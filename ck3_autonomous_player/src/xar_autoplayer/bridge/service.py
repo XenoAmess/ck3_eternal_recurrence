@@ -394,9 +394,11 @@ from ..construction_formal_consumer import (
 from ..family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
     RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
+    ALLIANCE_RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_ALLIANCE_RESULT_STEP,
     plan_family_marriage_private,
     submit_family_marriage_private,
     query_family_marriage_result_private,
+    query_family_marriage_alliance_result_private,
 )
 from .domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
@@ -1595,6 +1597,13 @@ class GameplayBridgeService:
                 result = query_family_marriage_result_private(
                     self.driver, pending=pending,
                     cold=plan.get("family_marriage_cold_recovery") is True)
+            elif selected_step == PRIVATE_FAMILY_MARRIAGE_ALLIANCE_RESULT_STEP:
+                resolved = plan.get("family_marriage_resolved")
+                if not isinstance(resolved, dict):
+                    raise UnsupportedStepError(
+                        "controlled first-heir alliance lacks resolved identity")
+                result = query_family_marriage_alliance_result_private(
+                    self.driver, resolved=resolved)
             elif selected_step == PRIVATE_FACTION_SUBMIT_STEP:
                 candidate = plan.get("faction_gift_action")
                 checkpoint = plan.get("faction_gift_pre_submit_checkpoint")

@@ -4820,6 +4820,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "family_marriage_choice",
         "family_marriage_pending",
         "family_marriage_result_consumed",
+        "family_marriage_alliance_status",
         "family_marriage_status",
         "family_marriage_private_diagnostic",
         "family_marriage_cold_recovery",
@@ -5080,6 +5081,14 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "post_target_perk_owned",
         "postcondition_verified",
         "query_sequence",
+        "read_only",
+        "heir_character_id",
+        "candidate_character_id",
+        "recipient_character_id",
+        "relationship_status",
+        "played_has_recipient_alliance",
+        "recipient_has_played_alliance",
+        "alliance_status",
         "snapshot_revision",
         "queried_snapshot_id",
         "queried_revision",
@@ -5593,6 +5602,9 @@ def _verify_pending_family_marriage_checkpoint(
             "status": "receipt_pending", "material_postcondition": "unobserved",
             "heir_character_id": pending["heir_character_id"],
             "candidate_character_id": pending["candidate_character_id"],
+            **({"recipient_character_id": pending["recipient_character_id"]}
+               if type(pending.get("recipient_character_id")) is int
+               and pending["recipient_character_id"] > 0 else {}),
             "date_raw": checkpoint["date_raw"],
             "episode_run_id": checkpoint["episode_run_id"]}
 
