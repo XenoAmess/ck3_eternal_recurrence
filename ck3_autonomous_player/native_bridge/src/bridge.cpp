@@ -8143,7 +8143,8 @@ std::string ObservedHeirMarriageMaterialFrameV1(
     std::string_view request_id,
     const xar::bridge::ObservedHeirMarriagePendingV1 &pending,
     std::uint64_t post_revision,
-    xar::bridge::ObservedHeirMarriageMaterialStatusV1 material) {
+    xar::bridge::ObservedHeirMarriageMaterialStatusV1 material,
+    bool cold_recovery) {
   const char *status = "pending";
   if (material ==
       xar::bridge::ObservedHeirMarriageMaterialStatusV1::marriage)
@@ -8151,6 +8152,13 @@ std::string ObservedHeirMarriageMaterialFrameV1(
   if (material ==
       xar::bridge::ObservedHeirMarriageMaterialStatusV1::betrothal)
     status = "betrothal";
+  if (material == xar::bridge::ObservedHeirMarriageMaterialStatusV1::refused)
+    status = "refused";
+  if (material == xar::bridge::ObservedHeirMarriageMaterialStatusV1::invalidated)
+    status = "invalidated";
+  if (material ==
+      xar::bridge::ObservedHeirMarriageMaterialStatusV1::accepted_pending)
+    status = "accepted_pending";
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(result, request_id);
@@ -8161,9 +8169,11 @@ std::string ObservedHeirMarriageMaterialFrameV1(
   AppendJsonString(result, status);
   result += ",\"material_result\":";
   result += material ==
-                    xar::bridge::ObservedHeirMarriageMaterialStatusV1::pending
-                ? "false"
-                : "true";
+                    xar::bridge::ObservedHeirMarriageMaterialStatusV1::marriage ||
+                    material == xar::bridge::ObservedHeirMarriageMaterialStatusV1::betrothal
+                ? "true" : "false";
+  result += ",\"cold_recovery\":";
+  result += cold_recovery ? "true" : "false";
   result += ",\"pre_native_revision\":";
   result += Number(pending.pre_native_revision);
   result += ",\"post_native_revision\":";
@@ -10850,23 +10860,55 @@ void RunConnectedSession(
           }
         } else if (step == kObservedFirstHeirMarriageResultStepV1) {
           std::uint64_t expected_revision = 0;
+          std::uint64_t cold_recovery_flag = 0;
+          const bool cold_recovery =
+              xar::bridge::JsonUnsignedField(incoming.payload, "cold_recovery",
+                                             cold_recovery_flag) &&
+              cold_recovery_flag == 1;
+          std::uint64_t cold_heir = 0;
+          std::uint64_t cold_candidate = 0;
+          std::uint64_t source_date_raw = 0;
           xar::game::Snapshot before{};
           if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
               expected_revision != state_revision ||
-              !state.marriage_family_pending_submission.has_value() ||
-              expected_revision <=
-                  state.marriage_family_pending_submission->pre_native_revision ||
               !previous_snapshot.has_value() ||
               !xar::game::ReadSnapshot(game, before) ||
               before != *previous_snapshot || !before.paused ||
-              !before.map_ready) {
+              !before.map_ready ||
+              (cold_recovery
+                   ? (!xar::bridge::JsonUnsignedField(
+                          incoming.payload, "heir_character_id", cold_heir) ||
+                      !xar::bridge::JsonUnsignedField(
+                          incoming.payload, "candidate_character_id",
+                          cold_candidate) ||
+                      !xar::bridge::JsonUnsignedField(
+                          incoming.payload, "source_date_raw", source_date_raw) ||
+                      cold_heir == 0 || cold_heir > INT32_MAX ||
+                      cold_candidate == 0 || cold_candidate > INT32_MAX ||
+                      cold_candidate == cold_heir ||
+                      source_date_raw > static_cast<std::uint64_t>(before.date_raw) ||
+                      state.observed_primary_heir_revision != state_revision ||
+                      state.observed_primary_heir_connection_generation !=
+                          connection_generation ||
+                      !state.observed_primary_heir_character_id.has_value() ||
+                      *state.observed_primary_heir_character_id !=
+                          static_cast<std::int32_t>(cold_heir))
+                   : (!state.marriage_family_pending_submission.has_value() ||
+                      expected_revision <= state.marriage_family_pending_submission
+                                               ->pre_native_revision))) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
                           "observed-heir marriage result needs a later paused frame"));
           } else {
-            const auto &pending = *state.marriage_family_pending_submission;
+            const xar::bridge::ObservedHeirMarriagePendingV1 pending =
+                cold_recovery
+                    ? xar::bridge::ObservedHeirMarriagePendingV1{
+                          0, before.played_character_id,
+                          static_cast<std::int32_t>(cold_heir),
+                          static_cast<std::int32_t>(cold_candidate)}
+                    : *state.marriage_family_pending_submission;
             xar::bridge::MarriageProposalBilateralRelationshipV1 relation{};
             xar::game::Snapshot after{};
             const bool read =
@@ -10878,9 +10920,19 @@ void RunConnectedSession(
                                      MarriageProposalNativeReadbackResultV1::
                                          available &&
                 xar::game::ReadSnapshot(game, after) && after == before;
+            xar::bridge::MarriageProposalNativeResolutionV1 resolution =
+                xar::bridge::MarriageProposalNativeResolutionV1::pending;
+            if (!cold_recovery) {
+              (void)xar::bridge::ReadMarriageProposalResolutionJournalV1(
+                  &g_marriage_shared_glue_v1.resolution,
+                  static_cast<std::uint32_t>(pending.heir_character_id),
+                  static_cast<std::uint32_t>(pending.candidate_character_id),
+                  resolution);
+            }
             const auto material = read
                 ? xar::bridge::ReadObservedHeirMarriageMaterialStatusV1(
-                      pending, relation, state_revision)
+                      pending, relation, state_revision, resolution,
+                      cold_recovery)
                 : xar::bridge::ObservedHeirMarriageMaterialStatusV1::
                       inconsistent;
             if (material == xar::bridge::
@@ -10893,7 +10945,8 @@ void RunConnectedSession(
             } else {
               connected = xar::bridge::WriteFrame(
                   pipe, ObservedHeirMarriageMaterialFrameV1(
-                            request_id, pending, state_revision, material));
+                            request_id, pending, state_revision, material,
+                            cold_recovery));
             }
           }
 #endif

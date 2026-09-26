@@ -144,8 +144,10 @@ def query_observed_first_heir_marriage_result_private_v1(
                       {"expected_revision": revision}, timeout_seconds)
     status = result.get("status")
     if (
-        status not in {"pending", "marriage", "betrothal"}
-        or result.get("material_result") is not (status != "pending")
+        status not in {"pending", "accepted_pending", "refused", "invalidated",
+                       "marriage", "betrothal"}
+        or result.get("material_result") is not (status in {"marriage", "betrothal"})
+        or result.get("cold_recovery") is not False
         or result.get("pre_native_revision") != pre
         or result.get("post_native_revision") != revision
         or result.get("heir_character_id") != heir_id
@@ -155,3 +157,55 @@ def query_observed_first_heir_marriage_result_private_v1(
     return {"schema": SCHEMA, "schema_version": 1,
             "exact_ck3_build": "1.19.0.6", "advertised": False,
             **result}
+
+
+def query_observed_first_heir_marriage_cold_result_private_v1(
+    driver: object, *, pending: dict[str, object],
+    timeout_seconds: float = 360.0,
+) -> dict[str, object]:
+    """Re-read the pair after a new PID; absent relation remains unresolved."""
+    before = _paused(driver)
+    heir_id = pending.get("heir_character_id")
+    candidate_id = pending.get("candidate_character_id")
+    source_date = pending.get("source_date_raw")
+    if (
+        pending.get("schema") != SCHEMA
+        or pending.get("status") != "receipt_pending"
+        or pending.get("played_character_id") !=
+           before["played_character"]["character_id"]
+        or not _positive(heir_id) or not _positive(candidate_id)
+        or type(source_date) is not int or source_date < 0
+        or type(before.get("date_raw")) is not int
+        or before["date_raw"] < source_date
+    ):
+        raise BridgeUnavailableError("cold heir marriage needs a bound pending pair")
+    root = driver._execute_campaign_root_context_v1_query(
+        expected_revision=before["revision"])
+    partition = root.get("held_title_partition")
+    primary = [row for row in partition if isinstance(row, dict)
+               and row.get("primary") is True] if isinstance(partition, list) else []
+    if (root.get("status") != "available" or len(primary) != 1 or
+            primary[0].get("first_heir_character_id") != heir_id or
+            _paused(driver)["native_revision"] != before["native_revision"]):
+        raise BridgeUnavailableError("cold heir marriage changed first heir or frame")
+    result = _command(driver, RESULT_STEP, {
+        "expected_revision": before["native_revision"],
+        "cold_recovery": 1,
+        "heir_character_id": heir_id,
+        "candidate_character_id": candidate_id,
+        "source_date_raw": source_date,
+    }, timeout_seconds)
+    status = result.get("status")
+    if (
+        status not in {"pending", "marriage", "betrothal"}
+        or result.get("material_result") is not (status != "pending")
+        or result.get("cold_recovery") is not True
+        or result.get("pre_native_revision") != 0
+        or result.get("post_native_revision") != before["native_revision"]
+        or result.get("heir_character_id") != heir_id
+        or result.get("candidate_character_id") != candidate_id
+    ):
+        raise BridgeUnavailableError("cold heir marriage pair readback malformed")
+    return {"schema": SCHEMA, "schema_version": 1,
+            "exact_ck3_build": "1.19.0.6", "advertised": False,
+            "cold_absent_relation_unresolved": status == "pending", **result}

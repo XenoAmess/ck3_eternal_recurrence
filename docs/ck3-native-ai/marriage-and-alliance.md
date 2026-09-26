@@ -680,10 +680,19 @@ flowchart LR
   C --> F["private candidate readback"]
   H --> F
   E --> F
-  F -. "child dynasty result, value, obligation and live result unknown" .-> G["formal family proposal"]
+  F --> V{"private trial: unpartnered heir + adult marriage + same current House/Dynasty + aligned native lineality + positive recipient raw?"}
+  V -->|yes| G["typed first-heir proposal; durable pending before send"]
+  V -->|no / unavailable| U["no proposal or observation RED"]
+  G --> R["later paused native resolution + bilateral spouse/betrothed"]
+  R -. "cold absent relation cannot prove refusal" .-> X["unresolved; no resubmit"]
+  R -. "child dynasty, alliance value, obligation, Robert live result unknown" .-> Y["future value calibration"]
   classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
-  class G unknown;
+  class X,Y unknown;
 ```
+
+`NW-FAMILY-PROPOSAL` 的私有 bounded 消费者只把**首继承人本人获得成人婚姻机会**列为当前窄收益：已有 spouse/betrothed 即不发案；原生预计 `betrothal`、继承人与玩家当前 House/Dynasty 不同、实际执行 lineality 与继承人 raw selector 不一致，或收件人原生 acceptance raw 非正，均不入选。正的 acceptance raw 仅是收件人答复线索，绝不当接受回执。五候选由同帧 final-legal 行按 raw 排入现有 projection；原生无玩家 AI rank，不把列举顺序伪作价值排名。子代 House/Dynasty、联盟、长期义务仍为未定项，不进入此窄收益，也不纳入 M5 公共仲裁。此 counter-policy 是静态候选，等待 Robert paused 正值行和正式后置核验。
+
+提案前持久记录可能已提交的 pair；typed native ACK 只证明提交进入 receiver。下一 paused 帧以同进程原生 resolution journal 区分 `pending`、`accepted_pending`、`refused`、`invalidated`，并以双方 spouse/betrothed 关系独立判定物质 `marriage`/`betrothal`。新 PID 冷读只使用正式 checkpoint 的首继承人身份与双方关系；若关系已成立可证明物质结果，若关系缺席则不能反推出拒绝，保持 `unresolved` 且禁止自动重发。提案后的配对 checkpoint、下一 turn 对 resolved receipt 的消费仍需实机核验；静态源码、Release DLL 与聚焦测试不算 production-live。
 
 ### exact native 候选发现与评分链
 

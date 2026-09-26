@@ -63,9 +63,12 @@ bool PrepareObservedHeirMarriageSubmissionV1(
 ObservedHeirMarriageMaterialStatusV1 ReadObservedHeirMarriageMaterialStatusV1(
     const ObservedHeirMarriagePendingV1 &pending,
     const MarriageProposalBilateralRelationshipV1 &after,
-    std::uint64_t after_native_revision) noexcept {
-  if (pending.pre_native_revision == 0 ||
-      after_native_revision <= pending.pre_native_revision ||
+    std::uint64_t after_native_revision,
+    MarriageProposalNativeResolutionV1 resolution,
+    bool cold_recovery) noexcept {
+  if ((!cold_recovery && (pending.pre_native_revision == 0 ||
+                         after_native_revision <= pending.pre_native_revision)) ||
+      after_native_revision == 0 ||
       pending.heir_character_id <= 0 || pending.candidate_character_id <= 0 ||
       after.subject_character_id !=
           static_cast<std::uint32_t>(pending.heir_character_id) ||
@@ -91,6 +94,14 @@ ObservedHeirMarriageMaterialStatusV1 ReadObservedHeirMarriageMaterialStatusV1(
   if (mutual_spouse) return ObservedHeirMarriageMaterialStatusV1::marriage;
   if (mutual_betrothed)
     return ObservedHeirMarriageMaterialStatusV1::betrothal;
+  if (!cold_recovery) {
+    if (resolution == MarriageProposalNativeResolutionV1::accepted)
+      return ObservedHeirMarriageMaterialStatusV1::accepted_pending;
+    if (resolution == MarriageProposalNativeResolutionV1::refused)
+      return ObservedHeirMarriageMaterialStatusV1::refused;
+    if (resolution == MarriageProposalNativeResolutionV1::invalidated)
+      return ObservedHeirMarriageMaterialStatusV1::invalidated;
+  }
   return ObservedHeirMarriageMaterialStatusV1::pending;
 }
 

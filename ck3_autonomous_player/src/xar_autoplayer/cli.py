@@ -380,6 +380,14 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-family-marriage-formal-trial",
+        action="store_true",
+        help=(
+            "enable one unadvertised exact-build first-heir marriage proposal "
+            "with later bilateral result for a bounded native-auto-run"
+        ),
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-m5-joint-collector",
         action="store_true",
         help=(
@@ -871,6 +879,11 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_construction_formal_trial
                     else {}
                 )
+                private_family_marriage_options = (
+                    {"allow_private_family_marriage_formal_trial": True}
+                    if args.allow_private_family_marriage_formal_trial
+                    else {}
+                )
                 private_m5_options = (
                     {"allow_private_m5_joint_collector": True}
                     if args.allow_private_m5_joint_collector
@@ -917,6 +930,7 @@ def main(argv: list[str] | None = None) -> int:
                     ),
                     **private_faction_options,
                     **private_construction_options,
+                    **private_family_marriage_options,
                     **private_m5_options,
                     **private_lifestyle_options,
                     **private_epidemic_options,
