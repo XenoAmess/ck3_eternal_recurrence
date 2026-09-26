@@ -1,4 +1,4 @@
-"""Freeze the two private observer entry and caller anchors to CK3 1.19.0.6."""
+"""Freeze private observer entries, callers, and interpreted branch anchors."""
 
 from __future__ import annotations
 
@@ -13,6 +13,10 @@ ANCHORS = {
     0x187235D: bytes.fromhex("e8 2e 8e ff ff"),
     0x973E00: bytes.fromhex("48 89 5c 24 08 4c 89 4c 24 20 57 48 83 ec 20"),
     0x186B2C5: bytes.fromhex("e8 36 8b 10 ff"),
+    0x1872611: bytes.fromhex("e8 ea 17 10 ff"),
+    0x186B278: bytes.fromhex("f6 05 01 72 ef 03 fd"),
+    0x186B1D6: bytes.fromhex("c6 43 08 01"),
+    0x186B2EA: bytes.fromhex("c6 43 09 01"),
 }
 
 

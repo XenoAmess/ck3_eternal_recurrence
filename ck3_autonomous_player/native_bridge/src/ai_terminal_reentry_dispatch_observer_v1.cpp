@@ -19,6 +19,14 @@ constexpr std::array<std::uint8_t, 5> kBuilderCallerAnchor{
     0xE8, 0x2E, 0x8E, 0xFF, 0xFF};
 constexpr std::array<std::uint8_t, 5> kSubmitCallerAnchor{
     0xE8, 0x36, 0x8B, 0x10, 0xFF};
+constexpr std::array<std::uint8_t, 5> kFallbackSubmitCallerAnchor{
+    0xE8, 0xEA, 0x17, 0x10, 0xFF};
+constexpr std::array<std::uint8_t, 7> kSubmitGateTestAnchor{
+    0xF6, 0x05, 0x01, 0x72, 0xEF, 0x03, 0xFD};
+constexpr std::array<std::uint8_t, 4> kBuilderHandledAnchor{
+    0xC6, 0x43, 0x08, 0x01};
+constexpr std::array<std::uint8_t, 4> kBuilderSecondAnchor{
+    0xC6, 0x43, 0x09, 0x01};
 
 std::atomic<AiReentryDispatchStateV1 *> g_active{nullptr};
 // Pass R9 through unchanged even though this exact callsite has only three
@@ -35,6 +43,7 @@ struct BuilderContext {
   std::int32_t target_id = -1;
   std::uintptr_t return_address = 0;
   std::uint32_t thread_id = 0;
+  std::uint32_t main_submit_calls = 0;
 };
 thread_local BuilderContext g_builder_context{};
 
@@ -226,8 +235,9 @@ bool ReadCommandHeader(const void *command, std::uintptr_t module_base,
       secondary == module_base + 0x432BFB0 &&
       record.command_kind == 2 &&
       cunit == static_cast<std::uint32_t>(record.cunit_id) &&
-      record.command_target_province_id ==
-          record.builder_target_province_id &&
+      (record.submit_site == AiReentrySubmitSiteV1::outer_fallback ||
+       record.command_target_province_id ==
+           record.builder_target_province_id) &&
       record.route_kind == 2 && record.direct_target == 1 &&
       record.channel_flags == 7;
   return true;
@@ -258,9 +268,48 @@ extern "C" void *__fastcall XarAiReentryBuilderHookV1(
                                          : ai_reentry_failure_identity);
     return original(result, cunit, province, opaque_r9);
   }
+  AiReentryBuilderOutcomeV1 outcome{};
+  outcome.thread_id = GetCurrentThreadId();
+  outcome.cunit_id = cunit_id;
+  outcome.target_province_id = target_id;
+  outcome.builder_return = caller;
+  outcome.gate_before_valid = ReadAt(
+      reinterpret_cast<const void *>(state->module_base +
+                                     kAiReentrySubmitGateRvaV1),
+      0, outcome.gate_before_raw);
+  if (!outcome.gate_before_valid)
+    Fail(*state, ai_reentry_failure_capture);
   g_builder_context = {true, cunit_id, target_id, caller,
-                       GetCurrentThreadId()};
+                       outcome.thread_id, 0};
   void *const returned = original(result, cunit, province, opaque_r9);
+  outcome.main_submit_calls = g_builder_context.main_submit_calls;
+  outcome.gate_after_valid = ReadAt(
+      reinterpret_cast<const void *>(state->module_base +
+                                     kAiReentrySubmitGateRvaV1),
+      0, outcome.gate_after_raw);
+  outcome.result_valid = returned == result &&
+      ReadAt(result, 8, outcome.result_handled_raw) &&
+      ReadAt(result, 9, outcome.result_second_raw);
+  if (!outcome.gate_after_valid || !outcome.result_valid)
+    Fail(*state, ai_reentry_failure_capture);
+  if (outcome.result_valid) {
+    outcome.outcome = ClassifyAiReentryBuilderOutcomeFixtureV1(
+        outcome.result_handled_raw, outcome.result_second_raw,
+        outcome.main_submit_calls);
+    if (outcome.outcome == AiReentryBuilderOutcomeKindV1::unclassified)
+      Fail(*state, ai_reentry_failure_identity);
+  }
+  outcome.terminal_sequence_cutoff = BattleTerminalJournalLatestSequenceV1();
+  void *game_state = nullptr;
+  if (state->game_state_slot != nullptr &&
+      SafeCopy(&game_state, state->game_state_slot, sizeof(game_state)) &&
+      game_state != nullptr) {
+    if (!ReadAt(game_state, 0x08, outcome.observed_date_raw))
+      Fail(*state, ai_reentry_failure_capture);
+  } else {
+    Fail(*state, ai_reentry_failure_capture);
+  }
+  (void)RecordAiReentryBuilderOutcomeFixtureV1(*state, outcome);
   g_builder_context = {};
   return returned;
 }
@@ -275,16 +324,37 @@ extern "C" bool __fastcall XarAiReentrySubmitHookV1(
     return original(manager, command, channel_flags, opaque_r9);
   const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
   const auto context = g_builder_context;
-  if (caller != state->module_base + kAiReentrySubmitReturnRvaV1 ||
-      !context.active)
+  const bool from_builder =
+      caller == state->module_base + kAiReentrySubmitReturnRvaV1 &&
+      context.active;
+  const bool from_fallback =
+      caller == state->module_base + kAiReentryFallbackSubmitReturnRvaV1;
+  if (!from_builder && !from_fallback)
     return original(manager, command, channel_flags, opaque_r9);
-  state->submit_matching_calls.fetch_add(1, std::memory_order_relaxed);
+  std::int32_t command_cunit_id = -1;
+  if (from_fallback) {
+    if (!ReadAt(command, 0x24, command_cunit_id)) {
+      Fail(*state, ai_reentry_failure_capture);
+      return original(manager, command, channel_flags, opaque_r9);
+    }
+    if (command_cunit_id != kAiReentryCunitIdV1)
+      return original(manager, command, channel_flags, opaque_r9);
+  }
+  if (from_builder) {
+    state->submit_matching_calls.fetch_add(1, std::memory_order_relaxed);
+    ++g_builder_context.main_submit_calls;
+  } else {
+    state->fallback_submit_matching_calls.fetch_add(
+        1, std::memory_order_relaxed);
+  }
   AiReentryDispatchRecordV1 record{};
   record.thread_id = GetCurrentThreadId();
-  record.cunit_id = context.cunit_id;
-  record.builder_target_province_id = context.target_id;
-  record.builder_return = context.return_address;
+  record.cunit_id = from_builder ? context.cunit_id : command_cunit_id;
+  record.builder_target_province_id = from_builder ? context.target_id : -1;
+  record.builder_return = from_builder ? context.return_address : 0;
   record.submit_return = caller;
+  record.submit_site = from_builder ? AiReentrySubmitSiteV1::builder
+                                    : AiReentrySubmitSiteV1::outer_fallback;
   record.channel_flags = channel_flags;
   record.terminal_sequence_cutoff =
       BattleTerminalJournalLatestSequenceV1();
@@ -297,7 +367,7 @@ extern "C" bool __fastcall XarAiReentrySubmitHookV1(
   } else {
     Fail(*state, ai_reentry_failure_capture);
   }
-  if (context.thread_id != record.thread_id ||
+  if ((from_builder && context.thread_id != record.thread_id) ||
       !ReadCommandHeader(command, state->module_base, record))
     Fail(*state, ai_reentry_failure_capture);
   else if (!record.command_header_valid)
@@ -370,6 +440,43 @@ bool RecordAiReentryDispatchFixtureV1(
   return true;
 }
 
+AiReentryBuilderOutcomeKindV1 ClassifyAiReentryBuilderOutcomeFixtureV1(
+    std::uint8_t handled, std::uint8_t second,
+    std::uint32_t main_submit_calls) noexcept {
+  if (handled == 0 && second == 0 && main_submit_calls == 0)
+    return AiReentryBuilderOutcomeKindV1::unhandled;
+  if (handled == 1 && second == 0 && main_submit_calls == 0)
+    return AiReentryBuilderOutcomeKindV1::early_return;
+  if (handled == 1 && second == 1 && main_submit_calls == 0)
+    return AiReentryBuilderOutcomeKindV1::gate_bypass;
+  if (handled == 1 && second == 1 && main_submit_calls == 1)
+    return AiReentryBuilderOutcomeKindV1::main_submit;
+  return AiReentryBuilderOutcomeKindV1::unclassified;
+}
+
+bool RecordAiReentryBuilderOutcomeFixtureV1(
+    AiReentryDispatchStateV1 &state,
+    const AiReentryBuilderOutcomeV1 &outcome) noexcept {
+  if (state.builder_outcome_recording.exchange(true,
+                                               std::memory_order_acq_rel)) {
+    Fail(state, ai_reentry_failure_reentry);
+    return false;
+  }
+  const auto count = state.builder_outcome_count.load(std::memory_order_relaxed);
+  if (count >= state.builder_outcomes.size()) {
+    state.overflow_count.fetch_add(1, std::memory_order_relaxed);
+    Fail(state, ai_reentry_failure_capacity);
+    state.builder_outcome_recording.store(false, std::memory_order_release);
+    return false;
+  }
+  auto copy = outcome;
+  copy.sequence = count + 1;
+  state.builder_outcomes[count] = copy;
+  state.builder_outcome_count.store(count + 1, std::memory_order_release);
+  state.builder_outcome_recording.store(false, std::memory_order_release);
+  return true;
+}
+
 AiReentryDispatchSnapshotV1 ReadAiReentryDispatchObserverV1(
     const AiReentryDispatchStateV1 &state) noexcept {
   AiReentryDispatchSnapshotV1 output{};
@@ -379,12 +486,20 @@ AiReentryDispatchSnapshotV1 ReadAiReentryDispatchObserverV1(
       std::memory_order_acquire);
   output.submit_matching_calls = state.submit_matching_calls.load(
       std::memory_order_acquire);
+  output.fallback_submit_matching_calls =
+      state.fallback_submit_matching_calls.load(std::memory_order_acquire);
   output.overflow_count = state.overflow_count.load(
       std::memory_order_acquire);
   output.count = state.count.load(std::memory_order_acquire);
   for (std::uint32_t index = 0; index < output.count &&
                                 index < output.records.size(); ++index)
     output.records[index] = state.records[index];
+  output.builder_outcome_count = state.builder_outcome_count.load(
+      std::memory_order_acquire);
+  for (std::uint32_t index = 0;
+       index < output.builder_outcome_count &&
+       index < output.builder_outcomes.size(); ++index)
+    output.builder_outcomes[index] = state.builder_outcomes[index];
   return output;
 }
 
@@ -440,6 +555,21 @@ bool InstallAiReentryDispatchObserverV1(
   const auto submit_caller = environment.submit_caller_override != 0
       ? environment.submit_caller_override
       : state.module_base + kAiReentrySubmitCallerRvaV1;
+  // Fixture pages model the original two patched entries. A live admission
+  // also freezes every newly interpreted, unpatched instruction site.
+  const bool extended_anchors = environment.offline_fixture ||
+      (SafeEqual(state.module_base + kAiReentryFallbackSubmitCallerRvaV1,
+                 kFallbackSubmitCallerAnchor.data(),
+                 kFallbackSubmitCallerAnchor.size()) &&
+       SafeEqual(state.module_base + 0x186B278,
+                 kSubmitGateTestAnchor.data(),
+                 kSubmitGateTestAnchor.size()) &&
+       SafeEqual(state.module_base + 0x186B1D6,
+                 kBuilderHandledAnchor.data(),
+                 kBuilderHandledAnchor.size()) &&
+       SafeEqual(state.module_base + 0x186B2EA,
+                 kBuilderSecondAnchor.data(),
+                 kBuilderSecondAnchor.size()));
   if (!SafeEqual(state.builder_target, kBuilderAnchor.data(),
                  kBuilderAnchor.size()) ||
       !SafeEqual(state.submit_target, kSubmitAnchor.data(),
@@ -447,7 +577,7 @@ bool InstallAiReentryDispatchObserverV1(
       !SafeEqual(builder_caller, kBuilderCallerAnchor.data(),
                  kBuilderCallerAnchor.size()) ||
       !SafeEqual(submit_caller, kSubmitCallerAnchor.data(),
-                 kSubmitCallerAnchor.size())) {
+                 kSubmitCallerAnchor.size()) || !extended_anchors) {
     Fail(state, ai_reentry_failure_anchor);
     g_active.store(nullptr, std::memory_order_release);
     return false;

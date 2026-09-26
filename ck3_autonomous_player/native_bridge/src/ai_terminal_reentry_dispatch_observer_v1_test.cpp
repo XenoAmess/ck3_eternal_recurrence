@@ -105,6 +105,36 @@ void CheckStorage() {
   state.recording.store(false, std::memory_order_release);
 }
 
+void CheckBuilderOutcomeStorageAndClassification() {
+  assert(ClassifyAiReentryBuilderOutcomeFixtureV1(0, 0, 0) ==
+         AiReentryBuilderOutcomeKindV1::unhandled);
+  assert(ClassifyAiReentryBuilderOutcomeFixtureV1(1, 0, 0) ==
+         AiReentryBuilderOutcomeKindV1::early_return);
+  assert(ClassifyAiReentryBuilderOutcomeFixtureV1(1, 1, 0) ==
+         AiReentryBuilderOutcomeKindV1::gate_bypass);
+  assert(ClassifyAiReentryBuilderOutcomeFixtureV1(1, 1, 1) ==
+         AiReentryBuilderOutcomeKindV1::main_submit);
+  assert(ClassifyAiReentryBuilderOutcomeFixtureV1(1, 1, 2) ==
+         AiReentryBuilderOutcomeKindV1::unclassified);
+  AiReentryDispatchStateV1 state{};
+  AiReentryBuilderOutcomeV1 row{};
+  row.cunit_id = kAiReentryCunitIdV1;
+  row.gate_before_raw = 4;
+  row.result_handled_raw = 1;
+  row.result_second_raw = 1;
+  row.outcome = AiReentryBuilderOutcomeKindV1::gate_bypass;
+  for (std::uint32_t i = 0; i < kAiReentryCapacityV1; ++i)
+    assert(RecordAiReentryBuilderOutcomeFixtureV1(state, row));
+  assert(!RecordAiReentryBuilderOutcomeFixtureV1(state, row));
+  const auto snapshot = ReadAiReentryDispatchObserverV1(state);
+  assert(snapshot.builder_outcome_count == kAiReentryCapacityV1);
+  assert(snapshot.builder_outcomes[0].sequence == 1);
+  assert(snapshot.builder_outcomes[63].sequence == 64);
+  assert(snapshot.builder_outcomes[63].gate_before_raw == 4);
+  assert(snapshot.overflow_count == 1);
+  assert(snapshot.failure_flags & ai_reentry_failure_capacity);
+}
+
 void CheckCommandAndTerminalState() {
   constexpr std::uintptr_t base = 0x10000000;
   std::array<std::byte, 0x38> command{};
@@ -132,6 +162,14 @@ void CheckCommandAndTerminalState() {
   assert(DecodeAiReentryCommandHeaderFixtureV1(command.data(), base, row));
   assert(row.command_header_valid);
   assert(row.command_target_province_id == target);
+  row.submit_site = AiReentrySubmitSiteV1::outer_fallback;
+  row.builder_target_province_id = -1;
+  assert(DecodeAiReentryCommandHeaderFixtureV1(command.data(), base, row));
+  assert(row.command_header_valid);
+  row.submit_site = AiReentrySubmitSiteV1::builder;
+  assert(DecodeAiReentryCommandHeaderFixtureV1(command.data(), base, row));
+  assert(!row.command_header_valid);
+  row.builder_target_province_id = target;
   row.channel_flags = 8;
   assert(DecodeAiReentryCommandHeaderFixtureV1(command.data(), base, row));
   assert(!row.command_header_valid);
@@ -216,6 +254,7 @@ void CheckInstall() {
 
 int main() {
   CheckStorage();
+  CheckBuilderOutcomeStorageAndClassification();
   CheckCommandAndTerminalState();
   CheckAdmissionAndAnchors();
   CheckRollback();

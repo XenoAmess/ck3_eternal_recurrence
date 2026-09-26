@@ -17,6 +17,9 @@ inline constexpr std::uintptr_t kAiReentryBuilderReturnRvaV1 = 0x1872362;
 inline constexpr std::uintptr_t kAiReentrySubmitRvaV1 = 0x973E00;
 inline constexpr std::uintptr_t kAiReentrySubmitCallerRvaV1 = 0x186B2C5;
 inline constexpr std::uintptr_t kAiReentrySubmitReturnRvaV1 = 0x186B2CA;
+inline constexpr std::uintptr_t kAiReentryFallbackSubmitCallerRvaV1 = 0x1872611;
+inline constexpr std::uintptr_t kAiReentryFallbackSubmitReturnRvaV1 = 0x1872616;
+inline constexpr std::uintptr_t kAiReentrySubmitGateRvaV1 = 0x5762480;
 inline constexpr std::size_t kAiReentryPatchBytesV1 = 15;
 inline constexpr std::size_t kAiReentryJumpBytesV1 = 14;
 inline constexpr std::size_t kAiReentryCapacityV1 = 64;
@@ -42,6 +45,39 @@ enum AiReentryFailureV1 : std::uint32_t {
   ai_reentry_failure_identity = 1U << 10,
 };
 
+enum class AiReentrySubmitSiteV1 : std::uint32_t {
+  builder = 1,
+  outer_fallback = 2,
+};
+
+enum class AiReentryBuilderOutcomeKindV1 : std::uint32_t {
+  unclassified = 0,
+  unhandled = 1,
+  early_return = 2,
+  gate_bypass = 3,
+  main_submit = 4,
+};
+
+struct AiReentryBuilderOutcomeV1 {
+  std::uint64_t sequence = 0;
+  std::uint32_t thread_id = 0;
+  std::int32_t cunit_id = -1;
+  std::int32_t target_province_id = -1;
+  std::int32_t observed_date_raw = 0;
+  std::uint64_t terminal_sequence_cutoff = 0;
+  std::uintptr_t builder_return = 0;
+  std::uint8_t gate_before_raw = 0;
+  std::uint8_t gate_after_raw = 0;
+  std::uint8_t result_handled_raw = 0;
+  std::uint8_t result_second_raw = 0;
+  std::uint32_t main_submit_calls = 0;
+  bool gate_before_valid = false;
+  bool gate_after_valid = false;
+  bool result_valid = false;
+  AiReentryBuilderOutcomeKindV1 outcome =
+      AiReentryBuilderOutcomeKindV1::unclassified;
+};
+
 struct AiReentryDispatchRecordV1 {
   std::uint64_t sequence = 0;
   std::uint32_t thread_id = 0;
@@ -57,6 +93,7 @@ struct AiReentryDispatchRecordV1 {
   std::uint64_t terminal_sequence_cutoff = 0;
   std::uintptr_t builder_return = 0;
   std::uintptr_t submit_return = 0;
+  AiReentrySubmitSiteV1 submit_site = AiReentrySubmitSiteV1::builder;
   bool command_header_valid = false;
   bool queue_accepted = false;
   BattleTerminalJournalLookupStatusV1 terminal_status =
@@ -74,9 +111,13 @@ struct AiReentryDispatchSnapshotV1 {
   std::uint32_t failure_flags = 0;
   std::uint64_t builder_matching_calls = 0;
   std::uint64_t submit_matching_calls = 0;
+  std::uint64_t fallback_submit_matching_calls = 0;
   std::uint64_t overflow_count = 0;
   std::uint32_t count = 0;
   std::array<AiReentryDispatchRecordV1, kAiReentryCapacityV1> records{};
+  std::uint32_t builder_outcome_count = 0;
+  std::array<AiReentryBuilderOutcomeV1, kAiReentryCapacityV1>
+      builder_outcomes{};
 };
 
 using AiReentryAllocV1 = void *(*)(void *, std::size_t, DWORD, DWORD) noexcept;
@@ -107,10 +148,15 @@ struct AiReentryDispatchStateV1 {
   std::atomic<std::uint32_t> failure_flags{0};
   std::atomic<std::uint64_t> builder_matching_calls{0};
   std::atomic<std::uint64_t> submit_matching_calls{0};
+  std::atomic<std::uint64_t> fallback_submit_matching_calls{0};
   std::atomic<std::uint64_t> overflow_count{0};
   std::atomic<std::uint32_t> count{0};
+  std::atomic<std::uint32_t> builder_outcome_count{0};
   std::atomic<bool> recording{false};
+  std::atomic<bool> builder_outcome_recording{false};
   std::array<AiReentryDispatchRecordV1, kAiReentryCapacityV1> records{};
+  std::array<AiReentryBuilderOutcomeV1, kAiReentryCapacityV1>
+      builder_outcomes{};
   std::uintptr_t module_base = 0;
   std::uintptr_t builder_target = 0;
   std::uintptr_t submit_target = 0;
@@ -135,6 +181,12 @@ AiReentryDispatchSnapshotV1 ReadAiReentryDispatchObserverV1(
 bool RecordAiReentryDispatchFixtureV1(
     AiReentryDispatchStateV1 &state,
     const AiReentryDispatchRecordV1 &record) noexcept;
+bool RecordAiReentryBuilderOutcomeFixtureV1(
+    AiReentryDispatchStateV1 &state,
+    const AiReentryBuilderOutcomeV1 &outcome) noexcept;
+AiReentryBuilderOutcomeKindV1 ClassifyAiReentryBuilderOutcomeFixtureV1(
+    std::uint8_t handled, std::uint8_t second,
+    std::uint32_t main_submit_calls) noexcept;
 bool DecodeAiReentryCommandHeaderFixtureV1(
     const void *command, std::uintptr_t module_base,
     AiReentryDispatchRecordV1 &record) noexcept;

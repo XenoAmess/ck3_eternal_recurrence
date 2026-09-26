@@ -16666,6 +16666,8 @@ void RunConnectedSession(
                       std::to_string(observed.builder_matching_calls);
           response += ",\"submit_matching_calls\":" +
                       std::to_string(observed.submit_matching_calls);
+          response += ",\"fallback_submit_matching_calls\":" +
+                      std::to_string(observed.fallback_submit_matching_calls);
           response += ",\"overflow_count\":" +
                       std::to_string(observed.overflow_count);
           response += ",\"records\":[";
@@ -16681,13 +16683,16 @@ void RunConnectedSession(
             response += ",\"command_target_province_id\":" +
                         std::to_string(row.command_target_province_id);
             response += ",\"builder_return_rva\":" +
-                        std::to_string(row.builder_return -
-                                       g_ai_terminal_reentry_dispatch_v1.module_base);
+                        std::to_string(row.builder_return == 0 ? 0 :
+                            row.builder_return -
+                            g_ai_terminal_reentry_dispatch_v1.module_base);
             response += ",\"submit_return_rva\":" +
                         std::to_string(row.submit_return -
                                        g_ai_terminal_reentry_dispatch_v1.module_base);
             response += ",\"channel_flags\":" +
                         std::to_string(row.channel_flags);
+            response += ",\"submit_site\":" + std::to_string(
+                static_cast<std::uint32_t>(row.submit_site));
             response += ",\"observed_date_raw\":" +
                         std::to_string(row.observed_date_raw);
             response += ",\"terminal_sequence_cutoff\":" +
@@ -16718,6 +16723,47 @@ void RunConnectedSession(
             response += row.terminal_before_submit ? "true" : "false";
             response += ",\"cunit_was_terminal_winner\":";
             response += row.cunit_was_terminal_winner ? "true" : "false";
+            response += '}';
+          }
+          response += "],\"builder_outcome_count\":" +
+                      std::to_string(observed.builder_outcome_count);
+          response += ",\"builder_outcomes\":[";
+          for (std::uint32_t index = 0;
+               index < observed.builder_outcome_count; ++index) {
+            if (index != 0) response += ',';
+            const auto &row = observed.builder_outcomes[index];
+            response += "{\"sequence\":" + std::to_string(row.sequence);
+            response += ",\"thread_id\":" +
+                        std::to_string(row.thread_id);
+            response += ",\"cunit_id\":" +
+                        std::to_string(row.cunit_id);
+            response += ",\"target_province_id\":" +
+                        std::to_string(row.target_province_id);
+            response += ",\"builder_return_rva\":" +
+                        std::to_string(row.builder_return -
+                            g_ai_terminal_reentry_dispatch_v1.module_base);
+            response += ",\"observed_date_raw\":" +
+                        std::to_string(row.observed_date_raw);
+            response += ",\"terminal_sequence_cutoff\":" +
+                        std::to_string(row.terminal_sequence_cutoff);
+            response += ",\"gate_before_raw\":" +
+                        std::to_string(row.gate_before_raw);
+            response += ",\"gate_after_raw\":" +
+                        std::to_string(row.gate_after_raw);
+            response += ",\"gate_before_valid\":";
+            response += row.gate_before_valid ? "true" : "false";
+            response += ",\"gate_after_valid\":";
+            response += row.gate_after_valid ? "true" : "false";
+            response += ",\"result_handled_raw\":" +
+                        std::to_string(row.result_handled_raw);
+            response += ",\"result_second_raw\":" +
+                        std::to_string(row.result_second_raw);
+            response += ",\"result_valid\":";
+            response += row.result_valid ? "true" : "false";
+            response += ",\"main_submit_calls\":" +
+                        std::to_string(row.main_submit_calls);
+            response += ",\"outcome\":" + std::to_string(
+                static_cast<std::uint32_t>(row.outcome));
             response += '}';
           }
           response += "]}}}";
