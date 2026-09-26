@@ -745,10 +745,27 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         if faction_target.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {faction_target}")
         faction_record = read_json(faction_source)
-        faction_request_id = faction_gift_pending_sidecar_request(
-            faction_record, driver_source_record, manifest, sha256(save_source)
+        resolved = faction_record.get("resolved_request_outcomes")
+        resolved_only = (
+            set(faction_record) == {
+                "schema", "format_version", "pending", "resolved_request_outcomes"
+            }
+            and faction_record.get("schema") == FACTION_GIFT_PENDING_V1_SCHEMA
+            and faction_record.get("format_version") == 1
+            and faction_record["pending"] is None
+            and isinstance(resolved, dict)
+            and all(isinstance(key, str) and key
+                    and value in {"applied", "unchanged"}
+                    for key, value in resolved.items())
         )
-        faction_source_sha256 = sha256(faction_source)
+        if resolved_only:
+            if faction_sidecar_arg is not None:
+                raise ValueError("explicit faction gift sidecar has no unresolved action")
+        else:
+            faction_request_id = faction_gift_pending_sidecar_request(
+                faction_record, driver_source_record, manifest, sha256(save_source)
+            )
+            faction_source_sha256 = sha256(faction_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():

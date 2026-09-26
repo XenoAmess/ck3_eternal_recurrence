@@ -96,6 +96,28 @@ class G2PreviewOperatorTest(unittest.TestCase):
                              "paired_no_launch")
             self.assertEqual(receipt["faction_gift_pending_sidecar"]["sha256"],
                              hashlib.sha256(sidecar.read_bytes()).hexdigest())
+            sidecar.write_text(json.dumps({
+                "schema": "xar.ck3.faction_gift_pending_v1",
+                "format_version": 1, "pending": None,
+                "resolved_request_outcomes": {pending["request_id"]: "applied"},
+            }), encoding="utf-8")
+            manifest_data = json.loads(manifest.read_text(encoding="utf-8"))
+            resolved_state = root / "resolved-state"
+            manifest_data["state_dir"] = str(resolved_state)
+            manifest.write_text(json.dumps(manifest_data), encoding="utf-8")
+            with (mock.patch.object(g2_preview_operator.subprocess, "run",
+                                    return_value=mock.Mock(returncode=0)),
+                  contextlib.redirect_stdout(io.StringIO())):
+                self.assertEqual(g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest, sample_dir=sample)), 0)
+            self.assertFalse((resolved_state / "native-session" /
+                              "faction-gift-pending-v1.json").exists())
+            manifest_data["state_dir"] = str(root / "explicit-resolved-state")
+            manifest.write_text(json.dumps(manifest_data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "explicit faction gift sidecar"):
+                g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest, sample_dir=sample,
+                                       faction_gift_sidecar=sidecar))
             pending["checkpoint_sha256_before_submit"] = "b" * 64
             with self.assertRaisesRegex(ValueError, "pre-submit save/driver"):
                 g2_preview_operator.faction_gift_pending_sidecar_request(
