@@ -1,0 +1,9 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-INPUT-R0244-20260927",
+  "status": "claimed",
+  "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
+  "updated_at_utc": "2026-09-26T19:58:54Z",
+  "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
+  "next_step": "Trace the exact same-frame regiment-input query and forecast strategy contract at the reported revision; repair or provide a policy-safe observed-frame fallback, run focused no-launch checks, then seek a separately paired bounded live replay. Preserve COMBAT_ENTRY_EU_ACTIVATION_ENABLED."
+}
