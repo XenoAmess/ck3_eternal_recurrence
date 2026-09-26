@@ -38,6 +38,99 @@ def _write(state_dir: Path, ledger: Mapping[str, object]) -> None:
     write_json_atomic(state_dir / _LEDGER, dict(ledger))
 
 
+def _candidate_rejection_reasons(source: Mapping[str, object] | None,
+                                 row: Mapping[str, object]) -> list[str]:
+    """Use the same narrow value gates for selection and private diagnostics."""
+    candidate_id = row.get("candidate_character_id")
+    if not _positive(candidate_id):
+        return ["invalid_candidate_identity"]
+    if not isinstance(source, dict):
+        return ["not_in_final_legal_rows"]
+    reasons = []
+    if row.get("status") != "available":
+        reasons.append("projection_unavailable")
+    if row.get("actor_character_id") != source.get("played_character_id"):
+        reasons.append("actor_identity_mismatch")
+    if row.get("heir_character_id") != source.get("subject_character_id"):
+        reasons.append("heir_identity_mismatch")
+    if row.get("predicted_outcome_if_accepted") != "marriage":
+        reasons.append("not_adult_marriage_outcome")
+    if row.get("heir_betrothed_character_id") is not None:
+        reasons.append("heir_already_betrothed")
+    if row.get("heir_spouse_character_ids") != []:
+        reasons.append("heir_spouse_list_not_empty")
+    if row.get("heir_primary_spouse_character_id") is not None:
+        reasons.append("heir_primary_spouse_present")
+    played_dynasty = row.get("played_dynasty_id")
+    if type(played_dynasty) is not int or played_dynasty < 0:
+        reasons.append("played_dynasty_unavailable")
+    if played_dynasty != row.get("heir_dynasty_id"):
+        reasons.append("heir_dynasty_not_played_dynasty")
+    if row.get("played_house_id") != row.get("heir_house_id"):
+        reasons.append("heir_house_not_played_house")
+    heir_selector = row.get("heir_sex_selector_raw")
+    candidate_selector = row.get("candidate_sex_selector_raw")
+    if heir_selector not in (0, 1):
+        reasons.append("heir_selector_unavailable")
+    if candidate_selector not in (0, 1):
+        reasons.append("candidate_selector_unavailable")
+    if heir_selector in (0, 1) and candidate_selector in (0, 1):
+        if candidate_selector == heir_selector:
+            reasons.append("same_selector_pair")
+        if row.get("effective_matrilineal_if_accepted") is not bool(heir_selector):
+            reasons.append("lineality_not_heir_aligned")
+    if source.get("complete_can_send") is not True:
+        reasons.append("native_can_send_not_true")
+    if source.get("recipient_answer_allows_send") is not True:
+        reasons.append("recipient_answer_blocks_send")
+    if source.get("recipient_answer_status_raw") not in (0, 1):
+        reasons.append("recipient_answer_status_not_allowed")
+    if not _positive(source.get("recipient_ai_accept_raw")):
+        reasons.append("recipient_accept_not_positive")
+    return reasons
+
+
+def _private_five_candidate_diagnostic(
+    legality: Mapping[str, object], projection: Mapping[str, object],
+    snapshot: Mapping[str, object], choice: Mapping[str, object] | None,
+) -> dict[str, object]:
+    """Retain only the five assessed rows, without advertising a query."""
+    legal = legality["native_legal_candidates"]
+    rows = projection["rows"]
+    by_id = {row["candidate_character_id"]: row for row in legal}
+    fields = ("status", "actor_character_id", "heir_character_id",
+              "candidate_character_id", "predicted_outcome_if_accepted",
+              "heir_betrothed_character_id", "heir_primary_spouse_character_id",
+              "played_house_id", "played_dynasty_id", "heir_house_id",
+              "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
+              "heir_sex_selector_raw", "candidate_sex_selector_raw",
+              "matrilineal_option_selected", "effective_matrilineal_if_accepted")
+    observed = []
+    for row in rows:
+        source = by_id.get(row["candidate_character_id"])
+        spouses = row.get("heir_spouse_character_ids")
+        observed.append({
+            **{field: row.get(field) for field in fields},
+            "heir_spouse_count": len(spouses) if isinstance(spouses, list) else None,
+            "recipient_ai_accept_raw": source.get("recipient_ai_accept_raw") if source else None,
+            "recipient_answer_status_raw": source.get("recipient_answer_status_raw") if source else None,
+            "recipient_answer_allows_send": source.get("recipient_answer_allows_send") if source else None,
+            "complete_can_send": source.get("complete_can_send") if source else None,
+            "rejection_reasons": _candidate_rejection_reasons(source, row),
+        })
+    return {"schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "advertised": False, "read_only": True,
+            "episode_run_id": snapshot.get("episode_run_id"),
+            "date_raw": snapshot.get("date_raw"),
+            "native_revision": legality["native_revision"],
+            "legality_query_sequence": legality["query_sequence"],
+            "observed_first_heir_character_id": legality["observed_first_heir_character_id"],
+            "final_legal_candidate_count": len(legal),
+            "selected_candidate_character_id": (
+                choice["candidate_character_id"] if choice else None),
+            "rows": observed}
+
+
 def choose_first_heir_marriage_candidate(
     legality: Mapping[str, object], projection: Mapping[str, object],
 ) -> dict[str, object] | None:
@@ -63,28 +156,7 @@ def choose_first_heir_marriage_candidate(
             continue
         candidate_id = row.get("candidate_character_id")
         source = by_id.get(candidate_id)
-        if not isinstance(source, dict) or not _positive(candidate_id):
-            continue
-        if (row.get("status") != "available"
-                or row.get("actor_character_id") != source.get("played_character_id")
-                or row.get("heir_character_id") != source.get("subject_character_id")
-                or row.get("predicted_outcome_if_accepted") != "marriage"
-                or row.get("heir_betrothed_character_id") is not None
-                or row.get("heir_spouse_character_ids") != []
-                or row.get("heir_primary_spouse_character_id") is not None
-                or type(row.get("played_dynasty_id")) is not int
-                or row["played_dynasty_id"] < 0
-                or row.get("played_dynasty_id") != row.get("heir_dynasty_id")
-                or row.get("played_house_id") != row.get("heir_house_id")
-                or row.get("heir_sex_selector_raw") not in (0, 1)
-                or row.get("candidate_sex_selector_raw") not in (0, 1)
-                or row["candidate_sex_selector_raw"] == row["heir_sex_selector_raw"]
-                or row.get("effective_matrilineal_if_accepted") is not
-                   bool(row["heir_sex_selector_raw"])
-                or source.get("complete_can_send") is not True
-                or source.get("recipient_answer_allows_send") is not True
-                or source.get("recipient_answer_status_raw") not in (0, 1)
-                or not _positive(source.get("recipient_ai_accept_raw"))):
+        if _candidate_rejection_reasons(source, row):
             continue
         choices.append((source["recipient_ai_accept_raw"], candidate_id))
     if not choices:
@@ -191,12 +263,16 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
             "phase": "first_heir_marriage_observation_unavailable",
             "reason": "one of five exact marriage outcome or lineage reads is unavailable"}}
     choice = choose_first_heir_marriage_candidate(legality, projection)
+    diagnostic = _private_five_candidate_diagnostic(
+        legality, projection, snapshot, choice)
     if choice is None:
         return {**planned, "plan": {**plan, "family_marriage_status":
-                                    "no_positive_observed_marriage_opportunity"}}
+                                    "no_positive_observed_marriage_opportunity",
+                                    "family_marriage_private_diagnostic": diagnostic}}
     return {**planned, "plan": {**plan, "phase": "first_heir_marriage_typed_submit",
         "selected_step": SUBMIT_STEP, "family_marriage_choice": choice,
         "family_marriage_legality": legality,
+        "family_marriage_private_diagnostic": diagnostic,
         "reason": "submit one observed unpartnered first-heir adult marriage opportunity"}}
 
 

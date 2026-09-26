@@ -695,6 +695,8 @@ flowchart LR
 
 `NW-FAMILY-PREWAR` 为上层仲裁增加默认关闭的调用参数 `prewar_arbitration=True`。它只允许既有 `life-advance`，或 exact `query-declarable-wars` / 合法 `declare-war-N` 基线进入同一家庭机会评估；其它动作及 RED/空计划不受理。即使显式调用，仍要求暂停、和平、无事件及 pending interaction、同帧原生 revision、五候选 final legality/预测成人婚姻/当前 House-Dynasty 与 lineality 对齐、收件人正 raw；无正值候选保留原战争计划。原生婚姻树与价值定义不变，pending/result/cold 路径共用。此处仅交付消费者入口，尚未接入上层战前仲裁，也没有 Robert 婚配动作或后置实机证据；不得将入口当作正式消费完成。
 
+`NW-FAMILY-R0225-DIAG` 针对 [R0225 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c2/attempt-01/formal-report.txt>) 第 2 turn 的 `no_positive_observed_marriage_opportunity`：该状态按源码只能在至少五个原生 final-legal 候选和同帧五行 `available` 投影后产生，旧报告却只保存状态，没有行内容，不能判断是订婚、现有关系、House/Dynasty、lineality 或接受值使窄价值门失败。私有消费者现将**已评估的五行**压成 `family_marriage_private_diagnostic`：绑定 episode/date/native revision/legality sequence、候选身份、预计 marriage/betrothal、首继承人关系数量与 betrothed/primary spouse、双方及候选 House/Dynasty、raw selector 与生效 lineality、收件人答复/accept raw，以及与正式选择共用门函数生成的逐行拒绝原因；另记录最终合法总数与所选 ID。此对象只随已有私有 formal plan/报告保存，不注册公共 MCP、不给未投影候选赋值，也不将正 accept raw 当实际接受。静态聚焦测试只证明诊断能保留字段；R0225 已流逝帧的具体五行仍未知，须在下一合法 paused 帧验收，才能确定下一项价值/读口修复。
+
 提案前持久记录可能已提交的 pair；typed native ACK 只证明提交进入 receiver。下一 paused 帧以同进程原生 resolution journal 区分 `pending`、`accepted_pending`、`refused`、`invalidated`，并以双方 spouse/betrothed 关系独立判定物质 `marriage`/`betrothal`。新 PID 冷读只使用正式 checkpoint 的首继承人身份与双方关系；若关系已成立可证明物质结果，若关系缺席则不能反推出拒绝，保持 `unresolved` 且禁止自动重发。提案后的配对 checkpoint、下一 turn 对 resolved receipt 的消费仍需实机核验；静态源码、Release DLL 与聚焦测试不算 production-live。
 
 ### exact native 候选发现与评分链
