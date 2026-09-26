@@ -29,7 +29,7 @@ For h148, `prepare-state` takes `--sample-dir <C12-recovery-pair-h148> --family-
 
 The operator command is:
 
-```powershell
+```text
 py tools/g2_preview_operator.py query-first-heir-marriage-alliance-result-v1 --manifest <official-h148-prepared-manifest> --output <new-Z-attempt-dir> --proposal-report <frozen-C10-attempt-01-formal-report.txt> --proposal-report-sha256 2BD6EBD230C2E730560119CF36D867192457D4E3247B7C4BF3DD8C8B0446C6F4 --recipient-character-id 32266 --ownership-round-id <allocated-R-number>
 ```
 
