@@ -544,6 +544,105 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     g2_preview_operator.command_prepare_state(args)
                 run.assert_not_called()
 
+    def test_prepare_state_requires_and_copies_saved_applied_construction(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "new-state"
+            sample = root / "recovery-pair-h106"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            request_id = "construction-submit-" + "c" * 32
+            candidate = {"barony_title_id": 2174, "province_id": 2629,
+                         "building_type_id": 628, "slot_index": 1,
+                         "stock_gold_cost_raw": 10000000,
+                         "building_key": "hill_farms_01"}
+            pending = {"status": "submitted_verification_pending",
+                       "action_request_id": request_id,
+                       "actor_character_id": 29829,
+                       "episode_run_id": "native-29829-test",
+                       "candidate": candidate}
+            applied = {"status": "applied", "postcondition_verified": True,
+                       "completion_status": "in_progress",
+                       "completion_last_check_date_raw": 53154528,
+                       "action_request_id": request_id,
+                       "actor_character_id": 29829,
+                       "episode_run_id": "native-29829-test",
+                       "candidate": candidate}
+            driver = {
+                "episode_character_id": 29829,
+                "episode_run_id": "native-29829-test",
+                "last_checkpoint": {"history_index": 106,
+                                    "episode_character_id": 29829,
+                                    "episode_run_id": "native-29829-test"},
+                "command_history": [
+                    {"index": 95, "command": "private-submit-player-construction-v1",
+                     "result": pending},
+                    {"index": 103, "command": "private-query-player-construction-receipt-v1",
+                     "result": applied},
+                ],
+            }
+            (sample / "driver-state.json").write_text(json.dumps(driver), encoding="utf-8")
+            sidecar_path = root / "old-state" / "construction-formal-pending-v1.json"
+            sidecar_path.parent.mkdir()
+            sidecar_bytes = json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": None, "applied": applied,
+            }).encode("utf-8")
+            sidecar_path.write_bytes(sidecar_bytes)
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            args = argparse.Namespace(manifest=manifest_path, sample_dir=sample,
+                                      construction_sidecar=None)
+            with mock.patch.object(g2_preview_operator.subprocess, "run") as run:
+                with self.assertRaisesRegex(ValueError, "requires --construction-sidecar"):
+                    g2_preview_operator.command_prepare_state(args)
+                run.assert_not_called()
+
+            args.construction_sidecar = sidecar_path
+            stdout = io.StringIO()
+            with (mock.patch.object(g2_preview_operator.subprocess, "run",
+                                    return_value=mock.Mock(returncode=0)),
+                  contextlib.redirect_stdout(stdout)):
+                self.assertEqual(g2_preview_operator.command_prepare_state(args), 0)
+            receipt = json.loads(stdout.getvalue())["construction_pending_sidecar"]
+            self.assertEqual(receipt["ledger_status"], "applied")
+            self.assertEqual(receipt["action_request_id"], request_id)
+            self.assertEqual(receipt["source"], str(sidecar_path))
+            self.assertEqual(receipt["sha256"], hashlib.sha256(sidecar_bytes).hexdigest())
+            self.assertEqual(Path(receipt["path"]).read_bytes(), sidecar_bytes)
+
+    def test_prepare_state_rejects_applied_sidecar_after_checkpoint(self) -> None:
+        request_id = "construction-submit-" + "d" * 32
+        applied = {"status": "applied", "postcondition_verified": True,
+                   "completion_status": "in_progress", "action_request_id": request_id,
+                   "actor_character_id": 29829, "episode_run_id": "native-29829-test",
+                   "candidate": {"building_type_id": 628}}
+        sidecar = {"schema": "xar.ck3.construction_formal_pending_v1",
+                   "pending": None, "applied": applied}
+        driver = {"episode_character_id": 29829,
+                  "episode_run_id": "native-29829-test",
+                  "last_checkpoint": {"history_index": 106,
+                                      "episode_character_id": 29829,
+                                      "episode_run_id": "native-29829-test"},
+                  "command_history": [
+                      {"index": 95, "command": "private-submit-player-construction-v1",
+                       "result": {"status": "submitted_verification_pending",
+                                  "action_request_id": request_id,
+                                  "candidate": applied["candidate"]}},
+                      {"index": 107,
+                       "command": "private-query-player-construction-receipt-v1",
+                       "result": applied}]}
+        with self.assertRaisesRegex(ValueError, "does not match checkpoint"):
+            g2_preview_operator.construction_pending_sidecar_request(sidecar, driver, {})
+
     def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
