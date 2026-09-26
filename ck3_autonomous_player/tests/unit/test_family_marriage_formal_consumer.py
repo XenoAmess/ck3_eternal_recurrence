@@ -480,7 +480,7 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertEqual(outcome["result"]["status"], "receipt_pending")
             self.assertEqual(driver.calls, ["legality", "projection", "submit"])
 
-    def test_cold_absent_relation_stays_unresolved_and_never_resubmits(self):
+    def test_cold_absent_relation_waits_for_new_frame_without_resubmitting(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))
             baseline = {"plan": {"selected_step": "life-advance"}}
@@ -500,11 +500,25 @@ class FamilyConsumerTest(unittest.TestCase):
                 query_family_marriage_result_private(
                     driver, pending=recovery["plan"]["family_marriage_pending"],
                     cold=True)
-                blocked = plan_family_marriage_private(driver, baseline,
+                waiting = plan_family_marriage_private(driver, baseline,
                                                       {**scene(), "native_revision": 1})
-            self.assertIsNone(blocked["plan"]["selected_step"])
-            self.assertEqual(blocked["plan"]["phase"],
-                             "first_heir_marriage_cold_resolution_unknown")
+                self.assertEqual(waiting["plan"]["selected_step"], "life-advance")
+                self.assertEqual(waiting["plan"]["family_marriage_status"],
+                                 "cold_absent_relation_unresolved")
+                later = plan_family_marriage_private(driver, baseline,
+                    {**scene(), "native_revision": 2, "date_raw": 53216688})
+                self.assertEqual(later["plan"]["selected_step"], RESULT_STEP)
+                driver.query_observed_first_heir_marriage_cold_result_private_v1 = (
+                    lambda *, pending: {"status": "pending", "material_result": False,
+                                        "post_native_revision": 2})
+                query_family_marriage_result_private(
+                    driver, pending=later["plan"]["family_marriage_pending"],
+                    cold=True)
+                still_waiting = plan_family_marriage_private(driver, baseline,
+                    {**scene(), "native_revision": 2, "date_raw": 53216688})
+            self.assertEqual(still_waiting["plan"]["selected_step"], "life-advance")
+            self.assertEqual(read_family_marriage_ledger(driver.state_dir)["pending"]
+                             ["candidate_character_id"], 300)
             self.assertEqual(driver.calls.count("submit"), 1)
 
     def test_pending_result_waits_for_new_frame_instead_of_query_loop(self):
