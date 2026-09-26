@@ -1,0 +1,71 @@
+{
+  "schema": "ck3.native_ai_winner_terminal_reentry_frozen_vector.v1",
+  "case_id": "winner-ai-terminal-reentry-072",
+  "scope": "one exact-build vanilla live replay; observation, not a general AI policy",
+  "ck3_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "observer_source_commit": "4d2524005c4a56238f43ea5fb3ac3289c1047398",
+  "observer_dll_sha256": "E8FB321D985880EC3079E2BBC9406663457C2F790445751CEDDDE522F0412ED6",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0064",
+  "attempt_path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-reentry-v2-attempt-072",
+  "evidence_sha256": {
+    "ck3-output/interactive-requests-responses/26-ai-reentry.json": "D738BBF6B366EAF8E4743A0FD274CF55657C37A59427BB2F744CFBC3F4C6F96F",
+    "ck3-output/interactive-requests-responses/26-winner-terminal-a.json": "CC43EDCCF15ECA88D9EF3375C2A77C7DC3B5288A5380F37F83227DB2696DF028",
+    "ck3-output/session-result.json": "3A252D6061D105ECCBBCCB971353C657682ECDAC0EFA12F2D0E64968597A19C3",
+    "ck3-output/capture-report.json": "BF520BD94869331159A19E0EC7DC0FD024692C49000C40DCBBFF0173C626F606",
+    "audit-result.json": "0EB8E00DF41BE162BC49048E55BAAC41FBA054D9E8DA9DA3C42F3C44533DC9A2"
+  },
+  "subject": {
+    "combat_id": 16777218,
+    "cunit_id": 16777231,
+    "owner_character_id": 32725,
+    "target_province_id": 2639
+  },
+  "before_terminal": {
+    "day_index": 25,
+    "private_target_province_id": 2639,
+    "route_province_ids": [],
+    "in_combat": true
+  },
+  "terminal": {
+    "day_index": 26,
+    "date_raw": 53146992,
+    "kind": "normal_result",
+    "event_sequence": 5,
+    "winner_raw": 0,
+    "in_combat": false,
+    "route_province_ids": [2639]
+  },
+  "builder": {
+    "matching_calls": 1,
+    "return_rva": 25633634,
+    "result_handled_raw": 0,
+    "result_second_raw": 0,
+    "outcome_code": 1,
+    "outcome_name": "unhandled",
+    "main_submit_calls": 0,
+    "gate_before_raw": 0,
+    "gate_after_raw": 0
+  },
+  "fallback_submit": {
+    "matching_calls": 1,
+    "submit_site": 2,
+    "return_rva": 25634326,
+    "command_target_province_id": 2639,
+    "command_kind": 2,
+    "channel_flags": 7,
+    "route_kind": 2,
+    "direct_target": 1,
+    "terminal_before_submit": true,
+    "cunit_was_terminal_winner": true,
+    "queue_accepted": true
+  },
+  "consumer_boundary": {
+    "observed_event_class": "winner_terminal_builder_unhandled_fallback_queue_accepted",
+    "general_ai_dispatch_rule_proven": false,
+    "post_queue_movement_executed": null,
+    "route_reappearance_alone_proves_new_command": false,
+    "global_gate_semantic_name": null,
+    "strategy_use": "store as an observed terminal reentry transition; require later position/route readback before asserting executed movement"
+  }
+}
