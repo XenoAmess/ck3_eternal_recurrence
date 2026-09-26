@@ -333,6 +333,8 @@ void CorrelateAiReentryTerminalAfterPauseV1(
       terminal.event.capture_failure_flags;
   record.terminal_normal_result =
       !terminal.event.suppress_normal_result_envelopes;
+  if (terminal.event.winner_raw != 0 && terminal.event.winner_raw != 1)
+    return;
   const auto &winner = terminal.event.winner_raw == 0
       ? terminal.event.attacker_public_cunit_ids_in_stored_order
       : terminal.event.defender_public_cunit_ids_in_stored_order;
