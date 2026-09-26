@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-27：劣势方三军原版夹具已构造，接战仍待回读
+
+[live-confirmed, fixture only] 为避免此前三军夹具在优势方不求援的条件限制，从原版 day-zero 存档（SHA-256 `A9C5D1C4B7646A956894BCBF22EAA2150DCE9381531734F8FD944D93310B541C`）重新宣战、征召、集结。原生 `life-advance` 后在 raw `53144520` 直接观察 CUnit `18` 已静止、未接战，保存不可变的拆军前检查点（SHA-256 `91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592`）。连续两次原生 `split-army-half-18` 获得同属 Character `29829` 的 CUnit `18、32、33`；三次原生 `ck3_move_army` 均接受 Province `2638`，同日三军路线终点均为 `2638`，保存路线检查点（SHA-256 `77BE86B0FDE44D348807B201B9809A29F8099A4FF005A9C12D632045B4AB0DE9`）。原始请求、响应、源档、桥版本和清理报告位于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-losing-side-split-attempt-058/`。这是**夹具制备成功**，尚不证明三军已在同一 CombatID 接战，更不证明 AI 自然求援、指派或重新入场。
+
+准备过程中的 RED 按独立尝试保留：`053` 在移动状态拆军被原版拒绝；`054/055` 所选中途省份没有发布为合法动作；`056/057` 以固定日期断言误判非战术 `life-advance` 的 8/9 日变动跨度。已改为按“战争仍在、军队静止、未接战”这一组实际状态判断，并在拆军前保存检查点。冷载尝试 `059` 因误用缺 `mcp` 依赖的系统 Python，在 CK3 启动前环境 RED；后续会话使用已验证的项目 `tools/.venv/Scripts/python.exe`。这些 RED 不是原生增援行为的反例。
+
 ## 2026-09-27：三军结构门通过，但自然求援未触发
 
 [live-confirmed, bounded negative] 从第 21 日不可变原版存档（SHA-256 `0E5AD3066B97689178797F1F9D3C35CA3700D513FAE6F6B032A3E8BF7BD1FB2A`）独立冷载。attempt-049 在同日 raw `53146728`、旧 `CombatID=16777218` 中直接读取：切换玩家前，side0 CUnit `16777221、27、16777231` 都在 `coordinator=3` 的同一 AI parent row `[16777221,27,16777231]`；切到 Character `31549` 后，玩家 CUnit `16777221` 的 AI backlink 暂时 unavailable，其余两支仍是同一 coordinator 的 parent `[16777231,27]`。这次**直接跨过**旧两军夹具撤离后只剩 singleton、`count<=1` 必清请求的结构性限制。切换后种子存档 SHA-256 `337B8818E819CA45A217F3751B1E0242045372084A265FEBF91C93D2BCB9F020`。
