@@ -434,6 +434,17 @@ def private_timeline_query_round_id(value: str) -> str:
     return value
 
 
+def private_family_alliance_round_id(value: str) -> str:
+    """Accept the exact padded suffix emitted by ck3_live_run_id.py."""
+    if (re.fullmatch(r"R[0-9]{4,}", value) is None
+            or int(value[1:]) <= 0
+            or value != f"R{int(value[1:]):04d}"):
+        raise argparse.ArgumentTypeError(
+            "family alliance round ID must match the allocated R number"
+        )
+    return value
+
+
 def private_timeline_action_round_id(value: str) -> str:
     if re.fullmatch(r"R[1-9][0-9]*", value) is None:
         raise argparse.ArgumentTypeError(
@@ -1717,7 +1728,7 @@ def parser() -> argparse.ArgumentParser:
     family_alliance_query.add_argument("--recipient-character-id", type=int,
                                        required=True)
     family_alliance_query.add_argument("--ownership-round-id",
-                                       type=private_timeline_query_round_id,
+                                       type=private_family_alliance_round_id,
                                        required=True)
     family_alliance_query.add_argument("--timeout", type=int)
     family_alliance_query.add_argument("--readiness-timeout", type=int)

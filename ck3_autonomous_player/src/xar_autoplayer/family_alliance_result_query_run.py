@@ -33,7 +33,7 @@ from .timeline_blocker_query_run import _same_frame
 
 QUERY_STEP = "query-observed-first-heir-marriage-alliance-result-v1-private"
 SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
-ROUND_PATTERN = re.compile(r"R[1-9][0-9]*")
+ROUND_PATTERN = re.compile(r"R[0-9]{4,}")
 
 
 def _sha256(path: Path) -> str:
@@ -128,6 +128,8 @@ def query_first_heir_marriage_alliance_once(
             or poll_interval_seconds <= 0
             or readiness_stable_seconds < 0
             or ROUND_PATTERN.fullmatch(ownership_round_id) is None
+            or int(ownership_round_id[1:]) <= 0
+            or ownership_round_id != f"R{int(ownership_round_id[1:]):04d}"
             or cold_start_checkpoint is not True):
         raise AgentError("family alliance query requires bounded cold restore and R round")
     config = (native_bridge_launch_config_from_environment() if native_bridge is None
