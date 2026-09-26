@@ -1306,6 +1306,16 @@ def create_server(
         """List the current bridge backend and gameplay steps it implements."""
         return service.capabilities()
 
+    if getattr(driver, "allow_private_prisoner_collection_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_prisoner_collection_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read current-player prisoner IDs on one paused native frame."""
+            return driver.query_player_prisoner_collection_private_v1(
+                expected_revision=expected_revision,
+            )
+
     @server.tool()
     def ck3_get_bridge_diagnostics() -> dict[str, object]:
         """Return live transport diagnostics without claiming CK3 game state."""
