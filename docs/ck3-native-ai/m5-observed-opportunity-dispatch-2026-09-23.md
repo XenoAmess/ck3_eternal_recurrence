@@ -411,3 +411,11 @@ flowchart TD
   B -->|完整空提案且无预留| D["保留 life-advance；记录真实空结果"]
   D --> E["独立 FAMILY 消费者，否则正常日期推进"]
 ```
+
+### 2026-09-26 R0233：空提案后正式日期推进
+
+#295 仅在完整 `no_complete_feasible_proposal`、无预留时保留既有 `life-advance` 和空结果诊断，normal/`-O` 聚焦各 13/13；PR 检查及 exact master `2700802d2e31ae28449ec8e9dd106f06a7597a6d` 官方 CI `36253284868` 成功，交付文件 blob 一致，临时远端/本地分支和源码 worktree 已清理。来源读取 RED 与已预留但无正式消费者的路径保持原边界。
+
+c20 独立候选 DLL SHA-256 `2B81CF7E81EB7DB28C4D8F8361F5C9A510266374FF1C81E22AE3E5A0A4E61AD3` 从原 h148 save/driver/建设/家庭账本通过官方 ordinary `xar_off` rebind/no-launch。R0233 唯一 PID174384 的 8/8 有界正式运行，turn 1–3 核 root/建设 applied/双边订婚；turn 4 在 `m5_joint_empty_proposals` 保留真实 `no_complete_feasible_proposal`、`formal_action_ready=false` 后实际执行 `life-advance`，游戏日期 raw53155728→53156568；turn 5 重新消费施工 watch，仍 `in_progress`、月收入读数 raw606918、未观测完工收益；turn 6–8 为正式战争入口查询，没有新 M5/建设/婚配 typed 提交。[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-econ-c20-20260926/attempt-01/formal-report.txt) SHA-256 `75BE30DE9A8A2F55CA21A66A88FA7C00D8AE6D295A7B5E8809025BCE0F0C0784`，[operator 回执](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-econ-c20-20260926/attempt-01/operator-receipt.json) SHA-256 `D756F83D18D6FE8396B094D4DB76AB17DC320A79907D163257F25407587797FE`；`turn_limit`、date_advanced=true、终局 h159 checkpoint SHA `0E4236834EBDC752AAB74ACE62FDEF1CD4CC74412EA7FE041BCD92A4358E72B3`，进程树清理。operator `completed` 且分配器 R0233 completed-green。失败/成功回执均未提供窗口终态字段，本节不声称该项实测通过。
+
+h159 save/driver/两账本及报告已单独哈希保留为 `g2-robert-joint-econ-c20-20260926/recovery-pair-h159`，原始 h148 未改。后续仍需新 PID、官方配对/no-launch 与下一 paused 帧消费证明冷恢复；R0233 只证明空场景正常推进、下一 turn 和持久 checkpoint，不提升 M5 五候选或建设完工收益结论。
