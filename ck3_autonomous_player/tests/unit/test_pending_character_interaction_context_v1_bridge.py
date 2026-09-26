@@ -1094,11 +1094,14 @@ class PendingCharacterInteractionContextV1NativeDriverTests(unittest.TestCase):
         _answer_with(endpoint, _native_result)
         service = GameplayBridgeService(driver)
         revision = int(service.snapshot()["revision"])
+        before = service.plan_turn()
+        self.assertEqual(before["plan"]["selected_step"], STEP)
 
         result = service.query_pending_character_interaction_context_v1(
             PENDING_ID,
             expected_revision=revision,
         )
+        after = service.plan_turn()
 
         history = driver._history_snapshot()
         self.assertEqual(len(history), 1)
@@ -1115,6 +1118,7 @@ class PendingCharacterInteractionContextV1NativeDriverTests(unittest.TestCase):
         )
         self.assertEqual(result["queried_revision"], revision)
         self.assertEqual(result["queried_native_revision"], NATIVE_REVISION)
+        self.assertNotEqual(after["plan"]["selected_step"], STEP)
 
     def test_driver_rejects_low_bits_alias_and_frame_drift(self) -> None:
         driver, _endpoint = _native_driver()
