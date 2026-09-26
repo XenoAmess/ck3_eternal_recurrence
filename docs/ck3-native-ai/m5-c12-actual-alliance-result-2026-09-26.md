@@ -13,13 +13,13 @@ flowchart TD
     A -->|true / true| Y["actual alliance allied"]
     A -->|false / false| N["actual alliance not_allied"]
     A -. "read unavailable or disagreement" .-> U
-    Y -. "C12 paused readback pending" .-> L["production outcome unknown"]
-    N -. "C12 paused readback pending" .-> L
+    Y --> L["R0230 native read: allied, attribution unknown"]
+    N -. "other recipients or frames unobserved" .-> U
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,L unknown;
 ```
 
-This source increment is static-ready until a frozen candidate reads C12 on a real paused frame. Its result describes the **current** alliance pair, not the causal effect of the betrothal; an alliance may predate or follow the proposal. Future proposals should persist the exact recipient identity with the pending receipt before automatic result consumption can use this query without an external frozen row.
+The R0230 frozen candidate read C12 on a real paused frame. Its result describes the **current** alliance pair, not the causal effect of the betrothal; an alliance may predate or follow the proposal. Future proposals should persist the exact recipient identity with the pending receipt before automatic result consumption can use this query without an external frozen row.
 
 ## Managed C12 h148 read-only entry
 
@@ -42,3 +42,5 @@ The c14 h148 attempt allocated `R0227`, but the official preflight blocked befor
 The c15 `R0228` preflight passed, then the managed native session failed before a paused frame with the same `game-rule source/profile fingerprint differs` error. The query runner had left `native_session` at its `prepared_xar_enabled=xar_on` default. Its RED report records `launch_attempted=true`, null readiness and query result, unchanged save/driver hashes and zero actions; the CK3 process inventory was empty afterward. The allocator marks R0228 `completed-red`. The runner now forwards the validated checkpoint lifecycle's `xar_enabled` to the managed session, with a focused test for the ordinary `xar_off` profile. Actual alliance status remains unobserved.
 
 The c16 `R0229` managed session launched CK3 PID 168384 and reached the in-game log, but timed out after 303.166 seconds with no native pipe connection. The official operator receipt records null paused frame and alliance envelope, unchanged save/driver hashes, zero actions, and proven process-tree cleanup. This is RED, not an alliance result. Source tracing found the next missing binding: `NativeHeadlessGameplayDriver` was constructed with its default rogue lifecycle. Its existing `_adopt_bridge_session` rejects the restored ordinary `xar_off` driver state on hello, while the normal auto-run and white-peace query bind the lifecycle before adoption. The family query now passes the exact checkpoint lifecycle to the driver; the focused managed-session test checks that binding. A new frozen build and paused query are still required.
+
+The c17 `R0230` candidate (source `495c87ca202c09ccc82d375095a0273a88c5e24d`, DLL SHA-256 `302859207A9A594180083C6422DBDE00634F8A522381B31944E49B984EB4CF0A`) launched CK3 PID 106980 and returned a native paused query on h148/raw53155728. Its raw `attempt-01/query-report.json` (SHA-256 `A519BF48791627D627252508893355BAFE83188AA66F6A8DA0471BE49F979A8E`) records heir 38822 and candidate 38710 as bilaterally betrothed, player 29829 and recipient 32266 with `is_allied_to=true` in both directions, and `alliance_status=allied`. The raw runner says `GREEN_READ_ONLY`, unchanged paused date/checkpoint, zero gameplay actions, minimized window and proven process-tree cleanup. The operator receipt remains `query_failed`: the child process emitted this JSON as Windows CP936, and the operator expected UTF-8, discarding the parseable result. The persistent allocator accordingly records R0230 as completed-red. This is a real native alliance observation with a failed managed operator wrapper, not a completed operator gate or proof that C12's betrothal caused the alliance. The wrapper now forces UTF-8 on child Python output; a new frozen candidate must confirm the end-to-end operator result.
