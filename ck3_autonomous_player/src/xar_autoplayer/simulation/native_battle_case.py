@@ -34,6 +34,14 @@ EPISODE01_JOIN_FULL_DAY_SHA256 = (
     "2BEA19218527FF7E9B35EFAF97543BDD6F168C99B99AE3CA8E88AD9699BF4983",
     "0AC4D03A8796D279D2D43E107002E76778D8B600F576CFF33026C9B4FD5511B8",
 )
+EPISODE01_DAILY_STAT_REFRESH_FILES = (
+    "ck3_1_19_0_6_episode01_messina_daily_stat_refresh_day11_v1.json",
+    "ck3_1_19_0_6_episode01_messina_daily_stat_refresh_day21_v1.json",
+)
+EPISODE01_DAILY_STAT_REFRESH_SHA256 = (
+    "E36224201492080046FE37E6C27653B6F38D8C7B97651BBEC86EC718A8A3AB06",
+    "26569235A6B1507B6693E381335A46B56F632E2D6F9DD0B9D825A2C46F8833AE",
+)
 EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
@@ -456,6 +464,39 @@ def load_episode01_join_full_day_boundaries() -> tuple[dict[str, Any], dict[str,
                     or row["soft_delta_raw"] != old["arrival_day_soft_casualties_raw"]
                     or row["hard_delta_raw"] != old["arrival_day_hard_casualties_raw"]):
                 raise NativeBattleCaseError("full join-day regiment disagrees with saved observation")
+        results.append(report)
+    return results[0], results[1]
+
+
+def load_episode01_daily_stat_refresh() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Return the two pre-schedule cached-stat changes for input fitting."""
+    joined = load_episode01_join_full_day_boundaries()
+    results = []
+    for index, (name, expected_sha, source_day, count, total) in enumerate(zip(
+        EPISODE01_DAILY_STAT_REFRESH_FILES, EPISODE01_DAILY_STAT_REFRESH_SHA256,
+        (11, 21), (32, 37), (51, 63), strict=True,
+    )):
+        raw = (Path(__file__).with_name("data") / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest().upper() != expected_sha:
+            raise NativeBattleCaseError("bundled daily stat-refresh bytes changed without review")
+        report = json.loads(raw)
+        chain = report.get("static_call_chain") if isinstance(report, dict) else None
+        changes = report.get("changed_regiments") if isinstance(report, dict) else None
+        if (report.get("schema") != "ck3.native_pre_schedule_stat_refresh.v1"
+                or report.get("source_day") != source_day
+                or report.get("combat_id") != 16777218
+                or report.get("finish_response_sha256") !=
+                joined[index]["response_sha256"][f"{'d11r2' if index == 0 else 'd21'}-finish"]
+                or report.get("changed_regiment_count") != count
+                or sum(row["regiment_count"] for row in report["side_census"]) != total
+                or not isinstance(chain, dict)
+                or chain.get("refresh_call_precedes_side0_schedule_in_same_loop") is not True
+                or len(chain.get("direct_edges", [])) != 9
+                or len(chain.get("stat_field_writes", [])) != 2
+                or report.get("specific_modifier_source_for_each_change_proven") is not False
+                or report.get("cross_manager_global_tick_order_proven") is not False
+                or not isinstance(changes, list) or len(changes) != count):
+            raise NativeBattleCaseError("daily stat-refresh identity or readiness drifted")
         results.append(report)
     return results[0], results[1]
 
@@ -1166,6 +1207,8 @@ __all__ = [
     "EPISODE01_JOIN_DAY_SHA256",
     "EPISODE01_JOIN_FULL_DAY_FILES",
     "EPISODE01_JOIN_FULL_DAY_SHA256",
+    "EPISODE01_DAILY_STAT_REFRESH_FILES",
+    "EPISODE01_DAILY_STAT_REFRESH_SHA256",
     "EPISODE01_JOIN_KERNEL_FILE",
     "EPISODE01_JOIN_KERNEL_SHA256",
     "EPISODE01_JOIN_KERNEL_V2_FILE",
@@ -1204,6 +1247,7 @@ __all__ = [
     "load_episode01_phase_event_save_feedback",
     "load_episode01_join_day_casualties",
     "load_episode01_join_full_day_boundaries",
+    "load_episode01_daily_stat_refresh",
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
     "load_episode01_phase_event_regiment_feedback",

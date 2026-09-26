@@ -28,6 +28,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_phase_event_save_feedback,
     load_episode01_join_day_casualties,
     load_episode01_join_full_day_boundaries,
+    load_episode01_daily_stat_refresh,
     load_episode01_join_day_kernel_parity,
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
@@ -63,6 +64,19 @@ class NativeBattleCaseTests(unittest.TestCase):
             self.assertTrue(report["bounded_seven_boundary_capture_complete"])
             self.assertFalse(report["full_mutable_transition_bundle_complete"])
             self.assertFalse(report["general_cross_manager_call_order_proven"])
+
+    def test_pre_schedule_stat_refresh_changes_model_inputs_before_fire(self) -> None:
+        day11, day21 = load_episode01_daily_stat_refresh()
+        self.assertEqual([day11["changed_regiment_count"], day21["changed_regiment_count"]],
+                         [32, 37])
+        self.assertEqual([sum(x["regiment_count"] for x in report["side_census"])
+                          for report in (day11, day21)], [51, 63])
+        knight = next(row for row in day11["changed_regiments"] if row["regiment_id"] == 220)
+        self.assertEqual((knight["old_damage_raw"], knight["new_damage_raw"]),
+                         (20_000_000, 18_500_000))
+        self.assertEqual((knight["old_toughness_raw"], knight["new_toughness_raw"]),
+                         (4_000_000, 3_700_000))
+        self.assertFalse(day11["specific_modifier_source_for_each_change_proven"])
 
     def test_original_outcome_and_replay_divergence_stay_separate(self) -> None:
         case = load_episode01_native_battle_case()

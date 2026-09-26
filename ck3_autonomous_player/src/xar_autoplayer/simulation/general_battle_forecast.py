@@ -137,6 +137,7 @@ def forecast_fixed_contact(
         "assumptions": [
             "phase_events_disabled", "no_voluntary_retreat",
             "fixed_participants", "unobserved_modifiers_omitted",
+            "future_daily_effective_stat_refresh_unmodeled",
         ],
         "capture": dict(capture),
     }
@@ -176,6 +177,9 @@ def contact_admission(forecast: Mapping[str, Any], *, defensive_relief: bool = F
         "reason": "within_bounded_model_risk_budget" if admitted else "bounded_model_risk_budget_exceeded",
         "risk_limits": {**limits, "death": limits["death"] if death_risk_modeled else None},
         "character_death_risk_modeled": death_risk_modeled,
-        "unquantified_risks": [] if death_risk_modeled else ["commander_or_knight_death"],
+        "unquantified_risks": [
+            *([] if death_risk_modeled else ["commander_or_knight_death"]),
+            "future_daily_effective_stat_refresh",
+        ],
         "native_parity_required": False,
     }

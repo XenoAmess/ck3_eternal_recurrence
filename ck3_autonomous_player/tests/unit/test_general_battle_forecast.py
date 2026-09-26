@@ -30,6 +30,7 @@ def test_frozen_live_encounter_produces_bounded_whole_battle_distribution():
     assert result["native_parity"] is False
     assert result["commander_or_knight_death_probability"] is None
     assert result["character_death_risk_status"] == "unmodeled_phase_events"
+    assert "future_daily_effective_stat_refresh_unmodeled" in result["assumptions"]
     assert "loaded_phase_event_effect_transition" in result["missing_required_domains"]
     assert forecast_fixed_contact(payload, **kwargs) == result
     assert forecast_fixed_contact(payload, **{**kwargs, "target_province_id": 1}) == {
@@ -56,4 +57,6 @@ def test_bounded_model_can_admit_without_native_parity_and_reject_risk():
     assert unmodeled["admitted"] is True
     assert unmodeled["character_death_risk_modeled"] is False
     assert unmodeled["risk_limits"]["death"] is None
-    assert unmodeled["unquantified_risks"] == ["commander_or_knight_death"]
+    assert unmodeled["unquantified_risks"] == [
+        "commander_or_knight_death", "future_daily_effective_stat_refresh",
+    ]

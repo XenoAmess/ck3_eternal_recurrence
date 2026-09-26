@@ -19,6 +19,7 @@
 - 宣战回执区分“预测已计算但风险准入失败”和“原生输入缺失”；前者保留完整代理试算，并将 `prewar_forecast_admission_available` 记为 true。未进入代理模型的合法候选回执列出实际不满足的同帧策略约束，不能再笼统写成“模型不完备”。
 - 实机每次接战后应把预测输入哈希、模型构建、三分结果（赢/输/未决）、p90 损失与实际 CombatID/战果对齐，分开统计“结果预测偏差”和“原版采集器 RED”。Episode 1 Messina 早期的增援日 attempt 因预备身份表缺新军而 RED，不能冒充模型公式偏差；后来从两个源日重放的[七边界 GREEN 回执](battle-reinforcement-and-join.md#2026-09-26两次自然增援的七边界身份同日出伤与逐团写回闭合)已修复这个**采集器**缺口。人物/兵团 full mutable 写回及未来路线预测仍是独立研究项；见[实机案例](battle-simulation-episode01-live-case.md)。
 - 固定参战者研究核仍禁用 loaded phase-event effects 与自愿撤退，未纳入途中新军加入；战争中的计划会在每个新暂停帧重新读取路线、敌军与输入，不复用旧候选。两次原版增援日已证明：若有实际到达的候选，新军在当天首次主阶段出伤前入场并同日承伤。将它用于**未来** trial 时，必须先有当前帧可信 route/ETA 与参战身份，再在到达日主阶段前扩名册；当前估计继续明确标记 `fixed_participants`，不凭这两次旧战例虚构未来增援。原版 effect/撤退/属性刷新对拍完成后应继续替换相应研究假设。
+- [同源原生日内属性对照](battle-reinforcement-and-join.md#2026-09-26到达日首次安排事件前会重算兵团有效属性)发现，暂停查询到当天 schedule 入口之间已有 32/51、37/63 团的有效伤害或坚韧改变；静态写入链也位于 schedule 前。试算仍运行，但它不再暗示冻结输入的属性对未来每一日都精确：决策回执新增 `future_daily_effective_stat_refresh` 未量化风险，完整预测的假设中也保留对应标签。后续应在 modifier 来源闭合后实现逐日刷新，再以两份原生回执做回归。
 - 2026-09-26 审计发现，禁用 phase events 的研究核总把 `commander_or_knight_death` 记为 false，聚合后为 `0%`；这只是**模型没有死亡转移**，不是原版人物无风险。接战预测适配器现把公开的死亡概率置为 `null`、状态标成 `unmodeled_phase_events`，准入回执把死亡阈值记为未应用并列入 `unquantified_risks`；其他可计算风险预算照常使用。下一步用[第 26 日原生击杀者抽签与写回](combat-phase-event-trace.md#2026-09-26-第-26-日骑士击杀者抽签实机闭合)及其他事件样本逐步替换该未知域，而不是把一次击杀见证外推成精确全程死亡率。
 - `COMBAT_ENTRY_EU_ACTIVATION_ENABLED=false` 仍表示**正式的胜率＋战役期望效用合同**未启用；本次启用的是独立、有风险预算和来源标记的 bounded-model 动作路径。二者状态不得混写。
 

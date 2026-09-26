@@ -1,0 +1,335 @@
+{
+  "schema": "ck3.native_pre_schedule_stat_refresh.v1",
+  "game_build": "1.19.0.6",
+  "source_day": 11,
+  "combat_id": 16777218,
+  "date_raw": 53146488,
+  "control_response_sha256": "97BFEB9091B858612755B418D7167402B792D698B2C4217C266DB4AEE730CCE6",
+  "finish_response_sha256": "D2636998C6E7F9FA494C498639BF5D9D8997207C3096805D891DEC6DEF3F6C52",
+  "static_call_chain": {
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "direct_edges": [
+      {
+        "callsite_rva": "0x27FB57A",
+        "target_rva": "0x2308D50"
+      },
+      {
+        "callsite_rva": "0x27FB58F",
+        "target_rva": "0x23C8750"
+      },
+      {
+        "callsite_rva": "0x2308D66",
+        "target_rva": "0x23CBCE0"
+      },
+      {
+        "callsite_rva": "0x2308D72",
+        "target_rva": "0x23CBCE0"
+      },
+      {
+        "callsite_rva": "0x2308D82",
+        "target_rva": "0x23CC2B0"
+      },
+      {
+        "callsite_rva": "0x2308D95",
+        "target_rva": "0x23CC2B0"
+      },
+      {
+        "callsite_rva": "0x23CC2E8",
+        "target_rva": "0x23D2CE0"
+      },
+      {
+        "callsite_rva": "0x23CC316",
+        "target_rva": "0x23D2CE0"
+      },
+      {
+        "callsite_rva": "0x23D2D2F",
+        "target_rva": "0x239CAE0"
+      }
+    ],
+    "stat_field_writes": [
+      {
+        "site_rva": "0x23D2D46",
+        "bytes_hex": "48894B40",
+        "meaning": "entry+0x40 effective damage"
+      },
+      {
+        "site_rva": "0x23D2D4E",
+        "bytes_hex": "48894B48",
+        "meaning": "entry+0x48 effective toughness"
+      }
+    ],
+    "refresh_call_precedes_side0_schedule_in_same_loop": true
+  },
+  "side_census": [
+    {
+      "side_index": 0,
+      "regiment_count": 27
+    },
+    {
+      "side_index": 1,
+      "regiment_count": 24
+    }
+  ],
+  "changed_regiment_count": 32,
+  "changed_regiments": [
+    {
+      "side_index": 0,
+      "regiment_id": 87,
+      "old_damage_raw": 4500000,
+      "new_damage_raw": 4500000,
+      "old_toughness_raw": 2500000,
+      "new_toughness_raw": 2625000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 90,
+      "old_damage_raw": 50000000,
+      "new_damage_raw": 55000000,
+      "old_toughness_raw": 10000000,
+      "new_toughness_raw": 11000000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 91,
+      "old_damage_raw": 45000000,
+      "new_damage_raw": 49500000,
+      "old_toughness_raw": 9000000,
+      "new_toughness_raw": 9900000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 92,
+      "old_damage_raw": 15000000,
+      "new_damage_raw": 22000000,
+      "old_toughness_raw": 3000000,
+      "new_toughness_raw": 4400000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 104,
+      "old_damage_raw": 2500000,
+      "new_damage_raw": 2500000,
+      "old_toughness_raw": 1400000,
+      "new_toughness_raw": 1490000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 105,
+      "old_damage_raw": 100000,
+      "new_damage_raw": 100000,
+      "old_toughness_raw": 1200000,
+      "new_toughness_raw": 1308000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 106,
+      "old_damage_raw": 2200000,
+      "new_damage_raw": 2200000,
+      "old_toughness_raw": 1500000,
+      "new_toughness_raw": 1635000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 110,
+      "old_damage_raw": 30000000,
+      "new_damage_raw": 60500000,
+      "old_toughness_raw": 6000000,
+      "new_toughness_raw": 12100000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 111,
+      "old_damage_raw": 45000000,
+      "new_damage_raw": 49500000,
+      "old_toughness_raw": 9000000,
+      "new_toughness_raw": 9900000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 112,
+      "old_damage_raw": 20000000,
+      "new_damage_raw": 44000000,
+      "old_toughness_raw": 4000000,
+      "new_toughness_raw": 8800000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 113,
+      "old_damage_raw": 40000000,
+      "new_damage_raw": 33000000,
+      "old_toughness_raw": 8000000,
+      "new_toughness_raw": 6600000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 114,
+      "old_damage_raw": 35000000,
+      "new_damage_raw": 38500000,
+      "old_toughness_raw": 7000000,
+      "new_toughness_raw": 7700000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 115,
+      "old_damage_raw": 35000000,
+      "new_damage_raw": 38500000,
+      "old_toughness_raw": 7000000,
+      "new_toughness_raw": 7700000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 217,
+      "old_damage_raw": 4500000,
+      "new_damage_raw": 4500000,
+      "old_toughness_raw": 2500000,
+      "new_toughness_raw": 2675000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 219,
+      "old_damage_raw": 45000000,
+      "new_damage_raw": 83250000,
+      "old_toughness_raw": 9000000,
+      "new_toughness_raw": 16650000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 220,
+      "old_damage_raw": 20000000,
+      "new_damage_raw": 18500000,
+      "old_toughness_raw": 4000000,
+      "new_toughness_raw": 3700000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 221,
+      "old_damage_raw": 10000000,
+      "new_damage_raw": 27750000,
+      "old_toughness_raw": 2000000,
+      "new_toughness_raw": 5550000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 222,
+      "old_damage_raw": 5000000,
+      "new_damage_raw": 18500000,
+      "old_toughness_raw": 1000000,
+      "new_toughness_raw": 3700000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 51,
+      "old_damage_raw": 2200000,
+      "new_damage_raw": 2200000,
+      "old_toughness_raw": 2400000,
+      "new_toughness_raw": 4224000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 52,
+      "old_damage_raw": 3200000,
+      "new_damage_raw": 3680000,
+      "old_toughness_raw": 2200000,
+      "new_toughness_raw": 3322000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 53,
+      "old_damage_raw": 100000,
+      "new_damage_raw": 100000,
+      "old_toughness_raw": 1200000,
+      "new_toughness_raw": 1512000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 57,
+      "old_damage_raw": 40000000,
+      "new_damage_raw": 122500000,
+      "old_toughness_raw": 8000000,
+      "new_toughness_raw": 24500000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 58,
+      "old_damage_raw": 40000000,
+      "new_damage_raw": 122500000,
+      "old_toughness_raw": 8000000,
+      "new_toughness_raw": 24500000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 59,
+      "old_damage_raw": 20000000,
+      "new_damage_raw": 113750000,
+      "old_toughness_raw": 4000000,
+      "new_toughness_raw": 22750000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 60,
+      "old_damage_raw": 45000000,
+      "new_damage_raw": 105000000,
+      "old_toughness_raw": 9000000,
+      "new_toughness_raw": 21000000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 61,
+      "old_damage_raw": 15000000,
+      "new_damage_raw": 96250000,
+      "old_toughness_raw": 3000000,
+      "new_toughness_raw": 19250000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 62,
+      "old_damage_raw": 20000000,
+      "new_damage_raw": 96250000,
+      "old_toughness_raw": 4000000,
+      "new_toughness_raw": 19250000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 63,
+      "old_damage_raw": 35000000,
+      "new_damage_raw": 78750000,
+      "old_toughness_raw": 7000000,
+      "new_toughness_raw": 15750000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 64,
+      "old_damage_raw": 15000000,
+      "new_damage_raw": 43750000,
+      "old_toughness_raw": 3000000,
+      "new_toughness_raw": 8750000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 65,
+      "old_damage_raw": 10000000,
+      "new_damage_raw": 35000000,
+      "old_toughness_raw": 2000000,
+      "new_toughness_raw": 7000000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 66,
+      "old_damage_raw": 5000000,
+      "new_damage_raw": 26250000,
+      "old_toughness_raw": 1000000,
+      "new_toughness_raw": 5250000
+    },
+    {
+      "side_index": 1,
+      "regiment_id": 67,
+      "old_damage_raw": 5000000,
+      "new_damage_raw": 17500000,
+      "old_toughness_raw": 1000000,
+      "new_toughness_raw": 3500000
+    }
+  ],
+  "per_regiment_cached_stats_reassigned_before_schedule": true,
+  "specific_modifier_source_for_each_change_proven": false,
+  "cross_manager_global_tick_order_proven": false
+}
