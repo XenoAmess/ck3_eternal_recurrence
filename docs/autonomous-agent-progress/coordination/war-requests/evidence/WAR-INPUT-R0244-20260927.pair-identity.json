@@ -1,0 +1,43 @@
+﻿{
+    "history_index":  133,
+    "source_candidate":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927",
+    "kind":  "derived-robert-c35-construction-continuation",
+    "native_source_commit":  "38bcf6dc5dc706e0d071c54a3c90889314e5dd53",
+    "actor_character_id":  29829,
+    "files":  {
+                  "xar_checkpoint.ck3":  {
+                                             "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927\\state\\profile\\save games\\xar_checkpoint.ck3",
+                                             "sha256":  "3E6E66CED57EE8D13707259D9D9656AA54C24F782598C86B192958CCA0B5A734",
+                                             "bytes":  58014913
+                                         },
+                  "formal-report.txt":  {
+                                            "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927\\attempt-01\\formal-report.txt",
+                                            "sha256":  "95ED751461D47619F45D0C9B0E5D34FBA18F0FF6DA31B90C7E5B218653483415",
+                                            "bytes":  121457
+                                        },
+                  "first-heir-marriage-formal-v1.json":  {
+                                                             "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927\\state\\first-heir-marriage-formal-v1.json",
+                                                             "sha256":  "0ECC7B580B90DC850AD91CCEE2EEA427162ED7537B127ABD47737CBC7DDBCF0E",
+                                                             "bytes":  1746
+                                                         },
+                  "operator-receipt.json":  {
+                                                "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927\\attempt-01\\operator-receipt.json",
+                                                "sha256":  "667AFBBA310E31401EF23D4157EEB047E88FEC18186C8E9B899962E9A6816A7B",
+                                                "bytes":  1648
+                                            },
+                  "driver-state.json":  {
+                                            "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927\\state\\native-session\\driver-state.json",
+                                            "sha256":  "EF09027B2F8438F99446C82A3E870AF1547CE1D25214F671C59346E3AC17D495",
+                                            "bytes":  881867
+                                        },
+                  "construction-formal-pending-v1.json":  {
+                                                              "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h115-c35-20260927\\state\\construction-formal-pending-v1.json",
+                                                              "sha256":  "600BA8F07248C1C89CB9F69DE69FD10090475422E86812A589024F3608150388",
+                                                              "bytes":  2852
+                                                          }
+              },
+    "source_commit":  "f6fba14b10477089c40d8c0cc78cbbf344fdbbd0",
+    "qualification":  "source copy only; new PID requires official prepare/rebind/no-launch",
+    "episode_run_id":  "native-29829-2bc2d599f7f9",
+    "date_raw":  53154936
+}
