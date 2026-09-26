@@ -15,6 +15,7 @@ from ..construction_formal_consumer import (
 )
 from ..runtime import _process_identity
 from .driver import BridgeUnavailableError, StepPostconditionError
+from .construction_economic_value_v1 import authored_monthly_income_hundredths
 
 
 QUERY_NATIVE = "g2_player_construction_view_probe_v1"
@@ -98,12 +99,18 @@ def _candidate(world: Mapping[str, object]) -> dict[str, object] | None:
                 and (row["barony_title_id"], row["province_id"]) in idle
                 and costs[0] < gold and gold - costs[0] >= RESERVE_RAW):
             continue
-        choices.append((costs[0], *(row[k] for k in TUPLE_KEYS)))
+        income = authored_monthly_income_hundredths(row.get("building_key"))
+        if income is None or income <= 0:
+            continue
+        choices.append((-income, costs[0], *(row[k] for k in TUPLE_KEYS),
+                        row["building_key"]))
     if not choices:
         return None
-    cost, *identifiers = min(choices)
+    negative_income, cost, *identity_and_key = min(choices)
+    *identifiers, building_key = identity_and_key
     return {**dict(zip(TUPLE_KEYS, identifiers)), "stock_gold_cost_raw": cost,
-            "gold_before_raw": gold}
+            "gold_before_raw": gold, "building_key": building_key,
+            "authored_monthly_income_hundredths": -negative_income}
 
 
 def query_construction_private(driver: object, *, expected_revision: int,

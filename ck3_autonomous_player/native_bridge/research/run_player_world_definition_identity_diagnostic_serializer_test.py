@@ -45,11 +45,12 @@ def main() -> int:
                 text=True, capture_output=True,
             ).stdout
             try:
-                receipt = json.loads(raw_receipt)
+                receipts = [json.loads(line) for line in raw_receipt.splitlines()]
             except json.JSONDecodeError as error:
                 raise AssertionError(raw_receipt[max(0, error.pos - 100):
                                                  error.pos + 100]) from error
-            source = receipt["player_world_building_sources"]
+            assert len(receipts) == 2
+            source = receipts[0]["player_world_building_sources"]
             diagnostic = source["definition_identity_diagnostic"]
             assert source["status"] == "unavailable"
             assert source["failure"] == "definition_identity"
@@ -64,6 +65,12 @@ def main() -> int:
             assert source["cost_ready"] is False
             assert source["construction_action_ready"] is False
             assert source["advertised"] is False
+            legal = receipts[1]["player_world_building_sources"]
+            assert legal["status"] == "source_available"
+            assert legal["snapshot_revision"] == 3
+            assert legal["legal_samples"][0]["building_type_id"] == 24
+            assert legal["legal_samples"][0]["slot_index"] == 1
+            assert legal["legal_samples"][0]["building_key"] == "common_tradeport_01"
             print(f"m4-definition-identity-receipt-{mode}: GREEN_W4WX_JSON")
     return 0
 

@@ -1,11 +1,38 @@
 #include "player_world_building_action_candidate_v1.hpp"
 
 #include <algorithm>
+#include <array>
 #include <limits>
+#include <string_view>
 #include <tuple>
+#include <utility>
 
 namespace xar::ck3_11906 {
 namespace {
+
+// 1.19.0.6 vanilla 00_standard_economy_buildings.txt tier-one unconditional
+// province monthly_income, resolved through 00_building_values.txt. This is
+// authored value only; actual character tax after completion is separate.
+constexpr std::array<std::pair<std::string_view, int>, 19> kAuthoredIncome{{
+    {"caravanserai_01", 70}, {"watermills_01", 70},
+    {"windmills_01", 70}, {"farm_estates_01", 70},
+    {"paddy_fields_01", 50}, {"cereal_fields_01", 50},
+    {"murex_farm_01", 35}, {"spice_plantation_01", 35},
+    {"common_tradeport_01", 35}, {"pastures_01", 35},
+    {"orchards_01", 35}, {"logging_camps_01", 35},
+    {"peat_quarries_01", 35}, {"hill_farms_01", 35},
+    {"elephant_pens_01", 35}, {"qanats_01", 25},
+    {"hunting_grounds_01", 25}, {"plantations_01", 25},
+    {"quarries_01", 25},
+}};
+
+int AuthoredIncomeHundredths(std::string_view key) noexcept {
+  const auto found = std::find_if(kAuthoredIncome.begin(), kAuthoredIncome.end(),
+                                  [key](const auto &row) {
+                                    return row.first == key;
+                                  });
+  return found == kAuthoredIncome.end() ? 0 : found->second;
+}
 
 bool GoldOnlyStockCost(
     const PlayerWorldBuildingLegalSampleV1 &sample) noexcept {
@@ -56,9 +83,13 @@ SelectPlayerWorldBuildingActionCandidateV1(
     return result;
   }
   const PlayerWorldBuildingLegalSampleV1 *selected = nullptr;
+  int selected_income = 0;
   bool saw_gold_only = false;
   bool saw_active = false;
+  bool saw_unvalued = false;
   for (const auto &sample : source.legal_samples) {
+    if (sample.barony_title_id <= 0 || sample.province_id <= 0 ||
+        sample.building_type_id <= 0 || sample.slot_index < 0) continue;
     if (!GoldOnlyStockCost(sample)) continue;
     saw_gold_only = true;
     if (!HoldingIdle(source, sample)) {
@@ -72,19 +103,28 @@ SelectPlayerWorldBuildingActionCandidateV1(
         minimum_gold_reserve_raw > source.player_gold_raw - cost) {
       continue;
     }
+    const auto income = AuthoredIncomeHundredths(sample.building_key);
+    if (income <= 0) {
+      saw_unvalued = true;
+      continue;
+    }
     if (selected == nullptr ||
-        std::tie(cost, sample.barony_title_id, sample.province_id,
-                 sample.building_type_id, sample.slot_index) <
-            std::tie(selected->cost_raw_native[0],
-                     selected->barony_title_id, selected->province_id,
-                     selected->building_type_id, selected->slot_index)) {
+        std::tuple{-income, cost, sample.barony_title_id,
+                   sample.province_id, sample.building_type_id,
+                   sample.slot_index} <
+            std::tuple{-selected_income, selected->cost_raw_native[0],
+                       selected->barony_title_id, selected->province_id,
+                       selected->building_type_id, selected->slot_index}) {
       selected = &sample;
+      selected_income = income;
     }
   }
   if (selected == nullptr) {
     result.failure =
         saw_active && saw_gold_only
             ? PlayerWorldBuildingActionFailureV1::active_construction
+            : saw_unvalued
+                  ? PlayerWorldBuildingActionFailureV1::economic_value_unknown
             : saw_gold_only
                   ? PlayerWorldBuildingActionFailureV1::no_budget_safe_candidate
                   : PlayerWorldBuildingActionFailureV1::resource_unknown;

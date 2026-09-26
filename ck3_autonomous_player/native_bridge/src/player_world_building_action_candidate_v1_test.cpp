@@ -31,6 +31,10 @@ xar::ck3_11906::PlayerWorldBuildingSourceResultV1 R746Shape() {
       sample.province_id = 2635;
       sample.building_type_id = type;
       sample.slot_index = slot;
+      // Synthetic IDs: the exact key comes from this same legal sample, not
+      // an assumed live BuildingTypeID mapping.
+      sample.building_key = type == 24 ? "common_tradeport_01"
+                                       : "farm_estates_01";
       sample.native_cost_observed = true;
       sample.cost_raw_native[0] = type == 24 ? 15000000 : 40000000;
       source.legal_samples.push_back(sample);
@@ -64,6 +68,31 @@ int main() {
     fresh.active_constructions[0].building_type_id = 12;
     Require(!ObservePlayerWorldBuildingMaterialResultV1(choice, fresh, 47),
             "wrong_building_does_not_confirm_pending_command");
+  }
+  {
+    auto source = R746Shape();
+    for (auto &sample : source.legal_samples) {
+      if (sample.building_type_id == 12) sample.cost_raw_native[0] = 20000000;
+    }
+    const auto choice =
+        SelectPlayerWorldBuildingActionCandidateV1(source, 46, 20000000);
+    Require(choice.ready && choice.snapshot_revision == 3 &&
+                choice.building_type_id == 12 && choice.slot_index == 1 &&
+                choice.stock_gold_cost_raw == 20000000,
+            "same_frame_positive_income_beats_cheapest_native_action");
+    std::cout << "VALUE_CHOICE " << choice.barony_title_id << ' '
+              << choice.province_id << ' ' << choice.building_type_id << ' '
+              << choice.slot_index << ' ' << choice.stock_gold_cost_raw << '\n';
+  }
+  {
+    auto source = R746Shape();
+    for (auto &sample : source.legal_samples)
+      sample.building_key = "unmapped_01";
+    const auto choice =
+        SelectPlayerWorldBuildingActionCandidateV1(source, 46, 20000000);
+    Require(!choice.ready && choice.failure ==
+                PlayerWorldBuildingActionFailureV1::economic_value_unknown,
+            "unmapped_legal_building_has_unknown_value_not_zero");
   }
   {
     auto source = R746Shape();

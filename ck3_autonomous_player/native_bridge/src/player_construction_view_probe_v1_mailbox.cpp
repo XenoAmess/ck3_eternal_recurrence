@@ -165,6 +165,7 @@ std::string_view WorldFailureKey(WorldFailure failure) noexcept {
     case WorldFailure::player_actor_binding: return "player_actor_binding";
     case WorldFailure::registry_source: return "registry_source";
     case WorldFailure::definition_identity: return "definition_identity";
+    case WorldFailure::definition_key: return "definition_key";
     case WorldFailure::province_slot_source:
       return "province_slot_source";
     case WorldFailure::native_final_legality:
@@ -190,6 +191,8 @@ std::string_view WorldActionCandidateFailureKey(
       return "frame_binding";
     case PlayerWorldBuildingActionFailureV1::resource_unknown:
       return "resource_unknown";
+    case PlayerWorldBuildingActionFailureV1::economic_value_unknown:
+      return "economic_value_unknown";
     case PlayerWorldBuildingActionFailureV1::active_construction:
       return "active_construction";
     case PlayerWorldBuildingActionFailureV1::no_budget_safe_candidate:
@@ -588,6 +591,10 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += std::to_string(sample.province_id);
       json += ",\"building_type_id\":";
       json += std::to_string(sample.building_type_id);
+      // ReadBuildingKey admits only lowercase ASCII, digits and underscore.
+      json += ",\"building_key\":\"";
+      json += sample.building_key;
+      json += '"';
       json += ",\"slot_index\":";
       json += std::to_string(sample.slot_index);
       json += ",\"native_cost_observed\":";
