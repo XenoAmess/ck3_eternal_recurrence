@@ -67,6 +67,8 @@ int main() {
   world.player_character_id = 29829;
   world.legal_samples.push_back({2103, 2635, 24, 1,
                                  "common_tradeport_01"});
+  world.active_constructions.push_back({2103, 2635, true, 24, 1,
+                                        29829, 109500000, 100000});
   std::cout <<
       xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query)
       << '\n';

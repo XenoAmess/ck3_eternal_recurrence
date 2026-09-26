@@ -82,6 +82,11 @@ struct PlayerWorldActiveConstructionV1 final {
   std::int32_t building_type_id = -1;
   std::int32_t slot_index = -1;
   std::int32_t initiator_character_id = -1;
+  // Stock progress update 0x21F6D40 subtracts 10^10 / progress_divisor_raw
+  // from remaining_work_raw at Province+0x620+0x88. Keep both native values
+  // private and unconverted until a paused runtime read validates cadence.
+  std::int64_t remaining_work_raw = 0;
+  std::int64_t progress_divisor_raw = 0;
   friend bool operator==(const PlayerWorldActiveConstructionV1 &,
                          const PlayerWorldActiveConstructionV1 &) = default;
 };

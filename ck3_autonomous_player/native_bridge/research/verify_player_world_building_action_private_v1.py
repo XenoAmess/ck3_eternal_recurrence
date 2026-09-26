@@ -49,6 +49,10 @@ def verify(exe: Path) -> None:
         0x21F699B: bytes.fromhex("44 89 77 78"),  # active slot
         0x21F699F: bytes.fromhex("48 89 77 70"),  # active CBuildingType*
         0x21F69C4: bytes.fromhex("89 9F E0 00 00 00"),  # initiator
+        0x21F69B6: bytes.fromhex("48 69 C0 A0 86 01 00"),  # base days * 100000
+        0x21F69BD: bytes.fromhex("48 89 87 88 00 00 00"),  # remaining work
+        0x21F6D57: bytes.fromhex("48 8B 89 E8 00 00 00"),  # progress divisor
+        0x21F6D72: bytes.fromhex("48 29 87 88 00 00 00"),  # progress decrement
         0x2CDD0A6: bytes.fromhex("4D 03 45 38"),  # conditional raw[7] extra
     }
     for rva, expected in exact_bytes.items():
