@@ -8830,6 +8830,45 @@ class GameplayBridgeTests(unittest.TestCase):
             ["accept", "reject", "block", "acknowledge"],
         )
 
+    def test_r0225_hostage_demand_selects_exact_legal_reject(self) -> None:
+        context_result = _pending_context_result(
+            pending_id=771_752_055,
+            revision=8,
+            native_revision=7,
+            date_raw=53_154_192,
+            definition_key="demand_hostage_interaction",
+            actor_character_id=37_011,
+            recipient_character_id=29_829,
+        )
+        context = context_result["pending_character_interaction_context"]
+        context["roles"]["secondary_recipient_character_id"] = 36_077
+        context["deadline"] = {
+            "age_days": 1, "expiration_days": 60, "remaining_days": 59,
+            "expiry_boundary_status": "not_reached",
+        }
+        context["send_options"] = {
+            "exclusive": False, "definition_count": 1, "context_count": 1,
+            "rows": [{"native_index": 0, "numeric_flag_identifier": 49,
+                      "selected": False, "is_shown": False, "is_valid": True,
+                      "canonical_flag_status": "unavailable"}],
+        }
+        steps = ("accept-pending-character-interaction",
+                 "reject-pending-character-interaction")
+        plan = _plan_for_pending_context(context_result, action_steps=steps,
+                                         active_wars=[])
+        self.assertEqual(plan["phase"], "pending_character_interaction_degraded_reject")
+        self.assertEqual(plan["selected_step"], "reject-pending-character-interaction")
+        self.assertEqual(plan["decision"]["classification"], "ordinary_non_war")
+        evidence = plan["decision"]["definition_classification"]["evidence"]
+        self.assertEqual(evidence["domain"], "hostage_demand")
+        self.assertTrue(evidence["war_sensitive"])
+        self.assertEqual(plan["decision"]["selected_action"], "reject")
+
+        context["terms"]["special_data_present"] = True
+        blocked = _plan_for_pending_context(context_result, action_steps=steps,
+                                            active_wars=[])
+        self.assertIsNone(blocked["selected_step"])
+
     def test_planner_rejects_exact_build_pay_ransom_pending(self) -> None:
         context_result = _pending_context_result(
             pending_id=855_638_016,
