@@ -4794,6 +4794,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "family_marriage_pending",
         "family_marriage_result_consumed",
         "family_marriage_status",
+        "family_marriage_private_diagnostic",
         "family_marriage_cold_recovery",
         "lifestyle_query_status",
         "lifestyle_native_error",

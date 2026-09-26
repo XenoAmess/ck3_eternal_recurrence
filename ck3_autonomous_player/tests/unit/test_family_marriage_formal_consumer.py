@@ -22,7 +22,9 @@ from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
     SCHEMA, RESULT_STEP, SUBMIT_STEP,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
-from xar_autoplayer.native_auto_run import _verify_pending_family_marriage_checkpoint
+from xar_autoplayer.native_auto_run import (
+    _turn_record, _verify_pending_family_marriage_checkpoint,
+)
 from xar_autoplayer.errors import AgentError
 from xar_autoplayer import cli
 
@@ -163,6 +165,16 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertIn("not_adult_marriage_outcome", observed[3]["rejection_reasons"])
             self.assertIn("recipient_accept_not_positive", observed[4]["rejection_reasons"])
             self.assertEqual(observed[4]["recipient_ai_accept_raw"], 0)
+            formal_turn = _turn_record(
+                3, "2026-09-26T00:00:00Z", turn_class="gameplay",
+                outcome={"status": "executed", "selected_step": "life-advance",
+                         "plan": plan, "result": {}},
+                before={"native_revision": 7}, after={"native_revision": 8},
+                evidence=["date_advanced"],
+            )
+            self.assertEqual(formal_turn["plan"]["family_marriage_private_diagnostic"],
+                             diagnostic)
+            self.assertNotIn("family_marriage_legality", formal_turn["plan"])
             self.assertEqual(driver.calls, ["legality", "projection"])
 
     def test_private_diagnostic_retains_shared_heir_relationship_and_house_gate(self):
