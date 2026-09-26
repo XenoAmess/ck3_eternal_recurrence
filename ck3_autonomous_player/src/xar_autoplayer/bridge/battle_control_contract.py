@@ -102,6 +102,9 @@ _SIDE_KEYS = {
     "side_strength_raw",
     "side_strength_scale",
 }
+_SIDE_KEYS_WITH_TERMINAL_BASELINE = _SIDE_KEYS | {
+    "stored_terminal_loss_baseline_raw"
+}
 
 _ARMY_KEYS = {
     "native_carmy_id",
@@ -786,7 +789,10 @@ def _normalize_side(
     combat_id: int,
 ) -> dict[str, object]:
     name = f"battle_control_snapshot.{expected_role}"
-    if not isinstance(value, dict) or set(value) != _SIDE_KEYS:
+    if not isinstance(value, dict) or set(value) not in (
+        _SIDE_KEYS,
+        _SIDE_KEYS_WITH_TERMINAL_BASELINE,
+    ):
         raise ValueError(f"{name} has a malformed schema")
     side_index = _signed_int32(value.get("side_index"), f"{name}.side_index")
     role = value.get("role")
@@ -839,6 +845,14 @@ def _normalize_side(
     stored_levy_current = _signed_int64(
         value.get("stored_levy_current_fighting_raw"),
         f"{name}.stored_levy_current_fighting_raw",
+    )
+    stored_terminal_baseline = (
+        _signed_int64(
+            value["stored_terminal_loss_baseline_raw"],
+            f"{name}.stored_terminal_loss_baseline_raw",
+        )
+        if "stored_terminal_loss_baseline_raw" in value
+        else None
     )
     stored_current_matches_derived = _strict_bool(
         value.get("stored_current_matches_derived"),
@@ -930,7 +944,7 @@ def _normalize_side(
     if value.get("side_strength_scale") != 100000:
         raise ValueError(f"{name}.side_strength_scale must be 100000")
 
-    return {
+    normalized = {
         "side_index": side_index,
         "role": role,
         "primary_participant_character_id": primary,
@@ -956,6 +970,9 @@ def _normalize_side(
         "side_strength_raw": side_strength_raw,
         "side_strength_scale": 100000,
     }
+    if stored_terminal_baseline is not None:
+        normalized["stored_terminal_loss_baseline_raw"] = stored_terminal_baseline
+    return normalized
 
 
 def _normalize_armies(

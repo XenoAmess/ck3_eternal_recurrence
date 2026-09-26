@@ -2967,6 +2967,25 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             normalized["attacker"]["stored_current_matches_derived"]
         )
 
+    def test_terminal_baseline_extension_preserves_historical_receipts(self) -> None:
+        historical = self.normalize(_battle_frame())
+        self.assertNotIn(
+            "stored_terminal_loss_baseline_raw", historical["attacker"]
+        )
+
+        extended = _battle_frame()
+        extended["attacker"]["stored_terminal_loss_baseline_raw"] = 9_000_000_000
+        extended["defender"]["stored_terminal_loss_baseline_raw"] = 8_000_000_000
+        normalized = self.normalize(extended)
+        self.assertEqual(
+            normalized["attacker"]["stored_terminal_loss_baseline_raw"],
+            9_000_000_000,
+        )
+
+        extended["attacker"]["stored_terminal_loss_baseline_raw"] = 2**63
+        with self.assertRaisesRegex(ValueError, "signed int64"):
+            self.normalize(extended)
+
     def test_rejects_false_stored_cache_freshness_claim(self) -> None:
         frame = _battle_frame()
         frame["attacker"]["stored_current_fighting_raw"] += 1

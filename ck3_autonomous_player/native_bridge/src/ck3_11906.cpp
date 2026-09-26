@@ -1027,6 +1027,7 @@ constexpr std::size_t kCombatSidePrimaryCharacterIdOffset = 0x70;
 constexpr std::size_t kCombatSideSelectedCommanderCharacterIdOffset = 0x74;
 constexpr std::size_t kCombatSideStoredCurrentFightingOffset = 0x98;
 constexpr std::size_t kCombatSideStoredLevyCurrentFightingOffset = 0xA0;
+constexpr std::size_t kCombatSideStoredTerminalLossBaselineOffset = 0xA8;
 constexpr std::size_t kCombatSideCombatBackPointerOffset = 0xB8;
 constexpr std::size_t kCombatSideDisallowRetreatOffset = 0xC0;
 constexpr std::size_t kCombatSideAllowEarlyRetreatOffset = 0xC1;
@@ -14366,6 +14367,8 @@ bool ReadBattleControlSide(
       side, kCombatSideStoredCurrentFightingOffset);
   output.stored_levy_current_fighting_raw = LoadAt<std::int64_t>(
       side, kCombatSideStoredLevyCurrentFightingOffset);
+  output.stored_terminal_loss_baseline_raw = LoadAt<std::int64_t>(
+      side, kCombatSideStoredTerminalLossBaselineOffset);
   std::int64_t bucket_total_raw = levy_current_fighting_raw;
   if (!CheckedAddSigned(bucket_total_raw, maa_current_fighting_raw) ||
       bucket_total_raw != output.derived_current_fighting_raw) {
@@ -14394,7 +14397,10 @@ bool ReadBattleControlSide(
              output.stored_current_fighting_raw &&
          LoadAt<std::int64_t>(
              side, kCombatSideStoredLevyCurrentFightingOffset) ==
-             output.stored_levy_current_fighting_raw;
+             output.stored_levy_current_fighting_raw &&
+         LoadAt<std::int64_t>(
+             side, kCombatSideStoredTerminalLossBaselineOffset) ==
+             output.stored_terminal_loss_baseline_raw;
 }
 
 std::string_view BattleControlPhaseName(std::int32_t phase) noexcept {
@@ -15090,6 +15096,15 @@ void PopulateTerminalPriorFromEventV1(
   output.phase_day = event.phase_day;
   output.winner_raw = event.winner_raw;
   output.finalized_before = event.finalized_before;
+  if (event.hard_loss_inputs_observable) {
+    output.hard_loss_inputs = game::BattleTerminalHardLossInputsSnapshotV1{
+        event.losing_side_index,
+        event.losing_side_baseline_raw,
+        event.losing_side_stored_current_raw,
+        event.losing_side_levy_soft_raw,
+        event.losing_side_maa_soft_raw,
+        event.losing_side_hard_loss_raw};
+  }
   output.daily_guard_raw = event.daily_guard_raw;
   output.province_id = event.province_id;
   if (event.battle_result_id != -1) {

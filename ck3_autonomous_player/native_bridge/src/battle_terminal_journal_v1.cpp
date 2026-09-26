@@ -42,6 +42,13 @@ constexpr std::size_t kCombatSideArmyCapacityOffset = 0x18;
 constexpr std::size_t kCombatSideArmyCountOffset = 0x1C;
 constexpr std::size_t kCombatSidePrimaryCharacterIdOffset = 0x70;
 constexpr std::size_t kCombatSideBackPointerOffset = 0xB8;
+constexpr std::size_t kCombatSideStoredCurrentOffset = 0x98;
+constexpr std::size_t kCombatSideLossBaselineOffset = 0xA8;
+constexpr std::size_t kCombatSideLevyHeaderOffset = 0x28;
+constexpr std::size_t kCombatSideMaaHeaderOffset = 0x40;
+constexpr std::size_t kCombatEntryStride = 0x60;
+constexpr std::size_t kCombatEntrySoftOffset = 0x20;
+constexpr std::int32_t kMaximumLossEntriesPerBucket = 4'096;
 constexpr std::size_t kProvinceIdOffset = 0x10;
 constexpr std::size_t kInternalArmyIdOffset = 0x10;
 constexpr std::size_t kInternalArmyUnitIdOffset = 0x124;
@@ -216,6 +223,85 @@ bool ReadTerminalSide(
          LoadAt<const void *>(side, kCombatSideBackPointerOffset) == combat;
 }
 
+bool CheckedAddLoss(std::int64_t left, std::int64_t right,
+                    std::int64_t &output) noexcept {
+  if ((right > 0 && left > std::numeric_limits<std::int64_t>::max() - right) ||
+      (right < 0 && left < std::numeric_limits<std::int64_t>::min() - right)) {
+    return false;
+  }
+  output = left + right;
+  return true;
+}
+
+bool CheckedSubtractLoss(std::int64_t left, std::int64_t right,
+                         std::int64_t &output) noexcept {
+  if ((right > 0 && left < std::numeric_limits<std::int64_t>::min() + right) ||
+      (right < 0 && left > std::numeric_limits<std::int64_t>::max() + right)) {
+    return false;
+  }
+  output = left - right;
+  return true;
+}
+
+bool ReadTerminalSoftBucket(const std::byte *side, std::size_t header_offset,
+                            std::int64_t &sum) noexcept {
+  const auto *const header = side + header_offset;
+  const auto *const rows = LoadAt<const std::byte *>(header, 0);
+  const auto capacity = LoadAt<std::int32_t>(header, 0x08);
+  const auto count = LoadAt<std::int32_t>(header, 0x0C);
+  if (capacity < 0 || count < 0 || count > capacity ||
+      count > kMaximumLossEntriesPerBucket || (count > 0 && rows == nullptr)) {
+    return false;
+  }
+  sum = 0;
+  for (std::int32_t index = 0; index < count; ++index) {
+    std::int64_t next = 0;
+    if (!CheckedAddLoss(sum,
+                        LoadAt<std::int64_t>(
+                            rows + static_cast<std::size_t>(index) *
+                                       kCombatEntryStride,
+                            kCombatEntrySoftOffset),
+                        next)) {
+      return false;
+    }
+    sum = next;
+  }
+  return LoadAt<const std::byte *>(header, 0) == rows &&
+         LoadAt<std::int32_t>(header, 0x0C) == count;
+}
+
+bool ReadTerminalHardLossInputs(const std::byte *side,
+                                BattleTerminalJournalEventV1 &event) noexcept {
+  event.losing_side_baseline_raw =
+      LoadAt<std::int64_t>(side, kCombatSideLossBaselineOffset);
+  event.losing_side_stored_current_raw =
+      LoadAt<std::int64_t>(side, kCombatSideStoredCurrentOffset);
+  if (!ReadTerminalSoftBucket(side, kCombatSideLevyHeaderOffset,
+                              event.losing_side_levy_soft_raw) ||
+      !ReadTerminalSoftBucket(side, kCombatSideMaaHeaderOffset,
+                              event.losing_side_maa_soft_raw)) {
+    return false;
+  }
+  std::int64_t subtotal = 0;
+  std::int64_t after_levy = 0;
+  std::int64_t after_maa = 0;
+  if (!CheckedSubtractLoss(event.losing_side_baseline_raw,
+                           event.losing_side_stored_current_raw, subtotal) ||
+      !CheckedSubtractLoss(subtotal, event.losing_side_levy_soft_raw,
+                           after_levy) ||
+      !CheckedSubtractLoss(after_levy, event.losing_side_maa_soft_raw,
+                           after_maa)) {
+    return false;
+  }
+  event.losing_side_hard_loss_raw = std::max<std::int64_t>(0, after_maa);
+  event.hard_loss_inputs_observable =
+      LoadAt<std::int64_t>(side, kCombatSideLossBaselineOffset) ==
+          event.losing_side_baseline_raw &&
+      LoadAt<std::int64_t>(side, kCombatSideStoredCurrentOffset) ==
+          event.losing_side_stored_current_raw;
+  return event.hard_loss_inputs_observable;
+}
+
 bool CaptureTerminalUnsafe(void *combat,
                            bool suppress_normal_result_envelopes,
                            BattleTerminalJournalEventV1 &event) noexcept {
@@ -246,6 +332,14 @@ bool CaptureTerminalUnsafe(void *combat,
       attacker, kCombatSidePrimaryCharacterIdOffset);
   event.defender_primary_participant_character_id = LoadAt<std::int32_t>(
       defender, kCombatSidePrimaryCharacterIdOffset);
+  if (!suppress_normal_result_envelopes &&
+      (event.winner_raw == 0 || event.winner_raw == 1)) {
+    event.losing_side_index = 1 - event.winner_raw;
+    if (!ReadTerminalHardLossInputs(
+            event.losing_side_index == 0 ? attacker : defender, event)) {
+      event.capture_failure_flags |= battle_terminal_capture_failure_bounds;
+    }
+  }
   void *const province = LoadAt<void *>(combat, kCombatProvinceOffset);
   event.province_id = province == nullptr
                           ? -1

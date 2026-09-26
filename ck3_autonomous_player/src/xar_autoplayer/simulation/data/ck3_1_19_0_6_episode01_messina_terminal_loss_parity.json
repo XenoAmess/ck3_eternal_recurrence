@@ -1,0 +1,39 @@
+{
+  "schema": "ck3.native_terminal_loss_parity.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_attempt": "episode01-terminal-loss-live-attempt-021",
+  "summary_sha256": "3645F37F864F8AF658CD6E124E830E738CA86FAE678A4005EF31499520BBFBF1",
+  "source_control_sha256_by_day": {
+    "27": "3932AEDF715A87C47174EF37777E3CCB1BBD0D0CA20EA544205B4B81E39993CE",
+    "28": "30474AD00EC5FEC89CF98364B8CEAE7859B8234F4C51BD0289EAE03F6F233349",
+    "29": "C43A06E6A5652249A3696D1CB06030979F92D97B4123C4340D743F839D347CD0",
+    "30": "BE18FBAEC63FB0983721CB25F4A0EB7B6D6F7DEBA14EB5D3D261C5D0714FD4C5",
+    "31": "FA172F71705D2EE4B24B33FD301698DAA2C2B1B365AD0346AE779F2205AFD461"
+  },
+  "source_terminal_sha256": "19708A0A4A4AA91143FFA1F260565F57975D8D4BE3563B9FD8E97DB722E562DB",
+  "terminal_date_raw": 53146992,
+  "losing_combat_side_index": 1,
+  "hard_loss_formula": "max(0, baseline - stored_current - levy_soft - men_at_arms_soft)",
+  "hard_loss_inputs_raw": {
+    "losing_side_index": 1,
+    "levy_soft_raw": 57753614,
+    "hard_loss_raw": 53662042,
+    "men_at_arms_soft_raw": 18384344,
+    "baseline_raw": 129800000,
+    "stored_current_raw": 0
+  },
+  "computed_hard_loss_raw": 53662042,
+  "participant_hard_ledger_day31_raw": 52662042,
+  "terminal_numerator_minus_participant_ledger_raw": 1000000,
+  "battle_warscore": {
+    "status": "recorded",
+    "war_id": 4,
+    "war_battle_row_index": 0,
+    "value_raw_q100000": 5000000,
+    "winner_is_war_attacker": false,
+    "combat_side0_is_war_attacker": false,
+    "attacker_relative_delta_raw_q100000": -5000000
+  },
+  "scope": "one replay; denominator, CB scale and uncapped score not observed"
+}

@@ -408,6 +408,28 @@ class BattleTerminalTransitionV1ContractTests(unittest.TestCase):
             SIGNED_SUCCESSOR_COMBAT_ID,
         )
 
+    def test_terminal_hard_loss_inputs_bind_winner_and_integer_arithmetic(self) -> None:
+        historical = _normalize(_normal_frame())
+        self.assertNotIn("hard_loss_inputs", historical["prior"])
+
+        extended = _normal_frame()
+        extended["prior"]["hard_loss_inputs"] = {
+            "losing_side_index": 1,
+            "baseline_raw": 8_000_000,
+            "stored_current_raw": 3_000_000,
+            "levy_soft_raw": 500_000,
+            "men_at_arms_soft_raw": 200_000,
+            "hard_loss_raw": 4_300_000,
+        }
+        normalized = _normalize(extended)
+        self.assertEqual(
+            normalized["prior"]["hard_loss_inputs"]["hard_loss_raw"],
+            4_300_000,
+        )
+        extended["prior"]["hard_loss_inputs"]["hard_loss_raw"] += 1
+        with self.assertRaisesRegex(ValueError, "hard-loss inputs disagree"):
+            _normalize(extended)
+
     def test_normal_result_does_not_depend_on_result_id_and_zero_is_recorded(self) -> None:
         frame = _normalize(_normal_frame())
         self.assertEqual(frame["prior"]["terminal_kind"], "normal_result")

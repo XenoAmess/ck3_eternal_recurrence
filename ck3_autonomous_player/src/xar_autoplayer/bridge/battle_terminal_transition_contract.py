@@ -58,6 +58,15 @@ _PRIOR_FIELDS: Final = {
     "defender_public_cunit_ids_in_stored_order",
     "battle_warscore",
 }
+_PRIOR_FIELDS_WITH_LOSS: Final = _PRIOR_FIELDS | {"hard_loss_inputs"}
+_HARD_LOSS_FIELDS: Final = {
+    "losing_side_index",
+    "baseline_raw",
+    "stored_current_raw",
+    "levy_soft_raw",
+    "men_at_arms_soft_raw",
+    "hard_loss_raw",
+}
 _WARSCORE_FIELDS: Final = {
     "status",
     "war_id",
@@ -424,8 +433,13 @@ def _normalize_prior(
     expected_prior_combat_id: int,
     event_status: str,
 ) -> dict[str, object]:
+    prior_fields = (
+        _PRIOR_FIELDS_WITH_LOSS
+        if isinstance(value, dict) and "hard_loss_inputs" in value
+        else _PRIOR_FIELDS
+    )
     prior = _exact_dict(
-        value, "battle_terminal_transition.prior", _PRIOR_FIELDS
+        value, "battle_terminal_transition.prior", prior_fields
     )
     combat_id = _full_component_id(
         prior.get("combat_id"), "battle_terminal_transition.prior.combat_id"
@@ -528,6 +542,43 @@ def _normalize_prior(
     ):
         raise ValueError("prior terminal side CUnit partitions overlap")
     warscore = _normalize_warscore(prior.get("battle_warscore"))
+    hard_loss_inputs = None
+    if prior.get("hard_loss_inputs") is not None:
+        loss = _exact_dict(
+            prior["hard_loss_inputs"],
+            "battle_terminal_transition.prior.hard_loss_inputs",
+            _HARD_LOSS_FIELDS,
+        )
+        side_index = _integer(
+            loss["losing_side_index"],
+            "battle_terminal_transition.prior.hard_loss_inputs.losing_side_index",
+            minimum=0,
+            maximum=1,
+        )
+        quantities = {
+            key: _integer(
+                loss[key],
+                f"battle_terminal_transition.prior.hard_loss_inputs.{key}",
+                minimum=0,
+                maximum=2**63 - 1,
+            )
+            for key in _HARD_LOSS_FIELDS - {"losing_side_index"}
+        }
+        if (
+            terminal_kind != "normal_result"
+            or winner_raw not in (0, 1)
+            or side_index != 1 - winner_raw
+            or quantities["hard_loss_raw"]
+            != max(
+                0,
+                quantities["baseline_raw"]
+                - quantities["stored_current_raw"]
+                - quantities["levy_soft_raw"]
+                - quantities["men_at_arms_soft_raw"],
+            )
+        ):
+            raise ValueError("terminal hard-loss inputs disagree")
+        hard_loss_inputs = {"losing_side_index": side_index, **quantities}
 
     observed_fields = (
         terminal_date_raw,
@@ -602,7 +653,7 @@ def _normalize_prior(
             raise ValueError("removed unobserved terminal state invented data")
         if warscore["status"] != "unavailable":
             raise ValueError("unobserved terminal state invented battle warscore")
-    return {
+    normalized = {
         **prior,
         "combat_id": combat_id,
         "terminal_kind": terminal_kind,
@@ -622,6 +673,9 @@ def _normalize_prior(
         "defender_public_cunit_ids_in_stored_order": defender_ids,
         "battle_warscore": warscore,
     }
+    if "hard_loss_inputs" in prior:
+        normalized["hard_loss_inputs"] = hard_loss_inputs
+    return normalized
 
 
 def _normalize_removal(value: object) -> dict[str, object]:

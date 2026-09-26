@@ -1285,6 +1285,8 @@ struct BattleControlSideSnapshot {
   std::vector<BattleControlRegimentEntrySnapshot> men_at_arms_entries;
   std::int64_t stored_current_fighting_raw = 0;
   std::int64_t stored_levy_current_fighting_raw = 0;
+  // CCombat side +0xA8, consumed by native terminal loss helper 0x23CDD90.
+  std::int64_t stored_terminal_loss_baseline_raw = 0;
   bool stored_current_matches_derived = false;
   bool stored_levy_current_matches_derived = false;
   std::int64_t derived_current_fighting_raw = 0;
@@ -1545,6 +1547,19 @@ struct BattleTerminalWarscoreSnapshotV1 {
                          const BattleTerminalWarscoreSnapshotV1 &) = default;
 };
 
+struct BattleTerminalHardLossInputsSnapshotV1 {
+  std::int32_t losing_side_index = -1;
+  std::int64_t baseline_raw = 0;
+  std::int64_t stored_current_raw = 0;
+  std::int64_t levy_soft_raw = 0;
+  std::int64_t men_at_arms_soft_raw = 0;
+  std::int64_t hard_loss_raw = 0;
+
+  friend bool operator==(const BattleTerminalHardLossInputsSnapshotV1 &,
+                         const BattleTerminalHardLossInputsSnapshotV1 &) =
+      default;
+};
+
 struct BattleTerminalPriorSnapshotV1 {
   std::int32_t combat_id = -1;
   BattleTerminalKindV1 terminal_kind =
@@ -1555,6 +1570,7 @@ struct BattleTerminalPriorSnapshotV1 {
   std::optional<std::int32_t> phase_day;
   std::optional<std::int32_t> winner_raw;
   std::optional<bool> finalized_before;
+  std::optional<BattleTerminalHardLossInputsSnapshotV1> hard_loss_inputs;
   std::optional<std::uint8_t> daily_guard_raw;
   std::optional<std::int32_t> province_id;
   std::optional<std::int32_t> battle_result_id;

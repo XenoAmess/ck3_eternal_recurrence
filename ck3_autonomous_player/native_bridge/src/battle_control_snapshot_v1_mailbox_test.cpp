@@ -118,6 +118,7 @@ xar::game::BattleControlSnapshot CompleteBattle() {
   result.attacker.men_at_arms_entries.push_back(reserve);
   result.attacker.stored_current_fighting_raw = 700'000;
   result.attacker.stored_levy_current_fighting_raw = 700'000;
+  result.attacker.stored_terminal_loss_baseline_raw = 1'500'000;
   result.attacker.stored_current_matches_derived = true;
   result.attacker.stored_levy_current_matches_derived = true;
   result.attacker.derived_current_fighting_raw = 700'000;
@@ -141,6 +142,7 @@ xar::game::BattleControlSnapshot CompleteBattle() {
                 800'000, 500'000, 100'000));
   result.defender.stored_current_fighting_raw = 500'000;
   result.defender.stored_levy_current_fighting_raw = 500'000;
+  result.defender.stored_terminal_loss_baseline_raw = 800'000;
   result.defender.stored_current_matches_derived = true;
   result.defender.stored_levy_current_matches_derived = true;
   result.defender.derived_current_fighting_raw = 500'000;
@@ -453,6 +455,8 @@ int main() {
   if (stale_encoded.empty() ||
       !Contains(stale_encoded,
                 "\"stored_current_fighting_raw\":699999") ||
+      !Contains(stale_encoded,
+                "\"stored_terminal_loss_baseline_raw\":1500000") ||
       !Contains(stale_encoded,
                 "\"stored_levy_current_fighting_raw\":699998") ||
       !Contains(stale_encoded,

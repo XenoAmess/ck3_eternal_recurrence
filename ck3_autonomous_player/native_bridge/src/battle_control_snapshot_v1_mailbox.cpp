@@ -765,6 +765,10 @@ bool AppendSide(std::string &output,
   if (!AppendNumber(output, side.stored_levy_current_fighting_raw)) {
     return false;
   }
+  output += ",\"stored_terminal_loss_baseline_raw\":";
+  if (!AppendNumber(output, side.stored_terminal_loss_baseline_raw)) {
+    return false;
+  }
   output += ",\"stored_current_matches_derived\":";
   output += side.stored_current_matches_derived ? "true" : "false";
   output += ",\"stored_levy_current_matches_derived\":";

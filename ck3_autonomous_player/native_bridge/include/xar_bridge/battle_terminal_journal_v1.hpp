@@ -41,6 +41,13 @@ struct BattleTerminalJournalEventV1 {
   std::uint8_t daily_guard_raw = 0;
   bool wipe_raw_observable = false;
   bool wipe_raw = false;
+  bool hard_loss_inputs_observable = false;
+  std::int32_t losing_side_index = -1;
+  std::int64_t losing_side_baseline_raw = 0;
+  std::int64_t losing_side_stored_current_raw = 0;
+  std::int64_t losing_side_levy_soft_raw = 0;
+  std::int64_t losing_side_maa_soft_raw = 0;
+  std::int64_t losing_side_hard_loss_raw = 0;
   std::int32_t attacker_primary_participant_character_id = -1;
   std::int32_t defender_primary_participant_character_id = -1;
   std::uint32_t attacker_public_cunit_count = 0;

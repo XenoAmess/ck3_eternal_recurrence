@@ -150,3 +150,9 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 总计 `6,294,269 raw / 100,000 = 62.94269` 人当量。另一个非主战 entry 的逐团 `hard_casualties_raw` 为 null，不能把它记作 0；因此逐团硬伤账的可比数是 69/69，三天 72/72 的 `current_fighting_raw` 均未变化。模型只用第 28 日的败方软伤池、追击方当前兵力/有效追击、败方有效坚韧/掩护，以及原版当时双方追击修正，**独立连续推演三日**；不在第 29/30 日重新喂入原版败方状态，链式预测仍 72/72 零差。三天 `pursuit_damage_raw` 都为 `75,203,000`，掩护为 0；每天重新计算缩小的 `toughness_soft` 与预算，不能将首日损失乘三。
 
 第 32 日独立原版终局回执确认 `normal_result`、winner side0、玩家军队 18 脱离旧 CombatID 并进入 retreating，战争进攻方战分增量 `-5,000,000 raw = -50`。这份回执与追击表属于**同一次独立回放**；它核对终局身份和账本结果，不意味着模拟器已复刻所有 battle-result effect、撤退目的地策略或战分生成公式。上述追击对拍是“给定追击开始时原版状态”的条件计算；主阶段事件回流、自然增援的完整日内调用顺序与其他条件分支，以及跨战例胜率校准仍是独立缺口。两次增援在首次 side0 phase fire 前入场的局部证据见[增援专题](battle-reinforcement-and-join.md#2026-09-26两次自然增援已在首次-phase-fire-前入场)。2026-09-26 的[有界策略接线](general-battle-strategy-forecast-2026-09-26.md)会使用研究分布并标明非原版校准，不能把本节的算术零差升级成整场原版胜率。
+
+## 2026-09-26 新终局回放：战分分子的 10 人口径差
+
+从 attempt-004 的 immutable 第 27 日存档另起 `episode01-terminal-loss-live-attempt-021`，逐日复现到第 32 日。新终局 journal 在原版 finalizer **入口**保存败方 side1 的四个输入：baseline `129,800,000`、stored current `0`、征召兵 soft `57,753,614`、兵士 soft `18,384,344`，均为 Q100000。原版战分分子因此是 `129,800,000 - 0 - 57,753,614 - 18,384,344 = 53,662,042 raw`，即去除引擎缩放后 **536.62042 人当量**。同一回放第 31 日参战者 hard 账本为 `52,662,042 raw`，少 `1,000,000 raw = 10 人`；第 31 日与终局的四个输入逐项一致，不能把差额说成最后一日新增伤亡。对应 [终局专题的算式和边界](battle-terminal-and-reentry.md#2026-09-26-梅西纳正常终局的分子实机回读)、[共用哈希绑定报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_terminal_loss_parity.json) 与 [只读投影工具](../../ck3_autonomous_player/tools/project_native_terminal_loss_receipt.py) 可直接供视频和智能体复核。
+
+同一终局 row 对 WarID `4` 写 `+5,000,000 raw = +50` magnitude，winner 是战争防守方，所以战争进攻方相对值为 `-5,000,000 raw = -50`。这是终局写回的实机事实；目前八桶分母和 CB scale 尚未在这次 writer 中读出，不能用封顶后的 `50` 倒推这些输入，也不能把本次分子零差升级成完整战分公式或整场胜率零差。

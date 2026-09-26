@@ -67,6 +67,9 @@ xar::game::BattleTerminalTransitionSnapshotV1 CompleteResult() {
   result.prior.phase_day = 33;
   result.prior.winner_raw = 0;
   result.prior.finalized_before = false;
+  result.prior.hard_loss_inputs =
+      xar::game::BattleTerminalHardLossInputsSnapshotV1{
+          1, 8'000'000, 3'000'000, 500'000, 200'000, 4'300'000};
   result.prior.daily_guard_raw = std::uint8_t{1};
   result.prior.province_id = 7;
   result.prior.battle_result_id = 6;
@@ -149,6 +152,7 @@ bool TestParserAndSerializer() {
           std::string::npos ||
       json.find("\"terminal_date_raw\":1233") == std::string::npos ||
       json.find("\"phase_day\":33") == std::string::npos ||
+      json.find("\"hard_loss_raw\":4300000") == std::string::npos ||
       json.find("\"ai_membership_status\":\"none\"") ==
           std::string::npos ||
       json.find("\"combat_backlink_id\":null") == std::string::npos ||
@@ -248,6 +252,8 @@ bool TestJournalAndDetourAnchors() {
   std::array<std::byte, 0x80> result{};
   std::array<std::int32_t, 1> attacker_ids{1};
   std::array<std::int32_t, 1> defender_ids{2};
+  std::array<std::byte, 0x60> defender_levy_entry{};
+  std::array<std::byte, 0x60> defender_maa_entry{};
   Store(combat.data(), 0x08, std::int32_t{5});
   Store(combat.data(), 0x6B0, std::int32_t{3});
   Store(combat.data(), 0x6B4, std::int32_t{33});
@@ -267,6 +273,18 @@ bool TestJournalAndDetourAnchors() {
   };
   initialize_side(0x20, attacker_ids.data(), 101);
   initialize_side(0x368, defender_ids.data(), 102);
+  Store(combat.data(), 0x368 + 0xA8, std::int64_t{8'000'000});
+  Store(combat.data(), 0x368 + 0x98, std::int64_t{3'000'000});
+  Store(defender_levy_entry.data(), 0x20, std::int64_t{500'000});
+  Store(defender_maa_entry.data(), 0x20, std::int64_t{200'000});
+  Store(combat.data(), 0x368 + 0x28,
+        static_cast<void *>(defender_levy_entry.data()));
+  Store(combat.data(), 0x368 + 0x30, std::int32_t{1});
+  Store(combat.data(), 0x368 + 0x34, std::int32_t{1});
+  Store(combat.data(), 0x368 + 0x40,
+        static_cast<void *>(defender_maa_entry.data()));
+  Store(combat.data(), 0x368 + 0x48, std::int32_t{1});
+  Store(combat.data(), 0x368 + 0x4C, std::int32_t{1});
   Store(attacker_army.data(), 0x10, std::int32_t{1});
   Store(attacker_army.data(), 0x124, std::int32_t{3});
   Store(attacker_army.data(), 0x128, std::int32_t{5});
@@ -307,6 +325,9 @@ bool TestJournalAndDetourAnchors() {
       normal.event.observed_date_raw != 1234 ||
       normal.event.phase_day != 33 ||
       normal.event.suppress_normal_result_envelopes ||
+      !normal.event.hard_loss_inputs_observable ||
+      normal.event.losing_side_index != 1 ||
+      normal.event.losing_side_hard_loss_raw != 4'300'000 ||
       normal.event.attacker_public_cunit_ids_in_stored_order[0] != 3 ||
       normal.event.defender_public_cunit_ids_in_stored_order[0] != 4) {
     std::cerr << "normal lookup mismatch status="
@@ -323,6 +344,7 @@ bool TestJournalAndDetourAnchors() {
   const auto no_normal = LookupBattleTerminalJournalV1(5, 1);
   if (no_normal.status != BattleTerminalJournalLookupStatusV1::observed ||
       no_normal.event.sequence != 2 ||
+      no_normal.event.hard_loss_inputs_observable ||
       !no_normal.event.suppress_normal_result_envelopes) {
     std::cerr << "no-normal lookup mismatch\n";
     return false;

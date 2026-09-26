@@ -668,6 +668,25 @@ std::string SerializeBattleTerminalTransitionV1(
   if (!AppendOptionalNumber(output, prior.winner_raw)) return {};
   output += ",\"finalized_before\":";
   AppendOptionalBool(output, prior.finalized_before);
+  output += ",\"hard_loss_inputs\":";
+  if (prior.hard_loss_inputs.has_value()) {
+    const auto &loss = *prior.hard_loss_inputs;
+    output += "{\"losing_side_index\":";
+    if (!AppendNumber(output, loss.losing_side_index)) return {};
+    output += ",\"baseline_raw\":";
+    if (!AppendNumber(output, loss.baseline_raw)) return {};
+    output += ",\"stored_current_raw\":";
+    if (!AppendNumber(output, loss.stored_current_raw)) return {};
+    output += ",\"levy_soft_raw\":";
+    if (!AppendNumber(output, loss.levy_soft_raw)) return {};
+    output += ",\"men_at_arms_soft_raw\":";
+    if (!AppendNumber(output, loss.men_at_arms_soft_raw)) return {};
+    output += ",\"hard_loss_raw\":";
+    if (!AppendNumber(output, loss.hard_loss_raw)) return {};
+    output.push_back('}');
+  } else {
+    output += "null";
+  }
   output += ",\"daily_guard_raw\":";
   if (!AppendOptionalNumber(output, prior.daily_guard_raw)) return {};
   output += ",\"province_id\":";

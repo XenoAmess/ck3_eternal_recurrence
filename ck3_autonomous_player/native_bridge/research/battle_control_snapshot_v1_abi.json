@@ -292,6 +292,7 @@
       "men_at_arms_entries": "BattleControlRegimentEntryV1[] in native bucket order",
       "stored_current_fighting_raw": "int64 Q100000 from side+0x98",
       "stored_levy_current_fighting_raw": "int64 Q100000 from side+0xA0",
+      "stored_terminal_loss_baseline_raw": "optional on historical V1 receipts; current bridge reads exact int64 Q100000 from side+0xA8 consumed by 0x23CDD90; a paused preterminal observation is not itself the final terminal score",
       "stored_current_matches_derived": "bool comparing the stable +0x98 tick-start cache with the checked retained-entry current sum; false is a valid observable frame",
       "stored_levy_current_matches_derived": "bool comparing the stable +0xA0 tick-start cache with the checked levy-entry current subtotal; false is a valid observable frame",
       "derived_current_fighting_raw": "checked sum of both entry buckets' current_fighting_raw",
