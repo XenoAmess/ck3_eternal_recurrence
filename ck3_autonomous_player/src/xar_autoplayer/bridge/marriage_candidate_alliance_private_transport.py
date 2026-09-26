@@ -120,6 +120,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             or row.get("status") not in {"available", "unavailable"}
             or not isinstance(row.get("failure"), str)
             or not isinstance(row.get("projection_failure"), str)
+            or not isinstance(row.get("outcome_failure"), str)
         ):
             raise BridgeUnavailableError("marriage projection row identity malformed")
         pairs = row.get("possible_alliance_pairs")
@@ -128,11 +129,17 @@ def query_first_heir_candidate_alliance_projection_private_v1(
         if row["status"] == "unavailable":
             observed_unavailable = True
             if (row["failure"] == "none" or
-                row.get("matrilineal_option_selected") is not None or pairs):
+                row.get("matrilineal_option_selected") is not None or pairs or
+                row.get("predicted_outcome_if_accepted") is not None or
+                (row["failure"] == "outcome_unavailable" and
+                 row["outcome_failure"] == "none")):
                 raise BridgeUnavailableError("unavailable projection claims a value")
             continue
         if (row["failure"] != "none" or
             row["projection_failure"] != "none" or
+            row["outcome_failure"] != "none" or
+            row.get("predicted_outcome_if_accepted") not in
+                {"marriage", "betrothal"} or
             type(row.get("matrilineal_option_selected")) is not bool):
             raise BridgeUnavailableError("available projection lost native option")
         for pair in pairs:
