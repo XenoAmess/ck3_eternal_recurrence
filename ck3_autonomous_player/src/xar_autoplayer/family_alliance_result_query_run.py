@@ -192,7 +192,8 @@ def query_first_heir_marriage_alliance_once(
     try:
         driver = NativeHeadlessGameplayDriver(
             config.pipe_name, state_dir=spec.state_dir,
-            save_dir=spec.profile_dir / "save games")
+            save_dir=spec.profile_dir / "save games",
+            succession_lifecycle_binding=lifecycle)
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
             target=supervise, name="xar-private-family-alliance-query-session",
