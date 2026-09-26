@@ -643,6 +643,27 @@ class G2PreviewOperatorTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "does not match checkpoint"):
             g2_preview_operator.construction_pending_sidecar_request(sidecar, driver, {})
 
+    def test_old_episode_construction_does_not_require_current_sidecar(self) -> None:
+        driver = {
+            "episode_character_id": 42000,
+            "episode_run_id": "native-42000-heir",
+            "last_checkpoint": {"history_index": 106,
+                                "episode_character_id": 42000,
+                                "episode_run_id": "native-42000-heir"},
+            "command_history": [{
+                "index": 103,
+                "command": "private-query-player-construction-receipt-v1",
+                "result": {"status": "applied", "postcondition_verified": True,
+                           "completion_status": "in_progress",
+                           "action_request_id": "construction-submit-" + "e" * 32,
+                           "actor_character_id": 29829,
+                           "episode_run_id": "native-29829-parent"},
+            }],
+        }
+        self.assertFalse(
+            g2_preview_operator.saved_in_progress_construction_without_sidecar(driver)
+        )
+
     def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
