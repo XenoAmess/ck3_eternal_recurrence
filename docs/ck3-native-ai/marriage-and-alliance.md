@@ -978,3 +978,9 @@ flowchart TD
 ```
 
 源码层的同帧门会逐项核 selected five-row、final-legal 行、原生 revision/query sequence、episode/date、无配偶/订婚、lineality 和资源身份；建设/礼金的 source 继续独立评估。既有 selector 在 building + marriage 同时出现时不启用只适用于 building + gift 的正收入优先规则，转而按盟友占用、金币、承诺键、角色数等共享资源排序。静态夹具中的建设因零盟友占用先于一盟友占用的婚约；这只是受限资源仲裁，不是婚配价值、长期义务与建设收益的统一数值比较，也未实机闭合资源冲突。M5 选中家庭时只转发既有 `submit-observed-first-heir-marriage-v1-private` 所需 choice、legality 和诊断，不新增 proposal 动作或公开广告。此阶段仅有聚焦静态验证，不能称作 C22 第 2 turn 的实机联合消费。
+
+## 2026-09-27：R0239 同路径的实际双向联盟只读结果
+
+C26 的 M5 正式第 4 turn 已提交首继承人38822与候选38710的订婚提案，接收方32266；第 5 turn `pending`，第 10 turn `betrothal`，C27 新 PID 复读同一关系。C29 用 C27 h114 的原始 save/driver 和 resolved 家庭账本，经官方 ordinary `xar_off` rebind/no-launch；第一次新管道配对不匹配仅为 no-launch 失败。正式候选固定来源 commit `8e28f12bee6fc7bfda037c4ac4002a92650c6bec`、与 C26 同源 native DLL SHA `CE57BB7F67B3B6646796E9679B5D198557CE175C056000C8FE4DFCB940F2FB0C`，游戏 1.19.0.6。R0239 在启动前分配，唯一 PID163576 以最小化窗口执行私有 `query-observed-first-heir-marriage-alliance-result-v1-private`；未执行任何游戏动作，paused raw53153976 与 h114 save SHA `AAD03E437C55A01B52FC1BF87195B32246B52DD4D452C746CF289F11FF704593` 前后不变，进程树回收。
+
+原生 `native_revision=3`、`read_only=true` 回执：`relationship_status=betrothal`，`alliance_status=allied`，`played_has_recipient_alliance=true`，`recipient_has_played_alliance=true`；C26 正式提案报告 SHA `581FD964496A30221FA8F7C7D6724A3F9699F6ABC3E57C408D606134ED35B40C` 绑定四个角色身份。独立 paused frame、日期、checkpoint、窗口和清理检查全为 true。[query report](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-family-alliance-c29-20260927/attempt-01/query-report.json) SHA `5CF76282595C807B8C904C6E0C0C33E8022CBDB1C38260B03B65F3F3F71A5097`；[operator receipt](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-family-alliance-c29-20260927/attempt-01/operator-receipt.json) SHA `6A6211D87058CC952ED7CEE3D505984D3AA8B8A34876F55DB7C4F9480A14B810`。因此同一路径的**当前双向联盟状态**已知；缺少提案前同组联盟观测，不能证明该联盟由本次订婚创建。联盟参战义务、子代宗族结果及解除婚约代价仍未量化，M5 不能把当前 allied 状态倒填为当时的预期收益。
