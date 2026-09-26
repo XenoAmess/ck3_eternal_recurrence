@@ -26,10 +26,13 @@ from xar_autoplayer.environment import (  # noqa: E402
     _git_lines,
     ck3_process_inventory,
     doctor,
+    display_contract,
     ensure_state_path_safe,
     launcher_identity,
     make_spec,
     prepare_profile,
+    render_settings,
+    settings_contract,
     process_creation_utc,
     same_process_creation_time,
     sha256_file,
@@ -270,6 +273,33 @@ class PreparedProfileTests(unittest.TestCase):
             )
             with self.assertRaises(AgentError):
                 verify_profile(spec, xar_enabled="xar_off")
+
+    def test_windowed_profile_pins_mode_resolution_and_rejects_drift(self) -> None:
+        self.assertNotIn("windowed_resolution", render_settings())
+        display = display_contract("windowed")
+        self.assertEqual(display, {
+            "contract_version": 1,
+            "language": "l_simp_chinese",
+            "mode": "windowed",
+            "resolution": [1280, 720],
+        })
+        rendered = render_settings("windowed")
+        self.assertIn('"windowed_resolution"={ version=0 value="1280x720" }', rendered)
+        self.assertEqual(settings_contract(rendered, display_mode="windowed")[
+            "windowed_resolution"], "1280x720")
+        with self.assertRaisesRegex(AgentError, "pdx_settings contract differs"):
+            settings_contract(rendered.replace('value="1280x720"',
+                                               'value="1024x768"'),
+                              display_mode="windowed")
+        schema = json.loads((REPO_ROOT / "ck3_autonomous_player" / "schemas"
+                             / "environment-v1.schema.json").read_text(encoding="utf-8"))
+        Draft202012Validator(schema["properties"]["display"]).validate(display)
+        with tempfile.TemporaryDirectory(prefix="xar-agent-windowed-") as temporary:
+            spec = EnvironmentSpec(Path(temporary).resolve(), GAME_DIR.resolve())
+            spec.manifest_path.parent.mkdir(parents=True, exist_ok=True)
+            spec.manifest_path.write_text(json.dumps({"display": display}), encoding="utf-8")
+            with self.assertRaisesRegex(AgentError, "display contract differs"):
+                verify_profile(spec, display_mode="fullscreen")
 
     def test_game_upgrade_requires_reprepare_without_a_schema_migration(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:

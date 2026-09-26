@@ -75,11 +75,17 @@
     },
     "display": {
       "type": "object",
-      "required": ["language", "resolution"],
+      "required": ["contract_version", "language", "mode", "resolution"],
       "properties": {
+        "contract_version": { "const": 1 },
         "language": { "const": "l_simp_chinese" },
-        "resolution": { "const": [2560, 1440] }
-      }
+        "mode": { "enum": ["fullscreen", "windowed"] },
+        "resolution": { "type": "array", "minItems": 2, "maxItems": 2 }
+      },
+      "oneOf": [
+        { "properties": { "mode": { "const": "fullscreen" }, "resolution": { "const": [2560, 1440] } } },
+        { "properties": { "mode": { "const": "windowed" }, "resolution": { "const": [1280, 720] } } }
+      ]
     },
     "legality": { "type": "object" }
   }
