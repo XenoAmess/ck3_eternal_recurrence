@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 直辖领地建设与升级原生 AI 树
 
+## 2026-09-27 NW-ECON-C35：h115 冷恢复后施工仍未完工，战争输入阻断后续日期
+
+R0243 从同一派生 Robert h115/raw53154720 的 save、driver、建设及家庭账本经正式 ordinary `xar_off` 重绑定与 no-launch 开始；启动前分配轮次，唯一 PID68496 在可见后最小化，12/12 有界正式 turn `turn_limit/qualified`，进程树回收。第 2 turn 在新 PID 独立复核原 `hill_farms_01` 槽位仍为 `applied/in_progress`，现金与玩家月收入读回沿用原收据，`completion_observed_date_raw` 和实际收入差值仍为 `null`，未重复扣款或施工。第 9 turn 战争策略宣战、第 11 turn 集结，第 12 turn 最小化后台推进 raw53154720→53154936（9 派生游戏日），保存 h133。距本次冷复核 raw53154720 尚不足既定 30 日 watch；无完工或收益证据。[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h115-c35-20260927/attempt-01/formal-report.txt) SHA `95ED751461D47619F45D0C9B0E5D34FBA18F0FF6DA31B90C7E5B218653483415`，[operator](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h115-c35-20260927/attempt-01/operator-receipt.json) SHA `667AFBBA310E31401EF23D4157EEB047E88FEC18186C8E9B899962E9A6816A7B`，[h133 原始配对清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h133-c35-20260927/source-pair-h133/PAIR-IDENTITY.json) SHA `9E7FB3DD88999C00E270EF82B607F73D0A998A5977E87D2029A8CEC02E43485E`。
+
+R0244 从 h133 四件原件再次正式重绑定/no-launch，唯一新 PID54808 最小化；第 1–5 turn 只读战争上下文、停战、兵力、行军预览和接敌时间，第 6 turn `general-battle-forecast-v1` 在 paused raw53154936 因缺同帧每兵团输入而 `planner_blocked`，无移动、日期推进或新施工检查。报告 `blocked/failed`，checkpoint 可恢复且进程树已回收；不能用这次 RED 证明 30 日 watch 或收益。战争缺口已登记任务总线 `WAR-INPUT-R0244-20260927`，由战争维护者承接；非战争侧只保留精确复现与原始配对。[失败报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h133-c35-20260927/attempt-01/formal-report.txt) SHA `07994F762425CCFF912BF697DCBF95BA1E00F374D646BE060748420526040E6F`。
+
 ## 2026-09-27 NW-ECON-C32：完工 watch 的游戏日单位（正式运行证据 + 源码修复）
 
 R0240 的正式 Robert 派生运行在 `hill_farms_01` 开工日 raw53153760 得到 `applied/in_progress`；一次 `life-advance` 到 raw53153976，只过了 **9 游戏日**，第 9 turn 却执行 `construction_completion_watch`，占用一个正式 turn、日期未推进且仍读到施工中。其正式报告 SHA-256 为 `E886352A09B434A38003237F46D06F045AA10C7F2A944CB4FD07C1B4BC72D8A3`。R0241 从其 h107 配对冷恢复后，先同日核对原施工，再推进 31 游戏日到 raw53154720；第 6 turn 的 watch 仍读到施工中。R0241 报告 SHA-256 `3951CF81F294E1D7CAFD8EA86611723E40697F97E536DAC02BF0379FC27DBB72`；h115 官方原件配对索引 SHA-256 `D809DAC8771C60D8EB803571B93A43E41C52DF8F616391CF22687CDF2DAD30F1`，其中建设账本 SHA-256 `60203AD547B32923BBDF4CF195D2B929BC4DCFFE4734E0BD98FD6C1E34BB5E24`、`completion_last_check_date_raw=53154720`、完工日期与收入差值仍为 `null`。
