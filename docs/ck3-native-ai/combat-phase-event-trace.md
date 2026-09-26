@@ -270,6 +270,31 @@ SHA-256 `C6E97DF67F1A561925C845F313F8BBE204296DAC1061E4150C43684D2B74AF38`
 仅在第 5 日暂停帧查询医师不够，因为升阶可能发生在列表抽签之前。同一 call 的 scope、状态、
 权重与执行子节点全部对上前，医师条件仍标记为静态匹配，不提升整场战斗概率门禁。
 
+#### 2026-09-27 医师同线程补采 ABI 门禁：只闭合 scope 指针路径
+
+对精确 EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
+的[只读指令校验器](../../ck3_autonomous_player/native_bridge/research/verify_phase_physician_scope_abi.py)
+已核对 11 处完整指令 bytes，结果为 `scope_pointer_path_static_only`。`0x23C999A–9A4`
+在栈上构造 `EventTargetScope`，`0x23C9B0C–B11` 把该地址传入 `0x3380310`；
+`0x3380357` 将它放进 effect context 的首个指针，`0x338038A–392` 传给执行器。
+`0x3380A25` 保存父 context，`0x3380CBE–CFB` 把其 `+0x00..+0x20` 槽复制到子 context
+并重设 `+0x28` RNG 指针；`0x2F08ACA–AD1` 将该子 context 作为选择器 R8，
+`0x2F087B1` 确认 `R8+0x28` 的 RNG 槽。该链只证明 **picker 当线程可达继承的
+EventTargetScope 指针**；它没有证明此时 `physician` 命名行的具体内容。
+
+当前补采仍 **未获准启用**。命名行虽然已有另一条 current-event 读者的通用
+`EventTargetScope+0x18/+0x24`、`0x18` 字节行、name identifier 与 kind-4
+CharacterID 静态 ABI，但还需在本 effect 执行上下文验证 `scope:physician` 的
+完整 identifier／generation、行唯一性及人物存储代际；不可把日初源档投影的
+57392 直接填入 picker 记录。`CCharacter+0xE4` 是现有 v3 的学习原始值读取点，
+尚须核对治疗脚本求值实际消费的“有效学习”是否为同一值。现有 v3 的 trait-track XP
+通过 `CharacterTraitTracks` 原生函数读取；该路径尚无无分配、同线程、钩子内可用的
+`lifestyle_physician` 直接内存 ABI。更关键的是 `0x2F08780` 位于治疗列表权重已求值后，
+单在 picker 前读取只能见升阶后的状态，无法证明前置 10% 升阶的前态或其是否执行。
+下一步须先定位该升阶效果的原生 entry 与前／后安全边界，证明同一医师身份和 trait／XP
+读法，再在独立默认关闭的私有开关下有界采集；任何失败应单列标志、保留原始 066
+权重回执，不以 `[40,50]` 反推医师即时状态。本轮未改 DLL 或默认 wire，也未启动 CK3。
+
 ### 事件后的下一帧智能体输入
 
 又从本次回放保存的第 27 日不可变存档（SHA-256
