@@ -229,6 +229,18 @@ def plan_m5_formal_query_only(
                 "m5_joint_formal_action_ready": True,
             },
         }
+    if collection["status"] == "no_complete_feasible_proposal":
+        return {
+            **cleaned,
+            "plan": {
+                **baseline,
+                "phase": "m5_joint_empty_proposals",
+                "selected_step": "life-advance",
+                "reason": "no complete same-frame proposal; continue normal life advance",
+                "m5_joint_query_only": collection,
+                "m5_joint_formal_action_ready": False,
+            },
+        }
     return {
         **cleaned,
         "plan": {
