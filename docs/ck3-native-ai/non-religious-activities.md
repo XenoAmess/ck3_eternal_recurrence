@@ -86,7 +86,7 @@ flowchart TD
     S -- false --> T[RED]
     S -- true --> J
 
-    D -. unknown: HostView 最终 evaluator .-> U[先补只读 observer]
+    D -. unknown: final evaluator 的失败对象与完整语义采集 .-> U[先补只读 observer]
     N -. unknown: invite/open collection owner .-> V[后续参加 observer]
     J -. unknown: lifecycle/phase native surface .-> W[后续结局 observer]
 ```
@@ -256,7 +256,7 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 ## 尚未闭合的分支
 
 - `CActivityType` registry owner/enumerator 与 native stable key 字段；
-- `CActivityListDetailHostView` 两个 planner 方法的 exact RVA、最终 evaluator 和 reason collector；
+- `CActivityListDetailHostView` slot 25 与最终 evaluator 的 RVA 已冻结；其失败对象的构造、文本提取与释放，以及完整 planner 语义采集仍未闭合（见 `activity-planning-native-binder-1.19.0.6.md`）；
 - AI 16-byte row 的完整所有权、identity 和 lifetime；
 - `CStartActivityCommand` `0x508` payload 的字段语义与可新建构造器；
 - treasury、herd、barter、piety、prestige 等配置费用向量槽位；
@@ -266,4 +266,4 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 - 狩猎等活动内部的 faith 分支，仅允许保留 opaque allow/deny；
 - feast 之后的 location、options、intent、guest 质量策略。
 
-这些 `unknown` 是下一批可施工入口。P0 的唯一下一步是 HostView planner evaluator 的 exact-build 定位和 private read-only capture；在它 live GREEN 前，活动能力仍是 `research`，不得标成 production query、action-ready 或完整活动 OODA。
+这些 `unknown` 是下一批可施工入口。P0 的下一步是完成已定位 HostView evaluator 的失败对象与原生语义采集，接入 private application-main paused read-only capture；在它 live GREEN 前，活动能力仍是 `research`，不得标成 production query、action-ready 或完整活动 OODA。
