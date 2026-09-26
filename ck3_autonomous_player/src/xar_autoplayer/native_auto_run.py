@@ -51,7 +51,6 @@ from .construction_formal_consumer import (
 )
 from .family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
-    RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
     read_family_marriage_ledger,
 )
 from .bridge.service import GameplayBridgeService
@@ -1550,14 +1549,8 @@ def native_auto_run(
                         )
                         raise AgentError("private construction receipt does not match paused game frame")
                     evidence.append("construction_active_independent_later_frame")
-            if step == PRIVATE_FAMILY_MARRIAGE_RESULT_STEP:
-                family_result = outcome.get("result")
-                if isinstance(family_result, dict):
-                    status = family_result.get("status")
-                    if status in {"marriage", "betrothal"} and family_result.get("material_result") is True:
-                        evidence.append("first_heir_bilateral_" + status)
-                    elif status in {"refused", "invalidated", "accepted_pending", "pending"}:
-                        evidence.append("first_heir_proposal_" + status)
+            # A marriage result is a same-frame query. Its status remains in
+            # the typed result; it is not evidence of a gameplay mutation.
             if "date_advanced" in evidence:
                 date_advanced = True
             if parse_event_option_step(step) is not None:

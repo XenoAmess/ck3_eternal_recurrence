@@ -55,6 +55,9 @@ ORDINARY_SEED_REBIND_V1_SCHEMA = "xar.ck3.ordinary-seed-rebind/v1"
 CONSTRUCTION_PENDING_V1_SCHEMA = "xar.ck3.construction_formal_pending_v1"
 CONSTRUCTION_SUBMIT_STEP = "private-submit-player-construction-v1"
 CONSTRUCTION_RECEIPT_STEP = "private-query-player-construction-receipt-v1"
+FAMILY_PENDING_V1_SCHEMA = "xar.ck3.first-heir-marriage-formal.v1"
+FAMILY_ACTION_V1_SCHEMA = "xar.ck3.observed-first-heir-marriage-private-action.v1"
+FAMILY_SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
 
 
 def sha256(path: Path) -> str:
@@ -305,6 +308,70 @@ def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bo
                for row in latest.values())
 
 
+def family_pending_sidecar_pair(
+    sidecar: dict[str, Any], driver: dict[str, Any],
+    manifest: dict[str, Any], save_sha256: str,
+    formal_report: dict[str, Any],
+) -> int:
+    """Bind one saved first-heir proposal to its checkpoint and formal report."""
+    pending = sidecar.get("pending")
+    checkpoint = driver.get("last_checkpoint")
+    report_checkpoints = formal_report.get("checkpoints")
+    auto_run = formal_report.get("auto_run")
+    turns = auto_run.get("turns") if isinstance(auto_run, dict) else None
+    session = formal_report.get("session")
+    if (sidecar.get("schema") != FAMILY_PENDING_V1_SCHEMA
+            or sidecar.get("resolved") is not None
+            or not isinstance(pending, dict)
+            or not isinstance(checkpoint, dict)
+            or not isinstance(report_checkpoints, list)
+            or not isinstance(turns, list)
+            or not isinstance(session, dict)):
+        raise ValueError("family sidecar lacks saved pending proposal proof")
+    actor = episode_value(driver, manifest, "episode_character_id")
+    episode = episode_value(driver, manifest, "episode_run_id")
+    heir = pending.get("heir_character_id")
+    candidate = pending.get("candidate_character_id")
+    source_date = pending.get("source_date_raw")
+    if (pending.get("schema") != FAMILY_ACTION_V1_SCHEMA
+            or pending.get("status") != "receipt_pending"
+            or pending.get("submission_state") != "receipt_pending"
+            or pending.get("material_result") is not False
+            or pending.get("accepted") is not True
+            or pending.get("played_character_id") != actor
+            or pending.get("episode_run_id") != episode
+            or type(heir) is not int or heir <= 0 or heir == actor
+            or type(candidate) is not int or candidate <= 0
+            or type(source_date) is not int
+            or pending.get("source_bridge_pid") != session.get("pid")
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != episode
+            or checkpoint.get("date_raw") != source_date
+            or checkpoint.get("sha256") != save_sha256):
+        raise ValueError("family pending identity disagrees with paired save")
+    matching = [row for row in report_checkpoints
+                if isinstance(row, dict)
+                and row.get("phase") == "first_heir_marriage_submitted_pending"
+                and row.get("sha256") == save_sha256
+                and row.get("history_index") == checkpoint.get("history_index")
+                and row.get("date_raw") == source_date
+                and isinstance(row.get("pending_action"), dict)
+                and row["pending_action"].get("heir_character_id") == heir
+                and row["pending_action"].get("candidate_character_id") == candidate
+                and row["pending_action"].get("episode_run_id") == episode]
+    submitted = [row for row in turns if isinstance(row, dict)
+                 and row.get("selected_step") == FAMILY_SUBMIT_STEP
+                 and isinstance(row.get("result"), dict)
+                 and row["result"].get("status") == "receipt_pending"
+                 and isinstance(row.get("plan"), dict)
+                 and isinstance(row["plan"].get("family_marriage_choice"), dict)
+                 and row["plan"]["family_marriage_choice"].get(
+                     "candidate_character_id") == candidate]
+    if len(matching) != 1 or len(submitted) != 1:
+        raise ValueError("family proposal is not proven by one saved formal submit")
+    return candidate
+
+
 def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
     with stdout_path.open("w", encoding="utf-8", newline="") as stdout_stream:
         with stderr_path.open("w", encoding="utf-8", newline="") as stderr_stream:
@@ -490,9 +557,16 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     explicit_sidecar = getattr(args, "construction_sidecar", None)
     pending_source = (explicit_sidecar.resolve() if explicit_sidecar is not None
                       else sample_dir / "construction-formal-pending-v1.json")
+    family_sidecar_arg = getattr(args, "family_sidecar", None)
+    family_report_arg = getattr(args, "family_proof_report", None)
+    if (family_sidecar_arg is None) != (family_report_arg is None):
+        raise ValueError("family pending recovery needs sidecar and formal proof report")
+    family_source = family_sidecar_arg.resolve() if family_sidecar_arg else None
+    family_report_source = family_report_arg.resolve() if family_report_arg else None
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
+    family_target = state_dir / "first-heir-marriage-formal-v1.json"
     for path in (save_source, driver_source):
         if not path.is_file():
             raise FileNotFoundError(path)
@@ -519,6 +593,25 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "saved in-progress construction receipt requires --construction-sidecar "
             "or construction-formal-pending-v1.json in sample-dir"
         )
+    family_candidate = None
+    family_source_sha256 = None
+    family_report_sha256 = None
+    family_record = None
+    formal_report = None
+    if family_source is not None and family_report_source is not None:
+        for path in (family_source, family_report_source):
+            if not path.is_file():
+                raise FileNotFoundError(path)
+        if family_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {family_target}")
+        family_record = read_json(family_source)
+        formal_report = read_json(family_report_source)
+        family_candidate = family_pending_sidecar_pair(
+            family_record, driver_source_record, manifest,
+            sha256(save_source), formal_report,
+        )
+        family_source_sha256 = sha256(family_source)
+        family_report_sha256 = sha256(family_report_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -643,6 +736,25 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "path": str(pending_target),
             "sha256": pending_source_sha256,
             "action_request_id": pending_request_id,
+        }
+    if family_candidate is not None:
+        if family_pending_sidecar_pair(
+            family_record, read_json(driver_target), manifest,
+            sha256(save_target), formal_report,
+        ) != family_candidate:
+            raise RuntimeError("prepared driver no longer matches family proposal")
+        shutil.copy2(family_source, family_target)
+        make_derived_state_owner_writable(family_target)
+        if sha256(family_target) != family_source_sha256:
+            raise RuntimeError("prepared family sidecar hash mismatch")
+        preparation["family_pending_sidecar"] = {
+            "status": "paired_no_launch",
+            "source": str(family_source),
+            "path": str(family_target),
+            "sha256": family_source_sha256,
+            "formal_proof_report": str(family_report_source),
+            "formal_proof_report_sha256": family_report_sha256,
+            "candidate_character_id": family_candidate,
         }
     print(json.dumps(preparation))
     return 0
@@ -1349,6 +1461,8 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--manifest", type=Path, required=True)
     prepare.add_argument("--sample-dir", type=Path, required=True)
     prepare.add_argument("--construction-sidecar", type=Path)
+    prepare.add_argument("--family-sidecar", type=Path)
+    prepare.add_argument("--family-proof-report", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
     run = commands.add_parser("run")
