@@ -11,6 +11,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -414,7 +415,10 @@ def family_resolved_sidecar_pair(
 def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
     with stdout_path.open("w", encoding="utf-8", newline="") as stdout_stream:
         with stderr_path.open("w", encoding="utf-8", newline="") as stderr_stream:
-            completed = subprocess.run(command, stdout=stdout_stream, stderr=stderr_stream, check=False)
+            completed = subprocess.run(
+                command, stdout=stdout_stream, stderr=stderr_stream,
+                check=False, env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+            )
     return completed.returncode
 
 

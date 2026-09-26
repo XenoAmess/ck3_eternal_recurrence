@@ -5,6 +5,7 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import stat
 import sys
@@ -1757,6 +1758,22 @@ class G2PreviewOperatorTest(unittest.TestCase):
 
 
 class FamilyAllianceResultOperatorTest(unittest.TestCase):
+    def test_logged_python_report_is_utf8_under_legacy_windows_encoding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            stdout = Path(directory) / "report.json"
+            stderr = Path(directory) / "stderr.txt"
+            command = [sys.executable, "-c", (
+                'import json; print(json.dumps({"name": "罗贝尔"}, ensure_ascii=False))'
+            )]
+            with mock.patch.dict(os.environ, {"PYTHONIOENCODING": "cp936"}):
+                self.assertEqual(
+                    g2_preview_operator.run_logged(command, stdout, stderr), 0
+                )
+            self.assertEqual(
+                g2_preview_operator.read_json(stdout)["name"], "罗贝尔"
+            )
+            self.assertEqual(stderr.read_text(encoding="utf-8"), "")
+
     def test_round_id_matches_persistent_allocator_suffix(self) -> None:
         self.assertEqual(
             g2_preview_operator.private_family_alliance_round_id("R0227"),
