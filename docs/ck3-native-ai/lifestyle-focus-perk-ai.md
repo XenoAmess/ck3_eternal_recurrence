@@ -19,6 +19,25 @@ receipt 也会延后。`require_initial_lifestyle_focus_before_date_advance` 是
 战争移动、终止和模态事件动作仍按原优先级。证据等级截至本节写入为
 `static-ready`；尚无新 CK3 动作、日期或冷恢复证据，不提升 M4/公共能力。
 
+### NW-LIFE-C13：自然继承后重新检查新角色焦点（2026-09-26）
+
+基线 `bb5e4aaa0c7a8458e4ec0909c43c296a4cb4fe97` 的正式 runner 只在启动时创建一次 `opening_focus_gate`。旧角色读回已有焦点后，该 gate 进入 `complete` 并关闭 driver 的 `require_initial_lifestyle_focus_before_date_advance`；`continue-as-reconciled-successor` 虽验证新 actor/episode 并保存继承 checkpoint，却没有为新角色重启焦点检查。其后若正式 planner 先选宣战等只读战争查询，普通 LIFE consumer 仅在 `life-advance` 或 combat-v3 查询前评估，故新角色首个可操作帧可能漏掉焦点机会。旧 R0186 的 perk 提交及 R0187 的新 PID 读回仍有效，不证明新角色焦点已检查。
+
+针对普通自然继承的确定性生产 runner 回放，动作序列为“旧角色已有焦点读回 → 自然死亡 → 验证并继续继承人 → 战争查询”。修复前第四轮实际执行战争查询，未重新检查继承人焦点；修复后新 episode 在无事件/交互阻塞的首个 paused 帧重新使用原 focus、receipt、下一 turn 和 checkpoint gate，第四轮战争查询被挡在提交前。若继承后有必须处理的模态事件，先按事件合同清除，再重启 gate；若新角色已有可验证焦点，只读确认后直接结束 gate，不重复提交。
+
+```mermaid
+flowchart LR
+  S[验证自然继承与新 episode] --> M{模态事件或交互仍阻塞?}
+  M -->|是| E[先完成原事件合同]
+  E --> M
+  M -->|否| F[同帧 LIFE2/原生焦点合法性检查]
+  F -->|已有有效焦点| R[只读确认并结束 gate]
+  F -->|缺焦点且最终合法| A[原 typed 焦点/receipt/下一 turn/checkpoint 路径]
+  F -. 观测或最终合法性缺失 .-> U[保留 RED，不推进日期]
+```
+
+这只修正式触发时序；回放是源码级 no-launch 证据，未证明继承后新焦点在 CK3 实机提交，也不提升 M4/G2 里程碑。新 actor 的实际选择仍需同帧原生合法性、独立后置、下一 turn、checkpoint 及配对冷恢复。
+
 ## R0186–R0187：剩余管理技能点的下一条原生分支（2026-09-23）
 
 冻结 CK3 `1.19.0.6-steam23530548` EXE SHA-256

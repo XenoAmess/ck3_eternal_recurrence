@@ -1394,6 +1394,14 @@ class _FakeGameplayService:
                 "advance": "life-advance",
                 "war_query": "query-declarable-wars",
                 "existing_focus": "query-campaign-root-context-v1",
+                "natural_terminal_advance": "life-advance",
+                "continue_natural_successor_clear": (
+                    "continue-as-reconciled-successor"
+                ),
+                "continue_natural_successor_event": (
+                    "continue-as-reconciled-successor"
+                ),
+                "event": "select-event-option-1",
                 "lifestyle_focus_submit": (
                     "private-select-player-lifestyle-stock-focus-v1"
                 ),
@@ -4340,6 +4348,42 @@ class NativeAutoRunTests(unittest.TestCase):
             "initial_lifestyle_focus_submitted_pending",
         )
         self.assertNotIn("auto_turn:advance", harness.events)
+
+    def test_natural_successor_rearms_focus_before_first_war_query(self) -> None:
+        report, harness = self._run(
+            ["existing_focus", "natural_terminal_advance",
+             "continue_natural_successor_clear", "war_query"],
+            succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+            require_initial_lifestyle_focus_before_date_advance=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(harness.auto_turn_count, 3)
+        self.assertNotIn("auto_turn:war_query", harness.events)
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["stage"],
+                         "await_submit")
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["episode_run_id"],
+                         "native-808-natural-test-run")
+
+    def test_successor_modal_clears_before_focus_rearm(self) -> None:
+        report, harness = self._run(
+            ["existing_focus", "natural_terminal_advance",
+             "continue_natural_successor_event", "event",
+             "existing_focus", "advance"],
+            succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+            require_initial_lifestyle_focus_before_date_advance=True,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["stage"],
+                         "complete")
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["episode_run_id"],
+                         "native-808-natural-test-run")
+        focus_turns = [index for index, event in enumerate(harness.events)
+                       if event == "auto_turn:existing_focus"]
+        self.assertEqual(len(focus_turns), 2)
+        self.assertLess(harness.events.index("auto_turn:event"), focus_turns[1])
+        self.assertNotIn("auto_turn:lifestyle_focus_submit", harness.events)
 
     def test_operator_stop_waits_for_verified_turn_and_saves_tail(self) -> None:
         report, harness = self._run(
