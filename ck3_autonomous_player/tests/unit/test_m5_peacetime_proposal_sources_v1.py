@@ -301,6 +301,60 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertEqual(result["gold_reserve_raw"], 0)
         self.assertEqual(result["existing_commitments"]["commitment_keys"], [])
 
+    def test_positive_income_building_routes_one_typed_joint_action(self) -> None:
+        driver = _Driver(self.state_dir)
+        construction = _construction()
+        construction["candidate"]["authored_monthly_income_hundredths"] = 35
+        baseline = {
+            "policy": "one-life-turn-v1", "phase": "peace_growth",
+            "selected_step": "life-advance", "reason": "ordinary peacetime planning",
+        }
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=construction,
+        ):
+            planned = GameplayBridgeService(driver).plan_turn()
+        plan = planned["plan"]
+        self.assertEqual(plan["selected_step"], "private-submit-player-construction-v1")
+        self.assertTrue(plan["m5_joint_formal_action_ready"])
+        self.assertEqual(plan["construction_private_query"], construction)
+        dispatch = plan["m5_joint_query_only"]["dispatch"]
+        self.assertEqual(dispatch["selected_candidate_id"], "building:501:701:1")
+        self.assertEqual(dispatch["reservation"]["commitments_after"]["gold_raw"], 3_000_000)
+        self.assertEqual(dispatch["reservation"]["commitments_after"]["commitment_keys"],
+                         ["building-slot:501:1"])
+        self.assertEqual(driver.source_reads, 1)
+        self.assertEqual(driver.faction_reads, 1)
+
+    def test_pending_construction_reaches_existing_receipt_before_joint_read(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        pending = {
+            "episode_run_id": _FRAME["episode_run_id"],
+            "source_bridge_pid": 123,
+            "source_bridge_creation_date": "t1",
+            "pre_native_revision": _FRAME["native_revision"] - 1,
+        }
+        (self.state_dir / "construction-formal-pending-v1.json").write_text(
+            json.dumps({"schema": "xar.ck3.construction_formal_pending_v1",
+                        "pending": pending, "applied": None}), encoding="utf-8",
+        )
+        driver = _Driver(self.state_dir)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"policy": "one-life-turn-v1", "phase": "peace_growth",
+                          "selected_step": "life-advance"},
+        ), mock.patch(
+            "xar_autoplayer.bridge.domain_construction_private_transport_v1._identity",
+            return_value=(123, "t1"),
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], "private-query-player-construction-receipt-v1")
+        self.assertEqual(plan["construction_pending_action"], pending)
+        self.assertEqual(driver.source_reads, 0)
+
     def test_drift_and_partial_data_are_red(self) -> None:
         drifted = _Driver(
             self.state_dir / "drift",

@@ -168,7 +168,9 @@ def construction_proposal(
         projected_supply_margin_raw=None, war_slot_claim=0,
         army_ids=[], ally_character_ids=[], character_ids=[],
         commitment_keys=[f"building-slot:{identifiers['barony_title_id']}:{slot}"],
-        evidence={**identifiers, "slot_index": slot, "gold_before_raw": before},
+        evidence={**identifiers, "slot_index": slot, "gold_before_raw": before,
+                  "authored_monthly_income_hundredths": candidate.get(
+                      "authored_monthly_income_hundredths")},
     )
 
 
@@ -428,11 +430,12 @@ def select_observed_m5_opportunity(
     commitments: Mapping[str, object], gold_reserve_raw: int,
     max_active_wars: int,
 ) -> dict[str, object]:
-    """Choose the least shared-cost feasible domain-approved proposal.
+    """Choose one feasible domain-approved proposal with observed benefit first.
 
-    The comparison order is military commitment, observed gold spend, other
-    exclusive identities, then stable candidate ID. It is a transparent
-    resource policy; it is not a conversion of domain benefits into utility.
+    In the bounded peaceful building/gift comparison, a positive authored
+    building income takes precedence over an unpriced gift. Other domains and
+    remaining ties use measured shared costs.
+    Authored income is a script value, not realized tax or cross-domain utility.
     """
     if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
         raise ValueError("M5 observed selector requires a paused map frame")
@@ -495,7 +498,12 @@ def select_observed_m5_opportunity(
             reason = "projected_supply_deficit"
         evaluated.append({**proposal, "reason": reason})
     eligible = [row for row in evaluated if row["reason"] == "eligible"]
-    selected = min(eligible, key=_opportunity_key) if eligible else None
+    prefer_income = (
+        not wars and not armies
+        and all(row["domain"] in {"building", "diplomacy"} for row in evaluated)
+    )
+    selected = (min(eligible, key=lambda row: _opportunity_key(
+        row, prefer_income=prefer_income)) if eligible else None)
     return {
         "policy": "g2-m5-observed-opportunity-selector-v1",
         "frame": frame,
@@ -505,7 +513,8 @@ def select_observed_m5_opportunity(
             selected["candidate_id"] if selected is not None else None
         ),
         "selection_basis": [
-            "war_slot_claim", "army_claim_count", "ally_claim_count",
+            "positive_authored_building_income_in_peace", "war_slot_claim",
+            "army_claim_count", "ally_claim_count",
             "gold_cost_raw", "commitment_key_count", "character_claim_count",
             "projected_supply_margin_raw_desc", "candidate_id",
         ],
@@ -611,9 +620,15 @@ def _normalize_proposal(
     return result
 
 
-def _opportunity_key(row: Mapping[str, object]) -> tuple[object, ...]:
+def _opportunity_key(
+    row: Mapping[str, object], *, prefer_income: bool,
+) -> tuple[object, ...]:
     supply = row["projected_supply_margin_raw"]
+    evidence = row["evidence"]
+    income = (evidence.get("authored_monthly_income_hundredths")
+              if row["domain"] == "building" else None)
     return (
+        0 if prefer_income and type(income) is int and income > 0 else 1,
         row["war_slot_claim"], len(row["army_ids"]),
         len(row["ally_character_ids"]), row["gold_cost_raw"],
         len(row["commitment_keys"]), len(row["character_ids"]),

@@ -296,6 +296,26 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         self.assertEqual(planned["plan"], baseline)
         self.assertEqual(driver.source_reads, 0)
 
+    def test_due_private_lifestyle_step_precedes_peace_only_joint_source(self) -> None:
+        driver = _ServiceDriver(enabled=True, sources=_sources())
+        driver.allow_private_lifestyle_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch.object(
+            GameplayBridgeService, "_plan_private_lifestyle_trial_v1",
+            side_effect=lambda planned, steps: {
+                **planned, "plan": {**planned["plan"],
+                                     "selected_step": "private-submit-player-lifestyle-perk-v1"},
+            },
+        ):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"],
+                         "private-submit-player-lifestyle-perk-v1")
+        self.assertEqual(driver.source_reads, 0)
+
 
 if __name__ == "__main__":
     unittest.main()
