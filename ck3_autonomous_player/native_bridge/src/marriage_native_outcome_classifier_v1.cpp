@@ -252,6 +252,10 @@ bool ClassifyMarriageNativeOutcomeDetailsExactV1(
       second.subject_adult_measure >= subject_threshold;
   output.candidate_is_adult =
       second.candidate_adult_measure >= candidate_threshold;
+  output.subject_adult_measure_raw = second.subject_adult_measure;
+  output.candidate_adult_measure_raw = second.candidate_adult_measure;
+  output.subject_adult_threshold_raw = subject_threshold;
+  output.candidate_adult_threshold_raw = candidate_threshold;
   output.grand_wedding_option_selected = second.grand_wedding;
   output.predicted_outcome =
       output.subject_is_adult && output.candidate_is_adult &&

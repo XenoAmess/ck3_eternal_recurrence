@@ -113,6 +113,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
     observed_heir_lineage: tuple[object, object] | None = None
     observed_heir_sex_selector: int | None = None
     observed_heir_is_adult: bool | None = None
+    observed_heir_adult_sample: tuple[int, int] | None = None
     lineage_fields = (
         "played_house_id", "played_dynasty_id", "heir_house_id",
         "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
@@ -136,7 +137,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                                                   *sex_selector_fields))
             or any(field not in row for field in (
                 "effective_matrilineal_if_accepted", "heir_is_adult",
-                "candidate_is_adult", "grand_wedding_option_selected"))
+                "candidate_is_adult", "grand_wedding_option_selected",
+                "heir_adult_measure_raw", "candidate_adult_measure_raw",
+                "heir_adult_threshold_raw", "candidate_adult_threshold_raw"))
         ):
             raise BridgeUnavailableError("marriage projection row identity malformed")
         pairs = row.get("possible_alliance_pairs")
@@ -152,7 +155,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 row.get("heir_spouse_character_ids") is not None or
                 any(row[field] is not None for field in (
                     "heir_is_adult", "candidate_is_adult",
-                    "grand_wedding_option_selected")) or
+                    "grand_wedding_option_selected", "heir_adult_measure_raw",
+                    "candidate_adult_measure_raw", "heir_adult_threshold_raw",
+                    "candidate_adult_threshold_raw")) or
                 any(row[field] is not None for field in lineage_fields) or
                 any(row[field] is not None for field in sex_selector_fields) or
                 row["effective_matrilineal_if_accepted"] is not None or
@@ -170,15 +175,31 @@ def query_first_heir_candidate_alliance_projection_private_v1(
         heir_is_adult = row["heir_is_adult"]
         candidate_is_adult = row["candidate_is_adult"]
         grand_wedding = row["grand_wedding_option_selected"]
+        heir_measure = row["heir_adult_measure_raw"]
+        candidate_measure = row["candidate_adult_measure_raw"]
+        heir_threshold = row["heir_adult_threshold_raw"]
+        candidate_threshold = row["candidate_adult_threshold_raw"]
         if (any(type(value) is not bool for value in (
                 heir_is_adult, candidate_is_adult, grand_wedding))
+            or any(type(value) is not int for value in (
+                heir_measure, candidate_measure, heir_threshold,
+                candidate_threshold))
+            or not (-2**15 <= heir_measure < 2**15
+                    and -2**15 <= candidate_measure < 2**15
+                    and -2**31 <= heir_threshold < 2**31
+                    and -2**31 <= candidate_threshold < 2**31)
+            or heir_is_adult is not (heir_measure >= heir_threshold)
+            or candidate_is_adult is not (candidate_measure >= candidate_threshold)
             or row["predicted_outcome_if_accepted"] != (
                 "marriage" if heir_is_adult and candidate_is_adult
                 and not grand_wedding else "betrothal")
             or (observed_heir_is_adult is not None and
-                heir_is_adult is not observed_heir_is_adult)):
+                heir_is_adult is not observed_heir_is_adult)
+            or (observed_heir_adult_sample is not None and
+                (heir_measure, heir_threshold) != observed_heir_adult_sample)):
             raise BridgeUnavailableError("marriage adult outcome breakdown malformed")
         observed_heir_is_adult = heir_is_adult
+        observed_heir_adult_sample = (heir_measure, heir_threshold)
         betrothed = row.get("heir_betrothed_character_id")
         primary = row.get("heir_primary_spouse_character_id")
         spouses = row.get("heir_spouse_character_ids")

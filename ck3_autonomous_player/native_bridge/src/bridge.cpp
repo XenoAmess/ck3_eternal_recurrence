@@ -8035,6 +8035,14 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
     result += available ? (read.heir_is_adult ? "true" : "false") : "null";
     result += ",\"candidate_is_adult\":";
     result += available ? (read.candidate_is_adult ? "true" : "false") : "null";
+    result += ",\"heir_adult_measure_raw\":";
+    result += available ? SignedNumber(read.heir_adult_measure_raw) : "null";
+    result += ",\"candidate_adult_measure_raw\":";
+    result += available ? SignedNumber(read.candidate_adult_measure_raw) : "null";
+    result += ",\"heir_adult_threshold_raw\":";
+    result += available ? SignedNumber(read.heir_adult_threshold_raw) : "null";
+    result += ",\"candidate_adult_threshold_raw\":";
+    result += available ? SignedNumber(read.candidate_adult_threshold_raw) : "null";
     result += ",\"grand_wedding_option_selected\":";
     result += available ? (read.grand_wedding_option_selected ? "true" : "false")
                         : "null";
