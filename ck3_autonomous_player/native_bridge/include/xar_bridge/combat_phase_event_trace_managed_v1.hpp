@@ -56,6 +56,10 @@ struct CombatPhaseEventTracePlanEnvironmentV1 {
   std::uintptr_t battle_event_vtable_override = 0;
   std::uintptr_t accolade_rank_threshold_data_slot_override = 0;
   std::uintptr_t accolade_rank_threshold_count_slot_override = 0;
+  // Research-only: one route-proven army that is still outside this combat at
+  // arm time but may join during the next native day.  Its full generation and
+  // regiment/knight identities are resolved before gameplay resumes.
+  std::int32_t candidate_joining_army_id = -1;
 };
 
 BuildCombatPhaseEventTraceCapturePlanV1Result

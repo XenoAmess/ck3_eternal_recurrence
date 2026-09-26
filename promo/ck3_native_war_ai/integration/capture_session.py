@@ -253,6 +253,11 @@ def preflight(args: argparse.Namespace) -> dict:
     ]
     if checkpoint is not None:
         required_capabilities = ["game.state.snapshot", "game.state.map-ready", "game.state.played-character"]
+    if args.enable_private_phase_trace:
+        required_capabilities += [
+            "experimental-combat-phase-event-trace-begin-v1",
+            "experimental-combat-phase-event-trace-finish-v1",
+        ]
     strings = {key: key.encode() in binary for key in required_capabilities}
     write_new(args.output_dir / "static-capability-strings.json", strings)
     require(all(strings.values()), "Existing DLL lacks static strings: " + ", ".join(key for key, found in strings.items() if not found))
@@ -536,6 +541,12 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                                     "Begin requires a materialized checkpoint sequence")
                             fields["checkpoint_sequence"] = checkpoint_sequence
                             allowed.add("checkpoint_sequence")
+                            if "candidate_joining_army_id" in request:
+                                candidate_id = request["candidate_joining_army_id"]
+                                require(type(candidate_id) is int and 0 < candidate_id < 2**31,
+                                        "Candidate joiner needs a positive full ArmyID")
+                                fields["candidate_joining_army_id"] = candidate_id
+                                allowed.add("candidate_joining_army_id")
                         require(set(request) == allowed,
                                 "Private phase trace request fields differ from the bounded contract")
                         return driver._execute_primitive_step(

@@ -1,0 +1,245 @@
+{
+  "schema": "ck3.native_join_full_day.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_date_raw": 53146728,
+  "arrival_date_raw": 53146752,
+  "joining_army_id": 28,
+  "source_save_sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A",
+  "source_receipt_sha256": "2F4E9E056CF346C4260BF76DE2C9B79BAAEDA13B5E4B537EAFF7B2AEB85188D3",
+  "bridge_dll_sha256": "A09ABC1E715CFA8A666A5484AE311668BB73D07147B35B10B3FCB60107FDD677",
+  "checkpoint_copy_sha256": "841F646C5138CABB4E54F0B5EFDA3E0FA621A50AFEB6B1D158221E45EC88C339",
+  "preflight_sha256": "E12E2D5F42412BE1666F9EC6462BFCF59D0CD685F37E3FA74BC88EF749632A78",
+  "capture_report_sha256": "7F916BF991B0535408E12DDD09D1F444CA4C866497FE59FDD822FAB7F123901F",
+  "response_sha256": {
+    "d21-before-snapshot": "BF57FBC86F43CDDEF73E9C1142706502FBC91A10201A654604344A89BA60F340",
+    "d21-before-control": "706AE225EE0606233AE8A97B910E14ACD4F746956935AB7FAB131DD042567F91",
+    "d21-save": "57229D9D8452540B560C4AA37CC867B9794CFDE8F8F2A8A9EFDF860D10A60522",
+    "d21-after-save-snapshot": "45E6F87C4C5515A13F7981A8C7037F00DDF4C56D076B745BC001C221DBDFA643",
+    "d21-begin": "9FA8FCE02E848F6118821E101C4CA1793F4481E1D5D99541A09392AA7E6A2019",
+    "d21-advance": "DC8386EEB2725688FB00642854362D7DED9E60E0115519D60741A808ADF0B549",
+    "d21-after-snapshot": "CF4B4D06CA753A10033386268DCA0CD733B96488721FB25F7A238EEDE7A2C032",
+    "d21-finish": "1EB282C202D89755A618CC633C5A265A9860B07FD02E6E49BA5A544F2B07A6EC"
+  },
+  "old_side0_army_ids": [
+    16777221,
+    16777231,
+    27,
+    22
+  ],
+  "new_side0_army_ids": [
+    16777221,
+    16777231,
+    27,
+    22,
+    28
+  ],
+  "new_army_present_before_first_side0_fire": true,
+  "boundaries": [
+    {
+      "boundary": "native_capture_before_side0_schedule_call_0x27FB58F",
+      "date_raw": 53146728,
+      "phase_day": 17,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "side0_fighting_raw": 368409866,
+      "side0_regiment_count": 39,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 16406435,
+      "capture_failure_flags": 0
+    },
+    {
+      "boundary": "native_capture_after_side1_schedule_return_0x27FB5AC",
+      "date_raw": 53146728,
+      "phase_day": 17,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "side0_fighting_raw": 368409866,
+      "side0_regiment_count": 39,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 16406435,
+      "capture_failure_flags": 0
+    },
+    {
+      "boundary": "native_capture_before_side0_phase_fire_entry_0x23C9900",
+      "date_raw": 53146752,
+      "phase_day": 18,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "side0_fighting_raw": 470651390,
+      "side0_regiment_count": 44,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 12161798,
+      "capture_failure_flags": 0
+    },
+    {
+      "boundary": "native_capture_after_side0_phase_fire_return_0x2309EF7",
+      "date_raw": 53146752,
+      "phase_day": 18,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "side0_fighting_raw": 470651390,
+      "side0_regiment_count": 44,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 12161798,
+      "capture_failure_flags": 0
+    },
+    {
+      "boundary": "native_capture_before_side1_phase_fire_entry_0x23C9900",
+      "date_raw": 53146752,
+      "phase_day": 18,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "side0_fighting_raw": 470651390,
+      "side0_regiment_count": 44,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 12161798,
+      "capture_failure_flags": 0
+    },
+    {
+      "boundary": "native_capture_after_side1_phase_fire_return_0x2309EFF",
+      "date_raw": 53146752,
+      "phase_day": 18,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "side0_fighting_raw": 470651390,
+      "side0_regiment_count": 44,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 12161798,
+      "capture_failure_flags": 0
+    },
+    {
+      "boundary": "paused_next_day_stable_query",
+      "date_raw": 53146752,
+      "phase_day": 18,
+      "side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "side0_fighting_raw": 470651390,
+      "side0_regiment_count": 44,
+      "side1_army_ids": [
+        18
+      ],
+      "side1_fighting_raw": 12161798,
+      "capture_failure_flags": 0
+    }
+  ],
+  "outgoing_damage": {
+    "source": "native_main_tick_before_casualty",
+    "scale": 100000,
+    "count": 2,
+    "side0_raw": 114543938,
+    "side1_raw": 37845714
+  },
+  "post_counter_attack": {
+    "source": "native_r14_after_0x23cae70_before_damage_scaling",
+    "scale": 100000,
+    "count": 2,
+    "side0_raw": 8094977971,
+    "side1_raw": 720870760
+  },
+  "joining_regiments": [
+    {
+      "regiment_id": 223,
+      "bucket": "men_at_arms",
+      "fights_in_main_phase": true,
+      "before_current_raw": 10000000,
+      "after_current_raw": 9968154,
+      "soft_delta_raw": 21815,
+      "hard_delta_raw": 10031,
+      "current_drop_raw": 31846
+    },
+    {
+      "regiment_id": 224,
+      "bucket": "levy",
+      "fights_in_main_phase": true,
+      "before_current_raw": 42500000,
+      "after_current_raw": 42158300,
+      "soft_delta_raw": 234065,
+      "hard_delta_raw": 107635,
+      "current_drop_raw": 341700
+    },
+    {
+      "regiment_id": 225,
+      "bucket": "men_at_arms",
+      "fights_in_main_phase": true,
+      "before_current_raw": 100000,
+      "after_current_raw": 99945,
+      "soft_delta_raw": 38,
+      "hard_delta_raw": 17,
+      "current_drop_raw": 55
+    },
+    {
+      "regiment_id": 226,
+      "bucket": "men_at_arms",
+      "fights_in_main_phase": true,
+      "before_current_raw": 100000,
+      "after_current_raw": 99833,
+      "soft_delta_raw": 115,
+      "hard_delta_raw": 52,
+      "current_drop_raw": 167
+    },
+    {
+      "regiment_id": 16777387,
+      "bucket": "levy",
+      "fights_in_main_phase": true,
+      "before_current_raw": 53100000,
+      "after_current_raw": 52673076,
+      "soft_delta_raw": 292443,
+      "hard_delta_raw": 134481,
+      "current_drop_raw": 426924
+    }
+  ],
+  "joining_fighting_regiment_count": 5,
+  "joining_soft_delta_raw": 548476,
+  "joining_hard_delta_raw": 252216,
+  "joining_current_drop_raw": 800692,
+  "bounded_seven_boundary_capture_complete": true,
+  "full_mutable_transition_bundle_complete": false,
+  "original_trace_ready": false,
+  "general_cross_manager_call_order_proven": false
+}

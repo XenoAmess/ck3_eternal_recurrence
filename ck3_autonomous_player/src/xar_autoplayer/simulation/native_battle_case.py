@@ -26,6 +26,14 @@ EPISODE01_PHASE_EVENT_SAVE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_sa
 EPISODE01_PHASE_EVENT_SAVE_SHA256 = "42C495789167F27F330D40FE657CEE359C02AF5FF217DFCB16E9A2971ECAC130"
 EPISODE01_JOIN_DAY_FILE = "ck3_1_19_0_6_episode01_messina_join_day_casualties.json"
 EPISODE01_JOIN_DAY_SHA256 = "C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72"
+EPISODE01_JOIN_FULL_DAY_FILES = (
+    "ck3_1_19_0_6_episode01_messina_join_full_day_v1.json",
+    "ck3_1_19_0_6_episode01_messina_join_full_day_day21_v1.json",
+)
+EPISODE01_JOIN_FULL_DAY_SHA256 = (
+    "2BEA19218527FF7E9B35EFAF97543BDD6F168C99B99AE3CA8E88AD9699BF4983",
+    "0AC4D03A8796D279D2D43E107002E76778D8B600F576CFF33026C9B4FD5511B8",
+)
 EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
@@ -394,6 +402,62 @@ def load_episode01_join_day_casualties() -> dict[str, Any]:
         raise NativeBattleCaseError("join-day evidence must be a JSON object")
     _validate_join_day_casualties(report)
     return report
+
+
+def load_episode01_join_full_day_boundaries() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Return two exact one-day join captures for conditional model fitting.
+
+    A complete bounded seven-boundary capture does not prove the full mutable
+    event write set or turn the fixed-participant strategy kernel into a
+    future reinforcement predictor.
+    """
+    previous = load_episode01_join_day_casualties()["join_observations"]
+    results = []
+    for index, (name, expected_sha, army_id, date_raw, soft_raw, hard_raw) in enumerate(zip(
+        EPISODE01_JOIN_FULL_DAY_FILES, EPISODE01_JOIN_FULL_DAY_SHA256,
+        (22, 28), (53146488, 53146728), (2_603_650, 548_476),
+        (1_197_289, 252_216), strict=True,
+    )):
+        raw = (Path(__file__).with_name("data") / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest().upper() != expected_sha:
+            raise NativeBattleCaseError("bundled full join-day boundary bytes changed without review")
+        report = json.loads(raw)
+        boundaries = report.get("boundaries") if isinstance(report, dict) else None
+        regiments = report.get("joining_regiments") if isinstance(report, dict) else None
+        if (report.get("schema") != "ck3.native_join_full_day.v1"
+                or report.get("combat_id") != 16777218
+                or report.get("joining_army_id") != army_id
+                or report.get("source_date_raw") != date_raw
+                or report.get("arrival_date_raw") != date_raw + 24
+                or report.get("bounded_seven_boundary_capture_complete") is not True
+                or report.get("full_mutable_transition_bundle_complete") is not False
+                or report.get("original_trace_ready") is not False
+                or report.get("general_cross_manager_call_order_proven") is not False
+                or report.get("joining_soft_delta_raw") != soft_raw
+                or report.get("joining_hard_delta_raw") != hard_raw
+                or report.get("joining_current_drop_raw") != soft_raw + hard_raw
+                or not isinstance(boundaries, list) or len(boundaries) != 7
+                or any(row.get("capture_failure_flags") != 0 for row in boundaries)
+                or army_id in boundaries[1]["side0_army_ids"]
+                or boundaries[2]["side0_army_ids"] !=
+                [*boundaries[1]["side0_army_ids"], army_id]
+                or not isinstance(regiments, list)
+                or len(regiments) != (13 if index == 0 else 5)):
+            raise NativeBattleCaseError("full join-day boundary identity or readiness drifted")
+        earlier = {row["regiment_id"]: row for row in previous[index]["regiments"]}
+        if set(earlier) != {row["regiment_id"] for row in regiments}:
+            raise NativeBattleCaseError("full join-day regiment set disagrees with saved observation")
+        for row in regiments:
+            old = earlier[row["regiment_id"]]
+            if (row["fights_in_main_phase"] is not old["fights_in_main_phase"]
+                    or (row["fights_in_main_phase"]
+                        and row["before_current_raw"] != old["prejoin_saved_current_raw"])
+                    or row["after_current_raw"] != old["arrival_day_current_fighting_raw"]
+                    or row["soft_delta_raw"] != old["arrival_day_soft_casualties_raw"]
+                    or row["hard_delta_raw"] != old["arrival_day_hard_casualties_raw"]):
+                raise NativeBattleCaseError("full join-day regiment disagrees with saved observation")
+        results.append(report)
+    return results[0], results[1]
 
 
 def _validate_join_day_kernel_parity(report: dict[str, Any]) -> None:
@@ -1100,6 +1164,8 @@ __all__ = [
     "EPISODE01_PHASE_EVENT_SAVE_SHA256",
     "EPISODE01_JOIN_DAY_FILE",
     "EPISODE01_JOIN_DAY_SHA256",
+    "EPISODE01_JOIN_FULL_DAY_FILES",
+    "EPISODE01_JOIN_FULL_DAY_SHA256",
     "EPISODE01_JOIN_KERNEL_FILE",
     "EPISODE01_JOIN_KERNEL_SHA256",
     "EPISODE01_JOIN_KERNEL_V2_FILE",
@@ -1137,6 +1203,7 @@ __all__ = [
     "load_episode01_phase_event_observations",
     "load_episode01_phase_event_save_feedback",
     "load_episode01_join_day_casualties",
+    "load_episode01_join_full_day_boundaries",
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
     "load_episode01_phase_event_regiment_feedback",

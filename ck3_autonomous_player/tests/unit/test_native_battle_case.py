@@ -27,6 +27,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_phase_event_observations,
     load_episode01_phase_event_save_feedback,
     load_episode01_join_day_casualties,
+    load_episode01_join_full_day_boundaries,
     load_episode01_join_day_kernel_parity,
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
@@ -53,6 +54,16 @@ from xar_autoplayer.simulation.native_phase_event_rewards import knight_kill_inv
 
 
 class NativeBattleCaseTests(unittest.TestCase):
+    def test_two_natural_joins_have_full_bounded_day_capture_without_mutable_claim(self) -> None:
+        day11, day21 = load_episode01_join_full_day_boundaries()
+        self.assertEqual([day11["joining_army_id"], day21["joining_army_id"]], [22, 28])
+        self.assertEqual([day11["joining_current_drop_raw"], day21["joining_current_drop_raw"]],
+                         [3_800_939, 800_692])
+        for report in (day11, day21):
+            self.assertTrue(report["bounded_seven_boundary_capture_complete"])
+            self.assertFalse(report["full_mutable_transition_bundle_complete"])
+            self.assertFalse(report["general_cross_manager_call_order_proven"])
+
     def test_original_outcome_and_replay_divergence_stay_separate(self) -> None:
         case = load_episode01_native_battle_case()
         self.assertEqual(len(original_daily_timeline()), 31)

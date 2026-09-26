@@ -1,5 +1,24 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-26：两次自然增援的七边界身份、同日出伤与逐团写回闭合
+
+从原案同一次 campaign 的第 11、21 日不可变存档各开一个隔离原版回放。研究用 DLL 在暂停时，把尚未参战、但已可用完整 generation 解析的候选军队、兵团及人物预登记；只允许**一个已由源存档和路线证明的候选 ArmyID**，进入原版日更时只读已绑定对象，不在 hook 内猜测新对象。开始前各自在当前会话生成原生检查点，推进严格一天；完整七边界均绑定 CombatID `16777218`、同一主线程、正确日期分界，捕获错误标志 `0`，结束后 detour 已卸载。原始 attempt 分别在 `D:/workspace/ck3_native_war_ai_promo_work/episode01-prearmed-join-live-attempt-026/` 和 `.../episode01-prearmed-join-live-attempt-027/`。只读投影工具为 [`project_native_join_full_day.py`](../../ck3_autonomous_player/tools/project_native_join_full_day.py)，两份冻结报告为[第 11→12 日](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_full_day_v1.json)（SHA-256 `2BEA19218527FF7E9B35EFAF97543BDD6F168C99B99AE3CA8E88AD9699BF4983`）和[第 21→22 日](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_full_day_day21_v1.json)（SHA-256 `0AC4D03A8796D279D2D43E107002E76778D8B600F576CFF33026C9B4FD5511B8`）；报告逐条绑定原始请求回执、源存档哈希、桥 DLL 哈希和会话清理结果。
+
+| 源日 → 到达日 | 前一日 side0 schedule 后 | 到达日首次 side0 phase-fire **入口** | 新军逐团结算（Q100000） |
+| --- | --- | --- | --- |
+| 11→12，ArmyID `22` | 原有 `[16777221, 16777231, 27]`；27 个兵团，fighting `160,317,482` | 原顺序末尾追加 `22`；40 个兵团，fighting `410,690,163` | 新军 13 个兵团中 12 个参与主阶段，软伤 `2,603,650` + 硬伤 `1,197,289` = `3,800,939`，即 **38.00939 人当量**；一名非参战骑士兵团的硬伤字段为不可用，不伪装成 0 |
+| 21→22，ArmyID `28` | 原有 `[16777221, 16777231, 27, 22]`；39 个兵团，fighting `368,409,866` | 原顺序末尾追加 `28`；44 个兵团，fighting `470,651,390` | 新军 5/5 兵团参与主阶段，软伤 `548,476` + 硬伤 `252,216` = `800,692`，即 **8.00692 人当量** |
+
+两次回放在 schedule 边界均不含候选军队，而到达日**首次** side0 phase-fire 入口已有完整 ArmyID、RegimentID、有效属性；其后的七边界保持同一 generation。到下一个暂停查询，候选每个参战兵团都满足 `入口 current - 暂停 current = soft 增量 + hard 增量`；合计数与此前分别从存档、阶段回读得到的 `26.03650+11.97289` 和 `5.48476+2.52216` 完全一致。故本案中，增援在到达当天被纳入出伤、承伤和写回，策略模拟一旦显式安排当天到达的增援，就必须**先扩参战名单，再进行当天主阶段**。日更总控中 `CUnitManager` 与 `CCombatManager` 的全局调用先后仍未用被动时间戳直接记录；两次样本也不代表所有路线、同盟或撤退后重入分支。
+
+这里的 `bounded_trace_available` 只证明七个指定原生边界与两个出伤对被完整采集；回执仍明确 `full_mutable_transition_bundle_complete=false`、`original_trace_ready=false`。因此尚不能把骑士效果全部写回、有效属性刷新原因、战宽与反制的内部刷新时点、以及任意增援预测写成已闭合。两份回执已由智能体代码的 [`load_episode01_join_full_day_boundaries`](../../ck3_autonomous_player/src/xar_autoplayer/simulation/native_battle_case.py) 按 SHA 和逐团旧证据交叉核验，供后续转移拟合和回归使用。智能体当前的有界整场估计仍在每个暂停帧重读真实名单，已加入者会进入下一帧输入；它的 trial kernel 仍把**未来途中加入**列为 `fixed_participants` 假设。后续应把本两日的入场时点/逐团账用于有条件 join-day kernel 回归，再接入有原生 route/ETA 证据的未来增援场景，而不是只在影片中使用这些数字。
+
+## 2026-09-26：两种日更入口的 vtable 身份已核验，跨 manager 顺序仍待实测
+
+对 exact-build EXE 的绝对函数指针、RTTI Complete Object Locator 和 vtable 地址点做[只读核验](../../ck3_autonomous_player/native_bridge/research/inspect_battle_daily_vtables.py)：`0x27F9B50` 位于 `CUnitManager` `+8` 子对象 vtable `0x43404A0` 的 slot 3（指针槽 `0x43404B8`），`0x27FB5D0` 位于 `CCombatManager` `+8` 子对象 vtable `0x43407A8` 的 slot 3（指针槽 `0x43407C0`）。两处都不是从邻近函数地址猜出的“同一个 manager”。提取结果原件在 `D:/workspace/ck3_native_war_ai_promo_work/daily-manager-vtables-20260926-r3.json`，SHA-256 `B478F53FA0EC94F370F5104D313AED2DB6D8A8CE0ADC0E5D9377A3EBABE99EF2`；EXE SHA 由工具逐字节验证。
+
+这是下次被动观测日内顺序的**精确入口身份**，仍不足以从两个 vtable 槽推出全局调度先后。增援日 phase-fire 前出现新 ArmyID 的实机结论保持不变；原追踪器 RED 的技术原因也已定位在其暂停预备 plan：`BuildPlanUnsafe` 只从当时的两侧 ArmyID/RegimentID 建立指针表，进入原版阶段时 `ReadSide` 在新增 ID 的 `FindObject` 处失败。修复需要把未来入场者以 full generation 身份纳入有界表，或用独立的受限动态解析，并对新军/新兵团/新人物及容量分别设门禁；不能把失败行的 ArmyID `0` 当原版数据，也不能仅删除身份检查让 trace 变绿。
+
 ## 2026-09-26：两次自然增援已在首次 phase fire 前入场
 
 对同一独立原版回放的第 11、21 源日 RED 七边界回执做[只读重投影 v2](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_phase_order_partial_v2.json)（SHA-256 `0A59B57CC8AA2A97DA0FD6210179E400977512DF6C6153B12DB7B3CFA4116D33`；[工具](../../ck3_autonomous_player/tools/project_native_join_phase_order.py)绑定 finish、前后 snapshot 及到达日原生 control 的原始 SHA；v1 保留历史原样）。两天在 `0x27FB5AC` 完成 side1 schedule 的记录均捕获标志 0，side0 旧军分别有 3、4 支。下一日 `0x23C9900` **side0 phase-fire 入口**记录的 side0 军队容器长度已经分别扩成 4、5，`current_fighting_total_raw` 分别由 `160317482→410690163`、`368409866→470651390`。前后暂停快照只新增 ArmyID `22`、`28` 入战；到达日 control 同时证明同一 CombatID `16777218` 的 stored army 顺序分别为旧军后追加 `22`、`28`。

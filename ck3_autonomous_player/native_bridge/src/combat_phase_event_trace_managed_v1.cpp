@@ -46,6 +46,7 @@ constexpr std::size_t kSideCombatBackPointerOffset = 0xB8;
 constexpr std::size_t kSideKnightStride = 0x60;
 constexpr std::size_t kSideKnightRegimentIdOffset = 0x08;
 constexpr std::size_t kArmyIdOffset = 0x10;
+constexpr std::size_t kArmyRegimentIdsOffset = 0x38;
 constexpr std::size_t kArmyCommanderOffset = 0x120;
 constexpr std::size_t kArmyCombatIdOffset = 0x128;
 constexpr std::size_t kRegimentIdOffset = 0x10;
@@ -360,6 +361,54 @@ BuildCombatPhaseEventTraceCapturePlanV1Result BuildPlanUnsafe(
                       LoadAt<std::int32_t>(side,
                                            kSideSelectedCommanderOffset))) {
       return BuildCombatPhaseEventTraceCapturePlanV1Result::roster_unavailable;
+    }
+  }
+
+  if (environment.candidate_joining_army_id != -1) {
+    const auto candidate_id = environment.candidate_joining_army_id;
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot, candidate_id, kArmyIdOffset);
+    if (army == nullptr ||
+        LoadAt<std::int32_t>(army, kArmyCombatIdOffset) != -1) {
+      return BuildCombatPhaseEventTraceCapturePlanV1Result::roster_unavailable;
+    }
+    if (!AddObjectRef(output.armies, output.army_count, candidate_id, army) ||
+        !AddCharacter(bindings, output,
+                      LoadAt<std::int32_t>(army, kArmyCommanderOffset))) {
+      return output.army_count >= output.armies.size() ||
+                     output.character_count >= output.characters.size()
+                 ? BuildCombatPhaseEventTraceCapturePlanV1Result::
+                       capacity_exceeded
+                 : BuildCombatPhaseEventTraceCapturePlanV1Result::
+                       roster_unavailable;
+    }
+    std::uintptr_t regiment_ids = 0;
+    std::uint32_t regiment_count = 0;
+    if (!ReadVector(reinterpret_cast<std::uintptr_t>(army),
+                    kArmyRegimentIdsOffset,
+                    kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide,
+                    regiment_ids, regiment_count) || regiment_count == 0) {
+      return BuildCombatPhaseEventTraceCapturePlanV1Result::roster_unavailable;
+    }
+    for (std::uint32_t index = 0; index < regiment_count; ++index) {
+      const auto regiment_id =
+          LoadAt<std::int32_t>(regiment_ids, index * sizeof(std::int32_t));
+      void *const regiment = ResolveStoredComponent(
+          bindings.regiment_storage_slot, regiment_id, kRegimentIdOffset);
+      if (regiment == nullptr ||
+          LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) != candidate_id ||
+          !AddObjectRef(output.regiments, output.regiment_count,
+                        regiment_id, regiment) ||
+          !AddCharacter(bindings, output,
+                        LoadAt<std::int32_t>(regiment,
+                                             kRegimentCharacterIdOffset))) {
+        return output.regiment_count >= output.regiments.size() ||
+                       output.character_count >= output.characters.size()
+                   ? BuildCombatPhaseEventTraceCapturePlanV1Result::
+                         capacity_exceeded
+                   : BuildCombatPhaseEventTraceCapturePlanV1Result::
+                         roster_unavailable;
+      }
     }
   }
 

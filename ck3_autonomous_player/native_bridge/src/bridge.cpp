@@ -9104,6 +9104,24 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     query.bindings = &bindings;
     query.plan_environment.exact_build_admitted = game.enabled();
     query.plan_environment.module_base = module_base;
+    if (payload.find("\"candidate_joining_army_id\"") !=
+        std::string_view::npos) {
+      std::uint64_t candidate_joining_army_id = 0;
+      if (!xar::bridge::JsonUnsignedField(
+              payload, "candidate_joining_army_id",
+              candidate_joining_army_id) ||
+          candidate_joining_army_id == 0 ||
+          candidate_joining_army_id >
+              static_cast<std::uint64_t>(
+                  std::numeric_limits<std::int32_t>::max())) {
+        session.reset();
+        return CommandResultFrame(
+            request_id, step, false,
+            "experimental trace candidate army ID is invalid");
+      }
+      query.plan_environment.candidate_joining_army_id =
+          static_cast<std::int32_t>(candidate_joining_army_id);
+    }
     query.detour_environment.exact_build_admitted = game.enabled();
     query.detour_environment.module_base = module_base;
     query.combat_id = combat_id;

@@ -2,7 +2,7 @@
 
 ## 2026-09-26 实机补证：梅西纳败方分母 996 人
 
-原有静态证据之后，使用 immutable 第 27 日战斗存档独立重放到第 32 日，在原版 `0x292FC40(character, mode=2)` 返回时被动记录实际结算输入。CombatID `16777218`、WarID `4` 的败方战争参战者只有 `CharacterID=29829`；按照原生加法顺序 `+C0,+00,+20,+40,+60,+80,+A0,+E0`，八桶分别为 `0,675,310,0,0,0,11,0`，总和 **996 人**。其中 675 是征召兵桶、310 是兵士桶、11 是骑士数量桶；这并不是本场战斗 side baseline `1,298 人当量`。
+原有静态证据之后，使用 immutable 第 27 日战斗存档独立重放到第 32 日，在原版 `0x292FC40(character, mode=2)` 返回时被动记录实际结算输入。CombatID `16777218`、WarID `4` 的败方战争参战者只有玩家罗贝尔 `CharacterID=29829`（人物名与身份由[同源存档标签账](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/r62-contextual/identity-ui-ledger.md)绑定）；按照原生加法顺序 `+C0,+00,+20,+40,+60,+80,+A0,+E0`，八桶分别为 `0,675,310,0,0,0,11,0`，总和 **996 人**。其中 675 是征召兵桶、310 是兵士桶、11 是骑士数量桶；这并不是本场战斗 side baseline `1,298 人当量`。
 
 同一次 writer 使用的已加载 CB 防守方战分倍率为 `15,000,000 Q100000 = 150`。本场 hard loss `53,662,042 Q100000 = 536.62042 人当量`，整数比例 `53,662,042 // 996 = 53,877 Q100000`，未封顶战分 `53,877 × 15,000,000 // 100,000 = 8,081,550 Q100000 = 80.8155`；单场上限 `5,000,000 Q100000 = 50`，原版 row 正好写回 50。战争防守方获胜，因此战争进攻方相对增量是 `-50`。完整原始回执 SHA、字段和复算见[共用报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_battle_score_parity.json)、[投影工具](../../ck3_autonomous_player/tools/project_native_battle_score_receipt.py)及[终局专题](battle-terminal-and-reentry.md#2026-09-26-梅西纳单场战分同一次原生-writer-的完整输入与写回)。原始 attempt 保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/`。
 

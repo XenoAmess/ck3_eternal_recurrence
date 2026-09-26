@@ -139,6 +139,9 @@ struct NativeFixture {
   static constexpr std::array<std::int32_t, 2> kRegimentIds{31, 41};
   static constexpr std::array<std::int32_t, 2> kLevyRegimentIds{32, 42};
   static constexpr std::array<std::int32_t, 2> kCharacterIds{51, 61};
+  static constexpr std::int32_t kCandidateArmyId = 12;
+  static constexpr std::int32_t kCandidateRegimentId = 33;
+  static constexpr std::int32_t kCandidateCharacterId = 52;
   static constexpr std::int32_t kAccoladeId = 31;
   static constexpr std::int32_t kBeforeDate = 53'175'816;
 
@@ -155,6 +158,11 @@ struct NativeFixture {
   std::array<std::array<std::byte, 0xA10>, 2> combat_types{};
   std::array<std::array<std::byte, 0xA10>, 2> levy_combat_types{};
   std::array<std::array<std::byte, 0x1D0>, 2> characters{};
+  std::array<std::byte, 0x130> candidate_army{};
+  std::array<std::byte, 0x150> candidate_regiment{};
+  std::array<std::byte, 0x1D0> candidate_character{};
+  std::array<std::byte, 0x100> candidate_character_link{};
+  std::array<std::int32_t, 1> candidate_regiment_ids{kCandidateRegimentId};
   std::array<std::array<std::byte, 0x100>, 2> character_links{};
   std::array<std::byte, 0x570> accolade_link{};
   std::array<std::byte, 0xB8> accolade{};
@@ -269,6 +277,23 @@ struct NativeFixture {
                          levy_regiments[index].data());
       character_store.Add(kCharacterIds[index], characters[index].data());
     }
+    Store(candidate_army, 0x10, kCandidateArmyId);
+    Store(candidate_army, 0x38,
+          reinterpret_cast<std::uintptr_t>(candidate_regiment_ids.data()));
+    Store(candidate_army, 0x40, std::int32_t{1});
+    Store(candidate_army, 0x44, std::int32_t{1});
+    Store(candidate_army, 0x120, kCandidateCharacterId);
+    Store(candidate_army, 0x128, std::int32_t{-1});
+    Store(candidate_regiment, 0x10, kCandidateRegimentId);
+    Store(candidate_regiment, 0x140, kCandidateArmyId);
+    Store(candidate_regiment, 0x148, kCandidateCharacterId);
+    Store(candidate_character, 0x18, kCandidateCharacterId);
+    Store(candidate_character_link, 0xF8, kCandidateRegimentId);
+    Store(candidate_character, 0x1B0,
+          reinterpret_cast<std::uintptr_t>(candidate_character_link.data()));
+    army_store.Add(kCandidateArmyId, candidate_army.data());
+    regiment_store.Add(kCandidateRegimentId, candidate_regiment.data());
+    character_store.Add(kCandidateCharacterId, candidate_character.data());
     Store(battle_result, 0x08, kBattleResultId);
     Store(battle_result, 0x188, std::uintptr_t{0});
     Store(battle_result, 0x190, std::int32_t{0});
@@ -504,6 +529,41 @@ bool PlanBuilderClosesPointers() {
   return true;
 }
 
+bool CandidateJoinPlanPrearmsAndRejectsStale() {
+  NativeFixture fixture;
+  fixture.plan_environment.candidate_joining_army_id =
+      NativeFixture::kCandidateArmyId;
+  CombatPhaseEventTraceCapturePlanV1 plan{};
+  if (BuildCombatPhaseEventTraceCapturePlanV1(
+          fixture.bindings, fixture.plan_environment,
+          NativeFixture::kCombatId, 79, plan) !=
+          BuildCombatPhaseEventTraceCapturePlanV1Result::built ||
+      plan.army_count != 3 || plan.regiment_count != 5 ||
+      plan.character_count != 3 ||
+      plan.armies[1].full_id != NativeFixture::kCandidateArmyId ||
+      plan.regiments[2].full_id != NativeFixture::kCandidateRegimentId ||
+      plan.characters[1].full_id != NativeFixture::kCandidateCharacterId) {
+    return Fail("route-proven candidate identities were not prearmed");
+  }
+  fixture.plan_environment.candidate_joining_army_id = 13;
+  if (BuildCombatPhaseEventTraceCapturePlanV1(
+          fixture.bindings, fixture.plan_environment,
+          NativeFixture::kCombatId, 80, plan) !=
+      BuildCombatPhaseEventTraceCapturePlanV1Result::roster_unavailable) {
+    return Fail("missing candidate generation was accepted");
+  }
+  fixture.plan_environment.candidate_joining_army_id =
+      NativeFixture::kCandidateArmyId;
+  Store(fixture.candidate_army, 0x128, NativeFixture::kCombatId);
+  if (BuildCombatPhaseEventTraceCapturePlanV1(
+          fixture.bindings, fixture.plan_environment,
+          NativeFixture::kCombatId, 81, plan) !=
+      BuildCombatPhaseEventTraceCapturePlanV1Result::roster_unavailable) {
+    return Fail("already-engaged candidate was accepted as future joiner");
+  }
+  return true;
+}
+
 bool ManagedBeginFinishProducesBoundedDto() {
   constexpr std::uint64_t token = 9001;
   NativeFixture fixture;
@@ -684,6 +744,7 @@ bool AdmissionRequiresCheckpointAndMailbox() {
 
 int main() {
   if (!PlanBuilderClosesPointers() ||
+      !CandidateJoinPlanPrearmsAndRejectsStale() ||
       !ManagedBeginFinishProducesBoundedDto() ||
       !AdmissionRequiresCheckpointAndMailbox()) {
     return 1;
