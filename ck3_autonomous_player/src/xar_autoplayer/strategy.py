@@ -132,11 +132,10 @@ from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
 from .simulation import combat_decision_contract as combat_entry_eu
-from .simulation.combat_core import CombatExperiment
-from .simulation.combat_input import CombatInputError, freeze_combat_simulation_input
-from .simulation.research_envelope import (
-    ResearchEnvelopeAssumptions,
-    run_research_envelope_experiment,
+from .simulation.general_battle_forecast import contact_admission, forecast_fixed_contact
+from .simulation.prewar_battle_proxy import (
+    forecast_prewar_power_battle,
+    prewar_declaration_admission,
 )
 from .vanilla_events.policy import (
     recommend_registered_vanilla_event_option_v1,
@@ -177,10 +176,7 @@ _TERMINAL_SCORE_SURRENDER_SCORE = -100
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 _PROVISIONAL_DEFENSE_TRIALS = 512
 _PROVISIONAL_DEFENSE_HORIZON_DAYS = 120
-_PROVISIONAL_DEFENSE_MIN_MODEL_WILSON_LOW = 0.70
 _PROVISIONAL_DEFENSE_MAX_P90_HARD_LOSS_PERCENT = 20
-_PROVISIONAL_DEFENSE_MAX_STACK_WIPE_FRACTION = 0.02
-_PROVISIONAL_DEFENSE_MAX_CHARACTER_DEATH_FRACTION = 0.02
 _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
     "war-objective-hold-sentinel-advance"
 )
@@ -5608,19 +5604,53 @@ def _forecast_required_war_entry_plan(
     campaign_root: dict[str, object],
     available_steps: set[str],
 ) -> dict[str, object]:
-    """Preserve a legal candidate without treating native power as odds."""
+    """Run the bounded prewar battle prior for a same-frame legal candidate."""
 
     advance = "life-advance" if "life-advance" in available_steps else None
     power_eu = _war_entry_power_eu_projection(assessment)
+    declaration_id = declaration.get("declaration_id")
+    forecast = forecast_prewar_power_battle(
+        assessment,
+        declaration_id=declaration_id if isinstance(declaration_id, str) else "",
+    )
+    admission = prewar_declaration_admission(forecast)
+    typed_step = candidate.get("typed_declaration_step")
+    if (
+        admission["admitted"] is True
+        and candidate.get("typed_declaration_available") is True
+        and isinstance(typed_step, str)
+        and typed_step in available_steps
+    ):
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_declaration",
+            "selected_step": typed_step,
+            "reason": "the same-frame legal declaration passes the bounded aggregate battle prior's conservative risk budget",
+            "decision": {
+                "policy": candidate["rule_id"],
+                "outcome": "DECLARE",
+                "declaration_id": declaration_id,
+                "target_character_id": declaration.get("target_character_id"),
+                "casus_belli_key": declaration.get("casus_belli_key"),
+                "claimant_character_id": declaration.get("claimant_character_id"),
+                "native_power_assessment_consumed": True,
+                "automatic_declaration_enabled": True,
+                "forecast_model_fidelity": forecast["model_fidelity"],
+            },
+            "declaration": dict(declaration),
+            "war_entry_assessment": dict(assessment),
+            "war_entry_candidate": dict(candidate),
+            "prewar_battle_forecast": forecast,
+            "prewar_forecast_admission": admission,
+            "prewar_forecast_admission_available": True,
+        }
     return {
         "policy": "one-life-turn-v1",
         "phase": "native_war_entry_forecast_required",
         "selected_step": advance,
         "reason": (
-            "the native declaration and strategic power are observable, but "
-            "a qualified declaration-bound prewar combat forecast and campaign "
-            "utility are unavailable; choose NO_DECLARE and re-observe after "
-            "one bounded advance when supported"
+            "the legal candidate was evaluated by the bounded aggregate "
+            "battle prior, but its risk budget does not support this declaration"
         ),
         "decision": {
             "policy": candidate["rule_id"],
@@ -5641,7 +5671,9 @@ def _forecast_required_war_entry_plan(
             "game.command.query-prewar-combat-simulation-inputs-v3-N",
             "game.forecast.combat-monte-carlo-v1",
         ],
-        "prewar_forecast_admission_available": False,
+        "prewar_forecast_admission_available": forecast.get("status") == "estimated",
+        "prewar_battle_forecast": forecast,
+        "prewar_forecast_admission": admission,
         "declaration": dict(declaration),
         "war_entry_assessment": dict(assessment),
         "war_entry_expected_utility": power_eu,
@@ -6744,6 +6776,13 @@ def choose_one_life_turn(
         battle_speed_readiness=battle_speed_readiness,
     )
     plan = _primary_defender_siege_forecast_ingress(
+        plan,
+        commands=_expanded_command_rows(commands),
+        snapshot=snapshot,
+        action_steps=set(steps),
+        bridge_capabilities=set(capabilities),
+    )
+    plan = _general_battle_forecast_ingress(
         plan,
         commands=_expanded_command_rows(commands),
         snapshot=snapshot,
@@ -13420,14 +13459,87 @@ def _choose_one_life_turn_core(
                 campaign_root,
                 available_steps,
             )
-        # The declaration row proves legality and the war-entry query now
-        # contributes exact native power/network risk to candidate ordering
-        # and the EU ledger.  It is still not a battle forecast, campaign-cost
-        # model, exit assessment, or calibrated utility policy, so this partial
-        # EU record cannot authorize an automatic declaration.  Missing entry
-        # evidence is a NO_DECLARE decision, not a reason to stop an otherwise
-        # playable lifetime: advance one bounded interval when that primitive
-        # is available and re-observe the world on the next turn.
+        # A final-legal native declaration can still be compared with the
+        # bounded aggregate battle prior when the narrow historical county
+        # canaries do not match.  The model's low fidelity stays explicit in
+        # the returned decision instead of making missing regiment detail an
+        # automatic NO_DECLARE.
+        declaration_id = declaration.get("declaration_id")
+        try:
+            typed_declaration_step = (
+                declare_war_step(declaration_id)
+                if isinstance(declaration_id, str) else None
+            )
+        except ValueError:
+            typed_declaration_step = None
+        government = campaign_root.get("government") if isinstance(campaign_root, dict) else None
+        monthly_income = (
+            campaign_root.get("player_monthly_gold_income")
+            if isinstance(campaign_root, dict) else None
+        )
+        same_frame_general_scope = bool(
+            isinstance(campaign_root, dict)
+            and campaign_root.get("independent") is True
+            and isinstance(government, dict)
+            and government.get("key") == "feudal_government"
+            and campaign_root.get("player_targeting_faction_count") == 0
+            and isinstance(campaign_root.get("player_domain_size"), int)
+            and isinstance(campaign_root.get("player_domain_limit"), int)
+            and campaign_root["player_domain_size"] <= campaign_root["player_domain_limit"]
+            and isinstance(monthly_income, dict)
+            and monthly_income.get("scale") == WAR_ENTRY_FIXED_POINT_SCALE
+            and isinstance(monthly_income.get("raw"), int)
+            and monthly_income["raw"] > 0
+        )
+        claimant = declaration.get("claimant_character_id")
+        claimant_valid = bool(
+            declaration.get("casus_belli_key") != "claim_cb"
+            or (
+                isinstance(campaign_root, dict)
+                and claimant == campaign_root.get("player_character_id")
+                and isinstance(claimant, int) and claimant > 0
+            )
+        )
+        if (
+            at_peace
+            and fresh_assessment
+            and same_frame_general_scope
+            and claimant_valid
+            and assessment_row.get("actor_network_contribution_raw") == 0
+            and assessment_row.get("actor_power_total_raw") == assessment_row.get("actor_power_base_raw")
+            and declaration.get("source") == "native"
+            and isinstance(typed_declaration_step, str)
+            and typed_declaration_step in available_steps
+        ):
+            return _forecast_required_war_entry_plan(
+                declaration,
+                assessment_row,
+                {
+                    "rule_id": "general-native-war-entry-battle-prior-v1",
+                    "typed_declaration_step": typed_declaration_step,
+                    "typed_declaration_available": True,
+                    "status": "forecast_required",
+                },
+                campaign_root if isinstance(campaign_root, dict) else {},
+                available_steps,
+            )
+        # A legal declaration can still lack the independent, same-frame
+        # identity/economy/action scope used by this bounded prior.  Report
+        # that concrete mismatch rather than treating imperfect native combat
+        # parity as a blanket reason never to use the model.
+        prior_scope_blockers = [
+            name for name, satisfied in (
+                ("at_peace", at_peace),
+                ("fresh_power_assessment", fresh_assessment),
+                ("independent_feudal_economic_scope", same_frame_general_scope),
+                ("claimant_identity", claimant_valid),
+                ("actor_power_without_unbounded_allies", assessment_row.get("actor_network_contribution_raw") == 0
+                 and assessment_row.get("actor_power_total_raw") == assessment_row.get("actor_power_base_raw")),
+                ("native_declaration", declaration.get("source") == "native"),
+                ("typed_declaration_available", isinstance(typed_declaration_step, str)
+                 and typed_declaration_step in available_steps),
+            ) if not satisfied
+        ]
         required_capabilities = [
             QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
             "game.forecast.combat-monte-carlo-v1",
@@ -13435,6 +13547,7 @@ def _choose_one_life_turn_core(
         ]
         shared_evidence = {
             "required_capabilities": required_capabilities,
+            "general_battle_prior_scope_blockers": prior_scope_blockers,
             "declaration": declaration,
             "war_entry_assessment": (
                 dict(assessment_row) if fresh_assessment else None
@@ -13447,11 +13560,9 @@ def _choose_one_life_turn_core(
                 "phase": "native_war_entry_no_declare",
                 "selected_step": "life-advance",
                 "reason": (
-                    "the native declaration is legally available and exact "
-                    "strategic power is consumed when present, but participant "
-                    "bounds, combat forecast, campaign costs, exit outcomes, "
-                    "and calibrated utility are incomplete; choose "
-                    "NO_DECLARE and advance one bounded interval"
+                    "the native declaration is legal but does not satisfy "
+                    "the bounded battle prior's same-frame strategy scope; "
+                    "choose NO_DECLARE and reassess after one bounded interval"
                 ),
                 "decision": {
                     "policy": "war-entry-minimal-defer-v1",
@@ -13478,10 +13589,8 @@ def _choose_one_life_turn_core(
             "phase": "native_war_entry_evidence_required",
             "selected_step": None,
             "reason": (
-                "the native declaration is legally available and exact "
-                "strategic power is consumed when present, but automatic war "
-                "entry still requires participant bounds, a combat forecast, "
-                "campaign costs, exit outcomes, and a calibrated utility policy"
+                "the native declaration is legal but does not satisfy "
+                "the bounded battle prior's same-frame strategy scope"
             ),
             **shared_evidence,
         }
@@ -15118,6 +15227,243 @@ def _same_frame_army_strength_balance(
     }
 
 
+def _general_battle_forecast_ingress(
+    baseline: dict[str, object],
+    *,
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+    action_steps: set[str],
+    bridge_capabilities: set[str],
+) -> dict[str, object]:
+    """Review any proposed army move into an observed hostile-held province.
+
+    This covers ordinary offensive and defensive wars.  The older siege relief
+    canary keeps its own narrower policy; it is not evaluated twice here.
+    """
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return baseline
+    if "provisional_forecast" in baseline or "qualified_forecast" in baseline:
+        return baseline
+    parsed = parse_move_army_step(baseline.get("selected_step"))
+    if parsed is None:
+        return baseline
+    army_id, target = parsed
+    player_armies = snapshot.get("player_armies")
+    active_wars = snapshot.get("active_wars")
+    if not isinstance(player_armies, list) or not isinstance(active_wars, list):
+        return baseline
+    army = next(
+        (row for row in player_armies if isinstance(row, dict) and row.get("army_id") == army_id),
+        None,
+    )
+    if not isinstance(army, dict):
+        return baseline
+    origin = _native_int(army.get("current_province_id"))
+    enemy_rows = [
+        enemy
+        for war in active_wars if isinstance(war, dict)
+        for enemy in (war.get("enemy_armies") if isinstance(war.get("enemy_armies"), list) else [])
+        if isinstance(enemy, dict)
+    ]
+    defenders = tuple(sorted({
+        enemy_id
+        for enemy in enemy_rows
+        if enemy.get("current_province_id") == target
+        and _army_tactical_state(enemy) != "retreating"
+        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
+        and enemy_id > 0
+    }))
+    if origin is None or origin == target or not defenders:
+        return baseline
+
+    def bounded(phase: str, selected_step: str | None, reason: str, **details: object) -> dict[str, object]:
+        return {
+            "policy": "general-battle-forecast-v1",
+            "phase": phase,
+            "selected_step": selected_step,
+            "reason": reason,
+            "baseline_phase": baseline.get("phase"),
+            "baseline_selected_step": baseline.get("selected_step"),
+            "encounter": {
+                "attacker_army_ids": [army_id],
+                "defender_army_ids": list(defenders),
+                "target_province_id": target,
+            },
+            **details,
+        }
+
+    preview_step = preview_move_army_step(army_id, target)
+    preview = _fresh_move_route_preview(
+        commands, army_id=army_id, origin_province_id=origin,
+        target_province_id=target, date_raw=_native_int(snapshot.get("date_raw")),
+    )
+    if preview is None:
+        return bounded(
+            "native_war_general_battle_route_query",
+            preview_step if preview_step in action_steps else None,
+            "read the current native route before forecasting an observed enemy contact",
+        )
+    route = preview.get("route_province_ids")
+    if not (
+        preview.get("status") == "available"
+        and isinstance(route, list) and route and route[-1] == target
+    ):
+        return bounded("native_war_general_battle_route_blocked", None,
+                       "the current native route is not an exact route to the contact", route_preview=preview)
+    entry = route[-2] if len(route) > 1 else origin
+    hostile_ids = tuple(sorted({
+        enemy_id
+        for enemy in enemy_rows
+        if _army_tactical_state(enemy) != "retreating"
+        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
+        and enemy_id > 0
+    }))
+    if not hostile_ids or len(hostile_ids) > MAX_ROUTE_CONTACT_HOSTILE_IDS:
+        return bounded("native_war_general_battle_roster_blocked", None,
+                       "the observed hostile roster exceeds the route query contract")
+    contact_step = query_route_contact_horizon_step(army_id, target, hostile_ids)
+    contact = _fresh_route_contact_horizon(
+        commands, snapshot, army_id=army_id, origin_province_id=origin,
+        target_province_id=target, hostile_army_ids=hostile_ids,
+        route_province_ids=route,
+    )
+    if contact is None:
+        return bounded(
+            "native_war_general_battle_contact_query",
+            contact_step if contact_step in action_steps else None,
+            "read all possible hostile contacts on the proposed route",
+            route_preview=preview,
+        )
+    conflicts = contact.get("conflicts")
+    if not isinstance(conflicts, list) or any(
+        not isinstance(row, dict)
+        or row.get("province_id") != target
+        or _native_int(row.get("hostile_army_id")) not in defenders
+        for row in conflicts
+    ):
+        return bounded(
+            "native_war_general_battle_contact_blocked", None,
+            "another encounter can occur before the simulated target battle",
+            route_preview=preview, route_contact_horizon=contact,
+        )
+    query_step = query_combat_simulation_inputs_v3_step(target, entry, [army_id], list(defenders))
+    payload = snapshot.get("combat_simulation_inputs_v3")
+    def current_query_row(row: dict[str, object]) -> bool:
+        result = _effective_command_result(row)
+        return bool(
+            row.get("ok") is True
+            and parse_query_combat_simulation_inputs_v3_step(_effective_command(row))
+            == (target, entry, [army_id], list(defenders))
+            and (_native_int(row.get("index")) or 0) > _latest_life_advance_index(commands)
+            and isinstance(result, dict)
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == snapshot.get("native_revision")
+            and result.get("status") == snapshot.get("combat_simulation_inputs_v3_status")
+        )
+    exact_cached = bool(
+        isinstance(payload, dict)
+        and snapshot.get("combat_simulation_inputs_v3_target_province_id") == target
+        and snapshot.get("combat_simulation_inputs_v3_attacker_entry_province_id") == entry
+        and snapshot.get("combat_simulation_inputs_v3_attacker_army_ids") == [army_id]
+        and snapshot.get("combat_simulation_inputs_v3_defender_army_ids") == list(defenders)
+        and snapshot.get("combat_simulation_inputs_v3_queried_snapshot_id") == snapshot.get("snapshot_id")
+        and snapshot.get("combat_simulation_inputs_v3_queried_revision") == snapshot.get("revision")
+        and any(current_query_row(row) for row in _history_after_latest_restore(commands))
+    )
+    if not exact_cached:
+        return bounded(
+            "native_war_general_battle_inputs_query",
+            query_step if query_step in action_steps and QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities else None,
+            "obtain same-frame per-regiment inputs for this encounter",
+            route_preview=preview, route_contact_horizon=contact,
+        )
+    assert isinstance(payload, dict)
+    forecast = forecast_fixed_contact(
+        payload, target_province_id=target,
+        attacker_entry_province_id=entry,
+        attacker_army_ids=(army_id,), defender_army_ids=defenders,
+        capture={key: snapshot.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw"
+        )},
+    )
+    admission = contact_admission(forecast)
+    if admission["admitted"] is not True:
+        return bounded(
+            "native_war_general_battle_model_rejected", None,
+            "the bounded whole-battle model exceeds the configured contact risk budget",
+            battle_forecast=forecast, contact_admission=admission,
+        )
+    if len(route) != 1:
+        if contact.get("one_day_contact_free") is not True:
+            return bounded(
+                "native_war_general_battle_short_route_blocked", None,
+                "the first travel day has another possible contact",
+                battle_forecast=forecast, contact_admission=admission,
+            )
+        first_hop = route[0]
+        first_preview_step = preview_move_army_step(army_id, first_hop)
+        first_preview = _fresh_move_route_preview(
+            commands, army_id=army_id, origin_province_id=origin,
+            target_province_id=first_hop, date_raw=_native_int(snapshot.get("date_raw")),
+        )
+        if first_preview is None:
+            return bounded(
+                "native_war_general_battle_short_preview",
+                first_preview_step if first_preview_step in action_steps else None,
+                "prove an exact first waypoint before a distant predicted contact",
+                battle_forecast=forecast, contact_admission=admission,
+            )
+        if first_preview.get("status") != "available" or first_preview.get("route_province_ids") != [first_hop]:
+            return bounded("native_war_general_battle_short_preview_blocked", None,
+                           "the first waypoint does not have an exact one-hop route",
+                           battle_forecast=forecast, contact_admission=admission)
+        first_contact_step = query_route_contact_horizon_step(army_id, first_hop, hostile_ids)
+        first_contact = _fresh_route_contact_horizon(
+            commands, snapshot, army_id=army_id, origin_province_id=origin,
+            target_province_id=first_hop, hostile_army_ids=hostile_ids,
+            route_province_ids=[first_hop],
+        )
+        if first_contact is None:
+            return bounded(
+                "native_war_general_battle_short_contact_query",
+                first_contact_step if first_contact_step in action_steps else None,
+                "prove the first waypoint has no near-term hostile contact",
+                battle_forecast=forecast, contact_admission=admission,
+            )
+        first_move_step = move_army_step(army_id, first_hop)
+        if not (
+            first_contact.get("one_day_contact_free") is True
+            and first_contact.get("conflicts") == []
+            and first_move_step in action_steps
+        ):
+            return bounded("native_war_general_battle_short_contact_blocked", None,
+                           "the first waypoint is not proved contact-free",
+                           battle_forecast=forecast, contact_admission=admission)
+        return bounded(
+            "native_war_general_battle_short_move", first_move_step,
+            "move one proved contact-free waypoint and refresh the battle estimate next turn",
+            battle_forecast=forecast, contact_admission=admission,
+            general_battle_forecast_used_for_decision=True,
+        )
+    subject_route = contact.get("subject_route")
+    arrivals = subject_route.get("arrival_date_raws") if isinstance(subject_route, dict) else None
+    final_arrival = _native_int(arrivals[-1]) if isinstance(arrivals, list) and arrivals else None
+    date_raw = _native_int(snapshot.get("date_raw"))
+    if final_arrival is None or date_raw is None or not date_raw < final_arrival <= date_raw + 24:
+        return bounded(
+            "native_war_general_battle_arrival_blocked", None,
+            "the single-step contact is outside the current one-day decision horizon",
+            battle_forecast=forecast, contact_admission=admission,
+        )
+    return {
+        **baseline,
+        "general_battle_forecast": forecast,
+        "general_battle_contact_admission": admission,
+        "general_battle_forecast_used_for_decision": True,
+    }
+
+
 def _primary_defender_siege_forecast_ingress(
     baseline: dict[str, object],
     *,
@@ -15685,37 +16031,28 @@ def _provisional_defense_research_assessment(
         and friendly_current_soldiers > 0
     ):
         return {"status": "same_frame_encounter_scope_mismatch"}
-    try:
-        frozen = freeze_combat_simulation_input(
-            base,
-            capture={
-                "snapshot_id": snapshot.get("snapshot_id"),
-                "revision": snapshot.get("revision"),
-                "native_revision": snapshot.get("native_revision"),
-                "date_raw": snapshot.get("date_raw"),
-            },
-        )
-        summary = run_research_envelope_experiment(
-            frozen,
-            CombatExperiment(
-                input_sha256=frozen.input_sha256,
-                seed_u64=int(frozen.input_sha256[:16], 16),
-                sample_count=_PROVISIONAL_DEFENSE_TRIALS,
-                horizon_days=_PROVISIONAL_DEFENSE_HORIZON_DAYS,
-            ),
-            ResearchEnvelopeAssumptions(
-                attacker_commander_army_id=attacker_army_id,
-                defender_commander_army_id=defender_army_ids[0],
-            ),
-            max_workers=1,
-        )
-    except (CombatInputError, ValueError, RuntimeError) as error:
+    forecast = forecast_fixed_contact(
+        payload,
+        target_province_id=target_province_id,
+        attacker_entry_province_id=entry_province_id,
+        attacker_army_ids=(attacker_army_id,),
+        defender_army_ids=defender_army_ids,
+        capture={
+            key: snapshot.get(key)
+            for key in ("snapshot_id", "revision", "native_revision", "date_raw")
+        },
+        sample_count=_PROVISIONAL_DEFENSE_TRIALS,
+        horizon_days=_PROVISIONAL_DEFENSE_HORIZON_DAYS,
+    )
+    if forecast.get("status") != "estimated":
         return {
             "status": "research_trial_unavailable",
-            "error_type": type(error).__name__,
+            "model_status": forecast.get("status"),
         }
-    wilson = summary.player_win_wilson95
-    p90_hard_loss = summary.player_hard_losses_raw.p90
+    admission = contact_admission(forecast, defensive_relief=True)
+    wilson = forecast.get("resolved_win_wilson95")
+    wilson_low = wilson.get("lower") if isinstance(wilson, dict) else None
+    p90_hard_loss = forecast.get("player_p90_hard_loss_raw")
     hard_loss_budget_raw = (
         friendly_current_soldiers
         * 100_000
@@ -15723,35 +16060,27 @@ def _provisional_defense_research_assessment(
         // 100
     )
     admitted = bool(
-        summary.sample_count == _PROVISIONAL_DEFENSE_TRIALS
-        and summary.no_resolution <= summary.sample_count // 10
-        and wilson is not None
-        and wilson.lower >= _PROVISIONAL_DEFENSE_MIN_MODEL_WILSON_LOW
-        and p90_hard_loss is not None
+        admission["admitted"] is True
+        and isinstance(p90_hard_loss, int)
         and p90_hard_loss <= hard_loss_budget_raw
-        and summary.player_stack_wipe_probability
-        <= _PROVISIONAL_DEFENSE_MAX_STACK_WIPE_FRACTION
-        and summary.commander_or_knight_death_probability
-        <= _PROVISIONAL_DEFENSE_MAX_CHARACTER_DEATH_FRACTION
     )
     return {
         "status": "provisional_admissible" if admitted else "model_risk_budget_exceeded",
         "model_fidelity": "research_only_phase_events_disabled",
         "calibrated_win_probability_available": False,
-        "input_sha256": frozen.input_sha256.upper(),
-        "simulator_build": summary.simulator_build,
-        "sample_count": summary.sample_count,
-        "player_wins": summary.player_wins,
-        "player_losses": summary.player_losses,
-        "no_resolution": summary.no_resolution,
-        "model_resolved_win_wilson_low": wilson.lower if wilson else None,
+        "input_sha256": forecast["input_sha256"],
+        "simulator_build": forecast["simulator_build"],
+        "sample_count": forecast["sample_count"],
+        "player_wins": forecast["player_wins"],
+        "player_losses": forecast["player_losses"],
+        "no_resolution": forecast["no_resolution"],
+        "model_resolved_win_wilson_low": wilson_low,
         "model_p90_hard_loss_raw": p90_hard_loss,
         "hard_loss_budget_raw": hard_loss_budget_raw,
-        "model_stack_wipe_fraction": summary.player_stack_wipe_probability,
-        "model_character_death_fraction": (
-            summary.commander_or_knight_death_probability
-        ),
-        "unmodeled_domains": list(summary.missing_required_domains),
+        "model_stack_wipe_fraction": forecast["player_stack_wipe_probability"],
+        "model_character_death_fraction": forecast["commander_or_knight_death_probability"],
+        "unmodeled_domains": forecast["missing_required_domains"],
+        "contact_admission": admission,
         "observation_identity": {
             key: snapshot.get(key)
             for key in ("episode_run_id", "snapshot_id", "revision", "native_revision", "date_raw")

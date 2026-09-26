@@ -1,5 +1,7 @@
 # CK3 1.19.0.6 战斗模拟器纯函数 core
 
+> 2026-09-26 当前策略接线更新：研究版整场试算现已用于通用战中接战动作评估；正式 `planner_usable`/exact-native-parity 门仍为 false。二者含义及战前聚合代理模型见 [通用战斗预测接线](general-battle-strategy-forecast-2026-09-26.md)。下文旧的“尚未接 planner”是当时的实现状态，不再描述当前策略调用链。
+
 ## 结论与边界
 
 本文只绑定 CK3 `1.19.0.6`，`ck3.exe` SHA-256

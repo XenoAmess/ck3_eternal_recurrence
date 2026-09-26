@@ -1,5 +1,7 @@
 # 自动玩家主动开战策略：胜率与期望效用优先
 
+> 2026-09-26 当前实现更新：原生 final-legal 宣战候选现可使用明确标注低保真、未校准的[聚合战斗代理试算](general-battle-strategy-forecast-2026-09-26.md)作有界行动先验。满足既有同帧身份/政体/经济约束且风险预算通过时可以提交 typed 宣战；下文 `NO_DECLARE` 的历史实现结论和正式 EU 设计门禁应按该更新区分，不应继续解读为“只因逐兵团模型未完备便永不宣战”。
+
 - [policy-design] 本文中的 `policy-design` 与 Mermaid `[P]` 都表示我方拟议策略，不是 CK3 原生事实；
   `static-confirmed`、`inference`、`unknown` 沿用本目录索引中的证据定义。
 
