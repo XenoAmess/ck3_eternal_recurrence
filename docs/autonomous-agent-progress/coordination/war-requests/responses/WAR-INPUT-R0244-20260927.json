@@ -1,9 +1,31 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-INPUT-R0244-20260927",
-  "status": "claimed",
+  "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-26T19:58:54Z",
+  "updated_at_utc": "2026-09-26T20:49:56Z",
   "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
-  "next_step": "Trace the exact same-frame regiment-input query and forecast strategy contract at the reported revision; repair or provide a policy-safe observed-frame fallback, run focused no-launch checks, then seek a separately paired bounded live replay. Preserve COMBAT_ENTRY_EU_ACTIVATION_ENABLED."
+  "source_pr": null,
+  "delivery_route": "direct rebase-only master push under the project Git policy",
+  "master_commit": "90afa9fef8d3ef7a7f00709ab08de19db94c51d7",
+  "interface_contract": {
+    "v3_query": "The planner constructs the exact read-only query-combat-simulation-inputs-v3 literal from the observed target, native route entry, and current side army IDs. The advertised v3 bridge capability, rather than action_steps enumeration, gates this parameterized query.",
+    "first_hop": "After a successful native full-route preview, the driver exposes only its first travel waypoint's preview, route-contact query, and move literals, bound to the same paused snapshot ID, public and native revisions, connection generation, episode, date, army origin, controllability, and hostile roster. The strategy still requires a same-frame v3 forecast admission, an exact one-hop preview, and a contact-free first-hop horizon before submitting a move; it then replans after one hop.",
+    "compatibility": "No native DLL protocol or on-disk save change. COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains false. Route previews that prefix the current province are normalized only for first-travel-hop selection."
+  },
+  "checks": [
+    "Focused strategy, first-hop projection, and native bridge driver tests: 252 passed and 248 subtests passed on 2026-09-26.",
+    "The original R0244 source save and DLL are on another machine, so its exact War 48 pair has not been replayed here."
+  ],
+  "live_evidence": null,
+  "local_analog_evidence": {
+    "attempt_062": "A separately paired local War 4/Army 18 versus Army 24 paused frame produced available exact v3 per-regiment inputs at the native route entry; model admission was true. This is not R0244 identity or native parity.",
+    "attempt_063": "A separate local stationary-save replay proved the full native route preview, all-hostile contact horizon, and exact v3 inputs on one paused frame. Production planning selected capital_regroup_hold_progress and life-advance, so no first-hop move was submitted; its RED probe is retained and cannot be used as an end-to-end movement pass.",
+    "source_checkpoint_sha256": "91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592"
+  },
+  "limitations": [
+    "The original Robert War 48 save, DLL, and formal paired execution are unavailable on this machine. The requesting consumer must fetch this master commit and rerun its exact pair, then write verifications/WAR-INPUT-R0244-20260927.json with the observed result.",
+    "A local model estimate is not a claim of true CK3 battle win probability or native simulation parity."
+  ],
+  "next_step": "Requesting consumer: rerun original R0244 pair against this commit and record the real selected_step, actual action/readback, and next-turn result. Maintainer: continue local bounded first-hop evidence and respond to any failed verification."
 }
