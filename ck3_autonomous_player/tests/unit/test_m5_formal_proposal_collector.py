@@ -176,6 +176,41 @@ class _ServiceDriver:
 
 
 class M5FormalProposalCollectorTests(unittest.TestCase):
+    def test_live_empty_peace_source_keeps_family_and_normal_advance(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(
+            enabled=True, sources=_sources(domains={}), snapshot=peace,
+        )
+        driver.allow_private_family_marriage_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        def family_no_positive(driver, planned, snapshot, **kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "family_marriage_status": "no_new_proposal"}}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_family_marriage_private",
+            side_effect=family_no_positive,
+        ) as family):
+            planned = GameplayBridgeService(driver).plan_turn()
+
+        family.assert_called_once()
+        self.assertEqual(driver.source_reads, 1)
+        self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+        self.assertEqual(planned["plan"]["phase"], "m5_joint_empty_proposals")
+        self.assertEqual(planned["plan"]["family_marriage_status"],
+                         "no_new_proposal")
+        collection = planned["plan"]["m5_joint_query_only"]
+        self.assertEqual(collection["status"], "no_complete_feasible_proposal")
+        self.assertEqual(collection["collected_domains"], [])
+        self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
+
     def test_ready_war_diplomacy_and_building_are_dispatched_once(self) -> None:
         original = M5FrameDispatcher.choose_observed
 

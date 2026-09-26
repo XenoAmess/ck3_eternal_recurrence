@@ -395,3 +395,19 @@ flowchart TD
 ```
 
 此改动只恢复来源评估；`selected_step` 仍为 `null`、`formal_action_ready=false`，礼金仍需自身正式消费者、独立后置、下一 turn 与恢复。没有扩大 M5 里程碑或公共广告。
+
+### 2026-09-26 R0232：空提案误拦正常推进
+
+c19 冻结源码/master `9e305a25aa2d815a2218b4a5fa8a6daeeafdd7d4`、CK3 1.19.0.6 exact EXE、DLL SHA-256 `E1C8EBA0DC631F134C2A6E9157ED298166AFDF7EBBB190F461794A58AFB6D514`，从 h148/raw53155728 官方配对及 no-launch 启动唯一 PID29596。8-turn 有界运行的前 3 turn 依次核 root、旧建设 `applied/in_progress`、既成双边订婚；第 4 turn 首次进入 `m5_joint_query_only_observed`。同一 paused revision 3 的 collector 返回 `no_complete_feasible_proposal`、`collected_domains=[]`、`evaluated=[]`、`formal_action_ready=false`。报告 SHA-256 `588806669FCCD6DFFEC86B77652E5B75DFB8B6FD6A9C458BB6933EF084A31CE5`、operator receipt SHA-256 `705CC12E5039CE6752A71BA50A3CE3F6B4050DD31C23BF914ECEA928717D6ECA`；四 turn 日期均 raw53155728，无 typed 动作或日期推进，checkpoint SHA 未变，进程树回收。失败回执没有窗口终态字段，故不外推最小化验收。正式结果是 planner RED，非 M5 动作成功。
+
+源码路径表明空提案是完整的真实空结果：source schema、同帧身份、commitments 与预算已通过，dispatcher 没有预留；`plan_m5_formal_query_only` 却把可执行的和平 `life-advance` 改成 `selected_step=None`，随后 `GameplayBridgeService` 的家庭消费者仍保留这个 null，令 `native_auto_run` 以 `compare complete same-frame proposals without submitting an action` 停止。这是实际漏推进，不是缺少候选数量。仅空且无预留的结果应保留原 `life-advance` 并附 M5 诊断；来源读失败继续 RED，已预留但尚无正式消费者的提案继续按现有边界处理，不伪造联合动作。
+
+```mermaid
+flowchart TD
+  A["和平 paused 帧；life-advance 可用"] --> B["M5 同帧来源与 dispatcher"]
+  B -->|读取或绑定失败| R["RED：保持阻塞"]
+  B -->|有正式可提交建设| C["原建设 typed 消费者"]
+  B -->|已分析预留但无正式消费者| W["现有 query-only 等待"]
+  B -->|完整空提案且无预留| D["保留 life-advance；记录真实空结果"]
+  D --> E["独立 FAMILY 消费者，否则正常日期推进"]
+```
