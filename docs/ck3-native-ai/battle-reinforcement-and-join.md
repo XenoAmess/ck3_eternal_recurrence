@@ -54,6 +54,8 @@ attempt-052 从 AI 种子新建 production/non-debug、无 mod 进程，逐日�
 
 ## 2026-09-26：到达日首次安排事件前会重算兵团有效属性
 
+职业兵士有效伤害、坚韧的 exact-build 静态来源入口见[职业兵士属性来源](maa-effective-stat-sources.md)；其中 18 项实机变化的具体数值归因仍需同帧回读。
+
 两次 GREEN 回放还给出一个影响模拟输入的**日内属性刷新**。暂停时的 `battle_control_snapshot` 与原生日更 `0x27FB58F` 首次 side0 schedule **入口**都处在同一源日期、同一 CombatID，且参战兵团 ID 集合尚未变化；然而第 11 日已有 51 团中的 32 团、第 21 日已有 63 团中的 37 团，其有效伤害或有效坚韧已经变化。第 11 日 RegimentID `220` 从暂停控制快照的伤害 `20,000,000`、坚韧 `4,000,000`，变为 schedule 入口的 `18,500,000`、`3,700,000`（均为 Q100000）。[日 11 只读对照](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_daily_stat_refresh_day11_v1.json) SHA-256 `E36224201492080046FE37E6C27653B6F38D8C7B97651BBEC86EC718A8A3AB06`；[日 21 对照](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_daily_stat_refresh_day21_v1.json) SHA-256 `26569235A6B1507B6693E381335A46B56F632E2D6F9DD0B9D825A2C46F8833AE`，均由[只读投影](../../ck3_autonomous_player/tools/project_native_daily_stat_refresh.py)核对实机回执 SHA 和 exact-build 指令。历史另一 attempt 中 `220` 曾记录更早控制值 `7,400,000`→schedule `3,700,000`；其输入轨迹独立，不能与本次的 `4,000,000` 拼成同一变化链。
 
 静态调用链把**刷新写入相对事件安排的先后**闭合：`CCombatManager` 日更循环在 `0x27FB57A` 调 `0x2308D50`，其对两侧先调 `0x23CBCE0`，再调 `0x23CC2B0`；后者逐个 entry 调 `0x23D2CE0`，其中调用 `0x239CAE0` 后明确写回 entry `+0x40` 有效伤害和 `+0x48` 有效坚韧。调用返回后，**同一个循环**才在 `0x27FB58F` 调 `0x23C8750` 开始 side0 schedule。故“暂停控制快照的有效属性可以原封不动用于下一日主阶段”已被两次实机对照否定；应取实际 schedule/phase 前刷新的属性，或在预测中显式标记该输入不确定。此链证明了写入时点及对象字段，**尚未证明每个数值变动来自哪项 trait、地形、将领或其他修正**，也未证明两个 manager 的全局调用顺序。
