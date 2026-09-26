@@ -805,9 +805,37 @@ class GameplayBridgeService:
             )
         m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
         m5_history = planned.pop("_private_m5_history_v1", None)
-        if getattr(
+        m5_enabled = getattr(
             self.driver, "allow_private_m5_joint_collector", False
-        ) is True:
+        ) is True
+        m5_ineligible = None
+        if isinstance(m5_snapshot, dict):
+            wars = m5_snapshot.get("active_wars")
+            armies = m5_snapshot.get("player_armies")
+            if isinstance(wars, list) and wars:
+                m5_ineligible = "ineligible_active_war"
+            elif isinstance(armies, list) and armies:
+                m5_ineligible = "ineligible_player_army"
+        if m5_enabled and m5_ineligible is not None:
+            current_plan = planned.get("plan")
+            if (
+                isinstance(current_plan, dict)
+                and current_plan.get("selected_step") == "life-advance"
+            ):
+                planned = {
+                    **planned,
+                    "plan": {
+                        **current_plan,
+                        "m5_joint_status": m5_ineligible,
+                        "m5_joint_formal_action_ready": False,
+                    },
+                }
+        if (
+            m5_enabled
+            and m5_ineligible is None
+            and isinstance(planned.get("plan"), dict)
+            and planned["plan"].get("selected_step") == "life-advance"
+        ):
             if not isinstance(m5_snapshot, dict) or not isinstance(
                 m5_history, list
             ):
@@ -832,12 +860,49 @@ class GameplayBridgeService:
                         planned, available_steps
                     )
                 )
-            return plan_m5_formal_query_only(
+            family_snapshot = planned.get("_private_family_marriage_snapshot_v1")
+            joint = plan_m5_formal_query_only(
                 self.driver,
                 planned,
                 snapshot=m5_snapshot,
                 history=m5_history,
             )
+            joint_plan = joint.get("plan")
+            if not (
+                isinstance(joint_plan, dict)
+                and joint_plan.get("selected_step") in {None, "life-advance"}
+                and getattr(
+                    self.driver, "allow_private_family_marriage_formal_trial", False
+                ) is True
+                and isinstance(family_snapshot, dict)
+            ):
+                return joint
+            # M5 has no typed building action. Give the independent family
+            # consumer its ordinary baseline, then retain any M5 RED when
+            # no family step is available.
+            family_input = {
+                **joint,
+                "plan": {**joint_plan, "selected_step": "life-advance"},
+            }
+            family = plan_family_marriage_private(
+                self.driver, family_input, family_snapshot,
+            )
+            family_plan = family.get("plan")
+            if not isinstance(family_plan, dict):
+                return joint
+            if joint_plan.get("phase") == "m5_joint_query_only_red":
+                family_plan = {
+                    **family_plan,
+                    "m5_joint_red_reason": joint_plan.get("reason"),
+                }
+            if family_plan.get("selected_step") == "life-advance":
+                family_plan = {
+                    **family_plan,
+                    "selected_step": joint_plan.get("selected_step"),
+                    "phase": joint_plan.get("phase", family_plan.get("phase")),
+                    "reason": joint_plan.get("reason", family_plan.get("reason")),
+                }
+            return {**family, "plan": family_plan}
         lifestyle_trial = getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
         ) is True
