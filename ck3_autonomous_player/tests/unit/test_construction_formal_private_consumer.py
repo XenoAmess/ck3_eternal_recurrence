@@ -883,7 +883,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                     driver, pending=pending, expected_revision=4)
                 self.assertEqual(start["completion_status"], "in_progress")
                 later = frame(5)
-                later["date_raw"] += 31
+                later["date_raw"] += 31 * 24
                 driver.snapshot = later
                 driver.completed_construction = True
                 planned = {"plan": {"selected_step": "life-advance"}, "revision": 5}
@@ -923,7 +923,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 start = transport.query_construction_receipt(
                     driver, pending=pending, expected_revision=4)
                 later = frame(5)
-                later["date_raw"] += 31
+                later["date_raw"] += 31 * 24
                 driver.snapshot = later
                 driver.completed_construction = True
                 planned = {"plan": {"selected_step": "life-advance"}, "revision": 5}
@@ -948,7 +948,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 start = transport.query_construction_receipt(
                     driver, pending=pending, expected_revision=4)
             later = frame(5)
-            later["date_raw"] += 31
+            later["date_raw"] += 31 * 24
             driver.snapshot = later
             driver.completed_construction = True
             planned = {"plan": {"selected_step": "life-advance"}, "revision": 5}
@@ -994,7 +994,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 start = transport.query_construction_receipt(
                     driver, pending=pending, expected_revision=4)
                 completed_frame = frame(5)
-                completed_frame["date_raw"] += 31
+                completed_frame["date_raw"] += 31 * 24
                 driver.snapshot = completed_frame
                 driver.completed_construction = True
                 completed_root = root(5)[0]["result"]
@@ -1028,16 +1028,34 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 driver.snapshot = frame(4)
                 start = transport.query_construction_receipt(
                     driver, pending=pending, expected_revision=4)
+                # R0240 watched after only nine game days: raw dates advance
+                # by 24 per day, not by one. That read consumed a formal turn.
+                premature = frame(5)
+                premature["date_raw"] += 9 * 24
+                driver.snapshot = premature
+                premature_plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"},
+                             "revision": 5}, premature, [], set())
+                self.assertNotEqual(premature_plan["plan"]["selected_step"],
+                                    RECEIPT_STEP)
+                with self.assertRaisesRegex(BridgeUnavailableError,
+                                            "later monthly frame"):
+                    transport.query_construction_receipt(
+                        driver, pending=start, expected_revision=5)
                 later = frame(5)
-                later["date_raw"] += 31
+                later["date_raw"] += 30 * 24
                 driver.snapshot = later
+                at_boundary = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"},
+                             "revision": 5}, later, [], set())
+                self.assertEqual(at_boundary["plan"]["selected_step"], RECEIPT_STEP)
                 still_active = transport.query_construction_receipt(
                     driver, pending=start, expected_revision=5)
                 self.assertEqual(still_active["completion_status"], "in_progress")
                 self.assertEqual(still_active["start_receipt"]["post_proof_epoch"],
                                  start["post_proof_epoch"])
                 next_day = frame(6)
-                next_day["date_raw"] += 32
+                next_day["date_raw"] += 31 * 24
                 plan = plan_construction_private(
                     driver, {"plan": {"selected_step": "life-advance"},
                              "revision": 6}, next_day, [], set())

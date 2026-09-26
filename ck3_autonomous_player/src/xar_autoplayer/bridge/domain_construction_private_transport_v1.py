@@ -11,7 +11,7 @@ from typing import Mapping
 import uuid
 
 from ..construction_formal_consumer import (
-    read_construction_ledger, write_construction_ledger,
+    COMPLETION_WATCH_INTERVAL_RAW, read_construction_ledger, write_construction_ledger,
     same_frame_construction_income,
 )
 from ..runtime import _process_identity
@@ -297,7 +297,8 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
             type(starting.get("date_raw")) is int
             and starting["date_raw"] > pending.get("post_date_raw", 0)
             and starting["date_raw"] >= pending.get(
-                "completion_last_check_date_raw", pending.get("post_date_raw", 0)) + 30):
+                "completion_last_check_date_raw", pending.get("post_date_raw", 0))
+            + COMPLETION_WATCH_INTERVAL_RAW):
         raise BridgeUnavailableError("construction completion watch needs a later monthly frame")
     if (starting.get("episode_run_id") != pending.get("episode_run_id")
             or starting["played_character"]["character_id"] != pending.get("actor_character_id")

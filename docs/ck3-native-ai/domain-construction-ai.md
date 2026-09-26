@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 直辖领地建设与升级原生 AI 树
 
+## 2026-09-27 NW-ECON-C32：完工 watch 的游戏日单位（正式运行证据 + 源码修复）
+
+R0240 的正式 Robert 派生运行在 `hill_farms_01` 开工日 raw53153760 得到 `applied/in_progress`；一次 `life-advance` 到 raw53153976，只过了 **9 游戏日**，第 9 turn 却执行 `construction_completion_watch`，占用一个正式 turn、日期未推进且仍读到施工中。其正式报告 SHA-256 为 `E886352A09B434A38003237F46D06F045AA10C7F2A944CB4FD07C1B4BC72D8A3`。R0241 从其 h107 配对冷恢复后，先同日核对原施工，再推进 31 游戏日到 raw53154720；第 6 turn 的 watch 仍读到施工中。R0241 报告 SHA-256 `3951CF81F294E1D7CAFD8EA86611723E40697F97E536DAC02BF0379FC27DBB72`；h115 官方原件配对索引 SHA-256 `D809DAC8771C60D8EB803571B93A43E41C52DF8F616391CF22687CDF2DAD30F1`，其中建设账本 SHA-256 `60203AD547B32923BBDF4CF195D2B929BC4DCFFE4734E0BD98FD6C1E34BB5E24`、`completion_last_check_date_raw=53154720`、完工日期与收入差值仍为 `null`。
+
+exact 1.19.0.6 的 `date_raw` 每游戏日增加 24；旧 planner 和 receipt guard 都把 30 直接加到 raw 日期，导致下一次同进程 watch 最早在第 2 个完整游戏日就符合条件。现统一使用 `30 * 24` raw 的既定月度间隔。聚焦测试先在旧代码上复现 9 日过早选择，再核 9 日不选择/拒绝直接 receipt、30 日选择并读回、31 日不立即重复；新 PID 首次冷恢复的独立材料核对及已完工但收入缺失时的同帧补读不受该间隔限制。此变更只修已有策略调度，不改原生 ABI，也不把著录工期或现有玩家收入变化当作完工收益。后续若从 h115 正式配对继续，新 PID 可先核原槽位；若仍为施工中，同进程正常 watch 要等至少 raw53155440 的合格 paused 帧，期间战争、事件与正常策略动作按各自合同处理，不能靠研究重放补日期。
+
 ## 2026-09-26 NW-ECON-C15：已建读回后的实际收入补消费（源码/fixture）
 
 Robert c12 h148 的 `hill_farms_01` 仍为 `applied/in_progress`，当前无实机完工或收益证据。现有正式消费者按月至少检查一次完工；新 PID 的冷恢复会先以已建槽位核对旧账本。如果该冷读首次看到 `completed`，但同帧尚无 `campaign_root_context.player_monthly_gold_income`，旧实现把完工收据写为 `completed` 且收入为 `null`，以后只要完工状态保持 `completed`，就不再触发收入查询。生产路径的构造原生材料测试在修复前确定性复现了下一 turn 直接选择 `life-advance`。

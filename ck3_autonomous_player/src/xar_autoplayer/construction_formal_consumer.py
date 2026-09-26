@@ -18,6 +18,7 @@ from .lifestyle_formal_consumer import ROOT_QUERY_STEP, same_frame_feudal_peace_
 SUBMIT_STEP = "private-submit-player-construction-v1"
 RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 _LEDGER = "construction-formal-pending-v1.json"
+COMPLETION_WATCH_INTERVAL_RAW = 30 * 24  # 30 game days; date_raw is hourly.
 
 
 def same_frame_construction_income(
@@ -156,7 +157,8 @@ def plan_construction_private(
         if (applied.get("completion_status") != "completed"
                 and type(snapshot.get("date_raw")) is int
                 and type(last_completion_check) is int
-                and snapshot["date_raw"] >= last_completion_check + 30):
+                and snapshot["date_raw"] >= (
+                    last_completion_check + COMPLETION_WATCH_INTERVAL_RAW)):
             income_observed, _ = same_frame_construction_income(snapshot, history)
             if not income_observed and ROOT_QUERY_STEP in available_steps:
                 return {**planned, "plan": {**plan,
