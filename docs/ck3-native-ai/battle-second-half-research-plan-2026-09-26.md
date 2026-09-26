@@ -29,6 +29,8 @@
 
 第 5 项胜方 AI 重入勘误：[065 独立终局回放与有界静态提交门闩](winner-ai-builder-submit-gate.md)记录同场 day 26 正常结果后胜方路线出现 `[2639]`，但私有目标 `2639` 在 day 25 已存在；被动 observer 见 builder 调用 `1`、所监控提交点调用 `0`。原版 builder 有早退和共享门闩绕过分支，外层仅在 builder 返回未处理时才有后备提交；本案未采门闩原值和返回字节，不能判定具体路径或把路线显现说成新派令。065 启动时 Steam 截图新鲜度也已另记为未独立确认；下次须强化离线门并采实际分支。
 
+第 5 项普通终局后续 effect 的新增静态边界：[败方战分门与正统性/战争条件](normal-result-loser-effect-war-score-gate-2026-09-27.md)把原生 row `+0x40` → ResultData `+0x40` → `warscore_value` accessor → loser on-action 脚本连成可复核的同 build 链。脚本声明单场幅度 `>=15` 且身份合法时的 `-50` 正统性 effect；同一外层分支再以战争方总分 `<=-25` 等条件筛选 marshal 事件。这里只闭合调用顺序、字段身份与脚本声明；字面量比较编译和实际 effect 写回还需同场实机，不能宣称战争已经结束或 R0244 已通过。
+
 执行纪律：每个新证据先保存原始 bytes/SHA、源存档、游戏 build、CombatID/WarID、参战双方与日期，再生成只读投影。静态公式向量、条件计算、独立回放与自然 AI 行为在文档、智能体和画面中均分开标注。任何残差先查同帧输入与定点截断，再查参与者/事件边界；不能为凑零差修改历史原始回执或把模型自生成数当 expected。
 
 2026-09-26 工具勘误：`native_bridge/research/find_xrefs.py` 原来把 CK3 整个可执行节一次交给 Capstone，在本机 EXE 上以 `CS_ERR_MEM` 失败；现按指令边界分块并保留最长 x64 指令的跨块余量，另提供 `--direct-only` 快速扫绝对指针与 E8/E9 候选。跨块引用测试通过。`--direct-only` 的 E8/E9 结果仍是**字节候选**，必须对命中的 RVA 再做有界反汇编审阅；vtable 相邻槽也只证明接口身份，不自动证明跨 manager 的全局调用先后。实际用它复核了 contact `0x2208320` 的 `0x220D3BA/0x27C0FDF/0x2277F6B` 三处候选，以及 combat manager `0x27FB4D0/0x27FB5D0` 的相邻函数指针；未据此冒称已闭合全局调度顺序。
