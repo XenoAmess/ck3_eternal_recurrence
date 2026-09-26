@@ -1,0 +1,30 @@
+{
+  "schema": "ck3.native_paused_v3_base_equals_v2_schedule_parity.v1",
+  "game_build": "1.19.0.6",
+  "case_days": [
+    {
+      "source_day": 11,
+      "v2_next_schedule_parity_report_sha256": "70940B9F47392EEF8953014EC0095B2AD5F2BFF14B6B3679926CF10E01D35F98",
+      "v2_live_response_sha256": "A91BD7A7119799109D042CFFEC58F9A3595EEE5ED7B75FB8C3322E724B107820",
+      "v3_live_response_sha256": "50F1FE7946F846E237AAC2003B98BF540363C133AA8EE93AB69F388E2472E2BE",
+      "same_paused_revision": 4,
+      "regiment_count": 51,
+      "v3_base_inputs_exactly_equal_to_v2": true,
+      "v2_equals_next_schedule_count": 51
+    },
+    {
+      "source_day": 21,
+      "v2_next_schedule_parity_report_sha256": "2A52B38050D1882FE5D4F34C0221B9A4FB5415C6B8D1BC19FF38879BE3A023DA",
+      "v2_live_response_sha256": "B6433227E4C625C377A8019A53B18B1C587C2925E6653F25B7AB9A50E3408406",
+      "v3_live_response_sha256": "A8B257EE743B593DBE145ED2D6E152DC7791C092EB0B6C95BE8943B1C23AE1E1",
+      "same_paused_revision": 4,
+      "regiment_count": 63,
+      "v3_base_inputs_exactly_equal_to_v2": true,
+      "v2_equals_next_schedule_count": 63
+    }
+  ],
+  "total_v3_direct_equals_next_schedule_regiments": 114,
+  "current_paused_frame_stat_input_parity_proven_in_these_cases": true,
+  "future_day_modifier_state_prediction_proven": false,
+  "whole_battle_transition_or_win_rate_native_parity_proven": false
+}

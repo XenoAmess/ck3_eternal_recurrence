@@ -56,6 +56,20 @@ NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_FILE = (
 NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_SHA256 = (
     "07428FDB8A4CE7D0893C3A5C69BF802A613A3A60385D7A48DA01A29A8865D6D3"
 )
+EPISODE01_PAUSED_STAT_EVAL_FILES = (
+    "ck3_1_19_0_6_episode01_messina_paused_stat_eval_day11_v1.json",
+    "ck3_1_19_0_6_episode01_messina_paused_stat_eval_day21_v1.json",
+)
+EPISODE01_PAUSED_STAT_EVAL_SHA256 = (
+    "70940B9F47392EEF8953014EC0095B2AD5F2BFF14B6B3679926CF10E01D35F98",
+    "2A52B38050D1882FE5D4F34C0221B9A4FB5415C6B8D1BC19FF38879BE3A023DA",
+)
+EPISODE01_PAUSED_V3_BASE_PARITY_FILE = (
+    "ck3_1_19_0_6_episode01_messina_paused_v3_stat_base_parity_v1.json"
+)
+EPISODE01_PAUSED_V3_BASE_PARITY_SHA256 = (
+    "3150223578A89947FC96DDF447292BC9C91BF0C17F46B9F963E8C921564E6F89"
+)
 EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
@@ -564,6 +578,64 @@ def load_native_knight_effectiveness_sources() -> dict[str, Any]:
             or report.get("specific_modifier_values_sampled_in_live_battle") is not False
             or report.get("observed_185000_effectiveness_decomposition_proven") is not False):
         raise NativeBattleCaseError("knight effectiveness source scope drifted")
+    return report
+
+
+def load_episode01_paused_stat_eval_parity() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Return two same-save paused native-evaluator versus next-schedule cases."""
+    refresh = load_episode01_daily_stat_refresh()
+    reports = []
+    for index, (name, expected_sha, day, count, changed, knights) in enumerate(zip(
+        EPISODE01_PAUSED_STAT_EVAL_FILES, EPISODE01_PAUSED_STAT_EVAL_SHA256,
+        (11, 21), (51, 63), (32, 37), (24, 27), strict=True,
+    )):
+        raw = (Path(__file__).with_name("data") / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest().upper() != expected_sha:
+            raise NativeBattleCaseError("bundled paused stat-eval bytes changed without review")
+        report = json.loads(raw)
+        rows = report.get("per_regiment_comparison") if isinstance(report, dict) else None
+        responses = report.get("response_sha256") if isinstance(report, dict) else None
+        if (report.get("schema") != "ck3.native_paused_stat_eval_next_schedule_parity.v1"
+                or report.get("source_day") != day
+                or report.get("regiment_count") != count
+                or report.get("control_cache_differs_from_direct_count") != changed
+                or report.get("knight_direct_effectiveness_count") != knights
+                or report.get("paused_direct_equals_next_schedule_count") != count
+                or not isinstance(responses, dict)
+                or responses.get("next_schedule_trace") != refresh[index]["finish_response_sha256"]
+                or not isinstance(rows, list) or len(rows) != count
+                or any((row["paused_direct_damage_raw"], row["paused_direct_toughness_raw"])
+                       != (row["next_schedule_damage_raw"], row["next_schedule_toughness_raw"])
+                       for row in rows)
+                or report.get("arbitrary_future_daily_modifier_state_predicted") is not False):
+            raise NativeBattleCaseError("paused native stat-eval scope or parity drifted")
+        reports.append(report)
+    return reports[0], reports[1]
+
+
+def load_episode01_paused_v3_base_parity() -> dict[str, Any]:
+    """Return the v3 input equality that binds these cases to agent forecasts."""
+    v2_reports = load_episode01_paused_stat_eval_parity()
+    raw = (Path(__file__).with_name("data") / EPISODE01_PAUSED_V3_BASE_PARITY_FILE).read_bytes()
+    if hashlib.sha256(raw).hexdigest().upper() != EPISODE01_PAUSED_V3_BASE_PARITY_SHA256:
+        raise NativeBattleCaseError("bundled v3 base parity bytes changed without review")
+    report = json.loads(raw)
+    days = report.get("case_days") if isinstance(report, dict) else None
+    if (report.get("schema") != "ck3.native_paused_v3_base_equals_v2_schedule_parity.v1"
+            or not isinstance(days, list) or len(days) != 2
+            or report.get("total_v3_direct_equals_next_schedule_regiments") != 114
+            or report.get("future_day_modifier_state_prediction_proven") is not False
+            or report.get("whole_battle_transition_or_win_rate_native_parity_proven") is not False):
+        raise NativeBattleCaseError("paused v3 input parity scope drifted")
+    for index, day in enumerate(days):
+        if (day.get("source_day") != (11, 21)[index]
+                or day.get("v2_next_schedule_parity_report_sha256") !=
+                EPISODE01_PAUSED_STAT_EVAL_SHA256[index]
+                or day.get("v2_live_response_sha256") !=
+                v2_reports[index]["response_sha256"]["native_v2_direct"]
+                or day.get("v3_base_inputs_exactly_equal_to_v2") is not True
+                or day.get("regiment_count") != (51, 63)[index]):
+            raise NativeBattleCaseError("paused v3 day identity drifted")
     return report
 
 
@@ -1279,6 +1351,10 @@ __all__ = [
     "EPISODE01_DAILY_STAT_SOURCE_SHA256",
     "NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_FILE",
     "NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_SHA256",
+    "EPISODE01_PAUSED_STAT_EVAL_FILES",
+    "EPISODE01_PAUSED_STAT_EVAL_SHA256",
+    "EPISODE01_PAUSED_V3_BASE_PARITY_FILE",
+    "EPISODE01_PAUSED_V3_BASE_PARITY_SHA256",
     "EPISODE01_JOIN_KERNEL_FILE",
     "EPISODE01_JOIN_KERNEL_SHA256",
     "EPISODE01_JOIN_KERNEL_V2_FILE",
@@ -1320,6 +1396,8 @@ __all__ = [
     "load_episode01_daily_stat_refresh",
     "load_episode01_daily_stat_sources",
     "load_native_knight_effectiveness_sources",
+    "load_episode01_paused_stat_eval_parity",
+    "load_episode01_paused_v3_base_parity",
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
     "load_episode01_phase_event_regiment_feedback",

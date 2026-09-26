@@ -31,6 +31,8 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_daily_stat_refresh,
     load_episode01_daily_stat_sources,
     load_native_knight_effectiveness_sources,
+    load_episode01_paused_stat_eval_parity,
+    load_episode01_paused_v3_base_parity,
     load_episode01_join_day_kernel_parity,
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
@@ -104,6 +106,24 @@ class NativeBattleCaseTests(unittest.TestCase):
         ])
         self.assertEqual(names[-1], "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP")
         self.assertFalse(report["observed_185000_effectiveness_decomposition_proven"])
+
+    def test_paused_native_stat_eval_predicts_next_schedule_in_two_saved_days(self) -> None:
+        day11, day21 = load_episode01_paused_stat_eval_parity()
+        self.assertEqual([day11["regiment_count"], day21["regiment_count"]], [51, 63])
+        self.assertEqual([day11["control_cache_differs_from_direct_count"],
+                          day21["control_cache_differs_from_direct_count"]], [32, 37])
+        self.assertEqual([day11["paused_direct_equals_next_schedule_count"],
+                          day21["paused_direct_equals_next_schedule_count"]], [51, 63])
+        witness = next(row for row in day11["per_regiment_comparison"]
+                       if row["regiment_id"] == 220)
+        self.assertEqual((witness["old_cached_damage_raw"],
+                          witness["paused_direct_damage_raw"],
+                          witness["next_schedule_damage_raw"]),
+                         (20_000_000, 18_500_000, 18_500_000))
+        self.assertEqual(witness["knight_effectiveness_raw"], 185_000)
+        v3 = load_episode01_paused_v3_base_parity()
+        self.assertEqual(v3["total_v3_direct_equals_next_schedule_regiments"], 114)
+        self.assertFalse(v3["future_day_modifier_state_prediction_proven"])
 
     def test_original_outcome_and_replay_divergence_stay_separate(self) -> None:
         case = load_episode01_native_battle_case()
