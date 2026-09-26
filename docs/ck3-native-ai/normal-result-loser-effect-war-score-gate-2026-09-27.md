@@ -34,3 +34,8 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ck3_autonomou
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ck3_autonomous_player\native_bridge\research\disasm_ck3.py 0x284C7A0 --size 0xA0 --exe C:\SteamLibrary\steamapps\common\CRUSAD~1\binaries\ck3.exe
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ck3_autonomous_player\native_bridge\research\verify_normal_result_loser_effect_static.py --exe C:\SteamLibrary\steamapps\common\CRUSAD~1\binaries\ck3.exe --on-action C:\SteamLibrary\steamapps\common\CRUSAD~1\game\common\on_action\combat_on_actions.txt --legitimacy-values C:\SteamLibrary\steamapps\common\CRUSAD~1\game\common\script_values\00_legitimacy_values.txt
 ```
+
+2026-09-27 后续[原生比较器补证](warscore-trigger-generic-ge-and-loaded-node-gap-2026-09-27.md)：
+`CCombatWarscoreTrigger` 的通用操作码 `0x3CB` 确实以 signed `setge` 比较两个原始 qword，包含等号；
+但败方脚本装载后的具体 trigger 实例 `+0x50` 与右侧求值 qword 尚未在同场实机绑定。
+因此本页的 `1,500,000` 仍是字段尺度投影，不能改写成已读出的 loaded-node 值。

@@ -35,6 +35,8 @@
 
 第 5 项普通终局后续 effect 的新增静态边界：[败方战分门与正统性/战争条件](normal-result-loser-effect-war-score-gate-2026-09-27.md)把原生 row `+0x40` → ResultData `+0x40` → `warscore_value` accessor → loser on-action 脚本连成可复核的同 build 链。脚本声明单场幅度 `>=15` 且身份合法时的 `-50` 正统性 effect；同一外层分支再以战争方总分 `<=-25` 等条件筛选 marshal 事件。这里只闭合调用顺序、字段身份与脚本声明；字面量比较编译和实际 effect 写回还需同场实机，不能宣称战争已经结束或 R0244 已通过。
 
+同项比较器补研：[原生 `setge` 分支与 loaded-node 缺口](warscore-trigger-generic-ge-and-loaded-node-gap-2026-09-27.md)已证 `CCombatWarscoreTrigger` 的虚表通向 generic 比较器，操作码 `0x3CB` 对两侧 raw qword 执行包含等号的 signed `>=`。脚本实例的操作码及 RHS `1,500,000` 尚未从实际载入节点读回；这仍需同场、同 CombatID、带 VFS 来源的被动实机采样。
+
 执行纪律：每个新证据先保存原始 bytes/SHA、源存档、游戏 build、CombatID/WarID、参战双方与日期，再生成只读投影。静态公式向量、条件计算、独立回放与自然 AI 行为在文档、智能体和画面中均分开标注。任何残差先查同帧输入与定点截断，再查参与者/事件边界；不能为凑零差修改历史原始回执或把模型自生成数当 expected。
 
 2026-09-26 工具勘误：`native_bridge/research/find_xrefs.py` 原来把 CK3 整个可执行节一次交给 Capstone，在本机 EXE 上以 `CS_ERR_MEM` 失败；现按指令边界分块并保留最长 x64 指令的跨块余量，另提供 `--direct-only` 快速扫绝对指针与 E8/E9 候选。跨块引用测试通过。`--direct-only` 的 E8/E9 结果仍是**字节候选**，必须对命中的 RVA 再做有界反汇编审阅；vtable 相邻槽也只证明接口身份，不自动证明跨 manager 的全局调用先后。实际用它复核了 contact `0x2208320` 的 `0x220D3BA/0x27C0FDF/0x2277F6B` 三处候选，以及 combat manager `0x27FB4D0/0x27FB5D0` 的相邻函数指针；未据此冒称已闭合全局调度顺序。
