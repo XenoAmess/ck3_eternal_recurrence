@@ -139,8 +139,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             and isinstance(world.get("active_constructions"), list)
             and ((world.get("completed_buildings_observed") is True
                   and isinstance(world.get("completed_buildings"), list))
-                 or (not material_receipt
-                     and world.get("completed_buildings_observed") is False
+                 or (world.get("completed_buildings_observed") is False
                      and world.get("completed_buildings") is None))
             and isinstance(world.get("legal_samples"), list)
             and all(isinstance(row, Mapping)
@@ -338,8 +337,19 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                  and all(row.get(key) == candidate.get(key) for key in TUPLE_KEYS)] if isinstance(built, list) else []
     if matches and completed:
         raise BridgeUnavailableError("construction active and completed tuple conflict")
+    if matches and starting["date_raw"] == pending["pre_date_raw"]:
+        # On the action date, the native active row and exact gold spend are
+        # independent material postconditions. Completed slots can remain
+        # unreadable without weakening this start receipt.
+        before = candidate.get("gold_before_raw")
+        cost = candidate.get("stock_gold_cost_raw")
+        if (type(before) is not int or type(cost) is not int or cost <= 0
+                or world["player_gold_raw"] != before - cost):
+            raise BridgeUnavailableError(
+                "construction same-date gold spend not verified; keep pending")
     if not matches and not completed and cold_recheck and (
-            starting["date_raw"] <= pending.get("post_date_raw", -1)
+            world.get("completed_buildings_observed") is True
+            and starting["date_raw"] <= pending.get("post_date_raw", -1)
             and world.get("player_gold_raw") == candidate.get("gold_before_raw")):
         # A saved game from before the action has the original resources and
         # no matching construction. This is a real rollback, not a license

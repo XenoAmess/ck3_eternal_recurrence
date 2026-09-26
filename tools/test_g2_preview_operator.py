@@ -269,7 +269,27 @@ class G2PreviewOperatorTest(unittest.TestCase):
             sample = root / "sample"
             sample.mkdir()
             (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
-            (sample / "driver-state.json").write_text("{}", encoding="utf-8")
+            request_id = "construction-submit-" + "a" * 32
+            pending = {"status": "submitted_verification_pending",
+                       "action_request_id": request_id,
+                       "actor_character_id": 31853,
+                       "episode_run_id": "native-31853-test"}
+            driver_bytes = json.dumps({
+                "episode_character_id": 31853,
+                "episode_run_id": "native-31853-test",
+                "last_checkpoint": {"history_index": 96,
+                                    "episode_character_id": 31853,
+                                    "episode_run_id": "native-31853-test"},
+                "command_history": [{"index": 95,
+                                     "command": "private-submit-player-construction-v1",
+                                     "result": pending}],
+            }).encode("utf-8")
+            (sample / "driver-state.json").write_bytes(driver_bytes)
+            pending_bytes = json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": pending, "applied": None,
+            }).encode("utf-8")
+            (sample / "construction-formal-pending-v1.json").write_bytes(pending_bytes)
             manifest_path = root / "manifest.json"
             manifest_path.write_text(json.dumps({
                 "python": str(root / "python.exe"),
@@ -298,16 +318,15 @@ class G2PreviewOperatorTest(unittest.TestCase):
                         "pipe_name": r"\\.\pipe\ordinary-preview",
                         "environment": {"target_sha256": "c" * 64},
                         "driver_state": {
-                            "target_sha256": hashlib.sha256(b"{}").hexdigest(),
+                             "target_sha256": hashlib.sha256(driver_bytes).hexdigest(),
                         },
                         "no_launch_preflight_expectations": {
                             "pipe_name": r"\\.\pipe\ordinary-preview",
                             "expected_character_id": 31853,
                             "expected_episode_run_id": "native-31853-test",
                             "expected_checkpoint_sha256": "a" * 64,
-                            "expected_driver_state_sha256": hashlib.sha256(
-                                b"{}"
-                            ).hexdigest(),
+                             "expected_driver_state_sha256": hashlib.sha256(
+                                 driver_bytes).hexdigest(),
                             "xar_enabled": "xar_off",
                             "succession_lifecycle": (
                                 "ordinary_campaign_succession"
@@ -359,9 +378,14 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertEqual(updated_manifest["environment_sha256"], "c" * 64)
             self.assertEqual(
                 updated_manifest["driver_state_sha256"],
-                hashlib.sha256(b"{}").hexdigest(),
+                hashlib.sha256(driver_bytes).hexdigest(),
             )
             self.assertEqual(preparation["manifest_updated"], str(manifest_path))
+            sidecar = preparation["construction_pending_sidecar"]
+            self.assertEqual(sidecar["status"], "paired_no_launch")
+            self.assertEqual(sidecar["action_request_id"], request_id)
+            self.assertEqual(sidecar["sha256"], hashlib.sha256(pending_bytes).hexdigest())
+            self.assertEqual(Path(sidecar["path"]).read_bytes(), pending_bytes)
 
     def test_prepare_state_preserves_read_only_sources_and_rebinds_writable_copy(
         self,
@@ -468,6 +492,57 @@ class G2PreviewOperatorTest(unittest.TestCase):
             finally:
                 for path in source_paths:
                     path.chmod(path.stat().st_mode | stat.S_IWRITE)
+
+    def test_prepare_state_rejects_unpaired_or_overwritten_construction_sidecar(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            sample = root / "sample"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            request_id = "construction-submit-" + "b" * 32
+            pending = {"status": "submitted_verification_pending",
+                       "action_request_id": request_id,
+                       "actor_character_id": 31853,
+                       "episode_run_id": "native-31853-test"}
+            (sample / "driver-state.json").write_text(json.dumps({
+                "episode_character_id": 31853,
+                "episode_run_id": "native-31853-test",
+                "last_checkpoint": {"history_index": 96,
+                                    "episode_character_id": 31853,
+                                    "episode_run_id": "native-31853-test"},
+                "command_history": [{"index": 95,
+                                     "command": "private-submit-player-construction-v1",
+                                     "result": pending}],
+            }), encoding="utf-8")
+            sidecar_path = sample / "construction-formal-pending-v1.json"
+            wrong = {"schema": "xar.ck3.construction_formal_pending_v1",
+                     "pending": {**pending, "actor_character_id": 31854},
+                     "applied": None}
+            sidecar_path.write_text(json.dumps(wrong), encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            args = argparse.Namespace(manifest=manifest_path, sample_dir=sample)
+            with mock.patch.object(g2_preview_operator.subprocess, "run") as run:
+                with self.assertRaisesRegex(ValueError, "does not match"):
+                    g2_preview_operator.command_prepare_state(args)
+                run.assert_not_called()
+            sidecar_path.write_text(json.dumps({**wrong, "pending": pending}),
+                                    encoding="utf-8")
+            state.mkdir()
+            (state / sidecar_path.name).write_text("existing", encoding="utf-8")
+            with mock.patch.object(g2_preview_operator.subprocess, "run") as run:
+                with self.assertRaisesRegex(FileExistsError, "refusing to overwrite"):
+                    g2_preview_operator.command_prepare_state(args)
+                run.assert_not_called()
 
     def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

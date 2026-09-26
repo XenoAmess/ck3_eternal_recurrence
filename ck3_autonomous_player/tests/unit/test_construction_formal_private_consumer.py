@@ -46,7 +46,7 @@ def world(revision: int = 3, *, active: bool = False) -> dict[str, object]:
             "date_raw": 53_178_312, "player_character_id": 29829,
             "native_final_legality_evaluated": True, "native_cost_evaluated": True,
             "checks_truncated": False, "positive_income_coverage_complete": True,
-            "player_gold_raw": 50_000_000,
+            "player_gold_raw": 35_000_000 if active else 50_000_000,
             "legal_samples": [{"barony_title_id": 2103, "province_id": 2635,
                                "building_type_id": 24, "slot_index": 1,
                                "building_key": "common_tradeport_01",
@@ -79,6 +79,7 @@ class Driver:
         self.r0080_material_without_cost = False
         self.second_building_available = False
         self.no_positive_building = False
+        self.r0227_material_without_completion = False
         self.positive_coverage_incomplete = False
         self.gold_override = None
 
@@ -115,8 +116,6 @@ class Driver:
             if self.positive_coverage_incomplete:
                 source["positive_income_coverage_complete"] = False
                 source["checks_truncated"] = True
-            if self.gold_override is not None:
-                source["player_gold_raw"] = self.gold_override
             if self.completed_construction:
                 source["completed_buildings"] = [{
                     "barony_title_id": 2103, "province_id": 2635,
@@ -124,6 +123,24 @@ class Driver:
             if self.completed_source_unavailable:
                 source["completed_buildings_observed"] = False
                 source["completed_buildings"] = None
+            if self.r0227_material_without_completion:
+                post = revision >= 4 or self.active_construction
+                source["player_gold_raw"] = 24_490_601 if post else 34_490_601
+                source["completed_buildings_observed"] = False
+                source["completed_buildings"] = None
+                source["active_constructions"] = [{
+                    "barony_title_id": 2174, "province_id": 2629,
+                    "active": post, "building_type_id": 628 if post else None,
+                    "slot_index": 1 if post else None,
+                    "initiator_character_id": 29829 if post else None}]
+                source["legal_samples"] = [] if post else [{
+                    "barony_title_id": 2174, "province_id": 2629,
+                    "building_type_id": 628, "slot_index": 1,
+                    "building_key": "hill_farms_01",
+                    "native_cost_observed": True,
+                    "cost_raw_native": [10_000_000] + [0] * 9}]
+            if self.gold_override is not None:
+                source["player_gold_raw"] = self.gold_override
             if self.second_building_available and revision >= 5:
                 source["date_raw"] = self.snapshot["date_raw"]
                 source["player_gold_raw"] = 25_000_000 if revision >= 6 else 35_000_000
@@ -151,7 +168,8 @@ class Driver:
                         **({
                             "checks_truncated": True,
                             "final_legality_checks": 512,
-                            "player_gold_raw": 50_035_659,
+                            "player_gold_raw": (35_035_659 if revision >= 4
+                                                else 50_035_659),
                             "legal_samples": [
                                 {"barony_title_id": 2103, "province_id": 2635,
                                  "building_type_id": building, "slot_index": slot,
@@ -189,12 +207,18 @@ class Driver:
                                     else 7476 if self.r0080_material_without_cost
                                     else query_epoch + 2),
                     "actor_character_id": 29829,
-                    "barony_title_id": 2200 if second else 2103,
-                    "province_id": 2700 if second else 2635,
-                    "building_type_id": 30 if second else 24,
+                    "barony_title_id": (2174 if self.r0227_material_without_completion
+                                        else 2200 if second else 2103),
+                    "province_id": (2629 if self.r0227_material_without_completion
+                                    else 2700 if second else 2635),
+                    "building_type_id": (628 if self.r0227_material_without_completion
+                                         else 30 if second else 24),
                     "slot_index": 2 if second else 1,
-                    "stock_gold_cost_raw": 10_000_000 if second else 15_000_000,
+                    "stock_gold_cost_raw": (10_000_000 if
+                                            self.r0227_material_without_completion
+                                            or second else 15_000_000),
                     "gold_before_raw": (
+                        34_490_601 if self.r0227_material_without_completion else
                         35_000_000 if second else
                         50_035_659 if (self.r753_truncated_samples or
                                        self.r0080_material_without_cost)
@@ -208,7 +232,7 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
-    def test_unavailable_completed_observer_keeps_prewar_legality_but_not_receipt(self):
+    def test_unavailable_completed_observer_keeps_prewar_legality_and_start_source(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
             driver.completed_source_unavailable = True
@@ -223,7 +247,82 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertIsNone(world_source["completed_buildings"])
             receipt = transport.query_construction_private(
                 driver, expected_revision=3, material_receipt=True)
-            self.assertEqual(receipt["status"], "source_red")
+            self.assertEqual(receipt["status"], "material_source")
+            self.assertIsNone(receipt["world"]["completed_buildings"])
+
+    def test_r0227_active_tuple_and_exact_spend_apply_start_receipt_only(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r0227_material_without_completion = True
+            with mock.patch.object(transport, "_identity", return_value=(146040, "c4")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                self.assertEqual(selected["candidate"], {
+                    "barony_title_id": 2174, "province_id": 2629,
+                    "building_type_id": 628, "slot_index": 1,
+                    "stock_gold_cost_raw": 10_000_000,
+                    "gold_before_raw": 34_490_601,
+                    "building_key": "hill_farms_01",
+                    "authored_monthly_income_hundredths": 35})
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                driver.snapshot["played_character_gold"]["raw"] = 24_490_601
+                material = transport.query_construction_private(
+                    driver, expected_revision=4, material_receipt=True)
+                self.assertEqual(material["status"], "material_source")
+                self.assertIs(material["world"]["completed_buildings_observed"], False)
+                self.assertIsNone(material["world"]["completed_buildings"])
+                self.assertEqual(material["world"]["player_gold_raw"], 24_490_601)
+                receipt = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+            self.assertEqual(receipt["status"], "applied")
+            self.assertTrue(receipt["postcondition_verified"])
+            self.assertEqual(receipt["completion_status"], "in_progress")
+            self.assertIsNone(receipt["completion_observed_date_raw"])
+            self.assertIsNone(receipt["observed_player_monthly_income_delta_raw"])
+            self.assertEqual(receipt["post_player_gold_raw"], 24_490_601)
+            self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
+            self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                 for row in driver.requests), 1)
+
+    def test_r0227_cold_restore_reads_active_and_spend_without_resubmitting(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r0227_material_without_completion = True
+            with mock.patch.object(transport, "_identity", return_value=(146040, "c4")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+            restored = Driver(Path(location))
+            restored.r0227_material_without_completion = True
+            restored.active_construction = True
+            restored.snapshot = frame(1)
+            restored.snapshot["played_character_gold"]["raw"] = 24_490_601
+            with mock.patch.object(transport, "_identity", return_value=(146041, "c5")):
+                receipt = transport.query_construction_receipt(
+                    restored, pending=pending, expected_revision=1)
+            self.assertEqual(receipt["completion_status"], "in_progress")
+            self.assertEqual(receipt["post_player_gold_raw"], 24_490_601)
+            self.assertIsNone(read_construction_ledger(restored.state_dir)["pending"])
+            self.assertFalse(any(row["step"] == transport.ACTION_NATIVE
+                                 for row in restored.requests))
+
+    def test_r0227_same_day_active_without_spend_keeps_pending(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r0227_material_without_completion = True
+            with mock.patch.object(transport, "_identity", return_value=(146040, "c4")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                driver.gold_override = 34_490_601
+                with self.assertRaisesRegex(BridgeUnavailableError,
+                                             "gold spend not verified"):
+                    transport.query_construction_receipt(
+                        driver, pending=pending, expected_revision=4)
+            self.assertEqual(read_construction_ledger(driver.state_dir)["pending"],
+                             pending)
 
     def test_prewar_query_step_consumes_positive_building_before_war_query(self):
         with TemporaryDirectory() as location:
@@ -883,6 +982,27 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertIsNone(read_construction_ledger(driver.state_dir)["applied"])
                 self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
                                      for row in driver.requests), 1)
+
+    def test_unobserved_completed_slots_cannot_prove_rollback_after_restore(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", side_effect=[
+                    (123, "t1"), (123, "t1"), (124, "t2")]):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                receipt = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                driver.snapshot = frame(1)
+                driver.completed_construction = True
+                driver.completed_source_unavailable = True
+                with self.assertRaisesRegex(BridgeUnavailableError,
+                                             "material not yet observed"):
+                    transport.query_construction_receipt(
+                        driver, pending=receipt, expected_revision=1)
+            self.assertEqual(read_construction_ledger(driver.state_dir)["applied"],
+                             receipt)
 
 
 if __name__ == "__main__":
