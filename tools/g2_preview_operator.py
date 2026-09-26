@@ -279,6 +279,7 @@ def native_auto_run_command(
     private_faction_round_id_value: str | None,
     private_lifestyle_formal_trial: bool = False,
     private_construction_formal_trial: bool = False,
+    private_family_marriage_formal_trial: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -302,6 +303,8 @@ def native_auto_run_command(
         command.append("--allow-private-lifestyle-formal-trial")
     if private_construction_formal_trial:
         command.append("--allow-private-construction-formal-trial")
+    if private_family_marriage_formal_trial:
+        command.append("--allow-private-family-marriage-formal-trial")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -545,6 +548,7 @@ def command_run(args: argparse.Namespace) -> int:
         "display_mode": display_mode_contract(manifest),
         "private_lifestyle_formal_trial": args.private_lifestyle_formal_trial,
         "private_construction_formal_trial": args.private_construction_formal_trial,
+        "private_family_marriage_formal_trial": args.private_family_marriage_formal_trial,
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -575,6 +579,7 @@ def command_run(args: argparse.Namespace) -> int:
             private_faction_round_id_value=private_faction_round,
             private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
             private_construction_formal_trial=args.private_construction_formal_trial,
+            private_family_marriage_formal_trial=args.private_family_marriage_formal_trial,
             require_initial_lifestyle_focus_before_date_advance=(
                 args.require_initial_lifestyle_focus_before_date_advance
             ),
@@ -1211,6 +1216,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-construction-formal-trial",
         action="store_true",
         help="enable the bounded unadvertised construction formal route",
+    )
+    run.add_argument(
+        "--private-family-marriage-formal-trial",
+        action="store_true",
+        help="enable the bounded unadvertised first-heir marriage formal route",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
