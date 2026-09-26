@@ -1,0 +1,110 @@
+{
+  "schema": "ck3.native_knight_treatment_due.v1",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "target_character_id": 34333,
+  "source_save_sha256": "9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A",
+  "maim_report_sha256": "1BEE0CDFDA842F23134932858ADD31072C56D553CF9BE185B0B075661F86EE94",
+  "next_input_report_sha256": "961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "script_sha256": {
+    "health_events": "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB",
+    "health_effects": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+    "health_modifiers": "19C63AC5CB5189393F1A5159626780890C7CC9E6BC78DC08645AF64447739315",
+    "basic_values": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096"
+  },
+  "initial_snapshot_response_sha256": "E06F72F36EAC8FE4190DF97407DEDC7CAFD9D2F222C340AA2A882D93C1DCEEFF",
+  "daily_receipts": {
+    "7": {
+      "day": 7,
+      "date_raw": 53146392,
+      "advance_response_sha256": "448C54EE1D2EE11426AA2CF0997CBFD53DFC8FB595B52E354E63C66658671B7F",
+      "snapshot_response_sha256": "08351FE46268B5BCBE8C35E953CB59AFC638681AABA82BFBAD5257EDACFC74CC",
+      "save_response_sha256": "9B44B622EB30A7ECA23F6B3E166959B0090AECF432C2EBD5063695243F9E4583",
+      "save_sha256": "6D38D56AB27B6AEF6C446F9697D5D29F9EF284ADFC51FAFB77B3DC60FE9789C2",
+      "active_event": null,
+      "combat_ids": [],
+      "post_save_snapshot_response_sha256": "3078A93F5071B1604CB739C6BD5E9BD46BD1A7E3E803D809C339FD55C8F595BC"
+    },
+    "8": {
+      "day": 8,
+      "date_raw": 53146416,
+      "advance_response_sha256": "8E492EDFE470F481CF03DF5D7D2CF10613DC6C439A1464198087A2D3B00E82DC",
+      "snapshot_response_sha256": "0BC7A4B0A3CB4D23ADCE4A4DB34D64101282A91CFA2BEDE61D5B65B9DAE8602B",
+      "save_response_sha256": "614618CD3C1E534D5E54A7E7AA0C44FEA1AFB3BCDCFA37D9AEA085E995243435",
+      "save_sha256": "1024ECCA81FE0D5733890DB76AFECB677A6F4597F6424E989FB5C3E15594A0A6",
+      "active_event": null,
+      "combat_ids": []
+    }
+  },
+  "melted_save_sha256_by_day": {
+    "6": "B47F7474C867F314623A8702236D7B55EF2A64B08073122C55972F072545B931",
+    "7": "34B3E8A5CF773FFC55398DE087B8430666BFA966B78CB4F9A177A9FCBB5801CB",
+    "8": "225AFFB07B28C5DD9E7C811EB4A87898CE1D13FEB79F1AA78964B9BCAF68D605"
+  },
+  "character_save_projection_by_day": {
+    "6": {
+      "meta_date": "1066.12.9",
+      "target_character_id": 34333,
+      "base_health_stored": "4.68791",
+      "trait_indices": [
+        76,
+        63,
+        60,
+        16,
+        250,
+        120,
+        115
+      ],
+      "safe_failure_modifier_present": false,
+      "modifier_expiration_dates": [],
+      "health_0101_queued_count": 1
+    },
+    "7": {
+      "meta_date": "1066.12.10",
+      "target_character_id": 34333,
+      "base_health_stored": "4.68791",
+      "trait_indices": [
+        76,
+        63,
+        60,
+        16,
+        250,
+        120,
+        115
+      ],
+      "safe_failure_modifier_present": false,
+      "modifier_expiration_dates": [],
+      "health_0101_queued_count": 1
+    },
+    "8": {
+      "meta_date": "1066.12.11",
+      "target_character_id": 34333,
+      "base_health_stored": "4.68791",
+      "trait_indices": [
+        76,
+        63,
+        60,
+        16,
+        250,
+        120,
+        115
+      ],
+      "safe_failure_modifier_present": true,
+      "modifier_expiration_dates": [
+        "1067.12.11"
+      ],
+      "health_0101_queued_count": 0
+    }
+  },
+  "day6_v3_response_sha256": "A02504FC9D71F4CAB5D87AC0EE3BD67A044A29A258505A98A1E0FB95897D1E44",
+  "day8_v3_response_sha256": "7E9D66E1E9B483AF33526C0D1DB4AD72C18BFB3BFE4DEDCC45FA8DFD1F10C4A9",
+  "day8_capture_report_sha256": "BDD8E9A50E82E14D66C4ACBC06ECDAFCCCD3F0762DB09EEC0F8D94C41782C11D",
+  "day8_capture_cleanup_processes": 0,
+  "target_knight_v3_row_unchanged_day6_to_day8": true,
+  "target_regiment_v3_row_unchanged_day6_to_day8": true,
+  "safe_failure_modifier_script_health_delta": "-0.5",
+  "safe_failure_modifier_script_duration_days": 365,
+  "effective_health_numeric_directly_queried": false,
+  "other_phase_effects_excluded": false
+}

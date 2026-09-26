@@ -94,6 +94,29 @@ SHA-256 `961DA3BC152903316214CEC3CA820669F83161A3A04C6EC3D6235C239E164100`，
 不能把所有 v3 对象差异都归因于骑士致残。该证据闭合了**本案致残结果被游玩智能体的下一帧
 原版基础输入消费**，仍不代表已证明所有 effect 可变字段或未来每一日的条件分布。
 
+### 两日后治疗失败事件的原版写回
+
+独立离线 attempt `episode01-day06-treatment-due-attempt-041` 再从第 6 日不可变存档冷恢复，
+以 `life-advance` 分别推进第 7、8 日，每日验证准确 `+24` raw date、暂停状态并立即冻结存档。
+第 7 日 `meta_date=1066.12.10` 时，`health.0101` 仍在存档待触发队列，目标骑士
+`34333` 尚无治疗失败修正；第 8 日 `1066.12.11`，该队列项已消失，人物存档新增
+`safe_wound_treatment_failure_modifier`，到期日 `1067.12.11`。
+[三日原版存档与下一帧 v3 对照](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_treatment_due.json)
+SHA-256 `A74BCD32213F87C62CF14D1303825342C5F46B801107D02A4CE52F2ECDFCBAB2`；
+[复算工具](../../ck3_autonomous_player/tools/project_native_knight_treatment_due.py)校验每日回执、
+三个 Rakaly melted save、原版脚本/EXE、CombatID、最终 v3 与 CK3 清理库存。
+
+原版 `health_events.txt:326–344` 的隐藏事件在 `immediate` 中调用
+`wound_treatment_results_effect(TREATMENT=safe, OUTCOME=failure)`；
+`20_health_effects.txt:3239` 添加该 modifier，`00_health_modifiers.txt:83–86`
+定义 `health=-0.5`，`00_basic_values.txt:707` 定义失败治疗持续 365 天。
+这是**健康修正的脚本数值**，存档 `alive_data.health=4.68791` 在这三个保存点均未变，
+不能把它误报为实机读取到的有效健康 `4.18791`。骑士 trait 列表也相同。
+第 8 日再次查询同一 CombatID `16777218` 的智能体 v3：目标骑士行与第 6 日逐对象相同，
+有效勇武仍为 7，61 号兵团一人、有效伤害 612.5、坚韧 122.5。
+因此本案延后治疗结果确已写回健康 modifier，但没有再次改变当前战斗出伤/坚韧输入；
+有效健康对死亡风险的后续作用仍需在相应原生选择器上单独核验。
+
 ## 2026-09-26 第 26 日成长随机列表的实际分支与抽签
 
 第二次独立离线回放 `episode01-day26-random-list-type-attempt-036` 从相同不可变第 26 日原版存档恢复；
