@@ -1058,6 +1058,16 @@ enum class MarriageCandidateAlliancePrivateFailureV1 : std::uint8_t {
   final_legality_changed,
   projection_unavailable,
   outcome_unavailable,
+  heir_relationship_unavailable,
+};
+
+struct MarriageHeirRelationshipV1 {
+  std::int32_t betrothed_character_id = -1;
+  std::int32_t primary_spouse_character_id = -1;
+  std::vector<std::int32_t> spouse_character_ids{};
+
+  friend bool operator==(const MarriageHeirRelationshipV1 &,
+                         const MarriageHeirRelationshipV1 &) = default;
 };
 
 struct MarriageCandidateAlliancePrivateReadV1 {
@@ -1070,6 +1080,7 @@ struct MarriageCandidateAlliancePrivateReadV1 {
       bridge::MarriageNativeOutcomeClassifierFailureV1::none;
   bridge::MarriagePredictedOutcomeV1 predicted_outcome =
       bridge::MarriagePredictedOutcomeV1::unavailable;
+  MarriageHeirRelationshipV1 heir_relationship{};
 };
 
 // Recreates and finalizes one exact five-role context on application-main.

@@ -7926,6 +7926,8 @@ std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
   case Failure::final_legality_changed: return "final_legality_changed";
   case Failure::projection_unavailable: return "projection_unavailable";
   case Failure::outcome_unavailable: return "outcome_unavailable";
+  case Failure::heir_relationship_unavailable:
+    return "heir_relationship_unavailable";
   }
   return "unknown";
 }
@@ -8026,6 +8028,35 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
                           xar::bridge::MarriagePredictedOutcomeV1::marriage
                       ? "marriage"
                       : "betrothal");
+    }
+    result += ",\"heir_betrothed_character_id\":";
+    if (available && read.heir_relationship.betrothed_character_id > 0) {
+      result += SignedNumber(
+          read.heir_relationship.betrothed_character_id);
+    } else {
+      result += "null";
+    }
+    result += ",\"heir_primary_spouse_character_id\":";
+    if (available &&
+        read.heir_relationship.primary_spouse_character_id > 0) {
+      result += SignedNumber(
+          read.heir_relationship.primary_spouse_character_id);
+    } else {
+      result += "null";
+    }
+    result += ",\"heir_spouse_character_ids\":";
+    if (!available) {
+      result += "null";
+    } else {
+      result += '[';
+      for (std::size_t spouse_index = 0;
+           spouse_index < read.heir_relationship.spouse_character_ids.size();
+           ++spouse_index) {
+        if (spouse_index != 0) result += ',';
+        result += SignedNumber(
+            read.heir_relationship.spouse_character_ids[spouse_index]);
+      }
+      result += ']';
     }
     result += ",\"matrilineal_option_selected\":";
     result += available

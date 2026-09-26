@@ -1,8 +1,9 @@
 """Default-OFF, unadvertised paused five-candidate alliance projection.
 
-The native result describes only pairs that the exact-build marriage effect
-would consider if the recipient accepted. It is not an alliance receipt,
-ranking, utility, or permission to submit a marriage.
+The native result describes the first heir's current relationship, the
+marriage-or-betrothal outcome if accepted, and pairs that the exact-build
+marriage effect would consider. It is not an alliance receipt, ranking,
+utility, or permission to submit a marriage.
 """
 
 from __future__ import annotations
@@ -107,6 +108,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
     if not isinstance(rows, list) or len(rows) != 5:
         raise BridgeUnavailableError("marriage projection requires five native rows")
     observed_unavailable = False
+    observed_heir_relationship: tuple[object, object, tuple[int, ...]] | None = None
     for index, row in enumerate(rows):
         if (
             not isinstance(row, dict)
@@ -131,6 +133,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             if (row["failure"] == "none" or
                 row.get("matrilineal_option_selected") is not None or pairs or
                 row.get("predicted_outcome_if_accepted") is not None or
+                row.get("heir_betrothed_character_id") is not None or
+                row.get("heir_primary_spouse_character_id") is not None or
+                row.get("heir_spouse_character_ids") is not None or
                 (row["failure"] == "outcome_unavailable" and
                  row["outcome_failure"] == "none")):
                 raise BridgeUnavailableError("unavailable projection claims a value")
@@ -142,6 +147,25 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 {"marriage", "betrothal"} or
             type(row.get("matrilineal_option_selected")) is not bool):
             raise BridgeUnavailableError("available projection lost native option")
+        betrothed = row.get("heir_betrothed_character_id")
+        primary = row.get("heir_primary_spouse_character_id")
+        spouses = row.get("heir_spouse_character_ids")
+        if (
+            (betrothed is not None and
+             (type(betrothed) is not int or betrothed <= 0))
+            or (primary is not None and
+                (type(primary) is not int or primary <= 0))
+            or not isinstance(spouses, list)
+            or any(type(value) is not int or value <= 0 for value in spouses)
+            or len(set(spouses)) != len(spouses)
+            or (primary is not None and primary not in spouses)
+        ):
+            raise BridgeUnavailableError("heir current relationship malformed")
+        relationship = (betrothed, primary, tuple(spouses))
+        if (observed_heir_relationship is not None and
+            relationship != observed_heir_relationship):
+            raise BridgeUnavailableError("heir relationship changed between candidates")
+        observed_heir_relationship = relationship
         for pair in pairs:
             if (
                 not isinstance(pair, dict)
