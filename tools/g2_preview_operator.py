@@ -1134,6 +1134,7 @@ def command_query_first_heir_marriage_alliance_result_v1(
     args: argparse.Namespace,
 ) -> int:
     manifest = load_manifest(args.manifest.resolve())
+    lifecycle = lifecycle_contract(manifest)
     source = frozen_source_identity(manifest)
     output = args.output.resolve()
     if output.exists():
@@ -1176,6 +1177,7 @@ def command_query_first_heir_marriage_alliance_result_v1(
         "--expected-episode-run-id", str(episode),
         "--expected-checkpoint-sha256", checkpoint_before,
         "--expected-driver-state-sha256", driver_before,
+        *preflight_lifecycle_arguments(lifecycle),
     ], output / "preflight-stdout.txt", output / "preflight-stderr.txt")
     receipt["preflight_exit_code"] = preflight_exit
     if preflight_exit != 0:
