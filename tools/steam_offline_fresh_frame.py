@@ -1,0 +1,137 @@
+"""Capture a provably new Steam desktop frame before a managed CK3 launch.
+
+This tool proves that the desktop capture responded to a reversible movement
+of the live Steam window. It does not infer Steam's online/offline status from
+pixels; the operator must inspect the resulting image separately.
+"""
+
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import time
+
+import psutil
+import pyautogui
+from PIL import ImageChops
+import win32gui
+import win32process
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def _steam_windows() -> list[tuple[int, int]]:
+    found: list[tuple[int, int]] = []
+
+    def visit(hwnd: int, _: object) -> None:
+        if not win32gui.IsWindowVisible(hwnd) or win32gui.GetWindowText(hwnd) != "Steam":
+            return
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+        try:
+            if psutil.Process(pid).name().lower() == "steamwebhelper.exe":
+                found.append((hwnd, pid))
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            return
+
+    win32gui.EnumWindows(visit, None)
+    return found
+
+
+def _shift_for_rect(rect: tuple[int, int, int, int], screen_width: int) -> int:
+    left, _, right, _ = rect
+    if right + 20 <= screen_width:
+        return 20
+    if left - 20 >= 0:
+        return -20
+    raise RuntimeError("Steam window has no 20-pixel horizontal movement room")
+
+
+def capture(output_dir: Path) -> dict[str, object]:
+    if not output_dir.is_dir():
+        raise ValueError("output directory must exist")
+    before_path = output_dir / "steam-before.png"
+    moved_path = output_dir / "steam-moved.png"
+    receipt_path = output_dir / "steam-frame-freshness.json"
+    if any(path.exists() for path in (before_path, moved_path, receipt_path)):
+        raise FileExistsError("capture files already exist; use a new attempt directory")
+    if any(process.info["name"] and process.info["name"].lower() == "ck3.exe"
+           for process in psutil.process_iter(["name"])):
+        raise RuntimeError("CK3 must not be running during Steam preflight")
+    windows = _steam_windows()
+    if len(windows) != 1:
+        raise RuntimeError(f"expected one live Steam window, found {len(windows)}")
+    hwnd, pid = windows[0]
+    if win32gui.GetForegroundWindow() != hwnd:
+        raise RuntimeError("Steam must be the foreground window for this capture")
+    original = win32gui.GetWindowRect(hwnd)
+    left, top, right, bottom = original
+    screen = pyautogui.size()
+    if not (0 <= left < right <= screen.width and
+            0 <= top < bottom <= screen.height):
+        raise RuntimeError("Steam window is not wholly inside the desktop")
+    shift = _shift_for_rect(original, screen.width)
+    moved_rect = (left + shift, top, right + shift, bottom)
+    before = pyautogui.screenshot()
+    if before.size != (screen.width, screen.height):
+        raise RuntimeError("desktop screenshot dimensions disagree with desktop")
+    before.save(before_path)
+    try:
+        win32gui.MoveWindow(hwnd, moved_rect[0], top,
+                            right - left, bottom - top, True)
+        time.sleep(1)
+        observed_moved = win32gui.GetWindowRect(hwnd)
+        if observed_moved != moved_rect:
+            raise RuntimeError("Steam window did not reach its expected position")
+        moved = pyautogui.screenshot()
+        if moved.size != before.size:
+            raise RuntimeError("desktop dimensions changed during capture")
+        moved.save(moved_path)
+    finally:
+        win32gui.MoveWindow(hwnd, left, top, right - left, bottom - top, True)
+    restored = win32gui.GetWindowRect(hwnd)
+    if restored != original:
+        raise RuntimeError("Steam window could not be restored")
+    difference = ImageChops.difference(before.convert("RGB"), moved.convert("RGB"))
+    bbox = difference.getbbox()
+    edge_left = min(left, left + shift)
+    edge_right = max(left, left + shift)
+    edge_change = difference.crop((edge_left, top, edge_right, bottom)).getbbox()
+    if bbox is None or edge_change is None or _sha256(before_path) == _sha256(moved_path):
+        raise RuntimeError("desktop capture did not respond to live Steam movement")
+    receipt = {
+        "schema": "ck3.steam_fresh_desktop_frame.v1",
+        "captured_at_utc": datetime.now(timezone.utc).isoformat(),
+        "steam_hwnd": hwnd,
+        "steam_pid": pid,
+        "desktop_size": [screen.width, screen.height],
+        "before_rect": list(original),
+        "moved_rect": list(moved_rect),
+        "restored_rect": list(restored),
+        "before_path": str(before_path),
+        "before_sha256": _sha256(before_path),
+        "moved_path": str(moved_path),
+        "moved_sha256": _sha256(moved_path),
+        "pixel_difference_bbox": list(bbox),
+        "moving_edge_changed": True,
+        "offline_status_observed": None,
+    }
+    with receipt_path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(receipt, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+    return receipt
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    args = parser.parse_args()
+    print(json.dumps(capture(args.output_dir), ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
