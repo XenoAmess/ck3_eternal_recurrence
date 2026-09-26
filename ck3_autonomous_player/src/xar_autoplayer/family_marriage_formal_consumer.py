@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Mapping
 
 from .environment import write_json_atomic
+from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.domain_construction_private_transport_v1 import _identity as bridge_process_identity
 from .bridge.observed_heir_marriage_private_action_v1 import SCHEMA, SUBMIT_STEP, RESULT_STEP
 
@@ -96,9 +97,21 @@ def choose_first_heir_marriage_candidate(
 
 
 def plan_family_marriage_private(driver: object, planned: dict[str, object],
-                                 snapshot: Mapping[str, object]) -> dict[str, object]:
+                                 snapshot: Mapping[str, object], *,
+                                 prewar_arbitration: bool = False) -> dict[str, object]:
+    """Consider marriage before an opted-in native declaration query or send.
+
+    The normal turn keeps its life-advance boundary. A pre-war caller must
+    explicitly opt in; all scene, legality, value and durable-result gates
+    below are shared with that normal turn.
+    """
     plan = planned.get("plan")
-    if not isinstance(plan, dict) or plan.get("selected_step") != "life-advance":
+    if not isinstance(plan, dict):
+        return planned
+    selected = plan.get("selected_step")
+    if selected != "life-advance" and not (
+        prewar_arbitration is True and is_native_declaration_step(selected)
+    ):
         return planned
     state_dir = getattr(driver, "state_dir", None)
     if not isinstance(state_dir, Path):

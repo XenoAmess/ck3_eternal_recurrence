@@ -677,6 +677,7 @@ flowchart LR
   B --> H["Character -> House -> Dynasty full IDs; raw sex selector"]
   B --> D["final-legal five-role marriage context"]
   D --> E["predicted outcome + effective lineality bit + possible alliances"]
+  P["life-advance or explicit native declaration arbitration"] --> F
   C --> F["private candidate readback"]
   H --> F
   E --> F
@@ -691,6 +692,8 @@ flowchart LR
 ```
 
 `NW-FAMILY-PROPOSAL` 的私有 bounded 消费者只把**首继承人本人获得成人婚姻机会**列为当前窄收益：已有 spouse/betrothed 即不发案；原生预计 `betrothal`、继承人与玩家当前 House/Dynasty 不同、实际执行 lineality 与继承人 raw selector 不一致，或收件人原生 acceptance raw 非正，均不入选。正的 acceptance raw 仅是收件人答复线索，绝不当接受回执。五候选由同帧 final-legal 行按 raw 排入现有 projection；原生无玩家 AI rank，不把列举顺序伪作价值排名。子代 House/Dynasty、联盟、长期义务仍为未定项，不进入此窄收益，也不纳入 M5 公共仲裁。此 counter-policy 是静态候选，等待 Robert paused 正值行和正式后置核验。
+
+`NW-FAMILY-PREWAR` 为上层仲裁增加默认关闭的调用参数 `prewar_arbitration=True`。它只允许既有 `life-advance`，或 exact `query-declarable-wars` / 合法 `declare-war-N` 基线进入同一家庭机会评估；其它动作及 RED/空计划不受理。即使显式调用，仍要求暂停、和平、无事件及 pending interaction、同帧原生 revision、五候选 final legality/预测成人婚姻/当前 House-Dynasty 与 lineality 对齐、收件人正 raw；无正值候选保留原战争计划。原生婚姻树与价值定义不变，pending/result/cold 路径共用。此处仅交付消费者入口，尚未接入上层战前仲裁，也没有 Robert 婚配动作或后置实机证据；不得将入口当作正式消费完成。
 
 提案前持久记录可能已提交的 pair；typed native ACK 只证明提交进入 receiver。下一 paused 帧以同进程原生 resolution journal 区分 `pending`、`accepted_pending`、`refused`、`invalidated`，并以双方 spouse/betrothed 关系独立判定物质 `marriage`/`betrothal`。新 PID 冷读只使用正式 checkpoint 的首继承人身份与双方关系；若关系已成立可证明物质结果，若关系缺席则不能反推出拒绝，保持 `unresolved` 且禁止自动重发。提案后的配对 checkpoint、下一 turn 对 resolved receipt 的消费仍需实机核验；静态源码、Release DLL 与聚焦测试不算 production-live。
 
