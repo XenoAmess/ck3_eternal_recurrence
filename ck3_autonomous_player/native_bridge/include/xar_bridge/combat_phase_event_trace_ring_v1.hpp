@@ -41,6 +41,10 @@ inline constexpr std::uintptr_t kCombatPhaseEventScheduleFunctionRva =
 inline constexpr std::uintptr_t kCombatPhaseEventFireFunctionRva = 0x23C9900;
 inline constexpr std::uintptr_t kCombatPhaseEffectDispatchFunctionRva = 0x3380A00;
 inline constexpr std::uintptr_t kCombatPhaseKnightSelectFunctionRva = 0x33E8D40;
+// The first three complete instructions after 0x2F08780's early-exit branch.
+// The entry itself contains a relative branch and cannot use the 15-byte
+// position-independent trampoline shared by the other research hooks.
+inline constexpr std::uintptr_t kCombatRandomListWeightHookRva = 0x2F08789;
 inline constexpr std::uintptr_t kCombatOutgoingDamageFunctionRva = 0x23CB1D0;
 inline constexpr std::uintptr_t kCombatPostCounterAttackCaptureRva = 0x23CB435;
 inline constexpr std::uintptr_t kCombatOutgoingDamageSide0ReturnRva =
@@ -96,6 +100,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_effect_root = 1U << 14,
   trace_capture_failure_knight_select = 1U << 15,
   trace_capture_failure_effect_node = 1U << 16,
+  trace_capture_failure_random_list_weight = 1U << 17,
 };
 
 inline constexpr std::size_t kCombatPhaseEffectRootMaximumRecordsV1 = 64;
@@ -126,6 +131,28 @@ struct CombatPhaseEffectNodeRecordV1 {
   std::uint32_t salt_before = 0;
   std::uint32_t counter_after = 0;
   std::uint32_t salt_after = 0;
+};
+
+inline constexpr std::size_t kCombatRandomListWeightMaximumRecordsV1 = 64;
+inline constexpr std::size_t kCombatRandomListWeightMaximumEntriesV1 = 16;
+
+struct CombatRandomListWeightRecordV1 {
+  std::int32_t side_index = -1;
+  std::int32_t native_event_load_index = -1;
+  std::uintptr_t effect_node_identity = 0;
+  std::uint32_t entry_count = 0;
+  std::int32_t pick_count = 0;
+  std::array<std::int32_t, kCombatRandomListWeightMaximumEntriesV1>
+      weights{};
+  std::array<std::uintptr_t, kCombatRandomListWeightMaximumEntriesV1>
+      entry_node_identities{};
+  std::uint32_t selected_entry_count = 0;
+  std::array<std::uintptr_t, kCombatRandomListWeightMaximumEntriesV1>
+      selected_entry_identities{};
+  std::uint32_t child_counter_before = 0;
+  std::uint32_t child_salt_before = 0;
+  std::uint32_t child_counter_after = 0;
+  std::uint32_t child_salt_after = 0;
 };
 
 inline constexpr std::size_t kCombatPhaseKnightSelectMaximumRecordsV1 = 64;
@@ -169,6 +196,8 @@ struct CombatPhaseEventTraceCapturePlanV1 {
   std::uintptr_t module_base = 0;
   std::int32_t combat_id = -1;
   std::uintptr_t combat = 0;
+  // Private, explicit opt-in. The default seven-boundary wire is unchanged.
+  bool capture_runtime_random_list_weights = false;
   std::array<std::uintptr_t, 2> sides{};
 
   // These are addresses of native pointer slots, not snapshots of their
@@ -423,6 +452,7 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> effect_root_count{0};
   std::atomic<std::uint32_t> effect_node_call_count{0};
   std::atomic<std::uint32_t> effect_node_draw_count{0};
+  std::atomic<std::uint32_t> random_list_weight_count{0};
   std::atomic<std::uint32_t> knight_select_count{0};
   std::atomic<std::uint32_t> failure_flags{trace_capture_failure_none};
   CombatPhaseEventTraceCapturePlanV1 plan{};
@@ -432,6 +462,8 @@ struct CombatPhaseEventTraceRingV1 {
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
   std::array<CombatPhaseEffectNodeRecordV1,
              kCombatPhaseEffectNodeMaximumRecordsV1> effect_node_draws{};
+  std::array<CombatRandomListWeightRecordV1,
+             kCombatRandomListWeightMaximumRecordsV1> random_list_weights{};
   std::array<CombatPhaseKnightSelectRecordV1,
              kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
   std::array<CombatPhaseEventTraceRingRecordV1,
@@ -457,6 +489,10 @@ struct CombatPhaseEventTraceRingDrainV1 {
   std::uint32_t effect_node_draw_count = 0;
   std::array<CombatPhaseEffectNodeRecordV1,
              kCombatPhaseEffectNodeMaximumRecordsV1> effect_node_draws{};
+  bool runtime_random_list_weights_requested = false;
+  std::uint32_t random_list_weight_count = 0;
+  std::array<CombatRandomListWeightRecordV1,
+             kCombatRandomListWeightMaximumRecordsV1> random_list_weights{};
   std::uint32_t knight_select_count = 0;
   std::array<CombatPhaseKnightSelectRecordV1,
              kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
@@ -482,6 +518,8 @@ using CombatPhaseEffectDispatchOriginalV1 = std::uintptr_t (*)(
     void *node, void *context);
 using CombatPhaseKnightSelectOriginalV1 = std::int32_t (*)(
     void *selector, void *candidates, void *context);
+using CombatRandomListWeightOriginalV1 = std::uintptr_t (*)(
+    void *entries, void *weights, void *context, std::int32_t pick_count);
 using CombatOutgoingDamageOriginalV1 = std::uintptr_t (*)(
     void *side, std::int64_t *output, std::int32_t final_width,
     std::int64_t advantage_multiplier_raw, void *opposite_side);
@@ -538,6 +576,8 @@ bool BindCombatPhaseEffectDispatchOriginalV1(
     CombatPhaseEffectDispatchOriginalV1 dispatch) noexcept;
 bool BindCombatPhaseKnightSelectOriginalV1(
     CombatPhaseKnightSelectOriginalV1 select) noexcept;
+bool BindCombatRandomListWeightOriginalV1(
+    CombatRandomListWeightOriginalV1 select) noexcept;
 
 extern "C" std::uintptr_t __fastcall
 XarCombatPhaseEventScheduleHookV1(void *side,
@@ -549,6 +589,9 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
     void *node, void *context) noexcept;
 extern "C" std::int32_t __fastcall XarCombatPhaseKnightSelectHookV1(
     void *selector, void *candidates, void *context) noexcept;
+extern "C" std::uintptr_t __fastcall XarCombatRandomListWeightHookV1(
+    void *entries, void *weights, void *context,
+    std::int32_t pick_count) noexcept;
 extern "C" std::uintptr_t __fastcall XarCombatOutgoingDamageHookV1(
     void *side, std::int64_t *output, std::int32_t final_width,
     std::int64_t advantage_multiplier_raw, void *opposite_side) noexcept;

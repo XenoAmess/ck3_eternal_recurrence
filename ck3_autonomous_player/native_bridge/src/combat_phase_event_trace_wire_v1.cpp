@@ -65,6 +65,23 @@ bool AppendOpaqueToken(std::string &output, std::uintptr_t value) {
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
 }
 
+bool AppendWeightBytesHex(std::string &output,
+                          const CombatRandomListWeightRecordV1 &row) {
+  constexpr char hex[] = "0123456789ABCDEF";
+  const auto *bytes =
+      reinterpret_cast<const std::uint8_t *>(row.weights.data());
+  output.push_back('"');
+  for (std::size_t index = 0;
+       index < static_cast<std::size_t>(row.entry_count) *
+                   sizeof(std::int32_t);
+       ++index) {
+    output.push_back(hex[bytes[index] >> 4U]);
+    output.push_back(hex[bytes[index] & 0x0FU]);
+  }
+  output.push_back('"');
+  return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
+}
+
 bool AppendArmyRows(std::string &output,
                     const CombatPhaseEventTraceSideRecordV1 &side) {
   output += '[';
@@ -409,6 +426,7 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
           drain.post_counter_attack_raw.size() ||
       drain.effect_root_count > drain.effect_roots.size() ||
       drain.effect_node_draw_count > drain.effect_node_draws.size() ||
+      drain.random_list_weight_count > drain.random_list_weights.size() ||
       drain.knight_select_count > drain.knight_selects.size()) {
     return {};
   }
@@ -507,6 +525,64 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     output.push_back('}');
   }
   output += "]";
+  if (drain.runtime_random_list_weights_requested) {
+    output += ",\"runtime_random_list_weights\":{\"status\":\"";
+    output += drain.random_list_weight_count == 0
+                  ? "no_list_observed"
+                  : "captured";
+    output += "\",\"count\":";
+    if (!AppendNumber(output, drain.random_list_weight_count)) return {};
+    output += ",\"records\":[";
+    for (std::uint32_t index = 0;
+         index < drain.random_list_weight_count; ++index) {
+      const auto &row = drain.random_list_weights[index];
+      if (row.entry_count == 0 || row.entry_count > row.weights.size() ||
+          row.selected_entry_count > row.selected_entry_identities.size()) {
+        return {};
+      }
+      if (index != 0) output.push_back(',');
+      output += "{\"side_index\":";
+      if (!AppendNumber(output, row.side_index)) return {};
+      output += ",\"native_event_load_index\":";
+      if (!AppendNumber(output, row.native_event_load_index)) return {};
+      output += ",\"effect_node_identity_token\":";
+      if (!AppendOpaqueToken(output, row.effect_node_identity)) return {};
+      output += ",\"entry_count\":";
+      if (!AppendNumber(output, row.entry_count)) return {};
+      output += ",\"pick_count\":";
+      if (!AppendNumber(output, row.pick_count)) return {};
+      output += ",\"weights\":[";
+      for (std::uint32_t entry = 0; entry < row.entry_count; ++entry) {
+        if (entry != 0) output.push_back(',');
+        if (!AppendNumber(output, row.weights[entry])) return {};
+      }
+      output += "],\"weights_bytes_hex\":";
+      if (!AppendWeightBytesHex(output, row)) return {};
+      output += ",\"entry_node_identity_tokens\":[";
+      for (std::uint32_t entry = 0; entry < row.entry_count; ++entry) {
+        if (entry != 0) output.push_back(',');
+        if (!AppendOpaqueToken(output, row.entry_node_identities[entry]))
+          return {};
+      }
+      output += "],\"selected_entry_identity_tokens\":[";
+      for (std::uint32_t entry = 0; entry < row.selected_entry_count;
+           ++entry) {
+        if (entry != 0) output.push_back(',');
+        if (!AppendOpaqueToken(output, row.selected_entry_identities[entry]))
+          return {};
+      }
+      output += "],\"child_counter_before\":";
+      if (!AppendNumber(output, row.child_counter_before)) return {};
+      output += ",\"child_salt_before\":";
+      if (!AppendNumber(output, row.child_salt_before)) return {};
+      output += ",\"child_counter_after\":";
+      if (!AppendNumber(output, row.child_counter_after)) return {};
+      output += ",\"child_salt_after\":";
+      if (!AppendNumber(output, row.child_salt_after)) return {};
+      output.push_back('}');
+    }
+    output += "]}";
+  }
   output += ",\"knight_selects\":[";
   for (std::uint32_t index = 0; index < drain.knight_select_count; ++index) {
     if (index != 0) output.push_back(',');

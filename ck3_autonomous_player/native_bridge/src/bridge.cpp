@@ -9167,6 +9167,16 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
   const auto combat_id = static_cast<std::int32_t>(requested_combat_id);
   auto &session = state.experimental_combat_phase_trace;
   if (begin) {
+    bool capture_runtime_random_list_weights = false;
+    if (payload.find("\"capture_runtime_random_list_weights\"") !=
+            std::string_view::npos &&
+        !xar::bridge::JsonBooleanField(
+            payload, "capture_runtime_random_list_weights",
+            capture_runtime_random_list_weights)) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental random-list weight flag is malformed");
+    }
     std::uint64_t checkpoint_sequence = 0;
     if (!xar::bridge::JsonUnsignedField(payload, "checkpoint_sequence",
                                         checkpoint_sequence) ||
@@ -9210,6 +9220,8 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     query.detour_environment.module_base = module_base;
     query.combat_id = combat_id;
     query.managed_daily_sequence_token = token;
+    query.capture_runtime_random_list_weights =
+        capture_runtime_random_list_weights;
     // The external driver must additionally verify the save file hash and
     // official semantic pair before this private request is sent.
     query.recoverable_checkpoint_created = true;

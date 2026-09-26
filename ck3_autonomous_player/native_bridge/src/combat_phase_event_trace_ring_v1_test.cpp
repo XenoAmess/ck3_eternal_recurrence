@@ -283,8 +283,10 @@ struct Fixture {
   }
 };
 
-bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
+bool CaptureSevenRecordFixture(std::int32_t date_delta = 24,
+                               bool request_runtime_weights = false) {
   Fixture fixture;
+  fixture.plan.capture_runtime_random_list_weights = request_runtime_weights;
   auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
   if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
@@ -408,6 +410,9 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
 
   const auto &records = drain->records;
   if (drain->record_count != 7 || !drain->exact_boundary_sequence ||
+      drain->runtime_random_list_weights_requested !=
+          request_runtime_weights ||
+      drain->random_list_weight_count != 0 ||
       !drain->same_full_generation_combat || drain->same_native_date ||
       !drain->expected_one_day_date_split ||
       !drain->same_loaded_event_table ||
@@ -1000,7 +1005,8 @@ int main(int argc, char **argv) {
                 CombatPhaseEventTraceCapturePlanV1>);
   if (argc != 3 || !SourceContract(argv[1]) ||
       !SourceCodeContract(argv[2]) ||
-      !CaptureSevenRecordFixture() ||
+       !CaptureSevenRecordFixture() ||
+       !CaptureSevenRecordFixture(24, true) ||
       !CaptureSevenRecordFixture(0) ||
       !CaptureSevenRecordFixture(23) ||
       !CaptureSevenRecordFixture(48) ||

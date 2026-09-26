@@ -23,6 +23,9 @@ constexpr std::array<std::uint8_t, 15> kEffectDispatchPrologue{
 constexpr std::array<std::uint8_t, 15> kKnightSelectPrologue{
     0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54,
     0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08};
+constexpr std::array<std::uint8_t, 15> kRandomListWeightPrologue{
+    0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
+    0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
@@ -54,14 +57,17 @@ struct FixtureMemory {
   void *fire_page = nullptr;
   void *effect_dispatch_page = nullptr;
   void *knight_select_page = nullptr;
+  void *random_list_weight_page = nullptr;
   void *outgoing_damage_page = nullptr;
   void *post_counter_page = nullptr;
   bool fail_fire_patch_protection = false;
   bool fail_outgoing_damage_patch_protection = false;
+  bool fail_random_list_weight_patch_protection = false;
   bool fail_allocation = false;
   std::uintptr_t fire_target = 0;
   std::uintptr_t effect_dispatch_target = 0;
   std::uintptr_t knight_select_target = 0;
+  std::uintptr_t random_list_weight_target = 0;
   std::uintptr_t outgoing_damage_target = 0;
   std::uintptr_t post_counter_target = 0;
   std::uint32_t live_allocations = 0;
@@ -78,6 +84,9 @@ struct FixtureMemory {
     }
     if (knight_select_page != nullptr) {
       VirtualFree(knight_select_page, 0, MEM_RELEASE);
+    }
+    if (random_list_weight_page != nullptr) {
+      VirtualFree(random_list_weight_page, 0, MEM_RELEASE);
     }
     if (outgoing_damage_page != nullptr) {
       VirtualFree(outgoing_damage_page, 0, MEM_RELEASE);
@@ -127,6 +136,13 @@ bool FixtureProtect(void *raw, void *address, std::size_t size,
     previous = 0;
     return false;
   }
+  if (fixture.fail_random_list_weight_patch_protection &&
+      reinterpret_cast<std::uintptr_t>(address) ==
+          fixture.random_list_weight_target &&
+      desired == PAGE_EXECUTE_READWRITE) {
+    previous = 0;
+    return false;
+  }
   previous = 0;
   return VirtualProtect(address, size, desired, &previous) != FALSE;
 }
@@ -165,6 +181,9 @@ struct Fixture {
     memory.knight_select_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
+    memory.random_list_weight_page = VirtualAlloc(
+        nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE);
     memory.outgoing_damage_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
@@ -174,6 +193,7 @@ struct Fixture {
     if (memory.schedule_page == nullptr || memory.fire_page == nullptr ||
         memory.effect_dispatch_page == nullptr ||
         memory.knight_select_page == nullptr ||
+        memory.random_list_weight_page == nullptr ||
         memory.outgoing_damage_page == nullptr ||
         memory.post_counter_page == nullptr) {
       return;
@@ -188,6 +208,9 @@ struct Fixture {
     std::memcpy(memory.knight_select_page,
                 kKnightSelectPrologue.data(),
                 kKnightSelectPrologue.size());
+    std::memcpy(memory.random_list_weight_page,
+                kRandomListWeightPrologue.data(),
+                kRandomListWeightPrologue.size());
     std::memcpy(memory.outgoing_damage_page,
                 kOutgoingDamagePrologue.data(),
                 kOutgoingDamagePrologue.size());
@@ -202,6 +225,8 @@ struct Fixture {
                           PAGE_EXECUTE_READ, &ignored);
     (void)VirtualProtect(memory.knight_select_page, page_size,
                           PAGE_EXECUTE_READ, &ignored);
+    (void)VirtualProtect(memory.random_list_weight_page, page_size,
+                         PAGE_EXECUTE_READ, &ignored);
     (void)VirtualProtect(memory.outgoing_damage_page, page_size,
                          PAGE_EXECUTE_READ, &ignored);
     (void)VirtualProtect(memory.post_counter_page, page_size,
@@ -212,6 +237,8 @@ struct Fixture {
         reinterpret_cast<std::uintptr_t>(memory.effect_dispatch_page);
     memory.knight_select_target =
         reinterpret_cast<std::uintptr_t>(memory.knight_select_page);
+    memory.random_list_weight_target =
+        reinterpret_cast<std::uintptr_t>(memory.random_list_weight_page);
     memory.outgoing_damage_target =
         reinterpret_cast<std::uintptr_t>(memory.outgoing_damage_page);
     memory.post_counter_target =
@@ -228,6 +255,8 @@ struct Fixture {
         memory.effect_dispatch_target;
     environment.knight_select_target_override =
         memory.knight_select_target;
+    environment.random_list_weight_target_override =
+        memory.random_list_weight_target;
     environment.outgoing_damage_target_override =
         memory.outgoing_damage_target;
     environment.post_counter_target_override =
@@ -369,6 +398,36 @@ bool InstallAndUninstall() {
   return true;
 }
 
+bool OptionalRandomListWeightInstallAndUninstall() {
+  Fixture fixture;
+  fixture.environment.capture_runtime_random_list_weights = true;
+  CombatPhaseEventTraceDetourStateV1 state{};
+  if (!InstallCombatPhaseEventTraceDetoursV1(state, fixture.environment) ||
+      !state.random_list_weight_installed ||
+      fixture.memory.live_allocations != 7 ||
+      !IsAbsoluteJumpTo(
+          fixture.memory.random_list_weight_page,
+          reinterpret_cast<std::uintptr_t>(&XarCombatRandomListWeightHookV1)) ||
+      !IsAbsoluteJumpTo(
+          static_cast<const std::uint8_t *>(state.random_list_weight_trampoline) +
+              kCombatPhaseEventTraceDetourPatchBytesV1,
+          state.random_list_weight_target +
+              kCombatPhaseEventTraceDetourPatchBytesV1) ||
+      std::memcmp(state.random_list_weight_trampoline,
+                  kRandomListWeightPrologue.data(),
+                  kRandomListWeightPrologue.size()) != 0) {
+    return Fail("optional random-list detour install mismatch");
+  }
+  if (!UninstallCombatPhaseEventTraceDetoursV1(state) ||
+      state.installed.load() != 0 || fixture.memory.live_allocations != 0 ||
+      std::memcmp(fixture.memory.random_list_weight_page,
+                  kRandomListWeightPrologue.data(),
+                  kRandomListWeightPrologue.size()) != 0) {
+    return Fail("optional random-list detour uninstall mismatch");
+  }
+  return true;
+}
+
 bool AdmissionAndRollbackFailures() {
   {
     Fixture fixture;
@@ -453,6 +512,44 @@ bool AdmissionAndRollbackFailures() {
       return Fail("partial install did not roll both earlier patches back");
     }
   }
+  {
+    Fixture fixture;
+    fixture.environment.capture_runtime_random_list_weights = true;
+    DWORD previous = 0;
+    if (VirtualProtect(fixture.memory.random_list_weight_page,
+                       kRandomListWeightPrologue.size(),
+                       PAGE_EXECUTE_READWRITE, &previous) == FALSE) {
+      return Fail("optional anchor fixture protection failed");
+    }
+    static_cast<std::uint8_t *>(fixture.memory.random_list_weight_page)[0] =
+        0x90;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (InstallCombatPhaseEventTraceDetoursV1(state, fixture.environment) ||
+        (state.failure_flags.load() & trace_detour_failure_anchor) == 0 ||
+        fixture.memory.live_allocations != 0) {
+      return Fail("optional random-list anchor mismatch was admitted");
+    }
+  }
+  {
+    Fixture fixture;
+    fixture.environment.capture_runtime_random_list_weights = true;
+    fixture.memory.fail_random_list_weight_patch_protection = true;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (InstallCombatPhaseEventTraceDetoursV1(state, fixture.environment) ||
+        (state.failure_flags.load() &
+         trace_detour_failure_target_protection) == 0 ||
+        fixture.memory.live_allocations != 0 ||
+        std::memcmp(fixture.memory.random_list_weight_page,
+                    kRandomListWeightPrologue.data(),
+                    kRandomListWeightPrologue.size()) != 0 ||
+        std::memcmp(fixture.memory.schedule_page,
+                    kSchedulePrologue.data(), kSchedulePrologue.size()) != 0 ||
+        std::memcmp(fixture.memory.post_counter_page,
+                    kPostCounterOriginal.data(),
+                    kPostCounterOriginal.size()) != 0) {
+      return Fail("optional random-list patch failure did not roll back");
+    }
+  }
   return true;
 }
 
@@ -461,5 +558,9 @@ bool AdmissionAndRollbackFailures() {
 int main() {
   static_assert(kCombatPhaseEventTraceDetourPatchBytesV1 == 15);
   static_assert(kCombatPhaseEventTraceAbsoluteJumpBytesV1 == 14);
-  return InstallAndUninstall() && AdmissionAndRollbackFailures() ? 0 : 1;
+  return InstallAndUninstall() &&
+                 OptionalRandomListWeightInstallAndUninstall() &&
+                 AdmissionAndRollbackFailures()
+             ? 0
+             : 1;
 }

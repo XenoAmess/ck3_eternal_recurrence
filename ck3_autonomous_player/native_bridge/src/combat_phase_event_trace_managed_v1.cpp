@@ -711,9 +711,13 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
           CombatPhaseEventTraceManagedCompletionV1::trace_unavailable;
       return true;
     }
+    session.plan.capture_runtime_random_list_weights =
+        query->capture_runtime_random_list_weights;
 
     auto detour_environment = query->detour_environment;
     detour_environment.managed_paused_quiescence_proven = true;
+    detour_environment.capture_runtime_random_list_weights =
+        session.plan.capture_runtime_random_list_weights;
     if (!InstallCombatPhaseEventTraceDetoursV1(session.detours,
                                                detour_environment)) {
       session.stage = CombatPhaseEventTraceManagedStageV1::failed;

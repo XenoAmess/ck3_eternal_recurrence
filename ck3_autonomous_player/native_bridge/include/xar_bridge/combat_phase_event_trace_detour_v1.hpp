@@ -54,12 +54,14 @@ struct CombatPhaseEventTraceDetourEnvironmentV1 {
   bool exact_build_admitted = false;
   bool managed_paused_quiescence_proven = false;
   bool offline_fixture = false;
+  bool capture_runtime_random_list_weights = false;
   std::uintptr_t module_base = 0;
 
   std::uintptr_t schedule_target_override = 0;
   std::uintptr_t fire_target_override = 0;
   std::uintptr_t effect_dispatch_target_override = 0;
   std::uintptr_t knight_select_target_override = 0;
+  std::uintptr_t random_list_weight_target_override = 0;
   std::uintptr_t outgoing_damage_target_override = 0;
   std::uintptr_t post_counter_target_override = 0;
   std::uintptr_t schedule_side0_call_override = 0;
@@ -86,12 +88,15 @@ struct CombatPhaseEventTraceDetourStateV1 {
   std::uintptr_t fire_target = 0;
   std::uintptr_t effect_dispatch_target = 0;
   std::uintptr_t knight_select_target = 0;
+  std::uintptr_t random_list_weight_target = 0;
+  bool random_list_weight_installed = false;
   std::uintptr_t outgoing_damage_target = 0;
   std::uintptr_t post_counter_target = 0;
   void *schedule_trampoline = nullptr;
   void *fire_trampoline = nullptr;
   void *effect_dispatch_trampoline = nullptr;
   void *knight_select_trampoline = nullptr;
+  void *random_list_weight_trampoline = nullptr;
   void *outgoing_damage_trampoline = nullptr;
   void *post_counter_trampoline = nullptr;
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
@@ -102,6 +107,8 @@ struct CombatPhaseEventTraceDetourStateV1 {
       effect_dispatch_original{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       knight_select_original{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      random_list_weight_original{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_original{};
   std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>

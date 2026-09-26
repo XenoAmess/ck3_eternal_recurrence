@@ -102,6 +102,7 @@ std::atomic<CombatPhaseEventScheduleOriginalV1> g_original_schedule{nullptr};
 std::atomic<CombatPhaseEventFireOriginalV1> g_original_fire{nullptr};
 std::atomic<CombatPhaseEffectDispatchOriginalV1> g_original_effect_dispatch{nullptr};
 std::atomic<CombatPhaseKnightSelectOriginalV1> g_original_knight_select{nullptr};
+std::atomic<CombatRandomListWeightOriginalV1> g_original_random_list_weight{nullptr};
 std::atomic<CombatOutgoingDamageOriginalV1> g_original_outgoing_damage{nullptr};
 struct OriginalOutgoingCallContextV1 {
   std::uintptr_t side = 0;
@@ -112,6 +113,7 @@ thread_local std::int32_t g_original_phase_fire_side = -1;
 thread_local std::int32_t g_original_effect_root_event_row = -1;
 thread_local std::uintptr_t g_original_effect_dispatch_node = 0;
 thread_local std::uint32_t g_original_effect_dispatch_depth = 0;
+thread_local CombatRandomListWeightRecordV1 *g_original_random_list_record = nullptr;
 
 template <typename T>
 T LoadAt(std::uintptr_t base, std::size_t offset) noexcept {
@@ -1052,6 +1054,7 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.effect_root_count.store(0, std::memory_order_relaxed);
   ring.effect_node_call_count.store(0, std::memory_order_relaxed);
   ring.effect_node_draw_count.store(0, std::memory_order_relaxed);
+  ring.random_list_weight_count.store(0, std::memory_order_relaxed);
   ring.knight_select_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
@@ -1060,6 +1063,7 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.post_counter_attack_raw = {};
   ring.effect_roots = {};
   ring.effect_node_draws = {};
+  ring.random_list_weights = {};
   ring.knight_selects = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
@@ -1292,6 +1296,13 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       static_cast<std::uint32_t>(output.effect_node_draws.size()));
   std::copy_n(ring.effect_node_draws.begin(), output.effect_node_draw_count,
               output.effect_node_draws.begin());
+  output.runtime_random_list_weights_requested =
+      ring.plan.capture_runtime_random_list_weights;
+  output.random_list_weight_count = std::min<std::uint32_t>(
+      ring.random_list_weight_count.load(std::memory_order_acquire),
+      static_cast<std::uint32_t>(output.random_list_weights.size()));
+  std::copy_n(ring.random_list_weights.begin(), output.random_list_weight_count,
+              output.random_list_weights.begin());
   output.knight_select_count = std::min<std::uint32_t>(
       ring.knight_select_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.knight_selects.size()));
@@ -1394,6 +1405,15 @@ bool BindCombatPhaseKnightSelectOriginalV1(
   return true;
 }
 
+bool BindCombatRandomListWeightOriginalV1(
+    CombatRandomListWeightOriginalV1 select) noexcept {
+  if (select == nullptr) {
+    return false;
+  }
+  g_original_random_list_weight.store(select, std::memory_order_release);
+  return true;
+}
+
 extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
     void *node, void *context) noexcept {
   auto *const ring = g_active_ring.load(std::memory_order_acquire);
@@ -1487,6 +1507,27 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
     if (nested_state == 0) {
       MarkFailure(*ring, trace_capture_failure_effect_node);
     }
+    // The selected entry executes on this same original call stack.  The
+    // random-list hook owns a bounded record until its trampoline returns.
+    if (g_original_random_list_record != nullptr &&
+        nested_row.parent_node_identity ==
+            g_original_random_list_record->effect_node_identity &&
+        nested_row.node_vtable_rva == 0x4478388) {
+      auto &selected = *g_original_random_list_record;
+      if (selected.selected_entry_count >=
+          selected.selected_entry_identities.size()) {
+        MarkFailure(*ring, trace_capture_failure_random_list_weight);
+      } else if (std::find(selected.entry_node_identities.begin(),
+                           selected.entry_node_identities.begin() +
+                               selected.entry_count,
+                           nested_row.node_identity) ==
+                 selected.entry_node_identities.begin() + selected.entry_count) {
+        MarkFailure(*ring, trace_capture_failure_random_list_weight);
+      } else {
+        selected.selected_entry_identities[selected.selected_entry_count++] =
+            nested_row.node_identity;
+      }
+    }
   }
   const auto previous_effect_root_event_row = g_original_effect_root_event_row;
   const auto previous_effect_dispatch_node = g_original_effect_dispatch_node;
@@ -1535,6 +1576,106 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
 #if defined(_MSC_VER)
     } __except (EXCEPTION_EXECUTE_HANDLER) {
       MarkFailure(*ring, trace_capture_failure_effect_root);
+    }
+#endif
+  }
+  return result;
+}
+
+extern "C" std::uintptr_t __fastcall XarCombatRandomListWeightHookV1(
+    void *entries, void *weights, void *context,
+    std::int32_t pick_count) noexcept {
+  auto *const ring = g_active_ring.load(std::memory_order_acquire);
+  const auto original =
+      g_original_random_list_weight.load(std::memory_order_acquire);
+  if (original == nullptr) {
+    if (ring != nullptr) {
+      MarkFailure(*ring, trace_capture_failure_original_trampoline);
+    }
+    return 0;
+  }
+  CombatRandomListWeightRecordV1 *record = nullptr;
+  std::uintptr_t child_state = 0;
+  const auto effect = reinterpret_cast<std::uintptr_t>(entries);
+  if (ring != nullptr && ring->armed.load(std::memory_order_acquire) != 0 &&
+      ring->plan.capture_runtime_random_list_weights && effect >= 0x40 &&
+      effect - 0x40 == g_original_effect_dispatch_node &&
+      g_original_phase_fire_side >= 0 &&
+      g_original_effect_root_event_row >= 0 && weights != nullptr &&
+      context != nullptr) {
+    bool valid = false;
+    CombatRandomListWeightRecordV1 candidate{};
+#if defined(_MSC_VER)
+    __try {
+#endif
+      const auto node = effect - 0x40;
+      const auto vtable = LoadAt<std::uintptr_t>(node, 0);
+      const auto count = LoadAt<std::int32_t>(weights, 0xC);
+      const auto source_count = LoadAt<std::int32_t>(entries, 0xC);
+      child_state = LoadAt<std::uintptr_t>(context, 0x28);
+      valid = vtable == ring->plan.module_base + 0x44782B0 &&
+              count > 0 &&
+              count <= static_cast<std::int32_t>(candidate.weights.size()) &&
+              source_count == count && pick_count > 0 &&
+              pick_count <= static_cast<std::int32_t>(
+                                candidate.selected_entry_identities.size()) &&
+              child_state != 0;
+      if (valid) {
+        const auto weight_data = LoadAt<std::uintptr_t>(weights, 0);
+        const auto source_data = LoadAt<std::uintptr_t>(entries, 0);
+        valid = weight_data != 0 && source_data != 0;
+        if (valid) {
+          candidate.side_index = g_original_phase_fire_side;
+          candidate.native_event_load_index =
+              g_original_effect_root_event_row;
+          candidate.effect_node_identity = node;
+          candidate.entry_count = static_cast<std::uint32_t>(count);
+          candidate.pick_count = pick_count;
+          std::memcpy(candidate.weights.data(),
+                      reinterpret_cast<const void *>(weight_data),
+                      static_cast<std::size_t>(count) * sizeof(std::int32_t));
+          std::memcpy(candidate.entry_node_identities.data(),
+                      reinterpret_cast<const void *>(source_data),
+                      static_cast<std::size_t>(count) * sizeof(std::uintptr_t));
+          candidate.child_counter_before =
+              LoadAt<std::uint32_t>(child_state, 0);
+          candidate.child_salt_before =
+              LoadAt<std::uint32_t>(child_state, 4);
+        }
+      }
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      valid = false;
+    }
+#endif
+    if (!valid) {
+      MarkFailure(*ring, trace_capture_failure_random_list_weight);
+    } else {
+      const auto index = ring->random_list_weight_count.fetch_add(
+          1, std::memory_order_acq_rel);
+      if (index >= ring->random_list_weights.size()) {
+        MarkFailure(*ring, trace_capture_failure_capacity);
+      } else {
+        record = &ring->random_list_weights[index];
+        *record = candidate;
+      }
+    }
+  }
+  auto *const previous = g_original_random_list_record;
+  if (record != nullptr) {
+    g_original_random_list_record = record;
+  }
+  const auto result = original(entries, weights, context, pick_count);
+  g_original_random_list_record = previous;
+  if (record != nullptr) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      record->child_counter_after = LoadAt<std::uint32_t>(child_state, 0);
+      record->child_salt_after = LoadAt<std::uint32_t>(child_state, 4);
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      MarkFailure(*ring, trace_capture_failure_random_list_weight);
     }
 #endif
   }

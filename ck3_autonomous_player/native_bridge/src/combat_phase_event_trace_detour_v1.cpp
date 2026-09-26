@@ -22,6 +22,11 @@ constexpr std::array<std::uint8_t, 15> kEffectDispatchPrologue{
 constexpr std::array<std::uint8_t, 15> kKnightSelectPrologue{
     0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54,
     0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08};
+// 0x2F08789: three complete, position-independent register saves after the
+// picker function's relative early-exit branch.
+constexpr std::array<std::uint8_t, 15> kRandomListWeightPrologue{
+    0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
+    0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
@@ -289,6 +294,11 @@ void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
                                state.knight_select_trampoline, 0,
                                MEM_RELEASE);
     }
+    if (state.random_list_weight_trampoline != nullptr) {
+      (void)state.virtual_free(state.memory_context,
+                               state.random_list_weight_trampoline, 0,
+                               MEM_RELEASE);
+    }
     if (state.outgoing_damage_trampoline != nullptr) {
       (void)state.virtual_free(state.memory_context,
                                state.outgoing_damage_trampoline, 0,
@@ -304,6 +314,7 @@ void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
   state.fire_trampoline = nullptr;
   state.effect_dispatch_trampoline = nullptr;
   state.knight_select_trampoline = nullptr;
+  state.random_list_weight_trampoline = nullptr;
   state.outgoing_damage_trampoline = nullptr;
   state.post_counter_trampoline = nullptr;
 }
@@ -313,13 +324,16 @@ bool ExactAnchorsMatch(
     std::uintptr_t schedule_target, std::uintptr_t fire_target,
     std::uintptr_t effect_dispatch_target,
     std::uintptr_t knight_select_target,
+    std::uintptr_t random_list_weight_target,
     std::uintptr_t outgoing_damage_target,
     std::uintptr_t post_counter_target) noexcept {
   const auto module = environment.module_base;
   return BytesMatch(schedule_target, kSchedulePrologue) &&
          BytesMatch(fire_target, kFirePrologue) &&
          BytesMatch(effect_dispatch_target, kEffectDispatchPrologue) &&
-         BytesMatch(knight_select_target, kKnightSelectPrologue) &&
+          BytesMatch(knight_select_target, kKnightSelectPrologue) &&
+          (!environment.capture_runtime_random_list_weights ||
+           BytesMatch(random_list_weight_target, kRandomListWeightPrologue)) &&
          BytesMatch(outgoing_damage_target, kOutgoingDamagePrologue) &&
          BytesMatch(post_counter_target, kPostCounterOriginal) &&
          BytesMatch(Resolve(environment.schedule_side0_call_override, module,
@@ -389,7 +403,14 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       environment.module_base, kCombatPhaseEffectDispatchFunctionRva);
   state.knight_select_target = Resolve(
       environment.knight_select_target_override,
-      environment.module_base, kCombatPhaseKnightSelectFunctionRva);
+       environment.module_base, kCombatPhaseKnightSelectFunctionRva);
+  state.random_list_weight_installed =
+      environment.capture_runtime_random_list_weights;
+  state.random_list_weight_target =
+      state.random_list_weight_installed
+          ? Resolve(environment.random_list_weight_target_override,
+                    environment.module_base, kCombatRandomListWeightHookRva)
+          : 0;
   state.outgoing_damage_target = Resolve(
       environment.outgoing_damage_target_override,
       environment.module_base, kCombatOutgoingDamageFunctionRva);
@@ -413,8 +434,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
 
   if (!ExactAnchorsMatch(environment, state.schedule_target,
                          state.fire_target,
-                         state.effect_dispatch_target,
-                         state.knight_select_target,
+                          state.effect_dispatch_target,
+                          state.knight_select_target,
+                          state.random_list_weight_target,
                          state.outgoing_damage_target,
                          state.post_counter_target)) {
     AddFailure(state, trace_detour_failure_anchor);
@@ -433,6 +455,11 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   std::memcpy(state.knight_select_original.data(),
               reinterpret_cast<const void *>(state.knight_select_target),
               state.knight_select_original.size());
+  if (state.random_list_weight_installed) {
+    std::memcpy(state.random_list_weight_original.data(),
+                reinterpret_cast<const void *>(state.random_list_weight_target),
+                state.random_list_weight_original.size());
+  }
   std::memcpy(state.outgoing_damage_original.data(),
               reinterpret_cast<const void *>(state.outgoing_damage_target),
               state.outgoing_damage_original.size());
@@ -452,6 +479,11 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   state.knight_select_trampoline = virtual_alloc(
       state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  if (state.random_list_weight_installed) {
+    state.random_list_weight_trampoline = virtual_alloc(
+        state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
+        MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  }
   state.outgoing_damage_trampoline = virtual_alloc(
       state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
@@ -462,6 +494,8 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       state.fire_trampoline == nullptr ||
       state.effect_dispatch_trampoline == nullptr ||
       state.knight_select_trampoline == nullptr ||
+      (state.random_list_weight_installed &&
+       state.random_list_weight_trampoline == nullptr) ||
       state.outgoing_damage_trampoline == nullptr ||
       state.post_counter_trampoline == nullptr) {
     AddFailure(state, trace_detour_failure_allocation);
@@ -483,8 +517,14 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       !FillTrampoline(
           state.knight_select_trampoline,
           state.knight_select_original,
-          state.knight_select_target +
-              kCombatPhaseEventTraceDetourPatchBytesV1) ||
+           state.knight_select_target +
+               kCombatPhaseEventTraceDetourPatchBytesV1) ||
+      (state.random_list_weight_installed &&
+       !FillTrampoline(
+           state.random_list_weight_trampoline,
+           state.random_list_weight_original,
+           state.random_list_weight_target +
+               kCombatPhaseEventTraceDetourPatchBytesV1)) ||
       !FillTrampoline(
           state.outgoing_damage_trampoline,
           state.outgoing_damage_original,
@@ -497,6 +537,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       !MakeTrampolineExecutable(state, state.fire_trampoline) ||
       !MakeTrampolineExecutable(state, state.effect_dispatch_trampoline) ||
       !MakeTrampolineExecutable(state, state.knight_select_trampoline) ||
+      (state.random_list_weight_installed &&
+       !MakeTrampolineExecutable(state,
+                                 state.random_list_weight_trampoline)) ||
       !MakeTrampolineExecutable(state, state.outgoing_damage_trampoline) ||
       !MakeTrampolineExecutable(state, state.post_counter_trampoline,
                                 kCombatPostCounterTrampolineBytesV1)) {
@@ -533,6 +576,15 @@ bool InstallCombatPhaseEventTraceDetoursV1(
     g_active_detours.store(nullptr, std::memory_order_release);
     return false;
   }
+  if (state.random_list_weight_installed &&
+      !BindCombatRandomListWeightOriginalV1(
+          reinterpret_cast<CombatRandomListWeightOriginalV1>(
+              state.random_list_weight_trampoline))) {
+    AddFailure(state, trace_detour_failure_original_binding);
+    FreeTrampolines(state);
+    g_active_detours.store(nullptr, std::memory_order_release);
+    return false;
+  }
 
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       schedule_patch{};
@@ -542,6 +594,8 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       effect_dispatch_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       knight_select_patch{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      random_list_weight_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_patch{};
   std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
@@ -557,7 +611,13 @@ bool InstallCombatPhaseEventTraceDetoursV1(
                          &XarCombatPhaseEffectDispatchHookV1));
   WriteAbsoluteJump(knight_select_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
-                        &XarCombatPhaseKnightSelectHookV1));
+                         &XarCombatPhaseKnightSelectHookV1));
+  if (state.random_list_weight_installed) {
+    WriteAbsoluteJump(random_list_weight_patch.data(),
+                      reinterpret_cast<std::uintptr_t>(
+                          &XarCombatRandomListWeightHookV1));
+    random_list_weight_patch.back() = 0x90;
+  }
   WriteAbsoluteJump(outgoing_damage_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatOutgoingDamageHookV1));
@@ -599,10 +659,23 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       WriteTargetBytes(state, state.post_counter_target,
                        state.post_counter_original.data(),
                        post_counter_patch.data(),
-                       kCombatPostCounterPatchBytesV1);
+                           kCombatPostCounterPatchBytesV1);
+  const bool random_list_weight_patch_installed =
+      post_counter_installed &&
+      (!state.random_list_weight_installed ||
+       WriteTargetBytes(state, state.random_list_weight_target,
+                        state.random_list_weight_original.data(),
+                        random_list_weight_patch.data()));
   if (!schedule_installed || !fire_installed ||
-      !effect_dispatch_installed || !knight_select_installed ||
-      !outgoing_damage_installed || !post_counter_installed) {
+       !effect_dispatch_installed || !knight_select_installed ||
+       !outgoing_damage_installed || !post_counter_installed ||
+       !random_list_weight_patch_installed) {
+    if (post_counter_installed) {
+      (void)RestoreTarget(state, state.post_counter_target,
+                          post_counter_patch.data(),
+                          state.post_counter_original.data(),
+                          kCombatPostCounterPatchBytesV1);
+    }
     if (outgoing_damage_installed) {
       (void)RestoreTarget(state, state.outgoing_damage_target,
                           outgoing_damage_patch.data(),
@@ -640,6 +713,11 @@ bool InstallCombatPhaseEventTraceDetoursV1(
     (void)BindCombatPhaseKnightSelectOriginalV1(
         reinterpret_cast<CombatPhaseKnightSelectOriginalV1>(
             state.knight_select_target));
+    if (state.random_list_weight_installed) {
+      (void)BindCombatRandomListWeightOriginalV1(
+          reinterpret_cast<CombatRandomListWeightOriginalV1>(
+              state.random_list_weight_target));
+    }
     FreeTrampolines(state);
     g_active_detours.store(nullptr, std::memory_order_release);
     return false;
@@ -660,14 +738,18 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
     return false;
   }
   if (state.schedule_target == 0 || state.fire_target == 0 ||
-      state.effect_dispatch_target == 0 ||
-      state.knight_select_target == 0 ||
+       state.effect_dispatch_target == 0 ||
+       state.knight_select_target == 0 ||
+       (state.random_list_weight_installed &&
+        state.random_list_weight_target == 0) ||
       state.outgoing_damage_target == 0 ||
       state.post_counter_target == 0 ||
       state.schedule_trampoline == nullptr ||
       state.fire_trampoline == nullptr ||
-      state.effect_dispatch_trampoline == nullptr ||
-      state.knight_select_trampoline == nullptr ||
+       state.effect_dispatch_trampoline == nullptr ||
+       state.knight_select_trampoline == nullptr ||
+       (state.random_list_weight_installed &&
+        state.random_list_weight_trampoline == nullptr) ||
       state.outgoing_damage_trampoline == nullptr ||
       state.post_counter_trampoline == nullptr) {
     AddFailure(state, trace_detour_failure_target_identity);
@@ -683,6 +765,8 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       knight_select_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      random_list_weight_patch{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_patch{};
   std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
       post_counter_patch{};
@@ -697,7 +781,13 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
                          &XarCombatPhaseEffectDispatchHookV1));
   WriteAbsoluteJump(knight_select_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
-                        &XarCombatPhaseKnightSelectHookV1));
+                         &XarCombatPhaseKnightSelectHookV1));
+  if (state.random_list_weight_installed) {
+    WriteAbsoluteJump(random_list_weight_patch.data(),
+                      reinterpret_cast<std::uintptr_t>(
+                          &XarCombatRandomListWeightHookV1));
+    random_list_weight_patch.back() = 0x90;
+  }
   WriteAbsoluteJump(outgoing_damage_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatOutgoingDamageHookV1));
@@ -734,19 +824,35 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
       AddFailure(state, trace_detour_failure_rollback);
     }
   };
+  const auto restore_random_list_weight_patch = [&]() noexcept {
+    if (state.random_list_weight_installed &&
+        !WriteTargetBytes(state, state.random_list_weight_target,
+                          state.random_list_weight_original.data(),
+                          random_list_weight_patch.data())) {
+      AddFailure(state, trace_detour_failure_rollback);
+    }
+  };
 
   // Restore all entrypoints before invalidating any trampoline.  A failed
   // restore deliberately leaves the installation owned and the trampolines
   // alive; the caller may retry from another verified paused pump.
+  if (state.random_list_weight_installed &&
+      !RestoreTarget(state, state.random_list_weight_target,
+                     random_list_weight_patch.data(),
+                     state.random_list_weight_original.data())) {
+    return false;
+  }
   if (!RestoreTarget(state, state.knight_select_target,
-                     knight_select_patch.data(),
-                     state.knight_select_original.data())) {
+                      knight_select_patch.data(),
+                      state.knight_select_original.data())) {
+    restore_random_list_weight_patch();
     return false;
   }
   if (!RestoreTarget(state, state.effect_dispatch_target,
                      effect_dispatch_patch.data(),
                      state.effect_dispatch_original.data())) {
     restore_knight_select_patch();
+    restore_random_list_weight_patch();
     return false;
   }
   if (!RestoreTarget(state, state.post_counter_target,
@@ -755,6 +861,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
                      kCombatPostCounterPatchBytesV1)) {
     restore_effect_dispatch_patch();
     restore_knight_select_patch();
+    restore_random_list_weight_patch();
     return false;
   }
   if (!RestoreTarget(state, state.outgoing_damage_target,
@@ -763,6 +870,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
     restore_post_counter_patch();
     restore_effect_dispatch_patch();
     restore_knight_select_patch();
+    restore_random_list_weight_patch();
     return false;
   }
   if (!RestoreTarget(state, state.fire_target, fire_patch.data(),
@@ -775,6 +883,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
     restore_post_counter_patch();
     restore_effect_dispatch_patch();
     restore_knight_select_patch();
+    restore_random_list_weight_patch();
     return false;
   }
   if (!RestoreTarget(state, state.schedule_target,
@@ -795,6 +904,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
     restore_post_counter_patch();
     restore_effect_dispatch_patch();
     restore_knight_select_patch();
+    restore_random_list_weight_patch();
     return false;
   }
   if (!BindCombatPhaseEventTraceOriginalTrampolinesV1(
@@ -816,6 +926,13 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
   if (!BindCombatPhaseKnightSelectOriginalV1(
           reinterpret_cast<CombatPhaseKnightSelectOriginalV1>(
               state.knight_select_target))) {
+    AddFailure(state, trace_detour_failure_original_binding);
+    return false;
+  }
+  if (state.random_list_weight_installed &&
+      !BindCombatRandomListWeightOriginalV1(
+          reinterpret_cast<CombatRandomListWeightOriginalV1>(
+              state.random_list_weight_target))) {
     AddFailure(state, trace_detour_failure_original_binding);
     return false;
   }

@@ -204,8 +204,59 @@ bool HappyPath() {
     }
   }
   if (Has(json, "\"combat\":") || Has(json, "\"side\":") ||
-      Has(json, "\"character\":")) {
+       Has(json, "\"character\":")) {
     return Fail("wire exposed a reusable native object address field");
+  }
+  if (Has(json, "\"runtime_random_list_weights\":")) {
+    return Fail("default wire unexpectedly changed for optional capture");
+  }
+  return true;
+}
+
+bool OptionalRuntimeWeights() {
+  const auto drain = SmallDrain();
+  drain->runtime_random_list_weights_requested = true;
+  drain->random_list_weight_count = 1;
+  auto &row = drain->random_list_weights[0];
+  row.side_index = 1;
+  row.native_event_load_index = 11;
+  row.effect_node_identity = 0x3BA;
+  row.entry_count = 3;
+  row.pick_count = 1;
+  row.weights[0] = 40;
+  row.weights[1] = 30;
+  row.weights[2] = 15;
+  row.entry_node_identities[0] = 0x3BB;
+  row.entry_node_identities[1] = 0x3BC;
+  row.entry_node_identities[2] = 0x3BD;
+  row.selected_entry_count = 1;
+  row.selected_entry_identities[0] = 0x3BC;
+  row.child_counter_before = 2708350930U;
+  row.child_counter_after = 2708350931U;
+  const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  constexpr std::array<std::string_view, 7> required{
+      "\"runtime_random_list_weights\":{\"status\":\"captured\",\"count\":1",
+      "\"side_index\":1,\"native_event_load_index\":11",
+      "\"entry_count\":3,\"pick_count\":1",
+      "\"weights\":[40,30,15]",
+      "\"weights_bytes_hex\":\"280000001E0000000F000000\"",
+      "\"selected_entry_identity_tokens\":[\"process-local-0x3BC\"]",
+      "\"child_counter_after\":2708350931",
+  };
+  for (const auto token : required) {
+    if (!Has(json, token)) {
+      return Fail("optional runtime weight wire missing token");
+    }
+  }
+  row.entry_count = static_cast<std::uint32_t>(row.weights.size() + 1);
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
+    return Fail("invalid runtime weight entry count was admitted");
+  }
+  row.entry_count = 3;
+  drain->random_list_weight_count =
+      static_cast<std::uint32_t>(drain->random_list_weights.size() + 1);
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
+    return Fail("invalid runtime weight record count was admitted");
   }
   return true;
 }
@@ -268,7 +319,7 @@ bool OversizeFailsClosed() {
 } // namespace
 
 int main() {
-  return HappyPath() && InvalidCountsFailClosed() &&
+  return HappyPath() && OptionalRuntimeWeights() && InvalidCountsFailClosed() &&
                  MissingRowMapStaysExplicitlyUnknown() &&
                  OversizeFailsClosed()
              ? 0

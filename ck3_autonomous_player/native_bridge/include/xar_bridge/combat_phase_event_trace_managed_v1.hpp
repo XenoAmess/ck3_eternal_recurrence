@@ -134,6 +134,7 @@ struct CombatPhaseEventTraceBeginContextV1 {
   std::int32_t combat_id = -1;
   std::uint64_t managed_daily_sequence_token = 0;
   bool recoverable_checkpoint_created = false;
+  bool capture_runtime_random_list_weights = false;
   CombatPhaseEventTraceManagedCompletionV1 completion =
       CombatPhaseEventTraceManagedCompletionV1::not_executed;
   std::uint32_t executor_invocations = 0;
