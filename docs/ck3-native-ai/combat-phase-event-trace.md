@@ -295,6 +295,43 @@ CharacterID 静态 ABI，但还需在本 effect 执行上下文验证 `scope:phy
 读法，再在独立默认关闭的私有开关下有界采集；任何失败应单列标志、保留原始 066
 权重回执，不以 `[40,50]` 反推医师即时状态。本轮未改 DLL 或默认 wire，也未启动 CK3。
 
+#### 医师升阶写入的下一层静态定位（仍未授权医师字段 hook）
+
+[精确构建静态证据；没有新增实机采集] `20_health_effects.txt:1476-1493` 的
+`physician_level_up_chance_effect` 在医师存活且未达到 `lifestyle_physician` 满级时执行
+`chance=10` 的 `random`，命中才调用 `physician_lifestyle_rank_up_effect`；
+`00_lifestyle_focus_effects.txt:552-571` 把该效果分为无特质的 `add_trait` 与已有特质、XP
+低于 100 的 `add_trait_xp(value=10)`。因此治疗列表前态与抽签时后态必须分开记录，
+不能单凭 066 列表权重证明这一次 10% 抽签有没有命中。
+
+对上文绑定的 CK3 EXE，`add_trait_xp` 字面量 RVA `0x445E978` 由 `0x5D1841`
+注册；其 factory `0x2ED2030` 在 `0x2ED205C` 设置 effect vtable
+`0x445F2A0`，该表 `+0xB0` 指向执行入口 `0x2ED12B0`。入口在
+`0x2ED12BC-0x2ED130D` 从执行 context 的 kind-4 CharacterID 解析带 generation
+校验的人物。已有特质分支在 `0x2ED14B6-0x2ED14F4` 查
+`CCharacter+0xF0/+0xFC` trait ID 列表；`0x2ED1523` 通过 `0x260EA70`
+累计先前 trait 的 track 数，随后 `0x2ED152D-0x2ED1534` 读
+`CCharacter+0x138` 扁平 XP 数组；`0x2ED1570-0x2ED158B` 加 delta、夹在
+`[0,10000000]` 内并写回该 XP 槽。`0x260EA70` 会碰全局 trait storage
+及锁状态，不能在采集 hook 中直接调用它；读 XP 还须先证明 trait key、track index、
+数组长度和 generation 在该线程的一致性。
+
+`add_trait` 字面量 RVA `0x40F6C30` 的注册入口是 `0x5D0FF0`，factory
+`0x2ED1B30` 创建 vtable `0x445F770`；它的 `+0xB0` 是复合执行器
+`0x3380EC0`，逐个调用子 effect。当前尚未把实际添加
+`lifestyle_physician` 的子节点和人物 trait 写入点唯一对应起来，不能用
+`0x2ED12B0` 的 XP 入口替代无特质分支。`0x2ED0EE0` 通向
+`0x260F190`，但后者从 `CCharacter+0xF0` **删除** trait ID，
+不是本次 `add_trait` 写入证据。以上注册、vtable 和写回锚点可由
+[只读校验器](../../ck3_autonomous_player/native_bridge/research/verify_phase_physician_rankup_abi.py)
+按完整指令和 EXE SHA 复核。
+
+剩余的最小闭环是：定位本次 `random(chance=10)` 的编译节点身份及其前后边界，
+确认本 effect context 的 named `scope:physician` 行标识与 generation，证明治疗
+`learning` 求值用的即时有效技能（现有 `CCharacter+0xE4` 仅是 v3 读数），
+并闭合无特质分支的写入与 XP track 安全读取。四项完成前只保留现有权重 observer；
+新增医师身份、学习、升阶前后态的私有钩子维持关闭。
+
 ### 事件后的下一帧智能体输入
 
 又从本次回放保存的第 27 日不可变存档（SHA-256
