@@ -1,0 +1,171 @@
+{
+  "schema": "ck3.native_knight_maim_next_input.v1",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_day": 5,
+  "next_day": 6,
+  "source_save_sha256": "D978D75A2212604CFDD9BF7FBDEF3424E85E39C5092D7245D04590694017FA01",
+  "post_event_save_sha256": "9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A",
+  "maim_report_sha256": "1BEE0CDFDA842F23134932858ADD31072C56D553CF9BE185B0B075661F86EE94",
+  "source_v3_response_sha256": "DEA079E6BAE417A3383797DF391D0BE92EF1790CCDDC0C6FB6DAFACB2EB2700A",
+  "source_trace_response_sha256": "EC61C0FD308E09B95FED5F7D9AB0BEFA01054DD87ECD45A4D9897BEBBFC2DA14",
+  "next_snapshot_response_sha256": "11D7D0EAA99E9DDA604F2971EC47473FAE7D7BBC9D4E100A673D7508B38F873D",
+  "next_control_response_sha256": "AA78BB167B136AECB02467DCEEEC4685F93FF0327000D2437FCE08AB0E96049E",
+  "next_v3_response_sha256": "A02504FC9D71F4CAB5D87AC0EE3BD67A044A29A258505A98A1E0FB95897D1E44",
+  "next_capture_report_sha256": "94998B0C427DFB825B1381581E1A72349EE9E95AB341C1E2DE4DDA3FED0D2689",
+  "next_capture_cleanup_processes": 0,
+  "regiments_before_after": [
+    51,
+    51
+  ],
+  "knights_before_after": [
+    24,
+    24
+  ],
+  "unchanged_other_knight_rows": 23,
+  "unchanged_other_regiment_effective_stat_rows": 50,
+  "maimed_character_id": 34333,
+  "maimed_regiment_id": 61,
+  "maimed_next_input_before": {
+    "eligible": true,
+    "character_id": 34333,
+    "source_regiment_id": 61,
+    "army_id": 18,
+    "participant_army_membership_verified": true,
+    "prowess": 11,
+    "knight_effectiveness_raw": 175000,
+    "effective_damage_raw": 96250000,
+    "effective_toughness_raw": 19250000,
+    "scale": 100000,
+    "effectiveness_components": {
+      "status": "available",
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ]
+    }
+  },
+  "maimed_next_input_after": {
+    "eligible": true,
+    "character_id": 34333,
+    "source_regiment_id": 61,
+    "army_id": 18,
+    "participant_army_membership_verified": true,
+    "prowess": 7,
+    "knight_effectiveness_raw": 175000,
+    "effective_damage_raw": 61250000,
+    "effective_toughness_raw": 12250000,
+    "scale": 100000,
+    "effectiveness_components": {
+      "status": "available",
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ]
+    }
+  },
+  "maimed_regiment_current_soldiers_before_after": [
+    1,
+    1
+  ],
+  "other_regiment_soldier_changes": [
+    {
+      "regiment_id": 50,
+      "before": 66,
+      "after": 65
+    },
+    {
+      "regiment_id": 51,
+      "before": 199,
+      "after": 198
+    },
+    {
+      "regiment_id": 54,
+      "before": 340,
+      "after": 333
+    },
+    {
+      "regiment_id": 55,
+      "before": 219,
+      "after": 214
+    },
+    {
+      "regiment_id": 72,
+      "before": 86,
+      "after": 85
+    },
+    {
+      "regiment_id": 88,
+      "before": 216,
+      "after": 214
+    },
+    {
+      "regiment_id": 102,
+      "before": 336,
+      "after": 332
+    },
+    {
+      "regiment_id": 104,
+      "before": 298,
+      "after": 296
+    },
+    {
+      "regiment_id": 107,
+      "before": 347,
+      "after": 343
+    },
+    {
+      "regiment_id": 132,
+      "before": 56,
+      "after": 55
+    },
+    {
+      "regiment_id": 144,
+      "before": 108,
+      "after": 106
+    },
+    {
+      "regiment_id": 218,
+      "before": 401,
+      "after": 396
+    }
+  ],
+  "full_mutable_write_set_proven": false,
+  "all_future_day_transitions_proven": false
+}
