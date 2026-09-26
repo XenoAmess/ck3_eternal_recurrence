@@ -193,10 +193,24 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
             and source.get("actor_character_id") == starting["played_character"]["character_id"]):
         raise BridgeUnavailableError("construction pre-submit frame changed; no native send")
     ledger = read_construction_ledger(state_dir)
-    if ledger["pending"] is not None or (isinstance(ledger["applied"], dict)
-                                         and ledger["applied"].get("episode_run_id") == starting["episode_run_id"]):
-        raise BridgeUnavailableError("construction already pending or applied; no duplicate send")
     pid, creation = _identity(driver)
+    if ledger["pending"] is not None:
+        raise BridgeUnavailableError("construction already pending; no duplicate send")
+    applied = ledger["applied"]
+    if isinstance(applied, dict) and applied.get("episode_run_id") == starting["episode_run_id"]:
+        # The previous action is durable evidence, not a lifetime limit on
+        # economic construction.  Only a later game day in the verified
+        # process may spend again; a cold process is rechecked by the planner.
+        if not (applied.get("status") == "applied"
+                and applied.get("postcondition_verified") is True
+                and applied.get("actor_character_id") == source["actor_character_id"]
+                and (pid, creation) == (applied.get("post_bridge_pid"),
+                                        applied.get("post_bridge_creation_date"))
+                and type(applied.get("post_native_revision")) is int
+                and type(applied.get("post_date_raw")) is int
+                and source["native_revision"] > applied["post_native_revision"]
+                and source["date_raw"] > applied["post_date_raw"]):
+            raise BridgeUnavailableError("construction receipt not yet consumed on a later game day")
     request_id = f"construction-submit-{uuid.uuid4().hex}"
     pending = {"status": "action_state_unknown", "action_request_id": request_id,
                "episode_run_id": starting["episode_run_id"],

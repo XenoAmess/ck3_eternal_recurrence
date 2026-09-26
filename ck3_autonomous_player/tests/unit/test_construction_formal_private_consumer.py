@@ -67,6 +67,7 @@ class Driver:
         self.unknown_gold = False
         self.r753_truncated_samples = False
         self.r0080_material_without_cost = False
+        self.second_building_available = False
 
     def take_snapshot(self):
         return {**self.snapshot, "native_command_history": [
@@ -93,12 +94,30 @@ class Driver:
             else revision * 10
         )
         if request["step"] == transport.QUERY_NATIVE:
+            source = world(revision, active=revision >= 4 or self.active_construction)
+            if self.second_building_available and revision >= 5:
+                source["date_raw"] = self.snapshot["date_raw"]
+                source["player_gold_raw"] = 25_000_000 if revision >= 6 else 35_000_000
+                second_sample = {
+                    "barony_title_id": 2200, "province_id": 2700,
+                    "building_type_id": 30, "slot_index": 2,
+                    "native_cost_observed": True,
+                    "cost_raw_native": [10_000_000] + [0] * 9,
+                }
+                source["legal_samples"] = [] if revision >= 6 else [second_sample]
+                source["active_constructions"].append({
+                    "barony_title_id": 2200, "province_id": 2700,
+                    "active": revision >= 6,
+                    "building_type_id": 30 if revision >= 6 else None,
+                    "slot_index": 2 if revision >= 6 else None,
+                    "initiator_character_id": 29829 if revision >= 6 else None,
+                })
             result = {"step": transport.QUERY_NATIVE, "accepted": True,
                 "private_probe": {"advertised": False,
                     "snapshot_revision": revision, "proof_epoch": query_epoch,
-                    "date_raw": 53_178_312,
+                    "date_raw": self.snapshot["date_raw"],
                     "player_world_building_sources": {
-                        **world(revision, active=revision >= 4 or self.active_construction),
+                        **source,
                         **({
                             "checks_truncated": True,
                             "final_legality_checks": 512,
@@ -127,6 +146,7 @@ class Driver:
                         **({"player_gold_raw": None} if self.unknown_gold else {}),
                     }}}
         else:
+            second = self.second_building_available and revision >= 5
             result = {"step": transport.ACTION_NATIVE, "accepted": True,
                 "private_probe": {"private_action": {
                     "status": "pending_receipt", "applied": False,
@@ -136,10 +156,14 @@ class Driver:
                     "proof_epoch": (4664 if self.r753_truncated_samples
                                     else 7476 if self.r0080_material_without_cost
                                     else query_epoch + 2),
-                    "actor_character_id": 29829, "barony_title_id": 2103,
-                    "province_id": 2635, "building_type_id": 24,
-                    "slot_index": 1, "stock_gold_cost_raw": 15_000_000,
+                    "actor_character_id": 29829,
+                    "barony_title_id": 2200 if second else 2103,
+                    "province_id": 2700 if second else 2635,
+                    "building_type_id": 30 if second else 24,
+                    "slot_index": 2 if second else 1,
+                    "stock_gold_cost_raw": 10_000_000 if second else 15_000_000,
                     "gold_before_raw": (
+                        35_000_000 if second else
                         50_035_659 if (self.r753_truncated_samples or
                                        self.r0080_material_without_cost)
                         else 50_000_000
@@ -392,6 +416,54 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertEqual(following["plan"]["construction_receipt_consumed"], receipt)
                 self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
                                      for row in driver.requests), 1)
+
+    def test_later_day_reopens_a_distinct_affordable_construction(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                first = transport.query_construction_private(driver, expected_revision=3)
+                first_pending = transport.submit_construction_private(
+                    driver, query=first, expected_revision=3)
+                driver.snapshot = frame(4)
+                receipt = transport.query_construction_receipt(
+                    driver, pending=first_pending, expected_revision=4)
+                same_frame = {"plan": {"selected_step": "life-advance"}, "revision": 4}
+                before_queries = len(driver.requests)
+                consumed = plan_construction_private(
+                    driver, same_frame, frame(4), root(4), set())
+                self.assertEqual(consumed["plan"]["selected_step"], "life-advance")
+                self.assertEqual(len(driver.requests), before_queries)
+
+                later = frame(5)
+                later["date_raw"] += 24
+                driver.snapshot = later
+                driver.second_building_available = True
+                later_root = root(5)
+                later_root[0]["result"]["campaign_root_context"]["date_raw"] = later["date_raw"]
+                later_plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"}, "revision": 5},
+                    later, later_root, set())
+                self.assertEqual(later_plan["plan"]["selected_step"], SUBMIT_STEP)
+                self.assertEqual(later_plan["plan"]["construction_receipt_consumed"], receipt)
+                self.assertEqual(later_plan["plan"]["construction_private_query"]["candidate"]["province_id"], 2700)
+                second_pending = transport.submit_construction_private(
+                    driver, query=later_plan["plan"]["construction_private_query"],
+                    expected_revision=5)
+                self.assertNotEqual(second_pending["action_request_id"],
+                                    first_pending["action_request_id"])
+                self.assertEqual(read_construction_ledger(driver.state_dir)["pending"],
+                                 second_pending)
+                self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                     for row in driver.requests), 2)
+                later_material = frame(6)
+                later_material["date_raw"] += 48
+                driver.snapshot = later_material
+                second_receipt = transport.query_construction_receipt(
+                    driver, pending=second_pending, expected_revision=6)
+                self.assertEqual(second_receipt["candidate"]["province_id"], 2700)
+                self.assertEqual(second_receipt["post_player_gold_raw"], 25_000_000)
+                self.assertTrue(second_receipt["postcondition_verified"])
+                self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
 
     def test_lost_ack_stays_pending_across_cold_process_and_requires_material(self):
         with TemporaryDirectory() as location:

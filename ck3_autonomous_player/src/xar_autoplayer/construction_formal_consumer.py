@@ -84,8 +84,16 @@ def plan_construction_private(
                 "selected_step": RECEIPT_STEP,
                 "construction_pending_action": dict(applied),
                 "reason": "cold restore may load an earlier checkpoint; verify construction before using ledger"}}
-        return {**planned, "plan": {**plan,
-            "construction_receipt_consumed": dict(applied)}}
+        plan = {**plan, "construction_receipt_consumed": dict(applied)}
+        # The receipt is consumed on the following formal turn.  A later
+        # game day can present another legal province after that turn.
+        if not (type(snapshot.get("native_revision")) is int
+                and type(snapshot.get("date_raw")) is int
+                and type(applied.get("post_native_revision")) is int
+                and type(applied.get("post_date_raw")) is int
+                and snapshot["native_revision"] > applied["post_native_revision"]
+                and snapshot["date_raw"] > applied["post_date_raw"]):
+            return {**planned, "plan": plan}
     scope = same_frame_feudal_peace_scope(snapshot, history)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:
