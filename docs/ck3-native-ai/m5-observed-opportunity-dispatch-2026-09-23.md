@@ -370,3 +370,9 @@ must persist the selected reservation, submit at most one owning typed action,
 verify its independent postcondition, then re-read a new paused revision and
 resume the defense before any date advance. Static selection, R0179's private
 perk, and candidate counts do not advance G2-M5; it remains `not_started`.
+
+### 2026-09-26 c12 attempt-03：M5 opt-in 已开，但来源帧未出现
+
+c10 四 turn 与 c12 attempt-01/02 的 operator receipt 均显示 `private_m5_joint_collector=false`；原报告没有 `m5_joint_*` 不能解释为候选零。c12 attempt-03 在同一冻结源码 `bb5e4aa` / DLL SHA `7A14A216...3A65ED36` 上，官方以 h137 save/driver 通过 no-launch 后显式启用 `--private-m5-joint-collector`，operator receipt 确认 `true`。唯一 PID104656（创建 `20260926132245.837999+000`）受管窗口最小化，8/8 turn `turn_limit/qualified`，进程树清理。派生 raw53155488→53155728、h148 checkpoint SHA `63D918053CD3DE7B9E8348F1C766759A6FE22EECF9B571E9C82386951F8150E5`；[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c12/attempt-03/formal-report.txt) SHA `8F1D185752548D71C4F2C2AD32B19E79A54CF9DD942C61F923F4545FB6AA2ACA`。
+
+第1–3 turn 依次冷读 root、旧建设 `applied/in_progress`、既成双边订婚；第4 turn 是和平 `life-advance`，但同日期旧建设 applied 账本仍需由原 consumer 核销，`plan_m5_formal_query_only` 按源码短路给建设消费者，该 turn 没有调用 M5 proposal source reader。第5/6 turn 是实际事件只读/有界选项，第7 turn 重读施工仍未完工，第8 turn 是 declarable-war 查询。因此虽开启 opt-in，本次仍未取得同帧 M5 source、候选比较、selected_step 或正式 joint 动作；不能把字段缺席写成零、false 或 RED。当前 source producer 仅接和平建设与派系礼金，既成订婚不会自动作为 M5 proposal。后续须在同 PID 已核销旧账本的和平 `life-advance` 帧观测源，再依据真实字段判断接线/价值缺口；不为填库存反复重启。h148 save/driver/两账本和报告已逐项哈希复制到 c12 `recovery-pair-h148`，新候选仍须官方 prepare/rebind/no-launch。
