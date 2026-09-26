@@ -7858,6 +7858,8 @@ struct MarriageCandidateAllianceMailboxQueryV1 {
   xar::ck3_11906::Bindings bindings{};
   xar::game::Snapshot expected_snapshot{};
   xar::bridge::MarriageCandidateAllianceProjectionEnvironmentV1 environment{};
+  xar::bridge::MarriageNativeOutcomeClassifierEnvironmentV1
+      outcome_environment{};
   std::array<xar::game::ArrangeMarriageFamilyCandidateV1,
              kMarriageCandidateAllianceProjectionRowsV1>
       observed{};
@@ -7881,7 +7883,8 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
   for (std::size_t index = 0; index < query.observed.size(); ++index) {
     query.reads[index] =
         xar::ck3_11906::ReadMarriageCandidateAlliancePrivateV1(
-            query.bindings, query.observed[index], query.environment);
+            query.bindings, query.observed[index], query.environment,
+            query.outcome_environment);
   }
   xar::game::Snapshot after{};
   if (!xar::ck3_11906::ReadSnapshot(query.bindings, after) ||
@@ -7922,6 +7925,7 @@ std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
   case Failure::role_changed: return "role_changed";
   case Failure::final_legality_changed: return "final_legality_changed";
   case Failure::projection_unavailable: return "projection_unavailable";
+  case Failure::outcome_unavailable: return "outcome_unavailable";
   }
   return "unknown";
 }
@@ -7939,6 +7943,27 @@ std::string_view MarriageCandidateAllianceCoreFailureKeyV1(
   case Failure::option_id_unavailable: return "option_id_unavailable";
   case Failure::native_vector_invalid: return "native_vector_invalid";
   case Failure::row_identity_mismatch: return "row_identity_mismatch";
+  }
+  return "unknown";
+}
+
+std::string_view MarriageCandidateOutcomeFailureKeyV1(
+    xar::bridge::MarriageNativeOutcomeClassifierFailureV1 failure) {
+  using Failure = xar::bridge::MarriageNativeOutcomeClassifierFailureV1;
+  switch (failure) {
+  case Failure::none: return "none";
+  case Failure::exact_build_not_admitted: return "exact_build_not_admitted";
+  case Failure::binding_mismatch: return "binding_mismatch";
+  case Failure::signature_mismatch: return "signature_mismatch";
+  case Failure::memory_reader_unavailable: return "memory_reader_unavailable";
+  case Failure::invalid_input: return "invalid_input";
+  case Failure::secondary_pair_identity_mismatch:
+    return "secondary_pair_identity_mismatch";
+  case Failure::runtime_threshold_unavailable:
+    return "runtime_threshold_unavailable";
+  case Failure::option_identifier_unavailable:
+    return "option_identifier_unavailable";
+  case Failure::outcome_sample_drift: return "outcome_sample_drift";
   }
   return "unknown";
 }
@@ -7988,6 +8013,20 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
     AppendJsonString(result,
                      MarriageCandidateAllianceCoreFailureKeyV1(
                          read.projection_failure));
+    result += ",\"outcome_failure\":";
+    AppendJsonString(result,
+                     MarriageCandidateOutcomeFailureKeyV1(
+                         read.outcome_failure));
+    result += ",\"predicted_outcome_if_accepted\":";
+    if (!available) {
+      result += "null";
+    } else {
+      AppendJsonString(
+          result, read.predicted_outcome ==
+                          xar::bridge::MarriagePredictedOutcomeV1::marriage
+                      ? "marriage"
+                      : "betrothal");
+    }
     result += ",\"matrilineal_option_selected\":";
     result += available
                   ? (read.projection.matrilineal_option_selected ? "true" : "false")
@@ -10583,6 +10622,12 @@ void RunConnectedSession(
                     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
                     true, xar::ck3_11906::kExecutableSha256);
             query.environment.read_memory = &ReadMarriageCurrentProcessMemory;
+            query.outcome_environment = xar::bridge::
+                BindMarriageNativeOutcomeClassifierEnvironmentV1(
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                    true, xar::ck3_11906::kExecutableSha256);
+            query.outcome_environment.read_memory =
+                &ReadMarriageCurrentProcessMemory;
             const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                 g_main_thread_query_mailbox_v1,
                 &ExecuteMarriageCandidateAllianceMailboxQueryV1,

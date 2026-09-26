@@ -4,6 +4,7 @@
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/marriage_candidate_alliance_projection_v1.hpp"
+#include "xar_bridge/marriage_native_outcome_classifier_v1.hpp"
 #endif
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
@@ -1056,6 +1057,7 @@ enum class MarriageCandidateAlliancePrivateFailureV1 : std::uint8_t {
   role_changed,
   final_legality_changed,
   projection_unavailable,
+  outcome_unavailable,
 };
 
 struct MarriageCandidateAlliancePrivateReadV1 {
@@ -1064,6 +1066,10 @@ struct MarriageCandidateAlliancePrivateReadV1 {
   bridge::MarriageCandidateAllianceProjectionFailureV1 projection_failure =
       bridge::MarriageCandidateAllianceProjectionFailureV1::none;
   bridge::MarriageCandidateAllianceProjectionV1 projection{};
+  bridge::MarriageNativeOutcomeClassifierFailureV1 outcome_failure =
+      bridge::MarriageNativeOutcomeClassifierFailureV1::none;
+  bridge::MarriagePredictedOutcomeV1 predicted_outcome =
+      bridge::MarriagePredictedOutcomeV1::unavailable;
 };
 
 // Recreates and finalizes one exact five-role context on application-main.
@@ -1074,7 +1080,9 @@ ReadMarriageCandidateAlliancePrivateV1(
     const Bindings &bindings,
     const ArrangeMarriageFamilyCandidateV1 &observed_legal_row,
     const bridge::MarriageCandidateAllianceProjectionEnvironmentV1
-        &projection_environment) noexcept;
+        &projection_environment,
+    const bridge::MarriageNativeOutcomeClassifierEnvironmentV1
+        &outcome_environment) noexcept;
 #endif
 
 using game::ArrangeMarriageResult;

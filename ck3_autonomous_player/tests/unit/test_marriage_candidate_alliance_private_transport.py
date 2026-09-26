@@ -48,6 +48,9 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
             "status": "unavailable" if unavailable else "available",
             "failure": "projection_unavailable" if unavailable else "none",
             "projection_failure": "signature_mismatch" if unavailable else "none",
+            "outcome_failure": "none",
+            "predicted_outcome_if_accepted":
+                None if unavailable else "marriage",
             "matrilineal_option_selected": None if unavailable else False,
             "possible_alliance_pairs": [] if unavailable else [{
                 "first_character_id": 29829,
@@ -105,6 +108,8 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(driver.endpoint.request["step"], STEP)
         self.assertEqual(driver.endpoint.request["candidate_id_4"], IDS[4])
         self.assertEqual(len(result["rows"]), 5)
+        self.assertEqual(result["rows"][0]["predicted_outcome_if_accepted"],
+                         "marriage")
 
     def test_one_unavailable_pair_does_not_become_false_or_success(self) -> None:
         result = query_first_heir_candidate_alliance_projection_private_v1(
@@ -112,7 +117,20 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
             legality=_legality(), candidate_character_ids=IDS)
         self.assertEqual(result["status"], "unavailable")
         self.assertIsNone(result["rows"][2]["matrilineal_option_selected"])
+        self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
         self.assertEqual(result["rows"][2]["possible_alliance_pairs"], [])
+
+    def test_outcome_failure_does_not_become_a_marriage(self) -> None:
+        reply = _reply(unavailable_index=2)
+        row = reply["result"]["rows"][2]
+        row["failure"] = "outcome_unavailable"
+        row["projection_failure"] = "none"
+        row["outcome_failure"] = "runtime_threshold_unavailable"
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertEqual(result["status"], "unavailable")
+        self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
 
     def test_duplicate_or_not_legal_id_never_submits(self) -> None:
         driver = _Driver(_reply(), [_frame(), _frame()])
@@ -150,6 +168,12 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         reply["result"]["rows"][0]["possible_alliance_pairs"][0][
             "would_attempt_if_accepted"] = False
         with self.assertRaisesRegex(BridgeUnavailableError, "pair malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply = _reply()
+        reply["result"]["rows"][0]["predicted_outcome_if_accepted"] = None
+        with self.assertRaisesRegex(BridgeUnavailableError, "lost native option"):
             query_first_heir_candidate_alliance_projection_private_v1(
                 _Driver(reply, [_frame()]), legality=_legality(),
                 candidate_character_ids=IDS)

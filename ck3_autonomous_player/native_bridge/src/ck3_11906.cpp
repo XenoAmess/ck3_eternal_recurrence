@@ -16805,7 +16805,9 @@ ReadMarriageCandidateAlliancePrivateV1(
     const Bindings &bindings,
     const ArrangeMarriageFamilyCandidateV1 &observed,
     const bridge::MarriageCandidateAllianceProjectionEnvironmentV1
-        &projection_environment) noexcept {
+        &projection_environment,
+    const bridge::MarriageNativeOutcomeClassifierEnvironmentV1
+        &outcome_environment) noexcept {
   MarriageCandidateAlliancePrivateReadV1 result{};
   using Failure = MarriageCandidateAlliancePrivateFailureV1;
   if (!HasArrangeMarriageReadBindings(bindings) ||
@@ -16891,10 +16893,30 @@ ReadMarriageCandidateAlliancePrivateV1(
           static_cast<std::uint32_t>(observed.subject_character_id),
           static_cast<std::uint32_t>(observed.candidate_character_id),
           result.projection);
+  if (result.projection_failure ==
+      bridge::MarriageCandidateAllianceProjectionFailureV1::none) {
+    bridge::MarriageNativeOutcomeClassifierStateV1 classifier{};
+    classifier.environment = outcome_environment;
+    if (!bridge::ClassifyMarriageNativeOutcomeExactV1(
+            &classifier, reinterpret_cast<std::uintptr_t>(heir),
+            reinterpret_cast<std::uintptr_t>(candidate), context,
+            result.predicted_outcome)) {
+      result.outcome_failure =
+          bridge::ReadMarriageNativeOutcomeClassifierFailureV1(classifier);
+    }
+  }
   bindings.destroy_character_interaction_context(context);
   if (result.projection_failure !=
       bridge::MarriageCandidateAllianceProjectionFailureV1::none) {
     result.failure = Failure::projection_unavailable;
+    result.projection = {};
+    return result;
+  }
+  if (result.outcome_failure !=
+          bridge::MarriageNativeOutcomeClassifierFailureV1::none ||
+      result.predicted_outcome ==
+          bridge::MarriagePredictedOutcomeV1::unavailable) {
+    result.failure = Failure::outcome_unavailable;
     result.projection = {};
     return result;
   }
