@@ -26,19 +26,20 @@ def build(attempt: Path, growth_projection: Path) -> dict[str, object]:
     matches = [row for row in contexts if row["root_character_id"] == 33437]
     if len(matches) != 1:
         raise ValueError("one native target context required")
-    if (growth["trace_response_sha256"] != selector["trace_response_sha256"]
+    if (growth["schema"] != "ck3.native_random_list_choice_projection.v2"
+            or growth["trace_response_sha256"] != selector["trace_response_sha256"]
             or growth["directly_observed_selected_index"] != 0
-            or growth["derived_draw31"] != 422551104):
+            or growth["actual_selection_draw31"] != 51510340):
         raise ValueError("growth selection is not bound to the same trace")
     replay = execute_phase_event_effect(
         matches[0], event_key="knight_killed",
-        draws=[selector["selector_draw31"], growth["derived_draw31"]],
+        draws=[selector["selector_draw31"], growth["actual_selection_draw31"]],
     )
     records = replay["draw_tape"]["records"]
     if len(records) != 2 or replay["draw_tape"]["consumed_count"] != 2:
         raise ValueError("frozen AST draw schedule changed")
     if (records[0]["random31"] != selector["selector_draw31"]
-            or records[1]["random31"] != growth["derived_draw31"]
+            or records[1]["random31"] != growth["actual_selection_draw31"]
             or records[1]["selected_index"] != growth["directly_observed_selected_index"]):
         raise ValueError("frozen AST and native draw/branch disagree")
     scaled = [weight // 100000 for weight in records[1]["weights_source_order"]]
@@ -59,7 +60,7 @@ def build(attempt: Path, growth_projection: Path) -> dict[str, object]:
             or growths[0]["applied"] is not False):
         raise ValueError("effect state does not match native target and branch")
     return {
-        "schema": "ck3.native_knight_kill_effect_direct_parity.v1",
+        "schema": "ck3.native_knight_kill_effect_direct_parity.v2",
         "game_build": "1.19.0.6",
         "combat_id": selector["combat_id"],
         "source_day": selector["source_day"],
@@ -69,7 +70,7 @@ def build(attempt: Path, growth_projection: Path) -> dict[str, object]:
         "growth_projection_sha256": digest(growth_projection),
         "stock_event_manifest_sha256": selector["stock_event_manifest_sha256"],
         "native_selector_draw31": selector["selector_draw31"],
-        "native_growth_draw31": growth["derived_draw31"],
+        "native_growth_draw31": growth["actual_selection_draw31"],
         "native_selected_character_id": selector["selected_character_id"],
         "native_growth_entry_index": growth["directly_observed_selected_index"],
         "frozen_ast_draw_records": records,

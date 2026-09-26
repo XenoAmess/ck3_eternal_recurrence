@@ -17,7 +17,9 @@ import sys
 import pefile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from xar_autoplayer.simulation.combat_core import DrawState, weighted_choice_index
+from xar_autoplayer.simulation.combat_core import (
+    DrawState, effect_child_state, weighted_choice_index,
+)
 
 
 GAME_EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -70,26 +72,34 @@ def main() -> int:
     image = pefile.PE(str(args.exe), fast_load=True)
     scale = struct.unpack("<d", image.get_data(WEIGHT_SCALE_RVA, 8))[0]
     assert scale == 2.0**-31
-    draw, state = DrawState(root["counter_before"], root["salt_before"]).draw31()
-    assert state.counter == root["counter_after"]
-    assert state.salt == root["salt_after"]
+    parent_draw, parent_after, child_state = effect_child_state(
+        DrawState(root["counter_before"], root["salt_before"]), root["node_hash"]
+    )
+    assert parent_after.counter == root["counter_after"]
+    assert parent_after.salt == root["salt_after"]
+    selection_draw, child_after = child_state.draw31()
+    assert child_after.counter == children[0]["counter_before"]
+    assert child_after.salt == children[0]["salt_before"] == 0
 
     weights = tuple(int(part) for part in args.conditional_weights.split(","))
     assert len(weights) == memory["entry_count"]
     positive_sum = sum(max(0, weight) for weight in weights)
     assert positive_sum > 0
-    threshold = int((float(draw) * scale) * float(positive_sum))
-    candidate = weighted_choice_index(weights, draw)
+    threshold = int((float(selection_draw) * scale) * float(positive_sum))
+    candidate = weighted_choice_index(weights, selection_draw)
     report = {
-        "schema": "ck3.native_random_list_choice_projection.v1",
+        "schema": "ck3.native_random_list_choice_projection.v2",
         "game_build": "1.19.0.6",
         "game_executable_sha256": GAME_EXE_SHA256,
         "receipt_sha256": digest(args.receipt),
         "classification_sha256": digest(args.classification),
         "trace_response_sha256": memory["trace_response_sha256"],
-        "source_counter_before": root["counter_before"],
-        "source_counter_after": root["counter_after"],
-        "derived_draw31": draw,
+        "parent_scope_counter_before": root["counter_before"],
+        "parent_scope_counter_after": root["counter_after"],
+        "parent_scope_seed_draw31": parent_draw,
+        "derived_list_scope_counter_before_selection": child_state.counter,
+        "actual_selection_draw31": selection_draw,
+        "entry_dispatch_counter_before": children[0]["counter_before"],
         "native_scale_rva": hex(WEIGHT_SCALE_RVA),
         "native_binary64_scale": scale,
         "directly_observed_base_weights": memory["weights_native_int32"],
@@ -101,7 +111,7 @@ def main() -> int:
         "directly_observed_selected_index": memory["selected_source_order_index"],
         "candidate_matches_direct_selection": candidate == memory["selected_source_order_index"],
     }
-    with args.out.open("x", encoding="utf-8") as stream:
+    with args.out.open("x", encoding="utf-8", newline="\n") as stream:
         json.dump(report, stream, ensure_ascii=False, indent=2)
         stream.write("\n")
     print(json.dumps(report, ensure_ascii=False, indent=2))

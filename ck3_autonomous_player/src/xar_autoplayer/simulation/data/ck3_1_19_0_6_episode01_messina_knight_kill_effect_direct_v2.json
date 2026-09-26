@@ -1,0 +1,91 @@
+{
+  "schema": "ck3.native_knight_kill_effect_direct_parity.v2",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_day": 26,
+  "source_checkpoint_sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B",
+  "trace_response_sha256": "713DB2C37504411A2E81CAF05B198E2AEC700D7B7612F68BEF1EF3BB05EFC5AC",
+  "v3_response_sha256": "5A170DA39F9305689E52EAA275485413F0A10C6B98DCB24CB9A26092D0CC4251",
+  "growth_projection_sha256": "717F4A025D67EED4B5FE6A1E563545728D5CE9D7A30F2872A5D4A07F01C9A4B1",
+  "stock_event_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "native_selector_draw31": 1400813912,
+  "native_growth_draw31": 51510340,
+  "native_selected_character_id": 34120,
+  "native_growth_entry_index": 0,
+  "frozen_ast_draw_records": [
+    {
+      "ordinal": 0,
+      "purpose": "knight_killed.effect_ast.steps[1]:enemy_knight",
+      "random31": 1400813912,
+      "weights_raw_compacted_order": [
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000
+      ],
+      "weights_int32_compacted_order": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "total_int32": 14,
+      "selection_mode": "positive_total_weighted",
+      "terminal_remainder_int32": -1,
+      "selected_index": 8
+    },
+    {
+      "ordinal": 1,
+      "purpose": "knight_increase_prowess:source_order",
+      "random31": 51510340,
+      "weights_source_order": [
+        4000000,
+        3000000,
+        1500000
+      ],
+      "selected_index": 0
+    }
+  ],
+  "frozen_ast_growth_transition": {
+    "transition": "knight_increase_prowess_chance",
+    "target_character_id": 34120,
+    "selected_branch": "no_op",
+    "weights_source_order": [
+      4000000,
+      3000000,
+      1500000
+    ],
+    "applied": false
+  },
+  "frozen_ast_death_transition": {
+    "transition": "kill_character",
+    "target_character_id": 33437,
+    "reason": "death_battle",
+    "killer_character_id": 34120,
+    "applied": true
+  },
+  "selected_character_and_growth_branch_direct_native_parity": true,
+  "adjusted_weight_values_native_directly_observed": false,
+  "complete_mutable_write_set_proven": false,
+  "other_event_paths_proven": false
+}

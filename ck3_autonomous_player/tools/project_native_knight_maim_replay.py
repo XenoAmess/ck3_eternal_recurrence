@@ -16,7 +16,9 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from xar_autoplayer.simulation.combat_core import DrawState, weighted_choice_index
+from xar_autoplayer.simulation.combat_core import (
+    DrawState, effect_child_state, weighted_choice_index,
+)
 from project_native_phase_event_save_feedback import _character_snapshot
 
 
@@ -57,12 +59,20 @@ def project(attempt: Path, source_save: Path, rakaly: Path, game_root: Path) -> 
     assert classification["status"] == summary["trace_status"] == "bounded_trace_available"
     assert classification["failure_flags"] == summary["trace_failure_flags"] == 0
     assert summary["final_capture_flags"] == 0
-    events = summary["appended_events"]
+    response = json.loads(response_path.read_text(encoding="utf-8"))
+    records = response["body"]["managed_trace"]["trace"]["records"]
+    assert len(records) == 7
+    baseline_events = records[0]["battle_events"]
+    final_events = records[5]["battle_events"]
+    assert all(row["battle_events"] == baseline_events for row in records[:5])
+    assert records[6]["battle_events"] == final_events
+    assert final_events[:len(baseline_events)] == baseline_events
+    newly_appended_events = final_events[len(baseline_events):]
+    assert summary["appended_events"] == final_events  # historical summary mislabeled the cumulative list
     assert [(item["side_index"], item["stable_key"], item["left_character_id"], item["right_character_id"])
-            for item in events] == [
-                (0, "knight_wounded_by_enemy", 47029, 33435),
-                (1, "knight_maimed_by_enemy", 34333, 47032),
-            ]
+            for item in baseline_events] == [(0, "knight_wounded_by_enemy", 47029, 33435)]
+    assert [(item["side_index"], item["stable_key"], item["left_character_id"], item["right_character_id"])
+            for item in newly_appended_events] == [(1, "knight_maimed_by_enemy", 34333, 47032)]
 
     sources = {
         "knight": game_root / "game/common/combat_phase_events/00_knight_phase_events.txt",
@@ -110,14 +120,27 @@ def project(attempt: Path, source_save: Path, rakaly: Path, game_root: Path) -> 
             "process-local-" + receipt["entry_identity_tokens"][selected]).lower()
         for name, sha in receipt["raw_sha256"].items():
             assert digest(attempt / name) == sha
-        draw, after = DrawState(root["counter_before"], root["salt_before"]).draw31()
-        assert after.counter == root["counter_after"] and after.salt == root["salt_after"]
+        parent_draw, parent_after, child_state = effect_child_state(
+            DrawState(root["counter_before"], root["salt_before"]), root["node_hash"]
+        )
+        assert parent_after.counter == root["counter_after"]
+        assert parent_after.salt == root["salt_after"]
+        selection_draw, child_after = child_state.draw31()
+        assert child_after.counter == child["counter_before"]
+        assert child_after.salt == child["salt_before"] == 0
+        assert child["counter_after"] == (child["counter_before"] + 1) & 0xFFFFFFFF
+        assert weighted_choice_index(tuple(weights), selection_draw) == selected
         choices.append({
             "call_index": call, "effect": effect, "branch": branch,
-            "counter_before": root["counter_before"], "counter_after": root["counter_after"],
-            "draw31": draw, "static_base_weights": weights,
+            "parent_counter_before": root["counter_before"],
+            "parent_counter_after": root["counter_after"],
+            "parent_scope_seed_draw31": parent_draw,
+            "derived_list_scope_counter_before_selection": child_state.counter,
+            "selection_draw31": selection_draw,
+            "entry_dispatch_counter_before": child["counter_before"],
+            "static_base_weights": weights,
             "selected_index_direct": selected,
-            "static_weights_projection_index": weighted_choice_index(tuple(weights), draw),
+            "static_weights_projection_index": selected,
             "adjusted_weights_directly_observed": False,
             "raw_sha256": receipt["raw_sha256"],
         })
@@ -145,7 +168,7 @@ def project(attempt: Path, source_save: Path, rakaly: Path, game_root: Path) -> 
     assert wound_before["wounded_rank"] == wound_after["wounded_rank"] == 1
 
     return {
-        "schema": "ck3.native_knight_maim_replay.v1",
+        "schema": "ck3.native_knight_maim_replay.v3",
         "game_version": "1.19.0.6", "game_executable_sha256": GAME_EXE_SHA256,
         "source_save_sha256": SOURCE_SAVE_SHA256, "post_save_sha256": POST_SAVE_SHA256,
         "rakaly_exe_sha256": RAKALY_EXE_SHA256,
@@ -154,14 +177,16 @@ def project(attempt: Path, source_save: Path, rakaly: Path, game_root: Path) -> 
         "trace_response_sha256": digest(response_path),
         "classification_sha256": digest(classification_path),
         "memory_receipt_sha256": digest(memory_path),
-        "event_log": events,
+        "baseline_event_log": baseline_events,
+        "newly_appended_events": newly_appended_events,
+        "final_cumulative_event_log": final_events,
         "random_list_choices": choices,
         "characters_by_day": {str(day): {str(key): value for key, value in rows.items()}
                               for day, rows in snapshots.items()},
         "directly_observed_maim_target_trait_delta": ["one_legged", "wounded_1"],
         "directly_observed_maim_opponent_prestige_delta": str(prestige_delta),
         "directly_observed_maim_opponent_base_prowess_delta": 0,
-        "separate_wound_event_target_unchanged_in_next_save": True,
+        "preexisting_wound_event_target_unchanged_in_next_save": True,
         "complete_effect_write_set_proven": False,
         "runtime_adjusted_random_list_weights_observed": False,
         "planner_usable_as_full_phase_transition": False,

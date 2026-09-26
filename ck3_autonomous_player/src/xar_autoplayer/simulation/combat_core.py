@@ -921,6 +921,22 @@ class DrawState:
         return draw, DrawState((self.counter + 1) & UINT32_MASK, self.salt)
 
 
+def effect_child_state(parent: DrawState, node_hash: int) -> tuple[int, DrawState, DrawState]:
+    """Mirror effect dispatch 0x3380C20-0x3380CFB for one child scope.
+
+    The parent's draw creates a new child RNG state; it is not the draw used
+    by a random-list selector running inside that child scope.
+    """
+    if not 0 <= node_hash <= UINT32_MASK:
+        raise ValueError("node hash must be uint32")
+    parent_draw, next_parent = parent.draw31()
+    mixed = (parent_draw + node_hash * 0xF4261) & UINT32_MASK
+    child_counter = avalanche32(
+        (_DRAW_BASE - ((mixed * _DRAW_STEP) & UINT32_MASK)) & UINT32_MASK
+    )
+    return parent_draw, next_parent, DrawState(child_counter, 0)
+
+
 @dataclass(frozen=True, slots=True)
 class BattleResultEnvelopeSchedule:
     normal_result_generated: bool

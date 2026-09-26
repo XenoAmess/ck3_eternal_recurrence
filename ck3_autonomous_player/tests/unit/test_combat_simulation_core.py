@@ -30,6 +30,7 @@ from xar_autoplayer.simulation.combat_core import (
     apply_pursuit_day,
     apply_three_day_pursuit,
     avalanche32,
+    effect_child_state,
     fire_phase_event_seeds,
     fixed_div,
     fixed_mul,
@@ -256,6 +257,24 @@ class PursuitGoldenTests(unittest.TestCase):
 
 
 class CombatRandomGoldenTests(unittest.TestCase):
+    def test_native_random_list_child_scope_is_distinct_from_parent_seed_draw(self) -> None:
+        cases = (
+            (621006420, 1775997395, 222734186, 1945981592, 969825991),
+            (4061646098, 3752165551, 1131396744, 3878703667, 518689972),
+            (2080801941, 661296556, 632491899, 1844551402, 1422813481),
+            (1645259625, 1775997395, 422551104, 1462316485, 51510340),
+        )
+        for parent_counter, node_hash, expected_parent, expected_child, expected_draw in cases:
+            with self.subTest(parent_counter=parent_counter):
+                parent_draw, parent_after, child = effect_child_state(
+                    DrawState(parent_counter, 0), node_hash
+                )
+                self.assertEqual(parent_draw, expected_parent)
+                self.assertEqual(parent_after.counter, parent_counter + 1)
+                self.assertEqual(child.counter, expected_child)
+                self.assertEqual(child.draw31()[0], expected_draw)
+        self.assertEqual(weighted_choice_index((4, 2, 4, 4), 518689972), 0)
+
     def test_schedule_draw_weight_and_effect_seed_vectors(self) -> None:
         state = phase_schedule_state(42)
         self.assertEqual(state, DrawState(counter=0x6DA1654D, salt=0))

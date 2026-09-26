@@ -1,0 +1,32 @@
+{
+  "schema": "ck3.native_random_list_choice_projection.v2",
+  "game_build": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "receipt_sha256": "E0AD891B95A269054A61CDC0DAF79E3D3BF2121941C775B448EDE2CE8AFDEAB7",
+  "classification_sha256": "1F67DC5051F842525B45E1627A4D78B7340CA11E307FAA5E912D9E65FD072B45",
+  "trace_response_sha256": "713DB2C37504411A2E81CAF05B198E2AEC700D7B7612F68BEF1EF3BB05EFC5AC",
+  "parent_scope_counter_before": 1645259625,
+  "parent_scope_counter_after": 1645259626,
+  "parent_scope_seed_draw31": 422551104,
+  "derived_list_scope_counter_before_selection": 1462316485,
+  "actual_selection_draw31": 51510340,
+  "entry_dispatch_counter_before": 1462316486,
+  "native_scale_rva": "0x4594650",
+  "native_binary64_scale": 4.656612873077393e-10,
+  "directly_observed_base_weights": [
+    60,
+    30,
+    10
+  ],
+  "conditional_adjusted_weights": [
+    40,
+    30,
+    15
+  ],
+  "adjusted_weights_directly_observed": false,
+  "conditional_positive_weight_sum": 85,
+  "conditional_threshold": 2,
+  "conditional_selected_index": 0,
+  "directly_observed_selected_index": 0,
+  "candidate_matches_direct_selection": true
+}

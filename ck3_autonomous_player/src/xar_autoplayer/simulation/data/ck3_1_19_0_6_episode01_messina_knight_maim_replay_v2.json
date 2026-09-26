@@ -1,0 +1,420 @@
+{
+  "schema": "ck3.native_knight_maim_replay.v2",
+  "game_version": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_save_sha256": "D978D75A2212604CFDD9BF7FBDEF3424E85E39C5092D7245D04590694017FA01",
+  "post_save_sha256": "9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "melted_save_sha256_by_day": {
+    "5": "6864BA494BED7729235E62EAAAB9A8205404623C101839C307D71238F18DF5BD",
+    "6": "B47F7474C867F314623A8702236D7B55EF2A64B08073122C55972F072545B931"
+  },
+  "source_script_sha256": {
+    "knight": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1",
+    "commander": "7999F7731F56A63A5E6E615EF1805F6382101D958A5AD4967F9C68CF3E8EE6F6",
+    "health": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+  },
+  "trace_response_sha256": "EC61C0FD308E09B95FED5F7D9AB0BEFA01054DD87ECD45A4D9897BEBBFC2DA14",
+  "classification_sha256": "5B9CF2ADDA1D44DA923EAB75FF55941671675240FB198D8F590218E346689A35",
+  "memory_receipt_sha256": "3008951C6267D7FEA17EB2B12CE9FE5F1C5A8EE47BBA7F80F64A67F34A1254BA",
+  "event_log": [
+    {
+      "left_character_id": 47029,
+      "right_character_id": 33435,
+      "stable_key": "knight_wounded_by_enemy",
+      "type_raw": 2,
+      "side_index": 0,
+      "target_right": false
+    },
+    {
+      "left_character_id": 34333,
+      "right_character_id": 47032,
+      "stable_key": "knight_maimed_by_enemy",
+      "type_raw": 2,
+      "side_index": 1,
+      "target_right": false
+    }
+  ],
+  "random_list_choices": [
+    {
+      "call_index": 8,
+      "effect": "knight_increase_prowess_chance_effect",
+      "branch": "no_prowess_gain",
+      "parent_counter_before": 621006420,
+      "parent_counter_after": 621006421,
+      "parent_scope_seed_draw31": 222734186,
+      "derived_list_scope_counter_before_selection": 1945981592,
+      "selection_draw31": 969825991,
+      "entry_dispatch_counter_before": 1945981593,
+      "static_base_weights": [
+        60,
+        30,
+        10
+      ],
+      "selected_index_direct": 0,
+      "static_weights_projection_index": 0,
+      "adjusted_weights_directly_observed": false,
+      "raw_sha256": {
+        "random-list-8-node.bin": "47641CB3A6CFAD6BBC0ADC041E480428A21185B74432188F9E33E846B83FA7CE",
+        "random-list-8-entries.bin": "F1EA1BE833D7DA7F451B290A61B58C94BE0873F64B1EBED367268599C6A1DB35",
+        "random-list-8-weights.bin": "C84F5CD4CC890032B10B266B22CA3FD46F5ED0D095111BD440A2ECA62C09F009"
+      }
+    },
+    {
+      "call_index": 15,
+      "effect": "maimed_in_battle_effect",
+      "branch": "one_legged_and_wound",
+      "parent_counter_before": 4061646098,
+      "parent_counter_after": 4061646099,
+      "parent_scope_seed_draw31": 1131396744,
+      "derived_list_scope_counter_before_selection": 3878703667,
+      "selection_draw31": 518689972,
+      "entry_dispatch_counter_before": 3878703668,
+      "static_base_weights": [
+        4,
+        2,
+        4,
+        4
+      ],
+      "selected_index_direct": 0,
+      "static_weights_projection_index": 0,
+      "adjusted_weights_directly_observed": false,
+      "raw_sha256": {
+        "random-list-15-node.bin": "3C890B15447B9E8DD2BBAB3E41E1D468B28DE862A39E557E6B42939D9353A698",
+        "random-list-15-entries.bin": "472F21D03F8CF97E337CBBD5469D82DD36E4815658C536D6BF4883B14DDD64A2",
+        "random-list-15-weights.bin": "8DFD93D41E7F952155E7724C526F0B27A538A8C8A58AF33D295272092A79B454"
+      }
+    },
+    {
+      "call_index": 49,
+      "effect": "safe_wound_treatment_effect",
+      "branch": "delayed_treatment_failure",
+      "parent_counter_before": 2080801941,
+      "parent_counter_after": 2080801942,
+      "parent_scope_seed_draw31": 632491899,
+      "derived_list_scope_counter_before_selection": 1844551402,
+      "selection_draw31": 1422813481,
+      "entry_dispatch_counter_before": 1844551403,
+      "static_base_weights": [
+        10,
+        50
+      ],
+      "selected_index_direct": 1,
+      "static_weights_projection_index": 1,
+      "adjusted_weights_directly_observed": false,
+      "raw_sha256": {
+        "random-list-49-node.bin": "CE12436B3CAA5C91F7D6795669422B18C21990B8F0E798850C58DEE2D408D173",
+        "random-list-49-entries.bin": "3B37BDA93243C8A1382039944E8F636F69B2C3ADC439CB22D9D1D0EF5E52E9A1",
+        "random-list-49-weights.bin": "EA873F9F64D0AA549B285FE81E908CF52077F4F95FDE7CB972577B5AFE5E6723"
+      }
+    }
+  ],
+  "characters_by_day": {
+    "5": {
+      "34333": {
+        "character_id": 34333,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          76,
+          63,
+          60,
+          16,
+          250
+        ],
+        "trait_keys": [
+          "callous",
+          "craven",
+          "humble",
+          "education_martial_2",
+          "cautious_leader"
+        ],
+        "base_skill_values": [
+          3,
+          7,
+          1,
+          3,
+          7,
+          3
+        ],
+        "prestige_currency": "342.8764",
+        "prestige_accumulated": "1002.8764",
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 61,
+        "character_block_sha256": "473A0934E66900AEE307BD72D1BAF37B5F4676F52E6A2077E632F2282D9A53B6"
+      },
+      "47032": {
+        "character_id": 47032,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          62,
+          72,
+          49,
+          6
+        ],
+        "trait_keys": [
+          "honest",
+          "zealous",
+          "gluttonous",
+          "education_diplomacy_2"
+        ],
+        "base_skill_values": [
+          4,
+          7,
+          1,
+          2,
+          2,
+          10
+        ],
+        "prestige_currency": "300",
+        "prestige_accumulated": null,
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 90,
+        "character_block_sha256": "4F5AD90ADD1F8EA335B9616C887F9974DB8104F84F1F0BD063157D2AFD3AA26B"
+      },
+      "47029": {
+        "character_id": 47029,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          67,
+          73,
+          53,
+          20,
+          167,
+          115
+        ],
+        "trait_keys": [
+          "ambitious",
+          "paranoid",
+          "lazy",
+          "education_learning_1",
+          "stuttering",
+          "wounded_1"
+        ],
+        "base_skill_values": [
+          5,
+          1,
+          2,
+          9,
+          4,
+          3
+        ],
+        "prestige_currency": "301.425",
+        "prestige_accumulated": "1001.425",
+        "wounded_rank": 1,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 92,
+        "character_block_sha256": "A86CC747A03FC85DC1247BEF68813BC28BFAC9E056AD0B35876E8DC86EDC8F45"
+      },
+      "33435": {
+        "character_id": 33435,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          78,
+          63,
+          47,
+          17,
+          241
+        ],
+        "trait_keys": [
+          "stubborn",
+          "craven",
+          "lustful",
+          "education_martial_3",
+          "flexible_leader"
+        ],
+        "base_skill_values": [
+          7,
+          7,
+          9,
+          3,
+          6,
+          8
+        ],
+        "prestige_currency": "639.7275",
+        "prestige_accumulated": "1039.7275",
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 57,
+        "character_block_sha256": "05B0601C27E3C4BEE006D1CDF1B2FA039027889716142F333B79B730CE3A4056"
+      }
+    },
+    "6": {
+      "34333": {
+        "character_id": 34333,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          76,
+          63,
+          60,
+          16,
+          250,
+          120,
+          115
+        ],
+        "trait_keys": [
+          "callous",
+          "craven",
+          "humble",
+          "education_martial_2",
+          "cautious_leader",
+          "one_legged",
+          "wounded_1"
+        ],
+        "base_skill_values": [
+          3,
+          7,
+          1,
+          3,
+          7,
+          3
+        ],
+        "prestige_currency": "342.8764",
+        "prestige_accumulated": "1002.8764",
+        "wounded_rank": 1,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 61,
+        "character_block_sha256": "4784AD6F4C6AAE1C162E1D9C2C8FD287DD4187D41B7D0456CE5D9DFB7DF9117D"
+      },
+      "47032": {
+        "character_id": 47032,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          62,
+          72,
+          49,
+          6
+        ],
+        "trait_keys": [
+          "honest",
+          "zealous",
+          "gluttonous",
+          "education_diplomacy_2"
+        ],
+        "base_skill_values": [
+          4,
+          7,
+          1,
+          2,
+          2,
+          10
+        ],
+        "prestige_currency": "450",
+        "prestige_accumulated": "1150",
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 90,
+        "character_block_sha256": "4C923A974B43D2A0F4A1A2182475B99880134B78958E2F0A9D7AEA657BEB3FA8"
+      },
+      "47029": {
+        "character_id": 47029,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          67,
+          73,
+          53,
+          20,
+          167,
+          115
+        ],
+        "trait_keys": [
+          "ambitious",
+          "paranoid",
+          "lazy",
+          "education_learning_1",
+          "stuttering",
+          "wounded_1"
+        ],
+        "base_skill_values": [
+          5,
+          1,
+          2,
+          9,
+          4,
+          3
+        ],
+        "prestige_currency": "301.425",
+        "prestige_accumulated": "1001.425",
+        "wounded_rank": 1,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 92,
+        "character_block_sha256": "A86CC747A03FC85DC1247BEF68813BC28BFAC9E056AD0B35876E8DC86EDC8F45"
+      },
+      "33435": {
+        "character_id": 33435,
+        "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+        "trait_indices": [
+          78,
+          63,
+          47,
+          17,
+          241
+        ],
+        "trait_keys": [
+          "stubborn",
+          "craven",
+          "lustful",
+          "education_martial_3",
+          "flexible_leader"
+        ],
+        "base_skill_values": [
+          7,
+          7,
+          9,
+          3,
+          6,
+          8
+        ],
+        "prestige_currency": "639.7275",
+        "prestige_accumulated": "1039.7275",
+        "wounded_rank": 0,
+        "alive_data_present": true,
+        "dead_data_present": false,
+        "death_date": null,
+        "death_reason": null,
+        "killer_character_id": null,
+        "regiment_id": 57,
+        "character_block_sha256": "0D9A902E716020B2FA6264674053745A364BD20C0C229D5364779C9165545731"
+      }
+    }
+  },
+  "directly_observed_maim_target_trait_delta": [
+    "one_legged",
+    "wounded_1"
+  ],
+  "directly_observed_maim_opponent_prestige_delta": "150",
+  "directly_observed_maim_opponent_base_prowess_delta": 0,
+  "separate_wound_event_target_unchanged_in_next_save": true,
+  "complete_effect_write_set_proven": false,
+  "runtime_adjusted_random_list_weights_observed": false,
+  "planner_usable_as_full_phase_transition": false
+}

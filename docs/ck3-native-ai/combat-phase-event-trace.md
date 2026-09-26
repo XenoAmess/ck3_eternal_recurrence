@@ -1,6 +1,6 @@
 # ongoing combat phase-event trace v1
 
-## 2026-09-26 第 5 日致残分支与基础权重反例
+## 2026-09-26 第 5 日致残分支与子作用域抽签
 
 独立离线 attempt `episode01-day05-wound-growth-attempt-039` 从源日第 5 日原版存档
 `D978D75A2212604CFDD9BF7FBDEF3424E85E39C5092D7245D04590694017FA01`
@@ -8,17 +8,21 @@
 `9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A`。
 七边界原始响应 SHA-256
 `EC61C0FD308E09B95FED5F7D9AB0BEFA01054DD87ECD45A4D9897BEBBFC2DA14`，
-状态 `bounded_trace_available`、失败标志 0，受管 CK3 进程已正常清理。本次同日新增两条战报：
-side0 角色 `47029` 被 `33435` 击伤；side1 角色 `34333` 被 `47032` 致残。
-这与旧轨迹第 5 日角色 `36303/34867` 的事件**不是同一次随机路径**。
+状态 `bounded_trace_available`、失败标志 0，受管 CK3 进程已正常清理。
+七边界逐帧差集显示：源存档**已有** side0 角色 `47029` 被 `33435`
+击伤的战报，边界 0–4 都未改变；边界 5 才**新增** side1 角色
+`34333` 被 `47032` 致残，边界 6 保留两条累计战报。早期 run 内
+`one-day-summary.json` 将边界 5 的累计列表误命名为 `appended_events`，
+不得据此说两条都发生在本日。这也与旧轨迹第 5 日角色 `36303/34867`
+的事件**不是同一次随机路径**。
 
 本次致残事件载入索引 10 的 56 次嵌套 effect 调用中，三个 `CRandomListEffect`
 均由实际执行的 `CRandomListEntryEffect` 指针在暂停帧与原生列表指针配对，选中来源顺序
 `0/0/1`。列表及静态权重分别是原版 `00_commander_effects.txt:20–40` 的
 成长 `60/30/10`（第 0 项不加勇武）、`20_health_effects.txt:1227–1267` 的
 致残 `4/2/4/4`（第 0 项断腿并加伤）、同文件 `2125–2233` 的
-安全治疗 `10/50`（第 1 项失败并延后触发治疗事件）。[只读投影报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_maim_replay_v1.json)
-SHA-256 `1F15160B01F6BED74A19CC00B2B15DA81F58D187752A02DF0D3FD2BFF5D9B23F`，
+安全治疗 `10/50`（第 1 项失败并延后触发治疗事件）。[修正的只读投影报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_maim_replay_v3.json)
+SHA-256 `1BEE0CDFDA842F23134932858ADD31072C56D553CF9BE185B0B075661F86EE94`，
 [复算工具](../../ck3_autonomous_player/tools/project_native_knight_maim_replay.py)逐个验证
 精确 EXE、七边界响应、对象内存原始 bytes、两个不可变存档、Rakaly 和脚本 SHA。
 错误地从另一历史轨迹取来的首次 `d05-melted.ck3` 和
@@ -28,21 +32,38 @@ SHA-256 `1F15160B01F6BED74A19CC00B2B15DA81F58D187752A02DF0D3FD2BFF5D9B23F`，
 同源前后存档直接显示：致残目标 `34333` 从无伤、无致残 trait 变成
 `one_legged + wounded_1`，仍存活；对手 `47032` 的威望货币 `300→450`
 （+150）、基础勇武仍为 10。其成长列表确实选中第 0 项，故**本次没有加基础勇武**。
-治疗失败分支只规定延后事件，不能在当前保存点冒称治疗已完成。另一条受伤战报目标
+治疗失败分支只规定延后事件，不能在当前保存点冒称治疗已完成。基线受伤战报目标
 `47029` 在源日已为 `wounded_1`，后存档仍为 `wounded_1`，角色核心块 SHA 也完全相同；
-目前只将它记作“日志与本次存档可见伤级未形成增量”的**待解释边界**，不臆测写回原因。
+该战报**并非本次推进新增**，因此其伤级不变没有写回矛盾。此前 v2 报告把累计列表
+当增量，保留为历史错误版本，改由 v3 的边界差集归因。
+同一第 6 日 melted save 的 `triggered_event` 还直接记有 `health.0101`，
+root/sick_character/knight 均为 `34333`，physician 为 `57392`，触发日期
+`1066.12.11`，相对该存档 `meta_date=1066.12.9` 延后两日；第 5 日源存档
+没有 `health.0101`。这证实本次治疗失败确已排入后续事件队列，
+但排队事件到期后的治疗结果仍须另行回读。
 
-更重要的是致残列表的静态基础权重不能复算这次分支：该列表局部状态
-`counter=4061646098→4061646099` 推出 `draw31=1131396744`；
-若径用 `4/2/4/4`，原生正权重累计阈值算法会选**索引 2**，而实际子节点指针、
-断腿 trait 都确认**索引 0**。这构成对“直接拿脚本基础权重算 effect 列表”的实机反例。
-精确 EXE 反汇编显示 `CRandomListEffect` 的 `0x2F08850` 在 `bd=1`
-路径先由 `0x2F08930` 计算运行时权重；本节点 `bc=0`，随后由
-`0x2F08780` 调用加权选择器 `0x3BB6DD0`。`bc=1` 时才由
-`0x2F08690` 走不放回选择。三个节点的 `flags_bc_bd=[0,1]`
-与该路径相符。**选择器入口的调整后数组尚未捕获**，不能用本次
-`draw31` 和静态数组声称已经证明实际概率。此前第 26 日成长列表的
-`40/30/15` 也仍是条件推算；其实际第 0 项由直接子节点证明，不依赖该概率算式。
+关键的随机数有两层：`0x3380C20–0x3380CFB` 的 effect dispatcher
+从**父作用域**状态取一枚随机数，和 `node_hash×0xF4261` 混合后派生
+`child_counter=avalanche32(0x5EA6BA9F-(parent_draw+node_hash×0xF4261)×0x4AD685B3)`
+（32 位回绕，child salt=0）。真正的列表选择器在**子作用域**再取一枚，
+随后 entry dispatcher 入口的 counter 恰为 `child_counter+1`，这给了独立的实机校验。
+本次三列表的父抽签数、子作用域初始 counter、实际列表抽签数分别为：
+
+| 列表 | 父抽签（派生 seed） | 子 counter | 实际列表抽签 | 基础权重投影 / 原生选项 |
+| --- | ---: | ---: | ---: | --- |
+| 对手成长 | 222,734,186 | 1,945,981,592 | 969,825,991 | 0 / 0 |
+| 断腿等致残 | 1,131,396,744 | 3,878,703,667 | 518,689,972 | 0 / 0 |
+| 安全治疗 | 632,491,899 | 1,844,551,402 | 1,422,813,481 | 1 / 1 |
+
+对致残列表，`trunc((518,689,972×2^-31)×14)=3`，第一项权重 4
+覆盖阈值 3，正好解释断腿；先前把父抽签 `1,131,396,744` 当列表抽签，
+得到索引 2 的“权重反例”**是研究错误**，已在追加的 v2/v3 报告中纠正，旧 v1
+原样保留且不得再作为抽签结论引用。精确 EXE 反汇编显示 `CRandomListEffect`
+的 `0x2F08850` 在 `bd=1` 时先由 `0x2F08930` 算运行时权重；本节点
+`bc=0`，随后 `0x2F08780` 调用加权选择器 `0x3BB6DD0`。`bc=1`
+时才由 `0x2F08690` 走不放回选择。三个节点的 `flags_bc_bd=[0,1]`
+与该路径相符。**选择器入口的调整后权重数组仍未捕获**；基础权重投影吻合
+只说明本案分支可解释，不能据此宣称条件权重或真实概率已经直接测得。
 
 ## 2026-09-26 第 26 日成长随机列表的实际分支与抽签
 
@@ -62,28 +83,34 @@ SHA-256 `1F15160B01F6BED74A19CC00B2B15DA81F58D187752A02DF0D3FD2BFF5D9B23F`，
 第 1 项基础权重 30、加勇武 1；第 2 项基础权重 10、提升剑术大师进度。
 所以**这一次选中的是不作成长写回的第 0 项**，不是仅凭后存档勇武不变倒推。
 内存回读原始三段 bytes 的 SHA-256 与节点/条目身份都保存在 run 内
-`random-list-memory.json`；[入库的只读投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_random_list_choice_v1.json)
+`random-list-memory.json`；[修正的只读投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_random_list_choice_v2.json)
+SHA-256 `717F4A025D67EED4B5FE6A1E563545728D5CE9D7A30F2872A5D4A07F01C9A4B1`，
 用[复算工具](../../ck3_autonomous_player/tools/project_native_random_list_receipt.py)绑定其 SHA、
 节点分类 SHA、精确 EXE SHA，并检查三个原始内存文件没有变化。
 
-该列表自己的局部 RNG counter 为 `1,645,259,625→1,645,259,626`、salt 0；
-由精确 build 的 `DrawState` 算得 `draw31=422,551,104`。
+该列表父作用域的 RNG counter 为 `1,645,259,625→1,645,259,626`、salt 0，
+父抽签 `422,551,104` 用于派生子状态 `counter=1,462,316,485`。
+真正的成长列表抽签为 `51,510,340`，选中条目的 dispatcher 入口 counter
+恰为 `1,462,316,486`，与该抽签消耗一次严格相符。
 加权选择器 `0x3BB6DD0` 读取的 binary64 常量 `0x4594650` 正是 `2^-31`，
 算法为 `threshold=trunc((draw31×2^-31)×正权重总和)`，选第一个累计正权重大于 threshold 的条目；
 它**不使用取模**。按脚本和本案人物条件推得的调整后权重候选 `40/30/15`，
-总和 85，得到 `threshold=16`，落在第 0 项；这组**运行时调整后权重尚未在选择器入口直接回读**，
+总和 85，得到 `threshold=2`，落在第 0 项；这组**运行时调整后权重尚未在选择器入口直接回读**，
 只能列为条件复算。分支索引 0 则已由原生实际执行的条目指针独立直接证明。
-run 内较早的 `growth-draw-projection.json` 把同一 draw 错用 `%85=39`，虽也碰巧选 0，
-其算法必须弃用；正确版本以 append-only 的 `growth-draw-projection-v2.json` 保留。
+run 内较早的 `growth-draw-projection.json` 错用取模；
+`growth-draw-projection-v2/v3.json` 虽改为比例阈值，但仍把父抽签当作列表抽签。
+这些探索报告保留原样，均由本次入库的 v2 报告取代。
 再把**击杀者选择 draw**和**成长列表自己的 draw**同时送入智能体共用的冻结事件 AST，
-[本案直接回放](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_effect_direct_v1.json)
+[修正的本案直接回放](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_effect_direct_v2.json)
+SHA-256 `7CE19775C2AD98D50C132D0D651E4E8086B764E80B9FE9E0C8E4C9356A1B2156`，
 由[可复跑投影器](../../ck3_autonomous_player/tools/project_native_knight_kill_effect_direct.py)得到
 目标 34120、成长第 0 项 `no_op`、被击杀者 33437，三者与同一次原版 trace 相符。
 冻结 AST 的 `4,000,000/3,000,000/1,500,000` 是 Q100000 权重，除以 100000
 对应条件整数 `40/30/15`；它不是选择器入口的直接权重采样。
 
-此结果修正下节 attempt-035 的证据边界：**根 counter 的 `26,436,929` 仍是子 seed，
-不能改称成长 draw；成长 draw 是随机列表自身的 `422,551,104`。**
+此结果修正下节 attempt-035 及本节旧 v1 的证据边界：**根 draw
+`26,436,929`、列表父作用域 draw `422,551,104` 都用于派生子作用域；
+实际成长列表 draw 是 `51,510,340`。**
 本案的无成长分支已闭合；其他受伤、致残、死亡路径的条件权重、人物完整写集及未来日缓存刷新
 仍需独立原版回读，不能从这一次空分支外推。
 
