@@ -53,6 +53,10 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
                 None if unavailable else "marriage",
             "heir_is_adult": None if unavailable else True,
             "candidate_is_adult": None if unavailable else True,
+            "heir_adult_measure_raw": None if unavailable else 16,
+            "candidate_adult_measure_raw": None if unavailable else 16,
+            "heir_adult_threshold_raw": None if unavailable else 16,
+            "candidate_adult_threshold_raw": None if unavailable else 16,
             "grand_wedding_option_selected": None if unavailable else False,
             "heir_betrothed_character_id": None,
             "heir_primary_spouse_character_id": None,
@@ -127,6 +131,7 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
                          "marriage")
         self.assertIs(result["rows"][0]["heir_is_adult"], True)
         self.assertIs(result["rows"][0]["candidate_is_adult"], True)
+        self.assertEqual(result["rows"][0]["heir_adult_measure_raw"], 16)
         self.assertIs(result["rows"][0]["grand_wedding_option_selected"], False)
         self.assertEqual(result["rows"][0]["heir_spouse_character_ids"], [])
         self.assertEqual(result["rows"][0]["played_dynasty_id"], 200)
@@ -143,6 +148,7 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertIsNone(result["rows"][2]["matrilineal_option_selected"])
         self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
         self.assertIsNone(result["rows"][2]["heir_is_adult"])
+        self.assertIsNone(result["rows"][2]["heir_adult_measure_raw"])
         self.assertIsNone(result["rows"][2]["heir_spouse_character_ids"])
         self.assertIsNone(result["rows"][2]["candidate_dynasty_id"])
         self.assertIsNone(result["rows"][2]["candidate_sex_selector_raw"])
@@ -263,12 +269,19 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         reply = _reply()
         for row in reply["result"]["rows"]:
             row["heir_is_adult"] = False
+            row["heir_adult_measure_raw"] = 15
             row["predicted_outcome_if_accepted"] = "betrothal"
         result = query_first_heir_candidate_alliance_projection_private_v1(
             _Driver(reply, [_frame(), _frame()]),
             legality=_legality(), candidate_character_ids=IDS)
         self.assertTrue(all(row["heir_is_adult"] is False for row in result["rows"]))
         self.assertTrue(all(row["candidate_is_adult"] is True for row in result["rows"]))
+        reply["result"]["rows"][4]["heir_adult_measure_raw"] = 14
+        with self.assertRaisesRegex(BridgeUnavailableError, "adult outcome breakdown"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply["result"]["rows"][4]["heir_adult_measure_raw"] = 15
         reply["result"]["rows"][4]["heir_is_adult"] = True
         with self.assertRaisesRegex(BridgeUnavailableError, "adult outcome breakdown"):
             query_first_heir_candidate_alliance_projection_private_v1(

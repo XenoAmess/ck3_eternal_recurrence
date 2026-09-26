@@ -58,6 +58,10 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
                           "predicted_outcome_if_accepted": "marriage",
                           "heir_is_adult": True,
                           "candidate_is_adult": True,
+                          "heir_adult_measure_raw": 16,
+                          "candidate_adult_measure_raw": 16,
+                          "heir_adult_threshold_raw": 16,
+                          "candidate_adult_threshold_raw": 16,
                           "grand_wedding_option_selected": False,
                           "heir_betrothed_character_id": None,
                           "heir_primary_spouse_character_id": None,
@@ -170,15 +174,16 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertIs(observed[0]["heir_is_adult"], True)
             self.assertIs(observed[0]["candidate_is_adult"], False)
             self.assertIs(observed[0]["grand_wedding_option_selected"], False)
-            self.assertEqual(observed[0]["rejection_reasons"],
-                             ["not_adult_marriage_outcome"])
+            self.assertIn("not_two_minors_without_grand_wedding",
+                          observed[0]["rejection_reasons"])
             self.assertIn("same_selector_pair", observed[1]["rejection_reasons"])
             self.assertEqual(observed[1]["heir_spouse_count"], 0)
             self.assertIsNone(observed[1]["heir_betrothed_character_id"])
             self.assertIn("lineality_not_heir_aligned", observed[2]["rejection_reasons"])
             self.assertEqual(observed[2]["heir_house_id"], 21)
             self.assertEqual(observed[2]["candidate_dynasty_id"], 30)
-            self.assertIn("not_adult_marriage_outcome", observed[3]["rejection_reasons"])
+            self.assertIn("not_two_minors_without_grand_wedding",
+                          observed[3]["rejection_reasons"])
             self.assertEqual(observed[3]["recipient_character_id"], 403)
             self.assertEqual(observed[3]["recipient_matchmaker_character_id"], 403)
             self.assertEqual(observed[3]["possible_alliance_pairs"],
@@ -199,6 +204,65 @@ class FamilyConsumerTest(unittest.TestCase):
                              rows[3]["possible_alliance_pairs"])
             self.assertNotIn("family_marriage_legality", formal_turn["plan"])
             self.assertEqual(driver.calls, ["legality", "projection"])
+
+    def test_minor_heir_chooses_bounded_external_betrothal_and_consumes_material_result(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            for index, row in enumerate(driver.projection["rows"]):
+                row.update(heir_is_adult=False, heir_adult_measure_raw=13,
+                           candidate_is_adult=index == 4,
+                           candidate_adult_measure_raw=18 if index == 4 else 14,
+                           predicted_outcome_if_accepted="betrothal")
+                if index >= 3:
+                    row["candidate_dynasty_id"] = 30 + index
+                    row["candidate_house_id"] = 30 + index
+                    row["possible_alliance_pairs"] = [{
+                        "first_character_id": 101,
+                        "second_character_id": 400 + index,
+                        "already_allied": False,
+                        "both_have_realm_data": True,
+                        "would_attempt_if_accepted": True}]
+                else:
+                    row["candidate_dynasty_id"] = 20
+            driver.submit_observed_first_heir_marriage_private_v1 = (
+                lambda *, legality, candidate_character_id: {
+                    "schema": SCHEMA, "status": "receipt_pending",
+                    "material_result": False, "pre_native_revision": 7,
+                    "played_character_id": 101, "heir_character_id": 202,
+                    "candidate_character_id": candidate_character_id})
+            driver.query_observed_first_heir_marriage_result_private_v1 = (
+                lambda *, pending: {"status": "betrothal", "material_result": True,
+                                    "post_native_revision": 8})
+            baseline = {"plan": {"selected_step": "query-declarable-wars"}}
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, baseline, scene(), prewar_arbitration=True)
+                self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+                self.assertEqual(planned["plan"]["family_marriage_choice"]
+                                 ["candidate_character_id"], 303)
+                self.assertEqual(planned["plan"]["family_marriage_choice"]
+                                 ["predicted_outcome_if_accepted"], "betrothal")
+                self.assertEqual(planned["plan"]["family_marriage_private_diagnostic"]
+                                 ["rows"][3]["rejection_reasons"], [])
+                self.assertIn("not_two_minors_without_grand_wedding",
+                              planned["plan"]["family_marriage_private_diagnostic"]
+                              ["rows"][4]["rejection_reasons"])
+                pending = submit_family_marriage_private(
+                    driver, plan=planned["plan"], snapshot=scene())
+                self.assertEqual(pending["candidate_character_id"], 303)
+                later = {**scene(), "native_revision": 8}
+                result_plan = plan_family_marriage_private(
+                    driver, baseline, later, prewar_arbitration=True)
+                self.assertEqual(result_plan["plan"]["selected_step"], RESULT_STEP)
+                result = query_family_marriage_result_private(
+                    driver, pending=result_plan["plan"]["family_marriage_pending"],
+                    cold=False)
+                self.assertEqual(result["status"], "betrothal")
+                consumed = plan_family_marriage_private(
+                    driver, baseline, later, prewar_arbitration=True)
+                self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
+                                 ["status"], "betrothal")
 
     def test_private_diagnostic_retains_shared_heir_relationship_and_house_gate(self):
         with tempfile.TemporaryDirectory() as temporary:

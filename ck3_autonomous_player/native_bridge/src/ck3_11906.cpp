@@ -17017,6 +17017,10 @@ ReadMarriageCandidateAlliancePrivateV1(
       result.predicted_outcome = details.predicted_outcome;
       result.heir_is_adult = details.subject_is_adult;
       result.candidate_is_adult = details.candidate_is_adult;
+      result.heir_adult_measure_raw = details.subject_adult_measure_raw;
+      result.candidate_adult_measure_raw = details.candidate_adult_measure_raw;
+      result.heir_adult_threshold_raw = details.subject_adult_threshold_raw;
+      result.candidate_adult_threshold_raw = details.candidate_adult_threshold_raw;
       result.grand_wedding_option_selected =
           details.grand_wedding_option_selected;
     }

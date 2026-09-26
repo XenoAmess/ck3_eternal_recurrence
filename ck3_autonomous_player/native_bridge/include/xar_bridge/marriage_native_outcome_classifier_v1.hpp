@@ -61,6 +61,10 @@ struct MarriageNativeOutcomeDetailsV1 {
   bool subject_is_adult = false;
   bool candidate_is_adult = false;
   bool grand_wedding_option_selected = false;
+  std::int16_t subject_adult_measure_raw = 0;
+  std::int16_t candidate_adult_measure_raw = 0;
+  std::int32_t subject_adult_threshold_raw = 0;
+  std::int32_t candidate_adult_threshold_raw = 0;
 };
 
 MarriageNativeOutcomeClassifierEnvironmentV1

@@ -133,6 +133,10 @@ void TestAdultGrandWeddingAndMinorBranches() {
   auto details = ReadDetails(fixture, state);
   assert(details.subject_is_adult && details.candidate_is_adult &&
          !details.grand_wedding_option_selected &&
+         details.subject_adult_measure_raw == 10 &&
+         details.candidate_adult_measure_raw == 12 &&
+         details.subject_adult_threshold_raw == 10 &&
+         details.candidate_adult_threshold_raw == 12 &&
          details.predicted_outcome ==
              bridge::MarriagePredictedOutcomeV1::marriage);
 

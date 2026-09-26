@@ -683,7 +683,7 @@ flowchart LR
   E --> F
   F --> V{"private trial: unpartnered heir + adult marriage + same current House/Dynasty + aligned native lineality + positive recipient raw?"}
   V -->|yes| G["typed first-heir proposal; durable pending before send"]
-  V -->|betrothal only| B["[unknown] future spouse value and betrothal obligation"]
+  V -->|betrothal only| BV["[unknown] future spouse value and betrothal obligation"]
   B -. "unpriced" .-> U
   V -->|no / unavailable| U["no proposal or observation RED"]
   G --> R["later paused native resolution + bilateral spouse/betrothed"]
@@ -706,6 +706,12 @@ flowchart LR
 当前 Python 按 recipient accept raw 在 `688/690` 个 final-legal row 中取前五；这些原生合法行没有成年/预计结果，故 c6 **无法排除**取前五遮住可立即成婚的成人候选。exact `marriage_native_outcome_classifier_v1.cpp` 已从双方 `CCharacter+0x68` 读取 adult measure、从 `+0x199` 选运行时成年阈值，并读取 grand-wedding 选项；旧接口只输出合并的 `marriage/betrothal`。本阶段复用相同双读样本，给五行私有投影和报告新增 `heir_is_adult`、`candidate_is_adult`、`grand_wedding_option_selected`，并由 transport 复核它们与原预计结果及跨行继承人身份一致。若下次同帧读到继承人未成年，则全部当前合法候选都不能立即成婚；若继承人已成年而前五仍是未成年候选或 grand-wedding 订婚，下一步须用同一原生投影对有界的其它合法 ID 补查，不能由 c6 猜存在或不存在成人婚姻。c6 的三个布尔值未保存，需新候选实机验收。
 
 五行投影还已有至多三组 `possible_alliance_pairs` 的具体双方、既有联盟及 realm-data/attempt 标志，但 c6 诊断没有保留它；本阶段把这些既有私有字段和 recipient/matchmaker 身份一同送入正式报告，不把 `would_attempt_if_accepted` 当已成立联盟。候选确切年龄/未来成年时间、配偶质量、未来子代归属与具体解除义务仍无同帧可比读数；本阶段不放宽 `betrothal` 正式价值门，不发送 proposal。
+
+`NW-FAMILY-BETROTHAL-C7` 的 [c7 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c7/attempt-01/formal-report.txt>) 在 turn 3/5/9 反复读到首继承人 `38822` 未成年，五行 final-legal 均可发送、预计 betrothal。跨宗族 `39757` 未成年、recipient `34333` 的 AI 接受 raw `16000000`；跨宗族 `28731` 成年、recipient `33649` 的 raw `9400000`。两行都有具体的玩家 `29829` → recipient 的 `would_attempt_if_accepted=true`，但该值只说明原生联盟 special 将尝试，**不是已成立联盟或联盟净值**。原版 `00_marriage_interactions.txt:1902–2468` 的解除订婚会按条件收取 prestige/opinion/unity；正常提案的原生最终合法、收件人回答和生效 lineality 已由现有同帧查询覆盖。`0x2282DE0` 分类器本来稳定双读双方 `CCharacter+0x68` 的有符号成年比较值及按 `+0x199` selector 选择的运行时阈值；此前只公开布尔值。本阶段把这四个**原始比较数**经既有私有五行查询、报告带出，仍不把它们称作公历年龄或生育概率。
+
+私有政策仅在首继承人与候选**都未成年**、无 grand-wedding、各自距原生成年阈值为 `1–4` 个原始单位且两人的剩余距离差 `≤2` 时考虑订婚。这两个限值是为避免多年锁定继承人婚配、面对有条件解除成本而定的保守项目启发式，**不是原版年龄规则或收益公式**。仍要求首继承人当前无配偶/订婚、House/Dynasty 与玩家相符、候选跨 Dynasty、原生双方 selector/生效 lineality 对齐、final Can Send 与正接受 raw，以及本帧玩家至 recipient 的非既有 realm-backed 联盟尝试。成人婚姻优先；合格婚约按较短最大等待、较小等待差、再按接受 raw 排序。收益只表述为“近成年继承人的跨宗族婚约和联盟尝试”，锁定未来择偶、解除成本、具体联盟强度与参战义务仍未定价；不把发送、原生接受或联盟预投影等同物质结果。typed 发送沿既有 durable pending 与双向关系/结果 journal；`betrothal` 必须下一个 paused frame 独立读回，下一 turn 和新 PID 恢复另验。c7 未含原始比较数，故无法预判 `39757` 是否过此门，需从已核的和平 c5 h106 配对在新候选复验；c7 h122 已进入战争，不能作为立即订婚的和平入口。静态候选不升级正式 live 能力。
+
+`28731` 虽是原生 final-legal 的成年候选，但继承人尚未成年；当前无法衡量成年候选在继承人长大时的年龄与生育风险，所以这条保守婚约分支不选它。`39757` 同为未成年仍须等待四个 exact 原始数满足上述等待界限；其较高接受 raw 不会绕过该界限。
 
 提案前持久记录可能已提交的 pair；typed native ACK 只证明提交进入 receiver。下一 paused 帧以同进程原生 resolution journal 区分 `pending`、`accepted_pending`、`refused`、`invalidated`，并以双方 spouse/betrothed 关系独立判定物质 `marriage`/`betrothal`。新 PID 冷读只使用正式 checkpoint 的首继承人身份与双方关系；若关系已成立可证明物质结果，若关系缺席则不能反推出拒绝，保持 `unresolved` 且禁止自动重发。提案后的配对 checkpoint、下一 turn 对 resolved receipt 的消费仍需实机核验；静态源码、Release DLL 与聚焦测试不算 production-live。
 
