@@ -27,3 +27,55 @@ Until then, the existing 30-game-day watch interval remains the running policy.
 The source, serializer and exact-byte checks pass normal Debug and optimized
 Release fixtures. This work did not launch CK3 or observe a new completion or
 income increase. Unknown runtime progress remains an explicit observation gap.
+
+## C71: manager cadence and completion boundary (exact-source only)
+
+The same frozen EXE places `0x21FDAC0` and `0x21FDDB0` in slots 2 and 3 of
+the `CHoldingManager` `CLegacyGameManagerInterface` vtable at `0x43426B8`
+(RTTI Complete Object Locator `0x4998148`, type
+`.?AVCHoldingManager@@`). In slot 2, `0x21FDD25..0x21FDD83` traverses the
+manager's active-construction list at `+0x20/+0x2C`. For every active row it
+calls `0x2919390` with base `100000` at `0x21FDD6D` and stores the returned
+raw divisor in the row's `+0xE8` at `0x21FDD75`. An earlier part of this same
+method selects a province bucket using a value modulo 30; the active-list
+divisor refresh is **after** that bucket and is not limited to the selected
+province bucket.
+
+Slot 3 `0x21FDDB0` traverses the same active list at
+`0x21FDE1B..0x21FDE70`. It passes `edx=0` to `0x21F6D40` at `0x21FDE3A`;
+that callee subtracts the signed integer quotient
+`10000000000 / progress_divisor_raw` when the divisor is positive. It sets
+remaining work to zero for a nonpositive divisor. With the normal `edx=0`,
+positive remaining work returns without completing. When the callee returns
+true, the manager removes the row from its active list. The other two direct
+callers at `0x21D34E8` and `0x2EBCEFE` pass `edx=1`, which also enters the
+completion branch with positive remaining work; they are not evidence for
+normal elapsed-day completion. The adjacent manager slots identify the two
+routes, but this source check alone does not establish their global ordering
+relative to other managers or a live per-day delta.
+
+For a normal building completion, `0x21F6FC9..0x21F7030` writes the finished
+`CBuildingType*` into the same built-slot array at `+0x18` and slot index
+`+0x78`; `0x21F7033` then calls `0x21F7970`, which invokes the holding
+recalculation functions `0x21FB690` and `0x21FB720`. The active definition
+pointer at `+0x70` is cleared only at `0x21F7070`, immediately before return.
+Thus the first safe completion proof is an independent paused snapshot **after
+the full manager update returns**, matching the previously active province,
+slot and type against the built-slot row and observing no matching active row.
+The recalculation call is not proof that the player's reported monthly gold
+income rises on that same frame or that any observed total-income delta is
+caused solely by this building. The existing root-income follow-up remains
+necessary.
+
+The next bounded live probe can attach to an already authorized Robert run
+with the matching DLL and paired save: read `date_raw`, active tuple,
+`native_remaining_work_raw` and `native_progress_divisor_raw` on a paused
+frame; after a normal one-day advance (`date_raw + 24`), read the same tuple
+again. If the divisor is positive and unchanged and no speed modifier changed,
+compare the work difference with the integer quotient above. A zero divisor,
+changed divisor, vanished row or date that did not advance is a distinct
+observation, not a calculated ETA. On a later completion frame, read the
+built-slot row and player monthly income independently, then consume the
+existing completion receipt and next turn. This source work added no CK3
+action, game date, completion or income evidence; the formal 30-game-day watch
+policy is unchanged.
