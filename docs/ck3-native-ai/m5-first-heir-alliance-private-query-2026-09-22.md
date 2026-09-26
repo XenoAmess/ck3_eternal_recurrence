@@ -17,3 +17,7 @@ Python 私有入口为 `NativeDriver.query_first_heir_candidate_alliance_project
 ### 2026-09-26 c10 正式提案的证据边界
 
 精确 CK3 1.19.0.6 / EXE SHA 如本文顶部，c10 DLL SHA `7F9A50DD4F044523B91FD539CD66997A8580562FF6DC589E49B1CB8E83D73D34`。h106 派生和平帧中，原生 final-legal 688 行里存在同龄异宗族候选 38710：继承人 38822 与候选的成人 measure 均为 6、阈值均为 16，原生 complete Can Send 与 recipient answer 均允许，接收者 32266 的 AI accept raw 为 9300000。投影的玩家/接收者 pair `would_attempt_if_accepted=true` 只说明接受后的条件尝试。正式私有策略提交一次 typed proposal，返回 `receipt_pending`；同日 h111 保存，独立 native:4 只读结果仍为 `pending`。因此尚未证明对方接受、双边订婚关系或联盟，也没有可计入的联盟收益。原生婚姻树的待答复分支继续为 unknown。随后运行器把 pending 文本误作游戏变化证据而 RED，修复需保持只读查询同帧合同并从保存的提案身份冷恢复，不能重发。正式 [c10 报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c10/attempt-01/formal-report.txt) SHA-256 `2BD6EBD230C2E730560119CF36D867192457D4E3247B7C4BF3DD8C8B0446C6F4`。
+
+### 2026-09-26 c11 冷读回与待答复边界
+
+c11 复用同一 CK3 1.19.0.6 EXE 与 c10 原生 DLL，在新 PID55088 官方配对 h111 存档/driver/提案账本后，对继承人38822/候选38710 冷读回 `pending`；同一暂停日期仍无双边婚姻或订婚关系。该结果仅说明本次查询尚未观测到关系，不说明原提案已被接受、拒绝或在存档中可靠保存；原生待答复队列的持久性仍是 unknown。此前策略在此立即阻断全部 turn，c11 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c11/attempt-01/formal-report.txt) SHA-256 `3034C854DB9D3E6881C2E20B9C2E63D451171030A99126992E817668CFBD3F1C`。后续最小政策仅在每个新 PID/原生帧读一次关系，并让既有有界 turn 推进以等待可能的答复；原提案身份与资源义务保留，不在无证据时重发或计联盟收益。

@@ -335,15 +335,15 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
         pid, creation = bridge_process_identity(driver)
         cold = (pid, creation) != (pending.get("source_bridge_pid"),
                                    pending.get("source_bridge_creation_date"))
-        if cold and pending.get("cold_absent_relation_unresolved") is True:
-            return {**planned, "plan": {**plan, "selected_step": None,
-                "phase": "first_heir_marriage_cold_resolution_unknown",
-                "family_marriage_pending": dict(pending),
-                "reason": "cold pair has no relation and no durable native reply result; retain pending without resubmit"}}
         revision = snapshot.get("native_revision")
         last_checked = pending.get("last_checked_native_revision",
                                    pending.get("pre_native_revision", 0))
-        if cold or (_positive(revision) and revision > last_checked):
+        checked_in_this_pid = (
+            pending.get("last_checked_bridge_pid") == pid
+            and pending.get("last_checked_bridge_creation_date") == creation
+        )
+        if ((cold and not checked_in_this_pid)
+                or (_positive(revision) and revision > last_checked)):
             return {**planned, "plan": {**plan,
                 "phase": "first_heir_marriage_result_read",
                 "selected_step": RESULT_STEP,
@@ -351,7 +351,11 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                 "family_marriage_cold_recovery": cold,
                 "reason": "read proposal resolution and bilateral relation before another send"}}
         return {**planned, "plan": {**plan, "family_marriage_pending": dict(pending),
-                                     "reason": "await later paused frame for marriage result"}}
+            "family_marriage_status": (
+                "cold_absent_relation_unresolved"
+                if pending.get("cold_absent_relation_unresolved") is True
+                else "await_later_paused_frame"),
+            "reason": "await later paused frame for marriage result without resubmitting"}}
     resolved = ledger["resolved"]
     if isinstance(resolved, dict) and resolved.get("episode_run_id") == snapshot.get("episode_run_id"):
         pid, creation = bridge_process_identity(driver)
@@ -475,9 +479,16 @@ def query_family_marriage_result_private(driver: object, *,
                     "post_bridge_creation_date": creation}
         _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
     elif cold and status == "pending":
+        pid, creation = bridge_process_identity(driver)
         _write(state_dir, {**ledger, "pending": {
-            **pending, "cold_absent_relation_unresolved": True}})
+            **pending, "cold_absent_relation_unresolved": True,
+            "last_checked_native_revision": result["post_native_revision"],
+            "last_checked_bridge_pid": pid,
+            "last_checked_bridge_creation_date": creation}})
     elif status in {"pending", "accepted_pending"}:
+        pid, creation = bridge_process_identity(driver)
         _write(state_dir, {**ledger, "pending": {
-            **pending, "last_checked_native_revision": result["post_native_revision"]}})
+            **pending, "last_checked_native_revision": result["post_native_revision"],
+            "last_checked_bridge_pid": pid,
+            "last_checked_bridge_creation_date": creation}})
     return result
