@@ -1835,6 +1835,14 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(args.require_initial_lifestyle_focus_before_date_advance)
         self.assertEqual(args.turns, 2)
 
+    def test_parser_exposes_private_epidemic_recovery_near_pair(self) -> None:
+        args = cli.parser().parse_args([
+            "--bridge-mode", "native-headless",
+            "native-auto-run", "--turns", "2", "--timeout", "900",
+            "--allow-private-epidemic-recovery-near-pair",
+        ])
+        self.assertTrue(args.allow_private_epidemic_recovery_near_pair)
+
     def test_parser_exposes_strict_one_generation_runner(self) -> None:
         args = cli.parser().parse_args(
             [
@@ -5053,6 +5061,29 @@ class NativeAutoRunTests(unittest.TestCase):
             True,
         )
         self.assertNotIn("allow_private_construction_formal_trial", run_mock.call_args.kwargs)
+
+    def test_cli_wires_private_epidemic_recovery_only_when_enabled(self) -> None:
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment",
+            return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run",
+            return_value={"ok": False, "status": "blocked", "outcome": "failed"},
+        ) as run_mock, contextlib.redirect_stdout(io.StringIO()):
+            code = cli.main([
+                "--bridge-mode", "native-headless",
+                "--bridge-dll", str(self.dll_path),
+                "--bridge-injector", str(self.injector_path),
+                "native-auto-run", "--turns", "2", "--timeout", "900",
+                "--allow-private-epidemic-recovery-near-pair",
+            ])
+        self.assertEqual(code, 1)
+        self.assertIs(
+            run_mock.call_args.kwargs["allow_private_epidemic_recovery_near_pair"],
+            True,
+        )
 
     def test_cli_reports_checkpointed_operator_stop_separately_from_qualification(self) -> None:
         stopped = {

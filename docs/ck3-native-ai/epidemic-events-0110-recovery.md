@@ -42,3 +42,11 @@ R0101 报告还记录了首个事件后 checkpoint：raw `53367888`、save SHA-2
 3. 让下一正式 turn 消费新状态，并保留完整 save/driver 配对与动作身份。若期间另有正统性效果或条件分支不能独立排除，材料归因继续 pending；不通过重播旧随机时间线凑事件。
 
 县列表和修正的 exact-build ABI 现状与下一逆向入口见 [`.0110` 县修正只读观测口](m2-0110-county-modifier-observer-abi-2026-09-22.md)。
+
+## 2026-09-26 NW-EVENT：私有近邻消费接线，尚无自然场景
+
+源码追踪确认，原有 `query-player-epidemic-recovery-v1` 已可在动作前列出 `formerly_infected_counties` 的完整 LandedTitleID，并在动作后按显式 title ID 读 minor/tiny 修正；正式事件消费者先前没有调用这个私有口。`.0110` 的原版 `after` 会清空列表，因此动作后再读列表必然丢失目标县身份。这是当前独立物质后置的具体接线缺口，不改变 R0101 的历史证据。
+
+新私有 `native-auto-run --allow-private-epidemic-recovery-near-pair` 仅在原有正式策略已选择 `epidemic_events.0110` authored 3/native 2、`select-event-option-3` 且同帧 instance 与玩家身份相符时工作。正式动作前的 `before_submit` 钩子冻结县 ID、两种修正的前值及玩家正统性；动作后先核旧 instance 的原有独立 lifecycle，再要求同角色、同 episode、同游戏日期、较新 paused revision，按冻结 ID 逐县查询两种修正及正统性后值。每个县分开标记新出现、原已存在而续期不可证、或未见修正；正统性单独记录 raw 差值，不把两者或十五日时间流逝混为单项归因。任一读口或同日绑定失败保留 RED，动作前失败时不提交。预提交拦截仍先执行；该钩子不更改选项或处理未知事件。
+
+此开关默认关闭、只允许 bounded 合同，并需启用已有私有 CE1 recovery DLL 构建开关；不加入公共 MCP 能力广告。聚焦 Python 测试只证明接线与分类，未启动 CK3、未产生新日期、typed 动作、县修正或正统性实机读回。下一次**自然** `.0110` paused 场景仍须匹配冻结 DLL/save/driver、单实例 owner 和官方 no-launch 检查，再核真实 pre/action/post/下一 turn/checkpoint；`remaining_days` 仍因 ABI 未闭合标 unavailable，已有修正不能由 presence 证明续期。

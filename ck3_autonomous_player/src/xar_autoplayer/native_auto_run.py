@@ -73,6 +73,12 @@ from .bridge.war_contract import (
     war_termination_active_war_signature,
 )
 from .environment import EnvironmentSpec, ensure_state_path_safe
+from .epidemic_recovery_formal_observer import (
+    EVENT_KEY as EPIDEMIC_RECOVERY_EVENT_KEY,
+    OPTION_STEP as EPIDEMIC_RECOVERY_OPTION_STEP,
+    capture_epidemic_recovery_before_option,
+    observe_epidemic_recovery_after_option,
+)
 from .errors import AgentError
 from .native_session import (
     native_session,
@@ -330,6 +336,7 @@ def native_auto_run(
     allow_private_construction_formal_trial: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
+    allow_private_epidemic_recovery_near_pair: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -420,6 +427,13 @@ def native_auto_run(
     ):
         raise AgentError(
             "private M5 peacetime collector only admits a bounded contract"
+        )
+    if (
+        allow_private_epidemic_recovery_near_pair is True
+        and completion_contract != "bounded"
+    ):
+        raise AgentError(
+            "private epidemic recovery near pair only admits a bounded contract"
         )
     if allow_private_faction_gift_formal_trial is True and not (
         isinstance(private_faction_round_id, str)
@@ -624,6 +638,10 @@ def native_auto_run(
             ),
             "cleanup": None,
         }
+        if isinstance(attempt.get("epidemic_recovery_pre"), dict):
+            first_failure["epidemic_recovery_pre"] = copy.deepcopy(
+                attempt["epidemic_recovery_pre"]
+            )
         retry_diagnostics = (
             getattr(error, "read_only_query_retry", None)
             if error is not None
@@ -700,6 +718,11 @@ def native_auto_run(
             if allow_private_m5_joint_collector is True
             else {}
         )
+        private_epidemic_driver_options = (
+            {"allow_private_epidemic_recovery_query": True}
+            if allow_private_epidemic_recovery_near_pair is True
+            else {}
+        )
         ordinary_succession_driver_options = (
             {
                 "allow_private_current_timeline_blocker_query": True,
@@ -723,6 +746,7 @@ def native_auto_run(
             **private_lifestyle_driver_options,
             **private_faction_driver_options,
             **private_m5_driver_options,
+            **private_epidemic_driver_options,
             **ordinary_succession_driver_options,
         )
         # This controlled, private Python route does not change the native
@@ -793,10 +817,12 @@ def native_auto_run(
         status = "running"
 
         opening_date_raw = readiness.get("date_raw")
+        epidemic_recovery_pre: dict[str, object] | None = None
 
         def opening_guard_before_submit(
             candidate: dict[str, object],
         ) -> dict[str, object] | None:
+            nonlocal epidemic_recovery_pre
             if opening_focus_gate is not None:
                 selected = candidate.get("selected_step")
                 plan = candidate.get("plan")
@@ -897,7 +923,35 @@ def native_auto_run(
                             "receipt, following-turn consumption and checkpoint; "
                             f"refusing {selected!r} before first date advance"
                         )
-            return before_submit(candidate) if before_submit is not None else None
+            interception = (
+                before_submit(candidate) if before_submit is not None else None
+            )
+            if interception is not None:
+                return interception
+            if allow_private_epidemic_recovery_near_pair is True:
+                epidemic_recovery_pre = capture_epidemic_recovery_before_option(
+                    service, candidate
+                )
+                event_plan = candidate.get("plan")
+                event_decision = (
+                    event_plan.get("event_decision")
+                    if isinstance(event_plan, dict) else None
+                )
+                if (
+                    candidate.get("selected_step") == EPIDEMIC_RECOVERY_OPTION_STEP
+                    and isinstance(event_decision, dict)
+                    and event_decision.get("event_definition_key")
+                    == EPIDEMIC_RECOVERY_EVENT_KEY
+                    and epidemic_recovery_pre is None
+                ):
+                    raise AgentError(
+                        "exact epidemic recovery option lacks its pre-action county capture"
+                    )
+                if epidemic_recovery_pre is not None:
+                    current_attempt["epidemic_recovery_pre"] = copy.deepcopy(
+                        epidemic_recovery_pre
+                    )
+            return None
 
         for turn_index in range(1, turn_count + 1):
             # A first Ctrl+C is deferred by the CLI until the previous typed
@@ -989,6 +1043,7 @@ def native_auto_run(
                     )
                     raise
             turn_started = utc_now()
+            epidemic_recovery_pre = None
             # GameplayBridgeService.auto_turn() owns planning and execution in
             # one call.  Until it returns a typed step, an exception may have
             # occurred after a planner-selected save already overwrote the
@@ -999,11 +1054,17 @@ def native_auto_run(
                 try:
                     outcome = (
                         service.auto_turn(before_submit=opening_guard_before_submit)
-                        if opening_focus_gate is not None or before_submit is not None
+                        if (
+                            opening_focus_gate is not None
+                            or before_submit is not None
+                            or allow_private_epidemic_recovery_near_pair is True
+                        )
                         else service.auto_turn()
                     )
                     break
                 except PreSubmissionRevisionMismatchError as error:
+                    epidemic_recovery_pre = None
+                    current_attempt.pop("epidemic_recovery_pre", None)
                     if isinstance(error.plan, dict):
                         current_attempt["plan"] = copy.deepcopy(error.plan)
                     if (
@@ -1507,6 +1568,27 @@ def native_auto_run(
                     raise AgentError(
                         "native event selection lacks an old-instance lifecycle postcondition"
                     )
+                if epidemic_recovery_pre is not None:
+                    if step != epidemic_recovery_pre["option_step"]:
+                        raise AgentError(
+                            "epidemic recovery capture did not match the submitted option"
+                        )
+                    if selection.get("old_event_instance_id") != (
+                        epidemic_recovery_pre["event_instance_id"]
+                    ):
+                        raise AgentError(
+                            "epidemic recovery selection changed the event identity"
+                        )
+                    near_pair = observe_epidemic_recovery_after_option(
+                        service, epidemic_recovery_pre, after_snapshot
+                    )
+                    result["epidemic_recovery_near_pair"] = near_pair
+                    current_attempt["result"] = copy.deepcopy(result)
+                    current_attempt["epidemic_recovery_near_pair"] = (
+                        copy.deepcopy(near_pair)
+                    )
+                    if near_pair["status"] == "verified_new_modifier_presence":
+                        evidence.append("epidemic_recovery_counties_new_same_day")
                 material_issue = _registered_event_material_postcondition_issue(
                     plan, result
                 )
@@ -4828,6 +4910,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "checkpoint",
         "event_selection",
         "event_material_postcondition",
+        "epidemic_recovery_near_pair",
         "council_assign_councillor_ack",
         "council_assign_councillor_receipt",
         "war_action",
