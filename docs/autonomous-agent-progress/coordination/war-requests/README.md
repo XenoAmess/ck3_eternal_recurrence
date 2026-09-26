@@ -15,6 +15,8 @@
 
 响应 JSON 使用 `schema: "xar.g2.cross-team-war-response.v1"`，至少包含同一 `request_id`、`status`、`maintainer` 与 `updated_at_utc`。`delivered` 时还要有 `source_pr`、`master_commit`、`interface_contract`、`checks`、`live_evidence` 和 `limitations`；未实机验证写明 `live_evidence: null`，不能填一个预测结果。复验 JSON 使用 `schema: "xar.g2.cross-team-war-verification.v1"`，至少包含 `request_id`、`status`、`consumed_master_commit`、`candidate_pair_sha256`、`run_id`、`formal_report_sha256`、`observed_result` 与 `remaining_blocker`。`passed` 必须指向真实匹配运行；失败仍保留失败报告。
 
+`evidence/*.json` 在 `.gitattributes` 中按原始字节保存，避免 Windows/Linux 换行转换破坏请求中的 SHA-256；文件内容仍是可直接解析的 JSON。请求与响应的普通 JSON 走仓库常规文本规则。
+
 ## 一次交接
 
 1. 请求方从失败的正式报告提取最小可复现帧，写 request 并附报告 SHA、源 commit、EXE/DLL 版本、actor/episode、当前日期、期望行为和实际结果；把分析所需的失败报告或精确摘录放在同一 PR 的 `evidence/`。**仅在另一台机器 `git fetch` 后能读到全部请求和失败证据，才算需求传达。**首条 R0244 请求同时携带完整 44 KB 正式报告、operator 回执和配对身份清单；其中的 `Z:` 路径仅是报告生成时的历史字段，接收方不必访问该盘。大型存档、游戏本体与 DLL 不进 Git；若实机复验需要完整 save/driver/sidecar，另约定已验证的资产传输途径并在 response 中记录，不能把本机路径当远端可用。

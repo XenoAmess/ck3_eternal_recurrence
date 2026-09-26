@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Preserve original operator evidence bytes and SHA-256 across Windows/Linux Git checkouts.
+docs/autonomous-agent-progress/coordination/war-requests/evidence/*.json binary
+
 *.dds binary
 *.jpeg binary
 *.jpg binary
