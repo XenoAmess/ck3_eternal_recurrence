@@ -4,7 +4,7 @@
 
 ## 跨任务战争请求优先队列
 
-按用户 2026-09-27 指令，[战争请求目录](../autonomous-agent-progress/coordination/war-requests/README.md)中的新请求优先于本计划下方的独立研究。活动研究期间每次 15 分钟任务总线 heartbeat、每次提交前，以及每个长时间实机尝试之间，先 `git fetch origin master` 并从远端 `master` 的 `war-requests/requests/`、`responses/`、`verifications/` 复查状态；新 request 立即加入本节并处理，不能仅依赖本机通知。`R0244` 已认领：Robert 战局在 `native_war_general_battle_inputs_query` 因精确 v3 查询未列入普通 action list 而阻塞；只读查询选择修复已于 `ba623c137` 推送。独立配对实机回读、长路线后续动作及消费方正式复验尚待关闭，不能把已认领或单元测试通过当成交付完成。
+按用户 2026-09-27 指令，[战争请求目录](../autonomous-agent-progress/coordination/war-requests/README.md)中的新请求优先于本计划下方的独立研究。活动研究期间每次 15 分钟任务总线 heartbeat、每次提交前，以及每个长时间实机尝试之间，先 `git fetch origin master` 并从远端 `master` 的 `war-requests/requests/`、`responses/`、`verifications/` 复查状态；新 request 立即加入本节并处理，不能仅依赖本机通知。`R0244` 的精确 v3 查询修复 `ba623c137`、同帧首跳动作投影 `90afa9fef` 与[交付响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-INPUT-R0244-20260927.json)均已在 `master`；请求方原始 Robert War `48` 存档/DLL 仍须正式配对复验并写 verification。本机另一份战局的逐兵团输入成功，但生产策略选择守住首都，未提交移动，不可代称原始战局 GREEN。复验若发现新缺口，立即重新提到本队列最前。
 
 | 顺序 | 要回答的具体问题 | 当前证据与状态 | 下一道可核验门 | 产出 |
 | --- | --- | --- | --- | --- |
