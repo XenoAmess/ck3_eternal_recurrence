@@ -19,6 +19,28 @@ RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 _LEDGER = "construction-formal-pending-v1.json"
 
 
+def same_frame_construction_income(
+    snapshot: Mapping[str, object], history: list[dict[str, object]],
+) -> tuple[bool, int | None]:
+    """Return an observed public root row and its actual player income raw."""
+    played = snapshot.get("played_character")
+    actor = played.get("character_id") if isinstance(played, Mapping) else None
+    for row in reversed(history):
+        if row.get("command") != ROOT_QUERY_STEP or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        root = result.get("campaign_root_context") if isinstance(result, Mapping) else None
+        if not (isinstance(root, Mapping) and root.get("status") == "available"
+                and root.get("snapshot_revision") == snapshot.get("native_revision")
+                and root.get("date_raw") == snapshot.get("date_raw")
+                and root.get("player_character_id") == actor):
+            continue
+        income = root.get("player_monthly_gold_income")
+        raw = income.get("raw") if isinstance(income, Mapping) else None
+        return True, raw if type(raw) is int and income.get("scale") == 100_000 else None
+    return False, None
+
+
 def read_construction_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.exists():
@@ -85,6 +107,23 @@ def plan_construction_private(
                 "construction_pending_action": dict(applied),
                 "reason": "cold restore may load an earlier checkpoint; verify construction before using ledger"}}
         plan = {**plan, "construction_receipt_consumed": dict(applied)}
+        last_completion_check = applied.get(
+            "completion_last_check_date_raw", applied.get("post_date_raw"))
+        if (applied.get("completion_status") != "completed"
+                and type(snapshot.get("date_raw")) is int
+                and type(last_completion_check) is int
+                and snapshot["date_raw"] >= last_completion_check + 30):
+            income_observed, _ = same_frame_construction_income(snapshot, history)
+            if not income_observed and ROOT_QUERY_STEP in available_steps:
+                return {**planned, "plan": {**plan,
+                    "phase": "construction_completion_income_query",
+                    "selected_step": ROOT_QUERY_STEP,
+                    "reason": "read same-frame actual player income before completed slot"}}
+            return {**planned, "plan": {**plan,
+                "phase": "construction_completion_watch",
+                "selected_step": RECEIPT_STEP,
+                "construction_pending_action": dict(applied),
+                "reason": "read completed native building slot on a later monthly frame"}}
         # The receipt is consumed on the following formal turn.  A later
         # game day can present another legal province after that turn.
         if not (type(snapshot.get("native_revision")) is int

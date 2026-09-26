@@ -186,7 +186,10 @@ Fixture Scene() {
   f.Put(0x200000 + 0x14C, std::int32_t{4000});
   f.Put(0x720000 + kProvince * 8, std::uintptr_t{0x700000});
   f.Put(0x700000 + 0x10, kProvince);
+  f.Put(0x700000 + 0x620 + 0x18, std::uintptr_t{0x730000});
   f.Put(0x700000 + 0x620 + 0x24, std::int32_t{2});
+  f.Put(0x730000, std::uintptr_t{0});
+  f.Put(0x730000 + 0x10, std::uintptr_t{0});
   f.Put(0x700000 + 0x620 + 0x70, std::uintptr_t{0});
   // The R722-style CHoldingView mode-0 list is empty although the stock
   // CBuildingType manager vector contains two definitions.
@@ -269,6 +272,35 @@ int main() {
                 std::vector<PlayerWorldActiveConstructionV1>{
                     {kBarony, kProvince, true, 22, 1, kActor}},
             "stock_active_building_is_independent_material_receipt");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x730000 + 0x10, std::uintptr_t{0xB10000});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.completed_buildings ==
+                std::vector<PlayerWorldCompletedBuildingV1>{
+                    {kBarony, kProvince, 22, 1}} &&
+                !r.active_constructions[0].active,
+            "stock_completed_slot_is_separate_from_active_queue");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x730000 + 0x10, std::uintptr_t{0xA20000});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(!r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::construction_state,
+            "completed_slot_type_outside_stock_manager_remains_red");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x700000 + 0x620 + 0x18, std::uintptr_t{0});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(!r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::construction_state,
+            "missing_stock_completed_slot_array_is_not_empty_building_state");
   }
   {
     auto f = Scene();

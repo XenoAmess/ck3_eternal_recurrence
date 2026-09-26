@@ -90,6 +90,20 @@
     "cost": "not read from this world vector or final predicate; stock GUIPotentialBuildingItem.GetCost callback 0x11A6530 is row/view scoped",
     "action": "none"
   },
+  "completed_slot_observer": {
+    "exact_predicate_rva": "0x295CD60",
+    "predicate_array_read_rva": "0x295CECA",
+    "predicate_membership_loop_rva": "0x295CEE1",
+    "province_subobject_offset": "0x620",
+    "array_data_offset": "0x18",
+    "array_count_offset": "0x24",
+    "entry_stride": "0x10",
+    "entry_definition_pointer_offset": "0x0",
+    "output": "private completed_buildings list of copied barony/province/slot/building_type IDs; pointers resolved against the verified CBuildingType manager and never serialized",
+    "distinct_active_state": "Province+0x620+0x70 definition, +0x78 slot, +0xE0 initiator are in-progress construction and cannot by themselves prove completion",
+    "source_status": "static-ready only; requires a matching paused live candidate to verify a completed slot and later income/effect separately",
+    "failure": "missing slot data or definition outside the exact manager returns construction_state unavailable"
+  },
   "exact_regions": [
     {"name": "building_manager_getter", "start_rva": "0x864750", "end_rva_exclusive": "0x8647A7", "sha256": "233C8008BA53A622B5AE65522A3D34DCF23760EF7187BF24448C1CADC62301DF"},
     {"name": "county_building_iterator", "start_rva": "0x1922C52", "end_rva_exclusive": "0x1922C7C", "sha256": "A4461F501C1CD862E052550C17FF5BA2E90EEAE36E635BF6F20CB3097FCBA020"},
@@ -100,6 +114,7 @@
     {"name": "domicile_vtable_col_for_r730", "start_rva": "0x4172FA0", "end_rva_exclusive": "0x4172FB0", "sha256": "E2E80CDE768FAA2CABB34EAF7A75560496B781FCCAA9C5B44A09615AAE323C40"},
     {"name": "building_type_ctor", "start_rva": "0x2C543F0", "end_rva_exclusive": "0x2C5440E", "sha256": "FACE83F62F26D90027F9AA8B0D34868B08D9D8695C3B946EA07911579B9AA0CE"},
     {"name": "gui_final_predicate_call", "start_rva": "0x11A6308", "end_rva_exclusive": "0x11A6333", "sha256": "B3B8CD7E8E28C60A0D88EA7B431207E6C067A152D17260C93FA8E1D4C4D2E27E"},
+    {"name": "player_final_predicate_completed_slot_scan", "start_rva": "0x295CECA", "end_rva_exclusive": "0x295CEEF", "sha256": "1B84DFD4521C4E1BB42377B722D5B5D7D301B3BA89F8B90A12BBBBB7D71ACCD3"},
     {"name": "gui_cost_callback", "start_rva": "0x11A6530", "end_rva_exclusive": "0x11A6559", "sha256": "60EA4BD2C73866AC4BBBB45DD76EB4FFAB1FECC207D423935D16B027984257BD"}
   ],
   "next_live_gate": "from a distinct final-master private-ON DLL and owner-controlled same R697 standard-feudal paired source, read exact 0x864750/module+0x570C108 CBuildingType manager+0x68/+0x74 vector on one paused revision, verify bounded count and copied BuildingTypeID/TitleID/ProvinceID rows plus at least one true stock player final-legality sample or explicitly retain evidence_insufficient; any definition identity mismatch stays RED. Zero game action/date/UI, tree reclaimed, cost/action/ad false. R730 domicile and R735 court RED close only after true manager source independently succeeds on paused live",

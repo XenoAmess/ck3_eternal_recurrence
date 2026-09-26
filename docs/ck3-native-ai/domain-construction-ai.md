@@ -2,12 +2,26 @@
 
 ## 状态与范围
 
+- **NW-ECON-COMPLETION（2026-09-26，static-ready-private；未新增实机）**：exact EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的玩家最终合法性 `0x295CD60` 在 `0x295CECA..0x295CEED` 从 `Province+0x620+0x18` 取模式 0 的槽位数组，`+0x24` 为数量，每项 `0x10` 字节，首个 qword 与候选 `CBuildingType*` 比较。原有 `+0x70/+0x78/+0xE0` 是**施工中**定义/槽位/发起人；二者独立。新私有只读投影按数组索引记录已建 `province_id/barony_title_id/slot_index/building_type_id`，仅接受同一已验证 manager 中的定义；数组缺失或定义不匹配返回 `construction_state` RED。此数组的实机含义仍须匹配候选 paused snapshot 验证，静态 fixture 不等于真实完工。
+
+  正式建设收据在开工后保留原 `active` 证据，后续每隔至少 30 游戏日以同一 paused frame 查询已建槽位；同 tuple 从 active 转为已建时，记录独立 `completion_status=completed` 与日期。新 PID 冷恢复若施工已完工，也可由已建槽位核对，不再因 active row 消失而无限停在“未见物质状态”。若已建与 active 同时匹配同一 tuple，或二者均不可读，仍保持 RED；旧存档回退继续单独分类。该结果只证明同槽建筑存在，**不证明当前玩家月收入增加，也不推断边际税收/ROI**。正式入口复用已有 `campaign_root_context.player_monthly_gold_income`：开工前保存同帧实际玩家总收入 raw，完工观察前先请求同帧 root，若前后读数均有效则记录总收入差值 raw；收入缺项保持 null，不阻断独立完工读回。其间战争、领地和其他 modifier 的变化仍须单独排除，不能把差值自动归因于建筑。Robert 当前战争中，既有 `life-advance` 与 peace gate 仍会拦截新建设，战时资源分配需另包处理。
+
+```mermaid
+flowchart LR
+    A[同帧合法且可负担的建设] --> B[typed 提交]
+    B --> C[独立 active 行与扣款]
+    C --> D[后续 paused 帧读取已建槽位]
+    D -->|同 province/slot/type| E[记录完工]
+    D -.->|未知/冲突| F[RED 保留收据]
+    E -.->|需实机收入读回| G[总收入变化及归因待证]
+```
+
 - **NW-ECON-VALUE（2026-09-26，static-ready-private；未新增实机）**：先前审计发现私有 `legal_samples[]` 只有 ID、槽位、原生成本，Python `_candidate` 一律选择最便宜样本，故 R746 的 ID `12`/`24` 与 R0081 开工都不能证明经济收益。exact EXE `CBuildingType` RTTI 层级经同版 PE 读取为 `CBuildingType → CGameDatabaseObject → CPersistent`；已验证的数据库对象身份布局为 `+0x10` ordinal、`+0x14` hash、`+0x18` MSVC canonical-key string。现于原生最终合法样本的**同一 paused revision**、同一 definition/Province/slot 读取并序列化 `building_key`，不把进程局部 ID 猜成稳定建筑类型。缺失或无效 key 使私有来源 unavailable；公共 query/action 广告仍关闭。
 
   对 exact 原版 `common/buildings/00_standard_economy_buildings.txt` SHA-256 `355445C46F70B9015A5E2BE68EE9DDC1F4E3EEB8BE368D34A37FD8A8CC0F7153` 与 `common/script_values/00_building_values.txt` SHA-256 `F436F7D9D5AC5506B38D715F0CE02C4F4257EEF3ADDF56597C18A526A6F66825`，一级经济建筑的无条件 `province_modifier.monthly_income` 有标称正值：poor `0.25`、normal `0.35`、good `0.50`、excellent `0.70`。Python 私有正式查询和 mailbox 调用的 native action selector **两处**只在原生合法、原生成本可负担、无施工且保留 200 金时选这些可识别的 tier-one key；按**脚本标称月收入**降序、实际成本升序排序。两者对同一六样本 fixture 的 tuple/cost 选择一致，随后仍沿 R0081 原有 typed submit/receipt/下一 turn 合同。未映射 key 的估值保持 `None`，native 标 `economic_value_unknown`，不当成零收益或默认可行动；原版动态 `ai_value` 与实际角色税收增量均没有据此求出。
 
   这项增量的证据为 exact EXE/原版脚本静态绑定、normal/optimized 原生读口与 JSON 序列化 fixture、Python 与 native action 对同一 paused-revision 形状选择相同 tuple/cost 的双模式聚焦测试，以及 Debug/Release 私有 action focused object no-launch 构建。**尚无本候选的 paused live key、动作、日期或实际完工收入**；R0081 仍只证明旧私有开工/收据/恢复。下一实机门为匹配 DLL 的同帧 key/ID/slot/cost 读回，随后正式策略选择、typed 开工、独立 active row 与扣款、下一 turn、冷恢复；完工后另读实际建筑效果和收入。标称 `monthly_income` 不冒充实际边际税收或 ROI，也不提升 M4/M5 完整里程碑。
-- **NW-ECON（2026-09-26，源码/fixture，未新增实机）**：R0081 已证明一次私有建设的物质收据、下一 turn 消费与新 PID 冷恢复；新源码核查发现 `applied` 收据曾令同一 episode 的后续合法建设永远跳过查询，提交层也永久拒绝第二次动作。现在仅在原收据已经核实、同一进程进入更晚游戏日及更新 native revision 后重查同帧原生候选；pending、同帧和冷进程仍先走原收据/恢复路径。聚焦 unit 以第一省份收据、下一 turn、后一游戏日另一可负担省份的第二次 typed submit 验证调用链。**这不是第二次建设的 live 证据**；此入口仍须显式 `allow_private_construction_formal_trial` 与 bounded contract，公共能力不因此开启。现有私有 source 提供成本、gold、槽位占用与合法性，却没有完整工期或建筑收入/效果字段；R0081 只证明开工，不证明完工或经济收益。完工后的冷恢复若看不到原 active row，旧收据目前仍缺独立物质读回，保持待施工缺口。
+- **NW-ECON（2026-09-26，源码/fixture，未新增实机）**：R0081 已证明一次私有建设的物质收据、下一 turn 消费与新 PID 冷恢复；新源码核查发现 `applied` 收据曾令同一 episode 的后续合法建设永远跳过查询，提交层也永久拒绝第二次动作。现在仅在原收据已经核实、同一进程进入更晚游戏日及更新 native revision 后重查同帧原生候选；pending、同帧和冷进程仍先走原收据/恢复路径。聚焦 unit 以第一省份收据、下一 turn、后一游戏日另一可负担省份的第二次 typed submit 验证调用链。**这不是第二次建设的 live 证据**；此入口仍须显式 `allow_private_construction_formal_trial` 与 bounded contract，公共能力不因此开启。现有私有 source 提供成本、gold、槽位占用与合法性，却没有完整工期或建筑收入/效果字段；R0081 只证明开工，不证明完工或经济收益。该轮次原有的完工后冷恢复缺口由上方 NW-ECON-COMPLETION 静态方案承接，仍待匹配实机验证。
 - **COST-GATE1（2026-09-15，static-ready/read-only，未实机）**：在已冻结的 native selected-row 成本 helper `0x18D17E0` 中，`0x18D18F3` 前的 `rdi`、`rbp-0x41`、`rbx` 分别是同步借用的 `0x28` 目标行、八槽成本、八槽资源余额；同一 native command 以后从 `[r14+0x18]` 写入 actor ID，因此 collector 要求它等于当帧玩家，排除 AI 的建设候选。exact EXE 和 helper span 的 SHA-256，以及对应寄存器来源指令，保存在 `native_bridge/research/domain_construction_cost_gate_collector_v1_abi.json`；独立 C++ collector 在该调用尚未返回时复制身份/成本/余额。`cost == balance` 在原生严格 `<` 判定下成为可观测的 `insufficient_resource` 拒绝；余额足够却尚未观察最终 native validator 时只记录 `final_observation`，不能进入 construction action。normal/optimized 聚焦 fixture 与 exact-build source verifier 已验证静态来源，**没有 paused live capture**。自然调用属于 AI scheduler；该 collector 没有可证的玩家调用，当前不接 AI hook 或广告公共建设动作。玩家建设的下一输入转向下文原版县视图与底层定义枚举。
 - **VIEW-PROBE1（2026-09-15，static-ready-private，未实机）**：`player_construction_view_probe_v1.hpp/.cpp/_process.cpp/_mailbox.cpp` 复用 exact root/idler/handler 路径，借用 `handler+0xD0` 的 `CHoldingView`，在 paused application-main 中同步读取 `+0x118/+0x120/+0x124` 候选缓存。返回 `view_candidate_cache_empty` 与 `view_candidate_cache_present`，其中 cache empty **不是**“玩家没有可建建筑”。源码 ABI `native_bridge/research/player_construction_view_probe_v1_abi.json` 与 exact source verifier GREEN，normal/optimized MSVC `/W4 /WX` 聚焦 fixture GREEN。`bridge.cpp` 有只在 `XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=ON` 时路由的私有 `execute_step`，CMake 默认 `OFF`；Debug/Release DLL 候选已链接。尚无真实 paused query、候选成本/合法性、策略动作或后置结果；不提升 M4/预览能力。
 

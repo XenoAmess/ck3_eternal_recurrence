@@ -86,6 +86,17 @@ struct PlayerWorldActiveConstructionV1 final {
                          const PlayerWorldActiveConstructionV1 &) = default;
 };
 
+// Stock Province+0x620 slot array, read independently of the active queue.
+// A row is a completed occupant of the indexed building slot.
+struct PlayerWorldCompletedBuildingV1 final {
+  std::int32_t barony_title_id = -1;
+  std::int32_t province_id = -1;
+  std::int32_t building_type_id = -1;
+  std::int32_t slot_index = -1;
+  friend bool operator==(const PlayerWorldCompletedBuildingV1 &,
+                         const PlayerWorldCompletedBuildingV1 &) = default;
+};
+
 struct PlayerWorldBuildingSourceResultV1 final {
   PlayerWorldBuildingFailureV1 failure = PlayerWorldBuildingFailureV1::none;
   PlayerWorldDefinitionIdentityDiagnosticV1 definition_identity_diagnostic{};
@@ -104,6 +115,7 @@ struct PlayerWorldBuildingSourceResultV1 final {
   std::int32_t final_legality_checks = 0;
   std::vector<PlayerHeldHoldingSourceV1> directly_held_barony_provinces;
   std::vector<PlayerWorldActiveConstructionV1> active_constructions;
+  std::vector<PlayerWorldCompletedBuildingV1> completed_buildings;
   std::vector<PlayerWorldBuildingLegalSampleV1> legal_samples;
 };
 

@@ -27,6 +27,11 @@ constexpr std::size_t kProvinceCountOffset = 0x14C;
 constexpr std::size_t kProvinceIdentityOffset = 0x10;
 constexpr std::size_t kProvinceSlotsOffset = 0x620;
 constexpr std::size_t kProvinceSlotCountOffset = 0x24;
+// Stock player final-legality 0x295CD60 walks the mode-0 slot array at
+// slots+0x18, in 0x10-byte records, comparing each record's first pointer
+// with the candidate CBuildingType*. The active queue lives at +0x70.
+constexpr std::size_t kProvinceBuiltSlotsDataOffset = 0x18;
+constexpr std::size_t kProvinceBuiltSlotStride = 0x10;
 // Stock building command executor 0x26CD290 calls 0x21F6860; that routine
 // writes the in-progress CBuildingType* at slots+0x70, selected slot at
 // slots+0x78, and initiating CharacterID at slots+0xE0.
@@ -348,6 +353,32 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
                 kProvinceSlotsOffset + kProvinceActiveBuildingOffset,
                 active_definition)) {
         return Failed(PlayerWorldBuildingFailureV1::construction_state);
+      }
+      std::uintptr_t built_slots = 0;
+      if (!Read(campaign, province,
+                kProvinceSlotsOffset + kProvinceBuiltSlotsDataOffset,
+                built_slots) || (slot_count > 0 && built_slots == 0)) {
+        return Failed(PlayerWorldBuildingFailureV1::construction_state);
+      }
+      for (std::int32_t slot = 0; slot < slot_count; ++slot) {
+        std::uintptr_t built_definition = 0;
+        if (!Read(campaign, built_slots,
+                  static_cast<std::size_t>(slot) * kProvinceBuiltSlotStride,
+                  built_definition)) {
+          return Failed(PlayerWorldBuildingFailureV1::construction_state);
+        }
+        if (built_definition == 0) continue;
+        const auto built_match = std::find_if(
+            definitions.begin(), definitions.end(),
+            [built_definition](const auto &definition) {
+              return definition.second == built_definition;
+            });
+        if (built_match == definitions.end()) {
+          return Failed(PlayerWorldBuildingFailureV1::construction_state);
+        }
+        result.completed_buildings.push_back({
+            holding.barony_title_id, holding.province_id,
+            built_match->first, slot});
       }
       PlayerWorldActiveConstructionV1 state{};
       state.barony_title_id = holding.barony_title_id;

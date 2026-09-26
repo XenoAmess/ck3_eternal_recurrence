@@ -33,7 +33,9 @@ def root(revision: int = 3) -> list[dict[str, object]]:
     return [{"command": "query-campaign-root-context-v1", "ok": True,
              "result": {"campaign_root_context": {"status": "available",
                  "snapshot_revision": revision, "date_raw": 53_178_312,
-                 "player_character_id": 29829, "government": {
+                 "player_character_id": 29829,
+                 "player_monthly_gold_income": {"raw": 1_000_000, "scale": 100_000},
+                 "government": {
                      "key": "feudal_government", "flags": ["government_is_feudal"]}}}}]
 
 
@@ -51,7 +53,8 @@ def world(revision: int = 3, *, active: bool = False) -> dict[str, object]:
                 "province_id": 2635, "active": active,
                 "building_type_id": 24 if active else None,
                 "slot_index": 1 if active else None,
-                "initiator_character_id": 29829 if active else None}]}
+                "initiator_character_id": 29829 if active else None}],
+            "completed_buildings": []}
 
 
 class Driver:
@@ -65,6 +68,7 @@ class Driver:
         self.recorded = []
         self.timeout_action = False
         self.active_construction = False
+        self.completed_construction = False
         self.unknown_gold = False
         self.r753_truncated_samples = False
         self.r0080_material_without_cost = False
@@ -95,7 +99,13 @@ class Driver:
             else revision * 10
         )
         if request["step"] == transport.QUERY_NATIVE:
-            source = world(revision, active=revision >= 4 or self.active_construction)
+            source = world(revision, active=(revision >= 4 or self.active_construction)
+                           and not self.completed_construction)
+            source["date_raw"] = self.snapshot["date_raw"]
+            if self.completed_construction:
+                source["completed_buildings"] = [{
+                    "barony_title_id": 2103, "province_id": 2635,
+                    "building_type_id": 24, "slot_index": 1}]
             if self.second_building_available and revision >= 5:
                 source["date_raw"] = self.snapshot["date_raw"]
                 source["player_gold_raw"] = 25_000_000 if revision >= 6 else 35_000_000
@@ -533,6 +543,98 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                                                                expected_revision=1)
                 self.assertEqual(receipt["post_proof_epoch"], 10)
                 self.assertTrue(receipt["postcondition_verified"])
+
+    def test_completed_slot_is_consumed_on_monthly_formal_watch(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                driver._record_command("query-campaign-root-context-v1", ok=True,
+                                       result=root(3)[0]["result"])
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                self.assertEqual(pending["pre_player_monthly_gold_income_raw"], 1_000_000)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                self.assertEqual(start["completion_status"], "in_progress")
+                later = frame(5)
+                later["date_raw"] += 31
+                driver.snapshot = later
+                driver.completed_construction = True
+                planned = {"plan": {"selected_step": "life-advance"}, "revision": 5}
+                need_income = plan_construction_private(
+                    driver, planned, later, [], {"query-campaign-root-context-v1"})
+                self.assertEqual(need_income["plan"]["selected_step"],
+                                 "query-campaign-root-context-v1")
+                later_root = root(5)[0]
+                later_root["result"]["campaign_root_context"]["date_raw"] = later["date_raw"]
+                later_root["result"]["campaign_root_context"][
+                    "player_monthly_gold_income"]["raw"] = 1_050_000
+                driver._record_command("query-campaign-root-context-v1", ok=True,
+                                       result=later_root["result"])
+                watch = plan_construction_private(
+                    driver, planned, later, [later_root], {"query-campaign-root-context-v1"})
+                self.assertEqual(watch["plan"]["selected_step"], RECEIPT_STEP)
+                done = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(done["status"], "applied")
+                self.assertEqual(done["completion_status"], "completed")
+                self.assertEqual(done["completion_observed_date_raw"], later["date_raw"])
+                self.assertEqual(done["observed_player_monthly_income_delta_raw"], 50_000)
+                self.assertEqual(done["start_receipt"]["completion_status"], "in_progress")
+                self.assertEqual(read_construction_ledger(driver.state_dir)["applied"], done)
+                self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                     for row in driver.requests), 1)
+
+    def test_cold_restore_after_completion_reads_built_slot(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", side_effect=[
+                    (123, "t1"), (123, "t1"), (124, "t2"), (124, "t2")]):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                later = frame(5)
+                later["date_raw"] += 31
+                driver.snapshot = later
+                driver.completed_construction = True
+                planned = {"plan": {"selected_step": "life-advance"}, "revision": 5}
+                cold = plan_construction_private(driver, planned, later, [], set())
+                self.assertEqual(cold["plan"]["selected_step"], RECEIPT_STEP)
+                done = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(done["completion_status"], "completed")
+                self.assertEqual(done["post_bridge_pid"], 124)
+                self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
+
+    def test_monthly_watch_keeps_active_start_proof_and_defers_next_read(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                later = frame(5)
+                later["date_raw"] += 31
+                driver.snapshot = later
+                still_active = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(still_active["completion_status"], "in_progress")
+                self.assertEqual(still_active["start_receipt"]["post_proof_epoch"],
+                                 start["post_proof_epoch"])
+                next_day = frame(6)
+                next_day["date_raw"] += 32
+                plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"},
+                             "revision": 6}, next_day, [], set())
+                self.assertNotEqual(plan["plan"]["selected_step"], RECEIPT_STEP)
 
     def test_restoring_older_checkpoint_clears_stale_applied_only_after_material_read(self):
         with TemporaryDirectory() as location:
