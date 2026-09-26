@@ -808,4 +808,4 @@ rg -n 'MIN_DAYS_BEFORE_MANUAL_RETREAT|PURSUIT_PHASE_DAYS|SHATTERED_RETREAT|MOVEM
 
 ## 2026-09-23 追加：普通移动路径的排除证据
 
-[战争影片撤退补研](war-film-retreat-policy-2026-09-23.md)确认 representative/follower 普通移动分派在 active combat 时提前返回/跳过，并保存 exact-build 指令。通用战争 AI 主动撤退策略仍未找到；`0x184818D` 与 `0x18793B0` 上游已在后续 caller 分类，不能把 direct-call census 当“不存在”证明。[2026-09-27 劫掠任务清理补充](raid-cleanup-active-combat-retreat-candidate-2026-09-27.md)进一步钉住 `0x18CF127 → 0x18793B0` 的异省、资格、两次建路与派令门；这仍是 raid 失败清理候选，不是普通战争按战损主动撤退的结论。
+[战争影片撤退补研](war-film-retreat-policy-2026-09-23.md)确认 representative/follower 普通移动分派在 active combat 时提前返回/跳过，并保存 exact-build 指令。通用战争 AI 主动撤退策略仍未找到；`0x184818D` 与 `0x18793B0` 上游已在后续 caller 分类，不能把 direct-call census 当“不存在”证明。[2026-09-27 劫掠任务清理补充](raid-cleanup-active-combat-retreat-candidate-2026-09-27.md)进一步钉住 `0x18CF127 → 0x18793B0` 的异省、资格、两次建路与派令门；这仍是 raid 失败清理候选，不是普通战争按战损主动撤退的结论。[同日协调器比例门复核](coordinator-ghw-staging-ratio-not-combat-retreat-2026-09-27.md)将 `0x1855359 → 0x18554F0` 的 0.9 比值绑定到大圣战集结 define，并证明所查分支只写计时状态；它也不能充当战中撤退 policy。
