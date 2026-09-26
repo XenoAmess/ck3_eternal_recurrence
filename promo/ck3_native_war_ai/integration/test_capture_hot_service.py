@@ -6,7 +6,67 @@ import tempfile
 import threading
 import unittest
 
-from capture_session import service_requests
+from capture_session import private_phase_trace_call, service_requests
+
+
+class PrivatePhaseTraceContractTests(unittest.TestCase):
+    def setUp(self):
+        self.calls = []
+
+        class Driver:
+            def __init__(inner, calls):
+                inner.calls = calls
+
+            def _execute_primitive_step(inner, step, **kwargs):
+                inner.calls.append((step, kwargs))
+                return {"status": "forwarded"}
+
+        self.driver = Driver(self.calls)
+        self.begin = {
+            "action": "private_phase_trace",
+            "step": "experimental-combat-phase-event-trace-begin-v1",
+            "expected_revision": 7,
+            "combat_id": 16777218,
+            "managed_daily_sequence_token": 66005,
+            "checkpoint_sequence": 9,
+        }
+
+    def test_optional_weight_capture_bool_is_forwarded_only_on_begin(self):
+        for value in (True, False):
+            with self.subTest(value=value):
+                request = {**self.begin,
+                           "capture_runtime_random_list_weights": value}
+                self.assertEqual(private_phase_trace_call(
+                    request, enabled=True, driver=self.driver),
+                    {"status": "forwarded"})
+                self.assertIs(self.calls[-1][1]["request_fields"]["capture_runtime_random_list_weights"], value)
+        self.assertEqual(self.calls[-1][1]["required_capability"],
+                         "game.command.experimental-combat-phase-event-trace-managed-v1")
+
+    def test_absent_flag_preserves_previous_wire_shape(self):
+        private_phase_trace_call(self.begin, enabled=True, driver=self.driver)
+        self.assertNotIn("capture_runtime_random_list_weights",
+                         self.calls[-1][1]["request_fields"])
+
+    def test_non_bool_and_finish_flag_are_rejected_before_driver_call(self):
+        for value in (0, 1, "true", None):
+            with self.subTest(value=value):
+                with self.assertRaises(RuntimeError):
+                    private_phase_trace_call(
+                        {**self.begin, "capture_runtime_random_list_weights": value},
+                        enabled=True, driver=self.driver)
+        finish = {key: value for key, value in self.begin.items()
+                  if key != "checkpoint_sequence"}
+        finish["step"] = "experimental-combat-phase-event-trace-finish-v1"
+        finish["capture_runtime_random_list_weights"] = True
+        with self.assertRaises(RuntimeError):
+            private_phase_trace_call(finish, enabled=True, driver=self.driver)
+        self.assertEqual(self.calls, [])
+
+    def test_opt_in_is_required(self):
+        with self.assertRaises(RuntimeError):
+            private_phase_trace_call(self.begin, enabled=False, driver=self.driver)
+        self.assertEqual(self.calls, [])
 
 
 class HotServiceTests(unittest.IsolatedAsyncioTestCase):

@@ -166,6 +166,54 @@ def session_outcome(*, session_ok: bool, debug_recording_enabled: bool, recordin
             else "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO")
 
 
+def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
+    """Forward only the bounded private trace fields to the native driver."""
+    require(enabled, "Private phase trace requires explicit capture opt-in")
+    step = request.get("step")
+    require(step in {
+        "experimental-combat-phase-event-trace-begin-v1",
+        "experimental-combat-phase-event-trace-finish-v1",
+    }, "Only the bounded phase trace command pair is permitted")
+    expected_revision = request.get("expected_revision")
+    combat_id = request.get("combat_id")
+    token = request.get("managed_daily_sequence_token")
+    require(type(expected_revision) is int and expected_revision > 0,
+            "Private phase trace needs a positive revision")
+    require(type(combat_id) is int and combat_id > 0,
+            "Private phase trace needs a positive CombatID")
+    require(type(token) is int and token > 0,
+            "Private phase trace needs a positive sequence token")
+    fields = {"combat_id": combat_id,
+              "managed_daily_sequence_token": token}
+    allowed = {"action", "step", "expected_revision",
+               "combat_id", "managed_daily_sequence_token"}
+    if step.endswith("-begin-v1"):
+        checkpoint_sequence = request.get("checkpoint_sequence")
+        require(type(checkpoint_sequence) is int and checkpoint_sequence > 0,
+                "Begin requires a materialized checkpoint sequence")
+        fields["checkpoint_sequence"] = checkpoint_sequence
+        allowed.add("checkpoint_sequence")
+        if "candidate_joining_army_id" in request:
+            candidate_id = request["candidate_joining_army_id"]
+            require(type(candidate_id) is int and 0 < candidate_id < 2**31,
+                    "Candidate joiner needs a positive full ArmyID")
+            fields["candidate_joining_army_id"] = candidate_id
+            allowed.add("candidate_joining_army_id")
+        if "capture_runtime_random_list_weights" in request:
+            capture_weights = request["capture_runtime_random_list_weights"]
+            require(type(capture_weights) is bool,
+                    "Runtime random-list weight capture flag must be bool")
+            fields["capture_runtime_random_list_weights"] = capture_weights
+            allowed.add("capture_runtime_random_list_weights")
+    require(set(request) == allowed,
+            "Private phase trace request fields differ from the bounded contract")
+    return driver._execute_primitive_step(
+        step, expected_revision=expected_revision,
+        required_capability="game.command.experimental-combat-phase-event-trace-managed-v1",
+        request_fields=fields, timeout_seconds=90,
+    )
+
+
 async def service_requests(directory: Path, *, call, stopped: threading.Event,
                            seconds: float, state_reader, private_phase_call=None) -> None:
     """Keep the one owning MCP connection available for bounded hot diagnosis.
@@ -515,45 +563,9 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                 duration = args.recovery_seconds if failed else args.interactive_seconds
                 if duration > 0 and not stopped.is_set():
                     def private_phase_call(request: dict) -> dict:
-                        require(args.enable_private_phase_trace,
-                                "Private phase trace requires explicit capture opt-in")
-                        step = request.get("step")
-                        require(step in {
-                            "experimental-combat-phase-event-trace-begin-v1",
-                            "experimental-combat-phase-event-trace-finish-v1",
-                        }, "Only the bounded phase trace command pair is permitted")
-                        expected_revision = request.get("expected_revision")
-                        combat_id = request.get("combat_id")
-                        token = request.get("managed_daily_sequence_token")
-                        require(type(expected_revision) is int and expected_revision > 0,
-                                "Private phase trace needs a positive revision")
-                        require(type(combat_id) is int and combat_id > 0,
-                                "Private phase trace needs a positive CombatID")
-                        require(type(token) is int and token > 0,
-                                "Private phase trace needs a positive sequence token")
-                        fields = {"combat_id": combat_id,
-                                  "managed_daily_sequence_token": token}
-                        allowed = {"action", "step", "expected_revision",
-                                   "combat_id", "managed_daily_sequence_token"}
-                        if step.endswith("-begin-v1"):
-                            checkpoint_sequence = request.get("checkpoint_sequence")
-                            require(type(checkpoint_sequence) is int and checkpoint_sequence > 0,
-                                    "Begin requires a materialized checkpoint sequence")
-                            fields["checkpoint_sequence"] = checkpoint_sequence
-                            allowed.add("checkpoint_sequence")
-                            if "candidate_joining_army_id" in request:
-                                candidate_id = request["candidate_joining_army_id"]
-                                require(type(candidate_id) is int and 0 < candidate_id < 2**31,
-                                        "Candidate joiner needs a positive full ArmyID")
-                                fields["candidate_joining_army_id"] = candidate_id
-                                allowed.add("candidate_joining_army_id")
-                        require(set(request) == allowed,
-                                "Private phase trace request fields differ from the bounded contract")
-                        return driver._execute_primitive_step(
-                            step, expected_revision=expected_revision,
-                            required_capability="game.command.experimental-combat-phase-event-trace-managed-v1",
-                            request_fields=fields, timeout_seconds=90,
-                        )
+                        return private_phase_trace_call(
+                            request, enabled=args.enable_private_phase_trace,
+                            driver=driver)
 
                     await service_requests(
                         args.output_dir / ("recovery-requests" if failed else "interactive-requests"),
