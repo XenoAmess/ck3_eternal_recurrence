@@ -13,3 +13,5 @@
 工具要求目录已存在且目标文件均不存在，唯一可见 Steam 窗口完全位于桌面内，向左或右有 20 像素安全空间。它先保存基线图，移动当前 HWND、核对新矩形和桌面真实宽高、保存新图，再在 `finally` 恢复原矩形；若新旧哈希相同、移动侧边沿像素无变化、屏幕尺寸变化或恢复失败，报错而不产出成功收据。输出的 `offline_status_observed` 固定为 `null`：执行者仍需直接审阅**新图**上的 Steam 状态，再单独记录离线结论；不得让脚本凭“画面有过离线字样”自动签核。整个过程不点击桌面坐标，也不启动游戏。
 
 该工具在无 CK3 的同机环境完成一次实际复跑，生成前图 SHA `96F835...B1235`、移动图 SHA `795B38...6ACC5`，Steam 矩形 `0,0,962,768→20,0,982,768→0,0,962,768`，桌面 `1024×768`；过程资产在外置 `D:/workspace/ck3_native_war_ai_promo_work/steam-fresh-helper-smoke-068/`。后续机器若窗口无法唯一识别、无法安全位移或图像不响应，应把离线预检记为未证明，并排查环境；不能复用旧图和旧收据。
+
+`steam-frame-freshness.json` 只证明画面响应窗口位移，**不是**受管 `capture_session.py` 所需的离线 UI 回执。后者在 `promo/ck3_native_war_ai/integration/capture_session.py:475-481` 精确核对：执行者审阅新图后才可记录 `current_offline_ui_observed=true`；顶层 `observed_at` 须为带时区 ISO 时间且距当前 UTC 为 `0..900` 秒；`screenshot` 必须与图像当时的 `identity(Path(path))` 完全相等，包含 resolve 后绝对 `path`、文件大小 `bytes` 与大写 `sha256`。068 尝试只填 `path`、`sha256`，被 `Steam screenshot identity changed` 在 CK3 启动前拒绝；原失败 attempt 保留，070 用新目录与完整回执重试。将来不能把本工具的输出原样传给受管启动器，也不能省略 `bytes` 或替代人工离线画面判断。
