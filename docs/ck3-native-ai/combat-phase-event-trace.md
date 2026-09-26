@@ -234,6 +234,42 @@ SHA-256 `CC792DF04804FD160C83AFCDFF2F2284C02791B0DE79492E49AAFAE99E73593E`
 上下文没有医师条件，模拟器也没有该治疗列表转移；本次只证明入口权重、分支身份和抽签，
 不把 `10→40` 的具体条件组合或治疗反馈伪称为已闭合。完整战斗概率与所有事件写回仍保持原有未闭合门禁。
 
+#### 第 5 日治疗 `40/50` 的医师条件：源档投影与下一采集门禁
+
+[精确原版脚本＋不可变源档的离线投影，非医师同帧实采] `20_health_effects.txt:1410-1425` 的
+`save_court_physician_as_effect` 从 `court_owner` 的可行动 `court_physician_court_position`
+持有者保存 `scope:physician`；`20_health_triggers.txt:498-518` 还要求该医师可用，旅行时须随行。
+`20_health_effects.txt:2125-2233` 的 `safe_wound_treatment_effect` 先尝试一次
+`CHANCE=10` 的医师升阶，再进入两个条目的列表：成功基础权重 `10`，失败基础权重 `50`；
+成功项对医师有效学习 `[8,10)`、`[10,12)`、`[12,15)`、`≥15` 依次乘 `2/4/7/10`，
+另有医师特质及 XP 的倍率。阈值 `8/10/12/15` 来自 `00_basic_values.txt:473-476`。
+上述 source 的 SHA-256 与[本页源表](#证据与加载边界)绑定；健康 trigger 文件 SHA-256 为
+`7A40670167D8073B34F73AAA53387FC05DB4543D5BF1C10C5296967A4DE8F8F8`。
+
+066 源档由 Rakaly 0.8.19（EXE SHA-256
+`E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D`）只读解码，
+明文 SHA-256 `3EA734AECA5992CA8DDAD87564C1B7090A7AC677DF23C1069764A5C93F42C4CA`。
+源档 court-position 记录 `834` 为医师席位，`employee=57392`、`employer=34333`；医师角色
+Guy（57392）的基础六技能为 `[1,3,2,7,2,1]`，第五槽学习 `2`；trait IDs
+`[70,49,67,22]` 经**同一存档** `traits_lookup` 解码为 `just/gluttonous/ambitious/education_learning_3`，
+没有 `lifestyle_physician`。原版 trait 定义给学习分别 `+1/0/+1/+6`，故不计其他动态修正的
+基础加特质学习是 `2+1+0+1+6=10`；落在 `[10,12)` 时，脚本投影成功权重
+`10×4=40`，失败权重 `50`，与本次实采数值吻合。
+[独立静态投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_day05_physician_conditions_v1.json)
+SHA-256 `C6E97DF67F1A561925C845F313F8BBE204296DAC1061E4150C43684D2B74AF38`
+由[只读校验器](../../ck3_autonomous_player/tools/project_native_day05_physician_conditions.py)
+逐字节绑定源档、明文、四份原版脚本、066 原始 007 响应及运行时权重投影，并验证新增的
+`knight_maimed_by_enemy` 正是 `34333` 对 `47032`。
+
+这**尚未证明** picker 当时 `scope:physician` 必为 57392，也未实采他的即时有效学习、医师特质／XP
+或前置 10% 升阶的结果。因此下一次窄采集应保持现有默认关闭的私有门禁，在 call `49` 的
+`0x2F08780` 同一执行线程、抽签前，把已验证的 effect／entry 身份和权重 bytes 与
+`scope:physician` 的 CharacterID、court-owner／position 身份、即时有效学习、`lifestyle_physician`
+存在位及 XP 一起写入有界 ring；另记录升阶效果前后该人物的特质／XP，或证明该分支没有执行。
+必须先静态证明 `R8` 子作用域中命名 scope 的精确读取 ABI 和人物字段偏移，再安装该只读钩子；
+仅在第 5 日暂停帧查询医师不够，因为升阶可能发生在列表抽签之前。同一 call 的 scope、状态、
+权重与执行子节点全部对上前，医师条件仍标记为静态匹配，不提升整场战斗概率门禁。
+
 ### 事件后的下一帧智能体输入
 
 又从本次回放保存的第 27 日不可变存档（SHA-256

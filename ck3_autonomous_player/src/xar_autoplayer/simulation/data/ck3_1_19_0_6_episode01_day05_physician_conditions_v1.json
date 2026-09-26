@@ -1,0 +1,65 @@
+{
+  "schema": "ck3.native_day05_physician_condition_projection.v1",
+  "evidence_sha256": {
+    "source_save": "695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885",
+    "melted_save": "3EA734AECA5992CA8DDAD87564C1B7090A7AC677DF23C1069764A5C93F42C4CA",
+    "rakaly_exe": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+    "raw_trace": "069584BF9134BA8949D5AB47ED36C925ADFD774DF10C5DA0055B1703BFB27AFF",
+    "runtime_weight_projection": "CC792DF04804FD160C83AFCDFF2F2284C02791B0DE79492E49AAFAE99E73593E",
+    "health_effects": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+    "health_triggers": "7A40670167D8073B34F73AAA53387FC05DB4543D5BF1C10C5296967A4DE8F8F8",
+    "basic_values": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+    "traits": "079F0AB5C4224C505AB9F25BCA80D8DF296E5899BFAB26049CE5FE794DC0B042"
+  },
+  "maimed_patient_character_id": 34333,
+  "candidate_court_owner_character_id": 34333,
+  "pre_event_court_physician_position_id": 834,
+  "pre_event_court_physician_character_id": 57392,
+  "pre_event_physician_name": "Guy",
+  "pre_event_physician_base_skill_vector": [
+    1,
+    3,
+    2,
+    7,
+    2,
+    1
+  ],
+  "pre_event_physician_trait_keys": [
+    "just",
+    "gluttonous",
+    "ambitious",
+    "education_learning_3"
+  ],
+  "pre_event_physician_learning_components": {
+    "base_learning": 2,
+    "trait_bonuses": {
+      "just": 1,
+      "gluttonous": 0,
+      "ambitious": 1,
+      "education_learning_3": 6
+    },
+    "base_plus_frozen_trait_modifiers": 10
+  },
+  "source_skill_thresholds": {
+    "mediocre_skill_rating": 8,
+    "medium_skill_rating": 10,
+    "decent_skill_rating": 12,
+    "high_skill_rating": 15
+  },
+  "source_success_base_weight": 10,
+  "source_matching_learning_factor": 4,
+  "static_projected_weights": [
+    40,
+    50
+  ],
+  "runtime_picker_weights_direct": [
+    40,
+    50
+  ],
+  "runtime_picker_selected_index_direct": 1,
+  "physician_id_at_picker_directly_observed": false,
+  "physician_effective_learning_at_picker_directly_observed": false,
+  "pre_list_physician_rank_up_outcome_observed": false,
+  "static_projection_matches_runtime_weights": true,
+  "full_treatment_feedback_ready": false
+}
