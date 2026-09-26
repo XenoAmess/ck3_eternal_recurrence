@@ -1,5 +1,15 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-27：三军结构门通过，但自然求援未触发
+
+[live-confirmed, bounded negative] 从第 21 日不可变原版存档（SHA-256 `0E5AD3066B97689178797F1F9D3C35CA3700D513FAE6F6B032A3E8BF7BD1FB2A`）独立冷载。attempt-049 在同日 raw `53146728`、旧 `CombatID=16777218` 中直接读取：切换玩家前，side0 CUnit `16777221、27、16777231` 都在 `coordinator=3` 的同一 AI parent row `[16777221,27,16777231]`；切到 Character `31549` 后，玩家 CUnit `16777221` 的 AI backlink 暂时 unavailable，其余两支仍是同一 coordinator 的 parent `[16777231,27]`。这次**直接跨过**旧两军夹具撤离后只剩 singleton、`count<=1` 必清请求的结构性限制。切换后种子存档 SHA-256 `337B8818E819CA45A217F3751B1E0242045372084A265FEBF91C93D2BCB9F020`。
+
+attempt-051 冷载该种子，原生 `battle_control_snapshot` 证明 owner-subset、已过 `20` 个整日、`legal_now=true`；Province `2639` 的路线预览 `action_ready=true`，短期 token 消费后，CUnit `16777221` 同日 `in_combat=false`、`retreating=true`、route `[2639]`。旧 CombatID 仍为 `active_not_terminal`，side0 roster 从 `[16777221,16777231,27,22]` 变为 `[16777231,27,22]`，side1 `[18]` 不变。之后才切回 Character `29829`，同日确认撤离者 `controllable=false`，冻结 AI 观察种子 SHA-256 `B07F9A4A821C6C29242511047F068DA8889653AA7F9E19CA2007EC5C4E4615D7`。前一 attempt-050 已执行同样合法原生撤退，但实验断言漏掉已加入的 `22` 而报 RED；原始失败过程保留，不作为新的业务失败。
+
+attempt-052 从 AI 种子新建 production/non-debug、无 mod 进程，逐日采集 12 帧、11 次严格一日推进。冷载首帧，撤离者仍是 `subunit_backlink_mismatch`；第 1 日转为完整 `available`，同一 coordinator `3` 的 parent row 为 `[22,28,16777221,27,16777231]`，旧 CombatID 仍在，其留战 roster 同日尾插 `28`。到第 11 日正常终局，所采两名 anchor `16777231、27` 的 `asking_for_help` 始终 false；撤离者可读期间 `assigned_to_help=false`、target 与 assignment ETA 均 null，也从未重入旧 CombatID。第 10 日它结束撤退并由原生 AI 以**普通移动**驶回 Province `2633`，当前路线预计抵达 raw `53147304`，晚于旧战斗的终局 raw `53146992`。这个移动没有 help assignment 标记，不能倒推为“求援成功”。
+
+[只读核验器](../../ck3_autonomous_player/tools/project_native_three_unit_reassignment_window.py)绑定源档、两次角色切换、合法性/路线/撤退回执、三阶段每条原生响应、逐日 AI membership 与终局、各会话清理；[机器可读报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_three_unit_reassignment_window.json) SHA-256 `0BE4D409A610CADFF5392987E0415DB3329C1F47AB80706F392A9A074E122EDA`。原始证据保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-three-unit-assignment-structure-attempt-049/`、`episode01-three-unit-owner-subset-withdrawal-attempt-050/051/`、`episode01-three-unit-ai-reassignment-observe-attempt-052/`；所有游戏进程均已清理。由此 `retained_multi_cunit_parent_live_ready=true`、`ai_membership_reopened_live_ready=true`，但 `requester_asking_observed=false`、`assignment_reopened_aligned_eta_live_ready=false`、`same_combat_rejoin_live_ready=false`。接下来应在**需要帮助且有足够剩余战斗时间**的多 subunit 战例里验证 requester 的实际生产、helper 资格和 ETA；不能把本例没有请求扩大成通用 AI 永不求援。
+
 ## 2026-09-27：AI 接管防守战后的独立逐日入列复测
 
 [live-confirmed] 从第 6 日同源存档制备玩家切至战争防守方 Character `31549` 的不可变种子，再在新 production/non-debug 进程中逐日观察 `CombatID=16777218` 共 27 个暂停帧。战斗 side0 的原生 stored roster 在 date raw `53146368` 为 `[16777221,16777231,27]`；第 6 个观察日（raw `53146512`）尾插 `22`，第 16 个观察日（raw `53146752`）再尾插 `28`，直到第 26 日正常终局未移出；side1 始终为 `[18]`。两次加入均发生在同一旧 CombatID、正常终局前。入列前后 main-phase day 分别为 `7→8`、`17→18`，**这两次并未重置 phase day**；因此“新参战者必重启 main day”不是通用规则。pursuit 中增援重开 main 是另一条已研究的分支，不能由本例取代。

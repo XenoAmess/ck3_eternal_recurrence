@@ -1,0 +1,30 @@
+{
+  "schema": "ck3.native_three_unit_reassignment_window.v1",
+  "game_version": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_day21_save_sha256": "0E5AD3066B97689178797F1F9D3C35CA3700D513FAE6F6B032A3E8BF7BD1FB2A",
+  "switched_player_seed_sha256": "337B8818E819CA45A217F3751B1E0242045372084A265FEBF91C93D2BCB9F020",
+  "ai_withdrawn_seed_sha256": "B07F9A4A821C6C29242511047F068DA8889653AA7F9E19CA2007EC5C4E4615D7",
+  "structure_readback_sha256": "ECCBB37AC49EB3F0276E763E98F23F9FB81767D92D7FE5F27821D3AD81A89A33",
+  "withdrawal_summary_sha256": "643781A892F08B39CC5D170192B0E1A2FA59994EB25862CBCA0018341D3023ED",
+  "daily_observations_sha256": "C576027BAEA5A7D1C9E96B3B36E06F7131DE33BEFB9A1CFAF9D26EB32B9640B5",
+  "capture_report_sha256": {
+    "structure": "3DBFAA37288EFE7EA980EF53162685CCA8F2FD1F381E98151DEC0208EECD97DF",
+    "withdrawal": "013BD07A601D41CCE53F51FEAF08962A1DDB2E2E52DD9CAC3C4134A90FE93C92",
+    "observation": "C2098326AA99B80433083B662407CA914AEA307903C2AAE6FF7095BC20C4E9B6"
+  },
+  "source_date_raw": 53146728,
+  "terminal_date_raw": 53146992,
+  "combat_id": 16777218,
+  "withdrawn_public_cunit_id": 16777221,
+  "owner_subset_retreat_live_ready": true,
+  "retained_multi_cunit_parent_live_ready": true,
+  "ai_membership_reopened_day_index": 1,
+  "requester_asking_observed": false,
+  "assignment_target_or_eta_observed": false,
+  "same_combat_rejoin_observed": false,
+  "ordinary_ai_return_move_observed_day_index": 10,
+  "ordinary_ai_return_arrival_date_raw": 53147304,
+  "return_arrival_after_battle_terminal": true,
+  "generic_ai_help_policy_absence_proven": false
+}
