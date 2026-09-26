@@ -526,6 +526,7 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_quinquagintary == nullptr &&
       environment.permitted_executor_unquinquagintary == nullptr &&
       environment.permitted_executor_duoquinquagintary == nullptr &&
+      environment.permitted_executor_triquinquagintary == nullptr &&
       environment.permitted_frontend_executor == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
@@ -759,6 +760,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_unquinquagintary;
   mailbox.permitted_executor_duoquinquagintary =
       environment.permitted_executor_duoquinquagintary;
+  mailbox.permitted_executor_triquinquagintary =
+      environment.permitted_executor_triquinquagintary;
   mailbox.permitted_frontend_executor =
       environment.permitted_frontend_executor;
   mailbox.executor = nullptr;
@@ -1021,6 +1024,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_quinquagintary != nullptr ||
        mailbox.permitted_executor_unquinquagintary != nullptr ||
        mailbox.permitted_executor_duoquinquagintary != nullptr ||
+       mailbox.permitted_executor_triquinquagintary != nullptr ||
        mailbox.permitted_frontend_executor != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
@@ -1073,6 +1077,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_quinquagintary &&
       executor != mailbox.permitted_executor_unquinquagintary &&
       executor != mailbox.permitted_executor_duoquinquagintary &&
+      executor != mailbox.permitted_executor_triquinquagintary &&
       executor != mailbox.permitted_frontend_executor) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
