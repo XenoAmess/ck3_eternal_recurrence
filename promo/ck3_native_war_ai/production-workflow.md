@@ -4,6 +4,8 @@
 
 第 1 集 R7D→R7E 的开场、数值、实机对齐、系列配色与交付复盘见[战争系列制作经验](docs/production-lessons-r7e.md)；后续新集在句稿冻结和成片交付前按此核对。
 
+IndexTTS 长片还须执行[局部重复检查](docs/production-lessons-r7f-index-voice.md)：整段 ASR 长度合格不代表没有短语复读；对相邻重复的数字或词组按源 WAV 与最终上传副本分别复核，修复时建立新 attempt 并重新生成字幕和章节。
+
 ## 2026-09-24 当前配乐制作入口
 
 第 0 集 V5 以 V4 已完成的 IndexTTS 画面与旁白母版为输入，使用项目脚本 [`war_ai_promo/theme_mix.py`](integration/src/war_ai_promo/theme_mix.py) 调用正式 xar-promo 0.2.1 的 `AudioMixSpec/plan_audio_mix`，只复制原视频流并重混 AAC 音轨；没有重拍或改变原生机制结论。`start-run` 的配置快照、原曲 WAV、源片、脚本、混音命令、成片、媒体探测、审阅尝试和 OneDrive 回读保存在独立的 `v5-theme-film-attempt-001/`。V4/V5 编码视频包和时间戳完全一致后，V5 原生 review 的重复抽帧尝试保留为不完整状态；项目级审阅通过这一逐包等价证明继承 V4 的 106 张真实帧，并单独绑定新音轨的完整解码证据，不把继承包冒充原生 `review` GREEN。每次未来制作前仍按根 AGENTS 查询最新正式 Release，届时版本可能不同，不能把 0.2.1 当永久要求。

@@ -62,6 +62,12 @@ def main() -> None:
         raise ValueError("User reference voice changed")
     if binding(synthesis) != inputs["index_voice"]["synthesis_receipt"]:
         raise ValueError("IndexTTS synthesis receipt changed")
+    synthesis_doc = json.loads(synthesis.read_text(encoding="utf-8"))
+    repair = synthesis_doc.get("repair")
+    if repair is not None and (synthesis_doc.get("state") !=
+                               "synthesized-with-audited-C10-editorial-cut" or
+                               not isinstance(repair, dict)):
+        raise ValueError("Unexpected IndexTTS editorial repair state")
     cli = [sys.executable, "-m", "xar_promo"]
     version = subprocess.run(cli + ["--version"], capture_output=True, text=True, check=True).stdout.strip()
     if version != "xar-promo " + args.toolchain_version:
@@ -88,6 +94,13 @@ def main() -> None:
             ("tts-receipt." + row["id"], audio.with_suffix(".receipt.json"),
              "raw", "TTS-receipt"),
         ])
+    if repair is not None:
+        for key in ("manifest", "source_audio", "source_receipt", "source_asr", "source_completed"):
+            record = repair[key]
+            path = Path(record["path"]).resolve(strict=True)
+            if binding(path) != record:
+                raise ValueError(f"IndexTTS repair evidence changed: {key}")
+            sources.append(("repair." + key, path, "raw", "C10-editorial-repair-evidence"))
     for index, (identifier, item, collection, role) in enumerate(sources):
         command(cli + ["preserve", "--run-manifest", str(manifest),
                        "--artifact-id", identifier, "--collection", collection,
@@ -140,7 +153,10 @@ def main() -> None:
         "source_run_manifest": str(manifest),
         "toolchain_version": version,
         "toolchain_wheel_sha256": args.wheel_sha256.lower(),
-        "narration_provider": "IndexTTS 2.5", "user_reference_sha256": digest(reference),
+        "narration_provider": ("IndexTTS 2.5 with audited C10 editorial cut" if repair
+                               else "IndexTTS 2.5"),
+        "voice_repair": repair,
+        "user_reference_sha256": digest(reference),
         "index_revision": inputs["index_voice"]["model_revision"],
         "index_profile": inputs["index_voice"]["profile"],
         "synthesis_receipt_sha256": digest(synthesis),

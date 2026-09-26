@@ -1,0 +1,75 @@
+{
+  "schema": "ck3-war-ai-episode-01-r7f-index-corrected-delivery.v1",
+  "recorded_at_utc": "2026-09-26T03:51:16+00:00",
+  "state": "rendered-uploaded-machine-reviewed-pending-human-1x-review",
+  "episode": 1,
+  "supersedes": "promo/ck3_native_war_ai/build-records/episode1-r7f-index-formal-20260926.json",
+  "reason": "The first IndexTTS C10 audio repeated the phrase for 62.77575 person-equivalents near film minute 21; the frozen script and subtitles contained it once",
+  "source": {
+    "combat_id": 16777218,
+    "game_version": "CK3 1.19.0.6",
+    "original_capture_sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+    "frozen_script_sha256": "a3cd86166116bf64123b72d57e284b3554f5d41734ed8933113fbba154e18e45",
+    "unchanged_cues": 22
+  },
+  "film": {
+    "name": "CK3-War-AI-Episode-1-Messina-Original-IndexTTS-Formal-R7F-Corrected-20260926.mp4",
+    "duration_seconds": 1542.054688,
+    "bytes": 112850307,
+    "sha256": "404720a924b50b57f7cd88c8a3ba43021aee8c79b4f327fc327b6c797a88d5dc",
+    "resolution": [2560, 1440],
+    "chapters": 23,
+    "narration_provider": "IndexTTS 2.5 with audited C10 editorial cut",
+    "user_reference_sha256": "061fe25b425752776da6c35eb2c634e2424239a8b5a2ea694bdee5a850e6d8b1",
+    "index_revision": "5bb1a21d0add49e164e1438144e48da31bb34582",
+    "duration_factor": 0.9,
+    "interval_silence_ms": 100,
+    "theme_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+    "theme_gain_db": -17,
+    "voice_gain_db": 0,
+    "ducking": false
+  },
+  "repair": {
+    "cue": "C10",
+    "source_cue_sha256": "ac6a5770375ed772c19ed992cb35d0a1ebf94356daaee84a0fbc382df19153cc",
+    "repaired_cue_sha256": "a6265e9b531040605f6d578f899c75ac9260f9f0f71fcff7fc2dbc13de389c8d",
+    "removed_seconds": 2.789161,
+    "cut_boundaries_pcm16": [0, 0],
+    "source_and_repaired_pcm_exact_outside_cut": true,
+    "source_short_asr_phrase_count": 2,
+    "repaired_short_and_full_asr_phrase_count": 1,
+    "old_23_cue_local_repetition_hits": ["C10"],
+    "corrected_23_cue_local_repetition_hits": [],
+    "audit": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7g-duplicate-repair-001/repair-audit.json"
+  },
+  "toolchain": {
+    "name": "xar-promo",
+    "version": "0.2.1",
+    "formal_release": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "run_id": "episode01-r7f-index-formal-002",
+    "manifest": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-002/run/run-manifest.json",
+    "authoring_validation": "GREEN; 186 artifacts; referenced bytes and SHA checked"
+  },
+  "delivery": {
+    "method": "OneDrive desktop client in existing selective-sync folder",
+    "folder": "CK3-War-AI-20260923",
+    "files_copied": 1,
+    "client_status": "uploaded",
+    "client_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-002/onedrive-client-check-02.json",
+    "other_cloud_file_content_read_or_downloaded": false
+  },
+  "machine_review_after_upload": {
+    "onedrive_local_copy_sha256": "404720a924b50b57f7cd88c8a3ba43021aee8c79b4f327fc327b6c797a88d5dc",
+    "full_decode": "passed",
+    "chapter_count": 23,
+    "caption_events": {"zh": 184, "en": 65},
+    "palette_samples": "27/27 pass, opening seconds 1/8/18/30 and 23 chapters",
+    "uploaded_final_audio_asr_phrase_count": 1,
+    "audio_mean_db": -20.5,
+    "audio_peak_db": -2.5,
+    "review_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-002/post-upload-review/review-probe.json",
+    "uploaded_phrase_audit": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-002/post-upload-duplicate-audit/uploaded-phrase-audit.json",
+    "human_1x_signoff": "not-provided"
+  }
+}

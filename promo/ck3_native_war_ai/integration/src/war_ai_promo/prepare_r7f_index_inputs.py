@@ -27,6 +27,8 @@ def main() -> None:
     script = json.loads(args.script.read_text(encoding="utf-8"))
     base = json.loads(args.base_inputs.read_text(encoding="utf-8"))
     synthesis = json.loads(args.synthesis.read_text(encoding="utf-8"))
+    if synthesis.get("state") not in ("synthesized", "synthesized-with-audited-C10-editorial-cut"):
+        raise ValueError("Unknown IndexTTS synthesis or repair state")
     frozen = script["cues"]
     rows = deepcopy(base["cues"])
     receipts = {row["id"]: row for row in synthesis["cues"]}
@@ -52,6 +54,10 @@ def main() -> None:
                 "source_time_seconds", "target_time_seconds")):
             raise ValueError(f"R7E script and prepared base differ: {row['id']}")
         receipt = receipts[row["id"]]
+        if (synthesis["state"] == "synthesized-with-audited-C10-editorial-cut" and
+            row["id"] == "C10" and
+            receipt.get("editorial_repair") != synthesis["repair"]["manifest"]):
+            raise ValueError("C10 repair receipt does not match the audited cut")
         if (receipt["text_sha256"] != hashlib.sha256(row["zh"].encode("utf-8")).hexdigest() or
             receipt["reference_sha256"] != REFERENCE_SHA or
             receipt["model_revision"] != MODEL_REVISION or
@@ -80,6 +86,8 @@ def main() -> None:
     result["index_voice"] = {"reference": identity["reference"],
                              "model_revision": MODEL_REVISION, "profile": profile,
                              "synthesis_receipt": binding(args.synthesis)}
+    if synthesis.get("repair"):
+        result["index_voice"]["repair"] = synthesis["repair"]
     args.output_dir.mkdir(parents=True, exist_ok=False)
     write_new(args.output_dir / "production-inputs.json", result)
     print(json.dumps({"cues": len(rows), "duration_seconds": result["actual_duration_seconds"],

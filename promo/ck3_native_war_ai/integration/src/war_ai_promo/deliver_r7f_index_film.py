@@ -11,7 +11,10 @@ import shutil
 from .index_revoice import binding
 
 
-EXPECTED_NAME = "CK3-War-AI-Episode-1-Messina-Original-IndexTTS-Formal-R7F-20260926.mp4"
+EXPECTED_NAMES = {
+    "CK3-War-AI-Episode-1-Messina-Original-IndexTTS-Formal-R7F-20260926.mp4",
+    "CK3-War-AI-Episode-1-Messina-Original-IndexTTS-Formal-R7F-Corrected-20260926.mp4",
+}
 
 
 def main() -> None:
@@ -19,19 +22,22 @@ def main() -> None:
     parser.add_argument("--build-receipt", type=Path, required=True)
     parser.add_argument("--onedrive-folder", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
+    parser.add_argument("--expected-name", default="CK3-War-AI-Episode-1-Messina-Original-IndexTTS-Formal-R7F-20260926.mp4")
     args = parser.parse_args()
+    if args.expected_name not in EXPECTED_NAMES:
+        raise ValueError("Only the selected Episode 1 IndexTTS MP4 may be copied")
     receipt = json.loads(args.build_receipt.read_text(encoding="utf-8"))
     source = Path(receipt["output"]).resolve(strict=True)
     if (receipt["schema"] != "ck3-war-ai-episode-01-r7f-index-formal-build.v1" or
         receipt["state"] != "ready-for-onedrive-before-machine-review" or
-        source.name != EXPECTED_NAME or receipt["chapter_count"] != 23 or
+        source.name != args.expected_name or receipt["chapter_count"] != 23 or
         binding(source)["sha256"] != receipt["output_sha256"] or
         source.stat().st_size != receipt["output_bytes"]):
         raise ValueError("R7F formal build is missing or changed")
     folder = args.onedrive_folder.resolve(strict=True)
     if folder.name != "CK3-War-AI-20260923" or not folder.is_dir() or args.receipt.exists():
         raise ValueError("Existing selected OneDrive folder and new receipt path required")
-    target = folder / EXPECTED_NAME
+    target = folder / args.expected_name
     if target.exists():
         raise FileExistsError(target)
     with source.open("rb") as reader, target.open("xb") as writer:

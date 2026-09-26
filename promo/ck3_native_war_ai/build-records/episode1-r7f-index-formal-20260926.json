@@ -71,5 +71,11 @@
     "audio_peak_db": -2.5,
     "review_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-001/post-upload-review/review-probe.json",
     "human_1x_signoff": "not-provided"
+  },
+  "post_delivery_erratum": {
+    "recorded_at_utc": "2026-09-26T03:51:16+00:00",
+    "issue": "The C10 IndexTTS voice repeated the 62.77575 person-equivalent phrase near 21:24 although the script and subtitle contained it once; gross ASR screening missed this local repetition",
+    "disposition": "superseded, retain original film and evidence",
+    "corrected_record": "promo/ck3_native_war_ai/build-records/episode1-r7f-index-formal-corrected-20260926.json"
   }
 }
