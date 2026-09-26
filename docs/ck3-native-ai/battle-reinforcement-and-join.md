@@ -1,5 +1,13 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-26：两份暂停帧之间的原生有效属性稳定性
+
+将同一梅西纳案例第 11 日和第 21 日的两份**直接原生求值**逐团对照，并分别从各自不可变源存档、隔离暂停查询和独立七边界回放重新生成原报告。[交叉日投影工具](../../ck3_autonomous_player/tools/project_native_cross_day_stat_stability.py)要求每一天的冻结报告与原始回执重算完全一致；[机器报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_cross_day_stat_stability_v1.json) SHA-256 `38486D71F2466775C6D7EE4D96536046BFC97ECB17EFCE49F186FA8F15BB8DFF`。这不是比较旧战斗 entry 缓存，也没有把两次独立回放拼成同一随机轨迹。
+
+两份名单共有 `51` 个相同 RegimentID、side 和原生 kind：征召兵 `19/19`、职业兵士 `8/8` 的有效伤害/坚韧完全相同；骑士 `22/24` 相同，另 `2/24` 的数值变了。骑士 CharacterID `32716`（RegimentID `59`）的有效勇武 `13→14`、效能仍 `175000`，有效伤害 `113750000→122500000`；CharacterID `54144`（RegimentID `220`）的有效勇武 `2→5`、效能仍 `185000`，有效伤害 `18500000→46250000`。两者的坚韧同步按原生骑士公式变化。这把本案跨十日的**端点差异**定位到两名骑士的有效勇武输入；未观察第 12–20 日每一个暂停帧，也未证明勇武变化的全部事件来源。
+
+对智能体而言，当前帧仍取原生 v3 直接求值；这一例支持在**无外部状态改变的有界试算**中先沿用职业兵士和征召兵有效值，但不能把本案 `8/8`、`19/19` 的稳定性当作所有地形、驻扎、将领、文化或未来增援的通用恒定律。骑士的未来有效勇武可能改变；逐日事件/人物状态未进入 trial kernel 前，整场估计继续标记该风险。
+
 ## 2026-09-26：暂停帧直接查询可得到本案下一次 schedule 的有效属性
 
 从同一第 11、21 日不可变原版存档，各另启一个**只读、隔离、未推进日期**的实机 attempt（外置 `episode01-daily-stats-live-attempt-028/029`），以当前战斗省份 `2633` 和完整交战军队集合调用原生 `ck3_query_combat_simulation_inputs` v2；前后快照仍是同一暂停日期及同一 revision，查询本身不消耗战斗日。各自再与先前独立完整七边界回放的当天首次 side0 schedule 入口对照。对应[第 11 日逐团报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paused_stat_eval_day11_v1.json) SHA-256 `70940B9F47392EEF8953014EC0095B2AD5F2BFF14B6B3679926CF10E01D35F98`、[第 21 日报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paused_stat_eval_day21_v1.json) SHA-256 `2A52B38050D1882FE5D4F34C0221B9A4FB5415C6B8D1BC19FF38879BE3A023DA`，均由[只读对拍工具](../../ck3_autonomous_player/tools/project_native_paused_stat_eval_parity.py)核对原始回执、源存档 SHA、exact-build 身份、逐团 ID/side 与游戏进程清理。

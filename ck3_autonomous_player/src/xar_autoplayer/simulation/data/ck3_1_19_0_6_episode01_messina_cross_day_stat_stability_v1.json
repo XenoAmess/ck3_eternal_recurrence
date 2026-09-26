@@ -1,0 +1,52 @@
+{
+  "schema": "ck3.native_cross_day_effective_stat_stability.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_parity_report_sha256": {
+    "11": "70940B9F47392EEF8953014EC0095B2AD5F2BFF14B6B3679926CF10E01D35F98",
+    "21": "2A52B38050D1882FE5D4F34C0221B9A4FB5415C6B8D1BC19FF38879BE3A023DA"
+  },
+  "day11_roster_count": 51,
+  "day21_roster_count": 63,
+  "shared_regiment_count": 51,
+  "shared_by_kind": {
+    "knight": 24,
+    "levy": 19,
+    "men_at_arms": 8
+  },
+  "changed_by_kind": {
+    "knight": 2
+  },
+  "changed_regiments": [
+    {
+      "side_index": 1,
+      "regiment_id": 59,
+      "kind": "knight",
+      "day11_damage_raw": 113750000,
+      "day21_damage_raw": 122500000,
+      "day11_toughness_raw": 22750000,
+      "day21_toughness_raw": 24500000,
+      "knight_character_id": 32716,
+      "day11_knight_prowess": 13,
+      "day21_knight_prowess": 14,
+      "day11_knight_effectiveness_raw": 175000,
+      "day21_knight_effectiveness_raw": 175000
+    },
+    {
+      "side_index": 0,
+      "regiment_id": 220,
+      "kind": "knight",
+      "day11_damage_raw": 18500000,
+      "day21_damage_raw": 46250000,
+      "day11_toughness_raw": 3700000,
+      "day21_toughness_raw": 9250000,
+      "knight_character_id": 54144,
+      "day11_knight_prowess": 2,
+      "day21_knight_prowess": 5,
+      "day11_knight_effectiveness_raw": 185000,
+      "day21_knight_effectiveness_raw": 185000
+    }
+  ],
+  "intervening_daily_values_observed": false,
+  "future_modifier_transition_proven": false
+}
