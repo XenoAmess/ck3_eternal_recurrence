@@ -892,6 +892,7 @@ class GameplayBridgeService:
         planned.pop("_private_faction_history_v1", None)
         construction_snapshot = planned.pop("_private_construction_snapshot_v1", None)
         construction_history = planned.pop("_private_construction_history_v1", None)
+        construction_red_plan = None
         if (
             getattr(self.driver, "allow_private_construction_formal_trial", False) is True
             and isinstance(construction_snapshot, dict)
@@ -902,13 +903,29 @@ class GameplayBridgeService:
                 construction_history, available_steps,
                 prewar_arbitration=prewar_arbitration,
             )
+            construction_plan = planned.get("plan")
+            if (isinstance(construction_plan, dict)
+                    and isinstance(plan, dict)
+                    and plan.get("selected_step") == "life-advance"
+                    and construction_plan.get("selected_step") is None
+                    and isinstance(construction_plan.get("construction_private_query"), dict)
+                    and construction_plan["construction_private_query"].get("status") == "source_red"):
+                construction_red_plan = construction_plan
+                planned = {**planned, "plan": {**construction_plan,
+                    "selected_step": "life-advance"}}
         family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
         if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
                 and isinstance(family_snapshot, dict)):
-            return plan_family_marriage_private(
+            planned = plan_family_marriage_private(
                 self.driver, planned, family_snapshot,
                 prewar_arbitration=prewar_arbitration,
             )
+        if (construction_red_plan is not None
+                and isinstance(planned.get("plan"), dict)
+                and planned["plan"].get("selected_step") == "life-advance"):
+            planned = {**planned, "plan": {**planned["plan"],
+                "selected_step": None,
+                "reason": construction_red_plan["reason"]}}
         return planned
 
     def _plan_initial_lifestyle_focus_first_v1(
