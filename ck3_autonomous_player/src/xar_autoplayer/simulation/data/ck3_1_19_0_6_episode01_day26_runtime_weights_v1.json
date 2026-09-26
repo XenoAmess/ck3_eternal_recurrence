@@ -1,0 +1,1699 @@
+{
+  "schema": "ck3.native_day26_runtime_random_list_weights.v1",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "bridge_dll_sha256": "03233A863F68D31FF123037A711CC22D7C489612E5C212145FB28B0650614F6B",
+  "source_save_sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B",
+  "source_receipt_sha256": "78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C",
+  "raw_response_sha256": {
+    "v3": "83BEC53806DE6FECF2A73B3A18D205CABF71A5E5E724B7C08ABC1452A3774B6E",
+    "begin": "D106084F49A5ADC1BCB6B28C9FE8E58DB10C84CCB9D36FF6A6A01CE09C4E3F41",
+    "finish": "35ADD14D501D094B32D40564B39B713705AE5A46FB6670024ADA776A4C1A0A47",
+    "session_result": "C79D8F553D7485254EADE9EB1F2DBF363AEE466C307A4E512B55A033FC0DCB07"
+  },
+  "combat_id": 16777218,
+  "source_date_raw": 53146848,
+  "next_date_raw": 53146872,
+  "native_event_load_index": 11,
+  "native_selector_draw31": 1400813912,
+  "native_selector_selected_character_id": 34120,
+  "native_choice": {
+    "call_index": 14,
+    "side_index": 1,
+    "native_event_load_index": 11,
+    "effect_node_identity_token": "process-local-0x2531F105D10",
+    "entry_node_identity_tokens": [
+      "process-local-0x251DDAA64C0",
+      "process-local-0x251DDAA39A0",
+      "process-local-0x251DDAA1D80"
+    ],
+    "selected_entry_identity_token": "process-local-0x251DDAA64C0",
+    "weights_native_int32": [
+      40,
+      30,
+      15
+    ],
+    "weights_bytes_hex": "280000001E0000000F000000",
+    "positive_weight_total": 85,
+    "child_counter_before": 1462316485,
+    "selection_draw31": 51510340,
+    "threshold": 2,
+    "selected_source_order_index": 0,
+    "child_counter_after": 1462316487
+  },
+  "native_battle_event": {
+    "left_character_id": 33437,
+    "right_character_id": 34120,
+    "stable_key": "knight_killed_by_enemy",
+    "type_raw": 3,
+    "side_index": 1,
+    "target_right": false
+  },
+  "same_frame_v3_context": {
+    "root_character_id": 33437,
+    "root_source_army_id": 18,
+    "root_source_regiment_id": 65,
+    "phase_roles": [
+      "knight"
+    ],
+    "combat_side_index": 1,
+    "enemy_side_index": 0,
+    "native_state_refs": {
+      "root.exists": true,
+      "root.alive": true,
+      "root.is_ai": true,
+      "root.is_incapable": false,
+      "root.skills.martial_raw": 400000,
+      "root.skills.learning_raw": 900000,
+      "root.skills.prowess_raw": 400000,
+      "root.house_id": 1105,
+      "root.liege": 29829,
+      "root.liege.house_id": 174,
+      "root.liege.accolade_progress_raw": 0,
+      "root.dynasty.perks.warfare_legacy_3": false,
+      "root.perks.stalwart_leader": false,
+      "root.culture.heritage_north_germanic": false,
+      "root.culture.parameters.knights_slightly_more_prone_to_injury": true,
+      "root.faith.parameters.death_is_glory": false,
+      "root.faith.tenets.warmonger": false,
+      "root.religion.germanic": false,
+      "root.is_acclaimed": false,
+      "root.can_be_acclaimed": true,
+      "root.court_positions.garuda": false,
+      "root.knight_army.maa_regiment_count_raw": 300000,
+      "root.traits.wounded.rank_raw": 0,
+      "root.traits.fragile_bones.rank_raw": 0,
+      "root.traits.fragile_bones.xp_raw": 0,
+      "root.traits.maim_injuries": false,
+      "root.traits.ambitious": false,
+      "root.traits.berserker": false,
+      "root.traits.brave": false,
+      "root.traits.calm": false,
+      "root.traits.compassionate": false,
+      "root.traits.content": false,
+      "root.traits.craven": false,
+      "root.traits.disfigured": false,
+      "root.traits.giant": false,
+      "root.traits.impatient": false,
+      "root.traits.incapable": false,
+      "root.traits.lazy": false,
+      "root.traits.maimed": false,
+      "root.traits.one_eyed": false,
+      "root.traits.one_legged": false,
+      "root.traits.patient": false,
+      "root.traits.sadistic": false,
+      "root.traits.shieldmaiden": false,
+      "root.traits.temperate": true,
+      "root.traits.wrathful": false,
+      "root.knight_army.maa_counts.skirmishers_raw": 0,
+      "root.knight_army.maa_counts.pikemen_raw": 100000,
+      "root.knight_army.maa_counts.heavy_infantry_raw": 100000,
+      "root.knight_army.maa_counts.light_cavalry_raw": 0,
+      "root.knight_army.maa_counts.heavy_cavalry_raw": 0,
+      "root.knight_army.maa_counts.camel_cavalry_raw": 0,
+      "root.knight_army.maa_counts.elephant_cavalry_raw": 0,
+      "root.knight_army.maa_counts.archer_cavalry_raw": 0,
+      "root.knight_army.maa_counts.gunpowder_raw": 0,
+      "root.knight_army.maa_counts.crossbow_family_raw": 0,
+      "root.knight_army.maa_counts.non_crossbow_archers_raw": 0,
+      "combat_side.character_membership": [
+        29829,
+        33435,
+        36077,
+        32716,
+        32440,
+        34333,
+        34867,
+        43706,
+        43712,
+        33437,
+        35637,
+        30784
+      ],
+      "combat_side.commander": 29829,
+      "combat_side.ordered_enemy_knights": [
+        47032,
+        47031,
+        47029,
+        34484,
+        44476,
+        33884,
+        36303,
+        34117,
+        34120,
+        54140,
+        54144,
+        54145,
+        54141,
+        30517,
+        36673,
+        35124,
+        34470,
+        53853,
+        53854
+      ],
+      "combat_side.side_army_size_raw": 94200000,
+      "combat_side.side_strength_raw": 38522,
+      "enemy_side.character_membership": [
+        31549,
+        47032,
+        47031,
+        47029,
+        32725,
+        34484,
+        44476,
+        33884,
+        36303,
+        34117,
+        34120,
+        34320,
+        54140,
+        54144,
+        54145,
+        54141,
+        32231,
+        30517,
+        36673,
+        35124,
+        34470,
+        34474,
+        53853,
+        53854
+      ],
+      "enemy_side.side_army_size_raw": 544200000,
+      "enemy_side.side_strength_raw": 161795,
+      "game_rules.easy_difficulty": false,
+      "game_rules.very_easy_difficulty": false
+    },
+    "offline_state_refs": {
+      "root.house_and_liege_relations": {
+        "house": {
+          "status": "available",
+          "value": 1105
+        },
+        "liege": {
+          "status": "available",
+          "value": 29829
+        },
+        "liege_house": {
+          "status": "available",
+          "value": 174
+        },
+        "same_house": false
+      },
+      "root.knight_army.maa_counts": {
+        "skirmishers_raw": 0,
+        "pikemen_raw": 100000,
+        "heavy_infantry_raw": 100000,
+        "light_cavalry_raw": 0,
+        "heavy_cavalry_raw": 0,
+        "camel_cavalry_raw": 0,
+        "elephant_cavalry_raw": 0,
+        "archer_cavalry_raw": 0,
+        "gunpowder_raw": 0,
+        "crossbow_family_raw": 0,
+        "non_crossbow_archers_raw": 0
+      },
+      "game_rules": {
+        "easy_difficulty": false,
+        "very_easy_difficulty": false
+      },
+      "root.traits_and_culture_for_blademaster": {
+        "education_martial": [
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "education_martial_prowess": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "lifestyle_blademaster": false,
+        "lifestyle_blademaster_xp_raw": 0,
+        "shrewd": false,
+        "physique_good": false,
+        "intellect_good": [
+          false,
+          false,
+          false
+        ],
+        "culture_blademaster_traits_more_common": false
+      },
+      "root.variables": {
+        "hold_court_8050_knight": {
+          "status": "absent",
+          "value": null
+        }
+      },
+      "root.employer.variables": {
+        "employer": {
+          "status": "available",
+          "value": 29829
+        },
+        "hold_court_8050_promise": {
+          "status": "absent",
+          "value": null
+        }
+      },
+      "root.ai_should_get_extreme_conqueror_bonuses": false,
+      "combat_side.enemy_faiths": [
+        67
+      ],
+      "combat_side.ordered_commanders_and_knights_with_accolade_parameters": [
+        {
+          "role": "commander",
+          "character_id": 29829,
+          "source_army_id": 18,
+          "source_regiment_id": null,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 33435,
+          "source_army_id": 18,
+          "source_regiment_id": 57,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 36077,
+          "source_army_id": 18,
+          "source_regiment_id": 58,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 32716,
+          "source_army_id": 18,
+          "source_regiment_id": 59,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 32440,
+          "source_army_id": 18,
+          "source_regiment_id": 60,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 34333,
+          "source_army_id": 18,
+          "source_regiment_id": 61,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 34867,
+          "source_army_id": 18,
+          "source_regiment_id": 62,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 43706,
+          "source_army_id": 18,
+          "source_regiment_id": 63,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 43712,
+          "source_army_id": 18,
+          "source_regiment_id": 64,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 33437,
+          "source_army_id": 18,
+          "source_regiment_id": 65,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 35637,
+          "source_army_id": 18,
+          "source_regiment_id": 66,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        },
+        {
+          "role": "knight",
+          "character_id": 30784,
+          "source_army_id": 18,
+          "source_regiment_id": 67,
+          "accolade": {
+            "status": "absent",
+            "value": null
+          },
+          "parameters": {
+            "accolade_defends_family_low": false,
+            "accolade_defends_family_medium": false,
+            "accolade_defends_family_high": false,
+            "accolade_increase_hostile_knight_death_low": false,
+            "accolade_increase_hostile_knight_death_medium": false,
+            "accolade_increase_hostile_knight_death_high": false
+          }
+        }
+      ],
+      "root.accolade_unlocks": {
+        "skirmisher": {
+          "valid": false
+        },
+        "archer": {
+          "valid": false
+        },
+        "crossbowmen": {
+          "valid": false
+        },
+        "pike": {
+          "valid": true
+        },
+        "vanguard": {
+          "valid": true
+        },
+        "outrider": {
+          "valid": false
+        },
+        "lancer": {
+          "valid": false
+        },
+        "camelry": {
+          "valid": false
+        },
+        "elephantry": {
+          "valid": false
+        },
+        "horse_archer": {
+          "valid": false
+        },
+        "gunpowder": {
+          "valid": false
+        },
+        "fanatic": {
+          "valid": true
+        },
+        "valiant": {
+          "valid": false
+        }
+      },
+      "derived.accolade_qualification_wound_factor_raw": 100000,
+      "derived.become_berserker_wound_factor_raw": 100000,
+      "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists": true,
+      "derived.qualifying_enemy_knight_exists": true,
+      "derived.outnumbering_injury_factor_raw": 100000,
+      "derived.own_side_more_than_five_times_enemy": false,
+      "derived.own_side_stronger": false,
+      "derived.root_has_any_maim_injury": false,
+      "derived.root_has_any_wounded_rank_1_2_3": false,
+      "derived.root_injury_factor_30_raw": 86666,
+      "derived.root_injury_factor_30_with_garuda_raw": 86666,
+      "derived.root_injury_factor_40_with_garuda_raw": 90000,
+      "derived.root_is_wounded": false,
+      "derived.root_player_stalwart": false,
+      "derived.root_ai_stalwart": false,
+      "derived.root_wounded_rank_3": false,
+      "derived.same_house_defends_family_any_tier": false,
+      "derived.same_house_defends_family_factor_raw": 100000,
+      "derived.same_house_defends_family_tier_high": false,
+      "derived.same_house_defends_family_tier_low_only": false,
+      "derived.same_house_defends_family_tier_medium_only": false,
+      "derived.enemy_hostile_knight_death_accolade_any_tier": false,
+      "derived.enemy_hostile_knight_death_accolade_factor_raw": 100000,
+      "root.accolade_unlocks.skirmisher.valid": false,
+      "root.accolade_unlocks.archer.valid": false,
+      "root.accolade_unlocks.crossbowmen.valid": false,
+      "root.accolade_unlocks.pike.valid": true,
+      "root.accolade_unlocks.vanguard.valid": true,
+      "root.accolade_unlocks.outrider.valid": false,
+      "root.accolade_unlocks.lancer.valid": false,
+      "root.accolade_unlocks.camelry.valid": false,
+      "root.accolade_unlocks.elephantry.valid": false,
+      "root.accolade_unlocks.horse_archer.valid": false,
+      "root.accolade_unlocks.gunpowder.valid": false,
+      "root.accolade_unlocks.fanatic.valid": true,
+      "root.accolade_unlocks.valiant.valid": false
+    },
+    "candidate_source_proof": {
+      "policy": "ccombat_side_commanders_then_knights_native_source_equivalence_v1",
+      "source_vector_equivalence": true,
+      "sequence_sha256": "57A20F8A7145E880862D6CA2CFF96524D5C7AD00F4E01357769A0249AF761E24",
+      "ordered_sources": [
+        {
+          "role": "commander",
+          "source_army_id": 16777221,
+          "source_regiment_id": null,
+          "character_id": 31549
+        },
+        {
+          "role": "commander",
+          "source_army_id": 16777231,
+          "source_regiment_id": null,
+          "character_id": 32725
+        },
+        {
+          "role": "commander",
+          "source_army_id": 27,
+          "source_regiment_id": null,
+          "character_id": 34320
+        },
+        {
+          "role": "commander",
+          "source_army_id": 22,
+          "source_regiment_id": null,
+          "character_id": 32231
+        },
+        {
+          "role": "commander",
+          "source_army_id": 28,
+          "source_regiment_id": null,
+          "character_id": 34474
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777221,
+          "source_regiment_id": 90,
+          "character_id": 47032
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777221,
+          "source_regiment_id": 91,
+          "character_id": 47031
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777221,
+          "source_regiment_id": 92,
+          "character_id": 47029
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777231,
+          "source_regiment_id": 110,
+          "character_id": 34484
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777231,
+          "source_regiment_id": 111,
+          "character_id": 44476
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777231,
+          "source_regiment_id": 112,
+          "character_id": 33884
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777231,
+          "source_regiment_id": 113,
+          "character_id": 36303
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777231,
+          "source_regiment_id": 114,
+          "character_id": 34117
+        },
+        {
+          "role": "knight",
+          "source_army_id": 16777231,
+          "source_regiment_id": 115,
+          "character_id": 34120
+        },
+        {
+          "role": "knight",
+          "source_army_id": 27,
+          "source_regiment_id": 219,
+          "character_id": 54140
+        },
+        {
+          "role": "knight",
+          "source_army_id": 27,
+          "source_regiment_id": 220,
+          "character_id": 54144
+        },
+        {
+          "role": "knight",
+          "source_army_id": 27,
+          "source_regiment_id": 221,
+          "character_id": 54145
+        },
+        {
+          "role": "knight",
+          "source_army_id": 27,
+          "source_regiment_id": 222,
+          "character_id": 54141
+        },
+        {
+          "role": "knight",
+          "source_army_id": 22,
+          "source_regiment_id": 179,
+          "character_id": 30517
+        },
+        {
+          "role": "knight",
+          "source_army_id": 22,
+          "source_regiment_id": 180,
+          "character_id": 36673
+        },
+        {
+          "role": "knight",
+          "source_army_id": 22,
+          "source_regiment_id": 181,
+          "character_id": 35124
+        },
+        {
+          "role": "knight",
+          "source_army_id": 22,
+          "source_regiment_id": 182,
+          "character_id": 34470
+        },
+        {
+          "role": "knight",
+          "source_army_id": 28,
+          "source_regiment_id": 225,
+          "character_id": 53853
+        },
+        {
+          "role": "knight",
+          "source_army_id": 28,
+          "source_regiment_id": 226,
+          "character_id": 53854
+        }
+      ]
+    },
+    "candidate_rows": [
+      {
+        "character_id": 47032,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 1000000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 300000,
+          "selected_enemy_knight.skills.prowess_raw": 1000000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 47031,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 900000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 900000,
+          "selected_enemy_knight.skills.prowess_raw": 900000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 47029,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 200000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": true,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 700000,
+          "selected_enemy_knight.skills.prowess_raw": 200000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 34484,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 1100000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 500000,
+          "selected_enemy_knight.skills.prowess_raw": 1100000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 44476,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": true,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 900000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 7500000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": true,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 500000,
+          "selected_enemy_knight.skills.prowess_raw": 900000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              true,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 33884,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": true,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 600000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 7500000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": true,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 600000,
+          "selected_enemy_knight.skills.prowess_raw": 600000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 36303,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 800000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 600000,
+          "selected_enemy_knight.skills.prowess_raw": 800000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              true,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 34117,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 700000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 1000000,
+          "selected_enemy_knight.skills.prowess_raw": 700000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              true,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 34120,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 700000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 1000000,
+          "selected_enemy_knight.skills.prowess_raw": 700000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              true,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 54140,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 800000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 700000,
+          "selected_enemy_knight.skills.prowess_raw": 800000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 54144,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 400000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 500000,
+          "selected_enemy_knight.skills.prowess_raw": 400000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 54145,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 300000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": true,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 400000,
+          "selected_enemy_knight.skills.prowess_raw": 300000,
+          "selected_enemy_knight.traits.brave": true,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 54141,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 200000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": true,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 700000,
+          "selected_enemy_knight.skills.prowess_raw": 200000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 30517,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 1300000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 800000,
+          "selected_enemy_knight.skills.prowess_raw": 1300000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              true,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 36673,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 600000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 600000,
+          "selected_enemy_knight.skills.prowess_raw": 600000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 35124,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 300000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": true,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 900000,
+          "selected_enemy_knight.skills.prowess_raw": 300000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              true,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 34470,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 100000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": true,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 67,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 300000,
+          "selected_enemy_knight.skills.prowess_raw": 100000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 53853,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 1200000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 82,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 900000,
+          "selected_enemy_knight.skills.prowess_raw": 1200000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      },
+      {
+        "character_id": 53854,
+        "candidate_refs": {
+          "candidate.alive": true,
+          "candidate.dynasty.perks.warfare_legacy_3": false,
+          "candidate.is_acclaimed": false,
+          "candidate.perks.stalwart_leader": false,
+          "candidate.skills.prowess_raw": 400000,
+          "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter": true,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold": false,
+          "derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter": false,
+          "derived.stock_enemy_knight_selection_weight_raw": 10000000
+        },
+        "selected_enemy_knight_refs": {
+          "selected_enemy_knight.alive": true,
+          "selected_enemy_knight.dynasty.perks.warfare_legacy_3": false,
+          "selected_enemy_knight.faith": 82,
+          "selected_enemy_knight.is_acclaimed": false,
+          "selected_enemy_knight.perks.stalwart_leader": false,
+          "selected_enemy_knight.skills.learning_raw": 600000,
+          "selected_enemy_knight.skills.prowess_raw": 400000,
+          "selected_enemy_knight.traits.brave": false,
+          "selected_enemy_knight.traits.craven": false,
+          "selected_enemy_knight.traits_and_culture_for_blademaster": {
+            "education_martial": [
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            "education_martial_prowess": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "lifestyle_blademaster": false,
+            "lifestyle_blademaster_xp_raw": 0,
+            "shrewd": false,
+            "physique_good": false,
+            "intellect_good": [
+              false,
+              false,
+              false
+            ],
+            "culture_blademaster_traits_more_common": false
+          }
+        }
+      }
+    ]
+  },
+  "stock_event_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "model_growth_draw_record": {
+    "ordinal": 1,
+    "purpose": "knight_increase_prowess:source_order",
+    "random31": 51510340,
+    "weights_source_order": [
+      4000000,
+      3000000,
+      1500000
+    ],
+    "selected_index": 0
+  },
+  "model_growth_transition": {
+    "transition": "knight_increase_prowess_chance",
+    "target_character_id": 34120,
+    "selected_branch": "no_op",
+    "weights_source_order": [
+      4000000,
+      3000000,
+      1500000
+    ],
+    "applied": false
+  },
+  "model_death_transition": {
+    "transition": "kill_character",
+    "target_character_id": 33437,
+    "reason": "death_battle",
+    "killer_character_id": 34120,
+    "applied": true
+  },
+  "runtime_weights_match_model_source_order": true,
+  "selected_growth_branch_matches_original": true,
+  "complete_mutable_write_set_proven": false,
+  "whole_battle_win_probability_available": false
+}

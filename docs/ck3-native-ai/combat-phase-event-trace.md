@@ -332,6 +332,50 @@ CharacterID 静态 ABI，但还需在本 effect 执行上下文验证 `scope:phy
 并闭合无特质分支的写入与 XP track 安全读取。四项完成前只保留现有权重 observer；
 新增医师身份、学习、升阶前后态的私有钩子维持关闭。
 
+### 2026-09-27 第 26 日成长列表：选择器权重实采
+
+[原版受管实机，私有只读钩子] 独立 attempt
+`D:/workspace/ck3_native_war_ai_promo_work/episode01-day26-runtime-weight-attempt-070/`
+从第 26 日不可变源档 `d26-immutable.ck3`（SHA-256
+`C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B`）
+冷载，配对原始 `d26-save.json` 保存回执 SHA-256
+`78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C`；
+源档日 `53146848`、人物 `29829`。游戏 EXE SHA 仍为本页精确 1.19.0.6 构建，
+只读权重 DLL 使用第 5 日已验的 e036 bytes SHA-256
+`03233A863F68D31FF123037A711CC22D7C489612E5C212145FB28B0650614F6B`，
+没有混用尚未经实机验证的医师字段改版。私有 begin 原始回执 SHA-256
+`D106084F49A5ADC1BCB6B28C9FE8E58DB10C84CCB9D36FF6A6A01CE09C4E3F41`，
+`status=armed`；原始 `007-finish.json` SHA-256
+`35ADD14D501D094B32D40564B39B713705AE5A46FB6670024ADA776A4C1A0A47`，
+`bounded_trace_available`、`failure_flags=0`，七个边界均无 capture failure。
+
+原生事件载入索引 `11` 的 `knight_killed` 在 side `1` 的
+`CRandomListEffect` call `14` 实际给出来源顺序 `int32` 权重 **`[40,30,15]`**，
+内存原始 bytes `280000001E0000000F000000`；三项正权重总和 `85`。
+子作用域 counter `1462316485→1462316487` 的选择 draw31 为 `51,510,340`，
+阈值 `floor(51,510,340×85/2^31)=2`，命中第 `0` 项。被执行的
+`CRandomListEntryEffect` call `15` 指针与第 `0` 项同一，原版分支为
+不增加勇武。相邻原生选择器选中骑士 `34120`，第 4→5 边界新增
+`knight_killed_by_enemy` 事件（死者 `33437`，对方 `34120`）。
+因此前文 `40/30/15` “仅条件复算、尚未直接回读”是这次之前的历史证据状态，
+**对本次第 26 日样本现已由入口实采确认**。
+
+同帧 v3 原始回执 SHA-256
+`83BEC53806DE6FECF2A73B3A18D205CABF71A5E5E724B7C08ABC1452A3774B6E`。
+[只读投影器](../../ck3_autonomous_player/tools/project_native_day26_runtime_weights.py)
+逐字节核对 EXE、DLL、源档与配对回执、begin／finish／v3 原始响应、七边界、
+effect／entry 身份、子 RNG 与游戏进程清场；然后用**同帧**角色 `33437` 的
+v3 evaluation context 运行智能体当前 `phase_event_evaluator.py`，得到 Q100000
+`[4,000,000,3,000,000,1,500,000]`，除以 `100000` 恰为入口
+`[40,30,15]`，分支同为 `no_op`。无此列表的权重残差，无须改算法。
+[智能体可复用冻结向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_day26_runtime_weights_v1.json)
+SHA-256 `8BC27BC8420B31474DEDABDF00E004E5C2C910C4906406A15CE0D46144E809A8`
+包含该次同帧输入和实采输出；聚焦测试重放模型并拒绝篡改的权重 bytes／entry 身份。
+受管 `session-result.json` SHA-256
+`C79D8F553D7485254EADE9EB1F2DBF363AEE466C307A4E512B55A033FC0DCB07`，
+`cleanup_proven=true`、最终 CK3 进程数 `0`；任务总线 070 已释放 CK3。
+本次确认的是这一列表的权重与选项，没有借它宣称所有事件写回或整场胜率已闭合。
+
 ### 事件后的下一帧智能体输入
 
 又从本次回放保存的第 27 日不可变存档（SHA-256
