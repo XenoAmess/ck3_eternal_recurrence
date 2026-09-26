@@ -18,6 +18,94 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_prepare_state_carries_paired_faction_gift_pending_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sample = root / "sample"
+            sample.mkdir()
+            save = sample / "xar_checkpoint.ck3"
+            save.write_bytes(b"pre-gift checkpoint")
+            digest = hashlib.sha256(save.read_bytes()).hexdigest()
+            episode = "native-29829-test"
+            driver = {
+                "episode_character_id": 29829,
+                "episode_run_id": episode,
+                "last_checkpoint": {
+                    "sha256": digest, "date_raw": 53154528,
+                    "episode_character_id": 29829, "episode_run_id": episode,
+                },
+            }
+            (sample / "driver-state.json").write_text(json.dumps(driver), encoding="utf-8")
+            pending = {
+                "request_id": "faction-gift-" + "a" * 32,
+                "episode_run_id": episode,
+                "source_faction_id": 771,
+                "source_round_id": "R742",
+                "source_bridge_pid": 12345,
+                "source_bridge_creation_date": "old-process",
+                "recipient_character_id": 33011,
+                "pre_snapshot_revision": 12,
+                "pre_native_snapshot_revision": 13,
+                "pre_player_character_id": 29829,
+                "pre_date_raw": 53154528,
+                "pre_player_gold_raw": 25_000_000,
+                "pre_recipient_opinion_of_player": -40,
+                "pre_gift_opinion_present": False,
+                "pre_source_faction_power_raw": 65_000_000,
+                "pre_source_faction_discontent_raw": 45_000_000,
+                "pre_source_faction_member_character_ids": [33011],
+                "pre_source_faction_targeting_player": True,
+                "gold_cost_raw": 7_500_000,
+                "opinion_delta": 25,
+                "minimum_gold_reserve_raw": 10_000_000,
+                "checkpoint_sha256_before_submit": digest,
+                "status": "submitted_verification_pending",
+                "ack": None,
+            }
+            sidecar = sample / "faction-gift-pending-v1.json"
+            sidecar.write_text(json.dumps({
+                "schema": "xar.ck3.faction_gift_pending_v1",
+                "format_version": 1,
+                "pending": pending,
+                "resolved_request_outcomes": {},
+            }), encoding="utf-8")
+            manifest = root / "manifest.json"
+            state = root / "state"
+            manifest.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\faction-gift-test",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "episode_character_id": 29829,
+                "episode_run_id": episode,
+            }), encoding="utf-8")
+            args = argparse.Namespace(manifest=manifest, sample_dir=sample,
+                                      faction_gift_sidecar=sidecar)
+            output = io.StringIO()
+            with (mock.patch.object(g2_preview_operator.subprocess, "run",
+                                    return_value=mock.Mock(returncode=0)),
+                  contextlib.redirect_stdout(output)):
+                self.assertEqual(g2_preview_operator.command_prepare_state(args), 0)
+            target = state / "native-session" / "faction-gift-pending-v1.json"
+            self.assertEqual(target.read_bytes(), sidecar.read_bytes())
+            receipt = json.loads(output.getvalue())
+            self.assertEqual(receipt["faction_gift_pending_sidecar"]["status"],
+                             "paired_no_launch")
+            self.assertEqual(receipt["faction_gift_pending_sidecar"]["sha256"],
+                             hashlib.sha256(sidecar.read_bytes()).hexdigest())
+            pending["checkpoint_sha256_before_submit"] = "b" * 64
+            with self.assertRaisesRegex(ValueError, "pre-submit save/driver"):
+                g2_preview_operator.faction_gift_pending_sidecar_request(
+                    {"schema": "xar.ck3.faction_gift_pending_v1",
+                     "format_version": 1, "pending": pending,
+                     "resolved_request_outcomes": {}},
+                    driver, {"episode_character_id": 29829,
+                             "episode_run_id": episode}, digest,
+                )
+
     def test_family_pending_sidecar_pairs_saved_proposal_and_rejects_other_pair(self) -> None:
         manifest = {"episode_character_id": 29829,
                     "episode_run_id": "native-29829-test"}
