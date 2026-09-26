@@ -1,4 +1,4 @@
-"""Private same-frame M5 sources for peaceful construction and faction gifts.
+"""Private same-frame M5 sources for peaceful building, gifts and family.
 
 This module only composes existing read-only domain queries.  It does not
 advertise a capability, submit an action, or turn partial data into a no-op.
@@ -24,11 +24,17 @@ from .faction_gift_formal_candidate_v1 import (
     latest_same_frame_faction_root_v1,
 )
 from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
+from .family_marriage_formal_consumer import (
+    plan_family_marriage_private, read_family_marriage_ledger,
+)
+from .bridge.observed_heir_marriage_private_action_v1 import (
+    SUBMIT_STEP as FAMILY_SUBMIT_STEP,
+)
 from .m5_formal_proposal_collector import SOURCE_SCHEMA
 from .m5_observed_opportunity_selector import observed_frame
 
 
-PRODUCER_POLICY = "g2-m5-peacetime-building-faction-source-v1"
+PRODUCER_POLICY = "g2-m5-peacetime-building-faction-family-source-v1"
 
 
 def query_m5_peacetime_proposal_sources_v1(
@@ -39,7 +45,7 @@ def query_m5_peacetime_proposal_sources_v1(
     baseline_plan: Mapping[str, object],
     expected_revision: int,
 ) -> dict[str, object]:
-    """Read at most one building and one faction-gift proposal on one frame."""
+    """Read at most one approved proposal per peaceful domain on one frame."""
 
     frame = _require_peaceful_frame(snapshot, expected_revision=expected_revision)
     observed_gold_raw = _snapshot_gold(snapshot)
@@ -58,6 +64,11 @@ def query_m5_peacetime_proposal_sources_v1(
 
     construction_ledger = read_construction_ledger(state_dir)
     faction_ledger = read_faction_gift_ledger_v1(state_dir)
+    family_enabled = getattr(
+        driver, "allow_private_family_marriage_formal_trial", False
+    ) is True
+    family_ledger = (read_family_marriage_ledger(state_dir)
+                     if family_enabled else None)
     if construction_ledger.get("pending") is not None:
         raise BridgeUnavailableError(
             "M5 peacetime source has an unresolved construction action"
@@ -150,6 +161,32 @@ def query_m5_peacetime_proposal_sources_v1(
                 "M5 peacetime faction gold crossed the planning frame"
             )
 
+    family_status = "opt_in_off"
+    family_plan: dict[str, object] | None = None
+    if family_enabled:
+        prior_resolution = family_ledger["resolved"]
+        if (family_ledger["pending"] is not None
+                or (isinstance(prior_resolution, Mapping)
+                    and prior_resolution.get("episode_run_id") ==
+                    frame["episode_run_id"])):
+            family_status = "existing_formal_ledger"
+        else:
+            observed = plan_family_marriage_private(
+                driver, {"revision": expected_revision,
+                         "plan": deepcopy(dict(baseline_plan))},
+                deepcopy(dict(snapshot)),
+            )
+            plan = observed.get("plan")
+            if not isinstance(plan, Mapping):
+                raise BridgeUnavailableError("M5 family policy returned no plan")
+            if plan.get("selected_step") == FAMILY_SUBMIT_STEP:
+                family_status = "selected"
+                family_plan = deepcopy(dict(plan))
+            else:
+                observed_status = plan.get("family_marriage_status")
+                family_status = (observed_status if isinstance(observed_status, str)
+                                 else "no_approved_proposal")
+
     _require_driver_frame(driver, frame, expected_gold_raw=observed_gold_raw)
     # The two existing query transports do not mutate either formal ledger.
     # Re-read them before publishing explicit empty commitments.
@@ -161,12 +198,18 @@ def query_m5_peacetime_proposal_sources_v1(
         raise BridgeUnavailableError(
             "M5 peacetime faction ledger changed during readback"
         )
+    if family_enabled and read_family_marriage_ledger(state_dir) != family_ledger:
+        raise BridgeUnavailableError(
+            "M5 peacetime family ledger changed during readback"
+        )
 
     domains: dict[str, object] = {}
     if construction_status == "selected":
         domains["building"] = {"query": deepcopy(dict(construction))}
     if faction.get("status") == "selected":
         domains["diplomacy"] = {"candidate": deepcopy(faction)}
+    if family_plan is not None:
+        domains["marriage"] = {"plan": family_plan}
 
     return {
         "schema": SOURCE_SCHEMA,
@@ -192,7 +235,7 @@ def query_m5_peacetime_proposal_sources_v1(
         "domains": domains,
         "producer": {
             "policy": PRODUCER_POLICY,
-            "scope": "peacetime_building_and_faction_gift_only",
+            "scope": "peacetime_building_faction_and_opted_family",
             "observed_player_gold_raw": observed_gold_raw,
             "domain_minimum_gold_reserves_raw": {
                 "building": CONSTRUCTION_RESERVE_RAW,
@@ -202,7 +245,9 @@ def query_m5_peacetime_proposal_sources_v1(
             "observed_player_army_count": 0,
             "construction_status": construction_status,
             "faction_status": faction.get("status"),
-            "pending_formal_ledgers_empty": True,
+            "family_status": family_status,
+            "pending_formal_ledgers_empty": (
+                not family_enabled or family_ledger["pending"] is None),
             "formal_action_ready": False,
         },
     }

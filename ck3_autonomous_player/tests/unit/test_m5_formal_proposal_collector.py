@@ -292,7 +292,7 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         self.assertIsNotNone(result["dispatch"]["reservation"])
 
     def test_marriage_inventory_is_not_an_admitted_source_domain(self) -> None:
-        with self.assertRaisesRegex(ValueError, "unsupported domains: marriage"):
+        with self.assertRaisesRegex(ValueError, "marriage.plan is unavailable"):
             collect_m5_formal_proposals(
                 snapshot=_snapshot(),
                 sources=_sources(domains={"marriage": {"candidate_count": 657}}),
