@@ -631,6 +631,7 @@ def select_observed_m5_opportunity(
         "selected_candidate_id": (
             selected["candidate_id"] if selected is not None else None
         ),
+        "income_preference_applied": prefer_income,
         "selection_basis": [
             "positive_authored_building_income_in_peace", "war_slot_claim",
             "army_claim_count", "ally_claim_count",

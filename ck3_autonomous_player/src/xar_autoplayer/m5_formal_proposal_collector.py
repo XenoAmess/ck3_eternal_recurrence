@@ -99,7 +99,7 @@ def collect_m5_formal_proposals(
         gold_reserve_raw=gold_reserve_raw,
         max_active_wars=max_active_wars,
     )
-    return {
+    result = {
         "schema": RESULT_SCHEMA,
         "policy": "g2-m5-formal-query-only-collector-v1",
         "status": (
@@ -118,6 +118,12 @@ def collect_m5_formal_proposals(
         "selected_step": None,
         "formal_action_ready": False,
     }
+    producer = sources.get("producer")
+    if isinstance(producer, Mapping) and isinstance(
+        producer.get("family_status"), str
+    ):
+        result["producer_family_status"] = producer["family_status"]
+    return result
 
 
 def plan_m5_formal_query_only(
