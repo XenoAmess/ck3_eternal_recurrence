@@ -7788,6 +7788,8 @@ constexpr std::string_view kObservedFirstHeirMarriageSubmitStepV1 =
     "submit-observed-first-heir-marriage-v1-private";
 constexpr std::string_view kObservedFirstHeirMarriageResultStepV1 =
     "query-observed-first-heir-marriage-result-v1-private";
+constexpr std::string_view kObservedFirstHeirMarriageAllianceResultStepV1 =
+    "query-observed-first-heir-marriage-alliance-result-v1-private";
 #endif
 
 std::string ObservedHeirMarriagePrivateResultFrameV1(
@@ -8228,6 +8230,42 @@ std::string ObservedHeirMarriageMaterialFrameV1(
   result += SignedNumber(pending.heir_character_id);
   result += ",\"candidate_character_id\":";
   result += SignedNumber(pending.candidate_character_id);
+  result += "}}";
+  return result;
+}
+
+std::string ObservedHeirMarriageAllianceResultFrameV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t played_id, std::int32_t recipient_id,
+    std::int32_t heir_id, std::int32_t candidate_id,
+    std::string_view relationship_status, std::string_view alliance_status,
+    bool alliance_read_available, bool first_has_second, bool second_has_first) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, kObservedFirstHeirMarriageAllianceResultStepV1);
+  result += ",\"accepted\":true,\"private_build\":true,"
+            "\"advertised\":false,\"read_only\":true,\"native_revision\":";
+  result += Number(native_revision);
+  result += ",\"played_character_id\":";
+  result += SignedNumber(played_id);
+  result += ",\"recipient_character_id\":";
+  result += SignedNumber(recipient_id);
+  result += ",\"heir_character_id\":";
+  result += SignedNumber(heir_id);
+  result += ",\"candidate_character_id\":";
+  result += SignedNumber(candidate_id);
+  result += ",\"relationship_status\":";
+  AppendJsonString(result, relationship_status);
+  result += ",\"alliance_status\":";
+  AppendJsonString(result, alliance_status);
+  result += ",\"played_has_recipient_alliance\":";
+  result += !alliance_read_available ? "null" :
+            first_has_second ? "true" : "false";
+  result += ",\"recipient_has_played_alliance\":";
+  result += !alliance_read_available ? "null" :
+            second_has_first ? "true" : "false";
   result += "}}";
   return result;
 }
@@ -9586,6 +9624,7 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
                    && step != kObservedFirstHeirMarriageSubmitStepV1
                    && step != kObservedFirstHeirMarriageResultStepV1
+                   && step != kObservedFirstHeirMarriageAllianceResultStepV1
 #endif
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
@@ -10918,6 +10957,105 @@ void RunConnectedSession(
                   connected = PublishSnapshot(
                       pipe, game, previous_snapshot, state_revision,
                       checkpoint_submission, published_checkpoint_sequence);
+                }
+              }
+            }
+          }
+        } else if (step == kObservedFirstHeirMarriageAllianceResultStepV1) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t played_id = 0;
+          std::uint64_t recipient_id = 0;
+          std::uint64_t heir_id = 0;
+          std::uint64_t candidate_id = 0;
+          xar::game::Snapshot before{};
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision != state_revision ||
+              !xar::bridge::JsonUnsignedField(
+                  incoming.payload, "played_character_id", played_id) ||
+              !xar::bridge::JsonUnsignedField(
+                  incoming.payload, "recipient_character_id", recipient_id) ||
+              !xar::bridge::JsonUnsignedField(
+                  incoming.payload, "heir_character_id", heir_id) ||
+              !xar::bridge::JsonUnsignedField(
+                  incoming.payload, "candidate_character_id", candidate_id) ||
+              played_id == 0 || played_id > INT32_MAX ||
+              recipient_id == 0 || recipient_id > INT32_MAX ||
+              heir_id == 0 || heir_id > INT32_MAX ||
+              candidate_id == 0 || candidate_id > INT32_MAX ||
+              played_id == recipient_id || heir_id == candidate_id ||
+              !previous_snapshot.has_value() ||
+              !xar::game::ReadSnapshot(game, before) ||
+              before != *previous_snapshot || !before.paused ||
+              !before.map_ready ||
+              before.played_character_id != static_cast<std::int32_t>(played_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "observed-heir alliance result needs a bound paused frame"));
+          } else {
+            xar::bridge::MarriageProposalBilateralRelationshipV1 relation{};
+            const auto relationship_read =
+                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
+                    g_marriage_shared_glue_v1.binder,
+                    static_cast<std::uint32_t>(heir_id),
+                    static_cast<std::uint32_t>(candidate_id), relation);
+            xar::game::Snapshot after_relation{};
+            if (relationship_read != xar::bridge::
+                    MarriageProposalNativeReadbackResultV1::available ||
+                !xar::game::ReadSnapshot(game, after_relation) ||
+                after_relation != before ||
+                !relation.subject_identity_round_trip ||
+                !relation.candidate_identity_round_trip ||
+                !relation.subject_alive || !relation.candidate_alive ||
+                relation.subject_has_candidate_as_spouse !=
+                    relation.candidate_has_subject_as_spouse ||
+                relation.subject_has_candidate_as_betrothed !=
+                    relation.candidate_has_subject_as_betrothed) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "observed-heir alliance result relationship RED"));
+            } else {
+              const bool married = relation.subject_has_candidate_as_spouse;
+              const bool betrothed =
+                  relation.subject_has_candidate_as_betrothed;
+              if (married && betrothed) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                        "observed-heir alliance result relationship RED"));
+              } else {
+                bool first_has_second = false;
+                bool second_has_first = false;
+                const auto alliance_read = (married || betrothed)
+                    ? xar::bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
+                        g_marriage_shared_glue_v1.binder,
+                        static_cast<std::uint32_t>(played_id),
+                        static_cast<std::uint32_t>(recipient_id),
+                        first_has_second, second_has_first)
+                    : xar::bridge::MarriageProposalNativeReadbackResultV1::blocked;
+                xar::game::Snapshot after{};
+                if (!xar::game::ReadSnapshot(game, after) || after != before) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(request_id, step, false,
+                          "observed-heir alliance result frame changed"));
+                } else {
+                  const char *alliance_status = "unknown";
+                  if (alliance_read == xar::bridge::
+                          MarriageProposalNativeReadbackResultV1::available &&
+                      first_has_second == second_has_first) {
+                    alliance_status = first_has_second ? "allied" : "not_allied";
+                  }
+                  connected = xar::bridge::WriteFrame(
+                      pipe, ObservedHeirMarriageAllianceResultFrameV1(
+                          request_id, state_revision,
+                          static_cast<std::int32_t>(played_id),
+                          static_cast<std::int32_t>(recipient_id),
+                          static_cast<std::int32_t>(heir_id),
+                          static_cast<std::int32_t>(candidate_id),
+                          married ? "marriage" : betrothed ? "betrothal" : "none",
+                          alliance_status,
+                          alliance_read == xar::bridge::
+                              MarriageProposalNativeReadbackResultV1::available,
+                          first_has_second, second_has_first));
                 }
               }
             }

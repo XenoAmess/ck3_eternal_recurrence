@@ -1,0 +1,22 @@
+# C12 first-heir betrothal: actual alliance result boundary
+
+The C12 frozen Robert evidence at `Z:\ck3_mod_rewrite_process_assets\g2-robert-nonwar-prewar-r0149-20260926-c12` establishes a bilateral betrothal between first heir 38822 and candidate 38710 on a new PID. A second new PID verified cold recovery. That is a material **betrothal**, not proof of an alliance. The earlier five-row `would_attempt_if_accepted` is a native projected attempt, not a result. The source proposal's actor was player 29829 and recipient matchmaker 32266: candidate 38710's exact row in the frozen C10 `attempt-01/formal-report.txt` (SHA-256 `2BD6EBD230C2E730560119CF36D867192457D4E3247B7C4BF3DD8C8B0446C6F4`) contains both `recipient_character_id=32266` and `recipient_matchmaker_character_id=32266`. The C12 durable `state/first-heir-marriage-formal-v1.json` (SHA-256 `44489AF3AD4A2901EE7D6236CE82C7412743D3109FCB8186A3703F3E8AA52918`) records actor/heir/candidate but does not retain recipient. The private readback caller must bind 32266 from that frozen final-legal row. Do not alter the C12 ledger to fill that historical field.
+
+The exact CK3 1.19.0.6 EXE (SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`) already has the certified `CCharacter::is_allied_to` RVA `0x2661E00` adapter. A private, default-OFF, read-only result query resolves the four CharacterIDs on one paused native revision: it first reads the heir/candidate spouse or betrothed relationship in both directions, then calls `is_allied_to` for player/recipient in both directions. `allied` requires two true reads, `not_allied` requires two false reads; a missing or mismatched read is `unknown`, never zero. The Python transport requires an existing material result and checks the returned identities, relationship kind, revision, and a second paused snapshot. The query performs no proposal submission and does not change public MCP/action advertisement.
+
+```mermaid
+flowchart TD
+    C["[C12 live] heir 38822 and candidate 38710 mutual betrothal"] --> P["[static] bind player 29829 and recipient 32266 from frozen proposal"]
+    P --> R{"[private query] mutual relationship on same paused frame?"}
+    R -->|yes| A{"[exact ABI] player / recipient is_allied_to both directions"}
+    R -->|no or drift| U["unknown or RED; no alliance conclusion"]
+    A -->|true / true| Y["actual alliance allied"]
+    A -->|false / false| N["actual alliance not_allied"]
+    A -. "read unavailable or disagreement" .-> U
+    Y -. "C12 paused readback pending" .-> L["production outcome unknown"]
+    N -. "C12 paused readback pending" .-> L
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,L unknown;
+```
+
+This source increment is static-ready until a frozen candidate reads C12 on a real paused frame. Its result describes the **current** alliance pair, not the causal effect of the betrothal; an alliance may predate or follow the proposal. Future proposals should persist the exact recipient identity with the pending receipt before automatic result consumption can use this query without an external frozen row.

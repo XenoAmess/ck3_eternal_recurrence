@@ -12,7 +12,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
-    RESULT_STEP, SCHEMA, SUBMIT_STEP,
+    ALLIANCE_RESULT_STEP, RESULT_STEP, SCHEMA, SUBMIT_STEP,
+    query_observed_first_heir_marriage_alliance_result_private_v1,
     query_observed_first_heir_marriage_result_private_v1,
     query_observed_first_heir_marriage_cold_result_private_v1,
     submit_observed_first_heir_marriage_private_v1,
@@ -76,6 +77,72 @@ def submit_result() -> dict[str, object]:
 
 
 class TransportTest(unittest.TestCase):
+    def test_material_pair_reads_actual_alliance_in_both_directions(self) -> None:
+        resolved = {"status": "betrothal", "material_result": True,
+                    "heir_character_id": 38822,
+                    "candidate_character_id": 38710,
+                    "source_pending": {"schema": SCHEMA,
+                                       "played_character_id": 29829,
+                                       "heir_character_id": 38822,
+                                       "candidate_character_id": 38710}}
+        for status, directions in (("allied", (True, True)),
+                                   ("not_allied", (False, False)),
+                                   ("unknown", (None, None))):
+            result = {"step": ALLIANCE_RESULT_STEP, "accepted": True,
+                      "private_build": True, "advertised": False,
+                      "read_only": True, "native_revision": 693,
+                      "played_character_id": 29829,
+                      "recipient_character_id": 32266,
+                      "heir_character_id": 38822,
+                      "candidate_character_id": 38710,
+                      "relationship_status": "betrothal",
+                      "alliance_status": status,
+                      "played_has_recipient_alliance": directions[0],
+                      "recipient_has_played_alliance": directions[1]}
+            driver = FakeDriver([frame(), frame()], result)
+            observed = query_observed_first_heir_marriage_alliance_result_private_v1(
+                driver, resolved=resolved, recipient_character_id=32266)
+            self.assertEqual(observed["alliance_status"], status)
+            self.assertEqual(driver.requests[0]["played_character_id"], 29829)
+            self.assertEqual(driver.requests[0]["recipient_character_id"], 32266)
+        unresolved = {**resolved, "material_result": False}
+        driver = FakeDriver([frame()], result)
+        with self.assertRaises(BridgeUnavailableError):
+            query_observed_first_heir_marriage_alliance_result_private_v1(
+                driver, resolved=unresolved, recipient_character_id=32266)
+        self.assertEqual(driver.requests, [])
+
+    def test_projection_or_one_way_answer_cannot_claim_alliance(self) -> None:
+        resolved = {"status": "betrothal", "material_result": True,
+                    "heir_character_id": 38822,
+                    "candidate_character_id": 38710,
+                    "source_pending": {"schema": SCHEMA,
+                                       "played_character_id": 29829,
+                                       "heir_character_id": 38822,
+                                       "candidate_character_id": 38710}}
+        result = {"step": ALLIANCE_RESULT_STEP, "accepted": True,
+                  "private_build": True, "advertised": False,
+                  "read_only": True, "native_revision": 693,
+                  "played_character_id": 29829,
+                  "recipient_character_id": 32266,
+                  "heir_character_id": 38822,
+                  "candidate_character_id": 38710,
+                  "relationship_status": "betrothal",
+                  "alliance_status": "allied",
+                  "played_has_recipient_alliance": True,
+                  "recipient_has_played_alliance": False}
+        driver = FakeDriver([frame(), frame()], result)
+        with self.assertRaises(BridgeUnavailableError):
+            query_observed_first_heir_marriage_alliance_result_private_v1(
+                driver, resolved=resolved, recipient_character_id=32266)
+        mismatch = {**result, "alliance_status": "unknown"}
+        driver = FakeDriver([frame(), frame()], mismatch)
+        observed = query_observed_first_heir_marriage_alliance_result_private_v1(
+            driver, resolved=resolved, recipient_character_id=32266)
+        self.assertEqual(observed["alliance_status"], "unknown")
+        self.assertIs(observed["played_has_recipient_alliance"], True)
+        self.assertIs(observed["recipient_has_played_alliance"], False)
+
     def test_submit_is_pending_only(self) -> None:
         driver = FakeDriver([frame(), frame()], submit_result())
         pending = submit_observed_first_heir_marriage_private_v1(
