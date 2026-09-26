@@ -6,6 +6,10 @@
 
 准备过程中的 RED 按独立尝试保留：`053` 在移动状态拆军被原版拒绝；`054/055` 所选中途省份没有发布为合法动作；`056/057` 以固定日期断言误判非战术 `life-advance` 的 8/9 日变动跨度。已改为按“战争仍在、军队静止、未接战”这一组实际状态判断，并在拆军前保存检查点。冷载尝试 `059` 因误用缺 `mcp` 依赖的系统 Python，在 CK3 启动前环境 RED；后续会话使用已验证的项目 `tools/.venv/Scripts/python.exe`。这些 RED 不是原生增援行为的反例。
 
+### 同源三军路线的独立接敌观察：第 33 日由互动中断
+
+[live-confirmed, inconclusive] attempt `061` 从上述三军路线存档 SHA-256 `77BE86B0FDE44D348807B201B9809A29F8099A4FF005A9C12D632045B4AB0DE9` 独立冷载，逐日使用原生 `life-advance`，每次核对日期恰好增加 24 个 raw 单位，并保存每帧快照及原始响应哈希。初帧 raw `53144520`、`native:3` / revision `4`；第 33 个观察帧 raw `53145312`，CUnit `18、32、33` 均到 Province `2629`、仍朝 `2638` 移动，War `4` 仍在，三军均未返回 CombatID。该帧出现 `pending_character_interaction`，instance `16777340`、sender Character `31106`、`auto_accept_notification=false`，因此按预设停止，**没有越过待处理互动推进游戏**。终止状态为 `interactive_blocker_before_common_contact / INCONCLUSIVE`，不是原版拒绝增援，也不是 110 天无接敌。初帧响应 SHA-256 `A6B0CF6686A8CDF1A0CC39AFD93C2B94F2C7A3DEC74E0F968B42570BA10EE9AB`，末帧响应 SHA-256 `7A5FFDB56F41E0F68A9ADBD61AD84FB6A3B049E8F7DD5554D05EE9727ABF3667`；原始逐日账本和 cleanup 清单保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-losing-side-contact-attempt-061/`。下一次独立尝试须在中途保全检查点，并用当前同帧原生互动上下文及生产策略决定合法回复，再继续追踪三军是否同 CombatID。
+
 ## 2026-09-27：三军结构门通过，但自然求援未触发
 
 [live-confirmed, bounded negative] 从第 21 日不可变原版存档（SHA-256 `0E5AD3066B97689178797F1F9D3C35CA3700D513FAE6F6B032A3E8BF7BD1FB2A`）独立冷载。attempt-049 在同日 raw `53146728`、旧 `CombatID=16777218` 中直接读取：切换玩家前，side0 CUnit `16777221、27、16777231` 都在 `coordinator=3` 的同一 AI parent row `[16777221,27,16777231]`；切到 Character `31549` 后，玩家 CUnit `16777221` 的 AI backlink 暂时 unavailable，其余两支仍是同一 coordinator 的 parent `[16777231,27]`。这次**直接跨过**旧两军夹具撤离后只剩 singleton、`count<=1` 必清请求的结构性限制。切换后种子存档 SHA-256 `337B8818E819CA45A217F3751B1E0242045372084A265FEBF91C93D2BCB9F020`。
