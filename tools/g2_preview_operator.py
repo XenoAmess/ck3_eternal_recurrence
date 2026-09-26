@@ -52,6 +52,8 @@ ORDINARY_LIFECYCLE_CONTRACT = {
     "ordinary_campaign_no_pact": True,
 }
 ORDINARY_SEED_REBIND_V1_SCHEMA = "xar.ck3.ordinary-seed-rebind/v1"
+CONSTRUCTION_PENDING_V1_SCHEMA = "xar.ck3.construction_formal_pending_v1"
+CONSTRUCTION_SUBMIT_STEP = "private-submit-player-construction-v1"
 
 
 def sha256(path: Path) -> str:
@@ -202,6 +204,46 @@ def episode_value(driver: dict[str, Any], manifest: dict[str, Any], key: str) ->
     if value is None or value == "":
         raise ValueError(f"paired checkpoint does not provide {key!r}")
     return value
+
+
+def construction_pending_sidecar_request(
+    sidecar: dict[str, Any], driver: dict[str, Any], manifest: dict[str, Any]
+) -> str:
+    """Pair a submitted construction ledger with its saved driver action."""
+
+    pending = sidecar.get("pending")
+    checkpoint = driver.get("last_checkpoint")
+    history = driver.get("command_history")
+    if (sidecar.get("schema") != CONSTRUCTION_PENDING_V1_SCHEMA
+            or not isinstance(pending, dict)
+            or sidecar.get("applied") is not None
+            or pending.get("status") != "submitted_verification_pending"
+            or not isinstance(checkpoint, dict)
+            or not isinstance(history, list)):
+        raise ValueError("construction pending sidecar lacks a saved pending action")
+    request_id = pending.get("action_request_id")
+    actor = episode_value(driver, manifest, "episode_character_id")
+    episode = episode_value(driver, manifest, "episode_run_id")
+    checkpoint_index = checkpoint.get("history_index")
+    if (not isinstance(request_id, str)
+            or re.fullmatch(r"construction-submit-[0-9a-f]{32}", request_id) is None
+            or type(actor) is not int or actor <= 0
+            or not isinstance(episode, str)
+            or pending.get("actor_character_id") != actor
+            or pending.get("episode_run_id") != episode
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != episode
+            or type(checkpoint_index) is not int
+            or not any(
+                isinstance(row, dict)
+                and row.get("command") == CONSTRUCTION_SUBMIT_STEP
+                and type(row.get("index")) is int
+                and row["index"] <= checkpoint_index
+                and row.get("result") == pending
+                for row in history
+            )):
+        raise ValueError("construction pending sidecar does not match checkpoint actor/episode/action")
+    return request_id
 
 
 def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
@@ -383,14 +425,28 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     sample_dir = args.sample_dir.resolve()
     save_source = sample_dir / "xar_checkpoint.ck3"
     driver_source = sample_dir / "driver-state.json"
+    pending_source = sample_dir / "construction-formal-pending-v1.json"
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
+    pending_target = state_dir / "construction-formal-pending-v1.json"
     for path in (save_source, driver_source):
         if not path.is_file():
             raise FileNotFoundError(path)
     for path in (save_target, driver_target):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {path}")
+    pending_request_id = None
+    pending_source_sha256 = None
+    pending_record = None
+    if pending_source.exists():
+        if not pending_source.is_file():
+            raise FileNotFoundError(pending_source)
+        if pending_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {pending_target}")
+        pending_record = read_json(pending_source)
+        pending_request_id = construction_pending_sidecar_request(
+            pending_record, read_json(driver_source), manifest)
+        pending_source_sha256 = sha256(pending_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -497,6 +553,23 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "ordinary_seed_rebind_receipt_sha256": sha256(rebind_receipt),
             "ordinary_no_launch_preflight": "passed",
         })
+    if pending_request_id is not None:
+        if construction_pending_sidecar_request(
+            pending_record, read_json(driver_target), manifest
+        ) != pending_request_id:
+            raise RuntimeError("prepared driver no longer matches construction pending sidecar")
+        if pending_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {pending_target}")
+        shutil.copy2(pending_source, pending_target)
+        make_derived_state_owner_writable(pending_target)
+        if sha256(pending_target) != pending_source_sha256:
+            raise RuntimeError("prepared construction pending sidecar hash mismatch")
+        preparation["construction_pending_sidecar"] = {
+            "status": "paired_no_launch",
+            "path": str(pending_target),
+            "sha256": pending_source_sha256,
+            "action_request_id": pending_request_id,
+        }
     print(json.dumps(preparation))
     return 0
 
