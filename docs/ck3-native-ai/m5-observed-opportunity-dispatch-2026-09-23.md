@@ -147,12 +147,13 @@ gift focused fixture is a dispatcher contract test, not a realizable live
 frame.  Active-war continuation remains a separate read-only MCP dependency
 and cannot be spliced into this producer.
 
-Before either query, both durable formal ledgers must have no pending action;
-a construction already consumed in the current episode also blocks a new
-building proposal under the existing one-construction-per-episode formal
-contract, but it does not block an independently ready faction gift.  A future
-multi-construction policy must extend that formal ledger contract first; this
-producer does not infer permission from a fresh native candidate.  The
+Before either query, both durable formal ledgers must have no pending action.
+After the 2026-09-26 NW-ECON continuation, an applied construction receipt
+blocks a new building proposal only until the formal route has consumed it and
+the same process reaches a later game day and native revision. A cold process
+must recheck the earlier material receipt first. This producer follows those
+conditions before it asks for another native candidate; a blocked building
+does not suppress an independently ready faction gift. The
 producer verifies the full player, native revision, public revision, date,
 snapshot and episode binding plus player gold before, between and after the
 reads,
@@ -183,6 +184,20 @@ unchanged.  With it present, the existing collector runs once and still
 returns `selected_step=null` and `formal_action_ready=false`.  Static tests and
 the opt-in do not establish a live joint choice, typed consumption, next-turn
 use or recovery; G2-M5 remains `not_started` until those separate gates pass.
+
+### 2026-09-26 NW-JOINT source continuation
+
+At baseline `c0c7c52`, the formal construction path could reassess a later
+legal building, but this peacetime M5 producer still omitted every building
+after the first `applied` receipt in an episode. The source fix admits a later
+same-frame, native-budgeted building again after the verified receipt and a
+later game day; the focused fixture includes an independent faction-empty
+frame and observes the existing dispatcher select the building. This removes
+one proposal omission in the opt-in analytic path. It is **source/fixture
+evidence only**: the source still lacks construction time and material income
+or building-effect benefit, and the dispatcher remains query-only. A formal
+M5 consumer, independent postcondition, next-turn use and cold recovery still
+require their own live evidence before M5 status can change.
 
 ## Focused fixture boundary and next live input
 

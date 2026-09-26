@@ -389,7 +389,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertEqual(list(sources["domains"]), ["diplomacy"])
         self.assertEqual(
             sources["producer"]["construction_status"],
-            "already_consumed_in_episode",
+            "prior_receipt_not_released",
         )
         result = collect_m5_formal_proposals(
             snapshot=driver.take_snapshot(), sources=sources,
@@ -398,6 +398,63 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             result["dispatch"]["selected_candidate_id"],
             "diplomacy:faction-gift:801:41003",
         )
+
+    def test_later_day_verified_building_enters_joint_shortlist(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        (self.state_dir / "construction-formal-pending-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": None,
+                "applied": {
+                    "status": "applied",
+                    "postcondition_verified": True,
+                    "episode_run_id": _FRAME["episode_run_id"],
+                    "actor_character_id": _FRAME["played_character_id"],
+                    "post_bridge_pid": 123,
+                    "post_bridge_creation_date": "t1",
+                    "post_native_revision": _FRAME["native_revision"] - 1,
+                    "post_date_raw": _FRAME["date_raw"] - 24,
+                },
+            }),
+            encoding="utf-8",
+        )
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+        )
+        with mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "construction_process_identity",
+            return_value=(123, "t1"),
+        ) as process, mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+            return_value=_construction(),
+        ) as construction:
+            sources = query_m5_peacetime_proposal_sources_v1(
+                driver,
+                snapshot=driver.take_snapshot(),
+                history=_history(count=0),
+                baseline_plan={
+                    "policy": "one-life-turn-v1",
+                    "selected_step": "life-advance",
+                },
+                expected_revision=_FRAME["revision"],
+            )
+        process.assert_called_once_with(driver)
+        construction.assert_called_once_with(
+            driver, expected_revision=_FRAME["revision"],
+        )
+        self.assertEqual(list(sources["domains"]), ["building"])
+        self.assertEqual(sources["producer"]["construction_status"], "selected")
+        result = collect_m5_formal_proposals(
+            snapshot=driver.take_snapshot(), sources=sources,
+        )
+        self.assertEqual(
+            result["dispatch"]["selected_candidate_id"],
+            "building:501:701:1",
+        )
+        self.assertIsNone(result["selected_step"])
+        self.assertFalse(result["formal_action_ready"])
 
     def test_active_war_or_player_army_is_out_of_scope(self) -> None:
         for field, row in (
