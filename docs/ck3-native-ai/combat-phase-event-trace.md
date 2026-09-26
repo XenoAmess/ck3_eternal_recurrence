@@ -1,5 +1,49 @@
 # ongoing combat phase-event trace v1
 
+## 2026-09-26 第 5 日致残分支与基础权重反例
+
+独立离线 attempt `episode01-day05-wound-growth-attempt-039` 从源日第 5 日原版存档
+`D978D75A2212604CFDD9BF7FBDEF3424E85E39C5092D7245D04590694017FA01`
+恢复；第 6 日后存档 SHA-256 为
+`9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A`。
+七边界原始响应 SHA-256
+`EC61C0FD308E09B95FED5F7D9AB0BEFA01054DD87ECD45A4D9897BEBBFC2DA14`，
+状态 `bounded_trace_available`、失败标志 0，受管 CK3 进程已正常清理。本次同日新增两条战报：
+side0 角色 `47029` 被 `33435` 击伤；side1 角色 `34333` 被 `47032` 致残。
+这与旧轨迹第 5 日角色 `36303/34867` 的事件**不是同一次随机路径**。
+
+本次致残事件载入索引 10 的 56 次嵌套 effect 调用中，三个 `CRandomListEffect`
+均由实际执行的 `CRandomListEntryEffect` 指针在暂停帧与原生列表指针配对，选中来源顺序
+`0/0/1`。列表及静态权重分别是原版 `00_commander_effects.txt:20–40` 的
+成长 `60/30/10`（第 0 项不加勇武）、`20_health_effects.txt:1227–1267` 的
+致残 `4/2/4/4`（第 0 项断腿并加伤）、同文件 `2125–2233` 的
+安全治疗 `10/50`（第 1 项失败并延后触发治疗事件）。[只读投影报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_maim_replay_v1.json)
+SHA-256 `1F15160B01F6BED74A19CC00B2B15DA81F58D187752A02DF0D3FD2BFF5D9B23F`，
+[复算工具](../../ck3_autonomous_player/tools/project_native_knight_maim_replay.py)逐个验证
+精确 EXE、七边界响应、对象内存原始 bytes、两个不可变存档、Rakaly 和脚本 SHA。
+错误地从另一历史轨迹取来的首次 `d05-melted.ck3` 和
+`melted-snapshots.json` 仍在 run 内保留，**不作本结论输入**；报告仅使用本 run 的
+`xar_episode_seed.ck3` 与其 `d05-replay-source-melted.ck3`。
+
+同源前后存档直接显示：致残目标 `34333` 从无伤、无致残 trait 变成
+`one_legged + wounded_1`，仍存活；对手 `47032` 的威望货币 `300→450`
+（+150）、基础勇武仍为 10。其成长列表确实选中第 0 项，故**本次没有加基础勇武**。
+治疗失败分支只规定延后事件，不能在当前保存点冒称治疗已完成。另一条受伤战报目标
+`47029` 在源日已为 `wounded_1`，后存档仍为 `wounded_1`，角色核心块 SHA 也完全相同；
+目前只将它记作“日志与本次存档可见伤级未形成增量”的**待解释边界**，不臆测写回原因。
+
+更重要的是致残列表的静态基础权重不能复算这次分支：该列表局部状态
+`counter=4061646098→4061646099` 推出 `draw31=1131396744`；
+若径用 `4/2/4/4`，原生正权重累计阈值算法会选**索引 2**，而实际子节点指针、
+断腿 trait 都确认**索引 0**。这构成对“直接拿脚本基础权重算 effect 列表”的实机反例。
+精确 EXE 反汇编显示 `CRandomListEffect` 的 `0x2F08850` 在 `bd=1`
+路径先由 `0x2F08930` 计算运行时权重；本节点 `bc=0`，随后由
+`0x2F08780` 调用加权选择器 `0x3BB6DD0`。`bc=1` 时才由
+`0x2F08690` 走不放回选择。三个节点的 `flags_bc_bd=[0,1]`
+与该路径相符。**选择器入口的调整后数组尚未捕获**，不能用本次
+`draw31` 和静态数组声称已经证明实际概率。此前第 26 日成长列表的
+`40/30/15` 也仍是条件推算；其实际第 0 项由直接子节点证明，不依赖该概率算式。
+
 ## 2026-09-26 第 26 日成长随机列表的实际分支与抽签
 
 第二次独立离线回放 `episode01-day26-random-list-type-attempt-036` 从相同不可变第 26 日原版存档恢复；
