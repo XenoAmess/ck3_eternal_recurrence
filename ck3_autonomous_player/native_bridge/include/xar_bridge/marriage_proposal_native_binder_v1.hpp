@@ -193,6 +193,14 @@ ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
     std::uint32_t candidate_character_id,
     MarriageProposalBilateralRelationshipV1 &output) noexcept;
 
+// Exact-build, read-only two-direction alliance state for a bound CharacterID
+// pair. A failed read never means that the pair is not allied.
+MarriageProposalNativeReadbackResultV1
+ReadMarriageProposalAlliancePairFromNativeBinderV1(
+    MarriageProposalNativeBinderStateV1 &binder,
+    std::uint32_t first_character_id, std::uint32_t second_character_id,
+    bool &first_has_second, bool &second_has_first) noexcept;
+
 MarriageProposalNativeReadbackResultV1
 ReadMarriageProposalRelationshipObservationFromNativeBinderV1(
     MarriageProposalNativeBinderStateV1 &binder,
