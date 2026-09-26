@@ -39,9 +39,12 @@ plain read-only views for:
 - authoritative configured resource costs, affordability, and cooldown;
 - `shown` and `can_start` final values.
 
-`CanPlanActivity` is requested separately through the exact slot-25 entry point
-and includes copied failure display key/text when false. A true result represents
-failure display fields as typed `unknown/not_applicable`; missing collectors,
+`CanPlanActivity` is requested separately through the exact slot-25 entry point.
+A false result with native display text and no proven stable key copies the text
+and reports `failure_display_key` as typed
+`unknown/native_stable_key_unresolved`; a proven key, if supplied, is copied
+as known. A true result represents failure display fields as typed
+`unknown/not_applicable`; missing collectors,
 bad strings, oversized rows, or failed native evaluation fail the whole capture
 instead of returning a field set made only of unknown values. UI predicted cost
 is absent from this contract.

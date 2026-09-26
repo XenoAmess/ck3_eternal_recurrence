@@ -47,19 +47,26 @@ fifth argument is null, the final evaluator cannot populate display text.
 
 ## Remaining private reader boundary
 
-The current source adapter requires both a nonempty
-`failure_display_key` **and** `failure_display_text` for every false result.
-The call chain above proves only the native byte-string text output; it
-does not expose a separately copied stable localization key or prove that every
-false path returns nonempty text. Treating the text as a key, deriving a key
-from English output, or forcing a synthetic key would make the contract false.
+The private binder and source adapter now accept a false result with a
+nonempty copied `failure_display_text` and an absent `failure_display_key`.
+The observer represents the absent key as typed
+`unknown/native_stable_key_unresolved`, while preserving the text as known.
+This needs no schema change because the observer's typed fields already
+represent that combination. A partially populated key reference or empty
+false-path text still fails the capture. The call chain above proves only the
+native byte-string text output; it does not expose a separately copied stable
+localization key or prove that every false path returns nonempty text. Treating
+the text as a key, deriving a key from English output, or forcing a synthetic
+key would make the contract false.
 
 The next narrow implementation is an exact-build, application-main paused
 probe that initializes this caller-owned string, invokes slot 25 once on a
 freshly resolved `activity_feast` HostView, copies the boolean and optional
 text before the native destructor, and records empty-text false paths as such.
-The source adapter must then carry **typed missing key/text** honestly or a
-separately proven key source before it can consume this probe. Complete native
+The source adapter can now carry a typed missing key with known text. If the
+probe finds an empty false-path text, the next narrow change must first trace
+that native path and give the text its own typed missing reason; no empty text
+is advertised as a known display. Complete native
 locations, configuration, authoritative cost, shown/can-start, and the private
 application-main invocation are still required by the existing P0 snapshot
 contract. No CK3 instance was launched for this research.

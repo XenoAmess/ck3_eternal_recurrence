@@ -315,15 +315,25 @@ ReadOneSample(ActivityPlanningSourceAdapterStateV1 &state,
     SetNotApplicable(output.failure_display_key);
     SetNotApplicable(output.failure_display_text);
   } else {
-    output.failure_display_key.state = ActivityPlanningFieldStateV1::known;
-    output.failure_display_key.unknown_reason =
-        ActivityPlanningUnknownReasonV1::none;
+    if (can_plan.failure_display_key.data == 0 &&
+        can_plan.failure_display_key.size == 0) {
+      output.failure_display_key = {};
+      output.failure_display_key.state = ActivityPlanningFieldStateV1::unknown;
+      output.failure_display_key.unknown_reason =
+          ActivityPlanningUnknownReasonV1::native_stable_key_unresolved;
+    } else {
+      output.failure_display_key.state = ActivityPlanningFieldStateV1::known;
+      output.failure_display_key.unknown_reason =
+          ActivityPlanningUnknownReasonV1::none;
+      if (!ReadText(environment, can_plan.failure_display_key,
+                    output.failure_display_key.value)) {
+        return ActivityPlanningSourceAdapterFailureV1::source_text_unavailable;
+      }
+    }
     output.failure_display_text.state = ActivityPlanningFieldStateV1::known;
     output.failure_display_text.unknown_reason =
         ActivityPlanningUnknownReasonV1::none;
-    if (!ReadText(environment, can_plan.failure_display_key,
-                  output.failure_display_key.value) ||
-        !ReadText(environment, can_plan.failure_display_text,
+    if (!ReadText(environment, can_plan.failure_display_text,
                   output.failure_display_text.value)) {
       return ActivityPlanningSourceAdapterFailureV1::source_text_unavailable;
     }
