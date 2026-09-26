@@ -1,0 +1,109 @@
+{
+  "schema": "ck3.native_day05_runtime_random_list_weights.v1",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "bridge_dll_sha256": "03233A863F68D31FF123037A711CC22D7C489612E5C212145FB28B0650614F6B",
+  "source_save_sha256": "695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885",
+  "raw_response_sha256": {
+    "v3": "45F90F25BD13934083B53C7F83603DCEA8B699633EE77403244AA00C1380A964",
+    "begin": "019D783A6F43E1FD54600743FD55100AF7223E64C0FACF4F61040FD80E7C621A",
+    "finish": "069584BF9134BA8949D5AB47ED36C925ADFD774DF10C5DA0055B1703BFB27AFF",
+    "session_result": "EE1BE812AC3969F8969E50DA6FBEBB0FC133854536951CADBA5006199B233ED2"
+  },
+  "capture_status": "bounded_trace_available",
+  "capture_failure_flags": 0,
+  "combat_id": 16777218,
+  "source_date_raw": 53146344,
+  "next_date_raw": 53146368,
+  "choices": [
+    {
+      "call_index": 8,
+      "effect": "knight_increase_prowess_chance_effect",
+      "side_index": 1,
+      "native_event_load_index": 10,
+      "effect_node_identity_token": "process-local-0x2782A5C1AC0",
+      "entry_node_identity_tokens": [
+        "process-local-0x2783CAB9760",
+        "process-local-0x2783CABA660",
+        "process-local-0x2783CABA840"
+      ],
+      "selected_entry_identity_token": "process-local-0x2783CAB9760",
+      "weights_native_int32": [
+        54,
+        30,
+        10
+      ],
+      "weights_bytes_hex": "360000001E0000000A000000",
+      "positive_weight_total": 94,
+      "child_counter_before": 1945981592,
+      "selection_draw31": 969825991,
+      "threshold": 42,
+      "selected_source_order_index": 0,
+      "child_counter_after": 1945981594
+    },
+    {
+      "call_index": 15,
+      "effect": "maimed_in_battle_effect",
+      "side_index": 1,
+      "native_event_load_index": 10,
+      "effect_node_identity_token": "process-local-0x2782A6E09A0",
+      "entry_node_identity_tokens": [
+        "process-local-0x27A50E9EF30",
+        "process-local-0x27A50E99170",
+        "process-local-0x27A50E9A610",
+        "process-local-0x27A50E9BC90"
+      ],
+      "selected_entry_identity_token": "process-local-0x27A50E9EF30",
+      "weights_native_int32": [
+        4,
+        2,
+        4,
+        4
+      ],
+      "weights_bytes_hex": "04000000020000000400000004000000",
+      "positive_weight_total": 14,
+      "child_counter_before": 3878703667,
+      "selection_draw31": 518689972,
+      "threshold": 3,
+      "selected_source_order_index": 0,
+      "child_counter_after": 3878703669
+    },
+    {
+      "call_index": 49,
+      "effect": "safe_wound_treatment_effect",
+      "side_index": 1,
+      "native_event_load_index": 10,
+      "effect_node_identity_token": "process-local-0x2782A6DADD0",
+      "entry_node_identity_tokens": [
+        "process-local-0x27A5903B510",
+        "process-local-0x27A59040D30"
+      ],
+      "selected_entry_identity_token": "process-local-0x27A59040D30",
+      "weights_native_int32": [
+        40,
+        50
+      ],
+      "weights_bytes_hex": "2800000032000000",
+      "positive_weight_total": 90,
+      "child_counter_before": 1844551402,
+      "selection_draw31": 1422813481,
+      "threshold": 59,
+      "selected_source_order_index": 1,
+      "child_counter_after": 1844551404
+    }
+  ],
+  "simulator_growth_weights_raw": [
+    5400000,
+    3000000,
+    1000000
+  ],
+  "simulator_maim_weights_raw": [
+    400000,
+    200000,
+    400000,
+    400000
+  ],
+  "simulator_growth_and_maim_equal_runtime_weights": true,
+  "safe_wound_treatment_model_status": "not_in_phase_event_evaluator_v3_context",
+  "day26_growth_runtime_weights_observed": false,
+  "full_effect_feedback_or_probability_ready": false
+}

@@ -191,6 +191,49 @@ SHA-256 `7CE19775C2AD98D50C132D0D651E4E8086B764E80B9FE9E0C8E4C9356A1B2156`，
 `4/2/4/4` 和第 26 日 `40/30/15` 均只是可解释分支的条件投影；
 **两次回放的实际运行时权重尚未直接观察**，也不能仅凭选中项推定完整条件概率。
 
+### 2026-09-27 第 5 日随机列表：选择器入口实采勘误
+
+[原版受管实机，私有只读钩子] 独立 attempt
+`D:/workspace/ck3_native_war_ai_promo_work/episode01-day05-runtime-weight-attempt-066/`
+从不可变第 5 日源档 SHA-256
+`695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885`
+恢复 CombatID `16777218`，在 `53146344 → 53146368` 的一次原生推进中，以默认关闭、私有 begin
+显式开启的 `capture_runtime_random_list_weights=true` 钩子读取 `0x2F08780` 入参。EXE SHA-256 仍为
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，
+DLL SHA-256 为 `03233A863F68D31FF123037A711CC22D7C489612E5C212145FB28B0650614F6B`。
+`005-begin.json` 原始响应 SHA-256 为
+`019D783A6F43E1FD54600743FD55100AF7223E64C0FACF4F61040FD80E7C621A`，
+`status=armed`；`007-finish.json` 原始响应 SHA-256 为
+`069584BF9134BA8949D5AB47ED36C925ADFD774DF10C5DA0055B1703BFB27AFF`，
+`bounded_trace_available`、`failure_flags=0`、权重采集状态 `captured` 且恰有三条。
+前段“尚未实机采集”只描述该次静态定位完成时的历史状态，现对**本次第 5 日**由下表替代；
+第 26 日成长列表的 `40/30/15` 仍未在选择器入口实采。
+
+| 原生 call／脚本列表 | 选择器入口 `int32` 权重（来源顺序） | 子作用域 counter 前→后／实际 draw31 | 正权重总和、阈值、执行条目 |
+| --- | --- | --- | --- |
+| 8／`knight_increase_prowess_chance_effect` | `[54,30,10]`，原始 bytes `360000001E0000000A000000` | `1945981592→1945981594`／`969825991` | `94`、`42`、索引 `0`：不增长勇武 |
+| 15／`maimed_in_battle_effect` | `[4,2,4,4]`，原始 bytes `04000000020000000400000004000000` | `3878703667→3878703669`／`518689972` | `14`、`3`、索引 `0`：断腿并增加伤级 |
+| 49／`safe_wound_treatment_effect` | `[40,50]`，原始 bytes `2800000032000000` | `1844551402→1844551404`／`1422813481` | `90`、`59`、索引 `1`：治疗失败分支 |
+
+三条均绑定 side `1`、原生事件载入索引 `10`，并逐条核对 `CRandomListEffect`
+节点身份、来源顺序条目指针、实际执行的 `CRandomListEntryEffect` 子节点与子计数。
+阈值按 `floor(draw31 × 正权重和 / 2^31)` 复算；三条均与执行子节点一致。
+[只读可复跑投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_day05_runtime_weights_v1.json)
+SHA-256 `CC792DF04804FD160C83AFCDFF2F2284C02791B0DE79492E49AAFAE99E73593E`
+由[投影器](../../ck3_autonomous_player/tools/project_native_day05_runtime_weights.py)绑定原始响应、
+同帧 v3、EXE、DLL、源档和进程清理回执；`session-result.json` SHA-256
+`EE1BE812AC3969F8969E50DA6FBEBB0FC133854536951CADBA5006199B233ED2`，
+`cleanup_proven=true`、最终 CK3 进程数 `0`。
+
+智能体当前 `phase_event_evaluator.py` 用同帧 v3 的骑士 `47032`
+`learning_raw=300000`（学习 `3`）、无 `warfare_legacy_3`、无剑术权重加项，得到
+`60−2×3=54`，模型 Q100000 权重 `[5400000,3000000,1000000]` 恰对应实机
+`[54,30,10]`；致残目标 `34333` 四种伤残前置标记均为 false，模型
+`[400000,200000,400000,400000]` 恰对应 `[4,2,4,4]`。这两条**已覆盖规则**未发现算法偏差。
+第三条 `[40,50]` 是同一事件后的安全治疗脚本列表，当前 phase-event v3
+上下文没有医师条件，模拟器也没有该治疗列表转移；本次只证明入口权重、分支身份和抽签，
+不把 `10→40` 的具体条件组合或治疗反馈伪称为已闭合。完整战斗概率与所有事件写回仍保持原有未闭合门禁。
+
 ### 事件后的下一帧智能体输入
 
 又从本次回放保存的第 27 日不可变存档（SHA-256
