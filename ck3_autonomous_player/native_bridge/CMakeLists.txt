@@ -48,6 +48,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1
+  "Install the private passive exact-build AI winner move-dispatch observer"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1
   "Install the existing exact-build startup containment chain"
   OFF
@@ -686,6 +692,12 @@ if(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
     XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/ai_terminal_reentry_dispatch_observer_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1=1)
+endif()
 if(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
@@ -1209,6 +1221,29 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  find_package(Python3 COMPONENTS Interpreter REQUIRED)
+  add_executable(xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test
+    src/ai_terminal_reentry_dispatch_observer_v1.cpp
+    src/battle_terminal_journal_v1.cpp
+    src/ai_terminal_reentry_dispatch_observer_v1_test.cpp)
+  target_include_directories(
+    xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_ai_terminal_reentry_dispatch_observer_v1
+    COMMAND xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test)
+  add_test(
+    NAME xar_ck3_ai_terminal_reentry_dispatch_observer_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_ai_terminal_reentry_dispatch_observer_v1_source_contract.py
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}")
   add_executable(xar_ck3_minor_religious_war_defenders_v1_test
     src/minor_religious_war_defenders_v1.cpp
     src/minor_religious_war_defenders_v1_test.cpp)

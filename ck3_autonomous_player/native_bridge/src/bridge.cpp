@@ -2,6 +2,9 @@
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+#include "xar_bridge/ai_terminal_reentry_dispatch_observer_v1.hpp"
+#endif
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
@@ -293,6 +296,10 @@ static xar::ck3_11906::CoatOfArmsDesignerProbeHookStateV1
     g_coat_of_arms_designer_probe_hook_v1{};
 static xar::ck3_11906::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_v1{};
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+static xar::ck3_11906::AiReentryDispatchStateV1
+    g_ai_terminal_reentry_dispatch_v1{};
+#endif
 static xar::ck3_11906::TacticalDailySentinelDetourStateV1
     g_tactical_daily_sentinel_v1{};
 static xar::bridge::StartupParticle2NullGuardV1State
@@ -16616,6 +16623,101 @@ void RunConnectedSession(
               }
             }
           }
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+        } else if (step ==
+                   "query-ai-terminal-reentry-dispatch-v1-16777231-16777218") {
+          xar::game::Snapshot current_snapshot{};
+          if (!previous_snapshot.has_value() || state_revision == 0 ||
+              !xar::game::ReadSnapshot(game, current_snapshot) ||
+              current_snapshot != previous_snapshot.value() ||
+              !current_snapshot.paused) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "AI reentry observer requires a stable paused frame"));
+          } else {
+          auto observed = xar::ck3_11906::
+              ReadAiReentryDispatchObserverV1(
+                  g_ai_terminal_reentry_dispatch_v1);
+          const auto terminal = xar::ck3_11906::
+              LookupBattleTerminalJournalV1(
+                  xar::ck3_11906::kAiReentryCombatIdV1, 0);
+          for (std::uint32_t index = 0; index < observed.count; ++index) {
+            xar::ck3_11906::CorrelateAiReentryTerminalAfterPauseV1(
+                observed.records[index], terminal);
+          }
+          std::string response =
+              "{\"type\":\"command_result\",\"protocol_version\":1,"
+              "\"request_id\":\"";
+          response += request_id;
+          response += "\",\"ok\":true,\"result\":{\"step\":\"";
+          response += step;
+          response += "\",\"accepted\":true,\"schema_version\":1,"
+                      "\"observer\":{\"installed\":";
+          response += observed.installed ? "true" : "false";
+          response += ",\"failure_flags\":" +
+                      std::to_string(observed.failure_flags);
+          response += ",\"builder_matching_calls\":" +
+                      std::to_string(observed.builder_matching_calls);
+          response += ",\"submit_matching_calls\":" +
+                      std::to_string(observed.submit_matching_calls);
+          response += ",\"overflow_count\":" +
+                      std::to_string(observed.overflow_count);
+          response += ",\"records\":[";
+          for (std::uint32_t index = 0; index < observed.count; ++index) {
+            if (index != 0) response += ',';
+            const auto &row = observed.records[index];
+            response += "{\"sequence\":" + std::to_string(row.sequence);
+            response += ",\"thread_id\":" +
+                        std::to_string(row.thread_id);
+            response += ",\"cunit_id\":" + std::to_string(row.cunit_id);
+            response += ",\"builder_target_province_id\":" +
+                        std::to_string(row.builder_target_province_id);
+            response += ",\"command_target_province_id\":" +
+                        std::to_string(row.command_target_province_id);
+            response += ",\"builder_return_rva\":" +
+                        std::to_string(row.builder_return -
+                                       g_ai_terminal_reentry_dispatch_v1.module_base);
+            response += ",\"submit_return_rva\":" +
+                        std::to_string(row.submit_return -
+                                       g_ai_terminal_reentry_dispatch_v1.module_base);
+            response += ",\"channel_flags\":" +
+                        std::to_string(row.channel_flags);
+            response += ",\"observed_date_raw\":" +
+                        std::to_string(row.observed_date_raw);
+            response += ",\"terminal_sequence_cutoff\":" +
+                        std::to_string(row.terminal_sequence_cutoff);
+            response += ",\"command_kind\":" +
+                        std::to_string(row.command_kind);
+            response += ",\"move_mode_raw\":" +
+                        std::to_string(row.move_mode_raw);
+            response += ",\"route_kind\":" +
+                        std::to_string(row.route_kind);
+            response += ",\"direct_target\":" +
+                        std::to_string(row.direct_target);
+            response += ",\"command_header_valid\":";
+            response += row.command_header_valid ? "true" : "false";
+            response += ",\"queue_accepted\":";
+            response += row.queue_accepted ? "true" : "false";
+            response += ",\"terminal_status\":" + std::to_string(
+                static_cast<std::uint32_t>(row.terminal_status));
+            response += ",\"terminal_sequence\":" +
+                        std::to_string(row.terminal_sequence);
+            response += ",\"terminal_date_raw\":" +
+                        std::to_string(row.terminal_date_raw);
+            response += ",\"terminal_capture_failure_flags\":" +
+                        std::to_string(row.terminal_capture_failure_flags);
+            response += ",\"terminal_normal_result\":";
+            response += row.terminal_normal_result ? "true" : "false";
+            response += ",\"terminal_before_submit\":";
+            response += row.terminal_before_submit ? "true" : "false";
+            response += ",\"cunit_was_terminal_winner\":";
+            response += row.cunit_was_terminal_winner ? "true" : "false";
+            response += '}';
+          }
+          response += "]}}}";
+          connected = xar::bridge::WriteFrame(pipe, response);
+          }
+#endif
         } else if (step.starts_with(
                        xar::ck3_11906::
                            kBattleTerminalTransitionV1StepPrefix)) {
@@ -17777,6 +17879,19 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
           battle_terminal_environment)) {
     return FALSE;
   }
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+  xar::ck3_11906::AiReentryDispatchEnvironmentV1
+      ai_reentry_environment{};
+  ai_reentry_environment.exact_build_admitted = true;
+  ai_reentry_environment.primary_thread_suspended_proven = true;
+  ai_reentry_environment.module_base = battle_terminal_environment.module_base;
+  ai_reentry_environment.game_state_slot = exact_bindings.game_state_slot;
+  if (!xar::ck3_11906::InstallAiReentryDispatchObserverV1(
+          g_ai_terminal_reentry_dispatch_v1,
+          ai_reentry_environment)) {
+    return FALSE;
+  }
+#endif
   // PrepareStartup owns the only admissible quiescent window for the marriage
   // resolution journal. Candidate and bilateral receipt reads attach later,
   // after WorkerMain has installed the fixed application-main mailbox.

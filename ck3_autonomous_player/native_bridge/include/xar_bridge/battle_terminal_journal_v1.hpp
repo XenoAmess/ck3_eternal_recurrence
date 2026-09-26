@@ -195,6 +195,10 @@ bool InstallBattleTerminalJournalV1(
 
 bool BattleTerminalJournalInstalledV1() noexcept;
 
+// Atomic scalar only; passive game-thread hooks must not scan non-atomic ring
+// record payloads while the game is running.
+std::uint64_t BattleTerminalJournalLatestSequenceV1() noexcept;
+
 BattleTerminalJournalLookupV1 LookupBattleTerminalJournalV1(
     std::int32_t prior_combat_id,
     std::uint64_t after_terminal_sequence) noexcept;

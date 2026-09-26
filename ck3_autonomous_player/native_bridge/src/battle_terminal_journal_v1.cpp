@@ -1002,6 +1002,10 @@ bool BattleTerminalJournalInstalledV1() noexcept {
          state->installed.load(std::memory_order_acquire) != 0;
 }
 
+std::uint64_t BattleTerminalJournalLatestSequenceV1() noexcept {
+  return g_terminal_ring.latest_sequence.load(std::memory_order_acquire);
+}
+
 extern "C" void __fastcall XarBattleTerminalHookV1(
     void *combat, bool suppress_normal_result_envelopes) noexcept {
   (void)CaptureBattleTerminalJournalEntryV1(
