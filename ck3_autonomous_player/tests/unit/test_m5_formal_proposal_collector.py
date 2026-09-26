@@ -149,13 +149,15 @@ def _sources(
 class _ServiceDriver:
     def __init__(
         self, *, enabled: bool, sources: dict[str, object] | None = None,
+        snapshot: dict[str, object] | None = None,
     ) -> None:
         self.allow_private_m5_joint_collector = enabled
         self._sources = deepcopy(sources)
+        self._snapshot = deepcopy(snapshot) if snapshot is not None else _snapshot()
         self.source_reads = 0
 
     def take_snapshot(self) -> dict[str, object]:
-        return _snapshot()
+        return deepcopy(self._snapshot)
 
     def capabilities(self) -> dict[str, object]:
         return {
@@ -315,6 +317,126 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         self.assertEqual(planned["plan"]["selected_step"],
                          "private-submit-player-lifestyle-perk-v1")
         self.assertEqual(driver.source_reads, 0)
+
+    def test_c8_active_war_skips_peace_only_m5_and_keeps_formal_turn(self) -> None:
+        driver = _ServiceDriver(enabled=True)
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_family_marriage_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "native_war_progress",
+                    "selected_step": "life-advance"}
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_construction_private",
+            side_effect=lambda driver, planned, snapshot, history, steps, **kwargs:
+                {**planned, "plan": {**planned["plan"],
+                                     "construction_receipt_consumed": {"status": "applied"}}},
+        ) as construction, mock.patch(
+            "xar_autoplayer.bridge.service.plan_family_marriage_private",
+            side_effect=lambda driver, planned, snapshot, **kwargs: planned,
+        ) as family):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+        self.assertEqual(planned["plan"]["m5_joint_status"], "ineligible_active_war")
+        self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
+        self.assertEqual(planned["plan"]["construction_receipt_consumed"],
+                         {"status": "applied"})
+        self.assertEqual(driver.source_reads, 0)
+        construction.assert_called_once()
+        family.assert_called_once()
+
+    def test_peace_m5_receipt_path_still_collects_family_diagnostic(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(enabled=True, snapshot=peace)
+        driver.allow_private_family_marriage_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        def family_no_positive(driver, planned, snapshot, **kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "family_marriage_status": "no_positive_observed_marriage_opportunity",
+                "family_marriage_private_diagnostic": {"rows": []}}}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_m5_formal_query_only",
+            side_effect=lambda driver, planned, **kwargs: planned,
+        ) as joint, mock.patch(
+            "xar_autoplayer.bridge.service.plan_family_marriage_private",
+            side_effect=family_no_positive,
+        ) as family):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+        self.assertEqual(planned["plan"]["family_marriage_status"],
+                         "no_positive_observed_marriage_opportunity")
+        joint.assert_called_once()
+        family.assert_called_once()
+
+    def test_peace_m5_observation_red_remains_visible_after_family_diagnostic(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(enabled=True, snapshot=peace)
+        driver.allow_private_family_marriage_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        def joint_red(driver, planned, **kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "phase": "m5_joint_query_only_red", "selected_step": None,
+                "reason": "M5 real observation missing"}}
+
+        def family_no_positive(driver, planned, snapshot, **kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "family_marriage_status": "no_positive_observed_marriage_opportunity"}}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_m5_formal_query_only",
+            side_effect=joint_red,
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_family_marriage_private",
+            side_effect=family_no_positive,
+        )):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertIsNone(planned["plan"]["selected_step"])
+        self.assertEqual(planned["plan"]["phase"], "m5_joint_query_only_red")
+        self.assertEqual(planned["plan"]["reason"], "M5 real observation missing")
+        self.assertEqual(planned["plan"]["m5_joint_red_reason"],
+                         "M5 real observation missing")
+        self.assertEqual(planned["plan"]["family_marriage_status"],
+                         "no_positive_observed_marriage_opportunity")
+
+    def test_unknown_war_scene_does_not_claim_m5_ineligible(self) -> None:
+        unknown = _snapshot()
+        unknown.pop("active_wars")
+        unknown.pop("player_armies")
+        driver = _ServiceDriver(enabled=True, snapshot=unknown)
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_m5_formal_query_only",
+            side_effect=lambda driver, planned, **kwargs: {
+                **planned, "plan": {**planned["plan"],
+                    "phase": "m5_joint_query_only_red", "selected_step": None,
+                    "reason": "M5 scene observation is unavailable"}},
+        ) as joint):
+            planned = GameplayBridgeService(driver).plan_turn()
+        joint.assert_called_once()
+        self.assertIsNone(planned["plan"]["selected_step"])
+        self.assertNotIn("m5_joint_status", planned["plan"])
+        self.assertEqual(planned["plan"]["reason"],
+                         "M5 scene observation is unavailable")
 
 
 if __name__ == "__main__":
