@@ -1,5 +1,15 @@
 # ongoing combat phase-event trace v1
 
+## 2026-09-26 第 26 日骑士击杀者抽签实机闭合
+
+独立离线 attempt-020 从原版同一第 26 日不可变存档（SHA-256 `C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B`）恢复，七边界 `bounded_trace_available`、采集失败标志 0。原生 effect root 再次确认为载入索引 11 `knight_killed`、node hash `3689483501`，局部 counter `2708350930→2708350931`。新增的 `0x33E8D40` 只读钩子**直接记录**该 root 下的骑士选择器：候选数 14、返回索引 8、候选 token `(4,0x8548)`，其中 `0x8548=34120`；其局部 RNG `counter=1117324859→1117324860, salt=0`。[原始回执只读投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_selector_native_parity.json) SHA-256 `954B203B34CA4A8F4ECCBF43579DFA481EC964469921F97C471F6D4BDB7E426B`，复算工具为 [`project_native_knight_selector_receipt.py`](../../ck3_autonomous_player/tools/project_native_knight_selector_receipt.py)，绑定 v3、trace、后存档与源存档 SHA。
+
+原生 v3 的 side source vector 有 19 名骑士；`knight_killed` 分支按勇武门槛过滤后剩 14 名。原生 `0x19F4760` **尾项填洞并重查同一索引**，所以过滤后的索引 8 是 34120；若误用稳定删除，索引 8 会错指 54140。此分支脚本没有候选 `weight`，`0x33E8D40` 走无权重的 `draw31 % candidate_count`。从记录的原生局部 counter/salt 按 exact-build 算法独立得到 `draw31=1,400,813,912`，`1,400,813,912 % 14 = 8`；边界 4→5 新增 `knight_killed_by_enemy` 战报的右侧角色也正是 34120。这里已闭合的是**这一次目标骑士的击杀者选择**，并非所有事件行的随机路径。冻结 AST 把原脚本缺省 weight 规范化为每人权重 1，投影报告因此显示 `positive_total_weighted`；此例 14 个权重全为 1，抽中索引等价，但该标签不能倒写为原版真的走了有权重分支。
+
+[局部效果回放 v4](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_effect_partial_v4.json)（SHA-256 `E8EE07454AC096FB96D236541F4759B592E81A24563E5157EF3174016B5B906D`）把已观测的 selector draw 送入冻结效果树，得到同一击杀者、死亡归因；另从**独立的效果根节点** `counter=2708350930→2708350931, salt=0` 复算出唯一一次 root draw `26,436,929`。将其作为成长抽签候选值送入树，来源顺序权重为 `4,000,000 / 3,000,000 / 1,500,000`，选中 `no_op`，与同日存档中击杀者基础勇武未变化一致。采集器目前只证明效果根节点消耗一枚随机数，没有在 `knight_increase_prowess_chance_effect` 回调本体记录随机状态和返回分支；因此**这是条件吻合，不是成长分支原版闭合**。v1/v2/v3 探索报告保留，不替代 v4；该差别在智能体输入中也必须保留。
+
+同一 attempt-020 的[前后原版存档回流](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json) SHA-256 `752D2257D358159FCA918885A9B16B6909D81FEC835F0FA9205868CE882876CA`，由 [`project_native_knight_kill_writeback.py`](../../ck3_autonomous_player/tools/project_native_knight_kill_writeback.py) 校验 Rakaly、原始及解码存档的 SHA。目标在 fire 边界 5 仍显示存活、有效勇武 4、兵团 65；边界 6 显示 death marker、有效勇武 2、兵团链接清空。前后存档的**基础勇武均为 2**，后存档记 `death_battle/killer=34120` 且不再链接兵团 65；击杀者基础勇武不变，威望货币和累计威望各 +150。故 `4→2` 是原生 core 的有效值刷新，不能记作基础技能 -2。其他深层抽签、完整写集与跨 root/side 回流仍待逐项核验；本证据不把有界策略估计升级为原版校准胜率。以下 2026-09-25 段落保持其当时证据状态。
+
 ## 2026-09-25 第 26 日选中行实机回读
 
 独立 Release 构建的七边界 attempt-017 将原生日程中的事件对象指针在暂停 arm 时与同进程已载入的 13 行表绑定；原生 tick hook 只记录身份，drain 后才序列化为 `native_event_load_index`。目标 `33437`／兵团 `65` 在边界 1–6 的索引均为 `11`，原版 manifest 对应 `knight_killed`。边界 4→5 追加击杀战报，边界 6 观察到死亡与退出；采集失败标志为 0。来源字节与桥接 DLL 见[选中行报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_selected_phase_event_row.json)（SHA-256 `BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D`）。这是该同源回放的事件行身份，不是内部随机抽签或全效果写集证明；整场胜率与智能体 planner 仍关闭。

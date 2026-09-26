@@ -1,0 +1,189 @@
+{
+  "schema": "ck3.native_knight_kill_writeback.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_day": 26,
+  "selector_report_sha256": "954B203B34CA4A8F4ECCBF43579DFA481EC964469921F97C471F6D4BDB7E426B",
+  "rakaly_version": "0.8.19",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "rakaly_command": "melt <immutable.ck3> --unknown-key stringify --format ck3 --out <melted.ck3>",
+  "before_save_receipt_sha256": "0F7BCEA0FE13C95C42D2C826B87A728642432ADB8A2C45F132F5C0F7C99C8003",
+  "after_save_receipt_sha256": "B7AF07E56DC2AD73C3869B1CAB095AEC84E8B134A7F277E7A26A170F465EF4E4",
+  "trace_response_sha256": "D5F0442FF068C4BC78C30622047D2831D3F094A0CF68C0AE2AEB1CC5B0CD2729",
+  "before_native_save_sha256": "B250A65EE6082112E09C0CDC6F4EF39093C5DE0AC571B29F2F1A80F9EE55E68A",
+  "after_native_save_sha256": "50D404CCFCA2BEADB5301FE84252835753FDAA294120972EB95E819AD76F4FB6",
+  "before_melted_save_sha256": "0E3B6EEA8647949F2397E553C9F7DC472A84B7E66037565283AA1002E127F768",
+  "after_melted_save_sha256": "ADDAB8CC3643C8A8E13E418193FFAE4E466A391391D46E97D998B373059299C1",
+  "target_character_id": 33437,
+  "killer_character_id": 34120,
+  "target_at_fire_boundary": {
+    "character_id": 33437,
+    "death_marker_present": false,
+    "martial": 4,
+    "learning": 9,
+    "prowess": 4,
+    "current_regiment_id": 65,
+    "current_regiment_back_reference_matches": true
+  },
+  "target_at_final_boundary": {
+    "character_id": 33437,
+    "death_marker_present": true,
+    "martial": 4,
+    "learning": 9,
+    "prowess": 2,
+    "current_regiment_id": 0,
+    "current_regiment_back_reference_matches": true
+  },
+  "target_before_save": {
+    "character_id": 33437,
+    "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+    "trait_indices": [
+      50,
+      76,
+      54,
+      16,
+      236
+    ],
+    "trait_keys": [
+      "temperate",
+      "callous",
+      "diligent",
+      "education_martial_2",
+      "logistician"
+    ],
+    "base_skill_values": [
+      4,
+      0,
+      4,
+      6,
+      6,
+      2
+    ],
+    "prestige_currency": "300.3456",
+    "prestige_accumulated": "1000.3456",
+    "wounded_rank": 0,
+    "alive_data_present": true,
+    "dead_data_present": false,
+    "death_date": null,
+    "death_reason": null,
+    "killer_character_id": null,
+    "regiment_id": 65,
+    "character_block_sha256": "9550E8E5838E1BABF2F39F7C45F098B9E7612D6F0253B53E4B316BB3ADDA80F1"
+  },
+  "target_after_save": {
+    "character_id": 33437,
+    "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+    "trait_indices": [
+      50,
+      76,
+      54,
+      16,
+      236
+    ],
+    "trait_keys": [
+      "temperate",
+      "callous",
+      "diligent",
+      "education_martial_2",
+      "logistician"
+    ],
+    "base_skill_values": [
+      4,
+      0,
+      4,
+      6,
+      6,
+      2
+    ],
+    "prestige_currency": null,
+    "prestige_accumulated": null,
+    "wounded_rank": 0,
+    "alive_data_present": false,
+    "dead_data_present": true,
+    "death_date": "1066.12.30",
+    "death_reason": "death_battle",
+    "killer_character_id": 34120,
+    "regiment_id": null,
+    "character_block_sha256": "59EAAF0917F2813B6BB6644706D695DA7E6404D8DC584EF51CBB24079C98DE48"
+  },
+  "killer_before_save": {
+    "character_id": 34120,
+    "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+    "trait_indices": [
+      62,
+      69,
+      71,
+      16,
+      248
+    ],
+    "trait_keys": [
+      "honest",
+      "arbitrary",
+      "cynical",
+      "education_martial_2",
+      "rough_terrain_expert"
+    ],
+    "base_skill_values": [
+      7,
+      5,
+      4,
+      6,
+      8,
+      7
+    ],
+    "prestige_currency": "301.0608",
+    "prestige_accumulated": "1001.0608",
+    "wounded_rank": 0,
+    "alive_data_present": true,
+    "dead_data_present": false,
+    "death_date": null,
+    "death_reason": null,
+    "killer_character_id": null,
+    "regiment_id": 115,
+    "character_block_sha256": "43FB24ABA7E73D422397CF2637438578EB8B20534B97B1002EEA8202D0EC4872"
+  },
+  "killer_after_save": {
+    "character_id": 34120,
+    "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+    "trait_indices": [
+      62,
+      69,
+      71,
+      16,
+      248
+    ],
+    "trait_keys": [
+      "honest",
+      "arbitrary",
+      "cynical",
+      "education_martial_2",
+      "rough_terrain_expert"
+    ],
+    "base_skill_values": [
+      7,
+      5,
+      4,
+      6,
+      8,
+      7
+    ],
+    "prestige_currency": "451.0608",
+    "prestige_accumulated": "1151.0608",
+    "wounded_rank": 0,
+    "alive_data_present": true,
+    "dead_data_present": false,
+    "death_date": null,
+    "death_reason": null,
+    "killer_character_id": null,
+    "regiment_id": 115,
+    "character_block_sha256": "B40088F0C47AA722E3455BF6E7666296EF0E57C284DC3B65D0DB35134D35A01D"
+  },
+  "target_base_prowess_change": 0,
+  "target_effective_core_prowess_change": -2,
+  "killer_base_prowess_change": 0,
+  "killer_prestige_currency_delta": "150.0000",
+  "killer_prestige_accumulated_delta": "150.0000",
+  "full_effect_write_set_proven": false,
+  "effect_only_cause_proven": false,
+  "whole_battle_win_probability_available": false
+}

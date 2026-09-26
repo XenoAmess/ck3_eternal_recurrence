@@ -1,0 +1,91 @@
+{
+  "schema": "ck3.native_knight_kill_effect_partial_parity.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_day": 26,
+  "trace_response_sha256": "D5F0442FF068C4BC78C30622047D2831D3F094A0CF68C0AE2AEB1CC5B0CD2729",
+  "v3_response_sha256": "2C24ED7530A5D1F92DADFD02F78E852943E396C9434F1ADEAB4F8102AA425E93",
+  "stock_event_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "native_observed": {
+    "draw_ordinal": 0,
+    "selector_draw31": 1400813912,
+    "candidate_count": 14,
+    "selected_index": 8,
+    "selected_character_id": 34120,
+    "battle_event_right_character_id": 34120
+  },
+  "frozen_ast_replay": {
+    "first_draw_record": {
+      "ordinal": 0,
+      "purpose": "knight_killed.effect_ast.steps[1]:enemy_knight",
+      "random31": 1400813912,
+      "weights_raw_compacted_order": [
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000
+      ],
+      "weights_int32_compacted_order": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "total_int32": 14,
+      "selection_mode": "positive_total_weighted",
+      "terminal_remainder_int32": -1,
+      "selected_index": 8
+    },
+    "selected_character_id": 34120,
+    "root_alive_after": false,
+    "root_killer_character_id_in_transition": 34120,
+    "second_draw_scenario_input": 0,
+    "second_draw_record_scenario_only": {
+      "ordinal": 1,
+      "purpose": "knight_increase_prowess:source_order",
+      "random31": 0,
+      "weights_source_order": [
+        4000000,
+        3000000,
+        1500000
+      ],
+      "selected_index": 0
+    },
+    "growth_transition_scenario_only": {
+      "transition": "knight_increase_prowess_chance",
+      "target_character_id": 34120,
+      "selected_branch": "no_op",
+      "weights_source_order": [
+        4000000,
+        3000000,
+        1500000
+      ],
+      "applied": false
+    }
+  },
+  "first_draw_native_parity": true,
+  "second_draw_native_observed": false,
+  "full_effect_write_set_proven": false,
+  "battle_horizon_feedback_ready": false,
+  "whole_battle_win_probability_available": false
+}

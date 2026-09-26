@@ -14,10 +14,64 @@ import pefile
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_EXE = HERE.parents[2] / "Crusader Kings III" / "binaries" / "ck3.exe"
+DECODE_CHUNK_BYTES = 64 * 1024
+X64_MAX_INSTRUCTION_BYTES = 15
 
 
 def integer(value: str) -> int:
     return int(value, 0)
+
+
+def iter_code_refs(code: bytes, scan_rva_start: int, image_base: int,
+                   targets: set[int], *, direct_only: bool = False):
+    """Yield direct-call candidates and decoded RIP references at bounded RAM.
+
+    A CK3 .text section can be too large for one Capstone allocation.  Decode
+    from the previous instruction boundary, with room for a maximal x64
+    instruction beyond each chunk.  The raw E8/E9 scan remains a candidate
+    scan, not an instruction-boundary proof.
+    """
+    for opcode, kind in ((0xE8, "call"), (0xE9, "jmp ")):
+        position = code.find(bytes((opcode,)))
+        while position >= 0:
+            if position + 5 <= len(code):
+                displacement = struct.unpack_from("<i", code, position + 1)[0]
+                target = scan_rva_start + position + 5 + displacement
+                if target in targets:
+                    yield f"{kind} source=0x{scan_rva_start + position:X} target=0x{target:X}"
+            position = code.find(bytes((opcode,)), position + 1)
+
+    if direct_only:
+        return
+
+    decoder = Cs(CS_ARCH_X86, CS_MODE_64)
+    decoder.detail = True
+    decoder.skipdata = True
+    position = 0
+    while position < len(code):
+        limit = min(len(code), position + DECODE_CHUNK_BYTES)
+        view_end = min(len(code), limit + X64_MAX_INSTRUCTION_BYTES)
+        next_position = position
+        for instruction in decoder.disasm(
+            code[position:view_end], image_base + scan_rva_start + position
+        ):
+            offset = instruction.address - image_base - scan_rva_start
+            if offset >= limit:
+                break
+            next_position = offset + instruction.size
+            if instruction.id == 0:
+                continue
+            source_rva = instruction.address - image_base
+            for operand in instruction.operands:
+                if operand.type != X86_OP_MEM or operand.mem.base != X86_REG_RIP:
+                    continue
+                target = source_rva + instruction.size + operand.mem.disp
+                if target in targets:
+                    yield (f"{instruction.mnemonic:4} source=0x{source_rva:X} "
+                           f"target=0x{target:X}")
+        if next_position <= position:
+            raise RuntimeError("Capstone did not advance inside executable section")
+        position = next_position
 
 
 def main() -> int:
@@ -26,6 +80,8 @@ def main() -> int:
     parser.add_argument("--exe", type=Path, default=DEFAULT_EXE)
     parser.add_argument("--source-rva-start", type=integer)
     parser.add_argument("--source-rva-end", type=integer)
+    parser.add_argument("--direct-only", action="store_true",
+                        help="scan E8/E9 call/jump candidates and absolute pointers without RIP decoding")
     arguments = parser.parse_args()
 
     exe = arguments.exe.resolve()
@@ -49,9 +105,6 @@ def main() -> int:
                 print(f"abs  source=0x{source_rva:X} target=0x{target:X}")
             start = offset + 1
 
-    decoder = Cs(CS_ARCH_X86, CS_MODE_64)
-    decoder.detail = True
-    decoder.skipdata = True
     for section in image.sections:
         if not section.IMAGE_SCN_MEM_EXECUTE:
             continue
@@ -67,29 +120,9 @@ def main() -> int:
         start = section.PointerToRawData + scan_rva_start - section_rva
         end = section.PointerToRawData + scan_rva_end - section_rva
         code = data[start:end]
-        for offset in range(len(code) - 7):
-            source_rva = scan_rva_start + offset
-            opcode = code[offset]
-            if opcode in (0xE8, 0xE9):
-                displacement = struct.unpack_from("<i", code, offset + 1)[0]
-                target = source_rva + 5 + displacement
-                if target in targets:
-                    kind = "call" if opcode == 0xE8 else "jmp"
-                    print(f"{kind:4} source=0x{source_rva:X} target=0x{target:X}")
-        virtual_address = image_base + scan_rva_start
-        for instruction in decoder.disasm(code, virtual_address):
-            if instruction.id == 0:
-                continue
-            source_rva = instruction.address - image_base
-            for operand in instruction.operands:
-                if operand.type != X86_OP_MEM or operand.mem.base != X86_REG_RIP:
-                    continue
-                target = source_rva + instruction.size + operand.mem.disp
-                if target in targets:
-                    print(
-                        f"{instruction.mnemonic:4} source=0x{source_rva:X} "
-                        f"target=0x{target:X}"
-                    )
+        for match in iter_code_refs(code, scan_rva_start, image_base, targets,
+                                    direct_only=arguments.direct_only):
+            print(match)
     return 0
 
 

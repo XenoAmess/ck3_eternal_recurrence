@@ -129,7 +129,10 @@ def forecast_fixed_contact(
             if p90_loss is not None and player_soldiers > 0 else None
         ),
         "player_stack_wipe_probability": summary.player_stack_wipe_probability,
-        "commander_or_knight_death_probability": summary.commander_or_knight_death_probability,
+        # The active envelope disables loaded phase events, so its zero death
+        # count is not evidence of zero character risk in the actual battle.
+        "commander_or_knight_death_probability": None,
+        "character_death_risk_status": "unmodeled_phase_events",
         "missing_required_domains": list(summary.missing_required_domains),
         "assumptions": [
             "phase_events_disabled", "no_voluntary_retreat",
@@ -151,8 +154,11 @@ def contact_admission(forecast: Mapping[str, Any], *, defensive_relief: bool = F
     death = forecast.get("commander_or_knight_death_probability")
     unresolved = forecast.get("no_resolution")
     count = forecast.get("sample_count")
-    if not all(isinstance(value, (int, float)) and not isinstance(value, bool) for value in (lower, loss, wipe, death, unresolved, count)):
+    if not all(isinstance(value, (int, float)) and not isinstance(value, bool) for value in (lower, loss, wipe, unresolved, count)):
         return {"admitted": False, "reason": "incomplete_distribution"}
+    death_risk_modeled = isinstance(death, (int, float)) and not isinstance(death, bool)
+    if death is not None and not death_risk_modeled:
+        return {"admitted": False, "reason": "invalid_character_death_risk"}
     limits = (
         {"win_lower": 0.70, "hard_loss": 0.20, "wipe": 0.02, "death": 0.02}
         if defensive_relief else
@@ -163,11 +169,13 @@ def contact_admission(forecast: Mapping[str, Any], *, defensive_relief: bool = F
         and lower >= limits["win_lower"]
         and loss <= limits["hard_loss"]
         and wipe <= limits["wipe"]
-        and death <= limits["death"]
+        and (death <= limits["death"] if death_risk_modeled else True)
     )
     return {
         "admitted": admitted,
         "reason": "within_bounded_model_risk_budget" if admitted else "bounded_model_risk_budget_exceeded",
-        "risk_limits": limits,
+        "risk_limits": {**limits, "death": limits["death"] if death_risk_modeled else None},
+        "character_death_risk_modeled": death_risk_modeled,
+        "unquantified_risks": [] if death_risk_modeled else ["commander_or_knight_death"],
         "native_parity_required": False,
     }

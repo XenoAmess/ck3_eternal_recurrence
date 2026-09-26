@@ -1,0 +1,99 @@
+{
+  "schema": "ck3.native_join_phase_order_partial.v2",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "cases": [
+    {
+      "source_day": 11,
+      "arrival_day": 12,
+      "combat_id": 16777218,
+      "joining_army_id": 22,
+      "finish_response_sha256": "3C0E71A11279628E1574C4CF6EBE6B35BFE3546A7F32C979723ED1203B96C36C",
+      "before_snapshot_sha256": "680C915BB49AB305E89934700BDA080A2D5D7FCDB13FBC6F539FEF8AC3088C81",
+      "after_snapshot_sha256": "87112AA2B7F0AEDC2C83C3DF6B8026A9421022DF9FF06799DA6AD57D302B25DE",
+      "arrival_control_sha256": "5AE37180B5680192DB9C09EC3632AC3CF89695C24103B1F7D7C0D92519FA78E3",
+      "source_date_raw": 53146488,
+      "arrival_date_raw": 53146512,
+      "scheduled_side0_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "arrival_snapshot_side0_army_ids": [
+        16777221,
+        16777231,
+        22,
+        27
+      ],
+      "arrival_control_side0_army_ids_in_stored_order": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "partial_prefire_side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        0
+      ],
+      "schedule_side0_fighting_raw": 160317482,
+      "prefire_side0_fighting_raw": 410690163,
+      "prefire_capture_failure_flags": 16,
+      "whole_trace_status": "trace_unavailable",
+      "whole_trace_failure_flags": 1040,
+      "join_before_side0_phase_fire_proven_for_this_day": true,
+      "complete_seven_boundary_state_proven": false,
+      "general_same_day_manager_order_proven": false
+    },
+    {
+      "source_day": 21,
+      "arrival_day": 22,
+      "combat_id": 16777218,
+      "joining_army_id": 28,
+      "finish_response_sha256": "46E2EE2B4E2D6F480AA9DCA1947A18CC6843C77C3256AC016DE2F6A8ECB1A994",
+      "before_snapshot_sha256": "E469D162969177F1DFC0511122A48FDA94199B62B7FB34990B59A8D36CA505BB",
+      "after_snapshot_sha256": "03299BEB425EF9B2E407D26A1A61692189388D27728C67DD54F8D66B7C938E64",
+      "arrival_control_sha256": "6F286635D6EDA5BFD7B9980379ABD2096D9A7B6462CF2ABA66B74D4B4ED9E6F8",
+      "source_date_raw": 53146728,
+      "arrival_date_raw": 53146752,
+      "scheduled_side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "arrival_snapshot_side0_army_ids": [
+        16777221,
+        16777231,
+        22,
+        27,
+        28
+      ],
+      "arrival_control_side0_army_ids_in_stored_order": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "partial_prefire_side0_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        0
+      ],
+      "schedule_side0_fighting_raw": 368409866,
+      "prefire_side0_fighting_raw": 470651390,
+      "prefire_capture_failure_flags": 16,
+      "whole_trace_status": "trace_unavailable",
+      "whole_trace_failure_flags": 1040,
+      "join_before_side0_phase_fire_proven_for_this_day": true,
+      "complete_seven_boundary_state_proven": false,
+      "general_same_day_manager_order_proven": false
+    }
+  ],
+  "all_cases_join_before_side0_fire": true,
+  "all_cases_full_trace_ready": false
+}

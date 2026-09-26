@@ -28,6 +28,8 @@ def test_frozen_live_encounter_produces_bounded_whole_battle_distribution():
     assert result["sample_count"] == 16
     assert result["player_wins"] + result["player_losses"] + result["no_resolution"] == 16
     assert result["native_parity"] is False
+    assert result["commander_or_knight_death_probability"] is None
+    assert result["character_death_risk_status"] == "unmodeled_phase_events"
     assert "loaded_phase_event_effect_transition" in result["missing_required_domains"]
     assert forecast_fixed_contact(payload, **kwargs) == result
     assert forecast_fixed_contact(payload, **{**kwargs, "target_province_id": 1}) == {
@@ -49,3 +51,9 @@ def test_bounded_model_can_admit_without_native_parity_and_reject_risk():
     assert contact_admission(forecast)["admitted"] is True
     assert contact_admission(forecast, defensive_relief=True)["admitted"] is True
     assert contact_admission({**forecast, "player_p90_hard_loss_fraction": 0.4})["admitted"] is False
+    assert contact_admission({**forecast, "commander_or_knight_death_probability": 0.06})["admitted"] is False
+    unmodeled = contact_admission({**forecast, "commander_or_knight_death_probability": None})
+    assert unmodeled["admitted"] is True
+    assert unmodeled["character_death_risk_modeled"] is False
+    assert unmodeled["risk_limits"]["death"] is None
+    assert unmodeled["unquantified_risks"] == ["commander_or_knight_death"]

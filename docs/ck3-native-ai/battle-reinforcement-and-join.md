@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-26：两次自然增援已在首次 phase fire 前入场
+
+对同一独立原版回放的第 11、21 源日 RED 七边界回执做[只读重投影 v2](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_phase_order_partial_v2.json)（SHA-256 `0A59B57CC8AA2A97DA0FD6210179E400977512DF6C6153B12DB7B3CFA4116D33`；[工具](../../ck3_autonomous_player/tools/project_native_join_phase_order.py)绑定 finish、前后 snapshot 及到达日原生 control 的原始 SHA；v1 保留历史原样）。两天在 `0x27FB5AC` 完成 side1 schedule 的记录均捕获标志 0，side0 旧军分别有 3、4 支。下一日 `0x23C9900` **side0 phase-fire 入口**记录的 side0 军队容器长度已经分别扩成 4、5，`current_fighting_total_raw` 分别由 `160317482→410690163`、`368409866→470651390`。前后暂停快照只新增 ArmyID `22`、`28` 入战；到达日 control 同时证明同一 CombatID `16777218` 的 stored army 顺序分别为旧军后追加 `22`、`28`。
+
+入口记录的最后一行是零值占位，捕获标志 `16`，因为日初预备的指针表没有新加入的 ArmyID；整条 trace 的失败标志 `1040`、状态 `trace_unavailable` 保持 RED。这个零值**不是原版 ArmyID 0**，不能拿它算人数或结算；它恰好定位到身份验证在新行处停止。由有效 schedule、实际 phase-fire 入口和前后名单可限定：**这两次加入发生在当天首次 side0 phase fire 之前**，与下一次可读阶段记录中新兵团已有软/硬伤亡互证。它不说明所有接触分支都采用同一日内顺序，也没有让当天七边界伤亡/事件树变成完整可回放；仍需动态指针采集器和独立战例。
+
 ## 2026-09-24：梅西纳同日增援伤亡实机观察
 
 同一接战检查点的[独立原版回放](battle-simulation-episode01-live-case.md)提供了两次自然增援。对第 11、21 源日的不可变存档只读解码，按 RegimentID 与第 12、22 日第一次有效阶段记录逐项绑定；[智能体共用投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_casualties.json) SHA-256 为 `C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72`，[只读重建工具](../../ck3_autonomous_player/tools/project_native_join_day_casualties.py)核对原始存档、解码文本、移动前后快照与阶段回执 SHA。两次增援在移动前均未入战、目标为梅西纳，推进恰好一天后已进入相同 CombatID。

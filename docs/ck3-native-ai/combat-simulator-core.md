@@ -1,6 +1,8 @@
 # CK3 1.19.0.6 战斗模拟器纯函数 core
 
 > 2026-09-26 当前策略接线更新：研究版整场试算现已用于通用战中接战动作评估；正式 `planner_usable`/exact-native-parity 门仍为 false。二者含义及战前聚合代理模型见 [通用战斗预测接线](general-battle-strategy-forecast-2026-09-26.md)。下文旧的“尚未接 planner”是当时的实现状态，不再描述当前策略调用链。
+>
+> 同日追击更新：第 0–3 pursuit day 的原始控制快照已让 `apply_three_day_pursuit` 从单一第 28 日状态连续预测同一回放的三次逐团软转硬，72/72 零差，69/69 个可读逐团硬伤与 3/3 参战者硬伤总账零差；证据与适用范围见[原版实战对拍](battle-simulation-episode01-live-case.md#2026-09-26-追击三日同一独立回放的逐团与账本对拍)。这提升追击子域证据，不提升整场 fidelity gate。
 
 ## 结论与边界
 

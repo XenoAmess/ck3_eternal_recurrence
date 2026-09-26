@@ -2,6 +2,10 @@
 
 状态：2026-09-24 新增原版实机证据；**整场胜率与模拟器 fidelity gate 仍未通过**。本页只记录一场实际发生的战斗，不把它的一次输赢转换为概率。
 
+> 2026-09-26 追击追加证据：下文原有结论仍按各自日期保留；最新同源三日逐团条件对拍见文末「追击三日」。它闭合了这一回放的追击算术，未闭合之前的主阶段、事件、增援策略或整场胜率。
+
+> 2026-09-26 第 26 日追加证据：独立 attempt-020 的[原生击杀者抽签](combat-phase-event-trace.md#2026-09-26-第-26-日骑士击杀者抽签实机闭合)直接记录局部 RNG、14 名候选、索引 8 与击杀者 34120；同源前后存档确认基础勇武未改、有效勇武 `4→2`、死亡脱团与威望 +150。这关闭一个选择节点与狭窄写回账，尚非整条 effect 或整场胜率对拍。
+
 ## 身份与原始材料
 
 - 游戏：纯原版 CK3 `1.19.0.6`，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；Steam 离线模式，独立 profile。
@@ -131,4 +135,18 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 ## 仍未满足的正片与智能体门槛
 
-本案例足以展示“开局 1288 对 330，增援改变了整场战斗并最终败退”的原版观察，也新增了原版事件账本和可用实机追击画面；它**不足以给出原版条件胜率**。下一步须在同一条随机时间线闭合 event effect 写集、增援/脱离/撤退与终局，逐日对拍模拟器，并用不同条件、独立种子的原版战例做概率校准。当前 [`combat-entry-eu-v1`](../../ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py) 计算器和[游玩策略入口](../../ck3_autonomous_player/src/xar_autoplayer/strategy.py)已能接收同一试验向量；没有合格 forecast producer 时保持自动进攻关闭，不能将研究包络的胜率用于实机进攻。第 1 集[导演案](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/director-plan.md)的出片门禁不变。
+本案例足以展示“开局 1288 对 330，增援改变了整场战斗并最终败退”的原版观察，也新增了原版事件账本和可用实机追击画面；它**不足以给出原版条件胜率**。下一步须在同一条随机时间线闭合 event effect 写集、增援/脱离/撤退与终局，逐日对拍模拟器，并用不同条件、独立种子的原版战例做概率校准。正式 [`combat-entry-eu-v1`](../../ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py) 的 exact-native-parity 门仍未开放；另一个明确标记假设与风险预算的[有界整场预测](general-battle-strategy-forecast-2026-09-26.md)已接入游玩智能体接战策略，不能把它称为原版条件胜率。第 1 集[导演案](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/director-plan.md)的出片门禁不变。
+
+## 2026-09-26 追击三日：同一独立回放的逐团与账本对拍
+
+新增[原版追击回执只读比较器](../../ck3_autonomous_player/tools/compare_native_pursuit_receipts.py)从 attempt-004 的 `terminal-replay-d28-d32.jsonl` 绑定第 28–31 日四份原始 `term-d*-control.json` 与第 32 日 `term-d32-terminal.json`，逐文件验证 SHA-256，保持 CombatID `16777218`、日期 24 raw 递增、phase day `0/1/2/3` 和胜者 side0 相同。索引 SHA-256 为 `B4F8C8D4E2827650E4401E9FBAB34DE62558641A424382A4C460FEDBD261E160`；可重跑的[共用结果 v4](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_pursuit_parity_v4.json)保存首日模型输入、每个兵团和中间预算。v1–v3 是增量核验过程报告，保留原样。
+
+| 原版日初→次日 | 败方 24 个兵团软伤变化 | 模型与原版当日软转硬 raw | 折合兵员 | 逐团硬伤账 | 参战者硬伤总账 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 28→29 | 24/24 零差 | 2,070,677 | 20.70677 | 23/23 零差 | 0 残差 |
+| 29→30 | 24/24 零差 | 2,097,473 | 20.97473 | 23/23 零差 | 0 残差 |
+| 30→31 | 24/24 零差 | 2,126,119 | 21.26119 | 23/23 零差 | 0 残差 |
+
+总计 `6,294,269 raw / 100,000 = 62.94269` 人当量。另一个非主战 entry 的逐团 `hard_casualties_raw` 为 null，不能把它记作 0；因此逐团硬伤账的可比数是 69/69，三天 72/72 的 `current_fighting_raw` 均未变化。模型只用第 28 日的败方软伤池、追击方当前兵力/有效追击、败方有效坚韧/掩护，以及原版当时双方追击修正，**独立连续推演三日**；不在第 29/30 日重新喂入原版败方状态，链式预测仍 72/72 零差。三天 `pursuit_damage_raw` 都为 `75,203,000`，掩护为 0；每天重新计算缩小的 `toughness_soft` 与预算，不能将首日损失乘三。
+
+第 32 日独立原版终局回执确认 `normal_result`、winner side0、玩家军队 18 脱离旧 CombatID 并进入 retreating，战争进攻方战分增量 `-5,000,000 raw = -50`。这份回执与追击表属于**同一次独立回放**；它核对终局身份和账本结果，不意味着模拟器已复刻所有 battle-result effect、撤退目的地策略或战分生成公式。上述追击对拍是“给定追击开始时原版状态”的条件计算；主阶段事件回流、自然增援的完整日内调用顺序与其他条件分支，以及跨战例胜率校准仍是独立缺口。两次增援在首次 side0 phase fire 前入场的局部证据见[增援专题](battle-reinforcement-and-join.md#2026-09-26两次自然增援已在首次-phase-fire-前入场)。2026-09-26 的[有界策略接线](general-battle-strategy-forecast-2026-09-26.md)会使用研究分布并标明非原版校准，不能把本节的算术零差升级成整场原版胜率。
