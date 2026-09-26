@@ -290,6 +290,71 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                 expected_revision=_FRAME["revision"],
             )
 
+    def test_formal_turn_report_retains_bounded_same_frame_joint_choice(self) -> None:
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            family_enabled=True,
+        )
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        building = _construction()
+        building["candidate"]["authored_monthly_income_hundredths"] = 35
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=building,
+        )):
+            planned = GameplayBridgeService(driver).plan_turn()
+        plan = planned["plan"]
+        self.assertEqual(plan["selected_step"],
+                         "private-submit-player-construction-v1")
+        turn = native_auto_run_module._turn_record(
+            2, "2026-09-27T00:00:00Z", turn_class="gameplay",
+            outcome={"status": "executed", "plan": plan,
+                     "selected_step": plan["selected_step"]},
+            before=driver.take_snapshot(), after=driver.take_snapshot(),
+            evidence=["same_frame_joint_selection"],
+        )
+        # Exercise the actual report turn shape and JSON materialization.
+        report = json.loads(json.dumps({"auto_run": {"turns": [turn]}}))
+        compact = report["auto_run"]["turns"][0]["plan"]
+        joint = compact["m5_joint_observation"]
+        self.assertNotIn("m5_joint_query_only", compact)
+        self.assertEqual(joint["frame"], _FRAME)
+        self.assertEqual(joint["status"], "reserved_analytic")
+        self.assertEqual(joint["producer_family_status"], "selected")
+        self.assertCountEqual(joint["collected_domains"], ["building", "marriage"])
+        self.assertCountEqual(joint["collected_candidate_ids"], [
+            "building:501:701:1", "marriage:first-heir:38822:38710:32266",
+        ])
+        self.assertEqual(joint["evaluated_count"], 2)
+        self.assertFalse(joint["evaluated_truncated"])
+        self.assertFalse(joint["income_preference_applied"])
+        self.assertEqual({row["reason"] for row in joint["evaluated"]},
+                         {"eligible"})
+        marriage = next(row for row in joint["evaluated"]
+                        if row["domain"] == "marriage")
+        building_row = next(row for row in joint["evaluated"]
+                            if row["domain"] == "building")
+        self.assertEqual(building_row["value_evidence"], {
+            "authored_monthly_income_hundredths": 35,
+        })
+        self.assertEqual(marriage["value_evidence"]["value"],
+                         "bounded_first_heir_betrothal_and_realm_alliance_attempt")
+        self.assertIsNone(marriage["value_evidence"]["alliance_established"])
+        self.assertEqual(marriage["ally_character_ids"], [32266])
+        self.assertEqual(marriage["commitment_keys"],
+                         ["first-heir-marriage:38822"])
+        self.assertEqual(joint["selected_candidate_id"], "building:501:701:1")
+        self.assertEqual(joint["reservation"]["commitments_after"]["gold_raw"],
+                         3_000_000)
+        self.assertEqual(joint["reservation"]["commitments_after"][
+            "commitment_keys"], ["building-slot:501:1"])
+        self.assertTrue(joint["formal_action_ready"])
+        self.assertNotIn("native_legal_candidates", json.dumps(joint))
+
     def test_opted_family_is_queried_on_building_frame_and_compared_once(self) -> None:
         driver = _Driver(
             self.state_dir, snapshot=_snapshot(faction_count=0),

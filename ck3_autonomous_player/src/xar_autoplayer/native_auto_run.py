@@ -4835,7 +4835,120 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
     war_exit = _compact_war_exit_decision(plan.get("war_exit_decision"))
     if war_exit is not None:
         compact["war_exit_decision"] = war_exit
+    m5_joint = _compact_m5_joint_collection(plan)
+    if m5_joint is not None:
+        compact["m5_joint_observation"] = m5_joint
     return compact
+
+
+def _compact_m5_joint_collection(plan: dict[str, object]) -> dict[str, object] | None:
+    """Retain the actual M5 comparison without its native source inventory."""
+    collection = plan.get("m5_joint_query_only")
+    if not isinstance(collection, dict):
+        return None
+    dispatch = collection.get("dispatch")
+    if not isinstance(dispatch, dict):
+        return None
+    analysis = dispatch.get("analysis")
+    evaluated = analysis.get("evaluated") if isinstance(analysis, dict) else None
+    evaluated_rows = evaluated if isinstance(evaluated, list) else []
+    row_keys = (
+        "candidate_id", "domain", "reason", "source_policy",
+        "gold_cost_raw", "minimum_gold_reserve_raw", "war_slot_claim",
+        "army_ids", "ally_character_ids", "character_ids", "commitment_keys",
+    )
+    evidence_keys = (
+        "authored_monthly_income_hundredths", "opinion_delta", "value",
+        "predicted_outcome_if_accepted", "realm_alliance_attempt_if_accepted",
+        "alliance_established", "unpriced",
+    )
+    selected_rows = []
+    for row in evaluated_rows[:8]:
+        if not isinstance(row, dict):
+            continue
+        compact_row = {
+            key: copy.deepcopy(row[key][:8] if isinstance(row[key], list)
+                               else row[key])
+            for key in row_keys if key in row
+        }
+        compact_row["resource_claims_truncated"] = any(
+            isinstance(row.get(key), list) and len(row[key]) > 8
+            for key in ("army_ids", "ally_character_ids", "character_ids",
+                        "commitment_keys")
+        )
+        evidence = row.get("evidence")
+        if isinstance(evidence, dict):
+            compact_row["value_evidence"] = {
+                key: copy.deepcopy(evidence[key][:8]
+                                   if isinstance(evidence[key], list)
+                                   else evidence[key])
+                for key in evidence_keys if key in evidence
+            }
+        selected_rows.append(compact_row)
+    reservation = dispatch.get("reservation")
+    reservation_keys = (
+        "candidate_id", "domain", "source_policy",
+        "observed_opportunity_cost", "commitments_after", "status",
+    )
+    frame = collection.get("frame")
+    frame_keys = (
+        "played_character_id", "native_revision", "date_raw",
+        "snapshot_id", "revision", "episode_run_id",
+    )
+    candidate_ids = collection.get("collected_candidate_ids")
+    domains = collection.get("collected_domains")
+    commitments = (reservation.get("commitments_after")
+                   if isinstance(reservation, dict) else None)
+    compact_reservation = None
+    if isinstance(reservation, dict):
+        compact_reservation = {
+            key: copy.deepcopy(reservation[key])
+            for key in reservation_keys if key in reservation
+            and key != "commitments_after"
+        }
+        if isinstance(commitments, dict):
+            compact_reservation["commitments_after"] = {
+                key: copy.deepcopy(commitments[key][:8]
+                                   if isinstance(commitments[key], list)
+                                   else commitments[key])
+                for key in ("gold_raw", "pending_war_slots", "army_ids",
+                            "ally_character_ids", "character_ids",
+                            "commitment_keys") if key in commitments
+            }
+            compact_reservation["resource_claims_truncated"] = any(
+                isinstance(commitments.get(key), list)
+                and len(commitments[key]) > 8
+                for key in ("army_ids", "ally_character_ids", "character_ids",
+                            "commitment_keys")
+            )
+    return {
+        "schema": "xar.ck3.m5-joint-formal-report.v1",
+        "frame": ({key: frame.get(key) for key in frame_keys}
+                  if isinstance(frame, dict) else None),
+        "status": collection.get("status"),
+        "producer_family_status": collection.get("producer_family_status"),
+        "collected_candidate_ids": (
+            copy.deepcopy(candidate_ids[:8]) if isinstance(candidate_ids, list)
+            else None),
+        "collected_candidate_count": (
+            len(candidate_ids) if isinstance(candidate_ids, list) else None),
+        "collected_domains": (
+            copy.deepcopy(domains[:8]) if isinstance(domains, list) else None),
+        "dispatch_status": dispatch.get("status"),
+        "evaluated": selected_rows,
+        "evaluated_count": len(evaluated_rows) if isinstance(evaluated, list) else None,
+        "evaluated_truncated": len(evaluated_rows) > 8,
+        "selection_basis": (
+            copy.deepcopy(analysis.get("selection_basis"))
+            if isinstance(analysis, dict) else None),
+        "income_preference_applied": (
+            analysis.get("income_preference_applied")
+            if isinstance(analysis, dict) else None),
+        "selected_candidate_id": dispatch.get("selected_candidate_id"),
+        "reservation": compact_reservation,
+        "selected_step": plan.get("selected_step"),
+        "formal_action_ready": plan.get("m5_joint_formal_action_ready"),
+    }
 
 
 def _compact_war_exit_decision(value: object) -> dict[str, object] | None:

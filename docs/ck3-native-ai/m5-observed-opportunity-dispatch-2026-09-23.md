@@ -440,3 +440,9 @@ flowchart LR
   F --> G["旧 receipt 再读；不重复提交"]
   E -.未知实际完工/收入.-> U["后续正常游玩观察"]
 ```
+
+### 2026-09-27：有界正式报告保留 M5 联合选择
+
+C22 上述正式报告第 2 turn 的 `plan` 只保留建设提交字段；源码 `native_auto_run._compact_plan` 白名单遗漏 `m5_joint_query_only` 与 `m5_joint_formal_action_ready`，所以报告无法证明当帧究竟收集了哪些 M5 候选、为何选中建设。C22 第 4 turn 的婚配报告来自另一 native revision，不能填补第 2 turn 的缺项。
+
+新的私有正式报告投影 `plan.m5_joint_observation` 只保留当帧身份、collection/dispatch status、实际收集的 domain 与 candidate ID、最多八行 evaluated 的原因、已读价值线索及金币/战争槽/军队/盟友/角色/承诺占用、选择依据及当帧收入优先规则是否启用、选中候选与 reservation 后占用、正式动作 ready 状态，以及 producer 的 `family_status`。它不复制 final-legal 全行、五行原生结果、建筑 world inventory 或其他完整 source；超出有界行数时标记 count/truncation。建设和婚配同帧时收入优先规则未启用，现有 selector 仍按共享资源等受限排序，不应据此宣称二者有统一价值量纲。投影是**证据输出**，不改选择、动作、公共 gate 或 G2 M5 里程碑。C25 新候选尚须在 h90 官方配对的新 paused 帧证明真实建设与家庭同帧候选/选择；静态夹具只证明报告路径保存了它们。
