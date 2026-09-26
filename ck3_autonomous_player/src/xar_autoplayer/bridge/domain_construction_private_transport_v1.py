@@ -137,7 +137,11 @@ def query_construction_private(driver: object, *, expected_revision: int,
             and type(world.get("player_gold_raw")) is int
             and world["player_gold_raw"] >= 0
             and isinstance(world.get("active_constructions"), list)
-            and isinstance(world.get("completed_buildings"), list)
+            and ((world.get("completed_buildings_observed") is True
+                  and isinstance(world.get("completed_buildings"), list))
+                 or (not material_receipt
+                     and world.get("completed_buildings_observed") is False
+                     and world.get("completed_buildings") is None))
             and isinstance(world.get("legal_samples"), list)
             and all(isinstance(row, Mapping)
                     and row.get("native_cost_observed") is True

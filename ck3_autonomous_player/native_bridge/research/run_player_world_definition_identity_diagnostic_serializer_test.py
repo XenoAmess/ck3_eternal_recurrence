@@ -49,7 +49,7 @@ def main() -> int:
             except json.JSONDecodeError as error:
                 raise AssertionError(raw_receipt[max(0, error.pos - 100):
                                                  error.pos + 100]) from error
-            assert len(receipts) == 2
+            assert len(receipts) == 3
             source = receipts[0]["player_world_building_sources"]
             diagnostic = source["definition_identity_diagnostic"]
             assert source["status"] == "unavailable"
@@ -65,12 +65,22 @@ def main() -> int:
             assert source["cost_ready"] is False
             assert source["construction_action_ready"] is False
             assert source["advertised"] is False
+            assert source["completed_buildings_observed"] is False
+            assert source["completed_buildings"] is None
             legal = receipts[1]["player_world_building_sources"]
             assert legal["status"] == "source_available"
             assert legal["snapshot_revision"] == 3
             assert legal["legal_samples"][0]["building_type_id"] == 24
             assert legal["legal_samples"][0]["slot_index"] == 1
             assert legal["legal_samples"][0]["building_key"] == "common_tradeport_01"
+            assert legal["completed_buildings_observed"] is False
+            assert legal["completed_buildings"] is None
+            completed = receipts[2]["player_world_building_sources"]
+            assert completed["completed_buildings_observed"] is True
+            assert completed["completed_buildings"] == [{
+                "barony_title_id": 2103, "province_id": 2635,
+                "building_type_id": 24, "slot_index": 1,
+            }]
             print(f"m4-definition-identity-receipt-{mode}: GREEN_W4WX_JSON")
     return 0
 

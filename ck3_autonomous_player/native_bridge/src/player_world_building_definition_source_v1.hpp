@@ -106,6 +106,7 @@ struct PlayerWorldBuildingSourceResultV1 final {
   bool cost_ready = false;
   bool native_cost_evaluated = false;
   bool player_gold_observed = false;
+  bool completed_buildings_observed = false;
   std::int64_t player_gold_raw = 0;
   std::int32_t native_cost_checks = 0;
   std::uint64_t snapshot_revision = 0;

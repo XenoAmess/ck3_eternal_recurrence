@@ -56,6 +56,7 @@ def world(revision: int = 3, *, active: bool = False) -> dict[str, object]:
                 "building_type_id": 24 if active else None,
                 "slot_index": 1 if active else None,
                 "initiator_character_id": 29829 if active else None}],
+            "completed_buildings_observed": True,
             "completed_buildings": []}
 
 
@@ -71,6 +72,7 @@ class Driver:
         self.timeout_action = False
         self.active_construction = False
         self.completed_construction = False
+        self.completed_source_unavailable = False
         self.unknown_gold = False
         self.r753_truncated_samples = False
         self.r0080_material_without_cost = False
@@ -114,6 +116,9 @@ class Driver:
                 source["completed_buildings"] = [{
                     "barony_title_id": 2103, "province_id": 2635,
                     "building_type_id": 24, "slot_index": 1}]
+            if self.completed_source_unavailable:
+                source["completed_buildings_observed"] = False
+                source["completed_buildings"] = None
             if self.second_building_available and revision >= 5:
                 source["date_raw"] = self.snapshot["date_raw"]
                 source["player_gold_raw"] = 25_000_000 if revision >= 6 else 35_000_000
@@ -198,6 +203,23 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
+    def test_unavailable_completed_observer_keeps_prewar_legality_but_not_receipt(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.completed_source_unavailable = True
+            planned = {"plan": {"selected_step": "query-declarable-wars"},
+                       "revision": 3}
+            selected = plan_construction_private(
+                driver, planned, frame(), root(), set(),
+                prewar_arbitration=True)
+            self.assertEqual(selected["plan"]["selected_step"], SUBMIT_STEP)
+            world_source = selected["plan"]["construction_private_query"]["world"]
+            self.assertIs(world_source["completed_buildings_observed"], False)
+            self.assertIsNone(world_source["completed_buildings"])
+            receipt = transport.query_construction_private(
+                driver, expected_revision=3, material_receipt=True)
+            self.assertEqual(receipt["status"], "source_red")
+
     def test_prewar_query_step_consumes_positive_building_before_war_query(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

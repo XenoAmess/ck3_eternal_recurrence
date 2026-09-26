@@ -343,6 +343,7 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
     }
     result.active_constructions.reserve(
         result.directly_held_barony_provinces.size());
+    result.completed_buildings_observed = true;
     for (const auto &holding : result.directly_held_barony_provinces) {
       std::int32_t slot_count = 0;
       std::uintptr_t province = 0;
@@ -354,31 +355,39 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
                 active_definition)) {
         return Failed(PlayerWorldBuildingFailureV1::construction_state);
       }
-      std::uintptr_t built_slots = 0;
-      if (!Read(campaign, province,
-                kProvinceSlotsOffset + kProvinceBuiltSlotsDataOffset,
-                built_slots) || (slot_count > 0 && built_slots == 0)) {
-        return Failed(PlayerWorldBuildingFailureV1::construction_state);
-      }
-      for (std::int32_t slot = 0; slot < slot_count; ++slot) {
-        std::uintptr_t built_definition = 0;
-        if (!Read(campaign, built_slots,
-                  static_cast<std::size_t>(slot) * kProvinceBuiltSlotStride,
-                  built_definition)) {
-          return Failed(PlayerWorldBuildingFailureV1::construction_state);
+      if (result.completed_buildings_observed) {
+        std::uintptr_t built_slots = 0;
+        if (!Read(campaign, province,
+                  kProvinceSlotsOffset + kProvinceBuiltSlotsDataOffset,
+                  built_slots) || (slot_count > 0 && built_slots == 0)) {
+          result.completed_buildings_observed = false;
+        } else {
+          for (std::int32_t slot = 0; slot < slot_count; ++slot) {
+            std::uintptr_t built_definition = 0;
+            if (!Read(campaign, built_slots,
+                      static_cast<std::size_t>(slot) * kProvinceBuiltSlotStride,
+                      built_definition)) {
+              result.completed_buildings_observed = false;
+              break;
+            }
+            if (built_definition == 0) continue;
+            const auto built_match = std::find_if(
+                definitions.begin(), definitions.end(),
+                [built_definition](const auto &definition) {
+                  return definition.second == built_definition;
+                });
+            if (built_match == definitions.end()) {
+              result.completed_buildings_observed = false;
+              break;
+            }
+            result.completed_buildings.push_back({
+                holding.barony_title_id, holding.province_id,
+                built_match->first, slot});
+          }
         }
-        if (built_definition == 0) continue;
-        const auto built_match = std::find_if(
-            definitions.begin(), definitions.end(),
-            [built_definition](const auto &definition) {
-              return definition.second == built_definition;
-            });
-        if (built_match == definitions.end()) {
-          return Failed(PlayerWorldBuildingFailureV1::construction_state);
+        if (!result.completed_buildings_observed) {
+          result.completed_buildings.clear();
         }
-        result.completed_buildings.push_back({
-            holding.barony_title_id, holding.province_id,
-            built_match->first, slot});
       }
       PlayerWorldActiveConstructionV1 state{};
       state.barony_title_id = holding.barony_title_id;
