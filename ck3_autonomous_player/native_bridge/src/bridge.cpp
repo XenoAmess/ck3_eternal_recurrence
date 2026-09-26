@@ -17557,6 +17557,7 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   battle_terminal_environment.module_base =
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   battle_terminal_environment.bindings = exact_bindings;
+  battle_terminal_environment.capture_denominator = true;
   if (!xar::ck3_11906::InstallBattleTerminalJournalV1(
           g_battle_terminal_journal_v1,
           battle_terminal_environment)) {

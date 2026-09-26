@@ -62,6 +62,11 @@ from .combat_decision_contract import (
     assess_combat_entry_eu_contract,
     combat_entry_eu_contract,
 )
+from .native_battle_score import (
+    NativeBattleScore,
+    calculate_native_battle_score,
+    denominator_from_native_buckets,
+)
 
 __all__ = [
     "CURRENT_BOUNDED_CORE_MANIFEST",
@@ -110,4 +115,7 @@ __all__ = [
     "CombatEntryEuContractError",
     "assess_combat_entry_eu_contract",
     "combat_entry_eu_contract",
+    "NativeBattleScore",
+    "calculate_native_battle_score",
+    "denominator_from_native_buckets",
 ]

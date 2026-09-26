@@ -155,4 +155,10 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 从 attempt-004 的 immutable 第 27 日存档另起 `episode01-terminal-loss-live-attempt-021`，逐日复现到第 32 日。新终局 journal 在原版 finalizer **入口**保存败方 side1 的四个输入：baseline `129,800,000`、stored current `0`、征召兵 soft `57,753,614`、兵士 soft `18,384,344`，均为 Q100000。原版战分分子因此是 `129,800,000 - 0 - 57,753,614 - 18,384,344 = 53,662,042 raw`，即去除引擎缩放后 **536.62042 人当量**。同一回放第 31 日参战者 hard 账本为 `52,662,042 raw`，少 `1,000,000 raw = 10 人`；第 31 日与终局的四个输入逐项一致，不能把差额说成最后一日新增伤亡。对应 [终局专题的算式和边界](battle-terminal-and-reentry.md#2026-09-26-梅西纳正常终局的分子实机回读)、[共用哈希绑定报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_terminal_loss_parity.json) 与 [只读投影工具](../../ck3_autonomous_player/tools/project_native_terminal_loss_receipt.py) 可直接供视频和智能体复核。
 
-同一终局 row 对 WarID `4` 写 `+5,000,000 raw = +50` magnitude，winner 是战争防守方，所以战争进攻方相对值为 `-5,000,000 raw = -50`。这是终局写回的实机事实；目前八桶分母和 CB scale 尚未在这次 writer 中读出，不能用封顶后的 `50` 倒推这些输入，也不能把本次分子零差升级成完整战分公式或整场胜率零差。
+同一终局 row 对 WarID `4` 写 `+5,000,000 raw = +50` magnitude，winner 是战争防守方，所以战争进攻方相对值为 `-5,000,000 raw = -50`。这次历史回放没有读取八桶分母和 CB scale；不能用封顶后的 `50` 倒推它们。
+
+## 2026-09-26 战分 writer 的八桶、CB 倍率与封顶对拍
+
+随后从同一 immutable 第 27 日存档做**另一条独立回放** `episode01-denominator-live-attempt-024`，在原版 writer 的同一调用链被动读取了败方战争参战者 `CharacterID=29829` 的八桶 `0+675+310+0+0+0+11+0=996 人`，和已加载 CB 防守方战分倍率 `15,000,000 raw / 100,000 = 150`。本场损失分子仍为 `53,662,042 raw / 100,000 = 536.62042 人当量`，但它的 `1,298 人当量` side baseline 不是战分分母。原生整数次序是：`53,662,042 // 996 = 53,877 raw` 的损失比例、`53,877 × 15,000,000 // 100,000 = 8,081,550 raw = 80.8155` 的未封顶战分，再用 `5,000,000 raw = 50` 单场上限截断，最后写入 row `+50`；战争进攻方相对值为 `-50`。这个对拍闭合**本场**分子到 row 的原版公式，不声称整场胜率已校准。
+
+[共用机器报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_battle_score_parity.json)、[只读重算工具](../../ck3_autonomous_player/tools/project_native_battle_score_receipt.py)和[终局专题](battle-terminal-and-reentry.md#2026-09-26-梅西纳单场战分同一次原生-writer-的完整输入与写回)保留八桶顺序、所有原始整数和原始回执 SHA。外部 attempt 原件不进入 Git，不能把报告当成额外实机画面。

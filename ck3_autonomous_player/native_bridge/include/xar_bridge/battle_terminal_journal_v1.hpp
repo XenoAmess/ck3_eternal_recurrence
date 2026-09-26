@@ -13,8 +13,12 @@ namespace xar::ck3_11906 {
 
 inline constexpr std::uintptr_t kBattleTerminalFinalizerRvaV1 = 0x230A590;
 inline constexpr std::uintptr_t kBattleWarscoreWriterRvaV1 = 0x222A5A0;
+inline constexpr std::uintptr_t kBattleDenominatorSummaryRvaV1 = 0x292FC40;
+inline constexpr std::uintptr_t kBattleDenominatorCallerReturnRvaV1 = 0x25BBFFA;
 inline constexpr std::size_t kBattleTerminalFinalizerPatchBytesV1 = 19;
 inline constexpr std::size_t kBattleWarscoreWriterPatchBytesV1 = 16;
+inline constexpr std::size_t kBattleDenominatorSummaryPatchBytesV1 = 20;
+inline constexpr std::size_t kBattleDenominatorMaximumParticipantsV1 = 32;
 inline constexpr std::size_t kBattleTerminalAbsoluteJumpBytesV1 = 14;
 inline constexpr std::size_t kBattleTerminalJournalCapacityV1 = 4'096;
 inline constexpr std::size_t kBattleTerminalMaximumSideCunitsV1 = 128;
@@ -69,6 +73,18 @@ struct BattleWarscoreJournalEventV1 {
   std::int64_t battle_warscore_value_raw = 0;
   bool winner_is_war_attacker = false;
   bool combat_side0_is_war_attacker = false;
+  bool selected_cb_battle_scale_observable = false;
+  std::int64_t selected_cb_battle_scale_raw_q100000 = 0;
+  bool denominator_observable = false;
+  std::int32_t denominator_participant_count = 0;
+  std::int32_t denominator_sum_int32 = 0;
+  std::int32_t denominator_after_minimum_int32 = 1;
+  struct DenominatorParticipantV1 {
+    std::int32_t character_id = -1;
+    std::array<std::int32_t, 8> buckets{};
+  };
+  std::array<DenominatorParticipantV1,
+             kBattleDenominatorMaximumParticipantsV1> denominator_participants{};
   std::uint32_t capture_failure_flags =
       battle_terminal_capture_failure_none;
 };
@@ -137,6 +153,8 @@ struct BattleTerminalJournalInstallEnvironmentV1 {
   Bindings bindings{};
   std::uintptr_t terminal_target_override = 0;
   std::uintptr_t warscore_target_override = 0;
+  bool capture_denominator = false;
+  std::uintptr_t denominator_target_override = 0;
   void *memory_context = nullptr;
   BattleTerminalVirtualAllocV1 virtual_alloc_override = nullptr;
   BattleTerminalVirtualFreeV1 virtual_free_override = nullptr;
@@ -151,12 +169,16 @@ struct BattleTerminalJournalDetourStateV1 {
       battle_terminal_install_failure_none};
   std::uintptr_t terminal_target = 0;
   std::uintptr_t warscore_target = 0;
+  std::uintptr_t denominator_target = 0;
   void *terminal_trampoline = nullptr;
   void *warscore_trampoline = nullptr;
+  void *denominator_trampoline = nullptr;
   std::array<std::uint8_t, kBattleTerminalFinalizerPatchBytesV1>
       terminal_original{};
   std::array<std::uint8_t, kBattleWarscoreWriterPatchBytesV1>
       warscore_original{};
+  std::array<std::uint8_t, kBattleDenominatorSummaryPatchBytesV1>
+      denominator_original{};
   void *memory_context = nullptr;
   BattleTerminalVirtualFreeV1 virtual_free = nullptr;
   BattleTerminalVirtualProtectV1 virtual_protect = nullptr;
@@ -190,10 +212,14 @@ bool CaptureBattleTerminalJournalEntryV1(
 
 using BattleTerminalOriginalV1 = void(__fastcall *)(void *, bool);
 using BattleWarscoreWriterOriginalV1 = void(__fastcall *)(void *, void *);
+using BattleDenominatorSummaryOriginalV1 = void *(__fastcall *)(
+    void *, void *, std::uint8_t);
 
 extern "C" void __fastcall XarBattleTerminalHookV1(
     void *combat, bool suppress_normal_result_envelopes) noexcept;
 extern "C" void __fastcall XarBattleWarscoreWriterHookV1(
     void *war, void *combat) noexcept;
+extern "C" void *__fastcall XarBattleDenominatorSummaryHookV1(
+    void *output, void *character, std::uint8_t mode) noexcept;
 
 } // namespace xar::ck3_11906

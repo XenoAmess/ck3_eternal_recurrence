@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -1533,6 +1534,23 @@ struct BattleTerminalJournalSnapshotV1 {
                          const BattleTerminalJournalSnapshotV1 &) = default;
 };
 
+struct BattleTerminalDenominatorParticipantSnapshotV1 {
+  std::int32_t character_id = -1;
+  std::array<std::int32_t, 8> buckets_native_add_order_int32{};
+
+  friend bool operator==(const BattleTerminalDenominatorParticipantSnapshotV1 &,
+                         const BattleTerminalDenominatorParticipantSnapshotV1 &) = default;
+};
+
+struct BattleTerminalDenominatorSnapshotV1 {
+  std::vector<BattleTerminalDenominatorParticipantSnapshotV1> participants;
+  std::int32_t sum_int32 = 0;
+  std::int32_t after_minimum_int32 = 1;
+
+  friend bool operator==(const BattleTerminalDenominatorSnapshotV1 &,
+                         const BattleTerminalDenominatorSnapshotV1 &) = default;
+};
+
 struct BattleTerminalWarscoreSnapshotV1 {
   BattleTerminalWarscoreStatusV1 status =
       BattleTerminalWarscoreStatusV1::unavailable;
@@ -1542,6 +1560,8 @@ struct BattleTerminalWarscoreSnapshotV1 {
   std::optional<bool> winner_is_war_attacker;
   std::optional<bool> combat_side0_is_war_attacker;
   std::optional<std::int64_t> attacker_relative_delta_raw_q100000;
+  std::optional<std::int64_t> selected_cb_battle_scale_raw_q100000;
+  std::optional<BattleTerminalDenominatorSnapshotV1> denominator_inputs;
 
   friend bool operator==(const BattleTerminalWarscoreSnapshotV1 &,
                          const BattleTerminalWarscoreSnapshotV1 &) = default;

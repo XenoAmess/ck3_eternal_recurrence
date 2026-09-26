@@ -20,6 +20,13 @@ constexpr std::array<std::uint8_t,
     kWarscorePrologue{
         0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C,
         0x24, 0x18, 0x56, 0x57, 0x41, 0x54, 0x41, 0x56};
+constexpr std::array<std::uint8_t,
+                     kBattleDenominatorSummaryPatchBytesV1>
+    kDenominatorPrologue{
+        0x48, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08,
+        0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56};
+constexpr std::array<std::size_t, 8> kDenominatorBucketOffsets{
+    0xC0, 0x00, 0x20, 0x40, 0x60, 0x80, 0xA0, 0xE0};
 
 constexpr std::size_t kComponentStorageSlotsOffset = 0x20;
 constexpr std::size_t kComponentStorageCapacityOffset = 0x2C;
@@ -65,6 +72,9 @@ constexpr std::size_t kWarBattleRowCountOffset = 0x2A4;
 constexpr std::size_t kWarBattleRowWarscoreOffset = 0x40;
 constexpr std::size_t kWarBattleRowWinnerIsAttackerOffset = 0x50;
 constexpr std::size_t kWarBattleRowSide0IsAttackerOffset = 0x51;
+constexpr std::size_t kWarCasusBelliPointerOffset = 0x100;
+constexpr std::size_t kCbAttackerBattleScaleOffset = 0x1768;
+constexpr std::size_t kCbDefenderBattleScaleOffset = 0x1770;
 
 template <typename Record>
 struct JournalSlotV1 {
@@ -88,6 +98,16 @@ std::atomic<std::uint32_t> g_warscore_unattributed_failures{0};
 std::atomic<BattleTerminalJournalDetourStateV1 *> g_active_state{nullptr};
 std::atomic<BattleTerminalOriginalV1> g_original_terminal{nullptr};
 std::atomic<BattleWarscoreWriterOriginalV1> g_original_warscore{nullptr};
+std::atomic<BattleDenominatorSummaryOriginalV1> g_original_denominator{nullptr};
+std::atomic<std::uintptr_t> g_denominator_caller_return{0};
+struct DenominatorCaptureV1 {
+  bool active = false;
+  bool failed = false;
+  std::int32_t count = 0;
+  std::array<BattleWarscoreJournalEventV1::DenominatorParticipantV1,
+             kBattleDenominatorMaximumParticipantsV1> participants{};
+};
+thread_local DenominatorCaptureV1 g_denominator_capture{};
 
 template <typename Value>
 Value LoadAt(const void *base, std::size_t offset) noexcept {
@@ -457,6 +477,15 @@ bool CaptureWarscorePostUnsafe(
   event.combat_side0_is_war_attacker =
       LoadAt<std::uint8_t>(row,
                            kWarBattleRowSide0IsAttackerOffset) != 0;
+  const void *const cb = LoadAt<const void *>(war, kWarCasusBelliPointerOffset);
+  if (cb != nullptr) {
+    event.selected_cb_battle_scale_raw_q100000 = LoadAt<std::int64_t>(
+        cb, event.winner_is_war_attacker
+                ? kCbAttackerBattleScaleOffset
+                : kCbDefenderBattleScaleOffset);
+    event.selected_cb_battle_scale_observable =
+        event.selected_cb_battle_scale_raw_q100000 >= 0;
+  }
   const auto result_id =
       LoadAt<std::int32_t>(combat, kCombatResultIdOffset);
   void *const result = ResolveStoredComponent(
@@ -627,9 +656,14 @@ void FreeTrampolines(BattleTerminalJournalDetourStateV1 &state) noexcept {
       (void)state.virtual_free(state.memory_context,
                                state.warscore_trampoline, 0, MEM_RELEASE);
     }
+    if (state.denominator_trampoline != nullptr) {
+      (void)state.virtual_free(state.memory_context,
+                               state.denominator_trampoline, 0, MEM_RELEASE);
+    }
   }
   state.terminal_trampoline = nullptr;
   state.warscore_trampoline = nullptr;
+  state.denominator_trampoline = nullptr;
 }
 
 template <typename Record>
@@ -807,10 +841,19 @@ bool InstallBattleTerminalJournalV1(
       environment.warscore_target_override != 0
           ? environment.warscore_target_override
           : environment.module_base + kBattleWarscoreWriterRvaV1;
+  state.denominator_target = environment.capture_denominator
+      ? (environment.denominator_target_override != 0
+             ? environment.denominator_target_override
+             : environment.module_base + kBattleDenominatorSummaryRvaV1)
+      : 0;
   if (std::memcmp(reinterpret_cast<const void *>(state.terminal_target),
                   kTerminalPrologue.data(), kTerminalPrologue.size()) != 0 ||
       std::memcmp(reinterpret_cast<const void *>(state.warscore_target),
-                  kWarscorePrologue.data(), kWarscorePrologue.size()) != 0) {
+                  kWarscorePrologue.data(), kWarscorePrologue.size()) != 0 ||
+      (state.denominator_target != 0 &&
+       std::memcmp(reinterpret_cast<const void *>(state.denominator_target),
+                   kDenominatorPrologue.data(),
+                   kDenominatorPrologue.size()) != 0)) {
     AddInstallFailure(state, battle_terminal_install_failure_anchor);
     g_active_state.store(nullptr, std::memory_order_release);
     return false;
@@ -839,18 +882,34 @@ bool InstallBattleTerminalJournalV1(
       kBattleWarscoreWriterPatchBytesV1 +
           kBattleTerminalAbsoluteJumpBytesV1,
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  if (state.denominator_target != 0) {
+    state.denominator_trampoline = allocate(
+        state.memory_context,
+        kBattleDenominatorSummaryPatchBytesV1 +
+            kBattleTerminalAbsoluteJumpBytesV1,
+        MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  }
   if (state.terminal_trampoline == nullptr ||
       state.warscore_trampoline == nullptr ||
+      (state.denominator_target != 0 &&
+       state.denominator_trampoline == nullptr) ||
       !FillTrampoline(state.terminal_trampoline, kTerminalPrologue,
                       state.terminal_target +
                           kBattleTerminalFinalizerPatchBytesV1) ||
       !FillTrampoline(state.warscore_trampoline, kWarscorePrologue,
                       state.warscore_target +
                           kBattleWarscoreWriterPatchBytesV1) ||
+      (state.denominator_target != 0 &&
+       !FillTrampoline(state.denominator_trampoline, kDenominatorPrologue,
+                       state.denominator_target +
+                           kBattleDenominatorSummaryPatchBytesV1)) ||
       !MakeExecutable<kBattleTerminalFinalizerPatchBytesV1>(
           state, state.terminal_trampoline) ||
       !MakeExecutable<kBattleWarscoreWriterPatchBytesV1>(
-          state, state.warscore_trampoline)) {
+          state, state.warscore_trampoline) ||
+      (state.denominator_target != 0 &&
+       !MakeExecutable<kBattleDenominatorSummaryPatchBytesV1>(
+           state, state.denominator_trampoline))) {
     AddInstallFailure(state, battle_terminal_install_failure_allocation);
     FreeTrampolines(state);
     g_active_state.store(nullptr, std::memory_order_release);
@@ -864,24 +923,53 @@ bool InstallBattleTerminalJournalV1(
       reinterpret_cast<BattleWarscoreWriterOriginalV1>(
           state.warscore_trampoline),
       std::memory_order_release);
+  if (state.denominator_target != 0) {
+    g_original_denominator.store(
+        reinterpret_cast<BattleDenominatorSummaryOriginalV1>(
+            state.denominator_trampoline),
+        std::memory_order_release);
+    g_denominator_caller_return.store(
+        environment.module_base + kBattleDenominatorCallerReturnRvaV1,
+        std::memory_order_release);
+  }
 
   std::array<std::uint8_t, kBattleTerminalFinalizerPatchBytesV1>
       terminal_patch{};
   std::array<std::uint8_t, kBattleWarscoreWriterPatchBytesV1>
       warscore_patch{};
+  std::array<std::uint8_t, kBattleDenominatorSummaryPatchBytesV1>
+      denominator_patch{};
   terminal_patch.fill(0x90);
   warscore_patch.fill(0x90);
+  denominator_patch.fill(0x90);
   WriteAbsoluteJump(terminal_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarBattleTerminalHookV1));
   WriteAbsoluteJump(warscore_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarBattleWarscoreWriterHookV1));
+  WriteAbsoluteJump(denominator_patch.data(),
+                    reinterpret_cast<std::uintptr_t>(
+                        &XarBattleDenominatorSummaryHookV1));
   const bool terminal_installed = WritePatch(
       state, state.terminal_target, kTerminalPrologue, terminal_patch);
   const bool warscore_installed = terminal_installed && WritePatch(
       state, state.warscore_target, kWarscorePrologue, warscore_patch);
-  if (!terminal_installed || !warscore_installed) {
+  const bool denominator_installed = warscore_installed &&
+      (state.denominator_target == 0 ||
+       WritePatch(state, state.denominator_target, kDenominatorPrologue,
+                  denominator_patch));
+  if (!terminal_installed || !warscore_installed || !denominator_installed) {
+    if (denominator_installed && state.denominator_target != 0 &&
+        !WritePatch(state, state.denominator_target, denominator_patch,
+                    kDenominatorPrologue)) {
+      AddInstallFailure(state, battle_terminal_install_failure_rollback);
+    }
+    if (warscore_installed &&
+        !WritePatch(state, state.warscore_target, warscore_patch,
+                    kWarscorePrologue)) {
+      AddInstallFailure(state, battle_terminal_install_failure_rollback);
+    }
     if (terminal_installed &&
         !WritePatch(state, state.terminal_target, terminal_patch,
                     kTerminalPrologue)) {
@@ -889,6 +977,8 @@ bool InstallBattleTerminalJournalV1(
     }
     g_original_terminal.store(nullptr, std::memory_order_release);
     g_original_warscore.store(nullptr, std::memory_order_release);
+    g_original_denominator.store(nullptr, std::memory_order_release);
+    g_denominator_caller_return.store(0, std::memory_order_release);
     FreeTrampolines(state);
     g_active_state.store(nullptr, std::memory_order_release);
     return false;
@@ -897,6 +987,10 @@ bool InstallBattleTerminalJournalV1(
               kTerminalPrologue.size());
   std::memcpy(state.warscore_original.data(), kWarscorePrologue.data(),
               kWarscorePrologue.size());
+  if (state.denominator_target != 0) {
+    std::memcpy(state.denominator_original.data(),
+                kDenominatorPrologue.data(), kDenominatorPrologue.size());
+  }
   state.installed.store(1, std::memory_order_release);
   return true;
 }
@@ -931,7 +1025,22 @@ extern "C" void __fastcall XarBattleWarscoreWriterHookV1(
         1, std::memory_order_acq_rel);
     return;
   }
+  const auto *const installed_state =
+      g_active_state.load(std::memory_order_acquire);
+  const bool denominator_enabled = installed_state != nullptr &&
+      installed_state->denominator_target != 0;
+  auto &denominator = g_denominator_capture;
+  const bool owns_denominator = denominator_enabled && !denominator.active;
+  if (owns_denominator) {
+    denominator = {};
+    denominator.active = true;
+  } else if (denominator_enabled) {
+    denominator.failed = true;
+  }
   original(war, combat);
+  if (owns_denominator) {
+    denominator.active = false;
+  }
   if (!before_ready) {
     g_warscore_unattributed_failures.fetch_add(
         1, std::memory_order_acq_rel);
@@ -949,6 +1058,25 @@ extern "C" void __fastcall XarBattleWarscoreWriterHookV1(
     return CaptureWarscorePostUnsafe(war, combat, before, event,
                                      row_appended);
   });
+  if (owns_denominator && !denominator.failed && denominator.count > 0 &&
+      denominator.count <=
+          static_cast<std::int32_t>(event.denominator_participants.size())) {
+    std::uint32_t sum = 0;
+    event.denominator_participant_count = denominator.count;
+    for (std::int32_t index = 0; index < denominator.count; ++index) {
+      const auto &participant =
+          denominator.participants[static_cast<std::size_t>(index)];
+      event.denominator_participants[static_cast<std::size_t>(index)] =
+          participant;
+      for (auto bucket : participant.buckets) {
+        sum += static_cast<std::uint32_t>(bucket);
+      }
+    }
+    event.denominator_sum_int32 = static_cast<std::int32_t>(sum);
+    event.denominator_after_minimum_int32 =
+        std::max<std::int32_t>(1, event.denominator_sum_int32);
+    event.denominator_observable = true;
+  }
   if (row_appended) {
     if (!captured && event.capture_failure_flags ==
                          battle_terminal_capture_failure_none) {
@@ -960,6 +1088,44 @@ extern "C" void __fastcall XarBattleWarscoreWriterHookV1(
         1, std::memory_order_acq_rel);
   }
   g_warscore_ring.capture_in_progress.store(0, std::memory_order_release);
+}
+
+extern "C" void *__fastcall XarBattleDenominatorSummaryHookV1(
+    void *output, void *character, std::uint8_t mode) noexcept {
+  const bool expected_caller = reinterpret_cast<std::uintptr_t>(
+      _ReturnAddress()) ==
+      g_denominator_caller_return.load(std::memory_order_acquire);
+  const auto original =
+      g_original_denominator.load(std::memory_order_acquire);
+  if (original == nullptr) {
+    return output;
+  }
+  void *const result = original(output, character, mode);
+  if (!expected_caller || !g_denominator_capture.active) {
+    return result;
+  }
+  auto &capture = g_denominator_capture;
+  if (mode != 2 || output == nullptr || character == nullptr ||
+      capture.count >=
+          static_cast<std::int32_t>(capture.participants.size())) {
+    capture.failed = true;
+    return result;
+  }
+  BattleWarscoreJournalEventV1::DenominatorParticipantV1 row{};
+  const bool read = FaultBoundary([&]() noexcept {
+    row.character_id = LoadAt<std::int32_t>(character, 0x18);
+    for (std::size_t index = 0; index < row.buckets.size(); ++index) {
+      row.buckets[index] =
+          LoadAt<std::int32_t>(output, kDenominatorBucketOffsets[index]);
+    }
+    return row.character_id > 0;
+  });
+  if (!read) {
+    capture.failed = true;
+    return result;
+  }
+  capture.participants[static_cast<std::size_t>(capture.count++)] = row;
+  return result;
 }
 
 } // namespace xar::ck3_11906

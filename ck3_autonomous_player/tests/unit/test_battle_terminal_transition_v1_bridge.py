@@ -430,6 +430,33 @@ class BattleTerminalTransitionV1ContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "hard-loss inputs disagree"):
             _normalize(extended)
 
+    def test_denominator_participants_bind_eight_native_quantity_buckets(self) -> None:
+        historical = _normalize(_normal_frame())
+        self.assertNotIn("denominator_inputs", historical["prior"]["battle_warscore"])
+
+        extended = _normal_frame()
+        extended["prior"]["battle_warscore"]["selected_cb_battle_scale_raw_q100000"] = 10_000_000
+        extended["prior"]["battle_warscore"]["denominator_inputs"] = {
+            "sum_int32": 1_298,
+            "after_minimum_int32": 1_298,
+            "participants": [
+                {"character_id": 29_829,
+                 "buckets_native_add_order_int32": [0, 1_200, 80, 0, 0, 0, 18, 0]},
+            ],
+        }
+        normalized = _normalize(extended)
+        self.assertEqual(
+            normalized["prior"]["battle_warscore"]["denominator_inputs"]
+            ["after_minimum_int32"], 1_298,
+        )
+        self.assertEqual(
+            normalized["prior"]["battle_warscore"]
+            ["selected_cb_battle_scale_raw_q100000"], 10_000_000,
+        )
+        extended["prior"]["battle_warscore"]["denominator_inputs"]["sum_int32"] += 1
+        with self.assertRaisesRegex(ValueError, "denominator arithmetic disagrees"):
+            _normalize(extended)
+
     def test_normal_result_does_not_depend_on_result_id_and_zero_is_recorded(self) -> None:
         frame = _normalize(_normal_frame())
         self.assertEqual(frame["prior"]["terminal_kind"], "normal_result")

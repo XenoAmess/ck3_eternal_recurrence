@@ -1,0 +1,85 @@
+{
+  "schema": "ck3.native_battle_score_parity.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_attempt": "episode01-denominator-live-attempt-024",
+  "source_summary_sha256": "973500D95B8C542D66B6B98B8C7732995DDDDFD2CDD574319AC3EF9DA9E2D56E",
+  "source_day31_control_sha256": "776757190F31963B4F2CD895DB8B829B68A6EB98A4510112AF229A5F24B774B4",
+  "source_day32_terminal_sha256": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F",
+  "terminal_date_raw": 53146992,
+  "losing_combat_side_index": 1,
+  "hard_loss_inputs_raw_q100000": {
+    "losing_side_index": 1,
+    "baseline_raw": 129800000,
+    "stored_current_raw": 0,
+    "men_at_arms_soft_raw": 18384344,
+    "hard_loss_raw": 53662042,
+    "levy_soft_raw": 57753614
+  },
+  "computed_hard_loss_raw_q100000": 53662042,
+  "day31_participant_hard_ledger_raw_q100000": 52662042,
+  "denominator_bucket_order": [
+    "eligible_title_regiments",
+    "levies",
+    "men_at_arms",
+    "mercenaries",
+    "holy_orders",
+    "special_troops",
+    "knights",
+    "nomadic_riders"
+  ],
+  "denominator_inputs": {
+    "sum_int32": 996,
+    "after_minimum_int32": 996,
+    "participants": [
+      {
+        "character_id": 29829,
+        "buckets_native_add_order_int32": [
+          0,
+          675,
+          310,
+          0,
+          0,
+          0,
+          11,
+          0
+        ]
+      }
+    ]
+  },
+  "ratio_raw_q100000": 53877,
+  "selected_cb_battle_scale_raw_q100000": 15000000,
+  "uncapped_score_raw_q100000": 8081550,
+  "single_battle_cap_raw_q100000": 5000000,
+  "expected_row_score_raw_q100000": 5000000,
+  "native_battle_warscore": {
+    "status": "recorded",
+    "war_id": 4,
+    "war_battle_row_index": 0,
+    "value_raw_q100000": 5000000,
+    "winner_is_war_attacker": false,
+    "combat_side0_is_war_attacker": false,
+    "attacker_relative_delta_raw_q100000": -5000000,
+    "selected_cb_battle_scale_raw_q100000": 15000000,
+    "denominator_inputs": {
+      "sum_int32": 996,
+      "after_minimum_int32": 996,
+      "participants": [
+        {
+          "character_id": 29829,
+          "buckets_native_add_order_int32": [
+            0,
+            675,
+            310,
+            0,
+            0,
+            0,
+            11,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "scope": "one normal-result replay and loaded CB; not whole-war score or calibrated win probability"
+}

@@ -436,6 +436,40 @@ bool AppendWarscore(
                             warscore.attacker_relative_delta_raw_q100000)) {
     return false;
   }
+  output += ",\"selected_cb_battle_scale_raw_q100000\":";
+  if (!AppendOptionalNumber(output,
+                            warscore.selected_cb_battle_scale_raw_q100000)) {
+    return false;
+  }
+  output += ",\"denominator_inputs\":";
+  if (warscore.denominator_inputs.has_value()) {
+    const auto &denominator = *warscore.denominator_inputs;
+    output += "{\"sum_int32\":";
+    if (!AppendNumber(output, denominator.sum_int32)) return false;
+    output += ",\"after_minimum_int32\":";
+    if (!AppendNumber(output, denominator.after_minimum_int32)) return false;
+    output += ",\"participants\":[";
+    bool first = true;
+    for (const auto &row : denominator.participants) {
+      if (!first) output.push_back(',');
+      first = false;
+      output += "{\"character_id\":";
+      if (!AppendNumber(output, row.character_id)) return false;
+      output += ",\"buckets_native_add_order_int32\":[";
+      for (std::size_t index = 0;
+           index < row.buckets_native_add_order_int32.size(); ++index) {
+        if (index != 0) output.push_back(',');
+        if (!AppendNumber(output,
+                          row.buckets_native_add_order_int32[index])) {
+          return false;
+        }
+      }
+      output += "]}";
+    }
+    output += "]}";
+  } else {
+    output += "null";
+  }
   output.push_back('}');
   return true;
 }

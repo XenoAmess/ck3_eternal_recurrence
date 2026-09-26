@@ -15219,6 +15219,27 @@ void PopulateTerminalWarscoreV1(
         event.winner_is_war_attacker
             ? event.battle_warscore_value_raw
             : -event.battle_warscore_value_raw;
+    if (event.selected_cb_battle_scale_observable) {
+      output.selected_cb_battle_scale_raw_q100000 =
+          event.selected_cb_battle_scale_raw_q100000;
+    }
+    if (event.denominator_observable &&
+        event.denominator_participant_count > 0 &&
+        event.denominator_participant_count <=
+            static_cast<std::int32_t>(
+                event.denominator_participants.size())) {
+      game::BattleTerminalDenominatorSnapshotV1 denominator{};
+      denominator.sum_int32 = event.denominator_sum_int32;
+      denominator.after_minimum_int32 =
+          event.denominator_after_minimum_int32;
+      for (std::int32_t index = 0;
+           index < event.denominator_participant_count; ++index) {
+        const auto &row =
+            event.denominator_participants[static_cast<std::size_t>(index)];
+        denominator.participants.push_back({row.character_id, row.buckets});
+      }
+      output.denominator_inputs = std::move(denominator);
+    }
   } else if (lookup.status ==
              BattleWarscoreJournalLookupStatusV1::not_observed) {
     output.status =

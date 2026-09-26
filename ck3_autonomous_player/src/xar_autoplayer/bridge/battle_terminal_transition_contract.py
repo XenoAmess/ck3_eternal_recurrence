@@ -76,6 +76,13 @@ _WARSCORE_FIELDS: Final = {
     "combat_side0_is_war_attacker",
     "attacker_relative_delta_raw_q100000",
 }
+_WARSCORE_EXTENSION_FIELDS: Final = {
+    "denominator_inputs", "selected_cb_battle_scale_raw_q100000"
+}
+_DENOMINATOR_FIELDS: Final = {"sum_int32", "after_minimum_int32", "participants"}
+_DENOMINATOR_PARTICIPANT_FIELDS: Final = {
+    "character_id", "buckets_native_add_order_int32"
+}
 _REMOVAL_FIELDS: Final = {
     "prior_combat_strictly_resolves",
     "prior_province_strictly_resolves",
@@ -365,15 +372,19 @@ def _normalize_journal(
 
 
 def _normalize_warscore(value: object) -> dict[str, object]:
+    fields = _WARSCORE_FIELDS | (
+        _WARSCORE_EXTENSION_FIELDS & value.keys()
+        if isinstance(value, dict) else set()
+    )
     warscore = _exact_dict(
         value,
         "battle_terminal_transition.prior.battle_warscore",
-        _WARSCORE_FIELDS,
+        fields,
     )
     status = warscore.get("status")
     if status not in {"recorded", "not_recorded_by_native", "unavailable"}:
         raise ValueError("battle warscore status is invalid")
-    optional_keys = _WARSCORE_FIELDS - {"status"}
+    optional_keys = fields - {"status"}
     if status != "recorded":
         if any(warscore.get(key) is not None for key in optional_keys):
             raise ValueError("non-recorded battle warscore invented native state")
@@ -416,7 +427,67 @@ def _normalize_warscore(value: object) -> dict[str, object]:
     expected_delta = value_raw if winner_is_war_attacker else -value_raw
     if relative_delta != expected_delta:
         raise ValueError("battle warscore attacker-relative sign is invalid")
-    return {
+    selected_cb_scale = None
+    if warscore.get("selected_cb_battle_scale_raw_q100000") is not None:
+        selected_cb_scale = _integer(
+            warscore["selected_cb_battle_scale_raw_q100000"],
+            "battle warscore selected CB battle scale",
+            minimum=0,
+            maximum=2**63 - 1,
+        )
+    denominator_inputs = None
+    if warscore.get("denominator_inputs") is not None:
+        denominator = _exact_dict(
+            warscore["denominator_inputs"],
+            "battle_terminal_transition.prior.battle_warscore.denominator_inputs",
+            _DENOMINATOR_FIELDS,
+        )
+        participants = denominator["participants"]
+        if not isinstance(participants, list) or not 1 <= len(participants) <= 32:
+            raise ValueError("battle denominator participant count is invalid")
+        normalized_rows = []
+        total_unsigned = 0
+        for index, item in enumerate(participants):
+            row = _exact_dict(
+                item,
+                f"battle denominator participant {index}",
+                _DENOMINATOR_PARTICIPANT_FIELDS,
+            )
+            character_id = _positive_int32(
+                row["character_id"], f"battle denominator character {index}"
+            )
+            buckets = row["buckets_native_add_order_int32"]
+            if not isinstance(buckets, list) or len(buckets) != 8:
+                raise ValueError("battle denominator requires eight buckets")
+            normalized_buckets = [
+                _integer(
+                    bucket, f"battle denominator bucket {index}:{slot}",
+                    minimum=0, maximum=2**31 - 1,
+                )
+                for slot, bucket in enumerate(buckets)
+            ]
+            total_unsigned = (total_unsigned + sum(normalized_buckets)) & 0xFFFFFFFF
+            normalized_rows.append({
+                "character_id": character_id,
+                "buckets_native_add_order_int32": normalized_buckets,
+            })
+        native_sum = _integer(
+            denominator["sum_int32"], "battle denominator native sum",
+            minimum=-(2**31), maximum=2**31 - 1,
+        )
+        expected_sum = total_unsigned if total_unsigned < 2**31 else total_unsigned - 2**32
+        after_minimum = _integer(
+            denominator["after_minimum_int32"], "battle denominator after minimum",
+            minimum=1, maximum=2**31 - 1,
+        )
+        if native_sum != expected_sum or after_minimum != max(1, native_sum):
+            raise ValueError("battle denominator arithmetic disagrees")
+        denominator_inputs = {
+            "sum_int32": native_sum,
+            "after_minimum_int32": after_minimum,
+            "participants": normalized_rows,
+        }
+    normalized = {
         **warscore,
         "war_id": war_id,
         "war_battle_row_index": row_index,
@@ -425,6 +496,11 @@ def _normalize_warscore(value: object) -> dict[str, object]:
         "combat_side0_is_war_attacker": combat_side0_is_war_attacker,
         "attacker_relative_delta_raw_q100000": relative_delta,
     }
+    if "denominator_inputs" in warscore:
+        normalized["denominator_inputs"] = denominator_inputs
+    if "selected_cb_battle_scale_raw_q100000" in warscore:
+        normalized["selected_cb_battle_scale_raw_q100000"] = selected_cb_scale
+    return normalized
 
 
 def _normalize_prior(

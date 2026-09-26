@@ -160,6 +160,34 @@ bool TestParserAndSerializer() {
           std::string::npos) {
     return false;
   }
+  auto with_denominator = complete;
+  with_denominator.prior.battle_warscore.status =
+      xar::game::BattleTerminalWarscoreStatusV1::recorded;
+  with_denominator.prior.battle_warscore.war_id = 4;
+  with_denominator.prior.battle_warscore.war_battle_row_index = 0;
+  with_denominator.prior.battle_warscore.value_raw_q100000 = 5'000'000;
+  with_denominator.prior.battle_warscore.winner_is_war_attacker = false;
+  with_denominator.prior.battle_warscore.combat_side0_is_war_attacker = false;
+  with_denominator.prior.battle_warscore.attacker_relative_delta_raw_q100000 =
+      -5'000'000;
+  with_denominator.prior.battle_warscore.selected_cb_battle_scale_raw_q100000 =
+      10'000'000;
+  xar::game::BattleTerminalDenominatorSnapshotV1 denominator{};
+  denominator.sum_int32 = 1'298;
+  denominator.after_minimum_int32 = 1'298;
+  denominator.participants.push_back(
+      {101, {0, 1'200, 80, 0, 0, 0, 18, 0}});
+  with_denominator.prior.battle_warscore.denominator_inputs = denominator;
+  const auto denominator_json =
+      SerializeBattleTerminalTransitionV1(with_denominator);
+  if (denominator_json.find("\"sum_int32\":1298") == std::string::npos ||
+      denominator_json.find("\"selected_cb_battle_scale_raw_q100000\":10000000") ==
+          std::string::npos ||
+      denominator_json.find("\"character_id\":101") == std::string::npos ||
+      denominator_json.find("\"buckets_native_add_order_int32\":[0,1200,80,0,0,0,18,0]") ==
+          std::string::npos) {
+    return false;
+  }
   auto signed_complete = complete;
   signed_complete.prior_combat_id = -2'147'483'647;
   signed_complete.prior.combat_id = -2'147'483'647;
@@ -388,8 +416,12 @@ bool TestJournalAndDetourAnchors() {
   constexpr std::array<std::uint8_t, 16> warscore_prologue{
       0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C, 0x24, 0x18,
       0x56, 0x57, 0x41, 0x54, 0x41, 0x56};
+  constexpr std::array<std::uint8_t, 20> denominator_prologue{
+      0x48, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08,
+      0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56};
   auto terminal_target = terminal_prologue;
   auto warscore_target = warscore_prologue;
+  auto denominator_target = denominator_prologue;
   BattleTerminalJournalDetourStateV1 state{};
   BattleTerminalJournalInstallEnvironmentV1 environment{};
   environment.exact_build_admitted = true;
@@ -400,6 +432,9 @@ bool TestJournalAndDetourAnchors() {
       reinterpret_cast<std::uintptr_t>(terminal_target.data());
   environment.warscore_target_override =
       reinterpret_cast<std::uintptr_t>(warscore_target.data());
+  environment.capture_denominator = true;
+  environment.denominator_target_override =
+      reinterpret_cast<std::uintptr_t>(denominator_target.data());
   environment.virtual_protect_override = &FakeProtect;
   environment.flush_instruction_cache_override = &FakeFlush;
   const bool installed = InstallBattleTerminalJournalV1(state, environment);
@@ -408,10 +443,12 @@ bool TestJournalAndDetourAnchors() {
               << state.failure_flags.load(std::memory_order_acquire) << "\n";
   }
   const bool final_ok = kBattleTerminalFinalizerPatchBytesV1 == 19 &&
-         kBattleWarscoreWriterPatchBytesV1 == 16 && installed &&
+         kBattleWarscoreWriterPatchBytesV1 == 16 &&
+         kBattleDenominatorSummaryPatchBytesV1 == 20 && installed &&
          state.installed.load(std::memory_order_acquire) == 1 &&
          terminal_target[0] == 0xFF && terminal_target[1] == 0x25 &&
-         warscore_target[0] == 0xFF && warscore_target[1] == 0x25;
+         warscore_target[0] == 0xFF && warscore_target[1] == 0x25 &&
+         denominator_target[0] == 0xFF && denominator_target[1] == 0x25;
   if (!final_ok) {
     std::cerr << "detour final identity mismatch installed=" << installed
               << " state=" << state.installed.load() << " terminal="

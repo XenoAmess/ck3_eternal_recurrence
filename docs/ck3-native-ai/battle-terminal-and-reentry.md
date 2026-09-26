@@ -1,5 +1,24 @@
 # CK3 1.19.0.6 战斗终局、清理、残余接战与 AI 重入
 
+## 2026-09-26 梅西纳单场战分：同一次原生 writer 的完整输入与写回
+
+从 immutable 第 27 日存档再次独立回放到第 32 日，`episode01-denominator-live-attempt-024` 在**原版**战分 writer 内被动记录了败方战争参战者的 `0x292FC40(mode=2)` 返回值、实际加载的 CB 倍率和最终 row。终局回执 SHA-256 是 `E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F`。这是同一 CombatID `16777218`、WarID `4`、正常终局的一条完整局部链；不是从封顶后的 UI 战分反推输入。
+
+| 原生步骤 | 引擎整数 | 去缩放后的读法 |
+| --- | ---: | ---: |
+| 败方 side baseline | 129,800,000 Q100000 | 1,298 人当量；只用于本场损失分子 |
+| 扣除暂存 current / 征召兵 soft / 兵士 soft | 0 / 57,753,614 / 18,384,344 Q100000 | 0 / 577.53614 / 183.84344 人当量 |
+| 本场 hard-loss 分子 | **53,662,042 Q100000** | **536.62042 人当量** |
+| 败方战争参战者 `CharacterID=29829` 的八桶 | `0+675+310+0+0+0+11+0` | **996 人**；桶序见[分母专题](war-film-battle-score-denominator-2026-09-23.md) |
+| `min(100000, 53662042 // 996)` | **53,877 Q100000** | 先按原生整数除法截断为 53.877% |
+| 已加载 CB 防守方战分倍率 | **15,000,000 Q100000** | **150** |
+| `53877 * 15000000 // 100000` | **8,081,550 Q100000** | 未封顶 80.8155 战分 |
+| `min(8081550, 5000000)` | **5,000,000 Q100000** | 单场上限 50；原生 row 正好写回 50 |
+
+胜者是战争防守方，row 本身是正 magnitude `+50`，从战争进攻方视角的增量是 `-50`。`1,298` 是本场 combat side 的起始口径，`996` 是败方**战争参战者的八桶军事汇总**；二者不应互换。第 31 日 participant hard 账本比终局分子少 10 人当量的历史口径差仍在，不能用它替代分子。
+
+[只读投影工具](../../ck3_autonomous_player/tools/project_native_battle_score_receipt.py)校验原始 summary、第 31 日控制回执、第 32 日终局回执的 SHA，并逐步复算分子、八桶、整数比例、倍率、单场 cap、row 和战争相对符号。它调用智能体的[共用原生战分计算模块](../../ck3_autonomous_player/src/xar_autoplayer/simulation/native_battle_score.py)；后者接受明确的战争参战者八桶、实际 CB 倍率和单场 cap，不能用缺失输入猜值。[机器可读对拍报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_battle_score_parity.json)供视频和智能体共用；全量原始证据保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/`。这只验证一场普通战斗的一次原版重放，尚不能推出所有 CB、特殊部队边界或整场胜率的零差。
+
 ## 2026-09-26 梅西纳正常终局的分子实机回读
 
 在 immutable 第 27 日存档的一次独立第 27–32 日重放中，production bridge 于 `0x230A590` 正常终局入口**只读**败方 side1 的 `+0xA8` baseline、`+0x98` 暂存当前量，以及征召兵/兵士 entry 的 `+0x20` soft 和。此时旧 CombatID `16777218` 尚未被清理；同一 journal 回执确认 `normal_result`、winner side0、WarID `4`、战争防守方获胜，单场 row `+50`，从战争进攻方视角是 `-50`。原始终局响应 SHA-256 为 `19708A0A4A4AA91143FFA1F260565F57975D8D4BE3563B9FD8E97DB722E562DB`。
@@ -16,7 +35,7 @@
 
 第 31 日暂停回执与终局入口的 baseline/current/两个 soft 和逐项相同，因此这 10 人不是第 31 日到终局之间新增的追击损失；它是两个账本的既有口径差，来自一个非主战 entry 的起始量口径，不能再用 participant hard 合计代替单场战分分子。第 27 日暂停时 side `+0x98` 尚含 `160,464 raw` 的跨 tick 暂存值，也不应拿该帧强行重建终局输入。
 
-[只读投影工具](../../ck3_autonomous_player/tools/project_native_terminal_loss_receipt.py)逐个校验第 27–31 日控制响应、第 32 日终局响应与原始 summary 的 SHA，并证明第 31 日四个分子输入与终局相等；[可复核报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_terminal_loss_parity.json)保留全部源 SHA 与算式。外部完整证据保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-terminal-loss-live-attempt-021/`。本次**没有**读取八桶实机分母、实际 CB scale 或单场 cap 前的未截断数值；`+50` 可能已被单场 cap 截断，不能倒推出分母。下一个实机门禁是同一次 writer 调用的败方战争参战者名单、`0x292FC40(mode=2)` 八桶和 CB scale 逐项回读。
+[只读投影工具](../../ck3_autonomous_player/tools/project_native_terminal_loss_receipt.py)逐个校验第 27–31 日控制响应、第 32 日终局响应与原始 summary 的 SHA，并证明第 31 日四个分子输入与终局相等；[可复核报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_terminal_loss_parity.json)保留全部源 SHA 与算式。外部完整证据保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-terminal-loss-live-attempt-021/`。**该次历史回放**尚未读取八桶分母和实际 CB scale，因此当时不能从已封顶的 `+50` 反推输入；这两项后来已由上节的独立 attempt-024 实机回读。
 
 ## 2026-09-23 八桶分母研究增量
 
