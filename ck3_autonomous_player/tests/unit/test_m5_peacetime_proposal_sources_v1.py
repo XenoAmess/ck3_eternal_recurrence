@@ -131,6 +131,71 @@ def _faction(*, status: str = "selected") -> dict[str, object]:
     return result
 
 
+def _family_reads() -> tuple[dict[str, object], dict[str, object]]:
+    legal = []
+    projected = []
+    for index in range(5):
+        candidate = 38710 + index
+        recipient = 32266 + index
+        dynasty = 1927 + index
+        legal.append({
+            "candidate_character_id": candidate,
+            "played_character_id": 29829,
+            "subject_character_id": 38822,
+            "recipient_matchmaker_character_id": recipient,
+            "complete_can_send": True,
+            "recipient_answer_allows_send": True,
+            "recipient_answer_status_raw": 0,
+            "recipient_ai_accept_raw": 9_300_000 - index * 100_000,
+            "heir_adult_measure_raw": 6,
+            "candidate_adult_measure_raw": 6,
+            "played_dynasty_id": 174,
+            "heir_dynasty_id": 174,
+            "candidate_dynasty_id": dynasty,
+            "realm_backed_actor_recipient": True,
+        })
+        projected.append({
+            "status": "available",
+            "actor_character_id": 29829,
+            "heir_character_id": 38822,
+            "recipient_character_id": recipient,
+            "candidate_character_id": candidate,
+            "predicted_outcome_if_accepted": "betrothal",
+            "heir_is_adult": False,
+            "candidate_is_adult": False,
+            "heir_adult_measure_raw": 6,
+            "candidate_adult_measure_raw": 6,
+            "heir_adult_threshold_raw": 16,
+            "candidate_adult_threshold_raw": 16,
+            "grand_wedding_option_selected": False,
+            "heir_betrothed_character_id": None,
+            "heir_primary_spouse_character_id": None,
+            "heir_spouse_character_ids": [],
+            "played_house_id": 174,
+            "played_dynasty_id": 174,
+            "heir_house_id": 174,
+            "heir_dynasty_id": 174,
+            "candidate_house_id": dynasty,
+            "candidate_dynasty_id": dynasty,
+            "heir_sex_selector_raw": 0,
+            "candidate_sex_selector_raw": 1,
+            "matrilineal_option_selected": False,
+            "effective_matrilineal_if_accepted": False,
+            "possible_alliance_pairs": [{
+                "first_character_id": 29829,
+                "second_character_id": recipient,
+                "already_allied": False,
+                "both_have_realm_data": True,
+                "would_attempt_if_accepted": True,
+            }],
+        })
+    return ({"status": "available", "native_revision": _FRAME["native_revision"],
+             "query_sequence": 1, "observed_first_heir_character_id": 38822,
+             "native_legal_candidates": legal},
+            {"status": "available", "native_revision": _FRAME["native_revision"],
+             "legality_query_sequence": 1, "rows": projected})
+
+
 class _Driver:
     def __init__(
         self,
@@ -140,15 +205,19 @@ class _Driver:
         snapshot: dict[str, object] | None = None,
         faction: dict[str, object] | None = None,
         drift_on_internal_read: int | None = None,
+        family_enabled: bool = False,
     ) -> None:
         self.state_dir = state_dir
         self.allow_private_m5_joint_collector = enabled
+        self.allow_private_family_marriage_formal_trial = family_enabled
         self._snapshot = deepcopy(snapshot or _snapshot())
         self._faction = deepcopy(faction or _faction())
         self.drift_on_internal_read = drift_on_internal_read
         self.internal_reads = 0
         self.source_reads = 0
         self.faction_reads = 0
+        self.family_reads = 0
+        self.legality, self.projection = _family_reads()
 
     def take_snapshot(self) -> dict[str, object]:
         return deepcopy(self._snapshot)
@@ -176,6 +245,20 @@ class _Driver:
     ) -> dict[str, object]:
         self.source_reads += 1
         return query_m5_peacetime_proposal_sources_v1(self, **kwargs)
+
+    def query_observed_first_heir_marriage_legality_v1(
+        self, *, expected_native_revision: int,
+    ) -> dict[str, object]:
+        self.family_reads += 1
+        self.family_revision = expected_native_revision
+        return deepcopy(self.legality)
+
+    def query_first_heir_candidate_alliance_projection_private_v1(
+        self, *, legality: dict[str, object],
+        candidate_character_ids: list[int],
+    ) -> dict[str, object]:
+        self.family_candidate_ids = list(candidate_character_ids)
+        return deepcopy(self.projection)
 
 
 class M5PeacetimeProposalSourcesTests(unittest.TestCase):
@@ -206,6 +289,95 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                 },
                 expected_revision=_FRAME["revision"],
             )
+
+    def test_opted_family_is_queried_on_building_frame_and_compared_once(self) -> None:
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            family_enabled=True,
+        )
+        sources = self._query(driver, history=_history(count=0))
+        self.assertEqual(driver.family_reads, 1)
+        self.assertEqual(driver.family_revision, _FRAME["native_revision"])
+        self.assertEqual(driver.family_candidate_ids,
+                         [38710, 38711, 38712, 38713, 38714])
+        self.assertCountEqual(sources["domains"], ["building", "marriage"])
+        self.assertEqual(sources["frame"], _FRAME)
+        self.assertEqual(sources["producer"]["family_status"], "selected")
+        collection = collect_m5_formal_proposals(
+            snapshot=driver.take_snapshot(), sources=sources,
+        )
+        evaluated = {row["domain"]: row for row in
+                     collection["dispatch"]["analysis"]["evaluated"]}
+        self.assertEqual(evaluated["marriage"]["reason"], "eligible")
+        self.assertEqual(evaluated["marriage"]["character_ids"],
+                         [32266, 38710, 38822])
+        self.assertEqual(evaluated["marriage"]["ally_character_ids"], [32266])
+        self.assertIsNone(evaluated["marriage"]["evidence"]["alliance_established"])
+        self.assertEqual(collection["dispatch"]["selected_candidate_id"],
+                         "building:501:701:1")
+        self.assertEqual(collection["dispatch"]["analysis"]["selection_basis"][3],
+                         "ally_claim_count")
+
+    def test_family_only_reservation_reuses_existing_typed_consumer(self) -> None:
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            family_enabled=True,
+        )
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+            return_value=_construction(status="no_legal_budgeted_building"),
+        )):
+            planned = GameplayBridgeService(driver).plan_turn()
+        plan = planned["plan"]
+        self.assertEqual(plan["selected_step"],
+                         "submit-observed-first-heir-marriage-v1-private")
+        self.assertEqual(plan["phase"], "m5_joint_family_typed_submit")
+        self.assertEqual(plan["family_marriage_choice"]["candidate_character_id"],
+                         38710)
+        self.assertEqual(plan["m5_joint_query_only"]["collected_domains"],
+                         ["marriage"])
+        self.assertTrue(plan["m5_joint_formal_action_ready"])
+
+    def test_later_native_revision_cannot_be_reused_as_joint_family_source(self) -> None:
+        driver = _Driver(self.state_dir, family_enabled=True)
+        driver.legality["native_revision"] += 2
+        driver.projection["native_revision"] += 2
+        sources = self._query(driver)
+        with self.assertRaisesRegex(ValueError, "same-frame approved"):
+            collect_m5_formal_proposals(
+                snapshot=driver.take_snapshot(), sources=sources,
+            )
+
+    def test_grand_wedding_cost_cannot_enter_zero_gold_joint_proposal(self) -> None:
+        driver = _Driver(self.state_dir, family_enabled=True)
+        sources = self._query(driver)
+        row = sources["domains"]["marriage"]["plan"][
+            "family_marriage_private_diagnostic"]["rows"][0]
+        row["grand_wedding_option_selected"] = True
+        with self.assertRaisesRegex(ValueError, "native-final value proof"):
+            collect_m5_formal_proposals(
+                snapshot=driver.take_snapshot(), sources=sources,
+            )
+
+    def test_prior_episode_resolution_does_not_hide_new_heir_opportunity(self) -> None:
+        self.state_dir.mkdir(parents=True)
+        (self.state_dir / "first-heir-marriage-formal-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.first-heir-marriage-formal.v1",
+                "pending": None,
+                "resolved": {"episode_run_id": "earlier-actor-episode",
+                             "status": "betrothal"},
+            }), encoding="utf-8")
+        driver = _Driver(self.state_dir, family_enabled=True)
+        sources = self._query(driver)
+        self.assertEqual(sources["producer"]["family_status"], "selected")
+        self.assertIn("marriage", sources["domains"])
 
     def test_two_real_peacetime_sources_feed_existing_collector_once(
         self,

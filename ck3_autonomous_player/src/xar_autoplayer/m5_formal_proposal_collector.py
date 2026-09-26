@@ -17,6 +17,9 @@ from .construction_formal_consumer import (
     plan_construction_private,
     read_construction_ledger,
 )
+from .bridge.observed_heir_marriage_private_action_v1 import (
+    SUBMIT_STEP as FAMILY_SUBMIT_STEP,
+)
 from .bridge.domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
 )
@@ -26,6 +29,7 @@ from .m5_observed_opportunity_selector import (
     construction_proposal,
     council_steward_proposal,
     faction_gift_proposal,
+    first_heir_marriage_proposal,
     observed_frame,
     wartime_lifestyle_perk_proposal,
 )
@@ -33,7 +37,7 @@ from .m5_observed_opportunity_selector import (
 
 SOURCE_SCHEMA = "xar.ck3.m5-formal-proposal-sources.v1"
 RESULT_SCHEMA = "xar.ck3.m5-formal-proposal-collection.v1"
-_DOMAIN_ORDER = ("war", "council", "building", "diplomacy", "lifestyle")
+_DOMAIN_ORDER = ("war", "council", "building", "marriage", "diplomacy", "lifestyle")
 
 
 def collect_m5_formal_proposals(
@@ -229,6 +233,28 @@ def plan_m5_formal_query_only(
                 "m5_joint_formal_action_ready": True,
             },
         }
+    family_source = sources.get("domains", {}).get("marriage")
+    family_plan = (family_source.get("plan")
+                   if isinstance(family_source, Mapping) else None)
+    if (
+        isinstance(reservation, Mapping)
+        and reservation.get("domain") == "marriage"
+        and reservation.get("candidate_id") == dispatch.get("selected_candidate_id")
+        and isinstance(family_plan, Mapping)
+        and family_plan.get("selected_step") == FAMILY_SUBMIT_STEP
+    ):
+        return {
+            **cleaned,
+            "plan": {
+                **baseline,
+                **deepcopy(dict(family_plan)),
+                "phase": "m5_joint_family_typed_submit",
+                "selected_step": FAMILY_SUBMIT_STEP,
+                "reason": "submit one same-frame native-legal valued first-heir marriage",
+                "m5_joint_query_only": collection,
+                "m5_joint_formal_action_ready": True,
+            },
+        }
     if collection["status"] == "no_complete_feasible_proposal":
         return {
             **cleaned,
@@ -275,6 +301,11 @@ def _adapt_domain(
         return construction_proposal(
             frame=frame,
             query=_mapping(source.get("query"), "building.query"),
+        )
+    if domain == "marriage":
+        return first_heir_marriage_proposal(
+            frame=frame,
+            plan=_mapping(source.get("plan"), "marriage.plan"),
         )
     if domain == "diplomacy":
         return faction_gift_proposal(

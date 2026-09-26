@@ -956,3 +956,25 @@ flowchart TD
 ```
 
 [evidence boundary] 原版 `marriage_ai_accept_modifier` 包含 alliance/hostility、家庭、tier、opinion、fertility、claim 等输入；其作用于**接收者接受度**，不是自动玩家可直接拿来排序的统一机会成本。`negotiate_alliance_interaction` 的 `00_alliance.txt:1120–1581` 还要单独检查关系、战争、hook/influence 与接受后 `create_alliance` 路径。R736 只证明现成的五候选真实场景及家庭原生最终合法性；任何跨婚姻、外交、战争的评分、参战承诺和独立结果仍是另一个门。
+
+## 2026-09-27：C22 同日不同帧与 M5 家庭源
+
+C22 的冻结正式报告 `Z:\ck3_mod_rewrite_process_assets\g2-robert-joint-h90-c22-20260927\attempt-01\formal-report.txt`，SHA-256 `53B09D75C147658ECA838BEFF4400675C15A6EA8BD210593EDF80673B1AAE02D`，第 2 turn 建设前是 `native:3`、公共 revision 4、native revision 3、`date_raw=53153760`；第 4 turn 婚约前是 `native:5`、公共 revision 6、native revision 5、同一日期。第 4 turn 的候选 38710、recipient 32266、原生可发送/接受线索及 `would_attempt_if_accepted=true` **不能**回填为第 2 turn 的家庭机会。第 2 turn 是否同时有该正值候选仍待新 paused 实机读回。
+
+原版 exact `00_marriage_interactions.txt:272–326` 的普通 arrange marriage `cost` 列出 prestige、piety、influence，没有 gold；`on_send:660–672` 的金币支出只在 grand wedding promise 分支。M5 私有家庭 adapter 因此只接现有家庭策略已经选出的、`grand_wedding_option_selected=false` 的原生 final-legal 候选，当前动作的金币占用记 0；prestige/piety/influence、子代宗族结果、联盟是否成立、联盟战争义务和退婚代价仍作为未估值项保留，不把 AI 接受分或潜在联盟折算成收益。原生 complete Can Send 和接收者最终答复依旧属于家庭策略自己的合法性门。
+
+```mermaid
+flowchart TD
+    A["[同一 paused frame] 公开 revision、native revision、日期、episode"] --> B["[现有原生口] 首继承人 final-legal 全行"]
+    B --> C["[现有原生口] 同帧价值排序后五行结果、lineality、possible pair"]
+    C --> D{"[既有家庭策略] 真实可发送且有界正值？"}
+    D -->|是| E["[私有 M5] 角色/潜在盟友/长期承诺占用"]
+    D -->|否| F["只报告无合格家庭提案"]
+    E --> G["同帧建设、礼金与家庭 proposal 联合选择"]
+    G --> H["选中家庭时复用原 typed proposal 与 pending/后置/冷恢复"]
+    H -. "C24 新 paused 联合结果待验" .-> I["[unknown] 第 2 turn 类场景是否有家庭正值"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class I unknown;
+```
+
+源码层的同帧门会逐项核 selected five-row、final-legal 行、原生 revision/query sequence、episode/date、无配偶/订婚、lineality 和资源身份；建设/礼金的 source 继续独立评估。既有 selector 在 building + marriage 同时出现时不启用只适用于 building + gift 的正收入优先规则，转而按盟友占用、金币、承诺键、角色数等共享资源排序。静态夹具中的建设因零盟友占用先于一盟友占用的婚约；这只是受限资源仲裁，不是婚配价值、长期义务与建设收益的统一数值比较，也未实机闭合资源冲突。M5 选中家庭时只转发既有 `submit-observed-first-heir-marriage-v1-private` 所需 choice、legality 和诊断，不新增 proposal 动作或公开广告。此阶段仅有聚焦静态验证，不能称作 C22 第 2 turn 的实机联合消费。

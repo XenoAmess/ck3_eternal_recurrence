@@ -174,6 +174,125 @@ def construction_proposal(
     )
 
 
+def first_heir_marriage_proposal(
+    *, frame: Mapping[str, object], plan: Mapping[str, object],
+) -> dict[str, object]:
+    """Adapt one already approved family policy choice on its paused frame."""
+    from .bridge.observed_heir_marriage_private_action_v1 import SUBMIT_STEP
+
+    choice = plan.get("family_marriage_choice")
+    legality = plan.get("family_marriage_legality")
+    diagnostic = plan.get("family_marriage_private_diagnostic")
+    if (plan.get("selected_step") != SUBMIT_STEP
+            or not isinstance(choice, Mapping)
+            or not isinstance(legality, Mapping)
+            or not isinstance(diagnostic, Mapping)
+            or legality.get("status") != "available"
+            or legality.get("native_revision") != frame.get("native_revision")
+            or diagnostic.get("native_revision") != frame.get("native_revision")
+            or diagnostic.get("date_raw") != frame.get("date_raw")
+            or diagnostic.get("episode_run_id") != frame.get("episode_run_id")
+            or diagnostic.get("legality_query_sequence") != legality.get("query_sequence")):
+        raise ValueError("same-frame approved first-heir marriage required")
+    candidate = choice.get("candidate_character_id")
+    legal_rows = legality.get("native_legal_candidates")
+    rows = diagnostic.get("rows")
+    if (type(candidate) is not int or candidate <= 0
+            or diagnostic.get("selected_candidate_character_id") != candidate
+            or not isinstance(legal_rows, list)
+            or not isinstance(rows, list) or len(rows) != 5):
+        raise ValueError("first-heir marriage lacks its five-row selected proof")
+    matched_legal = [row for row in legal_rows if isinstance(row, Mapping)
+                     and row.get("candidate_character_id") == candidate]
+    matched = [row for row in rows if isinstance(row, Mapping)
+               and row.get("candidate_character_id") == candidate]
+    if len(matched_legal) != 1 or len(matched) != 1:
+        raise ValueError("first-heir marriage selection is not unique")
+    native = matched_legal[0]
+    row = matched[0]
+    actor = frame["played_character_id"]
+    heir = row.get("heir_character_id")
+    recipient = row.get("recipient_character_id")
+    outcome = row.get("predicted_outcome_if_accepted")
+    expected_value = (
+        "unpartnered_first_heir_adult_marriage_opportunity"
+        if outcome == "marriage" else
+        "bounded_first_heir_betrothal_and_realm_alliance_attempt"
+        if outcome == "betrothal" else None
+    )
+    if (type(heir) is not int or heir <= 0 or heir == actor
+            or type(recipient) is not int or recipient <= 0 or recipient == actor
+            or recipient == heir or candidate in {actor, heir}
+            or row.get("status") != "available"
+            or row.get("actor_character_id") != actor
+            or diagnostic.get("observed_first_heir_character_id") != heir
+            or legality.get("observed_first_heir_character_id") != heir
+            or row.get("rejection_reasons") != []
+            or row.get("heir_spouse_count") != 0
+            or row.get("heir_betrothed_character_id") is not None
+            or row.get("heir_primary_spouse_character_id") is not None
+            or row.get("grand_wedding_option_selected") is not False
+            or native.get("played_character_id") != actor
+            or native.get("subject_character_id") != heir
+            or native.get("recipient_matchmaker_character_id") != recipient
+            or native.get("complete_can_send") is not True
+            or native.get("recipient_answer_allows_send") is not True
+            or native.get("recipient_answer_status_raw") not in (0, 1)
+            or type(native.get("recipient_ai_accept_raw")) is not int
+            or native["recipient_ai_accept_raw"] <= 0
+            or native.get("recipient_ai_accept_raw") !=
+               choice.get("recipient_ai_accept_raw")
+            or row.get("predicted_outcome_if_accepted") !=
+               choice.get("predicted_outcome_if_accepted")
+            or choice.get("value") != expected_value):
+        raise ValueError("first-heir marriage lacks native-final value proof")
+    pairs = row.get("possible_alliance_pairs")
+    if not isinstance(pairs, list):
+        raise ValueError("first-heir marriage alliance projection is absent")
+    realm_attempt = any(
+        isinstance(pair, Mapping)
+        and pair.get("first_character_id") == actor
+        and pair.get("second_character_id") == recipient
+        and pair.get("already_allied") is False
+        and pair.get("both_have_realm_data") is True
+        and pair.get("would_attempt_if_accepted") is True
+        for pair in pairs
+    )
+    if outcome == "betrothal" and not realm_attempt:
+        raise ValueError("betrothal lacks the approved realm alliance attempt")
+    unpriced = choice.get("unpriced")
+    if (not isinstance(unpriced, list)
+            or any(not isinstance(item, str) for item in unpriced)
+            or not {"child_dynasty_result", "alliance_result",
+                    "alliance_war_obligation", "betrothal_break_cost"}
+            <= set(unpriced)):
+        raise ValueError("first-heir marriage long-term obligations are absent")
+    return _proposal(
+        frame=frame,
+        candidate_id=f"marriage:first-heir:{heir}:{candidate}:{recipient}",
+        domain="marriage", source_policy="first-heir-marriage-formal-v1",
+        gold_cost_raw=0, minimum_gold_reserve_raw=0,
+        projected_supply_margin_raw=None, war_slot_claim=0,
+        army_ids=[],
+        ally_character_ids=[recipient] if realm_attempt else [],
+        character_ids=sorted({heir, candidate, recipient}),
+        commitment_keys=[f"first-heir-marriage:{heir}"],
+        evidence={
+            "heir_character_id": heir,
+            "candidate_character_id": candidate,
+            "recipient_character_id": recipient,
+            "predicted_outcome_if_accepted": outcome,
+            "value": expected_value,
+            "recipient_ai_accept_raw": choice["recipient_ai_accept_raw"],
+            "realm_alliance_attempt_if_accepted": realm_attempt,
+            "alliance_established": None,
+            "unpriced": list(unpriced),
+            "ordinary_marriage_immediate_gold_claim_raw": 0,
+            "stock_prestige_piety_influence_cost": "not_priced_in_joint_selector",
+        },
+    )
+
+
 def faction_gift_proposal(
     *, frame: Mapping[str, object], candidate: Mapping[str, object],
 ) -> dict[str, object]:
