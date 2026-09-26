@@ -25,6 +25,14 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
 
+def _identity(path: Path) -> dict[str, object]:
+    return {
+        "path": str(path.resolve()),
+        "bytes": path.stat().st_size,
+        "sha256": _sha256(path),
+    }
+
+
 def _steam_windows() -> list[tuple[int, int]]:
     found: list[tuple[int, int]] = []
 
@@ -116,6 +124,7 @@ def capture(output_dir: Path) -> dict[str, object]:
         "before_sha256": _sha256(before_path),
         "moved_path": str(moved_path),
         "moved_sha256": _sha256(moved_path),
+        "moved_identity": _identity(moved_path),
         "pixel_difference_bbox": list(bbox),
         "moving_edge_changed": True,
         "offline_status_observed": None,
