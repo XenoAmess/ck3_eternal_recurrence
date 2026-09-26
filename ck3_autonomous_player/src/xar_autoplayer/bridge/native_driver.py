@@ -1668,6 +1668,15 @@ class NativeHeadlessGameplayDriver:
             if result.get("snapshot") is True
             else None
         )
+        if isinstance(current_snapshot, dict):
+            action_steps.update(
+                _fresh_preview_first_hop_steps(
+                    current_snapshot,
+                    self._history_tail_snapshot(128),
+                    action_steps,
+                    bridge_capabilities,
+                )
+            )
         with self._driver_state_lock:
             marriage_choices = copy.deepcopy(self._arrange_marriage_choices)
             active_retreat_token = copy.deepcopy(
@@ -7208,6 +7217,10 @@ class NativeHeadlessGameplayDriver:
         with self._history_lock:
             return copy.deepcopy(self._command_history)
 
+    def _history_tail_snapshot(self, limit: int) -> list[dict[str, object]]:
+        with self._history_lock:
+            return copy.deepcopy(self._command_history[-limit:])
+
     def _driver_state_payload_locked(self) -> dict[str, object]:
         rollback_war_failures = copy.deepcopy(self._rollback_war_failures)
         payload = {
@@ -9916,6 +9929,11 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native move preview returned a malformed route_preview"
                 )
+            current = self.take_internal_semantic_snapshot()
+            if not _same_paused_native_frame(starting, current):
+                raise BridgeUnavailableError(
+                    "native move preview crossed a snapshot revision"
+                )
             return {
                 **result,
                 "route_preview": {
@@ -9923,6 +9941,15 @@ class NativeHeadlessGameplayDriver:
                     "route_province_ids": list(route_province_ids),
                     "previewed_date_raw": previewed_date_raw,
                 },
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+                "queried_connection_generation": (
+                    starting.get("diagnostics", {}).get("connection_generation")
+                    if isinstance(starting.get("diagnostics"), dict)
+                    else None
+                ),
+                "queried_episode_run_id": starting.get("episode_run_id"),
             }
 
         move = parse_move_army_step(step)
@@ -25190,6 +25217,90 @@ def _route_contact_hostile_ids(
             }
         )
     )
+
+
+def _fresh_preview_first_hop_steps(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+    advertised_steps: set[str],
+    bridge_capabilities: set[str],
+) -> set[str]:
+    """Expose only the first waypoint of a same-frame native route preview."""
+    if (
+        snapshot.get("paused") is not True
+        or snapshot.get("map_ready") is not True
+        or snapshot.get("active_event") is not None
+        or snapshot.get("pending_character_interaction") is not None
+        or not {
+            PREVIEW_MOVE_ARMY_CAPABILITY,
+            MOVE_ARMY_CAPABILITY,
+            QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
+        } <= bridge_capabilities
+    ):
+        return set()
+    hostiles = _route_contact_hostile_ids(snapshot)
+    if not 0 < len(hostiles) <= 64:
+        return set()
+    diagnostics = snapshot.get("diagnostics")
+    generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    if (
+        isinstance(generation, bool)
+        or not isinstance(generation, int)
+        or not isinstance(snapshot.get("episode_run_id"), str)
+        or not snapshot.get("episode_run_id")
+    ):
+        return set()
+    steps: set[str] = set()
+    seen: set[tuple[int, int]] = set()
+    for row in reversed(history):
+        parsed = parse_preview_move_army_step(row.get("command"))
+        if parsed is None or parsed in seen:
+            continue
+        seen.add(parsed)
+        army_id, target_id = parsed
+        if preview_move_army_step(army_id, target_id) not in advertised_steps:
+            continue
+        result = row.get("result")
+        preview = result.get("route_preview") if isinstance(result, dict) else None
+        army = _army_by_id(snapshot, army_id)
+        origin = army.get("current_province_id") if isinstance(army, dict) else None
+        route = preview.get("route_province_ids") if isinstance(preview, dict) else None
+        remaining_route = (
+            route[1:] if isinstance(route, list) and route and route[0] == origin
+            else route
+        )
+        if not (
+            row.get("ok") is True
+            and isinstance(result, dict)
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == snapshot.get("native_revision")
+            and result.get("queried_connection_generation") == generation
+            and result.get("queried_episode_run_id") == snapshot.get("episode_run_id")
+            and isinstance(army, dict)
+            and army.get("controllable") is True
+            and _positive_native_id(origin)
+            and isinstance(preview, dict)
+            and preview.get("status") == "available"
+            and preview.get("army_id") == army_id
+            and preview.get("origin_province_id") == origin
+            and preview.get("target_province_id") == target_id
+            and preview.get("previewed_date_raw") == snapshot.get("date_raw")
+            and isinstance(remaining_route, list)
+            and len(remaining_route) > 1
+            and remaining_route[-1] == target_id
+            and all(_positive_native_id(item) for item in remaining_route)
+        ):
+            continue
+        first_hop = remaining_route[0]
+        steps.add(preview_move_army_step(army_id, first_hop))
+        steps.add(query_route_contact_horizon_step(army_id, first_hop, hostiles))
+        steps.add(move_army_step(army_id, first_hop))
+    return steps
 
 
 def _fresh_route_contact_advance_steps(

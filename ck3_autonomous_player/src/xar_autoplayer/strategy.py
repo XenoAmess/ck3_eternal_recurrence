@@ -15340,13 +15340,19 @@ def _general_battle_forecast_ingress(
             "read the current native route before forecasting an observed enemy contact",
         )
     route = preview.get("route_province_ids")
+    remaining_route = (
+        route[1:] if isinstance(route, list) and route and route[0] == origin
+        else route
+    )
     if not (
         preview.get("status") == "available"
-        and isinstance(route, list) and route and route[-1] == target
+        and isinstance(remaining_route, list)
+        and remaining_route
+        and remaining_route[-1] == target
     ):
         return bounded("native_war_general_battle_route_blocked", None,
                        "the current native route is not an exact route to the contact", route_preview=preview)
-    entry = route[-2] if len(route) > 1 else origin
+    entry = remaining_route[-2] if len(remaining_route) > 1 else origin
     hostile_ids = tuple(sorted({
         enemy_id
         for enemy in enemy_rows
@@ -15434,14 +15440,14 @@ def _general_battle_forecast_ingress(
             "the bounded whole-battle model exceeds the configured contact risk budget",
             battle_forecast=forecast, contact_admission=admission,
         )
-    if len(route) != 1:
+    if len(remaining_route) != 1:
         if contact.get("one_day_contact_free") is not True:
             return bounded(
                 "native_war_general_battle_short_route_blocked", None,
                 "the first travel day has another possible contact",
                 battle_forecast=forecast, contact_admission=admission,
             )
-        first_hop = route[0]
+        first_hop = remaining_route[0]
         first_preview_step = preview_move_army_step(army_id, first_hop)
         first_preview = _fresh_move_route_preview(
             commands, army_id=army_id, origin_province_id=origin,
@@ -15454,7 +15460,10 @@ def _general_battle_forecast_ingress(
                 "prove an exact first waypoint before a distant predicted contact",
                 battle_forecast=forecast, contact_admission=admission,
             )
-        if first_preview.get("status") != "available" or first_preview.get("route_province_ids") != [first_hop]:
+        first_route = first_preview.get("route_province_ids")
+        if isinstance(first_route, list) and first_route and first_route[0] == origin:
+            first_route = first_route[1:]
+        if first_preview.get("status") != "available" or first_route != [first_hop]:
             return bounded("native_war_general_battle_short_preview_blocked", None,
                            "the first waypoint does not have an exact one-hop route",
                            battle_forecast=forecast, contact_admission=admission)

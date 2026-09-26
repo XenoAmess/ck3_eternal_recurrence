@@ -161,6 +161,39 @@ def test_long_route_uses_forecast_only_to_advance_one_contact_free_waypoint():
         assert result["general_battle_forecast_used_for_decision"] is True
 
 
+def test_long_route_with_origin_prefix_uses_first_travel_waypoint():
+    frame = _frame()
+    frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 40
+
+    def preview(*args, **kwargs):
+        return {"status": "available", "route_province_ids": (
+            [30, 40, 31] if kwargs["target_province_id"] == 31 else [30, 40]
+        )}
+
+    def contact(*args, **kwargs):
+        if kwargs["target_province_id"] == 31:
+            return {"one_day_contact_free": True, "conflicts": [
+                {"province_id": 31, "hostile_army_id": 21},
+            ]}
+        return {"one_day_contact_free": True, "conflicts": []}
+
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", side_effect=preview),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", side_effect=contact),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        result = _call(
+            frame, entry=40,
+            extra_steps={
+                "preview-move-army-11-to-40", "move-army-11-to-40",
+                query_route_contact_horizon_step(11, 40, (21,)),
+            },
+        )
+    assert result["phase"] == "native_war_general_battle_short_move"
+    assert result["selected_step"] == "move-army-11-to-40"
+
+
 def test_nullable_enemy_roster_does_not_crash_generic_contact_review():
     frame = _frame()
     frame["active_wars"].append({"war_id": 2, "enemy_armies": None})
