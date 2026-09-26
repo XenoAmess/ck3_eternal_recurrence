@@ -117,10 +117,11 @@ class FrozenPairTest(unittest.TestCase):
                      "paused": True, "map_ready": True,
                      "played_character": {"character_id": 29829}}
             observed = []
+            driver_options = {}
 
             class Driver:
                 def __init__(self, *args, **kwargs):
-                    pass
+                    driver_options.update(kwargs)
 
                 def _execute_campaign_root_context_v1_query(self, **kwargs):
                     return {"status": "available", "held_title_partition": [
@@ -181,6 +182,8 @@ class FrozenPairTest(unittest.TestCase):
                     recipient_character_id=32266, native_bridge=config,
                     readiness_stable_seconds=0)
             self.assertTrue(report["ok"])
+            self.assertEqual(driver_options["succession_lifecycle_binding"],
+                             {"xar_enabled": "xar_off"})
             self.assertEqual(report["query_envelope"]["alliance_status"],
                              "not_allied")
             self.assertEqual(report["before"]["frame"]["date_raw"],
