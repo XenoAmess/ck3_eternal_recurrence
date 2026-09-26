@@ -707,15 +707,18 @@ bool BinderInvokeCanPlan(
       result.value > 1 ||
       (result.value != 0 && (result.failure_display_key.size != 0 ||
                              result.failure_display_text.size != 0)) ||
-      (result.value == 0 && (!ValidText(result.failure_display_key) ||
-                             !ValidText(result.failure_display_text)))) {
+      (result.value == 0 &&
+       ((result.failure_display_key.size != 0 &&
+         !ValidText(result.failure_display_key)) ||
+        !ValidText(result.failure_display_text)))) {
     SetFailure(state,
                ActivityPlanningNativeBinderFailureV1::final_can_plan_failed);
     return false;
   }
   output.value = result.value;
   if (result.value == 0) {
-    output.failure_display_key = TextRef(result.failure_display_key);
+    if (result.failure_display_key.size != 0)
+      output.failure_display_key = TextRef(result.failure_display_key);
     output.failure_display_text = TextRef(result.failure_display_text);
   }
   SetFailure(state, ActivityPlanningNativeBinderFailureV1::none);

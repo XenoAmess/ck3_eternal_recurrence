@@ -66,6 +66,7 @@ struct Fixture {
   std::uint32_t can_plan_calls = 0;
   std::uint32_t semantic_calls = 0;
   bool can_plan = true;
+  bool failure_key_available = true;
   bool bad_owner = false;
   bool bad_semantic_provenance = false;
   bool semantic_drift = false;
@@ -336,8 +337,9 @@ bool InvokeCanPlan(void *context, std::uintptr_t module_base,
   output.used_host_view_final_can_plan = true;
   output.value = fixture.can_plan ? 1 : 0;
   if (!fixture.can_plan) {
-    output.failure_display_key = Fixed<kActivityPlanningStableKeyCapacityV1>(
-        "activity_feast_can_plan_failure");
+    if (fixture.failure_key_available)
+      output.failure_display_key = Fixed<kActivityPlanningStableKeyCapacityV1>(
+          "activity_feast_can_plan_failure");
     output.failure_display_text = Fixed<kActivityPlanningDisplayTextCapacityV1>(
         "A feast is unavailable.");
   }
@@ -462,6 +464,26 @@ void TestFinalCanPlanFailureIsTypedAndCopied() {
          "activity_feast_can_plan_failure");
 }
 
+void TestFinalCanPlanTextWithoutUnprovenKey() {
+  Harness harness{};
+  harness.fixture.can_plan = false;
+  harness.fixture.failure_key_available = false;
+  ActivityPlanningSnapshotPrivateV1 output{};
+  assert(harness.Read(output));
+  assert(!output.can_plan_final.value);
+  assert(output.failure_display_key.state ==
+         ActivityPlanningFieldStateV1::unknown);
+  assert(output.failure_display_key.unknown_reason ==
+         ActivityPlanningUnknownReasonV1::native_stable_key_unresolved);
+  assert(View(output.failure_display_key.value).empty());
+  assert(output.failure_display_text.state ==
+         ActivityPlanningFieldStateV1::known);
+  assert(ActivityPlanningFixedTextViewV1(output.failure_display_text.value) ==
+         "A feast is unavailable.");
+  assert(output.readiness.final_can_plan_ready);
+  assert(!output.readiness.action_inputs_ready);
+}
+
 void TestExactBuildImageAndSlotGate() {
   Fixture fixture{};
   ActivityPlanningNativeBinderStateV1 state{};
@@ -568,6 +590,7 @@ int main() {
   TestFullP0CaptureAndFreshResolution();
   TestHeapDefinitionAndIdentityReplacement();
   TestFinalCanPlanFailureIsTypedAndCopied();
+  TestFinalCanPlanTextWithoutUnprovenKey();
   TestExactBuildImageAndSlotGate();
   TestOwnerAndSemanticRedRemainVisible();
   TestContainerLifecycleAndFrameDriftFailClosed();

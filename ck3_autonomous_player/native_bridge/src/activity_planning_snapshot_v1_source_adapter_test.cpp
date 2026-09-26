@@ -168,7 +168,9 @@ bool InvokeFinalCanPlan(
   }
   output.value = fixture.can_plan ? 1 : 0;
   if (!fixture.can_plan) {
-    output.failure_display_key = Ref(fixture.failure_key);
+    output.failure_display_key = fixture.failure_key.empty()
+                                     ? ActivityPlanningSourceStringRefV1{}
+                                     : Ref(fixture.failure_key);
     output.failure_display_text = Ref(fixture.failure_text);
   }
   return true;
@@ -349,6 +351,34 @@ void TestBlockedCapturePreservesTypedFailure() {
   assert(!output.readiness.action_inputs_ready);
 }
 
+void TestBlockedCapturePreservesTextWithoutUnprovenKey() {
+  Harness harness{};
+  harness.fixture.can_plan = false;
+  harness.fixture.failure_key.clear();
+  ActivityPlanningSnapshotPrivateV1 output{};
+  assert(harness.Read(output));
+  assert(!output.can_plan_final.value);
+  assert(output.failure_display_key.state ==
+         ActivityPlanningFieldStateV1::unknown);
+  assert(output.failure_display_key.unknown_reason ==
+         ActivityPlanningUnknownReasonV1::native_stable_key_unresolved);
+  assert(View(output.failure_display_key.value).empty());
+  assert(output.failure_display_text.state ==
+         ActivityPlanningFieldStateV1::known);
+  assert(ActivityPlanningFixedTextViewV1(output.failure_display_text.value) ==
+         "A feast is unavailable.");
+  assert(output.readiness.final_can_plan_ready);
+  assert(!output.readiness.action_inputs_ready);
+
+  Harness empty_text{};
+  empty_text.fixture.can_plan = false;
+  empty_text.fixture.failure_key.clear();
+  empty_text.fixture.failure_text.clear();
+  assert(!empty_text.Read(output));
+  assert(ReadActivityPlanningSourceAdapterFailureV1(empty_text.state) ==
+         ActivityPlanningSourceAdapterFailureV1::source_text_unavailable);
+}
+
 void TestRepeatedQueryNeverCachesNativeIdentity() {
   Harness harness{};
   ActivityPlanningSnapshotPrivateV1 first{};
@@ -461,6 +491,7 @@ int main() {
       std::is_trivially_copyable_v<ActivityPlanningSourceContainerViewV1>);
   TestAvailableCaptureUsesTwoFreshNativeSamples();
   TestBlockedCapturePreservesTypedFailure();
+  TestBlockedCapturePreservesTextWithoutUnprovenKey();
   TestRepeatedQueryNeverCachesNativeIdentity();
   TestExactBuildAndHostViewAdmissionFailClosed();
   TestContainerAndSampleDriftRemainRed();
