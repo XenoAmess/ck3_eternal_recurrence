@@ -163,7 +163,8 @@ def follow_war_hotspot(
         raise ValueError("hotspot camera requires a bound snapshot revision")
     cursor_park = park_cursor() if park_cursor is not None else None
     if park_cursor is not None and (
-        not isinstance(cursor_park, dict) or cursor_park.get("status") != "parked"
+        not isinstance(cursor_park, dict)
+        or cursor_park.get("status") not in {"parked", "skipped_minimized"}
     ):
         raise ValueError(f"CK3 cursor was not parked inside the map window: {cursor_park}")
     result = service.center_map_on_landed_title_v1(

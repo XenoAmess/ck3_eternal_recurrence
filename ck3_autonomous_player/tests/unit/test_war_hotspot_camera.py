@@ -163,3 +163,34 @@ def test_camera_requires_verified_native_result(tmp_path: Path) -> None:
                 "war_objective_province_ids": [12]}]}, index,
             park_cursor=lambda: {"status": "ck3_not_foreground"},
         )
+
+
+def test_minimized_ck3_skips_pointer_move_but_keeps_native_postcondition(
+    tmp_path: Path,
+) -> None:
+    title_dir = tmp_path / "game" / "common" / "landed_titles"
+    title_dir.mkdir(parents=True)
+    (title_dir / "00_landed_titles.txt").write_text(
+        "c_test = { b_test = { province = 12 } }", encoding="utf-8"
+    )
+    index = LandedProvinceIndex.from_game_dir(tmp_path)
+    calls = []
+
+    class Service:
+        def center_map_on_landed_title_v1(
+            self, title_key: str, *, expected_revision: int
+        ) -> dict:
+            calls.append((title_key, expected_revision))
+            return {"status": "centered", "title": {"key": title_key},
+                    "camera_center": {"postcondition_verified": True}}
+
+    followed = follow_war_hotspot(
+        Service(),
+        {"revision": 4, "active_wars": [{
+            "war_id": 1, "war_objective_province_ids": [12]}]},
+        index,
+        park_cursor=lambda: {"status": "skipped_minimized", "ck3_pid": 321},
+    )
+    assert calls == [("b_test", 4)]
+    assert followed["status"] == "centered"
+    assert followed["cursor_park"]["status"] == "skipped_minimized"

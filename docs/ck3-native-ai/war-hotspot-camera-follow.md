@@ -8,7 +8,9 @@
 
 ## 执行与验收
 
-智能体的 `native_auto_run` 每回合在准备好暂停快照后、`auto_turn` 选择并提交游戏行动之前，调用同一选择器。它使用 `GameplayBridgeService.center_map_on_landed_title_v1` 的展示专用接口，不把居中伪装成 planner-selected 游戏步骤。调用前 `camera_cursor_parking.py` 必须核对 CK3 窗口为前台，并把鼠标停到客户区内部安全位置；调用必须绑定快照 revision；原生结果的稳定键、`centered`/`already_centered` 状态和 `camera_center.postcondition_verified=true` 都须成立。镜头失败会以 `camera_follow.status=unavailable` 写入该回合记录，不能伪称画面已对准，也不能替代战斗行动。
+智能体的 `native_auto_run` 每回合在准备好暂停快照后、`auto_turn` 选择并提交游戏行动之前，调用同一选择器。它使用 `GameplayBridgeService.center_map_on_landed_title_v1` 的展示专用接口，不把居中伪装成 planner-selected 游戏步骤。CK3 在前台时，`camera_cursor_parking.py` 将鼠标停到客户区内部安全位置；受管实例确为全局唯一 CK3 PID 且其可见顶层窗口全部最小化时，返回 `skipped_minimized` 并保持用户鼠标不动。仅处于后台但仍可见、窗口/PID 不明或视觉输入所需的场景不走该豁免。调用仍须绑定快照 revision；原生结果的稳定键、`centered`/`already_centered` 状态和 `camera_center.postcondition_verified=true` 都须成立。镜头失败会以 `camera_follow.status=unavailable` 写入该回合记录，不能伪称画面已对准，也不能替代战斗行动。
+
+2026-09-26 R0222（4cf58b5）实机首次按新窗口规则保持最小化后，后台 heartbeat 达 791，paused native turns 可读，但每回合附属镜头因 `park_foreground_ck3_cursor` 报 `ck3_not_foreground` 而记为 unavailable（attempt-01 正式报告行 274/419/558）。上述窄修复使真实最小化窗口无需鼠标停放即可尝试 native 镜头，并继续要求独立原生居中后置；目前只有源码/聚焦测试，最小化镜头新行为尚待下一轮实机核验。
 
 2026-09-24 复核时发现原先传给热点选择器的是 `native_auto_run` 的压缩 readiness binding，其中战争列表保存在 `_semantic.active_wars`，顶层没有 `active_wars`；因此先前的 agent 接入会返回 `no_observable_land_hotspot`。现已从**同一 readiness revision** 的 `_semantic.active_wars` 建立展示输入，并把成功或失败的 `camera_follow` 持久写入每回合正式报告；发生游戏动作失败时也写进 first-failure 记录。集成测试验证实战热点 `b_messina` 的定位发生在 `auto_turn` 之前；模拟镜头不可用时，回合仍继续执行原本的游戏动作。此测试证明调用与隔离逻辑，不替代长期原版实机 agent 运行验收。
 
