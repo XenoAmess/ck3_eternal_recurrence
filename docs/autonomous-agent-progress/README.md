@@ -21,6 +21,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 
 ## 导航
 
+- [2026-09-26 G2 非战争优先交接：生活方式、经济、家庭与联合调度](2026-09-26-g2-nonwar-priority-handoff.md)
 - [2026-09-22 G2 休假交接：预览、RED 与接班入口](2026-09-22-g2-holiday-handoff.md)
 - [T0/T1/T2 唯一现行状态投影](../project-state/current-state.json)
 - [状态投影 schema、生成与单写者规则](../project-state/README.md)
