@@ -20,3 +20,17 @@ flowchart TD
 ```
 
 This source increment is static-ready until a frozen candidate reads C12 on a real paused frame. Its result describes the **current** alliance pair, not the causal effect of the betrothal; an alliance may predate or follow the proposal. Future proposals should persist the exact recipient identity with the pending receipt before automatic result consumption can use this query without an external frozen row.
+
+## Managed C12 h148 read-only entry
+
+The latest retained C12 `recovery-pair-h148` contains a paired save, driver and family sidecar. A no-launch read of that sidecar and the C10 report binds played 29829, heir 38822, candidate 38710 and recipient 32266 without modifying either source. The package adds a dedicated, default-OFF `g2_preview_operator.py query-first-heir-marriage-alliance-result-v1` command. It first runs the official `native-one-generation-preflight` with the exact save/driver hashes, then uses a cold-checkpoint managed native session for one paused read. It stops and proves cleanup without a gameplay action or date advance, and records the before/after frames, current first-heir root query, native bilateral relationship, actual two-direction alliance read, window minimized/hidden state and query receipt. The query process validates the C10 report's supplied SHA and selected final-legal row against the C12 material ledger before session start. Neither the old sidecar nor the frozen proposal report is edited.
+
+For h148, `prepare-state` takes `--sample-dir <C12-recovery-pair-h148> --family-sidecar <C12-recovery-pair-h148/first-heir-marriage-formal-v1.json>` on the new candidate manifest. This resolved branch checks the old `source_pending`, material betrothal, actor and episode against the saved checkpoint, then copies the sidecar after the ordinary rebind and official no-launch preflight. It retains the original SHA. The existing pending branch still requires `--family-proof-report`; the resolved h148 branch does not read or rewrite h148's non-UTF-8 `formal-report.txt`. C10's separate frozen report and SHA are supplied only to the later read-only query.
+
+The operator command is:
+
+```powershell
+py tools/g2_preview_operator.py query-first-heir-marriage-alliance-result-v1 --manifest <official-h148-prepared-manifest> --output <new-Z-attempt-dir> --proposal-report <frozen-C10-attempt-01-formal-report.txt> --proposal-report-sha256 2BD6EBD230C2E730560119CF36D867192457D4E3247B7C4BF3DD8C8B0446C6F4 --recipient-character-id 32266 --ownership-round-id <allocated-R-number>
+```
+
+The manifest must pin the new source commit, DLL and prepared h148 save/driver. The ownership round must come from the persistent allocator, never from the example placeholder. Source tests and no-launch checks do not establish C12's actual alliance result; only the operator's paused native `query_envelope` can do that.
