@@ -664,15 +664,23 @@ py docs/ck3-native-ai/research/verify-marriage-matchmaking.py --game-root "D:\Ga
 
 既有玩家 snapshot 从 `CCharacter+0x1A0` 的 family data 读取 `+0x10` 订婚 CharacterID、`+0x14` 首配偶 CharacterID、`+0x20` 配偶 ID 数组。`NW-FAMILY-VALUE` 复用相同 exact-build reader，对已由 public campaign-root 指明、并在五角色婚配 context 重验的**首继承人 Character**读取这三项；五个候选行逐次核对相同值，查询前后仍须是同一 paused frame。这是当前关系只读口，不是正收益评分，也不修改原版 AI 的婚配决策树。已知继承人有配偶或订婚可以改变我方后续机会评估；三项都无值也不能推出候选遗传、宗族延续或联盟价值。
 
+同一私有五候选查询进一步复用 [House/Dynasty exact-build ABI](combat-phase-events.md#dynasty-perk-exact-build-reader-abi)：已解析的玩家、首继承人、候选 `CCharacter+0x150` 是 full HouseID；House store/fallback `module+0x570C408/0x570C400` 经 `CHouse+0x10` 校验身份，`CHouse+0x2C` 是 full DynastyID；Dynasty store/fallback `module+0x570C748/0x570C700` 经 `CDynasty+0x10` 校验身份。`-1` 是原生缺席，陈旧 generation 或 store 不可读是查询失败。查询前后逐个重读，五行玩家及继承人身份必须一致。这样可比较**当前人物**是否同 House/Dynasty，仍不能从当前身份推断未出生子女的宗族归属。
+
+已冻结的 native 候选评分函数 `0x1890F40` 在 `0x1890F52/0x1890FF9/0x1891029/0x18910AA` 读取 `CCharacter+0x199` 的一字节性别 selector；现有 `marriage_native_outcome_classifier_v1` 也用这个字段选择成人阈值。五候选查询现在发布首继承人与候选的 `*_sex_selector_raw`，只接受 `0/1` 并复读核对。它是原生 raw 值，当前尚无 `0/1` 与 male/female 的 exact 映射，因此不把 raw 值改名为性别语义，也不从相异 selector 自动作出子代 Dynasty 预测。
+
+原版 `00_marriage_interactions.txt:695` 的 `on_accept` 进入 `marriage_interaction_on_accept_effect`；`878-899` 的 `matrilineal` send option 在已 finalized context 中可读。exact-build 特殊婚配执行 `0x2282DE0` 在 `0x2282E76/0x2282E86` 比较实际双方 `+0x199`：selector 相同时 `0x2282E8F` 取首角色 selector；不同时 `0x2282E99` 从 context 读所选 matrilineal 选项。所得位在 `0x2282F10–0x2282F1D` 传给实际 marriage `0x2660B20`，或在 `0x2283047–0x2283057` 传给 betrothal `0x2660F40`。因此新读口可给出**接受后预计传入原生婚配操作的有效 lineality 位**；它与选项 bit 在同 selector 组合下可能不同。原生子代 House/Dynasty 归属、出生概率及实机后置仍未闭合，首继承人婚配的宗族延续收益保持 `unknown`，不能由该位或双方当前同宗族直接置为正值。
+
 ```mermaid
 flowchart LR
   A["public primary first heir ID"] --> B["same-frame native heir Character"]
   B --> C["family data: betrothed / primary spouse / spouse IDs"]
+  B --> H["Character -> House -> Dynasty full IDs; raw sex selector"]
   B --> D["final-legal five-role marriage context"]
-  D --> E["predicted marriage/betrothal + lineality + possible alliances"]
+  D --> E["predicted outcome + effective lineality bit + possible alliances"]
   C --> F["private candidate readback"]
+  H --> F
   E --> F
-  F -. "dynasty value, alliance obligation and live material result still unknown" .-> G["formal family proposal"]
+  F -. "child dynasty result, value, obligation and live result unknown" .-> G["formal family proposal"]
   classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
   class G unknown;
 ```

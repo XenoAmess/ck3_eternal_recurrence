@@ -16800,6 +16800,53 @@ ReadArrangeMarriageFamilyCandidatesV1(
 }
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+bool ReadMarriageCharacterLineageV1(
+    const void *character, MarriageCharacterLineageV1 &output) noexcept {
+  output = {};
+  if (character == nullptr) {
+    return false;
+  }
+  const auto module =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  if (module == 0) {
+    return false;
+  }
+  constexpr std::uintptr_t kHouseStoreSlotRva = 0x570C408;
+  constexpr std::uintptr_t kHouseFallbackSlotRva = 0x570C400;
+  constexpr std::uintptr_t kDynastyStoreSlotRva = 0x570C748;
+  constexpr std::uintptr_t kDynastyFallbackSlotRva = 0x570C700;
+  const auto house_id = LoadAt<std::int32_t>(character, 0x150);
+  if (house_id == -1) {
+    return true;
+  }
+  if (house_id < 0) {
+    return false;
+  }
+  void *const house = ResolveStoredComponent(
+      reinterpret_cast<void **>(module + kHouseStoreSlotRva), house_id, 0x10);
+  if (house == nullptr ||
+      house == *reinterpret_cast<void **>(module + kHouseFallbackSlotRva)) {
+    return false;
+  }
+  output.house_id = house_id;
+  const auto dynasty_id = LoadAt<std::int32_t>(house, 0x2C);
+  if (dynasty_id == -1) {
+    return true;
+  }
+  if (dynasty_id < 0) {
+    return false;
+  }
+  void *const dynasty = ResolveStoredComponent(
+      reinterpret_cast<void **>(module + kDynastyStoreSlotRva), dynasty_id,
+      0x10);
+  if (dynasty == nullptr ||
+      dynasty == *reinterpret_cast<void **>(module + kDynastyFallbackSlotRva)) {
+    return false;
+  }
+  output.dynasty_id = dynasty_id;
+  return true;
+}
+
 MarriageCandidateAlliancePrivateReadV1
 ReadMarriageCandidateAlliancePrivateV1(
     const Bindings &bindings,
@@ -16834,12 +16881,15 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.failure = Failure::identity_changed;
     return result;
   }
+  void *const played = ResolveCharacter(bindings, observed.played_character_id);
   void *const heir = ResolveCharacter(bindings, observed.subject_character_id);
   void *const candidate =
       ResolveCharacter(bindings, observed.candidate_character_id);
   void *const recipient = ResolveCharacter(
       bindings, observed.recipient_matchmaker_character_id);
-  if (heir == nullptr || candidate == nullptr || recipient == nullptr ||
+  if (played == nullptr || heir == nullptr || candidate == nullptr ||
+      recipient == nullptr ||
+      LoadAt<void *>(played, kCharacterDeathDataOffset) != nullptr ||
       LoadAt<void *>(heir, kCharacterDeathDataOffset) != nullptr ||
       LoadAt<void *>(candidate, kCharacterDeathDataOffset) != nullptr ||
       LoadAt<void *>(recipient, kCharacterDeathDataOffset) != nullptr) {
@@ -16851,6 +16901,22 @@ ReadMarriageCandidateAlliancePrivateV1(
           result.heir_relationship.primary_spouse_character_id,
           result.heir_relationship.spouse_character_ids)) {
     result.failure = Failure::heir_relationship_unavailable;
+    return result;
+  }
+  if (!ReadMarriageCharacterLineageV1(played, result.played_lineage) ||
+      !ReadMarriageCharacterLineageV1(heir, result.heir_lineage) ||
+      !ReadMarriageCharacterLineageV1(candidate,
+                                      result.candidate_lineage)) {
+    result.failure = Failure::lineage_unavailable;
+    return result;
+  }
+  result.heir_sex_selector_raw = LoadAt<std::uint8_t>(
+      heir, bridge::kMarriageCharacterAdultSelectorOffsetV1);
+  result.candidate_sex_selector_raw = LoadAt<std::uint8_t>(
+      candidate, bridge::kMarriageCharacterAdultSelectorOffsetV1);
+  if (result.heir_sex_selector_raw > 1 ||
+      result.candidate_sex_selector_raw > 1) {
+    result.failure = Failure::sex_selector_unavailable;
     return result;
   }
   CharacterInteractionContextStorage storage{};
@@ -16927,9 +16993,20 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.projection = {};
     return result;
   }
+  // Exact 0x2282E86..0x2282EAB chooses the first secondary participant's
+  // selector for same-selector pairs; otherwise it reads the matrilineal
+  // context option. 0x2282F10/0x228304D pass that bit to marriage/betrothal.
+  result.effective_matrilineal_if_accepted =
+      result.heir_sex_selector_raw == result.candidate_sex_selector_raw
+          ? result.heir_sex_selector_raw != 0
+          : result.projection.matrilineal_option_selected;
   Snapshot after{};
   MarriageHeirRelationshipV1 after_relationship{};
+  MarriageCharacterLineageV1 after_played_lineage{};
+  MarriageCharacterLineageV1 after_heir_lineage{};
+  MarriageCharacterLineageV1 after_candidate_lineage{};
   if (!ReadSnapshot(bindings, after) || after != before ||
+      ResolveCharacter(bindings, observed.played_character_id) != played ||
       ResolveCharacter(bindings, observed.subject_character_id) != heir ||
       ResolveCharacter(bindings, observed.candidate_character_id) != candidate ||
       ResolveCharacter(bindings, observed.recipient_matchmaker_character_id) !=
@@ -16938,10 +17015,28 @@ ReadMarriageCandidateAlliancePrivateV1(
           bindings, heir, after_relationship.betrothed_character_id,
           after_relationship.primary_spouse_character_id,
           after_relationship.spouse_character_ids) ||
-      after_relationship != result.heir_relationship) {
+      after_relationship != result.heir_relationship ||
+      !ReadMarriageCharacterLineageV1(played, after_played_lineage) ||
+      !ReadMarriageCharacterLineageV1(heir, after_heir_lineage) ||
+      !ReadMarriageCharacterLineageV1(candidate, after_candidate_lineage) ||
+      after_played_lineage != result.played_lineage ||
+      after_heir_lineage != result.heir_lineage ||
+      after_candidate_lineage != result.candidate_lineage ||
+      LoadAt<std::uint8_t>(
+          heir, bridge::kMarriageCharacterAdultSelectorOffsetV1) !=
+          result.heir_sex_selector_raw ||
+      LoadAt<std::uint8_t>(
+          candidate, bridge::kMarriageCharacterAdultSelectorOffsetV1) !=
+          result.candidate_sex_selector_raw) {
     result.failure = Failure::frame_changed;
     result.projection = {};
     result.heir_relationship = {};
+    result.played_lineage = {};
+    result.heir_lineage = {};
+    result.candidate_lineage = {};
+    result.heir_sex_selector_raw = 0xFF;
+    result.candidate_sex_selector_raw = 0xFF;
+    result.effective_matrilineal_if_accepted = false;
     return result;
   }
   result.failure = Failure::none;

@@ -54,6 +54,15 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
             "heir_betrothed_character_id": None,
             "heir_primary_spouse_character_id": None,
             "heir_spouse_character_ids": None if unavailable else [],
+            "played_house_id": None if unavailable else 100,
+            "played_dynasty_id": None if unavailable else 200,
+            "heir_house_id": None if unavailable else 100,
+            "heir_dynasty_id": None if unavailable else 200,
+            "candidate_house_id": None if unavailable else 300 + index,
+            "candidate_dynasty_id": None if unavailable else 400 + index,
+            "heir_sex_selector_raw": None if unavailable else 0,
+            "candidate_sex_selector_raw": None if unavailable else 1,
+            "effective_matrilineal_if_accepted": None if unavailable else False,
             "matrilineal_option_selected": None if unavailable else False,
             "possible_alliance_pairs": [] if unavailable else [{
                 "first_character_id": 29829,
@@ -114,6 +123,11 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(result["rows"][0]["predicted_outcome_if_accepted"],
                          "marriage")
         self.assertEqual(result["rows"][0]["heir_spouse_character_ids"], [])
+        self.assertEqual(result["rows"][0]["played_dynasty_id"], 200)
+        self.assertEqual(result["rows"][4]["candidate_dynasty_id"], 404)
+        self.assertEqual(result["rows"][0]["heir_sex_selector_raw"], 0)
+        self.assertIs(result["rows"][0]["effective_matrilineal_if_accepted"],
+                      False)
 
     def test_one_unavailable_pair_does_not_become_false_or_success(self) -> None:
         result = query_first_heir_candidate_alliance_projection_private_v1(
@@ -123,6 +137,9 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertIsNone(result["rows"][2]["matrilineal_option_selected"])
         self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
         self.assertIsNone(result["rows"][2]["heir_spouse_character_ids"])
+        self.assertIsNone(result["rows"][2]["candidate_dynasty_id"])
+        self.assertIsNone(result["rows"][2]["candidate_sex_selector_raw"])
+        self.assertIsNone(result["rows"][2]["effective_matrilineal_if_accepted"])
         self.assertEqual(result["rows"][2]["possible_alliance_pairs"], [])
 
     def test_same_heir_relationship_is_read_across_five_candidates(self) -> None:
@@ -155,6 +172,73 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
             legality=_legality(), candidate_character_ids=IDS)
         self.assertIsNone(result["rows"][2]["heir_spouse_character_ids"])
         self.assertEqual(result["status"], "unavailable")
+
+    def test_full_lineage_ids_are_consistent_and_absence_is_explicit(self) -> None:
+        reply = _reply()
+        reply["result"]["rows"][0]["candidate_house_id"] = None
+        reply["result"]["rows"][0]["candidate_dynasty_id"] = None
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertIsNone(result["rows"][0]["candidate_dynasty_id"])
+        reply["result"]["rows"][0]["candidate_dynasty_id"] = 400
+        with self.assertRaisesRegex(BridgeUnavailableError, "lineage identity malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply = _reply()
+        reply["result"]["rows"][3]["heir_dynasty_id"] = 201
+        with self.assertRaisesRegex(BridgeUnavailableError, "heir lineage changed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply = _reply()
+        del reply["result"]["rows"][1]["candidate_house_id"]
+        with self.assertRaisesRegex(BridgeUnavailableError, "row identity malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+
+    def test_lineage_read_failure_remains_unavailable(self) -> None:
+        reply = _reply(unavailable_index=2)
+        row = reply["result"]["rows"][2]
+        row["failure"] = "lineage_unavailable"
+        row["projection_failure"] = "none"
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertEqual(result["status"], "unavailable")
+        self.assertIsNone(result["rows"][2]["heir_house_id"])
+
+    def test_sex_selector_is_raw_and_consistent_without_semantic_guess(self) -> None:
+        reply = _reply()
+        reply["result"]["rows"][3]["heir_sex_selector_raw"] = 1
+        with self.assertRaisesRegex(BridgeUnavailableError, "heir sex selector changed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply["result"]["rows"][3]["heir_sex_selector_raw"] = 2
+        with self.assertRaisesRegex(BridgeUnavailableError, "sex selector malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+
+    def test_effective_lineality_uses_exact_same_selector_branch(self) -> None:
+        reply = _reply()
+        for row in reply["result"]["rows"]:
+            row["heir_sex_selector_raw"] = 1
+            row["candidate_sex_selector_raw"] = 1
+            row["effective_matrilineal_if_accepted"] = True
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertIs(result["rows"][0]["matrilineal_option_selected"], False)
+        self.assertIs(result["rows"][0]["effective_matrilineal_if_accepted"], True)
+        reply["result"]["rows"][2]["effective_matrilineal_if_accepted"] = False
+        with self.assertRaisesRegex(BridgeUnavailableError, "effective marriage lineality"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
 
     def test_outcome_failure_does_not_become_a_marriage(self) -> None:
         reply = _reply(unavailable_index=2)
