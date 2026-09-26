@@ -9,7 +9,9 @@ from typing import Mapping
 from .environment import write_json_atomic
 from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.domain_construction_private_transport_v1 import _identity as bridge_process_identity
-from .bridge.observed_heir_marriage_private_action_v1 import SCHEMA, SUBMIT_STEP, RESULT_STEP
+from .bridge.observed_heir_marriage_private_action_v1 import (
+    ALLIANCE_RESULT_STEP, RESULT_STEP, SCHEMA, SUBMIT_STEP,
+)
 
 
 _LEDGER = "first-heir-marriage-formal-v1.json"
@@ -375,7 +377,27 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                 "family_marriage_cold_recovery": True,
                 "family_marriage_prior_resolution": dict(resolved),
                 "reason": "re-read bilateral relation after restoring a prior checkpoint"}}
-        return {**planned, "plan": {**plan, "family_marriage_result_consumed": resolved}}
+        source_pending = resolved.get("source_pending")
+        recipient = (source_pending.get("recipient_character_id")
+                     if isinstance(source_pending, dict) else None)
+        alliance = resolved.get("alliance_result")
+        if (resolved.get("status") in {"marriage", "betrothal"}
+                and _positive(recipient)
+                and (not isinstance(alliance, dict)
+                     or (alliance.get("bridge_pid"),
+                         alliance.get("bridge_creation_date")) != (pid, creation))):
+            return {**planned, "plan": {**plan,
+                "phase": "first_heir_marriage_actual_alliance_read",
+                "selected_step": ALLIANCE_RESULT_STEP,
+                "family_marriage_resolved": dict(resolved),
+                "family_marriage_status": "actual_alliance_result_pending",
+                "reason": "read current player-recipient alliance after material heir relation"}}
+        return {**planned, "plan": {**plan,
+            "family_marriage_result_consumed": resolved,
+            "family_marriage_alliance_status": (
+                "recipient_unbound" if resolved.get("material_result") is True
+                and not _positive(recipient) else
+                alliance.get("status") if isinstance(alliance, dict) else None)}}
     if not (snapshot.get("paused") is True and snapshot.get("map_ready") is True
             and snapshot.get("active_event") is None
             and snapshot.get("pending_character_interaction") is None
@@ -419,6 +441,28 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
     state_dir = driver.state_dir
     legality = plan["family_marriage_legality"]
     choice = plan["family_marriage_choice"]
+    diagnostic = plan.get("family_marriage_private_diagnostic")
+    candidate = choice.get("candidate_character_id")
+    legal_rows = legality.get("native_legal_candidates")
+    observed_rows = (diagnostic.get("rows")
+                     if isinstance(diagnostic, Mapping) else None)
+    legal_matches = ([row for row in legal_rows if isinstance(row, Mapping)
+                      and row.get("candidate_character_id") == candidate]
+                     if isinstance(legal_rows, list) else [])
+    observed_matches = ([row for row in observed_rows if isinstance(row, Mapping)
+                         and row.get("candidate_character_id") == candidate]
+                        if isinstance(observed_rows, list) else [])
+    if (len(legal_matches) != 1 or len(observed_matches) != 1
+            or diagnostic.get("selected_candidate_character_id") != candidate
+            or diagnostic.get("native_revision") != legality.get("native_revision")
+            or diagnostic.get("legality_query_sequence") != legality.get("query_sequence")
+            or observed_matches[0].get("rejection_reasons") != []):
+        raise ValueError("first-heir marriage recipient lacks selected final-legal proof")
+    recipient = legal_matches[0].get("recipient_matchmaker_character_id")
+    if (not _positive(recipient)
+            or observed_matches[0].get("recipient_character_id") != recipient
+            or observed_matches[0].get("recipient_matchmaker_character_id") != recipient):
+        raise ValueError("first-heir marriage recipient changed before submission")
     pid, creation = bridge_process_identity(driver)
     pending = {"schema": SCHEMA, "status": "receipt_pending", "material_result": False,
                "pre_native_revision": snapshot["native_revision"],
@@ -426,6 +470,7 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
                "played_character_id": snapshot["played_character"]["character_id"],
                "heir_character_id": legality["observed_first_heir_character_id"],
                "candidate_character_id": choice["candidate_character_id"],
+               "recipient_character_id": recipient,
                "episode_run_id": snapshot["episode_run_id"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
                "submission_state": "may_have_submitted"}
@@ -491,4 +536,36 @@ def query_family_marriage_result_private(driver: object, *,
             **pending, "last_checked_native_revision": result["post_native_revision"],
             "last_checked_bridge_pid": pid,
             "last_checked_bridge_creation_date": creation}})
+    return result
+
+
+def query_family_marriage_alliance_result_private(
+    driver: object, *, resolved: Mapping[str, object],
+) -> dict[str, object]:
+    """Consume one current native alliance read without resending the proposal."""
+    state_dir = driver.state_dir
+    ledger = read_family_marriage_ledger(state_dir)
+    if ledger["pending"] is not None or ledger["resolved"] != dict(resolved):
+        raise ValueError("first-heir alliance read lacks its resolved receipt")
+    pending = resolved.get("source_pending")
+    recipient = (pending.get("recipient_character_id")
+                 if isinstance(pending, Mapping) else None)
+    if (resolved.get("status") not in {"marriage", "betrothal"}
+            or resolved.get("material_result") is not True
+            or not _positive(recipient)):
+        raise ValueError("first-heir alliance read lacks a bound material pair")
+    result = driver.query_observed_first_heir_marriage_alliance_result_private_v1(
+        resolved=dict(resolved), recipient_character_id=recipient)
+    pid, creation = bridge_process_identity(driver)
+    observation = {
+        "status": result["alliance_status"],
+        "recipient_character_id": recipient,
+        "played_has_recipient_alliance": result.get("played_has_recipient_alliance"),
+        "recipient_has_played_alliance": result.get("recipient_has_played_alliance"),
+        "relationship_status": result.get("relationship_status"),
+        "native_revision": result.get("native_revision"),
+        "bridge_pid": pid, "bridge_creation_date": creation,
+    }
+    _write(state_dir, {**ledger, "resolved": {
+        **resolved, "alliance_result": observation}})
     return result

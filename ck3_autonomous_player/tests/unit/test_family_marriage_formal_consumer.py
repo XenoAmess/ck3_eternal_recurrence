@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -14,12 +15,13 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer.family_marriage_formal_consumer import (
     choose_first_heir_marriage_candidate,
     plan_family_marriage_private,
+    query_family_marriage_alliance_result_private,
     query_family_marriage_result_private,
     read_family_marriage_ledger,
     submit_family_marriage_private,
 )
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
-    SCHEMA, RESULT_STEP, SUBMIT_STEP,
+    ALLIANCE_RESULT_STEP, SCHEMA, RESULT_STEP, SUBMIT_STEP,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.native_auto_run import (
@@ -121,6 +123,23 @@ class FakeDriver:
         self.calls.append("result")
         return {"status": "marriage", "material_result": True,
                 "post_native_revision": 8}
+
+    def query_observed_first_heir_marriage_alliance_result_private_v1(
+        self, *, resolved, recipient_character_id,
+    ):
+        self.calls.append("alliance")
+        assert recipient_character_id == resolved["source_pending"]["recipient_character_id"]
+        return {"step": ALLIANCE_RESULT_STEP, "status": "available",
+                "read_only": True, "advertised": False,
+                "played_character_id": 101,
+                "heir_character_id": 202,
+                "candidate_character_id": resolved["candidate_character_id"],
+                "recipient_character_id": recipient_character_id,
+                "relationship_status": resolved["status"],
+                "alliance_status": "allied",
+                "played_has_recipient_alliance": True,
+                "recipient_has_played_alliance": True,
+                "native_revision": resolved["post_native_revision"]}
 
 
 class FamilyConsumerTest(unittest.TestCase):
@@ -351,10 +370,18 @@ class FamilyConsumerTest(unittest.TestCase):
                     driver, pending=result_plan["plan"]["family_marriage_pending"],
                     cold=False)
                 self.assertEqual(result["status"], "betrothal")
+                alliance_plan = plan_family_marriage_private(
+                    driver, baseline, later, prewar_arbitration=True)
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 ALLIANCE_RESULT_STEP)
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=alliance_plan["plan"]["family_marriage_resolved"])
                 consumed = plan_family_marriage_private(
                     driver, baseline, later, prewar_arbitration=True)
                 self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
                                  ["status"], "betrothal")
+                self.assertEqual(consumed["plan"]["family_marriage_alliance_status"],
+                                 "allied")
 
     def test_private_diagnostic_retains_shared_heir_relationship_and_house_gate(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -427,13 +454,20 @@ class FamilyConsumerTest(unittest.TestCase):
                 query_family_marriage_result_private(
                     driver, pending=result_plan["plan"]["family_marriage_pending"],
                     cold=False)
+                alliance_plan = plan_family_marriage_private(
+                    driver, war, next_scene, prewar_arbitration=True)
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 ALLIANCE_RESULT_STEP)
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=alliance_plan["plan"]["family_marriage_resolved"])
                 consumed = plan_family_marriage_private(
                     driver, war, next_scene, prewar_arbitration=True)
             self.assertEqual(consumed["plan"]["selected_step"],
                              "query-declarable-wars")
             self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
                              ["status"], "marriage")
-            self.assertEqual(driver.calls, ["legality", "projection", "submit", "result"])
+            self.assertEqual(driver.calls, ["legality", "projection", "submit",
+                                            "result", "alliance"])
 
     def test_submit_pending_result_next_turn_and_no_repeat(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -450,6 +484,7 @@ class FamilyConsumerTest(unittest.TestCase):
                 pending = submit_family_marriage_private(
                     driver, plan=planned["plan"], snapshot=scene())
                 self.assertEqual(pending["submission_state"], "receipt_pending")
+                self.assertEqual(pending["recipient_character_id"], 400)
                 next_scene = {**scene(), "native_revision": 8}
                 next_plan = plan_family_marriage_private(driver, baseline, next_scene)
                 self.assertEqual(next_plan["plan"]["selected_step"], RESULT_STEP)
@@ -457,10 +492,17 @@ class FamilyConsumerTest(unittest.TestCase):
                     driver, pending=next_plan["plan"]["family_marriage_pending"],
                     cold=False)
                 self.assertTrue(result["material_result"])
+                alliance_plan = plan_family_marriage_private(
+                    driver, baseline, next_scene)
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 ALLIANCE_RESULT_STEP)
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=alliance_plan["plan"]["family_marriage_resolved"])
                 consumed = plan_family_marriage_private(driver, baseline, next_scene)
             self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]["status"],
                              "marriage")
-            self.assertEqual(driver.calls, ["legality", "projection", "submit", "result"])
+            self.assertEqual(driver.calls, ["legality", "projection", "submit",
+                                            "result", "alliance"])
             self.assertIsNone(read_family_marriage_ledger(driver.state_dir)["pending"])
 
     def test_formal_auto_turn_routes_typed_first_heir_submit(self):
@@ -479,6 +521,160 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertEqual(outcome["selected_step"], SUBMIT_STEP)
             self.assertEqual(outcome["result"]["status"], "receipt_pending")
             self.assertEqual(driver.calls, ["legality", "projection", "submit"])
+
+    def test_formal_auto_turn_reads_and_retains_actual_alliance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            baseline = {"plan": {"selected_step": "life-advance"}}
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                selected = plan_family_marriage_private(driver, baseline, scene())
+                pending = submit_family_marriage_private(
+                    driver, plan=selected["plan"], snapshot=scene())
+                query_family_marriage_result_private(driver, pending=pending,
+                                                     cold=False)
+                alliance_plan = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 8})
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 ALLIANCE_RESULT_STEP)
+                service = GameplayBridgeService(driver)
+                service.plan_turn = lambda: {**alliance_plan,
+                    "snapshot_id": "native:8", "revision": 8}
+                service.snapshot = lambda: {**scene(), "native_revision": 8}
+                outcome = service.auto_turn()
+                self.assertEqual(outcome["status"], "executed")
+                self.assertEqual(outcome["result"]["alliance_status"], "allied")
+                turn = _turn_record(
+                    4, "2026-09-27T00:00:00Z", turn_class="query",
+                    outcome=outcome, before=scene(), after=scene(), evidence=[])
+                self.assertEqual(turn["result"]["alliance_status"], "allied")
+                self.assertEqual(turn["result"]["recipient_character_id"], 400)
+                ledger = read_family_marriage_ledger(driver.state_dir)
+                self.assertIsNone(ledger["pending"])
+                self.assertEqual(ledger["resolved"]["alliance_result"]["status"],
+                                 "allied")
+                self.assertEqual(ledger["resolved"]["alliance_result"]
+                                 ["recipient_character_id"], 400)
+                consumed = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 8})
+                self.assertEqual(consumed["plan"]["selected_step"], "life-advance")
+                self.assertEqual(consumed["plan"]["family_marriage_alliance_status"],
+                                 "allied")
+            self.assertEqual(driver.calls, ["legality", "projection", "submit",
+                                            "result", "alliance"])
+
+    def test_actual_alliance_read_failure_keeps_material_receipt_retryable(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            baseline = {"plan": {"selected_step": "life-advance"}}
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                selected = plan_family_marriage_private(driver, baseline, scene())
+                pending = submit_family_marriage_private(
+                    driver, plan=selected["plan"], snapshot=scene())
+                query_family_marriage_result_private(driver, pending=pending,
+                                                     cold=False)
+                later = {**scene(), "native_revision": 8}
+                planned = plan_family_marriage_private(driver, baseline, later)
+                resolved = planned["plan"]["family_marriage_resolved"]
+                original_query = (
+                    driver.query_observed_first_heir_marriage_alliance_result_private_v1)
+                driver.query_observed_first_heir_marriage_alliance_result_private_v1 = (
+                    lambda **_: (_ for _ in ()).throw(RuntimeError("read unavailable")))
+                with self.assertRaisesRegex(RuntimeError, "read unavailable"):
+                    query_family_marriage_alliance_result_private(
+                        driver, resolved=resolved)
+                self.assertNotIn("alliance_result",
+                                 read_family_marriage_ledger(driver.state_dir)["resolved"])
+                self.assertEqual(plan_family_marriage_private(
+                    driver, baseline, later)["plan"]["selected_step"],
+                    ALLIANCE_RESULT_STEP)
+                driver.query_observed_first_heir_marriage_alliance_result_private_v1 = (
+                    original_query)
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=resolved)
+                self.assertEqual(plan_family_marriage_private(
+                    driver, baseline, later)["plan"]["family_marriage_alliance_status"],
+                    "allied")
+
+    def test_selected_recipient_mismatch_blocks_submit_before_pending_write(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            selected = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            selected["plan"]["family_marriage_private_diagnostic"]["rows"][0][
+                "recipient_character_id"] = 999
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                with self.assertRaisesRegex(ValueError, "recipient changed"):
+                    submit_family_marriage_private(
+                        driver, plan=selected["plan"], snapshot=scene())
+            self.assertIsNone(read_family_marriage_ledger(driver.state_dir)["pending"])
+            self.assertEqual(driver.calls, ["legality", "projection"])
+
+    def test_unknown_actual_alliance_is_durable_unknown_not_allied(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            baseline = {"plan": {"selected_step": "life-advance"}}
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                selected = plan_family_marriage_private(driver, baseline, scene())
+                pending = submit_family_marriage_private(
+                    driver, plan=selected["plan"], snapshot=scene())
+                query_family_marriage_result_private(driver, pending=pending,
+                                                     cold=False)
+                driver.query_observed_first_heir_marriage_alliance_result_private_v1 = (
+                    lambda *, resolved, recipient_character_id: {
+                        "step": ALLIANCE_RESULT_STEP, "status": "available",
+                        "read_only": True, "recipient_character_id": recipient_character_id,
+                        "relationship_status": resolved["status"],
+                        "alliance_status": "unknown",
+                        "played_has_recipient_alliance": None,
+                        "recipient_has_played_alliance": None,
+                        "native_revision": 8})
+                planned = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 8})
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=planned["plan"]["family_marriage_resolved"])
+                consumed = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 8})
+                self.assertEqual(consumed["plan"]["family_marriage_alliance_status"],
+                                 "unknown")
+                self.assertIsNone(consumed["plan"]["family_marriage_result_consumed"]
+                                  ["alliance_result"]["played_has_recipient_alliance"])
+
+    def test_legacy_material_ledger_without_recipient_remains_unbound(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            ledger = {"schema": "xar.ck3.first-heir-marriage-formal.v1",
+                      "pending": None, "resolved": {
+                          "status": "betrothal", "material_result": True,
+                          "episode_run_id": "robert-test",
+                          "heir_character_id": 202,
+                          "candidate_character_id": 300,
+                          "post_bridge_pid": 55,
+                          "post_bridge_creation_date": "created",
+                          "source_pending": {
+                              "played_character_id": 101,
+                              "heir_character_id": 202,
+                              "candidate_character_id": 300}}}
+            (driver.state_dir / "first-heir-marriage-formal-v1.json").write_text(
+                json.dumps(ledger), encoding="utf-8")
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            self.assertEqual(planned["plan"]["family_marriage_alliance_status"],
+                             "recipient_unbound")
+            turn = _turn_record(
+                3, "2026-09-27T00:00:00Z", turn_class="query",
+                outcome={"status": "executed", "plan": planned["plan"],
+                         "selected_step": "life-advance"},
+                before=scene(), after=scene(), evidence=[])
+            self.assertEqual(turn["plan"]["family_marriage_alliance_status"],
+                             "recipient_unbound")
+            self.assertEqual(driver.calls, [])
 
     def test_cold_absent_relation_waits_for_new_frame_without_resubmitting(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -557,6 +753,12 @@ class FamilyConsumerTest(unittest.TestCase):
                 pending = read_family_marriage_ledger(driver.state_dir)["pending"]
                 query_family_marriage_result_private(driver, pending=pending,
                                                      cold=False)
+                first_alliance = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 8})
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=first_alliance["plan"]["family_marriage_resolved"])
+                self.assertEqual(read_family_marriage_ledger(driver.state_dir)
+                                 ["resolved"]["alliance_result"]["bridge_pid"], 55)
             with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
                        return_value=(99, "new-created")):
                 recheck = plan_family_marriage_private(
@@ -568,10 +770,20 @@ class FamilyConsumerTest(unittest.TestCase):
                 query_family_marriage_result_private(
                     driver, pending=recheck["plan"]["family_marriage_pending"],
                     cold=True)
+                alliance_plan = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 1})
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 ALLIANCE_RESULT_STEP)
+                self.assertEqual(alliance_plan["plan"]["family_marriage_resolved"]
+                                 ["alliance_result"]["bridge_pid"], 55)
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=alliance_plan["plan"]["family_marriage_resolved"])
                 consumed = plan_family_marriage_private(
                     driver, baseline, {**scene(), "native_revision": 1})
             self.assertTrue(consumed["plan"]["family_marriage_result_consumed"]
                             ["cold_recovery_verified"])
+            self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
+                             ["alliance_result"]["bridge_pid"], 99)
 
     def test_pending_checkpoint_needs_durable_pair_and_game_save(self):
         pending = {"submission_state": "receipt_pending", "status": "receipt_pending",
@@ -583,6 +795,11 @@ class FamilyConsumerTest(unittest.TestCase):
             checkpoint, snapshot=scene(), submitted_result=pending,
             ledger={"pending": pending})
         self.assertEqual(fence["material_postcondition"], "unobserved")
+        self.assertNotIn("recipient_character_id", fence)
+        with_recipient = {**pending, "recipient_character_id": 400}
+        self.assertEqual(_verify_pending_family_marriage_checkpoint(
+            checkpoint, snapshot=scene(), submitted_result=with_recipient,
+            ledger={"pending": with_recipient})["recipient_character_id"], 400)
         with self.assertRaises(AgentError):
             _verify_pending_family_marriage_checkpoint(
                 checkpoint, snapshot=scene(), submitted_result=pending,
