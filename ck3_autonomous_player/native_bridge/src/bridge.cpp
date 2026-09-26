@@ -55,6 +55,9 @@
 #endif
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
 #include "xar_bridge/player_epidemic_treatment_presence_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+#include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
+#endif
 #include "xar_bridge/player_epidemic_recovery_v1.hpp"
 #include "xar_bridge/death_succession_modal_continue_v1_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
@@ -7173,6 +7176,32 @@ std::string PlayerEpidemicTreatmentPresenceResultFrame(
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+std::string PlayerPrisonerCollectionPrivateResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    std::uint64_t observation_revision, std::uint64_t snapshot_revision,
+    const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &value) {
+  const auto payload =
+      xar::ck3_11906::SerializePlayerPrisonerCollectionPrivateV1(
+          value, snapshot_revision);
+  if (payload.empty()) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":\"";
+  result += xar::ck3_11906::kPlayerPrisonerCollectionPrivateStepV1;
+  result += "\",\"accepted\":true,\"status\":\"";
+  result += value.available ? "available" : "unavailable";
+  result += "\",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"observation_revision\":" + Number(observation_revision);
+  result += ",\"snapshot_revision\":" + Number(snapshot_revision);
+  result += ",\"player_prisoner_collection\":" + payload;
+  result += ",\"private_build\":true,\"read_only\":true,";
+  result += "\"advertised\":false,\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+#endif
+
 std::string PlayerEpidemicRecoveryResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence, std::uint64_t observation_revision,
@@ -8787,6 +8816,10 @@ public:
     environment.permitted_executor_duoquinquagintary =
         &xar::ck3_11906::ExecuteCombatPhaseEventTraceFinishV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+    environment.permitted_executor_triquinquagintary =
+        &xar::ck3_11906::ExecutePlayerPrisonerCollectionPrivateQueryV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -9097,6 +9130,9 @@ struct WorkerState {
   std::uint64_t event_window_context_query_sequence = 0;
   std::uint64_t current_timeline_blocker_context_query_sequence = 0;
   std::uint64_t player_epidemic_treatment_presence_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  std::uint64_t player_prisoner_collection_query_sequence = 0;
+#endif
   std::uint64_t player_epidemic_recovery_query_sequence = 0;
   std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
@@ -9457,6 +9493,10 @@ void RunConnectedSession(
       state.current_timeline_blocker_context_query_sequence;
   auto &player_epidemic_treatment_presence_query_sequence =
       state.player_epidemic_treatment_presence_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  auto &player_prisoner_collection_query_sequence =
+      state.player_prisoner_collection_query_sequence;
+#endif
   auto &player_epidemic_recovery_query_sequence =
       state.player_epidemic_recovery_query_sequence;
   auto &coat_of_arms_designer_probe_query_sequence =
@@ -9681,6 +9721,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kPlayerEpidemicTreatmentPresenceStepV1
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+                   && step != xar::ck3_11906::
+                                  kPlayerPrisonerCollectionPrivateStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1)
                    && ![&]() {
@@ -14660,6 +14704,94 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "epidemic recovery result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+        } else if (step == xar::ck3_11906::
+                                kPlayerPrisonerCollectionPrivateStepV1) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "prisoner collection request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "prisoner collection revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "prisoner collection frame is not ready"));
+            } else {
+              xar::ck3_11906::PlayerPrisonerCollectionMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.expected_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecutePlayerPrisonerCollectionPrivateQueryV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                                             "prisoner collection executor unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kPlayerPrisonerCollectionQueuedWaitMsV1);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kPlayerPrisonerCollectionExecutingWaitMsV1);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completed && !query.frame_changed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (stable) {
+                  response = PlayerPrisonerCollectionPrivateResultFrame(
+                      request_id,
+                      player_prisoner_collection_query_sequence + 1,
+                      query.execution_stamp.pump_epoch, expected_revision,
+                      query.result);
+                  if (!response.empty())
+                    ++player_prisoner_collection_query_sequence;
+                }
+                if (response.empty()) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "prisoner collection query did not complete on stable paused frame");
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "prisoner collection result was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

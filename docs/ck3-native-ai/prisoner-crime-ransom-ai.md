@@ -1,8 +1,8 @@
 # 非宗教囚犯、犯罪、赎金与惩罚原生 AI 树（CK3 1.19.0.6）
 
 > 工作包：**G2-M6-PRISONER1-NATIVE-TREE**。
-> 状态：**static-ready / research-only**；2026-09-15；未启动 CK3，未连接进程，
-> 未实现 observer、bridge、MCP、action 或 planner。
+> PRISONER1 原始状态：**static-ready / research-only**；2026-09-15。后续 C80
+> 已接默认关闭的私有 bridge/pipe/MCP 集合查询，仍无 paused live 读回、action 或 planner。
 > exact build：ck3.exe 95,206,008 bytes，SHA-256
 > **2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86**。
 > 机器可复验账本：
@@ -19,10 +19,9 @@
 原生失败理由，以及引擎最终的 imprisonment/banishment/execution reason。集合不完整、被 cap、角色重定向不明
 或 option ownership 不明时都要 typed unavailable，readiness 不能变 true。
 
-下一项施工入口是
-**implement_private_exact_build_player_prisoner_management_snapshot_v1_reader**。C57 已静态定位 exact
-`Character.GetPrisoners` 的引擎拥有集合入口与 full-ID 元素形状；实现时从当前玩家的暂停帧复制完整列表，
-再接已经冻结的 generic interaction context/final validator。私有 paused live 证明完整集合和至少两类最终结果之后，才设计动作或公开 MCP。
+下一项施工入口是用 C80 的私有查询从自然 paused frame 读出当前玩家的完整囚犯集合，
+再接已冻结的 generic interaction context/final validator。私有 paused live 证明完整集合
+和至少两类最终结果之后，才设计动作或公开正式能力。
 
 ## 范围与宗教域排除
 
@@ -315,9 +314,41 @@ paused live artifact。生产 DLL 仍需把 exact-build collector 与 final eval
 paused live artifact 不存在，action 没有设计，public MCP 与 planner 都不 ready；G2 的囚犯/犯罪整项仍不能标
 production-live。已有 pay_ransom 拒绝 loop 继续只作为通用 interaction primitive 证据。
 
+### C80 private paused collection query
+
+`player_prisoner_collection_query_v1_private` 将 C57 的 exact-build `Character.GetPrisoners`
+内存路径接入一个同步、只读、默认关闭的 native bridge 查询。它仅在已准入
+`1.19.0.6` EXE SHA、application-main thread 和 paused frame 上读取当前 played character；
+从 `Character+0x1B8` 到 land-state `+0xD8`，复制 `+0x0C` count 与 `+0x00`
+四字节元素，并经 `0x570C130` character storage 对每个完整 generation-bearing ID
+回读 `Character+0x18`。land-state 为空时遵循 exact getter 的空集合分支。
+同一帧重读全部值，结束时复核 frame；截断、非法 ID、内存失败或漂移均返回 typed
+unavailable。每个 row 复用 [war-termination prison relation 已证明的原生字段](war-termination.md)：
+`CCharacter+0x1A8` extension → `+0x288` prison relation → `+0x00` full jailer ID，
+要求反向 jailer 与当前 played character 的完整 ID 相同；不一致时整份查询不可用。
+返回值只有 source ordinal、full prisoner ID 与经原生关系读回的 jailer ID，
+不携带借用指针。
+
+私有 native pipe step `query-player-prisoner-collection-private-v1` 使用现有 application-main
+mailbox 的专用 slot 53，采样前后核对正式 native `ReadSnapshot`，结果由 value-only
+serializer 交给 NativeDriver 的 opt-in 私有读回；同一 opt-in 才注册 MCP 只读
+tool，默认工具列表、公共 capabilities/ad 均不包含此能力。返回
+`collection_owner_character_id` 与 `jailer_character_id` 同时证明该 ID 位于当前角色的
+`Character.GetPrisoners` 集合且其 prison relation 指向当前角色。house arrest/dungeon
+位置、赎金和释放 final validity 仍缺对应 ABI，不借 custody owner 推断这些结果。
+CMake 私有选项默认 `OFF`；本包只具源码、构建与测试证据，没有启动 CK3，也没有
+paused live artifact，M6 readiness 不变。Debug/Release x64 私有 DLL 构建通过；
+集合读取 fixture **11/11**、既有 mailbox 聚焦 CTest **1/1**、Python 私有
+pipe/MCP 消费 **7/7**。C57 EXE ABI verifier 的 normal 与 `-O` 旧证据及 war
+termination prison relation 的静态/实机证据继续复用。
+下一入口是实机验证集合值与生命周期，
+然后映射 custody、duration 和 final previews 到 PRISONER3 callbacks；仅有 ID 时
+不发布完整 semantic snapshot。
+
 必须继续闭合：
 
-1. 在生产 DLL 内按 C57 已映射的 `Character.GetPrisoners` 引擎集合入口做暂停帧私有读取，验证实际 count、元素顺序、空值、full-ID 与 lease 生命周期；不使用 `CourtWindow` UI 成员代替；
+1. 用 C80 私有查询在 paused live 观察 count、元素顺序、空值、full-ID 与 lease
+   生命周期；不使用 `CourtWindow` UI 成员代替；
 2. 把 prison relation、custody、duration 和三类 reason native surface 接到已冻结 callback；
 3. 把 ransom 三种角色、option ownership/resource terms 和 release/punish finalized context 接到 callback；
 4. 为每种 punishment 补 final consequence/tyranny presentation；

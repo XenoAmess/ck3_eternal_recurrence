@@ -1431,6 +1431,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_m5_war_primary_current_query: bool = False,
         allow_private_minor_religious_war_defenders_query: bool = False,
         allow_private_epidemic_treatment_presence_query: bool = False,
+        allow_private_prisoner_collection_query: bool = False,
         allow_private_epidemic_recovery_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
@@ -1510,6 +1511,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_epidemic_treatment_presence_query = (
             allow_private_epidemic_treatment_presence_query is True
+        )
+        self.allow_private_prisoner_collection_query = (
+            allow_private_prisoner_collection_query is True
         )
         self.allow_private_epidemic_recovery_query = (
             allow_private_epidemic_recovery_query is True
@@ -2433,6 +2437,20 @@ class NativeHeadlessGameplayDriver:
         )
 
         return query_player_epidemic_treatment_presence_private_v1(
+            self,
+            expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_prisoner_collection_private_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
+        """Unadvertised, paused current-player prisoner ID collection readback."""
+        from .player_prisoner_collection_private_transport import (
+            query_player_prisoner_collection_private_v1,
+        )
+
+        return query_player_prisoner_collection_private_v1(
             self,
             expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
