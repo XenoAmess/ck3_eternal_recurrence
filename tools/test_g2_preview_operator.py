@@ -722,9 +722,16 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     "--private-lifestyle-formal-trial",
                 ])
                 private_result = g2_preview_operator.command_run(private_args)
+                family_args = g2_preview_operator.parser().parse_args([
+                    "run", "--manifest", str(manifest_path),
+                    "--output", str(root / "attempt-family"),
+                    "--private-family-marriage-formal-trial",
+                ])
+                family_result = g2_preview_operator.command_run(family_args)
 
             self.assertEqual(result, 0)
             self.assertEqual(private_result, 0)
+            self.assertEqual(family_result, 0)
             self.assertIn("--xar-enabled", calls[0])
             self.assertIn("xar_off", calls[0])
             self.assertIn("--ordinary-campaign-no-pact", calls[0])
@@ -733,6 +740,9 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertIn("--ordinary-campaign-no-pact", calls[1])
             self.assertNotIn("--allow-private-lifestyle-formal-trial", calls[1])
             self.assertIn("--allow-private-lifestyle-formal-trial", calls[3])
+            self.assertNotIn("--allow-private-family-marriage-formal-trial", calls[1])
+            self.assertNotIn("--allow-private-family-marriage-formal-trial", calls[3])
+            self.assertIn("--allow-private-family-marriage-formal-trial", calls[5])
             receipt = json.loads(
                 (output / "operator-receipt.json").read_text(encoding="utf-8")
             )
@@ -741,12 +751,19 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 receipt["lifecycle"]["ordinary_campaign_no_pact"]
             )
             self.assertFalse(receipt["private_lifestyle_formal_trial"])
+            self.assertFalse(receipt["private_family_marriage_formal_trial"])
             private_receipt = json.loads(
                 (root / "attempt-private" / "operator-receipt.json").read_text(
                     encoding="utf-8"
                 )
             )
             self.assertTrue(private_receipt["private_lifestyle_formal_trial"])
+            family_receipt = json.loads(
+                (root / "attempt-family" / "operator-receipt.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertTrue(family_receipt["private_family_marriage_formal_trial"])
 
     def test_r778_checkpoint_binding_is_the_authoritative_sha256(self) -> None:
         self.assertEqual(
@@ -1420,6 +1437,21 @@ class G2PreviewOperatorTest(unittest.TestCase):
             "--private-construction-formal-trial",
         ])
         self.assertTrue(parsed.private_construction_formal_trial)
+
+    def test_family_marriage_opt_in_is_forwarded_only_when_requested(self) -> None:
+        base = dict(
+            common=["python", "agent.py"], turns=1, timeout=60,
+            readiness_timeout=30, private_faction_round_id_value=None,
+        )
+        self.assertNotIn(
+            "--allow-private-family-marriage-formal-trial",
+            g2_preview_operator.native_auto_run_command(**base),
+        )
+        self.assertIn(
+            "--allow-private-family-marriage-formal-trial",
+            g2_preview_operator.native_auto_run_command(
+                **base, private_family_marriage_formal_trial=True),
+        )
 
     def test_owned_window_minimizes_only_matching_live_pid(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
