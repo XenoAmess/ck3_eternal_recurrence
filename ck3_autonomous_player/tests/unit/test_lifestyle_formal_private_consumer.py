@@ -29,6 +29,9 @@ from xar_autoplayer.lifestyle_formal_consumer import (
     unresolved_lifestyle_perk_action,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.combat_phase_contract import (
+    query_combat_simulation_inputs_v3_step,
+)
 
 
 def _life_snapshot() -> dict[str, object]:
@@ -342,6 +345,64 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         )
         self.assertEqual(selected["plan"], plan)
         self.assertIsNone(driver.state.last)
+
+    def test_ready_wartime_perk_precedes_combat_input_read_and_recovers_receipt(self) -> None:
+        driver = _Driver()
+        driver.state.centralization_ready = True
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        service = GameplayBridgeService(driver)
+        combat_read = query_combat_simulation_inputs_v3_step(2610, 2628, [1], [2])
+        baseline = {"selected_step": combat_read, "phase": "war_combat_read"}
+        selected = service._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:3", "revision": 3,
+             "plan": baseline,
+             "_private_lifestyle_scope_v1": same_frame_feudal_lifestyle_scope(
+                 driver.frame, driver.history)},
+            {"life-advance"},
+        )["plan"]
+        self.assertEqual(selected["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(selected["lifestyle_action"]["target_key"], "centralization_perk")
+        pending = driver.submit_player_lifestyle_perk_private_v1(
+            query=selected["lifestyle_query"],
+            action=selected["lifestyle_action"], expected_revision=3,
+        )
+        same_frame = service._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:3", "revision": 3,
+             "plan": baseline, "_private_lifestyle_pending_v1": pending},
+            {"life-advance"},
+        )["plan"]
+        self.assertEqual(same_frame["selected_step"], combat_read)
+        self.assertEqual(same_frame["lifestyle_pending_action"], pending)
+        driver.frame = _game_frame(4)
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        receipt = service._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:4", "revision": 4,
+             "plan": baseline, "_private_lifestyle_pending_v1": pending},
+            {"life-advance"},
+        )["plan"]
+        self.assertEqual(receipt["selected_step"], RECEIPT_STEP)
+        applied = query_player_lifestyle_receipt_private_v1(
+            driver, pending=pending, expected_revision=4,
+        )
+        self.assertTrue(applied["post_target_perk_owned"])
+        self.assertTrue(applied["postcondition_verified"])
+
+    def test_combat_input_read_continues_when_lifestyle_source_unavailable(self) -> None:
+        driver = _Driver()
+        driver.state.fail_query = True
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        combat_read = query_combat_simulation_inputs_v3_step(2610, 2628, [1], [2])
+        selected = GameplayBridgeService(driver)._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:3", "revision": 3,
+             "plan": {"selected_step": combat_read, "phase": "war_combat_read"},
+             "_private_lifestyle_scope_v1": same_frame_feudal_lifestyle_scope(
+                 driver.frame, driver.history)},
+            {"life-advance"},
+        )["plan"]
+        self.assertEqual(selected["selected_step"], combat_read)
+        self.assertIsNone(selected["lifestyle_decision"])
 
     def test_wartime_feudal_perk_uses_existing_typed_receipt_and_next_turn(self) -> None:
         driver = _Driver()

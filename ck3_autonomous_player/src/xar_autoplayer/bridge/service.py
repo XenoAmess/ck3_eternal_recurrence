@@ -1062,17 +1062,21 @@ class GameplayBridgeService:
     def _plan_private_lifestyle_trial_v1(
         self, planned: dict[str, object], available_steps: set[str]
     ) -> dict[str, object]:
-        """Read slot43 after the normal planner selects a bounded time step."""
+        """Spend a ready perk before time advance or a deferrable combat read."""
 
         scope = planned.pop("_private_lifestyle_scope_v1", None)
         pending = planned.pop("_private_lifestyle_pending_v1", None)
         plan = planned.get("plan")
+        selected = plan.get("selected_step") if isinstance(plan, dict) else None
+        combat_read = (
+            parse_query_combat_simulation_inputs_v3_step(selected) is not None
+        )
         if isinstance(pending, dict):
             # The previous typed request may already have changed CK3.  A
             # later paused frame is required before any new LIFE choice.
             if not isinstance(plan, dict):
                 return planned
-            if plan.get("selected_step") != "life-advance":
+            if selected != "life-advance" and not combat_read:
                 return planned
             pre_revision = pending.get("pre_public_revision")
             if (
@@ -1094,15 +1098,15 @@ class GameplayBridgeService:
                         {PRIVATE_LIFESTYLE_RECEIPT_STEP},
                     ),
                 }
-            return {
-                **planned,
-                "plan": {
-                    **plan,
-                    "lifestyle_pending_action": pending,
-                    "reason": "advance a bounded native interval to an independent receipt frame",
-                },
-            }
-        if not isinstance(plan, dict) or plan.get("selected_step") != "life-advance":
+            waiting = {**plan, "lifestyle_pending_action": pending}
+            if selected == "life-advance":
+                waiting["reason"] = (
+                    "advance a bounded native interval to an independent receipt frame"
+                )
+            return {**planned, "plan": waiting}
+        if not isinstance(plan, dict) or (
+            selected != "life-advance" and not combat_read
+        ):
             return planned
         if not isinstance(scope, dict):
             scope = {"status": "scope_unavailable"}
@@ -1121,11 +1125,15 @@ class GameplayBridgeService:
                 formal_life.get("current_focus")
                 if isinstance(formal_life, dict) else None
             )
-            if isinstance(query, dict) and (
-                query.get("status") != "available"
-                or (
-                    isinstance(formal_focus, dict)
-                    and formal_focus.get("presence") == "absent"
+            if (
+                (not combat_read or scope.get("at_peace") is True)
+                and isinstance(query, dict)
+                and (
+                    query.get("status") != "available"
+                    or (
+                        isinstance(formal_focus, dict)
+                        and formal_focus.get("presence") == "absent"
+                    )
                 )
             ):
                 focus_reader = getattr(
@@ -1143,10 +1151,38 @@ class GameplayBridgeService:
             ):
                 query = {"status": "paused_frame_changed_during_private_query"}
         consumed = consume_one_life_lifestyle_private_trial(
-            plan,
+            plan if not combat_read else {**plan, "selected_step": "life-advance"},
             same_frame_feudal_scope=scope,
             private_query=query,
         )
+        if combat_read and consumed.get("selected_step") not in {
+            PRIVATE_LIFESTYLE_PERK_STEP,
+            PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+        }:
+            # The combat input is a read-only plan. Keep it when the current
+            # frame has no final-legal perk, or the LIFE source is unavailable.
+            return {
+                **planned,
+                "plan": {
+                    **plan,
+                    "lifestyle_opportunity_status": consumed.get(
+                        "phase", "no_legal_minimum"
+                    ),
+                    "lifestyle_decision": consumed.get("lifestyle_decision"),
+                },
+            }
+        if (
+            combat_read
+            and consumed.get("selected_step") == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
+            and PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps
+        ):
+            return {
+                **planned,
+                "plan": {
+                    **plan,
+                    "lifestyle_opportunity_status": "feudal_scope_query_unavailable",
+                },
+            }
         if (
             consumed.get("selected_step") == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
             and PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps

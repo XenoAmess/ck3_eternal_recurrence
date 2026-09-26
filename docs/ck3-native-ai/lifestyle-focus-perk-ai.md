@@ -1,5 +1,24 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE：战争只读轮次的技能机会（2026-09-26）
+
+R0187 从 Robert h2127 冷恢复后，读到 `stewardship_wealth_focus`、已拥有
+`professional_workforce_perk`，管理点数仍为未用 1 / 已用 6；该轮的
+combat-v3 输入查询 RED，零技能动作、零日期推进。这个读回证明有待评估的
+点数，不证明 `centralization_perk` 在新帧最终合法。
+
+源码追踪发现，私有 LIFE 消费者虽有 `centralization_perk` 政策分支及
+windowless 同帧原生最终合法查询，却只在主计划选中 `life-advance` 时调用；
+若主计划连续选中 combat-v3 只读输入，合法技能候选不会被评估，待核
+receipt 也会延后。`require_initial_lifestyle_focus_before_date_advance` 是
+独立的开局 opt-in 门，已有重心时会消费现状，不属于这一漏评估条件。
+
+当前改动只允许已启用的私有有界 LIFE 消费者在正式 combat-v3 **只读**
+查询前评估技能，并沿原有 typed 动作、独立后置和下一 turn 收据路径执行；
+未取得原生最终合法候选或 LIFE 来源不可用时，保留原战争查询及诊断。
+战争移动、终止和模态事件动作仍按原优先级。证据等级截至本节写入为
+`static-ready`；尚无新 CK3 动作、日期或冷恢复证据，不提升 M4/公共能力。
+
 ## R0186–R0187：剩余管理技能点的下一条原生分支（2026-09-23）
 
 冻结 CK3 `1.19.0.6-steam23530548` EXE SHA-256
