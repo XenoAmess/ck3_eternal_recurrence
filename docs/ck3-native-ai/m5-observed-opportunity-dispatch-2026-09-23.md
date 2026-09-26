@@ -133,6 +133,12 @@ action, independent material readback, next turn and cold restore before it
 can be called live. This source and no-launch work does not advance G2-M5
 from `not_started`.
 
+### 2026-09-26 c7 operator entry gap
+
+Robert c7's [bounded formal report](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c7/attempt-01/formal-report.txt>) (SHA-256 `3CF4106636A5B895073C35FFA3E70F196F9655FCCE933C99065136FD35539F3F`) consumed the already applied `hill_farms_01` construction receipt and ran a later completion watch. It did not run an M5 collector. The native auto-run CLI, driver and service already carry the default-OFF `allow_private_m5_joint_collector` route, but the official `g2_preview_operator.py run` previously offered no matching argument or forwarding. The operator now accepts `--private-m5-joint-collector`, sends `--allow-private-m5-joint-collector` to bounded native auto-run only when requested, and records the opt-in in its receipt. This only makes a matching future candidate testable; it does not retroactively add a c7 proposal or prove a joint action.
+
+The c4 paused action showed one native-legal, budgeted `hill_farms_01` at barony 2174/slot 1, 100 gold with authored province monthly-income value +0.35. c5/c7 carried that same slot as `applied/in_progress`, so it cannot be recycled as a second candidate. No second same-frame positive building, valued betrothal or complete five-candidate joint comparison was observed in these reports. A future M5 run must read its own current native proposal frame and preserve the existing construction receipt before considering another slot; pending or unknown future war costs remain unavailable rather than zero.
+
 R0133 remains read-only evidence: 657 distinct final-legal first-heir rows and
 five successful projection reads, with zero observed alliance payoff in the
 sample. This selector does not turn that count into a marriage proposal. It
