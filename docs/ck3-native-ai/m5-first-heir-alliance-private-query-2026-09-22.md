@@ -1,6 +1,6 @@
 # M5 首继承人五候选联盟投影：私有接线
 
-状态：原五候选 pair 投影已由 R0133 在真实 paused 帧读回；2026-09-26 新增的婚姻/订婚预测字段仍是 `static-ready`，未实机复验，不代表联盟会建立、M5 联合选择完成或 G2 状态改变。R0133 五行中八个潜在 pair 的 `would_attempt_if_accepted` 全为 `false`，不能记作联盟收益。冻结 CK3 1.19.0.6，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。来源与界限见 [候选联盟投影 ABI](m5-r0082-candidate-alliance-projection-abi-2026-09-22.md)、[R0082 五候选缺口](m5-r0082-joint-selector-field-gap-2026-09-22.md) 和 [原生婚姻树](marriage-and-alliance.md)。
+状态：原五候选 pair 投影已由 R0133 在真实 paused 帧读回；2026-09-26 c10–c12 在独立派生 Robert 候选中完成了一项正式首继承人提案至双边订婚、下一 turn 消费及新 PID 冷恢复。实际联盟结果仍未观测，M5 联合选择和 G2 状态未改变。R0133 五行中八个潜在 pair 的 `would_attempt_if_accepted` 全为 `false`，不能记作联盟收益。冻结 CK3 1.19.0.6，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。来源与界限见 [候选联盟投影 ABI](m5-r0082-candidate-alliance-projection-abi-2026-09-22.md)、[R0082 五候选缺口](m5-r0082-joint-selector-field-gap-2026-09-22.md) 和 [原生婚姻树](marriage-and-alliance.md)。
 
 默认关闭的 `XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1` 依赖原有私有首继承人合法性查询选项，但不依赖私有婚姻动作选项。只有原有公共 campaign-root 在同一 native revision 指明首继承人、接着私有 `query-observed-first-heir-marriage-legality-v1` 返回合法候选行，才能调用新 `query-first-heir-candidate-alliance-projection-v1-private`。调用者提供 `expected_revision`、`legality_query_sequence` 和动态发现的 `candidate_id_0` 至 `candidate_id_4`；五个完整 CharacterID 必须互异且各自唯一存在于当前 final-legal 行。R0082 的五个示例 ID 仅供证据定位，不写入查询或策略。
 
@@ -21,3 +21,11 @@ Python 私有入口为 `NativeDriver.query_first_heir_candidate_alliance_project
 ### 2026-09-26 c11 冷读回与待答复边界
 
 c11 复用同一 CK3 1.19.0.6 EXE 与 c10 原生 DLL，在新 PID55088 官方配对 h111 存档/driver/提案账本后，对继承人38822/候选38710 冷读回 `pending`；同一暂停日期仍无双边婚姻或订婚关系。该结果仅说明本次查询尚未观测到关系，不说明原提案已被接受、拒绝或在存档中可靠保存；原生待答复队列的持久性仍是 unknown。此前策略在此立即阻断全部 turn，c11 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c11/attempt-01/formal-report.txt) SHA-256 `3034C854DB9D3E6881C2E20B9C2E63D451171030A99126992E817668CFBD3F1C`。后续最小政策仅在每个新 PID/原生帧读一次关系，并让既有有界 turn 推进以等待可能的答复；原提案身份与资源义务保留，不在无证据时重发或计联盟收益。
+
+### 2026-09-26 c12 双边订婚与二次冷恢复
+
+#281 将 pending 冷观察继续策略集成到 master `bb5e4aaa0c7a8458e4ec0909c43c296a4cb4fe97`，exact-master CI `36243661822` 成功。该 master 包含战争维护者交付的原生 combat modifier 读取 `a58f200`；c12 据此重建 Release DLL，SHA-256 `7A14A216E03312029E6D93FE863271A553A9D454C2CE6A4C49F4CF3E3A65ED36`。官方从 c11 h111 的原 save/driver、applied 建设账本、pending 家庭账本和 c10 提交证明 prepare/rebind/no-launch，未手改关系或重发提案。
+
+c12 attempt-01 唯一 PID176516，受管窗口最小化，正式 12/12 turn `turn_limit/qualified`。旧 pending 先冷读为 `pending`，随后已有有界日期推进 raw53154528→53154672；原生结果成为 `betrothal`。`ReadObservedHeirMarriageMaterialStatusV1` 只有在继承人38822与候选38710双方 betrothed 指针互指时才返回此状态，因此已证实**双边订婚关系**，并非单凭提交 ACK。家庭账本 `pending=null`、`resolved.material_result=true`，没有第二次提案；下一 turn 消费该结果。旧建设仍为 `applied/in_progress`，未见完工或收入。[attempt-01 正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c12/attempt-01/formal-report.txt) SHA-256 `3855E308983AC82B1B8D727DEB07511DFDD03F94CE5C0CFA087C09183F346FFA`；h126 save SHA `270158B4C65C89716EE31F28B5986CEE7470D50D85874828EF4594C992A71997`。
+
+c12 attempt-02 从 h126 官方配对再次冷启动唯一新 PID112144，窗口最小化，8/8 turn `turn_limit/qualified`，第3 turn 对同一双方冷读 `betrothal`，账本 `cold_recovery_verified=true`、`pending=null`，第4 turn 消费 resolved 并推进到 raw53155488。[attempt-02 正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c12/attempt-02/formal-report.txt) SHA-256 `7DCC3323EBF69FBB2A1F229F5210ACCE7DCDD7A4CBA56A26F3E1EDD606769F25`；h137 save SHA `10314937E12DD8D168331F05C378D6ED82F33B4DDB0DB287CDB1D8EE2E6C5611`。两个 PID 均受控停止并清空进程树。所有日期仅为派生验证，不累计正式 Robert 百年门；目前没有 player29829 与 recipient32266 的实际结盟读回，`would_attempt_if_accepted=true` 仍只是一项条件预测。建设实际收益与 M5 五候选同帧选择也未由此证明。
