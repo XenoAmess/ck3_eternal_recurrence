@@ -13,7 +13,8 @@ from xar_autoplayer.bridge import domain_construction_private_transport_v1 as tr
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, StepPostconditionError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.construction_formal_consumer import (
-    RECEIPT_STEP, SUBMIT_STEP, plan_construction_private, read_construction_ledger,
+    RECEIPT_STEP, ROOT_QUERY_STEP, SUBMIT_STEP,
+    plan_construction_private, read_construction_ledger,
     write_construction_ledger,
 )
 
@@ -25,6 +26,7 @@ def frame(revision: int = 3, *, episode: str = "native-29829-e1",
             "native_revision": revision,
             "date_raw": 53_178_312, "episode_run_id": episode,
             "played_character": {"character_id": 29829, "alive": True},
+            "played_character_gold": {"raw": 50_000_000, "scale": 100_000},
             "active_event": None, "pending_character_interaction": None,
             "active_wars": [], "player_armies": []}
 
@@ -73,6 +75,8 @@ class Driver:
         self.r753_truncated_samples = False
         self.r0080_material_without_cost = False
         self.second_building_available = False
+        self.no_positive_building = False
+        self.gold_override = None
 
     def take_snapshot(self):
         return {**self.snapshot, "native_command_history": [
@@ -102,6 +106,10 @@ class Driver:
             source = world(revision, active=(revision >= 4 or self.active_construction)
                            and not self.completed_construction)
             source["date_raw"] = self.snapshot["date_raw"]
+            if self.no_positive_building:
+                source["legal_samples"][0]["building_key"] = "military_camps_01"
+            if self.gold_override is not None:
+                source["player_gold_raw"] = self.gold_override
             if self.completed_construction:
                 source["completed_buildings"] = [{
                     "barony_title_id": 2103, "province_id": 2635,
@@ -190,6 +198,114 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
+    def test_prewar_query_step_consumes_positive_building_before_war_query(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            baseline = {"plan": {"policy": "one-life-turn-v1",
+                                  "selected_step": "query-declarable-wars"},
+                        "revision": 3}
+            self.assertEqual(plan_construction_private(
+                driver, baseline, frame(), root(), set()), baseline)
+            selected = plan_construction_private(
+                driver, baseline, frame(), root(), set(),
+                prewar_arbitration=True)
+            plan = selected["plan"]
+            self.assertEqual(plan["selected_step"], SUBMIT_STEP)
+            self.assertEqual(plan["construction_private_query"]["status"], "selected")
+            budget = plan["construction_prewar_arbitration"]
+            self.assertEqual(budget["status"], "selected_positive_budgeted_building")
+            self.assertEqual(budget["original_selected_step"], "query-declarable-wars")
+            self.assertEqual(budget["observed_player_gold_raw"], 50_000_000)
+            self.assertEqual(budget["construction_gold_cost_raw"], 15_000_000)
+            self.assertEqual(budget["construction_minimum_gold_reserve_raw"],
+                             transport.RESERVE_RAW)
+            self.assertEqual(budget["gold_after_construction_raw"], 35_000_000)
+            self.assertEqual(budget["authored_monthly_income_hundredths"], 35)
+            self.assertIsNone(budget["war_future_gold_cost_raw"])
+            self.assertIsNone(budget["additional_shared_gold_commitment_raw"])
+            self.assertFalse(any(row["step"] == transport.ACTION_NATIVE
+                                 for row in driver.requests))
+
+    def test_prewar_typed_declaration_observes_budget_and_preserves_war_if_empty(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            war_step = "declare-war-123-4-0"
+            baseline = {"plan": {"policy": "one-life-turn-v1",
+                                  "selected_step": war_step}, "revision": 3}
+            driver.no_positive_building = True
+            result = plan_construction_private(
+                driver, baseline, frame(), root(), set(),
+                prewar_arbitration=True)
+            self.assertEqual(result["plan"]["selected_step"], war_step)
+            self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
+                             "no_positive_budgeted_building")
+            driver.no_positive_building = False
+            driver.gold_override = 50_000_000
+            mismatched_cash = frame()
+            mismatched_cash["played_character_gold"]["raw"] = 49_000_000
+            result = plan_construction_private(
+                driver, baseline, mismatched_cash, root(), set(),
+                prewar_arbitration=True)
+            self.assertEqual(result["plan"]["selected_step"], war_step)
+            self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
+                             "same_frame_cash_or_positive_value_unavailable")
+            driver.gold_override = 30_000_000
+            low_cash = frame()
+            low_cash["played_character_gold"]["raw"] = 30_000_000
+            result = plan_construction_private(
+                driver, baseline, low_cash, root(), set(),
+                prewar_arbitration=True)
+            self.assertEqual(result["plan"]["selected_step"], war_step)
+            self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
+                             "no_positive_budgeted_building")
+
+    def test_prewar_scope_query_and_unrelated_step_do_not_submit(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            baseline = {"plan": {"policy": "one-life-turn-v1",
+                                  "selected_step": "declare-war-123-4-0"},
+                        "revision": 3}
+            query = plan_construction_private(
+                driver, baseline, frame(), [], {ROOT_QUERY_STEP},
+                prewar_arbitration=True)
+            self.assertEqual(query["plan"]["selected_step"], ROOT_QUERY_STEP)
+            self.assertEqual(query["plan"]["construction_prewar_arbitration"]["status"],
+                             "root_query_needed")
+            unavailable = plan_construction_private(
+                driver, baseline, frame(), [], set(), prewar_arbitration=True)
+            self.assertEqual(unavailable["plan"]["selected_step"],
+                             "declare-war-123-4-0")
+            unrelated = {"plan": {"selected_step": "query-army"}, "revision": 3}
+            self.assertEqual(plan_construction_private(
+                driver, unrelated, frame(), root(), set(),
+                prewar_arbitration=True), unrelated)
+            self.assertFalse(driver.requests)
+
+    def test_prewar_pending_action_requires_receipt_before_competing_spend(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            pending = {"episode_run_id": frame()["episode_run_id"],
+                       "source_bridge_pid": 123,
+                       "source_bridge_creation_date": "t1",
+                       "pre_native_revision": 3}
+            write_construction_ledger(driver.state_dir, {
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": pending, "applied": None})
+            baseline = {"plan": {"selected_step": "query-declarable-wars"},
+                        "revision": 3}
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                waiting = plan_construction_private(
+                    driver, baseline, frame(), root(), set(),
+                    prewar_arbitration=True)
+                self.assertIsNone(waiting["plan"]["selected_step"])
+                self.assertEqual(waiting["plan"]["construction_prewar_arbitration"]["status"],
+                                 "pending_action_needs_later_receipt")
+                later = plan_construction_private(
+                    driver, baseline, frame(4), root(4), set(),
+                    prewar_arbitration=True)
+                self.assertEqual(later["plan"]["selected_step"], RECEIPT_STEP)
+            self.assertFalse(driver.requests)
+
     def test_r753_truncated_scan_keeps_six_native_legal_cost_samples(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

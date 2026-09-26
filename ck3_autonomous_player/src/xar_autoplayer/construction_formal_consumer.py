@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Mapping
 
 from .environment import write_json_atomic
+from .bridge.declaration_contract import is_native_declaration_step
 from .lifestyle_formal_consumer import ROOT_QUERY_STEP, same_frame_feudal_peace_scope
 
 
@@ -63,12 +64,29 @@ def write_construction_ledger(state_dir: Path, record: Mapping[str, object]) -> 
 def plan_construction_private(
     driver: object, planned: dict[str, object], snapshot: Mapping[str, object],
     history: list[dict[str, object]], available_steps: set[str],
+    *, prewar_arbitration: bool = False,
 ) -> dict[str, object]:
     plan = planned.get("plan")
-    if not isinstance(plan, dict) or plan.get("selected_step") != "life-advance":
+    if not isinstance(plan, dict):
         return planned
+    original_step = plan.get("selected_step")
+    prewar = prewar_arbitration is True and is_native_declaration_step(original_step)
+    if original_step != "life-advance" and not prewar:
+        return planned
+
+    def prewar_unchanged(status: str, *, query: object = None) -> dict[str, object]:
+        observation = {"status": status, "original_selected_step": original_step,
+                       "war_future_gold_cost_raw": None,
+                       "additional_shared_gold_commitment_raw": None}
+        next_plan = {**plan, "construction_prewar_arbitration": observation}
+        if query is not None:
+            next_plan["construction_private_query"] = query
+        return {**planned, "plan": next_plan}
+
     state_dir = getattr(driver, "state_dir", None)
     if not isinstance(state_dir, Path):
+        if prewar:
+            return prewar_unchanged("durable_state_unavailable")
         return {**planned, "plan": {**plan, "selected_step": None,
                                     "reason": "construction trial lacks durable state_dir"}}
     ledger = read_construction_ledger(state_dir)
@@ -92,6 +110,16 @@ def plan_construction_private(
                 "selected_step": RECEIPT_STEP,
                 "construction_pending_action": dict(pending),
                 "reason": "query independent paused construction state before another action"}}
+        if prewar:
+            return {**planned, "plan": {**plan,
+                "selected_step": None,
+                "construction_pending_action": dict(pending),
+                "construction_prewar_arbitration": {
+                    "status": "pending_action_needs_later_receipt",
+                    "original_selected_step": original_step,
+                    "war_future_gold_cost_raw": None,
+                    "additional_shared_gold_commitment_raw": None},
+                "reason": "construction action state unknown; do not spend competing resources"}}
         return {**planned, "plan": {**plan,
             "construction_pending_action": dict(pending),
             "reason": "advance to independent native frame; never resubmit pending construction"}}
@@ -136,21 +164,69 @@ def plan_construction_private(
     scope = same_frame_feudal_peace_scope(snapshot, history)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:
+            if prewar:
+                return prewar_unchanged("feudal_root_query_unavailable")
             return {**planned, "plan": {**plan, "selected_step": None,
                 "reason": "construction trial needs same-frame public feudal root query"}}
         return {**planned, "plan": {**plan, "selected_step": ROOT_QUERY_STEP,
-            "phase": "construction_feudal_scope_query"}}
+            "phase": "construction_feudal_scope_query",
+            **({"construction_prewar_arbitration": {
+                "status": "root_query_needed",
+                "original_selected_step": original_step,
+                "war_future_gold_cost_raw": None,
+                "additional_shared_gold_commitment_raw": None}}
+               if prewar else {})}}
     if scope["status"] != "admitted":
+        if prewar:
+            return prewar_unchanged(f"scope_{scope['status']}")
         return planned
     from .bridge.domain_construction_private_transport_v1 import query_construction_private
 
     query = query_construction_private(driver, expected_revision=int(planned["revision"]))
     if query.get("status") == "no_legal_budgeted_building":
+        if prewar:
+            return prewar_unchanged("no_positive_budgeted_building", query=query)
         return {**planned, "plan": {**plan, "construction_private_query": query}}
     if query.get("status") != "selected":
+        if prewar:
+            return prewar_unchanged("construction_source_red", query=query)
         return {**planned, "plan": {**plan, "selected_step": None,
             "construction_private_query": query,
             "reason": "private construction source unavailable; preserve RED"}}
+    if prewar:
+        candidate = query.get("candidate")
+        gold = snapshot.get("played_character_gold")
+        observed_gold = gold.get("raw") if isinstance(gold, Mapping) else None
+        if not (isinstance(candidate, Mapping)
+                and type(candidate.get("authored_monthly_income_hundredths")) is int
+                and candidate["authored_monthly_income_hundredths"] > 0
+                and type(observed_gold) is int and observed_gold >= 0
+                and gold.get("scale") == 100_000
+                and candidate.get("gold_before_raw") == observed_gold):
+            return prewar_unchanged("same_frame_cash_or_positive_value_unavailable",
+                                    query=query)
+        from .bridge.domain_construction_private_transport_v1 import RESERVE_RAW
+
+        cost = candidate["stock_gold_cost_raw"]
+        if (type(cost) is not int or cost <= 0
+                or observed_gold - cost < RESERVE_RAW):
+            return prewar_unchanged("native_budget_not_available", query=query)
+        return {**planned, "plan": {**plan,
+            "phase": "construction_prewar_typed_submit",
+            "selected_step": SUBMIT_STEP,
+            "construction_private_query": query,
+            "construction_prewar_arbitration": {
+                "status": "selected_positive_budgeted_building",
+                "original_selected_step": original_step,
+                "observed_player_gold_raw": observed_gold,
+                "construction_gold_cost_raw": cost,
+                "construction_minimum_gold_reserve_raw": RESERVE_RAW,
+                "gold_after_construction_raw": observed_gold - cost,
+                "authored_monthly_income_hundredths":
+                    candidate["authored_monthly_income_hundredths"],
+                "war_future_gold_cost_raw": None,
+                "additional_shared_gold_commitment_raw": None},
+            "reason": "construct one same-frame native-legal positive-income building before war entry"}}
     return {**planned, "plan": {**plan,
         "phase": "construction_typed_submit", "selected_step": SUBMIT_STEP,
         "construction_private_query": query,

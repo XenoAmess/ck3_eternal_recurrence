@@ -2,6 +2,8 @@
 
 ## 状态与范围
 
+- **NW-ECON-PREWAR（2026-09-26，源码/fixture，未新增实机）**：R0223 和正式入口核查暴露和平战前漏消费：`service` 已把建设 snapshot/history 交给 consumer，但正常 `plan_construction_private` 仅在 `selected_step=life-advance` 时评估；当策略在和平帧查询可宣战争或选择 typed 宣战，正收益建设此前完全不进入比较。现给该 consumer 增加默认关闭的 `prewar_arbitration=True`，只匹配原生 `query-declarable-wars` 或格式合法的 `declare-war-*`；独立同帧 feudal/peace root、玩家实际现金、原生最终合法且可负担的正收益候选、未决建设收据和既有 200 金储备全部满足时，返回现有 typed 建设提交步骤与原始 query，保留原宣战步骤以供下一正式 turn 重评。无正收益或预算不足则保留战争步骤，观测缺项另记 status；pending/cold receipt 仍先恢复。战前战争后续现金成本与额外共享资源承诺保持 `None`，不填零或声称完成战争和建设的完整联合效用比较。当前包只提供模块入口，service 同帧调度与匹配 Robert 实机仍待接线/验收；原 M5 和平 source 的 `life-advance` 门及独立选择器未由此绕开。原生 AI 的 `ai_value`、80% 带与随机施工树未改，建设仍按已冻结的同帧 final-legal/标称月收入窄政策。
+
 - **NW-ECON-COMPLETION（2026-09-26，static-ready-private；未新增实机）**：exact EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的玩家最终合法性 `0x295CD60` 在 `0x295CECA..0x295CEED` 从 `Province+0x620+0x18` 取模式 0 的槽位数组，`+0x24` 为数量，每项 `0x10` 字节，首个 qword 与候选 `CBuildingType*` 比较。原有 `+0x70/+0x78/+0xE0` 是**施工中**定义/槽位/发起人；二者独立。新私有只读投影按数组索引记录已建 `province_id/barony_title_id/slot_index/building_type_id`，仅接受同一已验证 manager 中的定义；数组缺失或定义不匹配返回 `construction_state` RED。此数组的实机含义仍须匹配候选 paused snapshot 验证，静态 fixture 不等于真实完工。
 
   正式建设收据在开工后保留原 `active` 证据，后续每隔至少 30 游戏日以同一 paused frame 查询已建槽位；同 tuple 从 active 转为已建时，记录独立 `completion_status=completed` 与日期。新 PID 冷恢复若施工已完工，也可由已建槽位核对，不再因 active row 消失而无限停在“未见物质状态”。若已建与 active 同时匹配同一 tuple，或二者均不可读，仍保持 RED；旧存档回退继续单独分类。该结果只证明同槽建筑存在，**不证明当前玩家月收入增加，也不推断边际税收/ROI**。正式入口复用已有 `campaign_root_context.player_monthly_gold_income`：开工前保存同帧实际玩家总收入 raw，完工观察前先请求同帧 root，若前后读数均有效则记录总收入差值 raw；收入缺项保持 null，不阻断独立完工读回。其间战争、领地和其他 modifier 的变化仍须单独排除，不能把差值自动归因于建筑。Robert 当前战争中，既有 `life-advance` 与 peace gate 仍会拦截新建设，战时资源分配需另包处理。
