@@ -50,6 +50,11 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
                       "recipient_answer_allows_send": True,
                       "recipient_answer_status_raw": 0,
                       "recipient_ai_accept_raw": 500 - index})
+        legal[-1].update(heir_adult_measure_raw=16,
+                         candidate_adult_measure_raw=16,
+                         played_dynasty_id=20, heir_dynasty_id=20,
+                         candidate_dynasty_id=30 + index,
+                         realm_backed_actor_recipient=True)
         projected.append({"status": "available", "actor_character_id": 101,
                           "heir_character_id": 202,
                           "recipient_character_id": 400 + index,
@@ -94,8 +99,14 @@ class FakeDriver:
     def query_first_heir_candidate_alliance_projection_private_v1(self, *, legality,
                                                                   candidate_character_ids):
         self.calls.append("projection")
-        assert candidate_character_ids == [300, 301, 302, 303, 304]
-        return self.projection
+        assert len(candidate_character_ids) == 5
+        by_id = {row["candidate_character_id"]: row
+                 for row in self.projection["rows"]}
+        assert len(set(candidate_character_ids)) == 5
+        assert set(candidate_character_ids).issubset(by_id)
+        return {**self.projection,
+                "rows": [by_id[candidate_id]
+                         for candidate_id in candidate_character_ids]}
 
     def submit_observed_first_heir_marriage_private_v1(self, *, legality,
                                                        candidate_character_id):
@@ -113,6 +124,81 @@ class FakeDriver:
 
 
 class FamilyConsumerTest(unittest.TestCase):
+    @staticmethod
+    def _c9_rank_driver(state_dir: Path) -> FakeDriver:
+        driver = FakeDriver(state_dir)
+        for index, row in enumerate(driver.projection["rows"]):
+            legal = driver.legality["native_legal_candidates"][index]
+            row.update(heir_is_adult=False, heir_adult_measure_raw=6,
+                       candidate_is_adult=False,
+                       candidate_adult_measure_raw=5 if index == 0 else 2,
+                       predicted_outcome_if_accepted="betrothal",
+                       candidate_dynasty_id=20)
+            legal.update(heir_adult_measure_raw=6,
+                         candidate_adult_measure_raw=5 if index == 0 else 2,
+                         candidate_dynasty_id=20)
+        for index, age in ((5, 5), (6, 6)):
+            candidate_id = 300 + index
+            recipient_id = 400 + index
+            driver.legality["native_legal_candidates"].append({
+                "candidate_character_id": candidate_id,
+                "played_character_id": 101, "subject_character_id": 202,
+                "recipient_matchmaker_character_id": recipient_id,
+                "complete_can_send": True, "recipient_answer_allows_send": True,
+                "recipient_answer_status_raw": 0,
+                "recipient_ai_accept_raw": 100 - index,
+                "heir_adult_measure_raw": 6,
+                "candidate_adult_measure_raw": age,
+                "played_dynasty_id": 20, "heir_dynasty_id": 20,
+                "candidate_dynasty_id": 30 + index,
+                "realm_backed_actor_recipient": True})
+            driver.projection["rows"].append({
+                **driver.projection["rows"][0],
+                "recipient_character_id": recipient_id,
+                "candidate_character_id": candidate_id,
+                "candidate_adult_measure_raw": age,
+                "candidate_dynasty_id": 30 + index,
+                "candidate_house_id": 30 + index,
+                "possible_alliance_pairs": [{
+                    "first_character_id": 101,
+                    "second_character_id": recipient_id,
+                    "already_allied": False,
+                    "both_have_realm_data": True,
+                    "would_attempt_if_accepted": True}]})
+        return driver
+
+    def test_c9_acceptance_top_five_yields_to_external_age_matched_candidates(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = self._c9_rank_driver(Path(temporary))
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+            self.assertEqual(planned["plan"]["family_marriage_choice"]
+                             ["candidate_character_id"], 306)
+            diagnostic = planned["plan"]["family_marriage_private_diagnostic"]
+            self.assertEqual([row["candidate_character_id"] for row in
+                              diagnostic["rows"]][:2], [306, 305])
+            self.assertEqual(diagnostic["ranking"]["prefilter_eligible_count"], 2)
+            self.assertEqual(diagnostic["ranking"]["value_input_unavailable_count"], 0)
+
+    def test_c9_no_external_age_matched_candidate_is_a_real_no_op(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = self._c9_rank_driver(Path(temporary))
+            for index, age in ((5, 1), (6, 60)):
+                driver.legality["native_legal_candidates"][index][
+                    "candidate_adult_measure_raw"] = age
+                driver.projection["rows"][index]["candidate_adult_measure_raw"] = age
+                driver.projection["rows"][index]["candidate_is_adult"] = age >= 16
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            self.assertEqual(planned["plan"]["family_marriage_status"],
+                             "no_positive_observed_marriage_opportunity")
+            ranking = planned["plan"]["family_marriage_private_diagnostic"]["ranking"]
+            self.assertEqual(ranking["prefilter_eligible_count"], 0)
+            self.assertEqual(ranking["conclusion"],
+                             "no_age_matched_external_realm_candidate")
+
     def test_bounded_opt_in_is_explicit(self):
         args = cli.parser().parse_args([
             "--bridge-mode", "native-headless", "native-auto-run",
@@ -174,7 +260,7 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertIs(observed[0]["heir_is_adult"], True)
             self.assertIs(observed[0]["candidate_is_adult"], False)
             self.assertIs(observed[0]["grand_wedding_option_selected"], False)
-            self.assertIn("not_two_minors_without_grand_wedding",
+            self.assertIn("betrothal_age_gap_out_of_bounds",
                           observed[0]["rejection_reasons"])
             self.assertIn("same_selector_pair", observed[1]["rejection_reasons"])
             self.assertEqual(observed[1]["heir_spouse_count"], 0)
@@ -182,7 +268,7 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertIn("lineality_not_heir_aligned", observed[2]["rejection_reasons"])
             self.assertEqual(observed[2]["heir_house_id"], 21)
             self.assertEqual(observed[2]["candidate_dynasty_id"], 30)
-            self.assertIn("not_two_minors_without_grand_wedding",
+            self.assertIn("betrothal_age_gap_out_of_bounds",
                           observed[3]["rejection_reasons"])
             self.assertEqual(observed[3]["recipient_character_id"], 403)
             self.assertEqual(observed[3]["recipient_matchmaker_character_id"], 403)
@@ -213,9 +299,13 @@ class FamilyConsumerTest(unittest.TestCase):
                            candidate_is_adult=index == 4,
                            candidate_adult_measure_raw=18 if index == 4 else 14,
                            predicted_outcome_if_accepted="betrothal")
+                legal = driver.legality["native_legal_candidates"][index]
+                legal["heir_adult_measure_raw"] = 13
+                legal["candidate_adult_measure_raw"] = 18 if index == 4 else 14
                 if index >= 3:
                     row["candidate_dynasty_id"] = 30 + index
                     row["candidate_house_id"] = 30 + index
+                    legal["candidate_dynasty_id"] = 30 + index
                     row["possible_alliance_pairs"] = [{
                         "first_character_id": 101,
                         "second_character_id": 400 + index,
@@ -224,6 +314,7 @@ class FamilyConsumerTest(unittest.TestCase):
                         "would_attempt_if_accepted": True}]
                 else:
                     row["candidate_dynasty_id"] = 20
+                    legal["candidate_dynasty_id"] = 20
             driver.submit_observed_first_heir_marriage_private_v1 = (
                 lambda *, legality, candidate_character_id: {
                     "schema": SCHEMA, "status": "receipt_pending",
@@ -243,11 +334,12 @@ class FamilyConsumerTest(unittest.TestCase):
                                  ["candidate_character_id"], 303)
                 self.assertEqual(planned["plan"]["family_marriage_choice"]
                                  ["predicted_outcome_if_accepted"], "betrothal")
-                self.assertEqual(planned["plan"]["family_marriage_private_diagnostic"]
-                                 ["rows"][3]["rejection_reasons"], [])
-                self.assertIn("not_two_minors_without_grand_wedding",
-                              planned["plan"]["family_marriage_private_diagnostic"]
-                              ["rows"][4]["rejection_reasons"])
+                diagnostic = planned["plan"]["family_marriage_private_diagnostic"]
+                rows_by_id = {row["candidate_character_id"]: row
+                              for row in diagnostic["rows"]}
+                self.assertEqual(rows_by_id[303]["rejection_reasons"], [])
+                self.assertIn("betrothal_age_gap_out_of_bounds",
+                              rows_by_id[304]["rejection_reasons"])
                 pending = submit_family_marriage_private(
                     driver, plan=planned["plan"], snapshot=scene())
                 self.assertEqual(pending["candidate_character_id"], 303)

@@ -13,8 +13,7 @@ from .bridge.observed_heir_marriage_private_action_v1 import SCHEMA, SUBMIT_STEP
 
 
 _LEDGER = "first-heir-marriage-formal-v1.json"
-_MAX_BETROTHAL_WAIT_RAW = 4
-_MAX_BETROTHAL_WAIT_GAP_RAW = 2
+_MAX_BETROTHAL_AGE_GAP_RAW = 2
 
 
 def _positive(value: object) -> bool:
@@ -57,6 +56,17 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
         reasons.append("heir_identity_mismatch")
     if row.get("recipient_character_id") != source.get("recipient_matchmaker_character_id"):
         reasons.append("recipient_identity_mismatch")
+    if (source.get("candidate_dynasty_id") is not None
+            and row.get("candidate_dynasty_id") != source["candidate_dynasty_id"]):
+        reasons.append("candidate_dynasty_changed_since_ranking")
+    if (source.get("candidate_adult_measure_raw") is not None
+            and row.get("candidate_adult_measure_raw") !=
+            source["candidate_adult_measure_raw"]):
+        reasons.append("candidate_age_changed_since_ranking")
+    if (source.get("heir_adult_measure_raw") is not None
+            and row.get("heir_adult_measure_raw") !=
+            source["heir_adult_measure_raw"]):
+        reasons.append("heir_age_changed_since_ranking")
     outcome = row.get("predicted_outcome_if_accepted")
     if outcome not in {"marriage", "betrothal"}:
         reasons.append("outcome_unavailable")
@@ -85,29 +95,37 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
         if row.get("effective_matrilineal_if_accepted") is not bool(heir_selector):
             reasons.append("lineality_not_heir_aligned")
     if outcome == "betrothal":
+        if (any(type(source.get(key)) is not int for key in (
+                "heir_adult_measure_raw", "candidate_adult_measure_raw",
+                "played_dynasty_id", "heir_dynasty_id",
+                "candidate_dynasty_id"))
+                or source.get("realm_backed_actor_recipient") is not True):
+            reasons.append("betrothal_ranking_inputs_unavailable")
         # Native compares these exact signed measures with runtime thresholds.
-        # Bound the wait to adulthood for both parties and their gap, without
-        # pretending the raw values are calendar years or a fertility estimate.
+        # A close age gap bounds the match, even when the heir is much younger
+        # than the threshold. Raw measures are not a fertility estimate.
         heir_measure = row.get("heir_adult_measure_raw")
         candidate_measure = row.get("candidate_adult_measure_raw")
         heir_threshold = row.get("heir_adult_threshold_raw")
         candidate_threshold = row.get("candidate_adult_threshold_raw")
-        if (row.get("heir_is_adult") is not False
-                or row.get("candidate_is_adult") is not False
-                or row.get("grand_wedding_option_selected") is not False):
-            reasons.append("not_two_minors_without_grand_wedding")
+        if (row.get("grand_wedding_option_selected") is not False
+                or row.get("heir_is_adult") not in (True, False)
+                or row.get("candidate_is_adult") not in (True, False)
+                or (row.get("heir_is_adult") is True
+                    and row.get("candidate_is_adult") is True)):
+            reasons.append("not_ordinary_minor_betrothal")
         if any(type(value) is not int for value in (
                 heir_measure, candidate_measure, heir_threshold,
                 candidate_threshold)):
             reasons.append("adult_wait_measure_unavailable")
         else:
-            heir_wait = heir_threshold - heir_measure
-            candidate_wait = candidate_threshold - candidate_measure
-            if (not 0 < heir_wait <= _MAX_BETROTHAL_WAIT_RAW
-                    or not 0 < candidate_wait <= _MAX_BETROTHAL_WAIT_RAW
-                    or abs(heir_wait - candidate_wait) >
-                    _MAX_BETROTHAL_WAIT_GAP_RAW):
-                reasons.append("betrothal_wait_out_of_bounds")
+            if (row.get("heir_is_adult") is not
+                    (heir_measure >= heir_threshold)
+                    or row.get("candidate_is_adult") is not
+                    (candidate_measure >= candidate_threshold)
+                    or abs(heir_measure - candidate_measure) >
+                    _MAX_BETROTHAL_AGE_GAP_RAW):
+                reasons.append("betrothal_age_gap_out_of_bounds")
         if (type(row.get("candidate_dynasty_id")) is not int
                 or row["candidate_dynasty_id"] <= 0
                 or row["candidate_dynasty_id"] == played_dynasty):
@@ -136,6 +154,7 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
 def _private_five_candidate_diagnostic(
     legality: Mapping[str, object], projection: Mapping[str, object],
     snapshot: Mapping[str, object], choice: Mapping[str, object] | None,
+    ranking: Mapping[str, object],
 ) -> dict[str, object]:
     """Retain only the five assessed rows, without advertising a query."""
     legal = legality["native_legal_candidates"]
@@ -183,15 +202,66 @@ def _private_five_candidate_diagnostic(
             "legality_query_sequence": legality["query_sequence"],
             "observed_first_heir_character_id": legality["observed_first_heir_character_id"],
             "final_legal_candidate_count": len(legal),
+            "ranking": dict(ranking),
             "selected_candidate_character_id": (
                 choice["candidate_character_id"] if choice else None),
             "rows": observed}
 
 
+def _rank_five_family_candidates(
+    legal_rows: list[dict[str, object]],
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    """Prefer native-final external Dynasty peers before the fixed five-row read."""
+    eligible = []
+    unknown = 0
+    for row in legal_rows:
+        heir_age = row.get("heir_adult_measure_raw")
+        candidate_age = row.get("candidate_adult_measure_raw")
+        played_dynasty = row.get("played_dynasty_id")
+        heir_dynasty = row.get("heir_dynasty_id")
+        candidate_dynasty = row.get("candidate_dynasty_id")
+        realm_backed = row.get("realm_backed_actor_recipient")
+        if (any(type(value) is not int or value <= 0 for value in (
+                played_dynasty, heir_dynasty, candidate_dynasty))
+                or type(heir_age) is not int
+                or type(candidate_age) is not int
+                or type(realm_backed) is not bool):
+            unknown += 1
+            continue
+        if (heir_dynasty != played_dynasty
+                or candidate_dynasty == played_dynasty
+                or realm_backed is not True
+                or abs(heir_age - candidate_age) > _MAX_BETROTHAL_AGE_GAP_RAW
+                or not _positive(row.get("recipient_ai_accept_raw"))):
+            continue
+        eligible.append(row)
+    eligible.sort(key=lambda row: (
+        abs(row["heir_adult_measure_raw"] - row["candidate_adult_measure_raw"]),
+        -row["recipient_ai_accept_raw"], row["candidate_character_id"]))
+    picked = eligible[:5]
+    picked_ids = {row["candidate_character_id"] for row in picked}
+    fallback = sorted((row for row in legal_rows
+                       if row["candidate_character_id"] not in picked_ids),
+                      key=lambda row: (-row["recipient_ai_accept_raw"],
+                                       row["candidate_character_id"]))
+    picked.extend(fallback[:5 - len(picked)])
+    return picked, {"rule": "external_dynasty_realm_backed_age_gap_v1",
+                    "age_gap_max_raw": _MAX_BETROTHAL_AGE_GAP_RAW,
+                    "prefilter_eligible_count": len(eligible),
+                    "value_input_unavailable_count": unknown,
+                    "conclusion": (
+                        "no_age_matched_external_realm_candidate"
+                        if not eligible and not unknown else
+                        "unobserved_value_inputs_remain"
+                        if not eligible else
+                        "bounded_five_row_projection"),
+                    "projected_count": len(picked)}
+
+
 def choose_first_heir_marriage_candidate(
     legality: Mapping[str, object], projection: Mapping[str, object],
 ) -> dict[str, object] | None:
-    """Value an adult marriage, or a short-wait external-dynasty betrothal.
+    """Value an adult marriage, or an age-aligned external-dynasty betrothal.
 
     A projected alliance attempt is a narrow betrothal signal, not an alliance
     receipt. Positive recipient AI raw is only a send/acceptance clue.
@@ -216,19 +286,15 @@ def choose_first_heir_marriage_candidate(
         if _candidate_rejection_reasons(source, row):
             continue
         outcome = row["predicted_outcome_if_accepted"]
-        heir_wait = (row["heir_adult_threshold_raw"] - row["heir_adult_measure_raw"]
-                     if outcome == "betrothal" else 0)
-        candidate_wait = (row["candidate_adult_threshold_raw"]
-                          - row["candidate_adult_measure_raw"]
-                          if outcome == "betrothal" else 0)
+        age_gap = abs(row["heir_adult_measure_raw"] -
+                      row["candidate_adult_measure_raw"])
         choices.append((outcome == "marriage",
-                        -max(heir_wait, candidate_wait),
-                        -abs(heir_wait - candidate_wait),
+                        -age_gap,
                         source["recipient_ai_accept_raw"], -candidate_id,
                         outcome, candidate_id))
     if not choices:
         return None
-    _, _, _, acceptance_raw, _, outcome, candidate_id = max(choices)
+    _, _, acceptance_raw, _, outcome, candidate_id = max(choices)
     return {"candidate_character_id": candidate_id,
             "value": ("unpartnered_first_heir_adult_marriage_opportunity"
                       if outcome == "marriage" else
@@ -317,12 +383,9 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
     legal_rows = legality.get("native_legal_candidates")
     if legality.get("status") != "available" or not isinstance(legal_rows, list):
         return {**planned, "plan": {**plan, "family_marriage_legality": legality}}
-    # The projection's exact five-row contract is unchanged. Select by a
-    # native acceptance clue, then apply our independently authored value gate.
-    ranked = sorted((row for row in legal_rows if isinstance(row, dict)
-                     and type(row.get("recipient_ai_accept_raw")) is int),
-                    key=lambda row: (-row["recipient_ai_accept_raw"],
-                                     row["candidate_character_id"]))
+    # Preserve the exact five-row projection: value-rank all native-final
+    # legal rows on compact same-frame age, Dynasty and realm inputs first.
+    ranked, ranking = _rank_five_family_candidates(legal_rows)
     if len(ranked) < 5:
         return {**planned, "plan": {**plan, "family_marriage_status":
                                     "fewer_than_five_projectable_legal_candidates"}}
@@ -335,7 +398,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
             "reason": "one of five exact marriage outcome or lineage reads is unavailable"}}
     choice = choose_first_heir_marriage_candidate(legality, projection)
     diagnostic = _private_five_candidate_diagnostic(
-        legality, projection, snapshot, choice)
+        legality, projection, snapshot, choice, ranking)
     if choice is None:
         return {**planned, "plan": {**plan, "family_marriage_status":
                                     "no_positive_observed_marriage_opportunity",

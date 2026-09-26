@@ -713,6 +713,12 @@ flowchart LR
 
 `28731` 虽是原生 final-legal 的成年候选，但继承人尚未成年；当前无法衡量成年候选在继承人长大时的年龄与生育风险，所以这条保守婚约分支不选它。`39757` 同为未成年仍须等待四个 exact 原始数满足上述等待界限；其较高接受 raw 不会绕过该界限。
 
+`NW-FAMILY-C9-RANK` 的 [c9 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c9/attempt-01/formal-report.txt>) 在 turn 3/5/9 实测继承人 `38822` 成年比较数 `6/16`；接受 raw 前五中的前三名同 Dynasty `174`，候选比较数为 `5/2/2`，外 Dynasty `39757` 是 `1/16`（与继承人差 `5`），外 Dynasty `28731` 是 `60/16`（差 `54`）。此五行全部拒绝、typed proposal `0` 是当前窄政策的正确结果，却**无法证明**其余约 690 条 final-legal 行没有同龄外宗族机会。`ReadArrangeMarriageFamilyCandidatesV1` 扫描全体 Character storage，在同帧为每条验证五角色 context、complete Can Send 与 recipient answer；此前输出只有 ID、recipient、accept raw，玩家此生命周期无 matchmaking Strategy，`native_rank=null` 是真不可得。原生 AI `0x1890D90` 的 rank 依赖 Strategy，不能把未绑定的得分借给这条玩家代提路线。
+
+exact `CCharacter+0x68` 的两人有符号成年比较数和已闭合的 `CCharacter+0x150` House → `House+0x2C` Dynasty 路线，在全量 final-legal 枚举时已有 Character 指针；玩家/recipient 的 realm data 指针 `+0x1B8` 也可在相同 exact build 读取。因此私有合法行只加这些最小只读排序输入，**不增加五行投影数量**。消费者先在所有 final-legal 行中筛玩家与首继承人同 Dynasty、候选外 Dynasty、双方 raw 比较数差 `≤2`、玩家及 recipient 都有 realm data、accept raw 正值，再按 raw 差、接受 raw、ID 排前五；不足五行由现有合法行填足固定投影。五行继续逐项复核原生最终合法、年龄结果、实际 lineality、关系和具体 `possible_alliance_pairs`，且发送前原生动作重新验资格。realm data 只是联盟必要条件，不能替代具体 pair，更不能表示联盟已成立。若所有全量行的排序输入均可读却无一条满足前筛，则诊断可确定“本政策无同龄外宗族 realm-backed 候选”；若有未读行或五行未通过后置值门，只能记观测缺项或本次五行未选，不宣称全量零机会。
+
+c9 同时否定旧 `1–4` raw 绝对等待上限作为常规婚约门：继承人比较数 `6/16` 仍需较长等待，同龄婚约可能是正常继承安排。新私有政策保留双方原始阈值与距成年差供后续校准，选案改由两人 `+0x68` 原始比较数差 `≤2` 约束，至少一方原生未成年、无 grand-wedding、当前无配偶/婚约及原有宗族/lineality/最终合法/具体联盟尝试门仍生效。`≤2` 是面对未来择偶锁定与原版有条件解除成本的项目启发式，**不等同于原版年龄规则、可生育性或已量化净收益**；同龄可发不等于必须发。一个提案仍须 typed/pending、双向婚约物质后置、下一 turn 与新 PID 恢复，联盟独立读回。
+
 提案前持久记录可能已提交的 pair；typed native ACK 只证明提交进入 receiver。下一 paused 帧以同进程原生 resolution journal 区分 `pending`、`accepted_pending`、`refused`、`invalidated`，并以双方 spouse/betrothed 关系独立判定物质 `marriage`/`betrothal`。新 PID 冷读只使用正式 checkpoint 的首继承人身份与双方关系；若关系已成立可证明物质结果，若关系缺席则不能反推出拒绝，保持 `unresolved` 且禁止自动重发。提案后的配对 checkpoint、下一 turn 对 resolved receipt 的消费仍需实机核验；静态源码、Release DLL 与聚焦测试不算 production-live。
 
 ### exact native 候选发现与评分链
