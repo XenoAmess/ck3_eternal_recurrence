@@ -122,6 +122,63 @@ class FamilyConsumerTest(unittest.TestCase):
         projected["rows"][4]["heir_spouse_character_ids"] = [888]
         self.assertIsNone(choose_first_heir_marriage_candidate(legal, projected))
 
+    def test_prewar_requires_explicit_native_declaration_and_observed_value(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            query = {"plan": {"selected_step": "query-declarable-wars"}}
+            self.assertIs(plan_family_marriage_private(driver, query, scene()), query)
+            self.assertEqual(plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "resolve-current-event"}}, scene(),
+                prewar_arbitration=True)["plan"]["selected_step"],
+                "resolve-current-event")
+            self.assertEqual(driver.calls, [])
+            for step in ("query-declarable-wars", "declare-war-302-1--1"):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": step}}, scene(),
+                    prewar_arbitration=True)
+                self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+                self.assertEqual(planned["plan"]["family_marriage_choice"]
+                                 ["candidate_character_id"], 300)
+            self.assertEqual(driver.calls, ["legality", "projection"] * 2)
+            war = {"plan": {"selected_step": "query-declarable-wars"}}
+            self.assertIs(plan_family_marriage_private(
+                driver, war, {**scene(), "active_wars": [16777231]},
+                prewar_arbitration=True), war)
+            driver.projection["rows"] = [
+                {**row, "predicted_outcome_if_accepted": "betrothal"}
+                for row in driver.projection["rows"]]
+            no_value = plan_family_marriage_private(
+                driver, war, scene(), prewar_arbitration=True)
+            self.assertEqual(no_value["plan"]["selected_step"],
+                             "query-declarable-wars")
+            self.assertEqual(no_value["plan"]["family_marriage_status"],
+                             "no_positive_observed_marriage_opportunity")
+
+    def test_prewar_submission_keeps_pending_result_and_no_resend(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            war = {"plan": {"selected_step": "query-declarable-wars"}}
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, war, scene(), prewar_arbitration=True)
+                submit_family_marriage_private(driver, plan=planned["plan"],
+                                               snapshot=scene())
+                next_scene = {**scene(), "native_revision": 8}
+                result_plan = plan_family_marriage_private(
+                    driver, war, next_scene, prewar_arbitration=True)
+                self.assertEqual(result_plan["plan"]["selected_step"], RESULT_STEP)
+                query_family_marriage_result_private(
+                    driver, pending=result_plan["plan"]["family_marriage_pending"],
+                    cold=False)
+                consumed = plan_family_marriage_private(
+                    driver, war, next_scene, prewar_arbitration=True)
+            self.assertEqual(consumed["plan"]["selected_step"],
+                             "query-declarable-wars")
+            self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
+                             ["status"], "marriage")
+            self.assertEqual(driver.calls, ["legality", "projection", "submit", "result"])
+
     def test_submit_pending_result_next_turn_and_no_repeat(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))
