@@ -4,6 +4,7 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace xar::ck3_11906 {
@@ -19,6 +20,7 @@ enum class PlayerWorldBuildingFailureV1 : std::uint8_t {
   player_actor_binding,
   registry_source,
   definition_identity,
+  definition_key,
   province_slot_source,
   native_final_legality,
   player_gold_source,
@@ -56,6 +58,9 @@ struct PlayerWorldBuildingLegalSampleV1 final {
   std::int32_t province_id = -1;
   std::int32_t building_type_id = -1;
   std::int32_t slot_index = -1;
+  // CGameDatabaseObject canonical key, copied from this legal definition in
+  // the same paused frame.  BuildingTypeID is only a process-local ordinal.
+  std::string building_key;
   // Full 80-byte native output is retained because stock player affordability
   // can conditionally add raw[7] to raw[0] before its gold comparison.
   std::array<std::int64_t, 10> cost_raw_native{};

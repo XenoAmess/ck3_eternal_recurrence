@@ -36,6 +36,22 @@ struct Fixture {
     }
   }
 
+  void PutKey(std::uintptr_t definition, const char *key) {
+    const auto size = std::strlen(key);
+    const auto native_string = definition + 0x18;
+    Put(native_string + 0x10, size);
+    if (size <= 15) {
+      Put(native_string + 0x18, std::size_t{15});
+      for (std::size_t index = 0; index < size; ++index)
+        Put(native_string + index, key[index]);
+    } else {
+      Put(native_string + 0x18, size);
+      Put(native_string, std::uintptr_t{0xE00000});
+      for (std::size_t index = 0; index < size; ++index)
+        Put(0xE00000 + index, key[index]);
+    }
+  }
+
   static bool Read(void *context, const void *address, void *output,
                    std::size_t size) noexcept {
     auto &self = *static_cast<Fixture *>(context);
@@ -186,6 +202,7 @@ Fixture Scene() {
   f.Put(0xB00000 + 0x10, std::int32_t{11});
   f.Put(0xB10000, kModule + 0x44046C0);
   f.Put(0xB10000 + 0x10, std::int32_t{22});
+  f.PutKey(0xB10000, "farm_estates_01");
   // R735's wrong registry is a CCourtTypeSetting peer. Its first type
   // cannot replace the manager's typed CBuildingType definitions.
   f.Put(0xA00000 + 0x68, std::uintptr_t{0xA10000});
@@ -230,10 +247,12 @@ int main() {
                         {kBarony, kProvince, false, -1, -1, -1}},
             "world_definitions_independent_of_closed_gui");
     Require(r.native_final_legality_evaluated &&
+                r.snapshot_revision == 3 &&
                 r.final_legality_checks == 4 && !r.checks_truncated &&
                 r.legal_samples ==
                     std::vector<PlayerWorldBuildingLegalSampleV1>{
-                        {kBarony, kProvince, 22, 1}} &&
+                        {kBarony, kProvince, 22, 1,
+                         "farm_estates_01"}} &&
                 !r.cost_ready && f.native_checks == 4,
             "same_frame_player_final_legality_sample_not_cost_or_action");
   }
@@ -281,6 +300,24 @@ int main() {
                         0, 0, 800000, 0, 0} &&
                 !r.cost_ready,
             "same_paused_legal_tuple_has_opaque_stock_cost_and_player_gold");
+  }
+  {
+    auto f = Scene();
+    f.PutKey(0xB10000, "common_tradeport_01");
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available && r.legal_samples.size() == 1 &&
+                r.legal_samples[0].building_key == "common_tradeport_01",
+            "heap_backed_building_key_copied_from_same_definition");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000 + 0x18 + 0x10, std::size_t{0});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::definition_key,
+            "missing_building_key_is_not_positive_value");
   }
   {
     auto f = Scene();

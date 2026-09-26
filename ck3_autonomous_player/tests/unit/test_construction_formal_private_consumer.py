@@ -44,6 +44,7 @@ def world(revision: int = 3, *, active: bool = False) -> dict[str, object]:
             "checks_truncated": False, "player_gold_raw": 50_000_000,
             "legal_samples": [{"barony_title_id": 2103, "province_id": 2635,
                                "building_type_id": 24, "slot_index": 1,
+                               "building_key": "common_tradeport_01",
                                "native_cost_observed": True,
                                "cost_raw_native": [15_000_000] + [0] * 9}],
             "active_constructions": [{"barony_title_id": 2103,
@@ -101,6 +102,7 @@ class Driver:
                 second_sample = {
                     "barony_title_id": 2200, "province_id": 2700,
                     "building_type_id": 30, "slot_index": 2,
+                    "building_key": "orchards_01",
                     "native_cost_observed": True,
                     "cost_raw_native": [10_000_000] + [0] * 9,
                 }
@@ -125,6 +127,8 @@ class Driver:
                             "legal_samples": [
                                 {"barony_title_id": 2103, "province_id": 2635,
                                  "building_type_id": building, "slot_index": slot,
+                                 "building_key": ("farm_estates_01" if building == 12
+                                                  else "common_tradeport_01"),
                                  "native_cost_observed": True,
                                  "cost_raw_native": [cost] + [0] * 9}
                                 for building, cost in ((12, 40_000_000),
@@ -189,6 +193,30 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(query["candidate"]["slot_index"], 1)
             self.assertEqual(query["candidate"]["stock_gold_cost_raw"], 15_000_000)
             self.assertEqual(query["candidate"]["gold_before_raw"], 50_035_659)
+            self.assertEqual(query["candidate"]["building_key"],
+                             "common_tradeport_01")
+            self.assertEqual(query["candidate"]["authored_monthly_income_hundredths"],
+                             35)
+
+    def test_affordable_positive_income_beats_cheapest_and_unknown(self):
+        source = world()
+        source["legal_samples"] = [
+            {**source["legal_samples"][0], "building_type_id": 30,
+             "building_key": "military_camps_01", "cost_raw_native":
+             [8_000_000] + [0] * 9},
+            {**source["legal_samples"][0], "building_type_id": 24,
+             "building_key": "common_tradeport_01"},
+            {**source["legal_samples"][0], "building_type_id": 12,
+             "building_key": "farm_estates_01", "cost_raw_native":
+             [20_000_000] + [0] * 9},
+        ]
+        selected = transport._candidate(source)
+        self.assertEqual(selected["building_type_id"], 12)
+        self.assertEqual(selected["authored_monthly_income_hundredths"], 70)
+        source["legal_samples"][2]["building_key"] = "unknown_01"
+        self.assertEqual(transport._candidate(source)["building_type_id"], 24)
+        source["legal_samples"][1]["building_key"] = "unknown_02"
+        self.assertIsNone(transport._candidate(source))
 
     def test_r753_query_ack_material_epochs_are_independent(self):
         with TemporaryDirectory() as location:

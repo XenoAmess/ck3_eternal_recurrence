@@ -14,6 +14,7 @@ enum class PlayerWorldBuildingActionFailureV1 : std::uint8_t {
   source_unavailable,
   frame_binding,
   resource_unknown,
+  economic_value_unknown,
   active_construction,
   no_budget_safe_candidate,
 };

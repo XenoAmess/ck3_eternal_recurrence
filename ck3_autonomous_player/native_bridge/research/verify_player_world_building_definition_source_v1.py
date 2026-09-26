@@ -118,9 +118,20 @@ def verify(exe: Path) -> None:
     _require_equal(pe.get_data(type_descriptor + 0x10, 19), b".?AVCBuildingType@@", "building RTTI name")
     for col_name in ("primary_col_rva", "secondary_col_rva"):
         col = rva(world[col_name])
-        signature, _, _, type_rva, _, self_rva = struct.unpack("<6I", pe.get_data(col, 24))
-        _require(signature == 1 and type_rva == type_descriptor and self_rva == col,
+        signature, offset, _, type_rva, hierarchy_rva, self_rva = struct.unpack("<6I", pe.get_data(col, 24))
+        _require(signature == 1 and type_rva == type_descriptor and self_rva == col
+                 and (col_name != "primary_col_rva" or offset == 0),
                  f"invalid building COL layout: {col_name}")
+        _, _, base_count, base_array_rva = struct.unpack("<4I", pe.get_data(hierarchy_rva, 16))
+        building_bases = []
+        for index in range(base_count):
+            base_descriptor_rva = struct.unpack("<I", pe.get_data(base_array_rva + index * 4, 4))[0]
+            base_type_rva = struct.unpack("<I", pe.get_data(base_descriptor_rva, 4))[0]
+            building_bases.append(pe.get_string_at_rva(base_type_rva + 16))
+        _require_equal(building_bases, [b".?AVCBuildingType@@",
+                                        b".?AVCGameDatabaseObject@@",
+                                        b".?AVCPersistent@@"],
+                       f"building canonical-key base hierarchy: {col_name}")
     print("GREEN exact CBuildingType manager vector/player final-legality source; CK3 not launched")
     print("EVIDENCE_SCOPE " + json.dumps({
         "evidence_scope": "exact-build-static-chain",

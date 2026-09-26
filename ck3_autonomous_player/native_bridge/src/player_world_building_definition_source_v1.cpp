@@ -37,6 +37,12 @@ constexpr std::size_t kRegistryDataOffset = 0x68;
 constexpr std::size_t kRegistryCapacityOffset = 0x70;
 constexpr std::size_t kRegistryCountOffset = 0x74;
 constexpr std::size_t kBuildingTypeIdentityOffset = 0x10;
+// Exact CBuildingType RTTI includes CGameDatabaseObject. Its MSVC string key
+// follows ordinal +0x10 and hash +0x14, as in the stock database-object ABI.
+constexpr std::size_t kBuildingKeyOffset = 0x18;
+constexpr std::size_t kMsvcStringSizeOffset = 0x10;
+constexpr std::size_t kMsvcStringCapacityOffset = 0x18;
+constexpr std::size_t kMaxBuildingKeyBytes = 127;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
 constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
 constexpr std::size_t kCharacterGoldOffset = 0x100;
@@ -65,6 +71,36 @@ bool Read(const CampaignRootAccessV1 &access, std::uintptr_t base,
          access.read_memory(access.context,
                             reinterpret_cast<const void *>(address),
                             &out, sizeof(out));
+}
+
+bool ReadBuildingKey(const CampaignRootAccessV1 &access,
+                     std::uintptr_t definition, std::string &out) {
+  std::uintptr_t native_string = 0;
+  std::size_t size = 0;
+  std::size_t capacity = 0;
+  if (!Add(definition, kBuildingKeyOffset, native_string) ||
+      !Read(access, native_string, kMsvcStringSizeOffset, size) ||
+      !Read(access, native_string, kMsvcStringCapacityOffset, capacity) ||
+      size == 0 || size > capacity || size > kMaxBuildingKeyBytes) {
+    return false;
+  }
+  std::uintptr_t bytes = native_string;
+  if (capacity > 15 &&
+      (!Read(access, native_string, 0, bytes) || bytes == 0)) {
+    return false;
+  }
+  out.resize(size);
+  if (!access.read_memory(access.context,
+                          reinterpret_cast<const void *>(bytes),
+                          out.data(), size) ||
+      !std::all_of(out.begin(), out.end(), [](char value) {
+        return (value >= 'a' && value <= 'z') ||
+               (value >= '0' && value <= '9') || value == '_';
+      })) {
+    out.clear();
+    return false;
+  }
+  return true;
 }
 
 bool ReadWorldDefinitions(const CampaignRootAccessV1 &access,
@@ -379,6 +415,10 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
               PlayerWorldBuildingLegalSampleV1 sample{
                   holding.barony_title_id, holding.province_id,
                   building_type_id, slot};
+              if (!ReadBuildingKey(campaign, definition,
+                                   sample.building_key)) {
+                return Failed(PlayerWorldBuildingFailureV1::definition_key);
+              }
               if (access.native_cost != nullptr) {
                 if (!access.native_cost(
                         access.native_cost_context,
