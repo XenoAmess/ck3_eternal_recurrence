@@ -15410,7 +15410,11 @@ def _general_battle_forecast_ingress(
     if not exact_cached:
         return bounded(
             "native_war_general_battle_inputs_query",
-            query_step if query_step in action_steps and QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities else None,
+            # The native driver deliberately does not enumerate parameterized
+            # v3 queries in action_steps.  This exact read-only literal is
+            # derived from the current army, route edge and hostile roster;
+            # the bridge capability is the executable gate.
+            query_step if QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities else None,
             "obtain same-frame per-regiment inputs for this encounter",
             route_preview=preview, route_contact_horizon=contact,
         )

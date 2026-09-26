@@ -29,7 +29,8 @@ def _frame():
     }
 
 
-def _call(frame, *, query_history=True, entry=30, extra_steps=()):
+def _call(frame, *, query_history=True, entry=30, extra_steps=(),
+          bridge_capabilities=None):
     query = query_combat_simulation_inputs_v3_step(31, entry, [11], [21])
     commands = [{
         "index": 1, "command": query, "ok": True,
@@ -43,8 +44,14 @@ def _call(frame, *, query_history=True, entry=30, extra_steps=()):
     return _general_battle_forecast_ingress(
         {"policy": "one-life-turn-v1", "phase": "native_war_route", "selected_step": "move-army-11-to-31"},
         commands=commands, snapshot=frame,
-        action_steps={query, "move-army-11-to-31", "preview-move-army-11-to-31", *extra_steps},
-        bridge_capabilities={"game.command.query-combat-simulation-inputs-v3-N"},
+        # The production driver excludes parameterized v3 literals from its
+        # advertised action list.  The planner must construct this read-only
+        # query from the observed encounter and check the bridge capability.
+        action_steps={"move-army-11-to-31", "preview-move-army-11-to-31", *extra_steps},
+        bridge_capabilities=(
+            {"game.command.query-combat-simulation-inputs-v3-N"}
+            if bridge_capabilities is None else bridge_capabilities
+        ),
     )
 
 
@@ -86,6 +93,21 @@ def test_model_risk_rejection_stops_contact_and_absent_input_queries_it():
         query = _call(frame, query_history=False)
         assert query["phase"] == "native_war_general_battle_inputs_query"
         assert query["selected_step"] == query_combat_simulation_inputs_v3_step(31, 30, [11], [21])
+
+
+def test_missing_v3_capability_keeps_parameterized_query_blocked():
+    frame = _frame()
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+            "status": "available", "route_province_ids": [31],
+        }),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value={
+            "conflicts": [{"province_id": 31, "hostile_army_id": 21}],
+        }),
+    ):
+        result = _call(frame, query_history=False, bridge_capabilities=set())
+    assert result["phase"] == "native_war_general_battle_inputs_query"
+    assert result["selected_step"] is None
 
 
 def test_stale_native_revision_cannot_reuse_a_cached_battle_estimate():
