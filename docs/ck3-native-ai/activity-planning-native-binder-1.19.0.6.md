@@ -28,6 +28,17 @@ perform an activity action, or claim a live paused capture.
 - `CActivityType` primary vtable: `0x440E308`; stable MSVC string `+0x18`
 - HostView primary vtable slot 25: final `CanPlanActivity` at `0x15051F0`
 
+The frozen EXE was checked again for the next private reader. Slot 25 takes
+`HostView` in `RCX` and forwards its second argument (`RDX`) as the fifth
+argument to `0x28CFC50`. It reads `CActivityType*` from `HostView+0x268`;
+`CActivityType+0x3FC3` can return true immediately. On the regular path it
+calls the final evaluator with `RCX=activity type`, `R8=HostView+0xF8`,
+`R9=0`, and a zero sixth argument. The evaluator calls trigger evaluators for
+the activity type at `+0x38`, then `+0x118` or `+0x2D8`, and then `+0x1F8`.
+When evaluation is false, it enters a failure-display path only if the
+forwarded fifth argument is non-null (`0x28CFCE6..0x28CFDB6`). This is static
+disassembly evidence, not a safe construction contract for that object.
+
 Configuration checks the frozen instruction prefixes at the RTTI cast,
 interface-handler install, idler handler owner, HostView constructor, activity
 type setter, owner setter, and final `CanPlanActivity`. It also checks the
@@ -100,3 +111,12 @@ through an activity-owned application-main glue, documented in
 evaluator/semantic operations and a private application-main invocation entry
 still precede the single-owner paused capture. No production wiring or live
 claim follows from the static glue.
+
+For the next reader, the exact missing native chain is the second-argument
+failure-display object's type, construction, text/key extraction, and release;
+the normal planner sources and lifetimes for final shown/can-start, legal
+locations, selected configuration and authoritative configured cost; and the
+application-main paused invocation that supplies both callbacks. Slot 25 alone
+cannot provide the complete semantic sample. No production callback should
+call it with a guessed failure object or fill those fields from UI predicted
+cost. A paused `activity_feast` capture remains required before any live claim.
