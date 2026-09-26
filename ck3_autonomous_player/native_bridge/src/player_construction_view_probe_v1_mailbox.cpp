@@ -580,8 +580,12 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += '}';
     }
   }
-  json += "],\"completed_buildings\":[";
-  if (world_available) {
+  json += "],\"completed_buildings_observed\":";
+  json += world_available && world.completed_buildings_observed
+              ? "true" : "false";
+  json += ",\"completed_buildings\":";
+  if (world_available && world.completed_buildings_observed) {
+    json += '[';
     for (std::size_t index = 0; index < world.completed_buildings.size();
          ++index) {
       if (index != 0) json += ',';
@@ -596,8 +600,11 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += std::to_string(built.slot_index);
       json += '}';
     }
+    json += ']';
+  } else {
+    json += "null";
   }
-  json += "],\"legal_samples\":[";
+  json += ",\"legal_samples\":[";
   if (world_available) {
     for (std::size_t index = 0; index < world.legal_samples.size(); ++index) {
       if (index != 0) json += ',';

@@ -101,8 +101,8 @@
     "entry_definition_pointer_offset": "0x0",
     "output": "private completed_buildings list of copied barony/province/slot/building_type IDs; pointers resolved against the verified CBuildingType manager and never serialized",
     "distinct_active_state": "Province+0x620+0x70 definition, +0x78 slot, +0xE0 initiator are in-progress construction and cannot by themselves prove completion",
-    "source_status": "static-ready only; requires a matching paused live candidate to verify a completed slot and later income/effect separately",
-    "failure": "missing slot data or definition outside the exact manager returns construction_state unavailable"
+    "source_status": "R0224 live source failed construction_state before legality; after the focused fix, completed_buildings_observed=false and completed_buildings=null distinguish an unreadable completed-slot projection from an observed empty list; matching paused live validation remains required",
+    "failure": "missing completed-slot data or a definition outside the exact manager leaves completion unobserved and material completion receipt RED, while independent active state and native final legality may remain available"
   },
   "exact_regions": [
     {"name": "building_manager_getter", "start_rva": "0x864750", "end_rva_exclusive": "0x8647A7", "sha256": "233C8008BA53A622B5AE65522A3D34DCF23760EF7187BF24448C1CADC62301DF"},

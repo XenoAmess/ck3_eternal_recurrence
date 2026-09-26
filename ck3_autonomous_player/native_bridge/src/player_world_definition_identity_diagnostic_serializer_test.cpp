@@ -68,5 +68,10 @@ int main() {
   world.legal_samples.push_back({2103, 2635, 24, 1,
                                  "common_tradeport_01"});
   std::cout <<
+      xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query)
+      << '\n';
+  world.completed_buildings_observed = true;
+  world.completed_buildings.push_back({2103, 2635, 24, 1});
+  std::cout <<
       xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query);
 }

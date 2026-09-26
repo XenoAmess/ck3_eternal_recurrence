@@ -278,7 +278,8 @@ int main() {
     f.Put(0x730000 + 0x10, std::uintptr_t{0xB10000});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
         kModule, true, f.Access(false), {3, kProvince, 0, 0});
-    Require(r.source_available && r.completed_buildings ==
+    Require(r.source_available && r.completed_buildings_observed &&
+                r.completed_buildings ==
                 std::vector<PlayerWorldCompletedBuildingV1>{
                     {kBarony, kProvince, 22, 1}} &&
                 !r.active_constructions[0].active,
@@ -288,19 +289,27 @@ int main() {
     auto f = Scene();
     f.Put(0x730000 + 0x10, std::uintptr_t{0xA20000});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
-        kModule, true, f.Access(false), {3, kProvince, 0, 0});
-    Require(!r.source_available &&
-                r.failure == PlayerWorldBuildingFailureV1::construction_state,
-            "completed_slot_type_outside_stock_manager_remains_red");
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::none &&
+                !r.completed_buildings_observed &&
+                r.completed_buildings.empty() &&
+                r.native_final_legality_evaluated &&
+                r.legal_samples.size() == 1,
+            "unmapped_completed_slot_does_not_block_native_legality");
   }
   {
     auto f = Scene();
     f.Put(0x700000 + 0x620 + 0x18, std::uintptr_t{0});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
-        kModule, true, f.Access(false), {3, kProvince, 0, 0});
-    Require(!r.source_available &&
-                r.failure == PlayerWorldBuildingFailureV1::construction_state,
-            "missing_stock_completed_slot_array_is_not_empty_building_state");
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::none &&
+                !r.completed_buildings_observed &&
+                r.completed_buildings.empty() &&
+                r.native_final_legality_evaluated &&
+                r.legal_samples.size() == 1,
+            "missing_completed_array_is_unobserved_without_blocking_legality");
   }
   {
     auto f = Scene();
