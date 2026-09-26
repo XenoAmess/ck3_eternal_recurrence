@@ -138,6 +138,11 @@ def query_first_heir_marriage_alliance_once(
         raise AgentError("family alliance query requires native-headless bridge")
     ensure_state_path_safe(spec.state_dir)
     checkpoint = validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
+    lifecycle = checkpoint.get("succession_lifecycle")
+    if (not isinstance(lifecycle, dict)
+            or lifecycle.get("xar_enabled") not in {"xar_on", "xar_off"}):
+        raise AgentError("family alliance query lacks checkpoint game-rule binding")
+    prepared_xar_enabled = lifecycle["xar_enabled"]
     save = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
     driver_state = spec.state_dir / "native-session" / "driver-state.json"
     state = json.loads(driver_state.read_text(encoding="utf-8-sig"))
@@ -177,7 +182,8 @@ def query_first_heir_marriage_alliance_once(
                 SESSION_TIMEOUT_GRACE_SECONDS, native_bridge=config,
                 input_stream=None, output_stream=None,
                 poll_interval_seconds=float(poll_interval_seconds),
-                cold_start_checkpoint=True, stop_event=stop_event)
+                cold_start_checkpoint=True, stop_event=stop_event,
+                prepared_xar_enabled=prepared_xar_enabled)
         except BaseException as error:
             session_state["error"] = f"{type(error).__name__}: {error}"
         finally:
