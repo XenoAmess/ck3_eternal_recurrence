@@ -1876,7 +1876,10 @@ class FamilyAllianceResultOperatorTest(unittest.TestCase):
             proposal.write_text("{}", encoding="utf-8")
             digest = g2_preview_operator.sha256(proposal)
             manifest = {"timeout_seconds": 390,
-                        "readiness_timeout_seconds": 300}
+                        "readiness_timeout_seconds": 300,
+                        "xar_enabled": "xar_off",
+                        "succession_lifecycle": "ordinary_campaign_succession",
+                        "ordinary_campaign_no_pact": True}
             args = argparse.Namespace(
                 manifest=root / "manifest.json", output=root / "attempt",
                 proposal_report=proposal, proposal_report_sha256=digest,
@@ -1889,6 +1892,12 @@ class FamilyAllianceResultOperatorTest(unittest.TestCase):
                 stderr_path.write_text("", encoding="utf-8")
                 if len(commands) == 1:
                     self.assertIn("native-one-generation-preflight", command)
+                    self.assertEqual(command[command.index("--xar-enabled") + 1],
+                                     "xar_off")
+                    self.assertEqual(
+                        command[command.index("--succession-lifecycle") + 1],
+                        "ordinary_campaign_succession")
+                    self.assertIn("--ordinary-campaign-no-pact", command)
                     stdout_path.write_text("{}", encoding="utf-8")
                     return 0
                 self.assertIn(
