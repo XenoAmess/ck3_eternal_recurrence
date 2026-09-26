@@ -12,6 +12,7 @@ from typing import Mapping, Sequence
 
 from .bridge.domain_construction_private_transport_v1 import (
     RESERVE_RAW as CONSTRUCTION_RESERVE_RAW,
+    _identity as construction_process_identity,
     query_construction_private,
 )
 from .bridge.driver import BridgeUnavailableError
@@ -66,9 +67,8 @@ def query_m5_peacetime_proposal_sources_v1(
             "M5 peacetime source has an unresolved faction gift action"
         )
     applied = construction_ledger.get("applied")
-    construction_consumed = (
-        isinstance(applied, Mapping)
-        and applied.get("episode_run_id") == frame["episode_run_id"]
+    construction_blocked = _prior_construction_blocks_candidate(
+        driver, applied=applied, frame=frame,
     )
 
     _require_driver_frame(driver, frame, expected_gold_raw=observed_gold_raw)
@@ -80,11 +80,11 @@ def query_m5_peacetime_proposal_sources_v1(
             f"{root_status or 'unknown'}"
         )
 
-    if construction_consumed:
-        # The current formal construction route admits one applied action per
-        # episode.  Omit only that domain; an independent faction proposal is
-        # still useful and must not be turned into a permanent joint no-op.
-        construction = {"status": "already_consumed_in_episode"}
+    if construction_blocked:
+        # The formal route must consume or recheck its earlier receipt before
+        # another building can enter the joint comparison.  A faction gift
+        # remains an independent opportunity on the same frame.
+        construction = {"status": "prior_receipt_not_released"}
     else:
         construction = query_construction_private(
             driver, expected_revision=expected_revision
@@ -206,6 +206,29 @@ def query_m5_peacetime_proposal_sources_v1(
             "formal_action_ready": False,
         },
     }
+
+
+def _prior_construction_blocks_candidate(
+    driver: object, *, applied: object, frame: Mapping[str, object],
+) -> bool:
+    if not (isinstance(applied, Mapping)
+            and applied.get("episode_run_id") == frame["episode_run_id"]):
+        return False
+    try:
+        process = construction_process_identity(driver)
+    except BridgeUnavailableError:
+        return True
+    return not (
+        applied.get("status") == "applied"
+        and applied.get("postcondition_verified") is True
+        and applied.get("actor_character_id") == frame["played_character_id"]
+        and process == (applied.get("post_bridge_pid"),
+                        applied.get("post_bridge_creation_date"))
+        and type(applied.get("post_native_revision")) is int
+        and type(applied.get("post_date_raw")) is int
+        and frame["native_revision"] > applied["post_native_revision"]
+        and frame["date_raw"] > applied["post_date_raw"]
+    )
 
 
 def _require_peaceful_frame(
