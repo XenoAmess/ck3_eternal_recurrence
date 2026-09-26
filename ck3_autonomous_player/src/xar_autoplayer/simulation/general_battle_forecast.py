@@ -138,6 +138,7 @@ def forecast_fixed_contact(
             "phase_events_disabled", "no_voluntary_retreat",
             "fixed_participants", "unobserved_modifiers_omitted",
             "future_daily_effective_stat_refresh_unmodeled",
+            "future_daily_combat_width_refresh_unmodeled",
         ],
         "capture": dict(capture),
     }
@@ -180,6 +181,7 @@ def contact_admission(forecast: Mapping[str, Any], *, defensive_relief: bool = F
         "unquantified_risks": [
             *([] if death_risk_modeled else ["commander_or_knight_death"]),
             "future_daily_effective_stat_refresh",
+            "future_daily_combat_width_refresh",
         ],
         "native_parity_required": False,
     }
