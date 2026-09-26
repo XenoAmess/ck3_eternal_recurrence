@@ -19540,8 +19540,8 @@ class ConfiguredHybridFallbackDriver:
             backend_revisions.get("fast"), int
         ):
             native_revision = int(backend_revisions["fast"])
-        result = self.native.query_pending_character_interaction_context_v1(
-            pending_interaction_id,
+        result = self.native.execute_step(
+            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
             expected_revision=native_revision,
         )
         ending = self.take_snapshot()

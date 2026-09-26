@@ -9838,17 +9838,11 @@ class GameplayBridgeService:
             raise UnsupportedStepError(
                 "selected backend cannot query pending interaction context"
             )
-        typed_query = getattr(
-            self.driver,
-            "query_pending_character_interaction_context_v1",
-            None,
-        )
-        if not callable(typed_query):
-            raise UnsupportedStepError(
-                "selected backend lacks the parameterized pending query"
-            )
-        result = typed_query(
-            pending_interaction_id,
+        # The planner consumes successful semantic queries from command history.
+        # Route the public typed MCP query through the same recorded step that
+        # the planner selects, after binding its explicit ID to this frame.
+        result = self.driver.execute_step(
+            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
             expected_revision=expected_revision,
         )
         mirror_keys = {

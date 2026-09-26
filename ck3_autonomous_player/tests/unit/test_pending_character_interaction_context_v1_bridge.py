@@ -1089,6 +1089,33 @@ class PendingCharacterInteractionContextV1NativeDriverTests(unittest.TestCase):
         self.assertFalse(result["pending_character_interaction_context_ready"])
         self.assertEqual(result["pending_interaction_id"], PENDING_ID)
 
+    def test_public_typed_query_records_one_same_frame_semantic_step(self) -> None:
+        driver, endpoint = _native_driver()
+        _answer_with(endpoint, _native_result)
+        service = GameplayBridgeService(driver)
+        revision = int(service.snapshot()["revision"])
+
+        result = service.query_pending_character_interaction_context_v1(
+            PENDING_ID,
+            expected_revision=revision,
+        )
+
+        history = driver._history_snapshot()
+        self.assertEqual(len(history), 1)
+        self.assertEqual(history[0]["command"], STEP)
+        self.assertIs(history[0]["ok"], True)
+        self.assertEqual(history[0]["result"]["status"], result["status"])
+        self.assertEqual(
+            history[0]["result"]["pending_character_interaction_context"],
+            result["pending_character_interaction_context"],
+        )
+        self.assertEqual(
+            history[0]["result"]["queried_snapshot_id"],
+            result["queried_snapshot_id"],
+        )
+        self.assertEqual(result["queried_revision"], revision)
+        self.assertEqual(result["queried_native_revision"], NATIVE_REVISION)
+
     def test_driver_rejects_low_bits_alias_and_frame_drift(self) -> None:
         driver, _endpoint = _native_driver()
         with self.assertRaisesRegex(BridgeUnavailableError, "does not match"):
@@ -1213,20 +1240,17 @@ class _ServiceDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        if (
-            pending_interaction_id != PENDING_ID
-            or expected_revision != PUBLIC_REVISION
-        ):
+        raise AssertionError("service must use the recorded semantic step")
+
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        if step != STEP or expected_revision != PUBLIC_REVISION:
             raise AssertionError("service changed pending query binding")
         result = _driver_result(self.status, frame=self.frame)
         if self.mirror_drift:
             result["pending_interaction_id"] += 2**24
         return result
-
-    def execute_step(
-        self, step: str, *, expected_revision: int | None = None
-    ) -> dict[str, object]:
-        raise AssertionError("service must use the parameterized driver method")
 
     def wait_for_change(
         self, after_revision: int, *, timeout_seconds: float
