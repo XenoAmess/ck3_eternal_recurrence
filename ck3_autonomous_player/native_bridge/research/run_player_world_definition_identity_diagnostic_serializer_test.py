@@ -67,6 +67,7 @@ def main() -> int:
             assert source["advertised"] is False
             assert source["completed_buildings_observed"] is False
             assert source["completed_buildings"] is None
+            assert source["positive_income_coverage_complete"] is False
             legal = receipts[1]["player_world_building_sources"]
             assert legal["status"] == "source_available"
             assert legal["snapshot_revision"] == 3
@@ -75,8 +76,10 @@ def main() -> int:
             assert legal["legal_samples"][0]["building_key"] == "common_tradeport_01"
             assert legal["completed_buildings_observed"] is False
             assert legal["completed_buildings"] is None
+            assert legal["positive_income_coverage_complete"] is False
             completed = receipts[2]["player_world_building_sources"]
             assert completed["completed_buildings_observed"] is True
+            assert completed["positive_income_coverage_complete"] is True
             assert completed["completed_buildings"] == [{
                 "barony_title_id": 2103, "province_id": 2635,
                 "building_type_id": 24, "slot_index": 1,

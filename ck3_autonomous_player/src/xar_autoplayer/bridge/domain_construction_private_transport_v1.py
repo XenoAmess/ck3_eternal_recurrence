@@ -177,7 +177,12 @@ def query_construction_private(driver: object, *, expected_revision: int,
                                  "actor_character_id": starting["played_character"]["character_id"]}}
     selected = _candidate(world)
     if selected is None:
-        return {"status": "no_legal_budgeted_building", "world": dict(world),
+        covered = world.get("positive_income_coverage_complete") is True
+        return {"status": ("no_legal_budgeted_building" if covered
+                           else "evidence_insufficient"),
+                **({} if covered else {
+                    "reason": "positive_income_candidate_coverage_incomplete"}),
+                "world": dict(world),
                 "proof_epoch": probe["proof_epoch"], "source_frame": {
             "revision": expected_revision, "native_revision": revision,
             "episode_run_id": starting["episode_run_id"]}}

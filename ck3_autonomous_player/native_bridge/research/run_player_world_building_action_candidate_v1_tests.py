@@ -50,7 +50,7 @@ def main() -> int:
     source = NATIVE / "src"
     native_values = dict((key, int(value)) for key, value in re.findall(
         r'\{"([a-z0-9_]+)", ([0-9]+)\}',
-        (source / "player_world_building_action_candidate_v1.cpp").read_text(
+        (source / "player_world_building_authored_income_v1.hpp").read_text(
             encoding="utf-8")))
     assert native_values == _AUTHOR_MONTHLY_INCOME_HUNDREDTHS
     with tempfile.TemporaryDirectory(prefix="xar-m4-cost-to-action-") as name:

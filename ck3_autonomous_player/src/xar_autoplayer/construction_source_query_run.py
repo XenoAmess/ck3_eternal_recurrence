@@ -250,7 +250,8 @@ def query_private_construction_source_once(
     checks = {
         "single_cold_restore": bookkeeping["exact"] is True,
         "one_read_only_native_probe": isinstance(query, dict)
-            and query.get("status") in ("selected", "no_legal_budgeted_building", "source_red"),
+            and query.get("status") in ("selected", "no_legal_budgeted_building",
+                                        "evidence_insufficient", "source_red"),
         "paused_frame_unchanged": _same_frame(before, after),
         "no_gameplay_command": before_history is not None
             and after_history == before_history

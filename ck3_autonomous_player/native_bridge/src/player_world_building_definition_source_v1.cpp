@@ -1,9 +1,11 @@
 #include "player_world_building_definition_source_v1.hpp"
+#include "player_world_building_authored_income_v1.hpp"
 
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -425,47 +427,82 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
         }
         result.player_gold_observed = true;
       }
-      bool stop = false;
-      for (const auto &holding : sample_holding_order) {
-        std::int32_t slot_count = 0;
-        std::uintptr_t province = 0;
-        if (!ReadProvinceSlots(campaign, module_base, holding.province_id,
-                               slot_count, province)) {
-          return Failed(PlayerWorldBuildingFailureV1::province_slot_source);
+      struct ScanDefinition final {
+        std::int32_t building_type_id;
+        std::uintptr_t definition;
+        int authored_income_hundredths;
+      };
+      std::vector<ScanDefinition> positive_definitions;
+      std::vector<ScanDefinition> remaining_definitions;
+      positive_definitions.reserve(kAuthoredBuildingIncomeHundredthsV1.size());
+      remaining_definitions.reserve(definitions.size());
+      bool all_definition_keys_classified = true;
+      for (const auto &[building_type_id, definition] : definitions) {
+        std::string key;
+        if (!ReadBuildingKey(campaign, definition, key)) {
+          all_definition_keys_classified = false;
+          remaining_definitions.push_back({building_type_id, definition, 0});
+          continue;
         }
-        for (const auto &[building_type_id, definition] : definitions) {
-          for (std::int32_t slot = 0; slot < slot_count; ++slot) {
-            if (result.final_legality_checks >= request.max_native_checks ||
-                static_cast<std::int32_t>(result.legal_samples.size()) >=
-                    request.max_legal_samples) {
-              result.checks_truncated = true;
-              stop = true;
-              break;
+        const int income = AuthoredIncomeHundredths(key);
+        (income > 0 ? positive_definitions : remaining_definitions)
+            .push_back({building_type_id, definition, income});
+      }
+      std::stable_sort(positive_definitions.begin(),
+                       positive_definitions.end(),
+                       [](const auto &a, const auto &b) {
+                         return a.authored_income_hundredths >
+                                b.authored_income_hundredths;
+                       });
+      PlayerWorldBuildingFailureV1 scan_failure =
+          PlayerWorldBuildingFailureV1::none;
+      const auto scan = [&](const std::vector<ScanDefinition> &ordered) {
+        // Definition first distributes each valued option across every held
+        // barony before the bounded scan spends checks on unvalued types.
+        for (const auto &row : ordered) {
+          for (const auto &holding : sample_holding_order) {
+            std::int32_t slot_count = 0;
+            std::uintptr_t province = 0;
+            if (!ReadProvinceSlots(campaign, module_base,
+                                   holding.province_id,
+                                   slot_count, province)) {
+              scan_failure = PlayerWorldBuildingFailureV1::province_slot_source;
+              return false;
             }
-            bool allowed = false;
-            if (!access.final_legality(
-                    access.final_legality_context,
-                    before.played_character_id, holding.province_id,
-                    definition, slot, allowed)) {
-              return Failed(PlayerWorldBuildingFailureV1::
-                                native_final_legality);
-            }
-            ++result.final_legality_checks;
-            if (allowed) {
+            for (std::int32_t slot = 0; slot < slot_count; ++slot) {
+              if (result.final_legality_checks >= request.max_native_checks ||
+                  static_cast<std::int32_t>(result.legal_samples.size()) >=
+                      request.max_legal_samples) {
+                result.checks_truncated = true;
+                return false;
+              }
+              bool allowed = false;
+              if (!access.final_legality(
+                      access.final_legality_context,
+                      before.played_character_id, holding.province_id,
+                      row.definition, slot, allowed)) {
+                scan_failure = PlayerWorldBuildingFailureV1::
+                    native_final_legality;
+                return false;
+              }
+              ++result.final_legality_checks;
+              if (!allowed) continue;
               PlayerWorldBuildingLegalSampleV1 sample{
                   holding.barony_title_id, holding.province_id,
-                  building_type_id, slot};
-              if (!ReadBuildingKey(campaign, definition,
+                  row.building_type_id, slot};
+              if (!ReadBuildingKey(campaign, row.definition,
                                    sample.building_key)) {
-                return Failed(PlayerWorldBuildingFailureV1::definition_key);
+                scan_failure = PlayerWorldBuildingFailureV1::definition_key;
+                return false;
               }
               if (access.native_cost != nullptr) {
                 if (!access.native_cost(
                         access.native_cost_context,
                         before.played_character_id, holding.province_id,
-                        province, building_type_id, definition, slot,
+                        province, row.building_type_id, row.definition, slot,
                         sample.cost_raw_native)) {
-                  return Failed(PlayerWorldBuildingFailureV1::native_cost);
+                  scan_failure = PlayerWorldBuildingFailureV1::native_cost;
+                  return false;
                 }
                 const auto &raw = sample.cost_raw_native;
                 sample.cost_raw_slots = {
@@ -477,9 +514,20 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
               result.legal_samples.push_back(sample);
             }
           }
-          if (stop) break;
         }
-        if (stop) break;
+        return true;
+      };
+      const bool positive_scan_complete = scan(positive_definitions);
+      if (scan_failure != PlayerWorldBuildingFailureV1::none) {
+        return Failed(scan_failure);
+      }
+      result.positive_income_coverage_complete =
+          all_definition_keys_classified && positive_scan_complete;
+      if (positive_scan_complete) {
+        scan(remaining_definitions);
+        if (scan_failure != PlayerWorldBuildingFailureV1::none) {
+          return Failed(scan_failure);
+        }
       }
       result.native_final_legality_evaluated =
           result.final_legality_checks > 0;

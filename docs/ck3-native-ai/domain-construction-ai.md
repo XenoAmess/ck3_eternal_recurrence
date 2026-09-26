@@ -2,6 +2,19 @@
 
 ## 状态与范围
 
+- **NW-ECON-R0225（2026-09-26，R0225 实机漏判 → 源码/fixture 修复；未复验实机）**：Robert c2 候选在和平 paused 帧已读出 4 个直辖 barony、981 个原生建筑定义、玩家现金 344.906 金，仍以 512 次最终合法性上限在首个 barony 仅留下四个 `hospices_01` 样本（每个成本 150 金；保留 200 金后均不可负担），`checks_truncated=true`，随后错误地给出全局 `no_legal_budgeted_building` 并推进 18 天。此证据只能证明**已观察样本**不可负担。exact-build 原生树沿已验证 `CBuildingType` manager 的 canonical key 将现有 19 个标称正月收入一级建筑放在检查前列，按标称收入降序，对每个定义先遍历所有直辖 holding/slot，再花有界预算检查其他定义；每项仍经玩家同帧原生最终合法性、原生成本、现金与 200 金储备。新增 `positive_income_coverage_complete` 仅在 manager 所有 key 均可分类且正收益定义的全部直辖槽位已查完时为真；样本上限或检查上限截断正收益阶段时为假。无可选候选且此位为假返回 `evidence_insufficient`，和平正式消费者保留 RED、不推进日期；战前仲裁也阻止原战争步骤，service 先给独立婚配评估机会，无婚配动作则保留建设观测 RED。无候选且覆盖为真才可说该**现有 19-key 窄政策**没有可负担正收益建筑，不能扩大为所有建筑无经济价值。原版动态 AI `ai_value` 与真实完工税收增量未因此计算；本包还需 c3 匹配 DLL 的 paused live 验证，不把源码 GREEN 当新建设动作。
+
+```mermaid
+flowchart LR
+    M[同帧已验证 CBuildingType 定义与直辖领地] --> K[读取 canonical key]
+    K --> P[已知正收益定义按收益排序]
+    P --> H[每个定义跨全部直辖槽位做原生最终合法性]
+    H --> C{正收益覆盖完整且无可负担候选?}
+    C -->|是| N[窄政策无可负担建设]
+    C -.->|否且无候选| R[观测不足 RED]
+    H -->|合法且预算满足| A[既有 typed 建设与独立收据]
+```
+
 - **NW-ECON-NATIVE-RED（2026-09-26，R0224 实机 RED → 源码/fixture 修复；未复验实机）**：Robert 匹配候选 `g2-robert-nonwar-prewar-r0149-20260926-c1`，DLL SHA-256 `675C3DFE525AEE2692F9FE19B045400944D83EF1E905553DDE3F3BBB983C52ED`，在和平 paused 帧读得玩家直辖 4 个 barony/Province，却于建设正式评估前返回 `player_world_building_sources.failure=construction_state`，无动作、无日期推进。`definition_source_count=null` 是失败结果整体清空后的序列化值，不证明 manager 读取失败。与 e7bfe8a 的源码差异把新加入的**已建槽位**读取锁定为本次相对旧正式建设源的新增阻断路径；原报告未记录失败 province/槽位，不能进一步指称具体坏指针或建筑类型。现在把已建槽位读回单独标为 `completed_buildings_observed`：缺阵列、单项读失败或 manager 无对应定义时，清空不完整已建列表并序列化 `completed_buildings=null`，不将其当作空槽；原生最终合法性、成本、现金及 active 施工读回仍独立评估。正式候选可继续进入原有建设选择；物质 receipt 若需完工状态仍要求已建观察成功，否则保留 `source_red` 与 pending，不冒充完工或收益。此为 exact-build 原生候选阻断的最小源码修复，仍需新 DLL/合法配对 paused 实机确认 R0224 原故障已解除及具体合法候选、动作、后置。
 
 - **NW-ECON-PREWAR（2026-09-26，源码/fixture，未新增实机）**：R0223 和正式入口核查暴露和平战前漏消费：`service` 已把建设 snapshot/history 交给 consumer，但正常 `plan_construction_private` 仅在 `selected_step=life-advance` 时评估；当策略在和平帧查询可宣战争或选择 typed 宣战，正收益建设此前完全不进入比较。现给该 consumer 增加默认关闭的 `prewar_arbitration=True`，只匹配原生 `query-declarable-wars` 或格式合法的 `declare-war-*`；独立同帧 feudal/peace root、玩家实际现金、原生最终合法且可负担的正收益候选、未决建设收据和既有 200 金储备全部满足时，返回现有 typed 建设提交步骤与原始 query，保留原宣战步骤以供下一正式 turn 重评。无正收益或预算不足则保留战争步骤，观测缺项另记 status；pending/cold receipt 仍先恢复。战前战争后续现金成本与额外共享资源承诺保持 `None`，不填零或声称完成战争和建设的完整联合效用比较。当前包只提供模块入口，service 同帧调度与匹配 Robert 实机仍待接线/验收；原 M5 和平 source 的 `life-advance` 门及独立选择器未由此绕开。原生 AI 的 `ai_value`、80% 带与随机施工树未改，建设仍按已冻结的同帧 final-legal/标称月收入窄政策。

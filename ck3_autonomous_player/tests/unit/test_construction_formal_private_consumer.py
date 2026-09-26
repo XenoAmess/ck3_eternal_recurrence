@@ -45,7 +45,8 @@ def world(revision: int = 3, *, active: bool = False) -> dict[str, object]:
     return {"status": "source_available", "snapshot_revision": revision,
             "date_raw": 53_178_312, "player_character_id": 29829,
             "native_final_legality_evaluated": True, "native_cost_evaluated": True,
-            "checks_truncated": False, "player_gold_raw": 50_000_000,
+            "checks_truncated": False, "positive_income_coverage_complete": True,
+            "player_gold_raw": 50_000_000,
             "legal_samples": [{"barony_title_id": 2103, "province_id": 2635,
                                "building_type_id": 24, "slot_index": 1,
                                "building_key": "common_tradeport_01",
@@ -78,6 +79,7 @@ class Driver:
         self.r0080_material_without_cost = False
         self.second_building_available = False
         self.no_positive_building = False
+        self.positive_coverage_incomplete = False
         self.gold_override = None
 
     def take_snapshot(self):
@@ -110,6 +112,9 @@ class Driver:
             source["date_raw"] = self.snapshot["date_raw"]
             if self.no_positive_building:
                 source["legal_samples"][0]["building_key"] = "military_camps_01"
+            if self.positive_coverage_incomplete:
+                source["positive_income_coverage_complete"] = False
+                source["checks_truncated"] = True
             if self.gold_override is not None:
                 source["player_gold_raw"] = self.gold_override
             if self.completed_construction:
@@ -280,6 +285,28 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(result["plan"]["selected_step"], war_step)
             self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
                              "no_positive_budgeted_building")
+
+    def test_uncovered_positive_definitions_preserve_red_instead_of_advancing(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.no_positive_building = True
+            driver.positive_coverage_incomplete = True
+            query = transport.query_construction_private(driver, expected_revision=3)
+            self.assertEqual(query["status"], "evidence_insufficient")
+            self.assertEqual(query["reason"],
+                             "positive_income_candidate_coverage_incomplete")
+            baseline = {"plan": {"selected_step": "life-advance"}, "revision": 3}
+            normal = plan_construction_private(driver, baseline, frame(), root(), set())
+            self.assertIsNone(normal["plan"]["selected_step"])
+            self.assertEqual(normal["plan"]["construction_private_query"]["status"],
+                             "evidence_insufficient")
+            war_step = "declare-war-123-4-0"
+            prewar = {"plan": {"selected_step": war_step}, "revision": 3}
+            result = plan_construction_private(driver, prewar, frame(), root(), set(),
+                                               prewar_arbitration=True)
+            self.assertIsNone(result["plan"]["selected_step"])
+            self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
+                             "positive_income_coverage_incomplete")
 
     def test_prewar_scope_query_and_unrelated_step_do_not_submit(self):
         with TemporaryDirectory() as location:
@@ -528,6 +555,66 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 outcome = service.auto_turn()
             self.assertEqual(outcome["selected_step"], SUBMIT_STEP)
             self.assertEqual(outcome["result"]["status"], "submitted_verification_pending")
+
+    def test_service_preserves_incomplete_construction_red_after_family_chance(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.allow_private_construction_formal_trial = True
+            driver.allow_private_family_marriage_formal_trial = True
+            driver.no_positive_building = True
+            driver.positive_coverage_incomplete = True
+            driver.recorded.extend([(row["command"], row["result"]) for row in root()])
+            service = GameplayBridgeService(driver)
+            with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                            return_value={"selected_step": "life-advance",
+                                          "phase": "peacetime"}), \
+                 mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private",
+                            side_effect=lambda _driver, planned, _snapshot, **_kwargs:
+                                planned) as family:
+                planned = service.plan_turn()
+            family.assert_called_once()
+            self.assertIsNone(planned["plan"]["selected_step"])
+            self.assertEqual(planned["plan"]["construction_private_query"]["status"],
+                             "evidence_insufficient")
+            self.assertIn("coverage incomplete", planned["plan"]["reason"])
+            with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                            return_value={"selected_step": "life-advance",
+                                          "phase": "peacetime"}), \
+                 mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private",
+                            side_effect=lambda _driver, planned, _snapshot, **_kwargs:
+                                {**planned, "plan": {**planned["plan"],
+                                    "selected_step": "private-family-submit"}}):
+                family_selected = service.plan_turn()
+            self.assertEqual(family_selected["plan"]["selected_step"],
+                             "private-family-submit")
+
+    def test_service_prewar_incomplete_construction_blocks_war_after_family_chance(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.allow_private_construction_formal_trial = True
+            driver.allow_private_family_marriage_formal_trial = True
+            driver.no_positive_building = True
+            driver.positive_coverage_incomplete = True
+            driver.recorded.extend([(row["command"], row["result"]) for row in root()])
+            service = GameplayBridgeService(driver)
+            war_step = "query-declarable-wars"
+            driver.capabilities = lambda: {
+                "action_steps": ["life-advance", "query-campaign-root-context-v1",
+                                 war_step], "bridge_capabilities": []}
+            with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                            return_value={"selected_step": war_step,
+                                          "phase": "peacetime"}), \
+                 mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private",
+                            side_effect=lambda _driver, planned, _snapshot, **_kwargs:
+                                planned) as family:
+                planned = service.plan_turn()
+            family.assert_called_once()
+            self.assertIsNone(planned["plan"]["selected_step"])
+            self.assertIn("construction_prewar_arbitration", planned["plan"], planned)
+            self.assertEqual(planned["plan"]["construction_prewar_arbitration"]
+                             ["original_selected_step"], war_step)
+            self.assertEqual(planned["plan"]["construction_private_query"]["status"],
+                             "evidence_insufficient")
 
     def test_r0060_public_revision_after_native_root_query_reaches_construction(self):
         with TemporaryDirectory() as location:

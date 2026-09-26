@@ -103,6 +103,7 @@ struct PlayerWorldBuildingSourceResultV1 final {
   bool source_available = false;
   bool native_final_legality_evaluated = false;
   bool checks_truncated = false;
+  bool positive_income_coverage_complete = false;
   bool cost_ready = false;
   bool native_cost_evaluated = false;
   bool player_gold_observed = false;
