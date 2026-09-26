@@ -47,6 +47,7 @@ struct Harness {
   bool validate = true;
   bool submit = true;
   bool alliance = true;
+  bool alliance_reverse = true;
   bridge::MarriageProposalNativeResolutionV1 resolution =
       bridge::MarriageProposalNativeResolutionV1::accepted;
   bridge::MarriageProposalReceiptFrameV1 frame{};
@@ -236,11 +237,12 @@ bool CaptureFrame(void *, bridge::MarriageProposalReceiptFrameV1 &output) noexce
 }
 bool ReadAlliance(void *, std::uintptr_t subject, std::uintptr_t candidate,
                   bool &subject_has, bool &candidate_has) noexcept {
-  assert(subject == reinterpret_cast<std::uintptr_t>(g_harness->subject.data()));
-  assert(candidate ==
-         reinterpret_cast<std::uintptr_t>(g_harness->candidate.data()));
+  assert((subject == reinterpret_cast<std::uintptr_t>(g_harness->subject.data()) &&
+          candidate == reinterpret_cast<std::uintptr_t>(g_harness->candidate.data())) ||
+         (subject == reinterpret_cast<std::uintptr_t>(g_harness->played.data()) &&
+          candidate == reinterpret_cast<std::uintptr_t>(g_harness->recipient.data())));
   subject_has = g_harness->alliance;
-  candidate_has = g_harness->alliance;
+  candidate_has = g_harness->alliance_reverse;
   return true;
 }
 bool ReadResolution(void *, std::uint32_t subject, std::uint32_t candidate,
@@ -445,7 +447,32 @@ void TestBilateralReadbackAndExplicitBlockers() {
          observation.native_resolution ==
              bridge::MarriageProposalNativeResolutionV1::accepted);
 
+  bool played_has_recipient = false;
+  bool recipient_has_played = false;
+  assert(bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
+             state, kPlayedId, kRecipientId, played_has_recipient,
+             recipient_has_played) ==
+         bridge::MarriageProposalNativeReadbackResultV1::available);
+  assert(played_has_recipient && recipient_has_played);
+  harness.alliance = false;
+  harness.alliance_reverse = false;
+  assert(bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
+             state, kPlayedId, kRecipientId, played_has_recipient,
+             recipient_has_played) ==
+         bridge::MarriageProposalNativeReadbackResultV1::available);
+  assert(!played_has_recipient && !recipient_has_played);
+  harness.alliance = true;
+  assert(bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
+             state, kPlayedId, kRecipientId, played_has_recipient,
+             recipient_has_played) ==
+         bridge::MarriageProposalNativeReadbackResultV1::available);
+  assert(played_has_recipient && !recipient_has_played);
+
   state.environment.alliance_readback_certified = false;
+  assert(bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
+             state, kPlayedId, kRecipientId, played_has_recipient,
+             recipient_has_played) ==
+         bridge::MarriageProposalNativeReadbackResultV1::blocked);
   assert(bridge::ReadMarriageProposalRelationshipObservationFromNativeBinderV1(
              state, kSubjectId, kCandidateId, observation) ==
          bridge::MarriageProposalNativeReadbackResultV1::blocked);

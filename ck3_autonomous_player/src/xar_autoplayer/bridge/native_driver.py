@@ -2545,6 +2545,20 @@ class NativeHeadlessGameplayDriver:
             self, pending=pending, timeout_seconds=timeout_seconds,
         )
 
+    def query_observed_first_heir_marriage_alliance_result_private_v1(
+        self, *, resolved: dict[str, object], recipient_character_id: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Private paused actual-alliance read for a material proposal pair."""
+        from .observed_heir_marriage_private_action_v1 import (
+            query_observed_first_heir_marriage_alliance_result_private_v1,
+        )
+        return query_observed_first_heir_marriage_alliance_result_private_v1(
+            self, resolved=resolved,
+            recipient_character_id=recipient_character_id,
+            timeout_seconds=timeout_seconds,
+        )
+
     def query_player_lifestyle_formal_private_v1(
         self, *, expected_revision: int | None = None
     ) -> dict[str, object]:

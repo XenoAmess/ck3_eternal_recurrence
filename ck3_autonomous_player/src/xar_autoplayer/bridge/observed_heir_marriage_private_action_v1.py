@@ -9,6 +9,7 @@ from .driver import BridgeUnavailableError
 
 SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
 RESULT_STEP = "query-observed-first-heir-marriage-result-v1-private"
+ALLIANCE_RESULT_STEP = "query-observed-first-heir-marriage-alliance-result-v1-private"
 SCHEMA = "xar.ck3.observed-first-heir-marriage-private-action.v1"
 
 
@@ -209,3 +210,60 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
     return {"schema": SCHEMA, "schema_version": 1,
             "exact_ck3_build": "1.19.0.6", "advertised": False,
             "cold_absent_relation_unresolved": status == "pending", **result}
+
+
+def query_observed_first_heir_marriage_alliance_result_private_v1(
+    driver: object, *, resolved: dict[str, object],
+    recipient_character_id: int, timeout_seconds: float = 360.0,
+) -> dict[str, object]:
+    """Read the actual player/recipient alliance beside a material heir pair.
+
+    The recipient identity must come from the frozen final-legal proposal row.
+    An earlier possible-alliance projection cannot establish this result.
+    """
+    before = _paused(driver)
+    pending = resolved.get("source_pending")
+    if not isinstance(pending, dict):
+        raise BridgeUnavailableError("alliance result needs a durable proposal pair")
+    played_id = pending.get("played_character_id")
+    heir_id = pending.get("heir_character_id")
+    candidate_id = pending.get("candidate_character_id")
+    if (resolved.get("status") not in {"marriage", "betrothal"}
+            or resolved.get("material_result") is not True
+            or pending.get("schema") != SCHEMA
+            or played_id != before["played_character"]["character_id"]
+            or not all(_positive(value) for value in
+                       (played_id, heir_id, candidate_id, recipient_character_id))
+            or recipient_character_id == played_id
+            or heir_id == candidate_id
+            or resolved.get("heir_character_id") != heir_id
+            or resolved.get("candidate_character_id") != candidate_id):
+        raise BridgeUnavailableError("alliance result lacks a bound material proposal")
+    result = _command(driver, ALLIANCE_RESULT_STEP, {
+        "expected_revision": before["native_revision"],
+        "played_character_id": played_id,
+        "recipient_character_id": recipient_character_id,
+        "heir_character_id": heir_id,
+        "candidate_character_id": candidate_id,
+    }, timeout_seconds)
+    alliance_status = result.get("alliance_status")
+    first = result.get("played_has_recipient_alliance")
+    second = result.get("recipient_has_played_alliance")
+    if (result.get("read_only") is not True
+            or result.get("native_revision") != before["native_revision"]
+            or result.get("played_character_id") != played_id
+            or result.get("recipient_character_id") != recipient_character_id
+            or result.get("heir_character_id") != heir_id
+            or result.get("candidate_character_id") != candidate_id
+            or result.get("relationship_status") != resolved["status"]
+            or alliance_status not in {"allied", "not_allied", "unknown"}
+            or (alliance_status == "allied" and (first, second) != (True, True))
+            or (alliance_status == "not_allied" and (first, second) != (False, False))
+            or (alliance_status == "unknown" and
+                (first, second) not in {(None, None), (True, False),
+                                        (False, True)})
+            or _paused(driver)["native_revision"] != before["native_revision"]):
+        raise BridgeUnavailableError("alliance result disagrees with material pair or frame")
+    return {"schema": "xar.ck3.first-heir-marriage-alliance-result.v1",
+            "schema_version": 1, "exact_ck3_build": "1.19.0.6",
+            **result}

@@ -772,6 +772,68 @@ ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
 }
 
 MarriageProposalNativeReadbackResultV1
+ReadMarriageProposalAlliancePairFromNativeBinderV1(
+    MarriageProposalNativeBinderStateV1 &binder,
+    std::uint32_t first_character_id, std::uint32_t second_character_id,
+    bool &first_has_second, bool &second_has_first) noexcept {
+  first_has_second = false;
+  second_has_first = false;
+  const auto &env = binder.environment;
+  const auto admission = ValidateCommon(env, true);
+  if (admission != MarriageProposalNativeBinderFailureV1::none) {
+    SetFailure(binder, admission);
+    return MarriageProposalNativeReadbackResultV1::failed;
+  }
+  if (first_character_id == 0 || second_character_id == 0 ||
+      first_character_id == second_character_id) {
+    SetFailure(binder, MarriageProposalNativeBinderFailureV1::invalid_submission);
+    return MarriageProposalNativeReadbackResultV1::failed;
+  }
+  if (!env.alliance_readback_certified || env.read_alliance_pair == nullptr) {
+    SetFailure(binder,
+               MarriageProposalNativeBinderFailureV1::alliance_readback_not_certified);
+    return MarriageProposalNativeReadbackResultV1::blocked;
+  }
+  ResolvedCharacterV1 first{};
+  ResolvedCharacterV1 second{};
+  if (ResolveCharacter(env, first_character_id, first) !=
+          IdentityResultV1::available ||
+      ResolveCharacter(env, second_character_id, second) !=
+          IdentityResultV1::available || !first.alive || !second.alive) {
+    SetFailure(binder, MarriageProposalNativeBinderFailureV1::alliance_sample_drift);
+    return MarriageProposalNativeReadbackResultV1::blocked;
+  }
+  bool forward = false;
+  bool reverse = false;
+  if (!env.read_alliance_pair(env.alliance_context, first.character,
+                              second.character, forward, reverse)) {
+    SetFailure(binder, MarriageProposalNativeBinderFailureV1::alliance_sample_drift);
+    return MarriageProposalNativeReadbackResultV1::failed;
+  }
+  ResolvedCharacterV1 first_again{};
+  ResolvedCharacterV1 second_again{};
+  bool forward_again = false;
+  bool reverse_again = false;
+  if (ResolveCharacter(env, first_character_id, first_again) !=
+          IdentityResultV1::available ||
+      ResolveCharacter(env, second_character_id, second_again) !=
+          IdentityResultV1::available || !first_again.alive ||
+      !second_again.alive || first.character != first_again.character ||
+      second.character != second_again.character ||
+      !env.read_alliance_pair(env.alliance_context, first_again.character,
+                              second_again.character, forward_again,
+                              reverse_again) || forward != forward_again ||
+      reverse != reverse_again) {
+    SetFailure(binder, MarriageProposalNativeBinderFailureV1::alliance_sample_drift);
+    return MarriageProposalNativeReadbackResultV1::failed;
+  }
+  first_has_second = forward_again;
+  second_has_first = reverse_again;
+  SetFailure(binder, MarriageProposalNativeBinderFailureV1::none);
+  return MarriageProposalNativeReadbackResultV1::available;
+}
+
+MarriageProposalNativeReadbackResultV1
 ReadMarriageProposalRelationshipObservationFromNativeBinderV1(
     MarriageProposalNativeBinderStateV1 &binder,
     std::uint32_t subject_character_id,
