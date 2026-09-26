@@ -1660,6 +1660,76 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_peaceful_declaration_queries_private_nonwar_before_war(self) -> None:
+        state = {
+            **_snapshot(7),
+            "paused": True,
+            "map_ready": True,
+            "active_event": None,
+            "pending_character_interaction": None,
+            "active_wars": [],
+        }
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-declarable-wars", "life-advance"),
+        )
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_family_marriage_formal_trial = True
+        war_plan = {"policy": "one-life-turn-v1", "selected_step": "query-declarable-wars"}
+
+        def construction(_driver, planned, _snapshot, _history, _steps, *, prewar_arbitration):
+            self.assertTrue(prewar_arbitration)
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": "private-submit-player-construction-v1"}}
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value=war_plan),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private", side_effect=construction) as econ,
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private", side_effect=lambda _driver, planned, _snapshot, *, prewar_arbitration: planned) as family,
+        ):
+            chosen = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(chosen["selected_step"], "private-submit-player-construction-v1")
+        econ.assert_called_once()
+        family.assert_called_once()
+
+        def no_construction(_driver, planned, _snapshot, _history, _steps, *, prewar_arbitration):
+            self.assertTrue(prewar_arbitration)
+            return planned
+        def marriage(_driver, planned, _snapshot, *, prewar_arbitration):
+            self.assertTrue(prewar_arbitration)
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": "private-submit-first-heir-marriage-v1"}}
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value=war_plan),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private", side_effect=no_construction),
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private", side_effect=marriage),
+        ):
+            chosen = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(chosen["selected_step"], "private-submit-first-heir-marriage-v1")
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value=war_plan),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private", side_effect=no_construction),
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private", side_effect=lambda _driver, planned, _snapshot, *, prewar_arbitration: planned),
+        ):
+            retained = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(retained["selected_step"], "query-declarable-wars")
+
+        state["active_wars"] = [{"war_id": 4}]
+        def no_prewar_construction(_driver, planned, _snapshot, _history, _steps, *, prewar_arbitration):
+            self.assertFalse(prewar_arbitration)
+            return planned
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value=war_plan),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private", side_effect=no_prewar_construction) as econ,
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private", side_effect=lambda _driver, planned, _snapshot, *, prewar_arbitration: planned),
+        ):
+            retained = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(retained["selected_step"], "query-declarable-wars")
+        self.assertFalse(econ.call_args.kwargs["prewar_arbitration"])
+
     def test_plan_turn_routes_only_advertised_production_v3_readonly_query(
         self,
     ) -> None:

@@ -165,6 +165,24 @@ either gate. Future war cash and supply commitments remain unknown in this
 comparison. No Robert construction action or joint live benefit follows from
 the static nominal-income value.
 
+The 2026-09-26 R0223 replay used the independently frozen Robert R0142
+day-zero peace pair and the exact `4592ba0` candidate. The operator completed
+eight paused turns and minimized its sole CK3 window. Turn 2 queried
+declarable wars; turns 3–5 queried entry assessments; turn 6 started WarID 4;
+turn 8 raised ArmyID 18. No construction or marriage consumer ran before that
+declaration because both were gated on `selected_step=life-advance`. This is a
+real opportunity-evaluation gap, not evidence that a legal, affordable
+building or positive marriage existed: R0142 had 246 gold, of which 200 gold
+was reserved for construction, and no matching candidate result was read.
+The replay's date remained 53144328 and does not add Robert mainline days.
+The paused report, operator and minimized-window receipts are in
+`Z:\ck3_mod_rewrite_process_assets\g2-robert-nonwar-peace-r0142-20260926-c1`.
+The later private pre-declaration consumer route evaluates the existing domain
+rules on a same-frame peaceful native declaration query or legal declaration
+step, and retains the war plan when neither domain returns an admissible
+action. It is separate from the incomplete five-candidate M5 selector; no
+joint live benefit or material nonwar action is inferred from R0223.
+
 Before either query, both durable formal ledgers must have no pending action.
 After the 2026-09-26 NW-ECON continuation, an applied construction receipt
 blocks a new building proposal only until the formal route has consumed it and
