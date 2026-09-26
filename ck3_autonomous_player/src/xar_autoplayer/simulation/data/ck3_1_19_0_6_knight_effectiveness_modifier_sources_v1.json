@@ -1,0 +1,157 @@
+{
+  "schema": "ck3.native_knight_effectiveness_modifier_sources.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "reader_rva": "0x28FD990",
+  "modifier_set_resolver_rva": "0x26172C0",
+  "modifier_value_helper_rva": "0x2940E80",
+  "knight_stat_writer_rva": "0x28FDBC0",
+  "metadata_index_to_native_enum_offset": 1,
+  "metadata_offset_calibration": [
+    {
+      "native_enum": "0x106",
+      "metadata_index": 261,
+      "name": "MOD_COMBAT_COUNTER_EFFICIENCY",
+      "literal_rva": "0x43C1208",
+      "metadata_name_pointer_rva": "0x43C8D40",
+      "reader_callsite_rva": null,
+      "input_operand": "calibration from prior counter-helper research"
+    },
+    {
+      "native_enum": "0x107",
+      "metadata_index": 262,
+      "name": "MOD_COMBAT_COUNTER_RESISTANCE",
+      "literal_rva": "0x43C1260",
+      "metadata_name_pointer_rva": "0x43C8D78",
+      "reader_callsite_rva": null,
+      "input_operand": "calibration from prior counter-helper research"
+    }
+  ],
+  "modifier_components_in_reader_order": [
+    {
+      "native_enum": "0xB6",
+      "metadata_index": 181,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_MULT",
+      "literal_rva": "0x43C2978",
+      "metadata_name_pointer_rva": "0x43C7AE0",
+      "reader_callsite_rva": "0x28FD9B3",
+      "input_operand": "constant 100000 Q100000"
+    },
+    {
+      "native_enum": "0xB7",
+      "metadata_index": 182,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+      "literal_rva": "0x43C29D8",
+      "metadata_name_pointer_rva": "0x43C7B18",
+      "reader_callsite_rva": "0x28FDA01",
+      "input_operand": "military+0x350"
+    },
+    {
+      "native_enum": "0xB8",
+      "metadata_index": 183,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+      "literal_rva": "0x43C29B0",
+      "metadata_name_pointer_rva": "0x43C7B50",
+      "reader_callsite_rva": "0x28FDA3D",
+      "input_operand": "military+0x358"
+    },
+    {
+      "native_enum": "0xB9",
+      "metadata_index": 184,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+      "literal_rva": "0x43C27F0",
+      "metadata_name_pointer_rva": "0x43C7B88",
+      "reader_callsite_rva": "0x28FDA74",
+      "input_operand": "character+0xE8"
+    },
+    {
+      "native_enum": "0xBA",
+      "metadata_index": 185,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+      "literal_rva": "0x43C27C8",
+      "metadata_name_pointer_rva": "0x43C7BC0",
+      "reader_callsite_rva": "0x28FDAAB",
+      "input_operand": "character+0xD4"
+    },
+    {
+      "native_enum": "0xBB",
+      "metadata_index": 186,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+      "literal_rva": "0x43C2840",
+      "metadata_name_pointer_rva": "0x43C7BF8",
+      "reader_callsite_rva": "0x28FDAE2",
+      "input_operand": "character+0xE0"
+    },
+    {
+      "native_enum": "0xBC",
+      "metadata_index": 187,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+      "literal_rva": "0x43C2818",
+      "metadata_name_pointer_rva": "0x43C7C30",
+      "reader_callsite_rva": "0x28FDB19",
+      "input_operand": "character+0xE4"
+    },
+    {
+      "native_enum": "0xBD",
+      "metadata_index": 188,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+      "literal_rva": "0x43C2898",
+      "metadata_name_pointer_rva": "0x43C7C68",
+      "reader_callsite_rva": "0x28FDB50",
+      "input_operand": "character+0xD8"
+    },
+    {
+      "native_enum": "0xBE",
+      "metadata_index": 189,
+      "name": "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP",
+      "literal_rva": "0x43C2868",
+      "metadata_name_pointer_rva": "0x43C7CA0",
+      "reader_callsite_rva": "0x28FDB87",
+      "input_operand": "character+0xDC"
+    }
+  ],
+  "character_operand_instruction_bytes": [
+    {
+      "rva": "0x28FD9E1",
+      "bytes_hex": "488B9FB8010000"
+    },
+    {
+      "rva": "0x28FD9ED",
+      "bytes_hex": "488B9B50030000"
+    },
+    {
+      "rva": "0x28FDA22",
+      "bytes_hex": "488B87B8010000"
+    },
+    {
+      "rva": "0x28FDA2E",
+      "bytes_hex": "488BA858030000"
+    },
+    {
+      "rva": "0x28FDA61",
+      "bytes_hex": "486387E8000000"
+    },
+    {
+      "rva": "0x28FDA98",
+      "bytes_hex": "486387D4000000"
+    },
+    {
+      "rva": "0x28FDACF",
+      "bytes_hex": "486387E0000000"
+    },
+    {
+      "rva": "0x28FDB06",
+      "bytes_hex": "486387E4000000"
+    },
+    {
+      "rva": "0x28FDB3D",
+      "bytes_hex": "486387D8000000"
+    },
+    {
+      "rva": "0x28FDB74",
+      "bytes_hex": "486387DC000000"
+    }
+  ],
+  "specific_modifier_values_sampled_in_live_battle": false,
+  "observed_185000_effectiveness_decomposition_proven": false
+}

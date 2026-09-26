@@ -30,6 +30,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_join_full_day_boundaries,
     load_episode01_daily_stat_refresh,
     load_episode01_daily_stat_sources,
+    load_native_knight_effectiveness_sources,
     load_episode01_join_day_kernel_parity,
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
@@ -93,6 +94,16 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual((witness["new_damage_raw"], witness["new_toughness_raw"]),
                          (18_500_000, 3_700_000))
         self.assertFalse(day11["specific_modifier_source_for_knight_effectiveness_proven"])
+
+    def test_knight_modifier_names_are_exact_build_static_sources(self) -> None:
+        report = load_native_knight_effectiveness_sources()
+        names = [item["name"] for item in report["modifier_components_in_reader_order"]]
+        self.assertEqual(names[:4], [
+            "MOD_KNIGHT_EFFECTIVENESS_MULT", "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+            "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY", "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        ])
+        self.assertEqual(names[-1], "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP")
+        self.assertFalse(report["observed_185000_effectiveness_decomposition_proven"])
 
     def test_original_outcome_and_replay_divergence_stay_separate(self) -> None:
         case = load_episode01_native_battle_case()

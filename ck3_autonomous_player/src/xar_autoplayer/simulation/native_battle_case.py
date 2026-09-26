@@ -50,6 +50,12 @@ EPISODE01_DAILY_STAT_SOURCE_SHA256 = (
     "534907A0EC04359D00C40E86CAE86566C00B439F4795D758068F557159548B2A",
     "1D0FB70E3032B2358C59C41E8BB234C7B1BE5EA3747E4C983A8DB593C20FE937",
 )
+NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_FILE = (
+    "ck3_1_19_0_6_knight_effectiveness_modifier_sources_v1.json"
+)
+NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_SHA256 = (
+    "07428FDB8A4CE7D0893C3A5C69BF802A613A3A60385D7A48DA01A29A8865D6D3"
+)
 EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
@@ -538,6 +544,27 @@ def load_episode01_daily_stat_sources() -> tuple[dict[str, Any], dict[str, Any]]
             raise NativeBattleCaseError("daily stat-source identity or scope drifted")
         results.append(report)
     return results[0], results[1]
+
+
+def load_native_knight_effectiveness_sources() -> dict[str, Any]:
+    """Return exact-build static modifier names, without live value claims."""
+    raw = (Path(__file__).with_name("data") / NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_FILE).read_bytes()
+    if hashlib.sha256(raw).hexdigest().upper() != NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_SHA256:
+        raise NativeBattleCaseError("bundled knight effectiveness source bytes changed without review")
+    report = json.loads(raw)
+    components = report.get("modifier_components_in_reader_order") if isinstance(report, dict) else None
+    calibration = report.get("metadata_offset_calibration") if isinstance(report, dict) else None
+    if (report.get("schema") != "ck3.native_knight_effectiveness_modifier_sources.v1"
+            or report.get("exe_sha256") != "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+            or report.get("metadata_index_to_native_enum_offset") != 1
+            or not isinstance(components, list) or len(components) != 9
+            or [item["native_enum"] for item in components] !=
+            [f"0x{index:X}" for index in range(0xB6, 0xBF)]
+            or not isinstance(calibration, list) or len(calibration) != 2
+            or report.get("specific_modifier_values_sampled_in_live_battle") is not False
+            or report.get("observed_185000_effectiveness_decomposition_proven") is not False):
+        raise NativeBattleCaseError("knight effectiveness source scope drifted")
+    return report
 
 
 def _validate_join_day_kernel_parity(report: dict[str, Any]) -> None:
@@ -1250,6 +1277,8 @@ __all__ = [
     "EPISODE01_DAILY_STAT_REFRESH_SHA256",
     "EPISODE01_DAILY_STAT_SOURCE_FILES",
     "EPISODE01_DAILY_STAT_SOURCE_SHA256",
+    "NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_FILE",
+    "NATIVE_KNIGHT_EFFECTIVENESS_SOURCES_SHA256",
     "EPISODE01_JOIN_KERNEL_FILE",
     "EPISODE01_JOIN_KERNEL_SHA256",
     "EPISODE01_JOIN_KERNEL_V2_FILE",
@@ -1290,6 +1319,7 @@ __all__ = [
     "load_episode01_join_full_day_boundaries",
     "load_episode01_daily_stat_refresh",
     "load_episode01_daily_stat_sources",
+    "load_native_knight_effectiveness_sources",
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
     "load_episode01_phase_event_regiment_feedback",
