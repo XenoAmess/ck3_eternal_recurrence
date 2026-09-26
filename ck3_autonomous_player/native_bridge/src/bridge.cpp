@@ -7928,6 +7928,8 @@ std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
   case Failure::outcome_unavailable: return "outcome_unavailable";
   case Failure::heir_relationship_unavailable:
     return "heir_relationship_unavailable";
+  case Failure::lineage_unavailable: return "lineage_unavailable";
+  case Failure::sex_selector_unavailable: return "sex_selector_unavailable";
   }
   return "unknown";
 }
@@ -8058,6 +8060,32 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
       }
       result += ']';
     }
+    result += ",\"played_house_id\":";
+    result += available && read.played_lineage.house_id >= 0
+                  ? SignedNumber(read.played_lineage.house_id) : "null";
+    result += ",\"played_dynasty_id\":";
+    result += available && read.played_lineage.dynasty_id >= 0
+                  ? SignedNumber(read.played_lineage.dynasty_id) : "null";
+    result += ",\"heir_house_id\":";
+    result += available && read.heir_lineage.house_id >= 0
+                  ? SignedNumber(read.heir_lineage.house_id) : "null";
+    result += ",\"heir_dynasty_id\":";
+    result += available && read.heir_lineage.dynasty_id >= 0
+                  ? SignedNumber(read.heir_lineage.dynasty_id) : "null";
+    result += ",\"candidate_house_id\":";
+    result += available && read.candidate_lineage.house_id >= 0
+                  ? SignedNumber(read.candidate_lineage.house_id) : "null";
+    result += ",\"candidate_dynasty_id\":";
+    result += available && read.candidate_lineage.dynasty_id >= 0
+                  ? SignedNumber(read.candidate_lineage.dynasty_id) : "null";
+    result += ",\"heir_sex_selector_raw\":";
+    result += available ? Number(read.heir_sex_selector_raw) : "null";
+    result += ",\"candidate_sex_selector_raw\":";
+    result += available ? Number(read.candidate_sex_selector_raw) : "null";
+    result += ",\"effective_matrilineal_if_accepted\":";
+    result += available
+                  ? (read.effective_matrilineal_if_accepted ? "true" : "false")
+                  : "null";
     result += ",\"matrilineal_option_selected\":";
     result += available
                   ? (read.projection.matrilineal_option_selected ? "true" : "false")

@@ -109,6 +109,14 @@ def query_first_heir_candidate_alliance_projection_private_v1(
         raise BridgeUnavailableError("marriage projection requires five native rows")
     observed_unavailable = False
     observed_heir_relationship: tuple[object, object, tuple[int, ...]] | None = None
+    observed_played_lineage: tuple[object, object] | None = None
+    observed_heir_lineage: tuple[object, object] | None = None
+    observed_heir_sex_selector: int | None = None
+    lineage_fields = (
+        "played_house_id", "played_dynasty_id", "heir_house_id",
+        "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
+    )
+    sex_selector_fields = ("heir_sex_selector_raw", "candidate_sex_selector_raw")
     for index, row in enumerate(rows):
         if (
             not isinstance(row, dict)
@@ -123,6 +131,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             or not isinstance(row.get("failure"), str)
             or not isinstance(row.get("projection_failure"), str)
             or not isinstance(row.get("outcome_failure"), str)
+            or any(field not in row for field in (*lineage_fields,
+                                                  *sex_selector_fields))
+            or "effective_matrilineal_if_accepted" not in row
         ):
             raise BridgeUnavailableError("marriage projection row identity malformed")
         pairs = row.get("possible_alliance_pairs")
@@ -136,6 +147,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 row.get("heir_betrothed_character_id") is not None or
                 row.get("heir_primary_spouse_character_id") is not None or
                 row.get("heir_spouse_character_ids") is not None or
+                any(row[field] is not None for field in lineage_fields) or
+                any(row[field] is not None for field in sex_selector_fields) or
+                row["effective_matrilineal_if_accepted"] is not None or
                 (row["failure"] == "outcome_unavailable" and
                  row["outcome_failure"] == "none")):
                 raise BridgeUnavailableError("unavailable projection claims a value")
@@ -166,6 +180,47 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             relationship != observed_heir_relationship):
             raise BridgeUnavailableError("heir relationship changed between candidates")
         observed_heir_relationship = relationship
+        for role in ("played", "heir", "candidate"):
+            house = row[f"{role}_house_id"]
+            dynasty = row[f"{role}_dynasty_id"]
+            if (
+                (house is not None and
+                 (type(house) is not int or house < 0))
+                or (dynasty is not None and
+                    (type(dynasty) is not int or dynasty < 0))
+                or (dynasty is not None and house is None)
+            ):
+                raise BridgeUnavailableError("marriage lineage identity malformed")
+        played_lineage = (row["played_house_id"], row["played_dynasty_id"])
+        heir_lineage = (row["heir_house_id"], row["heir_dynasty_id"])
+        if (observed_played_lineage is not None and
+            played_lineage != observed_played_lineage):
+            raise BridgeUnavailableError("played lineage changed between candidates")
+        if (observed_heir_lineage is not None and
+            heir_lineage != observed_heir_lineage):
+            raise BridgeUnavailableError("heir lineage changed between candidates")
+        observed_played_lineage = played_lineage
+        observed_heir_lineage = heir_lineage
+        heir_sex_selector = row["heir_sex_selector_raw"]
+        candidate_sex_selector = row["candidate_sex_selector_raw"]
+        if (
+            type(heir_sex_selector) is not int
+            or heir_sex_selector not in {0, 1}
+            or type(candidate_sex_selector) is not int
+            or candidate_sex_selector not in {0, 1}
+        ):
+            raise BridgeUnavailableError("marriage sex selector malformed")
+        if (observed_heir_sex_selector is not None and
+            heir_sex_selector != observed_heir_sex_selector):
+            raise BridgeUnavailableError("heir sex selector changed between candidates")
+        observed_heir_sex_selector = heir_sex_selector
+        effective_matrilineal = (
+            bool(heir_sex_selector) if heir_sex_selector == candidate_sex_selector
+            else row["matrilineal_option_selected"]
+        )
+        if (type(row["effective_matrilineal_if_accepted"]) is not bool or
+            row["effective_matrilineal_if_accepted"] is not effective_matrilineal):
+            raise BridgeUnavailableError("effective marriage lineality malformed")
         for pair in pairs:
             if (
                 not isinstance(pair, dict)
