@@ -315,9 +315,30 @@ paused live artifact。生产 DLL 仍需把 exact-build collector 与 final eval
 paused live artifact 不存在，action 没有设计，public MCP 与 planner 都不 ready；G2 的囚犯/犯罪整项仍不能标
 production-live。已有 pay_ransom 拒绝 loop 继续只作为通用 interaction primitive 证据。
 
+### C69 private paused collection-only reader
+
+`player_prisoner_collection_query_v1_private` 将 C57 的 exact-build `Character.GetPrisoners`
+内存路径接入一个同步、只读、默认关闭的 native bridge 源项。它仅在已准入
+`1.19.0.6` EXE SHA、application-main thread 和 paused frame 上读取当前 played character；
+从 `Character+0x1B8` 到 land-state `+0xD8`，复制 `+0x0C` count 与 `+0x00`
+四字节元素，并经 `0x570C130` character storage 对每个完整 generation-bearing ID
+回读 `Character+0x18`。land-state 为空时遵循 exact getter 的空集合分支。
+同一帧重读全部值，结束时复核 frame；截断、非法 ID、内存失败或漂移均返回 typed
+unavailable。返回值只有 source ordinal 与 full ID，不携带借用指针。
+
+该读口还没有接生产 application-main dispatch/MCP；CMake 私有选项默认 `OFF`，
+也未把 collection-only 的结果冒充 custody、ransom 或最终合法性。
+MSVC x64 Debug `/Od` 与 Release `/O2` 聚焦夹具各 **10/10 GREEN**，包括两名
+囚犯顺序、空 fallback、完整 ID 代际校验、超出 64 行和双采样漂移。
+C57 原 EXE ABI verifier 在 normal 与 `-O` 下均为 `GREEN_STATIC`；本包没有启动
+CK3、没有 paused live artifact，M6 readiness 不变。下一入口是将该读口接到
+PRISONER3 collector callbacks 的真实 paused route，并映射 custody、duration 与
+final previews，不能在只具 ID 时发布完整 semantic snapshot。
+
 必须继续闭合：
 
-1. 在生产 DLL 内按 C57 已映射的 `Character.GetPrisoners` 引擎集合入口做暂停帧私有读取，验证实际 count、元素顺序、空值、full-ID 与 lease 生命周期；不使用 `CourtWindow` UI 成员代替；
+1. 将 C69 collection-only reader 接到生产 application-main 私有查询并用 paused live
+   观察 count、元素顺序、空值、full-ID 与 lease 生命周期；不使用 `CourtWindow` UI 成员代替；
 2. 把 prison relation、custody、duration 和三类 reason native surface 接到已冻结 callback；
 3. 把 ransom 三种角色、option ownership/resource terms 和 release/punish finalized context 接到 callback；
 4. 为每种 punishment 补 final consequence/tyranny presentation；

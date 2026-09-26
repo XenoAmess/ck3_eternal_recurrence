@@ -201,6 +201,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1
+  "Compile the private exact-build paused prisoner collection reader"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1
   "Run one private exact-build paused culture/innovation snapshot query"
   OFF
@@ -663,6 +669,12 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/player_prisoner_collection_query_v1_private.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
@@ -1209,6 +1221,20 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_ck3_player_prisoner_collection_query_v1_private_test
+    src/player_prisoner_collection_query_v1_private.cpp
+    src/player_prisoner_collection_query_v1_private_test.cpp)
+  target_include_directories(
+    xar_ck3_player_prisoner_collection_query_v1_private_test PRIVATE include)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_player_prisoner_collection_query_v1_private_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_player_prisoner_collection_query_v1_private
+    COMMAND xar_ck3_player_prisoner_collection_query_v1_private_test)
+
   add_executable(xar_ck3_minor_religious_war_defenders_v1_test
     src/minor_religious_war_defenders_v1.cpp
     src/minor_religious_war_defenders_v1_test.cpp)
