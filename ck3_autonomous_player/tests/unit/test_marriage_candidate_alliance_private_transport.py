@@ -51,6 +51,9 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
             "outcome_failure": "none",
             "predicted_outcome_if_accepted":
                 None if unavailable else "marriage",
+            "heir_is_adult": None if unavailable else True,
+            "candidate_is_adult": None if unavailable else True,
+            "grand_wedding_option_selected": None if unavailable else False,
             "heir_betrothed_character_id": None,
             "heir_primary_spouse_character_id": None,
             "heir_spouse_character_ids": None if unavailable else [],
@@ -122,6 +125,9 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(len(result["rows"]), 5)
         self.assertEqual(result["rows"][0]["predicted_outcome_if_accepted"],
                          "marriage")
+        self.assertIs(result["rows"][0]["heir_is_adult"], True)
+        self.assertIs(result["rows"][0]["candidate_is_adult"], True)
+        self.assertIs(result["rows"][0]["grand_wedding_option_selected"], False)
         self.assertEqual(result["rows"][0]["heir_spouse_character_ids"], [])
         self.assertEqual(result["rows"][0]["played_dynasty_id"], 200)
         self.assertEqual(result["rows"][4]["candidate_dynasty_id"], 404)
@@ -136,6 +142,7 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(result["status"], "unavailable")
         self.assertIsNone(result["rows"][2]["matrilineal_option_selected"])
         self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
+        self.assertIsNone(result["rows"][2]["heir_is_adult"])
         self.assertIsNone(result["rows"][2]["heir_spouse_character_ids"])
         self.assertIsNone(result["rows"][2]["candidate_dynasty_id"])
         self.assertIsNone(result["rows"][2]["candidate_sex_selector_raw"])
@@ -251,6 +258,28 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
             legality=_legality(), candidate_character_ids=IDS)
         self.assertEqual(result["status"], "unavailable")
         self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
+
+    def test_betrothal_breakdown_distinguishes_shared_minor_heir_from_candidate(self) -> None:
+        reply = _reply()
+        for row in reply["result"]["rows"]:
+            row["heir_is_adult"] = False
+            row["predicted_outcome_if_accepted"] = "betrothal"
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertTrue(all(row["heir_is_adult"] is False for row in result["rows"]))
+        self.assertTrue(all(row["candidate_is_adult"] is True for row in result["rows"]))
+        reply["result"]["rows"][4]["heir_is_adult"] = True
+        with self.assertRaisesRegex(BridgeUnavailableError, "adult outcome breakdown"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply = _reply()
+        reply["result"]["rows"][0]["grand_wedding_option_selected"] = True
+        reply["result"]["rows"][0]["predicted_outcome_if_accepted"] = "betrothal"
+        query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
 
     def test_duplicate_or_not_legal_id_never_submits(self) -> None:
         driver = _Driver(_reply(), [_frame(), _frame()])

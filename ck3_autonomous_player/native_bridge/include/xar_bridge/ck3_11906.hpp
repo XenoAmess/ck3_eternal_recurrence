@@ -1090,6 +1090,9 @@ struct MarriageCandidateAlliancePrivateReadV1 {
       bridge::MarriageNativeOutcomeClassifierFailureV1::none;
   bridge::MarriagePredictedOutcomeV1 predicted_outcome =
       bridge::MarriagePredictedOutcomeV1::unavailable;
+  bool heir_is_adult = false;
+  bool candidate_is_adult = false;
+  bool grand_wedding_option_selected = false;
   MarriageHeirRelationshipV1 heir_relationship{};
   MarriageCharacterLineageV1 played_lineage{};
   MarriageCharacterLineageV1 heir_lineage{};
