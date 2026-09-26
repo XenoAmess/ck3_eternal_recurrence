@@ -1,5 +1,13 @@
 # 游玩智能体通用战斗预测接线（2026-09-26）
 
+## 2026-09-27：R0244 同帧输入阻塞与独立原版回读
+
+[source-confirmed] [战争请求 R0244](../autonomous-agent-progress/coordination/war-requests/requests/WAR-INPUT-R0244-20260927.json) 的正式失败帧在 War `48`、Army `16777237` 对 `16777417`、Province `2640`，已有同帧路线预览和全敌接触窗，但 `native_war_general_battle_inputs_query` 返回 `selected_step=null`，未提交游戏动作。根因是通用策略曾要求精确的 `query-combat-simulation-inputs-v3-<战场>-<入场边>-...` 字面量存在于 `action_steps`；原生驱动按设计只发布其能力模板，不枚举任意战场/参战者组合。修复现在从已观察的玩家军队、目标省、路线末边和敌军当前省精确构造只读字面量，以 v3 桥接能力作执行门，不放开无能力后端或任意写入动作。聚焦测试 `6/6`，v3 桥接与生产合同测试 `22/22`（另 `43` 个 subtest）通过；源码已于 `ba623c137` 推送。
+
+[live-confirmed, analogous encounter only] 在**另一份独立配对**的纯原版存档（SHA-256 `77BE86B0FDE44D348807B201B9809A29F8099A4FF005A9C12D632045B4AB0DE9`）暂停 raw `53144520`，对 Character `29829` 的 Army `18` 与当前 Province `2638` 的敌 Army `24` 实际调用精确只读 v3 查询，路线末边 `2643→2638`。原版返回 `status=available`、输入完整性为真，查询绑定 `snapshot_id=native:3`、公开 revision `4`、原生 revision `3`，与前后暂停帧一致；查询响应 SHA-256 `0D252C2EDF307AFA7AD12650E7F3255B73FB65E41535AC71ADDF6D2DD9200107`。同一输入的 256 次有界估计在本例通过风险预算，但 `native_parity=false` 且人物死亡、未来属性刷新仍未量化，不能把 `256/256` 模型胜样称为原版实战胜率。原始请求/响应、源档、bridge、模型报告与进程清理保留于 `D:/workspace/ck3_native_war_ai_promo_work/war-input-r0244-analog-v3-attempt-062/`。
+
+这证明已修复的**只读查询路径**在本机等价接口上可用，尚未复演另一台机器的 R0244 原始 War `48`。长路线还需逐首跳预览/接触/移动：当前驱动没有把已预览路线的首跳省加入动作列表，模型准入通过后会再次遇到策略动作门槛。下一步关闭该门并验证至少一个正式下一步；消费方仍须用其原始配对存档从新的 `master` 独立复验，不得以本例替代。
+
 ## 当前行为
 
 本次把研究版整场模拟接入 `choose_one_life_turn` 的战争动作边界。`planner_usable=false` 仍准确表示**尚未达到原版逐日转移完全对拍**；它不再作为“所有战争动作一律不看模型”的开关。智能体现在使用模型估计作决策，同时在计划回执中保留模型来源、输入哈希、样本数、假设、未知项及风险阈值。不能把模型输出称为原版准确胜率。
