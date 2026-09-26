@@ -802,6 +802,18 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   session 已持有的锁，也不得先关 pipe 后等待 CK3。initial readiness 要在同一 PID/generation 上同时闭合 exact-build hello、
   default-OFF containment/recorder、paused map、存活 episode character 与同日期 main-thread mailbox；cold checkpoint 还要闭合
   `driver_state_restore_kind=cold_checkpoint`、`episode_binding_state=active_resumed` 且无 candidate rejection。
+- 新候选的 preview operator manifest 可显式写 `"display_mode": "windowed"`。`prepare-state` 将它传给
+  `prepare-profile` 和 `verify-profile`，在独立 `pdx_settings.txt` 冻结普通窗口 `1280×720`，环境 manifest 的
+  `display.contract_version=1`、mode、resolution 和环境 SHA 一起绑定；未写该字段时继续使用既有 fullscreen
+  `2560×1440`。这只影响新准备的候选，不修改 PRV008 冻结 profile。owner 核对当前受管
+  `state/control/ck3.json` 中的 PID/creation_date 后，可调用
+  `py tools/g2_preview_operator.py owned-window --manifest <candidate-manifest> --expected-pid <PID> --expected-creation-date <creation_date> --minimize`
+  一次性最小化该受管 CK3；省略 `--minimize` 只读回窗口状态。命令要求全局仅一个匹配进程且窗口归该 PID，
+  回执 `after_minimized=true` 只证明窗口状态。首次有界运行还须分别核后台心跳、turn/动作回执，以及该阶段应推进时的
+  游戏日期；paused frame 不以日期不变判故障。`native-session` 已按 PID 在托管恢复时保持先前最小化状态，
+  此入口不会周期性恢复或抢焦点。视觉输入/截图前仍须由 owner 恢复窗口并核对当前视口与坐标。
+- preview operator 的 `run --private-construction-formal-trial` 只在显式指定时转发
+  `native-auto-run --allow-private-construction-formal-trial`，默认保持 OFF；operator receipt 记录实际 opt-in。
 - 正式一代续跑前先执行 `native-one-generation-preflight`。这是严格的 no-launch/no-desktop 检查，不需要 DLL 或 injector，也不会调用
   OCR、输入、窗口或 CK3 launch 路径；但全局 `--bridge-pipe` 仍必须是合法 Windows named pipe。命令行必须显式 pin
   `--expected-character-id`、`--expected-episode-run-id`、`--expected-checkpoint-sha256` 与

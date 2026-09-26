@@ -1361,5 +1361,116 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 g2_preview_operator.command_request_stop(argparse.Namespace(manifest=manifest))
 
 
+    def test_windowed_prepare_state_forwards_exact_display_to_both_commands(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sample = root / "sample"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            (sample / "driver-state.json").write_text("{}", encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(root / "state"),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\windowed-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "display_mode": "windowed",
+            }), encoding="utf-8")
+            calls: list[list[str]] = []
+
+            def fake_run(command, check):
+                self.assertFalse(check)
+                calls.append(command)
+                return mock.Mock(returncode=0)
+
+            with mock.patch.object(g2_preview_operator.subprocess, "run", side_effect=fake_run):
+                g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest_path, sample_dir=sample)
+                )
+            self.assertEqual(len(calls), 2)
+            for command in calls:
+                self.assertEqual(command[-2:], ["--display-mode", "windowed"])
+            self.assertEqual(g2_preview_operator.display_mode_contract({}), "fullscreen")
+            with self.assertRaisesRegex(ValueError, "display_mode"):
+                g2_preview_operator.display_mode_contract({"display_mode": "borderless"})
+
+    def test_construction_opt_in_is_forwarded_only_when_requested(self) -> None:
+        base = dict(
+            common=["python", "agent.py"],
+            turns=1,
+            timeout=60,
+            readiness_timeout=30,
+            private_faction_round_id_value=None,
+        )
+        self.assertNotIn(
+            "--allow-private-construction-formal-trial",
+            g2_preview_operator.native_auto_run_command(**base),
+        )
+        self.assertIn(
+            "--allow-private-construction-formal-trial",
+            g2_preview_operator.native_auto_run_command(
+                **base, private_construction_formal_trial=True
+            ),
+        )
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "output",
+            "--private-construction-formal-trial",
+        ])
+        self.assertTrue(parsed.private_construction_formal_trial)
+
+    def test_owned_window_minimizes_only_matching_live_pid(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            control = state / "control"
+            control.mkdir(parents=True)
+            game = root / "game"
+            exe = game / "binaries" / "ck3.exe"
+            creation = "20260926070000.000000+480"
+            (control / "ck3.json").write_text(json.dumps({
+                "ck3_pid": 321,
+                "creation_date": creation,
+                "executable": str(exe.resolve()),
+            }), encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(game),
+                "pipe": r"\\.\pipe\windowed-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            args = argparse.Namespace(
+                manifest=manifest_path, expected_pid=321,
+                expected_creation_date=creation, minimize=True,
+            )
+            inventory = {"processes": [{
+                "pid": 321, "name": "ck3.exe", "creation_date": creation,
+                "executable": str(exe.resolve()),
+            }]}
+            output = io.StringIO()
+            with (
+                mock.patch.object(g2_preview_operator.sys, "platform", "win32"),
+                mock.patch.object(g2_preview_operator, "_owned_ck3_inventory",
+                                  return_value=(inventory, lambda a, b: a == b)),
+                mock.patch.object(g2_preview_operator, "_owned_ck3_window_states",
+                                  side_effect=[{11: False}, {11: True}]),
+                mock.patch.object(g2_preview_operator, "_minimize_owned_ck3_windows") as minimize,
+                contextlib.redirect_stdout(output),
+            ):
+                self.assertEqual(g2_preview_operator.command_owned_window(args), 0)
+            minimize.assert_called_once_with([11])
+            self.assertTrue(json.loads(output.getvalue())["after_minimized"])
+            args.expected_pid = 999
+            with mock.patch.object(g2_preview_operator.sys, "platform", "win32"):
+                with self.assertRaisesRegex(RuntimeError, "control identity differs"):
+                    g2_preview_operator.command_owned_window(args)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -115,7 +115,15 @@ def load_manifest(path: Path) -> dict[str, Any]:
         if not isinstance(manifest.get(field), str) or not manifest[field]:
             raise ValueError(f"manifest field {field!r} is required")
     lifecycle_contract(manifest)
+    display_mode_contract(manifest)
     return manifest
+
+
+def display_mode_contract(manifest: dict[str, Any]) -> str:
+    mode = manifest.get("display_mode", "fullscreen")
+    if mode not in ("fullscreen", "windowed"):
+        raise ValueError("manifest display_mode must be fullscreen or windowed")
+    return mode
 
 
 def lifecycle_contract(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -270,6 +278,7 @@ def native_auto_run_command(
     readiness_timeout: int,
     private_faction_round_id_value: str | None,
     private_lifestyle_formal_trial: bool = False,
+    private_construction_formal_trial: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -291,6 +300,8 @@ def native_auto_run_command(
         command.append("--ordinary-campaign-no-pact")
     if private_lifestyle_formal_trial:
         command.append("--allow-private-lifestyle-formal-trial")
+    if private_construction_formal_trial:
+        command.append("--allow-private-construction-formal-trial")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -385,6 +396,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             )
     common = agent_command(manifest)
     profile_rule = ["--xar-enabled", str(lifecycle["xar_enabled"])]
+    if "display_mode" in manifest:
+        profile_rule.extend(["--display-mode", display_mode_contract(manifest)])
     if subprocess.run(
         [*common, "prepare-profile", *profile_rule], check=False
     ).returncode != 0:
@@ -405,6 +418,7 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         "checkpoint_sha256": sha256(save_target),
         "driver_state_sha256": sha256(driver_target),
         "lifecycle": lifecycle,
+        "display_mode": display_mode_contract(manifest),
     }
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         rebind_command = [
@@ -528,7 +542,9 @@ def command_run(args: argparse.Namespace) -> int:
         "driver_state_sha256_before": sha256(driver_path),
         "preflight_exit_code": preflight_exit,
         "lifecycle": lifecycle,
+        "display_mode": display_mode_contract(manifest),
         "private_lifestyle_formal_trial": args.private_lifestyle_formal_trial,
+        "private_construction_formal_trial": args.private_construction_formal_trial,
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -558,6 +574,7 @@ def command_run(args: argparse.Namespace) -> int:
             readiness_timeout=readiness_timeout,
             private_faction_round_id_value=private_faction_round,
             private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
+            private_construction_formal_trial=args.private_construction_formal_trial,
             require_initial_lifestyle_focus_before_date_advance=(
                 args.require_initial_lifestyle_focus_before_date_advance
             ),
@@ -1059,6 +1076,98 @@ def tasklist_ck3() -> list[dict[str, str]]:
     return rows
 
 
+def _owned_ck3_inventory(source_repo: Path) -> tuple[dict[str, Any], Any]:
+    source_path = str(source_repo / "ck3_autonomous_player" / "src")
+    if source_path not in sys.path:
+        sys.path.insert(0, source_path)
+    from xar_autoplayer.environment import (  # noqa: PLC0415
+        ck3_process_inventory,
+        same_process_creation_time,
+    )
+
+    return ck3_process_inventory(), same_process_creation_time
+
+
+def _owned_ck3_window_states(pid: int) -> dict[int, bool]:
+    import win32gui
+    import win32process
+
+    states: dict[int, bool] = {}
+
+    def collect(hwnd: int, _extra: object) -> bool:
+        if win32gui.IsWindowVisible(hwnd):
+            _thread, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+            if int(window_pid) == pid:
+                states[int(hwnd)] = bool(win32gui.IsIconic(hwnd))
+        return True
+
+    win32gui.EnumWindows(collect, None)
+    return states
+
+
+def _minimize_owned_ck3_windows(handles: list[int]) -> None:
+    import win32con
+    import win32gui
+
+    for handle in handles:
+        win32gui.ShowWindow(handle, win32con.SW_MINIMIZE)
+
+
+def command_owned_window(args: argparse.Namespace) -> int:
+    """Observe or minimize only the CK3 process owned by this live state."""
+    if sys.platform != "win32":
+        raise RuntimeError("owned-window requires Windows")
+    manifest = load_manifest(args.manifest.resolve())
+    state_dir = manifest_path(manifest["state_dir"], "state_dir")
+    control = read_json(state_dir / "control" / "ck3.json")
+    expected_exe = (
+        manifest_path(manifest["game_dir"], "game_dir") / "binaries" / "ck3.exe"
+    ).resolve()
+    if (
+        control.get("ck3_pid") != args.expected_pid
+        or control.get("creation_date") != args.expected_creation_date
+        or Path(str(control.get("executable", ""))).resolve() != expected_exe
+    ):
+        raise RuntimeError("owned-window live control identity differs")
+    inventory, same_creation = _owned_ck3_inventory(
+        manifest_path(manifest["source_repo"], "source_repo")
+    )
+    processes = inventory.get("processes", [])
+    if len(processes) != 1:
+        raise RuntimeError("owned-window requires exactly one live CK3 process")
+    process = processes[0]
+    if (
+        int(process.get("pid", 0)) != args.expected_pid
+        or str(process.get("name", "")).casefold() != "ck3.exe"
+        or not same_creation(
+            process.get("creation_date"), args.expected_creation_date
+        )
+        or (
+            process.get("executable")
+            and Path(str(process["executable"])).resolve() != expected_exe
+        )
+    ):
+        raise RuntimeError("owned-window process inventory identity differs")
+    before = _owned_ck3_window_states(args.expected_pid)
+    if not before:
+        raise RuntimeError("owned-window has no visible CK3 top-level window")
+    if args.minimize:
+        _minimize_owned_ck3_windows(list(before))
+    after = _owned_ck3_window_states(args.expected_pid)
+    if not after or (args.minimize and not all(after.values())):
+        raise RuntimeError("owned-window state could not be verified")
+    print(json.dumps({
+        "ok": True,
+        "pid": args.expected_pid,
+        "creation_date": args.expected_creation_date,
+        "action": "minimize" if args.minimize else "status",
+        "before_minimized": all(before.values()),
+        "after_minimized": all(after.values()),
+        "window_count": len(after),
+    }))
+    return 0
+
+
 def command_status(args: argparse.Namespace) -> int:
     report_path = args.report.resolve()
     report: Any = None
@@ -1097,6 +1206,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-lifestyle-formal-trial",
         action="store_true",
         help="enable the bounded unadvertised lifestyle focus/perk formal route",
+    )
+    run.add_argument(
+        "--private-construction-formal-trial",
+        action="store_true",
+        help="enable the bounded unadvertised construction formal route",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
@@ -1166,6 +1280,13 @@ def parser() -> argparse.ArgumentParser:
     status = commands.add_parser("status")
     status.add_argument("--report", type=Path, required=True)
     status.set_defaults(handler=command_status)
+
+    owned_window = commands.add_parser("owned-window")
+    owned_window.add_argument("--manifest", type=Path, required=True)
+    owned_window.add_argument("--expected-pid", type=int, required=True)
+    owned_window.add_argument("--expected-creation-date", required=True)
+    owned_window.add_argument("--minimize", action="store_true")
+    owned_window.set_defaults(handler=command_owned_window)
     return result
 
 

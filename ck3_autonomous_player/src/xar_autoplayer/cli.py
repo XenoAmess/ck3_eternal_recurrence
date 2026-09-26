@@ -177,6 +177,12 @@ def parser() -> argparse.ArgumentParser:
         default="xar_on",
         help="freeze the main mod rule for this prepared profile",
     )
+    prepare_profile_parser.add_argument(
+        "--display-mode",
+        choices=("fullscreen", "windowed"),
+        default="fullscreen",
+        help="freeze a fullscreen or 1280x720 windowed display profile",
+    )
     verify_profile_parser = commands.add_parser(
         "verify-profile", help="verify the prepared profile contract"
     )
@@ -185,6 +191,12 @@ def parser() -> argparse.ArgumentParser:
         choices=("xar_on", "xar_off"),
         default="xar_on",
         help="require the prepared profile to use this main mod rule",
+    )
+    verify_profile_parser.add_argument(
+        "--display-mode",
+        choices=("fullscreen", "windowed"),
+        default="fullscreen",
+        help="require this exact prepared display mode",
     )
     ordinary_seed_rebind_parser = commands.add_parser(
         "rebind-ordinary-seed-v1",
@@ -714,12 +726,14 @@ def _summary(command: str, payload: dict[str, object]) -> dict[str, object]:
             "enabled_mods": payload["load_profile"]["enabled_mods"],
             "rules_sha256": payload["rules"]["profile_sha256"],
             "production_tree_sha256": payload["mod"]["production_tree_sha256"],
+            "display": payload["display"],
         }
     if command == "verify-profile":
         return {
             "ok": True,
             "profile_dir": payload["profile_dir"],
             "environment_sha256": payload["environment_sha256"],
+            "display": payload["display"],
         }
     return payload
 
@@ -777,11 +791,15 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "doctor":
             result = doctor(spec, require_prepared=args.prepared)
         elif args.command == "prepare-profile":
-            result = prepare_profile(spec, xar_enabled=args.xar_enabled)
+            result = prepare_profile(
+                spec, xar_enabled=args.xar_enabled, display_mode=args.display_mode
+            )
         elif args.command == "verify-profile":
             ensure_state_path_safe(spec.state_dir)
             with exclusive_state_lock(spec.state_dir, "verify-profile"):
-                result = verify_profile(spec, xar_enabled=args.xar_enabled)
+                result = verify_profile(
+                    spec, xar_enabled=args.xar_enabled, display_mode=args.display_mode
+                )
         elif args.command == "rebind-ordinary-seed-v1":
             from .environment import write_json_atomic
             from .ordinary_seed_rebinder import rebind_ordinary_seed_v1

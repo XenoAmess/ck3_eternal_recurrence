@@ -388,8 +388,27 @@ def installed_dlc_fingerprint(game_dir: Path) -> dict[str, object]:
     }
 
 
-def render_settings() -> str:
-    return '''"game"={
+DISPLAY_CONTRACT_VERSION = 1
+DISPLAY_RESOLUTIONS = {
+    "fullscreen": (2560, 1440),
+    "windowed": (1280, 720),
+}
+
+
+def display_contract(display_mode: str) -> dict[str, object]:
+    if display_mode not in DISPLAY_RESOLUTIONS:
+        raise AgentError(f"unsupported display mode: {display_mode!r}")
+    return {
+        "contract_version": DISPLAY_CONTRACT_VERSION,
+        "language": "l_simp_chinese",
+        "mode": display_mode,
+        "resolution": list(DISPLAY_RESOLUTIONS[display_mode]),
+    }
+
+
+def render_settings(display_mode: str = "fullscreen") -> str:
+    display_contract(display_mode)
+    settings = '''"game"={
 \t"promt_for_tutorial"={ version=0 enabled=no }
 \t"prompt_for_china_tutorial"={ version=0 enabled=no }
 \t"cloud_save"={ version=0 enabled=no }
@@ -403,6 +422,14 @@ def render_settings() -> str:
 \t"language"={ version=0 value="l_simp_chinese" }
 }
 '''
+    if display_mode == "windowed":
+        settings = settings.replace('value="fullscreen"', 'value="windowed"')
+        settings = settings.replace(
+            '\t"fullscreen_resolution"={ version=0 value="2560x1440" }',
+            '\t"fullscreen_resolution"={ version=0 value="2560x1440" }\n'
+            '\t"windowed_resolution"={ version=0 value="1280x720" }',
+        )
+    return settings
 
 
 def write_outer_descriptor(inner: Path, outer: Path, target: Path) -> None:
@@ -562,16 +589,21 @@ def verify_projection_manifest(
     return manifest
 
 
-def settings_contract(text: str) -> dict[str, object]:
+def settings_contract(
+    text: str, *, display_mode: str = "fullscreen"
+) -> dict[str, object]:
+    display_contract(display_mode)
     expected: dict[str, object] = {
         "promt_for_tutorial": False,
         "prompt_for_china_tutorial": False,
         "cloud_save": False,
-        "display_mode": "fullscreen",
+        "display_mode": display_mode,
         "display_index": "0",
         "fullscreen_resolution": "2560x1440",
         "language": "l_simp_chinese",
     }
+    if display_mode == "windowed":
+        expected["windowed_resolution"] = "1280x720"
     actual: dict[str, object] = {}
     for key, wanted in expected.items():
         matches = re.findall(
@@ -678,7 +710,7 @@ def agent_runtime_fingerprint() -> dict[str, object]:
 
 
 def prepare_profile(
-    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on"
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen"
 ) -> dict[str, object]:
     """Exclusively create/refresh the profile; refuse while any CK3 is active."""
     ensure_state_path_safe(spec.state_dir)
@@ -694,14 +726,17 @@ def prepare_profile(
                 "refusing to prepare a profile while ck3.exe is running: "
                 + "; ".join(running)
             )
-        return _prepare_profile_locked(spec, xar_enabled=xar_enabled)
+        return _prepare_profile_locked(
+            spec, xar_enabled=xar_enabled, display_mode=display_mode
+        )
 
 
 def _prepare_profile_locked(
-    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on"
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen"
 ) -> dict[str, object]:
     """Create or refresh the profile without touching persistent tutorial state."""
     ensure_state_path_safe(spec.state_dir)
+    display = display_contract(display_mode)
     identity = launcher_identity(spec.game_dir)
     identity_error = _launcher_identity_error(identity)
     if identity_error is not None:
@@ -775,7 +810,7 @@ def _prepare_profile_locked(
         dlc_load_path,
         {"enabled_mods": [OUTER_DESCRIPTOR_REF], "disabled_dlcs": []},
     )
-    write_text_atomic(settings_path, render_settings())
+    write_text_atomic(settings_path, render_settings(display_mode))
     tutorial = spec.profile_dir / "tutorial.txt"
     tutorial_initialized = False
     if not tutorial.exists():
@@ -831,15 +866,12 @@ def _prepare_profile_locked(
             "presets_sha256": sha256_file(presets_path),
             "pdx_settings_prepared_sha256": sha256_file(settings_path),
             "pdx_settings_contract": settings_contract(
-                settings_path.read_text(encoding="utf-8-sig")
+                settings_path.read_text(encoding="utf-8-sig"),
+                display_mode=display_mode,
             ),
         },
         "rules": rules,
-        "display": {
-            "language": "l_simp_chinese",
-            "resolution": [2560, 1440],
-            "mode": "fullscreen",
-        },
+        "display": display,
         "dlc": installed_dlc_fingerprint(spec.game_dir),
         "persistent_tutorial_state": {
             "path": str(tutorial),
@@ -856,12 +888,12 @@ def _prepare_profile_locked(
     }
     payload["environment_sha256"] = _contract_digest(payload)
     write_json_atomic(spec.manifest_path, payload)
-    verify_profile(spec, xar_enabled=xar_enabled)
+    verify_profile(spec, xar_enabled=xar_enabled, display_mode=display_mode)
     return payload
 
 
 def verify_profile(
-    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on"
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str | None = None
 ) -> dict[str, object]:
     """Verify the prelaunch contract without reading persistent score storage."""
     ensure_state_path_safe(spec.state_dir)
@@ -873,6 +905,13 @@ def verify_profile(
     if not spec.manifest_path.is_file():
         raise AgentError(f"environment manifest is missing: {spec.manifest_path}")
     manifest = json.loads(spec.manifest_path.read_text(encoding="utf-8"))
+    recorded_display = manifest.get("display")
+    if not isinstance(recorded_display, dict):
+        raise AgentError("environment display contract is missing")
+    if display_mode is None:
+        display_mode = str(recorded_display.get("mode", "fullscreen"))
+    if recorded_display != display_contract(display_mode):
+        raise AgentError("environment display contract differs")
     if manifest.get("environment_sha256") != _contract_digest(manifest):
         raise AgentError("environment manifest contract hash differs")
     if manifest.get("state_dir") != str(spec.state_dir.resolve()) or manifest.get(
@@ -981,7 +1020,8 @@ def verify_profile(
         raise AgentError("LastAppliedRules differs from the growth + 100% contract")
     settings_path = spec.profile_dir / "pdx_settings.txt"
     actual_settings_contract = settings_contract(
-        settings_path.read_text(encoding="utf-8-sig")
+        settings_path.read_text(encoding="utf-8-sig"),
+        display_mode=display_mode,
     )
     if actual_settings_contract != load_profile.get("pdx_settings_contract"):
         raise AgentError("pdx_settings semantic contract differs")
