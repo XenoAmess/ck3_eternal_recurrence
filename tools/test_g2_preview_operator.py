@@ -923,10 +923,17 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     "--private-family-marriage-formal-trial",
                 ])
                 family_result = g2_preview_operator.command_run(family_args)
+                m5_args = g2_preview_operator.parser().parse_args([
+                    "run", "--manifest", str(manifest_path),
+                    "--output", str(root / "attempt-m5"),
+                    "--private-m5-joint-collector",
+                ])
+                m5_result = g2_preview_operator.command_run(m5_args)
 
             self.assertEqual(result, 0)
             self.assertEqual(private_result, 0)
             self.assertEqual(family_result, 0)
+            self.assertEqual(m5_result, 0)
             self.assertIn("--xar-enabled", calls[0])
             self.assertIn("xar_off", calls[0])
             self.assertIn("--ordinary-campaign-no-pact", calls[0])
@@ -938,6 +945,10 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertNotIn("--allow-private-family-marriage-formal-trial", calls[1])
             self.assertNotIn("--allow-private-family-marriage-formal-trial", calls[3])
             self.assertIn("--allow-private-family-marriage-formal-trial", calls[5])
+            self.assertNotIn("--allow-private-m5-joint-collector", calls[1])
+            self.assertNotIn("--allow-private-m5-joint-collector", calls[3])
+            self.assertNotIn("--allow-private-m5-joint-collector", calls[5])
+            self.assertIn("--allow-private-m5-joint-collector", calls[7])
             receipt = json.loads(
                 (output / "operator-receipt.json").read_text(encoding="utf-8")
             )
@@ -947,6 +958,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
             )
             self.assertFalse(receipt["private_lifestyle_formal_trial"])
             self.assertFalse(receipt["private_family_marriage_formal_trial"])
+            self.assertFalse(receipt["private_m5_joint_collector"])
             private_receipt = json.loads(
                 (root / "attempt-private" / "operator-receipt.json").read_text(
                     encoding="utf-8"
@@ -959,6 +971,12 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 )
             )
             self.assertTrue(family_receipt["private_family_marriage_formal_trial"])
+            m5_receipt = json.loads(
+                (root / "attempt-m5" / "operator-receipt.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertTrue(m5_receipt["private_m5_joint_collector"])
 
     def test_r778_checkpoint_binding_is_the_authoritative_sha256(self) -> None:
         self.assertEqual(

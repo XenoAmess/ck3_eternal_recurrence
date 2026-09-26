@@ -381,6 +381,7 @@ def native_auto_run_command(
     private_lifestyle_formal_trial: bool = False,
     private_construction_formal_trial: bool = False,
     private_family_marriage_formal_trial: bool = False,
+    private_m5_joint_collector: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -406,6 +407,8 @@ def native_auto_run_command(
         command.append("--allow-private-construction-formal-trial")
     if private_family_marriage_formal_trial:
         command.append("--allow-private-family-marriage-formal-trial")
+    if private_m5_joint_collector:
+        command.append("--allow-private-m5-joint-collector")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -693,6 +696,7 @@ def command_run(args: argparse.Namespace) -> int:
         "private_lifestyle_formal_trial": args.private_lifestyle_formal_trial,
         "private_construction_formal_trial": args.private_construction_formal_trial,
         "private_family_marriage_formal_trial": args.private_family_marriage_formal_trial,
+        "private_m5_joint_collector": args.private_m5_joint_collector,
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -724,6 +728,7 @@ def command_run(args: argparse.Namespace) -> int:
             private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
             private_construction_formal_trial=args.private_construction_formal_trial,
             private_family_marriage_formal_trial=args.private_family_marriage_formal_trial,
+            private_m5_joint_collector=args.private_m5_joint_collector,
             require_initial_lifestyle_focus_before_date_advance=(
                 args.require_initial_lifestyle_focus_before_date_advance
             ),
@@ -1366,6 +1371,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-family-marriage-formal-trial",
         action="store_true",
         help="enable the bounded unadvertised first-heir marriage formal route",
+    )
+    run.add_argument(
+        "--private-m5-joint-collector",
+        action="store_true",
+        help="enable the bounded unadvertised M5 peacetime proposal collector",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
