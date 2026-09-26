@@ -293,7 +293,7 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                                        pending.get("source_bridge_creation_date")))
     completion_watch = (cold_recheck and (pid, creation) == (
         pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date")))
-    if completion_watch and not (
+    if completion_watch and pending.get("completion_status") != "completed" and not (
             type(starting.get("date_raw")) is int
             and starting["date_raw"] > pending.get("post_date_raw", 0)
             and starting["date_raw"] >= pending.get(
@@ -369,6 +369,15 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     _, observed_income = same_frame_construction_income(
         starting, history if isinstance(history, list) else [])
     pre_income = pending.get("pre_player_monthly_gold_income_raw")
+    income_observed_date = starting["date_raw"] if type(observed_income) is int else None
+    if (cold_recheck and completed and observed_income is None
+            and pending.get("completion_status") == "completed"):
+        # A cold material recheck must not erase a previously observed income
+        # just because this paused frame has not queried the public root yet.
+        observed_income = pending.get("observed_player_monthly_gold_income_raw")
+        if type(observed_income) is int:
+            income_observed_date = pending.get(
+                "income_observed_date_raw", pending.get("post_date_raw"))
     receipt = {"status": "applied", "postcondition_verified": True,
                "completion_status": "completed" if completed else "in_progress",
                "completion_last_check_date_raw": starting["date_raw"],
@@ -376,6 +385,7 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                    starting["date_raw"] if completed else None),
                "pre_player_monthly_gold_income_raw": pre_income,
                "observed_player_monthly_gold_income_raw": observed_income,
+               "income_observed_date_raw": income_observed_date,
                "observed_player_monthly_income_delta_raw": (
                    observed_income - pre_income if completed and
                    type(observed_income) is int and type(pre_income) is int

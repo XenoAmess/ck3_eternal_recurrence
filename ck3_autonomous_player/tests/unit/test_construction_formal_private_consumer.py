@@ -935,6 +935,89 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertEqual(done["post_bridge_pid"], 124)
                 self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
 
+    def test_cold_completion_without_root_income_is_followed_up_same_day(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=root(3)[0]["result"])
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+            later = frame(5)
+            later["date_raw"] += 31
+            driver.snapshot = later
+            driver.completed_construction = True
+            planned = {"plan": {"selected_step": "life-advance"}, "revision": 5}
+            with mock.patch.object(transport, "_identity", return_value=(124, "t2")):
+                cold = plan_construction_private(driver, planned, later, [], set())
+                self.assertEqual(cold["plan"]["selected_step"], RECEIPT_STEP)
+                completed = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(completed["completion_status"], "completed")
+                self.assertIsNone(completed["observed_player_monthly_gold_income_raw"])
+                self.assertIsNone(completed["observed_player_monthly_income_delta_raw"])
+
+                need_income = plan_construction_private(
+                    driver, planned, later, [], {ROOT_QUERY_STEP})
+                self.assertEqual(need_income["plan"]["selected_step"], ROOT_QUERY_STEP)
+                later_root = root(5)[0]
+                later_root["result"]["campaign_root_context"]["date_raw"] = later["date_raw"]
+                later_root["result"]["campaign_root_context"][
+                    "player_monthly_gold_income"]["raw"] = 1_050_000
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=later_root["result"])
+                followup = plan_construction_private(
+                    driver, planned, later, [later_root], {ROOT_QUERY_STEP})
+                self.assertEqual(followup["plan"]["selected_step"], RECEIPT_STEP)
+                income = transport.query_construction_receipt(
+                    driver, pending=completed, expected_revision=5)
+                self.assertEqual(income["completion_observed_date_raw"], later["date_raw"])
+                self.assertEqual(income["observed_player_monthly_gold_income_raw"], 1_050_000)
+                self.assertEqual(income["observed_player_monthly_income_delta_raw"], 50_000)
+                self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                     for row in driver.requests), 1)
+
+    def test_cold_completed_recheck_preserves_prior_actual_income(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=root(3)[0]["result"])
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                completed_frame = frame(5)
+                completed_frame["date_raw"] += 31
+                driver.snapshot = completed_frame
+                driver.completed_construction = True
+                completed_root = root(5)[0]["result"]
+                completed_root["campaign_root_context"]["date_raw"] = completed_frame["date_raw"]
+                completed_root["campaign_root_context"][
+                    "player_monthly_gold_income"]["raw"] = 1_050_000
+                driver._record_command(ROOT_QUERY_STEP, ok=True, result=completed_root)
+                complete = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(complete["observed_player_monthly_income_delta_raw"], 50_000)
+
+            restored_frame = frame(1)
+            restored_frame["date_raw"] = completed_frame["date_raw"]
+            driver.snapshot = restored_frame
+            with mock.patch.object(transport, "_identity", return_value=(124, "t2")):
+                cold = transport.query_construction_receipt(
+                    driver, pending=complete, expected_revision=1)
+            self.assertEqual(cold["completion_status"], "completed")
+            self.assertEqual(cold["completion_observed_date_raw"], completed_frame["date_raw"])
+            self.assertEqual(cold["observed_player_monthly_gold_income_raw"], 1_050_000)
+            self.assertEqual(cold["observed_player_monthly_income_delta_raw"], 50_000)
+            self.assertEqual(cold["income_observed_date_raw"], completed_frame["date_raw"])
+
     def test_monthly_watch_keeps_active_start_proof_and_defers_next_read(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
