@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-27：AI 接管防守战后的独立逐日入列复测
+
+[live-confirmed] 从第 6 日同源存档制备玩家切至战争防守方 Character `31549` 的不可变种子，再在新 production/non-debug 进程中逐日观察 `CombatID=16777218` 共 27 个暂停帧。战斗 side0 的原生 stored roster 在 date raw `53146368` 为 `[16777221,16777231,27]`；第 6 个观察日（raw `53146512`）尾插 `22`，第 16 个观察日（raw `53146752`）再尾插 `28`，直到第 26 日正常终局未移出；side1 始终为 `[18]`。两次加入均发生在同一旧 CombatID、正常终局前。入列前后 main-phase day 分别为 `7→8`、`17→18`，**这两次并未重置 phase day**；因此“新参战者必重启 main day”不是通用规则。pursuit 中增援重开 main 是另一条已研究的分支，不能由本例取代。
+
+同一回放里，CUnit `18` 是非玩家控制的战争进攻方，直到终局才败退；这给真实增援与终局的同局时间轴，但仅凭 roster 尾插不能归因 `22/28` 的所有者、AI 求援分配、未来 ETA 或何时决定进场。[逐帧只读核验器与报告](active-combat-retreat.md#2026-09-27-普通战争-ai-接管后的完整战斗观察)已绑定源存档、每帧响应及清理，报告 SHA-256 `E504AAC6C9196E4AB26879EDE920DEB62DD93E627CAAA9DE699E2E3BEBC1C6BF`。`assignment-reopened → target → aligned ETA → same-Combat tail join` 的端到端独立门槛仍未关闭。
+
 ## 2026-09-26：骑士效能九项修正逐项回读，以及共用 modifier 读取器勘误
 
 在第 11 日同一不可变梅西纳存档上，独立暂停实机 attempt `episode01-knight-components-live-attempt-033` 前后快照的日期与 revision 相同；原生 v2 和智能体实际消费的 v3 `base_inputs` 全对象相同，游戏进程清理已证明。[只读投影工具](../../ck3_autonomous_player/tools/project_native_knight_effectiveness_components.py)绑定存档、exact-build EXE、原始响应与历史第 11 日回执；[逐骑士机器报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_effectiveness_components_v1.json) SHA-256 `E842B4098CDDEBF78291E7E0B5CA26A4685862322DC021462C0A612A2E9CC04E`，`24/24` 名骑士的九项贡献之和与原生效能零差。

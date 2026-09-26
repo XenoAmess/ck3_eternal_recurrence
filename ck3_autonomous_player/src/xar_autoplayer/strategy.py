@@ -4966,8 +4966,10 @@ def _battle_control_transition(
         and after.get("forced_winner_side") == "none"
         and reinforcement_strictly_added
     ):
-        # CK3 restarts the main-phase day counter when a new army joins the
-        # same CombatID.  Accept only a strict per-side superset under the
+        # CK3 can restart the main-phase day counter when a new army joins
+        # the same CombatID.  It need not: the Messina AI-defender replay
+        # appended CUnit 22 and 28 while the counter advanced normally.
+        # Accept a regression only with a strict per-side superset under the
         # exact multi-day sentinel; an unexplained regression remains RED.
         phase_path_legal = True
         main_reopened_by_reinforcement = True

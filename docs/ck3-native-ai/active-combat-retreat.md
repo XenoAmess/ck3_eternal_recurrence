@@ -1,5 +1,15 @@
 # CK3 1.19.0.6 原生主动撤退决策树
 
+## 2026-09-27 普通战争 AI 接管后的完整战斗观察
+
+[live-confirmed, single fixture] 从第 6 日不可变原版存档（SHA-256 `9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A`）建立**隔离种子**：仅在制备阶段用专用原生接口把玩家从 Character `29829` 切到战争防守方主将 `31549`，同日确认旧 `CombatID=16777218` / `WarID=4` 仍在、战斗 side1 的 CUnit `18`（战争进攻方）已 `controllable=false`、`in_combat=true`、`retreating=false`。冻结种子存档 SHA-256 `9B51A2FB20C7F931CF4E9F2A33F1E7598F517C4E793CE0CEFCFEF48C0D65BD2F`。之后新建 production/non-debug、无 mod 的冷载会话，只做 26 次严格一日 `life-advance` 和暂停帧只读查询，未提交移动或撤退命令。
+
+27 帧覆盖 date raw `53146368 → 53146992`。第 0–25 帧，CUnit `18` 一直在旧战斗中且 `retreating=false`，旧 CombatID 仍严格解析，针对它的终局查询始终是 `active_not_terminal`；终局日志的全局 sequence 增长来自其他战斗，不能当作本场事件。战斗 side0 的 stored roster 在第 6 个观察日尾插 CUnit `22`，第 16 个观察日再尾插 `28`：`[16777221,16777231,27] → [...,22] → [...,22,28]`；side1 始终为 `[18]`。这是同一场战斗的**实际增援入列**，不是未来增援预测，也不证明某个特定 AI help-assignment 决策促成了这两次加入。
+
+第 22 帧进入 pursuit/0，winner raw `0`；第 26 帧原生 journal sequence `5` 才记录 `normal_result`、phase `3`/day `0`、winner side0，战争进攻方败北。此时 CUnit `18` 首次变为 `in_combat=false`、`retreating=true`，原生 subject movement raw `3`，语义 Army state code `6`；旧 CombatID 从全局与 Province 列表消失，`successor.state=subject_retreating`。单场战争分 row `0` 的 magnitude 是 `4,423,500` Q100000，战争进攻方相对增量 `-4,423,500`（即 `-44.235`）；这是一场**败后撤退**，不能记作 AI 自选的战中主动撤退。
+
+[只读逐帧核验器](../../ck3_autonomous_player/tools/project_native_ai_battle_retreat_observation.py)绑定游戏 EXE、种子与观察存档、专用切换命令、每条逐日响应、roster 尾插、终局 journal、两个受管进程清理；[机器可读报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_ai_battle_retreat_observation.json) SHA-256 `E504AAC6C9196E4AB26879EDE920DEB62DD93E627CAAA9DE699E2E3BEBC1C6BF`。原始证据永久保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-ai-active-retreat-seed-attempt-047/` 与 `episode01-ai-active-retreat-observe-attempt-048/`；两个会话的进程清理均 GREEN。此前 attempt-044/045 因把专用切换误用作普通 `ck3_execute_step` 而失败，已保留为工具调用错误，未当成游戏证据。此样本在 26 日窗口内没有通用战争 AI 自主撤退；其他战况、间接 caller 与目标省评分仍是独立待证问题。
+
 ## 2026-09-23 上层可达性勘误
 
 下文的 raid/barter movement builder 确实支持 active-combat 分支，但本次继续上溯后确认：

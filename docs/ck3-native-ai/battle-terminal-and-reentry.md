@@ -1,5 +1,9 @@
 # CK3 1.19.0.6 战斗终局、清理、残余接战与 AI 重入
 
+## 2026-09-27 AI 控制的败方：逐日到正常终局
+
+[live-confirmed, single fixture] [独立冷载回放](active-combat-retreat.md#2026-09-27-普通战争-ai-接管后的完整战斗观察)把战斗 side1 的 CUnit `18` 交给原生 AI，随后严格推进 26 日。前 26 个暂停帧（index 0–25）它仍在同一 CombatID 中、没有撤退；第 26 日 journal sequence `5` 记录 `normal_result`、phase `3`/day `0`、winner side0，败方 CUnit `18` 才转为撤退。单场 row `0` 的战争进攻方相对增量为 `-4,423,500` Q100000；旧 CombatID 与 Province 关系被清除，结果对象仍在，subject 的战斗 backlink 为 null、AI membership 完整可读，successor 为 `subject_retreating`。这验证了 AI 控制败方的 normal-terminal 后继，仍不替代同省 residual combat 或撤离者的 AI assignment-reopened 夹具。
+
 ## 2026-09-27 战争解散触发的无正常战果：独立实机回读
 
 [live-confirmed] 从第 6 日的不可变原版存档（SHA-256 `9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A`）启动隔离会话。战斗 `CombatID=16777218`、战争 `WarID=4` 仍在进行，玩家是战争主进攻方；原生战争选项读取证明投降可用、validator 通过且 `auto_accept=true`。另一只读 attempt-042 先独立复核同一前提。随后 attempt-043 在**私有研究副本**中仅对这个已核验的战争提交一次玩家投降，不推进日期，也未改变 production MCP 的退出条款门禁。游戏版本是 `1.19.0.6`，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。

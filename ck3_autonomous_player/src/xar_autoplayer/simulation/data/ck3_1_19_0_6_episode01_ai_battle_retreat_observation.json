@@ -1,0 +1,143 @@
+{
+  "schema": "ck3.native_ai_battle_retreat_observation.v1",
+  "game_version": "1.19.0.6",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "bridge_dll_sha256": "7CCF1E7C6FE3F4251F5214B257EF4A613090B88620D18377427DD33163B89CC3",
+  "source_save_sha256": "9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A",
+  "seed_save_sha256": "9B51A2FB20C7F931CF4E9F2A33F1E7598F517C4E793CE0CEFCFEF48C0D65BD2F",
+  "seed_summary_sha256": "DC12D8FEB1B254E20E77086CD38E6A118EAE8913282A3EE8AD1315AFD0332E34",
+  "seed_capture_report_sha256": "F1681A41C5AE0273E91B421A0D780EFCC116BA82DBC2650CFFC7B0EE61E37976",
+  "observation_capture_report_sha256": "1C6355EFEDEC3194B90D085B70D49B3C406DC9C2C5EB29D1FDDFF23B343DB2E2",
+  "daily_observations_sha256": "8780D9231E6A34EB1E9E2F5AA481EB2E0C8FDE49C1E22A6A888BFF1DA1693AA7",
+  "observation_frames": 27,
+  "one_day_advances": 26,
+  "first_date_raw": 53146368,
+  "terminal_date_raw": 53146992,
+  "combat_id": 16777218,
+  "war_id": 4,
+  "ai_subject_public_cunit_id": 18,
+  "ai_subject_owner_character_id": 29829,
+  "played_character_id": 31549,
+  "voluntary_retreat_observed_before_terminal": false,
+  "general_ai_voluntary_retreat_absence_proven": false,
+  "native_terminal": {
+    "schema_version": 1,
+    "contract_stage": "production_exact_battle_terminal_transition",
+    "status": "available",
+    "unavailable_reason": null,
+    "battle_terminal_transition_ready": true,
+    "snapshot_revision": 81,
+    "observed_date_raw": 53146992,
+    "prior_combat_id": 16777218,
+    "subject_public_cunit_id": 18,
+    "terminal_journal": {
+      "requested_after_sequence": null,
+      "oldest_available_sequence": 1,
+      "latest_sequence": 5,
+      "event_sequence": 5,
+      "event_status": "observed"
+    },
+    "prior": {
+      "combat_id": 16777218,
+      "terminal_kind": "normal_result",
+      "terminal_date_raw": 53146992,
+      "suppress_normal_result_envelopes": false,
+      "phase_raw": 3,
+      "phase_day": 0,
+      "winner_raw": 0,
+      "finalized_before": false,
+      "hard_loss_inputs": {
+        "losing_side_index": 1,
+        "men_at_arms_soft_raw": 18301350,
+        "stored_current_raw": 0,
+        "hard_loss_raw": 53820216,
+        "levy_soft_raw": 57678434,
+        "baseline_raw": 129800000
+      },
+      "daily_guard_raw": 0,
+      "province_id": 2633,
+      "battle_result_id": 16777218,
+      "wipe_raw": false,
+      "attacker_primary_participant_character_id": 31549,
+      "defender_primary_participant_character_id": 29829,
+      "attacker_public_cunit_ids_in_stored_order": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "defender_public_cunit_ids_in_stored_order": [
+        18
+      ],
+      "battle_warscore": {
+        "status": "recorded",
+        "war_id": 4,
+        "war_battle_row_index": 0,
+        "value_raw_q100000": 4423500,
+        "winner_is_war_attacker": false,
+        "combat_side0_is_war_attacker": false,
+        "attacker_relative_delta_raw_q100000": -4423500,
+        "selected_cb_battle_scale_raw_q100000": 15000000,
+        "denominator_inputs": {
+          "sum_int32": 1825,
+          "after_minimum_int32": 1825,
+          "participants": [
+            {
+              "character_id": 29829,
+              "buckets_native_add_order_int32": [
+                0,
+                674,
+                310,
+                829,
+                0,
+                0,
+                12,
+                0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "removal": {
+      "prior_combat_strictly_resolves": false,
+      "prior_province_strictly_resolves": true,
+      "prior_province_contains_prior_combat_id": false,
+      "result_strictly_resolves": true,
+      "result_relevant_player_count": 1
+    },
+    "subject": {
+      "exists": true,
+      "current_province_id": 2633,
+      "native_carmy_id": 18,
+      "combat_backlink_id": null,
+      "active_combat_id": null,
+      "movement_or_retreat_state_raw": 3,
+      "move_target_province_id": 2627,
+      "route_province_ids_in_stored_order": [
+        2627,
+        2626,
+        8753,
+        2629,
+        2630,
+        2631,
+        2624,
+        2619
+      ],
+      "ai_membership_status": "observed",
+      "coordinator_id": 21,
+      "unit_stack_stored_index": 0,
+      "subunit_stored_index": 0,
+      "blocked_by_active_combat": false
+    },
+    "successor": {
+      "state": "subject_retreating",
+      "matching_combat_ids_in_native_order": [],
+      "selected_successor_combat_id": null,
+      "participant_overlap_public_cunit_ids_in_prior_order": []
+    }
+  },
+  "source_process_cleanup_green": true,
+  "observation_process_cleanup_green": true
+}
