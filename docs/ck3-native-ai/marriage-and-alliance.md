@@ -984,3 +984,21 @@ flowchart TD
 C26 的 M5 正式第 4 turn 已提交首继承人38822与候选38710的订婚提案，接收方32266；第 5 turn `pending`，第 10 turn `betrothal`，C27 新 PID 复读同一关系。C29 用 C27 h114 的原始 save/driver 和 resolved 家庭账本，经官方 ordinary `xar_off` rebind/no-launch；第一次新管道配对不匹配仅为 no-launch 失败。正式候选固定来源 commit `8e28f12bee6fc7bfda037c4ac4002a92650c6bec`、与 C26 同源 native DLL SHA `CE57BB7F67B3B6646796E9679B5D198557CE175C056000C8FE4DFCB940F2FB0C`，游戏 1.19.0.6。R0239 在启动前分配，唯一 PID163576 以最小化窗口执行私有 `query-observed-first-heir-marriage-alliance-result-v1-private`；未执行任何游戏动作，paused raw53153976 与 h114 save SHA `AAD03E437C55A01B52FC1BF87195B32246B52DD4D452C746CF289F11FF704593` 前后不变，进程树回收。
 
 原生 `native_revision=3`、`read_only=true` 回执：`relationship_status=betrothal`，`alliance_status=allied`，`played_has_recipient_alliance=true`，`recipient_has_played_alliance=true`；C26 正式提案报告 SHA `581FD964496A30221FA8F7C7D6724A3F9699F6ABC3E57C408D606134ED35B40C` 绑定四个角色身份。独立 paused frame、日期、checkpoint、窗口和清理检查全为 true。[query report](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-family-alliance-c29-20260927/attempt-01/query-report.json) SHA `5CF76282595C807B8C904C6E0C0C33E8022CBDB1C38260B03B65F3F3F71A5097`；[operator receipt](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-family-alliance-c29-20260927/attempt-01/operator-receipt.json) SHA `6A6211D87058CC952ED7CEE3D505984D3AA8B8A34876F55DB7C4F9480A14B810`。因此同一路径的**当前双向联盟状态**已知；缺少提案前同组联盟观测，不能证明该联盟由本次订婚创建。联盟参战义务、子代宗族结果及解除婚约代价仍未量化，M5 不能把当前 allied 状态倒填为当时的预期收益。
+
+## 2026-09-27：R0240/R0241 正式结果消费与冷恢复
+
+#303 沿已有 exact 原生 final-legal/双边结果树接线，没有改原生 ABI：正式提案从被选中的合法行与五行诊断绑定 `recipient_matchmaker_character_id=32266` 到 pending；下一 paused frame 先读继承人38822/候选38710 的婚姻或订婚结果；物质结果成立后才按四角色身份调用既有 `query-observed-first-heir-marriage-alliance-result-v1-private`，保存双向实际联盟状态、native revision 与 bridge PID 到 durable resolved。新 PID 先重新读双边关系，再重新读取联盟；老账本无 recipient 时报告 `recipient_unbound`，不猜测或补写。源码 normal/`-O` 聚焦各 53 项、PR #303 exact master `433e132156f9b29e7544dd15f9692b2a2e71c388` 官方 CI `36262172533` 成功。此读回用于**结果消费**，不把事后联盟状态放入当时策略评分。
+
+```mermaid
+flowchart TD
+    A["[R0240 live] 同帧 final-legal 选中候选与接收方"] --> B["[R0240 live] typed 提案；recipient 写入 pending"]
+    B --> C["[R0240 live] 独立下一帧：pending → betrothal"]
+    C --> D["[R0240 live] 原生只读双向联盟：allied"]
+    D --> E["[R0240 live] durable resolved；下一 turn 消费"]
+    E --> F["[R0241 live] 新 PID 重验 betrothal 与双向 allied"]
+    F -. "缺提案前同组联盟基线" .-> G["[unknown] 本次提案的联盟增量"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class G unknown;
+```
+
+R0240 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance-h90-c30-20260927/attempt-01/formal-report.txt) SHA `E886352A09B434A38003237F46D06F045AA10C7F2A944CB4FD07C1B4BC72D8A3`：从原始 Robert h90 官方配对，唯一 PID82796、最小化、12/12 qualified；第 4 turn typed 提案，第 5 turn pending，第 10 turn双边 `betrothal`，第 11 turn原生 `allied` 且双方联盟标志 true，第 12 turn账本消费 `allied`。R0241 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance-h107-c31-20260927/attempt-01/formal-report.txt) SHA `3951CF81F294E1D7CAFD8EA86611723E40697F97E536DAC02BF0379FC27DBB72`：从 h107 save/driver/建设/家庭账本官方配对，新 PID80924、最小化、6/6 qualified；第 3 turn冷复核订婚，第 4 turn再次双向 `allied`，第 5 turn消费，零重提案。两轮均受控回收；h107/h115 配对 SHA 分别 `9D75995799978B0AA2A22A5E2E449AB71C2BAA9AD64B5C6898AB2BC5784F89E8`、`D809DAC8771C60D8EB803571B93A43E41C52DF8F616391CF22687CDF2DAD30F1`。这使当前实际联盟状态进入正式家庭结果循环；提案是否创建联盟、联盟战争义务、子代宗族及解除婚约代价仍未观察或估值。
