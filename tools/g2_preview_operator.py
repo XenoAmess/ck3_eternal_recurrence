@@ -372,6 +372,45 @@ def family_pending_sidecar_pair(
     return candidate
 
 
+def family_resolved_sidecar_pair(
+    sidecar: dict[str, Any], driver: dict[str, Any],
+    manifest: dict[str, Any], save_sha256: str,
+) -> int:
+    """Admit a saved material family result without editing its old receipt."""
+    resolved = sidecar.get("resolved")
+    checkpoint = driver.get("last_checkpoint")
+    if (sidecar.get("schema") != FAMILY_PENDING_V1_SCHEMA
+            or sidecar.get("pending") is not None
+            or not isinstance(resolved, dict)
+            or resolved.get("status") not in {"betrothal", "marriage"}
+            or resolved.get("material_result") is not True
+            or not isinstance(checkpoint, dict)):
+        raise ValueError("family sidecar lacks a material resolved proposal")
+    actor = episode_value(driver, manifest, "episode_character_id")
+    episode = episode_value(driver, manifest, "episode_run_id")
+    pending = resolved.get("source_pending")
+    heir = resolved.get("heir_character_id")
+    candidate = resolved.get("candidate_character_id")
+    if (not isinstance(pending, dict)
+            or pending.get("schema") != FAMILY_ACTION_V1_SCHEMA
+            or pending.get("status") != "receipt_pending"
+            or pending.get("material_result") is not False
+            or pending.get("played_character_id") != actor
+            or pending.get("episode_run_id") != episode
+            or pending.get("heir_character_id") != heir
+            or pending.get("candidate_character_id") != candidate
+            or resolved.get("episode_run_id") != episode
+            or type(heir) is not int or heir <= 0 or heir == actor
+            or type(candidate) is not int or candidate <= 0
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != episode
+            or checkpoint.get("sha256") != save_sha256
+            or type(checkpoint.get("history_index")) is not int
+            or checkpoint["history_index"] <= 0):
+        raise ValueError("resolved family sidecar disagrees with paired checkpoint")
+    return candidate
+
+
 def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
     with stdout_path.open("w", encoding="utf-8", newline="") as stdout_stream:
         with stderr_path.open("w", encoding="utf-8", newline="") as stderr_stream:
@@ -507,6 +546,23 @@ def timeline_blocker_query_command(
     ]
 
 
+def family_alliance_result_query_command(
+    common: list[str], *, timeout: int, readiness_timeout: int,
+    ownership_round_id: str, proposal_report: Path,
+    proposal_report_sha256: str, recipient_character_id: int,
+) -> list[str]:
+    return [
+        *common, "native-query-first-heir-marriage-alliance-result-v1",
+        "--timeout", str(timeout),
+        "--readiness-timeout", str(readiness_timeout),
+        "--cold-start-checkpoint",
+        "--ownership-round-id", ownership_round_id,
+        "--proposal-report", str(proposal_report.resolve()),
+        "--proposal-report-sha256", proposal_report_sha256,
+        "--recipient-character-id", str(recipient_character_id),
+    ]
+
+
 def death_succession_modal_action_command(
     common: list[str],
     *,
@@ -559,8 +615,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                       else sample_dir / "construction-formal-pending-v1.json")
     family_sidecar_arg = getattr(args, "family_sidecar", None)
     family_report_arg = getattr(args, "family_proof_report", None)
-    if (family_sidecar_arg is None) != (family_report_arg is None):
-        raise ValueError("family pending recovery needs sidecar and formal proof report")
+    if family_sidecar_arg is None and family_report_arg is not None:
+        raise ValueError("family proof report requires a family sidecar")
     family_source = family_sidecar_arg.resolve() if family_sidecar_arg else None
     family_report_source = family_report_arg.resolve() if family_report_arg else None
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
@@ -596,22 +652,32 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     family_candidate = None
     family_source_sha256 = None
     family_report_sha256 = None
+    family_kind = None
     family_record = None
     formal_report = None
-    if family_source is not None and family_report_source is not None:
-        for path in (family_source, family_report_source):
-            if not path.is_file():
-                raise FileNotFoundError(path)
+    if family_source is not None:
+        if not family_source.is_file():
+            raise FileNotFoundError(family_source)
         if family_target.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {family_target}")
         family_record = read_json(family_source)
-        formal_report = read_json(family_report_source)
-        family_candidate = family_pending_sidecar_pair(
-            family_record, driver_source_record, manifest,
-            sha256(save_source), formal_report,
-        )
+        if family_record.get("pending") is not None:
+            if family_report_source is None or not family_report_source.is_file():
+                raise ValueError("family pending recovery needs formal proof report")
+            formal_report = read_json(family_report_source)
+            family_candidate = family_pending_sidecar_pair(
+                family_record, driver_source_record, manifest,
+                sha256(save_source), formal_report)
+            family_kind = "pending"
+            family_report_sha256 = sha256(family_report_source)
+        else:
+            if family_report_source is not None:
+                raise ValueError("resolved family sidecar does not take a proof report")
+            family_candidate = family_resolved_sidecar_pair(
+                family_record, driver_source_record, manifest,
+                sha256(save_source))
+            family_kind = "resolved"
         family_source_sha256 = sha256(family_source)
-        family_report_sha256 = sha256(family_report_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -738,21 +804,29 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "action_request_id": pending_request_id,
         }
     if family_candidate is not None:
-        if family_pending_sidecar_pair(
-            family_record, read_json(driver_target), manifest,
-            sha256(save_target), formal_report,
-        ) != family_candidate:
+        prepared_driver = read_json(driver_target)
+        checked_candidate = (
+            family_pending_sidecar_pair(
+                family_record, prepared_driver, manifest,
+                sha256(save_target), formal_report)
+            if family_kind == "pending" else
+            family_resolved_sidecar_pair(
+                family_record, prepared_driver, manifest, sha256(save_target))
+        )
+        if checked_candidate != family_candidate:
             raise RuntimeError("prepared driver no longer matches family proposal")
         shutil.copy2(family_source, family_target)
         make_derived_state_owner_writable(family_target)
         if sha256(family_target) != family_source_sha256:
             raise RuntimeError("prepared family sidecar hash mismatch")
-        preparation["family_pending_sidecar"] = {
+        preparation["family_pending_sidecar" if family_kind == "pending"
+                    else "family_resolved_sidecar"] = {
             "status": "paired_no_launch",
             "source": str(family_source),
             "path": str(family_target),
             "sha256": family_source_sha256,
-            "formal_proof_report": str(family_report_source),
+            "formal_proof_report": (
+                str(family_report_source) if family_report_source else None),
             "formal_proof_report_sha256": family_report_sha256,
             "candidate_character_id": family_candidate,
         }
@@ -1041,6 +1115,114 @@ def command_query_current_timeline_blocker_context_v1(
         json.dumps(receipt, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
+    print(json.dumps(receipt, ensure_ascii=False))
+    return 0 if ok else (query_exit if query_exit != 0 else 1)
+
+
+def command_query_first_heir_marriage_alliance_result_v1(
+    args: argparse.Namespace,
+) -> int:
+    manifest = load_manifest(args.manifest.resolve())
+    source = frozen_source_identity(manifest)
+    output = args.output.resolve()
+    if output.exists():
+        raise FileExistsError(f"attempt output already exists: {output}")
+    output.mkdir(parents=True)
+    save, driver_path, driver = current_checkpoint_identity(manifest)
+    actor = episode_value(driver, manifest, "episode_character_id")
+    episode = episode_value(driver, manifest, "episode_run_id")
+    checkpoint_before = sha256(save)
+    driver_before = sha256(driver_path)
+    report_path = args.proposal_report.resolve()
+    report_sha = sha256(report_path)
+    common = agent_command(manifest)
+    receipt: dict[str, Any] = {
+        "schema": "xar-g2-private-family-alliance-query-operator-v1",
+        "mode": "query-first-heir-marriage-alliance-result-v1",
+        "manifest": str(args.manifest.resolve()),
+        "output": str(output), "source": source,
+        "round": args.ownership_round_id,
+        "private_build": True, "advertised": False,
+        "proposal_report": str(report_path),
+        "proposal_report_sha256": report_sha,
+        "recipient_character_id": args.recipient_character_id,
+        "checkpoint_sha256_before": checkpoint_before,
+        "driver_state_sha256_before": driver_before,
+        "gameplay_actions": 0, "date_advance_actions": 0,
+        "marriage_actions": 0, "ui_inputs": 0,
+    }
+    receipt_path = output / "operator-receipt.json"
+    if (report_sha.casefold() != args.proposal_report_sha256.casefold()
+            or args.recipient_character_id <= 0):
+        receipt.update({"ok": False, "status": "proposal_binding_blocked",
+                        "game_launched": False})
+        receipt_path.write_text(json.dumps(receipt, indent=2) + "\n",
+                                encoding="utf-8")
+        return 1
+    preflight_exit = run_logged([
+        *common, "native-one-generation-preflight",
+        "--expected-character-id", str(actor),
+        "--expected-episode-run-id", str(episode),
+        "--expected-checkpoint-sha256", checkpoint_before,
+        "--expected-driver-state-sha256", driver_before,
+    ], output / "preflight-stdout.txt", output / "preflight-stderr.txt")
+    receipt["preflight_exit_code"] = preflight_exit
+    if preflight_exit != 0:
+        receipt.update({"ok": False, "status": "preflight_blocked",
+                        "game_launched": False})
+        receipt_path.write_text(json.dumps(receipt, indent=2) + "\n",
+                                encoding="utf-8")
+        return preflight_exit
+    timeout = args.timeout if args.timeout is not None else int(
+        manifest.get("timeout_seconds", 390))
+    readiness_timeout = args.readiness_timeout if args.readiness_timeout is not None else int(
+        manifest.get("readiness_timeout_seconds", 300))
+    query_stdout = output / "query-report.json"
+    query_stderr = output / "query-stderr.txt"
+    query_exit = run_logged(family_alliance_result_query_command(
+        common, timeout=timeout, readiness_timeout=readiness_timeout,
+        ownership_round_id=args.ownership_round_id,
+        proposal_report=report_path,
+        proposal_report_sha256=report_sha,
+        recipient_character_id=args.recipient_character_id,
+    ), query_stdout, query_stderr)
+    try:
+        report = read_json(query_stdout)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+        report = None
+    checks = report.get("checks") if isinstance(report, dict) else None
+    after_save = sha256(save) if save.is_file() else None
+    after_driver = sha256(driver_path) if driver_path.is_file() else None
+    ok = bool(query_exit == 0 and isinstance(report, dict)
+              and report.get("ok") is True
+              and report.get("round") == args.ownership_round_id
+              and isinstance(checks, dict)
+              and checks.get("paused_frame_unchanged") is True
+              and checks.get("date_unchanged") is True
+              and checks.get("checkpoint_unchanged") is True
+              and checks.get("window_minimized_or_hidden") is True
+              and checks.get("cleanup_proven") is True
+              and after_save == checkpoint_before)
+    receipt.update({
+        "ok": ok, "status": "GREEN_READ_ONLY" if ok else "query_failed",
+        "game_launched": (
+            report.get("launch_attempted")
+            if isinstance(report, dict) else None
+        ), "query_exit_code": query_exit,
+        "query_report": str(query_stdout), "query_stderr": str(query_stderr),
+        "query_envelope": report.get("query_envelope") if isinstance(report, dict) else None,
+        "window_state_after_readiness": (
+            report.get("window_state_after_readiness")
+            if isinstance(report, dict) else None
+        ),
+        "before_frame": report.get("before", {}).get("frame") if isinstance(report, dict) else None,
+        "after_frame": report.get("after", {}).get("frame") if isinstance(report, dict) else None,
+        "checkpoint_sha256_after": after_save,
+        "driver_state_sha256_after": after_driver,
+        "cleanup": report.get("cleanup") if isinstance(report, dict) else None,
+    })
+    receipt_path.write_text(json.dumps(receipt, indent=2, ensure_ascii=False) + "\n",
+                            encoding="utf-8")
     print(json.dumps(receipt, ensure_ascii=False))
     return 0 if ok else (query_exit if query_exit != 0 else 1)
 
@@ -1525,6 +1707,22 @@ def parser() -> argparse.ArgumentParser:
     timeline_query.set_defaults(
         handler=command_query_current_timeline_blocker_context_v1
     )
+
+    family_alliance_query = commands.add_parser(
+        "query-first-heir-marriage-alliance-result-v1")
+    family_alliance_query.add_argument("--manifest", type=Path, required=True)
+    family_alliance_query.add_argument("--output", type=Path, required=True)
+    family_alliance_query.add_argument("--proposal-report", type=Path, required=True)
+    family_alliance_query.add_argument("--proposal-report-sha256", required=True)
+    family_alliance_query.add_argument("--recipient-character-id", type=int,
+                                       required=True)
+    family_alliance_query.add_argument("--ownership-round-id",
+                                       type=private_timeline_query_round_id,
+                                       required=True)
+    family_alliance_query.add_argument("--timeout", type=int)
+    family_alliance_query.add_argument("--readiness-timeout", type=int)
+    family_alliance_query.set_defaults(
+        handler=command_query_first_heir_marriage_alliance_result_v1)
 
     timeline_action = commands.add_parser(
         "continue-death-succession-modal-v1"

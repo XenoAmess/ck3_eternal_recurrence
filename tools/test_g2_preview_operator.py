@@ -1756,5 +1756,175 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     g2_preview_operator.command_owned_window(args)
 
 
+class FamilyAllianceResultOperatorTest(unittest.TestCase):
+    def test_prepare_state_accepts_paired_resolved_family_without_rewriting_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sample = root / "sample"
+            sample.mkdir()
+            state = root / "state"
+            save = sample / "xar_checkpoint.ck3"
+            driver = sample / "driver-state.json"
+            family = sample / "first-heir-marriage-formal-v1.json"
+            save.write_bytes(b"h148-paired-save")
+            save_hash = g2_preview_operator.sha256(save)
+            episode = "native-29829-test"
+            driver.write_text(json.dumps({
+                "episode_character_id": 29829, "episode_run_id": episode,
+                "last_checkpoint": {"history_index": 148, "sha256": save_hash,
+                                    "episode_character_id": 29829,
+                                    "episode_run_id": episode},
+            }), encoding="utf-8")
+            family.write_text(json.dumps({
+                "schema": g2_preview_operator.FAMILY_PENDING_V1_SCHEMA,
+                "pending": None,
+                "resolved": {
+                    "status": "betrothal", "material_result": True,
+                    "episode_run_id": episode,
+                    "heir_character_id": 38822,
+                    "candidate_character_id": 38710,
+                    "source_pending": {
+                        "schema": g2_preview_operator.FAMILY_ACTION_V1_SCHEMA,
+                        "status": "receipt_pending", "material_result": False,
+                        "played_character_id": 29829,
+                        "episode_run_id": episode,
+                        "heir_character_id": 38822,
+                        "candidate_character_id": 38710,
+                    },
+                },
+            }), encoding="utf-8")
+            family_bytes = family.read_bytes()
+            manifest_file = root / "manifest.json"
+            manifest_file.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\family-resolved-prepare",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+            }), encoding="utf-8")
+            calls: list[list[str]] = []
+
+            def fake_run(command, check):
+                self.assertFalse(check)
+                calls.append(command)
+                if "rebind-ordinary-seed-v1" in command:
+                    receipt = Path(command[command.index("--receipt") + 1])
+                    rebound_driver = state / "native-session" / "driver-state.json"
+                    receipt.write_text(json.dumps({
+                        "schema": g2_preview_operator.ORDINARY_SEED_REBIND_V1_SCHEMA,
+                        "status": "rebound", "ok": True,
+                        "ck3_launch_attempted": False,
+                        "pipe_name": r"\\.\pipe\family-resolved-prepare",
+                        "environment": {"target_sha256": "c" * 64},
+                        "driver_state": {"target_sha256":
+                            g2_preview_operator.sha256(rebound_driver)},
+                        "no_launch_preflight_expectations": {
+                            "pipe_name": r"\\.\pipe\family-resolved-prepare",
+                            "expected_character_id": 29829,
+                            "expected_episode_run_id": episode,
+                            "expected_checkpoint_sha256": save_hash,
+                            "expected_driver_state_sha256":
+                                g2_preview_operator.sha256(rebound_driver),
+                            "xar_enabled": "xar_off",
+                            "succession_lifecycle": "ordinary_campaign_succession",
+                            "ordinary_campaign_no_pact": True,
+                        },
+                    }), encoding="utf-8")
+                return mock.Mock(returncode=0)
+
+            with (mock.patch.object(g2_preview_operator.subprocess, "run",
+                                    side_effect=fake_run),
+                  contextlib.redirect_stdout(io.StringIO()) as output):
+                self.assertEqual(g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest_file, sample_dir=sample,
+                                       family_sidecar=family)), 0)
+            self.assertEqual(len(calls), 4)
+            self.assertIn("native-one-generation-preflight", calls[-1])
+            self.assertEqual(family.read_bytes(), family_bytes)
+            prepared = json.loads(output.getvalue())
+            family_receipt = prepared["family_resolved_sidecar"]
+            self.assertEqual(family_receipt["candidate_character_id"], 38710)
+            self.assertEqual(family_receipt["sha256"],
+                             hashlib.sha256(family_bytes).hexdigest())
+            self.assertEqual(Path(family_receipt["path"]).read_bytes(), family_bytes)
+
+    def test_preflight_precedes_exact_private_query_and_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            save = root / "xar_checkpoint.ck3"
+            driver = root / "driver-state.json"
+            proposal = root / "c10-formal-report.json"
+            save.write_bytes(b"paired-save")
+            driver.write_text(json.dumps({
+                "episode_character_id": 29829,
+                "episode_run_id": "native-29829-test",
+            }), encoding="utf-8")
+            proposal.write_text("{}", encoding="utf-8")
+            digest = g2_preview_operator.sha256(proposal)
+            manifest = {"timeout_seconds": 390,
+                        "readiness_timeout_seconds": 300}
+            args = argparse.Namespace(
+                manifest=root / "manifest.json", output=root / "attempt",
+                proposal_report=proposal, proposal_report_sha256=digest,
+                recipient_character_id=32266, ownership_round_id="R999",
+                timeout=None, readiness_timeout=None)
+            commands = []
+
+            def fake_run(command, stdout_path, stderr_path):
+                commands.append(command)
+                stderr_path.write_text("", encoding="utf-8")
+                if len(commands) == 1:
+                    self.assertIn("native-one-generation-preflight", command)
+                    stdout_path.write_text("{}", encoding="utf-8")
+                    return 0
+                self.assertIn(
+                    "native-query-first-heir-marriage-alliance-result-v1",
+                    command)
+                self.assertIn("--cold-start-checkpoint", command)
+                self.assertNotIn("native-auto-run", command)
+                stdout_path.write_text(json.dumps({
+                    "ok": True, "round": "R999",
+                    "query_envelope": {"alliance_status": "not_allied"},
+                    "before": {"frame": {"date_raw": 53155728}},
+                    "after": {"frame": {"date_raw": 53155728}},
+                    "checks": {"paused_frame_unchanged": True,
+                               "date_unchanged": True,
+                               "checkpoint_unchanged": True,
+                               "window_minimized_or_hidden": True,
+                               "cleanup_proven": True},
+                    "cleanup": {"ok": True},
+                }), encoding="utf-8")
+                return 0
+
+            with (mock.patch.object(g2_preview_operator, "load_manifest",
+                                    return_value=manifest),
+                  mock.patch.object(g2_preview_operator, "frozen_source_identity",
+                                    return_value={"commit": "a" * 40}),
+                  mock.patch.object(g2_preview_operator, "current_checkpoint_identity",
+                                    return_value=(save, driver, json.loads(
+                                        driver.read_text(encoding="utf-8")))),
+                  mock.patch.object(g2_preview_operator, "agent_command",
+                                    return_value=["python", "agent.py"]),
+                  mock.patch.object(g2_preview_operator, "run_logged",
+                                    side_effect=fake_run),
+                  contextlib.redirect_stdout(io.StringIO())):
+                self.assertEqual(
+                    g2_preview_operator.command_query_first_heir_marriage_alliance_result_v1(args),
+                    0)
+            self.assertEqual(len(commands), 2)
+            receipt = json.loads((args.output / "operator-receipt.json")
+                                 .read_text(encoding="utf-8"))
+            self.assertEqual(receipt["status"], "GREEN_READ_ONLY")
+            self.assertEqual(receipt["query_envelope"]["alliance_status"],
+                             "not_allied")
+            self.assertEqual(receipt["checkpoint_sha256_before"],
+                             receipt["checkpoint_sha256_after"])
+
+
 if __name__ == "__main__":
     unittest.main()
