@@ -28,6 +28,9 @@
 
 配套的只读 scope ABI、机器 fixture 与 future paused-live gate 见
 [actual-contact-scope.md](actual-contact-scope.md)；本文只负责原生行为树与证据边界，不把静态闭合写成已发布 capability。
+三支玩家军队的独立实机接触观察及第 41 天 pending 交互阻断见
+[war-contact-attempt-064-pending-history-2026-09-27.md](war-contact-attempt-064-pending-history-2026-09-27.md)；
+该次观察未形成共同 CombatID，不能提升本页的原生接触结论等级。
 
 ## 一张图：从原生 AI 目标到实际接触
 
