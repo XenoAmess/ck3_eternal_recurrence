@@ -1660,6 +1660,52 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_construction_source_red_still_checks_independent_marriage(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": []}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance",),
+        )
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_family_marriage_formal_trial = True
+        base_plan = {"policy": "one-life-turn-v1", "selected_step": "life-advance"}
+
+        def construction(_driver, planned, _snapshot, _history, _steps,
+                         *, prewar_arbitration):
+            self.assertFalse(prewar_arbitration)
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": None,
+                "construction_private_query": {"status": "source_red"},
+                "reason": "private construction source unavailable; preserve RED"}}
+
+        def marriage(_driver, planned, _snapshot, *, prewar_arbitration):
+            self.assertFalse(prewar_arbitration)
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": "private-submit-first-heir-marriage-v1"}}
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value=base_plan),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private", side_effect=construction),
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private", side_effect=marriage) as family,
+        ):
+            chosen = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(chosen["selected_step"], "private-submit-first-heir-marriage-v1")
+        self.assertEqual(chosen["construction_private_query"]["status"], "source_red")
+        family.assert_called_once()
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value=base_plan),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private", side_effect=construction),
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private", side_effect=lambda _driver, planned, _snapshot, *, prewar_arbitration: planned),
+        ):
+            blocked = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertIsNone(blocked["selected_step"])
+        self.assertEqual(blocked["reason"], "private construction source unavailable; preserve RED")
+
     def test_peaceful_declaration_queries_private_nonwar_before_war(self) -> None:
         state = {
             **_snapshot(7),

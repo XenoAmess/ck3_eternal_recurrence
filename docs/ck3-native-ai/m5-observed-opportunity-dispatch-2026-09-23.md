@@ -183,6 +183,21 @@ step, and retains the war plan when neither domain returns an admissible
 action. It is separate from the incomplete five-candidate M5 selector; no
 joint live benefit or material nonwar action is inferred from R0223.
 
+The separately frozen Robert R0149 peace pair reached R0224 turn 2 on exact
+`d070e0b`. The paused bridge had `active_wars=[]`, but the private building
+world source returned `status=unavailable`, `failure=construction_state` after
+identifying four directly held baronies. Its definition count, native cost and
+final legality were unavailable, so no building affordability or income claim
+can be made. The normal `life-advance` route preserved that RED by setting
+`selected_step=None` before the independent marriage consumer could read its
+own legality. The focused service change lets marriage inspect the same frame
+while carrying the construction RED. A material marriage or result-read step
+may proceed; if marriage has no step, the construction RED remains blocking
+and the date does not advance. R0224 itself made no nonwar action and retained
+the original checkpoint. The native construction source still needs an
+exact-build fix and independent live validation. Evidence is in
+`Z:\ck3_mod_rewrite_process_assets\g2-robert-nonwar-prewar-r0149-20260926-c1\attempt-01`.
+
 Before either query, both durable formal ledgers must have no pending action.
 After the 2026-09-26 NW-ECON continuation, an applied construction receipt
 blocks a new building proposal only until the formal route has consumed it and
