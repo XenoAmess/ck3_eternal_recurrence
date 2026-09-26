@@ -77,6 +77,13 @@ def main() -> int:
             assert legal["completed_buildings_observed"] is False
             assert legal["completed_buildings"] is None
             assert legal["positive_income_coverage_complete"] is False
+            assert legal["active_constructions"] == [{
+                "barony_title_id": 2103, "province_id": 2635,
+                "active": True, "building_type_id": 24,
+                "slot_index": 1, "initiator_character_id": 29829,
+                "native_remaining_work_raw": 109500000,
+                "native_progress_divisor_raw": 100000,
+            }]
             completed = receipts[2]["player_world_building_sources"]
             assert completed["completed_buildings_observed"] is True
             assert completed["positive_income_coverage_complete"] is True

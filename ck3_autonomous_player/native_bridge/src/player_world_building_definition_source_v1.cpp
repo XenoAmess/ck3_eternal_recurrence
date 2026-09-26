@@ -40,6 +40,8 @@ constexpr std::size_t kProvinceBuiltSlotStride = 0x10;
 constexpr std::size_t kProvinceActiveBuildingOffset = 0x70;
 constexpr std::size_t kProvinceActiveSlotOffset = 0x78;
 constexpr std::size_t kProvinceActiveInitiatorOffset = 0xE0;
+constexpr std::size_t kProvinceActiveRemainingWorkOffset = 0x88;
+constexpr std::size_t kProvinceActiveProgressDivisorOffset = 0xE8;
 constexpr std::size_t kRegistryDataOffset = 0x68;
 constexpr std::size_t kRegistryCapacityOffset = 0x70;
 constexpr std::size_t kRegistryCountOffset = 0x74;
@@ -407,6 +409,12 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
             !Read(campaign, province,
                   kProvinceSlotsOffset + kProvinceActiveInitiatorOffset,
                   state.initiator_character_id) ||
+            !Read(campaign, province,
+                  kProvinceSlotsOffset + kProvinceActiveRemainingWorkOffset,
+                  state.remaining_work_raw) ||
+            !Read(campaign, province,
+                  kProvinceSlotsOffset + kProvinceActiveProgressDivisorOffset,
+                  state.progress_divisor_raw) ||
             state.slot_index < 0 || state.slot_index >= slot_count ||
             state.initiator_character_id <= 0) {
           return Failed(PlayerWorldBuildingFailureV1::construction_state);

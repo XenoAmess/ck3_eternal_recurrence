@@ -5,6 +5,15 @@
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "read_only": true,
+  "active_progress_private_projection": {
+    "remaining_work_offset_from_province_slots": "0x88",
+    "progress_divisor_offset_from_province_slots": "0xE8",
+    "base_work_writer_rva": "0x21F69BD",
+    "progress_update_reader_rva": "0x21F6D57",
+    "progress_decrement_rva": "0x21F6D72",
+    "native_units": "base building days times 100000; per-call decrement is integer 10000000000 / positive divisor, or immediate completion for nonpositive divisor",
+    "qualification": "same-frame read-only private raw fields; exact paused runtime values and completion-date estimator are not yet live-qualified"
+  },
   "application_main_only": true,
   "public_registration": false,
   "public_advertisement": false,

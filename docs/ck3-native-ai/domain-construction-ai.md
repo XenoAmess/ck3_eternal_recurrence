@@ -1,5 +1,7 @@
 # CK3 1.19.0.6 直辖领地建设与升级原生 AI 树
 
+- [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
+
 ## 2026-09-27 NW-ECON-C35：h115 冷恢复后施工仍未完工，战争输入阻断后续日期
 
 R0243 从同一派生 Robert h115/raw53154720 的 save、driver、建设及家庭账本经正式 ordinary `xar_off` 重绑定与 no-launch 开始；启动前分配轮次，唯一 PID68496 在可见后最小化，12/12 有界正式 turn `turn_limit/qualified`，进程树回收。第 2 turn 在新 PID 独立复核原 `hill_farms_01` 槽位仍为 `applied/in_progress`，现金与玩家月收入读回沿用原收据，`completion_observed_date_raw` 和实际收入差值仍为 `null`，未重复扣款或施工。第 9 turn 战争策略宣战、第 11 turn 集结，第 12 turn 最小化后台推进 raw53154720→53154936（9 派生游戏日），保存 h133。距本次冷复核 raw53154720 尚不足既定 30 日 watch；无完工或收益证据。[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h115-c35-20260927/attempt-01/formal-report.txt) SHA `95ED751461D47619F45D0C9B0E5D34FBA18F0FF6DA31B90C7E5B218653483415`，[operator](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h115-c35-20260927/attempt-01/operator-receipt.json) SHA `667AFBBA310E31401EF23D4157EEB047E88FEC18186C8E9B899962E9A6816A7B`，[h133 原始配对清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h133-c35-20260927/source-pair-h133/PAIR-IDENTITY.json) SHA `9E7FB3DD88999C00E270EF82B607F73D0A998A5977E87D2029A8CEC02E43485E`。

@@ -294,11 +294,14 @@ int main() {
     f.Put(0x700000 + 0x620 + 0x70, std::uintptr_t{0xB10000});
     f.Put(0x700000 + 0x620 + 0x78, std::int32_t{1});
     f.Put(0x700000 + 0x620 + 0xE0, kActor);
+    f.Put(0x700000 + 0x620 + 0x88, std::int64_t{109500000});
+    f.Put(0x700000 + 0x620 + 0xE8, std::int64_t{100000});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
         kModule, true, f.Access(false), {3, kProvince, 0, 0});
     Require(r.source_available && r.active_constructions ==
                 std::vector<PlayerWorldActiveConstructionV1>{
-                    {kBarony, kProvince, true, 22, 1, kActor}},
+                    {kBarony, kProvince, true, 22, 1, kActor,
+                     109500000, 100000}},
             "stock_active_building_is_independent_material_receipt");
   }
   {

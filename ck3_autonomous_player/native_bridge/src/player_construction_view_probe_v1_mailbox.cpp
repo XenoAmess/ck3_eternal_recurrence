@@ -580,6 +580,12 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += ",\"initiator_character_id\":";
       json += active.active ? std::to_string(active.initiator_character_id)
                             : "null";
+      json += ",\"native_remaining_work_raw\":";
+      json += active.active ? std::to_string(active.remaining_work_raw)
+                            : "null";
+      json += ",\"native_progress_divisor_raw\":";
+      json += active.active ? std::to_string(active.progress_divisor_raw)
+                            : "null";
       json += '}';
     }
   }
