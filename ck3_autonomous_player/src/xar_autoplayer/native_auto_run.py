@@ -812,6 +812,8 @@ def native_auto_run(
             "date_raw": readiness.get("date_raw"),
         }
         current_episode = copy.deepcopy(initial_episode)
+        if opening_focus_gate is not None:
+            opening_focus_gate["episode_run_id"] = readiness.get("episode_run_id")
         if completion_contract in strict_completion_contracts:
             try:
                 _verify_one_generation_binding(readiness, initial_episode)
@@ -1005,6 +1007,38 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if (
+                opening_focus_gate is not None
+                and opening_focus_gate["stage"] == "complete"
+                and natural_succession_transitions
+                and opening_focus_gate.get("episode_run_id")
+                != current_episode.get("episode_run_id")
+                and before.get("episode_run_id")
+                == current_episode.get("episode_run_id")
+                and before.get("episode_character_id")
+                == current_episode.get("episode_character_id")
+                and before.get("paused") is True
+                and before.get("map_ready") is True
+                and before.get("one_life_terminal") is not True
+                and isinstance(before.get("active_context"), dict)
+                and before["active_context"].get("active_event") is None
+                and before["active_context"].get("pending_character_interaction")
+                is None
+            ):
+                # The predecessor's completed gate cannot certify the new
+                # character. Wait until modal decisions clear, then reuse the
+                # original focus/receipt/checkpoint path on this episode.
+                opening_focus_gate.pop("existing_focus", None)
+                opening_focus_gate.update({
+                    "stage": "await_submit",
+                    "episode_run_id": current_episode["episode_run_id"],
+                    "action_request_id": None,
+                    "target_key": None,
+                    "checkpoint_saved": False,
+                })
+                opening_date_raw = before.get("date_raw")
+                driver.require_initial_lifestyle_focus_before_date_advance = True
+                driver.initial_lifestyle_focus_gate_stage = "await_submit"
             if camera_index is not None:
                 try:
                     semantic = before.get("_semantic")
