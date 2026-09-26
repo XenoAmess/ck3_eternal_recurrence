@@ -8031,6 +8031,13 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
                       ? "marriage"
                       : "betrothal");
     }
+    result += ",\"heir_is_adult\":";
+    result += available ? (read.heir_is_adult ? "true" : "false") : "null";
+    result += ",\"candidate_is_adult\":";
+    result += available ? (read.candidate_is_adult ? "true" : "false") : "null";
+    result += ",\"grand_wedding_option_selected\":";
+    result += available ? (read.grand_wedding_option_selected ? "true" : "false")
+                        : "null";
     result += ",\"heir_betrothed_character_id\":";
     if (available && read.heir_relationship.betrothed_character_id > 0) {
       result += SignedNumber(

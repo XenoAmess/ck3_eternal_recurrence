@@ -55,6 +55,14 @@ struct MarriageNativeOutcomeClassifierStateV1 {
       MarriageNativeOutcomeClassifierFailureV1::none)};
 };
 
+struct MarriageNativeOutcomeDetailsV1 {
+  MarriagePredictedOutcomeV1 predicted_outcome =
+      MarriagePredictedOutcomeV1::unavailable;
+  bool subject_is_adult = false;
+  bool candidate_is_adult = false;
+  bool grand_wedding_option_selected = false;
+};
+
 MarriageNativeOutcomeClassifierEnvironmentV1
 BindMarriageNativeOutcomeClassifierEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted,
@@ -68,6 +76,11 @@ bool ClassifyMarriageNativeOutcomeExactV1(
     void *context, std::uintptr_t subject_character,
     std::uintptr_t candidate_character, const void *finalized_context,
     MarriagePredictedOutcomeV1 &output) noexcept;
+
+bool ClassifyMarriageNativeOutcomeDetailsExactV1(
+    void *context, std::uintptr_t subject_character,
+    std::uintptr_t candidate_character, const void *finalized_context,
+    MarriageNativeOutcomeDetailsV1 &output) noexcept;
 
 MarriageNativeOutcomeClassifierFailureV1
 ReadMarriageNativeOutcomeClassifierFailureV1(

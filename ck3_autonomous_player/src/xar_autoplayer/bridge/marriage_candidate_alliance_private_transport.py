@@ -112,6 +112,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
     observed_played_lineage: tuple[object, object] | None = None
     observed_heir_lineage: tuple[object, object] | None = None
     observed_heir_sex_selector: int | None = None
+    observed_heir_is_adult: bool | None = None
     lineage_fields = (
         "played_house_id", "played_dynasty_id", "heir_house_id",
         "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
@@ -133,7 +134,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             or not isinstance(row.get("outcome_failure"), str)
             or any(field not in row for field in (*lineage_fields,
                                                   *sex_selector_fields))
-            or "effective_matrilineal_if_accepted" not in row
+            or any(field not in row for field in (
+                "effective_matrilineal_if_accepted", "heir_is_adult",
+                "candidate_is_adult", "grand_wedding_option_selected"))
         ):
             raise BridgeUnavailableError("marriage projection row identity malformed")
         pairs = row.get("possible_alliance_pairs")
@@ -147,6 +150,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 row.get("heir_betrothed_character_id") is not None or
                 row.get("heir_primary_spouse_character_id") is not None or
                 row.get("heir_spouse_character_ids") is not None or
+                any(row[field] is not None for field in (
+                    "heir_is_adult", "candidate_is_adult",
+                    "grand_wedding_option_selected")) or
                 any(row[field] is not None for field in lineage_fields) or
                 any(row[field] is not None for field in sex_selector_fields) or
                 row["effective_matrilineal_if_accepted"] is not None or
@@ -161,6 +167,18 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 {"marriage", "betrothal"} or
             type(row.get("matrilineal_option_selected")) is not bool):
             raise BridgeUnavailableError("available projection lost native option")
+        heir_is_adult = row["heir_is_adult"]
+        candidate_is_adult = row["candidate_is_adult"]
+        grand_wedding = row["grand_wedding_option_selected"]
+        if (any(type(value) is not bool for value in (
+                heir_is_adult, candidate_is_adult, grand_wedding))
+            or row["predicted_outcome_if_accepted"] != (
+                "marriage" if heir_is_adult and candidate_is_adult
+                and not grand_wedding else "betrothal")
+            or (observed_heir_is_adult is not None and
+                heir_is_adult is not observed_heir_is_adult)):
+            raise BridgeUnavailableError("marriage adult outcome breakdown malformed")
+        observed_heir_is_adult = heir_is_adult
         betrothed = row.get("heir_betrothed_character_id")
         primary = row.get("heir_primary_spouse_character_id")
         spouses = row.get("heir_spouse_character_ids")

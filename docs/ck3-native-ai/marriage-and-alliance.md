@@ -683,12 +683,14 @@ flowchart LR
   E --> F
   F --> V{"private trial: unpartnered heir + adult marriage + same current House/Dynasty + aligned native lineality + positive recipient raw?"}
   V -->|yes| G["typed first-heir proposal; durable pending before send"]
+  V -->|betrothal only| B["[unknown] future spouse value and betrothal obligation"]
+  B -. "unpriced" .-> U
   V -->|no / unavailable| U["no proposal or observation RED"]
   G --> R["later paused native resolution + bilateral spouse/betrothed"]
   R -. "cold absent relation cannot prove refusal" .-> X["unresolved; no resubmit"]
   R -. "child dynasty, alliance value, obligation, Robert live result unknown" .-> Y["future value calibration"]
   classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
-  class X,Y unknown;
+  class B,X,Y unknown;
 ```
 
 `NW-FAMILY-PROPOSAL` 的私有 bounded 消费者只把**首继承人本人获得成人婚姻机会**列为当前窄收益：已有 spouse/betrothed 即不发案；原生预计 `betrothal`、继承人与玩家当前 House/Dynasty 不同、实际执行 lineality 与继承人 raw selector 不一致，或收件人原生 acceptance raw 非正，均不入选。正的 acceptance raw 仅是收件人答复线索，绝不当接受回执。五候选由同帧 final-legal 行按 raw 排入现有 projection；原生无玩家 AI rank，不把列举顺序伪作价值排名。子代 House/Dynasty、联盟、长期义务仍为未定项，不进入此窄收益，也不纳入 M5 公共仲裁。此 counter-policy 是静态候选，等待 Robert paused 正值行和正式后置核验。
@@ -697,7 +699,13 @@ flowchart LR
 
 `NW-FAMILY-R0225-DIAG` 针对 [R0225 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c2/attempt-01/formal-report.txt>) 第 2 turn 的 `no_positive_observed_marriage_opportunity`：该状态按源码只能在至少五个原生 final-legal 候选和同帧五行 `available` 投影后产生，旧报告却只保存状态，没有行内容，不能判断是订婚、现有关系、House/Dynasty、lineality 或接受值使窄价值门失败。私有消费者现将**已评估的五行**压成 `family_marriage_private_diagnostic`：绑定 episode/date/native revision/legality sequence、候选身份、预计 marriage/betrothal、首继承人关系数量与 betrothed/primary spouse、双方及候选 House/Dynasty、raw selector 与生效 lineality、收件人答复/accept raw，以及与正式选择共用门函数生成的逐行拒绝原因；另记录最终合法总数与所选 ID。此对象先写入私有 formal plan；正式报告需经投影验收，不注册公共 MCP、不给未投影候选赋值，也不将正 accept raw 当实际接受。静态聚焦测试只证明诊断能保留字段；R0225 已流逝帧的具体五行仍未知，须在下一合法 paused 帧验收，才能确定下一项价值/读口修复。
 
-`NW-FAMILY-DIAG-REPORT` 的 [c5 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c5/attempt-01/formal-report.txt>) 在第 3/5 turn 再次只保留 `no_positive_observed_marriage_opportunity`，五行诊断 token 在整个 c5 报告及 `state/native-session/driver-state.json` 均不存在。源码追踪确认消费者已经创建诊断，但 `native_auto_run._turn_record → _compact_plan` 的报告字段白名单遗漏它；该次实机未保留原始行，不能回填。当前修复只让既有有界私有诊断通过 `_compact_plan` 进入 `auto_run.turns[].plan`，不扩 native 读口、不改正式选择或公共广告。聚焦测试以真实消费者计划经过正式 turn 记录器核对五行保留；下一次 live 报告仍需核对应字段，才可针对具体拒绝门施工。
+`NW-FAMILY-DIAG-REPORT` 的 [c5 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c5/attempt-01/formal-report.txt>) 在第 3/5 turn 再次只保留 `no_positive_observed_marriage_opportunity`，五行诊断 token 在整个 c5 报告及 `state/native-session/driver-state.json` 均不存在。源码追踪确认消费者已经创建诊断，但 `native_auto_run._turn_record → _compact_plan` 的报告字段白名单遗漏它；该次实机未保留原始行，不能回填。修复只让既有有界私有诊断通过 `_compact_plan` 进入 `auto_run.turns[].plan`，不扩 native 读口、不改正式选择或公共广告。c6 正式报告已验收到第 2/3/7 turn 的五行诊断，具体拒绝门见下文。
+
+`NW-FAMILY-BETROTHAL` 以 [c6 正式报告](<Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c6/attempt-01/formal-report.txt>) 的 turn 2/3/7 为实机输入：首继承人 `38822` 无 spouse/betrothal，五个同帧 final-legal 候选 `38987/39503/39554/39757/28731` 均为接受后预计 **betrothal**，原生 final answer 允许发送、accept raw 为正，现有 lineality 与继承人对齐；五行的唯一拒绝原因均是 `not_adult_marriage_outcome`。前三名当前 House/Dynasty 同为 `174`，后两名分别为 `2352/4229`；当前身份差异本身不证明未来子代宗族、候选质量或联盟收益。原生 `00_marriage_interactions.txt:1902–2468` 的解除订婚路径含条件性 prestige/opinion/unity 后果，因此订婚还锁定未来择偶并可能有解除成本。
+
+当前 Python 按 recipient accept raw 在 `688/690` 个 final-legal row 中取前五；这些原生合法行没有成年/预计结果，故 c6 **无法排除**取前五遮住可立即成婚的成人候选。exact `marriage_native_outcome_classifier_v1.cpp` 已从双方 `CCharacter+0x68` 读取 adult measure、从 `+0x199` 选运行时成年阈值，并读取 grand-wedding 选项；旧接口只输出合并的 `marriage/betrothal`。本阶段复用相同双读样本，给五行私有投影和报告新增 `heir_is_adult`、`candidate_is_adult`、`grand_wedding_option_selected`，并由 transport 复核它们与原预计结果及跨行继承人身份一致。若下次同帧读到继承人未成年，则全部当前合法候选都不能立即成婚；若继承人已成年而前五仍是未成年候选或 grand-wedding 订婚，下一步须用同一原生投影对有界的其它合法 ID 补查，不能由 c6 猜存在或不存在成人婚姻。c6 的三个布尔值未保存，需新候选实机验收。
+
+五行投影还已有至多三组 `possible_alliance_pairs` 的具体双方、既有联盟及 realm-data/attempt 标志，但 c6 诊断没有保留它；本阶段把这些既有私有字段和 recipient/matchmaker 身份一同送入正式报告，不把 `would_attempt_if_accepted` 当已成立联盟。候选确切年龄/未来成年时间、配偶质量、未来子代归属与具体解除义务仍无同帧可比读数；本阶段不放宽 `betrothal` 正式价值门，不发送 proposal。
 
 提案前持久记录可能已提交的 pair；typed native ACK 只证明提交进入 receiver。下一 paused 帧以同进程原生 resolution journal 区分 `pending`、`accepted_pending`、`refused`、`invalidated`，并以双方 spouse/betrothed 关系独立判定物质 `marriage`/`betrothal`。新 PID 冷读只使用正式 checkpoint 的首继承人身份与双方关系；若关系已成立可证明物质结果，若关系缺席则不能反推出拒绝，保持 `unresolved` 且禁止自动重发。提案后的配对 checkpoint、下一 turn 对 resolved receipt 的消费仍需实机核验；静态源码、Release DLL 与聚焦测试不算 production-live。
 

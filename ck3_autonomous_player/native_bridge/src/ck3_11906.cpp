@@ -17006,12 +17006,19 @@ ReadMarriageCandidateAlliancePrivateV1(
       bridge::MarriageCandidateAllianceProjectionFailureV1::none) {
     bridge::MarriageNativeOutcomeClassifierStateV1 classifier{};
     classifier.environment = outcome_environment;
-    if (!bridge::ClassifyMarriageNativeOutcomeExactV1(
+    bridge::MarriageNativeOutcomeDetailsV1 details{};
+    if (!bridge::ClassifyMarriageNativeOutcomeDetailsExactV1(
             &classifier, reinterpret_cast<std::uintptr_t>(heir),
             reinterpret_cast<std::uintptr_t>(candidate), context,
-            result.predicted_outcome)) {
+            details)) {
       result.outcome_failure =
           bridge::ReadMarriageNativeOutcomeClassifierFailureV1(classifier);
+    } else {
+      result.predicted_outcome = details.predicted_outcome;
+      result.heir_is_adult = details.subject_is_adult;
+      result.candidate_is_adult = details.candidate_is_adult;
+      result.grand_wedding_option_selected =
+          details.grand_wedding_option_selected;
     }
   }
   bindings.destroy_character_interaction_context(context);

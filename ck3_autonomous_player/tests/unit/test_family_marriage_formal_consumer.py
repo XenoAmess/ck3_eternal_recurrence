@@ -45,14 +45,20 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
         legal.append({"candidate_character_id": candidate_id,
                       "played_character_id": 101,
                       "subject_character_id": 202,
+                      "recipient_matchmaker_character_id": 400 + index,
                       "complete_can_send": True,
                       "recipient_answer_allows_send": True,
                       "recipient_answer_status_raw": 0,
                       "recipient_ai_accept_raw": 500 - index})
         projected.append({"status": "available", "actor_character_id": 101,
                           "heir_character_id": 202,
+                          "recipient_character_id": 400 + index,
                           "candidate_character_id": candidate_id,
+                          "possible_alliance_pairs": [],
                           "predicted_outcome_if_accepted": "marriage",
+                          "heir_is_adult": True,
+                          "candidate_is_adult": True,
+                          "grand_wedding_option_selected": False,
                           "heir_betrothed_character_id": None,
                           "heir_primary_spouse_character_id": None,
                           "heir_spouse_character_ids": [],
@@ -131,10 +137,17 @@ class FamilyConsumerTest(unittest.TestCase):
             driver = FakeDriver(Path(temporary))
             rows = driver.projection["rows"]
             rows[0]["predicted_outcome_if_accepted"] = "betrothal"
+            rows[0]["candidate_is_adult"] = False
             rows[1]["candidate_sex_selector_raw"] = 0
             rows[2]["matrilineal_option_selected"] = True
             rows[2]["effective_matrilineal_if_accepted"] = True
             rows[3]["predicted_outcome_if_accepted"] = "betrothal"
+            rows[3]["candidate_is_adult"] = False
+            rows[3]["possible_alliance_pairs"] = [{
+                "first_character_id": 101, "second_character_id": 403,
+                "already_allied": False, "both_have_realm_data": True,
+                "would_attempt_if_accepted": True,
+            }]
             driver.legality["native_legal_candidates"][4]["recipient_ai_accept_raw"] = 0
             planned = plan_family_marriage_private(
                 driver, {"plan": {"selected_step": "life-advance"}}, scene())
@@ -154,6 +167,9 @@ class FamilyConsumerTest(unittest.TestCase):
                              [300, 301, 302, 303, 304])
             self.assertEqual(observed[0]["predicted_outcome_if_accepted"],
                              "betrothal")
+            self.assertIs(observed[0]["heir_is_adult"], True)
+            self.assertIs(observed[0]["candidate_is_adult"], False)
+            self.assertIs(observed[0]["grand_wedding_option_selected"], False)
             self.assertEqual(observed[0]["rejection_reasons"],
                              ["not_adult_marriage_outcome"])
             self.assertIn("same_selector_pair", observed[1]["rejection_reasons"])
@@ -163,6 +179,10 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertEqual(observed[2]["heir_house_id"], 21)
             self.assertEqual(observed[2]["candidate_dynasty_id"], 30)
             self.assertIn("not_adult_marriage_outcome", observed[3]["rejection_reasons"])
+            self.assertEqual(observed[3]["recipient_character_id"], 403)
+            self.assertEqual(observed[3]["recipient_matchmaker_character_id"], 403)
+            self.assertEqual(observed[3]["possible_alliance_pairs"],
+                             rows[3]["possible_alliance_pairs"])
             self.assertIn("recipient_accept_not_positive", observed[4]["rejection_reasons"])
             self.assertEqual(observed[4]["recipient_ai_accept_raw"], 0)
             formal_turn = _turn_record(
@@ -174,6 +194,9 @@ class FamilyConsumerTest(unittest.TestCase):
             )
             self.assertEqual(formal_turn["plan"]["family_marriage_private_diagnostic"],
                              diagnostic)
+            self.assertEqual(formal_turn["plan"]["family_marriage_private_diagnostic"]
+                             ["rows"][3]["possible_alliance_pairs"],
+                             rows[3]["possible_alliance_pairs"])
             self.assertNotIn("family_marriage_legality", formal_turn["plan"])
             self.assertEqual(driver.calls, ["legality", "projection"])
 
@@ -218,7 +241,8 @@ class FamilyConsumerTest(unittest.TestCase):
                 driver, war, {**scene(), "active_wars": [16777231]},
                 prewar_arbitration=True), war)
             driver.projection["rows"] = [
-                {**row, "predicted_outcome_if_accepted": "betrothal"}
+                {**row, "heir_is_adult": False,
+                 "predicted_outcome_if_accepted": "betrothal"}
                 for row in driver.projection["rows"]]
             no_value = plan_family_marriage_private(
                 driver, war, scene(), prewar_arbitration=True)
@@ -226,6 +250,9 @@ class FamilyConsumerTest(unittest.TestCase):
                              "query-declarable-wars")
             self.assertEqual(no_value["plan"]["family_marriage_status"],
                              "no_positive_observed_marriage_opportunity")
+            self.assertTrue(all(row["heir_is_adult"] is False for row in
+                                no_value["plan"]["family_marriage_private_diagnostic"]
+                                ["rows"]))
 
     def test_prewar_submission_keeps_pending_result_and_no_resend(self):
         with tempfile.TemporaryDirectory() as temporary:

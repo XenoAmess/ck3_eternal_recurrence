@@ -204,11 +204,11 @@ bool ConfigureMarriageNativeOutcomeClassifierV1(
   return true;
 }
 
-bool ClassifyMarriageNativeOutcomeExactV1(
+bool ClassifyMarriageNativeOutcomeDetailsExactV1(
     void *context, std::uintptr_t subject_character,
     std::uintptr_t candidate_character, const void *finalized_context,
-    MarriagePredictedOutcomeV1 &output) noexcept {
-  output = MarriagePredictedOutcomeV1::unavailable;
+    MarriageNativeOutcomeDetailsV1 &output) noexcept {
+  output = {};
   if (context == nullptr) return false;
   auto &state = *static_cast<MarriageNativeOutcomeClassifierStateV1 *>(context);
   const auto failure = Validate(state.environment);
@@ -248,14 +248,30 @@ bool ClassifyMarriageNativeOutcomeExactV1(
   const auto candidate_threshold = second.candidate_selector == 0
       ? second.adult_threshold_zero
       : second.adult_threshold_one;
-  const bool both_adult =
-      second.subject_adult_measure >= subject_threshold &&
+  output.subject_is_adult =
+      second.subject_adult_measure >= subject_threshold;
+  output.candidate_is_adult =
       second.candidate_adult_measure >= candidate_threshold;
-  output = both_adult && !second.grand_wedding
+  output.grand_wedding_option_selected = second.grand_wedding;
+  output.predicted_outcome =
+      output.subject_is_adult && output.candidate_is_adult &&
+              !output.grand_wedding_option_selected
       ? MarriagePredictedOutcomeV1::marriage
       : MarriagePredictedOutcomeV1::betrothal;
   SetFailure(state, MarriageNativeOutcomeClassifierFailureV1::none);
   return true;
+}
+
+bool ClassifyMarriageNativeOutcomeExactV1(
+    void *context, std::uintptr_t subject_character,
+    std::uintptr_t candidate_character, const void *finalized_context,
+    MarriagePredictedOutcomeV1 &output) noexcept {
+  MarriageNativeOutcomeDetailsV1 details{};
+  const bool available = ClassifyMarriageNativeOutcomeDetailsExactV1(
+      context, subject_character, candidate_character, finalized_context,
+      details);
+  output = details.predicted_outcome;
+  return available;
 }
 
 MarriageNativeOutcomeClassifierFailureV1

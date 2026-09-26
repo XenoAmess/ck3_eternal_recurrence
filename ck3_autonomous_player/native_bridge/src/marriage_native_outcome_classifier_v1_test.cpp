@@ -93,6 +93,17 @@ bridge::MarriagePredictedOutcomeV1 Classify(
   return output;
 }
 
+bridge::MarriageNativeOutcomeDetailsV1 ReadDetails(
+    Fixture &fixture,
+    bridge::MarriageNativeOutcomeClassifierStateV1 &state) {
+  bridge::MarriageNativeOutcomeDetailsV1 output{};
+  assert(bridge::ClassifyMarriageNativeOutcomeDetailsExactV1(
+      &state, reinterpret_cast<std::uintptr_t>(fixture.subject.data()),
+      reinterpret_cast<std::uintptr_t>(fixture.candidate.data()),
+      fixture.context.data(), output));
+  return output;
+}
+
 void TestExactBindingAndBinderConfiguration() {
   const auto env = bridge::BindMarriageNativeOutcomeClassifierEnvironmentV1(
       0x10000000U, true,
@@ -119,16 +130,36 @@ void TestAdultGrandWeddingAndMinorBranches() {
   Initialize(fixture, state);
   assert(Classify(fixture, state) ==
          bridge::MarriagePredictedOutcomeV1::marriage);
+  auto details = ReadDetails(fixture, state);
+  assert(details.subject_is_adult && details.candidate_is_adult &&
+         !details.grand_wedding_option_selected &&
+         details.predicted_outcome ==
+             bridge::MarriagePredictedOutcomeV1::marriage);
 
   fixture.grand_wedding = true;
   assert(Classify(fixture, state) ==
          bridge::MarriagePredictedOutcomeV1::betrothal);
+  details = ReadDetails(fixture, state);
+  assert(details.subject_is_adult && details.candidate_is_adult &&
+         details.grand_wedding_option_selected &&
+         details.predicted_outcome ==
+             bridge::MarriagePredictedOutcomeV1::betrothal);
 
   fixture.grand_wedding = false;
   Write(fixture.candidate, bridge::kMarriageCharacterAdultMeasureOffsetV1,
         std::int16_t{11});
   assert(Classify(fixture, state) ==
          bridge::MarriagePredictedOutcomeV1::betrothal);
+  details = ReadDetails(fixture, state);
+  assert(details.subject_is_adult && !details.candidate_is_adult &&
+         !details.grand_wedding_option_selected);
+
+  Write(fixture.subject, bridge::kMarriageCharacterAdultMeasureOffsetV1,
+        std::int16_t{9});
+  details = ReadDetails(fixture, state);
+  assert(!details.subject_is_adult && !details.candidate_is_adult &&
+         details.predicted_outcome ==
+             bridge::MarriagePredictedOutcomeV1::betrothal);
 }
 
 void TestIdentityAndVersionFailClosed() {

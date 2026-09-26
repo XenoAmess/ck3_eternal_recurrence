@@ -99,7 +99,10 @@ def _private_five_candidate_diagnostic(
     rows = projection["rows"]
     by_id = {row["candidate_character_id"]: row for row in legal}
     fields = ("status", "actor_character_id", "heir_character_id",
+              "recipient_character_id",
               "candidate_character_id", "predicted_outcome_if_accepted",
+              "heir_is_adult", "candidate_is_adult",
+              "grand_wedding_option_selected",
               "heir_betrothed_character_id", "heir_primary_spouse_character_id",
               "played_house_id", "played_dynasty_id", "heir_house_id",
               "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
@@ -109,13 +112,22 @@ def _private_five_candidate_diagnostic(
     for row in rows:
         source = by_id.get(row["candidate_character_id"])
         spouses = row.get("heir_spouse_character_ids")
+        pairs = row.get("possible_alliance_pairs")
         observed.append({
             **{field: row.get(field) for field in fields},
             "heir_spouse_count": len(spouses) if isinstance(spouses, list) else None,
             "recipient_ai_accept_raw": source.get("recipient_ai_accept_raw") if source else None,
+            "recipient_matchmaker_character_id": (
+                source.get("recipient_matchmaker_character_id") if source else None),
             "recipient_answer_status_raw": source.get("recipient_answer_status_raw") if source else None,
             "recipient_answer_allows_send": source.get("recipient_answer_allows_send") if source else None,
             "complete_can_send": source.get("complete_can_send") if source else None,
+            "possible_alliance_pairs": ([
+                {field: pair[field] for field in (
+                    "first_character_id", "second_character_id", "already_allied",
+                    "both_have_realm_data", "would_attempt_if_accepted")}
+                for pair in pairs
+            ] if isinstance(pairs, list) else None),
             "rejection_reasons": _candidate_rejection_reasons(source, row),
         })
     return {"schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
