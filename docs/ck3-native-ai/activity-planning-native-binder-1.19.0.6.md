@@ -112,9 +112,12 @@ evaluator/semantic operations and a private application-main invocation entry
 still precede the single-owner paused capture. No production wiring or live
 claim follows from the static glue.
 
-For the next reader, the exact missing native chain is the second-argument
-failure-display object's type, construction, text/key extraction, and release;
-the normal planner sources and lifetimes for final shown/can-start, legal
+The slot-25 second argument's string storage, text path, and native release are
+now traced in `activity-planning-failure-display-abi-1.19.0.6.md`. This static
+finding does not provide the required stable failure key or prove nonempty text
+on every false path. For the next reader, the exact missing native chain is
+the stable failure key (or an honest typed-missing contract), plus the normal
+planner sources and lifetimes for final shown/can-start, legal
 locations, selected configuration and authoritative configured cost; and the
 application-main paused invocation that supplies both callbacks. Slot 25 alone
 cannot provide the complete semantic sample. No production callback should
