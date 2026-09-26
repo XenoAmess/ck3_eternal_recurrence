@@ -9595,6 +9595,9 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kCombatPhaseEventTraceManagedFinishStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+                   && step != xar::ck3_11906::kAiReentryStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
                    && step != xar::ck3_11906::
                                   kFactionGiftPrivateQueryStepV1
@@ -16624,10 +16627,13 @@ void RunConnectedSession(
             }
           }
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
-        } else if (step ==
-                   "query-ai-terminal-reentry-dispatch-v1-16777231-16777218") {
+        } else if (step == xar::ck3_11906::kAiReentryStepV1) {
+          std::uint64_t expected_revision = 0;
           xar::game::Snapshot current_snapshot{};
-          if (!previous_snapshot.has_value() || state_revision == 0 ||
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision != state_revision ||
+              !previous_snapshot.has_value() || state_revision == 0 ||
               !xar::game::ReadSnapshot(game, current_snapshot) ||
               current_snapshot != previous_snapshot.value() ||
               !current_snapshot.paused) {

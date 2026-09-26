@@ -2,6 +2,9 @@
 
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+#include "xar_bridge/ai_terminal_reentry_dispatch_observer_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
 #include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
 #endif
@@ -43,6 +46,9 @@ constexpr std::size_t kBaseCapabilityCount = 101;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+    + 1
+#endif
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -181,6 +187,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kCombatPhaseEventTraceV1Capability,
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
     ck3_11906::kCombatPhaseEventTraceManagedCapabilityV1,
+#endif
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+    ck3_11906::kAiReentryCapabilityV1,
 #endif
     "game.command.query-war-termination-options-N",
     "game.command.query-outbound-war-white-peace-status-v1-N",

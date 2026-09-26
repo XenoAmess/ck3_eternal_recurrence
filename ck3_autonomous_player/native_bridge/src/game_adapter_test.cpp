@@ -233,6 +233,17 @@ bool Contains(std::span<const std::string_view> values,
 
 int main() {
   const auto &known = xar::game::Ck3_11906AdapterDescriptor();
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+  if (!Contains(known.capabilities,
+                "game.command.query-ai-terminal-reentry-dispatch-v1-private")) {
+    return Fail("private AI reentry capability missing from ON descriptor");
+  }
+#else
+  if (Contains(known.capabilities,
+               "game.command.query-ai-terminal-reentry-dispatch-v1-private")) {
+    return Fail("private AI reentry capability leaked into OFF descriptor");
+  }
+#endif
   if (known.adapter_id != "ck3-1.19.0.6-msvc-x64" ||
       known.game_version != "1.19.0.6" ||
       known.executable_sha256 !=

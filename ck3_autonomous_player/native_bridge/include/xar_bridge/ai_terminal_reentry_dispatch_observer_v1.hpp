@@ -6,6 +6,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <string_view>
 #include <windows.h>
 
 namespace xar::ck3_11906 {
@@ -21,6 +22,10 @@ inline constexpr std::size_t kAiReentryJumpBytesV1 = 14;
 inline constexpr std::size_t kAiReentryCapacityV1 = 64;
 inline constexpr std::int32_t kAiReentryCunitIdV1 = 16777231;
 inline constexpr std::int32_t kAiReentryCombatIdV1 = 16777218;
+inline constexpr std::string_view kAiReentryStepV1 =
+    "query-ai-terminal-reentry-dispatch-v1-16777231-16777218";
+inline constexpr std::string_view kAiReentryCapabilityV1 =
+    "game.command.query-ai-terminal-reentry-dispatch-v1-private";
 
 enum AiReentryFailureV1 : std::uint32_t {
   ai_reentry_failure_none = 0,

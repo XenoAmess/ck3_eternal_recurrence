@@ -20,7 +20,19 @@ rejects the suspended launch. The patch is process-lifetime pinned; do not
 hot-unload the DLL.
 
 The only private readback step is
-`query-ai-terminal-reentry-dispatch-v1-16777231-16777218`. It requires a
+`query-ai-terminal-reentry-dispatch-v1-16777231-16777218`. Its private
+capability marker is
+`game.command.query-ai-terminal-reentry-dispatch-v1-private`, advertised
+only by the ON build. The promo `capture_session.py` owner must also receive
+`--enable-private-ai-reentry-observer` and
+`--private-ai-reentry-dll-sha256 <exact-private-DLL-SHA256>`; the request
+channel then accepts only `{ "action": "private_ai_terminal_reentry",
+"step": <exact-step>, "expected_revision": <positive-public-revision> }`.
+This uses the already owning driver connection and never opens a second
+pipe. Direct ordinary `ck3_execute_step` remains outside the public
+`action_steps` allowlist.
+
+The readback requires a
 stable paused snapshot and returns `observer.installed`, `failure_flags`,
 matching-call counters, `overflow_count`, and every retained record in a
 fixed 64-slot array. A record includes both caller return RVAs, thread ID,

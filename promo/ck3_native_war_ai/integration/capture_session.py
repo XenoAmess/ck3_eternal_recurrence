@@ -32,6 +32,8 @@ BOOKMARK_KEYS = (
     "bookmark_rags_to_riches_petty_king_murchad",
 )
 CHECKPOINT_LOAD_NAME = "war_film_checkpoint"
+AI_REENTRY_STEP = "query-ai-terminal-reentry-dispatch-v1-16777231-16777218"
+AI_REENTRY_CAPABILITY = "game.command.query-ai-terminal-reentry-dispatch-v1-private"
 
 
 def utc() -> str:
@@ -59,6 +61,34 @@ def append(path: Path, value: object) -> None:
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise RuntimeError(message)
+
+
+def private_ai_reentry_readback(request: dict, *, driver) -> dict:
+    """Use the existing owner connection for one exact read-only paused query."""
+    require(set(request) == {"action", "step", "expected_revision"},
+            "Private AI reentry request fields differ from the fixed contract")
+    require(request["action"] == "private_ai_terminal_reentry"
+            and request["step"] == AI_REENTRY_STEP,
+            "Only the fixed AI winner reentry readback is permitted")
+    revision = request["expected_revision"]
+    require(type(revision) is int and revision > 0,
+            "Private AI reentry needs a positive public revision")
+    snapshot = driver.take_snapshot()
+    require(snapshot.get("paused") is True and snapshot.get("revision") == revision,
+            "Private AI reentry needs a stable paused snapshot at the requested revision")
+    capabilities = driver.capabilities()
+    require(AI_REENTRY_CAPABILITY in capabilities.get("bridge_capabilities", []),
+            "Private AI reentry DLL capability is not advertised")
+    result = driver._execute_primitive_step(
+        AI_REENTRY_STEP, expected_revision=revision,
+        required_capability=AI_REENTRY_CAPABILITY, timeout_seconds=90,
+    )
+    require(result.get("step") == AI_REENTRY_STEP
+            and result.get("accepted") is True
+            and result.get("schema_version") == 1
+            and isinstance(result.get("observer"), dict),
+            "Private AI reentry readback result is malformed")
+    return result
 
 
 def checkpoint_source(save: Path | None, receipt_path: Path | None) -> dict | None:
@@ -215,7 +245,8 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
 
 
 async def service_requests(directory: Path, *, call, stopped: threading.Event,
-                           seconds: float, state_reader, private_phase_call=None) -> None:
+                           seconds: float, state_reader, private_phase_call=None,
+                           private_ai_reentry_call=None) -> None:
     """Keep the one owning MCP connection available for bounded hot diagnosis.
 
     Requests are explicit local JSON files, never inferred retries of StartGame.
@@ -250,6 +281,11 @@ async def service_requests(directory: Path, *, call, stopped: threading.Event,
                     require(private_phase_call is not None,
                             "Private phase trace is not enabled for this capture")
                     row["body"] = private_phase_call(request)
+                    row["result"] = "CALL_COMPLETED"
+                elif request.get("action") == "private_ai_terminal_reentry":
+                    require(private_ai_reentry_call is not None,
+                            "Private AI reentry is not enabled for this capture")
+                    row["body"] = private_ai_reentry_call(request)
                     row["result"] = "CALL_COMPLETED"
                 else:
                     require(request.get("action") == "mcp", "Unknown request action")
@@ -306,6 +342,11 @@ def preflight(args: argparse.Namespace) -> dict:
             "experimental-combat-phase-event-trace-begin-v1",
             "experimental-combat-phase-event-trace-finish-v1",
         ]
+    if args.enable_private_ai_reentry_observer:
+        require(identity(args.bridge_dll)["sha256"] ==
+                args.private_ai_reentry_dll_sha256.upper(),
+                "Private AI reentry DLL SHA-256 mismatch")
+        required_capabilities += [AI_REENTRY_CAPABILITY, AI_REENTRY_STEP]
     strings = {key: key.encode() in binary for key in required_capabilities}
     write_new(args.output_dir / "static-capability-strings.json", strings)
     require(all(strings.values()), "Existing DLL lacks static strings: " + ", ".join(key for key, found in strings.items() if not found))
@@ -571,6 +612,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                         args.output_dir / ("recovery-requests" if failed else "interactive-requests"),
                         call=call, stopped=stopped, seconds=duration, state_reader=driver.diagnostics,
                         private_phase_call=private_phase_call if args.enable_private_phase_trace else None,
+                        private_ai_reentry_call=(lambda request: private_ai_reentry_readback(
+                            request, driver=driver)) if args.enable_private_ai_reentry_observer else None,
                     )
 
     def worker_main() -> None:
@@ -680,11 +723,24 @@ def main() -> int:
     parser.add_argument("--steam-offline-receipt", type=Path)
     parser.add_argument("--enable-private-phase-trace", action="store_true",
                         help="Allow only the research BEGIN/FINISH trace pair in explicit local requests")
+    parser.add_argument("--enable-private-ai-reentry-observer", action="store_true",
+                        help="Allow only the fixed passive AI winner dispatch readback through the owner driver")
+    parser.add_argument("--private-ai-reentry-dll-sha256",
+                        help="Expected SHA-256 of the explicit private observer DLL")
     parser.add_argument("--capture", action="store_true", help="Explicitly launch CK3 after preflight; default is no launch")
     args = parser.parse_args()
     require(30 <= args.hold_seconds <= 90, "Hold must be 30..90 seconds")
     require(30 <= args.frontend_timeout <= 600, "Frontend timeout must be 30..600 seconds")
     require(0 <= args.recovery_seconds <= 3600 and 0 <= args.interactive_seconds <= 3600, "Hot service must be 0..3600 seconds")
+    require(not args.enable_private_ai_reentry_observer or
+            (isinstance(args.private_ai_reentry_dll_sha256, str)
+             and len(args.private_ai_reentry_dll_sha256) == 64
+             and all(character in "0123456789abcdefABCDEF"
+                     for character in args.private_ai_reentry_dll_sha256)),
+            "Private AI reentry needs an explicit 64-digit DLL SHA-256")
+    require(args.enable_private_ai_reentry_observer or
+            args.private_ai_reentry_dll_sha256 is None,
+            "Private AI reentry DLL SHA-256 requires the private opt-in")
     args.output_dir.mkdir(parents=True, exist_ok=False)
     write_new(args.output_dir / "command.json", {"python": sys.executable, "argv": sys.argv, "started_at": utc()})
     try:

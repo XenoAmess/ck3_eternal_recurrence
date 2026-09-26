@@ -1,5 +1,8 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+#include "xar_bridge/ai_terminal_reentry_dispatch_observer_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
 #include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
 #endif
@@ -520,6 +523,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   if (step == ck3_11906::kCombatPhaseEventTraceManagedBeginStepV1 ||
       step == ck3_11906::kCombatPhaseEventTraceManagedFinishStepV1) {
     capability = ck3_11906::kCombatPhaseEventTraceManagedCapabilityV1;
+  }
+#endif
+#if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
+  if (step == ck3_11906::kAiReentryStepV1) {
+    capability = ck3_11906::kAiReentryCapabilityV1;
   }
 #endif
   if (capability.empty()) {
