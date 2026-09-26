@@ -52,6 +52,14 @@ struct ArrangeMarriageFamilyCandidateV1 {
   std::uint8_t recipient_answer_status_raw = 0;
   bool complete_can_send = false;
   bool recipient_answer_allows_send = false;
+  // Exact private value inputs from the already-enumerated native Character
+  // pair. Null means this build did not bind the lineage/age observer.
+  std::optional<std::int16_t> heir_adult_measure_raw;
+  std::optional<std::int16_t> candidate_adult_measure_raw;
+  std::optional<std::int32_t> played_dynasty_id;
+  std::optional<std::int32_t> heir_dynasty_id;
+  std::optional<std::int32_t> candidate_dynasty_id;
+  std::optional<bool> realm_backed_actor_recipient;
 
   friend bool operator==(const ArrangeMarriageFamilyCandidateV1 &,
                          const ArrangeMarriageFamilyCandidateV1 &) = default;

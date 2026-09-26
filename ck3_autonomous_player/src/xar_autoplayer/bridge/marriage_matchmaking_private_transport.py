@@ -181,6 +181,7 @@ def _query_observed_heir_marriage_transport_v1(
         raise BridgeUnavailableError("observed-heir marriage rows absent")
     seen: set[int] = set()
     legal_rows: list[dict[str, object]] = []
+    shared_value_inputs: tuple[object, object, object] | None = None
     for row in rows:
         if not isinstance(row, dict):
             raise BridgeUnavailableError("observed-heir marriage row malformed")
@@ -200,11 +201,33 @@ def _query_observed_heir_marriage_transport_v1(
             or type(row.get("recipient_answer_status_raw")) is not int
             or not 0 <= row["recipient_answer_status_raw"] <= 255
             or type(row.get("recipient_answer_allows_send")) is not bool
+            or any(key not in row for key in (
+                "heir_adult_measure_raw", "candidate_adult_measure_raw",
+                "played_dynasty_id", "heir_dynasty_id",
+                "candidate_dynasty_id", "realm_backed_actor_recipient"))
         ):
             raise BridgeUnavailableError(
                 "observed-heir marriage row lost native identity or legality"
             )
         answer_status = row["recipient_answer_status_raw"]
+        for key in ("heir_adult_measure_raw", "candidate_adult_measure_raw"):
+            value = row[key]
+            if value is not None and (type(value) is not int
+                                      or not -2**15 <= value < 2**15):
+                raise BridgeUnavailableError("marriage age ranking input malformed")
+        for key in ("played_dynasty_id", "heir_dynasty_id",
+                    "candidate_dynasty_id"):
+            value = row[key]
+            if value is not None and (type(value) is not int or value < -1):
+                raise BridgeUnavailableError("marriage dynasty ranking input malformed")
+        if (row["realm_backed_actor_recipient"] is not None
+                and type(row["realm_backed_actor_recipient"]) is not bool):
+            raise BridgeUnavailableError("marriage realm ranking input malformed")
+        value_inputs = (row["heir_adult_measure_raw"],
+                        row["played_dynasty_id"], row["heir_dynasty_id"])
+        if shared_value_inputs is not None and value_inputs != shared_value_inputs:
+            raise BridgeUnavailableError("marriage heir ranking input changed between rows")
+        shared_value_inputs = value_inputs
         if (
             answer_status not in {0, 1, 2}
             or row["recipient_answer_allows_send"] is not

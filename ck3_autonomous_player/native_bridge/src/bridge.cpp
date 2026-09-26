@@ -7841,6 +7841,24 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
       result += Number(static_cast<unsigned>(row.recipient_answer_status_raw));
       result += ",\"recipient_answer_allows_send\":";
       result += row.recipient_answer_allows_send ? "true" : "false";
+      result += ",\"heir_adult_measure_raw\":";
+      result += row.heir_adult_measure_raw.has_value()
+          ? SignedNumber(*row.heir_adult_measure_raw) : "null";
+      result += ",\"candidate_adult_measure_raw\":";
+      result += row.candidate_adult_measure_raw.has_value()
+          ? SignedNumber(*row.candidate_adult_measure_raw) : "null";
+      result += ",\"played_dynasty_id\":";
+      result += row.played_dynasty_id.has_value()
+          ? SignedNumber(*row.played_dynasty_id) : "null";
+      result += ",\"heir_dynasty_id\":";
+      result += row.heir_dynasty_id.has_value()
+          ? SignedNumber(*row.heir_dynasty_id) : "null";
+      result += ",\"candidate_dynasty_id\":";
+      result += row.candidate_dynasty_id.has_value()
+          ? SignedNumber(*row.candidate_dynasty_id) : "null";
+      result += ",\"realm_backed_actor_recipient\":";
+      result += row.realm_backed_actor_recipient.has_value()
+          ? (*row.realm_backed_actor_recipient ? "true" : "false") : "null";
       result += '}';
     }
   }

@@ -16699,6 +16699,11 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
   return ReadArrangeMarriageChoicesResult::available;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+bool ReadMarriageCharacterLineageV1(
+    const void *character, MarriageCharacterLineageV1 &output) noexcept;
+#endif
+
 ReadArrangeMarriageFamilyCandidatesResultV1
 ReadArrangeMarriageFamilyCandidatesV1(
     const Bindings &bindings, std::int32_t subject_character_id,
@@ -16730,6 +16735,17 @@ ReadArrangeMarriageFamilyCandidatesV1(
           bindings, bindings.arrange_marriage_interaction_offset) == nullptr) {
     return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
   }
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  MarriageCharacterLineageV1 played_lineage{};
+  MarriageCharacterLineageV1 subject_lineage{};
+  const bool shared_lineage_available =
+      ReadMarriageCharacterLineageV1(played, played_lineage) &&
+      ReadMarriageCharacterLineageV1(subject, subject_lineage);
+  const auto heir_adult_measure = LoadAt<std::int16_t>(
+      subject, bridge::kMarriageCharacterAdultMeasureOffsetV1);
+  const bool played_has_realm_data = LoadAt<void *>(
+      played, bridge::kMarriageCandidateRealmDataOffsetV1) != nullptr;
+#endif
   void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
   const auto capacity =
       LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
@@ -16778,10 +16794,12 @@ ReadArrangeMarriageFamilyCandidatesV1(
     // Redirect is native, but only a proposal whose final actor remains the
     // played ruler and whose actual couple remains the observed heir/candidate
     // can count as a player-controlled family opportunity.
+    void *const recipient = ResolveCharacter(
+        bindings, sample.recipient_character_id);
     if (sample.actor_character_id != current.played_character_id ||
         sample.secondary_actor_character_id != subject_character_id ||
         sample.secondary_recipient_character_id != candidate_id ||
-        ResolveCharacter(bindings, sample.recipient_character_id) == nullptr ||
+        recipient == nullptr ||
         (sample.intermediary_character_id != -1 &&
          ResolveCharacter(bindings, sample.intermediary_character_id) ==
              nullptr)) {
@@ -16830,6 +16848,23 @@ ReadArrangeMarriageFamilyCandidatesV1(
                           answer,
                           true,
                           answer != 2});
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    auto &value = candidates.back();
+    value.heir_adult_measure_raw = heir_adult_measure;
+    value.candidate_adult_measure_raw = LoadAt<std::int16_t>(
+        candidate, bridge::kMarriageCharacterAdultMeasureOffsetV1);
+    value.realm_backed_actor_recipient = played_has_realm_data &&
+        LoadAt<void *>(recipient,
+            bridge::kMarriageCandidateRealmDataOffsetV1) != nullptr;
+    if (shared_lineage_available) {
+      value.played_dynasty_id = played_lineage.dynasty_id;
+      value.heir_dynasty_id = subject_lineage.dynasty_id;
+    }
+    MarriageCharacterLineageV1 candidate_lineage{};
+    if (ReadMarriageCharacterLineageV1(candidate, candidate_lineage)) {
+      value.candidate_dynasty_id = candidate_lineage.dynasty_id;
+    }
+#endif
   }
   output = std::move(candidates);
   return ReadArrangeMarriageFamilyCandidatesResultV1::available;

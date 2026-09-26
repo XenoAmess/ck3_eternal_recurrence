@@ -192,6 +192,12 @@ class PrivateObservedHeirMarriageTransportTests(unittest.TestCase):
                 "recipient_ai_accept_raw": 250000,
                 "recipient_answer_status_raw": 0 if answer else 2,
                 "recipient_answer_allows_send": answer,
+                "heir_adult_measure_raw": 6,
+                "candidate_adult_measure_raw": 6,
+                "played_dynasty_id": 174,
+                "heir_dynasty_id": 174,
+                "candidate_dynasty_id": 2352,
+                "realm_backed_actor_recipient": True,
             }],
             "arrange_marriage_diagnostics": {
                 "storage_capacity": 8, "slots_scanned": 8,
