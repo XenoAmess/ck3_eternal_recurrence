@@ -233,6 +233,20 @@ _RAIKTOR_INBOUND_WHITE_PEACE_POLICY = {
     ),
 }
 _DEGRADED_ORDINARY_INTERACTION_ALLOWLIST = {
+    "demand_hostage_interaction": {
+        "classification": "ordinary_non_war_nonreligious",
+        "domain": "hostage_demand",
+        "war_sensitive": True,
+        "source": "common/character_interactions/05_bp2_interactions.txt",
+        "source_sha256": (
+            "78526C7BBC520B4F8D8713DC80BF8C089655A3000B661FC104FA1AF139AD7E94"
+        ),
+        "known_decline_effects": [
+            "secondary_recipient:remove_under_offer_as_hostage_flag",
+            "actor:char_interaction.0301",
+            "conditional_actor_tyranny_and_opinion_if_player_vassal",
+        ],
+    },
     "spar_with_knight_interaction": {
         "classification": "ordinary_non_war_nonreligious",
         "source": (
