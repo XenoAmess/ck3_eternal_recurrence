@@ -14,8 +14,13 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.m5_formal_proposal_collector import (
     SOURCE_SCHEMA,
     collect_m5_formal_proposals,
+    plan_m5_formal_query_only,
 )
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
+from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
+    COLD_RECOVERY_STEP as FACTION_GIFT_COLD_RECOVERY_STEP,
+    SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
+)
 
 
 _FRAME = {
@@ -176,6 +181,100 @@ class _ServiceDriver:
 
 
 class M5FormalProposalCollectorTests(unittest.TestCase):
+    def test_selected_gift_reaches_existing_formal_consumer(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        candidate = _diplomacy_source()["candidate"]
+        driver = _ServiceDriver(
+            enabled=True,
+            sources=_sources(domains={"diplomacy": {"candidate": candidate}}),
+            snapshot=peace,
+        )
+        driver.allow_private_faction_gift_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        def gift_consumer(driver, planned, snapshot, history, available_steps):
+            return {**planned, "plan": {
+                **planned["plan"],
+                "phase": "faction_gift_typed_submit",
+                "selected_step": FACTION_GIFT_SUBMIT_STEP,
+                "faction_gift_action": deepcopy(candidate),
+                "faction_gift_private_candidate_v1": deepcopy(candidate),
+            }}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector.plan_faction_gift_private_v1",
+            side_effect=gift_consumer,
+        ) as gift):
+            planned = GameplayBridgeService(driver).plan_turn()
+        gift.assert_called_once()
+        self.assertEqual(planned["plan"]["selected_step"], FACTION_GIFT_SUBMIT_STEP)
+        self.assertTrue(planned["plan"]["m5_joint_formal_action_ready"])
+        self.assertEqual(driver.source_reads, 1)
+
+    def test_gift_without_formal_opt_in_does_not_block_normal_advance(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(
+            enabled=True,
+            sources=_sources(domains={"diplomacy": _diplomacy_source()}),
+            snapshot=peace,
+        )
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+        self.assertEqual(planned["plan"]["m5_joint_query_only"]["collected_domains"],
+                         ["diplomacy"])
+        self.assertEqual(planned["plan"]["m5_joint_status"],
+                         "selected_gift_formal_consumer_disabled")
+        self.assertEqual(driver.source_reads, 1)
+
+    def test_pending_gift_uses_existing_cold_recovery_before_m5_source(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(enabled=True, snapshot=peace)
+        driver.state_dir = Path("Z:/jt54-tmp")
+        driver.allow_private_faction_gift_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        def gift_recovery(driver, planned, snapshot, history, available_steps):
+            return {**planned, "plan": {
+                **planned["plan"], "phase": "faction_gift_pending_verification",
+                "selected_step": FACTION_GIFT_COLD_RECOVERY_STEP,
+            }}
+
+        with (mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector.read_construction_ledger",
+            return_value={"pending": None, "applied": None},
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector.read_faction_gift_ledger_v1",
+            return_value={"pending": {"request_id": "gift-already-sent"}},
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector.plan_faction_gift_private_v1",
+            side_effect=gift_recovery,
+        ) as gift):
+            planned = plan_m5_formal_query_only(
+                driver, {"revision": _FRAME["revision"], "plan": baseline},
+                snapshot=peace, history=[], available_steps=set(),
+            )
+        gift.assert_called_once()
+        self.assertEqual(planned["plan"]["selected_step"],
+                         FACTION_GIFT_COLD_RECOVERY_STEP)
+        self.assertEqual(driver.source_reads, 0)
+
     def test_live_empty_peace_source_keeps_family_and_normal_advance(self) -> None:
         peace = _snapshot()
         peace["active_wars"] = []
