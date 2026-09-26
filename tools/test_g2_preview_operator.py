@@ -17,6 +17,45 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_family_pending_sidecar_pairs_saved_proposal_and_rejects_other_pair(self) -> None:
+        manifest = {"episode_character_id": 29829,
+                    "episode_run_id": "native-29829-test"}
+        driver = {**manifest, "last_checkpoint": {
+            "episode_character_id": 29829,
+            "episode_run_id": "native-29829-test",
+            "date_raw": 53154528, "sha256": "a" * 64,
+            "history_index": 111,
+        }}
+        sidecar = {"schema": g2_preview_operator.FAMILY_PENDING_V1_SCHEMA,
+                   "resolved": None, "pending": {
+            "schema": g2_preview_operator.FAMILY_ACTION_V1_SCHEMA,
+            "status": "receipt_pending", "submission_state": "receipt_pending",
+            "material_result": False, "accepted": True,
+            "played_character_id": 29829, "heir_character_id": 38822,
+            "candidate_character_id": 38710,
+            "episode_run_id": "native-29829-test",
+            "source_date_raw": 53154528, "source_bridge_pid": 146776,
+        }}
+        report = {"session": {"pid": 146776}, "checkpoints": [{
+            "phase": "first_heir_marriage_submitted_pending",
+            "sha256": "a" * 64, "history_index": 111,
+            "date_raw": 53154528,
+            "pending_action": {"heir_character_id": 38822,
+                               "candidate_character_id": 38710,
+                               "episode_run_id": "native-29829-test"},
+        }], "auto_run": {"turns": [{
+            "selected_step": g2_preview_operator.FAMILY_SUBMIT_STEP,
+            "result": {"status": "receipt_pending"},
+            "plan": {"family_marriage_choice": {
+                "candidate_character_id": 38710}},
+        }]}}
+        self.assertEqual(g2_preview_operator.family_pending_sidecar_pair(
+            sidecar, driver, manifest, "a" * 64, report), 38710)
+        report["checkpoints"][0]["pending_action"]["candidate_character_id"] = 38711
+        with self.assertRaisesRegex(ValueError, "not proven"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "a" * 64, report)
+
     def test_eligibility_active_context_contract_is_exact_and_additive(self) -> None:
         self.assertEqual(
             g2_preview_eligibility._active_context_contract({}),
