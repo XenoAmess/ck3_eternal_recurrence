@@ -135,6 +135,22 @@ def plan_construction_private(
                 "construction_pending_action": dict(applied),
                 "reason": "cold restore may load an earlier checkpoint; verify construction before using ledger"}}
         plan = {**plan, "construction_receipt_consumed": dict(applied)}
+        if (applied.get("completion_status") == "completed"
+                and applied.get("observed_player_monthly_gold_income_raw") is None):
+            income_observed, actual_income = same_frame_construction_income(
+                snapshot, history)
+            if actual_income is None:
+                if not income_observed and ROOT_QUERY_STEP in available_steps:
+                    return {**planned, "plan": {**plan,
+                        "phase": "construction_completed_income_query",
+                        "selected_step": ROOT_QUERY_STEP,
+                        "reason": "read actual player income after independently verified completion"}}
+            else:
+                return {**planned, "plan": {**plan,
+                    "phase": "construction_completed_income_receipt",
+                    "selected_step": RECEIPT_STEP,
+                    "construction_pending_action": dict(applied),
+                    "reason": "bind same-frame actual income to completed native building"}}
         last_completion_check = applied.get(
             "completion_last_check_date_raw", applied.get("post_date_raw"))
         if (applied.get("completion_status") != "completed"

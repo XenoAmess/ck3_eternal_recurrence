@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 直辖领地建设与升级原生 AI 树
 
+## 2026-09-26 NW-ECON-C15：已建读回后的实际收入补消费（源码/fixture）
+
+Robert c12 h148 的 `hill_farms_01` 仍为 `applied/in_progress`，当前无实机完工或收益证据。现有正式消费者按月至少检查一次完工；新 PID 的冷恢复会先以已建槽位核对旧账本。如果该冷读首次看到 `completed`，但同帧尚无 `campaign_root_context.player_monthly_gold_income`，旧实现把完工收据写为 `completed` 且收入为 `null`，以后只要完工状态保持 `completed`，就不再触发收入查询。生产路径的构造原生材料测试在修复前确定性复现了下一 turn 直接选择 `life-advance`。
+
+现在已验证完工而实际收入缺失时，正式消费者先查询同帧 public root，再走原有私有 receipt 入口将实际玩家月收入及可计算的总收入差值绑定到该完工收据。已完工槽位在同日期的这一次收入补读不受施工中的 30 日 watch 间隔限制；冷 PID 重查若暂时没有 root，则保留此前已经读到的收入及其观测日期，不把有效值重新写成 `null`。收入差值仍是玩家总收入的前后差，不能单独归因于该建筑；原生完工槽位、玩家收入和最终建筑效果分别记证据。聚焦测试 normal 32/32；尚未新起 CK3，修复只属源码/fixture，下一有界实机应从 h148 正式配对继续观察施工，并仅在真正完工时记录收入。
+
 ## 状态与范围
 
 - **NW-ECON-C6-APPLIED（2026-09-26，正式冷恢复漏掉完工 watch；源码修复待新 PID 复验）**：Robert c5 的 `state/construction-formal-pending-v1.json`（SHA-256 `A21E5D735831EB6477C079D4B0E24D091C48D3998F45E6CEBBF6B24CC8514F17`）保存了 `pending=null`、已验证 `applied/in_progress` 的 `hill_farms_01` 开工收据和最后检查日期；完工日期与实际收入增量仍为 `null`。c5 h106 及 c6 h125 的 driver 都保留同一请求的正式提交 history index 95、物质收据 history index 103，均早于各自 checkpoint index 106/125。c5 `recovery-pair-h106` 仅含 save/driver，旧 `prepare-state` 只从 sample_dir 寻找 sidecar 且只接受 pending；c6 配对回执因此没有建设 sidecar，新 state 也没有，随后 10 个正式 turn 没有 `construction_receipt_consumed` 或完工 watch。修复后可向官方 `prepare-state` 明确提供 `--construction-sidecar <c5/state/construction-formal-pending-v1.json>`：验证同一 actor、episode、请求、已验证 receipt 与提交 tuple 都属于 checkpoint 前历史，再原样复制、核 SHA 并在 no-launch 回执记录 `ledger_status=applied`。若保存的 driver 已有 `applied/in_progress` 而来源目录无 sidecar 且未显式指定，准备阶段报缺失，避免静默失去 watch；原 pending 配对仍可用。复制本身只恢复策略收据，下一新 PID 正式 paused 帧仍须走现有 `construction_cold_applied_requery` 的原生状态读回，不重复付款；只有后来确实读到已建槽位和收入变化才能记完工/实际收益。c6 h125 尚未由此源码修复后的匹配候选实机复验，不能将本项称为完工或收益 live。
