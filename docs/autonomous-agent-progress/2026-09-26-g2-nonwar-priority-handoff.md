@@ -84,10 +84,14 @@ M7 的跨身份/政府目标延续与第二独立种子仍保留合同要求。M
 | ID / 负责人 | `G2-NONWAR-HANDOFF-20260926` / 当前协调者 `/root`，仅文档写入者 |
 | 隔离原因 / 基线 | 根工作区为历史脏现场；从 `1b57b3301b87231b2b71eeae9edc44e20ee01a33` 建立隔离源码工作区，不覆盖根目录 |
 | 分支 / 工作区 | `wip/nonwar-priorities-handoff-20260926`；`Z:\ck3_mod_rewrite\.task-tmp\G2-NONWAR-HANDOFF-20260926\work` |
-| 写入边界 | 本交接、进度导航、09-26 本包计划/日报、W39 增量；不改里程碑定义、状态分母、游戏代码或冻结制品 |
+| 写入边界 | 本交接、进度导航、09-26 本包计划/日报、W39 增量；交付中实际遇到 Windows CI checkout 长路径失败，附最小 Git 作业环境修复。不改里程碑定义、状态分母、游戏代码或冻结制品 |
 | worker / 实机 | 本包实际一个文档执行者；本轮未新增子 worker。其他团队容量与在途工作未知；本包不占 CK3，不分配运行编号 |
 | 非 C 盘 | 本包源码、TEMP/TMP、缓存均在 Z 盘；已检查目录可写及空间。任务总线已有本机映射 `Z:\.codex-task-bus`，不机械使用失效的 D 盘安装路径 |
 | 验收 / 期限 | 文档链接、引用与 diff 检查后立即 commit/push；按保护检查线性集成。exact master 官方 CI GREEN 后清理本包远端/本地分支与临时源码 worktree；实际 SHA、CI 与清理结果写最终交付回执，不预填 DONE |
 | 资产保留 | PRV008 ZIP/说明/配对、Robert 与战争原始/派生配对、M4 制品、不可变证据均原地保留，由对应运行负责人维护；本包没有新运行资产 |
 
 下一次汇报分别说明：PRV008 可获取性与边界；上游战争交付/运行阻点；本包新增证据属于源码、no-launch、只读、动作或持续运行哪一层；G2 计数、Robert 持久日期、阶段门与种子各自数值。未知项保持未知，不提供未经实测的新交付日期。
+
+### 交付中发现的 CI 环境阻塞
+
+首份文档提交 `db3927d6cb4e6ce34722be5a440520151147770c` 已推送至 PR #244；官方 push CI `36221771531` 与 PR CI `36221787656` 在 checkout 阶段 RED。日志明确为既有 `promo/ck3_native_war_ai/.../artifacts/project-config/sha256/...json` 的 `Filename too long`，尚未进入测试。交付附带的最小修复是在 `static` job 使用进程环境 `GIT_CONFIG_COUNT/KEY_0/VALUE_0` 设置 `core.longpaths=true`，不改全机配置或移动制品。原失败保留，修复后的官方结果见最终交付回执；此环境修复不增加任何游戏能力证据。
