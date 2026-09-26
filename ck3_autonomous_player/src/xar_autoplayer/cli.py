@@ -384,6 +384,15 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-epidemic-recovery-near-pair",
+        action="store_true",
+        help=(
+            "on a natural exact epidemic_events.0110.c, capture recovered "
+            "county IDs before selection and read same-day county modifiers "
+            "and legitimacy afterward in one bounded private run"
+        ),
+    )
+    native_auto_run_parser.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
         action="store_true",
         help=(
@@ -856,6 +865,11 @@ def main(argv: list[str] | None = None) -> int:
                     private_lifestyle_options[
                         "require_initial_lifestyle_focus_before_date_advance"
                     ] = True
+                private_epidemic_options = (
+                    {"allow_private_epidemic_recovery_near_pair": True}
+                    if args.allow_private_epidemic_recovery_near_pair
+                    else {}
+                )
                 succession_options = (
                     {
                         "succession_lifecycle": args.succession_lifecycle,
@@ -887,6 +901,7 @@ def main(argv: list[str] | None = None) -> int:
                     **private_construction_options,
                     **private_m5_options,
                     **private_lifestyle_options,
+                    **private_epidemic_options,
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )
