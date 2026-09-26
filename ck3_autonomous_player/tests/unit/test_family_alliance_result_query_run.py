@@ -145,6 +145,7 @@ class FrozenPairTest(unittest.TestCase):
                     return dict(frame)
 
             def managed_session(*args, stop_event: threading.Event, **kwargs):
+                self.assertEqual(kwargs["prepared_xar_enabled"], "xar_off")
                 self.assertTrue(stop_event.wait(2))
                 return {"ok": True}
 
@@ -153,7 +154,9 @@ class FrozenPairTest(unittest.TestCase):
                       "validate_native_bridge_launch_config", return_value=config),
                   mock.patch.object(subject,
                       "validate_cold_start_checkpoint_for_pipe",
-                      return_value={"sha256": subject._sha256(save)}),
+                      return_value={"sha256": subject._sha256(save),
+                                    "succession_lifecycle": {
+                                        "xar_enabled": "xar_off"}}),
                   mock.patch.object(subject, "bind_frozen_family_proposal",
                       return_value={"resolved": {"status": "betrothal"},
                                     "proposal_report": str(root / "c10.json"),
