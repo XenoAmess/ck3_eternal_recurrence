@@ -2192,19 +2192,19 @@ bool ReadNativeIntArray(
   return true;
 }
 
-bool ReadPlayedCharacterRelationships(
-    const Bindings &bindings, const void *played_character,
+bool ReadCharacterRelationships(
+    const Bindings &bindings, const void *character,
     std::int32_t &betrothed_character_id,
     std::int32_t &primary_spouse_character_id,
     std::vector<std::int32_t> &spouse_character_ids) noexcept {
   betrothed_character_id = -1;
   primary_spouse_character_id = -1;
   spouse_character_ids.clear();
-  if (played_character == nullptr) {
+  if (character == nullptr) {
     return true;
   }
   const void *const family_data =
-      LoadAt<const void *>(played_character, kCharacterFamilyDataOffset);
+      LoadAt<const void *>(character, kCharacterFamilyDataOffset);
   if (family_data == nullptr) {
     return true;
   }
@@ -10403,7 +10403,7 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
         kFixedPointScale};
   }
   if (output.has_played_character &&
-      !ReadPlayedCharacterRelationships(
+      !ReadCharacterRelationships(
           bindings, played_character,
           output.played_character_betrothed_id,
           output.played_character_primary_spouse_id,
@@ -16846,6 +16846,13 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.failure = Failure::identity_changed;
     return result;
   }
+  if (!ReadCharacterRelationships(
+          bindings, heir, result.heir_relationship.betrothed_character_id,
+          result.heir_relationship.primary_spouse_character_id,
+          result.heir_relationship.spouse_character_ids)) {
+    result.failure = Failure::heir_relationship_unavailable;
+    return result;
+  }
   CharacterInteractionContextStorage storage{};
   ArrangeMarriageValidationSample roles{};
   if (!PrepareArrangeMarriageContext(
@@ -16921,13 +16928,20 @@ ReadMarriageCandidateAlliancePrivateV1(
     return result;
   }
   Snapshot after{};
+  MarriageHeirRelationshipV1 after_relationship{};
   if (!ReadSnapshot(bindings, after) || after != before ||
       ResolveCharacter(bindings, observed.subject_character_id) != heir ||
       ResolveCharacter(bindings, observed.candidate_character_id) != candidate ||
       ResolveCharacter(bindings, observed.recipient_matchmaker_character_id) !=
-          recipient) {
+          recipient ||
+      !ReadCharacterRelationships(
+          bindings, heir, after_relationship.betrothed_character_id,
+          after_relationship.primary_spouse_character_id,
+          after_relationship.spouse_character_ids) ||
+      after_relationship != result.heir_relationship) {
     result.failure = Failure::frame_changed;
     result.projection = {};
+    result.heir_relationship = {};
     return result;
   }
   result.failure = Failure::none;

@@ -51,6 +51,9 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
             "outcome_failure": "none",
             "predicted_outcome_if_accepted":
                 None if unavailable else "marriage",
+            "heir_betrothed_character_id": None,
+            "heir_primary_spouse_character_id": None,
+            "heir_spouse_character_ids": None if unavailable else [],
             "matrilineal_option_selected": None if unavailable else False,
             "possible_alliance_pairs": [] if unavailable else [{
                 "first_character_id": 29829,
@@ -110,6 +113,7 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(len(result["rows"]), 5)
         self.assertEqual(result["rows"][0]["predicted_outcome_if_accepted"],
                          "marriage")
+        self.assertEqual(result["rows"][0]["heir_spouse_character_ids"], [])
 
     def test_one_unavailable_pair_does_not_become_false_or_success(self) -> None:
         result = query_first_heir_candidate_alliance_projection_private_v1(
@@ -118,7 +122,39 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(result["status"], "unavailable")
         self.assertIsNone(result["rows"][2]["matrilineal_option_selected"])
         self.assertIsNone(result["rows"][2]["predicted_outcome_if_accepted"])
+        self.assertIsNone(result["rows"][2]["heir_spouse_character_ids"])
         self.assertEqual(result["rows"][2]["possible_alliance_pairs"], [])
+
+    def test_same_heir_relationship_is_read_across_five_candidates(self) -> None:
+        reply = _reply()
+        for row in reply["result"]["rows"]:
+            row["heir_primary_spouse_character_id"] = 456
+            row["heir_spouse_character_ids"] = [456]
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertEqual(result["rows"][4]["heir_spouse_character_ids"], [456])
+        reply["result"]["rows"][4]["heir_spouse_character_ids"] = []
+        with self.assertRaisesRegex(BridgeUnavailableError, "relationship malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply["result"]["rows"][4]["heir_primary_spouse_character_id"] = None
+        with self.assertRaisesRegex(BridgeUnavailableError, "changed between candidates"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+
+    def test_unavailable_heir_relationship_stays_unknown(self) -> None:
+        reply = _reply(unavailable_index=2)
+        row = reply["result"]["rows"][2]
+        row["failure"] = "heir_relationship_unavailable"
+        row["projection_failure"] = "none"
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [_frame(), _frame()]),
+            legality=_legality(), candidate_character_ids=IDS)
+        self.assertIsNone(result["rows"][2]["heir_spouse_character_ids"])
+        self.assertEqual(result["status"], "unavailable")
 
     def test_outcome_failure_does_not_become_a_marriage(self) -> None:
         reply = _reply(unavailable_index=2)

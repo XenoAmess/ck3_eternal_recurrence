@@ -660,6 +660,23 @@ py docs/ck3-native-ai/research/verify-marriage-matchmaking.py --game-root "D:\Ga
 - [static-confirmed] `_character_interactions.info:576-587` 是比界面命名更强的作者合同：marriage special 既供 UI 使用，
   也供 AI 选择用哪项 interaction；actual pair 是 secondary participants；special 自动结婚/订婚并处理联盟与 prestige。
 
+### 首继承人当前关系的观测入口（2026-09-26，待实机）
+
+既有玩家 snapshot 从 `CCharacter+0x1A0` 的 family data 读取 `+0x10` 订婚 CharacterID、`+0x14` 首配偶 CharacterID、`+0x20` 配偶 ID 数组。`NW-FAMILY-VALUE` 复用相同 exact-build reader，对已由 public campaign-root 指明、并在五角色婚配 context 重验的**首继承人 Character**读取这三项；五个候选行逐次核对相同值，查询前后仍须是同一 paused frame。这是当前关系只读口，不是正收益评分，也不修改原版 AI 的婚配决策树。已知继承人有配偶或订婚可以改变我方后续机会评估；三项都无值也不能推出候选遗传、宗族延续或联盟价值。
+
+```mermaid
+flowchart LR
+  A["public primary first heir ID"] --> B["same-frame native heir Character"]
+  B --> C["family data: betrothed / primary spouse / spouse IDs"]
+  B --> D["final-legal five-role marriage context"]
+  D --> E["predicted marriage/betrothal + lineality + possible alliances"]
+  C --> F["private candidate readback"]
+  E --> F
+  F -. "dynasty value, alliance obligation and live material result still unknown" .-> G["formal family proposal"]
+  classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+  class G unknown;
+```
+
 ### exact native 候选发现与评分链
 
 `AIWatchWindow.CalculateSpouseCandidates` 字符串 RVA 为 `0x4114F10`，注册点 `0x136DAD` 绑定 wrapper
