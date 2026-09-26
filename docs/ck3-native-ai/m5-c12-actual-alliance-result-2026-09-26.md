@@ -34,3 +34,5 @@ py tools/g2_preview_operator.py query-first-heir-marriage-alliance-result-v1 --m
 ```
 
 The manifest must pin the new source commit, DLL and prepared h148 save/driver. The ownership round must come from the persistent allocator, never from the example placeholder. Source tests and no-launch checks do not establish C12's actual alliance result; only the operator's paused native `query_envelope` can do that.
+
+The persistent allocator formats its canonical suffix as `R{sequence:04d}` (for example `R0227`). The first private query parser accepted only unpadded numbers, so it would reject that actual allocated ID before launch. The operator and managed query now accept the exact nonzero padded suffix and reject alternate spellings such as `R227` for the same allocation. This is a no-launch integration fix; it does not add alliance outcome evidence.

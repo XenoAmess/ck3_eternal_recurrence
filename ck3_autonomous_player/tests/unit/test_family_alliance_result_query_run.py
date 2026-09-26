@@ -85,7 +85,7 @@ class FrozenPairTest(unittest.TestCase):
             "--bridge-mode", "native-headless", "--bridge-pipe", "fixture",
             "--bridge-dll", "Z:/fixture.dll", "--bridge-injector", "Z:/fixture.exe",
             "native-query-first-heir-marriage-alliance-result-v1",
-            "--cold-start-checkpoint", "--ownership-round-id", "R999",
+            "--cold-start-checkpoint", "--ownership-round-id", "R0999",
             "--proposal-report", "Z:/proposal.json",
             "--proposal-report-sha256", "a" * 64,
             "--recipient-character-id", "32266",
@@ -172,7 +172,7 @@ class FrozenPairTest(unittest.TestCase):
                                     return_value={"ok": True})):
                 report = subject.query_first_heir_marriage_alliance_once(
                     spec, timeout_seconds=30, readiness_timeout_seconds=10,
-                    ownership_round_id="R999", cold_start_checkpoint=True,
+                    ownership_round_id="R0999", cold_start_checkpoint=True,
                     proposal_report=root / "c10.json",
                     proposal_report_sha256="a" * 64,
                     recipient_character_id=32266, native_bridge=config,

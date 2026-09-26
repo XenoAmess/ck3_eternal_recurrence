@@ -1757,6 +1757,15 @@ class G2PreviewOperatorTest(unittest.TestCase):
 
 
 class FamilyAllianceResultOperatorTest(unittest.TestCase):
+    def test_round_id_matches_persistent_allocator_suffix(self) -> None:
+        self.assertEqual(
+            g2_preview_operator.private_family_alliance_round_id("R0227"),
+            "R0227",
+        )
+        for invalid in ("R227", "R0000", "R00227"):
+            with self.assertRaises(argparse.ArgumentTypeError):
+                g2_preview_operator.private_family_alliance_round_id(invalid)
+
     def test_prepare_state_accepts_paired_resolved_family_without_rewriting_source(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1871,7 +1880,7 @@ class FamilyAllianceResultOperatorTest(unittest.TestCase):
             args = argparse.Namespace(
                 manifest=root / "manifest.json", output=root / "attempt",
                 proposal_report=proposal, proposal_report_sha256=digest,
-                recipient_character_id=32266, ownership_round_id="R999",
+                recipient_character_id=32266, ownership_round_id="R0999",
                 timeout=None, readiness_timeout=None)
             commands = []
 
@@ -1888,7 +1897,7 @@ class FamilyAllianceResultOperatorTest(unittest.TestCase):
                 self.assertIn("--cold-start-checkpoint", command)
                 self.assertNotIn("native-auto-run", command)
                 stdout_path.write_text(json.dumps({
-                    "ok": True, "round": "R999",
+                    "ok": True, "round": "R0999",
                     "query_envelope": {"alliance_status": "not_allied"},
                     "before": {"frame": {"date_raw": 53155728}},
                     "after": {"frame": {"date_raw": 53155728}},
