@@ -1,0 +1,189 @@
+{
+  "step": "query-war-termination-options-16777231",
+  "accepted": true,
+  "status": "available",
+  "query_sequence": 1,
+  "war_termination_options": {
+    "war_id": 16777231,
+    "player_side": "defender",
+    "player_is_primary_war_leader": true,
+    "player_relative_war_score": -15,
+    "war_duration_days": 1045,
+    "active_casus_belli_present": true,
+    "active_casus_belli_identity": {
+      "database_index": 17,
+      "canonical_key": "individual_county_de_jure_cb"
+    },
+    "cb_allows_white_peace": true,
+    "absolute_war_scores_observable": true,
+    "attacker_war_score": 15,
+    "defender_war_score": -15,
+    "war_score_breakdown": {
+      "battles": 0,
+      "imprisonment": 0,
+      "occupation": 39,
+      "ticking": -24
+    },
+    "options": {
+      "surrender": {
+        "outcome": "attacker_victory",
+        "hostage_variant": "none",
+        "context_constructed": true,
+        "native_validator_passed": true,
+        "available": true,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "ai_acceptance_observable": true,
+        "ai_acceptance": {
+          "raw": -8400000,
+          "scale": 100000
+        },
+        "auto_accept_observable": true,
+        "auto_accept": true,
+        "recipient_response": {
+          "status": "available",
+          "decision_status_raw": 0,
+          "would_accept_now": true
+        }
+      },
+      "white_peace": {
+        "outcome": "white_peace",
+        "hostage_variant": "none",
+        "context_constructed": true,
+        "native_validator_passed": false,
+        "available": false,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "ai_acceptance_observable": true,
+        "ai_acceptance": {
+          "raw": -3351649,
+          "scale": 100000
+        },
+        "auto_accept_observable": true,
+        "auto_accept": false,
+        "recipient_response": {
+          "status": "unavailable",
+          "decision_status_raw": null,
+          "would_accept_now": null
+        }
+      },
+      "victory": {
+        "outcome": "attacker_defeat",
+        "hostage_variant": "none",
+        "context_constructed": true,
+        "native_validator_passed": false,
+        "available": false,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "ai_acceptance_observable": true,
+        "ai_acceptance": {
+          "raw": -11400000,
+          "scale": 100000
+        },
+        "auto_accept_observable": true,
+        "auto_accept": false,
+        "recipient_response": {
+          "status": "unavailable",
+          "decision_status_raw": null,
+          "would_accept_now": null
+        }
+      }
+    },
+    "source": "native"
+  },
+  "backend_id": "native-headless",
+  "queried_snapshot_id": "native:3",
+  "queried_revision": 4,
+  "queried_native_revision": 3,
+  "queried_connection_generation": 1,
+  "queried_episode_run_id": "native-29829-2bc2d599f7f9",
+  "termination_query_context": {
+    "schema_version": 1,
+    "queried_date_raw": 53215920,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "native-29829-2bc2d599f7f9",
+    "queried_character_id": 29829,
+    "active_war_signature": [
+      {
+        "war_id": 16777231,
+        "player_side": "defender",
+        "player_is_primary_war_leader": true,
+        "primary_opponent_character_id": 30097,
+        "player_relative_war_score": -15,
+        "targeted_title_ids": [
+          2128
+        ]
+      }
+    ],
+    "negative_decision_signature": {
+      "war_id": 16777231,
+      "player_side": "defender",
+      "player_is_primary_war_leader": true,
+      "player_relative_war_score": -15,
+      "absolute_war_scores_observable": true,
+      "attacker_war_score": 15,
+      "defender_war_score": -15,
+      "war_score_breakdown": {
+        "battles": 0,
+        "imprisonment": 0,
+        "occupation": 39,
+        "ticking": -24
+      },
+      "active_casus_belli_present": true,
+      "active_casus_belli_identity": {
+        "database_index": 17,
+        "canonical_key": "individual_county_de_jure_cb"
+      },
+      "cb_allows_white_peace": true,
+      "options": {
+        "surrender": {
+          "outcome": "attacker_victory",
+          "hostage_variant": "none",
+          "context_constructed": true,
+          "native_validator_passed": true,
+          "available": true,
+          "recipient_response": {
+            "status": "available",
+            "decision_status_raw": 0,
+            "would_accept_now": true
+          }
+        },
+        "white_peace": {
+          "outcome": "white_peace",
+          "hostage_variant": "none",
+          "context_constructed": true,
+          "native_validator_passed": false,
+          "available": false,
+          "recipient_response": {
+            "status": "unavailable",
+            "decision_status_raw": null,
+            "would_accept_now": null
+          }
+        },
+        "victory": {
+          "outcome": "attacker_defeat",
+          "hostage_variant": "none",
+          "context_constructed": true,
+          "native_validator_passed": false,
+          "available": false,
+          "recipient_response": {
+            "status": "unavailable",
+            "decision_status_raw": null,
+            "would_accept_now": null
+          }
+        }
+      }
+    },
+    "queried_war_duration_days": 1045
+  },
+  "war_id": 16777231
+}

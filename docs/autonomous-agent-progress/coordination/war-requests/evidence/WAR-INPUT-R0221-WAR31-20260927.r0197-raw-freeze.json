@@ -1,0 +1,110 @@
+{
+    "schema":  "xar.ck3.r0197-m4-centralization-raw-freeze/v1",
+    "status":  "perk_checkpointed_frozen",
+    "round_id":  "R0197",
+    "source_code_commit":  "8d1496c0b4a7244920d1ec8ba37188f8157f39b8",
+    "source_candidate":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923",
+    "source_live_evidence":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-typed-R0197-live-20260923",
+    "checkpoint_history_index":  2134,
+    "checkpoint_date_raw":  53215920,
+    "checkpoint_sha256":  "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A",
+    "ck3_reclaimed":  true,
+    "files":  [
+                  {
+                      "name":  "xar_checkpoint.ck3",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\state\\profile\\save games\\xar_checkpoint.ck3",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\xar_checkpoint.ck3",
+                      "sha256":  "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A",
+                      "bytes":  77478199,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "driver-state.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\state\\native-session\\driver-state.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\driver-state.json",
+                      "sha256":  "1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336",
+                      "bytes":  16681512,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "report.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-typed-R0197-live-20260923\\probe\\report.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\report.json",
+                      "sha256":  "03322737638C111B766B83C3529D85AA1064C365F0F8C688F9680B0FF103442D",
+                      "bytes":  20162,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "round-ownership.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-typed-R0197-live-20260923\\probe\\round-ownership.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\round-ownership.json",
+                      "sha256":  "D02AAA7658216EC2A8CCB209840A46A0EDAB1DCE55425617A2D2A0CDB2D5CB79",
+                      "bytes":  488,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "live-run-identity.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-typed-R0197-live-20260923\\live-run-identity.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\live-run-identity.json",
+                      "sha256":  "176BE3BDE3B2CA2C5E0BB7E2D0C41F19E18558097769D4D2369A716C8A443011",
+                      "bytes":  377,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "candidate-manifest.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\candidate-manifest.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\candidate-manifest.json",
+                      "sha256":  "6F939978969B63C22ABD755F7A907FE374DE8DE68976B170F7F2E19201D687CE",
+                      "bytes":  3601,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "NO-LAUNCH-EVIDENCE.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\NO-LAUNCH-EVIDENCE.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\NO-LAUNCH-EVIDENCE.json",
+                      "sha256":  "670953A6877CF783E3B61AB0E4C9B2C4E3F56D5F36A67F35BADDAE4A7BB45968",
+                      "bytes":  2920,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "TARGET-INTENT.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\TARGET-INTENT.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\TARGET-INTENT.json",
+                      "sha256":  "8626D3FDEC75709FF27737D4B01F2AF8CE34E05E2579D8307E09520B545E2445",
+                      "bytes":  1445,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "ordinary-seed-rebind-v1.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\state\\ordinary-seed-rebind-v1.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\ordinary-seed-rebind-v1.json",
+                      "sha256":  "4D8264C47AB8C749C85BDABE75DA996104FC85E2200B3B420DEA3257E464A057",
+                      "bytes":  4369,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "xar-autoplayer-environment.json",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\state\\profile\\xar-autoplayer-environment.json",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\xar-autoplayer-environment.json",
+                      "sha256":  "061F7190B65AD145711FAB7EA476090F1CB6B61A6519793AC33E074BCA6103CC",
+                      "bytes":  158669,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "xar_ck3_bridge.dll",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\native\\xar_ck3_bridge.dll",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\xar_ck3_bridge.dll",
+                      "sha256":  "D2DB65B338BE7565F5138DA1689CE8BAAE6F9B0CC3CD2C434B58D866851F6C08",
+                      "bytes":  3424256,
+                      "readonly":  true
+                  },
+                  {
+                      "name":  "xar_ck3_bridge_injector.exe",
+                      "source":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-centralization-r0186-h2127-master8d1496c-typed-no-launch-20260923\\native\\xar_ck3_bridge_injector.exe",
+                      "copy":  "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\xar_ck3_bridge_injector.exe",
+                      "sha256":  "0BAEBC283AB586BBD09269841556C615B2D41803F9AD7DA9D3FD9107B9D2623B",
+                      "bytes":  39936,
+                      "readonly":  true
+                  }
+              ]
+}
