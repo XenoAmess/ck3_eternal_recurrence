@@ -258,7 +258,7 @@ def plan_m5_wartime_query_only(
               == "no_legal_budgeted_building"
               and construction.get("positive_income_coverage_complete") is True):
             status = "no_budgeted_building_observed"
-            missing = list(_MISSING_ACTIVE_WAR_CASH)
+            missing = []
         elif (construction.get("status") == "observed"
               and construction.get("native_source_status") == "selected"
               and construction.get("native_budgeted_positive_income_candidate")
