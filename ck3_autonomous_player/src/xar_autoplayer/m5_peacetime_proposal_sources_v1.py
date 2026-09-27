@@ -19,7 +19,10 @@ from .bridge.driver import BridgeUnavailableError
 from .bridge.faction_gift_formal_route_v1 import (
     MINIMUM_GOLD_RESERVE_RAW as FACTION_GIFT_RESERVE_RAW,
 )
-from .construction_formal_consumer import read_construction_ledger
+from .construction_formal_consumer import (
+    priority_construction_receipt,
+    read_construction_ledger,
+)
 from .faction_gift_formal_candidate_v1 import (
     latest_same_frame_faction_root_v1,
 )
@@ -78,6 +81,21 @@ def query_m5_peacetime_proposal_sources_v1(
     if faction_ledger.get("pending") is not None:
         raise BridgeUnavailableError(
             "M5 peacetime source has an unresolved faction gift action"
+        )
+    try:
+        priority_receipt = priority_construction_receipt(
+            driver, construction_ledger, snapshot,
+        )
+    except BridgeUnavailableError:
+        # Legacy single-applied readbacks may lack a process identity in a
+        # query-only caller. Keep the old independent gift route; the latest
+        # building stays unavailable through the release check below.
+        if construction_ledger.get("applied_prior"):
+            raise
+        priority_receipt = None
+    if priority_receipt is not None:
+        raise BridgeUnavailableError(
+            "M5 peacetime source must consume a prior construction receipt first"
         )
     applied = construction_ledger.get("applied")
     construction_blocked = _prior_construction_blocks_candidate(
