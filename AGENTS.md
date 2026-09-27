@@ -33,6 +33,7 @@
 ## Steam 离线模式与账号占用
 
 - 除非任务确实必须联网（例如上传或更新 Steam Workshop mod），禁止把 Steam 从离线模式切换为在线模式；普通开发、构建、静态检查和 CK3 实机验收默认保持 Steam 离线。
+- 受管 CK3 实机前必须取得当次新鲜的 Steam 离线画面证据。若桌面画面冻结、变黑或远程重连后不能确认实时性，执行者应先领取任务总线独占 `ck3-screen:acquired`，使用 `tools/desktop_steam_offline_recovery.py inspect` 与新的外置 attempt 运行 `recover`，自动尝试恢复本机桌面采集和 ToDesk 服务；只有窗口位移取证确证 stale、且确认没有 CK3/录制/其他屏幕占用时，才使用其显式 ToDesk 重启重试选项。每次必须审阅新截图中的“离线模式”，并按 `docs/ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md` 保存回执；旧截图、窗口响应或服务运行状态不能代替离线确认。
 - 因必要任务临时切换到在线模式后，该联网任务完成或终止时必须第一时间把 Steam 恢复为离线模式，不得让客户端无故保持在线。
 - Steam 处于在线模式时，每次启动 CK3 或其他 Steam 游戏前必须先检查当前账号是否已显示“正在游戏中”或存在其他机器的游戏会话。若账号正在游戏中，视为别的机器正在使用：禁止强行启动、接管或挤下线，以免顶号；停止启动流程并向用户报告。
 - 受管实机若以桌面截图证明 Steam 离线，不能仅凭截图文件时间或新收据时间判断画面新鲜度；同一画面哈希复现、画面时钟停滞时，必须取得可核验的当前窗口变化及新桌面像素，再直接审阅新图。`tools/steam_offline_fresh_frame.py` 只生成窗口位移与截图新鲜度证据，不自动判定离线；边界与历史 RED 见 `docs/ck3-native-ai/steam-offline-frame-freshness.md`。
