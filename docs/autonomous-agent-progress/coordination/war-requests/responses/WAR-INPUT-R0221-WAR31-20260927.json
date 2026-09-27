@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T11:19:35Z",
+  "updated_at_utc": "2026-09-27T11:40:22Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -69,6 +69,17 @@
       "finding": "In the exact stock individual_county_de_jure_cb on_victory branch, four direct sibling statements run in script order: create_title_and_vassal_change(type=conquest, save_scope_as=change, add_claim_on_loss=yes); every_in_list(target_titles) saves temporary target; setup_de_jure_cb consumes attacker/defender, scope:change and scope:target outside that loop; resolve_title_and_vassal_change consumes scope:change. There is no explicit change_title_holder assignment in this on_victory block.",
       "limit": "This proves only script syntax and parameter wiring. R0221 target TitleID 2128 is an input identity, not an observed runtime target_titles list or scope:target referent. The change object's contents, native setup/resolve effects, final title holder/liege/vassal operations and persisted result remain unknown. No effect was invoked and no CK3 process was launched.",
       "checks": "test_dejure_war31_title_effect_sequence.py: 3 passed on normal Python and 3 passed with -O, including exact installed EXE/script receipt replay, wrong-source fail-closed, and a nested-setup parser guard."
+    },
+    {
+      "date_utc": "2026-09-27T11:40:22Z",
+      "master_commit": "8ba2a45d6",
+      "exact_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "extractor": "ck3_autonomous_player/native_bridge/research/extract_dejure_resolve_prequeue_gate.py",
+      "receipt": "ck3_autonomous_player/native_bridge/research/dejure_resolve_prequeue_gate_1_19_0_6.json",
+      "receipt_sha256": "228708A305163B47769D34ADBDAE126A4789AAD50ABA65C436CD168763B955A3",
+      "finding": "CResolveTitleAndVassalChangeEffect execute dispatches change type +0x268==0x17 directly to queue append 0x27CD6A0. Other types pass 0x27CD510, where non-null and virtual checks precede an optional 0x24CC9A0 processor call, gated by change+0x260==0 and context dword +0x60<0x32; the wrapper then reaches queue append. The processor's five checked dword counts all zero yields +0x260=1 and immediate exit; nonempty input enters an unresolved helper chain.",
+      "limit": "These are exact-build static branch and processor-entry facts, not observed War31 values or final holder/liege/vassal writes. Runtime change type, flags/counts, actual queue consumption, title transfer, signed resources and truce expiry remain unknown. No CK3 process or native effect was invoked and no surrender was submitted.",
+      "checks": "test_dejure_resolve_prequeue_gate.py: 2 passed on normal Python and 2 passed with -O against the exact installed EXE, including receipt replay and wrong-build fail-closed."
     }
   ],
   "checks": [
@@ -85,5 +96,5 @@
     "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
     "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
   ],
-  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: trace the branch callees' transitive write sets and the +0x1B0 change-scope referent, then identify a non-mutating final-operation producer and signed CB effects before seeking a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
+  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: reduce the 0x24CC9A0 helper chain to concrete title/holder/liege/vassal writes and identify the actual War31 change referent, then identify a non-mutating final-operation producer and signed CB effects before seeking a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
 }
