@@ -19,7 +19,11 @@
     "post_native_revision": {"type": "integer", "minimum": 1},
     "played_character_id": {"type": "integer", "minimum": 1},
     "heir_character_id": {"type": "integer", "minimum": 1},
-    "candidate_character_id": {"type": "integer", "minimum": 1}
+    "candidate_character_id": {"type": "integer", "minimum": 1},
+    "outbound_pending_state": {"enum": ["active", "absent", "ambiguous", "unavailable", "not_applicable"]},
+    "outbound_pending_id": {"type": ["integer", "null"]},
+    "outbound_pending_age_days": {"type": ["integer", "null"]},
+    "outbound_pending_ai_reply_cutoff_days": {"type": ["integer", "null"]}
   },
   "oneOf": [
     {"properties": {"status": {"const": "receipt_pending"}, "step": {"const": "submit-observed-first-heir-marriage-v1-private"}, "material_result": {"const": false}}, "required": ["played_character_id"]},

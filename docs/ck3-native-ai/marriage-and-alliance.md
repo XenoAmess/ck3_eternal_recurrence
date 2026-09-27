@@ -1,5 +1,8 @@
 # CK3 1.19.0.6 婚姻、联盟与战争召集：主动婚配与入站回复树
 
+R0260 跨 PID 后的发件方提案状态观测与未闭合终态见
+[C198 exact pending 读回](m5-outbound-marriage-pending-readback-2026-09-27.md)。
+
 ## 2026-09-27 C168：R0255 同龄异宗族婚约与无联盟尝试
 
 正式 Robert R0255 从 h2357/raw53216424 开始的首个 paused 帧，首继承人 `38822` 当前没有配偶或婚约。原生 final-legal 集合有 `141` 行；候选 `38718`、接收方 `32897` 的完整 Can Send 为 true、最终答复允许、收件人接受 raw `900000`。两名实际婚配者的成年比较数均为 `13/16`，接受后预计为普通 `betrothal`；玩家与继承人当前 House/Dynasty `174`，候选当前 House/Dynasty `1807`，双方 selector `0/1`，生效 matrilineal 为 false，与继承人 selector 对齐。五行诊断中该行唯一拒绝原因是 `betrothal_realm_alliance_attempt_unavailable`。原生 `possible_alliance_pairs` 仅给出玩家 `29829` → 候选 `38718`，其 `both_have_realm_data=false`、`would_attempt_if_accepted=false`；没有玩家 → 接收方 `32897` 的联盟尝试行。此结论来自 [R0255 正式报告](Z:/r153-robert-h2357-candidate/run-formal-36/formal-report.txt)，SHA-256 `1E438E18A782A0EAA99CEA1748E657775D82D48D4F3C7B23A04BCA25C7E065C0`。R0255 的 36/36 turn 没有提交婚配动作，不能称该婚约已成立。
