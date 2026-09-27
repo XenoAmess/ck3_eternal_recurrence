@@ -15,3 +15,5 @@
 现有 v3 **假想接战同帧模型**构造 local shell 后确实调用 `0x2308D50`，因而由原版在 local side 上执行上述刷新，并以原版总 helper 做等式门禁。它证明的是所给假想军队名单及目标在该帧的 local-shell 求值。现役 `active_combat_resume_inputs_v1` 虽有两 bucket 的有序 entry 和选中将领，却不暴露每个 MAA entry 的 `CRegiment+0x148` 当刻角色、其 accolade full ID/有效性、称号 row 来源身份及下一次刷新后状态；也未把假想接战的 local shell 当真实现役 Combat 的下一日状态。故不得把 v3 `resolved_dynamic` 拷为现役未来日非 roll 输入，也不得移除 `next_day_non_roll_advantage_sources` 缺域。
 
 可行的下一步只读合同是在同一个 generation-valid CombatID/side、revision、日期与原始缓存生成 ordinal 上，按 entry 原序绑定 RegimentID、角色 full ID、称号 full ID、通过门的结果、来源 row count/selector/loaded identity，并在原版 `0x23CBCE0` **前后**取 `side+0x110` 的规范化 modifier 来源切片；另在 `0x23CC2B0` 前后记录六个 entry 字段及目标 Province 身份。任何身份、count、顺序或加载对象不一致整组 unavailable。应让现有受管原调用 observer 扩充有界复制点后做相邻日对拍；不得为了暂停查询主动重调这些 mutating helpers。
+
+其中称号来源的全 row gate 与现有 v3/现役名单差异，已进一步收窄在[最小 typed 输入合同](active-accolade-roster-input-contract-2026-09-27.md)。

@@ -1,0 +1,72 @@
+{
+  "schema": "ck3.native_active_accolade_all_row_gate.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "gate_span": [
+    "0x251C200",
+    "0x251C271"
+  ],
+  "anchors": {
+    "row_base": {
+      "rva": "0x251C20F",
+      "bytes_hex": "488B5958"
+    },
+    "row_count": {
+      "rva": "0x251C216",
+      "bytes_hex": "48634164"
+    },
+    "empty_rows_exit": {
+      "rva": "0x251C225",
+      "bytes_hex": "741B"
+    },
+    "row_source_pointer": {
+      "rva": "0x251C227",
+      "bytes_hex": "488B4B10"
+    },
+    "null_source_gate": {
+      "rva": "0x251C22B",
+      "bytes_hex": "4885C9"
+    },
+    "null_source_exit": {
+      "rva": "0x251C22E",
+      "bytes_hex": "7412"
+    },
+    "source_virtual_gate": {
+      "rva": "0x251C233",
+      "bytes_hex": "FF10"
+    },
+    "virtual_result_test": {
+      "rva": "0x251C235",
+      "bytes_hex": "84C0"
+    },
+    "invalid_source_exit": {
+      "rva": "0x251C237",
+      "bytes_hex": "7409"
+    },
+    "next_row": {
+      "rva": "0x251C239",
+      "bytes_hex": "4883C318"
+    },
+    "more_rows": {
+      "rva": "0x251C240",
+      "bytes_hex": "75E5"
+    },
+    "ended_at_count": {
+      "rva": "0x251C257",
+      "bytes_hex": "33C0"
+    },
+    "completed_rows_select": {
+      "rva": "0x251C25C",
+      "bytes_hex": "480F44D8"
+    },
+    "gate_result_test": {
+      "rva": "0x251C260",
+      "bytes_hex": "4885DB"
+    },
+    "gate_result_boolean": {
+      "rva": "0x251C268",
+      "bytes_hex": "0F94C0"
+    }
+  },
+  "proof_layer": "exact-build-instructions-pdata-and-branch-targets"
+}
