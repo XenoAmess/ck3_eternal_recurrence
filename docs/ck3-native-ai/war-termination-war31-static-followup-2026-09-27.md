@@ -231,3 +231,32 @@ SHA-256 为 `664003C57BBF27951DDFF34CFDCA00C49EE796F4F56402D92365D68B39BE9AA1`�
 间接分配器调用、共享预查 helper `0x2E9FF30` 和 setup 的其他路径仍未穷尽。
 因此构造时的 type `0` 仍不能等同于 War31 在 resolve 时读取的实际值；
 最终 title、holder、liege、vassal 与投降落地效果继续为未知。
+
+### 共享预查 `0x2E9FF30` 的 effect 基址边界与后续观察点
+
+[精确构建提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_shared_prelookup_effect_base.py)
+固定了 `setup_de_jure_cb` 在 `0x2E9F70B` 调用的共享 helper；
+[JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_shared_prelookup_effect_base_1_19_0_6.json)
+SHA-256 为 `6EA2D2E6D7B3E46FE13929592CFB7A752A9AC97C12CA07C4D4B35A450CFB79C9`。
+原版 EXE 函数范围为 `0x2E9FF30–0x2EA0B19`。入参 `RCX` 是 effect 指针，
+`0x2E9FF67` 将其保存到 `RBX`。该寄存器保持此身份期间，直接指令
+只取 `effect+0x260` 的标题作用域地址，并读取 `effect+0x258` 标志；
+没有直接取 `effect+0x1B0` 的 change scope，也没有直接写
+`change+0x268`。`RBX` 随后在容量分支被覆盖，或在绕过该分支后
+被另一数值覆盖。`0x2EA03AA` 虽读取 `[RBX+0x1B8]`，但这时 `RBX`
+已由全局表查找结果或 fallback 重新赋值，不能将该指令误判为
+`effect+0x1B8`。
+
+这是**直接 effect 基址**的寄存器来源结论，不是整个 helper 的传递性
+无写证明。标题作用域虚调用、后续辅助函数、全局查表别名，连同前述
+向量缓冲区与分配器的别名，仍可能影响另一个对象；本证据没有唯一化
+War31 的 change 指针或实际类型。
+
+若之后在**已有独立授权的受管实机动作**中重现这条路径，最小只读
+观察是：在同一次 effect 调用中记录精确 EXE/DLL 哈希、存档/episode、
+WarID、帧日期与调用序号；于 `0x2E9F746` 取得 setup 解析后的 change
+指针及其 `+0x268` 原始 dword，再在 `0x2EC4410` 的 resolve 比较指令
+执行前记录 `RAX` change 指针与同一 dword。两处必须证明是同一对象、
+同一动作链；只观测内存，不修改值、不为取得数据单独提交投降。
+这可以判定 resolve 实际读取的 type 及 `0x17` 分支条件，仍不能单独
+证明 title/holder/liege/vassal 落盘、资源变动或停战到期日。

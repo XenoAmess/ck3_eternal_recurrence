@@ -1,0 +1,119 @@
+{
+  "schema": "xar.ck3.war31.dejure_shared_prelookup_effect_base.v1",
+  "status": "DIRECT_EFFECT_BASE_ACCESSES_BOUNDED_TRANSITIVE_UNKNOWN",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "stock_script": {
+    "request_id": "WAR-INPUT-R0221-WAR31-20260927",
+    "request_sha256": "2B895343545B75F56F0594C746677015CBCC2B6BDDD78CA2696BB13EB0B53D75",
+    "script_path": "game/common/casus_belli_types/00_dejure_war.txt",
+    "script_sha256": "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE",
+    "create_type": "conquest",
+    "setup_between_create_and_resolve": true
+  },
+  "constructed_change_type": 0,
+  "call_site": {
+    "effect_argument": {
+      "rva": "0x2E9F708",
+      "bytes": "488BCE",
+      "instruction": "mov rcx, rsi"
+    },
+    "call": {
+      "call_rva": "0x2E9F70B",
+      "target_rva": "0x2E9FF30",
+      "bytes": "E820080000"
+    }
+  },
+  "helper": {
+    "entry_rva": "0x2E9FF30",
+    "end_exclusive_rva": "0x2EA0B1A",
+    "byte_count": 3050,
+    "sha256": "CD259ABF458AD99C5F036A93C33F4A9A5B546DD31594ACF21F25553C82DB6F08",
+    "effect_pointer_copy": {
+      "rva": "0x2E9FF67",
+      "bytes": "488BD9",
+      "instruction": "mov rbx, rcx"
+    },
+    "effect_base_direct_accesses": [
+      {
+        "rva": "0x2E9FFF0",
+        "bytes": "488D8B60020000",
+        "instruction": "lea rcx, [rbx + 0x260]"
+      },
+      {
+        "rva": "0x2EA0030",
+        "bytes": "80BB5802000000",
+        "instruction": "cmp byte ptr [rbx + 0x258], 0"
+      }
+    ],
+    "early_rbx_uses": [
+      "0x2E9FF67: mov rbx, rcx",
+      "0x2E9FFF0: lea rcx, [rbx + 0x260]",
+      "0x2EA0030: cmp byte ptr [rbx + 0x258], 0",
+      "0x2EA00E4: mov ebx, esi",
+      "0x2EA00E8: cmovl ebx, eax",
+      "0x2EA00F5: mov edx, ebx",
+      "0x2EA015A: mov dword ptr [rbp + 0xa8], ebx"
+    ],
+    "early_first_overwrites": [
+      {
+        "rva": "0x2EA00E4",
+        "bytes": "8BDE",
+        "instruction": "mov ebx, esi"
+      },
+      {
+        "rva": "0x2EA01FA",
+        "bytes": "8B5D28",
+        "instruction": "mov ebx, dword ptr [rbp + 0x28]"
+      }
+    ],
+    "zero_flag_cleanup_branch": {
+      "rva": "0x2EA0037",
+      "bytes": "0F849D0A0000",
+      "instruction": "je 0x2ea0ada"
+    },
+    "capacity_branch": {
+      "rva": "0x2EA00C8",
+      "bytes": "0F8594000000",
+      "instruction": "jne 0x2ea0162"
+    },
+    "later_rbx_rebinds_before_plus_1b8": [
+      {
+        "rva": "0x2EA028B",
+        "bytes": "488D1DD6A11402",
+        "instruction": "lea rbx, [rip + 0x214a1d6]"
+      },
+      {
+        "rva": "0x2EA0394",
+        "bytes": "488B5CD108",
+        "instruction": "mov rbx, qword ptr [rcx + rdx*8 + 8]"
+      },
+      {
+        "rva": "0x2EA03A3",
+        "bytes": "488B1D8EBD8602",
+        "instruction": "mov rbx, qword ptr [rip + 0x286bd8e]"
+      },
+      {
+        "rva": "0x2EA03AA",
+        "bytes": "488B8BB8010000",
+        "instruction": "mov rcx, qword ptr [rbx + 0x1b8]"
+      }
+    ],
+    "direct_effect_base_change_scope_access": false,
+    "direct_effect_base_change_type_write": false,
+    "interpretation": "Before the incoming effect pointer in RBX is overwritten or cleanup starts, this helper directly addresses only effect+0x260 (title scope) and reads effect+0x258. The later [rbx+0x1B8] reads a table-resolved/fallback entity after RBX was repurposed; it is not direct effect+0x1B8 evidence."
+  },
+  "boundary": {
+    "not_proven": [
+      "Transitive or global-alias accesses by calls from this helper, including title-scope virtual dispatch and downstream table helpers",
+      "Any pointed-buffer or allocator alias to the parent change object in setup",
+      "The actual War31 change+0x268 value immediately before resolve and its taken branch",
+      "Final title/holder/liege/vassal operations or persisted surrender consequences"
+    ],
+    "ck3_launched": false,
+    "native_effect_called": false,
+    "gameplay_action_submitted": false
+  }
+}
