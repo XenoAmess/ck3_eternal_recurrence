@@ -1,0 +1,204 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-excerpt.v1",
+  "evidence_id": "WAR-ROBERT-H2825-RISK-INPUTS-20260928.r0264-r0265-readonly",
+  "request_id": "WAR-ROBERT-H2825-RISK-INPUTS-20260928",
+  "status": "immutable_read_only_observation",
+  "campaign": "Robert_1066",
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "actor_character_id": 29829,
+  "war_id": 16777231,
+  "saved_checkpoint": {
+    "history_index": 2825,
+    "date_raw": 53217624,
+    "sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D"
+  },
+  "r0264": {
+    "runtime_source_commit": "adf4993cc67e62ea79ec66bdaef87c8c59963f78",
+    "source_pair_identity_sha256": "B52F34C4011FAB2691F8A5B03EA051C918AEA7BE94C0EB3D0D6A6B5B0C5F02E4",
+    "formal_report_sha256": "066B3E4993DF5BA5DED815345403C2C4B87A0FD9A4B75AA79DBA578B73B97473",
+    "paired_driver_sha256": "B8E50A281AFB9A5DAA7AC1ED55DD68C4305816302B71B14EDF79F1060177D872",
+    "runtime_dll_sha256": "70D96474053ADE0FE60091118CC6375F83E0ADC0E2192F44B51FC026400E2358",
+    "final_frame": {
+      "snapshot_id": "native:40",
+      "public_revision": 41,
+      "native_revision": 40,
+      "connection_generation": 1,
+      "date_raw": 53217624,
+      "formal_turn_index": 36,
+      "paired_driver_command_indices": {
+        "war_progress_after_advance": 2824,
+        "campaign_root_context": 2827,
+        "war_termination_options": 2828
+      },
+      "active_war": {
+        "player_side": "defender",
+        "player_is_primary_war_leader": true,
+        "player_relative_war_score": -24,
+        "score_breakdown_attacker_relative": {
+          "battles": 0,
+          "imprisonment": 0,
+          "occupation": 52,
+          "ticking": -28
+        },
+        "war_objective_province_ids": [2610],
+        "objective_province_states": [],
+        "enemy_primary_default_raise_province_id": 2609,
+        "player_armies": [
+          {
+            "army_id": 83886367,
+            "owner_character_id": null,
+            "current_province_id": 2610,
+            "move_target_province_id": null,
+            "route_province_ids": [],
+            "army_state": "regular",
+            "in_combat": false,
+            "retreating": false,
+            "soldiers": null,
+            "siege_days_left": null
+          }
+        ],
+        "enemy_armies": [
+          {
+            "army_id": 50331920,
+            "owner_character_id": null,
+            "current_province_id": 2629,
+            "move_target_province_id": null,
+            "route_province_ids": [],
+            "army_state": "sieging",
+            "in_combat": false,
+            "retreating": false,
+            "soldiers": null,
+            "siege_days_left": 292,
+            "siege_province_holder_character_id": 29829,
+            "siege_province_in_player_subrealm": true
+          },
+          {
+            "army_id": 83886484,
+            "owner_character_id": null,
+            "current_province_id": 3660,
+            "move_target_province_id": 2629,
+            "route_province_ids": [3597, 3595, 3579, 3719, 8652, 1038, 1036, 2629],
+            "army_state": "moving",
+            "in_combat": false,
+            "retreating": false,
+            "soldiers": null,
+            "siege_days_left": null
+          }
+        ]
+      },
+      "actor_monthly_gold_income": {"raw": 417179, "scale": 100000},
+      "actor_gold_balance": null,
+      "actor_prestige_balance": null,
+      "opponent_gold_balance": null,
+      "opponent_prestige_balance": null,
+      "current_war_cost": null,
+      "future_war_cost": null,
+      "surrender_available": true,
+      "surrender_recipient_would_accept_now": true,
+      "white_peace_available": false,
+      "victory_available": false,
+      "cb_specific_surrender_terms": null
+    },
+    "boundary": "The final R0264 native:40 frame has war progress, income and termination options. Its soldier counts and army owners are null; earlier R0264 strength queries belong to earlier frames and are excluded. Empty objective_province_states is not evidence that the objective is unoccupied."
+  },
+  "r0265_separate_restore_frame": {
+    "candidate_source_commit": "cbaf451361f92642b73be994f3e6c5ac9ec71545",
+    "formal_report_sha256": "B990E9F9E0F3E83B2412F86D9AE491820A0A5AA7EA6B83A028F7DF5A5B77E95B",
+    "paired_driver_sha256": "8C5700FBEBFB38856FEC6FAFCDC2734A9B719AD519F6F9BD0BB3F10D0BCA0695",
+    "candidate_index_sha256": "A9C502C3472F0E02CFC3926A0FB9C03A9E6425F2BFC4D1C9BDF87CA371974DD0",
+    "runtime_dll_sha256": "A520BCB688ED921E8DA7410D8426E2FE443135F3F0CECBA928791CCBA0243245",
+    "frame": {
+      "snapshot_id": "native:3",
+      "public_revision": 4,
+      "native_revision": 3,
+      "connection_generation": 1,
+      "date_raw": 53217624,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "paired_driver_command_indices": {
+        "campaign_root_context": 2828,
+        "war_termination_options": 2833,
+        "army_strengths": 2835,
+        "move_preview_only": 2837,
+        "route_contact_horizon": 2839
+      },
+      "player_relative_war_score": -24,
+      "score_breakdown_attacker_relative": {
+        "battles": 0,
+        "imprisonment": 0,
+        "occupation": 52,
+        "ticking": -28
+      },
+      "actor_monthly_gold_income": {"raw": 417179, "scale": 100000},
+      "actor_gold_balance": null,
+      "actor_prestige_balance": null,
+      "opponent_gold_balance": null,
+      "opponent_prestige_balance": null,
+      "current_war_cost": null,
+      "future_war_cost": null,
+      "armies": [
+        {
+          "army_id": 83886367,
+          "scope_role": "player",
+          "owner_character_id": null,
+          "war_ids": [16777231],
+          "current_soldiers": 2329,
+          "maximum_soldiers": 2461,
+          "regiment_count": 40,
+          "ai_base_power": {"raw": 7578100000, "scale": 100000}
+        },
+        {
+          "army_id": 50331920,
+          "scope_role": "active_war_enemy",
+          "owner_character_id": null,
+          "war_ids": [16777231],
+          "current_soldiers": 1462,
+          "maximum_soldiers": 1899,
+          "regiment_count": 19,
+          "ai_base_power": {"raw": 4880500000, "scale": 100000}
+        },
+        {
+          "army_id": 83886484,
+          "scope_role": "active_war_enemy",
+          "owner_character_id": null,
+          "war_ids": [16777231],
+          "current_soldiers": 311,
+          "maximum_soldiers": 311,
+          "regiment_count": 4,
+          "ai_base_power": {"raw": 1432000000, "scale": 100000}
+        }
+      ],
+      "player_move_preview": {
+        "status": "available",
+        "origin_province_id": 2610,
+        "target_province_id": 2629,
+        "route_province_ids": [2614, 2618, 2624, 2631, 2630, 2629]
+      },
+      "route_contact_horizon": {
+        "status": "available",
+        "horizon_start_date_raw": 53217624,
+        "horizon_end_date_raw": 53217648,
+        "one_day_contact_free": true,
+        "conflicts": [],
+        "player_route_arrival_date_raws": [53217792, 53217960, 53218176, 53218320, 53218488, 53218680],
+        "sieger_army_id": 50331920,
+        "sieger_current_province_id": 2629,
+        "sieger_route_province_ids": [],
+        "moving_enemy_army_id": 83886484,
+        "moving_enemy_current_province_id": 3660,
+        "moving_enemy_effective_origin_province_id": 3597,
+        "moving_enemy_route_province_ids": [3597, 3595, 3579, 3719, 8652, 1038, 1036, 2629],
+        "moving_enemy_route_arrival_date_raws": [53217696, 53217960, 53218344, 53218632, 53219352, 53219544, 53219688, 53219928]
+      },
+      "cb_specific_surrender_terms": null
+    },
+    "result": "Seven formal query/preview turns kept native:3, public/native revisions 4/3 and date_raw 53217624 unchanged. The eighth planning turn blocked with native_war_siege_forecast_observation_blocked: the observed siege does not prove a complete one-encounter participant partition. No move, termination, date advance, new checkpoint or postcondition was submitted. The move preview is a read-only operation even though the runner counts it in its gameplay class."
+  },
+  "missing_risk_inputs": [
+    "R0264 final-frame soldier counts and army owner identities are absent; the R0265 restored frame supplies soldier counts, but the two snapshot IDs and revisions must not be combined as one native frame.",
+    "Army owner character IDs and a complete same-encounter siege participant partition are not supplied by these excerpts.",
+    "Actor and opponent current treasury/prestige balances were not queried at H2825; the exact save was not separately parsed for them in this response. R0264/R0265 native campaign-root gives only actor monthly gold income.",
+    "Current and future war cash/army commitments, CB-specific surrender material terms, directed truce and a validated continue-versus-exit estimate are unobserved.",
+    "One-day contact-free status covers only raw 53217624 through 53217648; it does not prove the longer route or siege encounter safe."
+  ],
+  "transfer_and_action_boundary": "Only this small excerpt is committed to Git. The exact H2825 save, paired drivers, sidecars and DLLs remain outside Git. R0265 was read-only apart from a preview operation; no move, surrender, resource spend or durable Robert day was added. R0197's one-shot surrender authorization is not reusable."
+}
