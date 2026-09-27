@@ -1,0 +1,24 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-excerpt.v1",
+  "evidence_id": "WAR-ROBERT-H2743-EXIT-20260928.local-h2743-contracts",
+  "source": {
+    "checkpoint_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+    "rakaly_melted_sha256": "1F12D756D3643CFE7AC7D4A13ED1F39A95EBC508633B63415D6706C1BA71F233",
+    "external_full_projection_sha256": "3D51CCD05BF056D9848594A3037E4E3B761F6E090572B06C1BBC5FD3197E7F6E",
+    "save_date": "1075.1.12",
+    "save_level_only": true
+  },
+  "contract_edges": {
+    "target_holder_33435": {
+      "personal_liege_character_id": 29829,
+      "direct_vassal_character_ids": [43755, 43703]
+    },
+    "attacker_30097": {
+      "personal_liege_character_id": 29097,
+      "direct_vassal_character_ids": [43702, 43701]
+    }
+  },
+  "cross_check": "The exact H2743 target holder's personal contract edges and the attacker's edges match the independently projected R0197 pre-surrender save, whose historical single authorized action later transferred vassal 43703 to attacker 30097. This is a concrete comparison scenario, not proof of H2743 current termination terms.",
+  "not_observed": ["current_same_native_frame_contracts", "h2743_post_surrender_edges", "cb_specific_terms", "counterfactual_continue_war_result"],
+  "gameplay_action_submitted": false
+}
