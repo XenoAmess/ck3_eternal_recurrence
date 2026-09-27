@@ -1018,6 +1018,11 @@ class G2PreviewOperatorTest(unittest.TestCase):
     def test_ordinary_run_forwards_preflight_formal_and_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            bridge_dll = root / "bridge.dll"
+            bridge_dll.write_bytes(b"\x00".join(
+                step.encode("ascii")
+                for step in g2_preview_operator.PRIVATE_LIFESTYLE_QUERY_STEPS
+            ))
             state = root / "state"
             save = state / "profile" / "save games" / "xar_checkpoint.ck3"
             driver = state / "native-session" / "driver-state.json"
@@ -1036,6 +1041,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 "game_dir": str(root / "game"),
                 "pipe": r"\\.\pipe\ordinary-preview",
                 "dll": str(root / "bridge.dll"),
+                "dll_sha256": hashlib.sha256(bridge_dll.read_bytes()).hexdigest(),
                 "injector": str(root / "injector.exe"),
                 "xar_enabled": "xar_off",
                 "succession_lifecycle": "ordinary_campaign_succession",
@@ -1127,6 +1133,57 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 )
             )
             self.assertTrue(m5_receipt["private_m5_joint_collector"])
+
+    def test_private_lifestyle_dll_preflight_rejects_r0246_build_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dll = root / "bridge.dll"
+            dll.write_bytes(b"native build without private LIFE dispatch")
+            manifest = root / "manifest.json"
+            manifest.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(root / "state"),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\life-preflight",
+                "dll": str(dll),
+                "dll_sha256": hashlib.sha256(dll.read_bytes()).hexdigest(),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            verify_args = g2_preview_operator.parser().parse_args([
+                "verify-private-lifestyle-dll", "--manifest", str(manifest),
+            ])
+            with self.assertRaisesRegex(
+                ValueError, "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1=ON"
+            ):
+                g2_preview_operator.command_verify_private_lifestyle_dll(verify_args)
+            run_args = g2_preview_operator.parser().parse_args([
+                "run", "--manifest", str(manifest),
+                "--output", str(root / "attempt"),
+                "--private-lifestyle-formal-trial",
+            ])
+            with self.assertRaisesRegex(ValueError, "lacks native query dispatch keys"):
+                g2_preview_operator.command_run(run_args)
+            self.assertFalse((root / "attempt").exists())
+            dll.write_bytes(b"\x00".join(
+                step.encode("ascii")
+                for step in g2_preview_operator.PRIVATE_LIFESTYLE_QUERY_STEPS
+            ))
+            record = json.loads(manifest.read_text(encoding="utf-8"))
+            record["dll_sha256"] = hashlib.sha256(dll.read_bytes()).hexdigest()
+            manifest.write_text(json.dumps(record), encoding="utf-8")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(
+                    g2_preview_operator.command_verify_private_lifestyle_dll(verify_args), 0
+                )
+            receipt = json.loads(output.getvalue())
+            self.assertTrue(receipt["ok"])
+            self.assertFalse(receipt["game_launched"])
+            self.assertEqual(receipt["dll_sha256"], record["dll_sha256"])
+            dll.write_bytes(b"drift")
+            with self.assertRaisesRegex(ValueError, "DLL hash mismatch"):
+                g2_preview_operator.command_verify_private_lifestyle_dll(verify_args)
 
     def test_r778_checkpoint_binding_is_the_authoritative_sha256(self) -> None:
         self.assertEqual(

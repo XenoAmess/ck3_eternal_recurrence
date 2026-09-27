@@ -60,6 +60,14 @@ FAMILY_PENDING_V1_SCHEMA = "xar.ck3.first-heir-marriage-formal.v1"
 FAMILY_ACTION_V1_SCHEMA = "xar.ck3.observed-first-heir-marriage-private-action.v1"
 FAMILY_SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
 FACTION_GIFT_PENDING_V1_SCHEMA = "xar.ck3.faction_gift_pending_v1"
+PRIVATE_LIFESTYLE_CMAKE_OPTION = (
+    "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1"
+)
+PRIVATE_LIFESTYLE_QUERY_STEPS = (
+    "private-query-player-lifestyle-current-state-v1",
+    "private-query-player-lifestyle-formal-v1",
+    "private-query-player-lifestyle-stock-focus-v1",
+)
 
 
 def sha256(path: Path) -> str:
@@ -125,6 +133,47 @@ def load_manifest(path: Path) -> dict[str, Any]:
     lifecycle_contract(manifest)
     display_mode_contract(manifest)
     return manifest
+
+
+def verify_private_lifestyle_dll(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Check the pinned DLL contains the exact private LIFE query dispatch keys.
+
+    This is a no-launch build admission check, not proof that a CK3 query works.
+    The guarded native dispatch uses these byte strings only when its private
+    CMake option is enabled.  Inspect the DLL that the manifest will load,
+    rather than a potentially unrelated build directory's CMakeCache.
+    """
+    dll = manifest_path(manifest["dll"], "dll")
+    expected = manifest.get("dll_sha256")
+    if not isinstance(expected, str) or re.fullmatch(r"[0-9a-fA-F]{64}", expected) is None:
+        raise ValueError("private LIFE DLL admission requires manifest dll_sha256")
+    actual = sha256(dll)
+    if actual.casefold() != expected.casefold():
+        raise ValueError(f"private LIFE DLL hash mismatch: {actual} != {expected}")
+    binary = dll.read_bytes()
+    missing = [
+        step for step in PRIVATE_LIFESTYLE_QUERY_STEPS
+        if step.encode("ascii") not in binary
+    ]
+    if missing:
+        raise ValueError(
+            "private LIFE DLL lacks native query dispatch keys "
+            f"{', '.join(missing)}; rebuild the pinned DLL with "
+            f"-D{PRIVATE_LIFESTYLE_CMAKE_OPTION}=ON and rerun no-launch pairing"
+        )
+    return {
+        "dll": str(dll),
+        "dll_sha256": actual,
+        "private_lifestyle_query_steps_present": list(PRIVATE_LIFESTYLE_QUERY_STEPS),
+        "native_cmake_option_required": f"{PRIVATE_LIFESTYLE_CMAKE_OPTION}=ON",
+        "game_launched": False,
+    }
+
+
+def command_verify_private_lifestyle_dll(args: argparse.Namespace) -> int:
+    result = verify_private_lifestyle_dll(load_manifest(args.manifest.resolve()))
+    print(json.dumps({"ok": True, **result}, ensure_ascii=False))
+    return 0
 
 
 def display_mode_contract(manifest: dict[str, Any]) -> str:
@@ -948,6 +997,8 @@ def command_run(args: argparse.Namespace) -> int:
             "initial LIFE focus gate requires --private-lifestyle-formal-trial"
         )
     manifest = load_manifest(args.manifest.resolve())
+    if args.private_lifestyle_formal_trial:
+        verify_private_lifestyle_dll(manifest)
     lifecycle = lifecycle_contract(manifest)
     output = args.output.resolve()
     if output.exists():
@@ -1754,6 +1805,10 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--family-proof-report", type=Path)
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
+
+    verify_life_dll = commands.add_parser("verify-private-lifestyle-dll")
+    verify_life_dll.add_argument("--manifest", type=Path, required=True)
+    verify_life_dll.set_defaults(handler=command_verify_private_lifestyle_dll)
 
     run = commands.add_parser("run")
     run.add_argument("--manifest", type=Path, required=True)
