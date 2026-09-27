@@ -48,6 +48,7 @@ class DesktopRecoveryTests(unittest.TestCase):
             with (patch.object(recovery, "inspect", return_value=snapshot()),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
+                  patch.object(recovery, "recorder_pids", return_value=[]),
                   patch.object(recovery, "service_state", return_value={"status": "running", "pid": 11}),
                   patch.object(recovery.steam_offline_fresh_frame, "_steam_windows",
                                return_value=[(123, 456)]),
@@ -73,6 +74,7 @@ class DesktopRecoveryTests(unittest.TestCase):
             with (patch.object(recovery, "inspect", return_value=snapshot()),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
+                  patch.object(recovery, "recorder_pids", return_value=[]),
                   patch.object(recovery, "service_state", return_value={"status": "running", "pid": 11}),
                   patch.object(recovery.steam_offline_fresh_frame, "_steam_windows",
                                return_value=[(123, 456)]),
@@ -88,6 +90,28 @@ class DesktopRecoveryTests(unittest.TestCase):
             restart.assert_called_once_with(2)
             self.assertTrue((args.output_dir / "probe-1").is_dir())
             self.assertTrue((args.output_dir / "probe-2").is_dir())
+
+    def test_stale_capture_does_not_restart_service_while_recording(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            args = Namespace(output_dir=Path(temp) / "attempt", task_bus=Path("bus"),
+                             task_id=TASK, bring_steam_forward=True,
+                             restart_running_todesk_on_stale=True,
+                             service_timeout_seconds=2)
+            with (patch.object(recovery, "inspect", return_value=snapshot()),
+                  patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
+                  patch.object(recovery, "ck3_pids", return_value=[]),
+                  patch.object(recovery, "recorder_pids", return_value=[99]),
+                  patch.object(recovery, "service_state", return_value={"status": "running", "pid": 11}),
+                  patch.object(recovery.steam_offline_fresh_frame, "_steam_windows",
+                               return_value=[(123, 456)]),
+                  patch.object(recovery, "ensure_service_running"),
+                  patch.object(recovery, "capture_fresh_frame",
+                               side_effect=RuntimeError(recovery.STALE_CAPTURE_ERROR)),
+                  patch.object(recovery, "restart_running_service") as restart):
+                report = recovery.recover(args)
+            self.assertEqual(report["outcome"], "stale_or_unavailable")
+            restart.assert_not_called()
+            self.assertFalse((args.output_dir / "probe-2").exists())
 
     def test_recovery_refuses_without_own_screen_lease(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

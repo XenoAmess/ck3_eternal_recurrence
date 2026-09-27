@@ -25,6 +25,7 @@ SERVICE = "ToDesk_Service"
 SCREEN_RESOURCE = "ck3-screen:acquired"
 STALE_CAPTURE_ERROR = "desktop capture did not respond to live Steam movement"
 DEFAULT_BUS = Path(r"D:\workspace\.codex-task-bus\bin\codex_task_bus.py")
+RECORDER_NAMES = {"ffmpeg.exe", "obs64.exe", "obs32.exe", "obs.exe"}
 
 
 def now() -> str:
@@ -52,6 +53,11 @@ def screen_owners(tasks: list[dict]) -> list[str]:
 def ck3_pids() -> list[int]:
     return sorted(process.info["pid"] for process in psutil.process_iter(["pid", "name"])
                   if (process.info["name"] or "").lower() == "ck3.exe")
+
+
+def recorder_pids() -> list[int]:
+    return sorted(process.info["pid"] for process in psutil.process_iter(["pid", "name"])
+                  if (process.info["name"] or "").lower() in RECORDER_NAMES)
 
 
 def service_state() -> dict:
@@ -157,6 +163,7 @@ def inspect(bus: Path) -> dict:
         "observed_at_utc": now(),
         "todesk_service": service_state(),
         "ck3_pids": ck3_pids(),
+        "recorder_pids": recorder_pids(),
         "steam_windows": [{"hwnd": hwnd, "pid": pid}
                           for hwnd, pid in steam_offline_fresh_frame._steam_windows()],
         "foreground_hwnd": win32gui.GetForegroundWindow(),
@@ -223,6 +230,12 @@ def recover(args: argparse.Namespace) -> dict:
                         outcome = "stale_or_unavailable"
                         break
                     require_exclusive_screen(args.task_bus, args.task_id)
+                    recorders = recorder_pids()
+                    if recorders:
+                        record("restart_blocked", reason="recorder_running",
+                               recorder_pids=recorders)
+                        outcome = "stale_or_unavailable"
+                        break
                     restarted = restart_running_service(args.service_timeout_seconds)
                     record("todesk_restarted", state=restarted)
             if not any(pid == steam_pid for _, pid in steam_offline_fresh_frame._steam_windows()):
