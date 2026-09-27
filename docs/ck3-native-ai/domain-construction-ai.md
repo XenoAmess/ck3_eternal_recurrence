@@ -1040,3 +1040,7 @@ construction loop 跑通后再扩展 outcome delta，不把收益解析提前做
   `-O` 全量 seal verifier 证明 no-launch GREEN；这不是 R691 实机证据，也不改变 R687 的 bounded NO-GO。
 - **[live pending]** 没有 `domain-construction-candidates-v1` 生产 reader 或 MCP fixture，故本专题仍是 exact-build tree +
   contract-ready，不提升为 production-live primitive。
+
+## C97 province monthly income raw readback
+
+See [exact-build province aggregate source](domain-construction-province-income-raw-c97.md). This private read-only field is static/fixture ready; paused live readback, units and building attribution remain unproven.

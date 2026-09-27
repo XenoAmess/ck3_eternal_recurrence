@@ -191,6 +191,7 @@ Fixture Scene() {
   f.Put(0x200000 + 0x14C, std::int32_t{4000});
   f.Put(0x720000 + kProvince * 8, std::uintptr_t{0x700000});
   f.Put(0x700000 + 0x10, kProvince);
+  f.Put(0x700000 + 0x720, std::int64_t{2468000});
   f.Put(0x700000 + 0x620 + 0x18, std::uintptr_t{0x730000});
   f.Put(0x700000 + 0x620 + 0x24, std::int32_t{2});
   f.Put(0x730000, std::uintptr_t{0});
@@ -275,7 +276,8 @@ int main() {
                     std::vector<PlayerHeldHoldingSourceV1>{{kBarony, kProvince}} &&
                 r.active_constructions ==
                     std::vector<PlayerWorldActiveConstructionV1>{
-                        {kBarony, kProvince, false, -1, -1, -1}},
+                        {kBarony, kProvince, false, -1, -1, -1,
+                         0, 0, true, 2468000}},
             "world_definitions_independent_of_closed_gui");
     Require(r.native_final_legality_evaluated &&
                 r.snapshot_revision == 3 &&
@@ -286,6 +288,16 @@ int main() {
                          "farm_estates_01"}} &&
                 !r.cost_ready && f.native_checks == 4,
             "same_frame_player_final_legality_sample_not_cost_or_action");
+  }
+  {
+    auto f = Scene();
+    for (std::uintptr_t byte = 0; byte < sizeof(std::int64_t); ++byte)
+      f.bytes.erase(0x700000 + 0x720 + byte);
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.active_constructions.size() == 1 &&
+                !r.active_constructions[0].native_province_monthly_income_observed,
+            "unreadable_province_income_is_null_not_zero_or_source_red");
   }
   {
     auto f = Scene();
@@ -301,7 +313,7 @@ int main() {
     Require(r.source_available && r.active_constructions ==
                 std::vector<PlayerWorldActiveConstructionV1>{
                     {kBarony, kProvince, true, 22, 1, kActor,
-                     109500000, 100000}},
+                     109500000, 100000, true, 2468000}},
             "stock_active_building_is_independent_material_receipt");
   }
   {
@@ -313,7 +325,9 @@ int main() {
                 r.completed_buildings ==
                 std::vector<PlayerWorldCompletedBuildingV1>{
                     {kBarony, kProvince, 22, 1}} &&
-                !r.active_constructions[0].active,
+                !r.active_constructions[0].active &&
+                r.active_constructions[0].native_province_monthly_income_observed &&
+                r.active_constructions[0].native_province_monthly_income_raw == 2468000,
             "stock_completed_slot_is_separate_from_active_queue");
   }
   {

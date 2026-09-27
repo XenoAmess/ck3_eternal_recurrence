@@ -87,6 +87,10 @@ struct PlayerWorldActiveConstructionV1 final {
   // private and unconverted until a paused runtime read validates cadence.
   std::int64_t remaining_work_raw = 0;
   std::int64_t progress_divisor_raw = 0;
+  // CMonthlyIncomeTrigger reads this aggregate from Province+0x720. It is
+  // neither a building-exclusive delta nor a calibrated currency amount.
+  bool native_province_monthly_income_observed = false;
+  std::int64_t native_province_monthly_income_raw = 0;
   friend bool operator==(const PlayerWorldActiveConstructionV1 &,
                          const PlayerWorldActiveConstructionV1 &) = default;
 };

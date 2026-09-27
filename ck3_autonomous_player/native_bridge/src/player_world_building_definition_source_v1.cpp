@@ -396,6 +396,9 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
       PlayerWorldActiveConstructionV1 state{};
       state.barony_title_id = holding.barony_title_id;
       state.province_id = holding.province_id;
+      state.native_province_monthly_income_observed =
+          Read(campaign, province, 0x720,
+               state.native_province_monthly_income_raw);
       if (active_definition != 0) {
         const auto match = std::find_if(
             definitions.begin(), definitions.end(),

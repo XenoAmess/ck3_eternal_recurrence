@@ -58,6 +58,39 @@ def verify(exe: Path) -> None:
         _require_equal(hashlib.sha256(pe.get_data(start, end - start)).hexdigest().upper(),
                        region["sha256"], f"source span {region['name']} SHA-256")
     _require_equal(pe.OPTIONAL_HEADER.SizeOfImage, 0x5C2D000, "PE image size")
+    income = abi["province_monthly_income_private_projection"]
+    _require_equal(pe.get_string_at_rva(rva(income["name_rva"])),
+                   b"monthly_income", "province trigger name")
+    _require_equal(pe.get_string_at_rva(rva(income["description_rva"])),
+                   b"Check the income of the scoped province\nmonthly_income > 10",
+                   "province trigger description")
+    _require_equal(rip_target(pe, rva(income["name_lea_rva"])),
+                   rva(income["name_rva"]), "province trigger registration name")
+    _require_equal(rip_target(pe, rva(income["description_lea_rva"])),
+                   rva(income["description_rva"]), "province trigger registration description")
+    income_vtable = rva(income["trigger_vtable_rva"])
+    income_col_va = struct.unpack("<Q", pe.get_data(income_vtable - 8, 8))[0]
+    _require_equal(income_col_va - pe.OPTIONAL_HEADER.ImageBase,
+                   rva(income["trigger_col_rva"]), "province trigger COL")
+    income_col = struct.unpack("<6I", pe.get_data(rva(income["trigger_col_rva"]), 24))
+    _require(income_col[0] == 1 and income_col[3] == rva(income["trigger_type_descriptor_rva"])
+             and income_col[5] == rva(income["trigger_col_rva"]),
+             "province trigger RTTI layout")
+    _require_equal(pe.get_string_at_rva(rva(income["trigger_type_descriptor_rva"]) + 16),
+                   b".?AVCMonthlyIncomeTrigger@@", "province trigger RTTI name")
+    getter_va = struct.unpack("<Q", pe.get_data(
+        income_vtable + income["getter_slot_index"] * 8, 8))[0]
+    _require_equal(getter_va - pe.OPTIONAL_HEADER.ImageBase,
+                   rva(income["getter_rva"]), "province trigger getter slot")
+    _require_equal(hashlib.sha256(pe.get_data(
+        rva(income["getter_rva"]),
+        rva(income["getter_end_rva_exclusive"]) - rva(income["getter_rva"])
+    )).hexdigest().upper(), income["getter_sha256"], "province trigger getter bytes")
+    _require_equal(pe.get_data(0x2857683, 5), b"\x66\x83\x39\x08\x75",
+                   "province trigger scope kind 8")
+    _require_equal(pe.get_data(0x28576B7, 10),
+                   b"\x48\x8b\x80\x20\x07\x00\x00\x48\x89\x02",
+                   "province monthly income raw copy")
     world = abi["world_source"]
     _require_equal(rip_target(pe, 0x864754), rva(world["global_slot_rva"]), "world global load")
     _require_equal(rip_target(pe, 0x86479B), rva(world["global_slot_rva"]), "world global address")
@@ -135,7 +168,8 @@ def verify(exe: Path) -> None:
     print("GREEN exact CBuildingType manager vector/player final-legality source; CK3 not launched")
     print("EVIDENCE_SCOPE " + json.dumps({
         "evidence_scope": "exact-build-static-chain",
-        "verified": ["executable-and-span-bytes", "direct-call-and-global-anchors", "RTTI-type-chain"],
+        "verified": ["executable-and-span-bytes", "direct-call-and-global-anchors", "RTTI-type-chain",
+                     "province-monthly-income-trigger-raw-source"],
         "not_verified": ["live-behavior", "complete-decision-semantics"],
         "game_process_started": False,
     }, sort_keys=True))

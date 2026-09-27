@@ -5,6 +5,22 @@
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "read_only": true,
+  "province_monthly_income_private_projection": {
+    "trigger_registration_rva": "0x53FEA0",
+    "name_lea_rva": "0x53FEB1",
+    "name_rva": "0x429B6E8",
+    "description_lea_rva": "0x53FF04",
+    "description_rva": "0x4382F88",
+    "trigger_vtable_rva": "0x4383CE8",
+    "trigger_col_rva": "0x49C6358",
+    "trigger_type_descriptor_rva": "0x5504D90",
+    "getter_slot_index": 32,
+    "getter_rva": "0x2857680",
+    "getter_end_rva_exclusive": "0x28576DA",
+    "getter_sha256": "F7C7529CBC9B0DF23E424CD1D3C8A3B3D5747669C1EED7A76F4091939089E313",
+    "province_offset": "0x720",
+    "qualification": "private read-only Province monthly_income trigger aggregate raw; scale and building-exclusive marginal income unproven, no formal ROI use"
+  },
   "active_progress_private_projection": {
     "remaining_work_offset_from_province_slots": "0x88",
     "progress_divisor_offset_from_province_slots": "0xE8",

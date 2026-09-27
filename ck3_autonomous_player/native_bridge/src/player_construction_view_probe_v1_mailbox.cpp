@@ -586,6 +586,12 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += ",\"native_progress_divisor_raw\":";
       json += active.active ? std::to_string(active.progress_divisor_raw)
                             : "null";
+      json += ",\"native_province_monthly_income_observed\":";
+      json += active.native_province_monthly_income_observed ? "true" : "false";
+      json += ",\"native_province_monthly_income_raw\":";
+      json += active.native_province_monthly_income_observed
+                  ? std::to_string(active.native_province_monthly_income_raw)
+                  : "null";
       json += '}';
     }
   }
