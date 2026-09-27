@@ -191,6 +191,21 @@ class CombatPhaseEventTraceQueryTest(unittest.TestCase):
         self.assertIs(diagnostic["diagnostic_observation_complete"], False)
         self.assertIs(diagnostic["forecast_usable"], False)
 
+    def test_counter_output_sequence_failure_codes_remain_diagnostic(self) -> None:
+        for gate in (3, 31, 32, 33):
+            trace = managed_counter_trace()
+            output = trace["trace"]["runtime_counter_output"]
+            output.update(pair_complete=False, count=0, sides=[],
+                          first_failure_gate=gate)
+            trace["trace"]["failure_flags"] = 1 << 20
+            trace["trace"]["status"] = "failed"
+            trace["trace"]["readiness"]["bounded_capture_complete"] = False
+            trace["trace"]["readiness"]["runtime_counter_output_pair_complete"] = False
+            with self.subTest(gate=gate):
+                diagnostic = normalize_runtime_counter_output_diagnostic_v1(trace)
+                self.assertEqual(diagnostic["hook_diagnostic"]["first_failure_gate"], gate)
+                self.assertIs(diagnostic["forecast_usable"], False)
+
     def test_counter_output_rejects_forged_pair_or_vector(self) -> None:
         mutations = (
             lambda trace: trace["trace"]["runtime_counter_output"]["sides"][1].update(side_index=0),

@@ -1687,10 +1687,20 @@ bool CaptureCombatCounterOutputV1(
     return false;
   }
   CombatPhaseEventTraceRingV1::CounterOutputRecord record{};
-  bool valid = ring->committed_count.load(std::memory_order_acquire) == 6 &&
-               ring->counter_output_count.load(std::memory_order_acquire) == index &&
-               GetCurrentThreadId() == ring->plan.owner_thread_id;
-  if (!valid) MarkCounterOutputGate(*ring, 3); // Sequence or thread.
+  const auto committed_count =
+      ring->committed_count.load(std::memory_order_acquire);
+  const auto captured_count =
+      ring->counter_output_count.load(std::memory_order_acquire);
+  const auto current_thread_id = GetCurrentThreadId();
+  bool valid = committed_count == 6 && captured_count == index &&
+               current_thread_id == ring->plan.owner_thread_id;
+  if (!valid) {
+    // Preserve the legacy gate 3 meaning for older receipts; distinguish its
+    // three mutually ordered checks in new captures without exposing pointers.
+    MarkCounterOutputGate(*ring, committed_count != 6   ? 31
+                                 : captured_count != index ? 32
+                                                           : 33);
+  }
   if (valid) {
 #if defined(_MSC_VER)
     __try {

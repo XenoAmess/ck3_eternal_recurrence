@@ -78,7 +78,8 @@ def normalize_runtime_counter_output_diagnostic_v1(
         first_failure_gate = output["first_failure_gate"]
         if (not _bounded_int(hook_calls, 0, 2**32 - 1)
                 or not _bounded_int(target_calls, 0, hook_calls)
-                or not _bounded_int(first_failure_gate, 0, 5)
+                or not _bounded_int(first_failure_gate, 0, 33)
+                or first_failure_gate not in (0, 1, 2, 3, 4, 5, 31, 32, 33)
                 or (first_failure_gate != 0 and target_calls == 0)):
             raise ValueError("runtime counter output diagnostic counters differ")
     if output["source"] != _COUNTER_OUTPUT_SOURCE or output["requested"] is not True:

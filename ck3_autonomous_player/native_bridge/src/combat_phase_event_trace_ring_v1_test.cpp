@@ -1148,6 +1148,27 @@ bool CounterOutputCaptureCases() {
     return Fail("counter-output bad header was accepted");
   }
   CancelCombatPhaseEventTraceRingV1(*ring);
+  Store(header, 12, std::int32_t{2});
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("counter-output sequence diagnostic arm failed");
+  ring->committed_count.store(5);
+  if (capture(0) || ring->counter_output_first_failure_gate.load() != 31)
+    return Fail("counter-output committed-boundary gate was not distinguished");
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("counter-output ordering diagnostic arm failed");
+  ring->committed_count.store(6);
+  ring->counter_output_count.store(1);
+  if (capture(0) || ring->counter_output_first_failure_gate.load() != 32)
+    return Fail("counter-output side-order gate was not distinguished");
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  fixture.plan.owner_thread_id = GetCurrentThreadId() + 1;
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("counter-output thread diagnostic arm failed");
+  ring->committed_count.store(6);
+  if (capture(0) || ring->counter_output_first_failure_gate.load() != 33)
+    return Fail("counter-output owner-thread gate was not distinguished");
+  CancelCombatPhaseEventTraceRingV1(*ring);
   return true;
 }
 
