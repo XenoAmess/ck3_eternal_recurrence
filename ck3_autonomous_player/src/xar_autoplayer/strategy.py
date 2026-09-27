@@ -6810,6 +6810,7 @@ def _annotate_active_combat_resume_input(
     subject = _native_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
     sequence = _native_int(snapshot.get("battle_control_snapshot_v1_query_sequence"))
     receipt: dict[str, object] | None = None
+    battle_side_mapping: dict[str, object] | None = None
     if raw_receipt is not None:
         try:
             if not (
@@ -6834,6 +6835,26 @@ def _annotate_active_combat_resume_input(
             receipt = normalize_active_combat_resume_inputs_v1(
                 raw_receipt, parent=normalized_parent
             )
+            subject_side_index = normalized_parent["side_index"]
+            same_side = normalized_parent[
+                "attacker" if subject_side_index == 0 else "defender"
+            ]
+            opposing_side = normalized_parent[
+                "defender" if subject_side_index == 0 else "attacker"
+            ]
+            battle_side_mapping = {
+                "subject_side_index": subject_side_index,
+                "opposing_side_index": 1 - subject_side_index,
+                "subject_owner_character_id": normalized_parent[
+                    "selected_owner_character_id"
+                ],
+                "same_side_public_cunit_ids_in_stored_order": [
+                    army["public_cunit_id"] for army in same_side["ordered_armies"]
+                ],
+                "opposing_side_public_cunit_ids_in_stored_order": [
+                    army["public_cunit_id"] for army in opposing_side["ordered_armies"]
+                ],
+            }
         except (TypeError, ValueError):
             receipt = None
 
@@ -6855,6 +6876,10 @@ def _annotate_active_combat_resume_input(
             "source": (
                 dict(receipt["source"])
                 if receipt is not None and army_id == subject else None
+            ),
+            "battle_side_mapping": (
+                dict(battle_side_mapping)
+                if battle_side_mapping is not None and army_id == subject else None
             ),
             "battle_control_query_sequence": (
                 sequence if receipt is not None and army_id == subject else None

@@ -838,6 +838,15 @@ class BattleControlStrategyTests(unittest.TestCase):
         self.assertEqual(subject["missing_required_domains"], receipt["missing_required_domains"])
         self.assertEqual(subject["source"], receipt["source"])
         self.assertEqual(subject["battle_control_query_sequence"], 41)
+        mapping = subject["battle_side_mapping"]
+        self.assertEqual(mapping["subject_side_index"], 0)
+        self.assertEqual(mapping["opposing_side_index"], 1)
+        self.assertEqual(mapping["subject_owner_character_id"], 29_829)
+        self.assertIn(SUBJECT, mapping["same_side_public_cunit_ids_in_stored_order"])
+        self.assertEqual(
+            mapping["opposing_side_public_cunit_ids_in_stored_order"],
+            [357, 33_554_657],
+        )
 
         stale = copy.deepcopy(receipt)
         stale["source"]["combat_id"] += 1
@@ -854,6 +863,7 @@ class BattleControlStrategyTests(unittest.TestCase):
             invalid_subject["unavailable_reason"], "same_frame_resume_receipt_invalid"
         )
         self.assertIsNone(invalid_subject["source"])
+        self.assertIsNone(invalid_subject["battle_side_mapping"])
 
     def test_mismatched_current_binding_requires_a_fresh_query(self) -> None:
         frame = _battle_frame()

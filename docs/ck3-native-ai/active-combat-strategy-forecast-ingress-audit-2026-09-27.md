@@ -20,6 +20,8 @@
 
 该字段只解释当前决策证据，不改 `selected_step`、原生撤退合法性、一次一日推进或哨兵门槛，也不调用研究续算内核。合成驱动测试验证回执投影、父子身份不一致或 revision 漂移时同时清空；策略测试验证现役一日推进步骤保持不变、有效回执的缺失原因被记录、畸形回执不泄漏 source。聚焦验证 `74 passed, 9 subtests passed`，不是 CK3 实机同帧验收。
 
+在 086 原版暂停帧证明 subject 战斗侧身份后，策略的同帧注释现从已校验的 battle-control 父帧逐军队给出 `battle_side_mapping`：指定军队所在 side index、对面 side index、owner，以及两侧有序 PublicCUnitID。映射只有回执、父帧和查询代次全匹配时出现；畸形或跨帧回执返回 `null`，不借 v3 假定接战名单。这让游玩智能体明确知道“我方正在这场战斗的哪侧”，但 `used_for_decision=false` 且整场续算仍 unavailable；它没有改变撤退/推进动作或提升胜率可用性。当前聚焦回归为 `76 passed, 9 subtests passed`；086 的 live side1 与合成测试的 subject side0 覆盖两个朝向。
+
 ## 原生同帧输入余缺
 
 `active_combat_resume_inputs_v1.missing_required_domains` 明列玩家 coalition 映射、下一次将领 roll bounds、现役反制 class/stack/context、下一日非 roll 优势，以及骑士参与/动态 entry 转换。仍需把每个值与同一 application-main 的 full-generation `CombatID`、所有实际参与者、side0/side1 和日界结果核对；不能把战前 v3 的首次接战数值、缺失的 hard casualty 或未知未来增援填零。详见[原生回执合同](active-combat-resume-native-observation-receipt-2026-09-27.md)与[续算内核研究](active-main-combat-resume-kernel-2026-09-27.md)。
