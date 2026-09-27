@@ -13565,6 +13565,47 @@ def _choose_one_life_turn_core(
                 ),
                 "declaration": declaration,
             }
+        if not fresh_assessment:
+            advance = "life-advance" if "life-advance" in available_steps else None
+            power_eu = _war_entry_power_eu_projection(None)
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": (
+                    "native_war_entry_no_declare"
+                    if advance else "native_war_entry_evidence_required"
+                ),
+                "selected_step": advance,
+                "required_step": assessment_step,
+                "reason": (
+                    "the native declaration is legal, but its same-frame native "
+                    "power assessment is missing and cannot be queried now; "
+                    "choose NO_DECLARE and refresh before reconsidering"
+                ),
+                "decision": {
+                    "policy": "war-entry-minimal-defer-v1",
+                    "outcome": "NO_DECLARE",
+                    "declaration_id": declaration.get("declaration_id"),
+                    "target_character_id": declaration_target,
+                    "casus_belli_key": declaration.get("casus_belli_key"),
+                    "native_power_assessment_consumed": False,
+                    "eu_lower_raw": None,
+                    "advance_contract": "native_life_advance" if advance else None,
+                    "automatic_declaration_enabled": False,
+                    "native_ai_equivalent": False,
+                    "semantic_optimal": False,
+                    "missing_components": list(power_eu["missing_components"]),
+                },
+                "required_capabilities": [
+                    QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+                    "game.forecast.combat-monte-carlo-v1",
+                    "game.command.query-war-entry-assessments-v1-N",
+                ],
+                "general_battle_prior_scope_blockers": ["fresh_power_assessment"],
+                "missing_fields": ["war_entry_assessment"],
+                "declaration": declaration,
+                "war_entry_assessment": None,
+                "war_entry_expected_utility": power_eu,
+            }
         power_eu = _war_entry_power_eu_projection(assessment_row)
         power_component = power_eu.get("native_power_component")
         conservative_margin = (

@@ -8533,6 +8533,14 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
         self.assertFalse(plan["decision"]["automatic_declaration_enabled"])
+        self.assertFalse(plan["decision"]["native_power_assessment_consumed"])
+        self.assertIsNone(plan["decision"]["eu_lower_raw"])
+        self.assertEqual(plan["missing_fields"], ["war_entry_assessment"])
+        self.assertIn(
+            "native_power_assessment",
+            plan["decision"]["missing_components"],
+        )
+        self.assertIsNone(plan["war_entry_assessment"])
         self.assertEqual(plan["declaration"]["declaration_id"], "808-17-0")
         self.assertIn(
             "game.command.query-combat-simulation-inputs-v3-N",
@@ -8542,6 +8550,15 @@ class GameplayBridgeTests(unittest.TestCase):
             "game.forecast.combat-monte-carlo-v1",
             plan["required_capabilities"],
         )
+        blocked = choose_one_life_turn(
+            [{"index": 1, "command": "save-checkpoint", "ok": True}],
+            snapshot=snapshot,
+            action_steps=("declare-war-808-17-0", "query-declarable-wars"),
+        )
+        self.assertEqual(blocked["phase"], "native_war_entry_evidence_required")
+        self.assertIsNone(blocked["selected_step"])
+        self.assertEqual(blocked["decision"]["outcome"], "NO_DECLARE")
+        self.assertEqual(blocked["missing_fields"], ["war_entry_assessment"])
 
     def test_hybrid_propagates_semantic_settlement_without_visual_action(
         self,
@@ -17805,7 +17822,10 @@ class GameplayBridgeTests(unittest.TestCase):
             snapshot=snapshot,
             action_steps=("life-advance", "query-declarable-wars"),
         )
-        self.assertNotEqual(expired["phase"], "native_postwar_reentry_cooldown")
+        self.assertEqual(expired["phase"], "native_war_entry_no_declare")
+        self.assertEqual(expired["selected_step"], "life-advance")
+        self.assertEqual(expired["decision"]["outcome"], "NO_DECLARE")
+        self.assertEqual(expired["missing_fields"], ["war_entry_assessment"])
 
     def test_typed_war_service_routes_exact_native_commands(self) -> None:
         player = _army(
