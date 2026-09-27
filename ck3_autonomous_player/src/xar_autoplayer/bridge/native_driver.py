@@ -2468,7 +2468,7 @@ class NativeHeadlessGameplayDriver:
         )
 
     def query_player_prisoner_collection_private_v1(
-        self, *, expected_revision: int
+        self, *, expected_revision: int, ransom_ordinal: int = 0,
     ) -> dict[str, object]:
         """Unadvertised, paused current-player prisoner ID collection readback."""
         from .player_prisoner_collection_private_transport import (
@@ -2478,6 +2478,7 @@ class NativeHeadlessGameplayDriver:
         return query_player_prisoner_collection_private_v1(
             self,
             expected_revision=expected_revision,
+            ransom_ordinal=ransom_ordinal,
             timeout_seconds=self.command_timeout_seconds,
         )
 

@@ -158,14 +158,15 @@ void ReadRansomQuote(PlayerPrisonerCollectionMailboxContextV1 &query) {
     query.ransom_quotes[index].failure =
         PlayerPrisonerRansomQuoteFailureV1::not_evaluated;
   }
-  // The first complete collection row is a scene target, not a hard-coded
-  // character. One bounded native evaluator fits the existing paused mailbox.
-  if (query.result.returned_count != 0) {
-    query.ransom_quotes[0] = ReadPlayerPrisonerRansomQuotePrivateV1(
+  // Each mailbox still evaluates at most one current collection row. The
+  // caller may request another ordinal in a separate same-frame read.
+  if (query.requested_ransom_ordinal < query.result.returned_count) {
+    const auto index = query.requested_ransom_ordinal;
+    query.ransom_quotes[index] = ReadPlayerPrisonerRansomQuotePrivateV1(
         query.bindings,
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         query.result.frame.played_character_id,
-        static_cast<std::int32_t>(query.result.rows[0].full_character_id));
+        static_cast<std::int32_t>(query.result.rows[index].full_character_id));
   }
   query.ransom_quotes_complete = true;
 }

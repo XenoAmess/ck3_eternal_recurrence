@@ -10,6 +10,7 @@ from .timeline_blocker_private_transport import _binding
 
 
 STEP = "query-player-prisoner-collection-private-v1"
+RANSOM_ORDINAL_STEP_PREFIX = STEP + "-ransom-ordinal-"
 SCHEMA = "player-prisoner-collection-private-v1"
 _ENVELOPE_KEYS = {
     "step", "accepted", "status", "query_sequence", "observation_revision",
@@ -46,12 +47,15 @@ def _lineage_id(value: object) -> bool:
 
 
 def query_player_prisoner_collection_private_v1(
-    driver: object, *, expected_revision: int, timeout_seconds: float = 30.0,
+    driver: object, *, expected_revision: int, ransom_ordinal: int = 0,
+    timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_prisoner_collection_query", False) is not True:
         raise UnsupportedStepError("private prisoner collection query is disabled")
     if not _positive_int(expected_revision):
         raise ValueError("expected_revision must be a positive integer")
+    if type(ransom_ordinal) is not int or not 0 <= ransom_ordinal < 64:
+        raise ValueError("ransom_ordinal must be an integer from 0 through 63")
     if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float)) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = driver.take_snapshot()
@@ -71,9 +75,10 @@ def query_player_prisoner_collection_private_v1(
     ):
         raise BridgeUnavailableError("prisoner collection requires a living player on a paused map frame")
     request_id = "prisoner-collection-" + uuid.uuid4().hex
+    step = STEP if ransom_ordinal == 0 else f"{RANSOM_ORDINAL_STEP_PREFIX}{ransom_ordinal}"
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
-        "request_id": request_id, "step": STEP,
+        "request_id": request_id, "step": step,
         "expected_revision": native_revision,
     })
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
@@ -82,7 +87,7 @@ def query_player_prisoner_collection_private_v1(
     envelope = frame.get("result")
     if (
         not isinstance(envelope, dict) or set(envelope) != _ENVELOPE_KEYS
-        or envelope.get("step") != STEP or envelope.get("accepted") is not True
+        or envelope.get("step") != step or envelope.get("accepted") is not True
         or envelope.get("snapshot_revision") != native_revision
         or envelope.get("private_build") is not True
         or envelope.get("read_only") is not True
@@ -122,6 +127,8 @@ def query_player_prisoner_collection_private_v1(
             ))
         ):
             raise BridgeUnavailableError("private prisoner collection count or binding is malformed")
+        if ransom_ordinal and (not ransom_version or ransom_ordinal >= count):
+            raise BridgeUnavailableError("requested prisoner ransom ordinal is absent")
         seen: set[int] = set()
         for ordinal, row in enumerate(rows):
             if (
@@ -242,6 +249,11 @@ def query_player_prisoner_collection_private_v1(
                 else:
                     raise BridgeUnavailableError("private ransom quote status is malformed")
             seen.add(row["prisoner_character_id"])
+        if ransom_version and ransom_ordinal:
+            for ordinal, row in enumerate(rows):
+                quote = row["ransom_quote_preview"]
+                if (quote.get("unavailable_reason") == "not_evaluated") is (ordinal == ransom_ordinal):
+                    raise BridgeUnavailableError("private ransom quote evaluated the wrong prisoner ordinal")
     elif value["status"] == "unavailable":
         if (
             not isinstance(value.get("unavailable_reason"), str)

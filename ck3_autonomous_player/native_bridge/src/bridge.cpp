@@ -7296,7 +7296,8 @@ std::string PlayerEpidemicTreatmentPresenceResultFrame(
 
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
 std::string PlayerPrisonerCollectionPrivateResultFrame(
-    std::string_view request_id, std::uint64_t query_sequence,
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
     std::uint64_t observation_revision, std::uint64_t snapshot_revision,
     const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &value
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
@@ -7327,7 +7328,7 @@ std::string PlayerPrisonerCollectionPrivateResultFrame(
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(result, request_id);
   result += ",\"ok\":true,\"result\":{\"step\":\"";
-  result += xar::ck3_11906::kPlayerPrisonerCollectionPrivateStepV1;
+  result += step;
   result += "\",\"accepted\":true,\"status\":\"";
   result += value.available ? "available" : "unavailable";
   result += "\",\"query_sequence\":" + Number(query_sequence);
@@ -10029,8 +10030,12 @@ void RunConnectedSession(
                                   kPlayerEpidemicTreatmentPresenceStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
-                   && step != xar::ck3_11906::
-                                  kPlayerPrisonerCollectionPrivateStepV1
+                   && ![&]() {
+                     std::uint32_t ransom_ordinal = 0;
+                     return xar::ck3_11906::
+                         ParsePlayerPrisonerCollectionPrivateStepV1(
+                             step, ransom_ordinal);
+                   }()
 #endif
 #if defined(XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1)
                    && ![&]() {
@@ -15094,9 +15099,16 @@ void RunConnectedSession(
           }
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
-        } else if (step == xar::ck3_11906::
-                                kPlayerPrisonerCollectionPrivateStepV1) {
+        } else if ([&]() {
+                     std::uint32_t ransom_ordinal = 0;
+                     return xar::ck3_11906::
+                         ParsePlayerPrisonerCollectionPrivateStepV1(
+                             step, ransom_ordinal);
+                   }()) {
           std::uint64_t expected_revision = 0;
+          std::uint32_t requested_ransom_ordinal = 0;
+          (void)xar::ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(
+              step, requested_ransom_ordinal);
           if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
                   incoming.payload, expected_revision)) {
             connected = xar::bridge::WriteFrame(
@@ -15122,6 +15134,7 @@ void RunConnectedSession(
               query.mailbox = &g_main_thread_query_mailbox_v1;
               query.bindings = xar::ck3_11906::BindCurrentProcess(true);
               query.expected_revision = expected_revision;
+              query.requested_ransom_ordinal = requested_ransom_ordinal;
               query.expected_snapshot = current_snapshot;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
@@ -15156,7 +15169,7 @@ void RunConnectedSession(
                 std::string response;
                 if (stable) {
                   response = PlayerPrisonerCollectionPrivateResultFrame(
-                      request_id,
+                      request_id, step,
                       player_prisoner_collection_query_sequence + 1,
                       query.execution_stamp.pump_epoch, expected_revision,
                       query.result
