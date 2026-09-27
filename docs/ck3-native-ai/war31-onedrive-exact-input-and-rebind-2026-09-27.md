@@ -28,3 +28,7 @@ OneDrive 客户端的“选择文件夹”中，目标目录显示约 96.4 MB，
 用户已有的单次授权被原文转录到**跨 attempt 固定**的外置 `one-shot-authorization/user-authorization.json`，SHA-256 `2D60074DEAF365966C7C78649147862F2BC2D52CCA91F6CE68CA08FB423DA3BF`。用原始 R0197 save/driver 构造生产门禁成功，构造过程没有创建 `war31-one-shot-submission-reservation.json`，也没有启动 CK3 或投降。授权回执与来源、操作者、时间、精确输入哈希另见同目录 `authorization-manifest.json`；不能为新的 attempt 复制授权来重置单次 fence。
 
 WAR-WINDOW-ROBERT-H2577-20260927 的 [Git 协调回复](../autonomous-agent-progress/coordination/war-requests/responses/WAR-WINDOW-ROBERT-H2577-20260927.json)已明确让出当前拟议窗口。在 Robert h2577 执行者通过该通道报告完成、释放，并完成新鲜本机资源检查之前，不启动 WAR31。以上仅说明新代码与精确输入完成**无启动门禁**，不说明 WAR31 同帧、动作或结算已有实机证据。
+
+同一个 `attempt-02` 还用跨 attempt 固定授权回执、原始 R0197 两文件和原管道启动了**仅 MCP stdio 的子进程**作握手，确认 117 个工具中含 `ck3_take_snapshot`、`ck3_execute_step` 与 `ck3_get_capabilities`；随即正常退出，未启动 CK3、未创建一次性 fence。外置 `mcp-no-launch-argv.json`、`mcp-no-launch-stderr.txt` 与 `mcp-no-launch-result.json` 分别保存命令、错误流和结果。这是连接路径静态就绪，不是游戏内同帧通过。
+
+为后续战前/战后材料差分，已用精确 SHA `E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D` 的 Rakaly 0.8.19 对 R0197 原件**只读** melt，外置文本 SHA-256 `FC39B744D666C649C4E54B1198F7C7C5B39847B8AB8E98BC97F16919D9603C79`。新 [存档材料投影器](war31-save-material-reader-2026-09-27.md)在该文本上读取到 1074-11-17 战前：`c_foggia`（title 2128）holder 为 33435，de facto 上级 title 2141 的 holder 为玩家 29829；玩家 29829 的 gold/piety/prestige 原始整数分别为 `111798776/40657500/252655450`，对手 30097 分别为 `25389507/34050000/85620500`，均以 `100000` 为单位缩放。确切行号、对应人物、下级 title 和 unavailable 字段保存在 `attempt-02/R0197-before-save-material.json`。这些是**未投降的基线**；不能由它们推断战后会如何变化。
