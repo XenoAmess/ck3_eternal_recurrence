@@ -1,6 +1,6 @@
 # CK3 1.19.0.6：增援加入后的战宽缓存与主阶段出伤读取
 
-本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；078 已在实机取得 join 前后两点战宽，首次 phase-fire 第三点仍未取得，不能把完整传递链写成已实测。
+本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；078 先取得 join 前后两点，后续独立 083 attempt 已取得同一增援的第三点实际出伤入参。完整 entry 差额与未来增援到达日仍需另行取证。
 
 | 生产或消费点 | 原生行为 | 被动读取的字段 |
 | --- | --- | --- |
@@ -70,13 +70,21 @@ exact-build `ck3.exe` SHA-256 仍为页首值；本轮重新核对的最短写�
 
 080 应复用已验证的 `0x23040A0` wrapper 入口/正常返回钩子和独立 side0 出伤宽度钩子，**不在** `0x23CB840` 中段安装新 detour。新增单独默认关闭的私有严格布尔开关，必须与现有 `capture_runtime_join_width=true` 同时启用；默认 wire 和 079 的三点行为保持原样。入口与返回在同一实际 join 线程、同一 CombatID/日期和同一候选 `CArmy*` 下，只读复制两侧 `+0x98/+0xA0`、有界 side ArmyID 顺序、两 bucket 的 `{full RegimentID, bucket/index, starting/current/soft, effective damage/toughness}`，以及入场军 `CArmy+0x38/+0x44` 的完整 RegimentID 顺序与 `CRegiment+0x38` 基础人数。加入侧身份只在返回后由 side ArmyID 向量确认；入口不得提前假定 side。`+0x6C0/+0x6C4` 与第三点实际 `R8D` 继续由既有宽度记录给出。现有 prearmed generation-valid regiment/army 指针表和 `ReadVector` 上限可复用，但专用读取器只拷贝本合同字段，不在钩内分配、排序、调用 CK3 helper 或解析显示名；最多每侧 `2048` entry、`256` ArmyID，超限、重复 ID、指针/代际失配保留独立采集失败状态，不能截断后宣称完整。`cache - entry` 不为零时应**如实保留差值并阻止缓存一致性归因**，不能把合法的陈旧缓存或 wrapper 后段副作用误判为读口失败；`0x2304277` 后若 `+0x6FC` 非零仍有调用链，返回钩子不等于紧贴刷新指令的瞬间。
 
-离线对拍应分别计算：入口两侧 `cache - Σ(entry.current)`；共同完整 RegimentID 的旧 row 改变量；新增/移除的 ID 与其 ArmyID；新增 ArmyID `22` 的 entry current/starting 与入口原生 `CRegiment+0x38 × 100000`；返回两侧 `cache - Σ(entry.current)`；最后独立核对 side0 出伤实际宽度。若同帧入口 side0 缓存残差正是 `5627319`、旧 row 不变、新 row 为 `256000000`、返回残差为 0，才把“旧缓存陈旧解释本次差额”提升为 join 边界实采；若有旧 row 变化或入场军实际 current 不同，则逐项报告，不靠差额倒推原因。080 需新独立 attempt、源档/配对回执/DLL SHA、任务总线独占、新鲜且可读的 Steam 离线 UI、一步受管回放、原始 bytes/SHA 与 clean exit；079 的 prelaunch RED 不可覆盖。当前 Steam 实时 UI 门仍未通过，所以 **080 仅为静态计划，禁止启动**。
+离线对拍应分别计算：入口两侧 `cache - Σ(entry.current)`；共同完整 RegimentID 的旧 row 改变量；新增/移除的 ID 与其 ArmyID；新增 ArmyID `22` 的 entry current/starting 与入口原生 `CRegiment+0x38 × 100000`；返回两侧 `cache - Σ(entry.current)`；最后独立核对 side0 出伤实际宽度。若同帧入口 side0 缓存残差正是 `5627319`、旧 row 不变、新 row 为 `256000000`、返回残差为 0，才把“旧缓存陈旧解释本次差额”提升为 join 边界实采；若有旧 row 变化或入场军实际 current 不同，则逐项报告，不靠差额倒推原因。080 需新独立 attempt、源档/配对回执/DLL SHA、任务总线独占、新鲜且可读的 Steam 离线 UI、一步受管回放、原始 bytes/SHA 与 clean exit；079 的 prelaunch RED 不可覆盖。083 已从恢复后的 Steam 桌面取得新鲜且可读的离线 UI 并完成另一组战宽三点实采；080 自己启动前仍须重新取得新鲜画面，不能把 083 的图当本次门禁。
 
 下一版仅取消第三点的 **mailbox 线程等式**，在精确 side0 返回地址钩子中记录实际线程 ID；候选对象、CombatID、原生日期、side 身份与 `R8D == +0x6C4` 校验均保留。join 入口/返回仍须同实际 join 线程。独立私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`，聚焦 CTest 5/5（含第三点由另一个非 mailbox 线程采集的夹具）；离线通过不等于实机验证。使用全新 attempt 重放一天，要求三点完整、原始 bytes/SHA、失败码和 clean exit 后才给整条链 GREEN；历史 078 回执不得改写。
 
 ### 079 实机前环境 RED
 
 独立目录 `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-079` 的 DLL 私有 ON 静态自检通过，但 Steam 当前离线状态无法取得**实时可读**的 UI 证明：旧桌面帧的系统时钟停在 `04:06`，与观测时本机时间不符；079 的 GDI 与 Windows.Graphics.Capture 窗口帧内部均为黑色，其中可运行的 WGC 原始 PNG SHA-256 `9A30B47D0E7715F3E6F6B68E55FADCDFD456615A72D2B7B2431DA9B3D9A38CA7`。当前 `steam.exe` 同次进程的 `Start offline - 1` 日志、后续没有 logged online marker、`WantsOfflineMode=1` 只是启动和持久偏好的旁证，不能冒充当前 UI。预检回执 `prelaunch-red.json` SHA-256 `212F4ABDD74CD61AB2BDA03DC7178C24CBA476FF5F6269309F35529372FE8469` 精确绑定原始诊断。079 没有启动 CK3、没有发 private begin、没有生成 `ck3-output`；任务总线 `ck3-join-width-attempt-079-20260927` sequence `1361` 为 `done/resources=[]`，系统进程清单无 `ck3.exe`。第三点仍未实采，下一次需要新的独立 attempt 和可读的当前离线 UI 门，不能改写 079 RED。
+
+### 083 同一次自然增援的三点实采
+
+Steam 桌面恢复后，新独立 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-083` 在实时截图中读到“离线模式”并验证画面更新，才从冻结的第 11 日存档启动 CK3。原版 EXE、源档与 078 相同；本次私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`。原始 `jwidth083-finish.json` SHA-256 `4342DBBECF58C8DA38A34B525BE930510442BF734738FDD720B123BC0D01B247`，受管清场 `cleanup-check.json` SHA-256 `3D58E471CB43C648004E3452E26A14E386DB646480155C82B4AAE2E1D126FABF`。回执确认 `53146488→53146512` 恰好一日、`capture_returncode=0`、CK3 进程全灭、job active 为 0、探针卸载；`runtime_join_width.status=captured,count=3,first_failure_code=0`、全 trace `failure_flags=0`。这只说明有界探针采集成功，不能将 `production_trace_ready=false` 误写成完整生产 trace 已通过。
+
+三条原生记录均为 CombatID `16777218`、增援 ArmyID `22`、日期 `53146512`、实际战斗线程 `19936`；private mailbox 线程为 `25740`。phase day 7 的 join 入口：side index `-1`、两侧 `+0x98` 总量 `[160317482,89325449]`、base/final 战宽 `1645/1480`。同日 join 正常返回：目标落在 side 0、总量 `[410690163,82785368]`、战宽 `2467/2220`。phase day 8 首次 side 0 出伤：总量与返回点一致、缓存仍为 `2467/2220`，调用入参 `R8D=2220`。因此**这一次**的 base 增量为 `822`、final 增量为 `740`，且更新后的 final 确实传给了出伤器；078 的缺失第三点和 079 的启动前 RED 都保留历史原样。
+
+[083 机器可读向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_width_complete_083.json)冻结三条边界、原始 finish/清场 SHA 和实机身份；[只读投影器](../../ck3_autonomous_player/tools/project_join_width_complete_083.py)只有在两份原始文件的字节 SHA、日期、CombatID、ArmyID、三点次序、同一实际战斗线程、实际出伤入参和 clean exit 全部匹配时才重建向量。上述实采仍不包含每个 regiment 的完整 entry、该日 terrain 的运行时字段或未来某一天的增援到达机制，不能从战宽三点推出这些量。080 的 full-entry 采集须另开 attempt，不复用 083 的证据身份。
 
 ### 智能体 trial kernel 的条件战宽转移接口
 

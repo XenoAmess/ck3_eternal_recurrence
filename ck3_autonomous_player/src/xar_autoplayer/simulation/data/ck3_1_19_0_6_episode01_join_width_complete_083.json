@@ -1,0 +1,72 @@
+{
+  "boundaries": [
+    {
+      "base_width": 1645,
+      "boundary": 0,
+      "candidate_half_total_truncated": 1248,
+      "final_width": 1480,
+      "outgoing_width_argument": -1,
+      "phase_day": 7,
+      "side_fighting_total_raw": [
+        160317482,
+        89325449
+      ],
+      "side_index": -1,
+      "thread_id": 19936
+    },
+    {
+      "base_width": 2467,
+      "boundary": 1,
+      "candidate_half_total_truncated": 2467,
+      "final_width": 2220,
+      "outgoing_width_argument": -1,
+      "phase_day": 7,
+      "side_fighting_total_raw": [
+        410690163,
+        82785368
+      ],
+      "side_index": 0,
+      "thread_id": 19936
+    },
+    {
+      "base_width": 2467,
+      "boundary": 2,
+      "candidate_half_total_truncated": 2467,
+      "final_width": 2220,
+      "outgoing_width_argument": 2220,
+      "phase_day": 8,
+      "side_fighting_total_raw": [
+        410690163,
+        82785368
+      ],
+      "side_index": 0,
+      "thread_id": 19936
+    }
+  ],
+  "candidate_joining_army_id": 22,
+  "clean_exit": true,
+  "collector_failure_flags": 0,
+  "collector_status": "captured",
+  "combat_id": 16777218,
+  "fighting_total_scale": 100000,
+  "fire_width": 2220,
+  "first_failure_code": 0,
+  "join_and_fire_thread_id": 19936,
+  "mailbox_thread_id": 25740,
+  "native_date_raw": 53146512,
+  "observed_delta": {
+    "base_width": 822,
+    "final_width": 740
+  },
+  "schema": "ck3.native_join_width_three_boundary_observation.v1",
+  "source": {
+    "attempt": 83,
+    "bridge_sha256": "8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109",
+    "cleanup_sha256": "3D58E471CB43C648004E3452E26A14E386DB646480155C82B4AAE2E1D126FABF",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "finish_response_name": "jwidth083-finish.json",
+    "finish_sha256": "4342DBBECF58C8DA38A34B525BE930510442BF734738FDD720B123BC0D01B247",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+  },
+  "three_boundary_complete": true
+}
