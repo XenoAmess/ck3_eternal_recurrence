@@ -818,7 +818,7 @@ void record_winner_and_route(CCombat* combat,
    `0x2308250(combat,army,nullptr)` 检查 loser 是否能 route。也就是说，validator 结果决定的是 winner 已确定后
    是否进入 pursuit，不是重新选择 winner。
 3. validator 返回 false 时，两个 loser `0x60`-byte entry array 都按 stored order 调 `0x23D2E30`。该 helper
-   确切清零 entry `+0x18/+0x20`，并清理其 linked per-type component state；随后 side totals 清零、phase 写 `3`。
+   确切清零 entry `+0x18/+0x20`；底层对象验证通过时才逐项清理 linked per-type component state，详见[底层写回与无路由清零静态核](combat-component-writeback-and-terminal-reset-static-2026-09-27.md)；随后 side totals 清零、phase 写 `3`。
    这是**无 route、无 pursuit 的 terminal reset path**。在 serializer/result flag 未完全命名前，模拟器不得只凭
    该调用把业务标签硬编码成 `stack_wipe=true`，但数值终态必须按上述清零实现。
 4. validator 返回 true 时，loser 两组 entry `+0x20` 分别汇总到 `+0x6E8/+0x6F0`，phase 写 `2`。若 loser
