@@ -3,15 +3,15 @@
   "request_id": "WAR-ROBERT-R0266-JOINT-CASH-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T20:22:30Z",
+  "updated_at_utc": "2026-09-27T20:24:30Z",
   "source_pr": null,
-  "master_commit": "eefc08347",
+  "master_commit": "3ab82aa96",
   "delivery_route": "direct rebase-only master push",
   "interface_contract": {
     "source": "ck3_autonomous_player/src/xar_autoplayer/m5_war_cash_resource_v1.py:observe_active_war_cash_resource_v1; m5_observed_opportunity_selector.py:active_defensive_war_continuation_proposal; m5_formal_proposal_collector.py:collect_m5_formal_proposals",
     "document": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md",
     "schema": "xar.ck3.m5-active-war-cash-resource.v1",
-    "binding": "Exact played_character_id, snapshot_id, public revision, native revision, date_raw, episode_run_id and WarID at both receipt and each individual amount; Q100000 gold raw and explicit source per amount.",
+    "binding": "Exact played_character_id, snapshot_id, public revision, native revision, date_raw, episode_run_id and WarID at both receipt and each individual amount; Q100000 gold raw and explicit source per amount. Future cost remains null until horizon and assumptions are also present.",
     "routing": "Pending war cash enters existing_commitments.gold_raw once; immediate selected war action fee enters the war proposal gold_cost_raw; bounded future war cost plus explicit risk budget and war policy minimum enter global gold_reserve_raw. Incomplete/stale/scope-mismatched war cash rejects an active-war joint comparison; frame-local M5 dispatcher retains single analytic reservation.",
     "h2825_same_frame": {
       "snapshot_id": "native:3",
@@ -39,7 +39,7 @@
     }
   },
   "checks": [
-    "Focused M5 war cash, observed selector and formal collector: 35 tests passed normal and 35 under python -O, including exact treasury binding.",
+    "Focused M5 war cash, observed selector and formal collector: 36 tests passed normal and 36 under python -O, including exact treasury binding and horizonless-cost-null regression.",
     "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN.",
     "H2825 typed-null replay in test_m5_war_cash_resource_v1.py; no real same-frame war cash values inferred."
   ],
