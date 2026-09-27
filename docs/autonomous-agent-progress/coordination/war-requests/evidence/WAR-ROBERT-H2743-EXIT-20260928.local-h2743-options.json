@@ -99,6 +99,16 @@
     "active_war_pair_without_truce_slot": true,
     "same_native_frame_binding": false
   },
+  "persisted_save_three_army_cached_strength": {
+    "projection_sha256": "46A7F784108D60CE4FCC521F728AA1E933C0218E3E92DF277DEA6FAA589FBAC5",
+    "unit_army_regiment_reverse_links_verified": true,
+    "player_unit_83886367": {"owner_character_id": 29829, "province_id": 2614, "cached_current": 2329, "cached_max": 2461, "regiment_count": 39},
+    "enemy_sieging_unit_50331920": {"owner_character_id": 30097, "province_id": 2628, "cached_current": 1462, "cached_max": 1899, "regiment_count": 19},
+    "enemy_moving_unit_83886484": {"owner_character_id": 35357, "province_id": 3643, "cached_current": 311, "cached_max": 311, "regiment_count": 4},
+    "combined_enemy_cached_current_if_both_present": 1773,
+    "same_native_frame_binding": false,
+    "not_a_battle_forecast": "The two enemy armies are in different provinces; current terrain, commander modifiers, counter context, arrival and exact combat participants are not bound by this save projection."
+  },
   "audit": {
     "same_snapshot_id_and_date_before_after_query": true,
     "gameplay_action_submitted": false,
