@@ -1,0 +1,26 @@
+{
+  "schema": "xar.g2.cross-team-war-verification.v1",
+  "request_id": "WAR-WINDOW-ROBERT-H2577-20260927",
+  "status": "passed",
+  "verified_at_utc": "2026-09-27T15:06:10Z",
+  "verifier_role": "nonwar_operator",
+  "consumed_master_commit": "b8dba9d0a562f4dd177f28fa9e6a2f6989e0e25b",
+  "candidate_source_commit": "c6137f3504b6b7eb7f75165ccc1f9b25602fc12c",
+  "candidate_pair_sha256": "6420309d54d077778281d3720b87896f6ceac06691fc5d81fa1e57c101ff16f4",
+  "candidate_pair_sha256_scope": "C212-CANDIDATE-INDEX.json; local frozen candidate identity, not a remotely transferable save",
+  "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0262",
+  "execution_id": "dc9eb42b-2aa3-474b-91ad-862645f7e878",
+  "formal_report_sha256": "767c93e3d06603a2381709f3471f16483e7571b20251ac2655df692e2fab0b86",
+  "observed_result": {
+    "bounded_run": "36/36 formal turns, exit code 0, qualified turn_limit",
+    "final_robert_checkpoint": "history_index=2660; date_raw=53217072",
+    "final_save_sha256": "6cad77383fd128ea297c9ebf5133412649addcb06b9f80aec2b50b22431e1247",
+    "final_driver_sha256": "5bee9edda406b4e2e61da7956fb0568137633d95ded0ad9090f4ddcd29c5e4b4",
+    "formal_cleanup_tree_gone": true,
+    "local_operator_job_exit_code": 0,
+    "local_operator_get_status_at_approximately_15_03_utc": "CK3 and injector gates empty",
+    "independent_local_os_check_at_15_06_10_utc": "No ck3.exe or xar_ck3_bridge_injector.exe process found",
+    "window_handoff": "The nonwar operator releases its local R0262 CK3 window after bounded completion."
+  },
+  "remaining_blocker": "The war maintainer must independently check its own local operator, process tree, task bus, Steam/account state, official pair and exact WAR31 live frame before any launch or authorized action. This Git record is not a global lock or remote process observation."
+}
