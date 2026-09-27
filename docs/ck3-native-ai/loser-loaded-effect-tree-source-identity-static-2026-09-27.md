@@ -2,6 +2,8 @@
 
 日期：2026-09-27。接续[被动探针 ABI/身份预检](loser-warscore-trigger-passive-probe-abi-preflight-2026-09-27.md)，仅对 CK3 1.19.0.6 的 EXE 和原版脚本做只读静态审计。EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；`combat_on_actions.txt` SHA-256 `B35D696F472E801BB332D7204AA46008349E8AFBFDB38985C781EB099BBFB233`。没有启动或附加 CK3，也没有安装 hook。
 
+**2026-09-27 追加状态：**下文保留的是本轮初查时的缺口。后续[同实例、同序号映射](loser-on-action-name-root-index-map-2026-09-27.md)已静态闭合 `on_combat_end_loser` 名称序号 76 → 败方执行根序号 76，并证明构造、加载、getter、dispatch 使用同一数据库实例；下文“名称槽到根尚未闭合”不再是当前状态。根到脚本第 563 行具体 trigger、操作码/RHS 和 VFS 实际来源仍未闭合。原版另一事件也有相同 `warscore_value >= 15`，故数字相同不足以绑定脚本实例。
+
 ## 新闭合的有限边
 
 1. **定义名确实进入 on-action 数据库的静态初始化路径。** MSVC RTTI 将 primary vtable `0x4311910` 标为 `COnActionDataBase`，另有次级表 `0x4311948/0x4311978`；`0x25047F0–0x250480F` 把三表安装到同一 `RBX` 对象。后续同一初始化函数的 `0x2505287/0x2505294` 通过 `[RBX+0x50]+0x960` 写入 `on_combat_end_winner`（字符串 RVA `0x4311D28`），`0x25052A4/0x25052B1` 通过 `+0x980` 写入 `on_combat_end_loser`（RVA `0x4311D10`）；共同调用 `0x7E9530` 复制指定长度的字符串。这证实**名称注册槽**，尚未证实它与运行时 `database+0x260` 的加载指针有可直接遍历的固定偏移关系，更不指向第 563 行子 trigger。
