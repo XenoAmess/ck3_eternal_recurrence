@@ -11,10 +11,11 @@
 | `0x25048A4–0x25048C1` | `root+0x38` 数组按 8 字节元素寻址，配置 `0xC3=195` 个槽 | on-action 执行根指针表 |
 | `0x25049A4–0x2504A10` | `name+0x50` 数组按 0x20 字节字符串元素寻址，同样配置 195 个槽 | 对应的名称表 |
 | `0x25052A4–0x25052B8` | 名称表 `+0x980` 写入 `on_combat_end_loser` | 名称序号 `0x980/0x20=76` |
+| `0x257EFA4–0x257EFB8`、`0x132DE44–0x132DE8B` | 分配 `0x108` 字节，将实例写入全局 `0x57C0F10` 后调用 `0x25046D0` 构造 `COnActionDataBase`；getter 从同一全局返回 | 运行时取回的是该数据库实例 |
 | `0x2506B30→0x2506C9E→0x33F75C0` | `COnActionDataBase` 次级虚表 `+0x08` 的加载方法把次级对象 `RSI-0x88` 还原为数据库主基址传给通用加载器 | 加载器操作的是上述同一主对象的名称/根表 |
 | `0x33F7B45–0x33F7B91` | 从主基址 `+0x50` 取名称表，按 `0x20` 逐项比较解析名称；匹配序号在 `RDI` | 名称匹配产生索引 |
 | `0x33F7BF0–0x33F7D06` | `RBX=RDI*8`；从保存的同一主基址 `+0x38` 取根表；将解析所得 `R13` 写到该索引 | 名称序号原样成为执行根序号 |
-| `0x230B0A9–0x230B0EE` | 普通终局败方路径从 `+0x38` 根表的 `+0x260` 读指针，作为 `0x33F8350` 的 `RDX` | 执行根序号 `0x260/8=76` |
+| `0x230AF77–0x230B0EE` | 普通终局先调用 `0x132DE40` getter 把同一全局实例置入 `RDI`，然后从其 `+0x38` 根表的 `+0x260` 读指针，作为 `0x33F8350` 的 `RDX` | 执行根序号 `0x260/8=76` |
 
 所以**数据库结构和加载器的静态映射**为 `on_combat_end_loser` 名称序号 76 → 同序号的 loaded effect 根。`on_birthday` 名称表 `+0x260` 是序号 19，其相应根表位置应为 `19*8=+0x98`；它不是败方执行根 `+0x260`。此结论说明为什么两个字节偏移看似冲突，并给出实际配对规则。`0x33F75C0` 的 `R12` 在入口保存主基址，`[RBP+0x490]` 是入口 RCX 的栈保存位；`0x33F7B9A/0x33F7CFA` 从它恢复基址，故不是把名称表误当根表。
 
@@ -28,7 +29,7 @@
 
 ## 复核
 
-[exact-build verifier](../../ck3_autonomous_player/native_bridge/research/verify_loser_on_action_index_map_static.py)检查三份 SHA、on-action 原版唯一声明及事件文件的同文字反例、31 个指令锚点、两个调用目标、`COnActionDataBase` 次级虚表加载槽以及索引算术。本机运行通过；成功输出仍明确为 `actual_vfs_bytes_verified=false`、`loser_root_to_script_line_563_trigger_bound=false`、`loaded_loser_node_opcode_verified=false`、`loaded_loser_node_rhs_raw_verified=false`。
+[exact-build verifier](../../ck3_autonomous_player/native_bridge/research/verify_loser_on_action_index_map_static.py)检查三份 SHA、on-action 原版唯一声明及事件文件的同文字反例、38 个指令锚点、四个调用目标、全局 `0x57C0F10` 的构造/取回、`COnActionDataBase` 次级虚表加载槽以及索引算术。本机运行通过；成功输出仍明确为 `actual_vfs_bytes_verified=false`、`loser_root_to_script_line_563_trigger_bound=false`、`loaded_loser_node_opcode_verified=false`、`loaded_loser_node_rhs_raw_verified=false`。
 
 ```text
 <verified-python> ck3_autonomous_player/native_bridge/research/verify_loser_on_action_index_map_static.py --exe <exact-ck3.exe> --on-action <exact-combat_on_actions.txt> --combat-events <exact-combat_events.txt>

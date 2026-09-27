@@ -23,6 +23,10 @@ COMBAT_EVENTS_SHA256 = "CF4E7F43786477DF43319638138232086CFD477FEE0F2951B34DD41B
 # Each entry is an instruction boundary from this exact EXE.  The loader
 # carries the matched name-table index to the root-table write unchanged.
 ANCHORS = {
+    0x132DE44: "488b05c5304904",        # singleton getter reads global
+    0x132DE8B: "488b057e304904",        # getter returns same global
+    0x230AF77: "e8c42e02ff",            # result effect obtains singleton
+    0x230AF7C: "488bf8",                # singleton into RDI
     0x25048A4: "4863cf",                  # root table index, 8-byte stride
     0x25048A7: "488b4338",                # COnActionDataBase +0x38 root data
     0x25048AB: "488d0cc8",                # root element = base + index*8
@@ -33,6 +37,9 @@ ANCHORS = {
     0x2504A10: "c7435cc3000000",        # 195 name slots
     0x25052A4: "4881c180090000",        # loser name at index 76*32
     0x25052B1: "488d1558cae001",        # loser string
+    0x257EFA4: "b908010000",            # singleton allocation size 0x108
+    0x257EFB1: "488905581f2403",        # store instance in same global
+    0x257EFB8: "e81357f8ff",            # construct COnActionDataBase
     0x2506B5D: "488bf1",                # secondary subobject in RSI
     0x2506C9E: "488d8e78ffffff",        # pass primary base (RSI-0x88)
     0x2506CA5: "e81609ef00",            # call generic loader
@@ -90,11 +97,21 @@ def main() -> int:
         actual = exe[offset : offset + len(expected)]
         if actual != expected:
             raise ValueError(f"RVA 0x{rva:X}: expected {expected.hex()}, got {actual.hex()}")
-    for call_rva, target_rva in ((0x2506CA5, 0x33F75C0), (0x230B0EE, 0x33F8350)):
+    for call_rva, target_rva in (
+        (0x257EFB8, 0x25046D0),
+        (0x230AF77, 0x132DE40),
+        (0x2506CA5, 0x33F75C0),
+        (0x230B0EE, 0x33F8350),
+    ):
         offset = image.get_offset_from_rva(call_rva + 1)
         displacement = struct.unpack_from("<i", exe, offset)[0]
         if call_rva + 5 + displacement != target_rva:
             raise ValueError(f"RVA 0x{call_rva:X}: call target differs")
+    for instruction_rva in (0x132DE44, 0x132DE8B, 0x257EFB1):
+        offset = image.get_offset_from_rva(instruction_rva + 3)
+        displacement = struct.unpack_from("<i", exe, offset)[0]
+        if instruction_rva + 7 + displacement != 0x57C0F10:
+            raise ValueError(f"RVA 0x{instruction_rva:X}: singleton global differs")
     loader_vtable_offset = image.get_offset_from_rva(0x4311948 + 8)
     loader_rva = struct.unpack_from("<Q", exe, loader_vtable_offset)[0] - base
     if loader_rva != 0x2506B30:
@@ -124,6 +141,7 @@ def main() -> int:
         "root_stride": "0x08",
         "matched_index": 0x980 // 0x20,
         "on_action_loader_maps_name_index_to_root_index": True,
+        "dispatch_database_instance_link_verified": True,
         "same_comparison_text_exists_in_other_stock_script": True,
         "actual_vfs_bytes_verified": False,
         "loser_root_to_script_line_563_trigger_bound": False,
