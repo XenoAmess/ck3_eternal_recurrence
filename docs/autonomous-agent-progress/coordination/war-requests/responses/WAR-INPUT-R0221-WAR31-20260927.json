@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T10:10:42Z",
+  "updated_at_utc": "2026-09-27T11:10:52Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -47,6 +47,17 @@
       "finding": "The execute path at 0x2E9F734 passes effect+0x1B0 to 0x2EA1D30, which resolves a tag-0x0C scope value through 0x336AB40 and looks up a matching ID in a global candidate table; unmatched values use a fallback pointer. The preview entry does not directly perform this lookup.",
       "limit": "The actual War31 scope ID, referent pointer, ownership, helper transitive writes, final operations and signed resources remain unknown. The execute path may mutate game state and cannot be used as a read-only material-terms query.",
       "checks": "py ck3_autonomous_player/tests/unit/test_dejure_surrender_preview_branch_pairs.py: 3 passed including exact-EXE lookup receipt replay"
+    },
+    {
+      "date_utc": "2026-09-27T11:10:52Z",
+      "master_commit": "3af5613a4",
+      "exact_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "extractor": "ck3_autonomous_player/native_bridge/research/extract_dejure_war31_truce_script.py",
+      "receipt": "ck3_autonomous_player/native_bridge/research/dejure_war31_truce_script_1_19_0_6.json",
+      "receipt_sha256": "1D6BF5595F1E8083C4909302E180889381E84F2D30AB6D809F9FDB844D958168",
+      "finding": "Exact EXE and three stock script hashes plus the R0221 primary-defender identity bind this CB's attacker_victory on_victory to add_truce_attacker_victory_effect: one-way attacker 30097 toward defender 29829, result=victory, days=standard_truce_duration_days. The script formula is (2 if matching border-raid war else 1) * max(730, 1825 - 450*attacker_flexible_perk - 900*shorter_struggle + 900*longer_struggle - 730*both_nomadic).",
+      "limit": "This is a static script effect and conditional formula, not a live evaluation or applied truce. R0221 did not freeze the dynamic flags; evaluated days and persisted expiry date remain null. Other title/liege/vassal and signed-resource material terms remain unknown; no surrender was submitted and no CK3 process was launched.",
+      "checks": "test_dejure_war31_truce_script.py: 3 passed on normal Python and 3 passed with -O against the exact local game files; wrong script and changed R0221 identity fail closed."
     }
   ],
   "checks": [
