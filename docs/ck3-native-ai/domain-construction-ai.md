@@ -15,6 +15,9 @@ same public frame, and retains the original war action. It reports a native
 budgeted positive-income candidate separately from joint affordability:
 existing shared cash commitments and future war cost remain `null`, and
 `formal_action_ready=false`. The ordinary submit binding still excludes war.
+If native validation is RED, the full response is written to the paired
+driver-state evidence directory; the formal turn keeps its path, SHA-256 and
+a bounded failure summary rather than repeating the full response.
 Normal and optimized focused Python tests pass; no new paused CK3 readback,
 war-spend admission, building action, completion, or income result is claimed.
 

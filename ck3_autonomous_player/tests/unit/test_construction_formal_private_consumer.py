@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
@@ -322,11 +323,43 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(observation["reason"],
                              "native_construction_source_validation_failed")
             self.assertEqual(observation["native_source_status"], "source_red")
-            self.assertIsNone(observation["native_result"]["private_probe"]
+            raw = json.loads(Path(observation["raw_artifact_path"])
+                             .read_text(encoding="utf-8"))
+            self.assertIsNone(raw["native_result"]["private_probe"]
                               ["player_world_building_sources"]["player_gold_raw"])
+            self.assertEqual(observation["raw_artifact_sha256"],
+                             transport.sha256_file(Path(observation["raw_artifact_path"])))
+            self.assertEqual(observation["native_validation_diagnostic"]
+                             ["world_status"], "source_available")
+            self.assertNotIn("native_result", observation)
             self.assertEqual(observation["ending_frame"]["snapshot_id"],
                              "native:3")
             self.assertIsNone(observation["candidate"])
+
+    def test_wartime_native_red_compacts_large_result_but_keeps_raw_artifact(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.unknown_gold = True
+            source = transport.query_construction_private(
+                driver, expected_revision=3, wartime_observation=True)
+            native = source["native_result"]["private_probe"]
+            native["player_world_building_sources"]["holdings"] = [
+                {"marker": "large-raw-only", "index": index}
+                for index in range(4096)]
+            with mock.patch.object(transport, "query_construction_private",
+                                   return_value=source):
+                observation = transport.query_construction_wartime_observation_private(
+                    driver, expected_revision=3)
+            compact = json.dumps(observation)
+            self.assertLess(len(compact), 4000)
+            self.assertNotIn("large-raw-only", compact)
+            self.assertEqual(observation["reason"],
+                             "native_construction_source_validation_failed")
+            raw = json.loads(Path(observation["raw_artifact_path"])
+                             .read_text(encoding="utf-8"))
+            self.assertEqual(len(raw["native_result"]["private_probe"]
+                                 ["player_world_building_sources"]["holdings"]), 4096)
 
     def test_wartime_no_candidate_and_incomplete_coverage_stay_distinct(self):
         with TemporaryDirectory() as location:
