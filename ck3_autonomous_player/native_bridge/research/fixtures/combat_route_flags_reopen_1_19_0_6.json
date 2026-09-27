@@ -1,0 +1,120 @@
+{
+  "schema": "ck3-combat-route-flags-reopen-static-v1",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "anchors": [
+    {
+      "name": "effect_disallow_bool",
+      "rva": "0x2EB471F",
+      "bytes": "e8dc2eacfe",
+      "instruction": "call 0x141977600"
+    },
+    {
+      "name": "effect_disallow_write",
+      "rva": "0x2EB472E",
+      "bytes": "8887c0000000",
+      "instruction": "mov byte ptr [rdi + 0xc0], al"
+    },
+    {
+      "name": "effect_allow_early_bool",
+      "rva": "0x2EB476F",
+      "bytes": "e88c2eacfe",
+      "instruction": "call 0x141977600"
+    },
+    {
+      "name": "effect_allow_early_write",
+      "rva": "0x2EB477E",
+      "bytes": "8887c1000000",
+      "instruction": "mov byte ptr [rdi + 0xc1], al"
+    },
+    {
+      "name": "effect_skip_bool",
+      "rva": "0x2EB47BF",
+      "bytes": "e83c2eacfe",
+      "instruction": "call 0x141977600"
+    },
+    {
+      "name": "effect_skip_write",
+      "rva": "0x2EB47CE",
+      "bytes": "8887c2000000",
+      "instruction": "mov byte ptr [rdi + 0xc2], al"
+    },
+    {
+      "name": "validator_disallow_read",
+      "rva": "0x23082CE",
+      "bytes": "44382c30",
+      "instruction": "cmp byte ptr [rax + rsi], r13b"
+    },
+    {
+      "name": "validator_allow_early_read",
+      "rva": "0x2308434",
+      "bytes": "803c3000",
+      "instruction": "cmp byte ptr [rax + rsi], 0"
+    },
+    {
+      "name": "winner_loser_first_army",
+      "rva": "0x230A097",
+      "bytes": "488b4630",
+      "instruction": "mov rax, qword ptr [rsi + 0x30]"
+    },
+    {
+      "name": "winner_route_validator",
+      "rva": "0x230A0DD",
+      "bytes": "e86ee1ffff",
+      "instruction": "call 0x142308250"
+    },
+    {
+      "name": "winner_skip_flag",
+      "rva": "0x230A26F",
+      "bytes": "4438b6e2000000",
+      "instruction": "cmp byte ptr [rsi + 0xe2], r14b"
+    },
+    {
+      "name": "pursuit_skip_flag",
+      "rva": "0x230A2DF",
+      "bytes": "803c3000",
+      "instruction": "cmp byte ptr [rax + rsi], 0"
+    },
+    {
+      "name": "join_backlink",
+      "rva": "0x230422D",
+      "bytes": "898628010000",
+      "instruction": "mov dword ptr [rsi + 0x128], eax"
+    },
+    {
+      "name": "join_pursuit_gate",
+      "rva": "0x2304233",
+      "bytes": "83bbb006000002",
+      "instruction": "cmp dword ptr [rbx + 0x6b0], 2"
+    },
+    {
+      "name": "join_main_reopen",
+      "rva": "0x230423C",
+      "bytes": "48c783b006000001000000",
+      "instruction": "mov qword ptr [rbx + 0x6b0], 1"
+    },
+    {
+      "name": "join_winner_reset",
+      "rva": "0x2304247",
+      "bytes": "c783e0060000ffffffff",
+      "instruction": "mov dword ptr [rbx + 0x6e0], 0xffffffff"
+    },
+    {
+      "name": "join_side0_total_refresh",
+      "rva": "0x2304255",
+      "bytes": "e8e6750c00",
+      "instruction": "call 0x1423cb840"
+    },
+    {
+      "name": "join_side1_total_refresh",
+      "rva": "0x2304261",
+      "bytes": "e8da750c00",
+      "instruction": "call 0x1423cb840"
+    },
+    {
+      "name": "join_width_refresh",
+      "rva": "0x2304272",
+      "bytes": "e809130000",
+      "instruction": "call 0x142305580"
+    }
+  ]
+}

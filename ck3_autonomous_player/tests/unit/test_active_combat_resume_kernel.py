@@ -17,6 +17,7 @@ from xar_autoplayer.simulation.combat_input import (
 from xar_autoplayer.simulation.research_envelope import (
     ActiveMainResumeResearchKernel,
     ActiveMainResumeState,
+    ActiveRouteSideState,
     ResearchEnvelopeAssumptions,
 )
 
@@ -70,6 +71,22 @@ def _research_state() -> tuple[ActiveMainResumeState, ActiveMainResumeResearchKe
         side_1_entries=active.initial_entries_for_side(side_1),
         side_0_effective_damage_raw=damage_rows(side_0),
         side_1_effective_damage_raw=damage_rows(side_1),
+        side_0_route=ActiveRouteSideState(
+            first_stored_public_cunit_id=leader_0.public_army_id,
+            disallow_retreat=False,
+            allow_early_retreat=False,
+            skip_pursuit=False,
+            landless_blocked=False,
+            retreat_elapsed_whole_days=5,
+        ),
+        side_1_route=ActiveRouteSideState(
+            first_stored_public_cunit_id=leader_1.public_army_id,
+            disallow_retreat=False,
+            allow_early_retreat=False,
+            skip_pursuit=False,
+            landless_blocked=False,
+            retreat_elapsed_whole_days=5,
+        ),
     )
     kernel = ActiveMainResumeResearchKernel(
         ResearchEnvelopeAssumptions(
@@ -103,6 +120,10 @@ def test_resume_state_rejects_precontact_and_incomplete_active_binding() -> None
         replace(state, side_0_roll_points=None)
     with pytest.raises(CombatInputError, match="effective-damage census"):
         replace(state, side_0_effective_damage_raw=state.side_0_effective_damage_raw[:-1])
+    with pytest.raises(CombatInputError, match="route first-army identity"):
+        replace(state, side_0_route=replace(state.side_0_route, first_stored_public_cunit_id=999))
+    with pytest.raises(CombatInputError, match="observed booleans"):
+        replace(state.side_0_route, skip_pursuit=0)
 
 
 def test_resume_uses_current_entries_and_counts_future_days_only() -> None:
@@ -171,3 +192,42 @@ def test_resume_does_not_recount_past_soft_wounds_as_new_hard_losses() -> None:
         wounded, streams=derive_trial_random_streams(42, 0), horizon_days=1
     )
     assert after_wounds == original
+
+
+def test_resume_uses_loser_route_flags_and_native_day_baseline() -> None:
+    state, kernel = _research_state()
+    emptied = replace(
+        state,
+        side_0_entries=tuple(replace(entry, current_raw=0) for entry in state.side_0_entries),
+        side_0_route=replace(state.side_0_route, retreat_elapsed_whole_days=14),
+    )
+    def trial(candidate: ActiveMainResumeState):
+        return kernel.simulate_trial(
+            candidate, streams=derive_trial_random_streams(871, 0), horizon_days=1
+        )
+
+    # The next main tick advances native elapsed days from 14 to 15. Its
+    # loser is side 0; changing only the winner-side flags must do nothing.
+    ordinary = trial(emptied)
+    winner_flag_only = trial(replace(
+        emptied, side_1_route=replace(emptied.side_1_route, disallow_retreat=True)
+    ))
+    assert ordinary == winner_flag_only
+    assert ordinary.battle_days == 4
+
+    blocked = trial(replace(
+        emptied, side_0_route=replace(emptied.side_0_route, disallow_retreat=True)
+    ))
+    assert blocked.battle_days == 1
+    skipped = trial(replace(
+        emptied, side_0_route=replace(emptied.side_0_route, skip_pursuit=True)
+    ))
+    assert skipped.battle_days == 1
+    too_early = replace(
+        emptied, side_0_route=replace(emptied.side_0_route, retreat_elapsed_whole_days=13)
+    )
+    assert trial(too_early).battle_days == 1
+    early_override = replace(
+        too_early, side_0_route=replace(too_early.side_0_route, allow_early_retreat=True)
+    )
+    assert trial(early_override).battle_days == 4

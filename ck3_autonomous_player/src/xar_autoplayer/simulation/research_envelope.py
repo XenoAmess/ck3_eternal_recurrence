@@ -79,8 +79,32 @@ ACTIVE_MAIN_RESUME_MANIFEST = TransitionFidelityManifest(
     retreat_and_forced_result_exact=True,
     original_trace_fixture_sha256=None,
     closed_numeric_domains=RESEARCH_ENVELOPE_MANIFEST.closed_numeric_domains
-    + ("observed_main_phase_entry_and_roll_resume",),
+    + (
+        "observed_main_phase_entry_and_roll_resume",
+        "declared_both_side_route_flags_and_first_stored_armies",
+    ),
 )
+
+
+@dataclass(frozen=True, slots=True)
+class ActiveRouteSideState:
+    """Same-frame inputs for the first stored army of one active combat side."""
+
+    first_stored_public_cunit_id: int
+    disallow_retreat: bool
+    allow_early_retreat: bool
+    skip_pursuit: bool
+    landless_blocked: bool
+    retreat_elapsed_whole_days: int
+
+    def __post_init__(self) -> None:
+        if type(self.first_stored_public_cunit_id) is not int or self.first_stored_public_cunit_id <= 0:
+            raise CombatInputError("route side requires first stored public CUnit ID")
+        if type(self.retreat_elapsed_whole_days) is not int or self.retreat_elapsed_whole_days < 0:
+            raise CombatInputError("route side requires native elapsed whole days")
+        for flag in (self.disallow_retreat, self.allow_early_retreat, self.skip_pursuit, self.landless_blocked):
+            if type(flag) is not bool:
+                raise CombatInputError("route side flags must be observed booleans")
 
 
 @dataclass(frozen=True, slots=True)
@@ -111,6 +135,8 @@ class ActiveMainResumeState:
     side_1_entries: tuple[CombatRegimentState, ...]
     side_0_effective_damage_raw: tuple[tuple[int, int], ...]
     side_1_effective_damage_raw: tuple[tuple[int, int], ...]
+    side_0_route: ActiveRouteSideState
+    side_1_route: ActiveRouteSideState
 
     def __post_init__(self) -> None:
         combat_input = self.combat_input
@@ -181,6 +207,13 @@ class ActiveMainResumeState:
                 or any(type(row[1]) is not int or row[1] < 0 for row in damages)
             ):
                 raise CombatInputError("active effective-damage census drifted")
+        for side, route in (
+            (combat_input.encounter.attacker_side, self.side_0_route),
+            (combat_input.encounter.defender_side, self.side_1_route),
+        ):
+            armies = combat_input.armies_for_side(side)
+            if not isinstance(route, ActiveRouteSideState) or not armies or route.first_stored_public_cunit_id != armies[0].public_army_id:
+                raise CombatInputError("active route first-army identity drifted")
 
 
 
@@ -495,17 +528,23 @@ class PhaseEventsDisabledResearchKernel(
 
         loser_entries = defender_entries if winner_side_index == 0 else attacker_entries
         winner_entries = attacker_entries if winner_side_index == 0 else defender_entries
+        loser_route = (
+            resume.side_1_route if winner_side_index == 0 else resume.side_0_route
+        ) if resume is not None else None
         end = transition_after_winner_is_known(
             loser_entries,
             winner_side=winner_side_index,
             retreat_gate_input=RetreatGateInput(
-                disallow_retreat=False,
-                allow_early_retreat=False,
-                elapsed_whole_days=battle_days,
+                disallow_retreat=loser_route.disallow_retreat if loser_route is not None else False,
+                allow_early_retreat=loser_route.allow_early_retreat if loser_route is not None else False,
+                elapsed_whole_days=(
+                    loser_route.retreat_elapsed_whole_days + main_days
+                    if loser_route is not None else battle_days
+                ),
                 phase=CombatPhase.MAIN,
-                landless_blocked=False,
+                landless_blocked=loser_route.landless_blocked if loser_route is not None else False,
             ),
-            skip_pursuit=False,
+            skip_pursuit=loser_route.skip_pursuit if loser_route is not None else False,
         )
         pursuit_hard_raw = 0
         if end.phase is CombatPhase.PURSUIT:
