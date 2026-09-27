@@ -161,14 +161,25 @@
       "string_rvas": {"CanPlanActivity": "0x4096760", "GetCanPlanActivityTooltip": "0x4096778"},
       "resolved_can_plan_slot_rva": "0x15051F0",
       "resolved_final_evaluator_rva": "0x28CFC50",
+      "resolved_character_type_prerequisite": {
+        "boolean_wrapper_rva": "0x96F310",
+        "failure_text_wrapper_rva": "0x96F3D0",
+        "tagged_character_target_constructor_rva": "0x96A130",
+        "shared_prerequisite_rva": "0x28CFB70",
+        "subcheck_rvas": {"native_check": "0x28CFA40", "trigger_evaluator": "0x28CFC50"},
+        "boundary": "These character/type wrappers omit the selected location, options, intent, guests and 0x508 command payload; their result is not final can_start."
+      },
       "native_failure_string_destructor_rva": "0x7E97D0",
       "unresolved_semantic_entry_rvas": {"host_view_slot_26": "0x1505230", "slot_26_handler_call": "0xA79700", "host_view_slot_27_type_plus_0x2030": "0x1505330", "host_view_slot_29_type_plus_0x1f8": "0x1505340"},
       "why": "It evaluates the played character's planner state without waiting for the AI's 60-month scheduler or submitting a command.",
-      "implementation_order": "exact private slot-25 callback copies boolean and optional display text; inspect slot 26 -> 0xA79700 and slot 27 type+0x2030 consumers before claiming a read-only semantic collector, then bind a complete semantic sample and paused application-main invocation"
+      "implementation_order": "exact private slot-25 callback copies boolean and optional display text; reverse the command validator after its shared character/type prerequisite, especially 0x219AB2B -> 0x2CE2C80 and payload +0x10, before claiming a full can_start or a read-only semantic collector; then bind a complete semantic sample and paused application-main invocation"
     },
     "next_action_seam": {
       "target": "CStartActivityCommand native payload validator and secondary dispatch",
       "validator": "0x26C8070 -> 0x219A8B0",
+      "prerequisite_call_rva": "0x219AB02 -> 0x28CFB70",
+      "post_prerequisite_anchor": "0x219AB2B -> 0x2CE2C80; return compared against command +0x10 at 0x219AB3A; exact meanings unresolved",
+      "prerequisite_not_final": true,
       "dispatch": "0x26C8050 -> 0x2700340",
       "requirements": "construct a fresh exact-build payload from stable activity/location/option/invite/intent keys; validate at commit time; enqueue once; verify a new hosted activity owned by the same player and matching activity_feast",
       "prohibition": "do not copy a captured 0x508 object, call AIAttemptToHostActivityEffect, force script effects, or treat command ACK as the postcondition"
@@ -177,7 +188,8 @@
   },
   "unknowns": [
     "CActivityType database owner/enumerator and stable key field in native memory",
-    "current paused-save activity_feast HostView availability and complete planner semantic sample; adjacent native slots do not yet prove legal location/configuration/cost/can_start collection",
+    "current paused-save activity_feast HostView availability and complete planner semantic sample; character/type prerequisite 0x28CFB70 does not prove legal location/configuration/cost/can_start collection",
+    "post-prerequisite 0x219A8B0 payload validation, especially 0x219AB2B -> 0x2CE2C80 and command +0x10, lacks field semantics; no verified read-only final can_start",
     "full 16-byte AI host candidate row ownership and CActivityType identity layout",
     "complete CStartActivityCommand 0x508 payload field semantics and public-safe constructor",
     "authoritative cost-vector resource slot mapping for treasury, herd, barter, piety and prestige",
