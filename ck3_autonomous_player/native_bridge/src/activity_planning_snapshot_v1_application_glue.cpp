@@ -1,10 +1,20 @@
 #include "xar_bridge/activity_planning_snapshot_v1_application_glue.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstring>
+#include <limits>
 
 namespace xar::bridge {
 namespace {
+
+struct NativeFailureDisplayStringV1 {
+  std::array<char, 16> storage{};
+  std::uint64_t size = 0;
+  std::uint64_t capacity = 15;
+};
+
+static_assert(sizeof(NativeFailureDisplayStringV1) == 32);
 
 void SetFailure(ActivityPlanningApplicationGlueStateV1 &state,
                 ActivityPlanningApplicationGlueFailureV1 failure) noexcept {
@@ -160,6 +170,71 @@ bool CopyActivityKey(std::string_view source,
 }
 
 } // namespace
+
+bool InvokeActivityPlanningNativeCanPlanWithFunctionsV1(
+    std::uintptr_t host_view, ActivityPlanningNativeCanPlanEntryV1 can_plan,
+    ActivityPlanningNativeStringDestroyV1 destroy_string,
+    ActivityPlanningNativeCanPlanResultV1 &output) noexcept {
+  output = {};
+  if (host_view == 0 || can_plan == nullptr || destroy_string == nullptr)
+    return false;
+
+  NativeFailureDisplayStringV1 failure_text{};
+  const bool allowed = can_plan(reinterpret_cast<void *>(host_view),
+                                &failure_text);
+  ActivityPlanningNativeCanPlanResultV1 copied{};
+  bool valid = failure_text.size <= failure_text.capacity &&
+               failure_text.size < copied.failure_display_text.bytes.size();
+  if (valid && !allowed && failure_text.size != 0) {
+    const char *bytes = failure_text.storage.data();
+    if (failure_text.capacity >= 16) {
+      std::memcpy(&bytes, failure_text.storage.data(), sizeof(bytes));
+      valid = bytes != nullptr;
+    }
+    if (valid) {
+      std::memcpy(copied.failure_display_text.bytes.data(), bytes,
+                  static_cast<std::size_t>(failure_text.size));
+      copied.failure_display_text.size =
+          static_cast<std::uint16_t>(failure_text.size);
+    }
+  }
+  destroy_string(&failure_text);
+  if (!valid)
+    return false;
+  copied.complete = true;
+  copied.used_host_view_final_can_plan = true;
+  copied.value = allowed ? 1 : 0;
+  output = copied;
+  return true;
+}
+
+bool InvokeActivityPlanningNativeCanPlanExactV1(
+    void *context, std::uintptr_t module_base,
+    std::uintptr_t exact_entry_point, std::uintptr_t host_view,
+    std::uintptr_t activity_type,
+    const ActivityPlanningSnapshotRequestV1 &request,
+    ActivityPlanningNativeCanPlanResultV1 &output) noexcept {
+  (void)context;
+  output = {};
+  if (module_base == 0 ||
+      module_base > (std::numeric_limits<std::uintptr_t>::max)() -
+                        kActivityPlanningHostViewCanPlanRvaV1 ||
+      module_base > (std::numeric_limits<std::uintptr_t>::max)() -
+                        kActivityPlanningNativeStringDestroyRvaV1 ||
+      exact_entry_point !=
+          module_base + kActivityPlanningHostViewCanPlanRvaV1 ||
+      host_view == 0 || activity_type == 0 ||
+      request.activity_key != kActivityPlanningSnapshotP0ActivityKeyV1)
+    return false;
+  const auto can_plan =
+      reinterpret_cast<ActivityPlanningNativeCanPlanEntryV1>(
+          exact_entry_point);
+  const auto destroy_string =
+      reinterpret_cast<ActivityPlanningNativeStringDestroyV1>(
+          module_base + kActivityPlanningNativeStringDestroyRvaV1);
+  return InvokeActivityPlanningNativeCanPlanWithFunctionsV1(
+      host_view, can_plan, destroy_string, output);
+}
 
 bool ConfigureActivityPlanningApplicationGlueV1(
     ActivityPlanningApplicationGlueStateV1 &state,

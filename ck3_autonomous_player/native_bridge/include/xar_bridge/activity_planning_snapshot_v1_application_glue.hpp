@@ -11,6 +11,26 @@ namespace xar::bridge {
 inline constexpr std::string_view kActivityPlanningApplicationGluePrivateKeyV1 =
     "g2_activity_planning_snapshot_v1_application_glue";
 
+// CK3 1.19.0.6 HostView slot 25 takes (this, caller-owned MSVC string).
+// These private operations are used only inside the already admitted paused
+// application-main glue; the native string destructor is from the same image.
+using ActivityPlanningNativeCanPlanEntryV1 = bool (*)(void *, void *);
+using ActivityPlanningNativeStringDestroyV1 = void (*)(void *);
+inline constexpr std::uintptr_t kActivityPlanningNativeStringDestroyRvaV1 =
+    0x7E97D0;
+
+bool InvokeActivityPlanningNativeCanPlanWithFunctionsV1(
+    std::uintptr_t host_view, ActivityPlanningNativeCanPlanEntryV1 can_plan,
+    ActivityPlanningNativeStringDestroyV1 destroy_string,
+    ActivityPlanningNativeCanPlanResultV1 &output) noexcept;
+
+bool InvokeActivityPlanningNativeCanPlanExactV1(
+    void *context, std::uintptr_t module_base,
+    std::uintptr_t exact_entry_point, std::uintptr_t host_view,
+    std::uintptr_t activity_type,
+    const ActivityPlanningSnapshotRequestV1 &request,
+    ActivityPlanningNativeCanPlanResultV1 &output) noexcept;
+
 enum class ActivityPlanningApplicationGlueFailureV1 : std::uint32_t {
   none = 0,
   glue_disabled,

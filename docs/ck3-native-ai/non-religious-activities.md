@@ -3,7 +3,7 @@
 ## 状态与范围
 
 - **[research / static-frozen]** 本文冻结 exact build `1.19.0.6` 中宴会、狩猎和巡游的脚本合同、原生 AI 主办选择链，以及主办/参加命令类的静态边界。
-- **[not live]** 本工作包没有启动或附加 CK3，没有实现 observer、MCP、planner 或 action，也没有改变公共 readiness。
+- **[not live]** 已有默认关闭的私有 observer、binder、application-main glue 和 exact slot-25 只读回调；它们尚未在 CK3 paused 帧运行，没有公共 MCP、planner 或 action，也没有改变公共 readiness。
 - `activity_feast`、`activity_hunt`、`activity_tour` 三个定义都存在于 exact game tree。静态存在不等于当前存档中可用：玩家、冷却、政府、资源、战争、DLC 和地点状态仍须由同帧原生查询判定。
 - P0 选择**宴会**。它是单地点、非 grand 的基础活动，计划表面比狩猎和巡游小，能最快形成“发现 → 预检 → 主办 → 活动事件 → 结局”可见闭环。
 - 宗教活动全部排除。狩猎等普通活动内部若触及信仰规则，只消费原生最终 allow/deny 与粗粒度 reason；不展开 faith、doctrine、tenet、fervor、改宗或 holy order。
@@ -86,7 +86,7 @@ flowchart TD
     S -- false --> T[RED]
     S -- true --> J
 
-    D -. unknown: 失败 stable key 与完整语义采集 .-> U[先补只读 observer]
+    D -. unknown: 完整语义采集与实机 paused 判定 .-> U[先补只读 observer]
     N -. unknown: invite/open collection owner .-> V[后续参加 observer]
     J -. unknown: lifecycle/phase native surface .-> W[后续结局 observer]
 ```
@@ -256,7 +256,7 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 ## 尚未闭合的分支
 
 - `CActivityType` registry owner/enumerator 与 native stable key 字段；
-- `CActivityListDetailHostView` slot 25 与最终 evaluator 的 RVA 已冻结；失败文本的 32-byte caller-owned string 构造和原生释放已静态追踪（见 `activity-planning-failure-display-abi-1.19.0.6.md`）；失败 stable key、false 路径文本完整性与完整 planner 语义采集仍未闭合；
+- `CActivityListDetailHostView` slot 25 与最终 evaluator 的 RVA 已冻结；32-byte caller-owned 失败文本构造、复制和原生释放已进入默认关闭的私有回调（见 `activity-planning-slot25-native-callback-1.19.0.6.md`）；失败 stable key 保持 typed unknown，false 路径文本完整性、实机 HostView 可达性与完整 planner 语义采集仍未闭合；
 - AI 16-byte row 的完整所有权、identity 和 lifetime；
 - `CStartActivityCommand` `0x508` payload 的字段语义与可新建构造器；
 - treasury、herd、barter、piety、prestige 等配置费用向量槽位；
@@ -266,4 +266,4 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 - 狩猎等活动内部的 faith 分支，仅允许保留 opaque allow/deny；
 - feast 之后的 location、options、intent、guest 质量策略。
 
-这些 `unknown` 是下一批可施工入口。P0 的下一步是按已定位 HostView evaluator 的字符串 ABI 做私有只读 probe，明确 false 路径的实际文本与 stable key 来源，同时补原生语义采集并接入 private application-main paused read-only capture；在它 live GREEN 前，活动能力仍是 `research`，不得标成 production query、action-ready 或完整活动 OODA。
+这些 `unknown` 是下一批可施工入口。P0 下一步是补原生语义采集并接入 private application-main paused read-only capture，检查当前 Robert 帧能否取得真实 `activity_feast` HostView、final boolean、失败文本和完整配置；在它 live GREEN 前，活动能力仍是 `static-ready private glue/callback`，不得标成 production query、action-ready 或完整活动 OODA。

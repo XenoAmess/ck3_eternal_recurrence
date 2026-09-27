@@ -42,6 +42,13 @@ The caller must serialize prepare, application-main dispatch, and result read.
 This package does not install a cross-thread transport or extend the shared
 main-thread mailbox ABI.
 
+The private exact-build slot-25 final-evaluator callback is now available as
+`InvokeActivityPlanningNativeCanPlanExactV1`. It copies the caller-owned native
+failure string before calling the game's destructor; see
+`activity-planning-slot25-native-callback-1.19.0.6.md`. The caller must still
+provide the separate full semantic operation and private application-main
+invocation. Configuration does not silently install either operation.
+
 ## Build switch and static acceptance
 
 `XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1=ON` links the
@@ -63,8 +70,8 @@ Status: `static-ready private application-main glue`.
 The next live candidate is not production-wired. Before a paused CK3 run it
 still needs both of these activity-owned inputs:
 
-1. caller-supplied exact final-evaluator and complete semantic operations for
-   CK3 `1.19.0.6`;
+1. the complete exact-build semantic operation for CK3 `1.19.0.6`; the
+   final-evaluator callback is implemented but has no live capture;
 2. a private application-main invocation entry that serializes prepare,
    dispatch, and result collection without extending the shared mailbox ABI.
 

@@ -59,10 +59,11 @@ localization key or prove that every false path returns nonempty text. Treating
 the text as a key, deriving a key from English output, or forcing a synthetic
 key would make the contract false.
 
-The next narrow implementation is an exact-build, application-main paused
-probe that initializes this caller-owned string, invokes slot 25 once on a
-freshly resolved `activity_feast` HostView, copies the boolean and optional
-text before the native destructor, and records empty-text false paths as such.
+The private exact-build callback now initializes this caller-owned string,
+invokes slot 25 on a freshly resolved `activity_feast` HostView, copies the
+boolean and optional text before the native destructor, and leaves empty-text
+false paths unavailable. It has only passed native-shaped static fixtures;
+the application-main paused probe is still outstanding.
 The source adapter can now carry a typed missing key with known text. If the
 probe finds an empty false-path text, the next narrow change must first trace
 that native path and give the text its own typed missing reason; no empty text
