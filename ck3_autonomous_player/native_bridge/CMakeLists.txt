@@ -213,6 +213,16 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1
+  "Add a private native-final unconditional-release preview to prisoner rows"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  message(FATAL_ERROR "prisoner release preview requires private prisoner collection")
+endif()
+
+option(
   XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1
   "Run one private exact-build paused culture/innovation snapshot query"
   OFF
@@ -686,6 +696,13 @@ if(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
     src/player_prisoner_collection_private_transport_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1)
+endif()
+if(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/character_interaction_preview_v1.cpp
+    src/character_interaction_preview_v1_source_adapter.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   target_sources(xar_ck3_bridge PRIVATE

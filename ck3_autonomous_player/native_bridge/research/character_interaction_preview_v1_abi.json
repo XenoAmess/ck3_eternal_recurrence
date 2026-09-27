@@ -30,6 +30,25 @@
       "demand_payment_interaction"
     ]
   },
+  "private_unconditional_prisoner_release_extension": {
+    "source_scene": "R0258 Robert native:3 paused complete player prisoner collection, ids 34486/44484/47028",
+    "source_report_sha256": "5255FF3EFEC3BC41C7131C008E2CF463B16D83417BFEF69256B5E4D4B56CCC0B",
+    "interaction_key": "release_from_prison_interaction",
+    "stock_interaction_sha256": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
+    "stock_definition_lines": "4088-6227",
+    "exact_context_checks": [
+      "native actor and recipient full IDs equal current played jailer and exact prisoner ID",
+      "native definition and finalized context selected-option counts both equal 11",
+      "all eleven native option selection bytes are zero",
+      "final Can Send and stock auto-accept result are read from the same finalized context twice on one paused frame"
+    ],
+    "private_compile_option": "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1",
+    "private_collection_schema_version_when_enabled": 2,
+    "bound_snapshot_id": "native:<native_revision>",
+    "default_advertised": false,
+    "action_surface_present": false,
+    "live_status": "pending_matching_candidate"
+  },
   "native_entry_contract": {
     "character_storage_slot_rva": "0x570C130",
     "definition_database_getter_rva": "0x831890",

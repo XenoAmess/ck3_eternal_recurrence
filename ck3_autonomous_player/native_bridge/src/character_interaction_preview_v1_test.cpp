@@ -36,8 +36,10 @@ void Put(std::array<std::byte, Size> &bytes, std::size_t offset,
 struct Fixture {
   ck3::CharacterInteractionPreviewFrameV1 before{};
   ck3::CharacterInteractionPreviewFrameV1 after{};
-  std::array<std::byte, 0x40> definition{};
+  std::array<std::byte, 0x2600> definition{};
   std::array<char, 32> definition_key{};
+  std::array<std::uint8_t, 11> release_options{};
+  std::string interaction_key = "gift_interaction";
   std::array<std::byte, 0x40> storage{};
   std::array<std::byte, 8 * 0x10> slots{};
   std::array<std::byte, 0x200> actor{};
@@ -51,6 +53,7 @@ struct Fixture {
   bool fail_costs = false;
   bool fail_destroy = false;
   bool drift_second_sample = false;
+  bool release_context_role_drift = false;
   std::int32_t capture_calls = 0;
   std::int32_t hash_calls = 0;
   std::int32_t database_calls = 0;
@@ -144,7 +147,7 @@ bool StableHash(void *context, std::uintptr_t function, void *database,
   ++fixture.hash_calls;
   if (function !=
           kModuleBase + ck3::kCharacterInteractionPreviewStableKeyHashRvaV1 ||
-      database != &fixture.storage || key != "gift_interaction") {
+      database != &fixture.storage || key != fixture.interaction_key) {
     return false;
   }
   output = static_cast<std::int32_t>(kGiftHash);
@@ -195,6 +198,18 @@ bool Construct(void *context, std::uintptr_t function, void *context_storage,
     return false;
   }
   fixture.active_context = context_storage;
+  if (fixture.interaction_key == "release_from_prison_interaction") {
+    Put(*static_cast<std::array<std::byte, 0x338> *>(context_storage), 0x2D8,
+        fixture.release_context_role_drift ? kRecipientId : kActorId);
+    Put(*static_cast<std::array<std::byte, 0x338> *>(context_storage), 0x2DC,
+        kRecipientId);
+    Put(*static_cast<std::array<std::byte, 0x338> *>(context_storage), 0x300,
+        reinterpret_cast<std::uintptr_t>(fixture.release_options.data()));
+    Put(*static_cast<std::array<std::byte, 0x338> *>(context_storage), 0x308,
+        std::int32_t{11});
+    Put(*static_cast<std::array<std::byte, 0x338> *>(context_storage), 0x30C,
+        std::int32_t{11});
+  }
   output = context_storage;
   return true;
 }
@@ -509,6 +524,56 @@ void TestInvalidAcceptanceAndAllowlistStayRed() {
   assert(not_allowlisted.hash_calls == 0);
 }
 
+void TestUnconditionalPrisonerReleaseNativeSelection() {
+  auto fixture = BaseFixture();
+  fixture.interaction_key = "release_from_prison_interaction";
+  constexpr std::string_view release_key =
+      "release_from_prison_interaction";
+  fixture.definition_key.fill('\0');
+  std::copy(release_key.begin(), release_key.end(),
+            fixture.definition_key.begin());
+  Put(fixture.definition, 0x28, release_key.size());
+  Put(fixture.definition, 0x2554, std::int32_t{11});
+  fixture.acceptance = {};
+  fixture.acceptance.kind =
+      game::CharacterInteractionAcceptanceKindV1::auto_accept;
+  fixture.acceptance.recipient_is_ai = true;
+  fixture.acceptance.auto_accept = true;
+  fixture.acceptance.would_accept_now_present = true;
+  fixture.acceptance.would_accept_now = true;
+  fixture.before.snapshot_id.fill('\0');
+  AssignSnapshotId(fixture.before.snapshot_id, "native:73");
+  fixture.after = fixture.before;
+  auto request = Request();
+  request.expected_snapshot_id = "native:73";
+  request.interaction_key = release_key;
+  game::CharacterInteractionPreviewV1 output{};
+  assert(ck3::ReadCharacterInteractionPreviewV1(
+             Environment(fixture), Access(fixture), request, output) ==
+         game::ReadCharacterInteractionPreviewResultV1::available);
+  assert(output.unconditional_prisoner_release);
+  assert(output.can_send);
+  assert(ck3::SerializeCharacterInteractionPreviewV1(output).find(
+             "\"unconditional_prisoner_release\":true") !=
+         std::string::npos);
+
+  fixture.release_options[2] = 1;  // banish: never an unconditional release.
+  assert(ck3::ReadCharacterInteractionPreviewV1(
+             Environment(fixture), Access(fixture), request, output) ==
+         game::ReadCharacterInteractionPreviewResultV1::unavailable);
+  assert(output.unavailable_reason ==
+         game::CharacterInteractionPreviewFailureV1::
+             release_option_selection_invalid);
+  fixture.release_options[2] = 0;
+  fixture.release_context_role_drift = true;
+  assert(ck3::ReadCharacterInteractionPreviewV1(
+             Environment(fixture), Access(fixture), request, output) ==
+         game::ReadCharacterInteractionPreviewResultV1::unavailable);
+  assert(output.unavailable_reason ==
+         game::CharacterInteractionPreviewFailureV1::
+             release_option_selection_invalid);
+}
+
 void TestBoundEnvironment() {
   const auto environment = ck3::BindCharacterInteractionPreviewEnvironmentV1(
       kModuleBase, true, ck3::kCharacterInteractionPreviewExecutableSha256V1);
@@ -537,6 +602,7 @@ int main(int argc, char **argv) {
   TestDefinitionAndRecipientLookupFailuresAreAtomic();
   TestDriftAndCleanupFailuresStayRed();
   TestInvalidAcceptanceAndAllowlistStayRed();
+  TestUnconditionalPrisonerReleaseNativeSelection();
   TestBoundEnvironment();
   std::cout << "character-interaction-preview-v1 fixture passed\n";
   return 0;

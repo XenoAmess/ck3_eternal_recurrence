@@ -7180,10 +7180,21 @@ std::string PlayerEpidemicTreatmentPresenceResultFrame(
 std::string PlayerPrisonerCollectionPrivateResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     std::uint64_t observation_revision, std::uint64_t snapshot_revision,
-    const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &value) {
+    const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &value
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+    , const std::array<xar::game::CharacterInteractionPreviewV1,
+                       xar::bridge::kPlayerPrisonerMaximumRowsV1>
+          &release_previews,
+    bool release_previews_complete
+#endif
+) {
   const auto payload =
       xar::ck3_11906::SerializePlayerPrisonerCollectionPrivateV1(
-          value, snapshot_revision);
+          value, snapshot_revision
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+          , release_previews, release_previews_complete
+#endif
+      );
   if (payload.empty()) return {};
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
@@ -14954,7 +14965,12 @@ void RunConnectedSession(
                       request_id,
                       player_prisoner_collection_query_sequence + 1,
                       query.execution_stamp.pump_epoch, expected_revision,
-                      query.result);
+                      query.result
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+                      , query.release_previews,
+                      query.release_previews_complete
+#endif
+                  );
                   if (!response.empty())
                     ++player_prisoner_collection_query_sequence;
                 }

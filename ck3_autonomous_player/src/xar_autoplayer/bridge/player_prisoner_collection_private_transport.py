@@ -77,12 +77,14 @@ def query_player_prisoner_collection_private_v1(
     value = envelope.get("player_prisoner_collection")
     if (
         not isinstance(value, dict) or set(value) != _VALUE_KEYS
-        or value.get("schema") != SCHEMA or value.get("schema_version") != 1
+        or value.get("schema") != SCHEMA
+        or value.get("schema_version") not in (1, 2)
         or value.get("snapshot_revision") != native_revision
         or value.get("status") != envelope.get("status")
     ):
         raise BridgeUnavailableError("private prisoner collection payload is malformed")
     if value["status"] == "available":
+        preview_version = value["schema_version"] == 2
         count = value.get("total_count")
         rows = value.get("prisoners")
         if (
@@ -99,7 +101,7 @@ def query_player_prisoner_collection_private_v1(
         for ordinal, row in enumerate(rows):
             if (
                 not isinstance(row, dict)
-                or set(row) != {"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified"}
+                or set(row) != ({"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified", "unconditional_release_preview"} if preview_version else {"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified"})
                 or row.get("source_ordinal") != ordinal
                 or not _positive_int(row.get("prisoner_character_id"))
                 or row["prisoner_character_id"] > 0xFFFFFFFF
@@ -110,6 +112,52 @@ def query_player_prisoner_collection_private_v1(
                 or row.get("custody_relation_verified") is not True
             ):
                 raise BridgeUnavailableError("private prisoner collection row is malformed")
+            if preview_version:
+                preview = row["unconditional_release_preview"]
+                if (
+                    not isinstance(preview, dict)
+                    or preview.get("private_build") is not True
+                    or preview.get("read_only") is not True
+                    or preview.get("advertised") is not False
+                    or preview.get("action_surface_present") is not False
+                ):
+                    raise BridgeUnavailableError("private release preview envelope is malformed")
+                if preview.get("status") == "available":
+                    definition = preview.get("definition")
+                    roles = preview.get("roles")
+                    acceptance = preview.get("acceptance")
+                    costs = preview.get("costs")
+                    readiness = preview.get("readiness")
+                    if (
+                        preview.get("snapshot_id") != f"native:{native_revision}"
+                        or preview.get("public_revision") != native_revision
+                        or preview.get("native_revision") != native_revision
+                        or preview.get("date_raw") != date_raw
+                        or not isinstance(definition, dict)
+                        or definition.get("canonical_key") != "release_from_prison_interaction"
+                        or preview.get("payload_shape") != "two_role_all_release_options_off"
+                        or not isinstance(roles, dict)
+                        or roles.get("actor_character_id") != played["character_id"]
+                        or roles.get("recipient_character_id") != row["prisoner_character_id"]
+                        or preview.get("unconditional_prisoner_release") is not True
+                        or type(preview.get("can_send")) is not bool
+                        or not isinstance(acceptance, dict)
+                        or acceptance.get("kind") != "auto_accept"
+                        or acceptance.get("auto_accept") is not True
+                        or acceptance.get("would_accept_now") is not True
+                        or not isinstance(costs, dict)
+                        or costs.get("raw_scale") != 100_000
+                        or not isinstance(costs.get("entries"), list)
+                        or len(costs["entries"]) != 10
+                        or not isinstance(readiness, dict)
+                        or readiness.get("same_frame_ready") is not True
+                    ):
+                        raise BridgeUnavailableError("private release final preview is malformed")
+                elif preview.get("status") == "unavailable":
+                    if set(preview) != {"private_build", "read_only", "advertised", "action_surface_present", "status", "unavailable_reason"} or not isinstance(preview.get("unavailable_reason"), str) or not preview["unavailable_reason"]:
+                        raise BridgeUnavailableError("private release unavailable preview is malformed")
+                else:
+                    raise BridgeUnavailableError("private release preview status is malformed")
             seen.add(row["prisoner_character_id"])
     elif value["status"] == "unavailable":
         if (

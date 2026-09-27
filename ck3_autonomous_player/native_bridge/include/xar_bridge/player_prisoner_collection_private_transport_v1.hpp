@@ -3,6 +3,9 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+#include "xar_bridge/character_interaction_preview_v1.hpp"
+#endif
 
 #include <cstdint>
 #include <string>
@@ -22,6 +25,12 @@ struct PlayerPrisonerCollectionMailboxContextV1 {
   game::Snapshot expected_snapshot{};
   std::uint64_t expected_revision = 0;
   xar::bridge::PlayerPrisonerCollectionSnapshotV1 result{};
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+  std::array<game::CharacterInteractionPreviewV1,
+             xar::bridge::kPlayerPrisonerMaximumRowsV1>
+      release_previews{};
+  bool release_previews_complete = false;
+#endif
   MainThreadExecutionStampV1 execution_stamp{};
   bool completed = false;
   bool frame_changed = false;
@@ -31,10 +40,18 @@ struct PlayerPrisonerCollectionMailboxContextV1 {
 bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
     void *context, const MainThreadExecutionStampV1 &stamp) noexcept;
 
-// Value-only result for one exact paused native frame. No custody-kind or
-// ransom/release legality is inferred from collection membership.
+// Value-only result for one exact paused native frame. Collection membership
+// never infers legality; the separately enabled native-final release preview
+// records its own result for each exact prisoner ID.
 std::string SerializePlayerPrisonerCollectionPrivateV1(
     const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &snapshot,
-    std::uint64_t snapshot_revision);
+    std::uint64_t snapshot_revision
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+    , const std::array<game::CharacterInteractionPreviewV1,
+                       xar::bridge::kPlayerPrisonerMaximumRowsV1>
+          &release_previews,
+    bool release_previews_complete
+#endif
+);
 
 } // namespace xar::ck3_11906

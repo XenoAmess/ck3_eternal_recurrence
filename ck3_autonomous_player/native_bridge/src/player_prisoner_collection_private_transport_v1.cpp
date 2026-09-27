@@ -1,8 +1,12 @@
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+#include "xar_bridge/character_interaction_preview_v1_source_adapter.hpp"
+#endif
 
 #include <windows.h>
 
 #include <atomic>
+#include <charconv>
 #include <cstring>
 #include <string>
 
@@ -64,6 +68,88 @@ bool ReadMemory(void *, std::uintptr_t address, void *output,
 #endif
 }
 
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+bool CaptureReleaseFrame(
+    void *opaque, CharacterInteractionPreviewFrameV1 &output) noexcept {
+  auto *context = static_cast<ReadContext *>(opaque);
+  xar::bridge::PlayerPrisonerFrameV1 frame{};
+  if (context == nullptr || context->query == nullptr ||
+      !CaptureFrame(opaque, frame)) {
+    return false;
+  }
+  output = {};
+  constexpr char prefix[] = "native:";
+  std::memcpy(output.snapshot_id.data(), prefix, sizeof(prefix) - 1);
+  const auto start = output.snapshot_id.data() + sizeof(prefix) - 1;
+  const auto end = output.snapshot_id.data() + output.snapshot_id.size() - 1;
+  const auto encoded = std::to_chars(
+      start, end, context->query->expected_revision);
+  if (encoded.ec != std::errc{}) return false;
+  output.public_revision = frame.public_revision;
+  output.native_revision = frame.native_revision;
+  output.proof_epoch = frame.proof_epoch;
+  output.date_raw = static_cast<std::int32_t>(frame.date_raw);
+  if (static_cast<std::int64_t>(output.date_raw) != frame.date_raw)
+    return false;
+  output.paused = frame.paused;
+  output.map_ready = frame.map_ready;
+  output.has_played_character = true;
+  output.played_character_alive = frame.played_character_alive;
+  output.played_character_id = frame.played_character_id;
+  return true;
+}
+
+bool IsReleaseMainThread(void *opaque) noexcept {
+  const auto *context = static_cast<ReadContext *>(opaque);
+  return context != nullptr && context->stamp != nullptr &&
+         GetCurrentThreadId() == context->stamp->thread_id;
+}
+
+void ReadReleasePreviews(PlayerPrisonerCollectionMailboxContextV1 &query,
+                         ReadContext &read_context) {
+  if (!query.result.available || !query.result.collection_complete)
+    return;
+  CharacterInteractionPreviewSourceEnvironmentV1 environment{};
+  environment.adapter_enabled = true;
+  environment.exact_build_admitted = query.bindings.enabled;
+  environment.admitted_executable_sha256 =
+      kCharacterInteractionPreviewExecutableSha256V1;
+  environment.module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  environment.upstream_context = &read_context;
+  environment.capture_frame = CaptureReleaseFrame;
+  environment.is_main_thread = IsReleaseMainThread;
+  CharacterInteractionPreviewSourceStateV1 state{};
+  const bool bound =
+      BindCharacterInteractionPreviewSourceAdapterV1(environment, state);
+  const auto snapshot_id =
+      "native:" + std::to_string(query.expected_revision);
+  for (std::uint32_t index = 0; index < query.result.returned_count;
+       ++index) {
+    auto &preview = query.release_previews[index];
+    if (!bound) {
+      preview.unavailable_reason =
+          game::CharacterInteractionPreviewFailureV1::
+              native_bindings_unavailable;
+      continue;
+    }
+    CharacterInteractionPreviewRequestV1 request{};
+    request.expected_snapshot_id = snapshot_id;
+    request.expected_public_revision = query.expected_revision;
+    request.expected_native_revision = query.expected_revision;
+    request.expected_date_raw =
+        static_cast<std::int32_t>(query.result.frame.date_raw);
+    request.actor_character_id = query.result.frame.played_character_id;
+    request.recipient_character_id = static_cast<std::int32_t>(
+        query.result.rows[index].full_character_id);
+    request.interaction_key = "release_from_prison_interaction";
+    (void)ReadCharacterInteractionPreviewFromSourceAdapterV1(
+        state, request, preview);
+  }
+  query.release_previews_complete = true;
+}
+#endif
+
 } // namespace
 
 bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
@@ -120,6 +206,9 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
     access.capture_frame = CaptureFrame;
     access.read_memory = ReadMemory;
     xar::bridge::ReadPlayerPrisonerCollectionV1Private(access, query->result);
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+    ReadReleasePreviews(*query, read_context);
+#endif
     query->completed = true;
     return true;
   } catch (...) {
@@ -129,7 +218,14 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
 
 std::string SerializePlayerPrisonerCollectionPrivateV1(
     const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &snapshot,
-    std::uint64_t snapshot_revision) {
+    std::uint64_t snapshot_revision
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+    , const std::array<game::CharacterInteractionPreviewV1,
+                       xar::bridge::kPlayerPrisonerMaximumRowsV1>
+          &release_previews,
+    bool release_previews_complete
+#endif
+) {
   if (snapshot_revision == 0 ||
       snapshot.returned_count > xar::bridge::kPlayerPrisonerMaximumRowsV1 ||
       (snapshot.available &&
@@ -142,7 +238,11 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   }
   std::string result =
       "{\"schema\":\"player-prisoner-collection-private-v1\","
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+      "\"schema_version\":2,\"snapshot_revision\":" +
+#else
       "\"schema_version\":1,\"snapshot_revision\":" +
+#endif
       std::to_string(snapshot_revision);
   result += ",\"status\":\"";
   result += snapshot.available ? "available" : "unavailable";
@@ -179,7 +279,14 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
                 std::to_string(snapshot.frame.played_character_id) +
                 ",\"jailer_character_id\":" +
                 std::to_string(snapshot.rows[index].jailer_character_id) +
-                ",\"custody_relation_verified\":true}";
+                ",\"custody_relation_verified\":true";
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+      if (!release_previews_complete) return {};
+      result += ",\"unconditional_release_preview\":" +
+                SerializeCharacterInteractionPreviewV1(
+                    release_previews[index]);
+#endif
+      result += '}';
     }
   }
   result += "]}";
