@@ -4379,16 +4379,19 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertNotIn("unbounded_private_query", serialized["plan"])
         red = {**observation, "status": "source_red", "candidate": None,
                "reason": "native_construction_source_validation_failed",
-               "native_result": {"private_probe": {
-                   "player_world_building_sources": {
-                       "status": "source_unavailable", "failure": "construction_state"}}}}
+               "native_validation_diagnostic": {
+                   "world_status": "source_unavailable",
+                   "world_failure": "construction_state"},
+               "raw_artifact_path": "Z:/state/evidence/construction-read-id-wartime-source-red.json",
+               "raw_artifact_sha256": "a" * 64}
         compact_red = native_auto_run_module._compact_plan({
             "selected_step": "query-active-war-v1",
             "construction_wartime_observation": red,
         })
         self.assertEqual(json.loads(json.dumps(compact_red))
-                         ["construction_wartime_observation"]["native_result"],
-                         red["native_result"])
+                         ["construction_wartime_observation"], red)
+        self.assertNotIn("native_result", compact_red[
+            "construction_wartime_observation"])
 
     def test_construction_progress_is_visible_on_receipt_and_next_turn(self) -> None:
         progress = {

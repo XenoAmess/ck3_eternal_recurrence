@@ -14,6 +14,7 @@ from ..construction_formal_consumer import (
     COMPLETION_WATCH_INTERVAL_RAW, read_construction_ledger, write_construction_ledger,
     same_frame_construction_income,
 )
+from ..environment import sha256_file, write_json_atomic
 from ..runtime import _process_identity
 from .driver import BridgeUnavailableError, StepPostconditionError
 from .construction_economic_value_v1 import authored_monthly_income_hundredths
@@ -256,6 +257,47 @@ def query_construction_wartime_observation_private(
         source.get("reason")
     )
     candidate = source.get("candidate") if source_status == "selected" else None
+    raw_artifact: dict[str, object] = {}
+    native_diagnostic: dict[str, object] | None = None
+    if source_status == "source_red":
+        native_result = source.get("native_result")
+        probe = (native_result.get("private_probe")
+                 if isinstance(native_result, Mapping) else None)
+        native_world = (probe.get("player_world_building_sources")
+                        if isinstance(probe, Mapping) else None)
+        native_diagnostic = {
+            "step": native_result.get("step") if isinstance(native_result, Mapping) else None,
+            "accepted": (native_result.get("accepted")
+                         if isinstance(native_result, Mapping) else None),
+            "probe_status": probe.get("status") if isinstance(probe, Mapping) else None,
+            "probe_snapshot_revision": (probe.get("snapshot_revision")
+                                        if isinstance(probe, Mapping) else None),
+            "world_status": (native_world.get("status")
+                             if isinstance(native_world, Mapping) else None),
+            "world_failure": (native_world.get("failure")
+                              if isinstance(native_world, Mapping) else None),
+            "world_snapshot_revision": (
+                native_world.get("snapshot_revision")
+                if isinstance(native_world, Mapping) else None),
+            "world_date_raw": (native_world.get("date_raw")
+                               if isinstance(native_world, Mapping) else None),
+            "world_player_character_id": (
+                native_world.get("player_character_id")
+                if isinstance(native_world, Mapping) else None),
+        }
+        state_dir = getattr(driver, "state_dir", None)
+        if not isinstance(state_dir, Path):
+            raise BridgeUnavailableError(
+                "wartime construction RED lacks durable raw artifact directory")
+        request_id = source.get("native_query_request_id")
+        if not isinstance(request_id, str) or not request_id.startswith("construction-read-"):
+            raise BridgeUnavailableError(
+                "wartime construction RED lacks native query identity")
+        artifact = state_dir / "evidence" / f"{request_id}-wartime-source-red.json"
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        write_json_atomic(artifact, dict(source))
+        raw_artifact = {"raw_artifact_path": str(artifact.resolve()),
+                        "raw_artifact_sha256": sha256_file(artifact)}
     return {
         "status": ("observed" if bound and source_status in {
             "selected", "no_legal_budgeted_building", "evidence_insufficient"}
@@ -282,9 +324,9 @@ def query_construction_wartime_observation_private(
         "native_query_request_id": source.get("native_query_request_id"),
         "native_proof_epoch": source.get("proof_epoch"),
         "reason": reason,
-        **({"native_result": source.get("native_result"),
-            "ending_frame": source.get("ending_frame")}
-           if source_status == "source_red" else {}),
+        **({"native_validation_diagnostic": native_diagnostic,
+            "ending_frame": source.get("ending_frame"),
+            **raw_artifact} if source_status == "source_red" else {}),
     }
 
 
