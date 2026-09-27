@@ -1,0 +1,78 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "active-battle-knight-entry-transitions",
+  "question": "Which active-combat knight and army identities feed the next native daily schedule, commander selection, event fire and damage, and which transitions remain unobserved?",
+  "purpose": "engine-transition",
+  "build": {"version": "1.19.0.6", "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "One generation-bound active CombatID, both sides and their ordered full CArmyID/RegimentID rows; no new running session",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Full IDs bind to the same loaded combat/revision; process-local event pointers and hook ordinals expire on reload",
+    "producer_trigger": "not-applicable",
+    "producer": "Offline review of exact-build daily refresh 0x2308D50, schedule 0x23C8750, commander selector 0x23C8A60 and main tick 0x2309E80",
+    "caller": "Exact-build CCombatManager dispatchers 0x27FB4D0 and 0x27FB5D0; this plan calls none of them",
+    "consumer": "Static dependency ledger for a future typed read-only active-combat producer and day-to-day simulation",
+    "cache_lifetime": "Paused entry stats describe one revision; daily refresh and roster mutation can invalidate them before the next tick. Event pointers are process-local",
+    "expected_signal": "Distinct ordered army, entry, scripted-knight, scheduled-event and selected-commander sources with exact RVAs and a future observation contract",
+    "zero_sample_meaning": "Zero new live samples in this offline audit establishes no negative runtime behavior; a future zero-event window cannot exclude death or join paths",
+    "stop_condition": "Stop after reviewing pinned EXE call sites and frozen reports; no CK3 launch or native hook",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "source-review", "layer": "source-contract",
+      "path": "active-battle-knight-entry-transitions-2026-09-27.md",
+      "sha256": "0ee5e7b73c369a498ddf1f7d715865b73aa1d522dbb3689f9f143e72b3ff7a90",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Human-reviewed exact-build schedule/commander/phase chain and unresolved transition boundaries"
+    },
+    {
+      "id": "day26-kill", "layer": "live-observation",
+      "path": "../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json",
+      "sha256": "752D2257D358159FCA918885A9B16B6909D81FEC835F0FA9205868CE882876CA",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Day-26 selected knight-killed target detaches and has battle-death attribution in paired later save",
+      "session": "Independent day-26 attempt-020 recorded in combat-phase-event-trace.md",
+      "frame": "phase-fire boundaries 5 to 6 and paired next save",
+      "identity": "CharacterID=33437; RegimentID=65; killer CharacterID=34120"
+    },
+    {
+      "id": "joined-fire", "layer": "live-observation",
+      "path": "../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_schedule_boundary_v1.json",
+      "sha256": "CBB7956D8D3B1F466F3D09FD8C79F8ECD960A7C0FC8954703921747FD59D4DFB",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Independent joined-army replays saw new ArmyID/entries before first side0 phase fire",
+      "session": "episode01-prearmed-join-live-attempt-026 and attempt-027; offline projection 085",
+      "frame": "day11-to-12 and day21-to-22 first side0 phase-fire",
+      "identity": "CombatID=16777218; incoming ArmyIDs=22 and 28 in separate replays"
+    }
+  ],
+  "nodes": [
+    {"id": "paused", "label": "Paused active CombatID and ordered entries"},
+    {"id": "refresh", "label": "Daily modifier and effective-stat refresh"},
+    {"id": "schedule", "label": "Knight/commander event schedule"},
+    {"id": "commander", "label": "Daily selected commander recomputed"},
+    {"id": "fire", "label": "Both phase fires before damage"},
+    {"id": "death", "label": "Character death and regiment detach"},
+    {"id": "join", "label": "Natural army/entry tail join"},
+    {"id": "next", "label": "Next-day entry stats and membership"}
+  ],
+  "edges": [
+    {"id": "paused-refresh", "from": "paused", "to": "refresh", "label": "0x2308D50 refreshes both sides before schedule", "status": "static-confirmed", "evidence": ["source-review"]},
+    {"id": "refresh-schedule", "from": "refresh", "to": "schedule", "label": "MAA order, CRegiment+0x148, validity and modulo", "status": "static-confirmed", "evidence": ["source-review"]},
+    {"id": "paused-commander", "from": "paused", "to": "commander", "label": "0x27FB5D0 selects side0 then side1 before main tick", "status": "static-confirmed", "evidence": ["source-review"]},
+    {"id": "commander-fire", "from": "commander", "to": "fire", "label": "Main tick enters side0 then side1 phase fire", "status": "static-confirmed", "evidence": ["source-review"]},
+    {"id": "fire-death", "from": "fire", "to": "death", "label": "One selected knight-killed root detaches target", "status": "live-confirmed", "evidence": ["day26-kill"]},
+    {"id": "join-fire", "from": "join", "to": "fire", "label": "Two joined armies enter first side0 fire", "status": "live-confirmed", "evidence": ["joined-fire"]},
+    {"id": "death-next", "from": "death", "to": "next", "label": "Generic same-day entry and effective-stat transition", "status": "unknown", "evidence": [], "open_question": "At which original call boundary do lethal and nonlethal character changes alter each entry and damage contribution?"},
+    {"id": "join-next", "from": "join", "to": "next", "label": "All join/leave routes, width and event phase ordering", "status": "unknown", "evidence": [], "open_question": "Two joins do not close every route or global manager order"}
+  ],
+  "cases": [
+    {"id": "kill", "question": "Did one selected knight-killed root detach its exact target?", "status": "observed", "evidence": ["day26-kill"]},
+    {"id": "join", "question": "Were two natural joins present at first side0 fire?", "status": "observed", "evidence": ["joined-fire"]},
+    {"id": "wounds", "question": "When do wound, maim and death alter same-day entries and effective stats?", "status": "pending", "evidence": []},
+    {"id": "replacement", "question": "How does next tick re-rank commanders after death/join/leave?", "status": "pending", "evidence": []}
+  ]
+}
