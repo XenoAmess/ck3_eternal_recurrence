@@ -63,6 +63,7 @@ def _parser() -> argparse.ArgumentParser:
         help="Enable the private managed one-day phase trace in this isolated build",
     )
     parser.add_argument("--plan-only", action="store_true")
+    parser.add_argument("--cmake-define", action="append", default=[])
     return parser
 
 
@@ -258,6 +259,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "ck3_executable_path": (
             str(ck3_executable) if ck3_executable is not None else None
         ),
+        "cmake_defines": list(args.cmake_define),
     }
     if args.plan_only:
         return plan
@@ -284,6 +286,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         ]
         if ck3_executable is not None:
             configure.append(f"-DXAR_CK3_EXECUTABLE_PATH={ck3_executable}")
+        configure.extend(f"-D{item}" for item in args.cmake_define)
         if args.feudal_1066_selected_bookmark_private:
             configure.append(
                 "-DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON"

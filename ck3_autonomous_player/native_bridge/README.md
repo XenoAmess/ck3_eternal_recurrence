@@ -113,6 +113,11 @@ py tools\build_fresh.py --build-dir ..\build-fresh-production
 py tools\build_fresh.py --build-dir ..\build-fresh-production --plan-only
 ```
 
+For a bounded private candidate, repeat `--cmake-define NAME=ON` for each
+exact CMake option admitted by its run contract. The plan records these
+definitions and the fresh configure passes them to CMake; unspecified private
+options retain their default OFF value.
+
 `--build-dir` must not already exist. `--skip-tests` is available for a diagnostic
 compile, but such an artifact is not a production-tested bridge.
 
