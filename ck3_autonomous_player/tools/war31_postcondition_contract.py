@@ -159,6 +159,14 @@ def _action_submission(
     if result.get("accepted") is not True or result.get("status") != "submitted":
         return _available(False, "typed_action_result")
     action = result.get("war_termination_result")
+    observed_id = action.get("observed_snapshot_id") if isinstance(action, Mapping) else None
+    observed_revision = (
+        int(observed_id.removeprefix("native:"))
+        if isinstance(observed_id, str)
+        and observed_id.startswith("native:")
+        and observed_id.removeprefix("native:").isdecimal()
+        else None
+    )
     if not isinstance(action, Mapping) or any(
         (
             action.get("war_id") != WAR_ID,
@@ -167,8 +175,10 @@ def _action_submission(
             != before["identity"]["episode_run_id"],
             action.get("starting_snapshot_id")
             != before["identity"]["snapshot_id"],
-            action.get("observed_snapshot_id")
-            != after["identity"]["snapshot_id"],
+            observed_revision is None
+            or not (before["identity"]["native_revision"]
+                    <= observed_revision
+                    <= after["identity"]["native_revision"]),
             action.get("submitted_date_raw")
             != before["identity"]["date_raw"],
             action.get("observed_date_raw")
@@ -179,11 +189,14 @@ def _action_submission(
     ):
         raise ValueError("WAR31 action result lacks exact frame binding")
     absence = after["war_active"]
-    if absence["status"] == "available" and (
-        action.get("war_id_absent_after_ack") is not (not absence["value"])
-        or (action["status"] == "applied") is not (not absence["value"])
-    ):
-        raise ValueError("WAR31 action result conflicts with observed war state")
+    if absence["status"] == "available":
+        immediately_absent = action.get("war_id_absent_after_ack") is True
+        subsequently_absent = not absence["value"]
+        if (immediately_absent and not subsequently_absent) or (
+            action["status"] == "applied"
+            and (not immediately_absent or not subsequently_absent)
+        ):
+            raise ValueError("WAR31 action result conflicts with observed war state")
     return _available(
         {"submitted": True, "phase": action["status"]},
         "typed_action_result",

@@ -93,6 +93,29 @@ class War31PostconditionTests(unittest.TestCase):
         self.assertTrue(report["gates"]["action_submitted"])
         self.assertFalse(report["gates"]["war_absent_after"])
 
+    def test_pending_ack_can_resolve_in_the_next_native_snapshot(self) -> None:
+        result = action(phase="submitted_pending", absent=False)
+        termination = result["war_termination_result"]
+        termination["starting_snapshot_id"] = "native:4"
+        termination["observed_snapshot_id"] = "native:4"
+        report = project_war31_postcondition(
+            frame(active=True, snapshot_id="native:4", revision=4),
+            frame(active=False, snapshot_id="native:5", revision=5),
+            action_result=result,
+        )
+        self.assertTrue(report["gates"]["action_submitted"])
+        self.assertTrue(report["gates"]["war_absent_after"])
+        self.assertEqual(report["action_submission"]["value"]["phase"],
+                         "submitted_pending")
+
+        termination["observed_snapshot_id"] = "native:6"
+        with self.assertRaisesRegex(ValueError, "exact frame binding"):
+            project_war31_postcondition(
+                frame(active=True, snapshot_id="native:4", revision=4),
+                frame(active=False, snapshot_id="native:5", revision=5),
+                action_result=result,
+            )
+
     def test_ack_conflicting_with_war_readback_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "conflicts"):
             project_war31_postcondition(
