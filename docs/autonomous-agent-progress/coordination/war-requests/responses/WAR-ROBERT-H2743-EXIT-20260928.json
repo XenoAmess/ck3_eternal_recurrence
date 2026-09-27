@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T17:34:41Z",
+  "updated_at_utc": "2026-09-27T17:42:52Z",
   "source_pr": null,
   "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
   "delivery_route": "direct rebase-only master push",
@@ -14,10 +14,12 @@
     "driver_sha256": "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069",
     "family_sidecar_sha256": "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724",
     "runtime_dll_sha256": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
-    "status": "received_and_sha256_verified",
+    "status": "received_sha256_verified_and_no_launch_preflight_ready",
     "receiver_path": "D:/ck3-research-artifacts/war31-h2743-20260928/source-verified-01",
     "receiver_receipt_sha256": "DE10DAC715DE2AA976FABF7220BE8A9F2C3449594F83A19497F9A461BE529AAF",
-    "receiver_document": "docs/ck3-native-ai/h2743-onedrive-exact-input-2026-09-28.md"
+    "receiver_document": "docs/ck3-native-ai/h2743-onedrive-exact-input-2026-09-28.md",
+    "no_launch_preflight_sha256": "45272A42440DB742C485B4E243A59FB0660BBDC2C12C7ED4C4262BA3C5102B44",
+    "derived_driver_sha256": "DE008FD0E58C86897F419188787109A04391A44A245A25F2E7BD8AE670D6B614"
   },
   "interface_contract": {
     "kind": "scoped_missing-field_and_formal_read-only_observation_handoff",
@@ -37,9 +39,9 @@
   ],
   "live_evidence": null,
   "limitations": [
-    "The four exact H2743 source files are now present and SHA-verified locally; official pair/no-launch preflight and current-frame live read have not yet run.",
+    "The four exact H2743 source files are present and SHA-verified locally; fresh ordinary-profile rebind/no-launch preflight is READY, but a current-frame live read has not yet run.",
     "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war.",
     "The current Git excerpt cannot tell whether white peace is legal now, quantify surrender terms, or rank continue-war risk. A future current-frame result and material model are needed before any exit decision."
   ],
-  "next_step": "Prepare a fresh official pair from the now SHA-verified h2743 save, driver, sidecar and DLL, then make a read-only current-frame termination-options query after fresh local Steam-offline and screen ownership checks. If still unable to rank, publish the next single material/risk observation gap. Do not reuse the R0197 one-shot authorization or submit an h2743 exit based on this delivery."
+  "next_step": "With fresh local Steam-offline and screen ownership evidence now recorded, make a read-only current-frame H2743 termination-options query under managed CK3 session ownership, then publish any remaining material/risk observation gap. Do not reuse the R0197 one-shot authorization or submit an H2743 exit based on this delivery."
 }
