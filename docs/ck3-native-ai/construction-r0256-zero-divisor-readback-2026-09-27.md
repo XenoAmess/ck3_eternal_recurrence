@@ -1,8 +1,9 @@
 # R0256 construction progress: zero divisor on the cold paused frame
 
-Status: bounded live observation and exact-build source interpretation. This
-is a **derived** h223 Robert replay; it adds no days to the official Robert
-high-water line. No construction completion or income change was observed.
+Status: two paired bounded live observations and exact-build source
+interpretation. This is a **derived** Robert replay; it adds no days to the
+official Robert high-water line. Progress was observed, but no construction
+completion or income benefit was observed.
 
 ## Bound observation
 
@@ -45,11 +46,13 @@ progress divisor to `+0xE8`. A targeted disassembly of the same frozen EXE
 confirms that `0x21F6D40` reads this field at `0x21F6D57`. If it is positive,
 the routine subtracts integer `10000000000 / divisor` from remaining work at
 `+0x88`; if it is nonpositive, the routine sets remaining work to zero and
-enters its completion path. The manager's `0x21FDAC0` refresh path writes a
-new divisor at `0x21FDD75`; its `0x21FDDB0` progress path calls `0x21F6D40`.
-Thus `0` is an actual sampled raw value, **not** a missing-field encoding or
-evidence that progress is blocked. The source alone does not establish when
-the refresh path runs relative to a cold-loaded paused frame.
+enters its completion path. This conditional concerns the value **when that
+routine executes**, not an earlier or later paused-frame sample. The
+manager's `0x21FDAC0` refresh path writes a new divisor at `0x21FDD75`; its
+`0x21FDDB0` progress path calls `0x21F6D40`. Thus `0` is an actual sampled
+raw value, **not** a missing-field encoding or evidence that progress is
+blocked. The source alone does not establish when the refresh path runs
+relative to a cold-loaded paused frame.
 
 The stock start path writes `1095 * 100000 = 109500000` initial work for this
 building. The observed `103500006` is lower by `5999994`, exactly
@@ -58,17 +61,49 @@ to the R0256 read and `111111` is integer `10000000000 / 90000`. This is
 consistent with normal daily work having occurred before the cold read. It
 does not prove a constant divisor, a completion date, or exclusive causation:
 the stock start path also calls `0x21FBD10`, and no per-day paired progress
-samples have been read.
+samples had been read at R0256.
+
+## R0257 paired cold calibration
+
+R0257 used a fresh PID `79596` and source commit
+`fd662bacc2d2700eacf18262a1f00053cad8b663`. Its prepared input is
+the R0256 **h252/raw `53155128`** save, driver and sidecars. The source
+pair index SHA-256 is
+`04EE0136EE60D740AB07C5618826551693D82237DCA5061AFB21B2919B67F5E7`.
+The R0257 formal report SHA-256 is
+`98356C0B01C76227F42BB5FD060386A7AB4A9046906C3D9C5DC5B9DDBAC08B7D`;
+the resulting construction sidecar SHA-256 is
+`A11F3807639C027F9E7BEB7D62320EE6351571BEEF07DA949AA67705819298D5`.
+These live assets remain at
+`Z:\c175-h223-construction-cold4-current-candidate` on the run machine.
+
+The first paused material receipt matched the **same** barony `2174`,
+province `2629`, type `628`, slot `1` and still reported `in_progress` at raw
+`53155128`. It read remaining work `103166673` and divisor `0`; player
+monthly gold income was still raw `603774`. Formal turns 3 and 4 consumed
+the receipt without another construction submit. The four-turn bounded run
+did not advance the date. Completion and income benefit remain unobserved.
+
+The material work difference across the R0256 three-day advance is
+`103500006 - 103166673 = 333333 = 3 * 111111`. This is **observed progress**
+across paired new-PID paused reads, consistent with the stock positive-divisor
+quotient `10000000000 / 90000` during those days. Both cold paused reads
+sampled divisor `0`; their work decrease proves this sampled zero is not a
+reliable indicator of a blocked build or of immediate completion on the next
+date advance. It does not establish the actual per-tick divisor, the refresh
+ordering or an ETA.
 
 ## Next material read
 
-Continue from the R0256 h252/raw `53155128` **paired save, driver and construction
-sidecar** using a newly qualified candidate and new PID. On its first paused
-frame, query the same barony/province/type/slot. If active, compare remaining
-work with `103500006` and record the new divisor, date and native revision;
-if no longer active, require the matching built-slot row. Read player and
-province income separately. A second `0` paired with lower remaining work
-would support a cold-frame/refresh-phase explanation; unchanged work or a
-conflicting active/completed row needs its own investigation. Do not infer an
-ETA from this zero, force date advances, re-submit construction, or count this
-derived replay toward the official Robert high-water days.
+The latest derived checkpoint is **R0257 h263/raw `53155128`**: save SHA-256
+`5F96F853354FAD01E2369B2E6BC21731D5A44C7F0DEBA3AFACCFDA2399AB6328`,
+driver SHA-256
+`1CCBC4BC17379B1689C66478DBCF081C5828B5E4FDCD411A9D79A61BE398746A`,
+and the construction sidecar SHA-256 above. If the formal strategy later
+advances date from a qualified paired continuation, compare the same tuple's
+remaining work with `103166673`; if no longer active, require the matching
+built-slot row. Read player and province income separately. The existing
+30-day warm watch from the R0257 receipt is due at raw `53155848`, subject
+to subsequent cold recheck dates. Do not infer an ETA from the paused zero,
+force date advances, re-submit construction, or count this derived replay
+toward the official Robert high-water days.
