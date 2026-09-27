@@ -13,6 +13,7 @@ from copy import deepcopy
 from pathlib import Path
 
 from .construction_formal_consumer import (
+    COMPLETION_WATCH_INTERVAL_RAW,
     SUBMIT_STEP as CONSTRUCTION_SUBMIT_STEP,
     plan_construction_private,
     read_construction_ledger,
@@ -191,6 +192,20 @@ def plan_m5_formal_query_only(
             ledger = read_construction_ledger(state_dir)
             pending = ledger.get("pending")
             applied = ledger.get("applied")
+            last_completion_check = (
+                applied.get("completion_last_check_date_raw",
+                            applied.get("post_date_raw"))
+                if isinstance(applied, Mapping) else None
+            )
+            warm_completion_watch_due = (
+                isinstance(applied, Mapping)
+                and applied.get("episode_run_id") == snapshot.get("episode_run_id")
+                and applied.get("completion_status") != "completed"
+                and type(snapshot.get("date_raw")) is int
+                and type(last_completion_check) is int
+                and snapshot["date_raw"] >= (
+                    last_completion_check + COMPLETION_WATCH_INTERVAL_RAW)
+            )
             if isinstance(pending, Mapping) or (
                 isinstance(applied, Mapping)
                 and applied.get("episode_run_id") == snapshot.get("episode_run_id")
@@ -202,10 +217,12 @@ def plan_m5_formal_query_only(
                     or type(snapshot.get("native_revision")) is not int
                     or type(snapshot.get("date_raw")) is not int
                     or snapshot["native_revision"] < applied.get("post_native_revision", 0)
-                    or snapshot["date_raw"] < applied.get("post_date_raw", 0))
+                    or snapshot["date_raw"] < applied.get("post_date_raw", 0)
+                    or warm_completion_watch_due)
             ):
                 return plan_construction_private(
-                    driver, cleaned, snapshot, list(history), set()
+                    driver, cleaned, snapshot, list(history),
+                    available_steps if warm_completion_watch_due else set(),
                 )
             if isinstance(applied, Mapping) and (
                 applied.get("episode_run_id") == snapshot.get("episode_run_id")

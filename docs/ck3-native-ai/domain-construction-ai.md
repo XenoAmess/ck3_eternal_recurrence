@@ -2,6 +2,12 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-27 NW-ECON/JOIN-C87: warm completion watch in the M5 formal path
+
+The ordinary construction consumer already schedules a material completion watch when an applied, still-in-progress building reaches 30 game days after its last check. The M5 formal collector previously sent same-PID, later-date applied ledgers directly to the joint proposal source. A production-path `GameplayBridgeService.plan_turn` fixture reproduced the missed watch: with the same process identity and a due `completion_last_check_date_raw`, it selected `life-advance` instead of `private-query-player-construction-receipt-v1`. This is a source/fixture result, not a live completion or income observation.
+
+The collector now sends only a due warm watch through the existing construction consumer before considering new building, gift, or marriage proposals. The consumer first requests a same-frame public income root when needed and available, then the existing typed receipt checks the original slot; an applied building below the interval continues into the joint comparison. Existing event and LIFE choices still precede M5. Focused normal and optimized tests cover the due watch and same-frame non-due comparison. The h133 applied/in-progress evidence remains unchanged; independent CK3 completion, actual income, next turn, and cold recovery remain to be observed with a matched candidate.
+
 ## 2026-09-27 NW-ECON-C77：战争帧恢复已有施工的完工与收入消费（源码/fixture）
 
 C67 当前 h133 配对的建设账本仍为 `applied/in_progress`，`completion_last_check_date_raw=53154720`；该派生 save 的 `date_raw=53154936`，距 30 游戏日普通 watch 门 `53155440` 还有 21 天。新 PID 冷恢复本应先核同槽活动施工或已建槽位，不受这段间隔限制；此前消费者在正式策略选战争步骤时直接返回，而生活方式 opt-in 的 service 早退还会丢弃建设 snapshot。即使强行选出回执，私有传输 `_binding` 原先把和平且无军队条件同时用于**只读材料回执**，战争帧会在 native 查询前被拒绝。这是生产调用链的确定性漏消费；C67 候选尚未启动，不能据此说 h133 已完工。
