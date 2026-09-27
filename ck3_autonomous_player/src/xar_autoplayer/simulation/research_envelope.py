@@ -21,6 +21,7 @@ from .combat_core import (
     TransitionFidelityManifest,
     advantage_damage_multiplier_raw,
     apply_main_phase_casualties,
+    apply_pursuit_day,
     apply_three_day_pursuit,
     fixed_mul,
     outgoing_damage_raw,
@@ -57,7 +58,7 @@ _STOCK_DEFENDER_CROSSING_ADVANTAGE = {
 
 
 RESEARCH_ENVELOPE_MANIFEST = TransitionFidelityManifest(
-    simulator_build="ck3-1.19.0.6-phase-events-disabled-envelope-v2",
+    simulator_build="ck3-1.19.0.6-phase-events-disabled-envelope-v3",
     loaded_phase_effects_exact=False,
     battle_end_exact=True,
     retreat_and_forced_result_exact=True,
@@ -69,11 +70,12 @@ RESEARCH_ENVELOPE_MANIFEST = TransitionFidelityManifest(
         "generic_commander_plus_stock_static_advantage_research_assumption",
         "phase_events_disabled_research_assumption",
         "no_voluntary_or_partial_retreat_research_assumption",
+        "horizon_censored_pursuit_finalizer",
     ),
 )
 
 ACTIVE_MAIN_RESUME_MANIFEST = TransitionFidelityManifest(
-    simulator_build="ck3-1.19.0.6-active-main-resume-research-v2",
+    simulator_build="ck3-1.19.0.6-active-main-resume-research-v3",
     loaded_phase_effects_exact=False,
     battle_end_exact=True,
     retreat_and_forced_result_exact=True,
@@ -560,21 +562,55 @@ class PhaseEventsDisabledResearchKernel(
             winner_route = (
                 resume.side_0_route if winner_side_index == 0 else resume.side_1_route
             ) if resume is not None else None
+            pursuer_modifier_raw = (
+                winner_route.pursuit_efficiency_modifier_raw
+                if winner_route is not None else 0
+            )
+            loser_modifier_raw = (
+                loser_route.retreat_losses_modifier_raw
+                if loser_route is not None else 0
+            )
+            elapsed_at_winner = main_days if resume is not None else battle_days
+            remaining_days = horizon_days - elapsed_at_winner
+            # The stock dispatcher applies pursuit damage on days 1/2/3 and
+            # finishes/removes the combat on day 4. Do not count a winner as a
+            # resolved horizon sample before that last daily dispatch.
+            if remaining_days < 4:
+                current = end.loser_entries
+                for _ in range(min(3, remaining_days)):
+                    day = apply_pursuit_day(
+                        current, winner_entries,
+                        initial_pools=end.pursuit_initial_pools,
+                        pursuer_efficiency_modifier_raw=pursuer_modifier_raw,
+                        retreater_loss_modifier_raw=loser_modifier_raw,
+                    )
+                    pursuit_hard_raw += day.total_hard_raw
+                    current = day.entries
+                if winner_side_index == 0:
+                    defender_hard_raw += pursuit_hard_raw
+                else:
+                    attacker_hard_raw += pursuit_hard_raw
+                return TrialOutcome(
+                    TrialResult.NO_RESOLUTION,
+                    battle_days=horizon_days,
+                    player_hard_loss_raw=(
+                        attacker_hard_raw if attacker_coalition == "player_or_allied"
+                        else defender_hard_raw
+                    ),
+                    enemy_hard_loss_raw=(
+                        defender_hard_raw if attacker_coalition == "player_or_allied"
+                        else attacker_hard_raw
+                    ),
+                )
             pursuit = apply_three_day_pursuit(
                 end.loser_entries,
                 winner_entries,
                 initial_pools=end.pursuit_initial_pools,
-                pursuer_efficiency_modifier_raw=(
-                    winner_route.pursuit_efficiency_modifier_raw
-                    if winner_route is not None else 0
-                ),
-                retreater_loss_modifier_raw=(
-                    loser_route.retreat_losses_modifier_raw
-                    if loser_route is not None else 0
-                ),
+                pursuer_efficiency_modifier_raw=pursuer_modifier_raw,
+                retreater_loss_modifier_raw=loser_modifier_raw,
             )
             pursuit_hard_raw = pursuit.total_hard_raw
-            battle_days += 3
+            battle_days += 4
         if winner_side_index == 0:
             defender_hard_raw += pursuit_hard_raw
             winning_coalition = attacker_coalition

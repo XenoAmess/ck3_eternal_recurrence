@@ -9,6 +9,7 @@ import pytest
 from xar_autoplayer.simulation.combat_core import (
     CombatPhase,
     TrialResult,
+    apply_pursuit_day,
     apply_three_day_pursuit,
     derive_trial_random_streams,
 )
@@ -221,7 +222,16 @@ def test_resume_uses_loser_route_flags_and_native_day_baseline() -> None:
         emptied, side_1_route=replace(emptied.side_1_route, disallow_retreat=True)
     ))
     assert ordinary == winner_flag_only
-    assert ordinary.battle_days == 4
+    assert ordinary.result is TrialResult.NO_RESOLUTION
+    assert ordinary.battle_days == 1
+    assert ordinary.player_hard_loss_raw == 0
+    assert ordinary.enemy_hard_loss_raw == 0
+    route_finished = kernel.simulate_trial(
+        emptied, streams=derive_trial_random_streams(871, 0), horizon_days=5
+    )
+    assert route_finished.result is not TrialResult.NO_RESOLUTION
+    assert route_finished.battle_days == 5
+    assert route_finished.player_hard_loss_raw == 49_992
 
     blocked = trial(replace(
         emptied, side_0_route=replace(emptied.side_0_route, disallow_retreat=True)
@@ -238,7 +248,40 @@ def test_resume_uses_loser_route_flags_and_native_day_baseline() -> None:
     early_override = replace(
         too_early, side_0_route=replace(too_early.side_0_route, allow_early_retreat=True)
     )
-    assert trial(early_override).battle_days == 4
+    assert trial(early_override).result is TrialResult.NO_RESOLUTION
+
+
+@pytest.mark.parametrize("horizon,partial_ticks,resolved", (
+    (1, 0, False), (2, 1, False), (3, 2, False),
+    (4, 3, False), (5, 0, True),
+))
+def test_resume_horizon_waits_for_fourth_pursuit_finalizer_day(
+    horizon: int, partial_ticks: int, resolved: bool,
+) -> None:
+    state, kernel = _research_state()
+    losing = (
+        replace(state.side_0_entries[0], current_raw=0, soft_casualties_raw=8_000_000),
+        *(replace(entry, current_raw=0) for entry in state.side_0_entries[1:]),
+    )
+    state = replace(
+        state, side_0_entries=losing,
+        side_0_route=replace(state.side_0_route, retreat_elapsed_whole_days=14),
+    )
+    with mock.patch(
+        "xar_autoplayer.simulation.research_envelope.apply_pursuit_day",
+        wraps=apply_pursuit_day,
+    ) as partial, mock.patch(
+        "xar_autoplayer.simulation.research_envelope.apply_three_day_pursuit",
+        wraps=apply_three_day_pursuit,
+    ) as full:
+        outcome = kernel.simulate_trial(
+            state, streams=derive_trial_random_streams(871, 0),
+            horizon_days=horizon,
+        )
+    assert partial.call_count == partial_ticks
+    assert full.call_count == int(resolved)
+    assert (outcome.result is not TrialResult.NO_RESOLUTION) is resolved
+    assert outcome.battle_days == horizon
 
 
 @pytest.mark.parametrize("loser_side", (0, 1))
@@ -271,7 +314,7 @@ def test_resume_routes_observed_winner_and_loser_pursuit_modifiers(loser_side: i
         wraps=apply_three_day_pursuit,
     ) as pursuit:
         observed = kernel.simulate_trial(
-            state, streams=derive_trial_random_streams(871, 0), horizon_days=1
+            state, streams=derive_trial_random_streams(871, 0), horizon_days=5
         )
     assert pursuit.call_count == 1
     assert pursuit.call_args.kwargs["pursuer_efficiency_modifier_raw"] == 15_000
@@ -286,7 +329,7 @@ def test_resume_routes_observed_winner_and_loser_pursuit_modifiers(loser_side: i
     no_modifier = kernel.simulate_trial(
         without_observed_loss,
         streams=derive_trial_random_streams(871, 0),
-        horizon_days=1,
+        horizon_days=5,
     )
     if loser_side == 0:
         assert no_modifier != observed
