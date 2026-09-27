@@ -1,5 +1,45 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE-C99：R0246 私有 LIFE 编译特性漏配（2026-09-27）
+
+R0246 使用 Robert h133/raw53154936 的合法配对和 C85 候选：Python 源
+`a9248b2b4dbdf8a0d71f956b9677bf08a6d9b4be`、native 源
+`a181c84b94a81c90ef26811f1682b90ceb450a06`、DLL SHA-256
+`661B8E5811041A4F8D035F2C4D700160915AEFB06EB3A7AF9C2EAD13EF367B11`。
+首回合私有 LIFE `current-state` 和 `formal` 查询各返回原生错误
+`unsupported native gameplay step`；`stock` 因当前状态不可读而返回
+`current_state_unavailable`。内部前后保持同一 `native:3`、Python revision 4、
+native revision 3、raw53154936，失败谓词为 `formal_status_unavailable` 和
+`stock_status_unavailable`。正式成功 turn 0/1、typed 动作 0、游戏日期未推进；
+受控运行后的 CK3 进程树已回收。[原始报告](Z:/rc85-candidate-a924/attempt-01/formal-report.txt)
+SHA-256 `8305C59C1075626B058933D29FD4E9F27826578850C021A14C6C8122788F2578`；
+[operator 回执](Z:/rc85-candidate-a924/attempt-01/operator-receipt.json)
+SHA-256 `73242D69421830C594E0705400CA9A1F59E940107ED3C6495372324163487456`。
+
+Python 的三个请求字面量与 exact-build C++ header/bridge dispatch 相同；
+但 C85 原生构建缓存中
+`XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1:BOOL=OFF`。
+`bridge.cpp` 中支持这些请求的 allowlist 与分发均受该编译宏保护，C85
+实际 DLL 中三个查询字面量计数均为 0。因此这次是 DLL 特性漏配，
+不是帧漂移、已聚焦角色的 stock 合法性，也不能靠 Python 继续重试解除。
+R0186/R0187 的旧焦点/技能回执不代替 R0246 当前帧读回。
+
+```mermaid
+flowchart LR
+  F[冻结的 LIFE 私有试运行参数] --> H{配对 DLL 包含三个 LIFE 查询分发键?}
+  H -->|否| B[no-launch 阻断；用私有 LIFE CMake 选项重建 DLL]
+  H -->|是| P[官方 save/driver/profile 配对检查]
+  P --> Q[唯一 CK3 实例上的同帧原生读回]
+  Q -. 新动作、下一 turn、恢复仍待实际验收 .-> O[正式 OODA 证据]
+```
+
+本包在 `g2_preview_operator.py` 增加只读的
+`verify-private-lifestyle-dll --manifest <path>` 和正式私有 LIFE `run` 前置检查：
+对将加载的 hash-pinned DLL 查三个 exact 查询字面量，缺少时明确指出上述 CMake
+选项和重新配对要求。它只证明必要的编译接线存在，不证明原生查询能成功、
+当前角色可选重心/技能或游戏动作生效；ON Release DLL 仍须独立检查字面量，
+再做官方 no-launch 与新的有界实机回合。C85 冻结 DLL 与原始 RED 均保留。
+
 ## NW-LIFE-C76：R0245 开局重心门的冷恢复读回（2026-09-27）
 
 R0245 使用 C67 `d1690e9` Python / `c3bb2c3` 原生候选，从 Robert 派生
