@@ -55,10 +55,10 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         self.assertEqual(result["subject_target_arrival_date_raw"], 53218680)
         self.assertEqual(result["offsite_target_arrivals"][0]["target_arrival_date_raw"],
                          53219928)
-        # The report names 83886484 as the selected siege candidate while its
-        # route says it is at 3660.  The omitted full war row is needed to
-        # resolve that contradiction; a candidate-implied target position must
-        # fail instead of silently choosing either native readout.
+        # The R0265 candidate label was polluted by a local variable collision;
+        # the separate R0264 war row puts this moving army at 3660.  A supplied
+        # war row that instead puts it at the target must still fail the
+        # same-frame contact position check.
         war["enemy_armies"][1]["current_province_id"] = 2629
         mismatch = _siege_forecast_participant_partition(
             war, relief["army_strength_balance"], contact,

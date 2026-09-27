@@ -19059,7 +19059,11 @@ class SiegeForecastIngressTests(unittest.TestCase):
         preview_step = "preview-move-army-11-to-32"
         contact_step = query_route_contact_horizon_step(11, 32, (21,))
         query_step = query_combat_simulation_inputs_v3_step(32, 31, [11], [21])
-        steps = {preview_step, contact_step, "life-advance", "move-army-11-to-32"}
+        steps = {
+            preview_step, contact_step, "life-advance", "move-army-11-to-32",
+            "preview-move-army-11-to-31", "move-army-11-to-31",
+            query_route_contact_horizon_step(11, 31, (21,)),
+        }
         capabilities = {QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY}
 
         def ingest(
@@ -19162,9 +19166,47 @@ class SiegeForecastIngressTests(unittest.TestCase):
             return_value={"status": "ready", "assessment_sha256": "E" * 64},
         ):
             qualified = ingest([preview_row, contact_row, query_row], frame=queried_frame)
-        self.assertEqual(qualified["phase"], "native_war_siege_forecast_move")
-        self.assertEqual(qualified["selected_step"], "move-army-11-to-32")
-        self.assertTrue(qualified["active_attack_allowed"])
+            self.assertEqual(qualified["phase"], "native_war_siege_forecast_short_preview")
+            self.assertEqual(qualified["selected_step"], "preview-move-army-11-to-31")
+            short_preview = _preview_row(
+                4, army_id=11, origin=30, target=31,
+                date_raw=date_raw, route=[31],
+            )
+            qualified = ingest(
+                [preview_row, contact_row, query_row, short_preview],
+                frame=queried_frame,
+            )
+            self.assertEqual(qualified["selected_step"],
+                             query_route_contact_horizon_step(11, 31, (21,)))
+            short_contact = _route_contact_row(
+                5, army_id=11, origin=30, target=31,
+                date_raw=date_raw, route=[31], hostile_ids=(21,),
+                contact_free=True,
+            )
+            qualified = ingest(
+                [preview_row, contact_row, query_row, short_preview, short_contact],
+                frame=queried_frame,
+            )
+        self.assertEqual(qualified["phase"], "native_war_siege_forecast_short_move")
+        self.assertEqual(qualified["selected_step"], "move-army-11-to-31")
+        self.assertFalse(qualified["active_attack_allowed"])
+        adjacent_frame = copy.deepcopy(queried_frame)
+        adjacent_frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 30
+        adjacent_query = copy.deepcopy(query_row)
+        adjacent_query_step = query_combat_simulation_inputs_v3_step(32, 30, [11], [21])
+        adjacent_query["command"] = adjacent_query_step
+        adjacent_query["result"]["step"] = adjacent_query_step
+        with mock.patch(
+            "xar_autoplayer.strategy._qualified_siege_forecast_move",
+            return_value={"status": "ready", "assessment_sha256": "E" * 64},
+        ):
+            immediate = ingest(
+                [adjacent_preview, adjacent_contact, adjacent_query],
+                frame=adjacent_frame,
+            )
+        self.assertEqual(immediate["phase"], "native_war_siege_forecast_move")
+        self.assertEqual(immediate["selected_step"], "move-army-11-to-32")
+        self.assertTrue(immediate["active_attack_allowed"])
         stale = ingest([preview_row, contact_row, query_row])
         self.assertIsNone(stale["selected_step"])
         self.assertEqual(stale["required_observation"], "fresh-v3-cache-readback")
@@ -19228,7 +19270,8 @@ class SiegeForecastIngressTests(unittest.TestCase):
                 snapshot={**queried_frame, "army_strengths": overmatch["army_strengths"]},
                 action_steps=steps, bridge_capabilities=capabilities,
             )
-        self.assertEqual(overmatch_qualified["selected_step"], "move-army-11-to-32")
+        self.assertEqual(overmatch_qualified["selected_step"], "preview-move-army-11-to-31")
+        self.assertFalse(overmatch_qualified["active_attack_allowed"])
 
 
 if __name__ == "__main__":
