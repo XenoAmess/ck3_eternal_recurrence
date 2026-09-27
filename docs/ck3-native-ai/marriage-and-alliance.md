@@ -1,5 +1,26 @@
 # CK3 1.19.0.6 婚姻、联盟与战争召集：主动婚配与入站回复树
 
+## 2026-09-27 C168：R0255 同龄异宗族婚约与无联盟尝试
+
+正式 Robert R0255 从 h2357/raw53216424 开始的首个 paused 帧，首继承人 `38822` 当前没有配偶或婚约。原生 final-legal 集合有 `141` 行；候选 `38718`、接收方 `32897` 的完整 Can Send 为 true、最终答复允许、收件人接受 raw `900000`。两名实际婚配者的成年比较数均为 `13/16`，接受后预计为普通 `betrothal`；玩家与继承人当前 House/Dynasty `174`，候选当前 House/Dynasty `1807`，双方 selector `0/1`，生效 matrilineal 为 false，与继承人 selector 对齐。五行诊断中该行唯一拒绝原因是 `betrothal_realm_alliance_attempt_unavailable`。原生 `possible_alliance_pairs` 仅给出玩家 `29829` → 候选 `38718`，其 `both_have_realm_data=false`、`would_attempt_if_accepted=false`；没有玩家 → 接收方 `32897` 的联盟尝试行。此结论来自 [R0255 正式报告](Z:/r153-robert-h2357-candidate/run-formal-36/formal-report.txt)，SHA-256 `1E438E18A782A0EAA99CEA1748E657775D82D48D4F3C7B23A04BCA25C7E065C0`。R0255 的 36/36 turn 没有提交婚配动作，不能称该婚约已成立。
+
+原生结果树已经区分“双方成人则 marriage，否则 betrothal”，并把具体联盟尝试作为其后的独立分支。此候选即使不会尝试 realm 联盟，仍有一项有界家庭目标：为当前无伴侣的合法首继承人与同龄、异宗族候选取得未来配偶婚约关系。项目政策现在把这项关系机会独立于联盟尝试入选；原生最终合法、年龄差 `≤2`、继承人所属 House/Dynasty、生效 lineality、收件人正接受 raw 和现有关系门均保留。其收益是**婚约关系被接受后才会出现**，不是发送回执、子代宗族结果或盟约收益。锁定择偶、解除婚约可能的 prestige/opinion/unity 后果、未来子代身份及联盟战争义务仍未量化。没有实际 `would_attempt` 时，M5 同帧与待决账本的 ally claim 为 `[]`；三名婚配角色及首继承人婚约承诺仍各占一次。既有排序仍只把 realm-backed actor/recipient 候选优先送入固定五行，其他未投影候选的价值不由本次结论排除。
+
+```mermaid
+flowchart TD
+    A["[R0255 paused] 首继承人无伴侣；38718 同龄异宗族"] --> B{"[native] 完整 Can Send 与最终答复允许？"}
+    B -->|否| X["不提交"]
+    B -->|是| C{"[source policy] 年龄、House/Dynasty、lineality 和关系门通过？"}
+    C -->|否| X
+    C -->|是| D["[source policy] 婚约关系机会；typed 提案候选"]
+    D --> E{"[native] 玩家至接收方会尝试联盟？"}
+    E -->|是| F["只预留潜在盟友；仍需实际结果读回"]
+    E -->|否| G["ally claim 空；角色与婚约承诺照常占用"]
+    D -. "下一候选实机待验" .-> U["[unknown] 提案接受、婚约物质结果及冷恢复"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
 ## 2026-09-27 C145：战时首继承人婚配的原生边界
 
 原版 `00_marriage_interactions.txt`（SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`）的 `arrange_marriage_interaction` 在 `can_send` 中排除的是 `scope:actor` 与 `scope:recipient` **彼此交战**（约第 518–522 行），没有在这一门中要求 actor 全局和平。`grand_wedding_promise` 的 AI 专属 `is_at_war = no` 约束只位于该可选项的 `is_shown` 分支（约第 759–773 行），不能外推为普通婚配禁令。其他 native complete Can Send、收件人最终回答及婚姻/订婚结果门仍逐条执行；本节不据此声称当前战时 Robert 一定有可发送提案。

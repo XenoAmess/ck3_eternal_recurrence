@@ -244,16 +244,11 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
                 or row["candidate_dynasty_id"] <= 0
                 or row["candidate_dynasty_id"] == played_dynasty):
             reasons.append("betrothal_external_dynasty_unavailable")
-        pairs = row.get("possible_alliance_pairs")
-        if (not isinstance(pairs, list) or not any(
-                isinstance(pair, dict)
-                and pair.get("first_character_id") == source.get("played_character_id")
-                and pair.get("second_character_id") == row.get("recipient_character_id")
-                and pair.get("already_allied") is False
-                and pair.get("both_have_realm_data") is True
-                and pair.get("would_attempt_if_accepted") is True
-                for pair in pairs)):
-            reasons.append("betrothal_realm_alliance_attempt_unavailable")
+        # A same-age external-Dynasty betrothal can secure the heir's future
+        # partnership without a realm alliance. Keep the projection readable,
+        # but do not turn a missing attempt into an invented ally payoff.
+        if not isinstance(row.get("possible_alliance_pairs"), list):
+            reasons.append("betrothal_alliance_projection_unavailable")
     if source.get("complete_can_send") is not True:
         reasons.append("native_can_send_not_true")
     if source.get("recipient_answer_allows_send") is not True:
@@ -389,10 +384,11 @@ def choose_first_heir_marriage_candidate(
     legality: Mapping[str, object], projection: Mapping[str, object],
     *, rejected_candidate_ids: frozenset[int] = frozenset(),
 ) -> dict[str, object] | None:
-    """Value an adult marriage, or an age-aligned external-dynasty betrothal.
+    """Value an adult marriage or an age-aligned heir partnership betrothal.
 
-    A projected alliance attempt is a narrow betrothal signal, not an alliance
-    receipt. Positive recipient AI raw is only a send/acceptance clue.
+    A projected realm alliance attempt is a separate possible consequence, not
+    the marriage value or an alliance receipt. Positive recipient AI raw is
+    only a send/acceptance clue.
     """
     if (legality.get("status") != "available"
             or projection.get("status") != "available"
@@ -424,11 +420,25 @@ def choose_first_heir_marriage_candidate(
     if not choices:
         return None
     _, _, acceptance_raw, _, outcome, candidate_id = max(choices)
+    selected = next(row for row in rows
+                    if row["candidate_character_id"] == candidate_id)
+    source = by_id[candidate_id]
+    alliance_attempt = any(
+        pair.get("first_character_id") == source.get("played_character_id")
+        and pair.get("second_character_id") == selected.get("recipient_character_id")
+        and pair.get("already_allied") is False
+        and pair.get("both_have_realm_data") is True
+        and pair.get("would_attempt_if_accepted") is True
+        for pair in selected["possible_alliance_pairs"]
+    )
     return {"candidate_character_id": candidate_id,
             "value": ("unpartnered_first_heir_adult_marriage_opportunity"
                       if outcome == "marriage" else
-                      "bounded_first_heir_betrothal_and_realm_alliance_attempt"),
+                      "bounded_first_heir_betrothal_and_realm_alliance_attempt"
+                      if alliance_attempt else
+                      "bounded_first_heir_external_dynasty_betrothal_opportunity"),
             "predicted_outcome_if_accepted": outcome,
+            "realm_alliance_attempt_if_accepted": alliance_attempt,
             "recipient_ai_accept_raw": acceptance_raw,
             "unpriced": ["child_dynasty_result", "alliance_result",
                          "alliance_war_obligation", "betrothal_break_cost"]}
@@ -691,6 +701,14 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
                            if len(player_recipient_pairs) == 1 and
                            type(player_recipient_pairs[0].get("already_allied")) is bool
                            else None)
+    alliance_attempt = any(
+        pair.get("already_allied") is False
+        and pair.get("both_have_realm_data") is True
+        and pair.get("would_attempt_if_accepted") is True
+        for pair in player_recipient_pairs
+    )
+    if choice.get("realm_alliance_attempt_if_accepted") is not alliance_attempt:
+        raise ValueError("first-heir alliance claim changed before submission")
     pid, creation = bridge_process_identity(driver)
     pending = {"schema": SCHEMA, "status": "receipt_pending", "material_result": False,
                "pre_native_revision": snapshot["native_revision"],
@@ -700,6 +718,7 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
                "candidate_character_id": choice["candidate_character_id"],
                "recipient_character_id": recipient,
                "preproposal_played_has_recipient_alliance": prior_player_allied,
+               "preproposal_realm_alliance_attempt_if_accepted": alliance_attempt,
                "episode_run_id": snapshot["episode_run_id"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
                "submission_state": "may_have_submitted"}

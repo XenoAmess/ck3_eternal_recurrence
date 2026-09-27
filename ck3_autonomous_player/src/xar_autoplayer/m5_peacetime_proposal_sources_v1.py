@@ -290,10 +290,15 @@ def _pending_family_commitments(
         raise BridgeUnavailableError(
             "M5 pending family commitment lacks exact role identities"
         )
+    alliance_attempt = pending.get(
+        "preproposal_realm_alliance_attempt_if_accepted", True)
+    if type(alliance_attempt) is not bool:
+        raise BridgeUnavailableError("M5 pending family alliance claim is unreadable")
     return {
-        # The proposal may claim the recipient as a future alliance partner;
-        # this is a pending resource claim, not an established alliance value.
-        "ally_character_ids": [recipient],
+        # Historical pending ledgers predate this field; retain their earlier
+        # conservative recipient claim. A new no-attempt betrothal still
+        # occupies three characters and the heir's marriage commitment.
+        "ally_character_ids": [recipient] if alliance_attempt else [],
         "character_ids": sorted({heir, candidate, recipient}),
         "commitment_keys": [f"first-heir-marriage:{heir}"],
     }

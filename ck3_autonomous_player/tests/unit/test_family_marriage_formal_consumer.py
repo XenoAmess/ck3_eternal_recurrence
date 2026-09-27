@@ -20,6 +20,8 @@ from xar_autoplayer.family_marriage_formal_consumer import (
     read_family_marriage_ledger,
     submit_family_marriage_private,
 )
+from xar_autoplayer.m5_observed_opportunity_selector import first_heir_marriage_proposal
+from xar_autoplayer.m5_peacetime_proposal_sources_v1 import _pending_family_commitments
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
     ALLIANCE_RESULT_STEP, SCHEMA, RESULT_STEP, SUBMIT_STEP,
 )
@@ -87,6 +89,50 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
              "native_legal_candidates": legal},
             {"status": "available", "native_revision": 7,
              "legality_query_sequence": 2, "rows": projected})
+
+
+def r0255_no_alliance_betrothal(driver: "FakeDriver") -> dict[str, object]:
+    """Use R0255 turn-one identities and material projection fields."""
+    driver.legality["observed_first_heir_character_id"] = 38822
+    ids = [38718, 39554, 39503, 16841712, 30104]
+    recipients = [32897, 32716, 32716, 32440, 34333]
+    ages = [13, 9, 9, 1, 57]
+    dynasties = [1807, 174, 174, 2098, 174]
+    accepts = [900000, 15100000, 15000000, 8700000, 8300000]
+    for index, (source, row) in enumerate(zip(
+            driver.legality["native_legal_candidates"],
+            driver.projection["rows"])):
+        source.update(candidate_character_id=ids[index],
+                      played_character_id=29829, subject_character_id=38822,
+                      recipient_matchmaker_character_id=recipients[index],
+                      heir_adult_measure_raw=13,
+                      candidate_adult_measure_raw=ages[index],
+                      played_dynasty_id=174, heir_dynasty_id=174,
+                      candidate_dynasty_id=dynasties[index],
+                      recipient_ai_accept_raw=accepts[index])
+        row.update(actor_character_id=29829, heir_character_id=38822,
+                   recipient_character_id=recipients[index],
+                   candidate_character_id=ids[index],
+                   predicted_outcome_if_accepted="betrothal",
+                   heir_is_adult=False, candidate_is_adult=ages[index] >= 16,
+                   heir_adult_measure_raw=13,
+                   candidate_adult_measure_raw=ages[index],
+                   played_house_id=174, played_dynasty_id=174,
+                   heir_house_id=174, heir_dynasty_id=174,
+                   candidate_house_id=dynasties[index],
+                   candidate_dynasty_id=dynasties[index])
+    driver.projection["rows"][0]["possible_alliance_pairs"] = [{
+        "first_character_id": 29829, "second_character_id": 38718,
+        "already_allied": False, "both_have_realm_data": False,
+        "would_attempt_if_accepted": False,
+    }]
+    driver.allow_private_current_first_heir_relationship_query = True
+    driver.current_first_heir_relationship.update(heir_character_id=38822)
+    return {**scene(), "played_character": {"character_id": 29829},
+            "date_raw": 53216424,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "active_wars": [{"war_id": 16777231}],
+            "played_character_gold": {"raw": 4200000, "scale": 100000}}
 
 
 class FakeDriver:
@@ -158,6 +204,77 @@ class FakeDriver:
 
 
 class FamilyConsumerTest(unittest.TestCase):
+    def test_r0255_same_age_external_betrothal_has_value_without_realm_alliance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            snapshot = r0255_no_alliance_betrothal(driver)
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "query-war-termination-options-16777231"}},
+                snapshot, wartime_arbitration=True)
+            plan = planned["plan"]
+            self.assertEqual(plan["selected_step"], SUBMIT_STEP)
+            choice = plan["family_marriage_choice"]
+            self.assertEqual(choice["candidate_character_id"], 38718)
+            self.assertEqual(choice["value"],
+                             "bounded_first_heir_external_dynasty_betrothal_opportunity")
+            self.assertIs(choice["realm_alliance_attempt_if_accepted"], False)
+            self.assertIn("alliance_result", choice["unpriced"])
+            self.assertEqual(plan["family_marriage_private_diagnostic"]["rows"][0]
+                             ["rejection_reasons"], [])
+            frame = {"played_character_id": 29829,
+                     "native_revision": snapshot["native_revision"],
+                     "date_raw": snapshot["date_raw"],
+                     "episode_run_id": snapshot["episode_run_id"],
+                     "snapshot_id": "native:7", "revision": 8}
+            joint = first_heir_marriage_proposal(frame=frame, plan=plan)
+            self.assertEqual(joint["ally_character_ids"], [])
+            self.assertEqual(joint["character_ids"], [32897, 38718, 38822])
+            self.assertIs(joint["evidence"]["realm_alliance_attempt_if_accepted"],
+                          False)
+            driver.submit_observed_first_heir_marriage_private_v1 = (
+                lambda *, legality, candidate_character_id: {
+                    "schema": SCHEMA, "status": "receipt_pending",
+                    "material_result": False, "pre_native_revision": 7,
+                    "played_character_id": 29829, "heir_character_id": 38822,
+                    "candidate_character_id": candidate_character_id})
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                pending = submit_family_marriage_private(
+                    driver, plan=plan, snapshot=snapshot)
+            self.assertIs(pending["preproposal_realm_alliance_attempt_if_accepted"],
+                          False)
+            claims = _pending_family_commitments(pending, frame)
+            self.assertEqual(claims["ally_character_ids"], [])
+            self.assertEqual(claims["character_ids"], [32897, 38718, 38822])
+            self.assertEqual(claims["commitment_keys"],
+                             ["first-heir-marriage:38822"])
+
+    def test_r0255_no_alliance_betrothal_still_rejects_age_or_lineality_drift(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            snapshot = r0255_no_alliance_betrothal(driver)
+            source = driver.legality["native_legal_candidates"][0]
+            row = driver.projection["rows"][0]
+            source["candidate_adult_measure_raw"] = 10
+            row["candidate_adult_measure_raw"] = 10
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, snapshot,
+                wartime_arbitration=True)
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            self.assertIn("betrothal_age_gap_out_of_bounds",
+                          planned["plan"]["family_marriage_private_diagnostic"]
+                          ["rows"][0]["rejection_reasons"])
+            source["candidate_adult_measure_raw"] = 13
+            row["candidate_adult_measure_raw"] = 13
+            row["effective_matrilineal_if_accepted"] = True
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, snapshot,
+                wartime_arbitration=True)
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            self.assertIn("lineality_not_heir_aligned",
+                          planned["plan"]["family_marriage_private_diagnostic"]
+                          ["rows"][0]["rejection_reasons"])
+
     @staticmethod
     def _resolved_prior_betrothal(state_dir: Path) -> None:
         (state_dir / "first-heir-marriage-formal-v1.json").write_text(
