@@ -1,0 +1,50 @@
+{
+  "schema": "ck3.maa87_dual_type_stat_source_boundary.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "bridge_source_sha256": "F947160847CA20DB449DD63622A804FB761334AA4E895A1E1A6DA3921E8AB60E",
+  "source_save_identity_sha256": "69B906918120294000C8BB821A1AEEFE43BD210FB14610E8EACC1B0CFC1BC210",
+  "frozen_v3_cases": [
+    {
+      "source_day": 11,
+      "v3_sha256": "50F1FE7946F846E237AAC2003B98BF540363C133AA8EE93AB69F388E2472E2BE",
+      "regiment_id": 87,
+      "army_id": 16777221,
+      "counter_class_index_from_inner_type": 0,
+      "maa_type_key_in_v3": null,
+      "effective_toughness_raw": 2625000,
+      "target_province_id": 2633
+    },
+    {
+      "source_day": 21,
+      "v3_sha256": "A8B257EE743B593DBE145ED2D6E152DC7791C092EB0B6C95BE8943B1C23AE1E1",
+      "regiment_id": 87,
+      "army_id": 16777221,
+      "counter_class_index_from_inner_type": 0,
+      "maa_type_key_in_v3": null,
+      "effective_toughness_raw": 2625000,
+      "target_province_id": 2633
+    }
+  ],
+  "effective_stat_type_pointer_offset": "CRegiment+0x118",
+  "counter_class_type_pointer_offset": "CRegiment+0x18",
+  "effective_stat_type_class_index_offset": "type+0x270",
+  "counter_class_index_offset": "inner_type+0x270",
+  "class_row_stride": "0x58",
+  "toughness_class_row_enum_offsets": [
+    "+0x2E",
+    "+0x3A"
+  ],
+  "fixed_toughness_enum_ids": [
+    "0x1AC",
+    "0x1AD",
+    "0x1A7"
+  ],
+  "army_source_path": "CRegiment+0x28 -> generation-resolved CRegiment+0x140 -> CArmy+0x38/+0x44",
+  "pre_target_toughness_q100000_rule": "trunc_toward_zero((base_toughness_raw + accumulated_add_raw) * accumulated_multiplier_raw / 100000)",
+  "target_toughness_vector_added_after_pre_target_rule": true,
+  "same_regiment_type_pointers_observed_equal": false,
+  "effective_stat_class_index_observed": false,
+  "same_frame_modifier_values_observed": false,
+  "specific_125000_raw_difference_cause_proven": false
+}
