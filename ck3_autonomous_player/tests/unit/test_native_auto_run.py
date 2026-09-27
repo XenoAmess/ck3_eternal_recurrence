@@ -4218,6 +4218,73 @@ class NativeAutoRunTests(unittest.TestCase):
 
         self.assertEqual(compact, plan)
 
+    def test_compact_opening_lifestyle_preserves_zero_positive_and_unknown(self) -> None:
+        existing = {
+            "status": "verified_existing",
+            "readback_source": "native_current_state_only",
+            "source_frame": {"snapshot_id": "native:3", "revision": 4,
+                             "native_revision": 3, "date_raw": 53154936,
+                             "player_character_id": 29829,
+                             "unbounded_detail": "discard"},
+            "current_focus": {"presence": "present",
+                              "key": "stewardship_wealth_focus",
+                              "lifestyle_key": "stewardship_lifestyle"},
+            "current_lifestyle_progress": {
+                "presence": "present", "lifestyle_key": "stewardship_lifestyle",
+                "xp_total_raw": 1250, "xp_within_level_raw": 250,
+                "xp_per_level": 1000, "unspent_perk_points": 1,
+                "used_perk_points": 6, "unbounded_detail": "discard",
+            },
+            "perk_opportunity": {
+                "status": "observed", "query_status": "available",
+                "formal_precondition_status": "ready",
+                "legal_candidate_count": 1,
+                "policy_target_final_legal": {"centralization_perk": True},
+                "policy_target_owned": {"centralization_perk": False},
+                "unbounded_detail": "discard",
+            },
+        }
+        compact = native_auto_run_module._compact_plan({
+            "phase": "initial_lifestyle_focus_already_present",
+            "selected_step": "query-campaign-root-context-v1",
+            "initial_lifestyle_focus_existing": existing,
+        })
+        observed = compact["opening_lifestyle_observation"]
+        self.assertEqual(observed["current_lifestyle_progress"]["unspent_perk_points"], 1)
+        self.assertEqual(observed["perk_opportunity"]["legal_candidate_count"], 1)
+        self.assertTrue(observed["perk_opportunity"]["policy_target_final_legal"]
+                        ["centralization_perk"])
+        self.assertNotIn("unbounded_detail", observed["source_frame"])
+        self.assertNotIn("unbounded_detail", observed["current_lifestyle_progress"])
+        self.assertNotIn("unbounded_detail", observed["perk_opportunity"])
+
+        existing["current_lifestyle_progress"]["xp_total_raw"] = 0
+        existing["current_lifestyle_progress"]["unspent_perk_points"] = 0
+        existing["perk_opportunity"]["legal_candidate_count"] = 0
+        existing["perk_opportunity"]["policy_target_final_legal"] = {
+            "centralization_perk": False,
+        }
+        zero = native_auto_run_module._compact_plan({
+            "initial_lifestyle_focus_existing": existing,
+        })["opening_lifestyle_observation"]
+        self.assertEqual(zero["current_lifestyle_progress"]["xp_total_raw"], 0)
+        self.assertEqual(zero["current_lifestyle_progress"]["unspent_perk_points"], 0)
+        self.assertEqual(zero["perk_opportunity"]["legal_candidate_count"], 0)
+        self.assertFalse(zero["perk_opportunity"]["policy_target_final_legal"]
+                         ["centralization_perk"])
+
+        existing["perk_opportunity"] = {
+            "status": "unknown", "query_status": "native_query_unavailable",
+            "legal_candidate_count": None,
+            "policy_target_final_legal": None, "policy_target_owned": None,
+        }
+        unknown = native_auto_run_module._compact_plan({
+            "initial_lifestyle_focus_existing": existing,
+        })["opening_lifestyle_observation"]["perk_opportunity"]
+        self.assertIsNone(unknown["legal_candidate_count"])
+        self.assertIsNone(unknown["policy_target_final_legal"])
+        self.assertEqual(unknown["query_status"], "native_query_unavailable")
+
     def test_turn_limit_materializes_visible_tail_checkpoint(self) -> None:
         report, harness = self._run(["advance"])
 

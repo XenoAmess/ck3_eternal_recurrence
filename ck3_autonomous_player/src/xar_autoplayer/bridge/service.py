@@ -386,6 +386,7 @@ from ..lifestyle_formal_consumer import (
     same_frame_feudal_peace_scope,
     unresolved_lifestyle_perk_action,
 )
+from .player_lifestyle_private_transport_v1 import PERK_TARGETS
 from ..construction_formal_consumer import (
     SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP,
@@ -1025,6 +1026,98 @@ class GameplayBridgeService:
                 "reason": construction_red_plan["reason"]}}
         return planned
 
+    def _observe_opening_lifestyle_perks_v1(
+        self, *, before: dict[str, object], focus: dict[str, object],
+        revision: int, formal_query: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        """Record final perk legality without changing the opening focus gate."""
+        unknown: dict[str, object] = {
+            "status": "unknown", "query_status": "not_executed",
+            "formal_precondition_status": None,
+            "legal_candidate_count": None,
+            "policy_target_final_legal": None,
+            "policy_target_owned": None,
+        }
+        if getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is not True:
+            return {**unknown, "query_status": "trial_off"}
+        try:
+            if formal_query is None:
+                reader = getattr(
+                    self.driver, "query_player_lifestyle_formal_private_v1", None,
+                )
+                if not callable(reader):
+                    return {**unknown, "query_status": "reader_unavailable"}
+                query = reader(expected_revision=revision)
+            else:
+                query = formal_query
+            after = self.snapshot()
+        except Exception as error:
+            return {**unknown, "query_status": "query_error",
+                    "error_type": type(error).__name__}
+        if not isinstance(query, dict) or query.get("status") != "available":
+            return {**unknown, "query_status": (
+                query.get("status") if isinstance(query, dict) else "malformed_result"
+            ), "native_error": (
+                query.get("native_error") if isinstance(query, dict) else None
+            )}
+        source = query.get("source_frame")
+        bound = (
+            after.get("paused") is True
+            and all(after.get(key) == before.get(key) for key in (
+                "snapshot_id", "revision", "native_revision", "date_raw",
+                "episode_run_id",
+            ))
+            and isinstance(source, dict)
+            and all(source.get(key) == before.get(key) for key in (
+                "snapshot_id", "revision", "native_revision", "date_raw",
+            ))
+            and query.get("episode_run_id") == before.get("episode_run_id")
+            and source.get("player_character_id") == (
+                before.get("played_character", {}).get("character_id")
+                if isinstance(before.get("played_character"), dict) else None
+            )
+        )
+        if not bound:
+            return {**unknown, "query_status": "paused_frame_mismatch"}
+        life = query.get("snapshot")
+        readiness = life.get("readiness") if isinstance(life, dict) else None
+        candidates = life.get("legal_perk_candidates") if isinstance(life, dict) else None
+        owned = life.get("owned_perk_keys") if isinstance(life, dict) else None
+        formal_focus = life.get("current_focus") if isinstance(life, dict) else None
+        items = candidates.get("items") if isinstance(candidates, dict) else None
+        if not (
+            isinstance(readiness, dict)
+            and readiness.get("same_frame_ready") is True
+            and readiness.get("legal_perk_candidates_ready") is True
+            and readiness.get("owned_perks_ready") is True
+            and isinstance(candidates, dict)
+            and candidates.get("status") == "available"
+            and isinstance(items, list)
+            and all(isinstance(row, dict)
+                    and isinstance(row.get("key"), str)
+                    and isinstance(row.get("lifestyle_key"), str)
+                    for row in items)
+            and isinstance(owned, list)
+            and all(isinstance(key, str) for key in owned)
+            and isinstance(formal_focus, dict)
+            and formal_focus.get("key") == focus.get("key")
+            and formal_focus.get("lifestyle_key") == focus.get("lifestyle_key")
+        ):
+            return {**unknown, "query_status": "legal_candidates_unavailable"}
+        lifestyle = focus["lifestyle_key"]
+        keys = {row["key"] for row in items if row["lifestyle_key"] == lifestyle}
+        return {
+            "status": "observed", "query_status": "available",
+            "formal_precondition_status": query.get("formal_precondition_status"),
+            "legal_candidate_count": len(keys),
+            "policy_target_final_legal": {
+                key: key in keys for key in sorted(PERK_TARGETS)
+            },
+            "policy_target_owned": {
+                key: key in owned for key in sorted(PERK_TARGETS)
+            },
+        }
+
     def _plan_initial_lifestyle_focus_first_v1(
         self, planned: dict[str, object], available_steps: set[str]
     ) -> dict[str, object]:
@@ -1176,6 +1269,9 @@ class GameplayBridgeService:
                     return blocked("existing opening focus lacks exact current XP/points")
                 if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
                     return blocked("opening existing-focus read-only turn is unavailable")
+                perk_observation = self._observe_opening_lifestyle_perks_v1(
+                    before=before, focus=current_focus, revision=revision,
+                )
                 return {
                     **planned,
                     "plan": {
@@ -1187,6 +1283,7 @@ class GameplayBridgeService:
                             "source_frame": current_source,
                             "current_focus": current_focus,
                             "current_lifestyle_progress": current_progress,
+                            "perk_opportunity": perk_observation,
                         },
                     },
                 }
@@ -1295,10 +1392,15 @@ class GameplayBridgeService:
                     "selected_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
                     "initial_lifestyle_focus_existing": {
                         "status": "verified_existing",
+                        "readback_source": "native_formal_and_stock",
                         "source_frame": formal["source_frame"],
                         "current_focus": focus,
                         "current_lifestyle_progress": progress,
                         "stock_focus_native_legal": stock_focus["native_legal"],
+                        "perk_opportunity": self._observe_opening_lifestyle_perks_v1(
+                            before=before, focus=focus, revision=revision,
+                            formal_query=formal,
+                        ),
                     },
                 },
             }
