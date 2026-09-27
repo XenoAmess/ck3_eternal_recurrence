@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import contextlib
 import hashlib
 import io
@@ -130,12 +131,12 @@ class G2PreviewOperatorTest(unittest.TestCase):
 
     def test_family_pending_sidecar_pairs_saved_proposal_and_rejects_other_pair(self) -> None:
         manifest = {"episode_character_id": 29829,
-                    "episode_run_id": "native-29829-test"}
+                    "episode_run_id": "native-29829-2bc2d599f7f9"}
         driver = {**manifest, "last_checkpoint": {
             "episode_character_id": 29829,
-            "episode_run_id": "native-29829-test",
-            "date_raw": 53154528, "sha256": "a" * 64,
-            "history_index": 111,
+            "episode_run_id": manifest["episode_run_id"],
+            "date_raw": 53216640, "sha256": "a" * 64,
+            "history_index": 2443,
         }}
         sidecar = {"schema": g2_preview_operator.FAMILY_PENDING_V1_SCHEMA,
                    "resolved": None, "pending": {
@@ -143,29 +144,90 @@ class G2PreviewOperatorTest(unittest.TestCase):
             "status": "receipt_pending", "submission_state": "receipt_pending",
             "material_result": False, "accepted": True,
             "played_character_id": 29829, "heir_character_id": 38822,
-            "candidate_character_id": 38710,
-            "episode_run_id": "native-29829-test",
-            "source_date_raw": 53154528, "source_bridge_pid": 146776,
+            "candidate_character_id": 38718, "recipient_character_id": 32897,
+            "episode_run_id": manifest["episode_run_id"],
+            "source_date_raw": 53216640, "source_bridge_pid": 59384,
         }}
-        report = {"session": {"pid": 146776}, "checkpoints": [{
+        report = {"session": {"pid": 59384}, "checkpoints": [{
             "phase": "first_heir_marriage_submitted_pending",
-            "sha256": "a" * 64, "history_index": 111,
-            "date_raw": 53154528,
+            "status": "saved", "turn_index": 2,
+            "sha256": "a" * 64, "history_index": 2443,
+            "date_raw": 53216640,
+            "episode_character_id": 29829,
+            "episode_run_id": manifest["episode_run_id"],
             "pending_action": {"heir_character_id": 38822,
-                               "candidate_character_id": 38710,
-                               "episode_run_id": "native-29829-test"},
+                               "candidate_character_id": 38718,
+                               "recipient_character_id": 32897,
+                               "episode_run_id": manifest["episode_run_id"]},
         }], "auto_run": {"turns": [{
+            "index": 2,
             "selected_step": g2_preview_operator.FAMILY_SUBMIT_STEP,
-            "result": {"status": "receipt_pending"},
+            "result": {"status": "receipt_pending", "accepted": True,
+                       "played_character_id": 29829,
+                       "heir_character_id": 38822,
+                       "candidate_character_id": 38718,
+                       "recipient_character_id": 32897,
+                       "episode_run_id": manifest["episode_run_id"]},
             "plan": {"family_marriage_choice": {
-                "candidate_character_id": 38710}},
+                "candidate_character_id": 38718}},
         }]}}
         self.assertEqual(g2_preview_operator.family_pending_sidecar_pair(
-            sidecar, driver, manifest, "a" * 64, report), 38710)
+            sidecar, driver, manifest, "a" * 64, report), 38718)
         report["checkpoints"][0]["pending_action"]["candidate_character_id"] = 38711
         with self.assertRaisesRegex(ValueError, "not proven"):
             g2_preview_operator.family_pending_sidecar_pair(
                 sidecar, driver, manifest, "a" * 64, report)
+
+        # R0259 shape: the proposal was saved at h2443 and remained pending
+        # through later result queries and the paired h2513 checkpoint.
+        report["checkpoints"][0]["pending_action"]["candidate_character_id"] = 38718
+        driver["last_checkpoint"].update({
+            "date_raw": 53216784, "sha256": "b" * 64,
+            "history_index": 2513,
+        })
+        report["checkpoints"].append({
+            "phase": "periodic_checkpoint", "status": "saved",
+            "turn_index": 36, "sha256": "b" * 64,
+            "history_index": 2513, "date_raw": 53216784,
+            "episode_character_id": 29829,
+            "episode_run_id": manifest["episode_run_id"],
+        })
+        report["auto_run"]["turns"].append({
+            "index": 33,
+            "selected_step": "query-observed-first-heir-marriage-result-v1-private",
+            "result": {"status": "pending", "heir_character_id": 38822,
+                       "candidate_character_id": 38718},
+        })
+        self.assertEqual(g2_preview_operator.family_pending_sidecar_pair(
+            sidecar, driver, manifest, "b" * 64, report), 38718)
+        accepted_pending_report = copy.deepcopy(report)
+        accepted_pending_report["auto_run"]["turns"][-1]["result"]["status"] = "accepted_pending"
+        self.assertEqual(g2_preview_operator.family_pending_sidecar_pair(
+            sidecar, driver, manifest, "b" * 64, accepted_pending_report), 38718)
+        report_without_query = copy.deepcopy(report)
+        report_without_query["auto_run"]["turns"].pop()
+        with self.assertRaisesRegex(ValueError, "lacks pending family result query"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "b" * 64, report_without_query)
+        report_with_later_refusal = copy.deepcopy(report)
+        report_with_later_refusal["auto_run"]["turns"].append({
+            "index": 34,
+            "selected_step": "query-observed-first-heir-marriage-result-v1-private",
+            "result": {"status": "refused", "heir_character_id": 38822,
+                       "candidate_character_id": 38718},
+        })
+        with self.assertRaisesRegex(ValueError, "lacks pending family result query"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "b" * 64, report_with_later_refusal)
+        report_with_duplicate = copy.deepcopy(report)
+        report_with_duplicate["auto_run"]["turns"].append(
+            copy.deepcopy(report_with_duplicate["auto_run"]["turns"][0]))
+        with self.assertRaisesRegex(ValueError, "one saved formal submit"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "b" * 64, report_with_duplicate)
+        with self.assertRaisesRegex(ValueError, "identity disagrees with paired save"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "c" * 64, report)
 
     def test_eligibility_active_context_contract_is_exact_and_additive(self) -> None:
         self.assertEqual(
