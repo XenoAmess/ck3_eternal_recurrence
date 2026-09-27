@@ -1,0 +1,46 @@
+{
+  "schema": "xar.g2.cross-machine-asset-notice.v1",
+  "notice_id": "PRV008-ONEDRIVE-20260928",
+  "created_at_utc": "2026-09-27T18:04:50Z",
+  "purpose": "Copy-only access to the immutable PRV008 preview ZIP and its frozen-host qualification notes; no public release or new gameplay qualification.",
+  "channel": "OneDrive sync",
+  "folder_relative_to_each_machine_onedrive_root": "PRV008-frozen-preview-2026-09-28",
+  "files": [
+    {
+      "name": "g2-preview-ordinary-h1662-ca852d1-prv008.zip",
+      "bytes": 88251425,
+      "sha256": "B9952E544C78D51F650FCBF252D2DE81B1E005B0EA5081880AEE9FDECC2BD9F3"
+    },
+    {
+      "name": "START-HERE-frozen-host.txt",
+      "bytes": 7550,
+      "sha256": "222FAE1EFE4F64524A0AB4E930F1C30D781B4DCECF6053CB06BE87A00BD67881"
+    },
+    {
+      "name": "QUALIFICATION-frozen-host.json",
+      "bytes": 6934,
+      "sha256": "DA35CB26A549323A740FB5F5E0872C8A689CAFBB344395AC317541CA852EC0BE"
+    },
+    {
+      "name": "TRANSFER-README.txt",
+      "bytes": 1614,
+      "sha256": "94C1CA34B8F6281C6DA7731E19BC9EC89C8CF4892F12361817A72ED7F6EDFB87"
+    }
+  ],
+  "qualified_frozen_path": {
+    "actor": 31853,
+    "episode_run_id": "native-31853-af642d76cb41",
+    "source_pair": "R0074-derived ordinary feudal save and driver",
+    "profile": "ordinary_campaign_succession/xar_off",
+    "enabled_mods_in_order": ["mod/xar_autoplayer.mod"],
+    "evidence": "R0119-R0121 bounded frozen-path continuation; no natural succession in those rounds"
+  },
+  "limits": [
+    "The original R0121 save and driver pair and CK3 executable are not in this folder; frozen-host Z: paths are not portable launch commands.",
+    "The ZIP's separate earlier release qualification and bundled sample do not enlarge this frozen-path boundary.",
+    "No arbitrary save, indefinite unattended run, complete campaign, or two independent seeds are certified."
+  ],
+  "producer_machine_verification": "Exactly four local OneDrive files matched the listed SHA-256 hashes; the frozen ZIP, release directory and PRV008-FROZEN-EARLY-PAIR originals were not modified.",
+  "receiver_machine_availability": "not_verified",
+  "receiver_next_step": "Find the relative folder under the receiver's own OneDrive root, verify all four hashes, and use the project's official local no-launch pairing before any CK3 run. Each machine calls only its own operator MCP."
+}
