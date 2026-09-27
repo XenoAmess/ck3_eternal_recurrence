@@ -162,8 +162,9 @@
       "resolved_can_plan_slot_rva": "0x15051F0",
       "resolved_final_evaluator_rva": "0x28CFC50",
       "native_failure_string_destructor_rva": "0x7E97D0",
+      "unresolved_semantic_entry_rvas": {"host_view_slot_26": "0x1505230", "slot_26_handler_call": "0xA79700", "host_view_slot_27_type_plus_0x2030": "0x1505330", "host_view_slot_29_type_plus_0x1f8": "0x1505340"},
       "why": "It evaluates the played character's planner state without waiting for the AI's 60-month scheduler or submitting a command.",
-      "implementation_order": "exact private slot-25 callback now copies boolean and optional display text; next resolve a complete semantic sample and a normal paused application-main invocation before any query claim"
+      "implementation_order": "exact private slot-25 callback copies boolean and optional display text; inspect slot 26 -> 0xA79700 and slot 27 type+0x2030 consumers before claiming a read-only semantic collector, then bind a complete semantic sample and paused application-main invocation"
     },
     "next_action_seam": {
       "target": "CStartActivityCommand native payload validator and secondary dispatch",
@@ -176,7 +177,7 @@
   },
   "unknowns": [
     "CActivityType database owner/enumerator and stable key field in native memory",
-    "current paused-save activity_feast HostView availability and complete planner semantic sample",
+    "current paused-save activity_feast HostView availability and complete planner semantic sample; adjacent native slots do not yet prove legal location/configuration/cost/can_start collection",
     "full 16-byte AI host candidate row ownership and CActivityType identity layout",
     "complete CStartActivityCommand 0x508 payload field semantics and public-safe constructor",
     "authoritative cost-vector resource slot mapping for treasury, herd, barter, piety and prestige",

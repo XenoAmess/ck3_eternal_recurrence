@@ -256,7 +256,7 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 ## 尚未闭合的分支
 
 - `CActivityType` registry owner/enumerator 与 native stable key 字段；
-- `CActivityListDetailHostView` slot 25 与最终 evaluator 的 RVA 已冻结；32-byte caller-owned 失败文本构造、复制和原生释放已进入默认关闭的私有回调（见 `activity-planning-slot25-native-callback-1.19.0.6.md`）；失败 stable key 保持 typed unknown，false 路径文本完整性、实机 HostView 可达性与完整 planner 语义采集仍未闭合；
+- `CActivityListDetailHostView` slot 25 与最终 evaluator 的 RVA 已冻结；32-byte caller-owned 失败文本构造、复制和原生释放已进入默认关闭的私有回调（见 `activity-planning-slot25-native-callback-1.19.0.6.md`）；相邻 slot 26/27/29 的有界反汇编只得到未知效果的 `0xA79700` 调用与两个原始类型字段指针，未得到可用的合法地点、配置、权威费用或 `can_start` 语义（见 `activity-planning-semantic-seam-1.19.0.6.md`）；失败 stable key 保持 typed unknown，false 路径文本完整性、实机 HostView 可达性与完整 planner 语义采集仍未闭合；
 - AI 16-byte row 的完整所有权、identity 和 lifetime；
 - `CStartActivityCommand` `0x508` payload 的字段语义与可新建构造器；
 - treasury、herd、barter、piety、prestige 等配置费用向量槽位；
@@ -266,4 +266,4 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 - 狩猎等活动内部的 faith 分支，仅允许保留 opaque allow/deny；
 - feast 之后的 location、options、intent、guest 质量策略。
 
-这些 `unknown` 是下一批可施工入口。P0 下一步是补原生语义采集并接入 private application-main paused read-only capture，检查当前 Robert 帧能否取得真实 `activity_feast` HostView、final boolean、失败文本和完整配置；在它 live GREEN 前，活动能力仍是 `static-ready private glue/callback`，不得标成 production query、action-ready 或完整活动 OODA。
+这些 `unknown` 是下一批可施工入口。P0 的具体下一处逆向是 `0x1505230 -> 0xA79700` 的下游调用是否真的提供只读 planner collection，以及 `0x1505330` 返回的 `CActivityType+0x2030` 指针由谁消费、代表什么；未证明前不接生产 `read_semantics`。随后才接入 private application-main paused read-only capture，检查当前 Robert 帧能否取得真实 `activity_feast` HostView、final boolean、失败文本和完整配置；在它 live GREEN 前，活动能力仍是 `static-ready private glue/callback`，不得标成 production query、action-ready 或完整活动 OODA。

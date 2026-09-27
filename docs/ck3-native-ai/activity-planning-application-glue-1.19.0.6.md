@@ -71,7 +71,11 @@ The next live candidate is not production-wired. Before a paused CK3 run it
 still needs both of these activity-owned inputs:
 
 1. the complete exact-build semantic operation for CK3 `1.19.0.6`; the
-   final-evaluator callback is implemented but has no live capture;
+   final-evaluator callback is implemented but has no live capture. The
+   bounded adjacent-slot trace in
+   `activity-planning-semantic-seam-1.19.0.6.md` identifies precise next
+   reverse addresses but no verified read-only location/configuration/cost
+   collector;
 2. a private application-main invocation entry that serializes prepare,
    dispatch, and result collection without extending the shared mailbox ABI.
 
