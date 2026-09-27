@@ -206,6 +206,31 @@ def test_pending_routes_by_exact_process_identity(monkeypatch, tmp_path: Path) -
     assert cold["plan"]["faction_gift_pending_action"]["request_id"] == old["request_id"]
 
 
+def test_pending_same_public_revision_does_not_advance_date(
+    monkeypatch, tmp_path: Path,
+) -> None:
+    old = pending(tmp_path)
+    current = snapshot(revision=413, native_revision=old["pre_snapshot_revision"])
+    driver = Driver(tmp_path, current)
+    planned = {"snapshot_id": "s413", "revision": 413,
+               "plan": {"selected_step": "life-advance"}}
+    monkeypatch.setattr(route, "_process_identity",
+                        lambda pid: {"creation_date": "old-process"})
+
+    waiting = route.plan_faction_gift_private_v1(
+        driver, planned, current, [], set(),
+    )
+
+    if waiting["plan"].get("phase") != "faction_gift_pending_paused_frame":
+        pytest.fail("pending gift did not retain its paused-frame phase")
+    if waiting["plan"].get("selected_step") is not None:
+        pytest.fail("pending gift permitted an action before same-date verification")
+    if waiting["plan"]["faction_gift_pending_action"]["request_id"] != old["request_id"]:
+        pytest.fail("pending gift changed its request identity")
+    if read_faction_gift_ledger_v1(tmp_path)["pending"] != old:
+        pytest.fail("pending gift ledger changed before material verification")
+
+
 def test_submit_persists_identity_before_accepting_pending_ack(monkeypatch, tmp_path: Path) -> None:
     driver = Driver(tmp_path, snapshot())
     driver._last_checkpoint = {
