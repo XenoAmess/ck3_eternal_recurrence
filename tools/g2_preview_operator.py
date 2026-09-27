@@ -268,6 +268,7 @@ def construction_pending_sidecar_request(
 
     pending = sidecar.get("pending")
     applied = sidecar.get("applied")
+    applied_prior = sidecar.get("applied_prior", [])
     is_pending = isinstance(pending, dict) and applied is None
     is_applied = pending is None and isinstance(applied, dict)
     record = pending if is_pending else applied
@@ -280,6 +281,8 @@ def construction_pending_sidecar_request(
                 record.get("status") != "applied"
                 or record.get("postcondition_verified") is not True
                 or record.get("completion_status") not in ("in_progress", "completed")))
+            or not isinstance(applied_prior, list)
+            or any(not isinstance(prior, dict) for prior in applied_prior)
             or not isinstance(checkpoint, dict)
             or not isinstance(history, list)):
         raise ValueError("construction sidecar lacks a saved pending or applied action")
@@ -318,6 +321,47 @@ def construction_pending_sidecar_request(
         for row in history
     ):
         raise ValueError("construction applied sidecar lacks its saved submit action")
+    seen_requests = {request_id}
+    current_candidate = record.get("candidate")
+    seen_candidates = [current_candidate] if isinstance(current_candidate, dict) else []
+    for prior in applied_prior:
+        prior_request_id = prior.get("action_request_id")
+        prior_candidate = prior.get("candidate")
+        if (prior.get("status") != "applied"
+                or prior.get("postcondition_verified") is not True
+                or prior.get("completion_status") not in ("in_progress", "completed")
+                or not isinstance(prior_request_id, str)
+                or re.fullmatch(r"construction-submit-[0-9a-f]{32}", prior_request_id) is None
+                or not isinstance(prior_candidate, dict)
+                or not prior_candidate
+                or prior.get("actor_character_id") != actor
+                or prior.get("episode_run_id") != episode
+                or prior_request_id in seen_requests
+                or prior_candidate in seen_candidates):
+            raise ValueError("construction prior applied sidecar has invalid or duplicate action")
+        if not any(
+            isinstance(row, dict)
+            and row.get("command") == CONSTRUCTION_RECEIPT_STEP
+            and type(row.get("index")) is int
+            and row["index"] <= checkpoint_index
+            and row.get("result") == prior
+            for row in history
+        ):
+            raise ValueError("construction prior applied sidecar does not match checkpoint receipt")
+        if not any(
+            isinstance(row, dict)
+            and row.get("command") == CONSTRUCTION_SUBMIT_STEP
+            and type(row.get("index")) is int
+            and row["index"] <= checkpoint_index
+            and isinstance(row.get("result"), dict)
+            and row["result"].get("status") == "submitted_verification_pending"
+            and row["result"].get("action_request_id") == prior_request_id
+            and row["result"].get("candidate") == prior_candidate
+            for row in history
+        ):
+            raise ValueError("construction prior applied sidecar lacks its saved submit action")
+        seen_requests.add(prior_request_id)
+        seen_candidates.append(prior_candidate)
     return request_id
 
 
@@ -358,7 +402,7 @@ def faction_gift_pending_sidecar_request(
 
 
 def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bool:
-    """A saved material receipt needs its ledger for later completion checks."""
+    """A saved material receipt needs its ledger until completion and income settle."""
 
     checkpoint = driver.get("last_checkpoint")
     history = driver.get("command_history")
@@ -391,8 +435,12 @@ def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bo
             previous = latest.get(request_id)
             if previous is None or row["index"] > previous["index"]:
                 latest[request_id] = row
-    return any(row["result"].get("completion_status") == "in_progress"
-               for row in latest.values())
+    return any(
+        row["result"].get("completion_status") == "in_progress"
+        or (row["result"].get("completion_status") == "completed"
+            and row["result"].get("observed_player_monthly_gold_income_raw") is None)
+        for row in latest.values()
+    )
 
 
 def family_pending_sidecar_pair(
@@ -754,7 +802,7 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         pending_source_sha256 = sha256(pending_source)
     elif saved_in_progress_construction_without_sidecar(driver_source_record):
         raise ValueError(
-            "saved in-progress construction receipt requires --construction-sidecar "
+            "saved unresolved construction receipt requires --construction-sidecar "
             "or construction-formal-pending-v1.json in sample-dir"
         )
     family_candidate = None
