@@ -64,6 +64,36 @@ def sample() -> dict[str, object]:
 
 
 class AdvantageComponentsContractTest(unittest.TestCase):
+    def test_original_accolade_gate_is_typed_and_unbound(self) -> None:
+        frame = sample()
+        row = frame["advantage_components"]["materializations"][0]
+        row["refresh_side_count"] = 2
+        row["accolade_gates"] = [
+            {"ordinal": 0, "side_index": 0, "accolade_id": 1107,
+             "source_row_count": 2, "all_rows_passed": False,
+             "stable": True, "failure_kind": "unknown_null_or_virtual",
+             "slot_binding_status": "unbound_original_entry_pointer"},
+            {"ordinal": 1, "side_index": 1, "accolade_id": 1188,
+             "source_row_count": 0, "all_rows_passed": True,
+             "stable": True, "failure_kind": "none",
+             "slot_binding_status": "unbound_original_entry_pointer"},
+        ]
+        result = normalize_runtime_advantage_components_v1(
+            frame, combat_id=COMBAT_ID)
+        self.assertEqual(result["materializations"][0]["accolade_gates"],
+                         row["accolade_gates"])
+        self.assertIs(result["forecast_usable"], False)
+        for key, value in (("side_index", 2),
+                           ("failure_kind", "unknown_null_or_virtual"),
+                           ("slot_binding_status", "unique_candidate"),
+                           ("source_row_count", -1), ("stable", False)):
+            spoiled = copy.deepcopy(frame)
+            spoiled["advantage_components"]["materializations"][0][
+                "accolade_gates"][1][key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                normalize_runtime_advantage_components_v1(
+                    spoiled, combat_id=COMBAT_ID)
+
     def test_private_finish_envelope_decodes_new_first_failure(self) -> None:
         managed = sample()
         output = managed["advantage_components"]

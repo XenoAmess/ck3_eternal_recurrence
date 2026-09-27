@@ -9475,10 +9475,9 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
         query.completion != xar::ck3_11906::
                                 CombatPhaseEventTraceManagedCompletionV1::armed) {
       if (session->detours.installed.load(std::memory_order_acquire) != 0 ||
-          session->advantage_component_detours.sites[0].installed ||
-          session->advantage_component_detours.sites[1].installed ||
-          session->advantage_component_detours.sites[2].installed ||
-          session->advantage_component_detours.sites[3].installed ||
+          std::any_of(session->advantage_component_detours.sites.begin(),
+                      session->advantage_component_detours.sites.end(),
+                      [](const auto &site) { return site.installed; }) ||
           session->counter_output_detour.installed.load(
               std::memory_order_acquire) != 0 ||
           session->join_width_detour.installed.load(

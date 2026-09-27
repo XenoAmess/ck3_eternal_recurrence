@@ -10,6 +10,7 @@
 namespace xar::ck3_11906 {
 
 inline constexpr std::size_t kAdvantageComponentMaximumMaterializationsV1 = 8;
+inline constexpr std::size_t kAdvantageAccoladeGateMaximumCallsV1 = 512;
 
 enum class AdvantageAggregatorCallKindV1 : std::uint8_t {
   rejected = 0,
@@ -45,6 +46,17 @@ struct AdvantageSideComponentsV1 {
   bool complete = false;
 };
 
+// One original 0x251C200 invocation. The caller's RSI MAA entry pointer is
+// outside this ABI, so the slot association remains explicitly unresolved.
+struct AdvantageAccoladeGateV1 {
+  std::uint32_t ordinal = 0;
+  std::int32_t side_index = -1;
+  std::int32_t accolade_id = -1;
+  std::int32_t source_row_count = -1;
+  bool all_rows_passed = false;
+  bool stable = false;
+};
+
 struct AdvantageMaterializationV1 {
   std::uint32_t ordinal = 0;
   std::uint32_t thread_id = 0;
@@ -54,6 +66,10 @@ struct AdvantageMaterializationV1 {
   std::int64_t base_raw = 0;
   std::int64_t resolved_raw = 0;
   std::array<AdvantageSideComponentsV1, 2> sides{};
+  std::uint32_t refresh_side_count = 0;
+  std::uint32_t accolade_gate_count = 0;
+  std::array<AdvantageAccoladeGateV1,
+             kAdvantageAccoladeGateMaximumCallsV1> accolade_gates{};
   bool complete = false;
 };
 
@@ -88,11 +104,11 @@ struct AdvantageComponentDetoursV1 {
     std::uint8_t size = 0;
     bool installed = false;
   };
-  std::array<Site, 4> sites{};
+  std::array<Site, 7> sites{};
   std::uint32_t failure_flags = 0;
 };
 
-// All four patches are optional, exact-build only, and installed/removed at
+// All seven patches are optional, exact-build only, and installed/removed at
 // managed paused quiescence. A failed rollback retains trampoline ownership.
 bool InstallAdvantageComponentObserverV1(
     AdvantageComponentDetoursV1 &detours, AdvantageComponentObserverV1 &observer,

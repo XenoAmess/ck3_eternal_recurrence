@@ -752,6 +752,9 @@ bool AdvantageComponentsRequireOriginalPairArithmetic() {
   row.date_raw = 53192328;
   row.base_raw = 200000;
   row.resolved_raw = 300000;
+  row.refresh_side_count = 2;
+  row.accolade_gate_count = 1;
+  row.accolade_gates[0] = {0, 0, 1107, 2, false, true};
   row.complete = true;
   auto &left = row.sides[0];
   left.side_index = 0;
@@ -781,13 +784,24 @@ bool AdvantageComponentsRequireOriginalPairArithmetic() {
       wire.find("\"first_aggregator_failure\":{\"gate\":0") ==
           std::string::npos ||
       wire.find("\"nested_aggregator_calls\":1") == std::string::npos ||
-      wire.find("\"primary_aggregator_calls\":1") == std::string::npos) {
+      wire.find("\"primary_aggregator_calls\":1") == std::string::npos ||
+      wire.find("\"accolade_id\":1107") == std::string::npos ||
+      wire.find("\"failure_kind\":\"unknown_null_or_virtual\"") ==
+          std::string::npos) {
     return Fail("advantage original-call pair did not close");
   }
   right.commander_raw += 1;
   if (AdvantageComponentObserverCompleteV1(observer))
     return Fail("advantage component arithmetic spoof was accepted");
   right.commander_raw -= 1;
+  row.accolade_gates[0].stable = false;
+  if (AdvantageComponentObserverCompleteV1(observer))
+    return Fail("mutated accolade row head was accepted");
+  row.accolade_gates[0].stable = true;
+  row.refresh_side_count = 1;
+  if (AdvantageComponentObserverCompleteV1(observer))
+    return Fail("missing side refresh was accepted");
+  row.refresh_side_count = 2;
   right.primary_aggregator_calls = 0;
   if (AdvantageComponentObserverCompleteV1(observer))
     return Fail("missing primary aggregator call was accepted");

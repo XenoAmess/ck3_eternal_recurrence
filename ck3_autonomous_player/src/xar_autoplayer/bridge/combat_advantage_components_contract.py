@@ -13,6 +13,10 @@ _ROOT_KEYS = {"schema_version", "source", "requested", "available",
 _ROOT_KEYS_WITH_DIAGNOSTIC = _ROOT_KEYS | {"first_aggregator_failure"}
 _ROW_KEYS = {"ordinal", "thread_id", "caller_rva", "combat_id", "date_raw", "base_raw",
              "resolved_raw", "complete", "sides"}
+_ROW_KEYS_WITH_GATES = _ROW_KEYS | {"refresh_side_count", "accolade_gates"}
+_ACCOLADE_GATE_KEYS = {"ordinal", "side_index", "accolade_id",
+                       "source_row_count", "all_rows_passed", "stable",
+                       "failure_kind", "slot_binding_status"}
 _SIDE_KEYS = {"side_index", "roll", "commander_character_id", "roll_raw",
               "commander_raw", "aggregator_raw", "total_raw", "helper_calls",
               "complete"}
@@ -91,7 +95,9 @@ def normalize_runtime_advantage_components_v1(
     if not isinstance(rows, list) or len(rows) > 8:
         raise ValueError("advantage component materializations are unbounded")
     for index, row in enumerate(rows):
-        if not isinstance(row, dict) or set(row) != _ROW_KEYS:
+        if not isinstance(row, dict) or set(row) not in (
+            _ROW_KEYS, _ROW_KEYS_WITH_GATES,
+        ):
             raise ValueError("advantage component row is malformed")
         if (not _integer(row["ordinal"], index, index)
                 or not _integer(row["thread_id"], 1, 2**32 - 1)
@@ -102,6 +108,34 @@ def normalize_runtime_advantage_components_v1(
                 or any(not _integer(row[key], _I64_MIN, _I64_MAX)
                        for key in ("base_raw", "resolved_raw"))):
             raise ValueError("advantage component row identity is malformed")
+        if "accolade_gates" in row:
+            gates = row["accolade_gates"]
+            if (not _integer(row["refresh_side_count"], 0, 2)
+                    or not isinstance(gates, list) or len(gates) > 512
+                    or (row["complete"] and row["refresh_side_count"] != 2)):
+                raise ValueError("advantage accolade refresh census is malformed")
+            previous_side = 0
+            for gate_index, gate in enumerate(gates):
+                if not isinstance(gate, dict) or set(gate) != _ACCOLADE_GATE_KEYS:
+                    raise ValueError("advantage accolade gate shape is malformed")
+                side_index = gate["side_index"]
+                passed = gate["all_rows_passed"]
+                if (not _integer(gate["ordinal"], gate_index, gate_index)
+                        or not _integer(side_index, previous_side, 1)
+                        or not _integer(gate["accolade_id"], -(2**31), 2**31 - 1)
+                        or gate["accolade_id"] == -1
+                        or not _integer(gate["source_row_count"], 0, 4096)
+                        or type(passed) is not bool
+                        or type(gate["stable"]) is not bool
+                        or (gate["source_row_count"] == 0 and not passed)
+                        or gate["failure_kind"] != (
+                            "none" if passed else "unknown_null_or_virtual")
+                        or gate["slot_binding_status"] !=
+                            "unbound_original_entry_pointer"):
+                    raise ValueError("advantage accolade gate values are malformed")
+                previous_side = side_index
+                if row["complete"] and not gate["stable"]:
+                    raise ValueError("advantage accolade gate changed during call")
         sides = row["sides"]
         if not isinstance(sides, list) or len(sides) != 2:
             raise ValueError("advantage component side pair is malformed")

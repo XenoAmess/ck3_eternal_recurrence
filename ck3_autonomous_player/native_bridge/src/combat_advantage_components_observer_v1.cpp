@@ -10,8 +10,9 @@
 namespace xar::ck3_11906 {
 namespace {
 
-constexpr std::array<std::uintptr_t, 4> kRvas{
-    0x2308D50, 0x2307CB0, 0x2307680, 0x2307230};
+constexpr std::array<std::uintptr_t, 7> kRvas{
+    0x2308D50, 0x2307CB0, 0x2307680, 0x2307230,
+    0x23CBCE0, 0x251B8F0, 0x251C200};
 constexpr std::array<std::uint8_t, 15> kCacheBytes{
     0x48,0x89,0x5C,0x24,0x18,0x48,0x89,0x74,0x24,0x20,0x57,0x48,0x83,0xEC,0x20};
 constexpr std::array<std::uint8_t, 16> kSideBytes{
@@ -20,6 +21,14 @@ constexpr std::array<std::uint8_t, 15> kCommanderBytes{
     0x48,0x89,0x5C,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x48,0x89,0x7C,0x24,0x20};
 constexpr std::array<std::uint8_t, 15> kAggregatorBytes{
     0x48,0x89,0x5C,0x24,0x10,0x48,0x89,0x6C,0x24,0x18,0x48,0x89,0x74,0x24,0x20};
+constexpr std::array<std::uint8_t, 15> kRefreshBytes{
+    0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xEC,0x20};
+constexpr std::array<std::uint8_t, 16> kAppendBytes{
+    0x48,0x89,0x74,0x24,0x10,0x57,0x48,0x83,0xEC,0x20,
+    0x48,0x8B,0xF2,0x48,0x8B,0xF9};
+constexpr std::array<std::uint8_t, 15> kGateBytes{
+    0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x74,0x24,0x10,
+    0x57,0x48,0x83,0xEC,0x20};
 constexpr std::size_t kTrampolineBytes = 64;
 
 using CacheFn = void(__fastcall *)(void *);
@@ -28,16 +37,23 @@ using SideFn = std::int64_t *(__fastcall *)(void *, std::int64_t *,
 using HelperFn = std::int64_t *(__fastcall *)(void *, void *, void *,
                                                std::int32_t, std::int32_t,
                                                void *);
+using RefreshFn = void(__fastcall *)(void *);
+using AppendFn = void(__fastcall *)(void *, void *);
+using GateFn = bool(__fastcall *)(void *);
 std::atomic<AdvantageComponentObserverV1 *> g_observer{nullptr};
 CacheFn g_cache_original = nullptr;
 SideFn g_side_original = nullptr;
 HelperFn g_commander_original = nullptr;
 HelperFn g_aggregator_original = nullptr;
+RefreshFn g_refresh_original = nullptr;
+AppendFn g_append_original = nullptr;
+GateFn g_gate_original = nullptr;
 
 struct CacheContext {
   AdvantageComponentObserverV1 *observer = nullptr;
   AdvantageMaterializationV1 *record = nullptr;
   std::uint32_t next_side = 0;
+  std::uint32_t next_refresh_side = 0;
   CacheContext *prior = nullptr;
 };
 struct SideContext {
@@ -45,8 +61,22 @@ struct SideContext {
   AdvantageSideComponentsV1 *record = nullptr;
   SideContext *prior = nullptr;
 };
+struct RefreshContext {
+  CacheContext *cache = nullptr;
+  std::uintptr_t side = 0;
+  std::int32_t side_index = -1;
+  RefreshContext *prior = nullptr;
+};
+struct AppendContext {
+  RefreshContext *refresh = nullptr;
+  std::uintptr_t accolade = 0;
+  std::uint32_t gate_calls = 0;
+  AppendContext *prior = nullptr;
+};
 thread_local CacheContext *g_cache_context = nullptr;
 thread_local SideContext *g_side_context = nullptr;
+thread_local RefreshContext *g_refresh_context = nullptr;
+thread_local AppendContext *g_append_context = nullptr;
 
 template <typename T> T Read(const void *base, std::size_t offset) noexcept {
   T value{};
@@ -100,6 +130,100 @@ void RecordAggregatorFailure(AdvantageComponentObserverV1 *observer,
   Fail(observer, 64);
 }
 
+void __fastcall RefreshHook(void *side) noexcept {
+  const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  auto *const cache = g_cache_context;
+  if (cache == nullptr || cache->observer == nullptr ||
+      cache->observer->combat == 0) {
+    g_refresh_original(side);
+    return;
+  }
+  auto *const observer = cache->observer;
+  const auto index = cache->next_refresh_side;
+  if (index > 1 || GetCurrentThreadId() != cache->record->thread_id ||
+      caller != observer->module_base +
+                    (index == 0 ? 0x2308D6B : 0x2308D77) ||
+      reinterpret_cast<std::uintptr_t>(side) !=
+          observer->combat + 0x20 + 0x348U * index) {
+    Fail(observer, 512);
+    g_refresh_original(side);
+    return;
+  }
+  RefreshContext refresh{cache, reinterpret_cast<std::uintptr_t>(side),
+                         static_cast<std::int32_t>(index), g_refresh_context};
+  g_refresh_context = &refresh;
+  g_refresh_original(side);
+  g_refresh_context = refresh.prior;
+  ++cache->next_refresh_side;
+  cache->record->refresh_side_count = cache->next_refresh_side;
+}
+
+void __fastcall AppendHook(void *accolade, void *aggregator) noexcept {
+  const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  auto *const refresh = g_refresh_context;
+  if (refresh == nullptr || refresh->cache == nullptr) {
+    g_append_original(accolade, aggregator);
+    return;
+  }
+  auto *const observer = refresh->cache->observer;
+  if (accolade == nullptr ||
+      caller != observer->module_base + 0x23CBEA8 ||
+      reinterpret_cast<std::uintptr_t>(aggregator) !=
+          refresh->side + 0x110 ||
+      GetCurrentThreadId() != refresh->cache->record->thread_id) {
+    Fail(observer, 1024);
+    g_append_original(accolade, aggregator);
+    return;
+  }
+  AppendContext append{refresh, reinterpret_cast<std::uintptr_t>(accolade),
+                       0, g_append_context};
+  g_append_context = &append;
+  g_append_original(accolade, aggregator);
+  g_append_context = append.prior;
+  if (append.gate_calls != 1) Fail(observer, 1024);
+}
+
+bool __fastcall GateHook(void *accolade) noexcept {
+  const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  auto *const append = g_append_context;
+  if (append == nullptr || append->refresh == nullptr) {
+    return g_gate_original(accolade);
+  }
+  auto *const refresh = append->refresh;
+  auto *const observer = refresh->cache->observer;
+  if (accolade == nullptr ||
+      reinterpret_cast<std::uintptr_t>(accolade) != append->accolade ||
+      caller != observer->module_base + 0x251B905 ||
+      GetCurrentThreadId() != refresh->cache->record->thread_id ||
+      append->gate_calls != 0) {
+    Fail(observer, 2048);
+    return g_gate_original(accolade);
+  }
+  ++append->gate_calls;
+  auto &materialization = *refresh->cache->record;
+  const auto accolade_id = Read<std::int32_t>(accolade, 0x08);
+  const auto source_rows = Read<std::uintptr_t>(accolade, 0x58);
+  const auto source_row_count = Read<std::int32_t>(accolade, 0x64);
+  const bool passed = g_gate_original(accolade);
+  const bool stable =
+      accolade_id != -1 && source_row_count >= 0 &&
+      source_row_count <= 4096 &&
+      (source_row_count == 0 || source_rows != 0) &&
+      Read<std::int32_t>(accolade, 0x08) == accolade_id &&
+      Read<std::uintptr_t>(accolade, 0x58) == source_rows &&
+      Read<std::int32_t>(accolade, 0x64) == source_row_count;
+  if (!stable) Fail(observer, 2048);
+  const auto ordinal = materialization.accolade_gate_count++;
+  if (ordinal >= materialization.accolade_gates.size()) {
+    Fail(observer, 4096);
+  } else {
+    materialization.accolade_gates[ordinal] = {
+        ordinal, refresh->side_index, accolade_id, source_row_count,
+        passed, stable};
+  }
+  return passed;
+}
+
 void __fastcall CacheHook(void *combat) noexcept {
   const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
   auto *const observer = g_observer.load(std::memory_order_acquire);
@@ -137,14 +261,15 @@ void __fastcall CacheHook(void *combat) noexcept {
       reinterpret_cast<const void *>(observer->current_date_object), 0x08);
   record.base_raw = Read<std::int64_t>(combat, 0x6C8);
   if (record.combat_id != observer->combat_id) Fail(observer, 2);
-  CacheContext context{observer, &record, 0, g_cache_context};
+  CacheContext context{observer, &record, 0, 0, g_cache_context};
   g_cache_context = &context;
   g_cache_original(combat);
   g_cache_context = context.prior;
   record.resolved_raw = Read<std::int64_t>(combat, 0x710);
   const auto &left = record.sides[0];
   const auto &right = record.sides[1];
-  record.complete = context.next_side == 2 && left.complete && right.complete &&
+  record.complete = context.next_refresh_side == 2 &&
+      context.next_side == 2 && left.complete && right.complete &&
       right.total_raw != std::numeric_limits<std::int64_t>::min() &&
       SumExact(record.base_raw, left.total_raw, -right.total_raw,
                record.resolved_raw);
@@ -354,11 +479,14 @@ void FreeUnpatched(AdvantageComponentDetoursV1 &detours) noexcept {
   }
 }
 
-const std::array<std::uintptr_t, 4> kHooks{
+const std::array<std::uintptr_t, 7> kHooks{
     reinterpret_cast<std::uintptr_t>(&CacheHook),
     reinterpret_cast<std::uintptr_t>(&SideHook),
     reinterpret_cast<std::uintptr_t>(&CommanderHook),
-    reinterpret_cast<std::uintptr_t>(&AggregatorHook)};
+    reinterpret_cast<std::uintptr_t>(&AggregatorHook),
+    reinterpret_cast<std::uintptr_t>(&RefreshHook),
+    reinterpret_cast<std::uintptr_t>(&AppendHook),
+    reinterpret_cast<std::uintptr_t>(&GateHook)};
 
 } // namespace
 
@@ -393,17 +521,18 @@ bool InstallAdvantageComponentObserverV1(
     if (site.trampoline != nullptr || site.installed) return false;
   detours = {};
   observer.module_base = module_base;
-  const std::array<const std::uint8_t *, 4> expected{
+  const std::array<const std::uint8_t *, 7> expected{
       kCacheBytes.data(), kSideBytes.data(), kCommanderBytes.data(),
-      kAggregatorBytes.data()};
-  const std::array<std::uint8_t, 4> sizes{15, 16, 15, 15};
-  for (std::size_t i = 0; i < 4; ++i) {
+      kAggregatorBytes.data(), kRefreshBytes.data(), kAppendBytes.data(),
+      kGateBytes.data()};
+  const std::array<std::uint8_t, 7> sizes{15, 16, 15, 15, 15, 16, 15};
+  for (std::size_t i = 0; i < 7; ++i) {
     if (!Matches(module_base + kRvas[i], expected[i], sizes[i])) {
       detours.failure_flags |= 1;
       return false;
     }
   }
-  for (std::size_t i = 0; i < 4; ++i) {
+  for (std::size_t i = 0; i < 7; ++i) {
     if (!PatchOne(detours.sites[i], module_base + kRvas[i], expected[i],
                   sizes[i], kHooks[i])) {
       detours.failure_flags |= 2;
@@ -419,6 +548,9 @@ bool InstallAdvantageComponentObserverV1(
       case 1: g_side_original = reinterpret_cast<SideFn>(detours.sites[i].trampoline); break;
       case 2: g_commander_original = reinterpret_cast<HelperFn>(detours.sites[i].trampoline); break;
       case 3: g_aggregator_original = reinterpret_cast<HelperFn>(detours.sites[i].trampoline); break;
+      case 4: g_refresh_original = reinterpret_cast<RefreshFn>(detours.sites[i].trampoline); break;
+      case 5: g_append_original = reinterpret_cast<AppendFn>(detours.sites[i].trampoline); break;
+      case 6: g_gate_original = reinterpret_cast<GateFn>(detours.sites[i].trampoline); break;
     }
   }
   g_observer.store(&observer, std::memory_order_release);
@@ -431,7 +563,7 @@ bool UninstallAdvantageComponentObserverV1(
     AdvantageComponentObserverV1 &observer) noexcept {
   observer.armed.store(false, std::memory_order_release);
   bool restored = true;
-  for (std::size_t i = 4; i-- > 0;)
+  for (std::size_t i = 7; i-- > 0;)
     restored = RestoreOne(detours.sites[i], kHooks[i]) && restored;
   if (!restored) { detours.failure_flags |= 4; return false; }
   g_observer.store(nullptr, std::memory_order_release);
@@ -440,6 +572,9 @@ bool UninstallAdvantageComponentObserverV1(
   g_side_original = nullptr;
   g_commander_original = nullptr;
   g_aggregator_original = nullptr;
+  g_refresh_original = nullptr;
+  g_append_original = nullptr;
+  g_gate_original = nullptr;
   return true;
 }
 
@@ -454,9 +589,20 @@ bool AdvantageComponentObserverCompleteV1(
     const auto &r = observer.records[i];
     if (!r.complete || r.ordinal != i || r.combat_id != observer.combat_id ||
         r.thread_id == 0 || r.caller_rva == 0 ||
+        r.refresh_side_count != 2 ||
+        r.accolade_gate_count > r.accolade_gates.size() ||
         r.sides[1].total_raw == std::numeric_limits<std::int64_t>::min() ||
         !SumExact(r.base_raw, r.sides[0].total_raw,
                   -r.sides[1].total_raw, r.resolved_raw)) return false;
+    for (std::uint32_t gate_index = 0;
+         gate_index < r.accolade_gate_count; ++gate_index) {
+      const auto &gate = r.accolade_gates[gate_index];
+      if (gate.ordinal != gate_index || gate.side_index < 0 ||
+          gate.side_index > 1 || gate.accolade_id == -1 ||
+          gate.source_row_count < 0 || gate.source_row_count > 4096 ||
+          !gate.stable ||
+          (gate.source_row_count == 0 && !gate.all_rows_passed)) return false;
+    }
     for (std::size_t side = 0; side < 2; ++side) {
       const auto &s = r.sides[side];
       if (!s.complete || s.side_index != static_cast<std::int32_t>(side) ||
@@ -511,7 +657,30 @@ std::string SerializeAdvantageComponentObserverV1(
            ",\"base_raw\":" + std::to_string(r.base_raw) +
            ",\"resolved_raw\":" + std::to_string(r.resolved_raw) +
            ",\"complete\":" + (r.complete ? "true" : "false") +
-           ",\"sides\":[";
+           ",\"refresh_side_count\":" +
+           std::to_string(r.refresh_side_count) +
+           ",\"accolade_gates\":[";
+    const auto gate_count = std::min<std::uint32_t>(
+        r.accolade_gate_count,
+        static_cast<std::uint32_t>(r.accolade_gates.size()));
+    for (std::uint32_t gate_index = 0; gate_index < gate_count;
+         ++gate_index) {
+      if (gate_index != 0) out += ',';
+      const auto &gate = r.accolade_gates[gate_index];
+      out += "{\"ordinal\":" + std::to_string(gate.ordinal) +
+             ",\"side_index\":" + std::to_string(gate.side_index) +
+             ",\"accolade_id\":" + std::to_string(gate.accolade_id) +
+             ",\"source_row_count\":" +
+             std::to_string(gate.source_row_count) +
+             ",\"all_rows_passed\":" +
+             (gate.all_rows_passed ? "true" : "false") +
+             ",\"stable\":" + (gate.stable ? "true" : "false") +
+             ",\"failure_kind\":\"" +
+             (gate.all_rows_passed ? "none" : "unknown_null_or_virtual") +
+             "\",\"slot_binding_status\":"
+             "\"unbound_original_entry_pointer\"}";
+    }
+    out += "],\"sides\":[";
     for (std::size_t j = 0; j < 2; ++j) {
       if (j != 0) out += ',';
       const auto &s = r.sides[j];
