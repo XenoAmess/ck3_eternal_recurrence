@@ -1,0 +1,111 @@
+{
+  "schema": "ck3.native_active_advantage_cache_source_chain.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "proof_layer": "exact-build-instruction-sites",
+  "anchors": {
+    "base_from_combat": {
+      "rva": "0x2308D9A",
+      "bytes_hex": "488B9EC8060000",
+      "instruction": "mov rbx, qword ptr [rsi + 0x6c8]"
+    },
+    "side0_target_context_null": {
+      "rva": "0x2308DA6",
+      "bytes_hex": "4533C9",
+      "instruction": "xor r9d, r9d"
+    },
+    "side0_total_call": {
+      "rva": "0x2308DAF",
+      "bytes_hex": "E8FCEEFFFF",
+      "instruction": "call 0x2307cb0"
+    },
+    "side1_target_context_null": {
+      "rva": "0x2308DB4",
+      "bytes_hex": "4533C9",
+      "instruction": "xor r9d, r9d"
+    },
+    "side1_total_call": {
+      "rva": "0x2308DC6",
+      "bytes_hex": "E8E5EEFFFF",
+      "instruction": "call 0x2307cb0"
+    },
+    "resolved_cache_write": {
+      "rva": "0x2308DCE",
+      "bytes_hex": "48899E10070000",
+      "instruction": "mov qword ptr [rsi + 0x710], rbx"
+    },
+    "side_roll_read": {
+      "rva": "0x2307CD8",
+      "bytes_hex": "4A638CB1D0060000",
+      "instruction": "movsxd rcx, dword ptr [rcx + r14*4 + 0x6d0]"
+    },
+    "roll_scale_q100000": {
+      "rva": "0x2307CE0",
+      "bytes_hex": "4869D9A0860100",
+      "instruction": "imul rbx, rcx, 0x186a0"
+    },
+    "target_context_gate": {
+      "rva": "0x2307CEA",
+      "bytes_hex": "4D85C9",
+      "instruction": "test r9, r9"
+    },
+    "null_target_skips_conditions": {
+      "rva": "0x2307CED",
+      "bytes_hex": "0F8426010000",
+      "instruction": "je 0x2307e19"
+    },
+    "commander_selection_read": {
+      "rva": "0x2307E2C",
+      "bytes_hex": "458B843F94000000",
+      "instruction": "mov r8d, dword ptr [r15 + rdi + 0x94]"
+    },
+    "commander_component_call": {
+      "rva": "0x2307E88",
+      "bytes_hex": "E8F3F7FFFF",
+      "instruction": "call 0x2307680"
+    },
+    "side_aggregator_call": {
+      "rva": "0x2307EB5",
+      "bytes_hex": "E876F3FFFF",
+      "instruction": "call 0x2307230"
+    },
+    "main_tick_updates_roll0": {
+      "rva": "0x2309F29",
+      "bytes_hex": "8987D0060000",
+      "instruction": "mov dword ptr [rdi + 0x6d0], eax"
+    },
+    "main_tick_updates_roll1": {
+      "rva": "0x2309F37",
+      "bytes_hex": "8987D4060000",
+      "instruction": "mov dword ptr [rdi + 0x6d4], eax"
+    },
+    "main_tick_damage_multiplier_call": {
+      "rva": "0x2309F55",
+      "bytes_hex": "E856B4FFFF",
+      "instruction": "call 0x23053b0"
+    },
+    "main_tick_cached_advantage_sign": {
+      "rva": "0x2309F5A",
+      "bytes_hex": "4883BF1007000000",
+      "instruction": "cmp qword ptr [rdi + 0x710], 0"
+    },
+    "multiplier_reads_cached_advantage": {
+      "rva": "0x23053B4",
+      "bytes_hex": "488B8110070000",
+      "instruction": "mov rax, qword ptr [rcx + 0x710]"
+    }
+  },
+  "path_result": {
+    "cached_total_formula": "base + side0_total - side1_total",
+    "both_total_calls_pass_null_target_context": true,
+    "target_context_condition_branch_executed_for_cache": false,
+    "commander_and_side_aggregator_calls_remain_on_cache_path": true,
+    "main_tick_may_update_roll_before_reading_cached_advantage": true
+  },
+  "not_proven": [
+    "same-generation roll and cached advantage in paused reads",
+    "future side modifier and commander values",
+    "cross-manager global order",
+    "native next-day or whole-battle probability"
+  ]
+}
