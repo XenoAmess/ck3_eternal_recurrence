@@ -1,5 +1,27 @@
 # M5 observed opportunity dispatch (2026-09-23)
 
+## C146: unavailable faction root and independent family action (2026-09-27)
+
+The private M5 collector requires a same-frame public faction root before it
+can compare construction, gifts and marriage. A completed root read that
+returns `unavailable`, or an absent root with no query step, leaves that joint
+comparison RED. The prior collector returned the generic
+`m5_joint_query_only_red` phase; the service then erased even a separately
+native-gated first-heir marriage submit step. This is a deterministic routing
+gap, not an observed R0254 proposal: R0254 had an active war on all 36 turns,
+so its M5 peacetime collector was ineligible and no joint comparison ran.
+
+The collector now marks this narrow root case
+`m5_joint_root_unavailable_independent_family`, keeps `selected_step=null` and
+the M5 RED reason, and lets the existing independent family consumer run on the
+same paused frame. Only that consumer's own final-legal typed step may proceed.
+If family has no action, the turn remains blocked with `selected_step=null`;
+neither a joint reservation nor a date advance is inferred. Pending
+construction, gift and family receipts still resolve before the root branch.
+Focused service-path fixture tests cover both family outcomes. This is source
+readiness only; a matching live positive frame, material result, next turn and
+cold recovery are still required before claiming a new M5 or family loop.
+
 Current gift consumer integration: [C54 formal gift routing and recovery](m5-gift-formal-consumer-c54-2026-09-27.md).
 Pending family resource integration: [C79 exact claims and result priority](m5-pending-family-claims-c79-2026-09-27.md).
 

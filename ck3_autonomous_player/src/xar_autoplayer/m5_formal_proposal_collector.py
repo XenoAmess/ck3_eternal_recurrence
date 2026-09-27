@@ -195,6 +195,23 @@ def plan_m5_formal_query_only(
             },
         }
 
+    def root_unavailable(reason: str) -> dict[str, object]:
+        # The joint comparison cannot run without the faction root.  Keep it
+        # visibly unresolved and hold date advance; the service may still
+        # invoke the independent, native-gated family consumer on this frame.
+        return {
+            **cleaned,
+            "plan": {
+                **baseline,
+                "phase": "m5_joint_root_unavailable_independent_family",
+                "selected_step": None,
+                "reason": reason,
+                "m5_joint_status": "same_frame_faction_root_unavailable",
+                "m5_joint_red_reason": reason,
+                "m5_joint_formal_action_ready": False,
+            },
+        }
+
     if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
         return blocked("M5 private collector requires one paused map frame")
     revision = cleaned.get("revision")
@@ -296,9 +313,13 @@ def plan_m5_formal_query_only(
     root_status = latest_same_frame_faction_root_v1(snapshot, history)["status"]
     if root_status == "same_frame_root_not_observed":
         if _same_frame_root_returned_unavailable(snapshot, history):
-            return blocked("M5 same-frame root returned unavailable; joint inputs remain RED")
+            return root_unavailable(
+                "M5 same-frame root returned unavailable; joint inputs remain RED"
+            )
         if ROOT_QUERY_STEP not in available_steps:
-            return blocked("M5 same-frame faction root is absent and its query is unavailable")
+            return root_unavailable(
+                "M5 same-frame faction root is absent and its query is unavailable"
+            )
         return {
             **cleaned,
             "plan": {
