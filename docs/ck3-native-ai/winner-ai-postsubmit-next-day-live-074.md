@@ -58,6 +58,12 @@ MovePath/首跳 ETA 可否安全回读；若仍无 ETA，就逐日读相同 CUni
 `797B90957FAC588CC12CAA4D264C9D66A30C1F71A65F506107B7DC4B26EE4032`；
 capture exit 0、`cleanup_proven=true`、job 活跃进程 `0`，任务总线 CK3 资源已释放。
 
+下一次有限日数回放的冻结设计见
+[`winner-ai-postsubmit-076/plan.json`](research-plans/winner-ai-postsubmit-076/plan.json)：
+在第 26 日先复核同一终局与后备接受，再最多自然推进 30 日，以原生位置变化、
+目标/路线失效或经单独验证的原生首跳 ETA 为观察门；计划通过离线结构和证据
+哈希校验，不代表 076 已实机执行。
+
 给智能体消费的[冻结向量](research/winner-ai-postsubmit-next-day-074.json)
 把 `post_queue_movement_executed` 保持为 `null`，不把单样本写成通用 AI 派令规则。
 只读投影器同时校验外置原始响应 SHA、每日观察、终局对齐、DLL/EXE/源档身份、

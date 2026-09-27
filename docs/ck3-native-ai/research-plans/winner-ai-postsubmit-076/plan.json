@@ -1,0 +1,80 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "winner-ai-postsubmit-076",
+  "question": "After the same native winner-AI fallback command is accepted, does the CUnit later make observable movement toward target 2639, and can its committed-path ETA or exact command apply be observed?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "ai",
+    "owner_scope": "Independent replay of vanilla WarID 4, winning CUnit 16777231 owned by Character 32725, CombatID 16777218; all identities revalidated at day 26 before extending",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "IDs bind only to this loaded seeded scene, and observer counters live only in this process",
+    "producer_trigger": "daily-tick",
+    "producer": "Day-26 0x1872611 fallback to 0x973E00 was accepted in both 072 and 074; command apply and later movement remain unobserved",
+    "caller": "Managed life-advance from immutable 047 day-0 seed; after an exact matching day-26 terminal, advance at most 30 more native days without issuing a player move",
+    "consumer": "Paused public winner-army position/target/route/state, private CUnit route/target/state, append-only reentry records, and an exact native committed MovePath/ETA read only if a bounded safe observer is separately proven",
+    "cache_lifetime": "Each day is a new paused native revision; route and ETA, if available, must be read fresh. Process-local observer records are not save-persistent",
+    "expected_signal": "Stop as movement_observed only on a new native position for the same CUnit; record whether it reaches 2639. A changed route/target or vanished CUnit is a separate invalidated-path stop. If exact committed-path first-hop ETA can be safely exposed, compare fresh ETA against current date and stop on reached ETA plus position readback; absent ETA remains null, never inferred from route",
+    "zero_sample_meaning": "A replay diverging from 072/074 at day 26 is a new sample, not a negative of prior accepted queues. Thirty unchanged days leave apply unknown unless exact apply trace exists; siege or path policy can delay or cancel movement",
+    "stop_condition": "Exact day-26 identity gate first. Then first same-CUnit native position change, exact committed-path ETA reached with stable readback, route/target invalidation, CUnit absence, or day 56 (30 days after terminal), whichever is first; always finish and retain RED attempts",
+    "runtime_window_ref": "Attempt 076 only after higher-priority war-width 077 has clean-exited, task bus CK3 resource is released, and a new Steam-offline frame is visually verified"
+  },
+  "evidence": [
+    {
+      "id": "live-074-day26-private",
+      "layer": "live-observation",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-postsubmit-movement-attempt-074/ck3-output/interactive-requests-responses/26-ai-reentry.json",
+      "sha256": "CB38B7990237493F818A61A823BC62F71AE1DAC7ADCC0CE6A8B2BBA689C26884",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "Independent 074 day26 builder unhandled, fallback queue accepted for CUnit 16777231 and target 2639",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0066",
+      "frame": "date_raw=53146992; day=26; native revision=81",
+      "identity": "CombatID=16777218; WarID=4; CUnit=16777231"
+    },
+    {
+      "id": "live-074-day27-snapshot",
+      "layer": "live-observation",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-postsubmit-movement-attempt-074/ck3-output/interactive-requests-responses/27-snapshot.json",
+      "sha256": "EA7C23E4E4CD601F31D7E3DC31E5C931F148A58262767E92683BAA5CAB502C4A",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "074 day27 CUnit current=2633, target=2639, route=[2639], state=sieging; no ETA, progress or apply field in native army row",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0066",
+      "frame": "date_raw=53147016; day=27; native revision=85",
+      "identity": "WarID=4; CUnit=16777231"
+    },
+    {
+      "id": "live-074-audit",
+      "layer": "live-observation",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-postsubmit-movement-attempt-074/audit-result.json",
+      "sha256": "234F9B863D4A813C2688BBC637E1EA13BD7ED9D261901A130A8185D751271DFA",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "31/31 GREEN confirms exact terminal match, next paused day, raw hashes and cleanup; post_queue_movement_executed remains unknown",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0066",
+      "frame": "day26 date_raw=53146992 through day27 date_raw=53147016",
+      "identity": "CombatID=16777218; WarID=4; CUnit=16777231"
+    }
+  ],
+  "nodes": [
+    {"id": "terminal", "label": "074 matching day-26 normal result"},
+    {"id": "queue", "label": "Fallback queue accepted for target 2639"},
+    {"id": "day27", "label": "Day-27 same position 2633 and route 2639"},
+    {"id": "later_position", "label": "076 later native position or route invalidation"},
+    {"id": "apply", "label": "Exact queued command apply and movement attribution"}
+  ],
+  "edges": [
+    {"id": "terminal-to-queue", "from": "terminal", "to": "queue", "label": "074 independent fallback accepted", "status": "live-confirmed", "evidence": ["live-074-day26-private"]},
+    {"id": "queue-to-day27", "from": "queue", "to": "day27", "label": "074 day27 same position and route", "status": "live-confirmed", "evidence": ["live-074-day27-snapshot", "live-074-audit"]},
+    {"id": "day27-to-later-position", "from": "day27", "to": "later_position", "label": "076 bounded natural-day continuation", "status": "unknown", "evidence": [], "open_question": "When does this same AI CUnit move, cancel its route, or leave the war snapshot?"},
+    {"id": "queue-to-apply", "from": "queue", "to": "apply", "label": "Accepted queue command later applied", "status": "unknown", "evidence": [], "open_question": "Can exact native apply or committed-path ETA be passively observed, rather than inferred from route?"},
+    {"id": "apply-to-position", "from": "apply", "to": "later_position", "label": "Command caused later movement", "status": "unknown", "evidence": [], "open_question": "A later position change alone does not uniquely identify this accepted command as its cause"}
+  ],
+  "cases": [
+    {"id": "baseline-074", "question": "Does 074 show the accepted fallback and one unchanged next day?", "status": "observed", "evidence": ["live-074-audit"]},
+    {"id": "later-movement-076", "question": "Does the same CUnit change position before a 30-day bound?", "status": "pending", "evidence": []},
+    {"id": "apply-attribution-076", "question": "Can command apply or first-hop ETA be directly read?", "status": "pending", "evidence": []}
+  ]
+}
