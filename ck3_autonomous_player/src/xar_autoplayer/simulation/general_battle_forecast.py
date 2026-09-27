@@ -83,6 +83,11 @@ def forecast_fixed_contact(
         and scenario.get("actual_route_dependency") is False
     ):
         return {"status": "input_or_encounter_mismatch"}
+    ongoing_combats = base.get("ongoing_combats")
+    if not isinstance(ongoing_combats, list):
+        return {"status": "input_or_encounter_mismatch"}
+    if ongoing_combats:
+        return {"status": "active_combat_requires_resume_input"}
     try:
         frozen = freeze_combat_simulation_input(base, capture=dict(capture))
         leaders = []

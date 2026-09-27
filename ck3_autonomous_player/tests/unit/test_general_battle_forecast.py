@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 from pathlib import Path
 
 from xar_autoplayer.simulation.general_battle_forecast import (
@@ -62,3 +63,38 @@ def test_bounded_model_can_admit_without_native_parity_and_reject_risk():
         "commander_or_knight_death", "future_daily_effective_stat_refresh",
         "future_daily_combat_width_refresh",
     ]
+
+
+def test_active_combat_context_cannot_be_reused_as_precontact_forecast():
+    source = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    base = deepcopy(source["combat_simulation_inputs"])
+    base["ongoing_combats"] = [{"combat_id": 16777218}]
+    scenario = base["scenario"]
+    payload = {"completeness": {"input_observation_ready": True}, "base_inputs": base}
+    result = forecast_fixed_contact(
+        payload,
+        target_province_id=base["target_province_id"],
+        attacker_entry_province_id=scenario["attacker_entry_province_id"],
+        attacker_army_ids=tuple(scenario["attacker_army_ids"]),
+        defender_army_ids=tuple(scenario["defender_army_ids"]),
+        capture=source["capture"],
+        sample_count=16,
+    )
+    assert result == {"status": "active_combat_requires_resume_input"}
+
+
+def test_precontact_forecast_requires_explicit_ongoing_combat_observation():
+    source = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    base = deepcopy(source["combat_simulation_inputs"])
+    del base["ongoing_combats"]
+    scenario = base["scenario"]
+    payload = {"completeness": {"input_observation_ready": True}, "base_inputs": base}
+    assert forecast_fixed_contact(
+        payload,
+        target_province_id=base["target_province_id"],
+        attacker_entry_province_id=scenario["attacker_entry_province_id"],
+        attacker_army_ids=tuple(scenario["attacker_army_ids"]),
+        defender_army_ids=tuple(scenario["defender_army_ids"]),
+        capture=source["capture"],
+        sample_count=16,
+    ) == {"status": "input_or_encounter_mismatch"}
