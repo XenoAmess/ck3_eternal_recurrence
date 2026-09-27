@@ -853,6 +853,22 @@ class M5WartimeObservationTests(unittest.TestCase):
         self.assertIn("same_frame_native_budgeted_building", observed["missing"])
         self.assertFalse(observed["formal_action_ready"])
 
+    def test_complete_empty_building_source_is_no_opportunity(self):
+        construction = self._construction()
+        construction["native_source_status"] = "no_legal_budgeted_building"
+        construction["native_budgeted_positive_income_candidate"] = False
+        construction["candidate"] = None
+        construction["positive_income_coverage_complete"] = True
+        result = plan_m5_wartime_query_only(
+            object(), self._plan(construction), snapshot=_snapshot(),
+            history=[], available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "no_budgeted_building_observed")
+        self.assertEqual(observed["missing"], [])
+        self.assertIsNone(observed["candidate"])
+        self.assertFalse(observed["formal_action_ready"])
+
 
 if __name__ == "__main__":
     unittest.main()
