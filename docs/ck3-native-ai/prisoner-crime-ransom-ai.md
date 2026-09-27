@@ -416,3 +416,26 @@ flowchart LR
 结果与政策比较。赎金仍缺付款者重定向、原生金额求值与接受后转账；通用
 `on_send` 十槽费用不能充当 `on_accept` 赎金收入。C182 只有源码和聚焦构建/测试，
 尚无新 DLL 的 paused live 读回或任何囚犯动作，因此 M6 和正式自动游玩能力不变。
+
+### R0261：三名真实囚犯的无条件释放最终预览实机读回（2026-09-27）
+
+C202 候选从正式 Robert h2543/raw53216856 原配对经官方 ordinary `xar_off`
+prepare/rebind/no-launch，使用 source `585f2aea984faa0638980d208ba75b08ed75126c`、
+Release DLL SHA-256 `C279C0F5D512AFBAB579ED8EE08BA5FA65475DA8CDB8C633FFF4BEED2F80CA70`。
+R0261 新 PID26168 的首个 paused `native:3` 帧，私有查询返回完整集合 3/3：
+34486、44484、47028；各自的 custody relation 与玩家狱卒 29829 一致。
+各行 schema version 2 的 `unconditional_release_preview` 均为
+`status=available`、`payload_shape=two_role_all_release_options_off`、
+`can_send=true`、`auto_accept=true`、`would_accept_now=true`；`on_send` 十项资源费用
+raw 均为 0，`readiness` 全项为 true。这些是同帧原生最终预览，证明该构建与场景下
+三名囚犯分别可发送无条件释放，**没有执行释放**，不代表囚犯关系改变、赎金收入、
+惩罚后果或已形成正式政策选择。私有口保持 `read_only=true`、`advertised=false`、
+`action_surface_present=false`；M6 状态不提升。
+
+[R0261 正式报告](Z:/c202-prisoner-h2543-final-preview/master585/run-formal-16/formal-report.txt)
+SHA-256 `E39AEE7ED9B8FF025C993DC56D416C90E3170E801E1C687B42799001BA4025A6`；
+匹配候选的 [索引](Z:/c202-prisoner-h2543-final-preview/master585/C202-CANDIDATE-INDEX.json)
+SHA-256 `C777485266E60E94C062D9E6039E14DDC961D9F776F7FDE9DDDAE060881CB910`。
+下一有效施工入口是结合三个具体囚犯的战争义务、关系与机会成本选择一个
+净正值动作，接正式 typed 提交、原生囚禁关系后置、下一 turn 和新 PID 恢复；
+不能把本次只读阳性算作动作闭环。
