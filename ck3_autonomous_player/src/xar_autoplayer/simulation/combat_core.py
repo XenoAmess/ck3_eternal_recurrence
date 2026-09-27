@@ -117,8 +117,6 @@ def allocate_hard_casualties_to_components(
     remaining_raw = hard_raw
 
     for index, component in enumerate(tuple(mutable)):
-        if remaining_raw <= 0:
-            break
         selected_count = _component_selected_count(component)
         if selected_count == 0:
             continue
@@ -134,15 +132,17 @@ def allocate_hard_casualties_to_components(
         )
         losses[index] += whole_soldiers
         remaining_raw -= allocated_raw
+        # Stock 0x239C840 checks the remainder after its first setter call.
+        if remaining_raw <= 0:
+            break
 
-    # The native helper enters this pass even when remaining is exactly zero.
+    # Stock enters this pass for zero remainder and calls its first eligible
+    # setter before checking whether the new remainder is <= 0.
     if remaining_raw >= 0:
         for index, component in enumerate(tuple(mutable)):
-            if remaining_raw <= 0:
-                break
             selected_count = _component_selected_count(component)
-            if selected_count == 0:
-                continue
+            # Unlike pass one, stock also calls the setter for a resolved
+            # zero-count component; the integer state is unchanged here.
             allocated_raw = min(remaining_raw, selected_count * FIXED_SCALE)
             whole_soldiers = trunc_div_toward_zero(allocated_raw, FIXED_SCALE)
             setter_base = _component_setter_base(component)
@@ -151,6 +151,8 @@ def allocate_hard_casualties_to_components(
             )
             losses[index] += whole_soldiers
             remaining_raw -= allocated_raw
+            if remaining_raw <= 0:
+                break
 
     return ComponentAllocation(
         components=tuple(mutable),

@@ -150,6 +150,35 @@ class CombatFixedPointTests(unittest.TestCase):
         )
         self.assertEqual(maa.whole_soldier_losses, (2, 3))
 
+    def test_signed_negative_hard_reaches_first_nonempty_component(self) -> None:
+        # The exact-build first pass checks remaining <= 0 after its setter.
+        # With current 5 < max 10, the setter's exceptional clear guard cannot
+        # fire, so this signed-domain vector has an exact final integer state.
+        result = allocate_hard_casualties_to_components(
+            (BackingComponent(10, 0), BackingComponent(10, 5), BackingComponent(10, 5)),
+            -200_000,
+        )
+        self.assertEqual(
+            tuple(item.current_soldiers for item in result.components), (0, 7, 5)
+        )
+        self.assertEqual(result.whole_soldier_losses, (0, -2, 0))
+        self.assertEqual(result.unallocated_raw, 0)
+
+    def test_zero_remainder_second_pass_revisits_special_kind_three(self) -> None:
+        # A kind-3 zero-current component uses max as first-pass capacity but
+        # zero as setter base. The native second pass still starts at remainder
+        # zero, revisits its now-negative current, and moves one whole death to
+        # the following stored component. Both setter calls stay below max.
+        result = allocate_hard_casualties_to_components(
+            (BackingComponent(2, 0, kind=3), BackingComponent(5, 5)),
+            150_000,
+        )
+        self.assertEqual(
+            tuple(item.current_soldiers for item in result.components), (0, 4)
+        )
+        self.assertEqual(result.whole_soldier_losses, (0, 1))
+        self.assertEqual(result.unallocated_raw, 0)
+
 
 class MainCasualtyGoldenTests(unittest.TestCase):
     def setUp(self) -> None:

@@ -564,13 +564,17 @@ outgoing_damage = trunc_mul(outgoing_scalar,
   `min(original_hard_raw, cap_raw)`；实现仍不得把中间乘除合并，因为原程序先用 signed
   64-bit `imul` 生成 `selected_count * original_hard_raw`，再进入 CFixedPoint 的 overflow-avoiding
   division 分支。若前一乘法本身超出 int64，x64 结果是低 64 bit；该 helper 不另行拒绝。
-- [static-confirmed] 第一遍在 `remaining_raw<=0` 时立即停止。结束后只要
-  `remaining_raw>=0`（包含恰好为零），还会按同一容器顺序走第二遍；此遍不再做前述
-  fixed division，直接取 `allocated_raw=min(remaining_raw, selected_count*100000)`，再向零截成整数
-  soldier 写入。两遍都没有“最后 component 吃 remainder”规则：例如分配 `156516` raw 时，
+- [static-confirmed] 第一遍只在**完成一次有效 component 的 setter 写入并更新 remaining 后**
+  才检查 `remaining_raw<=0`，所以入口 hard raw 为零或负数时仍可能触及首个 selected-count 非零的
+  component。结束后只要 `remaining_raw>=0`（包含恰好为零），还会按同一 descriptor 顺序走第二遍；
+  此遍不做前述 fixed division，直接取 `allocated_raw=min(remaining_raw, selected_count*100000)`，
+  再向零截成整数 soldier 写入。第二遍对**每个解析成功的 component** 都先调用 setter、更新
+  remaining，然后才检查 `remaining_raw<=0`；它没有第一遍的 selected-count 为零跳过分支。
+  两遍都没有“最后 component 吃 remainder”规则：例如分配 `156516` raw 时，
   backing component 只减 `1` 人，`56516` 不会再写入其它 component；但它仍存在
   `CCombatRegiment` hard casualty 和归因 ledger 中。最后 `0x239BAD0(regiment)` 重算底层聚合。
-  这条路径无 RNG。
+  这条路径无 RNG。两遍检测位置与 kind-3 零现员边界的只读原版校验见
+  [独立静态记录](hard-component-allocation-first-setter-boundary-2026-09-27.md)。
 - [static-confirmed] 该 helper 不在入口 clamp `hard_raw`。负值在 signed 算术下可使
   `whole_soldiers<0`，从而增加 component current；过大正值也可以进入第二遍。这些是原生
   边界而非我方应修正的规则；fixture 需保留 signed/truncation 行为，生产 query 则应原样返回
