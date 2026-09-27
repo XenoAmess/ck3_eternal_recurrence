@@ -186,3 +186,26 @@ change 的其他字段。不过，`0x2E9F7F7` 把**完整 change 指针**传给
 全局表回查 change 的传递写入；或者在独立、可验证的 War31 同帧只读观察中
 取得 `setup` 之后、`resolve` 之前的 `change+0x268` 原始值。
 在此之前，`resolve` 实际走 `0x17` 还是非 `0x17` 分支仍标为未知。
+
+### `change+0x58/+0x70` 的 12 字节记录追加器，2026-09-27 补证
+
+[独立精确构建提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_substructure_append_boundary.py)
+继续沿 `0x24BD610 → 0x24D0270` 单一调用边验证直接写集合，
+[JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_substructure_append_boundary_1_19_0_6.json)
+SHA-256 为 `C9C50C30372E6BF3F99CF0C433483FE1C8DB4C1D9B5FB9CCAE827B6DC619831F`。
+`0x24BD610` 在 `0x24BD8A4/8AA` 二选一传入父 change 的 `+0x58`
+或 `+0x70` 子结构，再于 `0x24BD8AE` 调用 `0x24D0270`。
+
+`0x24D0270–0x24D03AE` 的直接指令把三个 dword（合计 12 字节）
+写入新分配或既有的数组缓冲区；通过子结构基址寄存器的直接写入
+仅落在 `+0`、`+8`、`+0xC`（指针、容量、计数）。
+对应父 change 的直接描述符写入偏移为
+`+0x58/+0x60/+0x64` 或 `+0x70/+0x78/+0x7C`，
+**均不覆盖 `+0x268` 类型字段**。该 helper 的直接调用只有两处
+分配器虚调用；其直接指令没有把父 change 基址作为参数交给子调用。
+
+这仍不足以宣称整个 `setup` 不会改类型：数组缓冲区的实际指针值未读，
+分配器回调与缓冲区别名写入未完成传递证明，`0xE0DBD0`、
+`0x2E9FF30` 等其他 setup helper 也不在这一段结论内。
+静态已证的是**这个单一追加器的直接描述符写入不会命中类型字段**；
+War31 的 `resolve` 实际类型和头衔归属结果继续保留未知。
