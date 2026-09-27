@@ -4991,6 +4991,11 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
     m5_joint = _compact_m5_joint_collection(plan)
     if m5_joint is not None:
         compact["m5_joint_observation"] = m5_joint
+    m5_wartime = _compact_m5_wartime_observation(
+        plan.get("m5_joint_wartime_observation")
+    )
+    if m5_wartime is not None:
+        compact["m5_joint_wartime_observation"] = m5_wartime
     return compact
 
 
@@ -5073,6 +5078,46 @@ def _compact_opening_lifestyle_observation(value: object) -> dict[str, object] |
         observed = traits.get("observed_keys")
         if traits["status"] == "available" and isinstance(observed, list):
             result["actor_traits"]["observed_keys"] = observed[:32]
+    return result
+
+
+def _compact_m5_wartime_observation(value: object) -> dict[str, object] | None:
+    """Retain the bounded wartime comparison beside the selected war step."""
+    if not isinstance(value, dict):
+        return None
+    result = {
+        key: value.get(key)
+        for key in ("schema", "scope", "status", "read_only", "formal_action_ready",
+                    "reason") if key in value
+    }
+    frame = value.get("frame")
+    if isinstance(frame, dict):
+        result["frame"] = {
+            key: frame.get(key)
+            for key in ("snapshot_id", "revision", "native_revision", "date_raw",
+                        "episode_run_id", "played_character_id") if key in frame
+        }
+    war_ids = value.get("war_ids")
+    if isinstance(war_ids, list):
+        result["war_ids"] = copy.deepcopy(war_ids[:8])
+        result["war_count"] = len(war_ids)
+        result["war_ids_truncated"] = len(war_ids) > 8
+    candidate = value.get("candidate")
+    if isinstance(candidate, dict):
+        result["candidate"] = {
+            key: copy.deepcopy(candidate[key])
+            for key in ("barony_title_id", "province_id", "building_type_id",
+                        "slot_index", "building_key", "stock_gold_cost_raw",
+                        "gold_before_raw",
+                        "authored_monthly_income_hundredths") if key in candidate
+        }
+    elif "candidate" in value:
+        result["candidate"] = None
+    missing = value.get("missing")
+    if isinstance(missing, list):
+        result["missing"] = copy.deepcopy(missing[:16])
+        result["missing_count"] = len(missing)
+        result["missing_truncated"] = len(missing) > 16
     return result
 
 
