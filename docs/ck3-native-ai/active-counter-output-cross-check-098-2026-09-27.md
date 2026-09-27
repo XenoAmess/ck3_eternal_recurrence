@@ -16,3 +16,9 @@
 此结果只闭合**这一天、这一个 CombatID、这份原生 hook 的两侧 class retention 输出对照**。它没有验证整个 `post_counter_attack` 到出伤、软硬伤与终局写回的逐兵团全链：回执明示 `full_mutable_transition_bundle_complete=false`、`original_trace_ready=false`。`active_combat_resume_inputs_v1` 仍列 `active_regiment_counter_class_stack_context`、下一日非骰子优势、骑士参与与动态 entry 转换为缺域；单日 hook 能观察实际向量，不等于智能体在未来每一天都能先验取得全部变化，也不产生整场胜率。
 
 本机复核命令：`D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe tools\project_active_counter_output_098.py --check`。`--check` 会校验原始 SHA 和入库 fixture 的精确投影字节；原始 attempt 不在仓库，其他机器要先取得相同哈希的原始回执，不能仅凭 fixture 冒充原始实机回读。
+
+## 研究模拟器的增援后动态反制回归
+
+后续[聚焦测试](../../ck3_autonomous_player/tests/unit/test_active_counter_output_098_envelope.py)直接从上述哈希绑定夹具重建同一 24/14 MAA 身份、owner、class、stack、target 和增援前后 fighting men；它故意把 `FrozenCombatSimulationInput.counter_resolutions` 内的玩家 class 1 留在旧值 `54257`。调用真实 `dynamic_counter_retention_by_class_raw` 后，增援前仍为 `54257`，增援后为原生 `10000`，两侧各 13 类都与 098 hook 一致。另以**明确标成 test-only 的合成完整输入**调用 `ActiveMainResumeResearchKernel.simulate_trial` 一天，并捕获该内核实际传入动态反制计算的向量；玩家 class 1 仍是 `10000`。这能防止未来把静态旧向量误用进这条研究路径。
+
+真实 098 回执的 `active_combat_resume_inputs_v1` 仍是 `unavailable`，且缺未来动态 entry 转换等域。测试中为执行研究内核而手工设置的 `input_observation_ready=true` **不是原版观察结论**；目前没有把 join 后 24 条兵团、此日原生 class 向量自动映射成可用于真实游玩预测的完整 `ActiveMainResumeState`。`PhaseEventsDisabledResearchKernel` 的首次接战输入还假定未来参战者固定，不模拟这次真实的外部增援；测试通过不提高整场胜率的原生对拍等级。

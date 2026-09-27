@@ -182,6 +182,10 @@ def project(attempt: Path) -> dict:
                 "owner_character_id": owner_by_army[item["army_id"]],
                 "class_index": classification["class_index"],
                 "class_status": classification["status"],
+                "stack_size_soldiers": classification["stack_size_soldiers"],
+                "counter_targets": classification["targets"],
+                "effective_damage_raw": item["effective_damage_raw"],
+                "effective_toughness_raw": item["effective_toughness_raw"],
                 "before_current_raw": (
                     earlier[regiment_id]["current_fighting_raw"]
                     if regiment_id in earlier else None
@@ -274,9 +278,9 @@ def main() -> int:
     projection = project(args.attempt)
     rendered = json.dumps(projection, ensure_ascii=False, indent=2) + "\n"
     if args.write_fixture:
-        FIXTURE.write_text(rendered, encoding="utf-8")
+        FIXTURE.write_bytes(rendered.encode("utf-8"))
     elif args.check:
-        require(FIXTURE.read_text(encoding="utf-8") == rendered,
+        require(FIXTURE.read_bytes() == rendered.encode("utf-8"),
                 "checked-in projection drift")
     else:
         print(rendered, end="")

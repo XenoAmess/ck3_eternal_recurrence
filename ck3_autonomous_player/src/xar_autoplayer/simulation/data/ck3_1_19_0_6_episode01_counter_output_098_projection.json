@@ -114,6 +114,23 @@
             "owner_character_id": 31549,
             "class_index": 0,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              },
+              {
+                "class_index": 0,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "effective_damage_raw": 4500000,
+            "effective_toughness_raw": 2625000,
             "before_current_raw": 8925384,
             "post_join_current_raw": 8925384,
             "post_tick_current_raw": 8869367
@@ -124,6 +141,10 @@
             "owner_character_id": 31549,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 55000000,
+            "effective_toughness_raw": 11000000,
             "before_current_raw": 97344,
             "post_join_current_raw": 97344,
             "post_tick_current_raw": 97199
@@ -134,6 +155,10 @@
             "owner_character_id": 31549,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 49500000,
+            "effective_toughness_raw": 9900000,
             "before_current_raw": 97052,
             "post_join_current_raw": 97052,
             "post_tick_current_raw": 96891
@@ -144,6 +169,10 @@
             "owner_character_id": 31549,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 22000000,
+            "effective_toughness_raw": 4400000,
             "before_current_raw": 93467,
             "post_join_current_raw": 93467,
             "post_tick_current_raw": 93118
@@ -154,6 +183,15 @@
             "owner_character_id": 32725,
             "class_index": 3,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 6,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "effective_damage_raw": 2500000,
+            "effective_toughness_raw": 1490000,
             "before_current_raw": 24524002,
             "post_join_current_raw": 24524002,
             "post_tick_current_raw": 24252840
@@ -164,6 +202,10 @@
             "owner_character_id": 32725,
             "class_index": 11,
             "class_status": "available",
+            "stack_size_soldiers": 10,
+            "counter_targets": [],
+            "effective_damage_raw": 100000,
+            "effective_toughness_raw": 1308000,
             "before_current_raw": 0,
             "post_join_current_raw": 0,
             "post_tick_current_raw": 0
@@ -174,6 +216,15 @@
             "owner_character_id": 32725,
             "class_index": 8,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 4,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "effective_damage_raw": 2200000,
+            "effective_toughness_raw": 1635000,
             "before_current_raw": 8324069,
             "post_join_current_raw": 8324069,
             "post_tick_current_raw": 8240193
@@ -184,6 +235,10 @@
             "owner_character_id": 32725,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 60500000,
+            "effective_toughness_raw": 12100000,
             "before_current_raw": 97583,
             "post_join_current_raw": 97583,
             "post_tick_current_raw": 97451
@@ -194,6 +249,10 @@
             "owner_character_id": 32725,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 49500000,
+            "effective_toughness_raw": 9900000,
             "before_current_raw": 97052,
             "post_join_current_raw": 97052,
             "post_tick_current_raw": 96891
@@ -204,6 +263,10 @@
             "owner_character_id": 32725,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 44000000,
+            "effective_toughness_raw": 8800000,
             "before_current_raw": 96687,
             "post_join_current_raw": 96687,
             "post_tick_current_raw": 96506
@@ -214,6 +277,10 @@
             "owner_character_id": 32725,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 33000000,
+            "effective_toughness_raw": 6600000,
             "before_current_raw": 96079,
             "post_join_current_raw": 96079,
             "post_tick_current_raw": 95840
@@ -224,6 +291,10 @@
             "owner_character_id": 32725,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 38500000,
+            "effective_toughness_raw": 7700000,
             "before_current_raw": 96222,
             "post_join_current_raw": 96222,
             "post_tick_current_raw": 96017
@@ -234,6 +305,10 @@
             "owner_character_id": 32725,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 38500000,
+            "effective_toughness_raw": 7700000,
             "before_current_raw": 96222,
             "post_join_current_raw": 96222,
             "post_tick_current_raw": 96017
@@ -244,6 +319,23 @@
             "owner_character_id": 32231,
             "class_index": 0,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              },
+              {
+                "class_index": 0,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "effective_damage_raw": 4500000,
+            "effective_toughness_raw": 2650000,
             "before_current_raw": null,
             "post_join_current_raw": 40000000,
             "post_tick_current_raw": 39751322
@@ -254,6 +346,10 @@
             "owner_character_id": 32231,
             "class_index": 11,
             "class_status": "available",
+            "stack_size_soldiers": 10,
+            "counter_targets": [],
+            "effective_damage_raw": 100000,
+            "effective_toughness_raw": 1272000,
             "before_current_raw": null,
             "post_join_current_raw": 0,
             "post_tick_current_raw": 0
@@ -264,6 +360,10 @@
             "owner_character_id": 32231,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 126750000,
+            "effective_toughness_raw": 25350000,
             "before_current_raw": null,
             "post_join_current_raw": 100000,
             "post_tick_current_raw": 99936
@@ -274,6 +374,10 @@
             "owner_character_id": 32231,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 58500000,
+            "effective_toughness_raw": 11700000,
             "before_current_raw": null,
             "post_join_current_raw": 100000,
             "post_tick_current_raw": 99860
@@ -284,6 +388,10 @@
             "owner_character_id": 32231,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 29250000,
+            "effective_toughness_raw": 5850000,
             "before_current_raw": null,
             "post_join_current_raw": 100000,
             "post_tick_current_raw": 99719
@@ -294,6 +402,10 @@
             "owner_character_id": 32231,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 9750000,
+            "effective_toughness_raw": 1950000,
             "before_current_raw": null,
             "post_join_current_raw": 100000,
             "post_tick_current_raw": 99156
@@ -304,6 +416,23 @@
             "owner_character_id": 34320,
             "class_index": 0,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              },
+              {
+                "class_index": 0,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "effective_damage_raw": 4500000,
+            "effective_toughness_raw": 2675000,
             "before_current_raw": 8944523,
             "post_join_current_raw": 8944523,
             "post_tick_current_raw": 8889435
@@ -314,6 +443,10 @@
             "owner_character_id": 34320,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 83250000,
+            "effective_toughness_raw": 16650000,
             "before_current_raw": 98082,
             "post_join_current_raw": 98082,
             "post_tick_current_raw": 97985
@@ -324,6 +457,10 @@
             "owner_character_id": 34320,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 18500000,
+            "effective_toughness_raw": 3700000,
             "before_current_raw": 96071,
             "post_join_current_raw": 96071,
             "post_tick_current_raw": 95644
@@ -334,6 +471,10 @@
             "owner_character_id": 34320,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 27750000,
+            "effective_toughness_raw": 5550000,
             "before_current_raw": 94790,
             "post_join_current_raw": 94790,
             "post_tick_current_raw": 94509
@@ -344,6 +485,10 @@
             "owner_character_id": 34320,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 18500000,
+            "effective_toughness_raw": 3700000,
             "before_current_raw": 92273,
             "post_join_current_raw": 92273,
             "post_tick_current_raw": 91863
@@ -427,6 +572,27 @@
             "owner_character_id": 29829,
             "class_index": 1,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 4,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 5,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 8,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 9,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "effective_damage_raw": 2200000,
+            "effective_toughness_raw": 4224000,
             "before_current_raw": 17579130,
             "post_join_current_raw": 17579130,
             "post_tick_current_raw": 16995387
@@ -437,6 +603,19 @@
             "owner_character_id": 29829,
             "class_index": 0,
             "class_status": "available",
+            "stack_size_soldiers": 100,
+            "counter_targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              }
+            ],
+            "effective_damage_raw": 3680000,
+            "effective_toughness_raw": 3322000,
             "before_current_raw": 8483391,
             "post_join_current_raw": 8483391,
             "post_tick_current_raw": 8125197
@@ -447,6 +626,10 @@
             "owner_character_id": 29829,
             "class_index": 11,
             "class_status": "available",
+            "stack_size_soldiers": 10,
+            "counter_targets": [],
+            "effective_damage_raw": 100000,
+            "effective_toughness_raw": 1512000,
             "before_current_raw": 0,
             "post_join_current_raw": 0,
             "post_tick_current_raw": 0
@@ -457,6 +640,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 122500000,
+            "effective_toughness_raw": 24500000,
             "before_current_raw": 97820,
             "post_join_current_raw": 97820,
             "post_tick_current_raw": 97260
@@ -467,6 +654,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 122500000,
+            "effective_toughness_raw": 24500000,
             "before_current_raw": 97820,
             "post_join_current_raw": 97820,
             "post_tick_current_raw": 97260
@@ -477,6 +668,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 113750000,
+            "effective_toughness_raw": 22750000,
             "before_current_raw": 97654,
             "post_join_current_raw": 97654,
             "post_tick_current_raw": 97052
@@ -487,6 +682,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 105000000,
+            "effective_toughness_raw": 21000000,
             "before_current_raw": 97461,
             "post_join_current_raw": 97461,
             "post_tick_current_raw": 96811
@@ -497,6 +696,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 96250000,
+            "effective_toughness_raw": 19250000,
             "before_current_raw": 97233,
             "post_join_current_raw": 97233,
             "post_tick_current_raw": 96525
@@ -507,6 +710,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 96250000,
+            "effective_toughness_raw": 19250000,
             "before_current_raw": 97132,
             "post_join_current_raw": 97132,
             "post_tick_current_raw": 96425
@@ -517,6 +724,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 78750000,
+            "effective_toughness_raw": 15750000,
             "before_current_raw": 96624,
             "post_join_current_raw": 96624,
             "post_tick_current_raw": 95764
@@ -527,6 +738,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 43750000,
+            "effective_toughness_raw": 8750000,
             "before_current_raw": 93994,
             "post_join_current_raw": 93994,
             "post_tick_current_raw": 92488
@@ -537,6 +752,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 35000000,
+            "effective_toughness_raw": 7000000,
             "before_current_raw": 92541,
             "post_join_current_raw": 92541,
             "post_tick_current_raw": 90687
@@ -547,6 +766,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 26250000,
+            "effective_toughness_raw": 5250000,
             "before_current_raw": 90161,
             "post_join_current_raw": 90161,
             "post_tick_current_raw": 87753
@@ -557,6 +780,10 @@
             "owner_character_id": 29829,
             "class_index": null,
             "class_status": "absent",
+            "stack_size_soldiers": null,
+            "counter_targets": [],
+            "effective_damage_raw": 17500000,
+            "effective_toughness_raw": 3500000,
             "before_current_raw": 85557,
             "post_join_current_raw": 85557,
             "post_tick_current_raw": 82129
