@@ -436,20 +436,27 @@ def choose_first_heir_marriage_candidate(
 
 def plan_family_marriage_private(driver: object, planned: dict[str, object],
                                  snapshot: Mapping[str, object], *,
-                                 prewar_arbitration: bool = False) -> dict[str, object]:
-    """Consider marriage before an opted-in native declaration query or send.
+                                 prewar_arbitration: bool = False,
+                                 wartime_arbitration: bool = False) -> dict[str, object]:
+    """Consider marriage at a peaceful opportunity or a deferrable war read.
 
     The normal turn keeps its life-advance boundary. A pre-war caller must
-    explicitly opt in; all scene, legality, value and durable-result gates
-    below are shared with that normal turn.
+    explicitly opt in. A wartime caller also opts in and retains the same
+    native final legality, value and durable-result gates.
     """
     plan = planned.get("plan")
     if not isinstance(plan, dict):
         return planned
     selected = plan.get("selected_step")
+    war_read = (
+        wartime_arbitration is True
+        and isinstance(selected, str) and selected.startswith("query-")
+        and isinstance(snapshot.get("active_wars"), list)
+        and bool(snapshot["active_wars"])
+    )
     if selected != "life-advance" and not (
         prewar_arbitration is True and is_native_declaration_step(selected)
-    ):
+    ) and not war_read:
         return planned
     state_dir = getattr(driver, "state_dir", None)
     if not isinstance(state_dir, Path):
@@ -544,7 +551,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
     if not (snapshot.get("paused") is True and snapshot.get("map_ready") is True
             and snapshot.get("active_event") is None
             and snapshot.get("pending_character_interaction") is None
-            and snapshot.get("active_wars") == []
+            and (snapshot.get("active_wars") == [] or war_read)
             and _positive(snapshot.get("native_revision"))):
         return planned
     legality = driver.query_observed_first_heir_marriage_legality_v1(
@@ -591,6 +598,33 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                                     "no_positive_observed_marriage_opportunity",
                                     "family_marriage_private_diagnostic": diagnostic,
                                     "family_marriage_current_relationship": relation}}
+    if war_read:
+        # Marriage's ordinary native Can Send only excludes a war against the
+        # recipient.  The existing family value is independent of spending a
+        # war cash reserve, but a prospective ally's future obligation has no
+        # observed price.  Keep that unknown and the occupied characters in
+        # the decision/ledger instead of treating the war as a zero cost.
+        wars = snapshot["active_wars"]
+        treasury = snapshot.get("played_character_gold")
+        choice = {**choice, "wartime_resource_context": {
+            "source_date_raw": snapshot.get("date_raw"),
+            "native_revision": snapshot.get("native_revision"),
+            "active_war_ids": [
+                row.get("war_id") if isinstance(row, Mapping) else None
+                for row in wars
+            ],
+            "observed_treasury": (dict(treasury)
+                                  if isinstance(treasury, Mapping) else None),
+            "future_war_cash_reserve_raw": None,
+            "prospective_ally_war_obligation": "unknown",
+            "character_claims": [
+                snapshot["played_character"]["character_id"],
+                legality["observed_first_heir_character_id"],
+                choice["candidate_character_id"],
+                next(row["recipient_matchmaker_character_id"] for row in legal_rows
+                     if row["candidate_character_id"] == choice["candidate_character_id"]),
+            ],
+        }}
     return {**planned, "plan": {**plan, "phase": "first_heir_marriage_typed_submit",
         "selected_step": SUBMIT_STEP, "family_marriage_choice": choice,
         "family_marriage_rejected_candidate_ids": sorted(rejected_candidate_ids),
@@ -668,6 +702,26 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
                "episode_run_id": snapshot["episode_run_id"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
                "submission_state": "may_have_submitted"}
+    wartime_context = choice.get("wartime_resource_context")
+    if wartime_context is not None:
+        if (not isinstance(wartime_context, Mapping)
+                or wartime_context.get("source_date_raw") != snapshot.get("date_raw")
+                or wartime_context.get("native_revision") != snapshot.get("native_revision")
+                or not isinstance(snapshot.get("active_wars"), list)
+                or not snapshot["active_wars"]
+                or wartime_context.get("active_war_ids") != [
+                    row.get("war_id") if isinstance(row, Mapping) else None
+                    for row in snapshot["active_wars"]
+                ]
+                or wartime_context.get("observed_treasury") !=
+                    snapshot.get("played_character_gold")
+                or wartime_context.get("character_claims") != [
+                    snapshot["played_character"]["character_id"],
+                    legality["observed_first_heir_character_id"],
+                    candidate, recipient,
+                ]):
+            raise ValueError("first-heir marriage wartime resource frame changed")
+        pending["wartime_resource_context"] = dict(wartime_context)
     ledger = read_family_marriage_ledger(state_dir)
     if ledger["pending"] is not None:
         raise ValueError("first-heir marriage already has unresolved submission")

@@ -710,6 +710,53 @@ class FamilyConsumerTest(unittest.TestCase):
                                 no_value["plan"]["family_marriage_private_diagnostic"]
                                 ["rows"]))
 
+    def test_wartime_read_uses_current_heir_and_native_final_legality(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.allow_private_current_first_heir_relationship_query = True
+            war_scene = {**scene(), "active_wars": [{"war_id": 16777231}],
+                         "played_character_gold": {"raw": 4200000, "scale": 100000}}
+            war = {"plan": {"selected_step": "query-army-strengths-v1"}}
+            self.assertIs(plan_family_marriage_private(driver, war, war_scene), war)
+            chosen = plan_family_marriage_private(
+                driver, war, war_scene, wartime_arbitration=True)
+            self.assertEqual(chosen["plan"]["selected_step"], SUBMIT_STEP)
+            context = chosen["plan"]["family_marriage_choice"]["wartime_resource_context"]
+            self.assertEqual(context["active_war_ids"], [16777231])
+            self.assertEqual(context["observed_treasury"],
+                             {"raw": 4200000, "scale": 100000})
+            self.assertIsNone(context["future_war_cash_reserve_raw"])
+            self.assertEqual(context["prospective_ally_war_obligation"], "unknown")
+            self.assertEqual(context["character_claims"], [101, 202, 300, 400])
+            self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                with self.assertRaisesRegex(ValueError, "wartime resource frame changed"):
+                    submit_family_marriage_private(
+                        driver, plan=chosen["plan"],
+                        snapshot={**war_scene, "played_character_gold":
+                                  {"raw": 4100000, "scale": 100000}})
+                submit_family_marriage_private(driver, plan=chosen["plan"],
+                                               snapshot=war_scene)
+            self.assertEqual(read_family_marriage_ledger(driver.state_dir)
+                             ["pending"]["wartime_resource_context"], context)
+            driver.current_first_heir_relationship["betrothed_character_id"] = 301
+            driver.current_first_heir_relationship["primary_spouse_character_id"] = 301
+            driver.current_first_heir_relationship["spouse_character_ids"] = [301]
+            # An active partner prevents a second proposal even when another
+            # candidate remains native-final legal.
+            other = FakeDriver(Path(tempfile.mkdtemp(dir=temporary)))
+            other.allow_private_current_first_heir_relationship_query = True
+            other.current_first_heir_relationship = dict(
+                driver.current_first_heir_relationship)
+            blocked = plan_family_marriage_private(
+                other, war, war_scene, wartime_arbitration=True)
+            self.assertEqual(blocked["plan"]["selected_step"],
+                             "query-army-strengths-v1")
+            self.assertEqual(blocked["plan"]["family_marriage_status"],
+                             "current_first_heir_already_partnered")
+            self.assertEqual(other.calls, ["relationship"])
+
     def test_prewar_submission_keeps_pending_result_and_no_resend(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))

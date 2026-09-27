@@ -1,5 +1,11 @@
 # CK3 1.19.0.6 婚姻、联盟与战争召集：主动婚配与入站回复树
 
+## 2026-09-27 C145：战时首继承人婚配的原生边界
+
+原版 `00_marriage_interactions.txt`（SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`）的 `arrange_marriage_interaction` 在 `can_send` 中排除的是 `scope:actor` 与 `scope:recipient` **彼此交战**（约第 518–522 行），没有在这一门中要求 actor 全局和平。`grand_wedding_promise` 的 AI 专属 `is_at_war = no` 约束只位于该可选项的 `is_shown` 分支（约第 759–773 行），不能外推为普通婚配禁令。其他 native complete Can Send、收件人最终回答及婚姻/订婚结果门仍逐条执行；本节不据此声称当前战时 Robert 一定有可发送提案。
+
+正式 R0254 在 h2271→h2357 的 36 turn 中保持 WarID `16777231` active，家庭试验参数和对应 native DLL 私有开关虽已开启，但 `plan_family_marriage_private` 只在 `life-advance` 或和平宣战前调用并要求 `active_wars == []`。该运行没有读取首继承人当前关系、final-legal 候选或提交婚配，不能把 h90/h115 派生支线 R0240/R0253 的订婚结果移植到 h2357。最小补口是在战时第一条可延后的正式只读查询上复用同一首继承人关系、原生最终合法、五行价值和 typed proposal/receipt/恢复合同；同游戏日期无新状态时不重复扫候选。选择结果保留同帧 WarID、观察到的金钱与四名婚配角色占用；未来战争现金储备及新盟友的参战义务仍记为未知，不填零，也不把跨域联合估值称为完成。成年婚姻的继承关系价值及近龄跨宗族婚约的宗族安排价值可独立于未定价的联盟收益判断；原有最终合法、关系、年龄与血统门不放松。需以新冻结候选的实际 paused 帧验证关系和机会，再按独立后置、下一 turn 与冷恢复决定能力等级。
+
 ## 范围与结论
 
 本文先按一代长跑中真实出现的 blocker，分别闭合 exact-build CK3 `1.19.0.6` 的 stock
