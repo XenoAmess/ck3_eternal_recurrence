@@ -448,7 +448,7 @@ def family_pending_sidecar_pair(
     manifest: dict[str, Any], save_sha256: str,
     formal_report: dict[str, Any],
 ) -> int:
-    """Bind one saved first-heir proposal to its checkpoint and formal report."""
+    """Bind one saved first-heir proposal and a later paired checkpoint."""
     pending = sidecar.get("pending")
     checkpoint = driver.get("last_checkpoint")
     report_checkpoints = formal_report.get("checkpoints")
@@ -467,7 +467,10 @@ def family_pending_sidecar_pair(
     episode = episode_value(driver, manifest, "episode_run_id")
     heir = pending.get("heir_character_id")
     candidate = pending.get("candidate_character_id")
+    recipient = pending.get("recipient_character_id")
     source_date = pending.get("source_date_raw")
+    latest_index = checkpoint.get("history_index")
+    latest_date = checkpoint.get("date_raw")
     if (pending.get("schema") != FAMILY_ACTION_V1_SCHEMA
             or pending.get("status") != "receipt_pending"
             or pending.get("submission_state") != "receipt_pending"
@@ -477,33 +480,79 @@ def family_pending_sidecar_pair(
             or pending.get("episode_run_id") != episode
             or type(heir) is not int or heir <= 0 or heir == actor
             or type(candidate) is not int or candidate <= 0
+            or type(recipient) is not int or recipient <= 0
             or type(source_date) is not int
             or pending.get("source_bridge_pid") != session.get("pid")
             or checkpoint.get("episode_character_id") != actor
             or checkpoint.get("episode_run_id") != episode
-            or checkpoint.get("date_raw") != source_date
+            or type(latest_index) is not int or latest_index <= 0
+            or type(latest_date) is not int or latest_date < source_date
             or checkpoint.get("sha256") != save_sha256):
         raise ValueError("family pending identity disagrees with paired save")
-    matching = [row for row in report_checkpoints
+    submitted_checkpoints = [row for row in report_checkpoints
                 if isinstance(row, dict)
                 and row.get("phase") == "first_heir_marriage_submitted_pending"
-                and row.get("sha256") == save_sha256
-                and row.get("history_index") == checkpoint.get("history_index")
                 and row.get("date_raw") == source_date
+                and row.get("status") == "saved"
+                and isinstance(row.get("sha256"), str)
+                and re.fullmatch(r"[0-9a-fA-F]{64}", row["sha256"]) is not None
+                and type(row.get("history_index")) is int
+                and 0 < row["history_index"] <= latest_index
+                and row.get("episode_character_id") == actor
+                and row.get("episode_run_id") == episode
                 and isinstance(row.get("pending_action"), dict)
                 and row["pending_action"].get("heir_character_id") == heir
                 and row["pending_action"].get("candidate_character_id") == candidate
+                and row["pending_action"].get("recipient_character_id") == recipient
                 and row["pending_action"].get("episode_run_id") == episode]
+    paired_checkpoints = [row for row in report_checkpoints
+                 if isinstance(row, dict)
+                 and row.get("status") == "saved"
+                 and row.get("sha256") == save_sha256
+                 and row.get("history_index") == latest_index
+                 and row.get("date_raw") == latest_date
+                 and row.get("episode_character_id") == actor
+                 and row.get("episode_run_id") == episode]
     submitted = [row for row in turns if isinstance(row, dict)
-                 and row.get("selected_step") == FAMILY_SUBMIT_STEP
-                 and isinstance(row.get("result"), dict)
-                 and row["result"].get("status") == "receipt_pending"
-                 and isinstance(row.get("plan"), dict)
-                 and isinstance(row["plan"].get("family_marriage_choice"), dict)
-                 and row["plan"]["family_marriage_choice"].get(
-                     "candidate_character_id") == candidate]
-    if len(matching) != 1 or len(submitted) != 1:
+                 and row.get("selected_step") == FAMILY_SUBMIT_STEP]
+    if len(submitted_checkpoints) != 1 or len(paired_checkpoints) != 1 or len(submitted) != 1:
         raise ValueError("family proposal is not proven by one saved formal submit")
+    source = submitted_checkpoints[0]
+    paired = paired_checkpoints[0]
+    submit = submitted[0]
+    result = submit.get("result")
+    plan = submit.get("plan")
+    if (type(source.get("turn_index")) is not int
+            or type(paired.get("turn_index")) is not int
+            or type(submit.get("index")) is not int
+            or source["turn_index"] != submit["index"]
+            or paired["turn_index"] < source["turn_index"]
+            or (source["history_index"] == latest_index) != (source["sha256"] == save_sha256)
+            or not isinstance(result, dict)
+            or result.get("status") != "receipt_pending"
+            or result.get("accepted") is not True
+            or result.get("played_character_id") != actor
+            or result.get("heir_character_id") != heir
+            or result.get("candidate_character_id") != candidate
+            or result.get("recipient_character_id") != recipient
+            or result.get("episode_run_id") != episode
+            or not isinstance(plan, dict)
+            or not isinstance(plan.get("family_marriage_choice"), dict)
+            or plan["family_marriage_choice"].get("candidate_character_id") != candidate):
+        raise ValueError("family proposal is not proven by one saved formal submit")
+    if source["history_index"] < latest_index:
+        later_reads = [row for row in turns if isinstance(row, dict)
+                       and row.get("selected_step") ==
+                       "query-observed-first-heir-marriage-result-v1-private"
+                       and type(row.get("index")) is int
+                       and source["turn_index"] < row["index"] <= paired["turn_index"]]
+        latest_read = max(later_reads, key=lambda row: row["index"]) if later_reads else None
+        latest_result = latest_read.get("result") if latest_read else None
+        if (not isinstance(latest_result, dict)
+                or latest_result.get("status") not in {"pending", "accepted_pending"}
+                or latest_result.get("heir_character_id") != heir
+                or latest_result.get("candidate_character_id") != candidate):
+            raise ValueError("later paired save lacks pending family result query")
     return candidate
 
 
