@@ -5,6 +5,22 @@
 int main() {
   using namespace xar::ck3_11906;
   MarriageHeirRelationshipV1 heir{};
+  if (!ValidateCurrentFirstHeirRawRelationshipV1(-1, -1, {}, heir) ||
+      !ValidateCurrentFirstHeirRawRelationshipV1(0, 0, {}, heir) ||
+      ValidateCurrentFirstHeirRawRelationshipV1(38710, -1, {}, heir) ||
+      ValidateCurrentFirstHeirRawRelationshipV1(-1, 38710, {}, heir) ||
+      ValidateCurrentFirstHeirRawRelationshipV1(-1, -1, {38710}, heir))
+    return EXIT_FAILURE;
+  heir.betrothed_character_id = 38710;
+  if (!ValidateCurrentFirstHeirRawRelationshipV1(38710, -1, {}, heir))
+    return EXIT_FAILURE;
+  heir.betrothed_character_id = -1;
+  heir.spouse_character_ids = {38710};
+  if (!ValidateCurrentFirstHeirRawRelationshipV1(-1, -1, {38710}, heir) ||
+      ValidateCurrentFirstHeirRawRelationshipV1(-1, -1,
+                                              {38710, 38711}, heir))
+    return EXIT_FAILURE;
+  heir.spouse_character_ids.clear();
   std::vector<CurrentFirstHeirPartnerRelationshipV1> peers;
   if (!ValidateCurrentFirstHeirBilateralRelationshipV1(38822, heir, peers))
     return EXIT_FAILURE;

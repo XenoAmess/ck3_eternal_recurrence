@@ -16,6 +16,15 @@ struct CurrentFirstHeirPartnerRelationshipV1 {
                          const CurrentFirstHeirPartnerRelationshipV1 &) = default;
 };
 
+// The shared relationship reader filters unresolved raw IDs. This check is
+// required before an empty filtered result can be reported as a real empty
+// family relation in the private current-heir query.
+bool ValidateCurrentFirstHeirRawRelationshipV1(
+    std::int32_t raw_betrothed_character_id,
+    std::int32_t raw_primary_spouse_character_id,
+    const std::vector<std::int32_t> &raw_spouse_character_ids,
+    const MarriageHeirRelationshipV1 &filtered) noexcept;
+
 // Pure reciprocity check used by the exact-build native reader. The peer list
 // must cover every observed heir partner, including a primary spouse that is
 // absent from the spouse array.
