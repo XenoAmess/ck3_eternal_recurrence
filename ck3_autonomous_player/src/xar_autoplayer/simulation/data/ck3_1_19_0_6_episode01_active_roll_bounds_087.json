@@ -1,0 +1,65 @@
+{
+  "schema": "ck3.native_active_commander_next_roll_087.v1",
+  "source": {
+    "attempt": 87,
+    "sha256": {
+      "c087-before-snapshot": "59BBCA62C10D4E900C77C16F697EF090092A7F777824914C4AED4CC8194A7E9C",
+      "c087-battle-control": "3D8ECE6EE38809E370891668022445C94A9BC57DD6F97898607C93F5F78D753C",
+      "c087-after-snapshot": "39C137C40788171FA429D56C8A37994D9D27E3BD26F6038B3763BF20C6968F46",
+      "cleanup-check": "DE39DF25956F79FDD132D402931F83184C6257BE48D986FFEA38A7F005ADBE36"
+    },
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_sha256": "EC0B57EC5036A10A87FDCBB8CC2E9DAB12EE2629CD442DBB9AC76BF0BAE63B92",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+  },
+  "identity": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53146488,
+    "combat_id": 16777218,
+    "province_id": 2633,
+    "subject_public_cunit_id": 18,
+    "subject_side_index": 1
+  },
+  "actual": {
+    "phase": "main",
+    "phase_day": 7,
+    "roll_cadence_counter": 1,
+    "sides": [
+      {
+        "side_index": 0,
+        "selected_commander_character_id": 34320,
+        "current_roll_points": 7,
+        "next_roll_bounds": {
+          "status": "available",
+          "effective_min_roll": 0,
+          "effective_max_roll": 10,
+          "unavailable_reason": null
+        }
+      },
+      {
+        "side_index": 1,
+        "selected_commander_character_id": 29829,
+        "current_roll_points": 8,
+        "next_roll_bounds": {
+          "status": "available",
+          "effective_min_roll": 0,
+          "effective_max_roll": 10,
+          "unavailable_reason": null
+        }
+      }
+    ]
+  },
+  "active_resume": {
+    "status": "unavailable",
+    "reason": "same_frame_resume_operands_incomplete",
+    "missing_required_domains": [
+      "active_coalition_side_mapping",
+      "active_regiment_counter_class_stack_context",
+      "next_day_non_roll_advantage_sources",
+      "battle_knight_participation_and_dynamic_entry_transitions"
+    ]
+  },
+  "cleanup_ok": true
+}

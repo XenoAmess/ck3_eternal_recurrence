@@ -48,6 +48,10 @@ v3 列出了同一暂停帧各军将领及**假想接战上下文**的 roll boun
 
 同一 086 原生 battle-control sample 已经给出**以指定军队为参照的战斗侧映射**：subject PublicCUnitID/NativeCArmyID 都是 `18`，owner CharacterID `29829`；它在 defender `side_index=1` 且仅出现一次，对面 attacker `side_index=0` 依原生存储顺序含 `[16777221,16777231,27]`。`ReadActiveCombatRetreatProjection` 从双方原生 `ordered_armies` 检查 subject 恰在一侧，Python 合同再次核对 side index、owner、两侧无重复和 owner subset；086 精确投影器现冻结此映射。这个证据足以决定**这场战斗里 subject 所在侧与对侧**，不能把 attacker 固定当作玩家侧；后续仍需把可用映射作为同帧 typed resume 载荷的已满足域，并验证多 owner 同侧时的策略效用归属。历史 086 回执的五项缺域列表保持原字节，不追改为 GREEN。
 
+## 087 现役将领下一掷骰读口实采
+
+087 使用新 DLL 和同一冻结存档进行**新独立只读 attempt**，前后快照同为 `native:3`、public/native revision `4/3`、raw date `53146488`；battle-control 的真实 `CombatID=16777218`、subject ArmyID `18` 在 side 1、主战第 7 日、cadence `1`。当前 side0/side1 roll 分别 `7/8`，实际选中将领 CharacterID `34320/29829`；新的同一 native sample typed 下一掷骰范围分别为 `[0,10]/[0,10]`，两侧 `available`，故新回执从缺域清单移除了 `selected_commander_next_roll_bounds`。四个其余缺域仍在，整体仍 `unavailable`；没有推进一天或观察 RNG 落点。原始 SHA、构建身份、清场与可重放向量见[专文](active-combat-commander-next-roll-bounds-2026-09-27.md)。086 历史五项缺域回执保持原样，不以 087 追写。
+
 ## 本轮聚焦验收
 
 在隔离工作区 `D:/wai`，显式使用主工作区 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`；相对 venv 不存在。解释器与依赖 probe 为 Python `3.14.7`、pytest `9.1.1`，`PYTHONPATH=D:/wai/ck3_autonomous_player/src` 指向本 worktree：`test_general_battle_strategy.py`、`test_combat_input_adapter.py`、`test_general_battle_forecast.py` 共 **19 passed、11 subtests passed**；`git diff --check` 通过。测试使用现有原版 v2 fixture 证明战前估计仍可运行，并对“选中军队已有 ongoing CombatID”与“该观察字段缺失”分别断言决策入口拒绝。本检查不构成 active-combat 原生读口或实机验收。

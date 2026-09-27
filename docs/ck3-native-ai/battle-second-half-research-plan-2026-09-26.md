@@ -35,6 +35,8 @@
 
 [086 独立同暂停帧实采](active-combat-forecast-input-gap-2026-09-27.md#086-同暂停帧双查询实采)已使上一段的“receipt 未进策略层”成为历史状态：近期代码已投影 typed unavailable，085 暴露的 service 白名单缺口也已修复，086 在同一真实 CombatID、日期、公开/native revision 上直接取得 battle-control 和 v3 两份成功读回。v3 `available` 仍标明假定首次接战，宽度 `1539/1385`，而现役缓存为 `1645/1480`；其 `ongoing_combats` 中虽有真实宽度，不能把整个 v3 `base_inputs` 当作现役初态。下一门是同一次 native application-main 的真实 roll bounds、反制和优势源及骑士/动态 entry 输入，随后做逐日原版对拍；不解除现役策略 guard。
 
+[087 现役下一掷骰读口](active-combat-commander-next-roll-bounds-2026-09-27.md#087-原版冻结存档只读回读)已在新独立原版实机 attempt 同帧回读实际选中将领 `34320/29829` 的下一范围 `[0,10]/[0,10]`，并核对当前 roll `7/8` 与清场；新 typed 回执从缺域清单移除此项，但总体仍 unavailable。086 的历史读回不追改。反制 class/stack/context 已有[来源审计](active-combat-counter-context-source-audit-2026-09-27.md)，下一步优先完成同钩子 typed producer 与原版日界对拍，再补非 roll 优势及骑士/动态 entry；暂不把当前范围当作实际下一 RNG 落点。
+
 086 的 51 团 crosswalk 还确认 ID/所属军队 `51/51` 匹配，但 battle entry current 与 v3 军团 `current_soldiers×100000` `51/51` 不等；51 号实例是 `17579130` 对 `19300000` Q100000，v3 预接战反制 chunk `193000`。现有试算核已经能按传入的 entry current 重算 depleted 反制；生产续算仍须从同一次 battle sample 确认 class/stack/context 与实际调用，不能用 v3 的 precontact chunk 直接接线。
 
 [战中撤退目的地种子](active-combat-retreat-destination-seeds-2026-09-27.md)已接入智能体的**只读动作预览**：可控且仍在战斗的军队现在能以同帧其他驻扎我军省份为初始候选，排除已观测敌军当前/目标/路线省；长路线第一站在战中只生成重新预览与接触查询，不派生可绕过撤退 token 的直接 move 命令。30 项聚焦测试通过。种子不是安全目的地证明，尚无战中 route-contact ETA 覆盖及撤退后速度的实机配对，因此自动撤退 order 尚未接线；后续必须在同一暂停帧通过 native legality、完整敌军作用域、全程到站门、typed token 和新 revision 回读。
