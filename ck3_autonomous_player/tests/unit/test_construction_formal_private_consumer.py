@@ -10,6 +10,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge import domain_construction_private_transport_v1 as transport
+from xar_autoplayer.bridge.mcp_server import (
+    _ck3_query_construction_province_income_private_v1,
+)
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, StepPostconditionError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.construction_formal_consumer import (
@@ -238,8 +241,8 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
             driver.completed_construction = True
-            result = transport.query_construction_province_income_private(
-                driver, expected_revision=3,
+            result = _ck3_query_construction_province_income_private_v1(
+                mock.Mock(driver=driver), expected_revision=3,
                 barony_title_id=2103, province_id=2635)
             self.assertEqual(result["status"], "observed")
             self.assertEqual(result["native_province_monthly_income_raw"], 2_468_000)

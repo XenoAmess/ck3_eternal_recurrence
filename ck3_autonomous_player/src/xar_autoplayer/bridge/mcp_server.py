@@ -1182,6 +1182,25 @@ def _ck3_query_player_epidemic_recovery_private_v1(
     )
 
 
+def _ck3_query_construction_province_income_private_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+    barony_title_id: int,
+    province_id: int,
+) -> dict[str, object]:
+    """Private aggregate readback; intentionally absent from public MCP tools."""
+    from .domain_construction_private_transport_v1 import (
+        query_construction_province_income_private,
+    )
+
+    return query_construction_province_income_private(
+        service.driver,
+        expected_revision=expected_revision,
+        barony_title_id=barony_title_id,
+        province_id=province_id,
+    )
+
+
 def _ck3_continue_death_succession_modal_v1(
     service: GameplayBridgeService,
     expected_revision: int,
