@@ -384,6 +384,37 @@ bool OptionalJoinFullEntryWire() {
   return true;
 }
 
+bool OptionalCounterOutputWire() {
+  auto drain = SmallDrain();
+  const auto ordinary = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (ordinary.empty() || Has(ordinary, "runtime_counter_output"))
+    return Fail("default trace leaked counter-output field");
+  drain->runtime_counter_output_requested = true;
+  drain->counter_output_count = 2;
+  drain->counter_output_pair_complete = true;
+  for (std::size_t index = 0; index < 2; ++index) {
+    auto &row = drain->counter_outputs[index];
+    row.side_index = static_cast<std::int32_t>(index);
+    row.countered_entry_count = 18;
+    row.countering_entry_count = 14;
+    row.context_raw = 125'000;
+    row.readout.class_count = 2;
+    row.readout.capacity = 2;
+    row.readout.retention_raw[0] = 87'500;
+    row.readout.retention_raw[1] = 100'000;
+  }
+  const auto included = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (!Has(included, "\"runtime_counter_output\"") ||
+      !Has(included, "\"retention_raw\":[87500,100000]") ||
+      !Has(included, "\"runtime_counter_output_pair_complete\":true")) {
+    return Fail("opt-in counter-output wire is incomplete");
+  }
+  drain->counter_outputs[1].readout.capacity = 1;
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty())
+    return Fail("invalid counter-output capacity serialized");
+  return true;
+}
+
 bool OversizeFailsClosed() {
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
   drain->record_count = 7;
@@ -410,6 +441,7 @@ bool OversizeFailsClosed() {
 int main() {
   return HappyPath() && OptionalRuntimeWeights() && OptionalJoinWidthWire() &&
          OptionalJoinFullEntryWire() &&
+         OptionalCounterOutputWire() &&
          InvalidCountsFailClosed() &&
                  MissingRowMapStaysExplicitlyUnknown() &&
                  OversizeFailsClosed()

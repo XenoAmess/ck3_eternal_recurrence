@@ -1080,6 +1080,70 @@ bool PostCounterAttackCaptureCases() {
   return true;
 }
 
+bool CounterOutputCaptureCases() {
+  Fixture fixture;
+  fixture.plan.owner_thread_id = GetCurrentThreadId();
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  std::array<std::int64_t, 2> native_values{87'500, 100'000};
+  std::array<std::byte, 16> header{};
+  Store(header, 0, reinterpret_cast<std::uintptr_t>(native_values.data()));
+  Store(header, 8, std::int32_t{2});
+  Store(header, 12, std::int32_t{2});
+  const auto capture = [&](std::size_t side_index) {
+    return CaptureCombatCounterOutputV1(
+        header.data(),
+        reinterpret_cast<void *>(fixture.plan.sides[side_index] + 0x40),
+        reinterpret_cast<void *>(fixture.plan.sides[1 - side_index] + 0x40),
+        125'000, fixture.plan.sides[side_index],
+        fixture.plan.module_base +
+            (side_index == 0 ? kCombatOutgoingDamageSide0ReturnRva
+                             : kCombatOutgoingDamageSide1ReturnRva));
+  };
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("counter-output default arm failed");
+  ring->committed_count.store(6);
+  if (capture(0) || ring->counter_output_count.load() != 0 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("counter-output default-off gate failed");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  fixture.plan.capture_runtime_counter_output = true;
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("counter-output opt-in arm failed");
+  ring->committed_count.store(6);
+  if (!capture(0) || ring->counter_output_count.load() != 1 ||
+      ring->counter_outputs[0].readout.class_count != 2 ||
+      ring->counter_outputs[0].readout.retention_raw[0] != 87'500 ||
+      ring->counter_outputs[0].countered_entry_count != 1 ||
+      ring->counter_outputs[0].countering_entry_count != 1 ||
+      ring->counter_outputs[0].context_raw != 125'000) {
+    return Fail("first counter-output vector was not captured");
+  }
+  ring->outgoing_damage_count.store(1);
+  ring->post_counter_attack_count.store(1);
+  native_values = {100'000, 92'000};
+  if (!capture(1) || ring->counter_output_count.load() != 2 ||
+      ring->counter_outputs[1].readout.retention_raw[1] != 92'000 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("counter-output pair was not captured in order");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("counter-output negative arm failed");
+  ring->committed_count.store(6);
+  Store(header, 12, std::int32_t{3});
+  const bool malformed_captured = capture(0);
+  if (malformed_captured || ring->counter_output_count.load() != 0 ||
+      (ring->failure_flags.load() & trace_capture_failure_counter_output) == 0) {
+    std::cerr << "malformed_captured=" << malformed_captured
+              << " count=" << ring->counter_output_count.load()
+              << " flags=" << ring->failure_flags.load() << '\n';
+    return Fail("counter-output bad header was accepted");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return true;
+}
+
 std::uintptr_t DummySchedule(void *, std::uint32_t *, void *) { return 0; }
 std::uintptr_t DummyFire(void *) { return 0; }
 std::uintptr_t DummyOutgoingDamage(void *side, std::int64_t *output,
@@ -1296,6 +1360,7 @@ int main(int argc, char **argv) {
       !CandidateJoinWidthFirstFailurePredicateFixture() ||
       !CandidateJoinWidthCrossThreadFixture() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
+      !CounterOutputCaptureCases() ||
       !OutgoingDamageHookAbi() || !OuterCallerContextTransport() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,
                                                       nullptr)) {

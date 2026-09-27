@@ -1056,6 +1056,7 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.committed_count.store(0, std::memory_order_relaxed);
   ring.outgoing_damage_count.store(0, std::memory_order_relaxed);
   ring.post_counter_attack_count.store(0, std::memory_order_relaxed);
+  ring.counter_output_count.store(0, std::memory_order_relaxed);
   ring.effect_root_count.store(0, std::memory_order_relaxed);
   ring.effect_node_call_count.store(0, std::memory_order_relaxed);
   ring.effect_node_draw_count.store(0, std::memory_order_relaxed);
@@ -1641,6 +1642,93 @@ bool CaptureCombatPostCounterAttackV1(
   return valid;
 }
 
+bool CaptureCombatCounterOutputV1(
+    const void *native_header, const void *countered_header,
+    const void *countering_header, std::int64_t context_raw,
+    std::uintptr_t outer_side,
+    std::uintptr_t original_caller_return_address) noexcept {
+  auto *const ring = g_active_ring.load(std::memory_order_acquire);
+  if (ring == nullptr || ring->armed.load(std::memory_order_acquire) == 0 ||
+      !ring->plan.capture_runtime_counter_output) {
+    return false;
+  }
+  if (outer_side != ring->plan.sides[0] &&
+      outer_side != ring->plan.sides[1]) {
+    return false; // The original wrapper may run for another combat.
+  }
+  const auto index = outer_side == ring->plan.sides[0] ? 0U : 1U;
+  const auto expected_return = ring->plan.module_base +
+      (index == 0 ? kCombatOutgoingDamageSide0ReturnRva
+                  : kCombatOutgoingDamageSide1ReturnRva);
+  if (original_caller_return_address != expected_return ||
+      reinterpret_cast<std::uintptr_t>(countered_header) !=
+          ring->plan.sides[index] + 0x40 ||
+      reinterpret_cast<std::uintptr_t>(countering_header) !=
+          ring->plan.sides[1U - index] + 0x40) {
+    MarkFailure(*ring, trace_capture_failure_counter_output);
+    return false;
+  }
+  if (ring->capture_in_progress.exchange(1, std::memory_order_acq_rel) != 0) {
+    MarkFailure(*ring, trace_capture_failure_reentry);
+    return false;
+  }
+  CombatPhaseEventTraceRingV1::CounterOutputRecord record{};
+  bool valid = ring->committed_count.load(std::memory_order_acquire) == 6 &&
+               ring->counter_output_count.load(std::memory_order_acquire) == index &&
+               GetCurrentThreadId() == ring->plan.owner_thread_id;
+  if (valid) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      const auto class_count = LoadAt<std::int32_t>(native_header, 0xC);
+      record.countered_entry_count =
+          LoadAt<std::int32_t>(countered_header, 0xC);
+      record.countering_entry_count =
+          LoadAt<std::int32_t>(countering_header, 0xC);
+      valid = LoadAt<std::int32_t>(ring->plan.combat, kCombatIdOffset) ==
+                  ring->plan.combat_id &&
+              LoadAt<std::uintptr_t>(outer_side,
+                                     kSideCombatBackPointerOffset) ==
+                  ring->plan.combat &&
+              record.countered_entry_count >= 0 &&
+              record.countering_entry_count >= 0 &&
+              record.countered_entry_count <=
+                  static_cast<std::int32_t>(
+                      kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide) &&
+              record.countering_entry_count <=
+                  static_cast<std::int32_t>(
+                      kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide) &&
+              ReadCombatCounterOutputV1(native_header, class_count,
+                                        record.readout);
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      valid = false;
+      MarkFailure(*ring, trace_capture_failure_memory_fault);
+    }
+#endif
+  }
+  if (valid) {
+    record.side_index = static_cast<std::int32_t>(index);
+    record.context_raw = context_raw;
+    ring->counter_outputs[index] = record;
+    ring->counter_output_count.store(index + 1,
+                                     std::memory_order_release);
+  } else {
+    MarkFailure(*ring, trace_capture_failure_counter_output);
+  }
+  ring->capture_in_progress.store(0, std::memory_order_release);
+  return valid;
+}
+
+extern "C" void __fastcall XarCaptureCombatCounterOutputV1(
+    const void *native_header, const void *countered_header,
+    const void *countering_header, std::int64_t context_raw) noexcept {
+  (void)CaptureCombatCounterOutputV1(
+      native_header, countered_header, countering_header, context_raw,
+      g_original_outgoing_call.side,
+      g_original_outgoing_call.caller_return_address);
+}
+
 extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
     void *side, std::int64_t attack_raw) noexcept {
   (void)CaptureCombatPostCounterAttackV1(
@@ -1677,6 +1765,28 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   output.post_counter_attack_pair_complete =
       output.post_counter_attack_count == 2 &&
       (output.failure_flags & trace_capture_failure_post_counter_attack) == 0;
+  output.runtime_counter_output_requested =
+      ring.plan.capture_runtime_counter_output;
+  output.counter_output_count =
+      ring.counter_output_count.load(std::memory_order_acquire);
+  if (output.counter_output_count <= output.counter_outputs.size()) {
+    std::copy_n(ring.counter_outputs.begin(), output.counter_output_count,
+                output.counter_outputs.begin());
+  } else {
+    output.failure_flags |= trace_capture_failure_counter_output;
+    output.counter_output_count = 0;
+  }
+  output.counter_output_pair_complete =
+      output.counter_output_count == 2 &&
+      (output.failure_flags & trace_capture_failure_counter_output) == 0 &&
+      output.counter_outputs[0].side_index == 0 &&
+      output.counter_outputs[1].side_index == 1 &&
+      output.counter_outputs[0].readout.class_count ==
+          output.counter_outputs[1].readout.class_count;
+  if (output.runtime_counter_output_requested &&
+      !output.counter_output_pair_complete) {
+    output.failure_flags |= trace_capture_failure_counter_output;
+  }
   output.effect_root_count = std::min<std::uint32_t>(
       ring.effect_root_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.effect_roots.size()));

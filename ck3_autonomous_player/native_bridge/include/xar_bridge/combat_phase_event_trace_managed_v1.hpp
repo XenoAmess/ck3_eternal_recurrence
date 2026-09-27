@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/combat_phase_event_trace_detour_v1.hpp"
+#include "xar_bridge/combat_counter_output_detour_v1.hpp"
 #include "xar_bridge/combat_phase_event_trace_wire_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -106,6 +107,7 @@ struct CombatPhaseEventTraceManagedSessionV1 {
   CombatPhaseEventTraceRingV1 ring{};
   CombatPhaseEventTraceDetourStateV1 detours{};
   CombatJoinWrapperDetourV1 join_width_detour{};
+  CombatCounterOutputDetourV1 counter_output_detour{};
   CombatPhaseEventTraceCapturePlanV1 plan{};
   CombatPhaseEventTraceRingDrainV1 drain{};
   CombatPhaseEventTraceManagedCheckpointV1 before{};
@@ -138,6 +140,7 @@ struct CombatPhaseEventTraceBeginContextV1 {
   bool capture_runtime_random_list_weights = false;
   bool capture_runtime_join_width = false;
   bool capture_runtime_join_full_entries = false;
+  bool capture_runtime_counter_output = false;
   CombatPhaseEventTraceManagedCompletionV1 completion =
       CombatPhaseEventTraceManagedCompletionV1::not_executed;
   std::uint32_t executor_invocations = 0;

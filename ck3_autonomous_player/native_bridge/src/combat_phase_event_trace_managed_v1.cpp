@@ -717,6 +717,8 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
         query->capture_runtime_join_width;
     session.plan.capture_runtime_join_full_entries =
         query->capture_runtime_join_full_entries;
+    session.plan.capture_runtime_counter_output =
+        query->capture_runtime_counter_output;
     session.plan.candidate_joining_army_id =
         query->plan_environment.candidate_joining_army_id;
     session.plan.owner_thread_id = stamp.thread_id;
@@ -757,10 +759,35 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
           : CombatPhaseEventTraceManagedCompletionV1::infrastructure_rejected;
       return base_uninstalled;
     }
+    if (session.plan.capture_runtime_counter_output &&
+        !InstallCombatCounterOutputDetourV1(
+            session.counter_output_detour, session.plan.module_base,
+            detour_environment.exact_build_admitted, true)) {
+      const bool counter_uninstalled =
+          session.counter_output_detour.installed.load(
+              std::memory_order_acquire) == 0 ||
+          UninstallCombatCounterOutputDetourV1(
+              session.counter_output_detour);
+      const bool join_uninstalled = counter_uninstalled &&
+          (!session.plan.capture_runtime_join_width ||
+           UninstallCombatJoinWrapperDetourV1(session.join_width_detour));
+      const bool base_uninstalled = join_uninstalled &&
+          UninstallCombatPhaseEventTraceDetoursV1(session.detours);
+      session.detours_uninstalled = base_uninstalled;
+      session.stage = CombatPhaseEventTraceManagedStageV1::failed;
+      query->completion = base_uninstalled
+          ? CombatPhaseEventTraceManagedCompletionV1::trace_unavailable
+          : CombatPhaseEventTraceManagedCompletionV1::infrastructure_rejected;
+      return base_uninstalled;
+    }
     if (!ArmCombatPhaseEventTraceRingV1(session.ring, session.plan)) {
-      const bool join_uninstalled =
-          !session.plan.capture_runtime_join_width ||
-          UninstallCombatJoinWrapperDetourV1(session.join_width_detour);
+      const bool counter_uninstalled =
+          !session.plan.capture_runtime_counter_output ||
+          UninstallCombatCounterOutputDetourV1(
+              session.counter_output_detour);
+      const bool join_uninstalled = counter_uninstalled &&
+          (!session.plan.capture_runtime_join_width ||
+           UninstallCombatJoinWrapperDetourV1(session.join_width_detour));
       const bool uninstalled = join_uninstalled &&
           UninstallCombatPhaseEventTraceDetoursV1(session.detours);
       session.detours_uninstalled = uninstalled;
@@ -832,10 +859,14 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
         session.drain.records[4].native_date_raw == session.after.date_raw &&
         session.drain.records[5].native_date_raw == session.after.date_raw &&
         session.drain.records[6].native_date_raw == session.after.date_raw;
-    const bool join_uninstalled =
-        !session.plan.capture_runtime_join_width ||
-        UninstallCombatJoinWrapperDetourV1(session.join_width_detour);
-    session.detours_uninstalled = join_uninstalled &&
+    const bool counter_uninstalled =
+        !session.plan.capture_runtime_counter_output ||
+        UninstallCombatCounterOutputDetourV1(
+            session.counter_output_detour);
+    const bool optional_uninstalled = counter_uninstalled &&
+        (!session.plan.capture_runtime_join_width ||
+         UninstallCombatJoinWrapperDetourV1(session.join_width_detour));
+    session.detours_uninstalled = optional_uninstalled &&
         UninstallCombatPhaseEventTraceDetoursV1(session.detours);
     if (!session.detours_uninstalled) {
       MarkFinishRejected(*query);

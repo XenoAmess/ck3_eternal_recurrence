@@ -424,6 +424,7 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       drain.outgoing_damage_count > drain.outgoing_damage_raw.size() ||
       drain.post_counter_attack_count >
           drain.post_counter_attack_raw.size() ||
+      drain.counter_output_count > drain.counter_outputs.size() ||
       drain.effect_root_count > drain.effect_roots.size() ||
       drain.effect_node_draw_count > drain.effect_node_draws.size() ||
       drain.random_list_weight_count > drain.random_list_weights.size() ||
@@ -480,6 +481,46 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     output += "null";
   }
   output += "}";
+  if (drain.runtime_counter_output_requested) {
+    output += ",\"runtime_counter_output\":{\"source\":\"native_resolve_counter_classes_after_0x23caf20\",\"requested\":true,\"pair_complete\":";
+    if (!AppendBool(output, drain.counter_output_pair_complete)) return {};
+    output += ",\"count\":";
+    if (!AppendNumber(output, drain.counter_output_count)) return {};
+    output += ",\"sides\":[";
+    for (std::uint32_t index = 0; index < drain.counter_output_count; ++index) {
+      const auto &row = drain.counter_outputs[index];
+      if (row.readout.class_count <= 0 ||
+          row.readout.class_count >
+              static_cast<std::int32_t>(kCombatCounterOutputMaximumClassesV1) ||
+          row.readout.capacity < row.readout.class_count ||
+          row.readout.capacity >
+              static_cast<std::int32_t>(kCombatCounterOutputMaximumClassesV1)) {
+        return {};
+      }
+      if (index != 0) output.push_back(',');
+      output += "{\"side_index\":";
+      if (!AppendNumber(output, row.side_index)) return {};
+      output += ",\"countered_entry_count\":";
+      if (!AppendNumber(output, row.countered_entry_count)) return {};
+      output += ",\"countering_entry_count\":";
+      if (!AppendNumber(output, row.countering_entry_count)) return {};
+      output += ",\"context_raw\":";
+      if (!AppendNumber(output, row.context_raw)) return {};
+      output += ",\"class_count\":";
+      if (!AppendNumber(output, row.readout.class_count)) return {};
+      output += ",\"capacity\":";
+      if (!AppendNumber(output, row.readout.capacity)) return {};
+      output += ",\"retention_raw\":[";
+      for (std::int32_t class_index = 0;
+           class_index < row.readout.class_count; ++class_index) {
+        if (class_index != 0) output.push_back(',');
+        if (!AppendNumber(output, row.readout.retention_raw[class_index]))
+          return {};
+      }
+      output += "]}";
+    }
+    output += "]}";
+  }
   output += ",\"effect_roots\":[";
   for (std::uint32_t index = 0; index < drain.effect_root_count; ++index) {
     if (index != 0) output.push_back(',');
@@ -777,6 +818,10 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
   if (!AppendBool(output, drain.outgoing_damage_pair_complete)) return {};
   output += ",\"post_counter_attack_pair_complete\":";
   if (!AppendBool(output, drain.post_counter_attack_pair_complete)) return {};
+  if (drain.runtime_counter_output_requested) {
+    output += ",\"runtime_counter_output_pair_complete\":";
+    if (!AppendBool(output, drain.counter_output_pair_complete)) return {};
+  }
   output += ",\"full_mutable_transition_bundle_complete\":";
   if (!AppendBool(output,
                   drain.full_mutable_transition_bundle_complete)) return {};

@@ -1,4 +1,5 @@
 #include "xar_bridge/combat_phase_event_trace_detour_v1.hpp"
+#include "xar_bridge/combat_counter_output_detour_v1.hpp"
 
 #include <array>
 #include <cstddef>
@@ -10,6 +11,49 @@
 namespace {
 
 using namespace xar::ck3_11906;
+bool Fail(std::string_view reason);
+
+bool OptionalCounterOutputPatchRestoresExactBytes() {
+  constexpr std::array<std::uint8_t, 14> original{
+      0x4D, 0x89, 0x3E, 0x48, 0x8B, 0x3E, 0x48,
+      0x63, 0x46, 0x0C, 0x4C, 0x8D, 0x3C, 0x40};
+  auto *const code = static_cast<std::uint8_t *>(
+      VirtualAlloc(nullptr, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+  if (code == nullptr) return Fail("counter-output fixture allocation failed");
+  std::memcpy(code, original.data(), original.size());
+  DWORD previous = 0;
+  if (!VirtualProtect(code, 4096, PAGE_EXECUTE_READ, &previous)) {
+    (void)VirtualFree(code, 0, MEM_RELEASE);
+    return Fail("counter-output fixture protection failed");
+  }
+  CombatCounterOutputDetourV1 state{};
+  const auto target = reinterpret_cast<std::uintptr_t>(code);
+  const bool admission_rejected =
+      !InstallCombatCounterOutputDetourV1(state, 1, false, true, target) &&
+      (state.failure_flags & trace_detour_failure_exact_build) != 0;
+  const bool installed = InstallCombatCounterOutputDetourV1(
+      state, 1, true, true, target);
+  const bool patch_bound = installed && state.installed.load() == 1 &&
+      code[0] == 0xFF && code[1] == 0x25 && state.trampoline != nullptr;
+  const bool restored = installed &&
+      UninstallCombatCounterOutputDetourV1(state) &&
+      std::memcmp(code, original.data(), original.size()) == 0 &&
+      state.installed.load() == 0 && state.trampoline == nullptr;
+  DWORD ignored = 0;
+  const bool writable = VirtualProtect(code, 4096, PAGE_EXECUTE_READWRITE,
+                                       &ignored) != FALSE;
+  bool drift_rejected = false;
+  if (writable) {
+    code[0] ^= 1;
+    drift_rejected = !InstallCombatCounterOutputDetourV1(
+        state, 1, true, true, target) &&
+        (state.failure_flags & trace_detour_failure_anchor) != 0 &&
+        state.installed.load() == 0 && state.trampoline == nullptr;
+  }
+  (void)VirtualFree(code, 0, MEM_RELEASE);
+  return admission_rejected && patch_bound && restored && drift_rejected
+             ? true : Fail("counter-output patch admission/restore failed");
+}
 
 constexpr std::array<std::uint8_t, 15> kSchedulePrologue{
     0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54,
@@ -610,6 +654,7 @@ int main() {
   static_assert(kCombatPhaseEventTraceDetourPatchBytesV1 == 15);
   static_assert(kCombatPhaseEventTraceAbsoluteJumpBytesV1 == 14);
   return OptionalJoinWrapperPreservesReturnAndRestores() &&
+         OptionalCounterOutputPatchRestoresExactBytes() &&
          InstallAndUninstall() &&
                  OptionalRandomListWeightInstallAndUninstall() &&
                  AdmissionAndRollbackFailures()

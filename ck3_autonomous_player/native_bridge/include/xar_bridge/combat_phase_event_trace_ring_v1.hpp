@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/combat_counter_output_readout_v1.hpp"
+
 #include <array>
 #include <atomic>
 #include <cstddef>
@@ -48,6 +50,7 @@ inline constexpr std::uintptr_t kCombatRandomListWeightHookRva = 0x2F08789;
 inline constexpr std::uintptr_t kCombatOutgoingDamageFunctionRva = 0x23CB1D0;
 inline constexpr std::uintptr_t kCombatJoinWrapperFunctionRva = 0x23040A0;
 inline constexpr std::uintptr_t kCombatPostCounterAttackCaptureRva = 0x23CB435;
+inline constexpr std::uintptr_t kCombatCounterOutputCaptureRva = 0x23CAF25;
 inline constexpr std::uintptr_t kCombatOutgoingDamageSide0ReturnRva =
     0x2309F98;
 inline constexpr std::uintptr_t kCombatOutgoingDamageSide1ReturnRva =
@@ -104,6 +107,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_random_list_weight = 1U << 17,
   trace_capture_failure_join_width = 1U << 18,
   trace_capture_failure_join_full_entry = 1U << 19,
+  trace_capture_failure_counter_output = 1U << 20,
 };
 
 inline constexpr std::size_t kCombatPhaseEffectRootMaximumRecordsV1 = 64;
@@ -296,6 +300,7 @@ struct CombatPhaseEventTraceCapturePlanV1 {
   // Private candidate-specific join probe. No field is added to default wire.
   bool capture_runtime_join_width = false;
   bool capture_runtime_join_full_entries = false;
+  bool capture_runtime_counter_output = false;
   std::int32_t candidate_joining_army_id = -1;
   std::uint32_t owner_thread_id = 0;
   std::array<std::uintptr_t, 2> sides{};
@@ -549,6 +554,7 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> committed_count{0};
   std::atomic<std::uint32_t> outgoing_damage_count{0};
   std::atomic<std::uint32_t> post_counter_attack_count{0};
+  std::atomic<std::uint32_t> counter_output_count{0};
   std::atomic<std::uint32_t> effect_root_count{0};
   std::atomic<std::uint32_t> effect_node_call_count{0};
   std::atomic<std::uint32_t> effect_node_draw_count{0};
@@ -565,6 +571,14 @@ struct CombatPhaseEventTraceRingV1 {
   CombatPhaseEventTraceCapturePlanV1 plan{};
   std::array<std::int64_t, 2> outgoing_damage_raw{};
   std::array<std::int64_t, 2> post_counter_attack_raw{};
+  struct CounterOutputRecord {
+    std::int32_t side_index = -1;
+    std::int32_t countered_entry_count = 0;
+    std::int32_t countering_entry_count = 0;
+    std::int64_t context_raw = 0;
+    CombatCounterOutputReadoutV1 readout{};
+  };
+  std::array<CounterOutputRecord, 2> counter_outputs{};
   std::array<CombatPhaseEffectRootRecordV1,
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
   std::array<CombatPhaseEffectNodeRecordV1,
@@ -591,6 +605,11 @@ struct CombatPhaseEventTraceRingDrainV1 {
   std::uint32_t post_counter_attack_count = 0;
   std::array<std::int64_t, 2> post_counter_attack_raw{};
   bool post_counter_attack_pair_complete = false;
+  bool runtime_counter_output_requested = false;
+  std::uint32_t counter_output_count = 0;
+  std::array<CombatPhaseEventTraceRingV1::CounterOutputRecord, 2>
+      counter_outputs{};
+  bool counter_output_pair_complete = false;
   std::uint32_t effect_root_count = 0;
   std::array<CombatPhaseEffectRootRecordV1,
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
@@ -679,6 +698,14 @@ bool CaptureCombatFirstSide0OutgoingWidthV1(
 bool CaptureCombatPostCounterAttackV1(
     void *side, std::int64_t attack_raw, std::uintptr_t outer_side,
     std::uintptr_t original_caller_return_address) noexcept;
+bool CaptureCombatCounterOutputV1(
+    const void *native_header, const void *countered_header,
+    const void *countering_header, std::int64_t context_raw,
+    std::uintptr_t outer_side,
+    std::uintptr_t original_caller_return_address) noexcept;
+extern "C" void __fastcall XarCaptureCombatCounterOutputV1(
+    const void *native_header, const void *countered_header,
+    const void *countering_header, std::int64_t context_raw) noexcept;
 // Called only by the exact 0x23CB435 internal trampoline, after it replays
 // the original 16 position-independent bytes. R14 is then the side's
 // post-counter attack accumulator before 0.03/advantage/width scaling.

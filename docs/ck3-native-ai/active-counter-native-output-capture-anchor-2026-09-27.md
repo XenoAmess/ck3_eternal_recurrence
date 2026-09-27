@@ -12,4 +12,10 @@ exact 入口字节：`0x23CAF20: E8 8B 42 00 00` 是 helper call。候选补丁�
 
 ## 输出 header 只读复制器的静态施工
 
-[`ReadCombatCounterOutputV1`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/combat_counter_output_readout_v1.hpp) 已按 exact 16 字节 header 布局实现有界复制：调用方必须给出预期 class 数 `1..4096`；数据指针非空、`count==expected`、`count<=capacity<=4096`，复制后再次核对 header，访问异常使整个结果失败并清零。合成 MSVC 测试覆盖正常向量、错 class 数、容量不足、空指针、超界容量和不可读指针。该函数**尚未连接 detour 或进入 CK3**；它只是被动探针需要的内存读取原语。
+[`ReadCombatCounterOutputV1`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/combat_counter_output_readout_v1.hpp) 已按 exact 16 字节 header 布局实现有界复制：调用方必须给出预期 class 数 `1..4096`；数据指针非空、`count==expected`、`count<=capacity<=4096`，复制后再次核对 header，访问异常使整个结果失败并清零。合成 MSVC 测试覆盖正常向量、错 class 数、容量不足、空指针、超界容量和不可读指针。它只是被动探针的内存读取原语，不独立证明游戏机制。
+
+## 受管、可选探针施工状态
+
+随后已在源码中加入默认关闭的 `capture_runtime_counter_output`：原始 `0x23CAF25` 14 字节先逐字节比对，再于已暂停且无追踪环执行时安装独立 detour；trampoline 在原版 helper 返回后、四条原指令执行前传递 `RBP/RSI/RDI/RBX`，保留标志位和易变寄存器，复制两侧输出，然后逐条重放原指令。安装、卸载失败均保留补丁所有权并让受管驱动停止进程，禁止悬空跳转。追踪环核对原始 caller、CombatID、side backpointer、MAA header、次序和容量；显式启用时才在 wire 中给出输出向量及是否成对，普通七边界回执不改变。独立合成测试覆盖默认关闭、两侧复制、坏 header、原始补丁恢复和 wire 合同。
+
+上述只是**实现与离线合成验收**；尚未获得同一存档、同一 exact EXE 的实机两侧原始输出。`active_regiment_counter_class_stack_context` 因而仍是缺项，现役续算不得把探针源码当作已验证输入。下一步必须记录单独日界 attempt 的 EXE/DLL/save SHA、完整命令回执、原始向量、七边界状态、进程清场，并以两侧 class 与 088 census/092 增援顺序交叉核对。

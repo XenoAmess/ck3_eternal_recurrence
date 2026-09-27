@@ -9291,6 +9291,7 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     bool capture_runtime_random_list_weights = false;
     bool capture_runtime_join_width = false;
     bool capture_runtime_join_full_entries = false;
+    bool capture_runtime_counter_output = false;
     if (payload.find("\"capture_runtime_random_list_weights\"") !=
             std::string_view::npos &&
         !xar::bridge::JsonBooleanField(
@@ -9317,6 +9318,15 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
       return CommandResultFrame(
           request_id, step, false,
           "experimental join full-entry flag is malformed");
+    }
+    if (payload.find("\"capture_runtime_counter_output\"") !=
+            std::string_view::npos &&
+        !xar::bridge::JsonBooleanField(
+            payload, "capture_runtime_counter_output",
+            capture_runtime_counter_output)) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental counter-output flag is malformed");
     }
     if (capture_runtime_join_full_entries &&
         !capture_runtime_join_width) {
@@ -9372,6 +9382,8 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     query.capture_runtime_join_width = capture_runtime_join_width;
     query.capture_runtime_join_full_entries =
         capture_runtime_join_full_entries;
+    query.capture_runtime_counter_output =
+        capture_runtime_counter_output;
     // The external driver must additionally verify the save file hash and
     // official semantic pair before this private request is sent.
     query.recoverable_checkpoint_created = true;
@@ -9399,7 +9411,11 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
         reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
         query.completion != xar::ck3_11906::
                                 CombatPhaseEventTraceManagedCompletionV1::armed) {
-      if (session->detours.installed.load(std::memory_order_acquire) != 0) {
+      if (session->detours.installed.load(std::memory_order_acquire) != 0 ||
+          session->counter_output_detour.installed.load(
+              std::memory_order_acquire) != 0 ||
+          session->join_width_detour.installed.load(
+              std::memory_order_acquire) != 0) {
         SetEvent(g_stop_event);
       } else {
         session.reset();
@@ -18078,8 +18094,12 @@ void RunConnectedSession(
   // the bounded ring owns the two detours. The managed wrapper must stop the
   // CK3 process; never free the still-referenced session in this process.
   if (state.experimental_combat_phase_trace &&
-      state.experimental_combat_phase_trace->detours.installed.load(
-          std::memory_order_acquire) != 0) {
+      (state.experimental_combat_phase_trace->detours.installed.load(
+           std::memory_order_acquire) != 0 ||
+       state.experimental_combat_phase_trace->counter_output_detour.installed.load(
+           std::memory_order_acquire) != 0 ||
+       state.experimental_combat_phase_trace->join_width_detour.installed.load(
+           std::memory_order_acquire) != 0)) {
     SetEvent(g_stop_event);
   }
 #endif
