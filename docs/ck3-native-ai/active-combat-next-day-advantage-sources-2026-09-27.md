@@ -78,3 +78,5 @@ constructor 来源，却标记 `explicit_hypothetical_fixed_at_contact_no_reinfo
 也没有改变智能体的 `input_observation_ready` 或胜率门禁。
 
 本轮未直接增加 bridge 字段：从暂停帧复制 `+0x6C8/+0x710/roll` 只能给算术残差，而现有代码没有在缓存重算调用边界保存两侧原生 total、当时 roll 和 loaded effect 身份。贸然把残差或对 `0x2307CB0` 的暂停查询调用暴露成真实 non-roll source，会跨越原生时序并可能执行条件/状态性 helper。先按第 2 项在受管 trace 的原调用边界只读复制，完成相邻日配对后，再决定可供智能体消费的 typed input；其间仍用带缺域标记的现有近似行动比较器。
+
+追加的[第 12 日连续帧/重载帧对照](active-battle-fresh-load-frame-divergence-2026-09-27.md)进一步实测了缓存时序风险：099/106 从第 11 日连续推进后的第 12 日 `resolved_advantage_raw=-1100000`，而 100/104 独立载入该日存档后的同 CombatID、日期及反制输入为 `-600000`，且部分兵团有效属性也不同。两组各自重复一致；现有证据只证明观察条件不同，不单凭这些值断言是哪个载入或刷新函数造成。任何下一日算式必须绑定真实运行帧，不能跨这两种条件拼接。

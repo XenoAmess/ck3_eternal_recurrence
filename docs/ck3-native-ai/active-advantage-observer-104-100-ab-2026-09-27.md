@@ -18,3 +18,5 @@
 原始 attempt 保留在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-active-advantage-components-attempt-104`。`c104-trace-finish.json` SHA-256 `B92CF0978C4B5954704ADACE63C4DC5B3936396F491DA3872163BE7F4BA02A68`；input-freeze `855D2F8A763547C1054AA2FCCD167FB3652C351FAD8E6770BA3148066D75F3F4`。`cleanup-check.json` 记录 capture 退出码 `0`、`cleanup_ok=true`、最后 CK3 进程数 `0`，绑定 session/report SHA-256 `72571438CC5AC209B15AD3B0009089C29537B50B3DE815DD87C7ED372B003FFD` / `82F9ED3F1ACB5F939F3DA17C3ED734C1B21AFE7957C276189F4D7D71EB5697C1`。
 
 这为同一存档的一次普通主战日提供了原版优势**回顾性分解**，且说明该观测器在此处没有改变已有反制和出伤。它不证明所有战局都无扰动，也不填平 `full_mutable_transition_bundle_complete=false`、`original_trace_ready=false` 所标的下一日可变输入缺域。[103 的失败清单与 bit 64](active-advantage-observer-103-100-ab-2026-09-27.md)仍按原始 attempt 保留为 RED，104 是单独的新尝试，不能倒填旧结果。
+
+100/104 都从 099 保存的第 12 日存档**重新载入**，因此这组 A/B 可比；它们的载入后暂停帧与 099 当时连续推进所得暂停帧并非所有有效属性全等。跨条件差异及禁止无缝串算的具体数字见[重载帧对照](active-battle-fresh-load-frame-divergence-2026-09-27.md)。

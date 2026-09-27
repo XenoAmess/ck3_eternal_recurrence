@@ -1,0 +1,56 @@
+{
+  "schema": "ck3.battle_fresh_load_frame_divergence_099_100_104_106.v1",
+  "day12_save_sha256": "E6155C9C127EC3D1D758468653E8ABC3458A96B50EA053E303FDCCAD18C0B731",
+  "control_response_sha256": {
+    "099_after": "FFE286DC1422A54A330A53F29BD4541512F9E75A4C0DE112584CFC934F2022B6",
+    "099_save_receipt": "A68C4D38CC14B11FCB4078E8D9074C9EE5793B0EF20674199327E6D0A983B415",
+    "100_before": "428B64DEA74202B5C5A2835E3079964C2227EC83946B3BB7A666E6D3CAB364EF",
+    "104_before": "1B6C78931B72C749F71E948477E568012BF9B40475D4A6105E94C9D05DE71D0A",
+    "106_after": "6D024AD861F07DF056D2B7118E2C0607B5E52A3CC7F1DC6F6AC858C86919198E"
+  },
+  "combat_id": 16777218,
+  "date_raw": 53146512,
+  "phase_day": 8,
+  "continuous_pair": [
+    "099_after",
+    "106_after"
+  ],
+  "fresh_load_pair": [
+    "100_before",
+    "104_before"
+  ],
+  "counter_inputs_equal_across_all_four": true,
+  "base_advantage_raw": -300000,
+  "resolved_advantage_raw_continuous": -1100000,
+  "resolved_advantage_raw_fresh_load": -600000,
+  "sides": {
+    "attacker": {
+      "maa_entries": 24,
+      "entry_changed_field_counts": {
+        "effective_toughness_raw": 24,
+        "entry_strength_raw": 22,
+        "effective_damage_raw": 17
+      },
+      "side_strength_raw_continuous": 125474,
+      "side_strength_raw_reloaded": 120954
+    },
+    "defender": {
+      "maa_entries": 14,
+      "entry_changed_field_counts": {
+        "effective_siege_raw": 3,
+        "effective_toughness_raw": 14,
+        "entry_strength_raw": 13,
+        "effective_damage_raw": 12
+      },
+      "side_strength_raw_continuous": 36020,
+      "side_strength_raw_reloaded": 24640
+    }
+  },
+  "gates": {
+    "paired_save_identity": "GREEN",
+    "within_condition_repetition": "GREEN",
+    "cross_condition_difference": "GREEN",
+    "overall": "GREEN"
+  },
+  "scope": "observed_frame_divergence_not_a_causal_attribution_to_serialization"
+}
