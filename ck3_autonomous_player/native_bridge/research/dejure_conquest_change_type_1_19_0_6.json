@@ -1,0 +1,179 @@
+{
+  "schema": "xar.ck3.war31.dejure_conquest_change_type.v1",
+  "status": "STATIC_CONSTRUCTED_TYPE_ZERO_RESOLVE_VALUE_UNOBSERVED",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "stock_script": {
+    "request_id": "WAR-INPUT-R0221-WAR31-20260927",
+    "request_sha256": "2B895343545B75F56F0594C746677015CBCC2B6BDDD78CA2696BB13EB0B53D75",
+    "script_path": "game/common/casus_belli_types/00_dejure_war.txt",
+    "script_sha256": "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE",
+    "create_type": "conquest",
+    "setup_between_create_and_resolve": true
+  },
+  "interned_tokens": {
+    "type_key": {
+      "name": "type",
+      "id": "0xE1",
+      "record_rva": "0x42B91A0",
+      "string_rva": "0x40A743C",
+      "record_bytes": "E1000000000000003C740A4401000000"
+    },
+    "conquest": {
+      "name": "conquest",
+      "id": "0x2CD7",
+      "record_rva": "0x42C0530",
+      "string_rva": "0x4095878",
+      "record_bytes": "D72C0000000000007858094401000000"
+    },
+    "conquest_holy_war": {
+      "name": "conquest_holy_war",
+      "id": "0x324C",
+      "record_rva": "0x42C4CA0",
+      "string_rva": "0x4095860",
+      "record_bytes": "4C320000000000006058094401000000"
+    },
+    "conquest_claim": {
+      "name": "conquest_claim",
+      "id": "0x324D",
+      "record_rva": "0x42C4CB0",
+      "string_rva": "0x4095850",
+      "record_bytes": "4D320000000000005058094401000000"
+    },
+    "conquest_populist": {
+      "name": "conquest_populist",
+      "id": "0x324E",
+      "record_rva": "0x42C4CC0",
+      "string_rva": "0x4095838",
+      "record_bytes": "4E320000000000003858094401000000"
+    }
+  },
+  "create_effect": {
+    "rtti_type_rva": "0x55D6F28",
+    "rtti_col_rva": "0x4ABE710",
+    "vtable_rva": "0x445C5C0",
+    "parse_rva": "0x2EC37A0",
+    "execute_rva": "0x2EC3CF0",
+    "parse_type_key_compare": {
+      "rva": "0x2EC37BB",
+      "bytes": "4181F8E1000000",
+      "instruction": "cmp r8d, 0xe1"
+    },
+    "parse_type_branch": {
+      "rva": "0x2EC37C2",
+      "bytes": "0F8442020000",
+      "instruction": "je 0x2ec3a0a"
+    },
+    "special_token_compare": {
+      "rva": "0x2EC3A10",
+      "bytes": "3DD52C0000",
+      "instruction": "cmp eax, 0x2cd5"
+    },
+    "table_base": {
+      "rva": "0x2EC3AAD",
+      "bytes": "488D3DECB74501",
+      "instruction": "lea rdi, [rip + 0x145b7ec]"
+    },
+    "table_end": {
+      "rva": "0x2EC3AA0",
+      "bytes": "488D1D55B84501",
+      "instruction": "lea rbx, [rip + 0x145b855]"
+    },
+    "table_rva": "0x431F2A0",
+    "table_end_rva": "0x431F2FC",
+    "table_sha256": "1666FB1E2C9B8C33B2ACD92EB412D3AA84A4177B30C3107256A3A4C37C5F1EE0",
+    "conquest_token_index": 0,
+    "table_lookup": {
+      "call_rva": "0x2EC3AC1",
+      "target_rva": "0x8155C0",
+      "bytes": "E8FA1A95FD"
+    },
+    "lookup_equal_compare": {
+      "rva": "0x815674",
+      "bytes": "3933",
+      "instruction": "cmp dword ptr [rbx], esi"
+    },
+    "index_byte_difference": {
+      "rva": "0x2EC3ACB",
+      "bytes": "482BC7",
+      "instruction": "sub rax, rdi"
+    },
+    "index_divide_by_four": {
+      "rva": "0x2EC3ACE",
+      "bytes": "48C1F802",
+      "instruction": "sar rax, 2"
+    },
+    "compiled_type_store": {
+      "rva": "0x2EC3AD2",
+      "bytes": "41894564",
+      "instruction": "mov dword ptr [r13 + 0x64], eax"
+    },
+    "execute_type_load": {
+      "rva": "0x2EC3D03",
+      "bytes": "8B5164",
+      "instruction": "mov edx, dword ptr [rcx + 0x64]"
+    },
+    "execute_invalid_compare": {
+      "rva": "0x2EC3D06",
+      "bytes": "83FA17",
+      "instruction": "cmp edx, 0x17"
+    },
+    "execute_valid_branch": {
+      "rva": "0x2EC3D09",
+      "bytes": "0F8581000000",
+      "instruction": "jne 0x2ec3d90"
+    },
+    "argument_unchanged_span_sha256": "73ECE28D61D5B9CA125756D98F1BA8C0718AC68E76B3C3CAC27014BFB32E739D",
+    "native_constructor_call": {
+      "call_rva": "0x2EC3DDB",
+      "target_rva": "0x27CD320",
+      "bytes": "E8409590FF"
+    }
+  },
+  "native_change_constructor": {
+    "entry_rva": "0x27CD320",
+    "type_argument_copy": {
+      "rva": "0x27CD339",
+      "bytes": "8BEA",
+      "instruction": "mov ebp, edx"
+    },
+    "default_type_store": {
+      "rva": "0x27CD414",
+      "bytes": "C7836802000017000000",
+      "instruction": "mov dword ptr [rbx + 0x268], 0x17"
+    },
+    "argument_type_store": {
+      "rva": "0x27CD45B",
+      "bytes": "89AB68020000",
+      "instruction": "mov dword ptr [rbx + 0x268], ebp"
+    },
+    "constructed_type": 0
+  },
+  "resolve_boundary": {
+    "type_compare": {
+      "rva": "0x2EC4410",
+      "bytes": "83B86802000017",
+      "instruction": "cmp dword ptr [rax + 0x268], 0x17"
+    },
+    "non_0x17_branch": {
+      "rva": "0x2EC4417",
+      "bytes": "0F85A0000000",
+      "instruction": "jne 0x2ec44bd"
+    },
+    "non_0x17_wrapper_call": {
+      "call_rva": "0x2EC4567",
+      "target_rva": "0x27CD510",
+      "bytes": "E8A48F90FF"
+    },
+    "conclusion": "Stock type=conquest compiles to index 0 and create-effect execution initializes change+0x268 to 0, not 0x17. The intervening setup_de_jure_cb may mutate the change; the actual value at resolve is not proven without tracing or observing that step."
+  },
+  "boundary": {
+    "runtime_change_type_at_resolve": null,
+    "final_title_holder_liege_vassal": null,
+    "ck3_launched": false,
+    "native_effect_called": false,
+    "gameplay_action_submitted": false
+  }
+}

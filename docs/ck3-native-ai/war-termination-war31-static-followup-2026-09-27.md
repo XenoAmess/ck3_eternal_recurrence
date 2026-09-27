@@ -135,3 +135,29 @@ change 作用域的直接内存操作。这是**仅限入口函数直接指令**
 War31 当前 change 是否走了任何分支。R0221 没有提供实际 change 类型、标志、
 五项计数或上下文计数；没有发生本次投降，也没有结算后持久化读回。
 所以 Title `2128` 的具体迁移、资源变动和停战到期日仍为未知。
+
+### `type=conquest` 到 change 类型字段，2026-09-27 补证
+
+[精确脚本与 EXE 联合提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_conquest_change_type.py)
+复用上文已验证的 `on_victory` 直接子语句解析，并以 EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
+冻结 token 表、RTTI/vtable、解析与执行分支。[JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_conquest_change_type_1_19_0_6.json)
+SHA-256 为 `8591C10FAF2F5C299B60122775FBE2C45F2A461CCCF718A34DDA75058786A12A`。
+
+在这个构建中，脚本键 `type` 的原生 token ID 是 `0xE1`，
+`conquest` 是 `0x2CD7`，有别于 `conquest_holy_war`、
+`conquest_claim`、`conquest_populist` 的 `0x324C/0x324D/0x324E`。
+`CCreateTitleAndVassalChangeEffect` 的解析 vtable slot `+0x10`
+指向 `0x2EC37A0`：其 `type` 分支在 23 项表 `0x431F2A0–0x431F2FC`
+查找 token，`0x2CD7` 位于首项，因此计算索引 `0` 并写入 effect `+0x64`。
+执行 slot `+0xB0` 的 `0x2EC3CF0` 将该值作为参数传给 `0x27CD320`；
+后者虽然先将新 change `+0x268` 初始化为 `0x17`，随即用参数覆盖，
+故**`type=conquest` 构造后的 change 类型是 `0`，不是 `0x17`**。
+
+`resolve_title_and_vassal_change` 随后在 `0x2EC4410` 对同一字段与 `0x17`
+比较；如果它仍为 `0`，将走 `0x27CD510` 的非 `0x17` 路径，
+而非 `0x27CD6A0` 直接入队路径。这里的 **“如果仍为 0”不可省略**：
+两次 effect 之间还有 `setup_de_jure_cb`，它通过 change scope 指针执行，
+本轮没有证明其整个传递写集合，也没有读出 War31 当时对象值。
+因此这轮只确证**构造值**，没有确证 `resolve` 实际读值，
+更没有证明 Title `2128` 的 holder、liege、vassal 结果或投降已执行。
