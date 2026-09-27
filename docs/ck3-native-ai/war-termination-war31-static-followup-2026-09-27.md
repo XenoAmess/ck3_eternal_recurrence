@@ -209,3 +209,25 @@ SHA-256 为 `C9C50C30372E6BF3F99CF0C433483FE1C8DB4C1D9B5FB9CCAE827B6DC619831F`�
 `0x2E9FF30` 等其他 setup helper 也不在这一段结论内。
 静态已证的是**这个单一追加器的直接描述符写入不会命中类型字段**；
 War31 的 `resolve` 实际类型和头衔归属结果继续保留未知。
+
+### `change+0x28/+0x40` 的 8 字节记录追加器，2026-09-27 补证
+
+[独立精确构建提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_pair_append_boundary.py)
+将 `setup_de_jure_cb` 的另一条子结构调用边固定到原版 EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
+[JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_pair_append_boundary_1_19_0_6.json)
+SHA-256 为 `664003C57BBF27951DDFF34CFDCA00C49EE796F4F56402D92365D68B39BE9AA1`。
+调用者在 `0x2E9F864/868` 取得 change 的 `+0x28/+0x40` 子结构，
+把两个 dword 组装为栈上的 8 字节记录，分别于 `0x2E9F896/8B1`
+调用 `0xE0DBD0`。
+
+`0xE0DBD0–0xE0DCBE` 将整条 8 字节记录复制到新分配或既有的向量缓冲区。
+通过子结构基址 `RBX` 的直接写入仅有 `+0`、`+8`、`+0xC`，
+对应父 change 的 `+0x28/+0x30/+0x34` 或 `+0x40/+0x48/+0x4C`；
+**这些直接描述符写入均未命中 `change+0x268`**。函数中的两个调用
+均经分配器虚表间接执行，其实现与运行时缓冲区指针未在这一证据中解析。
+
+这只收紧了 `0xE0DBD0` 单一 helper 的直接写集合。向量缓冲区别名、
+间接分配器调用、共享预查 helper `0x2E9FF30` 和 setup 的其他路径仍未穷尽。
+因此构造时的 type `0` 仍不能等同于 War31 在 resolve 时读取的实际值；
+最终 title、holder、liege、vassal 与投降落地效果继续为未知。
