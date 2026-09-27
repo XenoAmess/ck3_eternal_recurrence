@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T11:40:22Z",
+  "updated_at_utc": "2026-09-27T11:59:05Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -80,6 +80,17 @@
       "finding": "CResolveTitleAndVassalChangeEffect execute dispatches change type +0x268==0x17 directly to queue append 0x27CD6A0. Other types pass 0x27CD510, where non-null and virtual checks precede an optional 0x24CC9A0 processor call, gated by change+0x260==0 and context dword +0x60<0x32; the wrapper then reaches queue append. The processor's five checked dword counts all zero yields +0x260=1 and immediate exit; nonempty input enters an unresolved helper chain.",
       "limit": "These are exact-build static branch and processor-entry facts, not observed War31 values or final holder/liege/vassal writes. Runtime change type, flags/counts, actual queue consumption, title transfer, signed resources and truce expiry remain unknown. No CK3 process or native effect was invoked and no surrender was submitted.",
       "checks": "test_dejure_resolve_prequeue_gate.py: 2 passed on normal Python and 2 passed with -O against the exact installed EXE, including receipt replay and wrong-build fail-closed."
+    },
+    {
+      "date_utc": "2026-09-27T11:59:05Z",
+      "master_commit": "768a968b7",
+      "exact_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "extractor": "ck3_autonomous_player/native_bridge/research/extract_dejure_conquest_change_type.py",
+      "receipt": "ck3_autonomous_player/native_bridge/research/dejure_conquest_change_type_1_19_0_6.json",
+      "receipt_sha256": "8591C10FAF2F5C299B60122775FBE2C45F2A461CCCF718A34DDA75058786A12A",
+      "finding": "Exact stock on_victory script uses create_title_and_vassal_change(type=conquest). The exact EXE interns type as token 0xE1 and conquest as 0x2CD7; conquest is index 0 in CCreateTitleAndVassalChangeEffect's 23-entry type table. Its parser stores index 0 at effect+0x64, execution passes it to 0x27CD320, which overwrites the initial 0x17 at new change+0x268 with the argument 0. Thus the constructed change type is 0, distinct from 0x17.",
+      "limit": "setup_de_jure_cb executes between create and resolve and can access the change scope; its complete transitive writes have not been excluded. The actual change+0x268 value read by resolve for War31, and therefore the taken resolve branch, remain unobserved. This does not establish final holder/liege/vassal operations or persisted surrender consequences; no CK3 process or native effect was invoked.",
+      "checks": "test_dejure_conquest_change_type.py: 3 passed on normal Python and 3 passed with -O against the exact installed EXE/script/request, including wrong-script and wrong-request fail-closed fixtures."
     }
   ],
   "checks": [
@@ -96,5 +107,5 @@
     "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
     "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
   ],
-  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: reduce the 0x24CC9A0 helper chain to concrete title/holder/liege/vassal writes and identify the actual War31 change referent, then identify a non-mutating final-operation producer and signed CB effects before seeking a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
+  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: determine whether setup_de_jure_cb can rewrite change+0x268 after its proven construction as 0, then reduce the 0x24CC9A0 helper chain to concrete title/holder/liege/vassal writes and identify the actual War31 change referent. Find a non-mutating final-operation producer and signed CB effects before seeking a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
 }
