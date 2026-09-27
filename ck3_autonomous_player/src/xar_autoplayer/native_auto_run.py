@@ -5141,6 +5141,8 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "post_snapshot_id",
         "post_target_perk_owned",
         "postcondition_verified",
+        "completion_status",
+        "construction_progress_observation",
         "query_sequence",
         "read_only",
         "heir_character_id",
