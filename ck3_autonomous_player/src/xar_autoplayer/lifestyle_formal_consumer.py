@@ -137,9 +137,27 @@ def _same_frame_feudal_scope(
             government.get("key") == "feudal_government"
             and "government_is_feudal" in flags
         ):
+            council = root.get("council")
+            collect_taxes_active: bool | None = None
+            if isinstance(council, Mapping) and council.get("status") == "available":
+                positions = council.get("positions")
+                if isinstance(positions, list) and all(
+                    isinstance(position, Mapping) for position in positions
+                ):
+                    steward = [
+                        position for position in positions
+                        if position.get("position_key") == "councillor_steward"
+                    ]
+                    if len(steward) == 1:
+                        collect_taxes_active = (
+                            _positive(steward[0].get("incumbent_character_id"))
+                            and steward[0].get("task_key") == "task_collect_taxes"
+                            and steward[0].get("frozen") is False
+                        )
             return {
                 "status": "admitted",
                 "at_peace": at_peace,
+                "collect_taxes_active": collect_taxes_active,
                 "government_key": "feudal_government",
                 "snapshot_revision": revision,
                 "player_character_id": player_id,
@@ -212,6 +230,7 @@ def consume_lifestyle_private_query(
         life_snapshot if isinstance(life_snapshot, Mapping) else None,
         feudal_scope_admitted=True,
         at_peace=scope.get("at_peace", True),
+        collect_taxes_active=scope.get("collect_taxes_active"),
         allow_wartime_perk=scope.get("at_peace") is False,
     )
     if recommendation.get("status") == "recommend_action":

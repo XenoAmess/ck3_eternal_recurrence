@@ -19,6 +19,8 @@ inline constexpr std::string_view kStockPerkLegalityFollowupTargetV1 =
     "professional_workforce_perk";
 inline constexpr std::string_view kStockPerkLegalityNextTargetV1 =
     "centralization_perk";
+inline constexpr std::string_view kStockPerkLegalityCollectTaxesTargetV1 =
+    "tax_man_perk";
 inline constexpr std::string_view kStockPerkLegalityLifestyleV1 =
     "stewardship_lifestyle";
 

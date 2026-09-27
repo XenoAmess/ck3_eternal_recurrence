@@ -333,7 +333,8 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
   StockPerkLegalityResultV1 out{};
   if (target_key != kStockPerkLegalityTargetV1 &&
       target_key != kStockPerkLegalityFollowupTargetV1 &&
-      target_key != kStockPerkLegalityNextTargetV1) {
+      target_key != kStockPerkLegalityNextTargetV1 &&
+      target_key != kStockPerkLegalityCollectTaxesTargetV1) {
     out.status = Status::unavailable_candidate;
     return out;
   }

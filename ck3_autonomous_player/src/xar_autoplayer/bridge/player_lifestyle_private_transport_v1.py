@@ -23,6 +23,7 @@ FOCUS_TARGET = "stewardship_wealth_focus"
 FOCUS_LIFESTYLE = "stewardship_lifestyle"
 PERK_TARGETS = frozenset({
     "cutting_corners_perk", "professional_workforce_perk", "centralization_perk",
+    "tax_man_perk",
 })
 
 

@@ -46,12 +46,14 @@ inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
     std::string_view target) noexcept {
   return target == kStockPerkLegalityTargetV1 ||
          target == kStockPerkLegalityFollowupTargetV1 ||
-         target == kStockPerkLegalityNextTargetV1;
+         target == kStockPerkLegalityNextTargetV1 ||
+         target == kStockPerkLegalityCollectTaxesTargetV1;
 }
 
 // The domain parent chain is cutting_corners -> professional_workforce ->
-// centralization. A windowless formal query reads one exact native target for
-// the observed ownership state; submit recomputes it on the same paused frame.
+// centralization, then the Collect Taxes value target tax_man. A windowless
+// formal query reads one exact native target for the observed ownership state;
+// submit recomputes it on the same paused frame.
 inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
     const game::PlayerLifestyleSnapshotV1 &snapshot) noexcept {
   if (snapshot.status != game::PlayerLifestyleSnapshotStatusV1::available ||
@@ -62,6 +64,7 @@ inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
   }
   bool cutting_corners_owned = false;
   bool professional_workforce_owned = false;
+  bool centralization_owned = false;
   for (std::uint32_t index = 0;
        index < snapshot.state.owned_perk_count; ++index) {
     const auto key = PlayerLifestyleStableKeyViewV1(
@@ -69,7 +72,9 @@ inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
     if (key == kStockPerkLegalityFollowupTargetV1)
       professional_workforce_owned = true;
     if (key == kStockPerkLegalityTargetV1) cutting_corners_owned = true;
+    if (key == kStockPerkLegalityNextTargetV1) centralization_owned = true;
   }
+  if (centralization_owned) return kStockPerkLegalityCollectTaxesTargetV1;
   if (professional_workforce_owned) return kStockPerkLegalityNextTargetV1;
   return cutting_corners_owned ? kStockPerkLegalityFollowupTargetV1
                                : kStockPerkLegalityTargetV1;
