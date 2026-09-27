@@ -69,3 +69,36 @@ alive leaf. A broad native CTest run in this isolated source worktree had
 16 unrelated source-contract failures because its default `Crusader Kings III`
 path is absent there; its focused marriage tests passed. The live result gate
 remains open.
+
+## R0261 matched live result (2026-09-27)
+
+The C202 candidate used source commit `585f2aea984faa0638980d208ba75b08ed75126c`,
+Release DLL SHA-256 `C279C0F5D512AFBAB579ED8EE08BA5FA65475DA8CDB8C633FFF4BEED2F80CA70`,
+and the official ordinary `xar_off` prepare/rebind/no-launch pair from the
+R0260 Robert h2543/raw53216856 save, driver and family sidecar. Its
+[candidate index](Z:/c202-prisoner-h2543-final-preview/master585/C202-CANDIDATE-INDEX.json)
+has SHA-256 `C777485266E60E94C062D9E6039E14DDC961D9F776F7FDE9DDDAE060881CB910`.
+
+R0261's first paused marriage query, at raw53216856, found **one active exact
+outbound proposal** for heir 38822/candidate 38718/recipient 32897: signed
+component ID `-738197504`, age 9 days and native AI reply cutoff 10 days.
+This is a live proof of C198's `active` branch in the current PID, not a new
+submission. After one normal date advance to raw53216880, the next relationship
+query returned `betrothal` for heir 38822/candidate 38718. A separate next-turn
+alliance query returned `relationship_status=betrothal`,
+`played_has_recipient_alliance=false`, `recipient_has_played_alliance=false`,
+`alliance_status=not_allied`. The subsequent turn consumed the material family
+result and cleared `pending`; the final family sidecar has
+`resolved.status=betrothal`, `material_result=true`, `cold_recovery=true`.
+No second typed proposal was sent. This closes the **specific R0259 proposal's
+material betrothal and paired cold-recovery path**, not adult marriage, alliance
+formation, all candidate outcomes or the full M4/M5 contracts.
+
+The [R0261 formal report](Z:/c202-prisoner-h2543-final-preview/master585/run-formal-16/formal-report.txt)
+has SHA-256 `E39AEE7ED9B8FF025C993DC56D416C90E3170E801E1C687B42799001BA4025A6`;
+the [resolved family sidecar](Z:/c202-prisoner-h2543-final-preview/master585/state/first-heir-marriage-formal-v1.json)
+has SHA-256 `05B3E78CF70B7C984CBED7AE5D4A184B7149DC7B32BAB6E2A1EF3335F5AA6B0A`.
+The bounded run completed 16/16 qualified turns in new PID26168, saved
+h2577/raw53216880, and cleaned up its CK3 process tree. Its observed `active`
+branch is one exact-build positive; `absent`, `ambiguous` and `unavailable`
+remain bounded by the source/fixture contract above, without new live examples.
