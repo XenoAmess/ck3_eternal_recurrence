@@ -12,6 +12,8 @@ py D:\workspace\.codex-task-bus\bin\codex_task_bus.py status --task <本任务ID
 
 Steam 不在前台时，可在本任务独占屏幕期间加 `--bring-steam-forward`；脚本按窗口句柄置前、验证前台身份，并在取证后尽量恢复原前台窗口，不使用桌面点击。`recover` 拒绝活跃的其他屏幕占用、运行中的 CK3、非唯一 Steam 窗口及未知／转换中的 ToDesk 服务状态。任务总线的过期记录仅在其登记 PID 也已消失时不再算活跃占用。每次真正操作前及重试前再次检查租约和 CK3 进程。
 
+088 前检揭示 Windows 的 `SetForegroundWindow` 可能异步生效：同次调用立刻读前台曾误报失败，随后只读 `inspect` 已看见 Steam 在前台。工具现在最多等待两秒确认目标 HWND，仍未确认则拒绝采集；相应模拟时序测试已覆盖。该次保留失败的 004/005 attempt，再以全新 006 attempt 取得移动窗口的新鲜帧，人工看到左下“离线模式”，未改 Steam 模式，也未重启 ToDesk。
+
 ToDesk 服务若已停止，`recover` 会尝试启动。若服务正在运行，默认**绝不重启**。只有第一次窗口移动取证明确报出 `desktop capture did not respond to live Steam movement`，且调用者显式传 `--restart-running-todesk-on-stale`、屏幕租约仍独占、CK3 仍未运行、常见 FFmpeg/OBS 录制进程均不存在时，才尝试停止并启动 ToDesk，然后取第二次新鲜帧。录制进程存在时报告 `restart_blocked` 并保留该 attempt；仍须人工核查其他会话是否使用画面。这一步可能短暂中断远程桌面。不要用该参数处理单纯的网页黑屏、旧截图或未验证的远端画面卡顿。
 
 每次 attempt 保留 `events.jsonl`、`recovery.json` 和 `probe-1/`（有重试则再建 `probe-2/`）。`recovery.json` 的 `fresh_frame.receipt_path` 指向成功的新鲜帧回执，`fresh_frame.image_identity` 给出截图路径、字节数和 SHA-256；原回执 `probe-N/steam-frame-freshness.json` 的 `moved_identity` 也保存同一身份。`outcome` 只表达桌面响应性；`steam_offline_status_observed` 永远为 `null`。**操作人必须亲自审阅本次新截图**中的 Steam 离线标识，才可把它当作离线实证；黑屏、服务运行、旧图 hash、窗口移动成功都不单独证明离线。必要时还须查当前账号是否被其他机器占用，再按项目的 CK3 启动门禁继续。

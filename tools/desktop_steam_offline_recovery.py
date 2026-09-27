@@ -142,8 +142,14 @@ def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool) -> dic
             raise RuntimeError("Steam is not foreground; pass --bring-steam-forward under the screen lease")
         win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
         win32gui.SetForegroundWindow(hwnd)
-        if win32gui.GetForegroundWindow() != hwnd:
-            raise RuntimeError("could not make Steam foreground")
+        # Windows may apply SetForegroundWindow after the call returns.  A
+        # single immediate read falsely rejected a healthy Steam window in
+        # attempt 088, even though the next preflight saw it in front.
+        deadline = time.monotonic() + 2.0
+        while win32gui.GetForegroundWindow() != hwnd:
+            if time.monotonic() >= deadline:
+                raise RuntimeError("could not make Steam foreground")
+            time.sleep(0.05)
     try:
         return steam_offline_fresh_frame.capture(output_dir)
     finally:

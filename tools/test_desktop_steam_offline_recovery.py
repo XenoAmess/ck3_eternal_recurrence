@@ -27,6 +27,22 @@ def snapshot() -> dict:
 
 
 class DesktopRecoveryTests(unittest.TestCase):
+    def test_foreground_activation_waits_for_async_window_switch(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(recovery.win32gui, "GetForegroundWindow",
+                               side_effect=[999, 999, 123]),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow") as activate,
+                  patch.object(recovery.win32gui, "IsWindow", return_value=False),
+                  patch.object(recovery.time, "sleep") as sleep,
+                  patch.object(recovery.steam_offline_fresh_frame, "capture",
+                               return_value={"moving_edge_changed": True}) as capture):
+                receipt = recovery.capture_fresh_frame(Path(temp), 123, True)
+            self.assertTrue(receipt["moving_edge_changed"])
+            activate.assert_called_once_with(123)
+            sleep.assert_called_once_with(0.05)
+            capture.assert_called_once()
+
     def test_stale_screen_record_is_ignored_only_when_its_pid_is_dead(self) -> None:
         old = {**task("old"), "stale": True, "pid": 2696}
         with patch.object(recovery.psutil, "pid_exists", return_value=False):
