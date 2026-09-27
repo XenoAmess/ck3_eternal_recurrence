@@ -1,0 +1,297 @@
+{
+  "schema": "ck3.native_active_join_trace_092.v1",
+  "source": {
+    "attempt": 92,
+    "response_sha256": {
+      "c092-before-snapshot": "86AC61E91C25FFBE74F2B59A8ABE43C3EAC45C1CD0C151F82CF4750B42C63ED7",
+      "c092-save-checkpoint": "680ED297430B1383B9CA28991D187C21BBDE3A5CB7E68893025A56D0CC2661EC",
+      "c092-before-control": "F3F3ED616EE0AF6FB7B5C506A606941E61D1D46CE15F76D85BB509EDBF2761EA",
+      "c092-trace-begin": "5A670C4A91E6375E6DC3936EF91EBA3DF0ED8D3F4E9D96BA46942C871CE4D159",
+      "c092-life-advance": "B99B89BF717B07C028CB1AA51D80557C650766A115D37F92C308533EA9B77011",
+      "c092-trace-finish": "FE017E2DE3EFF4A481FBBB14632BCE8981F4487E7CAEF97E7DA589971A02CAC8",
+      "c092-after-snapshot": "AA7B0B70ACDD4BC4DFB023F362B152C818B08AC02F3816F08BBF91221883E929",
+      "c092-after-control": "7D028EE00EEF7E8F778E58E0DD76076BD89D8A03A6C916DC3DB23BD19EA508F2"
+    },
+    "other_sha256": {
+      "input-freeze": "4597C4AF13CBC0783B4D324E590B63F8435AD36E69E208F4B8D3CAFFBD26125E",
+      "trace-begin-request": "5D5270594F7765FAD423F2FA3CAB0D0BE1B5BBBFE32A9BDC4060960F803F5951",
+      "readonly-summary": "A1DD3CAB234108C44719E18688463F3FD812DBF709AB50018F43F16FB04AD6A3",
+      "cleanup-check": "C3DC93EF76F2DDC198E63708DF8360A1A12E5C2EC1C9D7A51C65B04ED6E32C6F",
+      "capture-report": "CEDC6A0AF7FD805BF1E715ED532CD65C86D7BB661DDC430E531CE24770052978"
+    },
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_sha256": "22411F45F8B23262FE8752275801959A8EA1EB2310F848D805D8BD606231A5CF",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+    "materialized_checkpoint_sha256": "9FFA46FEC00F302BC711BD981A3618A9080F8042531B7B201E3F1921C4F2FF3A"
+  },
+  "identity": {
+    "combat_id": 16777218,
+    "candidate_joining_army_id": 22,
+    "subject_owner_character_id": 29829,
+    "subject_side_index": 1,
+    "before_date_raw": 53146488,
+    "after_date_raw": 53146512,
+    "before_phase_day": 7,
+    "after_phase_day": 8
+  },
+  "observed": {
+    "status": "bounded_trace_available",
+    "failure_flags": 0,
+    "readiness": {
+      "exact_boundary_sequence": true,
+      "same_full_generation_combat": true,
+      "same_native_date": false,
+      "expected_one_day_date_split": true,
+      "same_loaded_event_table": true,
+      "loaded_event_row_identity_map_available": true,
+      "side_and_return_site_identity": true,
+      "schedule_phase_day_then_single_increment": true,
+      "bounded_capture_complete": true,
+      "outgoing_damage_pair_complete": true,
+      "post_counter_attack_pair_complete": true,
+      "full_mutable_transition_bundle_complete": false,
+      "original_trace_ready": false
+    },
+    "boundaries": [
+      {
+        "name": "native_capture_before_side0_schedule_call_0x27FB58F",
+        "capture_failure_flags": 0,
+        "date_raw": 53146488,
+        "phase_day": 7,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27
+          ],
+          [
+            18
+          ]
+        ]
+      },
+      {
+        "name": "native_capture_after_side1_schedule_return_0x27FB5AC",
+        "capture_failure_flags": 0,
+        "date_raw": 53146488,
+        "phase_day": 7,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27
+          ],
+          [
+            18
+          ]
+        ]
+      },
+      {
+        "name": "native_capture_before_side0_phase_fire_entry_0x23C9900",
+        "capture_failure_flags": 0,
+        "date_raw": 53146512,
+        "phase_day": 8,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ]
+      },
+      {
+        "name": "native_capture_after_side0_phase_fire_return_0x2309EF7",
+        "capture_failure_flags": 0,
+        "date_raw": 53146512,
+        "phase_day": 8,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ]
+      },
+      {
+        "name": "native_capture_before_side1_phase_fire_entry_0x23C9900",
+        "capture_failure_flags": 0,
+        "date_raw": 53146512,
+        "phase_day": 8,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ]
+      },
+      {
+        "name": "native_capture_after_side1_phase_fire_return_0x2309EFF",
+        "capture_failure_flags": 0,
+        "date_raw": 53146512,
+        "phase_day": 8,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ]
+      },
+      {
+        "name": "paused_next_day_stable_query",
+        "capture_failure_flags": 0,
+        "date_raw": 53146512,
+        "phase_day": 8,
+        "side_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ]
+      }
+    ],
+    "post_counter_attack": {
+      "source": "native_r14_after_0x23cae70_before_damage_scaling",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 7163402981,
+      "side1_raw": 1455075113
+    },
+    "outgoing_damage": {
+      "source": "native_main_tick_before_casualty",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 116118762,
+      "side1_raw": 67660992
+    },
+    "runtime_join_width": [
+      {
+        "boundary": 0,
+        "side_index": -1,
+        "phase_day": 7,
+        "base_width": 1645,
+        "final_width": 1480,
+        "outgoing_width_argument": -1,
+        "side_fighting_total_raw": [
+          160317482,
+          89325449
+        ]
+      },
+      {
+        "boundary": 1,
+        "side_index": 0,
+        "phase_day": 7,
+        "base_width": 2467,
+        "final_width": 2220,
+        "outgoing_width_argument": -1,
+        "side_fighting_total_raw": [
+          410690163,
+          82785368
+        ]
+      },
+      {
+        "boundary": 2,
+        "side_index": 0,
+        "phase_day": 8,
+        "base_width": 2467,
+        "final_width": 2220,
+        "outgoing_width_argument": 2220,
+        "side_fighting_total_raw": [
+          410690163,
+          82785368
+        ]
+      }
+    ],
+    "runtime_join_full_entries": [
+      {
+        "boundary": 0,
+        "joined_side_index": -1,
+        "incoming_regiment_count": 13,
+        "incoming_basic_soldiers": 2570,
+        "joined_current_fighting_raw": 0,
+        "sides": [
+          {
+            "army_ids": [
+              16777221,
+              16777231,
+              27
+            ],
+            "entry_count": 27,
+            "cached_fighting_total_raw": 160317482,
+            "entry_current_sum_raw": 154690163,
+            "cache_minus_entry_raw": 5627319
+          },
+          {
+            "army_ids": [
+              18
+            ],
+            "entry_count": 24,
+            "cached_fighting_total_raw": 89325449,
+            "entry_current_sum_raw": 82785368,
+            "cache_minus_entry_raw": 6540081
+          }
+        ]
+      },
+      {
+        "boundary": 1,
+        "joined_side_index": 0,
+        "incoming_regiment_count": 13,
+        "incoming_basic_soldiers": 2570,
+        "joined_current_fighting_raw": 256000000,
+        "sides": [
+          {
+            "army_ids": [
+              16777221,
+              16777231,
+              27,
+              22
+            ],
+            "entry_count": 40,
+            "cached_fighting_total_raw": 410690163,
+            "entry_current_sum_raw": 410690163,
+            "cache_minus_entry_raw": 0
+          },
+          {
+            "army_ids": [
+              18
+            ],
+            "entry_count": 24,
+            "cached_fighting_total_raw": 82785368,
+            "entry_current_sum_raw": 82785368,
+            "cache_minus_entry_raw": 0
+          }
+        ]
+      }
+    ]
+  },
+  "active_resume": {
+    "status": "unavailable",
+    "missing_required_domains": [
+      "active_regiment_counter_class_stack_context",
+      "next_day_non_roll_advantage_sources",
+      "battle_knight_participation_and_dynamic_entry_transitions"
+    ]
+  },
+  "cleanup_ok": true
+}
