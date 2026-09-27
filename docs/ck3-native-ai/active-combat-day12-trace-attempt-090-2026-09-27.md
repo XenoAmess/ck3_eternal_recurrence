@@ -1,0 +1,11 @@
+# 第 11→12 天受控战斗追踪 090：联盟映射通过，完整追踪仍 RED
+
+本次只针对原版 CK3 `1.19.0.6`、EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。源存档 SHA-256 `3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953`，日期 `53146488`，CombatID `16777218`，玩家 Army `18`。受控 attempt 保存在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-active-counter-trace-attempt-090`，不覆盖 089 的预检失败记录。研究版 DLL 来自源码提交 `f3abdd6b12ba5983d0c1d8c38cd674d43f917ccd`，开启实验 phase-trace 编译选项，DLL SHA-256 `22411F45F8B23262FE8752275801959A8EA1EB2310F848D805D8BD606231A5CF`。
+
+启动前自动恢复器取得新桌面帧，窗口移动边界实际改变；人工目视确认 Steam 左下角“离线模式”，没有切换 Steam 在线状态。090 保存了自身的 `steam-offline-receipt.json`。一次 `life-advance` 将暂停日期从 `53146488` 推进到 `53146512`，材料化的可恢复 checkpoint SHA-256 为 `5A0713638B51CA0C73D7B9418BC30C3C350C03DA118F207259B9BDB1DFB3BF0D`。`readonly-summary.json` SHA-256 为 `9E551E8642A90C9D79DE4832FC84F695BE2452411E778232EA992E10E118FECF`；原始 trace-finish 回包 SHA-256 为 `C2211750A124167234A10298285C64C5D3A29DDA1AC1885219896E678D50EDCD`。`capture-report.json` SHA-256 `F85210348616A9B688E0CFB5AFC1B87184DC5332CCC3C809CB03D4C3B7A514EE`，受控退出码 0，CK3 进程树清零，`cleanup_ok=true`。
+
+同一暂停帧的 `active_combat_resume_inputs_v1.observed.battle_side_mapping` 实机返回 `available`：玩家 Army 18 属 side 1、primary owner 29829；对方 side 0 的 CUnit 存储顺序为 `16777221, 16777231, 27`。缺失域从先前四项减为三项：反制类别堆栈、下一日非骰子优势来源、骑士参与和动态入场。第 12 天控制读回仍报告战斗进行中，反制输入 `available`，同三项继续缺失。这证明联盟身份读口的同帧合同在此样本上成立，不证明完整下一日可预测。
+
+实验追踪记录了七个边界，并各取得一对原生局部数值：反制后、伤害缩放前攻击 `side0=7,163,402,981` / `side1=1,455,075,113`，主 tick 伤亡前出伤 `side0=116,118,762` / `side1=67,660,992`，均为引擎 raw、比例 `100000`。但**整项状态为 `trace_unavailable`**，不能把这两对局部数值包装成经过完整校验的下一日伤亡演算。`failure_flags=1040=1024+16`：`1024` 是 `trace_capture_failure_final_query`，`16` 是 `trace_capture_failure_identity`。前两个调度边界的逐条失败位为 0；从 side 0 phase-fire 入口起逐条失败位为 16。该入口记录的第二个 side 被读成 `side_index=0`、空部队，第一 side 又多出零 ID 部队；因此 side/return-site 身份校验失败，`exact_boundary_sequence=false`，完整 mutable-transition bundle 不可用。`outgoing_damage_pair_complete` 和 `post_counter_attack_pair_complete` 只说明对应局部钩子各捕获一对，不解除全局 RED。
+
+下一步先审计 phase-fire 边界捕获的 side 指针和逐条身份前置条件，针对重复 side 与零 ID 部队写离线 fixture；修正后用新 attempt 重做单日同帧追踪。原始 090 回包和失败位永久保留，不改写为 GREEN；模型反制保留量仍是模型推导，不能借这次局部攻击数值宣称原生逐类别分配已验证。
