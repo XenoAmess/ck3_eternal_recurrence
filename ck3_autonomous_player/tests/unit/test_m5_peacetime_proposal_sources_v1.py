@@ -934,6 +934,73 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                          "selected_gift_formal_consumer_disabled")
         self.assertFalse(plan["m5_joint_formal_action_ready"])
 
+    def test_due_warm_construction_watch_precedes_new_joint_proposals(
+        self,
+    ) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        applied = {
+            "status": "applied",
+            "postcondition_verified": True,
+            "episode_run_id": _FRAME["episode_run_id"],
+            "actor_character_id": _FRAME["played_character_id"],
+            "post_bridge_pid": 123,
+            "post_bridge_creation_date": "t1",
+            "post_native_revision": _FRAME["native_revision"] - 1,
+            "post_date_raw": _FRAME["date_raw"] - 30 * 24,
+            "completion_status": "in_progress",
+            "completion_last_check_date_raw": _FRAME["date_raw"] - 30 * 24,
+        }
+        (self.state_dir / "construction-formal-pending-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": None,
+                "applied": applied,
+            }), encoding="utf-8",
+        )
+        baseline = {
+            "policy": "one-life-turn-v1", "phase": "peace_growth",
+            "selected_step": "life-advance",
+        }
+        for root_available in (False, True):
+            snapshot = _snapshot()
+            if root_available:
+                snapshot["native_command_history"] = []
+            driver = _Driver(self.state_dir, snapshot=snapshot)
+            if root_available:
+                driver.capabilities = lambda: {
+                    "action_steps": ["life-advance",
+                                     "query-campaign-root-context-v1"],
+                    "bridge_capabilities": [],
+                }
+            with (self.subTest(root_available=root_available), mock.patch(
+                "xar_autoplayer.bridge.service.choose_one_life_turn",
+                return_value=deepcopy(baseline),
+            ), mock.patch(
+                "xar_autoplayer.m5_formal_proposal_collector."
+                "construction_process_identity", return_value=(123, "t1"),
+            ), mock.patch(
+                "xar_autoplayer.bridge.domain_construction_private_transport_v1."
+                "_identity", return_value=(123, "t1"),
+            )):
+                planned = GameplayBridgeService(driver).plan_turn()
+
+            self.assertEqual(
+                planned["plan"]["selected_step"],
+                ("query-campaign-root-context-v1" if root_available else
+                 "private-query-player-construction-receipt-v1"),
+            )
+            self.assertEqual(
+                planned["plan"]["phase"],
+                ("construction_completion_income_query" if root_available else
+                 "construction_completion_watch"),
+            )
+            self.assertEqual(planned["plan"]["construction_receipt_consumed"],
+                             applied)
+            if not root_available:
+                self.assertEqual(planned["plan"]["construction_pending_action"],
+                                 applied)
+            self.assertEqual(driver.source_reads, 0)
+
     def test_later_day_verified_building_enters_joint_shortlist(self) -> None:
         self.state_dir.mkdir(parents=True, exist_ok=True)
         (self.state_dir / "construction-formal-pending-v1.json").write_text(
