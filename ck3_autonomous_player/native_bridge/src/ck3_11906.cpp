@@ -14226,6 +14226,10 @@ bool ReadBattleControlEntryBucket(
     }
     row.public_cunit_id = army_identity->public_cunit_id;
     row.owner_character_id = army_identity->owner_character_id;
+    if (bucket == "men_at_arms") {
+      row.knight_character_id_raw =
+          LoadAt<std::int32_t>(regiment, kRegimentKnightCharacterIdOffset);
+    }
     void *const combat_type =
         LoadAt<void *>(regiment, kRegimentInnerTypeOffset);
     if (combat_type == nullptr) {
@@ -14297,6 +14301,9 @@ bool ReadBattleControlEntryBucket(
                                kRegimentIdOffset) != regiment ||
         LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
             row.native_carmy_id ||
+        (bucket == "men_at_arms" &&
+         LoadAt<std::int32_t>(regiment, kRegimentKnightCharacterIdOffset) !=
+             row.knight_character_id_raw) ||
         LoadAt<void *>(regiment, kRegimentInnerTypeOffset) != combat_type) {
       output.clear();
       return false;

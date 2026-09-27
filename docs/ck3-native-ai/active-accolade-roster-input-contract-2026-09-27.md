@@ -27,3 +27,7 @@
 | 结果 | 当前只读块最多 `stored_roster_observed=true`。若任何身份或 span 不安全，整个块 unavailable。 | 保存刷新后 `side+0x110` 的有序规范化 modifier 来源与原 `aggregator_raw`，并与同一 ordinal 的将领嵌套/side 主调用分项相等核对。原调用结果是事后证据，不变成未来日常数。 |
 
 这个合同可复用 v3 已有的 generation-safe Regiment/Character resolver、全 MAA entry 验证与有序 Army 映射，但必须以**现役 Combat 的原始 entry**作 source，不可把 v3 local shell 的假想名单和现役快照拼成一个同帧。`original_refresh_outcome` 缺失时，`active_combat_resume_inputs_v1.next_day_non_roll_advantage_sources` 仍为 missing；即使已拿到一次 outcome，跨日预测仍须重新求值角色、称号来源及其他将领/side modifier。
+
+## 第一层只读暴露（静态实现，待实机）
+
+`query_battle_control_snapshot_v1` 的每条 `men_at_arms_entries` 新增可选的 `knight_character_id_raw:int32`。读取同一条 entry 已验证的 `CRegiment+0x148`，在调用既有 entry-strength getter 后复读，变动则整帧拒绝；序列化保留 `-1` 空槽和带符号 full ID，不将其改写为军队 owner，也不跳过零兵力 entry。徵召兵条目不带该字段。Python 标准化同时接受没有此字段的历史回执，新增字段只接受 int32（拒绝 bool/null/越界）。原战斗查询其余字段和 `active_combat_resume_inputs_v1` 的缺域判定保持原样。这只封闭「暂停帧完整 MAA 槽位与骑士 ID」这一层，尚不证明称号资格或下一日优势。

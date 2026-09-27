@@ -1461,7 +1461,13 @@ def _normalize_entries(
     result: list[dict[str, object]] = []
     for index, row in enumerate(value):
         row_name = f"{name}[{index}]"
-        if not isinstance(row, dict) or set(row) != _ENTRY_KEYS:
+        if not isinstance(row, dict) or (
+            set(row) != _ENTRY_KEYS
+            and not (
+                bucket == "men_at_arms"
+                and set(row) == _ENTRY_KEYS | {"knight_character_id_raw"}
+            )
+        ):
             raise ValueError(f"{row_name} has a malformed schema")
         if row.get("bucket") != bucket or row.get("bucket_index") != index:
             raise ValueError(f"{row_name} native bucket order disagrees")
@@ -1531,8 +1537,7 @@ def _normalize_entries(
                 != hard_reason
             ):
                 raise ValueError(f"{row_name} non-main hard ledger disagrees")
-        result.append(
-            {
+        normalized = {
                 "bucket": bucket,
                 "bucket_index": index,
                 "regiment_id": _positive_int32(
@@ -1577,8 +1582,15 @@ def _normalize_entries(
                     row.get("entry_strength_raw"),
                     f"{row_name}.entry_strength_raw",
                 ),
-            }
-        )
+        }
+        # Historical receipts have no knight slot field. Preserve their exact
+        # shape; a current MAA read keeps both occupied IDs and -1 empty slots.
+        if "knight_character_id_raw" in row:
+            normalized["knight_character_id_raw"] = _signed_int32(
+                row["knight_character_id_raw"],
+                f"{row_name}.knight_character_id_raw",
+            )
+        result.append(normalized)
     return result
 
 

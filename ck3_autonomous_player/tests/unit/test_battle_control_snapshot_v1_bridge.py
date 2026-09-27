@@ -3792,6 +3792,43 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             normalized["attacker"]["stored_current_matches_derived"]
         )
 
+    def test_retained_maa_knight_slot_extension_preserves_historical_receipts(self) -> None:
+        historical = self.normalize(_battle_frame())
+        self.assertNotIn(
+            "knight_character_id_raw",
+            historical["attacker"]["men_at_arms_entries"][0],
+        )
+
+        for knight_id in (-1, 29_829, -2_130_706_429):
+            extended = _battle_frame()
+            extended["attacker"]["men_at_arms_entries"][0][
+                "knight_character_id_raw"
+            ] = knight_id
+            normalized = self.normalize(extended)
+            self.assertEqual(
+                normalized["attacker"]["men_at_arms_entries"][0][
+                    "knight_character_id_raw"
+                ],
+                knight_id,
+            )
+            self.assertEqual(
+                normalized["attacker"]["levy_entries"][0],
+                historical["attacker"]["levy_entries"][0],
+            )
+
+        for bad in (None, True, 2**31):
+            extended["attacker"]["men_at_arms_entries"][0][
+                "knight_character_id_raw"
+            ] = bad
+            with self.assertRaisesRegex(ValueError, "signed int32"):
+                self.normalize(extended)
+        extended = _battle_frame()
+        extended["attacker"]["levy_entries"][0][
+            "knight_character_id_raw"
+        ] = 29_829
+        with self.assertRaisesRegex(ValueError, "malformed schema"):
+            self.normalize(extended)
+
     def test_terminal_baseline_extension_preserves_historical_receipts(self) -> None:
         historical = self.normalize(_battle_frame())
         self.assertNotIn(

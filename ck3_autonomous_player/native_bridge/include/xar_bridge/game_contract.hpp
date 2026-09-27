@@ -1261,6 +1261,9 @@ struct BattleControlRegimentEntrySnapshot {
   std::int32_t native_carmy_id = -1;
   std::int32_t public_cunit_id = -1;
   std::int32_t owner_character_id = -1;
+  // Exact CRegiment+0x148 on retained MAA slots; -1 means no knight.
+  // Levy entries do not expose this field on the wire.
+  std::int32_t knight_character_id_raw = -1;
   std::int64_t starting_raw = 0;
   std::int64_t current_fighting_raw = 0;
   std::int64_t soft_casualties_raw = 0;

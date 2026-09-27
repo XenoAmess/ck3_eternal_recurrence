@@ -228,7 +228,8 @@ bool ValidateEntries(
         entry.bucket_index != static_cast<std::int32_t>(index) ||
         entry.regiment_id <= 0 || army == nullptr ||
         entry.public_cunit_id != army->public_cunit_id ||
-        entry.owner_character_id != army->owner_character_id) {
+        entry.owner_character_id != army->owner_character_id ||
+        (bucket == "levy" && entry.knight_character_id_raw != -1)) {
       return false;
     }
 
@@ -675,6 +676,12 @@ bool AppendRegimentEntry(
   output += ",\"owner_character_id\":";
   if (!AppendNumber(output, entry.owner_character_id)) {
     return false;
+  }
+  if (entry.bucket == "men_at_arms") {
+    output += ",\"knight_character_id_raw\":";
+    if (!AppendNumber(output, entry.knight_character_id_raw)) {
+      return false;
+    }
   }
   output += ",\"starting_raw\":";
   if (!AppendNumber(output, entry.starting_raw)) {

@@ -115,6 +115,7 @@ xar::game::BattleControlSnapshot CompleteBattle() {
   reserve.fights_in_main_phase = false;
   reserve.hard_casualties_available = false;
   reserve.hard_casualties_raw = 0;
+  reserve.knight_character_id_raw = 2'130'706'429;
   result.attacker.men_at_arms_entries.push_back(reserve);
   result.attacker.stored_current_fighting_raw = 700'000;
   result.attacker.stored_levy_current_fighting_raw = 700'000;
@@ -233,6 +234,7 @@ int main() {
       !Contains(json, "\"hard_casualties_status\":\"available\"") ||
       !Contains(json, "\"hard_casualties_raw\":200000") ||
       !Contains(json, "\"hard_casualties_status\":\"unavailable\"") ||
+      !Contains(json, "\"knight_character_id_raw\":2130706429") ||
       !Contains(json, "\"hard_casualties_raw\":null") ||
       !Contains(json, "\"hard_casualties_unavailable_reason\":\"non_main_reserve_not_distinguishable_from_hard\"") ||
       !Contains(json, "\"participant_hard_ledger\":[{") ||
@@ -306,6 +308,24 @@ int main() {
                 "\"unaffected_same_side_public_cunit_ids_in_stored_order\":[]}") ||
       Contains(resume_json, "\"active_coalition_side_mapping\"")) {
     return Fail("active resume receipt did not preserve typed unavailable and exact source");
+  }
+  auto empty_knight_slot = complete;
+  empty_knight_slot.attacker.men_at_arms_entries[0].knight_character_id_raw = -1;
+  if (!Contains(SerializeBattleControlSnapshotV1(empty_knight_slot),
+                "\"knight_character_id_raw\":-1")) {
+    return Fail("battle-control lost the empty retained MAA knight slot");
+  }
+  auto signed_knight_slot = complete;
+  signed_knight_slot.attacker.men_at_arms_entries[0].knight_character_id_raw =
+      -2'130'706'429;
+  if (!Contains(SerializeBattleControlSnapshotV1(signed_knight_slot),
+                "\"knight_character_id_raw\":-2130706429")) {
+    return Fail("battle-control narrowed a signed full knight ID");
+  }
+  auto false_levy_knight = complete;
+  false_levy_knight.attacker.levy_entries[0].knight_character_id_raw = 100;
+  if (!SerializeBattleControlSnapshotV1(false_levy_knight).empty()) {
+    return Fail("battle-control admitted a knight field on a levy entry");
   }
   auto owner_subset = complete;
   owner_subset.attacker.ordered_armies.push_back(
