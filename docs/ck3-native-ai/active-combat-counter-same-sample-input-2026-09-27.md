@@ -21,3 +21,9 @@
 原始前帧、battle-control、后帧 SHA-256 依次为 `95C42C520926CF3B66F106ADFBFF4D7E91577F71820F83A7EAFDA8E3E2A11FD4`、`350941D8F88EAE8BA5F91C9CBDCC8F025920D9F120842C6571E832AD86CF396F`、`5FF86DF09D0DF07F222F89DFD1D42970BA567E56B7C57F481A4D16C1F7BC0351`；清场回执 SHA-256 `050123AB77778D00B3D6E66A23C0EE033A9ADD938B8DBEBD10A326756B74164F` 记录 capture 返回 0、CK3 进程树清空。可重放的[精确投影器](../../ck3_autonomous_player/tools/project_active_counter_088.py)与[机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_active_counter_088.json)约束每份源哈希和同帧身份。
 
 该实测只证明当前帧的原生反制基础 operand 可完整读取。`active_combat_resume_inputs_v1` 仍为 `unavailable/same_frame_resume_operands_incomplete`，包含 `active_regiment_counter_class_stack_context` 在内的四个缺域仍在；没有推进下一战斗日，也没有对拍真正进入 `0x23CF1B0` 的 class retention 向量或下一日输入。因此不得据此把下一日、整场胜率或智能体决策标成已闭合。
+
+## 用现有拟合公式计算的当前帧向量
+
+从同一 088 原始回执完整的 32 条 MAA entry 出发，[投影器](../../ck3_autonomous_player/tools/project_active_counter_088.py)复用游玩智能体的 `fixed_mul/fixed_div`，按每个方向逐 class 累加真实 chunk、目标 effectiveness 和 context scale，生成单独的[模型推算向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_model_derived_active_counter_088.json)。它的 `scope=current_paused_frame_only_not_native_output_or_next_day` 是合同的一部分；旧的 088 实测向量字节保持原样。
+
+具体地，守方 side 1 的 class 1 目前只有 51 号团贡献自有 chunk `175791`；攻方对 class 1 产生压力 `178698`。现有模型按 Q100000 逐次截断：`fixed_div(178698,175791)=101653`，再 `fixed_div(101653,200000)=50826`，乘最高 90% 减伤得 `45743`，所以推算保留比例 `100000-45743=54257`，即约 54.257% 的原伤害。攻方 side 0 的 class 8 自有 chunk `83240`、守方压力 `219738`，模型比例降至下限 `10000`。这些是**原生同帧 operand 驱动的模型结果**，尚无原版 `0x23CF1B0` 同边界输出对照，也未包含下一日事件、人数和 owner 更新；只有完成该对照才能将比例称为原生实测。

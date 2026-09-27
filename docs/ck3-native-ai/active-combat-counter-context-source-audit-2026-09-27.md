@@ -1,5 +1,7 @@
 # 现役战斗兵种反制：class、stack 与 context 的来源边界（2026-09-27）
 
+后续实现与 088 独立实机同帧回读见[现役反制输入合同](active-combat-counter-same-sample-input-2026-09-27.md)。下文的“尚未发布”与“未实采”只描述本次 086 来源审计时点，不能用于否定后续 088 的当前帧基础 operand 回读；原版日界 retention 输出对拍仍未完成。
+
 ## 可用结论
 
 [static-confirmed] CK3 1.19.0.6 的反制不是仅按兵种名称套一个常量：对被反制侧和实施反制侧的每个 `0x60` 字节 MAA 战斗 entry，原生读取 full `RegimentID` 与 `entry+0x18` 的当前作战人数 Q100000，借 `CRegiment+0x18` 所指的 inner type 取得 stack size、class 和目标表，再用双方**侧主参与者**的反制抵抗／效率修正生成每类 damage retention。实际选中将领不是这个 owner 的替代值。当前 `battle-control-snapshot-v1` 已读到现役 entry 的人数、顺序、side 与主参与者，却尚未在同一读口发布反制 class、stack、targets、当前 chunk 和实际 context；现役续算回执仍列 `active_regiment_counter_class_stack_context` 为缺域。

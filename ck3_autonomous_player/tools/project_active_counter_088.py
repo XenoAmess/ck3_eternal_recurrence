@@ -6,6 +6,10 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from xar_autoplayer.simulation.combat_core import FIXED_SCALE, fixed_div, fixed_mul
 
 
 SOURCE_SHA256 = {
@@ -25,6 +29,48 @@ def _read(path: Path, expected_sha: str) -> dict[str, object]:
     value = json.loads(raw)
     assert isinstance(value, dict), path
     return value
+
+
+def _model_retention(counter: dict[str, object]) -> list[dict[str, object]]:
+    """Apply the existing Python class formula to real current-frame operands.
+
+    This is a model projection, not an observed 0x23CF1B0 output or a
+    next-day promise.  The latter requires a native call-boundary trace.
+    """
+    class_count = counter["class_count"]
+    sides = counter["sides"]
+    result = []
+    for context in counter["contexts"]:
+        countered = sides[context["countered_side_index"]]
+        countering = sides[context["countering_side_index"]]
+        assert context["countered_primary_owner_character_id"] == countered["primary_owner_character_id"]
+        assert context["countering_primary_owner_character_id"] == countering["primary_owner_character_id"]
+        own_chunks = [0] * class_count
+        pressure = [0] * class_count
+        for entry in countered["men_at_arms_entries"]:
+            if entry["status"] == "available":
+                own_chunks[entry["class_index"]] += entry["current_chunk_raw"]
+        for entry in countering["men_at_arms_entries"]:
+            if entry["status"] != "available":
+                continue
+            for target in entry["targets"]:
+                pressure[target["class_index"]] += fixed_mul(
+                    fixed_mul(entry["current_chunk_raw"], target["effectiveness_raw"]),
+                    context["context_scale_raw"],
+                )
+        retention = []
+        for own, incoming in zip(own_chunks, pressure, strict=True):
+            if own == 0:
+                retention.append(FIXED_SCALE)
+            else:
+                ratio = fixed_div(fixed_div(incoming, own), 200_000)
+                retention.append(FIXED_SCALE - fixed_mul(min(FIXED_SCALE, ratio), 90_000))
+        result.append({"countered_side_index": context["countered_side_index"],
+                       "countering_side_index": context["countering_side_index"],
+                       "own_chunks_by_class_raw": own_chunks,
+                       "pressure_by_class_raw": pressure,
+                       "retention_by_class_raw": retention})
+    return result
 
 
 def project(attempt_dir: Path) -> dict[str, object]:
@@ -123,10 +169,32 @@ def main() -> None:
     parser.add_argument("--attempt-dir", type=Path, required=True)
     parser.add_argument("--fixture", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--derived-output", type=Path)
+    parser.add_argument("--derived-fixture", type=Path)
     args = parser.parse_args()
     result = project(args.attempt_dir)
     if args.fixture is not None:
         assert result == json.loads(args.fixture.read_text(encoding="utf-8"))
+    if args.derived_output is not None or args.derived_fixture is not None:
+        response_dir = args.attempt_dir / "ck3-output" / "interactive-requests-responses"
+        control = _read(response_dir / "c088-battle-control.json",
+                        SOURCE_SHA256["c088-battle-control"])
+        derived = {
+            "schema": "ck3.model_derived_current_counter_088.v1",
+            "source": result["source"],
+            "identity": result["identity"],
+            "scope": "current_paused_frame_only_not_native_output_or_next_day",
+            "directions": _model_retention(
+                control["body"]["battle_control_snapshot"]["active_counter_inputs_v1"]
+            ),
+        }
+        if args.derived_fixture is not None:
+            assert derived == json.loads(args.derived_fixture.read_text(encoding="utf-8"))
+        if args.derived_output is not None:
+            assert not args.derived_output.exists(), args.derived_output
+            args.derived_output.write_text(
+                json.dumps(derived, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
     payload = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     if args.output is not None:
         assert not args.output.exists(), args.output
