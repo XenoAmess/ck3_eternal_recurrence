@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <string>
 #include <string_view>
@@ -59,8 +60,10 @@ struct Fixture {
   std::vector<MemoryEntry> memory{};
   std::uint32_t read_frame_calls = 0;
   std::uint32_t final_evaluator_calls = 0;
+  std::uint32_t native_string_destroy_calls = 0;
   std::uint32_t semantic_operation_calls = 0;
   bool can_plan = true;
+  std::string native_failure_text{"A feast is unavailable."};
   bool fail_semantics = false;
 
   Fixture() {
@@ -295,6 +298,64 @@ bool InvokeFinalCanPlan(
   return true;
 }
 
+struct FakeNativeString {
+  std::array<char, 16> storage{};
+  std::uint64_t size = 0;
+  std::uint64_t capacity = 15;
+};
+
+static_assert(sizeof(FakeNativeString) == 32);
+
+bool FakeNativeCanPlan(void *host_view, void *native_output) {
+  assert(g_fixture != nullptr &&
+         reinterpret_cast<std::uintptr_t>(host_view) == kHost);
+  ++g_fixture->final_evaluator_calls;
+  auto &text = *static_cast<FakeNativeString *>(native_output);
+  if (!g_fixture->can_plan) {
+    const auto &source = g_fixture->native_failure_text;
+    text.size = source.size();
+    if (source.size() > 15) {
+      auto *owned = static_cast<char *>(std::malloc(source.size() + 1));
+      assert(owned != nullptr);
+      std::memcpy(owned, source.data(), source.size());
+      owned[source.size()] = '\0';
+      std::memcpy(text.storage.data(), &owned, sizeof(owned));
+      text.capacity = source.size();
+    } else {
+      std::memcpy(text.storage.data(), source.data(), source.size());
+      text.storage[source.size()] = '\0';
+    }
+  }
+  return g_fixture->can_plan;
+}
+
+void FakeNativeStringDestroy(void *native_output) {
+  assert(g_fixture != nullptr);
+  ++g_fixture->native_string_destroy_calls;
+  auto &text = *static_cast<FakeNativeString *>(native_output);
+  if (text.capacity >= 16) {
+    char *owned = nullptr;
+    std::memcpy(&owned, text.storage.data(), sizeof(owned));
+    std::free(owned);
+  }
+  text = {};
+}
+
+bool InvokeFinalCanPlanWithFakeNative(
+    void *, std::uintptr_t module_base, std::uintptr_t exact_entry_point,
+    std::uintptr_t host_view, std::uintptr_t activity_type,
+    const ActivityPlanningSnapshotRequestV1 &request,
+    ActivityPlanningNativeCanPlanResultV1 &output) noexcept {
+  if (module_base != kModuleBase ||
+      exact_entry_point !=
+          kModuleBase + kActivityPlanningHostViewCanPlanRvaV1 ||
+      activity_type != kActivityType ||
+      request.activity_key != kActivityPlanningSnapshotP0ActivityKeyV1)
+    return false;
+  return InvokeActivityPlanningNativeCanPlanWithFunctionsV1(
+      host_view, &FakeNativeCanPlan, &FakeNativeStringDestroy, output);
+}
+
 bool ReadSemantics(void *context, std::uintptr_t module_base,
                    std::uintptr_t host_view, std::uintptr_t activity_type,
                    const ActivityPlanningSnapshotRequestV1 &request,
@@ -487,6 +548,85 @@ void TestKnownFalseFinalEvaluatorIsPreserved() {
          "activity_feast_can_plan_failure");
 }
 
+void TestExactNativeStringIsCopiedAndReleasedThroughGlue() {
+  Fixture fixture{};
+  fixture.can_plan = false;
+  auto environment = Environment(fixture);
+  environment.native_environment.invoke_final_can_plan =
+      &InvokeFinalCanPlanWithFakeNative;
+  ActivityPlanningApplicationGlueStateV1 state{};
+  assert(ConfigureActivityPlanningApplicationGlueV1(state, environment));
+  assert(PrepareActivityPlanningApplicationGlueV1(
+      state, fixture.Request(kActivityPlanningSnapshotP0ActivityKeyV1)));
+  assert(ExecuteActivityPlanningApplicationGlueV1(state));
+  ActivityPlanningSnapshotPrivateV1 result{};
+  bool available = false;
+  assert(ReadActivityPlanningApplicationGlueResultV1(state, result, available));
+  assert(available && !result.can_plan_final.value);
+  assert(result.failure_display_key.state ==
+         ActivityPlanningFieldStateV1::unknown);
+  assert(result.failure_display_key.unknown_reason ==
+         ActivityPlanningUnknownReasonV1::native_stable_key_unresolved);
+  assert(result.failure_display_text.state ==
+         ActivityPlanningFieldStateV1::known);
+  assert(ActivityPlanningFixedTextViewV1(result.failure_display_text.value) ==
+         "A feast is unavailable.");
+  assert(fixture.final_evaluator_calls == 2);
+  assert(fixture.native_string_destroy_calls == 2);
+
+  Fixture short_text{};
+  short_text.can_plan = false;
+  short_text.native_failure_text = "blocked";
+  environment = Environment(short_text);
+  environment.native_environment.invoke_final_can_plan =
+      &InvokeFinalCanPlanWithFakeNative;
+  ActivityPlanningApplicationGlueStateV1 short_state{};
+  assert(ConfigureActivityPlanningApplicationGlueV1(short_state, environment));
+  assert(PrepareActivityPlanningApplicationGlueV1(
+      short_state,
+      short_text.Request(kActivityPlanningSnapshotP0ActivityKeyV1)));
+  assert(ExecuteActivityPlanningApplicationGlueV1(short_state));
+  assert(ReadActivityPlanningApplicationGlueResultV1(short_state, result,
+                                                     available));
+  assert(available &&
+         ActivityPlanningFixedTextViewV1(result.failure_display_text.value) ==
+             "blocked");
+  assert(short_text.native_string_destroy_calls == 2);
+
+  Fixture allowed{};
+  environment = Environment(allowed);
+  environment.native_environment.invoke_final_can_plan =
+      &InvokeFinalCanPlanWithFakeNative;
+  ActivityPlanningApplicationGlueStateV1 allowed_state{};
+  assert(ConfigureActivityPlanningApplicationGlueV1(allowed_state, environment));
+  assert(PrepareActivityPlanningApplicationGlueV1(
+      allowed_state,
+      allowed.Request(kActivityPlanningSnapshotP0ActivityKeyV1)));
+  assert(ExecuteActivityPlanningApplicationGlueV1(allowed_state));
+  assert(ReadActivityPlanningApplicationGlueResultV1(allowed_state, result,
+                                                     available));
+  assert(available && result.can_plan_final.value &&
+         result.readiness.action_inputs_ready);
+  assert(allowed.native_string_destroy_calls == 2);
+
+  Fixture empty_text{};
+  empty_text.can_plan = false;
+  empty_text.native_failure_text.clear();
+  environment = Environment(empty_text);
+  environment.native_environment.invoke_final_can_plan =
+      &InvokeFinalCanPlanWithFakeNative;
+  ActivityPlanningApplicationGlueStateV1 empty_state{};
+  assert(ConfigureActivityPlanningApplicationGlueV1(empty_state, environment));
+  assert(PrepareActivityPlanningApplicationGlueV1(
+      empty_state,
+      empty_text.Request(kActivityPlanningSnapshotP0ActivityKeyV1)));
+  assert(ExecuteActivityPlanningApplicationGlueV1(empty_state));
+  assert(ReadActivityPlanningApplicationGlueDiagnosticsV1(empty_state)
+             .binder_failure ==
+         ActivityPlanningNativeBinderFailureV1::final_can_plan_failed);
+  assert(empty_text.native_string_destroy_calls == 1);
+}
+
 void TestFailureVocabulary() {
   assert(
       ActivityPlanningApplicationGlueFailureKeyV1(
@@ -503,6 +643,7 @@ int main() {
   TestScopedOperationsRejectObserverBypass();
   TestTypedNativeFailuresRemainResults();
   TestKnownFalseFinalEvaluatorIsPreserved();
+  TestExactNativeStringIsCopiedAndReleasedThroughGlue();
   TestFailureVocabulary();
   return 0;
 }

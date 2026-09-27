@@ -149,7 +149,7 @@
       "shown",
       "can_plan",
       "can_start",
-      "native failure display keys/text",
+      "native failure display text; stable key typed unresolved",
       "valid location ids and native weights",
       "selected option/intents/invite-rule stable keys",
       "authoritative configured resource costs",
@@ -157,10 +157,13 @@
       "cooldown state"
     ],
     "next_observer_seam": {
-      "target": "CActivityListDetailHostView CanPlanActivity/GetCanPlanActivityTooltip backing evaluator",
+      "target": "CActivityListDetailHostView CanPlanActivity final evaluator plus complete native planner semantic sample",
       "string_rvas": {"CanPlanActivity": "0x4096760", "GetCanPlanActivityTooltip": "0x4096778"},
+      "resolved_can_plan_slot_rva": "0x15051F0",
+      "resolved_final_evaluator_rva": "0x28CFC50",
+      "native_failure_string_destructor_rva": "0x7E97D0",
       "why": "It evaluates the played character's planner state without waiting for the AI's 60-month scheduler or submitting a command.",
-      "implementation_order": "map HostView RTTI/vtable method to its final native evaluator, capture one normal read-only planner traversal, then expose a main-thread query with stable keys and copied values only"
+      "implementation_order": "exact private slot-25 callback now copies boolean and optional display text; next resolve a complete semantic sample and a normal paused application-main invocation before any query claim"
     },
     "next_action_seam": {
       "target": "CStartActivityCommand native payload validator and secondary dispatch",
@@ -173,7 +176,7 @@
   },
   "unknowns": [
     "CActivityType database owner/enumerator and stable key field in native memory",
-    "exact CActivityListDetailHostView CanPlanActivity and tooltip method RVAs and their final evaluator",
+    "current paused-save activity_feast HostView availability and complete planner semantic sample",
     "full 16-byte AI host candidate row ownership and CActivityType identity layout",
     "complete CStartActivityCommand 0x508 payload field semantics and public-safe constructor",
     "authoritative cost-vector resource slot mapping for treasury, herd, barter, piety and prestige",
