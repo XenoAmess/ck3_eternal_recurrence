@@ -1,0 +1,70 @@
+{
+  "schema": "ck3.native_active_accolade_original_call_boundary.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "hook_entries": {
+    "cache": {
+      "rva": "0x2308D50",
+      "whole_instruction_bytes": "48895C24184889742420574883EC20",
+      "length": 15,
+      "pdata_owner": [
+        "0x2308D50",
+        "0x2308DE5"
+      ]
+    },
+    "refresh": {
+      "rva": "0x23CBCE0",
+      "whole_instruction_bytes": "48896C24104889742418574883EC20",
+      "length": 15,
+      "pdata_owner": [
+        "0x23CBCE0",
+        "0x23CBD67"
+      ]
+    },
+    "append": {
+      "rva": "0x251B8F0",
+      "whole_instruction_bytes": "4889742410574883EC20488BF2488BF9",
+      "length": 16,
+      "pdata_owner": [
+        "0x251B8F0",
+        "0x251B90D"
+      ]
+    },
+    "all_row_gate": {
+      "rva": "0x251C200",
+      "whole_instruction_bytes": "48895C24084889742410574883EC20",
+      "length": 15,
+      "pdata_owner": [
+        "0x251C200",
+        "0x251C271"
+      ]
+    }
+  },
+  "original_calls": {
+    "cache_refresh_attacker": {
+      "rva": "0x2308D66",
+      "return_rva": "0x2308D6B",
+      "target_rva": "0x23CBCE0",
+      "bytes_hex": "E8752F0C00"
+    },
+    "cache_refresh_defender": {
+      "rva": "0x2308D72",
+      "return_rva": "0x2308D77",
+      "target_rva": "0x23CBCE0",
+      "bytes_hex": "E8692F0C00"
+    },
+    "refresh_append": {
+      "rva": "0x23CBEA3",
+      "return_rva": "0x23CBEA8",
+      "target_rva": "0x251B8F0",
+      "bytes_hex": "E848FA1400"
+    },
+    "append_gate": {
+      "rva": "0x251B900",
+      "return_rva": "0x251B905",
+      "target_rva": "0x251C200",
+      "bytes_hex": "E8FB080000"
+    }
+  },
+  "observation_limit": "all-row boolean is available at original gate return; the per-row failed virtual call index and caller RSI entry pointer are not returned by these function boundaries"
+}
