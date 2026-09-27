@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T19:33:29Z",
+  "updated_at_utc": "2026-09-27T21:10:00Z",
   "source_pr": null,
   "master_commit": "6074a9dd3a6e8e8ce5a6ed22a98efa75781d4ad0",
   "delivery_route": "direct rebase-only master push",
@@ -23,9 +23,9 @@
   "live_evidence": null,
   "limitations": [
     "This is source delivery and static conditional replay, not a new H2825 game run. R0265 remains blocked and failed. The wrong candidate ID is a local variable-clobber bug; there is no evidence of a native position-reader conflict. The R0265 full active_wars row remains absent from Git, so exact live success is unclaimed.",
-    "At response time the exact H2825 OneDrive folder WAR-ROBERT-H2825-R0265-2026-09-28 is absent from C:/Users/1/OneDrive. The sending machine reports local copy and hashes, but receiver availability and SHA-256 verification are pending.",
+    "The exact H2825 OneDrive folder was initially absent from local selective sync. Its six requested files are now present and SHA-256 verified in D:/ck3-research-artifacts/war31-h2825-20260928/source-verified-01/; official no-launch prepare/rebind/preflight is READY in attempt-01. See docs/ck3-native-ai/h2825-onedrive-exact-input-2026-09-28.md. This does not establish live H2825 success.",
     "The route time comparison is conditional on the current orders. Battle duration, later enemy orders, reinforcement during combat, CB material terms and full continue-versus-surrender utility remain unknown.",
     "The first matching live continuation must use the frozen R0264 source pair and official prepare/rebind/no-launch, not the mutated R0265 driver. It must prove same-frame war-row/route position consistency before querying v3 or claiming this planner block closed."
   ],
-  "next_step": "Receive and SHA-verify the exact H2825 source pair through the agreed selective OneDrive route, prepare a fresh candidate, review a fresh Steam offline frame and rerun the bounded formal planner. The previous snapshot-position request is superseded by its correction because the wrong candidate ID came from local Python variable shadowing. No live closure is claimed."
+  "next_step": "Review a fresh Steam offline frame, then use the verified H2825 source pair and official no-launch prepared attempt for a bounded read-only live replay. The previous snapshot-position request is superseded by its correction because the wrong candidate ID came from local Python variable shadowing. No live closure is claimed."
 }
