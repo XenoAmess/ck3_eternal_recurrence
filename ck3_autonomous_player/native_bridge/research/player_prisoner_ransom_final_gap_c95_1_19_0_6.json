@@ -40,6 +40,21 @@
     "factory_body_rva": "0x2876B70",
     "interpretation": "This registers the native ransom_cost script value and a node factory. The factory is not a callable evaluated-gold result; the evaluator and its context/scope ABI remain unmapped."
   },
+  "native_ransom_cost_base_evaluator_c210": {
+    "status": "exact-build-static-only",
+    "factory_body_rva": "0x2876B70",
+    "factory_body_end_rva_exclusive": "0x2876BD3",
+    "factory_body_sha256": "C64E164DD8612FFBD63A0DA8F4E2A0C495EA727C263EC46068905AE97FB0512B",
+    "constructed_node_vtable_write_rva": "0x2876BB1",
+    "constructed_node_vtable_rva": "0x439A218",
+    "value_method_vtable_slot": 32,
+    "value_method_rva": "0x2870FD0",
+    "value_method_end_rva_exclusive": "0x2871037",
+    "value_method_sha256": "4CE4AB16467D709142B98770A2169EBB98C3FDE1DACFE8CE46F0715428CC3082",
+    "native_base_cost_call_rva": "0x2871029",
+    "native_base_cost_target_rva": "0x28DCEC0",
+    "interpretation": "The constructed ransom_cost node has a value method that resolves a character from the script scope and calls the native base-cost routine. This does not evaluate the stock ransom_cost_value script modifiers, selected option, payer redirection, or on_accept current-gold/haggler amount. The target routine signature and result units are not qualified for a bridge call."
+  },
   "existing_generic_final_context": {
     "all_role_context_constructor_rva": "0x2C3F000",
     "final_can_send_rva": "0x2C43F00",
@@ -52,5 +67,5 @@
     "recipient final acceptance and final Can Send tied to that option and the same prisoner row",
     "certified semantic command binding and live postcondition/receipt"
   ],
-  "next_abi_entry": "Trace the ransom_cost node registered at 0x5495A0 through vtable 0x439E528 to the evaluated script-value result under the finalized three-role interaction context; then bind selected-option terms into the existing private prisoner source adapter. No prisoner action or live qualification is implied."
+  "next_abi_entry": "From the now-mapped ransom_cost base node at 0x439A218/slot 32, resolve the generic ransom_cost_value script-value evaluator under the finalized three-role interaction context, including option-specific payer redirection and current-gold/on_accept amount timing; then bind selected-option terms into the existing private prisoner source adapter. No payable amount, prisoner action, or live qualification is implied."
 }
