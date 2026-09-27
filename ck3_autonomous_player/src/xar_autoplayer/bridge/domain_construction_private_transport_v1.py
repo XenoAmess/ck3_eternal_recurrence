@@ -259,6 +259,9 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
         raise BridgeUnavailableError("construction already pending; no duplicate send")
     applied = ledger["applied"]
     if isinstance(applied, dict) and applied.get("episode_run_id") == starting["episode_run_id"]:
+        if not isinstance(applied.get("action_request_id"), str):
+            raise BridgeUnavailableError(
+                "construction prior receipt lacks a durable action identity")
         # The previous action is durable evidence, not a lifetime limit on
         # economic construction.  Only a later game day in the verified
         # process may spend again; a cold process is rechecked by the planner.
@@ -327,8 +330,12 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     ledger = read_construction_ledger(state_dir)
     unresolved = isinstance(ledger["pending"], dict) and (
         ledger["pending"].get("action_request_id") == pending.get("action_request_id"))
-    cold_recheck = ledger["pending"] is None and isinstance(ledger["applied"], dict) and (
-        ledger["applied"].get("action_request_id") == pending.get("action_request_id"))
+    prior = ledger.get("applied_prior", [])
+    cold_recheck = ledger["pending"] is None and (
+        (isinstance(ledger["applied"], dict)
+         and ledger["applied"].get("action_request_id") == pending.get("action_request_id"))
+        or any(isinstance(row, dict) and row.get("action_request_id") ==
+               pending.get("action_request_id") for row in prior))
     if not (unresolved or cold_recheck):
         raise BridgeUnavailableError("construction receipt lacks matching pending action")
     starting = _binding(driver, expected_revision=expected_revision,
@@ -337,7 +344,8 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     same_process = ((pid, creation) == (pending.get("source_bridge_pid"),
                                        pending.get("source_bridge_creation_date")))
     completion_watch = (cold_recheck and (pid, creation) == (
-        pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date")))
+        pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date"))
+        and starting.get("date_raw", -1) > pending.get("post_date_raw", -1))
     if completion_watch and pending.get("completion_status") != "completed" and not (
             type(starting.get("date_raw")) is int
             and starting["date_raw"] > pending.get("post_date_raw", 0)
@@ -406,7 +414,15 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
             "episode_run_id": pending["episode_run_id"],
             "post_snapshot_id": starting["snapshot_id"],
             "post_public_revision": expected_revision}
-        write_construction_ledger(state_dir, {**ledger, "applied": None})
+        if (isinstance(ledger["applied"], dict)
+                and ledger["applied"].get("action_request_id") ==
+                pending["action_request_id"]):
+            write_construction_ledger(state_dir, {**ledger, "applied": None})
+        else:
+            write_construction_ledger(state_dir, {**ledger,
+                "applied_prior": [row for row in prior
+                                  if row.get("action_request_id") !=
+                                  pending["action_request_id"]]})
         driver._record_command(RECEIPT_STEP, ok=True, result=classification)
         return classification
     if not matches and not completed:
@@ -480,6 +496,31 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                    "completion_observed_date_raw": (
                        pending.get("completion_observed_date_raw") or starting["date_raw"]
                        if completed else pending.get("completion_observed_date_raw"))}
-    write_construction_ledger(state_dir, {**ledger, "pending": None, "applied": receipt})
+    prior = list(ledger.get("applied_prior", []))
+    if cold_recheck:
+        current = ledger["applied"]
+        if isinstance(current, dict) and current.get("action_request_id") == (
+                pending["action_request_id"]):
+            write_construction_ledger(state_dir, {**ledger, "pending": None,
+                                                  "applied": receipt})
+        else:
+            match_indices = [index for index, row in enumerate(prior)
+                             if row.get("action_request_id") ==
+                             pending["action_request_id"]]
+            if len(match_indices) != 1:
+                raise BridgeUnavailableError(
+                    "construction prior receipt identity changed; keep pending")
+            prior[match_indices[0]] = receipt
+            write_construction_ledger(state_dir, {**ledger, "pending": None,
+                                                  "applied_prior": prior})
+    else:
+        previous = ledger["applied"]
+        if isinstance(previous, dict) and (
+                previous.get("completion_status") != "completed"
+                or previous.get("observed_player_monthly_gold_income_raw") is None):
+            prior.append(previous)
+        write_construction_ledger(state_dir, {**ledger, "pending": None,
+                                              "applied": receipt,
+                                              "applied_prior": prior})
     driver._record_command(RECEIPT_STEP, ok=True, result=receipt)
     return receipt

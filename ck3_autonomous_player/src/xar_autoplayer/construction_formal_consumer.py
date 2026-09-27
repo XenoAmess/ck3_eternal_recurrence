@@ -47,19 +47,81 @@ def read_construction_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.exists():
         return {"schema": "xar.ck3.construction_formal_pending_v1", "pending": None,
-                "applied": None}
+                "applied": None, "applied_prior": []}
     record = json.loads(path.read_text(encoding="utf-8"))
     if (not isinstance(record, dict)
             or record.get("schema") != "xar.ck3.construction_formal_pending_v1"
             or not all(key in record for key in ("pending", "applied"))
             or any(record[key] is not None and not isinstance(record[key], dict)
-                   for key in ("pending", "applied"))):
+                   for key in ("pending", "applied"))
+            or not isinstance(record.get("applied_prior", []), list)
+            or any(not isinstance(row, dict)
+                   for row in record.get("applied_prior", []))):
         raise ValueError("construction pending ledger shape is unknown")
+    record.setdefault("applied_prior", [])
+    receipts = [*record["applied_prior"]]
+    if record["applied"] is not None:
+        receipts.append(record["applied"])
+    request_ids = [row.get("action_request_id") for row in receipts]
+    if (len(receipts) > 1
+            and (any(not isinstance(request_id, str) or not request_id
+                     for request_id in request_ids)
+                 or len(request_ids) != len(set(request_ids)))):
+        raise ValueError("construction applied receipt identity is unknown")
     return record
 
 
 def write_construction_ledger(state_dir: Path, record: Mapping[str, object]) -> None:
     write_json_atomic(state_dir / _LEDGER, dict(record))
+
+
+def applied_construction_receipts(
+    ledger: Mapping[str, object], episode_run_id: object,
+) -> list[dict[str, object]]:
+    """Oldest first, including the newest legacy-compatible applied receipt."""
+    prior = ledger.get("applied_prior", [])
+    receipts = [*prior] if isinstance(prior, list) else []
+    applied = ledger.get("applied")
+    if isinstance(applied, dict):
+        receipts.append(applied)
+    return [row for row in receipts if isinstance(row, dict)
+            and row.get("episode_run_id") == episode_run_id]
+
+
+def priority_construction_receipt(
+    driver: object, ledger: Mapping[str, object], snapshot: Mapping[str, object],
+    *, process_identity: tuple[int, str] | None = None,
+) -> dict[str, object] | None:
+    """Choose one old material follow-up before considering a new expenditure."""
+    receipts = applied_construction_receipts(
+        ledger, snapshot.get("episode_run_id"))
+    if not receipts:
+        return None
+    from .bridge.domain_construction_private_transport_v1 import _identity
+
+    process = process_identity if process_identity is not None else _identity(driver)
+    revision = snapshot.get("native_revision")
+    date = snapshot.get("date_raw")
+    for row in receipts:
+        if (process != (row.get("post_bridge_pid"),
+                        row.get("post_bridge_creation_date"))
+                or (type(revision) is int and type(row.get("post_native_revision")) is int
+                    and revision < row["post_native_revision"])
+                or (type(date) is int and type(row.get("post_date_raw")) is int
+                    and date < row["post_date_raw"])):
+            return row
+    for row in receipts:
+        if (row.get("completion_status") == "completed"
+                and row.get("observed_player_monthly_gold_income_raw") is None):
+            return row
+    for row in receipts:
+        last_check = row.get("completion_last_check_date_raw",
+                             row.get("post_date_raw"))
+        if (row.get("completion_status") != "completed"
+                and type(date) is int and type(last_check) is int
+                and date >= last_check + COMPLETION_WATCH_INTERVAL_RAW):
+            return row
+    return None
 
 
 def plan_construction_private(
@@ -131,12 +193,26 @@ def plan_construction_private(
         return {**planned, "plan": {**plan,
             "construction_pending_action": dict(pending),
             "reason": "advance to independent native frame; never resubmit pending construction"}}
-    applied = ledger["applied"]
-    if isinstance(applied, dict) and applied.get("episode_run_id") == episode:
+    receipts = applied_construction_receipts(ledger, episode)
+    process_identity = None
+    if receipts:
         from .bridge.domain_construction_private_transport_v1 import _identity
-
-        if _identity(driver) != (applied.get("post_bridge_pid"),
-                                 applied.get("post_bridge_creation_date")):
+        process_identity = _identity(driver)
+    priority_applied = priority_construction_receipt(
+        driver, ledger, snapshot, process_identity=process_identity)
+    applied = priority_applied or ledger["applied"]
+    if isinstance(applied, dict) and applied.get("episode_run_id") == episode:
+        older_frame = (
+            (type(snapshot.get("native_revision")) is int
+             and type(applied.get("post_native_revision")) is int
+             and snapshot["native_revision"] < applied["post_native_revision"])
+            or (type(snapshot.get("date_raw")) is int
+                and type(applied.get("post_date_raw")) is int
+                and snapshot["date_raw"] < applied["post_date_raw"])
+        )
+        if (process_identity != (applied.get("post_bridge_pid"),
+                                 applied.get("post_bridge_creation_date"))
+                or older_frame):
             return {**planned, "plan": {**plan,
                 "phase": "construction_cold_applied_requery",
                 "selected_step": RECEIPT_STEP,
@@ -159,6 +235,10 @@ def plan_construction_private(
                     "selected_step": RECEIPT_STEP,
                     "construction_pending_action": dict(applied),
                     "reason": "bind same-frame actual income to completed native building"}}
+            if priority_applied is not None:
+                return {**planned, "plan": {**plan,
+                    "selected_step": None,
+                    "reason": "completed construction income remains unavailable"}}
         last_completion_check = applied.get(
             "completion_last_check_date_raw", applied.get("post_date_raw"))
         if (applied.get("completion_status") != "completed"
@@ -177,14 +257,18 @@ def plan_construction_private(
                 "selected_step": RECEIPT_STEP,
                 "construction_pending_action": dict(applied),
                 "reason": "read completed native building slot on a later monthly frame"}}
+        if priority_applied is not None:
+            return {**planned, "plan": plan}
         # The receipt is consumed on the following formal turn.  A later
         # game day can present another legal province after that turn.
-        if not (type(snapshot.get("native_revision")) is int
+        newest = ledger["applied"]
+        if isinstance(newest, dict) and not (
+                type(snapshot.get("native_revision")) is int
                 and type(snapshot.get("date_raw")) is int
-                and type(applied.get("post_native_revision")) is int
-                and type(applied.get("post_date_raw")) is int
-                and snapshot["native_revision"] > applied["post_native_revision"]
-                and snapshot["date_raw"] > applied["post_date_raw"]):
+                and type(newest.get("post_native_revision")) is int
+                and type(newest.get("post_date_raw")) is int
+                and snapshot["native_revision"] > newest["post_native_revision"]
+                and snapshot["date_raw"] > newest["post_date_raw"]):
             return {**planned, "plan": plan}
     # A pre-existing construction needs its material/income readback even
     # while the ordinary strategy is busy with war. Only a new expenditure

@@ -858,6 +858,57 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertEqual(second_receipt["post_player_gold_raw"], 25_000_000)
                 self.assertTrue(second_receipt["postcondition_verified"])
                 self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
+                # The first building remains active. A second receipt must
+                # retain its completion and income follow-up across restarts.
+                ledger = read_construction_ledger(driver.state_dir)
+                self.assertEqual(ledger["applied"], second_receipt)
+                self.assertEqual(ledger["applied_prior"], [receipt])
+
+            cold_frame = frame(7)
+            cold_frame["date_raw"] += 48
+            driver.snapshot = cold_frame
+            with mock.patch.object(transport, "_identity", return_value=(124, "t2")):
+                cold_plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"}, "revision": 7},
+                    cold_frame, [], set())
+                self.assertEqual(cold_plan["plan"]["selected_step"], RECEIPT_STEP)
+                self.assertEqual(cold_plan["plan"]["construction_pending_action"]
+                                 ["action_request_id"], receipt["action_request_id"])
+                first_cold = transport.query_construction_receipt(
+                    driver, pending=receipt, expected_revision=7)
+                self.assertEqual(first_cold["candidate"]["province_id"], 2635)
+                self.assertEqual(read_construction_ledger(driver.state_dir)
+                                 ["applied_prior"][0], first_cold)
+                second_cold_plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"}, "revision": 7},
+                    cold_frame, [], set())
+                self.assertEqual(second_cold_plan["plan"]["selected_step"], RECEIPT_STEP)
+                self.assertEqual(second_cold_plan["plan"]["construction_pending_action"]
+                                 ["action_request_id"], second_receipt["action_request_id"])
+                second_cold = transport.query_construction_receipt(
+                    driver, pending=second_receipt, expected_revision=7)
+                self.assertEqual(second_cold["candidate"]["province_id"], 2700)
+                self.assertEqual(read_construction_ledger(driver.state_dir)
+                                 ["applied"], second_cold)
+
+                due_frame = frame(8)
+                due_frame["date_raw"] = cold_frame["date_raw"] + 30 * 24
+                driver.snapshot = due_frame
+                first_watch_plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"}, "revision": 8},
+                    due_frame, [], set())
+                self.assertEqual(first_watch_plan["plan"]["selected_step"], RECEIPT_STEP)
+                self.assertEqual(first_watch_plan["plan"]["construction_pending_action"]
+                                 ["action_request_id"], receipt["action_request_id"])
+                first_watch = transport.query_construction_receipt(
+                    driver, pending=first_cold, expected_revision=8)
+                self.assertEqual(first_watch["completion_status"], "in_progress")
+                second_watch_plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"}, "revision": 8},
+                    due_frame, [], set())
+                self.assertEqual(second_watch_plan["plan"]["selected_step"], RECEIPT_STEP)
+                self.assertEqual(second_watch_plan["plan"]["construction_pending_action"]
+                                 ["action_request_id"], second_receipt["action_request_id"])
 
     def test_lost_ack_stays_pending_across_cold_process_and_requires_material(self):
         with TemporaryDirectory() as location:
