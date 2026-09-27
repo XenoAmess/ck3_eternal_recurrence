@@ -89,7 +89,11 @@ starts. Preparation checks each listed receipt and its original submit action
 against the same actor, episode and checkpoint-bounded driver history before
 copying the sidecar unchanged. An absent or empty list retains the previous
 single-building pairing; a copied ledger is not evidence of a completed build
-or income gain.
+or income gain. When a second building is submitted before its material
+receipt, the ledger legitimately contains both its new `pending` action and
+the previous `applied` receipt. Preparation pairs the pending request as the
+current action and independently checks that applied receipt, plus any
+`applied_prior` entries, against saved submit and receipt history.
 
 With the ordinary lifecycle triple, this one command runs `prepare-profile
 --xar-enabled xar_off`, copies the pair to its canonical target paths, runs
