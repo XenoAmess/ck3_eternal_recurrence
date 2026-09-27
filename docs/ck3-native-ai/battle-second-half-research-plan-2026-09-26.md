@@ -86,3 +86,7 @@
 执行纪律：每个新证据先保存原始 bytes/SHA、源存档、游戏 build、CombatID/WarID、参战双方与日期，再生成只读投影。静态公式向量、条件计算、独立回放与自然 AI 行为在文档、智能体和画面中均分开标注。任何残差先查同帧输入与定点截断，再查参与者/事件边界；不能为凑零差修改历史原始回执或把模型自生成数当 expected。
 
 2026-09-26 工具勘误：`native_bridge/research/find_xrefs.py` 原来把 CK3 整个可执行节一次交给 Capstone，在本机 EXE 上以 `CS_ERR_MEM` 失败；现按指令边界分块并保留最长 x64 指令的跨块余量，另提供 `--direct-only` 快速扫绝对指针与 E8/E9 候选。跨块引用测试通过。`--direct-only` 的 E8/E9 结果仍是**字节候选**，必须对命中的 RVA 再做有界反汇编审阅；vtable 相邻槽也只证明接口身份，不自动证明跨 manager 的全局调用先后。实际用它复核了 contact `0x2208320` 的 `0x220D3BA/0x27C0FDF/0x2277F6B` 三处候选，以及 combat manager `0x27FB4D0/0x27FB5D0` 的相邻函数指针；未据此冒称已闭合全局调度顺序。
+
+## R0266 战争现金联合预算（2026-09-28）
+
+新增的 [R0266 战争现金联合预算请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)已优先交付[同帧战争现金接口与静态响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)。H2825 只有国库与建造价格，没有原生待办战争现金、即时动作费用、带期限的未来费用上界或本游玩智能体的战争保留金；[研究说明](r0266-war-cash-resource-2026-09-28.md)逐项保留 `null`。该交付没有新实机读回或建造授权。下一轮若桌面与 H2825 精确原始资产恢复，应优先取同帧战争费用并完成受影响的联合候选消费，再继续本表独立战斗研究。
