@@ -19,6 +19,8 @@
 
 第 1 项掩护边界补研：[非零掩护静态向量与下一次同帧采集合同](pursuit-screen-nonzero-branch-contract-2026-09-27.md)确认 004 三日零差样本的**败方掩护聚合每天均为 0**；胜方条目有非零掩护不能代替败方分支证据。现有整数核对 `screen > pursuit`、`extra=0`、minimum 托底和逐团余数的离线向量通过，但尚未出现非零败方掩护的原版同帧逐团对拍。视频只能用 004 解释其真实输入，智能体仍须把未来追击修正与掩护条件保留为未校准风险。
 
+[冻结候选全量审计](pursuit-screen-frozen-candidate-audit-2026-09-27.md)用逐文件 SHA 扫描本机已有的 252 份原生控制回执：251 份可用，其中 32 份为追击期，均属同一梅西纳 CombatID，**败方非零掩护样本 0 份**。胜方有非零掩护，不能据此声称目标分支已覆盖。因此不再从现有冻结资产反复挑候选；下一次须先取得有非零败方 `effective_screen_raw` 的新自然战例，再按上述合同做同帧逐团对拍。
+
 第 5 项后备派令更新：[072 独立实机](winner-ai-terminal-reentry-live-072.md)把 065 的胜方路线疑点定位为 builder 返回未处理（`+8=0/+9=0`，主提交 0 次），外层 fallback 向 ProvinceID `2639` 提交一次 kind-2 move 且队列接受；26 项审计通过，原始证据与机器向量绑定。共享 gate 的通用语义及命令次日是否真正执行仍未证成，不能把这个单样本外推为普通战争 AI 的完整派令策略。
 
 第 5 项次日回读：[074 独立实机](winner-ai-postsubmit-next-day-live-074.md)复现同一终局分支和后备队列接受，在第 27 日仍读到胜方军队位于 ProvinceID `2633`、目标与路线为 `2639`，没有新 builder/submit；31 项审计通过。原始公开/私有回读都没有 AI 军队的 MovePath ETA 或队列 apply 事件，因此“入队接受”和“次日路线非空”仍不能证明命令执行。后续 076 应优先只读回读该 CUnit 的 MovePath/首跳 ETA；若无法安全取得，则有限逐日观察位置、目标与路线，保留命令归因未知。
@@ -28,6 +30,8 @@
 [战中预测输入审计](active-combat-forecast-input-gap-2026-09-27.md)进一步确认：v3 的 `ongoing_combats` 只来自**本次请求选中的军队**，并非全局其他战斗，因此生产 `forecast_fixed_contact` 现在会在所选军队已参战或该观察字段缺失时返回 typed unavailable，防止把“重新从第 0 日接战”的结果冒充现役 CombatID 的续算；其他独立军队的战前接战估计照常使用。battle-control 已有真实阶段、roll、双方逐团 current/soft 与战宽，但缺同一次 native application-main 的完整续算输入，现有 trial 也没有从主阶段第 N 日起跑的入口。下一步是独立 resumed 初态、同帧输入与原版对拍，然后把“继续/合法撤退”接进实际游玩策略；单纯解除这道 guard 不能解决问题。
 
 [主战阶段续算最小核](active-main-combat-resume-kernel-2026-09-27.md)已实现独立 `ActiveMainResumeState`/`ActiveMainResumeResearchKernel`：显式接收 CombatID、当前 entry/有效伤害、roll cadence/当前 roll、非 roll 优势与缓存战宽，只输出快照之后的天数和新增硬伤，拒绝战前 participant policy、跨快照和非主战阶段。46 项聚焦测试通过，但目前仅由合成续算状态检验内核行为；没有能提供这些操作数的同一 native application-main 生产读口，智能体尚未调用现役续算。下一步优先实现原生 typed producer 和真实暂停战斗下一日对拍，不能把这些静态测试算作已获得战中胜率。
+
+[现役战斗策略入口审计](active-combat-strategy-forecast-ingress-audit-2026-09-27.md)进一步确认，生产智能体当前使用同帧 battle-control 执行现役战斗的撤退与限时推进，**未使用现役续算胜率**。原生 sibling `active_combat_resume_inputs_v1=unavailable` 已可观察，但还未进入策略层的 snapshot 投影。通用首次接战 ingress 已加 guard：拟移动军或目标守军处于 `in_combat` 时，不得拿缓存 v3 或战前接战模型冒充现役战斗预测。下一步仍是补齐同帧操作数、将 typed receipt 接入策略，再以实机下一日对拍决定续算是否可用于实际游玩。
 
 [战中撤退目的地种子](active-combat-retreat-destination-seeds-2026-09-27.md)已接入智能体的**只读动作预览**：可控且仍在战斗的军队现在能以同帧其他驻扎我军省份为初始候选，排除已观测敌军当前/目标/路线省；长路线第一站在战中只生成重新预览与接触查询，不派生可绕过撤退 token 的直接 move 命令。30 项聚焦测试通过。种子不是安全目的地证明，尚无战中 route-contact ETA 覆盖及撤退后速度的实机配对，因此自动撤退 order 尚未接线；后续必须在同一暂停帧通过 native legality、完整敌军作用域、全程到站门、typed token 和新 revision 回读。
 
