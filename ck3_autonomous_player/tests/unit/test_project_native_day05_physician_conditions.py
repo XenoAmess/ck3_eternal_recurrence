@@ -4,7 +4,9 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+from tempfile import TemporaryDirectory
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -13,12 +15,36 @@ ARTIFACT = (ROOT / "src/xar_autoplayer/simulation/data/"
             "ck3_1_19_0_6_episode01_day05_physician_conditions_v1.json")
 sys.path.insert(0, str(ROOT / "src"))
 spec = importlib.util.spec_from_file_location("day05_physician_projector", SCRIPT)
-assert spec is not None and spec.loader is not None
+if spec is None or spec.loader is None:
+    raise RuntimeError("day05 physician projector could not be loaded")
 projector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(projector)
 
 
 class Day05PhysicianProjectionTest(unittest.TestCase):
+    def test_wrong_source_hash_is_rejected_before_other_evidence(self) -> None:
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            wrong_source = root / "wrong.ck3"
+            wrong_source.write_bytes(b"not the frozen day05 save")
+            with self.assertRaisesRegex(ValueError, "source save SHA-256"):
+                projector.project(root, wrong_source, root / "rakaly.exe",
+                                  root / "game", root / "weights.json")
+
+    def test_existing_output_is_never_overwritten(self) -> None:
+        with TemporaryDirectory() as temporary:
+            output = Path(temporary) / "existing.json"
+            output.write_text("existing", encoding="utf-8")
+            argv = [
+                "project_native_day05_physician_conditions.py",
+                "--attempt-root", temporary, "--source-save", temporary,
+                "--rakaly-exe", temporary, "--game-root", temporary,
+                "--weight-projection", temporary, "--output", str(output),
+            ]
+            with mock.patch.object(sys, "argv", argv), self.assertRaises(FileExistsError):
+                projector.main()
+            self.assertEqual(output.read_text(encoding="utf-8"), "existing")
+
     def test_character_save_parser_preserves_court_position_and_skill_slots(self) -> None:
         sample = (
             "\t57392={\n\t\tfirst_name=\"Guy\"\n"

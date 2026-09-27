@@ -37,6 +37,11 @@ def digest(path: Path) -> str:
     return h.hexdigest().upper()
 
 
+def require(condition: bool, detail: str) -> None:
+    if not condition:
+        raise ValueError(f"day05 physician evidence mismatch: {detail}")
+
+
 def single(pattern: str, text: str, *, flags: int = 0) -> re.Match[str]:
     matches = list(re.finditer(pattern, text, flags))
     if len(matches) != 1:
@@ -69,66 +74,75 @@ def project(attempt: Path, source_save: Path, rakaly_exe: Path, game_root: Path,
             weight_projection: Path) -> dict:
     melted_path = attempt / "d05-source-melted.ck3"
     trace_path = attempt / "ck3-output/interactive-requests-responses/007-finish.json"
-    assert digest(source_save) == SOURCE_SAVE_SHA
-    assert digest(melted_path) == MELTED_SAVE_SHA
-    assert digest(rakaly_exe) == RAKALY_SHA
-    assert digest(trace_path) == TRACE_SHA
-    assert digest(weight_projection) == WEIGHT_PROJECTION_SHA
+    require(digest(source_save) == SOURCE_SAVE_SHA, "source save SHA-256")
+    require(digest(melted_path) == MELTED_SAVE_SHA, "melted save SHA-256")
+    require(digest(rakaly_exe) == RAKALY_SHA, "Rakaly SHA-256")
+    require(digest(trace_path) == TRACE_SHA, "managed trace SHA-256")
+    require(digest(weight_projection) == WEIGHT_PROJECTION_SHA,
+            "weight projection SHA-256")
     scripts: dict[str, str] = {}
     for name, (relative, expected_sha) in SCRIPT_SHAS.items():
         path = game_root / "game" / relative
-        assert digest(path) == expected_sha
+        require(digest(path) == expected_sha, f"{name} script SHA-256")
         scripts[name] = path.read_text(encoding="utf-8-sig")
 
     trace = json.loads(trace_path.read_text(encoding="utf-8"))["body"]["managed_trace"]["trace"]
     before = trace["records"][0]["battle_events"]
     after = trace["records"][-1]["battle_events"]
-    assert after[:len(before)] == before
-    assert [(e["stable_key"], e["left_character_id"], e["right_character_id"])
-            for e in after[len(before):]] == [("knight_maimed_by_enemy", 34333, 47032)]
+    require(after[:len(before)] == before, "battle event prefix")
+    require([(e["stable_key"], e["left_character_id"], e["right_character_id"])
+             for e in after[len(before):]] == [("knight_maimed_by_enemy", 34333, 47032)],
+            "appended battle event")
     runtime = json.loads(weight_projection.read_text(encoding="utf-8"))
     treatment = next(row for row in runtime["choices"] if row["call_index"] == 49)
-    assert treatment["weights_native_int32"] == [40, 50]
-    assert treatment["selected_source_order_index"] == 1
+    require(treatment["weights_native_int32"] == [40, 50], "native treatment weights")
+    require(treatment["selected_source_order_index"] == 1, "native selected branch")
 
     melted = melted_path.read_text(encoding="utf-8-sig")
     lookup = single(r"(?ms)^traits_lookup=\{\n(.*?)^\}", melted).group(1).split()
-    assert lookup.index("lifestyle_physician") == 44
+    require(lookup.index("lifestyle_physician") == 44, "physician trait lookup index")
     position = single(
         r'(?m)^\t\t(\d+)=\{\n\t\t\tcourt_position="court_physician_court_position"\n'
         r'\t\t\temployee=(\d+)\n\t\t\temployer=34333$', melted
     )
     position_id, doctor_id = int(position.group(1)), int(position.group(2))
-    assert (position_id, doctor_id) == (834, 57392)
+    require((position_id, doctor_id) == (834, 57392), "court position and physician")
     doctor = character_record(melted, doctor_id)
-    assert doctor["court_employer_id"] == 34333
-    assert doctor["court_position_ids"] == [position_id]
-    assert doctor["skills"] == [1, 3, 2, 7, 2, 1]
+    require(doctor["court_employer_id"] == 34333, "physician court employer")
+    require(doctor["court_position_ids"] == [position_id], "physician court position")
+    require(doctor["skills"] == [1, 3, 2, 7, 2, 1], "physician base skill vector")
     trait_keys = [lookup[index] for index in doctor["trait_ids"]]
-    assert trait_keys == ["just", "gluttonous", "ambitious", "education_learning_3"]
-    assert "lifestyle_physician" not in trait_keys
+    require(trait_keys == ["just", "gluttonous", "ambitious", "education_learning_3"],
+            "physician traits")
+    require("lifestyle_physician" not in trait_keys, "physician has no lifestyle trait")
     bonuses = {key: trait_learning_bonus(scripts["traits"], key) for key in trait_keys}
-    assert bonuses == {"just": 1, "gluttonous": 0, "ambitious": 1,
-                       "education_learning_3": 6}
+    require(bonuses == {"just": 1, "gluttonous": 0, "ambitious": 1,
+                        "education_learning_3": 6}, "trait learning bonuses")
     baseline_learning = doctor["skills"][4] + sum(bonuses.values())
-    assert baseline_learning == 10
+    require(baseline_learning == 10, "frozen projected learning")
     thresholds = {
         key: int(single(rf"(?m)^{key}\s*=\s*(\d+)\s*$", scripts["basic_values"]).group(1))
         for key in ("mediocre_skill_rating", "medium_skill_rating", "decent_skill_rating", "high_skill_rating")
     }
-    assert thresholds == {"mediocre_skill_rating": 8, "medium_skill_rating": 10,
-                          "decent_skill_rating": 12, "high_skill_rating": 15}
+    require(thresholds == {"mediocre_skill_rating": 8, "medium_skill_rating": 10,
+                           "decent_skill_rating": 12, "high_skill_rating": 15},
+            "stock skill thresholds")
     effects = scripts["health_effects"]
-    assert re.search(r"court_owner\s*=\s*\{\s*random_court_position_holder\s*=", effects)
-    assert "type = court_physician_court_position" in effects
-    assert "save_scope_as = $SCOPE_NAME$" in effects
-    assert "physician_level_up_chance_effect = { CHANCE = 10 }" in effects
-    assert re.search(r"learning >= medium_skill_rating\s+learning < decent_skill_rating", effects)
-    assert "factor = 4" in effects
-    assert "50 = { #Failure" in effects
-    assert "court_physician_available_when_traveling_trigger = yes" in scripts["health_triggers"]
+    require(bool(re.search(r"court_owner\s*=\s*\{\s*random_court_position_holder\s*=", effects)),
+            "court-owner physician scope")
+    require("type = court_physician_court_position" in effects, "physician court-position type")
+    require("save_scope_as = $SCOPE_NAME$" in effects, "physician named scope")
+    require("physician_level_up_chance_effect = { CHANCE = 10 }" in effects,
+            "pre-list rank-up chance call")
+    require(bool(re.search(r"learning >= medium_skill_rating\s+learning < decent_skill_rating", effects)),
+            "medium learning condition")
+    require("factor = 4" in effects, "medium learning factor")
+    require("50 = { #Failure" in effects, "failure branch weight")
+    require("court_physician_available_when_traveling_trigger = yes" in scripts["health_triggers"],
+            "traveling physician trigger")
     projected_success = 10 * 4
-    assert projected_success == treatment["weights_native_int32"][0]
+    require(projected_success == treatment["weights_native_int32"][0],
+            "projected success weight parity")
 
     return {
         "schema": "ck3.native_day05_physician_condition_projection.v1",
@@ -174,7 +188,8 @@ def main() -> int:
     parser.add_argument("--weight-projection", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
-    assert not args.output.exists(), f"refusing to overwrite {args.output}"
+    if args.output.exists():
+        raise FileExistsError(f"refusing to overwrite {args.output}")
     result = project(args.attempt_root, args.source_save, args.rakaly_exe,
                      args.game_root, args.weight_projection)
     args.output.parent.mkdir(parents=True, exist_ok=True)
