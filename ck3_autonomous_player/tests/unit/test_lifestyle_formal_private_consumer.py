@@ -209,6 +209,13 @@ class _Driver:
     def query_player_lifestyle_formal_private_v1(self, *, expected_revision: int):
         return query_player_lifestyle_private_v1(self, expected_revision=expected_revision)
 
+    def query_player_lifestyle_current_state_private_v1(
+        self, *, expected_revision: int,
+    ):
+        return query_player_lifestyle_private_v1(
+            self, expected_revision=expected_revision, query_step=STATE_QUERY_STEP,
+        )
+
     def submit_player_lifestyle_perk_private_v1(self, *, query, action,
                                                  expected_revision: int):
         return submit_player_lifestyle_perk_private_v1(
@@ -528,7 +535,126 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             planned["plan"]["initial_lifestyle_focus_existing"]["current_focus"]["key"],
             "stewardship_domain_focus",
         )
-        self.assertFalse(planned["plan"]["initial_lifestyle_focus_existing"]["stock_focus_native_legal"])
+        self.assertEqual(
+            planned["plan"]["initial_lifestyle_focus_existing"]["readback_source"],
+            "native_current_state_only",
+        )
+        self.assertNotIn(
+            "stock_focus_native_legal",
+            planned["plan"]["initial_lifestyle_focus_existing"],
+        )
+        self.assertEqual(driver.state.last["step"], STATE_QUERY_STEP)
+
+    def test_existing_focus_does_not_require_formal_or_stock_window(self) -> None:
+        driver = _Driver()
+        driver.frame = _game_frame(4, native_revision=3)
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.fail_query = True
+        driver.state.focus_legal = False
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["phase"], "initial_lifestyle_focus_already_present")
+        self.assertEqual(plan["selected_step"], "query-campaign-root-context-v1")
+        self.assertEqual(
+            plan["initial_lifestyle_focus_existing"]["source_frame"]["revision"],
+            4,
+        )
+        self.assertEqual(
+            plan["initial_lifestyle_focus_existing"]["source_frame"]["native_revision"],
+            3,
+        )
+        self.assertEqual(driver.state.last["step"], STATE_QUERY_STEP)
+
+    def test_existing_focus_without_exact_xp_stays_blocked(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        current = query_player_lifestyle_private_v1(
+            driver, expected_revision=3, query_step=STATE_QUERY_STEP,
+        )
+        current["snapshot"]["current_lifestyle_progress"]["xp_total_raw"] = None
+        with mock.patch.object(
+            driver, "query_player_lifestyle_current_state_private_v1",
+            return_value=current,
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["phase"], "initial_lifestyle_focus_observation_red")
+        self.assertEqual(
+            plan["reason"], "existing opening focus lacks exact current XP/points",
+        )
+        self.assertEqual(driver.state.last["step"], STATE_QUERY_STEP)
+
+    def test_absent_focus_still_requires_stock_final_legality(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.formal_focus_absent = True
+        driver.state.focus_legal = False
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["phase"], "initial_lifestyle_focus_observation_red")
+        self.assertEqual(
+            plan["reason"],
+            "opening focus is absent but stock final legality is not true",
+        )
+        self.assertEqual(driver.state.last["step"], FOCUS_QUERY_STEP)
+
+    def test_opening_readback_red_identifies_failing_predicate(self) -> None:
+        def driver_for_absent_focus() -> _Driver:
+            driver = _Driver()
+            driver.require_initial_lifestyle_focus_before_date_advance = True
+            driver.state.formal_focus_absent = True
+            return driver
+
+        driver = driver_for_absent_focus()
+        with mock.patch.object(
+            driver, "query_player_lifestyle_formal_private_v1",
+            return_value={"status": "native_query_unavailable"},
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        diagnostic = plan["opening_lifestyle_readback_diagnostic"]
+        self.assertEqual(diagnostic["failed_predicates"], ["formal_status_unavailable"])
+        self.assertEqual(diagnostic["formal"]["status"], "native_query_unavailable")
+
+        driver = driver_for_absent_focus()
+        formal = query_player_lifestyle_private_v1(driver, expected_revision=3)
+        formal["source_frame"]["revision"] = 4
+        with mock.patch.object(
+            driver, "query_player_lifestyle_formal_private_v1",
+            return_value=formal,
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(
+            plan["opening_lifestyle_readback_diagnostic"]["failed_predicates"],
+            ["formal_source_frame_mismatch"],
+        )
+
+        driver = driver_for_absent_focus()
+        with mock.patch.object(
+            driver, "query_player_lifestyle_stock_focus_combined_private_v1",
+            return_value={"status": "current_state_unavailable"},
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(
+            plan["opening_lifestyle_readback_diagnostic"]["failed_predicates"],
+            ["stock_status_unavailable"],
+        )
+
+        driver = driver_for_absent_focus()
+        original_stock = driver.query_player_lifestyle_stock_focus_combined_private_v1
+
+        def drifting_stock(*, expected_revision: int):
+            result = original_stock(expected_revision=expected_revision)
+            driver.frame["revision"] += 1
+            return result
+
+        with mock.patch.object(
+            driver, "query_player_lifestyle_stock_focus_combined_private_v1",
+            side_effect=drifting_stock,
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(
+            plan["opening_lifestyle_readback_diagnostic"]["failed_predicates"],
+            ["service_paused_frame_drift"],
+        )
 
     def test_windowless_stock_focus_one_submit_and_material_receipt(self) -> None:
         driver = _Driver()

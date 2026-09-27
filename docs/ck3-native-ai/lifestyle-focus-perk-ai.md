@@ -1,5 +1,44 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE-C76：R0245 开局重心门的冷恢复读回（2026-09-27）
+
+R0245 使用 C67 `d1690e9` Python / `c3bb2c3` 原生候选，从 Robert 派生
+h133/raw53154936 的正式配对与 no-launch 结果进入唯一 CK3 PID181104。
+`allow_private_lifestyle_formal_trial=true` 与
+`require_initial_lifestyle_focus_before_date_advance=true`。首个正式 turn
+在 paused `native:3`、public revision 4、native revision 3、角色 29829
+被 `opening LIFE2/stock readback is not one paused frame` 阻断：成功 turn 0/1、
+typed 动作 0、游戏日期及配对 save 未变；进程树已受控回收。
+[原始报告](Z:/rc67-candidate/live-h133-opmcp-c75/formal-report.txt)
+SHA-256 `FA0A6F47B1DA8AC973C9F28A87242C2FB5EC1E717D1BE6BAEB3426C755559373`；
+[operator 回执](Z:/rc67-candidate/live-h133-opmcp-c75/operator-receipt.json)
+SHA-256 `FF4A637363DE574A554CDD377DDE8199E13107E9483FBD46786854BE05DBB8E1`。
+恢复历史中的财富焦点 receipt 属于旧 `native:4/raw53144328`，只能证明当时动作生效；
+它不能替代 R0245 当前帧的重心及经验/点数读回。
+
+源码中的开局 gate 在判断现有 `current_focus` 前，先同时要求完整 LIFE4 候选读口
+和固定财富焦点 stock 查询。已有有效重心时，原生 current-state-only 读口能独立
+验证当前焦点、当前生活方式经验和点数；不需要重新判断固定财富焦点是否可选。
+R0245 报告只保留合并后的 RED，没有保留内部 formal/stock 结果，因此目前无法确定
+原始失败具体是 service 内部帧漂移、formal 状态/来源帧，还是 stock 状态。
+本轮将已聚焦路径改为先消费同暂停帧 current-state-only 读回，缺焦点时仍沿原完整
+formal + stock 最终合法性门；RED 计划增加分项状态、来源帧和失败 predicate 诊断。
+这是源码级修复，**不是** R0245 RED 的实机关闭，也不宣称新动作或 M4 进展。
+
+```mermaid
+flowchart LR
+  P[暂停帧及角色绑定] --> S[原生 current-state-only]
+  S -->|现有焦点且经验/点数完整| E[只读确认，不重复选焦点]
+  S -->|焦点缺失或来源未证实| F[原 formal + stock 最终合法性检查]
+  F -->|缺焦点且合法| A[原 typed/receipt/下一 turn/checkpoint 路径]
+  F -. 状态或同帧绑定缺失 .-> R[保留 RED 与分项诊断]
+```
+
+下次匹配的 h133 配对实机候选须先通过本机 operator 的实例与 owner 核查及官方
+no-launch；在独立 paused 帧读取实际 `current_focus` 和目标 XP/点数，验证没有重复
+提交已存在焦点，随后确认下一正式 turn 与 checkpoint/cold restore。若仍 RED，依据
+新增分项诊断定位具体读口或帧，而不把进程存活、旧 receipt 或一次查询 ACK 记作闭环。
+
 ## NW-LIFE：战争只读轮次的技能机会（2026-09-26）
 
 R0187 从 Robert h2127 冷恢复后，读到 `stewardship_wealth_focus`、已拥有

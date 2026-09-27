@@ -879,7 +879,12 @@ def native_auto_run(
                                 )
                             )
                             and progress["xp_per_level"] > 0
-                            and existing.get("stock_focus_native_legal") in {True, False}
+                            and (
+                                existing.get("readback_source")
+                                == "native_current_state_only"
+                                or existing.get("stock_focus_native_legal")
+                                in {True, False}
+                            )
                         ):
                             raise AgentError(
                                 "existing opening LIFE focus proof is incomplete"

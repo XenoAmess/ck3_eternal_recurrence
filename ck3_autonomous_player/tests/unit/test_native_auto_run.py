@@ -1431,7 +1431,7 @@ class _FakeGameplayService:
                         "unspent_perk_points": 0,
                         "used_perk_points": 0,
                     },
-                    "stock_focus_native_legal": True,
+                    "readback_source": "native_current_state_only",
                 }
             if self.harness.opening_focus_receipt_seen:
                 plan["lifestyle_receipt_consumed"] = {
