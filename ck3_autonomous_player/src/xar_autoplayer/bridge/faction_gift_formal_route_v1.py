@@ -124,7 +124,15 @@ def plan_faction_gift_private_v1(
             and snapshot["native_revision"]
             > pending.get("pre_snapshot_revision", 0)
         ):
-            return planned
+            # The native receipt needs a newer paused observation at the
+            # submission date. Advancing the game here would invalidate its
+            # same-date material postcondition while the gift remains pending.
+            return {**planned, "plan": {**plan,
+                "phase": "faction_gift_pending_paused_frame",
+                "selected_step": None,
+                "faction_gift_pending_action": dict(pending),
+                "reason": "pending gift needs a newer same-date paused frame",
+            }}
         return {**planned, "plan": {**plan,
             "phase": "faction_gift_pending_verification",
             "selected_step": step,

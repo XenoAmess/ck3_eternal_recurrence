@@ -23,3 +23,24 @@ The two assessments above are historical. At master `d861608e`, the default-OFF 
 C41 found a narrower deterministic recovery gap: an unresolved gift is stored at `state_dir/native-session/faction-gift-pending-v1.json`, but official `g2_preview_operator.py prepare-state` previously carried only the save, driver, construction and family sidecars to a new candidate. A new process started from such a pair would not see the pending gift identity and could not select its cold recovery query. The operator now accepts `--faction-gift-sidecar <old-state/native-session/faction-gift-pending-v1.json>` (or the same basename inside `--sample-dir`), pairs its actor, episode, date and pre-submit checkpoint SHA with the selected save and driver, then copies the unchanged bytes to the new native-session directory after no-launch rebind. Its receipt records source, SHA and request ID. This is a source-only paired-state fix; a future gift-positive paused frame must still prove actual gold/opinion/faction effect, next-turn consumption and new-PID classification. A missing or mismatched sidecar cannot be inferred from an empty targeting vector.
 
 If a `--sample-dir` contains a valid ledger with `pending=null`, ordinary pairing continues without copying that historical resolved ledger. Explicitly passing a resolved ledger as `--faction-gift-sidecar` reports that no unresolved action was supplied.
+
+## C98 pending same-date handoff (2026-09-27)
+
+The C54 private M5 route already reaches the existing typed gift consumer and
+checks its durable pending ledger before collecting another proposal. C98 found
+a narrower production-path defect: when that ledger belongs to the current CK3
+process but the public paused revision has not passed the revision recorded
+before submit, `plan_faction_gift_private_v1` returned the original
+`life-advance` plan. The exact-build native receipt requires a newer paused
+revision **at the original game date**. A date advance in this state would make
+same-process material verification unavailable while the gift remains pending.
+
+The route now retains the pending identity and returns
+`faction_gift_pending_paused_frame` with no selected action until a newer
+same-date paused frame is available or official cold recovery classifies the
+gift. A focused production-path test reproduced the old `life-advance`
+selection before the change; the corrected route and C54 collector tests pass
+in normal and optimized Python. This is source/fixture evidence only. The
+preserved Robert roots checked for C60 have targeting-faction count zero, so
+there is still no gift-positive formal submit, independent gold/opinion/faction
+postcondition, next-turn consumption or live cold-restore qualification.
