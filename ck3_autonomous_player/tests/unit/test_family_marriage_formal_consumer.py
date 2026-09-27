@@ -93,6 +93,20 @@ class FakeDriver:
         self.state_dir = state_dir
         self.legality, self.projection = family_reads()
         self.calls: list[str] = []
+        self.allow_private_current_first_heir_relationship_query = False
+        self.current_first_heir_relationship = {
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "status": "available", "native_revision": 7,
+            "read_only": True, "advertised": False,
+            "heir_character_id": 202, "bilateral_verified": True,
+            "betrothed_character_id": None,
+            "primary_spouse_character_id": None,
+            "spouse_character_ids": [],
+        }
+
+    def query_current_first_heir_relationship_private_v1(self, *, expected_native_revision):
+        self.calls.append("relationship")
+        return dict(self.current_first_heir_relationship)
 
     def query_observed_first_heir_marriage_legality_v1(self, *, expected_native_revision):
         self.calls.append("legality")
@@ -143,6 +157,169 @@ class FakeDriver:
 
 
 class FamilyConsumerTest(unittest.TestCase):
+    @staticmethod
+    def _resolved_prior_betrothal(state_dir: Path) -> None:
+        (state_dir / "first-heir-marriage-formal-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.first-heir-marriage-formal.v1",
+                "pending": None,
+                "resolved": {
+                    "status": "betrothal", "material_result": True,
+                    "episode_run_id": "robert-test", "heir_character_id": 202,
+                    "candidate_character_id": 399,
+                    "post_bridge_pid": 55,
+                    "post_bridge_creation_date": "created",
+                    "source_pending": {"recipient_character_id": 400},
+                    "alliance_result": {"bridge_pid": 55,
+                                        "bridge_creation_date": "created",
+                                        "status": "allied"},
+                },
+            }), encoding="utf-8")
+
+    def test_current_heir_relationship_is_read_before_new_proposal(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.allow_private_current_first_heir_relationship_query = True
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+            self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
+
+    def test_current_heir_existing_relation_or_unavailable_read_blocks_new_send(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship["betrothed_character_id"] = 399
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            self.assertEqual(driver.calls, ["relationship"])
+            driver.calls.clear()
+            driver.current_first_heir_relationship = {
+                "schema": "xar.ck3.current-first-heir-relationship.v1",
+                "status": "unavailable", "native_revision": 7,
+                "read_only": True, "advertised": False,
+                "heir_character_id": 202, "unavailable_reason": "partner_unavailable",
+            }
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertNotEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+            self.assertEqual(driver.calls, ["relationship"])
+
+    def test_changed_first_heir_releases_old_resolved_ledger_for_new_proposal(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            self._resolved_prior_betrothal(state_dir)
+            driver = FakeDriver(state_dir)
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship["heir_character_id"] = 203
+            driver.legality["observed_first_heir_character_id"] = 203
+            for row in driver.legality["native_legal_candidates"]:
+                row["subject_character_id"] = 203
+            for row in driver.projection["rows"]:
+                row["heir_character_id"] = 203
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+            self.assertEqual(planned["plan"]["family_marriage_legality"]
+                             ["observed_first_heir_character_id"], 203)
+            self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
+
+    def test_dissolved_old_betrothal_can_be_reconsidered_without_resending_pending(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            self._resolved_prior_betrothal(state_dir)
+            driver = FakeDriver(state_dir)
+            driver.allow_private_current_first_heir_relationship_query = True
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+            self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
+            self.assertIsNone(read_family_marriage_ledger(state_dir)["pending"])
+
+    def test_current_relation_revision_drift_blocks_legal_query(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship["native_revision"] = 8
+            with self.assertRaisesRegex(ValueError, "planning frame"):
+                plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(driver.calls, ["relationship"])
+
+    def test_pending_result_precedes_optional_current_relation_read(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            (state_dir / "first-heir-marriage-formal-v1.json").write_text(
+                json.dumps({"schema": "xar.ck3.first-heir-marriage-formal.v1",
+                            "pending": {"episode_run_id": "robert-test",
+                                        "pre_native_revision": 6,
+                                        "source_bridge_pid": 55,
+                                        "source_bridge_creation_date": "created"},
+                            "resolved": None}), encoding="utf-8")
+            driver = FakeDriver(state_dir)
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship["status"] = "unavailable"
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], RESULT_STEP)
+            self.assertEqual(driver.calls, [])
+
+    def test_unavailable_current_relation_preserves_cold_result_recheck(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            self._resolved_prior_betrothal(state_dir)
+            driver = FakeDriver(state_dir)
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship.update(
+                status="unavailable", unavailable_reason="partner_unavailable")
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(66, "new")):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], RESULT_STEP)
+            self.assertTrue(planned["plan"]["family_marriage_cold_recovery"])
+            self.assertEqual(driver.calls, ["relationship"])
+
+    def test_selected_proposal_cannot_drop_current_relation_proof(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.allow_private_current_first_heir_relationship_query = True
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            without_relation = dict(planned["plan"])
+            without_relation.pop("family_marriage_current_relationship")
+            with self.assertRaisesRegex(ValueError, "same-frame relation proof"):
+                submit_family_marriage_private(
+                    driver, plan=without_relation, snapshot=scene())
+            self.assertIsNone(read_family_marriage_ledger(driver.state_dir)["pending"])
+
+    def test_current_relation_bound_proposal_reaches_formal_auto_turn(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.allow_private_current_first_heir_relationship_query = True
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            service = GameplayBridgeService(driver)
+            service.plan_turn = lambda: {**planned, "snapshot_id": "native:7",
+                                         "revision": 7}
+            service.snapshot = scene
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                outcome = service.auto_turn()
+            self.assertEqual(outcome["selected_step"], SUBMIT_STEP)
+            self.assertEqual(outcome["result"]["status"], "receipt_pending")
+            self.assertEqual(driver.calls,
+                             ["relationship", "legality", "projection", "submit"])
+            self.assertEqual(read_family_marriage_ledger(driver.state_dir)
+                             ["pending"]["heir_character_id"], 202)
+
     @staticmethod
     def _c9_rank_driver(state_dir: Path) -> FakeDriver:
         driver = FakeDriver(state_dir)

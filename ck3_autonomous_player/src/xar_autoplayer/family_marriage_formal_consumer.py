@@ -22,6 +22,102 @@ def _positive(value: object) -> bool:
     return type(value) is int and value > 0
 
 
+def _current_first_heir_relation(
+    driver: object, snapshot: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Bind the opted-in current heir read to this formal planning frame."""
+    if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
+        return None
+    revision = snapshot.get("native_revision")
+    if not _positive(revision):
+        raise ValueError("current first-heir relation lacks a native revision")
+    result = driver.query_current_first_heir_relationship_private_v1(
+        expected_native_revision=revision)
+    if (not isinstance(result, dict)
+            or result.get("schema") != "xar.ck3.current-first-heir-relationship.v1"
+            or result.get("status") not in {"available", "unavailable"}
+            or result.get("native_revision") != revision
+            or result.get("read_only") is not True
+            or result.get("advertised") is not False):
+        raise ValueError("current first-heir relation crossed the planning frame")
+    if result["status"] == "available":
+        heir = result.get("heir_character_id")
+        spouses = result.get("spouse_character_ids")
+        if (not _positive(heir)
+                or result.get("bilateral_verified") is not True
+                or not isinstance(spouses, list)
+                or any(not _positive(value) for value in spouses)
+                or any(value is not None and not _positive(value) for value in (
+                    result.get("betrothed_character_id"),
+                    result.get("primary_spouse_character_id")))):
+            raise ValueError("current first-heir relation is incomplete")
+    return dict(result)
+
+
+def _relation_has_partner(relation: Mapping[str, object]) -> bool:
+    return (relation.get("betrothed_character_id") is not None
+            or relation.get("primary_spouse_character_id") is not None
+            or bool(relation.get("spouse_character_ids")))
+
+
+def _resolved_relation_matches(resolved: Mapping[str, object],
+                               relation: Mapping[str, object]) -> bool:
+    if resolved.get("heir_character_id") != relation.get("heir_character_id"):
+        return False
+    candidate = resolved.get("candidate_character_id")
+    if not _positive(candidate):
+        return False
+    if resolved.get("status") == "betrothal":
+        return relation.get("betrothed_character_id") == candidate
+    if resolved.get("status") == "marriage":
+        return candidate in relation.get("spouse_character_ids", [])
+    return False
+
+
+def _plan_existing_resolution(
+    driver: object, planned: dict[str, object], plan: dict[str, object],
+    resolved: dict[str, object],
+) -> dict[str, object]:
+    pid, creation = bridge_process_identity(driver)
+    if (pid, creation) != (resolved.get("post_bridge_pid"),
+                           resolved.get("post_bridge_creation_date")):
+        if resolved.get("status") not in {"marriage", "betrothal"}:
+            return {**planned, "plan": {**plan, "selected_step": None,
+                "phase": "first_heir_marriage_cold_resolution_unknown",
+                "reason": "prior refusal/invalidated journal is not in the cold PID"}}
+        source_pending = resolved.get("source_pending")
+        if not isinstance(source_pending, dict):
+            raise ValueError("resolved marriage lacks cold source pair")
+        return {**planned, "plan": {**plan,
+            "phase": "first_heir_marriage_cold_material_recheck",
+            "selected_step": RESULT_STEP,
+            "family_marriage_pending": dict(source_pending),
+            "family_marriage_cold_recovery": True,
+            "family_marriage_prior_resolution": dict(resolved),
+            "reason": "re-read bilateral relation after restoring a prior checkpoint"}}
+    source_pending = resolved.get("source_pending")
+    recipient = (source_pending.get("recipient_character_id")
+                 if isinstance(source_pending, dict) else None)
+    alliance = resolved.get("alliance_result")
+    if (resolved.get("status") in {"marriage", "betrothal"}
+            and _positive(recipient)
+            and (not isinstance(alliance, dict)
+                 or (alliance.get("bridge_pid"),
+                     alliance.get("bridge_creation_date")) != (pid, creation))):
+        return {**planned, "plan": {**plan,
+            "phase": "first_heir_marriage_actual_alliance_read",
+            "selected_step": ALLIANCE_RESULT_STEP,
+            "family_marriage_resolved": dict(resolved),
+            "family_marriage_status": "actual_alliance_result_pending",
+            "reason": "read current player-recipient alliance after material heir relation"}}
+    return {**planned, "plan": {**plan,
+        "family_marriage_result_consumed": resolved,
+        "family_marriage_alliance_status": (
+            "recipient_unbound" if resolved.get("material_result") is True
+            and not _positive(recipient) else
+            alliance.get("status") if isinstance(alliance, dict) else None)}}
+
+
 def read_family_marriage_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.exists():
@@ -359,45 +455,49 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                 else "await_later_paused_frame"),
             "reason": "await later paused frame for marriage result without resubmitting"}}
     resolved = ledger["resolved"]
-    if isinstance(resolved, dict) and resolved.get("episode_run_id") == snapshot.get("episode_run_id"):
-        pid, creation = bridge_process_identity(driver)
-        if (pid, creation) != (resolved.get("post_bridge_pid"),
-                               resolved.get("post_bridge_creation_date")):
-            if resolved.get("status") not in {"marriage", "betrothal"}:
-                return {**planned, "plan": {**plan, "selected_step": None,
-                    "phase": "first_heir_marriage_cold_resolution_unknown",
-                    "reason": "prior refusal/invalidated journal is not in the cold PID"}}
-            source_pending = resolved.get("source_pending")
-            if not isinstance(source_pending, dict):
-                raise ValueError("resolved marriage lacks cold source pair")
-            return {**planned, "plan": {**plan,
-                "phase": "first_heir_marriage_cold_material_recheck",
-                "selected_step": RESULT_STEP,
-                "family_marriage_pending": dict(source_pending),
-                "family_marriage_cold_recovery": True,
-                "family_marriage_prior_resolution": dict(resolved),
-                "reason": "re-read bilateral relation after restoring a prior checkpoint"}}
-        source_pending = resolved.get("source_pending")
-        recipient = (source_pending.get("recipient_character_id")
-                     if isinstance(source_pending, dict) else None)
-        alliance = resolved.get("alliance_result")
-        if (resolved.get("status") in {"marriage", "betrothal"}
-                and _positive(recipient)
-                and (not isinstance(alliance, dict)
-                     or (alliance.get("bridge_pid"),
-                         alliance.get("bridge_creation_date")) != (pid, creation))):
-            return {**planned, "plan": {**plan,
-                "phase": "first_heir_marriage_actual_alliance_read",
-                "selected_step": ALLIANCE_RESULT_STEP,
-                "family_marriage_resolved": dict(resolved),
-                "family_marriage_status": "actual_alliance_result_pending",
-                "reason": "read current player-recipient alliance after material heir relation"}}
+    relation = (_current_first_heir_relation(driver, snapshot)
+                if snapshot.get("paused") is True
+                and snapshot.get("map_ready") is True
+                and _positive(snapshot.get("native_revision")) else None)
+    if relation is not None and relation["status"] == "unavailable":
+        if (isinstance(resolved, dict)
+                and resolved.get("episode_run_id") == snapshot.get("episode_run_id")
+                and bridge_process_identity(driver) != (
+                    resolved.get("post_bridge_pid"),
+                    resolved.get("post_bridge_creation_date"))):
+            return _plan_existing_resolution(driver, planned, plan, resolved)
         return {**planned, "plan": {**plan,
-            "family_marriage_result_consumed": resolved,
-            "family_marriage_alliance_status": (
-                "recipient_unbound" if resolved.get("material_result") is True
-                and not _positive(recipient) else
-                alliance.get("status") if isinstance(alliance, dict) else None)}}
+            "family_marriage_status": "current_first_heir_relation_unavailable",
+            "family_marriage_current_relationship": relation}}
+    if isinstance(resolved, dict) and resolved.get("episode_run_id") == snapshot.get("episode_run_id"):
+        if relation is not None:
+            same_heir = (resolved.get("heir_character_id") ==
+                         relation.get("heir_character_id"))
+            candidate = resolved.get("candidate_character_id")
+            matured = (same_heir and resolved.get("status") == "betrothal"
+                       and _positive(candidate)
+                       and candidate in relation.get("spouse_character_ids", []))
+            if matured:
+                pid, creation = bridge_process_identity(driver)
+                if (pid, creation) == (resolved.get("post_bridge_pid"),
+                                       resolved.get("post_bridge_creation_date")):
+                    resolved = {**resolved, "status": "marriage",
+                                "warm_material_transition": "betrothal_to_marriage",
+                                "warm_material_native_revision": snapshot["native_revision"]}
+                    resolved.pop("alliance_result", None)
+                    _write(state_dir, {**ledger, "resolved": resolved})
+            elif (not _resolved_relation_matches(resolved, relation)
+                  and (resolved.get("status") in {"marriage", "betrothal"}
+                       or not same_heir)):
+                # An old material pair belongs to the old heir or has ended.
+                # Keep its evidence until a new proposal replaces the ledger.
+                resolved = None
+        if resolved is not None:
+            return _plan_existing_resolution(driver, planned, plan, resolved)
+    if relation is not None and _relation_has_partner(relation):
+        return {**planned, "plan": {**plan,
+            "family_marriage_status": "current_first_heir_already_partnered",
+            "family_marriage_current_relationship": relation}}
     if not (snapshot.get("paused") is True and snapshot.get("map_ready") is True
             and snapshot.get("active_event") is None
             and snapshot.get("pending_character_interaction") is None
@@ -406,6 +506,10 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
         return planned
     legality = driver.query_observed_first_heir_marriage_legality_v1(
         expected_native_revision=snapshot["native_revision"])
+    if (relation is not None and legality.get("status") == "available"
+            and legality.get("observed_first_heir_character_id") !=
+                relation["heir_character_id"]):
+        raise ValueError("current first-heir relation and legal actor differ")
     legal_rows = legality.get("native_legal_candidates")
     if legality.get("status") != "available" or not isinstance(legal_rows, list):
         return {**planned, "plan": {**plan, "family_marriage_legality": legality}}
@@ -422,16 +526,29 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
         return {**planned, "plan": {**plan, "selected_step": None,
             "phase": "first_heir_marriage_observation_unavailable",
             "reason": "one of five exact marriage outcome or lineage reads is unavailable"}}
+    if relation is not None:
+        for row in projection.get("rows", []):
+            if (not isinstance(row, dict)
+                    or row.get("heir_character_id") != relation["heir_character_id"]
+                    or row.get("heir_betrothed_character_id") !=
+                        relation["betrothed_character_id"]
+                    or row.get("heir_primary_spouse_character_id") !=
+                        relation["primary_spouse_character_id"]
+                    or row.get("heir_spouse_character_ids") !=
+                        relation["spouse_character_ids"]):
+                raise ValueError("current first-heir relation and proposal projection differ")
     choice = choose_first_heir_marriage_candidate(legality, projection)
     diagnostic = _private_five_candidate_diagnostic(
         legality, projection, snapshot, choice, ranking)
     if choice is None:
         return {**planned, "plan": {**plan, "family_marriage_status":
                                     "no_positive_observed_marriage_opportunity",
-                                    "family_marriage_private_diagnostic": diagnostic}}
+                                    "family_marriage_private_diagnostic": diagnostic,
+                                    "family_marriage_current_relationship": relation}}
     return {**planned, "plan": {**plan, "phase": "first_heir_marriage_typed_submit",
         "selected_step": SUBMIT_STEP, "family_marriage_choice": choice,
         "family_marriage_legality": legality,
+        "family_marriage_current_relationship": relation,
         "family_marriage_private_diagnostic": diagnostic,
         "reason": "submit one observed bounded first-heir marriage or betrothal opportunity"}}
 
@@ -463,6 +580,22 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
             or observed_matches[0].get("recipient_character_id") != recipient
             or observed_matches[0].get("recipient_matchmaker_character_id") != recipient):
         raise ValueError("first-heir marriage recipient changed before submission")
+    if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is True:
+        relation = plan.get("family_marriage_current_relationship")
+        if (not isinstance(relation, Mapping)
+                or relation.get("status") != "available"
+                or relation.get("bilateral_verified") is not True
+                or relation.get("native_revision") != snapshot.get("native_revision")
+                or relation.get("heir_character_id") !=
+                    legality.get("observed_first_heir_character_id")
+                or _relation_has_partner(relation)
+                or observed_matches[0].get("heir_betrothed_character_id") !=
+                    relation.get("betrothed_character_id")
+                or observed_matches[0].get("heir_primary_spouse_character_id") !=
+                    relation.get("primary_spouse_character_id")
+                or observed_matches[0].get("heir_spouse_count") !=
+                    len(relation.get("spouse_character_ids", []))):
+            raise ValueError("first-heir marriage lacks current same-frame relation proof")
     # The selected native projection reads this direction before the proposal.
     # It does not establish the recipient-to-player direction or causality.
     pairs = observed_matches[0].get("possible_alliance_pairs")
