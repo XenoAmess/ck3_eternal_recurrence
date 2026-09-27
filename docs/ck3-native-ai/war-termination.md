@@ -2780,3 +2780,13 @@ driver, R14 source, or simulator files.
 [production policy, no-launch regression] 现有 `de-jure-no-safe-route-emergency-exit-v1` 只接受玩家为 **attacker** 且投降结果为 `attacker_defeat` 的行；它不接纳本帧的 primary-defender / `attacker_victory` 行。仓库的 [`test_war31_observed_frame_alternative.py`](../../ck3_autonomous_player/tests/unit/test_war31_observed_frame_alternative.py) 按 Git 内 R0221 回执的 SHA-256、同帧 WarID/episode/revisions 复核该 production 谓词；即使向测试提供 `surrender-war-16777231` 字面动作，也不会从“无安全路线”分支选择它。本次测试没有启动 CK3 或调用原生效果预览。
 
 因此本帧可交付的安全替代是：不提交任何终局动作，继续使用已绑定同帧路线、接敌与战斗输入的有界军事决策；帧变化后重新查询。R0250 在同一正式 campaign 上又观察到 12 个合格 turn、War31 仍在、无终局动作。这证明替代路线能继续推进一段，而不证明最终胜利或投降后的具体结算。跨任务的 [WAR31 响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-INPUT-R0221-WAR31-20260927.json) 仅以这个替代合同交付；原始 save/driver 在另一台机器，实际材料条款的读取和终局选择仍须独立研究与配对验收。
+
+### 2026-09-27 WAR31 静态停战连线
+
+[精确原版脚本校验](war31-dejure-truce-script-2026-09-27.md)把 R0221 的
+`attacker_victory` 接到该 CB 的 `on_victory`、通用胜利停战效果和
+`standard_truce_duration_days`。若以后实际执行这条结果，脚本指定
+`30097 → 29829` 单向停战，动态天数先做至少 730 天的下限，再可能因
+同一对人物的 `fp2_border_raid` 战争乘 2。R0221 未冻结各动态条件，
+未执行终局，也未读取已存储的 end-date；实际天数和到期日仍为 unknown，
+不能将这一静态方向发布成当前 War31 的完整 surrender terms。

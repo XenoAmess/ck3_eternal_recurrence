@@ -1,0 +1,38 @@
+{
+  "schema": "xar.ck3.war31.dejure_truce_script.v1",
+  "source": "stock-ck3-1.19.0.6-scripts-plus-R0221-identity",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "stock_script_sha256": {
+    "common/casus_belli_types/00_dejure_war.txt": "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE",
+    "common/scripted_effects/00_war_effects.txt": "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D",
+    "common/script_values/00_war_values.txt": "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B"
+  },
+  "request_id": "WAR-INPUT-R0221-WAR31-20260927",
+  "request_sha256": "2B895343545B75F56F0594C746677015CBCC2B6BDDD78CA2696BB13EB0B53D75",
+  "war_id": 16777231,
+  "paused_date_raw": 53215920,
+  "scripted_on_victory": {
+    "outcome": "attacker_victory",
+    "effect": "add_truce_attacker_victory_effect",
+    "truce_owner_role": "primary_attacker",
+    "truce_owner_character_id": 30097,
+    "toward_role": "primary_defender",
+    "toward_character_id": 29829,
+    "direction": "one_way",
+    "result_argument": "victory",
+    "days_script_value": "standard_truce_duration_days"
+  },
+  "duration_formula": {
+    "base_days": 1825,
+    "attacker_flexible_truces_perk_add_days": -450,
+    "shorter_struggle_add_days": -900,
+    "longer_struggle_add_days": 900,
+    "both_nomadic_subtract_days": 730,
+    "minimum_days_before_border_raid_multiplier": 730,
+    "matching_border_raid_war_multiplier": 2,
+    "dynamic_conditions_observed_in_R0221": false
+  },
+  "actual_evaluated_days": null,
+  "actual_expiry_date_raw": null,
+  "material_terms_status": "script_static_only_not_applied_or_observed"
+}
