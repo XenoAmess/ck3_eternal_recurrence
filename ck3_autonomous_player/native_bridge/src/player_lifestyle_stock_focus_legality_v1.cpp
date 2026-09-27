@@ -192,7 +192,9 @@ bool ValidTargetProgress(const StockFocusTargetProgressV1 &progress) noexcept {
 }
 
 Status ReadOne(const StockFocusLegalityEnvironmentV1 &env,
-               const StockFocusLegalityAccessV1 &access, Sample &sample) noexcept {
+               const StockFocusLegalityAccessV1 &access,
+               std::string_view target_key, std::string_view lifestyle_key,
+               Sample &sample) noexcept {
   sample = {};
   if (!access.capture_frame(access.context, sample.frame) ||
       !FrameValid(sample.frame)) {
@@ -229,7 +231,7 @@ Status ReadOne(const StockFocusLegalityEnvironmentV1 &env,
         !ReadStableKey(access, sample.members[index], sample.keys[index])) {
       return Status::unavailable_database;
     }
-    if (View(sample.keys[index]) == kStockFocusLegalityTargetV1) {
+    if (View(sample.keys[index]) == target_key) {
       ++target_matches;
       sample.target_definition = sample.members[index];
       sample.target_key = sample.keys[index];
@@ -243,7 +245,7 @@ Status ReadOne(const StockFocusLegalityEnvironmentV1 &env,
               lifestyle) ||
       lifestyle == 0 ||
       !ReadStableKey(access, lifestyle, sample.lifestyle_key) ||
-      View(sample.lifestyle_key) != kStockFocusLegalityLifestyleV1) {
+      View(sample.lifestyle_key) != lifestyle_key) {
     return Status::unavailable_candidate;
   }
   if (access.capture_target_progress != nullptr) {
@@ -294,7 +296,22 @@ StockFocusLegalityEnvironmentV1 BindStockFocusLegalityEnvironmentV1(
 StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
     const StockFocusLegalityEnvironmentV1 &env,
     const StockFocusLegalityAccessV1 &access) noexcept {
+  return ReadStockFocusLegalityV1(env, access, kStockFocusLegalityTargetV1,
+                                  kStockFocusLegalityLifestyleV1);
+}
+
+StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
+    const StockFocusLegalityEnvironmentV1 &env,
+    const StockFocusLegalityAccessV1 &access,
+    std::string_view target_key, std::string_view lifestyle_key) noexcept {
   StockFocusLegalityResultV1 out{};
+  if (!((target_key == kStockFocusLegalityTargetV1 &&
+         lifestyle_key == kStockFocusLegalityLifestyleV1) ||
+        (target_key == kDiplomacyForeignAffairsFocusV1 &&
+         lifestyle_key == kDiplomacyLifestyleV1))) {
+    out.status = Status::unavailable_candidate;
+    return out;
+  }
   if (!EnvironmentValid(env)) {
     out.status = Status::unavailable_exact_build;
     return out;
@@ -306,14 +323,14 @@ StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
     return out;
   }
   Sample first{};
-  const auto first_status = ReadOne(env, access, first);
+  const auto first_status = ReadOne(env, access, target_key, lifestyle_key, first);
   if (first_status != Status::observed_native_illegal &&
       first_status != Status::observed_native_legal) {
     out.status = first_status;
     return out;
   }
   Sample second{};
-  const auto second_status = ReadOne(env, access, second);
+  const auto second_status = ReadOne(env, access, target_key, lifestyle_key, second);
   if (second_status != Status::observed_native_illegal &&
       second_status != Status::observed_native_legal) {
     out.status = second_status;

@@ -47,9 +47,9 @@ struct Fixture {
   bool command_correct = true;
   static Fixture *active;
 
-  void Init() {
-    constexpr std::string_view focus_name = "stewardship_wealth_focus";
-    constexpr std::string_view lifestyle_name = "stewardship_lifestyle";
+  void Init(std::string_view focus_name = kStockFocusLegalityTargetV1,
+            std::string_view lifestyle_name =
+                kStockFocusLegalityLifestyleV1) {
     std::memcpy(definition_key.data(), focus_name.data(), focus_name.size());
     std::memcpy(lifestyle_key.data(), lifestyle_name.data(),
                 lifestyle_name.size());
@@ -181,7 +181,10 @@ struct Fixture {
     return f.validator_result;
   }
 
-  StockFocusLegalityResultV1 Run(bool exact = true) {
+  StockFocusLegalityResultV1 Run(
+      bool exact = true,
+      std::string_view target = kStockFocusLegalityTargetV1,
+      std::string_view target_lifestyle = kStockFocusLegalityLifestyleV1) {
     active = this;
     const StockFocusLegalityEnvironmentV1 env{
         exact, kStockFocusLegalityExeSha256V1, kModule, true,
@@ -189,7 +192,7 @@ struct Fixture {
     const StockFocusLegalityAccessV1 access{
         this, &Fixture::OnMain, &Fixture::Capture, &Fixture::ReadMemory,
         &Fixture::CaptureTargetProgress};
-    return ReadStockFocusLegalityV1(env, access);
+    return ReadStockFocusLegalityV1(env, access, target, target_lifestyle);
   }
 };
 Fixture *Fixture::active = nullptr;
@@ -240,6 +243,22 @@ void TestNativeRejectionIsNotUnknown() {
           "two stock false results are a native rejection");
 }
 
+void TestDiplomacyTargetIsReadOnlyAndDoubleSampled() {
+  Fixture f{};
+  f.Init(kDiplomacyForeignAffairsFocusV1, kDiplomacyLifestyleV1);
+  const auto result = f.Run(true, kDiplomacyForeignAffairsFocusV1,
+                            kDiplomacyLifestyleV1);
+  Require(result.status == Status::observed_native_legal &&
+              f.validator_calls == 2 && f.progress_calls == 2 &&
+              result.target_progress.available && f.command_correct &&
+              result.target_definition == f.rows[0],
+          "alternative focus needs its own two final verdicts and XP reads");
+  Require(f.Run(true, kDiplomacyForeignAffairsFocusV1,
+                kStockFocusLegalityLifestyleV1).status ==
+              Status::unavailable_candidate,
+          "mismatched target lifestyle must not be admitted");
+}
+
 void TestUnresolvedSourceNeverCallsValidator() {
   Fixture absent{};
   absent.Init();
@@ -287,10 +306,11 @@ int main() {
   try {
     TestLegalAndExactBinder();
     TestNativeRejectionIsNotUnknown();
+    TestDiplomacyTargetIsReadOnlyAndDoubleSampled();
     TestTargetProgressUnavailableAndDriftStayTyped();
     TestUnresolvedSourceNeverCallsValidator();
     TestFrameAndBuildGates();
-    std::cout << "stock focus legality: 5/5 GREEN\n";
+    std::cout << "stock focus legality: 6/6 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock focus legality: RED: " << error.what() << '\n';
