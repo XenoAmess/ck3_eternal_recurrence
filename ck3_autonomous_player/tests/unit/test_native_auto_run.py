@@ -4238,7 +4238,8 @@ class NativeAutoRunTests(unittest.TestCase):
             "perk_opportunity": {
                 "status": "observed", "query_status": "available",
                 "formal_precondition_status": "ready",
-                "legal_candidate_count": 1,
+                "candidate_scope": "policy_target",
+                "legal_candidate_count_in_scope": 1,
                 "policy_target_final_legal": {"centralization_perk": True},
                 "policy_target_owned": {"centralization_perk": False},
                 "unbounded_detail": "discard",
@@ -4251,7 +4252,9 @@ class NativeAutoRunTests(unittest.TestCase):
         })
         observed = compact["opening_lifestyle_observation"]
         self.assertEqual(observed["current_lifestyle_progress"]["unspent_perk_points"], 1)
-        self.assertEqual(observed["perk_opportunity"]["legal_candidate_count"], 1)
+        self.assertEqual(observed["perk_opportunity"]["candidate_scope"],
+                         "policy_target")
+        self.assertEqual(observed["perk_opportunity"]["legal_candidate_count_in_scope"], 1)
         self.assertTrue(observed["perk_opportunity"]["policy_target_final_legal"]
                         ["centralization_perk"])
         self.assertNotIn("unbounded_detail", observed["source_frame"])
@@ -4260,28 +4263,29 @@ class NativeAutoRunTests(unittest.TestCase):
 
         existing["current_lifestyle_progress"]["xp_total_raw"] = 0
         existing["current_lifestyle_progress"]["unspent_perk_points"] = 0
-        existing["perk_opportunity"]["legal_candidate_count"] = 0
+        existing["perk_opportunity"]["legal_candidate_count_in_scope"] = 0
         existing["perk_opportunity"]["policy_target_final_legal"] = {
-            "centralization_perk": False,
+            "centralization_perk": None,
         }
         zero = native_auto_run_module._compact_plan({
             "initial_lifestyle_focus_existing": existing,
         })["opening_lifestyle_observation"]
         self.assertEqual(zero["current_lifestyle_progress"]["xp_total_raw"], 0)
         self.assertEqual(zero["current_lifestyle_progress"]["unspent_perk_points"], 0)
-        self.assertEqual(zero["perk_opportunity"]["legal_candidate_count"], 0)
-        self.assertFalse(zero["perk_opportunity"]["policy_target_final_legal"]
-                         ["centralization_perk"])
+        self.assertEqual(zero["perk_opportunity"]["legal_candidate_count_in_scope"], 0)
+        self.assertIsNone(zero["perk_opportunity"]["policy_target_final_legal"]
+                          ["centralization_perk"])
 
         existing["perk_opportunity"] = {
             "status": "unknown", "query_status": "native_query_unavailable",
-            "legal_candidate_count": None,
+            "candidate_scope": None, "legal_candidate_count_in_scope": None,
             "policy_target_final_legal": None, "policy_target_owned": None,
         }
         unknown = native_auto_run_module._compact_plan({
             "initial_lifestyle_focus_existing": existing,
         })["opening_lifestyle_observation"]["perk_opportunity"]
-        self.assertIsNone(unknown["legal_candidate_count"])
+        self.assertIsNone(unknown["candidate_scope"])
+        self.assertIsNone(unknown["legal_candidate_count_in_scope"])
         self.assertIsNone(unknown["policy_target_final_legal"])
         self.assertEqual(unknown["query_status"], "native_query_unavailable")
 

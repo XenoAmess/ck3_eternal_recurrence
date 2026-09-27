@@ -4881,13 +4881,14 @@ def _compact_opening_lifestyle_observation(value: object) -> dict[str, object] |
     if isinstance(perk, dict):
         result["perk_opportunity"] = {key: perk.get(key) for key in (
             "status", "query_status", "native_error", "error_type",
-            "formal_precondition_status", "legal_candidate_count",
+            "formal_precondition_status", "candidate_scope",
+            "legal_candidate_count_in_scope",
             "policy_target_final_legal", "policy_target_owned",
         )}
     else:
         result["perk_opportunity"] = {
             "status": "unknown", "query_status": "not_observed",
-            "legal_candidate_count": None,
+            "candidate_scope": None, "legal_candidate_count_in_scope": None,
             "policy_target_final_legal": None,
             "policy_target_owned": None,
         }

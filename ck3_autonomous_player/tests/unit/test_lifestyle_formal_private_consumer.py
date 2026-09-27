@@ -85,6 +85,7 @@ class _State:
         self.formal_focus_absent = False
         self.stock_focus_present = False
         self.zero_points = False
+        self.policy_target_scope = False
         self.professional_workforce_ready = False
         self.centralization_ready = False
 
@@ -110,6 +111,8 @@ class _State:
                     "error": "native_lifestyle_state_or_final_candidates_unavailable"}
         if step == QUERY_STEP:
             life = _life_snapshot()
+            if self.policy_target_scope:
+                life["legal_perk_candidates"]["scope"] = "policy_target"
             if self.zero_points:
                 life["current_lifestyle_progress"].update({
                     "xp_total_raw": 0, "xp_within_level_raw": 0,
@@ -557,7 +560,8 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         )
         perk = planned["plan"]["initial_lifestyle_focus_existing"]["perk_opportunity"]
         self.assertEqual(perk["status"], "observed")
-        self.assertEqual(perk["legal_candidate_count"], 1)
+        self.assertEqual(perk["candidate_scope"], "full_inventory")
+        self.assertEqual(perk["legal_candidate_count_in_scope"], 1)
         self.assertTrue(perk["policy_target_final_legal"]["cutting_corners_perk"])
         self.assertFalse(perk["policy_target_owned"]["cutting_corners_perk"])
         self.assertEqual(driver.state.last["step"], QUERY_STEP)
@@ -567,16 +571,35 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         driver.require_initial_lifestyle_focus_before_date_advance = True
         driver.state.stock_focus_present = True
         driver.state.zero_points = True
+        driver.state.policy_target_scope = True
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
         existing = plan["initial_lifestyle_focus_existing"]
         self.assertEqual(plan["selected_step"], "query-campaign-root-context-v1")
         self.assertEqual(existing["current_lifestyle_progress"]["xp_total_raw"], 0)
         self.assertEqual(existing["current_lifestyle_progress"]["unspent_perk_points"], 0)
         self.assertEqual(existing["perk_opportunity"]["status"], "observed")
-        self.assertEqual(existing["perk_opportunity"]["legal_candidate_count"], 0)
-        self.assertFalse(any(
+        self.assertEqual(existing["perk_opportunity"]["candidate_scope"], "policy_target")
+        self.assertEqual(existing["perk_opportunity"]["legal_candidate_count_in_scope"], 0)
+        self.assertTrue(all(
+            value is None for value in
             existing["perk_opportunity"]["policy_target_final_legal"].values()
         ))
+
+    def test_opening_policy_target_one_row_keeps_unqueried_perks_unknown(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.policy_target_scope = True
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        opportunity = plan["initial_lifestyle_focus_existing"]["perk_opportunity"]
+        self.assertEqual(plan["selected_step"], "query-campaign-root-context-v1")
+        self.assertEqual(opportunity["candidate_scope"], "policy_target")
+        self.assertEqual(opportunity["legal_candidate_count_in_scope"], 1)
+        self.assertTrue(opportunity["policy_target_final_legal"]["cutting_corners_perk"])
+        self.assertIsNone(
+            opportunity["policy_target_final_legal"]["professional_workforce_perk"]
+        )
+        self.assertIsNone(opportunity["policy_target_final_legal"]["centralization_perk"])
 
     def test_opening_formal_fallback_projects_perks_without_another_formal_query(self) -> None:
         driver = _Driver()
@@ -628,7 +651,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         )
         self.assertIsNone(
             plan["initial_lifestyle_focus_existing"]["perk_opportunity"]
-            ["legal_candidate_count"]
+            ["legal_candidate_count_in_scope"]
         )
         self.assertEqual(driver.state.last["step"], QUERY_STEP)
 
