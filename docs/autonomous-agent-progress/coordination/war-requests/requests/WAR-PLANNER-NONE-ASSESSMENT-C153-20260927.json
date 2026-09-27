@@ -1,0 +1,40 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-PLANNER-NONE-ASSESSMENT-C153-20260927",
+  "created_at_utc": "2026-09-27T09:44:08Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "preexisting_future_peace_path_defect",
+  "scope": "Keep the war planner's at-peace native declaration path recoverable when no same-frame war-entry assessment is available; do not change combat modeling or active-war policy in this request.",
+  "source": {
+    "candidate_commit": "626f135ed37b900b17b5891d17d6dd79cef5ea9f",
+    "candidate_parent_commit": "09ce8bbaffc72b0c4d593697e9697915b3ccd401",
+    "latest_master_when_filed": "d70b0c4b55086c7a315d9ba5253daff27e4be2a9",
+    "same_strategy_blob_across_parent_candidate_and_master": "c17137752c8d71aded881c2595eee25bbb3c7a07",
+    "same_test_blob_across_parent_candidate_and_master": "d7de0b9873732d105f7aa9298114a440d712e8ae"
+  },
+  "reproduction": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:13716",
+    "entry": "choose_one_life_turn with an at-peace native declarable war and no fresh assessment row; assessment query step absent from available action steps",
+    "actual": "AttributeError on assessment_row.get before a no-declare or query-required plan is returned",
+    "affected_tests": [
+      "GameplayBridgeTests.test_legal_native_declaration_defers_without_bypassing_evidence",
+      "GameplayBridgeTests.test_native_war_planner_holds_peace_after_material_white_peace"
+    ],
+    "parent_and_candidate_reproduced": true
+  },
+  "expected_contract": "If the same-frame assessment is missing and cannot be queried now, return a typed, recoverable NO_DECLARE or explicitly blocked plan with the missing assessment recorded. Do not dereference a missing row, infer missing power as zero, or submit a declaration without required evidence. Preserve post-white-peace cooldown semantics.",
+  "requested_delivery": [
+    "Fix the narrow null-assessment path in the war planner and close the two named tests under normal and optimized Python.",
+    "State the planner phase, selected step, missing-field meaning and pending/resource effects so the nonwar consumer can use the master result in a future matching candidate.",
+    "Classify the ancillary MCP exact-tool-set assertion separately; the observed five extra tools are a stale test expectation, with no missing tool or demonstrated runtime call failure."
+  ],
+  "consumer_boundary": "The h2357 Robert candidate is already in an active war. This pre-existing at-peace defect is not evidence that its current active-war continuation fails, and the test-only MCP mismatch is not a CK3 live blocker. The consumer will recheck the changed path on a source-matched candidate when its frame becomes applicable.",
+  "evidence": {
+    "git_reproduction": "../evidence/WAR-PLANNER-NONE-ASSESSMENT-C153-20260927.repro.json",
+    "git_reproduction_sha256": "DDEBE75F896F44A92855D345805A23C2E0683F3E830E20D1FC8B8CDAE79DAA2C",
+    "local_logs_are_not_remote_dependencies": true,
+    "ck3_live_evidence": null
+  }
+}

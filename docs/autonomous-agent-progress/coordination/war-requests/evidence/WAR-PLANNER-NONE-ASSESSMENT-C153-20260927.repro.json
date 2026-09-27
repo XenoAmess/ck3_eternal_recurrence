@@ -1,0 +1,32 @@
+{
+  "schema": "xar.g2.cross-team-war-repro.v1",
+  "finding": "A legal native declaration with no same-frame war-entry assessment can reach the general battle prior blocker list and raise AttributeError before a plan is returned.",
+  "source": {
+    "candidate_commit": "626f135ed37b900b17b5891d17d6dd79cef5ea9f",
+    "parent_commit": "09ce8bbaffc72b0c4d593697e9697915b3ccd401",
+    "strategy_path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "strategy_blob_at_parent_candidate_and_master_d70b0c4": "c17137752c8d71aded881c2595eee25bbb3c7a07",
+    "test_path": "ck3_autonomous_player/tests/unit/test_gameplay_bridge.py",
+    "test_blob_at_parent_candidate_and_master_d70b0c4": "d7de0b9873732d105f7aa9298114a440d712e8ae",
+    "source_excerpt": "At strategy.py:13716, prior_scope_blockers evaluates assessment_row.get('actor_network_contribution_raw') and assessment_row.get('actor_power_total_raw') without first checking fresh_assessment; assessment_row may be None when the assessment query step is unavailable."
+  },
+  "reproduction": {
+    "working_directory": "ck3_autonomous_player",
+    "command": "python -m pytest -q -p no:cacheprovider --tb=short tests/unit/test_gameplay_bridge.py::GameplayBridgeTests::test_legal_native_declaration_defers_without_bypassing_evidence tests/unit/test_gameplay_bridge.py::GameplayBridgeTests::test_native_war_planner_holds_peace_after_material_white_peace tests/unit/test_gameplay_bridge.py::GameplayMcpServerTests::test_official_mcp_client_lists_and_calls_ck3_tools",
+    "candidate_normal": "3 failed, 493 passed, 167 subtests passed; log SHA-256 F99E95B615F01CD1E791A954FCB1A1C60B053066E05C608530D706D181A76C1F",
+    "candidate_optimized": "3 failed, 493 passed, 167 subtests passed; log SHA-256 68495BE8212C6C813E0F6151BC966DAA029082685A50A48601E6478E3519B313",
+    "parent_targeted": "3 failed; log SHA-256 144DA70A129C84C6C9F2AEAF224F5706ED464CD0947979D87A23C90B95594A76",
+    "failing_war_tests": [
+      "GameplayBridgeTests.test_legal_native_declaration_defers_without_bypassing_evidence",
+      "GameplayBridgeTests.test_native_war_planner_holds_peace_after_material_white_peace"
+    ],
+    "exception": "AttributeError: 'NoneType' object has no attribute 'get' at strategy.py:13716",
+    "fixture_conditions": "At peace, native declarable war present, no fresh war-entry assessment, and the assessment query step unavailable. The second test reaches the same branch after material white peace cooldown expires."
+  },
+  "ancillary_test_only_mismatch": {
+    "test": "GameplayMcpServerTests.test_official_mcp_client_lists_and_calls_ck3_tools",
+    "actual": "The server lists five extra tools absent from the test's exact expected set: ck3_query_engine_log_literals_v1, ck3_query_engine_diagnostics_v1, ck3_inspect_save_artifacts_v1, ck3_collect_declarable_wars_result_v1, ck3_query_combat_phase_event_trace_v1.",
+    "classification": "Stale exact-set test expectation; the failure reports no missing tool and supplies no evidence that a production MCP call broke. Coordinate any test update with the owning tool maintainers."
+  },
+  "risk_boundary": "The planner exception is a deterministic production-path risk at peace, but the current h2357 Robert candidate is already in an active war. These test failures alone do not block that active-war continuation or prove a live CK3 failure. No CK3 process was started for this reproduction."
+}
