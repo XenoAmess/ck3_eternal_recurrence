@@ -1,0 +1,147 @@
+{
+  "schema": "xar.ck3.robert-h2825-combined-candidate/v1",
+  "status": "official_no_launch_ready_live_not_started",
+  "created_at_utc": "2026-09-27T18:36:48.761471+00:00",
+  "candidate_source_commit": "cbaf451361f92642b73be994f3e6c5ac9ec71545",
+  "native_build_source_commit": "b0e268ec132479ac15e32c2ed36b56ed9fc2eea9",
+  "latest_master_checked_at_freeze": "a906d4a88940132ddf3a36e7cdba0bdfe687483b",
+  "source_vs_latest_master": "docs/coordination H2743 war request and PRV008 OneDrive transfer only; native bridge, runtime strategy and operator source Git blobs identical",
+  "native_source_tree": "a9189a4b6050c17d35573aa6ecdd0da5b60139e4",
+  "runtime_strategy_tree": "f2b16a134d64dd2ad6154faada062aa03408ab29",
+  "operator_source_blob": "fb2d1738104d18b8c21e87bcf3bcc6c79e281108",
+  "source_worktree": "Z:\\h2825-combined-precandidate-20260928\\src",
+  "source_pair_round": "R0264",
+  "actor_character_id": 29829,
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "history_index": 2825,
+  "date_raw": 53217624,
+  "persistent_robert_days": 3054,
+  "lifecycle": "ordinary_campaign_succession/xar_off",
+  "native_build_receipt": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\BUILD-RECEIPT.json",
+    "size_bytes": 4003,
+    "sha256": "639E4FDB0B13BC2F40B5795AC2A41DA86792DA8C16C459BE7DA1681903E71512"
+  },
+  "source_pair_index": {
+    "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\PAIR-IDENTITY.json",
+    "size_bytes": 5486,
+    "sha256": "B52F34C4011FAB2691F8A5B03EA051C918AEA7BE94C0EB3D0D6A6B5B0C5F02E4"
+  },
+  "manifest": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\operator-manifest-h2825-combined-attempt02.json",
+    "size_bytes": 1847,
+    "sha256": "EB721104EAC9777F317211C0B2A690A715B706A8048B5E97877F8913F1997EAC"
+  },
+  "operator_profile": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\operator-profile-h2825-combined-36.json",
+    "size_bytes": 7526,
+    "sha256": "4EED8FFCDF6B9976E4B2DFD8B828560B7D5BA71E0EDFDE8968903E94F3C35298"
+  },
+  "dll": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\build-release\\Release\\xar_ck3_bridge.dll",
+    "size_bytes": 3745280,
+    "sha256": "A520BCB688ED921E8DA7410D8426E2FE443135F3F0CECBA928791CCBA0243245"
+  },
+  "injector": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\build-release\\Release\\xar_ck3_bridge_injector.exe",
+    "size_bytes": 39936,
+    "sha256": "521EB12E5B3F8AFCFF01B2B2B8D9D6B6690B24CC59BE7C25E0E101F438766710"
+  },
+  "derived_save": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\state-attempt02\\profile\\save games\\xar_checkpoint.ck3",
+    "size_bytes": 78185155,
+    "sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D"
+  },
+  "derived_driver": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\state-attempt02\\native-session\\driver-state.json",
+    "size_bytes": 56060738,
+    "sha256": "23494B456844600DEA2E743C07117B9F3E8FE47BA5D6AA706A9F973923CD2DAA"
+  },
+  "derived_family_sidecar": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\state-attempt02\\first-heir-marriage-formal-v1.json",
+    "size_bytes": 2742,
+    "sha256": "E642B45C8FF830148A2DED2D2B107CDD30C81F7E8FB2D3D4938CCEA81D744AF8"
+  },
+  "rebind_receipt": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\state-attempt02\\ordinary-seed-rebind-v1.json",
+    "size_bytes": 4027,
+    "sha256": "9121A63F959FD2DC23194D7AF761AEA5CF2C6C82134F82C7080C4E1EF3CCDE84"
+  },
+  "no_launch_report": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\state-attempt02\\preflights\\20260927T183308Z-one-generation-preflight-0495e3fc\\report.json",
+    "size_bytes": 3995,
+    "sha256": "83C31D7F712E41C780F8DCF7F5D82BE21221BEF1E4B0BFC8A08774A14AA84609"
+  },
+  "prepare_log": {
+    "path": "Z:\\h2825-combined-precandidate-20260928\\prepare-state-attempt02.log",
+    "size_bytes": 21216,
+    "sha256": "4F002009C112B35F76C6B9488677D147B6364EECCBA9A0DDFE42575D33FF02BC"
+  },
+  "operator_job": {
+    "name": "robert-h2825-life3-prisoner-econ-private-36",
+    "command": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "Z:\\h2825-combined-precandidate-20260928\\src\\tools\\g2_preview_operator.py",
+      "run",
+      "--manifest",
+      "Z:\\h2825-combined-precandidate-20260928\\operator-manifest-h2825-combined-attempt02.json",
+      "--output",
+      "Z:\\h2825-combined-precandidate-20260928\\run-formal-36",
+      "--turns",
+      "36",
+      "--timeout",
+      "1800",
+      "--readiness-timeout",
+      "300",
+      "--private-family-marriage-formal-trial",
+      "--private-lifestyle-formal-trial",
+      "--private-prisoner-collection-observation",
+      "--private-construction-formal-trial",
+      "--require-initial-lifestyle-focus-before-date-advance"
+    ],
+    "required_pin_count": 21,
+    "profile_sha256": "4EED8FFCDF6B9976E4B2DFD8B828560B7D5BA71E0EDFDE8968903E94F3C35298",
+    "absent_run_output": "Z:\\h2825-combined-precandidate-20260928\\run-formal-36"
+  },
+  "validation": {
+    "native_release_link": "PASS",
+    "focused_native_ctest": "1/1 PASS",
+    "c95_abi": "GREEN_STATIC",
+    "python_normal": "185 passed, 35 subtests",
+    "python_optimized": "185 passed, 35 subtests",
+    "official_prepare": "PASS",
+    "ordinary_rebind": "PASS",
+    "ordinary_no_launch": "PASS",
+    "family_resolved_sidecar": "paired_no_launch",
+    "operator_profile_load_and_pins": "21/21 PASS",
+    "ck3_launch_attempted": false,
+    "operator_started": false,
+    "round_allocated": false
+  },
+  "failed_attempt_01": {
+    "status": "RED_no_launch",
+    "reason": "new manifest pipe differed from source driver's pinned pipe",
+    "manifest": {
+      "path": "Z:\\h2825-combined-precandidate-20260928\\operator-manifest-h2825-combined.json",
+      "size_bytes": 1767,
+      "sha256": "8C0C71F85C1AD4F784DFBC4BB579B654A6D555645B3942400B3435DAB3FBC413"
+    },
+    "log": {
+      "path": "Z:\\h2825-combined-precandidate-20260928\\prepare-state.log",
+      "size_bytes": 2866,
+      "sha256": "1931ACBFC176C0C229D9E8CBC72C23A870D57B3A81300D41A3E4C56887455DB0"
+    },
+    "partial_state": "Z:\\h2825-combined-precandidate-20260928\\state",
+    "game_launched": false
+  },
+  "first_run_assertions": [
+    "paused martial lifestyle focus/perk stock state, actual XP/points and current focus readback",
+    "prisoner collection row then final ransom quote status and legal target/value, no invented action",
+    "wartime construction candidate status, available gold, reserve and relevant RED fields",
+    "formal action only after native legality/value and independent postcondition; next turn and cold restore still unproven"
+  ],
+  "war_exit_authorization": "none; no automatic surrender action authorized from read-only observations",
+  "prv008": "unchanged; this independent candidate has no PRV008 qualification",
+  "live_boundary": "no CK3 process, turn, date or new nonwar action evidence from this candidate"
+}

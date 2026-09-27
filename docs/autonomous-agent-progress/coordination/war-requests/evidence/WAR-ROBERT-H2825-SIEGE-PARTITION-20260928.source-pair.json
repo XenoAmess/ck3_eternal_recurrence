@@ -1,0 +1,104 @@
+{
+  "schema": "xar.ck3.r0264-h2825-life3-family-source-pair/v1",
+  "status": "source_bytes_pinned_official_family_resolved_pair_passed_next_candidate_no_launch_pending",
+  "created_at_utc": "2026-09-27T17:26:06.561417+00:00",
+  "source_round": "R0264",
+  "prior_round": "R0263",
+  "actor_character_id": 29829,
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "profile": "ordinary_campaign_succession/xar_off",
+  "history_index": 2825,
+  "date_raw": 53217624,
+  "prior_history_index": 2743,
+  "prior_date_raw": 53217264,
+  "increment_raw_ticks": 360,
+  "increment_game_days": 15,
+  "prior_persistent_game_days": 3039,
+  "persistent_game_days": 3054,
+  "runtime_source_commit": "adf4993cc67e62ea79ec66bdaef87c8c59963f78",
+  "runtime_dll_build_commit": "3aeac6d9167c31716eab3ad8b1f8923e98488e63",
+  "formal_run": {
+    "successful_turns": 36,
+    "requested_turns": 36,
+    "outcome": "qualified",
+    "operator_exit_code": 0,
+    "bridge_pid": 180816,
+    "process_tree_gone": true,
+    "checkpoint_saved": true
+  },
+  "pinned_files": {
+    "checkpoint": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\source-pair\\xar_checkpoint.ck3",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size_bytes": 78185155,
+      "sha256": "231513d308a7d62d2f9cbf354d872c9f15ff1fb2b24b2ccaff2480cf5e14b13d"
+    },
+    "driver": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\source-pair\\driver-state.json",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\state\\native-session\\driver-state.json",
+      "size_bytes": 28477026,
+      "sha256": "b8e50a281afb9a5daa7ac1ed55dd68c4305816302b71b14edf79f1060177d872"
+    },
+    "family_sidecar": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\source-pair\\first-heir-marriage-formal-v1.json",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\state\\first-heir-marriage-formal-v1.json",
+      "size_bytes": 2742,
+      "sha256": "e642b45c8ff830148a2ded2d2b107cdd30c81f7e8fb2d3d4938ccea81d744af8"
+    },
+    "formal_report": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\evidence\\formal-report.txt",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\run-formal-36\\formal-report.txt",
+      "size_bytes": 423678,
+      "sha256": "066b3e4993df5ba5ded815345403c2c4b87a0fd9a4b75aa79dba578b73b97473"
+    },
+    "operator_receipt": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\evidence\\operator-receipt.json",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\run-formal-36\\operator-receipt.json",
+      "size_bytes": 1609,
+      "sha256": "52139e74397e2af266a63c4ebd52266e76c71bd1c67063609bede294587bf87f"
+    },
+    "candidate_index": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\identity\\H2743-CANDIDATE-INDEX.json",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\H2743-CANDIDATE-INDEX.json",
+      "size_bytes": 11763,
+      "sha256": "d5fa09028ca9d13c0243822062a7e1d97511ceeceb400baa7f3f804144983395"
+    },
+    "operator_manifest": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\identity\\operator-manifest-final-adf4993.json",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\operator-manifest-final-adf4993.json",
+      "size_bytes": 1813,
+      "sha256": "15262a72e8a01e2b4e720d6aa1f9bf7c09c1cd7c9bf8a0a0782583d29033cd13"
+    },
+    "operator_profile": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\identity\\operator-profile-h2743-life3-private-36-final.json",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\operator-profile-h2743-life3-private-36-final.json",
+      "size_bytes": 18631,
+      "sha256": "fe7b2d1efb3adfac6159d4106f1dff6eb492eb1108af67e8a5d2969b5d17dacb"
+    },
+    "dll": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\identity\\xar_ck3_bridge.dll",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\native-final\\xar_ck3_bridge.dll",
+      "size_bytes": 3645440,
+      "sha256": "70d96474053ade0fe60091118cc6375f83e0adc0e2192f44b51fc026400e2358"
+    },
+    "injector": {
+      "path": "Z:\\r0264-h2825-life3-family-freeze-20260928\\identity\\xar_ck3_bridge_injector.exe",
+      "source_path": "Z:\\robert-h2743-nextcandidate-20260928\\native-final\\xar_ck3_bridge_injector.exe",
+      "size_bytes": 39936,
+      "sha256": "5c67d7cead5a14be970d645d41ca93d20fa4cfac18e450ffc8ff29f0c1d27ac7"
+    }
+  },
+  "official_family_resolved_pair": {
+    "validator": "g2_preview_operator.family_resolved_sidecar_pair",
+    "status": "passed_on_copied_source_bytes",
+    "resolved_status": "betrothal",
+    "heir_character_id": 38822,
+    "candidate_character_id": 38718,
+    "alliance_status": "not_allied",
+    "driver_checkpoint_sha256": "231513d308a7d62d2f9cbf354d872c9f15ff1fb2b24b2ccaff2480cf5e14b13d",
+    "sidecar_sha256": "e642b45c8ff830148a2ded2d2b107cdd30c81f7e8fb2d3d4938ccea81d744af8",
+    "validated_at_utc": "2026-09-27T17:26:06.561443+00:00",
+    "full_prepare_rebind_no_launch": "pending_next_candidate"
+  },
+  "evidence_boundary": "R0264 persisted fifteen Robert days; actor trait keys were read back. Earlier heir betrothal remains resolved without alliance. No new nonwar typed action or completion of M4/M5 is claimed; further cold restore requires official prepare/rebind/no-launch."
+}
