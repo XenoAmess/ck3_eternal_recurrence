@@ -33,6 +33,7 @@ from xar_autoplayer.m5_peacetime_proposal_sources_v1 import (
     PRODUCER_POLICY,
     query_m5_peacetime_proposal_sources_v1,
 )
+from xar_autoplayer.lifestyle_formal_consumer import ROOT_QUERY_STEP
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig
 import xar_autoplayer.native_auto_run as native_auto_run_module
 
@@ -747,6 +748,67 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                          ["building-slot:501:1"])
         self.assertEqual(driver.source_reads, 1)
         self.assertEqual(driver.faction_reads, 1)
+
+    def test_missing_same_frame_root_queries_before_joint_building(self) -> None:
+        snapshot = _snapshot(faction_count=0)
+        snapshot["native_command_history"] = []
+        driver = _Driver(self.state_dir, snapshot=snapshot)
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP],
+            "bridge_capabilities": [],
+        }
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+        ) as construction_query:
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"], ROOT_QUERY_STEP)
+        self.assertEqual(driver.source_reads, 0)
+        construction_query.assert_not_called()
+
+        driver._snapshot["native_command_history"] = _history(count=0)
+        building = _construction()
+        building["candidate"]["authored_monthly_income_hundredths"] = 35
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=building,
+        ) as construction_query:
+            resumed = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(resumed["plan"]["selected_step"],
+                         "private-submit-player-construction-v1")
+        self.assertEqual(driver.source_reads, 1)
+        construction_query.assert_called_once()
+
+    def test_unknown_faction_facts_do_not_become_empty_root(self) -> None:
+        snapshot = _snapshot(faction_count=0)
+        snapshot["native_command_history"][0]["result"]["campaign_root_context"][\
+            "player_targeting_faction_count"] = None
+        driver = _Driver(self.state_dir, snapshot=snapshot)
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP],
+            "bridge_capabilities": [],
+        }
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"policy": "one-life-turn-v1", "phase": "peace_growth",
+                          "selected_step": "life-advance"},
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+        ) as construction_query:
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertIsNone(planned["plan"]["selected_step"])
+        self.assertEqual(planned["plan"]["phase"], "m5_joint_query_only_red")
+        self.assertIn("root_faction_facts_unknown", planned["plan"]["reason"])
+        construction_query.assert_not_called()
 
     def test_pending_construction_reaches_existing_receipt_before_joint_read(self) -> None:
         self.state_dir.mkdir(parents=True, exist_ok=True)
