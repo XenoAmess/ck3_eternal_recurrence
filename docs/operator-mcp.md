@@ -6,6 +6,12 @@
 它解决的是“当前 Codex 进程不能把子进程放进目标操作者 token / desktop”这一执行边界，
 不替代 CK3 gameplay MCP，也不包含任何账号、机器路径、CK3 轮次或具体 wrapper。
 
+本项目按运行机器本地部署：每台机器分别启动自己的 operator MCP，本机 Codex client 只连接本机
+endpoint，不跨机器调用其他操作者的服务。Git 只同步服务端代码、部署规范和可复用知识；机器专属
+profile、实际 endpoint、凭据与运行中 job 状态由各机器自己持有。把代码带到另一台兼容机器后，
+应在那台机器重新部署、注册并核验其本机工具。`operator_get_status` 只代表所连接机器的 live 状态；
+另一台机器的状态、旧报告和 Git 投影均不能替代本机查询。
+
 目标侧 JSON profile 冻结以下部署数据：
 
 - `target.id` 与期望 `token_user / desktop / machine`；
@@ -42,8 +48,9 @@ wrapper 因 stdin 永久 EOF 而错误退出。capabilities/status 只披露 con
    "<python>" "<repo>\ck3_autonomous_player\operator_mcp_server.py" --profile "<profile.json>"
    ```
 
-3. Codex client 将 profile 的 `advertised_url` 注册为 Streamable HTTP MCP endpoint，并刷新 client/session。
-   MCP 配置属于 client 部署，不写进 mod、wrapper 或 live artifact。
+3. 同一台机器上的 Codex client 将该机 profile 的 `advertised_url` 注册为本机 Streamable HTTP MCP
+   endpoint，并刷新 client/session。不得注册或调用另一台机器的 operator endpoint。MCP 配置属于
+   本机 client 部署，不写进 mod、wrapper 或 live artifact。
 4. 先调用 capabilities、status 和 preflight；只有三者指向同一 `target_id` 且 preflight 为 `GREEN`，
    才以新的 `request_id` 调用 handoff。CK3 类 job 的 profile 必须声明 `ck3.exe` 独占门。
 
@@ -51,8 +58,8 @@ Bootstrap 的唯一人工/外部边界是：首次让 server 本身运行在目�
 之后 job 继承该 server 的真实 Windows token/desktop；不得从
 非目标 sandbox 复制 Explorer token、创建账号专用计划任务，或在 sandbox desktop 重试目标程序。
 
-本仓通用部署约定是由本地 MCP client 连接 target-side Streamable HTTP server，endpoint 注册属于
-client 配置；已经运行的 session 不会因仓库内新增 server 代码而自动出现新工具。
+本仓通用部署约定是由同机 MCP client 连接同机 target-side Streamable HTTP server，endpoint 注册属于
+本机 client 配置；已经运行的 session 不会因仓库内新增 server 代码而自动出现新工具。
 因此 bootstrap 与 client MCP 注册完成后，必须以实际 tool listing 验证六个 `operator_*` 工具可调用。
 只有 profile 包含 `steam` allowlist 时，Steam/Workshop 查询才可用；capabilities 的
 `steam_workshop_status_configured` 是配置状态，不是版本或缓存通过证明。

@@ -384,6 +384,7 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `docs/ck3-live-run-identifiers.md`。
 - **全量枚举不是项目义务或产品验收门禁。** 不要求穷举 `361` 个严格场景，也不要求审完 `626` 个 definition；已有结果只作为历史覆盖证据。当前验收只要求产品关键路径、代表性高风险路径和实机真实出现的 RED 闭环。裁剪范围外的问题记录风险与影响面；除非触发关键链或高风险路径，不得扩成主线 blocker，也不得把测试数量替代真实产品能力。
 - **MCP-first 能力必须跨操作者、跨机器可部署。** 新能力优先进入通用 MCP，并通过配置、能力发现和 documented bootstrap 解析游戏、仓库、userdir、pipe 与凭据入口；不得把 Windows 账户、单机绝对路径、临时 PID/会话或某个操作者身份写成协议前提。另一名获授权操作者在另一台兼容机器上应能复用同一 MCP 合同与实现。
+- **operator MCP 按运行机器本地部署和调用。** 每台运行机器分别部署自己的 operator MCP，并让该机器上的 Codex client 只注册、调用本机 endpoint；不得跨机器调用另一台机器的 operator MCP，或把另一台机器的 `operator_get_status` 当作本机进程、owner、RED 的 live 状态。Git 只共享服务端代码、部署规范和可复用知识，不传输正在运行的 endpoint、机器专属 profile 或凭据。换机器时在新机器重新部署、注册并核验本机工具；本机接口缺席时不能用旧报告或 Git 状态投影冒充 live 查询。细节见 `docs/operator-mcp.md`。
 - **原版事件合同统一归档到可复用 registry。** 过去和未来对 vanilla event 的定义、作用域、选项、副作用、安全终止、复发策略与 exact-build/source SHA 分析，都必须 canonicalize 到 `xar_autoplayer` 的通用原版事件 registry，由 gameplay agent 和其他 mod 共用；项目 runner 只消费并绑定当次玩家、日期窗口与 observation evidence，不再把这些知识新增为 `zg361` 专属 shard。新实机变体仍按“保留 RED → 查原版定义 → 最小补充 registry → 热重跑”处理。
 - **纯 Python 合同修复必须保留 CK3 热重试。** 若 live RED 只需修改 Python registry、合同或 runner 判定，且 CK3 已加载的 mod、原版资源、native bridge 与进程状态均未变化，则必须暂停并保留同一 CK3 进程、事件实例、连接 generation 和 evidence，修复后 reload/hot-retry；不得仅因 Python 改动重启 CK3。只有游戏加载输入或 native binary 改变、进程失效或现场无法继续证明同一性时才允许重启。
 - **在本项目中，安全问题如果不能用可复现实证证明会影响实际使用，就不得进行任何处理。** 不得为其修改代码、补测试、扩展 schema/WAL/证明协议、阻断实机运行或启动额外审计。
