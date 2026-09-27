@@ -98,6 +98,8 @@ incoming CArmy 的原生顺序有 13 个 RegimentID，基础人数合计 **2570 
 
 [085 机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_full_entry_085.json)保留双方残差、完整 ID 变化、新军逐团 starting/current、战宽和源 SHA；[精确只读投影器](../../ck3_autonomous_player/tools/project_join_full_entry_085.py)对原始 finish 与 clean-exit 字节、三点宽度/两点 full-entry 同身份、双方 entry 求和、incoming ID 与 starting 人数逐项校验。它是供智能体条件 join 转移和视频算术板复用的实测向量，不提供未来 ETA、未来 CombatID 或另一天的实际名单。
 
+085 的附带 battle-control 查询 RED 已由 Python service 接受并校验新增 typed 续算 sibling 的修复处理；[独立 086 同暂停帧只读回放](active-combat-forecast-input-gap-2026-09-27.md#086-同暂停帧双查询实采)直接证明相同日的 battle-control 查询现为 `CALL_COMPLETED`，同时说明 v3 虽能并列读取，仍只给假定首次接战的输入。086 不重写 085 的原始 RED 身份，也不替代 085 的 join 钩子数据。
+
 ### 智能体 trial kernel 的条件战宽转移接口
 
 现有 `FrozenCombatSimulationInput.encounter` 给出接战时 `base_width/final_width` 与 terrain 宽度系数，`combat_core.update_combat_width` 已实现 exact-build 的 Q100000 算术。动态 trial 只缺**何时调用**和调用时的两侧真实 totals。kernel 应保留每场战斗的 `{CombatID, base_width, final_width, terrain_width_multiplier_raw}` 缓存，并仅在 route/participant policy **显式产出**同 CombatID、原生日期、加入方 ArmyID 与加入后两侧 `+0x98` Q100000 totals 的 participant-update 事件时调用 `update_combat_width(side0_raw, side1_raw, previous_base_width=cache.base_width, terrain_width_multiplier_raw=cache.terrain_raw)`；随后以返回的 base/final 更新缓存。没有该事件就沿用缓存，不应为每个 main tick 的 totals 刷新擅自调用宽度更新器；已确认的 `0x2309E80` 主函数体在出伤前没有直接调用 `0x2305580`。phase-fire 读缓存 final 的静态调用链已确认，但 078 的 `fire_width=null` 意味着本例的动态传参仍待实采。

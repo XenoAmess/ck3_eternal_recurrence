@@ -34,6 +34,14 @@
 
 在此接口和 resumed kernel 实现、聚焦静态回归及同一原版存档暂停帧 live 配对前，智能体应继续正常使用现有**战前接战**有界预测；对现役 `CombatID` 只能使用已经独立证实的控制/撤退合法性，不得把 v3 的假想接战分布写成该战的继续打胜率。
 
+## 086 同暂停帧双查询实采
+
+桌面恢复后，在 Steam 离线新鲜截图门下，新独立 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-battle-control-composite-attempt-086` 从第 11 日冻结 save 只读查询，没有推进日期。两次 `ck3_take_snapshot` 的 `snapshot_id=native:4`、公开 revision `5`、native revision `4`、date_raw `53146488`、paused 均一致；其间 `ck3_query_battle_control_snapshot_v1` 和 `query-combat-simulation-inputs-v3-2633-8653-a-3-16777221-16777231-27-d-1-18` 都返回 `CALL_COMPLETED`，两个查询各自绑定公开/native revision `5/4`。原始四份回执 SHA-256 依次为 `059C435F0F133E7152E4CDDED6AE7432C382674F47870166E8FE906E913E3827`、`6DFC287C42154486D78E2609AEE1C74B2A00F7E2E018C8FBC4B90D639CC4D550`、`F191AC1EBB3C9010882B8AD2892346F8B0DAB52D7B64298C017D578B72118793`、`FD9E4E558F2E99C2708559FBA073BAE84B63EF792F27194E3CE5A8A822D84EB2`；清场回执 SHA-256 `77CBB30E996B556856EA3973826CC68D1B222B3757CC3A00723FB36328659352`，CK3 clean exit、0 活进程。这验证了前次 085 暴露的 Python service 白名单修复：新增 typed `active_combat_resume_inputs_v1` 现在可随 battle-control 返回，而非使整个查询 RED。
+
+真实 battle-control 的 CombatID `16777218`、ProvinceID `2633`、主战第 7 日、roll cadence `1`、战宽 **base/final `1645/1480`**，双方名单为 `[16777221,16777231,27]` 与 `[18]`，entry current 合计分别 `154690163/82785368` Q100000。v3 的请求名单恰与这次真实名单相同，且其 `ongoing_combats` 观察确有该 CombatID 和真实战宽；但 v3 `base_inputs` 明确写 `participant_policy=explicit_hypothetical_fixed_at_contact_no_reinforcements`、`scenario.kind=explicit_hypothetical_contact`，另算出的**假定首次接战战宽 `1539/1385`**，与现役缓存 `1645/1480` 不同。`v3.status=available` 仅表示 `precontact-phase-event-inputs-v3` 观察片可用；其 `planner_usable=false`，不能把这个 available 解释为现役续算已可用。battle-control 的 typed 续算回执仍是 `unavailable/same_frame_resume_operands_incomplete`，明确列出 coalition side 映射、选中将领下一掷骰界、当前反制 class/stack、下一日非掷骰优势源和骑士/动态 entry 转移五个缺域。
+
+v3 列出了同一暂停帧各军将领及**假想接战上下文**的 roll bounds；实际 battle-control 所选将领 34320/29829 确在候选表中。这只是候选交叉匹配，尚未证明假想上下文界限与真实战斗下一次 roll bounds 的原生求值路径相同。两次查询同公开 revision 也不等于一次 native application-main 原子联合采样。故本例支持把已有 v3 作为未来 typed 生产者的候选来源逐项验证，不能直接构造 `ActiveMainResumeState` 或解除现役策略 guard。[086 精确投影器](../../ck3_autonomous_player/tools/project_active_composite_086.py)以五份原始 SHA、同帧身份、真实/假想战宽及清场重建[机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_active_composite_086.json)。
+
 ## 本轮聚焦验收
 
 在隔离工作区 `D:/wai`，显式使用主工作区 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`；相对 venv 不存在。解释器与依赖 probe 为 Python `3.14.7`、pytest `9.1.1`，`PYTHONPATH=D:/wai/ck3_autonomous_player/src` 指向本 worktree：`test_general_battle_strategy.py`、`test_combat_input_adapter.py`、`test_general_battle_forecast.py` 共 **19 passed、11 subtests passed**；`git diff --check` 通过。测试使用现有原版 v2 fixture 证明战前估计仍可运行，并对“选中军队已有 ongoing CombatID”与“该观察字段缺失”分别断言决策入口拒绝。本检查不构成 active-combat 原生读口或实机验收。

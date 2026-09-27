@@ -1,0 +1,97 @@
+{
+  "schema": "ck3.native_active_control_precontact_v3_pair.v1",
+  "source": {
+    "attempt": 86,
+    "sha256": {
+      "c086-before-snapshot": "059C435F0F133E7152E4CDDED6AE7432C382674F47870166E8FE906E913E3827",
+      "c086-battle-control": "6DFC287C42154486D78E2609AEE1C74B2A00F7E2E018C8FBC4B90D639CC4D550",
+      "c086-active-v3": "F191AC1EBB3C9010882B8AD2892346F8B0DAB52D7B64298C017D578B72118793",
+      "c086-after-snapshot": "FD9E4E558F2E99C2708559FBA073BAE84B63EF792F27194E3CE5A8A822D84EB2",
+      "cleanup-check": "77CBB30E996B556856EA3973826CC68D1B222B3757CC3A00723FB36328659352"
+    }
+  },
+  "identity": {
+    "date_raw": 53146488,
+    "snapshot_id": "native:4",
+    "public_revision": 5,
+    "native_revision": 4,
+    "combat_id": 16777218,
+    "province_id": 2633
+  },
+  "actual": {
+    "phase": "main",
+    "phase_day": 7,
+    "roll_cadence_counter": 1,
+    "base_width": 1645,
+    "final_width": 1480,
+    "ordered_army_ids": [
+      [
+        16777221,
+        16777231,
+        27
+      ],
+      [
+        18
+      ]
+    ],
+    "selected_commander_character_ids": [
+      34320,
+      29829
+    ],
+    "entry_current_sum_raw": [
+      154690163,
+      82785368
+    ]
+  },
+  "v3": {
+    "status": "available",
+    "observation_slice": "precontact-phase-event-inputs-v3",
+    "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+    "scenario_kind": "explicit_hypothetical_contact",
+    "hypothetical_base_width": 1539,
+    "hypothetical_final_width": 1385,
+    "ongoing_combat_observed_actual_width": [
+      1645,
+      1480
+    ],
+    "commander_candidates": [
+      {
+        "army_id": 16777221,
+        "character_id": 31549,
+        "hypothetical_min_roll": 0,
+        "hypothetical_max_roll": 10
+      },
+      {
+        "army_id": 16777231,
+        "character_id": 32725,
+        "hypothetical_min_roll": 2,
+        "hypothetical_max_roll": 9
+      },
+      {
+        "army_id": 27,
+        "character_id": 34320,
+        "hypothetical_min_roll": 0,
+        "hypothetical_max_roll": 10
+      },
+      {
+        "army_id": 18,
+        "character_id": 29829,
+        "hypothetical_min_roll": 0,
+        "hypothetical_max_roll": 10
+      }
+    ],
+    "planner_usable": false
+  },
+  "active_resume": {
+    "status": "unavailable",
+    "reason": "same_frame_resume_operands_incomplete",
+    "missing_required_domains": [
+      "active_coalition_side_mapping",
+      "selected_commander_next_roll_bounds",
+      "active_regiment_counter_class_stack_context",
+      "next_day_non_roll_advantage_sources",
+      "battle_knight_participation_and_dynamic_entry_transitions"
+    ]
+  },
+  "cleanup_ok": true
+}

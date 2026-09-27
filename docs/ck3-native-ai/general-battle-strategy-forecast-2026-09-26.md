@@ -45,6 +45,8 @@
 
 [085 同钩子逐团回放](join-width-production-and-fire.md#085-双方-full-entry-同钩子实采与缓存差额)进一步把这一次已发生增援的双方缓存、旧 entry、incoming 13 团、新 entry 和战宽算术固化为[机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_full_entry_085.json)。它给**条件** participant-update 提供了可复算实例：旧团不变，新增军 starting 2570 人但当次 current 2560 人，双方原有缓存与 entry 残差在 join 返回后归零。通用策略仍不能从当前帧自动得知未来入场日与该日全部逐团状态，因此不把该向量当成未来整场胜率的无条件输入。085 的只读 battle-control 查询另暴露了 service 对新增 typed 续算 sibling 的白名单滞后；接口已同步容纳并按同帧父战斗校验，保留这一 RED 的原始回执。
 
+[086 同暂停帧回放](active-combat-forecast-input-gap-2026-09-27.md#086-同暂停帧双查询实采)实证修复后的 battle-control 返回成功，也把现役输入边界量化：真实战宽 `1645/1480`，同帧 v3 的假定首次接战战宽 `1539/1385`。v3 的 `available` 指向可读的 precontact slice，不是对已开战 CombatID 续算的授权；现役 typed receipt 仍报告五个操作数域未齐。当前战前估计继续实际使用，现役继续由独立 battle-control 读口与撤退合法性控制。
+
 ## 静态验收
 
 ```text
