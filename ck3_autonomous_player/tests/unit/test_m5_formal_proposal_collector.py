@@ -102,7 +102,8 @@ def _war_source() -> dict[str, object]:
 
 def _war_cash() -> dict[str, object]:
     def amount(raw: int, source: str) -> dict[str, object]:
-        return {"raw": raw, "scale": 100_000, "source": source}
+        return {"raw": raw, "scale": 100_000, "source": source,
+                "source_frame": dict(_FRAME), "war_id": 16777231}
 
     return observe_active_war_cash_resource_v1(
         snapshot=_snapshot(), war_id=16777231,

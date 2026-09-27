@@ -168,21 +168,19 @@ def _defensive_plan(*, selected_step: str = "query-war-termination-options-16777
 
 
 def _continuation_observation(**updates: object) -> dict[str, object]:
+    def amount(raw: int, source: str) -> dict[str, object]:
+        return {"raw": raw, "scale": 100_000, "source": source,
+                "source_frame": dict(_FRAME), "war_id": 16777231}
+
     cash = observe_active_war_cash_resource_v1(
         snapshot=_defensive_snapshot(), war_id=16777231,
         inputs={
             "source_frame": dict(_FRAME), "war_id": 16777231,
-            "pending_war_cash_raw": {"raw": 0, "scale": 100_000,
-                                     "source": "test-observed-empty-pending-ledger"},
-            "immediate_war_action_cost_raw": {"raw": 0, "scale": 100_000,
-                                              "source": "test-read-only-query"},
-            "future_war_cost_upper_raw": {"raw": 1_000_000, "scale": 100_000,
-                                           "source": "test-bounded-horizon"},
-            "future_risk_budget_raw": {"raw": 1_000_000, "scale": 100_000,
-                                       "source": "test-policy-risk"},
-            "policy_minimum_gold_reserve_raw": {"raw": 3_000_000,
-                                                "scale": 100_000,
-                                                "source": "test-policy-reserve"},
+            "pending_war_cash_raw": amount(0, "test-observed-empty-pending-ledger"),
+            "immediate_war_action_cost_raw": amount(0, "test-read-only-query"),
+            "future_war_cost_upper_raw": amount(1_000_000, "test-bounded-horizon"),
+            "future_risk_budget_raw": amount(1_000_000, "test-policy-risk"),
+            "policy_minimum_gold_reserve_raw": amount(3_000_000, "test-policy-reserve"),
             "horizon_days": 1,
             "future_bound_assumptions": ["synthetic bounded test only"],
         },

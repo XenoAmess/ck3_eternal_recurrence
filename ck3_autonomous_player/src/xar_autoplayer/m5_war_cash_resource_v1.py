@@ -27,8 +27,8 @@ def observe_active_war_cash_resource_v1(
 ) -> dict[str, object]:
     """Publish a typed incomplete or complete cash receipt for one WarID.
 
-    Every amount is a ``{raw, scale, source}`` object.  A real zero needs an
-    explicit source proving absence; a missing value remains null with a
+    Every amount is a ``{raw, scale, source, source_frame, war_id}`` object.
+    A real zero needs an explicit source proving absence; a missing value remains null with a
     machine-readable reason.  The future upper bound includes only its stated
     horizon, while the separate risk budget covers uncertainty within it.
     """
@@ -63,8 +63,10 @@ def observe_active_war_cash_resource_v1(
         if (not isinstance(raw, Mapping)
                 or type(raw.get("raw")) is not int or raw["raw"] < 0
                 or raw.get("scale") != 100_000
-                or type(raw.get("source")) is not str or not raw["source"]):
-            raise ValueError(f"{name} needs sourced nonnegative Q100000 raw")
+                or type(raw.get("source")) is not str or not raw["source"]
+                or raw.get("source_frame") != frame
+                or raw.get("war_id") != war_id):
+            raise ValueError(f"{name} needs same-frame sourced nonnegative Q100000 raw")
         amounts[name] = raw["raw"]
         provenance[name] = raw["source"]
 

@@ -33,7 +33,8 @@ def snapshot() -> dict[str, object]:
 
 
 def amount(raw: int, source: str) -> dict[str, object]:
-    return {"raw": raw, "scale": 100_000, "source": source}
+    return {"raw": raw, "scale": 100_000, "source": source,
+            "source_frame": dict(FRAME), "war_id": WAR_ID}
 
 
 def complete_inputs() -> dict[str, object]:
@@ -92,6 +93,12 @@ class WarCashResourceTests(unittest.TestCase):
         inputs = complete_inputs()
         inputs["war_id"] = WAR_ID + 1
         with self.assertRaisesRegex(ValueError, "WarID"):
+            observe_active_war_cash_resource_v1(
+                snapshot=snapshot(), war_id=WAR_ID, inputs=inputs,
+            )
+        inputs = complete_inputs()
+        inputs["future_war_cost_upper_raw"]["source_frame"]["revision"] = 5
+        with self.assertRaisesRegex(ValueError, "same-frame sourced"):
             observe_active_war_cash_resource_v1(
                 snapshot=snapshot(), war_id=WAR_ID, inputs=inputs,
             )
