@@ -4,7 +4,9 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+from tempfile import TemporaryDirectory
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -13,7 +15,8 @@ ARTIFACT = (PROJECT_ROOT / "src/xar_autoplayer/simulation/data"
             / "ck3_1_19_0_6_episode01_day26_runtime_weights_v1.json")
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 spec = importlib.util.spec_from_file_location("day26_runtime_weights_projector", SCRIPT)
-assert spec is not None and spec.loader is not None
+if spec is None or spec.loader is None:
+    raise RuntimeError("day26 runtime weights projector could not be loaded")
 projector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(projector)
 
@@ -83,12 +86,28 @@ class NativeDay26RuntimeWeightsTest(unittest.TestCase):
     def test_corrupted_weight_bytes_or_child_identity_are_rejected(self) -> None:
         row, nodes = captured_fixture(self.artifact["native_choice"])
         row["weights_bytes_hex"] = "29000000" + row["weights_bytes_hex"][8:]
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegex(ValueError, "native weight bytes"):
             projector.validate_weight_record(row, nodes)
         row, nodes = captured_fixture(self.artifact["native_choice"])
         nodes[1]["node_identity_token"] = row["entry_node_identity_tokens"][1]
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegex(ValueError, "selected child identity"):
             projector.validate_weight_record(row, nodes)
+
+    def test_bad_identity_token_and_existing_output_are_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "process-local identity token"):
+            projector._token_number("not-an-original-token")
+        with TemporaryDirectory() as temporary:
+            output = Path(temporary) / "existing.json"
+            output.write_text("existing", encoding="utf-8")
+            argv = [
+                "project_native_day26_runtime_weights.py",
+                "--attempt-root", temporary, "--game-exe", temporary,
+                "--bridge-dll", temporary, "--source-save", temporary,
+                "--source-receipt", temporary, "--output", str(output),
+            ]
+            with mock.patch.object(sys, "argv", argv), self.assertRaises(FileExistsError):
+                projector.main()
+            self.assertEqual(output.read_text(encoding="utf-8"), "existing")
 
 
 if __name__ == "__main__":

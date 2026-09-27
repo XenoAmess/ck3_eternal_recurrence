@@ -375,6 +375,7 @@ v3 evaluation context 运行智能体当前 `phase_event_evaluator.py`，得到 
 [智能体可复用冻结向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_day26_runtime_weights_v1.json)
 SHA-256 `8BC27BC8420B31474DEDABDF00E004E5C2C910C4906406A15CE0D46144E809A8`
 包含该次同帧输入和实采输出；聚焦测试重放模型并拒绝篡改的权重 bytes／entry 身份。
+2026-09-28 校验器勘误：[第 26 日权重投影器](../../ck3_autonomous_player/tools/project_native_day26_runtime_weights.py)的所有运行时 `assert` 已改为显式失败，确保 `python -O` 不会跳过 EXE/DLL/源档/回执哈希、14 人目标抽签、成长子节点与死亡回流检查。用 070 原始素材在普通与 `-O` 模式重跑，新输出 SHA-256 均为 `8BC27BC8420B31474DEDABDF00E004E5C2C910C4906406A15CE0D46144E809A8`，与既有冻结向量一致，保存在 `D:/ck3-research-artifacts/day26-weight-opt-check-20260928/attempt-01/`。篡改权重字节、子节点或身份 token 以及覆盖已有输出的拒绝测试在两种模式通过；本次不改变原生行为结论。
 受管 `session-result.json` SHA-256
 `C79D8F553D7485254EADE9EB1F2DBF363AEE466C307A4E512B55A033FC0DCB07`，
 `cleanup_proven=true`、最终 CK3 进程数 `0`；任务总线 070 已释放 CK3。
