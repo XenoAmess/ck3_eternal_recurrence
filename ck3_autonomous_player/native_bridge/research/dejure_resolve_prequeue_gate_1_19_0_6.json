@@ -1,0 +1,175 @@
+{
+  "schema": "xar.ck3.dejure-resolve-prequeue-gate.v1",
+  "status": "STATIC_PREQUEUE_GATE_ONLY",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "resolve_execute": {
+    "vtable_slot": {
+      "vtable_rva": "0x445CAD0",
+      "slot": "0xB0",
+      "target_rva": "0x2EC43F0",
+      "bytes": "F043EC4201000000"
+    },
+    "type_compare": {
+      "rva": "0x2EC4410",
+      "bytes": "83B86802000017",
+      "instruction": "cmp dword ptr [rax + 0x268], 0x17"
+    },
+    "type_0x17_queue_call": {
+      "call_rva": "0x2EC44A7",
+      "target_rva": "0x27CD6A0",
+      "bytes": "E8F49190FF"
+    },
+    "other_type_wrapper_call": {
+      "call_rva": "0x2EC4567",
+      "target_rva": "0x27CD510",
+      "bytes": "E8A48F90FF"
+    }
+  },
+  "wrapper_0x27CD510": {
+    "non_null": {
+      "rva": "0x27CD510",
+      "bytes": "4885D2",
+      "instruction": "test rdx, rdx"
+    },
+    "virtual_check": {
+      "rva": "0x27CD52F",
+      "bytes": "FF5008",
+      "instruction": "call qword ptr [rax + 8]"
+    },
+    "virtual_check_failure_branch": {
+      "rva": "0x27CD534",
+      "bytes": "0F844E010000",
+      "instruction": "je 0x27cd688"
+    },
+    "type_compare": {
+      "rva": "0x27CD53A",
+      "bytes": "83BB6802000017",
+      "instruction": "cmp dword ptr [rbx + 0x268], 0x17"
+    },
+    "type_0x17_bypass_branch": {
+      "rva": "0x27CD546",
+      "bytes": "0F842C010000",
+      "instruction": "je 0x27cd678"
+    },
+    "processed_flag_compare": {
+      "rva": "0x27CD54C",
+      "bytes": "80BB6002000000",
+      "instruction": "cmp byte ptr [rbx + 0x260], 0"
+    },
+    "processed_bypass_branch": {
+      "rva": "0x27CD558",
+      "bytes": "0F85BE000000",
+      "instruction": "jne 0x27cd61c"
+    },
+    "counter_load": {
+      "rva": "0x27CD55E",
+      "bytes": "8B4560",
+      "instruction": "mov eax, dword ptr [rbp + 0x60]"
+    },
+    "counter_threshold": {
+      "rva": "0x27CD565",
+      "bytes": "83F832",
+      "instruction": "cmp eax, 0x32"
+    },
+    "counter_skip_branch": {
+      "rva": "0x27CD568",
+      "bytes": "7C43",
+      "instruction": "jl 0x27cd5ad"
+    },
+    "counter_increment": {
+      "rva": "0x27CD60E",
+      "bytes": "FF07",
+      "instruction": "inc dword ptr [rdi]"
+    },
+    "processor_call": {
+      "call_rva": "0x27CD613",
+      "target_rva": "0x24CC9A0",
+      "bytes": "E888F3CFFF"
+    },
+    "counter_decrement": {
+      "rva": "0x27CD618",
+      "bytes": "FF0F",
+      "instruction": "dec dword ptr [rdi]"
+    },
+    "queue_call": {
+      "call_rva": "0x27CD67E",
+      "target_rva": "0x27CD6A0",
+      "bytes": "E81D000000"
+    },
+    "interpretation": "After non-null and virtual checks, change type 0x17 skips this wrapper's prequeue processor. Other types call 0x24CC9A0 only when byte +0x260 is zero and context dword +0x60 is below 0x32; the wrapper then calls 0x27CD6A0. The meaning of type 0x17 and the counter is not independently identified."
+  },
+  "processor_0x24CC9A0": {
+    "entry_rva": "0x24CC9A0",
+    "last_ret_rva": "0x24CE183",
+    "byte_count": 6116,
+    "sha256": "718BA69B12F9DE3B0B385CD8399CDCC3B98BBC1341A40C7C1FDDBD9CF051C5E7",
+    "empty_count_checks": [
+      {
+        "rva": "0x24CC9D0",
+        "bytes": "83791C00",
+        "instruction": "cmp dword ptr [rcx + 0x1c], 0"
+      },
+      {
+        "rva": "0x24CC9D6",
+        "bytes": "83794C00",
+        "instruction": "cmp dword ptr [rcx + 0x4c], 0"
+      },
+      {
+        "rva": "0x24CC9DC",
+        "bytes": "83797C00",
+        "instruction": "cmp dword ptr [rcx + 0x7c], 0"
+      },
+      {
+        "rva": "0x24CC9E2",
+        "bytes": "83796400",
+        "instruction": "cmp dword ptr [rcx + 0x64], 0"
+      },
+      {
+        "rva": "0x24CC9E8",
+        "bytes": "83B99400000000",
+        "instruction": "cmp dword ptr [rcx + 0x94], 0"
+      }
+    ],
+    "empty_path_processed_flag": {
+      "rva": "0x24CC9F1",
+      "bytes": "C6816002000001",
+      "instruction": "mov byte ptr [rcx + 0x260], 1"
+    },
+    "empty_path_exit_branch": {
+      "rva": "0x24CC9F8",
+      "bytes": "E964170000",
+      "instruction": "jmp 0x24ce161"
+    },
+    "nonempty_path_first_helper": {
+      "call_rva": "0x24CCA2D",
+      "target_rva": "0x24BC660",
+      "bytes": "E82EFCFEFF"
+    },
+    "nonempty_path_processed_flag": {
+      "rva": "0x24CE046",
+      "bytes": "41C6866002000001",
+      "instruction": "mov byte ptr [r14 + 0x260], 1"
+    },
+    "return": {
+      "rva": "0x24CE183",
+      "bytes": "C3",
+      "instruction": "ret "
+    },
+    "interpretation": "When five entry counts are all zero, this function marks byte +0x260 and exits; otherwise it enters a large helper chain with a later observed +0x260 write. The chain has not been reduced to holder/liege/vassal operations."
+  },
+  "boundary": {
+    "proven": "Exact static branch and prequeue processing conditions for this resolve-effect path only.",
+    "not_proven": [
+      "War31's runtime change object type, +0x260 flag, five counts, or context +0x60 counter",
+      "The object-specific title holder, liege, or vassal writes inside the processor helper chain",
+      "Whether a queued change was consumed and persisted after any particular surrender",
+      "Any signed resource delta or evaluated truce expiry"
+    ],
+    "ck3_launched": false,
+    "effect_invoked": false,
+    "gameplay_action_submitted": false
+  }
+}

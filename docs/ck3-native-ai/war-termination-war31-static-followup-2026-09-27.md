@@ -108,3 +108,30 @@ change 作用域的直接内存操作。这是**仅限入口函数直接指令**
 只有这些路径有同帧、同构建绑定并经过独立配对实机只读验证，
 才能考虑扩展 WAR31 材料条款 DTO。当前请求响应仍只交付安全续行替代；
 不能据此提交投降，也不能把未知损失填成零。
+
+### resolve 入队前的条件处理，2026-09-27 补证
+
+[精确 EXE 提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_resolve_prequeue_gate.py)
+及 [JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_resolve_prequeue_gate_1_19_0_6.json)
+固定同一 `ck3.exe` SHA、`CResolveTitleAndVassalChangeEffect` 的执行 vtable slot、
+关键分支字节，以及 `0x24CC9A0–0x24CE183` 整段函数的 SHA-256。
+回执 SHA-256 为 `228708A305163B47769D34ADBDAE126A4789AAD50ABA65C436CD168763B955A3`。
+
+`resolve` 执行入口在 change `+0x268 == 0x17` 时直接调用
+`0x27CD6A0` 入队；其他类型先调用 `0x27CD510`。
+后者要求 change 非空、vtable `+0x08` 检查通过，随后只有
+`change+0x260 == 0` 且上下文 dword `+0x60 < 0x32` 时，
+才以 `change` 调用 `0x24CC9A0`；调用前后分别增减该上下文计数。
+`0x27CD510` 的通过路径最终仍调用 `0x27CD6A0`，
+因此**入队与入队前处理是两个不同阶段**；跳过前处理不自动证明跳过入队。
+这里的 `0x17` 与 `+0x60` 只作为机器字段/阈值记录，尚无可证业务名称。
+
+`0x24CC9A0` 入口依次查看 change 的五个 dword 计数
+`+0x1C/+0x4C/+0x7C/+0x64/+0x94`。
+若五者全为零，该函数把 `change+0x260` 设为 `1` 并直接退出；
+否则进入较长的 helper 链，链中还可见另一次 `+0x260=1` 写入。
+这些都是**对象准备/处理路径的静态指令事实**，并未解出 helper 链中
+究竟哪个调用写 title holder、liege 或 vassal，更不能由静态条件判断
+War31 当前 change 是否走了任何分支。R0221 没有提供实际 change 类型、标志、
+五项计数或上下文计数；没有发生本次投降，也没有结算后持久化读回。
+所以 Title `2128` 的具体迁移、资源变动和停战到期日仍为未知。
