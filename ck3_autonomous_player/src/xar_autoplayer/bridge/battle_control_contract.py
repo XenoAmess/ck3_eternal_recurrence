@@ -83,6 +83,8 @@ _ACTIVE_RESUME_OBSERVED_KEYS = {
     "side_1_current_roll_points",
     "side_0_selected_commander_character_id",
     "side_1_selected_commander_character_id",
+    "side_0_selected_commander_next_roll_bounds",
+    "side_1_selected_commander_next_roll_bounds",
     "side_0_ordered_public_cunit_ids",
     "side_1_ordered_public_cunit_ids",
     "side_0_entry_count",
@@ -626,6 +628,29 @@ def normalize_active_combat_resume_inputs_v1(
         )
         if commander != parent[role]["selected_commander_character_id"]:
             raise ValueError(f"{name}.observed.{commander_key} disagrees")
+        bounds_key = f"side_{index}_selected_commander_next_roll_bounds"
+        bounds = observed[bounds_key]
+        bounds_name = f"{name}.observed.{bounds_key}"
+        if not isinstance(bounds, dict) or set(bounds) != {
+            "status", "effective_min_roll", "effective_max_roll",
+            "unavailable_reason",
+        }:
+            raise ValueError(f"{bounds_name} has a malformed schema")
+        if bounds["status"] == "available":
+            _signed_int32(bounds["effective_min_roll"], f"{bounds_name}.effective_min_roll")
+            _signed_int32(bounds["effective_max_roll"], f"{bounds_name}.effective_max_roll")
+            if bounds["unavailable_reason"] is not None:
+                raise ValueError(f"{bounds_name} available result has a reason")
+        elif bounds["status"] == "unavailable":
+            if (
+                bounds["effective_min_roll"] is not None
+                or bounds["effective_max_roll"] is not None
+                or not isinstance(bounds["unavailable_reason"], str)
+                or not bounds["unavailable_reason"]
+            ):
+                raise ValueError(f"{bounds_name} unavailable result has endpoints")
+        else:
+            raise ValueError(f"{bounds_name} has an invalid status")
         armies_key = f"side_{index}_ordered_public_cunit_ids"
         armies = _positive_int32_list(
             observed[armies_key], f"{name}.observed.{armies_key}"
@@ -635,6 +660,12 @@ def normalize_active_combat_resume_inputs_v1(
         ]
         if armies != expected_armies:
             raise ValueError(f"{name}.observed.{armies_key} disagrees")
+    both_bounds_available = all(
+        observed[f"side_{index}_selected_commander_next_roll_bounds"]["status"]
+        == "available" for index in (0, 1)
+    )
+    if ("selected_commander_next_roll_bounds" in missing) == both_bounds_available:
+        raise ValueError(f"{name} roll bounds completeness disagrees")
     return {
         "schema_version": 1,
         "status": "unavailable",

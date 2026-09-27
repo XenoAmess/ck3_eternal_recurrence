@@ -1288,11 +1288,22 @@ struct BattleControlParticipantHardSnapshot {
                          const BattleControlParticipantHardSnapshot &) = default;
 };
 
+struct BattleControlNextRollBoundsSnapshot {
+  bool available = false;
+  std::int32_t effective_min_roll = 0;
+  std::int32_t effective_max_roll = 0;
+  std::string unavailable_reason = "not_sampled";
+
+  friend bool operator==(const BattleControlNextRollBoundsSnapshot &,
+                         const BattleControlNextRollBoundsSnapshot &) = default;
+};
+
 struct BattleControlSideSnapshot {
   std::int32_t side_index = -1;
   std::string role;
   std::int32_t primary_participant_character_id = -1;
   std::int32_t selected_commander_character_id = -1;
+  BattleControlNextRollBoundsSnapshot selected_commander_next_roll_bounds;
   std::int32_t current_roll_points = 0;
   std::vector<BattleControlArmyIdentitySnapshot> ordered_armies;
   std::vector<BattleControlRegimentEntrySnapshot> levy_entries;

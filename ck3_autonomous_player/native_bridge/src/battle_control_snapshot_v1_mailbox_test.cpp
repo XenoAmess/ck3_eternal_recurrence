@@ -289,12 +289,39 @@ int main() {
       !Contains(resume_json,
                 "\"side_0_selected_commander_character_id\":null") ||
       !Contains(resume_json,
+                "\"side_0_selected_commander_next_roll_bounds\":{"
+                "\"status\":\"unavailable\",\"effective_min_roll\":null,"
+                "\"effective_max_roll\":null,\"unavailable_reason\":\"not_sampled\"}") ||
+      !Contains(resume_json,
                 "\"side_0_ordered_public_cunit_ids\":[83886341]") ||
       !Contains(resume_json, "\"side_0_entry_count\":2") ||
       !Contains(resume_json,
                 "\"missing_required_domains\":["
                 "\"active_coalition_side_mapping\"")) {
     return Fail("active resume receipt did not preserve typed unavailable and exact source");
+  }
+  auto roll_bounds = complete;
+  roll_bounds.attacker.selected_commander_next_roll_bounds = {true, 0, 0, ""};
+  roll_bounds.defender.selected_commander_next_roll_bounds = {true, -1, 11, ""};
+  const auto bounds_receipt = SerializeActiveCombatResumeInputsV1(roll_bounds);
+  if (bounds_receipt.empty() ||
+      !Contains(bounds_receipt,
+                "\"side_0_selected_commander_next_roll_bounds\":{"
+                "\"status\":\"available\",\"effective_min_roll\":0,"
+                "\"effective_max_roll\":0,\"unavailable_reason\":null}") ||
+      !Contains(bounds_receipt,
+                "\"side_1_selected_commander_next_roll_bounds\":{"
+                "\"status\":\"available\",\"effective_min_roll\":-1,"
+                "\"effective_max_roll\":11,\"unavailable_reason\":null}") ||
+      Contains(bounds_receipt,
+               "\"selected_commander_next_roll_bounds\",")) {
+    return Fail("actual-side roll bounds did not close only their own domain");
+  }
+  roll_bounds.defender.selected_commander_next_roll_bounds =
+      {false, 0, 0, "commander_modifier_unavailable"};
+  if (!Contains(SerializeActiveCombatResumeInputsV1(roll_bounds),
+                "\"selected_commander_next_roll_bounds\",")) {
+    return Fail("one unavailable side incorrectly closed roll bounds domain");
   }
   auto invalid_resume = complete;
   invalid_resume.combat_id = -1;

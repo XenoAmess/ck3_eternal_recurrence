@@ -14352,8 +14352,8 @@ bool ReadBattleControlParticipantHardLedger(
 
 bool ReadBattleControlSide(
     const Bindings &bindings, void *combat, std::size_t side_offset,
-    std::int32_t side_index, std::string_view role,
-    std::int32_t expected_combat_id,
+    std::int32_t side_index, std::string_view role, std::int32_t province_id,
+    void *terrain, std::int32_t expected_combat_id,
     const std::vector<std::int32_t> &native_carmy_ids,
     const std::vector<std::int32_t> &public_cunit_ids,
     std::int32_t current_roll_points,
@@ -14384,6 +14384,33 @@ bool ReadBattleControlSide(
             bindings, output.selected_commander_character_id, commander)) {
       return false;
     }
+  }
+  // main_tick 0x2309F09..0x2309F37 passes this exact side and the terrain
+  // reached from CCombat+0x6B8 to the RNG-consuming 0x23CBFA0. Mirror only
+  // its endpoints; never invoke the native draw from a paused query.
+  auto &bounds = output.selected_commander_next_roll_bounds;
+  if (terrain == nullptr) {
+    bounds.unavailable_reason = "active_combat_terrain_unavailable";
+  } else if (bindings.character_storage_slot == nullptr ||
+             bindings.get_character_modifier_aggregator == nullptr ||
+             bindings.read_character_modifier == nullptr ||
+             bindings.commander_min_roll == nullptr ||
+             bindings.commander_max_roll == nullptr) {
+    bounds.unavailable_reason = "commander_roll_bindings_unavailable";
+  } else {
+    CombatCommanderSnapshot commander{};
+    commander.character_id = output.selected_commander_character_id;
+    commander.status = commander.character_id == -1
+                           ? CombatObservationStatus::absent
+                           : CombatObservationStatus::available;
+    const auto context =
+        ReadCommanderRollContext(bindings, province_id, terrain, commander);
+    bounds.available = context.available;
+    bounds.effective_min_roll = context.effective_min_roll;
+    bounds.effective_max_roll = context.effective_max_roll;
+    bounds.unavailable_reason = context.available
+                                    ? std::string{}
+                                    : context.unavailable_reason;
   }
   std::int64_t levy_current_fighting_raw = 0;
   std::int64_t maa_current_fighting_raw = 0;
@@ -14778,9 +14805,13 @@ bool ReadBattleControlSnapshotSample(
     output.diagnostic_reason = "combat_width_domain_invalid";
     return false;
   }
+  void *const actual_terrain = bindings.get_province_terrain == nullptr
+                                   ? nullptr
+                                   : bindings.get_province_terrain(province);
   if (!ReadBattleControlSide(
           bindings, combat, kCombatAttackerSideOffset, 0, "attacker",
-          output.combat_id, identity.attacker_native_carmy_ids,
+          output.province_id, actual_terrain, output.combat_id,
+          identity.attacker_native_carmy_ids,
           identity.attacker_public_cunit_ids,
           LoadAt<std::int32_t>(combat, kCombatSide0RollOffset),
           output.attacker)) {
@@ -14789,12 +14820,27 @@ bool ReadBattleControlSnapshotSample(
   }
   if (!ReadBattleControlSide(
           bindings, combat, kCombatDefenderSideOffset, 1, "defender",
-          output.combat_id, identity.defender_native_carmy_ids,
+          output.province_id, actual_terrain, output.combat_id,
+          identity.defender_native_carmy_ids,
           identity.defender_public_cunit_ids,
           LoadAt<std::int32_t>(combat, kCombatSide1RollOffset),
           output.defender)) {
     output.diagnostic_reason = "defender_side_projection_failed";
     return false;
+  }
+  if (LoadAt<void *>(combat, kCombatProvinceOffset) != province ||
+      (bindings.get_province_terrain != nullptr &&
+       bindings.get_province_terrain(province) != actual_terrain)) {
+    output.diagnostic_reason = "active_combat_terrain_changed";
+    return false;
+  }
+  if (output.phase_raw != 1 || output.finalized) {
+    output.attacker.selected_commander_next_roll_bounds = {};
+    output.defender.selected_commander_next_roll_bounds = {};
+    output.attacker.selected_commander_next_roll_bounds.unavailable_reason =
+        "next_main_roll_not_applicable_in_phase";
+    output.defender.selected_commander_next_roll_bounds.unavailable_reason =
+        "next_main_roll_not_applicable_in_phase";
   }
   if (bindings.read_combat_hard_side_modifier != nullptr) {
     auto &hard_sides = output.actual_hard_casualty_sides;

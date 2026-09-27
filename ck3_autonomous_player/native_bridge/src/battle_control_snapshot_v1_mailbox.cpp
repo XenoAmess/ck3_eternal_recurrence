@@ -268,6 +268,11 @@ bool ValidateSide(const game::BattleControlSideSnapshot &side,
       side.primary_participant_character_id <= 0 ||
       (side.selected_commander_character_id != -1 &&
        side.selected_commander_character_id <= 0) ||
+      (side.selected_commander_next_roll_bounds.available
+           ? !side.selected_commander_next_roll_bounds.unavailable_reason.empty()
+           : side.selected_commander_next_roll_bounds.unavailable_reason.empty() ||
+                 side.selected_commander_next_roll_bounds.effective_min_roll != 0 ||
+                 side.selected_commander_next_roll_bounds.effective_max_roll != 0) ||
       side.side_strength_scale != 100'000 ||
       !ValidArmyIdentities(side, combat_id)) {
     return false;
@@ -1309,6 +1314,36 @@ std::string SerializeActiveCombatResumeInputsV1(
     return id > 0 ? AppendNumber(output, id)
                   : (output += "null", true);
   };
+  const auto append_roll_bounds = [](
+      std::string &output,
+      const game::BattleControlNextRollBoundsSnapshot &bounds) {
+    output += "{\"status\":\"";
+    output += bounds.available ? "available" : "unavailable";
+    output += "\",\"effective_min_roll\":";
+    if (bounds.available) {
+      if (!AppendNumber(output, bounds.effective_min_roll)) {
+        return false;
+      }
+    } else {
+      output += "null";
+    }
+    output += ",\"effective_max_roll\":";
+    if (bounds.available) {
+      if (!AppendNumber(output, bounds.effective_max_roll)) {
+        return false;
+      }
+    } else {
+      output += "null";
+    }
+    output += ",\"unavailable_reason\":";
+    if (bounds.available) {
+      output += "null";
+    } else {
+      AppendJsonString(output, bounds.unavailable_reason);
+    }
+    output.push_back('}');
+    return true;
+  };
 
   std::string output =
       "{\"schema_version\":1,\"status\":\"unavailable\","
@@ -1374,6 +1409,16 @@ std::string SerializeActiveCombatResumeInputsV1(
           output, snapshot.defender.selected_commander_character_id)) {
     return {};
   }
+  output += ",\"side_0_selected_commander_next_roll_bounds\":";
+  if (!append_roll_bounds(
+          output, snapshot.attacker.selected_commander_next_roll_bounds)) {
+    return {};
+  }
+  output += ",\"side_1_selected_commander_next_roll_bounds\":";
+  if (!append_roll_bounds(
+          output, snapshot.defender.selected_commander_next_roll_bounds)) {
+    return {};
+  }
   output += ",\"side_0_ordered_public_cunit_ids\":";
   if (!append_army_ids(output, snapshot.attacker)) {
     return {};
@@ -1393,9 +1438,12 @@ std::string SerializeActiveCombatResumeInputsV1(
     return {};
   }
   output += "},\"missing_required_domains\":["
-            "\"active_coalition_side_mapping\","
-            "\"selected_commander_next_roll_bounds\","
-            "\"active_regiment_counter_class_stack_context\","
+            "\"active_coalition_side_mapping\",";
+  if (!snapshot.attacker.selected_commander_next_roll_bounds.available ||
+      !snapshot.defender.selected_commander_next_roll_bounds.available) {
+    output += "\"selected_commander_next_roll_bounds\",";
+  }
+  output += "\"active_regiment_counter_class_stack_context\","
             "\"next_day_non_roll_advantage_sources\","
             "\"battle_knight_participation_and_dynamic_entry_transitions\"]}";
   return output.size() <= kBattleControlSnapshotV1WireMaximumBytes

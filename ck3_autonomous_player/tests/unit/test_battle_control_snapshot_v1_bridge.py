@@ -399,6 +399,18 @@ def _active_resume_receipt(frame: dict[str, object]) -> dict[str, object]:
             "side_1_current_roll_points": defender["current_roll_points"],
             "side_0_selected_commander_character_id": attacker["selected_commander_character_id"],
             "side_1_selected_commander_character_id": defender["selected_commander_character_id"],
+            "side_0_selected_commander_next_roll_bounds": {
+                "status": "unavailable",
+                "effective_min_roll": None,
+                "effective_max_roll": None,
+                "unavailable_reason": "not_sampled",
+            },
+            "side_1_selected_commander_next_roll_bounds": {
+                "status": "unavailable",
+                "effective_min_roll": None,
+                "effective_max_roll": None,
+                "unavailable_reason": "not_sampled",
+            },
             "side_0_ordered_public_cunit_ids": [
                 army["public_cunit_id"] for army in attacker["ordered_armies"]
             ],
@@ -2862,6 +2874,47 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
                 normalize_active_combat_resume_inputs_v1(
                     malformed, parent=frame
                 )
+
+    def test_resume_next_roll_bounds_require_both_actual_sides(self) -> None:
+        frame = self.normalize(_battle_frame())
+        receipt = _active_resume_receipt(frame)
+        observed = receipt["observed"]
+        for index, endpoints in ((0, (0, 0)), (1, (-1, 11))):
+            observed[f"side_{index}_selected_commander_next_roll_bounds"] = {
+                "status": "available",
+                "effective_min_roll": endpoints[0],
+                "effective_max_roll": endpoints[1],
+                "unavailable_reason": None,
+            }
+        receipt["missing_required_domains"].remove(
+            "selected_commander_next_roll_bounds"
+        )
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(receipt, parent=frame),
+            receipt,
+        )
+        self.assertEqual(receipt["status"], "unavailable")
+
+        one_side_missing = copy.deepcopy(receipt)
+        one_side_missing["observed"]["side_1_selected_commander_next_roll_bounds"] = {
+            "status": "unavailable",
+            "effective_min_roll": None,
+            "effective_max_roll": None,
+            "unavailable_reason": "commander_modifier_unavailable",
+        }
+        with self.assertRaisesRegex(ValueError, "roll bounds completeness"):
+            normalize_active_combat_resume_inputs_v1(one_side_missing, parent=frame)
+        one_side_missing["missing_required_domains"].insert(
+            1, "selected_commander_next_roll_bounds"
+        )
+        normalize_active_combat_resume_inputs_v1(one_side_missing, parent=frame)
+
+        forged = copy.deepcopy(receipt)
+        forged["observed"]["side_0_selected_commander_next_roll_bounds"][
+            "effective_min_roll"
+        ] = True
+        with self.assertRaises(ValueError):
+            normalize_active_combat_resume_inputs_v1(forged, parent=frame)
 
     def test_private_actual_hard_sides_bind_to_same_combat_and_order(self) -> None:
         frame = _battle_frame()
