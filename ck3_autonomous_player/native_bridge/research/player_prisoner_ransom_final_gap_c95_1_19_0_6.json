@@ -71,10 +71,47 @@
     "compiled_value_evaluator_first_64_sha256": "CFED858793A5F5BE973A9E0E09C4C0001F3AC2E609E3312EFDF0E401B5BD71FA",
     "compiled_value_evaluator_contract": "This engine entry evaluates an already resolved compiled script-value object against a prepared scope and returns signed Q100000 raw through caller-owned output. It does not look up the named ransom_cost_value object or construct a ransom-specific scope.",
     "missing": [
-      "loaded named ransom_cost_value and increased_ransom_cost_value object lookup and ownership",
+      "ransom-specific validation that the existing named-value database lookup returns the loaded ransom_cost_value and increased_ransom_cost_value definitions with stable identity",
       "prisoner as secondary_recipient, redirected actual payer as recipient, and jailer as actor in the same finalized context",
       "selected authored option and its native final validity, including current_gold acceptance-time saving",
       "paused game differential for raw units and actual on_accept transferred amount"
+    ]
+  },
+  "existing_named_value_quote_path_c214": {
+    "status": "exact-build static route, not a bound ransom observer or live quote",
+    "loaded_named_value_database_getter": {
+      "rva": "0x999AF0",
+      "end_rva_exclusive": "0x999B47",
+      "sha256": "4E0246E4FB97D18607FA9CBF72F6030825B4FA0BF1340DABDC3FEBCBD0CA9AED"
+    },
+    "loaded_named_value_lookup": {
+      "rva": "0x9999B0",
+      "end_rva_exclusive": "0x999AEA",
+      "sha256": "B1BD5B25EB20D8B81D65BAE5942F3D233480910D40C2B11540BCC6E7A53D07E2"
+    },
+    "stable_name_hash": {
+      "rva": "0x3B8B000",
+      "end_rva_exclusive": "0x3B8B087",
+      "sha256": "E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD"
+    },
+    "interaction_scope_clone": {
+      "rva": "0x3358E00",
+      "end_rva_exclusive": "0x3358EE9",
+      "sha256": "99A378FCDFA266541F77B5FEEEEC753BC02CBCA73F2D20FE486D7D03BEB1AFE0"
+    },
+    "named_fixed_evaluator": {
+      "rva": "0x3369820",
+      "end_rva_exclusive": "0x33699B3",
+      "sha256": "88C220FD822BE90E6E8DF71E1FC26214D62E5218493F5FCF1B64C2CD80A2DC04"
+    },
+    "reuse_provenance": "MIL4 military_preparation_summary_v1_binding.cpp resolves named definitions and owns the evaluation scope; faction_gift_receivers_v1.cpp clones a finalized interaction scope, changes its root to the recipient, and passes a 0x28 source descriptor as the fifth evaluator argument. These routines are reusable ABI entries, but their existing consumers do not evaluate ransom.",
+    "stock_scope_and_options": "The gold and extortionate_gold send options read scope:secondary_recipient.ransom_cost_value and increased_ransom_cost_value. The root must therefore be the prisoner, with the finalized interaction's actor=jailer, recipient=redirected payer and secondary_recipient=prisoner intact. current_gold and extortionate_current_gold save the payer's current_gold_value during on_accept; a paused read is only a quote.",
+    "acceptance_limit": "The generic preview already evaluates final Can Send and an AI answer status for its bound context, but does not publish an option-specific refusal explanation for a ransom proposal.",
+    "unclosed": [
+      "Resolve the loaded ransom script-value definitions by exact key and verify canonical identity on a paused prisoner frame",
+      "Construct and finalize a ransom-specific context with stock redirect, then confirm role IDs, shown and selected option, final Can Send and AI answer against that same context",
+      "Clone the option-bound interaction scope with prisoner root, evaluate the selected gold script value twice and compare same-frame identity; separately read the redirected payer's Q100000 current gold for current_gold options",
+      "Observe accepted transfer and custody postcondition before treating a quote as payable outcome"
     ]
   },
   "missing_for_action": [
@@ -83,5 +120,5 @@
     "recipient final acceptance and final Can Send tied to that option and the same prisoner row",
     "certified semantic command binding and live postcondition/receipt"
   ],
-  "next_abi_entry": "On an existing paused prisoner frame, resolve the exact loaded ransom_interaction definition and complete prisoner IDs, call the stock role redirect at 0x2C3C4C0, construct/refresh/finalize an owned all-role context at 0x2C3F000, and verify actor/recipient/secondary_recipient and selected option. Independently map the loaded named script-value object lookup before invoking the already known 0x337B210 evaluator on the prisoner scope; double-sample its raw result and compare gold/current-gold paths to later actual transfer. If any binding or option timing is unavailable, return typed unavailable. No payable amount, prisoner action, or live qualification is implied."
+  "next_abi_entry": "On an existing paused prisoner frame, resolve the exact loaded ransom_interaction definition and complete prisoner IDs, call stock redirect 0x2C3C4C0, construct/refresh/finalize an owned all-role context at 0x2C3F000, and verify actor/recipient/secondary_recipient, selected authored option, final Can Send and AI answer. Reuse the MIL4 named-value getter/hash/lookup and faction-gift scope clone plus five-argument 0x3369820 evaluator, not 0x337B210 as a loaded-definition evaluator; root the clone at the prisoner and retain the interaction named scopes. Evaluate the selected full-gold value twice or read the redirected payer's current gold as a time-bound current_gold quote. If definition identity, role/option scope or acceptance timing cannot be proved, return typed unavailable. Compare any later accepted transfer and custody independently. No payable amount, prisoner action or live qualification is implied."
 }

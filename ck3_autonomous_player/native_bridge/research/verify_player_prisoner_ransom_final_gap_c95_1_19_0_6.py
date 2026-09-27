@@ -96,7 +96,18 @@ def main() -> int:
         require(hashlib.sha256(read(rva, 64)).hexdigest().upper() ==
                 reusable[f"{prefix}_first_64_sha256"],
                 f"{prefix} exact-build entry SHA mismatch")
-    print("GREEN_STATIC C95/C210/C213 native anchors; final payable amount/action not mapped")
+    quote = contract["existing_named_value_quote_path_c214"]
+    for prefix in ("loaded_named_value_database_getter",
+                   "loaded_named_value_lookup", "stable_name_hash",
+                   "interaction_scope_clone", "named_fixed_evaluator"):
+        entry = quote[prefix]
+        rva = int(entry["rva"], 16)
+        length = int(entry["end_rva_exclusive"], 16) - rva
+        require(length > 0 and
+                hashlib.sha256(read(rva, length)).hexdigest().upper() ==
+                entry["sha256"],
+                f"{prefix} exact-build span SHA mismatch")
+    print("GREEN_STATIC C95/C210/C213/C214 native anchors; ransom binding and final payable amount/action not mapped")
     return 0
 
 

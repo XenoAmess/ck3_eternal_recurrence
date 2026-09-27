@@ -106,10 +106,60 @@ recipient, secondary recipient and the exact authored option. Confirm that
 recipient is the actual payer and secondary recipient is the prisoner; read
 final Can Send and acceptance from that same option-bound context. Separately
 map the loaded `ransom_cost_value`/`increased_ransom_cost_value` object lookup
-and the prisoner's script-value scope ABI. Only then evaluate it through
-`0x337B210`, double-sample the same paused frame, and label the result as a
-quote tied to actor, payer, prisoner, option and frame. A later accepted
-proposal must compare actual payer/jailer gold and prisoner custody. If
-lookup, scope or option ownership cannot be proved, the amount remains typed
-unavailable. No CK3 process was launched and no query, command, action or
+and the prisoner's script-value scope ABI. C214 below corrects the evaluator
+choice for a loaded named definition. Double-sample the same paused frame and
+label the result as a quote tied to actor, payer, prisoner, option and frame.
+A later accepted proposal must compare actual payer/jailer gold and prisoner
+custody. If lookup, scope or option ownership cannot be proved, the amount
+remains typed unavailable. No CK3 process was launched and no query, command, action or
 readiness was added by C213.
+
+## C214: named-value route exists; ransom option binding remains open (2026-09-27)
+
+C213's proposed `0x337B210` call needs a correction. That routine owns a
+generic compiled-value evaluation context. The already implemented MIL4 reader
+resolves loaded **named** script values through the exact-build database getter
+`0x999AF0`, name hash `0x3B8B000` and lookup `0x9999B0`, then evaluates the
+definition with `0x3369820`. The faction gift reader proves the related
+interaction-scope recipe: clone the finalized interaction scope through
+`0x3358E00`, replace its root character, supply the evaluation support
+containers and the 0x28-byte source descriptor as the **fifth** argument to
+`0x3369820`, and tear down the owned clone. C214 adds those full executable
+spans to the C95 verifier. This is reuse of implemented ABI code, not a new
+prisoner query.
+
+The stock ransom `send_option` reads
+`scope:secondary_recipient.ransom_cost_value` for `gold` and
+`scope:secondary_recipient.increased_ransom_cost_value` for
+`extortionate_gold`. Thus the quote scope must retain the finalized
+interaction's `actor` (jailer), redirected `recipient` (payer) and
+`secondary_recipient` (prisoner), with the cloned root set to the prisoner.
+For `current_gold` and `extortionate_current_gold`, `on_accept` saves the
+payer's gold **at acceptance**, so the existing exact character gold read
+(`Character+0x1A8` extension, `+0x100` Q100000 gold) could provide only a
+same-frame quote. Neither path may use the generic ten-slot `on_send` cost as
+the ransom transfer. The stock effect actually pays on acceptance.
+
+The remaining concrete binding is a single paused prisoner row: resolve the
+loaded ransom definition and both named values by canonical identity; apply
+the stock redirect and build/finalize its three-role context; read the authored
+selected option, final Can Send and AI answer; clone that exact scope and
+double-sample only the selected gold value or payer gold. The generic preview
+has an AI answer status and score, but no option-specific refusal explanation
+for ransom. A negative score is not itself a complete reason. If the loaded
+definition, selected option, named scopes or refusal reason is unavailable,
+return typed unavailable for that field. Only a later accepted proposal with
+independent payer/jailer gold and prisoner-custody readback can establish an
+actual payment. This C214 pass launched no CK3 process, added no private
+runtime field or action, and changes no M6 readiness.
+
+```mermaid
+flowchart LR
+    P[Prisoner ID from exact collection] --> R[Stock ransom redirect]
+    R -. same-frame three-role context and option unverified .-> O[Selected option]
+    O -->|gold or extortionate_gold| N[Named value DB and evaluator: mapped static]
+    O -->|current_gold variant| G[Payer gold read: mapped static]
+    N -. prisoner-root scope and loaded key unverified .-> Q[Time-bound quote]
+    G -. acceptance-time amount may change .-> Q
+    Q -. accepted transfer and custody not observed .-> A[Formal ransom outcome]
+```
