@@ -199,6 +199,45 @@ def query_construction_private(driver: object, *, expected_revision: int,
                              "actor_character_id": starting["played_character"]["character_id"]}}
 
 
+def query_construction_province_income_private(
+        driver: object, *, expected_revision: int,
+        barony_title_id: int, province_id: int) -> dict[str, object]:
+    """Read the exact paused-frame province aggregate, including after construction.
+
+    This carries the original trigger's raw scalar without converting it to
+    building-exclusive income or changing the formal construction selector.
+    """
+    if not (_positive(barony_title_id) and _positive(province_id)):
+        raise ValueError("construction province identity must be positive integers")
+    source = query_construction_private(
+        driver, expected_revision=expected_revision, material_receipt=True)
+    if source.get("status") != "material_source":
+        return source
+    world = source["world"]
+    rows = [row for row in world["active_constructions"]
+            if isinstance(row, Mapping)
+            and row.get("barony_title_id") == barony_title_id
+            and row.get("province_id") == province_id]
+    if len(rows) != 1:
+        return {"status": "source_red", "reason": "province_row_missing_or_duplicate",
+                "source_frame": source["source_frame"]}
+    row = rows[0]
+    observed = row.get("native_province_monthly_income_observed")
+    raw = row.get("native_province_monthly_income_raw")
+    if observed is False and raw is None:
+        status = "observation_unavailable"
+    elif observed is True and type(raw) is int:
+        status = "observed"
+    else:
+        return {"status": "source_red", "reason": "province_income_shape_mismatch",
+                "source_frame": source["source_frame"]}
+    return {"status": status, "barony_title_id": barony_title_id,
+            "province_id": province_id,
+            "native_province_monthly_income_observed": observed,
+            "native_province_monthly_income_raw": raw,
+            "source_frame": source["source_frame"]}
+
+
 def submit_construction_private(driver: object, *, query: Mapping[str, object],
                                 expected_revision: int) -> dict[str, object]:
     source = query.get("source_frame")

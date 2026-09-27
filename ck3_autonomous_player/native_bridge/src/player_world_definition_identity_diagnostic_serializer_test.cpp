@@ -68,13 +68,16 @@ int main() {
   world.legal_samples.push_back({2103, 2635, 24, 1,
                                  "common_tradeport_01"});
   world.active_constructions.push_back({2103, 2635, true, 24, 1,
-                                        29829, 109500000, 100000});
+                                        29829, 109500000, 100000,
+                                        true, 2468000});
   std::cout <<
       xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query)
       << '\n';
   world.completed_buildings_observed = true;
   world.positive_income_coverage_complete = true;
   world.completed_buildings.push_back({2103, 2635, 24, 1});
+  world.active_constructions[0].active = false;
+  world.active_constructions[0].native_province_monthly_income_raw = 2654000;
   std::cout <<
       xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query);
 }

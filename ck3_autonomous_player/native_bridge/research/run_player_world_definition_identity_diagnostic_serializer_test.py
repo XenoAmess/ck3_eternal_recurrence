@@ -83,8 +83,19 @@ def main() -> int:
                 "slot_index": 1, "initiator_character_id": 29829,
                 "native_remaining_work_raw": 109500000,
                 "native_progress_divisor_raw": 100000,
+                "native_province_monthly_income_observed": True,
+                "native_province_monthly_income_raw": 2468000,
             }]
             completed = receipts[2]["player_world_building_sources"]
+            assert completed["active_constructions"] == [{
+                "barony_title_id": 2103, "province_id": 2635,
+                "active": False, "building_type_id": None,
+                "slot_index": None, "initiator_character_id": None,
+                "native_remaining_work_raw": None,
+                "native_progress_divisor_raw": None,
+                "native_province_monthly_income_observed": True,
+                "native_province_monthly_income_raw": 2654000,
+            }]
             assert completed["completed_buildings_observed"] is True
             assert completed["positive_income_coverage_complete"] is True
             assert completed["completed_buildings"] == [{

@@ -56,7 +56,9 @@ def world(revision: int = 3, *, active: bool = False) -> dict[str, object]:
                 "province_id": 2635, "active": active,
                 "building_type_id": 24 if active else None,
                 "slot_index": 1 if active else None,
-                "initiator_character_id": 29829 if active else None}],
+                "initiator_character_id": 29829 if active else None,
+                "native_province_monthly_income_observed": True,
+                "native_province_monthly_income_raw": 2_468_000}],
             "completed_buildings_observed": True,
             "completed_buildings": []}
 
@@ -232,6 +234,19 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
+    def test_private_province_aggregate_binds_completed_row_to_paused_frame(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.completed_construction = True
+            result = transport.query_construction_province_income_private(
+                driver, expected_revision=3,
+                barony_title_id=2103, province_id=2635)
+            self.assertEqual(result["status"], "observed")
+            self.assertEqual(result["native_province_monthly_income_raw"], 2_468_000)
+            self.assertEqual(result["source_frame"]["snapshot_id"], "native:3")
+            self.assertEqual(result["source_frame"]["actor_character_id"], 29829)
+            self.assertEqual(driver.requests[-1]["step"], transport.QUERY_NATIVE)
+
     def test_unavailable_completed_observer_keeps_prewar_legality_and_start_source(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
