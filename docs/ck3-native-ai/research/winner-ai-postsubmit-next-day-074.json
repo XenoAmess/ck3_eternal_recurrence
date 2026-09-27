@@ -1,0 +1,69 @@
+{
+  "schema": "ck3.native_ai_winner_postsubmit_next_day_frozen_vector.v1",
+  "case_id": "winner-ai-postsubmit-next-day-074",
+  "scope": "one independent exact-build vanilla replay matched to 072 through terminal day; no causal queue-apply proof",
+  "ck3_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "observer_dll_sha256": "E8FB321D985880EC3079E2BBC9406663457C2F790445751CEDDDE522F0412ED6",
+  "source_save_sha256": "9B51A2FB20C7F931CF4E9F2A33F1E7598F517C4E793CE0CEFCFEF48C0D65BD2F",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0066",
+  "attempt_path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-postsubmit-movement-attempt-074",
+  "evidence_sha256": {
+    "ck3-output/interactive-requests-responses/26-ai-reentry.json": "CB38B7990237493F818A61A823BC62F71AE1DAC7ADCC0CE6A8B2BBA689C26884",
+    "ck3-output/interactive-requests-responses/27-ai-reentry.json": "ACCE0FFD2181522A94B3B9E8C9923B67657C2B23665B1034A57DB7CC8702A0A6",
+    "ck3-output/interactive-requests-responses/26-snapshot.json": "5F0B587995E9DFA1C9B6F5703863963BD53E72F6BD97F53CE6762D1C588C62CE",
+    "ck3-output/interactive-requests-responses/27-snapshot.json": "EA7C23E4E4CD601F31D7E3DC31E5C931F148A58262767E92683BAA5CAB502C4A",
+    "ck3-output/interactive-requests-responses/26-winner-terminal-a.json": "7DDA35732B956C5A578C633235D9DAF0BB0C82662D238B5414D717DEC3A02948",
+    "ck3-output/interactive-requests-responses/27-winner-terminal-a.json": "21591B210FFC54A796793662C98AC4DBCD8DA8B1CBDFBC50FC9428C82E85B0EA",
+    "ck3-output/session-result.json": "797B90957FAC588CC12CAA4D264C9D66A30C1F71A65F506107B7DC4B26EE4032",
+    "ck3-output/capture-report.json": "3DD2824DD81630AF59EA408AA63304D7FABD4F0569B58DE20106B1828394E911",
+    "audit-result.json": "234F9B863D4A813C2688BBC637E1EA13BD7ED9D261901A130A8185D751271DFA",
+    "probe-summary.json": "3FBD46340EA3DC79936A3401057C85F60A342BA25BE57C1C2091CF3950E600C6",
+    "daily-observations.jsonl": "99547835BE2567271136C63AC6D685D2EAEC1DB74AE02AEBE7709D3294E775BF",
+    "input-freeze.json": "6B39E3FAC542B71FCFF580DFEEBA8BC73803794A1CF125D618906ED9FBBA7BA3"
+  },
+  "subject": {
+    "combat_id": 16777218,
+    "war_id": 4,
+    "cunit_id": 16777231,
+    "owner_character_id": 32725,
+    "target_province_id": 2639
+  },
+  "terminal_day": {
+    "day_index": 26,
+    "date_raw": 53146992,
+    "event_sequence": 5,
+    "terminal_kind": "normal_result",
+    "winner_raw": 0,
+    "current_province_id": 2633,
+    "route_province_ids": [2639],
+    "army_state": "sieging",
+    "builder_result_handled_raw": 0,
+    "builder_result_second_raw": 0,
+    "builder_main_submit_calls": 0,
+    "fallback_submit_matching_calls": 1,
+    "fallback_queue_accepted": true
+  },
+  "next_day": {
+    "day_index": 27,
+    "date_raw": 53147016,
+    "current_province_id": 2633,
+    "route_province_ids": [2639],
+    "move_target_province_id": 2639,
+    "army_state": "sieging",
+    "private_movement_or_retreat_state_raw": 0,
+    "new_builder_outcomes": 0,
+    "new_submit_records": 0,
+    "observer_failure_flags": 0,
+    "position_changed_since_terminal": false,
+    "target_arrival_observed": false
+  },
+  "consumer_boundary": {
+    "observed_event_class": "fallback_queue_accepted_next_day_same_position_and_route",
+    "queue_apply_directly_observed": false,
+    "post_queue_movement_executed": null,
+    "general_ai_dispatch_rule_proven": false,
+    "native_eta_or_movement_progress_observed": false,
+    "strategy_use": "retain accepted fallback as an observed event; do not classify command apply or actual movement from route persistence and one unchanged day"
+  }
+}

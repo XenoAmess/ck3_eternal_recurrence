@@ -91,3 +91,7 @@ CK3 job/系统清单归零；任务总线 CK3 资源已释放。新的 Steam 原
 
 该命令不启动游戏、不改写 attempt。原有更完整的 `audit.py` 保留在外置 attempt
 根目录，其输出 `audit-result.json` SHA 已列于上表。
+
+独立的 [074 次日回放](winner-ai-postsubmit-next-day-live-074.md) 已在相同终局身份与
+后备入队结果下读取第 27 日：位置仍为 `2633`，路线及目标仍为 `2639`，实际
+command apply 和行军执行仍未由现有字段证明。
