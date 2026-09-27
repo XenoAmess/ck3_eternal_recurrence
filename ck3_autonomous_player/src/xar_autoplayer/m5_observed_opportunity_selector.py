@@ -372,7 +372,8 @@ def active_defensive_war_continuation_proposal(
     planned = [row for row in plan_wars if isinstance(row, Mapping)
                and row.get("war_id") == war_id]
     if (
-        len(current) != 1 or len(planned) != 1
+        len(snapshot_wars) != 1 or len(plan_wars) != 1
+        or len(current) != 1 or len(planned) != 1
         or current[0].get("player_side") != "defender"
         or current[0].get("player_is_primary_war_leader") is not True
         or planned[0].get("player_side") != "defender"
@@ -414,6 +415,11 @@ def active_defensive_war_continuation_proposal(
     cash = require_complete_war_cash_resource_v1(
         observation.get("war_cash_resource"), frame=frame, war_id=war_id,
     )
+    treasury = snapshot.get("played_character_gold")
+    if (not isinstance(treasury, Mapping)
+            or treasury.get("scale") != 100_000
+            or cash["observed_treasury_raw"] != treasury.get("raw")):
+        raise ValueError("defensive-war cash treasury differs from snapshot")
     supply = observation.get("projected_supply_margin_raw")
     if type(supply) is not int:
         raise ValueError("defensive-war continuation lacks measured supply")

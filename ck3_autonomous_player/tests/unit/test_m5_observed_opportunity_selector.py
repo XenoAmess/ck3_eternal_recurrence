@@ -373,6 +373,15 @@ class M5ObservedOpportunitySelectorTests(unittest.TestCase):
                 plan=_defensive_plan(), observation=observation,
             )
 
+    def test_defensive_continuation_refuses_wrong_treasury(self) -> None:
+        observation = _continuation_observation()
+        observation["war_cash_resource"]["observed_treasury_raw"] += 1
+        with self.assertRaisesRegex(ValueError, "treasury differs"):
+            active_defensive_war_continuation_proposal(
+                frame=_FRAME, snapshot=_defensive_snapshot(),
+                plan=_defensive_plan(), observation=observation,
+            )
+
     def test_query_only_war_allows_observed_zero_date_perk_opportunity(self) -> None:
         snapshot = _defensive_snapshot()
         continuation = active_defensive_war_continuation_proposal(

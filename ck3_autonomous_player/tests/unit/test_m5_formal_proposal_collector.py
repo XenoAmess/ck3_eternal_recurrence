@@ -483,6 +483,11 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "omits active-war cash"):
             collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
 
+        sources = _sources(domains={"building": _building_source()})
+        sources["war_cash_resource"]["observed_treasury_raw"] += 1
+        with self.assertRaisesRegex(ValueError, "treasury differs"):
+            collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
+
     def test_pending_war_cash_must_enter_existing_commitments_once(self) -> None:
         sources = _sources(domains={"building": _building_source()})
         cash = _war_cash()

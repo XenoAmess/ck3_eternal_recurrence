@@ -134,6 +134,11 @@ def collect_m5_formal_proposals(
         cash = require_complete_war_cash_resource_v1(
             sources.get("war_cash_resource"), frame=frame, war_id=war_id,
         )
+        treasury = snapshot.get("played_character_gold")
+        if (not isinstance(treasury, Mapping)
+                or treasury.get("scale") != 100_000
+                or cash["observed_treasury_raw"] != treasury.get("raw")):
+            raise ValueError("M5 war cash treasury differs from snapshot")
         if (type(commitments.get("gold_raw")) is not int
                 or commitments["gold_raw"]
                 < cash["existing_shared_gold_commitment_raw"]
