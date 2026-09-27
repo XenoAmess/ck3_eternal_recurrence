@@ -69,13 +69,24 @@ def _game_frame(
         "active_wars": []}
 
 
-def _scope_root() -> list[dict[str, object]]:
-    return [{"command": "query-campaign-root-context-v1", "ok": True,
+def _scope_root(*, steward_task: str | None = None,
+                frozen: bool = False) -> list[dict[str, object]]:
+    history = [{"command": "query-campaign-root-context-v1", "ok": True,
         "result": {"campaign_root_context": {"status": "available",
             "snapshot_revision": 3, "date_raw": 53178312,
             "player_character_id": 29829,
             "government": {"key": "feudal_government",
                            "flags": ["government_is_feudal"]}}}}]
+    if steward_task is not None:
+        history[0]["result"]["campaign_root_context"]["council"] = {
+            "status": "available", "positions": [{
+                "position_key": "councillor_steward",
+                "incumbent_character_id": 32716,
+                "task_key": steward_task,
+                "frozen": frozen,
+            }],
+        }
+    return history
 
 
 class _State:
@@ -90,6 +101,8 @@ class _State:
         self.other_focus = False
         self.professional_workforce_ready = False
         self.centralization_ready = False
+        self.tax_man_ready = False
+        self.tax_man_owned = False
 
     def wait_for_command_result(self, request_id: str, _: float) -> dict[str, object]:
         assert self.last is not None and self.last["request_id"] == request_id
@@ -147,6 +160,20 @@ class _State:
                     "key": "centralization_perk",
                     "lifestyle_key": "stewardship_lifestyle",
                 }]
+            if self.tax_man_ready:
+                life["owned_perk_keys"] = [
+                    "cutting_corners_perk", "professional_workforce_perk",
+                    "centralization_perk",
+                ]
+                life["current_lifestyle_progress"]["unspent_perk_points"] = 1
+                life["current_lifestyle_progress"]["used_perk_points"] = 7
+                life["legal_perk_candidates"]["items"] = [{
+                    "key": "tax_man_perk", "lifestyle_key": "stewardship_lifestyle",
+                }]
+            if self.tax_man_owned:
+                life["owned_perk_keys"].append("tax_man_perk")
+                life["current_lifestyle_progress"]["unspent_perk_points"] = 0
+                life["legal_perk_candidates"]["items"] = []
             if self.formal_focus_absent:
                 life["current_focus"] = {"presence": "absent"}
                 life["current_lifestyle_progress"] = {"presence": "absent"}
@@ -480,6 +507,59 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         self.assertFalse(any(
             row["command"] == PERK_SUBMIT_STEP for row in driver.history
         ))
+
+    def test_tax_man_requires_current_collect_taxes_and_consumes_receipt(self) -> None:
+        driver = _Driver()
+        driver.state.tax_man_ready = True
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        query = driver.query_player_lifestyle_formal_private_v1(expected_revision=3)
+        baseline = {"selected_step": "life-advance"}
+        missing = same_frame_feudal_lifestyle_scope(driver.frame, _scope_root())
+        self.assertIsNone(missing["collect_taxes_active"])
+        self.assertEqual(
+            consume_lifestyle_private_query(
+                baseline, scope=missing, query=query,
+            )["lifestyle_decision"]["status"],
+            "no_legal_minimum",
+        )
+        inactive = same_frame_feudal_lifestyle_scope(
+            driver.frame, _scope_root(steward_task="task_develop_county"),
+        )
+        self.assertIs(inactive["collect_taxes_active"], False)
+        self.assertEqual(
+            consume_lifestyle_private_query(
+                baseline, scope=inactive, query=query,
+            )["lifestyle_decision"]["status"],
+            "no_legal_minimum",
+        )
+        frozen = same_frame_feudal_lifestyle_scope(
+            driver.frame, _scope_root(steward_task="task_collect_taxes",
+                                      frozen=True),
+        )
+        self.assertIs(frozen["collect_taxes_active"], False)
+        scope = same_frame_feudal_lifestyle_scope(
+            driver.frame, _scope_root(steward_task="task_collect_taxes"),
+        )
+        self.assertIs(scope["collect_taxes_active"], True)
+        selected = consume_lifestyle_private_query(
+            baseline, scope=scope, query=query,
+        )
+        self.assertEqual(selected["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(selected["lifestyle_action"]["target_key"], "tax_man_perk")
+        pending = driver.submit_player_lifestyle_perk_private_v1(
+            query=selected["lifestyle_query"],
+            action=selected["lifestyle_action"], expected_revision=3,
+        )
+        self.assertEqual(pending["status"], "submitted_verification_pending")
+        self.assertEqual(unresolved_lifestyle_perk_action(driver.frame, driver.history), pending)
+        driver.frame = _game_frame(4)
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        applied = query_player_lifestyle_receipt_private_v1(
+            driver, pending=pending, expected_revision=4,
+        )
+        self.assertEqual(applied["status"], "applied")
+        self.assertTrue(applied["post_target_perk_owned"])
+        self.assertIsNone(unresolved_lifestyle_perk_action(driver.frame, driver.history))
 
     def test_wartime_perk_waits_when_war_planner_has_a_step(self) -> None:
         driver = _Driver()

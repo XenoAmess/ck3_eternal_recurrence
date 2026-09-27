@@ -200,6 +200,47 @@ class LifestyleMinPolicyTests(unittest.TestCase):
         snapshot["owned_perk_keys"].remove("centralization_perk")
         self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
 
+    def test_tax_man_needs_active_collect_taxes_point_and_final_legality(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["owned_perk_keys"] = [
+            "cutting_corners_perk", "professional_workforce_perk",
+            "centralization_perk",
+        ]
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "tax_man_perk", "lifestyle_key": "stewardship_lifestyle",
+        }]
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        self.assertEqual(
+            _choose(snapshot, collect_taxes_active=False)["status"],
+            "no_legal_minimum",
+        )
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
+        self.assertEqual(
+            _choose(snapshot, collect_taxes_active=True)["status"],
+            "no_legal_minimum",
+        )
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 1
+        snapshot["legal_perk_candidates"]["items"] = []
+        self.assertEqual(
+            _choose(snapshot, collect_taxes_active=True)["status"],
+            "no_legal_minimum",
+        )
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "tax_man_perk", "lifestyle_key": "stewardship_lifestyle",
+        }]
+        selected = _choose(snapshot, collect_taxes_active=True)
+        self.assertEqual(selected["status"], "recommend_action")
+        self.assertEqual(selected["selected_action"]["target_key"], "tax_man_perk")
+        self.assertEqual(
+            selected["selected_action"]["reason"],
+            "active_collect_taxes_effectiveness_plus_25_percent",
+        )
+        snapshot["owned_perk_keys"].append("tax_man_perk")
+        self.assertEqual(
+            _choose(snapshot, collect_taxes_active=True)["status"],
+            "no_legal_minimum",
+        )
+
     def test_absent_focus_requires_exact_target_progress_source(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["current_focus"] = {"presence": "absent"}

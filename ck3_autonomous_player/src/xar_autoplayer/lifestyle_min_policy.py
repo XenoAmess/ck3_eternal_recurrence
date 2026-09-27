@@ -16,6 +16,7 @@ _STEWARDSHIP = "stewardship_lifestyle"
 _BUILD_COST_PERK = "cutting_corners_perk"
 _BUILD_SPEED_PERK = "professional_workforce_perk"
 _CAPITAL_DEVELOPMENT_PERK = "centralization_perk"
+_COLLECT_TAXES_PERK = "tax_man_perk"
 _WEALTH_FOCUS = "stewardship_wealth_focus"
 _REQUIRED_READINESS = (
     "current_focus_ready",
@@ -83,6 +84,7 @@ def choose_min_feudal_lifestyle_action(
     *,
     feudal_scope_admitted: bool | None,
     at_peace: bool | None,
+    collect_taxes_active: bool | None = None,
     allow_wartime_perk: bool = False,
     pending_action: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
@@ -198,6 +200,27 @@ def choose_min_feudal_lifestyle_action(
                         "target_lifestyle_key": _STEWARDSHIP,
                         "expected": binding,
                         "reason": "capital_county_monthly_development_growth_add_0_3",
+                    },
+                }
+            if (
+                points > 0
+                and collect_taxes_active is True
+                and all(key in owned for key in (
+                    _BUILD_COST_PERK, _BUILD_SPEED_PERK,
+                    _CAPITAL_DEVELOPMENT_PERK,
+                ))
+                and _COLLECT_TAXES_PERK in perk_keys
+                and _COLLECT_TAXES_PERK not in owned
+            ):
+                return {
+                    **result,
+                    "status": "recommend_action",
+                    "selected_action": {
+                        "kind": "perk",
+                        "target_key": _COLLECT_TAXES_PERK,
+                        "target_lifestyle_key": _STEWARDSHIP,
+                        "expected": binding,
+                        "reason": "active_collect_taxes_effectiveness_plus_25_percent",
                     },
                 }
         return {**result, "status": "no_legal_minimum"}
