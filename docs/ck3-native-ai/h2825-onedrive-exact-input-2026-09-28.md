@@ -17,4 +17,4 @@
 
 外置 `D:/ck3-research-artifacts/war31-h2825-20260928/attempt-01/` 使用官方 `prepare-profile --xar-enabled xar_off`、`rebind-ordinary-seed-v1` 和 `native-one-generation-preflight` 建立独立状态，三步均通过，预检 `ready`、进程清单为空。派生 driver SHA-256 **`C4958192D27FF32ACA77414D8D6381CD6FEAB52B9EEB640EF1ABF9C1473F2A29`**，rebind 回执 SHA-256 **`D0549CDA3AA872FAD78C10EF389D328BCA23F667BE6F4E4E81102E17230E5F4E`**，预检报告 SHA-256 **`57A2119DB844C848958584335599217653F593BA8E8D2DB86861ECA0ECF48933`**。这只证明精确输入与无启动配对就绪；没有启动 CK3、推进日期、执行投降或验证 H2825 围城规划器的实机结果。
 
-后续实机必须先取得**新鲜** Steam 离线画面，使用此配对及请求中的精确 DLL，并在全新 attempt 中记录同帧战争行、路线位置和规划结果。2026-09-28 05:03（北京时间）的桌面恢复尝试仍报告 `stale_or_unavailable`，且未取得新鲜离线画面，因此本次无启动配对不得被写成实机通过。
+后续实机必须先取得**新鲜** Steam 离线画面，使用此配对及请求中的精确 DLL，并在全新 attempt 中记录同帧战争行、路线位置和规划结果。2026-09-28 05:03（北京时间）的首次桌面恢复尝试报告 `stale_or_unavailable`，未取得新鲜离线画面；稍后的恢复与[独立只读实机复验](h2825-readonly-partition-live-2026-09-28.md)另有证据。本节无启动配对本身不等于实机通过。

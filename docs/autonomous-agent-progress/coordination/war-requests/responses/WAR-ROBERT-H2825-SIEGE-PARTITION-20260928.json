@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T21:10:00Z",
+  "updated_at_utc": "2026-09-27T21:41:24Z",
   "source_pr": null,
   "master_commit": "6074a9dd3a6e8e8ce5a6ed22a98efa75781d4ad0",
   "delivery_route": "direct rebase-only master push",
@@ -20,12 +20,21 @@
     "test_gameplay_bridge.py and test_general_battle_strategy.py -k siege: 25 passed, 6 subtests passed.",
     "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN."
   ],
-  "live_evidence": null,
+  "live_evidence": {
+    "status": "partial_read_only_partition_live",
+    "document": "docs/ck3-native-ai/h2825-readonly-partition-live-2026-09-28.md",
+    "attempt": "D:/ck3-research-artifacts/war31-h2825-20260928/attempt-02/live-readonly-02",
+    "partition_replay_sha256": "F50D944E7942F93AB9F59E532F426F2C94E0FAAD61CB91B2A32C5B65B82F8BEF",
+    "observed": "At native:3, public revision 4, native revision 3, raw date 53217624: army 50331920 is sieging in target 2629, while army 83886484 is moving in province 3660. Three native read-only queries and the current source partition agree on defender [50331920] and offsite hostile [83886484].",
+    "gameplay_action_submitted": false,
+    "v3_query_executed": false,
+    "formal_planner_verified": false
+  },
   "limitations": [
-    "This is source delivery and static conditional replay, not a new H2825 game run. R0265 remains blocked and failed. The wrong candidate ID is a local variable-clobber bug; there is no evidence of a native position-reader conflict. The R0265 full active_wars row remains absent from Git, so exact live success is unclaimed.",
+    "R0265 remains blocked and failed. The wrong candidate ID is a local variable-clobber bug; there is no evidence of a native position-reader conflict. A new H2825 read-only run now proves the war and route positions agree, but it did not execute the v3 query or full formal planner; exact live closure is unclaimed.",
     "The exact H2825 OneDrive folder was initially absent from local selective sync. Its six requested files are now present and SHA-256 verified in D:/ck3-research-artifacts/war31-h2825-20260928/source-verified-01/; official no-launch prepare/rebind/preflight is READY in attempt-01. See docs/ck3-native-ai/h2825-onedrive-exact-input-2026-09-28.md. This does not establish live H2825 success.",
     "The route time comparison is conditional on the current orders. Battle duration, later enemy orders, reinforcement during combat, CB material terms and full continue-versus-surrender utility remain unknown.",
-    "The first matching live continuation must use the frozen R0264 source pair and official prepare/rebind/no-launch, not the mutated R0265 driver. It must prove same-frame war-row/route position consistency before querying v3 or claiming this planner block closed."
+    "The live read-only replay used the frozen R0264 source pair and official prepare/rebind/no-launch, not the mutated R0265 driver. It used the exact R0265 DLL but the locally verified R0221 injector rather than the R0265 injector hash; full binary-pair identity is not claimed. Same-frame war-row/route position consistency is proved, while v3 and planner closure remain open."
   ],
-  "next_step": "Review a fresh Steam offline frame, then use the verified H2825 source pair and official no-launch prepared attempt for a bounded read-only live replay. The previous snapshot-position request is superseded by its correction because the wrong candidate ID came from local Python variable shadowing. No live closure is claimed."
+  "next_step": "On a new exact no-launch H2825 attempt, review a fresh Steam offline frame, run the derived one-defender v3 read-only query, then prove the formal planner consumes the same-frame cache without approving direct contact with the offsite hostile. The previous snapshot-position request is superseded by its correction. No formal live closure is claimed."
 }
