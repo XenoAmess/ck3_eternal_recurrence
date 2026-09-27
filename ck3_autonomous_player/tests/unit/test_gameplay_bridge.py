@@ -18311,7 +18311,34 @@ class GameplayBridgeTests(unittest.TestCase):
             r"\\.\pipe\xar_save_fixture",
             state_dir=state_dir,
             save_dir=state_dir / "profile" / "save games",
+            war31_one_shot_surrender_gate=None,
+            succession_lifecycle_binding=None,
         )
+
+    def test_native_mcp_cli_binds_explicit_ordinary_environment(self) -> None:
+        from xar_autoplayer.bridge import mcp_server
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = root / "environment.json"
+            manifest.write_text(json.dumps({
+                "environment_sha256": "a" * 64,
+                "rules": {"profile": [{"rule": "xar_enabled", "setting": "xar_off"}]},
+            }), encoding="utf-8")
+            with mock.patch.object(mcp_server, "load_driver") as factory, \
+                    mock.patch.object(mcp_server, "create_server") as create_server:
+                self.assertEqual(mcp_server.main([
+                    "--driver", "native-headless",
+                    "--state-dir", str(root),
+                    "--environment-manifest", str(manifest),
+                    "--succession-lifecycle", "ordinary_campaign_succession",
+                    "--ordinary-campaign-no-pact",
+                ]), 0)
+            binding = factory.call_args.kwargs["succession_lifecycle_binding"]
+            self.assertEqual(binding["lifecycle"], "ordinary_campaign_succession")
+            self.assertEqual(binding["xar_enabled"], "xar_off")
+            self.assertEqual(binding["environment_sha256"], "a" * 64)
+            create_server.return_value.run.assert_called_once_with(transport="stdio")
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):

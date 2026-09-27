@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import json
 import os
 from pathlib import Path
 
@@ -55,6 +56,11 @@ from .native_driver import (
     selected_pipe_name,
 )
 from .war31_one_shot_surrender import War31OneShotSurrenderGate
+from .succession_transition_contract import (
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
+    bind_succession_lifecycle_from_environment_v1,
+)
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
 from .war_entry_contract import normalize_war_entry_target_ids
@@ -275,6 +281,7 @@ def load_driver(
     state_dir: str | os.PathLike[str] | None = None,
     pipe_name: str | None = None,
     war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
+    succession_lifecycle_binding: dict[str, object] | None = None,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
     def selected_state_dir() -> Path:
@@ -300,7 +307,10 @@ def load_driver(
             state_dir=selected_state_dir(),
             save_dir=selected_save_dir(),
             war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
+            succession_lifecycle_binding=succession_lifecycle_binding,
         )
+    if succession_lifecycle_binding is not None:
+        raise ValueError("explicit succession lifecycle requires native-headless driver")
     if war31_one_shot_surrender_gate is not None:
         raise ValueError("WAR31 one-shot gate requires native-headless driver")
     if factory == "hybrid-fallback":
@@ -2964,6 +2974,15 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--host", default="127.0.0.1")
     result.add_argument("--port", type=int, default=8765)
     result.add_argument(
+        "--environment-manifest",
+        help="prepared environment manifest for an explicit native succession lifecycle",
+    )
+    result.add_argument(
+        "--succession-lifecycle",
+        choices=(ROGUE_ONE_LIFE, ORDINARY_CAMPAIGN_SUCCESSION),
+    )
+    result.add_argument("--ordinary-campaign-no-pact", action="store_true")
+    result.add_argument(
         "--private-current-first-heir-relationship-query",
         action="store_true",
         help="enable the local stdio-only read of the current first-heir relation",
@@ -2980,6 +2999,27 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    explicit_lifecycle = (
+        args.environment_manifest,
+        args.succession_lifecycle,
+        args.ordinary_campaign_no_pact,
+    )
+    if any(explicit_lifecycle) and (
+        not args.environment_manifest or not args.succession_lifecycle
+    ):
+        raise ValueError(
+            "explicit succession lifecycle requires an environment manifest and mode"
+        )
+    if any(explicit_lifecycle) and args.driver != "native-headless":
+        raise ValueError("explicit succession lifecycle requires native-headless driver")
+    succession_lifecycle_binding = (
+        bind_succession_lifecycle_from_environment_v1(
+            json.loads(Path(args.environment_manifest).read_text(encoding="utf-8-sig")),
+            lifecycle=args.succession_lifecycle,
+            ordinary_campaign_no_pact=args.ordinary_campaign_no_pact,
+        )
+        if args.environment_manifest else None
+    )
     war31_paths = (
         args.war31_one_shot_authorization_receipt,
         args.war31_one_shot_source_checkpoint,
@@ -3015,6 +3055,7 @@ def main(argv: list[str] | None = None) -> int:
         state_dir=selected_state_dir,
         pipe_name=args.pipe_name,
         war31_one_shot_surrender_gate=war31_gate,
+        succession_lifecycle_binding=succession_lifecycle_binding,
     )
     if args.private_current_first_heir_relationship_query:
         driver.allow_private_current_first_heir_relationship_query = True
