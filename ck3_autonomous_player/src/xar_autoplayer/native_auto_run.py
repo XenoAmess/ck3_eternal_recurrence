@@ -41,6 +41,8 @@ from .lifestyle_formal_consumer import (
     RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP,
 )
 from .bridge.player_lifestyle_private_transport_v1 import (
+    FOCUS_TARGET as PRIVATE_LIFESTYLE_WEALTH_FOCUS,
+    MARTIAL_TARGET as PRIVATE_LIFESTYLE_MARTIAL_FOCUS,
     STATE_QUERY_STEP as PRIVATE_LIFESTYLE_STATE_QUERY_STEP,
     query_player_lifestyle_private_v1,
 )
@@ -129,6 +131,10 @@ _RAIKTOR_TERMINAL_CONTROL_CB = "raiktor_claim_cb"
 _RAIKTOR_TERMINAL_CONTROL_SCORE = -100
 _RAIKTOR_LONG_WAR_SURRENDER_MIN_DAYS = 730
 _RAIKTOR_LONG_WAR_SURRENDER_MAX_SCORE = -1
+_OPENING_FOCUS_LIFESTYLE_BY_TARGET = {
+    PRIVATE_LIFESTYLE_WEALTH_FOCUS: "stewardship_lifestyle",
+    PRIVATE_LIFESTYLE_MARTIAL_FOCUS: "martial_lifestyle",
+}
 
 
 def _registered_event_material_postcondition_issue(
@@ -1488,7 +1494,8 @@ def native_auto_run(
                     and isinstance(focus_submit, dict)
                     and focus_submit.get("status") == "submitted_verification_pending"
                     and focus_submit.get("kind") == "focus"
-                    and focus_submit.get("target_key") == "stewardship_wealth_focus"
+                    and focus_submit.get("target_key")
+                    in _OPENING_FOCUS_LIFESTYLE_BY_TARGET
                     and isinstance(focus_submit.get("action_request_id"), str)
                 ):
                     raise AgentError("initial LIFE focus typed submit is not pending verification")
@@ -1528,6 +1535,9 @@ def native_auto_run(
                         "private LIFE receipt did not match the next paused game frame"
                     )
                 if receipt_kind == "focus":
+                    target_lifestyle_key = _OPENING_FOCUS_LIFESTYLE_BY_TARGET.get(
+                        receipt.get("target_key")
+                    )
                     post_life2 = query_player_lifestyle_private_v1(
                         driver,
                         expected_revision=int(after_snapshot["revision"]),
@@ -1555,10 +1565,11 @@ def native_auto_run(
                         and isinstance(post_focus, dict)
                         and post_focus.get("presence") == "present"
                         and post_focus.get("key") == receipt.get("target_key")
+                        and target_lifestyle_key is not None
                         and isinstance(post_progress, dict)
                         and post_progress.get("presence") == "present"
                         and post_progress.get("lifestyle_key")
-                        == "stewardship_lifestyle"
+                        == target_lifestyle_key
                         and isinstance(post_progress.get("xp_total_raw"), int)
                         and not isinstance(post_progress.get("xp_total_raw"), bool)
                         and post_progress.get("xp_total_raw") >= 0
@@ -4936,6 +4947,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "council_assignment",
         "council_decision",
         "lifestyle_decision",
+        "opening_first_focus_comparison",
         "lifestyle_opportunity_status",
         "lifestyle_war_observation",
         "lifestyle_action",
@@ -5301,6 +5313,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "post_public_revision",
         "post_snapshot_id",
         "post_target_perk_owned",
+        "post_life2_current_state",
         "postcondition_verified",
         "completion_status",
         "construction_progress_observation",
