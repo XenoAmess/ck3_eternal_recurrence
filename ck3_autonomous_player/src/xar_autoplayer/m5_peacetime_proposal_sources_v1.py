@@ -69,6 +69,8 @@ def query_m5_peacetime_proposal_sources_v1(
     ) is True
     family_ledger = (read_family_marriage_ledger(state_dir)
                      if family_enabled else None)
+    pending_family = (family_ledger["pending"] if family_enabled else None)
+    family_claims = _pending_family_commitments(pending_family, frame)
     if construction_ledger.get("pending") is not None:
         raise BridgeUnavailableError(
             "M5 peacetime source has an unresolved construction action"
@@ -222,9 +224,9 @@ def query_m5_peacetime_proposal_sources_v1(
             "gold_raw": 0,
             "pending_war_slots": 0,
             "army_ids": [],
-            "ally_character_ids": [],
-            "character_ids": [],
-            "commitment_keys": [],
+            "ally_character_ids": family_claims["ally_character_ids"],
+            "character_ids": family_claims["character_ids"],
+            "commitment_keys": family_claims["commitment_keys"],
         },
         # Each admitted proposal retains its existing domain reserve.  Zero is
         # the observed absence of an additional cross-domain cash commitment.
@@ -246,10 +248,47 @@ def query_m5_peacetime_proposal_sources_v1(
             "construction_status": construction_status,
             "faction_status": faction.get("status"),
             "family_status": family_status,
+            "pending_family_commitment_source": (
+                "formal_pending_ledger" if pending_family is not None else None
+            ),
             "pending_formal_ledgers_empty": (
                 not family_enabled or family_ledger["pending"] is None),
             "formal_action_ready": False,
         },
+    }
+
+
+def _pending_family_commitments(
+    pending: object, frame: Mapping[str, object],
+) -> dict[str, list[int] | list[str]]:
+    if pending is None:
+        return {"ally_character_ids": [], "character_ids": [],
+                "commitment_keys": []}
+    if not isinstance(pending, Mapping) or (
+        pending.get("episode_run_id") != frame["episode_run_id"]
+        or pending.get("played_character_id") != frame["played_character_id"]
+    ):
+        raise BridgeUnavailableError(
+            "M5 pending family commitment crossed the actor episode"
+        )
+    heir = pending.get("heir_character_id")
+    candidate = pending.get("candidate_character_id")
+    recipient = pending.get("recipient_character_id")
+    actor = frame["played_character_id"]
+    if (
+        any(type(value) is not int or value <= 0
+            for value in (heir, candidate, recipient))
+        or heir == candidate or actor in {heir, candidate, recipient}
+    ):
+        raise BridgeUnavailableError(
+            "M5 pending family commitment lacks exact role identities"
+        )
+    return {
+        # The proposal may claim the recipient as a future alliance partner;
+        # this is a pending resource claim, not an established alliance value.
+        "ally_character_ids": [recipient],
+        "character_ids": sorted({heir, candidate, recipient}),
+        "commitment_keys": [f"first-heir-marriage:{heir}"],
     }
 
 

@@ -1,6 +1,7 @@
 # M5 observed opportunity dispatch (2026-09-23)
 
 Current gift consumer integration: [C54 formal gift routing and recovery](m5-gift-formal-consumer-c54-2026-09-27.md).
+Pending family resource integration: [C79 exact claims and result priority](m5-pending-family-claims-c79-2026-09-27.md).
 
 Status: **static-ready private construction consumer; no live joint action or
 M5 milestone completion**. The exact game remains CK3 `1.19.0.6-steam23530548`, EXE SHA-256

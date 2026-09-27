@@ -29,6 +29,9 @@ from .bridge.domain_construction_private_transport_v1 import (
 )
 from .m5_joint_dispatch import M5FrameDispatcher
 from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
+from .family_marriage_formal_consumer import (
+    plan_family_marriage_private, read_family_marriage_ledger,
+)
 from .m5_observed_opportunity_selector import (
     active_defensive_war_continuation_proposal,
     construction_proposal,
@@ -180,6 +183,9 @@ def plan_m5_formal_query_only(
     gift_enabled = getattr(
         driver, "allow_private_faction_gift_formal_trial", False
     ) is True
+    family_enabled = getattr(
+        driver, "allow_private_family_marriage_formal_trial", False
+    ) is True
     if isinstance(state_dir, Path):
         try:
             ledger = read_construction_ledger(state_dir)
@@ -214,6 +220,24 @@ def plan_m5_formal_query_only(
                     driver, {**cleaned, "plan": baseline}, snapshot,
                     history, available_steps,
                 )
+            if family_enabled:
+                family_ledger = read_family_marriage_ledger(state_dir)
+                family_pending = family_ledger.get("pending")
+                family_resolved = family_ledger.get("resolved")
+                if isinstance(family_pending, Mapping) or (
+                    isinstance(family_resolved, Mapping)
+                    and family_resolved.get("episode_run_id")
+                    == snapshot.get("episode_run_id")
+                ):
+                    family = plan_family_marriage_private(
+                        driver, {**cleaned, "plan": baseline}, snapshot,
+                    )
+                    family_plan = family.get("plan")
+                    if not isinstance(family_plan, Mapping):
+                        raise ValueError("M5 pending family plan is unavailable")
+                    if family_plan.get("selected_step") != "life-advance":
+                        return family
+                    baseline = deepcopy(dict(family_plan))
         except (RuntimeError, TypeError, ValueError) as error:
             return blocked(f"M5 prior action receipt RED: {error}")
     try:
