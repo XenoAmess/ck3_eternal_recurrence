@@ -15,6 +15,8 @@ R0266 的 `H2825/raw53217624` 是一个已暂停的同帧观察：`snapshot_id=n
 
 `H2908/raw53217816` 是后来的另一帧，只能作后续检查点，不能填补 H2825 的同帧现金字段。以上数据来自 [R0266 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)和其[证据摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0266-JOINT-CASH-20260928.construction-frame.json)。本机桌面截图仍陈旧；此处没有新的实机读回。
 
+原版 AI 的战争储备规则提供了**后续取数路径**：当前游戏 `game/common/defines/ai/00_ai.txt:135-154` 把按 tier 的最低战争储备设为 `25/25/50/100/200/300/400` 金，并指定 `MONTHS_OF_MAINTENANCE_IN_WAR_CHEST=18`，即与 18 个月最大维护费需求比较。此前[原生宣战输入研究](war-film-declaration-inputs-2026-09-23.md)静态定位了 `war_chest_gold` 的预算字段和需求构造 helper。这说明“原版 AI 希望保留多少战争储备”有可追的原生入口；**还没有** H2825 同帧的角色 tier、最大维护费原生读数、当前 `war_chest_gold` 或与玩家建造消费共享的预算所有权读回。原版 AI 的宣战储备也不自动等于本游玩智能体在现役战争中的最低现金政策，因此当前收据继续保留 `policy_minimum_gold_reserve_raw=null`。
+
 ## 已落入运行时的接口
 
 `m5_war_cash_resource_v1.observe_active_war_cash_resource_v1` 产出只读 `xar.ck3.m5-active-war-cash-resource.v1` 收据。输入必须包括完整 `source_frame`（玩家、`snapshot_id`、公开/原生修订、日期、episode）和 WarID。五项金额各使用 `{raw, scale:100000, source}`：已提交战争现金、本次动作即时费用、指定期限内未来费用上界、该期限的额外风险预算、战争政策最低保留额。未来上界还要声明 `horizon_days` 和文字假设。未知输入以 `null` 和机器可读 `missing` 原因输出；显式的 0 同样需要来源。收据始终 `formal_action_ready:false`。
