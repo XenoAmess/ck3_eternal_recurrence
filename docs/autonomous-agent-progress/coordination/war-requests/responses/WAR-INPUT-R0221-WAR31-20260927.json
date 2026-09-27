@@ -3,7 +3,15 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "claimed",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T05:41:23Z",
+  "updated_at_utc": "2026-09-27T06:01:40Z",
   "triage": "The paused War 31 read proves a legal, accepted defender surrender but the current native query returns cb_specific_terms_not_observable. The actual title, holder, liege, resource, and truce effects remain unknown; no surrender action is authorized or inferred by this claim.",
-  "next_step": "Audit the exact-build native CB outcome and war-end operation path for a same-frame bounded read-only result; retain unknown fields explicitly, then run no-launch checks and an independently paired live readback."
+  "static_findings": {
+    "absolute_outcome": "primary defender surrender invokes attacker_victory",
+    "stock_cb": "individual_county_de_jure_cb on_victory in 00_dejure_war.txt:435-497 constructs conquest title-and-vassal change, setup_de_jure_cb, then resolve_title_and_vassal_change; later prestige/fame/truce and conditional effects remain material",
+    "existing_exact_build_audit": "docs/ck3-native-ai/war-termination.md:2717 and ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json",
+    "preview_boundary": "CSetupDeJureCBChangeEffect preview 0x2E9FA10 calls 0x2E9FF30 on a +0x260 change object; object ownership, side effects, and complete final-operation schema are not proven. CResolveTitleAndVassalChangeEffect preview 0x7E9220 only returns true. Broad loaded-effect preview remains disabled after two live crashes at RVA 0x334C668.",
+    "current_frame_material_result": "unknown; neither legal acceptance nor a static conquest script identifies this WarID's final holder, liege, vassal, signed resources, or truce expiry"
+  },
+  "policy_safe_observed_frame_alternative": "Keep surrender unavailable to automated selection while material terms are unknown; use the observed legal war option, same-frame route/contact and combat inputs to continue or hold by the existing war policy. This is a safe continuation policy, not a substitute claim of surrender-term observability.",
+  "next_step": "Prove a non-mutating final-operation producer for this de-jure CB and its conditional resources, or obtain an independently verified exact-build Robert save/driver pair for bounded read-only exploration; publish typed unknowns and run no-launch checks before any live query. Do not call the crashing broad preview or submit surrender on this evidence."
 }
