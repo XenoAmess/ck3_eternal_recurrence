@@ -1,0 +1,43 @@
+{
+  "schema": "xar.ck3.war-r0244-local-v3-source/v1",
+  "scope": "Local independent War 4 stationary checkpoint for a read-only same-frame v3 query rehearsal; never the requesting War 48 pairing",
+  "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+  "pipe_prefix": "\\\\.\\pipe\\xar_ck3_r0244_local_v3_",
+  "shader_cache_source": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-three-unit-ai-reassignment-observe-attempt-052\\ck3-state\\profile\\shadercache",
+  "assets": {
+    "ck3_exe": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "checkpoint": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-losing-side-split-attempt-058\\stationary-before-split-immutable.ck3",
+      "sha256": "91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592"
+    },
+    "checkpoint_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-losing-side-split-attempt-058\\ck3-output\\interactive-requests-responses\\000-stationary-save.json",
+      "sha256": "CBDC1F1BADFECDE3CAE03EFF65570EDE91207549E568E07A8B49BF41C7ECE71B"
+    },
+    "source_snapshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-losing-side-split-attempt-058\\ck3-output\\interactive-requests-responses\\000-after-stationary-save.json",
+      "sha256": "3F247A896A6C30E009657C0AD5425AC4574A774011A42E8166C3C9624DC390A9"
+    },
+    "bridge_dll": {
+      "path": "D:\\workspace\\ck3_build_ai_retreat_20260927_r2\\xar_ck3_bridge.dll",
+      "sha256": "7CCF1E7C6FE3F4251F5214B257EF4A613090B88620D18377427DD33163B89CC3"
+    },
+    "bridge_injector": {
+      "path": "D:\\workspace\\ck3_build_ai_retreat_20260927_r2\\xar_ck3_bridge_injector.exe",
+      "sha256": "C3110B4F574B0ED71B95626F5A7F648B72AA982DE1A56189CD699F58F29977B4"
+    }
+  },
+  "scene": {
+    "date_raw": 53144520,
+    "character_id": 29829,
+    "war_id": 4,
+    "attacker_army_id": 18,
+    "origin_province_id": 2619,
+    "defender_army_id": 24,
+    "target_province_id": 2638,
+    "hostile_army_ids": [24, 30, 31, 16777218, 16777230]
+  }
+}
