@@ -11,6 +11,7 @@
 #endif
 
 #include <cstdint>
+#include <charconv>
 #include <string>
 #include <string_view>
 
@@ -18,6 +19,30 @@ namespace xar::ck3_11906 {
 
 inline constexpr std::string_view kPlayerPrisonerCollectionPrivateStepV1 =
     "query-player-prisoner-collection-private-v1";
+inline constexpr std::string_view kPlayerPrisonerCollectionRansomOrdinalPrefixV1 =
+    "query-player-prisoner-collection-private-v1-ransom-ordinal-";
+
+inline bool ParsePlayerPrisonerCollectionPrivateStepV1(
+    std::string_view step, std::uint32_t &ransom_ordinal) noexcept {
+  ransom_ordinal = 0;
+  if (step == kPlayerPrisonerCollectionPrivateStepV1) return true;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+  if (!step.starts_with(kPlayerPrisonerCollectionRansomOrdinalPrefixV1))
+    return false;
+  const auto suffix = step.substr(kPlayerPrisonerCollectionRansomOrdinalPrefixV1.size());
+  if (suffix.empty() || suffix.front() == '0') return false;
+  std::uint32_t parsed = 0;
+  const auto [end, error] = std::from_chars(
+      suffix.data(), suffix.data() + suffix.size(), parsed);
+  if (error != std::errc{} || end != suffix.data() + suffix.size() ||
+      parsed >= xar::bridge::kPlayerPrisonerMaximumRowsV1)
+    return false;
+  ransom_ordinal = parsed;
+  return true;
+#else
+  return false;
+#endif
+}
 inline constexpr std::uint32_t kPlayerPrisonerCollectionQueuedWaitMsV1 = 8'000;
 inline constexpr std::uint32_t kPlayerPrisonerCollectionExecutingWaitMsV1 = 2'000;
 
@@ -27,6 +52,7 @@ struct PlayerPrisonerCollectionMailboxContextV1 {
   Bindings bindings{};
   game::Snapshot expected_snapshot{};
   std::uint64_t expected_revision = 0;
+  std::uint32_t requested_ransom_ordinal = 0;
   xar::bridge::PlayerPrisonerCollectionSnapshotV1 result{};
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
   std::array<game::CharacterInteractionPreviewV1,

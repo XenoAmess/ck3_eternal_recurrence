@@ -4796,12 +4796,66 @@ def _observe_private_prisoner_collection_once(
             "error_type": type(error).__name__,
             "error": str(error),
         }
-    return {
+    observation = {
         "status": readback.get("status"),
         "turn_index": turn_index,
         "source_frame": source_frame,
         "readback": copy.deepcopy(readback),
     }
+    collection = readback.get("player_prisoner_collection")
+    if not (
+        isinstance(collection, dict)
+        and collection.get("status") == "available"
+        and collection.get("schema_version") == 4
+        and isinstance(collection.get("prisoners"), list)
+    ):
+        return observation
+    rows = collection["prisoners"]
+    original_ids = [row.get("prisoner_character_id") for row in rows]
+    followups = []
+    # One native evaluator per mailbox. Three rows cover the observed Robert
+    # scene without making a paused turn unbounded for larger collections.
+    for ordinal in range(1, min(len(rows), 3)):
+        try:
+            additional = driver.query_player_prisoner_collection_private_v1(
+                expected_revision=before["revision"], ransom_ordinal=ordinal,
+            )
+            other = additional.get("player_prisoner_collection")
+            other_rows = other.get("prisoners") if isinstance(other, dict) else None
+            if not (
+                additional.get("status") == "available"
+                and additional.get("queried_snapshot_id") == before.get("snapshot_id")
+                and additional.get("queried_revision") == before.get("revision")
+                and additional.get("queried_native_revision") == before.get("native_revision")
+                and isinstance(other, dict)
+                and other.get("date_raw") == before.get("date_raw")
+                and other.get("played_character_id") == before.get("played_character_id")
+                and isinstance(other_rows, list)
+                and [row.get("prisoner_character_id") for row in other_rows] == original_ids
+            ):
+                raise BridgeUnavailableError("ransom quote collection or paused frame changed")
+            followups.append({
+                "status": "observed", "source_ordinal": ordinal,
+                "prisoner_character_id": original_ids[ordinal],
+                "readback": copy.deepcopy(additional),
+            })
+        except Exception as error:
+            followups.append({
+                "status": "query_failed", "source_ordinal": ordinal,
+                "prisoner_character_id": original_ids[ordinal],
+                "error_type": type(error).__name__, "error": str(error),
+            })
+            break
+    observation["ransom_quote_followups"] = followups
+    first_quote = rows[0].get("ransom_quote_preview") if rows else None
+    observation["ransom_quote_coverage"] = (
+        "complete" if len(rows) <= 3
+        and (not rows or isinstance(first_quote, dict)
+             and first_quote.get("unavailable_reason") != "not_evaluated")
+        and all(row["status"] == "observed" for row in followups)
+        else "partial"
+    )
+    return observation
 
 
 def _turn_record(

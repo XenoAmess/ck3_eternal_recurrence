@@ -264,6 +264,35 @@ def test_private_ransom_quote_keeps_refused_or_unavailable_distinct() -> None:
     assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]["status"] == "unavailable"
 
 
+def test_private_ransom_ordinal_queries_one_bound_second_prisoner() -> None:
+    result = _result_with_ransom_quote()
+    value = result["player_prisoner_collection"]
+    first = value["prisoners"][0]
+    second = deepcopy(first)
+    second["source_ordinal"] = 1
+    second["prisoner_character_id"] = 47028
+    second["unconditional_release_preview"]["roles"]["recipient_character_id"] = 47028
+    second["ransom_quote_preview"]["prisoner_character_id"] = 47028
+    first["ransom_quote_preview"] = {
+        "private_build": True, "read_only": True, "advertised": False,
+        "action_surface_present": False, "status": "unavailable",
+        "unavailable_reason": "not_evaluated",
+    }
+    value.update({"total_count": 2, "returned_count": 2, "prisoners": [first, second]})
+    result["step"] += "-ransom-ordinal-1"
+    driver = _Driver(result)
+    observed = query_player_prisoner_collection_private_v1(
+        driver, expected_revision=4, ransom_ordinal=1,
+    )
+    assert driver.endpoint.request["step"] == result["step"]
+    assert observed["player_prisoner_collection"]["prisoners"][1]["ransom_quote_preview"]["quoted_gold_raw"] == 2_500_000
+    second["ransom_quote_preview"] = deepcopy(first["ransom_quote_preview"])
+    with pytest.raises(BridgeUnavailableError, match="wrong prisoner ordinal"):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4, ransom_ordinal=1,
+        )
+
+
 def test_mcp_registers_read_only_tool_only_for_private_opt_in() -> None:
     from mcp import Client
     from xar_autoplayer.bridge.mcp_server import create_server
