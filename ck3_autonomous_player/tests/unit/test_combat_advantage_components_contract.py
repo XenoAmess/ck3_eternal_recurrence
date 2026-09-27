@@ -109,6 +109,17 @@ class AdvantageComponentsContractTest(unittest.TestCase):
         self.assertIs(result["diagnostic_observation_complete"], False)
         self.assertIs(result["forecast_usable"], False)
 
+    def test_complete_arithmetic_row_with_helper_failure_is_not_admitted(self) -> None:
+        frame = sample()
+        component = frame["advantage_components"]
+        component["available"] = False
+        component["failure_flags"] = 64
+        result = normalize_runtime_advantage_components_v1(
+            frame, combat_id=COMBAT_ID)
+        self.assertIs(component["materializations"][0]["complete"], True)
+        self.assertIs(result["diagnostic_observation_complete"], False)
+        self.assertIs(result["forecast_usable"], False)
+
 
 if __name__ == "__main__":
     unittest.main()
