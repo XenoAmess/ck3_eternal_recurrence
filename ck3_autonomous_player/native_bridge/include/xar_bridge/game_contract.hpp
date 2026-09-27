@@ -1327,6 +1327,59 @@ struct BattleControlSideSnapshot {
                          const BattleControlSideSnapshot &) = default;
 };
 
+// A same-sample observation of the operands used by the native MAA counter
+// resolver. This is not a resumed battle forecast or a next-tick promise.
+struct BattleControlCounterEntryV1 {
+  std::int32_t bucket_index = -1;
+  std::int32_t regiment_id = -1;
+  std::int32_t native_carmy_id = -1;
+  std::int64_t current_fighting_raw = 0;
+  CombatObservationStatus status = CombatObservationStatus::unavailable;
+  std::int32_t class_index = -1;
+  std::int32_t stack_size_soldiers = 0;
+  std::int64_t current_chunk_raw = 0;
+  std::vector<CombatCounterTargetSnapshot> targets;
+
+  friend bool operator==(const BattleControlCounterEntryV1 &,
+                         const BattleControlCounterEntryV1 &) = default;
+};
+
+struct BattleControlCounterSideV1 {
+  std::int32_t side_index = -1;
+  std::int32_t primary_owner_character_id = -1;
+  std::int64_t counter_efficiency_raw = 0;
+  std::int64_t counter_resistance_raw = 0;
+  std::vector<BattleControlCounterEntryV1> men_at_arms_entries;
+
+  friend bool operator==(const BattleControlCounterSideV1 &,
+                         const BattleControlCounterSideV1 &) = default;
+};
+
+struct BattleControlCounterContextV1 {
+  std::int32_t countered_side_index = -1;
+  std::int32_t countering_side_index = -1;
+  std::int32_t countered_primary_owner_character_id = -1;
+  std::int32_t countering_primary_owner_character_id = -1;
+  std::int64_t context_scale_raw = 0;
+
+  friend bool operator==(const BattleControlCounterContextV1 &,
+                         const BattleControlCounterContextV1 &) = default;
+};
+
+struct BattleControlCounterInputsV1 {
+  bool attempted = false;
+  bool available = false;
+  std::string unavailable_reason = "counter_inputs_not_observed";
+  std::int32_t source_combat_id = -1;
+  std::int32_t source_target_province_id = -1;
+  std::int32_t class_count = 0;
+  std::vector<BattleControlCounterSideV1> sides;
+  std::vector<BattleControlCounterContextV1> contexts;
+
+  friend bool operator==(const BattleControlCounterInputsV1 &,
+                         const BattleControlCounterInputsV1 &) = default;
+};
+
 struct ActiveCombatRetreatSideFlagsSnapshot {
   bool disallow_retreat = false;
   bool allow_early_retreat = false;
@@ -1442,6 +1495,9 @@ struct BattleControlSnapshot {
   std::int64_t resolved_advantage_raw = 0;
   BattleControlSideSnapshot attacker;
   BattleControlSideSnapshot defender;
+  // Private exact-build observation; a complete current operand census does
+  // not remove the active-resume planner's other missing domains.
+  BattleControlCounterInputsV1 active_counter_inputs_v1;
   // Private exact-build diagnostic. It does not change battle_control_ready.
   BattleControlActualHardSides actual_hard_casualty_sides;
   // Private exact-build diagnostic; these are full CCombatSide modifiers.

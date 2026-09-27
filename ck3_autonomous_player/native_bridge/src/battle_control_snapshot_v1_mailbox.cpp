@@ -491,6 +491,86 @@ bool ValidatePursuitModifierSides(
   return true;
 }
 
+bool ValidateActiveCounterInputsV1(
+    const game::BattleControlSnapshot &snapshot) noexcept {
+  const auto &inputs = snapshot.active_counter_inputs_v1;
+  if (!inputs.attempted) {
+    return true;
+  }
+  if (inputs.source_combat_id != snapshot.combat_id ||
+      inputs.source_target_province_id != snapshot.province_id) {
+    return false;
+  }
+  if (!inputs.available) {
+    return !inputs.unavailable_reason.empty() && inputs.class_count == 0 &&
+           inputs.sides.empty() && inputs.contexts.empty();
+  }
+  if (!inputs.unavailable_reason.empty() || inputs.class_count <= 0 ||
+      inputs.class_count > 4096 ||
+      inputs.sides.size() != 2 || inputs.contexts.size() != 2) {
+    return false;
+  }
+  const std::array<const game::BattleControlSideSnapshot *, 2> sides{
+      &snapshot.attacker, &snapshot.defender};
+  for (std::size_t side_index = 0; side_index < 2; ++side_index) {
+    const auto &observed = inputs.sides[side_index];
+    const auto &source = *sides[side_index];
+    if (observed.side_index != static_cast<std::int32_t>(side_index) ||
+        observed.primary_owner_character_id !=
+            source.primary_participant_character_id ||
+        observed.men_at_arms_entries.size() !=
+            source.men_at_arms_entries.size()) {
+      return false;
+    }
+    for (std::size_t index = 0;
+         index < observed.men_at_arms_entries.size(); ++index) {
+      const auto &row = observed.men_at_arms_entries[index];
+      const auto &entry = source.men_at_arms_entries[index];
+      if (row.bucket_index != entry.bucket_index ||
+          row.regiment_id != entry.regiment_id ||
+          row.native_carmy_id != entry.native_carmy_id ||
+          row.current_fighting_raw != entry.current_fighting_raw) {
+        return false;
+      }
+      if (row.status == game::CombatObservationStatus::absent) {
+        if (row.class_index != -1 || row.stack_size_soldiers != 0 ||
+            row.current_chunk_raw != 0 || !row.targets.empty()) {
+          return false;
+        }
+      } else if (row.status == game::CombatObservationStatus::available) {
+        if (row.class_index < 0 || row.class_index >= inputs.class_count ||
+            row.stack_size_soldiers <= 0 || row.current_chunk_raw < 0 ||
+            row.current_chunk_raw !=
+                entry.current_fighting_raw / row.stack_size_soldiers ||
+            row.targets.size() > 4096) {
+          return false;
+        }
+        for (const auto &target : row.targets) {
+          if (target.class_index < 0 ||
+              target.class_index >= inputs.class_count) {
+            return false;
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+    const auto &context = inputs.contexts[side_index];
+    if (context.countered_side_index !=
+            static_cast<std::int32_t>(side_index) ||
+        context.countering_side_index !=
+            static_cast<std::int32_t>(1 - side_index) ||
+        context.countered_primary_owner_character_id !=
+            observed.primary_owner_character_id ||
+        context.countering_primary_owner_character_id !=
+            inputs.sides[1 - side_index].primary_owner_character_id ||
+        context.context_scale_raw < 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
   const bool phase_valid =
       (snapshot.phase_raw == 0 && snapshot.phase == "maneuver") ||
@@ -517,6 +597,7 @@ bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
       !ValidateActiveCombatRetreat(snapshot) ||
       !ValidateSide(snapshot.attacker, 0, "attacker", snapshot.combat_id) ||
       !ValidateSide(snapshot.defender, 1, "defender", snapshot.combat_id) ||
+      !ValidateActiveCounterInputsV1(snapshot) ||
       !ValidateActualHardSides(snapshot) ||
       !ValidatePursuitModifierSides(snapshot)) {
     return false;
@@ -946,6 +1027,161 @@ bool AppendPursuitModifierSides(
   return true;
 }
 
+bool AppendActiveCounterInputsV1(
+    std::string &output, const game::BattleControlCounterInputsV1 &inputs) {
+  output += "{\"schema_version\":1,\"status\":";
+  AppendJsonString(output, inputs.available ? "available" : "unavailable");
+  output += ",\"operand_census_complete\":";
+  output += inputs.available ? "true" : "false";
+  output += ",\"source_combat_id\":";
+  if (!AppendNumber(output, inputs.source_combat_id)) {
+    return false;
+  }
+  output += ",\"source_target_province_id\":";
+  if (!AppendNumber(output, inputs.source_target_province_id)) {
+    return false;
+  }
+  output += ",\"scale\":100000,\"class_count\":";
+  if (!inputs.available) {
+    output += "null,\"sides\":null,\"contexts\":null,"
+              "\"unavailable_reason\":";
+    AppendJsonString(output, inputs.unavailable_reason);
+    output.push_back('}');
+    return true;
+  }
+  if (!AppendNumber(output, inputs.class_count)) {
+    return false;
+  }
+  output += ",\"sides\":[";
+  for (std::size_t side_index = 0; side_index < inputs.sides.size();
+       ++side_index) {
+    if (side_index != 0) {
+      output.push_back(',');
+    }
+    const auto &side = inputs.sides[side_index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, side.side_index)) {
+      return false;
+    }
+    output += ",\"primary_owner_character_id\":";
+    if (!AppendNumber(output, side.primary_owner_character_id)) {
+      return false;
+    }
+    output += ",\"counter_efficiency_raw\":";
+    if (!AppendNumber(output, side.counter_efficiency_raw)) {
+      return false;
+    }
+    output += ",\"counter_resistance_raw\":";
+    if (!AppendNumber(output, side.counter_resistance_raw)) {
+      return false;
+    }
+    output += ",\"men_at_arms_entries\":[";
+    for (std::size_t index = 0; index < side.men_at_arms_entries.size();
+         ++index) {
+      if (index != 0) {
+        output.push_back(',');
+      }
+      const auto &entry = side.men_at_arms_entries[index];
+      output += "{\"bucket_index\":";
+      if (!AppendNumber(output, entry.bucket_index)) {
+        return false;
+      }
+      output += ",\"regiment_id\":";
+      if (!AppendNumber(output, entry.regiment_id)) {
+        return false;
+      }
+      output += ",\"native_carmy_id\":";
+      if (!AppendNumber(output, entry.native_carmy_id)) {
+        return false;
+      }
+      output += ",\"current_fighting_raw\":";
+      if (!AppendNumber(output, entry.current_fighting_raw)) {
+        return false;
+      }
+      output += ",\"status\":";
+      AppendJsonString(
+          output, entry.status == game::CombatObservationStatus::available
+                      ? "available"
+                      : "absent");
+      output += ",\"class_index\":";
+      if (entry.status == game::CombatObservationStatus::available) {
+        if (!AppendNumber(output, entry.class_index)) {
+          return false;
+        }
+      } else {
+        output += "null";
+      }
+      output += ",\"stack_size_soldiers\":";
+      if (entry.status == game::CombatObservationStatus::available) {
+        if (!AppendNumber(output, entry.stack_size_soldiers)) {
+          return false;
+        }
+      } else {
+        output += "null";
+      }
+      output += ",\"current_chunk_raw\":";
+      if (entry.status == game::CombatObservationStatus::available) {
+        if (!AppendNumber(output, entry.current_chunk_raw)) {
+          return false;
+        }
+      } else {
+        output += "null";
+      }
+      output += ",\"targets\":[";
+      for (std::size_t target_index = 0;
+           target_index < entry.targets.size(); ++target_index) {
+        if (target_index != 0) {
+          output.push_back(',');
+        }
+        const auto &target = entry.targets[target_index];
+        output += "{\"class_index\":";
+        if (!AppendNumber(output, target.class_index)) {
+          return false;
+        }
+        output += ",\"effectiveness_raw\":";
+        if (!AppendNumber(output, target.effectiveness_raw)) {
+          return false;
+        }
+        output.push_back('}');
+      }
+      output += "]}";
+    }
+    output += "]}";
+  }
+  output += "],\"contexts\":[";
+  for (std::size_t index = 0; index < inputs.contexts.size(); ++index) {
+    if (index != 0) {
+      output.push_back(',');
+    }
+    const auto &context = inputs.contexts[index];
+    output += "{\"countered_side_index\":";
+    if (!AppendNumber(output, context.countered_side_index)) {
+      return false;
+    }
+    output += ",\"countering_side_index\":";
+    if (!AppendNumber(output, context.countering_side_index)) {
+      return false;
+    }
+    output += ",\"countered_primary_owner_character_id\":";
+    if (!AppendNumber(output,
+                      context.countered_primary_owner_character_id)) {
+      return false;
+    }
+    output += ",\"countering_primary_owner_character_id\":";
+    if (!AppendNumber(output,
+                      context.countering_primary_owner_character_id)) {
+      return false;
+    }
+    output += ",\"context_scale_raw\":";
+    if (!AppendNumber(output, context.context_scale_raw)) {
+      return false;
+    }
+    output.push_back('}');
+  }
+  output += "],\"unavailable_reason\":null}";
+  return true;
+}
+
 } // namespace
 
 bool ParseBattleControlSnapshotV1Step(
@@ -1278,6 +1514,13 @@ std::string SerializeBattleControlSnapshotV1(
     output += ",\"pursuit_modifier_sides\":";
     if (!AppendPursuitModifierSides(output,
                                     snapshot.pursuit_modifier_sides)) {
+      return {};
+    }
+  }
+  if (snapshot.active_counter_inputs_v1.attempted) {
+    output += ",\"active_counter_inputs_v1\":";
+    if (!AppendActiveCounterInputsV1(output,
+                                     snapshot.active_counter_inputs_v1)) {
       return {};
     }
   }

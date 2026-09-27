@@ -329,6 +329,73 @@ int main() {
     return Fail("active resume receipt accepted an invalid battle-control frame");
   }
 
+  auto active_counter = complete;
+  auto &counter = active_counter.active_counter_inputs_v1;
+  counter.attempted = true;
+  counter.available = true;
+  counter.unavailable_reason.clear();
+  counter.source_combat_id = complete.combat_id;
+  counter.source_target_province_id = complete.province_id;
+  counter.class_count = 2;
+  game::BattleControlCounterEntryV1 reserve_counter{};
+  const auto &reserve_entry = complete.attacker.men_at_arms_entries[0];
+  reserve_counter.bucket_index = reserve_entry.bucket_index;
+  reserve_counter.regiment_id = reserve_entry.regiment_id;
+  reserve_counter.native_carmy_id = reserve_entry.native_carmy_id;
+  reserve_counter.current_fighting_raw = reserve_entry.current_fighting_raw;
+  reserve_counter.status = game::CombatObservationStatus::available;
+  reserve_counter.class_index = 1;
+  reserve_counter.stack_size_soldiers = 100;
+  reserve_counter.current_chunk_raw = 0;
+  reserve_counter.targets.push_back({0, 25'000});
+  counter.sides = {
+      {0, 100, 12'000, -3'000, {reserve_counter}},
+      {1, 200, 12'001, -3'001, {}}};
+  // The defender commander is 201, while the native primary owner is 200.
+  counter.contexts = {
+      {0, 1, 100, 200, 150'000},
+      {1, 0, 200, 100, 150'001}};
+  const auto counter_encoded = SerializeBattleControlSnapshotV1(active_counter);
+  if (counter_encoded.empty() ||
+      !Contains(counter_encoded,
+                "\"active_counter_inputs_v1\":{\"schema_version\":1,"
+                "\"status\":\"available\","
+                "\"operand_census_complete\":true") ||
+      !Contains(counter_encoded, "\"regiment_id\":401") ||
+      !Contains(counter_encoded, "\"stack_size_soldiers\":100") ||
+      !Contains(counter_encoded, "\"context_scale_raw\":150000") ||
+      !Contains(counter_encoded,
+                "\"countered_primary_owner_character_id\":200,"
+                "\"countering_primary_owner_character_id\":100")) {
+    return Fail("active counter same-frame operands were not serialized");
+  }
+  auto wrong_counter = active_counter;
+  wrong_counter.active_counter_inputs_v1.contexts[0]
+      .countering_primary_owner_character_id = 201;
+  if (!SerializeBattleControlSnapshotV1(wrong_counter).empty()) {
+    return Fail("active counter accepted commander in place of primary owner");
+  }
+  wrong_counter = active_counter;
+  wrong_counter.active_counter_inputs_v1.sides[0]
+      .men_at_arms_entries[0].current_chunk_raw = 1;
+  if (!SerializeBattleControlSnapshotV1(wrong_counter).empty()) {
+    return Fail("active counter accepted wrong current chunk");
+  }
+  auto unavailable_counter = active_counter;
+  unavailable_counter.active_counter_inputs_v1.available = false;
+  unavailable_counter.active_counter_inputs_v1.unavailable_reason =
+      "counter_regiment_generation_changed";
+  unavailable_counter.active_counter_inputs_v1.class_count = 0;
+  unavailable_counter.active_counter_inputs_v1.sides.clear();
+  unavailable_counter.active_counter_inputs_v1.contexts.clear();
+  if (!Contains(SerializeBattleControlSnapshotV1(unavailable_counter),
+                "\"operand_census_complete\":false") ||
+      !Contains(SerializeBattleControlSnapshotV1(unavailable_counter),
+                "\"class_count\":null,\"sides\":null,"
+                "\"contexts\":null")) {
+    return Fail("active counter unavailable exposed partial operands");
+  }
+
   auto pursuit = complete;
   pursuit.pursuit_modifier_sides.attempted = true;
   pursuit.pursuit_modifier_sides.available = true;

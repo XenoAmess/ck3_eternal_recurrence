@@ -55,6 +55,27 @@ _SNAPSHOT_KEYS = {
 _OPTIONAL_SNAPSHOT_KEYS = {
     "actual_hard_casualty_sides",
     "pursuit_modifier_sides",
+    "active_counter_inputs_v1",
+}
+_ACTIVE_COUNTER_KEYS = {
+    "schema_version", "status", "operand_census_complete", "source_combat_id",
+    "source_target_province_id", "scale", "class_count", "sides", "contexts",
+    "unavailable_reason",
+}
+_ACTIVE_COUNTER_SIDE_KEYS = {
+    "side_index", "primary_owner_character_id", "counter_efficiency_raw",
+    "counter_resistance_raw", "men_at_arms_entries",
+}
+_ACTIVE_COUNTER_ENTRY_KEYS = {
+    "bucket_index", "regiment_id", "native_carmy_id", "current_fighting_raw",
+    "status", "class_index", "stack_size_soldiers", "current_chunk_raw",
+    "targets",
+}
+_ACTIVE_COUNTER_TARGET_KEYS = {"class_index", "effectiveness_raw"}
+_ACTIVE_COUNTER_CONTEXT_KEYS = {
+    "countered_side_index", "countering_side_index",
+    "countered_primary_owner_character_id", "countering_primary_owner_character_id",
+    "context_scale_raw",
 }
 _ACTIVE_RESUME_KEYS = {
     "schema_version",
@@ -497,6 +518,15 @@ def normalize_battle_control_snapshot_v1(
             combat_id=combat_id,
             province_id=province_id,
         )
+    active_counter = None
+    if "active_counter_inputs_v1" in value:
+        active_counter = _normalize_active_counter_inputs_v1(
+            value["active_counter_inputs_v1"],
+            combat_id=combat_id,
+            province_id=province_id,
+            attacker=attacker,
+            defender=defender,
+        )
 
     result = {
         "schema_version": 1,
@@ -544,7 +574,174 @@ def normalize_battle_control_snapshot_v1(
         result["actual_hard_casualty_sides"] = actual_hard
     if pursuit_modifiers is not None:
         result["pursuit_modifier_sides"] = pursuit_modifiers
+    if active_counter is not None:
+        result["active_counter_inputs_v1"] = active_counter
     return result
+
+
+def _normalize_active_counter_inputs_v1(
+    value: object, *, combat_id: int, province_id: int,
+    attacker: dict[str, object], defender: dict[str, object],
+) -> dict[str, object]:
+    """Admit only a complete same-battle counter operand census.
+
+    This current-frame observation never grants resumed-trial readiness.
+    """
+    name = "battle_control_snapshot.active_counter_inputs_v1"
+    if not isinstance(value, dict) or set(value) != _ACTIVE_COUNTER_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    if value["schema_version"] != 1 or isinstance(value["schema_version"], bool):
+        raise ValueError(f"{name} has an invalid version")
+    if (
+        _full_component_id(value["source_combat_id"], f"{name}.source_combat_id")
+        != combat_id
+        or _positive_int32(
+            value["source_target_province_id"],
+            f"{name}.source_target_province_id",
+        ) != province_id
+        or value["scale"] != 100_000
+        or isinstance(value["scale"], bool)
+    ):
+        raise ValueError(f"{name} identity or scale disagrees")
+    if value["status"] == "unavailable":
+        if (
+            value["operand_census_complete"] is not False
+            or value["class_count"] is not None
+            or value["sides"] is not None
+            or value["contexts"] is not None
+            or not isinstance(value["unavailable_reason"], str)
+            or not value["unavailable_reason"]
+        ):
+            raise ValueError(f"{name} unavailable result contains partial operands")
+        return dict(value)
+    if (
+        value["status"] != "available"
+        or value["operand_census_complete"] is not True
+        or value["unavailable_reason"] is not None
+    ):
+        raise ValueError(f"{name} claims an incomplete operand census")
+    class_count = _positive_int32(value["class_count"], f"{name}.class_count")
+    if class_count > 4096:
+        raise ValueError(f"{name}.class_count exceeds the native bound")
+    sides = value["sides"]
+    contexts = value["contexts"]
+    if not isinstance(sides, list) or len(sides) != 2:
+        raise ValueError(f"{name} requires two actual sides")
+    if not isinstance(contexts, list) or len(contexts) != 2:
+        raise ValueError(f"{name} requires two directional contexts")
+    parents = (attacker, defender)
+    normalized_sides: list[dict[str, object]] = []
+    for index, (side, parent) in enumerate(zip(sides, parents, strict=True)):
+        side_name = f"{name}.sides[{index}]"
+        if not isinstance(side, dict) or set(side) != _ACTIVE_COUNTER_SIDE_KEYS:
+            raise ValueError(f"{side_name} has a malformed schema")
+        if (
+            _signed_int32(side["side_index"], f"{side_name}.side_index") != index
+            or _positive_int32(
+                side["primary_owner_character_id"],
+                f"{side_name}.primary_owner_character_id",
+            ) != parent["primary_participant_character_id"]
+        ):
+            raise ValueError(f"{side_name} does not match the actual side")
+        entries = side["men_at_arms_entries"]
+        source_entries = parent["men_at_arms_entries"]
+        if not isinstance(entries, list) or len(entries) != len(source_entries):
+            raise ValueError(f"{side_name} has an incomplete MAA census")
+        normalized_entries: list[dict[str, object]] = []
+        for entry_index, (entry, source) in enumerate(
+            zip(entries, source_entries, strict=True)
+        ):
+            entry_name = f"{side_name}.men_at_arms_entries[{entry_index}]"
+            if not isinstance(entry, dict) or set(entry) != _ACTIVE_COUNTER_ENTRY_KEYS:
+                raise ValueError(f"{entry_name} has a malformed schema")
+            for key, checker in (
+                ("bucket_index", _signed_int32),
+                ("regiment_id", _full_component_id),
+                ("native_carmy_id", _full_component_id),
+                ("current_fighting_raw", _signed_int64),
+            ):
+                if checker(entry[key], f"{entry_name}.{key}") != source[key]:
+                    raise ValueError(f"{entry_name}.{key} disagrees with battle entry")
+            if entry["status"] == "absent":
+                if any(
+                    entry[key] is not None
+                    for key in ("class_index", "stack_size_soldiers", "current_chunk_raw")
+                ) or entry["targets"] != []:
+                    raise ValueError(f"{entry_name} has malformed absent operands")
+            elif entry["status"] == "available":
+                class_index = _signed_int32(
+                    entry["class_index"], f"{entry_name}.class_index"
+                )
+                stack = _positive_int32(
+                    entry["stack_size_soldiers"],
+                    f"{entry_name}.stack_size_soldiers",
+                )
+                chunk = _signed_int64(
+                    entry["current_chunk_raw"],
+                    f"{entry_name}.current_chunk_raw",
+                )
+                if (
+                    not 0 <= class_index < class_count
+                    or chunk < 0
+                    or chunk != source["current_fighting_raw"] // stack
+                ):
+                    raise ValueError(f"{entry_name} native chunk or class disagrees")
+                targets = entry["targets"]
+                if not isinstance(targets, list) or len(targets) > 4096:
+                    raise ValueError(f"{entry_name} target list is malformed")
+                for target_index, target in enumerate(targets):
+                    target_name = f"{entry_name}.targets[{target_index}]"
+                    if not isinstance(target, dict) or set(target) != _ACTIVE_COUNTER_TARGET_KEYS:
+                        raise ValueError(f"{target_name} has a malformed schema")
+                    target_class = _signed_int32(
+                        target["class_index"], f"{target_name}.class_index"
+                    )
+                    _signed_int64(
+                        target["effectiveness_raw"],
+                        f"{target_name}.effectiveness_raw",
+                    )
+                    if not 0 <= target_class < class_count:
+                        raise ValueError(f"{target_name} class is outside the native table")
+            else:
+                raise ValueError(f"{entry_name} status is unavailable")
+            normalized_entries.append(dict(entry))
+        normalized_sides.append({
+            **side,
+            "counter_efficiency_raw": _signed_int64(
+                side["counter_efficiency_raw"],
+                f"{side_name}.counter_efficiency_raw",
+            ),
+            "counter_resistance_raw": _signed_int64(
+                side["counter_resistance_raw"],
+                f"{side_name}.counter_resistance_raw",
+            ),
+            "men_at_arms_entries": normalized_entries,
+        })
+    normalized_contexts: list[dict[str, object]] = []
+    for index, context in enumerate(contexts):
+        context_name = f"{name}.contexts[{index}]"
+        if not isinstance(context, dict) or set(context) != _ACTIVE_COUNTER_CONTEXT_KEYS:
+            raise ValueError(f"{context_name} has a malformed schema")
+        if (
+            _signed_int32(context["countered_side_index"],
+                          f"{context_name}.countered_side_index") != index
+            or _signed_int32(context["countering_side_index"],
+                             f"{context_name}.countering_side_index") != 1 - index
+            or _positive_int32(
+                context["countered_primary_owner_character_id"],
+                f"{context_name}.countered_primary_owner_character_id",
+            ) != normalized_sides[index]["primary_owner_character_id"]
+            or _positive_int32(
+                context["countering_primary_owner_character_id"],
+                f"{context_name}.countering_primary_owner_character_id",
+            ) != normalized_sides[1 - index]["primary_owner_character_id"]
+            or _signed_int64(
+                context["context_scale_raw"], f"{context_name}.context_scale_raw"
+            ) < 0
+        ):
+            raise ValueError(f"{context_name} does not match the actual sides")
+        normalized_contexts.append(dict(context))
+    return {**value, "sides": normalized_sides, "contexts": normalized_contexts}
 
 
 def normalize_active_combat_resume_inputs_v1(

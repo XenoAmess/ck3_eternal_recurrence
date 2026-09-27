@@ -423,6 +423,60 @@ def _active_resume_receipt(frame: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _active_counter_inputs(frame: dict[str, object]) -> dict[str, object]:
+    sides = []
+    for side_index, name in enumerate(("attacker", "defender")):
+        source_side = frame[name]
+        entries = []
+        for source in source_side["men_at_arms_entries"]:
+            entries.append({
+                "bucket_index": source["bucket_index"],
+                "regiment_id": source["regiment_id"],
+                "native_carmy_id": source["native_carmy_id"],
+                "current_fighting_raw": source["current_fighting_raw"],
+                "status": "available",
+                "class_index": side_index,
+                "stack_size_soldiers": 100,
+                "current_chunk_raw": source["current_fighting_raw"] // 100,
+                "targets": [{
+                    "class_index": 1 - side_index,
+                    "effectiveness_raw": 25_000,
+                }],
+            })
+        sides.append({
+            "side_index": side_index,
+            "primary_owner_character_id": source_side[
+                "primary_participant_character_id"
+            ],
+            "counter_efficiency_raw": 12_000 + side_index,
+            "counter_resistance_raw": -3_000 - side_index,
+            "men_at_arms_entries": entries,
+        })
+    contexts = [{
+        "countered_side_index": side_index,
+        "countering_side_index": 1 - side_index,
+        "countered_primary_owner_character_id": sides[side_index][
+            "primary_owner_character_id"
+        ],
+        "countering_primary_owner_character_id": sides[1 - side_index][
+            "primary_owner_character_id"
+        ],
+        "context_scale_raw": 150_000 + side_index,
+    } for side_index in range(2)]
+    return {
+        "schema_version": 1,
+        "status": "available",
+        "operand_census_complete": True,
+        "source_combat_id": frame["combat_id"],
+        "source_target_province_id": frame["province_id"],
+        "scale": 100_000,
+        "class_count": 2,
+        "sides": sides,
+        "contexts": contexts,
+        "unavailable_reason": None,
+    }
+
+
 def _service_result() -> dict[str, object]:
     result = {**_native_result(), "backend_id": "battle-control-fixture"}
     frame = result["battle_control_snapshot"]
@@ -3030,6 +3084,57 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             "pursuit_efficiency_raw"
         ] = 2**63
         with self.assertRaises(ValueError):
+            self.normalize(changed)
+
+    def test_active_counter_census_binds_actual_entries_and_primary_owners(self) -> None:
+        frame = _battle_frame()
+        frame["active_counter_inputs_v1"] = _active_counter_inputs(frame)
+
+        normalized = self.normalize(frame)["active_counter_inputs_v1"]
+        self.assertEqual(normalized, frame["active_counter_inputs_v1"])
+        self.assertEqual(normalized["sides"][0]["men_at_arms_entries"][0][
+            "current_chunk_raw"
+        ], 0)
+        self.assertEqual(normalized["sides"][1]["men_at_arms_entries"][0][
+            "current_chunk_raw"
+        ], 8_000_000)
+        # The defender's selected commander is absent; the actual primary
+        # participant is still a fully bound counter context owner.
+        self.assertIsNone(frame["defender"]["selected_commander_character_id"])
+        self.assertEqual(normalized["sides"][1]["primary_owner_character_id"],
+                         36_108)
+
+        for mutator, expected in (
+            (lambda value: value["sides"][1]["men_at_arms_entries"][0]
+             .update(current_chunk_raw=8_000_001), "native chunk"),
+            (lambda value: value["sides"][1]["men_at_arms_entries"][0]
+             .update(regiment_id=999), "battle entry"),
+            (lambda value: value["sides"][1]
+             .update(primary_owner_character_id=36_109), "actual side"),
+            (lambda value: value["contexts"][0]
+             .update(countering_primary_owner_character_id=36_109),
+             "actual sides"),
+        ):
+            changed = copy.deepcopy(frame)
+            mutator(changed["active_counter_inputs_v1"])
+            with self.assertRaisesRegex(ValueError, expected):
+                self.normalize(changed)
+
+    def test_active_counter_unavailable_never_leaks_partial_operands(self) -> None:
+        frame = _battle_frame()
+        unavailable = _active_counter_inputs(frame)
+        unavailable.update(
+            status="unavailable", operand_census_complete=False,
+            class_count=None, sides=None, contexts=None,
+            unavailable_reason="counter_regiment_generation_changed",
+        )
+        frame["active_counter_inputs_v1"] = unavailable
+        self.assertEqual(self.normalize(frame)["active_counter_inputs_v1"],
+                         unavailable)
+
+        changed = copy.deepcopy(frame)
+        changed["active_counter_inputs_v1"]["sides"] = []
+        with self.assertRaisesRegex(ValueError, "partial operands"):
             self.normalize(changed)
 
     def test_signed_generation_combat_id_is_not_missing(self) -> None:

@@ -14467,6 +14467,213 @@ bool ReadBattleControlSide(
              output.stored_terminal_loss_baseline_raw;
 }
 
+void ReadBattleControlCounterInputsV1(
+    const Bindings &bindings, void *combat,
+    game::BattleControlSnapshot &battle) noexcept {
+  auto &output = battle.active_counter_inputs_v1;
+  output = {};
+  output.attempted = true;
+  output.source_combat_id = battle.combat_id;
+  output.source_target_province_id = battle.province_id;
+  const auto unavailable = [&output](std::string_view reason) {
+    output.available = false;
+    output.unavailable_reason = std::string(reason);
+    output.class_count = 0;
+    output.sides.clear();
+    output.contexts.clear();
+  };
+  if (bindings.get_combat_rules == nullptr ||
+      bindings.read_counter_current_chunk == nullptr ||
+      bindings.get_character_modifier_aggregator == nullptr ||
+      bindings.get_counter_context_scale == nullptr) {
+    unavailable("counter_native_reader_unavailable");
+    return;
+  }
+  std::int32_t class_count = 0;
+  if (!ReadCounterClassCount(bindings, class_count)) {
+    unavailable("counter_class_count_unavailable");
+    return;
+  }
+  constexpr std::size_t kMaximumObservedTargets = 8192;
+  std::size_t observed_targets = 0;
+  const std::array<const game::BattleControlSideSnapshot *, 2> sides{
+      &battle.attacker, &battle.defender};
+  const std::array<std::size_t, 2> side_offsets{
+      kCombatAttackerSideOffset, kCombatDefenderSideOffset};
+  output.sides.reserve(2);
+  for (std::size_t side_index = 0; side_index < sides.size(); ++side_index) {
+    const auto &source = *sides[side_index];
+    game::BattleControlCounterSideV1 side{};
+    side.side_index = static_cast<std::int32_t>(side_index);
+    side.primary_owner_character_id =
+        source.primary_participant_character_id;
+    void *const owner = ResolveStoredComponent(
+        bindings.character_storage_slot,
+        side.primary_owner_character_id, kCharacterIdOffset);
+    game::CombatOwnerSnapshot owner_modifiers{};
+    if (owner == nullptr ||
+        !ReadCombatOwner(bindings, owner,
+                         side.primary_owner_character_id, owner_modifiers)) {
+      unavailable("counter_primary_owner_modifiers_unavailable");
+      return;
+    }
+    side.counter_efficiency_raw = owner_modifiers.counter_efficiency_raw;
+    side.counter_resistance_raw = owner_modifiers.counter_resistance_raw;
+    side.men_at_arms_entries.reserve(source.men_at_arms_entries.size());
+    for (const auto &entry : source.men_at_arms_entries) {
+      game::BattleControlCounterEntryV1 row{};
+      row.bucket_index = entry.bucket_index;
+      row.regiment_id = entry.regiment_id;
+      row.native_carmy_id = entry.native_carmy_id;
+      row.current_fighting_raw = entry.current_fighting_raw;
+      void *const regiment = ResolveStoredComponent(
+          bindings.regiment_storage_slot, row.regiment_id,
+          kRegimentIdOffset);
+      if (regiment == nullptr ||
+          LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+              row.native_carmy_id) {
+        unavailable("counter_regiment_generation_changed");
+        return;
+      }
+      void *const inner_type =
+          LoadAt<void *>(regiment, kRegimentInnerTypeOffset);
+      if (inner_type == nullptr) {
+        unavailable("counter_inner_type_unavailable");
+        return;
+      }
+      const auto class_index = LoadAt<std::int32_t>(
+          inner_type, kRegimentCounterClassOffset);
+      if (class_index < 0) {
+        row.status = CombatObservationStatus::absent;
+      } else {
+        if (class_index >= class_count) {
+          unavailable("counter_class_out_of_range");
+          return;
+        }
+        row.class_index = class_index;
+        row.stack_size_soldiers = LoadAt<std::int32_t>(
+            inner_type, kRegimentCounterStackSizeOffset);
+        if (row.stack_size_soldiers <= 0) {
+          unavailable("counter_stack_size_invalid");
+          return;
+        }
+        void *const targets = LoadAt<void *>(
+            inner_type, kRegimentCounterTargetsDataOffset);
+        const auto target_count = LoadAt<std::int32_t>(
+            inner_type, kRegimentCounterTargetsCountOffset);
+        if (target_count < 0 || target_count > kMaximumCounterTargets ||
+            (target_count > 0 && targets == nullptr) ||
+            observed_targets + static_cast<std::size_t>(target_count) >
+                kMaximumObservedTargets) {
+          unavailable("counter_target_census_invalid");
+          return;
+        }
+        observed_targets += static_cast<std::size_t>(target_count);
+        row.targets.reserve(static_cast<std::size_t>(target_count));
+        for (std::int32_t index = 0; index < target_count; ++index) {
+          const auto *const target =
+              static_cast<const std::byte *>(targets) +
+              static_cast<std::size_t>(index) *
+                  kRegimentCounterTargetStride;
+          game::CombatCounterTargetSnapshot target_row{};
+          target_row.class_index = LoadAt<std::int32_t>(
+              target, kRegimentCounterTargetClassOffset);
+          target_row.effectiveness_raw = LoadAt<std::int64_t>(
+              target, kRegimentCounterTargetEffectivenessOffset);
+          if (target_row.class_index < 0 ||
+              target_row.class_index >= class_count) {
+            unavailable("counter_target_class_out_of_range");
+            return;
+          }
+          row.targets.push_back(target_row);
+        }
+        // The exact native helper consumes only a generation-valid RegimentID
+        // and the *battle entry* Q100000 current count. This synthetic row is
+        // read-only, stack allocated, and never survives the paused sample.
+        alignas(8) std::array<std::byte, 0x60> synthetic_entry{};
+        StoreAt(synthetic_entry.data(), 0x08, row.regiment_id);
+        StoreAt(synthetic_entry.data(), 0x18,
+                row.current_fighting_raw);
+        if (bindings.read_counter_current_chunk(
+                synthetic_entry.data(), &row.current_chunk_raw) !=
+                &row.current_chunk_raw ||
+            row.current_chunk_raw < 0) {
+          unavailable("counter_current_chunk_unavailable");
+          return;
+        }
+        row.status = CombatObservationStatus::available;
+      }
+      if (ResolveStoredComponent(bindings.regiment_storage_slot,
+                                 row.regiment_id, kRegimentIdOffset) !=
+              regiment ||
+          LoadAt<void *>(regiment, kRegimentInnerTypeOffset) !=
+              inner_type ||
+          LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+              row.native_carmy_id) {
+        unavailable("counter_regiment_generation_changed");
+        return;
+      }
+      side.men_at_arms_entries.push_back(std::move(row));
+    }
+    if (LoadAt<std::int32_t>(
+            static_cast<const std::byte *>(combat) + side_offsets[side_index],
+            kCombatSidePrimaryCharacterIdOffset) !=
+            side.primary_owner_character_id ||
+        ResolveStoredComponent(bindings.character_storage_slot,
+                               side.primary_owner_character_id,
+                               kCharacterIdOffset) != owner) {
+      unavailable("counter_primary_owner_generation_changed");
+      return;
+    }
+    output.sides.push_back(std::move(side));
+  }
+  for (std::int32_t countered = 0; countered < 2; ++countered) {
+    const auto countering = 1 - countered;
+    const auto &countered_side = output.sides[countered];
+    const auto &countering_side = output.sides[countering];
+    void *const countered_owner = ResolveStoredComponent(
+        bindings.character_storage_slot,
+        countered_side.primary_owner_character_id, kCharacterIdOffset);
+    void *const countering_owner = ResolveStoredComponent(
+        bindings.character_storage_slot,
+        countering_side.primary_owner_character_id, kCharacterIdOffset);
+    void *const countered_aggregator =
+        countered_owner == nullptr
+            ? nullptr
+            : bindings.get_character_modifier_aggregator(countered_owner);
+    void *const countering_aggregator =
+        countering_owner == nullptr
+            ? nullptr
+            : bindings.get_character_modifier_aggregator(countering_owner);
+    game::BattleControlCounterContextV1 context{};
+    context.countered_side_index = countered;
+    context.countering_side_index = countering;
+    context.countered_primary_owner_character_id =
+        countered_side.primary_owner_character_id;
+    context.countering_primary_owner_character_id =
+        countering_side.primary_owner_character_id;
+    if (countered_aggregator == nullptr ||
+        countering_aggregator == nullptr ||
+        bindings.get_counter_context_scale(
+            &context.context_scale_raw, countered_aggregator,
+            countering_aggregator) != &context.context_scale_raw ||
+        context.context_scale_raw < 0 ||
+        ResolveStoredComponent(bindings.character_storage_slot,
+                               context.countered_primary_owner_character_id,
+                               kCharacterIdOffset) != countered_owner ||
+        ResolveStoredComponent(bindings.character_storage_slot,
+                               context.countering_primary_owner_character_id,
+                               kCharacterIdOffset) != countering_owner) {
+      unavailable("counter_context_scale_unavailable");
+      return;
+    }
+    output.contexts.push_back(context);
+  }
+  output.class_count = class_count;
+  output.available = true;
+  output.unavailable_reason.clear();
+}
+
 std::string_view BattleControlPhaseName(std::int32_t phase) noexcept {
   constexpr std::array<std::string_view, 4> names{
       "maneuver", "main", "pursuit", "done"};
@@ -14842,6 +15049,7 @@ bool ReadBattleControlSnapshotSample(
     output.defender.selected_commander_next_roll_bounds.unavailable_reason =
         "next_main_roll_not_applicable_in_phase";
   }
+  ReadBattleControlCounterInputsV1(bindings, combat, output);
   if (bindings.read_combat_hard_side_modifier != nullptr) {
     auto &hard_sides = output.actual_hard_casualty_sides;
     hard_sides.attempted = true;
