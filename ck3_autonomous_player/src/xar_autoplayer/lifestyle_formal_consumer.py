@@ -177,7 +177,7 @@ def same_frame_feudal_peace_scope(
 def same_frame_feudal_lifestyle_scope(
     snapshot: Mapping[str, object], history: list[dict[str, object]]
 ) -> dict[str, object]:
-    """Admit an observed war only for the existing private perk candidate."""
+    """Admit an observed war for private perk or initial focus evaluation."""
 
     return _same_frame_feudal_scope(snapshot, history, require_peace=False)
 
@@ -210,7 +210,7 @@ def consume_lifestyle_private_query(
             **plan,
             "phase": "lifestyle_scope_unavailable",
             "selected_step": None,
-            "reason": "peace or feudal scope has no independent true observation",
+            "reason": "feudal scope has no independent true observation",
         }
     if not isinstance(query, Mapping) or query.get("status") not in {
         "available", "stock_focus_available",
@@ -266,14 +266,14 @@ def consume_lifestyle_private_query(
                 "lifestyle_action": dict(action),
                 "lifestyle_query": dict(query),
                 "lifestyle_decision": recommendation,
-                "reason": "one native-final-legal stewardship wealth focus",
+                "reason": "one native-final-legal first focus",
             }
         return {
             **plan,
             "phase": "lifestyle_action_not_fireable",
             "selected_step": None,
             "lifestyle_decision": recommendation,
-            "reason": "the private wire only admits a ready final-legal perk",
+            "reason": "the private wire lacks a ready final-legal action",
         }
     if recommendation.get("status") == "no_legal_minimum":
         return {**plan, "lifestyle_decision": recommendation}
