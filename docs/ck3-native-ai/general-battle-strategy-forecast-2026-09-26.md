@@ -43,6 +43,8 @@
 
 随后[083 同场独立回放](join-width-production-and-fire.md#083-同一次自然增援的三点实采)取得首次 side0 出伤的实际 `R8D=2220`，故上段“仍未采到”只描述 078 当时的证据状态。[现役战斗策略入口审计](active-combat-strategy-forecast-ingress-audit-2026-09-27.md)又修复一个生产漏口：拟移动军或目标守军已在战斗中时，通用首次接战入口即使看到缓存 v3，也不能把第 0 日模型当作现役续算。当前智能体仍以同帧 battle-control 控制撤退与限时推进；现役胜率的同帧操作数未齐，策略尚未调用 resumed kernel。战前固定参战者估计与上表风险预算继续实际使用，回执继续标示未来日增援、属性和人物风险的未量化边界。
 
+[085 同钩子逐团回放](join-width-production-and-fire.md#085-双方-full-entry-同钩子实采与缓存差额)进一步把这一次已发生增援的双方缓存、旧 entry、incoming 13 团、新 entry 和战宽算术固化为[机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_full_entry_085.json)。它给**条件** participant-update 提供了可复算实例：旧团不变，新增军 starting 2570 人但当次 current 2560 人，双方原有缓存与 entry 残差在 join 返回后归零。通用策略仍不能从当前帧自动得知未来入场日与该日全部逐团状态，因此不把该向量当成未来整场胜率的无条件输入。085 的只读 battle-control 查询另暴露了 service 对新增 typed 续算 sibling 的白名单滞后；接口已同步容纳并按同帧父战斗校验，保留这一 RED 的原始回执。
+
 ## 静态验收
 
 ```text

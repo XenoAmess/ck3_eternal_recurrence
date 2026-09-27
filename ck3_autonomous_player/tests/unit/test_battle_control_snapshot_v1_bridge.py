@@ -3740,10 +3740,14 @@ class _ServiceDriver:
         advertise: bool = True,
         drift: bool = False,
         mirror_drift: bool = False,
+        resume_inputs: bool = False,
+        resume_drift: bool = False,
     ) -> None:
         self.advertise = advertise
         self.drift = drift
         self.mirror_drift = mirror_drift
+        self.resume_inputs = resume_inputs
+        self.resume_drift = resume_drift
         self.calls = 0
 
     def capabilities(self) -> dict[str, object]:
@@ -3788,6 +3792,11 @@ class _ServiceDriver:
         if step != STEP or expected_revision != 4:
             raise AssertionError("service changed the battle query binding")
         result = _service_result()
+        if self.resume_inputs or self.resume_drift:
+            receipt = _active_resume_receipt(result["battle_control_snapshot"])
+            if self.resume_drift:
+                receipt["source"]["combat_id"] += 1
+            result["active_combat_resume_inputs_v1"] = receipt
         if self.mirror_drift:
             result["side_scope"] = "owner_subset"
         return result
@@ -3799,6 +3808,21 @@ class _ServiceDriver:
 
 
 class BattleControlSnapshotV1ServiceTests(unittest.TestCase):
+    def test_service_preserves_valid_resume_receipt_and_rejects_wrong_combat(self) -> None:
+        result = GameplayBridgeService(
+            _ServiceDriver(resume_inputs=True)
+        ).query_battle_control_snapshot_v1(SUBJECT, expected_revision=4)
+        receipt = result["active_combat_resume_inputs_v1"]
+        self.assertEqual(receipt["status"], "unavailable")
+        self.assertEqual(
+            receipt["source"]["combat_id"],
+            result["battle_control_snapshot"]["combat_id"],
+        )
+        with self.assertRaisesRegex(BridgeUnavailableError, "resume inputs"):
+            GameplayBridgeService(
+                _ServiceDriver(resume_drift=True)
+            ).query_battle_control_snapshot_v1(SUBJECT, expected_revision=4)
+
     def test_service_requires_capability_revision_and_same_paused_frame(self) -> None:
         with self.assertRaises(UnsupportedStepError):
             GameplayBridgeService(

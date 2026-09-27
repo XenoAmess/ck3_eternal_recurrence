@@ -37,3 +37,5 @@
 ## 2026-09-27 后续证据范围更新
 
 上段记述的是本页写成时的 079 门禁，不代表全天都未能实机回放。桌面后来恢复，[独立 083 attempt](join-width-production-and-fire.md#083-同一次自然增援的三点实采)取得同一 CombatID/ArmyID/日期的 join 入口、返回、首次 side0 出伤三点：base/final `1645/1480→2467/2220`，实际出伤入参 `R8D=2220`，collector 与清场回执通过。它闭合**这一次 join 的宽度传递**，但没有补出未来 ETA 或当次 wrapper 同帧 full-entry；上述 `participant-update` 的跨未来日期缺口维持不变。[080 同帧 full-entry 采集器](join-full-entry-collector-static-080.md)已实现并通过聚焦离线测试，尚待独立实机 attempt。
+
+再后的 [085 同钩子 full-entry 回放](join-width-production-and-fire.md#085-双方-full-entry-同钩子实采与缓存差额)已直接采得双方旧 entry、incoming 13 团、返回 entry 与缓存；旧 row 不变，入口缓存残差 side 0/1 分别 `5627319/6540081` Q100000，返回均为 0，新增军 starting 2570 人而 current 2560 人。因而本例的已发生 `participant-update` 可以由真实事件向量驱动条件 trial；但当前路线读口仍不能提前给未来 CombatID、side、入场日完整状态。不能把“本例加入日的账闭合”外推成“任意当前帧都能预测未来加入”。

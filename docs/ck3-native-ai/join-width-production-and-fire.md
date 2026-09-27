@@ -1,6 +1,6 @@
 # CK3 1.19.0.6：增援加入后的战宽缓存与主阶段出伤读取
 
-本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；078 先取得 join 前后两点，后续独立 083 attempt 已取得同一增援的第三点实际出伤入参。完整 entry 差额与未来增援到达日仍需另行取证。
+本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；078 先取得 join 前后两点，083 补齐实际出伤入参，085 又在同一个 wrapper 前后取得双方完整 entry 与 incoming CArmy。未来增援到达日和通用 join 转移仍需另行取证。
 
 | 生产或消费点 | 原生行为 | 被动读取的字段 |
 | --- | --- | --- |
@@ -85,6 +85,18 @@ Steam 桌面恢复后，新独立 attempt `D:\workspace\ck3_native_war_ai_promo_
 三条原生记录均为 CombatID `16777218`、增援 ArmyID `22`、日期 `53146512`、实际战斗线程 `19936`；private mailbox 线程为 `25740`。phase day 7 的 join 入口：side index `-1`、两侧 `+0x98` 总量 `[160317482,89325449]`、base/final 战宽 `1645/1480`。同日 join 正常返回：目标落在 side 0、总量 `[410690163,82785368]`、战宽 `2467/2220`。phase day 8 首次 side 0 出伤：总量与返回点一致、缓存仍为 `2467/2220`，调用入参 `R8D=2220`。因此**这一次**的 base 增量为 `822`、final 增量为 `740`，且更新后的 final 确实传给了出伤器；078 的缺失第三点和 079 的启动前 RED 都保留历史原样。
 
 [083 机器可读向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_width_complete_083.json)冻结三条边界、原始 finish/清场 SHA 和实机身份；[只读投影器](../../ck3_autonomous_player/tools/project_join_width_complete_083.py)只有在两份原始文件的字节 SHA、日期、CombatID、ArmyID、三点次序、同一实际战斗线程、实际出伤入参和 clean exit 全部匹配时才重建向量。上述实采仍不包含每个 regiment 的完整 entry、该日 terrain 的运行时字段或未来某一天的增援到达机制，不能从战宽三点推出这些量。080 的 full-entry 采集须另开 attempt，不复用 083 的证据身份。
+
+### 085 双方 full-entry 同钩子实采与缓存差额
+
+新独立 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-full-entry-live-attempt-085` 用第 11 日冻结 save SHA-256 `3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953`、原版 EXE 同页顶部 SHA 和私有 DLL SHA-256 `1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F`，在新鲜且时钟吻合的 Steam 离线画面后只推进原生一天。原始 `jfull085-finish.json` SHA-256 `A7F01C89BE66B34A6F2862BAEFC4354EF74507B6D5178E2949C381DEDC32FD88`；清场 `cleanup-check.json` SHA-256 `5FD3CFE8AB9A69D557042B5CA3DE2CC59587C6BA679BF430F2BA15A98337CB37`，capture 返回 0、CK3 进程全灭、job active 为 0。`runtime_join_full_entries.status=captured,count=2,first_failure_code=0`，并列战宽 `status=captured,count=3`，全 trace `failure_flags=0`。同次实验中，主仓 service 对额外的续算 sibling 仍给出一次**只读 battle-control 查询 RED**（原始 `jfull085-before-control.json` SHA-256 `EE65F3F48E234AFAD9AD6366B8BE5E0BFD520E4624ECD008341F46CD75D545AA`）；它未改变暂停帧，随后以独立原生快照、checkpoint 和私有探针完成有界取样。不能把局部 collector captured 写成所有受管查询 GREEN。
+
+两条 full-entry 边界与战宽边界在 CombatID `16777218`、ArmyID `22`、原生日期 `53146512`、实际 join 线程 `24676` 上逐项相等。入口时 side 0 的 `+0x98` 缓存 `160317482`，但 27 条旧 entry 的 `current_raw` 合计 `154690163`，残差 **`5627319` Q100000 = 56.27319 人**；side 1 缓存 `89325449`，24 条 entry 合计 `82785368`，残差 **`6540081` Q100000 = 65.40081 人**。两侧旧 RegimentID、ArmyID、桶位置、starting/current/soft 和有效伤害/坚韧在 wrapper 前后逐项完全相同，未出现旧团改写；入口 side 0 roster `[16777221,16777231,27]`，返回只在末尾加 ArmyID `22`，side 1 roster 不变。
+
+incoming CArmy 的原生顺序有 13 个 RegimentID，基础人数合计 **2570 人**；返回新增 13 条 entry 的 starting 合计 `257000000` Q100000，与逐团 `CRegiment+0x38 × 100000` 均一致。RegimentID `177` 起始 **10 人**但 `current_raw=0`，因此新增 entry 的实际 current 合计仅 **`256000000` Q100000 = 2560 人**。返回后 side 0 entry 总数为 40，合计 `154690163+256000000=410690163`；side 1 仍为 24 条，合计 `82785368`。两侧 `+0x98 - Σentry.current_raw` 此时均为 **0**。这在同一个 join wrapper 的入口/正常返回上，实证了本次“旧缓存残差被清掉，新增军按 entry current 入账”的具体账；不能概括成任意 join 都必然有相同残差或相同新增人数。
+
+返回两侧实际参战总数 `410690163+82785368=493475531` Q100000，去引擎缩放即 **4934.75531 人**；取半并截断得 base width `2467`，森林宽度乘数 `90000/100000` 后截断得 final `2220`，首次 side 0 出伤入参确为 `2220`。入口 base `1645` 是保留的历史最大值，不能从入口当前 entry 重算替代。这里的“人”是计算量中的兵力小数，画面人数显示仍取游戏可见整数；视频必须明确解释 Q100000 原始整数与实际人数的换算。
+
+[085 机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_full_entry_085.json)保留双方残差、完整 ID 变化、新军逐团 starting/current、战宽和源 SHA；[精确只读投影器](../../ck3_autonomous_player/tools/project_join_full_entry_085.py)对原始 finish 与 clean-exit 字节、三点宽度/两点 full-entry 同身份、双方 entry 求和、incoming ID 与 starting 人数逐项校验。它是供智能体条件 join 转移和视频算术板复用的实测向量，不提供未来 ETA、未来 CombatID 或另一天的实际名单。
 
 ### 智能体 trial kernel 的条件战宽转移接口
 

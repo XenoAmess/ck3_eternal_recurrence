@@ -67,6 +67,7 @@ from .war_entry_contract import (
 from .actual_contact_contract import query_actual_contact_scope_step
 from .battle_control_contract import (
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
+    normalize_active_combat_resume_inputs_v1,
     normalize_battle_control_snapshot_v1,
     query_battle_control_snapshot_v1_step,
 )
@@ -10312,6 +10313,7 @@ class GameplayBridgeService:
             "queried_snapshot_id",
             "queried_revision",
             "queried_native_revision",
+            "active_combat_resume_inputs_v1",
         }
         if (
             not required_result_keys <= set(result)
@@ -10345,6 +10347,19 @@ class GameplayBridgeService:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"battle-control result is malformed: {error}"
+            ) from error
+        try:
+            resume_inputs = (
+                normalize_active_combat_resume_inputs_v1(
+                    result["active_combat_resume_inputs_v1"],
+                    parent=normalized,
+                )
+                if "active_combat_resume_inputs_v1" in result
+                else None
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"battle-control resume inputs are malformed: {error}"
             ) from error
         retreat_mirrors = {
             "selected_public_cunit_id": normalized[
@@ -10437,6 +10452,11 @@ class GameplayBridgeService:
             **copy.deepcopy(retreat_mirrors),
             "battle_control_ready": True,
             "battle_control_snapshot": normalized,
+            **(
+                {"active_combat_resume_inputs_v1": resume_inputs}
+                if resume_inputs is not None
+                else {}
+            ),
         }
 
     def query_battle_transition_v1(

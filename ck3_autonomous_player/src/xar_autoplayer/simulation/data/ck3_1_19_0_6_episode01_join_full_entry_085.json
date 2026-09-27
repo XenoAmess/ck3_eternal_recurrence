@@ -1,0 +1,282 @@
+{
+  "added_starting_sum_raw": 257000000,
+  "added_zero_current_regiment_ids": [
+    177
+  ],
+  "clean_exit": true,
+  "collector_status": "captured",
+  "entry_columns": [
+    "regiment_id",
+    "army_id",
+    "bucket",
+    "bucket_index",
+    "starting_raw",
+    "current_raw",
+    "soft_raw",
+    "effective_damage_raw",
+    "effective_toughness_raw"
+  ],
+  "identity": {
+    "combat_id": 16777218,
+    "join_thread_id": 24676,
+    "joining_army_id": 22,
+    "native_date_raw": 53146512
+  },
+  "incoming_basic_soldiers_total": 2570,
+  "incoming_columns": [
+    "regiment_id",
+    "basic_soldiers"
+  ],
+  "incoming_regiments": [
+    [
+      175,
+      750
+    ],
+    [
+      176,
+      400
+    ],
+    [
+      177,
+      10
+    ],
+    [
+      178,
+      776
+    ],
+    [
+      179,
+      1
+    ],
+    [
+      180,
+      1
+    ],
+    [
+      181,
+      1
+    ],
+    [
+      182,
+      1
+    ],
+    [
+      191,
+      402
+    ],
+    [
+      192,
+      87
+    ],
+    [
+      197,
+      26
+    ],
+    [
+      198,
+      58
+    ],
+    [
+      204,
+      57
+    ]
+  ],
+  "schema": "ck3.native_join_full_entry_accounting.v1",
+  "sides": [
+    {
+      "added_army_ids": [
+        22
+      ],
+      "added_current_sum_raw": 256000000,
+      "added_regiments": [
+        [
+          175,
+          22,
+          0,
+          9,
+          75000000,
+          75000000,
+          0,
+          1000000,
+          1000000
+        ],
+        [
+          176,
+          22,
+          1,
+          18,
+          40000000,
+          40000000,
+          0,
+          4500000,
+          2650000
+        ],
+        [
+          177,
+          22,
+          1,
+          19,
+          1000000,
+          0,
+          0,
+          100000,
+          1272000
+        ],
+        [
+          178,
+          22,
+          0,
+          10,
+          77600000,
+          77600000,
+          0,
+          1000000,
+          1000000
+        ],
+        [
+          179,
+          22,
+          1,
+          20,
+          100000,
+          100000,
+          0,
+          126750000,
+          25350000
+        ],
+        [
+          180,
+          22,
+          1,
+          21,
+          100000,
+          100000,
+          0,
+          58500000,
+          11700000
+        ],
+        [
+          181,
+          22,
+          1,
+          22,
+          100000,
+          100000,
+          0,
+          29250000,
+          5850000
+        ],
+        [
+          182,
+          22,
+          1,
+          23,
+          100000,
+          100000,
+          0,
+          9750000,
+          1950000
+        ],
+        [
+          191,
+          22,
+          0,
+          11,
+          40200000,
+          40200000,
+          0,
+          1000000,
+          1000000
+        ],
+        [
+          192,
+          22,
+          0,
+          12,
+          8700000,
+          8700000,
+          0,
+          1000000,
+          1000000
+        ],
+        [
+          197,
+          22,
+          0,
+          13,
+          2600000,
+          2600000,
+          0,
+          1000000,
+          1000000
+        ],
+        [
+          198,
+          22,
+          0,
+          14,
+          5800000,
+          5800000,
+          0,
+          1000000,
+          1000000
+        ],
+        [
+          204,
+          22,
+          0,
+          15,
+          5700000,
+          5700000,
+          0,
+          1000000,
+          1000000
+        ]
+      ],
+      "after_cache_minus_entry_raw": 0,
+      "after_cached_raw": 410690163,
+      "after_entry_sum_raw": 410690163,
+      "before_cache_minus_entry_raw": 5627319,
+      "before_cached_raw": 160317482,
+      "before_entry_sum_raw": 154690163,
+      "changed_regiments": [],
+      "removed_army_ids": [],
+      "removed_current_sum_raw": 0,
+      "removed_regiments": [],
+      "side_index": 0,
+      "unchanged_regiment_count": 27
+    },
+    {
+      "added_army_ids": [],
+      "added_current_sum_raw": 0,
+      "added_regiments": [],
+      "after_cache_minus_entry_raw": 0,
+      "after_cached_raw": 82785368,
+      "after_entry_sum_raw": 82785368,
+      "before_cache_minus_entry_raw": 6540081,
+      "before_cached_raw": 89325449,
+      "before_entry_sum_raw": 82785368,
+      "changed_regiments": [],
+      "removed_army_ids": [],
+      "removed_current_sum_raw": 0,
+      "removed_regiments": [],
+      "side_index": 1,
+      "unchanged_regiment_count": 24
+    }
+  ],
+  "source": {
+    "attempt": 85,
+    "bridge_sha256": "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F",
+    "cleanup_sha256": "5FD3CFE8AB9A69D557042B5CA3DE2CC59587C6BA679BF430F2BA15A98337CB37",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "finish_sha256": "A7F01C89BE66B34A6F2862BAEFC4354EF74507B6D5178E2949C381DEDC32FD88",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+  },
+  "width": {
+    "after_base": 2467,
+    "after_final": 2220,
+    "before_base": 1645,
+    "before_final": 1480,
+    "first_fire_argument": 2220
+  }
+}
