@@ -30,7 +30,9 @@ from .bridge.domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
 )
 from .m5_joint_dispatch import M5FrameDispatcher
+from .faction_gift_formal_candidate_v1 import latest_same_frame_faction_root_v1
 from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
+from .lifestyle_formal_consumer import ROOT_QUERY_STEP
 from .family_marriage_formal_consumer import (
     plan_family_marriage_private, read_family_marriage_ledger,
 )
@@ -262,6 +264,23 @@ def plan_m5_formal_query_only(
             raise
         except (RuntimeError, TypeError, ValueError) as error:
             return blocked(f"M5 prior action receipt RED: {error}")
+    # The source needs a public faction root before it can compare a gift to
+    # an otherwise ready building. Read the missing same-frame root first;
+    # never interpret an absent root as an empty faction opportunity.
+    root_status = latest_same_frame_faction_root_v1(snapshot, history)["status"]
+    if root_status == "same_frame_root_not_observed":
+        if ROOT_QUERY_STEP not in available_steps:
+            return blocked("M5 same-frame faction root is absent and its query is unavailable")
+        return {
+            **cleaned,
+            "plan": {
+                **baseline,
+                "phase": "m5_joint_root_query",
+                "selected_step": ROOT_QUERY_STEP,
+                "reason": "observe same-frame feudal faction facts before joint spending",
+                "m5_joint_formal_action_ready": False,
+            },
+        }
     try:
         sources = reader(
             snapshot=deepcopy(dict(snapshot)),
