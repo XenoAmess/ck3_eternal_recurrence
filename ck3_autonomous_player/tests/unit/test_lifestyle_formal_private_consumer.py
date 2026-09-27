@@ -103,6 +103,7 @@ class _State:
         self.centralization_ready = False
         self.tax_man_ready = False
         self.tax_man_owned = False
+        self.actor_traits: dict[str, object] | None = None
 
     def wait_for_command_result(self, request_id: str, _: float) -> dict[str, object]:
         assert self.last is not None and self.last["request_id"] == request_id
@@ -126,6 +127,8 @@ class _State:
                     "error": "native_lifestyle_state_or_final_candidates_unavailable"}
         if step == QUERY_STEP:
             life = _life_snapshot()
+            if self.actor_traits is not None:
+                life["actor_traits"] = self.actor_traits
             if self.other_focus:
                 life["current_focus"] = {
                     "presence": "present", "key": "diplomacy_foreign_affairs_focus",
@@ -182,6 +185,8 @@ class _State:
                 "formal_precondition_status": "ready", "snapshot": life}
         elif step == STATE_QUERY_STEP:
             life = _life_snapshot()
+            if self.actor_traits is not None:
+                life["actor_traits"] = self.actor_traits
             if self.other_focus:
                 life["current_focus"] = {
                     "presence": "present", "key": "diplomacy_foreign_affairs_focus",
@@ -894,6 +899,18 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             existing["perk_opportunity"]["policy_target_final_legal"].values()
         ))
 
+    def test_opening_existing_focus_retains_same_frame_actor_traits(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.actor_traits = {
+            "status": "available",
+            "observed_keys": ["education_stewardship_4", "generous"],
+        }
+        existing = GameplayBridgeService(driver).plan_turn()["plan"]["initial_lifestyle_focus_existing"]
+        self.assertEqual(existing["source_frame"]["snapshot_id"], "native:3")
+        self.assertEqual(existing["actor_traits"], driver.state.actor_traits)
+
     def test_opening_policy_target_one_row_keeps_unqueried_perks_unknown(self) -> None:
         driver = _Driver()
         driver.require_initial_lifestyle_focus_before_date_advance = True
@@ -933,6 +950,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         driver.require_initial_lifestyle_focus_before_date_advance = True
         driver.state.stock_focus_present = True
         driver.state.focus_legal = False
+        driver.state.actor_traits = {"status": "unavailable"}
         with (
             mock.patch.object(
                 driver, "query_player_lifestyle_current_state_private_v1",
@@ -948,6 +966,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         existing = plan["initial_lifestyle_focus_existing"]
         self.assertEqual(existing["readback_source"], "native_formal_and_stock")
         self.assertEqual(existing["perk_opportunity"]["status"], "observed")
+        self.assertEqual(existing["actor_traits"], {"status": "unavailable"})
         self.assertEqual(formal_reader.call_count, 1)
 
     def test_existing_focus_does_not_require_formal_or_stock_window(self) -> None:

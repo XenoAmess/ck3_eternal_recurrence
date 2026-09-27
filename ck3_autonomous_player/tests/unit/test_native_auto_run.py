@@ -4401,6 +4401,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 "xp_per_level": 1000, "unspent_perk_points": 1,
                 "used_perk_points": 6, "unbounded_detail": "discard",
             },
+            "actor_traits": {"status": "available",
+                             "observed_keys": ["education_stewardship_4", "generous"],
+                             "unbounded_detail": "discard"},
             "perk_opportunity": {
                 "status": "observed", "query_status": "available",
                 "formal_precondition_status": "ready",
@@ -4426,6 +4429,16 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertNotIn("unbounded_detail", observed["source_frame"])
         self.assertNotIn("unbounded_detail", observed["current_lifestyle_progress"])
         self.assertNotIn("unbounded_detail", observed["perk_opportunity"])
+        self.assertEqual(observed["actor_traits"], {
+            "status": "available",
+            "observed_keys": ["education_stewardship_4", "generous"],
+        })
+
+        existing["actor_traits"] = {"status": "unavailable"}
+        unavailable = native_auto_run_module._compact_plan({
+            "initial_lifestyle_focus_existing": existing,
+        })["opening_lifestyle_observation"]["actor_traits"]
+        self.assertEqual(unavailable, {"status": "unavailable"})
 
         existing["current_lifestyle_progress"]["xp_total_raw"] = 0
         existing["current_lifestyle_progress"]["unspent_perk_points"] = 0

@@ -4962,6 +4962,14 @@ def _compact_opening_lifestyle_observation(value: object) -> dict[str, object] |
             "policy_target_final_legal": None,
             "policy_target_owned": None,
         }
+    traits = value.get("actor_traits")
+    if isinstance(traits, dict) and traits.get("status") in {
+        "available", "unavailable",
+    }:
+        result["actor_traits"] = {"status": traits["status"]}
+        observed = traits.get("observed_keys")
+        if traits["status"] == "available" and isinstance(observed, list):
+            result["actor_traits"]["observed_keys"] = observed[:32]
     return result
 
 

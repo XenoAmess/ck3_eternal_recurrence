@@ -1467,3 +1467,26 @@ This changes our consumer order, not the exact-build native LIFE decision
 tree. The fix needs a new matched Robert candidate, official no-launch check
 and new CK3 run. A first root-query readback alone does not prove a later
 marriage action, receipt or cold recovery.
+
+### R0263 actor-trait report boundary (2026-09-28)
+
+Official Robert R0263 used source `9283c6c` with the private LIFE2 actor-trait
+reader and completed 36/36 bounded turns. Its
+[`formal-report.txt`](Z:/robert-h2660-life2-4b5f/run-formal-36/formal-report.txt)
+has SHA-256 `FF69F6AEBF8D9EE510AE3F5699A74ACB64CFAFBFB12582823334C2079DB2A0F8`.
+The opening gate queried the paused LIFE2 current state and retained the
+existing focus plus actual XP and points. Native LIFE2 serializes
+`actor_traits.status` and, when available, the observed education/personality
+keys in that same snapshot. The service's opening-focus projection copied only
+the focus, progress and perk observation; the formal report compactor could
+therefore never show `actor_traits`. The persisted driver history contains
+action/receipt commands, not the raw private LIFE2 read. R0263 cannot
+retrospectively prove whether native actor traits were available or which keys
+were observed.
+
+The opening-focus projection now carries the native actor-trait object from
+the same verified paused snapshot, and the formal report retains its bounded
+status and up to 32 observed keys. This is report visibility only: policy,
+typed actions, public MCP and the native ABI are unchanged. A subsequent
+matched paused run must show `status=available` and the actual keys before
+the education/personality readback can be credited.
