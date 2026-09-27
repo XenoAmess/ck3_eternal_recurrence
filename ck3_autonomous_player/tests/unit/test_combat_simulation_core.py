@@ -393,6 +393,18 @@ class CombatRandomGoldenTests(unittest.TestCase):
                 self.assertEqual(child.draw31()[0], expected_draw)
         self.assertEqual(weighted_choice_index((4, 2, 4, 4), 518689972), 0)
 
+    def test_day26_selected_list_entry_consumes_seed_after_choice(self) -> None:
+        _, _, list_scope = effect_child_state(
+            DrawState(1645259625, 0), 1775997395
+        )
+        self.assertEqual(list_scope.counter, 1462316485)
+        choice_draw, after_choice = list_scope.draw31()
+        self.assertEqual(choice_draw, 51510340)
+        self.assertEqual(weighted_choice_index((40, 30, 15), choice_draw), 0)
+        entry_seed_draw, after_entry_seed = after_choice.draw31()
+        self.assertEqual(entry_seed_draw, 114945994)
+        self.assertEqual(after_entry_seed.counter, 1462316487)
+
     def test_schedule_draw_weight_and_effect_seed_vectors(self) -> None:
         state = phase_schedule_state(42)
         self.assertEqual(state, DrawState(counter=0x6DA1654D, salt=0))

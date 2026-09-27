@@ -1,0 +1,48 @@
+{
+  "schema": "ck3.knight_entry_dispatch_rng_static.v1",
+  "game_build": "1.19.0.6-steam23530548",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_fixture_sha256": "8BC27BC8420B31474DEDABDF00E004E5C2C910C4906406A15CE0D46144E809A8",
+  "stock_event_sha256": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1",
+  "source_save_sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B",
+  "span_sha256": {
+    "list_selection_0x2F087B1": "61591BDE1A95EA77AD39C2A25EF6A6D7DAEDE2FC4B671B161F45960EB3887D5A",
+    "selected_entry_seed_0x3380C20": "3F8F371E4A828A662F317F6D9AB5633C933335B90CD7514F8B7D56257598427C",
+    "selected_entry_virtual_call_0x3380CE6": "18B0FCB3D0D20A13E402EEAE2F18091FFF3FB93C174C44AEDCBC7F9529FDFA2F"
+  },
+  "observed": {
+    "event_load_index": 11,
+    "killer_selector_draw31": 1400813912,
+    "killer_character_id": 34120,
+    "list_local_counter_before": 1462316485,
+    "list_selection_draw31": 51510340,
+    "list_weights": [
+      40,
+      30,
+      15
+    ],
+    "selected_entry_index": 0,
+    "list_local_counter_after": 1462316487,
+    "victim_character_id": 33437,
+    "battle_event": "knight_killed_by_enemy"
+  },
+  "exact_build_conditional_inference": {
+    "selected_entry_seed_draw31": 114945994,
+    "seed_draw_is_directly_captured": false,
+    "second_consumer": "0x3380C20-0x3380CFB selected-entry effect dispatcher",
+    "seed_depends_on_selected_entry_node_hash": true,
+    "derived_entry_child_counter_available": false
+  },
+  "writeback_receipt_and_model_boundary": {
+    "character_death_transition": {
+      "transition": "kill_character",
+      "target_character_id": 33437,
+      "reason": "death_battle",
+      "killer_character_id": 34120,
+      "applied": true
+    },
+    "growth_branch": "no_op",
+    "complete_mutable_write_set_proven": false,
+    "whole_battle_win_probability_available": false
+  }
+}
