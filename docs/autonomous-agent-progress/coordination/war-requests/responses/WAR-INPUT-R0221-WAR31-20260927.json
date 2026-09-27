@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T12:19:13Z",
+  "updated_at_utc": "2026-09-27T12:24:24Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -113,6 +113,17 @@
       "finding": "0x24BD610 passes either change+0x58 or change+0x70 to 0x24D0270. The bounded 0x24D0270-0x24D03AE helper appends a 12-byte record and directly writes only the selected vector descriptor's offsets +0, +8 and +0xC: parent offsets +0x58/+0x60/+0x64 or +0x70/+0x78/+0x7C. These direct stores do not overlap parent change+0x268. Its two direct calls are indirect allocator-vtable calls at 0x24D02E0 and 0x24D034E.",
       "limit": "This excludes a direct descriptor write to change+0x268 only within the bounded helper. The pointed-to vector buffer may alias other storage, allocator callbacks are indirect, and other setup helpers 0xE0DBD0 and 0x2E9FF30 remain unproven. The actual War31 change+0x268 value at resolve, branch, final title/holder/liege/vassal changes and persisted surrender terms remain unknown; no CK3 process or native effect was invoked.",
       "checks": "test_dejure_substructure_append_boundary.py: 2 passed on normal Python and 2 passed with -O against the exact installed EXE, including receipt replay and wrong-script fail-closed fixture."
+    },
+    {
+      "date_utc": "2026-09-27T12:24:24Z",
+      "master_commit": "d375e28c6",
+      "exact_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "extractor": "ck3_autonomous_player/native_bridge/research/extract_dejure_pair_append_boundary.py",
+      "receipt": "ck3_autonomous_player/native_bridge/research/dejure_pair_append_boundary_1_19_0_6.json",
+      "receipt_sha256": "664003C57BBF27951DDFF34CFDCA00C49EE796F4F56402D92365D68B39BE9AA1",
+      "finding": "setup_de_jure_cb passes change+0x28 and change+0x40 plus two eight-byte caller-stack records to 0xE0DBD0. The bounded 0xE0DBD0-0xE0DCBE helper directly appends each record to a vector buffer; direct stores through the selected descriptor base touch offsets +0, +8 and +0xC, corresponding to parent +0x28/+0x30/+0x34 or +0x40/+0x48/+0x4C. None directly overlaps parent change+0x268. Both calls within the helper are indirect allocator-vtable calls.",
+      "limit": "This excludes a direct descriptor write to change+0x268 only inside this one helper. Runtime vector-buffer aliases, indirect allocator effects, shared prelookup helper 0x2E9FF30 and other setup paths remain unproven. War31's actual change+0x268 at resolve, taken branch, final title/holder/liege/vassal changes and persisted terms remain unknown; no CK3 process or native effect was invoked.",
+      "checks": "test_dejure_pair_append_boundary.py: 2 passed on normal Python and 2 passed with -O against the exact installed EXE, including receipt replay and wrong-script fail-closed fixture."
     }
   ],
   "checks": [
@@ -129,5 +140,5 @@
     "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
     "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
   ],
-  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: the bounded 0x24D0270 direct descriptor writes do not reach change+0x268; continue resolving pointed-buffer aliases, indirect allocator callbacks, 0xE0DBD0 and 0x2E9FF30, or independently observe exact change+0x268 after setup and before resolve on a verified War31 frame. Then reduce the 0x24CC9A0 chain to concrete title/holder/liege/vassal writes and find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview or submit surrender on this evidence."
+  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: the bounded 0x24D0270 and 0xE0DBD0 direct descriptor writes do not reach change+0x268; continue resolving pointed-buffer aliases, indirect allocator callbacks, 0x2E9FF30 and other setup paths, or independently observe exact change+0x268 after setup and before resolve on a verified War31 frame. Then reduce the 0x24CC9A0 chain to concrete title/holder/liege/vassal writes and find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview or submit surrender on this evidence."
 }
