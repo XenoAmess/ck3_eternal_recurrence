@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0244-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-26T20:49:56Z",
+  "updated_at_utc": "2026-09-27T00:55:08Z",
   "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
@@ -21,6 +21,7 @@
   "local_analog_evidence": {
     "attempt_062": "A separately paired local War 4/Army 18 versus Army 24 paused frame produced available exact v3 per-regiment inputs at the native route entry; model admission was true. This is not R0244 identity or native parity.",
     "attempt_063": "A separate local stationary-save replay proved the full native route preview, all-hostile contact horizon, and exact v3 inputs on one paused frame. Production planning selected capital_regroup_hold_progress and life-advance, so no first-hop move was submitted; its RED probe is retained and cannot be used as an end-to-end movement pass.",
+    "attempt_067": "An independent local War 4 replay removed a pending interaction blocker through a same-frame typed native query and actual reply, then observed three player armies 18/32/33 in common CombatID 2 with native control-query readback. Evidence: docs/ck3-native-ai/war-contact-attempt-067-same-frame-common-combat-2026-09-27.md. This is local contact evidence, not the original R0244 War 48 input or a verification of its selected step.",
     "source_checkpoint_sha256": "91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592"
   },
   "limitations": [
