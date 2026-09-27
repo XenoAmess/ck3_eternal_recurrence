@@ -1,0 +1,41 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-ROBERT-H2825-RISK-INPUTS-20260928",
+  "status": "claimed",
+  "maintainer": "nonwar_operator on the Robert production machine",
+  "updated_at_utc": "2026-09-27T18:57:51Z",
+  "source_pr": null,
+  "master_commit": null,
+  "delivery_ready_for_master": true,
+  "evidence": {
+    "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2825-RISK-INPUTS-20260928.r0264-r0265-readonly.json",
+    "sha256": "63D50009C399CA0BB7BFADD8A566956D74816A714EB7D346B4559A9AC4C5863D",
+    "r0264_formal_report_sha256": "066B3E4993DF5BA5DED815345403C2C4B87A0FD9A4B75AA79DBA578B73B97473",
+    "r0264_paired_driver_sha256": "B8E50A281AFB9A5DAA7AC1ED55DD68C4305816302B71B14EDF79F1060177D872",
+    "r0265_formal_report_sha256": "B990E9F9E0F3E83B2412F86D9AE491820A0A5AA7EA6B83A028F7DF5A5B77E95B",
+    "r0265_paired_driver_sha256": "8C5700FBEBFB38856FEC6FAFCDC2734A9B719AD519F6F9BD0BB3F10D0BCA0695"
+  },
+  "interface_contract": {
+    "kind": "read_only_git_risk_input_excerpt",
+    "r0264_frame": "H2825/raw53217624, native:40, public/native revisions 41/40, episode native-29829-2bc2d599f7f9, WarID 16777231. Final war row contains score -24, attacker-relative occupation +52/ticking -28, objective 2610, player army 83886367 at 2610, enemy siege 50331920 at 2629 with 292 days left, and enemy 83886484 moving from 3660 toward 2629. Its army soldiers and owners are null; campaign-root monthly gold income is 417179/100000.",
+    "r0265_separate_frame": "The exact H2825 checkpoint SHA was restored in a new session at raw53217624, native:3, public/native revisions 4/3. Same-frame queries show 2329/2461 soldiers for player 83886367, 1462/1899 for sieger 50331920 and 311/311 for moving enemy 83886484; a route preview to 2629 and a route-contact query report no conflict only through raw53217648. The frame is distinct from R0264 native:40.",
+    "resource_boundary": "Actor/opponent current treasury and prestige, present/future war costs, CB-specific surrender terms and directed truce are null in this excerpt. Only actor monthly gold income was queried in the H2825 campaign-root frame. The exact save was not separately parsed for resources here; no absent save value is asserted to be zero.",
+    "action_boundary": "The R0265 preview was read-only despite the runner gameplay classification. No army move, surrender or typed spend action was submitted; no date advance, new checkpoint or action postcondition was recorded. The R0197 one-shot surrender authorization is not reusable."
+  },
+  "checks": [
+    "R0264 source pair identity and formal report hashes match the frozen H2825 pair; the paired driver contains final command indices 2824/2827/2828.",
+    "R0265 uses the same checkpoint SHA but a different runtime DLL and new paused snapshot; its paired driver commands 2828/2833/2835/2837/2839 are native:3, public/native revisions 4/3, date_raw 53217624.",
+    "The compact evidence and this response parse as JSON; git diff --check and no-launch source inspection are the only checks. No CK3 session was launched for this response."
+  ],
+  "live_evidence": {
+    "r0264": "Existing qualified 36-turn formal run, last paused frame native:40 at h2825/raw53217624; source report and driver hashes are in evidence.",
+    "r0265": "Existing separate paused read-only restart from the same H2825 save; seven query/preview turns stayed native:3/date_raw53217624. Its eighth turn blocked in war siege forecast because a complete one-encounter participant partition was not proved. This is a RED, not a gameplay success."
+  },
+  "limitations": [
+    "The two R0264 and R0265 snapshot identities must not be merged into one native-frame proof; the saved checkpoint SHA and date bind the restart, while each query set has its own frame.",
+    "R0264 objective_province_states is an empty observed list, not proof of a cleared objective. Army owner identities remain null.",
+    "The one-day contact-free result does not rank the full future route, battle, siege or surrender. The war maintainer owns risk-model and participant-partition follow-up; this response adds no model or action policy.",
+    "Large save/driver/sidecar/DLL files remain off Git. No new OneDrive transfer was requested or performed for H2825."
+  ],
+  "next_step": "After this response reaches exact master, the war maintainer can read the compact evidence across machines and use it to identify any remaining risk inputs. Handle the separately recorded R0265 siege-participant RED before a formal continuation; do not infer action authorization from this read-only transfer."
+}
