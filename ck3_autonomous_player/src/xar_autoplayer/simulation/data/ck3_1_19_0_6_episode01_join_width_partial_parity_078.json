@@ -1,0 +1,54 @@
+{
+  "base_width_zero_residual_count": 2,
+  "candidate_joining_army_id": 22,
+  "combat_id": 16777218,
+  "final_width_zero_residual_count": 2,
+  "fire_width": null,
+  "join_policy_reconstructed": false,
+  "native_date_raw": 53146512,
+  "phase_fire_argument_observed": false,
+  "rows": [
+    {
+      "boundary": 0,
+      "model_base_width": 1645,
+      "model_final_width": 1480,
+      "model_minus_native_base": 0,
+      "model_minus_native_final": 0,
+      "native_base_width": 1645,
+      "native_final_width": 1480,
+      "previous_base_width_input": 1645,
+      "role": "cache_consistency_before_join",
+      "side_fighting_total_raw": [
+        160317482,
+        89325449
+      ]
+    },
+    {
+      "boundary": 1,
+      "model_base_width": 2467,
+      "model_final_width": 2220,
+      "model_minus_native_base": 0,
+      "model_minus_native_final": 0,
+      "native_base_width": 2467,
+      "native_final_width": 2220,
+      "previous_base_width_input": 1645,
+      "role": "join_return_candidate",
+      "side_fighting_total_raw": [
+        410690163,
+        82785368
+      ]
+    }
+  ],
+  "schema": "ck3.native_join_width_partial_model_parity.v1",
+  "source_finish_sha256": "9BFCEFF0BD1454F47B2371683B342E4FB8EC634CE4AF1397937375873FD51FF8",
+  "source_observation_sha256": "FCC6402187B91682B3C053CDFB9684D962602376974430AF00ABED2558325E86",
+  "terrain": {
+    "key": "forest",
+    "province_id": 2633,
+    "province_terrain_source_sha256": "922A5B8BA73007B18E95F1CCFCDBE075A03F5DE61CBF8FF8F66698BEDBB3BE3C",
+    "source_kind": "stock_script_static_not_attempt_078_runtime_field",
+    "terrain_types_source_sha256": "39D79AD120BF85B49D6EE8D96FE4D94EDBBABC190A41662DBA8ECA8DE0ACE64E",
+    "width_multiplier_raw": 90000
+  },
+  "three_boundary_complete": false
+}

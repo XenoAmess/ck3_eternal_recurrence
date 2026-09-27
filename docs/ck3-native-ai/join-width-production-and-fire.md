@@ -49,6 +49,8 @@
 
 智能体可复用的[078 机器可读局部向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_width_partial_078.json)将源 finish SHA、CombatID/日期/ArmyID、mailbox 与 join 线程、两点战宽及差额固定下来，显式写 `three_boundary_complete=false`、`fire_width=null`。只读投影器 `ck3_autonomous_player/tools/project_join_width_partial_078.py` 对本机冻结的原始 `jwidth078-finish.json` 校验精确 SHA 和 RED 合同，再与仓库向量逐字段对拍；它不会读取或写入游戏，也不把失败的完整 collector 升格为 GREEN。
 
+使用已独立核过的梅西纳森林 `terrain_width_multiplier_raw=90000`，纯函数 `update_combat_width` 对这份 078 机器向量的**两点 base/final 均严格零差**：入口侧 totals 与历史 base `1645` 算出 `(1645,1480)`，返回侧 totals 与同一历史 base 算出 `(2467,2220)`。`90000` 来自 exact-build 原版省份/地形脚本的静态定义，**不是 078 同帧原生字段实采，也不是从 `1480/1645` 反推**；向量把两份原版源文件 SHA 与 `source_kind=stock_script_static_not_attempt_078_runtime_field` 一起冻结。[模型局部对拍向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_width_partial_parity_078.json) SHA-256 `3470BD310C0AD17B94DBE42174E95CB56382BE2B2E17B1E9DCB17B1122E414FB`，由只读 `ck3_autonomous_player/tools/compare_join_width_partial_078.py` 生成；聚焦单测直接从该向量重跑模型。入口计算只是缓存一致性检查，**不声称原版在入口调用了更新器**；返回零差也不补出缺失的 phase-fire 传参或 AI 增援策略。
+
 下一版仅取消第三点的 **mailbox 线程等式**，在精确 side0 返回地址钩子中记录实际线程 ID；候选对象、CombatID、原生日期、side 身份与 `R8D == +0x6C4` 校验均保留。join 入口/返回仍须同实际 join 线程。独立私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`，聚焦 CTest 5/5（含第三点由另一个非 mailbox 线程采集的夹具）；离线通过不等于实机验证。使用全新 attempt 重放一天，要求三点完整、原始 bytes/SHA、失败码和 clean exit 后才给整条链 GREEN；历史 078 回执不得改写。
 
 ### 079 实机前环境 RED

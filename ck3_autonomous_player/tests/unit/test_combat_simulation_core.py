@@ -69,6 +69,32 @@ class CombatFixedPointTests(unittest.TestCase):
         self.assertEqual(joined, (2467, 2220))
         self.assertEqual(later, (2467, 2220))
 
+    def test_r078_native_join_width_partial_vector(self) -> None:
+        fixture_path = (
+            Path(__file__).parents[2]
+            / "src/xar_autoplayer/simulation/data"
+            / "ck3_1_19_0_6_episode01_join_width_partial_parity_078.json"
+        )
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        self.assertEqual(fixture["schema"], "ck3.native_join_width_partial_model_parity.v1")
+        self.assertEqual(fixture["combat_id"], 16777218)
+        self.assertEqual(fixture["candidate_joining_army_id"], 22)
+        self.assertEqual(fixture["base_width_zero_residual_count"], 2)
+        self.assertEqual(fixture["final_width_zero_residual_count"], 2)
+        self.assertFalse(fixture["three_boundary_complete"])
+        self.assertFalse(fixture["phase_fire_argument_observed"])
+        self.assertIsNone(fixture["fire_width"])
+        for row in fixture["rows"]:
+            with self.subTest(boundary=row["boundary"]):
+                actual = update_combat_width(
+                    *row["side_fighting_total_raw"],
+                    previous_base_width=row["previous_base_width_input"],
+                    terrain_width_multiplier_raw=fixture["terrain"]["width_multiplier_raw"],
+                )
+                self.assertEqual(actual, (
+                    row["native_base_width"], row["native_final_width"],
+                ))
+
     def test_signed_operations_truncate_toward_zero(self) -> None:
         self.assertEqual(trunc_div_toward_zero(-7, 3), -2)
         self.assertEqual(trunc_div_toward_zero(7, -3), -2)
