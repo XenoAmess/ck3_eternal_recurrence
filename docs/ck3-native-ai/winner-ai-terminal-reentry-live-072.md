@@ -44,6 +44,16 @@ flowchart TD
 泛化成所有胜方终局。第 25 日目标 `2639` 已存在，故不能仅凭第 26 日路线
 `[2639]` 证明新命令；本案的新命令证据来自独立的后备 `submit_site=2` 回读。
 队列接受也不证明之后已经实际移动，下一日路线/位置仍须另行观察。
+072 的交互响应止于第 26 日，之后直接 `999-finish`。其 `last_save.ck3` 与
+`autosave.ck3` 具有相同 SHA-256
+`5AFD62F0FB7EB677DF5174A641EEF650CD16FC64F75AD61334B5E564F80F69D6`，
+文件写入时间为 `2026-09-26 23:49:59 UTC`，早于第 26 日 `life-advance`
+请求文件的 `23:50:07 UTC`；因此它们**不是终局后 checkpoint**。原生
+raw-binary 存档内部的游戏日期尚未解析，不从文件时间推造具体游戏日期。
+外置 `existing-save-inventory.json` 与 `existing-save-timeline.json` 保留
+文件身份、请求时间与原始响应 SHA。后续单独按
+[`winner-ai-postsubmit-074` 采样方案](research-plans/winner-ai-postsubmit-074/plan.json)
+重放并读取下一原生游戏日，不把它称为 072 的连续现场。
 
 ## 可复核证据
 

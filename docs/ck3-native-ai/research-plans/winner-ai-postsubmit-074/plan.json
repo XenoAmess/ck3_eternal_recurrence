@@ -1,0 +1,100 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "winner-ai-postsubmit-074",
+  "question": "After native AI fallback movement queue acceptance at terminal, what position, route, target and movement state are visible after the next natural game day?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "ai",
+    "owner_scope": "Vanilla war 4, winning nonplayer CUnit 16777231 owned by Character 32725, original CombatID 16777218; revalidate IDs in each replay",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "CUnit and CombatID bind to one loaded session and seeded scene, not arbitrary later loads",
+    "producer_trigger": "daily-tick",
+    "producer": "072 observed 0x1872611 fallback submission to 0x973E00; native queue consumption and subsequent movement progression remain unobserved",
+    "caller": "Managed life-advance from stable day-26 terminal frame to the next native day, with no player move command",
+    "consumer": "Paused native army snapshot, battle-terminal-transition and private AI reentry readbacks; movement apply for this queued command is still a candidate",
+    "cache_lifetime": "Route/target/position are current paused-frame state; private observer counters are process-local and not saved",
+    "expected_signal": "First reproduce same-frame WarID/CombatID/CUnit/date and builder +8=0/+9=0 with fallback queue_accepted; on date_raw 53147016 read position, route, target, in_combat, army_state, private movement raw and queue records. Position change or separately proven movement progress can prove progress; route persistence alone cannot",
+    "zero_sample_meaning": "No matching fallback in 074 is replay divergence, not a refutation of 072. Unchanged position after one day does not prove non-execution because travel may take multiple days",
+    "stop_condition": "Stop after first stable paused day-27 and duplicate query if day-26 path matched; otherwise stop as divergent by day 35, not a 072 continuation",
+    "runtime_window_ref": "Independent managed attempt 074 only after higher-priority war-width 073 releases CK3 and a fresh Steam-offline receipt is visually reviewed"
+  },
+  "evidence": [
+    {
+      "id": "live-072-fallback",
+      "layer": "live-observation",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-reentry-v2-attempt-072/ck3-output/interactive-requests-responses/26-ai-reentry.json",
+      "sha256": "D738BBF6B366EAF8E4743A0FD274CF55657C37A59427BB2F744CFBC3F4C6F96F",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "072 day26 builder unhandled and fallback command to 2639 queue_accepted, not day27 movement",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0064",
+      "frame": "date_raw=53146992; day=26; native revision=81",
+      "identity": "CombatID=16777218; CUnit=16777231; target=2639"
+    },
+    {
+      "id": "offline-072-save-timeline",
+      "layer": "offline-fixture",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-winner-ai-reentry-v2-attempt-072/existing-save-timeline.json",
+      "sha256": "ED61913EAFAE35D26E4B110D232879D915F4063C44E7D96AFADA4FDAFF2A3BBD",
+      "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "supports": "072 last_save/autosave identical and save mtime precedes day26 advance request; internal raw-binary game date unknown"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "seed",
+      "label": "047 immutable day-0 seed"
+    },
+    {
+      "id": "terminal",
+      "label": "072 day-26 normal terminal"
+    },
+    {"id": "fallback", "label": "072 fallback queue accepted"},
+    {"id": "next_day", "label": "074 next native day state"},
+    {"id": "movement", "label": "Movement execution or progress"}
+  ],
+  "edges": [
+    {
+      "id": "seed-to-terminal",
+      "from": "seed",
+      "to": "terminal",
+      "label": "Observed in 072, reproduce independently in 074",
+      "status": "live-confirmed",
+      "evidence": ["live-072-fallback"]
+    },
+    {
+      "id": "terminal-to-fallback",
+      "from": "terminal",
+      "to": "fallback",
+      "label": "Builder unhandled then fallback queue accepted in 072",
+      "status": "live-confirmed",
+      "evidence": ["live-072-fallback"]
+    },
+    {
+      "id": "fallback-to-next-day",
+      "from": "fallback",
+      "to": "next_day",
+      "label": "New managed one-day observation pending",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does 074 preserve the same terminal queue state and reach a stable next-day frame?"
+    },
+    {
+      "id": "next-day-to-movement",
+      "from": "next_day",
+      "to": "movement",
+      "label": "Execution/progress versus route persistence",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "What native position/progress signal proves the accepted command executed?"
+    }
+  ],
+  "cases": [
+    {"id": "prior-072", "question": "Was fallback queue acceptance seen in 072?", "status": "observed", "evidence": ["live-072-fallback"]},
+    {"id": "next-day-074", "question": "Does a matching independent replay show command execution or progress on day 27?", "status": "pending", "evidence": []}
+  ]
+}
