@@ -795,10 +795,59 @@ class BattleControlStrategyTests(unittest.TestCase):
             plan["battle_control_frames"][0]["combat_id"],
             frame["combat_id"],
         )
+        self.assertEqual(
+            plan["active_combat_resume_input"]["subjects"][0][
+                "unavailable_reason"
+            ],
+            "same_frame_resume_receipt_unavailable",
+        )
+
+    def test_same_frame_resume_receipt_is_recorded_without_changing_battle_step(
+        self,
+    ) -> None:
+        frame = _battle_frame()
+        receipt = _active_resume_receipt(frame)
+        plan = self.plan(
+            [_battle_query_row(1, frame)], frame=frame,
+            snapshot_overrides={
+                "active_combat_resume_inputs_v1": receipt,
+                "battle_control_snapshot_v1_queried_native_revision": NATIVE_REVISION,
+            },
+        )
+        self.assertEqual(plan["phase"], "native_war_global_battle_control_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["active_combat_resume_input"]["status"], "unavailable")
+        self.assertFalse(plan["active_combat_resume_input"]["used_for_decision"])
+        subject = plan["active_combat_resume_input"]["subjects"][0]
+        self.assertEqual(subject["army_id"], SUBJECT)
+        self.assertEqual(
+            subject["unavailable_reason"], "same_frame_resume_operands_incomplete"
+        )
+        self.assertEqual(subject["missing_required_domains"], receipt["missing_required_domains"])
+        self.assertEqual(subject["source"], receipt["source"])
+        self.assertEqual(subject["battle_control_query_sequence"], 41)
+
+        stale = copy.deepcopy(receipt)
+        stale["source"]["combat_id"] += 1
+        invalid = self.plan(
+            [_battle_query_row(1, frame)], frame=frame,
+            snapshot_overrides={
+                "active_combat_resume_inputs_v1": stale,
+                "battle_control_snapshot_v1_queried_native_revision": NATIVE_REVISION,
+            },
+        )
+        self.assertEqual(invalid["selected_step"], "life-advance")
+        invalid_subject = invalid["active_combat_resume_input"]["subjects"][0]
+        self.assertEqual(
+            invalid_subject["unavailable_reason"], "same_frame_resume_receipt_invalid"
+        )
+        self.assertIsNone(invalid_subject["source"])
 
     def test_mismatched_current_binding_requires_a_fresh_query(self) -> None:
         frame = _battle_frame()
         snapshot = _planner_battle_snapshot(frame=frame)
+        snapshot["active_combat_resume_inputs_v1"] = _active_resume_receipt(frame)
+        snapshot["battle_control_snapshot_v1_queried_native_revision"] = NATIVE_REVISION
         snapshot["battle_control_snapshot_v1_queried_revision"] = (
             int(snapshot["revision"]) - 1
         )
@@ -809,6 +858,9 @@ class BattleControlStrategyTests(unittest.TestCase):
 
         self.assertEqual(plan["selected_step"], STEP)
         self.assertNotEqual(plan["selected_step"], "life-advance")
+        subject = plan["active_combat_resume_input"]["subjects"][0]
+        self.assertEqual(subject["unavailable_reason"], "same_frame_resume_receipt_invalid")
+        self.assertIsNone(subject["source"])
 
     def test_continuing_combat_requeries_immediately_after_advance(self) -> None:
         before = _battle_frame()
@@ -3402,6 +3454,7 @@ class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
             cached["battle_control_snapshot_v1"]["subject_public_cunit_id"],
             SUBJECT,
         )
+        self.assertIsNone(cached["active_combat_resume_inputs_v1"])
 
         frozen = copy.deepcopy(driver._battle_control_snapshot_v1_query)
         assert isinstance(frozen, dict)
@@ -3430,10 +3483,28 @@ class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
         receipt = result["active_combat_resume_inputs_v1"]
         self.assertEqual(receipt["status"], "unavailable")
         self.assertFalse(receipt["input_observation_ready"])
-        driver.take_snapshot()
+        projected = driver.take_snapshot()
+        self.assertEqual(projected["active_combat_resume_inputs_v1"], receipt)
+        self.assertEqual(
+            projected["battle_control_snapshot_v1"]["combat_id"],
+            receipt["source"]["combat_id"],
+        )
         cached = driver._battle_control_snapshot_v1_query
         assert isinstance(cached, dict)
         self.assertEqual(cached["active_combat_resume_inputs_v1"], receipt)
+
+        frozen = copy.deepcopy(cached)
+        tampered = copy.deepcopy(frozen)
+        tampered["active_combat_resume_inputs_v1"]["source"]["combat_id"] += 1
+        driver._battle_control_snapshot_v1_query = tampered
+        self.assertIsNone(driver.take_snapshot()["active_combat_resume_inputs_v1"])
+        self.assertIsNone(driver.take_snapshot()["battle_control_snapshot_v1"])
+
+        driver._battle_control_snapshot_v1_query = frozen
+        endpoint.publish(_semantic_snapshot(NATIVE_REVISION + 1))
+        advanced = driver.take_snapshot()
+        self.assertIsNone(advanced["active_combat_resume_inputs_v1"])
+        self.assertIsNone(advanced["battle_control_snapshot_v1"])
 
     def test_malformed_payload_and_same_frame_drift_are_rejected(self) -> None:
         driver, endpoint = _native_driver()

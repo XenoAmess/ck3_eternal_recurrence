@@ -25,6 +25,7 @@ from .bridge.combat_phase_contract import (
 from .bridge.battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
     BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
+    normalize_active_combat_resume_inputs_v1,
     normalize_battle_control_snapshot_v1,
     parse_query_battle_control_snapshot_v1_step,
     query_battle_control_snapshot_v1_step,
@@ -6783,6 +6784,95 @@ def _de_jure_surrender_submission_state(
     return None
 
 
+def _annotate_active_combat_resume_input(
+    plan: dict[str, object], snapshot: dict[str, object] | None
+) -> dict[str, object]:
+    """Expose exact unavailable resume evidence without changing the action."""
+    if not isinstance(snapshot, dict):
+        return plan
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return plan
+    active_subjects = sorted({
+        army_id
+        for army in controllable_armies(
+            [army for army in armies if isinstance(army, dict)]
+        )
+        if _army_tactical_state(army) == "combat"
+        and (army_id := _native_int(army.get("army_id"))) is not None
+        and army_id > 0
+    })
+    if not active_subjects:
+        return plan
+
+    raw_receipt = snapshot.get("active_combat_resume_inputs_v1")
+    parent = snapshot.get("battle_control_snapshot_v1")
+    subject = _native_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
+    sequence = _native_int(snapshot.get("battle_control_snapshot_v1_query_sequence"))
+    receipt: dict[str, object] | None = None
+    if raw_receipt is not None:
+        try:
+            if not (
+                snapshot.get("paused") is True
+                and snapshot.get("battle_control_snapshot_v1_status") == "available"
+                and subject in active_subjects
+                and sequence is not None and sequence > 0
+                and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
+                == snapshot.get("snapshot_id")
+                and snapshot.get("battle_control_snapshot_v1_queried_revision")
+                == snapshot.get("revision")
+                and snapshot.get("battle_control_snapshot_v1_queried_native_revision")
+                == snapshot.get("native_revision")
+            ):
+                raise ValueError("resume receipt lacks the current query binding")
+            normalized_parent = normalize_battle_control_snapshot_v1(
+                parent,
+                expected_subject_public_cunit_id=subject,
+                expected_observed_date_raw=snapshot.get("date_raw"),
+                expected_snapshot_revision=snapshot.get("native_revision"),
+            )
+            receipt = normalize_active_combat_resume_inputs_v1(
+                raw_receipt, parent=normalized_parent
+            )
+        except (TypeError, ValueError):
+            receipt = None
+
+    subjects = [
+        {
+            "army_id": army_id,
+            "status": "unavailable",
+            "unavailable_reason": (
+                receipt["unavailable_reason"]
+                if receipt is not None and army_id == subject
+                else "same_frame_resume_receipt_invalid"
+                if raw_receipt is not None and army_id == subject
+                else "same_frame_resume_receipt_unavailable"
+            ),
+            "missing_required_domains": (
+                list(receipt["missing_required_domains"])
+                if receipt is not None and army_id == subject else None
+            ),
+            "source": (
+                dict(receipt["source"])
+                if receipt is not None and army_id == subject else None
+            ),
+            "battle_control_query_sequence": (
+                sequence if receipt is not None and army_id == subject else None
+            ),
+        }
+        for army_id in active_subjects
+    ]
+    return {
+        **plan,
+        "active_combat_resume_input": {
+            "status": "unavailable",
+            "input_observation_ready": False,
+            "used_for_decision": False,
+            "subjects": subjects,
+        },
+    }
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
@@ -6825,6 +6915,7 @@ def choose_one_life_turn(
         action_steps=set(steps),
         bridge_capabilities=set(capabilities),
     )
+    plan = _annotate_active_combat_resume_input(plan, snapshot)
     if not isinstance(formal, dict):
         return plan
     decision = formal["decision"]

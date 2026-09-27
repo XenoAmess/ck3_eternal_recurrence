@@ -3261,6 +3261,16 @@ class NativeHeadlessGameplayDriver:
                 if isinstance(battle_control_snapshot_v1_query, dict)
                 else None
             ),
+            "active_combat_resume_inputs_v1": (
+                copy.deepcopy(
+                    battle_control_snapshot_v1_query.get(
+                        "active_combat_resume_inputs_v1"
+                    )
+                )
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                and battle_control_snapshot_v1_query.get("status") == "available"
+                else None
+            ),
             "battle_control_snapshot_v1_status": (
                 battle_control_snapshot_v1_query.get("status")
                 if isinstance(battle_control_snapshot_v1_query, dict)

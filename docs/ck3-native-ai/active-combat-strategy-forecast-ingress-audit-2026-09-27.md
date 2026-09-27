@@ -4,7 +4,7 @@
 
 游玩智能体的 `choose_one_life_turn` 先运行 `_choose_one_life_turn_core`，再运行围城解围和通用接战 forecast ingress。核心在可控军队 `in_combat` 时先运行 `_battle_control_turn_state`：按同帧 `battle_control_snapshot_v1` 查询、核对前后 `CombatID` 帧、检查撤退合法性与安全目标，然后执行受限的一日推进或原生终局/决策哨兵。此路径**没有调用** `ActiveMainResumeResearchKernel`，没有现役整场胜率或 continue-vs-retreat 预测。撤退、时间推进仍按原生观察和既有规则决定。
 
-`active_combat_resume_inputs_v1` 目前在 battle-control 查询结果中由 Python 合同校验并保留为 `status=unavailable`。`native_driver` 的顶层世界 snapshot 目前只投影父 `battle_control_snapshot_v1`，未将同一查询结果的续算回执投影给策略；`_current_battle_control_frames` 也只恢复父帧。因此“现役续算 unavailable”**还不是策略消费的 typed 字段**，不能声称已由回执驱动战中胜率决策。生产接线需保留六项 source 身份和查询代次，并在完整原生操作数就绪后另行验收。旧 DLL 没有回执时必须保持 unavailable，不能用战前 v3 补齐。
+`active_combat_resume_inputs_v1` 在 battle-control 查询结果中由 Python 合同校验并保留为 `status=unavailable`。`native_driver` 现在还把同一回执只读投影到顶层世界 snapshot：缓存投影先核查暂停帧、native/public revision、snapshot ID、日期、连接代次、episode、查询代次及父子六项 source 身份；任何漂移或畸形回执都令父帧和回执一起从当前投影消失。旧 DLL 没有回执时投影为 `null`。`_current_battle_control_frames` 仍只用父帧驱动撤退与时间推进；续算回执不会变成胜率。
 
 战前/接战预测另有两处：通用 `_general_battle_forecast_ingress` 对拟进入敌军所在地的 `move-army` 使用 v3 `forecast_fixed_contact`；围城解围 `_provisional_defense_research_assessment` 在同一 v3 上试算。`forecast_fixed_contact` 要求显式 `ongoing_combats` 列表为空，非空返回 `active_combat_requires_resume_input`；`contact_admission` 只接收 `status=estimated`，所以该状态不能授权攻击。围城解围候选另需单一非战斗可控军队与正在围城的敌军。`_qualified_siege_forecast_move` 的生产激活常量尚未开启，不能把其接口当作已上线的现役预测。
 
@@ -13,6 +13,12 @@
 通用接战 ingress 原来在索取路线或复用 v3 缓存前，没有核查拟移动军队或目标守军的当前 `in_combat`/战术状态。尽管 v3 自身拒绝非空 `ongoing_combats`，如果 cached v3 与军队现役状态矛盾，策略仍可能按首次接战模型走到下令；在无 v3 时也会误索取首次接战输入。现在只要任一已观察的参与者在战斗中，入口就返回 `native_war_active_combat_resume_unavailable`、`selected_step=null` 和 `active_combat_forecast_status=unavailable`，不调用路线查询或首次接战模型；这一核查先于已有 `qualified_forecast`/`provisional_forecast` 免重复计算分支。状态来自当前军队观察，**不是**从回执伪造出预测结果。
 
 聚焦测试覆盖我方已在战斗、目标守军已在战斗且基线带表面 qualified forecast、原有非战斗接战/长路线和 v3 `ongoing_combats` 拒绝。它们证明策略入口不会把这个矛盾观测当成首次接战胜率；不构成 CK3 实机验收，也不证明现役续算已可用。Steam UI 新鲜度门为 RED，本轮未启动 CK3。
+
+## 顶层回执与策略记录接线
+
+对每支当前可控且 `in_combat` 的军队，`choose_one_life_turn` 的计划附带 `active_combat_resume_input`：总状态固定 `unavailable`、`input_observation_ready=false`、`used_for_decision=false`，逐军队行记录原因。只有顶层回执与同一查询代次的父帧、subject、snapshot ID、public/native revision 和日期全部相符，并通过 `normalize_active_combat_resume_inputs_v1` 父子字段校验，才保留原生 `same_frame_resume_operands_incomplete`、缺失域和六项 source。无回执的旧 DLL 或尚未查询的军队写 `same_frame_resume_receipt_unavailable`，伪造/跨帧回执写 `same_frame_resume_receipt_invalid`；这两种情形的 source 与缺失域均为 `null`，不能把“不知道缺什么”显示成空缺域列表。多场战斗只给实际同帧查询到的 subject 记录原生回执，不把一军的 source 复制给其他军。
+
+该字段只解释当前决策证据，不改 `selected_step`、原生撤退合法性、一次一日推进或哨兵门槛，也不调用研究续算内核。合成驱动测试验证回执投影、父子身份不一致或 revision 漂移时同时清空；策略测试验证现役一日推进步骤保持不变、有效回执的缺失原因被记录、畸形回执不泄漏 source。聚焦验证 `74 passed, 9 subtests passed`，不是 CK3 实机同帧验收。
 
 ## 原生同帧输入余缺
 
