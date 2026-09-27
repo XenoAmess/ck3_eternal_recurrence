@@ -1336,3 +1336,31 @@ report serialization only; the native observation, policy, typed action and
 receipt contracts are unchanged. A subsequent matched live candidate must
 show the fields in its official report before a post-date point observation
 can be credited. R0254 supplies no new perk action or cold recovery evidence.
+
+### R0258 opening-focus and wartime-family ordering (2026-09-27)
+
+Official Robert R0258 resumed h2437/raw53216640 with runtime `1fe1833`.
+The private prisoner collection query read three prisoners on the first paused
+frame, then the opening LIFE gate stopped before any successful turn or date
+advance with `existing opening LIFE focus proof is incomplete`. The original
+[formal report](Z:/r171b-robert-h2437-candidate/run-formal-36/formal-report.txt)
+has SHA-256 `5255FF3EFEC3BC41C7131C008E2CF463B16D83417BFEF69256B5E4D4B56CCC0B`;
+its pre-submit plan was not retained because the gate raised. The source save
+remained SHA-256 `1BB6C29A69C2637866A30CFB3D99CED0FC4E76E314216720899163B417BEFE64`.
+
+The source-level failure is an ordering conflict between independent
+consumers. The service can attach a verified current-focus and XP/point proof
+to the initial campaign-root query, then let wartime family arbitration replace
+that query with a marriage proposal. The runner correctly accepts the existing
+focus proof only on its selected root-query turn. A deterministic test of this
+route failed before the fix because the selected step became the proposal.
+The service now returns the opening LIFE step directly while its gate is active;
+family and joint consumers resume on the next turn after that focus proof is
+consumed. The private prisoner read is not shown to be the cause. The actual
+R0258 candidate plan and marriage candidate were not captured, so this is a
+source-level reproduction rather than a claimed R0258 proposal observation.
+
+This changes our consumer order, not the exact-build native LIFE decision
+tree. The fix needs a new matched Robert candidate, official no-launch check
+and new CK3 run. A first root-query readback alone does not prove a later
+marriage action, receipt or cold recovery.

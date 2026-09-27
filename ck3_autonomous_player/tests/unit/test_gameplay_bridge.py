@@ -1660,6 +1660,61 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_existing_opening_focus_readback_precedes_wartime_family_proposal(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 48}],
+                 "episode_run_id": "robert-test", "date_raw": 53216640,
+                 "played_character": {"character_id": 101}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-campaign-root-context-v1", "life-advance"),
+        )
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.allow_private_family_marriage_formal_trial = True
+        service = GameplayBridgeService(driver)
+
+        def existing_focus(planned, _steps):
+            return {**planned, "plan": {**planned["plan"],
+                "phase": "initial_lifestyle_focus_already_present",
+                "selected_step": "query-campaign-root-context-v1",
+                "initial_lifestyle_focus_existing": {
+                    "status": "verified_existing",
+                    "source_frame": {"snapshot_id": "session:7", "revision": 7},
+                    "current_focus": {"presence": "present",
+                                      "key": "stewardship_wealth_focus",
+                                      "lifestyle_key": "stewardship_lifestyle"},
+                    "current_lifestyle_progress": {"presence": "present",
+                                                   "lifestyle_key": "stewardship_lifestyle",
+                                                   "xp_total_raw": 1000,
+                                                   "xp_within_level_raw": 0,
+                                                   "xp_per_level": 1000,
+                                                   "unspent_perk_points": 0,
+                                                   "used_perk_points": 1},
+                    "readback_source": "native_current_state_only",
+                },
+            }}
+
+        def family(_driver, planned, _snapshot, *, wartime_arbitration=False):
+            self.assertTrue(wartime_arbitration)
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": "private-send-first-heir-marriage-proposal-v1"}}
+
+        with (
+            mock.patch.object(service, "_plan_initial_lifestyle_focus_first_v1",
+                              side_effect=existing_focus),
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private",
+                       side_effect=family) as family_plan,
+        ):
+            first = service.plan_turn()["plan"]
+        self.assertEqual(first["selected_step"],
+                         "query-campaign-root-context-v1")
+        self.assertEqual(first["initial_lifestyle_focus_existing"]["status"],
+                         "verified_existing")
+        family_plan.assert_not_called()
+
     def test_wartime_family_runs_before_first_read_once_per_game_date(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,
