@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import pywintypes
 
 import desktop_steam_offline_recovery as recovery
 
@@ -42,6 +43,21 @@ class DesktopRecoveryTests(unittest.TestCase):
             activate.assert_called_once_with(123)
             sleep.assert_called_once_with(0.05)
             capture.assert_called_once()
+
+    def test_foreground_restore_denial_keeps_fresh_frame_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(recovery.win32gui, "GetForegroundWindow",
+                               side_effect=[999, 123]),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow",
+                               side_effect=[None, pywintypes.error(
+                                   0, "SetForegroundWindow", "denied")]),
+                  patch.object(recovery.win32gui, "IsWindow", return_value=True),
+                  patch.object(recovery.steam_offline_fresh_frame, "capture",
+                               return_value={"moving_edge_changed": True})):
+                receipt = recovery.capture_fresh_frame(Path(temp), 123, True)
+        self.assertTrue(receipt["moving_edge_changed"])
+        self.assertIn("SetForegroundWindow", receipt["foreground_restore_error"])
 
     def test_stale_screen_record_is_ignored_only_when_its_pid_is_dead(self) -> None:
         old = {**task("old"), "stale": True, "pid": 2696}

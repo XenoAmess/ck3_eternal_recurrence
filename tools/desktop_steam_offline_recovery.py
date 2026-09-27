@@ -15,6 +15,7 @@ import sys
 import time
 
 import psutil
+import pywintypes
 import win32con
 import win32gui
 
@@ -150,11 +151,20 @@ def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool) -> dic
             if time.monotonic() >= deadline:
                 raise RuntimeError("could not make Steam foreground")
             time.sleep(0.05)
+    receipt = None
     try:
-        return steam_offline_fresh_frame.capture(output_dir)
+        receipt = steam_offline_fresh_frame.capture(output_dir)
+        return receipt
     finally:
         if previous != hwnd and win32gui.IsWindow(previous):
-            win32gui.SetForegroundWindow(previous)
+            try:
+                win32gui.SetForegroundWindow(previous)
+            except pywintypes.error as exc:
+                # Windows can deny restoring the old foreground HWND after a
+                # successful Steam capture. Preserve the fresh-frame receipt
+                # and record the focus error instead of losing its evidence.
+                if receipt is not None:
+                    receipt["foreground_restore_error"] = str(exc)
 
 
 def inspect(bus: Path) -> dict:
