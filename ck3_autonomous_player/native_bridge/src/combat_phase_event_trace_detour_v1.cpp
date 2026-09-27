@@ -30,6 +30,11 @@ constexpr std::array<std::uint8_t, 15> kRandomListWeightPrologue{
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
+// Six complete position-independent instructions at exact EXE RVA 0x23040A0.
+// The 15-byte generic patch would split the last push; this patch uses 16.
+constexpr std::array<std::uint8_t, 16> kJoinWrapperPrologue{
+    0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74,
+    0x24, 0x18, 0x55, 0x57, 0x41, 0x54, 0x41, 0x56};
 // 0x23CB435 replays all three original instructions before recording R14.
 // mov r15,[rbp+0x98]; mov r11d,0x186a0; add r14,[rax]
 constexpr std::array<std::uint8_t, 16> kPostCounterOriginal{
@@ -360,6 +365,175 @@ bool ExactAnchorsMatch(
 }
 
 } // namespace
+
+bool InstallCombatJoinWrapperDetourV1(
+    CombatJoinWrapperDetourV1 &state, std::uintptr_t module_base,
+    bool exact_build_admitted, bool paused_quiescence_proven,
+    std::uintptr_t offline_target_override) noexcept {
+  if (state.installed.load(std::memory_order_acquire) != 0 ||
+      state.trampoline != nullptr) {
+    state.failure_flags |= trace_detour_failure_already_installed;
+    return false;
+  }
+  state.failure_flags = 0;
+  if (!exact_build_admitted || module_base == 0) {
+    state.failure_flags |= trace_detour_failure_exact_build;
+    return false;
+  }
+  if (!paused_quiescence_proven ||
+      IsCombatPhaseEventTraceRingV1Armed()) {
+    state.failure_flags |= trace_detour_failure_paused_quiescence;
+    return false;
+  }
+  state.target = offline_target_override != 0
+                     ? offline_target_override
+                     : module_base + kCombatJoinWrapperFunctionRva;
+  if (!BytesMatch(state.target, kJoinWrapperPrologue)) {
+    state.failure_flags |= trace_detour_failure_anchor;
+    return false;
+  }
+  state.original = kJoinWrapperPrologue;
+  state.trampoline = VirtualAlloc(nullptr, kCombatJoinWrapperTrampolineBytesV1,
+                                  MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  if (state.trampoline == nullptr) {
+    state.failure_flags |= trace_detour_failure_allocation;
+    return false;
+  }
+  auto *bytes = static_cast<std::uint8_t *>(state.trampoline);
+  std::memcpy(bytes, state.original.data(), state.original.size());
+  WriteAbsoluteJump(bytes + state.original.size(),
+                    state.target + kCombatJoinWrapperPatchBytesV1);
+  DWORD previous = 0;
+  if (!VirtualProtect(state.trampoline, kCombatJoinWrapperTrampolineBytesV1,
+                      PAGE_EXECUTE_READ, &previous) ||
+      previous != PAGE_READWRITE ||
+      !FlushInstructionCache(GetCurrentProcess(), state.trampoline,
+                             kCombatJoinWrapperTrampolineBytesV1) ||
+      !BindCombatJoinWrapperOriginalV1(
+          reinterpret_cast<CombatJoinWrapperOriginalV1>(state.trampoline))) {
+    state.failure_flags |= trace_detour_failure_trampoline_protection;
+    (void)VirtualFree(state.trampoline, 0, MEM_RELEASE);
+    state.trampoline = nullptr;
+    return false;
+  }
+  std::array<std::uint8_t, kCombatJoinWrapperPatchBytesV1> patch{};
+  WriteAbsoluteJump(patch.data(),
+                    reinterpret_cast<std::uintptr_t>(
+                        &XarCombatJoinWrapperHookV1));
+  patch[14] = 0x90;
+  patch[15] = 0x90;
+  DWORD old_protection = 0;
+  if (!VirtualProtect(reinterpret_cast<void *>(state.target), patch.size(),
+                      PAGE_EXECUTE_READWRITE, &old_protection)) {
+    state.failure_flags |= trace_detour_failure_target_protection;
+    (void)BindCombatJoinWrapperOriginalV1(
+        reinterpret_cast<CombatJoinWrapperOriginalV1>(state.target));
+    (void)VirtualFree(state.trampoline, 0, MEM_RELEASE);
+    state.trampoline = nullptr;
+    return false;
+  }
+  // No game thread can execute the target while the managed pause is proven.
+  std::memcpy(reinterpret_cast<void *>(state.target), patch.data(),
+              patch.size());
+  const bool flushed = FlushInstructionCache(
+      GetCurrentProcess(), reinterpret_cast<void *>(state.target),
+      patch.size()) != FALSE;
+  DWORD ignored = 0;
+  const bool restored = VirtualProtect(
+      reinterpret_cast<void *>(state.target), patch.size(), old_protection,
+      &ignored) != FALSE;
+  if (!flushed || !restored ||
+      std::memcmp(reinterpret_cast<void *>(state.target), patch.data(),
+                  patch.size()) != 0) {
+    state.failure_flags |= trace_detour_failure_flush;
+    DWORD rollback_protection = 0;
+    const bool writable = VirtualProtect(
+        reinterpret_cast<void *>(state.target), patch.size(),
+        PAGE_EXECUTE_READWRITE, &rollback_protection) != FALSE;
+    if (writable) {
+      std::memcpy(reinterpret_cast<void *>(state.target),
+                  state.original.data(), state.original.size());
+      const bool rollback_flush = FlushInstructionCache(
+          GetCurrentProcess(), reinterpret_cast<void *>(state.target),
+          state.original.size()) != FALSE;
+      DWORD ignored_rollback = 0;
+      const bool rollback_protect = VirtualProtect(
+          reinterpret_cast<void *>(state.target), state.original.size(),
+          old_protection, &ignored_rollback) != FALSE;
+      if (rollback_flush && rollback_protect &&
+          BytesMatch(state.target, state.original)) {
+        (void)BindCombatJoinWrapperOriginalV1(
+            reinterpret_cast<CombatJoinWrapperOriginalV1>(state.target));
+        (void)VirtualFree(state.trampoline, 0, MEM_RELEASE);
+        state.trampoline = nullptr;
+        return false;
+      }
+    }
+    // Keep the live trampoline and owned patch on any uncertain rollback.
+    state.failure_flags |= trace_detour_failure_rollback;
+    state.installed.store(1, std::memory_order_release);
+    return false;
+  }
+  state.installed.store(1, std::memory_order_release);
+  return true;
+}
+
+bool UninstallCombatJoinWrapperDetourV1(
+    CombatJoinWrapperDetourV1 &state) noexcept {
+  if (state.installed.load(std::memory_order_acquire) == 0 ||
+      state.trampoline == nullptr || state.target == 0 ||
+      IsCombatPhaseEventTraceRingV1Armed()) return false;
+  std::array<std::uint8_t, kCombatJoinWrapperPatchBytesV1> patch{};
+  WriteAbsoluteJump(patch.data(),
+                    reinterpret_cast<std::uintptr_t>(
+                        &XarCombatJoinWrapperHookV1));
+  patch[14] = patch[15] = 0x90;
+  if (!BytesMatch(state.target, patch)) {
+    state.failure_flags |= trace_detour_failure_target_identity;
+    return false;
+  }
+  DWORD old_protection = 0;
+  if (!VirtualProtect(reinterpret_cast<void *>(state.target), patch.size(),
+                      PAGE_EXECUTE_READWRITE, &old_protection)) {
+    state.failure_flags |= trace_detour_failure_target_protection;
+    return false;
+  }
+  std::memcpy(reinterpret_cast<void *>(state.target), state.original.data(),
+              state.original.size());
+  const bool flushed = FlushInstructionCache(
+      GetCurrentProcess(), reinterpret_cast<void *>(state.target),
+      state.original.size()) != FALSE;
+  DWORD ignored = 0;
+  const bool protected_again = VirtualProtect(
+      reinterpret_cast<void *>(state.target), state.original.size(),
+      old_protection, &ignored) != FALSE;
+  if (!flushed || !protected_again ||
+      std::memcmp(reinterpret_cast<void *>(state.target),
+                  state.original.data(), state.original.size()) != 0) {
+    state.failure_flags |= trace_detour_failure_rollback;
+    // Re-arm the known patch so ownership remains retryable. A failure here
+    // still causes the managed driver to stop CK3 with trampoline storage kept.
+    DWORD rollback_protection = 0;
+    if (VirtualProtect(reinterpret_cast<void *>(state.target), patch.size(),
+                       PAGE_EXECUTE_READWRITE, &rollback_protection)) {
+      std::memcpy(reinterpret_cast<void *>(state.target), patch.data(),
+                  patch.size());
+      (void)FlushInstructionCache(GetCurrentProcess(),
+                                  reinterpret_cast<void *>(state.target),
+                                  patch.size());
+      DWORD ignored_rollback = 0;
+      (void)VirtualProtect(reinterpret_cast<void *>(state.target),
+                           patch.size(), old_protection, &ignored_rollback);
+    }
+    return false;
+  }
+  (void)BindCombatJoinWrapperOriginalV1(
+      reinterpret_cast<CombatJoinWrapperOriginalV1>(state.target));
+  state.installed.store(0, std::memory_order_release);
+  (void)VirtualFree(state.trampoline, 0, MEM_RELEASE);
+  state.trampoline = nullptr;
+  return true;
+}
 
 bool InstallCombatPhaseEventTraceDetoursV1(
     CombatPhaseEventTraceDetourStateV1 &state,

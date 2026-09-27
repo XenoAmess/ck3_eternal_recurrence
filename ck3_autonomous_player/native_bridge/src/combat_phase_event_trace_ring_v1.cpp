@@ -103,6 +103,7 @@ std::atomic<CombatPhaseEventFireOriginalV1> g_original_fire{nullptr};
 std::atomic<CombatPhaseEffectDispatchOriginalV1> g_original_effect_dispatch{nullptr};
 std::atomic<CombatPhaseKnightSelectOriginalV1> g_original_knight_select{nullptr};
 std::atomic<CombatRandomListWeightOriginalV1> g_original_random_list_weight{nullptr};
+std::atomic<CombatJoinWrapperOriginalV1> g_original_join_wrapper{nullptr};
 std::atomic<CombatOutgoingDamageOriginalV1> g_original_outgoing_damage{nullptr};
 struct OriginalOutgoingCallContextV1 {
   std::uintptr_t side = 0;
@@ -1055,6 +1056,7 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.effect_node_call_count.store(0, std::memory_order_relaxed);
   ring.effect_node_draw_count.store(0, std::memory_order_relaxed);
   ring.random_list_weight_count.store(0, std::memory_order_relaxed);
+  ring.join_width_count.store(0, std::memory_order_relaxed);
   ring.knight_select_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
@@ -1064,6 +1066,7 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.effect_roots = {};
   ring.effect_node_draws = {};
   ring.random_list_weights = {};
+  ring.join_widths = {};
   ring.knight_selects = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
@@ -1130,6 +1133,124 @@ bool CaptureCombatPhaseEventTraceBoundaryV1(
   ring->committed_count.store(index + 1, std::memory_order_release);
   ring->capture_in_progress.store(0, std::memory_order_release);
   return captured;
+}
+
+namespace {
+bool ReadJoinWidthRecordUnsafe(const CombatPhaseEventTraceCapturePlanV1 &plan,
+                               CombatJoinWidthRecordV1 &row,
+                               bool identify_side) noexcept {
+  if (LoadAt<std::uintptr_t>(plan.current_date_slot, 0) !=
+          plan.expected_current_date_object ||
+      LoadAt<std::int32_t>(plan.combat, kCombatIdOffset) != plan.combat_id) {
+    return false;
+  }
+  row.thread_id = GetCurrentThreadId();
+  if (row.thread_id != plan.owner_thread_id) return false;
+  row.native_date_raw =
+      LoadAt<std::int32_t>(plan.expected_current_date_object, 0x08);
+  row.combat_id = plan.combat_id;
+  row.army_id = plan.candidate_joining_army_id;
+  row.phase_day = LoadAt<std::int32_t>(plan.combat, kCombatPhaseDayOffset);
+  row.base_width = LoadAt<std::int32_t>(plan.combat, 0x6C0);
+  row.final_width = LoadAt<std::int32_t>(plan.combat, 0x6C4);
+  for (std::size_t i = 0; i < 2; ++i) {
+    if (LoadAt<std::uintptr_t>(plan.sides[i],
+                               kSideCombatBackPointerOffset) != plan.combat)
+      return false;
+    row.side_fighting_total_raw[i] =
+        LoadAt<std::int64_t>(plan.sides[i], kSideCurrentFightingTotalOffset);
+  }
+  if (identify_side) {
+    std::uint32_t failure = 0;
+    for (std::int32_t i = 0; i < 2; ++i) {
+      NativeVectorView roster{};
+      if (!ReadVector(plan.sides[i], kSideArmyHeaderOffset,
+                      kCombatPhaseEventTraceRingV1MaximumArmiesPerSide,
+                      roster, failure)) return false;
+      for (std::uint32_t j = 0; j < roster.count; ++j) {
+        if (LoadAt<std::int32_t>(roster.data,
+                                 j * sizeof(std::int32_t)) == row.army_id) {
+          if (row.side_index != -1) return false;
+          row.side_index = i;
+        }
+      }
+    }
+    if (row.side_index == -1) return false;
+  }
+  return true;
+}
+} // namespace
+
+bool CaptureCombatJoinWidthV1(void *combat, void *incoming_army,
+                              bool after_original) noexcept {
+  auto *ring = g_active_ring.load(std::memory_order_acquire);
+  if (ring == nullptr || ring->armed.load(std::memory_order_acquire) == 0 ||
+      !ring->plan.capture_runtime_join_width ||
+      reinterpret_cast<std::uintptr_t>(combat) != ring->plan.combat ||
+      incoming_army == nullptr) return false;
+  const auto *candidate = FindObject(ring->plan.armies.data(),
+                                     ring->plan.army_count,
+                                     ring->plan.candidate_joining_army_id);
+  if (candidate == nullptr ||
+      reinterpret_cast<std::uintptr_t>(incoming_army) != candidate->object)
+    return false;
+  const auto expected = after_original ? 1U : 0U;
+  if (ring->join_width_count.load(std::memory_order_acquire) != expected) {
+    MarkFailure(*ring, trace_capture_failure_join_width);
+    return false;
+  }
+  CombatJoinWidthRecordV1 row{};
+  row.boundary = expected;
+  bool valid = false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    valid = LoadAt<std::int32_t>(incoming_army, kArmyIdOffset) ==
+                ring->plan.candidate_joining_army_id &&
+            ReadJoinWidthRecordUnsafe(ring->plan, row, after_original);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { valid = false; }
+#endif
+  if (!valid) {
+    MarkFailure(*ring, trace_capture_failure_join_width);
+    return false;
+  }
+  ring->join_widths[expected] = row;
+  ring->join_width_count.store(expected + 1, std::memory_order_release);
+  return true;
+}
+
+bool CaptureCombatFirstSide0OutgoingWidthV1(
+    void *side, std::int32_t width,
+    std::uintptr_t caller_return_address) noexcept {
+  auto *ring = g_active_ring.load(std::memory_order_acquire);
+  if (ring == nullptr || ring->armed.load(std::memory_order_acquire) == 0 ||
+      !ring->plan.capture_runtime_join_width ||
+      reinterpret_cast<std::uintptr_t>(side) != ring->plan.sides[0] ||
+      caller_return_address !=
+          ring->plan.module_base + kCombatOutgoingDamageSide0ReturnRva ||
+      ring->join_width_count.load(std::memory_order_acquire) != 2)
+    return false;
+  CombatJoinWidthRecordV1 row{};
+  row.boundary = 2;
+  row.side_index = 0;
+  row.outgoing_width_argument = width;
+  bool valid = false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    valid = ReadJoinWidthRecordUnsafe(ring->plan, row, false) &&
+            row.final_width == width;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { valid = false; }
+#endif
+  if (!valid) {
+    MarkFailure(*ring, trace_capture_failure_join_width);
+    return false;
+  }
+  ring->join_widths[2] = row;
+  ring->join_width_count.store(3, std::memory_order_release);
+  return true;
 }
 
 bool CaptureCombatOutgoingDamageV1(
@@ -1303,6 +1424,16 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       static_cast<std::uint32_t>(output.random_list_weights.size()));
   std::copy_n(ring.random_list_weights.begin(), output.random_list_weight_count,
               output.random_list_weights.begin());
+  output.runtime_join_width_requested = ring.plan.capture_runtime_join_width;
+  output.join_width_count = std::min<std::uint32_t>(
+      ring.join_width_count.load(std::memory_order_acquire),
+      static_cast<std::uint32_t>(output.join_widths.size()));
+  std::copy_n(ring.join_widths.begin(), output.join_width_count,
+              output.join_widths.begin());
+  if (output.runtime_join_width_requested && output.join_width_count != 0 &&
+      output.join_width_count != 3) {
+    output.failure_flags |= trace_capture_failure_join_width;
+  }
   output.knight_select_count = std::min<std::uint32_t>(
       ring.knight_select_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.knight_selects.size()));
@@ -1412,6 +1543,26 @@ bool BindCombatRandomListWeightOriginalV1(
   }
   g_original_random_list_weight.store(select, std::memory_order_release);
   return true;
+}
+
+bool BindCombatJoinWrapperOriginalV1(CombatJoinWrapperOriginalV1 join) noexcept {
+  if (join == nullptr) return false;
+  g_original_join_wrapper.store(join, std::memory_order_release);
+  return true;
+}
+
+extern "C" std::uintptr_t __fastcall XarCombatJoinWrapperHookV1(
+    void *combat, void *incoming_army) noexcept {
+  const auto original = g_original_join_wrapper.load(std::memory_order_acquire);
+  if (original == nullptr) {
+    if (auto *ring = g_active_ring.load(std::memory_order_acquire))
+      MarkFailure(*ring, trace_capture_failure_original_trampoline);
+    return 0;
+  }
+  (void)CaptureCombatJoinWidthV1(combat, incoming_army, false);
+  const auto result = original(combat, incoming_army);
+  (void)CaptureCombatJoinWidthV1(combat, incoming_army, true);
+  return result;
 }
 
 extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
@@ -1870,6 +2021,8 @@ extern "C" std::uintptr_t __fastcall XarCombatOutgoingDamageHookV1(
   const auto previous_call = g_original_outgoing_call;
   g_original_outgoing_call = {
       reinterpret_cast<std::uintptr_t>(side), return_address};
+  (void)CaptureCombatFirstSide0OutgoingWidthV1(side, final_width,
+                                               return_address);
   const auto result = original(side, output, final_width,
                                advantage_multiplier_raw, opposite_side);
   g_original_outgoing_call = previous_call;

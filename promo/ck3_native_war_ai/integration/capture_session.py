@@ -235,6 +235,14 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
                     "Runtime random-list weight capture flag must be bool")
             fields["capture_runtime_random_list_weights"] = capture_weights
             allowed.add("capture_runtime_random_list_weights")
+        if "capture_runtime_join_width" in request:
+            capture_join_width = request["capture_runtime_join_width"]
+            require(type(capture_join_width) is bool,
+                    "Runtime join-width capture flag must be bool")
+            require("candidate_joining_army_id" in request,
+                    "Join-width capture needs a frozen candidate ArmyID")
+            fields["capture_runtime_join_width"] = capture_join_width
+            allowed.add("capture_runtime_join_width")
     require(set(request) == allowed,
             "Private phase trace request fields differ from the bounded contract")
     return driver._execute_primitive_step(

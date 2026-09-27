@@ -9175,6 +9175,7 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
   auto &session = state.experimental_combat_phase_trace;
   if (begin) {
     bool capture_runtime_random_list_weights = false;
+    bool capture_runtime_join_width = false;
     if (payload.find("\"capture_runtime_random_list_weights\"") !=
             std::string_view::npos &&
         !xar::bridge::JsonBooleanField(
@@ -9183,6 +9184,15 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
       return CommandResultFrame(
           request_id, step, false,
           "experimental random-list weight flag is malformed");
+    }
+    if (payload.find("\"capture_runtime_join_width\"") !=
+            std::string_view::npos &&
+        !xar::bridge::JsonBooleanField(
+            payload, "capture_runtime_join_width",
+            capture_runtime_join_width)) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental join width flag is malformed");
     }
     std::uint64_t checkpoint_sequence = 0;
     if (!xar::bridge::JsonUnsignedField(payload, "checkpoint_sequence",
@@ -9229,6 +9239,7 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     query.managed_daily_sequence_token = token;
     query.capture_runtime_random_list_weights =
         capture_runtime_random_list_weights;
+    query.capture_runtime_join_width = capture_runtime_join_width;
     // The external driver must additionally verify the save file hash and
     // official semantic pair before this private request is sent.
     query.recoverable_checkpoint_created = true;

@@ -25,7 +25,10 @@ CALLS = {
     0x2309FAF: 0x23CB1D0,
 }
 INSTRUCTION_BYTES = {
+    0x23040A0: "48895C24104889742418555741544156",  # 16 complete hook bytes
+    0x23040B0: "4157",          # next instruction, not split by hook
     0x2304266: "4439A3C0060000",  # old base width > 0 gate; r12d=0
+    0x2304277: "4438A3FC060000",  # branch merge after optional update
     0x2305590: "4C8B8900040000",  # side1 current total
     0x230559E: "4C0389B8000000",  # plus side0 current total
     0x230571B: "8913",            # candidate base write

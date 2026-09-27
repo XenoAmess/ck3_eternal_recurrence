@@ -105,6 +105,7 @@ struct CombatPhaseEventTraceManagedSessionV1 {
       CombatPhaseEventTraceManagedStageV1::idle;
   CombatPhaseEventTraceRingV1 ring{};
   CombatPhaseEventTraceDetourStateV1 detours{};
+  CombatJoinWrapperDetourV1 join_width_detour{};
   CombatPhaseEventTraceCapturePlanV1 plan{};
   CombatPhaseEventTraceRingDrainV1 drain{};
   CombatPhaseEventTraceManagedCheckpointV1 before{};
@@ -135,6 +136,7 @@ struct CombatPhaseEventTraceBeginContextV1 {
   std::uint64_t managed_daily_sequence_token = 0;
   bool recoverable_checkpoint_created = false;
   bool capture_runtime_random_list_weights = false;
+  bool capture_runtime_join_width = false;
   CombatPhaseEventTraceManagedCompletionV1 completion =
       CombatPhaseEventTraceManagedCompletionV1::not_executed;
   std::uint32_t executor_invocations = 0;

@@ -295,6 +295,38 @@ bool MissingRowMapStaysExplicitlyUnknown() {
   return true;
 }
 
+bool OptionalJoinWidthWire() {
+  auto drain = SmallDrain();
+  const auto ordinary = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (Has(ordinary, "runtime_join_width"))
+    return Fail("default wire unexpectedly contains join-width probe");
+  drain->runtime_join_width_requested = true;
+  drain->join_width_count = 3;
+  for (std::uint32_t i = 0; i < 3; ++i) {
+    auto &row = drain->join_widths[i];
+    row.boundary = i;
+    row.thread_id = 42;
+    row.native_date_raw = 53'175'840;
+    row.combat_id = 0x01000001;
+    row.army_id = 22;
+    row.side_index = i == 0 ? -1 : 0;
+    row.phase_day = 5;
+    row.base_width = i == 0 ? 4 : 6;
+    row.final_width = i == 0 ? 5 : 7;
+    row.outgoing_width_argument = i == 2 ? 7 : -1;
+    row.side_fighting_total_raw = {1'300'000, 1'100'000};
+  }
+  const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (!Has(json, "\"runtime_join_width\":{\"status\":\"captured\",\"count\":3") ||
+      !Has(json, "\"outgoing_width_argument\":7") ||
+      !Has(json, "\"side_fighting_total_raw\":[1300000,1100000]"))
+    return Fail("join-width optional wire lost bounded numbers");
+  drain->join_width_count = 4;
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty())
+    return Fail("join-width overflow did not fail closed");
+  return true;
+}
+
 bool OversizeFailsClosed() {
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
   drain->record_count = 7;
@@ -319,7 +351,8 @@ bool OversizeFailsClosed() {
 } // namespace
 
 int main() {
-  return HappyPath() && OptionalRuntimeWeights() && InvalidCountsFailClosed() &&
+  return HappyPath() && OptionalRuntimeWeights() && OptionalJoinWidthWire() &&
+         InvalidCountsFailClosed() &&
                  MissingRowMapStaysExplicitlyUnknown() &&
                  OversizeFailsClosed()
              ? 0

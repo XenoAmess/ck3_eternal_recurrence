@@ -32,6 +32,9 @@ constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
 constexpr std::array<std::uint8_t, 16> kPostCounterOriginal{
     0x4C, 0x8B, 0xBD, 0x98, 0x00, 0x00, 0x00, 0x41,
     0xBB, 0xA0, 0x86, 0x01, 0x00, 0x4C, 0x03, 0x30};
+constexpr std::array<std::uint8_t, 16> kJoinWrapperPrologue{
+    0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74,
+    0x24, 0x18, 0x55, 0x57, 0x41, 0x54, 0x41, 0x56};
 constexpr std::array<std::uint8_t, 5> kScheduleSide0Call{
     0xE8, 0xBC, 0xD1, 0xBC, 0xFF};
 constexpr std::array<std::uint8_t, 5> kScheduleSide1Call{
@@ -50,6 +53,54 @@ constexpr std::array<std::uint8_t, 5> kOutgoingDamageSide1Call{
 bool Fail(std::string_view reason) {
   std::cerr << reason << '\n';
   return false;
+}
+
+bool OptionalJoinWrapperPreservesReturnAndRestores() {
+  auto *code = static_cast<std::uint8_t *>(VirtualAlloc(
+      nullptr, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+  if (code == nullptr) return Fail("join fixture allocation failed");
+  std::memcpy(code, kJoinWrapperPrologue.data(), kJoinWrapperPrologue.size());
+  // mov eax, 0x12345678; pop r14/r12/rdi/rbp; ret.
+  constexpr std::array<std::uint8_t, 11> body{
+      0xB8, 0x78, 0x56, 0x34, 0x12, 0x41, 0x5E, 0x41, 0x5C, 0x5F, 0x5D};
+  std::memcpy(code + 16, body.data(), body.size());
+  code[27] = 0xC3;
+  DWORD previous = 0;
+  if (!VirtualProtect(code, 4096, PAGE_EXECUTE_READ, &previous)) {
+    (void)VirtualFree(code, 0, MEM_RELEASE);
+    return Fail("join fixture protection failed");
+  }
+  using Function = std::uintptr_t (*)(void *, void *);
+  auto original = reinterpret_cast<Function>(code);
+  CombatJoinWrapperDetourV1 state{};
+  const bool baseline = original(nullptr, nullptr) == 0x12345678;
+  const bool rejected = !InstallCombatJoinWrapperDetourV1(
+      state, 1, false, true, reinterpret_cast<std::uintptr_t>(code));
+  const bool installed = InstallCombatJoinWrapperDetourV1(
+      state, 1, true, true, reinterpret_cast<std::uintptr_t>(code));
+  const bool hooked = installed &&
+      state.installed.load(std::memory_order_acquire) == 1 &&
+      original(nullptr, nullptr) == 0x12345678;
+  const bool removed = installed && UninstallCombatJoinWrapperDetourV1(state);
+  const bool restored = removed &&
+      std::memcmp(code, kJoinWrapperPrologue.data(), 16) == 0 &&
+      original(nullptr, nullptr) == 0x12345678;
+  DWORD writable_previous = 0;
+  const bool writable = VirtualProtect(code, 4096, PAGE_EXECUTE_READWRITE,
+                                       &writable_previous) != FALSE;
+  bool drift_rejected = false;
+  if (writable) {
+    code[0] ^= 1;
+    drift_rejected = !InstallCombatJoinWrapperDetourV1(
+        state, 1, true, true, reinterpret_cast<std::uintptr_t>(code)) &&
+        (state.failure_flags & trace_detour_failure_anchor) != 0 &&
+        state.trampoline == nullptr && state.installed.load() == 0;
+    code[0] ^= 1;
+  }
+  (void)VirtualFree(code, 0, MEM_RELEASE);
+  return baseline && rejected && installed && hooked && restored &&
+                 drift_rejected
+             ? true : Fail("join return/restore fixture failed");
 }
 
 struct FixtureMemory {
@@ -558,7 +609,8 @@ bool AdmissionAndRollbackFailures() {
 int main() {
   static_assert(kCombatPhaseEventTraceDetourPatchBytesV1 == 15);
   static_assert(kCombatPhaseEventTraceAbsoluteJumpBytesV1 == 14);
-  return InstallAndUninstall() &&
+  return OptionalJoinWrapperPreservesReturnAndRestores() &&
+         InstallAndUninstall() &&
                  OptionalRandomListWeightInstallAndUninstall() &&
                  AdmissionAndRollbackFailures()
              ? 0

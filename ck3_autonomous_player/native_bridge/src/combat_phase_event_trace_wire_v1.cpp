@@ -427,6 +427,7 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       drain.effect_root_count > drain.effect_roots.size() ||
       drain.effect_node_draw_count > drain.effect_node_draws.size() ||
       drain.random_list_weight_count > drain.random_list_weights.size() ||
+      drain.join_width_count > drain.join_widths.size() ||
       drain.knight_select_count > drain.knight_selects.size()) {
     return {};
   }
@@ -580,6 +581,46 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       output += ",\"child_salt_after\":";
       if (!AppendNumber(output, row.child_salt_after)) return {};
       output.push_back('}');
+    }
+    output += "]}";
+  }
+  if (drain.runtime_join_width_requested) {
+    output += ",\"runtime_join_width\":{\"status\":\"";
+    output += (drain.failure_flags & trace_capture_failure_join_width) != 0
+                  ? "failed"
+                  : drain.join_width_count == 0 ? "no_join_observed" :
+                    drain.join_width_count == 3 ? "captured" : "incomplete";
+    output += "\",\"count\":";
+    if (!AppendNumber(output, drain.join_width_count)) return {};
+    output += ",\"boundaries\":[";
+    for (std::uint32_t index = 0; index < drain.join_width_count; ++index) {
+      if (index) output.push_back(',');
+      const auto &row = drain.join_widths[index];
+      output += "{\"boundary\":";
+      if (!AppendNumber(output, row.boundary)) return {};
+      output += ",\"thread_id\":";
+      if (!AppendNumber(output, row.thread_id)) return {};
+      output += ",\"native_date_raw\":";
+      if (!AppendNumber(output, row.native_date_raw)) return {};
+      output += ",\"combat_id\":";
+      if (!AppendNumber(output, row.combat_id)) return {};
+      output += ",\"army_id\":";
+      if (!AppendNumber(output, row.army_id)) return {};
+      output += ",\"side_index\":";
+      if (!AppendNumber(output, row.side_index)) return {};
+      output += ",\"phase_day\":";
+      if (!AppendNumber(output, row.phase_day)) return {};
+      output += ",\"base_width\":";
+      if (!AppendNumber(output, row.base_width)) return {};
+      output += ",\"final_width\":";
+      if (!AppendNumber(output, row.final_width)) return {};
+      output += ",\"outgoing_width_argument\":";
+      if (!AppendNumber(output, row.outgoing_width_argument)) return {};
+      output += ",\"side_fighting_total_raw\":[";
+      if (!AppendNumber(output, row.side_fighting_total_raw[0])) return {};
+      output.push_back(',');
+      if (!AppendNumber(output, row.side_fighting_total_raw[1])) return {};
+      output += "]}";
     }
     output += "]}";
   }

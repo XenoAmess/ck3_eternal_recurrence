@@ -46,7 +46,25 @@ class PrivatePhaseTraceContractTests(unittest.TestCase):
     def test_absent_flag_preserves_previous_wire_shape(self):
         private_phase_trace_call(self.begin, enabled=True, driver=self.driver)
         self.assertNotIn("capture_runtime_random_list_weights",
+                          self.calls[-1][1]["request_fields"])
+        self.assertNotIn("capture_runtime_join_width",
                          self.calls[-1][1]["request_fields"])
+
+    def test_join_width_requires_bool_and_frozen_candidate(self):
+        for value in (True, False):
+            request = {**self.begin, "candidate_joining_army_id": 22,
+                       "capture_runtime_join_width": value}
+            private_phase_trace_call(request, enabled=True, driver=self.driver)
+            self.assertIs(self.calls[-1][1]["request_fields"]
+                          ["capture_runtime_join_width"], value)
+        prior = len(self.calls)
+        for request in ({**self.begin, "capture_runtime_join_width": True},
+                        {**self.begin, "candidate_joining_army_id": 22,
+                         "capture_runtime_join_width": 1}):
+            with self.assertRaises(RuntimeError):
+                private_phase_trace_call(request, enabled=True,
+                                         driver=self.driver)
+        self.assertEqual(len(self.calls), prior)
 
     def test_non_bool_and_finish_flag_are_rejected_before_driver_call(self):
         for value in (0, 1, "true", None):

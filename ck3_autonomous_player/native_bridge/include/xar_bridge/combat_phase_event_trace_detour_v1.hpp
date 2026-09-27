@@ -18,6 +18,8 @@ inline constexpr std::size_t kCombatPhaseEventTraceTrampolineBytesV1 =
     kCombatPhaseEventTraceAbsoluteJumpBytesV1;
 inline constexpr std::size_t kCombatPostCounterPatchBytesV1 = 16;
 inline constexpr std::size_t kCombatPostCounterTrampolineBytesV1 = 128;
+inline constexpr std::size_t kCombatJoinWrapperPatchBytesV1 = 16;
+inline constexpr std::size_t kCombatJoinWrapperTrampolineBytesV1 = 30;
 
 enum CombatPhaseEventTraceDetourFailureV1 : std::uint32_t {
   trace_detour_failure_none = 0,
@@ -118,6 +120,23 @@ struct CombatPhaseEventTraceDetourStateV1 {
   CombatTraceVirtualProtectV1 virtual_protect = nullptr;
   CombatTraceFlushInstructionCacheV1 flush_instruction_cache = nullptr;
 };
+
+// Separate optional entry patch: 0x23040A0 needs 16 complete prologue bytes.
+// It is installed only after the ordinary trace patches and before ring arm.
+struct CombatJoinWrapperDetourV1 {
+  std::atomic<std::uint32_t> installed{0};
+  std::uint32_t failure_flags = 0;
+  std::uintptr_t target = 0;
+  void *trampoline = nullptr;
+  std::array<std::uint8_t, kCombatJoinWrapperPatchBytesV1> original{};
+};
+
+bool InstallCombatJoinWrapperDetourV1(
+    CombatJoinWrapperDetourV1 &state, std::uintptr_t module_base,
+    bool exact_build_admitted, bool paused_quiescence_proven,
+    std::uintptr_t offline_target_override = 0) noexcept;
+bool UninstallCombatJoinWrapperDetourV1(
+    CombatJoinWrapperDetourV1 &state) noexcept;
 
 // Install/uninstall patch five frozen function entries and the 16-byte
 // post-counter scalar site inside the outgoing calculator. The caller

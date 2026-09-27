@@ -14,6 +14,14 @@
 
 建议的原生被动探针在同一 CombatID、同一游戏线程上记录三处边界：join wrapper 进入前；两条分支汇合的 `0x2304277`（同时记录是否经过 `0x2304272`）；首次 `0x2309F7F` phase-fire 宽度读取前。每处原子记录 phase/day、两侧 entry current-soldier 汇总与存储的 `+0x98/+0xA0`、`+0x6C0/+0x6C4`、Province/terrain 身份，以及 incoming ArmyID。它能区分“增援确实改变战宽”“已有历史宽度压住新候选”“宽度更新门未经过”和“主阶段只是复用缓存”。任何一个场景都要以实际记录为准；当前两份自然增援回放没有这些三个边界的宽度数值，故这四种归因仍不可判定。
 
+### 有界私有观测器（离线实现，待实机）
+
+当前实现选择更安全的三点：`0x23040A0` join wrapper **入口**、同一 wrapper **正常返回后**、首次 side0 `0x23CB1D0` 入参 `R8D`。返回点已经越过 `0x2304277` 汇合，但不是汇合指令本身；因此仅凭这三点不能直接证明是否经过 `0x2304272`，需要用前后宽度和后续证据判断。wrapper 的 RCX 为 `CCombat*`、RDX 为 incoming `CArmy*`；前置计划冻结候选 ArmyID 及完整代际对象指针。钩子只对这一个 CombatID/候选指针采集，返回后在有界原生 side army ID 向量中确认落入 side 0/1。记录含同线程 ID、原生日戳、phase day、两侧 `+0x98` Q100000 总量、`+0x6C0/+0x6C4` int32 战宽，以及 side0 出伤调用实际传入的宽度。首个边界的 side 尚未加入，记为 `-1`；返回后才填实际 side。尚未采集 Province/terrain 及 `+0xA0`，不能以当前字段独立重算地形修正。
+
+私有 begin 必须同时给 `candidate_joining_army_id` 正整数和严格布尔 `capture_runtime_join_width:true`；默认不安装 join 补丁，也不改变七边界 wire。成功的可选 `trace.runtime_join_width` 是 3 条 `boundary=0/1/2`，分别代表入口、正常返回、首次 side0 出伤前；无目标增援是 `no_join_observed`，部分记录/宽度不一致是 `failed`，原始 failure flag 保留。边界 2 的 `outgoing_width_argument` 必须等于当时 `+0x6C4`。实际实机结果仍为**未采样**，不能把离线夹具数字当作 CK3 战况。
+
+安全门：EXE SHA-256 为页首 exact build；入口 `0x23040A0` 的 16 字节 `48895C24104889742418555741544156` 是完整无相对地址的指令，下一条 `0x23040B0` 才开始 `4157`。专用 16+14 字节 trampoline 避免通用 15 字节补丁截断指令；离线可执行夹具核对原返回值、钩住后的返回值和卸载原字节一致。补丁安装/卸载仅在已验证暂停静止的 main-thread mailbox 执行，失败保留 trampoline 与停止门，钩内不分配也不调用 CK3 helper。实机前还需记录独立 DLL SHA、源存档/配对回执 SHA、新鲜 Steam 离线帧和任务总线独占；一天回放后必须冻结原始 finish bytes/SHA 以及 clean-exit 回执。两份自然增援案例应分别使用新 attempt，不得改写历史素材。
+
 有界复核（只读 EXE，不运行 CK3）：
 
 ```text

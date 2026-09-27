@@ -716,6 +716,57 @@ bool OutgoingDamageCaptureCases() {
   return true;
 }
 
+bool CandidateJoinWidthThreeBoundaryFixture() {
+  Fixture fixture;
+  std::array<std::byte, 0x130> candidate_army{};
+  constexpr std::int32_t candidate_id = 22;
+  Store(candidate_army, 0x10, candidate_id);
+  Store(candidate_army, 0x128, std::int32_t{-1});
+  fixture.plan.army_count = 3;
+  fixture.plan.armies[2] = {
+      candidate_id, reinterpret_cast<std::uintptr_t>(candidate_army.data())};
+  fixture.plan.capture_runtime_join_width = true;
+  fixture.plan.candidate_joining_army_id = candidate_id;
+  fixture.plan.owner_thread_id = GetCurrentThreadId();
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("join-width fixture arm failed");
+  Store(fixture.combat, 0x6C0, std::int32_t{4});
+  Store(fixture.combat, 0x6C4, std::int32_t{5});
+  if (CaptureCombatJoinWidthV1(fixture.combat.data(),
+                               fixture.armies[0].data(), false) ||
+      !CaptureCombatJoinWidthV1(fixture.combat.data(),
+                                candidate_army.data(), false)) {
+    CancelCombatPhaseEventTraceRingV1(*ring);
+    return Fail("join-width entry identity failed");
+  }
+  std::array<std::int32_t, 2> joined_roster{Fixture::kArmyIds[0], candidate_id};
+  auto *side0 = reinterpret_cast<void *>(fixture.plan.sides[0]);
+  Store(side0, 0x10,
+        reinterpret_cast<std::uintptr_t>(joined_roster.data()));
+  Store(side0, 0x18, std::int32_t{2});
+  Store(side0, 0x1C, std::int32_t{2});
+  Store(candidate_army, 0x128, Fixture::kCombatId);
+  Store(fixture.combat, 0x6C0, std::int32_t{6});
+  Store(fixture.combat, 0x6C4, std::int32_t{7});
+  if (!CaptureCombatJoinWidthV1(fixture.combat.data(),
+                                candidate_army.data(), true) ||
+      !CaptureCombatFirstSide0OutgoingWidthV1(
+          side0, 7, fixture.plan.module_base +
+                        kCombatOutgoingDamageSide0ReturnRva) ||
+      ring->join_width_count.load() != 3 ||
+      ring->join_widths[0].base_width != 4 ||
+      ring->join_widths[1].base_width != 6 ||
+      ring->join_widths[1].side_index != 0 ||
+      ring->join_widths[2].outgoing_width_argument != 7 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    CancelCombatPhaseEventTraceRingV1(*ring);
+    return Fail("join-width three-boundary fixture failed");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return true;
+}
+
 bool PostCounterAttackCaptureCases() {
   Fixture fixture;
   auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
@@ -1012,6 +1063,7 @@ int main(int argc, char **argv) {
       !CaptureSevenRecordFixture(48) ||
       !FailureCases() ||
       !StaleScheduledKnightCase() ||
+      !CandidateJoinWidthThreeBoundaryFixture() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
       !OutgoingDamageHookAbi() || !OuterCallerContextTransport() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,
