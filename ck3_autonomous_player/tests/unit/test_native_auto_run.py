@@ -113,6 +113,7 @@ class _NativeAutoRunHarness:
         self.public_revision = 101
         self.opening_focus_gate_trial = False
         self.opening_focus_receipt_seen = False
+        self.opening_focus_target_key = "stewardship_wealth_focus"
         self.heartbeat_date_raw = self.date_raw
         self.heartbeat_lag_capability_reads = 0
         self.pump_epochs = 40
@@ -658,7 +659,7 @@ class _NativeAutoRunHarness:
                 ),
                 "kind": "focus" if action == "lifestyle_focus_receipt" else "perk",
                 "target_key": (
-                    "stewardship_wealth_focus"
+                    self.opening_focus_target_key
                     if action == "lifestyle_focus_receipt"
                     else "cutting_corners_perk"
                 ),
@@ -668,7 +669,7 @@ class _NativeAutoRunHarness:
                 "post_target_perk_owned": action == "lifestyle_receipt",
                 "post_has_current_focus": action == "lifestyle_focus_receipt",
                 "post_current_focus_key": (
-                    "stewardship_wealth_focus"
+                    self.opening_focus_target_key
                     if action == "lifestyle_focus_receipt" else None
                 ),
                 "postcondition_verified": True,
@@ -684,7 +685,7 @@ class _NativeAutoRunHarness:
                 "status": "submitted_verification_pending",
                 "kind": "focus",
                 "action_request_id": "life-focus-fixture",
-                "target_key": "stewardship_wealth_focus",
+                "target_key": self.opening_focus_target_key,
             }
         elif action in {
             "advance",
@@ -1460,7 +1461,7 @@ class _FakeGameplayService:
                 plan["lifestyle_receipt_consumed"] = {
                     "kind": "focus",
                     "action_request_id": "life-focus-fixture",
-                    "target_key": "stewardship_wealth_focus",
+                    "target_key": self.harness.opening_focus_target_key,
                     "postcondition_verified": True,
                 }
             before_submit({
@@ -1621,6 +1622,8 @@ class NativeAutoRunTests(unittest.TestCase):
         before_submit: object = None,
         after_intercept: object = None,
         require_initial_lifestyle_focus_before_date_advance: bool = False,
+        focus_target_key: str = "stewardship_wealth_focus",
+        focus_post_lifestyle_key: str | None = None,
         focus_post_xp_available: bool = True,
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
@@ -1679,6 +1682,7 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
         )
+        harness.opening_focus_target_key = focus_target_key
         def post_focus_life2_readback(
             driver: _FakeNativeDriver, *, expected_revision: int,
             query_step: str,
@@ -1698,11 +1702,17 @@ class NativeAutoRunTests(unittest.TestCase):
                 "snapshot": {
                     "current_focus": {
                         "presence": "present",
-                        "key": "stewardship_wealth_focus",
+                        "key": harness.opening_focus_target_key,
                     },
                     "current_lifestyle_progress": {
                         "presence": "present",
-                        "lifestyle_key": "stewardship_lifestyle",
+                        "lifestyle_key": (
+                            focus_post_lifestyle_key
+                            if focus_post_lifestyle_key is not None
+                            else "martial_lifestyle"
+                            if harness.opening_focus_target_key == "martial_authority_focus"
+                            else "stewardship_lifestyle"
+                        ),
                         "xp_total_raw": 0 if focus_post_xp_available else None,
                         "unspent_perk_points": 0,
                     },
@@ -4667,6 +4677,65 @@ class NativeAutoRunTests(unittest.TestCase):
             harness.events.index("auto_turn:lifestyle_focus_receipt"),
             harness.events.index("auto_turn:advance"),
         )
+
+    def test_opening_martial_focus_gate_consumes_typed_receipt_before_advance(self) -> None:
+        report, harness = self._run(
+            ["lifestyle_focus_submit", "lifestyle_focus_receipt", "advance"],
+            require_initial_lifestyle_focus_before_date_advance=True,
+            focus_target_key="martial_authority_focus",
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["stage"], "complete")
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["target_key"],
+                         "martial_authority_focus")
+        self.assertEqual([row["phase"] for row in report["checkpoints"][:2]], [
+            "initial_lifestyle_focus_submitted_pending",
+            "initial_lifestyle_focus_applied",
+        ])
+        receipt = report["auto_run"]["turns"][1]["result"]
+        self.assertEqual(receipt["post_life2_current_state"]["current_focus"]["key"],
+                         "martial_authority_focus")
+        self.assertEqual(receipt["post_life2_current_state"]
+                         ["current_lifestyle_progress"]["lifestyle_key"],
+                         "martial_lifestyle")
+        self.assertLess(harness.events.index("auto_turn:lifestyle_focus_receipt"),
+                        harness.events.index("auto_turn:advance"))
+        self.assertEqual(harness.events.count("auto_turn:lifestyle_focus_submit"), 1)
+
+    def test_opening_martial_focus_rejects_wrong_post_lifestyle(self) -> None:
+        report, harness = self._run(
+            ["lifestyle_focus_submit", "lifestyle_focus_receipt", "advance"],
+            require_initial_lifestyle_focus_before_date_advance=True,
+            focus_target_key="martial_authority_focus",
+            focus_post_lifestyle_key="stewardship_lifestyle",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["stage"],
+                         "await_receipt")
+        self.assertNotIn("auto_turn:advance", harness.events)
+        self.assertEqual(harness.events.count("auto_turn:lifestyle_focus_submit"), 1)
+
+    def test_compact_first_focus_comparison_keeps_observed_value_inputs(self) -> None:
+        comparison = {
+            "status": "selected", "target_key": "martial_authority_focus",
+            "reason": "martial_education_and_war_objective",
+            "martial_education_rank": 4, "at_peace": False,
+            "commitment_months": 60,
+            "observed_target_progress": {
+                "wealth": {"native_legal": True,
+                           "progress": {"xp_total_raw": 1200,
+                                        "unspent_perk_points": 1}},
+                "martial": {"native_legal": True,
+                            "progress": {"xp_total_raw": 900,
+                                         "unspent_perk_points": 0}},
+            },
+        }
+        compact = native_auto_run_module._compact_plan({
+            "opening_first_focus_comparison": comparison,
+        })
+        self.assertEqual(compact["opening_first_focus_comparison"], comparison)
 
     def test_opening_focus_gate_keeps_short_run_incomplete(self) -> None:
         report, harness = self._run(
