@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T10:08:00Z",
+  "updated_at_utc": "2026-09-27T10:10:42Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -36,6 +36,17 @@
       "finding": "The two 0x28B21E0/0x28B1EB0 preview branches directly append two-dword pairs to a helper-supplied temporary vector. The 0x28B1C50 local table write is into a caller-stack buffer. Bounded preview entry 0x2E9FA10-0x2E9FC92 has no direct effect+0x1B0 operand.",
       "limit": "This is a direct-instruction/static result, not a complete transitive write-set or final title/vassal/resource outcome. The separate change-scope referent and all actual War31 surrender material terms remain unknown; no preview or surrender was invoked.",
       "checks": "py ck3_autonomous_player/tests/unit/test_dejure_surrender_preview_branch_pairs.py: 2 passed against the exact installed EXE and wrong-build fail-closed fixture"
+    },
+    {
+      "date_utc": "2026-09-27T10:10:42Z",
+      "master_commit": "a99cb9edb",
+      "exact_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "extractor": "ck3_autonomous_player/native_bridge/research/extract_dejure_change_scope_execute_lookup.py",
+      "receipt": "ck3_autonomous_player/native_bridge/research/dejure_change_scope_execute_lookup_1_19_0_6.json",
+      "receipt_sha256": "E4EB1FAFE25474B809E7A0AB290E6F61889A62CE4A5981C2DA3D1B7316B55C66",
+      "finding": "The execute path at 0x2E9F734 passes effect+0x1B0 to 0x2EA1D30, which resolves a tag-0x0C scope value through 0x336AB40 and looks up a matching ID in a global candidate table; unmatched values use a fallback pointer. The preview entry does not directly perform this lookup.",
+      "limit": "The actual War31 scope ID, referent pointer, ownership, helper transitive writes, final operations and signed resources remain unknown. The execute path may mutate game state and cannot be used as a read-only material-terms query.",
+      "checks": "py ck3_autonomous_player/tests/unit/test_dejure_surrender_preview_branch_pairs.py: 3 passed including exact-EXE lookup receipt replay"
     }
   ],
   "checks": [
