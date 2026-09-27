@@ -41,6 +41,8 @@
 
 对增援，上文“有 route/ETA 后扩名册”只是必要条件，不是可以预测未来参战身份的充分条件。[未来路线输入审计](future-reinforcement-trial-input-boundary-2026-09-27.md)确认 assignment 只有 Province，路线读口的接战证明只覆盖一日，当前 CombatID 不保证到达日仍存在或仍是同一 side；到达日还需旧/新 entry 的状态与刷新后的两侧人数缓存。078 已在**实际 join 入口/返回**见到 base/final width `1645/1480 → 2467/2220`，所以较早的“尚无具体战宽值”描述只适用于当时的两份旧回放；首次 side0 出伤器读取的 width 仍未采到。这些差额只支持给定实测参战者的局部算术，不提升未来 `participant-update` 或无条件整场胜率的证据等级。
 
+随后[083 同场独立回放](join-width-production-and-fire.md#083-同一次自然增援的三点实采)取得首次 side0 出伤的实际 `R8D=2220`，故上段“仍未采到”只描述 078 当时的证据状态。[现役战斗策略入口审计](active-combat-strategy-forecast-ingress-audit-2026-09-27.md)又修复一个生产漏口：拟移动军或目标守军已在战斗中时，通用首次接战入口即使看到缓存 v3，也不能把第 0 日模型当作现役续算。当前智能体仍以同帧 battle-control 控制撤退与限时推进；现役胜率的同帧操作数未齐，策略尚未调用 resumed kernel。战前固定参战者估计与上表风险预算继续实际使用，回执继续标示未来日增援、属性和人物风险的未量化边界。
+
 ## 静态验收
 
 ```text

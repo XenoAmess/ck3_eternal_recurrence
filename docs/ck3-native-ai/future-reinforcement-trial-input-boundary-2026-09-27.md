@@ -33,3 +33,7 @@
 4. 先用上述**实采事件**建立只读投影器与离线回归；trial 只接受带来源与完整状态的显式 `participant-update`，在对应日先扩双方 army/entry/counter 名册，再以 event 的刷新后 totals 更新战宽，随后两侧使用同一 final width 出伤。未来 ETA 进入策略时仍为条件场景，逐帧重估并对照实际 join/terminal；不能把条件场景的 trial 分布改名为原版无条件整场胜率。
 
 当前 Steam 离线 UI 新鲜帧门为 RED，079 没有启动 CK3；本页仅静态核验，不报告新的实机成功。相关原始案例、限制与 080 合同见[战宽专题](join-width-production-and-fire.md#080-私有同帧-full-entry-取样合同只设计未启动)及[通用策略接线](general-battle-strategy-forecast-2026-09-26.md)。
+
+## 2026-09-27 后续证据范围更新
+
+上段记述的是本页写成时的 079 门禁，不代表全天都未能实机回放。桌面后来恢复，[独立 083 attempt](join-width-production-and-fire.md#083-同一次自然增援的三点实采)取得同一 CombatID/ArmyID/日期的 join 入口、返回、首次 side0 出伤三点：base/final `1645/1480→2467/2220`，实际出伤入参 `R8D=2220`，collector 与清场回执通过。它闭合**这一次 join 的宽度传递**，但没有补出未来 ETA 或当次 wrapper 同帧 full-entry；上述 `participant-update` 的跨未来日期缺口维持不变。[080 同帧 full-entry 采集器](join-full-entry-collector-static-080.md)已实现并通过聚焦离线测试，尚待独立实机 attempt。
