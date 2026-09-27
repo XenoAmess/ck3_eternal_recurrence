@@ -2790,3 +2790,13 @@ driver, R14 source, or simulator files.
 同一对人物的 `fp2_border_raid` 战争乘 2。R0221 未冻结各动态条件，
 未执行终局，也未读取已存储的 end-date；实际天数和到期日仍为 unknown，
 不能将这一静态方向发布成当前 War31 的完整 surrender terms。
+
+### 2026-09-27 WAR31 领地变更的脚本顺序
+
+[精确原版脚本回执](war31-dejure-title-effect-sequence-2026-09-27.md)还冻结了
+`on_victory` 的四条同级连线：创建 `type=conquest`、`add_claim_on_loss=yes`
+的 `change`；遍历 `target_titles` 保存临时 `target`；在遍历块**之外**
+调用一次 `setup_de_jure_cb(change=scope:change,title=scope:target)`；最后以
+同一 `change` 调用 `resolve_title_and_vassal_change`。R0221 输入中的
+TitleID `2128` 不等于运行时 `scope:target` 已读回；对象内部操作、最终
+holder/liege/vassal 和持久化结果仍为 unknown。
