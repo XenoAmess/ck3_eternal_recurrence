@@ -70,7 +70,8 @@ def _resolved_relation_matches(resolved: Mapping[str, object],
     if resolved.get("status") == "betrothal":
         return relation.get("betrothed_character_id") == candidate
     if resolved.get("status") == "marriage":
-        return candidate in relation.get("spouse_character_ids", [])
+        return (relation.get("primary_spouse_character_id") == candidate
+                or candidate in relation.get("spouse_character_ids", []))
     return False
 
 
@@ -476,7 +477,8 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
             candidate = resolved.get("candidate_character_id")
             matured = (same_heir and resolved.get("status") == "betrothal"
                        and _positive(candidate)
-                       and candidate in relation.get("spouse_character_ids", []))
+                       and (relation.get("primary_spouse_character_id") == candidate
+                            or candidate in relation.get("spouse_character_ids", [])))
             if matured:
                 pid, creation = bridge_process_identity(driver)
                 if (pid, creation) == (resolved.get("post_bridge_pid"),

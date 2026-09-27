@@ -241,6 +241,25 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
             self.assertIsNone(read_family_marriage_ledger(state_dir)["pending"])
 
+    def test_primary_spouse_without_array_entry_matures_betrothal(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            self._resolved_prior_betrothal(state_dir)
+            driver = FakeDriver(state_dir)
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship["primary_spouse_character_id"] = 399
+            driver.current_first_heir_relationship["spouse_character_ids"] = []
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                planned = plan_family_marriage_private(
+                    driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            self.assertEqual(planned["plan"]["selected_step"], ALLIANCE_RESULT_STEP)
+            self.assertEqual(planned["plan"]["family_marriage_resolved"]
+                             ["status"], "marriage")
+            self.assertNotIn("alliance_result",
+                             read_family_marriage_ledger(state_dir)["resolved"])
+            self.assertEqual(driver.calls, ["relationship"])
+
     def test_current_relation_revision_drift_blocks_legal_query(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))
