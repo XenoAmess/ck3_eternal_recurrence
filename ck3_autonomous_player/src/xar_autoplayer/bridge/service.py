@@ -1367,6 +1367,11 @@ class GameplayBridgeService:
                             "current_focus": current_focus,
                             "current_lifestyle_progress": current_progress,
                             "perk_opportunity": perk_observation,
+                            **(
+                                {"actor_traits": current_life["actor_traits"]}
+                                if isinstance(current_life.get("actor_traits"), dict)
+                                else {}
+                            ),
                         },
                     },
                 }
@@ -1483,6 +1488,11 @@ class GameplayBridgeService:
                         "perk_opportunity": self._observe_opening_lifestyle_perks_v1(
                             before=before, focus=focus, revision=revision,
                             formal_query=formal,
+                        ),
+                        **(
+                            {"actor_traits": life["actor_traits"]}
+                            if isinstance(life.get("actor_traits"), dict)
+                            else {}
                         ),
                     },
                 },
