@@ -1,0 +1,55 @@
+{
+  "schema": "ck3.maa87_save_candidate_exclusion.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "identity_sidecar_sha256": "69B906918120294000C8BB821A1AEEFE43BD210FB14610E8EACC1B0CFC1BC210",
+  "script_sha256": {
+    "common/modifiers/01_dlc_ep1_modifiers.txt": "057697FEE06562815C1A5A92D9B8F4DDC889928607DE2274088AB8EEB062BFEA",
+    "events/dlc/ep1/ep1_flavor_events.txt": "CC4CD67B77F9FA7B83E3B7A5534045F0DBFC1E724C53182E19ED7884BAD10924",
+    "common/buildings/00_duchy_capital_buildings.txt": "90F1A5565F8AAFF77B06E51E5CF1F02B2859E002C4BF73349FF2550DBF6A7404"
+  },
+  "frozen_cases": [
+    {
+      "source_day": 11,
+      "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "melted_sha256": "A82FDD3A57B84B8FC5E4A42EBD292013C45FAA5061D89F79D9E7A24E979A01C6",
+      "v3_sha256": "50F1FE7946F846E237AAC2003B98BF540363C133AA8EE93AB69F388E2472E2BE",
+      "owner_character_id": 31549,
+      "owner_culture_id_in_save": 7,
+      "regiment_id": 87,
+      "army_id": 16777221,
+      "target_province_id": 2633,
+      "effective_toughness_raw": 2625000,
+      "ep1_modifier_serialized_count": 0,
+      "blacksmiths_02_building_serialized_count": 0,
+      "blacksmiths_01_positive_control_count": 1,
+      "timed_modifier_positive_control_count": 224,
+      "ep1_key_in_owner_record": false
+    },
+    {
+      "source_day": 21,
+      "source_save_sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A",
+      "melted_sha256": "48F2EA80D7AF0DA5EA4DA3B34E965A481BD2FF201017E35F0F08711503089B61",
+      "v3_sha256": "A8B257EE743B593DBE145ED2D6E152DC7791C092EB0B6C95BE8943B1C23AE1E1",
+      "owner_character_id": 31549,
+      "owner_culture_id_in_save": 7,
+      "regiment_id": 87,
+      "army_id": 16777221,
+      "target_province_id": 2633,
+      "effective_toughness_raw": 2625000,
+      "ep1_modifier_serialized_count": 0,
+      "blacksmiths_02_building_serialized_count": 0,
+      "blacksmiths_01_positive_control_count": 1,
+      "timed_modifier_positive_control_count": 225,
+      "ep1_key_in_owner_record": false
+    }
+  ],
+  "excluded_at_serialized_save_boundary": [
+    "ep1_flavor_2020_both_modifier",
+    "blacksmiths_02 character_culture_modifier +0.05"
+  ],
+  "same_frame_native_modifier_source_proven": false,
+  "fixed_enum_values_observed": false,
+  "effective_type_class_row_observed": false,
+  "army_and_target_contributions_observed": false
+}
