@@ -258,6 +258,12 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
                     "Runtime counter-output capture flag must be bool")
             fields["capture_runtime_counter_output"] = capture_counter_output
             allowed.add("capture_runtime_counter_output")
+        if "capture_runtime_advantage_components" in request:
+            capture_advantage = request["capture_runtime_advantage_components"]
+            require(type(capture_advantage) is bool,
+                    "Runtime advantage-component capture flag must be bool")
+            fields["capture_runtime_advantage_components"] = capture_advantage
+            allowed.add("capture_runtime_advantage_components")
     require(set(request) == allowed,
             "Private phase trace request fields differ from the bounded contract")
     return driver._execute_primitive_step(
