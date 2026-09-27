@@ -1,0 +1,59 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-excerpt.v1",
+  "evidence_id": "WAR-ROBERT-H2743-EXIT-20260928.r0264-h2825-war-options",
+  "related_request": "WAR-ROBERT-H2743-EXIT-20260928",
+  "status": "immutable_read_only_followup_observation",
+  "source": {
+    "round": "R0264",
+    "campaign": "Robert_1066",
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "runtime_source_commit": "adf4993cc67e62ea79ec66bdaef87c8c59963f78",
+    "runtime_dll_sha256": "70D96474053ADE0FE60091118CC6375F83E0ADC0E2192F44B51FC026400E2358",
+    "source_pair_identity_sha256": "B52F34C4011FAB2691F8A5B03EA051C918AEA7BE94C0EB3D0D6A6B5B0C5F02E4",
+    "checkpoint_sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+    "driver_sha256": "B8E50A281AFB9A5DAA7AC1ED55DD68C4305816302B71B14EDF79F1060177D872",
+    "formal_report_sha256": "066B3E4993DF5BA5DED815345403C2C4B87A0FD9A4B75AA79DBA578B73B97473",
+    "operator_receipt_sha256": "52139E74397E2AF266A63C4EBD52266E76C71BD1C67063609BEDE294587BF87F",
+    "driver_command_history_index": 2828,
+    "formal_turn_index": 36,
+    "snapshot_id": "native:40",
+    "public_revision": 41,
+    "native_revision": 40,
+    "history_index": 2825,
+    "date_raw": 53217624
+  },
+  "native_observation": {
+    "command": "query-war-termination-options-16777231",
+    "status": "available",
+    "war_id": 16777231,
+    "player_side": "defender",
+    "player_is_primary_war_leader": true,
+    "primary_opponent_character_id": 30097,
+    "player_relative_war_score": -24,
+    "casus_belli": {
+      "database_index": 17,
+      "canonical_key": "individual_county_de_jure_cb",
+      "targeted_title_ids": [2128],
+      "allows_white_peace": true
+    },
+    "surrender": {
+      "available": true,
+      "native_validator_passed": true,
+      "recipient_response": "would_accept_now",
+      "terms_observable": false
+    },
+    "white_peace": {
+      "available": false,
+      "native_validator_passed": false,
+      "recipient_response": "unavailable"
+    },
+    "victory": {
+      "available": false,
+      "native_validator_passed": false,
+      "recipient_response": "unavailable"
+    }
+  },
+  "unobserved": ["cb_specific_terms", "same_frame_signed_resources", "directed_truce", "policy_risk_comparison"],
+  "boundary": "R0264 ended qualified with WarID 16777231 still active. The native query proves current option legality and recipient response only; it authorizes no surrender or other war termination action, supplies no term value, and does not transfer R0197 one-shot authorization. Original H2743 request and H2743 OneDrive assets remain separately scoped."
+}
