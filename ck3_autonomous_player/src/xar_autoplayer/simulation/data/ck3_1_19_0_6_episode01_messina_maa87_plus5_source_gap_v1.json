@@ -1,0 +1,69 @@
+{
+  "schema": "ck3.maa87_plus5_source_gap.v1",
+  "identity_sidecar_sha256": "69B906918120294000C8BB821A1AEEFE43BD210FB14610E8EACC1B0CFC1BC210",
+  "source_save_type_key": "mubarizun",
+  "base_toughness": 25,
+  "current_effective_toughness_raw": 2625000,
+  "q100000_arithmetic_witness": "2500000*105000/100000=2625000",
+  "frozen_v3_cases": [
+    {
+      "source_day": 11,
+      "v3_sha256": "50F1FE7946F846E237AAC2003B98BF540363C133AA8EE93AB69F388E2472E2BE",
+      "army_id": 16777221,
+      "owner_character_id": 31549,
+      "regiment_id": 87,
+      "target_province_id": 2633,
+      "effective_toughness_raw": 2625000,
+      "modifier_components_in_regiment_stats": false
+    },
+    {
+      "source_day": 21,
+      "v3_sha256": "A8B257EE743B593DBE145ED2D6E152DC7791C092EB0B6C95BE8943B1C23AE1E1",
+      "army_id": 16777221,
+      "owner_character_id": 31549,
+      "regiment_id": 87,
+      "target_province_id": 2633,
+      "effective_toughness_raw": 2625000,
+      "modifier_components_in_regiment_stats": false
+    }
+  ],
+  "script_candidates_not_proven_active": [
+    {
+      "source_class": "generic_army",
+      "relative_path": "common/modifiers/01_dlc_ep1_modifiers.txt",
+      "file_sha256": "057697FEE06562815C1A5A92D9B8F4DDC889928607DE2274088AB8EEB062BFEA",
+      "modifier_key": "ep1_flavor_2020_both_modifier",
+      "literal": "army_toughness_mult = 0.05",
+      "line": 302,
+      "modifier_line": 305
+    },
+    {
+      "source_class": "heavy_infantry",
+      "relative_path": "common/buildings/00_duchy_capital_buildings.txt",
+      "file_sha256": "90F1A5565F8AAFF77B06E51E5CF1F02B2859E002C4BF73349FF2550DBF6A7404",
+      "gate": "better_blacksmith_buildings",
+      "literal": "heavy_infantry_toughness_mult = 0.05",
+      "line": 2058,
+      "modifier_line": 2061
+    }
+  ],
+  "next_probe_rvas": {
+    "outer_regiment_and_target_identity": "0x239CAE0",
+    "maa_aggregator_with_regiment_pointer": "0x2C8F1A0",
+    "class_modifier_reader": "0x2C8D6A0",
+    "native_modifier_value_helper": "0x2940E80",
+    "toughness_enum_operands": [
+      "0x2C8D8E0",
+      "0x2C8D902",
+      "0x2C8D92B"
+    ],
+    "class_dynamic_toughness_enum_operands": [
+      "0x2C8D94D",
+      "0x2C8D97E"
+    ],
+    "pre_apply_modifier_vector": "0x2C8F7B1",
+    "fixed_point_apply": "0x2C8F7B9",
+    "target_province_vector": "0x2C8F8FF"
+  },
+  "same_frame_modifier_source_proven": false
+}
