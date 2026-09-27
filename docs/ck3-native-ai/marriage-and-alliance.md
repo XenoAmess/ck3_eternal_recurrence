@@ -1008,3 +1008,9 @@ R0240 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance
 R0240 同一正式报告第 4 turn 的五行诊断，对被选中的候选 38710／接收方 32266 给出 `player 29829 → recipient 32266` 的原生 `already_allied=false`、`both_have_realm_data=true`、`would_attempt_if_accepted=true`；第 11 turn 的独立结果是双方当前 `allied=true`。因此报告原件已有**玩家到接收方这一方向**从 false 到 true 的先后观测；提案前的反方向状态没有读取，经过的时间和其他状态变化也使它不能单独证明联盟由此提案创建。此前正式 pending 账本只持久化接收方 ID，丢掉了这一选中行的前态，冷恢复后无法在结果消费者里作这个有界比较。
 
 C78 只从已核最终合法、同帧的被选中五行结果取 `first_character_id=player`、`second_character_id=recipient` 的 `already_allied`，写入 pending 的 `preproposal_played_has_recipient_alliance`；物质婚配结果成立并读到现有双向联盟原生回执后，durable resolved 记录前态及 `played_to_recipient_alliance_transition`。旧账本或无该 pair 的成人婚配保留 `unknown`，不从 `would_attempt_if_accepted` 推导实际结盟，不补猜反方向前态，也不把时间上的变化称为独占因果。原生决策树、typed 动作与公开协议不变。本包没有新 CK3 轮次、动作、日期或冷恢复证据；新增字段当前只达到源码与聚焦测试阶段。
+
+### C92：订婚自然转婚姻时的冷恢复（源码阶段）
+
+h133 原始 Robert 派生配对的[家庭账本](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h133-c35-20260927/source-pair-h133/first-heir-marriage-formal-v1.json) SHA-256 `0ECC7B580B90DC850AD91CCEE2EEA427162ED7537B127ABD47737CBC7DDBCF0E` 记录首继承人 38822／候选 38710 的已生效 `betrothal` 和当前双向 `allied`；没有待发送提案。它**尚未**观察到成人婚姻。exact-build 原生双边读回和私有 cold transport 均可在新 PID 返回 `marriage`，但旧正式消费者要求冷读状态与账本旧 `betrothal` 完全相等，因而会把合法的双边 `betrothal → marriage` 变化报作 `cold restore lost the earlier bilateral marriage result`。聚焦测试在旧源码确实复现了该异常。
+
+新消费者仅接受这一有方向的物质关系提升：新 PID 先由原生双边关系核实 `marriage`，再把 resolved 状态更新为婚姻、记录 `cold_material_transition=betrothal_to_marriage`，清掉旧订婚阶段的联盟读数，并沿已有路径在当前 PID 重读玩家／接收方双向实际联盟。结果缺失、关系倒退或角色不匹配仍保留原 RED；旧提案不重发。该实现尚无 h133 成年后的实机阳性或新 PID 配对回执，故只增加源码层恢复能力，不把 h133 的订婚记作已经成婚，也不扩大家庭公开资格。

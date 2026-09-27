@@ -516,15 +516,25 @@ def query_family_marriage_result_private(driver: object, *,
         raise ValueError("first-heir marriage pending identity changed")
     status = result["status"]
     if recheck:
-        if status != prior["status"] or result.get("material_result") is not True:
+        matured = prior["status"] == "betrothal" and status == "marriage"
+        if (status != prior["status"] and not matured
+                or result.get("material_result") is not True):
             _write(state_dir, {**ledger, "resolved": {
                 **prior, "cold_recovery_verified": False}})
             raise ValueError("cold restore lost the earlier bilateral marriage result")
         pid, creation = bridge_process_identity(driver)
-        _write(state_dir, {**ledger, "resolved": {
-            **prior, "post_bridge_pid": pid,
-            "post_bridge_creation_date": creation,
-            "cold_recovery_verified": True}})
+        verified = {**prior, "status": status,
+                    "post_bridge_pid": pid,
+                    "post_bridge_creation_date": creation,
+                    "cold_recovery_verified": True}
+        if matured:
+            # A bilateral betrothal may become a bilateral marriage while the
+            # game advances. The previous alliance read belongs to that older
+            # relation and must be observed again in this PID.
+            verified.pop("alliance_result", None)
+            verified["cold_material_transition"] = "betrothal_to_marriage"
+            verified["cold_material_native_revision"] = result["post_native_revision"]
+        _write(state_dir, {**ledger, "resolved": verified})
         return result
     if status in {"marriage", "betrothal", "refused", "invalidated"}:
         pid, creation = bridge_process_identity(driver)

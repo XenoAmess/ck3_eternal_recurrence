@@ -806,6 +806,53 @@ class FamilyConsumerTest(unittest.TestCase):
                              ["played_to_recipient_alliance_transition"],
                              "observed_false_to_true")
 
+    def test_cold_betrothal_maturing_to_marriage_rechecks_alliance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            baseline = {"plan": {"selected_step": "life-advance"}}
+            driver.query_observed_first_heir_marriage_result_private_v1 = (
+                lambda *, pending: {"status": "betrothal", "material_result": True,
+                                    "post_native_revision": 8})
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(55, "created")):
+                chosen = plan_family_marriage_private(driver, baseline, scene())
+                pending = submit_family_marriage_private(
+                    driver, plan=chosen["plan"], snapshot=scene())
+                query_family_marriage_result_private(
+                    driver, pending=pending, cold=False)
+                alliance_plan = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 8})
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=alliance_plan["plan"]["family_marriage_resolved"])
+            with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
+                       return_value=(99, "new-created")):
+                recovery = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 1})
+                self.assertEqual(recovery["plan"]["selected_step"], RESULT_STEP)
+                driver.query_observed_first_heir_marriage_cold_result_private_v1 = (
+                    lambda *, pending: {"status": "marriage", "material_result": True,
+                                        "post_native_revision": 1})
+                query_family_marriage_result_private(
+                    driver, pending=recovery["plan"]["family_marriage_pending"],
+                    cold=True)
+                alliance_plan = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 1})
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 ALLIANCE_RESULT_STEP)
+                self.assertEqual(alliance_plan["plan"]["family_marriage_resolved"]
+                                 ["status"], "marriage")
+                self.assertNotIn("alliance_result",
+                                 alliance_plan["plan"]["family_marriage_resolved"])
+                query_family_marriage_alliance_result_private(
+                    driver, resolved=alliance_plan["plan"]["family_marriage_resolved"])
+                consumed = plan_family_marriage_private(
+                    driver, baseline, {**scene(), "native_revision": 1})
+            resolved = consumed["plan"]["family_marriage_result_consumed"]
+            self.assertEqual(resolved["status"], "marriage")
+            self.assertEqual(resolved["alliance_result"]["relationship_status"],
+                             "marriage")
+            self.assertEqual(driver.calls.count("submit"), 1)
+
     def test_pending_checkpoint_needs_durable_pair_and_game_save(self):
         pending = {"submission_state": "receipt_pending", "status": "receipt_pending",
                    "material_result": False, "episode_run_id": "robert-test",
