@@ -260,3 +260,25 @@ WarID、帧日期与调用序号；于 `0x2E9F746` 取得 setup 解析后的 cha
 同一动作链；只观测内存，不修改值、不为取得数据单独提交投降。
 这可以判定 resolve 实际读取的 type 及 `0x17` 分支条件，仍不能单独
 证明 title/holder/liege/vassal 落盘、资源变动或停战到期日。
+
+[离线双采样验收器](../../ck3_autonomous_player/native_bridge/research/validate_war31_change_type_trace.py)
+已准备好，待未来独立授权的动作自然经过上述两处时消费采集器生成的
+JSON；它**不会连接、启动或操作 CK3**。输入 schema 为
+`xar.ck3.war31.change_type_two_point_trace.v1`，顶层包含本请求 ID、
+精确 EXE SHA-256 和恰好两条按时间排列的 `samples`。每条必须含
+`site_rva`、`instruction_bytes`、`site_phase`、
+`capture_timing=before_instruction`、`rax_change_pointer`、
+`change_type_dword`、`memory_read_status=ok`、`event_ordinal`，
+以及 `process_instance_id`、`thread_id`、`action_attempt_id`、
+`effect_invocation_id`、`frame_token`、WarID、episode、`date_raw`、
+checkpoint/DLL/raw-capture SHA-256。第一处必须为
+`0x2E9F746` 的 `mov rsi, rax` **执行前**，第二处必须为
+`0x2EC4410` 的 `cmp [rax+0x268], 0x17` **执行前**；两处均以
+`RAX` 为 change 指针读取原始 dword。缺任一点、读失败、指针不同、
+动作/进程/线程/帧/源哈希不同、顺序倒置或指令字节不符均拒绝。
+
+用法：`py ck3_autonomous_player/native_bridge/research/validate_war31_change_type_trace.py <capture.json>`。
+返回的 `STRUCTURAL_PAIR_ONLY` 只表示**提交的数据**满足配对门禁并列出
+resolve 比较值；验收器无法鉴定原始采集真伪、动作授权或实际分支已经
+执行，更不能把比较结果写成投降条款。采集器及正式源报告必须另行
+绑定实际运行，不能用单元测试的合成输入充当实机证据。
