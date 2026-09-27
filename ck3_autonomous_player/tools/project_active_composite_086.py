@@ -84,6 +84,28 @@ def project(attempt_dir: Path) -> dict[str, object]:
     assert battle["defender"]["selected_commander_character_id"] in {
         row["character_id"] for row in commander_candidates
     }
+    battle_regiments = {
+        row["regiment_id"]: (row["native_carmy_id"], row["current_fighting_raw"])
+        for role in ("attacker", "defender")
+        for bucket in ("levy_entries", "men_at_arms_entries")
+        for row in battle[role][bucket]
+    }
+    v3_regiments = {
+        row["regiment_id"]: (army["native_carmy_id"], row)
+        for army in base["armies"] for row in army["regiments"]
+    }
+    assert len(battle_regiments) == len(v3_regiments) == 51
+    assert battle_regiments.keys() == v3_regiments.keys()
+    assert all(battle_regiments[regiment_id][0] == v3_regiments[regiment_id][0]
+               for regiment_id in battle_regiments)
+    different_current_ids = sorted(
+        regiment_id for regiment_id, (_, battle_current_raw) in battle_regiments.items()
+        if battle_current_raw != v3_regiments[regiment_id][1]["current_soldiers"] * 100000
+    )
+    assert len(different_current_ids) == 51
+    assert battle_regiments[51][1] == 17579130
+    assert v3_regiments[51][1]["current_soldiers"] == 193
+    assert v3_regiments[51][1]["counter"]["current_chunk_raw"] == 193000
     return {
         "schema": "ck3.native_active_control_precontact_v3_pair.v1",
         "source": {"attempt": 86, "sha256": SOURCE_SHA256},
@@ -125,6 +147,15 @@ def project(attempt_dir: Path) -> dict[str, object]:
             "status": receipt["status"],
             "reason": receipt["unavailable_reason"],
             "missing_required_domains": receipt["missing_required_domains"],
+        },
+        "regiment_crosswalk": {
+            "matched_regiment_and_army_ids": 51,
+            "current_state_differences": len(different_current_ids),
+            "example_regiment_51": {
+                "battle_current_raw": battle_regiments[51][1],
+                "v3_army_current_soldiers": v3_regiments[51][1]["current_soldiers"],
+                "v3_precontact_counter_chunk_raw": v3_regiments[51][1]["counter"]["current_chunk_raw"],
+            },
         },
         "cleanup_ok": True,
     }

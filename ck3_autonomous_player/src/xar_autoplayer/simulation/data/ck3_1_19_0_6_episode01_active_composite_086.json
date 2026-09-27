@@ -93,5 +93,14 @@
       "battle_knight_participation_and_dynamic_entry_transitions"
     ]
   },
+  "regiment_crosswalk": {
+    "matched_regiment_and_army_ids": 51,
+    "current_state_differences": 51,
+    "example_regiment_51": {
+      "battle_current_raw": 17579130,
+      "v3_army_current_soldiers": 193,
+      "v3_precontact_counter_chunk_raw": 193000
+    }
+  },
   "cleanup_ok": true
 }

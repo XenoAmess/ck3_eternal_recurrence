@@ -42,6 +42,10 @@
 
 v3 列出了同一暂停帧各军将领及**假想接战上下文**的 roll bounds；实际 battle-control 所选将领 34320/29829 确在候选表中。这只是候选交叉匹配，尚未证明假想上下文界限与真实战斗下一次 roll bounds 的原生求值路径相同。两次查询同公开 revision 也不等于一次 native application-main 原子联合采样。故本例支持把已有 v3 作为未来 typed 生产者的候选来源逐项验证，不能直接构造 `ActiveMainResumeState` 或解除现役策略 guard。[086 精确投影器](../../ck3_autonomous_player/tools/project_active_composite_086.py)以五份原始 SHA、同帧身份、真实/假想战宽及清场重建[机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_active_composite_086.json)。
 
+同一两份回执的逐团交叉核算又给出反制输入的具体边界：battle-control 的 51 条 entry 与 v3 的 51 个 RegimentID 和所属 CArmyID **51/51 完全匹配**，但 51 条当前兵力**51/51 不等于** v3 军团 `current_soldiers × 100000`。例如 RegimentID `51` 的实际 battle entry current 是 `17579130` Q100000，即 175.79130 人；v3 观测的军团 current 为 193 人，并据其假定首次接战算出反制 chunk `193000` Q100000。把这个 chunk 原样塞给现役战斗会用错权重。两者同 ID 只证明有条件 crosswalk，可以作为在**同一次原生战斗 sample**里读取实际 entry current、class/stack/target 后重新求反制的起点；它不自动证明 class 指针和目标修正与真实下一次战斗求值相同。机器向量已冻结匹配数、差异数和 51 号实例。
+
+代码路径也与这项观察一致：`native_bridge/src/ck3_11906.cpp` 的 `BuildCounterSideEntries` 在 v3 假定接战侧明确把 `regiment.current_soldiers * 100000` 写入临时反制 entry；智能体已有的 `FrozenCombatSimulationInput.dynamic_counter_retention_by_class_raw` 则以传入的 `CombatRegimentState.current_raw` 重算 depleted chunk。后者为将来真正的现役 entry 初态留下了正确的计算接口，但还缺同钩子冻结的 class/stack/context 修正与原版下一次反制调用对拍；本次不能只换人数就把该 domain 标成完整。
+
 ## 本轮聚焦验收
 
 在隔离工作区 `D:/wai`，显式使用主工作区 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`；相对 venv 不存在。解释器与依赖 probe 为 Python `3.14.7`、pytest `9.1.1`，`PYTHONPATH=D:/wai/ck3_autonomous_player/src` 指向本 worktree：`test_general_battle_strategy.py`、`test_combat_input_adapter.py`、`test_general_battle_forecast.py` 共 **19 passed、11 subtests passed**；`git diff --check` 通过。测试使用现有原版 v2 fixture 证明战前估计仍可运行，并对“选中军队已有 ongoing CombatID”与“该观察字段缺失”分别断言决策入口拒绝。本检查不构成 active-combat 原生读口或实机验收。
