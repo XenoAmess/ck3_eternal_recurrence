@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T12:36:48Z",
+  "updated_at_utc": "2026-09-27T13:06:14Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -143,6 +143,17 @@
       "contract": "Future source-provided trace must contain exactly two ordered pre-instruction memory samples: setup 0x2E9F746 and resolve compare 0x2EC4410, both reading RAX change pointer and raw +0x268 dword. Exact EXE/opcodes, War31 episode, same process/thread/action/effect invocation/frame/date/checkpoint/DLL/raw-capture hash, same nonzero pointer, successful memory reads and increasing event order are required. Output reports only the submitted resolve dword and whether it equals 0x17.",
       "limit": "This is a post-capture offline structural validator, not a collector and not actual War31 two-point evidence. It cannot authenticate source events or authorization, prove the compare's taken branch, establish persisted terms, or authorize a surrender. No CK3 process was launched, hooked or queried by this delivery; no gameplay action was submitted.",
       "checks": "test_validate_war31_change_type_trace.py: 4 passed on normal Python and 4 passed with -O; tests bind both opcode sites to the exact static receipt and reject single-point, cross-action/frame/capture, pointer, timing, opcode and memory-read mismatches. All trace inputs in these tests are synthetic."
+    },
+    {
+      "date_utc": "2026-09-27T13:06:14Z",
+      "master_commit": "f9edcfcbe",
+      "exact_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "sampler": "ck3_autonomous_player/native_bridge/research/war31_two_point_hwprobe.cpp",
+      "driver": "ck3_autonomous_player/native_bridge/research/run_war31_two_point_hwprobe.py",
+      "offline_assembler": "ck3_autonomous_player/native_bridge/research/assemble_war31_hwprobe_trace.py",
+      "contract": "An experimental Win32 x64 hardware-execute-breakpoint sampler is prepared for a separately authorized, coordinated new action attempt. It reads RAX and raw [RAX+0x268] before the exact setup 0x2E9F746 and resolve 0x2EC4410 instructions, writes append-only start/sample/terminal records, and submits no gameplay action. The driver requires exact EXE and asset hashes, an external single-action authorization receipt, explicit PID/process creation identity, in-memory opcode anchors, and a fresh attempt before capture --arm. The offline assembler demands two ordered hits with same process, thread and pointer plus proven DR-register cleanup and debugger detach, and reports STRUCTURAL_PAIR_ONLY.",
+      "limit": "This is tool and fixture delivery only. No CK3 process was attached or launched, no War31 real two-point sample exists, and no surrender was submitted. Debug attachment changes target thread execution context and timing; zero perturbation is not claimed. The probe does not authenticate externally asserted WarID/action/frame/effect invocation or authorization source, and neither a matching type dword nor a fixture pass proves taken branch, persisted title/liege/vassal/resource changes or truce expiry. Timeout/exception cleanup is best-effort and explicitly RED if not proven; a hung sampler requires managed recovery.",
+      "checks": "MSVC x64 Release compilation; production --self-test passed. Disposable non-CK3 fixture-007 observed the two sites, same pointer and type 0x17; fixture-008 timed out, recorded DR clear/detach and the child subsequently executed normally. test_assemble_war31_hwprobe_trace.py plus test_run_war31_two_point_hwprobe.py: 6 passed on normal Python and 6 passed with -O. See docs/ck3-native-ai/war31-two-point-hardware-probe-2026-09-27.md; no live War31 evidence is asserted."
     }
   ],
   "checks": [
@@ -159,5 +170,5 @@
     "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
     "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
   ],
-  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: bounded direct writes through 0x24D0270 and 0xE0DBD0 descriptors do not reach change+0x268, and 0x2E9FF30 has no direct change-scope access via its effect base. Continue resolving transitive/global aliases, vector buffers and indirect callbacks. If a separately authorized future action naturally executes this chain, collect actual same-invocation setup/resolve pre-instruction +0x268 reads, then use the delivered offline validator and separately authenticate its capture; none have been collected here. Thereafter reduce 0x24CC9A0 to concrete title/holder/liege/vassal writes and find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview or submit surrender on this evidence."
+  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: coordinate a separately authorized new War31 action attempt with exact checkpoint, driver/sidecar, DLL, EXE, PID identity and external action receipt; only then consider experimental two-point capture, with managed cleanup and independent action/frame authentication. None has been collected here. Continue reducing transitive/global aliases and 0x24CC9A0 to concrete title/holder/liege/vassal writes; find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview or submit surrender solely on this evidence."
 }
