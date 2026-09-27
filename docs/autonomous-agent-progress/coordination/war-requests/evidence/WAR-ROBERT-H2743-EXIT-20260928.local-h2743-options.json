@@ -80,6 +80,25 @@
     "enemy_army_83886484": "Moving toward province 2628; soldiers unavailable in this war row",
     "war_objective_province_2610": "Not occupied; fort level 3, garrison 297, no active siege"
   },
+  "persisted_save_baseline": {
+    "melted_save_sha256": "1F12D756D3643CFE7AC7D4A13ED1F39A95EBC508633B63415D6706C1BA71F233",
+    "projection_sha256": "EB8A8737FCB67DCE700474E65D6063BAAD7334A45483263E0F3F22CCA8085FD3",
+    "date": "1075.1.12",
+    "target_county": "c_foggia",
+    "target_county_title_id": 2128,
+    "target_holder_character_id": 33435,
+    "target_de_facto_liege_title_id": 2141,
+    "target_de_facto_liege_title_holder_character_id": 29829,
+    "direct_child_titles": [
+      {"title_id": 2129, "key": "b_lucera", "holder_character_id": 33435},
+      {"title_id": 2130, "key": "b_larino", "holder_character_id": null},
+      {"title_id": 2131, "key": "b_vieste", "holder_character_id": 43703}
+    ],
+    "robert_resources_raw_scale_100000": {"gold": 111861020, "piety": 40832500, "prestige_currency": 253090010},
+    "landolf_resources_raw_scale_100000": {"gold": 22861397, "piety": 34640000, "prestige_currency": 85874500},
+    "active_war_pair_without_truce_slot": true,
+    "same_native_frame_binding": false
+  },
   "audit": {
     "same_snapshot_id_and_date_before_after_query": true,
     "gameplay_action_submitted": false,

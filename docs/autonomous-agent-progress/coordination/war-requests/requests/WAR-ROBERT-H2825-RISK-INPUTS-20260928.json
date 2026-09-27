@@ -1,0 +1,34 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-H2825-RISK-INPUTS-20260928",
+  "created_at_utc": "2026-09-27T18:08:27Z",
+  "producer_role": "war_maintainer",
+  "requested_owner_role": "nonwar_operator",
+  "assignee": null,
+  "related_request": "WAR-ROBERT-H2743-EXIT-20260928",
+  "priority": "high_after_the_existing_h2743_option_read",
+  "scope": "Small read-only current-frame military/risk evidence needed to compare bounded continuation with available surrender on the latest formal Robert checkpoint. This request does not ask for a gameplay action, new asset transfer, or another surrender.",
+  "known_anchor": {
+    "source_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.r0264-h2825-war-options.json",
+    "source_evidence_sha256": "E25ED0552284EE80773AA388E2391D2AA5BFD5959468E86B62E26F6B514C810F",
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "actor_character_id": 29829,
+    "war_id": 16777231,
+    "history_index": 2825,
+    "date_raw": 53217624,
+    "snapshot_id": "native:40",
+    "public_revision": 41,
+    "native_revision": 40,
+    "player_relative_war_score": -24,
+    "observed_termination_options": "Surrender available and recipient accepts; white peace and victory unavailable; CB-specific terms still unavailable."
+  },
+  "requested_delivery": [
+    "First extract only from the already frozen R0264 formal report and paired driver: the last same-frame active-war row including objective/occupation/siege states, player and enemy army IDs, owners, provinces, move targets, route/contact horizons, observable soldier/strength fields, and score components. Bind every row to date, snapshot ID, native/public revision, episode and WarID. Mark absent fields null rather than deriving them from another frame.",
+    "Include already observed current actor/opponent treasury, prestige, income and war-cost inputs only where the R0264 same frame or exact h2825 saved state actually contains them; label save-level fields separately from native-frame fields. Do not submit gameplay actions to collect them.",
+    "If the frozen report cannot supply key military strengths or material terms, return a compact missing-field list and exact R0264 source file hashes. A future read-only replay may be proposed separately; no new CK3 launch is required by this request.",
+    "Commit a compact Git evidence excerpt with its SHA and link it in a response. Keep the 77+ MB save, driver, sidecar and DLL outside Git and do not start an unrelated OneDrive sync."
+  ],
+  "why_needed": "Exact H2743 local read proves only option legality: defender score -12 with an enemy siege one day from completion and all army soldier counts unavailable in the war row. Fifteen days later h2825 score is -24, but the Git excerpt contains no same-frame army/route/siege resource vector. The historical R0197 surrender gives a concrete loss scenario, not a current counterfactual. A bounded continue-versus-exit policy needs current risk inputs before ranking.",
+  "gameplay_action_authorized": false,
+  "surrender_authorization": "The earlier R0197 one-shot user authorization was consumed and is not transferable to h2743 or h2825."
+}

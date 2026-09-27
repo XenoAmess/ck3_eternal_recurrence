@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T18:05:00Z",
+  "updated_at_utc": "2026-09-27T18:11:21Z",
   "source_pr": null,
   "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
   "delivery_route": "direct rebase-only master push",
@@ -48,13 +48,14 @@
   "live_evidence": {
     "document": "docs/ck3-native-ai/h2743-native-exit-readonly-2026-09-28.md",
     "git_excerpt": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.local-h2743-options.json",
-    "git_excerpt_sha256": "E385EDFF3A1BCF164C02CE96A1AEDD4A8BF4439017CA56B6A6B8B6C658E5B166",
+    "git_excerpt_sha256": "760ED28CC878690939055495CC81C32D0D3D43EB64AF180C19BC0CB03012442F",
     "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-02/live-readonly-01",
     "result_sha256": "DE3854F03B879770188FF714123EFFE30443E08D0AB9E2CD6DDC0657DAE162AF",
     "query_payload_sha256": "D7C6A50F5120944B4C53C42B52D0C64734BE9B169235F1C5764B3AABEA0DD2EB",
     "same_frame": "native:3 before/after, date_raw 53217264, episode native-29829-2bc2d599f7f9, public/native revision 4/3, connection generation 1, WarID 16777231, Robert primary defender, score -12",
     "options": "Surrender available and recipient would accept now; white peace and victory unavailable despite CB allowing white peace in principle. All three CB-specific material terms unavailable.",
     "score_components": "Attacker-relative occupation +39, ticking -27, battles 0, imprisonment 0; attacker total +12 / defender -12.",
+    "persisted_save_baseline": "Exact H2743 source-save projection SHA EB8A8737FCB67DCE700474E65D6063BAAD7334A45483263E0F3F22CCA8085FD3: c_foggia title 2128 remains held by Robert 33435 under Robert 29829's de-facto title 2141; pair has active WarID and no truce slot. Character gold/piety/prestige currency baselines are in the Git excerpt. No post-surrender delta is implied.",
     "no_action_and_cleanup": "No termination or other gameplay action submitted, no date change, source/prepared save SHA unchanged, managed session exit code 0 and CK3 PIDs empty. Attempt-01's 360-second readiness timeout was preserved separately."
   },
   "limitations": [
@@ -62,5 +63,5 @@
     "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war.",
     "H2743 and later H2825 both show white peace unavailable, but neither quantifies current surrender terms or ranks continue-war risk. The historical R0197 one-shot result is not a same-frame counterfactual for either checkpoint."
   ],
-  "next_step": "Research the exact CB material title/vassal/resource/truce consequences and a bounded continue-war risk comparison using current-frame inputs; ask the producing machine for one narrowly scoped current h2825 risk/material read if needed. Do not reuse the R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
+  "next_step": "Research the exact CB material title/vassal/resource/truce consequences and a bounded continue-war risk comparison using current-frame inputs. WAR-ROBERT-H2825-RISK-INPUTS-20260928 requests only the small existing R0264 risk excerpt from the producing machine; no new action. Do not reuse the R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
 }
