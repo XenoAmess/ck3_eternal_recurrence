@@ -46,6 +46,12 @@ def extract(exe: Path) -> dict[str, object]:
             raise ValueError(f"call at 0x{source_rva:X} changed target")
         return instruction.hex().upper()
 
+    def exact_bytes(source_rva: int, expected: str) -> str:
+        frozen = bytes.fromhex(expected)
+        if at(source_rva, len(frozen)) != frozen:
+            raise ValueError(f"instruction sequence at 0x{source_rva:X} changed")
+        return frozen.hex().upper()
+
     name_offset = data.find(SETUP_RTTI_NAME)
     if name_offset < 16 or data.find(SETUP_RTTI_NAME, name_offset + 1) >= 0:
         raise ValueError("setup-de-jure RTTI identity is absent or ambiguous")
@@ -93,6 +99,29 @@ def extract(exe: Path) -> dict[str, object]:
             "preview_helper_call_rva": "0x2E9FBC8",
             "preview_helper_rva": "0x2E9FF30",
             "preview_helper_call_bytes": direct_call(0x2E9FBC8, 0x2E9FF30),
+            "change_input_resolution": {
+                "input_lea_rva": "0x2E9FB8A",
+                "input_lea_bytes": exact_bytes(0x2E9FB8A, "48 8D 8B 60 02 00 00"),
+                "input_offset_from_effect": "0x260",
+                "resolver_call_rva": "0x2E9FB98",
+                "resolver_rva": "0x995CB0",
+                "resolver_call_bytes": direct_call(0x2E9FB98, 0x995CB0),
+                "helper_virtual_dispatch_rva": "0x2E9FFF0",
+                "helper_virtual_dispatch_bytes": exact_bytes(
+                    0x2E9FFF0, "48 8D 8B 60 02 00 00 48 8B 01 FF 50 30"
+                ),
+                "helper_virtual_slot_offset": "0x30",
+                "true_branch_call_rva": "0x2EA0012",
+                "true_branch_target_rva": "0x28B21E0",
+                "true_branch_call_bytes": direct_call(0x2EA0012, 0x28B21E0),
+                "false_branch_call_rva": "0x2EA001C",
+                "false_branch_target_rva": "0x28B1EB0",
+                "false_branch_call_bytes": direct_call(0x2EA001C, 0x28B1EB0),
+                "helper_output_count_write_rva": "0x2EA0021",
+                "helper_output_count_write_bytes": exact_bytes(
+                    0x2EA0021, "48 8B 8D 68 12 00 00 8B 85 DC 01 00 00 89 01"
+                ),
+            },
             "preview_output_helper_call_rva": "0x2E9FBE8",
             "preview_output_helper_rva": "0x2E9F190",
             "preview_output_helper_call_bytes": direct_call(0x2E9FBE8, 0x2E9F190),
@@ -111,7 +140,7 @@ def extract(exe: Path) -> dict[str, object]:
             "preview_safe_to_call": False,
             "final_title_holder_liege_vassal_operations_observed": False,
             "signed_resource_deltas_observed": False,
-            "next_locator": "Prove ownership and effects of setup preview's +0x260 change object and shared helper 0x2E9FF30; then locate a non-mutating producer of complete resolved operations and signed resource deltas.",
+            "next_locator": "The preview's +0x260 input is passed to 0x995CB0, then its vtable slot +0x30 is called inside 0x2E9FF30; prove the concrete runtime type, ownership and side effects of that indirect dispatch before any live invocation. Separately locate a non-mutating producer of complete resolved operations and signed resource deltas.",
         },
     }
 
