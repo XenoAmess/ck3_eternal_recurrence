@@ -173,10 +173,14 @@ Result BuildPlayerLifestyleStockFocusPreconditionV1(
       progress.used_perk_points < 0 ||
       source.owned_perk_count >
           game::kPlayerLifestyleWindowMaximumPerksV1 ||
-      PlayerLifestyleWindowStableKeyViewV1(focus.target_key) !=
-          kStockFocusLegalityTargetV1 ||
-      PlayerLifestyleWindowStableKeyViewV1(focus.lifestyle_key) !=
-          kStockFocusLegalityLifestyleV1) {
+      !((PlayerLifestyleWindowStableKeyViewV1(focus.target_key) ==
+              kStockFocusLegalityTargetV1 &&
+          PlayerLifestyleWindowStableKeyViewV1(focus.lifestyle_key) ==
+              kStockFocusLegalityLifestyleV1) ||
+        (PlayerLifestyleWindowStableKeyViewV1(focus.target_key) ==
+              kMartialAuthorityFocusV1 &&
+          PlayerLifestyleWindowStableKeyViewV1(focus.lifestyle_key) ==
+              kMartialLifestyleV1))) {
     return Result::target_progress_unavailable;
   }
   auto &candidates = output.candidates;

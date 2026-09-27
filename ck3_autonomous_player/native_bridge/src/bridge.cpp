@@ -362,6 +362,7 @@ static std::string g_player_lifestyle_last_query_episode_v1{};
 static std::uint64_t g_player_lifestyle_last_query_revision_v1 = 0;
 static std::int32_t g_player_lifestyle_last_query_player_v1 = -1;
 static bool g_player_lifestyle_last_query_stock_focus_v1 = false;
+static std::string g_player_lifestyle_last_query_focus_target_v1{};
 static bool g_player_lifestyle_action_may_have_submitted_v1 = false;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
@@ -5473,7 +5474,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
         kind != (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1
                      ? "focus" : "perk") ||
         (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1 &&
-         target != kStockFocusLegalityTargetV1) ||
+         target != kStockFocusLegalityTargetV1 &&
+         target != kMartialAuthorityFocusV1) ||
         (step == kPlayerLifestyleFormalPrivateSubmitStepV1 &&
          !PlayerLifestylePolicyStockPerkTargetAdmittedV1(target)) ||
         expected_native != revision ||
@@ -5483,6 +5485,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
         g_player_lifestyle_last_query_revision_v1 != revision ||
         g_player_lifestyle_last_query_stock_focus_v1 !=
             (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1) ||
+        (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1 &&
+         g_player_lifestyle_last_query_focus_target_v1 != target) ||
         g_player_lifestyle_last_query_episode_v1 != episode_run_id ||
         g_player_lifestyle_last_query_player_v1 !=
             published.played_character_id) {
@@ -5596,6 +5600,7 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
     g_player_lifestyle_pending_ack_v1 = context->pending_ack;
     g_player_lifestyle_last_query_revision_v1 = 0;
     g_player_lifestyle_last_query_stock_focus_v1 = false;
+    g_player_lifestyle_last_query_focus_target_v1.clear();
   }
   std::string response =
       stable ? PlayerLifestyleFormalPrivateResultFrame(
@@ -5605,7 +5610,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                    "private_lifestyle_executor_or_completion_state_red");
   if (stable && context->completed) {
     if (mode == PlayerLifestyleFormalWireModeV1::query ||
-        (mode == PlayerLifestyleFormalWireModeV1::query_focus_only &&
+        ((mode == PlayerLifestyleFormalWireModeV1::query_focus_only ||
+          mode == PlayerLifestyleFormalWireModeV1::query_martial_focus_only) &&
          context->stock_focus_result.status ==
              StockFocusLegalityStatusV1::observed_native_legal &&
          context->stock_focus_result.target_progress.available)) {
@@ -5614,7 +5620,13 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
       g_player_lifestyle_last_query_player_v1 =
           published.played_character_id;
       g_player_lifestyle_last_query_stock_focus_v1 =
-          mode == PlayerLifestyleFormalWireModeV1::query_focus_only;
+          mode == PlayerLifestyleFormalWireModeV1::query_focus_only ||
+          mode == PlayerLifestyleFormalWireModeV1::query_martial_focus_only;
+      g_player_lifestyle_last_query_focus_target_v1 =
+          g_player_lifestyle_last_query_stock_focus_v1
+              ? std::string(PlayerLifestyleWindowStableKeyViewV1(
+                    context->stock_focus_result.target_key))
+              : std::string{};
     } else if ((mode == PlayerLifestyleFormalWireModeV1::submit_perk ||
                 mode == PlayerLifestyleFormalWireModeV1::submit_focus) &&
                PlayerLifestyleAckProvesNoNativeSubmitV1(
@@ -5622,6 +5634,7 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
       g_player_lifestyle_action_may_have_submitted_v1 = false;
       g_player_lifestyle_last_query_revision_v1 = 0;
       g_player_lifestyle_last_query_stock_focus_v1 = false;
+      g_player_lifestyle_last_query_focus_target_v1.clear();
     } else if (mode == PlayerLifestyleFormalWireModeV1::verify_receipt &&
                context->receipt.status ==
                    xar::game::PlayerLifestyleSelectionActionReceiptStatusV1::

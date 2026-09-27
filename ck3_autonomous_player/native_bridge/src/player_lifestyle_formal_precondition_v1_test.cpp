@@ -260,6 +260,26 @@ int main() {
             out->state.lifestyle_progress[0].experience_raw == 0 &&
             out->candidates.focus_count == 1 &&
             out->candidates.focuses[0].can_select);
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        "martial_authority_focus", stock.target_key));
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        "martial_lifestyle", stock.lifestyle_key));
+    stock.target_progress = {true, 125000, 25000, 1000, 0, 2};
+    Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
+                *state, stock, episode, *out) ==
+            ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
+    Require(ck3::PlayerLifestyleWindowStableKeyViewV1(
+                out->candidates.focuses[0].key) ==
+                "martial_authority_focus" &&
+            ck3::PlayerLifestyleWindowStableKeyViewV1(
+                out->state.lifestyle_progress[0].lifestyle_key) ==
+                "martial_lifestyle" &&
+            out->state.lifestyle_progress[0].experience_raw == 125000);
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        "stewardship_wealth_focus", stock.target_key));
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        "stewardship_lifestyle", stock.lifestyle_key));
+    stock.target_progress = {true, 0, 0, 1000, 0, 0};
     stock.target_progress.available = false;
     Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
                 *state, stock, episode, *out) ==
@@ -269,7 +289,7 @@ int main() {
     Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
                 *state, stock, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::frame_mismatch);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 16/16 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 17/17 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

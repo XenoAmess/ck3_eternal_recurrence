@@ -466,7 +466,11 @@ bool CapturePrecondition(
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
   if (context == nullptr || !ReadState(*context)) return false;
   if (context->mode == PlayerLifestyleFormalWireModeV1::submit_focus) {
-    ReadStockFocus(*context);
+    if (context->action_target_key == kMartialAuthorityFocusV1) {
+      ReadMartialFocus(*context);
+    } else {
+      ReadStockFocus(*context);
+    }
     context->precondition_result =
         BuildPlayerLifestyleStockFocusPreconditionV1(
             *context->snapshot, context->stock_focus_result,
@@ -508,7 +512,8 @@ bool SubmitSelection(void *opaque, game::PlayerLifestyleSelectionKindV1 kind,
       context->stock_focus_result.status ==
           StockFocusLegalityStatusV1::observed_native_legal &&
       PlayerLifestyleWindowStableKeyViewV1(key) ==
-          kStockFocusLegalityTargetV1 &&
+          PlayerLifestyleWindowStableKeyViewV1(
+              context->stock_focus_result.target_key) &&
       context->stock_focus_result.target_definition != 0) {
     context->native_submit.last_result =
         DispatchResolvedPlayerLifestyleFocusNativeAdapterV1(
