@@ -1,5 +1,56 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE martial authority target observation candidate (2026-09-28; exact CK3 1.19.0.6)
+
+R0264's first paused Robert frame (`native:3`, raw date `53217264`, actor
+`29829`) read `education_martial_5`, `greedy`, `ambitious`, existing
+`stewardship_wealth_focus`, stewardship XP raw `58750000`, and zero unspent /
+seven used stewardship points. The same frame's policy scoped legal perk count
+was zero. It proves the opening focus gate avoided duplicate selection, and
+does not present a new actionable perk or a legal focus switch. The original
+R0264 report is `Z:/robert-h2743-nextcandidate-20260928/run-formal-36/formal-report.txt`,
+SHA-256 `066B3E4993DF5BA5DED815345403C2C4B87A0FD9A4B75AA79DBA578B73B97473`.
+The original
+`00_lifestyle_focuses.txt` (SHA-256
+`DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2`)
+gives each martial focus weight 2000 for martial education, while greedy
+wealth receives weight 55 without stewardship education. These are original
+AI weights, not the player's final legality or a sufficient value judgment.
+
+Current private policy chooses only wealth if a successor has no focus and
+peaceful feudal scope is proven; it does not compare actor education or
+alternative target XP. The existing `martial_authority_focus` definition at
+line 199 offers martial +1 and monthly county control +0.3. This candidate
+adds one default-off read-only target to slot 43. It reuses exact definition
+lookup (`Focus+0x880`), final focus command validator (`0x25DF570`) and target
+martial XP/point getters (`0x2668B80`, `0x2668A00`, `0x2668A80`). Two native
+samples must agree on the same paused actor/frame. Because it invokes the
+native final validator for the current played actor, it can observe whether
+the already wealth-focused R0264 successor is permitted to switch; neither
+education nor script `is_valid` is substituted for that verdict. The ABI is
+[`player_lifestyle_martial_authority_v1_abi.json`](../../ck3_autonomous_player/native_bridge/research/player_lifestyle_martial_authority_v1_abi.json).
+
+The query does not change the wealth-only policy, submit allowlist, public
+capabilities, or current focus. Its static fixtures do not prove a live
+martial verdict. A later official paired paused read must compare actual
+wealth and martial progress, legality, and current objective before any
+alternative typed action is considered. A submitted action would still need
+its own receipt, next turn and cold restore.
+
+On the isolated source candidate, the exact target fixture passed MSVC `/Od`
+and `/O2` with `/W4 /WX` (7/7 each); the private LIFE bridge linked in Debug
+and Release; the focused Python focus, diplomacy, martial and formal consumer
+tests passed 54/54 in normal and `-O`. These are static checks only.
+
+```mermaid
+flowchart LR
+  A[Paused played actor and current focus] --> B[Exact authority definition]
+  B --> C[Final CanSelectFocus twice and martial XP points]
+  C -->|agrees and complete| D[Private target observation]
+  C -. unavailable or drift .-> U[Keep uncertainty]
+  D -. value and typed action pending .-> E[Alternative focus loop]
+```
+
 ## NW-LIFE diplomacy target observation candidate (2026-09-28; exact CK3 1.19.0.6)
 
 The successor source can observe education traits, but the normal LIFE policy

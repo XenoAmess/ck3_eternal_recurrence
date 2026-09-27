@@ -259,6 +259,22 @@ void TestDiplomacyTargetIsReadOnlyAndDoubleSampled() {
           "mismatched target lifestyle must not be admitted");
 }
 
+void TestMartialAuthorityFocusIsReadOnlyAndDoubleSampled() {
+  Fixture f{};
+  f.Init(kMartialAuthorityFocusV1, kMartialLifestyleV1);
+  const auto result = f.Run(true, kMartialAuthorityFocusV1,
+                            kMartialLifestyleV1);
+  Require(result.status == Status::observed_native_legal &&
+              f.validator_calls == 2 && f.progress_calls == 2 &&
+              result.target_progress.available && f.command_correct &&
+              result.target_definition == f.rows[0],
+          "martial focus requires same-frame final verdict and target XP");
+  Require(f.Run(true, kMartialAuthorityFocusV1,
+                kStockFocusLegalityLifestyleV1).status ==
+              Status::unavailable_candidate,
+          "martial target may not borrow stewardship progress");
+}
+
 void TestUnresolvedSourceNeverCallsValidator() {
   Fixture absent{};
   absent.Init();
@@ -307,10 +323,11 @@ int main() {
     TestLegalAndExactBinder();
     TestNativeRejectionIsNotUnknown();
     TestDiplomacyTargetIsReadOnlyAndDoubleSampled();
+    TestMartialAuthorityFocusIsReadOnlyAndDoubleSampled();
     TestTargetProgressUnavailableAndDriftStayTyped();
     TestUnresolvedSourceNeverCallsValidator();
     TestFrameAndBuildGates();
-    std::cout << "stock focus legality: 6/6 GREEN\n";
+    std::cout << "stock focus legality: 7/7 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock focus legality: RED: " << error.what() << '\n';

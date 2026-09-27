@@ -21,6 +21,10 @@ inline constexpr std::string_view kDiplomacyForeignAffairsFocusV1 =
     "diplomacy_foreign_affairs_focus";
 inline constexpr std::string_view kDiplomacyLifestyleV1 =
     "diplomacy_lifestyle";
+inline constexpr std::string_view kMartialAuthorityFocusV1 =
+    "martial_authority_focus";
+inline constexpr std::string_view kMartialLifestyleV1 =
+    "martial_lifestyle";
 
 using StockFocusLegalityFrameV1 = StockPerkLegalityFrameV1;
 using StockFocusValidateCommandV1 = bool (*)(void *, void *);

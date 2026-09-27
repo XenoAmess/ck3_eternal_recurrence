@@ -1,0 +1,32 @@
+{
+  "schema": "xar.player_lifestyle_martial_authority_v1_abi",
+  "status": "static-ready-awaiting-paused-pair",
+  "visibility": "private-read-only-default-off",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_source": {
+    "focus_key": "martial_authority_focus",
+    "focus_file": "game/common/focuses/00_lifestyle_focuses.txt:199",
+    "focus_file_sha256": "DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2",
+    "lifestyle_key": "martial_lifestyle",
+    "focus_lifestyle_pointer_offset": "0x880",
+    "focus_validator_rva": "0x25DF570",
+    "xp_getter_rva": "0x2668B80",
+    "unspent_points_getter_rva": "0x2668A00",
+    "used_points_getter_rva": "0x2668A80",
+    "xp_per_level_offset": "0x138"
+  },
+  "contract": {
+    "step": "private-query-player-lifestyle-martial-authority-v1",
+    "slot": 43,
+    "source": "exact martial focus definition and twice sampled native final validator plus target martial progress on one paused application-main frame",
+    "response": "native legal/illegal/unavailable and target martial XP and points; can evaluate an existing wealth-focused actor's switch legality",
+    "same_frame": "episode, actor, revision, date and snapshot are bound before/after by private transport; native result is sampled twice",
+    "action_admission": false,
+    "public_registration": false,
+    "uncertainty": "failed source/getter or contradictory final verdict stays unavailable or RED; no inferred zero",
+    "outstanding": "official matched DLL and paused actor readback, value comparison, typed alternative action, independent postcondition, next turn and cold restore"
+  }
+}
