@@ -1,0 +1,176 @@
+{
+  "schema": "xar.ck3.robert-war31-termination-r0221-raw-freeze/v1",
+  "status": "GREEN_READONLY_TERMINATION_OPTIONS",
+  "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0221",
+  "execution_id": "eb54af61-b98e-49f8-b18d-67ac7a7222d8",
+  "candidate": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-h2134-masterf44-readonly-no-launch-20260924",
+  "game_pid": 165132,
+  "owner_pid_at_launch": 131620,
+  "episode_character_id": 29829,
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "date_raw": 53215920,
+  "before_snapshot_id": "native:3",
+  "after_snapshot_id": "native:3",
+  "public_revision": 4,
+  "native_revision": 3,
+  "same_native_frame": true,
+  "gameplay_actions": 0,
+  "date_advanced": 0,
+  "controlled_stop_exit_code": 0,
+  "managed_process_count_after_stop": 0,
+  "owner_present_after_stop": false,
+  "official_history_after_checkpoint": [
+    {
+      "index": 2135,
+      "command": "restore-checkpoint",
+      "ok": true
+    },
+    {
+      "index": 2136,
+      "command": "query-war-termination-options-16777231",
+      "ok": true
+    }
+  ],
+  "war_id": 16777231,
+  "war_player_side": "defender",
+  "war_score": -15,
+  "war_duration_days": 1045,
+  "casus_belli": {
+    "database_index": 17,
+    "canonical_key": "individual_county_de_jure_cb"
+  },
+  "surrender": {
+    "available": true,
+    "native_validator_passed": true,
+    "would_accept_now": true,
+    "terms_observable": false,
+    "terms_reason": "cb_specific_terms_not_observable"
+  },
+  "white_peace": {
+    "available": false,
+    "native_validator_passed": false
+  },
+  "victory": {
+    "available": false,
+    "native_validator_passed": false
+  },
+  "typed_termination_authorized": false,
+  "formal_war_red_preserved": true,
+  "files": {
+    "source_save": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\xar_checkpoint.ck3",
+      "bytes": 77478199,
+      "sha256": "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A"
+    },
+    "source_driver": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\driver-state.json",
+      "bytes": 16681512,
+      "sha256": "1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336"
+    },
+    "source_freeze": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-r0197-centralization-green-frozen-20260923\\R0197-final-frozen-pair\\R0197-raw-freeze.json",
+      "bytes": 8172,
+      "sha256": "F53C431F47B5F363B504B983CC2B7FE459A92AAE6ED7E6DC5DF62FCF7EC980B4"
+    },
+    "prepared_save": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-h2134-masterf44-readonly-no-launch-20260924\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 77478199,
+      "sha256": "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A"
+    },
+    "post_driver": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-h2134-masterf44-readonly-no-launch-20260924\\state\\native-session\\driver-state.json",
+      "bytes": 16663469,
+      "sha256": "39D23C6ADC96F1DCB1E57F9DAF18FAB99C7185D1EC0556896ED141B005C4BD3F"
+    },
+    "live_ready": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-h2134-masterf44-readonly-no-launch-20260924\\checks\\LIVE-READY-NO-LAUNCH.json",
+      "bytes": 6961,
+      "sha256": "FA515E0A6C40497F7EAD95358DE4CAD3386D5A848114A16375B2363F77BD2062"
+    },
+    "prelaunch": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\prelaunch.json",
+      "bytes": 1326,
+      "sha256": "34EE49DD962BF39B808D1F76993E472680E0838FAE5E3A68F7B3DA6662E9A237"
+    },
+    "launch_identity": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\launch-identity.json",
+      "bytes": 917,
+      "sha256": "6CF933EC0A389E573EBFF7CDC99A5AC5771807CD1CE05C4B5B166AC6ADB80898"
+    },
+    "allocator_launch_started": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\allocator-launch-started.json",
+      "bytes": 562,
+      "sha256": "5F7E00C9A803077B31289993D2BC4AB770EC4691017387FF35F8D366074B4260"
+    },
+    "process_closeout": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\process-closeout.json",
+      "bytes": 252,
+      "sha256": "59C5BE984A0547151738AC5464DCB58CA047E86E9EAEC20E67A43CE348BA079E"
+    },
+    "before_snapshot": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\ck3_take_snapshot-before.json",
+      "bytes": 29089979,
+      "sha256": "D5379AAF672FC20BC43A025792631DA50423F762007FC548E12E6056C637E42E"
+    },
+    "before_snapshot_raw": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\ck3_take_snapshot-before-mcp-result.json",
+      "bytes": 61329247,
+      "sha256": "33B4827A355BA718D74955862ED7A92FF61379038C7CFAF393008D074C5E41D1"
+    },
+    "after_snapshot": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\ck3_take_snapshot-after.json",
+      "bytes": 29100324,
+      "sha256": "A94B504366C61E8B63A425A6B07F3DDD2577C4BE7564B96B3D73471CB4481737"
+    },
+    "after_snapshot_raw": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\ck3_take_snapshot-after-mcp-result.json",
+      "bytes": 61351133,
+      "sha256": "FF445F6FAD2D0E29A7F5890F68CF55634D6A196E946A9D2C1174A4AE78D63055"
+    },
+    "termination_options": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\war-termination-options.json",
+      "bytes": 5783,
+      "sha256": "359C5A03B7F7C2FC35EE9FD47DE0DF054F9C200E0A77E2AB2F9F231D2394B124"
+    },
+    "termination_options_raw": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\war-termination-options-mcp-result.json",
+      "bytes": 12669,
+      "sha256": "520B5D6114C2DA537F373A4D94F93A905B68A5A5256DD3DC1B1983C9FEEC5D11"
+    },
+    "capabilities": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\ck3_get_capabilities.json",
+      "bytes": 24142,
+      "sha256": "5D3DA5FC26F06232247CB2F79C332CBEF7CE6DFFB3B59E1BC6043574394AB7DA"
+    },
+    "diagnostics": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\ck3_get_bridge_diagnostics.json",
+      "bytes": 10499,
+      "sha256": "2A626670C374F01A3319B1079B91114988F77E0911C2A384609C802E5A68689D"
+    },
+    "observation_index": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\observation-index.json",
+      "bytes": 660,
+      "sha256": "FCC948A3837C907151C7C3A21D2194B43D270EC50A4CFC0DD612F36CED850D86"
+    },
+    "shutdown": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\shutdown.json",
+      "bytes": 2147,
+      "sha256": "8CFB89678A1DE5E3249957FEE227FA61BBF8CEE6781F4CB68B3397533A1EFFBD"
+    },
+    "readiness_attempts": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\readiness-attempts.json",
+      "bytes": 52940,
+      "sha256": "88FBD9877412230E5CE3E7E0D7D10D89CC2AF4998342B3A2FA8F58133AFD804D"
+    },
+    "native_session_stdout": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\probe\\native-session-stdout.jsonl",
+      "bytes": 4797,
+      "sha256": "0C88E7630ECE606A595FD067101AF5CD0EB007185EE42F2082415D6CF059617A"
+    },
+    "runner_console": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-war31-termination-readonly-R0221-20260924\\runner-console.txt",
+      "bytes": 5138,
+      "sha256": "1A746222B9489FBDB52C56DCBCC714289FB8BD355E01A1DD171D2EEDAA641C70"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-summary.v1",
+  "purpose": "Later formal Robert high-water observation for the War 16777231 surrender-terms request; this summary is not the full live report or a replacement for its paired save and driver.",
+  "source_artifacts": {
+    "formal_report_sha256": "3A8B11F4E27D528C9B9EF798866285D04101A42682955DA529398024147820A7",
+    "operator_receipt_sha256": "C29C0475A4147C76FF95C4A03D2006B9EB23B2B58ED375CB9BFB87AF8F11B3E6",
+    "candidate_source_commit": "2ceb0717ebaa292051a7f9607dcf2355636d0ad8",
+    "native_source_commit": "2ceb0717ebaa292051a7f9607dcf2355636d0ad8",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "63D4816D401C938A29C41FE61412462379DEFD83EC5169BF5F79F2651C4AA416"
+  },
+  "pair_and_run": {
+    "source_checkpoint_sha256": "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A",
+    "source_checkpoint_history_index": 2134,
+    "source_date_raw": 53215920,
+    "episode_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "new_bridge_pid": 160564,
+    "cold_checkpoint_restored": true,
+    "operator_preflight_exit_code": 0,
+    "formal_exit_code": 0,
+    "attempted_turns": 12,
+    "successful_turns": 12,
+    "run_status": "turn_limit",
+    "outcome": "qualified",
+    "first_blocker": null
+  },
+  "observed_steps": [
+    {
+      "turn": 2,
+      "step": "query-war-termination-options-16777231",
+      "status": "available",
+      "same_frame_query": true,
+      "date_raw": 53215920
+    },
+    {
+      "turn": 9,
+      "step": "move-army-83886367-to-2614",
+      "status": "submitted",
+      "war_action_status": "moving",
+      "after_revision_changed": true,
+      "independent_evidence": ["war_changed", "army_changed"]
+    },
+    {
+      "turn": 12,
+      "step": "advance-route-contact-horizon-v1-83886367-to-2614-h-1-50331920",
+      "starting_date_raw": 53215920,
+      "ending_date_raw": 53215944,
+      "independent_evidence": ["date_advanced", "war_changed"]
+    }
+  ],
+  "last_checkpoint": {
+    "history_index": 2162,
+    "date_raw": 53215944,
+    "sha256": "9B9630A3BAD25DD3A1C59473BC3C2B224FDD146AB7FB04CC6B6EC98FAE8174CC"
+  },
+  "war_31_end_state": {
+    "war_id": 16777231,
+    "still_active": true,
+    "player_relative_war_score": -15,
+    "surrender_material_terms_newly_observed": false,
+    "termination_action_submitted": false
+  },
+  "cleanup": {
+    "tree_gone": true,
+    "cleanup_proven": true
+  },
+  "cross_machine_limit": "The hashes identify immutable local full artifacts. Only this summary and the separately listed small R0197/R0221 JSON files are included in Git; the full report, save, driver and DLL need a separately verified transfer for replay."
+}
