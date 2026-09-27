@@ -72,7 +72,12 @@ def plan_construction_private(
         return planned
     original_step = plan.get("selected_step")
     prewar = prewar_arbitration is True and is_native_declaration_step(original_step)
-    if original_step != "life-advance" and not prewar:
+    new_action_admitted = original_step == "life-advance" or prewar
+    if (not new_action_admitted
+            and (snapshot.get("paused") is not True
+                 or snapshot.get("map_ready") is not True
+                 or snapshot.get("active_event") is not None
+                 or snapshot.get("pending_character_interaction") is not None)):
         return planned
 
     def prewar_unchanged(status: str, *, query: object = None) -> dict[str, object]:
@@ -86,6 +91,8 @@ def plan_construction_private(
 
     state_dir = getattr(driver, "state_dir", None)
     if not isinstance(state_dir, Path):
+        if not new_action_admitted:
+            return planned
         if prewar:
             return prewar_unchanged("durable_state_unavailable")
         return {**planned, "plan": {**plan, "selected_step": None,
@@ -179,6 +186,11 @@ def plan_construction_private(
                 and snapshot["native_revision"] > applied["post_native_revision"]
                 and snapshot["date_raw"] > applied["post_date_raw"]):
             return {**planned, "plan": plan}
+    # A pre-existing construction needs its material/income readback even
+    # while the ordinary strategy is busy with war. Only a new expenditure
+    # remains limited to the life-advance or peaceful prewar opportunity.
+    if not new_action_admitted:
+        return {**planned, "plan": plan}
     scope = same_frame_feudal_peace_scope(snapshot, history)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:

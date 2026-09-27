@@ -40,7 +40,8 @@ def _identity(driver: object) -> tuple[int, str]:
     return pid, creation
 
 
-def _binding(driver: object, *, expected_revision: int) -> dict[str, object]:
+def _binding(driver: object, *, expected_revision: int,
+             material_receipt: bool = False) -> dict[str, object]:
     snapshot = driver.take_snapshot()
     played = snapshot.get("played_character")
     actor = played.get("character_id") if isinstance(played, Mapping) else None
@@ -48,15 +49,18 @@ def _binding(driver: object, *, expected_revision: int) -> dict[str, object]:
             and snapshot.get("map_ready") is True
             and snapshot.get("active_event") is None
             and snapshot.get("pending_character_interaction") is None
-            and snapshot.get("active_wars") == []
-            and snapshot.get("player_armies") == []
+            and isinstance(snapshot.get("active_wars"), list)
+            and isinstance(snapshot.get("player_armies"), list)
+            and (material_receipt or snapshot["active_wars"] == [])
+            and (material_receipt or snapshot["player_armies"] == [])
             and _positive(actor) and played.get("alive") is True
             and _positive(snapshot.get("native_revision"))
             and snapshot.get("snapshot_id") == f"native:{snapshot['native_revision']}"
             and snapshot.get("revision") == expected_revision
             and type(snapshot.get("date_raw")) is int
             and isinstance(snapshot.get("episode_run_id"), str)):
-        raise BridgeUnavailableError("construction trial lacks a stable peaceful paused actor frame")
+        raise BridgeUnavailableError(
+            "construction trial lacks a stable admitted paused actor frame")
     return snapshot
 
 
@@ -116,7 +120,8 @@ def _candidate(world: Mapping[str, object]) -> dict[str, object] | None:
 
 def query_construction_private(driver: object, *, expected_revision: int,
                                material_receipt: bool = False) -> dict[str, object]:
-    starting = _binding(driver, expected_revision=expected_revision)
+    starting = _binding(driver, expected_revision=expected_revision,
+                        material_receipt=material_receipt)
     revision = starting["native_revision"]
     request_id = f"construction-read-{uuid.uuid4().hex}"
     result = _send(driver, QUERY_NATIVE, revision, request_id)
@@ -287,7 +292,8 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         ledger["applied"].get("action_request_id") == pending.get("action_request_id"))
     if not (unresolved or cold_recheck):
         raise BridgeUnavailableError("construction receipt lacks matching pending action")
-    starting = _binding(driver, expected_revision=expected_revision)
+    starting = _binding(driver, expected_revision=expected_revision,
+                        material_receipt=True)
     pid, creation = _identity(driver)
     same_process = ((pid, creation) == (pending.get("source_bridge_pid"),
                                        pending.get("source_bridge_creation_date")))

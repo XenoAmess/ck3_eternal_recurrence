@@ -912,6 +912,11 @@ class GameplayBridgeService:
         lifestyle_trial = getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
         ) is True
+        before_lifestyle = planned.get("plan")
+        before_lifestyle_step = (
+            before_lifestyle.get("selected_step")
+            if isinstance(before_lifestyle, dict) else None
+        )
         if lifestyle_trial:
             planned = (
                 self._plan_initial_lifestyle_focus_first_v1(
@@ -939,6 +944,24 @@ class GameplayBridgeService:
         if (lifestyle_trial and isinstance(plan, dict)
                 and plan.get("selected_step") != "life-advance"
                 and not prewar_arbitration):
+            construction_snapshot = planned.get("_private_construction_snapshot_v1")
+            construction_history = planned.get("_private_construction_history_v1")
+            if (before_lifestyle_step is not None
+                    and plan.get("selected_step") == before_lifestyle_step
+                    and getattr(self.driver, "allow_private_construction_formal_trial", False) is True
+                    and isinstance(construction_snapshot, dict)
+                    and isinstance(construction_history, list)
+                    and construction_snapshot.get("paused") is True
+                    and construction_snapshot.get("map_ready") is True
+                    and construction_snapshot.get("active_event") is None
+                    and construction_snapshot.get("pending_character_interaction") is None):
+                # The lifestyle early return must not hide an existing
+                # construction receipt on a normal war turn. The consumer
+                # admits no new spend for this non-life step.
+                planned = plan_construction_private(
+                    self.driver, planned, construction_snapshot,
+                    construction_history, available_steps,
+                )
             planned.pop("_private_faction_snapshot_v1", None)
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
