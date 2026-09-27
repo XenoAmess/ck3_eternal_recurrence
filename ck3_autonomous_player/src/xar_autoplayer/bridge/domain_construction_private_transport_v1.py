@@ -411,6 +411,26 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         return classification
     if not matches and not completed:
         raise BridgeUnavailableError("construction material not yet observed; keep pending")
+    # The native row carries work and divisor on this same paused material
+    # frame. Keep the raw values with the receipt so a later paired run can
+    # compare progress without inferring a finish date from authored time.
+    progress_row = matches[0] if matches else None
+    remaining_work = (progress_row.get("native_remaining_work_raw")
+                      if progress_row is not None else None)
+    progress_divisor = (progress_row.get("native_progress_divisor_raw")
+                        if progress_row is not None else None)
+    progress_observation = {
+        "status": ("observed" if type(remaining_work) is int
+                   and type(progress_divisor) is int else
+                   "unavailable" if progress_row is not None else "not_active"),
+        "snapshot_id": starting["snapshot_id"],
+        "native_revision": starting["native_revision"],
+        "date_raw": starting["date_raw"],
+        "native_remaining_work_raw": (remaining_work
+                                       if type(remaining_work) is int else None),
+        "native_progress_divisor_raw": (progress_divisor
+                                        if type(progress_divisor) is int else None),
+    }
     history = starting.get("native_command_history")
     _, observed_income = same_frame_construction_income(
         starting, history if isinstance(history, list) else [])
@@ -426,6 +446,7 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                 "income_observed_date_raw", pending.get("post_date_raw"))
     receipt = {"status": "applied", "postcondition_verified": True,
                "completion_status": "completed" if completed else "in_progress",
+               "construction_progress_observation": progress_observation,
                "completion_last_check_date_raw": starting["date_raw"],
                "completion_observed_date_raw": (
                    starting["date_raw"] if completed else None),
