@@ -1838,6 +1838,7 @@ def run_from_cli(
     *,
     timeout_seconds: float,
     cold_start_checkpoint: bool = False,
+    prepared_xar_enabled: str = "xar_on",
 ) -> dict[str, object]:
     """CLI adapter kept here so the generic CLI never imports visual code."""
     return native_session(
@@ -1846,4 +1847,5 @@ def run_from_cli(
         input_stream=sys.stdin,
         output_stream=sys.stdout,
         cold_start_checkpoint=cold_start_checkpoint,
+        prepared_xar_enabled=prepared_xar_enabled,
     )

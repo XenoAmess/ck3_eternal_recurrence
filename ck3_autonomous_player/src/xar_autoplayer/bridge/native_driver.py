@@ -567,6 +567,11 @@ from .raiktor_war_bound_regiment_contract import (
 from .raiktor_surrender_session_binding_contract import (
     bind_raiktor_surrender_aggregate_session,
 )
+from .war31_one_shot_surrender import (
+    STEP as WAR31_ONE_SHOT_SURRENDER_STEP,
+    WAR_ID as WAR31_ONE_SHOT_WAR_ID,
+    War31OneShotSurrenderGate,
+)
 
 
 PROTOCOL_VERSION = 1
@@ -1437,7 +1442,13 @@ class NativeHeadlessGameplayDriver:
         allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
         succession_lifecycle_binding: dict[str, object] | None = None,
+        war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
     ) -> None:
+        if war31_one_shot_surrender_gate is not None and not isinstance(
+            war31_one_shot_surrender_gate, War31OneShotSurrenderGate
+        ):
+            raise TypeError("war31_one_shot_surrender_gate must be a verified gate")
+        self._war31_one_shot_surrender_gate = war31_one_shot_surrender_gate
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
             command_timeout_seconds, "command_timeout_seconds"
@@ -1939,6 +1950,16 @@ class NativeHeadlessGameplayDriver:
                     if ready and prior is None:
                         emergency_surrender_steps.add(
                             surrender_war_step(war_id)
+                        )
+                    if (
+                        war_id == WAR31_ONE_SHOT_WAR_ID
+                        and self._war31_one_shot_surrender_gate is not None
+                        and self._war31_one_shot_surrender_gate.readiness(
+                            current_snapshot
+                        )[0]
+                    ):
+                        emergency_surrender_steps.add(
+                            WAR31_ONE_SHOT_SURRENDER_STEP
                         )
         if proof_steps:
             action_steps.update(proof_steps)
@@ -6860,7 +6881,7 @@ class NativeHeadlessGameplayDriver:
             if step not in capabilities["action_steps"]:
                 raise BridgeUnavailableError(
                     "native surrender submission lacks fresh same-frame "
-                    "de-jure emergency readiness"
+                    "de-jure emergency or exact WAR31 one-shot readiness"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -15916,9 +15937,19 @@ class NativeHeadlessGameplayDriver:
             ready, reason, evidence = _emergency_surrender_readiness(
                 starting, war_id
             )
+            war31_one_shot = False
+            if (
+                not ready
+                and step == WAR31_ONE_SHOT_SURRENDER_STEP
+                and self._war31_one_shot_surrender_gate is not None
+            ):
+                ready, reason, evidence = (
+                    self._war31_one_shot_surrender_gate.readiness(starting)
+                )
+                war31_one_shot = ready
             if not ready:
                 raise BridgeUnavailableError(
-                    "native emergency surrender fresh validation failed: "
+                    "native surrender fresh validation failed: "
                     + reason
                 )
             if _emergency_surrender_submission(
@@ -15930,8 +15961,28 @@ class NativeHeadlessGameplayDriver:
                     "native emergency surrender was already submitted for "
                     "this active WarID"
                 )
+            reservation = None
+            if war31_one_shot:
+                if selected_revision != starting.get("revision"):
+                    raise PreSubmissionRevisionMismatchError(
+                        "WAR31 one-shot surrender expected revision differs "
+                        "from its same-frame query"
+                    )
+                options = evidence["options"]
+                try:
+                    reservation = self._war31_one_shot_surrender_gate.reserve(
+                        starting, query_sequence=options.get("query_sequence")
+                    )
+                except (OSError, ValueError) as error:
+                    raise BridgeUnavailableError(
+                        f"WAR31 one-shot surrender reservation failed: {error}"
+                    ) from error
             result = self._execute_primitive_step(
-                step, expected_revision=selected_revision
+                step,
+                expected_revision=selected_revision,
+                required_capability=(
+                    SURRENDER_WAR_CAPABILITY if war31_one_shot else None
+                ),
             )
             if (
                 set(result) != {"step", "accepted", "status", "backend_id"}
@@ -15984,7 +16035,14 @@ class NativeHeadlessGameplayDriver:
                         else "submitted_pending"
                     ),
                     "war_id": war_id,
-                    "outcome": "attacker_defeat",
+                    "outcome": (
+                        "attacker_victory"
+                        if war31_one_shot else "attacker_defeat"
+                    ),
+                    **(
+                        {"one_shot_authorization": reservation}
+                        if reservation is not None else {}
+                    ),
                     "submitted_date_raw": starting.get("date_raw"),
                     "observed_date_raw": current.get("date_raw"),
                     "episode_run_id": starting.get("episode_run_id"),

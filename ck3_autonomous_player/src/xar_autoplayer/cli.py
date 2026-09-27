@@ -293,6 +293,12 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="launch the exact v2 xar_checkpoint save instead of last_save.ck3",
     )
+    native_session_parser.add_argument(
+        "--xar-enabled",
+        choices=("xar_on", "xar_off"),
+        default="xar_on",
+        help="expected prepared profile mod state; WAR31 Robert requires xar_off",
+    )
     native_auto_run_parser = commands.add_parser(
         "native-auto-run",
         help=(
@@ -880,6 +886,7 @@ def main(argv: list[str] | None = None) -> int:
                 spec,
                 timeout_seconds=args.timeout,
                 cold_start_checkpoint=args.cold_start_checkpoint,
+                prepared_xar_enabled=args.xar_enabled,
             )
         elif args.command == "native-auto-run":
             from .native_auto_run import native_auto_run

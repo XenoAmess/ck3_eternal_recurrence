@@ -54,6 +54,7 @@ from .native_driver import (
     NativeHeadlessGameplayDriver,
     selected_pipe_name,
 )
+from .war31_one_shot_surrender import War31OneShotSurrenderGate
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
 from .war_entry_contract import normalize_war_entry_target_ids
@@ -273,6 +274,7 @@ def load_driver(
     userdir: str | os.PathLike[str] | None = None,
     state_dir: str | os.PathLike[str] | None = None,
     pipe_name: str | None = None,
+    war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
     def selected_state_dir() -> Path:
@@ -297,7 +299,10 @@ def load_driver(
             selected_pipe_name(pipe_name),
             state_dir=selected_state_dir(),
             save_dir=selected_save_dir(),
+            war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
         )
+    if war31_one_shot_surrender_gate is not None:
+        raise ValueError("WAR31 one-shot gate requires native-headless driver")
     if factory == "hybrid-fallback":
         return ConfiguredHybridFallbackDriver(
             NativeHeadlessGameplayDriver(
@@ -2963,11 +2968,39 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="enable the local stdio-only read of the current first-heir relation",
     )
+    for name in (
+        "authorization-receipt",
+        "source-checkpoint",
+        "source-driver",
+        "submission-fence",
+    ):
+        result.add_argument("--war31-one-shot-" + name)
     return result
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    war31_paths = (
+        args.war31_one_shot_authorization_receipt,
+        args.war31_one_shot_source_checkpoint,
+        args.war31_one_shot_source_driver,
+        args.war31_one_shot_submission_fence,
+    )
+    if any(war31_paths) and not all(war31_paths):
+        raise ValueError("WAR31 one-shot gate requires all four explicit paths")
+    if all(war31_paths) and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError("WAR31 one-shot gate requires native-headless stdio")
+    war31_gate = (
+        War31OneShotSurrenderGate(
+            authorization_receipt=war31_paths[0],
+            source_checkpoint=war31_paths[1],
+            source_driver=war31_paths[2],
+            submission_fence=war31_paths[3],
+        )
+        if all(war31_paths) else None
+    )
     if args.private_current_first_heir_relationship_query and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -2981,6 +3014,7 @@ def main(argv: list[str] | None = None) -> int:
         userdir=args.userdir,
         state_dir=selected_state_dir,
         pipe_name=args.pipe_name,
+        war31_one_shot_surrender_gate=war31_gate,
     )
     if args.private_current_first_heir_relationship_query:
         driver.allow_private_current_first_heir_relationship_query = True
