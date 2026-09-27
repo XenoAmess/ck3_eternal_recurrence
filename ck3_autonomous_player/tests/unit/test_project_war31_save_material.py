@@ -67,6 +67,42 @@ class War31SaveMaterialTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "version differs"):
             self.parse(save_text().replace("1.19.0.6", "1.19.0.7"))
 
+    def test_reads_only_exact_character_pair_raw_truce_slot_and_war(self) -> None:
+        relations = (
+            "relations={\n\tactive_relations={\n"
+            "\t\t{\n\t\t\tfirst=29829\n\t\t\tsecond=30098\n"
+            "\t\t\ttruce_0={\n\t\t\t\tdate=1079.1.1\n"
+            "\t\t\t\tresult=victory\n\t\t\t}\n\t\t}\n"
+            "\t\t{\n\t\t\tfirst=29829\n\t\t\tsecond=30097\n"
+            "\t\t\twar=16777231\n\t\t\ttruce_1={\n"
+            "\t\t\t\tdate=1079.9.19\n\t\t\t\tresult=victory\n"
+            "\t\t\t}\n\t\t}\n\t}\n}\n"
+        )
+        value = self.parse(save_text() + relations)
+        pair = value["persisted_truce"]
+        self.assertEqual(pair["status"], "observed_pair_truce_slots")
+        self.assertEqual(pair["active_war_id"], 16777231)
+        self.assertEqual(pair["raw_slots"]["truce_1"]["date"], "1079.9.19")
+        self.assertNotIn("truce_0", pair["raw_slots"])
+        self.assertEqual(pair["slot_direction"], "unverified")
+
+    def test_present_war_pair_without_truce_is_distinct_from_missing_pair(self) -> None:
+        relations = (
+            "relations={\n\tactive_relations={\n\t\t{\n"
+            "\t\t\tfirst=29829\n\t\t\tsecond=30097\n"
+            "\t\t\twar=16777231\n\t\t}\n\t}\n}\n"
+        )
+        value = self.parse(save_text() + relations)
+        self.assertEqual(value["persisted_truce"]["status"],
+                         "pair_present_without_truce_slot")
+        self.assertEqual(value["persisted_truce"]["raw_slots"], {})
+
+    def test_duplicate_exact_character_pair_is_rejected(self) -> None:
+        pair = "\t\t{\n\t\t\tfirst=29829\n\t\t\tsecond=30097\n\t\t}\n"
+        relations = "relations={\n\tactive_relations={\n" + pair + pair + "\t}\n}\n"
+        with self.assertRaisesRegex(ValueError, "duplicate WAR31 character pair"):
+            self.parse(save_text() + relations)
+
 
 if __name__ == "__main__":
     unittest.main()

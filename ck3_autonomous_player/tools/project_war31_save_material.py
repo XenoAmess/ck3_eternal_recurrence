@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Read WAR31 title and character resources from exact-build CK3 saves.
+"""Read WAR31 title, character resources and pair relations from exact CK3 saves.
 
 This is an offline save projection. It does not claim a live native revision,
-personal vassal relationship, or persisted truce without a separate observer.
+personal vassal relationship, or truce direction from an unproven save slot.
 """
 
 from __future__ import annotations
@@ -73,10 +73,14 @@ def project_melted(path: Path) -> dict[str, object]:
     metadata: dict[str, str] = {}
     titles: dict[int, dict[str, object]] = {}
     characters: dict[int, dict[str, object]] = {}
+    war31_relation: dict[str, object] | None = None
     section: str | None = None
     in_title_table = False
+    in_active_relations = False
     current_title: int | None = None
     current_character: int | None = None
+    current_relation: dict[str, object] | None = None
+    current_truce_slot: str | None = None
     active_resource: str | None = None
     active_alive = False
     needed_character_ids = set(CHARACTER_IDS)
@@ -98,8 +102,13 @@ def project_melted(path: Path) -> dict[str, object]:
                 _require(section is None, "duplicate or nested living")
                 section = "living"
                 continue
+            if line in (b"relations={\n", b"relations={\r\n"):
+                _require(section is None, "duplicate or nested relations")
+                section = "relations"
+                continue
             if section is not None and line in (b"}\n", b"}\r\n"):
-                _require(current_title is None and current_character is None,
+                _require(current_title is None and current_character is None
+                         and current_relation is None and not in_active_relations,
                          "unterminated scoped save record")
                 section = None
                 in_title_table = False
@@ -114,6 +123,61 @@ def project_melted(path: Path) -> dict[str, object]:
             if section is None:
                 if line.startswith(b"date="):
                     _record_field(metadata, "date", stripped[5:].decode("ascii"), line=line_number)
+                continue
+            if section == "relations":
+                if line in (b"\tactive_relations={\n", b"\tactive_relations={\r\n"):
+                    _require(not in_active_relations, "duplicate active_relations table")
+                    in_active_relations = True
+                    continue
+                if in_active_relations and line in (b"\t}\n", b"\t}\r\n"):
+                    _require(current_relation is None, "unterminated active relation")
+                    in_active_relations = False
+                    continue
+                if not in_active_relations:
+                    continue
+                if line in (b"\t\t{\n", b"\t\t{\r\n"):
+                    _require(current_relation is None, "nested active relation")
+                    current_relation = {"line_start": line_number, "truce_slots": {}}
+                    continue
+                if current_relation is None:
+                    continue
+                if line in (b"\t\t}\n", b"\t\t}\r\n"):
+                    current_relation["line_end"] = line_number
+                    if {current_relation.get("first"), current_relation.get("second")} == set(CHARACTER_IDS):
+                        _require(war31_relation is None, "duplicate WAR31 character pair")
+                        war31_relation = current_relation
+                    current_relation = None
+                    current_truce_slot = None
+                    continue
+                if current_truce_slot is not None:
+                    if line in (b"\t\t\t}\n", b"\t\t\t}\r\n"):
+                        current_truce_slot = None
+                        continue
+                    for key in (b"date", b"result"):
+                        prefix = b"\t\t\t\t" + key + b"="
+                        if line.startswith(prefix):
+                            value = stripped[len(key) + 1:].decode("ascii")
+                            if key == b"date":
+                                _require(_DATE.fullmatch(value) is not None,
+                                         "truce date is not a CK3 date")
+                            _record_field(current_relation["truce_slots"][current_truce_slot],
+                                          key.decode(), value, line=line_number)
+                    continue
+                for slot in ("truce_0", "truce_1"):
+                    if line in (f"\t\t\t{slot}={{\n".encode(), f"\t\t\t{slot}={{\r\n".encode()):
+                        _require(slot not in current_relation["truce_slots"],
+                                 "duplicate truce slot in relation")
+                        current_relation["truce_slots"][slot] = {"line_start": line_number}
+                        current_truce_slot = slot
+                        break
+                if current_truce_slot is not None:
+                    continue
+                for key in (b"first", b"second", b"war"):
+                    prefix = b"\t\t\t" + key + b"="
+                    if line.startswith(prefix):
+                        _record_field(current_relation, key.decode(),
+                                      _int_field(stripped[len(key) + 1:], field=key.decode()),
+                                      line=line_number)
                 continue
             if section == "landed_titles":
                 if line in (b"\tlanded_titles={\n", b"\tlanded_titles={\r\n"):
@@ -201,7 +265,8 @@ def project_melted(path: Path) -> dict[str, object]:
                                 _record_field(record[active_resource], "raw",
                                               _fixed(stripped[len(wanted) + 1:], field=active_resource),
                                               line=line_number)
-    _require(section is None and current_title is None and current_character is None,
+    _require(section is None and current_title is None and current_character is None
+             and current_relation is None and not in_active_relations,
              "truncated scoped save")
     _require(metadata.get("version") == GAME_VERSION, "CK3 save version differs")
     _require(metadata.get("date") == metadata.get("meta_date") and
@@ -231,6 +296,21 @@ def project_melted(path: Path) -> dict[str, object]:
             _require(isinstance(row.get(resource), dict) and
                      isinstance(row[resource].get("raw"), int),
                      f"character {character_id} {resource} absent")
+    persisted_truce = (
+        {"status": "unavailable", "reason": "war31_character_pair_not_present"}
+        if war31_relation is None else
+        {
+            "status": ("observed_pair_truce_slots" if war31_relation["truce_slots"]
+                       else "pair_present_without_truce_slot"),
+            "first_character_id": war31_relation["first"],
+            "second_character_id": war31_relation["second"],
+            "active_war_id": war31_relation.get("war"),
+            "raw_slots": war31_relation["truce_slots"],
+            "slot_direction": "unverified",
+            "line_start": war31_relation["line_start"],
+            "line_end": war31_relation["line_end"],
+        }
+    )
     return {
         "save_version": metadata["version"],
         "save_date": metadata["date"],
@@ -263,7 +343,7 @@ def project_melted(path: Path) -> dict[str, object]:
         },
         "holder_personal_liege": {"status": "unavailable", "reason": "title_de_facto_liege_is_not_a_personal_liege_read"},
         "holder_personal_vassals": {"status": "unavailable", "reason": "direct_child_titles_are_not_a_complete_personal_vassal_set"},
-        "persisted_truce": {"status": "unavailable", "reason": "truce_save_schema_not_proven_for_war31"},
+        "persisted_truce": persisted_truce,
     }
 
 
@@ -331,7 +411,9 @@ def project_pair(before_save: Path, before_melted: Path, after_save: Path,
         "signed_resource_deltas": resource_deltas,
         "same_native_frame_binding": False,
         "personal_liege_vassals_observed": False,
-        "persisted_truce_observed": False,
+        "persisted_truce_observed": (
+            after["persisted_truce"]["status"] == "observed_pair_truce_slots"
+        ),
     }
 
 
