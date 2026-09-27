@@ -52,12 +52,14 @@ def observe_active_war_cash_resource_v1(
 
     amounts: dict[str, int | None] = {}
     provenance: dict[str, str | None] = {}
+    observations: dict[str, dict[str, object] | None] = {}
     missing: dict[str, str] = {}
     for name in _AMOUNTS:
         raw = inputs.get(name)
         if raw is None:
             amounts[name] = None
             provenance[name] = None
+            observations[name] = None
             missing[name] = f"{name}_source_not_observed_same_frame"
             continue
         if (not isinstance(raw, Mapping)
@@ -69,6 +71,10 @@ def observe_active_war_cash_resource_v1(
             raise ValueError(f"{name} needs same-frame sourced nonnegative Q100000 raw")
         amounts[name] = raw["raw"]
         provenance[name] = raw["source"]
+        observations[name] = {
+            "raw": raw["raw"], "scale": 100_000, "source": raw["source"],
+            "source_frame": dict(frame), "war_id": war_id,
+        }
 
     horizon = inputs.get("horizon_days")
     assumptions = inputs.get("future_bound_assumptions")
@@ -109,6 +115,7 @@ def observe_active_war_cash_resource_v1(
         "future_bound_assumptions": assumptions,
         "amount_values_raw": amounts,
         "amount_sources": provenance,
+        "amount_observations": observations,
         "missing": missing,
         "formal_action_ready": False,
     }
@@ -140,8 +147,10 @@ def require_complete_war_cash_resource_v1(
         raise ValueError("war cash joint reserve does not balance")
     sources = receipt.get("amount_sources")
     values = receipt.get("amount_values_raw")
+    observations = receipt.get("amount_observations")
     if (not isinstance(sources, Mapping)
             or not isinstance(values, Mapping)
+            or not isinstance(observations, Mapping)
             or any(type(sources.get(name)) is not str or not sources[name]
                    for name in _AMOUNTS)
             or any(type(values.get(name)) is not int or values[name] < 0
@@ -151,6 +160,17 @@ def require_complete_war_cash_resource_v1(
             or not isinstance(receipt.get("future_bound_assumptions"), list)
             or not receipt["future_bound_assumptions"]):
         raise ValueError("war cash lacks bound provenance or horizon")
+    for name in _AMOUNTS:
+        observation = observations.get(name)
+        if (not isinstance(observation, Mapping)
+                or type(observation.get("raw")) is not int
+                or observation["raw"] != values[name]
+                or observation.get("scale") != 100_000
+                or observation.get("source") != sources[name]
+                or observation.get("source_frame") != dict(frame)
+                or type(observation.get("war_id")) is not int
+                or observation["war_id"] != war_id):
+            raise ValueError(f"war cash {name} lost same-frame provenance")
     if (
         receipt["existing_shared_gold_commitment_raw"]
         != values["pending_war_cash_raw"]

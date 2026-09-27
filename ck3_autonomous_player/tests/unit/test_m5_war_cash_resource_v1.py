@@ -78,6 +78,10 @@ class WarCashResourceTests(unittest.TestCase):
         self.assertEqual(receipt["joint_gold_reserve_raw"], 11_000_000)
         self.assertEqual(receipt["horizon_days"], 7)
         self.assertEqual(
+            receipt["amount_observations"]["future_war_cost_upper_raw"]["source_frame"],
+            FRAME,
+        )
+        self.assertEqual(
             require_complete_war_cash_resource_v1(
                 receipt, frame=FRAME, war_id=WAR_ID,
             )["war_id"], WAR_ID,
@@ -119,6 +123,25 @@ class WarCashResourceTests(unittest.TestCase):
             require_complete_war_cash_resource_v1(
                 forged, frame=FRAME, war_id=WAR_ID,
             )
+
+    def test_receipt_rechecks_each_amount_frame_war_and_source(self) -> None:
+        receipt = observe_active_war_cash_resource_v1(
+            snapshot=snapshot(), war_id=WAR_ID, inputs=complete_inputs(),
+        )
+        for name, value in (
+            ("source_frame", {**FRAME, "revision": 5}),
+            ("war_id", WAR_ID + 1),
+            ("source", "changed-source"),
+            ("raw", 6_000_001),
+        ):
+            forged = deepcopy(receipt)
+            forged["amount_observations"]["future_war_cost_upper_raw"][name] = value
+            with self.subTest(name=name), self.assertRaisesRegex(
+                ValueError, "lost same-frame provenance",
+            ):
+                require_complete_war_cash_resource_v1(
+                    forged, frame=FRAME, war_id=WAR_ID,
+                )
 
     def test_future_amount_without_horizon_is_not_a_bound(self) -> None:
         inputs = complete_inputs()

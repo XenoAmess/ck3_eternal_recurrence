@@ -100,7 +100,10 @@ def _war_source() -> dict[str, object]:
     }
 
 
-def _war_cash() -> dict[str, object]:
+def _war_cash(
+    pending_cash_raw: int = 0,
+    pending_source: str = "test-empty-pending-ledger",
+) -> dict[str, object]:
     def amount(raw: int, source: str) -> dict[str, object]:
         return {"raw": raw, "scale": 100_000, "source": source,
                 "source_frame": dict(_FRAME), "war_id": 16777231}
@@ -109,7 +112,7 @@ def _war_cash() -> dict[str, object]:
         snapshot=_snapshot(), war_id=16777231,
         inputs={
             "source_frame": dict(_FRAME), "war_id": 16777231,
-            "pending_war_cash_raw": amount(0, "test-empty-pending-ledger"),
+            "pending_war_cash_raw": amount(pending_cash_raw, pending_source),
             "immediate_war_action_cost_raw": amount(0, "test-read-only-query"),
             "future_war_cost_upper_raw": amount(1_000_000, "test-bound"),
             "future_risk_budget_raw": amount(1_000_000, "test-risk"),
@@ -491,10 +494,7 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
 
     def test_pending_war_cash_must_enter_existing_commitments_once(self) -> None:
         sources = _sources(domains={"building": _building_source()})
-        cash = _war_cash()
-        cash["amount_values_raw"]["pending_war_cash_raw"] = 2_000_000
-        cash["amount_sources"]["pending_war_cash_raw"] = "test-observed-pending-ledger"
-        cash["existing_shared_gold_commitment_raw"] = 2_000_000
+        cash = _war_cash(2_000_000, "test-observed-pending-ledger")
         sources["war_cash_resource"] = cash
         with self.assertRaisesRegex(ValueError, "omits active-war cash"):
             collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
