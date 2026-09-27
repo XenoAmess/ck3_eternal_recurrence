@@ -1,0 +1,108 @@
+{
+  "schema": "ck3.native_active_counter_088.v1",
+  "source": {
+    "attempt": 88,
+    "sha256": {
+      "c088-before-snapshot": "95C42C520926CF3B66F106ADFBFF4D7E91577F71820F83A7EAFDA8E3E2A11FD4",
+      "c088-battle-control": "350941D8F88EAE8BA5F91C9CBDCC8F025920D9F120842C6571E832AD86CF396F",
+      "c088-after-snapshot": "5FF86DF09D0DF07F222F89DFD1D42970BA567E56B7C57F481A4D16C1F7BC0351",
+      "cleanup-check": "050123AB77778D00B3D6E66A23C0EE033A9ADD938B8DBEBD10A326756B74164F"
+    },
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_sha256": "F56304CC0D46BFFCDC3477FEBD823235AB956E8CAFF5DB4F1432F7C6B4279D32",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+  },
+  "identity": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53146488,
+    "combat_id": 16777218,
+    "province_id": 2633,
+    "subject_public_cunit_id": 18,
+    "subject_side_index": 1
+  },
+  "actual": {
+    "phase": "main",
+    "phase_day": 7,
+    "counter_status": "available",
+    "class_count": 13,
+    "sides": [
+      {
+        "side_index": 0,
+        "primary_owner_character_id": 31549,
+        "selected_commander_character_id": 34320,
+        "maa_count": 18,
+        "class_available_count": 5,
+        "class_absent_count": 13,
+        "counter_efficiency_raw": 0,
+        "counter_resistance_raw": 0
+      },
+      {
+        "side_index": 1,
+        "primary_owner_character_id": 29829,
+        "selected_commander_character_id": 29829,
+        "maa_count": 14,
+        "class_available_count": 3,
+        "class_absent_count": 11,
+        "counter_efficiency_raw": 25000,
+        "counter_resistance_raw": 0
+      }
+    ],
+    "contexts": [
+      {
+        "countered_side_index": 0,
+        "countering_side_index": 1,
+        "countered_primary_owner_character_id": 31549,
+        "countering_primary_owner_character_id": 29829,
+        "context_scale_raw": 125000
+      },
+      {
+        "countered_side_index": 1,
+        "countering_side_index": 0,
+        "countered_primary_owner_character_id": 29829,
+        "countering_primary_owner_character_id": 31549,
+        "context_scale_raw": 100000
+      }
+    ],
+    "regiment_51": {
+      "bucket_index": 0,
+      "regiment_id": 51,
+      "native_carmy_id": 18,
+      "current_fighting_raw": 17579130,
+      "status": "available",
+      "class_index": 1,
+      "stack_size_soldiers": 100,
+      "current_chunk_raw": 175791,
+      "targets": [
+        {
+          "class_index": 4,
+          "effectiveness_raw": 100000
+        },
+        {
+          "class_index": 5,
+          "effectiveness_raw": 100000
+        },
+        {
+          "class_index": 8,
+          "effectiveness_raw": 100000
+        },
+        {
+          "class_index": 9,
+          "effectiveness_raw": 100000
+        }
+      ]
+    }
+  },
+  "active_resume": {
+    "status": "unavailable",
+    "reason": "same_frame_resume_operands_incomplete",
+    "missing_required_domains": [
+      "active_coalition_side_mapping",
+      "active_regiment_counter_class_stack_context",
+      "next_day_non_roll_advantage_sources",
+      "battle_knight_participation_and_dynamic_entry_transitions"
+    ]
+  },
+  "cleanup_ok": true
+}

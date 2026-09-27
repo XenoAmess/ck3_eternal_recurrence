@@ -52,6 +52,10 @@ v3 列出了同一暂停帧各军将领及**假想接战上下文**的 roll boun
 
 087 使用新 DLL 和同一冻结存档进行**新独立只读 attempt**，前后快照同为 `native:3`、public/native revision `4/3`、raw date `53146488`；battle-control 的真实 `CombatID=16777218`、subject ArmyID `18` 在 side 1、主战第 7 日、cadence `1`。当前 side0/side1 roll 分别 `7/8`，实际选中将领 CharacterID `34320/29829`；新的同一 native sample typed 下一掷骰范围分别为 `[0,10]/[0,10]`，两侧 `available`，故新回执从缺域清单移除了 `selected_commander_next_roll_bounds`。四个其余缺域仍在，整体仍 `unavailable`；没有推进一天或观察 RNG 落点。原始 SHA、构建身份、清场与可重放向量见[专文](active-combat-commander-next-roll-bounds-2026-09-27.md)。086 历史五项缺域回执保持原样，不以 087 追写。
 
+## 088 现役反制基础输入实采
+
+088 再次从同一冻结存档、以新 DLL 做独立只读 attempt；前后暂停快照仍同 `native:3`、public/native revision `4/3`、raw date `53146488`。`active_counter_inputs_v1` 完整回读了 13 类、双方真实主参战者、32 条 MAA entry 的显式 available/absent class、owner modifier 及两方向 context scale。实际 51 号兵团的 entry current `17579130` Q100000 对应原生 chunk `175791`，不是 v3 预接战 chunk `193000`。原始回执、清场 SHA 和可重放向量见[现役反制专文](active-combat-counter-same-sample-input-2026-09-27.md)。这关闭**当前帧反制基础 operand 可读取**的实机门槛；没有下一日真实 retention/重排对拍，typed resume 的 `active_regiment_counter_class_stack_context` 仍列缺域，不能误报现役胜率 ready。
+
 ## 本轮聚焦验收
 
 在隔离工作区 `D:/wai`，显式使用主工作区 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`；相对 venv 不存在。解释器与依赖 probe 为 Python `3.14.7`、pytest `9.1.1`，`PYTHONPATH=D:/wai/ck3_autonomous_player/src` 指向本 worktree：`test_general_battle_strategy.py`、`test_combat_input_adapter.py`、`test_general_battle_forecast.py` 共 **19 passed、11 subtests passed**；`git diff --check` 通过。测试使用现有原版 v2 fixture 证明战前估计仍可运行，并对“选中军队已有 ongoing CombatID”与“该观察字段缺失”分别断言决策入口拒绝。本检查不构成 active-combat 原生读口或实机验收。

@@ -10,4 +10,14 @@
 
 这次实现没有发布原版 `0x23CF1B0` 的 class retention 向量，也没有捕获战斗日界 `0x23CAE70` 真正使用的 owner、entry 集合和 modifier 刷新时点；因此不能把当前帧输入自动升格为下一日续算，不能让智能体用它替换 v3 的预接战向量。后续需在 exact EXE 的冻结战斗存档取得同一原生 sample 的实机回读，再以只读被动 trace 对拍日界双侧 entry、owner、context、retention 和出伤输入，覆盖人数耗尽、增援重排与混合 owner。086 旧回执能证明两种人数不得混用，不能充当这个新字段的实机验收。
 
-静态验收：`test_battle_control_snapshot_v1_bridge.py` 覆盖完整、缺失、错误当前 chunk、ID 漂移、主参战者与选中将领分离、方向 owner 错配；`battle_control_snapshot_v1_mailbox_test.cpp` 覆盖同一 wire、不可用不泄露部分 operand 和 C++ 拒绝错配。测试与编译通过只证明合同及构建，**尚无本次新读口实机 GREEN**。
+静态验收：`test_battle_control_snapshot_v1_bridge.py` 覆盖完整、缺失、错误当前 chunk、ID 漂移、主参战者与选中将领分离、方向 owner 错配；`battle_control_snapshot_v1_mailbox_test.cpp` 覆盖同一 wire、不可用不泄露部分 operand 和 C++ 拒绝错配。构建及静态测试之后，下述 088 完成了本次新读口的现役同帧实机回读。
+
+## 088 冻结战斗存档的独立只读回读
+
+[live-observed] 独立 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-active-counter-attempt-088` 使用原版 1.19.0.6 EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`、第 11 日冻结存档 SHA-256 `3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953` 与新 DLL SHA-256 `F56304CC0D46BFFCDC3477FEBD823235AB956E8CAFF5DB4F1432F7C6B4279D32`。启动前的 006 独立新鲜截图 SHA-256 `8E9FE00D26A22DD3A063E3B83283549CE6840A3F97F39F57ED8BB52FFE8B1F3B` 已人工看到 Steam 左下“离线模式”；ToDesk 未重启，Steam 未切换模式。004/005 的前台拒绝记录保留，不能拿来替代这张成功截图。
+
+查询前后均暂停于 `native:3`、public/native revision `4/3`、raw date `53146488`；其间 `ck3_query_battle_control_snapshot_v1` 返回 `CALL_COMPLETED`。实际 `CombatID=16777218`、ProvinceID `2633`、subject ArmyID `18` 位于守方 side 1、主阶段第 7 日。`active_counter_inputs_v1` 为 `available`、`operand_census_complete=true`、class count `13`。攻击方真实主参战者 CharacterID `31549`（与所选将领 `34320` 不同），18 条 MAA entry 中 5 条有 class、13 条显式 absent，效率/抗性原始值 `0/0`；守方主参战者 `29829`，14 条中 3 条有 class、11 条 absent，效率/抗性 `25000/0`。方向 context scale 分别为守方反制攻方 `125000`、攻方反制守方 `100000`（均 Q100000）。51 号兵团属于守方 ArmyID `18`，其**现役 entry** 当前人数为 `17579130` Q100000，即 `175.79130` 人的内部值，原生 counter chunk 为 `175791`；class `1`、stack `100` 人，目标 class 为 `4/5/8/9` 且各自 effectiveness `100000`。这与 v3 的预接战整数人数及 chunk 不是同一个输入。
+
+原始前帧、battle-control、后帧 SHA-256 依次为 `95C42C520926CF3B66F106ADFBFF4D7E91577F71820F83A7EAFDA8E3E2A11FD4`、`350941D8F88EAE8BA5F91C9CBDCC8F025920D9F120842C6571E832AD86CF396F`、`5FF86DF09D0DF07F222F89DFD1D42970BA567E56B7C57F481A4D16C1F7BC0351`；清场回执 SHA-256 `050123AB77778D00B3D6E66A23C0EE033A9ADD938B8DBEBD10A326756B74164F` 记录 capture 返回 0、CK3 进程树清空。可重放的[精确投影器](../../ck3_autonomous_player/tools/project_active_counter_088.py)与[机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_active_counter_088.json)约束每份源哈希和同帧身份。
+
+该实测只证明当前帧的原生反制基础 operand 可完整读取。`active_combat_resume_inputs_v1` 仍为 `unavailable/same_frame_resume_operands_incomplete`，包含 `active_regiment_counter_class_stack_context` 在内的四个缺域仍在；没有推进下一战斗日，也没有对拍真正进入 `0x23CF1B0` 的 class retention 向量或下一日输入。因此不得据此把下一日、整场胜率或智能体决策标成已闭合。
