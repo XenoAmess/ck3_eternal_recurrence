@@ -64,13 +64,17 @@ flowchart TD
     A[同帧 played character 与 activity registry] --> B{is_shown}
     B -- false --> X[不列出；保留原生 reason]
     B -- true --> C{can_plan 或 fallback failure-only}
+    A -. exact native character/type input .-> C0[0x96F310 或 0x96F3D0 调 0x28CFB70]
+    C0 -. 仅前置判定；不是完整 can_start .-> C
     C -- false --> Y[可见但不可计划；返回阻断原因]
     C -- true --> D[枚举合法地点、类型、选项、intent 与邀请规则]
     D --> E[用最终 creation data 求 configured cost]
     E --> F{可负担且 can_start}
     F -- false --> Z[不提交；返回费用或原生阻断原因]
     F -- true --> G[commit-time 再验证同一 owner/活动/地点/配置]
-    G --> H[CStartActivityCommand 提交一次]
+    G --> G0{0x219A8B0 完整命令 payload 验证}
+    G0 -- 拒绝 --> Z
+    G0 -- 通过 --> H[CStartActivityCommand 提交一次]
     H --> I{后置观测出现 owner/type 匹配的新活动}
     I -- false --> R[RED：ACK 不能代替状态]
     I -- true --> J[观察 travel/passive/active phase]
@@ -87,6 +91,7 @@ flowchart TD
     S -- true --> J
 
     D -. unknown: 完整语义采集与实机 paused 判定 .-> U[先补只读 observer]
+    G0 -. unknown: 0x219AB2B 至 0x2CE2C80 与 payload +0x10 .-> U
     N -. unknown: invite/open collection owner .-> V[后续参加 observer]
     J -. unknown: lifecycle/phase native surface .-> W[后续结局 observer]
 ```
@@ -257,8 +262,9 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 
 - `CActivityType` registry owner/enumerator 与 native stable key 字段；
 - `CActivityListDetailHostView` slot 25 与最终 evaluator 的 RVA 已冻结；32-byte caller-owned 失败文本构造、复制和原生释放已进入默认关闭的私有回调（见 `activity-planning-slot25-native-callback-1.19.0.6.md`）；相邻 slot 26/27/29 的有界反汇编只得到未知效果的 `0xA79700` 调用与两个原始类型字段指针，未得到可用的合法地点、配置、权威费用或 `can_start` 语义（见 `activity-planning-semantic-seam-1.19.0.6.md`）；失败 stable key 保持 typed unknown，false 路径文本完整性、实机 HostView 可达性与完整 planner 语义采集仍未闭合；
+- exact EXE `1.19.0.6`（SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`）中，原版 `0x96F310` 布尔包装与 `0x96F3D0` 失败文本包装都经 `0x96A130` 构造角色 target，调用 `0x28CFB70` 评估角色/活动类型前置条件；`CStartActivityCommand` validator `0x219A8B0` 在 `0x219AB02` 也调用它，但通过后仍继续验证完整 payload。因此这两个 UI 包装不等于合法地点、配置、权威费用或最终 `can_start` 查询；
 - AI 16-byte row 的完整所有权、identity 和 lifetime；
-- `CStartActivityCommand` `0x508` payload 的字段语义与可新建构造器；
+- `CStartActivityCommand` `0x508` payload 的字段语义与可新建构造器；下一确定地址为前置通过后的 `0x219AB2B -> 0x2CE2C80`，返回值在 `0x219AB3A` 与 payload `+0x10` 比较，两者的原生含义未查明；
 - treasury、herd、barter、piety、prestige 等配置费用向量槽位；
 - pending invite/open activity 集合及 native can-join reason；
 - lifecycle/phase/terminal 的只读原生 surface；
@@ -266,4 +272,4 @@ Observer live GREEN 后复用 `CStartActivityCommand`：
 - 狩猎等活动内部的 faith 分支，仅允许保留 opaque allow/deny；
 - feast 之后的 location、options、intent、guest 质量策略。
 
-这些 `unknown` 是下一批可施工入口。P0 的具体下一处逆向是 `0x1505230 -> 0xA79700` 的下游调用是否真的提供只读 planner collection，以及 `0x1505330` 返回的 `CActivityType+0x2030` 指针由谁消费、代表什么；未证明前不接生产 `read_semantics`。随后才接入 private application-main paused read-only capture，检查当前 Robert 帧能否取得真实 `activity_feast` HostView、final boolean、失败文本和完整配置；在它 live GREEN 前，活动能力仍是 `static-ready private glue/callback`，不得标成 production query、action-ready 或完整活动 OODA。
+这些 `unknown` 是下一批可施工入口。P0 的下一处逆向先沿 `0x219A8B0` 前置通过后的分支定位 `0x219AB2B -> 0x2CE2C80`、payload `+0x10` 和其余 `0x508` 字段的来源及含义；`0x1505230 -> 0xA79700` 与 `0x1505330` 返回的 `CActivityType+0x2030` 指针仍是待验证的只读 planner collection 线索。未证明完整语义前不接生产 `read_semantics`，也不发布只含前置布尔值的 `can_start` 查询。随后才接入 private application-main paused read-only capture，检查当前 Robert 帧能否取得真实 `activity_feast` HostView、前置布尔值、失败文本和完整配置；在它 live GREEN 前，活动能力仍是 `static-ready private glue/callback`，不得标成 production query、action-ready 或完整活动 OODA。
