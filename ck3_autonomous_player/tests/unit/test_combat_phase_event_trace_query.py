@@ -317,5 +317,65 @@ class CombatPhaseEventTraceQueryTest(unittest.TestCase):
         self.assertEqual(driver.calls, 1)
 
 
+class CombatPhaseEventTraceMcpTest(unittest.IsolatedAsyncioTestCase):
+    async def test_registered_tool_routes_revision_bound_read_without_odds(self) -> None:
+        from mcp import Client
+        from xar_autoplayer.bridge.mcp_server import create_server
+
+        class Driver:
+            calls: list[tuple[str, int | None]]
+
+            def __init__(self) -> None:
+                self.calls = []
+
+            def take_snapshot(self) -> dict[str, object]:
+                return {
+                    "paused": True, "revision": 3,
+                    "snapshot_id": "native:3", "date_raw": 53192304,
+                }
+
+            def capabilities(self) -> dict[str, object]:
+                return {"bridge_capabilities": [
+                    QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY,
+                ]}
+
+            def execute_step(
+                self, step: str, *, expected_revision: int | None = None,
+            ) -> dict[str, object]:
+                self.calls.append((step, expected_revision))
+                return {
+                    "step": step, "accepted": True,
+                    "status": "evaluator_probe_available",
+                    "combat_phase_event_trace": available_trace(),
+                    "backend_id": "native-headless",
+                }
+
+        driver = Driver()
+        async with Client(create_server(driver)) as client:
+            listed = await client.list_tools()
+            self.assertIn(
+                "ck3_query_combat_phase_event_trace_v1",
+                {tool.name for tool in listed.tools},
+            )
+            result = await client.call_tool(
+                "ck3_query_combat_phase_event_trace_v1",
+                {"combat_id": 738197508, "expected_revision": 3},
+            )
+            self.assertFalse(result.is_error)
+            self.assertIs(result.structured_content["production_trace_ready"], False)
+            self.assertIs(
+                result.structured_content["qualified_win_probability_available"],
+                False,
+            )
+            stale = await client.call_tool(
+                "ck3_query_combat_phase_event_trace_v1",
+                {"combat_id": 738197508, "expected_revision": 4},
+            )
+            self.assertTrue(stale.is_error)
+        self.assertEqual(driver.calls, [
+            ("query-combat-phase-event-trace-v1-738197508", 3),
+        ])
+
+
 if __name__ == "__main__":
     unittest.main()
