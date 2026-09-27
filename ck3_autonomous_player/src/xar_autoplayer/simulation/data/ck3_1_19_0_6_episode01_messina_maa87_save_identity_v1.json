@@ -1,0 +1,101 @@
+{
+  "schema": "ck3.maa87_source_save_human_identity.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "rakaly_version": "0.8.19",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "source_cases": [
+    {
+      "source_day": 11,
+      "source_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-full-edge-attempt-004\\trace-d11-immutable.ck3",
+        "sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+      },
+      "rakaly_melted": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\trace-d11-melted.ck3",
+        "sha256": "A82FDD3A57B84B8FC5E4A42EBD292013C45FAA5061D89F79D9E7A24E979A01C6"
+      },
+      "regiment_id": 87,
+      "line_start": 3908059,
+      "line_end": 3908076,
+      "type_key": "mubarizun",
+      "army_id": 16777221,
+      "block_sha256": "EC1BA47EDB147BC7F803A30CBF691B6BD6A5B21D20D301E196A9B343A9E03D3A"
+    },
+    {
+      "source_day": 21,
+      "source_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-full-edge-attempt-004\\trace-d21-immutable.ck3",
+        "sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A"
+      },
+      "rakaly_melted": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\trace-d21-melted.ck3",
+        "sha256": "48F2EA80D7AF0DA5EA4DA3B34E965A481BD2FF201017E35F0F08711503089B61"
+      },
+      "regiment_id": 87,
+      "line_start": 3926034,
+      "line_end": 3926051,
+      "type_key": "mubarizun",
+      "army_id": 16777221,
+      "block_sha256": "EC1BA47EDB147BC7F803A30CBF691B6BD6A5B21D20D301E196A9B343A9E03D3A"
+    }
+  ],
+  "game_sources": {
+    "maa_definition": {
+      "relative_path": "common/men_at_arms_types/00_cultural_maa_types.txt",
+      "sha256": "50037AE2D6597404B9F45CC2EB8FD194E0F41F2721E23AB9A4BA5208C9C2B761"
+    },
+    "province_definition": {
+      "relative_path": "map_data/definition.csv",
+      "sha256": "28A6793B3560145770A2A93C75CEC8A7D7A82CF2BF7C9A877D076CA65FC65101"
+    },
+    "landed_titles": {
+      "relative_path": "common/landed_titles/00_landed_titles.txt",
+      "sha256": "6A508DB6C113115AA5ACA18B8DA5374B30FEB76198533AEC3A59C5076958637E"
+    },
+    "maa_localization_zh": {
+      "relative_path": "localization/simp_chinese/regiment_l_simp_chinese.yml",
+      "sha256": "B642159F76AFA4CDF19CEC04516A10B26229C220E0CA621D8A2A22D232DD38EA"
+    },
+    "maa_localization_en": {
+      "relative_path": "localization/english/regiment_l_english.yml",
+      "sha256": "C33419B6C6E98A7BBFC4AE1DDFD5390936B451C8B6CACB6DB85F12ABDFACA51A"
+    },
+    "province_localization_zh": {
+      "relative_path": "localization/simp_chinese/titles_l_simp_chinese.yml",
+      "sha256": "22E5A59DDCC416B8E45581520111EF511AF86D92F4475A9FC7F814D850422009"
+    },
+    "province_localization_en": {
+      "relative_path": "localization/english/titles_l_english.yml",
+      "sha256": "4D3471BA0E8AC3E2028FE68D0B9D06839A13F7AF25FF00F0445F6CC0A7EF1801"
+    }
+  },
+  "maa_type": {
+    "key": "mubarizun",
+    "native_class_key": "heavy_infantry",
+    "base_damage": 45,
+    "base_toughness": 25,
+    "definition_line": 578,
+    "localization_lines": {
+      "zh": 143,
+      "en": 154
+    },
+    "name_zh": "穆巴里尊",
+    "name_en": "Mubarizun"
+  },
+  "target_province": {
+    "id": 2633,
+    "definition_line": 2634,
+    "landed_title_key": "b_messina",
+    "landed_title_line": 14181,
+    "localization_lines": {
+      "zh": 6579,
+      "en": 6580
+    },
+    "name_zh": "墨西拿",
+    "name_en": "Messina"
+  },
+  "v3_maa_type_key_filled": false,
+  "same_frame_modifier_source_proven": false,
+  "source_save_identity_only": true
+}
