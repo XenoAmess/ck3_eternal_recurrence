@@ -1660,6 +1660,43 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_lifestyle_early_return_keeps_due_construction_receipt_on_war_turn(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 48}]}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-army-strengths-v1", "life-advance",
+                          "private-query-player-construction-receipt-v1"),
+        )
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_construction_formal_trial = True
+        war_plan = {"policy": "one-life-turn-v1",
+                    "selected_step": "query-army-strengths-v1"}
+
+        def due_receipt(_driver, planned, _snapshot, _history, _steps,
+                        *, prewar_arbitration=False):
+            self.assertFalse(prewar_arbitration)
+            self.assertEqual(planned["plan"]["selected_step"],
+                             "query-army-strengths-v1")
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": "private-query-player-construction-receipt-v1"}}
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                       return_value=war_plan),
+            mock.patch.object(GameplayBridgeService,
+                              "_plan_private_lifestyle_trial_v1",
+                              side_effect=lambda planned, _steps: planned),
+            mock.patch("xar_autoplayer.bridge.service.plan_construction_private",
+                       side_effect=due_receipt) as construction,
+        ):
+            selected = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(selected["selected_step"],
+                         "private-query-player-construction-receipt-v1")
+        construction.assert_called_once()
+
     def test_construction_source_red_still_checks_independent_marriage(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,

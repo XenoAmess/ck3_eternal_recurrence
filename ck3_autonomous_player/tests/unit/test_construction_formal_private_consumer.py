@@ -911,6 +911,56 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
                                      for row in driver.requests), 1)
 
+    def test_due_completion_receipt_is_consumed_during_war_turn(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=root(3)[0]["result"])
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                later = frame(5)
+                later["date_raw"] += 30 * 24
+                later["active_wars"] = [{"war_id": 48}]
+                driver.snapshot = later
+                driver.completed_construction = True
+                war_step = "query-army-strengths-v1"
+                planned = {"plan": {"selected_step": war_step}, "revision": 5}
+                modal = {**later, "active_event": {"instance_id": 9}}
+                event_plan = {"plan": {"selected_step": "select-event-option-1"},
+                              "revision": 5}
+                self.assertEqual(plan_construction_private(
+                    driver, event_plan, modal, [], {ROOT_QUERY_STEP}), event_plan)
+                need_income = plan_construction_private(
+                    driver, planned, later, [], {ROOT_QUERY_STEP})
+                self.assertEqual(need_income["plan"]["selected_step"], ROOT_QUERY_STEP)
+                later_root = root(5)[0]
+                later_root["result"]["campaign_root_context"]["date_raw"] = later["date_raw"]
+                later_root["result"]["campaign_root_context"][
+                    "player_monthly_gold_income"]["raw"] = 1_050_000
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=later_root["result"])
+                watch = plan_construction_private(
+                    driver, planned, later, [later_root], {ROOT_QUERY_STEP})
+                self.assertEqual(watch["plan"]["selected_step"], RECEIPT_STEP)
+                completed = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(completed["completion_status"], "completed")
+                self.assertEqual(completed["observed_player_monthly_income_delta_raw"], 50_000)
+                after = plan_construction_private(
+                    driver, planned, later, [later_root], {ROOT_QUERY_STEP})
+                self.assertEqual(after["plan"]["selected_step"], war_step)
+                self.assertEqual(after["plan"]["construction_receipt_consumed"], completed)
+                with self.assertRaises(BridgeUnavailableError):
+                    transport.query_construction_private(
+                        driver, expected_revision=5)
+                self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                     for row in driver.requests), 1)
+
     def test_cold_restore_after_completion_reads_built_slot(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
@@ -934,6 +984,34 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertEqual(done["completion_status"], "completed")
                 self.assertEqual(done["post_bridge_pid"], 124)
                 self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
+
+    def test_cold_war_restore_rechecks_existing_construction_before_monthly_watch(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+            later = frame(5)
+            later["date_raw"] += 9 * 24
+            later["active_wars"] = [{"war_id": 48}]
+            later["player_armies"] = [{"army_id": 16777237}]
+            driver.snapshot = later
+            war_step = "query-army-strengths-v1"
+            with mock.patch.object(transport, "_identity", return_value=(124, "t2")):
+                plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": war_step}, "revision": 5},
+                    later, [], set())
+                self.assertEqual(plan["plan"]["selected_step"], RECEIPT_STEP)
+                cold = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+            self.assertEqual(cold["completion_status"], "in_progress")
+            self.assertEqual(cold["post_bridge_pid"], 124)
+            self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                 for row in driver.requests), 1)
 
     def test_cold_completion_without_root_income_is_followed_up_same_day(self):
         with TemporaryDirectory() as location:

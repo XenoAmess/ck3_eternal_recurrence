@@ -2,6 +2,14 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-27 NW-ECON-C77：战争帧恢复已有施工的完工与收入消费（源码/fixture）
+
+C67 当前 h133 配对的建设账本仍为 `applied/in_progress`，`completion_last_check_date_raw=53154720`；该派生 save 的 `date_raw=53154936`，距 30 游戏日普通 watch 门 `53155440` 还有 21 天。新 PID 冷恢复本应先核同槽活动施工或已建槽位，不受这段间隔限制；此前消费者在正式策略选战争步骤时直接返回，而生活方式 opt-in 的 service 早退还会丢弃建设 snapshot。即使强行选出回执，私有传输 `_binding` 原先把和平且无军队条件同时用于**只读材料回执**，战争帧会在 native 查询前被拒绝。这是生产调用链的确定性漏消费；C67 候选尚未启动，不能据此说 h133 已完工。
+
+现有建设账本的 pending、cold applied、到期 watch 与已完工但缺实际收入的后续查询，可以在无实质模态的战争 paused 帧先走原正式回执；没有到期或核完后保留原战争策略步骤。`material_receipt=True` 只放宽已有材料查询的战争/军队门，仍要求 paused/map-ready、同 actor/episode/revision 与独立 native proof；新候选查询和 typed 提交继续要求和平、无军队与原有预算合法性。完工仍以同省/槽/定义的已建槽位及不再 active 为物质证据，玩家实际月收入另外读同帧 public root；总收入差值不能独占归因于该建筑，具体建筑效果仍缺独立实机读回。
+
+聚焦测试以原开工账本验证：新 PID 在仅过 9 天且有战争和军队时立即冷核 active 槽、不重复提交；同 PID 满 30 天、战争步骤在前时先读收入再核已建槽，收据消费后保留原战争步骤；新建设候选在战争帧仍被拒绝。normal 与 `-O` 各 36/36。该改动只在源码/fixture 层闭合消费入口；需要下一独立匹配候选/no-launch 后在唯一实例中核对 h133 原配对及正式下一 turn，不热改 C67 冻结制品，不把未观察的完工或收入算进 M4。
+
 ## 2026-09-27 NW-ECON-C35：h115 冷恢复后施工仍未完工，战争输入阻断后续日期
 
 R0243 从同一派生 Robert h115/raw53154720 的 save、driver、建设及家庭账本经正式 ordinary `xar_off` 重绑定与 no-launch 开始；启动前分配轮次，唯一 PID68496 在可见后最小化，12/12 有界正式 turn `turn_limit/qualified`，进程树回收。第 2 turn 在新 PID 独立复核原 `hill_farms_01` 槽位仍为 `applied/in_progress`，现金与玩家月收入读回沿用原收据，`completion_observed_date_raw` 和实际收入差值仍为 `null`，未重复扣款或施工。第 9 turn 战争策略宣战、第 11 turn 集结，第 12 turn 最小化后台推进 raw53154720→53154936（9 派生游戏日），保存 h133。距本次冷复核 raw53154720 尚不足既定 30 日 watch；无完工或收益证据。[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h115-c35-20260927/attempt-01/formal-report.txt) SHA `95ED751461D47619F45D0C9B0E5D34FBA18F0FF6DA31B90C7E5B218653483415`，[operator](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h115-c35-20260927/attempt-01/operator-receipt.json) SHA `667AFBBA310E31401EF23D4157EEB047E88FEC18186C8E9B899962E9A6816A7B`，[h133 原始配对清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h133-c35-20260927/source-pair-h133/PAIR-IDENTITY.json) SHA `9E7FB3DD88999C00E270EF82B607F73D0A998A5977E87D2029A8CEC02E43485E`。
