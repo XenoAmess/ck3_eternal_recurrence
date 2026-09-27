@@ -3012,6 +3012,70 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
                     malformed, parent=frame
                 )
 
+    def test_resume_counter_census_preserves_next_day_gap(self) -> None:
+        frame = _battle_frame()
+        frame["active_counter_inputs_v1"] = _active_counter_inputs(frame)
+        frame = self.normalize(frame)
+        receipt = _with_typed_battle_side_mapping(
+            _active_resume_receipt(frame), frame
+        )
+        receipt["observed"]["active_counter_inputs_v1"] = copy.deepcopy(
+            frame["active_counter_inputs_v1"]
+        )
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(receipt, parent=frame),
+            receipt,
+        )
+        self.assertEqual(receipt["status"], "unavailable")
+        self.assertFalse(receipt["input_observation_ready"])
+        self.assertIn(
+            "active_regiment_counter_class_stack_context",
+            receipt["missing_required_domains"],
+        )
+
+        forged = copy.deepcopy(receipt)
+        forged["observed"]["active_counter_inputs_v1"]["sides"][0][
+            "men_at_arms_entries"
+        ][0]["current_chunk_raw"] += 1
+        with self.assertRaisesRegex(ValueError, "disagrees with battle frame"):
+            normalize_active_combat_resume_inputs_v1(forged, parent=frame)
+        forged = copy.deepcopy(receipt)
+        forged["missing_required_domains"].remove(
+            "active_regiment_counter_class_stack_context"
+        )
+        with self.assertRaisesRegex(ValueError, "next-day counter domain"):
+            normalize_active_combat_resume_inputs_v1(forged, parent=frame)
+
+        legacy = _active_resume_receipt(frame)
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(legacy, parent=frame),
+            legacy,
+        )
+        unavailable_frame = copy.deepcopy(frame)
+        unavailable_frame["active_counter_inputs_v1"].update(
+            status="unavailable", operand_census_complete=False,
+            class_count=None, sides=None, contexts=None,
+            unavailable_reason="counter_regiment_generation_changed",
+        )
+        unavailable_frame = self.normalize(unavailable_frame)
+        unavailable_receipt = _active_resume_receipt(unavailable_frame)
+        unavailable_receipt["observed"]["active_counter_inputs_v1"] = (
+            copy.deepcopy(unavailable_frame["active_counter_inputs_v1"])
+        )
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(
+                unavailable_receipt, parent=unavailable_frame
+            ),
+            unavailable_receipt,
+        )
+        unavailable_receipt["missing_required_domains"].remove(
+            "active_regiment_counter_class_stack_context"
+        )
+        with self.assertRaisesRegex(ValueError, "next-day counter domain"):
+            normalize_active_combat_resume_inputs_v1(
+                unavailable_receipt, parent=unavailable_frame
+            )
+
     def test_resume_coalition_mapping_closes_only_its_verified_domain(self) -> None:
         attacker_frame = self.normalize(_battle_frame())
         attacker_receipt = _with_typed_battle_side_mapping(

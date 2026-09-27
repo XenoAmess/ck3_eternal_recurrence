@@ -408,6 +408,20 @@ int main() {
                 "\"countering_primary_owner_character_id\":100")) {
     return Fail("active counter same-frame operands were not serialized");
   }
+  const auto counter_resume = SerializeActiveCombatResumeInputsV1(active_counter);
+  const auto counter_missing_pos =
+      counter_resume.find("\"missing_required_domains\":");
+  if (counter_resume.empty() ||
+      !Contains(counter_resume,
+                "\"active_counter_inputs_v1\":{\"schema_version\":1,"
+                "\"status\":\"available\","
+                "\"operand_census_complete\":true") ||
+      counter_missing_pos == std::string::npos ||
+      counter_resume.substr(counter_missing_pos).find(
+          "active_regiment_counter_class_stack_context") == std::string::npos ||
+      !Contains(counter_resume, "\"input_observation_ready\":false")) {
+    return Fail("active resume lost current counter data or next-day gap");
+  }
   auto wrong_counter = active_counter;
   wrong_counter.active_counter_inputs_v1.contexts[0]
       .countering_primary_owner_character_id = 201;
@@ -433,6 +447,19 @@ int main() {
                 "\"class_count\":null,\"sides\":null,"
                 "\"contexts\":null")) {
     return Fail("active counter unavailable exposed partial operands");
+  }
+  const auto unavailable_resume =
+      SerializeActiveCombatResumeInputsV1(unavailable_counter);
+  const auto unavailable_missing_pos =
+      unavailable_resume.find("\"missing_required_domains\":");
+  if (!Contains(unavailable_resume,
+                "\"active_counter_inputs_v1\":{\"schema_version\":1,"
+                "\"status\":\"unavailable\","
+                "\"operand_census_complete\":false") ||
+      unavailable_missing_pos == std::string::npos ||
+      unavailable_resume.substr(unavailable_missing_pos).find(
+          "active_regiment_counter_class_stack_context") == std::string::npos) {
+    return Fail("active resume hid an unavailable counter operand domain");
   }
 
   auto pursuit = complete;

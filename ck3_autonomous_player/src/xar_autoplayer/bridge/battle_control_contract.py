@@ -114,6 +114,12 @@ _ACTIVE_RESUME_OBSERVED_KEYS = {
 _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING = _ACTIVE_RESUME_OBSERVED_KEYS | {
     "battle_side_mapping"
 }
+_ACTIVE_RESUME_OBSERVED_KEYS_WITH_COUNTER = _ACTIVE_RESUME_OBSERVED_KEYS | {
+    "active_counter_inputs_v1"
+}
+_ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING_AND_COUNTER = (
+    _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING | {"active_counter_inputs_v1"}
+)
 _ACTIVE_RESUME_BATTLE_SIDE_MAPPING_KEYS = {
     "status",
     "subject_side_index",
@@ -809,6 +815,8 @@ def normalize_active_combat_resume_inputs_v1(
     if not isinstance(observed, dict) or set(observed) not in (
         _ACTIVE_RESUME_OBSERVED_KEYS,
         _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING,
+        _ACTIVE_RESUME_OBSERVED_KEYS_WITH_COUNTER,
+        _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING_AND_COUNTER,
     ):
         raise ValueError(f"{name}.observed has a malformed schema")
     if observed["phase"] != parent["phase"]:
@@ -927,6 +935,15 @@ def normalize_active_combat_resume_inputs_v1(
             actual = _positive_int32_list(mapping[key], f"{mapping_name}.{key}")
             if actual != expected:
                 raise ValueError(f"{mapping_name}.{key} disagrees with battle frame")
+    has_counter = "active_counter_inputs_v1" in observed
+    if has_counter:
+        parent_counter = parent.get("active_counter_inputs_v1")
+        if not isinstance(parent_counter, dict) or observed["active_counter_inputs_v1"] != parent_counter:
+            raise ValueError(f"{name}.observed.active_counter_inputs_v1 disagrees with battle frame")
+    # This copies a current-frame census only. Its next-day retention and
+    # dynamic-entry transition have not been validated against the native call.
+    if "active_regiment_counter_class_stack_context" not in missing:
+        raise ValueError(f"{name} next-day counter domain is not complete")
     return {
         "schema_version": 1,
         "status": "unavailable",

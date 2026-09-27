@@ -1718,11 +1718,21 @@ std::string SerializeActiveCombatResumeInputsV1(
           snapshot.unaffected_same_side_public_cunit_ids_in_stored_order)) {
     return {};
   }
-  output += "}},\"missing_required_domains\":[";
+  output.push_back('}');
+  if (snapshot.active_counter_inputs_v1.attempted) {
+    output += ",\"active_counter_inputs_v1\":";
+    if (!AppendActiveCounterInputsV1(output,
+                                     snapshot.active_counter_inputs_v1)) {
+      return {};
+    }
+  }
+  output += "},\"missing_required_domains\":[";
   if (!snapshot.attacker.selected_commander_next_roll_bounds.available ||
       !snapshot.defender.selected_commander_next_roll_bounds.available) {
     output += "\"selected_commander_next_roll_bounds\",";
   }
+  // A complete current-frame census does not establish the next-day
+  // retention call or entry reorder. Keep the resume domain unavailable.
   output += "\"active_regiment_counter_class_stack_context\","
             "\"next_day_non_roll_advantage_sources\","
             "\"battle_knight_participation_and_dynamic_entry_transitions\"]}";
