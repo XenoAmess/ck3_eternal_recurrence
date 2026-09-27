@@ -7305,12 +7305,21 @@ std::string PlayerPrisonerCollectionPrivateResultFrame(
           &release_previews,
     bool release_previews_complete
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+    , const std::array<xar::ck3_11906::PlayerPrisonerRansomQuoteV1,
+                       xar::bridge::kPlayerPrisonerMaximumRowsV1>
+          &ransom_quotes,
+    bool ransom_quotes_complete
+#endif
 ) {
   const auto payload =
       xar::ck3_11906::SerializePlayerPrisonerCollectionPrivateV1(
           value, snapshot_revision
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
           , release_previews, release_previews_complete
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+          , ransom_quotes, ransom_quotes_complete
 #endif
       );
   if (payload.empty()) return {};
@@ -15154,6 +15163,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
                       , query.release_previews,
                       query.release_previews_complete
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+                      , query.ransom_quotes,
+                      query.ransom_quotes_complete
 #endif
                   );
                   if (!response.empty())
