@@ -25381,7 +25381,7 @@ def _fresh_preview_first_hop_steps(
         return set()
     steps: set[str] = set()
     seen: set[tuple[int, int]] = set()
-    for row in reversed(history):
+    for row in reversed(_native_history_after_latest_restore(history)):
         parsed = parse_preview_move_army_step(row.get("command"))
         if parsed is None or parsed in seen:
             continue

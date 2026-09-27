@@ -127,6 +127,18 @@ class NativeFirstHopProjectionTests(unittest.TestCase):
     def test_no_preview_proof_exposes_no_hop(self) -> None:
         self.assertEqual(self._project(history=[]), set())
 
+    def test_successful_restore_invalidates_pre_restore_preview(self) -> None:
+        # A replay can reproduce the same native frame identifiers; only
+        # history from after the latest successful restore may authorize a hop.
+        restored = {"index": 2, "command": "restore-checkpoint", "ok": True}
+        self.assertEqual(self._project(history=[_preview_row(), restored]), set())
+        post_restore = copy.deepcopy(_preview_row())
+        post_restore["index"] = 3
+        self.assertEqual(
+            self._project(history=[_preview_row(), restored, post_restore]),
+            EXPECTED,
+        )
+
     def test_unadvertised_preview_target_cannot_expand_hop(self) -> None:
         self.assertEqual(self._project(advertised=set()), set())
 
