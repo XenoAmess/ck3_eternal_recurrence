@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,6 +88,37 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
             )
             self.assertTrue(json.loads(accepted.stdout)["feudal_1066_target_robert"])
             self.assertFalse(build_dir.exists())
+
+    def test_explicit_cmake_defines_are_planned_and_forwarded(self) -> None:
+        helper = _load_helper()
+        defines = [
+            "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1=ON",
+            "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=ON",
+        ]
+        with tempfile.TemporaryDirectory(prefix="xar-native-defines-") as temporary:
+            build_dir = Path(temporary) / "new-build"
+            args = helper._parser().parse_args(
+                ["--build-dir", str(build_dir),
+                 *[item for define in defines
+                   for item in ("--cmake-define", define)]]
+            )
+            with mock.patch.object(helper, "native_bridge_source_fingerprint",
+                                   return_value="stable"), mock.patch.object(
+                helper, "_required_command", return_value="tool"
+            ), mock.patch.object(
+                helper, "_run_checked", side_effect=RuntimeError("configure captured")
+            ) as run_checked:
+                with self.assertRaisesRegex(RuntimeError, "configure captured"):
+                    helper.run(args)
+            configure = run_checked.call_args.args[0]
+            self.assertEqual(
+                [item for item in configure if item.startswith("-DXAR_CK3_ENABLE_G2_")],
+                [f"-D{define}" for define in defines],
+            )
+            self.assertTrue(build_dir.exists())
+            build_dir.rmdir()
+            args.plan_only = True
+            self.assertEqual(helper.run(args)["cmake_defines"], defines)
 
     def test_2052_only_toolchain_repairs_cmake_mojibake_as_utf8(self) -> None:
         helper = _load_helper()
