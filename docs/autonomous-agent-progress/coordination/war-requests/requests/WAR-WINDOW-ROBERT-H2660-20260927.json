@@ -1,0 +1,37 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-WINDOW-ROBERT-H2660-20260927",
+  "created_at_utc": "2026-09-27T15:26:38Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "single_instance_window_coordination",
+  "scope": "Queue the next bounded 1066 Robert run after the war maintainer completes or abandons its separately managed WAR31 window. This request neither reserves a CK3 instance nor authorizes a gameplay action.",
+  "source": {
+    "formal_campaign": "1066_robert_and_legal_succession",
+    "last_completed_run": "R0262",
+    "last_completed_checkpoint_history_index": 2660,
+    "last_completed_date_raw": 53217072,
+    "last_completed_persistent_game_days": 3031,
+    "prospective_run": "next_allocator_assigned_robert_run",
+    "candidate_status": "official_prepare_rebind_no_launch_ready_live_not_started",
+    "candidate_source_commit": "b8dba9d0a562f4dd177f28fa9e6a2f6989e0e25b",
+    "candidate_index_sha256": "014245c999a04255d942dc59c3afdab0f419fd19680d6a0de74a2b08da077b21",
+    "official_no_launch_report_sha256": "854da5cc1a54bdfef32c492a99faabfd6d6f25ce27e1081526259a39d782c860",
+    "latest_master_when_filed": "10bba122bb9595e0fb3ae650f416ee2d36ff8892",
+    "candidate_artifacts_are_local_only": true,
+    "current_global_instance_status": "unverified"
+  },
+  "prior_window_handoff": {
+    "request_id": "WAR-WINDOW-ROBERT-H2577-20260927",
+    "release_verification_path": "../verifications/WAR-WINDOW-ROBERT-H2577-20260927.json",
+    "released_run": "R0262",
+    "meaning": "The prior local Robert window was released for WAR31; this new request does not revoke or preempt that handoff."
+  },
+  "requested_delivery": [
+    "After your WAR31 window is completed or abandoned, publish a response for this request on master that explicitly releases your local window. State the actual WAR31 outcome and any still-running CK3, injector or operator process observed on your machine at the handoff check; do not substitute a no-launch result or an earlier process inventory.",
+    "Identify any resource or account coordination still needed before Robert can start. If WAR31 remains active or blocked, retain the window and provide the concrete next release condition rather than reporting it free.",
+    "The nonwar operator will independently check its own live source, local processes, current candidate and official pairing before allocating or starting the next Robert run; the run number is not reserved by this request."
+  ],
+  "coordination_boundary": "Git transports cross-machine intent and handoff records, not a global live lock or remote MCP state. Each machine uses only its own operator MCP and fresh local process checks at its actual handoff."
+}
