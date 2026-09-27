@@ -20,6 +20,7 @@ from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
     RESULT_STEP as FAMILY_RESULT_STEP,
+    SUBMIT_STEP as FAMILY_SUBMIT_STEP,
 )
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
@@ -218,6 +219,7 @@ class _Driver:
         self.state_dir = state_dir
         self.allow_private_m5_joint_collector = enabled
         self.allow_private_family_marriage_formal_trial = family_enabled
+        self.allow_private_current_first_heir_relationship_query = False
         self._snapshot = deepcopy(snapshot or _snapshot())
         self._faction = deepcopy(faction or _faction())
         self.drift_on_internal_read = drift_on_internal_read
@@ -226,6 +228,20 @@ class _Driver:
         self.faction_reads = 0
         self.family_reads = 0
         self.legality, self.projection = _family_reads()
+
+    def query_current_first_heir_relationship_private_v1(
+        self, *, expected_native_revision: int,
+    ) -> dict[str, object]:
+        self.current_relation_reads = getattr(self, "current_relation_reads", 0) + 1
+        return {
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "status": "available", "read_only": True, "advertised": False,
+            "native_revision": expected_native_revision,
+            "heir_character_id": 38822, "bilateral_verified": True,
+            "betrothed_character_id": None,
+            "primary_spouse_character_id": None,
+            "spouse_character_ids": [],
+        }
 
     def take_snapshot(self) -> dict[str, object]:
         return deepcopy(self._snapshot)
@@ -293,6 +309,50 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                 "resolved": None,
             }), encoding="utf-8",
         )
+
+    def _write_old_heir_resolved_family(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        (self.state_dir / "first-heir-marriage-formal-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.first-heir-marriage-formal.v1",
+                "pending": None,
+                "resolved": {"status": "betrothal", "material_result": True,
+                             "episode_run_id": _FRAME["episode_run_id"],
+                             "heir_character_id": 39999,
+                             "candidate_character_id": 38710,
+                             "source_pending": {"recipient_character_id": 32266},
+                             "post_bridge_pid": 55,
+                             "post_bridge_creation_date": "created"},
+            }), encoding="utf-8")
+
+    def test_changed_heir_family_competes_with_building_after_old_resolution(self) -> None:
+        self._write_old_heir_resolved_family()
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            faction=_faction(status="no_legal_candidate"),
+            family_enabled=True,
+        )
+        driver.allow_private_current_first_heir_relationship_query = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        building = _construction()
+        building["candidate"]["authored_monthly_income_hundredths"] = 35
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=building,
+        )):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(driver.source_reads, 1)
+        self.assertEqual(planned["plan"]["selected_step"], FAMILY_SUBMIT_STEP)
+        collection = planned["plan"]["m5_joint_query_only"]
+        self.assertEqual(collection["collected_domains"], ["building", "marriage"])
+        self.assertEqual(len(collection["collected_candidate_ids"]), 2)
+        self.assertEqual(collection["dispatch"]["reservation"]["domain"],
+                         "marriage")
+        self.assertTrue(planned["plan"]["m5_joint_formal_action_ready"])
 
     def test_pending_family_claims_recipient_against_same_frame_gift(self) -> None:
         self._write_pending_family()
