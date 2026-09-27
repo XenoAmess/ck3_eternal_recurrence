@@ -44,38 +44,52 @@ def digest(path: Path) -> str:
     return h.hexdigest().upper()
 
 
+def require(condition: bool, detail: str) -> None:
+    if not condition:
+        raise ValueError(f"day05 runtime weights evidence mismatch: {detail}")
+
+
 def validate_weight_record(row: dict, nodes: list[dict]) -> dict:
     """Bind one picker row to the executed AST child and native draw."""
 
     token = row["effect_node_identity_token"]
     root = [n for n in nodes if n["node_identity_token"] == token]
-    assert len(root) == 1 and root[0]["node_vtable_rva"] == 0x44782B0
+    require(len(root) == 1 and root[0]["node_vtable_rva"] == 0x44782B0,
+            "unique weighted-list root")
     call = root[0]["call_index"]
     effect, expected_weights, expected_index = EXPECTED[call]
-    assert row["side_index"] == root[0]["side_index"] == 1
-    assert row["native_event_load_index"] == root[0]["native_event_load_index"] == 10
+    require(row["side_index"] == root[0]["side_index"] == 1, "root side identity")
+    require(row["native_event_load_index"] == root[0]["native_event_load_index"] == 10,
+            "root native event identity")
     weights = row["weights"]
-    assert weights == expected_weights
-    assert row["entry_count"] == len(weights) == len(row["entry_node_identity_tokens"])
-    assert row["pick_count"] == 1
-    assert bytes.fromhex(row["weights_bytes_hex"]) == struct.pack(
+    require(weights == expected_weights, "native weight vector")
+    require(row["entry_count"] == len(weights) == len(row["entry_node_identity_tokens"]),
+            "weight entry count")
+    require(row["pick_count"] == 1, "single native pick")
+    require(bytes.fromhex(row["weights_bytes_hex"]) == struct.pack(
         "<" + "i" * len(weights), *weights
-    )
+    ), "native weight bytes")
     selected_tokens = row["selected_entry_identity_tokens"]
-    assert len(selected_tokens) == 1
+    require(len(selected_tokens) == 1, "one selected entry token")
     selected = row["entry_node_identity_tokens"].index(selected_tokens[0])
-    assert selected == expected_index
+    require(selected == expected_index, "selected source-order index")
     children = [n for n in nodes if n["parent_node_identity_token"] == token]
-    assert len(children) == 1
-    assert children[0]["node_vtable_rva"] == 0x4478388
-    assert children[0]["node_identity_token"] == selected_tokens[0]
+    require(len(children) == 1, "one executed child")
+    require(children[0]["node_vtable_rva"] == 0x4478388,
+            "executed child vtable")
+    require(children[0]["node_identity_token"] == selected_tokens[0],
+            "selected child identity")
     draw, after_one = DrawState(
         row["child_counter_before"], row["child_salt_before"]
     ).draw31()
-    assert after_one.counter == children[0]["counter_before"]
-    assert children[0]["counter_after"] == row["child_counter_after"]
-    assert row["child_salt_before"] == row["child_salt_after"] == 0
-    assert weighted_choice_index(tuple(weights), draw) == selected
+    require(after_one.counter == children[0]["counter_before"],
+            "child RNG counter before")
+    require(children[0]["counter_after"] == row["child_counter_after"],
+            "child RNG counter after")
+    require(row["child_salt_before"] == row["child_salt_after"] == 0,
+            "child RNG salt")
+    require(weighted_choice_index(tuple(weights), draw) == selected,
+            "weighted draw selects executed child")
     positive_total = sum(max(weight, 0) for weight in weights)
     return {
         "call_index": call,
@@ -105,12 +119,12 @@ def project(attempt: Path, game_exe: Path, bridge_dll: Path, source_save: Path) 
         "session_result": attempt / "ck3-output/session-result.json",
     }
     hashes = {name: digest(path) for name, path in paths.items()}
-    assert hashes["v3"] == V3_SHA256
-    assert hashes["begin"] == BEGIN_SHA256
-    assert hashes["finish"] == FINISH_SHA256
-    assert digest(game_exe) == EXE_SHA256
-    assert digest(bridge_dll) == DLL_SHA256
-    assert digest(source_save) == SOURCE_SHA256
+    require(hashes["v3"] == V3_SHA256, "v3 response SHA-256")
+    require(hashes["begin"] == BEGIN_SHA256, "begin response SHA-256")
+    require(hashes["finish"] == FINISH_SHA256, "finish response SHA-256")
+    require(digest(game_exe) == EXE_SHA256, "CK3 EXE SHA-256")
+    require(digest(bridge_dll) == DLL_SHA256, "bridge DLL SHA-256")
+    require(digest(source_save) == SOURCE_SHA256, "source save SHA-256")
 
     begin = json.loads(paths["begin"].read_text(encoding="utf-8"))
     begin_request = json.loads(
@@ -118,28 +132,34 @@ def project(attempt: Path, game_exe: Path, bridge_dll: Path, source_save: Path) 
             encoding="utf-8"
         )
     )
-    assert begin_request["capture_runtime_random_list_weights"] is True
-    assert begin["result"] == "CALL_COMPLETED"
-    assert begin["body"]["status"] == "armed" and begin["body"]["accepted"] is True
-    assert begin["body"]["combat_id"] == 16777218
-    assert begin["body"]["managed_daily_sequence_token"] == 66005
+    require(begin_request["capture_runtime_random_list_weights"] is True,
+            "runtime weight capture requested")
+    require(begin["result"] == "CALL_COMPLETED", "begin call completed")
+    require(begin["body"]["status"] == "armed" and begin["body"]["accepted"] is True,
+            "runtime weight capture armed")
+    require(begin["body"]["combat_id"] == 16777218, "begin CombatID")
+    require(begin["body"]["managed_daily_sequence_token"] == 66005,
+            "managed daily sequence token")
     finish = json.loads(paths["finish"].read_text(encoding="utf-8"))
-    assert finish["result"] == "CALL_COMPLETED"
+    require(finish["result"] == "CALL_COMPLETED", "finish call completed")
     body = finish["body"]
-    assert body["status"] == "bounded_trace_available"
-    assert body["combat_id"] == 16777218
+    require(body["status"] == "bounded_trace_available", "bounded trace status")
+    require(body["combat_id"] == 16777218, "finish CombatID")
     trace = body["managed_trace"]["trace"]
-    assert trace["failure_flags"] == 0 and trace["record_count"] == 7
-    assert (trace["records"][0]["native_date_raw"], trace["records"][-1]["native_date_raw"]) == (
-        53146344, 53146368
-    )
+    require(trace["failure_flags"] == 0 and trace["record_count"] == 7,
+            "seven clean native boundaries")
+    require((trace["records"][0]["native_date_raw"],
+             trace["records"][-1]["native_date_raw"]) == (53146344, 53146368),
+            "native date interval")
     runtime = trace["runtime_random_list_weights"]
-    assert runtime["status"] == "captured" and runtime["count"] == 3
+    require(runtime["status"] == "captured" and runtime["count"] == 3,
+            "three runtime random lists")
     projections = [
         validate_weight_record(row, trace["effect_node_draws"])
         for row in runtime["records"]
     ]
-    assert [row["call_index"] for row in projections] == list(EXPECTED)
+    require([row["call_index"] for row in projections] == list(EXPECTED),
+            "runtime list call order")
 
     v3 = json.loads(paths["v3"].read_text(encoding="utf-8"))
     contexts = v3["body"]["combat_simulation_inputs"]["phase_event_inputs"][
@@ -153,28 +173,37 @@ def project(attempt: Path, game_exe: Path, bridge_dll: Path, source_save: Path) 
         target="selected_enemy_knight",
     )
     growth_weights = growth.transition_log[0]["weights_source_order"]
-    assert growth_weights == [weight * 100000 for weight in projections[0]["weights_native_int32"]]
-    assert growth.transition_log[0]["selected_branch"] == "no_op"
+    require(growth_weights == [weight * 100000 for weight in projections[0]["weights_native_int32"]],
+            "growth evaluator weight parity")
+    require(growth.transition_log[0]["selected_branch"] == "no_op",
+            "growth selected branch")
     maim = PhaseEventTrialState.from_context(context)
     _maim_random(maim, _DrawTape.from_value([projections[1]["selection_draw31"]]))
     maim_weights = maim.transition_log[0]["weights_source_order"]
-    assert maim_weights == [weight * 100000 for weight in projections[1]["weights_native_int32"]]
-    assert maim.transition_log[0]["selected_branch"] == "one_legged_then_wound"
+    require(maim_weights == [weight * 100000 for weight in projections[1]["weights_native_int32"]],
+            "maim evaluator weight parity")
+    require(maim.transition_log[0]["selected_branch"] == "one_legged_then_wound",
+            "maim selected branch")
     selected = next(
         row for row in context["candidate_rows"] if row["character_id"] == 47032
     )["selected_enemy_knight_refs"]
-    assert selected["selected_enemy_knight.skills.learning_raw"] == 300000
-    assert selected["selected_enemy_knight.dynasty.perks.warfare_legacy_3"] is False
+    require(selected["selected_enemy_knight.skills.learning_raw"] == 300000,
+            "selected knight learning")
+    require(selected["selected_enemy_knight.dynasty.perks.warfare_legacy_3"] is False,
+            "selected knight legacy perk")
     blade_facts = selected["selected_enemy_knight.traits_and_culture_for_blademaster"]
-    assert blade_facts["lifestyle_blademaster_xp_raw"] == 0
-    assert all(
+    require(blade_facts["lifestyle_blademaster_xp_raw"] == 0,
+            "selected knight blademaster XP")
+    require(all(
         not any(value) if isinstance(value, list) else value is False
         for key, value in blade_facts.items()
         if key != "lifestyle_blademaster_xp_raw"
-    )
+    ), "selected knight blademaster exclusions")
     session = json.loads(paths["session_result"].read_text(encoding="utf-8"))
-    assert session["shutdown"]["cleanup_proven"] is True
-    assert session["shutdown"]["job_active_processes_final"] == 0
+    require(session["shutdown"]["cleanup_proven"] is True,
+            "session cleanup proof")
+    require(session["shutdown"]["job_active_processes_final"] == 0,
+            "session process cleanup")
     return {
         "schema": "ck3.native_day05_runtime_random_list_weights.v1",
         "game_executable_sha256": EXE_SHA256,
@@ -204,7 +233,8 @@ def main() -> int:
     parser.add_argument("--source-save", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
-    assert not args.output.exists(), f"refusing to overwrite {args.output}"
+    if args.output.exists():
+        raise FileExistsError(f"refusing to overwrite {args.output}")
     result = project(args.attempt_root, args.game_exe, args.bridge_dll, args.source_save)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8", newline="\n") as output:

@@ -263,6 +263,8 @@ SHA-256 `C6E97DF67F1A561925C845F313F8BBE204296DAC1061E4150C43684D2B74AF38`
 
 2026-09-28 工具门禁勘误：上述投影脚本原先用 Python `assert` 检查源存档、脚本哈希、原生抽签与输出目标；`python -O` 会跳过这些检查。现已全部改为显式失败，并用原始 `war_film_checkpoint.ck3`、melted save、Rakaly、066 运行痕迹和原版脚本在普通与 `-O` 模式各重跑一遍；两份新外置输出逐字节 SHA-256 均为 `C6E97DF67F1A561925C845F313F8BBE204296DAC1061E4150C43684D2B74AF38`，保存在 `D:/ck3-research-artifacts/day05-physician-opt-check-20260928/attempt-01/`。错源哈希和已有输出拒绝测试在两种模式下均通过。本次只修证据校验的执行方式，既有医师身份／即时有效学习未证实的边界不变。
 
+同一链路上游的[第 5 日运行时权重投影器](../../ck3_autonomous_player/tools/project_native_day05_runtime_weights.py)也已移除所有运行时 `assert`：三组权重的原始字节、AST 子节点、RNG 计数和七边界，现在在 `-O` 下仍逐项验证。用 066 的原始 EXE/DLL/存档与响应重跑，普通与 `-O` 两份输出 SHA-256 都是 `CC792DF04804FD160C83AFCDFF2F2284C02791B0DE79492E49AAFAE99E73593E`，与既有冻结投影一致；新 attempt 位于 `D:/ck3-research-artifacts/day05-weight-opt-check-20260928/attempt-01/`。变更权重字节、错配子节点和覆盖已有输出的拒绝测试均在两种模式通过；未增加新的原版行为结论。
+
 这**尚未证明** picker 当时 `scope:physician` 必为 57392，也未实采他的即时有效学习、医师特质／XP
 或前置 10% 升阶的结果。因此下一次窄采集应保持现有默认关闭的私有门禁，在 call `49` 的
 `0x2F08780` 同一执行线程、抽签前，把已验证的 effect／entry 身份和权重 bytes 与

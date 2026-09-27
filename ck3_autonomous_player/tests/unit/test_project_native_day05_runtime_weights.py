@@ -4,7 +4,9 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+from tempfile import TemporaryDirectory
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -15,7 +17,8 @@ ARTIFACT = (
 )
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 spec = importlib.util.spec_from_file_location("day05_runtime_weights_projector", SCRIPT)
-assert spec is not None and spec.loader is not None
+if spec is None or spec.loader is None:
+    raise RuntimeError("day05 runtime weights projector could not be loaded")
 projector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(projector)
 
@@ -82,14 +85,28 @@ class NativeDay05RuntimeWeightsTest(unittest.TestCase):
     def test_changed_raw_weight_bytes_are_rejected(self) -> None:
         row, nodes = _captured_row(self.artifact["choices"][0])
         row["weights_bytes_hex"] = "00000000" + row["weights_bytes_hex"][8:]
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegex(ValueError, "native weight bytes"):
             projector.validate_weight_record(row, nodes)
 
     def test_child_identity_mismatch_is_rejected(self) -> None:
         row, nodes = _captured_row(self.artifact["choices"][2])
         nodes[1]["node_identity_token"] = row["entry_node_identity_tokens"][0]
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegex(ValueError, "selected child identity"):
             projector.validate_weight_record(row, nodes)
+
+    def test_existing_output_is_never_overwritten(self) -> None:
+        with TemporaryDirectory() as temporary:
+            output = Path(temporary) / "existing.json"
+            output.write_text("existing", encoding="utf-8")
+            argv = [
+                "project_native_day05_runtime_weights.py",
+                "--attempt-root", temporary, "--game-exe", temporary,
+                "--bridge-dll", temporary, "--source-save", temporary,
+                "--output", str(output),
+            ]
+            with mock.patch.object(sys, "argv", argv), self.assertRaises(FileExistsError):
+                projector.main()
+            self.assertEqual(output.read_text(encoding="utf-8"), "existing")
 
 
 if __name__ == "__main__":
