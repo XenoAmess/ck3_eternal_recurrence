@@ -17,6 +17,7 @@ from xar_autoplayer.m5_formal_proposal_collector import (
     plan_m5_formal_query_only,
 )
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
+from xar_autoplayer.m5_war_cash_resource_v1 import observe_active_war_cash_resource_v1
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     COLD_RECOVERY_STEP as FACTION_GIFT_COLD_RECOVERY_STEP,
     RECEIPT_STEP as FACTION_GIFT_RECEIPT_STEP,
@@ -94,8 +95,28 @@ def _war_source() -> dict[str, object]:
             "projected_supply_margin_raw": 250_000,
             "incremental_gold_cost_raw": 0,
             "minimum_gold_reserve_raw": 5_000_000,
+            "war_cash_resource": _war_cash(),
         },
     }
+
+
+def _war_cash() -> dict[str, object]:
+    def amount(raw: int, source: str) -> dict[str, object]:
+        return {"raw": raw, "scale": 100_000, "source": source}
+
+    return observe_active_war_cash_resource_v1(
+        snapshot=_snapshot(), war_id=16777231,
+        inputs={
+            "source_frame": dict(_FRAME), "war_id": 16777231,
+            "pending_war_cash_raw": amount(0, "test-empty-pending-ledger"),
+            "immediate_war_action_cost_raw": amount(0, "test-read-only-query"),
+            "future_war_cost_upper_raw": amount(1_000_000, "test-bound"),
+            "future_risk_budget_raw": amount(1_000_000, "test-risk"),
+            "policy_minimum_gold_reserve_raw": amount(3_000_000, "test-policy"),
+            "horizon_days": 1,
+            "future_bound_assumptions": ["synthetic bounded test only"],
+        },
+    )
 
 
 def _building_source() -> dict[str, object]:
@@ -148,6 +169,7 @@ def _sources(
         ),
         "gold_reserve_raw": 5_000_000,
         "max_active_wars": 1,
+        "war_cash_resource": _war_cash(),
         "domains": ({
             "war": _war_source(),
             "building": _building_source(),
@@ -449,6 +471,34 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
             "building:501:701:1",
         )
         self.assertIsNotNone(result["dispatch"]["reservation"])
+
+    def test_wartime_building_cannot_spend_without_complete_war_cash(self) -> None:
+        sources = _sources(domains={"building": _building_source()})
+        sources.pop("war_cash_resource")
+        with self.assertRaisesRegex(ValueError, "complete same-frame"):
+            collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
+
+        sources = _sources(domains={"building": _building_source()})
+        sources["gold_reserve_raw"] = 4_999_999
+        with self.assertRaisesRegex(ValueError, "omits active-war cash"):
+            collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
+
+    def test_pending_war_cash_must_enter_existing_commitments_once(self) -> None:
+        sources = _sources(domains={"building": _building_source()})
+        cash = _war_cash()
+        cash["amount_values_raw"]["pending_war_cash_raw"] = 2_000_000
+        cash["amount_sources"]["pending_war_cash_raw"] = "test-observed-pending-ledger"
+        cash["existing_shared_gold_commitment_raw"] = 2_000_000
+        sources["war_cash_resource"] = cash
+        with self.assertRaisesRegex(ValueError, "omits active-war cash"):
+            collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
+        sources["existing_commitments"]["gold_raw"] = 2_000_000
+        result = collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
+        self.assertEqual(result["status"], "reserved_analytic")
+        self.assertEqual(
+            result["dispatch"]["reservation"]["commitments_after"]["gold_raw"],
+            5_000_000,
+        )
 
     def test_marriage_inventory_is_not_an_admitted_source_domain(self) -> None:
         with self.assertRaisesRegex(ValueError, "marriage.plan is unavailable"):

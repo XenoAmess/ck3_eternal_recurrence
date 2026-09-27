@@ -409,6 +409,11 @@ def active_defensive_war_continuation_proposal(
         raise ValueError("defensive-war continuation army binding is incomplete")
     if not set(armies) <= controllable or not set(armies) <= bound_to_war:
         raise ValueError("defensive-war continuation army is not controllable and bound")
+    from .m5_war_cash_resource_v1 import require_complete_war_cash_resource_v1
+
+    cash = require_complete_war_cash_resource_v1(
+        observation.get("war_cash_resource"), frame=frame, war_id=war_id,
+    )
     supply = observation.get("projected_supply_margin_raw")
     if type(supply) is not int:
         raise ValueError("defensive-war continuation lacks measured supply")
@@ -420,6 +425,9 @@ def active_defensive_war_continuation_proposal(
         observation.get("minimum_gold_reserve_raw"),
         "continuation.minimum_gold_reserve_raw",
     )
+    if (gold != cash["immediate_war_action_cost_raw"]
+            or reserve != cash["joint_gold_reserve_raw"]):
+        raise ValueError("defensive-war proposal cash differs from war resource")
     return _proposal(
         frame=frame, candidate_id=f"war:continue:defender:{war_id}",
         domain="war", source_policy=str(plan["policy"]),
@@ -436,6 +444,7 @@ def active_defensive_war_continuation_proposal(
             "player_is_primary_war_leader": True,
             "phase": plan.get("phase"), "selected_step": plan["selected_step"],
             "active_war_slot_already_occupied": True,
+            "war_cash_resource": cash,
         },
         war_operation="active_defensive_continuation",
     )

@@ -122,6 +122,29 @@ def collect_m5_formal_proposals(
         raise ValueError("M5 formal proposal gold reserve is unavailable")
     if type(max_active_wars) is not int or max_active_wars < 0:
         raise ValueError("M5 formal proposal war budget is unavailable")
+    active_wars = snapshot.get("active_wars")
+    if not isinstance(active_wars, list):
+        raise ValueError("M5 active wars are unavailable")
+    if active_wars:
+        from .m5_war_cash_resource_v1 import require_complete_war_cash_resource_v1
+
+        if len(active_wars) != 1 or not isinstance(active_wars[0], Mapping):
+            raise ValueError("M5 active-war cash scope needs one observed war")
+        war_id = active_wars[0].get("war_id")
+        cash = require_complete_war_cash_resource_v1(
+            sources.get("war_cash_resource"), frame=frame, war_id=war_id,
+        )
+        if (type(commitments.get("gold_raw")) is not int
+                or commitments["gold_raw"]
+                < cash["existing_shared_gold_commitment_raw"]
+                or gold_reserve_raw < cash["joint_gold_reserve_raw"]):
+            raise ValueError("M5 shared budget omits active-war cash")
+        war_source = domains.get("war")
+        if war_source is not None:
+            observation = war_source.get("observation")
+            if (not isinstance(observation, Mapping)
+                    or observation.get("war_cash_resource") != cash):
+                raise ValueError("M5 war proposal cash differs from shared budget")
 
     dispatcher = M5FrameDispatcher(
         snapshot=deepcopy(dict(snapshot)),

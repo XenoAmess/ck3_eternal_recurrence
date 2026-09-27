@@ -20,6 +20,7 @@ from xar_autoplayer.m5_observed_opportunity_selector import (
     wartime_lifestyle_perk_proposal,
 )
 from xar_autoplayer.lifestyle_min_policy import choose_min_feudal_lifestyle_action
+from xar_autoplayer.m5_war_cash_resource_v1 import observe_active_war_cash_resource_v1
 
 
 _FRAME = {
@@ -167,6 +168,25 @@ def _defensive_plan(*, selected_step: str = "query-war-termination-options-16777
 
 
 def _continuation_observation(**updates: object) -> dict[str, object]:
+    cash = observe_active_war_cash_resource_v1(
+        snapshot=_defensive_snapshot(), war_id=16777231,
+        inputs={
+            "source_frame": dict(_FRAME), "war_id": 16777231,
+            "pending_war_cash_raw": {"raw": 0, "scale": 100_000,
+                                     "source": "test-observed-empty-pending-ledger"},
+            "immediate_war_action_cost_raw": {"raw": 0, "scale": 100_000,
+                                              "source": "test-read-only-query"},
+            "future_war_cost_upper_raw": {"raw": 1_000_000, "scale": 100_000,
+                                           "source": "test-bounded-horizon"},
+            "future_risk_budget_raw": {"raw": 1_000_000, "scale": 100_000,
+                                       "source": "test-policy-risk"},
+            "policy_minimum_gold_reserve_raw": {"raw": 3_000_000,
+                                                "scale": 100_000,
+                                                "source": "test-policy-reserve"},
+            "horizon_days": 1,
+            "future_bound_assumptions": ["synthetic bounded test only"],
+        },
+    )
     value: dict[str, object] = {
         "status": "available", "read_only": True,
         "source_frame": dict(_FRAME), "war_id": 16777231,
@@ -176,6 +196,7 @@ def _continuation_observation(**updates: object) -> dict[str, object]:
         "projected_supply_margin_raw": 250_000,
         "incremental_gold_cost_raw": 0,
         "minimum_gold_reserve_raw": 5_000_000,
+        "war_cash_resource": cash,
     }
     value.update(updates)
     return value
