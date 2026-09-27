@@ -50,7 +50,7 @@
     "evidence":  {
                      "git_excerpt":  "../evidence/WAR-ROBERT-H2743-EXIT-20260928.r0263-final-frame.json",
                      "git_excerpt_sha256":  "BA6C569FE0CB9F80094D46A7F4033ADFC814E0AF7E80054AB505D9150BABACEF",
-                     "formal_report_sha256":  "FF69F6AEBF8D9EE510AE3F5699A74ACB64CFAFBF12582823334C2079DB2A0F8",
+                     "formal_report_sha256":  "FF69F6AEBF8D9EE510AE3F5699A74ACB64CFAFBFB12582823334C2079DB2A0F8",
                      "operator_receipt_sha256":  "66200E6D1B0170FCCACF635C35A8F221AB8BC88F42BAE6FEBFC58641F0655C3E",
                      "git_carries_raw_save_driver_dll":  false,
                      "remote_replay_dependency":  "If exact replay of h2743 is required, request a separately verified transfer of checkpoint, driver, family sidecar and matching DLL. The local Z: provenance paths in the excerpt are not remote assets."
