@@ -21,6 +21,8 @@ H2743 的另一次只读存档检查进一步提醒这个区别。已在接收�
 
 继续沿 `0x184093A` 的直接调用追踪，独立的[精确版本静态校验器](../../ck3_autonomous_player/native_bridge/research/verify_war_cash_maintenance_candidate.py)核对了 EXE RVA `0x290BA70..0x290BDAC` 的完整函数字节 SHA-256 `A6D40023A1B422DF749610533E403A8BE054A46D952D36D3785973A5485F6B2F` 和 11 个指令锚点。该函数的直接指令以 RCX 接收输出缓冲区、RDX 接收角色指针，清零 0x50 字节输出，读取角色 `+0x1B8` 扩展，经过下层调用对十个 QWORD 槽累加，并将原输出指针返回；这比“只能读 AI strategy 预算”更接近一个可用于玩家角色的**候选维护资源源头**。但 `0x290B8A0`、`0x2395370` 及间接调用的传递读写尚未闭合，也没有对玩家 Robert 的同帧值或费用语义做实机验收。校验器明确输出 `safe_to_call_from_live_bridge=false`，不能因静态 ABI 看起来合理就调用它、把 slot 0 当成金币维护费，或为 H2825 填数。普通 Python 与 `-O` 精确 EXE 校验均通过；完整反汇编保存在上述仓库外 attempt 的 `maintenance-disasm-v2.txt`。
 
+对两个下层函数的初步只读反汇编显示，`0x290B8A0` 自己也构造十槽向量并读角色属性；`0x2395370` 在 `0x23953C1` 通过 vtable 间接调用，还在数条分支中调用其他金额／状态 helper。因而单看上层十槽累加没有足够证据证明它纯读取或各槽的最终经济语义。下层反汇编保存在同一外置 attempt 的 `helper-290b8a0-disasm.txt`、`helper-2395370-disasm.txt`；它们是候选调用图，不是可执行的桥接合同。
+
 ## 已落入运行时的接口
 
 `m5_war_cash_resource_v1.observe_active_war_cash_resource_v1` 产出只读 `xar.ck3.m5-active-war-cash-resource.v1` 收据。输入必须包括完整 `source_frame`（玩家、`snapshot_id`、公开/原生修订、日期、episode）和 WarID。五项金额各使用 `{raw, scale:100000, source, source_frame, war_id}`，逐项核对同帧、同一场战争：已提交战争现金、本次动作即时费用、指定期限内未来费用上界、该期限的额外风险预算、战争政策最低保留额。未来上界还要声明 `horizon_days` 和文字假设。未知输入以 `null` 和机器可读 `missing` 原因输出；显式的 0 同样需要来源。收据始终 `formal_action_ready:false`。
