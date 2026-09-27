@@ -12,6 +12,7 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -77,24 +78,24 @@ bool ReadSource(void *context, std::uintptr_t character,
   return true;
 }
 
-Fixture Base() {
-  Fixture fixture{};
-  CopyFixed(fixture.before.snapshot_id, "life2-fixture-001");
-  fixture.before.public_revision = 701;
-  fixture.before.native_revision = 9001;
-  fixture.before.proof_epoch = 17;
-  fixture.before.date_raw = 54'321'000;
-  fixture.before.paused = true;
-  fixture.before.map_ready = true;
-  fixture.before.has_played_character = true;
-  fixture.before.played_character_alive = true;
-  fixture.before.played_character_id = 32904;
-  fixture.before.played_character = 0x123456780ULL;
-  fixture.before.played_character_identity_round_trip = true;
-  fixture.after = fixture.before;
-  fixture.first.player_character_id = 32904;
-  fixture.first.player_identity_round_trip = true;
-  fixture.second = fixture.first;
+std::unique_ptr<Fixture> Base() {
+  auto fixture = std::make_unique<Fixture>();
+  CopyFixed(fixture->before.snapshot_id, "life2-fixture-001");
+  fixture->before.public_revision = 701;
+  fixture->before.native_revision = 9001;
+  fixture->before.proof_epoch = 17;
+  fixture->before.date_raw = 54'321'000;
+  fixture->before.paused = true;
+  fixture->before.map_ready = true;
+  fixture->before.has_played_character = true;
+  fixture->before.played_character_alive = true;
+  fixture->before.played_character_id = 32904;
+  fixture->before.played_character = 0x123456780ULL;
+  fixture->before.played_character_identity_round_trip = true;
+  fixture->after = fixture->before;
+  fixture->first.player_character_id = 32904;
+  fixture->first.player_identity_round_trip = true;
+  fixture->second = fixture->first;
   return fixture;
 }
 
@@ -215,51 +216,51 @@ void ExpectFixture(const std::string &actual, const char *path) {
 void TestNormalAndNoFocusFixtures(const char *normal_path,
                                   const char *no_focus_path) {
   auto normal = Base();
-  FillNormal(normal.first);
-  normal.second = normal.first;
-  game::PlayerLifestyleSnapshotV1 normal_output{};
-  const auto normal_json = ReadOffline(normal, normal_output);
-  assert(normal_output.state.owned_perk_count == 3);
+  FillNormal(normal->first);
+  normal->second = normal->first;
+  auto normal_output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
+  const auto normal_json = ReadOffline(*normal, *normal_output);
+  assert(normal_output->state.owned_perk_count == 3);
   assert(ck3::PlayerLifestyleStableKeyViewV1(
-             normal_output.state.owned_perk_keys[0]) ==
+             normal_output->state.owned_perk_keys[0]) ==
          "golden_obligations_perk");
   assert(ck3::PlayerLifestyleStableKeyViewV1(
-             normal_output.state.legal_perk_candidates[0].key) ==
+             normal_output->state.legal_perk_candidates[0].key) ==
          "heregeld_perk");
   ExpectFixture(normal_json, normal_path);
 
   auto no_focus = Base();
-  FillNoFocus(no_focus.first);
-  no_focus.second = no_focus.first;
-  game::PlayerLifestyleSnapshotV1 no_focus_output{};
-  const auto no_focus_json = ReadOffline(no_focus, no_focus_output);
-  assert(no_focus_output.state.current_focus_presence ==
+  FillNoFocus(no_focus->first);
+  no_focus->second = no_focus->first;
+  auto no_focus_output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
+  const auto no_focus_json = ReadOffline(*no_focus, *no_focus_output);
+  assert(no_focus_output->state.current_focus_presence ==
          game::PlayerLifestyleFocusPresenceV1::absent);
-  assert(!no_focus_output.state.current_lifestyle_progress_present);
-  assert(no_focus_output.state.owned_perk_count == 0);
-  assert(no_focus_output.state.legal_perk_candidate_count == 0);
+  assert(!no_focus_output->state.current_lifestyle_progress_present);
+  assert(no_focus_output->state.owned_perk_count == 0);
+  assert(no_focus_output->state.legal_perk_candidate_count == 0);
   ExpectFixture(no_focus_json, no_focus_path);
 }
 
 void TestFailureDoesNotPublishEmptyState() {
   auto fixture = Base();
-  FillNormal(fixture.first);
-  fixture.second = fixture.first;
-  fixture.fail_source = true;
-  game::PlayerLifestyleSnapshotV1 output{};
+  FillNormal(fixture->first);
+  fixture->second = fixture->first;
+  fixture->fail_source = true;
+  auto output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   const auto result = ck3::ReadPlayerLifestyleSnapshotV1(
-      OfflineEnvironment(), OfflineAccess(fixture), Request(), output);
+      OfflineEnvironment(), OfflineAccess(*fixture), Request(), *output);
   assert(result == game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-  assert(output.status == game::PlayerLifestyleSnapshotStatusV1::unavailable);
-  assert(output.unavailable_reason ==
+  assert(output->status == game::PlayerLifestyleSnapshotStatusV1::unavailable);
+  assert(output->unavailable_reason ==
          game::PlayerLifestyleSnapshotFailureV1::native_source_read_failed);
-  assert(output.state.current_focus_presence ==
+  assert(output->state.current_focus_presence ==
          game::PlayerLifestyleFocusPresenceV1::unknown);
-  assert(output.state.owned_perk_count == 0);
-  assert(!output.readiness.current_focus_ready &&
-         !output.readiness.owned_perks_ready &&
-         !output.readiness.same_frame_ready);
-  assert(ck3::SerializePlayerLifestyleSnapshotV1(output) ==
+  assert(output->state.owned_perk_count == 0);
+  assert(!output->readiness.current_focus_ready &&
+         !output->readiness.owned_perks_ready &&
+         !output->readiness.same_frame_ready);
+  assert(ck3::SerializePlayerLifestyleSnapshotV1(*output) ==
          "{\"private_build\":true,\"advertised\":false,"
          "\"status\":\"unavailable\","
          "\"unavailable_reason\":\"native_source_read_failed\"}");
@@ -267,21 +268,21 @@ void TestFailureDoesNotPublishEmptyState() {
 
 void TestCanonicalNativeSnapshotIds() {
   auto valid = Base();
-  CopyFixed(valid.before.snapshot_id, "native:3");
-  valid.before.public_revision = 3;
-  valid.before.native_revision = 3;
-  valid.after = valid.before;
-  FillNormal(valid.first);
-  valid.second = valid.first;
+  CopyFixed(valid->before.snapshot_id, "native:3");
+  valid->before.public_revision = 3;
+  valid->before.native_revision = 3;
+  valid->after = valid->before;
+  FillNormal(valid->first);
+  valid->second = valid->first;
   const ck3::PlayerLifestyleSnapshotRequestV1 valid_request = {
-      "native:3", 3, 3, valid.before.date_raw,
-      valid.before.played_character_id};
-  game::PlayerLifestyleSnapshotV1 output{};
+      "native:3", 3, 3, valid->before.date_raw,
+      valid->before.played_character_id};
+  auto output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             OfflineEnvironment(), OfflineAccess(valid), valid_request,
-             output) ==
+             OfflineEnvironment(), OfflineAccess(*valid), valid_request,
+             *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::available);
-  assert(valid.frame_calls == 2 && valid.source_calls == 2);
+  assert(valid->frame_calls == 2 && valid->source_calls == 2);
 
   constexpr std::array<std::pair<std::string_view, std::uint64_t>, 8>
       invalid_requests = {{{"native:", 3},
@@ -294,69 +295,69 @@ void TestCanonicalNativeSnapshotIds() {
                            {"native:4", 3}}};
   for (const auto &[snapshot_id, native_revision] : invalid_requests) {
     auto invalid = Base();
-    FillNormal(invalid.first);
-    invalid.second = invalid.first;
+    FillNormal(invalid->first);
+    invalid->second = invalid->first;
     const ck3::PlayerLifestyleSnapshotRequestV1 request = {
-        snapshot_id, 3, native_revision, invalid.before.date_raw,
-        invalid.before.played_character_id};
+        snapshot_id, 3, native_revision, invalid->before.date_raw,
+        invalid->before.played_character_id};
     assert(ck3::ReadPlayerLifestyleSnapshotV1(
-               OfflineEnvironment(), OfflineAccess(invalid), request,
-               output) ==
+               OfflineEnvironment(), OfflineAccess(*invalid), request,
+               *output) ==
            game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-    assert(output.unavailable_reason ==
+    assert(output->unavailable_reason ==
            game::PlayerLifestyleSnapshotFailureV1::invalid_request);
-    assert(invalid.frame_calls == 0 && invalid.source_calls == 0);
+    assert(invalid->frame_calls == 0 && invalid->source_calls == 0);
   }
 }
 
 void TestSampleAndFrameDrift() {
   auto sample_drift = Base();
-  FillNormal(sample_drift.first);
-  sample_drift.second = sample_drift.first;
-  sample_drift.second.state.current_lifestyle_progress.xp_total_raw += 1;
-  game::PlayerLifestyleSnapshotV1 output{};
+  FillNormal(sample_drift->first);
+  sample_drift->second = sample_drift->first;
+  sample_drift->second.state.current_lifestyle_progress.xp_total_raw += 1;
+  auto output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             OfflineEnvironment(), OfflineAccess(sample_drift), Request(),
-             output) ==
+             OfflineEnvironment(), OfflineAccess(*sample_drift), Request(),
+             *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-  assert(output.unavailable_reason ==
+  assert(output->unavailable_reason ==
          game::PlayerLifestyleSnapshotFailureV1::native_sample_drift);
 
   auto frame_drift = Base();
-  FillNormal(frame_drift.first);
-  frame_drift.second = frame_drift.first;
-  ++frame_drift.after.proof_epoch;
+  FillNormal(frame_drift->first);
+  frame_drift->second = frame_drift->first;
+  ++frame_drift->after.proof_epoch;
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             OfflineEnvironment(), OfflineAccess(frame_drift), Request(),
-             output) ==
+             OfflineEnvironment(), OfflineAccess(*frame_drift), Request(),
+             *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-  assert(output.unavailable_reason ==
+  assert(output->unavailable_reason ==
          game::PlayerLifestyleSnapshotFailureV1::revision_drift);
 }
 
 void TestInvalidAndDuplicateStableKeys() {
   auto invalid = Base();
-  FillNormal(invalid.first);
-  invalid.first.state.current_focus_key.bytes[0] = 'X';
-  invalid.second = invalid.first;
-  game::PlayerLifestyleSnapshotV1 output{};
+  FillNormal(invalid->first);
+  invalid->first.state.current_focus_key.bytes[0] = 'X';
+  invalid->second = invalid->first;
+  auto output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             OfflineEnvironment(), OfflineAccess(invalid), Request(),
-             output) ==
+             OfflineEnvironment(), OfflineAccess(*invalid), Request(),
+             *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-  assert(output.unavailable_reason ==
+  assert(output->unavailable_reason ==
          game::PlayerLifestyleSnapshotFailureV1::current_focus_invariant_failed);
 
   auto duplicate = Base();
-  FillNormal(duplicate.first);
-  duplicate.first.state.owned_perk_keys[1] =
-      duplicate.first.state.owned_perk_keys[0];
-  duplicate.second = duplicate.first;
+  FillNormal(duplicate->first);
+  duplicate->first.state.owned_perk_keys[1] =
+      duplicate->first.state.owned_perk_keys[0];
+  duplicate->second = duplicate->first;
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             OfflineEnvironment(), OfflineAccess(duplicate), Request(),
-             output) ==
+             OfflineEnvironment(), OfflineAccess(*duplicate), Request(),
+             *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-  assert(output.unavailable_reason ==
+  assert(output->unavailable_reason ==
          game::PlayerLifestyleSnapshotFailureV1::duplicate_stable_key);
 }
 
@@ -588,10 +589,10 @@ void TestNativeCurrentStateAndCandidateBoundary() {
   native.span.count = 2;
 
   auto fixture = Base();
-  fixture.before.played_character = 0x22220000ULL;
-  fixture.after = fixture.before;
+  fixture->before.played_character = 0x22220000ULL;
+  fixture->after = fixture->before;
   ck3::PlayerLifestyleSnapshotAccessV1 access{};
-  access.context = &fixture;
+  access.context = fixture.get();
   access.capture_frame = &Capture;
   access.is_main_thread = &IsMain;
   access.read_memory = &DirectMemory;
@@ -612,28 +613,28 @@ void TestNativeCurrentStateAndCandidateBoundary() {
   environment.focus_fallback_slot_address =
       reinterpret_cast<std::uintptr_t>(&native.fallback_focus);
 
-  game::PlayerLifestyleSnapshotV1 output{};
+  auto output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             environment, access, Request(), output) ==
+             environment, access, Request(), *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::available);
-  assert(output.readiness.current_focus_ready &&
-         output.readiness.lifestyle_progress_ready &&
-         output.readiness.owned_perks_ready &&
-         !output.readiness.legal_focus_candidates_ready &&
-         !output.readiness.legal_perk_candidates_ready &&
-         output.readiness.same_frame_ready);
-  assert(output.state.legal_focus_candidate_status ==
+  assert(output->readiness.current_focus_ready &&
+         output->readiness.lifestyle_progress_ready &&
+         output->readiness.owned_perks_ready &&
+         !output->readiness.legal_focus_candidates_ready &&
+         !output->readiness.legal_perk_candidates_ready &&
+         output->readiness.same_frame_ready);
+  assert(output->state.legal_focus_candidate_status ==
          game::PlayerLifestyleCandidateCollectionStatusV1::unavailable);
-  assert(output.state.legal_focus_candidate_count == 0 &&
-         output.state.legal_perk_candidate_count == 0);
-  assert(output.state.actor_traits_ready &&
-         output.state.observed_actor_trait_count == 2);
+  assert(output->state.legal_focus_candidate_count == 0 &&
+         output->state.legal_perk_candidate_count == 0);
+  assert(output->state.actor_traits_ready &&
+         output->state.observed_actor_trait_count == 2);
   assert(ck3::PlayerLifestyleStableKeyViewV1(
-             output.state.observed_actor_trait_keys[0]) ==
+             output->state.observed_actor_trait_keys[0]) ==
          "education_diplomacy_3");
   assert(ck3::PlayerLifestyleStableKeyViewV1(
-             output.state.observed_actor_trait_keys[1]) == "generous");
-  const auto json = ck3::SerializePlayerLifestyleSnapshotV1(output);
+             output->state.observed_actor_trait_keys[1]) == "generous");
+  const auto json = ck3::SerializePlayerLifestyleSnapshotV1(*output);
   assert(json.find("\"actor_traits\":{\"status\":\"available\","
                    "\"observed_keys\":[\"education_diplomacy_3\","
                    "\"generous\"]}") != std::string::npos);
@@ -645,16 +646,16 @@ void TestNativeCurrentStateAndCandidateBoundary() {
   const auto saved_trait_row = native.trait_rows[0];
   native.trait_rows[0] = 0;
   auto missing_trait = Base();
-  missing_trait.before.played_character = 0x22220000ULL;
-  missing_trait.after = missing_trait.before;
-  access.context = &missing_trait;
-  output = {};
+  missing_trait->before.played_character = 0x22220000ULL;
+  missing_trait->after = missing_trait->before;
+  access.context = missing_trait.get();
+  output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             environment, access, Request(), output) ==
+             environment, access, Request(), *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::available);
-  assert(!output.state.actor_traits_ready &&
-         output.state.observed_actor_trait_count == 0);
-  assert(ck3::SerializePlayerLifestyleSnapshotV1(output).find(
+  assert(!output->state.actor_traits_ready &&
+         output->state.observed_actor_trait_count == 0);
+  assert(ck3::SerializePlayerLifestyleSnapshotV1(*output).find(
              "\"actor_traits\":{\"status\":\"unavailable\"}") !=
          std::string::npos);
   native.trait_rows[0] = saved_trait_row;
@@ -662,17 +663,17 @@ void TestNativeCurrentStateAndCandidateBoundary() {
   const auto expect_native_failure =
       [&](game::PlayerLifestyleSnapshotFailureV1 expected) {
         auto failed = Base();
-        failed.before.played_character = 0x22220000ULL;
-        failed.after = failed.before;
-        access.context = &failed;
-        output = {};
+        failed->before.played_character = 0x22220000ULL;
+        failed->after = failed->before;
+        access.context = failed.get();
+        output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
         assert(ck3::ReadPlayerLifestyleSnapshotV1(
-                   environment, access, Request(), output) ==
+                   environment, access, Request(), *output) ==
                game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
-        assert(output.unavailable_reason == expected);
+        assert(output->unavailable_reason == expected);
         const auto failure_key =
             ck3::PlayerLifestyleSnapshotFailureKeyV1(expected);
-        assert(ck3::SerializePlayerLifestyleSnapshotV1(output).find(
+        assert(ck3::SerializePlayerLifestyleSnapshotV1(*output).find(
                    std::string("\"unavailable_reason\":\"") +
                    std::string(failure_key) + "\"") != std::string::npos);
       };
@@ -733,17 +734,17 @@ void TestNativeCurrentStateAndCandidateBoundary() {
                  "tax_man_perk");
 
   auto no_focus_fixture = Base();
-  access.context = &no_focus_fixture;
+  access.context = no_focus_fixture.get();
   native.fallback_focus =
       reinterpret_cast<std::uintptr_t>(native.focus.data());
-  output = {};
+  output = std::make_unique<game::PlayerLifestyleSnapshotV1>();
   assert(ck3::ReadPlayerLifestyleSnapshotV1(
-             environment, access, Request(), output) ==
+             environment, access, Request(), *output) ==
          game::ReadPlayerLifestyleSnapshotResultV1::available);
-  assert(output.state.current_focus_presence ==
+  assert(output->state.current_focus_presence ==
          game::PlayerLifestyleFocusPresenceV1::absent);
-  assert(!output.state.current_lifestyle_progress_present);
-  assert(output.state.owned_perk_count == 2);
+  assert(!output->state.current_lifestyle_progress_present);
+  assert(output->state.owned_perk_count == 2);
   g_native = nullptr;
 }
 
