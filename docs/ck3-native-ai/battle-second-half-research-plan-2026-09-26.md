@@ -49,7 +49,7 @@
 
 同项比较器补研：[原生 `setge` 分支与 loaded-node 缺口](warscore-trigger-generic-ge-and-loaded-node-gap-2026-09-27.md)已证 `CCombatWarscoreTrigger` 的虚表通向 generic 比较器，操作码 `0x3CB` 对两侧 raw qword 执行包含等号的 signed `>=`。脚本实例的操作码及 RHS `1,500,000` 尚未从实际载入节点读回；这仍需同场、同 CombatID、带 VFS 来源的被动实机采样。
 
-同项败方正统性配对审计：[11 份原生存档与 14 份正式回执](normal-result-loser-legitimacy-pair-gap-2026-09-27.md)只在墨西拿正常终局前证明败方罗贝尔 CharacterID `29829` 的正统性为 `321`；终局后没有对同一人物的原生读数。072/074 此时控制的是胜方阿里 CharacterID `31549`，其 `played` 字段不能作败方的后值。脚本所声明的 `-50` 仍待同身份 post-terminal 观测，不得记为已实测写回。
+同项败方正统性配对审计：[11 份原生存档与 14 份正式回执](normal-result-loser-legitimacy-pair-gap-2026-09-27.md)只在墨西拿正常终局前证明败方罗贝尔 CharacterID `29829` 的正统性为 `321`；终局后没有对同一人物的原生读数。072/074 此时控制的是胜方阿里 CharacterID `31549`，其 `played` 字段不能作败方的后值。[下次同角色读回合同](normal-result-loser-legitimacy-readback-contract-2026-09-27.md)确认现有 root 查询只能读当前玩家，要求新败方控制 attempt 在终局前后稳定暂停帧成对查询；即使读到净差 `-50`，仍须另外排除其他写者并绑定脚本 loaded 节点，才能归因为败方 effect。当前 `-50` 只有脚本声明，不得记为已实测写回。
 
 执行纪律：每个新证据先保存原始 bytes/SHA、源存档、游戏 build、CombatID/WarID、参战双方与日期，再生成只读投影。静态公式向量、条件计算、独立回放与自然 AI 行为在文档、智能体和画面中均分开标注。任何残差先查同帧输入与定点截断，再查参与者/事件边界；不能为凑零差修改历史原始回执或把模型自生成数当 expected。
 
