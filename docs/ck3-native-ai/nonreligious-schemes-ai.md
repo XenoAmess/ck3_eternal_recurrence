@@ -256,11 +256,41 @@ validity 与 `can_start_scheme`；murder 还必须携带四个互斥 starter pac
 owner/type/target 后置条件验收。先用 sway 验证 basic start 生命周期，再用 murder 验证复杂字段和 starter package，不把
 fixture 成功外推到其它 definition。
 
+#### C91 私有 sway 只读查询的 exact-build 前置（2026-09-27，源码核查，无实机）
+
+`SCHEME10` 已能以 `sway_interaction` 为 key 构造角色互动 context、运行 `0x2C43F00`
+complete Can Send，并在同一 paused application-main frame 返回布尔最终合法性。其原生函数
+已调用 ABI 是 `bool(context, void*)`；目前 SCHEME10、普通互动 preview 与 proposal binder 都向第二参数
+传 `nullptr`。因此当前已验证的读数仅是 **布尔结果**。失败时私有 binder 写入的
+`native_complete_validator_rejected` 是我方归类键，不是 CK3 返回的具体失败理由。
+`active_scheme_precondition_command_binders_1_19_0_6_abi.json` 也明确禁止把 false 猜成某个
+`is_shown`、`is_valid_showing_failures_only` 或 `can_start_scheme` 子原因。
+
+```mermaid
+flowchart LR
+    A["sway actor + target + context"] --> V["0x2C43F00 complete Can Send"]
+    V --> B["verified bool result"]
+    V -. "second argument / reason producer ABI unknown" .-> R["native failure reason unknown"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class R unknown;
+```
+
+下一项可施工 ABI 工作是沿 `0x2C43F00 → 0x2C42A30` 和原版
+`sway_interaction` 的 `is_valid_showing_failures_only` 调用链，确定第二参数的实际类型、
+理由生成者/调用点、返回对象的所有权和释放方式，并以 exact-build 离线 fixture 核验至少一个
+失败分支与一个通过分支；若该参数不承载理由，再追 GUI 展示失败原因所用的独立 callback。
+随后才把 reason 与现有 SCHEME10 布尔值一起接到私有 application-main mailbox、pipe 和
+opt-in MCP/driver。SCHEME4 的 `SourceFrame` 只含 capture epoch、date、played character 和
+paused，现有 SCHEME8 manifest 也没有 episode/revision；同帧的正式 root revision/episode
+还须由桥的公共 frame 绑定并在私有响应中核对，不能用 epoch 或日期冒充。
+目前没有 C91 查询、动作或新的 CK3 证据，公共广告仍关闭。
+
 ## 未闭合项与风险边界
 
 - [unknown] `CSchemeManager` 全局/root、player-owned active container 及 stable instance ID 布局。
 - [unknown] `CActiveScheme` 数值字段偏移；GUI literal 和脚本 getter 名只证明语义存在。
-- [unknown] `CInteractionSchemeInfo` preview 布局、候选集合与结构化 failure reason callback。
+- [unknown] `CInteractionSchemeInfo` preview 布局、候选集合与结构化 failure reason callback；
+  `0x2C43F00` 的第二参数目前一律传 null，C91 所需的原生具体失败理由及其所有权 ABI 未闭合。
 - [unknown] 跨所有 scheme 的结果 transition identity；script on_action key 不能代替 native correlation。
 - [unknown] agent invite/join/leave 与 critical-moment choice 的通用 utility；murder 只能代表复杂 hostile scheme。
 - [static-only] 本工作包没有 CK3 live、没有 paused artifact、没有动作执行，也没有改变 public schema/bridge/MCP。
