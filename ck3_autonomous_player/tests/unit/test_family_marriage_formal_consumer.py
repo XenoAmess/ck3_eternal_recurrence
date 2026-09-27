@@ -525,6 +525,10 @@ class FamilyConsumerTest(unittest.TestCase):
     def test_formal_auto_turn_reads_and_retains_actual_alliance(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))
+            driver.projection["rows"][0]["possible_alliance_pairs"] = [{
+                "first_character_id": 101, "second_character_id": 400,
+                "already_allied": False, "both_have_realm_data": True,
+                "would_attempt_if_accepted": True}]
             baseline = {"plan": {"selected_step": "life-advance"}}
             with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
                        return_value=(55, "created")):
@@ -555,6 +559,11 @@ class FamilyConsumerTest(unittest.TestCase):
                                  "allied")
                 self.assertEqual(ledger["resolved"]["alliance_result"]
                                  ["recipient_character_id"], 400)
+                self.assertIs(ledger["resolved"]["source_pending"]
+                              ["preproposal_played_has_recipient_alliance"], False)
+                self.assertEqual(ledger["resolved"]["alliance_result"]
+                                 ["played_to_recipient_alliance_transition"],
+                                 "observed_false_to_true")
                 consumed = plan_family_marriage_private(
                     driver, baseline, {**scene(), "native_revision": 8})
                 self.assertEqual(consumed["plan"]["selected_step"], "life-advance")
@@ -642,6 +651,10 @@ class FamilyConsumerTest(unittest.TestCase):
                                  "unknown")
                 self.assertIsNone(consumed["plan"]["family_marriage_result_consumed"]
                                   ["alliance_result"]["played_has_recipient_alliance"])
+                self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
+                                 ["alliance_result"]
+                                 ["played_to_recipient_alliance_transition"],
+                                 "unknown")
 
     def test_legacy_material_ledger_without_recipient_remains_unbound(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -744,6 +757,10 @@ class FamilyConsumerTest(unittest.TestCase):
     def test_resolved_marriage_is_rechecked_on_cold_pid(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))
+            driver.projection["rows"][0]["possible_alliance_pairs"] = [{
+                "first_character_id": 101, "second_character_id": 400,
+                "already_allied": False, "both_have_realm_data": True,
+                "would_attempt_if_accepted": True}]
             baseline = {"plan": {"selected_step": "life-advance"}}
             with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
                        return_value=(55, "created")):
@@ -784,6 +801,10 @@ class FamilyConsumerTest(unittest.TestCase):
                             ["cold_recovery_verified"])
             self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
                              ["alliance_result"]["bridge_pid"], 99)
+            self.assertEqual(consumed["plan"]["family_marriage_result_consumed"]
+                             ["alliance_result"]
+                             ["played_to_recipient_alliance_transition"],
+                             "observed_false_to_true")
 
     def test_pending_checkpoint_needs_durable_pair_and_game_save(self):
         pending = {"submission_state": "receipt_pending", "status": "receipt_pending",

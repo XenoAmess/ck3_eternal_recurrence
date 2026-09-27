@@ -1002,3 +1002,9 @@ flowchart TD
 ```
 
 R0240 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance-h90-c30-20260927/attempt-01/formal-report.txt) SHA `E886352A09B434A38003237F46D06F045AA10C7F2A944CB4FD07C1B4BC72D8A3`：从原始 Robert h90 官方配对，唯一 PID82796、最小化、12/12 qualified；第 4 turn typed 提案，第 5 turn pending，第 10 turn双边 `betrothal`，第 11 turn原生 `allied` 且双方联盟标志 true，第 12 turn账本消费 `allied`。R0241 [正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance-h107-c31-20260927/attempt-01/formal-report.txt) SHA `3951CF81F294E1D7CAFD8EA86611723E40697F97E536DAC02BF0379FC27DBB72`：从 h107 save/driver/建设/家庭账本官方配对，新 PID80924、最小化、6/6 qualified；第 3 turn冷复核订婚，第 4 turn再次双向 `allied`，第 5 turn消费，零重提案。两轮均受控回收；h107/h115 配对 SHA 分别 `9D75995799978B0AA2A22A5E2E449AB71C2BAA9AD64B5C6898AB2BC5784F89E8`、`D809DAC8771C60D8EB803571B93A43E41C52DF8F616391CF22687CDF2DAD30F1`。这使当前实际联盟状态进入正式家庭结果循环；提案是否创建联盟、联盟战争义务、子代宗族及解除婚约代价仍未观察或估值。
+
+### C78：保留选中提案前玩家侧联盟读数（源码阶段）
+
+R0240 同一正式报告第 4 turn 的五行诊断，对被选中的候选 38710／接收方 32266 给出 `player 29829 → recipient 32266` 的原生 `already_allied=false`、`both_have_realm_data=true`、`would_attempt_if_accepted=true`；第 11 turn 的独立结果是双方当前 `allied=true`。因此报告原件已有**玩家到接收方这一方向**从 false 到 true 的先后观测；提案前的反方向状态没有读取，经过的时间和其他状态变化也使它不能单独证明联盟由此提案创建。此前正式 pending 账本只持久化接收方 ID，丢掉了这一选中行的前态，冷恢复后无法在结果消费者里作这个有界比较。
+
+C78 只从已核最终合法、同帧的被选中五行结果取 `first_character_id=player`、`second_character_id=recipient` 的 `already_allied`，写入 pending 的 `preproposal_played_has_recipient_alliance`；物质婚配结果成立并读到现有双向联盟原生回执后，durable resolved 记录前态及 `played_to_recipient_alliance_transition`。旧账本或无该 pair 的成人婚配保留 `unknown`，不从 `would_attempt_if_accepted` 推导实际结盟，不补猜反方向前态，也不把时间上的变化称为独占因果。原生决策树、typed 动作与公开协议不变。本包没有新 CK3 轮次、动作、日期或冷恢复证据；新增字段当前只达到源码与聚焦测试阶段。
