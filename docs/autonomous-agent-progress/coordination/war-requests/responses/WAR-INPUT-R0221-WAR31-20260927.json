@@ -3,11 +3,11 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T16:40:00Z",
+  "updated_at_utc": "2026-09-27T16:52:00Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
-  "triage": "The original R0221 read-only frame returned cb_specific_terms_not_observable. A later explicit user instruction authorized one precise defender surrender. On verified R0197/R0221 inputs, attempt-05 submitted that action exactly once, observed WarID 16777231 absent in the next native snapshot and six days later, and saved a material-result checkpoint. The one-shot authorization is consumed; this update does not authorize another submission. Personal liege/vassal relations and truce-slot direction remain unknown.",
+  "triage": "The original R0221 read-only frame returned cb_specific_terms_not_observable. A later explicit user instruction authorized one precise defender surrender. On verified R0197/R0221 inputs, attempt-05 submitted that action exactly once, observed WarID 16777231 absent in the next native snapshot and six days later, and saved a material-result checkpoint. The one-shot authorization is consumed; this update does not authorize another submission. A later exact-save contract projection observed contract-defined personal liege/vassal edges at both save dates; same-native-frame relations and truce-slot direction remain unknown.",
   "static_findings": {
     "absolute_outcome": "primary defender surrender invokes attacker_victory",
     "stock_cb": "individual_county_de_jure_cb on_victory in 00_dejure_war.txt:435-497 constructs conquest title-and-vassal change, setup_de_jure_cb, then resolve_title_and_vassal_change; later prestige/fame/truce and conditional effects remain material",
@@ -31,7 +31,7 @@
     "authorized_literal": "surrender-war-16777231",
     "scope": "One submission only, after independently proving the exact R0221 source checkpoint bytes and driver/sidecar provenance, recording any bounded ordinary-seed rebind into a new vanilla profile and episode, and checking the newly observed WarID 16777231/frame and matching DLL. This does not authorize any other war, checkpoint or repeated submission.",
     "asset_status": "The lead agent selectively acquired and SHA-verified the exact R0197 checkpoint/driver and R0221 original DLL/injector from OneDrive, then prepared and cold-started a new vanilla profile. Attempt-05 is the sole action run.",
-    "unobserved_material_result": "Personal holder liege and complete vassal set, truce_1 direction, same-native-frame title/opponent/piety writeback and actual taken resolve branch remain unverified."
+    "unobserved_material_result": "Save-level contract-defined direct liege/vassal edges are now observed separately. Truce_1 direction, same-native-frame personal/title/opponent/piety writeback, any noncontract special dependence, and actual taken resolve branch remain unverified."
   },
   "live_one_shot_result": {
     "attempt": "D:/ck3-research-artifacts/war31-live-20260927/attempt-05",
@@ -45,7 +45,9 @@
     "native_postcondition": "Before native:4 and after native:5 at date_raw 53215920: WarID present then absent; Robert gold raw unchanged 111798776; prestige 252655450 to 249655450, scaled delta -30. Next-turn native:11 date_raw 53216064 still lacks WarID.",
     "post_action_save_sha256": "A29A41B2434B2A91BE1D3DC254F8C71455D4ACA528F1DCC9FF32369608F2EDB5",
     "save_material_report_sha256": "84154554437CE96FB751DC6DB23E65847CA974CD92917A2FCB32B12C3FC11634",
-    "save_material_result": "At 1074.11.23 c_foggia holder 33435 to 30097, de-facto superior title 2141 to 2121, b_lucera holder 33435 to 30097; Robert gold/piety delta zero and prestige -30; Landolf gold/piety/prestige delta zero; pair relation WarID absent and raw truce_1 date 1079.11.17/result victory. Truce slot direction and personal liege/vassal relations unverified.",
+    "save_material_result": "At 1074.11.23 c_foggia holder 33435 to 30097, de-facto superior title 2141 to 2121, b_lucera holder 33435 to 30097; Robert gold/piety delta zero and prestige -30; Landolf gold/piety/prestige delta zero; pair relation WarID absent and raw truce_1 date 1079.11.17/result victory. This report alone does not read personal liege/vassal relations; a separate contract projection below does. Truce slot direction remains unverified.",
+    "save_contract_report_sha256": "486AE3D695ED075952C92307452E26481A62F213E46CA7F71C4F9F41606CE16E",
+    "save_contract_result": "A later save-level projection cross-checked all vassal_contracts.database edges against each lord's landed_data contract ID list. Old holder 33435 remained direct contract vassal of Robert 29829 before and after; new holder 30097 remained direct contract vassal of 29097. Contract 16786148 for vassal 43703 changed liege 33435 to 30097; the before/after direct contract vassal sets are in docs/ck3-native-ai/war31-save-vassal-contract-edges-2026-09-28.md. This is not a same-native-frame relation read.",
     "two_point_probe": "Attempt-05 paired trace is STRUCTURAL_PAIR_ONLY: same PID/thread/pointer at setup RVA 0x2E9F746 and resolve comparison RVA 0x2EC4410; dword +0x268 was 0 at both. Raw capture SHA D6212CEDC465CF299FC1E61894457F7D6903D122E18EFC19E1126AF40E944ABD. External WarID/effect assertions and taken branch are not authenticated by the sampler.",
     "paired_recovery": "Attempt-07 cold-started exact post-action save SHA A29A41B2434B2A91BE1D3DC254F8C71455D4ACA528F1DCC9FF32369608F2EDB5. Recovered payload SHA 908E88D2B7BA30AB6D35E6D04DC11E503682950C221CDF97C3E70A94E3E916E2 matches the saved next-turn frame in episode, date, WarID absence and player gold/prestige. Full offline report SHA FF62B768B3C666AF059589867F469A76A6FCBE4139CC91015626F2223AE069AA has paired_recovery_matched=true. CK3 stopped with cleanup_proven=true.",
     "documentation": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md"
@@ -185,18 +187,20 @@
   "checks": [
     "py ck3_autonomous_player/tests/unit/test_war31_observed_frame_alternative.py: 1 passed; binds the Git evidence SHA, same-frame WarID/episode/revisions, option legality and unknown terms, and calls the production attacker-only emergency predicates with a hypothetically advertised surrender literal.",
     "The original R0221 bridge contract serialized terms_observable=false and reason cb_specific_terms_not_observable; the later action is an independent exact-input run, not a retroactive preview of that frame.",
-    "Attempt-05 exact action, next-date read and save delta; attempt-07 exact-byte cold-start recovery; ck3_autonomous_player/tests/unit/test_war31_postcondition_contract.py: 8 passed; tools/validate_python_only.py: GREEN. The recovery report retains false gates for domains absent from native rich snapshots."
+    "Attempt-05 exact action, next-date read and save delta; attempt-07 exact-byte cold-start recovery; ck3_autonomous_player/tests/unit/test_war31_postcondition_contract.py: 8 passed; tools/validate_python_only.py: GREEN. The recovery report retains false gates for domains absent from native rich snapshots.",
+    "Save-level vassal contract projection cross-checks each database edge with both requested characters' landed_data contract lists and their own lieges' lists. test_project_war31_vassal_contracts.py: 4 passed on normal Python and 4 passed under -O; the real exact-save report SHA is 486AE3D695ED075952C92307452E26481A62F213E46CA7F71C4F9F41606CE16E."
   ],
   "live_evidence": {
     "r0221_exact_readonly_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0221-raw-freeze.json; SHA BE7CCFF4DED6305744D3C2EE0ADD7FFD8D9163E0B662F02C3986090271DC30C5",
     "r0221_query_result": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.termination-options.json; SHA 359C5A03B7F7C2FC35EE9FD47DE0DF054F9C200E0A77E2AB2F9F231D2394B124",
     "r0250_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0250-summary.json; SHA 821DC087B89B06912A2DF2A737596604E94F9E59645546300F609C4E0B7D70FD",
-    "attempt05_live_result": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md; raw action, native snapshots, probe and persisted saves are retained under external attempt-05 and are not transported by Git"
+    "attempt05_live_result": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md; raw action, native snapshots, probe and persisted saves are retained under external attempt-05 and are not transported by Git",
+    "save_contract_edges": "docs/ck3-native-ai/war31-save-vassal-contract-edges-2026-09-28.md; external holder-contract-edges-03.json SHA 486AE3D695ED075952C92307452E26481A62F213E46CA7F71C4F9F41606CE16E"
   },
   "limitations": [
     "The original R0221/R0250 delivery was a policy-safe observed-frame alternative, not material surrender terms; the separately authorized exact-input attempt-05 supplied one live result. Its one-shot authorization is consumed.",
-    "The save material delta is six days after the immediate native frame. Title-layer changes do not prove personal liege/vassal relations, and the truce_1 slot direction remains unverified. The hardware probe is structural only and does not prove the taken branch.",
+    "The save material delta is six days after the immediate native frame. A separate contract-database projection does prove save-level contract-defined direct liege/vassal edges, but not their same-native-frame transition or noncontract dependencies. The truce_1 slot direction remains unverified. The hardware probe is structural only and does not prove the taken branch.",
     "Raw CK3 checkpoint, DLL, capture and save evidence is external to Git; consumers on another machine must acquire and verify exact bytes if they need independent replay."
   ],
-  "next_step": "Publish the separate Robert H2660 local-window release response. Consumers may use the observed WarID 16777231 result only for its exact source; generic termination prediction still needs personal liege/vassal, directed truce and same-frame signed opponent/resource readback. Do not repeat the consumed surrender or call the crashing broad preview."
+  "next_step": "Robert H2660 local-window release response is on master. Consumers may use the observed WarID 16777231 result only for its exact source; generic termination prediction still needs same-native-frame personal/title relations, directed truce and signed opponent/resource readback. Do not repeat the consumed surrender or call the crashing broad preview."
 }

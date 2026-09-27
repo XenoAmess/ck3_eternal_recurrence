@@ -15,6 +15,6 @@
 
 硬件两点 probe 的离线组装结果见 `attempt-05/hwprobe-01/paired-trace.json`，原始采集 SHA-256 `D6212CEDC465CF299FC1E61894457F7D6903D122E18EFC19E1126AF40E944ABD`。同一 PID `6532`、线程 `2452`、指针 `0x1F440020DE0` 在 setup `0x2E9F746` 与 resolve 比较 `0x2EC4410` 前的 `[RAX+0x268]` dword 都为 **0**，不是 `0x17`。组装器的等级仅为 `STRUCTURAL_PAIR_ONLY`：WarID、动作、episode、effect 调用身份来自外部断言，硬件 probe 本身并不认证它们，也没有记录比较后的实际分支。不能仅据这个 dword 宣称所有 de-jure conquest 的变更类型或最终分支。
 
-动作结果、原生战争消失、下一日期战争缺席、存档变化及独立冷启动恢复形成一致的这一战例证据。但战后存档比即时原生帧晚六天；把全部资源／title 变化逐项归因到同一原生帧仍需独立读数。人物直属领主／全部封臣及 truce 槽方向仍为明确缺口。`material_outcome_complete=false` 是字段完备度门禁，**不是**本次投降失败。恢复只证明上述可读原生域和存档字节配对，不增加缺失的字段。
+动作结果、原生战争消失、下一日期战争缺席、存档变化及独立冷启动恢复形成一致的这一战例证据。但战后存档比即时原生帧晚六天；把全部资源／title 变化逐项归因到同一原生帧仍需独立读数。[保存层契约核对](war31-save-vassal-contract-edges-2026-09-28.md)进一步读到了原、新 holder 的直属契约领主与封臣，仍不能代替即时原生同帧人物关系，也不能证明不经契约表达的特殊依附。truce 槽方向仍为明确缺口。`material_outcome_complete=false` 是字段完备度门禁，**不是**本次投降失败。恢复只证明上述可读原生域和存档字节配对，不增加缺失的字段。
 
 关闭窗口时 `attempt-07/desktop-handoff-01/probe-1/steam-moved.png` SHA-256 `ADD8AE6B68F3F04F973E70FE0541D2A84E61ECB7F394E290FE8EE46FB782E785` 是新鲜位移画面，人工可见 Steam“离线模式”；本机 CK3、bridge injector、operator MCP 进程清单为空，任务总线已释放 `ck3-screen:acquired`。首个恢复候选 `attempt-06` 在 CK3 启动前因同步 `master` 后 runtime fingerprint 变化而 RED，未启动游戏、未再次提交动作；保留其所有准备与失败证据。`attempt-07` 从相同战后不可变原件重新准备并通过。

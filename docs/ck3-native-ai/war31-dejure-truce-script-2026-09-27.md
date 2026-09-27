@@ -3,8 +3,10 @@
 **范围。** R0221 的 WarID `16777231` 是 CK3 `1.19.0.6` 的
 `individual_county_de_jure_cb`；Robert（CharacterID `29829`）为 primary defender，
 其 primary opponent（`30097`）为 primary attacker。原生同帧查询确认防守方投降可合法接受、
-对应绝对 `attacker_victory`，但**没有执行投降**。本页只确定该结果将走的原版脚本链，
+对应绝对 `attacker_victory`；**本页原始静态提取阶段没有执行投降**。本页只确定该结果将走的原版脚本链，
 不把脚本意图当成已落地的停战或到期日。
+
+后续单次获授权的[WAR31 实机投降](war31-r0197-one-shot-live-result-2026-09-28.md)已执行，战后保存的精确人物对新增原始 `truce_1` 槽、到期 `1079.11.17`、result `victory`。**脚本方向 `30097 → 29829` 与存档槽位方向的对应仍未由原生读取证明**；不要用本页的静态意图直接给 `truce_1` 定向。以下“未执行／待执行”均指本页冻结时的历史边界。
 
 ## 可静态确定的部分
 

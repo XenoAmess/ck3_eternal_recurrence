@@ -26,4 +26,6 @@
 
 对精确 R0197 原件本机重解码后的战前只读回读见外置 `D:/ck3-research-artifacts/war31-live-20260927/attempt-02/R0197-before-relation-material.json`：文本 SHA-256 `FC39B744D666C649C4E54B1198F7C7C5B39847B8AB8E98BC97F16919D9603C79`；唯一人物对 `first=29829, second=30097` 位于原文本第 5859748–5859752 行，含 `war=16777231`，`raw_slots={}`。这证明战前该人物对的**关系块内**没有持久 truce 槽位。
 
-投降后的实机差分现见 [WAR31 单次动作结果](war31-r0197-one-shot-live-result-2026-09-28.md)：外置 `attempt-05/save-material-delta-01.json` 将 `1074.11.17` 原件和 `1074.11.23` 保存配对，得到 `c_foggia` holder `33435→30097`、Robert 威望 −30、战后人物对新 `truce_1` 到期 `1079.11.17`。原生即时战后帧也读到威望 −30 与 WarID 消失。**槽位方向、人物直属领主和完整封臣集合仍未证明**；六天跨度的存档差分不冒充同帧 title／全部资源写回。
+投降后的实机差分现见 [WAR31 单次动作结果](war31-r0197-one-shot-live-result-2026-09-28.md)：外置 `attempt-05/save-material-delta-01.json` 将 `1074.11.17` 原件和 `1074.11.23` 保存配对，得到 `c_foggia` holder `33435→30097`、Robert 威望 −30、战后人物对新 `truce_1` 到期 `1079.11.17`。原生即时战后帧也读到威望 −30 与 WarID 消失。**槽位方向和原生同帧人物直属关系仍未证明**；六天跨度的存档差分不冒充同帧 title／全部资源写回。
+
+该投影器本身仍把人物直属关系标作 unavailable；后续独立的[保存层封臣契约投影](war31-save-vassal-contract-edges-2026-09-28.md)对 `vassal_contracts.database` 与人物的契约 ID 清单双向核对，补出了契约定义的直属领主／封臣。这不改变本工具既有输出，也不把六天后的保存层关系声称为即时原生同帧结果。
