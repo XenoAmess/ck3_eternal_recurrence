@@ -1,0 +1,60 @@
+{
+  "schema": "ck3.counter_inputs_reinforcement_frame_refresh_ab_106_098.v1",
+  "trace_pair_schema": "ck3.advantage_reinforcement_same_checkpoint_ab_106_098.v1",
+  "trace_pair_evidence_sha256": {
+    "098": {
+      "input-freeze.json": "DD0C346F046DB059C56B880A2F9C31686B83C3D5A104934DBB7AEF7D13B64C5C",
+      "ck3-output/preflight.json": "3886CC56B2B96A7BC3F5B39DA771DC2CB887702882FBBA887F7F34C5C97B114D",
+      "ck3-output/interactive-requests-responses/c098-trace-finish.json": "6B158A07A6071D058DE6F3E8994CA0065F09B2311EF79004EB1DDD445B1B8198"
+    },
+    "106": {
+      "input-freeze.json": "8680F5432705E2DE89755D23265279F0CAD7AB89086C621E2215DC7D006FF8D3",
+      "ck3-output/preflight.json": "FEB288712C9C608F705628B5F6FB4D18C02129664278E43989D669AC71647C6D",
+      "ck3-output/interactive-requests-responses/c106-trace-finish.json": "9DF1DB4763A9CC74FCB66751A8D8353A9427D555247C12F474D0BD6D8A31B24A",
+      "ck3-output/session-result.json": "6F720AF9BAD96F38B45CC379E64757C5EAE4C98278481C7BAC8BDD395AF9E025",
+      "ck3-output/capture-report.json": "915CAEA1139905B5EC304C496D7EB861A93F8153E258AE6A31D29A4214B82400",
+      "cleanup-check.json": "1B3FC992333B003DDA1F7DC1FD418172BA2A32FA68BCF6D43344EBB1F959E1C5"
+    }
+  },
+  "control_response_sha256": {
+    "098": {
+      "before": "2244E1144D7F5708B19BD2DE50311BCCA38481EFD0BC98165FC48AEA8C0602AA",
+      "after": "236E67C10CFABBABEDE2822A40074458ABF8EFCA019CE54A3C88CC669EA217EC"
+    },
+    "106": {
+      "before": "77C2084B8638598A805434CDE4ACA76EA2BE5635282C338550294A2C075FFE2C",
+      "after": "6D024AD861F07DF056D2B7118E2C0607B5E52A3CC7F1DC6F6AC858C86919198E"
+    }
+  },
+  "before_date_raw": 53146488,
+  "after_date_raw": 53146512,
+  "same_source_counter_entries_equal": true,
+  "before_side_maa_entry_counts": [
+    18,
+    14
+  ],
+  "after_side_maa_entry_counts": [
+    24,
+    14
+  ],
+  "joined_army_id": 22,
+  "joined_army_maa_regiment_ids_in_after_frame": [
+    176,
+    177,
+    179,
+    180,
+    181,
+    182
+  ],
+  "native_join_full_side0_entry_counts": [
+    27,
+    40
+  ],
+  "gates": {
+    "before_after_frame_binding": "GREEN",
+    "same_source_098_106": "GREEN",
+    "after_frame_joined_army_visible": "GREEN",
+    "overall": "GREEN"
+  },
+  "scope": "paused_after_frame_input_refresh_only_not_future_join_prediction"
+}

@@ -8,10 +8,13 @@
 
 原版两侧 13 类反制保留向量与 098 相同：side 0 只有 class 8 为 `10000`，其余 `100000`；side 1 的 class 0、1 为 `10000`，其余 `100000`（均为 Q100000）。反制后攻击 `7163402981/1455075113`，伤亡前出伤 `116118762/67660992`，也都与 098 精确相同。优势原调用有一条完整 materialization，`failure_flags=0`：base `-300000`，side 0 掷骰 `7`、指挥官 34320、总项 `4200000`；side 1 掷骰 `8`、指挥官 29829、总项 `5000000`；原版缓存结果为 `-300000+4200000-5000000=-1100000`，单位 Q100000。
 
+暂停帧的输入更新也单独做了[哈希绑定投影](../../ck3_autonomous_player/native_bridge/research/fixtures/counter_refresh_ab_106_098.json)，由[只读脚本](../../ck3_autonomous_player/tools/project_counter_refresh_ab_106_098.py)核验四份 battle-control 原始回包。第 11 日 `active_counter_inputs_v1` 的 side 0/1 职业兵条目数为 `18/14`，第 12 日为 `24/14`；新出现的 side 0 六条职业兵 `176,177,179,180,181,182` 均属军队 22。098 与 106 在对应暂停帧的两侧条目逐项相同。这说明**原版入场后重新查询的同帧输入能看到新增军队**，生产智能体在下一决策帧可重新获取这份原生输入；第 12 日回包已经过该日日更和伤亡，不能倒灌成第 11 日对增援的事前预测，也不能用其伤亡后的数值冒充第 12 日伤亡前入参。
+
 因此可把“同源增援日同时观测原版优势分解与反制/伤害输出”标为已对拍。它仍是**事后单日观测**：`full_mutable_transition_bundle_complete=false`、`original_trace_ready=false`，`forecast_usable=false`；没有证明暂停第 11 日就能预测军队 22 的加入、以后各日的优势、骑士/撤退与伤亡转移，或整场胜率标定。当前生产策略的固定接战分布及风险门继续按各自合同使用，不能把本页静态相等误写为未来预测已闭合。
 
 复验命令（读取原始 attempt，不启动游戏）：
 
 ```text
 tools\.venv\Scripts\python.exe ck3_autonomous_player\tools\project_advantage_reinforcement_ab_106_098.py --attempt-106 D:\workspace\ck3_native_war_ai_promo_work\episode01-active-advantage-reinforcement-attempt-106 --attempt-098 D:\workspace\ck3_native_war_ai_promo_work\episode01-active-counter-output-attempt-098 --expected ck3_autonomous_player\native_bridge\research\fixtures\advantage_reinforcement_ab_106_098.json --check
+tools\.venv\Scripts\python.exe ck3_autonomous_player\tools\project_counter_refresh_ab_106_098.py --attempt-106 D:\workspace\ck3_native_war_ai_promo_work\episode01-active-advantage-reinforcement-attempt-106 --attempt-098 D:\workspace\ck3_native_war_ai_promo_work\episode01-active-counter-output-attempt-098 --expected ck3_autonomous_player\native_bridge\research\fixtures\counter_refresh_ab_106_098.json --check
 ```
