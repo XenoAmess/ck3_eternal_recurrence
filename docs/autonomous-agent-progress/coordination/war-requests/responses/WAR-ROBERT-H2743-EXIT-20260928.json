@@ -1,0 +1,25 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
+  "status": "claimed",
+  "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
+  "updated_at_utc": "2026-09-27T17:14:07Z",
+  "source_pr": null,
+  "triage": "R0263 excerpt proves only WarID 16777231 active at h2743, player-relative score -12 and one bounded route advance. It does not include current same-frame native termination options, CB/side identity, terms, army risk inputs or a postcondition. R0197 one-shot surrender authorization is consumed and cannot be reused here.",
+  "asset_transfer_request": {
+    "channel": "OneDrive selective upload of only the exact four H2743 input classes; do not sync an unrelated tree",
+    "checkpoint_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+    "driver_sha256": "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069",
+    "family_sidecar_sha256": "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724",
+    "runtime_dll_sha256": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
+    "status": "awaiting_verified_local_path"
+  },
+  "current_work": "Implement a reusable, side- and CB-bound read-only observation ingress for a current formal war exit comparison; then verify exact H2743 assets and query on a separately qualified local replay.",
+  "first_missing_observation": "A current paused-frame query-war-termination-options-16777231 result bound to h2743's exact checkpoint, episode, war, character, revisions and date. The R0221 options row is historical and cannot fill this field.",
+  "gameplay_action_authorized": false,
+  "live_evidence": null,
+  "limitations": [
+    "No H2743 raw save, driver, family sidecar or matching DLL is present on this machine yet.",
+    "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war."
+  ]
+}
