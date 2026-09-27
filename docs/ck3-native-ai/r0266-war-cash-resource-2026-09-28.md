@@ -17,6 +17,8 @@ R0266 的 `H2825/raw53217624` 是一个已暂停的同帧观察：`snapshot_id=n
 
 原版 AI 的战争储备规则提供了**后续取数路径**：当前游戏 `game/common/defines/ai/00_ai.txt:135-154` 把按 tier 的最低战争储备设为 `25/25/50/100/200/300/400` 金，并指定 `MONTHS_OF_MAINTENANCE_IN_WAR_CHEST=18`，即与 18 个月最大维护费需求比较。此前[原生宣战输入研究](war-film-declaration-inputs-2026-09-23.md)静态定位了 `war_chest_gold` 的预算字段和需求构造 helper。这说明“原版 AI 希望保留多少战争储备”有可追的原生入口；**还没有** H2825 同帧的角色 tier、最大维护费原生读数、当前 `war_chest_gold` 或与玩家建造消费共享的预算所有权读回。原版 AI 的宣战储备也不自动等于本游玩智能体在现役战争中的最低现金政策，因此当前收据继续保留 `policy_minimum_gold_reserve_raw=null`。
 
+H2743 的另一次只读存档检查进一步提醒这个区别。已在接收机核验的原始 `xar_checkpoint.ck3` SHA-256 为 `A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9`；使用 SHA-256 `E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D` 的 Rakaly 0.8.19 解码到仓库外独立目录，melted SHA-256 为 `1F12D756D3643CFE7AC7D4A13ED1F39A95EBC508633B63415D6706C1BA71F233`。文本的 `ai_strategies` 中可以看到其他角色的 `budget_war_chest` / `desired_war_chest`，全文只有两处 `29829={`，分别位于角色数据库和一条 `child_born` 记忆，没有以玩家 29829 为键的 AI strategy 行。这是 **H2743 保存层** 的负面观察，既不证明 H2825 的实际状态，也不证明内存里绝不存在其他预算表示；它足以阻止把其他 AI 角色的战争储备读数移植给玩家 Robert。解码素材永久保留在 `D:/ck3-research-artifacts/war31-h2743-20260928/attempt-06-r0266-cash/`。
+
 ## 已落入运行时的接口
 
 `m5_war_cash_resource_v1.observe_active_war_cash_resource_v1` 产出只读 `xar.ck3.m5-active-war-cash-resource.v1` 收据。输入必须包括完整 `source_frame`（玩家、`snapshot_id`、公开/原生修订、日期、episode）和 WarID。五项金额各使用 `{raw, scale:100000, source}`：已提交战争现金、本次动作即时费用、指定期限内未来费用上界、该期限的额外风险预算、战争政策最低保留额。未来上界还要声明 `horizon_days` 和文字假设。未知输入以 `null` 和机器可读 `missing` 原因输出；显式的 0 同样需要来源。收据始终 `formal_action_ready:false`。
