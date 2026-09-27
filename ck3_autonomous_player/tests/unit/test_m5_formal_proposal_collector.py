@@ -18,6 +18,7 @@ from xar_autoplayer.m5_formal_proposal_collector import (
     plan_m5_wartime_query_only,
 )
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
+from xar_autoplayer.native_auto_run import _compact_plan
 from xar_autoplayer.m5_war_cash_resource_v1 import observe_active_war_cash_resource_v1
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     COLD_RECOVERY_STEP as FACTION_GIFT_COLD_RECOVERY_STEP,
@@ -843,6 +844,32 @@ class M5WartimeObservationTests(unittest.TestCase):
         self.assertFalse(observed["formal_action_ready"])
         self.assertEqual(observed["candidate"]["stock_gold_cost_raw"], 18_000_000)
         self.assertNotIn("m5_joint_wartime_observation", original["plan"])
+
+    def test_wartime_comparison_survives_bounded_formal_turn_report(self):
+        result = plan_m5_wartime_query_only(
+            object(), self._plan(self._construction()),
+            snapshot=_snapshot(), history=[], available_steps=set(),
+        )
+        result["plan"]["m5_joint_wartime_observation"]["candidate"][
+            "private_unbounded_detail"
+        ] = {"discard": True}
+        compact = _compact_plan(result["plan"])
+        self.assertEqual(compact["selected_step"],
+                         "query-combat-simulation-inputs-v3-2629")
+        observed = compact["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "incomplete_war_cash")
+        self.assertEqual(observed["frame"]["date_raw"], _FRAME["date_raw"])
+        self.assertEqual(observed["war_ids"], [16777231])
+        self.assertEqual(observed["candidate"]["stock_gold_cost_raw"],
+                         18_000_000)
+        self.assertEqual(observed["candidate"][
+            "authored_monthly_income_hundredths"], 70)
+        self.assertNotIn("private_unbounded_detail", observed["candidate"])
+        self.assertIn("future_war_cost_upper_raw", observed["missing"])
+        self.assertFalse(observed["formal_action_ready"])
+        self.assertNotIn("m5_joint_wartime_observation", _compact_plan({
+            "selected_step": "query-combat-simulation-inputs-v3-2629",
+        }))
 
     def test_stale_construction_frame_does_not_become_a_joint_candidate(self):
         construction = self._construction()
