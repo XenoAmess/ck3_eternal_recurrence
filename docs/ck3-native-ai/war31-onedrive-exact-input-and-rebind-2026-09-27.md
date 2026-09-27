@@ -18,3 +18,13 @@ OneDrive 客户端的“选择文件夹”中，目标目录显示约 96.4 MB，
 第一次 `native-one-generation-preflight` 使用 CLI 默认管道，按预期因与原 driver 不同而 `blocked`，原报告保留。第二次显式使用冻结管道后，报告 `status=ready`、`ok=true`、`ck3_launch_attempted=false`、CK3 进程清单为空，精确绑定 CharacterID 29829、episode `native-29829-2bc2d599f7f9`、history index 2134、date_raw 53215920、原存档 SHA 和上述派生 driver SHA。该 `report.json` 位于外置 `attempt-01/state/preflights/20260927T143526Z-one-generation-preflight-58c22544/`，SHA-256 `1DD258CB44DD4706EEB27356B54D77A85F579D67369623C7B359B9CDAAC9C6E4`。
 
 这些只是**输入及恢复准备就绪**，尚无 CK3 启动、同帧 WAR31 复验、硬件双点、投降动作或结算结果。受管动作前还须独立验证 exact source、授权回执、R0221 DLL、派生状态和实际 CK3 PID/创建时间；动作后须观察原生状态、下一 turn 和配对恢复。`attempt-01` 的 prepared agent runtime revision 为 `345eb451f`；后续代码若改动运行时，应建立新 attempt/profile，不改写该历史预检。
+
+## 新门禁运行时的独立 attempt-02
+
+一次性守方投降门禁进入 `master` 后，本机于 2026-09-27 14:51 UTC 从上述四份不可变本地原件**重新**创建外置 `attempt-02/state`，没有覆盖 attempt-01。已核对拟用于 MCP 的解释器实际加载 `D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py`；其 `--help` 已出现四项 `--war31-one-shot-*` 参数，`native-session --help` 已出现 `--xar-enabled xar_off`。以此代码重新执行 `xar_off` prepare、原 save/driver 放置、官方 ordinary rebind 与显式原管道的 no-launch preflight。
+
+结果为 `status=ready`、`ok=true`、`ck3_launch_attempted=false`、CK3 进程列表为空；prepared agent runtime revision `e733a529275e7877a7ac2f409c7a882522b9302a`，环境 SHA-256 `3874AA9C15B2A4872B9E862E1A0828F264935627D42AAE3FE089DD6CAAA70A09`，派生 driver SHA-256 `CA72774D835B61DA16C4B6ECC1CCBB93DE753D97E678198F9DDFD38D433AB018`，新 rebind 回执 SHA-256 `AE2119AAE249E0FA7330BB1885DF530EF18F43FB6F963B3C316AA2400302ADD4`。正式 preflight 报告在外置 `attempt-02/state/preflights/20260927T145111Z-one-generation-preflight-2f26f2ee/report.json`，SHA-256 `3805DD15045193D00C0BF291ED1A522D8B17B17F11FE90CCDF62E6C6C37854DA`；该 attempt 的命令、stdout/stderr 与输入放置回执均分别保存。
+
+用户已有的单次授权被原文转录到**跨 attempt 固定**的外置 `one-shot-authorization/user-authorization.json`，SHA-256 `2D60074DEAF365966C7C78649147862F2BC2D52CCA91F6CE68CA08FB423DA3BF`。用原始 R0197 save/driver 构造生产门禁成功，构造过程没有创建 `war31-one-shot-submission-reservation.json`，也没有启动 CK3 或投降。授权回执与来源、操作者、时间、精确输入哈希另见同目录 `authorization-manifest.json`；不能为新的 attempt 复制授权来重置单次 fence。
+
+WAR-WINDOW-ROBERT-H2577-20260927 的 [Git 协调回复](../autonomous-agent-progress/coordination/war-requests/responses/WAR-WINDOW-ROBERT-H2577-20260927.json)已明确让出当前拟议窗口。在 Robert h2577 执行者通过该通道报告完成、释放，并完成新鲜本机资源检查之前，不启动 WAR31。以上仅说明新代码与精确输入完成**无启动门禁**，不说明 WAR31 同帧、动作或结算已有实机证据。
