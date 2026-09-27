@@ -110,6 +110,15 @@ class NativeFirstHopProjectionTests(unittest.TestCase):
         self.assertNotIn(move_army_step(ARMY_ID, 22), projected)
         self.assertNotIn(move_army_step(ARMY_ID, 99), projected)
 
+    def test_combat_first_hop_is_preview_only_until_typed_retreat_gate(self) -> None:
+        snapshot = _snapshot()
+        snapshot["player_armies"][0]["in_combat"] = True
+        projected = self._project(snapshot=snapshot)
+        self.assertEqual(
+            projected,
+            EXPECTED - {move_army_step(ARMY_ID, FIRST_HOP_ID)},
+        )
+
     def test_route_with_origin_prefix_still_exposes_first_travel_hop(self) -> None:
         row = _preview_row()
         row["result"]["route_preview"]["route_province_ids"].insert(0, 20)

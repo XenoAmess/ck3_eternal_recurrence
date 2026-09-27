@@ -25113,12 +25113,40 @@ def _action_steps(
             ):
                 if _positive_native_id(province_id):
                     hostile_threat_province_ids.add(int(province_id))
+        # Active-combat retreat needs a destination seed outside the combat
+        # province.  Enemy positions and war objectives alone are attack
+        # targets, not retreat destinations.  Advertise only read-only
+        # previews toward observed, stationary player armies here; the
+        # strategy must still prove a one-hop route and hostile-scope safety
+        # before it may use the typed retreat preview/order.
+        friendly_retreat_seed_provinces: set[int] = set()
+        for friendly in controllable:
+            province_id = friendly.get("current_province_id")
+            if (
+                _positive_native_id(province_id)
+                and int(province_id) <= 2**31 - 1
+                and _army_is_known_stationary(friendly)
+                and not _army_in_combat_or_retreat(friendly)
+            ):
+                friendly_retreat_seed_provinces.add(int(province_id))
+        friendly_retreat_seed_provinces.difference_update(
+            hostile_threat_province_ids
+        )
         for army in controllable:
             army_id = army.get("army_id")
             if not isinstance(army_id, int):
                 continue
             army_target_provinces = set(target_provinces)
             current_province_id = army.get("current_province_id")
+            if (
+                paused is True
+                and expand_preview_move_armies
+                and _army_in_active_combat(army)
+                and _positive_native_id(current_province_id)
+            ):
+                for province_id in friendly_retreat_seed_provinces:
+                    if province_id != current_province_id:
+                        steps.add(preview_move_army_step(army_id, province_id))
             current_route = army.get("route_province_ids")
             same_province_route_clear_ready = bool(
                 _positive_native_id(current_province_id)
@@ -25299,7 +25327,11 @@ def _fresh_preview_first_hop_steps(
         first_hop = remaining_route[0]
         steps.add(preview_move_army_step(army_id, first_hop))
         steps.add(query_route_contact_horizon_step(army_id, first_hop, hostiles))
-        steps.add(move_army_step(army_id, first_hop))
+        # A combat-bound army must pass the typed retreat legality/scope and
+        # one-shot token gate.  Do not expose a direct move literal merely
+        # because a route preview discovered its first waypoint.
+        if not _army_in_active_combat(army):
+            steps.add(move_army_step(army_id, first_hop))
     return steps
 
 
