@@ -810,6 +810,43 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertIn("root_faction_facts_unknown", planned["plan"]["reason"])
         construction_query.assert_not_called()
 
+    def test_same_frame_unavailable_root_is_red_without_requery(self) -> None:
+        snapshot = _snapshot(faction_count=0)
+        snapshot["native_command_history"] = [{
+            "command": ROOT_QUERY_STEP, "ok": True,
+            "result": {
+                "step": ROOT_QUERY_STEP, "accepted": True,
+                "status": "unavailable",
+                "snapshot_revision": _FRAME["native_revision"],
+                "campaign_root_context": {
+                    "status": "unavailable",
+                    "snapshot_revision": _FRAME["native_revision"],
+                    "date_raw": _FRAME["date_raw"],
+                    "player_character_id": None,
+                    "unavailable_reason": "state_changed",
+                },
+            },
+        }]
+        driver = _Driver(self.state_dir, snapshot=snapshot)
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP],
+            "bridge_capabilities": [],
+        }
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"policy": "one-life-turn-v1", "phase": "peace_growth",
+                          "selected_step": "life-advance"},
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+        ) as construction_query:
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertIsNone(planned["plan"]["selected_step"])
+        self.assertEqual(planned["plan"]["phase"], "m5_joint_query_only_red")
+        self.assertIn("same-frame root returned unavailable",
+                      planned["plan"]["reason"])
+        construction_query.assert_not_called()
+
     def test_pending_construction_reaches_existing_receipt_before_joint_read(self) -> None:
         self.state_dir.mkdir(parents=True, exist_ok=True)
         pending = {

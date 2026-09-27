@@ -52,6 +52,28 @@ RESULT_SCHEMA = "xar.ck3.m5-formal-proposal-collection.v1"
 _DOMAIN_ORDER = ("war", "council", "building", "marriage", "diplomacy", "lifestyle")
 
 
+def _same_frame_root_returned_unavailable(
+    snapshot: Mapping[str, object], history: Sequence[Mapping[str, object]],
+) -> bool:
+    """Recognize a completed native read with no usable root on this frame."""
+    for row in reversed(history):
+        if row.get("command") != ROOT_QUERY_STEP or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        context = (result.get("campaign_root_context")
+                   if isinstance(result, Mapping) else None)
+        if (isinstance(context, Mapping)
+                and result.get("step") == ROOT_QUERY_STEP
+                and result.get("accepted") is True
+                and result.get("status") == "unavailable"
+                and result.get("snapshot_revision") == snapshot.get("native_revision")
+                and context.get("status") == "unavailable"
+                and context.get("snapshot_revision") == snapshot.get("native_revision")
+                and context.get("date_raw") == snapshot.get("date_raw")):
+            return True
+    return False
+
+
 def collect_m5_formal_proposals(
     *, snapshot: Mapping[str, object], sources: Mapping[str, object],
 ) -> dict[str, object]:
@@ -269,6 +291,8 @@ def plan_m5_formal_query_only(
     # never interpret an absent root as an empty faction opportunity.
     root_status = latest_same_frame_faction_root_v1(snapshot, history)["status"]
     if root_status == "same_frame_root_not_observed":
+        if _same_frame_root_returned_unavailable(snapshot, history):
+            return blocked("M5 same-frame root returned unavailable; joint inputs remain RED")
         if ROOT_QUERY_STEP not in available_steps:
             return blocked("M5 same-frame faction root is absent and its query is unavailable")
         return {
