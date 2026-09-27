@@ -21,6 +21,8 @@
 
 第 5 项次日回读：[074 独立实机](winner-ai-postsubmit-next-day-live-074.md)复现同一终局分支和后备队列接受，在第 27 日仍读到胜方军队位于 ProvinceID `2633`、目标与路线为 `2639`，没有新 builder/submit；31 项审计通过。原始公开/私有回读都没有 AI 军队的 MovePath ETA 或队列 apply 事件，因此“入队接受”和“次日路线非空”仍不能证明命令执行。后续 076 应优先只读回读该 CUnit 的 MovePath/首跳 ETA；若无法安全取得，则有限逐日观察位置、目标与路线，保留命令归因未知。
 
+第 5 项延长回放启动门：[076 预检诊断](winner-ai-postsubmit-076-prelaunch-steam-diagnostic.md)发现 Steam 桌面画面与 074 旧图逐字节相同、任务栏时钟冻结；UI Automation、直接窗口采样和可恢复重绘也未给出可读的当前离线状态。076 因此在 **CK3 启动前**保留 environment RED，没有新增 AI 移动或 ETA 结果。Steam 本次进程的离线启动日志和持久偏好是旁证，不冒充实时 UI；下一次新 attempt 须先恢复可靠离线状态取证，再执行已冻结的有限日观察计划。
+
 第 4 项片中身份映射：[两份配对原生存档的只读复核](maa-regiment-87-save-name-identity-2026-09-27.md)均把 RegimentID `87` 绑定为 `mubarizun`，原版简中为“穆巴里尊”，属职业兵士重步兵；ProvinceID `2633` 为“墨西拿”。该身份可用于视频文字与智能体解释层，但兵种定义的基础坚韧 `25` 与同帧有效值 `26.25` 的差额仍不能仅由名称推断修正来源。
 
 第 4 项输入回归更新：两个新增隔离暂停帧的原生 v2 **直接属性求值**与下一次 schedule 对拍为 `51/51 + 63/63 = 114/114` 零差；智能体实际使用的 v3 `base_inputs` 与 v2 全对象一致。故当前帧试算应保持 v3 直接输入，不把旧战斗 entry 缓存误当作下一次 schedule 的属性；待研究的是未来逐日 modifier 转移以及发生变化的 18 个职业兵团的具体修正来源。完整证据与边界见[增援和日内属性专题](battle-reinforcement-and-join.md#2026-09-26暂停帧直接查询可得到本案下一次-schedule-的有效属性)。
