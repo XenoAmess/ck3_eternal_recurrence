@@ -116,6 +116,12 @@ struct PlayerLifestyleStateV1 {
              kPlayerLifestyleMaximumOwnedPerksV1>
       owned_perk_keys{};
 
+  // Private policy input. Absence of this independent read is explicit and
+  // never interpreted as a character having no education/personality traits.
+  bool actor_traits_ready = false;
+  std::uint32_t observed_actor_trait_count = 0;
+  std::array<PlayerLifestyleStableKeyV1, 32> observed_actor_trait_keys{};
+
   PlayerLifestyleCandidateCollectionStatusV1 legal_focus_candidate_status =
       PlayerLifestyleCandidateCollectionStatusV1::unavailable;
   PlayerLifestyleCandidateCollectionFailureV1
@@ -257,6 +263,8 @@ struct PlayerLifestyleSnapshotEnvironmentV1 {
   using XpGetter = std::int64_t *(*)(void *character, std::int64_t *output,
                                     void *lifestyle, bool within_level);
   using PerkSpanGetter = const void *(*)(void *character);
+  using TraitDatabaseGetter = void *(*)();
+  using CharacterHasTrait = bool (*)(void *character, const void *trait);
 
   ObjectGetter current_focus = nullptr;
   ObjectGetter current_lifestyle = nullptr;
@@ -264,6 +272,8 @@ struct PlayerLifestyleSnapshotEnvironmentV1 {
   Int32Getter used_perk_points = nullptr;
   XpGetter lifestyle_xp = nullptr;
   PerkSpanGetter unlocked_perks = nullptr;
+  TraitDatabaseGetter trait_database = nullptr;
+  CharacterHasTrait character_has_trait = nullptr;
   std::uintptr_t focus_fallback_slot_address = 0;
 };
 

@@ -427,6 +427,9 @@ struct NativeFixture {
     std::int32_t count = 0;
   } span{};
   std::uintptr_t fallback_focus = 0x11110000ULL;
+  std::array<std::array<std::uint8_t, 0x40>, 32> trait_definitions{};
+  std::array<std::uintptr_t, 32> trait_rows{};
+  std::array<std::uint8_t, 0x80> trait_database{};
 };
 
 NativeFixture *g_native = nullptr;
@@ -480,6 +483,46 @@ const void *NativePerks(void *) {
 
 const void *NativeNullPerks(void *) { return nullptr; }
 
+void *NativeTraitDatabase() {
+  return g_native == nullptr ? nullptr : g_native->trait_database.data();
+}
+
+bool NativeHasTrait(void *character, const void *definition) {
+  if (g_native == nullptr || character !=
+          reinterpret_cast<void *>(0x22220000ULL)) return false;
+  return definition == g_native->trait_definitions[2].data() ||
+         definition == g_native->trait_definitions[26].data();
+}
+
+void FillNativeTraitDatabase(NativeFixture &fixture) {
+  constexpr std::array<std::string_view, 32> keys{{
+      "education_diplomacy_1", "education_diplomacy_2",
+      "education_diplomacy_3", "education_diplomacy_4",
+      "education_diplomacy_5", "education_martial_1",
+      "education_martial_2", "education_martial_3",
+      "education_martial_4", "education_martial_5",
+      "education_stewardship_1", "education_stewardship_2",
+      "education_stewardship_3", "education_stewardship_4",
+      "education_stewardship_5", "education_intrigue_1",
+      "education_intrigue_2", "education_intrigue_3",
+      "education_intrigue_4", "education_intrigue_5",
+      "education_learning_1", "education_learning_2",
+      "education_learning_3", "education_learning_4",
+      "education_learning_5", "greedy", "generous", "shy",
+      "arrogant", "ambitious", "diligent", "just",
+  }};
+  for (std::size_t index = 0; index < keys.size(); ++index) {
+    WriteHeapKey(fixture.trait_definitions[index].data(), 0x18,
+                 keys[index].data(), keys[index].size());
+    fixture.trait_rows[index] = reinterpret_cast<std::uintptr_t>(
+        fixture.trait_definitions[index].data());
+  }
+  const auto rows = reinterpret_cast<std::uintptr_t>(fixture.trait_rows.data());
+  const std::int32_t count = static_cast<std::int32_t>(keys.size());
+  std::memcpy(fixture.trait_database.data() + 0x68, &rows, sizeof(rows));
+  std::memcpy(fixture.trait_database.data() + 0x74, &count, sizeof(count));
+}
+
 void TestTypedNativeFailureKeys() {
   using Failure = game::PlayerLifestyleSnapshotFailureV1;
   const std::array<std::pair<Failure, std::string_view>, 11> expected{{
@@ -512,6 +555,7 @@ void TestTypedNativeFailureKeys() {
 void TestNativeCurrentStateAndCandidateBoundary() {
   NativeFixture native{};
   g_native = &native;
+  FillNativeTraitDatabase(native);
   static constexpr char focus_key[] = "stewardship_wealth_focus";
   static constexpr char lifestyle_key[] = "stewardship_lifestyle";
   WriteHeapKey(native.focus.data(),
@@ -563,6 +607,8 @@ void TestNativeCurrentStateAndCandidateBoundary() {
   environment.used_perk_points = &NativeUsed;
   environment.lifestyle_xp = &NativeXp;
   environment.unlocked_perks = &NativePerks;
+  environment.trait_database = &NativeTraitDatabase;
+  environment.character_has_trait = &NativeHasTrait;
   environment.focus_fallback_slot_address =
       reinterpret_cast<std::uintptr_t>(&native.fallback_focus);
 
@@ -580,11 +626,38 @@ void TestNativeCurrentStateAndCandidateBoundary() {
          game::PlayerLifestyleCandidateCollectionStatusV1::unavailable);
   assert(output.state.legal_focus_candidate_count == 0 &&
          output.state.legal_perk_candidate_count == 0);
+  assert(output.state.actor_traits_ready &&
+         output.state.observed_actor_trait_count == 2);
+  assert(ck3::PlayerLifestyleStableKeyViewV1(
+             output.state.observed_actor_trait_keys[0]) ==
+         "education_diplomacy_3");
+  assert(ck3::PlayerLifestyleStableKeyViewV1(
+             output.state.observed_actor_trait_keys[1]) == "generous");
   const auto json = ck3::SerializePlayerLifestyleSnapshotV1(output);
+  assert(json.find("\"actor_traits\":{\"status\":\"available\","
+                   "\"observed_keys\":[\"education_diplomacy_3\","
+                   "\"generous\"]}") != std::string::npos);
   assert(json.find("\"reason\":\"lifestyle_window_unavailable\"") !=
          std::string::npos);
   assert(json.find("\"owned_perk_keys\":[\"heregeld_perk\","
                    "\"tax_man_perk\"]") != std::string::npos);
+
+  const auto saved_trait_row = native.trait_rows[0];
+  native.trait_rows[0] = 0;
+  auto missing_trait = Base();
+  missing_trait.before.played_character = 0x22220000ULL;
+  missing_trait.after = missing_trait.before;
+  access.context = &missing_trait;
+  output = {};
+  assert(ck3::ReadPlayerLifestyleSnapshotV1(
+             environment, access, Request(), output) ==
+         game::ReadPlayerLifestyleSnapshotResultV1::available);
+  assert(!output.state.actor_traits_ready &&
+         output.state.observed_actor_trait_count == 0);
+  assert(ck3::SerializePlayerLifestyleSnapshotV1(output).find(
+             "\"actor_traits\":{\"status\":\"unavailable\"}") !=
+         std::string::npos);
+  native.trait_rows[0] = saved_trait_row;
 
   const auto expect_native_failure =
       [&](game::PlayerLifestyleSnapshotFailureV1 expected) {
@@ -682,6 +755,10 @@ void TestBoundEnvironment() {
          module + ck3::kPlayerLifestyleCurrentFocusGetterRvaV1);
   assert(reinterpret_cast<std::uintptr_t>(environment.current_lifestyle) ==
          module + ck3::kPlayerLifestyleCurrentLifestyleGetterRvaV1);
+  assert(reinterpret_cast<std::uintptr_t>(environment.trait_database) ==
+         module + 0x8318F0);
+  assert(reinterpret_cast<std::uintptr_t>(environment.character_has_trait) ==
+         module + 0x260F740);
   assert(environment.focus_fallback_slot_address ==
          module + ck3::kPlayerLifestyleFocusFallbackSlotRvaV1);
 }
