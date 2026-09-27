@@ -15,10 +15,10 @@ import pefile
 
 EXPECTED_EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 FUNCTIONS = {
-    "resolve": (0x2308D50, 0x2308DE0),
-    "side_total": (0x2307CB0, 0x2307F20),
-    "commander": (0x2307680, 0x2307920),
-    "side_modifier": (0x2307230, 0x23075B0),
+    "resolve": (0x2308D50, 0x2308DE5),
+    "side_total": (0x2307CB0, 0x2307EE0),
+    "commander": (0x2307680, 0x2307A2D),
+    "side_modifier": (0x2307230, 0x2307679),
     "main_tick": (0x2309E80, 0x230A010),
     "damage_advantage": (0x23053B0, 0x2305580),
     "side_primary_refresh": (0x23CBC20, 0x23CBCE0),
@@ -56,6 +56,42 @@ CACHE_ANCHORS = {
     "main_tick_damage_multiplier_call": ("main_tick", 0x2309F55, "call", "0x23053b0"),
     "main_tick_cached_advantage_sign": ("main_tick", 0x2309F5A, "cmp", "qword ptr [rdi + 0x710], 0"),
     "multiplier_reads_cached_advantage": ("damage_advantage", 0x23053B4, "mov", "rax, qword ptr [rcx + 0x710]"),
+}
+
+
+# The current-cache commander and side-aggregator operands, with exact .pdata
+# function spans. These are dependency sites, not a reconstruction of values.
+COMPONENT_ANCHORS = {
+    "side_total_output_initialized_from_roll": ("side_total", 0x2307CE7, "mov", "qword ptr [rdx], rbx"),
+    "side_total_commander_call": ("side_total", 0x2307E88, "call", "0x2307680"),
+    "side_total_commander_return_value": ("side_total", 0x2307E8D, "mov", "rcx, qword ptr [rax]"),
+    "side_total_commander_add": ("side_total", 0x2307E90, "add", "qword ptr [r12], rcx"),
+    "side_total_aggregator_call": ("side_total", 0x2307EB5, "call", "0x2307230"),
+    "side_total_aggregator_return_value": ("side_total", 0x2307EBA, "mov", "rcx, qword ptr [rax]"),
+    "side_total_aggregator_add": ("side_total", 0x2307EBD, "add", "qword ptr [r12], rcx"),
+    "commander_side_index": ("commander", 0x23076AC, "movsxd", "r12, r9d"),
+    "commander_character_stat": ("commander", 0x23076B8, "movsxd", "rdx, dword ptr [r8 + 0xd8]"),
+    "commander_stat_scale": ("commander", 0x23076BF, "imul", "rdi, rdx, 0x186a0"),
+    "commander_null_context_branch": ("commander", 0x23076D2, "test", "r14, r14"),
+    "commander_side_specific_operand": ("commander", 0x2307799, "mov", "r8d, dword ptr [rax + r13]"),
+    "commander_first_helper": ("commander", 0x23077A7, "call", "0x2306940"),
+    "commander_second_helper": ("commander", 0x23077D4, "call", "0x2306c70"),
+    "commander_modifier_set": ("commander", 0x23077E2, "call", "0x26172c0"),
+    "commander_regiment_backlink": ("commander", 0x2307868, "mov", "rax, qword ptr [r15 + 0x1b0]"),
+    "commander_late_identity_compare": ("commander", 0x230790A, "cmp", "eax, dword ptr [r15 + 0x18]"),
+    "side_aggregator_context": ("side_modifier", 0x230724C, "mov", "rdi, qword ptr [rsp + 0x88]"),
+    "side_aggregator_first_modifier": ("side_modifier", 0x2307280, "call", "0x2940d50"),
+    "side_aggregator_null_context_branch": ("side_modifier", 0x2307294, "test", "rdi, rdi"),
+    "side_aggregator_modifier_set": ("side_modifier", 0x23072BC, "lea", "rcx, [rsi + 0x68]"),
+    "side_aggregator_set_lookup": ("side_modifier", 0x23072C0, "call", "0x20ab950"),
+    "side_aggregator_location_context": ("side_modifier", 0x2307365, "mov", "rax, qword ptr [r15 + 0x6b8]"),
+    "side_aggregator_context_chain_operand": ("side_modifier", 0x230738D, "movzx", "r8d, word ptr [rax + 0x76c]"),
+    "side_aggregator_combat_flag": ("side_modifier", 0x23074C9, "cmp", "byte ptr [r15 + 0x6fd], 0"),
+}
+COMPONENT_FUNCTION_BOUNDS = {
+    "side_total": (0x2307CB0, 0x2307EE0),
+    "commander": (0x2307680, 0x2307A2D),
+    "side_modifier": (0x2307230, 0x2307679),
 }
 
 
@@ -106,6 +142,46 @@ def verify_cache_chain(image: pefile.PE) -> dict:
     }
 
 
+def verify_component_sources(image: pefile.PE) -> dict:
+    # The two component helpers are only relevant here through the pinned
+    # current-cache call path; verify its null-context callsites as well.
+    verify_cache_chain(image)
+    image.parse_data_directories(
+        directories=[pefile.DIRECTORY_ENTRY["IMAGE_DIRECTORY_ENTRY_EXCEPTION"]]
+    )
+    spans = {}
+    for name, expected in COMPONENT_FUNCTION_BOUNDS.items():
+        matches = [(int(row.struct.BeginAddress), int(row.struct.EndAddress))
+                   for row in image.DIRECTORY_ENTRY_EXCEPTION
+                   if int(row.struct.BeginAddress) <= expected[0] < int(row.struct.EndAddress)]
+        if matches != [expected]:
+            raise ValueError(f"{name} .pdata span changed: {matches}")
+        spans[name] = {"begin_rva": f"0x{expected[0]:X}", "end_rva_exclusive": f"0x{expected[1]:X}"}
+    decoded = {name: {instruction.address: instruction for instruction in decode(image, name)}
+               for name in COMPONENT_FUNCTION_BOUNDS}
+    anchors = {}
+    for claim, (name, address, mnemonic, operands) in COMPONENT_ANCHORS.items():
+        instruction = decoded[name].get(address)
+        if instruction is None or (instruction.mnemonic, instruction.op_str) != (mnemonic, operands):
+            actual = None if instruction is None else f"{instruction.mnemonic} {instruction.op_str}"
+            raise ValueError(f"{claim} at 0x{address:X}: expected {mnemonic} {operands}, got {actual}")
+        anchors[claim] = {"rva": f"0x{address:X}", "bytes_hex": instruction.bytes.hex().upper(),
+                          "instruction": f"{mnemonic} {operands}"}
+    return {
+        "schema": "ck3.native_active_advantage_component_sources.v1",
+        "game_build": "1.19.0.6",
+        "exe_sha256": EXPECTED_EXE_SHA256,
+        "proof_layer": "exact-build-instruction-sites-and-pdata-bounds",
+        "cache_chain_verified_on_same_image": True,
+        "function_spans": spans,
+        "anchors": anchors,
+        "confirmed_boundary": "current-cache side_total calls both components with null target context",
+        "not_proven": ["exact contribution values at current pause or next day",
+                       "semantic names of every modifier enum and operand",
+                       "cross-manager event/join ordering", "safe paused replay of either helper"],
+    }
+
+
 def disassemble(exe: Path, name: str, calls_to: list[int] | None = None) -> list[str]:
     image = read_image(exe)
     if name == "callers":
@@ -149,13 +225,16 @@ def main() -> None:
     parser.add_argument("--function", choices=sorted(FUNCTIONS) + ["callers"])
     parser.add_argument("--calls-to", action="append", type=lambda value: int(value, 0))
     parser.add_argument("--verify-cache", action="store_true", help="verify the current cache source path")
+    parser.add_argument("--verify-components", action="store_true", help="verify commander/side source sites and .pdata spans")
     parser.add_argument("--output", type=Path, help="exclusively create a new verification artifact")
     parser.add_argument("--expected", type=Path, help="compare verification bytes to a frozen artifact")
     args = parser.parse_args()
-    if args.verify_cache == bool(args.function):
-        parser.error("provide exactly one of --verify-cache or --function")
-    if args.verify_cache:
-        body = json.dumps(verify_cache_chain(read_image(args.exe)), indent=2) + "\n"
+    if sum((args.verify_cache, args.verify_components, bool(args.function))) != 1:
+        parser.error("provide exactly one of --verify-cache, --verify-components or --function")
+    if args.verify_cache or args.verify_components:
+        image = read_image(args.exe)
+        result = verify_cache_chain(image) if args.verify_cache else verify_component_sources(image)
+        body = json.dumps(result, indent=2) + "\n"
         if args.expected is not None and args.expected.read_bytes() != body.encode("utf-8"):
             raise ValueError(f"frozen verification artifact differs: {args.expected}")
         if args.output is None:
@@ -165,7 +244,7 @@ def main() -> None:
                 handle.write(body)
     else:
         if args.output is not None or args.expected is not None:
-            parser.error("--output/--expected are only valid with --verify-cache")
+            parser.error("--output/--expected are only valid with verification")
         print("\n".join(disassemble(args.exe, args.function, args.calls_to)))
 
 

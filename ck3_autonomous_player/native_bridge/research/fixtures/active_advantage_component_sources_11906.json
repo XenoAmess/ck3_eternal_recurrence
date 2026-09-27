@@ -1,0 +1,115 @@
+{
+  "schema": "ck3.native_active_advantage_component_sources.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "proof_layer": "exact-build-instruction-sites-and-pdata-bounds",
+  "function_spans": {
+    "commander": {
+      "begin_rva": "0x2307680",
+      "end_rva_exclusive": "0x2307A2D"
+    },
+    "side_modifier": {
+      "begin_rva": "0x2307230",
+      "end_rva_exclusive": "0x2307679"
+    }
+  },
+  "anchors": {
+    "commander_side_index": {
+      "rva": "0x23076AC",
+      "bytes_hex": "4D63E1",
+      "instruction": "movsxd r12, r9d"
+    },
+    "commander_character_stat": {
+      "rva": "0x23076B8",
+      "bytes_hex": "496390D8000000",
+      "instruction": "movsxd rdx, dword ptr [r8 + 0xd8]"
+    },
+    "commander_stat_scale": {
+      "rva": "0x23076BF",
+      "bytes_hex": "4869FAA0860100",
+      "instruction": "imul rdi, rdx, 0x186a0"
+    },
+    "commander_null_context_branch": {
+      "rva": "0x23076D2",
+      "bytes_hex": "4D85F6",
+      "instruction": "test r14, r14"
+    },
+    "commander_side_specific_operand": {
+      "rva": "0x2307799",
+      "bytes_hex": "468B0428",
+      "instruction": "mov r8d, dword ptr [rax + r13]"
+    },
+    "commander_first_helper": {
+      "rva": "0x23077A7",
+      "bytes_hex": "E894F1FFFF",
+      "instruction": "call 0x2306940"
+    },
+    "commander_second_helper": {
+      "rva": "0x23077D4",
+      "bytes_hex": "E897F4FFFF",
+      "instruction": "call 0x2306c70"
+    },
+    "commander_modifier_set": {
+      "rva": "0x23077E2",
+      "bytes_hex": "E8D9FA3000",
+      "instruction": "call 0x26172c0"
+    },
+    "commander_regiment_backlink": {
+      "rva": "0x2307868",
+      "bytes_hex": "498B87B0010000",
+      "instruction": "mov rax, qword ptr [r15 + 0x1b0]"
+    },
+    "commander_late_identity_compare": {
+      "rva": "0x230790A",
+      "bytes_hex": "413B4718",
+      "instruction": "cmp eax, dword ptr [r15 + 0x18]"
+    },
+    "side_aggregator_context": {
+      "rva": "0x230724C",
+      "bytes_hex": "488BBC2488000000",
+      "instruction": "mov rdi, qword ptr [rsp + 0x88]"
+    },
+    "side_aggregator_first_modifier": {
+      "rva": "0x2307280",
+      "bytes_hex": "E8CB9A6300",
+      "instruction": "call 0x2940d50"
+    },
+    "side_aggregator_null_context_branch": {
+      "rva": "0x2307294",
+      "bytes_hex": "4885FF",
+      "instruction": "test rdi, rdi"
+    },
+    "side_aggregator_modifier_set": {
+      "rva": "0x23072BC",
+      "bytes_hex": "488D4E68",
+      "instruction": "lea rcx, [rsi + 0x68]"
+    },
+    "side_aggregator_set_lookup": {
+      "rva": "0x23072C0",
+      "bytes_hex": "E88B46DAFF",
+      "instruction": "call 0x20ab950"
+    },
+    "side_aggregator_location_context": {
+      "rva": "0x2307365",
+      "bytes_hex": "498B87B8060000",
+      "instruction": "mov rax, qword ptr [r15 + 0x6b8]"
+    },
+    "side_aggregator_context_chain_operand": {
+      "rva": "0x230738D",
+      "bytes_hex": "440FB7806C070000",
+      "instruction": "movzx r8d, word ptr [rax + 0x76c]"
+    },
+    "side_aggregator_combat_flag": {
+      "rva": "0x23074C9",
+      "bytes_hex": "4180BFFD06000000",
+      "instruction": "cmp byte ptr [r15 + 0x6fd], 0"
+    }
+  },
+  "confirmed_boundary": "current-cache side_total calls both components with null target context",
+  "not_proven": [
+    "exact contribution values at current pause or next day",
+    "semantic names of every modifier enum and operand",
+    "cross-manager event/join ordering",
+    "safe paused replay of either helper"
+  ]
+}
