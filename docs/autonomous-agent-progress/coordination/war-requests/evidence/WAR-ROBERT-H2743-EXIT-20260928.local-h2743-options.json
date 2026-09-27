@@ -1,0 +1,93 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-excerpt.v1",
+  "evidence_id": "WAR-ROBERT-H2743-EXIT-20260928.local-h2743-options",
+  "related_request": "WAR-ROBERT-H2743-EXIT-20260928",
+  "status": "exact_checkpoint_read_only_current_frame_observation",
+  "source": {
+    "checkpoint_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+    "original_driver_sha256": "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069",
+    "family_sidecar_sha256": "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724",
+    "runtime_dll_sha256": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-02/live-readonly-01",
+    "no_launch_preflight_sha256": "AB8E2A18A82A75F4AD3C27E64A32EF4E1DFD966FE28A4DD99B1596E9E6FFBE27",
+    "read_only_result_sha256": "DE3854F03B879770188FF714123EFFE30443E08D0AB9E2CD6DDC0657DAE162AF",
+    "termination_query_payload_sha256": "D7C6A50F5120944B4C53C42B52D0C64734BE9B169235F1C5764B3AABEA0DD2EB",
+    "production_observer_projection_sha256": "D1F142A119A9F01134EC377358C5A176DFFBD7AAB1CFAA92205D13ECD2063E22",
+    "session_exit_sha256": "331A43493156F606F238532F7FE5A033FC77E194B05B162E97E3510D3237C099"
+  },
+  "frame": {
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "actor_character_id": 29829,
+    "date_raw": 53217264,
+    "snapshot_id_before_and_after": "native:3",
+    "queried_public_revision": 4,
+    "queried_native_revision": 3,
+    "queried_connection_generation": 1,
+    "war_id": 16777231,
+    "player_side": "defender",
+    "player_is_primary_war_leader": true,
+    "primary_opponent_character_id": 30097,
+    "targeted_title_ids": [2128],
+    "player_relative_war_score": -12,
+    "war_duration_days": 1101,
+    "score_breakdown_attacker_perspective": {
+      "battles": 0,
+      "imprisonment": 0,
+      "occupation": 39,
+      "ticking": -27
+    },
+    "casus_belli": {
+      "database_index": 17,
+      "canonical_key": "individual_county_de_jure_cb",
+      "allows_white_peace_by_definition": true
+    }
+  },
+  "native_options": {
+    "surrender": {
+      "outcome": "attacker_victory",
+      "available": true,
+      "native_validator_passed": true,
+      "recipient_would_accept_now": true,
+      "ai_acceptance_raw": -8700000,
+      "ai_acceptance_scale": 100000,
+      "auto_accept": true,
+      "terms_observable": false,
+      "terms_unavailable_reason": "cb_specific_terms_not_observable"
+    },
+    "white_peace": {
+      "available": false,
+      "native_validator_passed": false,
+      "recipient_response": "unavailable",
+      "ai_acceptance_raw": -2990110,
+      "ai_acceptance_scale": 100000,
+      "auto_accept": false,
+      "terms_observable": false
+    },
+    "victory": {
+      "available": false,
+      "native_validator_passed": false,
+      "recipient_response": "unavailable",
+      "ai_acceptance_raw": -11100000,
+      "ai_acceptance_scale": 100000,
+      "auto_accept": false,
+      "terms_observable": false
+    }
+  },
+  "military_risk_inputs": {
+    "player_army_83886367": "Regular and controllable in province 2614; soldiers unavailable in this war row",
+    "enemy_army_50331920": "Sieging player-subrealm province 2628, one day left; soldiers unavailable in this war row",
+    "enemy_army_83886484": "Moving toward province 2628; soldiers unavailable in this war row",
+    "war_objective_province_2610": "Not occupied; fort level 3, garrison 297, no active siege"
+  },
+  "audit": {
+    "same_snapshot_id_and_date_before_after_query": true,
+    "gameplay_action_submitted": false,
+    "checkpoint_sha256_unchanged": true,
+    "managed_session_exit_code": 0,
+    "ck3_pids_after": [],
+    "steam_offline_image_sha256": "F6C9911A190B658F3336814AE2DF79A17CCD41CCA4CA173B8B3302554574F28C",
+    "first_attempt": "attempt-01 was preserved RED after an inadequate 360-second map-readiness limit; managed exit was zero and original/prepared save hashes stayed unchanged"
+  },
+  "boundary": "This proves H2743 native option legality and immediate recipient response only. It does not observe CB-specific surrender terms, signed resource changes, directed truce or a counterfactual continuation result; no termination action is authorized."
+}

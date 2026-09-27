@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T17:54:55Z",
+  "updated_at_utc": "2026-09-27T18:05:00Z",
   "source_pr": null,
   "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
   "delivery_route": "direct rebase-only master push",
@@ -37,18 +37,30 @@
     "first_query": "query-war-termination-options-16777231 on a qualified h2743 paused frame; existing strategy/native driver already implement and cache the query. Historical R0221 options are rejected on h2743.",
     "document": "docs/ck3-native-ai/h2743-formal-defender-exit-observation-2026-09-28.md"
   },
-  "first_missing_observation": "A current paused-frame query-war-termination-options-16777231 result bound to h2743's exact checkpoint, episode, war, character, revisions and date. The R0221 options row is historical and cannot fill this field.",
+  "first_missing_observation": "RESOLVED by the exact local h2743 paused-frame query-war-termination-options-16777231 in attempt-02; see live_evidence. R0221 remains historical and the later R0264 h2825 row is a separate frame.",
   "gameplay_action_authorized": false,
   "checks": [
     "test_formal_defender_exit_observation.py: 4 passed normal, 4 passed under -O; real R0221 options are used only as historical source and h2743-shaped test frames are synthetic.",
     "test_raiktor_formal_exit_consumer.py: 7 passed with the verified tools/.venv interpreter; test_general_battle_strategy.py plus new observer: 15 passed; test_war_termination_contract.py: 8 passed.",
-    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN. No h2743 live test has run on this machine."
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN. Exact h2743 attempt-02 now supplies a live read-only frame, query and unchanged-frame postcheck; no gameplay action was submitted.",
+    "Production observe_primary_defender_de_jure_exit accepts the real h2743 query-after snapshot as native_legality_observed_material_comparison_open, with null recommended_outcome and action_literal; projection SHA D1F142A119A9F01134EC377358C5A176DFFBD7AAB1CFAA92205D13ECD2063E22."
   ],
-  "live_evidence": null,
+  "live_evidence": {
+    "document": "docs/ck3-native-ai/h2743-native-exit-readonly-2026-09-28.md",
+    "git_excerpt": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.local-h2743-options.json",
+    "git_excerpt_sha256": "E385EDFF3A1BCF164C02CE96A1AEDD4A8BF4439017CA56B6A6B8B6C658E5B166",
+    "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-02/live-readonly-01",
+    "result_sha256": "DE3854F03B879770188FF714123EFFE30443E08D0AB9E2CD6DDC0657DAE162AF",
+    "query_payload_sha256": "D7C6A50F5120944B4C53C42B52D0C64734BE9B169235F1C5764B3AABEA0DD2EB",
+    "same_frame": "native:3 before/after, date_raw 53217264, episode native-29829-2bc2d599f7f9, public/native revision 4/3, connection generation 1, WarID 16777231, Robert primary defender, score -12",
+    "options": "Surrender available and recipient would accept now; white peace and victory unavailable despite CB allowing white peace in principle. All three CB-specific material terms unavailable.",
+    "score_components": "Attacker-relative occupation +39, ticking -27, battles 0, imprisonment 0; attacker total +12 / defender -12.",
+    "no_action_and_cleanup": "No termination or other gameplay action submitted, no date change, source/prepared save SHA unchanged, managed session exit code 0 and CK3 PIDs empty. Attempt-01's 360-second readiness timeout was preserved separately."
+  },
   "limitations": [
-    "The four exact H2743 source files are present and SHA-verified locally; fresh ordinary-profile rebind/no-launch preflight is READY, but a current-frame live read has not yet run.",
+    "The four exact H2743 source files, ordinary-profile rebind/no-launch preflight and exact current-frame read-only option query are verified locally. This verifies native legality and recipient response, not the material cost of exiting.",
     "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war.",
-    "The current Git excerpt cannot tell whether white peace is legal now, quantify surrender terms, or rank continue-war risk. A future current-frame result and material model are needed before any exit decision."
+    "H2743 and later H2825 both show white peace unavailable, but neither quantifies current surrender terms or ranks continue-war risk. The historical R0197 one-shot result is not a same-frame counterfactual for either checkpoint."
   ],
-  "next_step": "With fresh local Steam-offline and screen ownership evidence now recorded, make a read-only current-frame H2743 termination-options query under managed CK3 session ownership, then publish any remaining material/risk observation gap. Do not reuse the R0197 one-shot authorization or submit an H2743 exit based on this delivery."
+  "next_step": "Research the exact CB material title/vassal/resource/truce consequences and a bounded continue-war risk comparison using current-frame inputs; ask the producing machine for one narrowly scoped current h2825 risk/material read if needed. Do not reuse the R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
 }
