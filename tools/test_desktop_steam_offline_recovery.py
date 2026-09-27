@@ -64,6 +64,30 @@ class DesktopRecoveryTests(unittest.TestCase):
             sleep.assert_called_once_with(0.05)
             capture.assert_called_once()
 
+    def test_minimized_steam_is_restored_before_fresh_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(recovery.win32gui, "GetForegroundWindow",
+                               side_effect=[999, 123]),
+                  patch.object(recovery.win32gui, "IsIconic", return_value=True),
+                  patch.object(recovery.win32gui, "ShowWindow") as show,
+                  patch.object(recovery.win32gui, "SetForegroundWindow"),
+                  patch.object(recovery.win32gui, "IsWindow", return_value=False),
+                  patch.object(recovery.steam_offline_fresh_frame, "capture",
+                               return_value={"moving_edge_changed": True})):
+                receipt = recovery.capture_fresh_frame(Path(temp), 123, True)
+        self.assertTrue(receipt["moving_edge_changed"])
+        show.assert_called_once_with(123, recovery.win32con.SW_RESTORE)
+
+    def test_foreground_denial_becomes_recovery_runtime_error(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(recovery.win32gui, "GetForegroundWindow", return_value=999),
+                  patch.object(recovery.win32gui, "IsIconic", return_value=True),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow",
+                               side_effect=pywintypes.error(0, "SetForegroundWindow", "denied"))):
+                with self.assertRaisesRegex(RuntimeError, "could not make Steam foreground"):
+                    recovery.capture_fresh_frame(Path(temp), 123, True)
+
     def test_foreground_restore_denial_keeps_fresh_frame_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             with (patch.object(recovery.win32gui, "GetForegroundWindow",

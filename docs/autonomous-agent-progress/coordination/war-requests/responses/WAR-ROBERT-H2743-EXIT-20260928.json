@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T18:38:05Z",
+  "updated_at_utc": "2026-09-27T19:08:05Z",
   "source_pr": null,
   "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
   "delivery_route": "direct rebase-only master push",
@@ -59,13 +59,15 @@
     "persisted_army_strengths": "Exact H2743 source-save cached regiment projection SHA 46A7F784108D60CE4FCC521F728AA1E933C0218E3E92DF277DEA6FAA589FBAC5: player unit 83886367 has 2329/2461 at 2614, enemy sieger 50331920 has 1462/1899 at 2628, moving enemy 83886484 has 311/311 at 3643. These are save-level cached counts, not a same-native-frame contact/battle forecast.",
     "persisted_contract_baseline": "Exact H2743 source-save projection SHA 3D51CCD05BF056D9848594A3037E4E3B761F6E090572B06C1BBC5FD3197E7F6E: title holder 33435 has personal liege 29829 and direct contract vassals 43755/43703; attacker 30097 has liege 29097 and vassals 43702/43701. Git excerpt docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.local-h2743-contracts.json SHA 70E4396A70FB25E3DC4446CB4AAF4FB43ECA3F44CB906ECA8EBAB239F9628D6A. These baseline edges match R0197 before, but are not H2743 surrender terms.",
     "native_actor_resource_baseline": "The exact native:3 read-only before/after snapshots both contain Robert gold 111861020/100000 and prestige currency 253090010/100000, matching the save baseline. Git excerpt docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.local-h2743-native-actor-resources.json SHA C5C19FBF4D2B1890B2B57A3AF564B20D0F397D3C27E503A75BA183236B43DE33. This is current-frame pre-action actor balance, not a post-termination signed delta; opponent resources and actor piety are save-only.",
-    "no_action_and_cleanup": "No termination or other gameplay action submitted, no date change, source/prepared save SHA unchanged, managed session exit code 0 and CK3 PIDs empty. Attempt-01's 360-second readiness timeout was preserved separately."
+    "native_army_strengths": "New exact h2743 attempt-04 read-only query-army-strengths-v1: native:3 before/after, raw date 53217264, same WarID, player relative score -12. Player unit 83886367 has 2329/2461 soldiers and AI base power 75781; enemy sieger 50331920 has 1462/1899 and 48805; moving enemy 83886484 has 311/311 and 14320. All soldier and power totals equal exact save cache. Native/save regiment counts are 40/39 for player, 19/19 and 4/4 for enemies; extra live identity remains unexplained. Git excerpt docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.local-h2743-native-armies.json SHA E57661D4E0F0663D584ACD9D56DE12C6BF81D69DCF25B35950F880C8FECCA8CA, external read-only result SHA AF09DDCFE240851D8EC8C716E6A6BEBD60710316D474CB5EB2998C2C36504E22.",
+    "no_action_and_cleanup": "No termination or other gameplay action submitted, no date change, source/prepared save SHA unchanged, managed session exit code 0 and CK3 PIDs empty for attempts 02 and 04. Attempt-01's 360-second readiness timeout and attempt-03's post-reboot runtime-fingerprint failure were preserved separately. Fresh Steam offline images were reviewed before and after attempt-04."
   },
   "limitations": [
     "The four exact H2743 source files, ordinary-profile rebind/no-launch preflight and exact current-frame read-only option query are verified locally. This verifies native legality and recipient response, not the material cost of exiting.",
     "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war.",
     "H2743 and later H2825 both show white peace unavailable, but neither quantifies current surrender terms or ranks continue-war risk. The historical R0197 one-shot result is not a same-frame counterfactual for either checkpoint.",
-    "A third H2743 read-only army query was prepared but not launched: frozen/black Steam desktop failed the fresh offline visual gate. The automatic ToDesk service restart was denied by Windows code 5; no CK3 process is running."
+    "The previously frozen/black Steam desktop failed the fresh offline visual gate and ToDesk service restart was denied by Windows code 5. User-authorized machine reboot restored a fresh offline frame; post-reboot attempt-03 stopped before launch due runtime-fingerprint drift, then new attempt-04 completed the army read-only query. No CK3 process remained afterward.",
+    "Same-frame soldier and AI-base-power totals are now observed, but the 40/39 player regiment-count discrepancy is not identified, and neither contact timing nor battle victory odds is implied."
   ],
   "next_step": "Research the exact CB material title/vassal/resource/truce consequences and a bounded continue-war risk comparison using current-frame inputs. WAR-ROBERT-H2825-RISK-INPUTS-20260928 requests only the small existing R0264 risk excerpt from the producing machine; no new action. Do not reuse the R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
 }

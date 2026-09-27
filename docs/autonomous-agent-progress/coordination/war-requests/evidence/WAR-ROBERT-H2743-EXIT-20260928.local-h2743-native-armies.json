@@ -1,0 +1,60 @@
+{
+  "schema": "xar.g2.war-evidence.native-army-strengths.v1",
+  "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
+  "observation": "H2743 exact checkpoint, read-only native:3 paused frame after 2026-09-28 desktop reboot",
+  "source_checkpoint_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+  "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-04/live-army-readonly-01",
+  "external_result_sha256": "AF09DDCFE240851D8EC8C716E6A6BEBD60710316D474CB5EB2998C2C36504E22",
+  "before_snapshot_sha256": "FE828E418A98A28B3DA7133944506E6C810FDBC933E64BFB52BEC0C62C1A7FB7",
+  "query_payload_sha256": "0D1701AFEAECEABB992CD67085297FF76E7B83CD4D8CD666CD16CD7503C08A23",
+  "after_snapshot_sha256": "6975EF26573D3B1695B5C9623BF30A4084556BBC16F7D89200361C00E4D3009E",
+  "same_frame": {
+    "before_snapshot_id": "native:3",
+    "after_snapshot_id": "native:3",
+    "date_raw": 53217264,
+    "war_id": 16777231,
+    "player_character_id": 29829,
+    "player_side": "defender",
+    "player_relative_war_score": -12,
+    "query_step": "query-army-strengths-v1",
+    "query_status": "available"
+  },
+  "army_strengths": [
+    {
+      "public_army_id": 83886367,
+      "native_carmy_id": 50331794,
+      "scope_role": "player",
+      "regiment_count_native": 40,
+      "regiment_count_save_projection": 39,
+      "current_soldiers": 2329,
+      "maximum_soldiers": 2461,
+      "ai_base_power_raw": 7578100000,
+      "ai_base_power_scale": 100000
+    },
+    {
+      "public_army_id": 50331920,
+      "native_carmy_id": 33554713,
+      "scope_role": "active_war_enemy",
+      "regiment_count_native": 19,
+      "regiment_count_save_projection": 19,
+      "current_soldiers": 1462,
+      "maximum_soldiers": 1899,
+      "ai_base_power_raw": 4880500000,
+      "ai_base_power_scale": 100000
+    },
+    {
+      "public_army_id": 83886484,
+      "native_carmy_id": 150995083,
+      "scope_role": "active_war_enemy",
+      "regiment_count_native": 4,
+      "regiment_count_save_projection": 4,
+      "current_soldiers": 311,
+      "maximum_soldiers": 311,
+      "ai_base_power_raw": 1432000000,
+      "ai_base_power_scale": 100000
+    }
+  ],
+  "crosscheck": "All three native soldier and AI-base-power totals equal exact-source-save cached-regiment projections (external SHA-256 46A7F784108D60CE4FCC521F728AA1E933C0218E3E92DF277DEA6FAA589FBAC5). Player regiment count differs by one; neither read-only query nor save projection identifies the extra live regiment, so its identity and load-time cause remain unproven.",
+  "boundaries": "No battle odds, exact contact time, current CB material outcome or gameplay action follows from this query.",
+  "cleanup": "Managed session exit 0, no CK3 process remained, source and prepared save SHA-256 unchanged, and fresh Steam image after exit was visually reviewed as offline."
+}
