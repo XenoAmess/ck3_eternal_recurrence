@@ -1,0 +1,729 @@
+{
+  "schema": "ck3.normal_result_loser_legitimacy_pair_gap.v2",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "rakaly_version": "0.8.19",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "terminal_date_raw": 53146992,
+  "loser_primary_character_id": 29829,
+  "winner_primary_character_id": 31549,
+  "source_save_inventory": {
+    "004": [
+      {
+        "relative_path": "ck3-state/profile/last_save.ck3",
+        "sha256": "2E71DEB1DB002EFDAE24D2B0395A512DCA9862E1979A6B227F4A4B6BFFD818E6"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave.ck3",
+        "sha256": "2E71DEB1DB002EFDAE24D2B0395A512DCA9862E1979A6B227F4A4B6BFFD818E6"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave_1.ck3",
+        "sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave_2.ck3",
+        "sha256": "11CEA7CA242901C124E1729E063F1C6A7AE7FC28F3AA1EC3B05E3CA5884B28C3"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/war_film_checkpoint.ck3",
+        "sha256": "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/xar_checkpoint.ck3",
+        "sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/xar_episode_seed.ck3",
+        "sha256": "7689ECDD94D7B57AFDADB7CDCCE09198DB606C251480450BE2C808456F34F913"
+      }
+    ],
+    "021": [
+      {
+        "relative_path": "ck3-state/profile/last_save.ck3",
+        "sha256": "0CAC7F2A45F685AC876715DA71AE0F44D76EF6053C0252EEA7FDC0BED917E851"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave.ck3",
+        "sha256": "0CAC7F2A45F685AC876715DA71AE0F44D76EF6053C0252EEA7FDC0BED917E851"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/war_film_checkpoint.ck3",
+        "sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+      }
+    ],
+    "024": [
+      {
+        "relative_path": "ck3-state/profile/last_save.ck3",
+        "sha256": "C12373789EAA22F4F0C84DDFA32E45F7D404687E80398A08E4B0CBEBD36D87E9"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave.ck3",
+        "sha256": "C12373789EAA22F4F0C84DDFA32E45F7D404687E80398A08E4B0CBEBD36D87E9"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/war_film_checkpoint.ck3",
+        "sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+      }
+    ],
+    "072": [
+      {
+        "relative_path": "ck3-state/profile/last_save.ck3",
+        "sha256": "5AFD62F0FB7EB677DF5174A641EEF650CD16FC64F75AD61334B5E564F80F69D6"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave.ck3",
+        "sha256": "5AFD62F0FB7EB677DF5174A641EEF650CD16FC64F75AD61334B5E564F80F69D6"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/war_film_checkpoint.ck3",
+        "sha256": "9B51A2FB20C7F931CF4E9F2A33F1E7598F517C4E793CE0CEFCFEF48C0D65BD2F"
+      }
+    ],
+    "074": [
+      {
+        "relative_path": "ck3-state/profile/last_save.ck3",
+        "sha256": "4B7B179DD7FE4FB4E9C05E57CF0E11C2006CD9AFD0188D1E6F61EC29B26E8F71"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/autosave.ck3",
+        "sha256": "4B7B179DD7FE4FB4E9C05E57CF0E11C2006CD9AFD0188D1E6F61EC29B26E8F71"
+      },
+      {
+        "relative_path": "ck3-state/profile/save games/war_film_checkpoint.ck3",
+        "sha256": "9B51A2FB20C7F931CF4E9F2A33F1E7598F517C4E793CE0CEFCFEF48C0D65BD2F"
+      }
+    ]
+  },
+  "source_saves": {
+    "004-day25": {
+      "source_relative_path": "episode01-full-edge-attempt-004/trace-d25-immutable.ck3",
+      "source_sha256": "D00D6A06CDF6F9F6917EA061CCA41AE04145E8AC0F800B7A7B55672A0D053788",
+      "melted_file": "004-day25-melted.ck3",
+      "melted_sha256": "9A267971AABB6E8F107054FBB8E2E71E8D2BE7D14109823A37D107850B353E93",
+      "dates": {
+        "meta_date": "1066.12.28",
+        "date": "1066.12.28"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1539274,
+          "first_name": {
+            "line": 1539275,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1539449,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1539450,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1539452
+        },
+        "31549": {
+          "line_start": 1672576,
+          "first_name": {
+            "line": 1672577,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1672723,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1672724,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1672726
+        }
+      }
+    },
+    "004-day26": {
+      "source_relative_path": "episode01-full-edge-attempt-004/trace-d26-immutable.ck3",
+      "source_sha256": "11CEA7CA242901C124E1729E063F1C6A7AE7FC28F3AA1EC3B05E3CA5884B28C3",
+      "melted_file": "004-day26-melted.ck3",
+      "melted_sha256": "58C95F0D50887E7FBDE7AC0457AC79F393870C6756719DC53DE011CCCC4EFABA",
+      "dates": {
+        "meta_date": "1066.12.29",
+        "date": "1066.12.29"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1541017,
+          "first_name": {
+            "line": 1541018,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1541192,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1541193,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1541195
+        },
+        "31549": {
+          "line_start": 1674516,
+          "first_name": {
+            "line": 1674517,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1674663,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1674664,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1674666
+        }
+      }
+    },
+    "004-day27": {
+      "source_relative_path": "episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
+      "source_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+      "melted_file": "004-day27-melted.ck3",
+      "melted_sha256": "B3BCA5760D61D0900BED791AFC4558DED1AC8024AE398D19218226BA6658901A",
+      "dates": {
+        "meta_date": "1066.12.30",
+        "date": "1066.12.30"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1541445,
+          "first_name": {
+            "line": 1541446,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1541620,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1541621,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1541623
+        },
+        "31549": {
+          "line_start": 1674988,
+          "first_name": {
+            "line": 1674989,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1675135,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1675136,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1675138
+        }
+      }
+    },
+    "004-seed": {
+      "source_relative_path": "episode01-full-edge-attempt-004/ck3-state/profile/save games/xar_episode_seed.ck3",
+      "source_sha256": "7689ECDD94D7B57AFDADB7CDCCE09198DB606C251480450BE2C808456F34F913",
+      "melted_file": "004-seed-melted.ck3",
+      "melted_sha256": "65F64BD142D574B446EC8B97BF754A820834B5B418BF603BC3747231EB3AC34C",
+      "dates": {
+        "meta_date": "1066.12.7",
+        "date": "1066.12.7"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1529530,
+          "first_name": {
+            "line": 1529531,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1529688,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1529689,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1529691
+        },
+        "31549": {
+          "line_start": 1660899,
+          "first_name": {
+            "line": 1660900,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1661042,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1661043,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1661045
+        }
+      }
+    },
+    "004-war-film-checkpoint": {
+      "source_relative_path": "episode01-full-edge-attempt-004/ck3-state/profile/save games/war_film_checkpoint.ck3",
+      "source_sha256": "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F",
+      "melted_file": "004-war-film-checkpoint-melted.ck3",
+      "melted_sha256": "2038C0489AE4B72E73EBF62395DA5048F70C6903B9F2A1DA4DD174E97D78D2E1",
+      "dates": {
+        "meta_date": "1066.12.4",
+        "date": "1066.12.4"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1529543,
+          "first_name": {
+            "line": 1529544,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1529702,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1529703,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1529705
+        },
+        "31549": {
+          "line_start": 1661281,
+          "first_name": {
+            "line": 1661282,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1661425,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1661426,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1661428
+        }
+      }
+    },
+    "072-war-film-checkpoint": {
+      "source_relative_path": "episode01-winner-ai-reentry-v2-attempt-072/ck3-state/profile/save games/war_film_checkpoint.ck3",
+      "source_sha256": "9B51A2FB20C7F931CF4E9F2A33F1E7598F517C4E793CE0CEFCFEF48C0D65BD2F",
+      "melted_file": "072-war-film-checkpoint-melted.ck3",
+      "melted_sha256": "3C3F771B091EEAD56BF87DC372F251E1B1277885846C9660FC40F6A85A20371B",
+      "dates": {
+        "meta_date": "1066.12.9",
+        "date": "1066.12.9"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1530054,
+          "first_name": {
+            "line": 1530055,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1530224,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1530225,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1530227
+        },
+        "31549": {
+          "line_start": 1661553,
+          "first_name": {
+            "line": 1661554,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1661691,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1661692,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1661694
+        }
+      }
+    },
+    "004-autosave": {
+      "source_relative_path": "episode01-full-edge-attempt-004/ck3-state/profile/save games/autosave.ck3",
+      "source_sha256": "2E71DEB1DB002EFDAE24D2B0395A512DCA9862E1979A6B227F4A4B6BFFD818E6",
+      "melted_file": "004-autosave-melted.ck3",
+      "melted_sha256": "49EDA8334D36DEF900744A20D58AC08E8ED766627B441539DD527B73CB8E2916",
+      "dates": {
+        "meta_date": "1067.1.1",
+        "date": "1067.1.1"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1547762,
+          "first_name": {
+            "line": 1547763,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1547940,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1547941,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1547943
+        },
+        "31549": {
+          "line_start": 1683129,
+          "first_name": {
+            "line": 1683130,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1683277,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1683278,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1683280
+        }
+      }
+    },
+    "021-autosave": {
+      "source_relative_path": "episode01-terminal-loss-live-attempt-021/ck3-state/profile/save games/autosave.ck3",
+      "source_sha256": "0CAC7F2A45F685AC876715DA71AE0F44D76EF6053C0252EEA7FDC0BED917E851",
+      "melted_file": "021-autosave-melted.ck3",
+      "melted_sha256": "EF329E8A8A6D8527D2B4FBE194D6A2D49A5B2884E43D099ED36EDD1D7BA809C2",
+      "dates": {
+        "meta_date": "1067.1.1",
+        "date": "1067.1.1"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1545082,
+          "first_name": {
+            "line": 1545083,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1545260,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1545261,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1545263
+        },
+        "31549": {
+          "line_start": 1679784,
+          "first_name": {
+            "line": 1679785,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1679931,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1679932,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1679934
+        }
+      }
+    },
+    "024-autosave": {
+      "source_relative_path": "episode01-denominator-live-attempt-024/ck3-state/profile/save games/autosave.ck3",
+      "source_sha256": "C12373789EAA22F4F0C84DDFA32E45F7D404687E80398A08E4B0CBEBD36D87E9",
+      "melted_file": "024-autosave-melted.ck3",
+      "melted_sha256": "36A8F9D0250EE030951C686AEE694637E09A058357F467997862A455EB6C3AF8",
+      "dates": {
+        "meta_date": "1067.1.1",
+        "date": "1067.1.1"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1545082,
+          "first_name": {
+            "line": 1545083,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1545260,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1545261,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1545263
+        },
+        "31549": {
+          "line_start": 1679784,
+          "first_name": {
+            "line": 1679785,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1679931,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1679932,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1679934
+        }
+      }
+    },
+    "072-autosave": {
+      "source_relative_path": "episode01-winner-ai-reentry-v2-attempt-072/ck3-state/profile/save games/autosave.ck3",
+      "source_sha256": "5AFD62F0FB7EB677DF5174A641EEF650CD16FC64F75AD61334B5E564F80F69D6",
+      "melted_file": "072-autosave-melted.ck3",
+      "melted_sha256": "B5089891818E67B8B81ABD8CF67A5A5BB6FB5E64A9DB3EEF192C23EC4D9307EB",
+      "dates": {
+        "meta_date": "1067.1.1",
+        "date": "1067.1.1"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1547579,
+          "first_name": {
+            "line": 1547580,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1547759,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1547760,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1547762
+        },
+        "31549": {
+          "line_start": 1683075,
+          "first_name": {
+            "line": 1683076,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1683219,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1683220,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1683222
+        }
+      }
+    },
+    "074-autosave": {
+      "source_relative_path": "episode01-winner-ai-postsubmit-movement-attempt-074/ck3-state/profile/save games/autosave.ck3",
+      "source_sha256": "4B7B179DD7FE4FB4E9C05E57CF0E11C2006CD9AFD0188D1E6F61EC29B26E8F71",
+      "melted_file": "074-autosave-melted.ck3",
+      "melted_sha256": "C1C8835EC997A10BBAB990E4F20BBEB38064C50269FA0BDFC5FDC0CE2CC67D49",
+      "dates": {
+        "meta_date": "1067.1.1",
+        "date": "1067.1.1"
+      },
+      "characters": {
+        "29829": {
+          "line_start": 1548077,
+          "first_name": {
+            "line": 1548078,
+            "value": "Robert"
+          },
+          "legitimacy": {
+            "line": 1548257,
+            "value": "321"
+          },
+          "legitimacy_type": {
+            "line": 1548258,
+            "value": "duke_legitimacy"
+          },
+          "line_end": 1548260
+        },
+        "31549": {
+          "line_start": 1683554,
+          "first_name": {
+            "line": 1683555,
+            "value": "Ali"
+          },
+          "legitimacy": {
+            "line": 1683698,
+            "value": "100"
+          },
+          "legitimacy_type": {
+            "line": 1683699,
+            "value": "count_legitimacy"
+          },
+          "line_end": 1683701
+        }
+      }
+    }
+  },
+  "formal_receipts": {
+    "004-d27": {
+      "relative_path": "episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/trace-d27-after-snapshot.json",
+      "sha256": "007058059A9964ED9805C06FFBDB604F408253227B61A2080CE4D3A5555EA036",
+      "at_utc": "2026-09-24T08:19:43.618309+00:00",
+      "date_raw": 53146896,
+      "played_character_id": 29829,
+      "war4_player_side": "attacker",
+      "war4_primary_opponent_character_id": 31549,
+      "legitimacy_key_found": false
+    },
+    "004-d32": {
+      "relative_path": "episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/term-d32-snapshot.json",
+      "sha256": "C95079C74AD69E2E7B0737D38871D35ADF80A7525568A4475586CCA552B744B4",
+      "at_utc": "2026-09-24T08:29:08.727228+00:00",
+      "date_raw": 53146992,
+      "played_character_id": 29829,
+      "war4_player_side": "attacker",
+      "war4_primary_opponent_character_id": 31549,
+      "legitimacy_key_found": false
+    },
+    "004-terminal": {
+      "relative_path": "episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/term-d32-terminal.json",
+      "sha256": "595E5B7CC2C5DC142CD1BF433D29719FDDF7CCF37B574A44BA5CA2C5C7B9F8A6",
+      "at_utc": "2026-09-24T08:29:09.455250+00:00",
+      "date_raw": null,
+      "played_character_id": null,
+      "war4_player_side": null,
+      "war4_primary_opponent_character_id": null,
+      "legitimacy_key_found": false
+    },
+    "021-d32": {
+      "relative_path": "episode01-terminal-loss-live-attempt-021/ck3-output/interactive-requests-responses/d32-snapshot.json",
+      "sha256": "42ECF3B8E20F4F678246E667D7AE578F8D0EC6A8EC0C7E6E9926623791765F0A",
+      "at_utc": "2026-09-26T07:24:09.935168+00:00",
+      "date_raw": 53146992,
+      "played_character_id": 29829,
+      "war4_player_side": "attacker",
+      "war4_primary_opponent_character_id": 31549,
+      "legitimacy_key_found": false
+    },
+    "021-terminal": {
+      "relative_path": "episode01-terminal-loss-live-attempt-021/ck3-output/interactive-requests-responses/d32-terminal.json",
+      "sha256": "19708A0A4A4AA91143FFA1F260565F57975D8D4BE3563B9FD8E97DB722E562DB",
+      "at_utc": "2026-09-26T07:24:10.289952+00:00",
+      "date_raw": null,
+      "played_character_id": null,
+      "war4_player_side": null,
+      "war4_primary_opponent_character_id": null,
+      "legitimacy_key_found": false
+    },
+    "024-d32": {
+      "relative_path": "episode01-denominator-live-attempt-024/ck3-output/interactive-requests-responses/d32-snapshot.json",
+      "sha256": "A385C248477E1D0A30ABF677DBA65390B0CB6C3A793DD3A4F06CBD95481AA95F",
+      "at_utc": "2026-09-26T09:00:06.313588+00:00",
+      "date_raw": 53146992,
+      "played_character_id": 29829,
+      "war4_player_side": "attacker",
+      "war4_primary_opponent_character_id": 31549,
+      "legitimacy_key_found": false
+    },
+    "024-terminal": {
+      "relative_path": "episode01-denominator-live-attempt-024/ck3-output/interactive-requests-responses/d32-terminal.json",
+      "sha256": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F",
+      "at_utc": "2026-09-26T09:00:06.639484+00:00",
+      "date_raw": null,
+      "played_character_id": null,
+      "war4_player_side": null,
+      "war4_primary_opponent_character_id": null,
+      "legitimacy_key_found": false
+    },
+    "072-d25": {
+      "relative_path": "episode01-winner-ai-reentry-v2-attempt-072/ck3-output/interactive-requests-responses/25-snapshot.json",
+      "sha256": "001548D0F6F9E79337319A97C844FDC02718B22BB0AE24581B43CD4659304149",
+      "at_utc": "2026-09-26T23:50:06.786134+00:00",
+      "date_raw": 53146968,
+      "played_character_id": 31549,
+      "war4_player_side": "defender",
+      "war4_primary_opponent_character_id": 29829,
+      "legitimacy_key_found": false
+    },
+    "072-d26": {
+      "relative_path": "episode01-winner-ai-reentry-v2-attempt-072/ck3-output/interactive-requests-responses/26-snapshot.json",
+      "sha256": "05EF37DF8B731E10124F1D811DC26FA8FA3DA54DC53514C79E07A281D87FD31E",
+      "at_utc": "2026-09-26T23:50:10.547863+00:00",
+      "date_raw": 53146992,
+      "played_character_id": 31549,
+      "war4_player_side": "defender",
+      "war4_primary_opponent_character_id": 29829,
+      "legitimacy_key_found": false
+    },
+    "072-terminal": {
+      "relative_path": "episode01-winner-ai-reentry-v2-attempt-072/ck3-output/interactive-requests-responses/26-winner-terminal-a.json",
+      "sha256": "CC43EDCCF15ECA88D9EF3375C2A77C7DC3B5288A5380F37F83227DB2696DF028",
+      "at_utc": "2026-09-26T23:50:10.895209+00:00",
+      "date_raw": null,
+      "played_character_id": null,
+      "war4_player_side": null,
+      "war4_primary_opponent_character_id": null,
+      "legitimacy_key_found": false
+    },
+    "074-d25": {
+      "relative_path": "episode01-winner-ai-postsubmit-movement-attempt-074/ck3-output/interactive-requests-responses/25-snapshot.json",
+      "sha256": "28D320287F2EA77F2424AF1B2C554CF739F532D23FE11C656299363A7FDD7B14",
+      "at_utc": "2026-09-27T00:38:08.317723+00:00",
+      "date_raw": 53146968,
+      "played_character_id": 31549,
+      "war4_player_side": "defender",
+      "war4_primary_opponent_character_id": 29829,
+      "legitimacy_key_found": false
+    },
+    "074-d26": {
+      "relative_path": "episode01-winner-ai-postsubmit-movement-attempt-074/ck3-output/interactive-requests-responses/26-snapshot.json",
+      "sha256": "5F0B587995E9DFA1C9B6F5703863963BD53E72F6BD97F53CE6762D1C588C62CE",
+      "at_utc": "2026-09-27T00:38:12.079909+00:00",
+      "date_raw": 53146992,
+      "played_character_id": 31549,
+      "war4_player_side": "defender",
+      "war4_primary_opponent_character_id": 29829,
+      "legitimacy_key_found": false
+    },
+    "074-d27": {
+      "relative_path": "episode01-winner-ai-postsubmit-movement-attempt-074/ck3-output/interactive-requests-responses/27-snapshot.json",
+      "sha256": "EA7C23E4E4CD601F31D7E3DC31E5C931F148A58262767E92683BAA5CAB502C4A",
+      "at_utc": "2026-09-27T00:38:15.296719+00:00",
+      "date_raw": 53147016,
+      "played_character_id": 31549,
+      "war4_player_side": "defender",
+      "war4_primary_opponent_character_id": 29829,
+      "legitimacy_key_found": false
+    },
+    "074-terminal": {
+      "relative_path": "episode01-winner-ai-postsubmit-movement-attempt-074/ck3-output/interactive-requests-responses/26-winner-terminal-a.json",
+      "sha256": "7DDA35732B956C5A578C633235D9DAF0BB0C82662D238B5414D717DEC3A02948",
+      "at_utc": "2026-09-27T00:38:12.413159+00:00",
+      "date_raw": null,
+      "played_character_id": null,
+      "war4_player_side": null,
+      "war4_primary_opponent_character_id": null,
+      "legitimacy_key_found": false
+    }
+  },
+  "preterminal_loser_legitimacy": 321,
+  "postterminal_same_character_legitimacy_available": false,
+  "legitimacy_effect_attributed": false
+}
