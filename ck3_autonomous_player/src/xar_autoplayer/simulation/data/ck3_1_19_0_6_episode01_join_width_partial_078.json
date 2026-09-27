@@ -1,0 +1,53 @@
+{
+  "boundaries": [
+    {
+      "base_width": 1645,
+      "boundary": 0,
+      "candidate_half_total_truncated": 1248,
+      "final_width": 1480,
+      "side_fighting_total_raw": [
+        160317482,
+        89325449
+      ],
+      "side_index": -1,
+      "thread_id": 3816
+    },
+    {
+      "base_width": 2467,
+      "boundary": 1,
+      "candidate_half_total_truncated": 2467,
+      "final_width": 2220,
+      "side_fighting_total_raw": [
+        410690163,
+        82785368
+      ],
+      "side_index": 0,
+      "thread_id": 3816
+    }
+  ],
+  "candidate_joining_army_id": 22,
+  "collector_failure_flags": 262144,
+  "collector_status": "failed",
+  "combat_id": 16777218,
+  "fighting_total_scale": 100000,
+  "fire_width": null,
+  "first_failure_code": 5,
+  "join_thread_id": 3816,
+  "mailbox_thread_id": 24068,
+  "native_date_raw": 53146512,
+  "observed_delta": {
+    "base_width": 822,
+    "final_width": 740
+  },
+  "phase_fire_thread_id": null,
+  "schema": "ck3.native_join_width_partial_observation.v1",
+  "source": {
+    "attempt": 78,
+    "bridge_sha256": "8EEFBE8854BFC28FA9CD61F1677B7AB66C642C6F005EBB9661775E2FFE7FE0A0",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "finish_response_name": "jwidth078-finish.json",
+    "finish_sha256": "9BFCEFF0BD1454F47B2371683B342E4FB8EC634CE4AF1397937375873FD51FF8",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+  },
+  "three_boundary_complete": false
+}

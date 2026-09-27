@@ -47,6 +47,8 @@
 
 返回时两侧总量合计 `493475531`，按 Q100000 去缩放并除以 2 得 `2467.377655`，截断为 `2467`，与实采 base 宽度一致。入口时同法得到 `1248.214655`，小于缓存的 `1645`，符合历史 base 可保留较大值；两次比较只是算术对拍，不能据此单独证明实际经过 `0x2304272`，也不能在未采 terrain 时声称 final 的确切乘数来源。第三点因观测器预设的 mailbox 线程不符而拒绝，故尚无原生出伤调用传入 `2220` 的动态证据。受管清场 `session-result.json` SHA-256 `68FE6AEE11DEA5F3D5B50FD6124A250334C39B85BB2F453F68CCDB78E59F565A`，capture 返回 0、最终 CK3 inventory 空，任务总线 `ck3-join-width-attempt-078-20260927` 已释放资源。
 
+智能体可复用的[078 机器可读局部向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_width_partial_078.json)将源 finish SHA、CombatID/日期/ArmyID、mailbox 与 join 线程、两点战宽及差额固定下来，显式写 `three_boundary_complete=false`、`fire_width=null`。只读投影器 `ck3_autonomous_player/tools/project_join_width_partial_078.py` 对本机冻结的原始 `jwidth078-finish.json` 校验精确 SHA 和 RED 合同，再与仓库向量逐字段对拍；它不会读取或写入游戏，也不把失败的完整 collector 升格为 GREEN。
+
 下一版仅取消第三点的 **mailbox 线程等式**，在精确 side0 返回地址钩子中记录实际线程 ID；候选对象、CombatID、原生日期、side 身份与 `R8D == +0x6C4` 校验均保留。join 入口/返回仍须同实际 join 线程。独立私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`，聚焦 CTest 5/5（含第三点由另一个非 mailbox 线程采集的夹具）；离线通过不等于实机验证。使用全新 attempt 重放一天，要求三点完整、原始 bytes/SHA、失败码和 clean exit 后才给整条链 GREEN；历史 078 回执不得改写。
 
 有界复核（只读 EXE，不运行 CK3）：
