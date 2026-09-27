@@ -19,7 +19,22 @@ import stat
 import subprocess
 import sys
 import tempfile
-from typing import Any
+from typing import Any, Callable
+
+if __package__:
+    from .ck3_live_run_id import (
+        STATE_ROOT_ENV,
+        allocate_live_run_id,
+        record_live_run_status,
+        write_identity_receipt,
+    )
+else:
+    from ck3_live_run_id import (
+        STATE_ROOT_ENV,
+        allocate_live_run_id,
+        record_live_run_status,
+        write_identity_receipt,
+    )
 
 
 R778_SOURCE_CHECKPOINT_SHA256 = (
@@ -68,6 +83,23 @@ PRIVATE_LIFESTYLE_QUERY_STEPS = (
     "private-query-player-lifestyle-formal-v1",
     "private-query-player-lifestyle-stock-focus-v1",
 )
+G2_LIVE_RUN_MOD_KEY = "eternal-recurrence"
+
+
+def live_run_state_root(configured: Path | None) -> Path:
+    """Use the machine's explicit persistent allocator, never its C: default."""
+    value = configured or os.environ.get(STATE_ROOT_ENV)
+    if not value:
+        raise ValueError(
+            f"G2 live run requires --live-run-state-root or {STATE_ROOT_ENV}"
+        )
+    candidate = Path(value).expanduser()
+    if not candidate.is_absolute():
+        raise ValueError("G2 live-run state root must be an absolute path")
+    root = candidate.resolve()
+    if os.name == "nt" and root.drive.casefold() == "c:":
+        raise ValueError("G2 live-run state root must be on a non-C drive")
+    return root
 
 
 def sha256(path: Path) -> str:
@@ -659,14 +691,30 @@ def family_resolved_sidecar_pair(
     return candidate
 
 
-def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
+def run_logged(
+    command: list[str], stdout_path: Path, stderr_path: Path,
+    *, on_started: Callable[[int], None] | None = None,
+) -> int:
     with stdout_path.open("w", encoding="utf-8", newline="") as stdout_stream:
         with stderr_path.open("w", encoding="utf-8", newline="") as stderr_stream:
-            completed = subprocess.run(
+            environment = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+            if on_started is None:
+                return subprocess.run(
+                    command, stdout=stdout_stream, stderr=stderr_stream,
+                    check=False, env=environment,
+                ).returncode
+            process = subprocess.Popen(
                 command, stdout=stdout_stream, stderr=stderr_stream,
-                check=False, env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+                env=environment,
             )
-    return completed.returncode
+            try:
+                on_started(process.pid)
+                return process.wait()
+            except BaseException:
+                if process.poll() is None:
+                    process.terminate()
+                    process.wait()
+                raise
 
 
 def private_faction_round_id(value: str) -> str:
@@ -1237,30 +1285,68 @@ def command_run(args: argparse.Namespace) -> int:
     stop_path = manifest_path(manifest["state_dir"], "state_dir") / "native-auto-run.stop"
     print(f"Operator stop request file: {stop_path}", file=sys.stderr, flush=True)
     private_faction_round = args.private_faction_round_id
-    formal_exit = run_logged(
-        native_auto_run_command(
-            common,
-            turns=turns,
-            timeout=timeout,
-            readiness_timeout=readiness_timeout,
-            private_faction_round_id_value=private_faction_round,
-            private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
-            private_construction_formal_trial=args.private_construction_formal_trial,
-            private_family_marriage_formal_trial=args.private_family_marriage_formal_trial,
-            private_m5_joint_collector=args.private_m5_joint_collector,
-            private_prisoner_collection_observation=(
-                args.private_prisoner_collection_observation
+    run_state_root = live_run_state_root(args.live_run_state_root)
+    run_identity = allocate_live_run_id(
+        G2_LIVE_RUN_MOD_KEY, state_root=run_state_root
+    )
+    try:
+        identity_receipt = write_identity_receipt(output, (run_identity,))
+    except Exception:
+        record_live_run_status(
+            run_identity, "voided",
+            reason="identity receipt could not be persisted before launch",
+            state_root=run_state_root,
+        )
+        raise
+    receipt["live_run_id"] = run_identity.run_id
+    receipt["live_run_identity_receipt"] = str(identity_receipt)
+    def record_formal_child_start(pid: int) -> None:
+        record_live_run_status(
+            run_identity, "launch-started",
+            reason=f"native-auto-run child started; pid={pid}",
+            state_root=run_state_root,
+        )
+        receipt["formal_runner_pid"] = pid
+
+    try:
+        formal_exit = run_logged(
+            native_auto_run_command(
+                common,
+                turns=turns,
+                timeout=timeout,
+                readiness_timeout=readiness_timeout,
+                private_faction_round_id_value=private_faction_round,
+                private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
+                private_construction_formal_trial=args.private_construction_formal_trial,
+                private_family_marriage_formal_trial=args.private_family_marriage_formal_trial,
+                private_m5_joint_collector=args.private_m5_joint_collector,
+                private_prisoner_collection_observation=(
+                    args.private_prisoner_collection_observation
+                ),
+                require_initial_lifestyle_focus_before_date_advance=(
+                    args.require_initial_lifestyle_focus_before_date_advance
+                ),
+                succession_lifecycle=str(lifecycle["succession_lifecycle"]),
+                ordinary_campaign_no_pact=(
+                    lifecycle["ordinary_campaign_no_pact"] is True
+                ),
             ),
-            require_initial_lifestyle_focus_before_date_advance=(
-                args.require_initial_lifestyle_focus_before_date_advance
-            ),
-            succession_lifecycle=str(lifecycle["succession_lifecycle"]),
-            ordinary_campaign_no_pact=(
-                lifecycle["ordinary_campaign_no_pact"] is True
-            ),
-        ),
-        formal_report,
-        formal_stderr,
+            formal_report,
+            formal_stderr,
+            on_started=record_formal_child_start,
+        )
+    except BaseException as error:
+        record_live_run_status(
+            run_identity, "completed-red",
+            reason=f"native-auto-run raised {type(error).__name__}",
+            state_root=run_state_root,
+        )
+        raise
+    record_live_run_status(
+        run_identity,
+        "completed-green" if formal_exit == 0 else "completed-red",
+        reason=f"native-auto-run exited {formal_exit}",
+        state_root=run_state_root,
     )
     receipt.update({
         "ok": formal_exit == 0,
@@ -1996,6 +2082,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--turns", type=int)
     run.add_argument("--timeout", type=int)
     run.add_argument("--readiness-timeout", type=int)
+    run.add_argument(
+        "--live-run-state-root", type=Path,
+        help=f"persistent machine-local live-run allocator root; defaults to {STATE_ROOT_ENV}",
+    )
     run.add_argument(
         "--private-lifestyle-formal-trial",
         action="store_true",

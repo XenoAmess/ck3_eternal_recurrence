@@ -121,13 +121,29 @@ The operator then runs the reusable scope check. This starts and recycles at mos
 python tools/g2_preview_eligibility.py --manifest <frozen-operator-manifest.json> --output <new-evidence-directory>
 ```
 
-The exact frozen package replaces those path values with validated paths. `GREEN_READ_ONLY` requires two managed same-version paused public campaign-root queries, the played episode/date, `government.key=feudal_government`, the exact frozen `expected_active_context`, unchanged save and proven process cleanup. A continuation checkpoint may name exact positive `war_ids` and `army_ids`; this R783 continuation therefore requires WarID 5 and ArmyID 33 instead of pretending that the campaign is action-free. Active events and pending interactions remain `null` for this preview slice. Omitting the additive field preserves the historical empty-context gate. Unknown IDs, duplicate IDs, a different war/army, a nonempty mandatory pending state, null/unknown government, stale frame, timeout or surviving CK3 is not GREEN. The readiness/stage/session values in the package must reflect the bounded window actually verified on its delivery host and retain the native-session cleanup grace. The owner's process ledger records the actual round; no tool assigns a round or assumes an expired lock means the old process died.
+The exact frozen package replaces those path values with validated paths. `GREEN_READ_ONLY` requires two managed same-version paused public campaign-root queries, the played episode/date, `government.key=feudal_government`, the exact frozen `expected_active_context`, unchanged save and proven process cleanup. A continuation checkpoint may name exact positive `war_ids` and `army_ids`; this R783 continuation therefore requires WarID 5 and ArmyID 33 instead of pretending that the campaign is action-free. Active events and pending interactions remain `null` for this preview slice. Omitting the additive field preserves the historical empty-context gate. Unknown IDs, duplicate IDs, a different war/army, a nonempty mandatory pending state, null/unknown government, stale frame, timeout or surviving CK3 is not GREEN. The readiness/stage/session values in the package must reflect the bounded window actually verified on its delivery host and retain the native-session cleanup grace. The owner's process ledger records the actual round; an expired lock alone does not prove the old process died.
 
-After eligibility is GREEN, confirm the prior process is dead, allocate a new actual round, and invoke the **formal production entry** directly with values from the frozen manifest:
+After eligibility is GREEN, confirm the prior process is dead and invoke the **formal production entry** with values from the frozen manifest and the machine's existing persistent allocator root:
 
 ```text
-python tools/g2_preview_operator.py run --manifest <frozen-operator-manifest.json> --output <new-formal-attempt-directory>
+python tools/g2_preview_operator.py run --manifest <frozen-operator-manifest.json> --output <new-formal-attempt-directory> --live-run-state-root <existing-machine-local-non-C-allocator-root>
 ```
+
+The current formal `run` entry allocates its own full machine/product ID only
+after the exact native preflight passes and before submitting `native-auto-run`.
+It writes `<output>/live-run-identity.json`, includes the full ID in
+`operator-receipt.json`, and appends `launch-started` only after the formal
+`native-auto-run` child process starts, followed by
+`completed-green` or `completed-red` to the allocator's status ledger. A
+preflight RED consumes no number. Do not manually allocate an additional ID for
+this entry. The state root may instead be configured through
+`XAR_CK3_LIVE_RUN_STATE_ROOT` in the target machine's operator process; absent
+configuration and a Windows C: root both block a new formal run. The G2 Robert
+product continues its established `eternal-recurrence` namespace; the actual
+loaded helper `mod/xar_autoplayer.mod` is recorded separately in the frozen
+profile. Existing frozen PRV008 code and evidence are unchanged. A current
+operator profile must be rebuilt and preflighted before it can use this new
+entry; an already running profile is not hot patched.
 
 For the ordinary triple, this command forwards the same lifecycle contract to
 the no-launch preflight and to production `native-auto-run`; its receipt also
