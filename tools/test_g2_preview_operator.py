@@ -950,6 +950,103 @@ class G2PreviewOperatorTest(unittest.TestCase):
                            [{**history[1], "index": 22}, history[0],
                             *history[2:]]}, {})
 
+    def test_second_construction_pending_pairs_existing_applied_receipts(self) -> None:
+        actor = 29829
+        episode = "native-29829-test"
+        first_id = "construction-submit-" + "a" * 32
+        second_id = "construction-submit-" + "b" * 32
+        older_id = "construction-submit-" + "c" * 32
+        first_candidate = {"barony_title_id": 2174, "province_id": 2629,
+                           "building_type_id": 628, "slot_index": 1}
+        second_candidate = {"barony_title_id": 2175, "province_id": 2630,
+                            "building_type_id": 629, "slot_index": 2}
+        older_candidate = {"barony_title_id": 2173, "province_id": 2628,
+                           "building_type_id": 627, "slot_index": 0}
+
+        def submitted(request_id: str, candidate: dict) -> dict:
+            return {"status": "submitted_verification_pending",
+                    "action_request_id": request_id, "candidate": candidate,
+                    "actor_character_id": actor, "episode_run_id": episode}
+
+        def applied(request_id: str, candidate: dict) -> dict:
+            return {"status": "applied", "postcondition_verified": True,
+                    "completion_status": "in_progress",
+                    "action_request_id": request_id, "candidate": candidate,
+                    "actor_character_id": actor, "episode_run_id": episode}
+
+        oldest = applied(older_id, older_candidate)
+        existing = applied(first_id, first_candidate)
+        pending = submitted(second_id, second_candidate)
+        history = [
+            {"index": 1, "command": "private-submit-player-construction-v1",
+             "result": submitted(older_id, older_candidate)},
+            {"index": 2, "command": "private-query-player-construction-receipt-v1",
+             "result": oldest},
+            {"index": 10, "command": "private-submit-player-construction-v1",
+             "result": submitted(first_id, first_candidate)},
+            {"index": 11, "command": "private-query-player-construction-receipt-v1",
+             "result": existing},
+            {"index": 20, "command": "private-submit-player-construction-v1",
+             "result": pending},
+        ]
+        driver = {"episode_character_id": actor, "episode_run_id": episode,
+                  "last_checkpoint": {"history_index": 20,
+                                      "episode_character_id": actor,
+                                      "episode_run_id": episode},
+                  "command_history": history}
+        sidecar = {"schema": "xar.ck3.construction_formal_pending_v1",
+                   "pending": pending, "applied": existing,
+                   "applied_prior": [oldest]}
+        pair = g2_preview_operator.construction_pending_sidecar_request
+        self.assertEqual(pair(sidecar, driver, {}), second_id)
+        for bad_sidecar in (
+            {**sidecar, "applied": {**existing, "action_request_id": second_id}},
+            {**sidecar, "applied": {**existing, "candidate": second_candidate}},
+            {**sidecar, "applied_prior": [{**oldest, "actor_character_id": actor + 1}]},
+        ):
+            with self.subTest(sidecar=bad_sidecar):
+                with self.assertRaises(ValueError):
+                    pair(bad_sidecar, driver, {})
+        with self.assertRaisesRegex(ValueError, "checkpoint receipt"):
+            pair(sidecar, {**driver, "command_history":
+                           [*history[:3], *history[4:]]}, {})
+        with self.assertRaisesRegex(ValueError, "saved submit action"):
+            pair(sidecar, {**driver, "command_history": history[1:]}, {})
+
+        # The official prepare-state path must copy this exact sidecar and
+        # report the newer pending request, not silently use the old receipt.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sample = root / "sample"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            (sample / "driver-state.json").write_text(
+                json.dumps(driver), encoding="utf-8")
+            sidecar_path = sample / "construction-formal-pending-v1.json"
+            sidecar_bytes = json.dumps(sidecar).encode("utf-8")
+            sidecar_path.write_bytes(sidecar_bytes)
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(root / "state"),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            args = argparse.Namespace(manifest=manifest_path, sample_dir=sample,
+                                      construction_sidecar=None)
+            stdout = io.StringIO()
+            with (mock.patch.object(g2_preview_operator.subprocess, "run",
+                                    return_value=mock.Mock(returncode=0)),
+                  contextlib.redirect_stdout(stdout)):
+                self.assertEqual(g2_preview_operator.command_prepare_state(args), 0)
+            receipt = json.loads(stdout.getvalue())["construction_pending_sidecar"]
+            self.assertEqual(receipt["ledger_status"], "pending")
+            self.assertEqual(receipt["action_request_id"], second_id)
+            self.assertEqual(Path(receipt["path"]).read_bytes(), sidecar_bytes)
+
     def test_old_episode_construction_does_not_require_current_sidecar(self) -> None:
         driver = {
             "episode_character_id": 42000,

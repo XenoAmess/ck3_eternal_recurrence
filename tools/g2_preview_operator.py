@@ -269,7 +269,9 @@ def construction_pending_sidecar_request(
     pending = sidecar.get("pending")
     applied = sidecar.get("applied")
     applied_prior = sidecar.get("applied_prior", [])
-    is_pending = isinstance(pending, dict) and applied is None
+    # A later construction may be submitted while an earlier verified
+    # building remains in `applied` for its completion and income readback.
+    is_pending = isinstance(pending, dict)
     is_applied = pending is None and isinstance(applied, dict)
     record = pending if is_pending else applied
     checkpoint = driver.get("last_checkpoint")
@@ -281,6 +283,7 @@ def construction_pending_sidecar_request(
                 record.get("status") != "applied"
                 or record.get("postcondition_verified") is not True
                 or record.get("completion_status") not in ("in_progress", "completed")))
+            or (applied is not None and not isinstance(applied, dict))
             or not isinstance(applied_prior, list)
             or any(not isinstance(prior, dict) for prior in applied_prior)
             or not isinstance(checkpoint, dict)
@@ -324,7 +327,10 @@ def construction_pending_sidecar_request(
     seen_requests = {request_id}
     current_candidate = record.get("candidate")
     seen_candidates = [current_candidate] if isinstance(current_candidate, dict) else []
-    for prior in applied_prior:
+    # When the newest action is pending, the previous `applied` is another
+    # retained material receipt, with the same history requirement as priors.
+    retained_applied = [applied] if is_pending and isinstance(applied, dict) else []
+    for prior in [*retained_applied, *applied_prior]:
         prior_request_id = prior.get("action_request_id")
         prior_candidate = prior.get("candidate")
         if (prior.get("status") != "applied"
