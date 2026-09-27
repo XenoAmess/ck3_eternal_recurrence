@@ -150,6 +150,27 @@ void ReadReleasePreviews(PlayerPrisonerCollectionMailboxContextV1 &query,
 }
 #endif
 
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+void ReadRansomQuote(PlayerPrisonerCollectionMailboxContextV1 &query) {
+  if (!query.result.available || !query.result.collection_complete) return;
+  for (std::uint32_t index = 0; index < query.result.returned_count;
+       ++index) {
+    query.ransom_quotes[index].failure =
+        PlayerPrisonerRansomQuoteFailureV1::not_evaluated;
+  }
+  // The first complete collection row is a scene target, not a hard-coded
+  // character. One bounded native evaluator fits the existing paused mailbox.
+  if (query.result.returned_count != 0) {
+    query.ransom_quotes[0] = ReadPlayerPrisonerRansomQuotePrivateV1(
+        query.bindings,
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        query.result.frame.played_character_id,
+        static_cast<std::int32_t>(query.result.rows[0].full_character_id));
+  }
+  query.ransom_quotes_complete = true;
+}
+#endif
+
 } // namespace
 
 bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
@@ -212,6 +233,9 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
     ReadReleasePreviews(*query, read_context);
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+    ReadRansomQuote(*query);
+#endif
     query->completed = true;
     return true;
   } catch (...) {
@@ -228,6 +252,12 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
           &release_previews,
     bool release_previews_complete
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+    , const std::array<PlayerPrisonerRansomQuoteV1,
+                       xar::bridge::kPlayerPrisonerMaximumRowsV1>
+          &ransom_quotes,
+    bool ransom_quotes_complete
+#endif
 ) {
   if (snapshot_revision == 0 ||
       snapshot.returned_count > xar::bridge::kPlayerPrisonerMaximumRowsV1 ||
@@ -241,7 +271,9 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   }
   std::string result =
       "{\"schema\":\"player-prisoner-collection-private-v1\","
-#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+      "\"schema_version\":4,\"snapshot_revision\":" +
+#elif defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
       "\"schema_version\":3,\"snapshot_revision\":" +
 #else
       "\"schema_version\":1,\"snapshot_revision\":" +
@@ -310,6 +342,14 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
       result += ",\"unconditional_release_preview\":" +
                 SerializeCharacterInteractionPreviewV1(
                     release_previews[index]);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+      if (!ransom_quotes_complete) return {};
+      const auto quote = SerializePlayerPrisonerRansomQuotePrivateV1(
+          ransom_quotes[index], snapshot_revision, snapshot.frame.date_raw,
+          snapshot.frame.proof_epoch);
+      if (quote.empty()) return {};
+      result += ",\"ransom_quote_preview\":" + quote;
 #endif
       result += '}';
     }
