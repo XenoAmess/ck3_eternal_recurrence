@@ -81,6 +81,12 @@ std::string_view BattleControlSnapshotFailureMessageV1(
 std::string SerializeBattleControlSnapshotV1(
     const game::BattleControlSnapshot &snapshot);
 
+// A same-application-main observation receipt for the future active-combat
+// resume producer. It is intentionally unavailable for forecasting until the
+// missing native operands listed in the payload have same-frame sources.
+std::string SerializeActiveCombatResumeInputsV1(
+    const game::BattleControlSnapshot &snapshot);
+
 static_assert(
     std::is_same_v<decltype(&ExecuteBattleControlSnapshotMailboxQueryV1),
                    MainThreadQueryExecutorV1>);

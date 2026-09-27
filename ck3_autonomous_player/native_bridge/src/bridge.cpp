@@ -6035,7 +6035,9 @@ std::string BattleControlSnapshotResultFrame(
     const xar::game::BattleControlSnapshot &snapshot) {
   const auto payload =
       xar::ck3_11906::SerializeBattleControlSnapshotV1(snapshot);
-  if (payload.empty()) {
+  const auto resume_inputs =
+      xar::ck3_11906::SerializeActiveCombatResumeInputsV1(snapshot);
+  if (payload.empty() || resume_inputs.empty()) {
     return {};
   }
   std::string result =
@@ -6051,6 +6053,8 @@ std::string BattleControlSnapshotResultFrame(
   result += Number(snapshot.snapshot_revision);
   result += ",\"battle_control_snapshot\":";
   result += payload;
+  result += ",\"active_combat_resume_inputs_v1\":";
+  result += resume_inputs;
   result += "}}";
   return result;
 }

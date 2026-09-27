@@ -268,6 +268,40 @@ int main() {
     return Fail("battle-control serializer omitted a frozen ABI field");
   }
 
+  const auto resume_receipt = SerializeActiveCombatResumeInputsV1(complete);
+  const std::string_view resume_json(resume_receipt);
+  if (resume_receipt.empty() ||
+      !Contains(resume_json, "\"status\":\"unavailable\"") ||
+      !Contains(resume_json, "\"input_observation_ready\":false") ||
+      !Contains(resume_json,
+                "\"unavailable_reason\":\"same_frame_resume_operands_incomplete\"") ||
+      !Contains(resume_json,
+                "\"source\":{\"snapshot_revision\":9,"
+                "\"observed_date_raw\":53178264,"
+                "\"subject_public_cunit_id\":83886341,"
+                "\"subject_native_carmy_id\":67108900,"
+                "\"combat_id\":335544325,\"province_id\":2586}") ||
+      !Contains(resume_json,
+                "\"observed\":{\"phase\":\"main\",\"phase_day\":2,"
+                "\"elapsed_whole_days\":15,\"roll_cadence_counter\":3,"
+                "\"final_combat_width\":950,"
+                "\"side_0_current_roll_points\":11") ||
+      !Contains(resume_json,
+                "\"side_0_selected_commander_character_id\":null") ||
+      !Contains(resume_json,
+                "\"side_0_ordered_public_cunit_ids\":[83886341]") ||
+      !Contains(resume_json, "\"side_0_entry_count\":2") ||
+      !Contains(resume_json,
+                "\"missing_required_domains\":["
+                "\"active_coalition_side_mapping\"")) {
+    return Fail("active resume receipt did not preserve typed unavailable and exact source");
+  }
+  auto invalid_resume = complete;
+  invalid_resume.combat_id = -1;
+  if (!SerializeActiveCombatResumeInputsV1(invalid_resume).empty()) {
+    return Fail("active resume receipt accepted an invalid battle-control frame");
+  }
+
   auto pursuit = complete;
   pursuit.pursuit_modifier_sides.attempted = true;
   pursuit.pursuit_modifier_sides.available = true;

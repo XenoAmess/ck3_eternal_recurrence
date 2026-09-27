@@ -1282,4 +1282,125 @@ std::string SerializeBattleControlSnapshotV1(
              : std::string{};
 }
 
+std::string SerializeActiveCombatResumeInputsV1(
+    const game::BattleControlSnapshot &snapshot) {
+  // This receipt is serialized from the *same* already double-sampled
+  // application-main BattleControlSnapshot as its sibling payload. No v3
+  // hypothetical contact input or second game query is used here.
+  if (!ValidateSnapshot(snapshot)) {
+    return {};
+  }
+
+  const auto append_army_ids = [](std::string &output,
+                                  const game::BattleControlSideSnapshot &side) {
+    output.push_back('[');
+    for (std::size_t index = 0; index < side.ordered_armies.size(); ++index) {
+      if (index != 0) {
+        output.push_back(',');
+      }
+      if (!AppendNumber(output, side.ordered_armies[index].public_cunit_id)) {
+        return false;
+      }
+    }
+    output.push_back(']');
+    return true;
+  };
+  const auto append_commander = [](std::string &output, std::int32_t id) {
+    return id > 0 ? AppendNumber(output, id)
+                  : (output += "null", true);
+  };
+
+  std::string output =
+      "{\"schema_version\":1,\"status\":\"unavailable\","
+      "\"input_observation_ready\":false,"
+      "\"unavailable_reason\":\"same_frame_resume_operands_incomplete\","
+      "\"source\":{\"snapshot_revision\":";
+  if (!AppendNumber(output, snapshot.snapshot_revision)) {
+    return {};
+  }
+  output += ",\"observed_date_raw\":";
+  if (!AppendNumber(output, snapshot.observed_date_raw)) {
+    return {};
+  }
+  output += ",\"subject_public_cunit_id\":";
+  if (!AppendNumber(output, snapshot.subject_public_cunit_id)) {
+    return {};
+  }
+  output += ",\"subject_native_carmy_id\":";
+  if (!AppendNumber(output, snapshot.subject_native_carmy_id)) {
+    return {};
+  }
+  output += ",\"combat_id\":";
+  if (!AppendNumber(output, snapshot.combat_id)) {
+    return {};
+  }
+  output += ",\"province_id\":";
+  if (!AppendNumber(output, snapshot.province_id)) {
+    return {};
+  }
+  output += "},\"observed\":{\"phase\":";
+  AppendJsonString(output, snapshot.phase);
+  output += ",\"phase_day\":";
+  if (!AppendNumber(output, snapshot.phase_day)) {
+    return {};
+  }
+  output += ",\"elapsed_whole_days\":";
+  if (!AppendNumber(output, snapshot.legality.elapsed_whole_days)) {
+    return {};
+  }
+  output += ",\"roll_cadence_counter\":";
+  if (!AppendNumber(output, snapshot.roll_cadence_counter)) {
+    return {};
+  }
+  output += ",\"final_combat_width\":";
+  if (!AppendNumber(output, snapshot.final_combat_width)) {
+    return {};
+  }
+  output += ",\"side_0_current_roll_points\":";
+  if (!AppendNumber(output, snapshot.attacker.current_roll_points)) {
+    return {};
+  }
+  output += ",\"side_1_current_roll_points\":";
+  if (!AppendNumber(output, snapshot.defender.current_roll_points)) {
+    return {};
+  }
+  output += ",\"side_0_selected_commander_character_id\":";
+  if (!append_commander(
+          output, snapshot.attacker.selected_commander_character_id)) {
+    return {};
+  }
+  output += ",\"side_1_selected_commander_character_id\":";
+  if (!append_commander(
+          output, snapshot.defender.selected_commander_character_id)) {
+    return {};
+  }
+  output += ",\"side_0_ordered_public_cunit_ids\":";
+  if (!append_army_ids(output, snapshot.attacker)) {
+    return {};
+  }
+  output += ",\"side_1_ordered_public_cunit_ids\":";
+  if (!append_army_ids(output, snapshot.defender)) {
+    return {};
+  }
+  output += ",\"side_0_entry_count\":";
+  if (!AppendNumber(output, snapshot.attacker.levy_entries.size() +
+                                snapshot.attacker.men_at_arms_entries.size())) {
+    return {};
+  }
+  output += ",\"side_1_entry_count\":";
+  if (!AppendNumber(output, snapshot.defender.levy_entries.size() +
+                                snapshot.defender.men_at_arms_entries.size())) {
+    return {};
+  }
+  output += "},\"missing_required_domains\":["
+            "\"active_coalition_side_mapping\","
+            "\"selected_commander_next_roll_bounds\","
+            "\"active_regiment_counter_class_stack_context\","
+            "\"next_day_non_roll_advantage_sources\","
+            "\"battle_knight_participation_and_dynamic_entry_transitions\"]}";
+  return output.size() <= kBattleControlSnapshotV1WireMaximumBytes
+             ? output
+             : std::string{};
+}
+
 } // namespace xar::ck3_11906
