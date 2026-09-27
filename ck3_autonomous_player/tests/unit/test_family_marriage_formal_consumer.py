@@ -84,10 +84,13 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
                           "matrilineal_option_selected": False,
                           "effective_matrilineal_if_accepted": False})
     return ({"status": "available", "native_revision": 7,
+             "schema": "xar.ck3.observed-first-heir-marriage-legality.v1",
+             "exact_ck3_build": "1.19.0.6",
              "query_sequence": 2,
              "observed_first_heir_character_id": 202,
              "native_legal_candidates": legal},
             {"status": "available", "native_revision": 7,
+             "schema": "xar.ck3.first-heir-candidate-alliance-projection.v1",
              "legality_query_sequence": 2, "rows": projected})
 
 
@@ -243,6 +246,27 @@ class FamilyConsumerTest(unittest.TestCase):
                     driver, plan=plan, snapshot=snapshot)
             self.assertIs(pending["preproposal_realm_alliance_attempt_if_accepted"],
                           False)
+            forecast = pending["selected_value_projection"]
+            self.assertEqual(forecast["evidence_kind"],
+                             "preproposal_native_projection")
+            self.assertEqual(forecast["exact_ck3_build"], "1.19.0.6")
+            self.assertEqual(forecast["source_native_revision"], 7)
+            self.assertEqual(forecast["source_legality_query_sequence"], 2)
+            self.assertEqual(forecast["heir_dynasty_id"], 174)
+            self.assertEqual(forecast["candidate_dynasty_id"], 1807)
+            self.assertEqual(forecast["heir_house_id"], 174)
+            self.assertEqual(forecast["candidate_house_id"], 1807)
+            self.assertIs(forecast["effective_matrilineal_if_accepted"], False)
+            self.assertEqual(forecast["predicted_outcome_if_accepted"],
+                             "betrothal")
+            self.assertEqual(forecast["heir_adult_measure_raw"], 13)
+            self.assertEqual(forecast["candidate_adult_measure_raw"], 13)
+            self.assertEqual(forecast["child_dynasty_prediction_status"],
+                             "basis_only_unpriced")
+            self.assertIsNone(forecast["predicted_child_dynasty_id"])
+            self.assertIn("future_child_identity_and_dynasty",
+                          forecast["unobserved_at_submission"])
+            self.assertEqual(forecast["missing_preproposal_fields"], [])
             claims = _pending_family_commitments(pending, frame)
             self.assertEqual(claims["ally_character_ids"], [])
             self.assertEqual(claims["character_ids"], [32897, 38718, 38822])
@@ -926,6 +950,10 @@ class FamilyConsumerTest(unittest.TestCase):
                     driver, plan=planned["plan"], snapshot=scene())
                 self.assertEqual(pending["submission_state"], "receipt_pending")
                 self.assertEqual(pending["recipient_character_id"], 400)
+                self.assertEqual(
+                    read_family_marriage_ledger(driver.state_dir)["pending"]
+                    ["selected_value_projection"],
+                    pending["selected_value_projection"])
                 next_scene = {**scene(), "native_revision": 8}
                 next_plan = plan_family_marriage_private(driver, baseline, next_scene)
                 self.assertEqual(next_plan["plan"]["selected_step"], RESULT_STEP)
@@ -945,6 +973,10 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertEqual(driver.calls, ["legality", "projection", "submit",
                                             "result", "alliance"])
             self.assertIsNone(read_family_marriage_ledger(driver.state_dir)["pending"])
+            self.assertEqual(
+                consumed["plan"]["family_marriage_result_consumed"]
+                ["source_pending"]["selected_value_projection"],
+                pending["selected_value_projection"])
 
     def test_formal_auto_turn_routes_typed_first_heir_submit(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -1253,6 +1285,10 @@ class FamilyConsumerTest(unittest.TestCase):
                              ["alliance_result"]
                              ["played_to_recipient_alliance_transition"],
                              "observed_false_to_true")
+            self.assertEqual(
+                consumed["plan"]["family_marriage_result_consumed"]
+                ["source_pending"]["selected_value_projection"],
+                pending["selected_value_projection"])
 
     def test_cold_betrothal_maturing_to_marriage_rechecks_alliance(self):
         with tempfile.TemporaryDirectory() as temporary:
