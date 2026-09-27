@@ -264,6 +264,27 @@ def test_private_ransom_quote_keeps_refused_or_unavailable_distinct() -> None:
     assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]["status"] == "unavailable"
 
 
+def test_private_child_relation_v5_preserves_true_false_and_unavailable() -> None:
+    result = _result_with_ransom_quote()
+    value = result["player_prisoner_collection"]
+    value["schema_version"] = 5
+    row = value["prisoners"][0]
+    row["is_child_of_played_character"] = True
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["is_child_of_played_character"] is True
+
+    row["is_child_of_played_character"] = False
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["is_child_of_played_character"] is False
+
+    row["is_child_of_played_character"] = None
+    with pytest.raises(BridgeUnavailableError, match="child relation"):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4)
+
+
 def test_private_ransom_ordinal_queries_one_bound_second_prisoner() -> None:
     result = _result_with_ransom_quote()
     value = result["player_prisoner_collection"]

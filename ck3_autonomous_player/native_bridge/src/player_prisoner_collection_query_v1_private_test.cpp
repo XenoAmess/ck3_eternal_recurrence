@@ -114,6 +114,13 @@ bool Read(void *context, std::uintptr_t address, void *output,
   return true;
 }
 
+int child_relation_calls = 0;
+bool IsChildOf(void *child, void *parent) {
+  ++child_relation_calls;
+  return child == reinterpret_cast<void *>(kPrisoner) &&
+         parent == reinterpret_cast<void *>(kPlayer);
+}
+
 PlayerPrisonerCollectionAccessV1 Access(Fixture &fixture) {
   PlayerPrisonerCollectionAccessV1 access{};
   access.exact_build_admitted = true;
@@ -214,6 +221,32 @@ int main() {
   }
   {
     Fixture fixture;
+    fixture.Put(kLand + 0xD8 + 0x0C, std::int32_t{2});
+    fixture.Put(kArray + sizeof(kPrisonerId), kSecondPrisonerId);
+    auto access = Access(fixture);
+    access.read_child_relation = true;
+    access.is_child_of = IsChildOf;
+    child_relation_calls = 0;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.rows[0].child_of_played_character &&
+                         !result.rows[1].child_of_played_character &&
+                         child_relation_calls == 4,
+                     "same-frame full-id child relation for both rows");
+  }
+  {
+    Fixture fixture;
+    auto access = Access(fixture);
+    access.read_child_relation = true;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(!ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.failure ==
+                             PlayerPrisonerCollectionFailureV1::
+                                 child_relation_unavailable,
+                     "missing child relation callback is unavailable");
+  }
+  {
+    Fixture fixture;
     fixture.Put(kPrisonerRelation, kSecondPrisonerId);
     PlayerPrisonerCollectionSnapshotV1 result{};
     passed += Expect(!ReadPlayerPrisonerCollectionV1Private(Access(fixture),
@@ -307,6 +340,6 @@ int main() {
                      "second-sample drift rejected");
   }
   std::cout << "player_prisoner_collection_query_v1_private " << passed
-            << "/14 GREEN\n";
-  return passed == 14 ? 0 : 1;
+            << "/16 GREEN\n";
+  return passed == 16 ? 0 : 1;
 }

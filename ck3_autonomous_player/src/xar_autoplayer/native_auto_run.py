@@ -4817,7 +4817,7 @@ def _observe_private_prisoner_collection_once(
     if not (
         isinstance(collection, dict)
         and collection.get("status") == "available"
-        and collection.get("schema_version") == 4
+        and collection.get("schema_version") in (4, 5)
         and isinstance(collection.get("prisoners"), list)
     ):
         return observation

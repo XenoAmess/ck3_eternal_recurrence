@@ -1917,14 +1917,13 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(failed["error_type"], "BridgeUnavailableError")
 
     def test_private_prisoner_ransom_quotes_follow_current_three_rows_once(self) -> None:
-        driver = mock.Mock()
         ids = [34486, 44484, 47028]
-        def response(ordinal: int) -> dict[str, object]:
+        def response(ordinal: int, schema_version: int) -> dict[str, object]:
             return {
                 "status": "available", "queried_snapshot_id": "native:3",
                 "queried_revision": 4, "queried_native_revision": 3,
                 "player_prisoner_collection": {
-                    "status": "available", "schema_version": 4,
+                    "status": "available", "schema_version": schema_version,
                     "date_raw": 100, "played_character_id": 29829,
                     "prisoners": [{
                         "prisoner_character_id": prisoner_id,
@@ -1936,22 +1935,25 @@ class NativeAutoRunTests(unittest.TestCase):
                     } for index, prisoner_id in enumerate(ids)],
                 },
             }
-        driver.query_player_prisoner_collection_private_v1.side_effect = [
-            response(0), response(1), response(2),
-        ]
         before = {"snapshot_id": "native:3", "revision": 4,
                   "native_revision": 3, "date_raw": 100,
                   "played_character_id": 29829}
-        observation = native_auto_run_module._observe_private_prisoner_collection_once(
-            driver, before=before, turn_index=1,
-        )
-        self.assertEqual(observation["ransom_quote_coverage"], "complete")
-        self.assertEqual([row["prisoner_character_id"] for row in observation["ransom_quote_followups"]], ids[1:])
-        self.assertEqual(driver.query_player_prisoner_collection_private_v1.call_args_list, [
-            mock.call(expected_revision=4),
-            mock.call(expected_revision=4, ransom_ordinal=1),
-            mock.call(expected_revision=4, ransom_ordinal=2),
-        ])
+        for schema_version in (4, 5):
+            driver = mock.Mock()
+            driver.query_player_prisoner_collection_private_v1.side_effect = [
+                response(0, schema_version), response(1, schema_version),
+                response(2, schema_version),
+            ]
+            observation = native_auto_run_module._observe_private_prisoner_collection_once(
+                driver, before=before, turn_index=1,
+            )
+            self.assertEqual(observation["ransom_quote_coverage"], "complete")
+            self.assertEqual([row["prisoner_character_id"] for row in observation["ransom_quote_followups"]], ids[1:])
+            self.assertEqual(driver.query_player_prisoner_collection_private_v1.call_args_list, [
+                mock.call(expected_revision=4),
+                mock.call(expected_revision=4, ransom_ordinal=1),
+                mock.call(expected_revision=4, ransom_ordinal=2),
+            ])
 
     def test_parser_exposes_private_prisoner_collection_only_on_opt_in(self) -> None:
         common = ["--bridge-mode", "native-headless", "native-auto-run",

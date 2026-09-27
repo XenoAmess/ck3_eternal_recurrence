@@ -254,6 +254,16 @@ if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1 AND
 endif()
 
 option(
+  XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1
+  "Read an exact-build private child-of-player predicate in prisoner rows"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+  message(FATAL_ERROR "prisoner child relation v5 requires the private v4 collection")
+endif()
+
+option(
   XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1
   "Run one private exact-build paused culture/innovation snapshot query"
   OFF
@@ -740,6 +750,10 @@ if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
     src/player_prisoner_ransom_private_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1=1)
+endif()
+if(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
