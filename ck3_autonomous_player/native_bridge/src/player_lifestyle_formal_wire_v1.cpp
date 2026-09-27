@@ -230,6 +230,16 @@ void ReadDiplomacyFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
       kDiplomacyLifestyleV1);
 }
 
+void ReadMartialFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
+  const auto environment = BindStockFocusLegalityEnvironmentV1(
+      context.module_base, true, kStockFocusLegalityExeSha256V1);
+  const StockFocusLegalityAccessV1 access{
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
+      &CaptureStockFocusTargetProgress};
+  context.stock_focus_result = ReadStockFocusLegalityV1(
+      environment, access, kMartialAuthorityFocusV1, kMartialLifestyleV1);
+}
+
 bool ReadStockPerkTargetPlayerState(
     void *opaque, const StockPerkLegalityFrameV1 &frame,
     std::uintptr_t target_lifestyle,
@@ -626,6 +636,12 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
     }
     if (context->mode == PlayerLifestyleFormalWireModeV1::query_focus_only) {
       ReadStockFocus(*context);
+      context->completed = true;
+      return true;
+    }
+    if (context->mode ==
+        PlayerLifestyleFormalWireModeV1::query_martial_focus_only) {
+      ReadMartialFocus(*context);
       context->completed = true;
       return true;
     }

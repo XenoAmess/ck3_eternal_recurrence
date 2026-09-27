@@ -2674,6 +2674,18 @@ class NativeHeadlessGameplayDriver:
             self, expected_revision=expected_revision,
         )
 
+    def query_player_lifestyle_martial_authority_private_v1(
+        self, *, expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Private read-only focus target; no public capability or submit."""
+        from .player_lifestyle_private_transport_v1 import (
+            query_player_lifestyle_martial_authority_private_v1,
+        )
+
+        return query_player_lifestyle_martial_authority_private_v1(
+            self, expected_revision=expected_revision,
+        )
+
     def submit_player_lifestyle_perk_private_v1(
         self,
         *,

@@ -20,6 +20,7 @@ enum class PlayerLifestyleFormalWireModeV1 {
   query_focus_only,
   query_professional_workforce_only,
   query_diplomacy_targets_only,
+  query_martial_focus_only,
   submit_perk,
   submit_focus,
   verify_receipt,
@@ -38,6 +39,8 @@ inline constexpr std::string_view
         "private-query-player-lifestyle-professional-workforce-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateDiplomacyStepV1 =
     "private-query-player-lifestyle-diplomacy-targets-v1";
+inline constexpr std::string_view kPlayerLifestyleFormalPrivateMartialStepV1 =
+    "private-query-player-lifestyle-martial-authority-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitStepV1 =
     "private-select-player-lifestyle-perk-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitFocusStepV1 =

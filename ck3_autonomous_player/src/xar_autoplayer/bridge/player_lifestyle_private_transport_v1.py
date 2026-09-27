@@ -17,11 +17,14 @@ QUERY_STEP = "private-query-player-lifestyle-formal-v1"
 STATE_QUERY_STEP = "private-query-player-lifestyle-current-state-v1"
 FOCUS_QUERY_STEP = "private-query-player-lifestyle-stock-focus-v1"
 DIPLOMACY_QUERY_STEP = "private-query-player-lifestyle-diplomacy-targets-v1"
+MARTIAL_QUERY_STEP = "private-query-player-lifestyle-martial-authority-v1"
 PERK_SUBMIT_STEP = "private-select-player-lifestyle-perk-v1"
 FOCUS_SUBMIT_STEP = "private-select-player-lifestyle-stock-focus-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
 FOCUS_TARGET = "stewardship_wealth_focus"
 FOCUS_LIFESTYLE = "stewardship_lifestyle"
+MARTIAL_TARGET = "martial_authority_focus"
+MARTIAL_LIFESTYLE = "martial_lifestyle"
 PERK_TARGETS = frozenset({
     "cutting_corners_perk", "professional_workforce_perk", "centralization_perk",
     "tax_man_perk",
@@ -66,6 +69,9 @@ def parse_player_lifestyle_focus_private_v1(
     expected_request_id: str,
     source_frame: Mapping[str, object],
     independent_after_frame: Mapping[str, object],
+    query_step: str = FOCUS_QUERY_STEP,
+    target_key: str = FOCUS_TARGET,
+    lifestyle_key: str = FOCUS_LIFESTYLE,
 ) -> dict[str, object]:
     """Validate the private fixed-focus read; never infer absent XP as zero.
 
@@ -108,14 +114,14 @@ def parse_player_lifestyle_focus_private_v1(
     result = response.get("result")
     if not (
         isinstance(result, Mapping)
-        and result.get("step") == FOCUS_QUERY_STEP
+        and result.get("step") == query_step
         and result.get("private_build") is True
         and result.get("advertised") is False
         and result.get("read_only") is True
         and result.get("policy_scoped") is True
         and result.get("snapshot_id") == source_frame.get("snapshot_id")
         and result.get("episode_run_id") == source_frame.get("episode_run_id")
-        and result.get("target_key") == FOCUS_TARGET
+        and result.get("target_key") == target_key
     ):
         return {"status": "red", "issue": "native_focus_binding_invalid"}
     native_status = result.get("status")
@@ -130,7 +136,7 @@ def parse_player_lifestyle_focus_private_v1(
         native_status in {"observed_native_legal", "observed_native_illegal"}
         and result.get("native_legal") is (native_status == "observed_native_legal")
         and _positive_int(result.get("scanned_database_rows"))
-        and result.get("target_lifestyle_key") == FOCUS_LIFESTYLE
+        and result.get("target_lifestyle_key") == lifestyle_key
     ):
         return {"status": "red", "issue": "native_focus_legality_untyped"}
     progress = result.get("target_lifestyle_progress")
@@ -150,8 +156,8 @@ def parse_player_lifestyle_focus_private_v1(
         return {
             "status": "target_progress_unavailable",
             "native_legal": result["native_legal"],
-            "target_key": FOCUS_TARGET,
-            "target_lifestyle_key": FOCUS_LIFESTYLE,
+            "target_key": target_key,
+            "target_lifestyle_key": lifestyle_key,
         }
     if not (
         progress.get("presence") == "present"
@@ -167,8 +173,8 @@ def parse_player_lifestyle_focus_private_v1(
     return {
         "status": "observed",
         "native_legal": result["native_legal"],
-        "target_key": FOCUS_TARGET,
-        "target_lifestyle_key": FOCUS_LIFESTYLE,
+        "target_key": target_key,
+        "target_lifestyle_key": lifestyle_key,
         "target_lifestyle_progress": dict(progress),
         "source_frame": {key: source_frame.get(key) for key in expected},
     }
@@ -184,7 +190,8 @@ def query_player_lifestyle_focus_private_v1(
     registers a public capability nor submits a focus action.
     """
 
-    if query_step not in {FOCUS_QUERY_STEP, DIPLOMACY_QUERY_STEP}:
+    if query_step not in {FOCUS_QUERY_STEP, DIPLOMACY_QUERY_STEP,
+                          MARTIAL_QUERY_STEP}:
         raise ValueError("unsupported private lifestyle focus query step")
     if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
         return {"status": "trial_off", "step": query_step}
@@ -242,13 +249,21 @@ def query_player_lifestyle_focus_private_v1(
         ),
         "episode_run_id": ending.get("episode_run_id"),
     }
-    parser = (parse_player_lifestyle_focus_private_v1
-              if query_step == FOCUS_QUERY_STEP
-              else parse_player_lifestyle_diplomacy_targets_private_v1)
-    parsed = parser(
-        response, expected_request_id=request_id,
-        source_frame=source_frame, independent_after_frame=after_frame,
-    )
+    if query_step == DIPLOMACY_QUERY_STEP:
+        parsed = parse_player_lifestyle_diplomacy_targets_private_v1(
+            response, expected_request_id=request_id,
+            source_frame=source_frame, independent_after_frame=after_frame,
+        )
+    else:
+        parsed = parse_player_lifestyle_focus_private_v1(
+            response, expected_request_id=request_id,
+            source_frame=source_frame, independent_after_frame=after_frame,
+            query_step=query_step,
+            target_key=(MARTIAL_TARGET if query_step == MARTIAL_QUERY_STEP
+                        else FOCUS_TARGET),
+            lifestyle_key=(MARTIAL_LIFESTYLE if query_step == MARTIAL_QUERY_STEP
+                           else FOCUS_LIFESTYLE),
+        )
     if ending.get("revision") != public_revision or ending.get("map_ready") is not True:
         return {"status": "red", "issue": "paused_focus_public_frame_drift"}
     return {**parsed, "step": query_step, "request_id": request_id}
@@ -261,6 +276,16 @@ def query_player_lifestyle_diplomacy_targets_private_v1(
     return query_player_lifestyle_focus_private_v1(
         driver, expected_revision=expected_revision,
         query_step=DIPLOMACY_QUERY_STEP,
+    )
+
+
+def query_player_lifestyle_martial_authority_private_v1(
+    driver: object, *, expected_revision: int | None = None,
+) -> dict[str, object]:
+    """Read exact current-actor focus legality and martial XP; no submit."""
+    return query_player_lifestyle_focus_private_v1(
+        driver, expected_revision=expected_revision,
+        query_step=MARTIAL_QUERY_STEP,
     )
 
 

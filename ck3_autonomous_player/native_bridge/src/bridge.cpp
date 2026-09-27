@@ -5120,7 +5120,10 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
         *context.snapshot);
   } else if (context.mode == xar::ck3_11906::
                                  PlayerLifestyleFormalWireModeV1::
-                                     query_focus_only) {
+                                     query_focus_only ||
+             context.mode == xar::ck3_11906::
+                                 PlayerLifestyleFormalWireModeV1::
+                                     query_martial_focus_only) {
     const auto &focus = context.stock_focus_result;
     result += "\"status\":";
     AppendJsonString(
@@ -5131,7 +5134,12 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
     result += ",\"snapshot_id\":";
     AppendJsonString(result, context.snapshot_id);
     result += ",\"target_key\":";
-    AppendJsonString(result, xar::ck3_11906::kStockFocusLegalityTargetV1);
+    AppendJsonString(
+        result,
+        context.mode == xar::ck3_11906::
+                            PlayerLifestyleFormalWireModeV1::query_martial_focus_only
+            ? xar::ck3_11906::kMartialAuthorityFocusV1
+            : xar::ck3_11906::kStockFocusLegalityTargetV1);
     if (focus.status == xar::ck3_11906::
                             StockFocusLegalityStatusV1::observed_native_legal ||
         focus.status == xar::ck3_11906::
@@ -5415,7 +5423,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                   step == kPlayerLifestyleFormalPrivateCurrentStateStepV1 ||
                   step == kPlayerLifestyleFormalPrivateStockFocusStepV1 ||
                   step == kPlayerLifestyleFormalPrivateProfessionalWorkforceStepV1 ||
-                  step == kPlayerLifestyleFormalPrivateDiplomacyStepV1
+                  step == kPlayerLifestyleFormalPrivateDiplomacyStepV1 ||
+                  step == kPlayerLifestyleFormalPrivateMartialStepV1
               ? "episode_run_id"
               : "expected_episode_run_id",
           episode_run_id, 64) ||
@@ -5518,6 +5527,9 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                 : step == kPlayerLifestyleFormalPrivateDiplomacyStepV1
                       ? PlayerLifestyleFormalWireModeV1::
                             query_diplomacy_targets_only
+                : step == kPlayerLifestyleFormalPrivateMartialStepV1
+                      ? PlayerLifestyleFormalWireModeV1::
+                            query_martial_focus_only
                 : step == kPlayerLifestyleFormalPrivateSubmitStepV1
                       ? PlayerLifestyleFormalWireModeV1::submit_perk
                       : step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1
@@ -9966,6 +9978,8 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateDiplomacyStepV1
                    && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateMartialStepV1
+                   && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitStepV1
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitFocusStepV1
@@ -10094,6 +10108,8 @@ void RunConnectedSession(
                           kPlayerLifestyleFormalPrivateProfessionalWorkforceStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateDiplomacyStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateMartialStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateSubmitStepV1 ||
               step == xar::ck3_11906::

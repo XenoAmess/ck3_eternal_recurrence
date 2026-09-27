@@ -308,7 +308,9 @@ StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
   if (!((target_key == kStockFocusLegalityTargetV1 &&
          lifestyle_key == kStockFocusLegalityLifestyleV1) ||
         (target_key == kDiplomacyForeignAffairsFocusV1 &&
-         lifestyle_key == kDiplomacyLifestyleV1))) {
+         lifestyle_key == kDiplomacyLifestyleV1) ||
+        (target_key == kMartialAuthorityFocusV1 &&
+         lifestyle_key == kMartialLifestyleV1))) {
     out.status = Status::unavailable_candidate;
     return out;
   }
