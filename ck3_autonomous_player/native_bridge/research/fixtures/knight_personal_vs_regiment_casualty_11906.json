@@ -1,0 +1,64 @@
+{
+  "schema": "ck3.knight_personal_vs_regiment_casualty_static.v1",
+  "game_build": "1.19.0.6-steam23530548",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "stock_source_sha256": {
+    "game/common/combat_phase_events/00_knight_phase_events.txt": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1",
+    "game/common/scripted_effects/20_health_effects.txt": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+  },
+  "sites": {
+    "side0_events_before_damage": {
+      "rva": "0x2309EF2",
+      "bytes_hex": "E8F9030C00"
+    },
+    "side1_events_before_damage": {
+      "rva": "0x2309EFA",
+      "bytes_hex": "E8F1030C00"
+    },
+    "side0_outgoing": {
+      "rva": "0x2309F93",
+      "bytes_hex": "E838120C00"
+    },
+    "side1_outgoing": {
+      "rva": "0x2309FAF",
+      "bytes_hex": "E81C120C00"
+    },
+    "side0_casualty_apply": {
+      "rva": "0x2309FE8",
+      "bytes_hex": "E893400C00"
+    },
+    "side1_casualty_apply": {
+      "rva": "0x230A002",
+      "bytes_hex": "E979400C00"
+    },
+    "event_wrapper_refresh": {
+      "rva": "0x23CA302",
+      "bytes_hex": "E819190000"
+    },
+    "event_wrapper_tail_fire": {
+      "rva": "0x23CA34E",
+      "bytes_hex": "E9ADF5FFFF"
+    },
+    "event_fire_reloads_knight_character": {
+      "rva": "0x23C9A6E",
+      "bytes_hex": "418B8048010000"
+    },
+    "event_fire_executes_compiled_effect": {
+      "rva": "0x23C9B11",
+      "bytes_hex": "E8FA67FB00"
+    },
+    "regiment_adds_soft": {
+      "rva": "0x23CDFC3",
+      "bytes_hex": "49015120"
+    },
+    "regiment_subtracts_current": {
+      "rva": "0x23CDFCB",
+      "bytes_hex": "49294118"
+    },
+    "regiment_writes_hard_component": {
+      "rva": "0x23CDFD5",
+      "bytes_hex": "E866E8FCFF"
+    }
+  },
+  "proof_boundary": "main_tick_order_and_local_direct_edges_only; compiled script effects are indirect; not a live wound/death probability or casualty parity claim"
+}
