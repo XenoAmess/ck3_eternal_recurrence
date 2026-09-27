@@ -1,0 +1,64 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-R0266-JOINT-CASH-20260928",
+  "created_at_utc": "2026-09-27T19:46:07Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "priority": "joint_budget_input_for_current_nonwar_candidate",
+  "related_requests": [
+    "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928",
+    "WAR-ROBERT-H2825-RISK-INPUTS-20260928"
+  ],
+  "scope": "Provide the smallest war-owned same-frame cash commitment and bounded future obligation inputs that let the nonwar joint selector compare an observed affordable income building with the active Robert war. This is an input/interface request, not a request to redesign the war model, approve construction, or launch CK3 on either machine.",
+  "observed_nonwar_opportunity": {
+    "run_round": "R0266",
+    "source_checkpoint": "H2825/raw53217624",
+    "observation_frame": {
+      "snapshot_id": "native:3",
+      "public_revision": 4,
+      "native_revision": 3,
+      "date_raw": 53217624,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "actor_character_id": 29829,
+      "war_id": 16777231
+    },
+    "candidate": "farm_estates_01 at barony 2103, province 2635, slot 1",
+    "stock_gold_cost_raw": 18000000,
+    "player_gold_raw": 111861020,
+    "authored_monthly_income_hundredths": 70,
+    "active_war_count": 1,
+    "player_army_count": 1,
+    "existing_shared_gold_commitment_raw": null,
+    "war_future_gold_cost_raw": null,
+    "joint_budget_affordability": "unassessed",
+    "formal_action_ready": false,
+    "observation_only": true
+  },
+  "final_checkpoint_is_a_different_frame": {
+    "history_index": 2908,
+    "date_raw": 53217816,
+    "purpose": "R0266 durable continuation source identity only; do not relabel the H2825 farm, treasury or war-budget observation as an H2908 same-frame read."
+  },
+  "why_needed": "The building's directly observed stock cost is below the same-frame treasury and its authored income input is positive, but the existing construction observation leaves shared gold commitment and future war cash cost null while WarID 16777231 and an army are active. The nonwar selector cannot honestly rank or reserve cash across construction and war from those two nulls. Null must not become zero, and this joint comparison gap does not cancel independent construction opportunities outside the affected war-resource comparison.",
+  "requested_delivery": [
+    "Identify existing published native or war-planner fields for this exact WarID and frame: cash already committed to pending war actions, immediate fees or maintenance, and the policy's current minimum cash reserve. Return field names, raw units, provenance and same-frame identity; if a value is not observable, return a typed missing reason rather than zero.",
+    "Provide the smallest bounded future war cash obligation useful for one construction-versus-war decision, with explicit planning horizon, assumptions and risk budget. If current inputs cannot support a defensible bound, expose war_future_gold_cost_raw=null with the exact missing source field or policy condition. A complete long-horizon war-cost or optimality model is not required.",
+    "Publish the war-owned input through the existing war proposal/resource contract on master, bound to snapshot ID, public/native revisions, episode and WarID so the nonwar joint selector can reserve gold once and release or update it after state change. Do not duplicate a construction consumer or turn on the separate COMBAT_ENTRY_EU_ACTIVATION_ENABLED contract.",
+    "Respond through this Git channel with source commit, interface contract, focused normal/optimized checks and any actual same-frame paused readback. Label static-only delivery as no-live; the nonwar operator will perform affected integration and formal action/recovery validation after a compatible candidate is frozen."
+  ],
+  "expected_nonwar_consumption": "Compare the true same-frame available cash and the building's cost with the delivered war commitment/reserve/bounded cost, then use the existing m5 selector and formal consumer only when readiness follows from real observations. Preserve pending/receipt ownership; no construction action or realized income is claimed by this request.",
+  "evidence": {
+    "git_path": "../evidence/WAR-ROBERT-R0266-JOINT-CASH-20260928.construction-frame.json",
+    "git_evidence_sha256": "64821FD7ABA019F8C99060B6F310866776B49B35B7DF88F2C189864B8C155A35",
+    "r0266_formal_report_sha256": "B5722E7CFE5162A35A8FFF356FEE1567F1CD1C15D59B1E7E59B1458E2665F059",
+    "r0266_candidate_index_sha256": "072FAD65382130F080E972D13644698DB0E1369CFA06F6E72C8C62F64C6B50D4",
+    "runtime_source_commit": "9568aa80ba1670555a82593a3b571b05b69a4ad3",
+    "native_build_source_commit": "d3dd6f92f29b116822e8c44d2cb8a75f0ee41bc1",
+    "runtime_dll_sha256": "EDA981CBB0E38BCCE38639690CC14FF4E3569C86388F05CB78C79916C8EC418A",
+    "git_carries_raw_save_driver_dll": false,
+    "local_provenance_paths_are_not_remote_assets": true
+  },
+  "gameplay_action_authorized": false,
+  "coordination_boundary": "Git carries the cross-machine request and response. Each machine runs its own local operator MCP and at most one local CK3 instance. This request does not reserve or start either machine's game window."
+}
