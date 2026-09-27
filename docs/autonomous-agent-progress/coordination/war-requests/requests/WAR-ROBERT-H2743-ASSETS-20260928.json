@@ -1,0 +1,39 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-H2743-ASSETS-20260928",
+  "created_at_utc": "2026-09-27T17:17:46Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "related_request": "WAR-ROBERT-H2743-EXIT-20260928",
+  "scope": "Exact H2743 replay asset transfer notice. This notice adds no war policy decision or gameplay authorization and does not modify the original request.",
+  "asset_delivery": {
+    "channel": "OneDrive sync",
+    "folder_relative_to_each_machine_onedrive_root": "WAR-ROBERT-H2743-2026-09-28",
+    "files": [
+      {
+        "name": "xar_checkpoint.ck3",
+        "sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9"
+      },
+      {
+        "name": "driver-state.json",
+        "sha256": "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069"
+      },
+      {
+        "name": "first-heir-marriage-formal-v1.json",
+        "sha256": "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724"
+      },
+      {
+        "name": "xar_ck3_bridge.dll",
+        "sha256": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C"
+      }
+    ],
+    "producer_machine_verification": "Exactly four files exist in the local OneDrive sync folder, and their freshly computed SHA-256 hashes match this notice and the original H2743 request.",
+    "receiver_machine_availability": "not_verified"
+  },
+  "requested_delivery": [
+    "On the war machine, locate this folder under that machine's own OneDrive sync root; do not assume the producer machine's absolute path exists there.",
+    "Verify all four files and SHA-256 hashes on the receiving machine before any official pairing or replay. Report a missing or mismatched file through the existing H2743 response channel."
+  ],
+  "coordination_boundary": "Git carries this cross-machine notice, not the four binary/runtime assets. Each machine uses its own operator MCP and at most one local CK3 instance."
+}
