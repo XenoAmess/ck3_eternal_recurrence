@@ -19,6 +19,7 @@ from xar_autoplayer.simulation.combat_core import update_combat_width  # noqa: E
 
 
 OBSERVATION_SHA256 = "FCC6402187B91682B3C053CDFB9684D962602376974430AF00ABED2558325E86"
+JOIN_FULL_DAY_SHA256 = "2BEA19218527FF7E9B35EFAF97543BDD6F168C99B99AE3CA8E88AD9699BF4983"
 TERRAIN_WIDTH_RAW = 90000
 
 
@@ -26,6 +27,13 @@ def compare(raw: bytes) -> dict[str, object]:
     if hashlib.sha256(raw).hexdigest().upper() != OBSERVATION_SHA256:
         raise ValueError("078 observation fixture SHA-256 mismatch")
     observation = json.loads(raw)
+    join_source = (
+        PROJECT / "src/xar_autoplayer/simulation/data"
+        / "ck3_1_19_0_6_episode01_messina_join_full_day_v1.json"
+    ).read_bytes()
+    if hashlib.sha256(join_source).hexdigest().upper() != JOIN_FULL_DAY_SHA256:
+        raise ValueError("day11 full join-day source SHA-256 mismatch")
+    full_day = json.loads(join_source)
     if (observation["schema"] != "ck3.native_join_width_partial_observation.v1"
             or observation["source"]["attempt"] != 78
             or observation["collector_status"] != "failed"
@@ -36,6 +44,15 @@ def compare(raw: bytes) -> dict[str, object]:
             or observation["fire_width"] is not None
             or len(observation["boundaries"]) != 2):
         raise ValueError("078 evidence boundary changed")
+    if (full_day["combat_id"] != 16777218 or full_day["joining_army_id"] != 22
+            or full_day["arrival_date_raw"] != 53146512):
+        raise ValueError("day11 join-day identity changed")
+    joined_fighting_before_raw = sum(
+        row["before_current_raw"] for row in full_day["joining_regiments"]
+        if row["fights_in_main_phase"]
+    )
+    if joined_fighting_before_raw != 256000000:
+        raise ValueError("day11 joining fighting total changed")
 
     previous = observation["boundaries"][0]["base_width"]
     rows = []
@@ -62,6 +79,7 @@ def compare(raw: bytes) -> dict[str, object]:
         "schema": "ck3.native_join_width_partial_model_parity.v1",
         "source_observation_sha256": OBSERVATION_SHA256,
         "source_finish_sha256": observation["source"]["finish_sha256"],
+        "join_full_day_source_sha256": JOIN_FULL_DAY_SHA256,
         "combat_id": observation["combat_id"],
         "native_date_raw": observation["native_date_raw"],
         "candidate_joining_army_id": observation["candidate_joining_army_id"],
@@ -74,6 +92,16 @@ def compare(raw: bytes) -> dict[str, object]:
             "terrain_types_source_sha256": "39D79AD120BF85B49D6EE8D96FE4D94EDBBABC190A41662DBA8ECA8DE0ACE64E",
         },
         "rows": rows,
+        "naive_prejoin_plus_source_join": {
+            "prejoin_side0_total_raw": observation["boundaries"][0]["side_fighting_total_raw"][0],
+            "source_joining_fighting_before_raw": joined_fighting_before_raw,
+            "naive_sum_raw": observation["boundaries"][0]["side_fighting_total_raw"][0] + joined_fighting_before_raw,
+            "native_join_return_side0_total_raw": observation["boundaries"][1]["side_fighting_total_raw"][0],
+            "naive_minus_native_raw": observation["boundaries"][0]["side_fighting_total_raw"][0] + joined_fighting_before_raw - observation["boundaries"][1]["side_fighting_total_raw"][0],
+            "source_join_amount_same_exact_hook_boundary": False,
+            "cause_of_gap_identified": False,
+            "valid_width_update_input": False,
+        },
         "base_width_zero_residual_count": sum(row["model_minus_native_base"] == 0 for row in rows),
         "final_width_zero_residual_count": sum(row["model_minus_native_final"] == 0 for row in rows),
         "three_boundary_complete": False,

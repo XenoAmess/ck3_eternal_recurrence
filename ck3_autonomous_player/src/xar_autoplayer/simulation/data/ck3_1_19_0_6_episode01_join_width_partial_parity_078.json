@@ -4,7 +4,18 @@
   "combat_id": 16777218,
   "final_width_zero_residual_count": 2,
   "fire_width": null,
+  "join_full_day_source_sha256": "2BEA19218527FF7E9B35EFAF97543BDD6F168C99B99AE3CA8E88AD9699BF4983",
   "join_policy_reconstructed": false,
+  "naive_prejoin_plus_source_join": {
+    "cause_of_gap_identified": false,
+    "naive_minus_native_raw": 5627319,
+    "naive_sum_raw": 416317482,
+    "native_join_return_side0_total_raw": 410690163,
+    "prejoin_side0_total_raw": 160317482,
+    "source_join_amount_same_exact_hook_boundary": false,
+    "source_joining_fighting_before_raw": 256000000,
+    "valid_width_update_input": false
+  },
   "native_date_raw": 53146512,
   "phase_fire_argument_observed": false,
   "rows": [

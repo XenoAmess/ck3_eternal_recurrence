@@ -84,6 +84,14 @@ class CombatFixedPointTests(unittest.TestCase):
         self.assertFalse(fixture["three_boundary_complete"])
         self.assertFalse(fixture["phase_fire_argument_observed"])
         self.assertIsNone(fixture["fire_width"])
+        naive = fixture["naive_prejoin_plus_source_join"]
+        self.assertEqual(naive["source_joining_fighting_before_raw"], 256_000_000)
+        self.assertEqual(naive["naive_sum_raw"], 416_317_482)
+        self.assertEqual(naive["native_join_return_side0_total_raw"], 410_690_163)
+        self.assertEqual(naive["naive_minus_native_raw"], 5_627_319)
+        self.assertFalse(naive["source_join_amount_same_exact_hook_boundary"])
+        self.assertFalse(naive["cause_of_gap_identified"])
+        self.assertFalse(naive["valid_width_update_input"])
         for row in fixture["rows"]:
             with self.subTest(boundary=row["boundary"]):
                 actual = update_combat_width(
