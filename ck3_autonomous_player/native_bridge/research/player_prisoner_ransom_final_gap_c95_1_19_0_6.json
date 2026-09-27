@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract": "private-player-prisoner-ransom-final-gap-c95-1.19.0.6",
+  "status": "exact-build-static-research-only",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "stock_sources": [
+    {
+      "path": "game/common/character_interactions/00_prison_interactions.txt",
+      "sha256": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
+      "lines": "1711-2365: ransom_interaction; 1718-1730 recipient redirect; 1778-1871 on_accept; 1921-2065 send options and values; 2070-2222 AI acceptance"
+    },
+    {
+      "path": "game/common/scripted_effects/00_prison_effects.txt",
+      "sha256": "F745201EFD827EFF9F4AE8BF61060FE81D1048C47F7C7B487AB5476218D26A66",
+      "lines": "2-225: ransom_interaction_effect; 3-51 mass-action option selection; 138-183 gold transfer; 225 release"
+    },
+    {
+      "path": "game/common/script_values/00_interaction_values.txt",
+      "sha256": "47A24A4B264E2036E454E72FB9E6945AD4AA47457DC256D3151CF534A5B9E6BC",
+      "lines": "161-322: ransom_cost_value and increased_ransom_cost_value"
+    }
+  ],
+  "native_ransom_cost_registration": {
+    "name": "ransom_cost",
+    "name_rva": "0x439F388",
+    "function_start_rva": "0x5495A0",
+    "function_end_rva_exclusive": "0x549638",
+    "function_sha256": "B2A08E3E1B5F1206DE79BC3F995BFAA846EF0C7AD66CFAABC4878E5EC26317C2",
+    "name_lea_rva": "0x5495B1",
+    "registration_call_rva": "0x5495E7",
+    "registration_call_target_rva": "0x3B58330",
+    "node_vtable_pointer_write_rva": "0x549619",
+    "node_vtable_rva": "0x439E528",
+    "factory_thunk_rva": "0x2871B00",
+    "factory_body_rva": "0x2876B70",
+    "interpretation": "This registers the native ransom_cost script value and a node factory. The factory is not a callable evaluated-gold result; the evaluator and its context/scope ABI remain unmapped."
+  },
+  "existing_generic_final_context": {
+    "all_role_context_constructor_rva": "0x2C3F000",
+    "final_can_send_rva": "0x2C43F00",
+    "generic_on_send_cost_evaluator_rva": "0x2CDB7B0",
+    "restriction": "The ten generic on_send cost slots do not contain the ransom transfer in the stock interaction: payment executes on_accept inside ransom_interaction_effect."
+  },
+  "missing_for_action": [
+    "same-frame payer/prisoner/imprisoner redirection and option ownership in a finalized interaction context",
+    "native evaluated selected-option ransom amount or actual saved current-gold amount, not a script-only estimate",
+    "recipient final acceptance and final Can Send tied to that option and the same prisoner row",
+    "certified semantic command binding and live postcondition/receipt"
+  ],
+  "next_abi_entry": "Trace the ransom_cost node registered at 0x5495A0 through vtable 0x439E528 to the evaluated script-value result under the finalized three-role interaction context; then bind selected-option terms into the existing private prisoner source adapter. No prisoner action or live qualification is implied."
+}
