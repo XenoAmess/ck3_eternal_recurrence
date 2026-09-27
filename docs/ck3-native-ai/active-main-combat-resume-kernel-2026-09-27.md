@@ -2,7 +2,7 @@
 
 ## 已实现的边界
 
-[source-confirmed] `ck3_autonomous_player/src/xar_autoplayer/simulation/research_envelope.py` 新增 `ActiveMainResumeState` 和独立的 `ActiveMainResumeResearchKernel`。它仅接受标记为 `observed_active_combat_resume_fixed_future_participants`、绑定 `CombatID` 与同一 snapshot/revision/date 的**主战阶段**输入；`explicit_hypothetical_fixed_at_contact_no_reinforcements` 明确被拒绝。内核从给定战斗 entry 的 `current_raw/soft_casualties_raw`、有效攻击/坚韧、当前战宽、roll cadence/当前 roll、非 roll 优势开始推进；输出的 `battle_days` 与硬伤只计快照**之后**，而撤退门仍使用战斗已历经的总天数。阶段事件关闭、未来增援和逐日刷新未建模，`fidelity_gate=False`，独立 build 名称也与战前研究模型不同。
+[source-confirmed] `ck3_autonomous_player/src/xar_autoplayer/simulation/research_envelope.py` 新增 `ActiveMainResumeState` 和独立的 `ActiveMainResumeResearchKernel`。它仅接受标记为 `observed_active_combat_resume_fixed_future_participants`、声明 `CombatID` 和 capture snapshot/revision/date 的**主战阶段**输入；`explicit_hypothetical_fixed_at_contact_no_reinforcements` 明确被拒绝。这层静态校验不能独自证明 `CombatID` 与操作数真的来自同一 application-main，证明必须由未来原生读取器提供。内核从给定战斗 entry 的 `current_raw/soft_casualties_raw`、有效攻击/坚韧、当前战宽、roll cadence/当前 roll、非 roll 优势开始推进；输出的 `battle_days` 与硬伤只计快照**之后**，而撤退门仍使用战斗已历经的总天数。阶段事件关闭、未来增援和逐日刷新未建模，`fidelity_gate=False`，独立 build 名称也与战前研究模型不同。
 
 这只是模型内核和 typed 输入的静态增量。**目前没有生产原生读取器生成这种输入，游玩智能体没有调用该续算核，也没有现役 CombatID 胜率结论。**测试里把战前冻结夹具的 participant policy 显式改成现役值，仅用于验证入口拒绝规则、初态使用、未来日数/伤亡和当前有效伤害覆盖；这个合成状态不是实机同帧证据，不能据此提高智能体能力等级。
 

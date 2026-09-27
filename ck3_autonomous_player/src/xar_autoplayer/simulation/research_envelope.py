@@ -85,12 +85,12 @@ ACTIVE_MAIN_RESUME_MANIFEST = TransitionFidelityManifest(
 
 @dataclass(frozen=True, slots=True)
 class ActiveMainResumeState:
-    """Same-frame active-combat input; no current production producer exists.
+    """Declared active-combat input; no current production producer exists.
 
     ``combat_input`` supplies the static regiment/counter and commander operands.
-    Its distinct participant policy and capture binding prevent a pre-contact v3
-    request from being silently passed off as a current battle. The two entry
-    tuples and effective damage rows are the observed, ordered battle entries.
+    Its distinct participant policy and capture fields reject an unmodified
+    pre-contact v3 request. Only a future native producer can establish that
+    the CombatID, operands, and ordered battle entries truly share one frame.
     """
 
     combat_input: FrozenCombatSimulationInput
