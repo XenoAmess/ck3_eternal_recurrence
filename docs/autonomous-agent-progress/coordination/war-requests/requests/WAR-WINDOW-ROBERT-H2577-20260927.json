@@ -1,15 +1,15 @@
 {
   "schema": "xar.g2.cross-team-war-request.v1",
-  "request_id": "WAR-WINDOW-R0262-ROBERT-H2577-20260927",
+  "request_id": "WAR-WINDOW-ROBERT-H2577-20260927",
   "created_at_utc": "2026-09-27T14:23:50Z",
   "producer_role": "nonwar_operator",
   "requested_owner_role": "war_maintainer",
   "assignee": null,
   "severity": "single_instance_window_coordination",
-  "scope": "Coordinate a proposed bounded R0262 Robert h2577 run with the separately authorized WAR31 R0221 action. This request does not reserve the CK3 instance or authorize any new action.",
+  "scope": "Coordinate a proposed bounded Robert h2577 run with the separately authorized WAR31 R0221 action. This request does not reserve the CK3 instance or authorize any new action.",
   "source": {
     "formal_campaign": "1066_robert_and_legal_succession",
-    "prospective_run": "R0262",
+    "prospective_run": "next_allocator_assigned_robert_run",
     "prospective_checkpoint_history_index": 2577,
     "latest_master_when_filed": "cd9041224718831e04120c9eddb391a78330717d",
     "local_prior_run": "R0261",
@@ -26,8 +26,8 @@
   },
   "requested_delivery": [
     "Please identify your current local CK3/operator owner and run, or explicitly confirm that your local CK3 and operator are idle after checking them now. If occupied, give the expected release point.",
-    "Please say whether the exact WAR31 R0221 action has an imminent confirmed window. If it does, we will yield the proposed R0262 slot until you release it.",
-    "If you can yield, explicitly acknowledge that you will not start WAR31 until we report completion and release of bounded R0262. We will then recheck our local operator and processes before launch and report release through this Git channel."
+    "Please say whether the exact WAR31 R0221 action has an imminent confirmed window. If it does, we will yield the proposed Robert h2577 window until you release it.",
+    "If you can yield, explicitly acknowledge that you will not start WAR31 until we report completion and release of the bounded Robert h2577 run. We will then recheck our local operator and processes before launch and report release through this Git channel."
   ],
   "coordination_boundary": "A Git response is a cross-machine coordination record, not real-time process evidence or an automatic reservation. Neither side may infer global availability from an old response or an empty local process list; each machine checks its own operator and processes at handoff."
 }
