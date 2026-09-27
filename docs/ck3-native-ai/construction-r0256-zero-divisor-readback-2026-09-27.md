@@ -25,7 +25,14 @@ row matched barony `2174`, province `2629`, building type `628`, slot `1`,
 The receipt status `observed` means both signed integers were read; a missing
 field would have been `null`/`unavailable`. The next formal turn consumed the
 receipt. R0256 then advanced one game day on each of three war-route turns,
-ending at raw `53155128`, and saved a checkpoint. Those turns did **not**
+ending at **driver history h252/raw `53155128`**, and saved a checkpoint.
+The saved `xar_checkpoint.ck3` SHA-256 is
+`7285A2D94C4F70DBB826384A8E591B0DBE790F40229CE9128B28BEF6A9EB2BF6`;
+its paired `native-session/driver-state.json` SHA-256 is
+`F7C01D7ECB33CB3E3A1D191FA3DB442081EB6DE5749CD0D8A1B0A2DA8E7D06C6`.
+The driver's last checkpoint and last history entry both identify h252/raw
+`53155128`. The three elapsed game days must not be added to h223 to derive
+a driver history index. Those turns did **not**
 submit another construction material query. Therefore the later date and
 unchanged ledger status do not show whether the building progressed or
 completed during those three days.
@@ -55,7 +62,7 @@ samples have been read.
 
 ## Next material read
 
-Continue from the R0256 raw `53155128` **paired save, driver and construction
+Continue from the R0256 h252/raw `53155128` **paired save, driver and construction
 sidecar** using a newly qualified candidate and new PID. On its first paused
 frame, query the same barony/province/type/slot. If active, compare remaining
 work with `103500006` and record the new divisor, date and native revision;
