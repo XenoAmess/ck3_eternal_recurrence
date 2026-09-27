@@ -1032,12 +1032,31 @@ class GameplayBridgeService:
         if not isinstance(plan, dict):
             return planned
 
+        readback_diagnostic: dict[str, object] = {}
+
+        def summarize_readback(value: object) -> dict[str, object]:
+            if not isinstance(value, dict):
+                return {"status": "not_a_mapping"}
+            summary = {
+                key: value.get(key)
+                for key in ("status", "issue", "native_error", "source_frame")
+                if key in value
+            }
+            native_result = value.get("native_result")
+            if isinstance(native_result, dict):
+                summary["native_result_status"] = native_result.get("status")
+            for key in ("state", "focus", "focus_query"):
+                if key in value:
+                    summary[key] = summarize_readback(value[key])
+            return summary
+
         def blocked(reason: str) -> dict[str, object]:
             return {
                 **planned,
                 "plan": {
                     **plan, "phase": "initial_lifestyle_focus_observation_red",
                     "selected_step": None, "reason": reason,
+                    "opening_lifestyle_readback_diagnostic": readback_diagnostic,
                 },
             }
 
@@ -1082,6 +1101,94 @@ class GameplayBridgeService:
             and before.get("revision") == revision
         ):
             return blocked("opening focus planning frame changed")
+        binding = (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id",
+        )
+        readback_diagnostic["before"] = {
+            key: before.get(key) for key in binding
+        }
+        current_reader = getattr(
+            self.driver, "query_player_lifestyle_current_state_private_v1", None,
+        )
+        if callable(current_reader):
+            current = current_reader(expected_revision=revision)
+            current_after = self.snapshot()
+            readback_diagnostic["current_state"] = summarize_readback(current)
+            readback_diagnostic["after_current_state"] = {
+                key: current_after.get(key) for key in binding
+            }
+            current_source = (
+                current.get("source_frame") if isinstance(current, dict) else None
+            )
+            current_life = (
+                current.get("snapshot") if isinstance(current, dict) else None
+            )
+            current_focus = (
+                current_life.get("current_focus")
+                if isinstance(current_life, dict) else None
+            )
+            current_progress = (
+                current_life.get("current_lifestyle_progress")
+                if isinstance(current_life, dict) else None
+            )
+            current_readiness = (
+                current_life.get("readiness")
+                if isinstance(current_life, dict) else None
+            )
+            if (
+                isinstance(current, dict)
+                and current.get("status") == "available"
+                and current_after.get("paused") is True
+                and all(before.get(key) == current_after.get(key) for key in binding)
+                and isinstance(current_source, dict)
+                and all(
+                    current_source.get(key) == before.get(key)
+                    for key in ("snapshot_id", "revision", "native_revision", "date_raw")
+                )
+                and isinstance(current_focus, dict)
+                and current_focus.get("presence") == "present"
+            ):
+                numeric = (
+                    "xp_total_raw", "xp_within_level_raw", "xp_per_level",
+                    "unspent_perk_points", "used_perk_points",
+                )
+                if not (
+                    isinstance(current_readiness, dict)
+                    and current_readiness.get("current_focus_ready") is True
+                    and current_readiness.get("lifestyle_progress_ready") is True
+                    and isinstance(current_focus.get("key"), str)
+                    and current_focus.get("key")
+                    and isinstance(current_focus.get("lifestyle_key"), str)
+                    and isinstance(current_progress, dict)
+                    and current_progress.get("presence") == "present"
+                    and current_progress.get("lifestyle_key")
+                    == current_focus.get("lifestyle_key")
+                    and all(
+                        isinstance(current_progress.get(key), int)
+                        and not isinstance(current_progress.get(key), bool)
+                        and current_progress[key] >= 0
+                        for key in numeric
+                    )
+                    and current_progress["xp_per_level"] > 0
+                ):
+                    return blocked("existing opening focus lacks exact current XP/points")
+                if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
+                    return blocked("opening existing-focus read-only turn is unavailable")
+                return {
+                    **planned,
+                    "plan": {
+                        **plan, "phase": "initial_lifestyle_focus_already_present",
+                        "selected_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+                        "initial_lifestyle_focus_existing": {
+                            "status": "verified_existing",
+                            "readback_source": "native_current_state_only",
+                            "source_frame": current_source,
+                            "current_focus": current_focus,
+                            "current_lifestyle_progress": current_progress,
+                        },
+                    },
+                }
         formal_reader = getattr(
             self.driver, "query_player_lifestyle_formal_private_v1", None
         )
@@ -1094,26 +1201,37 @@ class GameplayBridgeService:
         formal = formal_reader(expected_revision=revision)
         stock = stock_reader(expected_revision=revision)
         after = self.snapshot()
-        binding = (
-            "snapshot_id", "revision", "native_revision", "date_raw",
-            "episode_run_id",
+        readback_diagnostic["formal"] = summarize_readback(formal)
+        readback_diagnostic["stock"] = summarize_readback(stock)
+        readback_diagnostic["after_formal_stock"] = {
+            key: after.get(key) for key in binding
+        }
+        formal_source = (
+            formal.get("source_frame") if isinstance(formal, dict) else None
         )
+        failed_predicates = []
         if not (
             after.get("paused") is True
             and all(before.get(key) == after.get(key) for key in binding)
-            and isinstance(formal, dict)
-            and formal.get("status") == "available"
-            and isinstance(formal.get("source_frame"), dict)
-            and formal["source_frame"].get("snapshot_id") == before.get("snapshot_id")
-            and formal["source_frame"].get("revision") == revision
-            and formal["source_frame"].get("native_revision")
-            == before.get("native_revision")
-            and formal["source_frame"].get("date_raw") == before.get("date_raw")
-            and isinstance(stock, dict)
-            and stock.get("status") in {
-                "stock_focus_available", "stock_focus_readback_red",
-            }
         ):
+            failed_predicates.append("service_paused_frame_drift")
+        if not isinstance(formal, dict) or formal.get("status") != "available":
+            failed_predicates.append("formal_status_unavailable")
+        elif not (
+            isinstance(formal_source, dict)
+            and formal_source.get("snapshot_id") == before.get("snapshot_id")
+            and formal_source.get("revision") == revision
+            and formal_source.get("native_revision")
+            == before.get("native_revision")
+            and formal_source.get("date_raw") == before.get("date_raw")
+        ):
+            failed_predicates.append("formal_source_frame_mismatch")
+        if not isinstance(stock, dict) or stock.get("status") not in {
+            "stock_focus_available", "stock_focus_readback_red",
+        }:
+            failed_predicates.append("stock_status_unavailable")
+        if failed_predicates:
+            readback_diagnostic["failed_predicates"] = failed_predicates
             return blocked("opening LIFE2/stock readback is not one paused frame")
         stock_focus = (
             stock.get("focus_query")

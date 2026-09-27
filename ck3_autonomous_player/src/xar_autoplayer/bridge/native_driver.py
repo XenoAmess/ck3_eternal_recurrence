@@ -2581,6 +2581,19 @@ class NativeHeadlessGameplayDriver:
             self, expected_revision=expected_revision
         )
 
+    def query_player_lifestyle_current_state_private_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
+        """Read current focus and progress without requiring a LIFE4 window."""
+        from .player_lifestyle_private_transport_v1 import (
+            STATE_QUERY_STEP,
+            query_player_lifestyle_private_v1,
+        )
+
+        return query_player_lifestyle_private_v1(
+            self, expected_revision=expected_revision, query_step=STATE_QUERY_STEP,
+        )
+
     def query_player_lifestyle_stock_focus_combined_private_v1(
         self, *, expected_revision: int
     ) -> dict[str, object]:
