@@ -18,6 +18,13 @@ constexpr std::size_t kStorageSlotObjectOffset = 0x08;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
 constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
 constexpr std::size_t kCharacterLandStateOffset = 0x1B8;
+constexpr std::size_t kCharacterHouseIdOffset = 0x150;
+constexpr std::size_t kHouseDynastyIdOffset = 0x2C;
+constexpr std::size_t kLineageIdentityOffset = 0x10;
+constexpr std::uintptr_t kHouseStorageSlotRva = 0x570C408;
+constexpr std::uintptr_t kHouseFallbackSlotRva = 0x570C400;
+constexpr std::uintptr_t kDynastyStorageSlotRva = 0x570C748;
+constexpr std::uintptr_t kDynastyFallbackSlotRva = 0x570C700;
 constexpr std::size_t kExtensionPrisonRelationOffset = 0x288;
 constexpr std::size_t kPrisonRelationJailerIdOffset = 0;
 constexpr std::size_t kLandStatePrisonersOffset = 0xD8;
@@ -28,6 +35,8 @@ constexpr std::int32_t kMaximumCharacterSlots = 1 << 20;
 
 struct SourceSample {
   std::uintptr_t player_address = 0;
+  std::int32_t player_house_id = -1;
+  std::int32_t player_dynasty_id = -1;
   std::uintptr_t collector_address = 0;
   std::uintptr_t data_address = 0;
   std::uint32_t count = 0;
@@ -85,6 +94,65 @@ bool ResolveCharacter(const PlayerPrisonerCollectionAccessV1 &access,
   return true;
 }
 
+bool ResolveLineageComponent(const PlayerPrisonerCollectionAccessV1 &access,
+                             std::uintptr_t storage_slot_rva,
+                             std::uintptr_t fallback_slot_rva,
+                             std::int32_t full_id,
+                             std::uintptr_t &component) noexcept {
+  component = 0;
+  std::uintptr_t storage = 0;
+  std::uintptr_t fallback = 0;
+  std::uintptr_t slots = 0;
+  std::int32_t capacity = 0;
+  if (full_id < 0 ||
+      !Read(access, access.module_base, storage_slot_rva, storage) ||
+      !Read(access, access.module_base, fallback_slot_rva, fallback) ||
+      storage == 0 ||
+      !Read(access, storage, kStorageSlotsOffset, slots) || slots == 0 ||
+      !Read(access, storage, kStorageCapacityOffset, capacity) ||
+      capacity <= 0 || capacity > kMaximumCharacterSlots) {
+    return false;
+  }
+  const auto slot = static_cast<std::uint32_t>(full_id) & kIdentitySlotMask;
+  if (slot >= static_cast<std::uint32_t>(capacity) ||
+      !Read(access, slots,
+            static_cast<std::size_t>(slot) * kStorageSlotStride +
+                kStorageSlotObjectOffset,
+            component) || component == 0 || component == fallback) {
+    component = 0;
+    return false;
+  }
+  std::int32_t observed_id = -1;
+  if (!Read(access, component, kLineageIdentityOffset, observed_id) ||
+      observed_id != full_id) {
+    component = 0;
+    return false;
+  }
+  return true;
+}
+
+bool ReadLineage(const PlayerPrisonerCollectionAccessV1 &access,
+                 std::uintptr_t character, std::int32_t &house_id,
+                 std::int32_t &dynasty_id) noexcept {
+  house_id = -1;
+  dynasty_id = -1;
+  if (!Read(access, character, kCharacterHouseIdOffset, house_id) ||
+      house_id < -1) return false;
+  if (house_id == -1) return true;
+  std::uintptr_t house = 0;
+  if (!ResolveLineageComponent(access, kHouseStorageSlotRva,
+                               kHouseFallbackSlotRva, house_id, house) ||
+      !Read(access, house, kHouseDynastyIdOffset, dynasty_id) ||
+      dynasty_id < -1) {
+    return false;
+  }
+  if (dynasty_id == -1) return true;
+  std::uintptr_t dynasty = 0;
+  return ResolveLineageComponent(access, kDynastyStorageSlotRva,
+                                 kDynastyFallbackSlotRva, dynasty_id,
+                                 dynasty);
+}
+
 Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
                    std::uint32_t player_id, SourceSample &sample) noexcept {
   sample = {};
@@ -100,6 +168,11 @@ Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
   if (!ResolveCharacter(access, storage, fallback, player_id,
                         sample.player_address)) {
     return Failure::player_unavailable;
+  }
+  if (access.read_lineage &&
+      !ReadLineage(access, sample.player_address, sample.player_house_id,
+                   sample.player_dynasty_id)) {
+    return Failure::lineage_unavailable;
   }
   std::uintptr_t land_state = 0;
   if (!Read(access, sample.player_address, kCharacterLandStateOffset,
@@ -155,12 +228,18 @@ Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
         jailer_id != player_id) {
       return Failure::custody_relation_invalid;
     }
+    std::int32_t house_id = -1;
+    std::int32_t dynasty_id = -1;
+    if (access.read_lineage &&
+        !ReadLineage(access, prisoner_address, house_id, dynasty_id)) {
+      return Failure::lineage_unavailable;
+    }
     for (std::uint32_t prior = 0; prior < index; ++prior) {
       if (sample.rows[prior].full_character_id == full_id) {
         return Failure::collection_invalid;
       }
     }
-    sample.rows[index] = {index, full_id, jailer_id};
+    sample.rows[index] = {index, full_id, jailer_id, house_id, dynasty_id};
   }
   return Failure::none;
 }
@@ -224,6 +303,8 @@ bool ReadPlayerPrisonerCollectionV1Private(
     return false;
   }
   if (first.player_address != second.player_address ||
+      first.player_house_id != second.player_house_id ||
+      first.player_dynasty_id != second.player_dynasty_id ||
       first.collector_address != second.collector_address ||
       first.data_address != second.data_address || first.count != second.count ||
       !std::equal(first.rows.begin(), first.rows.begin() + first.count,
@@ -244,6 +325,8 @@ bool ReadPlayerPrisonerCollectionV1Private(
   output.available = true;
   output.failure = Failure::none;
   output.frame = before;
+  output.played_house_id = first.player_house_id;
+  output.played_dynasty_id = first.player_dynasty_id;
   output.total_count = first.count;
   output.returned_count = first.count;
   output.collection_complete = true;
@@ -266,6 +349,7 @@ std::string_view PlayerPrisonerCollectionFailureNameV1(Failure failure) noexcept
   case Failure::collection_truncated: return "collection_truncated";
   case Failure::prisoner_identity_invalid: return "prisoner_identity_invalid";
   case Failure::custody_relation_invalid: return "custody_relation_invalid";
+  case Failure::lineage_unavailable: return "lineage_unavailable";
   case Failure::sample_drift: return "sample_drift";
   case Failure::frame_drift: return "frame_drift";
   }
