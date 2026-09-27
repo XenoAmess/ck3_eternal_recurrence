@@ -41,7 +41,7 @@ flowchart TD
 | expected_signal | Stop as movement_observed only on a new native position for the same CUnit; record whether it reaches 2639. A changed route/target or vanished CUnit is a separate invalidated-path stop. If exact committed-path first-hop ETA can be safely exposed, compare fresh ETA against current date and stop on reached ETA plus position readback; absent ETA remains null, never inferred from route |
 | zero_sample_meaning | A replay diverging from 072/074 at day 26 is a new sample, not a negative of prior accepted queues. Thirty unchanged days leave apply unknown unless exact apply trace exists; siege or path policy can delay or cancel movement |
 | stop_condition | Exact day-26 identity gate first. Then first same-CUnit native position change, exact committed-path ETA reached with stable readback, route/target invalidation, CUnit absence, or day 56 (30 days after terminal), whichever is first; always finish and retain RED attempts |
-| runtime_window_ref | Attempt 076 only after higher-priority war-width 077 has clean-exited, task bus CK3 resource is released, and a new Steam-offline frame is visually verified |
+| runtime_window_ref | Attempt 076 only after higher-priority war-width 078 has clean-exited, task bus CK3 resource is released, and a new Steam-offline frame is visually verified; 077 collector RED remains historical evidence |
 
 | Evidence ID | Declared layer | File | SHA-256 | Supports |
 |---|---|---|---|---|
@@ -78,6 +78,6 @@ Check result (file integrity and declarations only):
     "Counts cover this enumerated graph only, not all CK3 branches.",
     "A consistent observation plan is not authorization to run or manipulate CK3."
   ],
-  "plan_sha256": "dc9cc6a9020f5c35a8f898c3e7ec7e8f8e7993196d87cefccabb7b1f0bd92701"
+  "plan_sha256": "5af6dad98fd539615296f30b215e32c916eb5a3ccdd66ab2331ce097636594f0"
 }
 ```
