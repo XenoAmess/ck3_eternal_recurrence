@@ -28,6 +28,9 @@
 哈希回执保存在同目录 `saved-input-candidate-hashes.json`。这只是列出的
 本机目录范围，不声称遍历所有盘和云端文件。根据项目 OneDrive 下载
 限制，本次没有访问 OneDrive 同步目录或触发任何云端下载。
+同一范围另按 checkpoint、两份 driver 和两份已知环境 sidecar 的
+**精确字节数及文件类型**搜寻改名副本，连大小候选也没有；外置记录为
+`D:/ck3-research-artifacts/war31-hwprobe-20260927/renamed-input-size-scan.json`。
 
 因此目前**不能组装合法 live manifest，更不能附加 CK3**。下一次
 独立尝试至少需要：经单独传输并按冻结 SHA 重验的 checkpoint、driver、
