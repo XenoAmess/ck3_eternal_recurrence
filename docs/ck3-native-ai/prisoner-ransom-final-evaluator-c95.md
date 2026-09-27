@@ -37,3 +37,40 @@ EXE 的 `ransom_cost` 字符串在 RVA `0x439F388`；`0x5495A0..0x549638` 注册
 ```text
 py ck3_autonomous_player/native_bridge/research/verify_player_prisoner_ransom_final_gap_c95_1_19_0_6.py --exe '<CK3>/binaries/ck3.exe' --game-root '<CK3>/game'
 ```
+
+## C210: native base cost is mapped; payable amount is still unresolved (2026-09-27)
+
+The exact `1.19.0.6` executable shows that the `ransom_cost` registration at
+`0x5495A0` constructs a node at `0x2876B70`. The constructed node's vtable is
+`0x439A218`; slot 32 points to `0x2870FD0`. That method resolves a Character
+from the script scope and calls `0x28DCEC0` at `0x2871029`. The versioned C95
+ABI verifier now checks the factory and value-method hashes, vtable edge and
+native call edge. These are static findings; neither the call signature nor
+the amount's fixed-point units have been qualified by a paused game readback.
+
+This is the **base** `ransom_cost` node, not the amount the jailer can receive.
+The stock `ransom_cost_value` script (`00_interaction_values.txt:161-274`)
+changes that base for culture, guest wealth, haggler office and difficulty.
+`ransom_interaction` redirects a landless prisoner's payer to their liege, then
+chooses between full, increased, current-gold, favor and other options
+(`00_prison_interactions.txt:1718-1730,1921-2065`). The `current_gold` option
+saves the payer's **then-current** gold on acceptance
+(`00_prison_interactions.txt:1816-1827`), and the transfer occurs in
+`ransom_interaction_effect` (`00_prison_effects.txt:138-183`). A base-cost
+value or generic `on_send` cost cannot be published as final payable gold.
+
+```mermaid
+flowchart LR
+    R[ransom_cost registration] --> N[constructed native node]
+    N --> B[base cost value method: mapped static]
+    B -. generic script value evaluation and three-role scope unknown .-> V[ransom_cost_value]
+    V -. selected option and payer timing unknown .-> A[final payable resource]
+    A -. no semantic command or live postcondition .-> C[formal ransom action]
+```
+
+Next bounded ABI step: locate the generic script-value evaluation call under a
+finalized three-role interaction context, read the selected option and its
+payer on the same paused frame, and map the corresponding value to the existing
+private prisoner source adapter. Until this is done, return typed unavailable
+for ransom terms. No private field, public capability, action or M6 readiness
+is added by C210.

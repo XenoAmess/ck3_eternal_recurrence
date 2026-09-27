@@ -71,7 +71,25 @@ def main() -> int:
     require(read(thunk, 1) == b"\xe9" and
             rel_target(thunk, 1, 5) == int(registration["factory_body_rva"], 16),
             "factory thunk target mismatch")
-    print("GREEN_STATIC C95 ransom source and registration; evaluator/action not mapped")
+    base_evaluator = contract["native_ransom_cost_base_evaluator_c210"]
+    factory_start = int(base_evaluator["factory_body_rva"], 16)
+    factory_end = int(base_evaluator["factory_body_end_rva_exclusive"], 16)
+    require(hashlib.sha256(read(factory_start, factory_end - factory_start)).hexdigest().upper() ==
+            base_evaluator["factory_body_sha256"], "base-cost node factory SHA mismatch")
+    node_vtable = int(base_evaluator["constructed_node_vtable_rva"], 16)
+    require(rel_target(int(base_evaluator["constructed_node_vtable_write_rva"], 16), 3, 7) ==
+            node_vtable, "constructed ransom-cost node vtable mismatch")
+    value_rva = int(base_evaluator["value_method_rva"], 16)
+    require(struct.unpack("<Q", read(node_vtable +
+                                  base_evaluator["value_method_vtable_slot"] * 8, 8))[0] ==
+            base + value_rva, "base-cost value method vtable entry mismatch")
+    value_end = int(base_evaluator["value_method_end_rva_exclusive"], 16)
+    require(hashlib.sha256(read(value_rva, value_end - value_rva)).hexdigest().upper() ==
+            base_evaluator["value_method_sha256"], "base-cost value method SHA mismatch")
+    require(rel_target(int(base_evaluator["native_base_cost_call_rva"], 16), 1, 5) ==
+            int(base_evaluator["native_base_cost_target_rva"], 16),
+            "base-cost native call mismatch")
+    print("GREEN_STATIC C95/C210 ransom base-cost node; final payable amount/action not mapped")
     return 0
 
 
