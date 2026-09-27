@@ -27,6 +27,8 @@
 
 [战中预测输入审计](active-combat-forecast-input-gap-2026-09-27.md)进一步确认：v3 的 `ongoing_combats` 只来自**本次请求选中的军队**，并非全局其他战斗，因此生产 `forecast_fixed_contact` 现在会在所选军队已参战或该观察字段缺失时返回 typed unavailable，防止把“重新从第 0 日接战”的结果冒充现役 CombatID 的续算；其他独立军队的战前接战估计照常使用。battle-control 已有真实阶段、roll、双方逐团 current/soft 与战宽，但缺同一次 native application-main 的完整续算输入，现有 trial 也没有从主阶段第 N 日起跑的入口。下一步是独立 resumed 初态、同帧输入与原版对拍，然后把“继续/合法撤退”接进实际游玩策略；单纯解除这道 guard 不能解决问题。
 
+[战中撤退目的地种子](active-combat-retreat-destination-seeds-2026-09-27.md)已接入智能体的**只读动作预览**：可控且仍在战斗的军队现在能以同帧其他驻扎我军省份为初始候选，排除已观测敌军当前/目标/路线省；长路线第一站在战中只生成重新预览与接触查询，不派生可绕过撤退 token 的直接 move 命令。30 项聚焦测试通过。种子不是安全目的地证明，尚无战中 route-contact ETA 覆盖及撤退后速度的实机配对，因此自动撤退 order 尚未接线；后续必须在同一暂停帧通过 native legality、完整敌军作用域、全程到站门、typed token 和新 revision 回读。
+
 第 5 项延长回放启动门：[076 预检诊断](winner-ai-postsubmit-076-prelaunch-steam-diagnostic.md)发现 Steam 桌面画面与 074 旧图逐字节相同、任务栏时钟冻结；UI Automation、直接窗口采样和可恢复重绘也未给出可读的当前离线状态。076 因此在 **CK3 启动前**保留 environment RED，没有新增 AI 移动或 ETA 结果。Steam 本次进程的离线启动日志和持久偏好是旁证，不冒充实时 UI；下一次新 attempt 须先恢复可靠离线状态取证，再执行已冻结的有限日观察计划。
 
 第 4 项片中身份映射：[两份配对原生存档的只读复核](maa-regiment-87-save-name-identity-2026-09-27.md)均把 RegimentID `87` 绑定为 `mubarizun`，原版简中为“穆巴里尊”，属职业兵士重步兵；ProvinceID `2633` 为“墨西拿”。该身份可用于视频文字与智能体解释层，但兵种定义的基础坚韧 `25` 与同帧有效值 `26.25` 的差额仍不能仅由名称推断修正来源。
