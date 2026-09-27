@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/combat_phase_event_trace_detour_v1.hpp"
 #include "xar_bridge/combat_counter_output_detour_v1.hpp"
+#include "xar_bridge/combat_advantage_components_observer_v1.hpp"
 #include "xar_bridge/combat_phase_event_trace_wire_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -108,6 +109,8 @@ struct CombatPhaseEventTraceManagedSessionV1 {
   CombatPhaseEventTraceDetourStateV1 detours{};
   CombatJoinWrapperDetourV1 join_width_detour{};
   CombatCounterOutputDetourV1 counter_output_detour{};
+  AdvantageComponentObserverV1 advantage_components{};
+  AdvantageComponentDetoursV1 advantage_component_detours{};
   CombatPhaseEventTraceCapturePlanV1 plan{};
   CombatPhaseEventTraceRingDrainV1 drain{};
   CombatPhaseEventTraceManagedCheckpointV1 before{};
@@ -119,6 +122,7 @@ struct CombatPhaseEventTraceManagedSessionV1 {
   bool exact_one_day_observed = false;
   bool boundary_dates_match_checkpoint = false;
   bool detours_uninstalled = false;
+  bool capture_runtime_advantage_components = false;
 
   CombatPhaseEventTraceManagedSessionV1() = default;
   CombatPhaseEventTraceManagedSessionV1(
@@ -141,6 +145,7 @@ struct CombatPhaseEventTraceBeginContextV1 {
   bool capture_runtime_join_width = false;
   bool capture_runtime_join_full_entries = false;
   bool capture_runtime_counter_output = false;
+  bool capture_runtime_advantage_components = false;
   CombatPhaseEventTraceManagedCompletionV1 completion =
       CombatPhaseEventTraceManagedCompletionV1::not_executed;
   std::uint32_t executor_invocations = 0;

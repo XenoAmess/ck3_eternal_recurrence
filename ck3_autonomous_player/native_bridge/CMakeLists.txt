@@ -525,6 +525,7 @@ add_library(xar_ck3_bridge SHARED
   src/combat_phase_event_trace_v1_mailbox.cpp
   src/combat_phase_event_trace_detour_v1.cpp
   src/combat_counter_output_detour_v1.cpp
+  src/combat_advantage_components_observer_v1.cpp
   src/combat_phase_event_trace_managed_v1.cpp
   src/combat_phase_event_trace_ring_v1.cpp
   src/combat_counter_output_readout_v1.cpp
@@ -2140,6 +2141,7 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_combat_phase_event_trace_managed_v1_test
     src/combat_phase_event_trace_detour_v1.cpp
     src/combat_counter_output_detour_v1.cpp
+    src/combat_advantage_components_observer_v1.cpp
     src/combat_phase_event_trace_managed_v1.cpp
     src/combat_phase_event_trace_ring_v1.cpp
     src/combat_counter_output_readout_v1.cpp

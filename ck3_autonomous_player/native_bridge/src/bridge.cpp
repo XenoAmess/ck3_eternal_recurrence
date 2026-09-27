@@ -9292,6 +9292,7 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     bool capture_runtime_join_width = false;
     bool capture_runtime_join_full_entries = false;
     bool capture_runtime_counter_output = false;
+    bool capture_runtime_advantage_components = false;
     if (payload.find("\"capture_runtime_random_list_weights\"") !=
             std::string_view::npos &&
         !xar::bridge::JsonBooleanField(
@@ -9327,6 +9328,15 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
       return CommandResultFrame(
           request_id, step, false,
           "experimental counter-output flag is malformed");
+    }
+    if (payload.find("\"capture_runtime_advantage_components\"") !=
+            std::string_view::npos &&
+        !xar::bridge::JsonBooleanField(
+            payload, "capture_runtime_advantage_components",
+            capture_runtime_advantage_components)) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental advantage-components flag is malformed");
     }
     if (capture_runtime_join_full_entries &&
         !capture_runtime_join_width) {
@@ -9384,6 +9394,8 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
         capture_runtime_join_full_entries;
     query.capture_runtime_counter_output =
         capture_runtime_counter_output;
+    query.capture_runtime_advantage_components =
+        capture_runtime_advantage_components;
     // The external driver must additionally verify the save file hash and
     // official semantic pair before this private request is sent.
     query.recoverable_checkpoint_created = true;
@@ -9412,6 +9424,10 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
         query.completion != xar::ck3_11906::
                                 CombatPhaseEventTraceManagedCompletionV1::armed) {
       if (session->detours.installed.load(std::memory_order_acquire) != 0 ||
+          session->advantage_component_detours.sites[0].installed ||
+          session->advantage_component_detours.sites[1].installed ||
+          session->advantage_component_detours.sites[2].installed ||
+          session->advantage_component_detours.sites[3].installed ||
           session->counter_output_detour.installed.load(
               std::memory_order_acquire) != 0 ||
           session->join_width_detour.installed.load(

@@ -719,6 +719,8 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
         query->capture_runtime_join_full_entries;
     session.plan.capture_runtime_counter_output =
         query->capture_runtime_counter_output;
+    session.capture_runtime_advantage_components =
+        query->capture_runtime_advantage_components;
     session.plan.candidate_joining_army_id =
         query->plan_environment.candidate_joining_army_id;
     session.plan.owner_thread_id = stamp.thread_id;
@@ -780,11 +782,48 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
           : CombatPhaseEventTraceManagedCompletionV1::infrastructure_rejected;
       return base_uninstalled;
     }
+    if (session.capture_runtime_advantage_components) {
+      session.advantage_components.combat = session.plan.combat;
+      session.advantage_components.combat_id = session.plan.combat_id;
+      session.advantage_components.current_date_slot =
+          session.plan.current_date_slot;
+      session.advantage_components.current_date_object =
+          session.plan.expected_current_date_object;
+      if (!InstallAdvantageComponentObserverV1(
+              session.advantage_component_detours,
+              session.advantage_components, session.plan.module_base,
+              detour_environment.exact_build_admitted, true)) {
+        const bool observer_uninstalled =
+            UninstallAdvantageComponentObserverV1(
+                session.advantage_component_detours,
+                session.advantage_components);
+        const bool counter_uninstalled = observer_uninstalled &&
+            (!session.plan.capture_runtime_counter_output ||
+             UninstallCombatCounterOutputDetourV1(
+                 session.counter_output_detour));
+        const bool join_uninstalled = counter_uninstalled &&
+            (!session.plan.capture_runtime_join_width ||
+             UninstallCombatJoinWrapperDetourV1(session.join_width_detour));
+        const bool base_uninstalled = join_uninstalled &&
+            UninstallCombatPhaseEventTraceDetoursV1(session.detours);
+        session.detours_uninstalled = base_uninstalled;
+        session.stage = CombatPhaseEventTraceManagedStageV1::failed;
+        query->completion = base_uninstalled
+            ? CombatPhaseEventTraceManagedCompletionV1::trace_unavailable
+            : CombatPhaseEventTraceManagedCompletionV1::infrastructure_rejected;
+        return base_uninstalled;
+      }
+    }
     if (!ArmCombatPhaseEventTraceRingV1(session.ring, session.plan)) {
-      const bool counter_uninstalled =
-          !session.plan.capture_runtime_counter_output ||
-          UninstallCombatCounterOutputDetourV1(
-              session.counter_output_detour);
+      const bool observer_uninstalled =
+          !session.capture_runtime_advantage_components ||
+          UninstallAdvantageComponentObserverV1(
+              session.advantage_component_detours,
+              session.advantage_components);
+      const bool counter_uninstalled = observer_uninstalled &&
+          (!session.plan.capture_runtime_counter_output ||
+           UninstallCombatCounterOutputDetourV1(
+               session.counter_output_detour));
       const bool join_uninstalled = counter_uninstalled &&
           (!session.plan.capture_runtime_join_width ||
            UninstallCombatJoinWrapperDetourV1(session.join_width_detour));
@@ -859,10 +898,15 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
         session.drain.records[4].native_date_raw == session.after.date_raw &&
         session.drain.records[5].native_date_raw == session.after.date_raw &&
         session.drain.records[6].native_date_raw == session.after.date_raw;
-    const bool counter_uninstalled =
+    const bool observer_uninstalled =
+        !session.capture_runtime_advantage_components ||
+        UninstallAdvantageComponentObserverV1(
+            session.advantage_component_detours,
+            session.advantage_components);
+    const bool counter_uninstalled = observer_uninstalled && (
         !session.plan.capture_runtime_counter_output ||
         UninstallCombatCounterOutputDetourV1(
-            session.counter_output_detour);
+            session.counter_output_detour));
     const bool optional_uninstalled = counter_uninstalled &&
         (!session.plan.capture_runtime_join_width ||
          UninstallCombatJoinWrapperDetourV1(session.join_width_detour));
@@ -878,7 +922,10 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
     if (session.exact_one_day_observed &&
         session.boundary_dates_match_checkpoint &&
         session.drain.bounded_capture_complete &&
-        !session.serialized_drain.empty()) {
+        !session.serialized_drain.empty() &&
+        (!session.capture_runtime_advantage_components ||
+         AdvantageComponentObserverCompleteV1(
+             session.advantage_components))) {
       query->completion = CombatPhaseEventTraceManagedCompletionV1::
           bounded_trace_available;
     } else {
@@ -915,6 +962,11 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
   if (!AppendCheckpoint(output, session.after)) return {};
   output += "},\"trace\":";
   output += session.serialized_drain;
+  if (session.capture_runtime_advantage_components) {
+    output += ",\"advantage_components\":";
+    output += SerializeAdvantageComponentObserverV1(
+        session.advantage_components);
+  }
   output.push_back('}');
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1
              ? output

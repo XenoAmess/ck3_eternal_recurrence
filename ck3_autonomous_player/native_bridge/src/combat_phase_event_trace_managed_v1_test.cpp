@@ -740,13 +740,65 @@ bool AdmissionRequiresCheckpointAndMailbox() {
   return true;
 }
 
+bool AdvantageComponentsRequireOriginalPairArithmetic() {
+  AdvantageComponentObserverV1 observer{};
+  observer.combat_id = 738197508;
+  observer.count.store(1);
+  auto &row = observer.records[0];
+  row.ordinal = 0;
+  row.thread_id = GetCurrentThreadId();
+  row.caller_rva = 0x27FB4AC;
+  row.combat_id = observer.combat_id;
+  row.date_raw = 53192328;
+  row.base_raw = 200000;
+  row.resolved_raw = 300000;
+  row.complete = true;
+  auto &left = row.sides[0];
+  left.side_index = 0;
+  left.roll = 2;
+  left.roll_raw = 200000;
+  left.commander_character_id = 29829;
+  left.commander_raw = 50000;
+  left.aggregator_raw = 25000;
+  left.total_raw = 275000;
+  left.helper_calls = 2;
+  left.complete = true;
+  auto &right = row.sides[1];
+  right.side_index = 1;
+  right.roll = 1;
+  right.roll_raw = 100000;
+  right.commander_raw = 50000;
+  right.aggregator_raw = 25000;
+  right.total_raw = 175000;
+  right.helper_calls = 2;
+  right.complete = true;
+  if (!AdvantageComponentObserverCompleteV1(observer) ||
+      SerializeAdvantageComponentObserverV1(observer).find(
+          "\"available\":true") == std::string::npos) {
+    return Fail("advantage original-call pair did not close");
+  }
+  right.commander_raw += 1;
+  if (AdvantageComponentObserverCompleteV1(observer))
+    return Fail("advantage component arithmetic spoof was accepted");
+  right.commander_raw -= 1;
+  row.resolved_raw += 1;
+  if (AdvantageComponentObserverCompleteV1(observer))
+    return Fail("advantage cache arithmetic spoof was accepted");
+  row.resolved_raw -= 1;
+  observer.failure_flags.store(1);
+  if (AdvantageComponentObserverCompleteV1(observer))
+    return Fail("advantage capture failure was accepted");
+  return true;
+}
+
 } // namespace
 
 int main() {
   if (!PlanBuilderClosesPointers() ||
       !CandidateJoinPlanPrearmsAndRejectsStale() ||
       !ManagedBeginFinishProducesBoundedDto() ||
-      !AdmissionRequiresCheckpointAndMailbox()) {
+      !AdmissionRequiresCheckpointAndMailbox() ||
+      !AdvantageComponentsRequireOriginalPairArithmetic()) {
     return 1;
   }
   std::cout << "combat phase event managed v1 fixture passed\n";
