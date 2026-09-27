@@ -53,6 +53,25 @@
 
 同一对拍向量还固定一个**不能直接相加**的反例：独立 full-day fixture 中 ArmyID `22` 的 12 个参战 regiment 入场前 current 合计 `256000000` Q100000；与 078 join 入口 side0 缓存 `160317482` 相加会得到 `416317482`，比 join 返回实采 `410690163` 多 `5627319`。这两个来源没有提供同一 hook 边界的完整 entry 向量，差额是旧缓存、入场军变化还是 join 中其他刷新所致，目前**不能识别**；因此 `416317482` 不是合法的 width 更新输入。full-day 原始 fixture SHA-256 `2BEA19218527FF7E9B35EFAF97543BDD6F168C99B99AE3CA8E88AD9699BF4983` 与 `source_join_amount_same_exact_hook_boundary=false`、`cause_of_gap_identified=false`、`valid_width_update_input=false` 一起冻结，单测阻止把简单相加误当原版规则。
 
+#### 078 七边界 entry 交叉核算（2026-09-27 追加证据）
+
+在**同一份**原始 `jwidth078-finish.json`（上列 SHA）里，七边界 `records[1]` 是原生日戳 `53146488` 的 side1 schedule 返回，`records[2]` 是 `53146512` 的首次 side0 phase-fire 前。它们夹住 join，但 `records[1]` 比 join 入口早一天，**不是同一 hook 边界**。[只读核算器](../../ck3_autonomous_player/tools/verify_join_entry_reconciliation_078.py)先校验整个原始 finish 的 SHA/status/CombatID/日期，再按完整 RegimentID 比较两侧 Entry60；原始 RED、失败码 `5` 与 `fire_width=null` 不变。
+
+| side | `records[1]` 旧缓存 `+0x98` | `records[1]` 旧 entry `+0x18` 总和 | 缓存减 entry | `records[1]→[2]` 原条目 | 新条目 current | join 返回 `+0x98` |
+| --- | ---: | ---: | ---: | --- | ---: | ---: |
+| 0 | 160317482 | 154690163 | **5627319** | 27 条完整 row 逐 ID 未变、无移除 | ArmyID `22` 增 13 条，合计 256000000 | **410690163 = 154690163 + 256000000** |
+| 1 | 89325449 | 82785368 | **6540081** | 24 条完整 row 逐 ID 未变、无移除 | 0 | **82785368** |
+
+新增的第 13 条是非主战 entry，`current=0`，因此与旧 full-day fixture 的“12 条参战 regiment”不冲突。`records[2]` 两侧 cache 与 entry 求和严格相等，且与同日 join 返回缓存相等。结合原版 `0x2304251/0x2304261` 两次调用 `0x23CB840` 的静态顺序，这批证据将 **078 观测窗口内的 5627319 差额**精确定位为先前 side0 **存储缓存高于当时 entry 总和**；side1 同样存在 6540081 的旧缓存差。它不能独立证明 join 入口瞬间旧 entry 没有变化，也不能让先前两个来源的 `source_join_amount_same_exact_hook_boundary=false` 变成 true；在同帧入口/返回 reader 实采前，trial kernel 仍不能用“旧缓存 + 新军人数”作为动态 width 输入。
+
+#### 080 私有同帧 full-entry 取样合同（只设计，未启动）
+
+exact-build `ck3.exe` SHA-256 仍为页首值；本轮重新核对的最短写链是 `0x23041C2/0x2304225 → 0x23044F0/0x23043F0 → 0x23C9100` 插入选中侧，`0x2304255` 以 `RCX=CCombat+0x20` 调 `0x23CB840`，`0x2304261` 以 `RCX=CCombat+0x368` 再调一次，`0x2304266..0x2304272` 才判断并更新宽度。`0x23CB84C/0x23CB850` 从 side `+0x28/+0x34` 扫第一 bucket 的 `0x60`-byte entry，`0x23CB870/0x23CB877` 加其 `+0x18` int64 current 到 `+0xA0`；`0x23CB88B` 复制到 `+0x98`，`0x23CB892/0x23CB896` 再从 `+0x40/+0x4C` 扫第二 bucket，`0x23CB8B0/0x23CB8B8` 加同一 `+0x18` 到 `+0x98`。`0x23C916E/0x23C9172` 读取 incoming `CArmy+0x38/+0x44` 的 regiment ID 序列，`0x23C91D3` 以每个 `CRegiment+0x38 × 100000` 建基础人数；新 entry 经 `0x23CEFC0/0x23D0520` 初始化，再经 `0x23D2CE0` 写有效属性。前述地址来自该 SHA 的静态指令，**不是 080 实采**；这些 mutator 绝不能为查询而主动调用。
+
+080 应复用已验证的 `0x23040A0` wrapper 入口/正常返回钩子和独立 side0 出伤宽度钩子，**不在** `0x23CB840` 中段安装新 detour。新增单独默认关闭的私有严格布尔开关，必须与现有 `capture_runtime_join_width=true` 同时启用；默认 wire 和 079 的三点行为保持原样。入口与返回在同一实际 join 线程、同一 CombatID/日期和同一候选 `CArmy*` 下，只读复制两侧 `+0x98/+0xA0`、有界 side ArmyID 顺序、两 bucket 的 `{full RegimentID, bucket/index, starting/current/soft, effective damage/toughness}`，以及入场军 `CArmy+0x38/+0x44` 的完整 RegimentID 顺序与 `CRegiment+0x38` 基础人数。加入侧身份只在返回后由 side ArmyID 向量确认；入口不得提前假定 side。`+0x6C0/+0x6C4` 与第三点实际 `R8D` 继续由既有宽度记录给出。现有 prearmed generation-valid regiment/army 指针表和 `ReadVector` 上限可复用，但专用读取器只拷贝本合同字段，不在钩内分配、排序、调用 CK3 helper 或解析显示名；最多每侧 `2048` entry、`256` ArmyID，超限、重复 ID、指针/代际失配、entry 合计与返回 cache 不等均保留独立失败状态，不能截断后宣称完整。
+
+离线对拍应分别计算：入口两侧 `cache - Σ(entry.current)`；共同完整 RegimentID 的旧 row 改变量；新增/移除的 ID 与其 ArmyID；新增 ArmyID `22` 的 entry current/starting 与入口原生 `CRegiment+0x38 × 100000`；返回两侧 `cache - Σ(entry.current)`；最后独立核对 side0 出伤实际宽度。若同帧入口 side0 缓存残差正是 `5627319`、旧 row 不变、新 row 为 `256000000`、返回残差为 0，才把“旧缓存陈旧解释本次差额”提升为 join 边界实采；若有旧 row 变化或入场军实际 current 不同，则逐项报告，不靠差额倒推原因。080 需新独立 attempt、源档/配对回执/DLL SHA、任务总线独占、新鲜且可读的 Steam 离线 UI、一步受管回放、原始 bytes/SHA 与 clean exit；079 的 prelaunch RED 不可覆盖。当前 Steam 实时 UI 门仍未通过，所以 **080 仅为静态计划，禁止启动**。
+
 下一版仅取消第三点的 **mailbox 线程等式**，在精确 side0 返回地址钩子中记录实际线程 ID；候选对象、CombatID、原生日期、side 身份与 `R8D == +0x6C4` 校验均保留。join 入口/返回仍须同实际 join 线程。独立私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`，聚焦 CTest 5/5（含第三点由另一个非 mailbox 线程采集的夹具）；离线通过不等于实机验证。使用全新 attempt 重放一天，要求三点完整、原始 bytes/SHA、失败码和 clean exit 后才给整条链 GREEN；历史 078 回执不得改写。
 
 ### 079 实机前环境 RED
