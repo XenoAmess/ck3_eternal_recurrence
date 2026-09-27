@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0244-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T11:29:21Z",
+  "updated_at_utc": "2026-09-27T13:27:06Z",
   "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
@@ -33,6 +33,17 @@
       "checks": "Normal and -O focused v3 bridge/production, general-battle strategy and first-hop tests: 50 passed plus 46 subtests in each mode. COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains false.",
       "live_evidence": null,
       "remaining_blocker": "The requesting consumer must replay an independently verified compatible War48 save/driver/DLL pair and write a verification for actual selected_step, action/readback and next turn; no original-pair live result was obtained here."
+    },
+    {
+      "date_utc": "2026-09-27T13:27:06Z",
+      "audit_master_commit": "3c32c10bf",
+      "audit_document": "docs/ck3-native-ai/war-r0244-frozen-v3-query-projection-2026-09-27.md",
+      "formal_report_sha256": "07994F762425CCFF912BF697DCBF95BA1E00F374D646BE060748420526040E6F",
+      "finding": "A no-launch regression binds the Git formal failed report to request/checkpoint/DLL/episode/paused-frame identity. Its frozen Army 16777237 route ends 2634->2640 against Army 16777417. With the current advertised v3 bridge capability, reconstructed route/contact transport envelopes project the exact read-only literal query-combat-simulation-inputs-v3-2640-2634-a-1-16777237-d-1-16777417. The query literal is parameterized and is not required in action_steps. No new production defect was found in this bounded interface review.",
+      "boundary": "The report retains route/contact results but not full command envelopes; those are reconstructed only for offline planner testing. The formal report's own identity.ck3_executable_sha256 is null, so the EXE hash is request-supplied provenance rather than independently attested by that report. No v3 query result, forecast, first-hop action or original War48 replay was observed here.",
+      "checks": "test_r0244_frozen_v3_query_projection.py: 1 passed on normal Python and 1 passed with -O. The four existing v3/strategy/first-hop modules on the current master each passed 50 tests plus 46 subtests in normal and -O modes. No CK3 process was launched.",
+      "live_evidence": null,
+      "remaining_blocker": "Original source checkpoint, driver/sidecars and matched DLL are only identified by another machine's historical Z: paths and frozen hashes. A separately qualified transfer or equivalent scene, current DLL capability check, actual same-frame v3 output and independent move/readback/next-turn/recovery are required before a passed War48 verification."
     }
   ],
   "live_evidence": null,
