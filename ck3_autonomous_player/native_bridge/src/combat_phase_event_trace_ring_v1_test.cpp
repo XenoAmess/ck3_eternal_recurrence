@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <thread>
 
 namespace {
 
@@ -816,6 +817,54 @@ bool CandidateJoinWidthFirstFailurePredicateFixture() {
              : Fail("join-width side-backpointer diagnosis failed");
 }
 
+bool CandidateJoinWidthCrossThreadFixture() {
+  Fixture fixture;
+  std::array<std::byte, 0x130> candidate_army{};
+  constexpr std::int32_t candidate_id = 22;
+  Store(candidate_army, 0x10, candidate_id);
+  Store(candidate_army, 0x128, std::int32_t{-1});
+  fixture.plan.army_count = 3;
+  fixture.plan.armies[2] = {
+      candidate_id, reinterpret_cast<std::uintptr_t>(candidate_army.data())};
+  fixture.plan.capture_runtime_join_width = true;
+  fixture.plan.candidate_joining_army_id = candidate_id;
+  fixture.plan.owner_thread_id = GetCurrentThreadId();
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("cross-thread join-width arm failed");
+  std::array<std::int32_t, 2> joined_roster{Fixture::kArmyIds[0], candidate_id};
+  auto *const side0 = reinterpret_cast<void *>(fixture.plan.sides[0]);
+  Store(fixture.combat, 0x6C0, std::int32_t{4});
+  Store(fixture.combat, 0x6C4, std::int32_t{5});
+  bool joined = false;
+  std::thread join_thread([&] {
+    const bool before = CaptureCombatJoinWidthV1(
+        fixture.combat.data(), candidate_army.data(), false);
+    Store(side0, 0x10, reinterpret_cast<std::uintptr_t>(joined_roster.data()));
+    Store(side0, 0x18, std::int32_t{2});
+    Store(side0, 0x1C, std::int32_t{2});
+    Store(candidate_army, 0x128, Fixture::kCombatId);
+    Store(fixture.combat, 0x6C0, std::int32_t{6});
+    Store(fixture.combat, 0x6C4, std::int32_t{7});
+    joined = before && CaptureCombatJoinWidthV1(
+        fixture.combat.data(), candidate_army.data(), true);
+  });
+  join_thread.join();
+  const bool phase = CaptureCombatFirstSide0OutgoingWidthV1(
+      side0, 7, fixture.plan.module_base +
+                    kCombatOutgoingDamageSide0ReturnRva);
+  const bool valid = joined && phase && ring->join_width_count.load() == 3 &&
+      ring->join_widths[0].thread_id != fixture.plan.owner_thread_id &&
+      ring->join_widths[0].thread_id == ring->join_widths[1].thread_id &&
+      ring->join_widths[2].thread_id == fixture.plan.owner_thread_id &&
+      ring->join_widths[0].native_date_raw ==
+          ring->join_widths[2].native_date_raw &&
+      ring->join_width_first_failure_code.load() == join_width_failure_none &&
+      ring->failure_flags.load() == trace_capture_failure_none;
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return valid ? true : Fail("cross-thread join/phase width capture failed");
+}
+
 bool PostCounterAttackCaptureCases() {
   Fixture fixture;
   auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
@@ -1114,6 +1163,7 @@ int main(int argc, char **argv) {
       !StaleScheduledKnightCase() ||
       !CandidateJoinWidthThreeBoundaryFixture() ||
       !CandidateJoinWidthFirstFailurePredicateFixture() ||
+      !CandidateJoinWidthCrossThreadFixture() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
       !OutgoingDamageHookAbi() || !OuterCallerContextTransport() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,

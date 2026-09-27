@@ -187,6 +187,7 @@ enum CombatJoinWidthFailureCodeV1 : std::uint32_t {
   join_width_failure_side_identity = 8,
   join_width_failure_width_argument = 9,
   join_width_failure_memory_fault = 10,
+  join_width_failure_cross_boundary_date = 11,
 };
 
 inline constexpr std::size_t kCombatPhaseKnightSelectMaximumRecordsV1 = 64;
@@ -492,6 +493,7 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> effect_node_draw_count{0};
   std::atomic<std::uint32_t> random_list_weight_count{0};
   std::atomic<std::uint32_t> join_width_count{0};
+  std::atomic<std::uint32_t> join_width_join_thread_id{0};
   std::atomic<std::uint32_t> join_width_first_failure_code{
       join_width_failure_none};
   std::atomic<std::uint32_t> knight_select_count{0};
