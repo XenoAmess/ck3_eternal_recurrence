@@ -198,12 +198,16 @@ def test_active_research_kernel_consumes_joined_dynamic_vector() -> None:
             disallow_retreat=False, allow_early_retreat=False,
             skip_pursuit=False, landless_blocked=False,
             retreat_elapsed_whole_days=8,
+            pursuit_efficiency_modifier_raw=0,
+            retreat_losses_modifier_raw=0,
         ),
         side_1_route=ActiveRouteSideState(
             first_stored_public_cunit_id=state.encounter.defender_army_ids[0],
             disallow_retreat=False, allow_early_retreat=False,
             skip_pursuit=False, landless_blocked=False,
             retreat_elapsed_whole_days=8,
+            pursuit_efficiency_modifier_raw=0,
+            retreat_losses_modifier_raw=0,
         ),
     )
     assumptions = ResearchEnvelopeAssumptions(

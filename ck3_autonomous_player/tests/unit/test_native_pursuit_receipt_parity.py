@@ -58,6 +58,20 @@ def test_one_native_pursuit_start_predicts_all_three_days_and_hard_ledgers():
             matched_rows += 1
     assert matched_rows == 72
     assert result.total_hard_raw == 6_294_269
+    assert inputs["retreater_loss_modifier_raw"] == -25_000
+    # The whole-battle research envelope historically supplied zero here.
+    # That assumption does not reproduce this observed native pursuit.
+    omitted = apply_three_day_pursuit(
+        loser, pursuer,
+        initial_pools=PursuitInitialPools.from_entries(loser),
+        pursuer_efficiency_modifier_raw=inputs["pursuer_efficiency_modifier_raw"],
+        retreater_loss_modifier_raw=0,
+    )
+    assert tuple(day.total_hard_raw for day in omitted.days) == (
+        2_760_921, 2_808_726, 2_861_216,
+    )
+    assert omitted.total_hard_raw == 8_430_863
+    assert omitted.total_hard_raw - result.total_hard_raw == 2_136_594
     assert evidence["terminal"] == {
         "kind": "normal_result",
         "winner_raw": 0,

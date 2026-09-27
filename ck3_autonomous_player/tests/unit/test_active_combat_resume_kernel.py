@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from dataclasses import replace
 from pathlib import Path
+from unittest import mock
 
 import pytest
 
 from xar_autoplayer.simulation.combat_core import (
     CombatPhase,
     TrialResult,
+    apply_three_day_pursuit,
     derive_trial_random_streams,
 )
 from xar_autoplayer.simulation.combat_input import (
@@ -78,6 +80,8 @@ def _research_state() -> tuple[ActiveMainResumeState, ActiveMainResumeResearchKe
             skip_pursuit=False,
             landless_blocked=False,
             retreat_elapsed_whole_days=5,
+            pursuit_efficiency_modifier_raw=0,
+            retreat_losses_modifier_raw=0,
         ),
         side_1_route=ActiveRouteSideState(
             first_stored_public_cunit_id=leader_1.public_army_id,
@@ -86,6 +90,8 @@ def _research_state() -> tuple[ActiveMainResumeState, ActiveMainResumeResearchKe
             skip_pursuit=False,
             landless_blocked=False,
             retreat_elapsed_whole_days=5,
+            pursuit_efficiency_modifier_raw=0,
+            retreat_losses_modifier_raw=0,
         ),
     )
     kernel = ActiveMainResumeResearchKernel(
@@ -124,6 +130,8 @@ def test_resume_state_rejects_precontact_and_incomplete_active_binding() -> None
         replace(state, side_0_route=replace(state.side_0_route, first_stored_public_cunit_id=999))
     with pytest.raises(CombatInputError, match="observed booleans"):
         replace(state.side_0_route, skip_pursuit=0)
+    with pytest.raises(CombatInputError, match="observed pursuit modifiers"):
+        replace(state.side_0_route, retreat_losses_modifier_raw=None)
 
 
 def test_resume_uses_current_entries_and_counts_future_days_only() -> None:
@@ -231,3 +239,54 @@ def test_resume_uses_loser_route_flags_and_native_day_baseline() -> None:
         too_early, side_0_route=replace(too_early.side_0_route, allow_early_retreat=True)
     )
     assert trial(early_override).battle_days == 4
+
+
+@pytest.mark.parametrize("loser_side", (0, 1))
+def test_resume_routes_observed_winner_and_loser_pursuit_modifiers(loser_side: int) -> None:
+    state, kernel = _research_state()
+    losing_entries = state.side_0_entries if loser_side == 0 else state.side_1_entries
+    losing_entries = (
+        replace(losing_entries[0], current_raw=0, soft_casualties_raw=8_000_000),
+        *(replace(entry, current_raw=0) for entry in losing_entries[1:]),
+    )
+    state = replace(
+        state,
+        side_0_entries=losing_entries if loser_side == 0 else state.side_0_entries,
+        side_1_entries=losing_entries if loser_side == 1 else state.side_1_entries,
+        side_0_route=replace(
+            state.side_0_route,
+            retreat_elapsed_whole_days=14,
+            retreat_losses_modifier_raw=-25_000 if loser_side == 0 else 7_000,
+            pursuit_efficiency_modifier_raw=11_000 if loser_side == 0 else 15_000,
+        ),
+        side_1_route=replace(
+            state.side_1_route,
+            retreat_elapsed_whole_days=14,
+            retreat_losses_modifier_raw=-25_000 if loser_side == 1 else 9_000,
+            pursuit_efficiency_modifier_raw=11_000 if loser_side == 1 else 15_000,
+        ),
+    )
+    with mock.patch(
+        "xar_autoplayer.simulation.research_envelope.apply_three_day_pursuit",
+        wraps=apply_three_day_pursuit,
+    ) as pursuit:
+        observed = kernel.simulate_trial(
+            state, streams=derive_trial_random_streams(871, 0), horizon_days=1
+        )
+    assert pursuit.call_count == 1
+    assert pursuit.call_args.kwargs["pursuer_efficiency_modifier_raw"] == 15_000
+    assert pursuit.call_args.kwargs["retreater_loss_modifier_raw"] == -25_000
+    assert observed.player_hard_loss_raw + observed.enemy_hard_loss_raw > 0
+
+    without_observed_loss = replace(
+        state,
+        side_0_route=replace(state.side_0_route, retreat_losses_modifier_raw=0),
+        side_1_route=replace(state.side_1_route, retreat_losses_modifier_raw=0),
+    )
+    no_modifier = kernel.simulate_trial(
+        without_observed_loss,
+        streams=derive_trial_random_streams(871, 0),
+        horizon_days=1,
+    )
+    if loser_side == 0:
+        assert no_modifier != observed

@@ -73,7 +73,7 @@ RESEARCH_ENVELOPE_MANIFEST = TransitionFidelityManifest(
 )
 
 ACTIVE_MAIN_RESUME_MANIFEST = TransitionFidelityManifest(
-    simulator_build="ck3-1.19.0.6-active-main-resume-research-v1",
+    simulator_build="ck3-1.19.0.6-active-main-resume-research-v2",
     loaded_phase_effects_exact=False,
     battle_end_exact=True,
     retreat_and_forced_result_exact=True,
@@ -82,13 +82,14 @@ ACTIVE_MAIN_RESUME_MANIFEST = TransitionFidelityManifest(
     + (
         "observed_main_phase_entry_and_roll_resume",
         "declared_both_side_route_flags_and_first_stored_armies",
+        "observed_pursuit_side_modifiers_frozen_until_terminal_research_assumption",
     ),
 )
 
 
 @dataclass(frozen=True, slots=True)
 class ActiveRouteSideState:
-    """Same-frame inputs for the first stored army of one active combat side."""
+    """Same-frame route and pursuit modifiers for one active combat side."""
 
     first_stored_public_cunit_id: int
     disallow_retreat: bool
@@ -96,12 +97,20 @@ class ActiveRouteSideState:
     skip_pursuit: bool
     landless_blocked: bool
     retreat_elapsed_whole_days: int
+    pursuit_efficiency_modifier_raw: int
+    retreat_losses_modifier_raw: int
 
     def __post_init__(self) -> None:
         if type(self.first_stored_public_cunit_id) is not int or self.first_stored_public_cunit_id <= 0:
             raise CombatInputError("route side requires first stored public CUnit ID")
         if type(self.retreat_elapsed_whole_days) is not int or self.retreat_elapsed_whole_days < 0:
             raise CombatInputError("route side requires native elapsed whole days")
+        for value in (
+            self.pursuit_efficiency_modifier_raw,
+            self.retreat_losses_modifier_raw,
+        ):
+            if type(value) is not int or not -(2**63) <= value < 2**63:
+                raise CombatInputError("route side requires signed observed pursuit modifiers")
         for flag in (self.disallow_retreat, self.allow_early_retreat, self.skip_pursuit, self.landless_blocked):
             if type(flag) is not bool:
                 raise CombatInputError("route side flags must be observed booleans")
@@ -548,10 +557,21 @@ class PhaseEventsDisabledResearchKernel(
         )
         pursuit_hard_raw = 0
         if end.phase is CombatPhase.PURSUIT:
+            winner_route = (
+                resume.side_0_route if winner_side_index == 0 else resume.side_1_route
+            ) if resume is not None else None
             pursuit = apply_three_day_pursuit(
                 end.loser_entries,
                 winner_entries,
                 initial_pools=end.pursuit_initial_pools,
+                pursuer_efficiency_modifier_raw=(
+                    winner_route.pursuit_efficiency_modifier_raw
+                    if winner_route is not None else 0
+                ),
+                retreater_loss_modifier_raw=(
+                    loser_route.retreat_losses_modifier_raw
+                    if loser_route is not None else 0
+                ),
             )
             pursuit_hard_raw = pursuit.total_hard_raw
             battle_days += 3
