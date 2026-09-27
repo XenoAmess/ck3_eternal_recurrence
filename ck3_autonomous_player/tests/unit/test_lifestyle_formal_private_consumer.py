@@ -86,6 +86,7 @@ class _State:
         self.stock_focus_present = False
         self.zero_points = False
         self.policy_target_scope = False
+        self.other_focus = False
         self.professional_workforce_ready = False
         self.centralization_ready = False
 
@@ -111,6 +112,14 @@ class _State:
                     "error": "native_lifestyle_state_or_final_candidates_unavailable"}
         if step == QUERY_STEP:
             life = _life_snapshot()
+            if self.other_focus:
+                life["current_focus"] = {
+                    "presence": "present", "key": "diplomacy_foreign_affairs_focus",
+                    "lifestyle_key": "diplomacy_lifestyle",
+                }
+                life["current_lifestyle_progress"]["lifestyle_key"] = (
+                    "diplomacy_lifestyle"
+                )
             if self.policy_target_scope:
                 life["legal_perk_candidates"]["scope"] = "policy_target"
             if self.zero_points:
@@ -145,6 +154,14 @@ class _State:
                 "formal_precondition_status": "ready", "snapshot": life}
         elif step == STATE_QUERY_STEP:
             life = _life_snapshot()
+            if self.other_focus:
+                life["current_focus"] = {
+                    "presence": "present", "key": "diplomacy_foreign_affairs_focus",
+                    "lifestyle_key": "diplomacy_lifestyle",
+                }
+                life["current_lifestyle_progress"]["lifestyle_key"] = (
+                    "diplomacy_lifestyle"
+                )
             if self.zero_points:
                 life["current_lifestyle_progress"].update({
                     "xp_total_raw": 0, "xp_within_level_raw": 0,
@@ -600,6 +617,24 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             opportunity["policy_target_final_legal"]["professional_workforce_perk"]
         )
         self.assertIsNone(opportunity["policy_target_final_legal"]["centralization_perk"])
+
+    def test_opening_policy_target_keeps_legal_stewardship_row_under_other_focus(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.policy_target_scope = True
+        driver.state.other_focus = True
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        existing = plan["initial_lifestyle_focus_existing"]
+        opportunity = existing["perk_opportunity"]
+        self.assertEqual(plan["selected_step"], "query-campaign-root-context-v1")
+        self.assertEqual(existing["current_focus"]["lifestyle_key"], "diplomacy_lifestyle")
+        self.assertEqual(opportunity["candidate_scope"], "policy_target")
+        self.assertEqual(opportunity["legal_candidate_count_in_scope"], 1)
+        self.assertTrue(opportunity["policy_target_final_legal"]["cutting_corners_perk"])
+        self.assertIsNone(
+            opportunity["policy_target_final_legal"]["professional_workforce_perk"]
+        )
 
     def test_opening_formal_fallback_projects_perks_without_another_formal_query(self) -> None:
         driver = _Driver()

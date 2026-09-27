@@ -1107,14 +1107,13 @@ class GameplayBridgeService:
             and formal_focus.get("lifestyle_key") == focus.get("lifestyle_key")
         ):
             return {**unknown, "query_status": "legal_candidates_unavailable"}
-        lifestyle = focus["lifestyle_key"]
-        keys = {row["key"] for row in items if row["lifestyle_key"] == lifestyle}
+        keys = {row["key"] for row in items}
         policy_scoped = scope == "policy_target"
         return {
             "status": "observed", "query_status": "available",
             "formal_precondition_status": query.get("formal_precondition_status"),
             "candidate_scope": "policy_target" if policy_scoped else "full_inventory",
-            "legal_candidate_count_in_scope": len(keys),
+            "legal_candidate_count_in_scope": len(items),
             "policy_target_final_legal": {
                 key: (True if key in keys else None if policy_scoped else False)
                 for key in sorted(PERK_TARGETS)
