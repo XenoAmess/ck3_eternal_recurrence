@@ -118,6 +118,7 @@ from .battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX,
+    normalize_active_combat_resume_inputs_v1,
     normalize_battle_control_snapshot_v1,
     parse_query_battle_control_snapshot_v1_step,
     query_battle_control_snapshot_v1_step,
@@ -4032,12 +4033,18 @@ class NativeHeadlessGameplayDriver:
             query_sequence = cached.get("query_sequence")
             if not (
                 set(cached)
-                == {
+                in ({
                     "status",
                     "battle_control_snapshot",
                     "query_sequence",
                     "cache_binding",
-                }
+                }, {
+                    "status",
+                    "battle_control_snapshot",
+                    "active_combat_resume_inputs_v1",
+                    "query_sequence",
+                    "cache_binding",
+                })
                 and isinstance(binding, dict)
                 and set(binding)
                 == {
@@ -4065,6 +4072,14 @@ class NativeHeadlessGameplayDriver:
                     expected_observed_date_raw=date_raw,
                     expected_snapshot_revision=native_revision,
                 )
+                resume_inputs = (
+                    normalize_active_combat_resume_inputs_v1(
+                        cached["active_combat_resume_inputs_v1"],
+                        parent=normalized,
+                    )
+                    if "active_combat_resume_inputs_v1" in cached
+                    else None
+                )
             except (KeyError, TypeError, ValueError):
                 self._battle_control_snapshot_v1_query = None
                 return None
@@ -4082,7 +4097,7 @@ class NativeHeadlessGameplayDriver:
             ):
                 self._battle_control_snapshot_v1_query = None
                 return None
-            return {
+            answer = {
                 "status": "available",
                 "battle_control_snapshot": copy.deepcopy(normalized),
                 "query_sequence": query_sequence,
@@ -4092,6 +4107,11 @@ class NativeHeadlessGameplayDriver:
                 "queried_native_revision": snapshot.get("native_revision"),
                 "episode_run_id": episode_run_id,
             }
+            if resume_inputs is not None:
+                answer["active_combat_resume_inputs_v1"] = copy.deepcopy(
+                    resume_inputs
+                )
+            return answer
 
     def _migrate_legacy_rollback_war_failures(
         self, snapshot: dict[str, object]
@@ -10846,9 +10866,7 @@ class NativeHeadlessGameplayDriver:
                             date_raw=date_raw,
                         )
                     raise
-        if (
-            set(result)
-            != {
+        expected_battle_keys = {
                 "step",
                 "accepted",
                 "status",
@@ -10857,6 +10875,11 @@ class NativeHeadlessGameplayDriver:
                 "battle_control_snapshot",
                 "backend_id",
             }
+        if (
+            set(result) not in (
+                expected_battle_keys,
+                expected_battle_keys | {"active_combat_resume_inputs_v1"},
+            )
             or result.get("step") != step
             or result.get("accepted") is not True
             or result.get("status") != "available"
@@ -10884,6 +10907,13 @@ class NativeHeadlessGameplayDriver:
                 ),
                 expected_observed_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
+            )
+            resume_inputs = (
+                normalize_active_combat_resume_inputs_v1(
+                    result["active_combat_resume_inputs_v1"], parent=normalized
+                )
+                if "active_combat_resume_inputs_v1" in result
+                else None
             )
         except ValueError as error:
             raise BridgeUnavailableError(
@@ -10923,13 +10953,18 @@ class NativeHeadlessGameplayDriver:
             "subject_public_cunit_id": subject_public_cunit_id,
         }
         with self._driver_state_lock:
-            self._battle_control_snapshot_v1_query = {
+            cached_query = {
                 "status": "available",
                 "battle_control_snapshot": copy.deepcopy(normalized),
                 "query_sequence": query_sequence,
                 "cache_binding": cache_binding,
             }
-        return {
+            if resume_inputs is not None:
+                cached_query["active_combat_resume_inputs_v1"] = copy.deepcopy(
+                    resume_inputs
+                )
+            self._battle_control_snapshot_v1_query = cached_query
+        answer = {
             **result,
             "status": "available",
             "battle_control_snapshot": normalized,
@@ -10962,6 +10997,9 @@ class NativeHeadlessGameplayDriver:
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,
         }
+        if resume_inputs is not None:
+            answer["active_combat_resume_inputs_v1"] = resume_inputs
+        return answer
 
     def _cache_battle_control_identity_pending(
         self,

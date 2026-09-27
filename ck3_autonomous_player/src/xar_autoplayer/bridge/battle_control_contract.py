@@ -56,6 +56,38 @@ _OPTIONAL_SNAPSHOT_KEYS = {
     "actual_hard_casualty_sides",
     "pursuit_modifier_sides",
 }
+_ACTIVE_RESUME_KEYS = {
+    "schema_version",
+    "status",
+    "input_observation_ready",
+    "unavailable_reason",
+    "missing_required_domains",
+    "source",
+    "observed",
+}
+_ACTIVE_RESUME_SOURCE_KEYS = {
+    "snapshot_revision",
+    "observed_date_raw",
+    "subject_public_cunit_id",
+    "subject_native_carmy_id",
+    "combat_id",
+    "province_id",
+}
+_ACTIVE_RESUME_OBSERVED_KEYS = {
+    "phase",
+    "phase_day",
+    "elapsed_whole_days",
+    "roll_cadence_counter",
+    "final_combat_width",
+    "side_0_current_roll_points",
+    "side_1_current_roll_points",
+    "side_0_selected_commander_character_id",
+    "side_1_selected_commander_character_id",
+    "side_0_ordered_public_cunit_ids",
+    "side_1_ordered_public_cunit_ids",
+    "side_0_entry_count",
+    "side_1_entry_count",
+}
 _ACTUAL_HARD_KEYS = {
     "status",
     "source_combat_id",
@@ -511,6 +543,107 @@ def normalize_battle_control_snapshot_v1(
     if pursuit_modifiers is not None:
         result["pursuit_modifier_sides"] = pursuit_modifiers
     return result
+
+
+def normalize_active_combat_resume_inputs_v1(
+    value: object, *, parent: dict[str, object]
+) -> dict[str, object]:
+    """Validate the same-sample observation without granting resume readiness.
+
+    V1 intentionally has no available form: the native producer reports the
+    observed battle state and explicit missing operands. A future complete
+    producer must introduce and validate its full operator census before a
+    planner may construct ``ActiveMainResumeState``.
+    """
+    name = "battle_control_snapshot.active_combat_resume_inputs_v1"
+    if not isinstance(value, dict) or set(value) != _ACTIVE_RESUME_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    if (
+        value["schema_version"] != 1
+        or isinstance(value["schema_version"], bool)
+        or value["status"] != "unavailable"
+        or value["input_observation_ready"] is not False
+        or value["unavailable_reason"]
+        != "same_frame_resume_operands_incomplete"
+    ):
+        raise ValueError(f"{name} cannot claim complete active-combat inputs")
+    missing = value["missing_required_domains"]
+    if (
+        not isinstance(missing, list)
+        or not missing
+        or any(not isinstance(item, str) or not item for item in missing)
+        or len(set(missing)) != len(missing)
+    ):
+        raise ValueError(f"{name} missing domains are malformed")
+
+    source = value["source"]
+    if not isinstance(source, dict) or set(source) != _ACTIVE_RESUME_SOURCE_KEYS:
+        raise ValueError(f"{name}.source has a malformed schema")
+    source_checks = {
+        "snapshot_revision": _positive_uint64,
+        "observed_date_raw": _signed_int64,
+        "subject_public_cunit_id": _positive_int32,
+        "subject_native_carmy_id": _positive_int32,
+        "combat_id": _full_component_id,
+        "province_id": _positive_int32,
+    }
+    for key, check in source_checks.items():
+        actual = check(source[key], f"{name}.source.{key}")
+        if actual != parent[key]:
+            raise ValueError(f"{name}.source.{key} disagrees with battle frame")
+
+    observed = value["observed"]
+    if not isinstance(observed, dict) or set(observed) != _ACTIVE_RESUME_OBSERVED_KEYS:
+        raise ValueError(f"{name}.observed has a malformed schema")
+    if observed["phase"] != parent["phase"]:
+        raise ValueError(f"{name}.observed.phase disagrees with battle frame")
+    integer_checks = {
+        "phase_day": (parent["phase_day"], _signed_int32),
+        "elapsed_whole_days": (parent["legality"]["elapsed_whole_days"], _signed_int32),
+        "roll_cadence_counter": (parent["roll_cadence_counter"], _signed_int32),
+        "final_combat_width": (parent["final_combat_width"], _signed_int32),
+        "side_0_current_roll_points": (parent["attacker"]["current_roll_points"], _signed_int32),
+        "side_1_current_roll_points": (parent["defender"]["current_roll_points"], _signed_int32),
+        "side_0_entry_count": (
+            len(parent["attacker"]["levy_entries"])
+            + len(parent["attacker"]["men_at_arms_entries"]),
+            _signed_int32,
+        ),
+        "side_1_entry_count": (
+            len(parent["defender"]["levy_entries"])
+            + len(parent["defender"]["men_at_arms_entries"]),
+            _signed_int32,
+        ),
+    }
+    for key, (expected, check) in integer_checks.items():
+        actual = check(observed[key], f"{name}.observed.{key}")
+        if actual != expected:
+            raise ValueError(f"{name}.observed.{key} disagrees with battle frame")
+    for index, role in enumerate(("attacker", "defender")):
+        commander_key = f"side_{index}_selected_commander_character_id"
+        commander = _optional_positive_int32(
+            observed[commander_key], f"{name}.observed.{commander_key}"
+        )
+        if commander != parent[role]["selected_commander_character_id"]:
+            raise ValueError(f"{name}.observed.{commander_key} disagrees")
+        armies_key = f"side_{index}_ordered_public_cunit_ids"
+        armies = _positive_int32_list(
+            observed[armies_key], f"{name}.observed.{armies_key}"
+        )
+        expected_armies = [
+            army["public_cunit_id"] for army in parent[role]["ordered_armies"]
+        ]
+        if armies != expected_armies:
+            raise ValueError(f"{name}.observed.{armies_key} disagrees")
+    return {
+        "schema_version": 1,
+        "status": "unavailable",
+        "input_observation_ready": False,
+        "unavailable_reason": "same_frame_resume_operands_incomplete",
+        "missing_required_domains": list(missing),
+        "source": dict(source),
+        "observed": dict(observed),
+    }
 
 
 def _normalize_actual_hard_sides(

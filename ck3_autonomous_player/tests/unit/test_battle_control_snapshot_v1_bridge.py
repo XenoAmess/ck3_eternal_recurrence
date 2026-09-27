@@ -15,6 +15,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from xar_autoplayer.bridge.battle_control_contract import (
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
     normalize_battle_control_snapshot_v1,
+    normalize_active_combat_resume_inputs_v1,
     parse_query_battle_control_snapshot_v1_step,
     query_battle_control_snapshot_v1_step,
 )
@@ -362,6 +363,51 @@ def _native_result() -> dict[str, object]:
         "query_sequence": 41,
         "snapshot_revision": NATIVE_REVISION,
         "battle_control_snapshot": _battle_frame(),
+    }
+
+
+def _active_resume_receipt(frame: dict[str, object]) -> dict[str, object]:
+    attacker = frame["attacker"]
+    defender = frame["defender"]
+    return {
+        "schema_version": 1,
+        "status": "unavailable",
+        "input_observation_ready": False,
+        "unavailable_reason": "same_frame_resume_operands_incomplete",
+        "missing_required_domains": [
+            "active_coalition_side_mapping",
+            "selected_commander_next_roll_bounds",
+            "active_regiment_counter_class_stack_context",
+            "next_day_non_roll_advantage_sources",
+            "battle_knight_participation_and_dynamic_entry_transitions",
+        ],
+        "source": {
+            key: frame[key]
+            for key in (
+                "snapshot_revision", "observed_date_raw",
+                "subject_public_cunit_id", "subject_native_carmy_id",
+                "combat_id", "province_id",
+            )
+        },
+        "observed": {
+            "phase": frame["phase"],
+            "phase_day": frame["phase_day"],
+            "elapsed_whole_days": frame["legality"]["elapsed_whole_days"],
+            "roll_cadence_counter": frame["roll_cadence_counter"],
+            "final_combat_width": frame["final_combat_width"],
+            "side_0_current_roll_points": attacker["current_roll_points"],
+            "side_1_current_roll_points": defender["current_roll_points"],
+            "side_0_selected_commander_character_id": attacker["selected_commander_character_id"],
+            "side_1_selected_commander_character_id": defender["selected_commander_character_id"],
+            "side_0_ordered_public_cunit_ids": [
+                army["public_cunit_id"] for army in attacker["ordered_armies"]
+            ],
+            "side_1_ordered_public_cunit_ids": [
+                army["public_cunit_id"] for army in defender["ordered_armies"]
+            ],
+            "side_0_entry_count": len(attacker["levy_entries"]) + len(attacker["men_at_arms_entries"]),
+            "side_1_entry_count": len(defender["levy_entries"]) + len(defender["men_at_arms_entries"]),
+        },
     }
 
 
@@ -2743,6 +2789,28 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             [357, 33_554_657],
         )
 
+    def test_resume_receipt_binds_observation_without_claiming_prediction(self) -> None:
+        frame = self.normalize(_battle_frame())
+        receipt = _active_resume_receipt(frame)
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(receipt, parent=frame),
+            receipt,
+        )
+        for change in (
+            lambda row: row["source"].__setitem__("combat_id", 1),
+            lambda row: row["observed"].__setitem__(
+                "side_1_ordered_public_cunit_ids", [33_554_657, 357]
+            ),
+            lambda row: row.__setitem__("input_observation_ready", True),
+            lambda row: row.__setitem__("status", "available"),
+        ):
+            malformed = copy.deepcopy(receipt)
+            change(malformed)
+            with self.assertRaises(ValueError):
+                normalize_active_combat_resume_inputs_v1(
+                    malformed, parent=frame
+                )
+
     def test_private_actual_hard_sides_bind_to_same_combat_and_order(self) -> None:
         frame = _battle_frame()
         rows = []
@@ -3345,6 +3413,27 @@ class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
         driver._battle_control_snapshot_v1_query = frozen
         endpoint.publish(_semantic_snapshot(NATIVE_REVISION + 1))
         self.assertIsNone(driver.take_snapshot()["battle_control_snapshot_v1"])
+
+    def test_same_sample_resume_receipt_survives_driver_cache(self) -> None:
+        driver, endpoint = _native_driver()
+
+        def with_resume() -> dict[str, object]:
+            result = _native_result()
+            result["active_combat_resume_inputs_v1"] = _active_resume_receipt(
+                result["battle_control_snapshot"]
+            )
+            return result
+
+        _answer_with(endpoint, with_resume)
+        revision = int(driver.take_snapshot()["revision"])
+        result = driver.execute_step(STEP, expected_revision=revision)
+        receipt = result["active_combat_resume_inputs_v1"]
+        self.assertEqual(receipt["status"], "unavailable")
+        self.assertFalse(receipt["input_observation_ready"])
+        driver.take_snapshot()
+        cached = driver._battle_control_snapshot_v1_query
+        assert isinstance(cached, dict)
+        self.assertEqual(cached["active_combat_resume_inputs_v1"], receipt)
 
     def test_malformed_payload_and_same_frame_drift_are_rejected(self) -> None:
         driver, endpoint = _native_driver()
