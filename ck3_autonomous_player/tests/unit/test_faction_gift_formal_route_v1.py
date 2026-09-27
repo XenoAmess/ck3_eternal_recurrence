@@ -211,24 +211,60 @@ def test_pending_same_public_revision_does_not_advance_date(
 ) -> None:
     old = pending(tmp_path)
     current = snapshot(revision=413, native_revision=old["pre_snapshot_revision"])
+    fresh = snapshot(revision=414, native_revision=old["pre_snapshot_revision"] + 1)
     driver = Driver(tmp_path, current)
     planned = {"snapshot_id": "s413", "revision": 413,
                "plan": {"selected_step": "life-advance"}}
     monkeypatch.setattr(route, "_process_identity",
                         lambda pid: {"creation_date": "old-process"})
+    calls: list[tuple[int, float]] = []
 
-    waiting = route.plan_faction_gift_private_v1(
-        driver, planned, current, [], set(),
-    )
+    def native_wait(start, predicate, *, timeout_seconds):
+        calls.append((start["revision"], timeout_seconds))
+        if not predicate(fresh):
+            pytest.fail("bounded native wait did not recognize the new paused frame")
+        return fresh
 
-    if waiting["plan"].get("phase") != "faction_gift_pending_paused_frame":
-        pytest.fail("pending gift did not retain its paused-frame phase")
-    if waiting["plan"].get("selected_step") is not None:
-        pytest.fail("pending gift permitted an action before same-date verification")
-    if waiting["plan"]["faction_gift_pending_action"]["request_id"] != old["request_id"]:
-        pytest.fail("pending gift changed its request identity")
+    driver._wait_for_snapshot = native_wait
+
+    with pytest.raises(route.PreSubmissionRevisionMismatchError):
+        route.plan_faction_gift_private_v1(
+            driver, planned, current, [], set(),
+        )
+    if calls != [(413, 5.0)]:
+        pytest.fail("pending gift did not use one existing bounded native wait")
     if read_faction_gift_ledger_v1(tmp_path)["pending"] != old:
         pytest.fail("pending gift ledger changed before material verification")
+
+    # The runner's established revision-mismatch retry replans from fresh.
+    receipt = route.plan_faction_gift_private_v1(
+        driver, {"snapshot_id": "s414", "revision": 414,
+                 "plan": {"selected_step": "life-advance"}},
+        fresh, [], set(),
+    )
+    if receipt["plan"].get("selected_step") != route.RECEIPT_STEP:
+        pytest.fail("new same-date paused frame did not reach native receipt")
+
+
+def test_pending_same_revision_timeout_is_red_and_keeps_ledger(
+    monkeypatch, tmp_path: Path,
+) -> None:
+    old = pending(tmp_path)
+    current = snapshot(revision=413, native_revision=old["pre_snapshot_revision"])
+    driver = Driver(tmp_path, current)
+    driver._wait_for_snapshot = lambda start, predicate, *, timeout_seconds: start
+    monkeypatch.setattr(route, "_process_identity",
+                        lambda pid: {"creation_date": "old-process"})
+
+    with pytest.raises(route.BridgeUnavailableError,
+                       match="same-date paused revision did not arrive"):
+        route.plan_faction_gift_private_v1(
+            driver, {"snapshot_id": "s413", "revision": 413,
+                     "plan": {"selected_step": "life-advance"}},
+            current, [], set(),
+        )
+    if read_faction_gift_ledger_v1(tmp_path)["pending"] != old:
+        pytest.fail("timed out gift changed its unresolved ledger")
 
 
 def test_submit_persists_identity_before_accepting_pending_ack(monkeypatch, tmp_path: Path) -> None:

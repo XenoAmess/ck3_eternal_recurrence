@@ -98,6 +98,62 @@ def _send(driver: object, step: str, fields: Mapping[str, object], timeout_secon
     return dict(frame["result"])
 
 
+def _wait_for_pending_paused_revision_v1(
+    driver: object, snapshot: Mapping[str, object], pending: Mapping[str, object],
+) -> None:
+    """Use the native driver's existing bounded snapshot wait, then replan."""
+    waiter = getattr(driver, "_wait_for_snapshot", None)
+    if not callable(waiter):
+        raise BridgeUnavailableError("private faction pending frame has no bounded native wait")
+    old_revision = snapshot.get("revision")
+    pre_revision = pending.get("pre_snapshot_revision")
+    if not (
+        type(old_revision) is int and type(pre_revision) is int
+        and snapshot.get("date_raw") == pending.get("pre_date_raw")
+        and snapshot.get("episode_run_id") == pending.get("episode_run_id")
+        and snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+    ):
+        raise BridgeUnavailableError("private faction pending frame changed before receipt")
+
+    def changed_or_ready(current: Mapping[str, object]) -> bool:
+        revision = current.get("native_revision")
+        return bool(
+            (type(revision) is int and revision > pre_revision)
+            or current.get("date_raw") != pending.get("pre_date_raw")
+            or current.get("episode_run_id") != pending.get("episode_run_id")
+            or current.get("played_character") != snapshot.get("played_character")
+            or current.get("paused") is not True
+            or current.get("map_ready") is not True
+            or current.get("active_event") is not None
+            or current.get("pending_character_interaction") is not None
+        )
+
+    fresh = waiter(dict(snapshot), changed_or_ready, timeout_seconds=5.0)
+    if not (
+        isinstance(fresh, Mapping)
+        and type(fresh.get("revision")) is int
+        and fresh["revision"] > old_revision
+        and type(fresh.get("native_revision")) is int
+        and fresh["native_revision"] > pre_revision
+        and fresh.get("date_raw") == pending.get("pre_date_raw")
+        and fresh.get("episode_run_id") == pending.get("episode_run_id")
+        and fresh.get("played_character") == snapshot.get("played_character")
+        and fresh.get("paused") is True
+        and fresh.get("map_ready") is True
+        and fresh.get("active_event") is None
+        and fresh.get("pending_character_interaction") is None
+    ):
+        raise BridgeUnavailableError(
+            "private faction pending same-date paused revision did not arrive"
+        )
+    # native_auto_run already catches this exact pre-submission condition and
+    # performs one bounded readiness replan; no gameplay request was sent.
+    raise PreSubmissionRevisionMismatchError(
+        "private faction pending receipt has a newer same-date paused frame"
+    )
+
+
 def plan_faction_gift_private_v1(
     driver: object, planned: dict[str, object], snapshot: Mapping[str, object],
     history: Sequence[Mapping[str, object]], available_steps: set[str],
@@ -124,15 +180,7 @@ def plan_faction_gift_private_v1(
             and snapshot["native_revision"]
             > pending.get("pre_snapshot_revision", 0)
         ):
-            # The native receipt needs a newer paused observation at the
-            # submission date. Advancing the game here would invalidate its
-            # same-date material postcondition while the gift remains pending.
-            return {**planned, "plan": {**plan,
-                "phase": "faction_gift_pending_paused_frame",
-                "selected_step": None,
-                "faction_gift_pending_action": dict(pending),
-                "reason": "pending gift needs a newer same-date paused frame",
-            }}
+            _wait_for_pending_paused_revision_v1(driver, snapshot, pending)
         return {**planned, "plan": {**plan,
             "phase": "faction_gift_pending_verification",
             "selected_step": step,
