@@ -728,8 +728,8 @@ flowchart TD
   hard_A = mul(proportional(A, entry), BASE_RATIO_CASUALTIES_CONVERSION_PURSUIT_raw)
   hard_B = mul(proportional(B, entry), BASE_RATIO_CASUALTIES_CONVERSION_PURSUIT_raw)
   hard_entry = hard_A + hard_B
-  entry.soft_raw -= hard_entry
   0x239C840(regiment, hard_entry)
+  entry.soft_raw -= hard_entry
   ```
 
   同一遍另按**未乘 conversion** 的 `proportional(A+B,entry)` 求 expected sum。若
@@ -907,7 +907,7 @@ void dispatch_normal_result_envelopes(CCombat* combat,
 
 - [static-confirmed] daily manager `0x27FB5D0` 在 tick 后看到 phase `3`，调用
   `0x230A590(combat,false)`，随后以 `0x27FDC50` 移除 CombatID。false 分支构造 result、调用 `0x230AF10`，
-  再以 `0x23C9770` reset 两侧，然后进入 common cleanup。
+  再以 `0x23C9770` 对两侧[归因行后置补记](combat-pursuit-write-order-and-final-side-attribution-static-2026-09-27.md)，然后进入 common cleanup。
 - [static-confirmed] `0x230AF10` 先按 `CCombat+0x6E0` 选择 winner side，在 `0x230AFBD` 消费一次全局 RNG，
   用 event database `+0x258` 的 definition 调 `0x33F8350`；随后选 opposite loser，在 `0x230B07C` 再消费
   一次全局 RNG，用 database `+0x260` dispatch。冻结顺序是
@@ -915,7 +915,7 @@ void dispatch_normal_result_envelopes(CCombat* combat,
   未通过 loaded result-effect trace 前，不声称整个 cleanup 再无其它间接随机副作用。
 - [static-confirmed] manager 的另一条 predicate-driven sweep `0x27FBE50` 对未 finalize、未处于 tick guard 的 combat
   调 `0x230A590(combat,true)`，再移除 CombatID。true 分支跳过正常 result construction、`0x230AF10` 两个
-  envelopes 与两侧 `0x23C9770` reset，直接进入 common cleanup。离线结果必须把它记为
+  envelopes 与两侧 `0x23C9770` 归因补记，直接进入 common cleanup。离线结果必须把它记为
   `terminal_no_normal_result`，不能伪造 winner/loss sample；当前只把其触发条件命名为 manager teardown predicate，
   不猜成某一种外交原因。
 

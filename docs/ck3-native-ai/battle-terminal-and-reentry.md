@@ -177,7 +177,7 @@ void __fastcall FinalizeCombat(CCombat* combat,
 
 两条路径都在 `0x230A5C4` 写 `CCombat+0x704=1`。`0x230A654` 检查第二参数：
 
-- `false`：构造/填充结果对象，调用 `0x230AF10`，然后分别调用 `0x23C9770` reset 两侧。
+- `false`：构造/填充结果对象，调用 `0x230AF10`，然后分别调用 `0x23C9770` 对两侧归因行后置补记；[exact-build 指令勘误](combat-pursuit-write-order-and-final-side-attribution-static-2026-09-27.md)表明它不是兵员 reset。
 - `true`：直接跳到 `0x230A9BD`，跳过上述整段，进入共同 army cleanup。
 
 这里的参数不能命名为 `aborted`、`war_ended` 或 `no_winner`：它的机器事实只是“抑制正常结果 envelopes”。当前唯一闭合的调用场景是 invalidation relation 失效。
@@ -215,7 +215,7 @@ void __fastcall FinalizeCombat(CCombat* combat,
 3. 由双方 primary participant 在 `0x230A780 -> 0x2610840` 取得共同 WarID，generation-resolve CWar 并检查 active vfunc；通过时，`0x230A7C6` 调 `0x222A5A0`，先追加战分 row 并写 result `+0x40`。
 4. 解析 player context（若存在），`0x230A7DA` 调用 `0x23097B0(combat,out,winner-side-selector)`，将 0x50 bytes 写入 `+0x48..+0x97`。
 5. 复制 side-associated stride-`0x18` rows 到 `+0xA0`，并用 `0x23DB050` 写两个 embedded side。
-6. `0x230A9A3` 调 `0x230AF10(combat)`；随后 `0x230A9AC` 与 `0x230A9B8` 分别调 `0x23C9770` reset 两侧。
+6. `0x230A9A3` 调 `0x230AF10(combat)`；随后 `0x230A9AC` 与 `0x230A9B8` 分别调 `0x23C9770` 对两侧归因行后置补记。
 7. 进入共同 cleanup。
 
 ### winner/loser envelopes 与角色变化
