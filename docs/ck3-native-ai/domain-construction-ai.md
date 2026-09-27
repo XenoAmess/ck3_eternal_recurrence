@@ -2,6 +2,38 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-28 NW-ECON: H3075 wartime opportunity and consumer boundary
+
+The Robert H2992→H3075 formal report (SHA-256
+`5067B19F42AF8DE2056B5577364BC644E73D68204263C0BBCECF6C1D7B14F03E`)
+contains 36/36 successful turns. On its native:3/revision 4 paused frame at
+raw53218008, the existing private native construction read selected
+`farm_estates_01` at barony 2103/province 2635/slot 1. Native cost was
+18,000,000/100,000 = 180 gold, player cash was 111,907,131/100,000 =
+1,119.07131 gold, the formal construction reserve was 200 gold, and the
+authored monthly province income increment was +0.70 gold. Its
+`positive_income_coverage_complete=false` means the selected building is
+identified but the full candidate set is not proven complete. The same frame
+had one active war and one player army. The existing shared war cash commitment
+and bounded future war cost were both `null`, so joint affordability remained
+`unassessed` and `formal_action_ready=false`. Later turns repeated the read-only
+candidate; none submitted construction or observed completed-building income.
+
+The ordinary consumer already admits a native-legal budgeted building on a
+peaceful `life-advance` or before a peaceful declaration, while prioritizing
+pending/applied receipts and 30-game-day completion watches. Its wartime branch
+only observes the candidate and preserves the selected war action. The M5
+formal service previously skipped every active-war frame, although the
+separately delivered war cash contract can represent complete same-frame
+amounts. Under the existing private M5 opt-in, the formal service now calls the
+wartime joint observer after the ordinary LIFE, construction receipt and family
+routes. That observer records the missing cash sources and preserves the
+selected formal action; it does not reserve or spend gold. This is a source and
+fixture connection, not an H3075 live result. H3075 missing cash amounts remain
+unknown, and this read-only report proves no construction spend. Independent
+action, material postcondition, next turn, cold restore, completion, and actual
+income remain separate live gates.
+
 ## 2026-09-28 NW-ECON: bounded wartime building source observation
 
 The exact-build private `g2_player_construction_view_probe_v1` already returns

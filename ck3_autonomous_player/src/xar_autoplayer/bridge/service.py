@@ -416,7 +416,9 @@ from .faction_gift_formal_route_v1 import (
     SUBMIT_STEP as PRIVATE_FACTION_SUBMIT_STEP,
     plan_faction_gift_private_v1,
 )
-from ..m5_formal_proposal_collector import plan_m5_formal_query_only
+from ..m5_formal_proposal_collector import (
+    plan_m5_formal_query_only, plan_m5_wartime_query_only,
+)
 
 
 class GameplayBridgeService:
@@ -838,6 +840,44 @@ class GameplayBridgeService:
         m5_enabled = getattr(
             self.driver, "allow_private_m5_joint_collector", False
         ) is True
+        def observe_m5_wartime(
+            current: dict[str, object],
+        ) -> dict[str, object]:
+            # The peacetime collector cannot consume an active-war frame. Its
+            # war cash contract still needs a formal, read-only observation
+            # path after the existing LIFE/construction/family consumers have
+            # kept their action and material-receipt priority.
+            if not (m5_enabled and isinstance(m5_snapshot, dict)
+                    and isinstance(m5_snapshot.get("active_wars"), list)
+                    and m5_snapshot["active_wars"]
+                    and m5_snapshot.get("paused") is True
+                    and m5_snapshot.get("map_ready") is True
+                    and m5_snapshot.get("active_event") is None
+                    and m5_snapshot.get("pending_character_interaction") is None):
+                return current
+            if not isinstance(m5_history, list):
+                plan = current.get("plan")
+                if not isinstance(plan, dict):
+                    return current
+                return {**current, "plan": {**plan,
+                    "m5_joint_wartime_observation": {
+                        "status": "source_unavailable",
+                        "read_only": True,
+                        "missing": ["formal_planning_history"],
+                        "formal_action_ready": False}}}
+            try:
+                return plan_m5_wartime_query_only(
+                    self.driver, current, snapshot=m5_snapshot,
+                    history=m5_history, available_steps=available_steps,
+                )
+            except ValueError as error:
+                plan = current.get("plan")
+                if not isinstance(plan, dict):
+                    raise
+                return {**current, "plan": {**plan,
+                    "m5_joint_wartime_observation": {
+                        "status": "source_red", "read_only": True,
+                        "formal_action_ready": False, "reason": str(error)}}}
         m5_ineligible = None
         if isinstance(m5_snapshot, dict):
             wars = m5_snapshot.get("active_wars")
@@ -998,7 +1038,7 @@ class GameplayBridgeService:
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
             planned.pop("_private_construction_history_v1", None)
-            return planned
+            return observe_m5_wartime(planned)
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -1060,7 +1100,7 @@ class GameplayBridgeService:
             planned = {**planned, "plan": {**planned["plan"],
                 "selected_step": None,
                 "reason": construction_red_plan["reason"]}}
-        return planned
+        return observe_m5_wartime(planned)
 
     def _plan_private_family_wartime_v1(
         self, planned: dict[str, object], snapshot: object,

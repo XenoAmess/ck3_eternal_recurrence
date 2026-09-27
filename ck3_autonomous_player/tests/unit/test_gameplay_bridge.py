@@ -1797,6 +1797,119 @@ class GameplayBridgeTests(unittest.TestCase):
                          "private-query-player-construction-receipt-v1")
         construction.assert_called_once()
 
+    def test_wartime_m5_observes_existing_construction_without_replacing_war_step(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 48}], "player_armies": [{"army_id": 8}],
+                 "episode_run_id": "robert-test", "date_raw": 53218008,
+                 "played_character": {"character_id": 101}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-army-strengths-v1", "life-advance"),
+        )
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_m5_joint_collector = True
+        war_plan = {"policy": "one-life-turn-v1", "selected_step": "query-army-strengths-v1"}
+        observed = {"status": "observed", "candidate": {
+            "building_key": "farm_estates_01", "stock_gold_cost_raw": 18_000_000},
+            "war_future_gold_cost_raw": None, "formal_action_ready": False}
+
+        def construction(_driver, planned, _snapshot, _history, _steps, **_kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "construction_wartime_observation": observed}}
+
+        def joint(_driver, planned, *, snapshot, history, available_steps):
+            self.assertEqual(planned["plan"]["construction_wartime_observation"], observed)
+            self.assertEqual(snapshot["active_wars"], [{"war_id": 48}])
+            self.assertIsInstance(history, list)
+            self.assertIn("query-army-strengths-v1", available_steps)
+            return {**planned, "plan": {**planned["plan"],
+                "m5_joint_wartime_observation": {
+                    "status": "incomplete_war_cash",
+                    "missing": ["future_war_cost_upper_raw"],
+                    "formal_action_ready": False}}}
+
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=war_plan),
+              mock.patch("xar_autoplayer.bridge.service.plan_construction_private",
+                         side_effect=construction) as construction_call,
+              mock.patch("xar_autoplayer.bridge.service.plan_m5_wartime_query_only",
+                         side_effect=joint) as joint_call):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], "query-army-strengths-v1")
+        self.assertEqual(plan["m5_joint_wartime_observation"]["status"],
+                         "incomplete_war_cash")
+        self.assertFalse(plan["m5_joint_wartime_observation"]["formal_action_ready"])
+        construction_call.assert_called_once()
+        joint_call.assert_called_once()
+
+    def test_wartime_m5_observes_after_lifestyle_early_return_and_receipt(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 48}], "player_armies": [{"army_id": 8}],
+                 "episode_run_id": "robert-test", "date_raw": 53218008,
+                 "played_character": {"character_id": 101}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-army-strengths-v1", "life-advance",
+                          "private-query-player-construction-receipt-v1"),
+        )
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_m5_joint_collector = True
+        war_plan = {"policy": "one-life-turn-v1", "selected_step": "query-army-strengths-v1"}
+
+        def construction(_driver, planned, _snapshot, _history, _steps, **_kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "selected_step": "private-query-player-construction-receipt-v1"}}
+
+        def joint(_driver, planned, **_kwargs):
+            self.assertEqual(planned["plan"]["selected_step"],
+                             "private-query-player-construction-receipt-v1")
+            return {**planned, "plan": {**planned["plan"],
+                "m5_joint_wartime_observation": {
+                    "status": "no_budgeted_building", "formal_action_ready": False}}}
+
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=war_plan),
+              mock.patch.object(GameplayBridgeService, "_plan_private_lifestyle_trial_v1",
+                                side_effect=lambda planned, _steps: planned),
+              mock.patch("xar_autoplayer.bridge.service.plan_construction_private",
+                         side_effect=construction) as construction_call,
+              mock.patch("xar_autoplayer.bridge.service.plan_m5_wartime_query_only",
+                         side_effect=joint) as joint_call):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"],
+                         "private-query-player-construction-receipt-v1")
+        self.assertFalse(plan["m5_joint_wartime_observation"]["formal_action_ready"])
+        construction_call.assert_called_once()
+        joint_call.assert_called_once()
+
+    def test_wartime_m5_source_red_keeps_war_action(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": None}], "player_armies": [],
+                 "episode_run_id": "robert-test", "date_raw": 53218008,
+                 "played_character": {"character_id": 101}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-army-strengths-v1", "life-advance"),
+        )
+        driver.allow_private_m5_joint_collector = True
+        war_plan = {"policy": "one-life-turn-v1", "selected_step": "query-army-strengths-v1"}
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=war_plan),
+              mock.patch("xar_autoplayer.bridge.service.plan_m5_wartime_query_only",
+                         side_effect=ValueError("missing exact WarID"))):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], "query-army-strengths-v1")
+        self.assertEqual(plan["m5_joint_wartime_observation"]["status"],
+                         "source_red")
+        self.assertFalse(plan["m5_joint_wartime_observation"]["formal_action_ready"])
+
     def test_construction_source_red_still_checks_independent_marriage(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,

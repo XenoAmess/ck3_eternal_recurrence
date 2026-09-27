@@ -546,7 +546,11 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
             return_value=deepcopy(baseline),
         ):
             planned = GameplayBridgeService(driver).plan_turn()
-        self.assertEqual(planned["plan"], baseline)
+        for key, value in baseline.items():
+            self.assertEqual(planned["plan"][key], value)
+        wartime = planned["plan"]["m5_joint_wartime_observation"]
+        self.assertTrue(wartime["read_only"])
+        self.assertFalse(wartime["formal_action_ready"])
         self.assertEqual(driver.source_reads, 0)
 
     def test_due_private_lifestyle_step_precedes_peace_only_joint_source(self) -> None:
