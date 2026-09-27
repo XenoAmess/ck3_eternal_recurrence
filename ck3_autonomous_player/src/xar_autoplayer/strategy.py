@@ -133,6 +133,7 @@ from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
 from .simulation import combat_decision_contract as combat_entry_eu
+from .simulation.combat_core import FIXED_SCALE, fixed_div
 from .simulation.general_battle_forecast import contact_admission, forecast_fixed_contact
 from .simulation.prewar_battle_proxy import (
     forecast_prewar_power_battle,
@@ -6784,10 +6785,104 @@ def _de_jure_surrender_submission_state(
     return None
 
 
+def _active_combat_provisional_comparison(
+    snapshot: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Compare observed main-phase strength retention, never future win odds."""
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return None
+    subject = _native_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
+    sequence = _native_int(snapshot.get("battle_control_snapshot_v1_query_sequence"))
+    if not (
+        subject is not None and subject > 0 and sequence is not None and sequence > 0
+        and snapshot.get("battle_control_snapshot_v1_status") == "available"
+        and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
+        == snapshot.get("snapshot_id")
+        and snapshot.get("battle_control_snapshot_v1_queried_revision")
+        == snapshot.get("revision")
+        and snapshot.get("battle_control_snapshot_v1_queried_native_revision")
+        == snapshot.get("native_revision")
+    ):
+        return None
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list) or not any(
+        isinstance(army, dict)
+        and _native_int(army.get("army_id")) == subject
+        and army.get("controllable") is True
+        and _army_tactical_state(army) == "combat"
+        for army in armies
+    ):
+        return None
+    try:
+        frame = normalize_battle_control_snapshot_v1(
+            snapshot.get("battle_control_snapshot_v1"),
+            expected_subject_public_cunit_id=subject,
+            expected_observed_date_raw=snapshot.get("date_raw"),
+            expected_snapshot_revision=snapshot.get("native_revision"),
+        )
+        raw_resume = snapshot.get("active_combat_resume_inputs_v1")
+        if raw_resume is not None:
+            normalize_active_combat_resume_inputs_v1(raw_resume, parent=frame)
+    except (TypeError, ValueError):
+        return None
+    if (frame["phase"] != "main" or frame["finalized"] is True
+            or frame["winner_side"] != "none"):
+        return None
+    side_index = frame["side_index"]
+    sides = (frame["attacker"], frame["defender"])
+    totals: list[tuple[int, int]] = []
+    for side in sides:
+        entries = [
+            entry for bucket in ("levy_entries", "men_at_arms_entries")
+            for entry in side[bucket] if entry["fights_in_main_phase"] is True
+        ]
+        starting = sum(int(entry["starting_raw"]) for entry in entries)
+        current = sum(int(entry["current_fighting_raw"]) for entry in entries)
+        if not (0 < starting <= 2**63 - 1 and 0 < current <= starting):
+            return None
+        totals.append((starting, current))
+    own_starting, own_current = totals[side_index]
+    enemy_starting, enemy_current = totals[1 - side_index]
+    own_retention = fixed_div(own_current, own_starting)
+    enemy_retention = fixed_div(enemy_current, enemy_starting)
+    # A deliberately narrow counter-policy: both live fighting count and
+    # retained share must be at most half the opponent's before shortening a
+    # multi-day advance. No inference about the next roll, counters or joins.
+    severe = bool(
+        own_current * 2 <= enemy_current
+        and own_retention * 2 <= enemy_retention
+    )
+    return {
+        "status": "provisional_observed_comparison",
+        "model_fidelity": "observed-current-and-starting-only",
+        "whole_battle_win_probability": None,
+        "combat_id": frame["combat_id"],
+        "province_id": frame["province_id"],
+        "subject_army_id": subject,
+        "subject_side_index": side_index,
+        "side_scope": frame["side_scope"],
+        "scale": FIXED_SCALE,
+        "own_current_fighting_raw": own_current,
+        "enemy_current_fighting_raw": enemy_current,
+        "own_retained_share_raw": own_retention,
+        "enemy_retained_share_raw": enemy_retention,
+        "severe_observed_disadvantage": severe,
+        "missing_dynamic_domains": (
+            list(raw_resume["missing_required_domains"])
+            if isinstance(raw_resume, dict) else [
+                "selected_commander_next_roll_bounds",
+                "active_regiment_counter_class_stack_context",
+                "next_day_non_roll_advantage_sources",
+                "battle_knight_participation_and_dynamic_entry_transitions",
+            ]
+        ),
+    }
+
+
 def _annotate_active_combat_resume_input(
     plan: dict[str, object], snapshot: dict[str, object] | None
 ) -> dict[str, object]:
-    """Expose exact unavailable resume evidence without changing the action."""
+    """Expose the bounded comparison separately from unavailable full resume."""
     if not isinstance(snapshot, dict):
         return plan
     armies = snapshot.get("player_armies")
@@ -6804,6 +6899,8 @@ def _annotate_active_combat_resume_input(
     })
     if not active_subjects:
         return plan
+
+    comparison = _active_combat_provisional_comparison(snapshot)
 
     raw_receipt = snapshot.get("active_combat_resume_inputs_v1")
     parent = snapshot.get("battle_control_snapshot_v1")
@@ -6921,6 +7018,15 @@ def _annotate_active_combat_resume_input(
             "status": "unavailable",
             "input_observation_ready": False,
             "used_for_decision": False,
+            "provisional_comparison_status": (
+                "provisional_observed_comparison"
+                if comparison is not None else "unavailable"
+            ),
+            "provisional_comparison_used_for_decision": bool(
+                comparison is not None
+                and plan.get("provisional_combat_comparison_used_for_decision") is True
+            ),
+            "provisional_comparison": comparison,
             "subjects": subjects,
         },
     }
@@ -9525,6 +9631,22 @@ def _choose_one_life_turn_core(
                 if incumbent_subject is None or subject < incumbent_subject:
                     distinct_frames[combat_id] = frame
 
+            provisional_comparison = _active_combat_provisional_comparison(
+                snapshot if isinstance(snapshot, dict) else None
+            )
+            if (
+                provisional_comparison is not None
+                and (
+                    len(distinct_frames) != 1
+                    or provisional_comparison["combat_id"] not in distinct_frames
+                )
+            ):
+                provisional_comparison = None
+            severe_observed_disadvantage = bool(
+                provisional_comparison is not None
+                and provisional_comparison["severe_observed_disadvantage"] is True
+            )
+
             terminal_assessments = [
                 assess_battle_terminal_cruise(
                     frame,
@@ -9656,6 +9778,7 @@ def _choose_one_life_turn_core(
                 }
             if (
                 battle_speed_gates["decision_sentinel_live_ready"]
+                and not severe_observed_disadvantage
                 and not active_assaults
                 and sentinel_watch_ready
                 and _BATTLE_DECISION_EPOCH_ADVANCE_STEP in available_steps
@@ -9701,6 +9824,10 @@ def _choose_one_life_turn_core(
                     ),
                     "battle_transitions": battle_control_state.get(
                         "transitions", []
+                    ),
+                    "provisional_combat_comparison": provisional_comparison,
+                    "provisional_combat_comparison_used_for_decision": (
+                        severe_observed_disadvantage
                     ),
                     "active_wars": war_summary,
                 }
@@ -15505,6 +15632,10 @@ def _general_battle_forecast_ingress(
         # An already active CombatID needs its own same-frame resume operands.
         # The v3 fixed-contact model starts a new encounter; even a cached
         # empty ongoing-combats list must not overrule the live army state.
+        provisional = (
+            _active_combat_provisional_comparison(snapshot)
+            if active_subject else None
+        )
         return {
             "policy": "general-battle-forecast-v1",
             "phase": "native_war_active_combat_resume_unavailable",
@@ -15512,7 +15643,11 @@ def _general_battle_forecast_ingress(
             "reason": "an observed participant is already in combat; fixed-contact inputs cannot estimate its ongoing battle",
             "baseline_phase": baseline.get("phase"),
             "baseline_selected_step": baseline.get("selected_step"),
-            "active_combat_forecast_status": "unavailable",
+            "active_combat_forecast_status": (
+                "provisional_observed_comparison"
+                if provisional is not None else "unavailable"
+            ),
+            "provisional_combat_comparison": provisional,
             "active_combat_subject_army_id": army_id if active_subject else None,
             "active_combat_defender_army_ids": list(active_defenders),
             "required_observation": "same-frame-active-combat-resume-inputs",

@@ -913,6 +913,14 @@ class BattleControlStrategyTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["active_combat_resume_input"]["status"], "unavailable")
         self.assertFalse(plan["active_combat_resume_input"]["used_for_decision"])
+        self.assertEqual(
+            plan["active_combat_resume_input"]["provisional_comparison_status"],
+            "provisional_observed_comparison",
+        )
+        comparison = plan["active_combat_resume_input"]["provisional_comparison"]
+        self.assertEqual(comparison["own_current_fighting_raw"], 4_000_000_000)
+        self.assertEqual(comparison["enemy_current_fighting_raw"], 2_300_000_000)
+        self.assertIsNone(comparison["whole_battle_win_probability"])
         subject = plan["active_combat_resume_input"]["subjects"][0]
         self.assertEqual(subject["army_id"], SUBJECT)
         self.assertEqual(
@@ -2104,6 +2112,54 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertIn("hold-invalidation", plan["reason"])
         self.assertNotIn("phase", plan["reason"])
         self.assertNotIn("winner", plan["reason"])
+
+    def test_same_frame_severe_observed_loss_shortens_decision_epoch(self) -> None:
+        frame = _battle_frame()
+        attacker = frame["attacker"]
+        levy = attacker["levy_entries"][0]
+        levy["current_fighting_raw"] = 500_000_000
+        levy["hard_casualties_raw"] = 4_000_000_000
+        for key in (
+            "stored_current_fighting_raw",
+            "stored_levy_current_fighting_raw",
+            "derived_current_fighting_raw",
+        ):
+            attacker[key] = 500_000_000
+        attacker["derived_main_fighting_entry_hard_casualties_raw"] = 4_000_000_000
+        snapshot = _planner_battle_snapshot(frame=frame)
+        snapshot["battle_control_snapshot_v1_queried_native_revision"] = NATIVE_REVISION
+        steps = (STEP, "life-advance", DECISION_SENTINEL_STEP)
+        history = [_battle_query_row(1, frame)]
+
+        plan = choose_one_life_turn(
+            history, snapshot=snapshot, action_steps=steps,
+            battle_speed_readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["phase"], "native_war_global_battle_control_progress")
+        observed = plan["active_combat_resume_input"]["provisional_comparison"]
+        self.assertTrue(observed["severe_observed_disadvantage"])
+        self.assertFalse(plan["active_combat_resume_input"]["used_for_decision"])
+        self.assertTrue(
+            plan["active_combat_resume_input"][
+                "provisional_comparison_used_for_decision"
+            ]
+        )
+        self.assertIsNone(observed["whole_battle_win_probability"])
+
+        stale = copy.deepcopy(snapshot)
+        stale.pop("battle_control_snapshot_v1_queried_native_revision")
+        stale_plan = choose_one_life_turn(
+            history, snapshot=stale, action_steps=steps,
+            battle_speed_readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(
+            stale_plan["selected_step"],
+            battle_decision_epoch_advance_step(DATE_RAW + 45 * 24),
+        )
+        self.assertIsNone(
+            stale_plan["active_combat_resume_input"]["provisional_comparison"]
+        )
 
     def test_active_assault_disables_ordinary_battle_decision_sentinel(self) -> None:
         frame = _battle_frame()

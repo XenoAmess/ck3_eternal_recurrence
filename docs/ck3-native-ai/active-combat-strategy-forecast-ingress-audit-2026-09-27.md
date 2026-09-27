@@ -1,5 +1,7 @@
 # 现役战斗续算状态到游玩策略的漏口审计（2026-09-27）
 
+**后续策略增量：**此文下列段落保留当时的审计与回归事实。当前智能体另有[同帧观察比较与限时决策](active-combat-provisional-decision-policy-2026-09-27.md)：完整续算仍不可用，但在严格同帧条件下，严重已观察劣势会把 decision-epoch 长推进缩短为一天。下文“总状态固定 unavailable”仍适用于完整续算；“不改变动作”仅描述本次审计时的版本。
+
 ## 当前真实调用路径
 
 游玩智能体的 `choose_one_life_turn` 先运行 `_choose_one_life_turn_core`，再运行围城解围和通用接战 forecast ingress。核心在可控军队 `in_combat` 时先运行 `_battle_control_turn_state`：按同帧 `battle_control_snapshot_v1` 查询、核对前后 `CombatID` 帧、检查撤退合法性与安全目标，然后执行受限的一日推进或原生终局/决策哨兵。此路径**没有调用** `ActiveMainResumeResearchKernel`，没有现役整场胜率或 continue-vs-retreat 预测。撤退、时间推进仍按原生观察和既有规则决定。
