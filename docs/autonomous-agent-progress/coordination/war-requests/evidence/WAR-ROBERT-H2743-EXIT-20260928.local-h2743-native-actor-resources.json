@@ -1,0 +1,26 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-excerpt.v1",
+  "evidence_id": "WAR-ROBERT-H2743-EXIT-20260928.local-h2743-native-actor-resources",
+  "source": {
+    "before_snapshot_payload_sha256": "14C33C7C95DCB54977C1FBBCF4CDB87ED309E681E622C49189AFCBCB528FFA69",
+    "after_snapshot_payload_sha256": "DB17BEE98CAFC120431C51436193A2262C12371FA861630C4AD27884C8B99DA5",
+    "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-02/live-readonly-01",
+    "checkpoint_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9"
+  },
+  "same_frame": {
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53217264,
+    "actor_character_id": 29829,
+    "war_id": 16777231
+  },
+  "native_actor_baseline_before_and_after_read_only_query": {
+    "gold": {"raw": 111861020, "scale": 100000},
+    "prestige_currency": {"raw": 253090010, "scale": 100000}
+  },
+  "not_observed": ["native_actor_piety", "native_opponent_resources", "post_termination_resource_deltas", "cb_specific_material_terms"],
+  "boundary": "These are current-frame pre-action actor balances and stayed equal across a read-only query. They do not give the signed effect of surrender; the H2743 save-level piety and opponent balances remain separate evidence.",
+  "gameplay_action_submitted": false
+}
