@@ -9,3 +9,7 @@ exact 入口字节：`0x23CAF20: E8 8B 42 00 00` 是 helper call。候选补丁�
 最小安全探针应复用现有受管、默认关闭的 `combat_phase_event_trace` 生命周期：只在暂停且证明无正在执行的战斗日界时装载；跟踪原 caller 的 CombatID、side 与原始 `+0x40` MAA 顺序；在同一线程的 `0x23CAF25` 仅复制 `RBP` header 和有界 `int64[class_count]`，核对 header count/capacity、可读性、前后身份与 canary，不调用 helper、不改变 RNG、world 或 entry；两侧输出必须成对出现。`0x23CAE70` 是两侧出伤共用 wrapper，不能把同一回调的两次结果混成一个方向。装载、日界、卸载及进程清场都要保留独立 attempt 的原始回执。
 
 捕获后须对照 088 当前帧 census 和 092 原生增援重排：输入 header 的 full RegimentID/current raw、primary owner/context、class_count 必须与捕获时刻原生 side 一致；class 为负、兵团归零、增援或主参与者变化分别验证。**本锚点本身不关闭** `active_regiment_counter_class_stack_context`；只有配对日界实证和 Python/智能体消费合同均通过后，才能让现役续算使用该结果。
+
+## 输出 header 只读复制器的静态施工
+
+[`ReadCombatCounterOutputV1`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/combat_counter_output_readout_v1.hpp) 已按 exact 16 字节 header 布局实现有界复制：调用方必须给出预期 class 数 `1..4096`；数据指针非空、`count==expected`、`count<=capacity<=4096`，复制后再次核对 header，访问异常使整个结果失败并清零。合成 MSVC 测试覆盖正常向量、错 class 数、容量不足、空指针、超界容量和不可读指针。该函数**尚未连接 detour 或进入 CK3**；它只是被动探针需要的内存读取原语。
