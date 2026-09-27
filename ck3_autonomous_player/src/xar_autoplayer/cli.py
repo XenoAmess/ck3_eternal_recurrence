@@ -413,6 +413,14 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-prisoner-collection-observation",
+        action="store_true",
+        help=(
+            "read the current player's private prisoner ID collection on one "
+            "paused frame of a bounded run, without submitting prisoner actions"
+        ),
+    )
+    native_auto_run_parser.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
         action="store_true",
         help=(
@@ -919,6 +927,11 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_epidemic_recovery_near_pair
                     else {}
                 )
+                private_prisoner_options = (
+                    {"allow_private_prisoner_collection_observation": True}
+                    if args.allow_private_prisoner_collection_observation
+                    else {}
+                )
                 succession_options = (
                     {
                         "succession_lifecycle": args.succession_lifecycle,
@@ -952,6 +965,7 @@ def main(argv: list[str] | None = None) -> int:
                     **private_m5_options,
                     **private_lifestyle_options,
                     **private_epidemic_options,
+                    **private_prisoner_options,
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )

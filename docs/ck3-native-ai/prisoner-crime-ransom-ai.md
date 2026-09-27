@@ -345,6 +345,24 @@ termination prison relation 的静态/实机证据继续复用。
 然后映射 custody、duration 和 final previews 到 PRISONER3 callbacks；仅有 ID 时
 不发布完整 semantic snapshot。
 
+### C151：有界正式 runner 的集合观测入口（2026-09-27）
+
+R0254 的 h2357/raw53216424 Robert 来源配对只冻结了 save/driver；正式报告没有
+囚犯集合查询，因此无法从这份报告判断有无可赎金或释放的囚犯。C151 在现有
+`native-auto-run` 增加默认关闭的 `--allow-private-prisoner-collection-observation`，
+operator 对应 `run --private-prisoner-collection-observation`。候选 DLL 还须单独用
+`-DXAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=ON` 构建并冻结完整 SHA；
+仅改 operator profile 不会给旧 DLL 加能力。
+
+启用后，runner 在第一个 ready 的 paused frame，以该帧的 public revision 调用
+NativeDriver `query_player_prisoner_collection_private_v1`，它与本机私有 MCP 工具
+`ck3_query_player_prisoner_collection_private_v1` 共用同一查询合同。结果或有类型的
+查询错误写入正式报告的 `private_prisoner_collection_observation`；只取一次，不让
+囚犯观测进入策略选择，也不提交囚犯动作。零囚犯仅证明该帧没有集合阳性；非零
+完整集合只证明玩家拥有和反向狱卒关系，尚不证明 ransom/release 的最终合法性、
+金额、接受或收益。下一有界候选若读到非零集合，再针对具体 ID 补 final preview。
+这一路径目前只有源码与聚焦测试，尚无 CK3 paused live 证据，M6 不变。
+
 必须继续闭合：
 
 1. 用 C80 私有查询在 paused live 观察 count、元素顺序、空值、full-ID 与 lease

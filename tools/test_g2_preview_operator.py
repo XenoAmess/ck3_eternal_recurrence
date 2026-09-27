@@ -1873,6 +1873,22 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 **base, private_family_marriage_formal_trial=True),
         )
 
+    def test_prisoner_collection_observation_is_default_off(self) -> None:
+        base = dict(
+            common=["python", "agent.py"], turns=1, timeout=60,
+            readiness_timeout=30, private_faction_round_id_value=None,
+        )
+        flag = "--allow-private-prisoner-collection-observation"
+        self.assertNotIn(flag, g2_preview_operator.native_auto_run_command(**base))
+        self.assertIn(flag, g2_preview_operator.native_auto_run_command(
+            **base, private_prisoner_collection_observation=True
+        ))
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "output",
+            "--private-prisoner-collection-observation",
+        ])
+        self.assertTrue(parsed.private_prisoner_collection_observation)
+
     def test_owned_window_minimizes_only_matching_live_pid(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
