@@ -15,4 +15,12 @@
 
 用这三份原生查询及同帧战争行对当前 `strategy._siege_forecast_participant_partition` 做纯回放，得到 `status=available`、`defender_army_ids=[50331920]`、`offsite_hostile_army_ids=[83886484]`、`offsite_arrival_risk=unmodeled_after_target_entry`。场外军按**当前路线**比我军晚 `1248` raw ticks（52 个游戏日）到目标；这只证明当前路线下目标进入时的假设划分，不证明交战期间不会变更命令或增援。回放回执 `partition-replay.json` SHA-256 **`F50D944E7942F93AB9F59E532F426F2C94E0FAAD61CB91B2A32C5B65B82F8BEF`**，其中绑定了四份原始同帧输入的 SHA。
 
-由此可构造精确只读 V3 查询字面量 `query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-1-50331920`。本次三步采样**尚未执行该 V3 查询**，也未运行完整正式规划器或批准接战；H2825 请求的最终实机消费验证仍待下一轮。第二轮托管进程返回 0、CK3 子进程清空，源与预备存档哈希均保持冻结值。
+由此可构造精确只读 V3 查询字面量 `query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-1-50331920`。第二轮三步采样尚未执行该查询；托管进程返回 0、CK3 子进程清空，源与预备存档哈希均保持冻结值。
+
+## 第三轮：原生 V3 输入读回
+
+新建 `attempt-03`，再次使用冻结原件、官方无启动配对和精确 R0265 DLL。启动前截图 `steam-desktop-recovery-06/probe-1/steam-moved.png` SHA-256 `5297E8465388F43BA98EE9B3911F7B813AC6C7DE3887F9556C02BDBC02063F89`；人工看见任务栏时间 05:44、Steam“离线模式”。在同一 `native:3`／revision `4`／native revision `3`／raw 日期 `53217624` 上重新执行三项只读军力与路线查询，运行当前参与者划分，仍得到守军 `[50331920]`、场外军 `[83886484]`。只有该划分通过后才执行上面的 V3 查询。
+
+V3 返回 `accepted=true/status=available`，其 `base_inputs.scenario` 为目标 `2629`、入口 `2630`、攻击军 `[83886367]`、守军 `[50331920]`，参与者政策为 `explicit_hypothetical_fixed_at_contact_no_reinforcements`。查询绑定同一原生帧；随后快照的缓存状态仍为 `available`，目标、入口、双方 ArmyID、`queried_snapshot_id=native:3` 和 `queried_revision=4` 全部一致。原始 V3 回执 `query-04-payload.json` 为 4,076,271 字节，SHA-256 **`00268510BC447FF1B5D1B085698B45F3B33FB94E81628F1B11D9BAA9A5E63AB7`**；最终快照 `after-04-payload.json` SHA-256 **`037EA98041568374F7CB0A37F6D02200457DBE98388AA9E6FC559316E064E38F`**；简明结果 `read-only-result.json` SHA-256 **`C4C61AB4545BD3CC51898F055A9D1DD98A204D964C6A125943894079A87C9532`**。这些文件均在外置 `attempt-03/live-readonly-03/`，不覆盖前两轮。
+
+V3 `completeness` 同时明确 `monte_carlo_ready=false`、`planner_usable=false`、`active_attack_allowed=false`；缺少载入 playset 验证、AST 求值与原版轨迹保真，并仍列出伤亡分配、追击、终局撤退及阶段事件随机与效果等所需域。因此它证明**假设遭遇的原生输入可读**，不证明整场胜率或批准直接接战。第三轮没有推进日期或提交游戏内动作；托管进程返回 0、CK3 子进程清空，两份存档仍为冻结 SHA。`ck3_plan_turn` 的实际消费行为还需单独只读复验。
