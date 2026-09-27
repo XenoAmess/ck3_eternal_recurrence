@@ -102,3 +102,10 @@ The bounded run completed 16/16 qualified turns in new PID26168, saved
 h2577/raw53216880, and cleaned up its CK3 process tree. Its observed `active`
 branch is one exact-build positive; `absent`, `ambiguous` and `unavailable`
 remain bounded by the source/fixture contract above, without new live examples.
+
+The original h2577 save, driver, resolved family sidecar and run evidence were
+copied byte-for-byte into the [R0261 source-pair index](Z:/r0261-h2577-family-betrothal-freeze-20260927/PAIR-IDENTITY.json),
+SHA-256 `1F074A14B003A1D7F1D47E1C7A6BC236D88B42047B330B33891BDF7A7A93D232`.
+The official resolved-family sidecar validator passed on those copied bytes.
+Full prepare/rebind/no-launch for the **next** candidate remains pending; this
+source-pair check does not qualify a new runtime or PID.
