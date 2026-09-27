@@ -1,0 +1,361 @@
+{
+  "schema": "ck3.episode01_paired_combat_human_names.v2",
+  "paired_save_identity_sidecar_sha256": "69B906918120294000C8BB821A1AEEFE43BD210FB14610E8EACC1B0CFC1BC210",
+  "cases": [
+    {
+      "source_day": 11,
+      "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "rakaly_melted_sha256": "A82FDD3A57B84B8FC5E4A42EBD292013C45FAA5061D89F79D9E7A24E979A01C6",
+      "units": {
+        "16777221": {
+          "owner_character_id": 31549,
+          "line_start": 3629401,
+          "line_end": 3629410,
+          "sha256": "6B58688C61AB75F3E4BCC692E820DCFA7D5B4B85D7557DF7E955FC57E9E81560"
+        },
+        "16777231": {
+          "owner_character_id": 32725,
+          "line_start": 3629511,
+          "line_end": 3629520,
+          "sha256": "5D6B1D516608B5F4E2A5C513D53E82FB3105E02A6C1AF31FB1BDBB2DC1FCD93B"
+        },
+        "27": {
+          "owner_character_id": 34320,
+          "line_start": 3629669,
+          "line_end": 3629678,
+          "sha256": "8F2EA6C18B83A15A5A336DC301A5252BC30F28E232F07198867DB3F9FF3DF988"
+        },
+        "22": {
+          "owner_character_id": 32231,
+          "line_start": 3629595,
+          "line_end": 3629609,
+          "sha256": "DD1C849C3F81827A1574C1AD83445203F0CBC1706B4E58500C872EF75A5A444D"
+        },
+        "18": {
+          "owner_character_id": 29829,
+          "line_start": 3629541,
+          "line_end": 3629554,
+          "sha256": "B29EB6742AF70E97533BD231847CC726BCFE75C2801ED4A7DB8D051B28B4A55C"
+        }
+      },
+      "characters": {
+        "31549": {
+          "first_name_key": "Ali",
+          "line_start": 1665697,
+          "line_end": 1665843,
+          "sha256": "BAD542494ACFBDACD5CAA4340E710184CC858EA0292A4893FB561E596CE1483E",
+          "nickname_key": "nick_benavert",
+          "saved_nickname_text_zh": "贝纳韦尔特"
+        },
+        "32725": {
+          "first_name_key": "Tamim",
+          "line_start": 988059,
+          "line_end": 988277,
+          "sha256": "BFCED4B7EEA29B1C7DD39E547AF73246B6A192E7E5EDE54876F49689BF5842F4"
+        },
+        "34320": {
+          "first_name_key": "Ramadan",
+          "line_start": 1105038,
+          "line_end": 1105180,
+          "sha256": "07240C3E507FB461EFEA513E45029FC770D778B9591BF5D8C42AC22B7ED9D588"
+        },
+        "32231": {
+          "first_name_key": "Munis",
+          "line_start": 1715002,
+          "line_end": 1715148,
+          "sha256": "CC5019171D681978015D53A5ED8AF4818BB973B076D628972CF1C4145031CA9C"
+        },
+        "29829": {
+          "first_name_key": "Robert",
+          "line_start": 1533487,
+          "line_end": 1533660,
+          "sha256": "C39580D0539DA39CAC935A261980BF872B5577EDFC2F61A206E0E793248995CB",
+          "nickname_key": "nick_the_fox",
+          "saved_nickname_text_zh": "狐狸"
+        }
+      },
+      "titles": {
+        "2111": {
+          "key": "c_siracusa",
+          "holder_character_id": 31549,
+          "saved_dynamic_name_zh": "塞尔古塞",
+          "line_start": 296139,
+          "line_end": 296196,
+          "sha256": "29940141AFC87F4A85A93AF3BE4941D4F4F03BD1B91B038FB990C74FC99EE1DF"
+        },
+        "2112": {
+          "key": "b_syracusa",
+          "holder_character_id": 31549,
+          "saved_dynamic_name_zh": "塞尔古塞",
+          "line_start": 296197,
+          "line_end": 296213,
+          "sha256": "62B67FB414736CA10D382B5FC686D77DE1890759A12760EF926BD8C08ECA49E2"
+        },
+        "2141": {
+          "key": "d_apulia",
+          "holder_character_id": 29829,
+          "saved_dynamic_name_zh": "阿普利亚",
+          "line_start": 297117,
+          "line_end": 297155,
+          "sha256": "FD7BC194CDF3164499FB7E70501EB9785EB20B2AE95EDE116C2909E641C897BE"
+        }
+      },
+      "regiment_87_army": {
+        "army_id": 16777221,
+        "commander_character_id": 31549,
+        "saved_name_seed": {
+          "id": 0,
+          "province_id": 2638
+        },
+        "line_start": 3923614,
+        "line_end": 3923643,
+        "sha256": "84CD243EC0915335F20023FA04F4C9407840FFC0E15CC1CD63F2B8B33C015753"
+      },
+      "combat": {
+        "combat_id": 16777218,
+        "province_id": 2633,
+        "attacker_army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "attacker_leader_character_id": 31549,
+        "attacker_commander_character_id": 34320,
+        "defender_army_ids": [
+          18
+        ],
+        "defender_leader_character_id": 29829,
+        "defender_commander_character_id": 29829,
+        "line_start": 4007439,
+        "line_end": 4007814,
+        "sha256": "8BDC07CCC6651D3EF1882E8761AF52769AA2D9F5E6F14E4BB54B7DDC383F87A3"
+      },
+      "combat_result_main_participants": {
+        "attacker": 31549,
+        "defender": 29829,
+        "line_start": 4006328,
+        "line_end": 4006747,
+        "sha256": "7FD4B850401CD0B3383A4A695A8C008854B2024CF4F4E7A0BBC67E6E01D98C36"
+      }
+    },
+    {
+      "source_day": 21,
+      "source_save_sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A",
+      "rakaly_melted_sha256": "48F2EA80D7AF0DA5EA4DA3B34E965A481BD2FF201017E35F0F08711503089B61",
+      "units": {
+        "16777221": {
+          "owner_character_id": 31549,
+          "line_start": 3644042,
+          "line_end": 3644051,
+          "sha256": "6B58688C61AB75F3E4BCC692E820DCFA7D5B4B85D7557DF7E955FC57E9E81560"
+        },
+        "16777231": {
+          "owner_character_id": 32725,
+          "line_start": 3644152,
+          "line_end": 3644161,
+          "sha256": "5D6B1D516608B5F4E2A5C513D53E82FB3105E02A6C1AF31FB1BDBB2DC1FCD93B"
+        },
+        "27": {
+          "owner_character_id": 34320,
+          "line_start": 3644307,
+          "line_end": 3644316,
+          "sha256": "8F2EA6C18B83A15A5A336DC301A5252BC30F28E232F07198867DB3F9FF3DF988"
+        },
+        "22": {
+          "owner_character_id": 32231,
+          "line_start": 3644236,
+          "line_end": 3644245,
+          "sha256": "63C8F606E5228F649DC4DACFECFEEA7EA9FE660C643CA93C187E054BDF78CF0E"
+        },
+        "18": {
+          "owner_character_id": 29829,
+          "line_start": 3644182,
+          "line_end": 3644195,
+          "sha256": "B29EB6742AF70E97533BD231847CC726BCFE75C2801ED4A7DB8D051B28B4A55C"
+        }
+      },
+      "characters": {
+        "31549": {
+          "first_name_key": "Ali",
+          "line_start": 1671124,
+          "line_end": 1671273,
+          "sha256": "430EAB884CDDFB3296C96854037EB57AA6315CDCC13209D619756C9D02BB7769",
+          "nickname_key": "nick_benavert",
+          "saved_nickname_text_zh": "贝纳韦尔特"
+        },
+        "32725": {
+          "first_name_key": "Tamim",
+          "line_start": 989082,
+          "line_end": 989303,
+          "sha256": "BBFDD48DE941FDFD87147F4E50E86D8D9A26C577F26A5B00D04C032BDAE18778"
+        },
+        "34320": {
+          "first_name_key": "Ramadan",
+          "line_start": 1106766,
+          "line_end": 1106908,
+          "sha256": "4B99EB5137811A396E27031D65C7B3873F2D8F90CDBC5C83EF02A2E2A3D32E49"
+        },
+        "32231": {
+          "first_name_key": "Munis",
+          "line_start": 1720665,
+          "line_end": 1720819,
+          "sha256": "0CF18979A6525BBAC026780D9DE43F0E24743467CA8A9E30C8BCEEE5AABE5914"
+        },
+        "29829": {
+          "first_name_key": "Robert",
+          "line_start": 1538073,
+          "line_end": 1538251,
+          "sha256": "B3D63DBD91E654D93AE31972C115D43160864FF47FD766D4793CB1FB2915F12F",
+          "nickname_key": "nick_the_fox",
+          "saved_nickname_text_zh": "狐狸"
+        }
+      },
+      "titles": {
+        "2111": {
+          "key": "c_siracusa",
+          "holder_character_id": 31549,
+          "saved_dynamic_name_zh": "塞尔古塞",
+          "line_start": 296407,
+          "line_end": 296464,
+          "sha256": "29940141AFC87F4A85A93AF3BE4941D4F4F03BD1B91B038FB990C74FC99EE1DF"
+        },
+        "2112": {
+          "key": "b_syracusa",
+          "holder_character_id": 31549,
+          "saved_dynamic_name_zh": "塞尔古塞",
+          "line_start": 296465,
+          "line_end": 296481,
+          "sha256": "62B67FB414736CA10D382B5FC686D77DE1890759A12760EF926BD8C08ECA49E2"
+        },
+        "2141": {
+          "key": "d_apulia",
+          "holder_character_id": 29829,
+          "saved_dynamic_name_zh": "阿普利亚",
+          "line_start": 297385,
+          "line_end": 297423,
+          "sha256": "FD7BC194CDF3164499FB7E70501EB9785EB20B2AE95EDE116C2909E641C897BE"
+        }
+      },
+      "regiment_87_army": {
+        "army_id": 16777221,
+        "commander_character_id": 31549,
+        "saved_name_seed": {
+          "id": 0,
+          "province_id": 2638
+        },
+        "line_start": 3943164,
+        "line_end": 3943193,
+        "sha256": "7818223D5E0C1BFCA60ABBA607983F3AE08BDA6B18F9BE707882E3F8812DE29A"
+      },
+      "combat": {
+        "combat_id": 16777218,
+        "province_id": 2633,
+        "attacker_army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "attacker_leader_character_id": 31549,
+        "attacker_commander_character_id": 34320,
+        "defender_army_ids": [
+          18
+        ],
+        "defender_leader_character_id": 29829,
+        "defender_commander_character_id": 29829,
+        "line_start": 4030803,
+        "line_end": 4031269,
+        "sha256": "15D671A788EA1FB7997C2923DE88D9D30EE847BF38EFA3257168982F7CD0FB8D"
+      },
+      "combat_result_main_participants": {
+        "attacker": 31549,
+        "defender": 29829,
+        "line_start": 4029542,
+        "line_end": 4030036,
+        "sha256": "CB66975FE565E3AAF04844FAF855710CEF2DB737B6681D3F1722A67ACAEDABA7"
+      }
+    }
+  ],
+  "game_sources": {
+    "names_zh": {
+      "relative_path": "localization/simp_chinese/names/character_names_l_simp_chinese.yml",
+      "sha256": "1FC26B5187A7DFB0695309969031EBF5FDD0F2B89D8D7CE6D3C7C4E3F24820B1"
+    },
+    "nicknames_zh": {
+      "relative_path": "localization/simp_chinese/nicknames_l_simp_chinese.yml",
+      "sha256": "F72AE332E5E261B6C201982C0873E5E9977469CCEE1E3D6040D7571B8F6ABE42"
+    },
+    "titles_zh": {
+      "relative_path": "localization/simp_chinese/titles_l_simp_chinese.yml",
+      "sha256": "22E5A59DDCC416B8E45581520111EF511AF86D92F4475A9FC7F814D850422009"
+    },
+    "landed_titles": {
+      "relative_path": "common/landed_titles/00_landed_titles.txt",
+      "sha256": "6A508DB6C113115AA5ACA18B8DA5374B30FEB76198533AEC3A59C5076958637E"
+    },
+    "province_definition": {
+      "relative_path": "map_data/definition.csv",
+      "sha256": "28A6793B3560145770A2A93C75CEC8A7D7A82CF2BF7C9A877D076CA65FC65101"
+    }
+  },
+  "first_names_zh": {
+    "31549": {
+      "first_name_key": "Ali",
+      "first_name_zh": "阿里",
+      "localization_line": 1047,
+      "nickname_key": "nick_benavert",
+      "nickname_zh": "贝纳韦尔特",
+      "nickname_localization_line": 756
+    },
+    "32725": {
+      "first_name_key": "Tamim",
+      "first_name_zh": "塔米姆",
+      "localization_line": 19191
+    },
+    "34320": {
+      "first_name_key": "Ramadan",
+      "first_name_zh": "拉马丹",
+      "localization_line": 16269
+    },
+    "32231": {
+      "first_name_key": "Munis",
+      "first_name_zh": "穆尼斯",
+      "localization_line": 13996
+    },
+    "29829": {
+      "first_name_key": "Robert",
+      "first_name_zh": "罗贝尔",
+      "localization_line": 16755,
+      "nickname_key": "nick_the_fox",
+      "nickname_zh": "狐狸",
+      "nickname_localization_line": 218
+    }
+  },
+  "title_base_localizations_zh": {
+    "c_siracusa": {
+      "base_name_zh": "锡拉库萨",
+      "localization_line": 14253
+    },
+    "b_syracusa": {
+      "base_name_zh": "叙拉古",
+      "localization_line": 9703
+    },
+    "d_apulia": {
+      "base_name_zh": "阿普利亚",
+      "localization_line": 15058
+    }
+  },
+  "army_16777221_name_seed_province": {
+    "province_id": 2638,
+    "definition_line": 2639,
+    "landed_title_key": "b_syracusa",
+    "landed_title_line": 14209
+  },
+  "viewer_explanatory_labels_zh": {
+    "attacker": "阿里（塞尔古塞领主）及塔米姆、拉马丹；第21日另有穆尼斯军",
+    "defender": "罗贝尔（阿普利亚领主）"
+  },
+  "exact_generated_army_label_proven": false,
+  "exact_full_character_ui_titulature_proven": false,
+  "source_save_identity_not_same_frame_ui_readback": true
+}
