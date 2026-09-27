@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0244-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T13:27:06Z",
+  "updated_at_utc": "2026-09-27T13:47:49Z",
   "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
@@ -44,6 +44,17 @@
       "checks": "test_r0244_frozen_v3_query_projection.py: 1 passed on normal Python and 1 passed with -O. The four existing v3/strategy/first-hop modules on the current master each passed 50 tests plus 46 subtests in normal and -O modes. No CK3 process was launched.",
       "live_evidence": null,
       "remaining_blocker": "Original source checkpoint, driver/sidecars and matched DLL are only identified by another machine's historical Z: paths and frozen hashes. A separately qualified transfer or equivalent scene, current DLL capability check, actual same-frame v3 output and independent move/readback/next-turn/recovery are required before a passed War48 verification."
+    },
+    {
+      "date_utc": "2026-09-27T13:47:49Z",
+      "preparation_master_commit": "10b483cac",
+      "audit_document": "docs/ck3-native-ai/war-r0244-local-v3-read-only-attempt-2026-09-27.md",
+      "source_manifest_sha256": "76D41D89165A305A2A4A9FFB3707E846BB35D439F22F58FC18386954FE34F13F",
+      "external_input_freeze": "D:/ck3-research-artifacts/war-r0244-local-v3-attempt-20260927-02/input-freeze.json",
+      "finding": "A fresh independent War4/Army18 versus Army24 read-only same-frame v3 rehearsal is prepared. No-game preflight recomputed and matched the exact CK3 EXE, immutable checkpoint, original save receipt, observed source snapshot, bridge DLL and injector SHA-256. It wrote a new append-only external attempt plan with capture/probe argv and explicit launch blockers. The probe permits only snapshot, capability, native route preview/contact and v3 read requests; all returned frames, bridge connection generation, scene IDs and v3 scenario/completeness must match before a local GREEN is written.",
+      "checks": "No-launch preflight passed; test_war_r0244_local_v3_probe.py passed 2 tests on normal Python and 2 with -O. New attempt live_status=NOT_STARTED; no CK3 process was launched and no OneDrive files were touched.",
+      "live_evidence": null,
+      "boundary": "This planned local War4 query is not the requesting War48 save/driver/DLL pairing; even a future War4 v3 GREEN will not verify the original selected step, gameplay action, next turn, win probability, or native simulator parity. Parent-coordinated exclusive CK3 use and a fresh visually reviewed Steam offline receipt are still required before any launch."
     }
   ],
   "live_evidence": null,
