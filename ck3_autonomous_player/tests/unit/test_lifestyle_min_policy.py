@@ -9,7 +9,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from xar_autoplayer.lifestyle_min_policy import choose_min_feudal_lifestyle_action
+from xar_autoplayer.lifestyle_min_policy import (
+    choose_first_focus_target,
+    choose_min_feudal_lifestyle_action,
+)
 
 
 def _complete_snapshot() -> dict[str, object]:
@@ -62,6 +65,69 @@ def _choose(snapshot: dict[str, object], **kwargs: object) -> dict[str, object]:
 
 
 class LifestyleMinPolicyTests(unittest.TestCase):
+    def test_focusless_martial_education_and_war_choose_legal_authority(self) -> None:
+        def observed(key: str, lifestyle: str, points: int) -> dict[str, object]:
+            return {"status": "observed", "native_legal": True,
+                    "target_key": key, "target_lifestyle_key": lifestyle,
+                    "target_lifestyle_progress": {
+                        "presence": "present", "xp_total_raw": 0,
+                        "xp_within_level_raw": 0, "xp_per_level": 1000,
+                        "unspent_perk_points": points, "used_perk_points": 0}}
+
+        wealth = observed("stewardship_wealth_focus", "stewardship_lifestyle", 1)
+        martial = observed("martial_authority_focus", "martial_lifestyle", 0)
+        traits = {"status": "available", "observed_keys": ["education_martial_4"]}
+        at_war = choose_first_focus_target(
+            wealth=wealth, martial=martial, actor_traits=traits, at_peace=False,
+        )
+        self.assertEqual(at_war["target_key"], "martial_authority_focus")
+        self.assertEqual(at_war["commitment_months"], 60)
+        self.assertEqual(at_war["observed_target_progress"]["wealth"]
+                         ["progress"]["unspent_perk_points"], 1)
+        at_peace = choose_first_focus_target(
+            wealth=wealth, martial=martial, actor_traits=traits, at_peace=True,
+        )
+        self.assertEqual(at_peace["target_key"], "stewardship_wealth_focus")
+        martial["native_legal"] = False
+        rejected = choose_first_focus_target(
+            wealth=wealth, martial=martial, actor_traits=traits, at_peace=False,
+        )
+        self.assertEqual(rejected["target_key"], "stewardship_wealth_focus")
+        martial["native_legal"] = True
+        wealth["native_legal"] = False
+        only_legal = choose_first_focus_target(
+            wealth=wealth, martial=martial, actor_traits={"status": "available",
+                "observed_keys": []}, at_peace=True,
+        )
+        self.assertEqual(only_legal["target_key"], "martial_authority_focus")
+        unknown_wealth = choose_first_focus_target(
+            wealth={"status": "target_progress_unavailable"},
+            martial=martial, actor_traits=traits, at_peace=False,
+        )
+        self.assertIsNone(unknown_wealth["target_key"])
+
+    def test_wartime_focusless_martial_action_requires_explicit_gate(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["current_focus"] = {"presence": "absent"}
+        snapshot["current_lifestyle_progress"] = {"presence": "absent"}
+        snapshot["legal_focus_candidates"]["items"] = [{
+            "key": "martial_authority_focus", "lifestyle_key": "martial_lifestyle",
+        }]
+        snapshot["target_lifestyle_progress"] = {
+            "presence": "present", "lifestyle_key": "martial_lifestyle",
+            "unspent_perk_points": 0,
+        }
+        kwargs = {"feudal_scope_admitted": True, "at_peace": False,
+                  "allow_wartime_perk": True,
+                  "preferred_focus_target_key": "martial_authority_focus"}
+        self.assertEqual(choose_min_feudal_lifestyle_action(
+            snapshot, **kwargs)["status"], "outside_admitted_scene")
+        selected = choose_min_feudal_lifestyle_action(
+            snapshot, **kwargs, allow_wartime_initial_focus=True,
+        )
+        self.assertEqual(selected["selected_action"]["target_key"],
+                         "martial_authority_focus")
+
     def test_wartime_opt_in_spends_existing_tree_point_but_never_starts_focus(self) -> None:
         snapshot = _complete_snapshot()
         result = choose_min_feudal_lifestyle_action(

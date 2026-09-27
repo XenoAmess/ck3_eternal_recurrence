@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import (
     FOCUS_QUERY_STEP,
+    MARTIAL_QUERY_STEP,
     FOCUS_SUBMIT_STEP,
     PERK_SUBMIT_STEP,
     QUERY_STEP,
@@ -18,6 +19,7 @@ from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import (
     RECEIPT_STEP,
     query_player_lifestyle_private_v1,
     query_player_lifestyle_stock_focus_combined_private_v1,
+    query_player_lifestyle_martial_authority_private_v1,
     query_player_lifestyle_receipt_private_v1,
     submit_player_lifestyle_stock_focus_private_v1,
     submit_player_lifestyle_perk_private_v1,
@@ -30,6 +32,7 @@ from xar_autoplayer.lifestyle_formal_consumer import (
     unresolved_lifestyle_perk_action,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.driver import StepPostconditionError
 from xar_autoplayer.bridge.combat_phase_contract import (
     query_combat_simulation_inputs_v3_step,
 )
@@ -94,6 +97,10 @@ class _State:
         self.last: dict[str, object] | None = None
         self.fail_query = False
         self.focus_legal = True
+        self.martial_focus_legal = True
+        self.wealth_unspent_points = 0
+        self.martial_unspent_points = 0
+        self.selected_focus_key = "stewardship_wealth_focus"
         self.formal_focus_absent = False
         self.stock_focus_present = False
         self.zero_points = False
@@ -113,7 +120,10 @@ class _State:
         assert req["expected_date_raw"] == 53178312
         assert req["expected_player_character_id"] == 29829
         assert req[
-            "episode_run_id" if step in {QUERY_STEP, STATE_QUERY_STEP, FOCUS_QUERY_STEP}
+            "episode_run_id" if step in {
+                QUERY_STEP, STATE_QUERY_STEP, FOCUS_QUERY_STEP,
+                MARTIAL_QUERY_STEP,
+            }
             else "expected_episode_run_id"
         ] == "native-29829-ee172aa720db"
         if step in {PERK_SUBMIT_STEP, FOCUS_SUBMIT_STEP}:
@@ -208,23 +218,34 @@ class _State:
             result = {"step": step, "private_build": True, "advertised": False,
                 "status": "available", "episode_run_id": req["episode_run_id"],
                 "snapshot": life}
-        elif step == FOCUS_QUERY_STEP:
+        elif step in {FOCUS_QUERY_STEP, MARTIAL_QUERY_STEP}:
+            martial = step == MARTIAL_QUERY_STEP
+            native_legal = (
+                self.martial_focus_legal if martial else self.focus_legal
+            )
             result = {"step": step, "private_build": True, "advertised": False,
                 "read_only": True, "policy_scoped": True,
                 "status": (
-                    "observed_native_legal" if self.focus_legal
+                    "observed_native_legal" if native_legal
                     else "observed_native_illegal"
-                ), "native_legal": self.focus_legal,
+                ), "native_legal": native_legal,
                 "snapshot_id": req["expected_snapshot_id"],
                 "episode_run_id": req["episode_run_id"],
-                "target_key": "stewardship_wealth_focus",
-                "target_lifestyle_key": "stewardship_lifestyle",
+                "target_key": ("martial_authority_focus" if martial
+                               else "stewardship_wealth_focus"),
+                "target_lifestyle_key": ("martial_lifestyle" if martial
+                                         else "stewardship_lifestyle"),
                 "scanned_database_rows": 23,
                 "target_lifestyle_progress": {"presence": "present",
                     "source": "exact_native_getters", "xp_total_raw": 0,
                     "xp_within_level_raw": 0, "xp_per_level": 1000,
-                    "unspent_perk_points": 0, "used_perk_points": 0}}
+                    "unspent_perk_points": (
+                        self.martial_unspent_points if martial
+                        else self.wealth_unspent_points
+                    ), "used_perk_points": 0}}
         elif step in {PERK_SUBMIT_STEP, FOCUS_SUBMIT_STEP}:
+            if step == FOCUS_SUBMIT_STEP:
+                self.selected_focus_key = req["target_key"]
             result = {"step": step, "private_build": True, "advertised": False,
                 "status": "submitted_verification_pending", "verification_pending": True,
                 "action_request_id": request_id, "target_key": req["target_key"],
@@ -239,7 +260,7 @@ class _State:
                 "post_public_revision": req["expected_revision"],
                 "post_target_perk_owned": True,
                 "post_has_current_focus": True,
-                "post_current_focus_key": "stewardship_wealth_focus",
+                "post_current_focus_key": self.selected_focus_key,
                 "postcondition_verified": True}
         return {"type": "command_result", "protocol_version": 1,
                 "request_id": request_id, "ok": True, "result": result}
@@ -291,6 +312,13 @@ class _Driver:
     ):
         return query_player_lifestyle_stock_focus_combined_private_v1(
             self, expected_revision=expected_revision)
+
+    def query_player_lifestyle_martial_authority_private_v1(
+        self, *, expected_revision: int,
+    ):
+        return query_player_lifestyle_martial_authority_private_v1(
+            self, expected_revision=expected_revision,
+        )
 
     def submit_player_lifestyle_stock_focus_private_v1(
         self, *, query, action, expected_revision: int,
@@ -751,6 +779,60 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
                 pending["action_request_id"],
             )
 
+    def test_focusless_martial_successor_in_war_uses_typed_focus_and_receipt(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        driver.state.formal_focus_absent = True
+        driver.state.actor_traits = {
+            "status": "available", "observed_keys": ["education_martial_4"],
+        }
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        service = GameplayBridgeService(driver)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            side_effect=AssertionError("opening focus must precede war planning"),
+        ):
+            selected = service.plan_turn()["plan"]
+        self.assertEqual(selected["selected_step"], FOCUS_SUBMIT_STEP)
+        self.assertEqual(selected["lifestyle_action"]["target_key"],
+                         "martial_authority_focus")
+        self.assertEqual(selected["lifestyle_query"]["focus_query"]
+                         ["target_key"], "martial_authority_focus")
+        self.assertEqual(selected["opening_first_focus_comparison"]
+                         ["commitment_months"], 60)
+        bad_action = {**selected["lifestyle_action"],
+                      "target_key": "stewardship_wealth_focus"}
+        with self.assertRaises(StepPostconditionError):
+            driver.submit_player_lifestyle_stock_focus_private_v1(
+                query=selected["lifestyle_query"], action=bad_action,
+                expected_revision=3,
+            )
+        self.assertFalse(any(row["command"] == FOCUS_SUBMIT_STEP
+                             for row in driver.history))
+        pending = driver.submit_player_lifestyle_stock_focus_private_v1(
+            query=selected["lifestyle_query"],
+            action=selected["lifestyle_action"], expected_revision=3,
+        )
+        self.assertEqual(pending["status"], "submitted_verification_pending")
+        self.assertEqual(driver.state.last["target_key"], "martial_authority_focus")
+        driver.frame = _game_frame(4)
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        applied = query_player_lifestyle_receipt_private_v1(
+            driver, pending=pending, expected_revision=4,
+        )
+        self.assertTrue(applied["postcondition_verified"])
+        self.assertEqual(applied["post_current_focus_key"],
+                         "martial_authority_focus")
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            following = service.plan_turn()["plan"]
+        self.assertEqual(following["lifestyle_receipt_consumed"]
+                         ["target_key"], "martial_authority_focus")
+
     def test_opening_focus_recognizes_exact_existing_focus_without_submit(self) -> None:
         driver = _Driver()
         driver.require_initial_lifestyle_focus_before_date_advance = True
@@ -776,7 +858,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         self.assertEqual(perk["legal_candidate_count_in_scope"], 1)
         self.assertTrue(perk["policy_target_final_legal"]["cutting_corners_perk"])
         self.assertFalse(perk["policy_target_owned"]["cutting_corners_perk"])
-        self.assertEqual(driver.state.last["step"], QUERY_STEP)
+        self.assertEqual(driver.state.last["step"], MARTIAL_QUERY_STEP)
 
     def test_existing_focus_ready_perk_precedes_peacetime_read_only_query(self) -> None:
         driver = _Driver()
@@ -999,7 +1081,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             plan["initial_lifestyle_focus_existing"]["perk_opportunity"]
             ["legal_candidate_count_in_scope"]
         )
-        self.assertEqual(driver.state.last["step"], QUERY_STEP)
+        self.assertEqual(driver.state.last["step"], MARTIAL_QUERY_STEP)
 
     def test_existing_focus_without_exact_xp_stays_blocked(self) -> None:
         driver = _Driver()
@@ -1025,11 +1107,12 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         driver.require_initial_lifestyle_focus_before_date_advance = True
         driver.state.formal_focus_absent = True
         driver.state.focus_legal = False
+        driver.state.martial_focus_legal = False
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
         self.assertEqual(plan["phase"], "initial_lifestyle_focus_observation_red")
         self.assertEqual(
             plan["reason"],
-            "opening focus is absent but stock final legality is not true",
+            "opening focus has no observed native-legal target",
         )
         self.assertEqual(driver.state.last["step"], FOCUS_QUERY_STEP)
 

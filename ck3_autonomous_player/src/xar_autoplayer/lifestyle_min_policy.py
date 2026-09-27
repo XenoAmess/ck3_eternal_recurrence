@@ -18,6 +18,8 @@ _BUILD_SPEED_PERK = "professional_workforce_perk"
 _CAPITAL_DEVELOPMENT_PERK = "centralization_perk"
 _COLLECT_TAXES_PERK = "tax_man_perk"
 _WEALTH_FOCUS = "stewardship_wealth_focus"
+_MARTIAL_FOCUS = "martial_authority_focus"
+_MARTIAL = "martial_lifestyle"
 _REQUIRED_READINESS = (
     "current_focus_ready",
     "lifestyle_progress_ready",
@@ -79,6 +81,99 @@ def _available_keys(collection: object, lifestyle_key: str) -> set[str] | None:
     return keys
 
 
+def choose_first_focus_target(
+    *, wealth: Mapping[str, object] | None,
+    martial: Mapping[str, object] | None,
+    actor_traits: Mapping[str, object] | None,
+    at_peace: bool,
+) -> dict[str, object]:
+    """Compare two exact final verdicts for a focusless actor's first focus.
+
+    A current unspent wealth point is a realized near-term opportunity during
+    peace. A martial education and active war favor authority over the wealth
+    income modifier for the initial 60-month commitment. XP values are kept
+    as observed opportunity inputs, never estimated from age.
+    """
+
+    def target(query: Mapping[str, object] | None, key: str,
+               lifestyle: str) -> dict[str, object] | None:
+        if not isinstance(query, Mapping) or query.get("status") != "observed":
+            return None
+        if not isinstance(query.get("native_legal"), bool):
+            return None
+        if query.get("target_key") != key or query.get("target_lifestyle_key") != lifestyle:
+            return None
+        progress = query.get("target_lifestyle_progress")
+        if not isinstance(progress, Mapping) or progress.get("presence") != "present":
+            return None
+        fields = ("xp_total_raw", "xp_within_level_raw", "xp_per_level",
+                  "unspent_perk_points", "used_perk_points")
+        if not all(isinstance(progress.get(field), int)
+                   and not isinstance(progress.get(field), bool)
+                   and progress[field] >= 0 for field in fields):
+            return None
+        if (progress["xp_per_level"] == 0 or
+                progress["xp_within_level_raw"] >=
+                progress["xp_per_level"] * 100000):
+            return None
+        return {
+            "native_legal": query.get("native_legal") is True,
+            "progress": {field: progress[field] for field in fields},
+        }
+
+    wealth_row = target(wealth, _WEALTH_FOCUS, _STEWARDSHIP)
+    martial_row = target(martial, _MARTIAL_FOCUS, _MARTIAL)
+    observed = {"wealth": wealth_row, "martial": martial_row}
+    traits = actor_traits.get("observed_keys") if isinstance(actor_traits, Mapping) \
+        and actor_traits.get("status") == "available" else None
+    martial_ranks = (
+        [rank for rank in range(1, 6)
+         if isinstance(traits, list) and f"education_martial_{rank}" in traits]
+    )
+    rank = max(martial_ranks, default=0)
+    martial_role = rank >= (4 if at_peace else 3)
+    wealth_point_due = bool(
+        wealth_row is not None and martial_row is not None
+        and wealth_row["progress"]["unspent_perk_points"] > 0
+        and martial_row["progress"]["unspent_perk_points"] == 0
+    )
+    only_final_legal_martial = bool(
+        wealth_row is not None and not wealth_row["native_legal"]
+    )
+    if (wealth_row is not None and martial_row is not None
+            and martial_row["native_legal"]
+            and (only_final_legal_martial or (
+                martial_role and (not at_peace or not wealth_point_due)
+            ))):
+        return {
+            "status": "selected", "target_key": _MARTIAL_FOCUS,
+            "reason": "only_observed_final_legal_focus" if only_final_legal_martial
+            else "martial_education_and_war_objective" if not at_peace
+            else "high_martial_education_without_ready_wealth_point",
+            "martial_education_rank": rank,
+            "at_peace": at_peace,
+            "commitment_months": 60,
+            "observed_target_progress": observed,
+        }
+    if wealth_row is not None and wealth_row["native_legal"]:
+        return {
+            "status": "selected", "target_key": _WEALTH_FOCUS,
+            "reason": "ready_wealth_point_in_peace" if wealth_point_due and at_peace
+            else "existing_income_baseline",
+            "martial_education_rank": rank,
+            "at_peace": at_peace,
+            "commitment_months": 60,
+            "observed_target_progress": observed,
+        }
+    return {
+        "status": "no_final_legal_focus_or_source_unavailable",
+        "target_key": None,
+        "martial_education_rank": rank,
+        "at_peace": at_peace,
+        "observed_target_progress": observed,
+    }
+
+
 def choose_min_feudal_lifestyle_action(
     snapshot: Mapping[str, object] | None,
     *,
@@ -86,6 +181,8 @@ def choose_min_feudal_lifestyle_action(
     at_peace: bool | None,
     collect_taxes_active: bool | None = None,
     allow_wartime_perk: bool = False,
+    allow_wartime_initial_focus: bool = False,
+    preferred_focus_target_key: str = _WEALTH_FOCUS,
     pending_action: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Choose one native focus/perk target from a complete paused observation.
@@ -224,18 +321,25 @@ def choose_min_feudal_lifestyle_action(
                     },
                 }
         return {**result, "status": "no_legal_minimum"}
-    if at_peace is not True:
+    if at_peace is not True and not allow_wartime_initial_focus:
         return {**result, "status": "outside_admitted_scene"}
     if focus.get("presence") != "absent" or progress.get("presence") != "absent":
         return {**result, "status": "observation_unavailable"}
     if readiness.get("legal_focus_candidates_ready") is not True:
         return {**result, "status": "legal_candidates_unavailable"}
+    focus_targets = {
+        _WEALTH_FOCUS: _STEWARDSHIP,
+        _MARTIAL_FOCUS: _MARTIAL,
+    }
+    target_lifestyle = focus_targets.get(preferred_focus_target_key)
+    if target_lifestyle is None:
+        return {**result, "status": "unsupported_focus_target"}
     focus_keys = _available_keys(
-        snapshot.get("legal_focus_candidates"), _STEWARDSHIP
+        snapshot.get("legal_focus_candidates"), target_lifestyle
     )
     if focus_keys is None:
         return {**result, "status": "legal_candidates_unavailable"}
-    if _WEALTH_FOCUS in focus_keys:
+    if preferred_focus_target_key in focus_keys:
         # LIFE2 currently observes progress only for the current lifestyle.
         # When focus is absent, LIFE6 cannot capture its mandatory target
         # stewardship progress row from that source. A later exact read-only
@@ -244,7 +348,7 @@ def choose_min_feudal_lifestyle_action(
         if (
             not isinstance(target_progress, Mapping)
             or target_progress.get("presence") != "present"
-            or target_progress.get("lifestyle_key") != _STEWARDSHIP
+            or target_progress.get("lifestyle_key") != target_lifestyle
             or not isinstance(target_progress.get("unspent_perk_points"), int)
             or isinstance(target_progress.get("unspent_perk_points"), bool)
             or target_progress.get("unspent_perk_points") < 0
@@ -255,10 +359,14 @@ def choose_min_feudal_lifestyle_action(
             "status": "recommend_action",
             "selected_action": {
                 "kind": "focus",
-                "target_key": _WEALTH_FOCUS,
-                "target_lifestyle_key": _STEWARDSHIP,
+                "target_key": preferred_focus_target_key,
+                "target_lifestyle_key": target_lifestyle,
                 "expected": binding,
-                "reason": "feudal_monthly_income_modifier_10_percent",
+                "reason": (
+                    "first_focus_martial_control_and_war_role"
+                    if preferred_focus_target_key == _MARTIAL_FOCUS
+                    else "feudal_monthly_income_modifier_10_percent"
+                ),
             },
         }
     return {**result, "status": "no_legal_minimum"}

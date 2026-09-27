@@ -27,6 +27,16 @@
     "action_admission": false,
     "public_registration": false,
     "uncertainty": "failed source/getter or contradictory final verdict stays unavailable or RED; no inferred zero",
-    "outstanding": "official matched DLL and paused actor readback, value comparison, typed alternative action, independent postcondition, next turn and cold restore"
+    "outstanding": "official matched DLL and paused first-focus actor action, independent postcondition, next turn and cold restore"
+  },
+  "first_focus_submit_candidate": {
+    "status": "source-static-pending-matched-live",
+    "scope": "focusless played actor on first operable paused frame; existing focus remains unchanged",
+    "submit_step": "private-select-player-lifestyle-stock-focus-v1",
+    "target_key": "martial_authority_focus",
+    "source": "same-frame final-legal martial query and exact target progress; submit precondition recomputes the martial final validator",
+    "binding": "last successful native focus query target must match submit target, episode, actor, revision and paused frame",
+    "result": "ACK remains pending until independent later paused focus equals martial_authority_focus; next turn and cold restore still required",
+    "public_registration": false
   }
 }

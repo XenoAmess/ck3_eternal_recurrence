@@ -7215,6 +7215,8 @@ def consume_one_life_lifestyle_private_trial(
     *,
     same_frame_feudal_scope: dict[str, object],
     private_query: dict[str, object] | None,
+    preferred_focus_target_key: str = "stewardship_wealth_focus",
+    allow_wartime_initial_focus: bool = False,
 ) -> dict[str, object]:
     """Keep the existing forced-state/war choice, then consider one LIFE perk.
 
@@ -7226,6 +7228,8 @@ def consume_one_life_lifestyle_private_trial(
         baseline_plan,
         scope=same_frame_feudal_scope,
         query=private_query,
+        preferred_focus_target_key=preferred_focus_target_key,
+        allow_wartime_initial_focus=allow_wartime_initial_focus,
     )
 
 

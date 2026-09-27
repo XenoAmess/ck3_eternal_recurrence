@@ -187,6 +187,8 @@ def consume_lifestyle_private_query(
     *,
     scope: Mapping[str, object],
     query: Mapping[str, object] | None,
+    preferred_focus_target_key: str = "stewardship_wealth_focus",
+    allow_wartime_initial_focus: bool = False,
 ) -> dict[str, object]:
     """Choose one private focus/perk only after same-frame native final legality."""
 
@@ -232,6 +234,8 @@ def consume_lifestyle_private_query(
         at_peace=scope.get("at_peace", True),
         collect_taxes_active=scope.get("collect_taxes_active"),
         allow_wartime_perk=scope.get("at_peace") is False,
+        allow_wartime_initial_focus=allow_wartime_initial_focus,
+        preferred_focus_target_key=preferred_focus_target_key,
     )
     if recommendation.get("status") == "recommend_action":
         action = recommendation.get("selected_action")

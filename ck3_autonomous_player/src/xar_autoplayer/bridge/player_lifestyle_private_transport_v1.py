@@ -488,9 +488,19 @@ def query_player_lifestyle_private_v1(
 
 
 def query_player_lifestyle_stock_focus_combined_private_v1(
-    driver: object, *, expected_revision: int
+    driver: object, *, expected_revision: int,
+    target_key: str = FOCUS_TARGET,
 ) -> dict[str, object]:
-    """Combine two private reads from one unchanged paused native frame."""
+    """Combine state and one named native-final-legal focus on one frame."""
+
+    if target_key not in {FOCUS_TARGET, MARTIAL_TARGET}:
+        raise ValueError("unsupported private lifestyle focus target")
+    lifestyle_key = (
+        MARTIAL_LIFESTYLE if target_key == MARTIAL_TARGET else FOCUS_LIFESTYLE
+    )
+    focus_step = (
+        MARTIAL_QUERY_STEP if target_key == MARTIAL_TARGET else FOCUS_QUERY_STEP
+    )
 
     state = query_player_lifestyle_private_v1(
         driver, expected_revision=expected_revision,
@@ -499,7 +509,7 @@ def query_player_lifestyle_stock_focus_combined_private_v1(
     if state.get("status") != "available":
         return {"status": "current_state_unavailable", "state": state}
     focus = query_player_lifestyle_focus_private_v1(
-        driver, expected_revision=expected_revision
+        driver, expected_revision=expected_revision, query_step=focus_step,
     )
     source = state.get("source_frame")
     focus_frame = focus.get("source_frame")
@@ -526,16 +536,16 @@ def query_player_lifestyle_stock_focus_combined_private_v1(
         "readiness": {**readiness, "legal_focus_candidates_ready": True},
         "legal_focus_candidates": {
             "status": "available", "policy_scoped": True,
-            "items": [{"key": FOCUS_TARGET, "lifestyle_key": FOCUS_LIFESTYLE}],
+            "items": [{"key": target_key, "lifestyle_key": lifestyle_key}],
         },
         "target_lifestyle_progress": {
             **focus["target_lifestyle_progress"],
-            "lifestyle_key": FOCUS_LIFESTYLE,
+            "lifestyle_key": lifestyle_key,
         },
     }
     return {
         "status": "stock_focus_available",
-        "step": FOCUS_QUERY_STEP,
+        "step": focus_step,
         "formal_precondition_status": "stock_focus_ready",
         "episode_run_id": state["episode_run_id"],
         "snapshot": enriched,
@@ -572,7 +582,24 @@ def _submit_player_lifestyle_selection_private_v1(
         and isinstance(expected, Mapping)
         and action.get("kind") == kind
         and isinstance(target, str)
-        and (target == FOCUS_TARGET if focus_action else target in PERK_TARGETS)
+        and (target in {FOCUS_TARGET, MARTIAL_TARGET}
+             if focus_action else target in PERK_TARGETS)
+        and (
+            not focus_action
+            or (
+                isinstance(query.get("focus_query"), Mapping)
+                and query["focus_query"].get("target_key") == target
+                and query["focus_query"].get("native_legal") is True
+                and isinstance(query.get("snapshot"), Mapping)
+                and isinstance(query["snapshot"].get("legal_focus_candidates"), Mapping)
+                and any(
+                    isinstance(row, Mapping)
+                    and row.get("key") == target
+                    and row.get("lifestyle_key") == action.get("target_lifestyle_key")
+                    for row in query["snapshot"]["legal_focus_candidates"].get("items", [])
+                )
+            )
+        )
         and (
             focus_action or _target_in_final_legal_perks(
                 query, target, action.get("target_lifestyle_key")

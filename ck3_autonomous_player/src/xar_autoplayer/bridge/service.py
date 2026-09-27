@@ -387,6 +387,10 @@ from ..lifestyle_formal_consumer import (
     unresolved_lifestyle_perk_action,
 )
 from .player_lifestyle_private_transport_v1 import PERK_TARGETS
+from .player_lifestyle_private_transport_v1 import (
+    query_player_lifestyle_stock_focus_combined_private_v1,
+)
+from ..lifestyle_min_policy import choose_first_focus_target
 from ..construction_formal_consumer import (
     SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP,
@@ -729,7 +733,7 @@ class GameplayBridgeService:
                 ),
                 "_private_lifestyle_scope_v1": (
                     (
-                        same_frame_feudal_peace_scope(planning_snapshot, history)
+                        same_frame_feudal_lifestyle_scope(planning_snapshot, history)
                         if getattr(
                             self.driver,
                             "require_initial_lifestyle_focus_before_date_advance",
@@ -1205,6 +1209,7 @@ class GameplayBridgeService:
 
     def _observe_opening_martial_authority_v1(
         self, *, before: dict[str, object], revision: int,
+        require_current_frame: bool = False,
     ) -> dict[str, object] | None:
         """Read one private alternative on this episode's opening frame."""
         if getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is not True:
@@ -1213,7 +1218,16 @@ class GameplayBridgeService:
         if not isinstance(episode, str) or not episode:
             return {"status": "episode_unavailable"}
         if episode == self._opening_martial_episode_v1:
-            return dict(self._opening_martial_observation_v1 or {})
+            cached = dict(self._opening_martial_observation_v1 or {})
+            source = cached.get("source_frame")
+            if not require_current_frame or (
+                cached.get("status") == "observed"
+                and isinstance(source, dict)
+                and all(source.get(key) == before.get(key) for key in (
+                    "snapshot_id", "native_revision", "date_raw", "episode_run_id",
+                ))
+            ):
+                return cached
         reader = getattr(
             self.driver, "query_player_lifestyle_martial_authority_private_v1", None,
         )
@@ -1373,6 +1387,7 @@ class GameplayBridgeService:
             ):
                 martial_observation = self._observe_opening_martial_authority_v1(
                     before=before, revision=revision,
+                    require_current_frame=True,
                 )
                 if isinstance(martial_observation, dict):
                     plan = {**plan, "opening_lifestyle_martial_observation":
@@ -1524,6 +1539,7 @@ class GameplayBridgeService:
             return blocked("opening LIFE2 current focus or XP/points are unavailable")
         martial_observation = self._observe_opening_martial_authority_v1(
             before=before, revision=revision,
+            require_current_frame=focus.get("presence") == "absent",
         )
         if isinstance(martial_observation, dict):
             plan = {**plan, "opening_lifestyle_martial_observation":
@@ -1576,11 +1592,24 @@ class GameplayBridgeService:
         if not (
             focus.get("presence") == "absent"
             and progress.get("presence") == "absent"
-            and stock.get("status") == "stock_focus_available"
-            and stock_focus.get("native_legal") is True
         ):
-            return blocked("opening focus is absent but stock final legality is not true")
+            return blocked("opening focus absence or target progress is unproved")
         scope = planned.get("_private_lifestyle_scope_v1")
+        if not isinstance(scope, dict) or scope.get("status") not in {
+            "admitted", "root_query_needed",
+        }:
+            return blocked("opening standard-feudal scope is unproved")
+        first_focus = choose_first_focus_target(
+            wealth=stock_focus, martial=martial_observation,
+            actor_traits=life.get("actor_traits"),
+            at_peace=scope.get("at_peace") is True,
+        )
+        plan = {**plan, "opening_first_focus_comparison": first_focus}
+        selected_focus = first_focus.get("target_key")
+        if selected_focus not in {
+            "stewardship_wealth_focus", "martial_authority_focus",
+        }:
+            return blocked("opening focus has no observed native-legal target")
         if isinstance(scope, dict) and scope.get("status") == "root_query_needed":
             if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
                 return blocked("opening peaceful feudal root query is unavailable")
@@ -1592,10 +1621,17 @@ class GameplayBridgeService:
                     "opening_lifestyle_readback": "absent_native_legal",
                 },
             }
-        if not isinstance(scope, dict) or scope.get("status") != "admitted":
-            return blocked("opening peaceful standard-feudal scope is unproved")
+        # The exact target query must be last before typed submit. Reading the
+        # other target for comparison cannot authorize this one.
+        selected_query = query_player_lifestyle_stock_focus_combined_private_v1(
+            self.driver, expected_revision=revision, target_key=selected_focus,
+        )
+        if selected_query.get("status") != "stock_focus_available":
+            return blocked("selected opening focus lacks a fresh final-legal frame")
         consumed = consume_one_life_lifestyle_private_trial(
-            plan, same_frame_feudal_scope=scope, private_query=stock
+            plan, same_frame_feudal_scope=scope, private_query=selected_query,
+            preferred_focus_target_key=selected_focus,
+            allow_wartime_initial_focus=True,
         )
         if consumed.get("selected_step") != PRIVATE_LIFESTYLE_FOCUS_STEP:
             return blocked("opening stock focus was not selected by policy")

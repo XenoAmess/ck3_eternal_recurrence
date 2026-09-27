@@ -1,5 +1,58 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE first-focus martial role candidate (2026-09-28; source contract)
+
+On exact CK3 1.19.0.6, original `game/common/focuses/00_lifestyle_focuses.txt`
+(SHA-256 `DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2`)
+defines `martial_authority_focus` at lines 199–241. It gives martial +1,
+monthly county control growth +0.3 and dread gain +20%; martial education
+raises its original automatic-selection weight from 11 to 2000. The same file
+defines `stewardship_wealth_focus` at lines 550–595, with monthly income +10%;
+greedy multiplies its non-stewardship-educated weight from 11 to 55. These are
+native value inputs, not substitutes for `CanSelectFocus` or proof that one
+choice has a larger realized 60-month return in every campaign.
+
+The source candidate compares these two named targets only when
+the current played successor has no focus on the first operable paused frame.
+It reads the actor's education and both targets' real XP/point progress and
+native final legality under one actor, revision and date. An active war is a
+military objective signal, and martial education is an actor-role signal;
+neither implies that an existing wealth focus should be changed. The policy
+selects martial authority with martial education rank 3–5 in an active war,
+or rank 4–5 in peace unless a final-legal wealth target already has an
+unspent point while martial has none. Martial is also selected when wealth is
+observed native-illegal and martial is observed native-legal. Both targets'
+actual XP and points are retained as opportunity-cost evidence; no target
+progress is inferred from age or an unavailable field. When neither martial
+case applies and wealth is final-legal, the existing wealth choice remains.
+
+The game has a 60-month adult focus-change cooldown. The initial no-focus
+choice therefore commits that time horizon, and this narrow policy trades
+income growth against war/control and martial progression without claiming a
+precise common currency. The original AI weights support the direction of
+the actor-role heuristic. The private source keeps the existing typed focus
+step, exact target-specific native precondition, durable pending marker,
+independent receipt and following-turn consumer; it admits martial only for
+the opening focusless actor, and binds the last legal native query's exact
+target before submit. Focus switching for a character who already has a
+focus remains outside this candidate. The focused Python tests passed 60/60
+under normal and `-O`; exact native Debug `/Od` and Release `/O2` focused
+tests passed precondition 17/17, adapter 9/9 and stock perk 12/12, with all
+five bridge objects compiled in each mode. These are source/static results;
+a matched live typed action, independent post-selection readback, next turn
+and paired cold restore are still required before a new live capability claim.
+
+```mermaid
+flowchart LR
+  A[First operable paused focusless actor] --> B[Read education, war and both target XP]
+  B --> C[Check each exact native final focus verdict]
+  C --> D{Military role and objective favor authority?}
+  D -->|yes and legal| E[Private typed martial focus]
+  D -->|no and wealth legal| F[Existing private wealth focus]
+  C -. missing source or frame drift .-> U[Keep unknown; no submit]
+  E -. independent receipt and restore pending .-> R[Future live closure]
+```
+
 ## NW-LIFE martial authority target observation candidate (2026-09-28; exact CK3 1.19.0.6)
 
 R0264's first paused Robert frame (`native:3`, raw date `53217264`, actor
@@ -17,7 +70,7 @@ gives each martial focus weight 2000 for martial education, while greedy
 wealth receives weight 55 without stewardship education. These are original
 AI weights, not the player's final legality or a sufficient value judgment.
 
-Current private policy chooses only wealth if a successor has no focus and
+Before the first-focus source candidate above, private policy chose only wealth if a successor had no focus and
 peaceful feudal scope is proven; it does not compare actor education or
 alternative target XP. The existing `martial_authority_focus` definition at
 line 199 offers martial +1 and monthly county control +0.3. This candidate
