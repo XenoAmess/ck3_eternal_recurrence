@@ -295,6 +295,39 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertFalse(any(row["step"] == transport.ACTION_NATIVE
                                  for row in driver.requests))
 
+    def test_wartime_construction_rejects_actor_mismatch_after_native_query(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            source = transport.query_construction_private(
+                driver, expected_revision=3, wartime_observation=True)
+            source["source_frame"]["actor_character_id"] = 99999
+            with mock.patch.object(transport, "query_construction_private",
+                                   return_value=source):
+                observation = transport.query_construction_wartime_observation_private(
+                    driver, expected_revision=3)
+            self.assertEqual(observation["status"], "source_red")
+            self.assertEqual(observation["reason"], "same_frame_binding_mismatch")
+            self.assertIsNone(observation["candidate"])
+            self.assertFalse(observation["formal_action_ready"])
+
+    def test_wartime_native_validation_red_keeps_diagnostic(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.unknown_gold = True
+            observation = transport.query_construction_wartime_observation_private(
+                driver, expected_revision=3)
+            self.assertEqual(observation["status"], "source_red")
+            self.assertEqual(observation["reason"],
+                             "native_construction_source_validation_failed")
+            self.assertEqual(observation["native_source_status"], "source_red")
+            self.assertIsNone(observation["native_result"]["private_probe"]
+                              ["player_world_building_sources"]["player_gold_raw"])
+            self.assertEqual(observation["ending_frame"]["snapshot_id"],
+                             "native:3")
+            self.assertIsNone(observation["candidate"])
+
     def test_wartime_no_candidate_and_incomplete_coverage_stay_distinct(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

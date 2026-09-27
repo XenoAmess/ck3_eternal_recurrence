@@ -229,30 +229,44 @@ def query_construction_wartime_observation_private(
     public_gold = snapshot.get("played_character_gold")
     gold_raw = public_gold.get("raw") if isinstance(public_gold, Mapping) else None
     source_frame = source.get("source_frame")
+    played = snapshot.get("played_character")
+    actor = played.get("character_id") if isinstance(played, Mapping) else None
+    frame_matches = (
+        isinstance(source_frame, Mapping)
+        and source_frame.get("revision") == snapshot.get("revision")
+        and source_frame.get("native_revision") == snapshot.get("native_revision")
+        and source_frame.get("date_raw") == snapshot.get("date_raw")
+        and source_frame.get("episode_run_id") == snapshot.get("episode_run_id")
+        and _positive(actor)
+        and source_frame.get("actor_character_id") == actor
+    )
     cash_matches = (
         isinstance(world, Mapping)
         and type(gold_raw) is int and gold_raw >= 0
         and public_gold.get("scale") == 100_000
         and world.get("player_gold_raw") == gold_raw
-        and isinstance(source_frame, Mapping)
-        and source_frame.get("revision") == snapshot.get("revision")
-        and source_frame.get("native_revision") == snapshot.get("native_revision")
-        and source_frame.get("date_raw") == snapshot.get("date_raw")
-        and source_frame.get("episode_run_id") == snapshot.get("episode_run_id")
     )
     source_status = source.get("status")
+    bound = frame_matches and cash_matches
+    reason = (
+        "native_construction_source_validation_failed"
+        if source_status == "source_red" else
+        "same_frame_binding_mismatch" if not frame_matches else
+        "same_frame_cash_mismatch" if not cash_matches else
+        source.get("reason")
+    )
     candidate = source.get("candidate") if source_status == "selected" else None
     return {
-        "status": ("observed" if cash_matches and source_status in {
+        "status": ("observed" if bound and source_status in {
             "selected", "no_legal_budgeted_building", "evidence_insufficient"}
             else "source_red"),
         "native_source_status": source_status,
         "read_only": True,
         "advertised": False,
         "formal_action_ready": False,
-        "candidate": dict(candidate) if isinstance(candidate, Mapping) and cash_matches else None,
+        "candidate": dict(candidate) if isinstance(candidate, Mapping) and bound else None,
         "native_budgeted_positive_income_candidate": (
-            source_status == "selected" and cash_matches),
+            source_status == "selected" and bound),
         "observed_player_gold_raw": gold_raw,
         "observed_active_war_count": len(wars),
         "observed_player_army_count": (
@@ -267,8 +281,10 @@ def query_construction_wartime_observation_private(
         "source_frame": dict(source_frame) if isinstance(source_frame, Mapping) else None,
         "native_query_request_id": source.get("native_query_request_id"),
         "native_proof_epoch": source.get("proof_epoch"),
-        "reason": ("same_frame_cash_mismatch" if source_status != "source_red"
-                   and not cash_matches else source.get("reason")),
+        "reason": reason,
+        **({"native_result": source.get("native_result"),
+            "ending_frame": source.get("ending_frame")}
+           if source_status == "source_red" else {}),
     }
 
 
