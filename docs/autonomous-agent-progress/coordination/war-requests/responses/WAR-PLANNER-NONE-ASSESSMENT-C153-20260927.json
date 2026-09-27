@@ -3,7 +3,7 @@
   "request_id": "WAR-PLANNER-NONE-ASSESSMENT-C153-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-warplanner-none-c153-20260927)",
-  "updated_at_utc": "2026-09-27T10:31:07Z",
+  "updated_at_utc": "2026-09-27T10:50:11Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "d70344d36",
@@ -34,13 +34,18 @@
     "test": "GameplayMcpServerTests.test_official_mcp_client_lists_and_calls_ck3_tools",
     "classification": "Separate stale exact tool-set test expectation; not the planner defect and no demonstrated runtime MCP call failure.",
     "observed_failure": "The test's assertEqual finds five server tools absent from its expected set: ck3_query_engine_log_literals_v1, ck3_query_engine_diagnostics_v1, ck3_inspect_save_artifacts_v1, ck3_collect_declarable_wars_result_v1, ck3_query_combat_phase_event_trace_v1. There are no reported missing server tools.",
-    "owner_followup": "The MCP test/tool owner should update the expected public tool contract or use a capability-scoped assertion; this response makes no MCP server or test change."
+    "owner_followup": "Resolved separately in master commit 7434cbd34. All five additional tools are @server.tool registrations; the exact expected set was updated, and a revision-bound MCP client contract test was added for the combat phase event trace tool. No MCP server implementation changed.",
+    "resolution_checks": [
+      "GameplayMcpServerTests.test_official_mcp_client_lists_and_calls_ck3_tools: 1 passed on normal Python and 1 passed with -O using the verified project interpreter; both runs continued past the former exact-set assertion into the tool calls.",
+      "CombatPhaseEventTraceMcpTest.test_registered_tool_routes_revision_bound_read_without_odds: 1 passed on normal Python and 1 passed with -O; success preserves revision and does not claim production trace readiness or win probability, while stale revision is rejected before the driver.",
+      "Four related contract test modules: 29 passed and 32 subtests passed on normal Python."
+    ]
   },
   "live_evidence": null,
   "limitations": [
     "No CK3 process was launched and no save or live campaign was changed; this is a deterministic at-peace strategy regression and focused test delivery.",
     "The current h2357 Robert candidate is in an active war. This at-peace fix does not claim to validate, block, or change its active-war continuation.",
     "A nonwar consumer must fetch the delivered master commit and verify its own source-matched future at-peace frame; no cross-team verification or formal campaign success is claimed here.",
-    "The ancillary MCP exact-set test remains RED and is independently classified above."
+    "The ancillary MCP exact-set test was resolved separately in master commit 7434cbd34; this response's planner master_commit remains the original delivered fix."
   ]
 }
