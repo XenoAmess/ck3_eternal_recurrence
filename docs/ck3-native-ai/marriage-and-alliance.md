@@ -1038,3 +1038,11 @@ flowchart TD
 最小私有合同只在现有 `XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1` 打开的 exact-build 候选中提供 read-only step：无候选列表和外部 heir ID 参数，要求当前 revision、paused/map-ready、玩家存活以及同 revision 的公开首继承人绑定；查询前后重读 snapshot 与双边关系。共享 `ReadCharacterRelationships` 会将无法解析的原始非空伴侣 ID 过滤成空值，因此本读口额外逐项比对原始 betrothed、primary spouse 与 spouse array；任何未解析项都返回 `relationship_unavailable`／`partner_unavailable`，双边不一致也不作为有效空关系。可读空关系使用 `-1` 与 `[]`。Python transport 与本机 MCP 工具默认关闭；只有以 `native-headless` 加 `stdio` 启动且明确传入 `--private-current-first-heir-relationship-query` 才注册只读工具，参数只含 `expected_native_revision`。该工具不进入公共 capability/ad。C109 切片本身没有接正式自动提交策略；新源码与静态测试不等于 h2134 已实机读到关系。
 
 C118 源码与生产路径 fixture 增量：有界 family opt-in 同时开启当前首继承人关系读口。正式 consumer 先消费在途提案及结果；新提案必须绑定同 revision、双向确认的当前首继承人和最终合法候选。旧 resolved 关系或首继承人变化后重新评估，产生的新提案经 M5 marriage source 与同帧建设、礼金统一选择及预留，不能从旧结果处理分支直接提交；首配偶 ID 即使未列在配偶数组，也能证明旧订婚已成熟。此增量尚无新实机 paused 关系、动作或恢复证据。
+
+### C131：已确认拒绝后的替代提案消费（源码阶段）
+
+现有原生结果口会在同一进程的独立暂停帧把提案分成 `pending`、`accepted_pending`、`refused`、`invalidated` 或已生效的双边关系。正式账本已保存 `refused`/`invalidated` 的结果，但此前同一 episode 的 `resolved` 总是直接返回“已消费”；即使当前首继承人经 C109 双边关系读口证明仍无配偶/婚约，剩余最终合法候选也不会被评估。针对该生产路径的聚焦夹具在修改前确实返回 `life-advance` 而非第二个提案。R0240 的实际提案已被接受；此处没有真实拒绝阳性，不把夹具称为实机新动作。
+
+现在仅在 **同一 PID/创建时间**、原生结果已确认为 `refused` 或 `invalidated`、当前首继承人身份相同且双边关系仍为空时，继续既有全量 final-legal → 固定五行投影 → 价值及同帧资格判断。已失败候选 ID 从前五优先位移除，并写入后续 pending；若第二次仍被拒绝，正式 resolved 继承全部已失败 ID，避免循环重发。投影不足五个新候选时可用已失败行补足诊断，但这些行绝不会被选中。首继承人换人时旧失败名单不继承，原生最终判定和发送前复验照旧。
+
+新 PID 中先前的拒绝 journal 无法独立重读，现有 `first_heir_marriage_cold_resolution_unknown` 继续阻断替代发送；关系空值不能反推拒绝。成人婚姻/订婚的实际收益、联盟义务和冷恢复这一缺口仍未由此代码证明。C131 只增加源码消费能力，下一真实拒绝场景仍须独立结果、下一 turn 和配对恢复后才可记 production-live。

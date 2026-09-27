@@ -75,6 +75,18 @@ def _resolved_relation_matches(resolved: Mapping[str, object],
     return False
 
 
+def _rejected_candidates(resolved: Mapping[str, object]) -> frozenset[int]:
+    """Carry native-confirmed failures without retrying the same pair."""
+    values = resolved.get("rejected_candidate_ids")
+    if values is None:
+        values = [resolved.get("candidate_character_id")]
+    if (not isinstance(values, list) or not values
+            or any(not _positive(value) for value in values)
+            or len(set(values)) != len(values)):
+        raise ValueError("resolved marriage has invalid rejected candidates")
+    return frozenset(values)
+
+
 def _plan_existing_resolution(
     driver: object, planned: dict[str, object], plan: dict[str, object],
     resolved: dict[str, object],
@@ -139,7 +151,8 @@ def _write(state_dir: Path, ledger: Mapping[str, object]) -> None:
 
 
 def _candidate_rejection_reasons(source: Mapping[str, object] | None,
-                                 row: Mapping[str, object]) -> list[str]:
+                                 row: Mapping[str, object], *,
+                                 rejected_candidate_ids: frozenset[int] = frozenset()) -> list[str]:
     """Use the same narrow value gates for selection and private diagnostics."""
     candidate_id = row.get("candidate_character_id")
     if not _positive(candidate_id):
@@ -147,6 +160,8 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
     if not isinstance(source, dict):
         return ["not_in_final_legal_rows"]
     reasons = []
+    if candidate_id in rejected_candidate_ids:
+        reasons.append("previously_refused_or_invalidated")
     if row.get("status") != "available":
         reasons.append("projection_unavailable")
     if row.get("actor_character_id") != source.get("played_character_id"):
@@ -253,7 +268,8 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
 def _private_five_candidate_diagnostic(
     legality: Mapping[str, object], projection: Mapping[str, object],
     snapshot: Mapping[str, object], choice: Mapping[str, object] | None,
-    ranking: Mapping[str, object],
+    ranking: Mapping[str, object], *,
+    rejected_candidate_ids: frozenset[int] = frozenset(),
 ) -> dict[str, object]:
     """Retain only the five assessed rows, without advertising a query."""
     legal = legality["native_legal_candidates"]
@@ -291,7 +307,8 @@ def _private_five_candidate_diagnostic(
                     "both_have_realm_data", "would_attempt_if_accepted")}
                 for pair in pairs
             ] if isinstance(pairs, list) else None),
-            "rejection_reasons": _candidate_rejection_reasons(source, row),
+            "rejection_reasons": _candidate_rejection_reasons(
+                source, row, rejected_candidate_ids=rejected_candidate_ids),
         })
     return {"schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
             "advertised": False, "read_only": True,
@@ -309,11 +326,14 @@ def _private_five_candidate_diagnostic(
 
 def _rank_five_family_candidates(
     legal_rows: list[dict[str, object]],
+    *, rejected_candidate_ids: frozenset[int] = frozenset(),
 ) -> tuple[list[dict[str, object]], dict[str, object]]:
     """Prefer native-final external Dynasty peers before the fixed five-row read."""
     eligible = []
     unknown = 0
-    for row in legal_rows:
+    fresh_rows = [row for row in legal_rows
+                  if row["candidate_character_id"] not in rejected_candidate_ids]
+    for row in fresh_rows:
         heir_age = row.get("heir_adult_measure_raw")
         candidate_age = row.get("candidate_adult_measure_raw")
         played_dynasty = row.get("played_dynasty_id")
@@ -339,11 +359,19 @@ def _rank_five_family_candidates(
         -row["recipient_ai_accept_raw"], row["candidate_character_id"]))
     picked = eligible[:5]
     picked_ids = {row["candidate_character_id"] for row in picked}
-    fallback = sorted((row for row in legal_rows
+    fallback = sorted((row for row in fresh_rows
                        if row["candidate_character_id"] not in picked_ids),
                       key=lambda row: (-row["recipient_ai_accept_raw"],
                                        row["candidate_character_id"]))
     picked.extend(fallback[:5 - len(picked)])
+    # Keep the fixed five-row native projection when fewer than five fresh
+    # candidates remain; old refusals are diagnostics, never selectable.
+    if len(picked) < 5:
+        rejected = sorted((row for row in legal_rows
+                           if row["candidate_character_id"] in rejected_candidate_ids),
+                          key=lambda row: (-row["recipient_ai_accept_raw"],
+                                           row["candidate_character_id"]))
+        picked.extend(rejected[:5 - len(picked)])
     return picked, {"rule": "external_dynasty_realm_backed_age_gap_v1",
                     "age_gap_max_raw": _MAX_BETROTHAL_AGE_GAP_RAW,
                     "prefilter_eligible_count": len(eligible),
@@ -359,6 +387,7 @@ def _rank_five_family_candidates(
 
 def choose_first_heir_marriage_candidate(
     legality: Mapping[str, object], projection: Mapping[str, object],
+    *, rejected_candidate_ids: frozenset[int] = frozenset(),
 ) -> dict[str, object] | None:
     """Value an adult marriage, or an age-aligned external-dynasty betrothal.
 
@@ -382,7 +411,8 @@ def choose_first_heir_marriage_candidate(
             continue
         candidate_id = row.get("candidate_character_id")
         source = by_id.get(candidate_id)
-        if _candidate_rejection_reasons(source, row):
+        if _candidate_rejection_reasons(
+                source, row, rejected_candidate_ids=rejected_candidate_ids):
             continue
         outcome = row["predicted_outcome_if_accepted"]
         age_gap = abs(row["heir_adult_measure_raw"] -
@@ -456,6 +486,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                 else "await_later_paused_frame"),
             "reason": "await later paused frame for marriage result without resubmitting"}}
     resolved = ledger["resolved"]
+    rejected_candidate_ids: frozenset[int] = frozenset()
     relation = (_current_first_heir_relation(driver, snapshot)
                 if snapshot.get("paused") is True
                 and snapshot.get("map_ready") is True
@@ -475,25 +506,35 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
             same_heir = (resolved.get("heir_character_id") ==
                          relation.get("heir_character_id"))
             candidate = resolved.get("candidate_character_id")
-            matured = (same_heir and resolved.get("status") == "betrothal"
-                       and _positive(candidate)
-                       and (relation.get("primary_spouse_character_id") == candidate
-                            or candidate in relation.get("spouse_character_ids", [])))
-            if matured:
-                pid, creation = bridge_process_identity(driver)
-                if (pid, creation) == (resolved.get("post_bridge_pid"),
-                                       resolved.get("post_bridge_creation_date")):
-                    resolved = {**resolved, "status": "marriage",
-                                "warm_material_transition": "betrothal_to_marriage",
-                                "warm_material_native_revision": snapshot["native_revision"]}
-                    resolved.pop("alliance_result", None)
-                    _write(state_dir, {**ledger, "resolved": resolved})
-            elif (not _resolved_relation_matches(resolved, relation)
-                  and (resolved.get("status") in {"marriage", "betrothal"}
-                       or not same_heir)):
-                # An old material pair belongs to the old heir or has ended.
-                # Keep its evidence until a new proposal replaces the ledger.
+            warm_rejection = (
+                same_heir and resolved.get("status") in {"refused", "invalidated"}
+                and not _relation_has_partner(relation)
+                and bridge_process_identity(driver) == (
+                    resolved.get("post_bridge_pid"),
+                    resolved.get("post_bridge_creation_date")))
+            if warm_rejection:
+                rejected_candidate_ids = _rejected_candidates(resolved)
                 resolved = None
+            if resolved is not None:
+                matured = (same_heir and resolved.get("status") == "betrothal"
+                           and _positive(candidate)
+                           and (relation.get("primary_spouse_character_id") == candidate
+                                or candidate in relation.get("spouse_character_ids", [])))
+                if matured:
+                    pid, creation = bridge_process_identity(driver)
+                    if (pid, creation) == (resolved.get("post_bridge_pid"),
+                                           resolved.get("post_bridge_creation_date")):
+                        resolved = {**resolved, "status": "marriage",
+                                    "warm_material_transition": "betrothal_to_marriage",
+                                    "warm_material_native_revision": snapshot["native_revision"]}
+                        resolved.pop("alliance_result", None)
+                        _write(state_dir, {**ledger, "resolved": resolved})
+                elif (not _resolved_relation_matches(resolved, relation)
+                      and (resolved.get("status") in {"marriage", "betrothal"}
+                           or not same_heir)):
+                    # An old material pair belongs to the old heir or has ended.
+                    # Keep its evidence until a new proposal replaces the ledger.
+                    resolved = None
         if resolved is not None:
             return _plan_existing_resolution(driver, planned, plan, resolved)
     if relation is not None and _relation_has_partner(relation):
@@ -517,7 +558,8 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
         return {**planned, "plan": {**plan, "family_marriage_legality": legality}}
     # Preserve the exact five-row projection: value-rank all native-final
     # legal rows on compact same-frame age, Dynasty and realm inputs first.
-    ranked, ranking = _rank_five_family_candidates(legal_rows)
+    ranked, ranking = _rank_five_family_candidates(
+        legal_rows, rejected_candidate_ids=rejected_candidate_ids)
     if len(ranked) < 5:
         return {**planned, "plan": {**plan, "family_marriage_status":
                                     "fewer_than_five_projectable_legal_candidates"}}
@@ -539,9 +581,11 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                     or row.get("heir_spouse_character_ids") !=
                         relation["spouse_character_ids"]):
                 raise ValueError("current first-heir relation and proposal projection differ")
-    choice = choose_first_heir_marriage_candidate(legality, projection)
+    choice = choose_first_heir_marriage_candidate(
+        legality, projection, rejected_candidate_ids=rejected_candidate_ids)
     diagnostic = _private_five_candidate_diagnostic(
-        legality, projection, snapshot, choice, ranking)
+        legality, projection, snapshot, choice, ranking,
+        rejected_candidate_ids=rejected_candidate_ids)
     if choice is None:
         return {**planned, "plan": {**plan, "family_marriage_status":
                                     "no_positive_observed_marriage_opportunity",
@@ -549,6 +593,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                                     "family_marriage_current_relationship": relation}}
     return {**planned, "plan": {**plan, "phase": "first_heir_marriage_typed_submit",
         "selected_step": SUBMIT_STEP, "family_marriage_choice": choice,
+        "family_marriage_rejected_candidate_ids": sorted(rejected_candidate_ids),
         "family_marriage_legality": legality,
         "family_marriage_current_relationship": relation,
         "family_marriage_private_diagnostic": diagnostic,
@@ -626,6 +671,27 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
     ledger = read_family_marriage_ledger(state_dir)
     if ledger["pending"] is not None:
         raise ValueError("first-heir marriage already has unresolved submission")
+    prior_rejected = plan.get("family_marriage_rejected_candidate_ids", [])
+    if (not isinstance(prior_rejected, list)
+            or any(not _positive(value) for value in prior_rejected)
+            or len(set(prior_rejected)) != len(prior_rejected)
+            or candidate in prior_rejected):
+        raise ValueError("first-heir marriage has invalid prior refusal history")
+    resolved = ledger.get("resolved")
+    matching_refusal = (
+        isinstance(resolved, dict)
+        and resolved.get("episode_run_id") == snapshot.get("episode_run_id")
+        and resolved.get("heir_character_id") == pending["heir_character_id"]
+        and resolved.get("status") in {"refused", "invalidated"})
+    if matching_refusal:
+        if (_rejected_candidates(resolved) != frozenset(prior_rejected)
+                or bridge_process_identity(driver) != (
+                    resolved.get("post_bridge_pid"),
+                    resolved.get("post_bridge_creation_date"))):
+            raise ValueError("first-heir marriage prior refusal changed before submission")
+    elif prior_rejected:
+        raise ValueError("first-heir marriage prior refusal changed before submission")
+    pending["prior_rejected_candidate_ids"] = prior_rejected
     _write(state_dir, {**ledger, "pending": pending})
     result = driver.submit_observed_first_heir_marriage_private_v1(
         legality=legality, candidate_character_id=choice["candidate_character_id"])
@@ -681,6 +747,15 @@ def query_family_marriage_result_private(driver: object, *,
                     "cold_recovery": cold, "source_pending": dict(pending),
                     "post_bridge_pid": pid,
                     "post_bridge_creation_date": creation}
+        if status in {"refused", "invalidated"}:
+            prior_ids = pending.get("prior_rejected_candidate_ids", [])
+            if (not isinstance(prior_ids, list)
+                    or any(not _positive(value) for value in prior_ids)
+                    or len(set(prior_ids)) != len(prior_ids)
+                    or pending["candidate_character_id"] in prior_ids):
+                raise ValueError("first-heir marriage rejection history is invalid")
+            resolved["rejected_candidate_ids"] = [
+                *prior_ids, pending["candidate_character_id"]]
         _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
     elif cold and status == "pending":
         pid, creation = bridge_process_identity(driver)
