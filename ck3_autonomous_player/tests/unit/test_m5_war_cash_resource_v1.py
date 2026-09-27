@@ -120,6 +120,18 @@ class WarCashResourceTests(unittest.TestCase):
                 forged, frame=FRAME, war_id=WAR_ID,
             )
 
+    def test_future_amount_without_horizon_is_not_a_bound(self) -> None:
+        inputs = complete_inputs()
+        inputs.pop("horizon_days")
+        receipt = observe_active_war_cash_resource_v1(
+            snapshot=snapshot(), war_id=WAR_ID, inputs=inputs,
+        )
+        self.assertEqual(receipt["status"], "incomplete")
+        self.assertIsNone(receipt["war_future_gold_cost_raw"])
+        self.assertIsNone(receipt["joint_gold_reserve_raw"])
+        self.assertEqual(receipt["missing"]["horizon_days"],
+                         "bounded_future_war_horizon_not_observed")
+
 
 if __name__ == "__main__":
     unittest.main()

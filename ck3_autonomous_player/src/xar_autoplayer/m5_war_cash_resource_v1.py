@@ -85,6 +85,10 @@ def observe_active_war_cash_resource_v1(
     future = amounts["future_war_cost_upper_raw"]
     risk = amounts["future_risk_budget_raw"]
     policy = amounts["policy_minimum_gold_reserve_raw"]
+    future_ready = (
+        future is not None and risk is not None
+        and horizon is not None and assumptions is not None
+    )
     return {
         "schema": SCHEMA, "status": "complete" if complete else "incomplete",
         "read_only": True, "source_frame": frame, "war_id": war_id,
@@ -93,12 +97,12 @@ def observe_active_war_cash_resource_v1(
         "existing_shared_gold_commitment_raw": pending,
         "immediate_war_action_cost_raw": immediate,
         "war_future_gold_cost_raw": (
-            future + risk if future is not None and risk is not None else None
+            future + risk if future_ready else None
         ),
         "minimum_gold_reserve_raw": policy,
         "joint_gold_reserve_raw": (
             future + risk + policy
-            if future is not None and risk is not None and policy is not None
+            if future_ready and policy is not None
             else None
         ),
         "horizon_days": horizon,
