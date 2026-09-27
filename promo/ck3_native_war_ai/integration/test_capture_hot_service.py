@@ -49,6 +49,8 @@ class PrivatePhaseTraceContractTests(unittest.TestCase):
                           self.calls[-1][1]["request_fields"])
         self.assertNotIn("capture_runtime_join_width",
                          self.calls[-1][1]["request_fields"])
+        self.assertNotIn("capture_runtime_join_full_entries",
+                         self.calls[-1][1]["request_fields"])
 
     def test_join_width_requires_bool_and_frozen_candidate(self):
         for value in (True, False):
@@ -62,6 +64,27 @@ class PrivatePhaseTraceContractTests(unittest.TestCase):
                         {**self.begin, "candidate_joining_army_id": 22,
                          "capture_runtime_join_width": 1}):
             with self.assertRaises(RuntimeError):
+                private_phase_trace_call(request, enabled=True,
+                                         driver=self.driver)
+        self.assertEqual(len(self.calls), prior)
+
+    def test_join_full_entries_requires_both_explicit_opt_ins(self):
+        valid = {**self.begin, "candidate_joining_army_id": 22,
+                 "capture_runtime_join_width": True,
+                 "capture_runtime_join_full_entries": True}
+        private_phase_trace_call(valid, enabled=True, driver=self.driver)
+        self.assertIs(self.calls[-1][1]["request_fields"]
+                      ["capture_runtime_join_full_entries"], True)
+        prior = len(self.calls)
+        invalid = (
+            {**self.begin, "candidate_joining_army_id": 22,
+             "capture_runtime_join_full_entries": True},
+            {**valid, "capture_runtime_join_width": False},
+            {**valid, "capture_runtime_join_full_entries": 1},
+            {**valid, "candidate_joining_army_id": 0},
+        )
+        for request in invalid:
+            with self.subTest(request=request), self.assertRaises(RuntimeError):
                 private_phase_trace_call(request, enabled=True,
                                          driver=self.driver)
         self.assertEqual(len(self.calls), prior)

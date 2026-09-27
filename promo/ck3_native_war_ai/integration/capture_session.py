@@ -243,6 +243,15 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
                     "Join-width capture needs a frozen candidate ArmyID")
             fields["capture_runtime_join_width"] = capture_join_width
             allowed.add("capture_runtime_join_width")
+        if "capture_runtime_join_full_entries" in request:
+            capture_full_entries = request["capture_runtime_join_full_entries"]
+            require(type(capture_full_entries) is bool,
+                    "Runtime join full-entry capture flag must be bool")
+            require(not capture_full_entries or
+                    fields.get("capture_runtime_join_width") is True,
+                    "Join full-entry capture needs enabled join-width capture")
+            fields["capture_runtime_join_full_entries"] = capture_full_entries
+            allowed.add("capture_runtime_join_full_entries")
     require(set(request) == allowed,
             "Private phase trace request fields differ from the bounded contract")
     return driver._execute_primitive_step(
