@@ -17050,11 +17050,11 @@ def _primary_defender_siege_relief_assessment(
         friendly_ids = balance.get("friendly_army_ids")
         enemy_ids = balance.get("enemy_army_ids")
         published_enemy_ids = {
-            enemy_id
+            roster_enemy_id
             for row in war.get("enemy_armies", [])
             if isinstance(row, dict)
             and _army_tactical_state(row) != "retreating"
-            and (enemy_id := _native_int(row.get("army_id"))) is not None
+            and (roster_enemy_id := _native_int(row.get("army_id"))) is not None
         }
         numeric = (
             _native_int(balance.get("friendly_current_soldiers")),

@@ -1,0 +1,23 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-H2825-SNAPSHOT-POSITION-CORRECTION-20260928",
+  "created_at_utc": "2026-09-27T19:31:56Z",
+  "producer_role": "war_maintainer",
+  "requested_owner_role": "nonwar_operator",
+  "assignee": null,
+  "supersedes": "WAR-ROBERT-H2825-SNAPSHOT-POSITION-20260928",
+  "priority": "correction_before_extra_work",
+  "correction": "Withdraw the earlier request's inference that two native position readers conflict. The erroneous siege_relief.enemy_army_id=83886484 is caused by a Python assignment expression in _primary_defender_siege_relief_assessment: the published_enemy_ids set comprehension rebinds the surrounding enemy_id to the last enemy in the war roster. The target province came from the actual selected sieger 50331920, while the ID was overwritten. This is a planner-local variable collision, not proof of a native snapshot/cache discrepancy.",
+  "support": {
+    "source_file": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "fixed_symbol": "roster_enemy_id",
+    "r0264_risk_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2825-RISK-INPUTS-20260928.r0264-r0265-readonly.json",
+    "r0264_evidence_sha256": "E5B3785948ACD714958336C5AD3075D2C97BED958679F78EAD1485BD125DAFFD",
+    "cross_frame_boundary": "R0264 native:40 final war row and R0265 native:3 route readout both place 50331920 at 2629 and 83886484 at 3660, but they remain distinct frames. The direct local code bug fully explains the wrong candidate ID without merging those frames."
+  },
+  "requested_delivery": [
+    "No extra driver extraction is required solely to resolve the candidate-ID symptom. Please avoid spending the requested R0265 snapshot extraction effort unless it is already available or independently needed for live verification.",
+    "If the exact H2825 source pair becomes available on the receiving machine, the war maintainer will validate the fixed candidate and same-frame war/route agreement in a fresh read-only run. No gameplay action is requested or authorized by this correction."
+  ],
+  "gameplay_action_authorized": false
+}

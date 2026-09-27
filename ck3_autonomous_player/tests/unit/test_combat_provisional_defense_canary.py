@@ -8,6 +8,7 @@ from unittest import mock
 from xar_autoplayer.strategy import (
     QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
     _primary_defender_siege_forecast_ingress,
+    _primary_defender_siege_relief_assessment,
     _provisional_defense_research_assessment,
     _siege_forecast_participant_partition,
     query_combat_simulation_inputs_v3_step,
@@ -77,6 +78,13 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             _army_strength(22, "active_war_enemy", [95], current=311,
                            base_power_raw=311_000_000)
         )
+        candidate = _primary_defender_siege_relief_assessment(
+            frame, commands=[], active_wars=frame["active_wars"],
+            controlled_armies=frame["player_armies"],
+            pursuit_army=frame["player_armies"][0],
+        )
+        self.assertEqual(candidate["enemy_army_id"], 21)
+        self.assertEqual(candidate["target_province_id"], 32)
         preview = _preview_row(
             1, origin=30, target=32, date_raw=frame["date_raw"], route=[31, 32]
         )

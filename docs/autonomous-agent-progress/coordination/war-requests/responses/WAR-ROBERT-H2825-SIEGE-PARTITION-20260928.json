@@ -3,29 +3,29 @@
   "request_id": "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928",
   "status": "claimed",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T19:25:00Z",
+  "updated_at_utc": "2026-09-27T19:31:56Z",
   "source_pr": null,
-  "master_commit": "b7588a1ab607c8e09b9efc59eac24ef25c42c6d1",
+  "master_commit": null,
   "delivery_route": "direct rebase-only master push",
   "interface_contract": {
-    "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_siege_forecast_participant_partition and _primary_defender_siege_forecast_ingress",
+    "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_primary_defender_siege_relief_assessment, _siege_forecast_participant_partition and _primary_defender_siege_forecast_ingress",
     "document": "docs/ck3-native-ai/h2825-siege-participant-partition-2026-09-28.md",
-    "problem": "The former gate required the entire active-war enemy strength roster to equal the set of currently sieging armies at the proposed target, conflating a war roster with one hypothetical encounter. R0265 additionally has an unresolved contradiction: its candidate marks 83886484 as the target sieger, while its route readout places that ArmyID at 3660.",
+    "problem": "The former gate required the entire active-war enemy strength roster to equal the set of currently sieging armies at the proposed target, conflating a war roster with one hypothetical encounter. The candidate ID was also corrupted by a local Python assignment expression: the enemy-roster comprehension overwrote the selected siege enemy_id with the last moving enemy ID 83886484.",
     "same_frame_partition": "Keep the full war enemy roster in the strength and route-contact checks, and require every enemy war-row current position to match its route-contact current position. Only when these native readouts agree, select current target siegers as hypothetical defenders and treat offsite enemies as separate conditional arrival risk. A mismatch blocks with war_contact_position_mismatch rather than choosing either source.",
-    "robert_h2825_report_replay": "R0265 route says player 83886367 reaches target 2629 at raw53218680; army 50331920 is at 2629; army 83886484 is at 3660 and reaches 2629 at raw53219928. However, the same report's siege_relief.enemy_army_id=83886484 with target 2629 implies the war snapshot selected that army as the local sieger. The full active_wars row is omitted from the Git report, so exact participant scope remains unresolved. A constructed war row matching the route yields defender [50331920]; a candidate-implied row is rejected for position mismatch. Neither construction is claimed to be the real R0265 war row.",
+    "robert_h2825_report_replay": "R0265 route says player 83886367 reaches target 2629 at raw53218680; army 50331920 is at 2629; army 83886484 is at 3660 and reaches 2629 at raw53219928. The erroneous siege_relief.enemy_army_id=83886484 is fully explained by the local enemy_id variable collision while target 2629 came from the true selected sieger. The separate R0264 native:40 final war row also places 50331920 at 2629 sieging and 83886484 at 3660 moving; the frames remain distinct, and R0265's full war row is still absent from Git.",
     "action_boundary": "The offsite enemy is unmodeled after target entry. A favorable two-army model cannot authorize direct contact or a qualified attack while it remains offsite. A long route may advance only through the existing exact first-hop preview and one-day contact-free recheck, refreshing the partition at the next frame. No surrender or other war exit is selected by this change."
   },
   "checks": [
-    "test_combat_provisional_defense_canary.py: 7 passed normal and 7 passed under -O. The regression covers checked-in R0265 route times, candidate-implied position mismatch, conditional only-target v3 query, earlier-arriving offsite rejection and no immediate contact with an unmodeled enemy.",
+    "test_combat_provisional_defense_canary.py: 7 passed normal and 7 passed under -O. The regression proves the true sieger remains selected when a second moving enemy follows it in the roster, and covers R0265 route times, position consistency, conditional only-target v3 query, earlier-arriving offsite rejection and no immediate contact with an unmodeled enemy.",
     "test_gameplay_bridge.py and test_general_battle_strategy.py -k siege: 25 passed, 6 subtests passed.",
     "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN."
   ],
   "live_evidence": null,
   "limitations": [
-    "This is a partial source fix and static conditional replay, not a completed H2825 delivery or new game run. R0265 remains blocked and failed. The same report's siege candidate and route-current-position fields conflict for 83886484; the omitted active_wars row is needed before any exact participant claim.",
+    "This is a source fix and static conditional replay, not a new H2825 game run. R0265 remains blocked and failed. The wrong candidate ID is a local variable-clobber bug; there is no evidence of a native position-reader conflict. The R0265 full active_wars row remains absent from Git, so exact live success is unclaimed.",
     "At response time the exact H2825 OneDrive folder WAR-ROBERT-H2825-R0265-2026-09-28 is absent from C:/Users/1/OneDrive. The sending machine reports local copy and hashes, but receiver availability and SHA-256 verification are pending.",
     "The route time comparison is conditional on the current orders. Battle duration, later enemy orders, reinforcement during combat, CB material terms and full continue-versus-surrender utility remain unknown.",
     "The first matching live continuation must use the frozen R0264 source pair and official prepare/rebind/no-launch, not the mutated R0265 driver. It must prove same-frame war-row/route position consistency before querying v3 or claiming this planner block closed."
   ],
-  "next_step": "Obtain the complete R0265 same-frame active_wars row or the exact H2825 source pair through the agreed selective OneDrive route. Verify whether 83886484 was truly marked as the target siege candidate while the route reader placed it at 3660, resolve any native snapshot/cache mismatch, then rerun the bounded formal planner. No live closure is claimed."
+  "next_step": "Receive and SHA-verify the exact H2825 source pair through the agreed selective OneDrive route, prepare a fresh candidate, review a fresh Steam offline frame and rerun the bounded formal planner. The previous snapshot-position request is superseded by its correction because the wrong candidate ID came from local Python variable shadowing. No live closure is claimed."
 }
