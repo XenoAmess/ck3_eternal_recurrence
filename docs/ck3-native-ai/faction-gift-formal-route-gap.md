@@ -39,11 +39,13 @@ The route now retains the pending identity and uses the native driver's
 existing bounded `_wait_for_snapshot` to await a newer paused revision at the
 same game date. When it arrives, it raises the existing pre-submission revision
 mismatch signal so `native_auto_run` performs its one bounded readiness replan;
-that replan selects the already wired receipt query. A timeout or changed
+the M5 collector explicitly passes this signal through its broad source/receipt
+error handlers, and the replan selects the already wired receipt query. A timeout or changed
 date/actor returns a concrete RED with the pending ledger intact. It never
 issues `life-advance` while the gift is unresolved. The initial source-path
 test reproduced the old `life-advance` selection; focused tests now cover
-same-date wait→replan→receipt and timeout→RED in normal and optimized Python.
+same-date wait→replan→receipt and timeout→RED, including the actual
+`GameplayBridgeService.plan_turn` M5 call path, in normal and optimized Python.
 This is source/fixture evidence only. The preserved Robert roots checked for
 C60 have targeting-faction count zero, so there is still no gift-positive
 formal submit, independent gold/opinion/faction postcondition, next-turn
