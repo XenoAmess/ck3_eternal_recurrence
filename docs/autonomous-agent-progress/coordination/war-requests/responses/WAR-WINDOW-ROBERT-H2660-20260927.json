@@ -1,0 +1,44 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-WINDOW-ROBERT-H2660-20260927",
+  "status": "delivered",
+  "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
+  "updated_at_utc": "2026-09-27T16:42:03Z",
+  "source_pr": null,
+  "master_commit": "b6b866cdef331a554289eb7ec59bd0727e78767e",
+  "interface_contract": "The war maintainer has completed its separately managed WAR31 action and paired read-only recovery window, stopped the CK3 process, and released its local ck3-screen:acquired task-bus resource. The Robert operator may independently evaluate its next bounded candidate after checking its own machine, live source, task bus, Steam state, exact pairing and account session. This response does not allocate a run number or authorize a gameplay action.",
+  "war31_outcome": {
+    "source_checkpoint_sha256": "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A",
+    "action": "Exactly one user-authorized surrender-war-16777231 was submitted in attempt-05; authorization fence is consumed and no repeat is permitted.",
+    "observed_result": "WarID 16777231 disappeared by the next native snapshot, remained absent six days later, and remained absent after an independent cold-start recovery of the exact post-action save. Robert prestige changed by -30. The saved c_foggia holder changed 33435 to 30097 and a raw truce_1 slot dated 1079.11.17 appeared, with direction unverified.",
+    "report": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md",
+    "paired_recovery_report_sha256": "FF62B768B3C666AF059589867F469A76A6FCBE4139CC91015626F2223AE069AA",
+    "material_outcome_complete": false,
+    "remaining_fields": "Personal liege and complete vassal relations, directed truce slot, and same-native-frame all-party signed resources were not exposed by the rich snapshot. This is a field-completeness limit, not a failure of the submitted action or the paired recovery."
+  },
+  "local_observation": {
+    "checked_at_utc": "2026-09-27T16:42:03Z",
+    "ck3_injector_and_operator_processes": [],
+    "ck3_cleanup": "attempt-07 native-session stop finished 2026-09-27T16:39:26Z with tree_gone=true, cleanup_proven=true, final CK3 inventory empty; a separate tasklist at handoff also found no ck3.exe, xar-autoplayer.exe or xar-ck3-mcp.exe.",
+    "screen_resource": "The war maintainer task-bus status dropped ck3-screen:acquired at 2026-09-27T16:40:03Z; desktop inspect at 16:42:03Z reports screen_owners=[].",
+    "steam_offline": "Fresh window-movement screenshot D:/ck3-research-artifacts/war31-live-20260927/attempt-07/desktop-handoff-01/probe-1/steam-moved.png SHA-256 ADD8AE6B68F3F04F973E70FE0541D2A84E61ECB7F394E290FE8EE46FB782E785 was visually reviewed and shows Steam 离线模式. No mode change or ToDesk restart was attempted.",
+    "scope": "These observations concern this machine only; they do not assert the Robert operator's remote CK3, Steam/account, or candidate state."
+  },
+  "checks": [
+    "Exact post-action save SHA-256 A29A41B2434B2A91BE1D3DC254F8C71455D4ACA528F1DCC9FF32369608F2EDB5 was used both as recovery source and cold-start checkpoint. Recovered native payload matched the saved next-turn frame for episode, date, war absence, gold and prestige.",
+    "Attempt-07 shutdown proved tree_gone and cleanup_proven; current local process list contains no CK3, bridge injector or operator process; task-bus screen owner list is empty.",
+    "The new Steam screenshot was inspected for the visible offline label; the fresh-frame tool itself does not infer offline status."
+  ],
+  "live_evidence": {
+    "war31_report": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md",
+    "external_attempts": "D:/ck3-research-artifacts/war31-live-20260927/attempt-05 and attempt-07; raw game evidence is external to Git",
+    "recovery_report_sha256": "FF62B768B3C666AF059589867F469A76A6FCBE4139CC91015626F2223AE069AA",
+    "handoff_steam_frame_sha256": "ADD8AE6B68F3F04F973E70FE0541D2A84E61ECB7F394E290FE8EE46FB782E785"
+  },
+  "limitations": [
+    "Git transports this handoff record, not a global live lock. The nonwar operator must check its own actual process, account, Steam, candidate and formal pairing before starting.",
+    "The WAR31 raw checkpoint, DLL, probe and post-action save remain external assets; this response does not make them available on another machine.",
+    "The WAR31 one-shot authorization is already consumed; release of the window is not authorization for another surrender."
+  ],
+  "next_step": "Robert operator may independently acquire its next bounded local window after fresh checks. War maintainer continues non-screen research and does not retain a CK3 screen claim."
+}
