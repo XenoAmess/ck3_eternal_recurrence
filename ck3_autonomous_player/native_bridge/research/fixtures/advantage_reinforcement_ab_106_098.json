@@ -1,0 +1,170 @@
+{
+  "schema": "ck3.advantage_reinforcement_same_checkpoint_ab_106_098.v1",
+  "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+  "source_save_receipt_sha256": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "evidence_sha256": {
+    "098": {
+      "input-freeze.json": "DD0C346F046DB059C56B880A2F9C31686B83C3D5A104934DBB7AEF7D13B64C5C",
+      "ck3-output/preflight.json": "3886CC56B2B96A7BC3F5B39DA771DC2CB887702882FBBA887F7F34C5C97B114D",
+      "ck3-output/interactive-requests-responses/c098-trace-finish.json": "6B158A07A6071D058DE6F3E8994CA0065F09B2311EF79004EB1DDD445B1B8198"
+    },
+    "106": {
+      "input-freeze.json": "8680F5432705E2DE89755D23265279F0CAD7AB89086C621E2215DC7D006FF8D3",
+      "ck3-output/preflight.json": "FEB288712C9C608F705628B5F6FB4D18C02129664278E43989D669AC71647C6D",
+      "ck3-output/interactive-requests-responses/c106-trace-finish.json": "9DF1DB4763A9CC74FCB66751A8D8353A9427D555247C12F474D0BD6D8A31B24A",
+      "ck3-output/session-result.json": "6F720AF9BAD96F38B45CC379E64757C5EAE4C98278481C7BAC8BDD395AF9E025",
+      "ck3-output/capture-report.json": "915CAEA1139905B5EC304C496D7EB861A93F8153E258AE6A31D29A4214B82400",
+      "cleanup-check.json": "1B3FC992333B003DDA1F7DC1FD418172BA2A32FA68BCF6D43344EBB1F959E1C5"
+    }
+  },
+  "gates": {
+    "same_source": "GREEN",
+    "full_trace_semantic_parity": "GREEN",
+    "incoming_army_22": "GREEN",
+    "native_output_parity": "GREEN",
+    "advantage_diagnostic": "GREEN",
+    "clean_exit": "GREEN",
+    "overall": "GREEN"
+  },
+  "comparison": {
+    "combat_id": 16777218,
+    "before_date_raw": 53146488,
+    "after_date_raw": 53146512,
+    "record_count": 7,
+    "join_width": [
+      {
+        "army_id": 22,
+        "side_index": -1,
+        "phase_day": 7,
+        "base_width": 1645,
+        "final_width": 1480
+      },
+      {
+        "army_id": 22,
+        "side_index": 0,
+        "phase_day": 7,
+        "base_width": 2467,
+        "final_width": 2220
+      },
+      {
+        "army_id": 22,
+        "side_index": 0,
+        "phase_day": 8,
+        "base_width": 2467,
+        "final_width": 2220
+      }
+    ],
+    "join_full_side0_entry_counts": [
+      27,
+      40
+    ],
+    "counter_side_retention_raw": [
+      [
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        10000,
+        100000,
+        100000,
+        100000,
+        100000
+      ],
+      [
+        10000,
+        10000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000,
+        100000
+      ]
+    ],
+    "post_counter_attack": {
+      "source": "native_r14_after_0x23cae70_before_damage_scaling",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 7163402981,
+      "side1_raw": 1455075113
+    },
+    "outgoing_damage": {
+      "source": "native_main_tick_before_casualty",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 116118762,
+      "side1_raw": 67660992
+    }
+  },
+  "advantage_106": {
+    "schema_version": 1,
+    "source": "native_cache_0x2308d50_original_calls",
+    "requested": true,
+    "available": true,
+    "failure_flags": 0,
+    "first_aggregator_failure": {
+      "gate": 0,
+      "thread_id": 0,
+      "caller_rva": 0,
+      "caller_address": 0,
+      "side_index": -1,
+      "expected_side_index": -1,
+      "helper_calls": 0,
+      "value_present": false
+    },
+    "materializations": [
+      {
+        "ordinal": 0,
+        "thread_id": 28684,
+        "caller_rva": 41923967,
+        "combat_id": 16777218,
+        "date_raw": 53146488,
+        "base_raw": -300000,
+        "resolved_raw": -1100000,
+        "complete": true,
+        "sides": [
+          {
+            "side_index": 0,
+            "roll": 7,
+            "commander_character_id": 34320,
+            "roll_raw": 700000,
+            "commander_raw": 3500000,
+            "aggregator_raw": 0,
+            "total_raw": 4200000,
+            "helper_calls": 2,
+            "nested_aggregator_calls": 1,
+            "primary_aggregator_calls": 1,
+            "complete": true
+          },
+          {
+            "side_index": 1,
+            "roll": 8,
+            "commander_character_id": 29829,
+            "roll_raw": 800000,
+            "commander_raw": 4200000,
+            "aggregator_raw": 0,
+            "total_raw": 5000000,
+            "helper_calls": 2,
+            "nested_aggregator_calls": 1,
+            "primary_aggregator_calls": 1,
+            "complete": true
+          }
+        ]
+      }
+    ],
+    "diagnostic_observation_complete": true,
+    "forecast_usable": false,
+    "validation_status": "live_validation_pending"
+  },
+  "conclusion": "same_source_reinforcement_day_observer_complete_retrospective_only"
+}
