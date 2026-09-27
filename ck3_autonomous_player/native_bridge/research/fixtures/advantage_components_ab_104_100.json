@@ -1,0 +1,169 @@
+{
+  "schema": "ck3.advantage_components_same_checkpoint_ab_104_100.v1",
+  "source_save_sha256": "E6155C9C127EC3D1D758468653E8ABC3458A96B50EA053E303FDCCAD18C0B731",
+  "source_save_receipt_sha256": "A68C4D38CC14B11FCB4078E8D9074C9EE5793B0EF20674199327E6D0A983B415",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "evidence_sha256": {
+    "100": {
+      "input-freeze.json": "7FB661DC36CF67733F17E447B53B8CDC0E99A4682FA2025792C23EB598338C81",
+      "ck3-output/preflight.json": "43ECB33997C889D901D0009A1ADAA227CB090A8BD2C127D2FC2F22D3D7EB9BE9",
+      "ck3-output/interactive-requests-responses/c100-trace-finish.json": "644580703FE18769B081CCEBCC96B473BF459E4489835777117D6B070014FBFC"
+    },
+    "104": {
+      "input-freeze.json": "855D2F8A763547C1054AA2FCCD167FB3652C351FAD8E6770BA3148066D75F3F4",
+      "ck3-output/preflight.json": "AA46C402FFD96D013FB48AF7B087150FB4401EDB234EBC46BCDB1ED6B5DB8512",
+      "ck3-output/interactive-requests-responses/c104-trace-finish.json": "B92CF0978C4B5954704ADACE63C4DC5B3936396F491DA3872163BE7F4BA02A68",
+      "ck3-output/session-result.json": "72571438CC5AC209B15AD3B0009089C29537B50B3DE815DD87C7ED372B003FFD",
+      "ck3-output/capture-report.json": "82F9ED3F1ACB5F939F3DA17C3ED734C1B21AFE7957C276189F4D7D71EB5697C1",
+      "cleanup-check.json": "1441CB38DED1A95F57ADD0A213571E11493113D2AD488CAA969B30AEF12DF5D3"
+    }
+  },
+  "gates": {
+    "same_source": "GREEN",
+    "freeze_manifest_provenance": "GREEN",
+    "raw_ab_comparison": "GREEN",
+    "advantage_diagnostic": "GREEN",
+    "clean_exit": "GREEN",
+    "overall": "GREEN"
+  },
+  "comparison": {
+    "combat_id": 16777218,
+    "before_date_raw": 53146512,
+    "after_date_raw": 53146536,
+    "counter_pair_equal": true,
+    "post_counter_attack_equal": true,
+    "outgoing_damage_equal": true,
+    "runtime_counter_output": {
+      "source": "native_resolve_counter_classes_after_0x23caf20",
+      "requested": true,
+      "pair_complete": true,
+      "count": 2,
+      "hook_calls": 12,
+      "target_calls": 2,
+      "first_failure_gate": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "countered_entry_count": 24,
+          "countering_entry_count": 14,
+          "context_raw": 125000,
+          "class_count": 13,
+          "capacity": 13,
+          "retention_raw": [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        },
+        {
+          "side_index": 1,
+          "countered_entry_count": 14,
+          "countering_entry_count": 24,
+          "context_raw": 100000,
+          "class_count": 13,
+          "capacity": 13,
+          "retention_raw": [
+            10000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        }
+      ]
+    },
+    "post_counter_attack": {
+      "source": "native_r14_after_0x23cae70_before_damage_scaling",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 7086468150,
+      "side1_raw": 1367059376
+    },
+    "outgoing_damage": {
+      "source": "native_main_tick_before_casualty",
+      "scale": 100000,
+      "count": 2,
+      "side0_raw": 116572401,
+      "side1_raw": 63568260
+    }
+  },
+  "advantage_104": {
+    "schema_version": 1,
+    "source": "native_cache_0x2308d50_original_calls",
+    "requested": true,
+    "available": true,
+    "failure_flags": 0,
+    "first_aggregator_failure": {
+      "gate": 0,
+      "thread_id": 0,
+      "caller_rva": 0,
+      "caller_address": 0,
+      "side_index": -1,
+      "expected_side_index": -1,
+      "helper_calls": 0,
+      "value_present": false
+    },
+    "materializations": [
+      {
+        "ordinal": 0,
+        "thread_id": 26028,
+        "caller_rva": 41923967,
+        "combat_id": 16777218,
+        "date_raw": 53146512,
+        "base_raw": -300000,
+        "resolved_raw": -1100000,
+        "complete": true,
+        "sides": [
+          {
+            "side_index": 0,
+            "roll": 7,
+            "commander_character_id": 34320,
+            "roll_raw": 700000,
+            "commander_raw": 3500000,
+            "aggregator_raw": 0,
+            "total_raw": 4200000,
+            "helper_calls": 2,
+            "nested_aggregator_calls": 1,
+            "primary_aggregator_calls": 1,
+            "complete": true
+          },
+          {
+            "side_index": 1,
+            "roll": 8,
+            "commander_character_id": 29829,
+            "roll_raw": 800000,
+            "commander_raw": 4200000,
+            "aggregator_raw": 0,
+            "total_raw": 5000000,
+            "helper_calls": 2,
+            "nested_aggregator_calls": 1,
+            "primary_aggregator_calls": 1,
+            "complete": true
+          }
+        ]
+      }
+    ],
+    "diagnostic_observation_complete": true,
+    "forecast_usable": false,
+    "validation_status": "live_validation_pending"
+  },
+  "conclusion": "same_source_single_day_observer_complete_retrospective_only"
+}
