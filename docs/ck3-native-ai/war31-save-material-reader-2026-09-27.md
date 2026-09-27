@@ -29,3 +29,5 @@
 投降后的实机差分现见 [WAR31 单次动作结果](war31-r0197-one-shot-live-result-2026-09-28.md)：外置 `attempt-05/save-material-delta-01.json` 将 `1074.11.17` 原件和 `1074.11.23` 保存配对，得到 `c_foggia` holder `33435→30097`、Robert 威望 −30、战后人物对新 `truce_1` 到期 `1079.11.17`。原生即时战后帧也读到威望 −30 与 WarID 消失。**槽位方向和原生同帧人物直属关系仍未证明**；六天跨度的存档差分不冒充同帧 title／全部资源写回。
 
 该投影器本身仍把人物直属关系标作 unavailable；后续独立的[保存层封臣契约投影](war31-save-vassal-contract-edges-2026-09-28.md)对 `vassal_contracts.database` 与人物的契约 ID 清单双向核对，补出了契约定义的直属领主／封臣。这不改变本工具既有输出，也不把六天后的保存层关系声称为即时原生同帧结果。
+
+同理，本工具的 `slot_direction=unverified` 保留其**单独解析存档**时的边界；后续[精确 EXE 槽位方向投影](war31-truce-slot-direction-2026-09-28.md)把序列化 token、关系对象偏移与原生 owner 方向逐字节连接，证明本次战后 `truce_1` 为 `30097 → 29829`。旧报告保持原字节，不能为改写历史报告而覆盖。
