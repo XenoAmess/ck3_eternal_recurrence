@@ -18,6 +18,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer import cli
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
+    RESULT_STEP as FAMILY_RESULT_STEP,
+)
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
 )
@@ -272,6 +275,134 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
 
     def tearDown(self) -> None:
         self._temporary.cleanup()
+
+    def _write_pending_family(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        (self.state_dir / "first-heir-marriage-formal-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.first-heir-marriage-formal.v1",
+                "pending": {
+                    "episode_run_id": _FRAME["episode_run_id"],
+                    "played_character_id": _FRAME["played_character_id"],
+                    "heir_character_id": 38822,
+                    "candidate_character_id": 38710,
+                    "recipient_character_id": 41003,
+                    "pre_native_revision": _FRAME["native_revision"] - 1,
+                },
+                "resolved": None,
+            }), encoding="utf-8",
+        )
+
+    def test_pending_family_claims_recipient_against_same_frame_gift(self) -> None:
+        self._write_pending_family()
+        driver = _Driver(self.state_dir, family_enabled=True)
+        sources = self._query(
+            driver, construction=_construction(status="no_legal_budgeted_building"),
+        )
+        claims = sources["existing_commitments"]
+        self.assertEqual(claims["character_ids"], [38710, 38822, 41003])
+        self.assertEqual(claims["ally_character_ids"], [41003])
+        self.assertEqual(claims["commitment_keys"],
+                         ["first-heir-marriage:38822"])
+        collection = collect_m5_formal_proposals(
+            snapshot=driver.take_snapshot(), sources=sources,
+        )
+        evaluated = collection["dispatch"]["analysis"]["evaluated"]
+        self.assertEqual(len(evaluated), 1)
+        self.assertEqual(evaluated[0]["domain"], "diplomacy")
+        self.assertEqual(evaluated[0]["reason"],
+                         "existing_commitment_conflict")
+
+    def test_due_family_result_precedes_independent_building_submit(self) -> None:
+        self._write_pending_family()
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            family_enabled=True,
+        )
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        building = _construction()
+        building["candidate"]["authored_monthly_income_hundredths"] = 35
+
+        def family_result(driver, planned, snapshot, **kwargs):
+            return {**planned, "plan": {
+                **planned["plan"], "phase": "first_heir_marriage_result_read",
+                "selected_step": FAMILY_RESULT_STEP,
+            }}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=building,
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector."
+            "plan_family_marriage_private", side_effect=family_result,
+            create=True,
+        ) as family):
+            planned = GameplayBridgeService(driver).plan_turn()
+        family.assert_called_once()
+        self.assertEqual(planned["plan"]["selected_step"], FAMILY_RESULT_STEP)
+        self.assertEqual(driver.source_reads, 0)
+
+    def test_waiting_family_claim_blocks_gift_but_allows_independent_building(self) -> None:
+        self._write_pending_family()
+        driver = _Driver(self.state_dir, family_enabled=True)
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        building = _construction()
+        building["candidate"]["authored_monthly_income_hundredths"] = 35
+
+        def family_wait(driver, planned, snapshot, **kwargs):
+            return {**planned, "plan": {
+                **planned["plan"],
+                "family_marriage_status": "await_later_paused_frame",
+            }}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=building,
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector."
+            "plan_family_marriage_private", side_effect=family_wait,
+        ) as family):
+            planned = GameplayBridgeService(driver).plan_turn()
+        family.assert_called_once()
+        self.assertEqual(planned["plan"]["selected_step"],
+                         "private-submit-player-construction-v1")
+        evaluated = planned["plan"]["m5_joint_query_only"]["dispatch"]
+        rows = {row["domain"]: row for row in evaluated["analysis"]["evaluated"]}
+        self.assertEqual(rows["building"]["reason"], "eligible")
+        self.assertEqual(rows["diplomacy"]["reason"],
+                         "existing_commitment_conflict")
+
+    def test_resolved_family_releases_pending_character_claims(self) -> None:
+        self._write_pending_family()
+        path = self.state_dir / "first-heir-marriage-formal-v1.json"
+        ledger = json.loads(path.read_text(encoding="utf-8"))
+        ledger["pending"] = None
+        ledger["resolved"] = {
+            "episode_run_id": _FRAME["episode_run_id"],
+            "status": "betrothal", "material_result": True,
+        }
+        path.write_text(json.dumps(ledger), encoding="utf-8")
+        driver = _Driver(self.state_dir, family_enabled=True)
+        sources = self._query(
+            driver, construction=_construction(status="no_legal_budgeted_building"),
+        )
+        claims = sources["existing_commitments"]
+        self.assertEqual(claims["character_ids"], [])
+        self.assertEqual(claims["ally_character_ids"], [])
+        self.assertEqual(claims["commitment_keys"], [])
+        collection = collect_m5_formal_proposals(
+            snapshot=driver.take_snapshot(), sources=sources,
+        )
+        self.assertEqual(collection["dispatch"]["analysis"]["evaluated"][0]
+                         ["reason"], "eligible")
 
     def _query(
         self, driver: _Driver, *, history: list[dict[str, object]] | None = None,
