@@ -15,3 +15,5 @@
 该工具在无 CK3 的同机环境完成一次实际复跑，生成前图 SHA `96F835...B1235`、移动图 SHA `795B38...6ACC5`，Steam 矩形 `0,0,962,768→20,0,982,768→0,0,962,768`，桌面 `1024×768`；过程资产在外置 `D:/workspace/ck3_native_war_ai_promo_work/steam-fresh-helper-smoke-068/`。后续机器若窗口无法唯一识别、无法安全位移或图像不响应，应把离线预检记为未证明，并排查环境；不能复用旧图和旧收据。
 
 `steam-frame-freshness.json` 只证明画面响应窗口位移，**不是**受管 `capture_session.py` 所需的离线 UI 回执。后者在 `promo/ck3_native_war_ai/integration/capture_session.py:475-481` 精确核对：执行者审阅新图后才可记录 `current_offline_ui_observed=true`；顶层 `observed_at` 须为带时区 ISO 时间且距当前 UTC 为 `0..900` 秒；`screenshot` 必须与图像当时的 `identity(Path(path))` 完全相等，包含 resolve 后绝对 `path`、文件大小 `bytes` 与大写 `sha256`。本工具的 `moved_identity` 已按这三个字段给出可复制的图片身份，但不能替代人工离线判断及其时效记录。068 尝试只填 `path`、`sha256`，被 `Steam screenshot identity changed` 在 CK3 启动前拒绝；原失败 attempt 保留，070 用新目录与完整回执重试。将来不能把本工具的输出原样传给受管启动器，也不能省略 `bytes` 或替代人工离线画面判断。
+
+私有研究 DLL 的精确 SHA、构建开关与受管启动器要求的 capability 字符串应先做**纯离线**检查，再采有时效的新 Steam 图并领取 CK3 资源。073 战宽尝试遗漏 `XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1=ON`，虽然 Steam 截图与源档均通过，仍被启动器静态 capability 门在 CK3 启动前拒绝；该 attempt 保留为 prelaunch RED。075 先用独立 ON 构建验证字符串和聚焦测试，再采新图，避免把未启用的探针当成游戏未出现战宽变化。
