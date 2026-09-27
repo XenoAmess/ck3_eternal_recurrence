@@ -25,6 +25,8 @@
 
 第 5 项战中主动撤退与智能体缺口：[普通战争队列生产端静态审计](ordinary-war-active-retreat-queue-audit-2026-09-27.md)又排除了六个邻近入队点，它们分别是创教、头衔、首都、宫廷设置和雇佣类命令，不能据此声称已找到普通战争 AI 的败势撤退策略；纯 AI 连续观察仍只见败后自动撤退。更直接的智能体缺口是：当前生产策略仅消费原生撤退合法性的 `too_early` 日期门来安排观察，**尚未在已开战状态用整场有界估计选择继续打或主动撤退**。原生 typed preview/order 能力已存在，下一步须先证明同一暂停帧的 active CombatID 输入足以从当前兵力/软硬损失起算，再接我方自有风险阈值、原生合法性、确切目的地预览和动作后新 revision 读回；不能把战前 `contact_admission` 反过来当作战中撤退策略，也不能称其为原版 AI parity。
 
+[战中预测输入审计](active-combat-forecast-input-gap-2026-09-27.md)进一步确认：v3 的 `ongoing_combats` 只来自**本次请求选中的军队**，并非全局其他战斗，因此生产 `forecast_fixed_contact` 现在会在所选军队已参战或该观察字段缺失时返回 typed unavailable，防止把“重新从第 0 日接战”的结果冒充现役 CombatID 的续算；其他独立军队的战前接战估计照常使用。battle-control 已有真实阶段、roll、双方逐团 current/soft 与战宽，但缺同一次 native application-main 的完整续算输入，现有 trial 也没有从主阶段第 N 日起跑的入口。下一步是独立 resumed 初态、同帧输入与原版对拍，然后把“继续/合法撤退”接进实际游玩策略；单纯解除这道 guard 不能解决问题。
+
 第 5 项延长回放启动门：[076 预检诊断](winner-ai-postsubmit-076-prelaunch-steam-diagnostic.md)发现 Steam 桌面画面与 074 旧图逐字节相同、任务栏时钟冻结；UI Automation、直接窗口采样和可恢复重绘也未给出可读的当前离线状态。076 因此在 **CK3 启动前**保留 environment RED，没有新增 AI 移动或 ETA 结果。Steam 本次进程的离线启动日志和持久偏好是旁证，不冒充实时 UI；下一次新 attempt 须先恢复可靠离线状态取证，再执行已冻结的有限日观察计划。
 
 第 4 项片中身份映射：[两份配对原生存档的只读复核](maa-regiment-87-save-name-identity-2026-09-27.md)均把 RegimentID `87` 绑定为 `mubarizun`，原版简中为“穆巴里尊”，属职业兵士重步兵；ProvinceID `2633` 为“墨西拿”。该身份可用于视频文字与智能体解释层，但兵种定义的基础坚韧 `25` 与同帧有效值 `26.25` 的差额仍不能仅由名称推断修正来源。
@@ -46,6 +48,8 @@
 第 4 项战宽局部实测更新：[078 独立回放](join-width-production-and-fire.md#078-两点战宽实采与第三点线程门)在同一 CombatID `16777218`、原生日期 `53146512` 见 ArmyID `22` 加入 side 0；join 入口→正常返回的 base width `1645→2467`、final width `1480→2220`。首次 side0 出伤点又被错误的 mailbox 线程等式拒绝，故完整三点探针仍为 collector RED；不能把 `2220` 写成已经捕获的出伤器入参。075/077/078 的原始失败均保留。[079](join-width-production-and-fire.md#079-实机前环境-red) 已准备好修正线程门的私有 DLL，却因无法取得新鲜、可读的 Steam 离线状态而在 CK3 启动前环境 RED；不算战宽阴性样本。下一次必须用新 attempt 重采三点。上段旧的“同线程”取证要求以专题中的 077/078 勘误为准：join 两点自身同线程，phase-fire 可在另一线程，但必须同 CombatID/日期和 side。
 
 078 的局部模型对拍还确认：以原版森林宽度乘数 `90000` 和实采双方 totals 为输入，已有 `update_combat_width` 对入口/返回两组 base/final 共四个数值零差。它是**给定当日参战身份和人数**后的算术核，不产生未来增援到达日；后续 trial 必须同时更新 roster、entry 状态、双方人数缓存和宽度。旧 side0 缓存与新 ArmyID `22` 的人数直接相加会高出实采返回值 `5627319` Q100000。[同一原始回执的七边界 entry 交叉核算](join-width-production-and-fire.md#078-七边界-entry-交叉核算2026-09-27-追加证据)又发现：前一日旧 side0 缓存 `160317482` 高于 27 条旧 entry 的合计 `154690163`，正差 `5627319`；次日旧 entry 逐 ID 未变，新增 ArmyID `22` 的 13 条合计 `256000000`，join 返回 `410690163=154690163+256000000`。这定位了观测窗口内的旧缓存差，但前一日记录不是 join 入口同一钩子边界，仍不能把简单加法写成通用转移。下一版 080 已冻结同帧入口/返回 full-entry 只读采集合同，实机须先恢复新鲜 Steam 离线状态取证。
+
+[未来增援路线输入审计](future-reinforcement-trial-input-boundary-2026-09-27.md)确认现有 route ETA、AI 求援 assignment 和一日接战查询只给**当前路线的条件候选**：assignment 目标是 Province，`contact_if_now_selected_combat_id` 只指现在，不能提前指定到达日的 CombatID、side 或完整 entry 状态。078 的实测 join 也不能替未来所有日子造名单。因此后续先逐日采真实 help-assignment→到达→同 CombatID join，再以 080 同一 hook 的完整 entry 与旧团刷新状态生成 typed `participant-update`；trial 接线必须在该日同时更新 roster、属性、反制、人数缓存和战宽。既有固定参战者模型仍可在标注条件与未知项后供战前策略使用。
 
 第 4 项人物与军队称呼更新：[双日存档身份映射](episode01-day11-day21-combat-human-names-2026-09-27.md)已将 87 号穆巴里尊归到阿里的 ArmyID `16777221`，这场战斗是阿里一方、拉马丹指挥，对罗贝尔一方；第 21 日新增 ArmyID `22` 是穆尼斯的军队。视频与智能体解释层可以用这些带 ID 的称呼。[军队标题静态边界](episode01-army-ui-name-boundary-2026-09-27.md)尚未读到 `Army.GetNameNoTooltip` 的本场返回，不能把存档中的 name seed 拼成精确 UI 军队标题。
 
