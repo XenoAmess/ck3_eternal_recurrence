@@ -21,8 +21,13 @@ ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / "mod_auto_upgrade_buildings"
 FIXTURE = ROOT / "tools" / "fixtures" / "auto_upgrade_buildings_acceptance"
 WORKSHOP_DESCRIPTION = ROOT / "workshop" / "auto_upgrade_buildings_description.bbcode"
-DEFAULT_GAME_ROOT = Path(
-    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"
+GAME_ROOT_CANDIDATES = (
+    Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"),
+    Path(r"C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"),
+)
+DEFAULT_GAME_ROOT = next(
+    (candidate for candidate in GAME_ROOT_CANDIDATES if candidate.is_dir()),
+    GAME_ROOT_CANDIDATES[0],
 )
 LOC_KEYS = {
     "enable_auto_build",
@@ -176,7 +181,7 @@ def validate(
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="4.0.1"\n'
+        'version="4.0.2"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.19.0.6"\n'
@@ -257,6 +262,8 @@ def validate(
     if enable_decision is None:
         errors.append("enable decision block is missing")
     else:
+        if "desc = enable_auto_build_desc" not in enable_decision:
+            errors.append("enable decision must display its localized short description")
         for fragment in (
             'gui = "decision_view_widget_option_list_generic"',
             "controller = decision_option_list_controller",
@@ -391,6 +398,12 @@ def validate(
             errors.append("domain-limit gate must precede payer scopes and province iteration")
         if pause_flag in global_loop or "domain_limit_available" in global_loop:
             errors.append("global loop must continue scheduling players while building is paused")
+        reset = "set_variable = { name = aub_upgrades_this_scan value = 0 }"
+        cap = "scope:aub_payer = { var:aub_upgrades_this_scan < 15 }"
+        if build_pass.count(reset) != 1 or build_pass.find(reset) > build_pass.find(iterator):
+            errors.append("each character build pass must reset its quota before scanning")
+        if build_pass.count(cap) != 1:
+            errors.append("province iterator must stop after 15 successful upgrades")
     if "ai_check_frequency" in decisions or decisions.count("ai_check_interval = 0") != 2:
         errors.append("decisions must use CK3 1.19 ai_check_interval syntax")
     if "auto_build.0001" in events:
@@ -443,6 +456,11 @@ def validate(
             errors.append(f"Mandala minor-building edge inventory drifted: {root}")
     if effects.count("aub_upgrade_chain_") != len(CHAINS) * 2:
         errors.append("generated building chain call/definition inventory drifted")
+    dispatch = extract_block(effects, "aub_upgrade_all_supported_buildings_effect")
+    if dispatch is None or dispatch.count(
+        "scope:aub_payer = { var:aub_upgrades_this_scan < 15 }"
+    ) != len(CHAINS):
+        errors.append("each dispatched chain must observe the 15-upgrade quota")
     if effects.count("aub_can_upgrade_to_") != len(EDGES):
         errors.append("generated qualification-trigger call inventory drifted")
     if triggers.count("aub_can_upgrade_to_") != len(EDGES):
@@ -476,6 +494,10 @@ def validate(
             if fragment not in affordability:
                 errors.append(f"gold affordability contract missing: {fragment}")
     if payment is not None:
+        if payment.count(
+            "scope:aub_payer = { change_variable = { name = aub_upgrades_this_scan add = 1 } }"
+        ) != 1:
+            errors.append("successful payment must count exactly one upgrade")
         if payment.count("remove_short_term_treasury = $GOLD$") != 2:
             errors.append("gold payment effect must have treasury-only and priority treasury paths")
         if payment.count("remove_short_term_gold = $GOLD$") != 2:
@@ -568,6 +590,8 @@ def validate(
             errors.append(f"localization key inventory mismatch: {relative}")
         if any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
+        if "15" not in entries.get("enable_auto_build_desc", ""):
+            errors.append(f"visible 15-upgrade limit missing: {relative}")
         for key, item in entries.items():
             if key.endswith("_confirm") and r"\n" in item:
                 errors.append(f"policy confirmation contains a forced line break: {relative}:{key}")
@@ -672,6 +696,8 @@ def validate(
         "AUBT: TEST PASS mandala_citadel_shrine",
         "AUBT: TEST PASS mandala_sacred_pool",
         "AUBT: TEST PASS mandala_vihara_halls",
+        "AUBT: TEST PASS fifteen_upgrade_quota",
+        "AUBT: TEST PASS next_scan_quota_reset",
         "AUBT: TEST PASS succession_enabled_retained",
         "AUBT: TEST PASS succession_policy_retained",
         "AUBT: TEST PASS succession_loop_retained",
@@ -731,7 +757,8 @@ def validate(
         workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
         for fragment in (
             "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
-            "Version 4.0.1 · CK3 1.19.0.6",
+            "Version 4.0.2 · CK3 1.19.0.6",
+            "[h1]4.0.2 更新记录[/h1]",
             "[h1]4.0.1 更新记录[/h1]",
             "[h1]原作、致谢与授权[/h1]",
             "[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596580780]自动升级建筑（新版）[/url]",

@@ -824,8 +824,10 @@ def ensure_decisions_panel(artifacts: Path, stem: str) -> None:
                 acceptance.deliberate_click(
                     candidate, "dynamically located native Decisions HUD tab"
                 )
+                # OCR can spend several seconds per live frame while CK3 is
+                # finishing a cold load; keep the two-frame proof intact.
                 if not _wait_for_decisions_header(
-                    artifacts, f"{stem}_decisions_panel_scan.png", 6.0
+                    artifacts, f"{stem}_decisions_panel_scan.png", 30.0
                 ):
                     acceptance.ImageGrab.grab().save(
                         artifacts / f"timeout_{stem}_decisions_panel_scan.png"

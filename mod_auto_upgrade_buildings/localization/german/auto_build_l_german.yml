@@ -1,7 +1,7 @@
 ﻿l_german:
  enable_auto_build:0 "Automatischen Ausbau aktivieren"
  enable_auto_build_tooltip:0 "Automatischen Ausbau aktivieren"
- enable_auto_build_desc:0 "Aktiviert den automatischen Ausbau."
+ enable_auto_build_desc:0 "Aktiviert den automatischen Ausbau. Pro Durchgang werden höchstens 15 Verbesserungen abgeschlossen."
  enable_auto_build_text:0 "Alle 15 Tage wird jede berechtigte bestehende Gebäudekette mit einer nächsten Stufe in deinen direkt gehaltenen Provinzen um eine Stufe aufgewertet.\nGold wird gemäß der in diesem Beschluss gewählten Finanzierungsstrategie gezahlt; ein einzelner Kostenbetrag wird niemals zwischen Reichsschatz und persönlichem Gold aufgeteilt. Du kannst außerdem die gesamte Runde pausieren, wenn du dein Domänenlimit überschritten hast, oder weiterbauen; eine Pause stoppt die Schleife nicht und wird automatisch aufgehoben, sobald du wieder innerhalb des Limits bist.\nAufwertungen verwenden die Basiskosten von CK3 1.19.0.6 ohne Rabatte und werden sofort abgeschlossen.\nHaupt-, reguläre, Herzogtums- und Spezialgebäude werden in Burg-, Stadt-, Tempel-, Stammes- und Mandala-Tempelzitadellen-Besitztümern unterstützt. Laufende Bauvorhaben, alle Wohnsitze, Nomaden- und Hirtenbesitztümer, das Mandala-Hauptstadt-Großprojekt und Endstufen werden nicht berührt."
  enable_auto_build_confirm:0 "Gewiss"
  enable_auto_build_choose_policy_button:0 "Finanzierungs- und Domänenstrategie wählen"

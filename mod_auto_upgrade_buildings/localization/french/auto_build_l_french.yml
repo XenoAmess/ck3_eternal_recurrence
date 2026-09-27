@@ -1,7 +1,7 @@
 ﻿l_french:
  enable_auto_build:0 "Activer la construction automatique"
  enable_auto_build_tooltip:0 "Activer la construction automatique"
- enable_auto_build_desc:0 "Active la fonction de construction automatique."
+ enable_auto_build_desc:0 "Active la fonction de construction automatique. Chaque vérification effectue au plus 15 améliorations."
  enable_auto_build_text:0 "Tous les 15 jours, chaque chaîne de bâtiments existante éligible disposant d'un palier suivant dans vos provinces directement détenues est améliorée d'un niveau.\nL'or est payé selon la politique de financement choisie dans cette décision ; un même coût n'est jamais réparti entre le trésor du royaume et l'or personnel. Vous pouvez aussi mettre en pause toute la passe lorsque vous dépassez votre limite de domaine, ou continuer à construire ; une pause n'arrête pas la boucle et se lève automatiquement dès que vous êtes de nouveau dans la limite.\nLes améliorations utilisent les coûts de base de CK3 1.19.0.6 sans remise et s'achèvent instantanément.\nLes bâtiments principaux, réguliers, de duché et spéciaux sont pris en charge dans les holdings de type château, ville, temple, tribal et citadelle-temple Mandala. Les constructions en cours, tous les domiciles, les holdings nomades et de bergers, le Grand Projet de la Capitale Mandala ainsi que les paliers terminaux ne sont pas affectés."
  enable_auto_build_confirm:0 "Bien sûr"
  enable_auto_build_choose_policy_button:0 "Choisir la politique de financement et de domaine"

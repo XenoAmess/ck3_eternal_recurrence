@@ -682,6 +682,58 @@ aubt.10 = {
 			}
 		}
 
+		# Exercise fifteen confirmed payments with a fixed 15-attempt guard.
+		# This repeated-chain probe uses the same production payment effect, then
+		# tests that the production dispatcher refuses a sixteenth candidate.
+		set_variable = { name = aub_upgrades_this_scan value = 0 }
+		set_variable = { name = aubt_quota_attempts value = 0 }
+		while = {
+			limit = { var:aubt_quota_attempts < 15 }
+			global_var:aubt_province = {
+				if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+				else_if = { limit = { has_building = barracks_01 } remove_building = barracks_01 }
+				add_building = barracks_01
+				province_owner = { save_scope_as = holder }
+				province_owner = { save_scope_as = build_owner }
+				county = { save_scope_as = county }
+				aub_upgrade_chain_barracks_01_effect = yes
+			}
+			change_variable = { name = aubt_quota_attempts add = 1 }
+		}
+		global_var:aubt_province = {
+			if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+			add_building = barracks_01
+			province_owner = { save_scope_as = holder }
+			province_owner = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
+		}
+		set_variable = { name = aubt_quota_gold_before value = gold }
+		global_var:aubt_province = { aub_upgrade_all_supported_buildings_effect = yes }
+		if = {
+			limit = {
+				var:aub_upgrades_this_scan = 15
+				gold = var:aubt_quota_gold_before
+				global_var:aubt_province = { has_building = barracks_01 }
+			}
+			debug_log = "AUBT: TEST PASS fifteen_upgrade_quota"
+		}
+		else = { debug_log = "AUBT: TEST FAIL fifteen_upgrade_quota" }
+		# The real character event must reset the quota before its province scan.
+		remove_character_flag = aub_pause_when_over_domain_limit
+		add_character_flag = enable_auto_build
+		trigger_event = auto_build.0004
+		if = {
+			limit = {
+				var:aub_upgrades_this_scan > 0
+				NOT = { var:aub_upgrades_this_scan > 15 }
+				global_var:aubt_province = { has_building = barracks_02 }
+			}
+			debug_log = "AUBT: TEST PASS next_scan_quota_reset"
+		}
+		else = { debug_log = "AUBT: TEST FAIL next_scan_quota_reset" }
+		remove_character_flag = enable_auto_build
+		remove_variable = aubt_quota_attempts
+
 		# Castle main building. The starting capital is already a castle; do not
 		# reapply its holding type because CK3 rejects redundant conversions.
 		global_var:aubt_province = {
@@ -722,6 +774,7 @@ aubt.10 = {
 		# Exact negative gate: Apulia's plains terrain cannot upgrade outposts.
 		# The source is materialized first, then all three player resources must
 		# remain unchanged when the generated vanilla target gate rejects it.
+		set_variable = { name = aub_upgrades_this_scan value = 0 }
 		global_var:aubt_province = {
 			# The core matrix has already verified barracks_01 -> 02; release that
 			# regular slot before installing the deliberately terrain-invalid source.
@@ -754,6 +807,7 @@ aubt.10 = {
 				gold = var:aubt_gold_before_gate
 				prestige = var:aubt_prestige_before_gate
 				piety = var:aubt_piety_before_gate
+				var:aub_upgrades_this_scan = 0
 			}
 			debug_log = "AUBT: TEST PASS vanilla_gate_rejection"
 		}

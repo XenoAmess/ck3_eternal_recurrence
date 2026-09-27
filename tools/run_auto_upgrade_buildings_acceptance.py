@@ -21,11 +21,16 @@ from pathlib import Path, PurePosixPath
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CK3_EXE = Path(
-    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\ck3.exe"
+DEFAULT_CK3_EXES = (
+    Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\ck3.exe"),
+    Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"))
+    / "Steam" / "steamapps" / "common" / "Crusader Kings III" / "binaries" / "ck3.exe",
 )
-if "XAR_CK3_EXE" not in os.environ and DEFAULT_CK3_EXE.is_file():
-    os.environ["XAR_CK3_EXE"] = str(DEFAULT_CK3_EXE)
+if "XAR_CK3_EXE" not in os.environ:
+    for candidate in DEFAULT_CK3_EXES:
+        if candidate.is_file():
+            os.environ["XAR_CK3_EXE"] = str(candidate)
+            break
 
 import build_auto_upgrade_buildings_release as release
 import ck3_live_run_id as live_ids
@@ -104,6 +109,8 @@ REQUIRED_MARKERS = (
     "AUBT: TEST PASS mandala_citadel_shrine",
     "AUBT: TEST PASS mandala_sacred_pool",
     "AUBT: TEST PASS mandala_vihara_halls",
+    "AUBT: TEST PASS fifteen_upgrade_quota",
+    "AUBT: TEST PASS next_scan_quota_reset",
     "AUBT: TEST PASS succession_enabled_retained",
     "AUBT: TEST PASS succession_policy_retained",
     "AUBT: TEST PASS succession_loop_retained",
@@ -793,7 +800,9 @@ def run_cell(
             raise acceptance.RunnerError(diagnostics[-1])
         isolated.dismiss_external_main_menu_popup(artifacts)
         acceptance.navigate_lobby(artifacts)
-        isolated.wait_for_gameplay_hud(artifacts)
+        # Cold starts on this machine can finish bookmark generation near the
+        # previous 180-second deadline while the loading screen is still up.
+        isolated.wait_for_gameplay_hud(artifacts, timeout_s=900)
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
         policy_ui = (
             {

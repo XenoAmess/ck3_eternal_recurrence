@@ -27,6 +27,8 @@ auto_build.0004 = {
     
     immediate = {
         hidden_effect = {
+            # Each character receives a fresh quota on this 15-day dispatch.
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
             # 无四期 flag 等价于 3.0.0 的“超直辖仍修建”。选择暂停时，
             # 只有原版普通超直辖警报尚未触发（可用直辖数 >= 0）才执行整轮。
             if = {
@@ -44,6 +46,7 @@ auto_build.0004 = {
                 # 仅遍历当前玩家直接持有、未出租且能承载普通省份建筑的地产。
                 every_directly_owned_province = {
                     limit = {
+                        scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
                         has_ongoing_construction = no
                         barony = { is_leased_out = no }
                         OR = {

@@ -224,6 +224,9 @@ def render_effects() -> str:
         "\telse = {",
         "\t\tscope:aub_payer = { remove_short_term_gold = $GOLD$ }",
         "\t}",
+        "\t# Every payment is reached only after the target building exists.",
+        "\t# Prestige/piety payments delegate here, so each success counts once.",
+        "\tscope:aub_payer = { change_variable = { name = aub_upgrades_this_scan add = 1 } }",
         "}",
         "",
         "aub_pay_gold_prestige_building_cost_effect = {",
@@ -254,7 +257,10 @@ def render_effects() -> str:
         lines.extend(
             [
                 "\tif = {",
-                f"\t\tlimit = {{ has_building_or_higher = {chain.root} }}",
+                "\t\tlimit = {",
+                "\t\t\tscope:aub_payer = { var:aub_upgrades_this_scan < 15 }",
+                f"\t\t\thas_building_or_higher = {chain.root}",
+                "\t\t}",
                 f"\t\t{chain_effect_name(chain)} = yes",
                 "\t}",
             ]

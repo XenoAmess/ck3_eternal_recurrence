@@ -1,7 +1,7 @@
 ﻿l_english:
  enable_auto_build:0 "Enable Auto Build"
  enable_auto_build_tooltip:0 "Enable Auto Build"
- enable_auto_build_desc:0 "Enable the auto build function."
+ enable_auto_build_desc:0 "Enable the auto build function. Each pass completes at most 15 upgrades."
  enable_auto_build_text:0 "Every 15 days, each eligible existing building chain with a next tier in your directly held provinces is upgraded by one tier.\nGold is paid according to the funding policy selected in this decision; a single cost is never split between the realm treasury and personal gold. You can also pause the entire pass while over your domain limit or keep building; a pause does not stop the loop and automatically lifts once you are back within the limit.\nUpgrades use the CK3 1.19.0.6 base costs without discounts and finish instantly.\nMain, regular, duchy, and special buildings are supported in castle, city, temple, tribal, and Mandala temple-citadel holdings. Ongoing construction, all domiciles, nomad and herder holdings, the Mandala Capital Great Project, and terminal tiers are not touched."
  enable_auto_build_confirm:0 "Certainly"
  enable_auto_build_choose_policy_button:0 "Choose Funding and Domain Policy"

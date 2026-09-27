@@ -1,7 +1,7 @@
 ﻿l_korean:
  enable_auto_build:0 "자동 건설 활성화"
  enable_auto_build_tooltip:0 "자동 건설 활성화"
- enable_auto_build_desc:0 "자동 건설 기능을 활성화합니다."
+ enable_auto_build_desc:0 "자동 건설 기능을 활성화합니다. 각 검사당 최대 15회의 업그레이드가 완료됩니다."
  enable_auto_build_text:0 "15일마다 직접 보유한 영지에 이미 존재하고 다음 단계가 있으며 조건을 충족하는 각 건물 연쇄가 한 단계씩 업그레이드됩니다.\n금화는 이 결정에서 선택한 자금 정책에 따라 지급되며, 단일 비용이 국고와 개인 금화로 분할되지 않습니다. 직할령 한도를 초과한 동안 전체 자동 건설 처리를 일시 중지하거나 계속 건설하도록 선택할 수도 있습니다. 일시 중지는 반복을 멈추지 않으며 한도 내로 돌아오면 자동으로 해제됩니다.\n업그레이드에는 할인 없는 CK3 1.19.0.6 기본 비용이 적용되며 즉시 완료됩니다.\n성채·도시·사원·부족·Mandala 사원 성채 영지의 주요·일반·공작령·특수 건물을 지원합니다. 건설 중인 영지, 모든 거처, 유목민 및 목축민 영지, Mandala Capital Great Project, 최종 단계 건물은 대상에서 제외됩니다."
  enable_auto_build_confirm:0 "물론입니다"
  enable_auto_build_choose_policy_button:0 "자금 및 직할령 한도 정책 선택"

@@ -1,7 +1,7 @@
 ﻿l_spanish:
  enable_auto_build:0 "Activar construcción automática"
  enable_auto_build_tooltip:0 "Activar construcción automática"
- enable_auto_build_desc:0 "Activa la función de construcción automática."
+ enable_auto_build_desc:0 "Activa la función de construcción automática. Cada pasada completa como máximo 15 mejoras."
  enable_auto_build_text:0 "Cada 15 días, cada cadena de edificios existente y apta que tenga un nivel siguiente en las provincias que posees directamente mejora un nivel.\nEl oro se paga según la política de financiación seleccionada en esta decisión; un único coste nunca se divide entre el tesoro del reino y el oro personal. También puedes pausar toda la pasada cuando superes tu límite de dominio o seguir construyendo; la pausa no detiene el bucle y se levanta automáticamente al volver a estar dentro del límite.\nLas mejoras usan los costes base de CK3 1.19.0.6 sin descuentos y finalizan al instante.\nSe admiten edificios principales, regulares, de ducado y especiales en dominios de castillo, ciudad, templo, tribales y ciudadelas-templo Mandala. No se modifican dominios con obras en curso, ningún domicilio, dominios nómadas o de pastores, el Gran Proyecto de la Capital Mandala ni los niveles finales."
  enable_auto_build_confirm:0 "Por supuesto"
  enable_auto_build_choose_policy_button:0 "Elegir política de financiación y de dominio"

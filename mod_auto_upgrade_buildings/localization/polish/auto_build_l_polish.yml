@@ -1,7 +1,7 @@
 ﻿l_polish:
  enable_auto_build:0 "Włącz automatyczną rozbudowę"
  enable_auto_build_tooltip:0 "Włącz automatyczną rozbudowę"
- enable_auto_build_desc:0 "Włącza funkcję automatycznej rozbudowy."
+ enable_auto_build_desc:0 "Włącza funkcję automatycznej rozbudowy. Każde przejście wykonuje co najwyżej 15 ulepszeń."
  enable_auto_build_text:0 "Co 15 dni każdy istniejący łańcuch budowli spełniający warunki i posiadający kolejny poziom w twoich bezpośrednio posiadanych prowincjach jest ulepszany o jeden poziom.\nZłoto jest pobierane zgodnie z polityką finansowania wybraną w tej decyzji; pojedynczy koszt nigdy nie jest dzielony między skarbiec państwa a osobiste złoto. Możesz również wstrzymać cały przebieg po przekroczeniu limitu domeny albo kontynuować budowę; wstrzymanie nie zatrzymuje pętli i automatycznie kończy się po powrocie do limitu.\nUlepszenia korzystają z bazowych kosztów CK3 1.19.0.6 bez zniżek i kończą się natychmiast.\nGłówne, zwykłe, książęce i specjalne budowle są obsługiwane w posiadłościach zamkowych, miejskich, świątynnych, plemiennych oraz cytadelach świątynnych Mandala. Trwające budowy, wszystkie siedziby, posiadłości koczowników i pasterzy, Wielki Projekt Stolicy Mandala oraz poziomy końcowe nie są modyfikowane."
  enable_auto_build_confirm:0 "Oczywiście"
  enable_auto_build_choose_policy_button:0 "Wybierz politykę finansowania i domeny"
