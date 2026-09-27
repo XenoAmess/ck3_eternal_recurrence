@@ -239,6 +239,110 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
+    def test_wartime_construction_observes_native_choice_without_spend(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.snapshot["player_armies"] = [{"army_id": 791}]
+            baseline = {"plan": {"selected_step": "query-army-strengths-v1"},
+                        "revision": 3}
+            first = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())
+            plan = first["plan"]
+            observation = plan["construction_wartime_observation"]
+            self.assertEqual(plan["selected_step"], "query-army-strengths-v1")
+            self.assertEqual(observation["status"], "observed")
+            self.assertEqual(observation["native_source_status"], "selected")
+            self.assertEqual(observation["candidate"]["stock_gold_cost_raw"],
+                             15_000_000)
+            self.assertEqual(observation["candidate"]
+                             ["authored_monthly_income_hundredths"], 35)
+            self.assertEqual(observation["observed_active_war_count"], 1)
+            self.assertEqual(observation["observed_player_army_count"], 1)
+            self.assertIsNone(observation["war_future_gold_cost_raw"])
+            self.assertIsNone(observation["existing_shared_gold_commitment_raw"])
+            self.assertEqual(observation["joint_budget_affordability"],
+                             "unassessed")
+            self.assertEqual(observation["native_proof_epoch"], 30)
+            self.assertTrue(observation["native_query_request_id"].startswith(
+                "construction-read-"))
+            self.assertFalse(observation["formal_action_ready"])
+            self.assertEqual([row["step"] for row in driver.requests],
+                             [transport.QUERY_NATIVE])
+            again = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())
+            self.assertEqual(again["plan"]["construction_wartime_observation"],
+                             observation)
+            self.assertEqual(len(driver.requests), 1)
+            with self.assertRaisesRegex(BridgeUnavailableError,
+                                         "stable admitted paused actor frame"):
+                transport.query_construction_private(driver, expected_revision=3)
+
+    def test_wartime_construction_cash_mismatch_is_read_only_red(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.gold_override = 49_000_000
+            baseline = {"plan": {"selected_step": "query-army-strengths-v1"},
+                        "revision": 3}
+            observation = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())[
+                    "plan"]["construction_wartime_observation"]
+            self.assertEqual(observation["status"], "source_red")
+            self.assertEqual(observation["reason"], "same_frame_cash_mismatch")
+            self.assertIsNone(observation["candidate"])
+            self.assertFalse(observation["formal_action_ready"])
+            self.assertFalse(any(row["step"] == transport.ACTION_NATIVE
+                                 for row in driver.requests))
+
+    def test_wartime_no_candidate_and_incomplete_coverage_stay_distinct(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.no_positive_building = True
+            baseline = {"plan": {"selected_step": "query-army-strengths-v1"},
+                        "revision": 3}
+            complete = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())[
+                    "plan"]["construction_wartime_observation"]
+            self.assertEqual(complete["status"], "observed")
+            self.assertEqual(complete["native_source_status"],
+                             "no_legal_budgeted_building")
+            self.assertIsNone(complete["candidate"])
+            driver.positive_coverage_incomplete = True
+            driver.snapshot = frame(4)
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.snapshot["date_raw"] = 53_178_336
+            driver.snapshot["played_character_gold"]["raw"] = 35_000_000
+            incomplete = plan_construction_private(
+                driver, {**baseline, "revision": 4}, driver.snapshot, [], set())[
+                    "plan"]["construction_wartime_observation"]
+            self.assertEqual(incomplete["status"], "observed")
+            self.assertEqual(incomplete["native_source_status"],
+                             "evidence_insufficient")
+            self.assertIsNone(incomplete["candidate"])
+            self.assertIs(incomplete["positive_income_coverage_complete"], False)
+
+    def test_formal_service_retains_war_step_with_read_only_building_observation(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.allow_private_construction_formal_trial = True
+            driver.capabilities = lambda: {
+                "action_steps": ["query-army-strengths-v1"],
+                "bridge_capabilities": []}
+            with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                            return_value={"selected_step": "query-army-strengths-v1",
+                                          "phase": "wartime"}):
+                planned = GameplayBridgeService(driver).plan_turn()["plan"]
+            self.assertEqual(planned["selected_step"], "query-army-strengths-v1")
+            self.assertEqual(planned["construction_wartime_observation"]
+                             ["native_source_status"], "selected")
+            self.assertFalse(planned["construction_wartime_observation"]
+                             ["formal_action_ready"])
+            self.assertEqual([row["step"] for row in driver.requests],
+                             [transport.QUERY_NATIVE])
+
     def test_private_province_aggregate_binds_completed_row_to_paused_frame(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

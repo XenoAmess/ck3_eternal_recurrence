@@ -41,7 +41,8 @@ def _identity(driver: object) -> tuple[int, str]:
 
 
 def _binding(driver: object, *, expected_revision: int,
-             material_receipt: bool = False) -> dict[str, object]:
+             material_receipt: bool = False,
+             wartime_observation: bool = False) -> dict[str, object]:
     snapshot = driver.take_snapshot()
     played = snapshot.get("played_character")
     actor = played.get("character_id") if isinstance(played, Mapping) else None
@@ -51,8 +52,10 @@ def _binding(driver: object, *, expected_revision: int,
             and snapshot.get("pending_character_interaction") is None
             and isinstance(snapshot.get("active_wars"), list)
             and isinstance(snapshot.get("player_armies"), list)
-            and (material_receipt or snapshot["active_wars"] == [])
-            and (material_receipt or snapshot["player_armies"] == [])
+            and (material_receipt or wartime_observation
+                 or snapshot["active_wars"] == [])
+            and (material_receipt or wartime_observation
+                 or snapshot["player_armies"] == [])
             and _positive(actor) and played.get("alive") is True
             and _positive(snapshot.get("native_revision"))
             and snapshot.get("snapshot_id") == f"native:{snapshot['native_revision']}"
@@ -119,9 +122,13 @@ def _candidate(world: Mapping[str, object]) -> dict[str, object] | None:
 
 
 def query_construction_private(driver: object, *, expected_revision: int,
-                               material_receipt: bool = False) -> dict[str, object]:
+                               material_receipt: bool = False,
+                               wartime_observation: bool = False) -> dict[str, object]:
+    if material_receipt and wartime_observation:
+        raise ValueError("construction source modes cannot be combined")
     starting = _binding(driver, expected_revision=expected_revision,
-                        material_receipt=material_receipt)
+                        material_receipt=material_receipt,
+                        wartime_observation=wartime_observation)
     revision = starting["native_revision"]
     request_id = f"construction-read-{uuid.uuid4().hex}"
     result = _send(driver, QUERY_NATIVE, revision, request_id)
@@ -172,6 +179,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
         # independent active-construction row is material evidence even when
         # this frame has no new cost sample; never use this mode to submit.
         return {"status": "material_source", "world": dict(world),
+                "native_query_request_id": request_id,
                 "proof_epoch": probe["proof_epoch"],
                 "source_frame": {"snapshot_id": starting["snapshot_id"],
                                  "revision": expected_revision,
@@ -187,16 +195,81 @@ def query_construction_private(driver: object, *, expected_revision: int,
                 **({} if covered else {
                     "reason": "positive_income_candidate_coverage_incomplete"}),
                 "world": dict(world),
+                "native_query_request_id": request_id,
                 "proof_epoch": probe["proof_epoch"], "source_frame": {
+            "snapshot_id": starting["snapshot_id"],
             "revision": expected_revision, "native_revision": revision,
-            "episode_run_id": starting["episode_run_id"]}}
+            "date_raw": starting["date_raw"],
+            "episode_run_id": starting["episode_run_id"],
+            "actor_character_id": starting["played_character"]["character_id"]}}
     return {"status": "selected", "candidate": selected, "world": dict(world),
+            "native_query_request_id": request_id,
             "proof_epoch": probe["proof_epoch"],
             "source_frame": {"snapshot_id": starting["snapshot_id"],
                              "revision": expected_revision, "native_revision": revision,
                              "date_raw": starting["date_raw"],
                              "episode_run_id": starting["episode_run_id"],
                              "actor_character_id": starting["played_character"]["character_id"]}}
+
+
+def query_construction_wartime_observation_private(
+        driver: object, *, expected_revision: int) -> dict[str, object]:
+    """Observe one native building choice while war spend remains unassessed.
+
+    The distinct result is never a construction submit query. Native budget
+    and authored income are observations; future war cash remains unknown.
+    """
+    snapshot = driver.take_snapshot()
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list) or not wars:
+        raise BridgeUnavailableError("wartime construction observation needs active war")
+    source = query_construction_private(
+        driver, expected_revision=expected_revision, wartime_observation=True)
+    world = source.get("world")
+    public_gold = snapshot.get("played_character_gold")
+    gold_raw = public_gold.get("raw") if isinstance(public_gold, Mapping) else None
+    source_frame = source.get("source_frame")
+    cash_matches = (
+        isinstance(world, Mapping)
+        and type(gold_raw) is int and gold_raw >= 0
+        and public_gold.get("scale") == 100_000
+        and world.get("player_gold_raw") == gold_raw
+        and isinstance(source_frame, Mapping)
+        and source_frame.get("revision") == snapshot.get("revision")
+        and source_frame.get("native_revision") == snapshot.get("native_revision")
+        and source_frame.get("date_raw") == snapshot.get("date_raw")
+        and source_frame.get("episode_run_id") == snapshot.get("episode_run_id")
+    )
+    source_status = source.get("status")
+    candidate = source.get("candidate") if source_status == "selected" else None
+    return {
+        "status": ("observed" if cash_matches and source_status in {
+            "selected", "no_legal_budgeted_building", "evidence_insufficient"}
+            else "source_red"),
+        "native_source_status": source_status,
+        "read_only": True,
+        "advertised": False,
+        "formal_action_ready": False,
+        "candidate": dict(candidate) if isinstance(candidate, Mapping) and cash_matches else None,
+        "native_budgeted_positive_income_candidate": (
+            source_status == "selected" and cash_matches),
+        "observed_player_gold_raw": gold_raw,
+        "observed_active_war_count": len(wars),
+        "observed_player_army_count": (
+            len(snapshot["player_armies"])
+            if isinstance(snapshot.get("player_armies"), list) else None),
+        "existing_shared_gold_commitment_raw": None,
+        "war_future_gold_cost_raw": None,
+        "joint_budget_affordability": "unassessed",
+        "positive_income_coverage_complete": (
+            world.get("positive_income_coverage_complete")
+            if isinstance(world, Mapping) else None),
+        "source_frame": dict(source_frame) if isinstance(source_frame, Mapping) else None,
+        "native_query_request_id": source.get("native_query_request_id"),
+        "native_proof_epoch": source.get("proof_epoch"),
+        "reason": ("same_frame_cash_mismatch" if source_status != "source_red"
+                   and not cash_matches else source.get("reason")),
+    }
 
 
 def query_construction_province_income_private(

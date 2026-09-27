@@ -4349,6 +4349,35 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertNotIn("unbounded_private_query", serialized["plan"])
 
+    def test_turn_report_preserves_read_only_wartime_building_observation(self) -> None:
+        observation = {
+            "status": "observed", "native_source_status": "selected",
+            "candidate": {"stock_gold_cost_raw": 15_000_000,
+                          "authored_monthly_income_hundredths": 35},
+            "war_future_gold_cost_raw": None,
+            "existing_shared_gold_commitment_raw": None,
+            "joint_budget_affordability": "unassessed",
+            "formal_action_ready": False,
+        }
+        binding = {"snapshot_id": "native:123", "revision": 456,
+                   "date_raw": 53_216_040, "paused": True}
+        turn = native_auto_run_module._turn_record(
+            6, "2026-09-28T00:00:00Z", turn_class="query",
+            outcome={"status": "executed",
+                     "selected_step": "query-active-war-v1",
+                     "plan": {
+                         "selected_step": "query-active-war-v1",
+                         "construction_wartime_observation": observation,
+                         "unbounded_private_query": {"discard": True},
+                     }},
+            before=binding, after=binding, evidence=["same_frame_query"],
+        )
+        serialized = json.loads(json.dumps(turn))
+        self.assertEqual(serialized["selected_step"], "query-active-war-v1")
+        self.assertEqual(serialized["plan"]["construction_wartime_observation"],
+                         observation)
+        self.assertNotIn("unbounded_private_query", serialized["plan"])
+
     def test_construction_progress_is_visible_on_receipt_and_next_turn(self) -> None:
         progress = {
             "status": "observed", "snapshot_id": "native:7",
