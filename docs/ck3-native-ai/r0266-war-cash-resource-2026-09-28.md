@@ -13,7 +13,7 @@ R0266 的 `H2825/raw53217624` 是一个已暂停的同帧观察：`snapshot_id=n
 | 战争政策最低现金保留 | `null` | 目前没有适用于该战争的已发布保留金政策。建造自身 200 金保留额不得冒充战争政策。 |
 | 未来战争现金上界与风险预算 | `null` | 缺少带期限的费用上界来源和政策风险额；`player_monthly_gold_income` 是当前净收入观察，不能倒推出总维护费，也不能证明未来费用上界。 |
 
-`H2908/raw53217816` 是后来的另一帧，只能作后续检查点，不能填补 H2825 的同帧现金字段。以上数据来自 [R0266 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)和其[证据摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0266-JOINT-CASH-20260928.construction-frame.json)。本机桌面截图仍陈旧；此处没有新的实机读回。
+`H2908/raw53217816` 是后来的另一帧，只能作后续检查点，不能填补 H2825 的同帧现金字段。以上数据来自 [R0266 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)和其[证据摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0266-JOINT-CASH-20260928.construction-frame.json)。本机在 UTC 20:38 的独立恢复 attempt `D:/ck3-research-artifacts/war31-h2743-20260928/attempt-06-r0266-cash/steam-stale-recovery-07/` 取得窗口位移的新桌面像素，人工查看到 Steam“离线模式”；任务栏时钟仍停在旧时间，任何实际启动前须重新取证。此处没有新的 CK3 实机读回。
 
 原版 AI 的战争储备规则提供了**后续取数路径**：当前游戏 `game/common/defines/ai/00_ai.txt:135-154` 把按 tier 的最低战争储备设为 `25/25/50/100/200/300/400` 金，并指定 `MONTHS_OF_MAINTENANCE_IN_WAR_CHEST=18`，即与 18 个月最大维护费需求比较。此前[原生宣战输入研究](war-film-declaration-inputs-2026-09-23.md)静态定位了 `war_chest_gold` 的预算字段和需求构造 helper。这说明“原版 AI 希望保留多少战争储备”有可追的原生入口；**还没有** H2825 同帧的角色 tier、最大维护费原生读数、当前 `war_chest_gold` 或与玩家建造消费共享的预算所有权读回。原版 AI 的宣战储备也不自动等于本游玩智能体在现役战争中的最低现金政策，因此当前收据继续保留 `policy_minimum_gold_reserve_raw=null`。
 
@@ -22,6 +22,8 @@ H2743 的另一次只读存档检查进一步提醒这个区别。已在接收�
 继续沿 `0x184093A` 的直接调用追踪，独立的[精确版本静态校验器](../../ck3_autonomous_player/native_bridge/research/verify_war_cash_maintenance_candidate.py)核对了 EXE RVA `0x290BA70..0x290BDAC` 的完整函数字节 SHA-256 `A6D40023A1B422DF749610533E403A8BE054A46D952D36D3785973A5485F6B2F` 和 11 个指令锚点。该函数的直接指令以 RCX 接收输出缓冲区、RDX 接收角色指针，清零 0x50 字节输出，读取角色 `+0x1B8` 扩展，经过下层调用对十个 QWORD 槽累加，并将原输出指针返回；这比“只能读 AI strategy 预算”更接近一个可用于玩家角色的**候选维护资源源头**。但 `0x290B8A0`、`0x2395370` 及间接调用的传递读写尚未闭合，也没有对玩家 Robert 的同帧值或费用语义做实机验收。校验器明确输出 `safe_to_call_from_live_bridge=false`，不能因静态 ABI 看起来合理就调用它、把 slot 0 当成金币维护费，或为 H2825 填数。普通 Python 与 `-O` 精确 EXE 校验均通过；完整反汇编保存在上述仓库外 attempt 的 `maintenance-disasm-v2.txt`。
 
 对两个下层函数的初步只读反汇编显示，`0x290B8A0` 自己也构造十槽向量并读角色属性；`0x2395370` 在 `0x23953C1` 通过 vtable 间接调用，还在数条分支中调用其他金额／状态 helper。因而单看上层十槽累加没有足够证据证明它纯读取或各槽的最终经济语义。下层反汇编保存在同一外置 attempt 的 `helper-290b8a0-disasm.txt`、`helper-2395370-disasm.txt`；它们是候选调用图，不是可执行的桥接合同。
+
+进一步的精确版本校验把两个下层函数的完整边界也冻结了：`0x290B8A0..0x290BA64` SHA-256 为 `DBA09E9FC922EF274A31DAA2C029053BE39E20DC127E2DF606A5B3E515069A1D`，在 `0x290BA44` 向选定输出槽累加；`0x2395370..0x2395604` SHA-256 为 `6AE006D6CA955A245D37429596864593CAC71625AC4A81728A8D46D0D45BB7B9`，在 `0x23953C1` 经虚表间接调用，还可能在 `0x23954F2/0x2395509` 递归调用自身，或走 `0xC883C0/0xC88270` 两条计算路径。校验器在普通 Python 和 `-O` 下均对精确 EXE 通过，但这些静态锚点**没有**闭合虚表目标、所有下层副作用或槽位经济含义，`safe_to_call_from_live_bridge` 仍为 `false`。精确函数反汇编另保存在同一 attempt 的 `helper-290b8a0-exact-function.txt` 和 `helper-2395370-exact-function.txt`。
 
 ## 已落入运行时的接口
 

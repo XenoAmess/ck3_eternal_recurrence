@@ -32,6 +32,33 @@ ANCHORS = {
     0x290BD88: ("mov", "rax, rsi"),
     0x290BDAB: ("ret", ""),
 }
+HELPER_SPANS = {
+    "per_regiment_vector": (
+        0x290B8A0, 0x290BA64,
+        "DBA09E9FC922EF274A31DAA2C029053BE39E20DC127E2DF606A5B3E515069A1D",
+        {
+            0x290B8C4: ("call", "0x1426165b0"),
+            0x290B8DC: ("call", "0x1428c2610"),
+            0x290B90C: ("call", "0x1426172c0"),
+            0x290BA44: ("add", "qword ptr [rbx + rsi*8], rdx"),
+            0x290BA63: ("ret", ""),
+        },
+    ),
+    "contextual_maintenance_vector": (
+        0x2395370, 0x2395604,
+        "6AE006D6CA955A245D37429596864593CAC71625AC4A81728A8D46D0D45BB7B9",
+        {
+            0x23953C1: ("call", "qword ptr [rax]"),
+            0x23954F2: ("call", "0x142395370"),
+            0x2395509: ("call", "0x142395370"),
+            0x2395558: ("call", "0x142c883c0"),
+            0x2395567: ("call", "0x142c88270"),
+            0x23955AB: ("call", "0x142c8c370"),
+            0x23955B8: ("call", "0x14171eed0"),
+            0x2395603: ("ret", ""),
+        },
+    ),
+}
 
 
 def verify(exe: Path) -> dict[str, object]:
@@ -59,6 +86,28 @@ def verify(exe: Path) -> dict[str, object]:
         row = by_rva.get(rva)
         if row is None or (row.mnemonic, row.op_str) != (mnemonic, operand):
             raise ValueError(f"maintenance-vector anchor {rva:#x} changed")
+    helper_rows = []
+    for name, (start, end, expected_sha, anchors) in HELPER_SPANS.items():
+        offset = image.get_offset_from_rva(start)
+        code = binary[offset:offset + end - start]
+        actual_sha = hashlib.sha256(code).hexdigest().upper()
+        if actual_sha != expected_sha:
+            raise ValueError(f"{name} function bytes changed")
+        decoded = list(decoder.disasm(code, image.OPTIONAL_HEADER.ImageBase + start))
+        if sum(row.size for row in decoded) != len(code):
+            raise ValueError(f"{name} function has undecoded bytes")
+        instructions_by_rva = {
+            row.address - image.OPTIONAL_HEADER.ImageBase: row
+            for row in decoded
+        }
+        for rva, (mnemonic, operand) in anchors.items():
+            row = instructions_by_rva.get(rva)
+            if row is None or (row.mnemonic, row.op_str) != (mnemonic, operand):
+                raise ValueError(f"{name} anchor {rva:#x} changed")
+        helper_rows.append({
+            "name": name, "start_rva": hex(start), "end_rva_exclusive": hex(end),
+            "function_sha256": actual_sha, "anchor_count": len(anchors),
+        })
     return {
         "schema": "xar.ck3.war-cash-maintenance-candidate-static.v1",
         "status": "exact_build_direct_instructions_only",
@@ -67,6 +116,7 @@ def verify(exe: Path) -> dict[str, object]:
         "function_end_rva_exclusive": hex(END_RVA),
         "function_sha256": function_sha256,
         "anchor_count": len(ANCHORS),
+        "transitive_helper_spans": helper_rows,
         "direct_observation": (
             "0x290BA70 takes an output pointer in RCX and a character pointer "
             "in RDX, zeroes 0x50 output bytes, reads the character +0x1B8 "
@@ -74,6 +124,7 @@ def verify(exe: Path) -> dict[str, object]:
             "helper call, and returns the output pointer"
         ),
         "transitive_helper_effects_proven_read_only": False,
+        "unresolved_indirect_call_rva": "0x23953c1",
         "safe_to_call_from_live_bridge": False,
         "same_frame_player_maintenance_observed": False,
     }
