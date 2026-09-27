@@ -28,7 +28,7 @@ FUNCTIONS = {
     # Counter helper safety audit: the original side caller, damage wrapper,
     # class resolver, and per-entry current-chunk reader.
     "counter_side_caller": (0x23CB1D0, 0x23CB435),
-    "counter_damage_wrapper": (0x23CAE70, 0x23CAF45),
+    "counter_damage_wrapper": (0x23CAE70, 0x23CB1D0),
     "counter_class_resolver": (0x23CF1B0, 0x23CF96D),
     "counter_current_chunk": (0x23D2B90, 0x23D2CDE),
 }

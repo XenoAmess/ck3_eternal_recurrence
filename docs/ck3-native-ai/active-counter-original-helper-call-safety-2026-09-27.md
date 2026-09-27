@@ -1,5 +1,7 @@
 # 现役反制原版 helper 的同帧调用安全审计（2026-09-27）
 
+后续[被动捕获锚点审计](active-counter-native-output-capture-anchor-2026-09-27.md)定位了原版 wrapper 中 helper 返回后、向量仍由 caller 持有的 `0x23CAF25`。它支持优先观察真正的日界调用结果，避免为了取数在暂停帧主动再调用一次 helper；该锚点尚未完成 detour 实机验收。
+
 ## 判断与证据边界
 
 **有条件可行，尚未获准作为现役预测的已验证输入。** 在 CK3 **1.19.0.6 exact EXE**、暂停的同一个 native application-main sample 中，已有 v3 代码能调用原版 `resolve_counter_classes`（RVA `0x23CF1B0`）；现役 battle-control 也已取得真正的两侧 MAA entry、primary owner、class、chunk、target 和 context。因此可以构造两方向的**当前帧** class damage-retention 向量。但它必须使用当前 `CCombatSide+0x40` 的 entry，不得复用 v3 假定首次接战的合成 roster 或已算好的向量；调用前还要补足所有原版无界索引的验证，并证明 helper 的内部临时分配、输出 header 和采样一致性在真实进程内安全。静态审计不等于实机 GREEN，更不等于下一战斗日的预言。
