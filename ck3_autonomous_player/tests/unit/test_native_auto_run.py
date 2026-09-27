@@ -4336,6 +4336,41 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertNotIn("unbounded_private_query", serialized["plan"])
 
+    def test_construction_progress_is_visible_on_receipt_and_next_turn(self) -> None:
+        progress = {
+            "status": "observed", "snapshot_id": "native:7",
+            "native_revision": 7, "date_raw": 53_155_056,
+            "native_remaining_work_raw": 87_000_000,
+            "native_progress_divisor_raw": 120_000,
+        }
+        receipt = {"status": "applied", "postcondition_verified": True,
+                   "completion_status": "in_progress",
+                   "construction_progress_observation": progress,
+                   "action_request_id": "construction-submit-1"}
+        binding = {"snapshot_id": "native:7", "revision": 8,
+                   "date_raw": 53_155_056, "paused": True}
+        first = native_auto_run_module._turn_record(
+            1, "2026-09-27T00:00:00Z", turn_class="query",
+            outcome={"status": "executed", "selected_step":
+                     "private-query-player-construction-receipt-v1",
+                     "plan": {"selected_step":
+                              "private-query-player-construction-receipt-v1"},
+                     "result": receipt},
+            before=binding, after=binding, evidence=["construction_active_independent_later_frame"],
+        )
+        second = native_auto_run_module._turn_record(
+            2, "2026-09-27T00:00:01Z", turn_class="query",
+            outcome={"status": "executed", "selected_step": "query-active-war-v1",
+                     "plan": {"selected_step": "query-active-war-v1",
+                              "construction_receipt_consumed": receipt}},
+            before=binding, after=binding, evidence=["same_frame_query"],
+        )
+        self.assertEqual(first["result"]["construction_progress_observation"],
+                         progress)
+        self.assertEqual(first["result"]["completion_status"], "in_progress")
+        self.assertEqual(second["plan"]["construction_receipt_consumed"]
+                         ["construction_progress_observation"], progress)
+
     def test_compact_opening_lifestyle_preserves_zero_positive_and_unknown(self) -> None:
         existing = {
             "status": "verified_existing",

@@ -90,10 +90,11 @@ The additive `construction_progress_observation` now binds those two raw
 integers to the same snapshot, native revision and game date as the matching
 material receipt. A missing raw field remains `null` with status `unavailable`;
 a completed slot has status `not_active`. Neither status predicts a finish
-date. The receipt stays in the construction ledger and the next formal turn's
-`construction_receipt_consumed` report field. This changes no action or watch
-cadence. Focused normal and optimized Python tests cover active and completed
-material receipts; paused CK3 progress and completion remain unobserved.
+date. The receipt stays in the construction ledger, the immediate formal turn
+result and the next turn's `construction_receipt_consumed` report field. This
+changes no action or watch cadence. Focused normal and optimized Python tests
+cover active and completed material receipts plus both report views; paused
+CK3 progress and completion remain unobserved.
 
 For the R0249-derived h223 pair, the saved ledger last checked at raw
 `53154936`, so its old 30-day threshold is raw `53155656`, 25 game days after
