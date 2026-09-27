@@ -268,6 +268,115 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_war_read_rechecks_life_after_date_change_only(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP, "query-army-strengths-v1"],
+            "bridge_capabilities": [],
+        }
+        service = GameplayBridgeService(driver)
+        points = 0
+        reads = []
+
+        def read(*, expected_revision: int) -> dict[str, object]:
+            frame = driver.frame
+            reads.append((expected_revision, frame["date_raw"]))
+            life = _life_snapshot()
+            life.update({
+                "snapshot_id": frame["snapshot_id"],
+                "public_revision": frame["native_revision"],
+                "native_revision": frame["native_revision"],
+                "proof_epoch": frame["native_revision"],
+                "date_raw": frame["date_raw"],
+                "episode_run_id": frame["episode_run_id"],
+            })
+            life["current_lifestyle_progress"]["unspent_perk_points"] = points
+            if points == 0:
+                life["legal_perk_candidates"]["items"] = []
+            return {"status": "available", "snapshot": life,
+                    "formal_precondition_status": "ready",
+                    "source_frame": {"snapshot_id": frame["snapshot_id"],
+                                     "revision": frame["revision"],
+                                     "native_revision": frame["native_revision"],
+                                     "date_raw": frame["date_raw"],
+                                     "player_character_id": 29829}}
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                       return_value={"selected_step": "query-army-strengths-v1",
+                                     "phase": "native_war_army_strength_query"}),
+            mock.patch.object(driver, "query_player_lifestyle_formal_private_v1",
+                              side_effect=read),
+        ):
+            first = service.plan_turn()["plan"]
+            self.assertEqual(first["selected_step"], "query-army-strengths-v1")
+            self.assertEqual(first["lifestyle_opportunity_status"], "no_legal_minimum")
+            self.assertEqual(first["lifestyle_war_observation"]["unspent_perk_points"], 0)
+            self.assertEqual(len(reads), 1)
+            self.assertEqual(service.plan_turn()["plan"]["selected_step"],
+                             "query-army-strengths-v1")
+            self.assertEqual(len(reads), 1)
+
+            driver.frame.update({"revision": 4, "native_revision": 4,
+                                 "snapshot_id": "native:4", "date_raw": 53178336})
+            points = 1
+            needs_root = service.plan_turn()["plan"]
+            self.assertEqual(needs_root["selected_step"], ROOT_QUERY_STEP)
+            self.assertEqual(len(reads), 1)
+            driver.history.append({"command": ROOT_QUERY_STEP, "ok": True,
+                "result": {"campaign_root_context": {"status": "available",
+                    "snapshot_revision": 4, "date_raw": 53178336,
+                    "player_character_id": 29829,
+                    "government": {"key": "feudal_government",
+                                   "flags": ["government_is_feudal"]}}}})
+            due = service.plan_turn()["plan"]
+            self.assertEqual(due["selected_step"], PERK_SUBMIT_STEP)
+            self.assertEqual(due["lifestyle_action"]["target_key"],
+                             "cutting_corners_perk")
+            self.assertEqual(due["lifestyle_war_observation"]["unspent_perk_points"], 1)
+            self.assertEqual(len(reads), 2)
+
+    def test_pending_life_receipt_preempts_same_date_war_read(self) -> None:
+        driver = _Driver()
+        service = GameplayBridgeService(driver)
+        frame = ("native-29829-ee172aa720db", 29829, 53178312)
+        service._last_war_lifestyle_observation = frame
+        planned = service._plan_private_lifestyle_trial_v1({
+            "snapshot_id": "native:3", "revision": 4,
+            "plan": {"selected_step": "query-army-strengths-v1"},
+            "_private_lifestyle_scope_v1": {"status": "admitted", "at_peace": False},
+            "_private_lifestyle_war_frame_v1": frame,
+            "_private_lifestyle_pending_v1": {
+                "status": "submitted_verification_pending", "pre_public_revision": 3,
+            },
+        }, {"query-army-strengths-v1", RECEIPT_STEP})
+        self.assertEqual(planned["plan"]["selected_step"], RECEIPT_STEP)
+
+    def test_war_read_unavailable_does_not_try_peaceful_focus_fallback(self) -> None:
+        driver = _Driver()
+        driver.state.fail_query = True
+        service = GameplayBridgeService(driver)
+        with mock.patch.object(
+            driver, "query_player_lifestyle_stock_focus_combined_private_v1"
+        ) as focus_reader:
+            planned = service._plan_private_lifestyle_trial_v1({
+                "snapshot_id": "native:3", "revision": 3,
+                "plan": {"selected_step": "query-army-strengths-v1"},
+                "_private_lifestyle_scope_v1": {
+                    "status": "admitted", "at_peace": False,
+                },
+                "_private_lifestyle_war_frame_v1": (
+                    "native-29829-ee172aa720db", 29829, 53178312,
+                ),
+            }, {"query-army-strengths-v1"})
+        self.assertEqual(planned["plan"]["selected_step"],
+                         "query-army-strengths-v1")
+        self.assertEqual(planned["plan"]["lifestyle_war_observation"]["query_status"],
+                         "native_query_unavailable")
+        focus_reader.assert_not_called()
+
     def test_centralization_formal_choice_reuses_typed_receipt_and_next_turn(self) -> None:
         driver = _Driver()
         driver.state.centralization_ready = True
