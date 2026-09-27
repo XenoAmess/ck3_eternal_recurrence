@@ -238,15 +238,16 @@ def project_war31_postcondition(
 
     if next_turn_snapshot is None:
         next_turn = _unavailable("next_turn_snapshot_not_supplied")
+        next_turn_projected = None
     else:
-        projected = project_war31_frame(next_turn_snapshot)
-        ident = projected["identity"]
+        next_turn_projected = project_war31_frame(next_turn_snapshot)
+        ident = next_turn_projected["identity"]
         if ident["episode_run_id"] != first["episode_run_id"]:
             raise ValueError("WAR31 next-turn episode mismatch")
         if ident["date_raw"] <= second["date_raw"]:
             raise ValueError("WAR31 next-turn date did not advance")
         next_turn = _available(
-            {"identity": ident, "war_active": projected["war_active"]},
+            {"identity": ident, "war_active": next_turn_projected["war_active"]},
             "next_turn_native_snapshot",
         )
 
@@ -263,14 +264,24 @@ def project_war31_postcondition(
             and source_hash.upper() == str(restored_hash).upper()
         ):
             raise ValueError("WAR31 recovery lacks exact paired save SHA-256")
+        reference_name = "after"
+        reference = after
+        if (next_turn_projected is not None
+                and restored["identity"]["date_raw"]
+                == next_turn_projected["identity"]["date_raw"]):
+            reference_name = "next_turn"
+            reference = next_turn_projected
         comparable = (
-            restored["identity"]["episode_run_id"] == second["episode_run_id"]
-            and restored["identity"]["date_raw"] == second["date_raw"]
-            and restored["war_active"] == after["war_active"]
-            and restored["resources"] == after["resources"]
+            restored["identity"]["episode_run_id"]
+            == reference["identity"]["episode_run_id"]
+            and restored["identity"]["date_raw"]
+            == reference["identity"]["date_raw"]
+            and restored["war_active"] == reference["war_active"]
+            and restored["resources"] == reference["resources"]
         )
         recovery = _available(
-            {"paired_save_sha256": source_hash.upper(), "matched": comparable},
+            {"paired_save_sha256": source_hash.upper(),
+             "matched_reference": reference_name, "matched": comparable},
             "paired_recovery_native_snapshot",
         )
 

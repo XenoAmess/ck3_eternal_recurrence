@@ -3,37 +3,54 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T14:15:20Z",
+  "updated_at_utc": "2026-09-27T16:40:00Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
-  "triage": "The paused War 31 read proves a legal, accepted defender surrender but the current native query returns cb_specific_terms_not_observable. The actual title, holder, liege, resource, and truce effects remain unknown. The original read-only claim did not itself authorize surrender; a later explicit user instruction now authorizes one surrender-war-16777231 action only on the independently verified matching R0221 checkpoint. No action has yet been submitted.",
+  "triage": "The original R0221 read-only frame returned cb_specific_terms_not_observable. A later explicit user instruction authorized one precise defender surrender. On verified R0197/R0221 inputs, attempt-05 submitted that action exactly once, observed WarID 16777231 absent in the next native snapshot and six days later, and saved a material-result checkpoint. The one-shot authorization is consumed; this update does not authorize another submission. Personal liege/vassal relations and truce-slot direction remain unknown.",
   "static_findings": {
     "absolute_outcome": "primary defender surrender invokes attacker_victory",
     "stock_cb": "individual_county_de_jure_cb on_victory in 00_dejure_war.txt:435-497 constructs conquest title-and-vassal change, setup_de_jure_cb, then resolve_title_and_vassal_change; later prestige/fame/truce and conditional effects remain material",
     "existing_exact_build_audit": "docs/ck3-native-ai/war-termination.md:2717 and ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json",
     "preview_boundary": "Exact-build constructor and RTTI identify effect +0x260 as an inline CJominiScriptScopeObject<CLandedTitle>, distinct from the +0x1B0 CJominiScriptScopeObject<CTitleAndVassalChange>. CSetupDeJureCBChangeEffect preview 0x2E9FA10 passes the title scope to 0x995CB0 and helper 0x2E9FF30; title-scope vtable slot +0x30 resolves to the nonwriting presence check 0x999CA0. Downstream branch write sets, change referent ownership and complete final-operation schema are unproven. CResolveTitleAndVassalChangeEffect preview 0x7E9220 only returns true. Broad loaded-effect preview remains disabled after two live crashes at RVA 0x334C668.",
     "static_followup": "docs/ck3-native-ai/war-termination-war31-static-followup-2026-09-27.md and exact-build extractor/ABI receipt correct the earlier +0x260 label without promoting surrender material terms",
-    "current_frame_material_result": "unknown; neither legal acceptance nor a static conquest script identifies this WarID's final holder, liege, vassal, signed resources, or truce expiry"
+    "current_frame_material_result": "The original R0221 pre-action frame alone had unknown terms. The separately authorized attempt-05 now provides an actual post-action native and persisted-save result; see live_one_shot_result below."
   },
   "interface_contract": {
-    "delivery_kind": "policy_safe_observed_frame_alternative; no material surrender terms claimed",
+    "delivery_kind": "original R0221 policy-safe observed-frame alternative, followed by separately authorized attempt-05 live result",
     "version_and_frame": "CK3 1.19.0.6 EXE SHA 2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86; WarID 16777231; date_raw 53215920; native:3; public/native revisions 4/3; episode native-29829-2bc2d599f7f9; connection generation 1; query_sequence 1",
     "same_frame_read": "query-war-termination-options-16777231 yields primary-defender surrender outcome attacker_victory, native validator/availability/recipient acceptance true, white peace and victory unavailable; R0221 before/after identity unchanged and gameplay_actions=0",
     "unknown_field_semantics": "surrender.terms={status:unavailable,reason:cb_specific_terms_not_observable}; title, old/new holder, liege, vassal, signed resource deltas and truce expiry are unknown, not zero; legal acceptance does not fill them",
-    "action_and_pending": "The production de-jure no-safe-route emergency surrender predicate requires player_side=attacker and outcome=attacker_defeat, so this defender attacker_victory row does not select surrender-war-16777231 even if that literal is hypothetically advertised. The observed-frame alternative selects no termination; ordinary bounded route/contact/hold policy may continue, with each changing frame freshly rebound. There is no termination submission or pending terminal response in R0221/R0250.",
-    "resource_effects": "No material settlement has been applied or read; primary resource changes, title changes and truce remain typed unknowns. The later single-action user authorization is recorded separately below; exact asset pairing, native postcondition, next turn and recovery are still required."
+    "action_and_pending": "The original R0221/R0250 observations submitted no termination. A later exact-input, user-authorized one-shot typed gate submitted surrender-war-16777231 in attempt-05. The ACK was submitted_pending while WarID remained in its immediate observed frame; the next native snapshot showed the war absent. The generic attacker-only emergency predicate was not changed into a defender auto-surrender policy.",
+    "resource_effects": "Attempt-05 native before/after gives Robert gold delta 0 and prestige delta -3000000 raw (-30); the six-day persisted-save comparison gives Robert gold/piety 0, prestige -30, Landolf gold/piety/prestige 0, c_foggia holder 33435 to 30097, and a new raw truce_1 slot dated 1079.11.17. The save comparison is not same-native-frame proof for every term."
   },
   "authorized_action_update": {
     "date_utc": "2026-09-27T14:15:20Z",
     "source": "Explicit user instruction in the current conversation, relayed by the lead agent; not an in-repository action receipt",
-    "status": "AUTHORIZED_NOT_EXECUTED",
+    "status": "EXECUTED_ONCE_AUTHORIZATION_CONSUMED",
     "authorized_literal": "surrender-war-16777231",
     "scope": "One submission only, after independently proving the exact R0221 source checkpoint bytes and driver/sidecar provenance, recording any bounded ordinary-seed rebind into a new vanilla profile and episode, and checking the newly observed WarID 16777231/frame and matching DLL. This does not authorize any other war, checkpoint or repeated submission.",
-    "asset_status": "The user identified OneDrive/WAR31-R0197-R0221-2026-09-27 as a source location, but this subtask has not downloaded or SHA-verified any of its files. The lead agent is handling exact asset pairing and managed live execution; no War31 CK3 process was started here.",
-    "unobserved_material_result": "Title/holder/liege/vassal/resource deltas, truce expiry and the actual change+0x268 resolve value remain unknown until separately captured and validated."
+    "asset_status": "The lead agent selectively acquired and SHA-verified the exact R0197 checkpoint/driver and R0221 original DLL/injector from OneDrive, then prepared and cold-started a new vanilla profile. Attempt-05 is the sole action run.",
+    "unobserved_material_result": "Personal holder liege and complete vassal set, truce_1 direction, same-native-frame title/opponent/piety writeback and actual taken resolve branch remain unverified."
   },
-  "policy_safe_observed_frame_alternative": "Continue or hold under the existing bounded military policy from the observed same-frame evidence, requerying after each frame change; do not infer surrender terms or select a defender surrender from the attacker-only emergency rule. R0250 independently observed 12 qualified turns of route continuation with War 31 still active and no termination action. This alternative keeps gameplay moving but does not resolve the eventual war exit.",
+  "live_one_shot_result": {
+    "attempt": "D:/ck3-research-artifacts/war31-live-20260927/attempt-05",
+    "source_checkpoint_sha256": "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A",
+    "source_driver_sha256": "1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336",
+    "original_bridge_dll_sha256": "C36ECCEB67A0DCA7C8C1C6C855A5036771B46617E9F1BF5F4185D965C1951BCE",
+    "ck3_pid": 6532,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "action_result_sha256": "026C0CF7A4CBC12CA65F0B85EBAD8B21BC2CE1B3861D65D6BE0CBA956BFAED0B",
+    "action_result": "One gated surrender-war-16777231 submission; typed ACK submitted_pending/attacker_victory, command acknowledged, ACK frame still listed WarID; durable one-shot fence exists and forbids repeat.",
+    "native_postcondition": "Before native:4 and after native:5 at date_raw 53215920: WarID present then absent; Robert gold raw unchanged 111798776; prestige 252655450 to 249655450, scaled delta -30. Next-turn native:11 date_raw 53216064 still lacks WarID.",
+    "post_action_save_sha256": "A29A41B2434B2A91BE1D3DC254F8C71455D4ACA528F1DCC9FF32369608F2EDB5",
+    "save_material_report_sha256": "84154554437CE96FB751DC6DB23E65847CA974CD92917A2FCB32B12C3FC11634",
+    "save_material_result": "At 1074.11.23 c_foggia holder 33435 to 30097, de-facto superior title 2141 to 2121, b_lucera holder 33435 to 30097; Robert gold/piety delta zero and prestige -30; Landolf gold/piety/prestige delta zero; pair relation WarID absent and raw truce_1 date 1079.11.17/result victory. Truce slot direction and personal liege/vassal relations unverified.",
+    "two_point_probe": "Attempt-05 paired trace is STRUCTURAL_PAIR_ONLY: same PID/thread/pointer at setup RVA 0x2E9F746 and resolve comparison RVA 0x2EC4410; dword +0x268 was 0 at both. Raw capture SHA D6212CEDC465CF299FC1E61894457F7D6903D122E18EFC19E1126AF40E944ABD. External WarID/effect assertions and taken branch are not authenticated by the sampler.",
+    "paired_recovery": "Attempt-07 cold-started exact post-action save SHA A29A41B2434B2A91BE1D3DC254F8C71455D4ACA528F1DCC9FF32369608F2EDB5. Recovered payload SHA 908E88D2B7BA30AB6D35E6D04DC11E503682950C221CDF97C3E70A94E3E916E2 matches the saved next-turn frame in episode, date, WarID absence and player gold/prestige. Full offline report SHA FF62B768B3C666AF059589867F469A76A6FCBE4139CC91015626F2223AE069AA has paired_recovery_matched=true. CK3 stopped with cleanup_proven=true.",
+    "documentation": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md"
+  },
+  "policy_safe_observed_frame_alternative": "Historical R0221/R0250 route: continue or hold under bounded military policy while the original read-only frame lacked material terms. It did not submit termination. This remains a general safe alternative for other unpaired frames, not the observed outcome of attempt-05.",
   "research_addenda": [
     {
       "date_utc": "2026-09-27T10:08:00Z",
@@ -167,17 +184,19 @@
   ],
   "checks": [
     "py ck3_autonomous_player/tests/unit/test_war31_observed_frame_alternative.py: 1 passed; binds the Git evidence SHA, same-frame WarID/episode/revisions, option legality and unknown terms, and calls the production attacker-only emergency predicates with a hypothetically advertised surrender literal.",
-    "Existing bridge contract continues to serialize terms_observable=false and reason cb_specific_terms_not_observable; no native preview was invoked and no CK3 process was launched for this delivery."
+    "The original R0221 bridge contract serialized terms_observable=false and reason cb_specific_terms_not_observable; the later action is an independent exact-input run, not a retroactive preview of that frame.",
+    "Attempt-05 exact action, next-date read and save delta; attempt-07 exact-byte cold-start recovery; ck3_autonomous_player/tests/unit/test_war31_postcondition_contract.py: 8 passed; tools/validate_python_only.py: GREEN. The recovery report retains false gates for domains absent from native rich snapshots."
   ],
   "live_evidence": {
     "r0221_exact_readonly_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0221-raw-freeze.json; SHA BE7CCFF4DED6305744D3C2EE0ADD7FFD8D9163E0B662F02C3986090271DC30C5",
     "r0221_query_result": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.termination-options.json; SHA 359C5A03B7F7C2FC35EE9FD47DE0DF054F9C200E0A77E2AB2F9F231D2394B124",
-    "r0250_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0250-summary.json; SHA 821DC087B89B06912A2DF2A737596604E94F9E59645546300F609C4E0B7D70FD"
+    "r0250_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0250-summary.json; SHA 821DC087B89B06912A2DF2A737596604E94F9E59645546300F609C4E0B7D70FD",
+    "attempt05_live_result": "docs/ck3-native-ai/war31-r0197-one-shot-live-result-2026-09-28.md; raw action, native snapshots, probe and persisted saves are retained under external attempt-05 and are not transported by Git"
   },
   "limitations": [
-    "The original delivery was a policy-safe observed-frame alternative, not actual surrender material terms or its own action authorization. A separate later user instruction authorizes one precisely paired action, which remains unexecuted.",
-    "The user now reports the original source files under this machine's OneDrive/WAR31-R0197-R0221-2026-09-27, but this subtask has not downloaded or independently SHA-verified the source save/driver/sidecars or matching DLL. A live material-result study still requires exact source pairing and a recorded new-profile rebind.",
-    "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
+    "The original R0221/R0250 delivery was a policy-safe observed-frame alternative, not material surrender terms; the separately authorized exact-input attempt-05 supplied one live result. Its one-shot authorization is consumed.",
+    "The save material delta is six days after the immediate native frame. Title-layer changes do not prove personal liege/vassal relations, and the truce_1 slot direction remains unverified. The hardware probe is structural only and does not prove the taken branch.",
+    "Raw CK3 checkpoint, DLL, capture and save evidence is external to Git; consumers on another machine must acquire and verify exact bytes if they need independent replay."
   ],
-  "next_step": "Lead agent: independently verify the exact R0221 checkpoint/driver/sidecars/DLL and vanilla profile, then use the user's one-time surrender-war-16777231 authorization in a separately managed attempt with exact EXE/PID/action/frame receipt, postcondition, next-turn and recovery evidence. No action has been submitted by this subtask. Consumer: continue the delivered policy-safe alternative until that separate result exists; do not treat the authorization or static scripts as material terms. Continue reducing transitive/global aliases and 0x24CC9A0 to concrete title/holder/liege/vassal writes; find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview."
+  "next_step": "Publish the separate Robert H2660 local-window release response. Consumers may use the observed WarID 16777231 result only for its exact source; generic termination prediction still needs personal liege/vassal, directed truce and same-frame signed opponent/resource readback. Do not repeat the consumed surrender or call the crashing broad preview."
 }

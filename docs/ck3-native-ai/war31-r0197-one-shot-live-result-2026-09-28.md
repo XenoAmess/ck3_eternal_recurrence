@@ -1,0 +1,20 @@
+# WAR31：R0197 原版存档单次投降的实机结果（2026-09-28）
+
+本记录只描述 CK3 1.19.0.6、WarID `16777231`、玩家 Robert `29829` 防守、对手 Landolf `30097`、目标 `c_foggia`（title `2128`）的这一份精确存档。用户仅授权一次匹配检查点的 `surrender-war-16777231`；动作前的独立门禁已核对来源原件并在原生帧重新确认 WarID。外置证据根目录为 `D:/ck3-research-artifacts/war31-live-20260927/`，本次真实动作全部位于 `attempt-05/`。这些文件没有进入 Git；本页的路径和 SHA 使同机可复核，不能把路径当作另一台机器已拥有素材。
+
+| 环节 | 观察与证据边界 |
+| --- | --- |
+| 来源 | R0197 checkpoint SHA-256 `1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A`；原始 driver `1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336`；R0221 原版 DLL `C36ECCEB67A0DCA7C8C1C6C855A5036771B46617E9F1BF5F4185D965C1951BCE`。新 profile 的普通战役 rebind 与 no-launch preflight 见 `attempt-05/ready-summary.json`。 |
+| 屏幕与启动 | `attempt-05/desktop-recovery-03/probe-1/steam-moved.png` SHA-256 `94107235DB9A6D227B10A8171A223FA097868045EA6574A725EC760627A18E2A` 是窗口位移后的新画面，人工可见 Steam“离线模式”；无 ToDesk 重启。随后受管 CK3 PID `6532` 从上述原始 checkpoint 冷启动。 |
+| 单次动作 | `attempt-05/live-mcp-controller/single-action-result-payload.json` SHA-256 `026C0CF7A4CBC12CA65F0B85EBAD8B21BC2CE1B3861D65D6BE0CBA956BFAED0B` 返回 `submitted`／`submitted_pending`、`attacker_victory`，命令已确认；ACK 同帧尚未观察到战争消失。跨 attempt 的 one-shot reservation 已持久写入，**该授权已消费，不能再次提交**。 |
+| 原生读回 | 动作前 `native:4`、动作后 `native:5` 同为 date_raw `53215920`，后者的完整 active-war 列表已无 WarID `16777231`；玩家威望原始整数 `252655450 → 249655450`，以 `100000` 缩放为 **−30**，金币不变。见 `attempt-05/postcondition-pre-recovery-02.json`。六天后 `native:11`、date_raw `53216064` 仍无该战。 |
+| 持久保存 | `attempt-05/post-action-save-immutable/xar_checkpoint.ck3` SHA-256 `A29A41B2434B2A91BE1D3DC254F8C71455D4ACA528F1DCC9FF32369608F2EDB5`，保存于 `1074.11.23`。`attempt-05/save-material-delta-01.json` SHA-256 `84154554437CE96FB751DC6DB23E65847CA974CD92917A2FCB32B12C3FC11634` 对原件和战后存档重新解码、逐域比较。 |
+| 独立恢复 | 新 `attempt-07` 从该战后存档的相同 SHA 冷启动，CK3 PID `23556`；只读恢复帧 `map-ready-watch-01/ready-payload.json` SHA-256 `908E88D2B7BA30AB6D35E6D04DC11E503682950C221CDF97C3E70A94E3E916E2` 与保存当日的 `native:11` 在 episode、日期、WarID 缺席、玩家金币与威望上相同。离线报告 `attempt-07/postcondition-with-recovery-01.json` SHA-256 `FF62B768B3C666AF059589867F469A76A6FCBE4139CC91015626F2223AE069AA`，`matched_reference=next_turn`、`paired_recovery_matched=true`。恢复会话已受管停止，进程树清空。 |
+
+存档层的 `c_foggia` holder 从 Robert `33435` 变为 Landolf `30097`；其 de-facto 上级 title 从 `2141`（holder `29829`）变为 `2121`（holder `30097`）。直属子 title `b_lucera` 的 holder 也从 `33435` 变为 `30097`，`b_larino` 的 holder 仍为空，`b_vieste` 仍为 `43703`。这些是**头衔层级**记录，不等同人物的全部直属领主／封臣关系。两个人物的金币、虔诚，及 Landolf 的威望在战前／六天后存档差分均为零；Robert 的威望差分为 −30。战前 `(29829,30097)` 人物对的关系块含 active WarID 且无 truce 槽位，战后该 WarID 消失，并出现原始 `truce_1`，日期 `1079.11.17`、result `victory`；`truce_1` 对应哪一方的方向尚未证实。
+
+硬件两点 probe 的离线组装结果见 `attempt-05/hwprobe-01/paired-trace.json`，原始采集 SHA-256 `D6212CEDC465CF299FC1E61894457F7D6903D122E18EFC19E1126AF40E944ABD`。同一 PID `6532`、线程 `2452`、指针 `0x1F440020DE0` 在 setup `0x2E9F746` 与 resolve 比较 `0x2EC4410` 前的 `[RAX+0x268]` dword 都为 **0**，不是 `0x17`。组装器的等级仅为 `STRUCTURAL_PAIR_ONLY`：WarID、动作、episode、effect 调用身份来自外部断言，硬件 probe 本身并不认证它们，也没有记录比较后的实际分支。不能仅据这个 dword 宣称所有 de-jure conquest 的变更类型或最终分支。
+
+动作结果、原生战争消失、下一日期战争缺席、存档变化及独立冷启动恢复形成一致的这一战例证据。但战后存档比即时原生帧晚六天；把全部资源／title 变化逐项归因到同一原生帧仍需独立读数。人物直属领主／全部封臣及 truce 槽方向仍为明确缺口。`material_outcome_complete=false` 是字段完备度门禁，**不是**本次投降失败。恢复只证明上述可读原生域和存档字节配对，不增加缺失的字段。
+
+关闭窗口时 `attempt-07/desktop-handoff-01/probe-1/steam-moved.png` SHA-256 `ADD8AE6B68F3F04F973E70FE0541D2A84E61ECB7F394E290FE8EE46FB782E785` 是新鲜位移画面，人工可见 Steam“离线模式”；本机 CK3、bridge injector、operator MCP 进程清单为空，任务总线已释放 `ck3-screen:acquired`。首个恢复候选 `attempt-06` 在 CK3 启动前因同步 `master` 后 runtime fingerprint 变化而 RED，未启动游戏、未再次提交动作；保留其所有准备与失败证据。`attempt-07` 从相同战后不可变原件重新准备并通过。

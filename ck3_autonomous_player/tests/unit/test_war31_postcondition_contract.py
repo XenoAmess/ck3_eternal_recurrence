@@ -160,6 +160,37 @@ class War31PostconditionTests(unittest.TestCase):
                 },
             )
 
+    def test_recovery_can_match_the_saved_next_turn_instead_of_immediate_frame(self) -> None:
+        next_turn = frame(active=False, snapshot_id="native:11", revision=11,
+                          date=53216064, prestige=-300_000)
+        recovery = frame(active=False, snapshot_id="native:2", revision=2,
+                         date=53216064, prestige=-300_000)
+        report = project_war31_postcondition(
+            frame(active=True),
+            frame(active=False, snapshot_id="native:4", revision=4),
+            next_turn_snapshot=next_turn,
+            recovery_snapshot=recovery,
+            recovery_pair={
+                "source_save_sha256": "A" * 64,
+                "restored_save_sha256": "A" * 64,
+            },
+        )
+        self.assertEqual(report["paired_recovery"]["value"]["matched_reference"],
+                         "next_turn")
+        self.assertTrue(report["gates"]["paired_recovery_matched"])
+        recovery["played_character_prestige"]["raw"] = -400_000
+        changed = project_war31_postcondition(
+            frame(active=True),
+            frame(active=False, snapshot_id="native:4", revision=4),
+            next_turn_snapshot=next_turn,
+            recovery_snapshot=recovery,
+            recovery_pair={
+                "source_save_sha256": "A" * 64,
+                "restored_save_sha256": "A" * 64,
+            },
+        )
+        self.assertFalse(changed["gates"]["paired_recovery_matched"])
+
     def test_cli_hashes_inputs_and_never_overwrites_report(self) -> None:
         tool = Path(__file__).resolve().parents[2] / "tools" / "project_war31_postcondition.py"
         with tempfile.TemporaryDirectory() as folder:

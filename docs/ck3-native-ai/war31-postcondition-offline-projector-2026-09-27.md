@@ -10,12 +10,12 @@
 <verified-python> ck3_autonomous_player/tools/project_war31_postcondition.py --before <before.json> --after <after.json> --action-result <typed-action-result.json> --output <new-report.json>
 ```
 
-`--next-turn <snapshot.json>` 可追加后续日期的新原生快照；`--recovery <snapshot.json> --recovery-source-save <post-action-save.ck3> --recovery-restored-save <restored-save.ck3>` 可追加独立重载回读。命令逐字节计算所有 JSON 输入的 SHA-256；恢复配对的两个存档由命令直接流式计算 SHA-256，不信任手写哈希。输出用独占新建，拒绝覆盖旧报告。
+`--next-turn <snapshot.json>` 可追加后续日期的新原生快照；`--recovery <snapshot.json> --recovery-source-save <post-action-save.ck3> --recovery-restored-save <restored-save.ck3>` 可追加独立重载回读。命令逐字节计算所有 JSON 输入的 SHA-256；恢复配对的两个存档由命令直接流式计算 SHA-256，不信任手写哈希。输出用独占新建，拒绝覆盖旧报告。若存档保存于下一日期，恢复帧按同日期的 `next_turn` 比较；若保存于即时战后日期，则按 `after` 比较，并在 `matched_reference` 明示所用基准。两者日期都对不上时不能判为配对一致。
 
 | 域 | 现有原生证据 | 投影原则 |
 | --- | --- | --- |
 | 战争仍在 | `active_wars` 中精确 WarID，连同防守方、主战方及对手身份 | 完整列表中缺 WarID 才是 `false`；列表缺失/损坏为 `unavailable`。 |
-| 动作提交 | typed 返回 `step/accepted/status/war_termination_result`，绑定 episode、战前/后 snapshot ID 和日期；本战防守方投降的 outcome 为 `attacker_victory` | `submitted_pending` 与 `applied` 分开；ACK 不能代替战争消失的原生回读。 |
+| 动作提交 | typed 返回 `step/accepted/status/war_termination_result`，绑定 episode、战前/后 native revision 区间和日期；本战防守方投降的 outcome 为 `attacker_victory` | `submitted_pending` 与 `applied` 分开；ACK 所在原生 revision 可早于后续读回。ACK 不能代替战争消失的原生回读。 |
 | 玩家金币、威望 | `played_character_gold/prestige.raw`，固定 `scale=100000` | 保留正负原始整数；两端均可见时才算 `after-before`，真实零与缺失严格分开。 |
 | 下一回合 | 另一次同 episode、日期严格前进的原生快照 | 单独检查旧 WarID 是否仍缺席；战后即刻回读不能冒充下一回合。 |
 | 恢复 | 两份实际存档同 SHA-256，恢复后原生快照 | 比较 episode、日期、旧 WarID 状态和已有玩家资源；不拿保存前的 action ACK 当恢复后证据。 |
@@ -27,6 +27,6 @@
 
 现有 `native_driver.py` 的 rich snapshot 直接载有 `active_wars`、玩家金币和威望；`campaign_root_context` 的玩家持有头衔分区及直属有地封臣列表也不能单独证明 title **2128** 终局 holder、该 holder 的领主或它的封臣关系。`raiktor_actual_truce_expiry` 是另一战例的定向私有读数，不能套到 WAR31。后续若补原生查询，须采集战前/后/恢复后的同一 title ID holder、holder 的直接领主及有地封臣、双方有符号资源，以及两个角色定向持久 truce 及到期日；各读数须绑定相应原生 revision/episode/date 和 DLL/EXE 身份，然后才能扩展投影，不能仅把新字段塞进本报告。
 
-另一个执行边界：当前 typed `surrender-war-<id>` 在 `native_driver.py` 仅由 `_emergency_surrender_readiness` 广告/执行，而该分支要求玩家为**进攻方**。R0221 WAR31 是**防守方**。用户本次单次授权并不自动使现有驱动器支持此步；正式实机需要先完成精确防守方 typed 门禁及受管复验，不能绕过驱动器直接调用原生写入。
+历史执行边界：原先 typed `surrender-war-<id>` 在 `native_driver.py` 仅由 `_emergency_surrender_readiness` 广告/执行，而该分支要求玩家为**进攻方**。R0221 WAR31 是**防守方**。其后为这一次精确 WarID／checkpoint／用户授权增加了防守方 typed 门禁；[单次实机结果](war31-r0197-one-shot-live-result-2026-09-28.md)证明动作已经提交且战争从原生读回消失。授权已消费，不得把这条特殊门禁推广为任意防守方战争的通用自动投降规则。
 
 本工具的合成测试：`<verified-python> ck3_autonomous_player/tests/unit/test_war31_postcondition_contract.py`。测试覆盖零与缺失、有符号差分、ACK 与原生战争状态冲突、下一回合与配对恢复、错角色及不匹配存档。它们只验证投影合同，不是 WAR31 实机结算证据。
