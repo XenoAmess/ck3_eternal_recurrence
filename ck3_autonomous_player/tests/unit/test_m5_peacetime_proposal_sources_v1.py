@@ -902,9 +902,12 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         ) as construction_query:
             planned = GameplayBridgeService(driver).plan_turn()
         self.assertIsNone(planned["plan"]["selected_step"])
-        self.assertEqual(planned["plan"]["phase"], "m5_joint_query_only_red")
+        self.assertEqual(planned["plan"]["phase"],
+                         "m5_joint_root_unavailable_independent_family")
         self.assertIn("same-frame root returned unavailable",
                       planned["plan"]["reason"])
+        self.assertEqual(planned["plan"]["m5_joint_status"],
+                         "same_frame_faction_root_unavailable")
         construction_query.assert_not_called()
 
     def test_pending_construction_reaches_existing_receipt_before_joint_read(self) -> None:

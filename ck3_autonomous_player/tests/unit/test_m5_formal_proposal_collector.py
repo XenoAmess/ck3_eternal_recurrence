@@ -23,6 +23,9 @@ from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
 )
 from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
+from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
+    SUBMIT_STEP as FAMILY_SUBMIT_STEP,
+)
 
 
 _FRAME = {
@@ -567,6 +570,58 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
                          "no_positive_observed_marriage_opportunity")
         joint.assert_called_once()
         family.assert_called_once()
+
+    def test_unavailable_joint_root_keeps_independent_family_action(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        peace["played_character"]["alive"] = True
+        driver = _ServiceDriver(enabled=True, snapshot=peace)
+        driver.state_dir = Path("Z:/r146-joint-test-state")
+        driver.allow_private_family_marriage_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        for family_step in (FAMILY_SUBMIT_STEP, "life-advance"):
+            with (self.subTest(family_step=family_step), mock.patch(
+                "xar_autoplayer.bridge.service.choose_one_life_turn",
+                return_value=deepcopy(baseline),
+            ), mock.patch(
+                "xar_autoplayer.m5_formal_proposal_collector.read_construction_ledger",
+                return_value={"pending": None, "applied": None},
+            ), mock.patch(
+                "xar_autoplayer.m5_formal_proposal_collector.read_faction_gift_ledger_v1",
+                return_value={"pending": None},
+            ), mock.patch(
+                "xar_autoplayer.m5_formal_proposal_collector.read_family_marriage_ledger",
+                return_value={"pending": None, "resolved": None},
+            ), mock.patch(
+                "xar_autoplayer.bridge.service.plan_family_marriage_private",
+                side_effect=lambda driver, planned, snapshot, **kwargs: {
+                    **planned, "plan": {**planned["plan"],
+                        "selected_step": family_step,
+                        "family_marriage_status": (
+                            "native_final_legal_selected"
+                            if family_step == FAMILY_SUBMIT_STEP else "no_new_proposal"
+                        ),
+                    },
+                },
+            ) as family):
+                planned = GameplayBridgeService(driver).plan_turn()
+            family.assert_called_once()
+            self.assertEqual(family.call_args.args[1]["plan"]["selected_step"],
+                             "life-advance")
+            self.assertEqual(family.call_args.args[2]["snapshot_id"],
+                             peace["snapshot_id"])
+            self.assertEqual(driver.source_reads, 0)
+            self.assertEqual(planned["plan"]["m5_joint_status"],
+                             "same_frame_faction_root_unavailable")
+            self.assertIn("same-frame faction root",
+                          planned["plan"]["m5_joint_red_reason"])
+            self.assertEqual(planned["plan"]["selected_step"],
+                             FAMILY_SUBMIT_STEP if family_step == FAMILY_SUBMIT_STEP
+                             else None)
+            self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
 
     def test_peace_m5_observation_red_remains_visible_after_family_diagnostic(self) -> None:
         peace = _snapshot()
