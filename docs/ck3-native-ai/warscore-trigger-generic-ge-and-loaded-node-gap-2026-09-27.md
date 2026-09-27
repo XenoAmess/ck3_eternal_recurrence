@@ -50,3 +50,5 @@ VFS 中实际载入的 `combat_on_actions.txt` 来源与 bytes、CombatID/WarID/
 `0x99FAF8` 返回 bool，再与同场 result `+0x40` 和后续 effect 回读关联。
 必须用调用上下文或稳定节点身份证明采到的是败方该脚本条件，不能把别的 `warscore_value` 使用者拼进来。
 探针只读、容量受限，不主动调用 evaluator/mutator；若身份、VFS、时间或分支不一致，保持 RED。
+
+后续[被动探针 ABI/身份预检](loser-warscore-trigger-passive-probe-abi-preflight-2026-09-27.md)已找出比较前可直接读取两侧 raw qword 的精确时点，也证实 trigger `+0x08` 只是注册 key，并非脚本节点唯一身份。败方 effect 根到该语句的 loaded trigger 父链尚未绑定，因此目前拒绝安装权威归因 hook。
