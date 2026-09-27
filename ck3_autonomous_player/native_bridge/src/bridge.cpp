@@ -3092,14 +3092,18 @@ void AppendCombatKnights(std::string &result,
       result += ",\"effectiveness_components\":{\"status\":\"";
       result += knight.effectiveness_components_observed ? "available" : "unavailable";
       result += "\",\"modifier_raw\":[";
-      for (std::size_t index = 0; index < knight.effectiveness_modifier_raw.size(); ++index) {
-        if (index != 0) result += ',';
-        result += SignedNumber(knight.effectiveness_modifier_raw[index]);
+      for (std::size_t component_index = 0;
+           component_index < knight.effectiveness_modifier_raw.size();
+           ++component_index) {
+        if (component_index != 0) result += ',';
+        result += SignedNumber(knight.effectiveness_modifier_raw[component_index]);
       }
       result += "],\"operand_raw\":[";
-      for (std::size_t index = 0; index < knight.effectiveness_operand_raw.size(); ++index) {
-        if (index != 0) result += ',';
-        result += SignedNumber(knight.effectiveness_operand_raw[index]);
+      for (std::size_t component_index = 0;
+           component_index < knight.effectiveness_operand_raw.size();
+           ++component_index) {
+        if (component_index != 0) result += ',';
+        result += SignedNumber(knight.effectiveness_operand_raw[component_index]);
       }
       result += "]}";
       result += ",\"effective_damage_raw\":";
@@ -9663,15 +9667,15 @@ void RunConnectedSession(
       state.pending_character_interaction_context_query_sequence;
   auto &event_window_context_query_sequence =
       state.event_window_context_query_sequence;
-  auto &current_timeline_blocker_context_query_sequence =
+  [[maybe_unused]] auto &current_timeline_blocker_context_query_sequence =
       state.current_timeline_blocker_context_query_sequence;
-  auto &player_epidemic_treatment_presence_query_sequence =
+  [[maybe_unused]] auto &player_epidemic_treatment_presence_query_sequence =
       state.player_epidemic_treatment_presence_query_sequence;
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   auto &player_prisoner_collection_query_sequence =
       state.player_prisoner_collection_query_sequence;
 #endif
-  auto &player_epidemic_recovery_query_sequence =
+  [[maybe_unused]] auto &player_epidemic_recovery_query_sequence =
       state.player_epidemic_recovery_query_sequence;
   auto &coat_of_arms_designer_probe_query_sequence =
       state.coat_of_arms_designer_probe_query_sequence;
