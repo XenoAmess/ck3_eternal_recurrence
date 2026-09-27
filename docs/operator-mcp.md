@@ -12,6 +12,8 @@ profile、实际 endpoint、凭据与运行中 job 状态由各机器自己持�
 应在那台机器重新部署、注册并核验其本机工具。`operator_get_status` 只代表所连接机器的 live 状态；
 另一台机器的状态、旧报告和 Git 投影均不能替代本机查询。
 
+CK3 排他范围也是每台运行机器本地：同一台机器至多一个 CK3 实例，启动前用本机 operator MCP 与实际进程确认本机 owner、RED 和空闲状态。不同机器可以同时各运行一个 CK3；战争同事在另一台机器的窗口不要求本机等待其释放。共享 Steam 账号、资产或同一任务如有真实冲突，仍按各自合同协调；跨机器意图与证据通过 Git 传递，不能调用远端 MCP 或把 Git 当作实时实例锁。
+
 目标侧 JSON profile 冻结以下部署数据：
 
 - `target.id` 与期望 `token_user / desktop / machine`；

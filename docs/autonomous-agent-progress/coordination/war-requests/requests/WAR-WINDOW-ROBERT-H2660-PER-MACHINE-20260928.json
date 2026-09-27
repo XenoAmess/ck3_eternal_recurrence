@@ -1,0 +1,32 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-WINDOW-ROBERT-H2660-PER-MACHINE-20260928",
+  "created_at_utc": "2026-09-27T16:27:04Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "coordination_rule_correction",
+  "supersedes": "WAR-WINDOW-ROBERT-H2660-20260927",
+  "scope": "Correct only the old global CK3 window handback prerequisite for the next bounded Robert run. The original request remains an immutable historical record; WAR31 research and action contracts are unchanged.",
+  "source": {
+    "formal_campaign": "1066_robert_and_legal_succession",
+    "last_completed_run": "R0262",
+    "last_completed_checkpoint_history_index": 2660,
+    "last_completed_date_raw": 53217072,
+    "candidate_status_at_filing": "official_prepare_rebind_no_launch_ready_live_not_started",
+    "superseded_request_path": "WAR-WINDOW-ROBERT-H2660-20260927.json",
+    "latest_master_when_filed": "9283c6c98435d1d72d255ae2577b596e9795f974"
+  },
+  "corrected_coordination": {
+    "instance_scope": "At most one CK3 process per machine; distinct machines may each run one at the same time.",
+    "operator_scope": "Each machine deploys and calls only its own operator MCP. Local operator status and local process inventory prove only that machine's current owner and RED.",
+    "robert_start_gate": "The nonwar operator independently checks its own live source, CK3/injector/operator process tree, owner, current candidate, official pair, Steam/account state and actual shared assets before allocating or starting the next local Robert run. A WAR31 release response from the other machine is not a prerequisite.",
+    "war_window": "The war maintainer may continue WAR31 on its own machine without yielding its CK3 window to the nonwar machine.",
+    "shared_resources": "Coordinate a concrete shared Steam account, asset or task conflict if one exists; do not infer a conflict solely from the other machine running CK3."
+  },
+  "requested_delivery": [
+    "Read this correction from master when convenient. No WAR31 window release response is required before the nonwar machine starts its own qualified Robert candidate.",
+    "If a concrete shared Steam account, asset or task conflict is observed, report that conflict through this Git channel with its own evidence and required release condition."
+  ],
+  "coordination_boundary": "Git transports cross-machine intent and results, not a global live lock or remote MCP status. No side may call the other machine's operator MCP or infer its live process state from this request."
+}
