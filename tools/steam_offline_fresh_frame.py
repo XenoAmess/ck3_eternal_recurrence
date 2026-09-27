@@ -16,7 +16,7 @@ import time
 
 import psutil
 import pyautogui
-from PIL import ImageChops
+from PIL import Image, ImageChops
 import win32gui
 import win32process
 
@@ -59,7 +59,46 @@ def _shift_for_rect(rect: tuple[int, int, int, int], screen_width: int) -> int:
     raise RuntimeError("Steam window has no 20-pixel horizontal movement room")
 
 
-def capture(output_dir: Path) -> dict[str, object]:
+def _unchanged_clock_region(
+    reference_path: Path, moved: Image.Image, rect: tuple[int, int, int, int]
+) -> dict[str, object]:
+    """Reject a moving window composited over an older, frozen desktop clock.
+
+    The caller must select a visibly updating clock region from a previously
+    reviewed screenshot. This is a fail-closed freshness check, not OCR or an
+    inference about Steam's offline mode.
+    """
+    reference = Image.open(reference_path).convert("RGB")
+    if reference.size != moved.size:
+        raise ValueError("clock reference and current desktop dimensions differ")
+    left, top, right, bottom = rect
+    if not (0 <= left < right <= moved.width and 0 <= top < bottom <= moved.height):
+        raise ValueError("clock region is outside the captured desktop")
+    age_seconds = time.time() - reference_path.stat().st_mtime
+    if age_seconds < 120:
+        raise ValueError("clock reference must be at least two minutes old")
+    old_clock = reference.crop(rect)
+    new_clock = moved.convert("RGB").crop(rect)
+    # Steam window movement can recolor the taskbar background while the
+    # composited clock glyphs stay frozen. Compare their bright foreground.
+    old_glyphs = old_clock.convert("L").point(lambda value: 255 if value >= 160 else 0)
+    new_glyphs = new_clock.convert("L").point(lambda value: 255 if value >= 160 else 0)
+    if old_glyphs.getbbox() is None:
+        raise ValueError("clock reference region has no bright clock glyphs")
+    return {
+        "reference_path": str(reference_path.resolve()),
+        "reference_sha256": _sha256(reference_path),
+        "reference_age_seconds": round(age_seconds, 1),
+        "clock_rect": list(rect),
+        "clock_pixels_unchanged": ImageChops.difference(old_glyphs, new_glyphs).getbbox() is None,
+        "clock_foreground_threshold": 160,
+    }
+
+
+def capture(
+    output_dir: Path, *, clock_reference: Path | None = None,
+    clock_rect: tuple[int, int, int, int] | None = None,
+) -> dict[str, object]:
     if not output_dir.is_dir():
         raise ValueError("output directory must exist")
     before_path = output_dir / "steam-before.png"
@@ -111,6 +150,26 @@ def capture(output_dir: Path) -> dict[str, object]:
     edge_change = difference.crop((edge_left, top, edge_right, bottom)).getbbox()
     if bbox is None or edge_change is None or _sha256(before_path) == _sha256(moved_path):
         raise RuntimeError("desktop capture did not respond to live Steam movement")
+    if (clock_reference is None) != (clock_rect is None):
+        raise ValueError("clock reference and rectangle must be supplied together")
+    clock_check = None
+    if clock_reference is not None and clock_rect is not None:
+        cl, ct, cr, cb = clock_rect
+        if (cl < moved_rect[2] and cr > moved_rect[0]
+                and ct < moved_rect[3] and cb > moved_rect[1]):
+            raise ValueError("clock region overlaps the moved Steam window")
+        clock_check = _unchanged_clock_region(clock_reference, moved, clock_rect)
+        if clock_check["clock_pixels_unchanged"]:
+            with (output_dir / "steam-frame-stale.json").open(
+                "x", encoding="utf-8", newline="\n"
+            ) as stream:
+                json.dump({"schema": "ck3.steam_frozen_clock_frame.v1",
+                           "captured_at_utc": datetime.now(timezone.utc).isoformat(),
+                           "before_sha256": _sha256(before_path),
+                           "moved_sha256": _sha256(moved_path),
+                           "clock_check": clock_check}, stream, ensure_ascii=False, indent=2)
+                stream.write("\n")
+            raise RuntimeError("desktop capture did not respond to live Steam movement")
     receipt = {
         "schema": "ck3.steam_fresh_desktop_frame.v1",
         "captured_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -127,6 +186,7 @@ def capture(output_dir: Path) -> dict[str, object]:
         "moved_identity": _identity(moved_path),
         "pixel_difference_bbox": list(bbox),
         "moving_edge_changed": True,
+        "clock_check": clock_check,
         "offline_status_observed": None,
     }
     with receipt_path.open("x", encoding="utf-8", newline="\n") as stream:

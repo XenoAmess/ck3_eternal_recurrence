@@ -136,7 +136,9 @@ def restart_running_service(timeout_seconds: int) -> dict:
     return service_state()
 
 
-def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool) -> dict:
+def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool,
+                        clock_reference: Path | None = None,
+                        clock_rect: tuple[int, int, int, int] | None = None) -> dict:
     previous = win32gui.GetForegroundWindow()
     if previous != hwnd:
         if not bring_forward:
@@ -153,7 +155,11 @@ def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool) -> dic
             time.sleep(0.05)
     receipt = None
     try:
-        receipt = steam_offline_fresh_frame.capture(output_dir)
+        if clock_reference is None:
+            receipt = steam_offline_fresh_frame.capture(output_dir)
+        else:
+            receipt = steam_offline_fresh_frame.capture(
+                output_dir, clock_reference=clock_reference, clock_rect=clock_rect)
         return receipt
     finally:
         if previous != hwnd and win32gui.IsWindow(previous):
@@ -233,7 +239,14 @@ def recover(args: argparse.Namespace) -> dict:
                 probe_dir = output_dir / f"probe-{attempt}"
                 probe_dir.mkdir(exist_ok=False)
                 try:
-                    receipt = capture_fresh_frame(probe_dir, hwnd, args.bring_steam_forward)
+                    clock_reference = getattr(args, "stale_clock_reference", None)
+                    clock_rect = getattr(args, "stale_clock_rect", None)
+                    if clock_reference is None:
+                        receipt = capture_fresh_frame(probe_dir, hwnd, args.bring_steam_forward)
+                    else:
+                        receipt = capture_fresh_frame(
+                            probe_dir, hwnd, args.bring_steam_forward,
+                            clock_reference=clock_reference, clock_rect=tuple(clock_rect))
                     record("fresh_frame", attempt=attempt, receipt=receipt)
                     fresh_frame = {"receipt_path": str(probe_dir / "steam-frame-freshness.json"),
                                    "image_identity": receipt.get("moved_identity")}
@@ -282,10 +295,17 @@ def main() -> None:
     recovery.add_argument("--output-dir", type=Path, required=True)
     recovery.add_argument("--bring-steam-forward", action="store_true")
     recovery.add_argument("--restart-running-todesk-on-stale", action="store_true")
+    recovery.add_argument("--stale-clock-reference", type=Path,
+                          help="previously reviewed desktop screenshot with a visible clock")
+    recovery.add_argument("--stale-clock-rect", type=int, nargs=4,
+                          metavar=("LEFT", "TOP", "RIGHT", "BOTTOM"))
     recovery.add_argument("--service-timeout-seconds", type=int, default=20)
     args = parser.parse_args()
     if args.mode == "recover" and args.service_timeout_seconds <= 0:
         parser.error("--service-timeout-seconds must be positive")
+    if args.mode == "recover" and ((args.stale_clock_reference is None)
+                                   != (args.stale_clock_rect is None)):
+        parser.error("--stale-clock-reference and --stale-clock-rect must be used together")
     print(json.dumps(inspect(args.task_bus) if args.mode == "inspect" else recover(args),
                      ensure_ascii=False))
 

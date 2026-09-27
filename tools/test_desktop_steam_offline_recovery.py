@@ -3,13 +3,17 @@
 from __future__ import annotations
 
 from argparse import Namespace
+import os
 from pathlib import Path
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 import pywintypes
+from PIL import Image
 
 import desktop_steam_offline_recovery as recovery
+import steam_offline_fresh_frame as freshness
 
 
 TASK = "offline-recovery-test"
@@ -28,6 +32,22 @@ def snapshot() -> dict:
 
 
 class DesktopRecoveryTests(unittest.TestCase):
+    def test_old_clock_pixels_detect_composited_stale_desktop(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            reference = Path(temp) / "old.png"
+            old = Image.new("RGB", (40, 20), "black")
+            old.putpixel((35, 10), (255, 255, 255))
+            old.save(reference)
+            timestamp = time.time() - 180
+            os.utime(reference, (timestamp, timestamp))
+            moved = old.copy()
+            moved.putpixel((2, 2), (200, 200, 200))
+            same_clock = freshness._unchanged_clock_region(reference, moved, (30, 0, 40, 20))
+            self.assertTrue(same_clock["clock_pixels_unchanged"])
+            moved.putpixel((35, 10), (100, 100, 100))
+            new_clock = freshness._unchanged_clock_region(reference, moved, (30, 0, 40, 20))
+            self.assertFalse(new_clock["clock_pixels_unchanged"])
+
     def test_foreground_activation_waits_for_async_window_switch(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             with (patch.object(recovery.win32gui, "GetForegroundWindow",
