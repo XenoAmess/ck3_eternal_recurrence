@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "contract": "private-player-prisoner-child-of-player-ck3-1.19.0.6",
+  "status": "exact-build-static-ready-private-opt-in; no paused readback",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000",
+    "release_script_relative_path": "game/common/character_interactions/00_prison_interactions.txt",
+    "release_script_sha256": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B"
+  },
+  "production_chain": {
+    "trigger_name": "is_child_of",
+    "trigger_name_rva": "0x43AA1B0",
+    "registration_function": {
+      "start_rva": "0x54ECC0",
+      "end_rva_exclusive": "0x54ED58",
+      "sha256": "6C6099AC0B362846C8660636554E76BE566755F6CDB402AC6AC7C21B270C0F87",
+      "name_reference_instruction_rva": "0x54ECD1",
+      "factory_vtable_assignment_rva": "0x54ED39",
+      "factory_vtable_rva": "0x43AA9D0"
+    },
+    "factory_vtable_method_offset": "0x8",
+    "factory_method": {
+      "start_rva": "0x28834E0",
+      "end_rva_exclusive": "0x2883551",
+      "sha256": "10B138DDB24ACD7A7948E8717758525A7C9F7DAB09FBF9FB5DBFC4B37417E7D1",
+      "predicate_vtable_assignment_rva": "0x288352F",
+      "predicate_vtable_rva": "0x43AB270"
+    },
+    "predicate_vtable_method_offset": "0xC8",
+    "predicate_wrapper": {
+      "start_rva": "0x2882680",
+      "end_rva_exclusive": "0x28827C2",
+      "sha256": "BFC8395CEBF7F596B05F6C335A7F0C66050B989FC4A9954F91096B50F37FAD91",
+      "tail_jump_instruction_rva": "0x28827BD"
+    },
+    "relation_function": {
+      "start_rva": "0x26085E0",
+      "end_rva_exclusive": "0x2608645",
+      "sha256": "6EECD04CC2B195DF2A94E784CEEF41D323185E767A594C3EE91140A9A933BCD3",
+      "calling_convention": "Microsoft x64: RCX child CCharacter*, RDX parent CCharacter*, bool in AL",
+      "child_parent_pair_pointer_offset": "0x1A0",
+      "parent_character_full_id_offset": "0x18",
+      "parent_pair_full_id_offsets": ["0x0", "0x4"],
+      "semantics": "After validating the parent character, return true when either full parent ID in the child's +0x1A0 pair equals the parent's +0x18 full CharacterID; null pair returns false."
+    }
+  },
+  "readiness": {
+    "static_registration_and_function_chain_verified": true,
+    "callable_in_paused_private_prisoner_collection": "private_v5_source_and_focused_tests_passed; live_probe_pending",
+    "three_robert_prisoners_observed_child_values": null,
+    "public_mcp_ready": false,
+    "release_action_ready": false
+  },
+  "next_proof": "Bind on the existing exact-build paused application-main prisoner collection to source-verified full IDs; keep the capability private and distinguish unavailable from false. In one bounded real paused frame, read player 29829 and prisoners 34486, 44484, 47028, then independently compare an actual known parent-child control pair if available. No release action follows from this one relation bit alone."
+}

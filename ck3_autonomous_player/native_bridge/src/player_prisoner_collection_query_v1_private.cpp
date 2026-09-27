@@ -234,12 +234,20 @@ Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
         !ReadLineage(access, prisoner_address, house_id, dynasty_id)) {
       return Failure::lineage_unavailable;
     }
+    bool child_of_played_character = false;
+    if (access.read_child_relation) {
+      if (access.is_child_of == nullptr) return Failure::child_relation_unavailable;
+      child_of_played_character = access.is_child_of(
+          reinterpret_cast<void *>(prisoner_address),
+          reinterpret_cast<void *>(sample.player_address));
+    }
     for (std::uint32_t prior = 0; prior < index; ++prior) {
       if (sample.rows[prior].full_character_id == full_id) {
         return Failure::collection_invalid;
       }
     }
-    sample.rows[index] = {index, full_id, jailer_id, house_id, dynasty_id};
+    sample.rows[index] = {index, full_id, jailer_id, house_id, dynasty_id,
+                          child_of_played_character};
   }
   return Failure::none;
 }
@@ -263,6 +271,10 @@ bool ReadPlayerPrisonerCollectionV1Private(
     return false;
   }
   if (access.capture_frame == nullptr || access.read_memory == nullptr) {
+    return false;
+  }
+  if (access.read_child_relation && access.is_child_of == nullptr) {
+    Fail(output, Failure::child_relation_unavailable);
     return false;
   }
   if (access.current_thread_id == 0 ||
@@ -350,6 +362,8 @@ std::string_view PlayerPrisonerCollectionFailureNameV1(Failure failure) noexcept
   case Failure::prisoner_identity_invalid: return "prisoner_identity_invalid";
   case Failure::custody_relation_invalid: return "custody_relation_invalid";
   case Failure::lineage_unavailable: return "lineage_unavailable";
+  case Failure::child_relation_unavailable:
+    return "child_relation_unavailable";
   case Failure::sample_drift: return "sample_drift";
   case Failure::frame_drift: return "frame_drift";
   }

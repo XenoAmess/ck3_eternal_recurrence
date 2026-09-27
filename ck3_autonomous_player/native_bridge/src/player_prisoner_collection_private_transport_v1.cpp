@@ -222,9 +222,18 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
     access.read_lineage = true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+    access.read_child_relation = true;
+#endif
     access.admitted_executable_sha256 =
         xar::bridge::kPlayerPrisonerManagementSnapshotV1ExecutableSha256;
     access.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+    access.is_child_of =
+        reinterpret_cast<xar::bridge::IsPlayerPrisonerChildOfV1>(
+            access.module_base +
+            xar::bridge::kPlayerPrisonerChildOfPredicateRvaV1);
+#endif
     access.current_thread_id = GetCurrentThreadId();
     access.application_main_thread_id = stamp.thread_id;
     access.context = &read_context;
@@ -272,7 +281,9 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   }
   std::string result =
       "{\"schema\":\"player-prisoner-collection-private-v1\","
-#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+      "\"schema_version\":5,\"snapshot_revision\":" +
+#elif defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
       "\"schema_version\":4,\"snapshot_revision\":" +
 #elif defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
       "\"schema_version\":3,\"snapshot_revision\":" +
@@ -340,6 +351,11 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
       result += snapshot.played_dynasty_id >= 0 &&
                         snapshot.played_dynasty_id == snapshot.rows[index].dynasty_id
                     ? "true" : "false";
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+      result += ",\"is_child_of_played_character\":";
+      result += snapshot.rows[index].child_of_played_character
+                    ? "true" : "false";
+#endif
       result += ",\"unconditional_release_preview\":" +
                 SerializeCharacterInteractionPreviewV1(
                     release_previews[index]);
