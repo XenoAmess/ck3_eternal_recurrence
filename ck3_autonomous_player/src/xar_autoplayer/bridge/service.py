@@ -1449,7 +1449,7 @@ class GameplayBridgeService:
     def _plan_private_lifestyle_trial_v1(
         self, planned: dict[str, object], available_steps: set[str]
     ) -> dict[str, object]:
-        """Spend a ready perk before time advance or a deferrable combat read."""
+        """Spend a ready perk before time advance or a deferrable read."""
 
         scope = planned.pop("_private_lifestyle_scope_v1", None)
         pending = planned.pop("_private_lifestyle_pending_v1", None)
@@ -1458,12 +1458,20 @@ class GameplayBridgeService:
         combat_read = (
             parse_query_combat_simulation_inputs_v3_step(selected) is not None
         )
+        root_read = selected == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
+        peaceful_root_read = (
+            root_read
+            and isinstance(scope, dict)
+            and scope.get("status") == "admitted"
+            and scope.get("at_peace") is True
+        )
+        deferrable_read = combat_read or peaceful_root_read
         if isinstance(pending, dict):
             # The previous typed request may already have changed CK3.  A
             # later paused frame is required before any new LIFE choice.
             if not isinstance(plan, dict):
                 return planned
-            if selected != "life-advance" and not combat_read:
+            if selected != "life-advance" and not (combat_read or root_read):
                 return planned
             pre_revision = pending.get("pre_public_revision")
             if (
@@ -1492,7 +1500,7 @@ class GameplayBridgeService:
                 )
             return {**planned, "plan": waiting}
         if not isinstance(plan, dict) or (
-            selected != "life-advance" and not combat_read
+            selected != "life-advance" and not deferrable_read
         ):
             return planned
         if not isinstance(scope, dict):
@@ -1538,16 +1546,16 @@ class GameplayBridgeService:
             ):
                 query = {"status": "paused_frame_changed_during_private_query"}
         consumed = consume_one_life_lifestyle_private_trial(
-            plan if not combat_read else {**plan, "selected_step": "life-advance"},
+            plan if not deferrable_read else {**plan, "selected_step": "life-advance"},
             same_frame_feudal_scope=scope,
             private_query=query,
         )
-        if combat_read and consumed.get("selected_step") not in {
+        if deferrable_read and consumed.get("selected_step") not in {
             PRIVATE_LIFESTYLE_PERK_STEP,
             PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
         }:
-            # The combat input is a read-only plan. Keep it when the current
-            # frame has no final-legal perk, or the LIFE source is unavailable.
+            # Keep the original read when this frame has no final-legal perk
+            # or the LIFE source is unavailable.
             return {
                 **planned,
                 "plan": {
@@ -1559,7 +1567,7 @@ class GameplayBridgeService:
                 },
             }
         if (
-            combat_read
+            deferrable_read
             and consumed.get("selected_step") == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
             and PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps
         ):

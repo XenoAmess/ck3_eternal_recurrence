@@ -1,5 +1,22 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE-C114: existing focus with a ready perk before a peaceful read-only step (2026-09-27)
+
+The exact CK3 1.19.0.6 native tree and LIFE final-legality boundary below remain the input. Before C114, the production service invoked its private LIFE consumer only for `life-advance` or a combat-v3 input read. The C114 production-path fixture uses a paused native:3 feudal peaceful frame with an existing stewardship focus, one unspent stewardship point, and a native-final-legal `cutting_corners_perk`. The opening gate correctly confirms the focus without resubmission. With the same-frame campaign-root proof already in history, a subsequent selected `query-campaign-root-context-v1` executed before the ready perk: the LIFE formal reader was not called. This is a source fixture failure, not evidence that R0247 or R0250 had this specific legal perk.
+
+```mermaid
+flowchart LR
+  A[New episode or opening frame] --> B{Current focus verified?}
+  B -->|yes| C[Keep focus and current XP/points]
+  B -->|no| F[Existing native focus gate and receipt path]
+  C --> D{Peaceful feudal root proof and native final-legal perk?}
+  D -->|yes, point available| E[Existing typed perk and independent receipt path]
+  D -->|no or unknown| Q[Preserve selected read-only query]
+  E -. new paired CK3 action, next turn and cold restore still pending .-> L[Formal LIFE closure]
+```
+
+The C114 narrow repair gives an already proven peaceful read-only root query a chance to use the existing private perk policy. It does not preempt a wartime tactical step, choose another focus, or infer zero points from an unavailable native read. An in-flight perk is verified by receipt before another spend. The native decision inputs, value limits, and unqueried perk targets remain as documented below.
+
 ## NW-LIFE-C105：R0247 当前帧技能机会的报告缺项（2026-09-27）
 
 R0247 从 Robert h133/raw53154936 的正式配对运行 5/5 turn，报告

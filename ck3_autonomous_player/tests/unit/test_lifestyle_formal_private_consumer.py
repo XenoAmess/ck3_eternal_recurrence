@@ -23,6 +23,7 @@ from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import (
     submit_player_lifestyle_perk_private_v1,
 )
 from xar_autoplayer.lifestyle_formal_consumer import (
+    ROOT_QUERY_STEP,
     consume_lifestyle_private_query,
     same_frame_feudal_lifestyle_scope,
     same_frame_feudal_peace_scope,
@@ -582,6 +583,108 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         self.assertTrue(perk["policy_target_final_legal"]["cutting_corners_perk"])
         self.assertFalse(perk["policy_target_owned"]["cutting_corners_perk"])
         self.assertEqual(driver.state.last["step"], QUERY_STEP)
+
+    def test_existing_focus_ready_perk_precedes_peacetime_read_only_query(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        driver.state.stock_focus_present = True
+        service = GameplayBridgeService(driver)
+        opening = service.plan_turn()["plan"]
+        self.assertEqual(opening["selected_step"], ROOT_QUERY_STEP)
+        self.assertEqual(
+            opening["initial_lifestyle_focus_existing"]["current_lifestyle_progress"]
+            ["unspent_perk_points"], 1,
+        )
+        self.assertTrue(
+            opening["initial_lifestyle_focus_existing"]["perk_opportunity"]
+            ["policy_target_final_legal"]["cutting_corners_perk"]
+        )
+        # The runner has verified and completed the existing-focus gate.
+        driver.require_initial_lifestyle_focus_before_date_advance = False
+        driver.history.extend(_scope_root())
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={
+                "selected_step": ROOT_QUERY_STEP,
+                "phase": "peacetime_read_only",
+            },
+        ):
+            following = service.plan_turn()["plan"]
+        self.assertEqual(following["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(following["lifestyle_action"]["target_key"],
+                         "cutting_corners_perk")
+
+    def test_peaceful_root_query_remains_when_no_point_is_available(self) -> None:
+        driver = _Driver()
+        driver.state.zero_points = True
+        driver.history.extend(_scope_root())
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={
+                "selected_step": ROOT_QUERY_STEP,
+                "phase": "peacetime_read_only",
+            },
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], ROOT_QUERY_STEP)
+        self.assertEqual(plan["lifestyle_opportunity_status"],
+                         "peacetime_read_only")
+        self.assertEqual(plan["lifestyle_decision"]["status"], "no_legal_minimum")
+        self.assertFalse(any(row["command"] == PERK_SUBMIT_STEP
+                             for row in driver.history))
+
+    def test_pending_perk_receipt_precedes_peaceful_root_retry(self) -> None:
+        driver = _Driver()
+        service = GameplayBridgeService(driver)
+        pending = {
+            "status": "submitted_verification_pending",
+            "kind": "perk",
+            "target_key": "cutting_corners_perk",
+            "action_request_id": "life-perk-c114",
+            "pre_public_revision": 3,
+        }
+        baseline = {"selected_step": ROOT_QUERY_STEP,
+                    "phase": "peacetime_read_only"}
+        same_frame = service._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:3", "revision": 3, "plan": baseline,
+             "_private_lifestyle_pending_v1": pending},
+            {ROOT_QUERY_STEP},
+        )["plan"]
+        self.assertEqual(same_frame["selected_step"], ROOT_QUERY_STEP)
+        self.assertEqual(same_frame["lifestyle_pending_action"], pending)
+        following = service._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:4", "revision": 4, "plan": baseline,
+             "_private_lifestyle_pending_v1": pending},
+            {ROOT_QUERY_STEP},
+        )["plan"]
+        self.assertEqual(following["selected_step"], RECEIPT_STEP)
+        self.assertEqual(following["lifestyle_pending_action"], pending)
+
+    def test_replayed_pending_perk_history_uses_receipt_before_root(self) -> None:
+        driver = _Driver()
+        driver.frame = _game_frame(4)
+        pending = {
+            "status": "submitted_verification_pending",
+            "kind": "perk",
+            "target_key": "cutting_corners_perk",
+            "action_request_id": "life-perk-c114-restored",
+            "episode_run_id": driver.frame["episode_run_id"],
+            "pre_public_revision": 3,
+        }
+        driver.history.append({"command": PERK_SUBMIT_STEP, "ok": True,
+                               "result": pending})
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": ROOT_QUERY_STEP,
+                          "phase": "peacetime_read_only"},
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], RECEIPT_STEP)
+        self.assertEqual(plan["lifestyle_pending_action"], pending)
+        self.assertFalse(any(row["command"] == PERK_SUBMIT_STEP
+                             and row["result"] is not pending
+                             for row in driver.history))
 
     def test_opening_existing_focus_reports_real_zero_points_and_zero_legal_perks(self) -> None:
         driver = _Driver()
