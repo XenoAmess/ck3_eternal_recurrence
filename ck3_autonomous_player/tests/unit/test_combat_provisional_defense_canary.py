@@ -171,6 +171,21 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_siege_forecast_observation_blocked")
         self.assertIsNone(plan["selected_step"])
         self.assertFalse(plan["active_attack_allowed"])
+        with mock.patch(
+            "xar_autoplayer.strategy._qualified_siege_forecast_move",
+            return_value={"status": "ready", "assessment_sha256": "E" * 64},
+        ):
+            qualified = _primary_defender_siege_forecast_ingress(
+                {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+                commands=[preview, contact, self._query_row(30)], snapshot=frame,
+                action_steps={"move-army-11-to-32"},
+                bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+            )
+        self.assertEqual(qualified["phase"], "native_war_siege_forecast_observation_blocked")
+        self.assertEqual(qualified["required_observation"],
+                         "one-day-target-entry-horizon-and-complete-participants")
+        self.assertIsNone(qualified["selected_step"])
+        self.assertFalse(qualified["active_attack_allowed"])
 
     def _frame(self, *, date_raw: int = 53_215_920):
         player = _army(
