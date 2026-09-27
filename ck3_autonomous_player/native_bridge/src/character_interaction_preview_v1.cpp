@@ -33,10 +33,19 @@ constexpr std::size_t kMsvcStringInlineCapacity = 15;
 constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::size_t kMaximumStableKeyBytes = 127;
 
-constexpr std::array<std::string_view, 5> kAllowlistedKeys{
+constexpr std::array<std::string_view, 6> kAllowlistedKeys{
     "gift_interaction", "recruit_guest_interaction",
     "invite_to_court_interaction", "offer_vassalization_interaction",
-    "demand_payment_interaction"};
+    "demand_payment_interaction", "release_from_prison_interaction"};
+constexpr std::string_view kUnconditionalReleaseKey =
+    "release_from_prison_interaction";
+constexpr std::size_t kContextActorOffset = 0x2D8;
+constexpr std::size_t kContextRecipientOffset = 0x2DC;
+constexpr std::size_t kContextSelectedOptionsDataOffset = 0x300;
+constexpr std::size_t kContextSelectedOptionsCapacityOffset = 0x308;
+constexpr std::size_t kContextSelectedOptionsCountOffset = 0x30C;
+constexpr std::size_t kDefinitionSelectedOptionsCountOffset = 0x2554;
+constexpr std::int32_t kReleaseAuthoredOptionCount = 11;
 
 constexpr std::array<std::string_view,
                      game::kCharacterInteractionPreviewCostCountV1>
@@ -48,6 +57,7 @@ constexpr std::array<std::string_view,
 struct NativeSample {
   game::CharacterInteractionPreviewDefinitionV1 definition{};
   game::CharacterInteractionPreviewRolesV1 roles{};
+  bool unconditional_prisoner_release = false;
   bool can_send = false;
   game::CharacterInteractionPreviewCostsV1 costs{};
   game::CharacterInteractionPreviewAcceptanceV1 acceptance{};
@@ -71,7 +81,7 @@ bool ValidSnapshotId(std::string_view value) noexcept {
     return (character >= 'a' && character <= 'z') ||
            (character >= 'A' && character <= 'Z') ||
            (character >= '0' && character <= '9') || character == '_' ||
-           character == '-' || character == '.';
+           character == '-' || character == '.' || character == ':';
   });
 }
 
@@ -165,6 +175,48 @@ bool CheckedAdd(std::uintptr_t base, std::size_t offset,
     return false;
   }
   output = base + offset;
+  return true;
+}
+
+// The stock release interaction has eleven authored options. Zero selected
+// bytes is the stock unconditional, auto-accept path; a default or partial
+// option vector must never be described as an unconditional release.
+bool ReadUnconditionalReleaseSelection(
+    const CharacterInteractionPreviewAccessV1 &access, void *definition,
+    void *context, std::int32_t expected_actor,
+    std::int32_t expected_recipient) noexcept {
+  const auto def = reinterpret_cast<std::uintptr_t>(definition);
+  const auto ctx = reinterpret_cast<std::uintptr_t>(context);
+  std::int32_t actor = -1, recipient = -1;
+  std::int32_t definition_count = -1, count = -1, capacity = -1;
+  std::uintptr_t data = 0;
+  auto read = [&](std::uintptr_t base, std::size_t offset,
+                  void *output, std::size_t size) noexcept {
+    std::uintptr_t address = 0;
+    return CheckedAdd(base, offset, address) &&
+           access.read_memory(access.context, address, output, size);
+  };
+  if (!read(ctx, kContextActorOffset, &actor, sizeof(actor)) ||
+      !read(ctx, kContextRecipientOffset, &recipient, sizeof(recipient)) ||
+      !read(def, kDefinitionSelectedOptionsCountOffset, &definition_count,
+            sizeof(definition_count)) ||
+      !read(ctx, kContextSelectedOptionsDataOffset, &data, sizeof(data)) ||
+      !read(ctx, kContextSelectedOptionsCapacityOffset, &capacity,
+            sizeof(capacity)) ||
+      !read(ctx, kContextSelectedOptionsCountOffset, &count,
+            sizeof(count)) ||
+      actor != expected_actor || recipient != expected_recipient ||
+      definition_count != kReleaseAuthoredOptionCount ||
+      count != definition_count || capacity < count || data == 0) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    std::uint8_t selected = 1;
+    if (!read(data, static_cast<std::size_t>(index), &selected,
+              sizeof(selected)) || selected != 0) {
+      return false;
+    }
+  }
   return true;
 }
 
@@ -432,6 +484,16 @@ bool ReadNativeSample(
                         : Failure::context_cleanup_failed;
     return false;
   }
+  if (request.interaction_key == kUnconditionalReleaseKey) {
+    if (!ReadUnconditionalReleaseSelection(
+            access, definition, constructed, request.actor_character_id,
+            request.recipient_character_id)) {
+      failure = destroy() ? Failure::release_option_selection_invalid
+                          : Failure::context_cleanup_failed;
+      return false;
+    }
+    sample.unconditional_prisoner_release = true;
+  }
   if (!access.invoke_can_send(access.context, environment.can_send,
                               constructed, sample.can_send)) {
     failure = destroy() ? Failure::can_send_evaluation_failed
@@ -453,6 +515,13 @@ bool ReadNativeSample(
     return false;
   }
   if (!ValidAcceptance(sample.acceptance)) {
+    failure = destroy() ? Failure::acceptance_invariant_failed
+                        : Failure::context_cleanup_failed;
+    return false;
+  }
+  if (sample.unconditional_prisoner_release &&
+      sample.acceptance.kind !=
+          game::CharacterInteractionAcceptanceKindV1::auto_accept) {
     failure = destroy() ? Failure::acceptance_invariant_failed
                         : Failure::context_cleanup_failed;
     return false;
@@ -616,6 +685,8 @@ game::ReadCharacterInteractionPreviewResultV1 ReadCharacterInteractionPreviewV1(
   output.date_raw = before.date_raw;
   output.definition = std::move(first.definition);
   output.roles = first.roles;
+  output.unconditional_prisoner_release =
+      first.unconditional_prisoner_release;
   output.can_send = first.can_send;
   output.costs = first.costs;
   output.acceptance = first.acceptance;
@@ -649,6 +720,8 @@ std::string_view CharacterInteractionPreviewFailureKeyV1(
   case context_construction_failed: return "context_construction_failed";
   case context_refresh_failed: return "context_refresh_failed";
   case context_finalize_failed: return "context_finalize_failed";
+  case release_option_selection_invalid:
+    return "release_option_selection_invalid";
   case can_send_evaluation_failed: return "can_send_evaluation_failed";
   case cost_evaluation_failed: return "cost_evaluation_failed";
   case acceptance_evaluation_failed:
@@ -689,11 +762,16 @@ std::string SerializeCharacterInteractionPreviewV1(
             std::to_string(preview.definition.deterministic_key_hash);
   output += ",\"runtime_ordinal\":" +
             std::to_string(preview.definition.runtime_ordinal) + '}';
-  output += ",\"payload_shape\":\"two_role_no_target_no_options\"";
+  output += preview.unconditional_prisoner_release
+                ? ",\"payload_shape\":\"two_role_all_release_options_off\""
+                : ",\"payload_shape\":\"two_role_no_target_no_options\"";
   output += ",\"roles\":{\"actor_character_id\":" +
             std::to_string(preview.roles.actor_character_id);
   output += ",\"recipient_character_id\":" +
             std::to_string(preview.roles.recipient_character_id) + '}';
+  if (preview.unconditional_prisoner_release) {
+    output += ",\"unconditional_prisoner_release\":true";
+  }
   output += ",\"can_send\":";
   output += preview.can_send ? "true" : "false";
   output += ",\"costs\":{\"raw_scale\":" +

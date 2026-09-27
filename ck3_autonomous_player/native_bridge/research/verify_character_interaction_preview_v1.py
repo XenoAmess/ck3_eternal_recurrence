@@ -146,6 +146,22 @@ def verify_abi(abi: dict[str, Any]) -> None:
         abi.get("request", {}).get("first_allowlist") == ALLOWLIST,
         "preview allowlist drifted",
     )
+    release = abi.get("private_unconditional_prisoner_release_extension", {})
+    require(
+        release.get("interaction_key") == "release_from_prison_interaction",
+        "private release key drifted",
+    )
+    require(
+        release.get("stock_interaction_sha256") ==
+        "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
+        "private release stock source drifted",
+    )
+    require(
+        release.get("private_collection_schema_version_when_enabled") == 2
+        and release.get("default_advertised") is False
+        and release.get("action_surface_present") is False,
+        "private release visibility drifted",
+    )
     entries = abi.get("native_entry_contract", {})
     expected_entries = {
         "character_storage_slot_rva": "0x570C130",

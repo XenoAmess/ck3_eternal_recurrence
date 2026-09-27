@@ -2,7 +2,8 @@
 
 > 工作包：**G2-M6-PRISONER1-NATIVE-TREE**。
 > PRISONER1 原始状态：**static-ready / research-only**；2026-09-15。后续 C80
-> 已接默认关闭的私有 bridge/pipe/MCP 集合查询，仍无 paused live 读回、action 或 planner。
+> 已接默认关闭的私有 bridge/pipe/MCP 集合查询；R0258 已有 3 人的 paused live
+> 集合读回，仍无囚犯 action 或 planner。详见文末增量。
 > exact build：ck3.exe 95,206,008 bytes，SHA-256
 > **2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86**。
 > 机器可复验账本：
@@ -19,9 +20,10 @@
 原生失败理由，以及引擎最终的 imprisonment/banishment/execution reason。集合不完整、被 cap、角色重定向不明
 或 option ownership 不明时都要 typed unavailable，readiness 不能变 true。
 
-下一项施工入口是用 C80 的私有查询从自然 paused frame 读出当前玩家的完整囚犯集合，
-再接已冻结的 generic interaction context/final validator。私有 paused live 证明完整集合
-和至少两类最终结果之后，才设计动作或公开正式能力。
+R0258 已用 C80 私有查询从自然 paused frame 读出当前玩家的完整囚犯集合。
+下一项施工入口是对同一囚犯接原生最终互动预览并核验结果；R0258 尚无任一
+赎金或释放的最终合法性和价值读回。两类最终结果及物质动作证据取得前，
+不公开正式能力。
 
 ## 范围与宗教域排除
 
@@ -373,3 +375,44 @@ NativeDriver `query_player_prisoner_collection_private_v1`，它与本机私有 
 5. 产出至少含一名真实囚犯、能得到两类 final result 的自然 paused fixture。
 
 以上 unknown 是下一轮可施工入口，不是把缺字段长期输出 null 的许可。
+
+### R0258 自然囚犯阳性与 C182 最小释放预览入口（2026-09-27）
+
+R0258 正式 Robert 候选源 `1fe1833f934aa07c3b90f202cc35ebd0cd9ad46e`，在
+`native:3`、`date_raw=53216640` 的暂停帧，从 C80 私有读口取得完整的 3 人集合：
+`34486`、`44484`、`47028`。三人均在当前玩家 `29829` 的原生集合内，反向狱卒关系
+也指向 `29829`。正式报告 SHA-256 为
+`5255FF3EFEC3BC41C7131C008E2CF463B16D83417BFEF69256B5E4D4B56CCC0B`，
+原件位于 `Z:\r171b-robert-h2437-candidate\run-formal-36\formal-report.txt`。
+该轮在首帧因开局 LIFE focus 证明不完整而 RED，囚犯查询没有导致动作或日期推进。
+上述值证明真实集合阳性，不证明任何一人可赎金或可释放。
+
+原版 `00_prison_interactions.txt:4088-6227` 的
+`release_from_prison_interaction` 是玩家狱卒与囚犯两个角色、无重定向的互动；
+其 11 个附加选项均不以 `starts_enabled` 开启。选择向量全零时，原版
+`auto_accept` 走无条件释放，接受后按 exact 囚禁关系执行释放。C182 只为这个
+分支接入默认关闭的私有读取：复用 C80 同帧集合，在应用主线程为每名囚犯构造、
+刷新、完成并销毁独立的原生互动 context。发布 `Can Send` 前逐字节核对原生
+actor/recipient、定义的 11 项数量和最终选中向量全零；读取原生十槽
+`on_send` 费用与最终自动接受结果；任何读不到或漂移保持 typed unavailable。
+旧私有集合查询的 v1 输出在新编译开关关闭时不变；显式打开
+`XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1` 后，同一私有查询的
+schema version 2 为各行增加 `unconditional_release_preview`。默认公共查询、广告、
+正式策略和囚犯动作均未开启。
+
+```mermaid
+flowchart LR
+    P["R0258 paused: 3 exact prisoner IDs"] --> C["C80 complete custody read"]
+    C --> U["native two-role release context"]
+    U --> O{"11 option bytes all off and roles unchanged?"}
+    O -->|yes| V["final Can Send, on-send cost, auto-accept"]
+    O -->|no| X["typed unavailable"]
+    V -. "next matched live candidate" .-> L["per-prisoner final legality"]
+    L -. "policy, typed command and material receipt pending" .-> A["formal release action"]
+```
+
+`Can Send=false` 是最终不能发送的读回，尚未附带原版详细失败 reason；不能从
+狱卒关系推断为 true。释放囚犯的目标价值、战争俘虏义务和具体当前场景均待同帧
+结果与政策比较。赎金仍缺付款者重定向、原生金额求值与接受后转账；通用
+`on_send` 十槽费用不能充当 `on_accept` 赎金收入。C182 只有源码和聚焦构建/测试，
+尚无新 DLL 的 paused live 读回或任何囚犯动作，因此 M6 和正式自动游玩能力不变。

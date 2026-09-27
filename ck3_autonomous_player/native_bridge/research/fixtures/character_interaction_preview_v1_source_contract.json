@@ -38,6 +38,7 @@
     "TestDefinitionAndRecipientLookupFailuresAreAtomic",
     "TestDriftAndCleanupFailuresStayRed",
     "TestInvalidAcceptanceAndAllowlistStayRed",
+    "TestUnconditionalPrisonerReleaseNativeSelection",
     "TestBoundEnvironment"
   ],
   "forbidden_shared_edits": [

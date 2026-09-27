@@ -35,6 +35,7 @@ enum class CharacterInteractionPreviewFailureV1 : std::uint32_t {
   context_construction_failed,
   context_refresh_failed,
   context_finalize_failed,
+  release_option_selection_invalid,
   can_send_evaluation_failed,
   cost_evaluation_failed,
   acceptance_evaluation_failed,
@@ -131,6 +132,9 @@ struct CharacterInteractionPreviewV1 {
   std::int32_t date_raw = 0;
   CharacterInteractionPreviewDefinitionV1 definition{};
   CharacterInteractionPreviewRolesV1 roles{};
+  // True only when the exact release definition's complete selected-option
+  // vector was read from the finalized native context and every option is off.
+  bool unconditional_prisoner_release = false;
   bool can_send = false;
   CharacterInteractionPreviewCostsV1 costs{};
   CharacterInteractionPreviewAcceptanceV1 acceptance{};

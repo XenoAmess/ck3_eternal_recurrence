@@ -133,6 +133,48 @@ def test_private_prisoner_collection_preserves_typed_unavailable() -> None:
     assert value["status"] == "unavailable"
 
 
+def _result_with_release_preview() -> dict[str, object]:
+    result = _result()
+    value = result["player_prisoner_collection"]
+    value["schema_version"] = 2
+    value["prisoners"][0]["unconditional_release_preview"] = {
+        "private_build": True, "read_only": True, "advertised": False,
+        "action_surface_present": False, "status": "available",
+        "snapshot_id": "native:5", "public_revision": 5,
+        "native_revision": 5, "date_raw": 100,
+        "definition": {"canonical_key": "release_from_prison_interaction"},
+        "payload_shape": "two_role_all_release_options_off",
+        "roles": {"actor_character_id": 31853,
+                  "recipient_character_id": 34250},
+        "unconditional_prisoner_release": True, "can_send": True,
+        "costs": {"raw_scale": 100_000,
+                  "entries": [{"resource_key": str(index), "raw": 0}
+                              for index in range(10)]},
+        "acceptance": {"kind": "auto_accept", "auto_accept": True,
+                       "would_accept_now": True},
+        "readiness": {"same_frame_ready": True},
+    }
+    return result
+
+
+def test_private_prisoner_collection_carries_native_unconditional_release() -> None:
+    result = _result_with_release_preview()
+    value = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    preview = value["player_prisoner_collection"]["prisoners"][0]["unconditional_release_preview"]
+    assert preview["can_send"] is True
+    assert preview["unconditional_prisoner_release"] is True
+
+
+def test_private_release_preview_rejects_wrong_prisoner_binding() -> None:
+    result = _result_with_release_preview()
+    preview = result["player_prisoner_collection"]["prisoners"][0]["unconditional_release_preview"]
+    preview["roles"]["recipient_character_id"] = 44484
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4)
+
+
 def test_mcp_registers_read_only_tool_only_for_private_opt_in() -> None:
     from mcp import Client
     from xar_autoplayer.bridge.mcp_server import create_server
