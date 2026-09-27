@@ -1,0 +1,46 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-PLANNER-NONE-ASSESSMENT-C153-20260927",
+  "status": "delivered",
+  "maintainer": "Codex war maintainer (ck3-warplanner-none-c153-20260927)",
+  "updated_at_utc": "2026-09-27T10:31:07Z",
+  "source_pr": null,
+  "delivery_route": "direct rebase-only master push under the project Git policy",
+  "master_commit": "d70344d36",
+  "source_paths": [
+    "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "ck3_autonomous_player/tests/unit/test_gameplay_bridge.py"
+  ],
+  "interface_contract": {
+    "trigger": "A native declarable war is present, but no same-frame war-entry assessment dict exists and the typed assessment query step is absent from available action steps.",
+    "planner_phase_with_life_advance": "native_war_entry_no_declare",
+    "selected_step_with_life_advance": "life-advance",
+    "planner_phase_without_life_advance": "native_war_entry_evidence_required",
+    "selected_step_without_life_advance": null,
+    "required_step": "The typed query-war-entry-assessments step for a valid target is reported when constructible, even when unavailable; invalid or absent target identity leaves required_step null.",
+    "decision": "outcome=NO_DECLARE; automatic_declaration_enabled=false; native_power_assessment_consumed=false; eu_lower_raw=null; no declare-war step selected",
+    "missing_field": "missing_fields=[war_entry_assessment], war_entry_assessment=null, expected_utility.status=power_assessment_required and missing_components includes native_power_assessment. Missing power is not interpreted as zero.",
+    "pending_and_resource_effects": "Planning this branch submits no declaration, creates no pending war action, and applies no resource or title effects. If life-advance is available it is the only selected step; subsequent frames must be reassessed before declaration.",
+    "cooldown": "The existing post-white-peace reentry cooldown runs before this branch and still selects a bounded hold inside its horizon; after expiry, a missing assessment enters the same NO_DECLARE path."
+  },
+  "checks": [
+    "Before fix, both named GameplayBridgeTests reproduced AttributeError at strategy.py:13716 on normal Python.",
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -m pytest -q -p no:cacheprovider <two named GameplayBridgeTests>: 2 passed.",
+    "Same verified interpreter with -O -m pytest on the same two named tests: 2 passed; pytest emitted its standard optimized-assertion warning.",
+    "The named tests now assert NO_DECLARE, missing assessment, no automatic declaration, no-life-advance blocked behavior, and unchanged white-peace cooldown before expiry.",
+    "py_compile on strategy.py and test_gameplay_bridge.py and git diff --check passed."
+  ],
+  "ancillary_mcp_exact_set": {
+    "test": "GameplayMcpServerTests.test_official_mcp_client_lists_and_calls_ck3_tools",
+    "classification": "Separate stale exact tool-set test expectation; not the planner defect and no demonstrated runtime MCP call failure.",
+    "observed_failure": "The test's assertEqual finds five server tools absent from its expected set: ck3_query_engine_log_literals_v1, ck3_query_engine_diagnostics_v1, ck3_inspect_save_artifacts_v1, ck3_collect_declarable_wars_result_v1, ck3_query_combat_phase_event_trace_v1. There are no reported missing server tools.",
+    "owner_followup": "The MCP test/tool owner should update the expected public tool contract or use a capability-scoped assertion; this response makes no MCP server or test change."
+  },
+  "live_evidence": null,
+  "limitations": [
+    "No CK3 process was launched and no save or live campaign was changed; this is a deterministic at-peace strategy regression and focused test delivery.",
+    "The current h2357 Robert candidate is in an active war. This at-peace fix does not claim to validate, block, or change its active-war continuation.",
+    "A nonwar consumer must fetch the delivered master commit and verify its own source-matched future at-peace frame; no cross-team verification or formal campaign success is claimed here.",
+    "The ancillary MCP exact-set test remains RED and is independently classified above."
+  ]
+}
