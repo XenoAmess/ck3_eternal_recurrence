@@ -463,6 +463,19 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
             or observed_matches[0].get("recipient_character_id") != recipient
             or observed_matches[0].get("recipient_matchmaker_character_id") != recipient):
         raise ValueError("first-heir marriage recipient changed before submission")
+    # The selected native projection reads this direction before the proposal.
+    # It does not establish the recipient-to-player direction or causality.
+    pairs = observed_matches[0].get("possible_alliance_pairs")
+    player_recipient_pairs = ([pair for pair in pairs
+                               if isinstance(pair, Mapping)
+                               and pair.get("first_character_id") ==
+                                   snapshot["played_character"]["character_id"]
+                               and pair.get("second_character_id") == recipient]
+                              if isinstance(pairs, list) else [])
+    prior_player_allied = (player_recipient_pairs[0].get("already_allied")
+                           if len(player_recipient_pairs) == 1 and
+                           type(player_recipient_pairs[0].get("already_allied")) is bool
+                           else None)
     pid, creation = bridge_process_identity(driver)
     pending = {"schema": SCHEMA, "status": "receipt_pending", "material_result": False,
                "pre_native_revision": snapshot["native_revision"],
@@ -471,6 +484,7 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
                "heir_character_id": legality["observed_first_heir_character_id"],
                "candidate_character_id": choice["candidate_character_id"],
                "recipient_character_id": recipient,
+               "preproposal_played_has_recipient_alliance": prior_player_allied,
                "episode_run_id": snapshot["episode_run_id"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
                "submission_state": "may_have_submitted"}
@@ -557,11 +571,18 @@ def query_family_marriage_alliance_result_private(
     result = driver.query_observed_first_heir_marriage_alliance_result_private_v1(
         resolved=dict(resolved), recipient_character_id=recipient)
     pid, creation = bridge_process_identity(driver)
+    before = pending.get("preproposal_played_has_recipient_alliance")
+    after = result.get("played_has_recipient_alliance")
+    transition = (f"observed_{str(before).lower()}_to_{str(after).lower()}"
+                  if type(before) is bool and type(after) is bool else "unknown")
     observation = {
         "status": result["alliance_status"],
         "recipient_character_id": recipient,
         "played_has_recipient_alliance": result.get("played_has_recipient_alliance"),
         "recipient_has_played_alliance": result.get("recipient_has_played_alliance"),
+        "preproposal_played_has_recipient_alliance": (
+            before if type(before) is bool else None),
+        "played_to_recipient_alliance_transition": transition,
         "relationship_status": result.get("relationship_status"),
         "native_revision": result.get("native_revision"),
         "bridge_pid": pid, "bridge_creation_date": creation,
