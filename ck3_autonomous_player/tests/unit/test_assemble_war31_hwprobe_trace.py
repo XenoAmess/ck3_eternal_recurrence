@@ -39,7 +39,11 @@ def synthetic_input():
                 "episode_run_id": "native-29829-2bc2d599f7f9",
                 "date_raw": 53215920, "ck3_exe_sha256":
                 "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-                "bridge_dll_sha256": "A" * 64, "checkpoint_sha256": "B" * 64,
+                "bridge_dll_sha256": "C36ECCEB67A0DCA7C8C1C6C855A5036771B46617E9F1BF5F4185D965C1951BCE",
+                "checkpoint_sha256": "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A",
+                "source_driver_state_sha256": "1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336",
+                "driver_state_sha256": "D" * 64,
+                "rebind_receipt_sha256": "E" * 64,
                 "authorization_receipt_sha256": "C" * 64,
                 "action_attempt_id": "synthetic-action-1",
                 "effect_invocation_id": "synthetic-invocation-1",
@@ -94,6 +98,10 @@ class AssembleWar31HardwareProbeTests(unittest.TestCase):
         wrong_action["approved_action_step"] = "white-peace-war-16777231"
         with self.assertRaisesRegex(ValueError, "authorized War31 action"):
             module.assemble(encode(events), wrong_action)
+        wrong_source = dict(manifest)
+        wrong_source["source_driver_state_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "source_driver_state_sha256"):
+            module.assemble(encode(events), wrong_source)
 
 
 if __name__ == "__main__":

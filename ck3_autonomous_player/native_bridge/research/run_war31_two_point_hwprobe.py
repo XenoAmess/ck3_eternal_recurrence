@@ -9,6 +9,7 @@ Debug attachment changes execution timing and thread debug registers.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import importlib.util
 import json
@@ -25,6 +26,10 @@ import psutil
 ROOT = Path(__file__).resolve().parents[3]
 ASSEMBLER = Path(__file__).with_name("assemble_war31_hwprobe_trace.py")
 EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+CHECKPOINT_SHA256 = "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A"
+SOURCE_DRIVER_STATE_SHA256 = "1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336"
+BRIDGE_DLL_SHA256 = "C36ECCEB67A0DCA7C8C1C6C855A5036771B46617E9F1BF5F4185D965C1951BCE"
+DATE_RAW = 53215920
 REQUEST_ID = "WAR-INPUT-R0221-WAR31-20260927"
 WAR_ID = 16777231
 EPISODE = "native-29829-2bc2d599f7f9"
@@ -73,6 +78,83 @@ def _hash_string(value: object, field: str) -> None:
         raise ValueError(f"{field} must be an uppercase SHA-256 hex string")
 
 
+def _verify_rebound_driver(
+    source_path: Path, rebound_path: Path, receipt_path: Path,
+    environment_path: Path,
+    identities: dict[str, object],
+) -> None:
+    """Require the target driver to differ only by the official lifecycle rebind."""
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8-sig"))
+    driver = receipt.get("driver_state") if isinstance(receipt, dict) else None
+    save = receipt.get("save") if isinstance(receipt, dict) else None
+    environment = receipt.get("environment") if isinstance(receipt, dict) else None
+    if (
+        not isinstance(driver, dict) or not isinstance(save, dict)
+        or not isinstance(environment, dict)
+        or receipt.get("schema") != "xar.ck3.ordinary-seed-rebind/v1"
+        or receipt.get("status") != "rebound" or receipt.get("ok") is not True
+        or driver.get("source_sha256", "").upper() != SOURCE_DRIVER_STATE_SHA256
+        or driver.get("target_sha256", "").upper()
+        != identities["driver_state"]["sha256"]
+        or save.get("bytes_unchanged") is not True
+        or not isinstance(save.get("source"), dict)
+        or not isinstance(save.get("target"), dict)
+        or save["source"].get("sha256", "").upper() != CHECKPOINT_SHA256
+        or save["target"].get("sha256", "").upper() != CHECKPOINT_SHA256
+    ):
+        raise ValueError("rebind receipt does not connect frozen source and derived driver")
+    source = json.loads(source_path.read_text(encoding="utf-8-sig"))
+    rebound = json.loads(rebound_path.read_text(encoding="utf-8-sig"))
+    current_environment = json.loads(environment_path.read_text(encoding="utf-8-sig"))
+    if (not isinstance(source, dict) or not isinstance(rebound, dict)
+            or not isinstance(current_environment, dict)):
+        raise ValueError("source, derived driver or environment is not a JSON object")
+    pipe = source.get("pipe_name")
+    if not isinstance(pipe, str) or not pipe or pipe != rebound.get("pipe_name"):
+        raise ValueError("derived driver changed the source bridge pipe")
+    if receipt.get("pipe_name") != pipe:
+        raise ValueError("rebind receipt bridge pipe differs from source driver")
+    source_binding = source.get("succession_lifecycle")
+    target_binding = rebound.get("succession_lifecycle")
+    if (
+        not isinstance(source_binding, dict)
+        or not isinstance(target_binding, dict)
+        or environment.get("source_sha256") != source_binding.get("environment_sha256")
+        or environment.get("target_sha256") != target_binding.get("environment_sha256")
+        or current_environment.get("environment_sha256") != environment.get("target_sha256")
+        or current_environment.get("environment_sha256") == environment.get("source_sha256")
+    ):
+        raise ValueError("sidecar is not the newly prepared environment bound by rebind")
+    source_checkpoint = source.get("last_checkpoint")
+    if (
+        source.get("format_version") != 2
+        or source.get("episode_character_id") != 29829
+        or source.get("episode_run_id") != EPISODE
+        or not isinstance(source_checkpoint, dict)
+        or source_checkpoint.get("sha256", "").upper() != CHECKPOINT_SHA256
+        or source_checkpoint.get("date_raw") != DATE_RAW
+        or source_checkpoint.get("history_index") != 2134
+    ):
+        raise ValueError("source driver lacks the frozen R0197 checkpoint anchor")
+    expected = copy.deepcopy(source)
+    try:
+        binding = rebound["succession_lifecycle"]
+        if (not isinstance(binding, dict)
+                or binding.get("lifecycle") != "ordinary_campaign_succession"
+                or binding.get("xar_enabled") != "xar_off"):
+            raise ValueError("derived driver lacks the ordinary xar_off lifecycle")
+        expected["succession_lifecycle"] = copy.deepcopy(binding)
+        expected["last_checkpoint"]["succession_lifecycle"] = copy.deepcopy(binding)
+        anchor = expected["command_history"][2133]
+        if anchor.get("command") != "save-checkpoint" or anchor.get("index") != 2134:
+            raise ValueError("source driver has the wrong history anchor")
+        anchor["result"]["checkpoint"]["succession_lifecycle"] = copy.deepcopy(binding)
+    except (IndexError, KeyError, TypeError) as error:
+        raise ValueError("source driver has an incomplete rebind anchor") from error
+    if rebound != expected:
+        raise ValueError("derived driver changed fields outside the three lifecycle anchors")
+
+
 def preflight_assets(args: argparse.Namespace) -> tuple[dict[str, object], dict[str, object]]:
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     if not isinstance(manifest, dict) or manifest.get("schema") != "xar.ck3.war31.hwprobe_manifest.v1":
@@ -81,6 +163,15 @@ def preflight_assets(args: argparse.Namespace) -> tuple[dict[str, object], dict[
             or manifest.get("episode_run_id") != EPISODE
             or manifest.get("ck3_exe_sha256") != EXE_SHA256):
         raise ValueError("manifest differs from frozen War31/exact executable")
+    for key, frozen in (
+        ("bridge_dll_sha256", BRIDGE_DLL_SHA256),
+        ("checkpoint_sha256", CHECKPOINT_SHA256),
+        ("source_driver_state_sha256", SOURCE_DRIVER_STATE_SHA256),
+    ):
+        if manifest.get(key) != frozen:
+            raise ValueError(f"{key} differs from frozen R0197/R0221 source")
+    if manifest.get("date_raw") != DATE_RAW:
+        raise ValueError("date_raw differs from frozen R0197/R0221 frame")
     if manifest.get("approved_action_step") != "surrender-war-16777231":
         raise ValueError("manifest does not identify the one authorized action")
     if manifest.get("source_evidence_status") != "separately_authorized_unverified_by_probe":
@@ -94,7 +185,10 @@ def preflight_assets(args: argparse.Namespace) -> tuple[dict[str, object], dict[
         "ck3_exe": (args.game_exe, "ck3_exe_sha256"),
         "bridge_dll": (args.bridge_dll, "bridge_dll_sha256"),
         "checkpoint": (args.checkpoint, "checkpoint_sha256"),
+        "source_driver_state": (args.source_driver_state,
+                                "source_driver_state_sha256"),
         "driver_state": (args.driver_state, "driver_state_sha256"),
+        "rebind_receipt": (args.rebind_receipt, "rebind_receipt_sha256"),
         "sidecar": (args.sidecar, "sidecar_sha256"),
         "sampler": (args.probe, "sampler_sha256"),
         "authorization_receipt": (args.authorization_receipt,
@@ -112,6 +206,8 @@ def preflight_assets(args: argparse.Namespace) -> tuple[dict[str, object], dict[
                              "size": path.stat().st_size}
     authorization = json.loads(args.authorization_receipt.read_text(encoding="utf-8"))
     _receipt(authorization, manifest)
+    _verify_rebound_driver(args.source_driver_state, args.driver_state,
+                           args.rebind_receipt, args.sidecar, identities)
     return manifest, identities
 
 
@@ -230,7 +326,10 @@ def capture(args: argparse.Namespace, manifest: dict[str, object],
             "ck3_exe": (args.game_exe, "ck3_exe_sha256"),
             "bridge_dll": (args.bridge_dll, "bridge_dll_sha256"),
             "checkpoint": (args.checkpoint, "checkpoint_sha256"),
+            "source_driver_state": (args.source_driver_state,
+                                    "source_driver_state_sha256"),
             "driver_state": (args.driver_state, "driver_state_sha256"),
+            "rebind_receipt": (args.rebind_receipt, "rebind_receipt_sha256"),
             "sidecar": (args.sidecar, "sidecar_sha256"),
             "sampler": (args.probe, "sampler_sha256"),
             "authorization_receipt": (args.authorization_receipt,
@@ -257,7 +356,9 @@ def main() -> int:
     parser.add_argument("--game-exe", type=Path, required=True)
     parser.add_argument("--bridge-dll", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--source-driver-state", type=Path, required=True)
     parser.add_argument("--driver-state", type=Path, required=True)
+    parser.add_argument("--rebind-receipt", type=Path, required=True)
     parser.add_argument("--sidecar", type=Path, required=True)
     parser.add_argument("--probe", type=Path, required=True)
     parser.add_argument("--pid", type=int)

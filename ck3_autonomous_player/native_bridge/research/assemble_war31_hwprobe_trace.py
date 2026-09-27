@@ -17,6 +17,10 @@ import re
 
 ROOT = Path(__file__).resolve().parents[3]
 VALIDATOR = Path(__file__).with_name("validate_war31_change_type_trace.py")
+CHECKPOINT_SHA256 = "1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A"
+SOURCE_DRIVER_STATE_SHA256 = "1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336"
+BRIDGE_DLL_SHA256 = "C36ECCEB67A0DCA7C8C1C6C855A5036771B46617E9F1BF5F4185D965C1951BCE"
+DATE_RAW = 53215920
 
 
 def _validator():
@@ -54,13 +58,21 @@ def assemble(raw_bytes: bytes, manifest: dict[str, object]) -> dict[str, object]
         raise ValueError("wrong War31 episode")
     if _hash(manifest.get("ck3_exe_sha256"), "ck3_exe_sha256") != validator.EXE_SHA256:
         raise ValueError("wrong exact CK3 build")
-    for field in ("bridge_dll_sha256", "checkpoint_sha256", "authorization_receipt_sha256"):
+    for field, frozen in (("bridge_dll_sha256", BRIDGE_DLL_SHA256),
+                          ("checkpoint_sha256", CHECKPOINT_SHA256),
+                          ("source_driver_state_sha256", SOURCE_DRIVER_STATE_SHA256)):
+        if _hash(manifest.get(field), field) != frozen:
+            raise ValueError(f"{field} differs from the frozen War31 source")
+    for field in ("driver_state_sha256", "rebind_receipt_sha256",
+                  "authorization_receipt_sha256"):
         _hash(manifest.get(field), field)
     for field in ("action_attempt_id", "effect_invocation_id", "frame_token"):
         _nonempty(manifest.get(field), field)
     for field in ("date_raw", "expected_pid", "expected_process_created_filetime"):
         if type(manifest.get(field)) is not int or manifest[field] <= 0:
             raise ValueError(f"{field} must be a positive integer")
+    if manifest["date_raw"] != DATE_RAW:
+        raise ValueError("date_raw differs from the frozen War31 frame")
     if manifest.get("approved_action_step") != "surrender-war-16777231":
         raise ValueError("manifest does not identify the one authorized War31 action")
     if manifest.get("source_evidence_status") != "separately_authorized_unverified_by_probe":

@@ -39,7 +39,23 @@ R0221 请求 ID、WarID `16777231`、episode
 `source_evidence_status=separately_authorized_unverified_by_probe`；还要有
 本次动作 ID、原始日期、帧和 effect 调用 ID、预期 PID/创建时间、
 以及 bridge DLL、checkpoint、driver state、sidecar、采样器和授权
-回执 SHA-256。上述文件加 EXE 共七份必须逐字节匹配。
+回执 SHA-256。收紧后上述文件加 EXE、原 driver 和重绑回执共九份
+必须逐字节匹配。
+2026-09-27 后续收紧：manifest 必须固定原始 R0197 checkpoint SHA
+`1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A`、
+原始 driver SHA `1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336`、
+R0221 DLL SHA `C36ECCEB67A0DCA7C8C1C6C855A5036771B46617E9F1BF5F4185D965C1951BCE`
+和 `date_raw=53215920`，不能只由新 manifest 自报。原 driver 用
+`--source-driver-state`/`source_driver_state_sha256` 单独绑定；本机官方
+ordinary rebind 产生的派生 driver 用 `--driver-state`/`driver_state_sha256`
+绑定，并另给 `--rebind-receipt`/`rebind_receipt_sha256`。驱动逐字段确认
+派生 driver 除三处生命周期环境锚外与原件一致、回执两端哈希一致。
+`--sidecar` 必须是新准备的 `xar-autoplayer-environment.json` 不可变副本，
+其环境摘要须与新重绑回执的目标环境摘要一致，旧机器的环境 sidecar
+会被拒绝。
+这些输入应使用独立不可变副本；若对正在运行的 state 文件核后置哈希，
+动作本身更新 driver 会使证据 RED。原环境 manifest 绑定旧机器路径，
+须在新 state 重建并重绑，不能当本机现场状态复用。
 外部回执 schema `xar.ck3.war31.single_action_authorization.v1`
 需同请求、WarID、episode、动作 ID/步骤一致，状态为 `authorized`，
 且注明授权来源。驱动只能检查这些字段和字节，**不能自行鉴定回执
