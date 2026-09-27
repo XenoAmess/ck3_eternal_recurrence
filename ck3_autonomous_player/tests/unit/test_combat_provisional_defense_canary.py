@@ -9,6 +9,7 @@ from xar_autoplayer.strategy import (
     QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
     _primary_defender_siege_forecast_ingress,
     _provisional_defense_research_assessment,
+    _siege_forecast_participant_partition,
     query_combat_simulation_inputs_v3_step,
     query_route_contact_horizon_step,
 )
@@ -24,9 +25,133 @@ from ck3_autonomous_player.tests.unit.test_gameplay_bridge import (
 
 
 FIXTURES = Path(__file__).parents[1] / "fixtures" / "combat"
+R0265_REPORT = (
+    Path(__file__).parents[3] / "docs" / "autonomous-agent-progress"
+    / "coordination" / "war-requests" / "evidence"
+    / "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928.r0265-formal-report.json"
+)
 
 
 class ProvisionalDefenseCanaryTests(unittest.TestCase):
+    def test_r0265_report_route_partitions_current_sieger_from_later_arrival(self):
+        report = json.loads(R0265_REPORT.read_text(encoding="utf-8"))
+        plan = report["first_blocker"]["plan"]
+        relief = plan["siege_relief"]
+        contact = plan["route_contact_horizon"]
+        war = {"enemy_armies": [
+            {"army_id": 50331920, "current_province_id": 2629,
+             "army_state": "sieging", "army_state_code": 3},
+            {"army_id": 83886484, "current_province_id": 3660,
+             "army_state": "moving", "army_state_code": 7},
+        ]}
+        result = _siege_forecast_participant_partition(
+            war, relief["army_strength_balance"], contact,
+            army_id=relief["army_id"], target_province_id=relief["target_province_id"],
+        )
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(result["defender_army_ids"], [50331920])
+        self.assertEqual(result["offsite_hostile_army_ids"], [83886484])
+        self.assertEqual(result["subject_target_arrival_date_raw"], 53218680)
+        self.assertEqual(result["offsite_target_arrivals"][0]["target_arrival_date_raw"],
+                         53219928)
+
+    def test_offsite_hostile_is_not_target_defender_and_cannot_authorize_contact(self):
+        frame = self._frame()
+        moving = _army(
+            22, soldiers=311, province_id=40, controllable=False,
+            army_state="moving", army_state_code=7,
+            route_province_ids=[33, 32], in_combat=False, retreating=False,
+        )
+        frame["active_wars"][0]["enemy_armies"].append(moving)
+        frame["army_strengths"].append(
+            _army_strength(22, "active_war_enemy", [95], current=311,
+                           base_power_raw=311_000_000)
+        )
+        preview = _preview_row(
+            1, origin=30, target=32, date_raw=frame["date_raw"], route=[31, 32]
+        )
+        contact = _route_contact_row(
+            2, origin=30, target=32, date_raw=frame["date_raw"],
+            route=[31, 32], hostile_ids=(21, 22), contact_free=True,
+        )
+        horizon = contact["result"]["route_contact_horizon"]
+        horizon["hostile_routes"][1].update({
+            "current_province_id": 40,
+            "route_province_ids": [33, 32],
+            "arrival_date_raws": [frame["date_raw"] + 72, frame["date_raw"] + 120],
+        })
+        balance = {
+            "friendly_army_ids": [11], "enemy_army_ids": [21, 22]
+        }
+        partition = _siege_forecast_participant_partition(
+            frame["active_wars"][0], balance, horizon,
+            army_id=11, target_province_id=32,
+        )
+        self.assertEqual(partition["status"], "available")
+        self.assertEqual(partition["defender_army_ids"], [21])
+        self.assertEqual(partition["offsite_hostile_army_ids"], [22])
+        self.assertEqual(partition["subject_target_arrival_date_raw"],
+                         frame["date_raw"] + 48)
+
+        steps = {
+            query_route_contact_horizon_step(11, 32, (21, 22)),
+            query_combat_simulation_inputs_v3_step(32, 31, [11], [21]),
+        }
+        result = _primary_defender_siege_forecast_ingress(
+            {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+            commands=[preview, contact], snapshot=frame, action_steps=steps,
+            bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+        )
+        self.assertEqual(result["phase"], "native_war_siege_forecast_inputs_query")
+        self.assertEqual(result["selected_step"],
+                         query_combat_simulation_inputs_v3_step(32, 31, [11], [21]))
+        self.assertFalse(result["active_attack_allowed"])
+
+        horizon["hostile_routes"][1]["arrival_date_raws"][1] = frame["date_raw"] + 24
+        blocked = _siege_forecast_participant_partition(
+            frame["active_wars"][0], balance, horizon,
+            army_id=11, target_province_id=32,
+        )
+        self.assertEqual(blocked["reason"], "offsite_hostile_may_join_by_target_entry")
+
+    def test_offsite_hostile_keeps_immediate_contact_blocked(self):
+        frame = self._frame()
+        frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 30
+        frame["active_wars"][0]["enemy_armies"].append(_army(
+            22, soldiers=311, province_id=40, controllable=False,
+            army_state="moving", army_state_code=7,
+            route_province_ids=[32], in_combat=False, retreating=False,
+        ))
+        frame["army_strengths"].append(
+            _army_strength(22, "active_war_enemy", [95], current=311,
+                           base_power_raw=311_000_000)
+        )
+        preview = _preview_row(
+            1, origin=30, target=32, date_raw=frame["date_raw"], route=[32]
+        )
+        contact = _route_contact_row(
+            2, origin=30, target=32, date_raw=frame["date_raw"],
+            route=[32], hostile_ids=(21, 22), contact_free=False,
+        )
+        contact["result"]["route_contact_horizon"]["hostile_routes"][1].update({
+            "current_province_id": 40,
+            "route_province_ids": [32],
+            "arrival_date_raws": [frame["date_raw"] + 72],
+        })
+        with mock.patch(
+            "xar_autoplayer.strategy._provisional_defense_research_assessment",
+            return_value={"status": "provisional_admissible"},
+        ):
+            plan = _primary_defender_siege_forecast_ingress(
+                {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+                commands=[preview, contact, self._query_row(30)], snapshot=frame,
+                action_steps={"move-army-11-to-32"},
+                bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+            )
+        self.assertEqual(plan["phase"], "native_war_siege_forecast_observation_blocked")
+        self.assertIsNone(plan["selected_step"])
+        self.assertFalse(plan["active_attack_allowed"])
+
     def _frame(self, *, date_raw: int = 53_215_920):
         player = _army(
             11, soldiers=2_327, province_id=30, controllable=True,

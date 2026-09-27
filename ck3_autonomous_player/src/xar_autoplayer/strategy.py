@@ -15987,6 +15987,105 @@ def _general_battle_forecast_ingress(
     }
 
 
+def _siege_forecast_participant_partition(
+    war: object,
+    balance: object,
+    contact: dict[str, object],
+    *,
+    army_id: int,
+    target_province_id: int,
+) -> dict[str, object]:
+    """Separate current target defenders from the full war-contact roster.
+
+    The native route is a conditional future timeline, not proof that a distant
+    army will stay away for an entire battle.  This partition permits a
+    current-frame v3 input read and contact-free first waypoint only; callers
+    must not authorize direct contact while an offsite hostile is unmodeled.
+    """
+    def unavailable(reason: str) -> dict[str, object]:
+        return {"status": "unavailable", "reason": reason}
+
+    enemy_rows = war.get("enemy_armies") if isinstance(war, dict) else None
+    if not isinstance(enemy_rows, list) or not enemy_rows or not isinstance(balance, dict):
+        return unavailable("war_enemy_or_strength_roster_missing")
+    by_id: dict[int, dict[str, object]] = {}
+    for row in enemy_rows:
+        enemy_id = _native_int(row.get("army_id")) if isinstance(row, dict) else None
+        if enemy_id is None or enemy_id <= 0 or enemy_id in by_id:
+            return unavailable("war_enemy_roster_invalid")
+        by_id[enemy_id] = row
+    enemy_ids = tuple(sorted(by_id))
+    contact_ids = contact.get("hostile_army_ids")
+    if (balance.get("friendly_army_ids") != [army_id]
+            or balance.get("enemy_army_ids") != list(enemy_ids)
+            or not isinstance(contact_ids, list)
+            or not set(enemy_ids).issubset(set(contact_ids))):
+        return unavailable("strength_or_contact_roster_mismatch")
+
+    defenders = tuple(
+        enemy_id for enemy_id in enemy_ids
+        if by_id[enemy_id].get("current_province_id") == target_province_id
+    )
+    if not defenders or any(
+        _army_tactical_state(by_id[enemy_id]) != "sieging" for enemy_id in defenders
+    ):
+        return unavailable("target_defenders_not_exact_siege_roster")
+    offsite = tuple(enemy_id for enemy_id in enemy_ids if enemy_id not in defenders)
+    if not offsite:
+        return {
+            "status": "available", "defender_army_ids": list(defenders),
+            "offsite_hostile_army_ids": [], "offsite_arrival_risk": "none_observed",
+        }
+
+    subject = contact.get("subject_route")
+    subject_arrivals = subject.get("arrival_date_raws") if isinstance(subject, dict) else None
+    subject_route = subject.get("route_province_ids") if isinstance(subject, dict) else None
+    if not (
+        isinstance(subject_route, list) and subject_route
+        and subject_route[-1] == target_province_id
+        and isinstance(subject_arrivals, list)
+        and len(subject_arrivals) == len(subject_route)
+    ):
+        return unavailable("subject_target_arrival_unavailable")
+    subject_arrival = _native_int(subject_arrivals[-1])
+    routes = contact.get("hostile_routes")
+    if subject_arrival is None or not isinstance(routes, list):
+        return unavailable("hostile_arrival_timeline_unavailable")
+    route_by_id: dict[int, dict[str, object]] = {}
+    for row in routes:
+        hostile_id = _native_int(row.get("army_id")) if isinstance(row, dict) else None
+        if hostile_id is None or hostile_id in route_by_id:
+            return unavailable("hostile_route_roster_invalid")
+        route_by_id[hostile_id] = row
+    arrival_risk: list[dict[str, object]] = []
+    for enemy_id in offsite:
+        row = route_by_id.get(enemy_id)
+        if not isinstance(row, dict) or row.get("timeline_observable") is not True:
+            return unavailable("offsite_hostile_timeline_unavailable")
+        if row.get("current_province_id") != by_id[enemy_id].get("current_province_id"):
+            return unavailable("offsite_hostile_position_mismatch")
+        route = row.get("route_province_ids")
+        arrivals = row.get("arrival_date_raws")
+        if not isinstance(route, list) or not isinstance(arrivals, list) or len(route) != len(arrivals):
+            return unavailable("offsite_hostile_route_invalid")
+        if target_province_id in route:
+            index = route.index(target_province_id)
+            arrival = _native_int(arrivals[index])
+            if arrival is None or arrival <= subject_arrival:
+                return unavailable("offsite_hostile_may_join_by_target_entry")
+            arrival_risk.append({"army_id": enemy_id, "target_arrival_date_raw": arrival})
+        else:
+            arrival_risk.append({"army_id": enemy_id, "target_arrival_date_raw": None})
+    return {
+        "status": "available",
+        "defender_army_ids": list(defenders),
+        "offsite_hostile_army_ids": list(offsite),
+        "subject_target_arrival_date_raw": subject_arrival,
+        "offsite_arrival_risk": "unmodeled_after_target_entry",
+        "offsite_target_arrivals": arrival_risk,
+    }
+
+
 def _primary_defender_siege_forecast_ingress(
     baseline: dict[str, object],
     *,
@@ -16191,31 +16290,18 @@ def _primary_defender_siege_forecast_ingress(
         (row for row in active_wars if isinstance(row, dict) and row.get("war_id") == war_id),
         None,
     )
-    enemy_rows = war.get("enemy_armies") if isinstance(war, dict) else None
-    defenders = (
-        tuple(sorted(_native_int(row.get("army_id")) for row in enemy_rows))
-        if isinstance(enemy_rows, list)
-        and enemy_rows
-        and all(
-            isinstance(row, dict)
-            and _native_int(row.get("army_id")) is not None
-            and row.get("current_province_id") == target
-            and _army_tactical_state(row) == "sieging"
-            for row in enemy_rows
-        )
-        else ()
+    partition = _siege_forecast_participant_partition(
+        war, balance, contact, army_id=army_id, target_province_id=target
     )
-    if not (
-        isinstance(balance, dict)
-        and balance.get("friendly_army_ids") == [army_id]
-        and sorted(balance.get("enemy_army_ids", [])) == list(defenders)
-        and defenders
-    ):
+    if partition["status"] != "available":
         return blocked(
             "the observed siege does not prove a complete one-encounter participant partition",
             "exact-attacker-defender-participant-scope",
-            detail={"route_preview": preview, "route_contact_horizon": contact},
+            detail={"route_preview": preview, "route_contact_horizon": contact,
+                    "participant_partition": partition},
         )
+    defenders = tuple(partition["defender_army_ids"])
+    evidence["participant_partition"] = partition
     query_step = query_combat_simulation_inputs_v3_step(
         target, entry, [army_id], list(defenders)
     )
@@ -16266,7 +16352,7 @@ def _primary_defender_siege_forecast_ingress(
                 or target_only_contact
             ),
         )
-        if qualified.get("status") == "ready":
+        if qualified.get("status") == "ready" and not partition["offsite_hostile_army_ids"]:
             move_step = move_army_step(army_id, target)
             if move_step not in action_steps:
                 return blocked(
@@ -16371,6 +16457,7 @@ def _primary_defender_siege_forecast_ingress(
             if (
                 len(route) == 1
                 and target_only_contact
+                and not partition["offsite_hostile_army_ids"]
                 and final_arrival is not None
                 and date_raw is not None
                 and date_raw < final_arrival <= date_raw + 24
