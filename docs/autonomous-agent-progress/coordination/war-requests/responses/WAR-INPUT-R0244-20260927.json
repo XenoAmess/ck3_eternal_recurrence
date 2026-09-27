@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0244-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T13:47:49Z",
+  "updated_at_utc": "2026-09-27T14:15:20Z",
   "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
@@ -55,6 +55,20 @@
       "checks": "No-launch preflight passed; test_war_r0244_local_v3_probe.py passed 2 tests on normal Python and 2 with -O. New attempt live_status=NOT_STARTED; no CK3 process was launched and no OneDrive files were touched.",
       "live_evidence": null,
       "boundary": "This planned local War4 query is not the requesting War48 save/driver/DLL pairing; even a future War4 v3 GREEN will not verify the original selected step, gameplay action, next turn, win probability, or native simulator parity. Parent-coordinated exclusive CK3 use and a fresh visually reviewed Steam offline receipt are still required before any launch."
+    },
+    {
+      "date_utc": "2026-09-27T14:15:20Z",
+      "probe_contract_fix_master_commit": "2730ab163",
+      "audit_document": "docs/ck3-native-ai/war-r0244-local-v3-read-only-attempt-2026-09-27.md",
+      "local_red_attempt": "D:/ck3-research-artifacts/war-r0244-local-v3-attempt-20260927-02/v3-read-only-red.json",
+      "local_green_attempt": "D:/ck3-research-artifacts/war-r0244-local-v3-attempt-20260927-03/v3-read-only-result.json",
+      "local_green_probe_result_sha256": "66F7B254CCD2541562D74D5463BDF79CB0B233366EABB8A8E23D65237109B201",
+      "checked_in_local_audit": "docs/ck3-native-ai/war-r0244-local-v3-attempt-03-audit.json",
+      "local_green_offline_audit_sha256": "C439215CE8072105A1DE6406C8963CA3DA992B64EC54585859119DEC8911F9C4",
+      "local_green_v3_raw_response_sha256": "BE333C06325F40E4585FF4240884F0B4B15A8C4E19F0ABC22D4807258E94C72B",
+      "finding": "A new independently hash-paired local War4 checkpoint session completed six explicit read-only requests and a finish request. Same-frame native route preview, all-hostile contact horizon and exact v3 query for Province 2638, entry 2643, Army18 versus Army24 returned available; v3 schema=3 and input_observation_ready=true. Initial and after-query snapshots match raw date 53144520, native:3, public/native revisions 4/3 and episode native-29829-23be5ac45c12; all response driver connections are generation 1. No gameplay action was submitted. The first new attempt remains RED because the probe incorrectly required queried_episode_run_id in the v3 response, which that contract omits; the corrected probe was tested and used only in a separate new attempt.",
+      "checks": "Attempt-03 source/exe/bridge hashes and a fresh Steam Offline Mode image were reviewed before launch; raw request and response exact sets and SHA-256, input identity, post-query frame, and managed cleanup were audited offline. Probe and capture exited 0; session-result cleanup_proven=true, tree_gone=true, final CK3 inventory empty. Normal and -O focused probe tests each passed 2. CK3/screen task-bus lease was released after independent process inspection.",
+      "boundary": "This GREEN is solely the local War4 read-only v3 query transport and input-completeness path. It does not replay the original War48 checkpoint/driver/DLL, submit a first-hop action, prove its planner selected_step or next turn, or establish a native win probability. The formal R0244 live_evidence remains null."
     }
   ],
   "live_evidence": null,
@@ -62,6 +76,7 @@
     "attempt_062": "A separately paired local War 4/Army 18 versus Army 24 paused frame produced available exact v3 per-regiment inputs at the native route entry; model admission was true. This is not R0244 identity or native parity.",
     "attempt_063": "A separate local stationary-save replay proved the full native route preview, all-hostile contact horizon, and exact v3 inputs on one paused frame. Production planning selected capital_regroup_hold_progress and life-advance, so no first-hop move was submitted; its RED probe is retained and cannot be used as an end-to-end movement pass.",
     "attempt_067": "An independent local War 4 replay removed a pending interaction blocker through a same-frame typed native query and actual reply, then observed three player armies 18/32/33 in common CombatID 2 with native control-query readback. Evidence: docs/ck3-native-ai/war-contact-attempt-067-same-frame-common-combat-2026-09-27.md. This is local contact evidence, not the original R0244 War 48 input or a verification of its selected step.",
+    "attempt_02_03": "New attempt-02 retains a probe-contract RED, while independently frozen attempt-03 completed six same-frame read-only requests with exact v3 available and input_observation_ready=true, followed by clean managed CK3 exit. See docs/ck3-native-ai/war-r0244-local-v3-read-only-attempt-2026-09-27.md and the hash-bound external offline-audit.json. Neither attempt is the original War48 pairing or a movement pass.",
     "source_checkpoint_sha256": "91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592"
   },
   "limitations": [

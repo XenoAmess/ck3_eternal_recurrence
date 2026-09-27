@@ -1,0 +1,43 @@
+{
+  "schema": "xar.ck3.r0244-local-v3-offline-audit/v1",
+  "audited_at_utc": "2026-09-27T14:14:12.010344+00:00",
+  "scope": "local War 4 read-only analog; not original War 48 pairing",
+  "result": "GREEN_LOCAL_WAR4_READ_ONLY_V3",
+  "attempt": "D:\\ck3-research-artifacts\\war-r0244-local-v3-attempt-20260927-03",
+  "input_freeze_sha256": "284996A1E366FD4EBD4564C13A118195503E31F4E6E615363EE68157F8735F14",
+  "steam_offline_receipt_sha256": "0654B786F7E754B66EE8D14089AE5317399CD8699DFDA8B6F0CC8320D95DBAE7",
+  "source_manifest_sha256": "76D41D89165A305A2A4A9FFB3707E846BB35D439F22F58FC18386954FE34F13F",
+  "orchestrator_result_sha256": "A63D61B92C6E8AE779DCF316DACEAE7BD0A51053253CF1ECDDDC0AE209A33F18",
+  "probe_result_sha256": "66F7B254CCD2541562D74D5463BDF79CB0B233366EABB8A8E23D65237109B201",
+  "capture_report_sha256": "4207E6634EC60009096CBE466F3E48CC5C80B9562F473D0ABCDFD6BE20FAA662",
+  "session_result_sha256": "60BA820FE957F8736190FB9F380C35D105015D1BBA2C4ED656C9475A554D6D06",
+  "raw_response_sha256": {
+    "000-snapshot": "3589B2A14BCA44F20DDEDDBD553AC99D70CCF4C82CE08618B5650957E82F3D2E",
+    "001-capabilities": "F6F1C5C16FA45210CD08FAAAA3C6EB04F3E47C851AB075D70F5C2E855ECE573A",
+    "010-route-preview": "DDCCA3DB107C6B0BA0551088008C2B56D44CDAEDF2BFCA328A1DA28DEE6F0180",
+    "011-route-contact": "023ECC4D17D3D780B7C2A3F6A2B1FA9B1111A0BCB1780B75B62C5D9056B790A7",
+    "020-v3": "BE333C06325F40E4585FF4240884F0B4B15A8C4E19F0ABC22D4807258E94C72B",
+    "021-after-snapshot": "0D6919A2453CA3938505DF28870CBC11401AD0DE8AA8CE99819E43E04384A76D"
+  },
+  "request_names": [
+    "000-snapshot",
+    "001-capabilities",
+    "010-route-preview",
+    "011-route-contact",
+    "020-v3",
+    "021-after-snapshot",
+    "999-finish"
+  ],
+  "initial_and_after_frame": {
+    "date_raw": 53144520,
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "episode_run_id": "native-29829-23be5ac45c12"
+  },
+  "connection_generation": 1,
+  "v3_step": "query-combat-simulation-inputs-v3-2638-2643-a-1-18-d-1-24",
+  "v3_input_observation_ready": true,
+  "cleanup_proven": true,
+  "limit": "Independent local War4 query only; no War48 pair or movement action."
+}
