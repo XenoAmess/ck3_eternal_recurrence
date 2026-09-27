@@ -1,0 +1,32 @@
+{
+  "schema": "xar.g2.war-evidence.correction.v1",
+  "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
+  "supersedes_claim_in": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.local-h2743-native-armies.json",
+  "superseded_claim": "Player native/save regiment counts are 40/39 and one extra live regiment is unidentified.",
+  "correction": "The exact saved projection itself has 40 ordered, unique player regiment IDs and 40 corresponding regiment rows. Native and saved counts are 40/40; no count discrepancy or extra live regiment is shown by these two sources.",
+  "source_projection": {
+    "path": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-02/h2743-three-army-cached-strength.json",
+    "sha256": "46A7F784108D60CE4FCC521F728AA1E933C0218E3E92DF277DEA6FAA589FBAC5",
+    "source_save_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9"
+  },
+  "audit_script": {
+    "path": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-05/audit-counts.py",
+    "sha256": "38D4AD96867C77606A69F9F082F6409784360C7D04B068163C187EE3E29F039F",
+    "method": "For each projected unit, compare list length, uniqueness, and ordered equality of regiment_ids with the IDs of every regiments row; separately sum cached current, max, and power."
+  },
+  "saved_counts": [
+    {"public_army_id": 83886367, "regiment_ids": 40, "unique_ids": 40, "regiment_rows": 40, "ordered_ids_match_rows": true, "current_soldiers": 2329, "maximum_soldiers": 2461, "ai_base_power": 75781},
+    {"public_army_id": 50331920, "regiment_ids": 19, "unique_ids": 19, "regiment_rows": 19, "ordered_ids_match_rows": true, "current_soldiers": 1462, "maximum_soldiers": 1899, "ai_base_power": 48805},
+    {"public_army_id": 83886484, "regiment_ids": 4, "unique_ids": 4, "regiment_rows": 4, "ordered_ids_match_rows": true, "current_soldiers": 311, "maximum_soldiers": 311, "ai_base_power": 14320}
+  ],
+  "player_regiment_ids_in_saved_order": [
+    50333090, 50333089, 50333088, 50333087, 50333086, 67109560,
+    50333966, 50333965, 50333964, 50333963, 50332949, 50332948,
+    50332947, 50332467, 67109636, 50331717, 50331716, 67110674,
+    67110760, 67110761, 67110762, 67109970, 50333217, 117442012,
+    50331698, 67109750, 67109751, 83886461, 100663628, 67109143,
+    50332558, 67110246, 50333275, 50332154, 50332177, 33554986,
+    33556395, 33556166, 67110068, 16777578
+  ],
+  "scope": "This corrects the count comparison only. The native strengths query still does not expose individual live RegimentIDs; ordered per-regiment native/save identity and battle-entry membership remain unverified. No CK3 launch or gameplay action occurred in this audit."
+}
