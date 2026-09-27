@@ -32,6 +32,149 @@ _TRACE_KEYS = {
     "global_rng_unchanged_by_probe", "characters",
 }
 
+_COUNTER_OUTPUT_SOURCE = "native_resolve_counter_classes_after_0x23caf20"
+_COUNTER_OUTPUT_FAILURE_FLAG = 1 << 20
+_COUNTER_OUTPUT_ROW_KEYS = {
+    "side_index", "countered_entry_count", "countering_entry_count",
+    "context_raw", "class_count", "capacity", "retention_raw",
+}
+_COUNTER_OUTPUT_KEYS = {
+    "source", "requested", "pair_complete", "count", "sides",
+}
+_EXPERIMENTAL_TRACE_FINISH_STEP = "experimental-combat-phase-event-trace-finish-v1"
+
+
+def _bounded_int(value: object, minimum: int, maximum: int) -> bool:
+    return type(value) is int and minimum <= value <= maximum
+
+
+def normalize_runtime_counter_output_diagnostic_v1(
+    managed_result: object,
+) -> dict[str, object] | None:
+    """Project the opt-in native counter readout as diagnostic evidence only.
+
+    Old managed traces have no counter output and return ``None``. This helper
+    never promotes an unverified readout to a forecast input.
+    """
+    if not isinstance(managed_result, dict):
+        raise ValueError("managed combat trace is malformed")
+    trace = managed_result.get("trace")
+    if not isinstance(trace, dict):
+        raise ValueError("managed combat trace lacks raw trace")
+    if "runtime_counter_output" not in trace:
+        return None
+    output = trace["runtime_counter_output"]
+    if not isinstance(output, dict) or set(output) != _COUNTER_OUTPUT_KEYS:
+        raise ValueError("runtime counter output has malformed keys")
+    if output["source"] != _COUNTER_OUTPUT_SOURCE or output["requested"] is not True:
+        raise ValueError("runtime counter output source or request differs")
+    pair_complete = output["pair_complete"]
+    sides = output["sides"]
+    count = output["count"]
+    if (type(pair_complete) is not bool or not _bounded_int(count, 0, 2)
+            or not isinstance(sides, list) or len(sides) != count):
+        raise ValueError("runtime counter output pair shape is malformed")
+    class_counts = []
+    for index, side in enumerate(sides):
+        if not isinstance(side, dict) or set(side) != _COUNTER_OUTPUT_ROW_KEYS:
+            raise ValueError("runtime counter output side keys are malformed")
+        if side["side_index"] != index or type(side["side_index"]) is not int:
+            raise ValueError("runtime counter output side order differs")
+        if not all(_bounded_int(side[key], 0, 2048) for key in (
+            "countered_entry_count", "countering_entry_count",
+        )):
+            raise ValueError("runtime counter output entry count is malformed")
+        if not _bounded_int(side["context_raw"], -(2**63), 2**63 - 1):
+            raise ValueError("runtime counter output context is malformed")
+        class_count = side["class_count"]
+        capacity = side["capacity"]
+        values = side["retention_raw"]
+        if (not _bounded_int(class_count, 1, 4096)
+                or not _bounded_int(capacity, class_count, 4096)
+                or not isinstance(values, list) or len(values) != class_count
+                or not all(_bounded_int(value, -(2**63), 2**63 - 1)
+                           for value in values)):
+            raise ValueError("runtime counter output vector is malformed")
+        class_counts.append(class_count)
+    if pair_complete and (count != 2 or class_counts[0] != class_counts[1]):
+        raise ValueError("runtime counter output pair is incomplete")
+
+    readiness = trace.get("readiness")
+    checkpoint = managed_result.get("managed_checkpoint")
+    failure_flags = trace.get("failure_flags")
+    if (not _bounded_int(managed_result.get("schema_version"), 1, 1)
+            or not _bounded_int(trace.get("schema_version"), 1, 1)
+            or type(trace.get("status")) is not str
+            or trace["status"] not in {"captured", "failed"}
+            or not _bounded_int(failure_flags, 0, 2**32 - 1)
+            or not isinstance(readiness, dict)
+            or type(readiness.get("runtime_counter_output_pair_complete")) is not bool
+            or readiness["runtime_counter_output_pair_complete"] is not pair_complete
+            or type(readiness.get("bounded_capture_complete")) is not bool
+            or not isinstance(checkpoint, dict)
+            or any(type(checkpoint.get(key)) is not bool for key in (
+                "recoverable_checkpoint_created", "exact_one_day_observed",
+                "boundary_dates_match_checkpoint", "detours_uninstalled",
+            ))):
+        raise ValueError("runtime counter output evidence gates are malformed")
+    if bool(failure_flags & _COUNTER_OUTPUT_FAILURE_FLAG) is pair_complete:
+        raise ValueError("runtime counter output failure flag contradicts pair")
+    observation_complete = (
+        pair_complete and trace["status"] == "captured"
+        and failure_flags == 0
+        and readiness["bounded_capture_complete"]
+        and all(checkpoint[key] for key in (
+            "recoverable_checkpoint_created", "exact_one_day_observed",
+            "boundary_dates_match_checkpoint", "detours_uninstalled",
+        ))
+    )
+    return {
+        "source": _COUNTER_OUTPUT_SOURCE,
+        "requested": True,
+        "diagnostic_observation_complete": observation_complete,
+        "forecast_usable": False,
+        "validation_status": "live_validation_pending",
+        "pair_complete": pair_complete,
+        "count": count,
+        "sides": sides,
+    }
+
+
+def normalize_experimental_counter_output_response_v1(
+    frame: object, *, combat_id: int,
+) -> dict[str, object] | None:
+    """Consume one private finish response without entering the forecast path."""
+    if not isinstance(frame, dict) or frame.get("type") != "command_result":
+        raise ValueError("experimental counter response is malformed")
+    if (not _bounded_int(frame.get("protocol_version"), 1, 1)
+            or frame.get("ok") is not True):
+        raise ValueError("experimental counter response protocol failed")
+    result = frame.get("result")
+    if (not isinstance(result, dict)
+            or result.get("step") != _EXPERIMENTAL_TRACE_FINISH_STEP
+            or result.get("accepted") is not True
+            or result.get("private_build") is not True
+            or result.get("production_trace_ready") is not False
+            or result.get("combat_id") != combat_id
+            or not _bounded_int(result.get("combat_id"), 1, 2**31 - 1)
+            or not _bounded_int(result.get("managed_daily_sequence_token"), 1, 2**64 - 1)
+            or type(result.get("status")) is not str
+            or result["status"] not in {"bounded_trace_available", "trace_unavailable"}):
+        raise ValueError("experimental counter response boundary differs")
+    diagnostic = normalize_runtime_counter_output_diagnostic_v1(
+        result.get("managed_trace"),
+    )
+    if diagnostic is None:
+        return None
+    if (diagnostic["diagnostic_observation_complete"]
+            != (result["status"] == "bounded_trace_available")):
+        raise ValueError("experimental counter response status disagrees with trace")
+    return {
+        "combat_id": combat_id,
+        "managed_daily_sequence_token": result["managed_daily_sequence_token"],
+        **diagnostic,
+    }
+
 
 def query_combat_phase_event_trace_v1_step(combat_id: int) -> str:
     if isinstance(combat_id, bool) or not isinstance(combat_id, int) or not 1 <= combat_id <= 2**31 - 1:
