@@ -133,7 +133,9 @@ from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
 from .simulation import combat_decision_contract as combat_entry_eu
-from .simulation.combat_core import FIXED_SCALE, fixed_div
+from .simulation.combat_core import (
+    FIXED_SCALE, fixed_div, fixed_mul, outgoing_damage_raw,
+)
 from .simulation.general_battle_forecast import contact_admission, forecast_fixed_contact
 from .simulation.prewar_battle_proxy import (
     forecast_prewar_power_battle,
@@ -6831,6 +6833,11 @@ def _active_combat_provisional_comparison(
     side_index = frame["side_index"]
     sides = (frame["attacker"], frame["defender"])
     totals: list[tuple[int, int]] = []
+    entries_by_side: list[list[dict[str, object]]] = []
+    basis_ready = bool(
+        frame["side_scope"] == "full_side"
+        and 0 < frame["final_combat_width"]
+    )
     for side in sides:
         entries = [
             entry for bucket in ("levy_entries", "men_at_arms_entries")
@@ -6841,6 +6848,30 @@ def _active_combat_provisional_comparison(
         if not (0 < starting <= 2**63 - 1 and 0 < current <= starting):
             return None
         totals.append((starting, current))
+        entries_by_side.append(entries)
+        if not (
+            basis_ready
+            and side["stored_current_matches_derived"] is True
+            and 0 < len(side["ordered_armies"]) <= 64
+            and 0 < len(side["levy_entries"]) + len(side["men_at_arms_entries"]) <= 512
+            and all(entry["effective_damage_raw"] >= 0 for entry in entries)
+        ):
+            basis_ready = False
+    damage_bases: list[int] = []
+    if basis_ready:
+        for side, entries in zip(sides, entries_by_side, strict=True):
+            # One frozen-day conditional component: no counter retention,
+            # advantage, participant refresh, or future entry transitions.
+            attack = sum(
+                fixed_mul(entry["effective_damage_raw"], entry["current_fighting_raw"])
+                for entry in entries
+            )
+            damage_bases.append(outgoing_damage_raw(
+                attack,
+                advantage_multiplier_raw=FIXED_SCALE,
+                final_combat_width=frame["final_combat_width"],
+                side_current_fighting_men_raw=side["stored_current_fighting_raw"],
+            ))
     own_starting, own_current = totals[side_index]
     enemy_starting, enemy_current = totals[1 - side_index]
     own_retention = fixed_div(own_current, own_starting)
@@ -6852,9 +6883,28 @@ def _active_combat_provisional_comparison(
         own_current * 2 <= enemy_current
         and own_retention * 2 <= enemy_retention
     )
+    neutral_basis = None
+    severe_basis = False
+    if basis_ready and len(damage_bases) == 2:
+        own_basis = damage_bases[side_index]
+        enemy_basis = damage_bases[1 - side_index]
+        neutral_basis = {
+            "status": "conditional_frozen_day",
+            "assumptions": "neutral_advantage_no_counter_no_participant_refresh",
+            "own_outgoing_raw": own_basis,
+            "enemy_outgoing_raw": enemy_basis,
+        }
+        severe_basis = bool(
+            enemy_basis > 0 and own_basis * 2 <= enemy_basis
+            and own_current <= enemy_current
+            and own_retention <= enemy_retention
+        )
     return {
         "status": "provisional_observed_comparison",
-        "model_fidelity": "observed-current-and-starting-only",
+        "model_fidelity": (
+            "observed-current-starting-and-conditional-neutral-damage-basis"
+            if neutral_basis is not None else "observed-current-and-starting-only"
+        ),
         "whole_battle_win_probability": None,
         "combat_id": frame["combat_id"],
         "province_id": frame["province_id"],
@@ -6867,6 +6917,8 @@ def _active_combat_provisional_comparison(
         "own_retained_share_raw": own_retention,
         "enemy_retained_share_raw": enemy_retention,
         "severe_observed_disadvantage": severe,
+        "neutral_uncountered_damage_basis": neutral_basis,
+        "severe_conditional_damage_basis_disadvantage": severe_basis,
         "missing_dynamic_domains": (
             list(raw_resume["missing_required_domains"])
             if isinstance(raw_resume, dict) else [
@@ -9644,7 +9696,12 @@ def _choose_one_life_turn_core(
                 provisional_comparison = None
             severe_observed_disadvantage = bool(
                 provisional_comparison is not None
-                and provisional_comparison["severe_observed_disadvantage"] is True
+                and (
+                    provisional_comparison["severe_observed_disadvantage"] is True
+                    or provisional_comparison[
+                        "severe_conditional_damage_basis_disadvantage"
+                    ] is True
+                )
             )
 
             terminal_assessments = [

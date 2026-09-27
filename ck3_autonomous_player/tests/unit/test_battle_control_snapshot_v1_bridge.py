@@ -41,7 +41,9 @@ from xar_autoplayer.bridge.war_contract import (
     committed_route_sentinel_advance_step,
     war_objective_hold_sentinel_advance_step,
 )
+from xar_autoplayer.simulation.combat_core import outgoing_damage_raw
 from xar_autoplayer.strategy import (
+    _active_combat_provisional_comparison,
     _battle_sentinel_advance_validation,
     _battle_control_transition,
     choose_one_life_turn,
@@ -2160,6 +2162,70 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertIsNone(
             stale_plan["active_combat_resume_input"]["provisional_comparison"]
         )
+
+    def test_conditional_native_damage_basis_shortens_only_observation_step(self) -> None:
+        frame = _battle_frame()
+        attacker = frame["attacker"]
+        levy = attacker["levy_entries"][0]
+        levy["current_fighting_raw"] = 2_000_000_000
+        levy["hard_casualties_raw"] = 2_500_000_000
+        for key in (
+            "stored_current_fighting_raw", "stored_levy_current_fighting_raw",
+            "derived_current_fighting_raw",
+        ):
+            attacker[key] = 2_000_000_000
+        attacker["derived_main_fighting_entry_hard_casualties_raw"] = 2_500_000_000
+        steps = (STEP, "life-advance", DECISION_SENTINEL_STEP)
+
+        normal_snapshot = _planner_battle_snapshot(frame=frame)
+        normal_snapshot["battle_control_snapshot_v1_queried_native_revision"] = NATIVE_REVISION
+        normal_plan = choose_one_life_turn(
+            [_battle_query_row(1, frame)], snapshot=normal_snapshot,
+            action_steps=steps,
+            battle_speed_readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(
+            normal_plan["selected_step"],
+            battle_decision_epoch_advance_step(DATE_RAW + 45 * 24),
+        )
+
+        levy["effective_damage_raw"] = 100_000
+        snapshot = _planner_battle_snapshot(frame=frame)
+        snapshot["battle_control_snapshot_v1_queried_native_revision"] = NATIVE_REVISION
+        with patch(
+            "xar_autoplayer.strategy.outgoing_damage_raw",
+            wraps=outgoing_damage_raw,
+        ) as native_core:
+            plan = choose_one_life_turn(
+                [_battle_query_row(1, frame)], snapshot=snapshot,
+                action_steps=steps,
+                battle_speed_readiness={"decision_sentinel_live_ready": True},
+            )
+        self.assertGreaterEqual(native_core.call_count, 2)
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["phase"], "native_war_global_battle_control_progress")
+        compared = plan["active_combat_resume_input"]["provisional_comparison"]
+        self.assertFalse(compared["severe_observed_disadvantage"])
+        self.assertTrue(compared["severe_conditional_damage_basis_disadvantage"])
+        self.assertEqual(
+            compared["neutral_uncountered_damage_basis"]["status"],
+            "conditional_frozen_day",
+        )
+        self.assertIsNone(compared["whole_battle_win_probability"])
+        self.assertFalse(plan["active_combat_resume_input"]["used_for_decision"])
+        self.assertTrue(plan["active_combat_resume_input"]["provisional_comparison_used_for_decision"])
+
+        no_width = copy.deepcopy(snapshot)
+        no_width["battle_control_snapshot_v1"]["final_combat_width"] = 0
+        with patch("xar_autoplayer.strategy.outgoing_damage_raw") as native_core:
+            no_width_result = _active_combat_provisional_comparison(no_width)
+        native_core.assert_not_called()
+        self.assertIsNone(no_width_result["neutral_uncountered_damage_basis"])
+        stale = copy.deepcopy(snapshot)
+        stale.pop("battle_control_snapshot_v1_queried_native_revision")
+        with patch("xar_autoplayer.strategy.outgoing_damage_raw") as native_core:
+            self.assertIsNone(_active_combat_provisional_comparison(stale))
+        native_core.assert_not_called()
 
     def test_active_assault_disables_ordinary_battle_decision_sentinel(self) -> None:
         frame = _battle_frame()
