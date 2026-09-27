@@ -431,6 +431,7 @@ class GameplayBridgeService:
         # A paused wartime query may recur many times on one game date.  LIFE
         # only needs another final-legal read after time or the player changes.
         self._last_war_lifestyle_observation: tuple[object, object, object] | None = None
+        self._last_war_family_observation: tuple[object, object, object] | None = None
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
         """Bind the runner-owned real product-checkpoint provider once."""
@@ -983,6 +984,10 @@ class GameplayBridgeService:
                     self.driver, planned, construction_snapshot,
                     construction_history, available_steps,
                 )
+            family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
+            planned = self._plan_private_family_wartime_v1(
+                planned, family_snapshot,
+            )
             planned.pop("_private_faction_snapshot_v1", None)
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
@@ -1034,10 +1039,15 @@ class GameplayBridgeService:
         family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
         if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
                 and isinstance(family_snapshot, dict)):
-            planned = plan_family_marriage_private(
-                self.driver, planned, family_snapshot,
-                prewar_arbitration=prewar_arbitration,
-            )
+            if isinstance(family_snapshot.get("active_wars"), list) and family_snapshot["active_wars"]:
+                planned = self._plan_private_family_wartime_v1(
+                    planned, family_snapshot,
+                )
+            else:
+                planned = plan_family_marriage_private(
+                    self.driver, planned, family_snapshot,
+                    prewar_arbitration=prewar_arbitration,
+                )
         if (construction_red_plan is not None
                 and isinstance(planned.get("plan"), dict)
                 and planned["plan"].get("selected_step") == plan["selected_step"]):
@@ -1045,6 +1055,37 @@ class GameplayBridgeService:
                 "selected_step": None,
                 "reason": construction_red_plan["reason"]}}
         return planned
+
+    def _plan_private_family_wartime_v1(
+        self, planned: dict[str, object], snapshot: object,
+    ) -> dict[str, object]:
+        """Inspect one war date without repeatedly enumerating family rows."""
+        if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is not True
+                or not isinstance(snapshot, dict)):
+            return planned
+        plan = planned.get("plan")
+        selected = plan.get("selected_step") if isinstance(plan, dict) else None
+        actor = snapshot.get("played_character")
+        frame = (snapshot.get("episode_run_id"),
+                 actor.get("character_id") if isinstance(actor, dict) else None,
+                 snapshot.get("date_raw"))
+        if (not isinstance(selected, str) or not selected.startswith("query-")
+                or not isinstance(snapshot.get("active_wars"), list)
+                or not snapshot["active_wars"]
+                or not isinstance(frame[0], str)
+                or type(frame[1]) is not int or frame[1] <= 0
+                or type(frame[2]) is not int
+                or frame == self._last_war_family_observation):
+            return planned
+        result = plan_family_marriage_private(
+            self.driver, planned, snapshot, wartime_arbitration=True,
+        )
+        result_plan = result.get("plan")
+        if (isinstance(result_plan, dict)
+                and result_plan.get("selected_step") == selected
+                and "family_marriage_pending" not in result_plan):
+            self._last_war_family_observation = frame
+        return result
 
     def _observe_opening_lifestyle_perks_v1(
         self, *, before: dict[str, object], focus: dict[str, object],

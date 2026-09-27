@@ -1660,6 +1660,47 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_wartime_family_runs_before_first_read_once_per_game_date(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 48}],
+                 "episode_run_id": "robert-test", "date_raw": 53215920,
+                 "played_character": {"character_id": 101}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-army-strengths-v1", "life-advance"),
+        )
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_family_marriage_formal_trial = True
+        service = GameplayBridgeService(driver)
+        war_plan = {"policy": "one-life-turn-v1",
+                    "selected_step": "query-army-strengths-v1"}
+
+        def family(_driver, planned, war_snapshot, *, wartime_arbitration=False):
+            self.assertTrue(wartime_arbitration)
+            self.assertEqual(war_snapshot["active_wars"], [{"war_id": 48}])
+            return {**planned, "plan": {**planned["plan"],
+                "family_marriage_status": "no_positive_observed_marriage_opportunity"}}
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                       return_value=war_plan),
+            mock.patch.object(GameplayBridgeService,
+                              "_plan_private_lifestyle_trial_v1",
+                              side_effect=lambda planned, _steps: planned),
+            mock.patch("xar_autoplayer.bridge.service.plan_family_marriage_private",
+                       side_effect=family) as family_plan,
+        ):
+            first = service.plan_turn()["plan"]
+            second = service.plan_turn()["plan"]
+            state["date_raw"] += 24
+            third = service.plan_turn()["plan"]
+        self.assertEqual(first["selected_step"], "query-army-strengths-v1")
+        self.assertEqual(second["selected_step"], "query-army-strengths-v1")
+        self.assertEqual(third["selected_step"], "query-army-strengths-v1")
+        self.assertEqual(family_plan.call_count, 2)
+
     def test_lifestyle_early_return_keeps_due_construction_receipt_on_war_turn(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,
