@@ -3,9 +3,9 @@
   "request_id": "WAR-ROBERT-R0266-JOINT-CASH-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T20:11:45Z",
+  "updated_at_utc": "2026-09-27T20:19:00Z",
   "source_pr": null,
-  "master_commit": "fa846539b",
+  "master_commit": "e2e92c501",
   "delivery_route": "direct rebase-only master push",
   "interface_contract": {
     "source": "ck3_autonomous_player/src/xar_autoplayer/m5_war_cash_resource_v1.py:observe_active_war_cash_resource_v1; m5_observed_opportunity_selector.py:active_defensive_war_continuation_proposal; m5_formal_proposal_collector.py:collect_m5_formal_proposals",
@@ -39,7 +39,7 @@
     }
   },
   "checks": [
-    "Focused M5 war cash, observed selector and formal collector: 34 tests passed normal and 34 under python -O.",
+    "Focused M5 war cash, observed selector and formal collector: 35 tests passed normal and 35 under python -O, including exact treasury binding.",
     "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN.",
     "H2825 typed-null replay in test_m5_war_cash_resource_v1.py; no real same-frame war cash values inferred."
   ],
@@ -47,7 +47,7 @@
   "limitations": [
     "Static-only/no-live delivery. The supplied H2825 construction observation is same-frame evidence of treasury and building cost, but publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
     "The native player_monthly_gold_income is a current net-income observation and cannot independently bound future gross army upkeep or replenishment. H2908/raw53217816 is a different frame and cannot fill H2825 cash fields.",
-    "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off."
+    "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. H2743 save-layer inspection found other AI war-chest records but no AI strategy row keyed to the played Robert CharacterID 29829; that does not supply H2825 player-war cash. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off."
   ],
   "next_step": "Once a fresh Steam-offline frame and source pair are available, measure or derive an explicit short-horizon war cash upper bound and pending-action ledger on the same paused frame; then hand the completed war cash receipt to the nonwar operator for candidate integration, formal action and receipt validation."
 }
