@@ -1,0 +1,7 @@
+# 102：优势观测请求被受管字段合同拒绝
+
+102 使用与 [100](active-counter-output-cross-check-100-2026-09-27.md)相同的 099 第 12 日冻结存档，候选 DLL SHA-256 为 `6D05257C6D6BA6E47019E56ED3ED79555DFE3EA856A91C841A22327AEA040457`。启动前 `verify_private_combat_trace_dll.py` 返回 `ready=true`：CMake 私有 trace 选项为 `ON`，DLL 同时含 begin/finish、counter 和 advantage 开关及来源字符串。CK3 **1.19.0.6** 实机成功载入暂停日期 `53146512`、CombatID `16777218`、主战阶段日 `8`；这是比 [101 预检 RED](active-advantage-components-preflight-attempt-101-2026-09-27.md)更进一步的受管入口验证。
+
+`c102-trace-begin.json` SHA-256 为 `748010B22FDB36350AAB66654037D74B0264B5648D0FB3A9E8E514FFF72B8E18`，返回 `RED`：`Private phase trace request fields differ from the bounded contract`。原因是 Python `promo/ck3_native_war_ai/integration/capture_session.py` 的私有 begin 请求白名单仍只收已有的 `capture_runtime_counter_output` 等字段，尚未接纳本次显式布尔 `capture_runtime_advantage_components`。请求在送入 DLL 前被拒，**没有 arm trace、没有推进日期、没有优势分项观测**；响应目录也不存在 `c102-life-advance.json`。
+
+原始 attempt 保留在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-active-advantage-components-attempt-102`。`finish` 仅用于结束会话，`cleanup-check.json` 报告 capture exit `0`、`cleanup_ok=true`、CK3 进程树和 watchdog 均已退出；其 session/report SHA-256 分别为 `FAB2D1574B1C668778ACF6846F5E5E4988900DD06C57372E511798621EBE2E39`、`A43B685B54AC677EEE661A1209076579E637FB0AFA40D6FDE432A8F8A1BFCA05`。这个 exit `0` 只证明安全清场，不能把被拒的研究请求改称成功。下一次须先更新 Python 受管字段合同并通过非布尔拒绝、默认关闭及旧请求兼容检查，再建新的 103 attempt；102 继续作为 RED 留存。
