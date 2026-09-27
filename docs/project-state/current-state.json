@@ -2,10 +2,10 @@
   "ck3": {
     "inventory_source": "operator_get_status",
     "last_completed_local_round": {
-      "operator_exit_code": 0,
+      "operator_exit_code": 1,
       "process_tree_gone_at_cleanup": true,
-      "round": "R0264",
-      "scope": "origin_machine_R0264_cleanup_only; current_pid_owner_and_RED_require_local_operator_get_status"
+      "round": "R0265",
+      "scope": "origin_machine_R0265_operator_reported_war_planner_blocked_after_7_nonmutating_turns_and_cleanup; local_ck3_injector_operator_processes_and_port_8766_cleared_at_2026-09-28T02:49+08:00; current_pid_owner_and_RED_require_local_operator_get_status"
     },
     "live_state_not_git_cached": true,
     "operator_mcp_scope": "local_machine_only",
@@ -185,7 +185,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "E551D7C6A2137B9CFFC2A792A8465E222DFD4556587ADC778E8A7AA96BA8C22B"
+        "sha256": "CBC0078D0795D4776509BAEF910CFD1B3BDA8851315EE92280D636C72A35CD64"
       },
       "raw_footage": {
         "passed": 0,
@@ -281,12 +281,32 @@
       "latest_formal_active_war_scores": [
         -24
       ],
-      "latest_formal_attempt_round": "R0264",
-      "latest_formal_attempt_status": "turn_limit_qualified_36_of_36_no_blocker",
-      "latest_formal_pair": "R0264_frozen_h2825_source_pair_next_no_launch_pending",
-      "latest_formal_war_scores_scope": "R0264_last_turn_native_termination_query_h2825_raw53217624",
-      "latest_formal_war_status": "R0264_last_formal_turn_war_16777231_active_no_terminal_result",
-      "latest_freeze_manifest_status": "R0264_source_bytes_pinned_family_pair_passed_next_candidate_no_launch_pending",
+      "latest_formal_attempt_evidence": {
+        "candidate_index_sha256": "A9C502C3472F0E02CFC3926A0FB9C03A9E6425F2BFC4D1C9BDF87CA371974DD0",
+        "candidate_runtime_source_commit": "cbaf451361f92642b73be994f3e6c5ac9ec71545",
+        "date_advanced_days": 0,
+        "dll_sha256": "A520BCB688ED921E8DA7410D8426E2FE443135F3F0CECBA928791CCBA0243245",
+        "evidence_origin_machine_locator": "Z:\\h2825-combined-precandidate-20260928\\run-formal-36",
+        "formal_report_sha256": "B990E9F9E0F3E83B2412F86D9AE491820A0A5AA7EA6B83A028F7DF5A5B77E95B",
+        "native_build_source_commit": "b0e268ec132479ac15e32c2ed36b56ed9fc2eea9",
+        "new_checkpoint": false,
+        "new_nonwar_typed_actions": 0,
+        "operator_receipt_sha256": "981D614378B1CA29267F457E09D8FEF7A2332FBAE4B30984A5BE85986A0944F2",
+        "prisoner_ransom_quote_status": "first_row_option_unavailable_other_two_not_evaluated",
+        "read_only_construction": "farm_estates_01_barony2103_province2635_slot1_cost_raw18000000_player_gold_raw111861020_monthly_income_hundredths70_joint_commitments_unknown_formal_action_ready_false",
+        "read_only_lifestyle": "martial_authority_focus_native_legal_true_target_martial_xp_raw0_unspent_used_points_0_13_action_admitted_false",
+        "required_war_observation": "exact-attacker-defender-participant-scope",
+        "source_checkpoint": "R0264_h2825_raw53217624",
+        "successful_nonmutating_turns": 7,
+        "terminal_phase": "native_war_siege_forecast_observation_blocked",
+        "turn_attempted": 8
+      },
+      "latest_formal_attempt_round": "R0265",
+      "latest_formal_attempt_status": "blocked_after_7_of_8_nonmutating_turns_war_siege_forecast_participant_partition_missing",
+      "latest_formal_pair": "R0264_frozen_h2825_source_pair_R0265_official_no_launch_passed_but_live_blocked_no_new_pair",
+      "latest_formal_war_scores_scope": "R0265_same_paused_native_3_formal_defender_exit_observation_h2825_raw53217624",
+      "latest_formal_war_status": "R0265_war_16777231_active_no_exit_action_war_forecast_planner_blocked",
+      "latest_freeze_manifest_status": "R0264_source_bytes_pinned_family_pair_passed_R0265_candidate_prepare_rebind_no_launch_passed_live_RED_no_new_freeze",
       "latest_private_checkpoint": {
         "date_raw": 53215920,
         "history_index": 2127,
@@ -296,7 +316,7 @@
         "save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
         "scope": "Same-date R0186 private professional_workforce_perk checkpoint after R0181 formal h2120; raw driver has one read-only post-checkpoint row and R0187 used official semantic recovery. R0187 privately read back the owned perk in a new PID, but its combat-v3 input query was RED. No additional game days or war conclusion."
       },
-      "latest_product_status": "GREEN_BOUNDED_CONTINUATION_WAR_ACTIVE",
+      "latest_product_status": "NOT_EVALUATED_R0265_WAR_SIEGE_FORECAST_PARTICIPANT_SCOPE_NO_NEW_DATE",
       "latest_read_only_combat_v3_observation": {
         "actor_id": 29829,
         "attacker_army_id": 83886367,
@@ -329,11 +349,11 @@
       "latest_restore_attempt_round": "R0188",
       "latest_restore_harness_status": "GREEN_official_h2127_new_pid_cold_restore_combat_v3_inputs_read_only",
       "m3_existing_complete_evidence_retained": true,
-      "mainline_status": "R0264_h2825_source_frozen_next_candidate_requires_official_prepare_rebind_no_launch",
+      "mainline_status": "R0265_h2825_candidate_war_planner_RED_R0264_source_pair_remains_durable",
       "material_expansion_proven": true,
       "new_title_acquisitions_in_R0177_R0178": 0,
       "primary_formal_seed_pair": "R0138_frozen_day0",
-      "prior_formal_war_red_still_open": false,
+      "prior_formal_war_red_still_open": true,
       "proven_defensive_war_victory_ids": [
         95,
         16777250
@@ -371,7 +391,7 @@
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
       "new_nonwar_typed_actions": 0,
-      "next_candidate_status": "official_prepare_rebind_no_launch_pending",
+      "next_candidate_status": "R0265_official_prepare_rebind_no_launch_passed_then_live_war_planner_RED_no_new_checkpoint",
       "pair_identity_sha256": "B52F34C4011FAB2691F8A5B03EA051C918AEA7BE94C0EB3D0D6A6B5B0C5F02E4",
       "profile": "ordinary_campaign_succession/xar_off",
       "round": "R0264",
@@ -596,7 +616,7 @@
     },
     "latest_restore_attempt_round": "R0188",
     "latest_restore_attempt_status": "official_h2127_new_pid_cold_restore_combat_v3_inputs_read_only_green",
-    "legacy_latest_fields_scope": "latest_durable_continuation and latest_paired_checkpoint retain their R0181 and R0186 historical object shapes for existing readers; current_robert_source_pair is the current Robert checkpoint authority. R0181 war score -16 is only an R0181 scoped read; R0264 final native war-option query observed -24.",
+    "legacy_latest_fields_scope": "latest_durable_continuation and latest_paired_checkpoint retain their R0181 and R0186 historical object shapes for existing readers; current_robert_source_pair remains the R0264 h2825 durable Robert checkpoint authority. R0181 war score -16 is only an R0181 scoped read; R0264 and R0265 same-date native war-option queries observed -24. R0265 made no new save or date advance.",
     "m4_focus_first_primitive": {
       "actor_id": 29829,
       "checkpoint_history_indices": [
@@ -1920,5 +1940,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-28T01:30:13+08:00"
+  "updated_at": "2026-09-28T02:53:22+08:00"
 }
