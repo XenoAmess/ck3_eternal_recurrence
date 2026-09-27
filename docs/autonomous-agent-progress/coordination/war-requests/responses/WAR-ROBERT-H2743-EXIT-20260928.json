@@ -1,10 +1,12 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
-  "status": "claimed",
+  "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T17:14:07Z",
+  "updated_at_utc": "2026-09-27T17:20:23Z",
   "source_pr": null,
+  "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
+  "delivery_route": "direct rebase-only master push",
   "triage": "R0263 excerpt proves only WarID 16777231 active at h2743, player-relative score -12 and one bounded route advance. It does not include current same-frame native termination options, CB/side identity, terms, army risk inputs or a postcondition. R0197 one-shot surrender authorization is consumed and cannot be reused here.",
   "asset_transfer_request": {
     "channel": "OneDrive selective upload of only the exact four H2743 input classes; do not sync an unrelated tree",
@@ -14,12 +16,27 @@
     "runtime_dll_sha256": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
     "status": "awaiting_verified_local_path"
   },
-  "current_work": "Implement a reusable, side- and CB-bound read-only observation ingress for a current formal war exit comparison; then verify exact H2743 assets and query on a separately qualified local replay.",
+  "interface_contract": {
+    "kind": "scoped_missing-field_and_formal_read-only_observation_handoff",
+    "source": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_exit_observation.py and strategy.py choose_one_life_turn",
+    "selection": "One paused primary-defender war with negative player-relative score; current native options must match WarID, snapshot ID, public/native revision, connection generation, episode, side, CB and score. Other CBs are out of scope.",
+    "observed_output": "formal_defender_exit_observation contains current option native legality, recipient acceptance and material visibility for victory, white peace and surrender. It is attached to the existing tactical plan without changing selected_step.",
+    "unknowns": "Unobserved title/vassal effects, signed actor/opponent resources, directed truce and continue-war risk remain null. recommended_outcome and action_literal are always null; no exit submission is authorized.",
+    "first_query": "query-war-termination-options-16777231 on a qualified h2743 paused frame; existing strategy/native driver already implement and cache the query. Historical R0221 options are rejected on h2743.",
+    "document": "docs/ck3-native-ai/h2743-formal-defender-exit-observation-2026-09-28.md"
+  },
   "first_missing_observation": "A current paused-frame query-war-termination-options-16777231 result bound to h2743's exact checkpoint, episode, war, character, revisions and date. The R0221 options row is historical and cannot fill this field.",
   "gameplay_action_authorized": false,
+  "checks": [
+    "test_formal_defender_exit_observation.py: 4 passed normal, 4 passed under -O; real R0221 options are used only as historical source and h2743-shaped test frames are synthetic.",
+    "test_raiktor_formal_exit_consumer.py: 7 passed with the verified tools/.venv interpreter; test_general_battle_strategy.py plus new observer: 15 passed; test_war_termination_contract.py: 8 passed.",
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN. No h2743 live test has run on this machine."
+  ],
   "live_evidence": null,
   "limitations": [
     "No H2743 raw save, driver, family sidecar or matching DLL is present on this machine yet.",
-    "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war."
-  ]
+    "No current-frame choice or exit action is claimed. Independent peaceful construction remains gated by this Robert war.",
+    "The current Git excerpt cannot tell whether white peace is legal now, quantify surrender terms, or rank continue-war risk. A future current-frame result and material model are needed before any exit decision."
+  ],
+  "next_step": "After selective OneDrive transfer and SHA verification of the exact h2743 save, driver, sidecar and DLL, prepare a fresh official pair and make a read-only current-frame termination-options query. If still unable to rank, publish the next single material/risk observation gap. Do not reuse the R0197 one-shot authorization or submit an h2743 exit based on this delivery."
 }
