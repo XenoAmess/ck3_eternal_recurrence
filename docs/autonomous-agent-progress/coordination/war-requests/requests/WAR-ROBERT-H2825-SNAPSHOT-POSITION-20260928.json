@@ -1,0 +1,36 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-H2825-SNAPSHOT-POSITION-20260928",
+  "created_at_utc": "2026-09-27T19:26:00Z",
+  "producer_role": "war_maintainer",
+  "requested_owner_role": "nonwar_operator",
+  "assignee": null,
+  "priority": "high_blocks_exact_R0265_participant_claim",
+  "related_request": "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928",
+  "scope": "Extract the omitted exact R0265 native:3 active_wars row and its army states from the already frozen formal run/driver, without a new gameplay action or source mutation. This clarifies an apparent contradiction between the selected siege candidate and the subsequent route-contact readout.",
+  "source": {
+    "formal_report_git_path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2825-SIEGE-PARTITION-20260928.r0265-formal-report.json",
+    "formal_report_sha256": "B990E9F9E0F3E83B2412F86D9AE491820A0A5AA7EA6B83A028F7DF5A5B77E95B",
+    "checkpoint_sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+    "source_driver_sha256": "B8E50A281AFB9A5DAA7AC1ED55DD68C4305816302B71B14EDF79F1060177D872",
+    "candidate_runtime_dll_sha256": "A520BCB688ED921E8DA7410D8426E2FE443135F3F0CECBA928791CCBA0243245",
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "date_raw": 53217624,
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "war_id": 16777231
+  },
+  "observed_contradiction": {
+    "planner_candidate": "R0265 first_blocker.plan.siege_relief selects enemy_army_id 83886484 at target_province_id 2629. In strategy.py this candidate can only be built from an enemy_armies row marked sieging with current_province_id 2629.",
+    "route_readback": "The same report's first_blocker.plan.route_contact_horizon.hostile_routes lists ArmyID 83886484 at current_province_id 3660 with route to 2629, and ArmyID 50331920 at current_province_id 2629.",
+    "why_unresolved": "The report preserves the candidate and route rows but omits the complete active_wars row. We cannot distinguish a stale planner snapshot, a native reader discrepancy, or another identity/semantic issue from those excerpts alone. Matching snapshot IDs and date do not substitute for the missing positions."
+  },
+  "requested_delivery": [
+    "Extract and SHA-bind the exact R0265 planner-before native snapshot's WarID 16777231 enemy_armies rows for ArmyIDs 50331920 and 83886484: owner, current_province_id, army_state/code, in_combat, retreating, move_target_province_id, route_province_ids and any source/revision fields. Include the selected siege candidate's full row.",
+    "Extract the same run's query-route-contact-horizon-v1 readback envelope, including before/after snapshot identities and each hostile route current_province_id. Record whether the source driver contains both rows or whether a fresh read-only replay is required.",
+    "Commit a compact Git evidence excerpt and response with exact source file SHA-256. Keep large save/driver/DLL outside Git. Do not submit surrender, move, time advance or any other gameplay action for this extraction."
+  ],
+  "receiver_state": "The H2825 sender reports a local OneDrive transfer folder, but as of this request the corresponding folder is absent in C:/Users/1/OneDrive. No exact H2825 file was received or verified on this machine.",
+  "gameplay_action_authorized": false
+}

@@ -33,7 +33,7 @@ R0265_REPORT = (
 
 
 class ProvisionalDefenseCanaryTests(unittest.TestCase):
-    def test_r0265_report_route_partitions_current_sieger_from_later_arrival(self):
+    def test_r0265_route_only_partitions_if_war_row_positions_agree(self):
         report = json.loads(R0265_REPORT.read_text(encoding="utf-8"))
         plan = report["first_blocker"]["plan"]
         relief = plan["siege_relief"]
@@ -54,6 +54,16 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         self.assertEqual(result["subject_target_arrival_date_raw"], 53218680)
         self.assertEqual(result["offsite_target_arrivals"][0]["target_arrival_date_raw"],
                          53219928)
+        # The report names 83886484 as the selected siege candidate while its
+        # route says it is at 3660.  The omitted full war row is needed to
+        # resolve that contradiction; a candidate-implied target position must
+        # fail instead of silently choosing either native readout.
+        war["enemy_armies"][1]["current_province_id"] = 2629
+        mismatch = _siege_forecast_participant_partition(
+            war, relief["army_strength_balance"], contact,
+            army_id=relief["army_id"], target_province_id=relief["target_province_id"],
+        )
+        self.assertEqual(mismatch["reason"], "war_contact_position_mismatch")
 
     def test_offsite_hostile_is_not_target_defender_and_cannot_authorize_contact(self):
         frame = self._frame()
@@ -73,6 +83,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         contact = _route_contact_row(
             2, origin=30, target=32, date_raw=frame["date_raw"],
             route=[31, 32], hostile_ids=(21, 22), contact_free=True,
+            hostile_provinces={21: 32, 22: 40},
         )
         horizon = contact["result"]["route_contact_horizon"]
         horizon["hostile_routes"][1].update({
@@ -132,6 +143,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         contact = _route_contact_row(
             2, origin=30, target=32, date_raw=frame["date_raw"],
             route=[32], hostile_ids=(21, 22), contact_free=False,
+            hostile_provinces={21: 32, 22: 40},
         )
         contact["result"]["route_contact_horizon"]["hostile_routes"][1].update({
             "current_province_id": 40,
@@ -238,7 +250,8 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
                          date_raw=frame["date_raw"], route=[31, 32]),
             _route_contact_row(2, origin=30, target=32,
                                date_raw=frame["date_raw"], route=[31, 32],
-                               hostile_ids=(21,), contact_free=True),
+                               hostile_ids=(21,), contact_free=True,
+                               hostile_provinces={21: 32}),
             self._query_row(31),
         ]
         with mock.patch(
@@ -272,7 +285,8 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
                          date_raw=frame["date_raw"], route=[32]),
             _route_contact_row(2, origin=30, target=32,
                                date_raw=frame["date_raw"], route=[32],
-                               hostile_ids=(21,), contact_free=False),
+                               hostile_ids=(21,), contact_free=False,
+                               hostile_provinces={21: 32}),
             self._query_row(30),
         ]
         with mock.patch(

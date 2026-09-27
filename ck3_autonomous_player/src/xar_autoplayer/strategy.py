@@ -16022,6 +16022,22 @@ def _siege_forecast_participant_partition(
             or not set(enemy_ids).issubset(set(contact_ids))):
         return unavailable("strength_or_contact_roster_mismatch")
 
+    routes = contact.get("hostile_routes")
+    if not isinstance(routes, list):
+        return unavailable("hostile_arrival_timeline_unavailable")
+    route_by_id: dict[int, dict[str, object]] = {}
+    for row in routes:
+        hostile_id = _native_int(row.get("army_id")) if isinstance(row, dict) else None
+        if hostile_id is None or hostile_id in route_by_id:
+            return unavailable("hostile_route_roster_invalid")
+        route_by_id[hostile_id] = row
+    for enemy_id in enemy_ids:
+        row = route_by_id.get(enemy_id)
+        if not isinstance(row, dict) or row.get("timeline_observable") is not True:
+            return unavailable("hostile_timeline_unavailable")
+        if row.get("current_province_id") != by_id[enemy_id].get("current_province_id"):
+            return unavailable("war_contact_position_mismatch")
+
     defenders = tuple(
         enemy_id for enemy_id in enemy_ids
         if by_id[enemy_id].get("current_province_id") == target_province_id
@@ -16048,22 +16064,12 @@ def _siege_forecast_participant_partition(
     ):
         return unavailable("subject_target_arrival_unavailable")
     subject_arrival = _native_int(subject_arrivals[-1])
-    routes = contact.get("hostile_routes")
-    if subject_arrival is None or not isinstance(routes, list):
+    if subject_arrival is None:
         return unavailable("hostile_arrival_timeline_unavailable")
-    route_by_id: dict[int, dict[str, object]] = {}
-    for row in routes:
-        hostile_id = _native_int(row.get("army_id")) if isinstance(row, dict) else None
-        if hostile_id is None or hostile_id in route_by_id:
-            return unavailable("hostile_route_roster_invalid")
-        route_by_id[hostile_id] = row
     arrival_risk: list[dict[str, object]] = []
     for enemy_id in offsite:
         row = route_by_id.get(enemy_id)
-        if not isinstance(row, dict) or row.get("timeline_observable") is not True:
-            return unavailable("offsite_hostile_timeline_unavailable")
-        if row.get("current_province_id") != by_id[enemy_id].get("current_province_id"):
-            return unavailable("offsite_hostile_position_mismatch")
+        assert isinstance(row, dict)
         route = row.get("route_province_ids")
         arrivals = row.get("arrival_date_raws")
         if not isinstance(route, list) or not isinstance(arrivals, list) or len(route) != len(arrivals):

@@ -1449,6 +1449,7 @@ def _route_contact_row(
     hostile_ids: tuple[int, ...],
     contact_free: bool,
     episode_run_id: str | None = None,
+    hostile_provinces: dict[int, int] | None = None,
 ) -> dict[str, object]:
     step = (
         f"query-route-contact-horizon-v1-{army_id}-to-{target}"
@@ -1489,7 +1490,10 @@ def _route_contact_row(
                     {
                         "timeline_observable": True,
                         "army_id": hostile_id,
-                        "current_province_id": 99,
+                        "current_province_id": (
+                            hostile_provinces.get(hostile_id, 99)
+                            if hostile_provinces is not None else 99
+                        ),
                         "effective_origin_province_id": 99,
                         "route_province_ids": [],
                         "arrival_date_raws": [],
@@ -5108,6 +5112,7 @@ class GameplayBridgeTests(unittest.TestCase):
             route=[2_636, 2_635],
             hostile_ids=(50_331_863, 83_886_252),
             contact_free=True,
+            hostile_provinces={50_331_863: 2_635, 83_886_252: 2_627},
         )
         move = _native_war_plan(
             **base,
@@ -19090,6 +19095,7 @@ class SiegeForecastIngressTests(unittest.TestCase):
             2, army_id=11, origin=30, target=32,
             date_raw=date_raw, route=[31, 32],
             hostile_ids=(21,), contact_free=True,
+            hostile_provinces={21: 32},
         )
         inputs = ingest([preview_row, contact_row])
         self.assertEqual(inputs["selected_step"], query_step)
@@ -19102,6 +19108,7 @@ class SiegeForecastIngressTests(unittest.TestCase):
             2, army_id=11, origin=30, target=32,
             date_raw=date_raw, route=[32],
             hostile_ids=(21,), contact_free=False,
+            hostile_provinces={21: 32},
         )
         self.assertEqual(
             ingest([adjacent_preview, adjacent_contact])["selected_step"],
