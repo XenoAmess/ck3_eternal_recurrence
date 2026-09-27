@@ -1092,6 +1092,9 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             "xar_autoplayer.m5_peacetime_proposal_sources_v1."
             "construction_process_identity", return_value=(123, "t1"),
         ), mock.patch(
+            "xar_autoplayer.bridge.domain_construction_private_transport_v1."
+            "_identity", return_value=(123, "t1"),
+        ), mock.patch(
             "xar_autoplayer.m5_formal_proposal_collector."
             "plan_construction_private", side_effect=lambda _driver, planned,
             _snapshot, _history, _steps: planned,
@@ -1185,6 +1188,155 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                                  applied)
             self.assertEqual(driver.source_reads, 0)
 
+    def test_older_due_building_receipt_precedes_new_joint_proposals(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        older = {
+            "action_request_id": "construction-first",
+            "status": "applied", "postcondition_verified": True,
+            "episode_run_id": _FRAME["episode_run_id"],
+            "actor_character_id": _FRAME["played_character_id"],
+            "post_bridge_pid": 123, "post_bridge_creation_date": "t1",
+            "post_native_revision": _FRAME["native_revision"] - 2,
+            "post_date_raw": _FRAME["date_raw"] - 31 * 24,
+            "completion_status": "in_progress",
+            "completion_last_check_date_raw": _FRAME["date_raw"] - 30 * 24,
+        }
+        newer = {
+            **older,
+            "action_request_id": "construction-second",
+            "post_native_revision": _FRAME["native_revision"] - 1,
+            "post_date_raw": _FRAME["date_raw"] - 24,
+            "completion_last_check_date_raw": _FRAME["date_raw"],
+        }
+        (self.state_dir / "construction-formal-pending-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": None, "applied_prior": [older], "applied": newer,
+            }), encoding="utf-8",
+        )
+        driver = _Driver(self.state_dir, snapshot=_snapshot(faction_count=0))
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector."
+            "construction_process_identity", return_value=(123, "t1"),
+        ), mock.patch(
+            "xar_autoplayer.bridge.domain_construction_private_transport_v1."
+            "_identity", return_value=(123, "t1"),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+        ) as construction_query):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"],
+                         "private-query-player-construction-receipt-v1",
+                         planned["plan"])
+        self.assertEqual(planned["plan"]["construction_pending_action"], older)
+        self.assertEqual(driver.source_reads, 0)
+        construction_query.assert_not_called()
+
+    def test_direct_joint_source_refuses_older_due_building_receipt(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        old = {
+            "action_request_id": "construction-first",
+            "episode_run_id": _FRAME["episode_run_id"],
+            "post_bridge_pid": 123, "post_bridge_creation_date": "t1",
+            "post_date_raw": _FRAME["date_raw"] - 31 * 24,
+            "completion_status": "in_progress",
+            "completion_last_check_date_raw": _FRAME["date_raw"] - 30 * 24,
+        }
+        newer = {
+            **old,
+            "action_request_id": "construction-second",
+            "post_date_raw": _FRAME["date_raw"] - 24,
+            "completion_last_check_date_raw": _FRAME["date_raw"],
+        }
+        (self.state_dir / "construction-formal-pending-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": None, "applied_prior": [old], "applied": newer,
+            }), encoding="utf-8",
+        )
+        driver = _Driver(self.state_dir)
+        with (mock.patch(
+            "xar_autoplayer.bridge.domain_construction_private_transport_v1."
+            "_identity", return_value=(123, "t1"),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+        ) as construction_query):
+            with self.assertRaisesRegex(
+                BridgeUnavailableError, "prior construction receipt first",
+            ):
+                query_m5_peacetime_proposal_sources_v1(
+                    driver,
+                    snapshot=driver.take_snapshot(),
+                    history=_history(),
+                    baseline_plan={
+                        "policy": "one-life-turn-v1",
+                        "selected_step": "life-advance",
+                    },
+                    expected_revision=_FRAME["revision"],
+                )
+        construction_query.assert_not_called()
+
+    def test_older_not_due_building_allows_new_joint_proposal(self) -> None:
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        old = {
+            "action_request_id": "construction-first",
+            "status": "applied", "postcondition_verified": True,
+            "episode_run_id": _FRAME["episode_run_id"],
+            "actor_character_id": _FRAME["played_character_id"],
+            "post_bridge_pid": 123, "post_bridge_creation_date": "t1",
+            "post_native_revision": _FRAME["native_revision"] - 2,
+            "post_date_raw": _FRAME["date_raw"] - 48,
+            "completion_status": "in_progress",
+            "completion_last_check_date_raw": _FRAME["date_raw"] - 48,
+        }
+        newer = {
+            **old,
+            "action_request_id": "construction-second",
+            "post_native_revision": _FRAME["native_revision"] - 1,
+            "post_date_raw": _FRAME["date_raw"] - 24,
+            "completion_last_check_date_raw": _FRAME["date_raw"] - 24,
+        }
+        (self.state_dir / "construction-formal-pending-v1.json").write_text(
+            json.dumps({
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": None, "applied_prior": [old], "applied": newer,
+            }), encoding="utf-8",
+        )
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            faction=_faction(status="no_legal_candidate"),
+        )
+        with (mock.patch(
+            "xar_autoplayer.bridge.domain_construction_private_transport_v1."
+            "_identity", return_value=(123, "t1"),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "construction_process_identity", return_value=(123, "t1"),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private", return_value=_construction(),
+        ) as construction_query):
+            sources = query_m5_peacetime_proposal_sources_v1(
+                driver,
+                snapshot=driver.take_snapshot(),
+                history=_history(count=0),
+                baseline_plan={
+                    "policy": "one-life-turn-v1",
+                    "selected_step": "life-advance",
+                },
+                expected_revision=_FRAME["revision"],
+            )
+        construction_query.assert_called_once()
+        self.assertEqual(list(sources["domains"]), ["building"])
+        self.assertEqual(sources["producer"]["construction_status"], "selected")
+
     def test_later_day_verified_building_enters_joint_shortlist(self) -> None:
         self.state_dir.mkdir(parents=True, exist_ok=True)
         (self.state_dir / "construction-formal-pending-v1.json").write_text(
@@ -1212,6 +1364,9 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             "construction_process_identity",
             return_value=(123, "t1"),
         ) as process, mock.patch(
+            "xar_autoplayer.bridge.domain_construction_private_transport_v1."
+            "_identity", return_value=(123, "t1"),
+        ), mock.patch(
             "xar_autoplayer.m5_peacetime_proposal_sources_v1."
             "query_construction_private",
             return_value=_construction(),
