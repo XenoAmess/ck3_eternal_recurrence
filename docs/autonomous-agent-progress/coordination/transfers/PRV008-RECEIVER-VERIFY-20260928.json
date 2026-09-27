@@ -1,0 +1,41 @@
+{
+  "schema": "xar.g2.cross-machine-asset-receipt-request.v1",
+  "request_id": "PRV008-RECEIVER-VERIFY-20260928",
+  "created_at_utc": "2026-09-27T22:13:17Z",
+  "source_notice": "docs/autonomous-agent-progress/coordination/transfers/PRV008-ONEDRIVE-20260928.json",
+  "source_notice_git_blob": "b58c7f171942a146085e60975e80b5e33c85bb08",
+  "status": "pending_receiver_verification",
+  "channel": "Git request and response; file bytes via existing OneDrive sync",
+  "folder_relative_to_each_machine_onedrive_root": "PRV008-frozen-preview-2026-09-28",
+  "expected_files": [
+    {
+      "name": "g2-preview-ordinary-h1662-ca852d1-prv008.zip",
+      "bytes": 88251425,
+      "sha256": "B9952E544C78D51F650FCBF252D2DE81B1E005B0EA5081880AEE9FDECC2BD9F3"
+    },
+    {
+      "name": "START-HERE-frozen-host.txt",
+      "bytes": 7550,
+      "sha256": "222FAE1EFE4F64524A0AB4E930F1C30D781B4DCECF6053CB06BE87A00BD67881"
+    },
+    {
+      "name": "QUALIFICATION-frozen-host.json",
+      "bytes": 6934,
+      "sha256": "DA35CB26A549323A740FB5F5E0872C8A689CAFBB344395AC317541CA852EC0BE"
+    },
+    {
+      "name": "TRANSFER-README.txt",
+      "bytes": 1614,
+      "sha256": "94C1CA34B8F6281C6DA7731E19BC9EC89C8CF4892F12361817A72ED7F6EDFB87"
+    }
+  ],
+  "receiver_request": [
+    "On the receiving machine, locate the folder below that machine's own OneDrive root and report its actual local path. Do not assume the sender's C: path is shared.",
+    "Read all four local files and report each observed byte count and freshly computed SHA-256, or report the exact missing/unreadable/mismatched file. OneDrive sync status on the sender is not a receiver receipt.",
+    "Read START-HERE-frozen-host.txt and QUALIFICATION-frozen-host.json. Report whether their frozen-host Z: paths and startup/stop/status/cold-restore instructions are directly usable on the receiving machine; identify each nonportable prerequisite and the official local pairing/no-launch route needed before any run.",
+    "Commit a response at the path below through an ordinary PR after fetching this request from master; give status verified or blocked, receiving machine path, observed hashes or exact blocker, and launch-document portability findings. Do not copy assets into Git."
+  ],
+  "response_path": "docs/autonomous-agent-progress/coordination/transfers/responses/PRV008-RECEIVER-VERIFY-20260928.json",
+  "scope": "Read-only receiver availability and documentation portability check. The folder omits the original R0121 save/driver and CK3 executable; verification grants no gameplay qualification, new launch authorization, or expansion beyond actor 31853 and episode native-31853-af642d76cb41.",
+  "machine_boundary": "Each machine uses only its own operator MCP and at most one local CK3 instance; this request does not ask for a CK3 run."
+}
