@@ -1,0 +1,9 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-INPUT-R0221-WAR31-20260927",
+  "status": "claimed",
+  "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
+  "updated_at_utc": "2026-09-27T05:41:23Z",
+  "triage": "The paused War 31 read proves a legal, accepted defender surrender but the current native query returns cb_specific_terms_not_observable. The actual title, holder, liege, resource, and truce effects remain unknown; no surrender action is authorized or inferred by this claim.",
+  "next_step": "Audit the exact-build native CB outcome and war-end operation path for a same-frame bounded read-only result; retain unknown fields explicitly, then run no-launch checks and an independently paired live readback."
+}
