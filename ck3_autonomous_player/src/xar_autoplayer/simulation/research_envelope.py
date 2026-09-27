@@ -72,6 +72,117 @@ RESEARCH_ENVELOPE_MANIFEST = TransitionFidelityManifest(
     ),
 )
 
+ACTIVE_MAIN_RESUME_MANIFEST = TransitionFidelityManifest(
+    simulator_build="ck3-1.19.0.6-active-main-resume-research-v1",
+    loaded_phase_effects_exact=False,
+    battle_end_exact=True,
+    retreat_and_forced_result_exact=True,
+    original_trace_fixture_sha256=None,
+    closed_numeric_domains=RESEARCH_ENVELOPE_MANIFEST.closed_numeric_domains
+    + ("observed_main_phase_entry_and_roll_resume",),
+)
+
+
+@dataclass(frozen=True, slots=True)
+class ActiveMainResumeState:
+    """Same-frame active-combat input; no current production producer exists.
+
+    ``combat_input`` supplies the static regiment/counter and commander operands.
+    Its distinct participant policy and capture binding prevent a pre-contact v3
+    request from being silently passed off as a current battle. The two entry
+    tuples and effective damage rows are the observed, ordered battle entries.
+    """
+
+    combat_input: FrozenCombatSimulationInput
+    combat_id: int
+    snapshot_id: str
+    phase: CombatPhase
+    phase_day: int
+    elapsed_whole_days: int
+    roll_cadence_counter: int
+    side_0_roll_points: int
+    side_1_roll_points: int
+    side_0_non_roll_advantage_points: int
+    side_1_non_roll_advantage_points: int
+    side_0_commander_character_id: int | None
+    side_1_commander_character_id: int | None
+    final_combat_width: int
+    side_0_entries: tuple[CombatRegimentState, ...]
+    side_1_entries: tuple[CombatRegimentState, ...]
+    side_0_effective_damage_raw: tuple[tuple[int, int], ...]
+    side_1_effective_damage_raw: tuple[tuple[int, int], ...]
+
+    def __post_init__(self) -> None:
+        combat_input = self.combat_input
+        if type(self.combat_id) is not int or self.combat_id <= 0:
+            raise CombatInputError("active combat_id must be a positive integer")
+        if (
+            combat_input.encounter.participant_policy
+            != "observed_active_combat_resume_fixed_future_participants"
+        ):
+            raise CombatInputError("active resume requires observed participant policy")
+        if (
+            not self.snapshot_id
+            or combat_input.capture_snapshot_id != self.snapshot_id
+            or type(combat_input.capture_revision) is not int
+            or type(combat_input.capture_native_revision) is not int
+            or type(combat_input.capture_date_raw) is not int
+            or not combat_input.input_observation_ready
+        ):
+            raise CombatInputError("active resume requires complete same-frame capture")
+        if self.phase is not CombatPhase.MAIN:
+            raise CombatInputError("only active main-phase resume is supported")
+        if (
+            type(self.phase_day) is not int or self.phase_day < 0
+            or type(self.elapsed_whole_days) is not int
+            or self.elapsed_whole_days < self.phase_day
+            or self.elapsed_whole_days < 3
+            or type(self.roll_cadence_counter) is not int
+            or not 0 <= self.roll_cadence_counter < 3
+            or type(self.final_combat_width) is not int
+            or self.final_combat_width <= 0
+        ):
+            raise CombatInputError("active phase, cadence, or width is invalid")
+        for value in (
+            self.side_0_roll_points, self.side_1_roll_points,
+            self.side_0_non_roll_advantage_points,
+            self.side_1_non_roll_advantage_points,
+        ):
+            if type(value) is not int:
+                raise CombatInputError("active advantage operands must be integers")
+        for side, entries, damages in (
+            (combat_input.encounter.attacker_side, self.side_0_entries,
+             self.side_0_effective_damage_raw),
+            (combat_input.encounter.defender_side, self.side_1_entries,
+             self.side_1_effective_damage_raw),
+        ):
+            regiments = tuple(
+                regiment for army in combat_input.armies_for_side(side)
+                for regiment in army.regiments
+            )
+            if not regiments or len(regiments) != len(entries):
+                raise CombatInputError("active entry census is incomplete")
+            if any(
+                regiment.regiment_id != entry.regiment_id
+                or regiment.kind is not entry.kind
+                or entry.current_raw < 0
+                or entry.soft_casualties_raw < 0
+                or entry.toughness_raw < 0
+                for regiment, entry in zip(regiments, entries, strict=True)
+            ):
+                raise CombatInputError("active entry identity or state drifted")
+            expected_damage_ids = tuple(
+                regiment.regiment_id for regiment in regiments
+                if regiment.fights_in_main_phase
+            )
+            if (
+                len(damages) != len(expected_damage_ids)
+                or tuple(row[0] for row in damages) != expected_damage_ids
+                or any(type(row[1]) is not int or row[1] < 0 for row in damages)
+            ):
+                raise CombatInputError("active effective-damage census drifted")
+
+
 
 @dataclass(frozen=True, slots=True)
 class ResearchEnvelopeAssumptions:
@@ -149,6 +260,7 @@ class PhaseEventsDisabledResearchKernel(
         armies: tuple[FixedContactArmyInput, ...],
         entries: tuple[CombatRegimentState, ...],
         retention_by_class_raw: tuple[int, ...],
+        effective_damage_raw: tuple[tuple[int, int], ...] | None = None,
     ) -> int:
         regiment_inputs = tuple(
             regiment for army in armies for regiment in army.regiments
@@ -156,10 +268,14 @@ class PhaseEventsDisabledResearchKernel(
         if len(regiment_inputs) != len(entries):
             raise CombatInputError("entry/input census drifted")
         total = 0
+        current_damage = dict(effective_damage_raw) if effective_damage_raw is not None else None
         for regiment, entry in zip(regiment_inputs, entries, strict=True):
             if entry.current_raw <= 0 or not regiment.fights_in_main_phase:
                 continue
-            damage_raw = regiment.stats.damage_raw
+            damage_raw = (
+                current_damage[regiment.regiment_id]
+                if current_damage is not None else regiment.stats.damage_raw
+            )
             if regiment.counter is not None:
                 class_index = regiment.counter.class_index
                 if not 0 <= class_index < len(retention_by_class_raw):
@@ -177,18 +293,56 @@ class PhaseEventsDisabledResearchKernel(
         streams: TrialRandomStreams,
         horizon_days: int,
     ) -> TrialOutcome:
+        return self._simulate_trial(
+            initial_state, streams=streams, horizon_days=horizon_days, resume=None
+        )
+
+    def simulate_resumed_trial(
+        self,
+        resume: ActiveMainResumeState,
+        *,
+        streams: TrialRandomStreams,
+        horizon_days: int,
+    ) -> TrialOutcome:
+        """Simulate future main ticks only; historical casualties never enter totals."""
+        if not isinstance(resume, ActiveMainResumeState):
+            raise CombatInputError("active resume requires a typed main-phase state")
+        return self._simulate_trial(
+            resume.combat_input, streams=streams, horizon_days=horizon_days,
+            resume=resume,
+        )
+
+    def _simulate_trial(
+        self,
+        initial_state: FrozenCombatSimulationInput,
+        *,
+        streams: TrialRandomStreams,
+        horizon_days: int,
+        resume: ActiveMainResumeState | None,
+    ) -> TrialOutcome:
+        if horizon_days <= 0:
+            raise ValueError("horizon_days must be positive")
         attacker_commander_army, defender_commander_army = (
             self._selected_commanders(initial_state)
         )
+        if resume is not None and (
+            attacker_commander_army.commander.character_id
+            != resume.side_0_commander_character_id
+            or defender_commander_army.commander.character_id
+            != resume.side_1_commander_character_id
+        ):
+            raise CombatInputError("active selected commander identity drifted")
         attacker_coalition = initial_state.encounter.attacker_side
         defender_coalition = initial_state.encounter.defender_side
         attacker_armies = initial_state.armies_for_side(attacker_coalition)
         defender_armies = initial_state.armies_for_side(defender_coalition)
-        attacker_entries = initial_state.initial_entries_for_side(
-            attacker_coalition
+        attacker_entries = (
+            resume.side_0_entries if resume is not None
+            else initial_state.initial_entries_for_side(attacker_coalition)
         )
-        defender_entries = initial_state.initial_entries_for_side(
-            defender_coalition
+        defender_entries = (
+            resume.side_1_entries if resume is not None
+            else initial_state.initial_entries_for_side(defender_coalition)
         )
         attacker_generic = (
             attacker_commander_army.commander.generic_advantage_points or 0
@@ -197,17 +351,19 @@ class PhaseEventsDisabledResearchKernel(
             defender_commander_army.commander.generic_advantage_points or 0
         )
         defender_static = self._static_defender_advantage(initial_state)
-        attacker_roll = 0
-        defender_roll = 0
-        roll_cadence = 0
+        attacker_roll = resume.side_0_roll_points if resume is not None else 0
+        defender_roll = resume.side_1_roll_points if resume is not None else 0
+        roll_cadence = resume.roll_cadence_counter if resume is not None else 0
         global_state = streams.global_state
         attacker_hard_raw = 0
         defender_hard_raw = 0
-        maneuver_days = 3
+        maneuver_days = resume.elapsed_whole_days if resume is not None else 3
         main_days = 0
         winner_side_index: int | None = None
 
-        while maneuver_days + main_days < horizon_days:
+        # A pre-contact horizon includes its three maneuver days. A resumed
+        # horizon counts only days after the observed active-combat snapshot.
+        while (main_days if resume is not None else maneuver_days + main_days) < horizon_days:
             # 0x2309E80 performs these checks at the start of a main tick. It
             # deliberately does not recheck after applying the day's damage.
             main_days += 1
@@ -246,11 +402,13 @@ class PhaseEventsDisabledResearchKernel(
             attacker_roll = random_day.side_0_roll
             defender_roll = random_day.side_1_roll
             resolved_advantage = (
-                attacker_generic
+                resume.side_0_non_roll_advantage_points
                 + attacker_roll
-                - defender_generic
+                - resume.side_1_non_roll_advantage_points
                 - defender_roll
-                - defender_static
+                if resume is not None else
+                attacker_generic + attacker_roll
+                - defender_generic - defender_roll - defender_static
             )
             attacker_advantage_raw = (
                 advantage_damage_multiplier_raw(resolved_advantage)
@@ -278,21 +436,29 @@ class PhaseEventsDisabledResearchKernel(
                 )
             )
             attacker_attack_raw = self._outgoing_attack_raw(
-                attacker_armies, attacker_entries, attacker_retention
+                attacker_armies, attacker_entries, attacker_retention,
+                resume.side_0_effective_damage_raw if resume is not None else None,
             )
             defender_attack_raw = self._outgoing_attack_raw(
-                defender_armies, defender_entries, defender_retention
+                defender_armies, defender_entries, defender_retention,
+                resume.side_1_effective_damage_raw if resume is not None else None,
             )
             attacker_damage_raw = outgoing_damage_raw(
                 attacker_attack_raw,
                 advantage_multiplier_raw=attacker_advantage_raw,
-                final_combat_width=initial_state.encounter.final_width,
+                final_combat_width=(
+                    resume.final_combat_width if resume is not None
+                    else initial_state.encounter.final_width
+                ),
                 side_current_fighting_men_raw=attacker_total_raw,
             )
             defender_damage_raw = outgoing_damage_raw(
                 defender_attack_raw,
                 advantage_multiplier_raw=defender_advantage_raw,
-                final_combat_width=initial_state.encounter.final_width,
+                final_combat_width=(
+                    resume.final_combat_width if resume is not None
+                    else initial_state.encounter.final_width
+                ),
                 side_current_fighting_men_raw=defender_total_raw,
             )
             attacker_result = apply_main_phase_casualties(
@@ -314,7 +480,7 @@ class PhaseEventsDisabledResearchKernel(
         if winner_side_index is None:
             return TrialOutcome(
                 TrialResult.NO_RESOLUTION,
-                battle_days=min(battle_days, horizon_days),
+                battle_days=(main_days if resume is not None else min(battle_days, horizon_days)),
                 player_hard_loss_raw=(
                     attacker_hard_raw
                     if attacker_coalition == "player_or_allied"
@@ -364,7 +530,7 @@ class PhaseEventsDisabledResearchKernel(
         player_was_loser = not player_won
         return TrialOutcome(
             TrialResult.PLAYER_WIN if player_won else TrialResult.PLAYER_LOSS,
-            battle_days=battle_days,
+            battle_days=(battle_days - resume.elapsed_whole_days if resume is not None else battle_days),
             player_hard_loss_raw=(
                 attacker_hard_raw
                 if attacker_coalition == "player_or_allied"
@@ -380,6 +546,26 @@ class PhaseEventsDisabledResearchKernel(
                 and end.branch.value == "non_retreating_clear"
             ),
             commander_or_knight_death=False,
+        )
+
+
+class ActiveMainResumeResearchKernel(BattleTransitionKernel[ActiveMainResumeState]):
+    """Research-only continuation kernel with its own visible model identity."""
+
+    manifest = ACTIVE_MAIN_RESUME_MANIFEST
+
+    def __init__(self, assumptions: ResearchEnvelopeAssumptions) -> None:
+        self._base = PhaseEventsDisabledResearchKernel(assumptions)
+
+    def simulate_trial(
+        self,
+        initial_state: ActiveMainResumeState,
+        *,
+        streams: TrialRandomStreams,
+        horizon_days: int,
+    ) -> TrialOutcome:
+        return self._base.simulate_resumed_trial(
+            initial_state, streams=streams, horizon_days=horizon_days
         )
 
 
