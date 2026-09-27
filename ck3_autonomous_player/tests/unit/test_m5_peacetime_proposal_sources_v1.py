@@ -20,7 +20,6 @@ from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
     RESULT_STEP as FAMILY_RESULT_STEP,
-    SUBMIT_STEP as FAMILY_SUBMIT_STEP,
 )
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
@@ -346,12 +345,13 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         )):
             planned = GameplayBridgeService(driver).plan_turn()
         self.assertEqual(driver.source_reads, 1)
-        self.assertEqual(planned["plan"]["selected_step"], FAMILY_SUBMIT_STEP)
+        self.assertEqual(planned["plan"]["selected_step"],
+                         "private-submit-player-construction-v1")
         collection = planned["plan"]["m5_joint_query_only"]
         self.assertEqual(collection["collected_domains"], ["building", "marriage"])
         self.assertEqual(len(collection["collected_candidate_ids"]), 2)
         self.assertEqual(collection["dispatch"]["reservation"]["domain"],
-                         "marriage")
+                         "building")
         self.assertTrue(planned["plan"]["m5_joint_formal_action_ready"])
 
     def test_pending_family_claims_recipient_against_same_frame_gift(self) -> None:

@@ -277,9 +277,13 @@ def plan_m5_formal_query_only(
                     family_plan = family.get("plan")
                     if not isinstance(family_plan, Mapping):
                         raise ValueError("M5 pending family plan is unavailable")
-                    if family_plan.get("selected_step") != "life-advance":
+                    # A changed heir can make an old resolved pair stale.
+                    # Its fresh proposal must compete with the other same-frame
+                    # sources; only in-flight/result work has priority here.
+                    if family_plan.get("selected_step") == "life-advance":
+                        baseline = deepcopy(dict(family_plan))
+                    elif family_plan.get("selected_step") != FAMILY_SUBMIT_STEP:
                         return family
-                    baseline = deepcopy(dict(family_plan))
         except PreSubmissionRevisionMismatchError:
             # The native runner owns one bounded readiness replan after the
             # existing gift consumer observed a newer same-date paused frame.

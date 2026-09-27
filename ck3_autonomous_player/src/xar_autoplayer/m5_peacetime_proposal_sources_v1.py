@@ -167,12 +167,19 @@ def query_m5_peacetime_proposal_sources_v1(
     family_plan: dict[str, object] | None = None
     if family_enabled:
         prior_resolution = family_ledger["resolved"]
+        relation_enabled = getattr(
+            driver, "allow_private_current_first_heir_relationship_query", False
+        ) is True
         if (family_ledger["pending"] is not None
-                or (isinstance(prior_resolution, Mapping)
+                or (not relation_enabled
+                    and isinstance(prior_resolution, Mapping)
                     and prior_resolution.get("episode_run_id") ==
                     frame["episode_run_id"])):
             family_status = "existing_formal_ledger"
         else:
+            # The collector already consumed any matching material result.
+            # A resolved prior heir may now be stale, so re-evaluate the
+            # current relation before excluding a new family proposal.
             observed = plan_family_marriage_private(
                 driver, {"revision": expected_revision,
                          "plan": deepcopy(dict(baseline_plan))},
