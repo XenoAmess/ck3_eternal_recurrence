@@ -3,13 +3,13 @@
   "request_id": "WAR-ROBERT-H2825-RISK-INPUTS-20260928",
   "status": "claimed",
   "maintainer": "nonwar_operator on the Robert production machine",
-  "updated_at_utc": "2026-09-27T19:02:15Z",
+  "updated_at_utc": "2026-09-27T19:06:11Z",
   "source_pr": 415,
   "master_commit": null,
   "delivery_ready_for_master": true,
   "evidence": {
     "path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2825-RISK-INPUTS-20260928.r0264-r0265-readonly.json",
-    "sha256": "63D50009C399CA0BB7BFADD8A566956D74816A714EB7D346B4559A9AC4C5863D",
+    "sha256": "E5B3785948ACD714958336C5AD3075D2C97BED958679F78EAD1485BD125DAFFD",
     "r0264_formal_report_sha256": "066B3E4993DF5BA5DED815345403C2C4B87A0FD9A4B75AA79DBA578B73B97473",
     "r0264_paired_driver_sha256": "B8E50A281AFB9A5DAA7AC1ED55DD68C4305816302B71B14EDF79F1060177D872",
     "r0265_formal_report_sha256": "B990E9F9E0F3E83B2412F86D9AE491820A0A5AA7EA6B83A028F7DF5A5B77E95B",
@@ -18,8 +18,8 @@
   "interface_contract": {
     "kind": "read_only_git_risk_input_excerpt",
     "r0264_frame": "H2825/raw53217624, native:40, public/native revisions 41/40, episode native-29829-2bc2d599f7f9, WarID 16777231. Final war row contains score -24, attacker-relative occupation +52/ticking -28, objective 2610, player army 83886367 at 2610, enemy siege 50331920 at 2629 with 292 days left, and enemy 83886484 moving from 3660 toward 2629. Its army soldiers and owners are null; campaign-root monthly gold income is 417179/100000.",
-    "r0265_separate_frame": "The exact H2825 checkpoint SHA was restored in a new session at raw53217624, native:3, public/native revisions 4/3. Same-frame queries show 2329/2461 soldiers for player 83886367, 1462/1899 for sieger 50331920 and 311/311 for moving enemy 83886484; a route preview to 2629 and a route-contact query report no conflict only through raw53217648. The frame is distinct from R0264 native:40.",
-    "resource_boundary": "Actor/opponent current treasury and prestige, present/future war costs, CB-specific surrender terms and directed truce are null in this excerpt. Only actor monthly gold income was queried in the H2825 campaign-root frame. The exact save was not separately parsed for resources here; no absent save value is asserted to be zero.",
+    "r0265_separate_frame": "The exact H2825 checkpoint SHA was restored in a new session at raw53217624, native:3, public/native revisions 4/3. Same-frame queries show 2329/2461 soldiers for player 83886367, 1462/1899 for sieger 50331920 and 311/311 for moving enemy 83886484; a route preview to 2629 and a route-contact query report no conflict only through raw53217648. Private construction observation on formal turns 2-7 reports actor gold raw 111861020 on this frame. The frame is distinct from R0264 native:40.",
+    "resource_boundary": "R0264 final-frame actor treasury remains null. R0265 private construction observation reports actor gold raw 111861020, but no scale or free-spend determination; the same observation has existing shared gold commitment and future war cost null and affordability unassessed. Opponent gold, both prestige balances, current war cost, CB-specific surrender terms and directed truce remain null. Campaign-root also reports actor monthly gold income 417179/100000. The exact save was not separately parsed for resources here; no absent value is asserted to be zero.",
     "action_boundary": "The R0265 preview was read-only despite the runner gameplay classification. No army move, surrender or typed spend action was submitted; no date advance, new checkpoint or action postcondition was recorded. The R0197 one-shot surrender authorization is not reusable."
   },
   "checks": [

@@ -129,12 +129,21 @@
         "ticking": -28
       },
       "actor_monthly_gold_income": {"raw": 417179, "scale": 100000},
-      "actor_gold_balance": null,
+      "actor_gold_balance": {
+        "raw": 111861020,
+        "scale": null,
+        "source": "formal-report.auto_run.turns[1..6].plan.construction_wartime_observation.observed_player_gold_raw",
+        "formal_turn_indices": [2, 3, 4, 5, 6, 7],
+        "source_frame": "native:3/public:4/native_revision:3/raw53217624",
+        "formal_action_ready": false
+      },
       "actor_prestige_balance": null,
       "opponent_gold_balance": null,
       "opponent_prestige_balance": null,
+      "existing_shared_gold_commitment_raw": null,
       "current_war_cost": null,
       "future_war_cost": null,
+      "joint_budget_affordability": "unassessed",
       "armies": [
         {
           "army_id": 83886367,
@@ -196,7 +205,7 @@
   "missing_risk_inputs": [
     "R0264 final-frame soldier counts and army owner identities are absent; the R0265 restored frame supplies soldier counts, but the two snapshot IDs and revisions must not be combined as one native frame.",
     "Army owner character IDs and a complete same-encounter siege participant partition are not supplied by these excerpts.",
-    "Actor and opponent current treasury/prestige balances were not queried at H2825; the exact save was not separately parsed for them in this response. R0264/R0265 native campaign-root gives only actor monthly gold income.",
+    "R0265 native:3 private construction observation supplies actor gold raw 111861020 but no scale, spendable amount or war reservation; R0264 native:40 actor gold remains unobserved. Opponent gold and both prestige balances were not queried at H2825, and the exact save was not separately parsed for them here.",
     "Current and future war cash/army commitments, CB-specific surrender material terms, directed truce and a validated continue-versus-exit estimate are unobserved.",
     "One-day contact-free status covers only raw 53217624 through 53217648; it does not prove the longer route or siege encounter safe."
   ],
