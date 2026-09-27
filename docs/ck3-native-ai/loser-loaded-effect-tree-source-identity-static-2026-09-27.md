@@ -10,9 +10,21 @@
 
 现阶段形成的精确阻断点是：`COnActionDataBase` 的败方名称槽 `+0x980` → 运行时败方 effect 根 `database+0x260` → dispatcher 子表/递归边 → `CCombatWarscoreTrigger` 对象。这条链的**名称槽到 loaded 根**以及**执行节点到具体 trigger**两跳都没有具备可复核的静态对象对应；解析期 0x28 字节记录的语义也未解码。原版文件中 `warscore_value` 只出现一次，不足以补齐对象身份。
 
+## `+0x260` 同值偏移的排误（2026-09-27 追加）
+
+从 `COnActionDataBase` 同一初始化函数再往前核查，`0x2504C2B–0x2504C43` 从 `[RBX+0x50]` 取**名称注册表**，在该表 `+0x260` 写入长度 11 的 `on_birthday`（RIP 源字符串 RVA `0x4299FE0`）。真正的 `on_combat_end_loser` 名称注册槽是同一表的 `+0x980`，位于 `0x25052A4–0x25052B8`。执行侧 `0x230B0A9–0x230B0AD` 则先从 `[RDI+0x38]` 取**另一个基址表达式**，再从它的 `+0x260` 取败方 loaded effect 根，并在 `0x230B0EE` 传给 dispatcher。两个 `+0x260` 的字面偏移相同，基址与用途不同；把注册表该槽当败方执行根，会实际落到 `on_birthday` 名称，构成错误身份链。
+
+[精确偏移排误 verifier](../../ck3_autonomous_player/native_bridge/research/verify_loser_name_slot_collision_static.py)冻结两份 SHA、14 处指令及三条名称源的 RIP 相对目标；本机通过。它只证明这条**错误映射必须排除**，没有反向证明名称槽 `+0x980` 如何装载到执行根，也没有绑定 `combat = { warscore_value >= 15 }` 的 runtime trigger。当前 `>=15` 的 opcode `+0x50` 和求值后的 RHS raw 仍未实测。
+
+```text
+<verified-python> ck3_autonomous_player/native_bridge/research/verify_loser_name_slot_collision_static.py --exe <exact-ck3.exe> --on-action <exact-combat_on_actions.txt>
+```
+
 ## 下一次安全观测方案与拒绝门槛
 
 先继续离线审计 `COnActionDataBase` 的装载函数，把败方名槽和 `+0x260` 的写者关联，核实两个执行数组的元素结构及 callback 子对象；再查解析期记录的字符串变换/字段含义。若仍不能静态唯一绑定，下一次受管同场只能做**候选遥测**：在唯一 CK3 owner 和精确 EXE/DLL/VFS 门禁下，容量受限地记录败方 root、实际递归父链和候选 trigger 指针/返回位置；离线比对 parser 来源与原版脚本后，才决定是否安装 `0x99FAF0` 取数 hook。候选命中不得标为“第 563 行已验证”。没有 VFS 来源、唯一父链、节点指针三项回读时，拒绝安装权威归因 hook；不调用 parser/evaluator/mutator，不覆盖旧回执。
+
+这一采样应明确分两道门。第一道只记录 `0x230B0EE` 当次败方调用的 loaded root 地址与 dispatcher 的父子边、候选 trigger 指针，并同时取得该进程实际 VFS 脚本 bytes、同场 CombatID/WarID、日期和败方身份；若仍找不到名称槽到 root 的写者，结果只能叫“败方执行树中的候选”，不能叫“磁盘第 563 行”。第二道须先离线证明该指针是唯一的原版条件节点，才允许在同一次调用上下文中被动读 `trigger+0x50`、`0x99FAF0` 两侧 raw qword 和返回值；`+0x08` 类型 key、文本唯一性、相同 `+0x260`、同一回调时间或单个 comparator 命中均不满足身份门。任何容量溢出、重入/线程交错、VFS 不符或父链歧义都保留 RED，不调用原生求值器或 effect。
 
 ## 可复核证据
 
