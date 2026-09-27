@@ -128,6 +128,7 @@ from .environment import write_json_atomic
 from .errors import AgentError
 from .runtime import utc_now
 from .raiktor_formal_exit import plan_raiktor_formal_exit
+from .formal_defender_exit_observation import observe_primary_defender_de_jure_exit
 from .lifestyle_formal_consumer import consume_lifestyle_private_query
 from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
@@ -7173,6 +7174,9 @@ def choose_one_life_turn(
         bridge_capabilities=set(capabilities),
     )
     plan = _annotate_active_combat_resume_input(plan, snapshot)
+    defender_exit_observation = observe_primary_defender_de_jure_exit(snapshot)
+    if defender_exit_observation is not None:
+        plan = {**plan, "formal_defender_exit_observation": defender_exit_observation}
     if not isinstance(formal, dict):
         return plan
     decision = formal["decision"]
