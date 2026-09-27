@@ -468,8 +468,10 @@ application-main/corrected-schema build 也在 combined-defensive paused frame �
 3. `0x23CBCE0` 依次刷新 side0、side1；
 4. `0x2304830(CCombat*)` 内严格执行 supply side0、supply side1、holding defender、first-army gathering
    side0、side1、debt side0（owner 后 optional treasury）、debt side1（同序）、unreformed-faith side0、side1；
-5. `0x23CC2B0` 依次用 target Province 刷新两侧 terrain operands。它影响后续动态 side contribution，不能
-   被误记成新的 `CCombatEffect` append。
+5. `0x23CC2B0` 依次用 target Province 刷新两侧 entry 属性。后续[精确刷新输入链](active-advantage-refresh-source-2026-09-27.md)
+   已把其显式写回定位为 levy/MAA entry `+0x30/+0x38/+0x40/+0x48/+0x50/+0x58`，其中 `+0x40/+0x48`
+   是有效伤害/坚韧；称号 modifier 的 `side+0x110` 则由此前的 `0x23CBCE0` 重建。不能把 entry 写回误记成
+   新的 `CCombatEffect` append 或直接的 side aggregator 返回。
 
 所有 constructor effect 共用以下 mutating helper；query **只镜像它的数学与顺序，不得调用它**：
 

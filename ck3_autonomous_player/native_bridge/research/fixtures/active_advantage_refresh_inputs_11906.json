@@ -1,0 +1,194 @@
+{
+  "schema": "ck3.native_active_advantage_refresh_inputs.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "function_spans": {
+    "accolade_refresh_head": [
+      "0x23CBCE0",
+      "0x23CBD67"
+    ],
+    "accolade_refresh_body": [
+      "0x23CBD67",
+      "0x23CBEBA"
+    ],
+    "entry_refresh": [
+      "0x23CC2B0",
+      "0x23CC339"
+    ],
+    "entry_materializer": [
+      "0x23D2CE0",
+      "0x23D2D68"
+    ],
+    "accolade_apply_head": [
+      "0x251B8F0",
+      "0x251B90D"
+    ],
+    "accolade_apply_body": [
+      "0x251B90D",
+      "0x251B966"
+    ]
+  },
+  "anchors": {
+    "reset_guard_count": {
+      "rva": "0x23CBCEF",
+      "bytes_hex": "83B91C01000000"
+    },
+    "reset_first_modifier_count": {
+      "rva": "0x23CBD31",
+      "bytes_hex": "89811C010000"
+    },
+    "reset_second_modifier_count": {
+      "rva": "0x23CBD37",
+      "bytes_hex": "898184010000"
+    },
+    "reset_third_modifier_count": {
+      "rva": "0x23CBD3D",
+      "bytes_hex": "8981EC010000"
+    },
+    "knight_entry_base": {
+      "rva": "0x23CBD4B",
+      "bytes_hex": "488B7140"
+    },
+    "knight_entry_count": {
+      "rva": "0x23CBD4F",
+      "bytes_hex": "4863414C"
+    },
+    "knight_entry_regiment_id": {
+      "rva": "0x23CBD7A",
+      "bytes_hex": "8B5608"
+    },
+    "regiment_generation_match": {
+      "rva": "0x23CBDA4",
+      "bytes_hex": "395310"
+    },
+    "regiment_knight_id": {
+      "rva": "0x23CBDB0",
+      "bytes_hex": "8B9348010000"
+    },
+    "character_generation_match": {
+      "rva": "0x23CBDE9",
+      "bytes_hex": "395118"
+    },
+    "character_validity_call": {
+      "rva": "0x23CBDFD",
+      "bytes_hex": "FF5008"
+    },
+    "character_accolade_link": {
+      "rva": "0x23CBE44",
+      "bytes_hex": "488B88A8010000"
+    },
+    "accolade_full_id": {
+      "rva": "0x23CBE5C",
+      "bytes_hex": "8B9168050000"
+    },
+    "accolade_generation_match": {
+      "rva": "0x23CBE80",
+      "bytes_hex": "395308"
+    },
+    "accolade_validity_call": {
+      "rva": "0x23CBE92",
+      "bytes_hex": "FF5008"
+    },
+    "side_modifier_destination": {
+      "rva": "0x23CBE99",
+      "bytes_hex": "488D9710010000"
+    },
+    "apply_accolade_to_side": {
+      "rva": "0x23CBEA3",
+      "bytes_hex": "E848FA1400"
+    },
+    "next_knight_entry": {
+      "rva": "0x23CBEA8",
+      "bytes_hex": "4883C660"
+    },
+    "accolade_source_gate": {
+      "rva": "0x251B900",
+      "bytes_hex": "E8FB080000"
+    },
+    "accolade_row_count": {
+      "rva": "0x251B909",
+      "bytes_hex": "48634764"
+    },
+    "accolade_row_base": {
+      "rva": "0x251B912",
+      "bytes_hex": "488B5F58"
+    },
+    "accolade_row_source": {
+      "rva": "0x251B930",
+      "bytes_hex": "488B5310"
+    },
+    "accolade_row_selector": {
+      "rva": "0x251B934",
+      "bytes_hex": "8B4B08"
+    },
+    "accolade_source_lookup": {
+      "rva": "0x251B93E",
+      "bytes_hex": "E85D793800"
+    },
+    "accolade_resolved_modifier": {
+      "rva": "0x251B94C",
+      "bytes_hex": "488D9090030000"
+    },
+    "accolade_aggregator_append": {
+      "rva": "0x251B953",
+      "bytes_hex": "E87884CBFF"
+    },
+    "next_accolade_row": {
+      "rva": "0x251B958",
+      "bytes_hex": "4883C318"
+    },
+    "levy_entry_base": {
+      "rva": "0x23CC2C4",
+      "bytes_hex": "488B5928"
+    },
+    "levy_entry_count": {
+      "rva": "0x23CC2CB",
+      "bytes_hex": "48634134"
+    },
+    "levy_entry_refresh": {
+      "rva": "0x23CC2E8",
+      "bytes_hex": "E8F3690000"
+    },
+    "maa_entry_base": {
+      "rva": "0x23CC2F6",
+      "bytes_hex": "488B5D40"
+    },
+    "maa_entry_count": {
+      "rva": "0x23CC2FA",
+      "bytes_hex": "4863454C"
+    },
+    "maa_entry_refresh": {
+      "rva": "0x23CC316",
+      "bytes_hex": "E8C5690000"
+    },
+    "entry_attribute_source": {
+      "rva": "0x23D2D2F",
+      "bytes_hex": "E8AC9DFCFF"
+    },
+    "entry_field_30_write": {
+      "rva": "0x23D2D37",
+      "bytes_hex": "894B30"
+    },
+    "entry_field_38_write": {
+      "rva": "0x23D2D3E",
+      "bytes_hex": "48894B38"
+    },
+    "entry_damage_write": {
+      "rva": "0x23D2D46",
+      "bytes_hex": "48894B40"
+    },
+    "entry_toughness_write": {
+      "rva": "0x23D2D4E",
+      "bytes_hex": "48894B48"
+    },
+    "entry_field_50_write": {
+      "rva": "0x23D2D56",
+      "bytes_hex": "48894B50"
+    },
+    "entry_field_58_write": {
+      "rva": "0x23D2D5E",
+      "bytes_hex": "48894358"
+    }
+  },
+  "proof_layer": "exact-build-instructions-calls-and-pdata"
+}
