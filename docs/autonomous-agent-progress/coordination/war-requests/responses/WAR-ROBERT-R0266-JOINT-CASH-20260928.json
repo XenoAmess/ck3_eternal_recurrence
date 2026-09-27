@@ -1,17 +1,53 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-ROBERT-R0266-JOINT-CASH-20260928",
-  "status": "claimed",
-  "maintainer": "war_maintainer",
-  "updated_at_utc": "2026-09-27T20:05:30Z",
+  "status": "delivered",
+  "maintainer": "Codex war maintainer",
+  "updated_at_utc": "2026-09-27T20:11:45Z",
   "source_pr": null,
-  "master_commit": null,
-  "interface_contract": null,
-  "checks": null,
+  "master_commit": "fa846539b",
+  "delivery_route": "direct rebase-only master push",
+  "interface_contract": {
+    "source": "ck3_autonomous_player/src/xar_autoplayer/m5_war_cash_resource_v1.py:observe_active_war_cash_resource_v1; m5_observed_opportunity_selector.py:active_defensive_war_continuation_proposal; m5_formal_proposal_collector.py:collect_m5_formal_proposals",
+    "document": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md",
+    "schema": "xar.ck3.m5-active-war-cash-resource.v1",
+    "binding": "Exact played_character_id, snapshot_id, public revision, native revision, date_raw, episode_run_id and WarID; Q100000 gold raw and explicit source per amount.",
+    "routing": "Pending war cash enters existing_commitments.gold_raw once; immediate selected war action fee enters the war proposal gold_cost_raw; bounded future war cost plus explicit risk budget and war policy minimum enter global gold_reserve_raw. Incomplete/stale/scope-mismatched war cash rejects an active-war joint comparison; frame-local M5 dispatcher retains single analytic reservation.",
+    "h2825_same_frame": {
+      "snapshot_id": "native:3",
+      "public_revision": 4,
+      "native_revision": 3,
+      "date_raw": 53217624,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "actor_character_id": 29829,
+      "war_id": 16777231,
+      "treasury_raw": 111861020,
+      "building_cost_raw": 18000000,
+      "construction_policy_reserve_raw": 20000000,
+      "cash_remaining_before_war_commitment_raw": 73861020,
+      "existing_shared_gold_commitment_raw": null,
+      "immediate_war_action_cost_raw": null,
+      "war_future_gold_cost_raw": null,
+      "war_policy_minimum_gold_reserve_raw": null,
+      "joint_budget_affordability": "unassessed",
+      "missing_sources": [
+        "same-frame pending war cash action ledger or proved empty ledger",
+        "same-frame selected war action fee or proved no-fee action",
+        "war policy minimum cash reserve",
+        "bounded future upkeep/replenishment cash source with horizon, assumptions and policy risk budget"
+      ]
+    }
+  },
+  "checks": [
+    "Focused M5 war cash, observed selector and formal collector: 34 tests passed normal and 34 under python -O.",
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN.",
+    "H2825 typed-null replay in test_m5_war_cash_resource_v1.py; no real same-frame war cash values inferred."
+  ],
   "live_evidence": null,
   "limitations": [
-    "H2825 cash commitment and future war cost are not published in the supplied same-frame evidence; null cannot be interpreted as zero.",
-    "Desktop capture is stale, so no fresh local CK3 or Steam-offline readback is claimed."
+    "Static-only/no-live delivery. The supplied H2825 construction observation is same-frame evidence of treasury and building cost, but publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
+    "The native player_monthly_gold_income is a current net-income observation and cannot independently bound future gross army upkeep or replenishment. H2908/raw53217816 is a different frame and cannot fill H2825 cash fields.",
+    "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off."
   ],
-  "next_step": "Publish a typed, full-frame war cash observation and bind it to the existing M5 resource proposal and shared commitment/reserve contract; retain typed nulls when a source or horizon bound is absent."
+  "next_step": "Once a fresh Steam-offline frame and source pair are available, measure or derive an explicit short-horizon war cash upper bound and pending-action ledger on the same paused frame; then hand the completed war cash receipt to the nonwar operator for candidate integration, formal action and receipt validation."
 }
