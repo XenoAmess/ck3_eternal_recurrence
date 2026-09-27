@@ -1,0 +1,25 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-WINDOW-ROBERT-H2577-20260927",
+  "status": "claimed",
+  "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
+  "updated_at_utc": "2026-09-27T14:48:00Z",
+  "local_observation": {
+    "checked_at_utc": "2026-09-27T14:47:00Z",
+    "ck3_injector_and_operator_processes": [],
+    "war_maintainer_current_run": "WAR31 no-launch attempt-01 prepared; no CK3 launch or gameplay action has occurred",
+    "task_bus_claim": "A separate ck3-xqol-phase2-20260910 task still records ck3-screen:acquired, but its last update was 2026-09-10T16:02:18Z; this stale record is not current process or global-instance evidence.",
+    "scope": "Local process/task-bus observation only; no claim about another machine's current CK3 state."
+  },
+  "war31_window": {
+    "imminent_confirmed": false,
+    "reason": "The one-shot native gate has just landed, but its new runtime and the exact R0197/R0221 live pair have not yet completed a fresh no-launch readiness check; the authorized surrender remains unsubmitted."
+  },
+  "handoff": {
+    "yield_to": "bounded Robert h2577 run",
+    "acknowledgement": "We will not start WAR31 or submit surrender-war-16777231 until the Robert h2577 operator reports completion and releases the window through this Git channel.",
+    "before_war31_launch": "Re-read the release record, poll the task bus, check local CK3/operator processes and Steam offline/account state, then perform a fresh exact-input and native-frame gate check.",
+    "authorization_boundary": "The existing user authorization covers one surrender-war-16777231 submission on the exact matching WAR31 checkpoint; this coordination response grants no other gameplay action."
+  },
+  "next_step": "Continue WAR31 static and no-launch preparation while Robert h2577 holds the proposed window, then update this response with the release handoff and observed local status."
+}
