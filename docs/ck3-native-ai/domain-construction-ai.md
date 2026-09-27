@@ -2,6 +2,22 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-28 NW-ECON: bounded wartime building source observation
+
+The exact-build private `g2_player_construction_view_probe_v1` already returns
+the player's native final building legality, ten-slot cost, cash, active slots,
+and definition-backed positive monthly income. The Python transport previously
+rejected any active war or player army before this read, while the formal
+consumer only looked for a new building in a peaceful `life-advance` or
+pre-declaration frame. The new private wartime observation calls that existing
+read-only source once per bound paused frame, checks native cash against the
+same public frame, and retains the original war action. It reports a native
+budgeted positive-income candidate separately from joint affordability:
+existing shared cash commitments and future war cost remain `null`, and
+`formal_action_ready=false`. The ordinary submit binding still excludes war.
+Normal and optimized focused Python tests pass; no new paused CK3 readback,
+war-spend admission, building action, completion, or income result is claimed.
+
 ## 2026-09-27 NW-ECON/JOIN-C87: warm completion watch in the M5 formal path
 
 The ordinary construction consumer already schedules a material completion watch when an applied, still-in-progress building reaches 30 game days after its last check. The M5 formal collector previously sent same-PID, later-date applied ledgers directly to the joint proposal source. A production-path `GameplayBridgeService.plan_turn` fixture reproduced the missed watch: with the same process identity and a due `completion_last_check_date_raw`, it selected `life-advance` instead of `private-query-player-construction-receipt-v1`. This is a source/fixture result, not a live completion or income observation.

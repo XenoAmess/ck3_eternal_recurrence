@@ -271,8 +271,43 @@ def plan_construction_private(
                 and snapshot["date_raw"] > newest["post_date_raw"]):
             return {**planned, "plan": plan}
     # A pre-existing construction needs its material/income readback even
-    # while the ordinary strategy is busy with war. Only a new expenditure
-    # remains limited to the life-advance or peaceful prewar opportunity.
+    # while the ordinary strategy is busy with war. Native building choices
+    # can be observed during war, but an unassessed war cash commitment never
+    # admits a new spend or replaces the already selected formal action.
+    wars = snapshot.get("active_wars")
+    if isinstance(wars, list) and wars and original_step is not None:
+        binding = (snapshot.get("episode_run_id"), snapshot.get("snapshot_id"),
+                   snapshot.get("revision"), snapshot.get("date_raw"),
+                   snapshot.get("played_character", {}).get("character_id")
+                   if isinstance(snapshot.get("played_character"), Mapping) else None)
+        cached = getattr(driver, "_construction_wartime_observation_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 2 and cached[0] == binding:
+            observation = cached[1]
+        else:
+            from .bridge.domain_construction_private_transport_v1 import (
+                query_construction_wartime_observation_private,
+            )
+            from .bridge.driver import BridgeUnavailableError
+
+            try:
+                observation = query_construction_wartime_observation_private(
+                    driver, expected_revision=int(planned["revision"]))
+            except BridgeUnavailableError as error:
+                observation = {
+                    "status": "source_red", "read_only": True,
+                    "advertised": False, "formal_action_ready": False,
+                    "candidate": None,
+                    "existing_shared_gold_commitment_raw": None,
+                    "war_future_gold_cost_raw": None,
+                    "joint_budget_affordability": "unassessed",
+                    "reason": str(error),
+                }
+            setattr(driver, "_construction_wartime_observation_cache",
+                    (binding, observation))
+        return {**planned, "plan": {**plan,
+            "construction_wartime_observation": observation}}
+    # Only a new expenditure remains limited to the life-advance or
+    # peaceful prewar opportunity.
     if not new_action_admitted:
         return {**planned, "plan": plan}
     scope = same_frame_feudal_peace_scope(snapshot, history)

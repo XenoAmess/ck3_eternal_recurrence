@@ -4888,6 +4888,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "lifestyle_pending_action",
         "lifestyle_receipt_consumed",
         "construction_private_query",
+        "construction_wartime_observation",
         "construction_pending_action",
         "construction_receipt_consumed",
         "family_marriage_choice",
