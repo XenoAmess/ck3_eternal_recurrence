@@ -850,13 +850,17 @@ bool CandidateJoinWidthCrossThreadFixture() {
         fixture.combat.data(), candidate_army.data(), true);
   });
   join_thread.join();
-  const bool phase = CaptureCombatFirstSide0OutgoingWidthV1(
-      side0, 7, fixture.plan.module_base +
-                    kCombatOutgoingDamageSide0ReturnRva);
+  bool phase = false;
+  std::thread phase_thread([&] {
+    phase = CaptureCombatFirstSide0OutgoingWidthV1(
+        side0, 7, fixture.plan.module_base +
+                      kCombatOutgoingDamageSide0ReturnRva);
+  });
+  phase_thread.join();
   const bool valid = joined && phase && ring->join_width_count.load() == 3 &&
       ring->join_widths[0].thread_id != fixture.plan.owner_thread_id &&
       ring->join_widths[0].thread_id == ring->join_widths[1].thread_id &&
-      ring->join_widths[2].thread_id == fixture.plan.owner_thread_id &&
+      ring->join_widths[2].thread_id != fixture.plan.owner_thread_id &&
       ring->join_widths[0].native_date_raw ==
           ring->join_widths[2].native_date_raw &&
       ring->join_width_first_failure_code.load() == join_width_failure_none &&

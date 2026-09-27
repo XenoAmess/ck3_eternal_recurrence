@@ -1,6 +1,6 @@
 # CK3 1.19.0.6：增援加入后的战宽缓存与主阶段出伤读取
 
-本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；075 虽已在实机确认自然增援，但战宽探针失败，尚无 join 前后或 phase-fire 战宽数值回执，不能把某一具体宽度写成已实测。
+本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；078 已在实机取得 join 前后两点战宽，首次 phase-fire 第三点仍未取得，不能把完整传递链写成已实测。
 
 | 生产或消费点 | 原生行为 | 被动读取的字段 |
 | --- | --- | --- |
@@ -12,11 +12,11 @@
 
 具体算术与 Q100000 截断次序见[战斗模拟文档的战宽公式](battle-simulation.md#参战者与战宽)；本页补的是**增援 join → 缓存写入 → phase-fire 读出**这条时序。`0x23CB840` 与 `0x2305580` 都是变更游戏状态的函数，暂停查询只能读取字段，不能为取样而主动调用。尤其 `+0x6C0` 是不下降的历史 base；在 main tick 刷新 `+0x98` 后，它不必等于用当前两侧人数重新算的候选。
 
-建议的原生被动探针在同一 CombatID、同一游戏线程上记录三处边界：join wrapper 进入前；两条分支汇合的 `0x2304277`（同时记录是否经过 `0x2304272`）；首次 `0x2309F7F` phase-fire 宽度读取前。每处原子记录 phase/day、两侧 entry current-soldier 汇总与存储的 `+0x98/+0xA0`、`+0x6C0/+0x6C4`、Province/terrain 身份，以及 incoming ArmyID。它能区分“增援确实改变战宽”“已有历史宽度压住新候选”“宽度更新门未经过”和“主阶段只是复用缓存”。任何一个场景都要以实际记录为准；当前两份自然增援回放没有这些三个边界的宽度数值，故这四种归因仍不可判定。
+建议的原生被动探针在同一 CombatID 和原生日期上记录三处边界：join wrapper 进入前；两条分支汇合的 `0x2304277`（同时记录是否经过 `0x2304272`）；首次 `0x2309F7F` phase-fire 宽度读取前。join 入口/返回必须彼此同线程；077、078 证明不能把任一实际战斗线程预设成 private begin 的 mailbox 线程。每处记录 phase/day、两侧 entry current-soldier 汇总与存储的 `+0x98/+0xA0`、`+0x6C0/+0x6C4`、Province/terrain 身份，以及 incoming ArmyID。它能区分“增援确实改变战宽”“已有历史宽度压住新候选”“宽度更新门未经过”和“主阶段只是复用缓存”。任何一个场景都要以实际记录为准；078 已取得入口/返回宽度，但未取得首次 phase-fire 的实际传参，完整传递归因仍待复测。
 
-### 有界私有观测器（离线实现，待实机）
+### 有界私有观测器（逐门实机验证）
 
-当前实现选择更安全的三点：`0x23040A0` join wrapper **入口**、同一 wrapper **正常返回后**、首次 side0 `0x23CB1D0` 入参 `R8D`。返回点已经越过 `0x2304277` 汇合，但不是汇合指令本身；因此仅凭这三点不能直接证明是否经过 `0x2304272`，需要用前后宽度和后续证据判断。wrapper 的 RCX 为 `CCombat*`、RDX 为 incoming `CArmy*`；前置计划冻结候选 ArmyID 及完整代际对象指针。钩子只对这一个 CombatID/候选指针采集，返回后在有界原生 side army ID 向量中确认落入 side 0/1。记录含同线程 ID、原生日戳、phase day、两侧 `+0x98` Q100000 总量、`+0x6C0/+0x6C4` int32 战宽，以及 side0 出伤调用实际传入的宽度。首个边界的 side 尚未加入，记为 `-1`；返回后才填实际 side。尚未采集 Province/terrain 及 `+0xA0`，不能以当前字段独立重算地形修正。
+当前实现选择更安全的三点：`0x23040A0` join wrapper **入口**、同一 wrapper **正常返回后**、首次 side0 `0x23CB1D0` 入参 `R8D`。返回点已经越过 `0x2304277` 汇合，但不是汇合指令本身；因此仅凭这三点不能直接证明是否经过 `0x2304272`，需要用前后宽度和后续证据判断。wrapper 的 RCX 为 `CCombat*`、RDX 为 incoming `CArmy*`；前置计划冻结候选 ArmyID 及完整代际对象指针。钩子只对这一个 CombatID/候选指针采集，返回后在有界原生 side army ID 向量中确认落入 side 0/1。三条记录分别含实际线程 ID、原生日戳、phase day、两侧 `+0x98` Q100000 总量、`+0x6C0/+0x6C4` int32 战宽，以及 side0 出伤调用实际传入的宽度；其中 join 两条线程 ID 相同，phase-fire 线程 ID 可不同。首个边界的 side 尚未加入，记为 `-1`；返回后才填实际 side。尚未采集 Province/terrain 及 `+0xA0`，不能以当前字段独立重算地形修正。
 
 私有 begin 必须同时给 `candidate_joining_army_id` 正整数和严格布尔 `capture_runtime_join_width:true`；默认不安装 join 补丁，也不改变七边界 wire。成功的可选 `trace.runtime_join_width` 是 3 条 `boundary=0/1/2`，分别代表入口、正常返回、首次 side0 出伤前；无目标增援是 `no_join_observed`，部分记录/宽度不一致是 `failed`，原始 failure flag 保留。边界 2 的 `outgoing_width_argument` 必须等于当时 `+0x6C4`。075 的真实增援观测为探针 RED，不能把离线夹具数字当作 CK3 战况。
 
@@ -34,7 +34,20 @@
 
 独立 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-077` 使用同一冻结源档/配对回执，但私有诊断 DLL SHA-256 为 `7203C732512536794C2DD4B90894CF459B504E872D617F194565A716C31ACD64`，只推进同一 CombatID 的一天。原始 `jwidth077-finish.json` SHA-256 `25F11353ED45992B7971581440D58A055274A271BE734968CA593B3B64CFF96D` 返回 `runtime_join_width.status=failed,count=0,first_failure_code=5`、`failure_flags=262144`。该诊断码是在候选 ArmyID/完整对象指针命中后检查线程时产生，故 **join wrapper 的执行线程不同于 private begin 的 main-thread mailbox**；不能继续要求 join 与 phase-fire 都使用 begin 线程。它尚未提供 join 线程的实际 ID，也未提供任何宽度值，不能把旧的全线程一致性假设当作原版规则。受管清场 `session-result.json` SHA-256 `C16B93E1CC80B1E26A3CB6EA7A0A59048D75FBA8BE9A3F7E0F7346D43974044D`：cleanup proven，job active 为 0，最终 CK3 inventory 空；任务总线 `ck3-join-width-attempt-077-20260927` 已释放 CK3。
 
-修正后的有界合同让同一个 join wrapper **入口与正常返回在同一实际 join 线程**采样；首次 side0 phase-fire 则仍要求原 mailbox/main-tick 线程，三点都绑定同一 CombatID 和原生日期，且 side0 R8D 必须等于当时 `+0x6C4`。前后宽度相等也仍是合法采集结果。`first_failure_code=11` 专用于跨边界日期不符。不同线程共享的数据以原子 `join_width_count` 的 release/acquire 提交与读取，不在钩子里分配或主动调用原版 helper。该离线构建的私有 DLL SHA-256 `8EEFBE8854BFC28FA9CD61F1677B7AB66C642C6F005EBB9661775E2FFE7FE0A0`，聚焦 CTest 5/5（含跨线程夹具）；夹具只证明探针合同可行，真实原版宽度仍待下次独立实机采样。
+077 后的首轮修正让同一个 join wrapper **入口与正常返回在同一实际 join 线程**采样，却仍错误地要求首次 side0 phase-fire 处于 mailbox/main-tick 线程。三点都必须绑定同一 CombatID 和原生日期，且 side0 R8D 必须等于当时 `+0x6C4`；前后宽度相等也仍是合法采集结果。`first_failure_code=11` 专用于跨边界日期不符。不同线程共享的数据以原子 `join_width_count` 的 release/acquire 提交与读取，不在钩子里分配或主动调用原版 helper。该首轮修正 DLL SHA-256 `8EEFBE8854BFC28FA9CD61F1677B7AB66C642C6F005EBB9661775E2FFE7FE0A0`，聚焦 CTest 5/5（含跨线程夹具）；078 随后证明其中 phase-fire 的线程假设仍错。
+
+### 078 两点战宽实采与第三点线程门
+
+独立 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-078` 使用同一第 11 日冻结源档与配对回执，并使用上段的首轮修正 DLL。原始 `jwidth078-finish.json` SHA-256 `9BFCEFF0BD1454F47B2371683B342E4FB8EC634CE4AF1397937375873FD51FF8`：`runtime_join_width.status=failed,count=2,first_failure_code=5`，`failure_flags=262144`。这份 collector **整体仍是 RED**，但两条原始边界记录直接证明目标 `CombatID=16777218`、增援 `ArmyID=22`、原生日期 `53146512` 的 join 前后缓存发生变化；不能把缺失的第三点补成已观察。
+
+| 边界 | 实际线程 ID | side | phase day | `+0x6C0` base | `+0x6C4` final | 两侧 fighting totals（Q100000） |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| join 入口 `0` | 3816 | -1 | 7 | 1645 | 1480 | 160317482 / 89325449 |
+| join 返回 `1` | 3816 | 0 | 7 | 2467 | 2220 | 410690163 / 82785368 |
+
+返回时两侧总量合计 `493475531`，按 Q100000 去缩放并除以 2 得 `2467.377655`，截断为 `2467`，与实采 base 宽度一致。入口时同法得到 `1248.214655`，小于缓存的 `1645`，符合历史 base 可保留较大值；两次比较只是算术对拍，不能据此单独证明实际经过 `0x2304272`，也不能在未采 terrain 时声称 final 的确切乘数来源。第三点因观测器预设的 mailbox 线程不符而拒绝，故尚无原生出伤调用传入 `2220` 的动态证据。受管清场 `session-result.json` SHA-256 `68FE6AEE11DEA5F3D5B50FD6124A250334C39B85BB2F453F68CCDB78E59F565A`，capture 返回 0、最终 CK3 inventory 空，任务总线 `ck3-join-width-attempt-078-20260927` 已释放资源。
+
+下一版仅取消第三点的 **mailbox 线程等式**，在精确 side0 返回地址钩子中记录实际线程 ID；候选对象、CombatID、原生日期、side 身份与 `R8D == +0x6C4` 校验均保留。join 入口/返回仍须同实际 join 线程。独立私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`，聚焦 CTest 5/5（含第三点由另一个非 mailbox 线程采集的夹具）；离线通过不等于实机验证。使用全新 attempt 重放一天，要求三点完整、原始 bytes/SHA、失败码和 clean exit 后才给整条链 GREEN；历史 078 回执不得改写。
 
 有界复核（只读 EXE，不运行 CK3）：
 

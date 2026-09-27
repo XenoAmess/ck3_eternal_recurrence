@@ -1157,7 +1157,7 @@ CombatJoinWidthFailureCodeV1 ReadJoinWidthRecordUnsafe(
   if (LoadAt<std::int32_t>(plan.combat, kCombatIdOffset) != plan.combat_id)
     return join_width_failure_combat_id;
   row.thread_id = GetCurrentThreadId();
-  if (row.thread_id != expected_thread_id)
+  if (expected_thread_id != 0 && row.thread_id != expected_thread_id)
     return join_width_failure_owner_thread;
   row.native_date_raw =
       LoadAt<std::int32_t>(plan.expected_current_date_object, 0x08);
@@ -1271,8 +1271,10 @@ bool CaptureCombatFirstSide0OutgoingWidthV1(
 #if defined(_MSC_VER)
   __try {
 #endif
-    failure = ReadJoinWidthRecordUnsafe(ring->plan, row, false,
-                                        ring->plan.owner_thread_id);
+    // The phase calculator may run on the native battle worker rather than
+    // the paused mailbox thread. The exact side/return site, CombatID, date,
+    // and width equality remain mandatory; record its actual thread ID.
+    failure = ReadJoinWidthRecordUnsafe(ring->plan, row, false, 0);
     if (failure == join_width_failure_none &&
         row.native_date_raw != ring->join_widths[1].native_date_raw)
       failure = join_width_failure_cross_boundary_date;
