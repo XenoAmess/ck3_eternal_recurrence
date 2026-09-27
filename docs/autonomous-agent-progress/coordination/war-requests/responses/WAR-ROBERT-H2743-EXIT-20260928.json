@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T17:42:52Z",
+  "updated_at_utc": "2026-09-27T17:54:55Z",
   "source_pr": null,
   "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
   "delivery_route": "direct rebase-only master push",
@@ -20,6 +20,13 @@
     "receiver_document": "docs/ck3-native-ai/h2743-onedrive-exact-input-2026-09-28.md",
     "no_launch_preflight_sha256": "45272A42440DB742C485B4E243A59FB0660BBDC2C12C7ED4C4262BA3C5102B44",
     "derived_driver_sha256": "DE008FD0E58C86897F419188787109A04391A44A245A25F2E7BD8AE670D6B614"
+  },
+  "later_followup_observation": {
+    "source": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.r0264-h2825-war-options.json",
+    "source_sha256": "E25ED0552284EE80773AA388E2391D2AA5BFD5959468E86B62E26F6B514C810F",
+    "frame": "R0264 h2825/raw53217624, snapshot native:40, public/native revisions 41/40, WarID 16777231 and same episode/actor; this is 15 game days later than h2743 and belongs to a different exact checkpoint and DLL.",
+    "observed_options": "Player primary defender, war score -24; surrender available/native validator passed/recipient would accept now; white peace and victory unavailable. CB individual_county_de_jure_cb index17 targets title2128 and allows white peace by definition, but the current native validator rejects it.",
+    "unknowns": "CB-specific material terms, same-frame signed resources, directed truce and policy risk comparison remain unobserved. No termination action was submitted or authorized by this follow-up."
   },
   "interface_contract": {
     "kind": "scoped_missing-field_and_formal_read-only_observation_handoff",
