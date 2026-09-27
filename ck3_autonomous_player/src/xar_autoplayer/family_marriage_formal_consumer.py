@@ -12,10 +12,23 @@ from .bridge.domain_construction_private_transport_v1 import _identity as bridge
 from .bridge.observed_heir_marriage_private_action_v1 import (
     ALLIANCE_RESULT_STEP, RESULT_STEP, SCHEMA, SUBMIT_STEP,
 )
+from .bridge.marriage_candidate_alliance_private_transport import (
+    SCHEMA as CANDIDATE_PROJECTION_SCHEMA,
+)
 
 
 _LEDGER = "first-heir-marriage-formal-v1.json"
 _MAX_BETROTHAL_AGE_GAP_RAW = 2
+_SELECTED_VALUE_FIELDS = (
+    "played_house_id", "played_dynasty_id", "heir_house_id",
+    "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
+    "heir_sex_selector_raw", "candidate_sex_selector_raw",
+    "matrilineal_option_selected", "effective_matrilineal_if_accepted",
+    "predicted_outcome_if_accepted", "heir_is_adult", "candidate_is_adult",
+    "heir_adult_measure_raw", "candidate_adult_measure_raw",
+    "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
+    "grand_wedding_option_selected",
+)
 
 
 def _positive(value: object) -> bool:
@@ -307,6 +320,8 @@ def _private_five_candidate_diagnostic(
         })
     return {"schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
             "advertised": False, "read_only": True,
+            "source_projection_schema": projection.get("schema"),
+            "exact_ck3_build": legality.get("exact_ck3_build"),
             "episode_run_id": snapshot.get("episode_run_id"),
             "date_raw": snapshot.get("date_raw"),
             "native_revision": legality["native_revision"],
@@ -667,6 +682,12 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
             or diagnostic.get("selected_candidate_character_id") != candidate
             or diagnostic.get("native_revision") != legality.get("native_revision")
             or diagnostic.get("legality_query_sequence") != legality.get("query_sequence")
+            or diagnostic.get("date_raw") != snapshot.get("date_raw")
+            or diagnostic.get("episode_run_id") != snapshot.get("episode_run_id")
+            or legality.get("exact_ck3_build") != "1.19.0.6"
+            or diagnostic.get("exact_ck3_build") != legality.get("exact_ck3_build")
+            or diagnostic.get("source_projection_schema") !=
+                CANDIDATE_PROJECTION_SCHEMA
             or observed_matches[0].get("rejection_reasons") != []):
         raise ValueError("first-heir marriage recipient lacks selected final-legal proof")
     recipient = legal_matches[0].get("recipient_matchmaker_character_id")
@@ -711,6 +732,41 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
     )
     if choice.get("realm_alliance_attempt_if_accepted") is not alliance_attempt:
         raise ValueError("first-heir alliance claim changed before submission")
+    selected_row = observed_matches[0]
+    selected_value_projection = {
+        "schema": "xar.ck3.first-heir-marriage-selected-value-projection.v1",
+        "evidence_kind": "preproposal_native_projection",
+        "exact_ck3_build": legality.get("exact_ck3_build"),
+        "source_projection_schema": diagnostic["source_projection_schema"],
+        "source_native_revision": legality["native_revision"],
+        "source_legality_query_sequence": legality["query_sequence"],
+        "source_date_raw": snapshot["date_raw"],
+        "source_episode_run_id": snapshot["episode_run_id"],
+        "played_character_id": snapshot["played_character"]["character_id"],
+        "heir_character_id": legality["observed_first_heir_character_id"],
+        "candidate_character_id": candidate,
+        "recipient_character_id": recipient,
+        **{field: selected_row.get(field) for field in _SELECTED_VALUE_FIELDS},
+        # These inputs bound a future lineage estimate. No child exists in
+        # this read, and neither the marriage nor its alliance is proven here.
+        "child_dynasty_prediction_basis_fields": [
+            "heir_dynasty_id", "candidate_dynasty_id",
+            "heir_sex_selector_raw", "candidate_sex_selector_raw",
+            "effective_matrilineal_if_accepted",
+        ],
+        "child_dynasty_prediction_status": "basis_only_unpriced",
+        "predicted_child_dynasty_id": None,
+        "unobserved_at_submission": [
+            "actual_marriage_or_betrothal_result",
+            "native_child_dynasty_result",
+            "future_child_identity_and_dynasty",
+            "actual_alliance_result",
+        ],
+        "missing_preproposal_fields": [
+            field for field in _SELECTED_VALUE_FIELDS
+            if selected_row.get(field) is None
+        ],
+    }
     pid, creation = bridge_process_identity(driver)
     pending = {"schema": SCHEMA, "status": "receipt_pending", "material_result": False,
                "pre_native_revision": snapshot["native_revision"],
@@ -721,6 +777,7 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
                "recipient_character_id": recipient,
                "preproposal_played_has_recipient_alliance": prior_player_allied,
                "preproposal_realm_alliance_attempt_if_accepted": alliance_attempt,
+               "selected_value_projection": selected_value_projection,
                "episode_run_id": snapshot["episode_run_id"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
                "submission_state": "may_have_submitted"}
