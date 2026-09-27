@@ -33,7 +33,11 @@
 
 第 4 项日内安排边界复核：[两次自然增援的掷骰、事件及战宽字段投影](battle-join-schedule-boundaries-2026-09-27.md)确认完整七边界内保留的优势掷骰分别为 `7/8`、`3/8`，抵达日首次出伤前名单已扩为 `27→40`、`39→44` 团；事件 load index 与显式战宽输入仍未捕获。这些原始字段不能替代下一次针对 roll/event/width/counter 的同日入口观察，也不能把局部 RNG `word0` 的数值差直接视作抽签次数。
 
-第 4 项战宽静态生产/消费链：[exact-build 调用与字段追踪](join-width-production-and-fire.md)确认增援 join 刷新双方人数缓存后，符合旧 base width 门时更新历史最大 base `+0x6C0` 与 final `+0x6C4`；随后主阶段出伤读取存储的 final width。两次自然增援尚无 join 前后 `+0x6C0/+0x6C4` 实测值，下一次只读探针须把 join 入口、更新分支汇合和首次出伤前绑定同一 CombatID/线程/日期，才可计算本案战宽变化。
+第 4 项战宽静态生产/消费链：[exact-build 调用与字段追踪](join-width-production-and-fire.md)确认增援 join 刷新双方人数缓存后，符合旧 base width 门时更新历史最大 base `+0x6C0` 与 final `+0x6C4`；随后主阶段出伤读取存储的 final width。078 之前两次自然增援回放尚无 join 前后战宽数值；完整只读探针必须把 join 入口、正常返回和首次出伤前绑定同一 CombatID/日期，不能预设三点都在同一线程。
+
+第 4 项战宽局部实测更新：[078 独立回放](join-width-production-and-fire.md#078-两点战宽实采与第三点线程门)在同一 CombatID `16777218`、原生日期 `53146512` 见 ArmyID `22` 加入 side 0；join 入口→正常返回的 base width `1645→2467`、final width `1480→2220`。首次 side0 出伤点又被错误的 mailbox 线程等式拒绝，故完整三点探针仍为 collector RED；不能把 `2220` 写成已经捕获的出伤器入参。075/077/078 的原始失败均保留，079 将用修正线程门独立复测。上段旧的“同线程”取证要求以专题中的 077/078 勘误为准：join 两点自身同线程，phase-fire 可在另一线程，但必须同 CombatID/日期和 side。
+
+第 4 项人物与军队称呼更新：[双日存档身份映射](episode01-day11-day21-combat-human-names-2026-09-27.md)已将 87 号穆巴里尊归到阿里的 ArmyID `16777221`，这场战斗是阿里一方、拉马丹指挥，对罗贝尔一方；第 21 日新增 ArmyID `22` 是穆尼斯的军队。视频与智能体解释层可以用这些带 ID 的称呼。[军队标题静态边界](episode01-army-ui-name-boundary-2026-09-27.md)尚未读到 `Army.GetNameNoTooltip` 的本场返回，不能把存档中的 name seed 拼成精确 UI 军队标题。
 
 第 5 项胜方 AI 重入勘误：[065 独立终局回放与有界静态提交门闩](winner-ai-builder-submit-gate.md)记录同场 day 26 正常结果后胜方路线出现 `[2639]`，但私有目标 `2639` 在 day 25 已存在；被动 observer 见 builder 调用 `1`、所监控提交点调用 `0`。原版 builder 有早退和共享门闩绕过分支，外层仅在 builder 返回未处理时才有后备提交；本案未采门闩原值和返回字节，不能判定具体路径或把路线显现说成新派令。065 启动时 Steam 截图新鲜度也已另记为未独立确认；下次须强化离线门并采实际分支。
 
