@@ -133,14 +133,16 @@
       "status": "in_progress",
       "latest_evidence": [
         "R639 standard-feudal independent/vassal production-live domain-capacity and active-council-task observations; artifact CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB",
-        "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public observation and semantic action remain pending",
+        "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public query/action registration remains OFF",
         "R693 exact-build private steward-candidate reader production-live primitive GREEN: available with a complete 11-candidate vector, one application-main execution, temporary vector released, paused read-only run and cleanup GREEN; manifest FC59D8D8F001B6B6F6A5ACD041EFBA78596F7D837A54819A8B3F3A2E3EAFABC4",
         "R0080 one formal typed private construction submit and immediate paired post-ACK checkpoint: next native paused frame showed matching active construction tuple/initiator and exact native gold cost, but Python receipt was RED; original manifest 551920217FE0EC4167CAA17E9FDAA4DCE6F966B539F77F0305D63660D0D42213",
-        "R0081 protected Python 8E0DF178 plus compatible frozen native 573F742: new-PID cold restore of R0080 postaction pair, first-turn verified applied receipt for same action ID, next formal turn consumed it without duplicate submit, 20/20 turns and paired checkpoint; private-only GREEN manifest ED175A02101C73AD8E0B5765EBF52397154EAA134CB54974D4AE84988B8BDAA2"
+        "R0081 protected Python 8E0DF178 plus compatible frozen native 573F742: new-PID cold restore of R0080 postaction pair, first-turn verified applied receipt for same action ID, next formal turn consumed it without duplicate submit, 20/20 turns and paired checkpoint; private-only GREEN manifest ED175A02101C73AD8E0B5765EBF52397154EAA134CB54974D4AE84988B8BDAA2",
+        "R0142 Robert day-zero private stewardship_wealth_focus typed action: independent receipt, paired checkpoint and following-turn consumption; no date advance or public lifestyle registration",
+        "R0186 private professional_workforce_perk typed action: independent HasPerk and unspent/used point changes 2/5 to 1/6, following-turn receipt consumption and paired h2127 checkpoint; report 656BABEE8CCB58FD69D30EF84782C95F331D5109482F9A2E5320E40FA2F98D58. R0187 new-PID cold restore read back the owned perk and focus; public lifestyle registration and the M4 two-year window remain open"
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
-      "open_blocker": "R0081 closes the private bounded construction submit/material receipt/new-PID cold/next-turn consumption branch, not public construction registration or the two-year M4 window. A public/formal legal council reassignment with independent postcondition and next-turn consumption, a real vassal/faction intervention, lifestyle focus/perk observation and action, and full window verification remain open"
+      "open_blocker": "R0081 closes the private bounded construction submit/material receipt/new-PID cold/next-turn consumption branch, not public construction registration or the two-year M4 window. A public/formal legal council reassignment with independent postcondition and next-turn consumption, a real vassal/faction intervention, public lifestyle query/action registration and broader role-specific coverage, and full window verification remain open; R0142 and R0186/R0187 already prove the narrower private focus/perk actions"
     },
     {
       "id": "G2-M5",
