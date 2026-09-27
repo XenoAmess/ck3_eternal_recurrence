@@ -792,6 +792,10 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 receipt = transport.query_construction_receipt(
                     driver, pending=pending, expected_revision=4)
                 self.assertTrue(receipt["postcondition_verified"])
+                self.assertEqual(receipt["construction_progress_observation"]
+                                 ["status"], "unavailable")
+                self.assertIsNone(receipt["construction_progress_observation"]
+                                  ["native_progress_divisor_raw"])
                 self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
                 consumed = plan_construction_private(driver, planned, frame(4), [], set())
                 self.assertEqual(consumed["plan"]["selected_step"], "life-advance")
