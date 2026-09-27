@@ -342,6 +342,7 @@ def native_auto_run(
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
+    allow_private_prisoner_collection_observation: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -441,6 +442,13 @@ def native_auto_run(
     ):
         raise AgentError(
             "private epidemic recovery near pair only admits a bounded contract"
+        )
+    if (
+        allow_private_prisoner_collection_observation is True
+        and completion_contract != "bounded"
+    ):
+        raise AgentError(
+            "private prisoner collection observation only admits a bounded contract"
         )
     if allow_private_faction_gift_formal_trial is True and not (
         isinstance(private_faction_round_id, str)
@@ -550,6 +558,7 @@ def native_auto_run(
     readiness_timeout_diagnostics: dict[str, object] | None = None
     candidate_interception: dict[str, object] | None = None
     candidate_resolution: dict[str, object] | None = None
+    private_prisoner_collection_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -730,6 +739,11 @@ def native_auto_run(
             if allow_private_epidemic_recovery_near_pair is True
             else {}
         )
+        private_prisoner_driver_options = (
+            {"allow_private_prisoner_collection_query": True}
+            if allow_private_prisoner_collection_observation is True
+            else {}
+        )
         ordinary_succession_driver_options = (
             {
                 "allow_private_current_timeline_blocker_query": True,
@@ -754,6 +768,7 @@ def native_auto_run(
             **private_faction_driver_options,
             **private_m5_driver_options,
             **private_epidemic_driver_options,
+            **private_prisoner_driver_options,
             **ordinary_succession_driver_options,
         )
         # This controlled, private Python route does not change the native
@@ -1017,6 +1032,15 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if (
+                allow_private_prisoner_collection_observation is True
+                and private_prisoner_collection_observation is None
+            ):
+                private_prisoner_collection_observation = (
+                    _observe_private_prisoner_collection_once(
+                        driver, before=before, turn_index=turn_index
+                    )
+                )
             if (
                 opening_focus_gate is not None
                 and opening_focus_gate["stage"] == "complete"
@@ -2887,6 +2911,15 @@ def native_auto_run(
         ),
         "cold_start_checkpoint": cold_start_checkpoint,
         "initial_lifestyle_focus_gate": copy.deepcopy(opening_focus_gate),
+        **(
+            {
+                "private_prisoner_collection_observation": copy.deepcopy(
+                    private_prisoner_collection_observation
+                )
+            }
+            if allow_private_prisoner_collection_observation is True
+            else {}
+        ),
         "fixed_seed": fixed_seed,
         "bounds": {
             "requested_turns": turn_count,
@@ -4741,6 +4774,34 @@ def _retried_root_query_binding(
     ):
         return None
     return fresh_binding
+
+
+def _observe_private_prisoner_collection_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    before: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Read one paused frame without adding a prisoner action to the planner."""
+    source_frame = _public_binding(before)
+    try:
+        readback = driver.query_player_prisoner_collection_private_v1(
+            expected_revision=before["revision"]
+        )
+    except Exception as error:
+        return {
+            "status": "query_failed",
+            "turn_index": turn_index,
+            "source_frame": source_frame,
+            "error_type": type(error).__name__,
+            "error": str(error),
+        }
+    return {
+        "status": readback.get("status"),
+        "turn_index": turn_index,
+        "source_frame": source_frame,
+        "readback": copy.deepcopy(readback),
+    }
 
 
 def _turn_record(

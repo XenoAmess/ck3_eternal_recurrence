@@ -106,6 +106,7 @@ class _NativeAutoRunHarness:
         self.operator_stop_event = threading.Event()
         self.operator_stop_after_action_count = operator_stop_after_action_count
         self.auto_turn_count = 0
+        self.prisoner_collection_query_count = 0
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -198,6 +199,7 @@ class _NativeAutoRunHarness:
         allow_route_contact_high_speed_ab: bool,
         allow_stationary_objective_hold_sentinel_canary: bool,
         allow_private_lifestyle_formal_trial: bool = False,
+        allow_private_prisoner_collection_query: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
     ) -> "_FakeNativeDriver":
@@ -211,6 +213,9 @@ class _NativeAutoRunHarness:
         )
         self.allow_private_lifestyle_formal_trial = (
             allow_private_lifestyle_formal_trial
+        )
+        self.allow_private_prisoner_collection_query = (
+            allow_private_prisoner_collection_query
         )
         self.allow_private_current_timeline_blocker_query = (
             allow_private_current_timeline_blocker_query
@@ -1354,6 +1359,24 @@ class _FakeNativeDriver:
     def take_snapshot(self) -> dict[str, object]:
         return self.harness.snapshot()
 
+    def query_player_prisoner_collection_private_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
+        assert self.harness.allow_private_prisoner_collection_query
+        assert expected_revision == self.harness.public_revision
+        self.harness.prisoner_collection_query_count += 1
+        return {
+            "status": "available",
+            "player_prisoner_collection": {
+                "schema": "player-prisoner-collection-private-v1",
+                "played_character_id": self.harness.played_character_id,
+                "total_count": 0,
+                "returned_count": 0,
+                "collection_complete": True,
+                "prisoners": [],
+            },
+        }
+
     def bind_succession_lifecycle_v1(self, binding: object) -> None:
         if not isinstance(binding, dict):
             raise AssertionError("fake lifecycle binding must be a mapping")
@@ -1600,6 +1623,7 @@ class NativeAutoRunTests(unittest.TestCase):
         require_initial_lifestyle_focus_before_date_advance: bool = False,
         focus_post_xp_available: bool = True,
         war_hotspot_army: bool = False,
+        allow_private_prisoner_collection_observation: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         use_cold_start_checkpoint = (
             completion_contract in {"one_generation", "next_episode"}
@@ -1745,6 +1769,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 require_initial_lifestyle_focus_before_date_advance=(
                     require_initial_lifestyle_focus_before_date_advance
                 ),
+                allow_private_prisoner_collection_observation=(
+                    allow_private_prisoner_collection_observation
+                ),
             )
         return report, harness
 
@@ -1850,6 +1877,57 @@ class NativeAutoRunTests(unittest.TestCase):
             "--allow-private-epidemic-recovery-near-pair",
         ])
         self.assertTrue(args.allow_private_epidemic_recovery_near_pair)
+
+    def test_private_prisoner_collection_observation_is_one_frame_read_only(self) -> None:
+        driver = mock.Mock()
+        driver.query_player_prisoner_collection_private_v1.return_value = {
+            "status": "available",
+            "player_prisoner_collection": {
+                "total_count": 1,
+                "prisoners": [{"prisoner_character_id": 34250}],
+            },
+        }
+        before = {"revision": 4, "native_revision": 5, "date_raw": 100}
+        result = native_auto_run_module._observe_private_prisoner_collection_once(
+            driver, before=before, turn_index=1
+        )
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(result["source_frame"], before)
+        self.assertEqual(result["readback"]["player_prisoner_collection"]["total_count"], 1)
+        driver.query_player_prisoner_collection_private_v1.assert_called_once_with(
+            expected_revision=4
+        )
+        driver.query_player_prisoner_collection_private_v1.side_effect = BridgeUnavailableError(
+            "native query unavailable"
+        )
+        failed = native_auto_run_module._observe_private_prisoner_collection_once(
+            driver, before=before, turn_index=1
+        )
+        self.assertEqual(failed["status"], "query_failed")
+        self.assertEqual(failed["error_type"], "BridgeUnavailableError")
+
+    def test_parser_exposes_private_prisoner_collection_only_on_opt_in(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "2", "--timeout", "900"]
+        self.assertFalse(
+            cli.parser().parse_args(common).allow_private_prisoner_collection_observation
+        )
+        self.assertTrue(cli.parser().parse_args(
+            [*common, "--allow-private-prisoner-collection-observation"]
+        ).allow_private_prisoner_collection_observation)
+
+    def test_private_prisoner_collection_reads_once_without_changing_turns(self) -> None:
+        report, harness = self._run(
+            ["advance", "advance"],
+            allow_private_prisoner_collection_observation=True,
+        )
+        observation = report["private_prisoner_collection_observation"]
+        self.assertEqual(observation["status"], "available")
+        self.assertEqual(observation["turn_index"], 1)
+        self.assertEqual(observation["readback"]["player_prisoner_collection"]["total_count"], 0)
+        self.assertEqual(harness.prisoner_collection_query_count, 1)
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 2)
+        self.assertEqual(harness.auto_turn_count, 2)
 
     def test_parser_exposes_strict_one_generation_runner(self) -> None:
         args = cli.parser().parse_args(
@@ -5237,6 +5315,28 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIs(
             run_mock.call_args.kwargs["allow_private_epidemic_recovery_near_pair"],
+            True,
+        )
+
+    def test_cli_wires_private_prisoner_observation_only_when_enabled(self) -> None:
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment",
+            return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run",
+            return_value={"ok": False, "status": "blocked", "outcome": "failed"},
+        ) as run_mock, contextlib.redirect_stdout(io.StringIO()):
+            cli.main([
+                "--bridge-mode", "native-headless",
+                "--bridge-dll", str(self.dll_path),
+                "--bridge-injector", str(self.injector_path),
+                "native-auto-run", "--turns", "2", "--timeout", "900",
+                "--allow-private-prisoner-collection-observation",
+            ])
+        self.assertIs(
+            run_mock.call_args.kwargs["allow_private_prisoner_collection_observation"],
             True,
         )
 

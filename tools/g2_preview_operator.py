@@ -589,6 +589,7 @@ def native_auto_run_command(
     private_construction_formal_trial: bool = False,
     private_family_marriage_formal_trial: bool = False,
     private_m5_joint_collector: bool = False,
+    private_prisoner_collection_observation: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -616,6 +617,8 @@ def native_auto_run_command(
         command.append("--allow-private-family-marriage-formal-trial")
     if private_m5_joint_collector:
         command.append("--allow-private-m5-joint-collector")
+    if private_prisoner_collection_observation:
+        command.append("--allow-private-prisoner-collection-observation")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -1039,6 +1042,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_construction_formal_trial": args.private_construction_formal_trial,
         "private_family_marriage_formal_trial": args.private_family_marriage_formal_trial,
         "private_m5_joint_collector": args.private_m5_joint_collector,
+        "private_prisoner_collection_observation": (
+            args.private_prisoner_collection_observation
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -1071,6 +1077,9 @@ def command_run(args: argparse.Namespace) -> int:
             private_construction_formal_trial=args.private_construction_formal_trial,
             private_family_marriage_formal_trial=args.private_family_marriage_formal_trial,
             private_m5_joint_collector=args.private_m5_joint_collector,
+            private_prisoner_collection_observation=(
+                args.private_prisoner_collection_observation
+            ),
             require_initial_lifestyle_focus_before_date_advance=(
                 args.require_initial_lifestyle_focus_before_date_advance
             ),
@@ -1835,6 +1844,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-m5-joint-collector",
         action="store_true",
         help="enable the bounded unadvertised M5 peacetime proposal collector",
+    )
+    run.add_argument(
+        "--private-prisoner-collection-observation",
+        action="store_true",
+        help="read one paused private prisoner collection without prisoner actions",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
