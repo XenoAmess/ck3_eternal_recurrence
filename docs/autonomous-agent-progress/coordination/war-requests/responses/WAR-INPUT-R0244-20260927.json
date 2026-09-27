@@ -3,19 +3,37 @@
   "request_id": "WAR-INPUT-R0244-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T00:55:08Z",
+  "updated_at_utc": "2026-09-27T11:29:21Z",
   "triage": "War 48, Army 16777237 versus 16777417 at Province 2640: the formal continuation blocked in native_war_general_battle_inputs_query before any gameplay action, while the route contact horizon was available and one-day contact-free.",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "90afa9fef8d3ef7a7f00709ab08de19db94c51d7",
   "interface_contract": {
     "v3_query": "The planner constructs the exact read-only query-combat-simulation-inputs-v3 literal from the observed target, native route entry, and current side army IDs. The advertised v3 bridge capability, rather than action_steps enumeration, gates this parameterized query.",
-    "first_hop": "After a successful native full-route preview, the driver exposes only its first travel waypoint's preview, route-contact query, and move literals, bound to the same paused snapshot ID, public and native revisions, connection generation, episode, date, army origin, controllability, and hostile roster. The strategy still requires a same-frame v3 forecast admission, an exact one-hop preview, and a contact-free first-hop horizon before submitting a move; it then replans after one hop.",
+    "first_hop": "After a successful native full-route preview, the driver exposes only its first travel waypoint's preview, route-contact query, and move literals, bound to the same paused snapshot ID, public and native revisions, connection generation, episode, date, army origin, controllability, and hostile roster. Since master commit 02fd5a560, a successful restore-checkpoint also cuts off earlier preview history before this projection. The strategy still requires a same-frame v3 forecast admission, an exact one-hop preview, and a contact-free first-hop horizon before submitting a move; it then replans after one hop.",
     "compatibility": "No native DLL protocol or on-disk save change. COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains false. Route previews that prefix the current province are normalized only for first-travel-hop selection."
   },
   "checks": [
     "Focused strategy, first-hop projection, and native bridge driver tests: 252 passed and 248 subtests passed on 2026-09-26.",
-    "The original R0244 source save and DLL are on another machine, so its exact War 48 pair has not been replayed here."
+    "The original R0244 source save and DLL are on another machine, so its exact War 48 pair has not been replayed here.",
+    "Post-delivery audit: four focused v3/strategy/first-hop test modules on normal Python and -O each passed 50 tests and 46 subtests; this is no-launch contract verification, not War 48 live verification."
+  ],
+  "post_delivery_audits": [
+    {
+      "date_utc": "2026-09-27T11:29:21Z",
+      "fix_master_commit": "02fd5a560",
+      "audit_master_commit": "e1aa10d63",
+      "audit_document": "docs/ck3-native-ai/war-r0244-v3-first-hop-contract-audit-2026-09-27.md",
+      "request_sha256": "56CC01A3AFE7B49981893E21E121F933A4A249DDA0E875C67DA19F4253E3B035",
+      "formal_report_sha256": "07994F762425CCFF912BF697DCBF95BA1E00F374D646BE060748420526040E6F",
+      "operator_receipt_sha256": "788F08A51C90F6A455739288D6732249DE57937FBC23C0DDA8DB355C62BB96C8",
+      "pair_identity_sha256": "9E7FB3DD88999C00E270EF82B607F73D0A998A5977E87D2029A8CEC02E43485E",
+      "finding": "The v3 query is capability-gated and cache-bound to the paused encounter; first-hop movement still requires model admission, exact one-hop preview, and a conflict-free first-hop contact horizon. A separate driver first-hop projection gap allowed a pre-restore preview to survive if frame identifiers repeated; the projection now reads only history after the latest successful restore-checkpoint. Pending interactions already suppress projected hops and now have a regression test.",
+      "resource_and_pending_boundary": "The failed R0244 turn submitted no gameplay action, did not advance the date, and observed no pending interaction. This no-launch audit submits no query or move; it does not claim a new War48 resource delta or terminal pending state. A future one-hop move requires independent ACK, army/route readback, next-turn and recovery evidence.",
+      "checks": "Normal and -O focused v3 bridge/production, general-battle strategy and first-hop tests: 50 passed plus 46 subtests in each mode. COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains false.",
+      "live_evidence": null,
+      "remaining_blocker": "The requesting consumer must replay an independently verified compatible War48 save/driver/DLL pair and write a verification for actual selected_step, action/readback and next turn; no original-pair live result was obtained here."
+    }
   ],
   "live_evidence": null,
   "local_analog_evidence": {
