@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T12:31:01Z",
+  "updated_at_utc": "2026-09-27T12:36:48Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -135,6 +135,14 @@
       "finding": "The exact 0x2E9FF30-0x2EA0B19 shared prelookup helper receives the effect pointer in RCX, copies it to RBX, and while RBX retains that identity directly addresses only effect+0x260 title scope and reads effect+0x258. It does not directly load effect+0x1B0 change scope or write change+0x268 through that base. The later [RBX+0x1B8] dereference follows a distinct table/fallback rebind and is not effect+0x1B8.",
       "limit": "This is direct effect-base provenance, not a transitive no-write proof. Title-scope virtual dispatch, downstream calls, global aliases, vector buffers and allocator callbacks remain possible bridges. The actual War31 change+0x268 at resolve and all persisted surrender terms remain unknown. A future independently authorized execution could read the same change pointer and raw +0x268 dword at setup 0x2E9F746 and immediately before resolve comparison 0x2EC4410; this study did not launch CK3 or submit an action.",
       "checks": "test_dejure_shared_prelookup_effect_base.py: 2 passed on normal Python and 2 passed with -O against the exact installed EXE, including receipt replay and wrong-script fail-closed fixture."
+    },
+    {
+      "date_utc": "2026-09-27T12:36:48Z",
+      "master_commit": "f98f911be",
+      "offline_validator": "ck3_autonomous_player/native_bridge/research/validate_war31_change_type_trace.py",
+      "contract": "Future source-provided trace must contain exactly two ordered pre-instruction memory samples: setup 0x2E9F746 and resolve compare 0x2EC4410, both reading RAX change pointer and raw +0x268 dword. Exact EXE/opcodes, War31 episode, same process/thread/action/effect invocation/frame/date/checkpoint/DLL/raw-capture hash, same nonzero pointer, successful memory reads and increasing event order are required. Output reports only the submitted resolve dword and whether it equals 0x17.",
+      "limit": "This is a post-capture offline structural validator, not a collector and not actual War31 two-point evidence. It cannot authenticate source events or authorization, prove the compare's taken branch, establish persisted terms, or authorize a surrender. No CK3 process was launched, hooked or queried by this delivery; no gameplay action was submitted.",
+      "checks": "test_validate_war31_change_type_trace.py: 4 passed on normal Python and 4 passed with -O; tests bind both opcode sites to the exact static receipt and reject single-point, cross-action/frame/capture, pointer, timing, opcode and memory-read mismatches. All trace inputs in these tests are synthetic."
     }
   ],
   "checks": [
@@ -151,5 +159,5 @@
     "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
     "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
   ],
-  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: bounded direct writes through 0x24D0270 and 0xE0DBD0 descriptors do not reach change+0x268, and 0x2E9FF30 has no direct change-scope access via its effect base. Continue resolving transitive/global aliases, vector buffers and indirect callbacks, or during a separately authorized action observe the same change pointer and raw +0x268 dword at setup 0x2E9F746 and before resolve 0x2EC4410 on a verified War31 frame. Then reduce the 0x24CC9A0 chain to concrete title/holder/liege/vassal writes and find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview or submit surrender on this evidence."
+  "next_step": "Consumer: fetch the delivered alternative and record a verification against its formal pair, without treating it as terms observability or closing the war. Maintainer: bounded direct writes through 0x24D0270 and 0xE0DBD0 descriptors do not reach change+0x268, and 0x2E9FF30 has no direct change-scope access via its effect base. Continue resolving transitive/global aliases, vector buffers and indirect callbacks. If a separately authorized future action naturally executes this chain, collect actual same-invocation setup/resolve pre-instruction +0x268 reads, then use the delivered offline validator and separately authenticate its capture; none have been collected here. Thereafter reduce 0x24CC9A0 to concrete title/holder/liege/vassal writes and find a non-mutating final-operation producer and signed CB effects. Do not call the crashing broad preview or submit surrender on this evidence."
 }
