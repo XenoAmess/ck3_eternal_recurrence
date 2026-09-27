@@ -732,17 +732,7 @@ class GameplayBridgeService:
                     plan, routable_steps
                 ),
                 "_private_lifestyle_scope_v1": (
-                    (
-                        same_frame_feudal_lifestyle_scope(planning_snapshot, history)
-                        if getattr(
-                            self.driver,
-                            "require_initial_lifestyle_focus_before_date_advance",
-                            False,
-                        ) is True
-                        else same_frame_feudal_lifestyle_scope(
-                            planning_snapshot, history
-                        )
-                    )
+                    same_frame_feudal_lifestyle_scope(planning_snapshot, history)
                     if getattr(
                         self.driver, "allow_private_lifestyle_formal_trial", False
                     ) is True
@@ -1612,7 +1602,7 @@ class GameplayBridgeService:
             return blocked("opening focus has no observed native-legal target")
         if isinstance(scope, dict) and scope.get("status") == "root_query_needed":
             if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
-                return blocked("opening peaceful feudal root query is unavailable")
+                return blocked("opening feudal root query is unavailable")
             return {
                 **planned,
                 "plan": {
