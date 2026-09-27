@@ -25,6 +25,8 @@
 
 上述 `rbp+0x7D0` 是 `0x2C8F1A0` 入参保存槽中的原 `r8`；`rbp+0x7D8` 才是原 `r9`。两者若混淆，会误将目标省份路径认作已跳过的额外上下文路径。
 
+[冻结 v3 人类名称映射门禁](maa-regiment-87-human-identity-gate-2026-09-27.md)进一步确认 RegimentID `87` 的 `maa_type.key` 在第 11／21 日回执均为 `null`，因此目前不能给该团写玩家可见兵种名称。
+
 下一次同场被动采样须先以 exact EXE、单一 RegimentID 87、CombatID、side、source date 和同一线程绑定两侧；在旧控制缓存形成时、暂停帧直接求值时、下一 schedule 入口分别留存 type/class、`CRegiment+0x120/+0x12C/+0x130` 解析身份、target Province ID、所有实际启用 enum 的 `0x2940E80` 返回、基础六维、中间修正向量、`0x23C2DF0` 前后和最终 `Stats38`。任何 identity、target 或采样时点不匹配即拒绝“变化来源”归因。只允许有界被动记录，不能为取数调用会更改游戏状态的原生函数。其他 17 个职业兵团需要各自的同类证据。
 
 有界复核（只读 EXE 和四份已冻结 JSON，不启动 CK3）：
