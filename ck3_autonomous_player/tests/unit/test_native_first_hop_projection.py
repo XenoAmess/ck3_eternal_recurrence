@@ -194,6 +194,11 @@ class NativeFirstHopProjectionTests(unittest.TestCase):
         snapshot["active_event"] = {"event_id": "blocked"}
         self.assertEqual(self._project(snapshot=snapshot), set())
 
+    def test_pending_interaction_cannot_expand_hop(self) -> None:
+        snapshot = _snapshot()
+        snapshot["pending_character_interaction"] = {"interaction_id": 9}
+        self.assertEqual(self._project(snapshot=snapshot), set())
+
     def test_failed_latest_preview_does_not_resurrect_older_proof(self) -> None:
         failed = copy.deepcopy(_preview_row())
         failed["index"] = 2
