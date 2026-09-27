@@ -1,0 +1,15 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
+  "status": "claimed",
+  "maintainer": "Codex war maintainer",
+  "updated_at_utc": "2026-09-27T22:02:45Z",
+  "current_evidence": {
+    "exact_h2825_source_pair_local": true,
+    "source_pair_receipt": "docs/ck3-native-ai/h2825-onedrive-exact-input-2026-09-28.md",
+    "same_frame_war_row_document": "docs/ck3-native-ai/h2825-readonly-partition-live-2026-09-28.md",
+    "prisoner_war_retention_queried": false,
+    "prisoner_action_submitted": false
+  },
+  "next_step": "Inspect exact CK3 war/CB/prisoner source and existing bridge readouts, then provide a typed same-frame read-only retention interface or precise unavailable reasons for CharacterIDs 34486, 44484 and 47028. Do not submit prisoner actions."
+}
