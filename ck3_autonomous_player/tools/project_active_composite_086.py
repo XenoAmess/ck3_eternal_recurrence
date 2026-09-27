@@ -60,6 +60,15 @@ def project(attempt_dir: Path) -> dict[str, object]:
         for role in ("attacker", "defender")
     ]
     assert actual_rosters == [scenario["attacker_army_ids"], scenario["defender_army_ids"]]
+    assert battle["subject_public_cunit_id"] == battle["selected_public_cunit_id"] == 18
+    assert battle["subject_native_carmy_id"] == battle["selected_native_carmy_id"] == 18
+    assert battle["side_index"] == 1
+    subject_side = battle["defender"]["ordered_armies"]
+    opposing_side = battle["attacker"]["ordered_armies"]
+    assert [row["public_cunit_id"] for row in subject_side] == [18]
+    assert all(row["public_cunit_id"] != 18 for row in opposing_side)
+    assert subject_side[0]["owner_character_id"] == battle["selected_owner_character_id"]
+    assert battle["side_scope"] == "full_side"
     observed = [row for row in base["ongoing_combats"] if row["combat_id"] == battle["combat_id"]]
     assert len(observed) == 1
     assert (observed[0]["base_combat_width"], observed[0]["final_combat_width"]) == (
@@ -120,6 +129,16 @@ def project(attempt_dir: Path) -> dict[str, object]:
             "base_width": battle["base_combat_width"],
             "final_width": battle["final_combat_width"],
             "ordered_army_ids": actual_rosters,
+            "subject_battle_side_mapping": {
+                "subject_public_cunit_id": 18,
+                "subject_native_carmy_id": 18,
+                "subject_owner_character_id": battle["selected_owner_character_id"],
+                "subject_side_index": 1,
+                "opposing_side_index": 0,
+                "subject_side_public_cunit_ids": [row["public_cunit_id"] for row in subject_side],
+                "opposing_side_public_cunit_ids": [row["public_cunit_id"] for row in opposing_side],
+                "side_scope": battle["side_scope"],
+            },
             "selected_commander_character_ids": [
                 battle[role]["selected_commander_character_id"]
                 for role in ("attacker", "defender")

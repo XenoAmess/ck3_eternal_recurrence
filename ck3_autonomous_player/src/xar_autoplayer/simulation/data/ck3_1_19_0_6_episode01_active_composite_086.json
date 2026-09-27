@@ -34,6 +34,22 @@
         18
       ]
     ],
+    "subject_battle_side_mapping": {
+      "subject_public_cunit_id": 18,
+      "subject_native_carmy_id": 18,
+      "subject_owner_character_id": 29829,
+      "subject_side_index": 1,
+      "opposing_side_index": 0,
+      "subject_side_public_cunit_ids": [
+        18
+      ],
+      "opposing_side_public_cunit_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "side_scope": "full_side"
+    },
     "selected_commander_character_ids": [
       34320,
       29829
