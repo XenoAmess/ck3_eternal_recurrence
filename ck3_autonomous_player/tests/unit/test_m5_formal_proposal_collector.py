@@ -577,7 +577,10 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         peace["player_armies"] = []
         peace["played_character"]["alive"] = True
         driver = _ServiceDriver(enabled=True, snapshot=peace)
-        driver.state_dir = Path("Z:/r146-joint-test-state")
+        # All ledger reads below are mocked; this portable sentinel must stay
+        # absent so the test cannot silently create campaign state.
+        driver.state_dir = Path("c146-inert-state-dir")
+        self.assertFalse(driver.state_dir.exists())
         driver.allow_private_family_marriage_formal_trial = True
         baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
                     "selected_step": "life-advance"}
@@ -622,6 +625,7 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
                              FAMILY_SUBMIT_STEP if family_step == FAMILY_SUBMIT_STEP
                              else None)
             self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
+            self.assertFalse(driver.state_dir.exists())
 
     def test_peace_m5_observation_red_remains_visible_after_family_diagnostic(self) -> None:
         peace = _snapshot()
