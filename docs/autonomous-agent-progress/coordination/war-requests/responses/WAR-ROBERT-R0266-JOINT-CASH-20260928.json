@@ -1,0 +1,17 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-ROBERT-R0266-JOINT-CASH-20260928",
+  "status": "claimed",
+  "maintainer": "war_maintainer",
+  "updated_at_utc": "2026-09-27T20:05:30Z",
+  "source_pr": null,
+  "master_commit": null,
+  "interface_contract": null,
+  "checks": null,
+  "live_evidence": null,
+  "limitations": [
+    "H2825 cash commitment and future war cost are not published in the supplied same-frame evidence; null cannot be interpreted as zero.",
+    "Desktop capture is stale, so no fresh local CK3 or Steam-offline readback is claimed."
+  ],
+  "next_step": "Publish a typed, full-frame war cash observation and bind it to the existing M5 resource proposal and shared commitment/reserve contract; retain typed nulls when a source or horizon bound is absent."
+}
