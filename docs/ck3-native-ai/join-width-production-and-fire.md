@@ -57,6 +57,12 @@
 
 独立目录 `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-079` 的 DLL 私有 ON 静态自检通过，但 Steam 当前离线状态无法取得**实时可读**的 UI 证明：旧桌面帧的系统时钟停在 `04:06`，与观测时本机时间不符；079 的 GDI 与 Windows.Graphics.Capture 窗口帧内部均为黑色，其中可运行的 WGC 原始 PNG SHA-256 `9A30B47D0E7715F3E6F6B68E55FADCDFD456615A72D2B7B2431DA9B3D9A38CA7`。当前 `steam.exe` 同次进程的 `Start offline - 1` 日志、后续没有 logged online marker、`WantsOfflineMode=1` 只是启动和持久偏好的旁证，不能冒充当前 UI。预检回执 `prelaunch-red.json` SHA-256 `212F4ABDD74CD61AB2BDA03DC7178C24CBA476FF5F6269309F35529372FE8469` 精确绑定原始诊断。079 没有启动 CK3、没有发 private begin、没有生成 `ck3-output`；任务总线 `ck3-join-width-attempt-079-20260927` sequence `1361` 为 `done/resources=[]`，系统进程清单无 `ck3.exe`。第三点仍未实采，下一次需要新的独立 attempt 和可读的当前离线 UI 门，不能改写 079 RED。
 
+### 智能体 trial kernel 的条件战宽转移接口
+
+现有 `FrozenCombatSimulationInput.encounter` 给出接战时 `base_width/final_width` 与 terrain 宽度系数，`combat_core.update_combat_width` 已实现 exact-build 的 Q100000 算术。动态 trial 只缺**何时调用**和调用时的两侧真实 totals。kernel 应保留每场战斗的 `{CombatID, base_width, final_width, terrain_width_multiplier_raw}` 缓存，并仅在 route/participant policy **显式产出**同 CombatID、原生日期、加入方 ArmyID 与加入后两侧 `+0x98` Q100000 totals 的 participant-update 事件时调用 `update_combat_width(side0_raw, side1_raw, previous_base_width=cache.base_width, terrain_width_multiplier_raw=cache.terrain_raw)`；随后以返回的 base/final 更新缓存。没有该事件就沿用缓存，不应为每个 main tick 的 totals 刷新擅自调用宽度更新器；已确认的 `0x2309E80` 主函数体在出伤前没有直接调用 `0x2305580`。phase-fire 读缓存 final 的静态调用链已确认，但 078 的 `fire_width=null` 意味着本例的动态传参仍待实采。
+
+078 向量可作为该**给定参战事件与 totals**的回归输入：入口缓存 `(1645,1480)`，ArmyID `22` 加入后 totals `[410690163,82785368]`，用 stock forest `90000` 得 `(2467,2220)`，四个观测数值严格零差。它不能生成 ArmyID `22` 的到达日期，也不能替代路线、撤退或第三方加入策略。要让整场胜率决策器对真实战局输出无条件预测，仍须接入 route-timing/participant policy 产生带身份的事件、覆盖多次增援和离场的宽度更新门、取得同日首次 phase-fire 传参并验证这些输入与已冻结的战斗轨迹；缺任何一项时应明示条件场景及其输入来源，不把单次 078 两点扩展成全程概率。
+
 有界复核（只读 EXE，不运行 CK3）：
 
 ```text
