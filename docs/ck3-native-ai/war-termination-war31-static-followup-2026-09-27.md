@@ -161,3 +161,28 @@ SHA-256 为 `8591C10FAF2F5C299B60122775FBE2C45F2A461CCCF718A34DDA75058786A12A`�
 本轮没有证明其整个传递写集合，也没有读出 War31 当时对象值。
 因此这轮只确证**构造值**，没有确证 `resolve` 实际读值，
 更没有证明 Title `2128` 的 holder、liege、vassal 结果或投降已执行。
+
+### `setup_de_jure_cb` 的直接类型写入边界，2026-09-27 补证
+
+[精确构建扫描器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_setup_change_type_write_boundary.py)
+把上述构造证据与 `CSetupDeJureCBChangeEffect` 执行 vtable slot `+0xB0`
+绑定，在 `0x2E9F746–0x2E9F86C` 对解析后的 change 指针寄存器 `rsi`
+逐条检查内存写指令，并对 `0x24BD610–0x24BD8C9` 中持有同一指针的
+`rbp` 做相同检查。[JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_setup_change_type_write_boundary_1_19_0_6.json)
+SHA-256 为 `52C90BAC612E76DCD28DBE380A80160C25DE2CE1AD3AE3736A128526141AF6FC`。
+
+执行函数在 `0x2E9F734/741` 将 effect `+0x1B0` change 作用域交给
+`0x2EA1D30` 查找，`0x2E9F746` 保存返回指针，随后做虚方法检查。
+这一段入口的**直接指令**没有经该指针写 `+0x268`，也没有经该寄存器写
+change 的其他字段。不过，`0x2E9F7F7` 把**完整 change 指针**传给
+`0x24BD610`；它本身只直接读 change 的字段（包括 `+0x265`），
+没有经持有该指针的 `rbp` 写入，但又将 `+0x58` 或 `+0x70` 子结构地址
+传给 `0x24D0270`。执行入口另将 `+0x28`、`+0x40` 子结构地址交给
+`0xE0DBD0`，更早还以整个 effect 调用共享 helper `0x2E9FF30`。
+
+因此目前可以回答 **“所检查的入口和第一个完整指针 helper 没有直接写
+`change+0x268`”**；不能回答 **“整个 `setup_de_jure_cb` 绝不改写它”**。
+后一个命题还需排除子结构 helper 越界/别名写入、共享 helper 经作用域或
+全局表回查 change 的传递写入；或者在独立、可验证的 War31 同帧只读观察中
+取得 `setup` 之后、`resolve` 之前的 `change+0x268` 原始值。
+在此之前，`resolve` 实际走 `0x17` 还是非 `0x17` 分支仍标为未知。

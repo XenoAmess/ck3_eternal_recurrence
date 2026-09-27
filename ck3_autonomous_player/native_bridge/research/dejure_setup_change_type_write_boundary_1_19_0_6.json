@@ -1,0 +1,133 @@
+{
+  "schema": "xar.ck3.war31.dejure_setup_change_type_write_boundary.v1",
+  "status": "DIRECT_NO_TYPE_WRITE_TRANSITIVE_UNKNOWN",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "stock_script": {
+    "request_id": "WAR-INPUT-R0221-WAR31-20260927",
+    "request_sha256": "2B895343545B75F56F0594C746677015CBCC2B6BDDD78CA2696BB13EB0B53D75",
+    "script_path": "game/common/casus_belli_types/00_dejure_war.txt",
+    "script_sha256": "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE",
+    "create_type": "conquest",
+    "setup_between_create_and_resolve": true
+  },
+  "constructed_change_type": 0,
+  "setup_execute": {
+    "rva": "0x2E9F420",
+    "vtable_rva": "0x444AFA0",
+    "execute_slot": "0xB0",
+    "prelookup_shared_helper": {
+      "call_rva": "0x2E9F70B",
+      "target_rva": "0x2E9FF30",
+      "bytes": "E820080000"
+    },
+    "change_scope_address": {
+      "rva": "0x2E9F734",
+      "bytes": "488D8EB0010000",
+      "instruction": "lea rcx, [rsi + 0x1b0]"
+    },
+    "change_lookup": {
+      "call_rva": "0x2E9F741",
+      "target_rva": "0x2EA1D30",
+      "bytes": "E8EA250000"
+    },
+    "resolved_change_pointer": {
+      "rva": "0x2E9F746",
+      "bytes": "488BF0",
+      "instruction": "mov rsi, rax"
+    },
+    "change_virtual_check": {
+      "rva": "0x2E9F74F",
+      "bytes": "FF5208",
+      "instruction": "call qword ptr [rdx + 8]"
+    },
+    "direct_writes_while_rsi_is_change": {
+      "start_rva": "0x2E9F746",
+      "end_exclusive_rva": "0x2E9F86C",
+      "byte_count": 294,
+      "sha256": "B964758E3F93E66C04FCE7BF470B415CC8A000E2846F9929187F5BC1A1BD7311",
+      "direct_memory_writes_through_base": 0
+    },
+    "whole_change_argument": {
+      "rva": "0x2E9F7F4",
+      "bytes": "488BCE",
+      "instruction": "mov rcx, rsi"
+    },
+    "whole_change_helper": {
+      "call_rva": "0x2E9F7F7",
+      "target_rva": "0x24BD610",
+      "bytes": "E814DE61FF"
+    },
+    "first_substructure_address": {
+      "rva": "0x2E9F864",
+      "bytes": "4C8D6628",
+      "instruction": "lea r12, [rsi + 0x28]"
+    },
+    "second_substructure_address": {
+      "rva": "0x2E9F868",
+      "bytes": "4C8D6E40",
+      "instruction": "lea r13, [rsi + 0x40]"
+    },
+    "first_substructure_call": {
+      "call_rva": "0x2E9F896",
+      "target_rva": "0xE0DBD0",
+      "bytes": "E835E3F6FD"
+    },
+    "second_substructure_call": {
+      "call_rva": "0x2E9F8B1",
+      "target_rva": "0xE0DBD0",
+      "bytes": "E81AE3F6FD"
+    },
+    "interpretation": "The resolved change pointer is checked and passed whole to 0x24BD610. Bounded direct instructions do not store through RSI before it is repurposed, but callees and global alias paths are not covered."
+  },
+  "whole_change_helper": {
+    "rva": "0x24BD610",
+    "change_pointer_copy": {
+      "rva": "0x24BD630",
+      "bytes": "488BE9",
+      "instruction": "mov rbp, rcx"
+    },
+    "change_flag_read": {
+      "rva": "0x24BD743",
+      "bytes": "80BD6502000000",
+      "instruction": "cmp byte ptr [rbp + 0x265], 0"
+    },
+    "direct_writes_through_change_base": {
+      "start_rva": "0x24BD610",
+      "end_exclusive_rva": "0x24BD8CA",
+      "byte_count": 698,
+      "sha256": "D77DC24BEDC03ECDF79CB7157527E5932860B502008A8A8E9E2809DBC8FB03D6",
+      "direct_memory_writes_through_base": 0
+    },
+    "substructure_selector": {
+      "call_rva": "0x24BD8AE",
+      "target_rva": "0x24D0270",
+      "bytes": "E8BD290100"
+    },
+    "interpretation": "This helper directly reads the change and delegates with addresses of +0x58 or +0x70 substructures; its own bounded instructions do not store through RBP. Callee writes and aliasing are not excluded."
+  },
+  "resolve": {
+    "rva": "0x2EC43F0",
+    "type_read": {
+      "rva": "0x2EC4410",
+      "bytes": "83B86802000017",
+      "instruction": "cmp dword ptr [rax + 0x268], 0x17"
+    },
+    "actual_type_for_war31": null,
+    "branch_determined_from_static_setup_analysis": false
+  },
+  "boundary": {
+    "known": "Creation initializes change+0x268 to 0; setup entry and 0x24BD610 show no direct write to that field in bounded disassembly.",
+    "remaining_bridge": [
+      "Transitive writes of 0x24BD610 -> 0x24D0270 and the +0x28/+0x40 substructure helper 0xE0DBD0",
+      "Shared prelookup helper 0x2E9FF30 and other called helpers may access the change by scope or global alias",
+      "No exact War31 runtime value of change+0x268 immediately before resolve has been read"
+    ],
+    "final_title_holder_liege_vassal": null,
+    "ck3_launched": false,
+    "native_effect_called": false,
+    "gameplay_action_submitted": false
+  }
+}
