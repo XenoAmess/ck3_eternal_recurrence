@@ -173,6 +173,22 @@ struct CombatJoinWidthRecordV1 {
   std::array<std::int64_t, 2> side_fighting_total_raw{};
 };
 
+// Private, default-off diagnosis for the first target-join capture failure.
+// The value is evidence of the guard that rejected a sample, not a game rule.
+enum CombatJoinWidthFailureCodeV1 : std::uint32_t {
+  join_width_failure_none = 0,
+  join_width_failure_order = 1,
+  join_width_failure_army_id = 2,
+  join_width_failure_date_object = 3,
+  join_width_failure_combat_id = 4,
+  join_width_failure_owner_thread = 5,
+  join_width_failure_side_backpointer = 6,
+  join_width_failure_side_roster = 7,
+  join_width_failure_side_identity = 8,
+  join_width_failure_width_argument = 9,
+  join_width_failure_memory_fault = 10,
+};
+
 inline constexpr std::size_t kCombatPhaseKnightSelectMaximumRecordsV1 = 64;
 
 struct CombatPhaseKnightSelectRecordV1 {
@@ -476,6 +492,8 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> effect_node_draw_count{0};
   std::atomic<std::uint32_t> random_list_weight_count{0};
   std::atomic<std::uint32_t> join_width_count{0};
+  std::atomic<std::uint32_t> join_width_first_failure_code{
+      join_width_failure_none};
   std::atomic<std::uint32_t> knight_select_count{0};
   std::atomic<std::uint32_t> failure_flags{trace_capture_failure_none};
   CombatPhaseEventTraceCapturePlanV1 plan{};
@@ -519,6 +537,7 @@ struct CombatPhaseEventTraceRingDrainV1 {
              kCombatRandomListWeightMaximumRecordsV1> random_list_weights{};
   bool runtime_join_width_requested = false;
   std::uint32_t join_width_count = 0;
+  std::uint32_t join_width_first_failure_code = join_width_failure_none;
   std::array<CombatJoinWidthRecordV1, 3> join_widths{};
   std::uint32_t knight_select_count = 0;
   std::array<CombatPhaseKnightSelectRecordV1,

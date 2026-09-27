@@ -1,6 +1,6 @@
 # CK3 1.19.0.6：增援加入后的战宽缓存与主阶段出伤读取
 
-本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；尚无本次自然增援案例的 join 前后或 phase-fire 战宽数值回执，不能把某一具体宽度写成已实测。
+本页绑定原版 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下调用、字段与先后次序为 **exact-build 静态确认**；075 虽已在实机确认自然增援，但战宽探针失败，尚无 join 前后或 phase-fire 战宽数值回执，不能把某一具体宽度写成已实测。
 
 | 生产或消费点 | 原生行为 | 被动读取的字段 |
 | --- | --- | --- |
@@ -18,9 +18,17 @@
 
 当前实现选择更安全的三点：`0x23040A0` join wrapper **入口**、同一 wrapper **正常返回后**、首次 side0 `0x23CB1D0` 入参 `R8D`。返回点已经越过 `0x2304277` 汇合，但不是汇合指令本身；因此仅凭这三点不能直接证明是否经过 `0x2304272`，需要用前后宽度和后续证据判断。wrapper 的 RCX 为 `CCombat*`、RDX 为 incoming `CArmy*`；前置计划冻结候选 ArmyID 及完整代际对象指针。钩子只对这一个 CombatID/候选指针采集，返回后在有界原生 side army ID 向量中确认落入 side 0/1。记录含同线程 ID、原生日戳、phase day、两侧 `+0x98` Q100000 总量、`+0x6C0/+0x6C4` int32 战宽，以及 side0 出伤调用实际传入的宽度。首个边界的 side 尚未加入，记为 `-1`；返回后才填实际 side。尚未采集 Province/terrain 及 `+0xA0`，不能以当前字段独立重算地形修正。
 
-私有 begin 必须同时给 `candidate_joining_army_id` 正整数和严格布尔 `capture_runtime_join_width:true`；默认不安装 join 补丁，也不改变七边界 wire。成功的可选 `trace.runtime_join_width` 是 3 条 `boundary=0/1/2`，分别代表入口、正常返回、首次 side0 出伤前；无目标增援是 `no_join_observed`，部分记录/宽度不一致是 `failed`，原始 failure flag 保留。边界 2 的 `outgoing_width_argument` 必须等于当时 `+0x6C4`。实际实机结果仍为**未采样**，不能把离线夹具数字当作 CK3 战况。
+私有 begin 必须同时给 `candidate_joining_army_id` 正整数和严格布尔 `capture_runtime_join_width:true`；默认不安装 join 补丁，也不改变七边界 wire。成功的可选 `trace.runtime_join_width` 是 3 条 `boundary=0/1/2`，分别代表入口、正常返回、首次 side0 出伤前；无目标增援是 `no_join_observed`，部分记录/宽度不一致是 `failed`，原始 failure flag 保留。边界 2 的 `outgoing_width_argument` 必须等于当时 `+0x6C4`。075 的真实增援观测为探针 RED，不能把离线夹具数字当作 CK3 战况。
 
 安全门：EXE SHA-256 为页首 exact build；入口 `0x23040A0` 的 16 字节 `48895C24104889742418555741544156` 是完整无相对地址的指令，下一条 `0x23040B0` 才开始 `4157`。专用 16+14 字节 trampoline 避免通用 15 字节补丁截断指令；离线可执行夹具核对原返回值、钩住后的返回值和卸载原字节一致。补丁安装/卸载仅在已验证暂停静止的 main-thread mailbox 执行，失败保留 trampoline 与停止门，钩内不分配也不调用 CK3 helper。实机前还需记录独立 DLL SHA、源存档/配对回执 SHA、新鲜 Steam 离线帧和任务总线独占；一天回放后必须冻结原始 finish bytes/SHA 以及 clean-exit 回执。两份自然增援案例应分别使用新 attempt，不得改写历史素材。
+
+### 075 自然增援实机 RED 与下一道诊断门
+
+独立外置 attempt `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-075` 使用第 11 日冻结存档 SHA-256 `3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953`、配对保存回执 SHA-256 `DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5` 和私有 DLL SHA-256 `E48EB9A6745F5544F2F45B98AE11498C67230CE905350CB6229BA9F2A2F86A0C`。private begin 接受了 `candidate_joining_army_id=22`、`capture_runtime_join_width=true`；原生日期 `53146488→53146512` 恰为一天。七边界记录显示 CombatID `16777218` 的 side 0 军队 ID 从 `[16777221,16777231,27]` 变为 `[16777221,16777231,27,22]`，故目标自然增援确实发生。
+
+然而原始 `jwidth075-finish.json` SHA-256 `71699B47C3091D44E990BEB17E3477ADE3C97769528347B985AA1DFCB3E006C6` 报 `trace.failure_flags=262144`（`1<<18` join-width），`runtime_join_width.status=failed,count=0,boundaries=[]`。不能从它得出宽度是否更新。源码中空记录本身不置该位：`CompleteAndDrainCombatPhaseEventTraceRingV1` 只对 **非零但不足三条** 置位，因此在 075 的已冻结二进制里，有候选指针匹配后第一条拒绝；可疑谓词仍包括 ArmyID、日期对象、CombatID、线程和 side backpointer，原始 wire 无法区分。受管清场回执 `session-result.json` SHA-256 `8B116F9C52F2FE99C2CBB4720471C98119A8E5B1CDA4017DF70EFE2376A5B2B1` 证明 CK3 进程全灭、job active 为 0，任务总线 `ck3-join-width-attempt-075-20260927` 已释放 CK3。外置 `start.py` 把非空的 final-inventory **容器**误判成仍有进程，使自己的 `cleanup-check.json` 假阴性；原始文件保留，另附 `cleanup-recheck-note.md`。
+
+后续默认关闭诊断版在可选 `runtime_join_width.first_failure_code` 记录首次拒绝谓词，不改默认 wire：`1` 顺序、`2` ArmyID、`3` 日期对象、`4` CombatID、`5` owner 线程、`6` side 回指、`7` side roster、`8` side 身份、`9` 传入宽度、`10` 内存故障，`0` 无失败。该值只是**观测器校验失败原因**，不是 CK3 战宽公式。离线 DLL SHA-256 `7203C732512536794C2DD4B90894CF459B504E872D617F194565A716C31ACD64`、聚焦 CTest 5/5；尚未实机。ABI 再核：原版 `0x23040C1` 将 RDX 保存到 RSI，`0x23040FC` 读其 `+0x124`，`0x230422D` 写其 `+0x128` CombatID；后者也正是已解析 `CArmy` 的 combat ID 字段。因此本钩子的 RDX 为 `CArmy*`，先前把它写成 CUnit 的文字不能作为本入口的证据。下次采样必须新 attempt、原始 bytes/SHA 和 clean exit，不能重写 075。
 
 有界复核（只读 EXE，不运行 CK3）：
 

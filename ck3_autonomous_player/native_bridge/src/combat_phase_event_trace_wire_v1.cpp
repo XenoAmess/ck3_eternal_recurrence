@@ -592,6 +592,8 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
                     drain.join_width_count == 3 ? "captured" : "incomplete";
     output += "\",\"count\":";
     if (!AppendNumber(output, drain.join_width_count)) return {};
+    output += ",\"first_failure_code\":";
+    if (!AppendNumber(output, drain.join_width_first_failure_code)) return {};
     output += ",\"boundaries\":[";
     for (std::uint32_t index = 0; index < drain.join_width_count; ++index) {
       if (index) output.push_back(',');

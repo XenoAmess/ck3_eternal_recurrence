@@ -1057,6 +1057,8 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.effect_node_draw_count.store(0, std::memory_order_relaxed);
   ring.random_list_weight_count.store(0, std::memory_order_relaxed);
   ring.join_width_count.store(0, std::memory_order_relaxed);
+  ring.join_width_first_failure_code.store(join_width_failure_none,
+                                           std::memory_order_relaxed);
   ring.knight_select_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
@@ -1136,16 +1138,25 @@ bool CaptureCombatPhaseEventTraceBoundaryV1(
 }
 
 namespace {
-bool ReadJoinWidthRecordUnsafe(const CombatPhaseEventTraceCapturePlanV1 &plan,
-                               CombatJoinWidthRecordV1 &row,
-                               bool identify_side) noexcept {
+void MarkJoinWidthFailure(CombatPhaseEventTraceRingV1 &ring,
+                          CombatJoinWidthFailureCodeV1 code) noexcept {
+  std::uint32_t expected = join_width_failure_none;
+  (void)ring.join_width_first_failure_code.compare_exchange_strong(
+      expected, code, std::memory_order_acq_rel);
+  MarkFailure(ring, trace_capture_failure_join_width);
+}
+
+CombatJoinWidthFailureCodeV1 ReadJoinWidthRecordUnsafe(
+    const CombatPhaseEventTraceCapturePlanV1 &plan,
+    CombatJoinWidthRecordV1 &row, bool identify_side) noexcept {
   if (LoadAt<std::uintptr_t>(plan.current_date_slot, 0) !=
-          plan.expected_current_date_object ||
-      LoadAt<std::int32_t>(plan.combat, kCombatIdOffset) != plan.combat_id) {
-    return false;
-  }
+      plan.expected_current_date_object)
+    return join_width_failure_date_object;
+  if (LoadAt<std::int32_t>(plan.combat, kCombatIdOffset) != plan.combat_id)
+    return join_width_failure_combat_id;
   row.thread_id = GetCurrentThreadId();
-  if (row.thread_id != plan.owner_thread_id) return false;
+  if (row.thread_id != plan.owner_thread_id)
+    return join_width_failure_owner_thread;
   row.native_date_raw =
       LoadAt<std::int32_t>(plan.expected_current_date_object, 0x08);
   row.combat_id = plan.combat_id;
@@ -1156,7 +1167,7 @@ bool ReadJoinWidthRecordUnsafe(const CombatPhaseEventTraceCapturePlanV1 &plan,
   for (std::size_t i = 0; i < 2; ++i) {
     if (LoadAt<std::uintptr_t>(plan.sides[i],
                                kSideCombatBackPointerOffset) != plan.combat)
-      return false;
+      return join_width_failure_side_backpointer;
     row.side_fighting_total_raw[i] =
         LoadAt<std::int64_t>(plan.sides[i], kSideCurrentFightingTotalOffset);
   }
@@ -1166,18 +1177,18 @@ bool ReadJoinWidthRecordUnsafe(const CombatPhaseEventTraceCapturePlanV1 &plan,
       NativeVectorView roster{};
       if (!ReadVector(plan.sides[i], kSideArmyHeaderOffset,
                       kCombatPhaseEventTraceRingV1MaximumArmiesPerSide,
-                      roster, failure)) return false;
+                      roster, failure)) return join_width_failure_side_roster;
       for (std::uint32_t j = 0; j < roster.count; ++j) {
         if (LoadAt<std::int32_t>(roster.data,
                                  j * sizeof(std::int32_t)) == row.army_id) {
-          if (row.side_index != -1) return false;
+          if (row.side_index != -1) return join_width_failure_side_identity;
           row.side_index = i;
         }
       }
     }
-    if (row.side_index == -1) return false;
+    if (row.side_index == -1) return join_width_failure_side_identity;
   }
-  return true;
+  return join_width_failure_none;
 }
 } // namespace
 
@@ -1196,23 +1207,26 @@ bool CaptureCombatJoinWidthV1(void *combat, void *incoming_army,
     return false;
   const auto expected = after_original ? 1U : 0U;
   if (ring->join_width_count.load(std::memory_order_acquire) != expected) {
-    MarkFailure(*ring, trace_capture_failure_join_width);
+    MarkJoinWidthFailure(*ring, join_width_failure_order);
     return false;
   }
   CombatJoinWidthRecordV1 row{};
   row.boundary = expected;
-  bool valid = false;
+  CombatJoinWidthFailureCodeV1 failure = join_width_failure_none;
 #if defined(_MSC_VER)
   __try {
 #endif
-    valid = LoadAt<std::int32_t>(incoming_army, kArmyIdOffset) ==
-                ring->plan.candidate_joining_army_id &&
-            ReadJoinWidthRecordUnsafe(ring->plan, row, after_original);
+    failure = LoadAt<std::int32_t>(incoming_army, kArmyIdOffset) !=
+                  ring->plan.candidate_joining_army_id
+                  ? join_width_failure_army_id
+                  : ReadJoinWidthRecordUnsafe(ring->plan, row, after_original);
 #if defined(_MSC_VER)
-  } __except (EXCEPTION_EXECUTE_HANDLER) { valid = false; }
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    failure = join_width_failure_memory_fault;
+  }
 #endif
-  if (!valid) {
-    MarkFailure(*ring, trace_capture_failure_join_width);
+  if (failure != join_width_failure_none) {
+    MarkJoinWidthFailure(*ring, failure);
     return false;
   }
   ring->join_widths[expected] = row;
@@ -1235,17 +1249,20 @@ bool CaptureCombatFirstSide0OutgoingWidthV1(
   row.boundary = 2;
   row.side_index = 0;
   row.outgoing_width_argument = width;
-  bool valid = false;
+  CombatJoinWidthFailureCodeV1 failure = join_width_failure_none;
 #if defined(_MSC_VER)
   __try {
 #endif
-    valid = ReadJoinWidthRecordUnsafe(ring->plan, row, false) &&
-            row.final_width == width;
+    failure = ReadJoinWidthRecordUnsafe(ring->plan, row, false);
+    if (failure == join_width_failure_none && row.final_width != width)
+      failure = join_width_failure_width_argument;
 #if defined(_MSC_VER)
-  } __except (EXCEPTION_EXECUTE_HANDLER) { valid = false; }
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    failure = join_width_failure_memory_fault;
+  }
 #endif
-  if (!valid) {
-    MarkFailure(*ring, trace_capture_failure_join_width);
+  if (failure != join_width_failure_none) {
+    MarkJoinWidthFailure(*ring, failure);
     return false;
   }
   ring->join_widths[2] = row;
@@ -1428,6 +1445,8 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   output.join_width_count = std::min<std::uint32_t>(
       ring.join_width_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.join_widths.size()));
+  output.join_width_first_failure_code =
+      ring.join_width_first_failure_code.load(std::memory_order_acquire);
   std::copy_n(ring.join_widths.begin(), output.join_width_count,
               output.join_widths.begin());
   if (output.runtime_join_width_requested && output.join_width_count != 0 &&

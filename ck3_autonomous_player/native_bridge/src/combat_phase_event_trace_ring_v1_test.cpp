@@ -759,12 +759,61 @@ bool CandidateJoinWidthThreeBoundaryFixture() {
       ring->join_widths[1].base_width != 6 ||
       ring->join_widths[1].side_index != 0 ||
       ring->join_widths[2].outgoing_width_argument != 7 ||
+      ring->join_width_first_failure_code.load() != join_width_failure_none ||
       ring->failure_flags.load() != trace_capture_failure_none) {
     CancelCombatPhaseEventTraceRingV1(*ring);
     return Fail("join-width three-boundary fixture failed");
   }
   CancelCombatPhaseEventTraceRingV1(*ring);
   return true;
+}
+
+bool CandidateJoinWidthFirstFailurePredicateFixture() {
+  Fixture fixture;
+  std::array<std::byte, 0x130> candidate_army{};
+  constexpr std::int32_t candidate_id = 22;
+  Store(candidate_army, 0x10, candidate_id);
+  Store(candidate_army, 0x128, std::int32_t{-1});
+  fixture.plan.army_count = 3;
+  fixture.plan.armies[2] = {
+      candidate_id, reinterpret_cast<std::uintptr_t>(candidate_army.data())};
+  fixture.plan.capture_runtime_join_width = true;
+  fixture.plan.candidate_joining_army_id = candidate_id;
+  fixture.plan.owner_thread_id = GetCurrentThreadId();
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("join-width diagnosis arm failed");
+  Store(candidate_army, 0x10, candidate_id + 1);
+  const bool army_rejected =
+      !CaptureCombatJoinWidthV1(fixture.combat.data(),
+                                candidate_army.data(), false) &&
+      ring->join_width_count.load() == 0 &&
+      ring->join_width_first_failure_code.load() == join_width_failure_army_id;
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  Store(candidate_army, 0x10, candidate_id);
+  if (!army_rejected || !ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("join-width army-ID diagnosis failed");
+  fixture.date_slot = 0;
+  const bool date_rejected =
+      !CaptureCombatJoinWidthV1(fixture.combat.data(),
+                                candidate_army.data(), false) &&
+      ring->join_width_first_failure_code.load() ==
+          join_width_failure_date_object;
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  fixture.date_slot = fixture.plan.expected_current_date_object;
+  if (!date_rejected || !ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("join-width date-object diagnosis failed");
+  auto *const side0 = reinterpret_cast<void *>(fixture.plan.sides[0]);
+  Store(side0, 0xB8, std::uintptr_t{0});
+  const bool backpointer_rejected =
+      !CaptureCombatJoinWidthV1(fixture.combat.data(),
+                                candidate_army.data(), false) &&
+      ring->join_width_first_failure_code.load() ==
+          join_width_failure_side_backpointer;
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return backpointer_rejected
+             ? true
+             : Fail("join-width side-backpointer diagnosis failed");
 }
 
 bool PostCounterAttackCaptureCases() {
@@ -1064,6 +1113,7 @@ int main(int argc, char **argv) {
       !FailureCases() ||
       !StaleScheduledKnightCase() ||
       !CandidateJoinWidthThreeBoundaryFixture() ||
+      !CandidateJoinWidthFirstFailurePredicateFixture() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
       !OutgoingDamageHookAbi() || !OuterCallerContextTransport() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,

@@ -318,9 +318,16 @@ bool OptionalJoinWidthWire() {
   }
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
   if (!Has(json, "\"runtime_join_width\":{\"status\":\"captured\",\"count\":3") ||
+      !Has(json, "\"first_failure_code\":0") ||
       !Has(json, "\"outgoing_width_argument\":7") ||
       !Has(json, "\"side_fighting_total_raw\":[1300000,1100000]"))
     return Fail("join-width optional wire lost bounded numbers");
+  drain->failure_flags |= trace_capture_failure_join_width;
+  drain->join_width_first_failure_code = join_width_failure_side_backpointer;
+  const auto failed = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (!Has(failed, "\"runtime_join_width\":{\"status\":\"failed\",\"count\":3") ||
+      !Has(failed, "\"first_failure_code\":6"))
+    return Fail("join-width failure predicate was not preserved");
   drain->join_width_count = 4;
   if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty())
     return Fail("join-width overflow did not fail closed");
