@@ -38,6 +38,11 @@ DLL（SHA `CE57BB7F67B3B6646796E9679B5D198557CE175C056000C8FE4DFCB940F2FB0C`）
 仅有另一台机器的 `Z:` 历史路径，未转入本机。下一步真实验收仍需
 单独转入并核对 save/driver/sidecars/DLL、做新 PID 的前后同帧查询，
 验证实际 v3 状态和后续第一跳的独立动作/读回/下一 turn/恢复。
+另在本机 artifacts、research、Downloads、上传目录、Temp、Saved Games
+及 `D:/Users` 中按原 save `58,014,913` B 和 driver `881,867` B 的
+精确大小/文件类型寻找改名副本，未发现大小候选；只读索引在外置
+`D:/ck3-research-artifacts/war31-hwprobe-20260927/r0244-input-size-scan.json`。
+扫描不包括所有盘或 OneDrive 同步目录，不声称远端文件不存在。
 
 离线回归在普通与 `-O` Python 下各 1 项通过。此前四个 v3/策略/first-hop
 模块在当前 master 下两种模式各 `50 passed, 46 subtests passed`；
