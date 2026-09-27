@@ -1,0 +1,145 @@
+{
+  "schema": "ck3.native_active_knight_entry_static_anchors.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "proof_layer": "exact-build-instruction-sites",
+  "anchors": {
+    "schedule_clears_event_count": {
+      "rva": "0x23C87AD",
+      "bytes_hex": "C783E400000000000000",
+      "instruction": "mov dword ptr [rbx + 0xe4], 0"
+    },
+    "schedule_reads_maa_entries": {
+      "rva": "0x23C87B7",
+      "bytes_hex": "488B6B40",
+      "instruction": "mov rbp, qword ptr [rbx + 0x40]"
+    },
+    "schedule_reads_regiment_knight": {
+      "rva": "0x23C8843",
+      "bytes_hex": "8B9748010000",
+      "instruction": "mov edx, dword ptr [rdi + 0x148]"
+    },
+    "schedule_adds_character_and_day": {
+      "rva": "0x23C88A6",
+      "bytes_hex": "438D0429",
+      "instruction": "lea eax, [r9 + r13]"
+    },
+    "schedule_uses_character_day_modulo": {
+      "rva": "0x23C88AA",
+      "bytes_hex": "F735EC663403",
+      "instruction": "div dword ptr [rip + 0x33466ec]"
+    },
+    "schedule_stores_regiment_id": {
+      "rva": "0x23C893D",
+      "bytes_hex": "8B4F10",
+      "instruction": "mov ecx, dword ptr [rdi + 0x10]"
+    },
+    "schedule_writes_regiment_id_to_row": {
+      "rva": "0x23C8940",
+      "bytes_hex": "894CD008",
+      "instruction": "mov dword ptr [rax + rdx*8 + 8], ecx"
+    },
+    "fire_reads_scheduled_rows": {
+      "rva": "0x23C99A5",
+      "bytes_hex": "498B9ED8000000",
+      "instruction": "mov rbx, qword ptr [r14 + 0xd8]"
+    },
+    "fire_reloads_regiment_id": {
+      "rva": "0x23C99F6",
+      "bytes_hex": "8B5308",
+      "instruction": "mov edx, dword ptr [rbx + 8]"
+    },
+    "fire_checks_army_combat_backlink": {
+      "rva": "0x23C9A62",
+      "bytes_hex": "398128010000",
+      "instruction": "cmp dword ptr [rcx + 0x128], eax"
+    },
+    "fire_reloads_knight_id": {
+      "rva": "0x23C9A6E",
+      "bytes_hex": "418B8048010000",
+      "instruction": "mov eax, dword ptr [r8 + 0x148]"
+    },
+    "manager_refreshes_stats": {
+      "rva": "0x27FB57A",
+      "bytes_hex": "E8D1D7B0FF",
+      "instruction": "call 0x2308d50"
+    },
+    "manager_schedules_side0": {
+      "rva": "0x27FB58F",
+      "bytes_hex": "E8BCD1BCFF",
+      "instruction": "call 0x23c8750"
+    },
+    "refreshes_side0_modifiers": {
+      "rva": "0x2308D66",
+      "bytes_hex": "E8752F0C00",
+      "instruction": "call 0x23cbce0"
+    },
+    "refreshes_side1_modifiers": {
+      "rva": "0x2308D72",
+      "bytes_hex": "E8692F0C00",
+      "instruction": "call 0x23cbce0"
+    },
+    "refreshes_side0_entries": {
+      "rva": "0x2308D82",
+      "bytes_hex": "E829350C00",
+      "instruction": "call 0x23cc2b0"
+    },
+    "refreshes_side1_entries": {
+      "rva": "0x2308D95",
+      "bytes_hex": "E816350C00",
+      "instruction": "call 0x23cc2b0"
+    },
+    "refreshes_levy_entry": {
+      "rva": "0x23CC2E8",
+      "bytes_hex": "E8F3690000",
+      "instruction": "call 0x23d2ce0"
+    },
+    "refreshes_maa_entry": {
+      "rva": "0x23CC316",
+      "bytes_hex": "E8C5690000",
+      "instruction": "call 0x23d2ce0"
+    },
+    "recomputes_entry_stats": {
+      "rva": "0x23D2D2F",
+      "bytes_hex": "E8AC9DFCFF",
+      "instruction": "call 0x239cae0"
+    },
+    "manager_selects_side0_commander": {
+      "rva": "0x27FB683",
+      "bytes_hex": "E8D8D3BCFF",
+      "instruction": "call 0x23c8a60"
+    },
+    "manager_selects_side1_commander": {
+      "rva": "0x27FB6A2",
+      "bytes_hex": "E8B9D3BCFF",
+      "instruction": "call 0x23c8a60"
+    },
+    "manager_enters_main_tick": {
+      "rva": "0x27FB6FD",
+      "bytes_hex": "E87EE7B0FF",
+      "instruction": "call 0x2309e80"
+    },
+    "entry_writes_effective_damage": {
+      "rva": "0x23D2D46",
+      "bytes_hex": "48894B40",
+      "instruction": "mov qword ptr [rbx + 0x40], rcx"
+    },
+    "entry_writes_effective_toughness": {
+      "rva": "0x23D2D4E",
+      "bytes_hex": "48894B48",
+      "instruction": "mov qword ptr [rbx + 0x48], rcx"
+    }
+  },
+  "static_order": [
+    "manager_refreshes_stats < manager_schedules_side0",
+    "refreshes_side0_modifiers < refreshes_side1_modifiers < refreshes_side0_entries < refreshes_side1_entries",
+    "manager_selects_side0_commander < manager_selects_side1_commander < manager_enters_main_tick",
+    "schedule_writes_regiment_id_to_row; fire_reloads_regiment_id_and_knight_id"
+  ],
+  "not_proven": [
+    "cross-manager global tick order",
+    "future join/leave schedule",
+    "all wounded/death effects",
+    "next-day effective stat values"
+  ]
+}
