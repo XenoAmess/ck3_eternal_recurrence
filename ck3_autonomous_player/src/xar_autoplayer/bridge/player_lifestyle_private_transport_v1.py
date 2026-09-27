@@ -16,6 +16,7 @@ from .driver import StepPostconditionError
 QUERY_STEP = "private-query-player-lifestyle-formal-v1"
 STATE_QUERY_STEP = "private-query-player-lifestyle-current-state-v1"
 FOCUS_QUERY_STEP = "private-query-player-lifestyle-stock-focus-v1"
+DIPLOMACY_QUERY_STEP = "private-query-player-lifestyle-diplomacy-targets-v1"
 PERK_SUBMIT_STEP = "private-select-player-lifestyle-perk-v1"
 FOCUS_SUBMIT_STEP = "private-select-player-lifestyle-stock-focus-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
@@ -174,7 +175,8 @@ def parse_player_lifestyle_focus_private_v1(
 
 
 def query_player_lifestyle_focus_private_v1(
-    driver: object, *, expected_revision: int | None = None
+    driver: object, *, expected_revision: int | None = None,
+    query_step: str = FOCUS_QUERY_STEP,
 ) -> dict[str, object]:
     """Run the default-off stock focus read and consume its independent frame.
 
@@ -182,8 +184,10 @@ def query_player_lifestyle_focus_private_v1(
     registers a public capability nor submits a focus action.
     """
 
+    if query_step not in {FOCUS_QUERY_STEP, DIPLOMACY_QUERY_STEP}:
+        raise ValueError("unsupported private lifestyle focus query step")
     if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
-        return {"status": "trial_off", "step": FOCUS_QUERY_STEP}
+        return {"status": "trial_off", "step": query_step}
     starting = driver.take_snapshot()
     played = starting.get("played_character")
     player_id = played.get("character_id") if isinstance(played, Mapping) else None
@@ -203,11 +207,11 @@ def query_player_lifestyle_focus_private_v1(
         and starting.get("snapshot_id") == f"native:{native_revision}"
         and (expected_revision is None or expected_revision == public_revision)
     ):
-        return {"status": "paused_frame_unavailable", "step": FOCUS_QUERY_STEP}
+        return {"status": "paused_frame_unavailable", "step": query_step}
     request_id = f"life-focus-query-{uuid.uuid4().hex}"
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
-        "request_id": request_id, "step": FOCUS_QUERY_STEP,
+        "request_id": request_id, "step": query_step,
         "expected_revision": native_revision,
         "expected_snapshot_id": starting["snapshot_id"],
         "episode_run_id": episode_run_id,
@@ -238,13 +242,105 @@ def query_player_lifestyle_focus_private_v1(
         ),
         "episode_run_id": ending.get("episode_run_id"),
     }
-    parsed = parse_player_lifestyle_focus_private_v1(
+    parser = (parse_player_lifestyle_focus_private_v1
+              if query_step == FOCUS_QUERY_STEP
+              else parse_player_lifestyle_diplomacy_targets_private_v1)
+    parsed = parser(
         response, expected_request_id=request_id,
         source_frame=source_frame, independent_after_frame=after_frame,
     )
     if ending.get("revision") != public_revision or ending.get("map_ready") is not True:
         return {"status": "red", "issue": "paused_focus_public_frame_drift"}
-    return {**parsed, "step": FOCUS_QUERY_STEP, "request_id": request_id}
+    return {**parsed, "step": query_step, "request_id": request_id}
+
+
+def query_player_lifestyle_diplomacy_targets_private_v1(
+    driver: object, *, expected_revision: int | None = None,
+) -> dict[str, object]:
+    """Read one named diplomacy focus/perk pair without admitting an action."""
+    return query_player_lifestyle_focus_private_v1(
+        driver, expected_revision=expected_revision,
+        query_step=DIPLOMACY_QUERY_STEP,
+    )
+
+
+def parse_player_lifestyle_diplomacy_targets_private_v1(
+    response: Mapping[str, object] | None, *, expected_request_id: str,
+    source_frame: Mapping[str, object],
+    independent_after_frame: Mapping[str, object],
+) -> dict[str, object]:
+    """Keep an unavailable target separate from a native false verdict."""
+    bound = ("snapshot_id", "native_revision", "date_raw",
+             "played_character_id", "episode_run_id")
+    if (any(source_frame.get(key) != independent_after_frame.get(key)
+            for key in bound) or not (
+        source_frame.get("paused") is True
+        and independent_after_frame.get("paused") is True
+        and source_frame.get("snapshot_id") ==
+            f"native:{source_frame.get('native_revision')}"
+        and _positive_int(source_frame.get("native_revision"))
+        and _nonnegative_int(source_frame.get("date_raw"))
+        and _positive_int(source_frame.get("played_character_id"))
+        and isinstance(source_frame.get("episode_run_id"), str)
+        and source_frame["episode_run_id"].startswith(
+            f"native-{source_frame['played_character_id']}-")
+    )):
+        return {"status": "red", "issue": "paused_diplomacy_frame_drift_or_invalid"}
+    if not (isinstance(response, Mapping)
+            and response.get("type") == "command_result"
+            and response.get("protocol_version") == 1
+            and response.get("request_id") == expected_request_id
+            and response.get("ok") is True):
+        return {"status": "red", "issue": "native_diplomacy_query_failed"}
+    result = response.get("result")
+    if not (isinstance(result, Mapping)
+            and result.get("step") == DIPLOMACY_QUERY_STEP
+            and result.get("private_build") is True
+            and result.get("advertised") is False
+            and result.get("read_only") is True
+            and result.get("policy_scoped") is True
+            and all(result.get(key) == source_frame.get(key)
+                    for key in bound)):
+        return {"status": "red", "issue": "native_diplomacy_binding_invalid"}
+    focus, perk = result.get("focus"), result.get("perk")
+    if not (isinstance(focus, Mapping) and isinstance(perk, Mapping)
+            and focus.get("target_key") == "diplomacy_foreign_affairs_focus"
+            and perk.get("target_key") == "thoughtful_perk"):
+        return {"status": "red", "issue": "native_diplomacy_target_invalid"}
+    if result.get("status") == "unavailable":
+        return {"status": "source_unavailable",
+                "focus_status": focus.get("status"),
+                "perk_status": perk.get("status")}
+    progress = focus.get("target_lifestyle_progress")
+    if not (result.get("status") == "observed"
+            and focus.get("status") in {"observed_native_legal",
+                                         "observed_native_illegal"}
+            and perk.get("status") in {"observed_native_legal",
+                                        "observed_native_illegal"}
+            and focus.get("native_legal") is
+                (focus["status"] == "observed_native_legal")
+            and perk.get("native_legal") is
+                (perk["status"] == "observed_native_legal")
+            and focus.get("lifestyle_key") == "diplomacy_lifestyle"
+            and perk.get("lifestyle_key") == "diplomacy_lifestyle"
+            and isinstance(perk.get("target_perk_owned"), bool)
+            and isinstance(progress, Mapping)
+            and progress.get("presence") == "present"
+            and progress.get("source") == "exact_native_getters"
+            and _nonnegative_int(progress.get("xp_total_raw"))
+            and _nonnegative_int(progress.get("xp_within_level_raw"))
+            and _positive_int(progress.get("xp_per_level"))
+            and _nonnegative_int(progress.get("unspent_perk_points"))
+            and _nonnegative_int(progress.get("used_perk_points"))
+            and progress["xp_within_level_raw"] <
+                progress["xp_per_level"] * 100000
+            and all(perk.get(field) == progress.get(field) for field in (
+                "xp_total_raw", "xp_within_level_raw", "xp_per_level",
+                "unspent_perk_points", "used_perk_points"))):
+        return {"status": "red", "issue": "native_diplomacy_observation_invalid"}
+    return {"status": "observed", "focus": dict(focus),
+            "perk": dict(perk), "source_frame": {
+                key: source_frame.get(key) for key in bound}}
 
 
 def query_player_lifestyle_private_v1(

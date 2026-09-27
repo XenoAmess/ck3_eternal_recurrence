@@ -219,6 +219,17 @@ void ReadStockFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
   context.stock_focus_result = ReadStockFocusLegalityV1(environment, access);
 }
 
+void ReadDiplomacyFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
+  const auto environment = BindStockFocusLegalityEnvironmentV1(
+      context.module_base, true, kStockFocusLegalityExeSha256V1);
+  const StockFocusLegalityAccessV1 access{
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
+      &CaptureStockFocusTargetProgress};
+  context.stock_focus_result = ReadStockFocusLegalityV1(
+      environment, access, kDiplomacyForeignAffairsFocusV1,
+      kDiplomacyLifestyleV1);
+}
+
 bool ReadStockPerkTargetPlayerState(
     void *opaque, const StockPerkLegalityFrameV1 &frame,
     std::uintptr_t target_lifestyle,
@@ -230,7 +241,8 @@ bool ReadStockPerkTargetPlayerState(
       (target_key != kStockPerkLegalityTargetV1 &&
        target_key != kStockPerkLegalityFollowupTargetV1 &&
        target_key != kStockPerkLegalityNextTargetV1 &&
-       target_key != kStockPerkLegalityCollectTaxesTargetV1) ||
+       target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
+       target_key != kDiplomacyThoughtfulPerkV1) ||
       !OnMain(*context) ||
       context->snapshot == nullptr ||
       context->snapshot->status !=
@@ -259,7 +271,9 @@ bool ReadStockPerkTargetPlayerState(
   }
   const auto &state = context->snapshot->state;
   if (!AssignPlayerLifestyleWindowStableKeyV1(
-          kStockPerkLegalityLifestyleV1,
+          target_key == kDiplomacyThoughtfulPerkV1
+              ? kDiplomacyThoughtfulLifestyleV1
+              : kStockPerkLegalityLifestyleV1,
           output.target_lifestyle_key)) {
     return false;
   }
@@ -307,6 +321,17 @@ void ReadProfessionalWorkforcePerk(
   access.read_target_player_state = &ReadStockPerkTargetPlayerState;
   context.stock_perk_result = ReadStockPerkLegalityV1(
       environment, access, kStockPerkLegalityFollowupTargetV1);
+}
+
+void ReadDiplomacyPerk(PlayerLifestyleFormalWireContextV1 &context) noexcept {
+  const auto environment = BindStockPerkLegalityEnvironmentV1(
+      context.module_base, true, kStockPerkLegalityExeSha256V1);
+  StockPerkLegalityAccessV1 access{
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
+      &ReadStockPerkPlayerState};
+  access.read_target_player_state = &ReadStockPerkTargetPlayerState;
+  context.stock_perk_result = ReadStockPerkLegalityV1(
+      environment, access, kDiplomacyThoughtfulPerkV1);
 }
 
 bool PublishStockPerkCandidates(
@@ -612,6 +637,18 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
         return true;
       }
       ReadProfessionalWorkforcePerk(*context);
+      context->completed = true;
+      return true;
+    }
+    if (context->mode ==
+        PlayerLifestyleFormalWireModeV1::query_diplomacy_targets_only) {
+      if (!ReadState(*context)) {
+        context->failure = PlayerLifestyleFormalStateFailureV1(
+            context->snapshot->unavailable_reason);
+        return true;
+      }
+      ReadDiplomacyFocus(*context);
+      ReadDiplomacyPerk(*context);
       context->completed = true;
       return true;
     }

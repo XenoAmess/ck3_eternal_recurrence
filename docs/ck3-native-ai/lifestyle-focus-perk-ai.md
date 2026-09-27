@@ -1,5 +1,51 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE diplomacy target observation candidate (2026-09-28; exact CK3 1.19.0.6)
+
+The successor source can observe education traits, but the normal LIFE policy
+still filters final targets to stewardship. The first reviewed alternative is
+`diplomacy_foreign_affairs_focus` with `thoughtful_perk` in
+`diplomacy_lifestyle`. The original focus definition is at
+`game/common/focuses/00_lifestyle_focuses.txt:3` (SHA-256
+`DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2`)
+and the original perk definition is at
+`game/common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt:1`
+(SHA-256 `11CD0804DCB859748569D083245F2EC614E5DCCB7AB5915415FA7775A147B510`).
+The original AI weight raises the focus and perk for diplomacy education;
+the focus's `is_shown` and `is_valid` exclude landless adventurers. Those
+scripted conditions are context for the target, while the exact native final
+validators remain authoritative.
+
+The private slot43 candidate uses the existing focus definition lookup at
+`Focus+0x880` and perk lookup at `Perk+0x468`, then invokes the exact command
+validators at RVAs `0x25DF570` and `0x25DFAF0` twice within the same paused
+episode, actor, revision, date and snapshot. The same resolved lifestyle
+pointer supplies XP and unspent/used points through the already bound native
+getters (`0x2668B80`, `0x2668A00`, `0x2668A80`). This is one named target pair,
+not a full five-lifestyle enumeration. A missing definition, failed getter,
+native rejection and a legal result are different outcomes. No new typed
+focus or perk action key is admitted; the existing stewardship formal
+consumer and receipt route remain unchanged.
+
+```mermaid
+flowchart LR
+  A[Paused successor frame] --> B[Exact focus and perk definitions]
+  B --> C[Native final validators and diplomacy XP / points]
+  C -->|two agreeing observations| D[Private read-only target result]
+  C -. unavailable or drift .-> U[Keep uncertainty and investigate source]
+  D -. formal policy, action, postcondition and restore pending .-> E[Wider LIFE closure]
+```
+
+This candidate is source/static only until a separate official matched DLL
+and paired paused CK3 readback. It does not assert that Robert or his current
+heir has diplomacy points, that the native target is legal in their frame, or
+that a perk was consumed.
+On the isolated source candidate, the focused exact-target fixtures passed
+MSVC `/Od` and `/O2` with `/W4 /WX` (focus 6/6, perk 12/12 each), the private
+bridge linked in Debug and Release, and the existing/new Python focus readers
+passed 14/14 under normal and `-O`. These are static results, not a live
+qualification or an M4 milestone change.
+
 ## NW-LIFE successor policy input gap (2026-09-27; exact CK3 1.19.0.6)
 
 The existing opening gate restarts after a verified natural successor and checks

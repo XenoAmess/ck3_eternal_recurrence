@@ -17,6 +17,10 @@ inline constexpr std::string_view kStockFocusLegalityTargetV1 =
     "stewardship_wealth_focus";
 inline constexpr std::string_view kStockFocusLegalityLifestyleV1 =
     "stewardship_lifestyle";
+inline constexpr std::string_view kDiplomacyForeignAffairsFocusV1 =
+    "diplomacy_foreign_affairs_focus";
+inline constexpr std::string_view kDiplomacyLifestyleV1 =
+    "diplomacy_lifestyle";
 
 using StockFocusLegalityFrameV1 = StockPerkLegalityFrameV1;
 using StockFocusValidateCommandV1 = bool (*)(void *, void *);
@@ -92,6 +96,12 @@ StockFocusLegalityEnvironmentV1 BindStockFocusLegalityEnvironmentV1(
 StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
     const StockFocusLegalityEnvironmentV1 &environment,
     const StockFocusLegalityAccessV1 &access) noexcept;
+
+// The alternative target is observation only. It does not admit a typed submit.
+StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
+    const StockFocusLegalityEnvironmentV1 &environment,
+    const StockFocusLegalityAccessV1 &access,
+    std::string_view target_key, std::string_view lifestyle_key) noexcept;
 
 std::string_view StockFocusLegalityStatusKeyV1(
     StockFocusLegalityStatusV1 status) noexcept;

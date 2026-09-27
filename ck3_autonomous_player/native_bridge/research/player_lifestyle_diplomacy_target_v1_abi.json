@@ -1,0 +1,37 @@
+{
+  "schema": "xar.player_lifestyle_diplomacy_target_v1_abi",
+  "status": "static-ready-awaiting-paused-pair",
+  "visibility": "private-read-only-default-off",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_source": {
+    "focus_key": "diplomacy_foreign_affairs_focus",
+    "focus_file": "game/common/focuses/00_lifestyle_focuses.txt:3",
+    "focus_file_sha256": "DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2",
+    "perk_key": "thoughtful_perk",
+    "perk_file": "game/common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt:1",
+    "perk_file_sha256": "11CD0804DCB859748569D083245F2EC614E5DCCB7AB5915415FA7775A147B510",
+    "lifestyle_key": "diplomacy_lifestyle",
+    "focus_lifestyle_pointer_offset": "0x880",
+    "perk_lifestyle_pointer_offset": "0x468",
+    "focus_validator_rva": "0x25DF570",
+    "perk_validator_rva": "0x25DFAF0",
+    "xp_getter_rva": "0x2668B80",
+    "unspent_points_getter_rva": "0x2668A00",
+    "used_points_getter_rva": "0x2668A80",
+    "xp_per_level_offset": "0x138"
+  },
+  "contract": {
+    "step": "private-query-player-lifestyle-diplomacy-targets-v1",
+    "slot": 43,
+    "source": "two bound native target samples per reader on the same application-main paused frame",
+    "response": "separate focus and perk native legal/illegal/unavailable statuses; target-system XP and points; actual owned state",
+    "same_frame": "episode, snapshot, native revision, date and played actor are checked before and after; progress values must agree across focus and perk before Python reports observed",
+    "action_admission": false,
+    "public_registration": false,
+    "uncertainty": "failed source/getter, contradictory target progress, and failed final validators remain unavailable or RED; no inferred zero",
+    "outstanding": "official candidate pairing and paused CK3 readback, policy valuation, typed action, independent postcondition, next turn, cold restore"
+  }
+}

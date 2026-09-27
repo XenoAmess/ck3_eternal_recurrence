@@ -65,12 +65,16 @@ struct Fixture {
   std::uintptr_t expected_definition = 0;
   static Fixture *active;
 
-  void Init() {
-    constexpr std::string_view target = "cutting_corners_perk";
+  void Init(bool diplomacy_target = false) {
+    const std::string_view target = diplomacy_target
+                                        ? kDiplomacyThoughtfulPerkV1
+                                        : kStockPerkLegalityTargetV1;
     constexpr std::string_view followup = "professional_workforce_perk";
     constexpr std::string_view next = "centralization_perk";
     constexpr std::string_view tax_man = "tax_man_perk";
-    constexpr std::string_view lifestyle = "stewardship_lifestyle";
+    const std::string_view lifestyle = diplomacy_target
+                                           ? "diplomacy_lifestyle"
+                                           : kStockPerkLegalityLifestyleV1;
     std::memcpy(target_key_text.data(), target.data(), target.size());
     std::memcpy(followup_key_text.data(), followup.data(), followup.size());
     std::memcpy(next_key_text.data(), next.data(), next.size());
@@ -228,7 +232,8 @@ struct Fixture {
     auto &f = *static_cast<Fixture *>(context);
     if ((target_key != kStockPerkLegalityFollowupTargetV1 &&
          target_key != kStockPerkLegalityNextTargetV1 &&
-         target_key != kStockPerkLegalityCollectTaxesTargetV1) ||
+         target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
+         target_key != kDiplomacyThoughtfulPerkV1) ||
         !ReadPlayer(context, frame, target_lifestyle, output)) {
       return false;
     }
@@ -283,7 +288,9 @@ struct Fixture {
     if (target_key != kStockPerkLegalityTargetV1 && bind_followup) {
       access.read_target_player_state = &Fixture::ReadTargetPlayer;
       expected_definition =
-          target_key == kStockPerkLegalityCollectTaxesTargetV1
+          target_key == kDiplomacyThoughtfulPerkV1
+              ? database_rows[0]
+              : target_key == kStockPerkLegalityCollectTaxesTargetV1
               ? database_rows[3]
               : target_key == kStockPerkLegalityNextTargetV1
                     ? database_rows[2] : database_rows[1];
@@ -329,6 +336,26 @@ void TestProfessionalWorkforceUsesExactFinalValidator() {
                            result.target_key.size) ==
               kStockPerkLegalityFollowupTargetV1,
           "followup query must report the exact selected key");
+}
+
+void TestDiplomacyPerkUsesTargetStateAndFinalValidator() {
+  Fixture f{};
+  f.Init(true);
+  const auto result = f.Run(true, kDiplomacyThoughtfulPerkV1);
+  Require(result.status == Status::observed_native_legal &&
+              result.validator_invoked_twice && f.validator_calls == 2 &&
+              f.capture_calls == 3 && f.command_fields_valid &&
+              result.target_definition == f.database_rows[0] &&
+              result.observed_unspent_points == 1 &&
+              std::string_view(result.lifestyle_key.bytes.data(),
+                               result.lifestyle_key.size) ==
+                  "diplomacy_lifestyle",
+          "diplomacy target must read its own points and final verdict");
+  Fixture missing{};
+  missing.Init(true);
+  Require(missing.Run(true, kDiplomacyThoughtfulPerkV1, false).status ==
+              Status::unavailable_binding,
+          "alternative target cannot reuse stewardship callback");
 }
 
 void TestCentralizationUsesItsOwnFinalValidatorAndOwnedState() {
@@ -513,6 +540,7 @@ int main() {
   try {
     TestLegalWithoutWindowOrCurrentFocus();
     TestProfessionalWorkforceUsesExactFinalValidator();
+    TestDiplomacyPerkUsesTargetStateAndFinalValidator();
     TestCentralizationUsesItsOwnFinalValidatorAndOwnedState();
     TestTaxManUsesItsOwnFinalValidatorAndOwnedState();
     TestProfessionalWorkforceDenialsRemainTyped();
@@ -522,7 +550,7 @@ int main() {
     TestBoundedDatabaseWithoutCapacityGuess();
     TestFrameDriftAndManualReservationBoundary();
     TestProductionBinder();
-    std::cout << "stock perk legality private fixture: 11/11 green\n";
+    std::cout << "stock perk legality private fixture: 12/12 green\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock perk legality private fixture RED: " << error.what()

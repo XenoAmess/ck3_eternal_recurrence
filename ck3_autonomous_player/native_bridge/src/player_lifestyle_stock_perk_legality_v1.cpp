@@ -250,7 +250,10 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
               lifestyle) ||
       lifestyle == 0 ||
       !ReadStableKey(access, lifestyle, sample.target_lifestyle_key) ||
-      View(sample.target_lifestyle_key) != kStockPerkLegalityLifestyleV1) {
+      View(sample.target_lifestyle_key) !=
+          (target_key == kDiplomacyThoughtfulPerkV1
+               ? kDiplomacyThoughtfulLifestyleV1
+               : kStockPerkLegalityLifestyleV1)) {
     return Status::unavailable_candidate;
   }
   const bool state_observed =
@@ -265,7 +268,9 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
   if (!state_observed ||
       !StableKeyValid(sample.player_state.target_lifestyle_key) ||
       View(sample.player_state.target_lifestyle_key) !=
-          kStockPerkLegalityLifestyleV1 ||
+          (target_key == kDiplomacyThoughtfulPerkV1
+               ? kDiplomacyThoughtfulLifestyleV1
+               : kStockPerkLegalityLifestyleV1) ||
       sample.player_state.target_xp_total_raw < 0 ||
       sample.player_state.target_xp_within_level_raw < 0 ||
       sample.player_state.target_xp_per_level <= 0 ||
@@ -334,7 +339,8 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
   if (target_key != kStockPerkLegalityTargetV1 &&
       target_key != kStockPerkLegalityFollowupTargetV1 &&
       target_key != kStockPerkLegalityNextTargetV1 &&
-      target_key != kStockPerkLegalityCollectTaxesTargetV1) {
+      target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
+      target_key != kDiplomacyThoughtfulPerkV1) {
     out.status = Status::unavailable_candidate;
     return out;
   }
@@ -375,7 +381,9 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
   }
   const bool state_agrees =
       View(first.player_state.target_lifestyle_key) ==
-          kStockPerkLegalityLifestyleV1 &&
+          (target_key == kDiplomacyThoughtfulPerkV1
+               ? kDiplomacyThoughtfulLifestyleV1
+               : kStockPerkLegalityLifestyleV1) &&
       first.player_state.unspent_perk_points > 0 &&
       !first.player_state.target_perk_owned;
   if (first.native_legal && !state_agrees) {
