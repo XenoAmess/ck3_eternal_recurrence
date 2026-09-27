@@ -2,7 +2,7 @@
   "schema": "xar.g2.cross-team-war-verification.v1",
   "request_id": "WAR-WINDOW-ROBERT-H2577-20260927",
   "status": "passed",
-  "verified_at_utc": "2026-09-27T15:06:10Z",
+  "verified_at_utc": "2026-09-27T15:07:18Z",
   "verifier_role": "nonwar_operator",
   "consumed_master_commit": "b8dba9d0a562f4dd177f28fa9e6a2f6989e0e25b",
   "candidate_source_commit": "c6137f3504b6b7eb7f75165ccc1f9b25602fc12c",
@@ -20,6 +20,7 @@
     "local_operator_job_exit_code": 0,
     "local_operator_get_status_at_approximately_15_03_utc": "CK3 and injector gates empty",
     "independent_local_os_check_at_15_06_10_utc": "No ck3.exe or xar_ck3_bridge_injector.exe process found",
+    "local_operator_shutdown": "Exact C212 operator MCP server and launcher were stopped after job exit 0; at 15:07:18Z a local process check found no ck3.exe, injector or operator_mcp_server.py, and no port 8766 listener",
     "window_handoff": "The nonwar operator releases its local R0262 CK3 window after bounded completion."
   },
   "remaining_blocker": "The war maintainer must independently check its own local operator, process tree, task bus, Steam/account state, official pair and exact WAR31 live frame before any launch or authorized action. This Git record is not a global lock or remote process observation."
