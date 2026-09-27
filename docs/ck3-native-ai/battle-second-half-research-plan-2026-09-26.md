@@ -37,7 +37,9 @@
 
 第 4 项战宽静态生产/消费链：[exact-build 调用与字段追踪](join-width-production-and-fire.md)确认增援 join 刷新双方人数缓存后，符合旧 base width 门时更新历史最大 base `+0x6C0` 与 final `+0x6C4`；随后主阶段出伤读取存储的 final width。078 之前两次自然增援回放尚无 join 前后战宽数值；完整只读探针必须把 join 入口、正常返回和首次出伤前绑定同一 CombatID/日期，不能预设三点都在同一线程。
 
-第 4 项战宽局部实测更新：[078 独立回放](join-width-production-and-fire.md#078-两点战宽实采与第三点线程门)在同一 CombatID `16777218`、原生日期 `53146512` 见 ArmyID `22` 加入 side 0；join 入口→正常返回的 base width `1645→2467`、final width `1480→2220`。首次 side0 出伤点又被错误的 mailbox 线程等式拒绝，故完整三点探针仍为 collector RED；不能把 `2220` 写成已经捕获的出伤器入参。075/077/078 的原始失败均保留，079 将用修正线程门独立复测。上段旧的“同线程”取证要求以专题中的 077/078 勘误为准：join 两点自身同线程，phase-fire 可在另一线程，但必须同 CombatID/日期和 side。
+第 4 项战宽局部实测更新：[078 独立回放](join-width-production-and-fire.md#078-两点战宽实采与第三点线程门)在同一 CombatID `16777218`、原生日期 `53146512` 见 ArmyID `22` 加入 side 0；join 入口→正常返回的 base width `1645→2467`、final width `1480→2220`。首次 side0 出伤点又被错误的 mailbox 线程等式拒绝，故完整三点探针仍为 collector RED；不能把 `2220` 写成已经捕获的出伤器入参。075/077/078 的原始失败均保留。[079](join-width-production-and-fire.md#079-实机前环境-red) 已准备好修正线程门的私有 DLL，却因无法取得新鲜、可读的 Steam 离线状态而在 CK3 启动前环境 RED；不算战宽阴性样本。下一次必须用新 attempt 重采三点。上段旧的“同线程”取证要求以专题中的 077/078 勘误为准：join 两点自身同线程，phase-fire 可在另一线程，但必须同 CombatID/日期和 side。
+
+078 的局部模型对拍还确认：以原版森林宽度乘数 `90000` 和实采双方 totals 为输入，已有 `update_combat_width` 对入口/返回两组 base/final 共四个数值零差。它是**给定当日参战身份和人数**后的算术核，不产生未来增援到达日；后续 trial 必须同时更新 roster、entry 状态、双方人数缓存和宽度。旧 side0 缓存与新 ArmyID `22` 的人数直接相加会高出实采返回值 `5627319` Q100000，故不能以简单加法补出 join 后人数。正在核对该差额对应的同帧 entry 与缓存来源。
 
 第 4 项人物与军队称呼更新：[双日存档身份映射](episode01-day11-day21-combat-human-names-2026-09-27.md)已将 87 号穆巴里尊归到阿里的 ArmyID `16777221`，这场战斗是阿里一方、拉马丹指挥，对罗贝尔一方；第 21 日新增 ArmyID `22` 是穆尼斯的军队。视频与智能体解释层可以用这些带 ID 的称呼。[军队标题静态边界](episode01-army-ui-name-boundary-2026-09-27.md)尚未读到 `Army.GetNameNoTooltip` 的本场返回，不能把存档中的 name seed 拼成精确 UI 军队标题。
 
@@ -46,6 +48,8 @@
 第 5 项普通终局后续 effect 的新增静态边界：[败方战分门与正统性/战争条件](normal-result-loser-effect-war-score-gate-2026-09-27.md)把原生 row `+0x40` → ResultData `+0x40` → `warscore_value` accessor → loser on-action 脚本连成可复核的同 build 链。脚本声明单场幅度 `>=15` 且身份合法时的 `-50` 正统性 effect；同一外层分支再以战争方总分 `<=-25` 等条件筛选 marshal 事件。这里只闭合调用顺序、字段身份与脚本声明；字面量比较编译和实际 effect 写回还需同场实机，不能宣称战争已经结束或 R0244 已通过。
 
 同项比较器补研：[原生 `setge` 分支与 loaded-node 缺口](warscore-trigger-generic-ge-and-loaded-node-gap-2026-09-27.md)已证 `CCombatWarscoreTrigger` 的虚表通向 generic 比较器，操作码 `0x3CB` 对两侧 raw qword 执行包含等号的 signed `>=`。脚本实例的操作码及 RHS `1,500,000` 尚未从实际载入节点读回；这仍需同场、同 CombatID、带 VFS 来源的被动实机采样。
+
+同项败方正统性配对审计：[11 份原生存档与 14 份正式回执](normal-result-loser-legitimacy-pair-gap-2026-09-27.md)只在墨西拿正常终局前证明败方罗贝尔 CharacterID `29829` 的正统性为 `321`；终局后没有对同一人物的原生读数。072/074 此时控制的是胜方阿里 CharacterID `31549`，其 `played` 字段不能作败方的后值。脚本所声明的 `-50` 仍待同身份 post-terminal 观测，不得记为已实测写回。
 
 执行纪律：每个新证据先保存原始 bytes/SHA、源存档、游戏 build、CombatID/WarID、参战双方与日期，再生成只读投影。静态公式向量、条件计算、独立回放与自然 AI 行为在文档、智能体和画面中均分开标注。任何残差先查同帧输入与定点截断，再查参与者/事件边界；不能为凑零差修改历史原始回执或把模型自生成数当 expected。
 
