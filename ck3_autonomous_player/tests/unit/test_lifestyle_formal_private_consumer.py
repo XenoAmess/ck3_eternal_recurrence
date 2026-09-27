@@ -84,6 +84,7 @@ class _State:
         self.focus_legal = True
         self.formal_focus_absent = False
         self.stock_focus_present = False
+        self.zero_points = False
         self.professional_workforce_ready = False
         self.centralization_ready = False
 
@@ -109,6 +110,12 @@ class _State:
                     "error": "native_lifestyle_state_or_final_candidates_unavailable"}
         if step == QUERY_STEP:
             life = _life_snapshot()
+            if self.zero_points:
+                life["current_lifestyle_progress"].update({
+                    "xp_total_raw": 0, "xp_within_level_raw": 0,
+                    "unspent_perk_points": 0, "used_perk_points": 0,
+                })
+                life["legal_perk_candidates"]["items"] = []
             if self.professional_workforce_ready:
                 life["owned_perk_keys"] = ["cutting_corners_perk"]
                 life["current_lifestyle_progress"]["unspent_perk_points"] = 2
@@ -135,6 +142,11 @@ class _State:
                 "formal_precondition_status": "ready", "snapshot": life}
         elif step == STATE_QUERY_STEP:
             life = _life_snapshot()
+            if self.zero_points:
+                life["current_lifestyle_progress"].update({
+                    "xp_total_raw": 0, "xp_within_level_raw": 0,
+                    "unspent_perk_points": 0, "used_perk_points": 0,
+                })
             if not self.stock_focus_present:
                 life["current_focus"] = {"presence": "absent"}
                 life["current_lifestyle_progress"] = {"presence": "absent"}
@@ -543,7 +555,50 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             "stock_focus_native_legal",
             planned["plan"]["initial_lifestyle_focus_existing"],
         )
-        self.assertEqual(driver.state.last["step"], STATE_QUERY_STEP)
+        perk = planned["plan"]["initial_lifestyle_focus_existing"]["perk_opportunity"]
+        self.assertEqual(perk["status"], "observed")
+        self.assertEqual(perk["legal_candidate_count"], 1)
+        self.assertTrue(perk["policy_target_final_legal"]["cutting_corners_perk"])
+        self.assertFalse(perk["policy_target_owned"]["cutting_corners_perk"])
+        self.assertEqual(driver.state.last["step"], QUERY_STEP)
+
+    def test_opening_existing_focus_reports_real_zero_points_and_zero_legal_perks(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.zero_points = True
+        plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        existing = plan["initial_lifestyle_focus_existing"]
+        self.assertEqual(plan["selected_step"], "query-campaign-root-context-v1")
+        self.assertEqual(existing["current_lifestyle_progress"]["xp_total_raw"], 0)
+        self.assertEqual(existing["current_lifestyle_progress"]["unspent_perk_points"], 0)
+        self.assertEqual(existing["perk_opportunity"]["status"], "observed")
+        self.assertEqual(existing["perk_opportunity"]["legal_candidate_count"], 0)
+        self.assertFalse(any(
+            existing["perk_opportunity"]["policy_target_final_legal"].values()
+        ))
+
+    def test_opening_formal_fallback_projects_perks_without_another_formal_query(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.focus_legal = False
+        with (
+            mock.patch.object(
+                driver, "query_player_lifestyle_current_state_private_v1",
+                return_value={"status": "native_query_unavailable"},
+            ),
+            mock.patch.object(
+                driver, "query_player_lifestyle_formal_private_v1",
+                wraps=driver.query_player_lifestyle_formal_private_v1,
+            ) as formal_reader,
+        ):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], "query-campaign-root-context-v1")
+        existing = plan["initial_lifestyle_focus_existing"]
+        self.assertEqual(existing["readback_source"], "native_formal_and_stock")
+        self.assertEqual(existing["perk_opportunity"]["status"], "observed")
+        self.assertEqual(formal_reader.call_count, 1)
 
     def test_existing_focus_does_not_require_formal_or_stock_window(self) -> None:
         driver = _Driver()
@@ -563,7 +618,19 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             plan["initial_lifestyle_focus_existing"]["source_frame"]["native_revision"],
             3,
         )
-        self.assertEqual(driver.state.last["step"], STATE_QUERY_STEP)
+        self.assertEqual(
+            plan["initial_lifestyle_focus_existing"]["perk_opportunity"]["status"],
+            "unknown",
+        )
+        self.assertEqual(
+            plan["initial_lifestyle_focus_existing"]["perk_opportunity"]["query_status"],
+            "native_query_unavailable",
+        )
+        self.assertIsNone(
+            plan["initial_lifestyle_focus_existing"]["perk_opportunity"]
+            ["legal_candidate_count"]
+        )
+        self.assertEqual(driver.state.last["step"], QUERY_STEP)
 
     def test_existing_focus_without_exact_xp_stays_blocked(self) -> None:
         driver = _Driver()

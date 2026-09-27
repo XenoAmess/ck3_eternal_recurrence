@@ -4838,6 +4838,11 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "battle_terminal_cruise_assessments",
     )
     compact = {key: plan.get(key) for key in keys if key in plan}
+    opening_life = _compact_opening_lifestyle_observation(
+        plan.get("initial_lifestyle_focus_existing")
+    )
+    if opening_life is not None:
+        compact["opening_lifestyle_observation"] = opening_life
     war_exit = _compact_war_exit_decision(plan.get("war_exit_decision"))
     if war_exit is not None:
         compact["war_exit_decision"] = war_exit
@@ -4845,6 +4850,48 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
     if m5_joint is not None:
         compact["m5_joint_observation"] = m5_joint
     return compact
+
+
+def _compact_opening_lifestyle_observation(value: object) -> dict[str, object] | None:
+    """Retain bounded LIFE XP, points and observed perk legality in reports."""
+    if not isinstance(value, dict) or value.get("status") != "verified_existing":
+        return None
+    source = value.get("source_frame")
+    focus = value.get("current_focus")
+    progress = value.get("current_lifestyle_progress")
+    perk = value.get("perk_opportunity")
+    if not all(isinstance(item, dict) for item in (source, focus, progress)):
+        return None
+    result: dict[str, object] = {
+        "status": "verified_existing",
+        "readback_source": value.get("readback_source"),
+        "source_frame": {key: source.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "player_character_id",
+        )},
+        "current_focus": {key: focus.get(key) for key in (
+            "presence", "key", "lifestyle_key",
+        )},
+        "current_lifestyle_progress": {key: progress.get(key) for key in (
+            "presence", "lifestyle_key", "xp_total_raw",
+            "xp_within_level_raw", "xp_per_level", "unspent_perk_points",
+            "used_perk_points",
+        )},
+    }
+    if isinstance(perk, dict):
+        result["perk_opportunity"] = {key: perk.get(key) for key in (
+            "status", "query_status", "native_error", "error_type",
+            "formal_precondition_status", "legal_candidate_count",
+            "policy_target_final_legal", "policy_target_owned",
+        )}
+    else:
+        result["perk_opportunity"] = {
+            "status": "unknown", "query_status": "not_observed",
+            "legal_candidate_count": None,
+            "policy_target_final_legal": None,
+            "policy_target_owned": None,
+        }
+    return result
 
 
 def _compact_m5_joint_collection(plan: dict[str, object]) -> dict[str, object] | None:
