@@ -276,6 +276,61 @@ class PursuitGoldenTests(unittest.TestCase):
         self.assertEqual(result.total_hard_raw, 2_261_666)
         self.assertEqual(result.domains[0].allocation_remainder_raw, 1)
 
+    def test_screen_dominates_pursuit_static_boundary(self) -> None:
+        # Static 0x23CD2E0/0x23CD660 vector, not an independent live parity.
+        # It covers extra=0, the minimum floor, signed modifier, and the
+        # earliest-entry remainder which the Messina live case cannot cover.
+        retreater = (
+            CombatRegimentState(
+                1, RegimentKind.LEVY, 0, 7_000_003, 1_000_000,
+                screen_raw=2_000_000,
+            ),
+            CombatRegimentState(
+                2, RegimentKind.LEVY, 0, 5_000_007, 1_200_000,
+                screen_raw=500_000,
+            ),
+            CombatRegimentState(
+                3, RegimentKind.MEN_AT_ARMS, 0, 3_000_011, 2_000_000,
+                screen_raw=1_000_000,
+            ),
+        )
+        pursuer = (
+            CombatRegimentState(
+                4, RegimentKind.MEN_AT_ARMS, 9_000_013, 0, 1,
+                pursuit_raw=600_000,
+            ),
+        )
+        result = apply_pursuit_day(
+            retreater,
+            pursuer,
+            initial_pools=PursuitInitialPools.from_entries(retreater),
+            retreater_loss_modifier_raw=25_000,
+        )
+        self.assertEqual(result.toughness_soft_raw, 190_000_334)
+        self.assertEqual(result.pursuit_damage_raw, 27_000_039)
+        self.assertEqual(result.screen_raw, 195_000_205)
+        self.assertEqual(result.base_raw, 9_500_016)
+        self.assertEqual(result.minimum_raw, 1_900_003)
+        self.assertEqual(result.extra_raw, 0)
+        self.assertEqual(result.floor_component_raw, 1_900_003)
+        self.assertEqual(
+            tuple(
+                (domain.extra_daily_raw, domain.floor_daily_raw,
+                 domain.allocation_remainder_raw)
+                for domain in result.domains
+            ),
+            ((0, 49_950, 1), (0, 12_487, 1)),
+        )
+        self.assertEqual(
+            result.hard_by_regiment_raw,
+            ((1, 29_138), (2, 20_812), (3, 12_487)),
+        )
+        self.assertEqual(result.total_hard_raw, 62_437)
+        self.assertEqual(
+            tuple(entry.soft_casualties_raw for entry in result.entries),
+            (6_970_865, 4_979_195, 2_987_524),
+        )
+
     def test_three_days_reuse_frozen_initial_pools(self) -> None:
         result = apply_three_day_pursuit(
             self.retreater, self.pursuer, initial_pools=self.initial

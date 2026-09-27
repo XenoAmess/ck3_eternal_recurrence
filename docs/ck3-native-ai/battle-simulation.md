@@ -764,6 +764,9 @@ screen 为 `500000`。Pursuer 有 `30000000` current、`1500000` pursuit 的 MAA
 
 levy 的 `1` raw remainder 在第二遍进入第一个 entry；MAA 单 entry 没有 allocation remainder。三日都从冻结的
 initial domain pool 重算 budget，但每一日用缩小后的 current soft pool cap/分配，故不能把首日结果简单乘三。
+非零败方掩护**压过**追击时的 `extra=0`、minimum 托底和逐 entry 余数已有
+[独立静态回归向量及实机采集合同](pursuit-screen-nonzero-branch-contract-2026-09-27.md)；
+该向量不提高已有 attempt-004 的实机覆盖等级。
 
 ```mermaid
 flowchart TD
