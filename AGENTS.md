@@ -311,6 +311,11 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - **谨慎创建 Git 分支不等于限制 Agent 子线程。** 能按文件所有权、运行现场或依赖边界安全拆分的工作应主动使用多 Agent
   并行；各线程仍共同服务于 `master`，可在同一工作树修改互不重叠文件，或使用基于 exact master 的 detached worktree。
   detached worktree 不是新分支；若产生提交，必须尽快 rebase 到最新 `master` 并 fast-forward 更新主线，不得因此保留长期游离 ref。
+- 在 Windows 为并行任务新建 worktree 时，优先使用短的绝对路径（例如 `D:\w87`）；本仓深层目录曾使
+  `D:\workspace\ck3_regiment87_modifier_20260927` 这种长目标在 checkout 末尾报 `Could not reset index file to revision HEAD`，
+  而短路径完成同一约 9875 文件的 checkout。任务开始仍先按任务总线协议登记；`git worktree add` 完成后核对目标 `.git`
+  和 `git status --short --branch` 仅有预期分支且无脏项，再开始编辑或测试。checkout 期间的临时大量 dirty entries 不能当成真实改动。
+  失败时先确认 Git 是否已自行回收目标；如需清理残留目录，须先验证解析后的绝对路径位于预期工作区，不能误删其他任务素材。
 - 禁止 force-push。并发推送先 fetch/复核 remote master；远端移动时停止 push，rebase 到新 master、复测后普通 fast-forward push。
 - 冻结 evidence 使用 detached HEAD 与根目录 `.xar-frozen-evidence.json`；不得把历史 runtime clone 当开发线。仅当写 marker 会
   改变所有者已冻结的 dirty tree 时，才可用记录 exact HEAD/status/diff hash 的中央 machine-readable ledger 代替。删除 branch ref
