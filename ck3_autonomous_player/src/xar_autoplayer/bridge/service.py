@@ -1034,7 +1034,8 @@ class GameplayBridgeService:
         unknown: dict[str, object] = {
             "status": "unknown", "query_status": "not_executed",
             "formal_precondition_status": None,
-            "legal_candidate_count": None,
+            "candidate_scope": None,
+            "legal_candidate_count_in_scope": None,
             "policy_target_final_legal": None,
             "policy_target_owned": None,
         }
@@ -1085,6 +1086,7 @@ class GameplayBridgeService:
         owned = life.get("owned_perk_keys") if isinstance(life, dict) else None
         formal_focus = life.get("current_focus") if isinstance(life, dict) else None
         items = candidates.get("items") if isinstance(candidates, dict) else None
+        scope = candidates.get("scope") if isinstance(candidates, dict) else None
         if not (
             isinstance(readiness, dict)
             and readiness.get("same_frame_ready") is True
@@ -1092,6 +1094,7 @@ class GameplayBridgeService:
             and readiness.get("owned_perks_ready") is True
             and isinstance(candidates, dict)
             and candidates.get("status") == "available"
+            and (scope is None or scope == "policy_target")
             and isinstance(items, list)
             and all(isinstance(row, dict)
                     and isinstance(row.get("key"), str)
@@ -1106,12 +1109,15 @@ class GameplayBridgeService:
             return {**unknown, "query_status": "legal_candidates_unavailable"}
         lifestyle = focus["lifestyle_key"]
         keys = {row["key"] for row in items if row["lifestyle_key"] == lifestyle}
+        policy_scoped = scope == "policy_target"
         return {
             "status": "observed", "query_status": "available",
             "formal_precondition_status": query.get("formal_precondition_status"),
-            "legal_candidate_count": len(keys),
+            "candidate_scope": "policy_target" if policy_scoped else "full_inventory",
+            "legal_candidate_count_in_scope": len(keys),
             "policy_target_final_legal": {
-                key: key in keys for key in sorted(PERK_TARGETS)
+                key: (True if key in keys else None if policy_scoped else False)
+                for key in sorted(PERK_TARGETS)
             },
             "policy_target_owned": {
                 key: key in owned for key in sorted(PERK_TARGETS)
