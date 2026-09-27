@@ -81,6 +81,16 @@ First take exclusive CK3 ownership and confirm all managed CK3 processes are dea
 python tools/g2_preview_operator.py prepare-state --manifest <frozen-operator-manifest.json> --sample-dir <frozen-paired-seed-directory>
 ```
 
+For a construction cold restore, pass the saved
+`construction-formal-pending-v1.json` with `--construction-sidecar` when it is
+outside the sample directory. The optional `applied_prior` list keeps older
+verified buildings under completion or income watch after a newer building
+starts. Preparation checks each listed receipt and its original submit action
+against the same actor, episode and checkpoint-bounded driver history before
+copying the sidecar unchanged. An absent or empty list retains the previous
+single-building pairing; a copied ledger is not evidence of a completed build
+or income gain.
+
 With the ordinary lifecycle triple, this one command runs `prepare-profile
 --xar-enabled xar_off`, copies the pair to its canonical target paths, runs
 `verify-profile --xar-enabled xar_off`, invokes the public agent subcommand

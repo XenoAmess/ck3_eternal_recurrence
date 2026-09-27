@@ -718,6 +718,15 @@ class G2PreviewOperatorTest(unittest.TestCase):
                        "actor_character_id": 29829,
                        "episode_run_id": "native-29829-test",
                        "candidate": candidate}
+            older_request_id = "construction-submit-" + "a" * 32
+            older_candidate = {**candidate, "barony_title_id": 2173,
+                               "province_id": 2628, "slot_index": 0}
+            older_pending = {**pending, "action_request_id": older_request_id,
+                             "candidate": older_candidate}
+            older_applied = {**applied, "action_request_id": older_request_id,
+                             "candidate": older_candidate,
+                             "completion_status": "completed",
+                             "observed_player_monthly_gold_income_raw": None}
             driver = {
                 "episode_character_id": 29829,
                 "episode_run_id": "native-29829-test",
@@ -725,6 +734,10 @@ class G2PreviewOperatorTest(unittest.TestCase):
                                     "episode_character_id": 29829,
                                     "episode_run_id": "native-29829-test"},
                 "command_history": [
+                    {"index": 90, "command": "private-submit-player-construction-v1",
+                     "result": older_pending},
+                    {"index": 91, "command": "private-query-player-construction-receipt-v1",
+                     "result": older_applied},
                     {"index": 95, "command": "private-submit-player-construction-v1",
                      "result": pending},
                     {"index": 103, "command": "private-query-player-construction-receipt-v1",
@@ -736,7 +749,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
             sidecar_path.parent.mkdir()
             sidecar_bytes = json.dumps({
                 "schema": "xar.ck3.construction_formal_pending_v1",
-                "pending": None, "applied": applied,
+                "pending": None, "applied": applied, "applied_prior": [older_applied],
             }).encode("utf-8")
             sidecar_path.write_bytes(sidecar_bytes)
             manifest_path = root / "manifest.json"
@@ -768,6 +781,8 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertEqual(receipt["source"], str(sidecar_path))
             self.assertEqual(receipt["sha256"], hashlib.sha256(sidecar_bytes).hexdigest())
             self.assertEqual(Path(receipt["path"]).read_bytes(), sidecar_bytes)
+            self.assertEqual(json.loads(Path(receipt["path"]).read_text(
+                encoding="utf-8"))["applied_prior"], [older_applied])
 
     def test_prepare_state_rejects_applied_sidecar_after_checkpoint(self) -> None:
         request_id = "construction-submit-" + "d" * 32
@@ -793,6 +808,86 @@ class G2PreviewOperatorTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "does not match checkpoint"):
             g2_preview_operator.construction_pending_sidecar_request(sidecar, driver, {})
 
+    def test_construction_sidecar_pairs_every_prior_applied_receipt(self) -> None:
+        actor = 29829
+        episode = "native-29829-test"
+        candidate_1 = {"barony_title_id": 2174, "province_id": 2629,
+                       "building_type_id": 628, "slot_index": 1}
+        candidate_2 = {"barony_title_id": 2175, "province_id": 2630,
+                       "building_type_id": 629, "slot_index": 2}
+        request_1 = "construction-submit-" + "a" * 32
+        request_2 = "construction-submit-" + "b" * 32
+
+        def submitted(request_id: str, candidate: dict) -> dict:
+            return {"status": "submitted_verification_pending",
+                    "action_request_id": request_id, "candidate": candidate,
+                    "actor_character_id": actor, "episode_run_id": episode}
+
+        def applied(request_id: str, candidate: dict) -> dict:
+            return {"status": "applied", "postcondition_verified": True,
+                    "completion_status": "in_progress",
+                    "action_request_id": request_id, "candidate": candidate,
+                    "actor_character_id": actor, "episode_run_id": episode}
+
+        prior = {**applied(request_1, candidate_1),
+                 "completion_status": "completed",
+                 "observed_player_monthly_gold_income_raw": None}
+        newest = applied(request_2, candidate_2)
+        sidecar = {"schema": "xar.ck3.construction_formal_pending_v1",
+                   "pending": None, "applied": newest, "applied_prior": [prior]}
+        history = [
+            {"index": 10, "command": "private-submit-player-construction-v1",
+             "result": submitted(request_1, candidate_1)},
+            {"index": 11, "command": "private-query-player-construction-receipt-v1",
+             "result": prior},
+            {"index": 20, "command": "private-submit-player-construction-v1",
+             "result": submitted(request_2, candidate_2)},
+            {"index": 21, "command": "private-query-player-construction-receipt-v1",
+             "result": newest},
+        ]
+        driver = {"episode_character_id": actor, "episode_run_id": episode,
+                  "last_checkpoint": {"history_index": 21,
+                                      "episode_character_id": actor,
+                                      "episode_run_id": episode},
+                  "command_history": history}
+        pair = g2_preview_operator.construction_pending_sidecar_request
+        self.assertEqual(pair(sidecar, driver, {}), request_2)
+        candidate_0 = {"barony_title_id": 2172, "province_id": 2627,
+                       "building_type_id": 627, "slot_index": 0}
+        request_0 = "construction-submit-" + "c" * 32
+        earliest = applied(request_0, candidate_0)
+        earliest_rows = [
+            {"index": 1, "command": "private-submit-player-construction-v1",
+             "result": submitted(request_0, candidate_0)},
+            {"index": 2, "command": "private-query-player-construction-receipt-v1",
+             "result": earliest},
+        ]
+        both_prior = {**sidecar, "applied_prior": [earliest, prior]}
+        both_driver = {**driver, "command_history": [*earliest_rows, *history]}
+        self.assertEqual(pair(both_prior, both_driver, {}), request_2)
+        with self.assertRaisesRegex(ValueError, "checkpoint receipt"):
+            pair(both_prior, {**both_driver, "command_history":
+                              [earliest_rows[0], *history]}, {})
+        self.assertEqual(pair({**sidecar, "applied_prior": []}, driver, {}), request_2)
+        self.assertEqual(pair({key: value for key, value in sidecar.items()
+                               if key != "applied_prior"}, driver, {}), request_2)
+
+        for bad_prior in (None, {}, {**prior, "actor_character_id": actor + 1},
+                          {**prior, "action_request_id": request_2},
+                          {**prior, "candidate": candidate_2}):
+            with self.subTest(bad_prior=bad_prior):
+                with self.assertRaises(ValueError):
+                    pair({**sidecar, "applied_prior": [bad_prior]}, driver, {})
+        with self.assertRaisesRegex(ValueError, "saved submit action"):
+            pair(sidecar, {**driver, "command_history": history[1:]}, {})
+        with self.assertRaisesRegex(ValueError, "checkpoint receipt"):
+            pair(sidecar, {**driver, "command_history":
+                           [history[0], *history[2:]]}, {})
+        with self.assertRaisesRegex(ValueError, "checkpoint receipt"):
+            pair(sidecar, {**driver, "command_history":
+                           [{**history[1], "index": 22}, history[0],
+                            *history[2:]]}, {})
+
     def test_old_episode_construction_does_not_require_current_sidecar(self) -> None:
         driver = {
             "episode_character_id": 42000,
@@ -813,6 +908,28 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertFalse(
             g2_preview_operator.saved_in_progress_construction_without_sidecar(driver)
         )
+
+    def test_completed_construction_without_income_still_requires_sidecar(self) -> None:
+        actor = 29829
+        episode = "native-29829-test"
+        completed = {"status": "applied", "postcondition_verified": True,
+                     "completion_status": "completed",
+                     "observed_player_monthly_gold_income_raw": None,
+                     "action_request_id": "construction-submit-" + "a" * 32,
+                     "actor_character_id": actor, "episode_run_id": episode}
+        driver = {"episode_character_id": actor, "episode_run_id": episode,
+                  "last_checkpoint": {"history_index": 10,
+                                      "episode_character_id": actor,
+                                      "episode_run_id": episode},
+                  "command_history": [
+                      {"index": 9,
+                       "command": "private-query-player-construction-receipt-v1",
+                       "result": completed}]}
+        requires_sidecar = g2_preview_operator.saved_in_progress_construction_without_sidecar
+        self.assertTrue(requires_sidecar(driver))
+        observed = {**completed, "observed_player_monthly_gold_income_raw": 603774}
+        self.assertFalse(requires_sidecar({**driver, "command_history": [
+            {**driver["command_history"][0], "result": observed}]}))
 
     def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
