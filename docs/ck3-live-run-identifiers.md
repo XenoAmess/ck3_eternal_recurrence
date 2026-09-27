@@ -34,6 +34,14 @@ py tools/ck3_live_run_id.py status --mod auto-upgrade-buildings --run-id <完整
 `launch-started`、`completed-green`、`completed-red`、`superseded` 和 `voided`。测试可通过
 `XAR_CK3_LIVE_RUN_STATE_ROOT` 使用隔离状态目录，绝不能消耗生产计数器。
 
+G2 Robert 正式续跑沿用已建立的 `eternal-recurrence` 产品命名空间；实际加载的
+`mod/xar_autoplayer.mod` 是独立记录的运行配置，不为它重置序号或改写既有分配。
+新版 `g2_preview_operator.py run` 在 exact preflight 成功后自动分配并写回执，
+无需调用者预先手动分配第二个编号。该入口要求显式的
+`--live-run-state-root` 或目标机器本地的 `XAR_CK3_LIVE_RUN_STATE_ROOT`，
+Windows 上不接受 C: 根；应指向该机器已经在使用的非 C 盘持久分配器，
+不能为每次候选新建一个会从 R0001 重开的根。冻结旧制品不受新版入口影响。
+
 runner 必须在静态/preflight 通过后、任何 CK3 启动前分配编号，并立即在 artifact 根目录写
 `live-run-identity.json`。即使后续在启动前失败，已分配编号也不回收；报告用 `ck3_launch_attempted` 区分“已登记 attempt”和“实际启动”。
 这让编号保持单调且不会因覆盖失败目录而复用。

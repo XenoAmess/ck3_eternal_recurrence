@@ -19,6 +19,34 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_logged_child_start_callback_runs_only_after_spawn(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            seen: list[int] = []
+            exit_code = g2_preview_operator.run_logged(
+                [sys.executable, "-c", "print('ready')"],
+                root / "stdout.txt", root / "stderr.txt",
+                on_started=seen.append,
+            )
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(len(seen), 1)
+            self.assertGreater(seen[0], 0)
+            self.assertEqual(
+                (root / "stdout.txt").read_text(encoding="utf-8").strip(),
+                "ready",
+            )
+            seen.clear()
+            with mock.patch.object(
+                g2_preview_operator.subprocess, "Popen",
+                side_effect=OSError("spawn failed"),
+            ), self.assertRaisesRegex(OSError, "spawn failed"):
+                g2_preview_operator.run_logged(
+                    [sys.executable, "-c", "print('never')"],
+                    root / "failed-stdout.txt", root / "failed-stderr.txt",
+                    on_started=seen.append,
+                )
+            self.assertEqual(seen, [])
+
     def test_prepare_state_carries_paired_faction_gift_pending_identity(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1431,12 +1459,18 @@ class G2PreviewOperatorTest(unittest.TestCase):
             }), encoding="utf-8")
             output = root / "attempt"
             calls: list[list[str]] = []
+            outcomes = {"preflight": 0, "formal": 0}
 
-            def fake_run(command, stdout_path, stderr_path):
+            def fake_run(command, stdout_path, stderr_path, *, on_started=None):
                 calls.append(command)
                 stdout_path.write_text("{}\n", encoding="utf-8")
                 stderr_path.write_text("", encoding="utf-8")
-                return 0
+                if on_started is not None:
+                    on_started(42137)
+                return outcomes[
+                    "preflight" if "native-one-generation-preflight" in command
+                    else "formal"
+                ]
 
             args = g2_preview_operator.parser().parse_args([
                 "run", "--manifest", str(manifest_path),
@@ -1444,6 +1478,9 @@ class G2PreviewOperatorTest(unittest.TestCase):
             ])
             with mock.patch.object(
                 g2_preview_operator, "run_logged", side_effect=fake_run
+            ), mock.patch.object(
+                g2_preview_operator, "live_run_state_root",
+                return_value=root / "allocator",
             ):
                 result = g2_preview_operator.command_run(args)
                 private_args = g2_preview_operator.parser().parse_args([
@@ -1464,11 +1501,26 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     "--private-m5-joint-collector",
                 ])
                 m5_result = g2_preview_operator.command_run(m5_args)
+                outcomes["preflight"] = 1
+                blocked_args = g2_preview_operator.parser().parse_args([
+                    "run", "--manifest", str(manifest_path),
+                    "--output", str(root / "attempt-preflight-red"),
+                ])
+                blocked_result = g2_preview_operator.command_run(blocked_args)
+                outcomes["preflight"] = 0
+                outcomes["formal"] = 1
+                red_args = g2_preview_operator.parser().parse_args([
+                    "run", "--manifest", str(manifest_path),
+                    "--output", str(root / "attempt-formal-red"),
+                ])
+                red_result = g2_preview_operator.command_run(red_args)
 
             self.assertEqual(result, 0)
             self.assertEqual(private_result, 0)
             self.assertEqual(family_result, 0)
             self.assertEqual(m5_result, 0)
+            self.assertEqual(blocked_result, 1)
+            self.assertEqual(red_result, 1)
             self.assertIn("--xar-enabled", calls[0])
             self.assertIn("xar_off", calls[0])
             self.assertIn("--ordinary-campaign-no-pact", calls[0])
@@ -1494,6 +1546,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertFalse(receipt["private_lifestyle_formal_trial"])
             self.assertFalse(receipt["private_family_marriage_formal_trial"])
             self.assertFalse(receipt["private_m5_joint_collector"])
+            self.assertEqual(receipt["formal_runner_pid"], 42137)
             private_receipt = json.loads(
                 (root / "attempt-private" / "operator-receipt.json").read_text(
                     encoding="utf-8"
@@ -1512,6 +1565,49 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 )
             )
             self.assertTrue(m5_receipt["private_m5_joint_collector"])
+            identities = []
+            for attempt in (
+                "attempt", "attempt-private", "attempt-family", "attempt-m5",
+                "attempt-formal-red",
+            ):
+                identity_receipt = root / attempt / "live-run-identity.json"
+                self.assertTrue(identity_receipt.is_file())
+                payload = json.loads(identity_receipt.read_text(encoding="utf-8"))
+                identities.append(payload["identities"][0])
+            self.assertEqual(
+                [row["sequence"] for row in identities], [1, 2, 3, 4, 5]
+            )
+            self.assertTrue(all(
+                row["mod_key"] == "eternal-recurrence" for row in identities
+            ))
+            self.assertFalse(
+                (root / "attempt-preflight-red" / "live-run-identity.json").exists()
+            )
+            namespace = (
+                root / "allocator" / identities[0]["machine_id"]
+                / "eternal-recurrence"
+            )
+            statuses = [
+                json.loads(line)["status"]
+                for line in (namespace / "statuses.jsonl").read_text(
+                    encoding="utf-8"
+                ).splitlines()
+            ]
+            self.assertEqual(
+                statuses,
+                ["launch-started", "completed-green"] * 4
+                + ["launch-started", "completed-red"],
+            )
+
+    def test_live_run_state_root_requires_explicit_non_c_location(self) -> None:
+        with mock.patch.dict(os.environ, {"XAR_CK3_LIVE_RUN_STATE_ROOT": ""}):
+            with self.assertRaisesRegex(ValueError, "requires"):
+                g2_preview_operator.live_run_state_root(None)
+        if os.name == "nt":
+            with self.assertRaisesRegex(ValueError, "non-C"):
+                g2_preview_operator.live_run_state_root(
+                    Path(r"C:\ck3-live-run-ids")
+                )
 
     def test_private_lifestyle_dll_preflight_rejects_r0246_build_before_launch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
