@@ -163,3 +163,52 @@ flowchart LR
     G -. acceptance-time amount may change .-> Q
     Q -. accepted transfer and custody not observed .-> A[Formal ransom outcome]
 ```
+
+## H2825 private ransom observation entry (2026-09-28)
+
+The R0264 Robert paused frame (`native:3`, native revision 3, `date_raw=53217264`)
+contains three full-ID prisoners held by the played character: `34486`,
+`44484`, and `47028`. The private collection proves custody and shows legal
+unconditional release for each. It has **no ransom preview**, so none is yet
+a proved payable opportunity. Prisoner `34486` is the first bounded read-only
+target; the ID is a fixture locator, not a policy constant.
+
+The same exact EXE SHA as above and the stock `00_prison_interactions.txt`
+SHA `3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`
+give a narrower native option route. The all-role constructor `0x2C3F000`
+calls `0x2C40540`, which tests the definition's exclusive-options flag at
+`+0x2A4E`, scans authored options through `0x2C408B0`, writes a selected byte
+in the owned context's `+0x300` vector, refreshes at `0x2C40950` and finalizes
+at `0x2C40B20`. The local clear `0x2C405F0` and setter
+`0x2C406D0(context, index)` use the same refresh
+and finalizer after selecting one authored index. Exact code-span hashes and
+the original script source are recorded in the versioned C95 contract. This
+is a **local context operation**, not a player command or world action.
+
+```mermaid
+flowchart TD
+    P[R0264 complete prisoner ID and custody] --> D[Loaded ransom definition and stock role redirect]
+    D --> C[Owned all-role context]
+    C --> S[Native option setter: ordinary gold index 2 or current-gold index 3]
+    S --> V[Final selected mask, role IDs, Can Send and AI answer]
+    V --> Q{selected option and payer verified?}
+    Q -->|yes, ordinary gold| N[Named ransom_cost_value in prisoner-root scope]
+    Q -->|yes, current gold| G[Redirected payer current gold quote]
+    Q -. no or frame drift .-> U[typed unavailable]
+    N --> E[Same-frame quote, double sampled]
+    G --> E
+    E -. no live readback or accepted transfer yet .-> A[formal action unavailable]
+```
+
+The stock ordinary `gold` option is authored index 2; `current_gold` is index
+3 (`00_prison_interactions.txt:1960-2018`). The observer must require exactly
+one of these selected after native finalize, the redirected payer as recipient,
+prisoner as secondary recipient, jailer as actor, final Can Send, and the
+recipient's final answer in the same paused frame. The generic ten-slot
+`on_send` cost is still **not** the ransom payment. A gold quote uses the
+loaded `ransom_cost_value` definition with the finalized interaction scope
+rooted at the prisoner; current-gold is only a quote because the stock
+`on_accept` saves payer gold later. Definition identity, scope ownership,
+selected option and amount units require a natural paused readback before
+any formal consumer. All other options and any missing input stay typed
+unavailable. No action, readiness or M6 claim follows from this static entry.

@@ -206,6 +206,64 @@ def test_private_prisoner_lineage_preserves_legitimate_absence() -> None:
         _Driver(result), expected_revision=4)
 
 
+def _result_with_ransom_quote() -> dict[str, object]:
+    result = _result_with_release_preview()
+    value = result["player_prisoner_collection"]
+    value.update({"schema_version": 4, "played_house_id": 12,
+                  "played_dynasty_id": 30})
+    row = value["prisoners"][0]
+    row.update({"house_id": 45, "dynasty_id": 45,
+                "same_house": False, "same_dynasty": False,
+                "ransom_quote_preview": {
+                    "private_build": True, "read_only": True,
+                    "advertised": False, "action_surface_present": False,
+                    "status": "available", "unavailable_reason": None,
+                    "snapshot_id": "native:5", "public_revision": 5,
+                    "native_revision": 5, "proof_epoch": 2,
+                    "date_raw": 100, "definition_key": "ransom_interaction",
+                    "jailer_character_id": 31853, "payer_character_id": 44484,
+                    "prisoner_character_id": 34250,
+                    "selected_option": "gold", "can_send": True,
+                    "quoted_gold_raw": 2_500_000, "raw_scale": 100_000,
+                    "recipient_acceptance_raw": 100_000,
+                    "recipient_answer_status_raw": 0,
+                    "would_accept_now": True,
+                    "amount_is_acceptance_time_quote": False,
+                }})
+    return result
+
+
+def test_private_ransom_quote_requires_same_prisoner_payer_and_option() -> None:
+    result = _result_with_ransom_quote()
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    quote = observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]
+    assert quote["quoted_gold_raw"] == 2_500_000
+    assert quote["payer_character_id"] == 44484
+
+    quote["prisoner_character_id"] = 47028
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4)
+
+
+def test_private_ransom_quote_keeps_refused_or_unavailable_distinct() -> None:
+    result = _result_with_ransom_quote()
+    quote = result["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]
+    quote.update({"recipient_answer_status_raw": 2,
+                  "would_accept_now": False})
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]["would_accept_now"] is False
+    quote.clear()
+    quote.update({"private_build": True, "read_only": True,
+                  "advertised": False, "action_surface_present": False,
+                  "status": "unavailable", "unavailable_reason": "option_unavailable"})
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]["status"] == "unavailable"
+
+
 def test_mcp_registers_read_only_tool_only_for_private_opt_in() -> None:
     from mcp import Client
     from xar_autoplayer.bridge.mcp_server import create_server

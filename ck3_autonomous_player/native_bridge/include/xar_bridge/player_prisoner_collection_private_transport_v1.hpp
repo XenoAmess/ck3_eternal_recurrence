@@ -6,6 +6,9 @@
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
 #include "xar_bridge/character_interaction_preview_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+#include "xar_bridge/player_prisoner_ransom_private_v1.hpp"
+#endif
 
 #include <cstdint>
 #include <string>
@@ -31,6 +34,12 @@ struct PlayerPrisonerCollectionMailboxContextV1 {
       release_previews{};
   bool release_previews_complete = false;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+  std::array<PlayerPrisonerRansomQuoteV1,
+             xar::bridge::kPlayerPrisonerMaximumRowsV1>
+      ransom_quotes{};
+  bool ransom_quotes_complete = false;
+#endif
   MainThreadExecutionStampV1 execution_stamp{};
   bool completed = false;
   bool frame_changed = false;
@@ -51,6 +60,12 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
                        xar::bridge::kPlayerPrisonerMaximumRowsV1>
           &release_previews,
     bool release_previews_complete
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+    , const std::array<PlayerPrisonerRansomQuoteV1,
+                       xar::bridge::kPlayerPrisonerMaximumRowsV1>
+          &ransom_quotes,
+    bool ransom_quotes_complete
 #endif
 );
 

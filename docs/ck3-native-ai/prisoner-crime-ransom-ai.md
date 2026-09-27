@@ -154,6 +154,27 @@ active prison break 时 hard zero。
 influence_send_option、herd_send_option 和 mass-action invalid fallback。effect 根据最终 option 在 payer 与
 imprisoner 间转移准确资源，最后 release 精确 prisoner。
 
+R0264 的 Robert paused frame（`native:3`，`date_raw=53217264`）已有囚犯
+`34486`、`44484`、`47028` 的完整 jailer/custody 读回，但只有无条件释放的
+finalized preview，**没有赎金选项、付款者或金额**。H2825 先用 `34486`
+作为场景定位，在本地拥有的三角色 context 内尝试原版 `gold`（authored
+index 2）或 `current_gold`（index 3）；原生 option setter/refresh/finalize
+路径在 [C95 增量](prisoner-ransom-final-evaluator-c95.md) 中按 exact EXE
+冻结。选项未被引擎最终选中、付款者重定向不明、最终 Can Send/回答或金额
+读不到时，沿下图虚线返回 typed unavailable，不以已有 release 合法性推断赎金。
+
+```mermaid
+flowchart TD
+    P[R0264 prisoner 34486 and Robert jailer] --> R[stock redirect: prisoner secondary, payer recipient]
+    R --> C[owned all-role context and native option selection]
+    C --> V[final option, Can Send and recipient answer]
+    V -. payer or selected option unresolved .-> U[unknown: no ransom action]
+    V --> Q[gold script-value or payer current-gold quote]
+    Q -. quote/live result not yet validated .-> U
+    Q --> A[future formal policy and typed proposal]
+    A -. no receipt or resource/custody postcondition .-> U
+```
+
 ### 第三方 pay_ransom
 
 pay_ransom_interaction 从 family、spouses、scripted relations、liege，以及受限 neighboring/peer/top-realm

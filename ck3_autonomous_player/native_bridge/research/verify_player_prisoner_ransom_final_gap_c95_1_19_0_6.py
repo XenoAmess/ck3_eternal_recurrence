@@ -107,7 +107,20 @@ def main() -> int:
                 hashlib.sha256(read(rva, length)).hexdigest().upper() ==
                 entry["sha256"],
                 f"{prefix} exact-build span SHA mismatch")
-    print("GREEN_STATIC C95/C210/C213/C214 native anchors; ransom binding and final payable amount/action not mapped")
+    options = contract["owned_context_option_route_h2825"]
+    for name, entry in options["spans"].items():
+        rva = int(entry["rva"], 16)
+        length = int(entry["end_rva_exclusive"], 16) - rva
+        require(length > 0 and
+                hashlib.sha256(read(rva, length)).hexdigest().upper() ==
+                entry["sha256"],
+                f"{name} exact-build option span SHA mismatch")
+    for edge in options["edges"]:
+        source = int(edge["from_rva"], 16)
+        require(read(source, 1) in (b"\xe8", b"\xe9") and
+                rel_target(source, 1, 5) == int(edge["target_rva"], 16),
+                f"option route edge mismatch at {source:#x}")
+    print("GREEN_STATIC C95/C210/C213/C214/H2825 native anchors; ransom live quote/action not mapped")
     return 0
 
 

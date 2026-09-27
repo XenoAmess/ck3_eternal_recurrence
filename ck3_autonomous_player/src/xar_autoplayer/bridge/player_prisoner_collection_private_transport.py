@@ -22,8 +22,19 @@ _VALUE_KEYS = {
     "returned_count", "collection_complete", "prisoners",
 }
 _VALUE_KEYS_V3 = _VALUE_KEYS | {"played_house_id", "played_dynasty_id"}
+_VALUE_KEYS_V4 = _VALUE_KEYS_V3
 _ROW_KEYS = {"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified"}
 _LINEAGE_KEYS = {"house_id", "dynasty_id", "same_house", "same_dynasty"}
+_RANSOM_QUOTE_KEYS = {
+    "private_build", "read_only", "advertised", "action_surface_present",
+    "status", "unavailable_reason", "snapshot_id", "public_revision",
+    "native_revision", "proof_epoch",
+    "date_raw", "definition_key", "jailer_character_id",
+    "payer_character_id", "prisoner_character_id", "selected_option",
+    "can_send", "quoted_gold_raw", "raw_scale", "recipient_acceptance_raw",
+    "recipient_answer_status_raw", "would_accept_now",
+    "amount_is_acceptance_time_quote",
+}
 
 
 def _positive_int(value: object) -> bool:
@@ -83,16 +94,17 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("private prisoner collection envelope is malformed")
     value = envelope.get("player_prisoner_collection")
     if (
-        not isinstance(value, dict) or set(value) != (_VALUE_KEYS_V3 if value.get("schema_version") == 3 else _VALUE_KEYS)
+        not isinstance(value, dict) or set(value) != (_VALUE_KEYS_V4 if value.get("schema_version") == 4 else (_VALUE_KEYS_V3 if value.get("schema_version") == 3 else _VALUE_KEYS))
         or value.get("schema") != SCHEMA
-        or value.get("schema_version") not in (1, 2, 3)
+        or value.get("schema_version") not in (1, 2, 3, 4)
         or value.get("snapshot_revision") != native_revision
         or value.get("status") != envelope.get("status")
     ):
         raise BridgeUnavailableError("private prisoner collection payload is malformed")
     if value["status"] == "available":
-        preview_version = value["schema_version"] in (2, 3)
-        lineage_version = value["schema_version"] == 3
+        preview_version = value["schema_version"] in (2, 3, 4)
+        lineage_version = value["schema_version"] in (3, 4)
+        ransom_version = value["schema_version"] == 4
         count = value.get("total_count")
         rows = value.get("prisoners")
         if (
@@ -114,7 +126,7 @@ def query_player_prisoner_collection_private_v1(
         for ordinal, row in enumerate(rows):
             if (
                 not isinstance(row, dict)
-                or set(row) != (_ROW_KEYS | ({"unconditional_release_preview"} if preview_version else set()) | (_LINEAGE_KEYS if lineage_version else set()))
+                or set(row) != (_ROW_KEYS | ({"unconditional_release_preview"} if preview_version else set()) | (_LINEAGE_KEYS if lineage_version else set()) | ({"ransom_quote_preview"} if ransom_version else set()))
                 or row.get("source_ordinal") != ordinal
                 or not _positive_int(row.get("prisoner_character_id"))
                 or row["prisoner_character_id"] > 0xFFFFFFFF
@@ -184,6 +196,51 @@ def query_player_prisoner_collection_private_v1(
                         raise BridgeUnavailableError("private release unavailable preview is malformed")
                 else:
                     raise BridgeUnavailableError("private release preview status is malformed")
+            if ransom_version:
+                quote = row["ransom_quote_preview"]
+                if (
+                    not isinstance(quote, dict)
+                    or quote.get("private_build") is not True
+                    or quote.get("read_only") is not True
+                    or quote.get("advertised") is not False
+                    or quote.get("action_surface_present") is not False
+                ):
+                    raise BridgeUnavailableError("private ransom quote envelope is malformed")
+                if quote.get("status") == "available":
+                    option = quote.get("selected_option")
+                    answer = quote.get("recipient_answer_status_raw")
+                    if (
+                        set(quote) != _RANSOM_QUOTE_KEYS
+                        or quote.get("unavailable_reason") is not None
+                        or quote.get("snapshot_id") != f"native:{native_revision}"
+                        or quote.get("public_revision") != native_revision
+                        or quote.get("native_revision") != native_revision
+                        or quote.get("proof_epoch") != envelope["observation_revision"]
+                        or quote.get("date_raw") != date_raw
+                        or quote.get("definition_key") != "ransom_interaction"
+                        or quote.get("jailer_character_id") != played["character_id"]
+                        or quote.get("prisoner_character_id") != row["prisoner_character_id"]
+                        or not _positive_int(quote.get("payer_character_id"))
+                        or quote["payer_character_id"] == played["character_id"]
+                        or option not in ("gold", "current_gold")
+                        or quote.get("can_send") is not True
+                        or not _positive_int(quote.get("quoted_gold_raw"))
+                        or quote.get("raw_scale") != 100_000
+                        or type(quote.get("recipient_acceptance_raw")) is not int
+                        or type(answer) is not int or answer not in (0, 1, 2)
+                        or quote.get("would_accept_now") is not (answer != 2)
+                        or quote.get("amount_is_acceptance_time_quote") is not (option == "current_gold")
+                    ):
+                        raise BridgeUnavailableError("private ransom final quote is malformed")
+                elif quote.get("status") == "unavailable":
+                    if (
+                        set(quote) != {"private_build", "read_only", "advertised", "action_surface_present", "status", "unavailable_reason"}
+                        or not isinstance(quote.get("unavailable_reason"), str)
+                        or not quote["unavailable_reason"]
+                    ):
+                        raise BridgeUnavailableError("private ransom unavailable quote is malformed")
+                else:
+                    raise BridgeUnavailableError("private ransom quote status is malformed")
             seen.add(row["prisoner_character_id"])
     elif value["status"] == "unavailable":
         if (

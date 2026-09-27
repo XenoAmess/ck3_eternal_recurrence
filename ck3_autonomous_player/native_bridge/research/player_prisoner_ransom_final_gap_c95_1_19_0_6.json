@@ -114,6 +114,29 @@
       "Observe accepted transfer and custody postcondition before treating a quote as payable outcome"
     ]
   },
+  "owned_context_option_route_h2825": {
+    "status": "exact-build static; no paused ransom option or quote yet",
+    "source": "all-role constructor calls the stock default picker; the native setter changes only the newly owned interaction context's selected-option vector, refreshes scope and finalizes",
+    "spans": {
+      "all_role_context_constructor": {"rva": "0x2C3F000", "end_rva_exclusive": "0x2C3F140", "sha256": "8402769A6CDB78F0DA1A780039918295A2366ED222A4FC460C34A6C8ECB33CFD"},
+      "default_option_picker": {"rva": "0x2C40540", "end_rva_exclusive": "0x2C405E3", "sha256": "ED00220D887423164533FC4AF7DC7B7B41A9C7A7469B97B82FE61D23A7CC48CC"},
+      "clear_owned_options": {"rva": "0x2C405F0", "end_rva_exclusive": "0x2C40647", "sha256": "B9A89F2208D0A726A177C787DD201316BADC22BAA9668E71E9B4FB76DBC63DA8"},
+      "select_authored_option": {"rva": "0x2C406D0", "end_rva_exclusive": "0x2C40718", "sha256": "116498E783237A71A7B4730C1F430690A65B09CFB625FF14F84F0F97D0453A89"},
+      "option_shown_valid": {"rva": "0x2C408B0", "end_rva_exclusive": "0x2C40949", "sha256": "5DAE0CF2AF678F5738AED4EE050CC42F18AE176099EFDC4381A7D0B1B660846E"},
+      "finalize_selected_options": {"rva": "0x2C40B20", "end_rva_exclusive": "0x2C40D44", "sha256": "D97C901DF7E64C24308E7682F4DA34D320602A150E41EC2DBADB1AA56D6374BC"}
+    },
+    "edges": [
+      {"from_rva": "0x2C3F110", "target_rva": "0x2C40540"},
+      {"from_rva": "0x2C405BD", "target_rva": "0x2C40950"},
+      {"from_rva": "0x2C405C5", "target_rva": "0x2C40B20"},
+      {"from_rva": "0x2C40701", "target_rva": "0x2C40950"},
+      {"from_rva": "0x2C40713", "target_rva": "0x2C40B20"}
+    ],
+    "context_selected_vector": {"data_offset": "0x300", "count_offset": "0x30C", "definition_count_offset": "0x2554", "exclusive_flag_offset": "0x2A4E"},
+    "stock_gold_option_authored_index": 2,
+    "stock_current_gold_option_authored_index": 3,
+    "unknown": "R0264 proves custody but contains no ransom context, redirected payer, selected option or amount. The first private observer must verify all roles, exactly one native-final selected option, final Can Send/answer and double-sampled quote on a natural paused frame before any policy action."
+  },
   "missing_for_action": [
     "same-frame payer/prisoner/imprisoner redirection and option ownership in a finalized interaction context",
     "native evaluated selected-option ransom amount or actual saved current-gold amount, not a script-only estimate",
