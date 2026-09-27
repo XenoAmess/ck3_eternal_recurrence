@@ -181,7 +181,8 @@ def test_bounded_model_can_admit_without_native_parity_and_reject_risk():
     assert unmodeled["character_death_risk_modeled"] is False
     assert unmodeled["risk_limits"]["death"] is None
     assert unmodeled["unquantified_risks"] == [
-        "commander_or_knight_death", "future_daily_effective_stat_refresh",
+        "commander_or_knight_death", "future_reinforcement_and_participant_exit",
+        "voluntary_retreat", "future_daily_effective_stat_refresh",
         "future_daily_combat_width_refresh", "future_daily_non_roll_advantage_refresh",
     ]
 

@@ -75,6 +75,66 @@ def test_proposed_hostile_contact_consumes_model_even_without_native_parity():
         model.assert_called_once()
 
 
+def test_observed_unmodeled_inbound_enemy_route_blocks_only_final_contact():
+    frame = _frame()
+    frame["active_wars"][0]["enemy_armies"].append({
+        "army_id": 22, "current_province_id": 32,
+        "army_state": "moving", "route_province_ids": [40, 31, 33],
+    })
+    contact = {"conflicts": [{"province_id": 31, "hostile_army_id": 21}],
+               "subject_route": {"arrival_date_raws": [101]}}
+    forecast = {"status": "estimated", "native_parity": False, "sample_count": 256}
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+            "status": "available", "route_province_ids": [31],
+        }),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value=contact),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value=forecast) as model,
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        result = _call(frame)
+    model.assert_called_once()
+    assert result["phase"] == "native_war_general_battle_observed_inbound_reinforcement"
+    assert result["selected_step"] is None
+    assert result["battle_forecast"] == forecast
+    assert result["observed_unmodeled_inbound_enemy_army_ids"] == [22]
+    assert result["inbound_arrival_before_battle_resolution_proven"] is False
+
+
+def test_observed_inbound_route_does_not_block_contact_free_first_waypoint():
+    frame = _frame()
+    frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 40
+    frame["active_wars"][0]["enemy_armies"].append({
+        "army_id": 22, "current_province_id": 32,
+        "army_state": "moving", "route_province_ids": [31],
+    })
+
+    def preview(*args, **kwargs):
+        return {"status": "available", "route_province_ids": (
+            [40, 31] if kwargs["target_province_id"] == 31 else [40]
+        )}
+
+    def contact(*args, **kwargs):
+        return ({"one_day_contact_free": True, "conflicts": [
+            {"province_id": 31, "hostile_army_id": 21},
+        ]} if kwargs["target_province_id"] == 31 else
+            {"one_day_contact_free": True, "conflicts": []})
+
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", side_effect=preview),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", side_effect=contact),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}) as model,
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        result = _call(frame, entry=40, extra_steps={
+            "preview-move-army-11-to-40", "move-army-11-to-40",
+            query_route_contact_horizon_step(11, 40, (21, 22)),
+        })
+    model.assert_called_once()
+    assert result["phase"] == "native_war_general_battle_short_move"
+    assert result["selected_step"] == "move-army-11-to-40"
+
+
 def test_model_risk_rejection_stops_contact_and_absent_input_queries_it():
     frame = _frame()
     contact = {"conflicts": [{"province_id": 31, "hostile_army_id": 21}],

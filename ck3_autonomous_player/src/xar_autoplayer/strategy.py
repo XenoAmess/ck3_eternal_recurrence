@@ -15888,6 +15888,28 @@ def _general_battle_forecast_ingress(
             "the bounded whole-battle model exceeds the configured contact risk budget",
             battle_forecast=forecast, contact_admission=admission,
         )
+    # The v3 distribution freezes the explicitly selected armies. A hostile
+    # army outside that roster can already have a native stored route through
+    # the target, even when the one-day contact query sees no overlap yet.
+    # Re-check after safe waypoints; only withhold the final contact move.
+    inbound_unmodeled = sorted({
+        enemy_id
+        for enemy in enemy_rows
+        if enemy.get("current_province_id") != target
+        and _army_tactical_state(enemy) != "retreating"
+        and isinstance(enemy.get("route_province_ids"), list)
+        and target in enemy["route_province_ids"]
+        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
+        and enemy_id > 0 and enemy_id not in defenders
+    })
+    if len(remaining_route) == 1 and inbound_unmodeled:
+        return bounded(
+            "native_war_general_battle_observed_inbound_reinforcement", None,
+            "an unmodeled hostile army has a same-frame native route through the contact province",
+            battle_forecast=forecast, contact_admission=admission,
+            observed_unmodeled_inbound_enemy_army_ids=inbound_unmodeled,
+            inbound_arrival_before_battle_resolution_proven=False,
+        )
     if len(remaining_route) != 1:
         if contact.get("one_day_contact_free") is not True:
             return bounded(

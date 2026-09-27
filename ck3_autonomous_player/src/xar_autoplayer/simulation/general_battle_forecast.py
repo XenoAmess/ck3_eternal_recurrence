@@ -326,6 +326,8 @@ def contact_admission(forecast: Mapping[str, Any], *, defensive_relief: bool = F
         "character_death_risk_modeled": death_risk_modeled,
         "unquantified_risks": [
             *([] if death_risk_modeled else ["commander_or_knight_death"]),
+            "future_reinforcement_and_participant_exit",
+            "voluntary_retreat",
             "future_daily_effective_stat_refresh",
             "future_daily_combat_width_refresh",
             "future_daily_non_roll_advantage_refresh",
