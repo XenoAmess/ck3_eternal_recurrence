@@ -72,6 +72,34 @@ void Fail(AdvantageComponentObserverV1 *observer,
     observer->failure_flags.fetch_or(bit, std::memory_order_relaxed);
 }
 
+void RecordAggregatorFailure(AdvantageComponentObserverV1 *observer,
+                             const AdvantageSideComponentsV1 &record,
+                             std::uintptr_t caller, std::int32_t side_index,
+                             bool value_present,
+                             std::uint32_t gate) noexcept {
+  std::uint32_t unclaimed = 0;
+  if (observer->first_aggregator_failure_gate.compare_exchange_strong(
+          unclaimed, std::numeric_limits<std::uint32_t>::max(),
+          std::memory_order_acq_rel)) {
+    observer->first_aggregator_failure_thread_id = GetCurrentThreadId();
+    observer->first_aggregator_failure_caller_address = caller;
+    if (caller >= observer->module_base &&
+        caller - observer->module_base <=
+            std::numeric_limits<std::uint32_t>::max()) {
+      observer->first_aggregator_failure_caller_rva =
+          static_cast<std::uint32_t>(caller - observer->module_base);
+    }
+    observer->first_aggregator_failure_side_index = side_index;
+    observer->first_aggregator_failure_expected_side_index =
+        record.side_index;
+    observer->first_aggregator_failure_helper_calls = record.helper_calls;
+    observer->first_aggregator_failure_value_present = value_present;
+    observer->first_aggregator_failure_gate.store(gate,
+                                                   std::memory_order_release);
+  }
+  Fail(observer, 64);
+}
+
 void __fastcall CacheHook(void *combat) noexcept {
   const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
   auto *const observer = g_observer.load(std::memory_order_acquire);
@@ -152,6 +180,8 @@ std::int64_t *__fastcall SideHook(void *combat, std::int64_t *output,
   g_side_context = side.prior;
   record.total_raw = output != nullptr ? *output : 0;
   record.complete = result == output && record.helper_calls == 2 &&
+      record.primary_aggregator_calls == 1 &&
+      record.nested_aggregator_calls <= 1 &&
       SumExact(record.roll_raw, record.commander_raw,
                record.aggregator_raw, record.total_raw);
   if (!record.complete) Fail(observer, 16);
@@ -186,13 +216,30 @@ std::int64_t *__fastcall AggregatorHook(
                                             side_index, arg5, arg6);
   auto *const side = g_side_context;
   if (side != nullptr && side->record != nullptr) {
-    if (value != nullptr &&
-        caller == side->cache->observer->module_base + 0x2307EBA &&
-        side->record->side_index == side_index &&
-        side->record->helper_calls == 1) {
+    auto *const observer = side->cache->observer;
+    const auto caller_rva = caller >= observer->module_base &&
+        caller - observer->module_base <=
+            std::numeric_limits<std::uint32_t>::max()
+        ? static_cast<std::uint32_t>(caller - observer->module_base) : 0;
+    const auto decision = ClassifyAdvantageAggregatorCallV1(
+        value != nullptr,
+        combat == reinterpret_cast<void *>(observer->combat), caller_rva,
+        side_index, side->record->side_index, side->record->helper_calls,
+        side->record->nested_aggregator_calls,
+        side->record->primary_aggregator_calls);
+    if (decision.failure_gate != 0) {
+      RecordAggregatorFailure(observer, *side->record, caller, side_index,
+                              value != nullptr, decision.failure_gate);
+    } else if (decision.kind ==
+               AdvantageAggregatorCallKindV1::nested_commander) {
+      // 0x23079FE is the original commander helper's own aggregator call.
+      // Its return is already part of commander_raw at 0x2307A06.
+      ++side->record->nested_aggregator_calls;
+    } else {
       side->record->aggregator_raw = *value;
       side->record->helper_calls = 2;
-    } else Fail(side->cache->observer, 64);
+      ++side->record->primary_aggregator_calls;
+    }
   }
   return value;
 }
@@ -315,6 +362,25 @@ const std::array<std::uintptr_t, 4> kHooks{
 
 } // namespace
 
+AdvantageAggregatorCallDecisionV1 ClassifyAdvantageAggregatorCallV1(
+    bool value_present, bool combat_matches, std::uint32_t caller_rva,
+    std::int32_t side_index, std::int32_t expected_side_index,
+    std::uint32_t helper_calls, std::uint32_t nested_calls,
+    std::uint32_t primary_calls) noexcept {
+  if (!value_present) return {{}, 1};
+  if (!combat_matches) return {{}, 3};
+  const bool nested = caller_rva == 0x2307A03;
+  const bool primary = caller_rva == 0x2307EBA;
+  if (!nested && !primary) return {{}, 2};
+  if (side_index != expected_side_index) return {{}, 4};
+  if (nested) {
+    if (helper_calls != 0 || nested_calls != 0) return {{}, 5};
+    return {AdvantageAggregatorCallKindV1::nested_commander, 0};
+  }
+  if (helper_calls != 1 || primary_calls != 0) return {{}, 5};
+  return {AdvantageAggregatorCallKindV1::primary_side, 0};
+}
+
 bool InstallAdvantageComponentObserverV1(
     AdvantageComponentDetoursV1 &detours, AdvantageComponentObserverV1 &observer,
     std::uintptr_t module_base, bool exact_build_admitted,
@@ -381,7 +447,9 @@ bool AdvantageComponentObserverCompleteV1(
     const AdvantageComponentObserverV1 &observer) noexcept {
   const auto count = observer.count.load(std::memory_order_acquire);
   if (count == 0 || count > observer.records.size() ||
-      observer.failure_flags.load(std::memory_order_acquire) != 0) return false;
+      observer.failure_flags.load(std::memory_order_acquire) != 0 ||
+      observer.first_aggregator_failure_gate.load(
+          std::memory_order_acquire) != 0) return false;
   for (std::uint32_t i = 0; i < count; ++i) {
     const auto &r = observer.records[i];
     if (!r.complete || r.ordinal != i || r.combat_id != observer.combat_id ||
@@ -392,7 +460,8 @@ bool AdvantageComponentObserverCompleteV1(
     for (std::size_t side = 0; side < 2; ++side) {
       const auto &s = r.sides[side];
       if (!s.complete || s.side_index != static_cast<std::int32_t>(side) ||
-          s.helper_calls != 2 ||
+          s.helper_calls != 2 || s.primary_aggregator_calls != 1 ||
+          s.nested_aggregator_calls > 1 ||
           s.roll_raw != static_cast<std::int64_t>(s.roll) * 100000 ||
           !SumExact(s.roll_raw, s.commander_raw, s.aggregator_raw,
                     s.total_raw)) return false;
@@ -409,6 +478,24 @@ std::string SerializeAdvantageComponentObserverV1(
   out += AdvantageComponentObserverCompleteV1(observer) ? "true" : "false";
   out += ",\"failure_flags\":" + std::to_string(
       observer.failure_flags.load(std::memory_order_acquire));
+  out += ",\"first_aggregator_failure\":{\"gate\":" +
+         std::to_string(observer.first_aggregator_failure_gate.load(
+             std::memory_order_acquire));
+  out += ",\"thread_id\":" +
+         std::to_string(observer.first_aggregator_failure_thread_id);
+  out += ",\"caller_rva\":" +
+         std::to_string(observer.first_aggregator_failure_caller_rva);
+  out += ",\"caller_address\":" +
+         std::to_string(observer.first_aggregator_failure_caller_address);
+  out += ",\"side_index\":" +
+         std::to_string(observer.first_aggregator_failure_side_index);
+  out += ",\"expected_side_index\":" +
+         std::to_string(observer.first_aggregator_failure_expected_side_index);
+  out += ",\"helper_calls\":" +
+         std::to_string(observer.first_aggregator_failure_helper_calls);
+  out += ",\"value_present\":" +
+         std::string(observer.first_aggregator_failure_value_present ?
+                         "true}" : "false}");
   const auto count = std::min<std::uint32_t>(
       observer.count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(observer.records.size()));
@@ -436,6 +523,8 @@ std::string SerializeAdvantageComponentObserverV1(
              ",\"aggregator_raw\":" + std::to_string(s.aggregator_raw) +
              ",\"total_raw\":" + std::to_string(s.total_raw) +
              ",\"helper_calls\":" + std::to_string(s.helper_calls) +
+             ",\"nested_aggregator_calls\":" + std::to_string(s.nested_aggregator_calls) +
+             ",\"primary_aggregator_calls\":" + std::to_string(s.primary_aggregator_calls) +
              ",\"complete\":" + (s.complete ? "true}" : "false}");
     }
     out += "]}";

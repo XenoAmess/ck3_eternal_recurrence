@@ -11,6 +11,26 @@ namespace xar::ck3_11906 {
 
 inline constexpr std::size_t kAdvantageComponentMaximumMaterializationsV1 = 8;
 
+enum class AdvantageAggregatorCallKindV1 : std::uint8_t {
+  rejected = 0,
+  nested_commander = 1,
+  primary_side = 2,
+};
+
+struct AdvantageAggregatorCallDecisionV1 {
+  AdvantageAggregatorCallKindV1 kind =
+      AdvantageAggregatorCallKindV1::rejected;
+  // 0 accepted; 1 null return; 2 unknown caller; 3 wrong combat;
+  // 4 wrong side; 5 duplicate or wrong call order.
+  std::uint32_t failure_gate = 0;
+};
+
+AdvantageAggregatorCallDecisionV1 ClassifyAdvantageAggregatorCallV1(
+    bool value_present, bool combat_matches, std::uint32_t caller_rva,
+    std::int32_t side_index, std::int32_t expected_side_index,
+    std::uint32_t helper_calls, std::uint32_t nested_calls,
+    std::uint32_t primary_calls) noexcept;
+
 struct AdvantageSideComponentsV1 {
   std::int32_t side_index = -1;
   std::int32_t roll = 0;
@@ -20,6 +40,8 @@ struct AdvantageSideComponentsV1 {
   std::int64_t aggregator_raw = 0;
   std::int64_t total_raw = 0;
   std::uint32_t helper_calls = 0;
+  std::uint32_t nested_aggregator_calls = 0;
+  std::uint32_t primary_aggregator_calls = 0;
   bool complete = false;
 };
 
@@ -39,6 +61,16 @@ struct AdvantageComponentObserverV1 {
   std::atomic<bool> armed{false};
   std::atomic<std::uint32_t> count{0};
   std::atomic<std::uint32_t> failure_flags{0};
+  // Gate 0 means no unexpected aggregator invocation. 0xFFFFFFFF is the
+  // brief first-writer reservation, never a completed wire value.
+  std::atomic<std::uint32_t> first_aggregator_failure_gate{0};
+  std::uint32_t first_aggregator_failure_thread_id = 0;
+  std::uint32_t first_aggregator_failure_caller_rva = 0;
+  std::uint64_t first_aggregator_failure_caller_address = 0;
+  std::int32_t first_aggregator_failure_side_index = -1;
+  std::int32_t first_aggregator_failure_expected_side_index = -1;
+  std::uint32_t first_aggregator_failure_helper_calls = 0;
+  bool first_aggregator_failure_value_present = false;
   std::uintptr_t module_base = 0;
   std::uintptr_t combat = 0;
   std::int32_t combat_id = -1;

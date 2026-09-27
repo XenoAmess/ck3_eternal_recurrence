@@ -762,6 +762,8 @@ bool AdvantageComponentsRequireOriginalPairArithmetic() {
   left.aggregator_raw = 25000;
   left.total_raw = 275000;
   left.helper_calls = 2;
+  left.nested_aggregator_calls = 1;
+  left.primary_aggregator_calls = 1;
   left.complete = true;
   auto &right = row.sides[1];
   right.side_index = 1;
@@ -771,16 +773,25 @@ bool AdvantageComponentsRequireOriginalPairArithmetic() {
   right.aggregator_raw = 25000;
   right.total_raw = 175000;
   right.helper_calls = 2;
+  right.primary_aggregator_calls = 1;
   right.complete = true;
+  const auto wire = SerializeAdvantageComponentObserverV1(observer);
   if (!AdvantageComponentObserverCompleteV1(observer) ||
-      SerializeAdvantageComponentObserverV1(observer).find(
-          "\"available\":true") == std::string::npos) {
+      wire.find("\"available\":true") == std::string::npos ||
+      wire.find("\"first_aggregator_failure\":{\"gate\":0") ==
+          std::string::npos ||
+      wire.find("\"nested_aggregator_calls\":1") == std::string::npos ||
+      wire.find("\"primary_aggregator_calls\":1") == std::string::npos) {
     return Fail("advantage original-call pair did not close");
   }
   right.commander_raw += 1;
   if (AdvantageComponentObserverCompleteV1(observer))
     return Fail("advantage component arithmetic spoof was accepted");
   right.commander_raw -= 1;
+  right.primary_aggregator_calls = 0;
+  if (AdvantageComponentObserverCompleteV1(observer))
+    return Fail("missing primary aggregator call was accepted");
+  right.primary_aggregator_calls = 1;
   row.resolved_raw += 1;
   if (AdvantageComponentObserverCompleteV1(observer))
     return Fail("advantage cache arithmetic spoof was accepted");
@@ -788,6 +799,51 @@ bool AdvantageComponentsRequireOriginalPairArithmetic() {
   observer.failure_flags.store(1);
   if (AdvantageComponentObserverCompleteV1(observer))
     return Fail("advantage capture failure was accepted");
+  observer.failure_flags.store(64);
+  observer.first_aggregator_failure_gate.store(2);
+  observer.first_aggregator_failure_thread_id = 420;
+  observer.first_aggregator_failure_caller_rva = 0x2307A03;
+  observer.first_aggregator_failure_caller_address = 0x142307A03;
+  observer.first_aggregator_failure_side_index = 0;
+  observer.first_aggregator_failure_expected_side_index = 0;
+  observer.first_aggregator_failure_helper_calls = 0;
+  observer.first_aggregator_failure_value_present = true;
+  const auto failed_wire = SerializeAdvantageComponentObserverV1(observer);
+  if (failed_wire.find("\"failure_flags\":64") == std::string::npos ||
+      failed_wire.find("\"first_aggregator_failure\":{\"gate\":2") ==
+          std::string::npos ||
+      failed_wire.find("\"caller_rva\":36731395") == std::string::npos ||
+      failed_wire.find("\"value_present\":true") == std::string::npos) {
+    return Fail("first unexpected aggregator call was not serialized");
+  }
+  return true;
+}
+
+bool AggregatorCallClassifierSeparatesNestedAndPrimary() {
+  const auto nested = ClassifyAdvantageAggregatorCallV1(
+      true, true, 0x2307A03, 0, 0, 0, 0, 0);
+  const auto primary = ClassifyAdvantageAggregatorCallV1(
+      true, true, 0x2307EBA, 0, 0, 1, 1, 0);
+  if (nested.kind != AdvantageAggregatorCallKindV1::nested_commander ||
+      nested.failure_gate != 0 ||
+      primary.kind != AdvantageAggregatorCallKindV1::primary_side ||
+      primary.failure_gate != 0) {
+    return Fail("original nested and primary aggregator calls were conflated");
+  }
+  const std::array<AdvantageAggregatorCallDecisionV1, 5> rejected{
+      ClassifyAdvantageAggregatorCallV1(false, true, 0x2307EBA, 0, 0, 1, 0, 0),
+      ClassifyAdvantageAggregatorCallV1(true, true, 0x23012345, 0, 0, 1, 0, 0),
+      ClassifyAdvantageAggregatorCallV1(true, false, 0x2307EBA, 0, 0, 1, 0, 0),
+      ClassifyAdvantageAggregatorCallV1(true, true, 0x2307A03, 1, 0, 0, 0, 0),
+      ClassifyAdvantageAggregatorCallV1(true, true, 0x2307EBA, 0, 0, 0, 0, 0),
+  };
+  const std::array<std::uint32_t, 5> gates{1, 2, 3, 4, 5};
+  for (std::size_t i = 0; i < gates.size(); ++i) {
+    if (rejected[i].kind != AdvantageAggregatorCallKindV1::rejected ||
+        rejected[i].failure_gate != gates[i]) {
+      return Fail("unexpected aggregator call did not retain its failure gate");
+    }
+  }
   return true;
 }
 
@@ -798,7 +854,8 @@ int main() {
       !CandidateJoinPlanPrearmsAndRejectsStale() ||
       !ManagedBeginFinishProducesBoundedDto() ||
       !AdmissionRequiresCheckpointAndMailbox() ||
-      !AdvantageComponentsRequireOriginalPairArithmetic()) {
+      !AdvantageComponentsRequireOriginalPairArithmetic() ||
+      !AggregatorCallClassifierSeparatesNestedAndPrimary()) {
     return 1;
   }
   std::cout << "combat phase event managed v1 fixture passed\n";
