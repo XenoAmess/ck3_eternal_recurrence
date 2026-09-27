@@ -1,9 +1,12 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
-  "status": "claimed",
+  "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T06:01:40Z",
+  "updated_at_utc": "2026-09-27T06:44:11Z",
+  "source_pr": null,
+  "delivery_route": "direct rebase-only master push under the project Git policy",
+  "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
   "triage": "The paused War 31 read proves a legal, accepted defender surrender but the current native query returns cb_specific_terms_not_observable. The actual title, holder, liege, resource, and truce effects remain unknown; no surrender action is authorized or inferred by this claim.",
   "static_findings": {
     "absolute_outcome": "primary defender surrender invokes attacker_victory",
@@ -12,6 +15,28 @@
     "preview_boundary": "CSetupDeJureCBChangeEffect preview 0x2E9FA10 calls 0x2E9FF30 on a +0x260 change object; object ownership, side effects, and complete final-operation schema are not proven. CResolveTitleAndVassalChangeEffect preview 0x7E9220 only returns true. Broad loaded-effect preview remains disabled after two live crashes at RVA 0x334C668.",
     "current_frame_material_result": "unknown; neither legal acceptance nor a static conquest script identifies this WarID's final holder, liege, vassal, signed resources, or truce expiry"
   },
-  "policy_safe_observed_frame_alternative": "Keep surrender unavailable to automated selection while material terms are unknown; use the observed legal war option, same-frame route/contact and combat inputs to continue or hold by the existing war policy. This is a safe continuation policy, not a substitute claim of surrender-term observability.",
-  "next_step": "Prove a non-mutating final-operation producer for this de-jure CB and its conditional resources, or obtain an independently verified exact-build Robert save/driver pair for bounded read-only exploration; publish typed unknowns and run no-launch checks before any live query. Do not call the crashing broad preview or submit surrender on this evidence."
+  "interface_contract": {
+    "delivery_kind": "policy_safe_observed_frame_alternative; no material surrender terms claimed",
+    "version_and_frame": "CK3 1.19.0.6 EXE SHA 2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86; WarID 16777231; date_raw 53215920; native:3; public/native revisions 4/3; episode native-29829-2bc2d599f7f9; connection generation 1; query_sequence 1",
+    "same_frame_read": "query-war-termination-options-16777231 yields primary-defender surrender outcome attacker_victory, native validator/availability/recipient acceptance true, white peace and victory unavailable; R0221 before/after identity unchanged and gameplay_actions=0",
+    "unknown_field_semantics": "surrender.terms={status:unavailable,reason:cb_specific_terms_not_observable}; title, old/new holder, liege, vassal, signed resource deltas and truce expiry are unknown, not zero; legal acceptance does not fill them",
+    "action_and_pending": "The production de-jure no-safe-route emergency surrender predicate requires player_side=attacker and outcome=attacker_defeat, so this defender attacker_victory row does not select surrender-war-16777231 even if that literal is hypothetically advertised. The observed-frame alternative selects no termination; ordinary bounded route/contact/hold policy may continue, with each changing frame freshly rebound. There is no termination submission or pending terminal response in R0221/R0250.",
+    "resource_effects": "No material settlement has been applied or read; primary resource changes, title changes and truce remain typed unknowns. A later termination choice requires its own authorization, native postcondition, next turn and recovery."
+  },
+  "policy_safe_observed_frame_alternative": "Continue or hold under the existing bounded military policy from the observed same-frame evidence, requerying after each frame change; do not infer surrender terms or select a defender surrender from the attacker-only emergency rule. R0250 independently observed 12 qualified turns of route continuation with War 31 still active and no termination action. This alternative keeps gameplay moving but does not resolve the eventual war exit.",
+  "checks": [
+    "py ck3_autonomous_player/tests/unit/test_war31_observed_frame_alternative.py: 1 passed; binds the Git evidence SHA, same-frame WarID/episode/revisions, option legality and unknown terms, and calls the production attacker-only emergency predicates with a hypothetically advertised surrender literal.",
+    "Existing bridge contract continues to serialize terms_observable=false and reason cb_specific_terms_not_observable; no native preview was invoked and no CK3 process was launched for this delivery."
+  ],
+  "live_evidence": {
+    "r0221_exact_readonly_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0221-raw-freeze.json; SHA BE7CCFF4DED6305744D3C2EE0ADD7FFD8D9163E0B662F02C3986090271DC30C5",
+    "r0221_query_result": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.termination-options.json; SHA 359C5A03B7F7C2FC35EE9FD47DE0DF054F9C200E0A77E2AB2F9F231D2394B124",
+    "r0250_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-INPUT-R0221-WAR31-20260927.r0250-summary.json; SHA 821DC087B89B06912A2DF2A737596604E94F9E59645546300F609C4E0B7D70FD"
+  },
+  "limitations": [
+    "This delivery is the request's policy-safe observed-frame alternative, not actual surrender material terms or permission to submit surrender.",
+    "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
+    "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
+  ],
+  "next_step": "Consumer: fetch this master commit and record a verification of the exact WAR31 alternative against its formal pair, without treating it as terms observability or closing the war. Maintainer: continue static proof of a non-mutating final-operation producer and signed CB effects, then seek a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
 }
