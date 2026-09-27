@@ -1,0 +1,168 @@
+{
+  "schema": "ck3-combat-terminal-controlflow-static-v1",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "anchors": [
+    {
+      "name": "daily_day_increment",
+      "rva": "0x27FB6C6",
+      "bytes": "ffc2",
+      "instruction": "inc edx"
+    },
+    {
+      "name": "daily_main_call",
+      "rva": "0x27FB6FD",
+      "bytes": "e87ee7b0ff",
+      "instruction": "call 0x142309e80"
+    },
+    {
+      "name": "daily_pursuit_call",
+      "rva": "0x27FB6DF",
+      "bytes": "e8bcebb0ff",
+      "instruction": "call 0x14230a2a0"
+    },
+    {
+      "name": "daily_done_gate",
+      "rva": "0x27FB730",
+      "bytes": "83beb006000003",
+      "instruction": "cmp dword ptr [rsi + 0x6b0], 3"
+    },
+    {
+      "name": "daily_normal_finalizer",
+      "rva": "0x27FB73E",
+      "bytes": "e84deeb0ff",
+      "instruction": "call 0x14230a590"
+    },
+    {
+      "name": "daily_storage_removal",
+      "rva": "0x27FB74A",
+      "bytes": "e801250000",
+      "instruction": "call 0x1427fdc50"
+    },
+    {
+      "name": "main_forced_winner",
+      "rva": "0x2309EA6",
+      "bytes": "8b9700070000",
+      "instruction": "mov edx, dword ptr [rdi + 0x700]"
+    },
+    {
+      "name": "main_side0_total_gate",
+      "rva": "0x2309EB1",
+      "bytes": "4883bfb800000000",
+      "instruction": "cmp qword ptr [rdi + 0xb8], 0"
+    },
+    {
+      "name": "main_side1_total_gate",
+      "rva": "0x2309ECF",
+      "bytes": "4883bf0004000000",
+      "instruction": "cmp qword ptr [rdi + 0x400], 0"
+    },
+    {
+      "name": "main_winner_side1",
+      "rva": "0x2309ECA",
+      "bytes": "e941010000",
+      "instruction": "jmp 0x14230a010"
+    },
+    {
+      "name": "main_winner_side0",
+      "rva": "0x2309EE5",
+      "bytes": "e926010000",
+      "instruction": "jmp 0x14230a010"
+    },
+    {
+      "name": "winner_write",
+      "rva": "0x230A080",
+      "bytes": "899fe0060000",
+      "instruction": "mov dword ptr [rdi + 0x6e0], ebx"
+    },
+    {
+      "name": "loser_route_gate",
+      "rva": "0x230A0DD",
+      "bytes": "e86ee1ffff",
+      "instruction": "call 0x142308250"
+    },
+    {
+      "name": "no_route_first_entry_clear",
+      "rva": "0x230A10A",
+      "bytes": "e8218d0c00",
+      "instruction": "call 0x1423d2e30"
+    },
+    {
+      "name": "no_route_second_entry_clear",
+      "rva": "0x230A133",
+      "bytes": "e8f88c0c00",
+      "instruction": "call 0x1423d2e30"
+    },
+    {
+      "name": "no_route_done_write",
+      "rva": "0x230A162",
+      "bytes": "48c787b006000003000000",
+      "instruction": "mov qword ptr [rdi + 0x6b0], 3"
+    },
+    {
+      "name": "route_initial_soft_levy",
+      "rva": "0x230A22D",
+      "bytes": "488987e8060000",
+      "instruction": "mov qword ptr [rdi + 0x6e8], rax"
+    },
+    {
+      "name": "route_initial_soft_maa",
+      "rva": "0x230A25D",
+      "bytes": "488987f0060000",
+      "instruction": "mov qword ptr [rdi + 0x6f0], rax"
+    },
+    {
+      "name": "route_pursuit_write",
+      "rva": "0x230A264",
+      "bytes": "48c787b006000002000000",
+      "instruction": "mov qword ptr [rdi + 0x6b0], 2"
+    },
+    {
+      "name": "skip_pursuit_sync_call",
+      "rva": "0x230A27B",
+      "bytes": "e820000000",
+      "instruction": "call 0x14230a2a0"
+    },
+    {
+      "name": "pursuit_skip_flag",
+      "rva": "0x230A2DF",
+      "bytes": "803c3000",
+      "instruction": "cmp byte ptr [rax + rsi], 0"
+    },
+    {
+      "name": "pursuit_day_gate",
+      "rva": "0x230A2EF",
+      "bytes": "39aeb4060000",
+      "instruction": "cmp dword ptr [rsi + 0x6b4], ebp"
+    },
+    {
+      "name": "pursuit_damage_call",
+      "rva": "0x230A3C7",
+      "bytes": "e8142f0c00",
+      "instruction": "call 0x1423cd2e0"
+    },
+    {
+      "name": "pursuit_done_write",
+      "rva": "0x230A3F9",
+      "bytes": "48c786b006000003000000",
+      "instruction": "mov qword ptr [rsi + 0x6b0], 3"
+    },
+    {
+      "name": "pursuit_finish_helper",
+      "rva": "0x230A407",
+      "bytes": "e8d4c4ffff",
+      "instruction": "call 0x1423068e0"
+    },
+    {
+      "name": "sweep_no_normal_finalizer",
+      "rva": "0x27FBF85",
+      "bytes": "e806e6b0ff",
+      "instruction": "call 0x14230a590"
+    },
+    {
+      "name": "sweep_storage_removal",
+      "rva": "0x27FBF91",
+      "bytes": "e8ba1c0000",
+      "instruction": "call 0x1427fdc50"
+    }
+  ]
+}
