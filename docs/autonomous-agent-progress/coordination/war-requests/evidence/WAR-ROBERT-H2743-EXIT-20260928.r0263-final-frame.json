@@ -1,0 +1,41 @@
+{
+    "schema":  "xar.g2.cross-team-war-evidence-excerpt.v1",
+    "evidence_id":  "WAR-ROBERT-H2743-EXIT-20260928.r0263-final-frame",
+    "source_pair_identity_sha256":  "D8A4E9730BD2AA37671355EBF55A1F94121310AC75EBBC1307F896358B39AC45",
+    "formal_report_sha256":  "FF69F6AEBF8D9EE510AE3F5699A74ACB64CFAFBFB12582823334C2079DB2A0F8",
+    "operator_receipt_sha256":  "66200E6D1B0170FCCACF635C35A8F221AB8BC88F42BAE6FEBFC58641F0655C3E",
+    "source_checkpoint_sha256":  "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+    "source_driver_sha256":  "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069",
+    "family_sidecar_sha256":  "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724",
+    "runtime_source_commit":  "9283c6c98435d1d72d255ae2577b596e9795f974",
+    "runtime_dll_sha256":  "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
+    "ck3_version":  "1.19.0.6-steam23530548",
+    "ck3_exe_sha256":  "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "lifecycle":  "ordinary_campaign_succession/xar_off",
+    "run_id":  "R0263",
+    "actor_character_id":  29829,
+    "episode_run_id":  "native-29829-2bc2d599f7f9",
+    "result_checkpoint_history_index":  2743,
+    "result_date_raw":  53217264,
+    "successful_turns":  36,
+    "formal_outcome":  "qualified",
+    "formal_exit_code":  0,
+    "final_turn":  {
+                       "index":  36,
+                       "before_snapshot_id":  "native:27",
+                       "before_date_raw":  53217240,
+                       "after_snapshot_id":  "native:30",
+                       "after_date_raw":  53217264,
+                       "active_war_ids":  [
+                                              16777231
+                                          ],
+                       "player_army_ids":  [
+                                               83886367
+                                           ],
+                       "selected_step":  "advance-route-contact-horizon-v1-83886367-to-2614-h-2-50331920-83886484",
+                       "war_score_before":  -12,
+                       "war_score_after":  -12
+                   },
+    "observed_boundary":  "This excerpt proves an active WarID and bounded route advance at R0263 h2743. It does not prove that surrender, white peace, continued fighting or any other exit is currently preferable or final-legal on that frame; no termination was submitted.",
+    "raw_asset_transport":  "Git carries this excerpt and hashes, not the save, driver, sidecar, DLL or full local report. Request separately verified asset transfer if exact remote replay is needed."
+}
