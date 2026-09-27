@@ -229,6 +229,109 @@ class G2PreviewOperatorTest(unittest.TestCase):
             g2_preview_operator.family_pending_sidecar_pair(
                 sidecar, driver, manifest, "c" * 64, report)
 
+    def test_family_pending_sidecar_pairs_consecutive_cold_formal_runs(self) -> None:
+        episode = "native-29829-2bc2d599f7f9"
+        manifest = {"episode_character_id": 29829, "episode_run_id": episode}
+        sidecar = {"schema": g2_preview_operator.FAMILY_PENDING_V1_SCHEMA,
+                   "resolved": None, "pending": {
+            "schema": g2_preview_operator.FAMILY_ACTION_V1_SCHEMA,
+            "status": "receipt_pending", "submission_state": "receipt_pending",
+            "material_result": False, "accepted": True,
+            "played_character_id": 29829, "heir_character_id": 38822,
+            "candidate_character_id": 38718, "recipient_character_id": 32897,
+            "episode_run_id": episode, "source_date_raw": 53216640,
+            "source_bridge_pid": 59384, "last_checked_bridge_pid": 162992,
+        }}
+        driver = {**manifest, "last_checkpoint": {
+            "episode_character_id": 29829, "episode_run_id": episode,
+            "date_raw": 53216856, "sha256": "c" * 64,
+            "history_index": 2543,
+        }}
+        submit_report = {
+            "session": {"pid": 59384},
+            "checkpoints": [
+                {"phase": "first_heir_marriage_submitted_pending",
+                 "status": "saved", "turn_index": 2, "history_index": 2443,
+                 "date_raw": 53216640, "sha256": "a" * 64,
+                 "episode_character_id": 29829, "episode_run_id": episode,
+                 "pending_action": {"heir_character_id": 38822,
+                                    "candidate_character_id": 38718,
+                                    "recipient_character_id": 32897,
+                                    "episode_run_id": episode}},
+                {"phase": "periodic_checkpoint", "status": "saved",
+                 "turn_index": 36, "history_index": 2513,
+                 "date_raw": 53216784, "sha256": "b" * 64,
+                 "episode_character_id": 29829, "episode_run_id": episode},
+            ],
+            "auto_run": {"turns": [
+                {"index": 2, "selected_step": g2_preview_operator.FAMILY_SUBMIT_STEP,
+                 "result": {"status": "receipt_pending", "accepted": True,
+                            "played_character_id": 29829,
+                            "heir_character_id": 38822,
+                            "candidate_character_id": 38718,
+                            "recipient_character_id": 32897,
+                            "episode_run_id": episode},
+                 "plan": {"family_marriage_choice": {
+                     "candidate_character_id": 38718}}},
+                {"index": 33,
+                 "selected_step": "query-observed-first-heir-marriage-result-v1-private",
+                 "result": {"status": "pending", "heir_character_id": 38822,
+                            "candidate_character_id": 38718}},
+            ]},
+        }
+        cold_report = {
+            "ok": True, "session": {"pid": 162992},
+            "fixed_seed": {"sha256": "b" * 64,
+                           "history_index": 2513,
+                           "saved_date_raw": 53216784},
+            "readiness": {"bridge_pid": 162992,
+                          "episode_character_id": 29829,
+                          "episode_run_id": episode},
+            "checkpoints": [{"phase": "periodic_checkpoint",
+                             "status": "saved", "turn_index": 14,
+                             "history_index": 2543,
+                             "date_raw": 53216856, "sha256": "c" * 64,
+                             "episode_character_id": 29829,
+                             "episode_run_id": episode}],
+            "auto_run": {"turns": [
+                {"index": 11,
+                 "selected_step": "query-observed-first-heir-marriage-result-v1-private",
+                 "result": {"status": "pending", "heir_character_id": 38822,
+                            "candidate_character_id": 38718}},
+                {"index": 15,
+                 "selected_step": "query-observed-first-heir-marriage-result-v1-private",
+                 "result": {"status": "pending", "heir_character_id": 38822,
+                            "candidate_character_id": 38718}},
+            ]},
+        }
+        reports = [submit_report, cold_report]
+        self.assertEqual(g2_preview_operator.family_pending_sidecar_pair(
+            sidecar, driver, manifest, "c" * 64, reports), 38718)
+        bad = copy.deepcopy(reports)
+        bad[1]["fixed_seed"]["sha256"] = "d" * 64
+        with self.assertRaisesRegex(ValueError, "does not continue"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "c" * 64, bad)
+        bad = copy.deepcopy(reports)
+        bad[1]["auto_run"]["turns"][0]["result"]["status"] = "refused"
+        with self.assertRaisesRegex(ValueError, "lacks pending family result query"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "c" * 64, bad)
+        bad = copy.deepcopy(reports)
+        bad[1]["auto_run"]["turns"].append({
+            "index": 12, "selected_step": g2_preview_operator.FAMILY_SUBMIT_STEP})
+        with self.assertRaisesRegex(ValueError, "does not continue"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "c" * 64, bad)
+        bad = copy.deepcopy(reports)
+        bad[1]["auto_run"]["turns"][0]["index"] = 15
+        with self.assertRaisesRegex(ValueError, "lacks pending family result query"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "c" * 64, bad)
+        with self.assertRaisesRegex(ValueError, "identity disagrees with paired save"):
+            g2_preview_operator.family_pending_sidecar_pair(
+                sidecar, driver, manifest, "d" * 64, reports)
+
     def test_eligibility_active_context_contract_is_exact_and_additive(self) -> None:
         self.assertEqual(
             g2_preview_eligibility._active_context_contract({}),
