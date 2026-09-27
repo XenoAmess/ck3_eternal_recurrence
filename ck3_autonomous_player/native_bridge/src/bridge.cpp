@@ -7821,6 +7821,8 @@ constexpr std::string_view kObservedFirstHeirMarriageLegalityStepV1 =
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 constexpr std::string_view kMarriageCandidateAllianceProjectionStepV1 =
     "query-first-heir-candidate-alliance-projection-v1-private";
+constexpr std::string_view kCurrentFirstHeirRelationshipStepV1 =
+    "query-current-first-heir-relationship-v1-private";
 constexpr std::size_t kMarriageCandidateAllianceProjectionRowsV1 = 5;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
@@ -7926,6 +7928,78 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
 }
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+std::string_view CurrentFirstHeirRelationshipFailureKeyV1(
+    xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1 failure) {
+  using Failure = xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1;
+  switch (failure) {
+  case Failure::none: return "none";
+  case Failure::frame_changed: return "frame_changed";
+  case Failure::heir_unavailable: return "heir_unavailable";
+  case Failure::relationship_unavailable: return "relationship_unavailable";
+  case Failure::partner_unavailable: return "partner_unavailable";
+  case Failure::bilateral_inconsistent: return "bilateral_inconsistent";
+  }
+  return "unknown";
+}
+
+std::string CurrentFirstHeirRelationshipResultFrameV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t heir_character_id,
+    const xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &read,
+    std::string_view override_unavailable_reason = {}) {
+  const bool available =
+      override_unavailable_reason.empty() &&
+      read.failure ==
+          xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none;
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, kCurrentFirstHeirRelationshipStepV1);
+  result += ",\"accepted\":true,\"private_build\":true,"
+            "\"read_only\":true,\"advertised\":false,\"status\":";
+  AppendJsonString(result, available ? "available" : "unavailable");
+  result += ",\"native_revision\":" + Number(native_revision);
+  result += ",\"subject_source\":\"public_campaign_root_primary_first_heir\","
+            "\"heir_character_id\":" + SignedNumber(heir_character_id);
+  result += ",\"unavailable_reason\":";
+  if (available) {
+    result += "null";
+  } else {
+    AppendJsonString(result, override_unavailable_reason.empty()
+                                 ? CurrentFirstHeirRelationshipFailureKeyV1(
+                                       read.failure)
+                                 : override_unavailable_reason);
+  }
+  result += ",\"bilateral_verified\":";
+  result += available ? "true" : "false";
+  result += ",\"betrothed_character_id\":";
+  if (available && read.relationship.betrothed_character_id > 0)
+    result += SignedNumber(read.relationship.betrothed_character_id);
+  else
+    result += "null";
+  result += ",\"primary_spouse_character_id\":";
+  if (available && read.relationship.primary_spouse_character_id > 0)
+    result += SignedNumber(read.relationship.primary_spouse_character_id);
+  else
+    result += "null";
+  result += ",\"spouse_character_ids\":";
+  if (!available) {
+    result += "null";
+  } else {
+    result += '[';
+    for (std::size_t index = 0;
+         index < read.relationship.spouse_character_ids.size(); ++index) {
+      if (index != 0) result += ',';
+      result += SignedNumber(read.relationship.spouse_character_ids[index]);
+    }
+    result += ']';
+  }
+  result += "}}";
+  return result;
+}
+
 struct MarriageCandidateAllianceMailboxQueryV1 {
   xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
   xar::ck3_11906::Bindings bindings{};
@@ -9715,6 +9789,7 @@ void RunConnectedSession(
                    && step != kObservedFirstHeirMarriageLegalityStepV1
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
                    && step != kMarriageCandidateAllianceProjectionStepV1
+                   && step != kCurrentFirstHeirRelationshipStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
                    && step != kObservedFirstHeirMarriageSubmitStepV1
@@ -10808,6 +10883,59 @@ void RunConnectedSession(
             }
           }
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+        } else if (step == kCurrentFirstHeirRelationshipStepV1) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision == 0 || expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "current first-heir relationship needs current native revision"));
+          } else {
+            xar::game::Snapshot before{};
+            if (!previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, before) ||
+                before != *previous_snapshot || !before.paused ||
+                !before.map_ready || !before.has_played_character ||
+                !before.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "current first-heir relationship frame changed"));
+            } else {
+              const bool observed_current =
+                  state.observed_primary_heir_revision == state_revision &&
+                  state.observed_primary_heir_connection_generation ==
+                      connection_generation;
+              const auto heir_id =
+                  observed_current && state.observed_primary_heir_character_id
+                      ? *state.observed_primary_heir_character_id : -1;
+              std::string_view unavailable_reason;
+              xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
+              if (!observed_current) {
+                unavailable_reason =
+                    "same_revision_public_campaign_root_query_required";
+              } else if (heir_id <= 0) {
+                unavailable_reason =
+                    "public_campaign_root_primary_first_heir_absent";
+              } else {
+                read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+                    xar::ck3_11906::BindCurrentProcess(true), heir_id);
+              }
+              xar::game::Snapshot after{};
+              if (!xar::game::ReadSnapshot(game, after) || after != before ||
+                  read.failure == xar::ck3_11906::
+                      CurrentFirstHeirRelationshipFailureV1::frame_changed) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                        "current first-heir relationship frame changed during read"));
+              } else {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CurrentFirstHeirRelationshipResultFrameV1(
+                        request_id, state_revision, heir_id, read,
+                        unavailable_reason));
+              }
+            }
+          }
         } else if (step == kMarriageCandidateAllianceProjectionStepV1) {
           std::uint64_t expected_revision = 0;
           std::uint64_t legality_query_sequence = 0;

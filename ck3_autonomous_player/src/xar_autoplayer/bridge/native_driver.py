@@ -1432,6 +1432,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_minor_religious_war_defenders_query: bool = False,
         allow_private_epidemic_treatment_presence_query: bool = False,
         allow_private_prisoner_collection_query: bool = False,
+        allow_private_current_first_heir_relationship_query: bool = False,
         allow_private_epidemic_recovery_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
@@ -1514,6 +1515,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_prisoner_collection_query = (
             allow_private_prisoner_collection_query is True
+        )
+        self.allow_private_current_first_heir_relationship_query = (
+            allow_private_current_first_heir_relationship_query is True
         )
         self.allow_private_epidemic_recovery_query = (
             allow_private_epidemic_recovery_query is True
@@ -2503,6 +2507,20 @@ class NativeHeadlessGameplayDriver:
         )
 
         return query_observed_heir_marriage_private_v1(
+            self, expected_native_revision=expected_native_revision,
+            timeout_seconds=timeout_seconds,
+        )
+
+    def query_current_first_heir_relationship_private_v1(
+        self, *, expected_native_revision: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Opt-in paused current-heir bilateral read, outside formal actions."""
+        from .current_first_heir_relationship_private_transport import (
+            query_current_first_heir_relationship_private_v1,
+        )
+
+        return query_current_first_heir_relationship_private_v1(
             self, expected_native_revision=expected_native_revision,
             timeout_seconds=timeout_seconds,
         )
