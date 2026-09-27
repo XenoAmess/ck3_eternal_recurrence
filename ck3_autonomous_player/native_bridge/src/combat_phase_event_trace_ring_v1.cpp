@@ -1691,15 +1691,15 @@ bool CaptureCombatCounterOutputV1(
       ring->committed_count.load(std::memory_order_acquire);
   const auto captured_count =
       ring->counter_output_count.load(std::memory_order_acquire);
-  const auto current_thread_id = GetCurrentThreadId();
-  bool valid = committed_count == 6 && captured_count == index &&
-               current_thread_id == ring->plan.owner_thread_id;
+  // The managed pause/query runs on the UI owner thread, whereas the daily
+  // combat tick can run on a simulation worker. The exact outer caller is
+  // already bound through thread-local context and checked above. Requiring
+  // the UI owner here discards the real combat output (attempt 097).
+  bool valid = committed_count == 6 && captured_count == index;
   if (!valid) {
-    // Preserve the legacy gate 3 meaning for older receipts; distinguish its
-    // three mutually ordered checks in new captures without exposing pointers.
-    MarkCounterOutputGate(*ring, committed_count != 6   ? 31
-                                 : captured_count != index ? 32
-                                                           : 33);
+    // Gates 3 and 33 remain readable in historical receipts. New captures
+    // distinguish the two actual sequence checks without exposing pointers.
+    MarkCounterOutputGate(*ring, committed_count != 6 ? 31 : 32);
   }
   if (valid) {
 #if defined(_MSC_VER)

@@ -1162,12 +1162,22 @@ bool CounterOutputCaptureCases() {
   if (capture(0) || ring->counter_output_first_failure_gate.load() != 32)
     return Fail("counter-output side-order gate was not distinguished");
   CancelCombatPhaseEventTraceRingV1(*ring);
-  fixture.plan.owner_thread_id = GetCurrentThreadId() + 1;
+  fixture.plan.owner_thread_id = GetCurrentThreadId();
   if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
-    return Fail("counter-output thread diagnostic arm failed");
+    return Fail("counter-output simulation-thread arm failed");
   ring->committed_count.store(6);
-  if (capture(0) || ring->counter_output_first_failure_gate.load() != 33)
-    return Fail("counter-output owner-thread gate was not distinguished");
+  bool worker_captured = false;
+  std::uint32_t worker_thread_id = 0;
+  std::thread worker([&] {
+    worker_thread_id = GetCurrentThreadId();
+    worker_captured = capture(0);
+  });
+  worker.join();
+  if (worker_thread_id == fixture.plan.owner_thread_id || !worker_captured ||
+      ring->counter_output_count.load() != 1 ||
+      ring->counter_output_first_failure_gate.load() != 0 ||
+      ring->failure_flags.load() != trace_capture_failure_none)
+    return Fail("real simulation-thread counter output was rejected");
   CancelCombatPhaseEventTraceRingV1(*ring);
   return true;
 }
