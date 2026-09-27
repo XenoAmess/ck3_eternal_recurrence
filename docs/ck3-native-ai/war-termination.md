@@ -2735,9 +2735,13 @@ freezes [this ABI result](../../ck3_autonomous_player/native_bridge/research/dej
 (SHA-256 `61DBA4F26EB06707F41D59CE9F8E5AB9275707EBDB87248B666D4719F0BCA117`).
 RTTI binds `CSetupDeJureCBChangeEffect` to vtable `0x444AFA0`, execute
 `0x2E9F420` and preview `0x2E9FA10`. Preview calls helper `0x2E9FF30`
-and output helper `0x2E9F190`; it resolves effect input `+0x260`. That change
-object's ownership, helper side effects, and final-operation schema are
-**unproven**. Preview is not approved for live invocation. The common
+and output helper `0x2E9F190`; it resolves effect input `+0x260`.
+The 2026-09-27 [constructor/RTTI follow-up](war-termination-war31-static-followup-2026-09-27.md)
+corrects the earlier “change object” label: `+0x260` is an inline
+`CJominiScriptScopeObject<CLandedTitle>`, whose virtual slot `+0x30` is a
+nonwriting presence check. The separate inline `+0x1B0` field is
+`CJominiScriptScopeObject<CTitleAndVassalChange>`. The downstream helper branches and final-operation
+schema are **unproven**. Preview is not approved for live invocation. The common
 `CResolveTitleAndVassalChangeEffect` preview slot `0x7E9220` is `B0 01 C3`
 (`return true`) and produces no resolved operations. The previously crashing
 broad loaded-effect preview remains outside this path.
@@ -2748,7 +2752,8 @@ flowchart TD
     A --> B["[static] individual_county_de_jure_cb on_victory"]
     B --> C["[static] create conquest change; setup_de_jure_cb; resolve"]
     C --> P["[static] setup preview 0x2E9FA10 calls helper"]
-    P -. "[unknown] +0x260 ownership and helper effects" .-> O["safe, non-mutating final operation producer"]
+    P --> I["[static] +0x260 inline CLandedTitle scope; presence check"]
+    I -. "[unknown] downstream helper effects" .-> O["safe, non-mutating final operation producer"]
     C --> N["[static] resolve preview 0x7E9220 returns true only"]
     O -. "[unknown] no complete old/new title or liege rows" .-> T["structured material terms"]
     B -. "[unknown] signed resources and conditional effects" .-> T
@@ -2757,9 +2762,9 @@ flowchart TD
     class O,T,X unknown;
 ```
 
-**Next smallest reverse-engineering step:** trace `0x2E9FA10 -> 0x2E9FF30`
-and the effect `+0x260` change object to prove allocation, lifetime and every
-write destination; then locate a non-mutating producer of the *resolved*
+**Next smallest reverse-engineering step:** trace the downstream
+`0x28B21E0` / `0x28B1EB0` branches and the `+0x1B0` change scope's referent
+to prove their write destinations; then locate a non-mutating producer of the *resolved*
 old/new Title/holder/liege/vassal operations. Independently identify primary
 and conditional signed resource outputs for this exact CB. Only after those
 paths are proven can a CB-specific read-only terms DTO and same-frame fixture

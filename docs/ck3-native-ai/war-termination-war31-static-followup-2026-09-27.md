@@ -35,20 +35,30 @@ title/holder/liege/vassal 逐项操作清单。
 并冻结地址、直接 call 目标与关键指令字节。
 [ABI 回执](../../ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json)
 SHA-256 为
-`E954C1E01B04CD655F1A316C995C0D70491F365020389DB5A96DDAE257099422`。
+`0FD1E7611DF64C1CCC9111D0B43558B231506A161C2403DA54BA9553AA5933B0`。
 
 `CSetupDeJureCBChangeEffect` 的 preview 在 `0x2E9FB8A`
 取 effect `+0x260`，在 `0x2E9FB98` 传给 `0x995CB0`。
-随后 `0x2E9FF30` 在 `0x2E9FFF0` 再从 effect `+0x260`
-取 vtable 并调用 slot `+0x30`。其布尔返回把控制流分到
-`0x28B21E0` 或 `0x28B1EB0`，再向调用者提供一项计数。
-这是一条具体的**间接执行链**，不是已证明只读的“预览标题列表”。
-`+0x260` 的动态类型、对象所有权、slot 的副作用与计数的业务含义
-尚未证明。`CResolveTitleAndVassalChangeEffect` 的 preview 仅返回 true，
+继续追溯构造函数 `0x2EA2140`：它把 vtable `0x4099588` 装入
+effect 内联字段 `+0x260`；RTTI 将该字段确认为
+`CJominiScriptScopeObject<CLandedTitle>`。因此它是**目标头衔的作用域对象**，
+不是此前误称的 conquest change 对象，所有权是 effect 内联字段。
+同一构造函数把另一个内联字段 `+0x1B0` 的 vtable 设置为
+`0x444B948`；RTTI 将它确认为
+`CJominiScriptScopeObject<CTitleAndVassalChange>`，即单独的 change
+作用域。这里证明了两个**作用域包装对象**的类型与位置，尚未证明
+它们所引用游戏对象的所有权或最终迁移清单。
+`0x2E9FF30` 在 `0x2E9FFF0` 调用该作用域的 vtable slot `+0x30`；
+该 slot 指向 `0x999CA0`，仅检查作用域 `+0x1C` 的 dword 是否非零，
+自身没有写操作。检查结果将控制流分到 `0x28B21E0` 或
+`0x28B1EB0`，再向调用者提供一项计数。
+两条下游调用的完整写集合、计数的业务含义以及 change 作用域所指
+对象的最终操作仍未证明；一个非写入的 presence check 不足以证明整个 preview 纯读取。
+`CResolveTitleAndVassalChangeEffect` 的 preview 仅返回 true，
 也不提供最终 title/holder/liege/vassal 迁移。
 
-下一步应静态解析 `+0x260` 动态类型及 slot `+0x30` 两条后续
-调用的写集合，再寻找能输出**结算后逐项操作**的独立只读路径；
+下一步应静态解析 `0x28B21E0` / `0x28B1EB0` 两条下游调用
+及 `+0x1B0` change 作用域所指对象的写集合，再寻找能输出**结算后逐项操作**的独立只读路径；
 对 `cb_prestige_factor`、停战与条件资源效果分别建立原始值读回。
 只有这些路径有同帧、同构建绑定并经过独立配对实机只读验证，
 才能考虑扩展 WAR31 材料条款 DTO。当前请求响应仍只交付安全续行替代；

@@ -3,7 +3,7 @@
   "request_id": "WAR-INPUT-R0221-WAR31-20260927",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T06:44:11Z",
+  "updated_at_utc": "2026-09-27T09:45:56Z",
   "source_pr": null,
   "delivery_route": "direct rebase-only master push under the project Git policy",
   "master_commit": "2a2f87a2d7c9afc733f2168e7371f1e303323752",
@@ -12,7 +12,8 @@
     "absolute_outcome": "primary defender surrender invokes attacker_victory",
     "stock_cb": "individual_county_de_jure_cb on_victory in 00_dejure_war.txt:435-497 constructs conquest title-and-vassal change, setup_de_jure_cb, then resolve_title_and_vassal_change; later prestige/fame/truce and conditional effects remain material",
     "existing_exact_build_audit": "docs/ck3-native-ai/war-termination.md:2717 and ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json",
-    "preview_boundary": "CSetupDeJureCBChangeEffect preview 0x2E9FA10 calls 0x2E9FF30 on a +0x260 change object; object ownership, side effects, and complete final-operation schema are not proven. CResolveTitleAndVassalChangeEffect preview 0x7E9220 only returns true. Broad loaded-effect preview remains disabled after two live crashes at RVA 0x334C668.",
+    "preview_boundary": "Exact-build constructor and RTTI identify effect +0x260 as an inline CJominiScriptScopeObject<CLandedTitle>, distinct from the +0x1B0 CJominiScriptScopeObject<CTitleAndVassalChange>. CSetupDeJureCBChangeEffect preview 0x2E9FA10 passes the title scope to 0x995CB0 and helper 0x2E9FF30; title-scope vtable slot +0x30 resolves to the nonwriting presence check 0x999CA0. Downstream branch write sets, change referent ownership and complete final-operation schema are unproven. CResolveTitleAndVassalChangeEffect preview 0x7E9220 only returns true. Broad loaded-effect preview remains disabled after two live crashes at RVA 0x334C668.",
+    "static_followup": "docs/ck3-native-ai/war-termination-war31-static-followup-2026-09-27.md and exact-build extractor/ABI receipt correct the earlier +0x260 label without promoting surrender material terms",
     "current_frame_material_result": "unknown; neither legal acceptance nor a static conquest script identifies this WarID's final holder, liege, vassal, signed resources, or truce expiry"
   },
   "interface_contract": {
@@ -38,5 +39,5 @@
     "The original Robert source save/driver/sidecars are on another machine; a new typed material-terms reader cannot be paired live here until those exact assets are independently verified and transferred.",
     "R0250 proves bounded continuation and no termination; it does not prove ultimate victory, surrender consequences or a resolved War 31 exit."
   ],
-  "next_step": "Consumer: fetch this master commit and record a verification of the exact WAR31 alternative against its formal pair, without treating it as terms observability or closing the war. Maintainer: continue static proof of a non-mutating final-operation producer and signed CB effects, then seek a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
+  "next_step": "Consumer: fetch this master commit and record a verification of the exact WAR31 alternative against its formal pair, without treating it as terms observability or closing the war. Maintainer: trace downstream preview branches 0x28B21E0/0x28B1EB0 and the +0x1B0 change scope referent, then identify a non-mutating final-operation producer and signed CB effects before seeking a separately verified exact Robert save/driver pair for a read-only live query. Do not call the crashing broad preview or submit surrender on this evidence."
 }

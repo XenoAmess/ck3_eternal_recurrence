@@ -14,7 +14,28 @@
     "preview_helper_call_rva": "0x2E9FBC8",
     "preview_helper_rva": "0x2E9FF30",
     "preview_helper_call_bytes": "E863030000",
-    "change_input_resolution": {
+    "target_title_scope_resolution": {
+      "effect_constructor_rva": "0x2EA2140",
+      "effect_vtable_install_rva": "0x2EA216C",
+      "effect_vtable_install_bytes": "488D052D8E5A01488907",
+      "embedded_scope_vtable_install_rva": "0x2EA2176",
+      "embedded_scope_vtable_install_bytes": "488D8F60020000E86E3EAFFD488D05FF731F0148898760020000",
+      "embedded_scope_vtable_rva": "0x4099588",
+      "embedded_scope_type_descriptor_rva": "0x516C040",
+      "embedded_scope_rtti_col_rva": "0x45CC888",
+      "embedded_scope_rtti_name": ".?AV?$CJominiScriptScopeObject@VCLandedTitle@@@@",
+      "separate_change_scope": {
+        "effect_offset": "0x1B0",
+        "constructor_initialization_call_rva": "0x2EA21FF",
+        "constructor_initialization_rva": "0x995FF0",
+        "constructor_initialization_call_bytes": "E8EC3DAFFD",
+        "vtable_install_rva": "0x2EA2209",
+        "vtable_install_bytes": "488D0538975A01488B742438488987B0010000",
+        "vtable_rva": "0x444B948",
+        "type_descriptor_rva": "0x55D2960",
+        "rtti_col_rva": "0x4AB2F90",
+        "rtti_name": ".?AV?$CJominiScriptScopeObject@VCTitleAndVassalChange@@@@"
+      },
       "input_lea_rva": "0x2E9FB8A",
       "input_lea_bytes": "488D8B60020000",
       "input_offset_from_effect": "0x260",
@@ -24,6 +45,9 @@
       "helper_virtual_dispatch_rva": "0x2E9FFF0",
       "helper_virtual_dispatch_bytes": "488D8B60020000488B01FF5030",
       "helper_virtual_slot_offset": "0x30",
+      "helper_virtual_slot_target_rva": "0x999CA0",
+      "helper_virtual_slot_target_bytes": "83791C000F95C0C3",
+      "helper_virtual_slot_behavior": "reads embedded scope dword +0x1C and returns whether it is nonzero; this slot itself performs no write",
       "true_branch_call_rva": "0x2EA0012",
       "true_branch_target_rva": "0x28B21E0",
       "true_branch_call_bytes": "E8C921A1FF",
@@ -51,6 +75,6 @@
     "preview_safe_to_call": false,
     "final_title_holder_liege_vassal_operations_observed": false,
     "signed_resource_deltas_observed": false,
-    "next_locator": "The preview's +0x260 input is passed to 0x995CB0, then its vtable slot +0x30 is called inside 0x2E9FF30; prove the concrete runtime type, ownership and side effects of that indirect dispatch before any live invocation. Separately locate a non-mutating producer of complete resolved operations and signed resource deltas."
+    "next_locator": "The +0x260 input is an inline CJominiScriptScopeObject<CLandedTitle>; the separate +0x1B0 field is CJominiScriptScopeObject<CTitleAndVassalChange>. Title-scope slot +0x30 is a nonwriting presence check. Downstream preview branches 0x28B21E0/0x28B1EB0 and complete final-operation production remain unproven. Do not invoke preview live; locate a non-mutating producer of complete resolved operations and signed resource deltas."
   }
 }

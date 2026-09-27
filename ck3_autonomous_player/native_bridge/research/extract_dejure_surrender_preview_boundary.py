@@ -85,6 +85,30 @@ def extract(exe: Path) -> dict[str, object]:
         raise ValueError("setup-de-jure execute/preview dispatch changed")
     if pointer(0x445CAD0 + 0xB8) != 0x7E9220 or at(0x7E9220, 3) != bytes.fromhex("B001C3"):
         raise ValueError("resolve-title preview boundary changed")
+    if pointer(0x4099588 - 8) != 0x45CC888:
+        raise ValueError("landed-title scope RTTI locator changed")
+    if struct.unpack("<6I", at(0x45CC888, 24)) != (
+        1, 0, 0, 0x516C040, 0x45CC380, 0x45CC888
+    ):
+        raise ValueError("landed-title scope RTTI identity changed")
+    landed_title_scope_rtti = ".?AV?$CJominiScriptScopeObject@VCLandedTitle@@@@"
+    if at(0x516C040 + 16, len(landed_title_scope_rtti) + 1) != (
+        landed_title_scope_rtti.encode("ascii") + b"\0"
+    ):
+        raise ValueError("landed-title scope type name changed")
+    if pointer(0x4099588 + 0x30) != 0x999CA0:
+        raise ValueError("landed-title scope virtual dispatch changed")
+    if pointer(0x444B948 - 8) != 0x4AB2F90:
+        raise ValueError("title-and-vassal-change scope RTTI locator changed")
+    if struct.unpack("<6I", at(0x4AB2F90, 24)) != (
+        1, 0, 0, 0x55D2960, 0x4AB3408, 0x4AB2F90
+    ):
+        raise ValueError("title-and-vassal-change scope RTTI identity changed")
+    change_scope_rtti = ".?AV?$CJominiScriptScopeObject@VCTitleAndVassalChange@@@@"
+    if at(0x55D2960 + 16, len(change_scope_rtti) + 1) != (
+        change_scope_rtti.encode("ascii") + b"\0"
+    ):
+        raise ValueError("title-and-vassal-change scope type name changed")
 
     return {
         "schema": "xar.ck3.dejure-defender-surrender-preview-boundary.v1",
@@ -99,7 +123,36 @@ def extract(exe: Path) -> dict[str, object]:
             "preview_helper_call_rva": "0x2E9FBC8",
             "preview_helper_rva": "0x2E9FF30",
             "preview_helper_call_bytes": direct_call(0x2E9FBC8, 0x2E9FF30),
-            "change_input_resolution": {
+            "target_title_scope_resolution": {
+                "effect_constructor_rva": "0x2EA2140",
+                "effect_vtable_install_rva": "0x2EA216C",
+                "effect_vtable_install_bytes": exact_bytes(
+                    0x2EA216C, "48 8D 05 2D 8E 5A 01 48 89 07"
+                ),
+                "embedded_scope_vtable_install_rva": "0x2EA2176",
+                "embedded_scope_vtable_install_bytes": exact_bytes(
+                    0x2EA2176,
+                    "48 8D 8F 60 02 00 00 E8 6E 3E AF FD 48 8D 05 FF 73 1F 01 48 89 87 60 02 00 00",
+                ),
+                "embedded_scope_vtable_rva": "0x4099588",
+                "embedded_scope_type_descriptor_rva": "0x516C040",
+                "embedded_scope_rtti_col_rva": "0x45CC888",
+                "embedded_scope_rtti_name": landed_title_scope_rtti,
+                "separate_change_scope": {
+                    "effect_offset": "0x1B0",
+                    "constructor_initialization_call_rva": "0x2EA21FF",
+                    "constructor_initialization_rva": "0x995FF0",
+                    "constructor_initialization_call_bytes": direct_call(0x2EA21FF, 0x995FF0),
+                    "vtable_install_rva": "0x2EA2209",
+                    "vtable_install_bytes": exact_bytes(
+                        0x2EA2209,
+                        "48 8D 05 38 97 5A 01 48 8B 74 24 38 48 89 87 B0 01 00 00",
+                    ),
+                    "vtable_rva": "0x444B948",
+                    "type_descriptor_rva": "0x55D2960",
+                    "rtti_col_rva": "0x4AB2F90",
+                    "rtti_name": change_scope_rtti,
+                },
                 "input_lea_rva": "0x2E9FB8A",
                 "input_lea_bytes": exact_bytes(0x2E9FB8A, "48 8D 8B 60 02 00 00"),
                 "input_offset_from_effect": "0x260",
@@ -111,6 +164,11 @@ def extract(exe: Path) -> dict[str, object]:
                     0x2E9FFF0, "48 8D 8B 60 02 00 00 48 8B 01 FF 50 30"
                 ),
                 "helper_virtual_slot_offset": "0x30",
+                "helper_virtual_slot_target_rva": "0x999CA0",
+                "helper_virtual_slot_target_bytes": exact_bytes(
+                    0x999CA0, "83 79 1C 00 0F 95 C0 C3"
+                ),
+                "helper_virtual_slot_behavior": "reads embedded scope dword +0x1C and returns whether it is nonzero; this slot itself performs no write",
                 "true_branch_call_rva": "0x2EA0012",
                 "true_branch_target_rva": "0x28B21E0",
                 "true_branch_call_bytes": direct_call(0x2EA0012, 0x28B21E0),
@@ -140,7 +198,7 @@ def extract(exe: Path) -> dict[str, object]:
             "preview_safe_to_call": False,
             "final_title_holder_liege_vassal_operations_observed": False,
             "signed_resource_deltas_observed": False,
-            "next_locator": "The preview's +0x260 input is passed to 0x995CB0, then its vtable slot +0x30 is called inside 0x2E9FF30; prove the concrete runtime type, ownership and side effects of that indirect dispatch before any live invocation. Separately locate a non-mutating producer of complete resolved operations and signed resource deltas.",
+            "next_locator": "The +0x260 input is an inline CJominiScriptScopeObject<CLandedTitle>; the separate +0x1B0 field is CJominiScriptScopeObject<CTitleAndVassalChange>. Title-scope slot +0x30 is a nonwriting presence check. Downstream preview branches 0x28B21E0/0x28B1EB0 and complete final-operation production remain unproven. Do not invoke preview live; locate a non-mutating producer of complete resolved operations and signed resource deltas.",
         },
     }
 
