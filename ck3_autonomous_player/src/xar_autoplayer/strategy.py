@@ -16466,9 +16466,17 @@ def _provisional_defense_research_assessment(
     completeness = payload.get("completeness")
     base = payload.get("base_inputs")
     scenario = base.get("scenario") if isinstance(base, dict) else None
+    base_completeness = base.get("completeness") if isinstance(base, dict) else None
     if not (
         isinstance(completeness, dict)
-        and completeness.get("input_observation_ready") is True
+        and (
+            completeness.get("input_observation_ready") is True
+            or (
+                payload.get("schema_version") == 3
+                and payload.get("contract_stage") == "production_exact_132_refs"
+                and isinstance(base_completeness, dict)
+                and base_completeness.get("input_observation_ready") is True)
+        )
         and isinstance(base, dict)
         and isinstance(scenario, dict)
         and base.get("target_province_id") == target_province_id
@@ -16520,6 +16528,7 @@ def _provisional_defense_research_assessment(
         "model_fidelity": "research_only_phase_events_disabled",
         "calibrated_win_probability_available": False,
         "input_sha256": forecast["input_sha256"],
+        "advantage_input": forecast["advantage_input"],
         "simulator_build": forecast["simulator_build"],
         "sample_count": forecast["sample_count"],
         "player_wins": forecast["player_wins"],

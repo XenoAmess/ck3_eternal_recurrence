@@ -9,11 +9,109 @@ from __future__ import annotations
 
 from dataclasses import asdict
 from functools import lru_cache
+from hashlib import sha256
+import json
 from typing import Any, Mapping
 
 from .combat_core import CombatExperiment
 from .combat_input import CombatInputError, FrozenCombatSimulationInput, freeze_combat_simulation_input
 from .research_envelope import ResearchEnvelopeAssumptions, run_research_envelope_experiment
+
+
+def _native_precontact_advantage(
+    payload: Mapping[str, Any], frozen: FrozenCombatSimulationInput,
+) -> tuple[int, int, int, tuple[int | None, int | None], str] | None:
+    """Bind the same v3 query's zero-roll helper and native-selected commanders.
+
+    An unavailable optional phase slice permits the declared generic fallback.
+    A malformed *available* slice is an identity error, never a silent fallback.
+    """
+    phase = payload.get("phase_event_inputs")
+    if phase is None and payload.get("schema_version") != 3:
+        return None
+    if (isinstance(phase, dict) and phase.get("status") == "unavailable"
+            and phase.get("advantage_model") is None):
+        return None
+    if (not isinstance(phase, dict) or payload.get("schema_version") != 3
+            or payload.get("contract_stage") != "production_exact_132_refs"):
+        raise CombatInputError("native phase slice has no v3 identity")
+    model = phase.get("advantage_model")
+    resolved = model.get("resolved_dynamic") if isinstance(model, dict) else None
+    if not (
+        isinstance(model, dict) and isinstance(resolved, dict)
+        and model.get("status") == "available"
+        and model.get("scale") == 100_000
+        and model.get("scenario_policy") == frozen.encounter.participant_policy
+        and model.get("observation_origin") == "native_exact_build_production"
+        and resolved.get("status") == "available"
+        and resolved.get("helper_status") == "original_helpers_matched"
+        and resolved.get("roll_policy") == "zero_in_query_sampled_offline"
+        and resolved.get("original_total_helper_match") is True
+    ):
+        raise CombatInputError("native phase advantage provenance is unavailable")
+    base = model.get("base_static_accumulator_raw")
+    total = resolved.get("resolved_advantage_at_zero_roll_raw")
+    original = resolved.get("original_total_helper_raw")
+    sides = resolved.get("sides")
+    side_inputs = model.get("side_inputs")
+    if (any(type(value) is not int or not -(2**63) <= value < 2**63
+            for value in (base, total, original))
+            or not isinstance(sides, list) or len(sides) != 2
+            or not isinstance(side_inputs, list) or len(side_inputs) != 2):
+        raise CombatInputError("native phase advantage numbers are malformed")
+    leaders = []
+    selected_ids = []
+    side_totals = []
+    for index, role in enumerate(("attacker", "defender")):
+        side = sides[index]
+        source = side_inputs[index]
+        armies = tuple(army for army in frozen.armies if army.encounter_role == role)
+        expected_ids = tuple(army.public_army_id for army in armies)
+        if (not isinstance(side, dict) or not isinstance(source, dict)
+                or side.get("side") != role or source.get("side") != role
+                or not armies
+                or source.get("ordered_army_ids") != list(expected_ids)
+                or source.get("primary_army_id") != expected_ids[0]
+                or side.get("battle_commander_selection") != "native_0x23C8A60"
+                or type(side.get("battle_commander_selected")) is not bool):
+            raise CombatInputError("native phase side identity differs")
+        selected = side["battle_commander_selected"]
+        character_id = side.get("battle_commander_character_id")
+        if selected:
+            if type(character_id) is not int or character_id <= 0:
+                raise CombatInputError("native selected commander ID is malformed")
+            candidates = tuple(
+                army for army in armies
+                if army.commander.character_id == character_id
+            )
+            if len(candidates) != 1:
+                raise CombatInputError("native selected commander army is not unique in same-frame armies")
+            leader = candidates[0]
+        elif character_id is None:
+            leader = armies[0]  # placeholder only; no commander roll is drawn
+        else:
+            raise CombatInputError("native absent commander has a character ID")
+        operands = (
+            side.get("roll_raw"), side.get("target_conditionals_residual_raw"),
+            side.get("commander_dynamic_raw"), side.get("side_dynamic_raw"),
+            side.get("side_total_raw"),
+        )
+        if (any(type(value) is not int or not -(2**63) <= value < 2**63
+                for value in operands)
+                or side.get("roll_points") != 0 or operands[0] != 0
+                or sum(operands[:4]) != operands[4]):
+            raise CombatInputError("native phase side helper arithmetic differs")
+        leaders.append(leader.public_army_id)
+        selected_ids.append(character_id)
+        side_totals.append(operands[4])
+    if (total != original or total != base + side_totals[0] - side_totals[1]
+            or resolved.get("side_0_dynamic_raw") != side_totals[0]
+            or resolved.get("side_1_dynamic_raw") != side_totals[1]):
+        raise CombatInputError("native zero-roll advantage arithmetic differs")
+    model_sha256 = sha256(json.dumps(
+        model, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+    ).encode("utf-8")).hexdigest().upper()
+    return leaders[0], leaders[1], total, (selected_ids[0], selected_ids[1]), model_sha256
 
 
 def _positive_ids(value: object) -> tuple[int, ...] | None:
@@ -29,6 +127,8 @@ def _run_cached(
     frozen: FrozenCombatSimulationInput,
     attacker_commander_id: int,
     defender_commander_id: int,
+    native_zero_roll_advantage_raw: int | None,
+    native_selected_commander_ids: tuple[int | None, int | None] | None,
     sample_count: int,
     horizon_days: int,
 ):
@@ -43,6 +143,8 @@ def _run_cached(
         ResearchEnvelopeAssumptions(
             attacker_commander_army_id=attacker_commander_id,
             defender_commander_army_id=defender_commander_id,
+            precontact_zero_roll_advantage_raw=native_zero_roll_advantage_raw,
+            precontact_selected_commander_character_ids=native_selected_commander_ids,
         ),
         max_workers=1,
     )
@@ -71,10 +173,21 @@ def forecast_fixed_contact(
     completeness = payload.get("completeness")
     base = payload.get("base_inputs")
     scenario = base.get("scenario") if isinstance(base, dict) else None
-    if not (
+    base_completeness = base.get("completeness") if isinstance(base, dict) else None
+    ready = bool(
         isinstance(completeness, dict)
         and completeness.get("input_observation_ready") is True
-        and isinstance(base, dict)
+    )
+    # Production v3 can preserve a complete v2 base while an optional phase
+    # slice is unavailable. Keep the bounded generic forecast usable then.
+    ready = ready or bool(
+        payload.get("schema_version") == 3
+        and payload.get("contract_stage") == "production_exact_132_refs"
+        and isinstance(base_completeness, dict)
+        and base_completeness.get("input_observation_ready") is True
+    )
+    if not (
+        ready and isinstance(base, dict)
         and isinstance(scenario, dict)
         and base.get("target_province_id") == target_province_id
         and scenario.get("attacker_entry_province_id") == attacker_entry_province_id
@@ -90,14 +203,23 @@ def forecast_fixed_contact(
         return {"status": "active_combat_requires_resume_input"}
     try:
         frozen = freeze_combat_simulation_input(base, capture=dict(capture))
-        leaders = []
-        for role in ("attacker", "defender"):
-            armies = tuple(army for army in frozen.armies if army.encounter_role == role)
-            if not armies:
-                return {"status": "participant_role_unavailable"}
-            leaders.append(max(armies, key=lambda army: (army.current_soldiers, -army.public_army_id)))
+        native_advantage = _native_precontact_advantage(payload, frozen)
+        if native_advantage is not None:
+            leader_ids = native_advantage[:2]
+            native_raw, selected_ids, native_model_sha256 = native_advantage[2:]
+        else:
+            leaders = []
+            for role in ("attacker", "defender"):
+                armies = tuple(army for army in frozen.armies if army.encounter_role == role)
+                if not armies:
+                    return {"status": "participant_role_unavailable"}
+                leaders.append(max(armies, key=lambda army: (army.current_soldiers, -army.public_army_id)))
+            leader_ids = tuple(army.public_army_id for army in leaders)
+            native_raw = None
+            selected_ids = None
+            native_model_sha256 = None
         summary = _run_cached(
-            frozen, leaders[0].public_army_id, leaders[1].public_army_id,
+            frozen, leader_ids[0], leader_ids[1], native_raw, selected_ids,
             sample_count, horizon_days,
         )
     except (CombatInputError, ValueError, RuntimeError, TypeError) as error:
@@ -117,6 +239,23 @@ def forecast_fixed_contact(
         "simulator_build": summary.simulator_build,
         "sample_count": summary.sample_count,
         "horizon_days": horizon_days,
+        "advantage_input": {
+            "source": (
+                "same_frame_v3_native_zero_roll_frozen_future"
+                if native_raw is not None else "generic_commander_and_stock_static_approximation"
+            ),
+            "zero_roll_raw": native_raw,
+            "model_sha256": native_model_sha256,
+            "fallback_reason": (
+                None if native_raw is not None else
+                "phase_event_inputs_unavailable"
+                if isinstance(payload.get("phase_event_inputs"), dict) else
+                "native_phase_not_in_payload"
+            ),
+            "selected_commander_character_ids": list(selected_ids) if selected_ids is not None else None,
+            "selected_commander_army_ids": list(leader_ids),
+            "future_daily_refresh_modeled": False,
+        },
         "player_wins": summary.player_wins,
         "player_losses": summary.player_losses,
         "no_resolution": summary.no_resolution,
@@ -144,6 +283,8 @@ def forecast_fixed_contact(
             "fixed_participants", "unobserved_modifiers_omitted",
             "future_daily_effective_stat_refresh_unmodeled",
             "future_daily_combat_width_refresh_unmodeled",
+            "future_daily_non_roll_advantage_refresh_unmodeled",
+            *(["same_frame_native_advantage_frozen_for_future_days"] if native_raw is not None else []),
         ],
         "capture": dict(capture),
     }
@@ -187,6 +328,7 @@ def contact_admission(forecast: Mapping[str, Any], *, defensive_relief: bool = F
             *([] if death_risk_modeled else ["commander_or_knight_death"]),
             "future_daily_effective_stat_refresh",
             "future_daily_combat_width_refresh",
+            "future_daily_non_roll_advantage_refresh",
         ],
         "native_parity_required": False,
     }

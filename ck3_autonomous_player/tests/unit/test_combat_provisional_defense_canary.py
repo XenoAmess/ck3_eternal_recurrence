@@ -197,6 +197,40 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         self.assertIn(result["status"],
                       {"provisional_admissible", "model_risk_budget_exceeded"})
 
+    def test_complete_base_survives_unavailable_v3_phase_for_provisional_trial(self):
+        fixture = json.loads(
+            (FIXTURES / "live_rev4_player_attacks_357.json").read_text(encoding="utf-8")
+        )
+        frame = {
+            "diagnostics": {"hello": {
+                "ck3_build_match": True,
+                "expected_ck3_sha256": fixture["executable_sha256"],
+            }},
+            "succession_lifecycle": {
+                "lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
+            },
+            "combat_simulation_inputs_v3": {
+                "schema_version": 3,
+                "contract_stage": "production_exact_132_refs",
+                "completeness": {"input_observation_ready": False},
+                "base_inputs": fixture["combat_simulation_inputs"],
+                "phase_event_inputs": {"status": "unavailable"},
+            },
+            "snapshot_id": fixture["capture"]["snapshot_id"],
+            "revision": fixture["capture"]["revision"],
+            "native_revision": fixture["capture"]["native_revision"],
+            "date_raw": fixture["capture"]["date_raw"],
+        }
+        result = _provisional_defense_research_assessment(
+            frame, target_province_id=2581, entry_province_id=2587,
+            attacker_army_id=83_886_341, defender_army_ids=(357,),
+            friendly_current_soldiers=1_482,
+        )
+        self.assertIn(result["status"],
+                      {"provisional_admissible", "model_risk_budget_exceeded"})
+        self.assertEqual(result["advantage_input"]["fallback_reason"],
+                         "phase_event_inputs_unavailable")
+
 
 if __name__ == "__main__":
     unittest.main()

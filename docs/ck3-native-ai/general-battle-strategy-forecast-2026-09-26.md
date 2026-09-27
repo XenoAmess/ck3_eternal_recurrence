@@ -1,5 +1,7 @@
 # 游玩智能体通用战斗预测接线（2026-09-26）
 
+2026-09-27 增补：前接战 v3 原生选中将领与零掷骰优势已进入有界预测；完整 base 而 phase unavailable 时明确回退 generic 近似，未来日仍冻结同帧值。证据、算式、回退门与受控前后向量见[专项接线记录](precontact-native-advantage-forecast-2026-09-27.md)。
+
 ## 2026-09-27：R0244 同帧输入阻塞与独立原版回读
 
 [source-confirmed] [战争请求 R0244](../autonomous-agent-progress/coordination/war-requests/requests/WAR-INPUT-R0244-20260927.json) 的正式失败帧在 War `48`、Army `16777237` 对 `16777417`、Province `2640`，已有同帧路线预览和全敌接触窗，但 `native_war_general_battle_inputs_query` 返回 `selected_step=null`，未提交游戏动作。根因是通用策略曾要求精确的 `query-combat-simulation-inputs-v3-<战场>-<入场边>-...` 字面量存在于 `action_steps`；原生驱动按设计只发布其能力模板，不枚举任意战场/参战者组合。修复现在从已观察的玩家军队、目标省、路线末边和敌军当前省精确构造只读字面量，以 v3 桥接能力作执行门，不放开无能力后端或任意写入动作。聚焦测试 `6/6`，v3 桥接与生产合同测试 `22/22`（另 `43` 个 subtest）通过；源码已于 `ba623c137` 推送。

@@ -8,6 +8,7 @@ import os
 
 from .combat_core import (
     CURRENT_BOUNDED_CORE_MANIFEST,
+    FIXED_SCALE,
     BattleTransitionKernel,
     CombatPhase,
     CombatExperiment,
@@ -19,7 +20,6 @@ from .combat_core import (
     TrialRandomStreams,
     TrialResult,
     TransitionFidelityManifest,
-    advantage_damage_multiplier_raw,
     apply_main_phase_casualties,
     apply_pursuit_day,
     apply_three_day_pursuit,
@@ -58,7 +58,7 @@ _STOCK_DEFENDER_CROSSING_ADVANTAGE = {
 
 
 RESEARCH_ENVELOPE_MANIFEST = TransitionFidelityManifest(
-    simulator_build="ck3-1.19.0.6-phase-events-disabled-envelope-v3",
+    simulator_build="ck3-1.19.0.6-phase-events-disabled-envelope-v4",
     loaded_phase_effects_exact=False,
     battle_end_exact=True,
     retreat_and_forced_result_exact=True,
@@ -232,6 +232,8 @@ class ActiveMainResumeState:
 class ResearchEnvelopeAssumptions:
     attacker_commander_army_id: int
     defender_commander_army_id: int
+    precontact_zero_roll_advantage_raw: int | None = None
+    precontact_selected_commander_character_ids: tuple[int | None, int | None] | None = None
     phase_events_disabled: bool = True
     no_voluntary_retreat: bool = True
     omit_unobserved_hard_casualty_modifiers: bool = True
@@ -247,6 +249,20 @@ class ResearchEnvelopeAssumptions:
     )
 
     def __post_init__(self) -> None:
+        if (self.precontact_zero_roll_advantage_raw is None) != (
+            self.precontact_selected_commander_character_ids is None
+        ):
+            raise ValueError("native precontact advantage and selector must be paired")
+        if self.precontact_zero_roll_advantage_raw is not None:
+            if (type(self.precontact_zero_roll_advantage_raw) is not int
+                    or not -(2**63) <= self.precontact_zero_roll_advantage_raw < 2**63):
+                raise ValueError("native zero-roll advantage must be signed int64")
+            selected = self.precontact_selected_commander_character_ids
+            if (not isinstance(selected, tuple) or len(selected) != 2
+                    or any(value is not None and
+                           (type(value) is not int or value <= 0)
+                           for value in selected)):
+                raise ValueError("native selected commander pair is invalid")
         if not (
             self.phase_events_disabled
             and self.no_voluntary_retreat
@@ -388,6 +404,22 @@ class PhaseEventsDisabledResearchKernel(
             resume.side_1_entries if resume is not None
             else initial_state.initial_entries_for_side(defender_coalition)
         )
+        selected_ids = self.assumptions.precontact_selected_commander_character_ids
+        if selected_ids is not None and (
+            (selected_ids[0] is not None and
+             selected_ids[0] != attacker_commander_army.commander.character_id)
+            or (selected_ids[1] is not None and
+                selected_ids[1] != defender_commander_army.commander.character_id)
+        ):
+            raise CombatInputError("native selected commander drifted from bound army")
+        attacker_has_commander = (
+            selected_ids[0] is not None if selected_ids is not None
+            else attacker_commander_army.commander.character_id is not None
+        )
+        defender_has_commander = (
+            selected_ids[1] is not None if selected_ids is not None
+            else defender_commander_army.commander.character_id is not None
+        )
         attacker_generic = (
             attacker_commander_army.commander.generic_advantage_points or 0
         )
@@ -429,13 +461,13 @@ class PhaseEventsDisabledResearchKernel(
                 global_state,
                 roll_cadence=roll_cadence,
                 side_0_roll=CommanderRollRequest(
-                    attacker_commander_army.commander.character_id is not None,
+                    attacker_has_commander,
                     attacker_commander_army.commander.effective_min_roll,
                     attacker_commander_army.commander.effective_max_roll,
                     attacker_roll,
                 ),
                 side_1_roll=CommanderRollRequest(
-                    defender_commander_army.commander.character_id is not None,
+                    defender_has_commander,
                     defender_commander_army.commander.effective_min_roll,
                     defender_commander_army.commander.effective_max_roll,
                     defender_roll,
@@ -445,23 +477,32 @@ class PhaseEventsDisabledResearchKernel(
             roll_cadence = random_day.next_roll_cadence
             attacker_roll = random_day.side_0_roll
             defender_roll = random_day.side_1_roll
-            resolved_advantage = (
-                resume.side_0_non_roll_advantage_points
-                + attacker_roll
-                - resume.side_1_non_roll_advantage_points
-                - defender_roll
-                if resume is not None else
-                attacker_generic + attacker_roll
-                - defender_generic - defender_roll - defender_static
-            )
+            if resume is not None:
+                resolved_advantage_raw = (
+                    resume.side_0_non_roll_advantage_points + attacker_roll
+                    - resume.side_1_non_roll_advantage_points - defender_roll
+                ) * FIXED_SCALE
+            elif self.assumptions.precontact_zero_roll_advantage_raw is not None:
+                # This is a same-frame native helper result, frozen as an
+                # explicit fixed-future research assumption. It is not a
+                # prediction of tomorrow's refreshed non-roll advantage.
+                resolved_advantage_raw = (
+                    self.assumptions.precontact_zero_roll_advantage_raw
+                    + (attacker_roll - defender_roll) * FIXED_SCALE
+                )
+            else:
+                resolved_advantage_raw = (
+                    attacker_generic + attacker_roll
+                    - defender_generic - defender_roll - defender_static
+                ) * FIXED_SCALE
             attacker_advantage_raw = (
-                advantage_damage_multiplier_raw(resolved_advantage)
-                if resolved_advantage > 0
+                FIXED_SCALE + fixed_mul(resolved_advantage_raw, 5_000)
+                if resolved_advantage_raw > 0
                 else 100_000
             )
             defender_advantage_raw = (
-                advantage_damage_multiplier_raw(resolved_advantage)
-                if resolved_advantage < 0
+                FIXED_SCALE + fixed_mul(-resolved_advantage_raw, 5_000)
+                if resolved_advantage_raw < 0
                 else 100_000
             )
 
