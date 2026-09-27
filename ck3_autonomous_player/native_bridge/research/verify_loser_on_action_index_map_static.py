@@ -18,6 +18,7 @@ import pefile
 
 EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 ON_ACTION_SHA256 = "B35D696F472E801BB332D7204AA46008349E8AFBFDB38985C781EB099BBFB233"
+COMBAT_EVENTS_SHA256 = "CF4E7F43786477DF43319638138232086CFD477FEE0F2951B34DD41BE265CADD"
 
 # Each entry is an instruction boundary from this exact EXE.  The loader
 # carries the matched name-table index to the root-table write unchanged.
@@ -68,6 +69,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", required=True, type=Path)
     parser.add_argument("--on-action", required=True, type=Path)
+    parser.add_argument("--combat-events", required=True, type=Path)
     args = parser.parse_args()
     exe = checked(args.exe, EXE_SHA256)
     on_action = checked(args.on_action, ON_ACTION_SHA256).decode("utf-8-sig")
@@ -75,6 +77,9 @@ def main() -> int:
         raise ValueError("stock loser warscore declaration is not unique")
     if on_action.splitlines()[562].strip() != "combat = { warscore_value >= 15 }":
         raise ValueError("stock loser warscore declaration moved from line 563")
+    combat_events = checked(args.combat_events, COMBAT_EVENTS_SHA256).decode("utf-8-sig")
+    if combat_events.splitlines()[2237].strip() != "combat = { warscore_value >= 15 }":
+        raise ValueError("stock combat event comparison moved from line 2238")
     image = pefile.PE(data=exe, fast_load=True)
     base = image.OPTIONAL_HEADER.ImageBase
     if base != 0x140000000:
@@ -111,6 +116,7 @@ def main() -> int:
         "status": "static_loser_on_action_name_root_index_map_verified",
         "exe_sha256": EXE_SHA256,
         "on_action_sha256": ON_ACTION_SHA256,
+        "combat_events_sha256": COMBAT_EVENTS_SHA256,
         "checked_instruction_anchors": len(ANCHORS),
         "loser_name_table_offset": "+0x980",
         "name_stride": "0x20",
@@ -118,6 +124,7 @@ def main() -> int:
         "root_stride": "0x08",
         "matched_index": 0x980 // 0x20,
         "on_action_loader_maps_name_index_to_root_index": True,
+        "same_comparison_text_exists_in_other_stock_script": True,
         "actual_vfs_bytes_verified": False,
         "loser_root_to_script_line_563_trigger_bound": False,
         "loaded_loser_node_opcode_verified": False,
