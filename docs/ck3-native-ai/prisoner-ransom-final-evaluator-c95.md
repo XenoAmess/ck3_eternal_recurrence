@@ -74,3 +74,42 @@ payer on the same paused frame, and map the corresponding value to the existing
 private prisoner source adapter. Until this is done, return typed unavailable
 for ransom terms. No private field, public capability, action or M6 readiness
 is added by C210.
+
+## C213: reusable exact-build entries and the remaining value binding (2026-09-27)
+
+The bridge already uses the exact-build role redirect at `0x2C3C4C0` and an
+owned all-role interaction-context constructor at `0x2C3F000` for marriage.
+Its combat differential evaluator uses `0x337B210(compiled_value, &raw,
+scope)` for a **resolved** compiled script value; that result is signed
+Q100000. C213 pins the first 64 bytes of each entry in the C95 verifier.
+This only proves the entries exist in the frozen executable. The marriage
+context and combat scope are different from a finalized ransom context, and
+neither route resolves the stock `ransom_cost_value` object by name.
+
+The frozen EXE does not contain the literal `ransom_cost_value` in its file
+bytes; that named definition is in `game/common/script_values/00_interaction_values.txt`.
+The current bridge has no qualified runtime lookup for the loaded named
+script value, no proved prisoner scope adapter for `0x337B210`, and no
+selected-option final value. Calling the mapped native **base** method or
+publishing the generic ten-slot `on_send` cost as payable gold would conflate
+different stock paths. Full-gold and extortionate-gold use the prisoner's
+script value on acceptance. `current_gold` and `extortionate_current_gold`
+save the redirected payer's gold at acceptance, so a paused-frame amount is
+only a time-bound quote. Favor, influence and herd carry different resources
+or obligations, not a zero-gold ransom.
+
+The next executable **read-only** experiment is one bounded paused prisoner
+frame, reusing a row from the private prisoner collection. Resolve the loaded
+`ransom_interaction` definition and the complete jailer/prisoner IDs; invoke
+the stock redirect and owned all-role context path, then read back actor,
+recipient, secondary recipient and the exact authored option. Confirm that
+recipient is the actual payer and secondary recipient is the prisoner; read
+final Can Send and acceptance from that same option-bound context. Separately
+map the loaded `ransom_cost_value`/`increased_ransom_cost_value` object lookup
+and the prisoner's script-value scope ABI. Only then evaluate it through
+`0x337B210`, double-sample the same paused frame, and label the result as a
+quote tied to actor, payer, prisoner, option and frame. A later accepted
+proposal must compare actual payer/jailer gold and prisoner custody. If
+lookup, scope or option ownership cannot be proved, the amount remains typed
+unavailable. No CK3 process was launched and no query, command, action or
+readiness was added by C213.
