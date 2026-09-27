@@ -764,6 +764,11 @@ def native_auto_run(
         driver.allow_private_family_marriage_formal_trial = (
             allow_private_family_marriage_formal_trial is True
         )
+        # Reuse the same bounded family opt-in for the exact current-heir read.
+        # The query remains private and unadvertised by the driver.
+        driver.allow_private_current_first_heir_relationship_query = (
+            allow_private_family_marriage_formal_trial is True
+        )
         if opening_focus_gate is not None:
             driver.require_initial_lifestyle_focus_before_date_advance = True
             driver.initial_lifestyle_focus_gate_stage = "await_submit"
@@ -4828,6 +4833,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "family_marriage_alliance_status",
         "family_marriage_status",
         "family_marriage_private_diagnostic",
+        "family_marriage_current_relationship",
         "family_marriage_cold_recovery",
         "lifestyle_query_status",
         "lifestyle_native_error",
