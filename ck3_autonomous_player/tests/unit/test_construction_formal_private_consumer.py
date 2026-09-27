@@ -137,7 +137,9 @@ class Driver:
                     "barony_title_id": 2174, "province_id": 2629,
                     "active": post, "building_type_id": 628 if post else None,
                     "slot_index": 1 if post else None,
-                    "initiator_character_id": 29829 if post else None}]
+                    "initiator_character_id": 29829 if post else None,
+                    "native_remaining_work_raw": 87_000_000 if post else None,
+                    "native_progress_divisor_raw": 120_000 if post else None}]
                 source["legal_samples"] = [] if post else [{
                     "barony_title_id": 2174, "province_id": 2629,
                     "building_type_id": 628, "slot_index": 1,
@@ -299,6 +301,12 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertIsNone(receipt["completion_observed_date_raw"])
             self.assertIsNone(receipt["observed_player_monthly_income_delta_raw"])
             self.assertEqual(receipt["post_player_gold_raw"], 24_490_601)
+            self.assertEqual(receipt["construction_progress_observation"], {
+                "status": "observed", "snapshot_id": "native:4",
+                "native_revision": 4, "date_raw": frame(4)["date_raw"],
+                "native_remaining_work_raw": 87_000_000,
+                "native_progress_divisor_raw": 120_000,
+            })
             self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
             self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
                                  for row in driver.requests), 1)
@@ -321,6 +329,8 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                     restored, pending=pending, expected_revision=1)
             self.assertEqual(receipt["completion_status"], "in_progress")
             self.assertEqual(receipt["post_player_gold_raw"], 24_490_601)
+            self.assertEqual(read_construction_ledger(restored.state_dir)["applied"]
+                             ["construction_progress_observation"]["status"], "observed")
             self.assertIsNone(read_construction_ledger(restored.state_dir)["pending"])
             self.assertFalse(any(row["step"] == transport.ACTION_NATIVE
                                  for row in restored.requests))
@@ -922,6 +932,10 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                     driver, pending=start, expected_revision=5)
                 self.assertEqual(done["status"], "applied")
                 self.assertEqual(done["completion_status"], "completed")
+                self.assertEqual(done["construction_progress_observation"]["status"],
+                                 "not_active")
+                self.assertIsNone(done["construction_progress_observation"]
+                                  ["native_remaining_work_raw"])
                 self.assertEqual(done["completion_observed_date_raw"], later["date_raw"])
                 self.assertEqual(done["observed_player_monthly_income_delta_raw"], 50_000)
                 self.assertEqual(done["start_receipt"]["completion_status"], "in_progress")

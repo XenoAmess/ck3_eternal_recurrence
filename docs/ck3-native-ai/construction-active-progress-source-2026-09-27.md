@@ -79,3 +79,28 @@ built-slot row and player monthly income independently, then consume the
 existing completion receipt and next turn. This source work added no CK3
 action, game date, completion or income evidence; the formal 30-game-day watch
 policy is unchanged.
+
+## C156: retain the paused active-progress read in the material receipt
+
+The existing private construction material query already reads the matching
+active row on a paused actor frame. Its native row includes
+`native_remaining_work_raw` and `native_progress_divisor_raw`, but the formal
+receipt previously retained only `in_progress`/`completed` and income fields.
+The additive `construction_progress_observation` now binds those two raw
+integers to the same snapshot, native revision and game date as the matching
+material receipt. A missing raw field remains `null` with status `unavailable`;
+a completed slot has status `not_active`. Neither status predicts a finish
+date. The receipt stays in the construction ledger and the next formal turn's
+`construction_receipt_consumed` report field. This changes no action or watch
+cadence. Focused normal and optimized Python tests cover active and completed
+material receipts; paused CK3 progress and completion remain unobserved.
+
+For the R0249-derived h223 pair, the saved ledger last checked at raw
+`53154936`, so its old 30-day threshold is raw `53155656`, 25 game days after
+h223/raw `53155056`. A new-PID cold material recheck happens immediately and,
+if still active, updates `completion_last_check_date_raw` to the current date.
+If that first read occurs at h223/raw `53155056`, the next warm threshold is
+raw `53155776`, 30 game days later. Any derived-line observation must use the
+actual receipt date to calculate the next watch; it cannot promise a warm
+watch exactly 25 days after the source pair. The derived dates do not add to
+the official Robert high-water count.
