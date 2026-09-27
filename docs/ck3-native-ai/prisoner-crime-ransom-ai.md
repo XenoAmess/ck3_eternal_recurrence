@@ -439,3 +439,32 @@ SHA-256 `C777485266E60E94C062D9E6039E14DDC961D9F776F7FDE9DDDAE060881CB910`。
 下一有效施工入口是结合三个具体囚犯的战争义务、关系与机会成本选择一个
 净正值动作，接正式 typed 提交、原生囚禁关系后置、下一 turn 和新 PID 恢复；
 不能把本次只读阳性算作动作闭环。
+
+### C211：同帧囚犯宗族身份的窄价值输入（2026-09-27）
+
+上节 R0261 的 `Can Send=true` 证明释放合法，未提供谁值得释放的比较输入。
+C211 只复用已冻结的
+[House/Dynasty exact-build reader](combat-phase-events.md#dynasty-perk-exact-build-reader-abi)：
+`CCharacter+0x150` 是 full HouseID，House store/fallback 为
+`module+0x570C408/0x570C400`，`CHouse+0x10` 回读身份，`CHouse+0x2C`
+是 full DynastyID，Dynasty store/fallback 为 `module+0x570C748/0x570C700`，
+`CDynasty+0x10` 回读身份。`-1` 是原生无身份；store 缺失或 generation
+不符应使私有查询 unavailable。现有囚犯 reader 已在同一应用主线程暂停帧
+对玩家和每名囚犯作 full CharacterID 回读，并双次采样，故可把各人的
+House/Dynasty ID 加入相同双采样指纹，再发布同 House/同 Dynasty 布尔值。
+
+```mermaid
+flowchart LR
+    C[同帧 full CharacterID 囚犯集合] --> H[玩家与囚犯 House/Dynasty 完整 ID]
+    H --> V[同 House/同 Dynasty 私有价值输入]
+    V -. 未闭合 .-> R[赎金付款者/金额/接受结果]
+    V -. 未闭合 .-> W[当前战争相关性与拘禁原因]
+    R --> P[正式收益比较]
+    W --> P
+```
+
+同 Dynasty 仅表示当前身份相同，不等于近亲、友好关系或释放的正收益。
+原生 `GetImprisonmentReasons` 目前仅有反射字符串锚点，未闭合 callable RVA
+及 owner/context；当前战争数组虽已有其他查询的 exact reader，囚犯集合
+入口尚无绑定的当前 War 对象。因此 C211 不把这两项猜成 false，也不据
+宗族身份提交释放动作或开放公共能力。新增代码仍须聚焦验证和匹配实机读回。

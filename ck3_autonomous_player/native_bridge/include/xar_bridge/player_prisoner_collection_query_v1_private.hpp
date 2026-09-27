@@ -9,8 +9,9 @@
 
 namespace xar::bridge {
 
-// Private collection-only probe. This does not claim custody, final interaction
-// legality, or player_prisoner_management_snapshot_v1 readiness.
+// Private collection and same-frame lineage probe. Reverse jailer identity is
+// checked, but this does not claim final interaction legality or the complete
+// player_prisoner_management_snapshot_v1 readiness.
 inline constexpr std::string_view kPlayerPrisonerCollectionQueryV1PrivateKey =
     "player_prisoner_collection_query_v1_private";
 inline constexpr std::uintptr_t kPlayerPrisonerCharacterStorageSlotRvaV1 =
@@ -31,6 +32,7 @@ enum class PlayerPrisonerCollectionFailureV1 : std::uint8_t {
   collection_truncated,
   prisoner_identity_invalid,
   custody_relation_invalid,
+  lineage_unavailable,
   sample_drift,
   frame_drift,
 };
@@ -39,6 +41,8 @@ struct PlayerPrisonerCollectionRowV1 {
   std::uint32_t source_ordinal = 0;
   std::uint32_t full_character_id = 0;
   std::uint32_t jailer_character_id = 0;
+  std::int32_t house_id = -1;
+  std::int32_t dynasty_id = -1;
 
   friend bool operator==(const PlayerPrisonerCollectionRowV1 &,
                          const PlayerPrisonerCollectionRowV1 &) = default;
@@ -49,6 +53,8 @@ struct PlayerPrisonerCollectionSnapshotV1 {
   PlayerPrisonerCollectionFailureV1 failure =
       PlayerPrisonerCollectionFailureV1::callbacks_unavailable;
   PlayerPrisonerFrameV1 frame{};
+  std::int32_t played_house_id = -1;
+  std::int32_t played_dynasty_id = -1;
   std::uint32_t total_count = 0;
   std::uint32_t returned_count = 0;
   bool collection_complete = false;
@@ -64,6 +70,7 @@ using ReadPlayerPrisonerCollectionMemoryV1 = bool (*)(
 
 struct PlayerPrisonerCollectionAccessV1 {
   bool exact_build_admitted = false;
+  bool read_lineage = false;
   std::string_view admitted_executable_sha256{};
   std::uintptr_t module_base = 0;
   std::uint32_t current_thread_id = 0;

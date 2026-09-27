@@ -197,6 +197,9 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
     ReadContext read_context{query, &stamp};
     xar::bridge::PlayerPrisonerCollectionAccessV1 access{};
     access.exact_build_admitted = query->bindings.enabled;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+    access.read_lineage = true;
+#endif
     access.admitted_executable_sha256 =
         xar::bridge::kPlayerPrisonerManagementSnapshotV1ExecutableSha256;
     access.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
@@ -239,7 +242,7 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   std::string result =
       "{\"schema\":\"player-prisoner-collection-private-v1\","
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
-      "\"schema_version\":2,\"snapshot_revision\":" +
+      "\"schema_version\":3,\"snapshot_revision\":" +
 #else
       "\"schema_version\":1,\"snapshot_revision\":" +
 #endif
@@ -260,6 +263,14 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   result += snapshot.available
                 ? std::to_string(snapshot.frame.played_character_id)
                 : "null";
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
+  result += ",\"played_house_id\":";
+  result += snapshot.available && snapshot.played_house_id >= 0
+                ? std::to_string(snapshot.played_house_id) : "null";
+  result += ",\"played_dynasty_id\":";
+  result += snapshot.available && snapshot.played_dynasty_id >= 0
+                ? std::to_string(snapshot.played_dynasty_id) : "null";
+#endif
   result += ",\"total_count\":";
   result += snapshot.available ? std::to_string(snapshot.total_count) : "null";
   result += ",\"returned_count\":";
@@ -282,6 +293,20 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
                 ",\"custody_relation_verified\":true";
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
       if (!release_previews_complete) return {};
+      result += ",\"house_id\":";
+      result += snapshot.rows[index].house_id >= 0
+                    ? std::to_string(snapshot.rows[index].house_id) : "null";
+      result += ",\"dynasty_id\":";
+      result += snapshot.rows[index].dynasty_id >= 0
+                    ? std::to_string(snapshot.rows[index].dynasty_id) : "null";
+      result += ",\"same_house\":";
+      result += snapshot.played_house_id >= 0 &&
+                        snapshot.played_house_id == snapshot.rows[index].house_id
+                    ? "true" : "false";
+      result += ",\"same_dynasty\":";
+      result += snapshot.played_dynasty_id >= 0 &&
+                        snapshot.played_dynasty_id == snapshot.rows[index].dynasty_id
+                    ? "true" : "false";
       result += ",\"unconditional_release_preview\":" +
                 SerializeCharacterInteractionPreviewV1(
                     release_previews[index]);
