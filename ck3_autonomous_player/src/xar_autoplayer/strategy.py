@@ -15278,8 +15278,6 @@ def _general_battle_forecast_ingress(
     """
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
         return baseline
-    if "provisional_forecast" in baseline or "qualified_forecast" in baseline:
-        return baseline
     parsed = parse_move_army_step(baseline.get("selected_step"))
     if parsed is None:
         return baseline
@@ -15309,6 +15307,33 @@ def _general_battle_forecast_ingress(
         and (enemy_id := _native_int(enemy.get("army_id"))) is not None
         and enemy_id > 0
     }))
+    active_subject = _army_tactical_state(army) == "combat"
+    active_defenders = tuple(sorted({
+        enemy_id
+        for enemy in enemy_rows
+        if enemy.get("current_province_id") == target
+        and _army_tactical_state(enemy) == "combat"
+        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
+        and enemy_id > 0
+    }))
+    if active_subject or active_defenders:
+        # An already active CombatID needs its own same-frame resume operands.
+        # The v3 fixed-contact model starts a new encounter; even a cached
+        # empty ongoing-combats list must not overrule the live army state.
+        return {
+            "policy": "general-battle-forecast-v1",
+            "phase": "native_war_active_combat_resume_unavailable",
+            "selected_step": None,
+            "reason": "an observed participant is already in combat; fixed-contact inputs cannot estimate its ongoing battle",
+            "baseline_phase": baseline.get("phase"),
+            "baseline_selected_step": baseline.get("selected_step"),
+            "active_combat_forecast_status": "unavailable",
+            "active_combat_subject_army_id": army_id if active_subject else None,
+            "active_combat_defender_army_ids": list(active_defenders),
+            "required_observation": "same-frame-active-combat-resume-inputs",
+        }
+    if "provisional_forecast" in baseline or "qualified_forecast" in baseline:
+        return baseline
     if origin is None or origin == target or not defenders:
         return baseline
 

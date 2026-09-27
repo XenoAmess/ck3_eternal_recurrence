@@ -30,7 +30,7 @@ def _frame():
 
 
 def _call(frame, *, query_history=True, entry=30, extra_steps=(),
-          bridge_capabilities=None):
+          bridge_capabilities=None, baseline=None):
     query = query_combat_simulation_inputs_v3_step(31, entry, [11], [21])
     commands = [{
         "index": 1, "command": query, "ok": True,
@@ -42,7 +42,7 @@ def _call(frame, *, query_history=True, entry=30, extra_steps=(),
         },
     }] if query_history else []
     return _general_battle_forecast_ingress(
-        {"policy": "one-life-turn-v1", "phase": "native_war_route", "selected_step": "move-army-11-to-31"},
+        baseline or {"policy": "one-life-turn-v1", "phase": "native_war_route", "selected_step": "move-army-11-to-31"},
         commands=commands, snapshot=frame,
         # The production driver excludes parameterized v3 literals from its
         # advertised action list.  The planner must construct this read-only
@@ -200,3 +200,45 @@ def test_nullable_enemy_roster_does_not_crash_generic_contact_review():
     with mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value=None):
         result = _call(frame)
     assert result["phase"] == "native_war_general_battle_route_query"
+
+
+def test_active_subject_cannot_use_fixed_contact_or_request_precontact_inputs():
+    frame = _frame()
+    frame["player_armies"][0].update({"in_combat": True, "army_state": "combat"})
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview") as preview,
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact") as model,
+    ):
+        result = _call(frame, query_history=False)
+    assert result["phase"] == "native_war_active_combat_resume_unavailable"
+    assert result["selected_step"] is None
+    assert result["active_combat_forecast_status"] == "unavailable"
+    assert result["active_combat_subject_army_id"] == 11
+    assert result["active_combat_defender_army_ids"] == []
+    preview.assert_not_called()
+    model.assert_not_called()
+
+
+def test_active_defender_cannot_be_treated_as_fresh_contact_even_with_cached_v3():
+    frame = _frame()
+    frame["combat_simulation_inputs_v3"]["base_inputs"]["ongoing_combats"] = []
+    frame["active_wars"][0]["enemy_armies"][0].update(
+        {"in_combat": True, "army_state": "combat"}
+    )
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview") as preview,
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact") as model,
+    ):
+        result = _call(frame, baseline={
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_siege_forecast_move",
+            "selected_step": "move-army-11-to-31",
+            "qualified_forecast": {"status": "ready"},
+        })
+    assert result["phase"] == "native_war_active_combat_resume_unavailable"
+    assert result["selected_step"] is None
+    assert result["active_combat_forecast_status"] == "unavailable"
+    assert result["active_combat_subject_army_id"] is None
+    assert result["active_combat_defender_army_ids"] == [21]
+    preview.assert_not_called()
+    model.assert_not_called()
