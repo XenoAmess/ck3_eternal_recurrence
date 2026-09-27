@@ -4218,6 +4218,46 @@ class NativeAutoRunTests(unittest.TestCase):
 
         self.assertEqual(compact, plan)
 
+    def test_turn_report_preserves_wartime_lifestyle_readback(self) -> None:
+        observation = {
+            "query_status": "available",
+            "date_raw": 53_216_040,
+            "source_frame": {"snapshot_id": "native:123", "revision": 456},
+            "unspent_perk_points": 0,
+            "policy_decision_status": "no_legal_minimum",
+        }
+        binding = {"snapshot_id": "native:123", "revision": 456,
+                   "date_raw": 53_216_040, "paused": True}
+        turn = native_auto_run_module._turn_record(
+            6,
+            "2026-09-27T00:00:00Z",
+            turn_class="query",
+            outcome={
+                "status": "executed",
+                "selected_step": "query-active-war-v1",
+                "plan": {
+                    "selected_step": "query-active-war-v1",
+                    "lifestyle_decision": {"status": "no_legal_minimum"},
+                    "lifestyle_opportunity_status": "no_legal_minimum",
+                    "lifestyle_war_observation": observation,
+                    "unbounded_private_query": {"discard": True},
+                },
+            },
+            before=binding,
+            after=binding,
+            evidence=["same_frame_query"],
+        )
+
+        serialized = json.loads(json.dumps(turn))
+        self.assertEqual(
+            serialized["plan"]["lifestyle_war_observation"], observation
+        )
+        self.assertEqual(
+            serialized["plan"]["lifestyle_opportunity_status"],
+            "no_legal_minimum",
+        )
+        self.assertNotIn("unbounded_private_query", serialized["plan"])
+
     def test_compact_opening_lifestyle_preserves_zero_positive_and_unknown(self) -> None:
         existing = {
             "status": "verified_existing",

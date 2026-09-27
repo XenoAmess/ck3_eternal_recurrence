@@ -4821,6 +4821,8 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "council_assignment",
         "council_decision",
         "lifestyle_decision",
+        "lifestyle_opportunity_status",
+        "lifestyle_war_observation",
         "lifestyle_action",
         "lifestyle_pending_action",
         "lifestyle_receipt_consumed",

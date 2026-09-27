@@ -1316,3 +1316,23 @@ flowchart LR
   L -- no opportunity or unavailable --> W[Continue original war query]
   W --> N[Skip repeat LIFE read on the same date]
 ```
+
+### R0254 report visibility boundary (2026-09-27)
+
+The official Robert R0254 report at
+`Z:/r137-robert-h2271-candidate/run-formal-36/formal-report.txt` (SHA-256
+`467CD9F78DB0771BCB953C1D4A3679BFA97558E543BD75FC4F722E31FE4AD161`)
+records 36/36 qualified turns and eight durable days, raw date
+`53216232` to `53216424`, with runtime source `37825a5`. Nine turn plans
+contain `lifestyle_decision.status=no_legal_minimum`. The private service
+also prepares a bounded `lifestyle_war_observation` with the query status,
+date, source frame, unspent points and policy result, plus
+`lifestyle_opportunity_status`. The formal report compactor omitted both
+fields, so this report alone cannot independently show the post-date point
+readback or prove an available perk was spent.
+
+The report compactor now retains those two fields in each turn plan. This is
+report serialization only; the native observation, policy, typed action and
+receipt contracts are unchanged. A subsequent matched live candidate must
+show the fields in its official report before a post-date point observation
+can be credited. R0254 supplies no new perk action or cold recovery evidence.
