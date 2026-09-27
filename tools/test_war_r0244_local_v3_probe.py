@@ -54,6 +54,8 @@ class LocalV3ProbeTest(unittest.TestCase):
             },
         }
         self.assertTrue(probe.require_v3(result, before, SCENE, 2643, step)["input_observation_ready"])
+        without_optional_episode = {key: value for key, value in result.items() if key != "queried_episode_run_id"}
+        self.assertTrue(probe.require_v3(without_optional_episode, before, SCENE, 2643, step)["input_observation_ready"])
         for field, value in (("queried_revision", 5), ("queried_native_revision", 4),
                              ("queried_snapshot_id", "native:4"), ("queried_episode_run_id", "other")):
             changed = {**result, field: value}

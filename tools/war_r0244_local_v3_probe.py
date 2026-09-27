@@ -51,6 +51,11 @@ def require_same_frame(initial: dict, queried: dict) -> None:
                              ("queried_revision", "revision"),
                              ("queried_native_revision", "native_revision"),
                              ("queried_episode_run_id", "episode_run_id")):
+        # v3 returns snapshot/revision stamps but does not serialize the episode
+        # stamp; the transport's driver-state connection identity is checked by
+        # call(), and the final snapshot must retain the initial episode.
+        if key == "queried_episode_run_id" and key not in queried:
+            continue
         if queried.get(key) != initial.get(initial_key):
             raise ValueError(f"same-frame mismatch: {key}")
 
