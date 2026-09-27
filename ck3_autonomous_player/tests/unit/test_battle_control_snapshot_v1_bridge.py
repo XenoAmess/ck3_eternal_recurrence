@@ -2207,6 +2207,8 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         compared = plan["active_combat_resume_input"]["provisional_comparison"]
         self.assertFalse(compared["severe_observed_disadvantage"])
         self.assertTrue(compared["severe_conditional_damage_basis_disadvantage"])
+        self.assertEqual(compared["severe_conditional_damage_basis_source"],
+                         "neutral_uncountered")
         self.assertEqual(
             compared["neutral_uncountered_damage_basis"]["status"],
             "conditional_frozen_day",
@@ -2214,6 +2216,100 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertIsNone(compared["whole_battle_win_probability"])
         self.assertFalse(plan["active_combat_resume_input"]["used_for_decision"])
         self.assertTrue(plan["active_combat_resume_input"]["provisional_comparison_used_for_decision"])
+
+    def test_same_frame_counter_census_changes_conditional_damage_only(self) -> None:
+        frame = _battle_frame()
+        attacker = frame["attacker"]
+        levy = attacker["levy_entries"][0]
+        levy.update(_entry(
+            bucket="levy", bucket_index=0, regiment_id=501,
+            native_carmy_id=NATIVE_SUBJECT, public_cunit_id=SUBJECT,
+            owner_character_id=29_829, starting_raw=5_000_000_000,
+            current_fighting_raw=1_000_000_000,
+            soft_casualties_raw=500_000_000,
+            fights_in_main_phase=True, entry_strength_raw=81_000,
+        ))
+        levy["effective_damage_raw"] = 1_600_000_000
+        reserve = _entry(
+            bucket="men_at_arms", bucket_index=0, regiment_id=502,
+            native_carmy_id=NATIVE_SUBJECT, public_cunit_id=SUBJECT,
+            owner_character_id=29_829, starting_raw=3_000_000_000,
+            current_fighting_raw=1_000_000_000,
+            soft_casualties_raw=1_000_000_000,
+            fights_in_main_phase=True, entry_strength_raw=10_000,
+        )
+        frame["attacker"] = _side(
+            side_index=0, role="attacker", primary=29_829,
+            commander=29_829, roll=7, armies=attacker["ordered_armies"],
+            levy_entries=[levy], men_at_arms_entries=[reserve],
+            participant_rows=[{
+                "row_index": 0, "participant_character_id": 29_829,
+                "hard_casualties_raw": 4_500_000_000,
+            }], side_strength_raw=129_975,
+        )
+        counter = _active_counter_inputs(frame)
+        counter["sides"][1]["men_at_arms_entries"][0]["targets"][0][
+            "effectiveness_raw"
+        ] = 1_000_000
+        counter["sides"][0]["men_at_arms_entries"][0]["targets"][0][
+            "effectiveness_raw"
+        ] = 0
+        frame["active_counter_inputs_v1"] = counter
+        snapshot = _planner_battle_snapshot(frame=frame)
+        snapshot["battle_control_snapshot_v1_queried_native_revision"] = NATIVE_REVISION
+        compared = _active_combat_provisional_comparison(snapshot)
+        self.assertIsNotNone(compared)
+        conditional = compared["current_frame_counter_conditioned_damage_basis"]
+        self.assertEqual(conditional["status"], "conditional_frozen_current_frame")
+        self.assertEqual(compared["severe_conditional_damage_basis_source"],
+                         "current_frame_counter")
+        self.assertEqual(
+            compared["neutral_uncountered_damage_basis"]["own_outgoing_raw"],
+            313_200_000_000,
+        )
+        self.assertEqual(conditional["own_outgoing_raw"], 156_600_000_000)
+        self.assertEqual(conditional["enemy_outgoing_raw"], 347_760_000_000)
+        self.assertEqual(conditional["retention_by_class_raw"],
+                         [[10_000, 100_000], [100_000, 100_000]])
+        self.assertFalse(compared["severe_observed_disadvantage"])
+        self.assertTrue(compared["severe_conditional_damage_basis_disadvantage"])
+        self.assertLess(
+            conditional["own_outgoing_raw"],
+            compared["neutral_uncountered_damage_basis"]["own_outgoing_raw"],
+        )
+        self.assertFalse(conditional["next_tick_retention_validated"])
+        self.assertIsNone(compared["whole_battle_win_probability"])
+
+        absent = copy.deepcopy(snapshot)
+        absent["battle_control_snapshot_v1"].pop("active_counter_inputs_v1")
+        fallback = _active_combat_provisional_comparison(absent)
+        self.assertIsNone(fallback["current_frame_counter_conditioned_damage_basis"])
+        self.assertEqual(
+            fallback["current_frame_counter_basis_status"],
+            "current_frame_counter_unavailable",
+        )
+        self.assertFalse(fallback["severe_conditional_damage_basis_disadvantage"])
+        self.assertEqual(fallback["severe_conditional_damage_basis_source"],
+                         "neutral_uncountered")
+
+        steps = (STEP, "life-advance", DECISION_SENTINEL_STEP)
+        fast_recheck = choose_one_life_turn(
+            [_battle_query_row(1, frame)], snapshot=snapshot,
+            action_steps=steps,
+            battle_speed_readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(fast_recheck["selected_step"], "life-advance")
+        no_counter_frame = copy.deepcopy(frame)
+        no_counter_frame.pop("active_counter_inputs_v1")
+        scheduled_recheck = choose_one_life_turn(
+            [_battle_query_row(1, no_counter_frame)], snapshot=absent,
+            action_steps=steps,
+            battle_speed_readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(
+            scheduled_recheck["selected_step"],
+            battle_decision_epoch_advance_step(DATE_RAW + 45 * 24),
+        )
 
         no_width = copy.deepcopy(snapshot)
         no_width["battle_control_snapshot_v1"]["final_combat_width"] = 0

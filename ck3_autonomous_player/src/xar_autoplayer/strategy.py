@@ -136,6 +136,7 @@ from .simulation import combat_decision_contract as combat_entry_eu
 from .simulation.combat_core import (
     FIXED_SCALE, fixed_div, fixed_mul, outgoing_damage_raw,
 )
+from .simulation.active_counter_current_basis import project_current_counter_attack_raw
 from .simulation.general_battle_forecast import contact_admission, forecast_fixed_contact
 from .simulation.prewar_battle_proxy import (
     forecast_prewar_power_battle,
@@ -6885,6 +6886,11 @@ def _active_combat_provisional_comparison(
     )
     neutral_basis = None
     severe_basis = False
+    counter_basis = None
+    counter_basis_status = (
+        "current_frame_counter_unavailable" if basis_ready
+        else "conditional_damage_basis_unavailable"
+    )
     if basis_ready and len(damage_bases) == 2:
         own_basis = damage_bases[side_index]
         enemy_basis = damage_bases[1 - side_index]
@@ -6899,9 +6905,43 @@ def _active_combat_provisional_comparison(
             and own_current <= enemy_current
             and own_retention <= enemy_retention
         )
+        counter = frame.get("active_counter_inputs_v1")
+        if isinstance(counter, dict) and counter.get("status") == "available":
+            try:
+                attacks, retention = project_current_counter_attack_raw(frame)
+                adjusted = tuple(outgoing_damage_raw(
+                    attacks[index],
+                    advantage_multiplier_raw=FIXED_SCALE,
+                    final_combat_width=frame["final_combat_width"],
+                    side_current_fighting_men_raw=sides[index]["stored_current_fighting_raw"],
+                ) for index in (0, 1))
+            except (KeyError, TypeError, ValueError, IndexError, ZeroDivisionError):
+                counter_basis_status = "current_frame_counter_projection_rejected"
+            else:
+                own_adjusted = adjusted[side_index]
+                enemy_adjusted = adjusted[1 - side_index]
+                counter_basis = {
+                    "status": "conditional_frozen_current_frame",
+                    "assumptions": "same_frame_counter_neutral_advantage_no_participant_refresh",
+                    "own_outgoing_raw": own_adjusted,
+                    "enemy_outgoing_raw": enemy_adjusted,
+                    "retention_by_class_raw": [list(row) for row in retention],
+                    "next_tick_retention_validated": False,
+                }
+                counter_basis_status = "current_frame_counter_projected"
+                # This only shortens the reversible observation interval.
+                # A current-frame counter vector is not tomorrow's forecast.
+                severe_basis = bool(
+                    enemy_adjusted > 0
+                    and own_adjusted * 2 <= enemy_adjusted
+                    and own_current <= enemy_current
+                    and own_retention <= enemy_retention
+                )
     return {
         "status": "provisional_observed_comparison",
         "model_fidelity": (
+            "observed-current-starting-and-conditional-counter-damage-basis"
+            if counter_basis is not None else
             "observed-current-starting-and-conditional-neutral-damage-basis"
             if neutral_basis is not None else "observed-current-and-starting-only"
         ),
@@ -6918,7 +6958,13 @@ def _active_combat_provisional_comparison(
         "enemy_retained_share_raw": enemy_retention,
         "severe_observed_disadvantage": severe,
         "neutral_uncountered_damage_basis": neutral_basis,
+        "current_frame_counter_conditioned_damage_basis": counter_basis,
+        "current_frame_counter_basis_status": counter_basis_status,
         "severe_conditional_damage_basis_disadvantage": severe_basis,
+        "severe_conditional_damage_basis_source": (
+            "current_frame_counter" if counter_basis is not None else
+            "neutral_uncountered" if neutral_basis is not None else None
+        ),
         "missing_dynamic_domains": (
             list(raw_resume["missing_required_domains"])
             if isinstance(raw_resume, dict) else [
