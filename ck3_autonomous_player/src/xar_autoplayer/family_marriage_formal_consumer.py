@@ -450,7 +450,8 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
     selected = plan.get("selected_step")
     war_read = (
         wartime_arbitration is True
-        and isinstance(selected, str) and selected.startswith("query-")
+        and isinstance(selected, str)
+        and (selected == "life-advance" or selected.startswith("query-"))
         and isinstance(snapshot.get("active_wars"), list)
         and bool(snapshot["active_wars"])
     )

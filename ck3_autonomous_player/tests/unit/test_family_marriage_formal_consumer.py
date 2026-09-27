@@ -721,6 +721,10 @@ class FamilyConsumerTest(unittest.TestCase):
             chosen = plan_family_marriage_private(
                 driver, war, war_scene, wartime_arbitration=True)
             self.assertEqual(chosen["plan"]["selected_step"], SUBMIT_STEP)
+            before_advance = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}},
+                war_scene, wartime_arbitration=True)
+            self.assertEqual(before_advance["plan"]["selected_step"], SUBMIT_STEP)
             context = chosen["plan"]["family_marriage_choice"]["wartime_resource_context"]
             self.assertEqual(context["active_war_ids"], [16777231])
             self.assertEqual(context["observed_treasury"],
@@ -728,7 +732,7 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertIsNone(context["future_war_cash_reserve_raw"])
             self.assertEqual(context["prospective_ally_war_obligation"], "unknown")
             self.assertEqual(context["character_claims"], [101, 202, 300, 400])
-            self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
+            self.assertEqual(driver.calls, ["relationship", "legality", "projection"] * 2)
             with patch("xar_autoplayer.family_marriage_formal_consumer.bridge_process_identity",
                        return_value=(55, "created")):
                 with self.assertRaisesRegex(ValueError, "wartime resource frame changed"):

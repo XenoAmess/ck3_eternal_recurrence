@@ -1069,7 +1069,8 @@ class GameplayBridgeService:
         frame = (snapshot.get("episode_run_id"),
                  actor.get("character_id") if isinstance(actor, dict) else None,
                  snapshot.get("date_raw"))
-        if (not isinstance(selected, str) or not selected.startswith("query-")
+        if (not isinstance(selected, str)
+                or not (selected == "life-advance" or selected.startswith("query-"))
                 or not isinstance(snapshot.get("active_wars"), list)
                 or not snapshot["active_wars"]
                 or not isinstance(frame[0], str)
