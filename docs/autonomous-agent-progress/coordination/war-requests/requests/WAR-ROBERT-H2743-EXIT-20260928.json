@@ -1,0 +1,59 @@
+{
+    "schema":  "xar.g2.cross-team-war-request.v1",
+    "request_id":  "WAR-ROBERT-H2743-EXIT-20260928",
+    "created_at_utc":  "2026-09-27T16:55:46Z",
+    "producer_role":  "nonwar_operator",
+    "requested_owner_role":  "war_maintainer",
+    "assignee":  null,
+    "severity":  "blocks_formal_robert_war_exit_and_independent_economy_opportunity",
+    "related_request":  "WAR-INPUT-R0221-WAR31-20260927",
+    "scope":  "R0263 advanced the formal Robert campaign eight days and froze h2743 with WarID 16777231 still active. Provide a reusable formal war exit decision/consumer or a bounded, recoverable continuation handoff for this current source. The R0197/R0221 one-shot surrender result is an exact-source precedent, not permission or a general outcome predictor.",
+    "source":  {
+                   "formal_campaign":  "1066_robert_and_legal_succession",
+                   "frozen_run":  "R0263",
+                   "source_pair_identity_sha256":  "D8A4E9730BD2AA37671355EBF55A1F94121310AC75EBBC1307F896358B39AC45",
+                   "checkpoint_history_index":  2743,
+                   "checkpoint_date_raw":  53217264,
+                   "checkpoint_sha256":  "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+                   "driver_sha256":  "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069",
+                   "family_sidecar_sha256":  "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724",
+                   "runtime_source_commit":  "9283c6c98435d1d72d255ae2577b596e9795f974",
+                   "runtime_dll_sha256":  "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
+                   "ck3_version":  "1.19.0.6-steam23530548",
+                   "ck3_exe_sha256":  "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+                   "lifecycle":  "ordinary_campaign_succession/xar_off",
+                   "latest_master_when_filed":  "217f44dbdf91835f4c06958c9d0c33a960b2d9a7"
+               },
+    "observed":  {
+                     "run_outcome":  "qualified_36_of_36_turns",
+                     "persisted_robert_days":  3039,
+                     "played_character_id":  29829,
+                     "episode_run_id":  "native-29829-2bc2d599f7f9",
+                     "final_snapshot_id":  "native:30",
+                     "final_date_raw":  53217264,
+                     "war_id":  16777231,
+                     "player_relative_war_score":  -12,
+                     "player_army_ids":  [
+                                             83886367
+                                         ],
+                     "last_selected_step":  "advance-route-contact-horizon-v1-83886367-to-2614-h-2-50331920-83886484",
+                     "termination_action_submitted_in_r0263":  false,
+                     "independent_economy_gate":  "Active war and army still prevent the current independent peace-construction opportunity; R0263 made no construction submission. This is a consumer constraint, not a finding that immediate surrender is optimal."
+                 },
+    "delta_from_prior_war31_response":  "The WAR-INPUT-R0221-WAR31 response delivered a separately authorized exact-input surrender and paired recovery, but says generic termination prediction still lacks personal liege/vassal, directed truce and same-frame signed opponent/resource readback. Its one-shot authorization was consumed. No current h2743 exit policy or typed termination consumer was delivered by that response.",
+    "requested_delivery":  [
+                               "On the current or an independently qualified matching Robert frame, evaluate continue-fighting, white-peace and surrender through the existing native legal/war policy and bounded risk model. Preserve unknown material terms as unknown, not zero; do not hard-code the R0197 observed result onto h2743.",
+                               "If a war exit is policy-selected, deliver a reusable formal typed consumer with same-frame version/war binding, resource and pending commitments, receipt reconciliation, independent war/title/resource postcondition, next turn and official cold recovery. The consumed one-shot surrender gate must not be reused or counted as this action.",
+                               "If current terms or risk inputs cannot justify an exit, deliver the exact recoverable continue-war step or a scoped missing-field/observation contract so Robert can continue safely. Identify the one native field or interface that actually blocks formal selection, and keep unrelated peaceful nonwar work independent.",
+                               "Publish source/interface commit, focused checks and bounded exact-build live evidence or an explicit no-live limit in a response to this request. Do not claim ECON gate released until this Robert war actually ends and an independent construction opportunity is evaluated."
+                           ],
+    "evidence":  {
+                     "git_excerpt":  "../evidence/WAR-ROBERT-H2743-EXIT-20260928.r0263-final-frame.json",
+                     "git_excerpt_sha256":  "BA6C569FE0CB9F80094D46A7F4033ADFC814E0AF7E80054AB505D9150BABACEF",
+                     "formal_report_sha256":  "FF69F6AEBF8D9EE510AE3F5699A74ACB64CFAFBF12582823334C2079DB2A0F8",
+                     "operator_receipt_sha256":  "66200E6D1B0170FCCACF635C35A8F221AB8BC88F42BAE6FEBFC58641F0655C3E",
+                     "git_carries_raw_save_driver_dll":  false,
+                     "remote_replay_dependency":  "If exact replay of h2743 is required, request a separately verified transfer of checkpoint, driver, family sidecar and matching DLL. The local Z: provenance paths in the excerpt are not remote assets."
+                 },
+    "coordination_boundary":  "Git is the cross-machine transport for requests and results. Each machine may run one CK3 instance and uses only its own operator MCP; this request creates no global window reservation and does not authorize a gameplay action."
+}
