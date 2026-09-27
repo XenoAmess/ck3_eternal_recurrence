@@ -27,7 +27,11 @@
 
 [战中预测输入审计](active-combat-forecast-input-gap-2026-09-27.md)进一步确认：v3 的 `ongoing_combats` 只来自**本次请求选中的军队**，并非全局其他战斗，因此生产 `forecast_fixed_contact` 现在会在所选军队已参战或该观察字段缺失时返回 typed unavailable，防止把“重新从第 0 日接战”的结果冒充现役 CombatID 的续算；其他独立军队的战前接战估计照常使用。battle-control 已有真实阶段、roll、双方逐团 current/soft 与战宽，但缺同一次 native application-main 的完整续算输入，现有 trial 也没有从主阶段第 N 日起跑的入口。下一步是独立 resumed 初态、同帧输入与原版对拍，然后把“继续/合法撤退”接进实际游玩策略；单纯解除这道 guard 不能解决问题。
 
+[主战阶段续算最小核](active-main-combat-resume-kernel-2026-09-27.md)已实现独立 `ActiveMainResumeState`/`ActiveMainResumeResearchKernel`：显式接收 CombatID、当前 entry/有效伤害、roll cadence/当前 roll、非 roll 优势与缓存战宽，只输出快照之后的天数和新增硬伤，拒绝战前 participant policy、跨快照和非主战阶段。46 项聚焦测试通过，但目前仅由合成续算状态检验内核行为；没有能提供这些操作数的同一 native application-main 生产读口，智能体尚未调用现役续算。下一步优先实现原生 typed producer 和真实暂停战斗下一日对拍，不能把这些静态测试算作已获得战中胜率。
+
 [战中撤退目的地种子](active-combat-retreat-destination-seeds-2026-09-27.md)已接入智能体的**只读动作预览**：可控且仍在战斗的军队现在能以同帧其他驻扎我军省份为初始候选，排除已观测敌军当前/目标/路线省；长路线第一站在战中只生成重新预览与接触查询，不派生可绕过撤退 token 的直接 move 命令。30 项聚焦测试通过。种子不是安全目的地证明，尚无战中 route-contact ETA 覆盖及撤退后速度的实机配对，因此自动撤退 order 尚未接线；后续必须在同一暂停帧通过 native legality、完整敌军作用域、全程到站门、typed token 和新 revision 回读。
+
+[战中路线窗口复核](active-combat-retreat-destination-seeds-2026-09-27.md#战中-route-contact-与到站时间的静态复核)确认当前 route-contact 只覆盖 `date_raw..+24` 的一天，战中 subject 虽未被静态代码显式拒绝，但下令前普通移动的 ETA 不可直接当作撤退后 ETA；原版另有 `MOVEMENT_SPEED_RETREAT=4.5`。后续需分别实采战中只读查询和合法撤退后的独立恢复回读；单日无接敌不能证明一条超过一天的撤退路线全程安全。
 
 第 5 项延长回放启动门：[076 预检诊断](winner-ai-postsubmit-076-prelaunch-steam-diagnostic.md)发现 Steam 桌面画面与 074 旧图逐字节相同、任务栏时钟冻结；UI Automation、直接窗口采样和可恢复重绘也未给出可读的当前离线状态。076 因此在 **CK3 启动前**保留 environment RED，没有新增 AI 移动或 ETA 结果。Steam 本次进程的离线启动日志和持久偏好是旁证，不冒充实时 UI；下一次新 attempt 须先恢复可靠离线状态取证，再执行已冻结的有限日观察计划。
 
@@ -62,6 +66,8 @@
 同项比较器补研：[原生 `setge` 分支与 loaded-node 缺口](warscore-trigger-generic-ge-and-loaded-node-gap-2026-09-27.md)已证 `CCombatWarscoreTrigger` 的虚表通向 generic 比较器，操作码 `0x3CB` 对两侧 raw qword 执行包含等号的 signed `>=`。脚本实例的操作码及 RHS `1,500,000` 尚未从实际载入节点读回；这仍需同场、同 CombatID、带 VFS 来源的被动实机采样。
 
 [败方 on-action 名称与执行根的同序号静态映射](loser-on-action-name-root-index-map-2026-09-27.md)已把 `on_combat_end_loser` 名称槽 `0x980/0x20=76` 对到同一数据库的根指针槽 `0x260/8=76`，纠正了此前拿不同表的同一个字节偏移相互配对的错误。它只闭合到败方执行根，尚未唯一定位第 563 行的具体 loaded trigger；原版另一份 `combat_events.txt` 也有逐字相同的 `warscore_value >= 15`，所以仅采到比较类型、操作码与数字仍不够，必须绑定父链和 VFS 来源。
+
+[败方根的条件门与 child 遍历](loser-effect-root-gate-and-child-dispatch-static-2026-09-27.md)再证同一 loaded root 在执行 child 前会先经节点 `+0x338` 求条件；失败时直接跳过后续两种数组与递归。0x30／0x48 步幅的两数组和 `+0x348` 递归顺序已由 exact-build verifier 核验，但具体哪个子对象来自脚本第 563 行、它的 RHS 是否为 `1,500,000` 及败方正统性写回仍未被唯一证成。下一步查 parser/VFS 源路径与真实 loaded 节点的父链，不用仅凭同文字面量越过身份门。
 
 同项败方正统性配对审计：[11 份原生存档与 14 份正式回执](normal-result-loser-legitimacy-pair-gap-2026-09-27.md)只在墨西拿正常终局前证明败方罗贝尔 CharacterID `29829` 的正统性为 `321`；终局后没有对同一人物的原生读数。072/074 此时控制的是胜方阿里 CharacterID `31549`，其 `played` 字段不能作败方的后值。[下次同角色读回合同](normal-result-loser-legitimacy-readback-contract-2026-09-27.md)确认现有 root 查询只能读当前玩家，要求新败方控制 attempt 在终局前后稳定暂停帧成对查询；即使读到净差 `-50`，仍须另外排除其他写者并绑定脚本 loaded 节点，才能归因为败方 effect。当前 `-50` 只有脚本声明，不得记为已实测写回。
 
