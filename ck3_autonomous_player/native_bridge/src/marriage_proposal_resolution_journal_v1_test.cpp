@@ -22,6 +22,11 @@ struct FixtureV1 {
   std::uint32_t flush_calls = 0;
 };
 
+bool g_pending_component_alive = true;
+bool FixturePendingComponentAlive(const void *) {
+  return g_pending_component_alive;
+}
+
 void *Allocate(void *context, std::size_t size, DWORD, DWORD) noexcept {
   auto &fixture = *static_cast<FixtureV1 *>(context);
   auto *const result = new (std::nothrow) std::uint8_t[size];
@@ -264,6 +269,77 @@ int main() {
       signed_submission.candidate_character_id, signed_resolution));
   assert(signed_resolution ==
          bridge::MarriageProposalNativeResolutionV1::pending);
+
+  {
+    constexpr std::uintptr_t module_base = 0x10000000;
+    std::array<std::byte, 2 * 0x10> slots{};
+    std::array<std::byte, 0x5C8> first{};
+    std::array<std::byte, 0x5C8> second{};
+    std::array<std::byte, sizeof(std::uintptr_t)> special{};
+    const auto put = [](auto &buffer, std::size_t offset,
+                        const auto &value) {
+      std::memcpy(buffer.data() + offset, &value, sizeof(value));
+    };
+    const auto pending_vtable =
+        module_base + bridge::kMarriagePendingObjectVtableRvaV1;
+    const auto special_vtable =
+        module_base + bridge::kMarriagePendingSpecialVtableRvaV1;
+    put(special, 0, special_vtable);
+    const auto *const special_pointer = special.data();
+    auto populate = [&](auto &pending, std::int32_t id) {
+      put(pending, 0, pending_vtable);
+      put(pending, 0x10, id);
+      put(pending, 0x18, identity.interaction_definition);
+      put(pending, 0x2F0, identity.actor_character_id);
+      put(pending, 0x2F4, identity.recipient_character_id);
+      put(pending, 0x2F8, identity.subject_character_id);
+      put(pending, 0x2FC, identity.candidate_character_id);
+      put(pending, 0x300, identity.intermediary_character_id);
+      put(pending, 0x348, special_pointer);
+      put(pending, 0x5B8, std::int32_t{6});
+      put(pending, 0x5BC, std::int32_t{9});
+      put(pending, 0x5C0, std::uint8_t{0});
+    };
+    populate(first, 0); // full ID zero is structurally valid.
+    const auto *first_pointer = first.data();
+    put(slots, 0x08, first_pointer);
+    bridge::MarriageOutboundPendingSnapshotV1 observed{};
+    assert(bridge::InspectMarriageOutboundPendingSlotsV1(
+        module_base, slots.data(), 2, identity,
+        &FixturePendingComponentAlive, observed));
+    assert(observed.state == bridge::MarriageOutboundPendingStateV1::active);
+    assert(observed.pending_id == 0 && observed.age_days == 6 &&
+           observed.ai_reply_cutoff_days == 9);
+
+    g_pending_component_alive = false;
+    assert(bridge::InspectMarriageOutboundPendingSlotsV1(
+        module_base, slots.data(), 2, identity,
+        &FixturePendingComponentAlive, observed));
+    assert(observed.state == bridge::MarriageOutboundPendingStateV1::absent);
+    g_pending_component_alive = true;
+
+    put(first, 0x5C0, std::uint8_t{3});
+    assert(bridge::InspectMarriageOutboundPendingSlotsV1(
+        module_base, slots.data(), 2, identity,
+        &FixturePendingComponentAlive, observed));
+    assert(observed.state == bridge::MarriageOutboundPendingStateV1::ambiguous);
+    put(first, 0x5C0, std::uint8_t{0});
+
+    auto other = identity;
+    other.candidate_character_id = 405;
+    assert(bridge::InspectMarriageOutboundPendingSlotsV1(
+        module_base, slots.data(), 2, other,
+        &FixturePendingComponentAlive, observed));
+    assert(observed.state == bridge::MarriageOutboundPendingStateV1::absent);
+
+    populate(second, 1);
+    const auto *second_pointer = second.data();
+    put(slots, 0x18, second_pointer);
+    assert(bridge::InspectMarriageOutboundPendingSlotsV1(
+        module_base, slots.data(), 2, identity,
+        &FixturePendingComponentAlive, observed));
+    assert(observed.state == bridge::MarriageOutboundPendingStateV1::ambiguous);
+  }
 
   assert(bridge::RemoveMarriageProposalResolutionJournalV1(state, true));
   assert(state.installed.load() == 0);

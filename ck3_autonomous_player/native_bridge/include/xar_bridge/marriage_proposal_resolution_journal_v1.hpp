@@ -22,6 +22,9 @@ inline constexpr std::uintptr_t kMarriageResolutionResponseRvaV1 = 0x2751410;
 inline constexpr std::uintptr_t kMarriageResolutionConstructRvaV1 = 0x27541F0;
 inline constexpr std::uintptr_t kMarriageResolutionDeleteRvaV1 = 0x2751310;
 inline constexpr std::uintptr_t kMarriagePendingStorageSlotRvaV1 = 0x57BF1C8;
+inline constexpr std::uintptr_t kMarriagePendingObjectVtableRvaV1 = 0x431C550;
+inline constexpr std::uintptr_t kMarriagePendingComponentAliveRvaV1 =
+    0x10495A0;
 inline constexpr std::uintptr_t kMarriagePendingSpecialVtableRvaV1 = 0x40B0F20;
 inline constexpr std::uintptr_t kMarriageDeleteInvalidatedCallerRvaV1 =
     0x27518BD;
@@ -108,6 +111,42 @@ struct MarriageProposalResolutionIdentityV1 {
                          const MarriageProposalResolutionIdentityV1 &) =
       default;
 };
+
+enum class MarriageOutboundPendingStateV1 : std::uint8_t {
+  absent = 0,
+  active = 1,
+  ambiguous = 2,
+};
+
+struct MarriageOutboundPendingSnapshotV1 {
+  MarriageOutboundPendingStateV1 state =
+      MarriageOutboundPendingStateV1::absent;
+  std::int32_t pending_id = -1;
+  std::int32_t age_days = -1;
+  std::int32_t ai_reply_cutoff_days = -1;
+};
+
+struct MarriageProposalResolutionJournalDetourStateV1;
+
+using MarriagePendingComponentAliveV1 = bool (*)(const void *component);
+
+// Only the exact identity of a live outgoing proposal counts as active.
+// Absent does not distinguish refusal, expiration, or other invalidation.
+bool ReadMarriageOutboundPendingSnapshotV1(
+    const MarriageProposalResolutionJournalDetourStateV1 &state,
+    std::int32_t actor_character_id,
+    std::int32_t recipient_character_id,
+    std::int32_t subject_character_id,
+    std::int32_t candidate_character_id,
+    MarriageOutboundPendingSnapshotV1 &output) noexcept;
+
+// Pure slot view used by the exact-build fixture. The production reader first
+// resolves the manager, canonical marriage definition, and slot capacity.
+bool InspectMarriageOutboundPendingSlotsV1(
+    std::uintptr_t module_base, const void *slots, std::int32_t capacity,
+    const MarriageProposalResolutionIdentityV1 &identity,
+    MarriagePendingComponentAliveV1 component_alive,
+    MarriageOutboundPendingSnapshotV1 &output) noexcept;
 
 struct MarriageProposalResolutionJournalDetourStateV1 {
   std::atomic<std::uint32_t> installed{0};

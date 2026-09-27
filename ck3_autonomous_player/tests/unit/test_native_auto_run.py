@@ -2018,6 +2018,19 @@ class NativeAutoRunTests(unittest.TestCase):
             "exact_one_day_contact_free_speed_3",
         )
 
+    def test_compact_family_cold_outbound_identity_survives_report(self) -> None:
+        compact = native_auto_run_module._compact_step_result({
+            "step": "query-observed-first-heir-marriage-result-v1-private",
+            "status": "pending",
+            "outbound_pending_state": "active",
+            "outbound_pending_id": -2013265918,
+            "outbound_pending_age_days": 9,
+            "outbound_pending_ai_reply_cutoff_days": 9,
+        })
+        self.assertEqual(compact["outbound_pending_state"], "active")
+        self.assertEqual(compact["outbound_pending_id"], -2013265918)
+        self.assertEqual(compact["outbound_pending_age_days"], 9)
+
     def test_compact_success_keeps_native_battle_sentinel_evidence(self) -> None:
         sentinel = {
             "state": "triggered",

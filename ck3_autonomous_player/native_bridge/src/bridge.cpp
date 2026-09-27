@@ -8317,7 +8317,8 @@ std::string ObservedHeirMarriageMaterialFrameV1(
     const xar::bridge::ObservedHeirMarriagePendingV1 &pending,
     std::uint64_t post_revision,
     xar::bridge::ObservedHeirMarriageMaterialStatusV1 material,
-    bool cold_recovery) {
+    bool cold_recovery,
+    const xar::bridge::MarriageOutboundPendingSnapshotV1 *outbound_pending) {
   const char *status = "pending";
   if (material ==
       xar::bridge::ObservedHeirMarriageMaterialStatusV1::marriage)
@@ -8355,6 +8356,45 @@ std::string ObservedHeirMarriageMaterialFrameV1(
   result += SignedNumber(pending.heir_character_id);
   result += ",\"candidate_character_id\":";
   result += SignedNumber(pending.candidate_character_id);
+  if (cold_recovery) {
+    result += ",\"outbound_pending_state\":";
+    const char *outbound_state =
+        material == xar::bridge::ObservedHeirMarriageMaterialStatusV1::pending
+            ? "unavailable"
+            : "not_applicable";
+    if (outbound_pending != nullptr) {
+      switch (outbound_pending->state) {
+      case xar::bridge::MarriageOutboundPendingStateV1::active:
+        outbound_state = "active";
+        break;
+      case xar::bridge::MarriageOutboundPendingStateV1::absent:
+        outbound_state = "absent";
+        break;
+      case xar::bridge::MarriageOutboundPendingStateV1::ambiguous:
+        outbound_state = "ambiguous";
+        break;
+      }
+    }
+    AppendJsonString(result, outbound_state);
+    result += ",\"outbound_pending_id\":";
+    result += outbound_pending != nullptr &&
+                      outbound_pending->state ==
+                          xar::bridge::MarriageOutboundPendingStateV1::active
+                  ? SignedNumber(outbound_pending->pending_id)
+                  : "null";
+    result += ",\"outbound_pending_age_days\":";
+    result += outbound_pending != nullptr &&
+                      outbound_pending->state ==
+                          xar::bridge::MarriageOutboundPendingStateV1::active
+                  ? SignedNumber(outbound_pending->age_days)
+                  : "null";
+    result += ",\"outbound_pending_ai_reply_cutoff_days\":";
+    result += outbound_pending != nullptr &&
+                      outbound_pending->state ==
+                          xar::bridge::MarriageOutboundPendingStateV1::active
+                  ? SignedNumber(outbound_pending->ai_reply_cutoff_days)
+                  : "null";
+  }
   result += "}}";
   return result;
 }
@@ -11339,6 +11379,7 @@ void RunConnectedSession(
               cold_recovery_flag == 1;
           std::uint64_t cold_heir = 0;
           std::uint64_t cold_candidate = 0;
+          std::uint64_t cold_recipient = 0;
           std::uint64_t source_date_raw = 0;
           xar::game::Snapshot before{};
           if (!xar::bridge::JsonUnsignedField(
@@ -11355,9 +11396,13 @@ void RunConnectedSession(
                           incoming.payload, "candidate_character_id",
                           cold_candidate) ||
                       !xar::bridge::JsonUnsignedField(
+                          incoming.payload, "recipient_character_id",
+                          cold_recipient) ||
+                      !xar::bridge::JsonUnsignedField(
                           incoming.payload, "source_date_raw", source_date_raw) ||
                       cold_heir == 0 || cold_heir > INT32_MAX ||
                       cold_candidate == 0 || cold_candidate > INT32_MAX ||
+                      cold_recipient == 0 || cold_recipient > INT32_MAX ||
                       cold_candidate == cold_heir ||
                       source_date_raw > static_cast<std::uint64_t>(before.date_raw) ||
                       state.observed_primary_heir_revision != state_revision ||
@@ -11407,7 +11452,21 @@ void RunConnectedSession(
                       cold_recovery)
                 : xar::bridge::ObservedHeirMarriageMaterialStatusV1::
                       inconsistent;
-            if (material == xar::bridge::
+            xar::bridge::MarriageOutboundPendingSnapshotV1 outbound_pending{};
+            const bool outbound_read =
+                cold_recovery &&
+                material == xar::bridge::
+                                ObservedHeirMarriageMaterialStatusV1::pending &&
+                xar::bridge::ReadMarriageOutboundPendingSnapshotV1(
+                    g_marriage_shared_glue_v1.resolution,
+                    pending.played_character_id,
+                    static_cast<std::int32_t>(cold_recipient),
+                    pending.heir_character_id, pending.candidate_character_id,
+                    outbound_pending);
+            xar::game::Snapshot post_scan{};
+            const bool stable = xar::game::ReadSnapshot(game, post_scan) &&
+                                post_scan == before;
+            if (!stable || material == xar::bridge::
                                 ObservedHeirMarriageMaterialStatusV1::
                                     inconsistent) {
               connected = xar::bridge::WriteFrame(
@@ -11418,7 +11477,8 @@ void RunConnectedSession(
               connected = xar::bridge::WriteFrame(
                   pipe, ObservedHeirMarriageMaterialFrameV1(
                             request_id, pending, state_revision, material,
-                            cold_recovery));
+                            cold_recovery,
+                            outbound_read ? &outbound_pending : nullptr));
             }
           }
 #endif

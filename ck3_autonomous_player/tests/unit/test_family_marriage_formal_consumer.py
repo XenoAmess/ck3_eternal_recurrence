@@ -1146,6 +1146,10 @@ class FamilyConsumerTest(unittest.TestCase):
                 self.assertEqual(recovery["plan"]["selected_step"], RESULT_STEP)
                 driver.query_observed_first_heir_marriage_cold_result_private_v1 = (
                     lambda *, pending: {"status": "pending", "material_result": False,
+                                        "outbound_pending_state": "active",
+                                        "outbound_pending_id": -2013265918,
+                                        "outbound_pending_age_days": 6,
+                                        "outbound_pending_ai_reply_cutoff_days": 9,
                                         "post_native_revision": 1})
                 query_family_marriage_result_private(
                     driver, pending=recovery["plan"]["family_marriage_pending"],
@@ -1155,6 +1159,9 @@ class FamilyConsumerTest(unittest.TestCase):
                 self.assertEqual(waiting["plan"]["selected_step"], "life-advance")
                 self.assertEqual(waiting["plan"]["family_marriage_status"],
                                  "cold_absent_relation_unresolved")
+                self.assertEqual(
+                    waiting["plan"]["family_marriage_outbound_pending_state"],
+                    "active")
                 later = plan_family_marriage_private(driver, baseline,
                     {**scene(), "native_revision": 2, "date_raw": 53216688})
                 self.assertEqual(later["plan"]["selected_step"], RESULT_STEP)

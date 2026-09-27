@@ -235,19 +235,45 @@ class TransportTest(unittest.TestCase):
 
     def test_cold_result_reports_pair_without_claiming_rejection(self) -> None:
         pending = {"schema": SCHEMA, **submit_result(),
+                   "recipient_character_id": 38713,
                    "source_date_raw": 53215920}
         cold = {"step": RESULT_STEP, "accepted": True,
                 "private_build": True, "advertised": False,
                 "status": "pending", "material_result": False,
                 "cold_recovery": True, "pre_native_revision": 0,
                 "post_native_revision": 1, "heir_character_id": 38822,
-                "candidate_character_id": 16778038}
+                "candidate_character_id": 16778038,
+                "outbound_pending_state": "active",
+                "outbound_pending_id": -2013265918,
+                "outbound_pending_age_days": 6,
+                "outbound_pending_ai_reply_cutoff_days": 9}
         driver = FakeDriver([frame(1), frame(1)], cold)
         result = query_observed_first_heir_marriage_cold_result_private_v1(
             driver, pending=pending)
         self.assertTrue(result["cold_absent_relation_unresolved"])
         self.assertEqual(driver.requests[0]["cold_recovery"], 1)
+        self.assertEqual(driver.requests[0]["recipient_character_id"], 38713)
         self.assertEqual(driver.requests[0]["source_date_raw"], 53215920)
+        self.assertEqual(result["outbound_pending_state"], "active")
+
+    def test_cold_absent_outbound_does_not_become_refusal(self) -> None:
+        pending = {"schema": SCHEMA, **submit_result(),
+                   "recipient_character_id": 38713,
+                   "source_date_raw": 53215920}
+        cold = {"step": RESULT_STEP, "accepted": True,
+                "private_build": True, "advertised": False,
+                "status": "pending", "material_result": False,
+                "cold_recovery": True, "pre_native_revision": 0,
+                "post_native_revision": 1, "heir_character_id": 38822,
+                "candidate_character_id": 16778038,
+                "outbound_pending_state": "absent",
+                "outbound_pending_id": None,
+                "outbound_pending_age_days": None,
+                "outbound_pending_ai_reply_cutoff_days": None}
+        result = query_observed_first_heir_marriage_cold_result_private_v1(
+            FakeDriver([frame(1), frame(1)], cold), pending=pending)
+        self.assertEqual(result["status"], "pending")
+        self.assertEqual(result["outbound_pending_state"], "absent")
 
 
 if __name__ == "__main__":

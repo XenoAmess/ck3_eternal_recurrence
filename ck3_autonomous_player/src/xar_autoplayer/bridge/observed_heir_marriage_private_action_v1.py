@@ -168,6 +168,7 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
     before = _paused(driver)
     heir_id = pending.get("heir_character_id")
     candidate_id = pending.get("candidate_character_id")
+    recipient_id = pending.get("recipient_character_id")
     source_date = pending.get("source_date_raw")
     if (
         pending.get("schema") != SCHEMA
@@ -175,6 +176,7 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
         or pending.get("played_character_id") !=
            before["played_character"]["character_id"]
         or not _positive(heir_id) or not _positive(candidate_id)
+        or not _positive(recipient_id)
         or type(source_date) is not int or source_date < 0
         or type(before.get("date_raw")) is not int
         or before["date_raw"] < source_date
@@ -194,11 +196,30 @@ def query_observed_first_heir_marriage_cold_result_private_v1(
         "cold_recovery": 1,
         "heir_character_id": heir_id,
         "candidate_character_id": candidate_id,
+        "recipient_character_id": recipient_id,
         "source_date_raw": source_date,
     }, timeout_seconds)
     status = result.get("status")
+    outbound_state = result.get("outbound_pending_state")
+    if status == "pending":
+        valid_outbound = outbound_state in {
+            "active", "absent", "ambiguous", "unavailable"}
+    else:
+        valid_outbound = outbound_state == "not_applicable"
+    active_outbound = outbound_state == "active"
+    outbound_id = result.get("outbound_pending_id")
+    outbound_age = result.get("outbound_pending_age_days")
+    outbound_cutoff = result.get("outbound_pending_ai_reply_cutoff_days")
     if (
         status not in {"pending", "marriage", "betrothal"}
+        or not valid_outbound
+        or (active_outbound and
+            (type(outbound_id) is not int or outbound_id == -1 or
+             type(outbound_age) is not int or outbound_age < 0 or
+             type(outbound_cutoff) is not int or outbound_cutoff < 0))
+        or (not active_outbound and
+            (outbound_id is not None or outbound_age is not None or
+             outbound_cutoff is not None))
         or result.get("material_result") is not (status != "pending")
         or result.get("cold_recovery") is not True
         or result.get("pre_native_revision") != 0

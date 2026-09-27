@@ -502,6 +502,8 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                 "cold_absent_relation_unresolved"
                 if pending.get("cold_absent_relation_unresolved") is True
                 else "await_later_paused_frame"),
+            "family_marriage_outbound_pending_state":
+                pending.get("last_outbound_pending_state"),
             "reason": "await later paused frame for marriage result without resubmitting"}}
     resolved = ledger["resolved"]
     rejected_candidate_ids: frozenset[int] = frozenset()
@@ -835,6 +837,12 @@ def query_family_marriage_result_private(driver: object, *,
         pid, creation = bridge_process_identity(driver)
         _write(state_dir, {**ledger, "pending": {
             **pending, "cold_absent_relation_unresolved": True,
+            "last_outbound_pending_state": result.get("outbound_pending_state"),
+            "last_outbound_pending_id": result.get("outbound_pending_id"),
+            "last_outbound_pending_age_days":
+                result.get("outbound_pending_age_days"),
+            "last_outbound_pending_ai_reply_cutoff_days":
+                result.get("outbound_pending_ai_reply_cutoff_days"),
             "last_checked_native_revision": result["post_native_revision"],
             "last_checked_bridge_pid": pid,
             "last_checked_bridge_creation_date": creation}})

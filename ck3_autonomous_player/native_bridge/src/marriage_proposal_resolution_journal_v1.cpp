@@ -27,6 +27,8 @@ constexpr std::size_t kPendingIdOffset = 0x10;
 constexpr std::size_t kPendingContextOffset = 0x18;
 constexpr std::size_t kPendingSpecialPointerOffset = 0x348;
 constexpr std::size_t kPendingRouteOffset = 0x5C0;
+constexpr std::size_t kPendingAgeDaysOffset = 0x5B8;
+constexpr std::size_t kPendingAiReplyCutoffDaysOffset = 0x5BC;
 constexpr std::size_t kComponentSlotsOffset = 0x20;
 constexpr std::size_t kComponentCapacityOffset = 0x2C;
 constexpr std::size_t kComponentSlotStride = 0x10;
@@ -696,6 +698,128 @@ bool ReadMarriageProposalResolutionJournalV1(
   }
   output = state.resolution;
   return true;
+}
+
+bool InspectMarriageOutboundPendingSlotsV1(
+    std::uintptr_t module_base, const void *slots, std::int32_t capacity,
+    const MarriageProposalResolutionIdentityV1 &identity,
+    MarriagePendingComponentAliveV1 component_alive,
+    MarriageOutboundPendingSnapshotV1 &output) noexcept {
+  output = {};
+  if (module_base == 0 || !ValidIdentity(identity) ||
+      component_alive == nullptr ||
+      capacity < 0 || capacity > kMaximumPendingCapacity ||
+      (capacity != 0 && slots == nullptr)) {
+    return false;
+  }
+  return FaultBoundary([&]() noexcept {
+    std::uint32_t matches = 0;
+    for (std::int32_t index = 0; index < capacity; ++index) {
+      const auto *const pending = LoadAt<const std::byte *>(
+          slots, static_cast<std::size_t>(index) * kComponentSlotStride +
+                     kComponentSlotObjectOffset);
+      if (pending == nullptr ||
+          LoadAt<std::uintptr_t>(pending, 0) !=
+              module_base + kMarriagePendingObjectVtableRvaV1) {
+        continue;
+      }
+      const auto full_id = LoadAt<std::int32_t>(pending, kPendingIdOffset);
+      if (full_id == -1 ||
+          (static_cast<std::uint32_t>(full_id) & 0x00FFFFFFU) !=
+              static_cast<std::uint32_t>(index)) {
+        continue;
+      }
+      // Exact 0x10495A0 reads component +0x08 (pending +0x10). Invoke the
+      // native liveness gate as the existing pending-storage ABI requires.
+      if (!component_alive(pending + 0x08)) {
+        continue;
+      }
+      if (LoadAt<std::uintptr_t>(pending + kPendingContextOffset,
+                                 kContextDefinitionOffset) !=
+          identity.interaction_definition) {
+        continue;
+      }
+      MarriageProposalResolutionIdentityV1 observed{};
+      if (!ReadContextIdentityUnsafe(pending + kPendingContextOffset,
+                                     observed)) {
+        return false;
+      }
+      if (observed != identity) {
+        continue;
+      }
+      const auto *const special =
+          LoadAt<const std::byte *>(pending, kPendingSpecialPointerOffset);
+      if (special == nullptr ||
+          LoadAt<std::uintptr_t>(special, 0) !=
+              module_base + kMarriagePendingSpecialVtableRvaV1) {
+        return false;
+      }
+      ++matches;
+      if (matches > 1) {
+        output.state = MarriageOutboundPendingStateV1::ambiguous;
+        output.pending_id = -1;
+        output.age_days = -1;
+        output.ai_reply_cutoff_days = -1;
+        return true;
+      }
+      const auto route = LoadAt<std::uint8_t>(pending, kPendingRouteOffset);
+      output.state = route == 0 || route == 2
+                         ? MarriageOutboundPendingStateV1::active
+                         : MarriageOutboundPendingStateV1::ambiguous;
+      output.pending_id = full_id;
+      output.age_days = LoadAt<std::int32_t>(pending, kPendingAgeDaysOffset);
+      output.ai_reply_cutoff_days =
+          LoadAt<std::int32_t>(pending, kPendingAiReplyCutoffDaysOffset);
+    }
+    return true;
+  });
+}
+
+bool ReadMarriageOutboundPendingSnapshotV1(
+    const MarriageProposalResolutionJournalDetourStateV1 &state,
+    std::int32_t actor_character_id,
+    std::int32_t recipient_character_id,
+    std::int32_t subject_character_id,
+    std::int32_t candidate_character_id,
+    MarriageOutboundPendingSnapshotV1 &output) noexcept {
+  output = {};
+  if (state.installed.load(std::memory_order_acquire) == 0 ||
+      g_active_state.load(std::memory_order_acquire) != &state ||
+      state.offline_fixture || state.module_base == 0 ||
+      actor_character_id <= 0 || recipient_character_id <= 0 ||
+      subject_character_id <= 0 || candidate_character_id <= 0 ||
+      subject_character_id == candidate_character_id) {
+    return false;
+  }
+  return FaultBoundary([&]() noexcept {
+    using GetDatabase = void *(*)();
+    const auto get_database = reinterpret_cast<GetDatabase>(
+        state.module_base + kMarriageGetCharacterInteractionDatabaseRvaV1);
+    const auto *const database =
+        static_cast<const std::byte *>(get_database());
+    if (database == nullptr) {
+      return false;
+    }
+    const MarriageProposalResolutionIdentityV1 identity{
+        LoadAt<std::uintptr_t>(database,
+                               kArrangeMarriageInteractionOffsetV1),
+        actor_character_id, recipient_character_id,
+        subject_character_id, candidate_character_id, -1};
+    if (!ValidIdentity(identity)) return false;
+    const auto *const storage = *reinterpret_cast<const std::byte *const *>(
+        state.module_base + kMarriagePendingStorageSlotRvaV1);
+    if (storage == nullptr) {
+      return false;
+    }
+    const auto *const slots = LoadAt<const void *>(storage, kComponentSlotsOffset);
+    const auto capacity =
+        LoadAt<std::int32_t>(storage, kComponentCapacityOffset);
+    return InspectMarriageOutboundPendingSlotsV1(
+        state.module_base, slots, capacity, identity,
+        reinterpret_cast<MarriagePendingComponentAliveV1>(
+            state.module_base + kMarriagePendingComponentAliveRvaV1),
+        output);
+  });
 }
 
 bool CaptureMarriageResolutionDispatchReturnFixtureV1(
