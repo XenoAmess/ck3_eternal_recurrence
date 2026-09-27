@@ -175,6 +175,37 @@ def test_private_release_preview_rejects_wrong_prisoner_binding() -> None:
             _Driver(result), expected_revision=4)
 
 
+def test_private_prisoner_lineage_is_same_frame_value_input() -> None:
+    result = _result_with_release_preview()
+    value = result["player_prisoner_collection"]
+    value.update({"schema_version": 3, "played_house_id": 12,
+                  "played_dynasty_id": 30})
+    row = value["prisoners"][0]
+    row.update({"house_id": 12, "dynasty_id": 30,
+                "same_house": True, "same_dynasty": True})
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["same_dynasty"] is True
+
+    row["same_dynasty"] = False
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4)
+
+
+def test_private_prisoner_lineage_preserves_legitimate_absence() -> None:
+    result = _result_with_release_preview()
+    value = result["player_prisoner_collection"]
+    value.update({"schema_version": 3, "played_house_id": None,
+                  "played_dynasty_id": None})
+    value["prisoners"][0].update({
+        "house_id": None, "dynasty_id": None,
+        "same_house": False, "same_dynasty": False,
+    })
+    query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+
+
 def test_mcp_registers_read_only_tool_only_for_private_opt_in() -> None:
     from mcp import Client
     from xar_autoplayer.bridge.mcp_server import create_server

@@ -1,4 +1,4 @@
-"""Unadvertised paused native query for the current player's prisoner IDs."""
+"""Unadvertised paused native prisoner collection and narrow lineage values."""
 
 from __future__ import annotations
 
@@ -21,10 +21,17 @@ _VALUE_KEYS = {
     "unavailable_reason", "date_raw", "played_character_id", "total_count",
     "returned_count", "collection_complete", "prisoners",
 }
+_VALUE_KEYS_V3 = _VALUE_KEYS | {"played_house_id", "played_dynasty_id"}
+_ROW_KEYS = {"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified"}
+_LINEAGE_KEYS = {"house_id", "dynasty_id", "same_house", "same_dynasty"}
 
 
 def _positive_int(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
+def _lineage_id(value: object) -> bool:
+    return value is None or (isinstance(value, int) and not isinstance(value, bool) and value >= 0)
 
 
 def query_player_prisoner_collection_private_v1(
@@ -76,15 +83,16 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("private prisoner collection envelope is malformed")
     value = envelope.get("player_prisoner_collection")
     if (
-        not isinstance(value, dict) or set(value) != _VALUE_KEYS
+        not isinstance(value, dict) or set(value) != (_VALUE_KEYS_V3 if value.get("schema_version") == 3 else _VALUE_KEYS)
         or value.get("schema") != SCHEMA
-        or value.get("schema_version") not in (1, 2)
+        or value.get("schema_version") not in (1, 2, 3)
         or value.get("snapshot_revision") != native_revision
         or value.get("status") != envelope.get("status")
     ):
         raise BridgeUnavailableError("private prisoner collection payload is malformed")
     if value["status"] == "available":
-        preview_version = value["schema_version"] == 2
+        preview_version = value["schema_version"] in (2, 3)
+        lineage_version = value["schema_version"] == 3
         count = value.get("total_count")
         rows = value.get("prisoners")
         if (
@@ -95,13 +103,18 @@ def query_player_prisoner_collection_private_v1(
             or not 0 <= count <= 64 or value.get("returned_count") != count
             or value.get("collection_complete") is not True
             or not isinstance(rows, list) or len(rows) != count
+            or (lineage_version and (
+                not _lineage_id(value.get("played_house_id"))
+                or not _lineage_id(value.get("played_dynasty_id"))
+                or (value.get("played_house_id") is None and value.get("played_dynasty_id") is not None)
+            ))
         ):
             raise BridgeUnavailableError("private prisoner collection count or binding is malformed")
         seen: set[int] = set()
         for ordinal, row in enumerate(rows):
             if (
                 not isinstance(row, dict)
-                or set(row) != ({"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified", "unconditional_release_preview"} if preview_version else {"source_ordinal", "prisoner_character_id", "collection_owner_character_id", "jailer_character_id", "custody_relation_verified"})
+                or set(row) != (_ROW_KEYS | ({"unconditional_release_preview"} if preview_version else set()) | (_LINEAGE_KEYS if lineage_version else set()))
                 or row.get("source_ordinal") != ordinal
                 or not _positive_int(row.get("prisoner_character_id"))
                 or row["prisoner_character_id"] > 0xFFFFFFFF
@@ -112,6 +125,19 @@ def query_player_prisoner_collection_private_v1(
                 or row.get("custody_relation_verified") is not True
             ):
                 raise BridgeUnavailableError("private prisoner collection row is malformed")
+            if lineage_version:
+                house_id = row.get("house_id")
+                dynasty_id = row.get("dynasty_id")
+                if (
+                    not _lineage_id(house_id)
+                    or not _lineage_id(dynasty_id)
+                    or (house_id is None and dynasty_id is not None)
+                    or type(row.get("same_house")) is not bool
+                    or type(row.get("same_dynasty")) is not bool
+                    or row["same_house"] != (house_id is not None and house_id == value["played_house_id"])
+                    or row["same_dynasty"] != (dynasty_id is not None and dynasty_id == value["played_dynasty_id"])
+                ):
+                    raise BridgeUnavailableError("private prisoner lineage is malformed")
             if preview_version:
                 preview = row["unconditional_release_preview"]
                 if (
@@ -164,7 +190,8 @@ def query_player_prisoner_collection_private_v1(
             not isinstance(value.get("unavailable_reason"), str)
             or not value["unavailable_reason"]
             or any(value.get(key) is not None for key in (
-                "date_raw", "played_character_id", "total_count", "returned_count"
+                "date_raw", "played_character_id", "total_count", "returned_count",
+                "played_house_id", "played_dynasty_id",
             ))
             or value.get("collection_complete") is not False
             or value.get("prisoners") != []

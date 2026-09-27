@@ -416,3 +416,36 @@ flowchart LR
 结果与政策比较。赎金仍缺付款者重定向、原生金额求值与接受后转账；通用
 `on_send` 十槽费用不能充当 `on_accept` 赎金收入。C182 只有源码和聚焦构建/测试，
 尚无新 DLL 的 paused live 读回或任何囚犯动作，因此 M6 和正式自动游玩能力不变。
+
+### C211：同帧囚犯宗族身份的窄价值输入（2026-09-27）
+
+R0261 在 `date_raw=53216856` 的正式 Robert 暂停帧列出 34486、44484、47028 三名
+囚犯；三人无条件释放均为原生 `Can Send=true`、零 `on_send` 费用、自动接受。
+来源 `Z:\c202-prisoner-h2543-final-preview\master585\run-formal-16\formal-report.txt`
+SHA-256 `E39AEE7ED9B8FF025C993DC56D416C90E3170E801E1C687B42799001BA4025A6`；
+exact `ck3.exe` SHA-256 为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+该结果证明合法性，未提供谁值得释放的比较输入。C211 只复用已冻结的
+[House/Dynasty exact-build reader](combat-phase-events.md#dynasty-perk-exact-build-reader-abi)：
+`CCharacter+0x150` 是 full HouseID，House store/fallback 为
+`module+0x570C408/0x570C400`，`CHouse+0x10` 回读身份，`CHouse+0x2C`
+是 full DynastyID，Dynasty store/fallback 为 `module+0x570C748/0x570C700`，
+`CDynasty+0x10` 回读身份。`-1` 是原生无身份；store 缺失或 generation
+不符应使私有查询 unavailable。现有囚犯 reader 已在同一应用主线程暂停帧
+对玩家和每名囚犯作 full CharacterID 回读，并双次采样，故可把各人的
+House/Dynasty ID 加入相同双采样指纹，再发布同 House/同 Dynasty 布尔值。
+
+```mermaid
+flowchart LR
+    C[同帧 full CharacterID 囚犯集合] --> H[玩家与囚犯 House/Dynasty 完整 ID]
+    H --> V[同 House/同 Dynasty 私有价值输入]
+    V -. 未闭合 .-> R[赎金付款者/金额/接受结果]
+    V -. 未闭合 .-> W[当前战争相关性与拘禁原因]
+    R --> P[正式收益比较]
+    W --> P
+```
+
+同 Dynasty 仅表示当前身份相同，不等于近亲、友好关系或释放的正收益。
+原生 `GetImprisonmentReasons` 目前仅有反射字符串锚点，未闭合 callable RVA
+及 owner/context；当前战争数组虽已有其他查询的 exact reader，囚犯集合
+入口尚无绑定的当前 War 对象。因此 C211 不把这两项猜成 false，也不据
+宗族身份提交释放动作或开放公共能力。新增代码仍须聚焦验证和匹配实机读回。

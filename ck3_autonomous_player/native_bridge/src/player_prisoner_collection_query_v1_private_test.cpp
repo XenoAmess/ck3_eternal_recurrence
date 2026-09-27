@@ -23,6 +23,12 @@ constexpr std::uintptr_t kPrisonerRelation = 0x270000000;
 constexpr std::uintptr_t kSecondPrisonerRelation = 0x270001000;
 constexpr std::uintptr_t kLand = 0x230000000;
 constexpr std::uintptr_t kArray = 0x240000000;
+constexpr std::uintptr_t kHouseStorage = 0x280000000;
+constexpr std::uintptr_t kHouseSlots = 0x281000000;
+constexpr std::uintptr_t kHouse = 0x282000000;
+constexpr std::uintptr_t kDynastyStorage = 0x290000000;
+constexpr std::uintptr_t kDynastySlots = 0x291000000;
+constexpr std::uintptr_t kDynasty = 0x292000000;
 constexpr std::uint32_t kPlayerId = 0x01000002;
 constexpr std::uint32_t kPrisonerId = 0x02000003;
 constexpr std::uint32_t kSecondPrisonerId = 0x03000004;
@@ -64,6 +70,9 @@ struct Fixture {
     Put(kPlayer + 0x18, kPlayerId);
     Put(kPrisoner + 0x18, kPrisonerId);
     Put(kSecondPrisoner + 0x18, kSecondPrisonerId);
+    Put(kPlayer + 0x150, std::int32_t{-1});
+    Put(kPrisoner + 0x150, std::int32_t{-1});
+    Put(kSecondPrisoner + 0x150, std::int32_t{-1});
     Put(kPrisoner + 0x1A8, kPrisonerExtension);
     Put(kSecondPrisoner + 0x1A8, kSecondPrisonerExtension);
     Put(kPrisonerExtension + 0x288, kPrisonerRelation);
@@ -108,6 +117,7 @@ bool Read(void *context, std::uintptr_t address, void *output,
 PlayerPrisonerCollectionAccessV1 Access(Fixture &fixture) {
   PlayerPrisonerCollectionAccessV1 access{};
   access.exact_build_admitted = true;
+  access.read_lineage = true;
   access.admitted_executable_sha256 =
       kPlayerPrisonerManagementSnapshotV1ExecutableSha256;
   access.module_base = kBase;
@@ -128,6 +138,53 @@ bool Expect(bool condition, const char *case_name) {
 
 int main() {
   int passed = 0;
+  {
+    Fixture fixture;
+    for (std::size_t offset = 0; offset < sizeof(std::int32_t); ++offset) {
+      fixture.memory.erase(kPlayer + 0x150 + offset);
+      fixture.memory.erase(kPrisoner + 0x150 + offset);
+    }
+    auto access = Access(fixture);
+    access.read_lineage = false;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.available && result.played_house_id == -1 &&
+                         result.rows[0].house_id == -1,
+                     "legacy collection does not require lineage");
+  }
+  {
+    Fixture fixture;
+    fixture.Put(kBase + 0x570C408, kHouseStorage);
+    fixture.Put(kBase + 0x570C400, std::uintptr_t{0x283000000});
+    fixture.Put(kHouseStorage + 0x20, kHouseSlots);
+    fixture.Put(kHouseStorage + 0x2C, std::int32_t{8});
+    fixture.Put(kHouseSlots + 3 * 0x10 + 0x08, kHouse);
+    fixture.Put(kHouse + 0x10, std::int32_t{3});
+    fixture.Put(kHouse + 0x2C, std::int32_t{4});
+    fixture.Put(kBase + 0x570C748, kDynastyStorage);
+    fixture.Put(kBase + 0x570C700, std::uintptr_t{0x293000000});
+    fixture.Put(kDynastyStorage + 0x20, kDynastySlots);
+    fixture.Put(kDynastyStorage + 0x2C, std::int32_t{8});
+    fixture.Put(kDynastySlots + 4 * 0x10 + 0x08, kDynasty);
+    fixture.Put(kDynasty + 0x10, std::int32_t{4});
+    fixture.Put(kPlayer + 0x150, std::int32_t{3});
+    fixture.Put(kPrisoner + 0x150, std::int32_t{3});
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(ReadPlayerPrisonerCollectionV1Private(Access(fixture),
+                                                            result) &&
+                         result.played_house_id == 3 &&
+                         result.played_dynasty_id == 4 &&
+                         result.rows[0].house_id == 3 &&
+                         result.rows[0].dynasty_id == 4,
+                     "same-house dynasty identities");
+    fixture.Put(kHouse + 0x10, std::int32_t{0x01000003});
+    passed += Expect(!ReadPlayerPrisonerCollectionV1Private(Access(fixture),
+                                                             result) &&
+                         result.failure ==
+                             PlayerPrisonerCollectionFailureV1::
+                                 lineage_unavailable,
+                     "stale house generation unavailable");
+  }
   {
     Fixture fixture;
     PlayerPrisonerCollectionSnapshotV1 result{};
@@ -250,6 +307,6 @@ int main() {
                      "second-sample drift rejected");
   }
   std::cout << "player_prisoner_collection_query_v1_private " << passed
-            << "/11 GREEN\n";
-  return passed == 11 ? 0 : 1;
+            << "/14 GREEN\n";
+  return passed == 14 ? 0 : 1;
 }
