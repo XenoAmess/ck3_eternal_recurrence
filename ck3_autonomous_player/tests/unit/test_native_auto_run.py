@@ -4525,6 +4525,20 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertNotIn("auto_turn:lifestyle_focus_submit", harness.events)
         self.assertNotIn("auto_turn:advance", harness.events)
 
+    def test_opening_focus_readback_follows_prisoner_collection_query(self) -> None:
+        report, harness = self._run(
+            ["existing_focus"],
+            require_initial_lifestyle_focus_before_date_advance=True,
+            allow_private_prisoner_collection_observation=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(harness.prisoner_collection_query_count, 1)
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["stage"],
+                         "complete")
+        self.assertEqual(report["auto_run"]["turns"][0]["selected_step"],
+                         "query-campaign-root-context-v1")
+
     def test_opening_focus_gate_requires_submit_receipt_checkpoint_and_consumption(self) -> None:
         report, harness = self._run(
             ["lifestyle_focus_submit", "lifestyle_focus_receipt", "advance"],

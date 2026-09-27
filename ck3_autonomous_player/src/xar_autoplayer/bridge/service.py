@@ -827,6 +827,16 @@ class GameplayBridgeService:
                     else []
                 ),
             )
+        if getattr(
+            self.driver, "require_initial_lifestyle_focus_before_date_advance",
+            False,
+        ) is True:
+            # The runner consumes the opening focus proof on its own root
+            # query turn. A family proposal or joint choice cannot replace
+            # that selected step while retaining the unconsumed proof.
+            return self._plan_initial_lifestyle_focus_first_v1(
+                planned, available_steps
+            )
         m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
         m5_history = planned.pop("_private_m5_history_v1", None)
         m5_enabled = getattr(
