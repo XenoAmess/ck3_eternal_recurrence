@@ -1680,8 +1680,45 @@ std::string SerializeActiveCombatResumeInputsV1(
                                 snapshot.defender.men_at_arms_entries.size())) {
     return {};
   }
-  output += "},\"missing_required_domains\":["
-            "\"active_coalition_side_mapping\",";
+  const auto &same_side =
+      snapshot.side_index == 0 ? snapshot.attacker : snapshot.defender;
+  const auto &opposing_side =
+      snapshot.side_index == 0 ? snapshot.defender : snapshot.attacker;
+  output += ",\"battle_side_mapping\":{\"status\":\"available\","
+            "\"subject_side_index\":";
+  if (!AppendNumber(output, snapshot.side_index)) {
+    return {};
+  }
+  output += ",\"opposing_side_index\":";
+  if (!AppendNumber(output, 1 - snapshot.side_index)) {
+    return {};
+  }
+  output += ",\"subject_owner_character_id\":";
+  if (!AppendNumber(output, snapshot.selected_owner_character_id)) {
+    return {};
+  }
+  output += ",\"side_scope\":";
+  AppendJsonString(output, snapshot.side_scope);
+  output += ",\"same_side_public_cunit_ids_in_stored_order\":";
+  if (!append_army_ids(output, same_side)) {
+    return {};
+  }
+  output += ",\"opposing_side_public_cunit_ids_in_stored_order\":";
+  if (!append_army_ids(output, opposing_side)) {
+    return {};
+  }
+  output += ",\"affected_public_cunit_ids_in_stored_order\":";
+  if (!AppendInt32Array(output,
+                        snapshot.affected_public_cunit_ids_in_stored_order)) {
+    return {};
+  }
+  output += ",\"unaffected_same_side_public_cunit_ids_in_stored_order\":";
+  if (!AppendInt32Array(
+          output,
+          snapshot.unaffected_same_side_public_cunit_ids_in_stored_order)) {
+    return {};
+  }
+  output += "}},\"missing_required_domains\":[";
   if (!snapshot.attacker.selected_commander_next_roll_bounds.available ||
       !snapshot.defender.selected_commander_next_roll_bounds.available) {
     output += "\"selected_commander_next_roll_bounds\",";

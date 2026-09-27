@@ -6835,26 +6835,54 @@ def _annotate_active_combat_resume_input(
             receipt = normalize_active_combat_resume_inputs_v1(
                 raw_receipt, parent=normalized_parent
             )
-            subject_side_index = normalized_parent["side_index"]
-            same_side = normalized_parent[
-                "attacker" if subject_side_index == 0 else "defender"
-            ]
-            opposing_side = normalized_parent[
-                "defender" if subject_side_index == 0 else "attacker"
-            ]
-            battle_side_mapping = {
-                "subject_side_index": subject_side_index,
-                "opposing_side_index": 1 - subject_side_index,
-                "subject_owner_character_id": normalized_parent[
-                    "selected_owner_character_id"
-                ],
-                "same_side_public_cunit_ids_in_stored_order": [
-                    army["public_cunit_id"] for army in same_side["ordered_armies"]
-                ],
-                "opposing_side_public_cunit_ids_in_stored_order": [
-                    army["public_cunit_id"] for army in opposing_side["ordered_armies"]
-                ],
-            }
+            typed_mapping = receipt["observed"].get("battle_side_mapping")
+            if typed_mapping is not None:
+                battle_side_mapping = {
+                    key: typed_mapping[key]
+                    for key in (
+                        "subject_side_index",
+                        "opposing_side_index",
+                        "subject_owner_character_id",
+                        "side_scope",
+                        "same_side_public_cunit_ids_in_stored_order",
+                        "opposing_side_public_cunit_ids_in_stored_order",
+                        "affected_public_cunit_ids_in_stored_order",
+                        "unaffected_same_side_public_cunit_ids_in_stored_order",
+                    )
+                }
+            else:
+                # Preserve the meaning of immutable pre-field receipts.
+                subject_side_index = normalized_parent["side_index"]
+                same_side = normalized_parent[
+                    "attacker" if subject_side_index == 0 else "defender"
+                ]
+                opposing_side = normalized_parent[
+                    "defender" if subject_side_index == 0 else "attacker"
+                ]
+                battle_side_mapping = {
+                    "subject_side_index": subject_side_index,
+                    "opposing_side_index": 1 - subject_side_index,
+                    "subject_owner_character_id": normalized_parent[
+                        "selected_owner_character_id"
+                    ],
+                    "side_scope": normalized_parent["side_scope"],
+                    "same_side_public_cunit_ids_in_stored_order": [
+                        army["public_cunit_id"] for army in same_side["ordered_armies"]
+                    ],
+                    "opposing_side_public_cunit_ids_in_stored_order": [
+                        army["public_cunit_id"] for army in opposing_side["ordered_armies"]
+                    ],
+                    "affected_public_cunit_ids_in_stored_order": list(
+                        normalized_parent[
+                            "affected_public_cunit_ids_in_stored_order"
+                        ]
+                    ),
+                    "unaffected_same_side_public_cunit_ids_in_stored_order": list(
+                        normalized_parent[
+                            "unaffected_same_side_public_cunit_ids_in_stored_order"
+                        ]
+                    ),
+                }
         except (TypeError, ValueError):
             receipt = None
 

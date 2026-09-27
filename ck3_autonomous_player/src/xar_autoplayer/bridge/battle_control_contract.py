@@ -111,6 +111,20 @@ _ACTIVE_RESUME_OBSERVED_KEYS = {
     "side_0_entry_count",
     "side_1_entry_count",
 }
+_ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING = _ACTIVE_RESUME_OBSERVED_KEYS | {
+    "battle_side_mapping"
+}
+_ACTIVE_RESUME_BATTLE_SIDE_MAPPING_KEYS = {
+    "status",
+    "subject_side_index",
+    "opposing_side_index",
+    "subject_owner_character_id",
+    "side_scope",
+    "same_side_public_cunit_ids_in_stored_order",
+    "opposing_side_public_cunit_ids_in_stored_order",
+    "affected_public_cunit_ids_in_stored_order",
+    "unaffected_same_side_public_cunit_ids_in_stored_order",
+}
 _ACTUAL_HARD_KEYS = {
     "status",
     "source_combat_id",
@@ -792,7 +806,10 @@ def normalize_active_combat_resume_inputs_v1(
             raise ValueError(f"{name}.source.{key} disagrees with battle frame")
 
     observed = value["observed"]
-    if not isinstance(observed, dict) or set(observed) != _ACTIVE_RESUME_OBSERVED_KEYS:
+    if not isinstance(observed, dict) or set(observed) not in (
+        _ACTIVE_RESUME_OBSERVED_KEYS,
+        _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING,
+    ):
         raise ValueError(f"{name}.observed has a malformed schema")
     if observed["phase"] != parent["phase"]:
         raise ValueError(f"{name}.observed.phase disagrees with battle frame")
@@ -863,6 +880,53 @@ def normalize_active_combat_resume_inputs_v1(
     )
     if ("selected_commander_next_roll_bounds" in missing) == both_bounds_available:
         raise ValueError(f"{name} roll bounds completeness disagrees")
+    has_mapping = "battle_side_mapping" in observed
+    if has_mapping == ("active_coalition_side_mapping" in missing):
+        raise ValueError(f"{name} coalition side mapping completeness disagrees")
+    if has_mapping:
+        mapping = observed["battle_side_mapping"]
+        mapping_name = f"{name}.observed.battle_side_mapping"
+        if not isinstance(mapping, dict) or set(mapping) != _ACTIVE_RESUME_BATTLE_SIDE_MAPPING_KEYS:
+            raise ValueError(f"{mapping_name} has a malformed schema")
+        if mapping["status"] != "available":
+            raise ValueError(f"{mapping_name} cannot claim unavailable operands")
+        subject_side_index = _signed_int32(
+            mapping["subject_side_index"], f"{mapping_name}.subject_side_index"
+        )
+        opposing_side_index = _signed_int32(
+            mapping["opposing_side_index"], f"{mapping_name}.opposing_side_index"
+        )
+        owner = _positive_int32(
+            mapping["subject_owner_character_id"],
+            f"{mapping_name}.subject_owner_character_id",
+        )
+        if (
+            subject_side_index != parent["side_index"]
+            or opposing_side_index != 1 - subject_side_index
+            or owner != parent["selected_owner_character_id"]
+            or mapping["side_scope"] != parent["side_scope"]
+        ):
+            raise ValueError(f"{mapping_name} subject binding disagrees")
+        same = parent["attacker" if subject_side_index == 0 else "defender"]
+        opposing = parent["defender" if subject_side_index == 0 else "attacker"]
+        expected_lists = {
+            "same_side_public_cunit_ids_in_stored_order": [
+                army["public_cunit_id"] for army in same["ordered_armies"]
+            ],
+            "opposing_side_public_cunit_ids_in_stored_order": [
+                army["public_cunit_id"] for army in opposing["ordered_armies"]
+            ],
+            "affected_public_cunit_ids_in_stored_order": parent[
+                "affected_public_cunit_ids_in_stored_order"
+            ],
+            "unaffected_same_side_public_cunit_ids_in_stored_order": parent[
+                "unaffected_same_side_public_cunit_ids_in_stored_order"
+            ],
+        }
+        for key, expected in expected_lists.items():
+            actual = _positive_int32_list(mapping[key], f"{mapping_name}.{key}")
+            if actual != expected:
+                raise ValueError(f"{mapping_name}.{key} disagrees with battle frame")
     return {
         "schema_version": 1,
         "status": "unavailable",

@@ -423,6 +423,35 @@ def _active_resume_receipt(frame: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _with_typed_battle_side_mapping(
+    receipt: dict[str, object], frame: dict[str, object]
+) -> dict[str, object]:
+    side_index = frame["side_index"]
+    same = frame["attacker" if side_index == 0 else "defender"]
+    opposing = frame["defender" if side_index == 0 else "attacker"]
+    receipt["observed"]["battle_side_mapping"] = {
+        "status": "available",
+        "subject_side_index": side_index,
+        "opposing_side_index": 1 - side_index,
+        "subject_owner_character_id": frame["selected_owner_character_id"],
+        "side_scope": frame["side_scope"],
+        "same_side_public_cunit_ids_in_stored_order": [
+            army["public_cunit_id"] for army in same["ordered_armies"]
+        ],
+        "opposing_side_public_cunit_ids_in_stored_order": [
+            army["public_cunit_id"] for army in opposing["ordered_armies"]
+        ],
+        "affected_public_cunit_ids_in_stored_order": list(
+            frame["affected_public_cunit_ids_in_stored_order"]
+        ),
+        "unaffected_same_side_public_cunit_ids_in_stored_order": list(
+            frame["unaffected_same_side_public_cunit_ids_in_stored_order"]
+        ),
+    }
+    receipt["missing_required_domains"].remove("active_coalition_side_mapping")
+    return receipt
+
+
 def _active_counter_inputs(frame: dict[str, object]) -> dict[str, object]:
     sides = []
     for side_index, name in enumerate(("attacker", "defender")):
@@ -896,10 +925,54 @@ class BattleControlStrategyTests(unittest.TestCase):
         self.assertEqual(mapping["subject_side_index"], 0)
         self.assertEqual(mapping["opposing_side_index"], 1)
         self.assertEqual(mapping["subject_owner_character_id"], 29_829)
+        self.assertEqual(mapping["side_scope"], "full_side")
+        self.assertEqual(
+            mapping["affected_public_cunit_ids_in_stored_order"], [SUBJECT]
+        )
+        self.assertEqual(
+            mapping["unaffected_same_side_public_cunit_ids_in_stored_order"], []
+        )
         self.assertIn(SUBJECT, mapping["same_side_public_cunit_ids_in_stored_order"])
         self.assertEqual(
             mapping["opposing_side_public_cunit_ids_in_stored_order"],
             [357, 33_554_657],
+        )
+
+        typed = _with_typed_battle_side_mapping(
+            copy.deepcopy(receipt), frame
+        )
+        typed_plan = self.plan(
+            [_battle_query_row(1, frame)], frame=frame,
+            snapshot_overrides={
+                "active_combat_resume_inputs_v1": typed,
+                "battle_control_snapshot_v1_queried_native_revision": NATIVE_REVISION,
+            },
+        )
+        typed_subject = typed_plan["active_combat_resume_input"]["subjects"][0]
+        self.assertEqual(typed_plan["selected_step"], "life-advance")
+        self.assertEqual(typed_subject["battle_side_mapping"], mapping)
+        self.assertNotIn(
+            "active_coalition_side_mapping",
+            typed_subject["missing_required_domains"],
+        )
+        self.assertFalse(typed_plan["active_combat_resume_input"]["used_for_decision"])
+
+        forged_typed = copy.deepcopy(typed)
+        forged_typed["observed"]["battle_side_mapping"].update(
+            subject_side_index=1
+        )
+        forged_plan = self.plan(
+            [_battle_query_row(1, frame)], frame=frame,
+            snapshot_overrides={
+                "active_combat_resume_inputs_v1": forged_typed,
+                "battle_control_snapshot_v1_queried_native_revision": NATIVE_REVISION,
+            },
+        )
+        self.assertEqual(
+            forged_plan["active_combat_resume_input"]["subjects"][0][
+                "unavailable_reason"
+            ],
+            "same_frame_resume_receipt_invalid",
         )
 
         stale = copy.deepcopy(receipt)
@@ -2938,6 +3011,102 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
                 normalize_active_combat_resume_inputs_v1(
                     malformed, parent=frame
                 )
+
+    def test_resume_coalition_mapping_closes_only_its_verified_domain(self) -> None:
+        attacker_frame = self.normalize(_battle_frame())
+        attacker_receipt = _with_typed_battle_side_mapping(
+            _active_resume_receipt(attacker_frame), attacker_frame
+        )
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(
+                attacker_receipt, parent=attacker_frame
+            ),
+            attacker_receipt,
+        )
+        self.assertEqual(attacker_receipt["status"], "unavailable")
+        self.assertEqual(attacker_receipt["observed"]["battle_side_mapping"][
+            "subject_side_index"
+        ], 0)
+
+        defender_frame = _battle_frame()
+        defender_frame.update({
+            "subject_public_cunit_id": 357,
+            "subject_native_carmy_id": 202,
+            "selected_public_cunit_id": 357,
+            "selected_native_carmy_id": 202,
+            "selected_owner_character_id": 36_108,
+            "side_index": 1,
+            "side_scope": "owner_subset",
+            "affected_public_cunit_ids_in_stored_order": [357],
+            "unaffected_same_side_public_cunit_ids_in_stored_order":
+                [33_554_657],
+        })
+        defender_frame = normalize_battle_control_snapshot_v1(
+            defender_frame,
+            expected_subject_public_cunit_id=357,
+            expected_observed_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        defender_receipt = _with_typed_battle_side_mapping(
+            _active_resume_receipt(defender_frame), defender_frame
+        )
+        self.assertEqual(
+            normalize_active_combat_resume_inputs_v1(
+                defender_receipt, parent=defender_frame
+            ),
+            defender_receipt,
+        )
+        mapping = defender_receipt["observed"]["battle_side_mapping"]
+        self.assertEqual(mapping["subject_side_index"], 1)
+        self.assertEqual(mapping["opposing_side_index"], 0)
+        self.assertEqual(mapping["subject_owner_character_id"], 36_108)
+        self.assertEqual(mapping["side_scope"], "owner_subset")
+        self.assertEqual(
+            mapping["same_side_public_cunit_ids_in_stored_order"],
+            [357, 33_554_657],
+        )
+        self.assertEqual(
+            mapping["unaffected_same_side_public_cunit_ids_in_stored_order"],
+            [33_554_657],
+        )
+
+        for mutator in (
+            lambda row: row["observed"]["battle_side_mapping"].update(
+                subject_side_index=0
+            ),
+            lambda row: row["observed"]["battle_side_mapping"].update(
+                subject_owner_character_id=36_109
+            ),
+            lambda row: row["observed"]["battle_side_mapping"].update(
+                side_scope="full_side"
+            ),
+            lambda row: row["observed"]["battle_side_mapping"][
+                "same_side_public_cunit_ids_in_stored_order"
+            ].reverse(),
+            lambda row: row["observed"]["battle_side_mapping"].update(
+                affected_public_cunit_ids_in_stored_order=[33_554_657]
+            ),
+            lambda row: row["observed"]["battle_side_mapping"].update(
+                status="unavailable"
+            ),
+            lambda row: row["missing_required_domains"].insert(
+                0, "active_coalition_side_mapping"
+            ),
+        ):
+            forged = copy.deepcopy(defender_receipt)
+            mutator(forged)
+            with self.assertRaises(ValueError):
+                normalize_active_combat_resume_inputs_v1(
+                    forged, parent=defender_frame
+                )
+        legacy_forged = _active_resume_receipt(defender_frame)
+        legacy_forged["missing_required_domains"].remove(
+            "active_coalition_side_mapping"
+        )
+        with self.assertRaisesRegex(ValueError, "mapping completeness"):
+            normalize_active_combat_resume_inputs_v1(
+                legacy_forged, parent=defender_frame
+            )
 
     def test_resume_next_roll_bounds_require_both_actual_sides(self) -> None:
         frame = self.normalize(_battle_frame())

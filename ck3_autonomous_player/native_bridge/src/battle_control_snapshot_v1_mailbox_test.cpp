@@ -296,9 +296,48 @@ int main() {
                 "\"side_0_ordered_public_cunit_ids\":[83886341]") ||
       !Contains(resume_json, "\"side_0_entry_count\":2") ||
       !Contains(resume_json,
-                "\"missing_required_domains\":["
-                "\"active_coalition_side_mapping\"")) {
+                "\"battle_side_mapping\":{\"status\":\"available\","
+                "\"subject_side_index\":0,\"opposing_side_index\":1,"
+                "\"subject_owner_character_id\":100,"
+                "\"side_scope\":\"full_side\","
+                "\"same_side_public_cunit_ids_in_stored_order\":[83886341],"
+                "\"opposing_side_public_cunit_ids_in_stored_order\":[357],"
+                "\"affected_public_cunit_ids_in_stored_order\":[83886341],"
+                "\"unaffected_same_side_public_cunit_ids_in_stored_order\":[]}") ||
+      Contains(resume_json, "\"active_coalition_side_mapping\"")) {
     return Fail("active resume receipt did not preserve typed unavailable and exact source");
+  }
+  auto owner_subset = complete;
+  owner_subset.attacker.ordered_armies.push_back(
+      {67'108'902, 83'886'342, 101, complete.combat_id});
+  owner_subset.side_scope = "owner_subset";
+  owner_subset.unaffected_same_side_public_cunit_ids_in_stored_order =
+      {83'886'342};
+  const auto subset_receipt = SerializeActiveCombatResumeInputsV1(owner_subset);
+  if (!Contains(subset_receipt,
+                "\"side_scope\":\"owner_subset\","
+                "\"same_side_public_cunit_ids_in_stored_order\":[83886341,83886342]") ||
+      !Contains(subset_receipt,
+                "\"unaffected_same_side_public_cunit_ids_in_stored_order\":[83886342]")) {
+    return Fail("active resume coalition mapping lost the owner subset");
+  }
+  auto defender_subject = complete;
+  defender_subject.subject_public_cunit_id = 357;
+  defender_subject.subject_native_carmy_id = 67'108'901;
+  defender_subject.selected_public_cunit_id = 357;
+  defender_subject.selected_native_carmy_id = 67'108'901;
+  defender_subject.selected_owner_character_id = 200;
+  defender_subject.side_index = 1;
+  defender_subject.affected_public_cunit_ids_in_stored_order = {357};
+  const auto defender_receipt =
+      SerializeActiveCombatResumeInputsV1(defender_subject);
+  if (!Contains(defender_receipt,
+                "\"subject_side_index\":1,\"opposing_side_index\":0,"
+                "\"subject_owner_character_id\":200") ||
+      !Contains(defender_receipt,
+                "\"same_side_public_cunit_ids_in_stored_order\":[357],"
+                "\"opposing_side_public_cunit_ids_in_stored_order\":[83886341]")) {
+    return Fail("active resume coalition mapping assumed attacker is subject");
   }
   auto roll_bounds = complete;
   roll_bounds.attacker.selected_commander_next_roll_bounds = {true, 0, 0, ""};
