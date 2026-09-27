@@ -82,6 +82,26 @@ change 作用域的直接内存操作。这是**仅限入口函数直接指令**
 目前只收窄了两条分支的直接写入目标；没有完成所有 callees 的写集合证明，
 所以仍不调用预览，更不能发布 Robert 投降的材料条款。
 
+### change 作用域在执行路径的查找，2026-09-27 补证
+
+与预览入口不同，`CSetupDeJureCBChangeEffect` 的**执行**函数
+`0x2E9F420` 在 `0x2E9F734` 把 effect `+0x1B0` 的内联
+`CJominiScriptScopeObject<CTitleAndVassalChange>` 传给
+`0x2EA1D30`。该 helper 先通过 `0x336AB40` 解析作用域值，
+只在值 tag 为 `0x0C` 时从全局表 `+0xD2B0`、计数
+`+0xD2BC` 按 ID 搜索，匹配后返回表内对象指针；
+不匹配时返回 fallback 指针。执行函数随后对返回对象调用 vtable `+0x08`
+作检查，并在后续路径调用 `0x24BD610` 等 helper。
+[独立 EXE 提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_change_scope_execute_lookup.py)
+和 [JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_change_scope_execute_lookup_1_19_0_6.json)
+冻结上述地址和分支；回执 SHA-256
+`E4EB1FAFE25474B809E7A0AB290E6F61889A62CE4A5981C2DA3D1B7316B55C66`。
+
+这个查找链只证明 **effect 的 change 作用域如何在执行路径寻找候选对象**。
+它没有读出 War31 当前作用域中的 ID、对象指针、所有权或生命周期，也没有证明
+后续操作 helper 的完整写集合。执行路径可写回游戏对象，绝不能作为只读条款查询直接调用。
+对预览入口缺少 `+0x1B0` 直接操作的阴性证据，也不能推广为执行路径不使用 change。
+
 下一步应继续静态解析两条分支所调用 helper 的传递写集合，
 追踪 `+0x1B0` change 作用域的 referent/所有权，再寻找能输出**结算后逐项操作**的独立只读路径；
 对 `cb_prestige_factor`、停战与条件资源效果分别建立原始值读回。

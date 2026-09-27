@@ -1,0 +1,88 @@
+{
+  "schema": "xar.ck3.dejure-change-scope-execute-lookup.v1",
+  "status": "STATIC_EXECUTE_LOOKUP_ONLY",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "execute_path": {
+    "effect_change_scope_offset": "0x1B0",
+    "lea": {
+      "rva": "0x2E9F734",
+      "bytes": "488D8EB0010000",
+      "instruction": "lea rcx, [rsi + 0x1b0]"
+    },
+    "lookup_call": {
+      "call_rva": "0x2E9F741",
+      "target_rva": "0x2EA1D30",
+      "bytes": "E8EA250000"
+    },
+    "returned_pointer_virtual_check": {
+      "rva": "0x2E9F74F",
+      "bytes": "FF5208",
+      "instruction": "call qword ptr [rdx + 8]"
+    },
+    "following_operation_helper": {
+      "call_rva": "0x2E9F7F7",
+      "target_rva": "0x24BD610",
+      "bytes": "E814DE61FF"
+    }
+  },
+  "lookup": {
+    "entry_rva": "0x2EA1D30",
+    "last_ret_rva": "0x2EA1DB9",
+    "byte_count": 138,
+    "sha256": "98D0C371B9C38B4180B89C9F8465D17BDE90EE77719A481996081105FFE9C551",
+    "scope_value_resolution": {
+      "call_rva": "0x2EA1D4F",
+      "target_rva": "0x336AB40",
+      "bytes": "E8EC8D4C00"
+    },
+    "tag_12_check": {
+      "rva": "0x2EA1D54",
+      "bytes": "66837C24300C",
+      "instruction": "cmp word ptr [rsp + 0x30], 0xc"
+    },
+    "global_table_base": {
+      "rva": "0x2EA1D6A",
+      "bytes": "488B81B0D20000",
+      "instruction": "mov rax, qword ptr [rcx + 0xd2b0]"
+    },
+    "global_table_count": {
+      "rva": "0x2EA1D71",
+      "bytes": "486389BCD20000",
+      "instruction": "movsxd rcx, dword ptr [rcx + 0xd2bc]"
+    },
+    "candidate_id": {
+      "rva": "0x2EA1D81",
+      "bytes": "448B442438",
+      "instruction": "mov r8d, dword ptr [rsp + 0x38]"
+    },
+    "candidate_match": {
+      "rva": "0x2EA1D89",
+      "bytes": "44394108",
+      "instruction": "cmp dword ptr [rcx + 8], r8d"
+    },
+    "candidate_pointer_return": {
+      "rva": "0x2EA1DA4",
+      "bytes": "488B00",
+      "instruction": "mov rax, qword ptr [rax]"
+    },
+    "fallback_pointer_load": {
+      "rva": "0x2EA1DAD",
+      "bytes": "488B05E4439202",
+      "instruction": "mov rax, qword ptr [rip + 0x29243e4]"
+    }
+  },
+  "boundary": {
+    "lookup_direction": "Execute resolves the inline +0x1B0 scope to a tag-12 ID and looks up a pointer in a global table; unmatched rows use a fallback pointer.",
+    "not_proven": [
+      "Actual War31 change-scope ID or resolved pointer",
+      "Ownership and lifetime of the resolved title-and-vassal change object",
+      "Transitive effects of virtual check or following operation helpers",
+      "Final title/holder/liege/vassal operations and signed resources"
+    ],
+    "ck3_launched": false,
+    "effect_invoked": false
+  }
+}
