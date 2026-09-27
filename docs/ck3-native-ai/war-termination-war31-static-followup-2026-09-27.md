@@ -52,13 +52,38 @@ effect 内联字段 `+0x260`；RTTI 将该字段确认为
 该 slot 指向 `0x999CA0`，仅检查作用域 `+0x1C` 的 dword 是否非零，
 自身没有写操作。检查结果将控制流分到 `0x28B21E0` 或
 `0x28B1EB0`，再向调用者提供一项计数。
-两条下游调用的完整写集合、计数的业务含义以及 change 作用域所指
+两条下游调用的完整**传递**写集合、计数的业务含义以及 change 作用域所指
 对象的最终操作仍未证明；一个非写入的 presence check 不足以证明整个 preview 纯读取。
 `CResolveTitleAndVassalChangeEffect` 的 preview 仅返回 true，
 也不提供最终 title/holder/liege/vassal 迁移。
 
-下一步应静态解析 `0x28B21E0` / `0x28B1EB0` 两条下游调用
-及 `+0x1B0` change 作用域所指对象的写集合，再寻找能输出**结算后逐项操作**的独立只读路径；
+### 两条下游分支的直接写入，2026-09-27 补证
+
+[独立提取器](../../ck3_autonomous_player/native_bridge/research/extract_dejure_surrender_preview_branch_pairs.py)
+对同一 EXE SHA 做全文件校验，冻结两条函数边界、直接 call 和整数对写入指令；
+[JSON 回执](../../ck3_autonomous_player/native_bridge/research/dejure_surrender_preview_branch_pairs_1_19_0_6.json)
+SHA-256 为 `840225F5FF01FB65853C0E21A6AE10A574AB9898D225DB0546DCED5B9A36AA81`。
+
+`0x2E9FF30` 以同一临时向量作为 `r8` 分别调用 `0x28B21E0`（标题作用域
+presence check 为真）或 `0x28B1EB0`（为假）。前者先以 `0x20B4E10`
+收集一个本地 32 位整数列表，然后在 `0x28B2305/08` 或
+`0x28B235B/5E` 向向量追加两列 32 位整数。后者先通过
+`0x28B1C50` 填充调用者栈上的 dword 表、通过 `0x26287C0`
+收集本地数据，再在 `0x28B2097/9A` 或 `0x28B20F6/F9`
+追加同样宽度的整数对。`0x28B1C50` 的直接 `0x28B1DB9`
+写入经由调用者 `lea rdx,[rbp+0x20]` 提供的临时表。
+这些是预览中间值，**不是**旧/新 holder、liege、vassal 操作记录；
+它们各只有两个整数，含义尚未由类型或实机结果确证。
+
+精确预览入口 `0x2E9FA10–0x2E9FC92` 对 effect 的
+`+0x260` 标题作用域有直接操作，却没有对 effect `+0x1B0`
+change 作用域的直接内存操作。这是**仅限入口函数直接指令**的阴性结果：
+被调函数、传递指针、执行路径和真实 change referent 仍可能读写相关对象。
+目前只收窄了两条分支的直接写入目标；没有完成所有 callees 的写集合证明，
+所以仍不调用预览，更不能发布 Robert 投降的材料条款。
+
+下一步应继续静态解析两条分支所调用 helper 的传递写集合，
+追踪 `+0x1B0` change 作用域的 referent/所有权，再寻找能输出**结算后逐项操作**的独立只读路径；
 对 `cb_prestige_factor`、停战与条件资源效果分别建立原始值读回。
 只有这些路径有同帧、同构建绑定并经过独立配对实机只读验证，
 才能考虑扩展 WAR31 材料条款 DTO。当前请求响应仍只交付安全续行替代；

@@ -1,0 +1,120 @@
+{
+  "schema": "xar.ck3.dejure-surrender-preview-branch-pairs.v1",
+  "status": "STATIC_INTERMEDIATE_TUPLES_ONLY",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "branch_functions": [
+    {
+      "entry_rva": "0x28B21E0",
+      "last_ret_rva": "0x28B23BF",
+      "byte_count": 480,
+      "sha256": "62FCEC342FEAFE9F1153B0F980143991BFB9E8EEF3EA974E3B451ABF9546EB87"
+    },
+    {
+      "entry_rva": "0x28B1EB0",
+      "last_ret_rva": "0x28B21DA",
+      "byte_count": 811,
+      "sha256": "4E0F096F8F09B78BB5557575BA34B37E83AA0314E6D2C1AD821135C30C0F34FE"
+    }
+  ],
+  "branch_calls": {
+    "title_scope_present": {
+      "call_rva": "0x2EA0012",
+      "target_rva": "0x28B21E0",
+      "bytes": "E8C921A1FF"
+    },
+    "title_scope_absent": {
+      "call_rva": "0x2EA001C",
+      "target_rva": "0x28B1EB0",
+      "bytes": "E88F1EA1FF"
+    },
+    "present_local_id_collection": {
+      "call_rva": "0x28B2289",
+      "target_rva": "0x20B4E10",
+      "bytes": "E8822B80FF"
+    },
+    "absent_local_table_population": {
+      "call_rva": "0x28B1F87",
+      "target_rva": "0x28B1C50",
+      "bytes": "E8C4FCFFFF"
+    },
+    "absent_local_id_collection": {
+      "call_rva": "0x28B1FC1",
+      "target_rva": "0x26287C0",
+      "bytes": "E8FA67D7FF"
+    }
+  },
+  "present_branch_pair_writes": [
+    {
+      "rva": "0x28B2305",
+      "bytes": "892CC8",
+      "instruction": "mov dword ptr [rax + rcx*8], ebp"
+    },
+    {
+      "rva": "0x28B2308",
+      "bytes": "448964C804",
+      "instruction": "mov dword ptr [rax + rcx*8 + 4], r12d"
+    },
+    {
+      "rva": "0x28B235B",
+      "bytes": "892CC8",
+      "instruction": "mov dword ptr [rax + rcx*8], ebp"
+    },
+    {
+      "rva": "0x28B235E",
+      "bytes": "448964C804",
+      "instruction": "mov dword ptr [rax + rcx*8 + 4], r12d"
+    }
+  ],
+  "absent_branch_pair_writes": [
+    {
+      "rva": "0x28B2097",
+      "bytes": "893CD0",
+      "instruction": "mov dword ptr [rax + rdx*8], edi"
+    },
+    {
+      "rva": "0x28B209A",
+      "bytes": "894CD004",
+      "instruction": "mov dword ptr [rax + rdx*8 + 4], ecx"
+    },
+    {
+      "rva": "0x28B20F6",
+      "bytes": "893CC8",
+      "instruction": "mov dword ptr [rax + rcx*8], edi"
+    },
+    {
+      "rva": "0x28B20F9",
+      "bytes": "8954C804",
+      "instruction": "mov dword ptr [rax + rcx*8 + 4], edx"
+    }
+  ],
+  "absent_branch_local_table_write": {
+    "rva": "0x28B1DB9",
+    "bytes": "418908",
+    "instruction": "mov dword ptr [r8], ecx"
+  },
+  "preview_entry": {
+    "entry_rva": "0x2E9FA10",
+    "last_ret_rva": "0x2E9FC92",
+    "direct_effect_change_scope_0x1b0_operands": [],
+    "effect_title_scope_0x260_lea": {
+      "rva": "0x2E9FB8A",
+      "bytes": "488D8B60020000",
+      "instruction": "lea rcx, [rbx + 0x260]"
+    },
+    "read_boundary": "No direct +0x1B0 operand in this bounded entry; indirect callees and execute path remain unresolved."
+  },
+  "interpretation": {
+    "branch_output": "Both branches append 8-byte pairs of two 32-bit integers to the r8 output vector supplied by the preview helper.",
+    "local_scratch": "The absent branch also fills a caller-stack dword table through 0x28B1C50; direct writes shown here do not identify final title/vassal operations.",
+    "not_proven": [
+      "Transitive write set of called helpers or complete preview side-effect safety",
+      "Ownership and referent of the separate inline change scope at effect +0x1B0",
+      "Resolved title/holder/liege/vassal operation rows or signed resources"
+    ],
+    "ck3_launched": false,
+    "surrender_submitted": false
+  }
+}
