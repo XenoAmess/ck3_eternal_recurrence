@@ -61,11 +61,27 @@
     "generic_on_send_cost_evaluator_rva": "0x2CDB7B0",
     "restriction": "The ten generic on_send cost slots do not contain the ransom transfer in the stock interaction: payment executes on_accept inside ransom_interaction_effect."
   },
+  "known_reusable_native_entries_c213": {
+    "status": "exact-build-static-only; no ransom amount evaluator bound",
+    "redirect_roles_rva": "0x2C3C4C0",
+    "redirect_roles_first_64_sha256": "067C3174BEDB39AD59E6C1C3415318E5CE5CE620E63670D52F7289BC10AD61FE",
+    "all_role_context_constructor_rva": "0x2C3F000",
+    "all_role_context_constructor_first_64_sha256": "1A6F6EEAEF35268E39F2F6342F5B578B2EC22A832D3FBF0C4EF02C258E740124",
+    "compiled_value_evaluator_rva": "0x337B210",
+    "compiled_value_evaluator_first_64_sha256": "CFED858793A5F5BE973A9E0E09C4C0001F3AC2E609E3312EFDF0E401B5BD71FA",
+    "compiled_value_evaluator_contract": "This engine entry evaluates an already resolved compiled script-value object against a prepared scope and returns signed Q100000 raw through caller-owned output. It does not look up the named ransom_cost_value object or construct a ransom-specific scope.",
+    "missing": [
+      "loaded named ransom_cost_value and increased_ransom_cost_value object lookup and ownership",
+      "prisoner as secondary_recipient, redirected actual payer as recipient, and jailer as actor in the same finalized context",
+      "selected authored option and its native final validity, including current_gold acceptance-time saving",
+      "paused game differential for raw units and actual on_accept transferred amount"
+    ]
+  },
   "missing_for_action": [
     "same-frame payer/prisoner/imprisoner redirection and option ownership in a finalized interaction context",
     "native evaluated selected-option ransom amount or actual saved current-gold amount, not a script-only estimate",
     "recipient final acceptance and final Can Send tied to that option and the same prisoner row",
     "certified semantic command binding and live postcondition/receipt"
   ],
-  "next_abi_entry": "From the now-mapped ransom_cost base node at 0x439A218/slot 32, resolve the generic ransom_cost_value script-value evaluator under the finalized three-role interaction context, including option-specific payer redirection and current-gold/on_accept amount timing; then bind selected-option terms into the existing private prisoner source adapter. No payable amount, prisoner action, or live qualification is implied."
+  "next_abi_entry": "On an existing paused prisoner frame, resolve the exact loaded ransom_interaction definition and complete prisoner IDs, call the stock role redirect at 0x2C3C4C0, construct/refresh/finalize an owned all-role context at 0x2C3F000, and verify actor/recipient/secondary_recipient and selected option. Independently map the loaded named script-value object lookup before invoking the already known 0x337B210 evaluator on the prisoner scope; double-sample its raw result and compare gold/current-gold paths to later actual transfer. If any binding or option timing is unavailable, return typed unavailable. No payable amount, prisoner action, or live qualification is implied."
 }

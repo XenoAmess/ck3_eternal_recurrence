@@ -89,7 +89,14 @@ def main() -> int:
     require(rel_target(int(base_evaluator["native_base_cost_call_rva"], 16), 1, 5) ==
             int(base_evaluator["native_base_cost_target_rva"], 16),
             "base-cost native call mismatch")
-    print("GREEN_STATIC C95/C210 ransom base-cost node; final payable amount/action not mapped")
+    reusable = contract["known_reusable_native_entries_c213"]
+    for prefix in ("redirect_roles", "all_role_context_constructor",
+                   "compiled_value_evaluator"):
+        rva = int(reusable[f"{prefix}_rva"], 16)
+        require(hashlib.sha256(read(rva, 64)).hexdigest().upper() ==
+                reusable[f"{prefix}_first_64_sha256"],
+                f"{prefix} exact-build entry SHA mismatch")
+    print("GREEN_STATIC C95/C210/C213 native anchors; final payable amount/action not mapped")
     return 0
 
 
