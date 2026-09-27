@@ -51,6 +51,10 @@
 
 下一版仅取消第三点的 **mailbox 线程等式**，在精确 side0 返回地址钩子中记录实际线程 ID；候选对象、CombatID、原生日期、side 身份与 `R8D == +0x6C4` 校验均保留。join 入口/返回仍须同实际 join 线程。独立私有 DLL SHA-256 `8DC462F92BA1FBF7066FC9C87601651DAB34626FDF5D9289A5839CB7ED821109`，聚焦 CTest 5/5（含第三点由另一个非 mailbox 线程采集的夹具）；离线通过不等于实机验证。使用全新 attempt 重放一天，要求三点完整、原始 bytes/SHA、失败码和 clean exit 后才给整条链 GREEN；历史 078 回执不得改写。
 
+### 079 实机前环境 RED
+
+独立目录 `D:\workspace\ck3_native_war_ai_promo_work\episode01-join-width-live-attempt-079` 的 DLL 私有 ON 静态自检通过，但 Steam 当前离线状态无法取得**实时可读**的 UI 证明：旧桌面帧的系统时钟停在 `04:06`，与观测时本机时间不符；079 的 GDI 与 Windows.Graphics.Capture 窗口帧内部均为黑色，其中可运行的 WGC 原始 PNG SHA-256 `9A30B47D0E7715F3E6F6B68E55FADCDFD456615A72D2B7B2431DA9B3D9A38CA7`。当前 `steam.exe` 同次进程的 `Start offline - 1` 日志、后续没有 logged online marker、`WantsOfflineMode=1` 只是启动和持久偏好的旁证，不能冒充当前 UI。预检回执 `prelaunch-red.json` SHA-256 `212F4ABDD74CD61AB2BDA03DC7178C24CBA476FF5F6269309F35529372FE8469` 精确绑定原始诊断。079 没有启动 CK3、没有发 private begin、没有生成 `ck3-output`；任务总线 `ck3-join-width-attempt-079-20260927` sequence `1361` 为 `done/resources=[]`，系统进程清单无 `ck3.exe`。第三点仍未实采，下一次需要新的独立 attempt 和可读的当前离线 UI 门，不能改写 079 RED。
+
 有界复核（只读 EXE，不运行 CK3）：
 
 ```text
