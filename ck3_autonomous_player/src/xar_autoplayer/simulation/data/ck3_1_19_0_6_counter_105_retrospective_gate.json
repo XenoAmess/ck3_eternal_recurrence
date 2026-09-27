@@ -1,0 +1,414 @@
+{
+  "schema": "ck3.counter_105_retrospective_gate.v1",
+  "scope": "same-frame-conditional-readout-only; no next-day prediction",
+  "attempts": {
+    "098": {
+      "source": {
+        "attempt": 98,
+        "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "frozen_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+        "bridge_sha256": "ABEE0A5AD16347A9EA2F10454D111A769CEDB84E343010792619CBB27A4CD858",
+        "input_sha256": {
+          "input-freeze.json": "DD0C346F046DB059C56B880A2F9C31686B83C3D5A104934DBB7AEF7D13B64C5C",
+          "ck3-output/preflight.json": "3886CC56B2B96A7BC3F5B39DA771DC2CB887702882FBBA887F7F34C5C97B114D",
+          "before-control": "2244E1144D7F5708B19BD2DE50311BCCA38481EFD0BC98165FC48AEA8C0602AA",
+          "after-control": "236E67C10CFABBABEDE2822A40074458ABF8EFCA019CE54A3C88CC669EA217EC",
+          "trace-finish": "6B158A07A6071D058DE6F3E8994CA0065F09B2311EF79004EB1DDD445B1B8198"
+        }
+      },
+      "before": {
+        "combat_id": 16777218,
+        "observed_date_raw": 53146488,
+        "phase_day": 7,
+        "final_combat_width": 1480,
+        "subject_public_cunit_id": 18,
+        "side_native_army_ids": [
+          [
+            16777221,
+            16777231,
+            27
+          ],
+          [
+            18
+          ]
+        ],
+        "side_maa_counts": [
+          18,
+          14
+        ],
+        "context_raw": [
+          125000,
+          100000
+        ],
+        "current_frame_retention_raw": [
+          [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ],
+          [
+            10000,
+            54257,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        ],
+        "current_frame_counter_attack_raw": [
+          2844673326,
+          1035382439
+        ],
+        "current_frame_neutral_advantage_outgoing_raw": [
+          78769004,
+          31061473
+        ]
+      },
+      "after": {
+        "combat_id": 16777218,
+        "observed_date_raw": 53146512,
+        "phase_day": 8,
+        "final_combat_width": 2220,
+        "subject_public_cunit_id": 18,
+        "side_native_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ],
+        "side_maa_counts": [
+          24,
+          14
+        ],
+        "context_raw": [
+          125000,
+          100000
+        ],
+        "current_frame_retention_raw": [
+          [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ],
+          [
+            10000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        ],
+        "current_frame_counter_attack_raw": [
+          7086468150,
+          1367059376
+        ],
+        "current_frame_neutral_advantage_outgoing_raw": [
+          114871648,
+          41011781
+        ]
+      },
+      "trace": {
+        "status": "captured",
+        "failure_flags": 0,
+        "exact_boundary_sequence": true,
+        "side_and_return_site_identity": true,
+        "bounded_capture_complete": true,
+        "runtime_join_full_entries_captured": true,
+        "native_retention_raw": [
+          [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ],
+          [
+            10000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        ],
+        "native_counter_entry_counts": [
+          24,
+          14
+        ],
+        "native_post_counter_attack_raw": [
+          7163402981,
+          1455075113
+        ],
+        "native_outgoing_damage_raw": [
+          116118762,
+          67660992
+        ]
+      }
+    },
+    "105": {
+      "source": {
+        "attempt": 105,
+        "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "frozen_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+        "bridge_sha256": "DB4E5EE96EAA72836D3F853618A65A16F7346F6CC6B1E34C0F8E672138589B6E",
+        "input_sha256": {
+          "input-freeze.json": "1182947A0FF7375E9761F27E1BBB045E0DBD4E3D0658BED166AAD0B6CDD1DCF8",
+          "ck3-output/preflight.json": "AB98E3EC33D531F870CFEA2B0FD40483FED6ECAA445A9C0254D73C2D6ECE532A",
+          "before-control": "BEC16EE07718D3E483474E0488B45C80A49FAB89A08019BFD09F371EDB03363F",
+          "after-control": "BAFB9090085360D4A7D914B2499FB91C592AAD7F7BC257A612BC50D7EFE71B57",
+          "trace-finish": "4BC6B5B9CC9417574F8B92063090A8A6D25152B85448C044454E280FDD2F76B9"
+        }
+      },
+      "before": {
+        "combat_id": 16777218,
+        "observed_date_raw": 53146488,
+        "phase_day": 7,
+        "final_combat_width": 1480,
+        "subject_public_cunit_id": 18,
+        "side_native_army_ids": [
+          [
+            16777221,
+            16777231,
+            27
+          ],
+          [
+            18
+          ]
+        ],
+        "side_maa_counts": [
+          18,
+          14
+        ],
+        "context_raw": [
+          125000,
+          100000
+        ],
+        "current_frame_retention_raw": [
+          [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ],
+          [
+            10000,
+            54257,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        ],
+        "current_frame_counter_attack_raw": [
+          2844673326,
+          1035382439
+        ],
+        "current_frame_neutral_advantage_outgoing_raw": [
+          78769004,
+          31061473
+        ]
+      },
+      "after": {
+        "combat_id": 16777218,
+        "observed_date_raw": 53146512,
+        "phase_day": 8,
+        "final_combat_width": 2220,
+        "subject_public_cunit_id": 18,
+        "side_native_army_ids": [
+          [
+            16777221,
+            16777231,
+            27,
+            22
+          ],
+          [
+            18
+          ]
+        ],
+        "side_maa_counts": [
+          24,
+          14
+        ],
+        "context_raw": [
+          125000,
+          100000
+        ],
+        "current_frame_retention_raw": [
+          [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ],
+          [
+            10000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        ],
+        "current_frame_counter_attack_raw": [
+          7086468150,
+          1367059376
+        ],
+        "current_frame_neutral_advantage_outgoing_raw": [
+          114871648,
+          41011781
+        ]
+      },
+      "trace": {
+        "status": "failed",
+        "failure_flags": 1040,
+        "exact_boundary_sequence": false,
+        "side_and_return_site_identity": false,
+        "bounded_capture_complete": false,
+        "runtime_join_full_entries_captured": false,
+        "native_retention_raw": [
+          [
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000
+          ],
+          [
+            10000,
+            10000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000,
+            100000
+          ]
+        ],
+        "native_counter_entry_counts": [
+          24,
+          14
+        ],
+        "native_post_counter_attack_raw": [
+          7163402981,
+          1455075113
+        ],
+        "native_outgoing_damage_raw": [
+          116118762,
+          67660992
+        ]
+      }
+    }
+  },
+  "assessment": {
+    "same_source_control_numeric_agreement": true,
+    "same_source_native_numerical_fields_agree": true,
+    "before_side1_class1_retention_raw": 54257,
+    "after_side1_class1_retention_raw": 10000,
+    "native_tick_side1_class1_retention_raw": 10000,
+    "formal_native_parity_098": "single_tick_counter_vector_only",
+    "formal_native_parity_105": "red_trace_identity_and_final_query",
+    "day11_to_day12_forecast_validated": false,
+    "day12_after_frame_equals_prefire_operands_proven": false,
+    "whole_battle_win_probability": null
+  }
+}
