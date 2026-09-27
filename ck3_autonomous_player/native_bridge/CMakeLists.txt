@@ -2,6 +2,26 @@ cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
+# Explicitly built research helper. It never starts CK3 or submits actions;
+# production bridge builds do not include it by default.
+add_executable(xar_ck3_war31_two_point_hwprobe EXCLUDE_FROM_ALL
+  research/war31_two_point_hwprobe.cpp)
+add_executable(xar_ck3_war31_two_point_hwprobe_fixture EXCLUDE_FROM_ALL
+  research/war31_two_point_hwprobe.cpp)
+target_compile_features(xar_ck3_war31_two_point_hwprobe PRIVATE cxx_std_20)
+target_compile_features(xar_ck3_war31_two_point_hwprobe_fixture PRIVATE cxx_std_20)
+target_compile_definitions(xar_ck3_war31_two_point_hwprobe PRIVATE
+  NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+target_compile_definitions(xar_ck3_war31_two_point_hwprobe_fixture PRIVATE
+  NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  XAR_WAR31_HWPROBE_FIXTURE=1)
+if(MSVC)
+  target_compile_options(xar_ck3_war31_two_point_hwprobe PRIVATE
+    /W4 /permissive- /EHsc)
+  target_compile_options(xar_ck3_war31_two_point_hwprobe_fixture PRIVATE
+    /W4 /permissive- /EHsc)
+endif()
+
 set(
   XAR_CK3_EXECUTABLE_PATH
   "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
