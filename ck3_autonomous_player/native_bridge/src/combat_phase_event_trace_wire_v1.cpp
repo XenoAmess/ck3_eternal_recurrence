@@ -428,8 +428,19 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       drain.effect_node_draw_count > drain.effect_node_draws.size() ||
       drain.random_list_weight_count > drain.random_list_weights.size() ||
       drain.join_width_count > drain.join_widths.size() ||
+      drain.join_full_entry_count > drain.join_full_entries.size() ||
       drain.knight_select_count > drain.knight_selects.size()) {
     return {};
+  }
+  for (std::uint32_t index = 0; index < drain.join_full_entry_count; ++index) {
+    const auto &record = drain.join_full_entries[index];
+    if (record.incoming_regiment_count > record.incoming_regiments.size())
+      return {};
+    for (const auto &side : record.sides) {
+      if (side.army_count > side.army_ids.size() ||
+          side.entry_count > side.entries.size())
+        return {};
+    }
   }
   std::string output;
   output.reserve(64U * 1024U);
@@ -622,6 +633,94 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       if (!AppendNumber(output, row.side_fighting_total_raw[0])) return {};
       output.push_back(',');
       if (!AppendNumber(output, row.side_fighting_total_raw[1])) return {};
+      output += "]}";
+    }
+    output += "]}";
+  }
+  if (drain.runtime_join_full_entries_requested) {
+    output += ",\"runtime_join_full_entries\":{\"status\":\"";
+    output += (drain.failure_flags & trace_capture_failure_join_full_entry)
+                  ? "failed"
+                  : drain.join_full_entry_count == 0 ? "no_join_observed" :
+                    drain.join_full_entry_count == 2 ? "captured" : "incomplete";
+    output += "\",\"count\":";
+    if (!AppendNumber(output, drain.join_full_entry_count)) return {};
+    output += ",\"first_failure_code\":";
+    if (!AppendNumber(output, drain.join_full_entry_first_failure_code))
+      return {};
+    output += ",\"entry_columns\":[\"regiment_id\",\"army_id\",\"bucket\",\"bucket_index\",\"starting_raw\",\"current_raw\",\"soft_raw\",\"effective_damage_raw\",\"effective_toughness_raw\"]";
+    output += ",\"incoming_columns\":[\"regiment_id\",\"basic_soldiers\"]";
+    output += ",\"boundaries\":[";
+    for (std::uint32_t index = 0; index < drain.join_full_entry_count;
+         ++index) {
+      if (index) output.push_back(',');
+      const auto &record = drain.join_full_entries[index];
+      output += "{\"boundary\":";
+      if (!AppendNumber(output, record.boundary)) return {};
+      output += ",\"thread_id\":";
+      if (!AppendNumber(output, record.thread_id)) return {};
+      output += ",\"native_date_raw\":";
+      if (!AppendNumber(output, record.native_date_raw)) return {};
+      output += ",\"combat_id\":";
+      if (!AppendNumber(output, record.combat_id)) return {};
+      output += ",\"incoming_army_id\":";
+      if (!AppendNumber(output, record.incoming_army_id)) return {};
+      output += ",\"joined_side_index\":";
+      if (!AppendNumber(output, record.joined_side_index)) return {};
+      output += ",\"sides\":[";
+      for (std::size_t side_index = 0; side_index < 2; ++side_index) {
+        if (side_index) output.push_back(',');
+        const auto &side = record.sides[side_index];
+        output += "{\"cached_fighting_total_raw\":";
+        if (!AppendNumber(output, side.cached_fighting_total_raw)) return {};
+        output += ",\"cached_first_bucket_raw\":";
+        if (!AppendNumber(output, side.cached_first_bucket_raw)) return {};
+        output += ",\"entry_current_sum_raw\":";
+        if (!AppendNumber(output, side.entry_current_sum_raw)) return {};
+        output += ",\"cache_minus_entry_raw\":";
+        if (!AppendNumber(output, side.cache_minus_entry_raw)) return {};
+        output += ",\"army_ids\":[";
+        for (std::uint32_t army = 0; army < side.army_count; ++army) {
+          if (army) output.push_back(',');
+          if (!AppendNumber(output, side.army_ids[army])) return {};
+        }
+        output += "],\"entries\":[";
+        for (std::uint32_t entry = 0; entry < side.entry_count; ++entry) {
+          if (entry) output.push_back(',');
+          const auto &row = side.entries[entry];
+          output.push_back('[');
+          if (!AppendNumber(output, row.regiment_id)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.army_id)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.bucket)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.bucket_index)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.starting_raw)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.current_raw)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.soft_raw)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.effective_damage_raw)) return {};
+          output.push_back(',');
+          if (!AppendNumber(output, row.effective_toughness_raw)) return {};
+          output.push_back(']');
+        }
+        output += "]}";
+      }
+      output += "],\"incoming_regiments\":[";
+      for (std::uint32_t incoming = 0;
+           incoming < record.incoming_regiment_count; ++incoming) {
+        if (incoming) output.push_back(',');
+        const auto &row = record.incoming_regiments[incoming];
+        output.push_back('[');
+        if (!AppendNumber(output, row.regiment_id)) return {};
+        output.push_back(',');
+        if (!AppendNumber(output, row.basic_soldiers)) return {};
+        output.push_back(']');
+      }
       output += "]}";
     }
     output += "]}";

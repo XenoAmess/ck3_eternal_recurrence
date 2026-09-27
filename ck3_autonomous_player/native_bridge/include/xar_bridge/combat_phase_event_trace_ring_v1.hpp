@@ -103,6 +103,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_effect_node = 1U << 16,
   trace_capture_failure_random_list_weight = 1U << 17,
   trace_capture_failure_join_width = 1U << 18,
+  trace_capture_failure_join_full_entry = 1U << 19,
 };
 
 inline constexpr std::size_t kCombatPhaseEffectRootMaximumRecordsV1 = 64;
@@ -190,6 +191,65 @@ enum CombatJoinWidthFailureCodeV1 : std::uint32_t {
   join_width_failure_cross_boundary_date = 11,
 };
 
+// Private 080 wrapper entry/return snapshot. Counts are published only after
+// the entire bounded read succeeds; a failed read never claims a partial list.
+enum CombatJoinFullEntryFailureCodeV1 : std::uint32_t {
+  join_full_entry_failure_none = 0,
+  join_full_entry_failure_width_gate = 1,
+  join_full_entry_failure_order = 2,
+  join_full_entry_failure_identity = 3,
+  join_full_entry_failure_date_or_thread = 4,
+  join_full_entry_failure_container = 5,
+  join_full_entry_failure_capacity = 6,
+  join_full_entry_failure_duplicate = 7,
+  join_full_entry_failure_arithmetic = 8,
+  join_full_entry_failure_memory_fault = 9,
+};
+
+struct CombatJoinFullEntryRegimentV1 {
+  std::int32_t regiment_id = -1;
+  std::int32_t army_id = -1;
+  std::uint32_t bucket = 0;
+  std::uint32_t bucket_index = 0;
+  std::int64_t starting_raw = 0;
+  std::int64_t current_raw = 0;
+  std::int64_t soft_raw = 0;
+  std::int64_t effective_damage_raw = 0;
+  std::int64_t effective_toughness_raw = 0;
+};
+
+struct CombatJoinFullEntrySideV1 {
+  std::int64_t cached_fighting_total_raw = 0;
+  std::int64_t cached_first_bucket_raw = 0;
+  std::int64_t entry_current_sum_raw = 0;
+  std::int64_t cache_minus_entry_raw = 0;
+  std::uint32_t army_count = 0;
+  std::array<std::int32_t,
+             kCombatPhaseEventTraceRingV1MaximumArmiesPerSide> army_ids{};
+  std::uint32_t entry_count = 0;
+  std::array<CombatJoinFullEntryRegimentV1,
+             kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide> entries{};
+};
+
+struct CombatJoinFullEntryIncomingRegimentV1 {
+  std::int32_t regiment_id = -1;
+  std::int32_t basic_soldiers = 0;
+};
+
+struct CombatJoinFullEntryRecordV1 {
+  std::uint32_t boundary = 0; // 0 wrapper entry; 1 normal return.
+  std::uint32_t thread_id = 0;
+  std::int32_t native_date_raw = 0;
+  std::int32_t combat_id = -1;
+  std::int32_t incoming_army_id = -1;
+  std::int32_t joined_side_index = -1; // Only resolved at normal return.
+  std::array<CombatJoinFullEntrySideV1, 2> sides{};
+  std::uint32_t incoming_regiment_count = 0;
+  std::array<CombatJoinFullEntryIncomingRegimentV1,
+             kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide>
+      incoming_regiments{};
+};
+
 inline constexpr std::size_t kCombatPhaseKnightSelectMaximumRecordsV1 = 64;
 
 struct CombatPhaseKnightSelectRecordV1 {
@@ -235,6 +295,7 @@ struct CombatPhaseEventTraceCapturePlanV1 {
   bool capture_runtime_random_list_weights = false;
   // Private candidate-specific join probe. No field is added to default wire.
   bool capture_runtime_join_width = false;
+  bool capture_runtime_join_full_entries = false;
   std::int32_t candidate_joining_army_id = -1;
   std::uint32_t owner_thread_id = 0;
   std::array<std::uintptr_t, 2> sides{};
@@ -496,6 +557,9 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> join_width_join_thread_id{0};
   std::atomic<std::uint32_t> join_width_first_failure_code{
       join_width_failure_none};
+  std::atomic<std::uint32_t> join_full_entry_count{0};
+  std::atomic<std::uint32_t> join_full_entry_first_failure_code{
+      join_full_entry_failure_none};
   std::atomic<std::uint32_t> knight_select_count{0};
   std::atomic<std::uint32_t> failure_flags{trace_capture_failure_none};
   CombatPhaseEventTraceCapturePlanV1 plan{};
@@ -508,6 +572,7 @@ struct CombatPhaseEventTraceRingV1 {
   std::array<CombatRandomListWeightRecordV1,
              kCombatRandomListWeightMaximumRecordsV1> random_list_weights{};
   std::array<CombatJoinWidthRecordV1, 3> join_widths{};
+  std::array<CombatJoinFullEntryRecordV1, 2> join_full_entries{};
   std::array<CombatPhaseKnightSelectRecordV1,
              kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
   std::array<CombatPhaseEventTraceRingRecordV1,
@@ -541,6 +606,11 @@ struct CombatPhaseEventTraceRingDrainV1 {
   std::uint32_t join_width_count = 0;
   std::uint32_t join_width_first_failure_code = join_width_failure_none;
   std::array<CombatJoinWidthRecordV1, 3> join_widths{};
+  bool runtime_join_full_entries_requested = false;
+  std::uint32_t join_full_entry_count = 0;
+  std::uint32_t join_full_entry_first_failure_code =
+      join_full_entry_failure_none;
+  std::array<CombatJoinFullEntryRecordV1, 2> join_full_entries{};
   std::uint32_t knight_select_count = 0;
   std::array<CombatPhaseKnightSelectRecordV1,
              kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
@@ -598,6 +668,8 @@ bool CaptureCombatOutgoingDamageV1(
     std::uintptr_t caller_return_address) noexcept;
 bool CaptureCombatJoinWidthV1(void *combat, void *incoming_army,
                               bool after_original) noexcept;
+bool CaptureCombatJoinFullEntryV1(void *combat, void *incoming_army,
+                                  bool after_original) noexcept;
 bool CaptureCombatFirstSide0OutgoingWidthV1(
     void *side, std::int32_t width,
     std::uintptr_t caller_return_address) noexcept;

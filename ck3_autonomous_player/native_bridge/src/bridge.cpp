@@ -9180,6 +9180,7 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
   if (begin) {
     bool capture_runtime_random_list_weights = false;
     bool capture_runtime_join_width = false;
+    bool capture_runtime_join_full_entries = false;
     if (payload.find("\"capture_runtime_random_list_weights\"") !=
             std::string_view::npos &&
         !xar::bridge::JsonBooleanField(
@@ -9197,6 +9198,21 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
       return CommandResultFrame(
           request_id, step, false,
           "experimental join width flag is malformed");
+    }
+    if (payload.find("\"capture_runtime_join_full_entries\"") !=
+            std::string_view::npos &&
+        !xar::bridge::JsonBooleanField(
+            payload, "capture_runtime_join_full_entries",
+            capture_runtime_join_full_entries)) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental join full-entry flag is malformed");
+    }
+    if (capture_runtime_join_full_entries &&
+        !capture_runtime_join_width) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental join full-entry requires join width opt-in");
     }
     std::uint64_t checkpoint_sequence = 0;
     if (!xar::bridge::JsonUnsignedField(payload, "checkpoint_sequence",
@@ -9244,6 +9260,8 @@ std::string ExecuteExperimentalCombatPhaseTraceV1(
     query.capture_runtime_random_list_weights =
         capture_runtime_random_list_weights;
     query.capture_runtime_join_width = capture_runtime_join_width;
+    query.capture_runtime_join_full_entries =
+        capture_runtime_join_full_entries;
     // The external driver must additionally verify the save file hash and
     // official semantic pair before this private request is sent.
     query.recoverable_checkpoint_created = true;

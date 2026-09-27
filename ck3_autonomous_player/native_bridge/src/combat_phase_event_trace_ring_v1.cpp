@@ -53,9 +53,11 @@ constexpr std::size_t kSideScheduledKnightEventOffset = 0x00;
 constexpr std::size_t kSideScheduledKnightRegimentIdOffset = 0x08;
 
 constexpr std::size_t kArmyIdOffset = 0x10;
+constexpr std::size_t kArmyRegimentHeaderOffset = 0x38;
 constexpr std::size_t kArmyCommanderOffset = 0x120;
 constexpr std::size_t kArmyCombatIdOffset = 0x128;
 constexpr std::size_t kRegimentIdOffset = 0x10;
+constexpr std::size_t kRegimentBasicSoldiersOffset = 0x38;
 constexpr std::size_t kRegimentArmyIdOffset = 0x140;
 constexpr std::size_t kRegimentCharacterIdOffset = 0x148;
 constexpr std::size_t kRegimentCombatTypeOffset = 0x18;
@@ -230,6 +232,8 @@ const CombatPhaseEventTraceObjectRefV1 *FindObject(
 
 bool ValidateCapturePlanUnsafe(
     const CombatPhaseEventTraceCapturePlanV1 &plan) noexcept {
+  if (plan.capture_runtime_join_full_entries &&
+      !plan.capture_runtime_join_width) return false;
   if (plan.abi_version != kCombatPhaseEventTraceRingV1AbiVersion ||
       plan.managed_daily_sequence_token == 0 || plan.module_base == 0 ||
       plan.combat_id <= 0 || plan.combat == 0 ||
@@ -1060,6 +1064,9 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.join_width_join_thread_id.store(0, std::memory_order_relaxed);
   ring.join_width_first_failure_code.store(join_width_failure_none,
                                            std::memory_order_relaxed);
+  ring.join_full_entry_count.store(0, std::memory_order_relaxed);
+  ring.join_full_entry_first_failure_code.store(
+      join_full_entry_failure_none, std::memory_order_relaxed);
   ring.knight_select_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
@@ -1070,6 +1077,9 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.effect_node_draws = {};
   ring.random_list_weights = {};
   ring.join_widths = {};
+  std::memset(ring.join_full_entries.data(), 0,
+              sizeof(CombatJoinFullEntryRecordV1) *
+                  ring.join_full_entries.size());
   ring.knight_selects = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
@@ -1249,6 +1259,227 @@ bool CaptureCombatJoinWidthV1(void *combat, void *incoming_army,
   }
   ring->join_widths[expected] = row;
   ring->join_width_count.store(expected + 1, std::memory_order_release);
+  return true;
+}
+
+namespace {
+void MarkJoinFullEntryFailure(CombatPhaseEventTraceRingV1 &ring,
+                              CombatJoinFullEntryFailureCodeV1 code) noexcept {
+  std::uint32_t expected = join_full_entry_failure_none;
+  (void)ring.join_full_entry_first_failure_code.compare_exchange_strong(
+      expected, code, std::memory_order_acq_rel);
+  MarkFailure(ring, trace_capture_failure_join_full_entry);
+}
+
+CombatJoinFullEntryFailureCodeV1 ReadJoinFullEntryUnsafe(
+    const CombatPhaseEventTraceCapturePlanV1 &plan,
+    std::uintptr_t incoming_army, bool after_original,
+    CombatJoinFullEntryRecordV1 &record) noexcept {
+  if (LoadAt<std::uintptr_t>(plan.current_date_slot, 0) !=
+          plan.expected_current_date_object ||
+      LoadAt<std::int32_t>(plan.expected_current_date_object, 0x08) !=
+          record.native_date_raw ||
+      GetCurrentThreadId() != record.thread_id)
+    return join_full_entry_failure_date_or_thread;
+  if (LoadAt<std::int32_t>(plan.combat, kCombatIdOffset) != plan.combat_id ||
+      LoadAt<std::int32_t>(incoming_army, kArmyIdOffset) !=
+          plan.candidate_joining_army_id)
+    return join_full_entry_failure_identity;
+
+  // Plan indices are stable and sorted; these fixed bitmaps reject duplicate
+  // full IDs without allocating or sorting in the native hook.
+  std::array<bool, kCombatPhaseEventTraceRingV1MaximumTrackedArmies>
+      seen_armies{};
+  std::array<bool, kCombatPhaseEventTraceRingV1MaximumTrackedRegiments>
+      seen_entries{};
+  for (std::size_t side_index = 0; side_index < 2; ++side_index) {
+    const auto side_address = plan.sides[side_index];
+    if (LoadAt<std::uintptr_t>(side_address,
+                               kSideCombatBackPointerOffset) != plan.combat)
+      return join_full_entry_failure_identity;
+    auto &side = record.sides[side_index];
+    side.cached_fighting_total_raw = LoadAt<std::int64_t>(
+        side_address, kSideCurrentFightingTotalOffset);
+    side.cached_first_bucket_raw = LoadAt<std::int64_t>(
+        side_address, kSideFirstFightingSubtotalOffset);
+
+    std::uint32_t read_flags = 0;
+    NativeVectorView armies{};
+    if (!ReadVector(side_address, kSideArmyHeaderOffset,
+                    static_cast<std::uint32_t>(side.army_ids.size()),
+                    armies, read_flags))
+      return (read_flags & trace_capture_failure_capacity)
+                 ? join_full_entry_failure_capacity
+                 : join_full_entry_failure_container;
+    side.army_count = armies.count;
+    for (std::uint32_t i = 0; i < armies.count; ++i) {
+      const auto id = LoadAt<std::int32_t>(
+          armies.data, i * sizeof(std::int32_t));
+      const auto *resolved = FindObject(plan.armies.data(), plan.army_count, id);
+      if (resolved == nullptr ||
+          LoadAt<std::int32_t>(resolved->object, kArmyIdOffset) != id ||
+          LoadAt<std::int32_t>(resolved->object, kArmyCombatIdOffset) !=
+              plan.combat_id)
+        return join_full_entry_failure_identity;
+      const auto slot = static_cast<std::size_t>(resolved - plan.armies.data());
+      if (seen_armies[slot]) return join_full_entry_failure_duplicate;
+      seen_armies[slot] = true;
+      side.army_ids[i] = id;
+      if (after_original && id == plan.candidate_joining_army_id) {
+        if (record.joined_side_index != -1)
+          return join_full_entry_failure_duplicate;
+        record.joined_side_index = static_cast<std::int32_t>(side_index);
+      }
+    }
+    for (std::uint32_t bucket = 0; bucket < 2; ++bucket) {
+      NativeVectorView entries{};
+      const auto maximum = static_cast<std::uint32_t>(
+          side.entries.size() - side.entry_count);
+      if (!ReadVector(side_address,
+                      bucket == 0 ? kSideLevyHeaderOffset
+                                  : kSideKnightHeaderOffset,
+                      maximum, entries, read_flags))
+        return (read_flags & trace_capture_failure_capacity)
+                   ? join_full_entry_failure_capacity
+                   : join_full_entry_failure_container;
+      for (std::uint32_t i = 0; i < entries.count; ++i) {
+        const auto native_row = entries.data + i * kSideRegimentStride;
+        const auto id = LoadAt<std::int32_t>(native_row, kSideRegimentIdOffset);
+        const auto *resolved =
+            FindObject(plan.regiments.data(), plan.regiment_count, id);
+        if (resolved == nullptr ||
+            LoadAt<std::int32_t>(resolved->object, kRegimentIdOffset) != id)
+          return join_full_entry_failure_identity;
+        const auto slot =
+            static_cast<std::size_t>(resolved - plan.regiments.data());
+        if (seen_entries[slot]) return join_full_entry_failure_duplicate;
+        seen_entries[slot] = true;
+        auto &row = side.entries[side.entry_count++];
+        row.regiment_id = id;
+        row.army_id = LoadAt<std::int32_t>(resolved->object,
+                                           kRegimentArmyIdOffset);
+        bool army_on_side = false;
+        for (std::uint32_t j = 0; j < side.army_count; ++j)
+          army_on_side |= side.army_ids[j] == row.army_id;
+        if (!army_on_side) return join_full_entry_failure_identity;
+        row.bucket = bucket;
+        row.bucket_index = i;
+        row.starting_raw = LoadAt<std::int64_t>(
+            native_row, kSideRegimentStartingOffset);
+        row.current_raw = LoadAt<std::int64_t>(
+            native_row, kSideRegimentCurrentOffset);
+        row.soft_raw = LoadAt<std::int64_t>(
+            native_row, kSideRegimentSoftOffset);
+        row.effective_damage_raw = LoadAt<std::int64_t>(
+            native_row, kSideRegimentDamageOffset);
+        row.effective_toughness_raw = LoadAt<std::int64_t>(
+            native_row, kSideRegimentToughnessOffset);
+        if (row.starting_raw < 0 || row.current_raw < 0 ||
+            row.soft_raw < 0 || row.current_raw > row.starting_raw ||
+            row.soft_raw > row.starting_raw - row.current_raw)
+          return join_full_entry_failure_container;
+        if (side.entry_current_sum_raw >
+            std::numeric_limits<std::int64_t>::max() - row.current_raw)
+          return join_full_entry_failure_arithmetic;
+        side.entry_current_sum_raw += row.current_raw;
+      }
+    }
+    if (side.cached_fighting_total_raw < 0 ||
+        side.cached_first_bucket_raw < 0 ||
+        side.entry_current_sum_raw < 0 ||
+        side.cached_fighting_total_raw <
+            std::numeric_limits<std::int64_t>::min() +
+                side.entry_current_sum_raw)
+      return join_full_entry_failure_arithmetic;
+    // A nonzero residual is evidence of a stale cache, not a read failure.
+    side.cache_minus_entry_raw = side.cached_fighting_total_raw -
+                                 side.entry_current_sum_raw;
+  }
+  if (after_original && record.joined_side_index == -1)
+    return join_full_entry_failure_identity;
+
+  std::array<bool, kCombatPhaseEventTraceRingV1MaximumTrackedRegiments>
+      seen_incoming{};
+  std::uint32_t read_flags = 0;
+  NativeVectorView incoming{};
+  if (!ReadVector(incoming_army, kArmyRegimentHeaderOffset,
+                  static_cast<std::uint32_t>(record.incoming_regiments.size()),
+                  incoming, read_flags))
+    return (read_flags & trace_capture_failure_capacity)
+               ? join_full_entry_failure_capacity
+               : join_full_entry_failure_container;
+  record.incoming_regiment_count = incoming.count;
+  for (std::uint32_t i = 0; i < incoming.count; ++i) {
+    const auto id = LoadAt<std::int32_t>(
+        incoming.data, i * sizeof(std::int32_t));
+    const auto *resolved =
+        FindObject(plan.regiments.data(), plan.regiment_count, id);
+    if (resolved == nullptr ||
+        LoadAt<std::int32_t>(resolved->object, kRegimentIdOffset) != id ||
+        LoadAt<std::int32_t>(resolved->object, kRegimentArmyIdOffset) !=
+            plan.candidate_joining_army_id)
+      return join_full_entry_failure_identity;
+    const auto slot =
+        static_cast<std::size_t>(resolved - plan.regiments.data());
+    if (seen_incoming[slot]) return join_full_entry_failure_duplicate;
+    seen_incoming[slot] = true;
+    auto &row = record.incoming_regiments[i];
+    row.regiment_id = id;
+    row.basic_soldiers = LoadAt<std::int32_t>(resolved->object,
+                                              kRegimentBasicSoldiersOffset);
+    if (row.basic_soldiers < 0) return join_full_entry_failure_container;
+  }
+  return join_full_entry_failure_none;
+}
+} // namespace
+
+bool CaptureCombatJoinFullEntryV1(void *combat, void *incoming_army,
+                                  bool after_original) noexcept {
+  auto *ring = g_active_ring.load(std::memory_order_acquire);
+  if (ring == nullptr || ring->armed.load(std::memory_order_acquire) == 0 ||
+      !ring->plan.capture_runtime_join_full_entries ||
+      reinterpret_cast<std::uintptr_t>(combat) != ring->plan.combat ||
+      incoming_army == nullptr) return false;
+  const auto *candidate = FindObject(ring->plan.armies.data(),
+                                     ring->plan.army_count,
+                                     ring->plan.candidate_joining_army_id);
+  if (candidate == nullptr ||
+      reinterpret_cast<std::uintptr_t>(incoming_army) != candidate->object)
+    return false;
+  const auto expected = after_original ? 1U : 0U;
+  if (ring->join_full_entry_count.load(std::memory_order_acquire) != expected) {
+    MarkJoinFullEntryFailure(*ring, join_full_entry_failure_order);
+    return false;
+  }
+  if (ring->join_width_count.load(std::memory_order_acquire) != expected + 1 ||
+      ring->join_width_first_failure_code.load(std::memory_order_acquire) !=
+          join_width_failure_none) {
+    MarkJoinFullEntryFailure(*ring, join_full_entry_failure_width_gate);
+    return false;
+  }
+  auto &row = ring->join_full_entries[expected];
+  row.boundary = expected;
+  row.thread_id = ring->join_widths[expected].thread_id;
+  row.native_date_raw = ring->join_widths[expected].native_date_raw;
+  row.combat_id = ring->plan.combat_id;
+  row.incoming_army_id = ring->plan.candidate_joining_army_id;
+  row.joined_side_index = -1;
+  auto failure = join_full_entry_failure_none;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    failure = ReadJoinFullEntryUnsafe(ring->plan,
+        reinterpret_cast<std::uintptr_t>(incoming_army), after_original, row);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    failure = join_full_entry_failure_memory_fault;
+  }
+#endif
+  if (failure != join_full_entry_failure_none) {
+    MarkJoinFullEntryFailure(*ring, failure);
+    return false;
+  }
+  ring->join_full_entry_count.store(expected + 1, std::memory_order_release);
   return true;
 }
 
@@ -1477,6 +1708,20 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       output.join_width_count != 3) {
     output.failure_flags |= trace_capture_failure_join_width;
   }
+  output.runtime_join_full_entries_requested =
+      ring.plan.capture_runtime_join_full_entries;
+  output.join_full_entry_count = std::min<std::uint32_t>(
+      ring.join_full_entry_count.load(std::memory_order_acquire),
+      static_cast<std::uint32_t>(output.join_full_entries.size()));
+  output.join_full_entry_first_failure_code =
+      ring.join_full_entry_first_failure_code.load(std::memory_order_acquire);
+  for (std::uint32_t index = 0; index < output.join_full_entry_count; ++index)
+    std::memcpy(&output.join_full_entries[index], &ring.join_full_entries[index],
+                sizeof(CombatJoinFullEntryRecordV1));
+  if (output.runtime_join_full_entries_requested &&
+      output.join_full_entry_count != 0 &&
+      output.join_full_entry_count != 2)
+    output.failure_flags |= trace_capture_failure_join_full_entry;
   output.knight_select_count = std::min<std::uint32_t>(
       ring.knight_select_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.knight_selects.size()));
@@ -1603,8 +1848,10 @@ extern "C" std::uintptr_t __fastcall XarCombatJoinWrapperHookV1(
     return 0;
   }
   (void)CaptureCombatJoinWidthV1(combat, incoming_army, false);
+  (void)CaptureCombatJoinFullEntryV1(combat, incoming_army, false);
   const auto result = original(combat, incoming_army);
   (void)CaptureCombatJoinWidthV1(combat, incoming_army, true);
+  (void)CaptureCombatJoinFullEntryV1(combat, incoming_army, true);
   return result;
 }
 

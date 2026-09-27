@@ -715,11 +715,15 @@ bool ExecuteCombatPhaseEventTraceBeginV1(
         query->capture_runtime_random_list_weights;
     session.plan.capture_runtime_join_width =
         query->capture_runtime_join_width;
+    session.plan.capture_runtime_join_full_entries =
+        query->capture_runtime_join_full_entries;
     session.plan.candidate_joining_army_id =
         query->plan_environment.candidate_joining_army_id;
     session.plan.owner_thread_id = stamp.thread_id;
-    if (session.plan.capture_runtime_join_width &&
-        session.plan.candidate_joining_army_id <= 0) {
+    if ((session.plan.capture_runtime_join_width &&
+         session.plan.candidate_joining_army_id <= 0) ||
+        (session.plan.capture_runtime_join_full_entries &&
+         !session.plan.capture_runtime_join_width)) {
       session.stage = CombatPhaseEventTraceManagedStageV1::failed;
       query->completion =
           CombatPhaseEventTraceManagedCompletionV1::trace_unavailable;

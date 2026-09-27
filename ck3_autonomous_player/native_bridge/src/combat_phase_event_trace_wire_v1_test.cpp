@@ -334,6 +334,56 @@ bool OptionalJoinWidthWire() {
   return true;
 }
 
+bool OptionalJoinFullEntryWire() {
+  auto drain = SmallDrain();
+  const auto ordinary = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (Has(ordinary, "runtime_join_full_entries"))
+    return Fail("default wire unexpectedly contains full-entry probe");
+  drain->runtime_join_width_requested = true;
+  drain->runtime_join_full_entries_requested = true;
+  drain->join_full_entry_count = 2;
+  for (std::uint32_t i = 0; i < 2; ++i) {
+    auto &record = drain->join_full_entries[i];
+    record.boundary = i;
+    record.thread_id = 42;
+    record.native_date_raw = 53'175'840;
+    record.combat_id = 0x01000001;
+    record.incoming_army_id = 22;
+    record.joined_side_index = i == 0 ? -1 : 0;
+    record.incoming_regiment_count = 1;
+    record.incoming_regiments[0] = {43, 30};
+    auto &side = record.sides[0];
+    side.cached_fighting_total_raw = i == 0 ? 1'200'000 : 4'000'000;
+    side.entry_current_sum_raw = i == 0 ? 1'000'000 : 4'000'000;
+    side.cache_minus_entry_raw = i == 0 ? 200'000 : 0;
+    side.army_count = i == 0 ? 1 : 2;
+    side.army_ids[0] = 11;
+    side.army_ids[1] = 22;
+    side.entry_count = 1;
+    side.entries[0] = {31, 11, 1, 0, 1'000'000, 1'000'000, 0,
+                       200'000, 150'000};
+  }
+  const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (!Has(json, "\"runtime_join_full_entries\":{\"status\":\"captured\",\"count\":2") ||
+      !Has(json, "\"cache_minus_entry_raw\":200000") ||
+      !Has(json, "\"army_ids\":[11,22]") ||
+      !Has(json, "\"incoming_regiments\":[[43,30]]") ||
+      !Has(json, "\"joined_side_index\":-1") ||
+      !Has(json, "\"joined_side_index\":0"))
+    return Fail("full-entry optional wire lost bounded values");
+  drain->failure_flags |= trace_capture_failure_join_full_entry;
+  drain->join_full_entry_first_failure_code =
+      join_full_entry_failure_duplicate;
+  const auto failed = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (!Has(failed, "\"runtime_join_full_entries\":{\"status\":\"failed\",\"count\":2") ||
+      !Has(failed, "\"first_failure_code\":7"))
+    return Fail("full-entry failure status was not preserved");
+  drain->join_full_entry_count = 3;
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty())
+    return Fail("full-entry boundary overflow did not fail closed");
+  return true;
+}
+
 bool OversizeFailsClosed() {
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
   drain->record_count = 7;
@@ -359,6 +409,7 @@ bool OversizeFailsClosed() {
 
 int main() {
   return HappyPath() && OptionalRuntimeWeights() && OptionalJoinWidthWire() &&
+         OptionalJoinFullEntryWire() &&
          InvalidCountsFailClosed() &&
                  MissingRowMapStaysExplicitlyUnknown() &&
                  OversizeFailsClosed()

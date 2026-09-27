@@ -769,6 +769,132 @@ bool CandidateJoinWidthThreeBoundaryFixture() {
   return true;
 }
 
+bool CandidateJoinFullEntryFixture() {
+  Fixture fixture;
+  std::array<std::byte, 0x130> candidate_army{};
+  std::array<std::byte, 0x150> candidate_regiment{};
+  std::array<std::int32_t, 1> incoming_ids{43};
+  std::array<std::int32_t, 2> joined_roster{Fixture::kArmyIds[0], 22};
+  std::array<std::array<std::byte, 0x60>, 2> joined_levy_entries{};
+  Store(candidate_army, 0x10, std::int32_t{22});
+  Store(candidate_army, 0x128, std::int32_t{-1});
+  Store(candidate_army, 0x38,
+        reinterpret_cast<std::uintptr_t>(incoming_ids.data()));
+  Store(candidate_army, 0x40, std::int32_t{1});
+  Store(candidate_army, 0x44, std::int32_t{1});
+  Store(candidate_regiment, 0x10, std::int32_t{43});
+  Store(candidate_regiment, 0x38, std::int32_t{30});
+  Store(candidate_regiment, 0x140, std::int32_t{22});
+  fixture.plan.armies[2] = {
+      22, reinterpret_cast<std::uintptr_t>(candidate_army.data())};
+  fixture.plan.army_count = 3;
+  fixture.plan.regiments[4] = {
+      43, reinterpret_cast<std::uintptr_t>(candidate_regiment.data())};
+  fixture.plan.regiment_count = 5;
+  fixture.plan.capture_runtime_join_width = true;
+  fixture.plan.capture_runtime_join_full_entries = true;
+  fixture.plan.candidate_joining_army_id = 22;
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  fixture.plan.capture_runtime_join_width = false;
+  if (ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    CancelCombatPhaseEventTraceRingV1(*ring);
+    return Fail("full-entry opt-in did not require join width");
+  }
+  fixture.plan.capture_runtime_join_width = true;
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("full-entry opt-in arm failed");
+  auto *const side0 = reinterpret_cast<void *>(fixture.plan.sides[0]);
+  if (!CaptureCombatJoinWidthV1(fixture.combat.data(),
+                                candidate_army.data(), false) ||
+      !CaptureCombatJoinFullEntryV1(fixture.combat.data(),
+                                    candidate_army.data(), false)) {
+    CancelCombatPhaseEventTraceRingV1(*ring);
+    return Fail("full-entry wrapper entry read failed");
+  }
+  joined_levy_entries[0] = fixture.levy_entries[0];
+  Store(joined_levy_entries[1], 0x08, std::int32_t{43});
+  Store(joined_levy_entries[1], 0x10, std::int64_t{3'000'000});
+  Store(joined_levy_entries[1], 0x18, std::int64_t{3'000'000});
+  Store(joined_levy_entries[1], 0x40, std::int64_t{80'000});
+  Store(joined_levy_entries[1], 0x48, std::int64_t{60'000});
+  Store(side0, 0x10,
+        reinterpret_cast<std::uintptr_t>(joined_roster.data()));
+  Store(side0, 0x18, std::int32_t{2});
+  Store(side0, 0x1C, std::int32_t{2});
+  Store(side0, 0x28, reinterpret_cast<std::uintptr_t>(
+                          joined_levy_entries.data()));
+  Store(side0, 0x30, std::int32_t{2});
+  Store(side0, 0x34, std::int32_t{2});
+  Store(side0, 0x98, std::int64_t{4'000'000});
+  Store(side0, 0xA0, std::int64_t{3'000'000});
+  Store(candidate_army, 0x128, Fixture::kCombatId);
+  const bool captured =
+      CaptureCombatJoinWidthV1(fixture.combat.data(),
+                               candidate_army.data(), true) &&
+      CaptureCombatJoinFullEntryV1(fixture.combat.data(),
+                                   candidate_army.data(), true);
+  const auto &before = ring->join_full_entries[0];
+  const auto &after = ring->join_full_entries[1];
+  const bool valid = captured && ring->join_full_entry_count.load() == 2 &&
+      before.thread_id == after.thread_id &&
+      before.native_date_raw == after.native_date_raw &&
+      before.joined_side_index == -1 && after.joined_side_index == 0 &&
+      before.sides[0].entry_count == 2 &&
+      before.sides[1].cache_minus_entry_raw == 200'000 &&
+      after.sides[0].army_count == 2 &&
+      after.sides[0].entry_count == 3 &&
+      after.sides[0].entries[1].regiment_id == 43 &&
+      after.sides[0].entries[1].current_raw == 3'000'000 &&
+      after.sides[0].entry_current_sum_raw == 4'000'000 &&
+      after.sides[0].cache_minus_entry_raw == 0 &&
+      before.incoming_regiment_count == 1 &&
+      before.incoming_regiments[0].basic_soldiers == 30 &&
+      ring->join_full_entry_first_failure_code.load() ==
+          join_full_entry_failure_none &&
+      ring->failure_flags.load() == trace_capture_failure_none;
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  if (!valid) {
+    std::cerr << "full-entry diagnostics captured=" << captured
+              << " count=" << ring->join_full_entry_count.load()
+              << " code=" << ring->join_full_entry_first_failure_code.load()
+              << " flags=" << ring->failure_flags.load()
+              << " before_side1_residual="
+              << before.sides[1].cache_minus_entry_raw
+              << " after_side0_armies=" << after.sides[0].army_count
+              << " after_side0_army_ids="
+              << after.sides[0].army_ids[0] << ','
+              << after.sides[0].army_ids[1]
+              << " after_side0_count=" << after.sides[0].entry_count
+              << " after_side0_ids="
+              << after.sides[0].entries[0].regiment_id << ','
+              << after.sides[0].entries[1].regiment_id << ','
+              << after.sides[0].entries[2].regiment_id
+              << " after_side1_count=" << after.sides[1].entry_count
+              << " after_side0_sum="
+              << after.sides[0].entry_current_sum_raw << '\n';
+    return Fail("full-entry same-frame values lost");
+  }
+
+  // A duplicate full RegimentID fails only the 080 collector. The 079
+  // candidate-specific width sample remains independently available.
+  Store(joined_levy_entries[1], 0x08, Fixture::kRegimentIds[0]);
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan))
+    return Fail("full-entry duplicate fixture arm failed");
+  const bool duplicate_rejected =
+      CaptureCombatJoinWidthV1(fixture.combat.data(),
+                               candidate_army.data(), false) &&
+      !CaptureCombatJoinFullEntryV1(fixture.combat.data(),
+                                    candidate_army.data(), false) &&
+      ring->join_width_count.load() == 1 &&
+      ring->join_full_entry_count.load() == 0 &&
+      ring->join_full_entry_first_failure_code.load() ==
+          join_full_entry_failure_duplicate &&
+      ring->join_width_first_failure_code.load() == join_width_failure_none;
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return duplicate_rejected ? true :
+      Fail("full-entry duplicate did not fail independently");
+}
+
 bool CandidateJoinWidthFirstFailurePredicateFixture() {
   Fixture fixture;
   std::array<std::byte, 0x130> candidate_army{};
@@ -1166,6 +1292,7 @@ int main(int argc, char **argv) {
       !FailureCases() ||
       !StaleScheduledKnightCase() ||
       !CandidateJoinWidthThreeBoundaryFixture() ||
+      !CandidateJoinFullEntryFixture() ||
       !CandidateJoinWidthFirstFailurePredicateFixture() ||
       !CandidateJoinWidthCrossThreadFixture() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
