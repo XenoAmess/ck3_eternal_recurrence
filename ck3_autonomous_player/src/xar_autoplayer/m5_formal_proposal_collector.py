@@ -25,6 +25,7 @@ from .bridge.faction_gift_formal_route_v1 import (
     SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
     plan_faction_gift_private_v1,
 )
+from .bridge.driver import PreSubmissionRevisionMismatchError
 from .bridge.domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
 )
@@ -255,6 +256,10 @@ def plan_m5_formal_query_only(
                     if family_plan.get("selected_step") != "life-advance":
                         return family
                     baseline = deepcopy(dict(family_plan))
+        except PreSubmissionRevisionMismatchError:
+            # The native runner owns one bounded readiness replan after the
+            # existing gift consumer observed a newer same-date paused frame.
+            raise
         except (RuntimeError, TypeError, ValueError) as error:
             return blocked(f"M5 prior action receipt RED: {error}")
     try:
@@ -269,6 +274,8 @@ def plan_m5_formal_query_only(
         collection = collect_m5_formal_proposals(
             snapshot=snapshot, sources=sources,
         )
+    except PreSubmissionRevisionMismatchError:
+        raise
     except (RuntimeError, TypeError, ValueError) as error:
         return blocked(f"M5 private proposal collection RED: {error}")
     dispatch = collection["dispatch"]

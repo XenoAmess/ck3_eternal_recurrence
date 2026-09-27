@@ -19,8 +19,10 @@ from xar_autoplayer.m5_formal_proposal_collector import (
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
 from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
     COLD_RECOVERY_STEP as FACTION_GIFT_COLD_RECOVERY_STEP,
+    RECEIPT_STEP as FACTION_GIFT_RECEIPT_STEP,
     SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
 )
+from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
 
 
 _FRAME = {
@@ -273,6 +275,61 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         gift.assert_called_once()
         self.assertEqual(planned["plan"]["selected_step"],
                          FACTION_GIFT_COLD_RECOVERY_STEP)
+        self.assertEqual(driver.source_reads, 0)
+
+    def test_pending_gift_same_date_refresh_reaches_service_replan(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(enabled=True, snapshot=peace)
+        driver.state_dir = Path("Z:/fa98-tmp")
+        driver.allow_private_faction_gift_formal_trial = True
+        driver._session_bridge_pid = 12345
+        pending = {
+            "request_id": "gift-pending-same-date",
+            "source_bridge_pid": 12345,
+            "source_bridge_creation_date": "old-process",
+            "episode_run_id": peace["episode_run_id"],
+            "pre_snapshot_revision": peace["native_revision"],
+            "pre_date_raw": peace["date_raw"],
+        }
+        fresh = {**peace, "revision": peace["revision"] + 1,
+                 "native_revision": peace["native_revision"] + 1,
+                 "snapshot_id": "native:18"}
+        waits: list[float] = []
+
+        def native_wait(start, predicate, *, timeout_seconds):
+            self.assertEqual(start["snapshot_id"], peace["snapshot_id"])
+            self.assertTrue(predicate(fresh))
+            waits.append(timeout_seconds)
+            return fresh
+
+        driver._wait_for_snapshot = native_wait
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        service = GameplayBridgeService(driver)
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector.read_construction_ledger",
+            return_value={"pending": None, "applied": None},
+        ), mock.patch(
+            "xar_autoplayer.m5_formal_proposal_collector.read_faction_gift_ledger_v1",
+            return_value={"pending": pending},
+        ), mock.patch(
+            "xar_autoplayer.bridge.faction_gift_formal_route_v1.read_faction_gift_ledger_v1",
+            return_value={"pending": pending},
+        ), mock.patch(
+            "xar_autoplayer.bridge.faction_gift_formal_route_v1._process_identity",
+            return_value={"creation_date": "old-process"},
+        )):
+            with self.assertRaises(PreSubmissionRevisionMismatchError):
+                service.plan_turn()
+            driver._snapshot = fresh
+            receipt = service.plan_turn()
+        self.assertEqual(waits, [5.0])
+        self.assertEqual(receipt["plan"]["selected_step"], FACTION_GIFT_RECEIPT_STEP)
         self.assertEqual(driver.source_reads, 0)
 
     def test_live_empty_peace_source_keeps_family_and_normal_advance(self) -> None:
