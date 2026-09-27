@@ -1,5 +1,8 @@
 # Construction active progress: exact 1.19.0.6 source
 
+The first derived paused runtime read and its zero-divisor boundary are
+recorded in [R0256 construction progress](construction-r0256-zero-divisor-readback-2026-09-27.md).
+
 This is a private read-only source for an already active building. The frozen
 `ck3.exe` SHA-256 is
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
