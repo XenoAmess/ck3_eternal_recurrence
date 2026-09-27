@@ -432,6 +432,8 @@ class GameplayBridgeService:
         # only needs another final-legal read after time or the player changes.
         self._last_war_lifestyle_observation: tuple[object, object, object] | None = None
         self._last_war_family_observation: tuple[object, object, object] | None = None
+        self._opening_martial_episode_v1: str | None = None
+        self._opening_martial_observation_v1: dict[str, object] | None = None
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
         """Bind the runner-owned real product-checkpoint provider once."""
@@ -1201,6 +1203,49 @@ class GameplayBridgeService:
             },
         }
 
+    def _observe_opening_martial_authority_v1(
+        self, *, before: dict[str, object], revision: int,
+    ) -> dict[str, object] | None:
+        """Read one private alternative on this episode's opening frame."""
+        if getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is not True:
+            return None
+        episode = before.get("episode_run_id")
+        if not isinstance(episode, str) or not episode:
+            return {"status": "episode_unavailable"}
+        if episode == self._opening_martial_episode_v1:
+            return dict(self._opening_martial_observation_v1 or {})
+        reader = getattr(
+            self.driver, "query_player_lifestyle_martial_authority_private_v1", None,
+        )
+        if not callable(reader):
+            result: dict[str, object] = {"status": "query_route_unavailable"}
+        else:
+            try:
+                query = reader(expected_revision=revision)
+                after = self.snapshot()
+            except Exception as error:
+                result = {"status": "query_error", "error_type": type(error).__name__}
+            else:
+                binding = (
+                    "snapshot_id", "revision", "native_revision", "date_raw",
+                    "episode_run_id",
+                )
+                if (after.get("paused") is not True or any(
+                    after.get(key) != before.get(key) for key in binding
+                )):
+                    result = {"status": "red", "issue": "opening_frame_changed"}
+                elif not isinstance(query, dict):
+                    result = {"status": "malformed_query_result"}
+                else:
+                    result = {key: query[key] for key in (
+                        "status", "issue", "native_legal", "target_key",
+                        "target_lifestyle_key", "target_lifestyle_progress",
+                        "source_frame",
+                    ) if key in query}
+        self._opening_martial_episode_v1 = episode
+        self._opening_martial_observation_v1 = dict(result)
+        return result
+
     def _plan_initial_lifestyle_focus_first_v1(
         self, planned: dict[str, object], available_steps: set[str]
     ) -> dict[str, object]:
@@ -1317,6 +1362,25 @@ class GameplayBridgeService:
                 isinstance(current, dict)
                 and current.get("status") == "available"
                 and current_after.get("paused") is True
+                and all(before.get(key) == current_after.get(key)
+                        for key in binding)
+                and isinstance(current_source, dict)
+                and all(current_source.get(key) == before.get(key)
+                        for key in ("snapshot_id", "revision",
+                                    "native_revision", "date_raw"))
+                and isinstance(current_focus, dict)
+                and current_focus.get("presence") == "absent"
+            ):
+                martial_observation = self._observe_opening_martial_authority_v1(
+                    before=before, revision=revision,
+                )
+                if isinstance(martial_observation, dict):
+                    plan = {**plan, "opening_lifestyle_martial_observation":
+                            martial_observation}
+            if (
+                isinstance(current, dict)
+                and current.get("status") == "available"
+                and current_after.get("paused") is True
                 and all(before.get(key) == current_after.get(key) for key in binding)
                 and isinstance(current_source, dict)
                 and all(
@@ -1355,11 +1419,17 @@ class GameplayBridgeService:
                 perk_observation = self._observe_opening_lifestyle_perks_v1(
                     before=before, focus=current_focus, revision=revision,
                 )
+                martial_observation = self._observe_opening_martial_authority_v1(
+                    before=before, revision=revision,
+                )
                 return {
                     **planned,
                     "plan": {
                         **plan, "phase": "initial_lifestyle_focus_already_present",
                         "selected_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+                        **({"opening_lifestyle_martial_observation":
+                            martial_observation}
+                           if isinstance(martial_observation, dict) else {}),
                         "initial_lifestyle_focus_existing": {
                             "status": "verified_existing",
                             "readback_source": "native_current_state_only",
@@ -1452,6 +1522,12 @@ class GameplayBridgeService:
             and isinstance(progress, dict)
         ):
             return blocked("opening LIFE2 current focus or XP/points are unavailable")
+        martial_observation = self._observe_opening_martial_authority_v1(
+            before=before, revision=revision,
+        )
+        if isinstance(martial_observation, dict):
+            plan = {**plan, "opening_lifestyle_martial_observation":
+                    martial_observation}
         if focus.get("presence") == "present":
             numeric = (
                 "xp_total_raw", "xp_within_level_raw", "xp_per_level",

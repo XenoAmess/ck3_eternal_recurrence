@@ -4913,6 +4913,11 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
     )
     if opening_life is not None:
         compact["opening_lifestyle_observation"] = opening_life
+    martial = _compact_opening_martial_observation(
+        plan.get("opening_lifestyle_martial_observation")
+    )
+    if martial is not None:
+        compact["opening_lifestyle_martial_observation"] = martial
     war_exit = _compact_war_exit_decision(plan.get("war_exit_decision"))
     if war_exit is not None:
         compact["war_exit_decision"] = war_exit
@@ -4920,6 +4925,37 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
     if m5_joint is not None:
         compact["m5_joint_observation"] = m5_joint
     return compact
+
+
+def _compact_opening_martial_observation(value: object) -> dict[str, object] | None:
+    """Keep typed final legality and target XP without claiming an action."""
+    if not isinstance(value, dict):
+        return None
+    result = {key: value.get(key) for key in (
+        "status", "issue", "error_type", "target_key",
+        "target_lifestyle_key",
+    ) if key in value}
+    result["read_only"] = True
+    result["action_admitted"] = False
+    if isinstance(value.get("native_legal"), bool):
+        result["native_legal"] = value["native_legal"]
+    source = value.get("source_frame")
+    if isinstance(source, dict):
+        result["source_frame"] = {key: source.get(key) for key in (
+            "snapshot_id", "native_revision", "date_raw",
+            "played_character_id", "episode_run_id",
+        )}
+    progress = value.get("target_lifestyle_progress")
+    if isinstance(progress, dict) and progress.get("presence") in {
+        "present", "unavailable",
+    }:
+        fields = ("presence", "source", "reason", "xp_total_raw",
+                  "xp_within_level_raw", "xp_per_level",
+                  "unspent_perk_points", "used_perk_points")
+        result["target_lifestyle_progress"] = {
+            key: progress.get(key) for key in fields if key in progress
+        }
+    return result
 
 
 def _compact_opening_lifestyle_observation(value: object) -> dict[str, object] | None:
