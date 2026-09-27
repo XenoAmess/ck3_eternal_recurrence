@@ -1,0 +1,23 @@
+{
+  "schema": "ck3.native_active_advantage_leaf_inputs.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "cache_chain_verified_on_same_image": true,
+  "anchors": {
+    "side_to_character_r8": {"rva": "0x2307E7A", "bytes_hex": "4C8BC6"},
+    "side_calls_commander": {"rva": "0x2307E88", "bytes_hex": "E8F3F7FFFF"},
+    "commander_keeps_character": {"rva": "0x23076AF", "bytes_hex": "4D8BF8"},
+    "commander_character_int32": {"rva": "0x23076B8", "bytes_hex": "496390D8000000"},
+    "commander_scales_100000": {"rva": "0x23076BF", "bytes_hex": "4869FAA0860100"},
+    "commander_writes_initial_qword": {"rva": "0x23076C6", "bytes_hex": "48893E"},
+    "side_adds_commander_return": {"rva": "0x2307E90", "bytes_hex": "49010C24"},
+    "side_calls_aggregator": {"rva": "0x2307EB5", "bytes_hex": "E876F3FFFF"},
+    "aggregator_keeps_combat": {"rva": "0x230725D", "bytes_hex": "4C8BF9"},
+    "aggregator_combat_flag": {"rva": "0x23074C9", "bytes_hex": "4180BFFD06000000"},
+    "aggregator_skips_flag_block": {"rva": "0x23074D1", "bytes_hex": "0F8412010000"},
+    "aggregator_adds_flag_block": {"rva": "0x23075E6", "bytes_hex": "480113"},
+    "side_adds_aggregator_return": {"rva": "0x2307EBD", "bytes_hex": "49010C24"}
+  },
+  "aggregator_zero_flag_branch_target_rva": "0x23075E9",
+  "proof_layer": "exact-build-instructions-and-control-flow"
+}
