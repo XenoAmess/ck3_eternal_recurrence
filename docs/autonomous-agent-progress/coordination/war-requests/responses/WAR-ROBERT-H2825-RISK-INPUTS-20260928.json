@@ -3,8 +3,8 @@
   "request_id": "WAR-ROBERT-H2825-RISK-INPUTS-20260928",
   "status": "claimed",
   "maintainer": "nonwar_operator on the Robert production machine",
-  "updated_at_utc": "2026-09-27T18:57:51Z",
-  "source_pr": null,
+  "updated_at_utc": "2026-09-27T19:02:15Z",
+  "source_pr": 415,
   "master_commit": null,
   "delivery_ready_for_master": true,
   "evidence": {
