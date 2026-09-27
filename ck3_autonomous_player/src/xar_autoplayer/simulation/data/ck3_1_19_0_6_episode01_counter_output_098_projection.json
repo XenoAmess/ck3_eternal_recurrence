@@ -1,0 +1,573 @@
+{
+  "fixture_kind": "ck3-1.19.0.6-active-counter-output-098-cross-check",
+  "source": {
+    "attempt": 98,
+    "game_version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_sha256": "ABEE0A5AD16347A9EA2F10454D111A769CEDB84E343010792619CBB27A4CD858",
+    "response_sha256": {
+      "before-control": "2244E1144D7F5708B19BD2DE50311BCCA38481EFD0BC98165FC48AEA8C0602AA",
+      "trace-finish": "6B158A07A6071D058DE6F3E8994CA0065F09B2311EF79004EB1DDD445B1B8198",
+      "after-control": "236E67C10CFABBABEDE2822A40074458ABF8EFCA019CE54A3C88CC669EA217EC"
+    },
+    "combat_id": 16777218,
+    "before_date_raw": 53146488,
+    "after_date_raw": 53146512,
+    "before_phase_day": 7,
+    "after_phase_day": 8,
+    "trace_failure_flags": 0,
+    "original_trace_ready": false,
+    "full_mutable_transition_bundle_complete": false
+  },
+  "join": {
+    "incoming_army_id": 22,
+    "joined_side_index": 0,
+    "boundary": 1
+  },
+  "counter": {
+    "source": "native_resolve_counter_classes_after_0x23caf20",
+    "pair_complete": true,
+    "class_count": 13,
+    "scale": 100000,
+    "sides": [
+      {
+        "side_index": 0,
+        "primary_owner_character_id": 31549,
+        "context_raw": 125000,
+        "before_maa_count": 18,
+        "post_join_maa_count": 24,
+        "after_maa_count": 24,
+        "new_regiment_ids": [
+          176,
+          177,
+          179,
+          180,
+          181,
+          182
+        ],
+        "native_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "post_join_model_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "before_model_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "after_model_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "post_join_model_matches_native": true,
+        "mismatch_class_indices": [],
+        "entry_mapping": [
+          {
+            "regiment_id": 87,
+            "army_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": 0,
+            "class_status": "available",
+            "before_current_raw": 8925384,
+            "post_join_current_raw": 8925384,
+            "post_tick_current_raw": 8869367
+          },
+          {
+            "regiment_id": 90,
+            "army_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97344,
+            "post_join_current_raw": 97344,
+            "post_tick_current_raw": 97199
+          },
+          {
+            "regiment_id": 91,
+            "army_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97052,
+            "post_join_current_raw": 97052,
+            "post_tick_current_raw": 96891
+          },
+          {
+            "regiment_id": 92,
+            "army_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 93467,
+            "post_join_current_raw": 93467,
+            "post_tick_current_raw": 93118
+          },
+          {
+            "regiment_id": 104,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": 3,
+            "class_status": "available",
+            "before_current_raw": 24524002,
+            "post_join_current_raw": 24524002,
+            "post_tick_current_raw": 24252840
+          },
+          {
+            "regiment_id": 105,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": 11,
+            "class_status": "available",
+            "before_current_raw": 0,
+            "post_join_current_raw": 0,
+            "post_tick_current_raw": 0
+          },
+          {
+            "regiment_id": 106,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": 8,
+            "class_status": "available",
+            "before_current_raw": 8324069,
+            "post_join_current_raw": 8324069,
+            "post_tick_current_raw": 8240193
+          },
+          {
+            "regiment_id": 110,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97583,
+            "post_join_current_raw": 97583,
+            "post_tick_current_raw": 97451
+          },
+          {
+            "regiment_id": 111,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97052,
+            "post_join_current_raw": 97052,
+            "post_tick_current_raw": 96891
+          },
+          {
+            "regiment_id": 112,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 96687,
+            "post_join_current_raw": 96687,
+            "post_tick_current_raw": 96506
+          },
+          {
+            "regiment_id": 113,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 96079,
+            "post_join_current_raw": 96079,
+            "post_tick_current_raw": 95840
+          },
+          {
+            "regiment_id": 114,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 96222,
+            "post_join_current_raw": 96222,
+            "post_tick_current_raw": 96017
+          },
+          {
+            "regiment_id": 115,
+            "army_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 96222,
+            "post_join_current_raw": 96222,
+            "post_tick_current_raw": 96017
+          },
+          {
+            "regiment_id": 176,
+            "army_id": 22,
+            "owner_character_id": 32231,
+            "class_index": 0,
+            "class_status": "available",
+            "before_current_raw": null,
+            "post_join_current_raw": 40000000,
+            "post_tick_current_raw": 39751322
+          },
+          {
+            "regiment_id": 177,
+            "army_id": 22,
+            "owner_character_id": 32231,
+            "class_index": 11,
+            "class_status": "available",
+            "before_current_raw": null,
+            "post_join_current_raw": 0,
+            "post_tick_current_raw": 0
+          },
+          {
+            "regiment_id": 179,
+            "army_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": null,
+            "post_join_current_raw": 100000,
+            "post_tick_current_raw": 99936
+          },
+          {
+            "regiment_id": 180,
+            "army_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": null,
+            "post_join_current_raw": 100000,
+            "post_tick_current_raw": 99860
+          },
+          {
+            "regiment_id": 181,
+            "army_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": null,
+            "post_join_current_raw": 100000,
+            "post_tick_current_raw": 99719
+          },
+          {
+            "regiment_id": 182,
+            "army_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": null,
+            "post_join_current_raw": 100000,
+            "post_tick_current_raw": 99156
+          },
+          {
+            "regiment_id": 217,
+            "army_id": 27,
+            "owner_character_id": 34320,
+            "class_index": 0,
+            "class_status": "available",
+            "before_current_raw": 8944523,
+            "post_join_current_raw": 8944523,
+            "post_tick_current_raw": 8889435
+          },
+          {
+            "regiment_id": 219,
+            "army_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 98082,
+            "post_join_current_raw": 98082,
+            "post_tick_current_raw": 97985
+          },
+          {
+            "regiment_id": 220,
+            "army_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 96071,
+            "post_join_current_raw": 96071,
+            "post_tick_current_raw": 95644
+          },
+          {
+            "regiment_id": 221,
+            "army_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 94790,
+            "post_join_current_raw": 94790,
+            "post_tick_current_raw": 94509
+          },
+          {
+            "regiment_id": 222,
+            "army_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 92273,
+            "post_join_current_raw": 92273,
+            "post_tick_current_raw": 91863
+          }
+        ]
+      },
+      {
+        "side_index": 1,
+        "primary_owner_character_id": 29829,
+        "context_raw": 100000,
+        "before_maa_count": 14,
+        "post_join_maa_count": 14,
+        "after_maa_count": 14,
+        "new_regiment_ids": [],
+        "native_retention_raw": [
+          10000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "post_join_model_retention_raw": [
+          10000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "before_model_retention_raw": [
+          10000,
+          54257,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "after_model_retention_raw": [
+          10000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "post_join_model_matches_native": true,
+        "mismatch_class_indices": [],
+        "entry_mapping": [
+          {
+            "regiment_id": 51,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": 1,
+            "class_status": "available",
+            "before_current_raw": 17579130,
+            "post_join_current_raw": 17579130,
+            "post_tick_current_raw": 16995387
+          },
+          {
+            "regiment_id": 52,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": 0,
+            "class_status": "available",
+            "before_current_raw": 8483391,
+            "post_join_current_raw": 8483391,
+            "post_tick_current_raw": 8125197
+          },
+          {
+            "regiment_id": 53,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": 11,
+            "class_status": "available",
+            "before_current_raw": 0,
+            "post_join_current_raw": 0,
+            "post_tick_current_raw": 0
+          },
+          {
+            "regiment_id": 57,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97820,
+            "post_join_current_raw": 97820,
+            "post_tick_current_raw": 97260
+          },
+          {
+            "regiment_id": 58,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97820,
+            "post_join_current_raw": 97820,
+            "post_tick_current_raw": 97260
+          },
+          {
+            "regiment_id": 59,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97654,
+            "post_join_current_raw": 97654,
+            "post_tick_current_raw": 97052
+          },
+          {
+            "regiment_id": 60,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97461,
+            "post_join_current_raw": 97461,
+            "post_tick_current_raw": 96811
+          },
+          {
+            "regiment_id": 61,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97233,
+            "post_join_current_raw": 97233,
+            "post_tick_current_raw": 96525
+          },
+          {
+            "regiment_id": 62,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 97132,
+            "post_join_current_raw": 97132,
+            "post_tick_current_raw": 96425
+          },
+          {
+            "regiment_id": 63,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 96624,
+            "post_join_current_raw": 96624,
+            "post_tick_current_raw": 95764
+          },
+          {
+            "regiment_id": 64,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 93994,
+            "post_join_current_raw": 93994,
+            "post_tick_current_raw": 92488
+          },
+          {
+            "regiment_id": 65,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 92541,
+            "post_join_current_raw": 92541,
+            "post_tick_current_raw": 90687
+          },
+          {
+            "regiment_id": 66,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 90161,
+            "post_join_current_raw": 90161,
+            "post_tick_current_raw": 87753
+          },
+          {
+            "regiment_id": 67,
+            "army_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "class_status": "absent",
+            "before_current_raw": 85557,
+            "post_join_current_raw": 85557,
+            "post_tick_current_raw": 82129
+          }
+        ]
+      }
+    ]
+  },
+  "interpretation": {
+    "post_join_model_is_conditional": true,
+    "whole_battle_win_probability": null,
+    "active_resume_input_ready": false
+  }
+}
