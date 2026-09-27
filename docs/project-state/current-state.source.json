@@ -1,7 +1,7 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-28T04:43:00+08:00",
+  "updated_at": "2026-09-28T05:01:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
@@ -1969,12 +1969,12 @@
     "single_instance_scope": "per_machine",
     "operator_mcp_scope": "local_machine_only",
     "last_completed_local_round": {
-      "round": "R0262",
+      "round": "R0263",
       "source": "canonical_g2_live_run_ids_v1_allocator_local_machine",
       "canonical_status": "completed-green",
       "operator_exit_code": 0,
       "process_tree_gone_at_cleanup": true,
-      "scope": "canonical_origin_machine_allocator_last_completed_R0262_h2660_raw53217072; R0263-R0267 are unallocated historical attempt labels; current_pid_owner_and_RED_require_local_operator_get_status"
+      "scope": "canonical_origin_machine_allocator_completed_R0263_R0138_derived_private_bounded_focus_trial_4_of_4_qualified_same_date_no_cold_restore; earlier R0263-R0267 are separate unallocated historical attempt labels; current_pid_owner_and_RED_require_local_operator_get_status"
     },
     "allocator_audit_snapshot": {
       "audited_at": "2026-09-28T04:42:00+08:00",
@@ -1986,12 +1986,32 @@
       "last_status": "completed-green",
       "unallocated_historical_attempt_labels": ["R0263", "R0264", "R0265", "R0266", "R0267"],
       "h3075_operational_round_status": "no_canonical_allocation_or_live_run_identity",
-      "next_round_only_after_actual_allocation": "R0263",
+      "next_round_at_audit_if_actually_allocated": "R0263",
       "origin_machine_locator": "Z:\\ck3_mod_rewrite_process_assets\\g2-live-run-ids-v1\\xenoamess-full-tower-eb9d2c1186\\eternal-recurrence",
       "counter_sha256_at_audit": "3770EDAA08A5C0E7993B4D7E5C9C7CDD2409E5829B67F5E9ED650A934965A765",
       "allocations_sha256_at_audit": "C643DA5151C57AB75A4C8E107DD5BF988071704F11409A072F08B6B37C3D9F3A",
       "statuses_sha256_at_audit": "C4D59C103FBB8CB5285FDE170C2E948C9A153566B89F06ACA3A7C490A73ED1B4",
       "scope": "Read-only audit snapshot; mutable ledger hashes will change upon a future true allocation. Physical H3075 game/save evidence remains separate from operational round compliance."
+    },
+    "post_audit_r0263_allocation_and_trial": {
+      "allocated_at": "2026-09-28T04:54:06.376055+08:00",
+      "full_run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0263",
+      "execution_id": "895f09fd-bb3d-495e-ba17-dd944285d687",
+      "allocation_receipt_sha256": "560C529D6D0F6D28B2C19552C6D021E2C8BFB4814B6C445B5219F0038137F3FC",
+      "allocation_receipt_origin_machine_locator": "Z:\\life-first-martial-r0138-candidate-20260928\\live-run-identity.json",
+      "historical_short_label_distinction": "earlier_R0263_unallocated_attempt_label_is_a_different_execution",
+      "trial_source": "R0138_derived_private_bounded_focus_trial_not_H3075_Robert_continuation",
+      "trial_formal_report_sha256": "22458CB97665446EFDE47C38C2F8A66FE0A55E96DD9D4CA4184ACD54290D952D",
+      "trial_operator_receipt_sha256": "984BC33097C98A3FEFBFFFBA201E009D540359F79460431C56ED8C2C27E946C1",
+      "trial_outcome": "four_of_four_runner_qualified_focus_typed_applied_independent_postcondition_next_turn_consumed_same_date",
+      "trial_focus_action_request_id": "life-focus-a9524b8c2ac94a1f9e5f94b1fc1900d2",
+      "trial_selected_focus": "martial_authority_focus",
+      "trial_saved_date_raw": 53144328,
+      "trial_save_sha256": "48D98FD4CA4EC3FD6D984FF0A8D9E401BDCFE19B0F2C12EEDA2E4AC0E70E9F32",
+      "trial_driver_sha256": "004DD1BF8B8B4308A5E76754E053A297D92F28CD93306DC49F840A91A3FC5380",
+      "canonical_terminal_status": "completed-green",
+      "cold_restore_done": false,
+      "scope": "Physical private bounded focus action proven through independent postcondition and next turn; no cold restore, no H3075 durable-day addition, no G2 milestone promotion. This transaction does not backfill the historical unallocated R0263 attempt label. Current live PID, owner, RED and canonical terminal status remain local live-source questions."
     },
     "stable_projection": {
       "live_round": null,
