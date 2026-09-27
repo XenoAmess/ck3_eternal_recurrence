@@ -1014,3 +1014,25 @@ C78 只从已核最终合法、同帧的被选中五行结果取 `first_characte
 h133 原始 Robert 派生配对的[家庭账本](Z:/ck3_mod_rewrite_process_assets/g2-robert-econ-h133-c35-20260927/source-pair-h133/first-heir-marriage-formal-v1.json) SHA-256 `0ECC7B580B90DC850AD91CCEE2EEA427162ED7537B127ABD47737CBC7DDBCF0E` 记录首继承人 38822／候选 38710 的已生效 `betrothal` 和当前双向 `allied`；没有待发送提案。它**尚未**观察到成人婚姻。exact-build 原生双边读回和私有 cold transport 均可在新 PID 返回 `marriage`，但旧正式消费者要求冷读状态与账本旧 `betrothal` 完全相等，因而会把合法的双边 `betrothal → marriage` 变化报作 `cold restore lost the earlier bilateral marriage result`。聚焦测试在旧源码确实复现了该异常。
 
 新消费者仅接受这一有方向的物质关系提升：新 PID 先由原生双边关系核实 `marriage`，再把 resolved 状态更新为婚姻、记录 `cold_material_transition=betrothal_to_marriage`，清掉旧订婚阶段的联盟读数，并沿已有路径在当前 PID 重读玩家／接收方双向实际联盟。结果缺失、关系倒退或角色不匹配仍保留原 RED；旧提案不重发。该实现尚无 h133 成年后的实机阳性或新 PID 配对回执，故只增加源码层恢复能力，不把 h133 的订婚记作已经成婚，也不扩大家庭公开资格。
+
+### C109：高水位首继承人当前关系的独立只读入口（2026-09-27，源码阶段）
+
+R0197 正式 Robert 高水位 h2134/raw53215920 的冻结 save/driver 分别为 SHA-256 `1AF4055F978AF60267FB3A0D8658224047CD6BFDA884C66886A13B74EE34A90A` / `1DE61CF0AC47EDD1D63FE1F3D77668D5F499EA6CA06B90BC83B068CF35F16336`。其最后一次原生继承观测指向首继承人 38822；冻结配对及来源都没有家庭 sidecar，driver 的 2135 条 command history 中也没有婚配动作。相同 episode 名称的 h223/raw53155056 婚约账本来自更早日期的派生分支，不能强配高水位。R0197 当时战争 16777231 仍在进行；当前正式家庭策略的 `active_wars == []` 门使无 sidecar 时连五候选关系投影都不读，所以高水位首继承人的实际 spouse/betrothed 与游戏内待决提案仍未知。
+
+已冻结 CK3 `1.19.0.6`，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。现有 `ck3_11906.cpp:ReadCharacterRelationships` 从经 CharacterID generation round-trip 的 `CCharacter+0x1A0` family data 读取 `+0x10` betrothed、`+0x14` primary spouse、`+0x20` 配偶数组；`ReadMarriageCandidateAlliancePrivateV1` 已在五候选投影里对同一首继承人双采样这些字段。现有 `ReadMarriageProposalBilateralRelationshipFromNativeBinderV1` 只读**已知双方 ID**，需要真实 pending pair 才能作为冷恢复后置；它不能枚举未知当前配偶。上述 exact-build ABI 足以从公开 campaign-root 同帧绑定的首继承人直接读关系，再对每个非空伴侣反向读取，验证双方互指。这个关系读数不依赖候选数、发送 receipt、战争和平条件或人工指定 CharacterID。
+
+```mermaid
+flowchart TD
+  A["[已观测] 暂停帧与公开主头衔首继承人"] --> B["[exact ABI] 首继承人 family data：订婚、首配偶、配偶数组"]
+  B --> C{"每位非空伴侣反向指向首继承人？"}
+  C -->|是| D["[C109 静态目标] 双向当前关系只读结果；空数组是有效空值"]
+  C -->|否或读失败| E["关系不可用；不得当作未婚"]
+  D -. "下一高水位 paused 实机待验" .-> F["[unknown] h2134 实际关系及婚配机会"]
+  F --> G{"和平、同帧最终合法且正式价值为正？"}
+  G -->|是| H["已有 typed proposal 与独立后置"]
+  G -->|否| I["继续原目标，不发送婚配提案"]
+  classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+  class F unknown;
+```
+
+最小私有合同只在现有 `XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1` 打开的 exact-build 候选中提供 read-only step：无候选列表和外部 heir ID 参数，要求当前 revision、paused/map-ready、玩家存活以及同 revision 的公开首继承人绑定；查询前后重读 snapshot 与双边关系。已解析的非空伴侣反向读取失败或双边不一致返回明确不可用/RED，不把不可用的 `null` 当合法无关系；可读空关系使用 `-1` 与 `[]`。Python transport 与本机 MCP 工具默认关闭；只有以 `native-headless` 加 `stdio` 启动且明确传入 `--private-current-first-heir-relationship-query` 才注册只读工具，参数只含 `expected_native_revision`。该工具不进入公共 capability/ad，不接正式自动提交策略。本切片的原生树输入先于策略改动落盘；新源码与静态测试不等于 h2134 已实机读到关系。

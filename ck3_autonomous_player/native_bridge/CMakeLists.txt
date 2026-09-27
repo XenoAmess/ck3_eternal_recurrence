@@ -564,6 +564,7 @@ add_library(xar_ck3_bridge SHARED
   src/major_decision_found_kingdom_internal_route_v1.cpp
   src/marriage_application_main_receipt_v1.cpp
   src/marriage_candidate_internal_route_v1.cpp
+  src/current_first_heir_relationship_v1.cpp
   src/observed_heir_marriage_private_v1.cpp
   src/marriage_alliance_projection_adapter_v1.cpp
   src/marriage_alliance_readback_adapter_v1.cpp
@@ -1315,6 +1316,22 @@ if(BUILD_TESTING)
       COMMAND xar_ck3_m5_war_primary_readback_v1_test)
   endif()
   if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    add_executable(xar_ck3_current_first_heir_relationship_v1_test
+      src/current_first_heir_relationship_v1.cpp
+      src/current_first_heir_relationship_v1_test.cpp)
+    target_include_directories(
+      xar_ck3_current_first_heir_relationship_v1_test PRIVATE include)
+    target_compile_definitions(
+      xar_ck3_current_first_heir_relationship_v1_test PRIVATE
+      NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+      XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1=1)
+    if(MSVC)
+      target_compile_options(
+        xar_ck3_current_first_heir_relationship_v1_test PRIVATE
+        /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_native_bridge_current_first_heir_relationship_v1
+      COMMAND xar_ck3_current_first_heir_relationship_v1_test)
     add_executable(xar_ck3_marriage_candidate_alliance_projection_v1_test
       src/marriage_candidate_alliance_projection_v1.cpp
       src/marriage_candidate_alliance_projection_v1_test.cpp)

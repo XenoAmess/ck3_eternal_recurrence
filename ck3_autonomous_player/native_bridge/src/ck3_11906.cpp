@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/campaign_root_context_v1.hpp"
+#include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
@@ -16991,6 +16992,79 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
 }
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
+    const Bindings &bindings, std::int32_t heir_character_id) noexcept {
+  using Failure = CurrentFirstHeirRelationshipFailureV1;
+  CurrentFirstHeirRelationshipReadV1 result{};
+  result.heir_character_id = heir_character_id;
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || !before.paused || !before.map_ready ||
+      !before.has_played_character || !before.played_character_alive) {
+    result.failure = Failure::frame_changed;
+    return result;
+  }
+  if (heir_character_id <= 0) return result;
+
+  const auto read_once = [&](MarriageHeirRelationshipV1 &relationship,
+                             std::vector<CurrentFirstHeirPartnerRelationshipV1>
+                                 &partners) -> Failure {
+    void *const heir = ResolveCharacter(bindings, heir_character_id);
+    if (heir == nullptr ||
+        LoadAt<void *>(heir, kCharacterDeathDataOffset) != nullptr)
+      return Failure::heir_unavailable;
+    if (!ReadCharacterRelationships(
+            bindings, heir, relationship.betrothed_character_id,
+            relationship.primary_spouse_character_id,
+            relationship.spouse_character_ids))
+      return Failure::relationship_unavailable;
+    std::vector<std::int32_t> partner_ids =
+        relationship.spouse_character_ids;
+    const auto add = [&](std::int32_t id) {
+      if (id > 0 && std::find(partner_ids.begin(), partner_ids.end(), id) ==
+                        partner_ids.end())
+        partner_ids.push_back(id);
+    };
+    add(relationship.primary_spouse_character_id);
+    add(relationship.betrothed_character_id);
+    partners.clear();
+    partners.reserve(partner_ids.size());
+    for (const auto id : partner_ids) {
+      void *const partner = ResolveCharacter(bindings, id);
+      if (partner == nullptr ||
+          LoadAt<void *>(partner, kCharacterDeathDataOffset) != nullptr)
+        return Failure::partner_unavailable;
+      CurrentFirstHeirPartnerRelationshipV1 peer{};
+      peer.character_id = id;
+      if (!ReadCharacterRelationships(
+              bindings, partner, peer.relationship.betrothed_character_id,
+              peer.relationship.primary_spouse_character_id,
+              peer.relationship.spouse_character_ids))
+        return Failure::partner_unavailable;
+      partners.push_back(std::move(peer));
+    }
+    return ValidateCurrentFirstHeirBilateralRelationshipV1(
+               heir_character_id, relationship, partners)
+               ? Failure::none
+               : Failure::bilateral_inconsistent;
+  };
+  MarriageHeirRelationshipV1 first{};
+  MarriageHeirRelationshipV1 second{};
+  std::vector<CurrentFirstHeirPartnerRelationshipV1> first_partners;
+  std::vector<CurrentFirstHeirPartnerRelationshipV1> second_partners;
+  result.failure = read_once(first, first_partners);
+  if (result.failure != Failure::none) return result;
+  result.failure = read_once(second, second_partners);
+  if (result.failure != Failure::none) return result;
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before ||
+      first != second || first_partners != second_partners) {
+    result.failure = Failure::frame_changed;
+    return result;
+  }
+  result.relationship = std::move(second);
+  return result;
+}
+
 bool ReadMarriageCharacterLineageV1(
     const void *character, MarriageCharacterLineageV1 &output) noexcept;
 #endif

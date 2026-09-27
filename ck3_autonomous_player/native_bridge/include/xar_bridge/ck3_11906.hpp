@@ -1081,6 +1081,28 @@ struct MarriageHeirRelationshipV1 {
                          const MarriageHeirRelationshipV1 &) = default;
 };
 
+enum class CurrentFirstHeirRelationshipFailureV1 : std::uint8_t {
+  none = 0,
+  frame_changed,
+  heir_unavailable,
+  relationship_unavailable,
+  partner_unavailable,
+  bilateral_inconsistent,
+};
+
+struct CurrentFirstHeirRelationshipReadV1 {
+  CurrentFirstHeirRelationshipFailureV1 failure =
+      CurrentFirstHeirRelationshipFailureV1::heir_unavailable;
+  std::int32_t heir_character_id = -1;
+  MarriageHeirRelationshipV1 relationship{};
+};
+
+// Independent current relation read for the same-revision public first heir.
+// Empty family data is a valid empty relation; failed identity or reciprocity
+// is never reported as an empty relation.
+CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
+    const Bindings &bindings, std::int32_t heir_character_id) noexcept;
+
 struct MarriageCandidateAlliancePrivateReadV1 {
   MarriageCandidateAlliancePrivateFailureV1 failure =
       MarriageCandidateAlliancePrivateFailureV1::binding_unavailable;
