@@ -25,6 +25,8 @@
 
 下一次实机只读探针应在同一来源日冻结 `CRegimentID`、target Province ID、type/class、六个固定 enum 的实际 `0x2940E80` 返回、四个 class 动态 enum 及其返回、`0x2C8EA90` 的基础六维、中间聚合结果、最终 `0x239CAE0` 的 `Stats38`；暂停控制帧和 schedule 入口各记录一次，并与既有 raw entry 对拍。若有任何 identity、class、target 或序列不一致，就不能跨帧归因。
 
+[RegimentID 87 的有界来源审计](maa-regiment-87-refresh-source-boundary-2026-09-27.md)补充了第 11/21 日同一职业兵团的冻结数值、标准入口额外 `r9=0` 的跳过边界，以及目标省份输入路径；具体 modifier 来源仍待同帧采值。
+
 有界复核（不启动游戏、不扫描完整 EXE；校验脚本只读指定指令和最多 400 个 `0x38` 字节的 metadata 行）：
 
 ```text
