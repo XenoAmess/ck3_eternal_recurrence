@@ -1,0 +1,49 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
+  "created_at_utc": "2026-09-27T21:42:17Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "blocks_prisoner_release_value_comparison_only",
+  "scope": "Supply the current-war retention and release consequence for three actual Robert prisoners. The nonwar consumer owns relationship value and any future release choice; this request does not authorize a prisoner action or ask the war maintainer to rebuild the prisoner planner.",
+  "source": {
+    "latest_master_when_filed": "57faadc63e578f419ec4d0d1475264b3b3a86b9e",
+    "ck3_version": "1.19.0.6-steam23530548",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "A520BCB688ED921E8DA7410D8426E2FE443135F3F0CECBA928791CCBA0243245",
+    "lifecycle": "ordinary_campaign_succession/xar_off",
+    "campaign": "1066_robert_and_legal_succession"
+  },
+  "observed": {
+    "historical_attempt_label": "R0265 (unallocated historical label; physical paused report only)",
+    "source_checkpoint_history_index": 2825,
+    "source_checkpoint_sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+    "paused_snapshot_id": "native:3",
+    "paused_native_revision": 3,
+    "paused_date_raw": 53217624,
+    "played_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "active_war_id": 16777231,
+    "prisoners": [
+      {"character_id": 34486, "house_id": 2370, "dynasty_id": 2370},
+      {"character_id": 44484, "house_id": null, "dynasty_id": null},
+      {"character_id": 47028, "house_id": null, "dynasty_id": null}
+    ],
+    "private_collection": "All three full CharacterIDs are held by player 29829 in the same paused native revision. Native finalized unconditional-release previews report can_send=true, auto_accept=true, and zero on-send resource costs; each ransom quote is unavailable. No prisoner action was submitted.",
+    "war_binding_missing": "The prisoner rows do not say whether each prisoner is a WarID 16777231 PoW, is included in an attainable war-exit release pair, or has the FP3 free-house-member CB prestige consequence. Missing means unknown, not false or zero."
+  },
+  "requested_delivery": [
+    "Expose, or give a source-bound read-only adapter for, each named prisoner against the same paused WarID: whether current war custody/PoW or an actual attainable exit-term release pair creates a retention commitment, and the exact war/CB/side/participant and full-CharacterID evidence behind that result. Preserve unavailable and not-applicable separately.",
+    "Resolve the narrow original-script FP3 free-house-member CB consequence only when the observed war/primary attacker/defender and relevant prisoner House make it applicable. Report actual source-bound prestige/term semantics or unavailable; do not invent an expected amount.",
+    "State the frame/version and future resource or pending commitment interface that the nonwar prisoner consumer can join with its existing private collection. A static/no-live delivery must say so; a live claim needs an independently paired paused readback."
+  ],
+  "evidence": {
+    "git_formal_report": "../evidence/WAR-ROBERT-H2825-SIEGE-PARTITION-20260928.r0265-formal-report.json",
+    "git_formal_report_sha256": "B990E9F9E0F3E83B2412F86D9AE491820A0A5AA7EA6B83A028F7DF5A5B77E95B",
+    "git_carries_raw_save_driver_dll": false,
+    "replay_dependency": "The Git report is sufficient to inspect the observed question. Exact replay, if needed, requires independently verified source save, driver, complete sidecar and matching DLL through the separate asset channel."
+  },
+  "consumer_acceptance": "After delivery reaches master, the nonwar consumer joins it to a same-frame private prisoner collection and native relationship readback. Only a proven positive, legal choice can advance to typed release, independent postcondition, next-turn receipt and official cold restore. This request alone does not raise M6 readiness.",
+  "coordination_boundary": "Cross-machine knowledge uses Git; each machine uses only its own operator MCP and may run one CK3. The request creates no global CK3 window lock."
+}
