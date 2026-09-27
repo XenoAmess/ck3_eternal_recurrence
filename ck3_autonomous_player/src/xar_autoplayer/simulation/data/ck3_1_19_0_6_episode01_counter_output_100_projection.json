@@ -1,0 +1,626 @@
+{
+  "fixture_kind": "ck3-1.19.0.6-active-counter-output-100-cross-check",
+  "source": {
+    "attempt": 100,
+    "source_checkpoint_attempt": 99,
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_sha256": "ABEE0A5AD16347A9EA2F10454D111A769CEDB84E343010792619CBB27A4CD858",
+    "source_save_sha256": "E6155C9C127EC3D1D758468653E8ABC3458A96B50EA053E303FDCCAD18C0B731",
+    "source_receipt_sha256": "A68C4D38CC14B11FCB4078E8D9074C9EE5793B0EF20674199327E6D0A983B415",
+    "response_sha256": {
+      "before-control": "428B64DEA74202B5C5A2835E3079964C2227EC83946B3BB7A666E6D3CAB364EF",
+      "trace-finish": "644580703FE18769B081CCEBCC96B473BF459E4489835777117D6B070014FBFC",
+      "after-control": "14055050DBA2548FFEB71B14CF4D32CFC1C55F7170D345C1EA5D1C8415EEC089"
+    },
+    "combat_id": 16777218,
+    "before_date_raw": 53146512,
+    "after_date_raw": 53146536,
+    "before_phase_day": 8,
+    "after_phase_day": 9,
+    "trace_failure_flags": 0,
+    "original_trace_ready": false,
+    "full_mutable_transition_bundle_complete": false
+  },
+  "trace": {
+    "post_counter_attack_raw": [
+      7086468150,
+      1367059376
+    ],
+    "outgoing_damage_raw": [
+      116572401,
+      63568260
+    ]
+  },
+  "counter": {
+    "source": "native_resolve_counter_classes_after_0x23caf20",
+    "pair_complete": true,
+    "class_count": 13,
+    "scale": 100000,
+    "before_context_raw": [
+      125000,
+      100000
+    ],
+    "after_context_raw": [
+      125000,
+      100000
+    ],
+    "sides": [
+      {
+        "side_index": 0,
+        "primary_owner_character_id": 31549,
+        "context_raw": 125000,
+        "native_countered_entry_count": 24,
+        "native_countering_entry_count": 14,
+        "same_regiment_ids_before_after": true,
+        "same_counter_metadata_before_after": true,
+        "native_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "before_model_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "after_model_retention_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "before_model_matches_native": true,
+        "mismatch_class_indices": [],
+        "entry_mapping": [
+          {
+            "regiment_id": 87,
+            "native_carmy_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": 0,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              },
+              {
+                "class_index": 0,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "before_current_raw": 8869367,
+            "after_current_raw": 8816299
+          },
+          {
+            "regiment_id": 90,
+            "native_carmy_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 97199,
+            "after_current_raw": 97061
+          },
+          {
+            "regiment_id": 91,
+            "native_carmy_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96891,
+            "after_current_raw": 96738
+          },
+          {
+            "regiment_id": 92,
+            "native_carmy_id": 16777221,
+            "owner_character_id": 31549,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 93118,
+            "after_current_raw": 92786
+          },
+          {
+            "regiment_id": 104,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": 3,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 6,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "before_current_raw": 24252840,
+            "after_current_raw": 23997186
+          },
+          {
+            "regiment_id": 105,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": 11,
+            "stack_size_soldiers": 10,
+            "targets": [],
+            "before_current_raw": 0,
+            "after_current_raw": 0
+          },
+          {
+            "regiment_id": 106,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": 8,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 4,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "before_current_raw": 8240193,
+            "after_current_raw": 8161035
+          },
+          {
+            "regiment_id": 110,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 97451,
+            "after_current_raw": 97325
+          },
+          {
+            "regiment_id": 111,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96891,
+            "after_current_raw": 96738
+          },
+          {
+            "regiment_id": 112,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96506,
+            "after_current_raw": 96334
+          },
+          {
+            "regiment_id": 113,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 95840,
+            "after_current_raw": 95612
+          },
+          {
+            "regiment_id": 114,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96017,
+            "after_current_raw": 95822
+          },
+          {
+            "regiment_id": 115,
+            "native_carmy_id": 16777231,
+            "owner_character_id": 32725,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96017,
+            "after_current_raw": 95822
+          },
+          {
+            "regiment_id": 176,
+            "native_carmy_id": 22,
+            "owner_character_id": 32231,
+            "class_index": 0,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              },
+              {
+                "class_index": 0,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "before_current_raw": 39751322,
+            "after_current_raw": 39515719
+          },
+          {
+            "regiment_id": 177,
+            "native_carmy_id": 22,
+            "owner_character_id": 32231,
+            "class_index": 11,
+            "stack_size_soldiers": 10,
+            "targets": [],
+            "before_current_raw": 0,
+            "after_current_raw": 0
+          },
+          {
+            "regiment_id": 179,
+            "native_carmy_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 99936,
+            "after_current_raw": 99875
+          },
+          {
+            "regiment_id": 180,
+            "native_carmy_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 99860,
+            "after_current_raw": 99726
+          },
+          {
+            "regiment_id": 181,
+            "native_carmy_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 99719,
+            "after_current_raw": 99452
+          },
+          {
+            "regiment_id": 182,
+            "native_carmy_id": 22,
+            "owner_character_id": 32231,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 99156,
+            "after_current_raw": 98358
+          },
+          {
+            "regiment_id": 217,
+            "native_carmy_id": 27,
+            "owner_character_id": 34320,
+            "class_index": 0,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              },
+              {
+                "class_index": 0,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "before_current_raw": 8889435,
+            "after_current_raw": 8837241
+          },
+          {
+            "regiment_id": 219,
+            "native_carmy_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 97985,
+            "after_current_raw": 97893
+          },
+          {
+            "regiment_id": 220,
+            "native_carmy_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 95644,
+            "after_current_raw": 95238
+          },
+          {
+            "regiment_id": 221,
+            "native_carmy_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 94509,
+            "after_current_raw": 94242
+          },
+          {
+            "regiment_id": 222,
+            "native_carmy_id": 27,
+            "owner_character_id": 34320,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 91863,
+            "after_current_raw": 91474
+          }
+        ]
+      },
+      {
+        "side_index": 1,
+        "primary_owner_character_id": 29829,
+        "context_raw": 100000,
+        "native_countered_entry_count": 14,
+        "native_countering_entry_count": 24,
+        "same_regiment_ids_before_after": true,
+        "same_counter_metadata_before_after": true,
+        "native_retention_raw": [
+          10000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "before_model_retention_raw": [
+          10000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "after_model_retention_raw": [
+          10000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "before_model_matches_native": true,
+        "mismatch_class_indices": [],
+        "entry_mapping": [
+          {
+            "regiment_id": 51,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": 1,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 4,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 5,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 8,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 9,
+                "effectiveness_raw": 100000
+              }
+            ],
+            "before_current_raw": 16995387,
+            "after_current_raw": 16361732
+          },
+          {
+            "regiment_id": 52,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": 0,
+            "stack_size_soldiers": 100,
+            "targets": [
+              {
+                "class_index": 1,
+                "effectiveness_raw": 100000
+              },
+              {
+                "class_index": 2,
+                "effectiveness_raw": 200000
+              }
+            ],
+            "before_current_raw": 8125197,
+            "after_current_raw": 7740003
+          },
+          {
+            "regiment_id": 53,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": 11,
+            "stack_size_soldiers": 10,
+            "targets": [],
+            "before_current_raw": 0,
+            "after_current_raw": 0
+          },
+          {
+            "regiment_id": 57,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 97260,
+            "after_current_raw": 96635
+          },
+          {
+            "regiment_id": 58,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 97260,
+            "after_current_raw": 96635
+          },
+          {
+            "regiment_id": 59,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 97052,
+            "after_current_raw": 96381
+          },
+          {
+            "regiment_id": 60,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96811,
+            "after_current_raw": 96085
+          },
+          {
+            "regiment_id": 61,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96525,
+            "after_current_raw": 95736
+          },
+          {
+            "regiment_id": 62,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 96425,
+            "after_current_raw": 95637
+          },
+          {
+            "regiment_id": 63,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 95764,
+            "after_current_raw": 94807
+          },
+          {
+            "regiment_id": 64,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 92488,
+            "after_current_raw": 90824
+          },
+          {
+            "regiment_id": 65,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 90687,
+            "after_current_raw": 88647
+          },
+          {
+            "regiment_id": 66,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 87753,
+            "after_current_raw": 85121
+          },
+          {
+            "regiment_id": 67,
+            "native_carmy_id": 18,
+            "owner_character_id": 29829,
+            "class_index": null,
+            "stack_size_soldiers": null,
+            "targets": [],
+            "before_current_raw": 82129,
+            "after_current_raw": 78434
+          }
+        ]
+      }
+    ]
+  },
+  "interpretation": {
+    "before_model_is_conditional": true,
+    "whole_battle_win_probability": null,
+    "active_resume_input_ready": false
+  }
+}
