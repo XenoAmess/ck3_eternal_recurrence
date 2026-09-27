@@ -1,6 +1,6 @@
 # 战争需求的 Git 文件通道
 
-本目录让非战争执行者和战争维护者通过仓库的普通提交、PR 与 `master` 交换具体需求。任务总线可以提醒本机执行者，但不承担跨机器交付。当前实际请求见 [`requests/WAR-INPUT-R0244-20260927.json`](requests/WAR-INPUT-R0244-20260927.json)。
+本目录让非战争执行者和战争维护者通过仓库的普通提交、PR 与 `master` 交换具体需求。任务总线可以提醒本机执行者，但不承担跨机器交付。当前请求以 `requests/` 文件为准，其中 [`WAR-INPUT-R0244`](requests/WAR-INPUT-R0244-20260927.json) 和 [`Robert H2743 退战`](requests/WAR-ROBERT-H2743-EXIT-20260928.json) 均有独立响应；H2743 的[响应](responses/WAR-ROBERT-H2743-EXIT-20260928.json)还列出了待通过 OneDrive 精确传输的四类原始资产与 SHA-256。
 
 CK3 实例与 operator MCP 按机器分别管理：每台机器最多一个 CK3，本机启动只依赖本机 live 状态、正式配对及实际共享资源条件；另一台机器运行 WAR31 本身不占用本机窗口。早期 H2660 全局窗口等待请求由 [`requests/WAR-WINDOW-ROBERT-H2660-PER-MACHINE-20260928.json`](requests/WAR-WINDOW-ROBERT-H2660-PER-MACHINE-20260928.json) 更正；原请求保留作历史记录。Git 传递更正与成果，不充当实时锁，也不允许调用另一台机器的 MCP。
 
