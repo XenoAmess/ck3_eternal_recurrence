@@ -5,6 +5,26 @@
 
 namespace xar::ck3_11906 {
 
+bool ValidateCurrentFirstHeirRawRelationshipV1(
+    std::int32_t raw_betrothed_character_id,
+    std::int32_t raw_primary_spouse_character_id,
+    const std::vector<std::int32_t> &raw_spouse_character_ids,
+    const MarriageHeirRelationshipV1 &filtered) noexcept {
+  const auto scalar_matches = [](std::int32_t raw, std::int32_t observed) {
+    return (raw == -1 || raw == 0) ? observed == -1
+                                   : raw > 0 && observed == raw;
+  };
+  if (!scalar_matches(raw_betrothed_character_id,
+                      filtered.betrothed_character_id) ||
+      !scalar_matches(raw_primary_spouse_character_id,
+                      filtered.primary_spouse_character_id) ||
+      raw_spouse_character_ids != filtered.spouse_character_ids)
+    return false;
+  return std::all_of(raw_spouse_character_ids.begin(),
+                     raw_spouse_character_ids.end(),
+                     [](std::int32_t id) { return id > 0; });
+}
+
 bool ValidateCurrentFirstHeirBilateralRelationshipV1(
     std::int32_t heir_character_id,
     const MarriageHeirRelationshipV1 &heir,

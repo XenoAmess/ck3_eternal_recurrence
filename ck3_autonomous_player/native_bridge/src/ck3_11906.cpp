@@ -17008,14 +17008,36 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
   const auto read_once = [&](MarriageHeirRelationshipV1 &relationship,
                              std::vector<CurrentFirstHeirPartnerRelationshipV1>
                                  &partners) -> Failure {
+    const auto read_checked_relationship =
+        [&](const void *character, MarriageHeirRelationshipV1 &value) {
+      if (!ReadCharacterRelationships(
+              bindings, character, value.betrothed_character_id,
+              value.primary_spouse_character_id, value.spouse_character_ids))
+        return false;
+      const void *const family_data =
+          LoadAt<const void *>(character, kCharacterFamilyDataOffset);
+      std::int32_t raw_betrothed = -1;
+      std::int32_t raw_primary_spouse = -1;
+      std::vector<std::int32_t> raw_spouses;
+      if (family_data != nullptr) {
+        raw_betrothed = LoadAt<std::int32_t>(
+            family_data, kFamilyBetrothedCharacterIdOffset);
+        raw_primary_spouse = LoadAt<std::int32_t>(
+            family_data, kFamilyPrimarySpouseCharacterIdOffset);
+        if (!ReadNativeIntArray(
+                static_cast<const std::byte *>(family_data) +
+                    kFamilySpouseCharacterIdsOffset,
+                raw_spouses))
+          return false;
+      }
+      return ValidateCurrentFirstHeirRawRelationshipV1(
+          raw_betrothed, raw_primary_spouse, raw_spouses, value);
+    };
     void *const heir = ResolveCharacter(bindings, heir_character_id);
     if (heir == nullptr ||
         LoadAt<void *>(heir, kCharacterDeathDataOffset) != nullptr)
       return Failure::heir_unavailable;
-    if (!ReadCharacterRelationships(
-            bindings, heir, relationship.betrothed_character_id,
-            relationship.primary_spouse_character_id,
-            relationship.spouse_character_ids))
+    if (!read_checked_relationship(heir, relationship))
       return Failure::relationship_unavailable;
     std::vector<std::int32_t> partner_ids =
         relationship.spouse_character_ids;
@@ -17035,10 +17057,7 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
         return Failure::partner_unavailable;
       CurrentFirstHeirPartnerRelationshipV1 peer{};
       peer.character_id = id;
-      if (!ReadCharacterRelationships(
-              bindings, partner, peer.relationship.betrothed_character_id,
-              peer.relationship.primary_spouse_character_id,
-              peer.relationship.spouse_character_ids))
+      if (!read_checked_relationship(partner, peer.relationship))
         return Failure::partner_unavailable;
       partners.push_back(std::move(peer));
     }
