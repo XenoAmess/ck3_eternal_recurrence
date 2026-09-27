@@ -1,0 +1,9 @@
+# 现役续算反制回执 093 同帧实测（2026-09-27）
+
+结论：[live-confirmed] CK3 `1.19.0.6` 的独立受管 093 attempt，以同一份暂停 day-11 存档、同一 native battle-control 查询取得 `active_counter_inputs_v1` 和 `active_combat_resume_inputs_v1`。后者 `observed.active_counter_inputs_v1` 与父战斗帧的该子域逐字段相等；原始响应 SHA-256 为 `D422C36240CD58F61D74F8B10756F01C63F8902E500E3E29066275E71F3C492A`。这证明新回执的**当前帧**反制 census 传递和身份绑定可用，不证明下一日原生 class retention、兵团重排或整场胜率。回执仍是 `status=unavailable`、`input_observation_ready=false`，并保留 `active_regiment_counter_class_stack_context`、`next_day_non_roll_advantage_sources`、`battle_knight_participation_and_dynamic_entry_transitions` 三个续算缺域。
+
+exact EXE SHA-256 为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；新 DLL SHA-256 为 `0E7DCBB78E77B76EB1912D9EB630D9E7A41C6D4A4EDF0A38EC4C364CAF6F66CF`；来源存档 SHA-256 为 `3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953`，其配对保存回执 SHA-256 为 `DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5`。观测身份：`native:3`、date raw `53146488`、CombatID `16777218`、被查询 ArmyID `18`，处于 side 1。13 类反制、两侧 18/14 条职业兵 entry；side 0 被反制、side 1 实施反制的 context 为 Q100000 `125000`，反向为 `100000`。当前帧并未执行 `life-advance` 或战争终局动作。
+
+可重放的[精确投影器](../../ck3_autonomous_player/tools/project_active_resume_receipt_093.py)绑定原始前帧、战斗查询、输入冻结、摘要、清场及 capture report 的 SHA-256；Git 内[小型机器向量](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_active_resume_receipt_093.json)保存该次可验证结果。外置完整素材位于 `D:\workspace\ck3_native_war_ai_promo_work\episode01-active-resume-receipt-attempt-093`，没有覆盖 088/092。清场报告 SHA-256 `38917314E6AFB4B36EF74C48442D628A8AC323EF5AC2EF34C920A72AD5AD2E92` 证明 capture 返回 0、CK3 进程树归零；报告结果为 `ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO`，本 attempt 只做研究回读。
+
+下一步是被动记录真实日界原生 `0x23CF1B0` 的两方向输入和完整 class retention 输出，并用 092 已观测的增援 entry 重排对照。暂停帧 census 不能代替这个日界结果，也不能提前移除缺域。

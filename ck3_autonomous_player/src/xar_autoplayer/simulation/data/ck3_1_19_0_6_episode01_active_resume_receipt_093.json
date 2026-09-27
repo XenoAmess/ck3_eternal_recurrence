@@ -1,0 +1,56 @@
+{
+  "schema": "ck3.native_active_resume_counter_receipt_093.v1",
+  "source": {
+    "attempt": 93,
+    "sha256": {
+      "snapshot": "A49400E9E5AFDA8F832FDCC6BEB66E152621267898C25FCB09E2FCA3492C866C",
+      "control": "D422C36240CD58F61D74F8B10756F01C63F8902E500E3E29066275E71F3C492A",
+      "input_freeze": "13A1B65355CCBBD987367837C6E16C4883BADD6C33D46D978050F6445BD738A5",
+      "summary": "AC11791CD56C5293D40779CA994305E2744C31BBF1D3D9665B3939A241A35BFB",
+      "cleanup": "38917314E6AFB4B36EF74C48442D628A8AC323EF5AC2EF34C920A72AD5AD2E92",
+      "capture_report": "9796EA6C7120B0CDB55227CE0E721FB404B58201DAD73C902DE92AAD2A5B01B9"
+    },
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_sha256": "0E7DCBB78E77B76EB1912D9EB630D9E7A41C6D4A4EDF0A38EC4C364CAF6F66CF",
+    "save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+  },
+  "identity": {
+    "snapshot_id": "native:3",
+    "date_raw": 53146488,
+    "combat_id": 16777218,
+    "subject_public_cunit_id": 18,
+    "side_index": 1
+  },
+  "observed": {
+    "counter_class_count": 13,
+    "counter_entry_counts": [
+      18,
+      14
+    ],
+    "counter_contexts": [
+      {
+        "countered_side_index": 0,
+        "countering_side_index": 1,
+        "countered_primary_owner_character_id": 31549,
+        "countering_primary_owner_character_id": 29829,
+        "context_scale_raw": 125000
+      },
+      {
+        "countered_side_index": 1,
+        "countering_side_index": 0,
+        "countered_primary_owner_character_id": 29829,
+        "countering_primary_owner_character_id": 31549,
+        "context_scale_raw": 100000
+      }
+    ],
+    "resume_counter_equals_parent": true,
+    "resume_status": "unavailable",
+    "resume_input_observation_ready": false,
+    "resume_missing_domains": [
+      "active_regiment_counter_class_stack_context",
+      "next_day_non_roll_advantage_sources",
+      "battle_knight_participation_and_dynamic_entry_transitions"
+    ]
+  },
+  "cleanup_ok": true
+}

@@ -4,6 +4,8 @@
 
 后续代码将 `active_counter_inputs_v1` 原样纳入同一 `BattleControlSnapshot` 序列化的 `active_combat_resume_inputs_v1.observed`，由 Python 合同逐字段与父 battle-control 帧核对；原生 census 为 unavailable 时，同样保留其原因而不暴露部分 operand。该附录只改善研究与消费方看到同帧输入的能力。`active_regiment_counter_class_stack_context` **仍列在续算缺域**：当前帧完整不证明下一日原生 retention 调用、兵团重排或增援后的重新取数顺序。`status=unavailable`、`input_observation_ready=false` 与智能体的禁用门槛不变。下文 088 回执是变更前历史证据，不改写其原始字节或结论。
 
+[093 独立实机回读](active-combat-resume-counter-receipt-attempt-093-2026-09-27.md)验证了该新增回执字段与父 battle-control 帧逐字段一致，日期没有推进，清场完成。
+
 `battle_control_snapshot.active_counter_inputs_v1` 是 CK3 1.19.0.6 的只读观察子域。它在现有 `ReadBattleControlSnapshotSample` 内、两侧 battle entries 读完后读取；外层 battle-control 对整个 sample（包括本字段）做两次相等比较，且要求观察前后世界修订号与日期一致。字段的 `available` 只表示**当前暂停帧的反制基础 operand census 完整**，不是下一战斗日的 retention、出伤或整场胜率已获验证。`active_combat_resume_inputs_v1` 仍返回 `unavailable/same_frame_resume_operands_incomplete`，其 `missing_required_domains` 仍含 `active_regiment_counter_class_stack_context`。
 
 来源边界沿用[静态审计](active-combat-counter-context-source-audit-2026-09-27.md)：现役兵团逐条取自 `CCombatSide` 的 `0x60` entry，RegimentID、CArmyID、bucket/index 和 `entry+0x18` 的 Q100000 当前作战人数与 battle-control 同源。`CRegiment+0x18` 的 inner type 提供反制 class、stack 和完整目标表。`read_counter_current_chunk` 用包含同一 full RegimentID 和**现役 entry 当前人数**的 synthetic entry 调用，绝不使用 v3 预接战的 `regiment.current_soldiers * 100000`。class 为负的 MAA 是显式 `absent`，其 class、stack、chunk 都是 null，目标表为空；其他任何兵团读取、generation、target 或 chunk 失败会使**整个子域** unavailable，不能混合发布部分成功行。
