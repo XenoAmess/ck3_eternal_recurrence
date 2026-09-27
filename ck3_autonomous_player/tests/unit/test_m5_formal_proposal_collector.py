@@ -15,6 +15,7 @@ from xar_autoplayer.m5_formal_proposal_collector import (
     SOURCE_SCHEMA,
     collect_m5_formal_proposals,
     plan_m5_formal_query_only,
+    plan_m5_wartime_query_only,
 )
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
 from xar_autoplayer.m5_war_cash_resource_v1 import observe_active_war_cash_resource_v1
@@ -782,6 +783,75 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
                          "M5 scene observation is unavailable")
         self.assertEqual(planned["plan"]["family_marriage_private_diagnostic"],
                          {"valued": True})
+
+
+class M5WartimeObservationTests(unittest.TestCase):
+    def _plan(self, observation: object) -> dict[str, object]:
+        return {
+            "revision": _FRAME["revision"],
+            "plan": {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_siege_forecast_inputs_query",
+                "selected_step": "query-combat-simulation-inputs-v3-2629",
+                "construction_wartime_observation": observation,
+            },
+        }
+
+    def _construction(self) -> dict[str, object]:
+        return {
+            "status": "observed",
+            "native_source_status": "selected",
+            "native_budgeted_positive_income_candidate": True,
+            "candidate": {
+                "barony_title_id": 2103,
+                "province_id": 2635,
+                "slot_index": 1,
+                "building_key": "farm_estates_01",
+                "stock_gold_cost_raw": 18_000_000,
+                "authored_monthly_income_hundredths": 70,
+            },
+            "observed_player_gold_raw": 40_000_000,
+            "observed_active_war_count": 1,
+            "source_frame": {
+                "snapshot_id": _FRAME["snapshot_id"],
+                "revision": _FRAME["revision"],
+                "native_revision": _FRAME["native_revision"],
+                "date_raw": _FRAME["date_raw"],
+                "episode_run_id": _FRAME["episode_run_id"],
+                "actor_character_id": _FRAME["played_character_id"],
+            },
+        }
+
+    def test_h3075_type_building_remains_read_only_with_war_cash_missing(self):
+        original = self._plan(self._construction())
+        result = plan_m5_wartime_query_only(
+            object(), original, snapshot=_snapshot(), history=[],
+            available_steps=set(),
+        )
+        plan = result["plan"]
+        self.assertEqual(plan["selected_step"], original["plan"]["selected_step"])
+        self.assertEqual(plan["phase"], original["plan"]["phase"])
+        observed = plan["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "incomplete_war_cash")
+        self.assertEqual(observed["war_ids"], [16777231])
+        self.assertIn("future_war_cost_upper_raw", observed["missing"])
+        self.assertIn("pending_war_cash_raw", observed["missing"])
+        self.assertFalse(observed["formal_action_ready"])
+        self.assertEqual(observed["candidate"]["stock_gold_cost_raw"], 18_000_000)
+        self.assertNotIn("m5_joint_wartime_observation", original["plan"])
+
+    def test_stale_construction_frame_does_not_become_a_joint_candidate(self):
+        construction = self._construction()
+        construction["source_frame"]["date_raw"] += 24
+        result = plan_m5_wartime_query_only(
+            object(), self._plan(construction), snapshot=_snapshot(),
+            history=[], available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "construction_observation_frame_mismatch")
+        self.assertIsNone(observed["candidate"])
+        self.assertIn("same_frame_native_budgeted_building", observed["missing"])
+        self.assertFalse(observed["formal_action_ready"])
 
 
 if __name__ == "__main__":

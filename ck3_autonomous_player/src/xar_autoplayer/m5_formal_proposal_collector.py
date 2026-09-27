@@ -50,6 +50,15 @@ from .m5_observed_opportunity_selector import (
 SOURCE_SCHEMA = "xar.ck3.m5-formal-proposal-sources.v1"
 RESULT_SCHEMA = "xar.ck3.m5-formal-proposal-collection.v1"
 _DOMAIN_ORDER = ("war", "council", "building", "marriage", "diplomacy", "lifestyle")
+_MISSING_ACTIVE_WAR_CASH = (
+    "pending_war_cash_raw",
+    "immediate_war_action_cost_raw",
+    "future_war_cost_upper_raw",
+    "future_risk_budget_raw",
+    "policy_minimum_gold_reserve_raw",
+    "horizon_days",
+    "future_bound_assumptions",
+)
 
 
 def _same_frame_root_returned_unavailable(
@@ -185,6 +194,103 @@ def collect_m5_formal_proposals(
         producer.get("family_status"), str
     ):
         result["producer_family_status"] = producer["family_status"]
+    return result
+
+
+def plan_m5_wartime_query_only(
+    driver: object, planned: Mapping[str, object], *,
+    snapshot: Mapping[str, object], history: Sequence[Mapping[str, object]],
+    available_steps: set[str],
+) -> dict[str, object]:
+    """Classify an existing wartime building read without replacing war play.
+
+    The active-war cash contract has no runtime producer yet.  A native-legal
+    building observation alone cannot reserve shared gold or authorize a
+    construction submit.  Keep the already selected war, lifestyle or receipt
+    step and make the missing joint input visible in the formal turn report.
+    """
+    del driver, history, available_steps
+    result = deepcopy(dict(planned))
+    plan = result.get("plan")
+    if not isinstance(plan, Mapping):
+        raise ValueError("M5 wartime observation lacks a formal plan")
+    frame = observed_frame(snapshot)
+    wars = snapshot.get("active_wars")
+    if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+        raise ValueError("M5 wartime observation requires a paused map frame")
+    if not isinstance(wars, list) or not wars:
+        raise ValueError("M5 wartime observation requires an active war")
+    war_ids = [row.get("war_id") for row in wars
+               if isinstance(row, Mapping)]
+    if (len(war_ids) != len(wars)
+            or any(type(war_id) is not int or war_id <= 0
+                   for war_id in war_ids)):
+        raise ValueError("M5 wartime observation lacks exact WarIDs")
+    construction = plan.get("construction_wartime_observation")
+    status = "construction_observation_unavailable"
+    missing = ["same_frame_native_budgeted_building", *_MISSING_ACTIVE_WAR_CASH]
+    candidate: dict[str, object] | None = None
+    if len(war_ids) != 1:
+        status = "multiple_wars_cash_aggregation_unavailable"
+        missing.insert(0, "aggregate_active_war_cash_resource")
+    elif isinstance(construction, Mapping):
+        source = construction.get("source_frame")
+        expected_source = {
+            "snapshot_id": frame["snapshot_id"],
+            "revision": frame["revision"],
+            "native_revision": frame["native_revision"],
+            "date_raw": frame["date_raw"],
+            "episode_run_id": frame["episode_run_id"],
+            "actor_character_id": frame["played_character_id"],
+        }
+        treasury = snapshot.get("played_character_gold")
+        if (source != expected_source
+                or not isinstance(treasury, Mapping)
+                or treasury.get("scale") != 100_000
+                or construction.get("observed_player_gold_raw")
+                != treasury.get("raw")
+                or construction.get("observed_active_war_count") != 1):
+            status = "construction_observation_frame_mismatch"
+        elif construction.get("status") == "source_red":
+            status = "construction_source_red"
+        elif (construction.get("status") == "observed"
+              and construction.get("native_source_status")
+              == "no_legal_budgeted_building"
+              and construction.get("positive_income_coverage_complete") is True):
+            status = "no_budgeted_building_observed"
+            missing = list(_MISSING_ACTIVE_WAR_CASH)
+        elif (construction.get("status") == "observed"
+              and construction.get("native_source_status") == "selected"
+              and construction.get("native_budgeted_positive_income_candidate")
+              is True
+              and isinstance(construction.get("candidate"), Mapping)):
+            candidate = deepcopy(dict(construction["candidate"]))
+            if (type(candidate.get("stock_gold_cost_raw")) is int
+                    and candidate["stock_gold_cost_raw"] > 0
+                    and type(candidate.get("authored_monthly_income_hundredths"))
+                    is int
+                    and candidate["authored_monthly_income_hundredths"] > 0):
+                status = "incomplete_war_cash"
+                missing = list(_MISSING_ACTIVE_WAR_CASH)
+            else:
+                status = "construction_candidate_value_unavailable"
+                candidate = None
+        else:
+            status = "construction_observation_incomplete"
+    result["plan"] = {
+        **deepcopy(dict(plan)),
+        "m5_joint_wartime_observation": {
+            "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+            "scope": "construction_vs_active_war_cash",
+            "status": status,
+            "read_only": True,
+            "formal_action_ready": False,
+            "frame": frame,
+            "war_ids": war_ids,
+            "candidate": candidate,
+            "missing": missing,
+        },
+    }
     return result
 
 
