@@ -51,6 +51,29 @@ class PrivatePhaseTraceContractTests(unittest.TestCase):
                          self.calls[-1][1]["request_fields"])
         self.assertNotIn("capture_runtime_join_full_entries",
                          self.calls[-1][1]["request_fields"])
+        self.assertNotIn("capture_runtime_counter_output",
+                         self.calls[-1][1]["request_fields"])
+
+    def test_optional_counter_output_capture_is_bounded_to_begin(self):
+        for value in (True, False):
+            with self.subTest(value=value):
+                request = {**self.begin, "capture_runtime_counter_output": value}
+                private_phase_trace_call(request, enabled=True, driver=self.driver)
+                self.assertIs(self.calls[-1][1]["request_fields"]
+                              ["capture_runtime_counter_output"], value)
+        prior = len(self.calls)
+        for value in (0, 1, "true", None):
+            with self.subTest(value=value), self.assertRaises(RuntimeError):
+                private_phase_trace_call(
+                    {**self.begin, "capture_runtime_counter_output": value},
+                    enabled=True, driver=self.driver)
+        finish = {key: value for key, value in self.begin.items()
+                  if key != "checkpoint_sequence"}
+        finish["step"] = "experimental-combat-phase-event-trace-finish-v1"
+        finish["capture_runtime_counter_output"] = True
+        with self.assertRaises(RuntimeError):
+            private_phase_trace_call(finish, enabled=True, driver=self.driver)
+        self.assertEqual(len(self.calls), prior)
 
     def test_join_width_requires_bool_and_frozen_candidate(self):
         for value in (True, False):

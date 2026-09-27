@@ -252,6 +252,12 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
                     "Join full-entry capture needs enabled join-width capture")
             fields["capture_runtime_join_full_entries"] = capture_full_entries
             allowed.add("capture_runtime_join_full_entries")
+        if "capture_runtime_counter_output" in request:
+            capture_counter_output = request["capture_runtime_counter_output"]
+            require(type(capture_counter_output) is bool,
+                    "Runtime counter-output capture flag must be bool")
+            fields["capture_runtime_counter_output"] = capture_counter_output
+            allowed.add("capture_runtime_counter_output")
     require(set(request) == allowed,
             "Private phase trace request fields differ from the bounded contract")
     return driver._execute_primitive_step(
