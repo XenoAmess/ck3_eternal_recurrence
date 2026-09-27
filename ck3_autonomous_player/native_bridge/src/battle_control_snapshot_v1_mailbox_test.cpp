@@ -327,6 +327,35 @@ int main() {
   if (!SerializeBattleControlSnapshotV1(false_levy_knight).empty()) {
     return Fail("battle-control admitted a knight field on a levy entry");
   }
+  auto accolade_link = complete;
+  auto &linked_entry = accolade_link.attacker.men_at_arms_entries[0];
+  linked_entry.accolade_link_status = "observed";
+  linked_entry.accolade_id_raw = 77;
+  const auto linked_json = SerializeBattleControlSnapshotV1(accolade_link);
+  if (!Contains(linked_json,
+                "\"accolade_source\":{\"link_status\":\"observed\","
+                "\"accolade_id_raw\":77,\"rows_status\":\"unknown_not_observed\","
+                "\"rows\":null,\"source_gate_status\":"
+                "\"unknown_original_call_not_observed\"}")) {
+    return Fail("battle-control claimed unseen accolade source rows");
+  }
+  linked_entry.accolade_id_raw = -1;
+  if (!Contains(SerializeBattleControlSnapshotV1(accolade_link),
+                "\"rows_status\":\"not_applicable_no_accolade\","
+                "\"rows\":null,\"source_gate_status\":"
+                "\"not_applicable_no_accolade\"")) {
+    return Fail("battle-control failed the no-accolade link case");
+  }
+  linked_entry.accolade_link_status = "unavailable_character_generation";
+  linked_entry.accolade_id_raw.reset();
+  if (!Contains(SerializeBattleControlSnapshotV1(accolade_link),
+                "\"link_status\":\"unavailable_character_generation\"")) {
+    return Fail("battle-control lost unresolved knight link semantics");
+  }
+  linked_entry.accolade_link_status = "observed";
+  if (!SerializeBattleControlSnapshotV1(accolade_link).empty()) {
+    return Fail("battle-control accepted observed link without ID");
+  }
   auto owner_subset = complete;
   owner_subset.attacker.ordered_armies.push_back(
       {67'108'902, 83'886'342, 101, complete.combat_id});

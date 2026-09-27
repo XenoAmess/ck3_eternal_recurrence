@@ -31,3 +31,11 @@
 ## 第一层只读暴露（静态实现，待实机）
 
 `query_battle_control_snapshot_v1` 的每条 `men_at_arms_entries` 新增可选的 `knight_character_id_raw:int32`。读取同一条 entry 已验证的 `CRegiment+0x148`，在调用既有 entry-strength getter 后复读，变动则整帧拒绝；序列化保留 `-1` 空槽和带符号 full ID，不将其改写为军队 owner，也不跳过零兵力 entry。徵召兵条目不带该字段。Python 标准化同时接受没有此字段的历史回执，新增字段只接受 int32（拒绝 bool/null/越界）。原战斗查询其余字段和 `active_combat_resume_inputs_v1` 的缺域判定保持原样。这只封闭「暂停帧完整 MAA 槽位与骑士 ID」这一层，尚不证明称号资格或下一日优势。
+
+## 第二层只读链接与明确未知（静态实现，待实机）
+
+每条现役 MAA entry 可选的 `accolade_source` 对象把**可读取的存储链接**与**未观测的原调用门**分开。非空骑士 ID 经 `Character` storage full-ID 回读，再只读取 Character `+0x1A8` 扩展指针与其 `+0x568` 称号 ID；entry-strength getter 后复核 Character 身份、扩展指针与 ID。失败仅将该 entry 标为 `unavailable_character_generation` 或 `unavailable_link_changed`，不把整个原有战斗查询误报为失败。空骑士槽标 `not_applicable_empty_knight_slot`。`observed` 只代表原始链接字节稳定；它**不代表** Character/Accolade 有效性虚调用通过。
+
+`accolade_source.rows` 固定为 `null`，`rows_status` 为 `unknown_not_observed`（若无骑士或链接 ID `-1` 则为相应 `not_applicable`）；`source_gate_status` 为 `unknown_original_call_not_observed` 或相应 `not_applicable`。生产标准化拒绝任何伪造的 rows、`passed` 门或不相符的 status。原版 `0x251C200` 会读取来源 row `+0x10` 的对象并调用 vtable `+0x00`；现有 v3 读取还会主动调用 `AccoladeValidate`、`VcallBool`、`AccoladeHasParameter`。没有暂停帧安全重调证明，故此层故意不运行它们，也不声称输出完整来源行。后续若要填 `rows`，必须另加 exact-build 来源对象身份、来源生命周期/有界数组读回和原调用边界 gate 观测，再升 schema；不能把 `side+0x110` 汇总残差充作来源行。
+
+同日 fresh-load 对照已经证明优势与多条 MAA 有效伤害/坚韧会变（[独立证据](active-battle-fresh-load-frame-divergence-2026-09-27.md)）。这个现象为称号刷新对拍提供取样点，但当前不能将差异直接归因为称号：还需要在同一 CombatID/日期比较全 MAA 槽位、角色称号链接、原 `0x251C200` gate 与原刷新后的有序 modifier 行。

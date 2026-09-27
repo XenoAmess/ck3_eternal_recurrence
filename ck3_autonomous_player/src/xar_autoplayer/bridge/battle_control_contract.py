@@ -211,6 +211,10 @@ _ENTRY_KEYS = {
     "effective_screen_raw",
     "entry_strength_raw",
 }
+_ACCOLADE_SOURCE_KEYS = {
+    "link_status", "accolade_id_raw", "rows_status", "rows",
+    "source_gate_status",
+}
 
 _PARTICIPANT_HARD_KEYS = {
     "row_index",
@@ -1465,7 +1469,10 @@ def _normalize_entries(
             set(row) != _ENTRY_KEYS
             and not (
                 bucket == "men_at_arms"
-                and set(row) == _ENTRY_KEYS | {"knight_character_id_raw"}
+                and set(row) in (
+                    _ENTRY_KEYS | {"knight_character_id_raw"},
+                    _ENTRY_KEYS | {"knight_character_id_raw", "accolade_source"},
+                )
             )
         ):
             raise ValueError(f"{row_name} has a malformed schema")
@@ -1590,6 +1597,52 @@ def _normalize_entries(
                 row["knight_character_id_raw"],
                 f"{row_name}.knight_character_id_raw",
             )
+        if "accolade_source" in row:
+            source = row["accolade_source"]
+            if not isinstance(source, dict) or set(source) != _ACCOLADE_SOURCE_KEYS:
+                raise ValueError(f"{row_name}.accolade_source has a malformed schema")
+            link_status = source["link_status"]
+            knight_id = normalized["knight_character_id_raw"]
+            if link_status == "observed" and knight_id != -1:
+                accolade_id = _signed_int32(
+                    source["accolade_id_raw"],
+                    f"{row_name}.accolade_source.accolade_id_raw",
+                )
+            elif link_status in (
+                "not_applicable_empty_knight_slot",
+                "unavailable_character_generation",
+                "unavailable_link_changed",
+            ) and source["accolade_id_raw"] is None:
+                accolade_id = None
+            else:
+                raise ValueError(f"{row_name}.accolade_source link status disagrees")
+            if (knight_id == -1) != (link_status == "not_applicable_empty_knight_slot"):
+                raise ValueError(f"{row_name}.accolade_source knight slot disagrees")
+            expected_status = (
+                "not_applicable_empty_knight_slot"
+                if knight_id == -1
+                else "not_applicable_no_accolade"
+                if link_status == "observed" and accolade_id == -1
+                else "unknown_not_observed"
+            )
+            expected_gate = (
+                expected_status
+                if expected_status != "unknown_not_observed"
+                else "unknown_original_call_not_observed"
+            )
+            if (
+                source["rows_status"] != expected_status
+                or source["rows"] is not None
+                or source["source_gate_status"] != expected_gate
+            ):
+                raise ValueError(f"{row_name}.accolade_source invented source rows or gate")
+            normalized["accolade_source"] = {
+                "link_status": link_status,
+                "accolade_id_raw": accolade_id,
+                "rows_status": expected_status,
+                "rows": None,
+                "source_gate_status": expected_gate,
+            }
         result.append(normalized)
     return result
 

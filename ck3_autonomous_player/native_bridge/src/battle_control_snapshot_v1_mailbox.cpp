@@ -229,7 +229,23 @@ bool ValidateEntries(
         entry.regiment_id <= 0 || army == nullptr ||
         entry.public_cunit_id != army->public_cunit_id ||
         entry.owner_character_id != army->owner_character_id ||
-        (bucket == "levy" && entry.knight_character_id_raw != -1)) {
+        (bucket == "levy" &&
+         (entry.knight_character_id_raw != -1 ||
+          entry.accolade_link_status != "not_sampled" ||
+          entry.accolade_id_raw.has_value())) ||
+        (bucket == "men_at_arms" &&
+         !((entry.accolade_link_status == "not_sampled" &&
+            !entry.accolade_id_raw.has_value()) ||
+           (entry.knight_character_id_raw == -1 &&
+            entry.accolade_link_status == "not_applicable_empty_knight_slot" &&
+            !entry.accolade_id_raw.has_value()) ||
+           (entry.knight_character_id_raw != -1 &&
+            ((entry.accolade_link_status == "observed" &&
+              entry.accolade_id_raw.has_value()) ||
+             ((entry.accolade_link_status ==
+                   "unavailable_character_generation" ||
+               entry.accolade_link_status == "unavailable_link_changed") &&
+              !entry.accolade_id_raw.has_value())))))) {
       return false;
     }
 
@@ -681,6 +697,35 @@ bool AppendRegimentEntry(
     output += ",\"knight_character_id_raw\":";
     if (!AppendNumber(output, entry.knight_character_id_raw)) {
       return false;
+    }
+    if (entry.accolade_link_status != "not_sampled") {
+      output += ",\"accolade_source\":{\"link_status\":";
+      AppendJsonString(output, entry.accolade_link_status);
+      output += ",\"accolade_id_raw\":";
+      if (entry.accolade_id_raw.has_value()) {
+        if (!AppendNumber(output, *entry.accolade_id_raw)) {
+          return false;
+        }
+      } else {
+        output += "null";
+      }
+      output += ",\"rows_status\":\"";
+      output += entry.accolade_link_status == "observed" &&
+                        entry.accolade_id_raw == -1
+                    ? "not_applicable_no_accolade"
+                    : entry.accolade_link_status ==
+                              "not_applicable_empty_knight_slot"
+                          ? "not_applicable_empty_knight_slot"
+                          : "unknown_not_observed";
+      output += "\",\"rows\":null,\"source_gate_status\":\"";
+      output += entry.accolade_link_status == "observed" &&
+                        entry.accolade_id_raw == -1
+                    ? "not_applicable_no_accolade"
+                    : entry.accolade_link_status ==
+                              "not_applicable_empty_knight_slot"
+                          ? "not_applicable_empty_knight_slot"
+                          : "unknown_original_call_not_observed";
+      output += "\"}";
     }
   }
   output += ",\"starting_raw\":";

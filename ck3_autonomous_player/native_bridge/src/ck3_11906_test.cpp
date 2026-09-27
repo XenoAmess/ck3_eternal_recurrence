@@ -5535,12 +5535,37 @@ int main() {
       attacker_reserve.bucket != "men_at_arms" ||
       attacker_reserve.bucket_index != 0 ||
       attacker_reserve.regiment_id != player_regiment_1_id ||
+      attacker_reserve.knight_character_id_raw != -1 ||
+      attacker_reserve.accolade_link_status !=
+          "not_applicable_empty_knight_slot" ||
+      attacker_reserve.accolade_id_raw.has_value() ||
       attacker_reserve.fights_in_main_phase ||
       attacker_reserve.hard_casualties_available ||
       attacker_reserve.hard_casualties_raw != 0 ||
       attacker_reserve.entry_strength_raw != 22'222) {
     return Fail(
         "battle-control fabricated per-entry hard casualties for reserve");
+  }
+  std::array<std::byte, 0x600> linked_extension{};
+  std::copy(g_played_character_extension.begin(),
+            g_played_character_extension.end(), linked_extension.begin());
+  Store(linked_extension, 0x568, std::int32_t{77});
+  Store(g_player_regiment_1, 0x148, played_character_id);
+  Store(g_played_character, 0x1A8,
+        static_cast<void *>(linked_extension.data()));
+  const auto linked_status = xar::ck3_11906::ReadBattleControlSnapshot(
+      bindings, battle_request, battle);
+  Store(g_player_regiment_1, 0x148, std::int32_t{-1});
+  Store(g_played_character, 0x1A8,
+        static_cast<void *>(g_played_character_extension.data()));
+  if (linked_status != xar::game::BattleControlSnapshotStatus::available ||
+      battle.attacker.men_at_arms_entries.size() != 1 ||
+      battle.attacker.men_at_arms_entries[0].knight_character_id_raw !=
+          played_character_id ||
+      battle.attacker.men_at_arms_entries[0].accolade_link_status !=
+          "observed" ||
+      battle.attacker.men_at_arms_entries[0].accolade_id_raw != 77) {
+    return Fail("battle-control lost a stable stored knight accolade link");
   }
   if (battle.defender.side_index != 1 ||
       battle.defender.role != "defender" ||

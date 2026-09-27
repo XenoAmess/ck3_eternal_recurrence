@@ -3829,6 +3829,53 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "malformed schema"):
             self.normalize(extended)
 
+    def test_accolade_link_does_not_fabricate_source_gate(self) -> None:
+        historical = self.normalize(_battle_frame())
+        self.assertNotIn(
+            "accolade_source", historical["attacker"]["men_at_arms_entries"][0]
+        )
+        cases = (
+            (-1, "not_applicable_empty_knight_slot", None,
+             "not_applicable_empty_knight_slot",
+             "not_applicable_empty_knight_slot"),
+            (29_829, "observed", -1, "not_applicable_no_accolade",
+             "not_applicable_no_accolade"),
+            (29_829, "observed", 77, "unknown_not_observed",
+             "unknown_original_call_not_observed"),
+            (29_829, "unavailable_character_generation", None,
+             "unknown_not_observed", "unknown_original_call_not_observed"),
+        )
+        for knight_id, link, accolade_id, rows, gate in cases:
+            frame = _battle_frame()
+            entry = frame["attacker"]["men_at_arms_entries"][0]
+            entry["knight_character_id_raw"] = knight_id
+            entry["accolade_source"] = {
+                "link_status": link,
+                "accolade_id_raw": accolade_id,
+                "rows_status": rows,
+                "rows": None,
+                "source_gate_status": gate,
+            }
+            self.assertEqual(
+                self.normalize(frame)["attacker"]["men_at_arms_entries"][0][
+                    "accolade_source"
+                ],
+                entry["accolade_source"],
+            )
+
+        forged = copy.deepcopy(frame)
+        forged["attacker"]["men_at_arms_entries"][0]["accolade_source"][
+            "rows"
+        ] = []
+        with self.assertRaisesRegex(ValueError, "invented source rows or gate"):
+            self.normalize(forged)
+        forged = copy.deepcopy(frame)
+        forged["attacker"]["men_at_arms_entries"][0]["accolade_source"][
+            "source_gate_status"
+        ] = "passed"
+        with self.assertRaisesRegex(ValueError, "invented source rows or gate"):
+            self.normalize(forged)
+
     def test_terminal_baseline_extension_preserves_historical_receipts(self) -> None:
         historical = self.normalize(_battle_frame())
         self.assertNotIn(

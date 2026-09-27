@@ -14226,9 +14226,28 @@ bool ReadBattleControlEntryBucket(
     }
     row.public_cunit_id = army_identity->public_cunit_id;
     row.owner_character_id = army_identity->owner_character_id;
+    void *knight_character = nullptr;
+    void *accolade_extension = nullptr;
     if (bucket == "men_at_arms") {
       row.knight_character_id_raw =
           LoadAt<std::int32_t>(regiment, kRegimentKnightCharacterIdOffset);
+      if (row.knight_character_id_raw == -1) {
+        row.accolade_link_status = "not_applicable_empty_knight_slot";
+      } else {
+        knight_character = ResolveStoredComponent(
+            bindings.character_storage_slot, row.knight_character_id_raw,
+            kCharacterIdOffset);
+        if (knight_character == nullptr) {
+          row.accolade_link_status = "unavailable_character_generation";
+        } else {
+          accolade_extension = LoadAt<void *>(knight_character, 0x1A8);
+          row.accolade_id_raw = accolade_extension == nullptr
+                                    ? -1
+                                    : LoadAt<std::int32_t>(accolade_extension,
+                                                           0x568);
+          row.accolade_link_status = "observed";
+        }
+      }
     }
     void *const combat_type =
         LoadAt<void *>(regiment, kRegimentInnerTypeOffset);
@@ -14296,6 +14315,17 @@ bool ReadBattleControlEntryBucket(
     }
     row.entry_strength_raw =
         bindings.get_combat_regiment_strength(entry);
+    if (row.accolade_link_status == "observed" &&
+        (ResolveStoredComponent(bindings.character_storage_slot,
+                                row.knight_character_id_raw,
+                                kCharacterIdOffset) != knight_character ||
+         LoadAt<void *>(knight_character, 0x1A8) != accolade_extension ||
+         (accolade_extension != nullptr &&
+          LoadAt<std::int32_t>(accolade_extension, 0x568) !=
+              *row.accolade_id_raw))) {
+      row.accolade_link_status = "unavailable_link_changed";
+      row.accolade_id_raw.reset();
+    }
     if (ResolveStoredComponent(bindings.regiment_storage_slot,
                                row.regiment_id,
                                kRegimentIdOffset) != regiment ||
