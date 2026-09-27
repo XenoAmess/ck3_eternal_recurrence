@@ -486,6 +486,12 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     if (!AppendBool(output, drain.counter_output_pair_complete)) return {};
     output += ",\"count\":";
     if (!AppendNumber(output, drain.counter_output_count)) return {};
+    output += ",\"hook_calls\":";
+    if (!AppendNumber(output, drain.counter_output_hook_calls)) return {};
+    output += ",\"target_calls\":";
+    if (!AppendNumber(output, drain.counter_output_target_calls)) return {};
+    output += ",\"first_failure_gate\":";
+    if (!AppendNumber(output, drain.counter_output_first_failure_gate)) return {};
     output += ",\"sides\":[";
     for (std::uint32_t index = 0; index < drain.counter_output_count; ++index) {
       const auto &row = drain.counter_outputs[index];

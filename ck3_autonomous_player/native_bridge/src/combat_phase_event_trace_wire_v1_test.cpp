@@ -392,6 +392,8 @@ bool OptionalCounterOutputWire() {
   drain->runtime_counter_output_requested = true;
   drain->counter_output_count = 2;
   drain->counter_output_pair_complete = true;
+  drain->counter_output_hook_calls = 2;
+  drain->counter_output_target_calls = 2;
   for (std::size_t index = 0; index < 2; ++index) {
     auto &row = drain->counter_outputs[index];
     row.side_index = static_cast<std::int32_t>(index);
@@ -405,6 +407,7 @@ bool OptionalCounterOutputWire() {
   }
   const auto included = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
   if (!Has(included, "\"runtime_counter_output\"") ||
+      !Has(included, "\"hook_calls\":2,\"target_calls\":2,\"first_failure_gate\":0") ||
       !Has(included, "\"retention_raw\":[87500,100000]") ||
       !Has(included, "\"runtime_counter_output_pair_complete\":true")) {
     return Fail("opt-in counter-output wire is incomplete");

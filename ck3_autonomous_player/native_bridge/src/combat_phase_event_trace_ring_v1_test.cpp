@@ -1103,6 +1103,7 @@ bool CounterOutputCaptureCases() {
     return Fail("counter-output default arm failed");
   ring->committed_count.store(6);
   if (capture(0) || ring->counter_output_count.load() != 0 ||
+      ring->counter_output_hook_calls.load() != 0 ||
       ring->failure_flags.load() != trace_capture_failure_none) {
     return Fail("counter-output default-off gate failed");
   }
@@ -1123,6 +1124,9 @@ bool CounterOutputCaptureCases() {
   ring->post_counter_attack_count.store(1);
   native_values = {100'000, 92'000};
   if (!capture(1) || ring->counter_output_count.load() != 2 ||
+      ring->counter_output_hook_calls.load() != 2 ||
+      ring->counter_output_target_calls.load() != 2 ||
+      ring->counter_output_first_failure_gate.load() != 0 ||
       ring->counter_outputs[1].readout.retention_raw[1] != 92'000 ||
       ring->failure_flags.load() != trace_capture_failure_none) {
     return Fail("counter-output pair was not captured in order");
@@ -1134,6 +1138,9 @@ bool CounterOutputCaptureCases() {
   Store(header, 12, std::int32_t{3});
   const bool malformed_captured = capture(0);
   if (malformed_captured || ring->counter_output_count.load() != 0 ||
+      ring->counter_output_hook_calls.load() != 1 ||
+      ring->counter_output_target_calls.load() != 1 ||
+      ring->counter_output_first_failure_gate.load() != 5 ||
       (ring->failure_flags.load() & trace_capture_failure_counter_output) == 0) {
     std::cerr << "malformed_captured=" << malformed_captured
               << " count=" << ring->counter_output_count.load()

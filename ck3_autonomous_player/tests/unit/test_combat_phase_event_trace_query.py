@@ -88,6 +88,9 @@ def managed_counter_trace() -> dict[str, object]:
                 "requested": True,
                 "pair_complete": True,
                 "count": 2,
+                "hook_calls": 2,
+                "target_calls": 2,
+                "first_failure_gate": 0,
                 "sides": [
                     {
                         "side_index": side_index,
@@ -162,6 +165,17 @@ class CombatPhaseEventTraceQueryTest(unittest.TestCase):
         self.assertIs(diagnostic["forecast_usable"], False)
         self.assertEqual(diagnostic["validation_status"], "live_validation_pending")
         self.assertEqual(diagnostic["sides"], trace["trace"]["runtime_counter_output"]["sides"])
+        self.assertEqual(diagnostic["hook_diagnostic"], {
+            "hook_calls": 2, "target_calls": 2, "first_failure_gate": 0,
+        })
+
+    def test_earlier_counter_output_wire_remains_readable(self) -> None:
+        trace = managed_counter_trace()
+        output = trace["trace"]["runtime_counter_output"]
+        for key in ("hook_calls", "target_calls", "first_failure_gate"):
+            del output[key]
+        self.assertIsNone(normalize_runtime_counter_output_diagnostic_v1(
+            trace)["hook_diagnostic"])
 
     def test_counter_output_partial_capture_remains_diagnostic(self) -> None:
         trace = managed_counter_trace()
@@ -185,6 +199,9 @@ class CombatPhaseEventTraceQueryTest(unittest.TestCase):
             lambda trace: trace["trace"]["runtime_counter_output"]["sides"][0].update(capacity=1),
             lambda trace: trace["trace"]["runtime_counter_output"].update(count=1),
             lambda trace: trace["trace"]["runtime_counter_output"].update(requested=False),
+            lambda trace: trace["trace"]["runtime_counter_output"].update(hook_calls=1),
+            lambda trace: trace["trace"]["runtime_counter_output"].update(target_calls=3),
+            lambda trace: trace["trace"]["runtime_counter_output"].update(first_failure_gate=6),
             lambda trace: trace["trace"]["readiness"].update(runtime_counter_output_pair_complete=False),
             lambda trace: trace["trace"].update(failure_flags=1 << 20),
             lambda trace: trace["managed_checkpoint"].update(detours_uninstalled=None),

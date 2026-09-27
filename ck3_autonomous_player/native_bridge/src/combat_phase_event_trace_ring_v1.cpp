@@ -136,6 +136,13 @@ void MarkFailure(CombatPhaseEventTraceRingV1 &ring,
   ring.failure_flags.fetch_or(flags, std::memory_order_relaxed);
 }
 
+void MarkCounterOutputGate(CombatPhaseEventTraceRingV1 &ring,
+                           std::uint32_t gate) noexcept {
+  std::uint32_t expected = 0;
+  (void)ring.counter_output_first_failure_gate.compare_exchange_strong(
+      expected, gate, std::memory_order_acq_rel);
+}
+
 bool IsStrictlySortedAndValid(
     const CombatPhaseEventTraceObjectRefV1 *rows,
     std::uint32_t count) noexcept {
@@ -1057,6 +1064,9 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.outgoing_damage_count.store(0, std::memory_order_relaxed);
   ring.post_counter_attack_count.store(0, std::memory_order_relaxed);
   ring.counter_output_count.store(0, std::memory_order_relaxed);
+  ring.counter_output_hook_calls.store(0, std::memory_order_relaxed);
+  ring.counter_output_target_calls.store(0, std::memory_order_relaxed);
+  ring.counter_output_first_failure_gate.store(0, std::memory_order_relaxed);
   ring.effect_root_count.store(0, std::memory_order_relaxed);
   ring.effect_node_call_count.store(0, std::memory_order_relaxed);
   ring.effect_node_draw_count.store(0, std::memory_order_relaxed);
@@ -1652,10 +1662,12 @@ bool CaptureCombatCounterOutputV1(
       !ring->plan.capture_runtime_counter_output) {
     return false;
   }
+  ring->counter_output_hook_calls.fetch_add(1, std::memory_order_relaxed);
   if (outer_side != ring->plan.sides[0] &&
       outer_side != ring->plan.sides[1]) {
     return false; // The original wrapper may run for another combat.
   }
+  ring->counter_output_target_calls.fetch_add(1, std::memory_order_relaxed);
   const auto index = outer_side == ring->plan.sides[0] ? 0U : 1U;
   const auto expected_return = ring->plan.module_base +
       (index == 0 ? kCombatOutgoingDamageSide0ReturnRva
@@ -1665,10 +1677,12 @@ bool CaptureCombatCounterOutputV1(
           ring->plan.sides[index] + 0x40 ||
       reinterpret_cast<std::uintptr_t>(countering_header) !=
           ring->plan.sides[1U - index] + 0x40) {
+    MarkCounterOutputGate(*ring, 1); // Caller or MAA-header identity.
     MarkFailure(*ring, trace_capture_failure_counter_output);
     return false;
   }
   if (ring->capture_in_progress.exchange(1, std::memory_order_acq_rel) != 0) {
+    MarkCounterOutputGate(*ring, 2); // Reentry.
     MarkFailure(*ring, trace_capture_failure_reentry);
     return false;
   }
@@ -1676,6 +1690,7 @@ bool CaptureCombatCounterOutputV1(
   bool valid = ring->committed_count.load(std::memory_order_acquire) == 6 &&
                ring->counter_output_count.load(std::memory_order_acquire) == index &&
                GetCurrentThreadId() == ring->plan.owner_thread_id;
+  if (!valid) MarkCounterOutputGate(*ring, 3); // Sequence or thread.
   if (valid) {
 #if defined(_MSC_VER)
     __try {
@@ -1700,9 +1715,11 @@ bool CaptureCombatCounterOutputV1(
                       kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide) &&
               ReadCombatCounterOutputV1(native_header, class_count,
                                         record.readout);
+      if (!valid) MarkCounterOutputGate(*ring, 5); // Native header/readout.
 #if defined(_MSC_VER)
     } __except (EXCEPTION_EXECUTE_HANDLER) {
       valid = false;
+      MarkCounterOutputGate(*ring, 4); // Native memory fault.
       MarkFailure(*ring, trace_capture_failure_memory_fault);
     }
 #endif
@@ -1769,6 +1786,12 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       ring.plan.capture_runtime_counter_output;
   output.counter_output_count =
       ring.counter_output_count.load(std::memory_order_acquire);
+  output.counter_output_hook_calls =
+      ring.counter_output_hook_calls.load(std::memory_order_acquire);
+  output.counter_output_target_calls =
+      ring.counter_output_target_calls.load(std::memory_order_acquire);
+  output.counter_output_first_failure_gate =
+      ring.counter_output_first_failure_gate.load(std::memory_order_acquire);
   if (output.counter_output_count <= output.counter_outputs.size()) {
     std::copy_n(ring.counter_outputs.begin(), output.counter_output_count,
                 output.counter_outputs.begin());

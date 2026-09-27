@@ -41,6 +41,9 @@ _COUNTER_OUTPUT_ROW_KEYS = {
 _COUNTER_OUTPUT_KEYS = {
     "source", "requested", "pair_complete", "count", "sides",
 }
+_COUNTER_OUTPUT_DIAGNOSTIC_KEYS = {
+    "hook_calls", "target_calls", "first_failure_gate",
+}
 _EXPERIMENTAL_TRACE_FINISH_STEP = "experimental-combat-phase-event-trace-finish-v1"
 
 
@@ -64,8 +67,20 @@ def normalize_runtime_counter_output_diagnostic_v1(
     if "runtime_counter_output" not in trace:
         return None
     output = trace["runtime_counter_output"]
-    if not isinstance(output, dict) or set(output) != _COUNTER_OUTPUT_KEYS:
+    if not isinstance(output, dict) or set(output) not in (
+        _COUNTER_OUTPUT_KEYS,
+        _COUNTER_OUTPUT_KEYS | _COUNTER_OUTPUT_DIAGNOSTIC_KEYS,
+    ):
         raise ValueError("runtime counter output has malformed keys")
+    if _COUNTER_OUTPUT_DIAGNOSTIC_KEYS <= set(output):
+        hook_calls = output["hook_calls"]
+        target_calls = output["target_calls"]
+        first_failure_gate = output["first_failure_gate"]
+        if (not _bounded_int(hook_calls, 0, 2**32 - 1)
+                or not _bounded_int(target_calls, 0, hook_calls)
+                or not _bounded_int(first_failure_gate, 0, 5)
+                or (first_failure_gate != 0 and target_calls == 0)):
+            raise ValueError("runtime counter output diagnostic counters differ")
     if output["source"] != _COUNTER_OUTPUT_SOURCE or output["requested"] is not True:
         raise ValueError("runtime counter output source or request differs")
     pair_complete = output["pair_complete"]
@@ -137,6 +152,10 @@ def normalize_runtime_counter_output_diagnostic_v1(
         "pair_complete": pair_complete,
         "count": count,
         "sides": sides,
+        "hook_diagnostic": (
+            {key: output[key] for key in _COUNTER_OUTPUT_DIAGNOSTIC_KEYS}
+            if _COUNTER_OUTPUT_DIAGNOSTIC_KEYS <= set(output) else None
+        ),
     }
 
 

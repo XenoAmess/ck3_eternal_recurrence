@@ -555,6 +555,9 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> outgoing_damage_count{0};
   std::atomic<std::uint32_t> post_counter_attack_count{0};
   std::atomic<std::uint32_t> counter_output_count{0};
+  std::atomic<std::uint32_t> counter_output_hook_calls{0};
+  std::atomic<std::uint32_t> counter_output_target_calls{0};
+  std::atomic<std::uint32_t> counter_output_first_failure_gate{0};
   std::atomic<std::uint32_t> effect_root_count{0};
   std::atomic<std::uint32_t> effect_node_call_count{0};
   std::atomic<std::uint32_t> effect_node_draw_count{0};
@@ -607,6 +610,9 @@ struct CombatPhaseEventTraceRingDrainV1 {
   bool post_counter_attack_pair_complete = false;
   bool runtime_counter_output_requested = false;
   std::uint32_t counter_output_count = 0;
+  std::uint32_t counter_output_hook_calls = 0;
+  std::uint32_t counter_output_target_calls = 0;
+  std::uint32_t counter_output_first_failure_gate = 0;
   std::array<CombatPhaseEventTraceRingV1::CounterOutputRecord, 2>
       counter_outputs{};
   bool counter_output_pair_complete = false;
