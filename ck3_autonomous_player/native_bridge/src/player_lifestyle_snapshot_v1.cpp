@@ -16,6 +16,27 @@ using Result = game::ReadPlayerLifestyleSnapshotResultV1;
 using Snapshot = game::PlayerLifestyleSnapshotV1;
 using State = game::PlayerLifestyleStateV1;
 
+// The same exact trait source is already used by combat_v3.cpp. Keep this
+// subset private to LIFE until an actor-bound paused readback exists.
+constexpr std::uintptr_t kTraitDatabaseGetterRva = 0x8318F0;
+constexpr std::uintptr_t kCharacterHasTraitRva = 0x260F740;
+constexpr std::array<std::string_view, 32> kLifestyleActorTraitKeys{{
+    "education_diplomacy_1", "education_diplomacy_2",
+    "education_diplomacy_3", "education_diplomacy_4",
+    "education_diplomacy_5", "education_martial_1",
+    "education_martial_2", "education_martial_3",
+    "education_martial_4", "education_martial_5",
+    "education_stewardship_1", "education_stewardship_2",
+    "education_stewardship_3", "education_stewardship_4",
+    "education_stewardship_5", "education_intrigue_1",
+    "education_intrigue_2", "education_intrigue_3",
+    "education_intrigue_4", "education_intrigue_5",
+    "education_learning_1", "education_learning_2",
+    "education_learning_3", "education_learning_4",
+    "education_learning_5", "greedy", "generous", "shy",
+    "arrogant", "ambitious", "diligent", "just",
+}};
+
 static_assert(sizeof(void *) == 8,
               "player lifestyle snapshot is x64-only");
 
@@ -289,6 +310,78 @@ bool ReadPointer(const PlayerLifestyleSnapshotAccessV1 &access,
       access.read_memory(access.context, address, &output, sizeof(output));
 }
 
+bool ReadLifestyleActorTraits(
+    const PlayerLifestyleSnapshotEnvironmentV1 &environment,
+    const PlayerLifestyleSnapshotAccessV1 &access,
+    std::uintptr_t character, State &state) noexcept {
+  state.actor_traits_ready = false;
+  state.observed_actor_trait_count = 0;
+  state.observed_actor_trait_keys = {};
+  if (environment.trait_database == nullptr ||
+      environment.character_has_trait == nullptr ||
+      access.read_memory == nullptr || character == 0) {
+    return false;
+  }
+  const auto database = reinterpret_cast<std::uintptr_t>(
+      environment.trait_database());
+  std::uintptr_t data = 0;
+  std::int32_t count = -1;
+  if (database == 0 ||
+      !ReadPointer(access, database + 0x68, data) ||
+      !access.read_memory(access.context, database + 0x74,
+                          &count, sizeof(count)) ||
+      count <= 0 || count > 8192 || data == 0) {
+    return false;
+  }
+  std::array<std::uintptr_t, kLifestyleActorTraitKeys.size()> definitions{};
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto row = data + static_cast<std::uintptr_t>(index) *
+                                sizeof(std::uintptr_t);
+    std::uintptr_t definition = 0;
+    game::PlayerLifestyleStableKeyV1 key{};
+    if (row < data || !ReadPointer(access, row, definition) ||
+        definition == 0 ||
+        !ReadPlayerLifestyleMsvcStableKeyV1(
+            access.context, access.read_memory, definition + 0x18, key)) {
+      return false;
+    }
+    const auto view = PlayerLifestyleStableKeyViewV1(key);
+    const auto match = std::find(kLifestyleActorTraitKeys.begin(),
+                                 kLifestyleActorTraitKeys.end(), view);
+    if (match != kLifestyleActorTraitKeys.end()) {
+      const auto slot = static_cast<std::size_t>(
+          match - kLifestyleActorTraitKeys.begin());
+      if (definitions[slot] != 0) return false;
+      definitions[slot] = definition;
+    }
+  }
+  if (std::any_of(definitions.begin(), definitions.end(),
+                  [](std::uintptr_t value) { return value == 0; })) {
+    return false;
+  }
+  std::uint32_t education_count = 0;
+  std::uint32_t observed_count = 0;
+  std::array<game::PlayerLifestyleStableKeyV1, 32> observed{};
+  for (std::size_t index = 0; index < definitions.size(); ++index) {
+    if (!environment.character_has_trait(
+            reinterpret_cast<void *>(character),
+            reinterpret_cast<const void *>(definitions[index]))) {
+      continue;
+    }
+    if (index < 25 && ++education_count > 1) return false;
+    if (!AssignPlayerLifestyleStableKeyV1(
+            kLifestyleActorTraitKeys[index],
+            observed[observed_count])) {
+      return false;
+    }
+    ++observed_count;
+  }
+  state.observed_actor_trait_keys = observed;
+  state.observed_actor_trait_count = observed_count;
+  state.actor_traits_ready = true;
+  return true;
+}
+
 Failure ReadNativeSource(
     const PlayerLifestyleSnapshotEnvironmentV1 &environment,
     const PlayerLifestyleSnapshotAccessV1 &access,
@@ -407,6 +500,9 @@ Failure ReadNativeSource(
       return Failure::owned_perk_key_read_failed;
     }
   }
+  // A missing optional trait source must not erase the already proven LIFE2
+  // focus/progress row. The serialized status remains explicitly unavailable.
+  ReadLifestyleActorTraits(environment, access, frame.played_character, state);
   return Failure::none;
 }
 
@@ -635,6 +731,12 @@ PlayerLifestyleSnapshotEnvironmentV1 BindPlayerLifestyleSnapshotEnvironmentV1(
   output.unlocked_perks =
       reinterpret_cast<PlayerLifestyleSnapshotEnvironmentV1::PerkSpanGetter>(
           module_base + kPlayerLifestyleOwnedPerksGetterRvaV1);
+  output.trait_database =
+      reinterpret_cast<PlayerLifestyleSnapshotEnvironmentV1::TraitDatabaseGetter>(
+          module_base + kTraitDatabaseGetterRva);
+  output.character_has_trait =
+      reinterpret_cast<PlayerLifestyleSnapshotEnvironmentV1::CharacterHasTrait>(
+          module_base + kCharacterHasTraitRva);
   output.focus_fallback_slot_address =
       module_base + kPlayerLifestyleFocusFallbackSlotRvaV1;
   return output;
@@ -871,6 +973,15 @@ std::string SerializePlayerLifestyleSnapshotV1(
   output += ",\"owned_perk_keys\":";
   AppendKeyArray(output, snapshot.state.owned_perk_keys,
                  snapshot.state.owned_perk_count);
+  output += ",\"actor_traits\":{\"status\":";
+  AppendEscaped(output, snapshot.state.actor_traits_ready
+                            ? "available" : "unavailable");
+  if (snapshot.state.actor_traits_ready) {
+    output += ",\"observed_keys\":";
+    AppendKeyArray(output, snapshot.state.observed_actor_trait_keys,
+                   snapshot.state.observed_actor_trait_count);
+  }
+  output += "}";
   output += ",\"legal_focus_candidates\":";
   AppendCandidateCollection(
       output, snapshot.state.legal_focus_candidate_status,

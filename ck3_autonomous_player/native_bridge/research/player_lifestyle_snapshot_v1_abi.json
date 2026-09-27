@@ -33,6 +33,23 @@
     "known_absent_focus": "GetFocus returns the pointer stored at module+0x570CB90; this is distinct from a getter/read failure",
     "stable_key": "bounded MSVC string SSO/heap decode followed by [a-z0-9_] validation; no native pointer is published"
   },
+  "actor_traits_private_read_only": {
+    "status": "static-ready-awaiting-paused-live",
+    "purpose": "Expose the successor's actually held education and policy-relevant personality traits before extending the LIFE focus/perk policy",
+    "trait_database_getter_rva": "0x8318F0",
+    "database_pointer_span_offset": "0x68",
+    "database_count_offset": "0x74",
+    "trait_stable_key_offset": "0x18",
+    "character_has_trait_rva": "0x260F740",
+    "authored_traits_path": "common/traits/00_traits.txt",
+    "authored_traits_sha256": "079F0AB5C4224C505AB9F25BCA80D8DF296E5899BFAB26049CE5FE794DC0B042",
+    "source_reuse": "combat_v3.cpp exact-build trait reader uses the same getter, database layout, stable key and HasTrait call",
+    "keys": "five education families x ranks 1..5 plus greedy, generous, shy, arrogant, ambitious, diligent and just",
+    "semantics": "Scan unique definitions and read all listed presence flags for the played CCharacter in both native source samples. On complete observation serialize only held keys; zero held keys is distinct from unavailable. More than one of the 25 education traits or a missing/unreadable definition makes this optional actor_traits field unavailable without erasing already observed LIFE2 focus/XP/points.",
+    "fixtures": "player_lifestyle_snapshot_v1_test.cpp observed diplomacy rank 3 plus generous and missing-definition fallback; MSVC /Od and /O2 /W4 /WX focused fixture passed on 2026-09-27",
+    "no_action_or_public_advertisement": true,
+    "live_readback": false
+  },
   "candidate_boundary": {
     "production_status": "unavailable",
     "reason": "lifestyle_window_unavailable",
@@ -94,6 +111,8 @@
     "current_focus_native_path": true,
     "current_lifestyle_progress_native_path": true,
     "owned_perks_native_path": true,
+    "actor_traits_private_native_path_static": true,
+    "actor_traits_paused_live": false,
     "stable_key_parser": true,
     "same_frame_double_sample": true,
     "candidate_fixture_semantics": true,

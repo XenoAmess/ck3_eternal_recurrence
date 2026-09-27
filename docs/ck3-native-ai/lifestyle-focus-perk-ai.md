@@ -1,5 +1,62 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE successor policy input gap (2026-09-27; exact CK3 1.19.0.6)
+
+The existing opening gate restarts after a verified natural successor and checks
+that successor's focus on the first operable paused frame. The private perk
+consumer then reads LIFE2 current focus, its lifestyle XP and unspent points,
+owned perks, and one policy-scoped final-legal target. This timing and the
+receipt/next-turn path are already implemented. The R0262 Robert report
+(`Z:/c212-robert-h2577-candidate/masterc613/run-formal-36/formal-report.txt`,
+SHA-256 `767C93E3D06603A2381709F3471F16483E7571B20251AC2655DF692E2FAB0B86`)
+ended at h2660/raw53217072; its sampled player retained
+`stewardship_wealth_focus` and had **zero** unspent stewardship points. It
+therefore supplies no positive example of a missed legal perk.
+
+The next-actor coverage gap is deterministic in the pre-change production
+source. LIFE2's `PlayerLifestyleStateV1` did not publish education or
+personality fields.
+`lifestyle_min_policy.py` filters legal perks to `stewardship_lifestyle` and
+selects a missing focus only from `stewardship_wealth_focus`. The native
+`PlayerLifestylePolicyStockPerkTargetV1` and the stock perk validator and
+target-progress callback likewise admit four stewardship keys only;
+`player_lifestyle_private_transport_v1.py` repeats that typed-submit allowlist.
+For a successor already focused in another lifestyle with a real unspent
+point, the present policy returns `no_legal_minimum` without ever obtaining a
+final verdict for a perk in that lifestyle. That result means **outside the
+current policy scope**, not that the game has no legal or valuable perk. A
+focusless successor can be offered wealth even though the current policy cannot
+compare education, personality, target XP, or alternative focus benefits.
+
+The smallest read-only extension can reuse these frozen native inputs:
+
+| Required input | Exact source and proposed private read | Current boundary |
+| --- | --- | --- |
+| Education and relevant personality | `combat_v3.cpp` already uses Trait database getter RVA `0x8318F0`, database pointer span `+0x68`/count `+0x74`, stable key `Trait+0x18`, and `CCharacter::HasTrait` RVA `0x260F740`. The original `00_traits.txt` defines five education families at ranks 1–5. Resolve each required definition once, then read presence for the same played `CCharacter` and publish the observed keys with actor/frame binding. | Combat-v3 currently samples martial education only and does not publish a complete LIFE actor context. A missing definition, unreadable span, or exception is unavailable, never a false trait. |
+| Target XP and points | LIFE2 uses `GetLifestyleXp` RVA `0x2668B80`, `GetPerkPoints` `0x2668A00`, `GetPerkPointsUsed` `0x2668A80`, and `Lifestyle+0x138` XP-per-level. The stock focus/perk readers already demonstrate how to resolve a target definition to its Lifestyle pointer on one paused frame. | LIFE2 reports progress only for the **current** lifestyle. An absent focus or a different target needs its own target row; age and base monthly XP cannot substitute for it. |
+| Alternative focus/perk final legality | The stock focus command validator RVA `0x25DF570` and stock perk validator RVA `0x25DFAF0` are window independent in their existing exact-build private readers. Resolve one reviewed target by unique stable key and its native Lifestyle pointer, evaluate the relevant validator twice, and keep a `policy_target` scope. | Existing readers and action gates are hard-coded to wealth focus and four stewardship perks. No result for another key is currently available; `lifestyle_window_unbound_or_stale` is not a legal-empty result. |
+
+This candidate adds a **private read-only actor-trait source** to LIFE2. It
+scans those 32 exact definitions and observes presence for the played native
+`CCharacter` in each of LIFE2's two source samples. Successful output is
+`actor_traits.status=available` with held keys; a missing definition, source
+read failure, or contradictory education remains `unavailable`, while the
+existing focus/XP/point read stays available. A focused native fixture checks
+observed diplomacy rank 3 plus generous and the unavailable fallback under
+MSVC `/Od` and `/O2` with `/W4 /WX`. The normal and absent-focus JSON fixtures
+record the optional field's unavailable state. There has been **no paired CK3
+readback** of this new field, no new focus/perk action, and no M4 upgrade.
+
+Next, bind target XP/points separately from current-focus progress and get
+one reviewed alternative target's native `legal`/`illegal`/`unavailable`
+verdict. Reuse the current private, default-OFF slot43 or add a private
+read-only step there; keep its policy-target scope and all typed-action
+allowlists unchanged. Bind every read to the same paused episode, actor,
+native revision, date, and `snapshot_id`, then obtain a bounded paired paused
+CK3 readback. Only then choose the smallest alternative by current objective,
+education, actual XP, and final legality, followed by the existing typed
+receipt, next turn, checkpoint, and cold-restore gates.
+
 ## NW-LIFE-C114: existing focus with a ready perk before a peaceful read-only step (2026-09-27)
 
 The exact CK3 1.19.0.6 native tree and LIFE final-legality boundary below remain the input. Before C114, the production service invoked its private LIFE consumer only for `life-advance` or a combat-v3 input read. The C114 production-path fixture uses a paused native:3 feudal peaceful frame with an existing stewardship focus, one unspent stewardship point, and a native-final-legal `cutting_corners_perk`. The opening gate correctly confirms the focus without resubmission. With the same-frame campaign-root proof already in history, a subsequent selected `query-campaign-root-context-v1` executed before the ready perk: the LIFE formal reader was not called. This is a source fixture failure, not evidence that R0247 or R0250 had this specific legal perk.
