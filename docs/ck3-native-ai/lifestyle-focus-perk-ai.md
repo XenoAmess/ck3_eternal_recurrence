@@ -1274,3 +1274,45 @@ flowchart TD
   I -. pending live proof .-> J[War planning and date advance]
   G -. unavailable or illegal .-> R[RED before war query or date]
 ```
+
+## Wartime point opportunity after a date advance (2026-09-27)
+
+R0252 resumed the formal Robert mainline for 36/36 qualified turns and nine
+durable game days. Its opening LIFE2 read showed stewardship unspent points
+`0`, used points `7`, and all three current policy targets owned. The remaining
+war turns selected ordinary native war queries, route actions and bounded
+advances without another LIFE2 read. The formal report is
+`Z:/r128-robert-h2189-candidate/run-formal-36/formal-report.txt` (SHA-256
+`907024631F91E8352645F8D7365047FB3DEC5F802C161AF64D84C297A6698647`).
+This proves a later **observation gap**, not a missed legal perk: the points
+after each date advance were not observed.
+
+The existing private LIFE policy still requires a current paused actor, an
+independent same-frame feudal campaign-root result, LIFE2 progress, native
+final legality, and the unchanged typed-action/receipt path. A war query is
+read-only and may be deferred once when the game date or player changes. If
+the root result is stale, the normal root query runs first. The first following
+war query on that date then obtains one current LIFE2/final-legality read; a
+legal new perk can use the existing typed path, while zero points, already
+owned targets or unavailable observations preserve the original war query.
+Subsequent war queries on the same date in one runner session do not repeat
+that read. A cold restore may repeat the read; pending actions and material
+state still prevent a second spend. Pending actions seek the independent
+later-frame receipt before any new spend.
+
+This is a source-level trigger correction. A new candidate still needs a
+matched no-launch check and bounded CK3 run before it can claim a new observed
+wartime opportunity, typed action, next turn or cold recovery. The R0186/R0187
+perk evidence and M4 two-year peaceful-governance gate retain their existing
+scope.
+
+```mermaid
+flowchart LR
+  D[Paused war query on a new date] --> R{Current feudal root result?}
+  R -- no --> Q[Query campaign root on this date]
+  Q --> D
+  R -- yes --> L[Read LIFE2 points and final legal perk]
+  L -- legal new target and positive points --> A[Existing typed action and receipt]
+  L -- no opportunity or unavailable --> W[Continue original war query]
+  W --> N[Skip repeat LIFE read on the same date]
+```

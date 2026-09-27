@@ -428,6 +428,9 @@ class GameplayBridgeService:
         self._coat_of_arms_framebuffer_calibrations_v3 = (
             CoatOfArmsFramebufferCalibrationStoreV3()
         )
+        # A paused wartime query may recur many times on one game date.  LIFE
+        # only needs another final-legal read after time or the player changes.
+        self._last_war_lifestyle_observation: tuple[object, object, object] | None = None
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
         """Bind the runner-owned real product-checkpoint provider once."""
@@ -629,6 +632,7 @@ class GameplayBridgeService:
             history.extend(
                 row for row in native_history if isinstance(row, dict)
             )
+            played_character = planning_snapshot.get("played_character")
             opening_focus_first = getattr(
                 self.driver, "require_initial_lifestyle_focus_before_date_advance",
                 False,
@@ -744,6 +748,21 @@ class GameplayBridgeService:
                     if getattr(
                         self.driver, "allow_private_lifestyle_formal_trial", False
                     ) is True
+                    else None
+                ),
+                "_private_lifestyle_war_frame_v1": (
+                    (
+                        planning_snapshot.get("episode_run_id"),
+                        played_character.get("character_id")
+                        if isinstance(played_character, dict) else None,
+                        planning_snapshot.get("date_raw"),
+                    )
+                    if getattr(
+                        self.driver, "allow_private_lifestyle_formal_trial", False
+                    ) is True
+                    and not opening_focus_first
+                    and isinstance(planning_snapshot.get("active_wars"), list)
+                    and planning_snapshot["active_wars"]
                     else None
                 ),
                 "_private_faction_snapshot_v1": (
@@ -971,6 +990,7 @@ class GameplayBridgeService:
             return planned
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
+        planned.pop("_private_lifestyle_war_frame_v1", None)
         if getattr(
             self.driver, "allow_private_faction_gift_formal_trial", False
         ) is True:
@@ -1055,6 +1075,12 @@ class GameplayBridgeService:
         except Exception as error:
             return {**unknown, "query_status": "query_error",
                     "error_type": type(error).__name__}
+        played = before.get("played_character")
+        self._last_war_lifestyle_observation = (
+            before.get("episode_run_id"),
+            played.get("character_id") if isinstance(played, dict) else None,
+            before.get("date_raw"),
+        )
         if not isinstance(query, dict) or query.get("status") != "available":
             return {**unknown, "query_status": (
                 query.get("status") if isinstance(query, dict) else "malformed_result"
@@ -1453,6 +1479,7 @@ class GameplayBridgeService:
 
         scope = planned.pop("_private_lifestyle_scope_v1", None)
         pending = planned.pop("_private_lifestyle_pending_v1", None)
+        war_frame = planned.pop("_private_lifestyle_war_frame_v1", None)
         plan = planned.get("plan")
         selected = plan.get("selected_step") if isinstance(plan, dict) else None
         combat_read = (
@@ -1465,13 +1492,32 @@ class GameplayBridgeService:
             and scope.get("status") == "admitted"
             and scope.get("at_peace") is True
         )
-        deferrable_read = combat_read or peaceful_root_read
+        war_read_step = (
+            isinstance(selected, str)
+            and selected.startswith("query-")
+            and isinstance(scope, dict)
+            and scope.get("at_peace") is False
+            and isinstance(war_frame, tuple)
+            and len(war_frame) == 3
+            and isinstance(war_frame[0], str)
+            and isinstance(war_frame[1], int)
+            and not isinstance(war_frame[1], bool)
+            and isinstance(war_frame[2], int)
+            and not isinstance(war_frame[2], bool)
+        )
+        war_read_due = (
+            war_read_step
+            and war_frame != self._last_war_lifestyle_observation
+        )
+        deferrable_read = combat_read or peaceful_root_read or war_read_due
         if isinstance(pending, dict):
             # The previous typed request may already have changed CK3.  A
             # later paused frame is required before any new LIFE choice.
             if not isinstance(plan, dict):
                 return planned
-            if selected != "life-advance" and not (combat_read or root_read):
+            if selected != "life-advance" and not (
+                combat_read or root_read or war_read_step
+            ):
                 return planned
             pre_revision = pending.get("pre_public_revision")
             if (
@@ -1515,13 +1561,15 @@ class GameplayBridgeService:
                 if callable(reader)
                 else {"status": "private_query_route_missing"}
             )
+            if war_read_due:
+                self._last_war_lifestyle_observation = war_frame
             formal_life = query.get("snapshot") if isinstance(query, dict) else None
             formal_focus = (
                 formal_life.get("current_focus")
                 if isinstance(formal_life, dict) else None
             )
             if (
-                (not combat_read or scope.get("at_peace") is True)
+                (not (combat_read or war_read_due) or scope.get("at_peace") is True)
                 and isinstance(query, dict)
                 and (
                     query.get("status") != "available"
@@ -1550,6 +1598,29 @@ class GameplayBridgeService:
             same_frame_feudal_scope=scope,
             private_query=query,
         )
+        if war_read_due and isinstance(query, dict):
+            life = query.get("snapshot")
+            progress = (
+                life.get("current_lifestyle_progress")
+                if isinstance(life, dict) else None
+            )
+            consumed = {
+                **consumed,
+                "lifestyle_war_observation": {
+                    "query_status": query.get("status"),
+                    "date_raw": war_frame[2],
+                    "source_frame": query.get("source_frame"),
+                    "unspent_perk_points": (
+                        progress.get("unspent_perk_points")
+                        if isinstance(progress, dict) else None
+                    ),
+                    "policy_decision_status": (
+                        consumed.get("lifestyle_decision", {}).get("status")
+                        if isinstance(consumed.get("lifestyle_decision"), dict)
+                        else None
+                    ),
+                },
+            }
         if deferrable_read and consumed.get("selected_step") not in {
             PRIVATE_LIFESTYLE_PERK_STEP,
             PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
@@ -1560,10 +1631,19 @@ class GameplayBridgeService:
                 **planned,
                 "plan": {
                     **plan,
-                    "lifestyle_opportunity_status": consumed.get(
-                        "phase", "no_legal_minimum"
+                    "lifestyle_opportunity_status": (
+                        consumed["lifestyle_decision"].get("status")
+                        if war_read_due
+                        and isinstance(consumed.get("lifestyle_decision"), dict)
+                        else consumed.get("phase", "no_legal_minimum")
                     ),
                     "lifestyle_decision": consumed.get("lifestyle_decision"),
+                    **(
+                        {"lifestyle_war_observation": consumed[
+                            "lifestyle_war_observation"
+                        ]}
+                        if "lifestyle_war_observation" in consumed else {}
+                    ),
                 },
             }
         if (
