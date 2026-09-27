@@ -374,6 +374,28 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertEqual(evaluated[0]["reason"],
                          "existing_commitment_conflict")
 
+    def test_pending_betrothal_without_alliance_keeps_character_claim_only(self) -> None:
+        self._write_pending_family()
+        path = self.state_dir / "first-heir-marriage-formal-v1.json"
+        ledger = json.loads(path.read_text(encoding="utf-8"))
+        ledger["pending"]["preproposal_realm_alliance_attempt_if_accepted"] = False
+        path.write_text(json.dumps(ledger), encoding="utf-8")
+        driver = _Driver(self.state_dir, family_enabled=True)
+        sources = self._query(
+            driver, construction=_construction(status="no_legal_budgeted_building"),
+        )
+        claims = sources["existing_commitments"]
+        self.assertEqual(claims["ally_character_ids"], [])
+        self.assertEqual(claims["character_ids"], [38710, 38822, 41003])
+        self.assertEqual(claims["commitment_keys"],
+                         ["first-heir-marriage:38822"])
+        collection = collect_m5_formal_proposals(
+            snapshot=driver.take_snapshot(), sources=sources,
+        )
+        evaluated = collection["dispatch"]["analysis"]["evaluated"]
+        self.assertEqual(evaluated[0]["reason"],
+                         "existing_commitment_conflict")
+
     def test_due_family_result_precedes_independent_building_submit(self) -> None:
         self._write_pending_family()
         driver = _Driver(

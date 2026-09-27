@@ -214,12 +214,6 @@ def first_heir_marriage_proposal(
     heir = row.get("heir_character_id")
     recipient = row.get("recipient_character_id")
     outcome = row.get("predicted_outcome_if_accepted")
-    expected_value = (
-        "unpartnered_first_heir_adult_marriage_opportunity"
-        if outcome == "marriage" else
-        "bounded_first_heir_betrothal_and_realm_alliance_attempt"
-        if outcome == "betrothal" else None
-    )
     if (type(heir) is not int or heir <= 0 or heir == actor
             or type(recipient) is not int or recipient <= 0 or recipient == actor
             or recipient == heir or candidate in {actor, heir}
@@ -243,8 +237,7 @@ def first_heir_marriage_proposal(
             or native.get("recipient_ai_accept_raw") !=
                choice.get("recipient_ai_accept_raw")
             or row.get("predicted_outcome_if_accepted") !=
-               choice.get("predicted_outcome_if_accepted")
-            or choice.get("value") != expected_value):
+               choice.get("predicted_outcome_if_accepted")):
         raise ValueError("first-heir marriage lacks native-final value proof")
     pairs = row.get("possible_alliance_pairs")
     if not isinstance(pairs, list):
@@ -258,8 +251,20 @@ def first_heir_marriage_proposal(
         and pair.get("would_attempt_if_accepted") is True
         for pair in pairs
     )
-    if outcome == "betrothal" and not realm_attempt:
-        raise ValueError("betrothal lacks the approved realm alliance attempt")
+    if outcome == "marriage":
+        expected_value = "unpartnered_first_heir_adult_marriage_opportunity"
+    elif outcome == "betrothal":
+        expected_value = (
+            "bounded_first_heir_betrothal_and_realm_alliance_attempt"
+            if realm_attempt else
+            "bounded_first_heir_external_dynasty_betrothal_opportunity"
+        )
+    else:
+        expected_value = None
+    if (expected_value is None or choice.get("value") != expected_value
+            or choice.get("realm_alliance_attempt_if_accepted") is not
+                realm_attempt):
+        raise ValueError("first-heir marriage value or alliance claim changed")
     unpriced = choice.get("unpriced")
     if (not isinstance(unpriced, list)
             or any(not isinstance(item, str) for item in unpriced)
