@@ -1,0 +1,209 @@
+{
+  "schema": "ck3.episode01_army_ui_name_boundary.v1",
+  "paired_combat_names_sidecar_sha256": "9D9385F55B3FAC7A74CDDA4D2A51C8DB1FCE2E96EEFE4727460B372E53D81D9A",
+  "cases": [
+    {
+      "source_day": 11,
+      "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "rakaly_melted_sha256": "A82FDD3A57B84B8FC5E4A42EBD292013C45FAA5061D89F79D9E7A24E979A01C6",
+      "army_name_seeds": {
+        "18": {
+          "save_name_id": 0,
+          "seed_province_id": 2619,
+          "line_start": 3923983,
+          "line_end": 3924012,
+          "block_sha256": "9537B9862AC674757F60FD24731F29BDCEAB2C999A893C9A5458A823FF154560"
+        },
+        "16777221": {
+          "save_name_id": 0,
+          "seed_province_id": 2638,
+          "line_start": 3923614,
+          "line_end": 3923643,
+          "block_sha256": "84CD243EC0915335F20023FA04F4C9407840FFC0E15CC1CD63F2B8B33C015753"
+        },
+        "22": {
+          "save_name_id": 0,
+          "seed_province_id": 4598,
+          "line_start": 3924099,
+          "line_end": 3924131,
+          "block_sha256": "D682215C4753CEB1CC7AE4915E8FFC51B8A60B970CBE308DC00BA9BABD885E69"
+        },
+        "27": {
+          "save_name_id": 0,
+          "seed_province_id": 2646,
+          "line_start": 3924255,
+          "line_end": 3924284,
+          "block_sha256": "69448AD03B54B5678A7F50765D3962D80047BC8372BF6534057D305111A189C7"
+        },
+        "16777231": {
+          "save_name_id": 0,
+          "seed_province_id": 4578,
+          "line_start": 3923901,
+          "line_end": 3923930,
+          "block_sha256": "F2CA1C820565063CF487E8543CDDA8332EB9E5664FBCE5244F62066FC3FD4495"
+        }
+      },
+      "combat_army_ids": {
+        "attacker": [
+          16777221,
+          16777231,
+          27
+        ],
+        "defender": [
+          18
+        ]
+      }
+    },
+    {
+      "source_day": 21,
+      "source_save_sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A",
+      "rakaly_melted_sha256": "48F2EA80D7AF0DA5EA4DA3B34E965A481BD2FF201017E35F0F08711503089B61",
+      "army_name_seeds": {
+        "18": {
+          "save_name_id": 0,
+          "seed_province_id": 2619,
+          "line_start": 3943533,
+          "line_end": 3943562,
+          "block_sha256": "1ACDF6B9DD1EADEE36C9EC0451A07D9BB754C8F0C335745551BBABC7792C26DE"
+        },
+        "16777221": {
+          "save_name_id": 0,
+          "seed_province_id": 2638,
+          "line_start": 3943164,
+          "line_end": 3943193,
+          "block_sha256": "7818223D5E0C1BFCA60ABBA607983F3AE08BDA6B18F9BE707882E3F8812DE29A"
+        },
+        "22": {
+          "save_name_id": 0,
+          "seed_province_id": 4598,
+          "line_start": 3943649,
+          "line_end": 3943680,
+          "block_sha256": "303A722E83663926D5CF7C194407BE0EB02C1FEE40ECC0DD7F68C721D78654EF"
+        },
+        "27": {
+          "save_name_id": 0,
+          "seed_province_id": 2646,
+          "line_start": 3943817,
+          "line_end": 3943846,
+          "block_sha256": "703D92278B39AA2DADDA9F11692B6803F390A78B24CF1F4A4B9C251DC1D2AE79"
+        },
+        "16777231": {
+          "save_name_id": 0,
+          "seed_province_id": 4578,
+          "line_start": 3943451,
+          "line_end": 3943480,
+          "block_sha256": "F60FE7EFB1ECF47B79CB5F08A0A7656945744CA1F455CE94666104CC6B371AC8"
+        }
+      },
+      "combat_army_ids": {
+        "attacker": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "defender": [
+          18
+        ]
+      }
+    }
+  ],
+  "game_sources": {
+    "army_window_gui": {
+      "relative_path": "gui/window_army.gui",
+      "sha256": "35F208C5D990F22D5D88849F0156F550CE9C81982F8F637BC0C8C00B8AE8738A"
+    },
+    "outliner_gui": {
+      "relative_path": "gui/hud_outliner.gui",
+      "sha256": "6ADF5E25448C0C2CA5254330F597E898883F0E067D50B8D97286E1F835BC4D42"
+    },
+    "core_zh": {
+      "relative_path": "localization/simp_chinese/core_l_simp_chinese.yml",
+      "sha256": "76814E8C5D160FA0171545F5FBF24FCDF520073C3D05B7A017C093EB52054487"
+    },
+    "titles_zh": {
+      "relative_path": "localization/simp_chinese/titles_l_simp_chinese.yml",
+      "sha256": "22E5A59DDCC416B8E45581520111EF511AF86D92F4475A9FC7F814D850422009"
+    },
+    "landed_titles": {
+      "relative_path": "common/landed_titles/00_landed_titles.txt",
+      "sha256": "6A508DB6C113115AA5ACA18B8DA5374B30FEB76198533AEC3A59C5076958637E"
+    },
+    "province_definition": {
+      "relative_path": "map_data/definition.csv",
+      "sha256": "28A6793B3560145770A2A93C75CEC8A7D7A82CF2BF7C9A877D076CA65FC65101"
+    }
+  },
+  "ui_getter_lines": {
+    "army_window": [
+      333,
+      462
+    ],
+    "outliner": 737
+  },
+  "localization_template_lines": {
+    "ARMY_NAME": 107,
+    "ARMY_NAME_RAIDER": 108,
+    "ARMY_NAME_BARTER": 109,
+    "ARMY_NAME_LANDLESS": 110,
+    "GATHERING_ARMY_NAME": 111
+  },
+  "seed_province_base_name_candidates": {
+    "2619": {
+      "army_id": 18,
+      "saved_owner_short_name_zh": "罗贝尔",
+      "landed_title_key": "b_trani",
+      "base_localization_zh": "特拉尼",
+      "definition_line": 2620,
+      "landed_title_line": 14400,
+      "base_localization_line": 10221
+    },
+    "2638": {
+      "army_id": 16777221,
+      "saved_owner_short_name_zh": "阿里",
+      "landed_title_key": "b_syracusa",
+      "base_localization_zh": "叙拉古",
+      "definition_line": 2639,
+      "landed_title_line": 14209,
+      "base_localization_line": 9703
+    },
+    "4598": {
+      "army_id": 22,
+      "saved_owner_short_name_zh": "穆尼斯",
+      "landed_title_key": "b_al-qasrayn",
+      "base_localization_zh": "卡塞林",
+      "definition_line": 4603,
+      "landed_title_line": 50376,
+      "base_localization_line": 312
+    },
+    "2646": {
+      "army_id": 27,
+      "saved_owner_short_name_zh": "拉马丹",
+      "landed_title_key": "b_malta",
+      "base_localization_zh": "马耳他",
+      "definition_line": 2647,
+      "landed_title_line": 14280,
+      "base_localization_line": 6255
+    },
+    "4578": {
+      "army_id": 16777231,
+      "saved_owner_short_name_zh": "塔米姆",
+      "landed_title_key": "b_mahdiya",
+      "base_localization_zh": "马赫迪耶",
+      "definition_line": 4583,
+      "landed_title_line": 50513,
+      "base_localization_line": 6189
+    }
+  },
+  "exact_native_getter_branch_proven": false,
+  "name_id_to_display_ordinal_proven": false,
+  "province_runtime_display_name_proven": false,
+  "exact_army_ui_titles_proven": false,
+  "safe_explanatory_labels_zh": {
+    "18": "罗贝尔的军队",
+    "16777221": "阿里的军队",
+    "22": "穆尼斯的军队",
+    "27": "拉马丹的军队",
+    "16777231": "塔米姆的军队"
+  }
+}
