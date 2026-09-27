@@ -1,11 +1,11 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928",
-  "status": "claimed",
+  "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T19:31:56Z",
+  "updated_at_utc": "2026-09-27T19:33:29Z",
   "source_pr": null,
-  "master_commit": null,
+  "master_commit": "6074a9dd3a6e8e8ce5a6ed22a98efa75781d4ad0",
   "delivery_route": "direct rebase-only master push",
   "interface_contract": {
     "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_primary_defender_siege_relief_assessment, _siege_forecast_participant_partition and _primary_defender_siege_forecast_ingress",
@@ -22,7 +22,7 @@
   ],
   "live_evidence": null,
   "limitations": [
-    "This is a source fix and static conditional replay, not a new H2825 game run. R0265 remains blocked and failed. The wrong candidate ID is a local variable-clobber bug; there is no evidence of a native position-reader conflict. The R0265 full active_wars row remains absent from Git, so exact live success is unclaimed.",
+    "This is source delivery and static conditional replay, not a new H2825 game run. R0265 remains blocked and failed. The wrong candidate ID is a local variable-clobber bug; there is no evidence of a native position-reader conflict. The R0265 full active_wars row remains absent from Git, so exact live success is unclaimed.",
     "At response time the exact H2825 OneDrive folder WAR-ROBERT-H2825-R0265-2026-09-28 is absent from C:/Users/1/OneDrive. The sending machine reports local copy and hashes, but receiver availability and SHA-256 verification are pending.",
     "The route time comparison is conditional on the current orders. Battle duration, later enemy orders, reinforcement during combat, CB material terms and full continue-versus-surrender utility remain unknown.",
     "The first matching live continuation must use the frozen R0264 source pair and official prepare/rebind/no-launch, not the mutated R0265 driver. It must prove same-frame war-row/route position consistency before querying v3 or claiming this planner block closed."
