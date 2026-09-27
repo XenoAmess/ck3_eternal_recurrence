@@ -31,7 +31,13 @@ education nor script `is_valid` is substituted for that verdict. The ABI is
 [`player_lifestyle_martial_authority_v1_abi.json`](../../ck3_autonomous_player/native_bridge/research/player_lifestyle_martial_authority_v1_abi.json).
 
 The query does not change the wealth-only policy, submit allowlist, public
-capabilities, or current focus. Its static fixtures do not prove a live
+capabilities, or current focus. The already opted-in formal opening gate calls
+this reader once per episode in one service lifetime after an operable paused LIFE state is bound and
+places its typed result next to the existing focus and perk observation in the
+turn report. If the reader or frame is unavailable, it reports that status;
+the original selected step remains unchanged. A new service after cold restore
+re-reads the frame; this static test is not a game recovery claim. The ordinary opt-in-off path
+does not call it. Its static fixtures do not prove a live
 martial verdict. A later official paired paused read must compare actual
 wealth and martial progress, legality, and current objective before any
 alternative typed action is considered. A submitted action would still need
@@ -40,7 +46,7 @@ its own receipt, next turn and cold restore.
 On the isolated source candidate, the exact target fixture passed MSVC `/Od`
 and `/O2` with `/W4 /WX` (7/7 each); the private LIFE bridge linked in Debug
 and Release; the focused Python focus, diplomacy, martial and formal consumer
-tests passed 54/54 in normal and `-O`. These are static checks only.
+tests passed 59/59 in normal and `-O`. These are static checks only.
 
 ```mermaid
 flowchart LR
