@@ -452,15 +452,19 @@ def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bo
 def family_pending_sidecar_pair(
     sidecar: dict[str, Any], driver: dict[str, Any],
     manifest: dict[str, Any], save_sha256: str,
-    formal_report: dict[str, Any],
+    formal_report: dict[str, Any] | list[dict[str, Any]],
 ) -> int:
-    """Bind one saved first-heir proposal and a later paired checkpoint."""
+    """Bind a saved first-heir proposal through consecutive formal checkpoints."""
+    reports = formal_report if isinstance(formal_report, list) else [formal_report]
+    if not reports or any(not isinstance(report, dict) for report in reports):
+        raise ValueError("family sidecar lacks saved pending proposal proof")
+    submit_report = reports[0]
     pending = sidecar.get("pending")
     checkpoint = driver.get("last_checkpoint")
-    report_checkpoints = formal_report.get("checkpoints")
-    auto_run = formal_report.get("auto_run")
+    report_checkpoints = submit_report.get("checkpoints")
+    auto_run = submit_report.get("auto_run")
     turns = auto_run.get("turns") if isinstance(auto_run, dict) else None
-    session = formal_report.get("session")
+    session = submit_report.get("session")
     if (sidecar.get("schema") != FAMILY_PENDING_V1_SCHEMA
             or sidecar.get("resolved") is not None
             or not isinstance(pending, dict)
@@ -511,29 +515,17 @@ def family_pending_sidecar_pair(
                 and row["pending_action"].get("candidate_character_id") == candidate
                 and row["pending_action"].get("recipient_character_id") == recipient
                 and row["pending_action"].get("episode_run_id") == episode]
-    paired_checkpoints = [row for row in report_checkpoints
-                 if isinstance(row, dict)
-                 and row.get("status") == "saved"
-                 and row.get("sha256") == save_sha256
-                 and row.get("history_index") == latest_index
-                 and row.get("date_raw") == latest_date
-                 and row.get("episode_character_id") == actor
-                 and row.get("episode_run_id") == episode]
     submitted = [row for row in turns if isinstance(row, dict)
                  and row.get("selected_step") == FAMILY_SUBMIT_STEP]
-    if len(submitted_checkpoints) != 1 or len(paired_checkpoints) != 1 or len(submitted) != 1:
+    if len(submitted_checkpoints) != 1 or len(submitted) != 1:
         raise ValueError("family proposal is not proven by one saved formal submit")
     source = submitted_checkpoints[0]
-    paired = paired_checkpoints[0]
     submit = submitted[0]
     result = submit.get("result")
     plan = submit.get("plan")
     if (type(source.get("turn_index")) is not int
-            or type(paired.get("turn_index")) is not int
             or type(submit.get("index")) is not int
             or source["turn_index"] != submit["index"]
-            or paired["turn_index"] < source["turn_index"]
-            or (source["history_index"] == latest_index) != (source["sha256"] == save_sha256)
             or not isinstance(result, dict)
             or result.get("status") != "receipt_pending"
             or result.get("accepted") is not True
@@ -546,19 +538,85 @@ def family_pending_sidecar_pair(
             or not isinstance(plan.get("family_marriage_choice"), dict)
             or plan["family_marriage_choice"].get("candidate_character_id") != candidate):
         raise ValueError("family proposal is not proven by one saved formal submit")
-    if source["history_index"] < latest_index:
-        later_reads = [row for row in turns if isinstance(row, dict)
-                       and row.get("selected_step") ==
-                       "query-observed-first-heir-marriage-result-v1-private"
-                       and type(row.get("index")) is int
-                       and source["turn_index"] < row["index"] <= paired["turn_index"]]
-        latest_read = max(later_reads, key=lambda row: row["index"]) if later_reads else None
-        latest_result = latest_read.get("result") if latest_read else None
-        if (not isinstance(latest_result, dict)
-                or latest_result.get("status") not in {"pending", "accepted_pending"}
-                or latest_result.get("heir_character_id") != heir
-                or latest_result.get("candidate_character_id") != candidate):
-            raise ValueError("later paired save lacks pending family result query")
+    previous_checkpoint = None
+    previous_pid = None
+    for report_number, report in enumerate(reports):
+        run = report.get("auto_run")
+        run_turns = run.get("turns") if isinstance(run, dict) else None
+        run_session = report.get("session")
+        checkpoints = report.get("checkpoints")
+        if (not isinstance(run_turns, list)
+                or not isinstance(run_session, dict)
+                or not isinstance(checkpoints, list)):
+            raise ValueError("family proof chain lacks formal run data")
+        run_pid = run_session.get("pid")
+        if type(run_pid) is not int or run_pid <= 0:
+            raise ValueError("family proof chain lacks formal run identity")
+        if report_number:
+            fixed_seed = report.get("fixed_seed")
+            readiness = report.get("readiness")
+            if (report.get("ok") is not True
+                    or run_pid == previous_pid
+                    or not isinstance(fixed_seed, dict)
+                    or not isinstance(readiness, dict)
+                    or readiness.get("bridge_pid") != run_pid
+                    or readiness.get("episode_character_id") != actor
+                    or readiness.get("episode_run_id") != episode
+                    or fixed_seed.get("sha256") != previous_checkpoint.get("sha256")
+                    or fixed_seed.get("history_index") != previous_checkpoint.get("history_index")
+                    or fixed_seed.get("saved_date_raw") != previous_checkpoint.get("date_raw")
+                    or any(isinstance(row, dict)
+                           and row.get("selected_step") == FAMILY_SUBMIT_STEP
+                           for row in run_turns)):
+                raise ValueError("family proof chain does not continue prior checkpoint")
+        saved = [row for row in checkpoints if isinstance(row, dict)
+                 and row.get("status") == "saved"
+                 and type(row.get("history_index")) is int
+                 and type(row.get("date_raw")) is int
+                 and type(row.get("turn_index")) is int
+                 and isinstance(row.get("sha256"), str)
+                 and re.fullmatch(r"[0-9a-fA-F]{64}", row["sha256"]) is not None
+                 and row.get("episode_character_id") == actor
+                 and row.get("episode_run_id") == episode]
+        if not saved:
+            raise ValueError("family proof chain lacks paired checkpoint")
+        paired = max(saved, key=lambda row: row["history_index"])
+        if (sum(row["history_index"] == paired["history_index"] for row in saved) != 1
+                or paired["history_index"] < source["history_index"]
+                or (report_number == 0 and paired["turn_index"] < source["turn_index"])
+                or (previous_checkpoint is not None and (
+                    paired["history_index"] < previous_checkpoint["history_index"]
+                    or paired["date_raw"] < previous_checkpoint["date_raw"]
+                    or (paired["history_index"] == previous_checkpoint["history_index"]
+                        and paired["sha256"] != previous_checkpoint["sha256"])))):
+            raise ValueError("family proof chain has ambiguous checkpoint")
+        if report_number == len(reports) - 1:
+            if (paired["sha256"] != save_sha256
+                    or paired["history_index"] != latest_index
+                    or paired["date_raw"] != latest_date):
+                raise ValueError("family proof chain does not reach paired save")
+        if (report_number == 0 and paired["history_index"] == source["history_index"]
+                and paired["sha256"] != source["sha256"]):
+            raise ValueError("family proof chain has ambiguous checkpoint")
+        if paired["history_index"] > source["history_index"]:
+            later_reads = [row for row in run_turns if isinstance(row, dict)
+                           and row.get("selected_step") ==
+                           "query-observed-first-heir-marriage-result-v1-private"
+                           and type(row.get("index")) is int
+                           and (report_number != 0 or row["index"] > source["turn_index"])
+                           and row["index"] <= paired["turn_index"]]
+            if (not later_reads or any(
+                    not isinstance(row.get("result"), dict)
+                    or row["result"].get("status") not in {"pending", "accepted_pending"}
+                    or row["result"].get("heir_character_id") != heir
+                    or row["result"].get("candidate_character_id") != candidate
+                    for row in later_reads)):
+                raise ValueError("later paired save lacks pending family result query")
+        previous_checkpoint = paired
+        previous_pid = run_pid
+    if (len(reports) > 1
+            and pending.get("last_checked_bridge_pid") != previous_pid):
+        raise ValueError("family proof chain disagrees with latest pending reader")
     return candidate
 
 
@@ -822,10 +880,14 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                       else sample_dir / "construction-formal-pending-v1.json")
     family_sidecar_arg = getattr(args, "family_sidecar", None)
     family_report_arg = getattr(args, "family_proof_report", None)
-    if family_sidecar_arg is None and family_report_arg is not None:
+    family_report_sources = (
+        [family_report_arg] if isinstance(family_report_arg, Path)
+        else list(family_report_arg or [])
+    )
+    if family_sidecar_arg is None and family_report_sources:
         raise ValueError("family proof report requires a family sidecar")
     family_source = family_sidecar_arg.resolve() if family_sidecar_arg else None
-    family_report_source = family_report_arg.resolve() if family_report_arg else None
+    family_report_sources = [path.resolve() for path in family_report_sources]
     faction_sidecar_arg = getattr(args, "faction_gift_sidecar", None)
     faction_source = (faction_sidecar_arg.resolve() if faction_sidecar_arg is not None
                       else sample_dir / "faction-gift-pending-v1.json")
@@ -873,16 +935,17 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             raise FileExistsError(f"refusing to overwrite prepared state: {family_target}")
         family_record = read_json(family_source)
         if family_record.get("pending") is not None:
-            if family_report_source is None or not family_report_source.is_file():
+            if not family_report_sources or any(
+                    not path.is_file() for path in family_report_sources):
                 raise ValueError("family pending recovery needs formal proof report")
-            formal_report = read_json(family_report_source)
+            formal_report = [read_json(path) for path in family_report_sources]
             family_candidate = family_pending_sidecar_pair(
                 family_record, driver_source_record, manifest,
                 sha256(save_source), formal_report)
             family_kind = "pending"
-            family_report_sha256 = sha256(family_report_source)
+            family_report_sha256 = [sha256(path) for path in family_report_sources]
         else:
-            if family_report_source is not None:
+            if family_report_sources:
                 raise ValueError("resolved family sidecar does not take a proof report")
             family_candidate = family_resolved_sidecar_pair(
                 family_record, driver_source_record, manifest,
@@ -1069,8 +1132,13 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "path": str(family_target),
             "sha256": family_source_sha256,
             "formal_proof_report": (
-                str(family_report_source) if family_report_source else None),
-            "formal_proof_report_sha256": family_report_sha256,
+                str(family_report_sources[0]) if len(family_report_sources) == 1
+                else None),
+            "formal_proof_report_sha256": (
+                family_report_sha256[0] if len(family_report_sources) == 1
+                else None),
+            "formal_proof_reports": [str(path) for path in family_report_sources],
+            "formal_proof_reports_sha256": family_report_sha256,
             "candidate_character_id": family_candidate,
         }
     if faction_request_id is not None:
@@ -1914,7 +1982,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--sample-dir", type=Path, required=True)
     prepare.add_argument("--construction-sidecar", type=Path)
     prepare.add_argument("--family-sidecar", type=Path)
-    prepare.add_argument("--family-proof-report", type=Path)
+    prepare.add_argument("--family-proof-report", type=Path, action="append")
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
