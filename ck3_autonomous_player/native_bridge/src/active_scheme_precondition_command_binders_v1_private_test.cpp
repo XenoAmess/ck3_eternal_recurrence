@@ -387,6 +387,37 @@ void TestScheme10GenerationZeroCharacterIds() {
           bound.state.precondition_failure_stage.empty());
 }
 
+void TestScheme10SwayEmptyOptionsIgnoreStorageShape() {
+  // No send_option exists for stock sway. Empty vector counts are material;
+  // an unused rows pointer and exclusivity byte are not.
+  Scheme10Fixture fixture{};
+  const std::uintptr_t unused_rows = 0x12345678;
+  const bool unused_exclusive = true;
+  Put(fixture.base.sway_definition, kActiveSchemeDefinitionOptionsOffset,
+      unused_rows);
+  Put(fixture.base.sway_definition, kActiveSchemeDefinitionOptionsExclusiveOffset,
+      unused_exclusive);
+  Scheme10Bound bound{};
+  BindScheme10(fixture, bound);
+  ActiveSchemeSemanticActionV1PrivatePrecondition precondition{};
+  ActiveSchemePreconditionCommandBindersV1PrivateFailure failure{};
+  Require(CaptureActiveSchemePreconditionCommandPreconditionV1Private(
+      bound.state, {77, 77}, Request(fixture.base), precondition, failure));
+  Require(precondition.available && precondition.can_start_scheme &&
+          bound.state.precondition_failure_stage.empty() &&
+          fixture.submits == 0);
+
+  const std::int32_t nonempty_definition_count = 1;
+  Put(fixture.base.sway_definition,
+      kActiveSchemeDefinitionOptionsCountOffset,
+      nonempty_definition_count);
+  Require(!CaptureActiveSchemePreconditionCommandPreconditionV1Private(
+      bound.state, {77, 77}, Request(fixture.base), precondition, failure));
+  Require(bound.state.precondition_failure_stage ==
+              "context_options_definition_count" &&
+          fixture.submits == 0);
+}
+
 void TestScheme10TypedRedAndSingleSubmit() {
   {
     Scheme10Fixture fixture{};
@@ -433,7 +464,8 @@ void TestScheme10TypedRedAndSingleSubmit() {
     Require(failure ==
             ActiveSchemePreconditionCommandBindersV1PrivateFailure::
                 native_precondition_red);
-    Require(bound.state.precondition_failure_stage == "context_options");
+    Require(bound.state.precondition_failure_stage ==
+            "context_options_murder_flags");
     Require(fixture.submits == 0);
   }
   {
@@ -521,6 +553,7 @@ int main() {
   try {
     TestScheme10SwayAndMurder();
     TestScheme10GenerationZeroCharacterIds();
+    TestScheme10SwayEmptyOptionsIgnoreStorageShape();
     TestScheme10TypedRedAndSingleSubmit();
     TestScheme10BindingAndOwnershipGates();
     std::cout << "active scheme precondition/command binders: GREEN\n";

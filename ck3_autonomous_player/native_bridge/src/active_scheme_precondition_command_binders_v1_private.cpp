@@ -462,30 +462,41 @@ bool ResolveRouteThunk(void *context, RouteLease &output) noexcept {
 bool ReadOptions(BinderState &state, std::uintptr_t definition,
                  std::uintptr_t context, bool murder,
                  std::string_view selected) noexcept {
-  std::uintptr_t rows = 0;
   std::int32_t definition_count = 0;
-  bool exclusive = false;
-  std::uintptr_t selected_bytes = 0;
   std::int32_t selected_count = 0;
-  if (!Read(state, definition, kActiveSchemeDefinitionOptionsOffset, rows) ||
-      !Read(state, definition, kActiveSchemeDefinitionOptionsCountOffset,
+  state.precondition_failure_stage = "context_options_count_read";
+  if (!Read(state, definition, kActiveSchemeDefinitionOptionsCountOffset,
             definition_count) ||
-      !Read(state, definition, kActiveSchemeDefinitionOptionsExclusiveOffset,
-            exclusive) ||
-      !Read(state, context, kActiveSchemeContextSelectedOptionsOffset,
-            selected_bytes) ||
       !Read(state, context, kActiveSchemeContextSelectedOptionsCountOffset,
             selected_count)) {
     return false;
   }
   if (!murder) {
-    return rows == 0 && definition_count == 0 && !exclusive &&
-           selected_count == 0 && selected.empty();
+    // Sway has no send_option in the exact stock script. With both vectors
+    // empty, their storage pointers and the exclusivity flag have no effect.
+    // The native final validator still decides whether the interaction sends.
+    state.precondition_failure_stage = "context_options_definition_count";
+    if (definition_count != 0) return false;
+    state.precondition_failure_stage = "context_options_selected_count";
+    return selected_count == 0 && selected.empty();
   }
+  std::uintptr_t rows = 0;
+  bool exclusive = false;
+  std::uintptr_t selected_bytes = 0;
+  state.precondition_failure_stage = "context_options_murder_read";
+  if (!Read(state, definition, kActiveSchemeDefinitionOptionsOffset, rows) ||
+      !Read(state, definition, kActiveSchemeDefinitionOptionsExclusiveOffset,
+            exclusive) ||
+      !Read(state, context, kActiveSchemeContextSelectedOptionsOffset,
+            selected_bytes)) {
+    return false;
+  }
+  state.precondition_failure_stage = "context_options_murder_layout";
   if (rows == 0 || definition_count != 4 || !exclusive ||
       selected_bytes == 0 || selected_count != 4) {
     return false;
   }
+  state.precondition_failure_stage = "context_options_murder_flags";
   std::uintptr_t table_function = 0;
   std::uintptr_t lookup_function = 0;
   if (!CheckedAddress(state.module_base,
