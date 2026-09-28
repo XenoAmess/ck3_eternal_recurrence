@@ -100,7 +100,9 @@ class ExistingCaptureBundleTest(unittest.TestCase):
             stderr = self.root / f"{phase}-stderr.txt"
             stderr.write_text(f"pts_time:{pts}\n", encoding="utf-8")
             extraction = self.root / f"{phase}-extraction.json"
-            write(extraction, {"result": "EXTRACTED_UNREVIEWED", "raw": source["raw"],
+            write(extraction, {"result": "EXTRACTED_UNREVIEWED",
+                               "created_at_utc": "2026-09-28T10:30:00+00:00",
+                               "raw": source["raw"],
                                "image": bundle.record(image), "pts_seconds": pts,
                                "ffprobe": source["ffprobe"], "decoded_index": index,
                                "command": bundle.record(command), "stdout": bundle.record(stdout),
@@ -262,6 +264,16 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "command does not bind selected frame"):
             bundle.package(self.output / "source-manifest.json", review,
                            self.root / "wrong-video-bundle")
+
+    def test_review_cannot_predate_exact_endpoint_extraction(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        payload = bundle.read_json(review)
+        payload["reviewed_at_utc"] = "2026-09-28T10:15:00+00:00"
+        write(review, payload)
+        with self.assertRaisesRegex(ValueError, "precede review"):
+            bundle.package(self.output / "source-manifest.json", review,
+                           self.root / "premature-review-bundle")
 
 
 if __name__ == "__main__":

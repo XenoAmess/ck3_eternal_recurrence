@@ -363,7 +363,9 @@ def extract_frame(source_manifest: Path, exact_pts: str, output: Path,
                  for value in re.findall(r"pts_time:([^\s]+)", stderr_text)]
         require(len(shown) == 1 and shown[0] == selected,
                 f"FFmpeg decoded frame PTS differs from requested PTS: {shown}")
-        result = {"result": "EXTRACTED_UNREVIEWED", "raw": raw,
+        result = {"result": "EXTRACTED_UNREVIEWED",
+                  "created_at_utc": datetime.now(timezone.utc).isoformat(),
+                  "raw": raw,
                   "image": record(image), "pts_seconds": str(selected),
                   "decoded_index": index, "ffprobe": probe,
                   "command": record(output / "command.json"),
@@ -450,6 +452,10 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
             image = verified(frame.get("image"))
             extraction = verified(frame.get("extraction_receipt"))
             receipt = read_json(Path(extraction["path"]))
+            extracted_at = datetime.fromisoformat(receipt["created_at_utc"])
+            require(extracted_at.utcoffset() is not None and
+                    ended_at <= extracted_at <= reviewed_at,
+                    f"{phase} endpoint extraction must follow recording and precede review")
             require(receipt.get("raw") == source["raw"] and
                     receipt.get("image") == image and
                     decimal_pts(receipt.get("pts_seconds"), "extraction PTS") == expected and

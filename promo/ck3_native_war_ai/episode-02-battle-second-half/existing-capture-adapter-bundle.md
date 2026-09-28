@@ -45,6 +45,7 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_nat
 ```json
 {
   "result": "EXTRACTED_UNREVIEWED",
+  "created_at_utc": "ACTUAL_EXTRACTION_COMPLETION_TIME_WITH_TIMEZONE",
   "raw": {"path": "ABSOLUTE_ORIGINAL_RAW", "bytes": 0, "sha256": "64_HEX"},
   "image": {"path": "ABSOLUTE_EXTRACTED_PNG", "bytes": 0, "sha256": "64_HEX"},
   "pts_seconds": "EXACT_FFPROBE_FRAME_PTS",
@@ -58,7 +59,8 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_nat
 ```
 
 该回执必须记录实际抽出的帧 PTS，不能用墙钟 mark、帧序号÷30 或标称 fps 猜测。阶段二重核
-原 session/recorder 清单关系、抽帧命令所选 raw/帧号、原始 FFmpeg `showinfo` PTS、区间内最大相邻
+原 session/recorder 清单关系、抽帧命令所选 raw/帧号、原始 FFmpeg `showinfo` PTS、抽帧完成
+时间早于人工审阅时间、区间内最大相邻
 PTS gap ≤0.2 秒；它不会解码画面或替人审片。A05 a02 的 271.267–278.833 秒 gap 为 7.566 秒，
 跨它的候选必拒。
 
