@@ -13,8 +13,8 @@
 
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
 - 正式 Robert 最近合法持久配对为 **h3778/raw53219568、3,135/36,524 游戏日**；百年门 **0/1**、首整局 **0/1**、独立种子 **0/2**。派生 h90 日期和失败尝试均不计入 Robert。
-- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。[R0318 Emma attempt](Z:/family-child-h3778-native-v3/operator-runs/xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0318/attempt-report.json) SHA-256 `11F011DE86BB108757F1EF68FCC9B6D6E313253B8AF46F08565EA02C88F0BC68` 在原生婚配查询处 `BridgeUnavailableError`，没有查询结果、动作或日期，**不能判定 Emma 婚配阴性**；R0319 仍在途，不预写结果。
-- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0301 生活方式首帧未用点数 **0**、有效财富 focus，未证实本帧漏消费；R0302–R0303 建设有正收益候选，但战时现金比较字段和完整同帧可行动门尚缺，未在 Robert 开工；Emma 家庭查询 RED 待修；联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
+- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。R0318 Emma attempt 位于 `Z:\family-child-h3778-native-v3\operator-runs\xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0318\attempt-report.json`，SHA-256 `11F011DE86BB108757F1EF68FCC9B6D6E313253B8AF46F08565EA02C88F0BC68`；它在原生婚配查询处 `BridgeUnavailableError`，没有查询结果、动作或日期，**不能判定 Emma 婚配阴性**。R0319 仍在途，不预写结果。
+- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0301 生活方式首帧未用点数 **0**、有效财富 focus，未证实本帧漏消费；R0302–R0303 建设有预计正收益的原生合法候选，但战时现金比较字段和完整同帧可行动门尚缺，未在 Robert 开工；Emma 家庭查询 RED 待修；联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
 
 ## 口径纠正
 
