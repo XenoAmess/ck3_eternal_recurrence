@@ -89,3 +89,27 @@ Any wartime spending decision must consume the war cash/resource contract or
 remain a documented comparison gap. Only a formal typed submit followed by
 independent gold, recipient opinion, original-faction readback, next-turn
 consumption and paired cold recovery can extend the live capability claim.
+
+## R0309–R0310 private query failure (2026-09-28)
+
+R0309 used a paired Robert paused save at date raw 53219496, actor 29829,
+and read a fresh feudal targeting-faction count of 1 with ten direct landed
+vassals. Its Python classifier returned `native_preview_not_terminal`, but
+that classifier collapses several native statuses; the raw status was not
+recorded. R0310 used the same paired lineage and a verified fresh application
+main pump (epoch 9802→9830). The private query ran once and returned
+`receiver_red`, `failure_flags=1`, `completion=unavailable`, with an empty
+observation. It took no gameplay action or date advance. This is a native
+frame-path RED before legal recipient, cost, opinion or benefit can be judged.
+The paired R0310 readback is
+`Z:/ck3_mod_rewrite_process_assets/nw-faction-h3694-pump-readonly-edc0434-20260928/evidence/R0310/faction-readback.json`.
+
+At the R0310 DLL source commit `edc0434c`, `ExecuteFactionGiftMitigationAsyncMailboxV1`
+sets the same `faction_gift_async_failure_frame` bit for an invalid execution
+stamp, public revision, snapshot read/drift, direct targeting-row read,
+native binder, or source observation capture. The existing result cannot
+identify which check failed. The narrow private `frame_failure_stage` field
+now preserves that branch while keeping the candidate unavailable and the
+public capability off. A replacement exact-build DLL and one bounded paused
+query are needed to identify the leaf; repeating the R0310 DLL would not add
+evidence. No gift submit or M4 completion is claimed.

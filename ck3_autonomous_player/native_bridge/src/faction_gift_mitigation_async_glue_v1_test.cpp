@@ -451,6 +451,23 @@ int main() {
   stamp.paused = true;
   stamp.pump_epoch = 12;
   stamp.date_raw = 100;
+  xar::ck3_11906::FactionGiftMitigationAsyncContextV1 bad_stamp{};
+  bad_stamp.expected_snapshot = g_snapshot;
+  auto unpaused_stamp = stamp;
+  unpaused_stamp.paused = false;
+  if (!Check(xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1(
+                 &bad_stamp, unpaused_stamp) &&
+                 bad_stamp.failure_flags ==
+                     xar::ck3_11906::faction_gift_async_failure_frame &&
+                 bad_stamp.frame_failure_stage == xar::ck3_11906::
+                     FactionGiftMitigationFrameFailureStageV1::execution_stamp &&
+                 xar::ck3_11906::
+                     SerializeFactionGiftMitigationAsyncContextV1(bad_stamp)
+                         .find("\"frame_failure_stage\":\"execution_stamp\"") !=
+                     std::string::npos,
+             "frame failure stage was not preserved in private result")) {
+    return 1;
+  }
   if (!Check(xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1(
                  &query, stamp),
              "async executor failed") ||
@@ -590,9 +607,9 @@ int main() {
   context.completion = xar::ck3_11906::
       FactionGiftMitigationAsyncCompletionV1::preview_ready;
   context.failure_flags = xar::ck3_11906::
-                              faction_gift_async_failure_faction_war_receiver |
-                          xar::ck3_11906::
-                              faction_gift_async_failure_opinion_receiver;
+                               faction_gift_async_failure_faction_war_receiver |
+                           xar::ck3_11906::
+                               faction_gift_async_failure_opinion_receiver;
   context.source_faction_id = 303;
   context.recipient_character_id = 202;
   context.observation.available = true;
@@ -605,8 +622,10 @@ int main() {
                      std::string::npos &&
                  json.find("\"opinion_delta\":40") !=
                      std::string::npos &&
-                 json.find("gift_opinion_receiver_unavailable") !=
-                     std::string::npos &&
+                  json.find("gift_opinion_receiver_unavailable") !=
+                      std::string::npos &&
+                  json.find("\"frame_failure_stage\":\"none\"") !=
+                      std::string::npos &&
                  json.find("\"receipt_pending\":false") !=
                      std::string::npos,
              "serializer mismatch")) {

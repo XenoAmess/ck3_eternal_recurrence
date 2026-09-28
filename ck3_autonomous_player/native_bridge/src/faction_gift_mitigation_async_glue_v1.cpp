@@ -235,15 +235,29 @@ bool ReadFrame(void *context,
   auto &query = *static_cast<FactionGiftMitigationAsyncContextV1 *>(context);
   output = {};
   game::Snapshot current{};
-  if (query.mailbox == nullptr ||
-      !ReadSnapshot(query.bindings, current) ||
-      current != query.expected_snapshot || !current.paused ||
-      !current.has_played_character || current.played_character_id <= 0 ||
-      required.snapshot_revision == 0 ||
-      required.snapshot_revision != query.targeting_rows.observed_binding.snapshot_revision ||
+  if (query.mailbox == nullptr || !ReadSnapshot(query.bindings, current)) {
+    query.frame_failure_stage =
+        FactionGiftMitigationFrameFailureStageV1::snapshot_read;
+    return false;
+  }
+  if (current != query.expected_snapshot) {
+    query.frame_failure_stage =
+        FactionGiftMitigationFrameFailureStageV1::snapshot_changed;
+    return false;
+  }
+  if (!current.paused || !current.has_played_character ||
+      current.played_character_id <= 0) {
+    query.frame_failure_stage = FactionGiftMitigationFrameFailureStageV1::actor;
+    return false;
+  }
+  if (required.snapshot_revision == 0 ||
+      required.snapshot_revision !=
+          query.targeting_rows.observed_binding.snapshot_revision ||
       required.date_raw != current.date_raw ||
       required.player_character_id !=
           static_cast<std::uint32_t>(current.played_character_id)) {
+    query.frame_failure_stage =
+        FactionGiftMitigationFrameFailureStageV1::source_frame_binding;
     return false;
   }
   output.available = true;
@@ -406,8 +420,10 @@ bool CaptureIndependentReceiptPostV1(
       query.source_faction_id != ack.source_faction_id ||
       query.recipient_character_id != ack.recipient_character_id ||
       current.played_character_gold.scale < 0 ||
-      current.played_character_gold.scale >
-          (std::numeric_limits<std::uint32_t>::max)()) {
+       current.played_character_gold.scale >
+           (std::numeric_limits<std::uint32_t>::max)()) {
+    query.frame_failure_stage =
+        FactionGiftMitigationFrameFailureStageV1::receipt_binding;
     query.failure_flags |= faction_gift_async_failure_frame;
     return false;
   }
@@ -720,6 +736,7 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   ++query.executor_invocations;
   query.completion = FactionGiftMitigationAsyncCompletionV1::unavailable;
   query.failure_flags = faction_gift_async_failure_none;
+  query.frame_failure_stage = FactionGiftMitigationFrameFailureStageV1::none;
   query.observation = {};
   query.ack = {};
   query.preflight = {};
@@ -729,22 +746,44 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   query.execution_stamp = stamp;
   if (!stamp.paused || stamp.pump_epoch == 0 ||
       stamp.date_raw != query.expected_snapshot.date_raw) {
+    query.frame_failure_stage =
+        FactionGiftMitigationFrameFailureStageV1::execution_stamp;
     query.failure_flags |= faction_gift_async_failure_frame;
     return true;
   }
   if (query.use_direct_source_rows) {
     game::Snapshot current{};
-    if (query.expected_public_revision == 0 ||
-        !ReadSnapshot(query.bindings, current) ||
-        current != query.expected_snapshot ||
-        !current.has_played_character ||
-        current.played_character_id <= 0 ||
-        !ReadFactionGiftDirectTargetingRowsExact11906V1(
+    if (query.expected_public_revision == 0) {
+      query.frame_failure_stage =
+          FactionGiftMitigationFrameFailureStageV1::public_revision;
+      query.failure_flags |= faction_gift_async_failure_frame;
+      return true;
+    }
+    if (!ReadSnapshot(query.bindings, current)) {
+      query.frame_failure_stage =
+          FactionGiftMitigationFrameFailureStageV1::snapshot_read;
+      query.failure_flags |= faction_gift_async_failure_frame;
+      return true;
+    }
+    if (current != query.expected_snapshot) {
+      query.frame_failure_stage =
+          FactionGiftMitigationFrameFailureStageV1::snapshot_changed;
+      query.failure_flags |= faction_gift_async_failure_frame;
+      return true;
+    }
+    if (!current.has_played_character || current.played_character_id <= 0) {
+      query.frame_failure_stage = FactionGiftMitigationFrameFailureStageV1::actor;
+      query.failure_flags |= faction_gift_async_failure_frame;
+      return true;
+    }
+    if (!ReadFactionGiftDirectTargetingRowsExact11906V1(
             query.module_base, query.bindings,
             {true, stamp.pump_epoch, query.expected_public_revision,
              current.date_raw,
              static_cast<std::uint32_t>(current.played_character_id)},
             query.targeting_rows)) {
+      query.frame_failure_stage =
+          FactionGiftMitigationFrameFailureStageV1::direct_targeting_rows;
       query.failure_flags |= faction_gift_async_failure_frame;
       return true;
     }
@@ -815,14 +854,21 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   upstream.submit_gift = &SubmitGift;
   FactionGiftMitigationNativeBinderStateV1 binder{};
   if (!BindFactionGiftMitigationNativeCallbacksV1(
-          binder, environment, upstream)) {
+           binder, environment, upstream)) {
+    query.frame_failure_stage =
+        FactionGiftMitigationFrameFailureStageV1::native_binder;
     query.failure_flags |= faction_gift_async_failure_frame;
     return true;
   }
   auto access = MakeFactionGiftMitigationNativeSourceActionAccessV1(binder);
   if (!CaptureFactionGiftMitigationObservationFromSourcesV1(
-          access, query.source_faction_id, query.recipient_character_id,
-          query.observation)) {
+           access, query.source_faction_id, query.recipient_character_id,
+           query.observation)) {
+    if (query.frame_failure_stage ==
+        FactionGiftMitigationFrameFailureStageV1::none) {
+      query.frame_failure_stage =
+          FactionGiftMitigationFrameFailureStageV1::observation_capture;
+    }
     query.failure_flags |= faction_gift_async_failure_frame;
     return true;
   }
@@ -870,6 +916,31 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
 
 std::string SerializeFactionGiftMitigationAsyncContextV1(
     const FactionGiftMitigationAsyncContextV1 &context) {
+  const auto frame_failure_stage = [&]() -> std::string_view {
+    switch (context.frame_failure_stage) {
+    case FactionGiftMitigationFrameFailureStageV1::none: return "none";
+    case FactionGiftMitigationFrameFailureStageV1::execution_stamp:
+      return "execution_stamp";
+    case FactionGiftMitigationFrameFailureStageV1::public_revision:
+      return "public_revision";
+    case FactionGiftMitigationFrameFailureStageV1::snapshot_read:
+      return "snapshot_read";
+    case FactionGiftMitigationFrameFailureStageV1::snapshot_changed:
+      return "snapshot_changed";
+    case FactionGiftMitigationFrameFailureStageV1::actor: return "actor";
+    case FactionGiftMitigationFrameFailureStageV1::direct_targeting_rows:
+      return "direct_targeting_rows";
+    case FactionGiftMitigationFrameFailureStageV1::native_binder:
+      return "native_binder";
+    case FactionGiftMitigationFrameFailureStageV1::source_frame_binding:
+      return "source_frame_binding";
+    case FactionGiftMitigationFrameFailureStageV1::observation_capture:
+      return "observation_capture";
+    case FactionGiftMitigationFrameFailureStageV1::receipt_binding:
+      return "receipt_binding";
+    }
+    return "unknown";
+  }();
   const auto completion =
       context.completion ==
               FactionGiftMitigationAsyncCompletionV1::preview_ready
@@ -910,9 +981,10 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
   typed_reds += ']';
   std::string output =
       "{\"schema_version\":1,\"private\":true,\"completion\":" +
-      Quote(completion) + ",\"failure_flags\":" +
-      std::to_string(context.failure_flags) +
-      ",\"typed_reds\":" + typed_reds +
+       Quote(completion) + ",\"failure_flags\":" +
+       std::to_string(context.failure_flags) +
+       ",\"frame_failure_stage\":" + Quote(frame_failure_stage) +
+       ",\"typed_reds\":" + typed_reds +
       ",\"source_faction_id\":" +
       std::to_string(context.source_faction_id) +
       ",\"recipient_character_id\":" +

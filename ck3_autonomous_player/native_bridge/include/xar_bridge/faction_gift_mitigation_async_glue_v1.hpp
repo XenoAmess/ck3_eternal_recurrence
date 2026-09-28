@@ -43,6 +43,22 @@ enum FactionGiftMitigationAsyncFailureV1 : std::uint32_t {
   faction_gift_async_failure_independent_entity_receiver = 1U << 7,
 };
 
+// Private exact-build diagnosis for a material frame failure. No partial
+// candidate may be published when this stage is non-none.
+enum class FactionGiftMitigationFrameFailureStageV1 : std::uint8_t {
+  none = 0,
+  execution_stamp,
+  public_revision,
+  snapshot_read,
+  snapshot_changed,
+  actor,
+  direct_targeting_rows,
+  native_binder,
+  source_frame_binding,
+  observation_capture,
+  receipt_binding,
+};
+
 struct FactionGiftMitigationAsyncContextV1 {
   MainThreadQueryMailboxV1 *mailbox = nullptr;
   MainThreadQueryTicketV1 ticket{};
@@ -71,6 +87,8 @@ struct FactionGiftMitigationAsyncContextV1 {
   FactionGiftMitigationAsyncCompletionV1 completion =
       FactionGiftMitigationAsyncCompletionV1::not_executed;
   std::uint32_t failure_flags = faction_gift_async_failure_none;
+  FactionGiftMitigationFrameFailureStageV1 frame_failure_stage =
+      FactionGiftMitigationFrameFailureStageV1::none;
   game::FactionGiftMitigationObservationV1 observation{};
   game::FactionGiftMitigationAckV1 ack{};
   FactionGiftMitigationIntegrationGateResultV1 preflight{};
