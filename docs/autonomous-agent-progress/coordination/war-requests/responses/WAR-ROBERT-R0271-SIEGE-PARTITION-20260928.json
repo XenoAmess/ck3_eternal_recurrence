@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T14:30:29Z",
+  "updated_at_utc": "2026-09-28T15:28:20Z",
   "source_request_commit": "5d2070f",
   "work_branch": "war/r0271-siege-partition-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/450",
@@ -74,6 +74,14 @@
     "authority_commit": "32c0dd3706b95426977d787886b44f5545105772",
     "correction": "The prior 5777-byte source handoff's recovery_qualified_for_receiver=false was a historical pre-preparation statement. Later Git project-state records the last qualified H3911/raw53219928 Robert checkpoint as canonical, six durable days beyond H3860, and a separate source candidate with official pair/rebind/no-launch passed. No H3911 cold restore, receiver asset transfer, matching receiver replay or closure of the turn27 forecast RED is claimed.",
     "source_pair": "Frozen H3911 save SHA-256 5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746 and original driver SHA-256 DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33; independent rebind produces a different driver SHA-256 BF58AB4FE890F7AAAC6EA8F0254655DA869BB3327DF867C6D217550165D9085D."
+  },
+  "historical_r0319_h3860_excerpt_audit": {
+    "status": "source_ack_and_bounded_excerpt_receiver_verified_final_same_frame_participants_not_observed",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0319-h3860-excerpt-audit.json",
+    "excerpt_sha256": "506497A181A9F3061E4365B9C95E2FCE67379033C17C3F8D9BCC8333EFF4C638",
+    "receiver_ack_sha256": "3AA1E415D202035E137413E5BC17DC60C88543F0A27D6D0A15422E37722FECE5",
+    "bounded_finding": "At R0319 final h3860/native:34/raw53219784, the extracted same-frame rows show active WarID16777231 and three scoped army-strength rows only. The source explicitly marks final-frame army position/route/ETA, province2629 siege/presence, full-hostile contact, participant partition and next planner step not_observed. An earlier native:30 route-contact/one-day advance is retained separately and cannot fill those same-frame gaps.",
+    "boundary": "The source accepted the H3860 request and the receiver verified the five exact small files and their reference chain. A receiver ACK was written and re-read locally; source readback remains pending. Parent formal report/driver remain source-only. H3860 is historical versus the later H3911 source pair; neither SOURCE-ACK nor excerpt resolves the original H3388 R0271 RED or R0321 forecast RED."
   },
   "limitations": [
     "The original R0271 attempt remains historical RED. Independent exact-source receiver runs R0002/R0004/R0005 prove a recoverable first-hop command and six fresh daily full-hostile gates, but do not prove arrival at2614 or settle future siege participants at2629. Delivered means the bounded recovery contract is available; the war objective itself remains open.",

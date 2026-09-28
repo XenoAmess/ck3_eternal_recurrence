@@ -1,0 +1,88 @@
+{
+  "schema": "xar.g2.war-r0271-h3860-historical-excerpt-audit.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "audit_at_utc": "2026-09-28T15:28:20Z",
+  "status": "historical_h3860_excerpt_verified_final_same_frame_siege_participants_not_observed",
+  "receiver_intake": {
+    "fixed_onedrive_dir": "WAR/R0271-H3388",
+    "immutable_copy_dir": "D:\\ck3-research-artifacts\\war-intake-20260928\\r0319-h3860-siege-excerpt-001",
+    "intake_receipt_sha256": "5B369BAFBF5BF62C8B97FF048250B96A91ADE932C04747F75DDA7F260098D257",
+    "request": {
+      "name": "REQUEST-R0319-H3860-SIEGE-FRAME-v1.json",
+      "size_bytes": 4247,
+      "sha256": "7ECCB6D7561B4DD2F0701959B6F79EFC52131CB0EF55D0CCDFA7D6DEB80A4E1D"
+    },
+    "source_ack": {
+      "name": "SOURCE-ACK-R0319-H3860-SIEGE-FRAME-v1.json",
+      "size_bytes": 1499,
+      "sha256": "F138F58D83FAC227493661982BD75C57FF258FB6E8BDD75C596C270CC5BBB4D5",
+      "scope": "Source accepted a bounded extraction from existing immutable report and driver; no CK3 launch or gameplay."
+    },
+    "planned_manifest": {
+      "name": "SOURCE-R0319-H3860-SIEGE-FRAME-PLANNED-MANIFEST-v1.json",
+      "size_bytes": 1921,
+      "sha256": "BBA3C6AA8F4BB43737793BFA6D8FC9B650F3E5F45107117AEDB7063E29CD5410"
+    },
+    "final_manifest": {
+      "name": "SOURCE-R0319-H3860-SIEGE-FRAME-MANIFEST-v1.json",
+      "size_bytes": 2262,
+      "sha256": "6318F7B2CC8C7C5DF6D383FBEADDF9E9236732195A74490E9669FA1A56C01505"
+    },
+    "excerpt": {
+      "name": "SOURCE-R0319-H3860-SIEGE-FRAME-EXCERPT-v1.json",
+      "size_bytes": 36163,
+      "sha256": "506497A181A9F3061E4365B9C95E2FCE67379033C17C3F8D9BCC8333EFF4C638"
+    },
+    "receiver_ack": {
+      "name": "RECEIVER-ACK-R0319-H3860-SIEGE-FRAME-v1.json",
+      "size_bytes": 2949,
+      "sha256": "3AA1E415D202035E137413E5BC17DC60C88543F0A27D6D0A15422E37722FECE5",
+      "status": "Written append-only in the fixed WAR directory, parsed and SHA-256 read back locally; cloud delivery and source-machine readback are pending."
+    },
+    "cross_checks": "Intake independently verified exact sizes, SHA-256, JSON and request/manifest/excerpt reference chain, then preserved copies in the named external directory. Its receipt is a local audit artifact, not a source formal-report copy."
+  },
+  "source_parent_claims_not_transferred": {
+    "formal_report_size_bytes": 508355,
+    "formal_report_sha256": "DE3BA372C21A2D542108C320E4A71AA3B377154721AA602D7FE2F000E6BB177D",
+    "final_driver_size_bytes": 43693841,
+    "final_driver_sha256": "CD0F2CE72BF55A122A6A868DE9F2C456B52575C0269758F2D45F6EB38C726868",
+    "checkpoint_save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A"
+  },
+  "historical_final_paused_frame": {
+    "frame": "R0319 h3860/native:34/public-revision:35/native-revision:34/raw53219784",
+    "paused": true,
+    "actor_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "active_war_ids": [16777231],
+    "observed_same_frame_rows": [
+      "formal before/after identity and active context, source pointers /auto_run/turns/35/before and /after",
+      "query-campaign-root-context-v1 at /command_history/3861, including active actor and campaign context",
+      "query-army-strengths-v1 at /command_history/3862: player ArmyID83886367 2332 soldiers, enemy ArmyID50331920 1423, enemy ArmyID83886484 311, all scoped to WarID16777231"
+    ],
+    "formal_selected_step": "query-army-strengths-v1",
+    "not_observed_in_this_final_frame": [
+      "Complete allied/hostile army roster with tactical position, route and ETA; three strength rows do not assert complete roster coverage.",
+      "ArmyID83886367 current province, move target, remaining route and ETA.",
+      "Province2629 siege state and armies physically present there.",
+      "Full-hostile route contact at native:34.",
+      "Siege participant partition or actual-contact scope at native:34.",
+      "Next formal planner phase or selected action after H3860."
+    ]
+  },
+  "near_neighbor_separate_frame": {
+    "frame": "native:30/public-revision:31/raw53219760",
+    "route_contact_pointer": "/command_history/3856",
+    "one_day_contact_free": true,
+    "subject_army": "83886367 currently 2614, route target2610",
+    "hostile_armies": "50331920 at2629; 83886484 embarked at1036 with route target2629 and ETA raw53219928",
+    "advance_pointer": "/command_history/3858",
+    "advance_postcondition": "One exact day to raw53219784; the advance postcondition is not a final native:34 army-position, siege or participant query.",
+    "scope": "The earlier route/contact row cannot be joined with final-frame strength rows to manufacture a same-frame H3860 siege participant decision."
+  },
+  "decision_boundary": {
+    "historical_frame": "H3860 is earlier than the latest qualified source H3911 checkpoint. The later R0321 source-reported partition result cannot fill H3860's absent final-frame fields.",
+    "original_r0271": "The H3388 offsite participant RED remains historical; this excerpt does not prove its target2629 encounter set or a safe attack.",
+    "source_ack_vs_result": "The SOURCE-ACK proves request acceptance. The excerpt proves only the explicitly copied rows and absences. A receiver ACK was locally written and re-read, but this audit does not claim cloud delivery or source-machine readback.",
+    "current_war": "R0321 turn27 qualified forecast RED remains open. No battle probability, expected utility, attack authorization, surrender or war exit follows from this H3860 excerpt."
+  }
+}
