@@ -12,7 +12,7 @@
 
 若战争维护者发布**新的玩家战争现金政策**，最低可审阅字段应包含：政策 ID 与版本、仓库跟踪文件的固定 SHA-256、作者/复核证据、玩家 CharacterID、WarID、episode、生效与失效帧日期、适用 horizon、Q100000 金额和计算依据。政策必须明确表示该金额是**支付期限内未来支出后还要留下的终点流动性**，不是未来费用或风险支出的另一个名字。若基于军费率设定，先取得该军费率完整同帧原生证据并说明政策系数；原版 AI 18 个月公式和建造 200 金都不能自动作为玩家政策版本。
 
-[候选 provenance gate](../../ck3_autonomous_player/src/xar_autoplayer/war_cash_floor_policy_provenance_v1.py) 只验证传入政策文档 bytes 与外部可信配置中已固定的 SHA-256 相等、玩家/WarID/episode/日期/horizon 匹配、用途为 `terminal_liquidity_after_horizon`，并要求终点流动性、期限内未来支出、额外风险支出的现金用途 ID 两两不重叠。缺政策来源返回 `policy_source_unavailable_unknown`；旧版、串帧、重复用途或凭空省略风险范围会拒绝。通过后状态仅为 `candidate_document_and_claims_valid`，始终输出 `formal_cash_receipt_eligible=false`：调用者仍须证明**固定 SHA 来自已发布政策**、未来及风险用途 ID 来自同帧原生/政策收据、五项现金金额有实证，才能考虑接入 M5。测试里的 250 金与 0 金仅为 synthetic fixture，**不是 Robert 政策**。
+[候选 provenance gate](../../ck3_autonomous_player/src/xar_autoplayer/war_cash_floor_policy_provenance_v1.py) 只验证传入政策文档 bytes 与外部可信配置中已固定的 SHA-256 相等、玩家/WarID/episode/日期/horizon 匹配、用途为 `terminal_liquidity_after_horizon`，并要求终点流动性、期限内未来支出、额外风险支出的现金用途 ID 两两不重叠。按当前原生日期单位一游戏日为 24 raw，政策失效日期还必须覆盖整个 `horizon_days`；只覆盖本帧而不覆盖下一日的文件会拒绝。缺政策来源返回 `policy_source_unavailable_unknown`；旧版、串帧、重复用途或凭空省略风险范围会拒绝。通过后状态仅为 `candidate_document_and_claims_valid`，始终输出 `formal_cash_receipt_eligible=false`：调用者仍须证明**固定 SHA 来自已发布政策**、未来及风险用途 ID 来自同帧原生/政策收据、五项现金金额有实证，才能考虑接入 M5。测试里的 250 金与 0 金仅为 synthetic fixture，**不是 Robert 政策**。
 
 ## 三个桶的防重复计数规则
 

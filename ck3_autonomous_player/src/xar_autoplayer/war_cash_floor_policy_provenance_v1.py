@@ -15,6 +15,7 @@ from .m5_observed_opportunity_selector import observed_frame
 
 
 SCHEMA = "xar.ck3.war-cash-floor-policy.v1"
+_DATE_RAW_PER_GAME_DAY = 24
 
 
 def _nonnegative(value: object) -> bool:
@@ -104,6 +105,9 @@ def assess_war_cash_floor_policy_candidate_v1(
                 <= policy["valid_until_date_raw"])
         or not _positive(policy["valid_through_horizon_days"])
         or policy["valid_through_horizon_days"] < horizon_days
+        or policy["valid_until_date_raw"] < (
+            frame["date_raw"] + horizon_days * _DATE_RAW_PER_GAME_DAY
+        )
         or not _nonnegative(policy["floor_raw"])
         or policy["gold_scale"] != 100_000
         or policy["floor_purpose"] != "terminal_liquidity_after_horizon"

@@ -28,7 +28,7 @@ def policy(**changes: object) -> bytes:
         "policy_version": "test-v1", "played_character_id": 29829,
         "episode_run_id": FRAME["episode_run_id"], "war_id": WAR_ID,
         "valid_from_date_raw": 53217620,
-        "valid_until_date_raw": 53217630,
+        "valid_until_date_raw": FRAME["date_raw"] + 24,
         "valid_through_horizon_days": 1,
         "floor_raw": 25_000_000, "gold_scale": 100_000,
         "floor_purpose": "terminal_liquidity_after_horizon",
@@ -80,6 +80,7 @@ class WarCashFloorPolicyProvenanceTests(unittest.TestCase):
             {"war_id": WAR_ID + 1},
             {"episode_run_id": "other-run"},
             {"valid_until_date_raw": FRAME["date_raw"] - 1},
+            {"valid_until_date_raw": FRAME["date_raw"] + 1},
             {"valid_through_horizon_days": 0},
             {"floor_purpose": "future_expense"},
         ):
