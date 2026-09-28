@@ -120,6 +120,21 @@ class RemainingLiveStepTest(unittest.TestCase):
             self.assertEqual(calls, [("e2-04-d05-pre-advance-snapshot", "ck3_take_snapshot")])
             self.assertFalse((steps / "e2-04-d05-advance-intent.json").exists())
 
+    def test_finish_refuses_active_or_unprobed_recorder(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            attempt = Path(directory)
+            output = attempt / "ck3-output"
+            output.mkdir()
+            recorder = attempt / "recording-a01"
+            recorder.mkdir()
+            write(recorder / "recorder-start.json", {"pid": 123})
+            with self.assertRaisesRegex(ValueError, "active recorder"):
+                live.finish(output, "e2-06-d11", {}, recorder)
+            write(recorder / "recorder-end.json", {"ffmpeg_exit_code": 0})
+            with self.assertRaisesRegex(ValueError, "probe/final receipt"):
+                live.finish(output, "e2-06-d11", {}, recorder)
+            self.assertFalse((output / "interactive-requests").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

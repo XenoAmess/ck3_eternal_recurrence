@@ -291,9 +291,13 @@ def advance(output: Path, track: str, binding: dict[str, Any],
 
 
 def finish(output: Path, track: str, binding: dict[str, Any], recorder: Path | None) -> int:
+    for child in output.parent.iterdir():
+        if child.is_dir() and (child / "recorder-start.json").is_file():
+            require((child / "recorder-end.json").is_file(),
+                    f"active recorder remains in this attempt: {child}")
     if recorder is not None:
-        require((recorder / "recorder-end.json").is_file(),
-                "wait for recorder to seal before ending the managed session")
+        require((recorder / "recorder-final.json").is_file(),
+                "wait for recorder probe/final receipt before ending the managed session")
     target = output / "interactive-requests" / f"999-{track}-finish.json"
     temp = target.with_suffix(".json.pending")
     require(not target.exists() and not temp.exists(), "finish already submitted")
