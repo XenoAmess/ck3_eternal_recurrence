@@ -40,3 +40,22 @@ composer 读取上述 run artifact，重新验 SHA、章节次序、旁白全文
 ```
 
 实际还需对卡、音频、reel、回执和 `episode02-production-inputs-v1` 分别 `preserve`，上面的命令不能在缺素材时直接用作构建。`--offline-tts` 让 build 只消费本 run 准备的精确音频；不会调用 provider。每次 build/audit/review 重试使用新 run/workdir，并永久保留旧 attempt。专题正式门、OneDrive 单文件交付和人工签核按系列规则另行完成。
+
+## 六章实际组装入口与精确输入
+
+`war_ai_promo.assemble_episode_two` 是本项目的正式组装入口。它只接收本 run 的已保全素材，外置 `--attempt-directory` 必须是不存在的新目录。执行顺序为 `validate`、只读 `plan`、`build --offline-tts`、单一主题曲固定增益混音、六章元数据复制、ffprobe、完整解码，以及将候选 MP4 再次 preserve 到同一 native run。argv、stdout/stderr、probe、输入 SHA/长度、失败事件和 partial 均留在这个独立 attempt。成功状态仅为 `TECHNICAL_CANDIDATE_UNREVIEWED`；没有人工 1× 签核，也没有 OneDrive 传输或外部发布。
+
+保全 `episode02-production-inputs-v1` 时，在已有字段外必须加入本 run `project_config_sha256` 与 `project_config_bytes`；`narration_script_sha256`/`narration_script_bytes`；`card_index_sha256`/`card_index_bytes`；九卡 `card_sha256` 和 `card_bytes` 字典；`replay_by_card`；以及本 run 单一音乐的 `music_artifact_id`/`music_sha256`/`music_bytes`。每一章的音频、reel、reel receipt 还需各自的 artifact ID、SHA-256 与 byte length，例如 `audio_artifact_id`/`audio_sha256`/`audio_bytes`。composer 会把这些声明与 native run manifest 及配置快照的实际字节逐一核对。
+
+reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，source save、raw video、control 的 artifact ID、SHA-256 与 byte length，以及 clean-span 与来源标签审查 artifact ID。`cards[card_id]` 必须有卡 SHA、replay、该 replay 的 `primary_receipt_sha256` 与 `evidence_mode`：
+
+- `historical_research_card` 仅对应冻结的 004/039→040/020/070/036→038/085/024 旧研究回执；还需 `visible_label_audit_artifact_id` 与实际 `visible_label_text`，标签写明“历史研究”、该研究编号、“非当前录制”，审查回执绑定 reel SHA 和卡 ID。
+- `current_run_recomputed` 必须先按新拍 attempt 重算数字、重建卡与旁白，再给出 `recomputed_receipt_artifact_id`。该回执绑定新卡 SHA、来源主回执、捕获 attempt 与 source save SHA；旧 024 的 `-50` 不能改称新轨 writer 证据。
+
+新 run 前再次查询正式 xar-promo Release、安装所选 wheel 并核 SHA。六章素材齐全时，命令形状是：
+
+```text
+<verified-python> -m war_ai_promo.assemble_episode_two --run-manifest <NEW_RUN>/run-manifest.json --attempt-directory <NEW_EXTERNAL_ASSEMBLY_ATTEMPT> --selected-version 0.2.1 --selected-wheel-sha256 f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621
+```
+
+版本和 SHA 是 2026-09-28 本次已核值，不代表后续 run 永久使用 0.2.1。组装后的自动检查尚不涵盖整片真实画面、字幕安全区、色彩、逐帧 PTS 连续性或人工审片；这些门仍须使用独立证据和精确成片 SHA 收口。
