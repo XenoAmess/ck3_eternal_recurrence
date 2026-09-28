@@ -1,0 +1,81 @@
+{
+  "schema": "xar.war-ai.episode02.calculation-cards.v1",
+  "canvas": {
+    "width": 2560,
+    "height": 1440,
+    "subtitle_safe_top": 1120,
+    "presentation": "standalone_full_frame_intertitle_not_gameplay_overlay"
+  },
+  "game": {
+    "version": "CK3 1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "combat_id": 16777218,
+    "war_id": 4,
+    "province_id": 2633
+  },
+  "replays": {
+    "085": {
+      "kind": "independent_replay_from_day11_save",
+      "source_save": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d11-immutable.ck3",
+      "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "source_finish": "D:/workspace/ck3_native_war_ai_promo_work/episode01-join-full-entry-live-attempt-085/ck3-output/interactive-requests-responses/jfull085-finish.json",
+      "source_finish_sha256": "A7F01C89BE66B34A6F2862BAEFC4354EF74507B6D5178E2949C381DEDC32FD88",
+      "source_cleanup": "D:/workspace/ck3_native_war_ai_promo_work/episode01-join-full-entry-live-attempt-085/cleanup-check.json",
+      "source_cleanup_sha256": "5FD3CFE8AB9A69D557042B5CA3DE2CC59587C6BA679BF430F2BA15A98337CB37",
+      "date_raw": 53146512,
+      "joining_army_id": 22,
+      "incoming_regiments": 13,
+      "incoming_starting_people": 2570,
+      "incoming_current_people": 2560,
+      "zero_current_regiment_id": 177,
+      "zero_current_regiment_starting_people": 10,
+      "side0_before_cache_raw_q100000": 160317482,
+      "side0_before_entry_sum_raw_q100000": 154690163,
+      "side0_cache_minus_entry_raw_q100000": 5627319,
+      "side1_before_cache_raw_q100000": 89325449,
+      "side1_before_entry_sum_raw_q100000": 82785368,
+      "side1_cache_minus_entry_raw_q100000": 6540081,
+      "side0_after_cache_and_entry_raw_q100000": 410690163,
+      "side1_after_cache_and_entry_raw_q100000": 82785368,
+      "base_width_before": 1645,
+      "final_width_before": 1480,
+      "base_width_after": 2467,
+      "final_width_after": 2220,
+      "first_side0_fire_width_argument": 2220,
+      "forest_width_multiplier_raw_q100000": 90000,
+      "forest_multiplier_source": "CK3 1.19.0.6 stock script static, not attempt-085 runtime field",
+      "collector_status": "join_full_entries captured 2/2; join_width captured 3/3; failure_flags 0; production_trace_ready false"
+    },
+    "024": {
+      "kind": "independent_replay_from_day27_checkpoint",
+      "source_save": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
+      "source_save_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+      "source_terminal": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/ck3-output/interactive-requests-responses/d32-terminal.json",
+      "source_terminal_sha256": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F",
+      "source_session_result": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/ck3-output/session-result.json",
+      "source_session_result_sha256": "85400E4632D5C6D8C6EE9FE527B37EA70CC60938C0A77FEAC8DCB3451472B529",
+      "start_date_raw": 53146872,
+      "terminal_date_raw": 53146992,
+      "terminal_kind": "normal_result",
+      "winner_side": 0,
+      "loser_side": 1,
+      "loser_successor": "subject_retreating",
+      "loser_baseline_raw_q100000": 129800000,
+      "hard_loss_numerator_raw_q100000": 53662042,
+      "denominator_buckets_people": [0, 675, 310, 0, 0, 0, 11, 0],
+      "denominator_people": 996,
+      "ratio_raw_q100000": 53877,
+      "cb_scale_raw_q100000": 15000000,
+      "uncapped_score_raw_q100000": 8081550,
+      "single_battle_cap_raw_q100000": 5000000,
+      "row_magnitude_raw_q100000": 5000000,
+      "winner_is_war_attacker": false,
+      "war_attacker_relative_delta_raw_q100000": -5000000
+    }
+  },
+  "cards": [
+    {"id": "E2-06", "replay": "085", "title": "增援：先对齐参战账", "purpose": "同钩子旧 entry、缓存差额与新增 current 的算术板"},
+    {"id": "E2-07", "replay": "085", "title": "战宽：从入场写到首次出伤", "purpose": "同一 attempt 的 join 前后战宽与 R8D 实参"},
+    {"id": "E2-09", "replay": "024", "title": "终局：一场仗怎样入战争账", "purpose": "同一次原生 writer 的分子、八桶分母、倍率、封顶与相对符号"}
+  ]
+}
