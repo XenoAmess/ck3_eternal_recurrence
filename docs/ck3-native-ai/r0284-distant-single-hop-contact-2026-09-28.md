@@ -2,7 +2,7 @@
 
 ## 来源与实际断点
 
-固定 OneDrive `WAR/R0284-H90-CONTACT-20260928` 的九件素材已在接收机逐项核验（9/9）；源请求和传输清单的精确字节已镜像到 [Git 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0284-CONTACT-20260928.json)引用的 evidence。源是 **H90 derivative**，不能算 Robert 正式日期信用。原 run 的 256 个 turn 成功；第 257 turn 在 raw `53157816` 规划阶段 RED，未提交该 turn 动作。最后耐久存档是 h907/raw `53157768`/SHA-256 `64D669CE…2075`。收到的原 driver 还含 h908–h933 只读尾，不能把两者物理强配成已成功的第 257 turn。
+固定 OneDrive `WAR/R0284-H90-CONTACT-20260928` 的九件素材已在接收机逐项核验（9/9）；源请求和传输清单的精确字节已镜像到 [Git 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0284-CONTACT-20260928.json)引用的 evidence。源是 **H90 derivative**，不能算 Robert 正式日期信用。原 run 的 256 个 turn 成功；第 257 turn 在 raw `53157816` 规划阶段 RED，未提交该 turn 动作。最后耐久存档是 h907/raw `53157768`/SHA-256 `64D669CE…2075`。收到的原 driver 还含 h908–h933 的存档后历史（其中含日期推进与失败帧查询）；必须由官方重绑/冷恢复处理，不能把存档和尾帧物理强配成已成功的第 257 turn。
 
 同一失败帧的 h928 原生预览给出我军 `16777450` 从省 `2634` 到省 `2640` 的精确单跳。h930 的完整敌军接触查询只见敌军 `16777537` 留在 `2640`，预计到达 raw `53157960`，比当前帧晚 `144` raw 小时，即六天；raw `53157816` 至 `53157840` 的一天 `one_day_contact_free=true`、`conflicts=[]`。h932 的 v3 接战输入查询成功。源报告的风险准入为 admitted，但该输入冻结当前参战者，不能保证六天后的参战集合、敌军位置或战斗结果。原规划器只接受“单跳抵达在当前一天内”，因此返回 `native_war_general_battle_arrival_blocked`。精确缩减证据在 [blocker excerpt](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.blocker-excerpt.json)。
 
