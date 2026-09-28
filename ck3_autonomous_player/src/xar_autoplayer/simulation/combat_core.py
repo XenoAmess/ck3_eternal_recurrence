@@ -1416,7 +1416,11 @@ def summarize_trial_outcomes(
             / experiment.sample_count
         ),
         fidelity_gate=fidelity_gate,
-        planner_usable=fidelity_gate,
+        # A transition trace proves a local simulator property. It does not
+        # validate the outcome distribution on independent battles or supply
+        # the same-frame three-action EU inputs required by the strategy.
+        # Only a separate qualified producer may later assert planner use.
+        planner_usable=False,
         model_fidelity=(
             "exact-native-parity" if fidelity_gate else "research-only-bounded-core"
         ),
