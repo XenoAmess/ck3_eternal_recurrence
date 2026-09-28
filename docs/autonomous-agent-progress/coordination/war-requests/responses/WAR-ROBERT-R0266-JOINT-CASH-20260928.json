@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_live_diagnostic_red_no_cash_values",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T09:11:51Z",
+  "updated_at_utc": "2026-09-28T09:30:06Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -55,7 +55,7 @@
     "2026-09-28 exact-build embark quote ABI verifier passed 34 static instruction anchors normal/-O and Python-only validation GREEN; no safe live call, selected-action binding or cash amount follows.",
     "2026-09-28 H3492 source addendum offered a new official rebound six-file pair at history 3492/raw53219160. Receiver compared all six proposed filenames, sizes and SHA-256 against an append-only transfer acceptance; transfer is now independently hashed 8/8 including separate historical DLL/injector, but receiver no-launch pairing and live cash observation are still pending.",
     "2026-09-28 five-cash producer map and fail-closed structural quote/reserve candidate: six targeted tests passed normal and -O. This is a non-production candidate and deliberately returns formal_cash_eligible=false/formal_action_ready=false.",
-    "2026-09-28 master 8a3d51f4b identifies H3547/raw53219304 as the latest officially paired durable Robert source after the 34486 ransom material result; H3492 assets are historical diagnostics only. A new append-only WAR request asks for H3547 official pair identity and same-frame cash producer capability before any new large transfer."
+    "2026-09-28 master 8a3d51f4b identified H3547/raw53219304 after the 34486 ransom material result; source WAR response AF137DB4 now supersedes it with R0296 H3568/raw53219304 as the latest verified durable raw pair. H3568 source save/driver are frozen but receiver official rebind/no-launch waits for concurrent R0298 to exit. No large H3568 transfer or same-frame cash producer is claimed; all five amounts are still null."
   ],
   "followup_research": {
     "status": "static_sources_plus_h2825_live_diagnostic_red",
@@ -236,11 +236,18 @@
     "h3492_rebound_transfer_manifest_sha256": "5A3A528BF028AEC682B83F32449DD2D9F47563FA8A9704FBA2B37478314B1428",
     "h3492_historical_binary_transfer_manifest_sha256": "3D06C4B608A204DC86D3F8A700D944712C124DA454BF4CD9E3A7CA3811F99F5A",
     "h3492_historical_pair_status": "origin_new_official_rebind_no_launch_ready_eight_exact_assets_receiver_hash_verified_transfer_only_receiver_no_launch_pending",
-    "latest_official_robert_frame": "H3547/raw53219304/history3547/actor29829/save-B809FD507B3EB7FFB16AFC7AE1B63B93BE58A40FEDEBF1C6386F89E1FE5F4CC8",
-    "latest_official_robert_frame_source_commit": "8A3D51F4B0E55F4E8F3B82B00E6CF080DD3AB900",
+    "previous_official_robert_frame": "H3547/raw53219304/history3547/actor29829/save-B809FD507B3EB7FFB16AFC7AE1B63B93BE58A40FEDEBF1C6386F89E1FE5F4CC8",
+    "previous_official_robert_frame_source_commit": "8A3D51F4B0E55F4E8F3B82B00E6CF080DD3AB900",
     "h3547_pair_request_sha256": "D204A4D7ACA5A2F40E51647A40606CD306E656D85210252E888902B3F0029FF5",
     "h3547_pair_request_git_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3547-PAIR-REQUEST-20260928.json",
-    "h3547_origin_response_status": "pending",
+    "h3547_origin_response_sha256": "AF137DB4B64A1C9E7D0E93B3174344C3710231E813189712824FDEB5B0DE1B9D",
+    "h3547_origin_response_status": "superseded_by_h3568_raw_durable_pair_official_receiver_rebind_pending_no_transfer",
+    "h3547_h3568_pair_ack_sha256": "9E677DBE2ECA834FD4BA69C15414A46FB3AE5AC8B55F603D369BA4D2ECA09022",
+    "h3547_h3568_pair_ack_git_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3547-H3568-PAIR-ACK-20260928.json",
+    "latest_verified_durable_robert_frame_at_origin_response": "H3568/raw53219304/history3568/actor29829/save-9C960CA0063AC4771B457A2CD5A5D320E2DD7536553167004D54E780B83CF4A9",
+    "h3568_raw_driver_sha256": "07A52C47A29E8A4CAB569CA73700D594EE3B4203D99C9AA93793BA10AE9D7CF0",
+    "h3568_receiver_official_rebind_status": "not_run_pending_r0298_exit",
+    "h3568_same_frame_war_cash_producer": "absent_all_five_null",
     "h3446_exact_assets_received": true,
     "h3446_original_exact_assets_received": false,
     "same_frame_cash_receipt": null,
@@ -261,7 +268,7 @@
     "A monthly predicted expense is a rate, not a proved one-day cash deduction cap. Before any horizon calculation, establish native payment cadence/next due boundary or conservatively reserve a potentially full monthly charge, then cover fleets, replenishment, hires, changed forces and rates with sourced bounds; future and risk remain null until then.",
     "Consumer policy remains unresolved: the existing M5 selector takes max(global war reserve, proposal minimum reserve). If a building's 200-gold floor must survive payment of separate future war costs, taking max under-reserves; the consumer must define overlap versus addition and validate the joint gate before approving construction.",
     "Exact-build GetEmbarkCost static audit now binds GUI callback, the icon's vtable update method, Q100000 rounded line-item aggregation and a player-gold comparison. The underlying quote function's pure-read safety, icon-to-selected-army/route identity, cache freshness and any same-frame amount remain unproved. It cannot fill the immediate war fee or prove zero.",
-    "The H3446 original driver 9FD5 has post-checkpoint history and cannot be paired as-is; a distinct official rebound driver 048D and its six assets passed transfer hash verification, but receiver-side official no-launch pairing awaits video CK3 cleanup. H3492 origin-side official rebound six files and separate historical M6 DLL/injector are all independently hash-verified transfer-only; receiver no-launch and live WarID verification remain pending. The latest officially paired durable Robert source is now H3547 after a ransom gold event, so H3492 amounts cannot be substituted into current M5 cash."
+    "The H3446 original driver 9FD5 has post-checkpoint history and cannot be paired as-is; a distinct official rebound driver 048D and its six assets passed transfer hash verification, but receiver-side official no-launch pairing awaits video CK3 cleanup. H3492 origin-side official rebound six files and separate historical M6 DLL/injector are all independently hash-verified transfer-only; receiver no-launch and live WarID verification remain pending. Source now identifies H3568 as the latest verified durable raw Robert pair after a ransom gold event; its isolated rebound/no-launch has not been run and R0298 may advance again. Historical H3492/H3547 amounts cannot be substituted into current M5 cash."
   ],
-  "next_step": "Obtain source response for latest official H3547 pair and any superseding official frame; accept exact assets separately, then perform receiver-side official no-launch only after video CK3/recorder cleanup. H3492's 8/8 assets can support bounded historical scanner/ABI diagnosis, never the current M5 cash decision. A future producer should attach the five sourced amounts to each formal paused-frame query with selected-action identity and revalidate them before spending; a unique MilitaryView cache alone is a monthly-rate candidate, not a complete war-cash receipt."
+  "next_step": "Wait for R0298 to exit; source must freeze whichever Robert checkpoint is then latest, run official prepare/rebind/no-launch in a new isolated state, publish an exact asset manifest, and obtain receiver acceptance before transfer. After video CK3/recorder cleanup, receiver may no-launch verify a transferred exact pair; H3492's 8/8 assets only support bounded historical scanner/ABI diagnosis. A reusable producer should attach all five independently sourced amounts to each formal paused-frame query with selected-action identity and revalidate before spending. Until its native sources, horizon and player reserve policy exist, keep all five typed null and the M5 spend gate closed."
 }

@@ -1,0 +1,38 @@
+{
+  "schema": "xar.g2.m5-war-cash-latest-pair-response-receiver-ack.v1",
+  "created_at_utc": "2026-09-28T09:28:50Z",
+  "owner": "r0266_resume",
+  "source_response_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-RESPONSE-H3547-v1.json",
+  "source_response_sha256": "AF137DB4B64A1C9E7D0E93B3174344C3710231E813189712824FDEB5B0DE1B9D",
+  "status": "received_latest_h3568_identity_await_official_rebound_no_transfer",
+  "received_frame": {
+    "checkpoint": "H3568",
+    "history_index": 3568,
+    "date_raw": 53219304,
+    "actor_character_id": 29829,
+    "war_id_to_recheck": 16777231,
+    "save_sha256": "9C960CA0063AC4771B457A2CD5A5D320E2DD7536553167004D54E780B83CF4A9",
+    "raw_driver_sha256": "07A52C47A29E8A4CAB569CA73700D594EE3B4203D99C9AA93793BA10AE9D7CF0",
+    "raw_driver_post_checkpoint_tail": "one read-only war prisoner query at history 3569; no game action or date advance",
+    "official_receiver_rebind_status": "not_run",
+    "source_r0298_status": "running_on_separate_mutable_candidate_at_response_time"
+  },
+  "decision": "await_origin_frozen_latest_official_rebound_addendum",
+  "requested_origin_next_step": [
+    "After R0298 fully exits and CK3 process tree is empty, freeze the latest durable Robert source in a new isolated state. If H3568 has been superseded, publish the newer frame identity first; do not silently send the historical H3568 candidate.",
+    "Run official prepare/rebind/family-pair/no-launch against that exact frozen frame, publish source receipt SHA and a filename/size/SHA whitelist before transfer. Do not use the mutable R0298 driver or the historical pre-run 962A driver as a rebound proof.",
+    "If a stable, safe per-formal-paused-frame war-cash producer has been implemented, publish its exact EXE/DLL/commit provenance and five independent raw Q100000 sources with actor/WarID/episode/date/revision/selected-action identity. Otherwise continue to send typed null for every missing item and a concrete implementation gap.",
+    "Keep future responses under this fixed WAR/M5 folder and make each new response append-only; the receiver will issue a separate exact asset acceptance after checking the next addendum."
+  ],
+  "no_asset_acceptance_here": true,
+  "large_transfer_authorized_by_this_ack": false,
+  "cash_receipt_status": "absent",
+  "war_cash_fields": {
+    "pending_war_cash_raw": null,
+    "immediate_war_action_cost_raw": null,
+    "future_war_cost_upper_raw": null,
+    "future_risk_budget_raw": null,
+    "policy_minimum_gold_reserve_raw": null
+  },
+  "cross_frame_boundary": "H3492's verified eight-file transfer is historical scanner/ABI material only. H3547 is superseded by H3568 as reported. Prisoner ransom gain, net income, GUI monthly rate and AI war chest cannot fill current M5 war cash."
+}
