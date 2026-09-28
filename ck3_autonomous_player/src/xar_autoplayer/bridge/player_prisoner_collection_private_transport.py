@@ -268,11 +268,20 @@ def query_player_prisoner_collection_private_v1(
                         raise BridgeUnavailableError("private ransom final quote is malformed")
                 elif quote.get("status") == "unavailable":
                     count_mismatch = quote.get("unavailable_reason") == "option_definition_count_unexpected"
+                    mask_unexpected = quote.get("unavailable_reason") == "option_mask_unexpected"
+                    mask_diagnostic = mask_unexpected and (
+                        "requested_option_index" in quote
+                        or "observed_option_mask_bits" in quote
+                    )
                     expected_keys = {"private_build", "read_only", "advertised", "action_surface_present", "status", "unavailable_reason"}
                     if count_mismatch:
                         expected_keys |= {"observed_definition_option_count", "observed_context_option_count"}
+                    if mask_diagnostic:
+                        expected_keys |= {"requested_option_index", "observed_option_mask_bits"}
                     definition_count = quote.get("observed_definition_option_count")
                     context_count = quote.get("observed_context_option_count")
+                    requested_option = quote.get("requested_option_index")
+                    observed_mask = quote.get("observed_option_mask_bits")
                     if (
                         set(quote) != expected_keys
                         or not isinstance(quote.get("unavailable_reason"), str)
@@ -284,6 +293,13 @@ def query_player_prisoner_collection_private_v1(
                                 type(context_count) is not int
                                 or not -(2 ** 31) <= context_count < 2 ** 31
                             ))
+                        ))
+                        or (mask_diagnostic and (
+                            type(requested_option) is not int
+                            or requested_option not in (0, 1, 2, 3)
+                            or type(observed_mask) is not int
+                            or not 1 <= observed_mask <= 0xFF
+                            or observed_mask == 1 << requested_option
                         ))
                     ):
                         raise BridgeUnavailableError("private ransom unavailable quote is malformed")

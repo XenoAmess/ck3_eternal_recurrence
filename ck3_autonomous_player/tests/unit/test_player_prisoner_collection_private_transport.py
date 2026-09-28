@@ -308,6 +308,35 @@ def test_private_ransom_definition_count_mismatch_preserves_both_reads() -> None
         query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
 
 
+def test_private_ransom_unexpected_mask_preserves_stock_selection() -> None:
+    result = _result_with_ransom_quote()
+    quote = result["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]
+    quote.clear()
+    quote.update({"private_build": True, "read_only": True,
+                  "advertised": False, "action_surface_present": False,
+                  "status": "unavailable",
+                  "unavailable_reason": "option_mask_unexpected",
+                  "requested_option_index": 2,
+                  "observed_option_mask_bits": 1 << 4})
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"] == quote
+    del quote["observed_option_mask_bits"]
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
+    quote["observed_option_mask_bits"] = 1 << 2
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
+    quote["observed_option_mask_bits"] = 0
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
+    del quote["observed_option_mask_bits"]
+    del quote["requested_option_index"]
+    # Frozen older DLLs only return the typed reason; keep their read-only
+    # response loadable without treating it as an actionable quote.
+    query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
+
+
 def test_private_child_relation_v5_preserves_true_false_and_unavailable() -> None:
     result = _result_with_ransom_quote()
     value = result["player_prisoner_collection"]

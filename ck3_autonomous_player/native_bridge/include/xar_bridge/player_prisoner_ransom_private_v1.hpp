@@ -46,6 +46,10 @@ struct PlayerPrisonerRansomQuoteV1 {
       PlayerPrisonerRansomQuoteFailureV1::binding_unavailable;
   std::optional<std::int32_t> observed_definition_option_count;
   std::optional<std::int32_t> observed_context_option_count;
+  // Only populated when the stock option setter selects a different mask.
+  // These diagnostics do not authorize a ransom command.
+  std::optional<std::int32_t> requested_option_index;
+  std::optional<std::uint32_t> observed_option_mask_bits;
   std::int32_t jailer_character_id = -1;
   std::int32_t payer_character_id = -1;
   std::int32_t prisoner_character_id = -1;
