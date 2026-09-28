@@ -80,6 +80,12 @@ class Driver:
                 "cold_recovery": cold,
                 "outbound_pending_state": "active" if self.calls == 1 else "not_applicable"}
 
+    def query_player_child_matrilineal_alliance_private_v1(
+        self, *, resolved: dict[str, object],
+    ) -> dict[str, object]:
+        self.calls += 1
+        return {"status": "not_allied", "source_status": resolved["status"]}
+
 
 class ConsumerTest(unittest.TestCase):
     def test_exact_read_only_war_query_can_be_deferred_once(self) -> None:
@@ -159,7 +165,8 @@ class ConsumerTest(unittest.TestCase):
             consumer._write(driver.state_dir,
                             {"schema": consumer.SCHEMA,
                              "pending": pending, "resolved": None})
-            frame = {**_frame(), "native_revision": 2}
+            frame = {**_frame(), "native_revision": 2,
+                     "active_wars": [{"war_id": 16777231}]}
             planned = {"plan": {"selected_step": "life-advance"}}
             with patch.object(consumer, "bridge_process_identity", return_value=(200, "new")):
                 choice = consumer.plan_child_matrilineal_private(
@@ -192,6 +199,19 @@ class ConsumerTest(unittest.TestCase):
                 self.assertEqual(repeat["plan"]["selected_step"],
                                  consumer.ALLIANCE_RESULT_STEP)
                 self.assertEqual(driver.calls, 2)
+                alliance = consumer.query_child_matrilineal_alliance_private(
+                    driver, resolved=repeat["plan"]["child_matrilineal_resolved"])
+                self.assertEqual(alliance["status"], "not_allied")
+                war_query = {"plan": {"selected_step":
+                                      "query-war-termination-options-16777231"}}
+                resumed = consumer.plan_child_matrilineal_private(
+                    driver, war_query, later, subject_character_id=37265,
+                    candidate_character_id=37267)
+                self.assertIs(resumed, war_query)
+                self.assertEqual(resumed["plan"]["selected_step"],
+                                 "query-war-termination-options-16777231")
+                self.assertEqual(later["date_raw"], pending["source_date_raw"])
+                self.assertEqual(driver.calls, 3)
 
 
 if __name__ == "__main__":
