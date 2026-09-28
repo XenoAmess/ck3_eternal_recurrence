@@ -607,6 +607,92 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             blocked = self._plan(frame, rows)
         self.assertIsNone(blocked["selected_step"])
 
+    def test_two_defender_one_day_contact_cannot_consume_research_canary(self):
+        frame = self._frame()
+        frame["active_wars"][0]["enemy_armies"].append(_army(
+            22, soldiers=311, province_id=32, controllable=False,
+            army_state="sieging", army_state_code=3,
+            route_province_ids=[], in_combat=False, retreating=False,
+        ))
+        frame["army_strengths"].append(
+            _army_strength(22, "active_war_enemy", [95], current=311)
+        )
+        frame["diagnostics"]["hello"] = {
+            "ck3_build_match": True,
+            "expected_ck3_sha256":
+                "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        }
+        frame["succession_lifecycle"] = {
+            "lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
+        }
+        frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 30
+        frame["combat_simulation_inputs_v3_defender_army_ids"] = [21, 22]
+        frame["combat_simulation_inputs_v3"] = {
+            "completeness": {"input_observation_ready": True},
+            "base_inputs": {
+                "target_province_id": 32,
+                "scenario": {
+                    "attacker_entry_province_id": 30,
+                    "attacker_army_ids": [11],
+                    "defender_army_ids": [21, 22],
+                    "attacker_side": "player_or_allied",
+                    "defender_side": "enemy",
+                    "actual_route_dependency": False,
+                },
+            },
+        }
+        preview = _preview_row(
+            1, origin=30, target=32, date_raw=frame["date_raw"], route=[32],
+        )
+        contact = _route_contact_row(
+            2, origin=30, target=32, date_raw=frame["date_raw"],
+            route=[32], hostile_ids=(21, 22), contact_free=False,
+            hostile_provinces={21: 32, 22: 32},
+        )
+        query = self._query_row(30)
+        query_step = query_combat_simulation_inputs_v3_step(32, 30, [11], [21, 22])
+        query["command"] = query_step
+        query["result"]["step"] = query_step
+        rows = [preview, contact, query]
+        forecast = {
+            "status": "estimated", "input_sha256": "A" * 64,
+            "advantage_input": {}, "simulator_build": "test-only",
+            "sample_count": 512, "player_wins": 512, "player_losses": 0,
+            "no_resolution": 0, "resolved_win_wilson95": {"lower": 0.99},
+            "player_p90_hard_loss_raw": 0,
+            "player_p90_hard_loss_fraction": 0.0,
+            "player_stack_wipe_probability": 0.0,
+            "commander_or_knight_death_probability": None,
+            "missing_required_domains": [],
+        }
+
+        def plan():
+            return _primary_defender_siege_forecast_ingress(
+                {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+                commands=rows, snapshot=frame,
+                action_steps={"move-army-11-to-32"},
+                bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+            )
+
+        with mock.patch(
+            "xar_autoplayer.strategy.forecast_fixed_contact", return_value=forecast,
+        ):
+            blocked = plan()
+        self.assertEqual(blocked["provisional_forecast"]["status"],
+                         "multi_defender_research_only", blocked)
+        self.assertIsNone(blocked["selected_step"])
+        self.assertFalse(blocked["active_attack_allowed"])
+
+        # Defence in depth: a stale or mistaken admissible result still cannot
+        # enter the one-day contact action when two defenders are observed.
+        with mock.patch(
+            "xar_autoplayer.strategy._provisional_defense_research_assessment",
+            return_value={"status": "provisional_admissible"},
+        ):
+            misclassified = plan()
+        self.assertIsNone(misclassified["selected_step"])
+        self.assertFalse(misclassified["active_attack_allowed"])
+
     def test_existing_frozen_live_input_runs_provisional_model_without_native_planner_gate(self):
         fixture = json.loads(
             (FIXTURES / "live_rev4_player_attacks_357.json").read_text(encoding="utf-8")
@@ -684,8 +770,8 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             attacker_army_id=83_886_341, defender_army_ids=(357, 358),
             friendly_current_soldiers=1_482,
         )
-        self.assertIn(exact["status"],
-                      {"provisional_admissible", "model_risk_budget_exceeded"}, exact)
+        self.assertEqual(exact["status"], "multi_defender_research_only", exact)
+        self.assertFalse(exact["planner_usable"])
         self.assertEqual(exact["sample_count"], 512)
         self.assertFalse(exact["calibrated_win_probability_available"])
         reversed_roster = _provisional_defense_research_assessment(
