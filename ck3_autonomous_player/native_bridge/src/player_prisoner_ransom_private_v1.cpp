@@ -19,10 +19,15 @@ constexpr std::string_view kRansom = "ransom_interaction";
 constexpr std::string_view kRansomCost = "ransom_cost_value";
 constexpr std::uint32_t kSlotMask = 0x00FFFFFFU;
 constexpr std::size_t kContextSize = 0x338;
-constexpr std::size_t kOptionCount = 7;
+// The final authored option is the stock mass-action-only `invalid` fallback.
+// It must be observed in the mask but is never a ransom quote candidate.
+constexpr std::size_t kOptionCount = 8;
 constexpr std::size_t kOptionDataOffset = 0x300;
 constexpr std::size_t kOptionCountOffset = 0x30C;
 constexpr std::size_t kDefinitionOptionCountOffset = 0x2554;
+constexpr std::size_t kDefinitionOptionRowsOffset = 0x2548;
+constexpr std::size_t kDefinitionOptionRowStride = 0x7D0;
+constexpr std::size_t kDefinitionOptionFlagOffset = 0x3A8;
 constexpr std::size_t kCharacterIdOffset = 0x18;
 constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
 constexpr std::size_t kGoldOffset = 0x100;
@@ -44,6 +49,18 @@ constexpr std::uintptr_t kClearLocalOptionsRva = 0x2C405F0;
 constexpr std::uintptr_t kSelectLocalOptionRva = 0x2C406D0;
 constexpr std::uint16_t kCharacterScopeKind = 4;
 constexpr std::int64_t kFixedScale = 100000;
+constexpr std::array<std::string_view, kOptionCount> kOptionFlags{
+    "extortionate_gold", "extortionate_current_gold", "gold",
+    "current_gold", "favor", "influence_send_option",
+    "herd_send_option", "invalid"};
+
+struct NativeStringView {
+  const char *data = nullptr;
+  std::int32_t size = 0;
+  std::uint8_t owned = 0;
+  std::array<std::byte, 3> padding{};
+};
+static_assert(sizeof(NativeStringView) == 0x10);
 
 using GetDatabase = void *(*)();
 using LookupNamed = const void *(*)(void *, std::uint32_t);
@@ -322,6 +339,32 @@ bool ContextRolesMatch(const void *context, const void *definition,
          observed_prisoner == prisoner_id;
 }
 
+bool LoadedOptionFlagsMatch(const Bindings &bindings,
+                            const void *definition) noexcept {
+  if (bindings.get_script_identifier_table == nullptr ||
+      bindings.lookup_script_identifier_id == nullptr)
+    return false;
+  void *rows = nullptr;
+  void *const table = bindings.get_script_identifier_table();
+  if (table == nullptr ||
+      !Read(definition, kDefinitionOptionRowsOffset, rows) || rows == nullptr)
+    return false;
+  for (std::size_t index = 0; index < kOptionFlags.size(); ++index) {
+    std::int32_t observed = -1;
+    std::int32_t expected = -1;
+    const auto key = kOptionFlags[index];
+    const NativeStringView view{key.data(),
+                                static_cast<std::int32_t>(key.size())};
+    if (!Read(rows, index * kDefinitionOptionRowStride +
+                        kDefinitionOptionFlagOffset, observed) ||
+        bindings.lookup_script_identifier_id(table, &expected, &view) ==
+            nullptr ||
+        expected < 0 || observed != expected)
+      return false;
+  }
+  return true;
+}
+
 enum class OptionMaskState : std::uint8_t {
   unreadable,
   none_selected,
@@ -417,6 +460,8 @@ std::string_view FailureName(PlayerPrisonerRansomQuoteFailureV1 value) {
     return "option_unavailable";
   case PlayerPrisonerRansomQuoteFailureV1::option_context_roles_unverified:
     return "option_context_roles_unverified";
+  case PlayerPrisonerRansomQuoteFailureV1::option_flag_identity_unverified:
+    return "option_flag_identity_unverified";
   case PlayerPrisonerRansomQuoteFailureV1::option_mask_unreadable:
     return "option_mask_unreadable";
   case PlayerPrisonerRansomQuoteFailureV1::option_definition_pointer_unreadable:
@@ -500,6 +545,14 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
                                      database, hash);
   if (definition == nullptr || !DefinitionKey(definition, hash, kRansom)) {
     result.failure = PlayerPrisonerRansomQuoteFailureV1::definition_unavailable;
+    return result;
+  }
+  std::int32_t authored_option_count = 0;
+  if (Read(definition, kDefinitionOptionCountOffset, authored_option_count) &&
+      authored_option_count == static_cast<std::int32_t>(kOptionCount) &&
+      !LoadedOptionFlagsMatch(bindings, definition)) {
+    result.failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_flag_identity_unverified;
     return result;
   }
   std::int32_t actor = jailer_id;

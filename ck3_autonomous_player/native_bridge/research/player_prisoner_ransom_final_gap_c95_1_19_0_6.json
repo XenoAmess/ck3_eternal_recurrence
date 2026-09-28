@@ -12,7 +12,7 @@
     {
       "path": "game/common/character_interactions/00_prison_interactions.txt",
       "sha256": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
-      "lines": "1711-2365: ransom_interaction; 1718-1730 recipient redirect; 1778-1871 on_accept; 1921-2065 send options and values; 2070-2222 AI acceptance"
+      "lines": "1711-2363: ransom_interaction; 1718-1730 recipient redirect; 1778-1871 on_accept; 1922-2042 seven send options; 2070-2222 AI acceptance; 2355-2362 eighth mass-action-only invalid send option"
     },
     {
       "path": "game/common/scripted_effects/00_prison_effects.txt",

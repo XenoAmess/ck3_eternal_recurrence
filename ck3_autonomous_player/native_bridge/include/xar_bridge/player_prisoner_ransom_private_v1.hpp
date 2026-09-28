@@ -18,6 +18,7 @@ enum class PlayerPrisonerRansomQuoteFailureV1 : std::uint8_t {
   role_unavailable,
   option_unavailable,
   option_context_roles_unverified,
+  option_flag_identity_unverified,
   option_mask_unreadable,
   option_definition_pointer_unreadable,
   option_definition_count_unreadable,
