@@ -642,3 +642,51 @@ flowchart TD
     M -->|yes| A[Consume applied receipt]
     M -->|no| X[Pending or ambiguous; no repeat]
 ```
+
+## R0304: 47028 的原生回退选项是 current_gold
+
+R0304 在 Robert 的首个 paused 帧读取囚犯 47028，raw date
+`53219496`，没有游戏动作或日期推进；原始 verdict 为
+`Z:\m6r47028mask-h3686-runner-v1\evidence\R0304\verdict.json`，
+SHA-256 为
+`ECC435E342544826EA468AC86C73DD6E1FE6505CFB555CAD27F2DCE4367B71BA`。
+查询请求原版 `gold` 的 authored index 2，最终八位 selected mask 是
+`8 = 1 << 3`。已核对的 loaded option flag 顺序中 index 3 为
+`current_gold`，而 `favor` 为 index 4、mass-only `invalid` 为 index 7。
+因此这个读数证明原生 finalized context 选中了另一种**金钱选项**；
+它不是零金额、favor 或 invalid，也尚未证明提案可发送、会被接受或会付多少钱。
+
+在同一 SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
+的 EXE 中，`0x2C406D0` 先把请求 index 写入 owned context 的
+`+0x300` 向量，调用 refresh `0x2C40950`，再进入 finalizer
+`0x2C40B20`。finalizer 在 selected index 的原生 option gate 不成立时，
+于 `0x2C40BC8–0x2C40BCF` 调用默认选项选择器 `0x2C40540`。
+只读反汇编
+`Z:\m6r47028mask-analysis-v1\disasm.txt`
+SHA-256 为
+`79BF7DD04885C84008CA4B0F18C21F27A8BD38E6B1C918CA009804EBE67016B9`。
+原版 `00_prison_interactions.txt:1954–1995` 把普通 `gold` 和
+`current_gold` 的付款者资金条件写成互斥区间；这与回退到 index 3
+相符，但 R0304 没有直接读付款者黄金、完整赎金成本、最终 Can Send
+或 AI answer，因此不能把资金不足推为实测原因。
+
+现有私有报价循环在 probe index 2 遇到任何不同 mask 时立即返回
+`option_mask_unexpected`，使合法候选的 index 3 原生最终判定和
+acceptance-time 付款者黄金读口永远无法执行。这是已实测的只读消费缺口。
+最小修复只承认 `requested index 2 → exact mask 1 << 3` 这一原生回退，
+销毁该 owned context 并在新的 owned context 中显式 probe index 3；
+其他不同 mask 继续返回 typed unavailable。后续需独立 paused 读回
+`current_gold` 的实际 option、重定向付款者、Can Send、AI answer 和
+同帧付款者黄金，才可比较赎金与保留囚犯的价值。付款金额在接受时重新取值；
+不能把这次 mask 或未来只读报价当成已收款。
+
+```mermaid
+flowchart LR
+    G[Probe ordinary gold index 2] --> M{Final mask}
+    M -->|bit 2| Q[现有普通黄金报价路径]
+    M -->|仅 bit 3| C[销毁上下文并新建 index 3 probe]
+    M -->|其他| U[typed unavailable]
+    C -. R0304 尚未读回 .-> F[final Can Send + answer + payer current gold]
+    F -. 正式策略价值与恢复仍待验证 .-> A[动作]
+```

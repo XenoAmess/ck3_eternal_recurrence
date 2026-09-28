@@ -600,6 +600,14 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
                                      result.observed_context_option_count,
                                      &observed_mask)
                                : OptionMaskState::unreadable;
+    // The stock exclusive-option finalizer can replace an unaffordable
+    // ordinary gold selection with current_gold. Probe that option afresh;
+    // its own final Can Send, answer and acceptance-time amount still decide.
+    if (option == 2 && mask == OptionMaskState::unexpected &&
+        observed_mask == (std::uint32_t{1} << 3)) {
+      bindings.destroy_character_interaction_context(context);
+      continue;
+    }
     if (!roles_ok || mask == OptionMaskState::unreadable ||
         mask == OptionMaskState::unexpected) {
       bindings.destroy_character_interaction_context(context);
