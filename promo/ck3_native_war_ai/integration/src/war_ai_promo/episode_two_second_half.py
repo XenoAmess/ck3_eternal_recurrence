@@ -24,8 +24,17 @@ from .captions import subtitle_document
 
 
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
-CARD_REPLAYS = {"E2-06": "085", "E2-07": "085", "E2-09": "024"}
-CHAPTER_CARDS = {"reinforcement": ("E2-06", "E2-07"), "terminal": ("E2-09",)}
+CARD_REPLAYS = {
+    "E2-02": "004", "E2-03": "004", "E2-04": "039_040",
+    "E2-05A": "020", "E2-05B": "070", "E2-05C": "036_038",
+    "E2-06": "085", "E2-07": "085", "E2-09": "024",
+}
+CHAPTER_CARDS = {
+    "pursuit": ("E2-02", "E2-03"),
+    "knights": ("E2-04", "E2-05A", "E2-05B", "E2-05C"),
+    "reinforcement": ("E2-06", "E2-07"),
+    "terminal": ("E2-09",),
+}
 HEADING = re.compile(r"^## \d\d:\d\d[–-]\d\d:\d\d .+$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
 
@@ -156,7 +165,7 @@ def compose(config, run, *, config_path, run_path, workdir,
         raise ValueError("Card index must retain separate 085/024 replay identities")
     card_hashes = inputs["card_sha256"]
     if set(card_hashes) != set(CARD_REPLAYS):
-        raise ValueError("All three source-bound cards are required")
+        raise ValueError("All nine source-bound cards are required")
     for card_id, digest in card_hashes.items():
         _checked_source(run, run_path, f"episode02-card-{card_id}", digest)
     narration = script_chapters(script)
