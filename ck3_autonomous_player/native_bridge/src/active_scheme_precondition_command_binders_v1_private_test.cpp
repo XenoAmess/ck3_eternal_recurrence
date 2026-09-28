@@ -364,6 +364,28 @@ void TestScheme10SwayAndMurder() {
   }
 }
 
+void TestScheme10GenerationZeroCharacterIds() {
+  // H3911's Robert and direct vassals have IDs below 2^24. Their high
+  // generation byte is zero, while the native object's full ID still matches.
+  constexpr std::uint32_t actor = 42;
+  constexpr std::uint32_t target = 57;
+  Scheme10Fixture fixture{};
+  Put(fixture.actor, 0x18, actor);
+  Put(fixture.target, 0x18, target);
+  fixture.base.observation.played_character_id = actor;
+  fixture.base.precondition.actor_character_id = actor;
+  fixture.base.precondition.target_id = target;
+  Scheme10Bound bound{};
+  BindScheme10(fixture, bound);
+  ActiveSchemeSemanticActionV1PrivatePrecondition precondition{};
+  ActiveSchemePreconditionCommandBindersV1PrivateFailure failure{};
+  Require(CaptureActiveSchemePreconditionCommandPreconditionV1Private(
+      bound.state, {77, 77}, Request(fixture.base), precondition, failure));
+  Require(precondition.available && precondition.actor_character_id == actor &&
+          precondition.target_id == target && precondition.can_start_scheme &&
+          fixture.submits == 0);
+}
+
 void TestScheme10TypedRedAndSingleSubmit() {
   {
     Scheme10Fixture fixture{};
@@ -479,6 +501,7 @@ void TestScheme10BindingAndOwnershipGates() {
 int main() {
   try {
     TestScheme10SwayAndMurder();
+    TestScheme10GenerationZeroCharacterIds();
     TestScheme10TypedRedAndSingleSubmit();
     TestScheme10BindingAndOwnershipGates();
     std::cout << "active scheme precondition/command binders: GREEN\n";

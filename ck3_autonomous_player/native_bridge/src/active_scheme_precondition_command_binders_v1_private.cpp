@@ -414,7 +414,9 @@ bool ResolveCharacterThunk(void *context, std::uint32_t full_id,
   std::uintptr_t first = 0;
   std::uintptr_t second = 0;
   const auto generation = full_id >> kIdentityGenerationShift;
-  if (generation == 0 || !CurrentFrame(state, before) ||
+  // Generation zero is a valid first incarnation (Robert in H3911 is 29829).
+  // The full 32-bit identity is verified against the object twice below.
+  if (!CurrentFrame(state, before) ||
       !ResolveCharacterAddress(state, full_id, first) ||
       !ResolveCharacterAddress(state, full_id, second) || first != second ||
       !CurrentFrame(state, after) || !SameFrame(before, after)) {
