@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import importlib.util
 from pathlib import Path
 from types import SimpleNamespace
@@ -25,6 +26,8 @@ def clean_receipt() -> dict[str, object]:
         "source_sha256_after": runner.SOURCE_HASHES.copy(),
         "candidate_dll_sha256_after": runner.DLL_SHA,
         "injector_sha256_after": runner.INJECTOR_SHA,
+        "exe_sha256_after": runner.EXE_SHA,
+        "binary_audit_live_sha256": "A" * 64,
         "prepared_save_sha256_after": runner.SOURCE_HASHES["xar_checkpoint.ck3"],
         "prepared_sidecar_sha256_after": runner.SOURCE_HASHES["first-heir-marriage-formal-v1.json"],
     }
@@ -38,6 +41,8 @@ class H2743RunnerGateTests(unittest.TestCase):
             ("ck3_pids_after", [1234]),
             ("stdout_reader_alive_after", True),
             ("candidate_dll_sha256_after", "0" * 64),
+            ("exe_sha256_after", "0" * 64),
+            ("binary_audit_live_sha256", None),
             ("prepared_save_sha256_after", "0" * 64),
             ("prepared_sidecar_sha256_after", "0" * 64),
         )
@@ -82,6 +87,96 @@ class H2743RunnerGateTests(unittest.TestCase):
         ))
         with patch.object(runner.subprocess, "run", return_value=listed):
             runner.screen_lease("h2743-review")
+
+    def test_war_options_rejects_any_of_six_frame_drifts_or_wrong_war(self) -> None:
+        frame = {"snapshot_id": "native:3", "revision": 4, "native_revision": 3,
+                 "date_raw": 53217264, "episode_run_id": runner.EPISODE,
+                 "connection_generation": 1}
+        war = {"war_id": 16777231, "player_side": "defender",
+               "player_is_primary_war_leader": True,
+               "primary_opponent_character_id": 30097,
+               "player_relative_war_score": -12, "targeted_title_ids": [2128]}
+        result = {"step": runner.OPTIONS_QUERY, "accepted": True,
+                  "status": "available", "query_sequence": 2,
+                  "queried_snapshot_id": "native:3", "queried_revision": 4,
+                  "queried_native_revision": 3,
+                  "queried_episode_run_id": runner.EPISODE,
+                  "queried_connection_generation": 1,
+                  "termination_query_context": {
+                      "queried_date_raw": 53217264,
+                      "queried_connection_generation": 1,
+                      "queried_episode_run_id": runner.EPISODE,
+                      "queried_character_id": 29829,
+                      "active_war_signature": [copy.deepcopy(war)]},
+                  "war_termination_options": {
+                      "war_id": 16777231, "player_side": "defender",
+                      "player_is_primary_war_leader": True,
+                      "active_casus_belli_identity": {
+                          "database_index": 17,
+                          "canonical_key": "individual_county_de_jure_cb"},
+                      "options": {"surrender": {
+                          "outcome": "attacker_victory",
+                          "native_validator_passed": True, "available": True,
+                          "recipient_response": {"would_accept_now": True}},
+                          "white_peace": {}, "victory": {}}}}
+        runner.require_options_query(result, frame, war)
+        mutations = (
+            ("queried_snapshot_id", "native:4"),
+            ("queried_revision", 5),
+            ("queried_native_revision", 4),
+            ("queried_episode_run_id", "other-episode"),
+            ("queried_connection_generation", 2),
+            ("termination_query_context.queried_date_raw", 53217265),
+            ("war_termination_options.war_id", 123),
+            ("termination_query_context.active_war_signature", []),
+            ("query_sequence", 0),
+            ("war_termination_options.options.surrender.available", False),
+            ("war_termination_options.options.surrender.recipient_response.would_accept_now", False),
+        )
+        for dotted, bad in mutations:
+            with self.subTest(field=dotted):
+                changed = copy.deepcopy(result)
+                current = changed
+                parts = dotted.split(".")
+                for part in parts[:-1]:
+                    current = current[part]
+                current[parts[-1]] = bad
+                with self.assertRaises(RuntimeError):
+                    runner.require_options_query(changed, frame, war)
+
+        for field in runner.FRAME_FIELDS:
+            with self.subTest(snapshot_field=field):
+                changed = dict(frame)
+                changed[field] = "other" if isinstance(changed[field], str) else changed[field] + 1
+                if field == "episode_run_id":
+                    with self.assertRaises(RuntimeError):
+                        runner.frame_signature(changed)
+                else:
+                    self.assertNotEqual(runner.frame_signature(changed), frame)
+
+    def test_loaded_binary_audit_rejects_wrong_process_module(self) -> None:
+        process = SimpleNamespace(exe=lambda: str(runner.EXE),
+                                  memory_maps=lambda grouped=False: [
+                                      SimpleNamespace(path=str(runner.DLL))],
+                                  create_time=lambda: 123.0)
+        def hashed(path: Path) -> str:
+            if path.resolve() == runner.EXE.resolve():
+                return runner.EXE_SHA
+            if path.resolve() == runner.DLL.resolve():
+                return runner.DLL_SHA
+            return "B" * 64
+        with (patch("psutil.Process", return_value=process),
+              patch.object(runner, "sha256", side_effect=hashed)):
+            audit = runner.audit_loaded_binaries(1234, Path("D:/synthetic-state"))
+            self.assertTrue(audit["loaded_binary_identity_proven"])
+            process.memory_maps = lambda grouped=False: [
+                SimpleNamespace(path="D:/wrong/xar_ck3_bridge.dll")]
+            with self.assertRaises(RuntimeError):
+                runner.audit_loaded_binaries(1234, Path("D:/synthetic-state"))
+            process.memory_maps = lambda grouped=False: [SimpleNamespace(path=str(runner.DLL))]
+            process.exe = lambda: "D:/wrong/ck3.exe"
+            with self.assertRaises(RuntimeError):
+                runner.audit_loaded_binaries(1234, Path("D:/synthetic-state"))
 
 
 if __name__ == "__main__":

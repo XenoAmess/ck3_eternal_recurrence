@@ -34,6 +34,7 @@ TASK_BUS = Path("D:/workspace/.codex-task-bus/bin/codex_task_bus.py")
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 EPISODE = "native-29829-2bc2d599f7f9"
 QUERY = "query-defender-de-jure-exit-terms-v1-16777231"
+OPTIONS_QUERY = "query-war-termination-options-16777231"
 CLI_ENTRY = ("import sys; sys.path.insert(0, r'D:/w/h2743exit/ck3_autonomous_player/src'); "
              "from xar_autoplayer.cli import main; raise SystemExit(main(sys.argv[1:]))")
 MCP_ENTRY = ("import sys; sys.path.insert(0, r'D:/w/h2743exit/ck3_autonomous_player/src'); "
@@ -92,6 +93,10 @@ def check_static() -> dict[str, object]:
     for module in ("mcp", "psutil"):
         if importlib.util.find_spec(module) is None:
             raise RuntimeError(f"selected interpreter lacks required dependency: {module}")
+    import psutil
+    own_maps = psutil.Process().memory_maps(grouped=False)
+    if not own_maps or not any(getattr(item, "path", None) for item in own_maps):
+        raise RuntimeError("selected interpreter cannot read its own process module map")
     if {item.name for item in SOURCE.iterdir() if item.name != "transfer-receipt.json"} != set(SOURCE_HASHES):
         raise RuntimeError("H2743 source set is no longer the exact four files")
     for entry, help_args in ((CLI_ENTRY, ["--help"]),
@@ -103,7 +108,9 @@ def check_static() -> dict[str, object]:
             raise RuntimeError(f"branch CLI help probe failed: {help_args}")
     return {"status": "static_bytes_verified_no_launch", "readiness_seconds": READINESS_SECONDS,
             "session_timeout_seconds": SESSION_SECONDS, "paths_sha256": {str(path): digest for path, digest in expected.items()},
-            "query_step": QUERY, "gameplay_action_submitted": False}
+            "allowed_query_steps": [QUERY, OPTIONS_QUERY],
+            "process_module_map_probe": "self_readable",
+            "gameplay_action_submitted": False}
 
 
 def screen_lease(task_id: str) -> None:
@@ -276,7 +283,91 @@ def require_snapshot(value: dict[str, object]) -> dict[str, object]:
     return war
 
 
-async def read_frame(state: Path, output: Path) -> dict[str, object]:
+FRAME_FIELDS = ("snapshot_id", "revision", "native_revision", "date_raw",
+                "episode_run_id", "connection_generation")
+
+
+def frame_signature(snapshot: dict[str, object]) -> dict[str, object]:
+    frame = {field: snapshot.get(field) for field in FRAME_FIELDS}
+    if (not isinstance(frame["snapshot_id"], str) or not frame["snapshot_id"]
+            or frame["episode_run_id"] != EPISODE
+            or any(type(frame[field]) is not int or frame[field] <= 0
+                   for field in ("revision", "native_revision", "date_raw", "connection_generation"))):
+        raise RuntimeError("H2743 six-field paused frame is incomplete")
+    return frame
+
+
+def require_options_query(result: dict[str, object], frame: dict[str, object],
+                          war: dict[str, object]) -> None:
+    """Bind the exact war-options read to all six paused-frame fields and WarID."""
+    context = result.get("termination_query_context")
+    options = result.get("war_termination_options")
+    if (result.get("step") != OPTIONS_QUERY or result.get("accepted") is not True
+            or result.get("status") != "available" or not isinstance(context, dict)
+            or not isinstance(options, dict)
+            or type(result.get("query_sequence")) is not int
+            or result["query_sequence"] <= 0
+            or result.get("queried_snapshot_id") != frame["snapshot_id"]
+            or result.get("queried_revision") != frame["revision"]
+            or result.get("queried_native_revision") != frame["native_revision"]
+            or result.get("queried_episode_run_id") != frame["episode_run_id"]
+            or result.get("queried_connection_generation") != frame["connection_generation"]
+            or context.get("queried_date_raw") != frame["date_raw"]
+            or context.get("queried_connection_generation") != frame["connection_generation"]
+            or context.get("queried_episode_run_id") != frame["episode_run_id"]
+            or context.get("queried_character_id") != 29829
+            or options.get("war_id") != 16777231
+            or options.get("player_side") != "defender"
+            or options.get("player_is_primary_war_leader") is not True
+            or options.get("active_casus_belli_identity") != {
+                "database_index": 17, "canonical_key": "individual_county_de_jure_cb"}
+            or not isinstance(options.get("options"), dict)
+            or set(options["options"]) != {"surrender", "white_peace", "victory"}):
+        raise RuntimeError("war-options query is not bound to the exact H2743 paused frame")
+    surrender = options["options"]["surrender"]
+    if (not isinstance(surrender, dict)
+            or surrender.get("outcome") != "attacker_victory"
+            or surrender.get("native_validator_passed") is not True
+            or surrender.get("available") is not True
+            or not isinstance(surrender.get("recipient_response"), dict)
+            or surrender["recipient_response"].get("would_accept_now") is not True):
+        raise RuntimeError("H2743 surrender button legality or acceptance is unavailable")
+    signatures = context.get("active_war_signature")
+    if (not isinstance(signatures, list) or len(signatures) != 1
+            or not isinstance(signatures[0], dict)
+            or any(signatures[0].get(key) != war.get(key) for key in (
+                "war_id", "player_side", "player_is_primary_war_leader",
+                "primary_opponent_character_id", "player_relative_war_score",
+                "targeted_title_ids"))):
+        raise RuntimeError("war-options signature changed WarID, parties or target")
+
+
+def audit_loaded_binaries(pid: int, state: Path) -> dict[str, object]:
+    """Read the actual CK3 process module map, not merely launch arguments."""
+    import psutil
+    if type(pid) is not int or pid <= 0:
+        raise RuntimeError("session ready event has no CK3 PID")
+    process = psutil.Process(pid)
+    actual_exe = Path(process.exe()).resolve()
+    if actual_exe != EXE.resolve() or sha256(actual_exe) != EXE_SHA:
+        raise RuntimeError("running CK3 EXE path or bytes differ")
+    loaded = sorted({str(Path(mapping.path).resolve())
+                     for mapping in process.memory_maps(grouped=False)
+                     if Path(mapping.path).name.casefold() == "xar_ck3_bridge.dll"})
+    if loaded != [str(DLL.resolve())] or sha256(Path(loaded[0])) != DLL_SHA:
+        raise RuntimeError("actual loaded bridge DLL path or bytes differ")
+    return {"schema": "xar.ck3.h2743.readonly-loaded-binary-audit.v1",
+            "ck3_pid": pid, "ck3_process_create_time": process.create_time(),
+            "loaded_exe_path": str(actual_exe), "loaded_exe_sha256": EXE_SHA,
+            "loaded_bridge_paths": loaded, "loaded_bridge_sha256": DLL_SHA,
+            "candidate_injector_path": str(INJECTOR.resolve()),
+            "candidate_injector_sha256": sha256(INJECTOR),
+            "source_input_sha256": dict(SOURCE_HASHES),
+            "derived_driver_sha256_at_query": sha256(state / "native-session/driver-state.json"),
+            "loaded_binary_identity_proven": True}
+
+
+async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, object]:
     from mcp.client.session import ClientSession
     from mcp.client.stdio import StdioServerParameters, stdio_client
 
@@ -285,8 +376,11 @@ async def read_frame(state: Path, output: Path) -> dict[str, object]:
             "--pipe-name", PIPE, "--environment-manifest", str(state / "profile/xar-autoplayer-environment.json"),
             "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact"]
     write_new(output / "mcp-plan.json", {"python": str(PYTHON), "command": command, "args": args,
-                                         "allowed_execute_step": QUERY})
+                                         "allowed_execute_steps": [QUERY, OPTIONS_QUERY],
+                                         "gameplay_action_submitted": False})
     async def call(session: ClientSession, name: str, arguments: dict[str, object], stem: str) -> dict[str, object]:
+        renew_screen_lease(task_id)
+        write_new(output / f"{stem}-request.json", {"tool": name, "arguments": arguments})
         response = await asyncio.wait_for(session.call_tool(name, arguments), timeout=TOOL_SECONDS)
         write_new(output / f"{stem}-envelope.json", response.model_dump(mode="json", by_alias=True))
         if response.is_error or not isinstance(response.structured_content, dict):
@@ -309,10 +403,13 @@ async def read_frame(state: Path, output: Path) -> dict[str, object]:
                         before = response.structured_content
                         write_new(output / "before-payload.json", before)
                         war = require_snapshot(before)
+                        frame = frame_signature(before)
                         break
                     if time.monotonic() >= deadline:
                         raise RuntimeError("H2743 paused MCP frame not ready within 300 seconds")
                     await asyncio.sleep(15)
+                ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
+                write_new(output / "binary-audit-live.json", audit_loaded_binaries(ready.get("pid"), state))
                 results = []
                 for number in (1, 2):
                     result = await call(session, "ck3_execute_step", {"step": QUERY}, f"baseline-query-{number}")
@@ -327,17 +424,26 @@ async def read_frame(state: Path, output: Path) -> dict[str, object]:
                             or len(baseline.get("primary_monthly_gold_income", [])) != 2):
                         raise RuntimeError("baseline query unavailable, malformed or falsely material-complete")
                     results.append(result)
+                    if number == 1:
+                        options_result = await call(session, "ck3_execute_step",
+                                                    {"step": OPTIONS_QUERY}, "war-options-query")
+                        require_options_query(options_result, frame, war)
                 after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
-                if (require_snapshot(after) != war or after.get("native_revision") != before.get("native_revision")
-                        or after.get("date_raw") != before.get("date_raw")
+                if (require_snapshot(after) != war or frame_signature(after) != frame
                         or results[0]["defender_de_jure_exit_terms_v1"] != results[1]["defender_de_jure_exit_terms_v1"]):
                     raise RuntimeError("H2743 baseline changed within the paused frame")
                 summary = {"status": "baseline_only_material_unavailable", "war_id": 16777231,
-                           "date_raw": before["date_raw"], "native_revision": before.get("native_revision"),
+                           "frame": frame, "date_raw": before["date_raw"],
+                           "native_revision": before.get("native_revision"),
                            "source_save_sha256": SOURCE_HASHES["xar_checkpoint.ck3"],
                            "before_snapshot_sha256": sha256(output / "before-payload.json"),
                            "query_1_sha256": sha256(output / "baseline-query-1-payload.json"),
                            "query_2_sha256": sha256(output / "baseline-query-2-payload.json"),
+                           "war_options_request_sha256": sha256(output / "war-options-query-request.json"),
+                           "war_options_envelope_sha256": sha256(output / "war-options-query-envelope.json"),
+                           "war_options_payload_sha256": sha256(output / "war-options-query-payload.json"),
+                           "war_options_query_sequence": options_result["query_sequence"],
+                           "binary_audit_live_sha256": sha256(output / "binary-audit-live.json"),
                            "after_snapshot_sha256": sha256(output / "after-snapshot-payload.json"),
                            "missing_for_exit_comparison": ["runtime_target_scope", "title_vassal_delta",
                                 "cb_prestige_factor", "signed_resource_delta_14_rows",
@@ -356,6 +462,9 @@ def require_clean_session_exit(receipt: dict[str, object]) -> None:
             or receipt.get("source_sha256_after") != SOURCE_HASHES
             or receipt.get("candidate_dll_sha256_after") != DLL_SHA
             or receipt.get("injector_sha256_after") != INJECTOR_SHA
+            or receipt.get("exe_sha256_after") != EXE_SHA
+            or not isinstance(receipt.get("binary_audit_live_sha256"), str)
+            or len(receipt["binary_audit_live_sha256"]) != 64
             or receipt.get("prepared_save_sha256_after") != SOURCE_HASHES["xar_checkpoint.ck3"]
             or receipt.get("prepared_sidecar_sha256_after") != SOURCE_HASHES["first-heir-marriage-formal-v1.json"]):
         raise RuntimeError("managed H2743 session exit, process cleanup or exact inputs are RED")
@@ -379,7 +488,8 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
     write_new(output / "launch-plan.json", {"argv": argv, "source_pair": SOURCE_HASHES,
              "ready_summary_sha256": sha256(attempt / "ready-summary.json"), "gate": gate,
              "readiness_seconds": READINESS_SECONDS, "session_timeout_seconds": SESSION_SECONDS,
-             "query_step": QUERY, "allowed_gameplay_steps": [], "started_at_utc": utc_now().isoformat()})
+             "allowed_query_steps": [QUERY, OPTIONS_QUERY],
+             "allowed_gameplay_steps": [], "started_at_utc": utc_now().isoformat()})
     lines: queue.Queue[str] = queue.Queue()
     with (output / "session-stderr.txt").open("x", encoding="utf-8") as error_log, \
          (output / "session-stdout.jsonl").open("x", encoding="utf-8") as stdout_log:
@@ -412,7 +522,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
             else:
                 raise RuntimeError("native session not ready within 1800 seconds")
             renew_screen_lease(task_id)
-            summary = asyncio.run(read_frame(state, output))
+            summary = asyncio.run(read_frame(state, output, task_id))
         except BaseException as error:
             write_new(output / "failure.json", {"type": type(error).__name__, "message": str(error),
                          "at_utc": utc_now().isoformat(), "gameplay_action_submitted": False})
@@ -445,6 +555,9 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
                     "source_sha256_after": {name: sha256(SOURCE / name) for name in SOURCE_HASHES},
                     "candidate_dll_sha256_after": sha256(DLL),
                     "injector_sha256_after": sha256(INJECTOR),
+                    "exe_sha256_after": sha256(EXE),
+                    "binary_audit_live_sha256": (sha256(output / "binary-audit-live.json")
+                        if (output / "binary-audit-live.json").is_file() else None),
                     "prepared_save_sha256_after": sha256(state / "profile/save games/xar_checkpoint.ck3"),
                     "prepared_sidecar_sha256_after": sha256(state / "first-heir-marriage-formal-v1.json"),
                     "derived_driver_sha256_after": sha256(state / "native-session/driver-state.json"),
@@ -452,6 +565,8 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
                         if (item.info.get("name") or "").casefold() == "ck3.exe"]}
                 write_new(output / "session-exit.json", receipt)
                 require_clean_session_exit(receipt)
+                if "summary" in locals() and receipt["binary_audit_live_sha256"] != summary["binary_audit_live_sha256"]:
+                    raise RuntimeError("loaded binary audit changed between paused read and managed exit")
                 if lease_error is not None:
                     raise RuntimeError("screen lease lost before managed session exit") from lease_error
             except BaseException as error:
