@@ -195,6 +195,7 @@ def query_m5_peacetime_proposal_sources_v1(
 
     family_status = "opt_in_off"
     family_plan: dict[str, object] | None = None
+    family_plans: list[dict[str, object]] = []
     if family_enabled:
         prior_resolution = family_ledger["resolved"]
         relation_enabled = getattr(
@@ -221,6 +222,32 @@ def query_m5_peacetime_proposal_sources_v1(
             if plan.get("selected_step") == FAMILY_SUBMIT_STEP:
                 family_status = "selected"
                 family_plan = deepcopy(dict(plan))
+                choices = plan.get("family_marriage_valued_choices")
+                if choices is None:
+                    choices = [plan.get("family_marriage_choice")]
+                diagnostic = plan.get("family_marriage_private_diagnostic")
+                if (not isinstance(choices, list) or not 1 <= len(choices) <= 5
+                        or not isinstance(diagnostic, Mapping)
+                        or choices[0] != plan.get("family_marriage_choice")):
+                    raise BridgeUnavailableError(
+                        "M5 family valued choices lack one selected five-row proof"
+                    )
+                candidate_ids: set[int] = set()
+                for choice in choices:
+                    candidate_id = (choice.get("candidate_character_id")
+                                    if isinstance(choice, Mapping) else None)
+                    if (type(candidate_id) is not int or candidate_id <= 0
+                            or candidate_id in candidate_ids):
+                        raise BridgeUnavailableError(
+                            "M5 family valued choices repeat or lack a candidate"
+                        )
+                    candidate_ids.add(candidate_id)
+                    variant = deepcopy(dict(plan))
+                    variant["family_marriage_choice"] = deepcopy(dict(choice))
+                    variant_diagnostic = deepcopy(dict(diagnostic))
+                    variant_diagnostic["selected_candidate_character_id"] = candidate_id
+                    variant["family_marriage_private_diagnostic"] = variant_diagnostic
+                    family_plans.append(variant)
             else:
                 observed_status = plan.get("family_marriage_status")
                 family_status = (observed_status if isinstance(observed_status, str)
@@ -248,7 +275,7 @@ def query_m5_peacetime_proposal_sources_v1(
     if faction.get("status") == "selected":
         domains["diplomacy"] = {"candidate": deepcopy(faction)}
     if family_plan is not None:
-        domains["marriage"] = {"plan": family_plan}
+        domains["marriage"] = {"plan": family_plan, "plans": family_plans}
 
     return {
         "schema": SOURCE_SCHEMA,

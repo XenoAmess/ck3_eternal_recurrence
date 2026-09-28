@@ -351,7 +351,8 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                          "private-submit-player-construction-v1")
         collection = planned["plan"]["m5_joint_query_only"]
         self.assertEqual(collection["collected_domains"], ["building", "marriage"])
-        self.assertEqual(len(collection["collected_candidate_ids"]), 2)
+        self.assertEqual(len(collection["collected_candidate_ids"]), 6)
+        self.assertEqual(len(set(collection["collected_candidate_ids"])), 6)
         self.assertEqual(collection["dispatch"]["reservation"]["domain"],
                          "building")
         self.assertTrue(planned["plan"]["m5_joint_formal_action_ready"])
@@ -547,9 +548,11 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertEqual(joint["producer_family_status"], "selected")
         self.assertCountEqual(joint["collected_domains"], ["building", "marriage"])
         self.assertCountEqual(joint["collected_candidate_ids"], [
-            "building:501:701:1", "marriage:first-heir:38822:38710:32266",
+            "building:501:701:1",
+            *(f"marriage:first-heir:38822:{38710 + i}:{32266 + i}"
+              for i in range(5)),
         ])
-        self.assertEqual(joint["evaluated_count"], 2)
+        self.assertEqual(joint["evaluated_count"], 6)
         self.assertFalse(joint["evaluated_truncated"])
         self.assertFalse(joint["income_preference_applied"])
         self.assertEqual({row["reason"] for row in joint["evaluated"]},
@@ -591,13 +594,15 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         collection = collect_m5_formal_proposals(
             snapshot=driver.take_snapshot(), sources=sources,
         )
-        evaluated = {row["domain"]: row for row in
-                     collection["dispatch"]["analysis"]["evaluated"]}
-        self.assertEqual(evaluated["marriage"]["reason"], "eligible")
-        self.assertEqual(evaluated["marriage"]["character_ids"],
+        evaluated = collection["dispatch"]["analysis"]["evaluated"]
+        marriage_rows = [row for row in evaluated if row["domain"] == "marriage"]
+        self.assertEqual(len(marriage_rows), 5)
+        self.assertEqual({row["reason"] for row in marriage_rows}, {"eligible"})
+        self.assertEqual(marriage_rows[0]["character_ids"],
                          [32266, 38710, 38822])
-        self.assertEqual(evaluated["marriage"]["ally_character_ids"], [32266])
-        self.assertIsNone(evaluated["marriage"]["evidence"]["alliance_established"])
+        self.assertEqual(marriage_rows[0]["ally_character_ids"], [32266])
+        self.assertTrue(all(row["evidence"]["alliance_established"] is None
+                            for row in marriage_rows))
         self.assertEqual(collection["dispatch"]["selected_candidate_id"],
                          "building:501:701:1")
         self.assertEqual(collection["dispatch"]["analysis"]["selection_basis"][3],
@@ -629,6 +634,54 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                          ["marriage"])
         self.assertTrue(plan["m5_joint_formal_action_ready"])
 
+    def test_distinct_no_alliance_heir_offer_can_win_one_formal_slot(self) -> None:
+        driver = _Driver(
+            self.state_dir, snapshot=_snapshot(faction_count=0),
+            family_enabled=True,
+        )
+        pair = driver.projection["rows"][1]["possible_alliance_pairs"][0]
+        pair["both_have_realm_data"] = False
+        pair["would_attempt_if_accepted"] = False
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+            return_value=_construction(status="no_legal_budgeted_building"),
+        )):
+            planned = GameplayBridgeService(driver).plan_turn()
+        plan = planned["plan"]
+        self.assertEqual(plan["family_marriage_choice"]["candidate_character_id"],
+                         38711)
+        self.assertEqual(plan["family_marriage_private_diagnostic"]
+                         ["selected_candidate_character_id"], 38711)
+        self.assertEqual(plan["selected_step"],
+                         "submit-observed-first-heir-marriage-v1-private")
+        collection = plan["m5_joint_query_only"]
+        self.assertEqual(len(collection["collected_candidate_ids"]), 5)
+        self.assertEqual(len(set(collection["collected_candidate_ids"])), 5)
+        selected = collection["dispatch"]["reservation"]
+        self.assertEqual(selected["candidate_id"],
+                         "marriage:first-heir:38822:38711:32267")
+        self.assertEqual(selected["commitments_after"]["ally_character_ids"], [])
+        self.assertEqual(selected["commitments_after"]["commitment_keys"],
+                         ["first-heir-marriage:38822"])
+        self.assertEqual(plan["family_marriage_choice"]["value"],
+                         "bounded_first_heir_external_dynasty_betrothal_opportunity")
+
+    def test_repeated_family_plan_cannot_fake_five_candidates(self) -> None:
+        driver = _Driver(self.state_dir, family_enabled=True)
+        sources = self._query(driver)
+        family = sources["domains"]["marriage"]
+        family["plans"][1] = deepcopy(family["plans"][0])
+        with self.assertRaisesRegex(ValueError, "repeat a candidate"):
+            collect_m5_formal_proposals(
+                snapshot=driver.take_snapshot(), sources=sources,
+            )
+
     def test_later_native_revision_cannot_be_reused_as_joint_family_source(self) -> None:
         driver = _Driver(self.state_dir, family_enabled=True)
         driver.legality["native_revision"] += 2
@@ -642,9 +695,11 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
     def test_grand_wedding_cost_cannot_enter_zero_gold_joint_proposal(self) -> None:
         driver = _Driver(self.state_dir, family_enabled=True)
         sources = self._query(driver)
-        row = sources["domains"]["marriage"]["plan"][
-            "family_marriage_private_diagnostic"]["rows"][0]
-        row["grand_wedding_option_selected"] = True
+        family = sources["domains"]["marriage"]
+        family["plan"]["family_marriage_private_diagnostic"]["rows"][0][
+            "grand_wedding_option_selected"] = True
+        family["plans"][0]["family_marriage_private_diagnostic"]["rows"][0][
+            "grand_wedding_option_selected"] = True
         with self.assertRaisesRegex(ValueError, "native-final value proof"):
             collect_m5_formal_proposals(
                 snapshot=driver.take_snapshot(), sources=sources,

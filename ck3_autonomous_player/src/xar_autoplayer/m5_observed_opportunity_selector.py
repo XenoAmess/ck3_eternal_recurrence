@@ -289,6 +289,8 @@ def first_heir_marriage_proposal(
             "predicted_outcome_if_accepted": outcome,
             "value": expected_value,
             "recipient_ai_accept_raw": choice["recipient_ai_accept_raw"],
+            "heir_adult_measure_raw": row.get("heir_adult_measure_raw"),
+            "candidate_adult_measure_raw": row.get("candidate_adult_measure_raw"),
             "realm_alliance_attempt_if_accepted": realm_attempt,
             "alliance_established": None,
             "unpriced": list(unpriced),
@@ -656,7 +658,8 @@ def select_observed_m5_opportunity(
             "positive_authored_building_income_in_peace", "war_slot_claim",
             "army_claim_count", "ally_claim_count",
             "gold_cost_raw", "commitment_key_count", "character_claim_count",
-            "projected_supply_margin_raw_desc", "candidate_id",
+            "projected_supply_margin_raw_desc", "domain",
+            "family_outcome_age_and_native_acceptance", "candidate_id",
         ],
         "selected_step": None,
         "formal_action_ready": False,
@@ -767,12 +770,24 @@ def _opportunity_key(
     evidence = row["evidence"]
     income = (evidence.get("authored_monthly_income_hundredths")
               if row["domain"] == "building" else None)
+    family_order = (0, 0, 0)
+    if row["domain"] == "marriage":
+        heir_age = evidence.get("heir_adult_measure_raw")
+        candidate_age = evidence.get("candidate_adult_measure_raw")
+        acceptance = evidence.get("recipient_ai_accept_raw")
+        if (type(heir_age) is int and type(candidate_age) is int
+                and type(acceptance) is int):
+            family_order = (
+                0 if evidence.get("predicted_outcome_if_accepted") == "marriage" else 1,
+                abs(heir_age - candidate_age), -acceptance,
+            )
     return (
         0 if prefer_income and type(income) is int and income > 0 else 1,
         row["war_slot_claim"], len(row["army_ids"]),
         len(row["ally_character_ids"]), row["gold_cost_raw"],
         len(row["commitment_keys"]), len(row["character_ids"]),
-        -(supply if type(supply) is int else 0), row["candidate_id"],
+        -(supply if type(supply) is int else 0), row["domain"],
+        family_order, row["candidate_id"],
     )
 
 

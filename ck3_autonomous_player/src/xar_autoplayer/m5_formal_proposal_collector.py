@@ -118,9 +118,24 @@ def collect_m5_formal_proposals(
             continue
         if not isinstance(raw, Mapping):
             raise ValueError(f"M5 {domain} proposal source is malformed")
-        proposals.append(
-            _adapt_domain(domain, frame=frame, snapshot=snapshot, source=raw)
-        )
+        if domain == "marriage" and "plans" in raw:
+            plans = raw["plans"]
+            if (not isinstance(plans, list) or not 1 <= len(plans) <= 5
+                    or plans[0] != raw.get("plan")):
+                raise ValueError("M5 marriage plans lack selected five-row source")
+            marriage_ids: set[str] = set()
+            for plan in plans:
+                proposal = first_heir_marriage_proposal(
+                    frame=frame, plan=_mapping(plan, "marriage.plan"),
+                )
+                if proposal["candidate_id"] in marriage_ids:
+                    raise ValueError("M5 marriage plans repeat a candidate")
+                marriage_ids.add(proposal["candidate_id"])
+                proposals.append(proposal)
+        else:
+            proposals.append(
+                _adapt_domain(domain, frame=frame, snapshot=snapshot, source=raw)
+            )
 
     commitments = sources.get("existing_commitments")
     if not isinstance(commitments, Mapping):
@@ -181,7 +196,8 @@ def collect_m5_formal_proposals(
         "read_only": True,
         "advertised": False,
         "frame": frame,
-        "collected_domains": [proposal["domain"] for proposal in proposals],
+        "collected_domains": list(dict.fromkeys(
+            proposal["domain"] for proposal in proposals)),
         "collected_candidate_ids": [
             proposal["candidate_id"] for proposal in proposals
         ],
@@ -492,8 +508,21 @@ def plan_m5_formal_query_only(
             },
         }
     family_source = sources.get("domains", {}).get("marriage")
-    family_plan = (family_source.get("plan")
-                   if isinstance(family_source, Mapping) else None)
+    family_plans = (family_source.get("plans", [family_source.get("plan")])
+                    if isinstance(family_source, Mapping) else [])
+    family_plan = None
+    if (isinstance(reservation, Mapping)
+            and reservation.get("domain") == "marriage"
+            and isinstance(family_plans, list)):
+        for candidate_plan in family_plans:
+            if not isinstance(candidate_plan, Mapping):
+                return blocked("M5 selected family plan is malformed")
+            proposal = first_heir_marriage_proposal(
+                frame=observed_frame(snapshot), plan=candidate_plan,
+            )
+            if proposal["candidate_id"] == dispatch.get("selected_candidate_id"):
+                family_plan = candidate_plan
+                break
     if (
         isinstance(reservation, Mapping)
         and reservation.get("domain") == "marriage"
