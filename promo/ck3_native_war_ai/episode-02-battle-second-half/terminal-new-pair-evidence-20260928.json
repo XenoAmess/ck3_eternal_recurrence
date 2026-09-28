@@ -1,0 +1,34 @@
+{
+  "schema": "xar.war-ai.episode02.terminal-new-pair-evidence.v1",
+  "date": "2026-09-28",
+  "historical_attempt_024": {
+    "material_status": "RED_EXACT_DLL_UNAVAILABLE",
+    "expected_dll_bytes": 3063808,
+    "expected_dll_sha256": "5FA16EABCD2FD77730E96F11A3C030401EA14B58926E6504007008533B6929DE",
+    "receiver_old_path_current_dll_sha256": "FCAFBA2A73E1EEF1E2651ADD40F71CE66B9FE16E4E61BD014DBA65C9965AEBD8",
+    "war_response": {
+      "status": "unavailable",
+      "scope": "sender_machine_only",
+      "onedrive_relative_path": "WAR/E2-09-024-DLL-20260928/RESPONSE.json",
+      "preserved_copy": "D:/ck3-research-artifacts/war-intake-20260928/e2-09-024-response-001/RESPONSE.json",
+      "bytes": 1609,
+      "sha256": "7AAB57A2DB34BE7735990E6ECC537A63ADF9317BF5075A06E9AF0CA9B497DD1D",
+      "preservation_receipt": "D:/ck3-research-artifacts/war-intake-20260928/e2-09-024-response-001/receipt.json",
+      "exact_dll_received": false
+    }
+  },
+  "new_pair_candidate": {
+    "source_save_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+    "actual_source_save_receipt_sha256": "5198123BD71842624A3FB933492F78C3BB11C65D2DED634E3965FDC79B90A012",
+    "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "candidate_dll_sha256": "FCAFBA2A73E1EEF1E2651ADD40F71CE66B9FE16E4E61BD014DBA65C9965AEBD8",
+    "candidate_injector_sha256": "3773042110D9E207FD02E00BF5376A033E71B70433B6B650088550A522B581C5",
+    "static_preflight_result": "STATIC_MATERIAL_GREEN_LIVE_UNPROVEN",
+    "static_preflight_path": "D:/ck3-research-artifacts/episode02-terminal-new-pair-preflight-20260928/attempt-001/preflight.json",
+    "static_preflight_sha256": "818FAFA40B11BF0D43C5C059D8BBC5DDFD72DF5F7E2999FE415C0092ECD4AA51",
+    "new_ck3_attempt_started": false,
+    "raw_video_recorded": false,
+    "clean_spans_proven": false,
+    "historical_024_values_reused_for_new_run": false
+  }
+}

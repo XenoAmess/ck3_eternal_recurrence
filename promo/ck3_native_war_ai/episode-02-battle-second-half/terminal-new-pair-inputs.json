@@ -1,0 +1,47 @@
+{
+  "schema": "xar.war-ai.episode02.terminal-new-pair-inputs.v1",
+  "identity": {
+    "track": "E2-09-new-paired-attempt",
+    "historical_reference_only": "episode01-denominator-live-attempt-024",
+    "source_day": 27,
+    "source_date_raw": 53146872,
+    "actor": 29829,
+    "combat_id": 16777218,
+    "war_id": 4,
+    "game_version": "CK3 1.19.0.6"
+  },
+  "game_exe": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "source_save": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
+    "bytes": 52871423,
+    "sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+  },
+  "source_receipt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/trace-d27-save.json",
+    "bytes": 13401,
+    "sha256": "5198123BD71842624A3FB933492F78C3BB11C65D2DED634E3965FDC79B90A012"
+  },
+  "candidate_bridge_dll": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-build-007/xar_ck3_bridge.dll",
+    "bytes": 3063808,
+    "sha256": "FCAFBA2A73E1EEF1E2651ADD40F71CE66B9FE16E4E61BD014DBA65C9965AEBD8"
+  },
+  "candidate_bridge_injector": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-build-007/xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "3773042110D9E207FD02E00BF5376A033E71B70433B6B650088550A522B581C5"
+  },
+  "historical_024_dll_expected_sha256": "5FA16EABCD2FD77730E96F11A3C030401EA14B58926E6504007008533B6929DE",
+  "war_unavailable_response": {
+    "path": "D:/ck3-research-artifacts/war-intake-20260928/e2-09-024-response-001/RESPONSE.json",
+    "bytes": 1609,
+    "sha256": "7AAB57A2DB34BE7735990E6ECC537A63ADF9317BF5075A06E9AF0CA9B497DD1D"
+  },
+  "war_response_preservation_receipt": {
+    "path": "D:/ck3-research-artifacts/war-intake-20260928/e2-09-024-response-001/receipt.json"
+  }
+}
