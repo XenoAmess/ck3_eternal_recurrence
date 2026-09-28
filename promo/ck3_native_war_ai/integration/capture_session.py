@@ -53,6 +53,8 @@ A04_UI_SETTINGS_SHA256 = "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B5
 A04_UI_GUI_BLOCK_SHA256 = "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593"
 A04_UI_GUI_BLOCK_START = 6642
 A04_UI_GUI_BLOCK_END = 6696
+A04_UI_GUI_BLOCK_BYTES = (b'"GUI"={\r\n\t"scale"={\r\n\t\tversion=1\r\n'
+                          b'\t\tvalue="1"\r\n\t}\r\n}\r\n')
 A04_UI_PRESERVATION_SHA256 = "69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779"
 A04_UI_HOT_READBACK_SHA256 = "D3F1837AB33FD5541CA2696FF51DD27A114FEACFD332431D2CAC48691D68D337"
 A04_UI_IMAGE_IDENTITIES = {
@@ -399,6 +401,7 @@ def validate_a04_ui_gui_source_binding(args: argparse.Namespace) -> dict | None:
             hashlib.sha256(source_bytes).hexdigest().upper() == A04_UI_SETTINGS_SHA256 and
             source_bytes.count(b'"GUI"=') == 1 and
             len(gui_block) == A04_UI_GUI_BLOCK_END - A04_UI_GUI_BLOCK_START and
+            gui_block == A04_UI_GUI_BLOCK_BYTES and
             hashlib.sha256(gui_block).hexdigest().upper() == A04_UI_GUI_BLOCK_SHA256,
             "A04 UI exact GUI block differs from the frozen 54-byte source")
     preservation = identity(preservation_path)
@@ -762,10 +765,14 @@ def normalize_gui_scale_ratio(serialized: str) -> str | None:
 
 
 def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: str,
-                            *, allow_native_ui_one: bool = False) -> dict:
+                            *, allow_native_ui_one: bool = False,
+                            require_native_a04_gui_block: bool = False) -> dict:
     """Read the isolated profile's persisted GUI setting without claiming runtime state."""
     require(requested_scale == "1.0", "Only the reviewed 1.0 GUI scale is supported")
     require(type(allow_native_ui_one) is bool, "Native UI one opt-in must be boolean")
+    require(type(require_native_a04_gui_block) is bool and
+            (not require_native_a04_gui_block or allow_native_ui_one),
+            "Exact a04 GUI block gate needs native UI one opt-in")
     requested_ratio = normalize_gui_scale_ratio(requested_scale)
     require(requested_ratio is not None, "Requested GUI scale is not a fixed decimal ratio")
     row = {"schema": "war-film-gui-scale-disk-gate/v2", "observed_at": utc(),
@@ -814,6 +821,17 @@ def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: st
                 row["reason"] = "ratio_equal_but_literal_not_admitted"
         else:
             row["reason"] = "missing_ambiguous_or_unrecognized_GUI_block"
+        if require_native_a04_gui_block:
+            pinned = (len(A04_UI_GUI_BLOCK_BYTES) == A04_UI_GUI_BLOCK_END - A04_UI_GUI_BLOCK_START
+                      and hashlib.sha256(A04_UI_GUI_BLOCK_BYTES).hexdigest().upper() ==
+                      A04_UI_GUI_BLOCK_SHA256)
+            exact = pinned and len(gui_declarations) == 1 and raw.count(A04_UI_GUI_BLOCK_BYTES) == 1
+            row["native_a04_gui_block_required"] = True
+            row["native_a04_gui_block_sha256"] = A04_UI_GUI_BLOCK_SHA256
+            row["native_a04_gui_block_passed"] = exact
+            if not exact:
+                row["disk_gate_passed"] = False
+                row["reason"] = "exact_native_a04_gui_block_missing_or_ambiguous"
     except (OSError, UnicodeError, RuntimeError) as error:
         row["reason"] = repr(error)
     return row
@@ -821,13 +839,15 @@ def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: st
 
 def require_gui_scale_disk_gate(settings_path: Path, requested_scale: str | None,
                                 phase: str, receipt_path: Path,
-                                *, allow_native_ui_one: bool = False) -> None:
+                                *, allow_native_ui_one: bool = False,
+                                require_native_a04_gui_block: bool = False) -> None:
     if requested_scale is None:
-        require(allow_native_ui_one is False,
+        require(allow_native_ui_one is False and require_native_a04_gui_block is False,
                 "Native UI one opt-in requires an explicit requested GUI scale")
         return
     receipt = gui_scale_disk_readback(settings_path, requested_scale, phase,
-                                      allow_native_ui_one=allow_native_ui_one)
+                                      allow_native_ui_one=allow_native_ui_one,
+                                      require_native_a04_gui_block=require_native_a04_gui_block)
     write_new(receipt_path, receipt)
     require(receipt["disk_gate_passed"],
             f"GUI.scale disk gate failed at {phase}; see {receipt_path}")
@@ -894,8 +914,37 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
         require(observed == "1.3" or before["disk_gate_passed"],
                 "Warm-up GUI scale is outside the reviewed 100%/130% values")
         row["source_settings"] = {**before["settings"]}
+        native_block = None
+        native_match = None
+        if allow_native_ui_one:
+            native_block = A04_UI_GUI_BLOCK_BYTES
+            require(len(native_block) == A04_UI_GUI_BLOCK_END - A04_UI_GUI_BLOCK_START and
+                    hashlib.sha256(native_block).hexdigest().upper() == A04_UI_GUI_BLOCK_SHA256,
+                    "Frozen a04 native GUI block constant differs from reviewed SHA")
+            candidates = list(re.finditer(
+                rb'(?m)^"GUI"[ \t]*=[ \t]*\{[ \t\r\n]*'
+                rb'"scale"[ \t]*=[ \t]*\{[ \t\r\n]*version[ \t]*=[ \t]*1[ \t\r\n]+'
+                rb'value[ \t]*=[ \t]*"(?P<value>[^"\r\n]*)"[ \t\r\n]*\}'
+                rb'[ \t\r\n]*\}[ \t]*(?:\r?\n|$)', source))
+            require(len(candidates) == 1 and candidates[0].start() == blocks[0].start() and
+                    candidates[0].group("value").decode("ascii") == observed,
+                    "Warm-up native GUI block is missing, ambiguous or has unreviewed syntax")
+            native_match = candidates[0]
+            row["native_a04_gui_block_sha256"] = A04_UI_GUI_BLOCK_SHA256
+            row["warmup_gui_block"] = {"bytes": len(native_match.group()),
+                                       "sha256": hashlib.sha256(native_match.group()).hexdigest().upper()}
+            require(observed in ("1.3", "1"),
+                    "A05 final launch requires the native 1 literal or reviewed 1.3 warm-up value")
         if observed == "1.3":
-            target = source[:blocks[0].start("value")] + b"1.0" + source[blocks[0].end("value"):]
+            if allow_native_ui_one:
+                target = source[:native_match.start()] + native_block + source[native_match.end():]
+                row["non_gui_bytes_unchanged"] = (
+                    target.replace(native_block, b"", 1) ==
+                    source[:native_match.start()] + source[native_match.end():])
+                require(row["non_gui_bytes_unchanged"],
+                        "A05 warm-up reseed changed non-GUI bytes")
+            else:
+                target = source[:blocks[0].start("value")] + b"1.0" + source[blocks[0].end("value"):]
             row["expected_target"] = {"bytes": len(target),
                                       "sha256": hashlib.sha256(target).hexdigest().upper()}
             # The native-session callback runs only after verified warm-up shutdown.
@@ -922,6 +971,9 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
             require(settings_path.read_bytes() == target,
                     "GUI settings bytes differ after atomic replace")
         else:
+            if allow_native_ui_one:
+                require(native_match.group() == native_block,
+                        "A05 warm-up 100% block differs from the exact native UI bytes")
             row["expected_target"] = {"bytes": len(source),
                                       "sha256": hashlib.sha256(source).hexdigest().upper()}
         row["after_settings"] = {**identity(settings_path),
@@ -931,7 +983,10 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
                 "GUI settings target identity differs after reseed")
         require_gui_scale_disk_gate(settings_path, requested_scale,
                                     "after-reseed-before-final-launch", after_path,
-                                    allow_native_ui_one=allow_native_ui_one)
+                                    allow_native_ui_one=allow_native_ui_one,
+                                    require_native_a04_gui_block=allow_native_ui_one)
+        if allow_native_ui_one:
+            row["final_native_gui_block_exact"] = True
         row["status"] = "GREEN_DISK_ONLY"
     except Exception as error:
         row["error"] = repr(error)
@@ -1092,7 +1147,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
         require_gui_scale_disk_gate(
             settings_path, args.gui_scale, "before-native-session",
             args.output_dir / "gui-settings-before-native-session.json",
-            allow_native_ui_one=allow_native_ui_one)
+            allow_native_ui_one=allow_native_ui_one,
+            require_native_a04_gui_block=allow_native_ui_one)
     except Exception as error:
         record_live_run_status(run, "completed-red", reason=str(error))
         raise
@@ -1189,7 +1245,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     require_gui_scale_disk_gate(
                         settings_path, args.gui_scale, "postmap-before-capture",
                         args.output_dir / "gui-settings-postmap.json",
-                        allow_native_ui_one=allow_native_ui_one)
+                        allow_native_ui_one=allow_native_ui_one,
+                        require_native_a04_gui_block=allow_native_ui_one)
                     load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
                     require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
                     from PIL import ImageGrab
@@ -1202,7 +1259,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     require_gui_scale_disk_gate(
                         settings_path, args.gui_scale, "posthold-before-service",
                         args.output_dir / "gui-settings-posthold.json",
-                        allow_native_ui_one=allow_native_ui_one)
+                        allow_native_ui_one=allow_native_ui_one,
+                        require_native_a04_gui_block=allow_native_ui_one)
                     ImageGrab.grab().save(args.output_dir / "map-end.png")
                     worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
                                               "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
@@ -1237,7 +1295,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                             request, driver=driver)) if args.enable_private_ai_reentry_observer else None,
                         gui_scale_readback=(lambda: gui_scale_disk_readback(
                             settings_path, args.gui_scale, "hot-service-after-native-UI-save",
-                            allow_native_ui_one=allow_native_ui_one))
+                            allow_native_ui_one=allow_native_ui_one,
+                            require_native_a04_gui_block=allow_native_ui_one))
                             if args.gui_scale is not None else None,
                     )
 
