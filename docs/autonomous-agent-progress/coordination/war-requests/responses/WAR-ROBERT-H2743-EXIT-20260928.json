@@ -152,5 +152,20 @@
     "formal_exit_decision_complete": false,
     "gameplay_action_submitted": false
   },
-  "next_step": "Close the actual de-jure setup/resolve target and change semantics and conditional resource branches before attempting a separately versioned full terms producer. The v3 live query verified only same-frame prestate and legal surrender; obtain signed title/vassal/resource deltas, dynamic factor and truce duration through audited side-effect-free sources, plus finite-horizon continuation loss and cash bounds. Keep the formal comparison unavailable and the terminal selected-step guard active until those facts and a sourced policy threshold exist. Do not reuse R0197 one-shot authorization or submit H2743/H2825 exit based on this response."
+  "h2743_v5_war_storage_static_candidate_2026_09_29": {
+    "status": "static_build_and_admission_only_no_live_read",
+    "draft_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/448",
+    "document": "docs/ck3-native-ai/h2743-war-storage-candidate-v5-2026-09-29.md",
+    "candidate_dll_sha256": "19C53611AEA499A37CF222A48A5395EC7B5BBA306ABC6065AB73C097CC85FB2B",
+    "static_receipt_path": "D:/ck3-research-artifacts/war31-h2743-20260928/war-storage-v5-static-002/check-static.json",
+    "static_receipt_sha256": "CDC83573D8631EF51246394D231220644F2A8F59C957A82CA371CCDD5D51F663",
+    "producer_scope": "Complete WarManager slot double-read with full WarID/generation, pointer, parties, CB and target identity checks; only structural_candidate_only may be published.",
+    "stock_border_raid_pair": null,
+    "actual_directed_truce_days": null,
+    "material_complete": false,
+    "formal_exit_decision_complete": false,
+    "gameplay_action_submitted": false,
+    "next_live_gate": "Wait for current ck3-screen owner to release, then create a fresh exact H2743 no-launch attempt and obtain a fresh Steam offline image before any new read-only session."
+  },
+  "next_step": "Close the actual de-jure setup/resolve target and change semantics and conditional resource branches before attempting a separately versioned full terms producer. The v3/v4 live queries verified only same-frame prestate, partial truce inputs and legal surrender; v5 is a static WarManager structural candidate without a live result or proven stock any_character_war equivalence. Obtain signed title/vassal/resource deltas, dynamic factor and truce duration through audited side-effect-free sources, plus finite-horizon continuation loss and cash bounds. Keep the formal comparison unavailable and the terminal selected-step guard active until those facts and a sourced policy threshold exist. Do not reuse R0197 one-shot authorization or submit H2743/H2825 exit based on this response."
 }
