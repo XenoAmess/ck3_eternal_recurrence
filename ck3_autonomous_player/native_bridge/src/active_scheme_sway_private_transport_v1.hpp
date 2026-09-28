@@ -2,6 +2,7 @@
 
 #include "active_scheme_precondition_command_binders_v1_private.hpp"
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/faction_gift_receivers_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
@@ -25,6 +26,7 @@ struct ActiveSchemeSwayPrivateQueryV1 {
   std::uint32_t target_character_id = 0;
   xar::bridge::ActiveSchemeStateV1PrivateObservation active{};
   xar::bridge::ActiveSchemeSemanticActionV1PrivatePrecondition precondition{};
+  GiftOpinionReceiverResultV1 target_opinion{};
   bool matching_active_scheme = false;
   bool completed = false;
   bool frame_changed = false;

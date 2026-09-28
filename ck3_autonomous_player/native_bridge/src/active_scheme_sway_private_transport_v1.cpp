@@ -174,6 +174,14 @@ bool ExecuteActiveSchemeSwayPrivateQueryV1(
       query->completed = true;
       return true;
     }
+    if (!ReadGiftOpinionExact11906V1(
+            module_base, query->bindings, query->target_character_id,
+            static_cast<std::uint32_t>(current.played_character_id),
+            query->target_opinion) || !query->target_opinion.query_complete) {
+      query->failure = "native_sway_target_opinion_red";
+      query->completed = true;
+      return true;
+    }
     query->completed = true;
     return true;
   } catch (...) {
@@ -192,7 +200,8 @@ std::string SerializeActiveSchemeSwayPrivateQueryV1(
           query.active.played_character_id ||
       query.precondition.target_id != query.target_character_id ||
       query.precondition.interaction_key != "sway_interaction" ||
-      query.precondition.scheme_type_key != "sway") return {};
+      query.precondition.scheme_type_key != "sway" ||
+      !query.target_opinion.query_complete) return {};
   std::string result = "{\"schema\":\"active-scheme-sway-private-read-v1\","
                        "\"snapshot_revision\":" +
                        std::to_string(query.expected_revision);
@@ -205,6 +214,8 @@ std::string SerializeActiveSchemeSwayPrivateQueryV1(
             std::to_string(query.active.played_character_id);
   result += ",\"target_character_id\":" +
             std::to_string(query.target_character_id);
+  result += ",\"target_opinion_of_actor\":" +
+            std::to_string(query.target_opinion.recipient_opinion_of_player);
   result += ",\"active_scheme_count\":" +
             std::to_string(query.active.row_count);
   result += ",\"matching_sway_active\":";

@@ -753,6 +753,9 @@ add_library(xar_ck3_bridge SHARED
 )
 target_include_directories(xar_ck3_bridge PRIVATE research src)
 if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  if(NOT XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+    target_sources(xar_ck3_bridge PRIVATE src/faction_gift_receivers_v1.cpp)
+  endif()
   target_sources(xar_ck3_bridge PRIVATE
     src/active_scheme_state_v1_private_observer.cpp
     src/active_scheme_state_v1_private_source_adapter.cpp
