@@ -59,6 +59,48 @@ def ids(rows: list[dict], key: str) -> set[int]:
     return {row[key] for row in rows}
 
 
+PREEXISTING_EVENTS = [
+    {"left_character_id": 47029, "right_character_id": 33435,
+     "stable_key": "knight_wounded_by_enemy", "type_raw": 2,
+     "side_index": 0, "target_right": False},
+    {"left_character_id": 33884, "right_character_id": 32440,
+     "stable_key": "knight_wounded_by_enemy", "type_raw": 2,
+     "side_index": 0, "target_right": False},
+]
+
+
+def verify_trace_binding(finish: dict) -> None:
+    """Check the managed-day identity and exact preexisting-event prefix.
+
+    Kept separate from byte loading so a mutated in-memory trace can test the
+    semantic gate independently of source SHA verification.
+    """
+    checkpoint = finish["managed_trace"]["managed_checkpoint"]
+    records = finish["managed_trace"]["trace"]["records"]
+    require(finish["managed_daily_sequence_token"] == 101 and
+            finish["combat_id"] == 16777218 and
+            all(checkpoint[edge]["managed_daily_sequence_token"] == 101 and
+                checkpoint[edge]["combat_id"] == 16777218 and
+                checkpoint[edge]["paused"] is True
+                for edge in ("before", "after")) and
+            [checkpoint[edge]["date_raw"] for edge in ("before", "after")] ==
+            [53146848, 53146872] and
+            len(records) == 7 and
+            all(r["managed_daily_sequence_token"] == 101 and
+                r["combat_id"] == 16777218 for r in records) and
+            [r["native_date_raw"] for r in records] ==
+            [53146848, 53146848, 53146872, 53146872,
+             53146872, 53146872, 53146872],
+            "one managed sequence, combat and exact d26/d27 dates")
+    require(all(r["battle_events"] == PREEXISTING_EVENTS
+                for r in records[:5]) and
+            records[5]["battle_events"][:2] == PREEXISTING_EVENTS,
+            "first five boundaries preserve the exact two wound events")
+    require(33437 in ids(records[5]["sides"][1]["knights"], "character_id") and
+            34120 in ids(records[5]["sides"][0]["knights"], "character_id"),
+            "event left and right characters belong to opposite battle sides")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--external-root", type=Path, default=DEFAULT_ROOT)
@@ -130,6 +172,7 @@ def main() -> None:
     checkpoint = finish["managed_trace"]["managed_checkpoint"]
     trace = finish["managed_trace"]["trace"]
     records = trace["records"]
+    verify_trace_binding(finish)
     require(finish["accepted"] is True and finish["production_trace_ready"] is False and
             finish["status"] == "trace_unavailable" and
             checkpoint["exact_one_day_observed"] is True and
