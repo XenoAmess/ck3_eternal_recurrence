@@ -87,6 +87,41 @@ def _truce_inputs() -> dict[str, object]:
 
 
 class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
+    def test_storage_scan_is_only_a_structural_candidate(self) -> None:
+        candidate = _candidate()
+        candidate["truce_inputs_v1"] = _truce_inputs()
+        candidate["border_raid_storage_candidate_v1"] = {
+            "schema": "xar.ck3.h2743-border-raid-storage-candidate.v1",
+            "status": "structural_candidate_only", "candidate": False,
+            "storage_capacity": 17, "active_war_count": 2,
+            "matching_war_count": 0, "unavailable_reason": None,
+            "native_condition_observed": False,
+        }
+        projected = _project(candidate)
+        self.assertIs(projected["border_raid_storage_candidate_v1"]["candidate"], False)
+        self.assertEqual(projected["truce_inputs_v1"]["border_raid_pair"]["status"],
+                         "unavailable")
+        self.assertIsNone(projected["directed_truce"])
+        self.assertFalse(projected["material_complete"])
+        self.assertIsNone(projected["action_literal"])
+        for field, value in (
+            ("status", "observed"), ("native_condition_observed", True),
+            ("candidate", None), ("matching_war_count", 1),
+            ("storage_capacity", 1),
+        ):
+            with self.subTest(field=field):
+                invalid = copy.deepcopy(candidate)
+                invalid["border_raid_storage_candidate_v1"][field] = value
+                with self.assertRaises(ValueError):
+                    _project(invalid)
+        invalid = copy.deepcopy(candidate)
+        invalid["truce_inputs_v1"]["border_raid_pair"] = {
+            "status": "observed", "value": False,
+            "unavailable_reason": None,
+        }
+        with self.assertRaises(ValueError):
+            _project(invalid)
+
     def test_partial_truce_inputs_preserve_material_gate(self) -> None:
         candidate = _candidate()
         candidate["truce_inputs_v1"] = _truce_inputs()

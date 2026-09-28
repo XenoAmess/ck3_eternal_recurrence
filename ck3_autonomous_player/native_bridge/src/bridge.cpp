@@ -4430,6 +4430,25 @@ void AppendDefenderDeJureExitTermsV1(
   }
   result += ",\"evaluated_days\":null,"
             "\"persisted_expiry_date_raw\":null}";
+  // A complete storage traversal is only a structural candidate. The stock
+  // any_character_war predicate above remains typed unavailable.
+  result += ",\"border_raid_storage_candidate_v1\":{\"schema\":"
+            "\"xar.ck3.h2743-border-raid-storage-candidate.v1\",\"status\":";
+  const auto &scan = terms.border_raid_storage_candidate;
+  AppendJsonString(result, scan.value ? "structural_candidate_only" :
+                                  "unavailable");
+  result += ",\"candidate\":";
+  result += scan.value ? (*scan.value ? "true" : "false") : "null";
+  result += ",\"storage_capacity\":";
+  result += SignedNumber(scan.storage_capacity);
+  result += ",\"active_war_count\":";
+  result += SignedNumber(scan.active_war_count);
+  result += ",\"matching_war_count\":";
+  result += SignedNumber(scan.matching_war_count);
+  result += ",\"unavailable_reason\":";
+  if (scan.value) result += "null";
+  else AppendJsonString(result, scan.unavailable_reason);
+  result += ",\"native_condition_observed\":false}";
   result += ",\"title_vassal_delta\":null,";
   result += "\"title_vassal_delta_unavailable_reason\":";
   AppendJsonString(result, terms.title_vassal_delta_unavailable_reason);

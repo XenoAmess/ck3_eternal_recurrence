@@ -48,12 +48,17 @@ SOURCE_HASHES = {
 DLL_SHA = "6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E"
 TRUCE_DLL = ROOT / "build-truce-inputs-002/xar_ck3_bridge.dll"
 TRUCE_DLL_SHA = "1361FC0991D1FA09CB7272112D73F7F50736B7BBAD6A3656C33F9FB200CA1BAA"
+STORAGE_DLL = ROOT / "build-war-storage-candidate-002/xar_ck3_bridge.dll"
+STORAGE_DLL_SHA = "19C53611AEA499A37CF222A48A5395EC7B5BBA306ABC6065AB73C097CC85FB2B"
 DEFAULT_CANDIDATE = "title-prestate-v3"
 TRUCE_CANDIDATE = "partial-truce-inputs-v4"
+STORAGE_CANDIDATE = "war-storage-candidate-v5"
 CANDIDATE = DEFAULT_CANDIDATE
 LIVE_OUTPUT = "live-dejure-readonly-v3"
 INJECTOR_SHA = "C89F1A919514A7E664AEE8FAF165B78C693ABA4EA2105289BDA2DB4BAC6A84FF"
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+WAR_VALUES = GAME / "game/common/script_values/00_war_values.txt"
+WAR_VALUES_SHA = "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B"
 READINESS_SECONDS = 1800
 SESSION_SECONDS = 3000
 FRAME_SECONDS = 1800
@@ -77,6 +82,11 @@ def select_candidate(name: str) -> None:
         DLL = TRUCE_DLL
         DLL_SHA = TRUCE_DLL_SHA
         LIVE_OUTPUT = "live-dejure-partial-truce-v4"
+    elif name == STORAGE_CANDIDATE:
+        CANDIDATE = STORAGE_CANDIDATE
+        DLL = STORAGE_DLL
+        DLL_SHA = STORAGE_DLL_SHA
+        LIVE_OUTPUT = "live-dejure-war-storage-v5"
     else:
         raise ValueError("unknown exact H2743 candidate")
 
@@ -109,7 +119,8 @@ def valid_attempt_name(name: str) -> bool:
 
 def check_static() -> dict[str, object]:
     expected = {SOURCE / name: digest for name, digest in SOURCE_HASHES.items()}
-    expected.update({DLL: DLL_SHA, INJECTOR: INJECTOR_SHA, EXE: EXE_SHA})
+    expected.update({DLL: DLL_SHA, INJECTOR: INJECTOR_SHA, EXE: EXE_SHA,
+                     WAR_VALUES: WAR_VALUES_SHA})
     for path, digest in expected.items():
         if not path.is_file() or sha256(path) != digest:
             raise RuntimeError(f"exact byte identity missing or changed: {path}")
@@ -382,6 +393,25 @@ def require_partial_truce_inputs(baseline: dict[str, object]) -> None:
         raise RuntimeError("H2743 partial truce input was promoted to an exit term")
 
 
+def require_storage_candidate(baseline: dict[str, object]) -> None:
+    """Admit only typed storage evidence; stock border-raid remains unknown."""
+    source = REPO / "ck3_autonomous_player/src"
+    if str(source) not in sys.path:
+        sys.path.insert(0, str(source))
+    from xar_autoplayer.bridge.defender_dejure_exit_terms_v1 import (
+        _normalize_border_raid_storage_candidate,
+    )
+    try:
+        _normalize_border_raid_storage_candidate(
+            baseline.get("border_raid_storage_candidate_v1"))
+    except ValueError as error:
+        raise RuntimeError("H2743 storage candidate missing or malformed") from error
+    border = baseline["truce_inputs_v1"]["border_raid_pair"]
+    if border != {"status": "unavailable", "value": None,
+                  "unavailable_reason": "stock_condition_reader_unavailable"}:
+        raise RuntimeError("storage candidate was promoted to the stock truce predicate")
+
+
 WAR_SIGNATURE_FIELDS = ("war_id", "player_side", "player_is_primary_war_leader",
                         "primary_opponent_character_id", "player_relative_war_score",
                         "targeted_title_ids")
@@ -558,8 +588,10 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                             or len(baseline.get("primary_monthly_gold_income", [])) != 2):
                         raise RuntimeError("baseline query unavailable, malformed or falsely material-complete")
                     require_target_holder_prestate(baseline)
-                    if CANDIDATE == TRUCE_CANDIDATE:
+                    if CANDIDATE in (TRUCE_CANDIDATE, STORAGE_CANDIDATE):
                         require_partial_truce_inputs(baseline)
+                    if CANDIDATE == STORAGE_CANDIDATE:
+                        require_storage_candidate(baseline)
                     results.append(result)
                     if number == 1:
                         options_result = await call(session, "ck3_execute_step",
@@ -591,6 +623,11 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                                 "same_frame_continuation_risk"],
                            "comparison_status": "unavailable", "action_literal": None,
                            "gameplay_action_submitted": False}
+                if CANDIDATE == STORAGE_CANDIDATE:
+                    summary["border_raid_storage_candidate_v1"] = results[0][
+                        "defender_de_jure_exit_terms_v1"
+                    ]["border_raid_storage_candidate_v1"]
+                    summary["stock_border_raid_pair_observed"] = False
                 return summary
 
 
@@ -752,7 +789,8 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--candidate", choices=(DEFAULT_CANDIDATE, TRUCE_CANDIDATE),
+    parser.add_argument("--candidate", choices=(DEFAULT_CANDIDATE, TRUCE_CANDIDATE,
+                                                STORAGE_CANDIDATE),
                         default=DEFAULT_CANDIDATE,
                         help="exact pinned read-only DLL; default preserves the v3 reader")
     parser.add_argument("--check-static", action="store_true", help="hash exact inputs; no profile or CK3 launch")

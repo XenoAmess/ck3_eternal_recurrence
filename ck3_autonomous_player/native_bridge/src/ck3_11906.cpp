@@ -2,6 +2,7 @@
 #include "xar_bridge/campaign_root_context_v1.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
+#include "xar_bridge/h2743_war_storage_candidate_v1.hpp"
 #include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -18772,6 +18773,77 @@ std::optional<std::vector<std::int32_t>> ReadH2743GovernmentFlags(
   return flags;
 }
 
+std::optional<bridge::h2743::CompleteScan> ReadH2743CompleteWarStorage(
+    const Bindings &bindings, void *game_state) noexcept {
+  if (game_state == nullptr || bindings.contains_war_participant == nullptr)
+    return std::nullopt;
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  if (game_data == nullptr) return std::nullopt;
+  auto *const war_manager =
+      static_cast<std::byte *>(game_data) + bindings.war_manager_offset;
+  void *const storage = LoadAt<void *>(war_manager, kWarStorageOffset);
+  if (storage == nullptr) return std::nullopt;
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) return std::nullopt;
+  bridge::h2743::CompleteScan scan{};
+  scan.capacity = capacity;
+  try {
+    scan.slots.reserve(static_cast<std::size_t>(capacity));
+    for (std::int32_t index = 0; index < capacity; ++index) {
+      bridge::h2743::WarSlot row{};
+      row.index = index;
+      void *const war = LoadAt<void *>(
+          slots, static_cast<std::size_t>(index) *
+                         kComponentStorageSlotSize +
+                     kComponentStorageSlotObjectOffset);
+      if (war == nullptr) {
+        scan.slots.push_back(std::move(row));
+        continue;
+      }
+      row.object_address = reinterpret_cast<std::uintptr_t>(war);
+      row.war_id = LoadAt<std::int32_t>(war, kWarIdOffset);
+      if (row.war_id <= 0 ||
+          (static_cast<std::uint32_t>(row.war_id) & 0x00FFFFFFU) !=
+              static_cast<std::uint32_t>(index)) return std::nullopt;
+      if (LoadAt<void *>(war, kWarEndedDataOffset) != nullptr) {
+        row.state = bridge::h2743::SlotState::ended;
+        scan.slots.push_back(std::move(row));
+        continue;
+      }
+      if (ResolveWar(bindings, game_state, row.war_id) != war)
+        return std::nullopt;
+      row.state = bridge::h2743::SlotState::active;
+      row.primary_attacker = LoadAt<std::int32_t>(
+          war, kWarPrimaryAttackerCharacterIdOffset);
+      row.primary_defender = LoadAt<std::int32_t>(
+          war, kWarPrimaryDefenderCharacterIdOffset);
+      void *const cb = LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+      if (cb == nullptr) return std::nullopt;
+      row.cb_address = reinterpret_cast<std::uintptr_t>(cb);
+      row.cb_index = LoadAt<std::int32_t>(
+          cb, kCasusBelliTypeDatabaseIndexOffset);
+      if (row.cb_index < 0 || row.cb_index >= kMaximumCasusBelliTypes ||
+          !ReadCasusBelliTypeKey(cb, row.cb_key)) return std::nullopt;
+      row.primary_attacker_in_participants =
+          bindings.contains_war_participant(
+              static_cast<std::byte *>(war) + kWarAttackersOffset,
+              row.primary_attacker);
+      row.primary_defender_in_participants =
+          bindings.contains_war_participant(
+              static_cast<std::byte *>(war) + kWarDefendersOffset,
+              row.primary_defender);
+      scan.slots.push_back(std::move(row));
+    }
+  } catch (...) {
+    return std::nullopt;
+  }
+  return scan;
+}
+
 ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
     const Bindings &bindings, std::int32_t war_id,
     DefenderDeJureExitTermsV1 &output) noexcept {
@@ -18912,6 +18984,8 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
   const auto perk_keys = ReadH2743OwnedPerkKeys(attacker);
   const auto attacker_flags = ReadH2743GovernmentFlags(bindings, attacker);
   const auto defender_flags = ReadH2743GovernmentFlags(bindings, defender);
+  const auto war_storage_first =
+      ReadH2743CompleteWarStorage(bindings, game_state);
   std::optional<std::int32_t> nomadic_flag_id;
   if (bindings.h2743_lookup_script_identifier != nullptr &&
       bindings.h2743_script_identifier_name != nullptr) {
@@ -18933,6 +19007,8 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
   const auto perk_keys_after = ReadH2743OwnedPerkKeys(attacker);
   const auto attacker_flags_after = ReadH2743GovernmentFlags(bindings, attacker);
   const auto defender_flags_after = ReadH2743GovernmentFlags(bindings, defender);
+  const auto war_storage_second =
+      ReadH2743CompleteWarStorage(bindings, game_state);
   if (nomadic_flag_id) {
     constexpr std::string_view key = "government_is_nomadic";
     const H2743NativeStringView64 view{
@@ -19011,6 +19087,23 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
                   output.attacker_government_is_nomadic);
   publish_nomadic(defender_flags, defender_flags_after,
                   output.defender_government_is_nomadic);
+  if (war_storage_first && war_storage_second) {
+    const auto candidate = bridge::h2743::AdmitStableWarStorageCandidate(
+        *war_storage_first, *war_storage_second, war_id,
+        reinterpret_cast<std::uintptr_t>(war), attacker_id, defender_id,
+        casus_belli_index, output.casus_belli_key);
+    if (candidate) {
+      output.border_raid_storage_candidate.value =
+          candidate->border_raid_pair;
+      output.border_raid_storage_candidate.storage_capacity =
+          war_storage_first->capacity;
+      output.border_raid_storage_candidate.active_war_count =
+          candidate->active_wars;
+      output.border_raid_storage_candidate.matching_war_count =
+          candidate->matching_wars;
+      output.border_raid_storage_candidate.unavailable_reason.clear();
+    }
+  }
   output.same_frame_stable = true;
   return Result::available_baseline;
 }

@@ -36,6 +36,42 @@ def clean_receipt() -> dict[str, object]:
 
 
 class H2743RunnerGateTests(unittest.TestCase):
+    def test_storage_candidate_requires_new_pin_and_keeps_stock_condition_unknown(self) -> None:
+        try:
+            runner.select_candidate(runner.STORAGE_CANDIDATE)
+            self.assertEqual(runner.DLL, runner.STORAGE_DLL)
+            self.assertEqual(runner.DLL_SHA, runner.STORAGE_DLL_SHA)
+            self.assertEqual(runner.LIVE_OUTPUT, "live-dejure-war-storage-v5")
+        finally:
+            runner.select_candidate(runner.DEFAULT_CANDIDATE)
+        baseline = {
+            "border_raid_storage_candidate_v1": {
+                "schema": "xar.ck3.h2743-border-raid-storage-candidate.v1",
+                "status": "structural_candidate_only", "candidate": False,
+                "storage_capacity": 17, "active_war_count": 2,
+                "matching_war_count": 0, "unavailable_reason": None,
+                "native_condition_observed": False,
+            },
+            "truce_inputs_v1": {"border_raid_pair": {
+                "status": "unavailable", "value": None,
+                "unavailable_reason": "stock_condition_reader_unavailable"}},
+        }
+        runner.require_storage_candidate(baseline)
+        for path, value in (
+            (("border_raid_storage_candidate_v1", "native_condition_observed"), True),
+            (("border_raid_storage_candidate_v1", "status"), "observed"),
+            (("border_raid_storage_candidate_v1", "matching_war_count"), 1),
+            (("truce_inputs_v1", "border_raid_pair", "status"), "observed"),
+        ):
+            with self.subTest(path=path):
+                changed = copy.deepcopy(baseline)
+                node = changed
+                for segment in path[:-1]:
+                    node = node[segment]
+                node[path[-1]] = value
+                with self.assertRaises(RuntimeError):
+                    runner.require_storage_candidate(changed)
+
     def test_partial_truce_candidate_is_exact_and_cannot_reuse_old_ready(self) -> None:
         try:
             runner.select_candidate(runner.TRUCE_CANDIDATE)

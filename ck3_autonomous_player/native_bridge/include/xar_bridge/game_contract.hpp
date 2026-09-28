@@ -936,6 +936,19 @@ struct DefenderDeJureExitTermsV1 {
   TruceInput attacker_flexible_truces_perk;
   TruceInput attacker_government_is_nomadic;
   TruceInput defender_government_is_nomadic;
+  // Full WarManager storage scan is only a structural candidate for the
+  // stock any_character_war border-raid predicate. It is never a formal
+  // truce input until that evaluator equivalence is independently proven.
+  struct BorderRaidStorageCandidate {
+    std::optional<bool> value;
+    std::int32_t storage_capacity = 0;
+    std::int32_t active_war_count = 0;
+    std::int32_t matching_war_count = 0;
+    std::string unavailable_reason = "full_war_storage_scan_unavailable_or_drift";
+    friend bool operator==(const BorderRaidStorageCandidate &,
+                           const BorderRaidStorageCandidate &) = default;
+  };
+  BorderRaidStorageCandidate border_raid_storage_candidate;
   std::string title_vassal_delta_unavailable_reason =
       "runtime_target_scope_and_de_jure_change_semantics_unproven";
   std::string signed_resource_delta_unavailable_reason =

@@ -5165,6 +5165,16 @@ if(BUILD_TESTING)
     COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_extract_bridge_observer_state_from_minidump.py
   )
+  add_executable(xar_ck3_h2743_war_storage_candidate_v1_test
+    src/h2743_war_storage_candidate_v1_test.cpp)
+  target_include_directories(xar_ck3_h2743_war_storage_candidate_v1_test
+    PRIVATE include)
+  if(MSVC)
+    target_compile_options(xar_ck3_h2743_war_storage_candidate_v1_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_h2743_war_storage_candidate_v1
+    COMMAND xar_ck3_h2743_war_storage_candidate_v1_test)
 
   add_test(
     NAME xar_ck3_native_bridge_suspended_injection

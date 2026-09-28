@@ -61,6 +61,36 @@ TRUCE_INPUT_KEYS = frozenset({
 })
 
 
+def _normalize_border_raid_storage_candidate(value: Any) -> dict[str, Any]:
+    keys = {
+        "schema", "status", "candidate", "storage_capacity",
+        "active_war_count", "matching_war_count", "unavailable_reason",
+        "native_condition_observed",
+    }
+    if not isinstance(value, dict) or set(value) != keys:
+        raise ValueError("malformed border-raid storage candidate")
+    if (value["schema"] != "xar.ck3.h2743-border-raid-storage-candidate.v1"
+            or value["native_condition_observed"] is not False):
+        raise ValueError("border-raid storage candidate claims stock condition")
+    capacity = _native_int(value["storage_capacity"])
+    active = _native_int(value["active_war_count"])
+    matches = _native_int(value["matching_war_count"])
+    if value["status"] == "unavailable":
+        if (value["candidate"] is not None or capacity != 0 or active != 0
+                or matches != 0 or not isinstance(value["unavailable_reason"], str)
+                or not value["unavailable_reason"]):
+            raise ValueError("unavailable storage scan was laundered")
+    elif value["status"] == "structural_candidate_only":
+        if (type(value["candidate"]) is not bool or not 0 < capacity <= 1_000_000
+                or not 1 <= active <= capacity or not 0 <= matches <= active
+                or value["candidate"] != (matches > 0)
+                or value["unavailable_reason"] is not None):
+            raise ValueError("inconsistent border-raid storage candidate")
+    else:
+        raise ValueError("invalid border-raid storage candidate status")
+    return dict(value)
+
+
 def _normalize_truce_inputs(value: Any) -> dict[str, Any]:
     if not isinstance(value, dict) or set(value) != TRUCE_INPUT_KEYS:
         raise ValueError("malformed partial truce input wire")
@@ -156,7 +186,10 @@ def normalize_defender_dejure_exit_terms_v1(
     expected_target_title_ids: list[int],
 ) -> dict[str, Any]:
     """Accept only a same-frame baseline with all material terms unavailable."""
-    if not isinstance(value, dict) or set(value) not in (KEYS, KEYS | {"truce_inputs_v1"}):
+    if not isinstance(value, dict) or set(value) not in (
+        KEYS, KEYS | {"truce_inputs_v1"},
+        KEYS | {"truce_inputs_v1", "border_raid_storage_candidate_v1"},
+    ):
         raise ValueError("defender de-jure baseline schema is malformed")
     if value["schema"] != SCHEMA:
         raise ValueError("defender de-jure baseline schema version differs")
@@ -259,6 +292,11 @@ def normalize_defender_dejure_exit_terms_v1(
         "truce_inputs_v1": (
             _normalize_truce_inputs(value["truce_inputs_v1"])
             if "truce_inputs_v1" in value else None
+        ),
+        "border_raid_storage_candidate_v1": (
+            _normalize_border_raid_storage_candidate(
+                value["border_raid_storage_candidate_v1"])
+            if "border_raid_storage_candidate_v1" in value else None
         ),
         "title_vassal_delta": None,
         "title_vassal_delta_unavailable_reason": UNAVAILABLE_REASONS["title_vassal_delta"],
