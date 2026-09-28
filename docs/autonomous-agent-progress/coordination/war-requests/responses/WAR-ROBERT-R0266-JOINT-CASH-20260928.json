@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_static_candidate_only",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T05:10:46Z",
+  "updated_at_utc": "2026-09-28T05:17:33Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -46,7 +46,8 @@
     "H2825 typed-null replay in test_m5_war_cash_resource_v1.py; no real same-frame war cash values inferred.",
     "Per-amount receipt provenance regression: six war-cash and twenty formal-collector tests pass under both normal Python and -O at master 922cb379b; tools/validate_python_only.py GREEN.",
     "2026-09-28 follow-up: exact-build MilitaryView getter/GUI/localization verifier passed under normal Python and -O against CK3 1.19.0.6. This is static source discovery only; no same-frame amount was read.",
-    "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained."
+    "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained.",
+    "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. This is no-launch only and has no matching local DLL/injector pair or same-frame cash amount."
   ],
   "followup_research": {
     "status": "static_source_candidate_only",
@@ -65,7 +66,16 @@
     "predicted_max_gold_layout_evidence": "0x11F2F12 constructs object at view+0x6C8 with 0xBC3D70; 0xBC3D7D zeroes EDX before its +0x78 QWORD is initialized to zero, +0x80 QWORD to 100000, and 0x11F7DD0 checks view+0x740 nonzero",
     "view_constructor_vtable_rvas": ["0x4135EE0", "0x4135FB0"],
     "value_breakdown_back_pointer": "Constructor stores view+0x6C8 at view+0x758; passive instance candidate check only",
-    "h2825_no_launch_plan": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md#h2825-原件的下一次只读采集准备尚未启动",
+    "h2825_no_launch_plan": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md#h2825-原件的无启动配对与下一次只读采集",
+    "h2825_no_launch_preflight": {
+      "status": "ready_without_game_launch",
+      "attempt": "D:/ck3-research-artifacts/war31-h2825-20260928/attempt-09-r0266-cash-no-launch/",
+      "derived_driver_sha256": "970B55BD00B84A1F35CADA929FF2A2D2B9BEBD5A734E9C06270516D1B9DCB0ED",
+      "rebind_receipt_sha256": "9FA71637242C1933E2315C216751676955362632A8C8E35C23F693D4E889C804",
+      "preflight_report_sha256": "1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10",
+      "dll_injector_pair_ready": false,
+      "same_frame_amount_observed": false
+    },
     "predicted_max_gold_refresh_rva": "0x11F3B10; adds breakdown rows through 0x11F3BFB, but no bridge invocation is authorized",
     "current_expense_getter_rva": "0x11F7D00",
     "current_expense_helper_rva": "0x11F7370",
