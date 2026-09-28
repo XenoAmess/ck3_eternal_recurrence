@@ -49,7 +49,11 @@ FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
 
 
 def _sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest().upper()
 
 
 def _spoken(value: str) -> str:
@@ -116,12 +120,13 @@ def _artifact(run, run_path: Path | None, artifact_id: str) -> Path:
 
 def _checked_source(run, run_path: Path, artifact_id: str, expected_sha: str,
                     expected_bytes: int) -> Path:
-    path = _artifact(run, run_path, artifact_id)
+    hits = [item for item in run.artifacts if item.artifact_id == artifact_id]
     if (not isinstance(expected_sha, str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", expected_sha)
             or type(expected_bytes) is not int or expected_bytes < 1
-            or path.stat().st_size != expected_bytes or _sha(path) != expected_sha.upper()):
+            or len(hits) != 1 or hits[0].bytes != expected_bytes
+            or hits[0].sha256.upper() != expected_sha.upper()):
         raise ValueError(f"Editorial source hash changed: {artifact_id}")
-    return path
+    return _artifact(run, run_path, artifact_id)
 
 
 def _replay_primary(source: dict) -> str:
@@ -139,9 +144,10 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
     receipt_path = _checked_source(run, run_path, row["reel_receipt_artifact_id"],
                                    row["reel_receipt_sha256"], row["reel_receipt_bytes"])
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    media_sha = row["reel_sha256"].upper()
     if receipt.get("schema") != "ck3-war-ai.episode02.chapter-reel.v1" or receipt.get("chapter_id") != row["id"]:
         raise ValueError(f"Wrong chapter reel receipt for {row['id']}")
-    if (receipt.get("media_sha256", "").upper() != _sha(media)
+    if (receipt.get("media_sha256", "").upper() != media_sha
             or receipt.get("media_bytes") != media.stat().st_size):
         raise ValueError(f"Reel receipt media identity mismatch for {row['id']}")
     if receipt.get("duration_seconds") != row["duration_seconds"]:
@@ -211,7 +217,7 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
             if (audit.get("schema") != "ck3-war-ai.episode02.card-label-audit.v1"
                     or audit.get("status") != "visible"
                     or audit.get("card_id") != card_id
-                    or audit.get("reel_sha256", "").upper() != _sha(media)
+                    or audit.get("reel_sha256", "").upper() != media_sha
                     or audit.get("label_text") != label
                     or replay not in label
                     or "历史研究" not in label

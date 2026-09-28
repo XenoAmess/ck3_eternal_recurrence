@@ -113,8 +113,15 @@ def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
                     raise ValueError("Synthetic smoke requires the generated non-game source marker")
             dimensions.append({
                 "chapter_id": row["id"], "attempt_id": span["attempt_id"],
+                "cold_load_save_artifact_id": span["cold_load_save_artifact_id"],
+                "cold_load_save_sha256": span["cold_load_save_sha256"],
+                "cold_load_save_bytes": span["cold_load_save_bytes"],
                 "raw_video_artifact_id": span["raw_video_artifact_id"],
                 "raw_video_sha256": span["raw_video_sha256"],
+                "raw_video_bytes": span["raw_video_bytes"],
+                "control_artifact_id": span["control_artifact_id"],
+                "control_sha256": span["control_sha256"],
+                "control_bytes": span["control_bytes"],
                 "source_width": span["raw_video_width"],
                 "source_height": span["raw_video_height"],
                 "reel_width": receipt["reel_width"], "reel_height": receipt["reel_height"],
@@ -208,9 +215,12 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
              selected_wheel_sha256: str, music_gain_db: float = -17.0,
              synthetic_smoke: bool = False) -> dict:
     manifest_path = manifest_path.resolve(strict=True)
+    if not attempt.is_absolute():
+        raise ValueError("Attempt directory must be an absolute path")
     attempt = attempt.resolve()
-    if not attempt.is_absolute() or attempt.exists():
-        raise ValueError("Attempt must be an absolute new directory")
+    repo_root = Path(__file__).resolve().parents[5]
+    if attempt.is_relative_to(repo_root) or attempt.exists():
+        raise ValueError("Attempt must be a new directory outside the project worktree")
     if not math.isfinite(music_gain_db) or not -120 <= music_gain_db <= 0:
         raise ValueError("Invalid fixed music gain")
     run, inputs, snapshot, music = _inputs(manifest_path)
@@ -233,6 +243,11 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
         "project_config_snapshot": {"path": str(snapshot), **_binding(snapshot)},
         "production_inputs": _binding(_artifact(manifest_path, run, "episode02-production-inputs-v1")),
         "source_capture_dimensions": source_dimensions,
+        "chapter_input_bindings": [{key: row[key] for key in (
+            "id", "audio_artifact_id", "audio_sha256", "audio_bytes",
+            "reel_artifact_id", "reel_sha256", "reel_bytes",
+            "reel_receipt_artifact_id", "reel_receipt_sha256", "reel_receipt_bytes")}
+            for row in inputs["chapters"]],
         "music": {"artifact_id": inputs["music_artifact_id"], "path": str(music), **_binding(music)},
         "toolchain": {"version": selected_version, "wheel_sha256": selected_wheel_sha256.upper(),
                       "interpreter": sys.executable},
@@ -273,9 +288,11 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
              "-xerror", "-i", str(final), "-f", "null", os.devnull], env=env)
     artifact_id = ("episode02-synthetic-technical-smoke" if synthetic_smoke
                    else "episode02-technical-review-candidate")
+    artifact_role = ("synthetic-technical-smoke-unapproved" if synthetic_smoke
+                     else "technical-review-candidate-unapproved")
     _command(attempt, "preserve-final", cli + ["preserve", "--run-manifest",
              str(manifest_path), "--artifact-id", artifact_id, "--collection", "derived",
-             "--role", "technical-review-candidate-unapproved", str(final)], env=env)
+             "--role", artifact_role, str(final)], env=env)
     receipt = {
         "schema": "ck3-war-ai.episode02.assembly-receipt.v1",
         "state": "SYNTHETIC_TECHNICAL_SMOKE" if synthetic_smoke else "TECHNICAL_CANDIDATE_UNREVIEWED",
@@ -290,6 +307,14 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
         "chapter_ids": list(CHAPTER_IDS), "chapter_count": len(probe["chapters"]),
         "output_video_width": 2560, "output_video_height": 1440,
         "source_capture_dimensions": source_dimensions,
+        "chapter_input_bindings": [{key: row[key] for key in (
+            "id", "audio_artifact_id", "audio_sha256", "audio_bytes",
+            "reel_artifact_id", "reel_sha256", "reel_bytes",
+            "reel_receipt_artifact_id", "reel_receipt_sha256", "reel_receipt_bytes")}
+            for row in inputs["chapters"]],
+        "synthetic_source_basis": (
+            "explicit synthetic production inputs and reel receipts; SYNTHETIC attempt IDs; "
+            "exact non-CK3 source marker per span" if synthetic_smoke else None),
         "full_decode": "passed", "technical_probe": str(attempt / "probes" / "final.json"),
         "toolchain_version": selected_version,
         "toolchain_wheel_sha256": selected_wheel_sha256.upper(),

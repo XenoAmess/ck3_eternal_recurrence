@@ -76,7 +76,11 @@ def main() -> None:
     parser.add_argument("--selected-version", required=True)
     parser.add_argument("--selected-wheel-sha256", required=True)
     args = parser.parse_args()
+    if not args.attempt_directory.is_absolute():
+        raise ValueError("Synthetic attempt must use an absolute external path")
     root = args.attempt_directory.resolve()
+    if root.is_relative_to(SRC.parents[3]):
+        raise ValueError("Synthetic attempt must be outside the project worktree")
     if root.exists():
         raise FileExistsError(f"Synthetic attempt already exists: {root}")
     project = args.project_directory.resolve(strict=True)
