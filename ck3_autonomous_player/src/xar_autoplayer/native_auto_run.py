@@ -4992,7 +4992,9 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
     if m5_joint is not None:
         compact["m5_joint_observation"] = m5_joint
     m5_wartime = _compact_m5_wartime_observation(
-        plan.get("m5_joint_wartime_observation")
+        plan.get("m5_joint_wartime_observation"),
+        selected_step=plan.get("selected_step"),
+        selected_step_present="selected_step" in plan,
     )
     if m5_wartime is not None:
         compact["m5_joint_wartime_observation"] = m5_wartime
@@ -5081,7 +5083,10 @@ def _compact_opening_lifestyle_observation(value: object) -> dict[str, object] |
     return result
 
 
-def _compact_m5_wartime_observation(value: object) -> dict[str, object] | None:
+def _compact_m5_wartime_observation(
+    value: object, *, selected_step: object,
+    selected_step_present: bool,
+) -> dict[str, object] | None:
     """Retain the bounded wartime comparison beside the selected war step."""
     if not isinstance(value, dict):
         return None
@@ -5118,6 +5123,60 @@ def _compact_m5_wartime_observation(value: object) -> dict[str, object] | None:
         result["missing"] = copy.deepcopy(missing[:16])
         result["missing_count"] = len(missing)
         result["missing_truncated"] = len(missing) > 16
+    reasons = value.get("cash_input_missing_reasons")
+    if isinstance(reasons, dict):
+        result["cash_input_missing_reasons"] = {
+            key: reasons[key] for key in (
+                "pending_war_cash_raw", "immediate_war_action_cost_raw",
+                "future_war_cost_upper_raw", "future_risk_budget_raw",
+                "policy_minimum_gold_reserve_raw", "horizon_days",
+                "future_bound_assumptions",
+            ) if isinstance(reasons.get(key), str)
+        }
+    fee = value.get("immediate_war_action_cost_observation")
+    if (selected_step_present and selected_step is None
+            and isinstance(fee, dict)
+            and fee.get("schema") == "xar.ck3.war-cash-no-selected-action.v1"
+            and fee.get("status") == "no_selected_action_fee_proven"
+            and fee.get("read_only") is True
+            and fee.get("selected_step") is None
+            and fee.get("formal_cash_receipt_eligible") is False
+            and fee.get("source_frame") == frame
+            and type(fee.get("war_id")) is int
+            and isinstance(war_ids, list) and war_ids == [fee["war_id"]]):
+        amount = fee.get("immediate_war_action_cost_raw")
+        if (isinstance(amount, dict)
+                and amount.get("raw") == 0
+                and amount.get("scale") == 100_000
+                and amount.get("source")
+                == "formal_selected_step_absent_same_frame_v1"
+                and amount.get("source_frame") == frame
+                and amount.get("war_id") == fee["war_id"]):
+            result["immediate_war_action_cost_observation"] = {
+                "schema": fee["schema"], "status": fee["status"],
+                "read_only": True,
+                "source_frame": copy.deepcopy(frame),
+                "war_id": fee["war_id"],
+                "selected_step": None,
+                "immediate_war_action_cost_raw": {
+                    "raw": 0, "scale": 100_000,
+                    "source": "formal_selected_step_absent_same_frame_v1",
+                    "source_frame": copy.deepcopy(frame),
+                    "war_id": fee["war_id"],
+                },
+                "formal_cash_receipt_eligible": False,
+            }
+    if (fee is not None
+            and "immediate_war_action_cost_observation" not in result
+            and isinstance(missing, list)
+            and "immediate_war_action_cost_raw" not in missing):
+        missing = [*missing, "immediate_war_action_cost_raw"]
+        result["missing"] = copy.deepcopy(missing[:16])
+        result["missing_count"] = len(missing)
+        result["missing_truncated"] = len(missing) > 16
+        result.setdefault("cash_input_missing_reasons", {})[
+            "immediate_war_action_cost_raw"
+        ] = "selected_step_receipt_binding_failed"
     return result
 
 

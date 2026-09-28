@@ -293,6 +293,30 @@ def plan_m5_wartime_query_only(
                 candidate = None
         else:
             status = "construction_observation_incomplete"
+    immediate_action_fee = None
+    immediate_action_fee_missing_reason = "selected_war_step_not_proven_absent"
+    if status == "incomplete_war_cash" and plan.get("selected_step") is None:
+        from .war_cash_no_selected_action_v1 import (
+            observe_no_selected_war_action_fee_v1,
+        )
+
+        try:
+            immediate_action_fee = observe_no_selected_war_action_fee_v1(
+                snapshot=snapshot, planned=result, war_id=war_ids[0],
+            )
+        except ValueError as error:
+            immediate_action_fee_missing_reason = str(error)
+        else:
+            missing.remove("immediate_war_action_cost_raw")
+            immediate_action_fee_missing_reason = None
+    missing_reasons = {
+        name: (
+            immediate_action_fee_missing_reason
+            if name == "immediate_war_action_cost_raw"
+            else f"{name}_source_not_observed_same_frame"
+        )
+        for name in missing if name in _MISSING_ACTIVE_WAR_CASH
+    }
     result["plan"] = {
         **deepcopy(dict(plan)),
         "m5_joint_wartime_observation": {
@@ -305,6 +329,8 @@ def plan_m5_wartime_query_only(
             "war_ids": war_ids,
             "candidate": candidate,
             "missing": missing,
+            "cash_input_missing_reasons": missing_reasons,
+            "immediate_war_action_cost_observation": immediate_action_fee,
         },
     }
     return result

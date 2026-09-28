@@ -15,6 +15,7 @@ from war_cash_topbar_passive_layout import (
 
 
 TOPBAR_ADDRESS = 0x100000
+IMAGE_BASE = 0x140000000
 ROW_ADDRESS = 0x200000
 NAME_ADDRESS = 0x300000
 MILITARY_KEY = b"BREAKDOWN_ARMY_MAINTENANCE"
@@ -22,6 +23,8 @@ MILITARY_KEY = b"BREAKDOWN_ARMY_MAINTENANCE"
 
 def fixture() -> dict[str, object]:
     topbar = bytearray(0xF90)
+    struct.pack_into("<Q", topbar, 0, IMAGE_BASE + 0x40E6F68)
+    struct.pack_into("<Q", topbar, 0x10, IMAGE_BASE + 0x40E7038)
     struct.pack_into("<QII", topbar, 0xAD8, ROW_ADDRESS, 2, 2)
     struct.pack_into("<q", topbar, 0xB50, -5_000_000)
     struct.pack_into("<Q", topbar, 0xB58, 100_000)
@@ -36,6 +39,7 @@ def fixture() -> dict[str, object]:
     struct.pack_into("<QQ", rows, 0x90 + 0x28, len(other), 15)
     struct.pack_into("<qQ", rows, 0x90 + 0x78, -2_500_000, 100_000)
     return {
+        "image_base": IMAGE_BASE,
         "topbar_address": TOPBAR_ADDRESS,
         "topbar_bytes": bytes(topbar),
         "row_array_address": ROW_ADDRESS,
@@ -52,6 +56,7 @@ class PassiveTopbarLayoutTests(unittest.TestCase):
         self.assertEqual(result["rows"][0]["name_key"],
                          "BREAKDOWN_ARMY_MAINTENANCE")
         self.assertEqual(result["expense_total_signed_raw_candidate"], -5_000_000)
+        self.assertTrue(result["double_vtable_fingerprint_matches"])
         self.assertFalse(result["unique_live_topbar_instance_proven"])
         self.assertFalse(result["formal_cash_eligible"])
 
@@ -66,6 +71,17 @@ class PassiveTopbarLayoutTests(unittest.TestCase):
             candidate["topbar_bytes"] = bytes(topbar)
             with self.subTest(offset=offset), self.assertRaisesRegex(
                 ValueError, reason,
+            ):
+                inspect_supplied_topbar_expense_bytes(**candidate)
+
+    def test_wrong_type_vtables_are_rejected_before_cash_rows(self) -> None:
+        for offset in (0, 0x10):
+            candidate = fixture()
+            topbar = bytearray(candidate["topbar_bytes"])
+            struct.pack_into("<Q", topbar, offset, IMAGE_BASE + 0x4135EE0)
+            candidate["topbar_bytes"] = bytes(topbar)
+            with self.subTest(offset=offset), self.assertRaisesRegex(
+                ValueError, "double vtable",
             ):
                 inspect_supplied_topbar_expense_bytes(**candidate)
 

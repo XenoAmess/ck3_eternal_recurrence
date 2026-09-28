@@ -12,6 +12,8 @@ import struct
 
 
 TOPBAR_READ_SIZE = 0xF90
+TOPBAR_PRIMARY_VTABLE_RVA = 0x40E6F68
+TOPBAR_SECONDARY_VTABLE_RVA = 0x40E7038
 ROW_STRIDE = 0x90
 GOLD_SCALE = 100_000
 MAX_DIAGNOSTIC_ROWS = 128
@@ -67,12 +69,14 @@ def _name_key(row: bytes, name_payloads: Mapping[int, bytes]) -> str:
 
 
 def inspect_supplied_topbar_expense_bytes(
-    *, topbar_address: int, topbar_bytes: bytes,
+    *, image_base: int, topbar_address: int, topbar_bytes: bytes,
     row_array_address: int, row_bytes: bytes,
     name_payloads: Mapping[int, bytes],
 ) -> dict[str, object]:
     """Check layout of one externally supplied candidate, never live truth."""
-    if (type(topbar_address) is not int or topbar_address < 0x10000
+    if (type(image_base) is not int or image_base < 0x10000
+            or image_base % 0x10000
+            or type(topbar_address) is not int or topbar_address < 0x10000
             or not isinstance(topbar_bytes, bytes)
             or len(topbar_bytes) != TOPBAR_READ_SIZE
             or type(row_array_address) is not int
@@ -80,6 +84,10 @@ def inspect_supplied_topbar_expense_bytes(
             or not isinstance(row_bytes, bytes)
             or not isinstance(name_payloads, Mapping)):
         raise ValueError("exact supplied topbar and row bytes required")
+    if (_u64(topbar_bytes, 0) != image_base + TOPBAR_PRIMARY_VTABLE_RVA
+            or _u64(topbar_bytes, 0x10)
+            != image_base + TOPBAR_SECONDARY_VTABLE_RVA):
+        raise ValueError("CHudTopBar double vtable fingerprint does not match")
     if _u64(topbar_bytes, 0xB68) != topbar_address + 0xAD8:
         raise ValueError("expense ValueBreakdown back-pointer does not match")
     if _u64(topbar_bytes, 0xB58) != GOLD_SCALE:
@@ -107,6 +115,8 @@ def inspect_supplied_topbar_expense_bytes(
         "schema": "xar.ck3.war-cash-topbar-passive-layout-diagnostic.v1",
         "status": "structurally_matching_supplied_bytes_only",
         "topbar_address": hex(topbar_address),
+        "image_base": hex(image_base),
+        "double_vtable_fingerprint_matches": True,
         "topbar_sha256": hashlib.sha256(topbar_bytes).hexdigest().upper(),
         "row_array_address": hex(row_array_address),
         "row_array_sha256": hashlib.sha256(row_bytes).hexdigest().upper(),

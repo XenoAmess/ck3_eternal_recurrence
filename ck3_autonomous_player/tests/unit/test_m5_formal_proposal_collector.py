@@ -863,9 +863,56 @@ class M5WartimeObservationTests(unittest.TestCase):
         self.assertEqual(observed["war_ids"], [16777231])
         self.assertIn("future_war_cost_upper_raw", observed["missing"])
         self.assertIn("pending_war_cash_raw", observed["missing"])
+        self.assertIsNone(observed["immediate_war_action_cost_observation"])
         self.assertFalse(observed["formal_action_ready"])
         self.assertEqual(observed["candidate"]["stock_gold_cost_raw"], 18_000_000)
         self.assertNotIn("m5_joint_wartime_observation", original["plan"])
+
+    def test_explicit_same_frame_no_war_step_produces_only_immediate_zero(self):
+        planned = self._plan(self._construction())
+        planned["snapshot_id"] = _FRAME["snapshot_id"]
+        planned["plan"]["selected_step"] = None
+        result = plan_m5_wartime_query_only(
+            object(), planned, snapshot=_snapshot(), history=[],
+            available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertEqual(observed["status"], "incomplete_war_cash")
+        self.assertNotIn("immediate_war_action_cost_raw", observed["missing"])
+        self.assertIn("pending_war_cash_raw", observed["missing"])
+        self.assertIn("future_war_cost_upper_raw", observed["missing"])
+        fee = observed["immediate_war_action_cost_observation"]
+        self.assertEqual(fee["immediate_war_action_cost_raw"]["raw"], 0)
+        self.assertEqual(fee["immediate_war_action_cost_raw"]["source_frame"], _FRAME)
+        self.assertFalse(fee["formal_cash_receipt_eligible"])
+        compact = _compact_plan(result["plan"])["m5_joint_wartime_observation"]
+        self.assertEqual(compact["immediate_war_action_cost_observation"]
+                         ["immediate_war_action_cost_raw"]["raw"], 0)
+        self.assertEqual(compact["missing_count"], 6)
+
+        forged = {**result["plan"], "selected_step": "move-army-71-to-22"}
+        self.assertNotIn(
+            "immediate_war_action_cost_observation",
+            _compact_plan(forged)["m5_joint_wartime_observation"],
+        )
+        self.assertIn(
+            "immediate_war_action_cost_raw",
+            _compact_plan(forged)["m5_joint_wartime_observation"]["missing"],
+        )
+
+    def test_stale_no_step_plan_does_not_publish_immediate_zero(self):
+        planned = self._plan(self._construction())
+        planned["snapshot_id"] = "native:older"
+        planned["plan"]["selected_step"] = None
+        result = plan_m5_wartime_query_only(
+            object(), planned, snapshot=_snapshot(), history=[],
+            available_steps=set(),
+        )
+        observed = result["plan"]["m5_joint_wartime_observation"]
+        self.assertIn("immediate_war_action_cost_raw", observed["missing"])
+        self.assertIsNone(observed["immediate_war_action_cost_observation"])
+        self.assertIn("crossed", observed["cash_input_missing_reasons"]
+                      ["immediate_war_action_cost_raw"])
 
     def test_wartime_comparison_survives_bounded_formal_turn_report(self):
         result = plan_m5_wartime_query_only(

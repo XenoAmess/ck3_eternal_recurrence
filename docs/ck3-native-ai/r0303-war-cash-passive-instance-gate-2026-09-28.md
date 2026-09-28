@@ -22,3 +22,13 @@
 4. **缺所选战争动作绑定。**上船缓存绑定的是可变预测图标，不是 `WarID=16777231` 的正式 action receipt；无同帧 CUnitID/route 比对，不得填即时现金金额。
 
 上述任一缺口未闭合时，静态类型校验器和被动布局解析器只能产生诊断信息，不能批准战争现金字段。下一步需在录制空档作有界 manager 指针/对象构造链静态核查；随后由持有实机独占者用当前配对 DLL/injector 在受管暂停帧完成纯读采样。测试任何 live producer 前，先确定唯一 owner 指针与只读、固定上限的内存访问策略。
+
+## Supplied-byte diagnostic gate (2026-09-28 follow-up)
+
+`war_cash_topbar_passive_layout.py` now requires an explicit, 64 KiB aligned
+`image_base` and checks both `CHudTopBar` vtable pointers at object `+0` and
+`+0x10` against the verified exact-build RVAs `0x40E6F68` and `0x40E7038`
+before it decodes any expense row. A matching fingerprint only narrows an
+externally supplied byte candidate. It does not locate the live GUI owner,
+prove cache freshness against the native revision, or authenticate a Robert
+war cash amount. The diagnostic still emits `formal_cash_eligible=false`.
