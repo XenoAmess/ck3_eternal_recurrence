@@ -1,0 +1,22 @@
+{
+  "schema": "xar.war.r0284-h968-stage3-transfer/v1",
+  "files": {
+    "FOCUSED-EXCERPT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE3-20260928\\FOCUSED-EXCERPT.json",
+      "size": 6297,
+      "sha256": "39D4E9D856CB5467A4E43D9C7AA7ECFDCF15E01DC0160C068308C6820A20B9F4"
+    },
+    "RESULT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE3-20260928\\RESULT.json",
+      "size": 2612,
+      "sha256": "816BD9A51B1AD6F296961C5116F111ECBF6BE5C96EC274C98792A8F30B2248E0"
+    },
+    "NEXT-BOUNDED-PROPOSAL.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE3-20260928\\NEXT-BOUNDED-PROPOSAL.json",
+      "size": 2648,
+      "sha256": "C4A85122CB3C84E29439846D95B1096E6025D4FFD96EBC296E08501F4629DEB2"
+    }
+  },
+  "large_pair_transfer": "The exact h968 save/driver remain in source assets; no large files uploaded to OneDrive.",
+  "append_only": true
+}

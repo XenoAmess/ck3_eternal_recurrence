@@ -1,0 +1,35 @@
+{
+  "schema": "xar.war.r0284-h968-next-bounded-proposal/v1",
+  "status": "receiver_boundary_ack_pending_no_candidate_prepared_no_game_launch",
+  "evidence": {
+    "R0293_report_sha256": "63BA8CD5F62829BBAF23A8205B99E0D2BEC8714FA77DCEB46081F594F874FF77",
+    "R0295_report_sha256": "AAAB7677AC7AB0AFAB4F2EAC784DAA05660DD12A6319EFAF09074EFE71280292",
+    "identical_selected_steps": [
+      "private-query-player-construction-receipt-v1",
+      "query-observed-first-heir-marriage-result-v1-private",
+      "query-observed-first-heir-marriage-alliance-result-v1-private",
+      "query-war-termination-options-16777237",
+      "query-army-strengths-v1",
+      "preview-move-army-16777450-to-2640",
+      "query-route-contact-horizon-v1-16777450-to-2640-h-1-16777537",
+      "query-combat-simulation-inputs-v3-2640-2634-a-1-16777450-d-1-16777537"
+    ],
+    "both_end_after_v3_query": true
+  },
+  "minimum_requested_change": "From the exact R0295 h968 save/driver, allow at most nine planner turns within one new PID instead of eight. The first eight turns may repeat the per-PID recovery and war read prefix; turn nine is the first chance to observe the next merged decision. This is a bound change only, not a war model or input change.",
+  "proposed_bounds": {
+    "planner_turns_max": 9,
+    "typed_move_count_max": 1,
+    "date_advance_allowed_raw": 0,
+    "wall_seconds_max": 1200,
+    "automatic_following_day_run": false
+  },
+  "private_stop": "Extend the existing task-local before_submit wrapper's turn_count upper bound from 8 to 9. Preserve exact merged move gate (WarID16777237, ArmyID16777450, target2640, future_contact_authorized=false, contact_recheck_required_before_each_day=true). Stop after the formal first typed move and independent native postcondition. Any other action or date advance remains RED before submission.",
+  "qualification_before_run": "After receiver approval, freeze R0295 h968 save/driver/sidecars; fetch latest master, check affected strategy and runner bytes, run official rebind/no-launch and local operator preflight, then hand a pinned job to the sole local operator.",
+  "outcomes": "Move submission requires action receipt and independent route after-state. A query-only ninth turn remains incomplete and must be reported; no move is assumed.",
+  "source_after_save_sha256": "4CF887AA99C5479F552595112D19886B12E1F089F87F12B1D37D105619ABEEFA",
+  "source_after_driver_sha256": "8DB5FC8CD204B4A04A550461CD7C0B62BC3A15F9B3D89218F76868A8853BF347",
+  "receiver_ack_required_for_new_nine_turn_boundary": true,
+  "h90_derivative_only": true,
+  "formal_robert_date_credit": 0
+}

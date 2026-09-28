@@ -1,0 +1,221 @@
+{
+  "schema": "xar.war.r0284-h951-stage2-focused/v1",
+  "round": "R0293",
+  "binding": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53157816,
+    "episode_run_id": "native-29829-2bc2d599f7f9"
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "step": "private-query-player-construction-receipt-v1",
+      "class": "gameplay",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 2,
+      "step": "query-observed-first-heir-marriage-result-v1-private",
+      "class": "query",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 3,
+      "step": "query-observed-first-heir-marriage-alliance-result-v1-private",
+      "class": "query",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 4,
+      "step": "query-war-termination-options-16777237",
+      "class": "query",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 5,
+      "step": "query-army-strengths-v1",
+      "class": "query",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 6,
+      "step": "preview-move-army-16777450-to-2640",
+      "class": "gameplay",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 7,
+      "step": "query-route-contact-horizon-v1-16777450-to-2640-h-1-16777537",
+      "class": "query",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    },
+    {
+      "turn": 8,
+      "step": "query-combat-simulation-inputs-v3-2640-2634-a-1-16777450-d-1-16777537",
+      "class": "query",
+      "status": "executed",
+      "before_date_raw": 53157816,
+      "after_date_raw": 53157816
+    }
+  ],
+  "preview": {
+    "status": "available",
+    "army_id": 16777450,
+    "origin_province_id": 2634,
+    "target_province_id": 2640,
+    "route_province_ids": [
+      2640
+    ],
+    "previewed_date_raw": 53157816
+  },
+  "route_contact_horizon": {
+    "status": "available",
+    "date_raw": 53157816,
+    "snapshot_revision": 3,
+    "subject_army_id": 16777450,
+    "target_province_id": 2640,
+    "hostile_army_ids": [
+      16777537
+    ],
+    "subject_route": {
+      "timeline_observable": true,
+      "army_id": 16777450,
+      "current_province_id": 2634,
+      "effective_origin_province_id": 2634,
+      "route_province_ids": [
+        2640
+      ],
+      "arrival_date_raws": [
+        53157960
+      ]
+    },
+    "hostile_routes": [
+      {
+        "timeline_observable": true,
+        "army_id": 16777537,
+        "current_province_id": 2640,
+        "effective_origin_province_id": 2640,
+        "route_province_ids": [],
+        "arrival_date_raws": []
+      }
+    ],
+    "horizon_start_date_raw": 53157816,
+    "horizon_end_date_raw": 53157840,
+    "one_day_contact_free": true,
+    "conflicts": []
+  },
+  "v3": {
+    "schema_version": 3,
+    "contract_stage": "production_exact_132_refs",
+    "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+    "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+    "scenario": {
+      "kind": "explicit_hypothetical_contact",
+      "attacker_entry_province_id": 2634,
+      "attacker_army_ids": [
+        16777450
+      ],
+      "defender_army_ids": [
+        16777537
+      ],
+      "attacker_side": "player_or_allied",
+      "defender_side": "enemy",
+      "attacker_position_policy": "fixed_at_entry_hypothetical",
+      "defender_position_policy": "fixed_at_target_hypothetical",
+      "defender_insertion_order_policy": "explicit_request_order_hypothetical",
+      "actual_route_dependency": false
+    },
+    "army_summary": [
+      {
+        "army_id": 16777450,
+        "scope_role": "player",
+        "current_province_id": 2634,
+        "regiment_count": 35
+      },
+      {
+        "army_id": 16777537,
+        "scope_role": "active_war_enemy",
+        "current_province_id": 2640,
+        "regiment_count": 5
+      }
+    ],
+    "state_ref_coverage": {
+      "manifest_domain_counts": {
+        "character_relation": 79,
+        "army": 13,
+        "side": 10,
+        "global": 3,
+        "derived": 27
+      },
+      "abi_level_counts": {
+        "native_leaf_exact": 81,
+        "offline_exact": 51,
+        "determinable": 132,
+        "missing": 0
+      },
+      "path_set_sha256": {
+        "native_leaf_exact": "E18C26667EF5F896564B21766E145A5B63C73ACDB5DD8B21ED25853CA793119E",
+        "offline_exact": "368924B26875C74EEA9A631CAA528086829851233A48860671140E7842FF5CA6",
+        "required": "2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0"
+      },
+      "native_payload_policy": "81_exact_native_leaves_plus_51_offline_exact"
+    },
+    "completeness": {
+      "observation_slice": "precontact-phase-event-inputs-v3",
+      "base_input_observation_ready": true,
+      "phase_raw_observation_ready": true,
+      "offline_exact_state_refs_ready": true,
+      "phase_event_inputs_ready": true,
+      "input_observation_ready": true,
+      "monte_carlo_ready": false,
+      "transition_fidelity_gate": false,
+      "planner_usable": false,
+      "active_attack_allowed": false,
+      "phase_event_manifest_fidelity": {
+        "loaded_playset_verified": false,
+        "ast_evaluator_ready": false,
+        "original_trace_ready": false,
+        "fidelity_gate": false
+      },
+      "missing_observation_domains": [],
+      "missing_fidelity_gates": [
+        "loaded_playset_verified",
+        "ast_evaluator_ready",
+        "original_trace_ready"
+      ],
+      "missing_required_domains": [
+        "damage_to_casualty_allocation",
+        "pursuit_transition",
+        "battle_end_and_retreat_transition",
+        "phase_event_rng_and_effects"
+      ]
+    }
+  },
+  "private_stop": {
+    "schema": "xar.war.r0284-private-semantic-stop/v1",
+    "source_commit": "ae36b14d861b2ef8ec68265bdebe2d32a7e0c7ff",
+    "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+    "selected_move_count": 0,
+    "selected_move_snapshot_id": null,
+    "selected_move_revision": null,
+    "operator_stop_event_set": false,
+    "move_poststate": "read_formal_turn_result_and_after_snapshot",
+    "date_advance_after_move": "forbidden_by_stop_before_next_turn"
+  }
+}
