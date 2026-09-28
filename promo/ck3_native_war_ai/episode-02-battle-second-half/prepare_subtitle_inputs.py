@@ -20,6 +20,8 @@ from war_ai_promo.episode_two_second_half import (  # noqa: E402
 from war_ai_promo.episode_two_subtitle_contract import (  # noqa: E402
     A05_SCOPE, compact, derive_boundaries, identity, require_audio_coverage,
 )
+A01_SCOPE = "current-a01-private-join-edit-proxy"
+A05_PURSUIT_SCOPE = "current-a05-paired-pursuit-edit-proxy"
 
 
 def checked(path: Path, expected: dict, label: str) -> Path:
@@ -62,17 +64,30 @@ def source_group(render_path: Path, native_path: Path, group: str,
     if any(selected_source[chapter_id] != narration[chapter_id] for chapter_id in chapters):
         raise ValueError(f"{group} TTS source draft changed current selected narration")
     a05 = any(chapter_id in CHAPTER_IDS[4:] for chapter_id in chapters)
+    a01 = "reinforcement" in chapters
+    a05_pursuit = "pursuit" in chapters
     if not chapters or not set(chapters).issubset(set(selected)):
         raise ValueError(f"{group} used chapters are not a subset of the original render selection")
     if a05 and (chapters != CHAPTER_IDS[4:] or selected != CHAPTER_IDS[4:]):
         raise ValueError("Current A05 terminal/closing must use one exact two-chapter TTS run")
+    if a01 and (chapters != ("reinforcement",) or selected != ("reinforcement",) or a05):
+        raise ValueError("Current A01 reinforcement must use one exact chapter TTS run")
+    if a05_pursuit and (chapters != ("pursuit",) or selected != ("pursuit",)
+                        or a05 or a01):
+        raise ValueError("Current A05 pursuit must use one exact chapter TTS run")
     if not a05 and any(chapter_id in CHAPTER_IDS[4:] for chapter_id in selected):
         raise ValueError("Opening/middle TTS source may not select terminal chapters")
     if (a05 and (render.get("usage_scope") != A05_SCOPE
                  or render.get("a05_writer_facts_checked") is not True
                  or render.get("new_e2_09_live_verified") is not False)):
         raise ValueError("Terminal/closing TTS must bind the current A05 facts without claiming media review")
-    if not a05 and render.get("usage_scope") not in (None, "source-bound-edit-proxy"):
+    if a01 and (render.get("usage_scope") != A01_SCOPE
+                or render.get("a01_join_facts_checked") is not True):
+        raise ValueError("Reinforcement TTS must bind current A01 facts")
+    if a05_pursuit and (render.get("usage_scope") != A05_PURSUIT_SCOPE
+                        or render.get("a05_pursuit_facts_checked") is not True):
+        raise ValueError("Pursuit TTS must bind current A05 native/parity facts")
+    if not a05 and not a01 and not a05_pursuit and render.get("usage_scope") not in (None, "source-bound-edit-proxy"):
         raise ValueError("Opening/middle TTS has unexpected usage scope")
     native_id = f"episode02-tts-native-{group}"
     render_id = f"episode02-tts-render-{group}"
@@ -81,7 +96,8 @@ def source_group(render_path: Path, native_path: Path, group: str,
         {"artifact_id": render_id, "source": str(render_path), **identity(render_path), "role": "tts-render-manifest"},
     ]
     facts_id = None
-    facts_path = script.parent / "cards" / "e2-09-a05-writer-facts-20260928-v2.json"
+    a01_facts_id = None
+    facts_path = script.parent / "cards" / "e2-09-a05-writer-facts-20260928-v3.json"
     if a05:
         facts_path = facts_path.resolve(strict=True)
         facts_identity = identity(facts_path)
@@ -95,7 +111,7 @@ def source_group(render_path: Path, native_path: Path, group: str,
                 or preserved["bytes"] != facts_identity["bytes"]):
             raise ValueError("A05 TTS run lacks its exact checked-in writer fact receipt")
         facts = json.loads(facts_path.read_text(encoding="utf-8"))
-        if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v2"
+        if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v3"
                 or facts.get("usage_scope") != A05_SCOPE
                 or facts.get("run_identity", {}).get("run") !=
                 "episode02-terminal-pair-20260928-a05-live"):
@@ -103,6 +119,51 @@ def source_group(render_path: Path, native_path: Path, group: str,
         facts_id = "episode02-tts-a05-facts"
         plan.append({"artifact_id": facts_id, "source": str(facts_path),
                      **facts_identity, "role": "a05-writer-facts"})
+    a01_facts_path = script.parent / "cards" / "e2-06-07-a01-join-facts-20260928-v2.json"
+    if a01:
+        a01_facts_path = a01_facts_path.resolve(strict=True)
+        facts_identity = identity(a01_facts_path)
+        fact_source = render.get("a01_fact_evidence")
+        preserved = source_artifacts.get("a01-facts")
+        if (not isinstance(fact_source, dict)
+                or fact_source.get("sha256", "").upper() != facts_identity["sha256"]
+                or fact_source.get("bytes") != facts_identity["bytes"]
+                or preserved is None
+                or preserved["sha256"].upper() != facts_identity["sha256"]
+                or preserved["bytes"] != facts_identity["bytes"]):
+            raise ValueError("A01 TTS run lacks exact checked-in join fact receipt")
+        facts = json.loads(a01_facts_path.read_text(encoding="utf-8"))
+        if (facts.get("schema") != "xar.war-ai.episode02.a01-join-card-facts.v2"
+                or facts.get("usage_scope") != A01_SCOPE
+                or facts.get("run_identity", {}).get("run") !=
+                "episode02-e2-06-d11-live-20260928-a01"):
+            raise ValueError("A01 fact receipt source scope changed")
+        a01_facts_id = "episode02-tts-a01-facts"
+        plan.append({"artifact_id": a01_facts_id, "source": str(a01_facts_path),
+                     **facts_identity, "role": "a01-private-join-facts"})
+    a05_pursuit_facts_id = None
+    a05_pursuit_facts_path = script.parent / "cards" / "e2-02-03-a05-pursuit-facts-20260928.json"
+    if a05_pursuit:
+        a05_pursuit_facts_path = a05_pursuit_facts_path.resolve(strict=True)
+        facts_identity = identity(a05_pursuit_facts_path)
+        fact_source = render.get("a05_pursuit_fact_evidence")
+        preserved = source_artifacts.get("a05-pursuit-facts")
+        if (not isinstance(fact_source, dict)
+                or fact_source.get("sha256", "").upper() != facts_identity["sha256"]
+                or fact_source.get("bytes") != facts_identity["bytes"]
+                or preserved is None
+                or preserved["sha256"].upper() != facts_identity["sha256"]
+                or preserved["bytes"] != facts_identity["bytes"]):
+            raise ValueError("A05 pursuit TTS run lacks exact checked-in fact receipt")
+        facts = json.loads(a05_pursuit_facts_path.read_text(encoding="utf-8"))
+        if (facts.get("schema") != "xar.war-ai.episode02.a05-pursuit-card-facts.v1"
+                or facts.get("usage_scope") != A05_PURSUIT_SCOPE
+                or facts.get("run_identity", {}).get("run") !=
+                "episode02-terminal-pair-20260928-a05-live"):
+            raise ValueError("A05 pursuit receipt source scope changed")
+        a05_pursuit_facts_id = "episode02-tts-a05-pursuit-facts"
+        plan.append({"artifact_id": a05_pursuit_facts_id, "source": str(a05_pursuit_facts_path),
+                     **facts_identity, "role": "a05-native-pursuit-facts"})
     source_draft_id = None
     if identity(source_draft) != identity(script):
         source_draft_id = f"episode02-tts-source-draft-{group}"
@@ -159,7 +220,8 @@ def source_group(render_path: Path, native_path: Path, group: str,
             "sentence_boundaries": boundaries,
             "tts_source": {
                 "run_id": native["run"]["id"],
-                "usage_scope": A05_SCOPE if a05 else "general-edit-proxy",
+                "usage_scope": (A05_SCOPE if a05 else A01_SCOPE if a01 else
+                                A05_PURSUIT_SCOPE if a05_pursuit else "general-edit-proxy"),
                 "run_selected_chapters": list(selected),
                 "native_run_artifact_id": native_id,
                 "native_run_sha256": identity(native_path)["sha256"],
@@ -177,6 +239,14 @@ def source_group(render_path: Path, native_path: Path, group: str,
                     "a05_facts_sha256": identity(facts_path)["sha256"],
                     "a05_facts_bytes": facts_path.stat().st_size}
                    if facts_id else {}),
+                **({"a01_facts_artifact_id": a01_facts_id,
+                    "a01_facts_sha256": identity(a01_facts_path)["sha256"],
+                    "a01_facts_bytes": a01_facts_path.stat().st_size}
+                   if a01_facts_id else {}),
+                **({"a05_pursuit_facts_artifact_id": a05_pursuit_facts_id,
+                    "a05_pursuit_facts_sha256": identity(a05_pursuit_facts_path)["sha256"],
+                    "a05_pursuit_facts_bytes": a05_pursuit_facts_path.stat().st_size}
+                   if a05_pursuit_facts_id else {}),
             },
         })
     return output, plan

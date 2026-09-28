@@ -88,7 +88,11 @@ def _subtitle_sources(declaration: dict, script: Path, config: Path) -> tuple[li
     source_root = source_root.resolve(strict=True)
     preflight_root = Path(source_root.anchor)
     a05_fact_source = (Path(declaration["card_index"]["source"]).resolve(strict=True).parent /
-                       "e2-09-a05-writer-facts-20260928-v2.json").resolve(strict=True)
+                       "e2-09-a05-writer-facts-20260928-v3.json").resolve(strict=True)
+    a01_fact_source = (Path(declaration["card_index"]["source"]).resolve(strict=True).parent /
+                       "e2-06-07-a01-join-facts-20260928-v2.json").resolve(strict=True)
+    a05_pursuit_fact_source = (Path(declaration["card_index"]["source"]).resolve(strict=True).parent /
+                               "e2-02-03-a05-pursuit-facts-20260928.json").resolve(strict=True)
     source_rows = []
     namespace = []
     for row in plan.get("artifacts", []):
@@ -97,6 +101,12 @@ def _subtitle_sources(declaration: dict, script: Path, config: Path) -> tuple[li
         if artifact_id == "episode02-tts-a05-facts":
             if path != a05_fact_source or row.get("role") != "a05-writer-facts":
                 raise ValueError("A05 TTS facts must use the indexed checked-in receipt")
+        elif artifact_id == "episode02-tts-a01-facts":
+            if path != a01_fact_source or row.get("role") != "a01-private-join-facts":
+                raise ValueError("A01 TTS facts must use the indexed checked-in receipt")
+        elif artifact_id == "episode02-tts-a05-pursuit-facts":
+            if path != a05_pursuit_fact_source or row.get("role") != "a05-native-pursuit-facts":
+                raise ValueError("A05 pursuit TTS facts must use the indexed checked-in receipt")
         elif not path.is_relative_to(source_root):
             raise ValueError(f"TTS source escapes explicit source root: {artifact_id}")
         if not path.is_relative_to(preflight_root):
@@ -114,6 +124,10 @@ def _subtitle_sources(declaration: dict, script: Path, config: Path) -> tuple[li
             expected_tts_ids.add(source["source_draft_artifact_id"])
         if source.get("a05_facts_artifact_id"):
             expected_tts_ids.add(source["a05_facts_artifact_id"])
+        if source.get("a01_facts_artifact_id"):
+            expected_tts_ids.add(source["a01_facts_artifact_id"])
+        if source.get("a05_pursuit_facts_artifact_id"):
+            expected_tts_ids.add(source["a05_pursuit_facts_artifact_id"])
         for paragraph in source["paragraphs"]:
             expected_tts_ids.update((paragraph["request_artifact_id"],
                                      paragraph["events_artifact_id"]))

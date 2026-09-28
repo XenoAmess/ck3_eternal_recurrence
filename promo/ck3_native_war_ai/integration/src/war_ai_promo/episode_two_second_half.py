@@ -94,6 +94,9 @@ HISTORICAL_085_CARD_SHA = {
     "E2-06": "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5",
     "E2-07": "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527",
 }
+A01_TRACE_FINISH_SHA = "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5"
+A01_COLD_LOAD_SHA = "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+A01_POSTSTATE_SHA = "23A38AFB71F660695793CE04E3CF433E6BF0A93A7C590A6CD41D502EB083337A"
 HEADING = re.compile(r"^## \d\d:\d\d[–-]\d\d:\d\d .+$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
 
@@ -173,6 +176,11 @@ def _card_replays(data: dict) -> dict[str, str]:
         row = next(row for row in rows if row["id"] == card_id)
         if row.get("artifact") != card_filename(card_id):
             raise ValueError(f"Formal {card_id} card lacks its current-run SVG identity")
+    a01_source = data["replays"]["A01"]
+    if (a01_source.get("primary_receipt_sha256", "").upper() != A01_TRACE_FINISH_SHA
+            or a01_source.get("source_save_sha256", "").upper() != A01_COLD_LOAD_SHA
+            or a01_source.get("source_post_snapshot_sha256", "").upper() != A01_POSTSTATE_SHA):
+        raise ValueError("Formal A01 card must bind its exact trace, cold load and paused poststate")
     a05_source = data["replays"]["A05"]
     if (a05_source.get("source_terminal_sha256", "").upper() != A05_WRITER_SHA
             or a05_source.get("source_save_sha256", "").upper() != A05_COLD_LOAD_SHA
@@ -415,9 +423,14 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
             or chapters[0].get("speech_seconds") != row["speech_duration_seconds"]):
         raise ValueError(f"{chapter_id} source TTS chapter audio/duration changed")
     a05 = chapter_id in ("terminal", "closing")
-    scope = A05_SCOPE if a05 else "general-edit-proxy"
+    a01 = chapter_id == "reinforcement"
+    a05_pursuit = chapter_id == "pursuit"
+    scope = (A05_SCOPE if a05 else "current-a01-private-join-edit-proxy" if a01 else
+             "current-a05-paired-pursuit-edit-proxy" if a05_pursuit else "general-edit-proxy")
     selected = tuple(source.get("run_selected_chapters", ()))
     valid_selection = (selected == CHAPTER_IDS[4:] if a05 else
+                       selected == ("reinforcement",) if a01 else
+                       selected == ("pursuit",) if a05_pursuit else
                        bool(selected) and selected ==
                        tuple(item for item in CHAPTER_IDS[:4] if item in selected)
                        and chapter_id in selected)
@@ -430,7 +443,11 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
             or (a05 and (render.get("usage_scope") != A05_SCOPE
                          or render.get("a05_writer_facts_checked") is not True
                          or render.get("new_e2_09_live_verified") is not False))
-            or (not a05 and render.get("usage_scope") not in
+            or (a01 and (render.get("usage_scope") != scope
+                         or render.get("a01_join_facts_checked") is not True))
+            or (a05_pursuit and (render.get("usage_scope") != scope
+                                 or render.get("a05_pursuit_facts_checked") is not True))
+            or (not a05 and not a01 and not a05_pursuit and render.get("usage_scope") not in
                 (None, "source-bound-edit-proxy"))):
         raise ValueError(f"{chapter_id} TTS usage boundary changed")
     if a05:
@@ -444,11 +461,44 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
                 or preserved_facts["bytes"] != facts.stat().st_size
                 or render_facts.get("sha256", "").upper() != _sha(facts)
                 or render_facts.get("bytes") != facts.stat().st_size
-                or fact_data.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v2"
+                or fact_data.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v3"
                 or fact_data.get("usage_scope") != A05_SCOPE
                 or fact_data.get("run_identity", {}).get("run") !=
                 "episode02-terminal-pair-20260928-a05-live"):
             raise ValueError(f"{chapter_id} TTS fact receipt differs from its A05 native source")
+    if a01:
+        facts = _checked_source(run, run_path, source["a01_facts_artifact_id"],
+                                source["a01_facts_sha256"], source["a01_facts_bytes"])
+        fact_data = json.loads(facts.read_text(encoding="utf-8"))
+        preserved_facts = original.get("a01-facts")
+        render_facts = render.get("a01_fact_evidence") or {}
+        if (preserved_facts is None
+                or preserved_facts["sha256"].upper() != _sha(facts)
+                or preserved_facts["bytes"] != facts.stat().st_size
+                or render_facts.get("sha256", "").upper() != _sha(facts)
+                or render_facts.get("bytes") != facts.stat().st_size
+                or fact_data.get("schema") != "xar.war-ai.episode02.a01-join-card-facts.v2"
+                or fact_data.get("usage_scope") != scope
+                or fact_data.get("run_identity", {}).get("run") !=
+                "episode02-e2-06-d11-live-20260928-a01"):
+            raise ValueError(f"{chapter_id} TTS fact receipt differs from its A01 native source")
+    if a05_pursuit:
+        facts = _checked_source(run, run_path, source["a05_pursuit_facts_artifact_id"],
+                                source["a05_pursuit_facts_sha256"],
+                                source["a05_pursuit_facts_bytes"])
+        fact_data = json.loads(facts.read_text(encoding="utf-8"))
+        preserved_facts = original.get("a05-pursuit-facts")
+        render_facts = render.get("a05_pursuit_fact_evidence") or {}
+        if (preserved_facts is None
+                or preserved_facts["sha256"].upper() != _sha(facts)
+                or preserved_facts["bytes"] != facts.stat().st_size
+                or render_facts.get("sha256", "").upper() != _sha(facts)
+                or render_facts.get("bytes") != facts.stat().st_size
+                or fact_data.get("schema") != "xar.war-ai.episode02.a05-pursuit-card-facts.v1"
+                or fact_data.get("usage_scope") != scope
+                or fact_data.get("run_identity", {}).get("run") !=
+                "episode02-terminal-pair-20260928-a05-live"):
+            raise ValueError(f"{chapter_id} TTS fact receipt differs from its A05 pursuit source")
     expected = [item for item in render["paragraphs"] if item["chapter_id"] == chapter_id]
     paragraphs = source.get("paragraphs")
     if not isinstance(paragraphs, list) or len(paragraphs) != len(expected):
@@ -475,6 +525,12 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
         if a05 and (request.get("usage_scope") != A05_SCOPE
                     or request.get("a05_facts_sha256", "").upper() != _sha(facts)):
             raise ValueError(f"{chapter_id} current A05 TTS request lost its fact scope")
+        if a01 and (request.get("usage_scope") != scope
+                    or request.get("a01_facts_sha256", "").upper() != _sha(facts)):
+            raise ValueError(f"{chapter_id} current A01 TTS request lost its fact scope")
+        if a05_pursuit and (request.get("usage_scope") != scope
+                            or request.get("a05_pursuit_facts_sha256", "").upper() != _sha(facts)):
+            raise ValueError(f"{chapter_id} current A05 pursuit TTS request lost its fact scope")
         files[index] = (request_path, events_path)
     boundaries, source_text, last_end = derive_boundaries(
         chapter_id, paragraphs, lambda item: files[item["paragraph_index"]])

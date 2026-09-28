@@ -64,6 +64,18 @@ def plan(render_dir: Path, native_path: Path) -> list[tuple[str, Path, str, str]
         if identity(path) != {key: facts[key] for key in ("bytes", "sha256")}:
             raise ValueError("A05 writer fact snapshot differs from render")
         aliases.append(("a05-facts", path, "raw", "a05-writer-fact-receipt"))
+    facts = render.get("a01_fact_evidence")
+    if facts is not None:
+        path = render_dir / ("snapshot-" + Path(facts["path"]).name)
+        if identity(path) != {key: facts[key] for key in ("bytes", "sha256")}:
+            raise ValueError("A01 join fact snapshot differs from render")
+        aliases.append(("a01-facts", path, "raw", "a01-private-join-fact-receipt"))
+    facts = render.get("a05_pursuit_fact_evidence")
+    if facts is not None:
+        path = render_dir / ("snapshot-" + Path(facts["path"]).name)
+        if identity(path) != {key: facts[key] for key in ("bytes", "sha256")}:
+            raise ValueError("A05 pursuit fact snapshot differs from render")
+        aliases.append(("a05-pursuit-facts", path, "raw", "a05-native-pursuit-fact-receipt"))
     covered = {path.resolve() for _, path, _, _ in aliases}
     for path in sorted(render_dir.rglob("*")):
         if not path.is_file() or path.resolve() in covered:

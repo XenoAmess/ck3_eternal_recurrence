@@ -91,6 +91,19 @@ class EpisodeTwoCardIndexTest(unittest.TestCase):
             with self.subTest(field=field), self.assertRaisesRegex(ValueError, "exact writer"):
                 _card_replays(index)
 
+    def test_a01_name_cannot_hide_an_old_trace_or_other_run(self):
+        original = json.loads((CARDS / "calculation-cards.json").read_text(encoding="utf-8"))
+        bad_values = {
+            "primary_receipt_sha256": original["replays"]["085"]["source_finish_sha256"],
+            "source_save_sha256": "0" * 64,
+            "source_post_snapshot_sha256": "0" * 64,
+        }
+        for field, value in bad_values.items():
+            index = json.loads(json.dumps(original))
+            index["replays"]["A01"][field] = value
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "exact trace"):
+                _card_replays(index)
+
 
 if __name__ == "__main__":
     unittest.main()

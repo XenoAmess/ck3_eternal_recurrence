@@ -124,15 +124,15 @@
 [^identity]: [系列路线图：统一拍法及下一期](../series-roadmap.md)、[墨西拿案例：身份与独立回放](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md)。
 [^case]: [墨西拿原始 31 日同案观察](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md#原版观察)，接战 UI 玩家 1288、敌方 330，战斗 side0 是敌方。
 [^pursuit]: [A05 新原生追击与独立模型逐团对拍](cards/e2-02-03-a05-pursuit-facts-20260928.json)，原件在 `D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/`；旧 [004 三日原件](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md#2026-09-26-追击三日同一独立回放的逐团与账本对拍)只作历史审计旁证。
-[^screen]: [非零败方掩护研究合同](../../../docs/ck3-native-ai/pursuit-screen-nonzero-branch-contract-2026-09-27.md)；004 本案败方掩护聚合为 0。
+[^screen]: [非零败方掩护研究合同](../../../docs/ck3-native-ai/pursuit-screen-nonzero-branch-contract-2026-09-27.md)；[A05 同源追击事实回执](cards/e2-02-03-a05-pursuit-facts-20260928.json)记录本次败方有效掩护聚合为 0，旧 004 仅作历史对照。
 [^maim]: [第 5 日致残、随机列表与同源前后存档](../../../docs/ck3-native-ai/combat-phase-event-trace.md#2026-09-26-第-5-日致残分支与子作用域抽签)，原件 `episode01-day05-wound-growth-attempt-039/`。
 [^maim_next]: [039→040 的第 6 日 v3 对照](../../../docs/ck3-native-ai/combat-phase-event-trace.md#致残写回进入第-6-天智能体输入)、[机器报告](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json)。
 [^selector]: [020 原生骑士选择器与候选顺序](../../../docs/ck3-native-ai/combat-phase-event-trace.md#2026-09-26-第-26-日骑士击杀者抽签实机闭合)，源档 SHA-256 `C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B`。
 [^kill_write]: [020 前后存档写回](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_writeback.json)。
 [^growth]: [070 运行时成长权重与实际子抽签](../../../docs/ck3-native-ai/combat-phase-event-trace.md#2026-09-27-第-26-日成长列表选择器权重实采)。
 [^kill_next]: [036→038 的第 27 日名册](../../../docs/ck3-native-ai/combat-phase-event-trace.md#事件后的下一帧智能体输入)。038 的 `capture-report.json` `checkpoint_source.save.path` 指向 `episode01-day26-random-list-type-attempt-036/d27-postevent-immutable.ck3`，SHA-256 `CD0648D7603290E470ED07261128C05FF449C0FFAEA89D01A1102D0D56208A55`。
-[^join]: [A01 同钩子原生事实回执](cards/e2-06-07-a01-join-facts-20260928.json)，原件 `episode02-e2-06-d11-live-20260928-a01/`；旧 [085 机器向量](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_full_entry_085.json)仅作独立历史对照。
-[^width]: [A01 同钩子原生事实回执](cards/e2-06-07-a01-join-facts-20260928.json)。森林 `90000/100000` 来源为同版原版脚本静态定义；本案 final、出伤入参为 A01 原生运行时实采。
+[^join]: [A01 同钩子原生事实回执](cards/e2-06-07-a01-join-facts-20260928-v2.json)，原件 `episode02-e2-06-d11-live-20260928-a01/`；旧 [085 机器向量](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_join_full_entry_085.json)仅作独立历史对照。
+[^width]: [A01 同钩子原生事实回执](cards/e2-06-07-a01-join-facts-20260928-v2.json)。森林 `90000/100000` 来源为同版原版脚本静态定义；本案 final、出伤入参为 A01 原生运行时实采。
 [^join_limit]: [未来增援路线输入边界](../../../docs/ck3-native-ai/future-reinforcement-trial-input-boundary-2026-09-27.md)。
 [^terminal]: [A05 同一回放第 32 日原生终局 writer 与后态](cards/e2-09-a05-writer-facts-20260928-v3.json)；旧 [004 正常终局](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md#2026-09-26-追击三日同一独立回放的逐团与账本对拍)仅为历史独立对照。
 [^score]: [A05 新 writer 与第 32 日原生暂停后态逐项回执](cards/e2-09-a05-writer-facts-20260928-v3.json)、[A05 实机与媒体准入边界](terminal-pair-a05-integrated-admission-20260928.md)。旧 [024 原生 writer 原件](../../../docs/ck3-native-ai/battle-terminal-and-reentry.md#2026-09-26-梅西纳单场战分同一次原生-writer-的完整输入与写回)只作历史对照。

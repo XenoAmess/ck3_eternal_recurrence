@@ -17,6 +17,13 @@ ROOT = Path(__file__).resolve().parent
 
 
 class EnglishSubtitleGateTest(unittest.TestCase):
+    def test_checked_in_six_chapters_bind_current_chinese(self):
+        narration = script_chapters(ROOT / "narration-script-draft.md")
+        source = ROOT / "english-subtitles.json"
+        _, translated = _english_source({"english_subtitles": {
+            "source": str(source), **identity(source)}}, narration)
+        self.assertEqual(tuple(translated), CHAPTER_IDS)
+
     def test_each_translation_is_bound_to_its_original_chapter(self):
         narration = script_chapters(ROOT / "narration-script-draft.md")
         rows = [{"id": chapter,
