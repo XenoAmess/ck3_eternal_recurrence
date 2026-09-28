@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 import hashlib
 import json
 import os
@@ -75,6 +76,9 @@ def link(recorder: Path, session_output: Path, pts_audit: Path) -> dict[str, Any
     raw = Path(intent["raw_path"]).resolve(strict=True)
     require(raw.parent == recorder / "raw" and raw.is_file(), "unexpected raw path")
     raw_stat_before = raw.stat()
+    probe_path = paths["ffprobe.json"].resolve(strict=True)
+    require(probe_path.is_file(), "full ffprobe disappeared after PTS audit")
+    probe_stat_before = probe_path.stat()
     # Full raw and full FFprobe SHA values come from the independently run
     # PTS audit. Do not read either large file a second time here.
     require(pts.get("recorder_intent") == identity(paths["recorder-intent.json"]) and
@@ -82,10 +86,12 @@ def link(recorder: Path, session_output: Path, pts_audit: Path) -> dict[str, Any
             pts.get("raw") == final.get("raw") == end.get("raw") and
             pts.get("full_ffprobe") == final.get("ffprobe_output") and
             Path(pts["raw"]["path"]).resolve() == raw and
-            Path(pts["full_ffprobe"]["path"]).resolve() == paths["ffprobe.json"].resolve(),
+            Path(pts["full_ffprobe"]["path"]).resolve() == probe_path,
             "PTS audit, recorder end and recorder final do not bind the same raw/probe")
     require(raw_stat_before.st_size == pts["raw"]["bytes"],
             "raw size changed after PTS audit")
+    require(probe_stat_before.st_size == pts["full_ffprobe"]["bytes"],
+            "full ffprobe size changed after PTS audit")
     marks_id = identity(paths["marks.jsonl"])
     require(final.get("marks") == marks_id, "marks journal differs from recorder final")
     rows = [json.loads(line) for line in paths["marks.jsonl"].read_text(encoding="utf-8").splitlines()
@@ -94,12 +100,17 @@ def link(recorder: Path, session_output: Path, pts_audit: Path) -> dict[str, Any
     require(rows[0].get("kind") == "recorder-start" and rows[-1].get("kind") == "recorder-end" and
             rows[0].get("monotonic_ns") == start.get("monotonic_ns") and
             rows[-1].get("monotonic_ns") == end.get("monotonic_ns") and
+            rows[0].get("pid") == start.get("pid") and
+            rows[-1].get("pid") == end.get("pid") and
+            rows[0].get("utc") == start.get("started_at") and
+            rows[-1].get("utc") == end.get("ended_at") and
             all(type(row.get("monotonic_ns")) is int for row in rows) and
             all(a["monotonic_ns"] < b["monotonic_ns"] for a, b in zip(rows, rows[1:])),
             "marks journal boundaries or order differ from recorder")
     require(end.get("ffmpeg_exit_code") == 0 and end.get("interrupted") is False and
             final.get("ffmpeg_exit_code") == 0 and final.get("ffprobe_exit_code") == 0 and
             final.get("result") == "ENCODED_UNREVIEWED" and
+            final.get("video_pts_complete") is True and
             final.get("clean_spans_certified") is False and
             final.get("human_review_completed") is False,
             "recorder did not close as an unreviewed encoding")
@@ -122,17 +133,51 @@ def link(recorder: Path, session_output: Path, pts_audit: Path) -> dict[str, Any
                shutdown.get("tree_gone") is True and shutdown.get("cleanup_proven") is True and
                not (shutdown.get("final_ck3_inventory") or {}).get("processes"))
     require(cleanup, "managed CK3 cleanup is not proven")
-    require(capture.get("environment_session_complete") is True and
+    require(capture.get("result") == "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO" and
+            capture.get("environment_session_complete") is True and
+            capture.get("adapter_bundle_validated") is False and
             (capture.get("worker") or {}).get("ok") is True and
             not (capture.get("cleanup_process_inventory") or {}).get("processes"),
             "managed capture session is not complete")
     pts_result = pts.get("result")
     require(pts_result in ("PTS_CONTINUOUS_UNREVIEWED", "RED_PRESERVED"),
             "unknown PTS audit result")
+    if pts_result == "PTS_CONTINUOUS_UNREVIEWED":
+        try:
+            span = Decimal(pts["span_seconds"])
+            minimum = Decimal(pts["min_duration_seconds"])
+            max_gap = Decimal(pts["max_frame_gap_seconds"])
+            first = Decimal(pts["first_pts_seconds"])
+            last = Decimal(pts["last_pts_seconds"])
+        except (KeyError, InvalidOperation, TypeError) as exc:
+            raise ValueError("continuous PTS report lacks valid duration/gap bounds") from exc
+        require(type(pts.get("frame_count_with_pts")) is int and
+                pts["frame_count_with_pts"] > 1 and
+                pts.get("missing_pts_count") == 0 and
+                pts.get("nonmonotonic_count") == 0 and
+                pts.get("gap_count") == 0 and
+                span.is_finite() and minimum.is_finite() and max_gap.is_finite() and
+                first.is_finite() and last.is_finite() and
+                span >= minimum >= Decimal("590") and
+                Decimal(0) < max_gap <= Decimal("0.2") and
+                first >= 0 and last > first and last - first == span,
+                "continuous PTS result contradicts its frame/gap/duration counts")
+        streams = [row for row in final.get("streams", []) if row.get("codec_type") == "video"]
+        require(len(streams) == 1 and pts.get("video_stream_index") == streams[0].get("index"),
+                "PTS report video stream differs from recorder final")
+        final_frames = (final.get("frame_pts_by_stream") or {}).get(str(streams[0]["index"])) or {}
+        require(final_frames.get("count") == pts["frame_count_with_pts"] and
+                Decimal(str(final_frames.get("first_pts_time"))) == first and
+                Decimal(str(final_frames.get("last_pts_time"))) == last,
+                "PTS report frame count/endpoints differ from recorder final")
     raw_stat_after = raw.stat()
+    probe_stat_after = probe_path.stat()
     require((raw_stat_before.st_size, raw_stat_before.st_mtime_ns) ==
             (raw_stat_after.st_size, raw_stat_after.st_mtime_ns),
             "raw changed during small-file link audit")
+    require((probe_stat_before.st_size, probe_stat_before.st_mtime_ns) ==
+            (probe_stat_after.st_size, probe_stat_after.st_mtime_ns),
+            "full ffprobe changed during small-file link audit")
     return {"schema": "xar.war-promo.e2-05-postrun-links/v1",
             "created_at_utc": datetime.now(timezone.utc).isoformat(),
             "result": ("MEDIA_PTS_CANDIDATE_UNREVIEWED" if pts_result == "PTS_CONTINUOUS_UNREVIEWED"
@@ -150,6 +195,8 @@ def link(recorder: Path, session_output: Path, pts_audit: Path) -> dict[str, Any
             "raw_stat_during_link_audit": {"bytes": raw_stat_after.st_size,
                                            "mtime_ns": raw_stat_after.st_mtime_ns},
             "ffprobe_from_prior_full_sha_audit": pts["full_ffprobe"],
+            "ffprobe_stat_during_link_audit": {"bytes": probe_stat_after.st_size,
+                                               "mtime_ns": probe_stat_after.st_mtime_ns},
             "marks_journal": marks_id,
             "marks": marks,
             "video_pts_summary": {key: pts.get(key) for key in

@@ -33,25 +33,34 @@ class PostrunLinksTest(unittest.TestCase):
         put(self.recorder / "recorder-intent.json", {
             "workdir": str(self.recorder), "session_output": str(self.session),
             "raw_path": str(raw)})
-        put(self.recorder / "recorder-start.json", {"monotonic_ns": 100, "pid": 42})
+        put(self.recorder / "recorder-start.json", {"monotonic_ns": 100, "pid": 42,
+                                                    "started_at": "2026-09-28T19:00:00+00:00"})
         put(self.recorder / "recorder-end.json", {
-            "monotonic_ns": 300, "ffmpeg_exit_code": 0,
+            "monotonic_ns": 300, "pid": 42, "ended_at": "2026-09-28T19:10:00+00:00",
+            "ffmpeg_exit_code": 0,
             "interrupted": False, "raw": audit.identity(raw)})
         screenshot = self.recorder / "screens/d26.png"
         screenshot.parent.mkdir()
         screenshot.write_bytes(b"fixture screenshot")
         marks = self.recorder / "marks.jsonl"
         marks.write_text("".join(json.dumps(row) + "\n" for row in (
-            {"kind": "recorder-start", "monotonic_ns": 100},
+            {"kind": "recorder-start", "monotonic_ns": 100, "pid": 42,
+             "utc": "2026-09-28T19:00:00+00:00"},
             {"kind": "d26-before", "monotonic_ns": 200,
              "date_raw": 53146848, "war_id": 4, "combat_id": 16777218,
              "approx_seconds_from_recorder_start": 100.0,
              "approx_seconds_are_not_video_pts": True,
              "screenshot": audit.identity(screenshot)},
-            {"kind": "recorder-end", "monotonic_ns": 300})), encoding="utf-8")
+            {"kind": "recorder-end", "monotonic_ns": 300, "pid": 42,
+             "utc": "2026-09-28T19:10:00+00:00"})), encoding="utf-8")
         put(self.recorder / "recorder-final.json", {
             "result": "ENCODED_UNREVIEWED", "ffmpeg_exit_code": 0,
-            "ffprobe_exit_code": 0, "clean_spans_certified": False,
+            "ffprobe_exit_code": 0, "video_pts_complete": True,
+            "streams": [{"index": 0, "codec_type": "video"}],
+            "frame_pts_by_stream": {"0": {"count": 100,
+                                           "first_pts_time": "0.000",
+                                           "last_pts_time": "599.967"}},
+            "clean_spans_certified": False,
             "human_review_completed": False, "raw": audit.identity(raw),
             "ffprobe_output": audit.identity(probe), "marks": audit.identity(marks)})
         put(self.session / "session-result.json", {"ok": True, "shutdown": {
@@ -59,7 +68,8 @@ class PostrunLinksTest(unittest.TestCase):
             "final_ck3_inventory": {"processes": []}}})
         put(self.session / "capture-report.json", {
             "result": "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO",
-            "environment_session_complete": True, "worker": {"ok": True},
+            "environment_session_complete": True,
+            "adapter_bundle_validated": False, "worker": {"ok": True},
             "cleanup_process_inventory": {"processes": []}})
         self.pts = self.root / "pts-audit.json"
         put(self.pts, {"schema": "xar.war-promo.raw-video-pts-audit/v1",
@@ -70,7 +80,12 @@ class PostrunLinksTest(unittest.TestCase):
                        "recorder_final": audit.identity(self.recorder / "recorder-final.json"),
                        "raw": audit.identity(raw), "full_ffprobe": audit.identity(probe),
                        "frame_count_with_pts": 100,
+                       "video_stream_index": 0,
                        "first_pts_seconds": "0.000", "last_pts_seconds": "599.967",
+                       "span_seconds": "599.967",
+                       "min_duration_seconds": "590",
+                       "max_frame_gap_seconds": "0.2",
+                       "missing_pts_count": 0, "nonmonotonic_count": 0,
                        "gap_count": 0})
         self.raw = raw
 
@@ -98,6 +113,55 @@ class PostrunLinksTest(unittest.TestCase):
         screen = self.recorder / "screens/d26.png"
         screen.write_bytes(b"changed")
         with self.assertRaisesRegex(ValueError, "small evidence byte/SHA differs"):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_capture_red_cannot_become_candidate(self) -> None:
+        path = self.session / "capture-report.json"
+        value = audit.read_object(path)
+        value["result"] = "RED_PRESERVED"
+        put(path, value)
+        with self.assertRaisesRegex(ValueError, "capture session is not complete"):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_continuous_result_with_gap_count_rejects(self) -> None:
+        value = audit.read_object(self.pts)
+        value["gap_count"] = 1
+        put(self.pts, value)
+        with self.assertRaisesRegex(ValueError, "contradicts"):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_weak_gap_threshold_rejects(self) -> None:
+        value = audit.read_object(self.pts)
+        value["max_frame_gap_seconds"] = "8"
+        put(self.pts, value)
+        with self.assertRaisesRegex(ValueError, "contradicts"):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_weak_duration_threshold_rejects(self) -> None:
+        value = audit.read_object(self.pts)
+        value["min_duration_seconds"] = "1"
+        put(self.pts, value)
+        with self.assertRaisesRegex(ValueError, "contradicts"):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_missing_full_probe_rejects_without_raw_rehash(self) -> None:
+        (self.recorder / "ffprobe.json").unlink()
+        with self.assertRaises(FileNotFoundError):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_recorder_pid_mismatch_rejects(self) -> None:
+        marks = self.recorder / "marks.jsonl"
+        rows = [json.loads(line) for line in marks.read_text(encoding="utf-8").splitlines()]
+        rows[0]["pid"] = 999
+        marks.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+        final_path = self.recorder / "recorder-final.json"
+        final = audit.read_object(final_path)
+        final["marks"] = audit.identity(marks)
+        put(final_path, final)
+        pts = audit.read_object(self.pts)
+        pts["recorder_final"] = audit.identity(final_path)
+        put(self.pts, pts)
+        with self.assertRaisesRegex(ValueError, "boundaries or order"):
             audit.link(self.recorder, self.session, self.pts)
 
 
