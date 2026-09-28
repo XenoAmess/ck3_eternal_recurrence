@@ -27,3 +27,30 @@ T = read_ptr(H + 0x470)
 同一探针需在读取前后各取原生 `paused`、played CharacterID、WarID、date、episode、snapshot/public/native revision、treasury 及顶栏 `+0xF88` 渲染帧；两次快照及全部指针相同才允许将结果标为**稳定的候选缓存**。还需独立证明本次自然 GUI 渲染确已把该玩家该原生修订的费用写入这些行，并与可观察费用分项对照。渲染帧计数不是 native revision。`CIngameInterfaceHandler+0x40` 的上下文类型仍待核；本轮仅能把它用于构造器回指一致性。
 
 即使顶栏月费率获得同帧证明，它也不是实际金币扣款。`committed_war_spend_raw`、即时费用、Robert 的最低战争储备及有限期 `future_war_cost_upper_raw` 仍需实际余额写入/扣款节奏、正式动作报价与有来源的策略上界。缺任一边时保持五项未证读数为 `null`、`formal_eligible=false`，不得把普通 GUI 显示值或一日月费率冒充现金占款。
+
+## Offline supplied-byte owner-path check
+
+[`war_cash_topbar_owner_path.py`](../../ck3_autonomous_player/native_bridge/research/war_cash_topbar_owner_path.py)
+checks caller-supplied bytes for the exact global slot, owner, idler, handler,
+and topbar pointer chain, including both handler and topbar vtables and the
+topbar's reverse context/handler pointers. It performs no process I/O and
+always reports `formal_cash_eligible=false`. The caller must prove that those
+bytes came from the stated addresses in one managed paused frame; a synthetic
+matching byte set is only a structural fixture. Four focused tests run under
+normal Python and `-O`. The validator requires the supplied global-slot
+address to equal `image_base+0x570F7B8` and rejects overlapping supplied
+object regions. A future live reader must read the same addresses twice and
+reject inconsistent bytes before this structural result is useful.
+
+[`war_cash_topbar_bounded_sample.py`](../../ck3_autonomous_player/native_bridge/research/war_cash_topbar_bounded_sample.py)
+is a prepared, **not yet run** Windows read-only diagnostic. It reuses the
+existing exact-EXE `WindowsReadOnlyProcess` transport, follows only the five
+fixed owner blocks, and reads at most 64 KiB per sample, twice. It never scans
+the process VADs or calls a GUI getter. Its expense-row decoder is optional:
+an unavailable or changing row vector remains RED, while a stable supplied
+row is still only a candidate. The CLI requires an external managed-session
+receipt and writes to a new output path; it does not itself prove that receipt,
+the Steam/offline screen lease, a paused native before/after frame, GUI cache
+freshness or monthly debit cadence. Four focused fake-process tests pass in
+normal and optimized Python, and `--help` passes. No live Robert amount was
+read or entered into the five cash fields.
