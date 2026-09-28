@@ -277,7 +277,7 @@ def advance(output: Path, track: str, binding: dict[str, Any],
             ended.get("accepted") is True and ended.get("combat_id") == COMBAT and
             ended.get("managed_daily_sequence_token") == token and post_ok)
     row = {"schema": "xar.war-promo.remaining-live-step/v1", "created_at": utc(),
-           "mode": "advance", "track": track, "result": "ONE_DAY_CAPTURED_UNREVIEWED" if okay else
+           "mode": "advance", "track": track, "result": "ONE_DAY_ADVANCED_UNREVIEWED" if okay else
            "RED_PRESERVED", "source_binding": binding, "intent": identity(intent_path),
            "pre_save": save_receipt, "after_save_snapshot": after_save_receipt,
            "after_save_control": control_receipt, "trace_begin": begin_receipt,
