@@ -407,6 +407,29 @@ gold or price, no
 proposal, and no gameplay action. A fresh candidate must prove the corrected
 reader's result on H3446 before any formal value or readiness claim.
 
+R0282 provides that paused readback. Its report at
+`Z:\m6ransom-gate-h3446-candidate-v5\evidence\R0282\report.json` has
+SHA-256 `888395C1C42EF490AD1D621291B76A55F9AC31A95ACD374DF1918F6B64516CED`.
+The same actor `29829`, native revision 3 and date raw `53219112` yielded:
+
+| Prisoner | Redirected payer | Native gold option | Quote (scale 100,000) | Final readback |
+| --- | ---: | --- | ---: | --- |
+| `34486` | `30470` | `gold` | `5,000,000` = 50 gold | `can_send=true`, `would_accept_now=true`, acceptance raw `2,500,000` |
+| `44484` | `44484` | `gold` | `3,000,000` = 30 gold | `can_send=true`, `would_accept_now=true`, acceptance raw `10,000,000` |
+| `47028` | unknown | unavailable | unknown | `option_mask_unexpected` |
+
+The two available quotes passed the loaded eight-flag order check before
+option selection. All three queries used fresh verified pumps with the CK3
+window minimized. No gameplay action or date advance occurred; source save
+SHA-256 `DB1C897F1C4C93FA3927DDC0D901B225A797678B41687A9275744F898E712C65`
+remained unchanged and controlled cleanup removed the CK3 tree. For `47028`,
+the setter left an unexpected selected mask; the reason does not establish a
+zero quote, absent payer, or unlawful proposal. The two positive rows are
+private same-frame **opportunities**, not sent proposals or payments. The
+formal consumer still needs a value comparison with release, typed submit,
+independent prisoner/gold/relationship postconditions, next-turn consumption,
+and matched cold restore before claiming a production loop.
+
 ```mermaid
 flowchart TD
     C[Owned all-role ransom context] --> R{Exact roles readable?}
