@@ -481,7 +481,7 @@ def write_profile_settings(settings_path: Path, base: str, gui_scale: str | None
 
 def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
                               source_snapshot: Path, expected_source_sha256: str,
-                              output_dir: Path) -> dict:
+                              output_dir: Path, *, requested_scale: str) -> dict:
     """Prepare one fresh profile from vanilla bytes plus an exact UI-saved GUI block.
 
     This candidate is deliberately not wired to the capture CLI.  An actual
@@ -496,6 +496,7 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
         "schema": "war-film-ui-saved-gui-block-import/v1", "at": utc(),
         "source_snapshot_path": str(source_snapshot.absolute()),
         "target_settings_path": str(settings_path.absolute()),
+        "requested_scale": requested_scale, "native_ui_serialized_scale": None,
         "source_snapshot": None, "source_gui_block": None,
         "vanilla_non_gui_template": None, "staging_settings": None,
         "prepared_snapshot": None,
@@ -508,6 +509,8 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
     }
     primary_error = None
     try:
+        require(requested_scale == "1.0",
+                "UI GUI import needs the explicit 1.0 capture request")
         require(re.fullmatch(r"[0-9A-Fa-f]{64}", expected_source_sha256) is not None,
                 "UI snapshot needs an explicit SHA-256")
         require(settings_path.name == "pdx_settings.txt", "Target must be pdx_settings.txt")
@@ -532,17 +535,19 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
         require(len(source) <= 1024 * 1024, "UI snapshot exceeds reviewed size limit")
         source.decode("utf-8")
         declarations = list(re.finditer(rb'(?m)^[ \t]*"GUI"\s*=\s*\{', source))
-        # The complete GUI block contains exactly one scale key and no other key.
+        # CK3's reviewed UI SaveAndClose serializes displayed 100% as "1".
+        # Accept exactly this native value for the explicit 1.0 request.
         # The closing line break is part of the imported bytes, including CRLF.
         blocks = list(re.finditer(
             rb'(?m)^"GUI"[ \t]*=[ \t]*\{[ \t\r\n]*'
             rb'"scale"[ \t]*=[ \t]*\{[ \t\r\n]*version[ \t]*=[ \t]*1[ \t\r\n]+'
-            rb'value[ \t]*=[ \t]*"1\.0"[ \t\r\n]*\}[ \t\r\n]*\}[ \t]*(?:\r?\n|$)',
+            rb'value[ \t]*=[ \t]*"1"[ \t\r\n]*\}[ \t\r\n]*\}[ \t]*(?:\r?\n|$)',
             source))
         require(len(declarations) == len(blocks) == 1 and
                 declarations[0].start() == blocks[0].start(),
                 "UI snapshot has missing, ambiguous, extra-key or unreviewed GUI syntax")
         block = blocks[0].group()
+        row["native_ui_serialized_scale"] = "1"
         non_gui_source = source[:blocks[0].start()] + source[blocks[0].end():]
         require(re.search(rb'(?m)^"[A-Za-z_][A-Za-z0-9_]*"[ \t]*=[ \t]*\{',
                           non_gui_source) is not None,
