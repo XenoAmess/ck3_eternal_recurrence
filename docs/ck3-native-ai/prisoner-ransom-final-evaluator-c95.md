@@ -1,10 +1,10 @@
 # 囚犯赎金：最终金额与关系约束的原生入口（C95）
 
-状态：**exact-build static research**，未启动 CK3、未取得自然囚犯 paused frame，未提交赎金或释放动作。对应独立[版本化证据与校验器](../../ck3_autonomous_player/native_bridge/research/player_prisoner_ransom_final_gap_c95_1_19_0_6.json)；承接[囚犯原生树](prisoner-crime-ransom-ai.md)及 C80 私有囚犯集合读口。后者只列出囚犯 ID，不提供最终赎金金额或可发送动作。
+状态：C95 原生金额调用链为 **exact-build static research**；H3446 已有只读实机囚犯与报价尝试，三个报价仍不可用。尚未提交赎金或释放动作。对应独立[版本化证据与校验器](../../ck3_autonomous_player/native_bridge/research/player_prisoner_ransom_final_gap_c95_1_19_0_6.json)；承接[囚犯原生树](prisoner-crime-ransom-ai.md)及 C80 私有囚犯集合读口。
 
 ## 冻结来源与具体决策
 
-CK3 `1.19.0.6` 的 `ck3.exe` 为 95,206,008 字节，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_prison_interactions.txt`、`00_prison_effects.txt`、`00_interaction_values.txt` 的完整 SHA 与行段在版本化证据中。校验器逐字节核对三份来源及 EXE。以下对应**玩家作为监禁者提出 `ransom_interaction`**；没有自然囚犯帧，不能断言当前 Robert 可执行。
+CK3 `1.19.0.6` 的 `ck3.exe` 为 95,206,008 字节，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_prison_interactions.txt`、`00_prison_effects.txt`、`00_interaction_values.txt` 的完整 SHA 与行段在版本化证据中。校验器逐字节核对三份来源及 EXE。以下对应**玩家作为监禁者提出 `ransom_interaction`**；本节 C95 当时尚无自然囚犯帧，后续实测边界见下文 R0276。
 
 1. `00_prison_interactions.txt:1718-1730`：最初选中的囚犯成为 `secondary_recipient`；若囚犯不是统治者且有领主，`recipient` 被重定向为领主，即实际提案对象/付款者。`1747-1760` 要求该囚犯正被 actor 监禁，且 actor 不能与 recipient 相同；后续还有拷问、摄政与清洗等有效性限制。不能只用玩家与囚犯的二角色预览。
 2. `1921-2065`：选择普通、加价、付款者现有黄金、favor、influence、herd 等不同 `send_option`，原版按付款者资金、监禁者宗族特性与具体资源判定显示/有效。`2070-2222` 的 AI 接受权重含付款者与囚犯的本人、配偶、亲属、朋友、宿敌等关系；关系分数只是原版输入，**最终接受结果**仍由 finalized context 判定。
@@ -30,7 +30,7 @@ EXE 的 `ransom_cost` 字符串在 RVA `0x439F388`；`0x5495A0..0x549638` 注册
 
 现有通用 interaction 基底已映射 all-role context 构造 `0x2C3F000`、final Can Send `0x2C43F00` 和十槽 `on_send` cost 求值 `0x2CDB7B0`。**十槽 cost 不能替代赎金转账**：上述原版路径在 `on_accept` 的 `ransom_interaction_effect` 才付款。现有 prisoner payload extractor 能从*已经 finalized* 的 context 取 `secondary_recipient` 和选项 mask；它既不自行构造当前帧合法 context，也不求得该项实际付款。
 
-下一步先在自然囚犯 paused frame 核实至少一项玩家可发送的普通赎金或无条件释放预览，再为对应选项接 native 最终金额、关系接受与命令语义。命令前后须核对同一囚犯、付款者/监禁者、实际资源转移与释放状态，下一 turn 和冷恢复继续消费；在此之前不把 C80 私有读口或 C95 静态研究称为正式可用动作。信仰仅沿婚姻/战争限定边界保留原生最终判定，本文不展开宗教策略。
+R0276 已在自然囚犯 paused frame 读回无条件释放预览，但赎金仍未取得可发送选项；下一项必需原生观测见文末。将来命令前后须核对同一囚犯、付款者/监禁者、实际资源转移与释放状态，下一 turn 和冷恢复继续消费；在此之前不把 C80 私有读口或 C95 静态研究称为正式可用动作。信仰仅沿婚姻/战争限定边界保留原生最终判定，本文不展开宗教策略。
 
 验证命令（不启动 CK3）：
 
@@ -261,6 +261,47 @@ extortionate options with their owned finalized native contexts and reports
 `extortionate_gold_option_requires_valuation` only if final `Can Send` passes;
 otherwise a double read of the redirected payer's current gold reports
 `payer_below_one_gold` when it is below one. Any other case remains
-`option_unavailable`. Neither reason is a ransom quote or an action. A new
-matching paused frame is required to learn which reason applies to the three
-prisoners; H2825 values are not backfilled from source inspection.
+`option_unavailable`. Neither reason is a ransom quote or an action.
+
+## R0275/R0276 H3446 live readback and remaining native gate (2026-09-28)
+
+The H3446/raw53219112 Robert source pair remained unchanged: actor `29829`,
+save SHA-256 `DB1C897F1C4C93FA3927DDC0D901B225A797678B41687A9275744F898E712C65`,
+`ordinary_campaign_succession/xar_off`. The candidate used source commit
+`430228384d11d418b2a365cbc01d1711653f3e43` and private DLL SHA-256
+`B9984237BF96696409BBB5AB806D7A0EDDE74ABB3D8FA3D719F7D1C6C510CA6D`.
+The first read-only R0275 attempt was **harness RED**: its standalone runner
+omitted `succession_lifecycle_binding`, so driver adoption rejected the
+persisted ordinary lifecycle against its legacy default. Its report at
+`Z:\m6ransom28-candidate\evidence\R0275\report.json`
+has SHA-256 `F550BB96F17F15102DD0973AB4179C2AD89B46E1B1946DDCDD65F76FB2AACC2A`;
+no prisoner query or gameplay action ran. Cleanup proved the CK3 tree gone.
+
+An independent state and runner then used the official paired checkpoint
+validator's `succession_lifecycle` as the driver's binding. Official
+prepare/rebind/no-launch and normal/optimized runner preflight passed. Its
+frozen candidate index SHA-256 is
+`5A9009DF1C1195F027591530BE544CF27746C7B3DC351A40CF7871DE99595DAE`;
+runner SHA-256 is
+`734D83398F819099D062B3CCBD7E10ADE77FEE32BE652C16B067BB20126EF11E`.
+R0276 report at
+`Z:\m6ransom28-candidate-lifecycle-v2\evidence\R0276\report.json`
+SHA-256 `9DA1D039FBF974F13A997C89C1F9C5023A5C0837981614ADE0E0624491A3F53B`
+is **read-only GREEN**: same paused raw date, all three full IDs `34486`,
+`44484`, `47028` present, one visible CK3 window minimized, zero gameplay
+actions, source save unchanged, and controlled CK3 tree cleanup passed.
+Each private ransom quote remained `unavailable/option_unavailable`.
+
+That result excludes an observed sendable extortionate quote and an observed
+sub-one-gold payer result; it does **not** prove either option is absent from
+the game. In the current reader, `option_unavailable` means no ordinary
+option had both matching finalized roles and an exact selected option, neither
+extortionate probe passed final `Can Send`, and the payer-gold fallback did
+not classify below one. The fallback also uses this reason if the gold read
+fails. The specific native shown/valid predicate or role mismatch is still
+unknown. The next bounded read-only probe must expose the authored option's
+final selected versus role-match state, native shown/valid failure, and payer
+gold read status on the same paused frame. Only then can the policy decide
+whether a gold proposal exists or whether another prisoner disposition has
+greater value. No quote amount, ransom action, next-turn consumption, cold
+restore, or M6 readiness increase follows from R0276.
