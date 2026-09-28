@@ -427,12 +427,21 @@ def preflight(args: argparse.Namespace) -> dict:
         "checkpoint_source": checkpoint,
         "launch_mode": "managed-frontend-first-checkpoint" if checkpoint else "fresh-1066-bookmark",
         "record_debug_desktop": args.record_debug_desktop,
+        "gui_scale_requested": args.gui_scale,
         "process_inventory": processes, "state_dir": str(args.state_dir),
         "pipe_name": args.pipe_name,
         "codex_global_registration_required": False,
         "mcp_transport": "official-Client-create_server-in-process",
         "native_ai_causality_proven": False,
     }
+
+
+def render_profile_settings(base: str, gui_scale: str | None) -> str:
+    if gui_scale is None:
+        return base
+    require(gui_scale == "1.0", "Only the reviewed 1.0 GUI scale is supported")
+    require('"GUI"=' not in base, "Base settings already define GUI; refuse duplicate")
+    return base.rstrip("\n") + '\n"GUI"={\n\t"scale"={ version=1 value="1.0" }\n}\n'
 
 
 def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
@@ -449,7 +458,17 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) ->
     rules = declared_vanilla_rule_defaults(spec.vanilla_rules)
     presets = render_presets({"profile": [{"rule": r, "setting": s} for r, s in rules], "ironman": False})
     (spec.profile_dir / "player/game_rules/presets.txt").write_text(presets, encoding="utf-8")
-    (spec.profile_dir / "pdx_settings.txt").write_text(render_settings(), encoding="utf-8")
+    settings_path = spec.profile_dir / "pdx_settings.txt"
+    settings_text = render_profile_settings(render_settings(), args.gui_scale)
+    settings_path.write_text(settings_text, encoding="utf-8")
+    require(settings_path.read_text(encoding="utf-8") == settings_text,
+            "Prepared GUI settings readback differs")
+    write_new(args.output_dir / "gui-settings-prelaunch.json", {
+        "requested_scale": args.gui_scale,
+        "settings": identity(settings_path),
+        "rendered_bytes_sha256": hashlib.sha256(settings_text.encode("utf-8")).hexdigest(),
+        "readback_matches": True,
+    })
     (spec.profile_dir / "tutorial.txt").write_text('last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n', encoding="utf-8")
     if args.shader_cache_source is not None:
         source_cache = args.shader_cache_source.resolve()
@@ -745,6 +764,8 @@ def main() -> int:
     parser.add_argument("--checkpoint-receipt", type=Path, help="Actual MCP save-checkpoint response with byte, actor/date and build evidence")
     parser.add_argument("--frontend-timeout", type=float, default=360,
                         help="Per frontend readiness wait; checkpoint map wait is twice this value")
+    parser.add_argument("--gui-scale", choices=("1.0",),
+                        help="Set only this new isolated capture profile's CK3 GUI scale before launch")
     parser.add_argument("--hold-seconds", type=float, default=60)
     parser.add_argument("--shader-cache-source", type=Path, help="Reuse only a prior exact-build shadercache")
     parser.add_argument("--recovery-seconds", type=float, default=1800, help="Keep the same MCP owner available after Python failure")
