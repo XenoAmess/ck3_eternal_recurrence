@@ -363,6 +363,28 @@ invalid/unreadable selected byte. A typed reason will identify the next native
 binding repair; it is not a quote or a formal ransom consumer. Payer gold is
 still unknown until all preceding option reads are sound.
 
+R0280 ran the independent H3446 candidate on the same paused raw date with
+source commit `9d1c513ead3c38f83027065ae1c6a13dfec6e328`. Its report at
+`Z:\m6ransom-gate-h3446-candidate-v3\evidence\R0280\report.json` has
+SHA-256 `64E183EE829E6E5E45E9E6F034539C47F8CD9BD1C8C070C61FCC0EFEF977E3DA`.
+All three prisoner queries returned
+`unavailable/option_definition_count_unexpected`. Each query had a fresh
+verified pump while minimized; no gameplay action or date advance occurred,
+the source save hash stayed unchanged, and cleanup removed the CK3 tree.
+This pins the first failed read to a **readable** value at the loaded
+definition's `+0x2554` that differs from the hardcoded seven; it does not
+record that value. The frozen stock script has seven authored rows, so a
+runtime count mismatch may reflect a loaded definition difference or an
+incorrect identity/layout assumption. The count cannot be guessed from this
+reason, and neither the payer gold nor ransom value was reached.
+
+The next private failure payload includes the observed signed 32-bit
+definition count and a separate context count read at `+0x30C`, with `null`
+only if that read fails. The reader still rejects any count other than seven
+and makes no ransom action available. A matching paused readback must show
+the actual numbers before changing the option index mapping or loaded
+definition assumption.
+
 ```mermaid
 flowchart TD
     C[Owned all-role ransom context] --> R{Exact roles readable?}

@@ -331,7 +331,9 @@ enum class OptionMaskState : std::uint8_t {
 
 OptionMaskState ReadOptionMaskState(
     const void *context, std::int32_t expected,
-    PlayerPrisonerRansomQuoteFailureV1 &failure) noexcept {
+    PlayerPrisonerRansomQuoteFailureV1 &failure,
+    std::optional<std::int32_t> &observed_definition_count,
+    std::optional<std::int32_t> &observed_context_count) noexcept {
   void *data = nullptr;
   std::int32_t count = 0;
   const void *definition = nullptr;
@@ -347,7 +349,10 @@ OptionMaskState ReadOptionMaskState(
         option_definition_count_unreadable;
     return OptionMaskState::unreadable;
   }
+  observed_definition_count = definition_count;
   if (definition_count != static_cast<std::int32_t>(kOptionCount)) {
+    if (Read(context, kOptionCountOffset, count))
+      observed_context_count = count;
     failure = PlayerPrisonerRansomQuoteFailureV1::
         option_definition_count_unexpected;
     return OptionMaskState::unreadable;
@@ -366,6 +371,7 @@ OptionMaskState ReadOptionMaskState(
         option_context_count_unreadable;
     return OptionMaskState::unreadable;
   }
+  observed_context_count = count;
   if (count != definition_count) {
     failure = PlayerPrisonerRansomQuoteFailureV1::
         option_context_count_mismatch;
@@ -530,8 +536,10 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
     auto mask_failure = PlayerPrisonerRansomQuoteFailureV1::none;
-    const auto mask = roles_ok ? ReadOptionMaskState(context, option,
-                                                    mask_failure)
+    const auto mask = roles_ok ? ReadOptionMaskState(
+                                     context, option, mask_failure,
+                                     result.observed_definition_option_count,
+                                     result.observed_context_option_count)
                                : OptionMaskState::unreadable;
     if (!roles_ok || mask == OptionMaskState::unreadable ||
         mask == OptionMaskState::unexpected) {
@@ -624,8 +632,10 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
     auto mask_failure = PlayerPrisonerRansomQuoteFailureV1::none;
-    const auto mask = roles_ok ? ReadOptionMaskState(context, option,
-                                                    mask_failure)
+    const auto mask = roles_ok ? ReadOptionMaskState(
+                                     context, option, mask_failure,
+                                     result.observed_definition_option_count,
+                                     result.observed_context_option_count)
                                : OptionMaskState::unreadable;
     if (!roles_ok || mask == OptionMaskState::unreadable ||
         mask == OptionMaskState::unexpected) {
@@ -680,6 +690,17 @@ std::string SerializePlayerPrisonerRansomQuotePrivateV1(
     value += '"';
     value += FailureName(quote.failure);
     value += '"';
+    if (quote.failure == PlayerPrisonerRansomQuoteFailureV1::
+                             option_definition_count_unexpected) {
+      value += ",\"observed_definition_option_count\":";
+      value += quote.observed_definition_option_count
+                   ? std::to_string(*quote.observed_definition_option_count)
+                   : "null";
+      value += ",\"observed_context_option_count\":";
+      value += quote.observed_context_option_count
+                   ? std::to_string(*quote.observed_context_option_count)
+                   : "null";
+    }
     value += '}';
     return value;
   }

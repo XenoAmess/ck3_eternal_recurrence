@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -42,6 +43,8 @@ struct PlayerPrisonerRansomQuoteV1 {
   bool available = false;
   PlayerPrisonerRansomQuoteFailureV1 failure =
       PlayerPrisonerRansomQuoteFailureV1::binding_unavailable;
+  std::optional<std::int32_t> observed_definition_option_count;
+  std::optional<std::int32_t> observed_context_option_count;
   std::int32_t jailer_character_id = -1;
   std::int32_t payer_character_id = -1;
   std::int32_t prisoner_character_id = -1;
