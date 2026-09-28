@@ -5135,6 +5135,12 @@ def _compact_m5_wartime_observation(
         }
     fee = value.get("immediate_war_action_cost_observation")
     if (selected_step_present and selected_step is None
+            and value.get("schema") == "xar.ck3.m5-wartime-joint-observation.v1"
+            and value.get("status") == "incomplete_war_cash"
+            and value.get("read_only") is True
+            and value.get("formal_action_ready") is False
+            and isinstance(missing, list)
+            and "immediate_war_action_cost_raw" not in missing
             and isinstance(fee, dict)
             and fee.get("schema") == "xar.ck3.war-cash-no-selected-action.v1"
             and fee.get("status") == "no_selected_action_fee_proven"
@@ -5146,8 +5152,10 @@ def _compact_m5_wartime_observation(
             and isinstance(war_ids, list) and war_ids == [fee["war_id"]]):
         amount = fee.get("immediate_war_action_cost_raw")
         if (isinstance(amount, dict)
-                and amount.get("raw") == 0
-                and amount.get("scale") == 100_000
+                and type(amount.get("raw")) is int
+                and amount["raw"] == 0
+                and type(amount.get("scale")) is int
+                and amount["scale"] == 100_000
                 and amount.get("source")
                 == "formal_selected_step_absent_same_frame_v1"
                 and amount.get("source_frame") == frame
