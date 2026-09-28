@@ -52,6 +52,9 @@ HISTORICAL_PRIMARY = {
     "024": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F",
 }
 HISTORICAL_024_CARD_SHA = "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31"
+A05_WRITER_SHA = "3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782"
+A05_COLD_LOAD_SHA = "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+A05_POSTSTATE_SHA = "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
 HEADING = re.compile(r"^## \d\d:\d\d[–-]\d\d:\d\d .+$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
 
@@ -102,6 +105,11 @@ def _card_replays(data: dict) -> dict[str, str]:
         raise ValueError("Nine cards lack separate source replay identities")
     if replays["E2-09"] != "A05":
         raise ValueError("The formal E2-09 card must use the current A05 replay")
+    a05_source = data["replays"]["A05"]
+    if (a05_source.get("source_terminal_sha256", "").upper() != A05_WRITER_SHA
+            or a05_source.get("source_save_sha256", "").upper() != A05_COLD_LOAD_SHA
+            or a05_source.get("source_post_snapshot_sha256", "").upper() != A05_POSTSTATE_SHA):
+        raise ValueError("Formal A05 card must bind its exact writer, cold load and paused poststate")
     terminal_card = next(row for row in rows if row["id"] == "E2-09")
     old_cards = data.get("historical_cards")
     if (terminal_card.get("artifact") != card_filename("E2-09")
