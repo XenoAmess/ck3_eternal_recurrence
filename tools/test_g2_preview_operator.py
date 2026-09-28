@@ -74,6 +74,64 @@ class G2PreviewOperatorTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "saved submit"):
             paired(sidecar, driver, {}, save_hash, changed)
 
+        later_sidecar = copy.deepcopy(sidecar)
+        later_sidecar["pending"].update({
+            "last_checked_bridge_pid": 4321,
+            "last_checked_native_revision": 4,
+            "last_outbound_pending_state": "active",
+        })
+        later_hash = "c" * 64
+        later_checkpoint = {**checkpoint, "history_index": 3922,
+                            "sha256": later_hash, "turn_index": 3,
+                            "phase": "candidate_terminal_intercept", "status": "saved"}
+        later_driver = {**driver, "last_checkpoint": later_checkpoint}
+        continuation = {
+            "schema": g2_preview_operator.CHILD_MATRILINEAL_COLD_PROOF_SCHEMA,
+            # The one-time R0329 wrapper misclassified an intercepted third query.
+            "status": "cold_result_not_qualified", "ok": False,
+            "child_ledger": later_sidecar,
+            "formal_auto_run": {
+                "ok": True, "status": "candidate_terminal_intercepted",
+                "cleanup": {"ok": True}, "session": {"pid": 4321},
+                "fixed_seed": {"sha256": save_hash,
+                               "history_index": 3915,
+                               "saved_date_raw": 53219928},
+                "readiness": {"bridge_pid": 4321,
+                              "episode_character_id": 29829,
+                              "episode_run_id": episode},
+                "auto_run": {"turns": [
+                    {"index": 1, "selected_step":
+                     g2_preview_operator.CHILD_MATRILINEAL_RESULT_STEP,
+                     "status": "executed", "result": {
+                         "status": "pending", "accepted": True,
+                         "material_result": False, "heir_character_id": 37265,
+                         "candidate_character_id": 37267,
+                         "recipient_character_id": 32440,
+                         "post_native_revision": 4,
+                         "outbound_pending_state": "active"}},
+                    {"index": 2, "selected_step":
+                     "query-war-termination-options-16777231",
+                     "status": "executed"},
+                    {"index": 3, "selected_step": "query-army-strengths-v1",
+                     "status": "intercepted"}]},
+                "checkpoints": [later_checkpoint],
+            },
+        }
+        self.assertEqual(
+            paired(later_sidecar, later_driver, {}, later_hash,
+                   [proof, continuation]), 37267)
+        changed = copy.deepcopy(continuation)
+        changed["formal_auto_run"]["fixed_seed"]["sha256"] = "b" * 64
+        with self.assertRaisesRegex(ValueError, "prior checkpoint"):
+            paired(later_sidecar, later_driver, {}, later_hash,
+                   [proof, changed])
+        changed = copy.deepcopy(continuation)
+        changed["formal_auto_run"]["auto_run"]["turns"].append({
+            "selected_step": g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP})
+        with self.assertRaisesRegex(ValueError, "prior checkpoint"):
+            paired(later_sidecar, later_driver, {}, later_hash,
+                   [proof, changed])
+
     def test_exact_war_move_contract_is_bound_in_formal_argv(self) -> None:
         path = Path("D:/frozen/exact-move.json")
         command = g2_preview_operator.native_auto_run_command(
