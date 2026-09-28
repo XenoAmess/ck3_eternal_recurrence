@@ -54,7 +54,8 @@ std::array<std::byte, 0x30> g_target_legitimacy_data{};
 std::array<std::byte, 0x08> g_dead_prison_relation{};
 std::array<std::byte, 0x80> g_played_family_data{};
 std::array<std::int32_t, 2> g_played_spouse_ids{};
-std::array<std::int32_t, 1> g_played_child_ids{};
+std::array<std::int32_t, 1> g_played_family_slot50_ids{};
+int g_child_predicate_calls = 0;
 std::array<std::byte, 0xE0> g_player_character_entry{};
 std::array<std::byte, sizeof(void *)> g_player_character_entries{};
 std::array<std::byte, 0x40> g_war_storage{};
@@ -2782,6 +2783,12 @@ void *FixtureGetCharacterPrimaryTitle(void *character) {
              : nullptr;
 }
 
+bool FixtureIsCharacterChildOf(void *child, void *parent) {
+  ++g_child_predicate_calls;
+  return child == g_ally_character.data() &&
+         parent == g_played_character.data();
+}
+
 std::int64_t *FixtureReadMonthlyGoldIncome(
     std::int64_t *output, void *character, void *optional_breakdown,
     void *evaluation_context) {
@@ -4669,6 +4676,7 @@ int main() {
   bindings.evaluate_truce_duration_days =
       FixtureEvaluateTruceDurationDays;
   bindings.get_character_primary_title = FixtureGetCharacterPrimaryTitle;
+  bindings.is_character_child_of = FixtureIsCharacterChildOf;
   bindings.read_monthly_gold_income = FixtureReadMonthlyGoldIncome;
   bindings.evaluate_character_interaction_answer =
       FixtureEvaluateCharacterInteractionAnswer;
@@ -9128,15 +9136,18 @@ int main() {
   g_family_marriage_accept_raw = 1'250'000;
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
   Store(jomini_state, 0x20, std::uint8_t{1});
-  g_played_child_ids = {kFixtureAllyCharacterId};
+  // This old slot is not the proven child relation. Its deliberately different
+  // ID must not decide the specified subject's native child predicate.
+  g_played_family_slot50_ids = {enemy_character_id};
   Store(g_played_family_data, 0x50,
-        static_cast<void *>(g_played_child_ids.data()));
+        static_cast<void *>(g_played_family_slot50_ids.data()));
   Store(g_played_family_data, 0x58, std::int32_t{1});
   Store(g_played_family_data, 0x5C, std::int32_t{1});
   Store(g_played_character, 0x150, std::int32_t{-1});
   Store(g_ally_character, 0x150, std::int32_t{-1});
   Store(g_target_character, 0x150, std::int32_t{-1});
   Store(g_ally_character, 0x68, std::int16_t{18});
+  g_child_predicate_calls = 0;
   const auto specified_child =
       xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
           bindings, kFixtureAllyCharacterId);
@@ -9147,7 +9158,8 @@ int main() {
       specified_child.adult_measure_raw != 18 ||
       specified_child.relationship.betrothed_character_id != -1 ||
       specified_child.relationship.primary_spouse_character_id != -1 ||
-      !specified_child.relationship.spouse_character_ids.empty()) {
+      !specified_child.relationship.spouse_character_ids.empty() ||
+      g_child_predicate_calls != 2) {
     return Fail("specified player child native relation read unavailable");
   }
   const auto family_probe =
@@ -9159,7 +9171,7 @@ int main() {
       !family_probe.slots[3].native_int_array_shape ||
       !family_probe.slots[3].sample_readable ||
       family_probe.slots[3].sample_ids !=
-          std::vector<std::int32_t>{kFixtureAllyCharacterId} ||
+          std::vector<std::int32_t>{enemy_character_id} ||
       family_probe.slots[3].sample_generation_valid !=
           std::vector<bool>{true}) {
     return Fail("private family array diagnostic lost bounded native IDs");
@@ -9169,6 +9181,13 @@ int main() {
       xar::ck3_11906::PlayerChildMarriageSubjectFailureV1::not_player_child) {
     return Fail("specified marriage subject borrowed player-child authority");
   }
+  bindings.is_character_child_of = nullptr;
+  if (xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
+          bindings, kFixtureAllyCharacterId).failure !=
+      xar::ck3_11906::PlayerChildMarriageSubjectFailureV1::relationship_unavailable) {
+    return Fail("missing native child predicate became false relationship");
+  }
+  bindings.is_character_child_of = FixtureIsCharacterChildOf;
   Store(jomini_state, 0x20, std::uint8_t{0});
 #endif
   std::vector<xar::ck3_11906::ArrangeMarriageFamilyCandidateV1>
