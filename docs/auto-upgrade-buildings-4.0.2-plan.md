@@ -1,6 +1,6 @@
 # 自动升级建筑 4.0.2：每轮最多 15 栋
 
-状态：源码与隔离验收夹具已修改；本文件不代表 CK3 实机或 Workshop 发布通过。
+状态：设计与验收过程已归档；正式发布事实见 [4.0.2 changelog](release-changelogs/auto-upgrade-buildings/4.0.2.md)。
 
 ## 规则设计
 
