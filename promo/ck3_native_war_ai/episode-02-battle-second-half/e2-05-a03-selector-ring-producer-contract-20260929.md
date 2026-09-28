@@ -30,4 +30,15 @@
 3. 只有新的受管 a03 run 可以产生新事实：精确冷载 d26 存档、冻结 EXE/DLL/injector 与新 run ID；同一暂停帧只读 WarID `4`、ArmyID `18`、CombatID `16777218`、省 `2633`、actor `29829` 和 d26 `date_raw=53146848`。在受管 begin 回执确认本 run 的 token、战斗 ID 与 selector hook 已安装后，仅允许唯一一次 d26→d27 受管日推进；保全 begin、one-day、finish、d27 paused snapshot 的精确 bytes/SHA。finish、managed checkpoint 前后和每条 boundary record 的 token/CombatID/日期必须相符。若新 run 没有重现相同战局或事件，停止该叙事，不以 a02 的事件补位。
 4. 验收 `knight_selects` 时，要求新 run 自身的非空数组、无 selector/capacity/trampoline failure bit、唯一匹配的 side 1 与原版 `knight_killed` load index 11 root/select、`0 < candidate_count <= 65536`、`0 <= selected_index < candidate_count`；同一份 trace 的第 5→6 边界须有本 run 自己新增且目标相符的战报。若同侧同事件有多条 root 或 select，现有行没有逐条调用 ID，必须保持歧义 RED，不能按数组位置猜配对。要说出“抽到了角色 34120”或重算 raw draw，还须取 a03 自身 V3 候选源顺序、原版 event manifest 身份、选中 token 的独立 ABI 映射和 RNG 算法同源对拍；旧 020/070/036→038 的 `14/8`、候选名单和 token 映射一律不能移植。不得从一次战报反推候选集或 RNG 值。
 
-当前静态源码允许设计新读数，尚无新 DLL SHA、专项 selector 负例或 a03 原生回执；因此本合同的 producer 状态为 **未准入**，选择器数值与死亡状态都保持 unknown。即使未来 selector 行完整，原有最后稳定查询的 `failure_flags=1040` 仍要独立修复，不能将局部选择器成功写成完整 production trace GREEN。
+初次只读审查时，静态源码只允许设计新读数，尚无新 DLL SHA、专项 selector 负例或 a03 原生回执；因此 producer 状态为 **未准入**，选择器数值与死亡状态都保持 unknown。即使未来 selector 行完整，原有最后稳定查询的 `failure_flags=1040` 仍要独立修复，不能将局部选择器成功写成完整 production trace GREEN。
+
+## 2026-09-29 静态夹具续证
+
+上段是初次只读审查时的状态。本次在独立 `research/e205-selector-producer-tests` 工作树补了**离线源码夹具**，尚未生成或准入新 DLL，也未改变 a02/a03 的原生证据状态：
+
+- ring 测试经过真实 `XarCombatPhaseEventFireHookV1` → `XarCombatPhaseEffectDispatchHookV1` → `XarCombatPhaseKnightSelectHookV1` 调用链，在合成 exact-return-site、side 1、event root index 11 下，检查合成的 14 个候选、index 8、RNG counter `612212889→612212890`、salt 7 与两字 opaque token。它**只证明 producer 在该合成输入上的读写行为**，不证明 a03 实机抽签为 14/8，也不把 token 当作 CharacterID。
+- 负例覆盖 selector 原 trampoline 缺失、候选数 0/65537、选中 index 越界、RNG state null/不可读、65 次写入触发容量位，以及未进入 phase-fire、错误 side、错误 event root 和 null 候选指针时不留 selector 行。null 候选指针目前不会单独设置 selector failure bit；因此新 run 若要求原生选择器事实，必须检查期望行确实存在，缺行不能读作零次选择。
+- detour 测试补 selector prologue 漂移拒绝、安装时目标页保护失败且前序 hook 回滚，以及卸载时 selector 恢复失败保留安装所有权、随后重试恢复精确字节。这里只模拟内存/页保护，不替代真实 EXE SHA、RVA、prologue 与进程内安装回执。
+- 仅单线程构建并运行 `xar_ck3_native_bridge_combat_phase_event_trace_ring_v1` 与 `xar_ck3_native_bridge_combat_phase_event_trace_detour_v1`：MSVC 19.51.36256.0、CMake Debug/Ninja，`ctest -I 35,36 --output-on-failure -j 1` 为 **2/2 passed**。首次定向运行前的宽泛 `-R` 还选中了三个未构建 target，并暴露 Debug 函数栈上多个大型 fixture 造成的栈溢出；改为逐例堆分配后，上述两个目标重建并通过。未运行完整 CTest，也未构建 DLL/injector。
+
+源码 ABI 仍不给出 selector 的原始 draw、完整候选 CharacterID 列表、所选 opaque token→人物 ID 映射，或同侧同 event 多次 selector 的逐调用关联 ID。这些语义不能靠现有离线夹具补出；必须在独立 ABI 研究与新 a03 同源回执中证明，缺任一项时相关叙述保持 unknown。新 DLL 字节、SHA、配置门、全部正式 target 测试和 paused-live begin/finish 仍是 producer **RED** 的剩余准入项。

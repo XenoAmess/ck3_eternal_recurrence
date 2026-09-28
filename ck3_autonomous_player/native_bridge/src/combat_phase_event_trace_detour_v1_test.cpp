@@ -156,6 +156,7 @@ struct FixtureMemory {
   void *outgoing_damage_page = nullptr;
   void *post_counter_page = nullptr;
   bool fail_fire_patch_protection = false;
+  bool fail_knight_select_patch_protection = false;
   bool fail_outgoing_damage_patch_protection = false;
   bool fail_random_list_weight_patch_protection = false;
   bool fail_allocation = false;
@@ -220,6 +221,13 @@ bool FixtureProtect(void *raw, void *address, std::size_t size,
   auto &fixture = *static_cast<FixtureMemory *>(raw);
   if (fixture.fail_fire_patch_protection &&
       reinterpret_cast<std::uintptr_t>(address) == fixture.fire_target &&
+      desired == PAGE_EXECUTE_READWRITE) {
+    previous = 0;
+    return false;
+  }
+  if (fixture.fail_knight_select_patch_protection &&
+      reinterpret_cast<std::uintptr_t>(address) ==
+          fixture.knight_select_target &&
       desired == PAGE_EXECUTE_READWRITE) {
     previous = 0;
     return false;
@@ -559,6 +567,23 @@ bool AdmissionAndRollbackFailures() {
   }
   {
     Fixture fixture;
+    DWORD previous = 0;
+    if (!VirtualProtect(fixture.memory.knight_select_page,
+                        kKnightSelectPrologue.size(),
+                        PAGE_EXECUTE_READWRITE, &previous)) {
+      return Fail("selector prologue fixture protection failed");
+    }
+    static_cast<std::uint8_t *>(fixture.memory.knight_select_page)[0] = 0x90;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (InstallCombatPhaseEventTraceDetoursV1(state,
+                                              fixture.environment) ||
+        (state.failure_flags.load() & trace_detour_failure_anchor) == 0 ||
+        fixture.memory.live_allocations != 0) {
+      return Fail("selector prologue mismatch was admitted");
+    }
+  }
+  {
+    Fixture fixture;
     fixture.memory.fail_allocation = true;
     CombatPhaseEventTraceDetourStateV1 state{};
     if (InstallCombatPhaseEventTraceDetoursV1(state,
@@ -585,6 +610,50 @@ bool AdmissionAndRollbackFailures() {
         std::memcmp(fixture.memory.fire_page, kFirePrologue.data(),
                     kFirePrologue.size()) != 0) {
       return Fail("partial install did not roll schedule patch back");
+    }
+  }
+  {
+    Fixture fixture;
+    fixture.memory.fail_knight_select_patch_protection = true;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (InstallCombatPhaseEventTraceDetoursV1(state,
+                                              fixture.environment) ||
+        (state.failure_flags.load() &
+         trace_detour_failure_target_protection) == 0 ||
+        fixture.memory.live_allocations != 0 ||
+        std::memcmp(fixture.memory.fire_page, kFirePrologue.data(),
+                    kFirePrologue.size()) != 0 ||
+        std::memcmp(fixture.memory.effect_dispatch_page,
+                    kEffectDispatchPrologue.data(),
+                    kEffectDispatchPrologue.size()) != 0 ||
+        std::memcmp(fixture.memory.knight_select_page,
+                    kKnightSelectPrologue.data(),
+                    kKnightSelectPrologue.size()) != 0) {
+      return Fail("selector patch failure did not roll prior hooks back");
+    }
+  }
+  {
+    Fixture fixture;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (!InstallCombatPhaseEventTraceDetoursV1(state, fixture.environment)) {
+      return Fail("selector restore fixture did not install");
+    }
+    fixture.memory.fail_knight_select_patch_protection = true;
+    if (UninstallCombatPhaseEventTraceDetoursV1(state) ||
+        state.installed.load() == 0 ||
+        (state.failure_flags.load() &
+         trace_detour_failure_target_protection) == 0 ||
+        fixture.memory.live_allocations == 0) {
+      return Fail("selector restore failure discarded live hook ownership");
+    }
+    fixture.memory.fail_knight_select_patch_protection = false;
+    if (!UninstallCombatPhaseEventTraceDetoursV1(state) ||
+        state.installed.load() != 0 ||
+        fixture.memory.live_allocations != 0 ||
+        std::memcmp(fixture.memory.knight_select_page,
+                    kKnightSelectPrologue.data(),
+                    kKnightSelectPrologue.size()) != 0) {
+      return Fail("selector restore retry did not recover exact bytes");
     }
   }
   {
