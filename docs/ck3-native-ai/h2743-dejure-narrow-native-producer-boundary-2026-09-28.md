@@ -16,6 +16,17 @@ EXE 的完整 SHA 为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96
 | `F` 写入 | `0x2E9F2C0` 把传入的 Q100000 数值纳入结构并调用 `0x33590D0`；后者 `0x3359123–158` 在容器中查找 identifier，`0x335953F–560` 可更新已有 row，`0x3359566–57A` 可插入新 row。 | 这是**修改上下文容器**的路径，不是纯只读 getter。既有 claim CB 的 root-proxy/loaded-effect traversal 不自动适用于此 de-jure effect；本项目已记录该类预览崩溃，禁止在原游戏态重试。 |
 | `resolve_title_and_vassal_change` | [预入队回执](../../ck3_autonomous_player/native_bridge/research/dejure_resolve_prequeue_gate_1_19_0_6.json)仅证明 type `0x17` 对比、其他类型的条件处理和五个容器计数检查；[预览回执](../../ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json)证明其 preview `0x7E9220` 只是返回 true。 | 任何入口都没有给出当前完整 title／holder／人物 liege／vassal 的最终操作图。构造时 `type=0` 和历史 R0197 迁移不能填 H2743 delta。 |
 
+setup 的变更记录还有一道具体运行时门：`0x2E9F749–754` 对查得的
+`change` 调用虚表 `+0x08` 并检查返回；只有 true 才进入
+`0x2E9F7B5` 后面的动态列表遍历。`0x2E9F873–8B1` 在后续列表非空时，
+从两个列表对象各取 `+0x18` dword，并把同一对值分别追加到
+`change+0x28`、`change+0x40` 两个向量。另一条
+`0x2E9F7F7→0x24BD610` 路径还检查对象 `+0x30/+0x32`、
+change `+0x265`，按条件选 `change+0x58` 或 `+0x70` 的三 dword
+向量。对象类型、记录列业务含义、各列表的 H2743 内容和 resolve
+消费语义尚未闭合；这些指令只能证明**有条件追加的形状**，不能变成
+title 或 vassal 的 `old→new`。
+
 定向休战的静态方向来自原版 `00_dejure_war.txt:486–487` 和
 `00_war_effects.txt:1895–1903`，为攻方 Landolf `30097 →` 守方 Robert
 `29829`；它没有给出已设置的 truce slot。`standard_truce_duration_days`
