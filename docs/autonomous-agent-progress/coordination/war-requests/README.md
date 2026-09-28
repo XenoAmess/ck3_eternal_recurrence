@@ -2,6 +2,12 @@
 
 本目录让非战争执行者和战争维护者通过仓库的普通提交、PR 与 `master` 交换具体需求。任务总线可以提醒本机执行者，但不承担跨机器交付。当前请求以 `requests/` 文件为准，其中 [`WAR-INPUT-R0244`](requests/WAR-INPUT-R0244-20260927.json) 和 [`Robert H2743 退战`](requests/WAR-ROBERT-H2743-EXIT-20260928.json) 均有独立响应；H2743 的[响应](responses/WAR-ROBERT-H2743-EXIT-20260928.json)还列出了待通过 OneDrive 精确传输的四类原始资产与 SHA-256。
 
+## OneDrive/WAR 精确资产通道
+
+项目所有者于 2026-09-28 授权两台机器此后在各自 OneDrive 根目录下的固定 `WAR/` 目录直接双向交互，发现需求、传输精确资产和回传校验回执，不再经用户逐次转述。**Git `master` 中的 request/response/verification 仍是任务与状态的权威记录**；OneDrive 目录名、同步提示或文件到达本身不代表请求已认领、交付或通过实机复验。
+
+每个请求使用 `WAR/` 下独立子目录。传输前先从对应 request 和 Git evidence 冻结本次所需的相对目录、每个文件名、字节数和 SHA-256；发送方只放该清单中的文件，接收方只对该清单执行选择性同步或下载，并在本机逐文件复算大小与 SHA-256，保存带来源帧、实际路径、时间和结果的外置回执。接收方在请求子目录中新增约定的 ACK 或响应文件，不覆盖来件；Git 通道的 response 再引用它并明确实机证据边界。此前不得下载其他 OneDrive 文件的限制继续有效，不得为发现新需求而进入或下载无关目录内容；只读目录名与元数据检查可以用于定位新的 `WAR/` 来件。任何资产传输均不授权 CK3 启动、玩法动作或窗口接管。
+
 CK3 实例与 operator MCP 按机器分别管理：每台机器最多一个 CK3，本机启动只依赖本机 live 状态、正式配对及实际共享资源条件；另一台机器运行 WAR31 本身不占用本机窗口。早期 H2660 全局窗口等待请求由 [`requests/WAR-WINDOW-ROBERT-H2660-PER-MACHINE-20260928.json`](requests/WAR-WINDOW-ROBERT-H2660-PER-MACHINE-20260928.json) 更正；原请求保留作历史记录。Git 传递更正与成果，不充当实时锁，也不允许调用另一台机器的 MCP。
 
 ## 文件与写入者
