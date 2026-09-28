@@ -1,0 +1,121 @@
+{
+  "schema": "xar.war-ai.episode02.a05-writer-card-facts.v1",
+  "usage_scope": "current-a05-paired-writer-edit-proxy",
+  "media_review_status": "ENCODED_UNREVIEWED",
+  "clean_spans_certified": false,
+  "human_review_completed": false,
+  "run_identity": {
+    "run": "episode02-terminal-pair-20260928-a05-live",
+    "source_relation": "independent_cold_load_of_checkpoint_produced_within_004_not_004_original_cold_load",
+    "source_save_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+    "start_date_raw": 53146872,
+    "terminal_date_raw": 53146992,
+    "game_version": "1.19.0.6",
+    "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "FCAFBA2A73E1EEF1E2651ADD40F71CE66B9FE16E4E61BD014DBA65C9965AEBD8",
+    "player_character_id": 29829,
+    "combat_id": 16777218,
+    "war_id": 4,
+    "army_id": 18,
+    "province_id": 2633
+  },
+  "sources": {
+    "preflight": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/preflight.json",
+      "sha256": "BF626C5967EFC114C24D00317CCD61A185E6CF44628416D0D2DEC01FDA0667B6"
+    },
+    "start_readback": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/native-start-readback.json",
+      "sha256": "B001347BA7066AC4DFE0024784F956809680ED24C9E9FC3B9EF7B5941F0992F4"
+    },
+    "writer_response": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-terminal.json",
+      "bytes": 18852,
+      "sha256": "3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782"
+    },
+    "paused_post_snapshot": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
+      "bytes": 580630,
+      "sha256": "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
+    },
+    "same_recorder_observe": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/terminal-pair-steps/e2t-s02-d32-observe.json",
+      "bytes": 3199,
+      "sha256": "D6B0606A7C9B993937CD0C8323A0294500DB5858FCDF7447F64FC9B6B8381FA8"
+    },
+    "same_recorder_terminal_verify": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/terminal-pair-steps/e2t-s02-d32-verify-terminal.json",
+      "sha256": "2E5C955857F5F218774D08DC236B41705188992C367EFFD3ED7E3BDF62BB15C6",
+      "status": "same-recorder-terminal-mark-bound-unreviewed"
+    },
+    "recorder_final": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/recorder-final.json",
+      "sha256": "5431520988C402A80D017B0338703463B61824B9E59213FD24467F14A8F60C49"
+    },
+    "raw_video": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/raw/e2-09-terminal-a02.mkv",
+      "bytes": 840210967,
+      "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+      "hash_provenance": "recorder_final_reported_and_file_size_checked_not_rehashed_for_this_card"
+    }
+  },
+  "native_writer_facts": {
+    "terminal_kind": "normal_result",
+    "winner_combat_side": 0,
+    "losing_combat_side": 1,
+    "loser_successor": "subject_retreating",
+    "fixed_point_scale": 100000,
+    "hard_loss_inputs_raw_q100000": {
+      "baseline": 129800000,
+      "stored_current": 0,
+      "levy_soft": 57753614,
+      "men_at_arms_soft": 18384344
+    },
+    "hard_loss_numerator_raw_q100000": 53662042,
+    "denominator_character_id": 29829,
+    "denominator_buckets_native_add_order_people": [0, 675, 310, 0, 0, 0, 11, 0],
+    "denominator_people": 996,
+    "integer_ratio_raw_q100000": 53877,
+    "selected_cb_battle_scale_raw_q100000": 15000000,
+    "uncapped_score_raw_q100000": 8081550,
+    "single_battle_cap_raw_q100000": 5000000,
+    "battle_row_index": 0,
+    "battle_row_positive_magnitude_raw_q100000": 5000000,
+    "winner_is_war_attacker": false,
+    "war_attacker_relative_delta_raw_q100000": -5000000
+  },
+  "paused_poststate_facts": {
+    "war_id": 4,
+    "player_side": "attacker",
+    "player_relative_war_score": -50,
+    "army_id": 18,
+    "army_retreating": true,
+    "army_in_combat": false
+  },
+  "arithmetic": {
+    "hard_loss": "129800000 - 0 - 57753614 - 18384344 = 53662042 Q100000",
+    "denominator": "0 + 675 + 310 + 0 + 0 + 0 + 11 + 0 = 996 people",
+    "ratio": "min(100000, 53662042 // 996) = 53877 Q100000 = 53.877%",
+    "cb_scale": "53877 * 15000000 // 100000 = 8081550 Q100000 = 80.8155",
+    "battle_cap": "min(8081550, 5000000) = 5000000 Q100000 = 50",
+    "attacker_sign": "defender won; war attacker relative battle row = -5000000 Q100000 = -50"
+  },
+  "artifacts": {
+    "card_index": {
+      "path_relative_to_this_file": "calculation-cards.json",
+      "bytes": 17571,
+      "sha256": "9D6035244B128D193103A338A1AF0ED15028493A6A843D4EAFD0BCF3E7B20FB8"
+    },
+    "renderer": {
+      "path_relative_to_this_file": "render_calculation_cards.py",
+      "bytes": 37709,
+      "sha256": "111C71F71F8E4F24916A9D7FA49E1DF1B7694557B4FE5EFFB05325ACD6FF3F50"
+    },
+    "current_a05_card": {
+      "path_relative_to_this_file": "e2-09-a05-calculation.svg",
+      "bytes": 7073,
+      "sha256": "18DACA2739B654E49EF8998BC002EEA5525883486AAECA7F1D71C883F63F5E4C"
+    },
+    "historical_024_card_preserved_sha256": "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31"
+  }
+}

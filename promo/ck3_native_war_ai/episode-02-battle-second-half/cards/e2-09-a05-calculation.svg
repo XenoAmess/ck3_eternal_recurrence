@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit calculation-cards.json or render_calculation_cards.py -->
+<rect x="0" y="0" width="2560" height="1440" rx="0" fill="#211813" stroke="#211813" stroke-width="2"/>
+<line x1="64" y1="30" x2="2496" y2="30" stroke="#61503C" stroke-width="1"/>
+<line x1="64" y1="30" x2="174" y2="30" stroke="#CBA56A" stroke-width="2"/>
+<line x1="2386" y1="30" x2="2496" y2="30" stroke="#CBA56A" stroke-width="2"/>
+<text x="90" y="105" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="700" text-anchor="start">战斗后半笔账  /  E2-09-A05</text>
+<text x="2470" y="105" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="end">独立原版回放 A05 · 新同源实拍</text>
+<text x="90" y="188" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="70" font-weight="700" text-anchor="start">终局：一场仗怎样入战争账</text>
+<text x="92" y="238" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">A05 新独立冷载第 27 日检查点；第 32 日 writer 与同录制器后态</text>
+<line x1="90" y1="255" x2="2470" y2="255" stroke="#61503C" stroke-width="2"/>
+<line x1="90" y1="1022" x2="2470" y2="1022" stroke="#CBA56A" stroke-width="2"/>
+<text x="92" y="1060" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="400" text-anchor="start">CK3 1.19.0.6  ·  CombatID 16777218  ·  WarID 4  ·  原生日戳 53146992</text>
+<text x="92" y="1100" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" text-anchor="start">原始回执 SHA-256  3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782</text>
+<line x1="0" y1="1120" x2="2560" y2="1120" stroke="#CBA56A" stroke-width="2"/>
+<rect x="90" y="284" width="730" height="665" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<rect x="870" y="284" width="730" height="665" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<rect x="1650" y="284" width="820" height="665" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="342" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="700" text-anchor="start">败方输入</text>
+<line x1="125" y1="364" x2="785" y2="364" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="421" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="34" font-weight="400" text-anchor="start">单场起始 1,298 人</text>
+<text x="125" y="507" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="400" text-anchor="start">硬伤分子</text>
+<text x="125" y="603" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="72" font-weight="700" text-anchor="start">536.62042</text>
+<text x="125" y="659" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">人当量</text>
+<line x1="125" y1="698" x2="785" y2="698" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="752" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="400" text-anchor="start">八桶战争分母</text>
+<text x="125" y="828" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="71" font-weight="700" text-anchor="start">996 人</text>
+<text x="125" y="888" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="400" text-anchor="start">0+675+310+0+0+0+11+0</text>
+<text x="905" y="342" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="700" text-anchor="start">整数计算</text>
+<line x1="905" y1="364" x2="1565" y2="364" stroke="#61503C" stroke-width="2"/>
+<text x="905" y="424" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="start">53,662,042 Q100000 ÷ 996 人</text>
+<text x="905" y="502" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="44" font-weight="700" text-anchor="start">= 53,877 / 100,000</text>
+<text x="905" y="562" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="37" font-weight="400" text-anchor="start">= 53.877%</text>
+<line x1="905" y1="602" x2="1565" y2="602" stroke="#61503C" stroke-width="2"/>
+<text x="905" y="669" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="400" text-anchor="start">CB 战分系数 150</text>
+<text x="905" y="757" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="400" text-anchor="start">未封顶</text>
+<text x="905" y="851" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="75" font-weight="700" text-anchor="start">80.8155</text>
+<text x="905" y="910" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="30" font-weight="400" text-anchor="start">战分</text>
+<text x="1685" y="342" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="700" text-anchor="start">正常终局 · 单场封顶</text>
+<line x1="1685" y1="364" x2="2435" y2="364" stroke="#61503C" stroke-width="2"/>
+<text x="1685" y="431" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="400" text-anchor="start">min(80.8155, 50)</text>
+<text x="1685" y="575" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="150" font-weight="700" text-anchor="start">50</text>
+<text x="1685" y="628" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="400" text-anchor="start">row 正幅度</text>
+<line x1="1685" y1="673" x2="2435" y2="673" stroke="#61503C" stroke-width="2"/>
+<text x="1685" y="735" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="37" font-weight="400" text-anchor="start">胜者：战争防守方</text>
+<text x="1685" y="831" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="35" font-weight="400" text-anchor="start">进攻方相对战分</text>
+<text x="1685" y="927" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="97" font-weight="700" text-anchor="start">−50</text>
+<text x="95" y="997" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="400" text-anchor="start">A05 原生单场 row −50；同 run 第 32 日暂停后态总分 −50；录制仍待人工审阅。</text>
+</svg>

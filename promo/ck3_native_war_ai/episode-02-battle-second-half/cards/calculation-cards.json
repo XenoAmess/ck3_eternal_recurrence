@@ -191,6 +191,48 @@
       "row_magnitude_raw_q100000": 5000000,
       "winner_is_war_attacker": false,
       "war_attacker_relative_delta_raw_q100000": -5000000
+    },
+    "A05": {
+      "kind": "new_paired_live_run_from_004_day27_checkpoint",
+      "source_save": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
+      "source_save_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+      "source_preflight": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/preflight.json",
+      "source_preflight_sha256": "BF626C5967EFC114C24D00317CCD61A185E6CF44628416D0D2DEC01FDA0667B6",
+      "source_start_readback": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/native-start-readback.json",
+      "source_start_readback_sha256": "B001347BA7066AC4DFE0024784F956809680ED24C9E9FC3B9EF7B5941F0992F4",
+      "source_terminal": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-terminal.json",
+      "source_terminal_sha256": "3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782",
+      "source_post_snapshot": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d32-snapshot.json",
+      "source_post_snapshot_sha256": "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7",
+      "source_observe": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/terminal-pair-steps/e2t-s02-d32-observe.json",
+      "source_observe_sha256": "D6B0606A7C9B993937CD0C8323A0294500DB5858FCDF7447F64FC9B6B8381FA8",
+      "source_same_recorder_verify": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/terminal-pair-steps/e2t-s02-d32-verify-terminal.json",
+      "source_same_recorder_verify_sha256": "2E5C955857F5F218774D08DC236B41705188992C367EFFD3ED7E3BDF62BB15C6",
+      "source_recorder_final": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02/recorder-final.json",
+      "source_recorder_final_sha256": "5431520988C402A80D017B0338703463B61824B9E59213FD24467F14A8F60C49",
+      "raw_video_sha256_reported_by_recorder": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+      "start_date_raw": 53146872,
+      "terminal_date_raw": 53146992,
+      "terminal_kind": "normal_result",
+      "winner_side": 0,
+      "loser_side": 1,
+      "loser_successor": "subject_retreating",
+      "loser_baseline_raw_q100000": 129800000,
+      "loser_stored_current_raw_q100000": 0,
+      "loser_levy_soft_raw_q100000": 57753614,
+      "loser_men_at_arms_soft_raw_q100000": 18384344,
+      "hard_loss_numerator_raw_q100000": 53662042,
+      "denominator_buckets_people": [0, 675, 310, 0, 0, 0, 11, 0],
+      "denominator_people": 996,
+      "ratio_raw_q100000": 53877,
+      "cb_scale_raw_q100000": 15000000,
+      "uncapped_score_raw_q100000": 8081550,
+      "single_battle_cap_raw_q100000": 5000000,
+      "row_magnitude_raw_q100000": 5000000,
+      "winner_is_war_attacker": false,
+      "war_attacker_relative_delta_raw_q100000": -5000000,
+      "post_snapshot_player_relative_war_score": -50,
+      "media_status": "ENCODED_UNREVIEWED"
     }
   },
   "cards": [
@@ -202,6 +244,7 @@
     {"id": "E2-05C", "replay": "036_038", "source_label": "036→038 后档复载", "title": "阵亡之后：下一帧名单少了谁", "purpose": "036 后存档由 038 逐字节复载；不得接到 020 或 070"},
     {"id": "E2-06", "replay": "085", "title": "增援：先对齐参战账", "purpose": "同钩子旧 entry、缓存差额与新增 current 的算术板"},
     {"id": "E2-07", "replay": "085", "title": "战宽：从入场写到首次出伤", "purpose": "同一 attempt 的 join 前后战宽与 R8D 实参"},
-    {"id": "E2-09", "replay": "024", "source_label": "024 · 历史原始回执", "title": "终局：一场仗怎样入战争账", "purpose": "历史 024 同一次原生 writer 的分子、八桶分母、战分系数、封顶与相对符号；不是新拍 run 的读数"}
+    {"id": "E2-09", "replay": "024", "source_label": "024 · 历史原始回执", "title": "终局：一场仗怎样入战争账", "purpose": "历史 024 同一次原生 writer 的分子、八桶分母、战分系数、封顶与相对符号；不是新拍 run 的读数"},
+    {"id": "E2-09-A05", "replay": "A05", "source_label": "A05 · 新同源实拍", "title": "终局：一场仗怎样入战争账", "purpose": "A05 新独立 run 的原生 writer、同录制器终局标记和第32日暂停后态；媒体未完成 clean-span 与人工审阅"}
   ]
 }

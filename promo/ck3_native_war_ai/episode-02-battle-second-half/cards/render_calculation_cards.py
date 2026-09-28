@@ -39,6 +39,10 @@ SOURCE_FIELDS = {
                 "source_day27_capture_report"),
     "085": ("source_save", "source_finish", "source_cleanup"),
     "024": ("source_save", "source_terminal", "source_session_result"),
+    "A05": ("source_save", "source_preflight", "source_start_readback",
+            "source_terminal", "source_post_snapshot", "source_observe",
+            "source_same_recorder_verify",
+            "source_recorder_final"),
 }
 
 
@@ -107,6 +111,40 @@ def validate(data: dict) -> None:
     require(b["winner_is_war_attacker"] is False and
             b["war_attacker_relative_delta_raw_q100000"] ==
             -b["row_magnitude_raw_q100000"], "war attacker sign")
+    live = replays["A05"]
+    require(live["kind"] == "new_paired_live_run_from_004_day27_checkpoint" and
+            live["source_save_sha256"] == pursuit_save_sha(replays) and
+            live["source_terminal_sha256"] != b["source_terminal_sha256"],
+            "A05 checkpoint relation and independent writer")
+    require(live["terminal_kind"] == "normal_result" and
+            (live["winner_side"], live["loser_side"], live["loser_successor"]) ==
+            (0, 1, "subject_retreating") and
+            (live["start_date_raw"], live["terminal_date_raw"]) ==
+            (53146872, 53146992), "A05 terminal identity")
+    require(live["loser_baseline_raw_q100000"] -
+            live["loser_stored_current_raw_q100000"] -
+            live["loser_levy_soft_raw_q100000"] -
+            live["loser_men_at_arms_soft_raw_q100000"] ==
+            live["hard_loss_numerator_raw_q100000"], "A05 hard-loss inputs")
+    require(sum(live["denominator_buckets_people"]) ==
+            live["denominator_people"] == 996, "A05 native denominator buckets")
+    require(min(Q, live["hard_loss_numerator_raw_q100000"] //
+                live["denominator_people"]) == live["ratio_raw_q100000"] == 53877,
+            "A05 integer ratio")
+    require(live["ratio_raw_q100000"] * live["cb_scale_raw_q100000"] // Q ==
+            live["uncapped_score_raw_q100000"] == 8081550,
+            "A05 uncapped CB score")
+    require(min(live["uncapped_score_raw_q100000"],
+                live["single_battle_cap_raw_q100000"]) ==
+            live["row_magnitude_raw_q100000"] == 5000000 and
+            live["winner_is_war_attacker"] is False and
+            live["war_attacker_relative_delta_raw_q100000"] ==
+            -live["row_magnitude_raw_q100000"] and
+            live["post_snapshot_player_relative_war_score"] == -50,
+            "A05 capped row, war sign, and poststate")
+    require(live["media_status"] == "ENCODED_UNREVIEWED" and
+            len(live["raw_video_sha256_reported_by_recorder"]) == 64,
+            "A05 media scope")
     pursuit = replays["004"]
     require(pursuit["source_index_sha256"] == pursuit["primary_receipt_sha256"],
             "004 original index binding")
@@ -198,8 +236,12 @@ def validate(data: dict) -> None:
                     f"{key} {field} SHA")
     require([row["id"] for row in data["cards"]] ==
             ["E2-02", "E2-03", "E2-04", "E2-05A", "E2-05B", "E2-05C",
-             "E2-06", "E2-07", "E2-09"],
+             "E2-06", "E2-07", "E2-09", "E2-09-A05"],
             "card order")
+
+
+def pursuit_save_sha(replays: dict) -> str:
+    return replays["004"]["source_day27_checkpoint_sha256"]
 
 
 class Svg:
@@ -474,42 +516,49 @@ def card_07(data: dict, card: dict) -> bytes:
 
 
 def card_09(data: dict, card: dict) -> bytes:
-    b = data["replays"]["024"]
+    b = data["replays"][card["replay"]]
     s = Svg()
-    frame(s, card, b, data, "历史研究板：024 第 27→32 日独立回放；本板不是新拍 run 的读数")
+    subtitle = ("A05 新独立冷载第 27 日检查点；第 32 日 writer 与同录制器后态"
+                if card["replay"] == "A05" else
+                "历史研究板：024 第 27→32 日独立回放；本板不是新拍 run 的读数")
+    frame(s, card, b, data, subtitle)
     widths = [(90, 730), (870, 730), (1650, 820)]
     for x, width in widths:
         s.rect(x, 284, width, 665)
     s.text(125, 342, "败方输入", 40, "gold", 700)
     s.line(125, 364, 785, 364)
-    s.text(125, 421, "单场起始 1,298 人", 34, "muted")
+    s.text(125, 421, f'单场起始 {scaled_compact(b["loser_baseline_raw_q100000"])} 人', 34, "muted")
     s.text(125, 507, "硬伤分子", 33)
-    s.text(125, 603, "536.62042", 72, "ink", 700)
+    s.text(125, 603, scaled(b["hard_loss_numerator_raw_q100000"]), 72, "ink", 700)
     s.text(125, 659, "人当量", 32, "muted")
     s.line(125, 698, 785, 698)
     s.text(125, 752, "八桶战争分母", 33)
-    s.text(125, 828, "996 人", 71, "gold", 700)
-    s.text(125, 888, "0+675+310+0+0+0+11+0", 29, "muted")
+    s.text(125, 828, f'{b["denominator_people"]} 人', 71, "gold", 700)
+    s.text(125, 888, "+".join(map(str, b["denominator_buckets_people"])), 29, "muted")
     s.text(905, 342, "整数计算", 40, "gold", 700)
     s.line(905, 364, 1565, 364)
-    s.text(905, 424, "53,662,042 Q100000 ÷ 996 人", 31)
-    s.text(905, 502, "= 53,877 / 100,000", 44, "ink", 700)
-    s.text(905, 562, "= 53.877%", 37, "muted")
+    s.text(905, 424, f'{b["hard_loss_numerator_raw_q100000"]:,} Q100000 ÷ {b["denominator_people"]} 人', 31)
+    s.text(905, 502, f'= {b["ratio_raw_q100000"]:,} / 100,000', 44, "ink", 700)
+    s.text(905, 562, f'= {b["ratio_raw_q100000"] / 1000:g}%', 37, "muted")
     s.line(905, 602, 1565, 602)
-    s.text(905, 669, "CB 战分系数 150", 40)
+    s.text(905, 669, f'CB 战分系数 {scaled_compact(b["cb_scale_raw_q100000"])}', 40)
     s.text(905, 757, "未封顶", 33, "muted")
-    s.text(905, 851, "80.8155", 75, "gold", 700)
+    s.text(905, 851, scaled_compact(b["uncapped_score_raw_q100000"]), 75, "gold", 700)
     s.text(905, 910, "战分", 30, "muted")
     s.text(1685, 342, "正常终局 · 单场封顶", 40, "gold", 700)
     s.line(1685, 364, 2435, 364)
-    s.text(1685, 431, "min(80.8155, 50)", 40)
-    s.text(1685, 575, "50", 150, "ink", 700)
+    s.text(1685, 431, f'min({scaled_compact(b["uncapped_score_raw_q100000"])}, '
+           f'{scaled_compact(b["single_battle_cap_raw_q100000"])})', 40)
+    s.text(1685, 575, scaled_compact(b["row_magnitude_raw_q100000"]), 150, "ink", 700)
     s.text(1685, 628, "row 正幅度", 33, "muted")
     s.line(1685, 673, 2435, 673)
     s.text(1685, 735, "胜者：战争防守方", 37)
     s.text(1685, 831, "进攻方相对战分", 35, "muted")
-    s.text(1685, 927, "−50", 97, "gold", 700)
-    s.text(95, 997, "仅对应历史 024 的单场 row；新拍镜头须另取同 run writer 与战争面板回执。", 28, "muted")
+    s.text(1685, 927, f'−{scaled_compact(-b["war_attacker_relative_delta_raw_q100000"])}', 97, "gold", 700)
+    footer = ("A05 原生单场 row −50；同 run 第 32 日暂停后态总分 −50；录制仍待人工审阅。"
+              if card["replay"] == "A05" else
+              "仅对应历史 024 的单场 row；新拍镜头须另取同 run writer 与战争面板回执。")
+    s.text(95, 997, footer, 28, "muted")
     return s.finish()
 
 
@@ -517,6 +566,7 @@ RENDERERS = {
     "E2-02": card_02, "E2-03": card_03, "E2-04": card_04,
     "E2-05A": card_05a, "E2-05B": card_05b, "E2-05C": card_05c,
     "E2-06": card_06, "E2-07": card_07, "E2-09": card_09,
+    "E2-09-A05": card_09,
 }
 
 
@@ -535,6 +585,95 @@ def verify_sources(data: dict) -> None:
                 checked[path] = digest.hexdigest().upper()
             require(checked[path] == replay[field + "_sha256"],
                     f"source SHA mismatch: replay {key}, {field}")
+    verify_a05_sources(data["replays"]["A05"])
+
+
+def verify_a05_sources(a: dict) -> None:
+    """Check source semantics after the byte hashes; never decode the raw video."""
+    preflight = json.loads(Path(a["source_preflight"]).read_text(encoding="utf-8"))
+    start = json.loads(Path(a["source_start_readback"]).read_text(encoding="utf-8"))
+    writer = json.loads(Path(a["source_terminal"]).read_text(encoding="utf-8"))
+    post = json.loads(Path(a["source_post_snapshot"]).read_text(encoding="utf-8"))
+    observe = json.loads(Path(a["source_observe"]).read_text(encoding="utf-8"))
+    verify = json.loads(Path(a["source_same_recorder_verify"]).read_text(encoding="utf-8"))
+    recorder = json.loads(Path(a["source_recorder_final"]).read_text(encoding="utf-8"))
+    require(preflight["result"] == "READY_FOR_BOUNDED_LIVE_ATTEMPT" and
+            preflight["checkpoint_source"]["save"]["sha256"] ==
+            a["source_save_sha256"] and
+            start["postcondition_verified"] is True and
+            start["source_checkpoint"]["save"]["sha256"] ==
+            a["source_save_sha256"] and
+            start["snapshot"]["date_raw"] == a["start_date_raw"] and
+            start["snapshot"]["played_character"]["character_id"] == 29829,
+            "A05 independent cold-load readback")
+    require(writer["result"] == "CALL_COMPLETED" and
+            writer["body"]["status"] == "available" and
+            writer["body"]["battle_terminal_transition_ready"] is True,
+            "A05 writer response")
+    transition = writer["body"]["battle_terminal_transition"]
+    prior = transition["prior"]
+    hard = prior["hard_loss_inputs"]
+    row = prior["battle_warscore"]
+    denom = row["denominator_inputs"]
+    require((transition["prior_combat_id"], transition["subject_public_cunit_id"],
+             transition["observed_date_raw"], prior["province_id"],
+             prior["terminal_kind"], prior["winner_raw"],
+             transition["successor"]["state"]) ==
+            (16777218, 18, a["terminal_date_raw"], 2633, "normal_result", 0,
+             "subject_retreating"), "A05 writer terminal identity")
+    require((hard["losing_side_index"], hard["baseline_raw"],
+             hard["stored_current_raw"], hard["levy_soft_raw"],
+             hard["men_at_arms_soft_raw"], hard["hard_loss_raw"]) ==
+            (1, a["loser_baseline_raw_q100000"],
+             a["loser_stored_current_raw_q100000"],
+             a["loser_levy_soft_raw_q100000"],
+             a["loser_men_at_arms_soft_raw_q100000"],
+             a["hard_loss_numerator_raw_q100000"]), "A05 writer hard-loss fields")
+    require(denom["sum_int32"] == denom["after_minimum_int32"] ==
+            a["denominator_people"] and
+            denom["participants"] == [
+                {"character_id": 29829,
+                 "buckets_native_add_order_int32": a["denominator_buckets_people"]}],
+            "A05 writer denominator fields")
+    require((row["status"], row["war_id"], row["war_battle_row_index"],
+             row["value_raw_q100000"], row["winner_is_war_attacker"],
+             row["attacker_relative_delta_raw_q100000"],
+             row["selected_cb_battle_scale_raw_q100000"]) ==
+            ("recorded", 4, 0, a["row_magnitude_raw_q100000"], False,
+             a["war_attacker_relative_delta_raw_q100000"],
+             a["cb_scale_raw_q100000"]), "A05 writer battle row")
+    require(post["result"] == "CALL_COMPLETED" and
+            post["body"]["date_raw"] == a["terminal_date_raw"] and
+            post["body"]["paused"] is True and
+            post["body"]["played_character"]["character_id"] == 29829,
+            "A05 pause poststate")
+    wars = [w for w in post["body"]["active_wars"] if w["war_id"] == 4]
+    require(len(wars) == 1 and wars[0]["player_side"] == "attacker" and
+            wars[0]["player_relative_war_score"] ==
+            a["post_snapshot_player_relative_war_score"] and
+            any(army["army_id"] == 18 and army["retreating"] is True and
+                army["in_combat"] is False for army in wars[0]["allied_armies"]),
+            "A05 WarID 4 score and ArmyID 18 successor")
+    require(observe["native_response"]["sha256"] ==
+            a["source_terminal_sha256"] and
+            observe["snapshot"]["sha256"] ==
+            a["source_post_snapshot_sha256"] and
+            verify["observed"]["sha256"] ==
+            a["source_observe_sha256"] and
+            verify["mark"]["response_sha256"] ==
+            a["source_terminal_sha256"] and
+            verify["status"] == "same-recorder-terminal-mark-bound-unreviewed" and
+            (verify["day"], verify["date_raw"]) == (32, a["terminal_date_raw"]),
+            "A05 same-recorder writer/poststate binding")
+    raw = recorder["raw"]
+    require(recorder["result"] == a["media_status"] == "ENCODED_UNREVIEWED" and
+            recorder["clean_spans_certified"] is False and
+            recorder["human_review_completed"] is False and
+            recorder["video_pts_complete"] is True and
+            raw["path"] == verify["recorder_gate"]["raw_path"] and
+            raw["sha256"] == a["raw_video_sha256_reported_by_recorder"] and
+            Path(raw["path"]).stat().st_size == raw["bytes"],
+            "A05 raw recorder identity and unreviewed boundary")
 
 
 def main() -> None:

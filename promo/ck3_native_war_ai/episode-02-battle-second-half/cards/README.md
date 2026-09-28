@@ -1,6 +1,6 @@
 # 第 2 期原生战斗计算卡
 
-2026-09-28。九张 **2560×1440 全屏独立插页**对应[下一期镜头表](../shot-list.md)的 E2-02/03/04/05/06/07/09；E2-05 拆成三张，防止把不同回放剪成同一次。画面底部 `y=1120..1439` 留白给字幕。它们只表现已取得的原生整数回执和说明，不是 CK3 实机截图，也不作为覆盖原生 UI 的叠层。现场画面、原速连续段和用户全片审阅仍按[追击与骑士证据索引](../pursuit-knight-evidence-audit-20260928.md)及[增援与终局证据索引](../join-terminal-evidence-index.md)另行取得。
+2026-09-28。十张 **2560×1440 全屏独立插页**对应[下一期镜头表](../shot-list.md)的 E2-02/03/04/05/06/07/09；其中两张 E2-09 分别保存历史 024 研究板与当前 A05 配对实拍的独立读数，不能混用。E2-05 拆成三张，防止把不同回放剪成同一次。画面底部 `y=1120..1439` 留白给字幕。它们只表现已取得的原生整数回执和说明，不是 CK3 实机截图，也不作为覆盖原生 UI 的叠层。现场画面、原速连续段和用户全片审阅仍按[追击与骑士证据索引](../pursuit-knight-evidence-audit-20260928.md)及[增援与终局证据索引](../join-terminal-evidence-index.md)另行取得。
 
 | 卡 | 原版回放 | 说明 | 生成 SVG SHA-256 |
 | --- | --- | --- | --- |
@@ -13,8 +13,9 @@
 | [E2-06](e2-06-calculation.svg) | 085，第 11 日源档独立回放 | 旧双方 entry/cache 差额，ArmyID 22 的 13 团起始 2570 人与实际 current 2560 人，返回双方残差归零。 | `767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5` |
 | [E2-07](e2-07-calculation.svg) | 同一次 085 回放 | join 前后 base/final 战宽 `1645/1480→2467/2220`，首次 side 0 出伤 `R8D=2220`。森林 `0.9` 是同版原版脚本静态值，非 085 同帧运行时地形字段。 | `91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527` |
 | [E2-09](e2-09-calculation.svg) | 历史 024，第 27 日源档独立回放 | 024 的原生 writer 回执：分子 536.62042 人当量、八桶分母 996 人、整数比例 53.877%、CB 战分系数 150、未封顶 80.8155、单场封顶 50、战争进攻方相对 row `-50`。本卡没有新拍 run 的结果。 | `1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31` |
+| [E2-09-A05](e2-09-a05-calculation.svg) | 当前 A05，从 004 运行中保存的第 27 日检查点独立冷载 | 新 run 的原生 writer **独立**给出 `129800000−0−57753614−18384344=53662042 Q100000`、八桶 `[0,675,310,0,0,0,11,0]` 合计 996、整数比例 53.877%、CB 战分系数 150、未封顶 80.8155、单场封顶 50、战争进攻方相对 row `−50`；同 run 暂停后态 WarID 4 总分 `−50`，ArmyID 18 正常败退。录制仍待 clean-span 与人工审阅。 | `18DACA2739B654E49EF8998BC002EEA5525883486AAECA7F1D71C883F63F5E4C` |
 
-004 的 E2-02/03 可讲为同一条追击回放；004 的实际冷载源由其 `capture-report.json` 的 `checkpoint_source.save` 绑定到 attempt-002 接战存档 SHA `45CCE7E9...6245F`，第 27 日存档 SHA `F085D8AB...FEEB3` 则是在 004 运行中生成、供后续 024 等回放使用的检查点。039→040 和 036→038 各有自己的逐字节后档复载；020、070、036 是从第 26 日源档分别启动的回放，即使角色与战报一致，也不能拼成同一次。085 和 024 又是不同日期检查点的独立回放。每张卡顶部标 attempt，底部标 exact build、CombatID `16777218`、WarID `4`、原生日戳及**各自原始回执完整 SHA-256**。[数据表](calculation-cards.json)保留来源存档、原始响应、采集报告及终局文件路径与 SHA。038 外置 `ck3-output/capture-report.json` SHA-256 `2D09C0B1432B5E2D608B95ECDA75C143169C56404C138FF85EA266B8E5504D5D` 的 `checkpoint_source.save.path` 指向 `episode01-day26-random-list-type-attempt-036/d27-postevent-immutable.ck3`；完整本机路径见数据表。085 自己已有入场前、返回后、首次出伤三点，E2-07 无需把另一条 083 回放的第三点拼入。024 的 50 是历史单场 battle row，不等于整个战争总分；败方的正常败退也不是主动撤退证据。024 精确 DLL 已确认不可得，新配对仅有静态预检，详见[新配对证据](../terminal-new-pair-evidence-20260928.json)。
+004 的 E2-02/03 可讲为同一条追击回放；004 的实际冷载源由其 `capture-report.json` 的 `checkpoint_source.save` 绑定到 attempt-002 接战存档 SHA `45CCE7E9...6245F`，第 27 日存档 SHA `F085D8AB...FEEB3` 则是在 004 运行中生成、供后续 024、A05 等回放使用的检查点。A05、004、024 是不同 run；A05 的数值虽与 024 一致，但当前卡只取 A05 原生 writer 与后态，不用 024 填空。039→040 和 036→038 各有自己的逐字节后档复载；020、070、036 是从第 26 日源档分别启动的回放，即使角色与战报一致，也不能拼成同一次。085 和 024 又是不同日期检查点的独立回放。每张卡顶部标 attempt，底部标 exact build、CombatID `16777218`、WarID `4`、原生日戳及**各自原始回执完整 SHA-256**。[数据表](calculation-cards.json)保留来源存档、原始响应、采集报告及终局文件路径与 SHA。038 外置 `ck3-output/capture-report.json` SHA-256 `2D09C0B1432B5E2D608B95ECDA75C143169C56404C138FF85EA266B8E5504D5D` 的 `checkpoint_source.save.path` 指向 `episode01-day26-random-list-type-attempt-036/d27-postevent-immutable.ck3`；完整本机路径见数据表。085 自己已有入场前、返回后、首次出伤三点，E2-07 无需把另一条 083 回放的第三点拼入。024 的 50 是历史单场 battle row，不等于整个战争总分；A05 的 row `−50` 与暂停后态战争总分 `−50` 各有独立字段。两条 run 的正常败退都不是主动撤退证据。024 精确 DLL 已确认不可得；A05 改用另一个候选 DLL 并完成新 run 的 writer 与后态观测，媒体仍未完成 clean-span 或人工审阅。[A05 机器事实回执](e2-09-a05-writer-facts-20260928.json)精确绑定 A05 原始响应、录制器与新卡 bytes/SHA。
 
 ## 样式来源和复现
 
@@ -25,8 +26,9 @@
 ```text
 tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\cards\render_calculation_cards.py --verify-sources
 tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\cards\render_calculation_cards.py --check --verify-sources
+tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\cards\verify_e2_09_a05_fact_receipt.py
 ```
 
-`--verify-sources` 对本机外置 attempt-004/020/024/036/038/039/040/070/085 的**全部列明来源文件**逐字节算 SHA，重复引用的大存档只读取一次；只有这些本地证据齐备时使用。跨机只检查 repo 内数据与生成 SVG 的确定性，可仅运行 `--check`。生成器在算式、回放身份、来源 SHA 或 SVG bytes 偏离时拒绝通过。SVG 是生成结果，调整文字与数值应改 JSON 或脚本后重建；不要手改 SVG。
+`--verify-sources` 对本机外置 attempt-004/020/024/036/038/039/040/070/085/A05 的**全部列明来源文件**逐字节算 SHA，重复引用的大存档只读取一次；还核对 A05 writer、同录制器终局标记、暂停后态和录制器状态的字段关系。A05 840 MB 原始视频仅核对录制器报告的 SHA 与文件大小，不在本卡生成时重算视频 SHA；这项媒体来源待剪辑门禁另审。只有本地证据齐备时使用。跨机只检查 repo 内数据与生成 SVG 的确定性，可仅运行 `--check`。生成器在算式、回放身份、来源 SHA 或 SVG bytes 偏离时拒绝通过。SVG 是生成结果，调整文字与数值应改 JSON 或脚本后重建；不要手改 SVG。
 
 2026-09-28 在独立 worktree 用主 worktree 的已验证 Python `3.14.7` 完成 `--check --verify-sources`；六张新增 SVG 以 Edge headless 渲染到外置 `D:/ck3-research-artifacts/episode02-pk-card-preview-20260928/`，逐张查看文字可读、面板间距和字幕安全区。E2-09 随历史来源标注勘误重新生成，其新 SHA 列于上表；此处的卡片预览不是成片人工审阅。004 有 100 秒原速 MKV，但不能覆盖其第 31/32 日终局；039/040/020/070/036/038 没有可用原始录像，卡片不能被剪作这些回放的原速游戏镜头。
