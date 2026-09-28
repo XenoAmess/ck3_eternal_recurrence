@@ -131,7 +131,10 @@ bool ExecuteActiveSchemeSwayPrivateQueryV1(
     ActiveSchemePreconditionCommandBindersV1PrivateReadiness readiness{};
     if (!BindActiveSchemePreconditionCommandBindersV1Private(
             environment, binder, readiness)) {
-      query->failure = "native_scheme_precondition_bind_red";
+      query->failure = "native_scheme_precondition_bind_red:";
+      query->failure +=
+          ActiveSchemePreconditionCommandBindersV1PrivateFailureName(
+              readiness.failure);
       query->completed = true;
       return true;
     }
@@ -140,7 +143,10 @@ bool ExecuteActiveSchemeSwayPrivateQueryV1(
     ActiveSchemePreconditionCommandBindersV1PrivateFailure failure{};
     if (!CaptureActiveSchemePreconditionCommandSnapshotV1Private(
             binder, execution, query->active, failure)) {
-      query->failure = "native_scheme_observation_red";
+      query->failure = "native_scheme_observation_red:";
+      query->failure +=
+          ActiveSchemeStateV1PrivateSourceFailureName(
+              binder.glue.last_source_failure);
       query->completed = true;
       return true;
     }
@@ -162,7 +168,9 @@ bool ExecuteActiveSchemeSwayPrivateQueryV1(
     request.expected_date_raw = query->active.date_raw;
     if (!CaptureActiveSchemePreconditionCommandPreconditionV1Private(
             binder, execution, request, query->precondition, failure)) {
-      query->failure = "native_sway_precondition_red";
+      query->failure = "native_sway_precondition_red:";
+      query->failure +=
+          ActiveSchemePreconditionCommandBindersV1PrivateFailureName(failure);
       query->completed = true;
       return true;
     }
