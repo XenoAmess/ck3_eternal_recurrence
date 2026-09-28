@@ -1,6 +1,6 @@
 # 第二期六章生产输入预检
 
-`prepare_production_inputs.py` 只读取原件并校验显式 `bytes` / SHA-256；可选地在一个**新建的仓库外目录**写出 `production-inputs.json`、`preserve-plan.json`、`source-audit.json`。它不启动游戏、不探测或编码媒体、不创建 `xar-promo` run，也不制造人工审片结论。`source-audit.json` 的成功状态只代表这次机器来源预检。
+`prepare_production_inputs.py` 只读取原件并校验显式 `bytes` / SHA-256；可选地在一个**新建的仓库外目录**写出 `production-inputs.json`、`preserve-plan.json`、`source-audit.json`。它不启动游戏、不探测或编码媒体、不创建 `xar-promo` run，也不制造人工审片结论。`source-audit.json` 的成功状态只代表这次机器来源预检。当前六章逐章缺口与 29:50 暂定排期见[录制后组装清单](production-six-chapter-handoff-20260928.md)。
 
 先按仓库 `AGENTS.md` 查询最新正式 `xar-promo` Release，验证所用解释器与 wheel。相对 `.venv` 缺失的工作树须显式使用已验证的主工作树解释器。真实素材齐备后，调用：
 
@@ -9,7 +9,7 @@
 <verified-python> promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_production_inputs.py --declaration <absolute-declaration.json> --output-directory <new-absolute-external-attempt>
 ```
 
-第一条纯只读；第二条只新增一个外置 attempt。任一来源不存在、哈希/长度变化、六章不足、TTS 原始请求/事件与字幕边界不符、缺少 GREEN clean span、来源标签帧不匹配、旧研究卡被冒充为新数值，均拒绝生成可用清单。E2-02/03 a01/a02 稀疏索引和未审原片不能充当 GREEN clean span；未到齐的 E2-09 原片也不能借旧 024 卡补位。
+第一条纯只读；第二条只新增一个外置 attempt。任一来源不存在、哈希/长度变化、六章不足、TTS 原始请求/事件与字幕边界不符、缺少 GREEN clean span、来源标签帧不匹配、旧研究卡被冒充为新数值，均拒绝生成可用清单。E2-02/03 与 E2-09 的 A05 raw 已封口但尚未审片、生成 GREEN clean span；稀疏索引和未审原片不能填这些字段，旧 004/024 历史卡也不能冒充 A05 当前回放。
 
 声明 JSON 的顶层字段：
 
@@ -17,12 +17,12 @@
 | --- | --- |
 | `schema` | `ck3-war-ai.episode02.production-declaration.v1` |
 | `human_signoff` | `not-provided` |
-| `project_config`, `narration_script`, `card_index`, `subtitle_fragments`, `subtitle_preserve_plan` | 各自 `{source, bytes, sha256}`，`source` 为绝对路径 |
-| `subtitle_source_root` | 覆盖 70 件原始 TTS run、manifest、MP3、请求与 Edge 事件的绝对目录 |
+| `project_config`, `narration_script`, `card_index`, `english_subtitles`, `subtitle_fragments`, `subtitle_preserve_plan` | 各自 `{source, bytes, sha256}`，`source` 为绝对路径；英稿须为六章、逐章绑定正式中文 |
+| `subtitle_source_root` | 覆盖当前 82 件原始 TTS run、manifest、MP3、请求、Edge 事件及来源事实回执的绝对目录；事实回执按预检代码的例外路径精确核验 |
 | `cards` | 9 个卡 ID 对应的 SVG `{source, bytes, sha256}`；须是卡索引旁的原件 |
 | `music` | `{artifact_id: "episode02-series-theme", source, bytes, sha256}` |
 | `source_artifacts` | 六章 reel receipt 引用的 save、raw、control、clean span、label、label frame、完整逐帧 ffprobe JSON、`recorder-final.json`、历史卡可见标签或当次重算回执的 `{artifact_id, source, bytes, sha256, role}`；集合必须恰好匹配 receipt 所引用的 ID |
-| `chapters` | 按 `opening,pursuit,knights,reinforcement,terminal,closing` 排列的 6 条 `{id,title,en,duration_seconds,reel,reel_receipt}`，其中 `reel` 和 `reel_receipt` 均为 `{source,bytes,sha256}` |
+| `chapters` | 按 `opening,pursuit,knights,reinforcement,terminal,closing` 排列的 6 条 `{id,title,duration_seconds,reel,reel_receipt}`，可附与正式英稿全文一致的 `en`；`reel` 和 `reel_receipt` 均为 `{source,bytes,sha256}` |
 
 所有声明文件须先由实际原件产生，绝不能把样片、静态计划、命令 ACK、稀疏帧索引填进真实 reel 或 GREEN clean span 字段。`title` 与 run 配置快照逐章相同；`en` 是实际采用的英语字幕文案；时长不短于来源 TTS。
 
