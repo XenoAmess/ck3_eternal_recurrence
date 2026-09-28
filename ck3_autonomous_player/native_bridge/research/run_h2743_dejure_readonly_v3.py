@@ -28,7 +28,7 @@ SOURCE = ROOT / "source-verified-01"
 PYTHON = Path("D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe")
 GAME = Path("C:/SteamLibrary/steamapps/common/Crusader Kings III")
 EXE = GAME / "binaries/ck3.exe"
-DLL = ROOT / "build-read-port-v1/Release/xar_ck3_bridge.dll"
+DLL = ROOT / "build-title-prestate-001/xar_ck3_bridge.dll"
 INJECTOR = Path("D:/ck3-research-artifacts/war31-live-20260927/source-verified-01/R0221-original-bridge/native/xar_ck3_bridge_injector.exe")
 TASK_BUS = Path("D:/workspace/.codex-task-bus/bin/codex_task_bus.py")
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
@@ -45,7 +45,7 @@ SOURCE_HASHES = {
     "first-heir-marriage-formal-v1.json": "12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724",
     "xar_ck3_bridge.dll": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
 }
-DLL_SHA = "FD8B5C7873C22BE32ACF2E421D2A9F625AE8FF3FB4D5408DB7F6E6AF15321470"
+DLL_SHA = "6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E"
 INJECTOR_SHA = "C89F1A919514A7E664AEE8FAF165B78C693ABA4EA2105289BDA2DB4BAC6A84FF"
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 READINESS_SECONDS = 1800
@@ -308,6 +308,24 @@ def require_snapshot_bridge_pid(snapshot: dict[str, object], pid: int) -> None:
         raise RuntimeError("paused snapshot bridge PID differs from managed CK3 process")
 
 
+def require_target_holder_prestate(baseline: dict[str, object]) -> None:
+    """Require a typed current relation; never treat it as a surrender delta."""
+    rows = baseline.get("target_title_holder_prestate")
+    if (baseline.get("target_title_ids") != [2128]
+            or not isinstance(rows, list) or len(rows) != 1
+            or not isinstance(rows[0], dict)
+            or set(rows[0]) != {"title_id", "holder_character_id",
+                                "holder_immediate_liege_character_id"}):
+        raise RuntimeError("H2743 target holder prestate is missing or malformed")
+    row = rows[0]
+    holder = row["holder_character_id"]
+    liege = row["holder_immediate_liege_character_id"]
+    if (row["title_id"] != 2128 or type(holder) is not int or holder <= 0
+            or (liege is not None and (type(liege) is not int or liege <= 0
+                                       or liege == holder))):
+        raise RuntimeError("H2743 target holder prestate identity is invalid")
+
+
 WAR_SIGNATURE_FIELDS = ("war_id", "player_side", "player_is_primary_war_leader",
                         "primary_opponent_character_id", "player_relative_war_score",
                         "targeted_title_ids")
@@ -475,6 +493,7 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                             or len(baseline.get("primary_resource_balances", [])) != 14
                             or len(baseline.get("primary_monthly_gold_income", [])) != 2):
                         raise RuntimeError("baseline query unavailable, malformed or falsely material-complete")
+                    require_target_holder_prestate(baseline)
                     results.append(result)
                     if number == 1:
                         options_result = await call(session, "ck3_execute_step",

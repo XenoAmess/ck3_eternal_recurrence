@@ -193,6 +193,31 @@ class H2743RunnerGateTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     runner.frame_signature(missing)
 
+    def test_new_candidate_requires_target_holder_prestate_without_delta_claim(self) -> None:
+        baseline = {"target_title_ids": [2128], "target_title_holder_prestate": [
+            {"title_id": 2128, "holder_character_id": 33435,
+             "holder_immediate_liege_character_id": 29829}]}
+        runner.require_target_holder_prestate(baseline)
+        for bad_rows in (
+            None, [],
+            [{"title_id": 2128, "holder_character_id": 33435,
+              "holder_immediate_liege_character_id": 29829}] * 2,
+            [{"title_id": 2129, "holder_character_id": 33435,
+              "holder_immediate_liege_character_id": 29829}],
+            [{"title_id": 2128, "holder_character_id": True,
+              "holder_immediate_liege_character_id": 29829}],
+            [{"title_id": 2128, "holder_character_id": 33435,
+              "holder_immediate_liege_character_id": 33435}],
+        ):
+            with self.subTest(rows=bad_rows):
+                changed = copy.deepcopy(baseline)
+                changed["target_title_holder_prestate"] = bad_rows
+                with self.assertRaises(RuntimeError):
+                    runner.require_target_holder_prestate(changed)
+        no_liege = copy.deepcopy(baseline)
+        no_liege["target_title_holder_prestate"][0]["holder_immediate_liege_character_id"] = None
+        runner.require_target_holder_prestate(no_liege)
+
     def test_loaded_binary_audit_rejects_wrong_process_module(self) -> None:
         process = SimpleNamespace(exe=lambda: str(runner.EXE),
                                   memory_maps=lambda grouped=False: [

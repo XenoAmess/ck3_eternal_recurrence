@@ -16,7 +16,8 @@ R0271 R0004 本机外置报告 `D:/ck3-research-artifacts/war-r0271-replay-20260
 | `driver-state.json` | `F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069` |
 | `first-heir-marriage-formal-v1.json` | `12D7B2B006E409DB69F7F442107B01B5D38D8C589A7F494B24519094024B5724` |
 | 源 `xar_ck3_bridge.dll` | `8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C` |
-| 候选 `build-read-port-v1/Release/xar_ck3_bridge.dll` | `FD8B5C7873C22BE32ACF2E421D2A9F625AE8FF3FB4D5408DB7F6E6AF15321470` |
+| 旧候选 `build-read-port-v1/Release/xar_ck3_bridge.dll`（历史旧请求） | `FD8B5C7873C22BE32ACF2E421D2A9F625AE8FF3FB4D5408DB7F6E6AF15321470` |
+| 当前候选 `build-title-prestate-001/xar_ck3_bridge.dll` | `6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E` |
 | `R0221-original-bridge/native/xar_ck3_bridge_injector.exe` | `C89F1A919514A7E664AEE8FAF165B78C693ABA4EA2105289BDA2DB4BAC6A84FF` |
 | CK3 1.19.0.6 `binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` |
 
@@ -59,7 +60,7 @@ R0271 R0004 本机外置报告 `D:/ck3-research-artifacts/war-r0271-replay-20260
 
 ## 读数与缺项判定
 
-v1 native reader 预计只给双方身份、同帧目标 Title ID、**14 行当前资源余额**（双方各 7 种：gold、prestige、prestige_experience、piety、piety_experience、legitimacy、stress）和双方每月 gold income 2 行。余额与收入不是终战 signed delta；Title `2128` 的前态或目标列表也不是转移结果。两次查询必须保持 `material_complete=false`，`title_vassal_delta=null`、`signed_resource_delta=null`、`directed_truce=null`。若原生读口意外宣称 material complete，脚本拒绝该 run，不据此提交动作。
+当前候选的 v1 native reader 预计给双方身份、同帧目标 Title ID、Title `2128` 当前 holder 与该 holder 的个人直属领主**前态**、**14 行当前资源余额**（双方各 7 种：gold、prestige、prestige_experience、piety、piety_experience、legitimacy、stress）和双方每月 gold income 2 行。余额、收入和 title 前态都不是终战 signed delta 或转移结果。两次查询必须保持 `material_complete=false`，`title_vassal_delta=null`、`signed_resource_delta=null`、`directed_truce=null`；新增前态行缺失也拒绝。若原生读口意外宣称 material complete，脚本拒绝该 run，不据此提交动作。旧 FD8B 候选及其 WAR 请求和外置 attempts 保留历史原样，不能追认为含新增前态。
 
 `read-only-result.json` 是**退出后**回执：只有受管 session 返回码为 0、stdout 读取线程结束、CK3 PID 清空，源四件／候选 DLL／注入器／CK3 EXE／已放置 save 与 sidecar 的后哈希均匹配，且运行中 module-map 路径与当前磁盘 SHA audit 已生成时才创建，并绑定 `session-exit.json` SHA。该 audit 不读取或证明进程内存映像 bytes。查询成功但清理失败会留下原始查询和 `cleanup-red.json`，不会生成最终结果；运维需处理遗留进程，不能把查询 payload 单独升级为本轮 GREEN。普通查询失败留下 `failure.json`；每次失败仍保留该 attempt 全部已写文件。
 
