@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img">
+<!-- GENERATED FILE: edit calculation-cards.json or render_calculation_cards.py -->
+<rect x="0" y="0" width="2560" height="1440" rx="0" fill="#211813" stroke="#211813" stroke-width="2"/>
+<line x1="64" y1="30" x2="2496" y2="30" stroke="#61503C" stroke-width="1"/>
+<line x1="64" y1="30" x2="174" y2="30" stroke="#CBA56A" stroke-width="2"/>
+<line x1="2386" y1="30" x2="2496" y2="30" stroke="#CBA56A" stroke-width="2"/>
+<text x="90" y="105" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="700" text-anchor="start">战斗后半笔账  /  E2-05C</text>
+<text x="2470" y="105" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="end">独立原版回放 036→038 后档复载</text>
+<text x="90" y="188" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="70" font-weight="700" text-anchor="start">阵亡之后：下一帧名单少了谁</text>
+<text x="92" y="238" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">036 保存第 27 日不可变后档；038 只读复载同一份 bytes</text>
+<line x1="90" y1="255" x2="2470" y2="255" stroke="#61503C" stroke-width="2"/>
+<line x1="90" y1="1022" x2="2470" y2="1022" stroke="#CBA56A" stroke-width="2"/>
+<text x="92" y="1060" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="400" text-anchor="start">CK3 1.19.0.6  ·  CombatID 16777218  ·  WarID 4  ·  原生日戳 53146848→53146872</text>
+<text x="92" y="1100" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" text-anchor="start">原始回执 SHA-256  713DB2C37504411A2E81CAF05B198E2AEC700D7B7612F68BEF1EF3BB05EFC5AC</text>
+<line x1="0" y1="1120" x2="2560" y2="1120" stroke="#CBA56A" stroke-width="2"/>
+<rect x="90" y="284" width="1138" height="610" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<rect x="1332" y="284" width="1138" height="610" rx="4" fill="#35291F" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="350" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="38" font-weight="700" text-anchor="start">第 26 日事件前 · 036 源档</text>
+<line x1="125" y1="375" x2="1193" y2="375" stroke="#61503C" stroke-width="2"/>
+<text x="125" y="488" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="91" font-weight="700" text-anchor="start">69 团</text>
+<text x="125" y="631" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="82" font-weight="700" text-anchor="start">30 名骑士</text>
+<text x="125" y="770" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">036 触发事件后保存不可变后档。</text>
+<text x="1367" y="350" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="41" font-weight="700" text-anchor="start">第 27 日暂停输入 · 038</text>
+<line x1="1367" y1="375" x2="2435" y2="375" stroke="#61503C" stroke-width="2"/>
+<text x="1367" y="488" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="91" font-weight="700" text-anchor="start">68 团</text>
+<text x="1367" y="631" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="82" font-weight="700" text-anchor="start">29 名骑士</text>
+<text x="1367" y="770" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="400" text-anchor="start">缺骑士 33437 / 团 65</text>
+<text x="95" y="941" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" text-anchor="start">036 后存档 SHA-256  CD0648D7603290E470ED07261128C05FF449C0FFAEA89D01A1102D0D56208A55</text>
+<text x="95" y="993" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" text-anchor="start">038 原生 v3 SHA-256  3309B3A763F2C6CD02683EA0643D26A13A292E20F57C89BFBCF594804557B0E3</text>
+</svg>

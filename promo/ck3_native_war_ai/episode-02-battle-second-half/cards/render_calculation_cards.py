@@ -1,4 +1,4 @@
-"""Render three source-bound Episode 2 folio cards as standalone SVG frames.
+"""Render source-bound Episode 2 folio cards as standalone SVG frames.
 
 No CK3, recording, promo-toolchain, network, or compositor access is involved.
 The output is a full-frame intertitle; its lower 320 px remain empty for subtitles.
@@ -27,6 +27,18 @@ PALETTE = {
     "red": "#CA7962",
 }
 FONT = "Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+SOURCE_FIELDS = {
+    "004": ("source_save", "source_index", "source_day28_control",
+            "source_day29_control", "source_day30_control", "source_day31_control",
+            "source_day32_terminal"),
+    "039_040": ("source_day5_finish", "source_day6_save", "source_day6_v3"),
+    "020": ("source_save", "source_finish"),
+    "070": ("source_save", "source_finish"),
+    "036_038": ("source_day26_finish", "source_day27_save", "source_day27_v3",
+                "source_day27_capture_report"),
+    "085": ("source_save", "source_finish", "source_cleanup"),
+    "024": ("source_save", "source_terminal", "source_session_result"),
+}
 
 
 def require(condition: bool, message: str) -> None:
@@ -45,7 +57,8 @@ def validate(data: dict) -> None:
     require((game["combat_id"], game["war_id"], game["province_id"]) ==
             (16777218, 4, 2633), "game identity")
     require(len(game["exe_sha256"]) == 64, "EXE SHA")
-    a, b = data["replays"]["085"], data["replays"]["024"]
+    replays = data["replays"]
+    a, b = replays["085"], replays["024"]
     require(a["kind"] != b["kind"] and a["source_save_sha256"] != b["source_save_sha256"],
             "085 and 024 must remain separate replays")
     for replay, source_keys in ((a, ("source_save", "source_finish", "source_cleanup")),
@@ -93,7 +106,98 @@ def validate(data: dict) -> None:
     require(b["winner_is_war_attacker"] is False and
             b["war_attacker_relative_delta_raw_q100000"] ==
             -b["row_magnitude_raw_q100000"], "war attacker sign")
-    require([row["id"] for row in data["cards"]] == ["E2-06", "E2-07", "E2-09"],
+    pursuit = replays["004"]
+    require(pursuit["source_index_sha256"] == pursuit["primary_receipt_sha256"],
+            "004 original index binding")
+    require(pursuit["date_raw"] == 53146896 and pursuit["pursuit_begin_day"] == 28 and
+            pursuit["retreater_regiments"] == 24, "004 pursuit identity")
+    require(pursuit["levy_soft_pool_raw_q100000"] +
+            pursuit["men_at_arms_soft_pool_raw_q100000"] ==
+            pursuit["total_soft_pool_raw_q100000"] == 82432227,
+            "004 initial soft pool")
+    require(pursuit["pursuit_damage_raw_q100000"] == 75203000 and
+            pursuit["retreater_screen_raw_q100000"] == 0,
+            "004 pursuit and observed zero loser screen")
+    require(pursuit["daily_hard_raw_q100000"] == [2070677, 2097473, 2126119] and
+            sum(pursuit["daily_hard_raw_q100000"]) ==
+            pursuit["total_hard_raw_q100000"] == 6294269,
+            "004 three-day hard loss")
+    require(pursuit["daily_toughness_soft_raw_q100000"] ==
+            [1489459979, 1452047877, 1414150820], "004 shrinking toughness-soft")
+    require((pursuit["exact_soft_rows"], pursuit["exact_hard_rows"],
+             pursuit["stable_current_rows"], pursuit["unreadable_hard_rows"]) ==
+            (72, 69, 72, 3), "004 native comparable rows")
+    require(pursuit["terminal_kind"] == "normal_result" and
+            pursuit["terminal_winner_side"] == 0, "004 terminal identity")
+    maim = replays["039_040"]
+    require(maim["source_day5_finish_sha256"] == maim["primary_receipt_sha256"] and
+            maim["source_day6_save_sha256"] ==
+            "9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A",
+            "039 to 040 same saved bytes")
+    require((maim["character_id"], maim["opponent_id"], maim["regiment_id"]) ==
+            (34333, 47032, 61) and maim["new_traits"] ==
+            ["one_legged", "wounded_1"], "maim event identity")
+    require(maim["knights_before_after"] == [24, 24] and
+            maim["regiments_before_after"] == [51, 51] and
+            maim["regiment_current_before_after"] == [1, 1] and
+            maim["base_prowess_before_after"] == [3, 3], "maimed knight remains")
+    require(maim["effective_prowess_before_after"] == [11, 7] and
+            maim["effectiveness_raw_q100000"] == 175000 and
+            maim["damage_raw_q100000_before_after"] ==
+            [p * maim["effectiveness_raw_q100000"] * 50
+             for p in maim["effective_prowess_before_after"]] and
+            maim["toughness_raw_q100000_before_after"] ==
+            [p * maim["effectiveness_raw_q100000"] * 10
+             for p in maim["effective_prowess_before_after"]] and
+            maim["opponent_prestige_delta"] == 150, "039 to 040 effective stat math")
+    killer = replays["020"]
+    require(killer["source_finish_sha256"] == killer["primary_receipt_sha256"] and
+            killer["source_knights"] == 19 and killer["eligible_candidates"] == 14 and
+            killer["selector_draw31"] % killer["eligible_candidates"] ==
+            killer["selected_index_zero_based"] == 8, "020 native unweighted draw")
+    require((killer["event_load_index"], killer["selected_killer_character_id"],
+             killer["killed_character_id"], killer["killed_regiment_id"]) ==
+            (11, 34120, 33437, 65), "020 killer/victim identity")
+    require(killer["victim_base_prowess_before_after"] == [2, 2] and
+            killer["victim_effective_prowess_before_after"] == [4, 2] and
+            killer["killer_prestige_delta"] == 150 and
+            killer["full_effect_write_set_proven"] is False,
+            "020 narrow writeback boundary")
+    growth = replays["070"]
+    require(growth["source_finish_sha256"] == growth["primary_receipt_sha256"] and
+            growth["source_save_sha256"] == killer["source_save_sha256"],
+            "070 same input save, independent replay")
+    require(growth["runtime_growth_weights"] == [40, 30, 15] and
+            sum(growth["runtime_growth_weights"]) == growth["positive_weight_total"] == 85 and
+            growth["selection_draw31"] * growth["positive_weight_total"] // (1 << 31) ==
+            growth["threshold"] == 2 and growth["selected_source_order_index"] == 0 and
+            growth["selected_branch"] == "no_op" and
+            growth["selected_killer_character_id"] == 34120 and
+            growth["full_effect_write_set_proven"] is False,
+            "070 runtime growth choice")
+    next_roster = replays["036_038"]
+    require(next_roster["source_day26_finish_sha256"] ==
+            next_roster["primary_receipt_sha256"] and
+            next_roster["source_day27_save_sha256"] ==
+            "CD0648D7603290E470ED07261128C05FF449C0FFAEA89D01A1102D0D56208A55",
+            "036 to 038 exact post-save identity")
+    require(next_roster["source_day26_finish_sha256"] !=
+            growth["source_finish_sha256"] and
+            next_roster["source_day27_save_sha256"] !=
+            killer["source_save_sha256"], "independent knight tracks")
+    require(next_roster["regiments_before_after"] == [69, 68] and
+            next_roster["knights_before_after"] == [30, 29] and
+            (next_roster["victim_character_id"], next_roster["removed_regiment_id"]) ==
+            (33437, 65) and next_roster["other_base_inputs_identical"] is True and
+            next_roster["full_mutable_write_set_proven"] is False,
+            "036 to 038 narrow roster readback")
+    for key in ("004", "039_040", "020", "070", "036_038"):
+        for field in SOURCE_FIELDS[key]:
+            require(len(replays[key][field + "_sha256"]) == 64,
+                    f"{key} {field} SHA")
+    require([row["id"] for row in data["cards"]] ==
+            ["E2-02", "E2-03", "E2-04", "E2-05A", "E2-05B", "E2-05C",
+             "E2-06", "E2-07", "E2-09"],
             "card order")
 
 
@@ -133,7 +237,8 @@ def frame(s: Svg, card: dict, replay: dict, data: dict, subtitle: str) -> None:
     s.line(64, 30, 174, 30, "gold", 2)
     s.line(2386, 30, 2496, 30, "gold", 2)
     s.text(90, 105, f'战斗后半笔账  /  {card["id"]}', 32, "gold", 700)
-    s.text(2470, 105, f'独立原版回放 {card["replay"]}', 31, "muted", anchor="end")
+    s.text(2470, 105, f'独立原版回放 {card.get("source_label", card["replay"])}',
+           31, "muted", anchor="end")
     s.text(90, 188, card["title"], 70, "ink", 700)
     s.text(92, 238, subtitle, 32, "muted")
     s.line(90, 255, 2470, 255, "rule", 2)
@@ -142,10 +247,176 @@ def frame(s: Svg, card: dict, replay: dict, data: dict, subtitle: str) -> None:
     date = replay.get("date_raw", replay.get("terminal_date_raw"))
     s.text(92, 1060, f'{game["version"]}  ·  CombatID {game["combat_id"]}  ·  WarID {game["war_id"]}  ·  原生日戳 {date}',
            27, "muted")
-    sha = replay.get("source_finish_sha256", replay.get("source_terminal_sha256"))
+    sha = replay.get("primary_receipt_sha256",
+                     replay.get("source_finish_sha256", replay.get("source_terminal_sha256")))
     s.text(92, 1100, f'原始回执 SHA-256  {sha}', 23, "gold")
     # A standalone card is inserted between gameplay shots. No CK3 UI is covered.
     s.line(0, 1120, 2560, 1120, "gold", 2)
+
+
+def scaled(raw: int) -> str:
+    return f"{raw // Q:,}.{raw % Q:05d}"
+
+
+def scaled_compact(raw: int) -> str:
+    return scaled(raw).rstrip("0").rstrip(".")
+
+
+def card_02(data: dict, card: dict) -> bytes:
+    a = data["replays"]["004"]
+    s = Svg()
+    frame(s, card, a, data, "004 第 28 日单帧起算；败方掩护聚合为 0 的条件样本")
+    s.rect(90, 284, 1138, 665)
+    s.rect(1332, 284, 1138, 665)
+    s.text(125, 344, "败方 · 24 团软伤池", 40, "gold", 700)
+    s.line(125, 368, 1193, 368)
+    s.text(125, 447, f'征召兵 soft    {a["levy_soft_pool_raw_q100000"]:,}', 42)
+    s.text(125, 522, f'兵士 soft      {a["men_at_arms_soft_pool_raw_q100000"]:,}', 42)
+    s.line(125, 572, 1193, 572)
+    s.text(125, 664, f'合计 {a["total_soft_pool_raw_q100000"]:,}', 65, "ink", 700)
+    s.text(125, 730, f'= {scaled(a["total_soft_pool_raw_q100000"])} 人当量', 42, "gold")
+    s.text(125, 836, "这是第 28 日冻结输入，不是三日损失。", 31, "muted")
+    s.text(1367, 344, "追击方 · 当日中间账", 40, "gold", 700)
+    s.line(1367, 368, 2435, 368)
+    s.text(1367, 445, "追击伤害原始值", 34, "muted")
+    s.text(1367, 536, f'{a["pursuit_damage_raw_q100000"]:,}', 74, "ink", 700)
+    s.text(1367, 606, f'败方有效掩护聚合  {a["retreater_screen_raw_q100000"]}',
+           39, "gold")
+    s.line(1367, 647, 2435, 647)
+    s.text(1367, 712, f'首日 toughness-soft  {a["daily_toughness_soft_raw_q100000"][0]:,}',
+           33)
+    s.text(1367, 780, f'首日软转硬  {a["daily_hard_raw_q100000"][0]:,}',
+           47, "gold", 700)
+    s.text(1367, 842, "逐团比例分配后再处理余数；无追击抽签结论。", 28, "muted")
+    s.text(95, 997, "只验证这次给定初态的条件计算；非零败方掩护仍待原版同帧取样。", 29, "muted")
+    return s.finish()
+
+
+def card_03(data: dict, card: dict) -> bytes:
+    a = data["replays"]["004"]
+    s = Svg()
+    frame(s, card, a, data, "004 同一独立回放；第 29/30 日不重新喂入原版败方状态")
+    for i, x in enumerate((90, 895, 1700)):
+        start_day = 28 + i
+        s.rect(x, 290, 770, 615)
+        s.text(x + 36, 356, f'第 {start_day} → {start_day + 1} 日',
+               42, "gold", 700)
+        s.line(x + 36, 382, x + 734, 382)
+        s.text(x + 36, 453, "toughness-soft", 35, "muted")
+        s.text(x + 36, 515, f'{a["daily_toughness_soft_raw_q100000"][i]:,}', 42)
+        s.text(x + 36, 625, f'{scaled(a["daily_hard_raw_q100000"][i])}',
+               92, "ink", 700)
+        s.text(x + 36, 682, "人当量 soft → hard", 33, "gold")
+        s.line(x + 36, 724, x + 734, 724)
+        s.text(x + 36, 783, "soft 24/24 零差", 32)
+        s.text(x + 36, 841, "可读 hard 23/23 零差", 30)
+    s.text(95, 972, f'三日合计 {scaled(a["total_hard_raw_q100000"])} 人当量',
+           51, "gold", 700)
+    s.text(1200, 973, "72/72 soft · 69/69 可读 hard · 72/72 current 不变", 32)
+    s.text(95, 1007, "另有 1 团/日 hard 原始字段为 null，不得按零计。", 27, "muted")
+    return s.finish()
+
+
+def card_04(data: dict, card: dict) -> bytes:
+    a = data["replays"]["039_040"]
+    s = Svg()
+    frame(s, card, a, data, "039 事件写回；040 逐字节复载 039 后档，不推进日期")
+    s.rect(90, 284, 1138, 665)
+    s.rect(1332, 284, 1138, 665)
+    s.text(125, 345, "第 5 日 · 原生事件", 40, "gold", 700)
+    s.line(125, 367, 1193, 367)
+    s.text(125, 440, f'目标骑士 CharacterID {a["character_id"]}', 38)
+    s.text(125, 507, f'对手 {a["opponent_id"]} · 威望 +{a["opponent_prestige_delta"]}',
+           39)
+    s.text(125, 606, "独腿 + 轻伤", 72, "ink", 700)
+    s.text(125, 674, f'骑士 {a["knights_before_after"][0]} → {a["knights_before_after"][1]}；'
+           f'61 号团人数 {a["regiment_current_before_after"][0]} → '
+           f'{a["regiment_current_before_after"][1]}', 35, "gold")
+    s.text(125, 780, f'基础勇武 {a["base_prowess_before_after"][0]} → '
+           f'{a["base_prowess_before_after"][1]}，未被扣四点。', 35, "muted")
+    s.text(1367, 345, "第 6 日 · 智能体原生输入", 40, "gold", 700)
+    s.line(1367, 367, 2435, 367)
+    s.text(1367, 442, f'有效勇武 {a["effective_prowess_before_after"][0]} → '
+           f'{a["effective_prowess_before_after"][1]}', 52, "ink", 700)
+    s.text(1367, 510, "骑士效能仍为 1.75", 35, "muted")
+    s.text(1367, 605, "有效伤害", 35, "muted")
+    s.text(1367, 684, f'{scaled_compact(a["damage_raw_q100000_before_after"][0])} → '
+           f'{scaled_compact(a["damage_raw_q100000_before_after"][1])}', 55, "gold", 700)
+    s.text(1367, 763, "有效坚韧", 35, "muted")
+    s.text(1367, 842, f'{scaled_compact(a["toughness_raw_q100000_before_after"][0])} → '
+           f'{scaled_compact(a["toughness_raw_q100000_before_after"][1])}', 55, "gold", 700)
+    s.text(95, 996, f'040 原生 v3 SHA-256  {a["source_day6_v3_sha256"]}', 23, "muted")
+    return s.finish()
+
+
+def card_05a(data: dict, card: dict) -> bytes:
+    a = data["replays"]["020"]
+    s = Svg()
+    frame(s, card, a, data, "020 独立回放；无权重选择器，候选按原生尾项填洞顺序排列")
+    s.rect(90, 284, 1138, 665)
+    s.rect(1332, 284, 1138, 665)
+    s.text(125, 345, "事件载入索引 11 · knight_killed", 38, "gold", 700)
+    s.line(125, 367, 1193, 367)
+    s.text(125, 457, f'来源骑士  {a["source_knights"]}', 54)
+    s.text(125, 570, f'过勇武门槛  {a["eligible_candidates"]}',
+           72, "ink", 700)
+    s.text(125, 644, "被筛掉者用尾项填洞；不可稳定删除。", 32, "muted")
+    s.line(125, 702, 1193, 702)
+    s.text(125, 768, "这是击杀者选择，不是成长列表抽签。", 31)
+    s.text(1367, 345, "局部 RNG 与原版战报", 40, "gold", 700)
+    s.line(1367, 367, 2435, 367)
+    s.text(1367, 471, f'{a["selector_draw31"]:,} % '
+           f'{a["eligible_candidates"]} = {a["selected_index_zero_based"]}',
+           57, "ink", 700)
+    s.text(1367, 566, f'索引 8 → 击杀者 {a["selected_killer_character_id"]}',
+           59, "gold", 700)
+    s.text(1367, 654, f'阵亡 {a["killed_character_id"]} · '
+           f'兵团 {a["killed_regiment_id"]} 脱团', 43)
+    s.text(1367, 735, f'击杀者威望 +{a["killer_prestige_delta"]}', 39)
+    s.text(1367, 835, "死者基础勇武 2→2；有效勇武 4→2", 34, "muted")
+    s.text(95, 996, "只证本次选择与狭窄写回；020 不是 070 或 036→038 的同一次回放。", 28, "muted")
+    return s.finish()
+
+
+def card_05b(data: dict, card: dict) -> bytes:
+    a = data["replays"]["070"]
+    s = Svg()
+    frame(s, card, a, data, "070 另一次第 26 日回放；实际运行时权重由原生入口直接采得")
+    panels = ((90, "运行时权重", "40 / 30 / 15", "正权重合计 85"),
+              (895, "子作用域抽签", "51,510,340", "阈值 floor(draw × 85 / 2³¹) = 2"),
+              (1700, "执行来源第 0 项", "no_op", "本次未加基础勇武"))
+    for x, heading, value, explanation in panels:
+        s.rect(x, 292, 770, 600)
+        s.text(x + 36, 360, heading, 39, "gold", 700)
+        s.line(x + 36, 385, x + 734, 385)
+        s.text(x + 36, 585, value, 73 if x != 1700 else 103, "ink", 700)
+        s.text(x + 36, 685, explanation, 30, "muted")
+    s.text(95, 969, f'本次击杀者 {a["selected_killer_character_id"]}；'
+           "选择器与成长列表各用自己的 draw。", 36, "gold")
+    s.text(95, 1008, "070 与 020/036 均为独立运行；038 并未复载 070 的后存档。", 27, "muted")
+    return s.finish()
+
+
+def card_05c(data: dict, card: dict) -> bytes:
+    a = data["replays"]["036_038"]
+    s = Svg()
+    frame(s, card, a, data, "036 保存第 27 日不可变后档；038 只读复载同一份 bytes")
+    s.rect(90, 284, 1138, 610)
+    s.rect(1332, 284, 1138, 610)
+    s.text(125, 350, "第 26 日事件前 · 036 源档", 38, "gold", 700)
+    s.line(125, 375, 1193, 375)
+    s.text(125, 488, f'{a["regiments_before_after"][0]} 团', 91, "ink", 700)
+    s.text(125, 631, f'{a["knights_before_after"][0]} 名骑士', 82, "ink", 700)
+    s.text(125, 770, "036 触发事件后保存不可变后档。", 32, "muted")
+    s.text(1367, 350, "第 27 日暂停输入 · 038", 41, "gold", 700)
+    s.line(1367, 375, 2435, 375)
+    s.text(1367, 488, f'{a["regiments_before_after"][1]} 团', 91, "gold", 700)
+    s.text(1367, 631, f'{a["knights_before_after"][1]} 名骑士', 82, "gold", 700)
+    s.text(1367, 770, f'缺骑士 {a["victim_character_id"]} / 团 '
+           f'{a["removed_regiment_id"]}', 40)
+    s.text(95, 941, f'036 后存档 SHA-256  {a["source_day27_save_sha256"]}', 23, "muted")
+    s.text(95, 993, f'038 原生 v3 SHA-256  {a["source_day27_v3_sha256"]}', 23, "muted")
+    return s.finish()
 
 
 def card_06(data: dict, card: dict) -> bytes:
@@ -241,29 +512,34 @@ def card_09(data: dict, card: dict) -> bytes:
     return s.finish()
 
 
-RENDERERS = {"E2-06": card_06, "E2-07": card_07, "E2-09": card_09}
+RENDERERS = {
+    "E2-02": card_02, "E2-03": card_03, "E2-04": card_04,
+    "E2-05A": card_05a, "E2-05B": card_05b, "E2-05C": card_05c,
+    "E2-06": card_06, "E2-07": card_07, "E2-09": card_09,
+}
 
 
 def verify_sources(data: dict) -> None:
-    sources = (("085", ("source_save", "source_finish", "source_cleanup")),
-               ("024", ("source_save", "source_terminal", "source_session_result")))
-    for key, fields in sources:
+    checked = {}
+    for key, fields in SOURCE_FIELDS.items():
         replay = data["replays"][key]
         for field in fields:
             path = Path(replay[field])
             require(path.is_file(), f"source missing: {path}")
-            digest = hashlib.sha256()
-            with path.open("rb") as stream:
-                for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-                    digest.update(chunk)
-            require(digest.hexdigest().upper() == replay[field + "_sha256"],
+            if path not in checked:
+                digest = hashlib.sha256()
+                with path.open("rb") as stream:
+                    for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                        digest.update(chunk)
+                checked[path] = digest.hexdigest().upper()
+            require(checked[path] == replay[field + "_sha256"],
                     f"source SHA mismatch: replay {key}, {field}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Compare generated SVG bytes with checked-in files")
-    parser.add_argument("--verify-sources", action="store_true", help="Verify the two preserved raw receipt SHA-256 values")
+    parser.add_argument("--verify-sources", action="store_true", help="Verify all preserved raw source SHA-256 values")
     args = parser.parse_args()
     data = json.loads(DATA.read_text(encoding="utf-8"))
     validate(data)
