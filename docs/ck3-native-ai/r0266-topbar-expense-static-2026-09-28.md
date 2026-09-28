@@ -15,6 +15,6 @@
 
 ## 最新来源帧可验证路径与当前门禁
 
-来源已把 H3568 升级为 R0298 正式 H3603/raw53219352；接收端对 H3603 七件仅做传输精确接受，未取得资产或完成本机配对。在当时**最新**帧自身官方 save/driver/sidecar/DLL/injector family pair、接收端无启动配对及受管暂停帧证明齐备后，才可尝试**被动**读回：先确认唯一顶栏实例及其 vtable/生命周期来源（目前缺），再在 GUI 正常刷新后取得 `+0xB68` 指回、`+0xB50/+0xB58` raw/scale、`+0xF88` 渲染帧标记、玩家全局 ID 和原生玩家角色 ID。刷新前后要由正式桥接双读同一 episode、snapshot/public/native revision、date、WarID、gold 与暂停状态，并核可见 tooltip 费用。任何一处失配或未定位唯一对象，即标为诊断 RED。若需鼠标触发 tooltip，应由拥有 `ck3-screen` 的执行者按桌面坐标合同操作；本静态研究不做该步。
+来源已把 H3568 升级为 R0298 正式 H3603/raw53219352，随后 R0299 于约 09:40Z 继续推进，因此 H3603 已是历史帧。接收端对 H3603 七件完成 7/7 精确传输哈希验收，未完成本机配对。在当时**最新**帧自身官方 save/driver/sidecar/DLL/injector family pair、接收端无启动配对及受管暂停帧证明齐备后，才可尝试**被动**读回：先确认唯一顶栏实例及其 vtable/生命周期来源（目前缺），再在 GUI 正常刷新后取得 `+0xB68` 指回、`+0xB50/+0xB58` raw/scale、`+0xF88` 渲染帧标记、玩家全局 ID 和原生玩家角色 ID。刷新前后要由正式桥接双读同一 episode、snapshot/public/native revision、date、WarID、gold 与暂停状态，并核可见 tooltip 费用。任何一处失配或未定位唯一对象，即标为诊断 RED。若需鼠标触发 tooltip，应由拥有 `ck3-screen` 的执行者按桌面坐标合同操作；本静态研究不做该步。
 
-取得总额候选后，还需以同一帧的 `ValueBreakdown.GetSubValues` 或原生独立军费 readout 精确识别军费行，并与 `MilitaryView` 当前值交叉核对；光有总额不足。未来成本上界仍需实际付款节奏、舰队和补员等完整风险合同。H3603 暂停帧单独无法证明这些条件，当前战争现金各输入继续为 `null`。
+取得总额候选后，还需以同一帧的 `ValueBreakdown.GetSubValues` 或原生独立军费 readout 精确识别军费行，并与 `MilitaryView` 当前值交叉核对；光有总额不足。未来成本上界仍需实际付款节奏、舰队和补员等完整风险合同。历史 H3603 即使被动读到总额也无法证明现行 R0299 条件，当前战争现金各输入继续为 `null`。
