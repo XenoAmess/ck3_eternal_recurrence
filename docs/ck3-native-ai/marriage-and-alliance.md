@@ -2,7 +2,7 @@
 
 ## 2026-09-28：指定玩家子女的婚配入口（待 paused 实机）
 
-当前 Robert h3690 的首继承人 `38822` 已与 `38718` 订婚；仅反复扫描首继承人不会找到下一项家庭动作。h3686 的正式存档（SHA-256 `BCCF0B016CA1FED9D9993F3B529692458803D830194BA96A5EC922DB9D68DC09`）离线读到玩家 `29829` 的子女 `37265`（Emma），当时年满 16 岁、无婚约或配偶、House `174`、雇主 `29829`。这是指定 subject 的线索，**不是** h3690 当前关系或玩家可提案权限的实机证明。
+当前 Robert h3690 的首继承人 `38822` 已与 `38718` 订婚；仅反复扫描首继承人不会找到下一项家庭动作。h3686 的正式存档（SHA-256 `BCCF0B016CA1FED9D9993F3B529692458803D830194BA96A5EC922DB9D68DC09`）离线读到玩家 `29829` 的子女 `37265`（Emma），当时年满 16 岁、无婚约或配偶、House `174`、雇主 `29829`。R0323 后来在 h3911 暂停帧用原生 `is_child_of` 确认 Emma 身份、成人及未婚，取得具体默认五角色 Can Send/最终答复；候选 `37267` 的母系选项、伴侣状态、联盟及收益仍需专门同帧投影，参见 [Emma 证据](emma-matrilineal-option-2026-09-28.md#r0323-specified-child-and-default-final-legality)。
 
 exact-build EXE `1.19.0.6`，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_marriage_interactions.txt`，SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`，其 `populate_actor_list` 包含玩家、廷臣及符合条件的子女；这只提供入口，不证明特定提案可发送。EXE 的 family 访问链显示 `CCharacter+0x1A0` 指向 family data；既有原生婚配关系读 `family+0x10/+0x14/+0x20`。同构建的 `combat_v3` 读回链使用 `CCharacter+0x1B0 → relation+0xC8` 取得雇主。R0322 实机证实先前误认的 `family+0x50` 对 Robert 是空数组，不能据此否认其子女 Emma。新的私有指定 subject 读口复用同一 EXE 已冻结的原生 `is_child_of` 谓词 RVA `0x26085E0`，再读年龄、House/Dynasty、雇主及双边配偶/婚约；Emma 的正向 paused 结果及具体提案权限仍待实机核验，详见 [R0322 诊断](emma-matrilineal-option-2026-09-28.md#r0322-exact-paused-layout-and-existing-native-child-predicate)。
 

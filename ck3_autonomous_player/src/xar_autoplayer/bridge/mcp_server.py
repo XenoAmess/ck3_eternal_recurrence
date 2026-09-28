@@ -1373,6 +1373,15 @@ def create_server(
                 diagnose_family_arrays=diagnose_family_arrays,
             )
 
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_child_marriage_value_private_v1(
+            legality: dict[str, object], candidate_character_id: int,
+        ) -> dict[str, object]:
+            """Read one final-legal player-child match's default native value."""
+            return driver.query_player_child_marriage_value_private_v1(
+                legality=legality, candidate_character_id=candidate_character_id,
+            )
+
     @server.tool()
     def ck3_get_bridge_diagnostics() -> dict[str, object]:
         """Return live transport diagnostics without claiming CK3 game state."""

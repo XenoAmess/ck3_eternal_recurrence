@@ -2593,6 +2593,21 @@ class NativeHeadlessGameplayDriver:
             diagnose_family_arrays=diagnose_family_arrays,
         )
 
+    def query_player_child_marriage_value_private_v1(
+        self, *, legality: dict[str, object], candidate_character_id: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Read one child's final-legal default marriage value on the same frame."""
+        from .player_child_marriage_value_private_transport import (
+            query_player_child_marriage_value_private_v1,
+        )
+
+        return query_player_child_marriage_value_private_v1(
+            self, legality=legality,
+            candidate_character_id=candidate_character_id,
+            timeout_seconds=timeout_seconds,
+        )
+
     def query_observed_first_heir_marriage_legality_v1(
         self, *, expected_native_revision: int,
         timeout_seconds: float = 360.0,
