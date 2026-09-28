@@ -1,0 +1,129 @@
+{
+  "schema": "xar.ck3.h3388-robert-latest-master-candidate/v1",
+  "status": "official_no_launch_ready_window_owner_gate_pending",
+  "source_runtime_commit": "7d414228c63c504c6e02904ffd905048dc834cbd",
+  "native_build_commit": "7d414228c63c504c6e02904ffd905048dc834cbd",
+  "master_at_candidate_freeze": "7d414228c63c504c6e02904ffd905048dc834cbd",
+  "actor_character_id": 29829,
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "history_index": 3388,
+  "date_raw": 53218968,
+  "persistent_game_days": 3110,
+  "source_round": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0269",
+  "profile": "ordinary_campaign_succession/xar_off",
+  "display_mode": "windowed",
+  "formal_turns_requested": 36,
+  "environment_sha256": "6d80cc209728cbfdbc2b2dc3d7e93ebfa90e3d575fce642ccb6c3d048f3d1037",
+  "agent_runtime_sha256": "97333d1336f0714f68f058e214e556c4110858609ec7ada1a5029d77623b8590",
+  "game_exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "rules_sha256": "4e7e02f62f0751c52b46613966ed4e27e2a16dfe24253b504bc8b60332c33537",
+  "production_tree_sha256": "8471f6b4333d2d3d0c4dfb1be1dff11a586953ae7b920089dfc830164fbf0367",
+  "prepared_driver_sha256": "9F1CD53CC12C41984B9A5B12414352F9E81EFBFD8312FD34321CF4E1B735E21E",
+  "family_pair_status": "resolved_betrothal_paired_no_launch",
+  "native_cmake_options_on": [
+    "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1",
+    "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1",
+    "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1",
+    "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1",
+    "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1",
+    "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1",
+    "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1"
+  ],
+  "official_pair_validation": {
+    "validator": "g2_preview_operator.py prepare-state",
+    "status": "ready",
+    "ck3_launch_attempted": false,
+    "processes_at_preflight": []
+  },
+  "files": {
+    "source_pair_index": {
+      "path": "Z:\\h3388-source-freeze-20260928\\PAIR-IDENTITY.json",
+      "size_bytes": 6205,
+      "sha256": "C8E0064F1324C848E0B166689D0EDEB66F7C3B07068022FF592AA54F052DAB5A"
+    },
+    "source_checkpoint": {
+      "path": "Z:\\h3388-source-freeze-20260928\\source-pair\\xar_checkpoint.ck3",
+      "size_bytes": 78481694,
+      "sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17"
+    },
+    "source_driver": {
+      "path": "Z:\\h3388-source-freeze-20260928\\source-pair\\driver-state.json",
+      "size_bytes": 41767822,
+      "sha256": "99C58301C212ABCDBBEDD74D92AE74FCFE23719B927377C93FE7C7D0F54C5C50"
+    },
+    "source_family_sidecar": {
+      "path": "Z:\\h3388-source-freeze-20260928\\source-pair\\first-heir-marriage-formal-v1.json",
+      "size_bytes": 2742,
+      "sha256": "C5B0E9AF69928003F3AF34FAC05240E384BDEA44A9C4227CA66BC269F2979AEC"
+    },
+    "manifest": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\operator-manifest-h3388-7d41.json",
+      "size_bytes": 1874,
+      "sha256": "3DF07AB8AAE9C8CBB10F9A5B84FAC66AF14726B83B7525512746FCCB1D5923B2"
+    },
+    "dll": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\build-native\\Release\\xar_ck3_bridge.dll",
+      "size_bytes": 3770368,
+      "sha256": "0E0B7F5621917A3B9E51E3002AD58E79EF12F7372F912F3B9EA31CEA3CE98B6C"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\build-native\\Release\\xar_ck3_bridge_injector.exe",
+      "size_bytes": 39936,
+      "sha256": "A0BC08BFE39BE5D5D2C477B3DE061061FDAF44F69C4C018FC6BAF972DAA06FC6"
+    },
+    "cmake_cache": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\build-native\\CMakeCache.txt",
+      "size_bytes": 26355,
+      "sha256": "BF4894F55634B335182B920080850245E1853632FB45E0317C3DAAE782611D98"
+    },
+    "build_log": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\build-native.log",
+      "size_bytes": 13923,
+      "sha256": "3AEB9C3028C0E134856A37B2BBF6A0EBD8A7F65EF3B1AD52D2DDB0DC95DBD3C6"
+    },
+    "prepared_checkpoint": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\profile\\save games\\xar_checkpoint.ck3",
+      "size_bytes": 78481694,
+      "sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17"
+    },
+    "prepared_driver": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\native-session\\driver-state.json",
+      "size_bytes": 87970736,
+      "sha256": "9F1CD53CC12C41984B9A5B12414352F9E81EFBFD8312FD34321CF4E1B735E21E"
+    },
+    "prepared_family_sidecar": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\first-heir-marriage-formal-v1.json",
+      "size_bytes": 2742,
+      "sha256": "C5B0E9AF69928003F3AF34FAC05240E384BDEA44A9C4227CA66BC269F2979AEC"
+    },
+    "rebind_receipt": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\ordinary-seed-rebind-v1.json",
+      "size_bytes": 4057,
+      "sha256": "76116CDC35914F2C0B281CC6AAD9A51FEE921066EF9CA87500FE4F29C4F905ED"
+    },
+    "preflight_report": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\preflights\\20260928T024515Z-one-generation-preflight-57ebdb91\\report.json",
+      "size_bytes": 4020,
+      "sha256": "221B06337BED1EF6D480516B9465BAE215A1BE47C10A70CCB9E4ED8D4426BE2D"
+    },
+    "official_prepare_log": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\official-prepare-no-launch.log",
+      "size_bytes": 11860,
+      "sha256": "CC30A197094D00538B57823D668D9BF4E67675005F2C313AAE2E3F465AD0EBA1"
+    },
+    "operator_profile": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\operator-profile-h3388-7d41.json",
+      "size_bytes": 6676,
+      "sha256": "5BCC5458234E585699F469B3AAA676886A09905D7FC21D5CCF71A4302B9641A2"
+    },
+    "operator_run_wrapper": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\run_bounded.py",
+      "size_bytes": 1452,
+      "sha256": "A95EE91DB2867E39B690C5BA2D9C70ED752799E99674B2B382FBB85041069E44"
+    }
+  },
+  "evidence_boundary": "No CK3 launch, R allocation, gameplay action, new Robert game day, or live owner/window claim. Recheck master and frozen pair before formal run; profile state and output are independent from H90 and PRV008."
+}
