@@ -52,7 +52,7 @@ def _event(attempt: Path, phase: str, state: str, **details) -> None:
 
 
 def _artifact(manifest_path: Path, run: dict, artifact_id: str) -> Path:
-    rows = [row for row in run["artifacts"] if row["artifact_id"] == artifact_id]
+    rows = [row for row in run["artifacts"] if row["id"] == artifact_id]
     if len(rows) != 1:
         raise ValueError(f"Expected exactly one preserved artifact {artifact_id}")
     row = rows[0]
