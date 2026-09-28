@@ -1,6 +1,7 @@
 # Private paused sway target read v1 (2026-09-29)
 
-Status: **source and Release build ready; no CK3 live read yet**. This package
+Status: **R0330 live attempt RED before native Can Send; root fix under focused
+verification, no successful CK3 sway read yet**. This package
 connects the already exact-build-bound SCHEME4/9/10 observation and native
 Can Send reader to the existing paused application-main mailbox. It adds the
 default-off `query-active-scheme-sway-target-v1-private-<full-character-id>`
@@ -77,3 +78,26 @@ receipt accounting once a concrete target and checkpoint are frozen.
 The local worker may request the unique CK3 slot only after a fresh master
 sync, full candidate build, official pair/no-launch check, and coordinator
 assignment. The game stays minimized while the paused query runs.
+
+## R0330 exact-build root correction
+
+The first H3911 paired, paused read in R0330 stopped on
+`native_scheme_observation_red:root_unavailable` before the sway legality
+query. The immutable Operator report is
+`Z:\m6swayh3911\operator-runs\sway-h3911-read-1\formal-report.txt`
+(SHA-256 `0F33C7A094BB3F88A83518ED9759EC528C69364BBBBDED65D118D2FB20C00630`).
+The game was paused and responsive with player 29829; no gameplay action or
+date advance occurred, and the process tree was reclaimed. This is a source
+binding failure, not evidence that target 32716 is native-illegal.
+
+The binder had treated `*(module+0x570E068)` as the base of the embedded
+scheme manager. Exact EXE 1.19.0.6 (SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`)
+at RVA `0x25A1A63` instead reads `[game_state+0xA0]`, then at `0x25A1A6A`
+adds `0xA538`; RVA `0x2EB5584/0x2EB558B` independently repeats this chain.
+The corrected root is therefore `game_data = *(game_state+0xA0)`, then
+`manager = game_data+0xA538`. The native fixture now models both objects,
+so the earlier direct `game_state+0xA538` lookup fails the focused test.
+Normal and optimized `/W4 /WX` fixture runs pass with the correction.
+This does not establish a live scheme observation; a newly paired candidate
+must repeat the bounded paused read before any typed sway action.
