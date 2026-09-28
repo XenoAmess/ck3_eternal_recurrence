@@ -16,6 +16,7 @@ namespace xar::bridge {
 namespace {
 
 constexpr std::uintptr_t kManagerStorageOffset = 0x20;
+constexpr std::uintptr_t kGameStateGameDataOffset = 0xA0;
 constexpr std::uintptr_t kStorageBlockTableOffset = 0x08;
 constexpr std::uintptr_t kStorageSlotsOffset = 0x20;
 constexpr std::uintptr_t kStorageCapacityOffset = 0x2C;
@@ -320,16 +321,21 @@ bool ValidateVtable(const State &state, std::uintptr_t object,
 
 bool ResolveRootInternal(const State &state, Root &output) noexcept {
   output = {};
-  std::uintptr_t application = 0;
+  std::uintptr_t game_state = 0;
   if (!Read(state, state.module_base,
-            kActiveSchemeStateV1PrivateApplicationSlotRva, application) ||
-      application == 0 ||
+            kActiveSchemeStateV1PrivateApplicationSlotRva, game_state) ||
+      game_state == 0) {
+    return false;
+  }
+  std::uintptr_t game_data = 0;
+  if (!Read(state, game_state, kGameStateGameDataOffset, game_data) ||
+      game_data == 0 ||
       kActiveSchemeStateV1PrivateManagerOffset >
-          (std::numeric_limits<std::uintptr_t>::max)() - application) {
+          (std::numeric_limits<std::uintptr_t>::max)() - game_data) {
     return false;
   }
   const auto manager =
-      application + kActiveSchemeStateV1PrivateManagerOffset;
+      game_data + kActiveSchemeStateV1PrivateManagerOffset;
   std::uintptr_t storage = 0;
   if (!ValidateVtable(state, manager,
                       kActiveSchemeStateV1PrivateManagerVtableRva) ||

@@ -26,7 +26,8 @@ void Store(void *base, std::size_t offset, const T &value) {
 }
 
 struct Fixture {
-  std::vector<std::byte> application{0xA580};
+  std::array<std::byte, 0xA8> game_state{};
+  std::vector<std::byte> game_data{0xA580};
   std::array<std::byte, 0x58> storage{};
   std::array<std::uintptr_t, 1> block_table{};
   std::vector<std::byte> block{kSchemeSize * 16};
@@ -44,10 +45,10 @@ struct Fixture {
   bool corrupt_vtable_slot = false;
   bool mutate_on_third_key_read = false;
   int key_reads = 0;
-  int application_slot_reads = 0;
+  int game_state_slot_reads = 0;
 
   std::uintptr_t Manager() noexcept {
-    return reinterpret_cast<std::uintptr_t>(application.data()) +
+    return reinterpret_cast<std::uintptr_t>(game_data.data()) +
            kActiveSchemeStateV1PrivateManagerOffset;
   }
   std::uintptr_t Storage() noexcept {
@@ -63,12 +64,15 @@ struct Fixture {
   }
 
   Fixture() {
+    const auto game_data_address =
+        reinterpret_cast<std::uintptr_t>(game_data.data());
+    Store(game_state.data(), 0xA0, game_data_address);
     const auto manager_vtable =
         kModuleBase + kActiveSchemeStateV1PrivateManagerVtableRva;
-    Store(application.data(), kActiveSchemeStateV1PrivateManagerOffset,
+    Store(game_data.data(), kActiveSchemeStateV1PrivateManagerOffset,
           manager_vtable);
     const auto storage_address = Storage();
-    Store(application.data(),
+    Store(game_data.data(),
           kActiveSchemeStateV1PrivateManagerOffset + 0x20,
           storage_address);
 
@@ -174,9 +178,9 @@ bool ReadMemory(void *context, const void *address, void *output,
   if (current ==
           kModuleBase + kActiveSchemeStateV1PrivateApplicationSlotRva &&
       size == sizeof(std::uintptr_t)) {
-    ++fixture.application_slot_reads;
+    ++fixture.game_state_slot_reads;
     const auto value =
-        reinterpret_cast<std::uintptr_t>(fixture.application.data());
+        reinterpret_cast<std::uintptr_t>(fixture.game_state.data());
     std::memcpy(output, &value, sizeof(value));
     return true;
   }
@@ -345,7 +349,7 @@ void TestSwayAndMurder() {
              murder.maximum_breaches.value == 5 &&
              murder.phases_remaining_until_opportunity.value == 3,
          "complex murder metrics");
-  Expect(fixture.application_slot_reads >= 8,
+  Expect(fixture.game_state_slot_reads >= 8,
          "root is re-resolved instead of cached");
 }
 
