@@ -9,7 +9,8 @@ import threading
 import unittest
 
 from capture_session import (EXACT_SHA, checkpoint_source, copy_checkpoint, identity,
-                             session_outcome, wait_checkpoint_map, write_new)
+                             prioritize_supervisor_failure, record_observer_failure, session_outcome,
+                             wait_checkpoint_map, write_new)
 
 OUTPUT = None
 
@@ -123,6 +124,28 @@ class CheckpointSessionTests(unittest.TestCase):
         self.assertEqual(session_outcome(session_ok=True, debug_recording_enabled=True, recording_ok=True),
                          "RAW_CAPTURE_COMPLETE_PENDING_VISUAL_REVIEW")
         self.assertEqual(session_outcome(session_ok=False, debug_recording_enabled=False, recording_ok=False), "RED")
+
+    def test_prelaunch_supervisor_error_precedes_map_observer_error(self):
+        observer = ("RuntimeError('Loaded checkpoint did not produce a verified "
+                    "stable paused map within the bounded wait')")
+        supervisor = ("UnsafeCleanupError('watchdog bootstrap failed; unsafe marker "
+                      "retained: process watchdog bootstrap PID 20120 did not become ready')")
+        worker = {"ok": False, "error": observer, "marks": []}
+        prioritize_supervisor_failure(worker, supervisor)
+        self.assertEqual(worker["error"], supervisor)
+        self.assertEqual(worker["observer_error"], observer)
+        self.assertFalse(worker["ok"])
+        self.assertEqual(worker["marks"], [])
+
+        # A direct supervisor failure does not fabricate a second observer.
+        direct = {"ok": False, "error": supervisor, "marks": []}
+        prioritize_supervisor_failure(direct, supervisor)
+        self.assertNotIn("observer_error", direct)
+
+        # The observer may leave after the supervisor has already failed.
+        record_observer_failure(direct, observer, supervisor_error=supervisor)
+        self.assertEqual(direct["error"], supervisor)
+        self.assertEqual(direct["observer_error"], observer)
 
 
 def main():

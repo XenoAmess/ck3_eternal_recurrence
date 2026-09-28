@@ -216,6 +216,19 @@ def session_outcome(*, session_ok: bool, debug_recording_enabled: bool, recordin
             else "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO")
 
 
+def prioritize_supervisor_failure(worker: dict, supervisor_error: str) -> None:
+    """Keep the map observer error, but report the failed native session first."""
+    observer_error = worker.get("error")
+    if observer_error is not None and observer_error != supervisor_error:
+        worker["observer_error"] = observer_error
+    worker["error"] = supervisor_error
+
+
+def record_observer_failure(worker: dict, observer_error: str, *, supervisor_error: str | None) -> None:
+    """A late observer exit must not overwrite the native session failure."""
+    worker["observer_error" if supervisor_error is not None else "error"] = observer_error
+
+
 def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
     """Forward only the bounded private trace fields to the native driver."""
     require(enabled, "Private phase trace requires explicit capture opt-in")
@@ -1304,11 +1317,12 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
         try:
             asyncio.run(observe())
         except BaseException as error:
-            worker["error"] = repr(error)
+            record_observer_failure(worker, repr(error), supervisor_error=supervisor_error)
         finally:
             stopped.set()
 
     thread = threading.Thread(target=worker_main, daemon=True)
+    supervisor_error = None
     try:
         with ExitStack() as resources:
             output = resources.enter_context((args.output_dir / "session.jsonl").open("x", encoding="utf-8"))
@@ -1335,11 +1349,14 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                 frontend_first_before_final_launch=before_final_launch,
             )
     except BaseException as error:
+        supervisor_error = repr(error)
         worker["error"] = worker["error"] or repr(error)
     finally:
         stopped.set()
         if thread.ident is not None:
             thread.join(timeout=5)
+        if supervisor_error is not None:
+            prioritize_supervisor_failure(worker, supervisor_error)
         if recorder is not None and recorder.poll() is None:
             try:
                 recorder.communicate(b"q\n", timeout=30)
