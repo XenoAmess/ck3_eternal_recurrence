@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_live_diagnostic_red_no_cash_values",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T11:27:58Z",
+  "updated_at_utc": "2026-09-28T11:46:44Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -68,7 +68,8 @@
     "2026-09-28 independent quote-binding review tightened the only mapped read-only query: query_name war_termination_options must equal selected_step query-war-termination-options-{WarID}. Matching plan and quote with a different query step, or an unknown query name, now fail even if their amounts match. This remains structural only; no zero-cost native query was observed.",
     "2026-09-28 R0303 policy-floor static audit found no versioned Robert active-war minimum reserve source. AI pre-declaration war chest, building 200-gold post-action floor, and faction gift floor are separate policies and cannot fill the war field. A standalone policy-byte/SHA/frame/horizon/purpose claim gate passed synthetic regressions, including rejection of a document that expires before its 24-raw-per-game-day horizon, but always returns formal_cash_receipt_eligible=false; H3686 policy and risk remain null.",
     "2026-09-28 conditional plan-local no-selected-war-action fee diagnostic: an explicitly null selected_step on one matching paused WarID with matching snapshot_id/public revision yields Q100000 immediate cost 0 for that plan only. Four other war cash amounts remain null and formal_cash_receipt_eligible=false. The report projector rejects a later selected-step mismatch and restores the missing immediate amount. The R0303 notice contains only a summary, not this receiver-verifiable plan/postcheck, so its five historical values remain null. Four dedicated and twenty-seven M5 collector regressions passed normal/-O; no native action price or live amount was read.",
-    "2026-09-28 supplied topbar byte-layout diagnostic now requires exact-build CHudTopBar primary and secondary vtable fingerprints against an explicit module image_base before decoding expense rows. Five focused regressions passed normal/-O. This does not establish a unique live GUI owner, cache freshness, actual debit cadence, or any war cash amount."
+    "2026-09-28 supplied topbar byte-layout diagnostic now requires exact-build CHudTopBar primary and secondary vtable fingerprints against an explicit module image_base before decoding expense rows. Five focused regressions passed normal/-O. This does not establish a unique live GUI owner, cache freshness, actual debit cadence, or any war cash amount.",
+    "2026-09-28 selected MoveArmy-to-embark crosswalk independently confirmed a typed army/target and preview route, but the preview returns no fee or embark event and the GUI icon cache lacks selected ArmyID/route/freshness binding. The cache total cannot be treated as an immediate action quote or zero fee; five cash amounts remain null."
   ],
   "followup_research": {
     "status": "static_sources_plus_h2825_live_diagnostic_red",
@@ -94,6 +95,7 @@
     "r0303_policy_floor_static_audit": "docs/ck3-native-ai/r0303-war-cash-policy-floor-static-audit-2026-09-28.md",
     "policy_floor_provenance_candidate": "ck3_autonomous_player/src/xar_autoplayer/war_cash_floor_policy_provenance_v1.py",
     "no_selected_action_fee_diagnostic": "docs/ck3-native-ai/r0303-no-selected-war-action-fee-2026-09-28.md",
+    "selected_move_embark_quote_crosswalk": "docs/ck3-native-ai/r0266-selected-move-embark-quote-crosswalk-2026-09-28.md",
     "no_selected_action_fee_scope": "Conditional plan-local zero only when the exact paused plan explicitly selects no step; not an observed native quote, not applicable to the historical R0303 summary, and never a formal cash receipt.",
     "r0303_policy_source_request_relative_path": "WAR/M5-WAR-CASH-20260928/POLICY-SOURCE-REQUEST-R0303-v1.json",
     "r0303_policy_source_request_sha256": "6DACB5EF6395C66DF73DA5174485B04FEAFA3090751A825E7FFB8B92B1D4119E",
