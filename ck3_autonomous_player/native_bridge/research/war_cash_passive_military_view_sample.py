@@ -115,10 +115,14 @@ def _scan(process: WindowsReadOnlyProcess, player_id: int, max_bytes: int):
     regions = 0
     while position < MAX_USER_ADDRESS:
         info = MemoryBasicInformation()
+        ctypes.set_last_error(0)
         queried = kernel.VirtualQueryEx(
             process.handle, ctypes.c_void_p(position),
             ctypes.byref(info), ctypes.sizeof(info))
         if queried == 0:
+            error = ctypes.get_last_error()
+            if error != 87:  # ERROR_INVALID_PARAMETER above user VA range.
+                raise OSError(error, "VirtualQueryEx ended before the address-space limit")
             break
         region_start = int(info.BaseAddress or position)
         region_end = region_start + int(info.RegionSize)
