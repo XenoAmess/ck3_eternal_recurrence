@@ -53,6 +53,63 @@ KEYS = frozenset(
         "material_complete",
     }
 )
+TRUCE_INPUT_KEYS = frozenset({
+    "schema", "attacker_flexible_truces_perk",
+    "attacker_government_is_nomadic", "defender_government_is_nomadic",
+    "nomad_both", "short", "long", "border_raid_pair",
+    "evaluated_days", "persisted_expiry_date_raw",
+})
+
+
+def _normalize_truce_inputs(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != TRUCE_INPUT_KEYS:
+        raise ValueError("malformed partial truce input wire")
+    if value["schema"] != "xar.ck3.defender-de-jure-truce-inputs.v1":
+        raise ValueError("unexpected partial truce input schema")
+    normalized = {"schema": value["schema"]}
+    for key in (
+        "attacker_flexible_truces_perk", "attacker_government_is_nomadic",
+        "defender_government_is_nomadic", "nomad_both", "short", "long",
+        "border_raid_pair",
+    ):
+        field = value[key]
+        if not isinstance(field, dict) or set(field) != {
+            "status", "value", "unavailable_reason"
+        }:
+            raise ValueError(f"malformed {key} truce input")
+        if field["status"] == "observed":
+            if type(field["value"]) is not bool or field["unavailable_reason"] is not None:
+                raise ValueError(f"invalid observed {key} truce input")
+        elif field["status"] == "unavailable":
+            if (field["value"] is not None or
+                    not isinstance(field["unavailable_reason"], str) or
+                    not field["unavailable_reason"]):
+                raise ValueError(f"unavailable {key} truce input was laundered")
+        else:
+            raise ValueError(f"invalid {key} truce input status")
+        normalized[key] = dict(field)
+    for key in ("short", "long", "border_raid_pair"):
+        if normalized[key] != {
+            "status": "unavailable", "value": None,
+            "unavailable_reason": "stock_condition_reader_unavailable",
+        }:
+            raise ValueError(f"{key} truce condition was laundered")
+    attacker = normalized["attacker_government_is_nomadic"]
+    defender = normalized["defender_government_is_nomadic"]
+    both = normalized["nomad_both"]
+    if attacker["status"] == defender["status"] == "observed":
+        if both != {"status": "observed",
+                    "value": attacker["value"] and defender["value"],
+                    "unavailable_reason": None}:
+            raise ValueError("nomad conjunction disagrees with both parties")
+    elif both != {"status": "unavailable", "value": None,
+                  "unavailable_reason": "party_government_flag_unavailable"}:
+        raise ValueError("nomad conjunction lacks a party")
+    if value["evaluated_days"] is not None or value["persisted_expiry_date_raw"] is not None:
+        raise ValueError("partial truce inputs cannot contain a duration")
+    normalized["evaluated_days"] = None
+    normalized["persisted_expiry_date_raw"] = None
+    return normalized
 
 
 def query_defender_dejure_exit_terms_v1_step(war_id: int) -> str:
@@ -99,7 +156,7 @@ def normalize_defender_dejure_exit_terms_v1(
     expected_target_title_ids: list[int],
 ) -> dict[str, Any]:
     """Accept only a same-frame baseline with all material terms unavailable."""
-    if not isinstance(value, dict) or set(value) != KEYS:
+    if not isinstance(value, dict) or set(value) not in (KEYS, KEYS | {"truce_inputs_v1"}):
         raise ValueError("defender de-jure baseline schema is malformed")
     if value["schema"] != SCHEMA:
         raise ValueError("defender de-jure baseline schema version differs")
@@ -199,6 +256,10 @@ def normalize_defender_dejure_exit_terms_v1(
         "target_title_holder_prestate": normalized_prestate,
         "primary_resource_balances": normalized_balances,
         "primary_monthly_gold_income": normalized_income,
+        "truce_inputs_v1": (
+            _normalize_truce_inputs(value["truce_inputs_v1"])
+            if "truce_inputs_v1" in value else None
+        ),
         "title_vassal_delta": None,
         "title_vassal_delta_unavailable_reason": UNAVAILABLE_REASONS["title_vassal_delta"],
         "signed_resource_delta": None,

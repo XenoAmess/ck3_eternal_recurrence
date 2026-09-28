@@ -67,7 +67,67 @@ def _project(value: dict[str, object]) -> dict[str, object]:
     )
 
 
+def _truce_inputs() -> dict[str, object]:
+    observed = lambda value: {"status": "observed", "value": value,
+                              "unavailable_reason": None}
+    unavailable = lambda reason: {"status": "unavailable", "value": None,
+                                  "unavailable_reason": reason}
+    return {
+        "schema": "xar.ck3.defender-de-jure-truce-inputs.v1",
+        "attacker_flexible_truces_perk": observed(False),
+        "attacker_government_is_nomadic": observed(True),
+        "defender_government_is_nomadic": observed(False),
+        "nomad_both": observed(False),
+        "short": unavailable("stock_condition_reader_unavailable"),
+        "long": unavailable("stock_condition_reader_unavailable"),
+        "border_raid_pair": unavailable("stock_condition_reader_unavailable"),
+        "evaluated_days": None,
+        "persisted_expiry_date_raw": None,
+    }
+
+
 class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
+    def test_partial_truce_inputs_preserve_material_gate(self) -> None:
+        candidate = _candidate()
+        candidate["truce_inputs_v1"] = _truce_inputs()
+        projected = _project(candidate)
+        self.assertIs(projected["truce_inputs_v1"]["nomad_both"]["value"], False)
+        self.assertIsNone(projected["truce_inputs_v1"]["evaluated_days"])
+        self.assertIsNone(projected["directed_truce"])
+        self.assertFalse(projected["material_complete"])
+        self.assertIsNone(projected["action_literal"])
+
+    def test_partial_truce_inputs_fail_closed_on_missing_or_laundered_fields(self) -> None:
+        for mutate in (
+            lambda item: item["attacker_flexible_truces_perk"].update(
+                status="unavailable", value=False),
+            lambda item: item["attacker_government_is_nomadic"].update(
+                status="unavailable", value=None, unavailable_reason=None),
+            lambda item: item["nomad_both"].update(value=True),
+            lambda item: item["short"].update(status="observed", value=False,
+                                              unavailable_reason=None),
+            lambda item: item.update(evaluated_days=730),
+            lambda item: item.pop("border_raid_pair"),
+        ):
+            with self.subTest(mutate=mutate):
+                candidate = _candidate()
+                candidate["truce_inputs_v1"] = _truce_inputs()
+                mutate(candidate["truce_inputs_v1"])
+                with self.assertRaises(ValueError):
+                    _project(candidate)
+
+    def test_partial_truce_inputs_allow_typed_unavailable(self) -> None:
+        candidate = _candidate()
+        inputs = _truce_inputs()
+        inputs["attacker_government_is_nomadic"] = {
+            "status": "unavailable", "value": None,
+            "unavailable_reason": "landed_government_flags_unavailable"}
+        inputs["nomad_both"] = {
+            "status": "unavailable", "value": None,
+            "unavailable_reason": "party_government_flag_unavailable"}
+        candidate["truce_inputs_v1"] = inputs
+        self.assertIsNone(_project(candidate)["truce_inputs_v1"]["nomad_both"]["value"])
+
     def test_current_baseline_projects_without_exit_authority(self) -> None:
         projected = _project(_candidate())
         self.assertEqual(projected["target_title_ids"], [2128])
@@ -76,6 +136,7 @@ class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
              "holder_immediate_liege_character_id": 29829}
         ])
         self.assertEqual(len(projected["primary_resource_balances"]), 14)
+        self.assertIsNone(projected["truce_inputs_v1"])
         self.assertIsNone(projected["title_vassal_delta"])
         self.assertIsNone(projected["signed_resource_delta"])
         self.assertIsNone(projected["directed_truce"])

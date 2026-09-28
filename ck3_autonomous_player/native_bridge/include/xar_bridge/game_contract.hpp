@@ -926,6 +926,16 @@ struct DefenderDeJureExitTermsV1 {
   std::vector<DefenderDeJureTargetHolderPrestateV1> target_title_holder_prestate;
   std::vector<WarExitResourceSnapshot> primary_resource_balances;
   std::vector<WarExitCharacterFixedPointSnapshot> primary_monthly_gold_income;
+  // Partial inputs to the stock truce formula only. These are not a truce
+  // duration, expiry, or material exit terms.
+  struct TruceInput {
+    std::optional<bool> value;
+    std::string unavailable_reason = "read_only_input_not_observed";
+    friend bool operator==(const TruceInput &, const TruceInput &) = default;
+  };
+  TruceInput attacker_flexible_truces_perk;
+  TruceInput attacker_government_is_nomadic;
+  TruceInput defender_government_is_nomadic;
   std::string title_vassal_delta_unavailable_reason =
       "runtime_target_scope_and_de_jure_change_semantics_unproven";
   std::string signed_resource_delta_unavailable_reason =

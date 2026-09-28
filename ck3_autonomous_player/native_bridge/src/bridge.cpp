@@ -4392,7 +4392,45 @@ void AppendDefenderDeJureExitTermsV1(
     AppendFixedPoint(result, row.value);
     result += '}';
   }
-  result += "],\"title_vassal_delta\":null,";
+  result += "],\"truce_inputs_v1\":{\"schema\":"
+            "\"xar.ck3.defender-de-jure-truce-inputs.v1\"";
+  const auto append_input = [&result](
+      std::string_view key,
+      const xar::game::DefenderDeJureExitTermsV1::TruceInput &input) {
+    result += ",\"";
+    result += key;
+    result += "\":{\"status\":";
+    AppendJsonString(result, input.value ? "observed" : "unavailable");
+    result += ",\"value\":";
+    result += input.value ? (*input.value ? "true" : "false") : "null";
+    result += ",\"unavailable_reason\":";
+    if (input.value) result += "null";
+    else AppendJsonString(result, input.unavailable_reason);
+    result += '}';
+  };
+  append_input("attacker_flexible_truces_perk",
+               terms.attacker_flexible_truces_perk);
+  append_input("attacker_government_is_nomadic",
+               terms.attacker_government_is_nomadic);
+  append_input("defender_government_is_nomadic",
+               terms.defender_government_is_nomadic);
+  xar::game::DefenderDeJureExitTermsV1::TruceInput both{};
+  both.unavailable_reason = "party_government_flag_unavailable";
+  if (terms.attacker_government_is_nomadic.value &&
+      terms.defender_government_is_nomadic.value) {
+    both.value = *terms.attacker_government_is_nomadic.value &&
+                 *terms.defender_government_is_nomadic.value;
+    both.unavailable_reason.clear();
+  }
+  append_input("nomad_both", both);
+  for (const auto key : {"short", "long", "border_raid_pair"}) {
+    xar::game::DefenderDeJureExitTermsV1::TruceInput unavailable{};
+    unavailable.unavailable_reason = "stock_condition_reader_unavailable";
+    append_input(key, unavailable);
+  }
+  result += ",\"evaluated_days\":null,"
+            "\"persisted_expiry_date_raw\":null}";
+  result += ",\"title_vassal_delta\":null,";
   result += "\"title_vassal_delta_unavailable_reason\":";
   AppendJsonString(result, terms.title_vassal_delta_unavailable_reason);
   result += ",\"signed_resource_delta\":null,";

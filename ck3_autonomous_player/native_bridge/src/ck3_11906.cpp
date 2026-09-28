@@ -727,6 +727,11 @@ constexpr std::uintptr_t kReadCounterCurrentChunkRva = 0x23D2B90;
 constexpr std::uintptr_t kResolveCounterClassesRva = 0x23CF1B0;
 constexpr std::uintptr_t kGetCounterContextScaleRva = 0x2946B50;
 constexpr std::uintptr_t kGetKnightEffectivenessContextRva = 0x2613480;
+// H2743's partial truce-input reader uses only the exact-build lookup and
+// canonical character-government getter already audited by combat_v3.
+constexpr std::uintptr_t kH2743LookupScriptIdentifierRva = 0x3B588E0;
+constexpr std::uintptr_t kH2743ScriptIdentifierNameRva = 0x3B58970;
+constexpr std::uintptr_t kH2743CharacterGovernmentRva = 0x26165B0;
 constexpr std::uintptr_t kReadKnightEffectivenessRva = 0x28FD990;
 constexpr std::uintptr_t kIsHoldingDefenderRva = 0x2900BB0;
 constexpr std::uintptr_t kCommanderMinRollRva = 0x570ED7C;
@@ -10394,6 +10399,15 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.character_immediate_liege =
       reinterpret_cast<CharacterImmediateLiege>(
           module + kCampaignRootImmediateLiegeRva);
+  result.h2743_lookup_script_identifier =
+      reinterpret_cast<H2743LookupScriptIdentifier>(
+          module + kH2743LookupScriptIdentifierRva);
+  result.h2743_script_identifier_name =
+      reinterpret_cast<H2743ScriptIdentifierName>(
+          module + kH2743ScriptIdentifierNameRva);
+  result.h2743_character_government =
+      reinterpret_cast<H2743CharacterGovernment>(
+          module + kH2743CharacterGovernmentRva);
   result.classify_contact_defender_by_holder =
       reinterpret_cast<CharacterRelationPredicate>(
           module + kClassifyContactDefenderByHolderRva);
@@ -18689,6 +18703,75 @@ ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
   return ReadRaiktorActualTruceExpiryV1(access, toward_character_id, output);
 }
 
+// These helpers inspect pre-existing containers only. They do not call
+// GetOwnedPerks, HasPerk, script effects, or the truce evaluator.
+std::optional<std::vector<std::string>> ReadH2743OwnedPerkKeys(
+    const void *character) noexcept {
+  if (character == nullptr ||
+      LoadAt<void *>(character, kCharacterDeathDataOffset) != nullptr)
+    return std::nullopt;
+  void *const owner = LoadAt<void *>(character, 0x1A8);
+  if (owner == nullptr) return std::nullopt;
+  const auto *const span = static_cast<const std::byte *>(owner) + 0x220;
+  void *const data = LoadAt<void *>(span, 0);
+  const auto count = LoadAt<std::int32_t>(span, 0x0C);
+  if (count < 0 || count > 512 || (count > 0 && data == nullptr))
+    return std::nullopt;
+  std::vector<std::string> keys;
+  try {
+    keys.reserve(static_cast<std::size_t>(count));
+    for (std::int32_t index = 0; index < count; ++index) {
+      void *const perk = LoadAt<void *>(
+          data, static_cast<std::size_t>(index) * sizeof(void *));
+      std::string key;
+      if (!ReadDatabaseObjectKey(perk, 0x18, key) || key.empty() ||
+          key.size() > 127) return std::nullopt;
+      for (const char ch : key) {
+        if (!((ch >= 'a' && ch <= 'z') ||
+              (ch >= '0' && ch <= '9') || ch == '_'))
+          return std::nullopt;
+      }
+      if (std::find(keys.begin(), keys.end(), key) != keys.end())
+        return std::nullopt;
+      keys.push_back(std::move(key));
+    }
+  } catch (...) {
+    return std::nullopt;
+  }
+  return keys;
+}
+
+std::optional<std::vector<std::int32_t>> ReadH2743GovernmentFlags(
+    const Bindings &bindings, void *character) noexcept {
+  if (character == nullptr ||
+      LoadAt<void *>(character, kCharacterDeathDataOffset) != nullptr ||
+      bindings.h2743_character_government == nullptr) return std::nullopt;
+  void *const landed = LoadAt<void *>(character, 0x1B8);
+  if (landed == nullptr) return std::nullopt; // unaudited non-landed branch
+  void *const expected = LoadAt<void *>(landed, 0x3F0);
+  if (expected == nullptr ||
+      bindings.h2743_character_government(character) != expected)
+    return std::nullopt;
+  const auto *const span = static_cast<const std::byte *>(expected) + 0x48;
+  void *const data = LoadAt<void *>(span, 0);
+  const auto count = LoadAt<std::int32_t>(span, 0x0C);
+  if (count < 0 || count > 65'536 || (count > 0 && data == nullptr))
+    return std::nullopt;
+  std::vector<std::int32_t> flags;
+  try {
+    flags.reserve(static_cast<std::size_t>(count));
+    for (std::int32_t index = 0; index < count; ++index) {
+      const auto flag = LoadAt<std::int32_t>(
+          data, static_cast<std::size_t>(index) * sizeof(std::int32_t));
+      if (!flags.empty() && flag <= flags.back()) return std::nullopt;
+      flags.push_back(flag);
+    }
+  } catch (...) {
+    return std::nullopt;
+  }
+  return flags;
+}
+
 ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
     const Bindings &bindings, std::int32_t war_id,
     DefenderDeJureExitTermsV1 &output) noexcept {
@@ -18824,12 +18907,42 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
                                 defender_id, balances, income)) {
     return Result::unavailable;
   }
+  // Partial truce inputs never authorize an exit or a duration. Each source
+  // is independently unavailable when its exact reader cannot be established.
+  const auto perk_keys = ReadH2743OwnedPerkKeys(attacker);
+  const auto attacker_flags = ReadH2743GovernmentFlags(bindings, attacker);
+  const auto defender_flags = ReadH2743GovernmentFlags(bindings, defender);
+  std::optional<std::int32_t> nomadic_flag_id;
+  if (bindings.h2743_lookup_script_identifier != nullptr &&
+      bindings.h2743_script_identifier_name != nullptr) {
+    constexpr std::string_view key = "government_is_nomadic";
+    const H2743NativeStringView64 view{
+        key.data(), static_cast<std::int64_t>(key.size())};
+    const auto identifier = bindings.h2743_lookup_script_identifier(&view);
+    const auto *const returned_name = identifier < 0 || identifier == 12
+        ? nullptr : bindings.h2743_script_identifier_name(identifier);
+    if (returned_name != nullptr && *returned_name == key)
+      nomadic_flag_id = identifier;
+  }
   std::vector<game::WarExitResourceSnapshot> balances_after;
   std::vector<game::WarExitCharacterFixedPointSnapshot> income_after;
   std::vector<std::int32_t> targets_after;
   std::string key_after;
   Snapshot after{};
   const auto target_holders_after = read_target_holders();
+  const auto perk_keys_after = ReadH2743OwnedPerkKeys(attacker);
+  const auto attacker_flags_after = ReadH2743GovernmentFlags(bindings, attacker);
+  const auto defender_flags_after = ReadH2743GovernmentFlags(bindings, defender);
+  if (nomadic_flag_id) {
+    constexpr std::string_view key = "government_is_nomadic";
+    const H2743NativeStringView64 view{
+        key.data(), static_cast<std::int64_t>(key.size())};
+    const auto repeated = bindings.h2743_lookup_script_identifier(&view);
+    const auto *const returned_name = repeated < 0 || repeated == 12
+        ? nullptr : bindings.h2743_script_identifier_name(repeated);
+    if (repeated != *nomadic_flag_id || returned_name == nullptr ||
+        *returned_name != key) nomadic_flag_id.reset();
+  }
   if (!target_holders_after || *target_holders_after != *target_holders ||
       !ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
                                 defender_id, balances_after, income_after) ||
@@ -18869,6 +18982,35 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
   output.target_title_holder_prestate = *target_holders;
   output.primary_resource_balances = std::move(balances);
   output.primary_monthly_gold_income = std::move(income);
+  if (perk_keys && perk_keys_after && *perk_keys == *perk_keys_after) {
+    output.attacker_flexible_truces_perk.value =
+        std::find(perk_keys->begin(), perk_keys->end(),
+                  "flexible_truces_perk") != perk_keys->end();
+    output.attacker_flexible_truces_perk.unavailable_reason.clear();
+  } else {
+    output.attacker_flexible_truces_perk.unavailable_reason =
+        perk_keys && perk_keys_after ? "perk_span_sample_drift"
+                                     : "attacker_perk_span_unavailable";
+  }
+  const auto publish_nomadic = [nomadic_flag_id](
+      const auto &first, const auto &second,
+      game::DefenderDeJureExitTermsV1::TruceInput &field) {
+    if (!nomadic_flag_id) {
+      field.unavailable_reason = "government_flag_identity_unavailable";
+    } else if (!first || !second) {
+      field.unavailable_reason = "landed_government_flags_unavailable";
+    } else if (*first != *second) {
+      field.unavailable_reason = "government_flag_sample_drift";
+    } else {
+      field.value = std::binary_search(first->begin(), first->end(),
+                                       *nomadic_flag_id);
+      field.unavailable_reason.clear();
+    }
+  };
+  publish_nomadic(attacker_flags, attacker_flags_after,
+                  output.attacker_government_is_nomadic);
+  publish_nomadic(defender_flags, defender_flags_after,
+                  output.defender_government_is_nomadic);
   output.same_frame_stable = true;
   return Result::available_baseline;
 }
