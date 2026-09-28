@@ -1,0 +1,75 @@
+{
+    "schema":  "xar.g2.war-forecast-red-handoff.v1",
+    "created_at_utc":  "2026-09-28T14:13:41Z",
+    "status":  "formal_war_planner_red_no_unsafe_action",
+    "previous_mainline_notice":  "CASH-PAIR-LATEST-ADDENDUM-R0319-H3860-v1.json",
+    "previous_mainline_notice_sha256":  "BD775201A4D45EB9B44E2476BFD53C11CF9CE4BAC0DEA9F322890A14F275E61F",
+    "source":  {
+                   "round":  "R0321",
+                   "source_commit":  "a6d1ae845f11e1e0bae79cac3fd9c30b00afae59",
+                   "native_source_commit":  "a6d1ae845f11e1e0bae79cac3fd9c30b00afae59",
+                   "game_exe_sha256":  "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+                   "native_dll_sha256":  "C71F6A5DFE8D23374B5B73F9DFA18AD9455CFF087D36EC93D2D29F7F610E8786",
+                   "native_injector_sha256":  "F9F2472C5969A248E7942AC79CC17A03CFDDA24C7FF79E78DA810A66A0E30C15",
+                   "input_h3860_save_sha256":  "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+                   "formal_report_source_machine_path":  "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3860-a6d1\\run-formal-36\\formal-report.txt",
+                   "formal_report_bytes":  388302,
+                   "formal_report_sha256":  "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30"
+               },
+    "exact_blocker":  {
+                          "turn_index":  27,
+                          "stage":  "planning",
+                          "kind":  "planner_blocked",
+                          "history_index_at_recovery_checkpoint":  3911,
+                          "date_raw":  53219928,
+                          "snapshot_id":  "native:23",
+                          "public_revision":  24,
+                          "native_revision":  23,
+                          "played_character_id":  29829,
+                          "episode_run_id":  "native-29829-2bc2d599f7f9",
+                          "war_id":  16777231,
+                          "player_relative_war_score":  -19,
+                          "player_army_id":  83886367,
+                          "player_army_province_id":  2610,
+                          "enemy_army_ids":  [
+                                                 50331920,
+                                                 83886484
+                                             ],
+                          "enemy_province_id":  2629,
+                          "participant_partition_status":  "available",
+                          "offsite_hostile_army_ids":  [
+
+                                                       ],
+                          "offsite_arrival_risk":  "none_observed",
+                          "v3_query_step":  "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484",
+                          "v3_read_accepted":  true,
+                          "v3_read_status":  "available",
+                          "qualified_forecast_status":  "producer_unavailable",
+                          "provisional_forecast_status":  "same_frame_encounter_scope_mismatch",
+                          "monte_carlo_ready":  false,
+                          "planner_usable":  false,
+                          "forecast_status":  "research_only",
+                          "active_attack_allowed":  false,
+                          "selected_step":  null,
+                          "required_observation":  "qualified-same-frame-combat-forecast-and-expected-utility",
+                          "formal_error":  "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact"
+                      },
+    "minimal_reproduction":  {
+                                 "input":  "Official H3860 Robert pair under source commit a6d1ae845f11e1e0bae79cac3fd9c30b00afae59 with exact EXE/DLL above; R0321 bounded native auto run from input date_raw 53219784.",
+                                 "steps":  "Allow official strategy through turn 27; inspect paused native:23/public24/native23 at raw53219928 for WarID16777231, player army83886367 at2610 and candidate enemy armies50331920/83886484 at2629. Submit read-only v3 query step recorded above, then evaluate forecast gate.",
+                                 "observed":  "V3 read accepted but same-frame encounter provisional scope mismatch, no qualified battle probability or expected-utility authorization; planner blocks before attack.",
+                                 "expected_contract":  "Either produce a qualified same-frame combat forecast and expected-utility decision for the exact encounter or preserve RED without an unsafe move. Do not treat a syntactically accepted v3 read or raw strength balance as battle win odds."
+                             },
+    "recovery":  {
+                     "checkpoint_history_index":  3911,
+                     "checkpoint_date_raw":  53219928,
+                     "checkpoint_save_source_machine_path":  "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3860-a6d1\\state\\profile\\save games\\xar_checkpoint.ck3",
+                     "checkpoint_save_bytes":  78514751,
+                     "checkpoint_save_sha256":  "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+                     "driver_sha256":  "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+                     "cleanup_proven":  true,
+                     "post_inventory":  "empty per formal report",
+                     "recovery_qualified_for_receiver":  false
+                 },
+    "boundary":  "Metadata handoff only. No CK3 launch, gameplay, asset transfer, recipient receipt, cash producer, or new war-model formula/accuracy claim."
+}

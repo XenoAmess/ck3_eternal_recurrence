@@ -1,0 +1,81 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-R0321-COMBAT-FORECAST-20260928",
+  "created_at_utc": "2026-09-28T14:17:05Z",
+  "producer_role": "war_maintainer_receiver",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "blocks_formal_robert_continuation_after_r0321_h3911_checkpoint",
+  "related_requests": [
+    "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+    "WAR-ROBERT-R0266-JOINT-CASH-20260928"
+  ],
+  "scope": "A newer, distinct R0321 formal Robert planning RED at h3911/raw53219928: the siege participant partition is source-reported available, but a read-only V3 input acceptance and provisional forecast do not supply a qualified same-frame encounter forecast or expected-utility authorization. Preserve selected_step=null and active_attack_allowed=false until the exact scope mismatch is resolved and the existing risk gate authorizes a choice. This request authorizes no CK3 action.",
+  "source_notice": {
+    "onedrive_relative_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json",
+    "git_evidence_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.source-notice.json",
+    "size_bytes": 5777,
+    "sha256": "6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20",
+    "created_at_utc_source_claim": "2026-09-28T14:13:41Z",
+    "source_commit": "a6d1ae845f11e1e0bae79cac3fd9c30b00afae59",
+    "formal_report_source_claim_size_bytes": 388302,
+    "formal_report_source_claim_sha256": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30"
+  },
+  "source_pair_claim": {
+    "input_h3860_save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "runtime_dll_sha256": "C71F6A5DFE8D23374B5B73F9DFA18AD9455CFF087D36EC93D2D29F7F610E8786",
+    "injector_sha256": "F9F2472C5969A248E7942AC79CC17A03CFDDA24C7FF79E78DA810A66A0E30C15",
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "played_character_id": 29829,
+    "war_id": 16777231
+  },
+  "source_reported_blocker": {
+    "turn_index": 27,
+    "stage": "planning",
+    "history_index": 3911,
+    "date_raw": 53219928,
+    "snapshot_id": "native:23",
+    "public_revision": 24,
+    "native_revision": 23,
+    "player_relative_war_score": -19,
+    "player_army_id": 83886367,
+    "player_army_province_id": 2610,
+    "enemy_army_ids": [50331920, 83886484],
+    "enemy_province_id": 2629,
+    "participant_partition_status": "available",
+    "offsite_hostile_army_ids": [],
+    "v3_query_step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484",
+    "v3_read_accepted": true,
+    "v3_read_status": "available",
+    "qualified_forecast_status": "producer_unavailable",
+    "provisional_forecast_status": "same_frame_encounter_scope_mismatch",
+    "monte_carlo_ready": false,
+    "planner_usable": false,
+    "forecast_status": "research_only",
+    "active_attack_allowed": false,
+    "selected_step": null,
+    "formal_error": "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact"
+  },
+  "receiver_static_triage": {
+    "source_file": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "sufficient_research_scope_failure": "At line 16880, _provisional_defense_research_assessment requires len(defender_army_ids)==1; the source notice names two defenders. This condition alone makes that research canary return same_frame_encounter_scope_mismatch, but the untransferred raw V3 result is still needed to audit the full runtime scope.",
+    "production_gate": "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py line 22 sets COMBAT_ENTRY_EU_ACTIVATION_ENABLED=False. No qualified forecast or expected-utility authorization is demonstrated by the R0321 notice; removing the one-defender research guard alone is insufficient to permit contact."
+  },
+  "requested_delivery": [
+    "Return immutable R0321 formal-report bytes and a bounded, lossless excerpt containing the paused frame, full participant partition, exact V3 request/response, provisional encounter-scope comparison, qualified producer availability reason, expected-utility inputs or explicit missing fields, and the planner gate. Give row/JSON pointers and SHA-256 rather than reconstructing a result from this small notice.",
+    "Identify the exact native/provisional scope identity mismatch and the minimum same-frame observation or producer change that can make the complete two-defender encounter forecast qualified. A syntactically accepted V3 read, strength ratio, or research-only provisional output is not a battle probability or attack authorization.",
+    "Deliver a fail-closed, same-frame source/observation or bounded continuation allowed by the existing war risk contract, with focused normal and optimized checks and a matching formal live run when assets and managed screen are available. Keep no-action RED if qualification remains unavailable."
+  ],
+  "recovery_asset_request": {
+    "onedrive_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
+    "source_checkpoint_history_index": 3911,
+    "source_checkpoint_date_raw": 53219928,
+    "source_checkpoint_save_size_bytes": 78514751,
+    "source_checkpoint_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "source_checkpoint_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "receiver_qualification": "not_yet_possible_from_metadata_only"
+  },
+  "relation_to_prior": "R0271 original turn36 future-siege-participant RED remains historical. R0004/R0005 proved only a bounded first-hop/day-by-day recovery; R0319 reported later progress to h3860. R0321's source-reported participant_partition=available at h3911 is a new frame and does not retroactively prove the old frame. R0266 cash amount fields are independent and remain unfilled by this forecast notice.",
+  "receiver_boundary": "Only the 5777-byte OneDrive notice and its preceding R0319 notice were byte-verified here. The R0321 formal report, h3911 save/driver, V3 raw envelope, and exact new binaries were not transferred or independently checked. No receiver CK3 launch, formal replay, cash receipt, or war model accuracy claim."
+}

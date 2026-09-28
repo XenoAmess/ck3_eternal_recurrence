@@ -1,0 +1,59 @@
+{
+  "schema": "xar.g2.war-r0271-subsequent-metadata-audit.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "audit_at_utc": "2026-09-28T14:22:11Z",
+  "status": "newer_r0321_forecast_red_metadata_only",
+  "historical_r0271_status": "original_turn36_red_unchanged",
+  "earlier_receiver_recovery": "R0004/R0005 proved bounded first-hop submission and six fresh full-hostile one-day gates only; they did not prove target2629 participant scope, combat forecast or attack authorization.",
+  "verified_receiver_bytes": {
+    "source_notice_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json",
+    "source_notice_size_bytes": 5777,
+    "source_notice_sha256": "6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20",
+    "git_evidence_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.source-notice.json",
+    "predecessor_path": "WAR/M5-WAR-CASH-20260928/CASH-PAIR-LATEST-ADDENDUM-R0319-H3860-v1.json",
+    "predecessor_sha256": "BD775201A4D45EB9B44E2476BFD53C11CF9CE4BAC0DEA9F322890A14F275E61F",
+    "receiver_ack_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-ACK-R0321-WAR-FORECAST-RED-v1.json",
+    "receiver_ack_sha256": "1859E326E074B6E6F24A7E3CF7361EF533E4F46E897E65ED14475C9F827915B1"
+  },
+  "source_reported_r0321": {
+    "input_h3860_save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+    "source_commit": "a6d1ae845f11e1e0bae79cac3fd9c30b00afae59",
+    "formal_turn": 27,
+    "history_index": 3911,
+    "date_raw": 53219928,
+    "frame": "native:23/public24/native23",
+    "actor_character_id": 29829,
+    "war_id": 16777231,
+    "player_army_id": 83886367,
+    "player_army_province_id": 2610,
+    "defender_army_ids": [50331920, 83886484],
+    "target_province_id": 2629,
+    "participant_partition_status": "available",
+    "offsite_hostile_army_ids": [],
+    "v3_read_accepted": true,
+    "qualified_forecast_status": "producer_unavailable",
+    "provisional_forecast_status": "same_frame_encounter_scope_mismatch",
+    "planner_usable": false,
+    "active_attack_allowed": false,
+    "selected_step": null,
+    "formal_report_size_bytes_source_claim": 388302,
+    "formal_report_sha256_source_claim": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30",
+    "h3911_checkpoint_save_sha256_source_claim": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "h3911_checkpoint_driver_sha256_source_claim": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "cleanup_proven_source_claim": true
+  },
+  "source_boundary": {
+    "historical_r0271": "Original raw53219160 future siege partition unavailable because offsite hostile 83886484 might join before player arrival; this remains an immutable RED.",
+    "r0319": "The independently hashed predecessor notice reports 36/36 formal turns from h3778/raw53219568 to h3860/raw53219784 and a move to2610 plus two bounded advances; it contains no target2629 partition or cash amount. The full R0319 report/save/driver were not checked here.",
+    "r0321": "At a later source-reported h3911/raw53219928 frame, the two enemy armies are listed at target2629 and the participant partition is available. The new RED is forecast qualification/expected utility, not the old offsite-participant uncertainty. This later frame cannot retroactively validate the original R0271 frame.",
+    "r0266": "No pending war cash, selected-action fee, future cost upper bound, risk budget, policy reserve or horizon is delivered by either metadata notice. R0266 joint cash remains incomplete."
+  },
+  "static_triage_boundary": "Current source has a one-defender-only research canary and disabled production combat-entry expected-utility activation. These facts help locate the reported provisional mismatch but are not a qualified probability, accuracy trial, or action approval; raw R0321 V3 payload is not yet receiver-verified.",
+  "receiver_unverified": "R0321 388302-byte formal report, exact V3 result/partition native rows, H3911 checkpoint pair qualification, source DLL/injector bytes, trial tape, model accuracy, and any receiver live replay. The notice itself states recovery_qualified_for_receiver=false.",
+  "next_request": {
+    "git_request": "../requests/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.json",
+    "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
+    "onedrive_sha256": "E515F2EF8C47B989D095431B41B16C72F8660D75A5D86A5405AD0885169AC7BC",
+    "purpose": "Obtain immutable full formal report or exact same-frame V3/partition excerpt first, then qualified recovery pair/binaries and any existing trial-tape/accuracy evidence; no CK3 action requested."
+  }
+}
