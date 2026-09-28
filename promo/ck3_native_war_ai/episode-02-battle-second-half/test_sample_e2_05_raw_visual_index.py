@@ -7,6 +7,7 @@ import json
 import sys
 import tempfile
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -47,7 +48,28 @@ def make_tiny_fixture(root: Path) -> tuple[Path, Path, list[str]]:
     return raw, output, argv
 
 
+@contextmanager
+def patched_fixture_identity(argv: list[str]):
+    links_path = Path(argv[2])
+    links = json.loads(links_path.read_text(encoding="utf-8"))
+    with patch.object(sampler, "EXPECTED_LINK_SHA256", argv[4].upper()), \
+            patch.object(sampler, "EXPECTED_RAW_SHA256",
+                         links["raw_from_prior_full_sha_audit"]["sha256"]), \
+            patch.object(sampler, "EXPECTED_FFPROBE_SHA256",
+                         links["ffprobe_from_prior_full_sha_audit"]["sha256"]):
+        yield
+
+
 class SparseSamplerSafetyTests(unittest.TestCase):
+    def test_self_consistent_other_run_is_rejected_by_frozen_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            _, output, argv = make_tiny_fixture(root)
+            with patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
+                    patch.object(sys, "argv", argv), self.assertRaises(ValueError):
+                sampler.main()
+            self.assertFalse(output.exists())
+
     def test_output_must_be_new_flat_external_attempt(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -85,7 +107,7 @@ class SparseSamplerSafetyTests(unittest.TestCase):
                 Path(command[-1]).write_bytes(b"PNG-partial")
                 return SimpleNamespace(returncode=13)
 
-            with patch.object(sampler, "EXTERNAL_PARENT", root), \
+            with patched_fixture_identity(argv), patch.object(sampler, "EXTERNAL_PARENT", root), \
                     patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
                     patch.object(sampler.subprocess, "run", side_effect=failed_ffmpeg), \
                     patch.object(sys, "argv", argv), self.assertRaises(RuntimeError):
@@ -113,7 +135,7 @@ class SparseSamplerSafetyTests(unittest.TestCase):
                 raw.write_bytes(b"changed-after-launch")
                 return SimpleNamespace(returncode=0)
 
-            with patch.object(sampler, "EXTERNAL_PARENT", root), \
+            with patched_fixture_identity(argv), patch.object(sampler, "EXTERNAL_PARENT", root), \
                     patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
                     patch.object(sampler.subprocess, "run", side_effect=drifting_ffmpeg), \
                     patch.object(sys, "argv", argv), self.assertRaises(RuntimeError):
