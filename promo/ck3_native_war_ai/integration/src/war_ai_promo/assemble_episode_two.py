@@ -17,6 +17,8 @@ from pathlib import Path
 import subprocess
 import sys
 
+from xar_promo.model import RunManifest
+
 from .episode_two_second_half import CHAPTER_IDS
 
 
@@ -55,6 +57,8 @@ def _artifact(manifest_path: Path, run: dict, artifact_id: str) -> Path:
         raise ValueError(f"Expected exactly one preserved artifact {artifact_id}")
     row = rows[0]
     path = (manifest_path.parent / row["path"]).resolve(strict=True)
+    if not path.is_relative_to(manifest_path.parent.resolve()):
+        raise ValueError(f"Artifact escapes native run: {artifact_id}")
     if _binding(path) != {"bytes": row["bytes"], "sha256": row["sha256"].upper()}:
         raise ValueError(f"Preserved bytes changed: {artifact_id}")
     return path
@@ -70,8 +74,11 @@ def _inputs(manifest_path: Path) -> tuple[dict, dict, Path, Path]:
     run = json.loads(manifest_path.read_text(encoding="utf-8"))
     if run.get("kind") != "xar_promo_run_manifest" or run.get("format_version") != 1:
         raise ValueError("Episode 2 requires a native xar-promo RunManifest")
+    RunManifest.from_mapping(run)
     config = run["project_config"]
     snapshot = (manifest_path.parent / config["path"]).resolve(strict=True)
+    if not snapshot.is_relative_to(manifest_path.parent.resolve()):
+        raise ValueError("ProjectConfig snapshot escapes native run")
     _expect(snapshot, config["sha256"], config["bytes"], "ProjectConfig snapshot")
     document = json.loads(snapshot.read_text(encoding="utf-8"))
     if (document["project"]["id"] != "ck3-war-ai-battle-second-half"
@@ -276,7 +283,7 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
     chapter_path = attempt / "chapters.ffmeta"
     with chapter_path.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(metadata)
-    final = attempt / FINAL
+    final = attempt / ("episode-02-synthetic-technical-smoke.mp4" if synthetic_smoke else FINAL)
     _command(attempt, "chapters", [env["WAR_PROMO_FFMPEG"], "-nostdin", "-hide_banner",
              "-loglevel", "error", "-n", "-i", str(mixed), "-f", "ffmetadata",
              "-i", str(chapter_path), "-map", "0:v:0", "-map", "0:a:0",
@@ -298,7 +305,7 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
         "state": "SYNTHETIC_TECHNICAL_SMOKE" if synthetic_smoke else "TECHNICAL_CANDIDATE_UNREVIEWED",
         "human_signoff": "not-provided", "publication": "not-performed",
         "run_id": run["run"]["id"], "run_manifest": str(manifest_path),
-        "run_manifest_after_build": _binding(manifest_path),
+        "run_manifest_after_final_preserve": _binding(manifest_path),
         "project_config_snapshot": _binding(snapshot),
         "unmixed": {"path": str(unmixed), **_binding(unmixed)},
         "music": {"path": str(music), **_binding(music), "gain_db": music_gain_db},
@@ -319,7 +326,12 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
         "toolchain_version": selected_version,
         "toolchain_wheel_sha256": selected_wheel_sha256.upper(),
     }
-    _new_json(attempt / "assembly-receipt.json", receipt)
+    receipt_path = attempt / "assembly-receipt.json"
+    _new_json(receipt_path, receipt)
+    _command(attempt, "preserve-receipt", cli + ["preserve", "--run-manifest",
+             str(manifest_path), "--artifact-id", artifact_id + ".assembly-receipt",
+             "--collection", "derived", "--role", artifact_role + "-receipt",
+             str(receipt_path)], env=env)
     _event(attempt, "assembly", "synthetic-smoke" if synthetic_smoke else "technical-candidate-unreviewed")
     return receipt
 

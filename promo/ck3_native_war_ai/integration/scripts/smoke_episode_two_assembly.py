@@ -9,7 +9,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -26,10 +25,6 @@ from war_ai_promo.episode_two_second_half import CHAPTER_CARDS, CHAPTER_IDS, _re
 
 def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
-
-
-def record(path: Path) -> dict:
-    return {"sha256": sha(path), "bytes": path.stat().st_size}
 
 
 def new_json(path: Path, data: dict) -> None:

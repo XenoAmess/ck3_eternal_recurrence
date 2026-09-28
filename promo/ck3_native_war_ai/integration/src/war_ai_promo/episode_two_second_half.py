@@ -80,6 +80,32 @@ def script_chapters(path: Path) -> dict[str, str]:
     return result
 
 
+def _card_replays(data: dict) -> dict[str, str]:
+    if data.get("schema") != "xar.war-ai.episode02.calculation-cards.v1":
+        raise ValueError("Unknown Episode 2 card index")
+    rows = data["cards"]
+    replays = {item["id"]: item["replay"] for item in rows}
+    if (len(rows) != len(CARD_REPLAYS) or set(replays) != set(CARD_REPLAYS)
+            or replays["E2-02"] != replays["E2-03"]
+            or replays["E2-06"] != replays["E2-07"]
+            or len({replays["E2-04"], replays["E2-05A"],
+                    replays["E2-05B"], replays["E2-05C"]}) != 4
+            or any(replay not in data["replays"] for replay in replays.values())):
+        raise ValueError("Nine cards lack separate source replay identities")
+    terminal = _replay_primary(data["replays"][replays["E2-09"]])
+    reinforcement = _replay_primary(data["replays"][replays["E2-06"]])
+    if terminal == reinforcement:
+        raise ValueError("Terminal writer and reinforcement cannot share a replay receipt")
+    pursuit = data["replays"][replays["E2-02"]]
+    if replays["E2-02"] == "004" and (
+            pursuit.get("source_save_sha256", "").upper() !=
+            "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F"
+            or pursuit.get("source_day27_checkpoint_sha256", "").upper() !=
+            "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"):
+        raise ValueError("004 card index must distinguish contact cold-load from day-27 checkpoint")
+    return replays
+
+
 def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dict:
     """Read-only source gate, usable before any production run or game screen."""
     config = json.loads(config_path.read_text(encoding="utf-8"))
@@ -90,12 +116,7 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
     narration = script_chapters(draft_path)
     card_index = cards_dir / "calculation-cards.json"
     data = json.loads(card_index.read_text(encoding="utf-8"))
-    if data["schema"] != "xar.war-ai.episode02.calculation-cards.v1":
-        raise ValueError("unknown Episode 2 card schema")
-    if {row["id"]: row["replay"] for row in data["cards"]} != CARD_REPLAYS:
-        raise ValueError("calculation card replay identities changed")
-    if data["replays"]["085"]["source_save_sha256"] == data["replays"]["024"]["source_save_sha256"]:
-        raise ValueError("085 and 024 cannot be the same source replay")
+    replay_by_card = _card_replays(data)
     cards = {key: _sha(cards_dir / f"{key.lower()}-calculation.svg") for key in CARD_REPLAYS}
     return {"schema": "ck3-war-ai.episode02.editorial-check.v1",
             "status": "editorial-inputs-present-not-media-ready",
@@ -103,7 +124,7 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
             "card_index_sha256": _sha(card_index), "card_sha256": cards,
             "chapter_ids": list(narration),
             "chapter_narration_characters": {key: len(value) for key, value in narration.items()},
-            "replay_by_card": CARD_REPLAYS}
+            "replay_by_card": replay_by_card}
 
 
 def _artifact(run, run_path: Path | None, artifact_id: str) -> Path:
@@ -267,29 +288,9 @@ def compose(config, run, *, config_path, run_path, workdir,
     card_index = _checked_source(run, run_path, "episode02-card-index",
                                  inputs["card_index_sha256"], inputs["card_index_bytes"])
     card_data = json.loads(card_index.read_text(encoding="utf-8"))
-    if card_data.get("schema") != "xar.war-ai.episode02.calculation-cards.v1":
-        raise ValueError("Unknown Episode 2 card index")
-    card_replays = {item["id"]: item["replay"] for item in card_data["cards"]}
-    if (len(card_data["cards"]) != len(CARD_REPLAYS)
-            or set(card_replays) != set(CARD_REPLAYS)
-            or inputs.get("replay_by_card") != card_replays
-            or card_replays["E2-02"] != card_replays["E2-03"]
-            or card_replays["E2-06"] != card_replays["E2-07"]
-            or len({card_replays["E2-04"], card_replays["E2-05A"],
-                    card_replays["E2-05B"], card_replays["E2-05C"]}) != 4
-            or any(replay not in card_data["replays"] for replay in card_replays.values())):
-        raise ValueError("Nine cards lack separate source replay identities")
-    terminal_primary = _replay_primary(card_data["replays"][card_replays["E2-09"]])
-    reinforcement_primary = _replay_primary(card_data["replays"][card_replays["E2-06"]])
-    if terminal_primary == reinforcement_primary:
-        raise ValueError("Terminal writer and reinforcement cannot share a replay receipt")
-    pursuit = card_data["replays"][card_replays["E2-02"]]
-    if card_replays["E2-02"] == "004" and (
-            pursuit.get("source_save_sha256", "").upper() !=
-            "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F"
-            or pursuit.get("source_day27_checkpoint_sha256", "").upper() !=
-            "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"):
-        raise ValueError("004 card index must distinguish contact cold-load from day-27 checkpoint")
+    card_replays = _card_replays(card_data)
+    if inputs.get("replay_by_card") != card_replays:
+        raise ValueError("Production card replay bindings differ from the preserved index")
     card_hashes = inputs["card_sha256"]
     card_bytes = inputs["card_bytes"]
     if set(card_hashes) != set(CARD_REPLAYS) or set(card_bytes) != set(CARD_REPLAYS):
