@@ -429,6 +429,42 @@
       "war_cash_receipt": null,
       "scope": "source_pair_qualified_only_no_receiver_cash_evidence"
     },
+    "latest_source_pair_state_v6": {
+      "source_round": "R0321",
+      "history_index": 3911,
+      "date_raw": 53219928,
+      "war_id": 16777231,
+      "request_file": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-MATCHED-PAIR-v1.json",
+      "request_sha256": "1C82BD10B526179AE1AEC4CF8F8A452190089D5204DF031212B501371601769F",
+      "source_ack_sha256": "7F23727C9A7DEFBF457302D53C97C4BE51C0D0CA50E207F3CDBF9DAF2528E32D",
+      "planned_manifest_sha256": "1C815788AD833872B6010852DB1289E7ECD76B8FD8BFFD40A4DB2BB1B61BCE90",
+      "transfer_manifest_sha256": "4227CDB460C5B9D5F962C4234B19F25B6342537B31166D3ED7101A7E484CFF50",
+      "receiver_transfer_receipt": "D:/ck3-research-artifacts/war-intake-20260928/r0321-h3911-matched-pair-001/receipt.json",
+      "receiver_transfer_receipt_sha256": "25B832ED62BC6C75081B353BA1CFA018892AE357C6BAD7099F8C32E6C312C174",
+      "receiver_verified_exact_files": 6,
+      "receiver_verified_total_bytes": 128617719,
+      "receiver_rebind_no_launch": null,
+      "receiver_live_formal_query": null,
+      "same_frame_cash_receipt": null,
+      "scope": "exact_transfer_verified_only_not_receiver_pair_or_live_cash"
+    },
+    "nw_econ_h3911_dependency_notice_v1": {
+      "source_file": "WAR/M5-WAR-CASH-20260928/SOURCE-NW-ECON-R0326-H3911-WAR-CASH-DEPENDENCY-v1.json",
+      "source_sha256": "226FA2E747AD64E1D0B408C4612D3F39B216AC01ACF15713E04DB60916A3BED3",
+      "source_round": "R0326",
+      "source_master_commit": "ddce71e2fbaf04d67b4c38756c3da9b3bdc2c5ba",
+      "source_candidate_commit": "ceb7cf620f9f65a6dbe46630da91969ec43b7e5c",
+      "history_index": 3911,
+      "date_raw": 53219928,
+      "native_revision": 3,
+      "war_id": 16777231,
+      "source_selected_step": "query-war-termination-options-16777231",
+      "construction_stock_gold_cost_raw": 18000000,
+      "player_gold_raw": 120644281,
+      "war_cash_amounts_and_horizon": null,
+      "action_or_date_advance": false,
+      "scope": "source_dependency_only_not_formal_receiver_selected_query_or_cash_receipt"
+    },
     "h3446_exact_assets_received": true,
     "h3446_original_exact_assets_received": false,
     "same_frame_cash_receipt": null,
@@ -451,8 +487,9 @@
     "Exact-build GetEmbarkCost static audit now binds GUI callback, the icon's vtable update method, Q100000 rounded line-item aggregation and a player-gold comparison. The update fills a potentially multi-row forecast set before summing its quotes; a cached total is not automatically the single selected MoveArmy fee. The underlying quote function's pure-read safety, complete set-to-selected-action/route identity, cache freshness and any same-frame amount remain unproved. It cannot fill the immediate war fee or prove zero.",
     "The H3446 original driver 9FD5 has post-checkpoint history and cannot be paired as-is; a distinct official rebound driver 048D and its six assets passed transfer hash verification, but receiver-side official no-launch pairing awaits video CK3 cleanup. H3492 origin-side official rebound six files and separate historical M6 DLL/injector are all independently hash-verified transfer-only; receiver no-launch and live WarID verification remain pending. H3568/H3603/H3670 are historical; H3603 seven assets are hash-verified transfer only, H3670 seven accepted assets were not transferred. Source R0303 reports a later H3686 final read-only raw save/driver identity but no receiver rebind or transfer request. Its construction price and treasury are not war cash. Historical amounts cannot be substituted into current M5 cash. The resolved 44484 prisoner ransom 30-gold income is not war cash.",
     "Topbar GetGoldExpensesBreakdown is an exact-build static GUI candidate; calling its getter may refresh/write cache. An exact HUD owner path and bounded passive double-read sampler are prepared but never attached to CK3, and they explicitly do not prove paused-frame revision, cache freshness, account debit timing, or a formal cash amount.",
-    "R0313 H3770 was the latest source-selected official durable raw pair at its metadata response time, but R0314 H3774, R0317 H3778, R0319 H3860, and R0321 H3911 superseded it. The first R0321 WAR notice marked h3911/raw53219928 recovery_qualified_for_receiver=false. Later master 32c0dd370 records a frozen H3911 source pair with official rebind and no-launch PASS on source 2eb9, superseding that earlier qualification status. The receiver has not transferred or independently qualified the H3911 assets, run a live query, or measured cash. Forecast remains RED at producer_unavailable/same_frame_encounter_scope_mismatch; selected_step at the failed turn was null. Earlier notices remain historical. The receiver's initial H3770 ACK copied a truncated response SHA; an append-only same-folder erratum binds the correct SHA and keeps the no-transfer decision. The source read back and accepted that erratum.",
-    "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove the DLL/driver actually used in a Robert output pair. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan emits typed priced_command identity only for the selected termination-options query. A new opt-in, one-turn runner path can append a managed receipt for that exact formal selection, parsed protocol request/envelope, six-field paused frame, process PID/creation time and mapped module disk-file hashes after cleanup, but it has not run against CK3. It is documented at docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md. Direct H2743 query evidence cannot substitute for formal selection, and no historical immediate fee is filled."
+    "R0313 H3770 was the latest source-selected official durable raw pair at its metadata response time, but R0314 H3774, R0317 H3778, R0319 H3860, and R0321 H3911 superseded it. The first R0321 WAR notice marked h3911/raw53219928 recovery_qualified_for_receiver=false. Later master 32c0dd370 records a frozen H3911 source pair with official rebind and no-launch PASS on source 2eb9, superseding that earlier qualification status. At the v5 cutoff the receiver had not transferred or independently qualified the H3911 assets. The v6 transfer receipt now verifies all six source bytes, but receiver rebind/no-launch, live query and cash remain absent. R0321 forecast remains RED at producer_unavailable/same_frame_encounter_scope_mismatch; selected_step at its failed turn was null. Earlier notices remain historical. The receiver's initial H3770 ACK copied a truncated response SHA; an append-only same-folder erratum binds the correct SHA and keeps the no-transfer decision. The source read back and accepted that erratum.",
+    "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove the DLL/driver actually used in a Robert output pair. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan emits typed priced_command identity only for the selected termination-options query. A new opt-in, one-turn runner path can append a managed receipt for that exact formal selection, parsed protocol request/envelope, six-field paused frame, process PID/creation time and mapped module disk-file hashes after cleanup, but it has not run against CK3. It is documented at docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md. Direct H2743 query evidence cannot substitute for formal selection, and no historical immediate fee is filled.",
+    "R0326 NW-ECON reported a source-side H3911 selected termination-options query, construction cost 18,000,000 raw and treasury 120,644,281 raw with zero action/date advance. That metadata raises the chance that a new receiver formal turn selects the same query, but it contains no complete six-field frame, typed priced command, raw request/envelope, actual loaded-module audit or war cash amount. It cannot be spliced with R0321's failed forecast turn or the receiver's future attempt, nor price the construction candidate."
   ],
-  "next_step": "Do not interrupt source LIFE/ECON continuation. During E2 video screen use, continue static producer research without CK3/no-launch. The bounded HUD sampler and exact read-only query zero-fee gate are prepared but cannot supply a formal cash field by themselves. The H3911 source pair now has source-side official rebind/no-launch, but receiver asset transfer, independent no-launch, exact DLL/driver binary audit, managed same-frame formal selected postquery receipt and reviewed SHA promotion remain absent. Earlier metadata and source-only qualification cannot substitute for receiver cash. Connect and authenticate an auditable owner-side commitment source, a native selected-action/route/quote fee for nonquery actions, bounded future fee with debit cadence and risk, and a newly published versioned player war reserve policy. Source explicitly reported no current Robert war liquidity floor policy. Keep all five typed null and the M5 spend gate closed meanwhile."
+  "next_step": "Do not interrupt source LIFE/ECON continuation or the current screen owner. H3911 six exact assets passed receiver transfer SHA only; use the new external attempt plan in docs/ck3-native-ai/r0266-h3911-formal-query-receiver-plan-2026-09-28.md for independent receiver rebind/no-launch, actual DLL/driver binary audit and a managed same-frame formal selected-query receipt after screen release. R0326 source metadata selected the exact query but cannot provide its price or replace that receiver evidence. Connect an auditable owner-side commitment source, a native selected-action/route/quote fee for nonquery actions, bounded future fee with debit cadence and risk, and a newly published versioned player war reserve policy. Source explicitly reported no current Robert war liquidity floor policy. Keep all five typed null, horizon null and the M5 spend gate closed meanwhile."
 }
