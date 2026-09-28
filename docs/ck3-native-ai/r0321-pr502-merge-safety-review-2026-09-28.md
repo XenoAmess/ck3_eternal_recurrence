@@ -15,4 +15,4 @@
 
 这一 `512/512` 是 `phase-events-disabled-envelope-v4` 对**条件固定参战集合**的模型输出，人物死亡、未来增援/离场、主动撤退、未来每日 effective stats/战宽/非掷骰优势未定量；v3 原生 `monte_carlo_ready=false`、`transition_fidelity_gate=false`、`planner_usable=false`。其 Wilson 下界只反映模拟抽样误差，不是 CK3 原版真实胜率的置信下界。
 
-原始 46 MB H3911 driver 未转交，接收片缺原 command row 的 request/before/after、episode ID 与 connection generation；正式报告的 `first_blocker.before` 也不含 `player_armies`，因此接收机无法从这两件材料独立重建生产 `combat_simulation_encounter_scope` 再做 strict normalizer 全量同帧认证。只读审查 v2 在此处如实报 `army-strength scope requires player_armies`，没有从 payload 自身循环伪造 scope。来源侧 row 相等性、现场原生回放、概率模型保真、三行动 EU、终战和现金输入仍是独立未交付门；不得据本次 GREEN 发出 target 接战移动。
+原始 46 MB H3911 driver 未转交，接收片缺原 command row 的 request/before/after、episode ID 与 connection generation；正式报告的 `first_blocker.before` 也不含 `player_armies`。离线脚本的 `diagnostics.hello` 是从来源通知 EXE SHA 构造的研究门输入，**不是原生 hello 回包**。因此接收机无法从这两件材料独立重建生产 `combat_simulation_encounter_scope` 再做 strict normalizer 全量同帧认证。只读审查 v2 在此处如实报 `army-strength scope requires player_armies`，没有从 payload 自身循环伪造 scope。来源侧 row 相等性、现场原生回放、概率模型保真、三行动 EU、终战和现金输入仍是独立未交付门；不得据本次 GREEN 发出 target 接战移动。
