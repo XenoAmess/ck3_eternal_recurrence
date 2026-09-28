@@ -19,26 +19,42 @@ def write(path: Path, value: object) -> None:
 
 class RemainingLiveStepTest(unittest.TestCase):
     def test_battle_control_uses_nested_subject_and_exact_frame(self) -> None:
-        body = {"accepted": True, "status": "available", "snapshot_revision": 4,
+        snapshot = {"revision": 4, "native_revision": 3, "snapshot_id": "native:3"}
+        body = {"accepted": True, "status": "available", "snapshot_revision": 3,
+                "queried_revision": 4, "queried_native_revision": 3,
+                "queried_snapshot_id": "native:3",
+                "source": {"revision": 4, "native_revision": 3,
+                           "snapshot_id": "native:3", "date_raw": 53146344,
+                           "paused": True},
                 "battle_control_snapshot": {
                     "status": "available", "battle_control_ready": True,
-                    "snapshot_revision": 4, "observed_date_raw": 53146344,
+                    "snapshot_revision": 3, "observed_date_raw": 53146344,
                     "subject_public_cunit_id": 18, "subject_native_carmy_id": 18,
                     "selected_owner_character_id": 29829,
                     "combat_id": 16777218, "combat_province_id": 2633}}
-        self.assertTrue(live.battle_control_case(body, 4, 53146344)[0])
-        for key, value in (("snapshot_revision", 5),
+        self.assertTrue(live.battle_control_case(body, snapshot, 53146344)[0])
+        for key, value in (("snapshot_revision", 4),
                            ("observed_date_raw", 53146368),
                            ("subject_public_cunit_id", 22),
                            ("combat_id", 16777219)):
             changed = dict(body, battle_control_snapshot={
                 **body["battle_control_snapshot"], key: value})
-            self.assertFalse(live.battle_control_case(changed, 4, 53146344)[0])
-        changed = dict(body, snapshot_revision=5)
-        self.assertFalse(live.battle_control_case(changed, 4, 53146344)[0])
+            self.assertFalse(live.battle_control_case(changed, snapshot, 53146344)[0])
+        for key, value in (("snapshot_revision", 4), ("queried_revision", 5),
+                           ("queried_native_revision", 4),
+                           ("queried_snapshot_id", "native:4")):
+            self.assertFalse(live.battle_control_case(
+                dict(body, **{key: value}), snapshot, 53146344)[0])
+        for key, value in (("revision", 5), ("native_revision", 4),
+                           ("snapshot_id", "native:4"), ("date_raw", 53146368),
+                           ("paused", False)):
+            changed = dict(body, source={**body["source"], key: value})
+            self.assertFalse(live.battle_control_case(changed, snapshot, 53146344)[0])
+        self.assertFalse(live.battle_control_case(body, {**snapshot, "revision": 5}, 53146344)[0])
 
     def test_snapshot_requires_exact_paused_actor_war_and_army(self) -> None:
         body = {"date_raw": 53146344, "paused": True, "revision": 4,
+                "native_revision": 3, "snapshot_id": "native:3",
                 "played_character": {"character_id": 29829},
                 "active_wars": [{"war_id": 4,
                                  "allied_armies": [{"army_id": 18, "army_state": "combat"}]}]}

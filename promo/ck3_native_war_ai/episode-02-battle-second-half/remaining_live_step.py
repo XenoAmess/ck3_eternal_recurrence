@@ -130,7 +130,10 @@ def snapshot_case(body: dict[str, Any], date: int, *, require_combat: bool) -> t
                  if isinstance(row, dict) and row.get("army_id") == PLAYER_ARMY), {})
     values = {"date_raw": body.get("date_raw"), "paused": body.get("paused"),
               "actor": (body.get("played_character") or {}).get("character_id"),
-              "revision": body.get("revision"), "war_ids": [row.get("war_id") for row in wars],
+              "revision": body.get("revision"),
+              "native_revision": body.get("native_revision"),
+              "snapshot_id": body.get("snapshot_id"),
+              "war_ids": [row.get("war_id") for row in wars],
               "army_id": army.get("army_id"), "army_state": army.get("army_state")}
     okay = (values["date_raw"] == date and values["paused"] is True and
             values["actor"] == ACTOR and type(values["revision"]) is int and
@@ -140,13 +143,22 @@ def snapshot_case(body: dict[str, Any], date: int, *, require_combat: bool) -> t
     return okay, values
 
 
-def battle_control_case(body: dict[str, Any], revision: int,
+def battle_control_case(body: dict[str, Any], snapshot_values: dict[str, Any],
                         date: int) -> tuple[bool, dict[str, Any]]:
-    """Read the real v1 wire: subject and date live inside its snapshot row."""
+    """Bind wrapper and native revisions to the same exact paused snapshot."""
     row = body.get("battle_control_snapshot") or {}
+    source = body.get("source") or {}
     values = {"accepted": body.get("accepted"), "status": body.get("status"),
-              "root_revision": body.get("snapshot_revision"),
-              "snapshot_revision": row.get("snapshot_revision"),
+              "root_native_revision": body.get("snapshot_revision"),
+              "snapshot_native_revision": row.get("snapshot_revision"),
+              "queried_revision": body.get("queried_revision"),
+              "queried_native_revision": body.get("queried_native_revision"),
+              "queried_snapshot_id": body.get("queried_snapshot_id"),
+              "source_revision": source.get("revision"),
+              "source_native_revision": source.get("native_revision"),
+              "source_snapshot_id": source.get("snapshot_id"),
+              "source_date_raw": source.get("date_raw"),
+              "source_paused": source.get("paused"),
               "observed_date_raw": row.get("observed_date_raw"),
               "subject_army_id": row.get("subject_public_cunit_id"),
               "native_army_id": row.get("subject_native_carmy_id"),
@@ -156,8 +168,17 @@ def battle_control_case(body: dict[str, Any], revision: int,
               "battle_control_ready": row.get("battle_control_ready")}
     okay = (values["accepted"] is True and values["status"] == "available" and
             row.get("status") == "available" and
-            values["root_revision"] == values["snapshot_revision"] == revision and
-            values["observed_date_raw"] == date and
+            type(snapshot_values.get("revision")) is int and
+            type(snapshot_values.get("native_revision")) is int and
+            isinstance(snapshot_values.get("snapshot_id"), str) and
+            values["queried_revision"] == values["source_revision"] == snapshot_values["revision"] and
+            values["root_native_revision"] == values["snapshot_native_revision"] ==
+            values["queried_native_revision"] == values["source_native_revision"] ==
+            snapshot_values["native_revision"] and
+            values["queried_snapshot_id"] == values["source_snapshot_id"] ==
+            snapshot_values["snapshot_id"] and
+            values["observed_date_raw"] == values["source_date_raw"] == date and
+            values["source_paused"] is True and
             values["subject_army_id"] == values["native_army_id"] == PLAYER_ARMY and
             values["owner_character_id"] == ACTOR and
             values["combat_id"] == COMBAT and
@@ -179,8 +200,7 @@ def observe(output: Path, track: str, binding: dict[str, Any], timeout: float) -
                                "ck3_query_battle_control_snapshot_v1",
                                {"subject_army_id": PLAYER_ARMY,
                                 "expected_revision": values["revision"]}, timeout)
-        okay, control_values = battle_control_case(
-            result, values["revision"], spec["date"])
+        okay, control_values = battle_control_case(result, values, spec["date"])
     # 085's historical sibling battle-control query returned RED. Its same
     # CombatID is bound only when the private trace begin explicitly accepts it.
     row = {"schema": "xar.war-promo.remaining-live-step/v1", "created_at": utc(),
@@ -273,8 +293,7 @@ def advance(output: Path, track: str, binding: dict[str, Any],
                                         "ck3_query_battle_control_snapshot_v1",
                                         {"subject_army_id": PLAYER_ARMY,
                                          "expected_revision": after_save_values["revision"]}, timeout)
-        control_ok, control_values = battle_control_case(
-            control, after_save_values["revision"], spec["date"])
+        control_ok, control_values = battle_control_case(control, after_save_values, spec["date"])
         require(control_ok,
                 f"same-frame combat identity changed before arming private trace: {control_values}")
     begin_args = {"action": "private_phase_trace",
