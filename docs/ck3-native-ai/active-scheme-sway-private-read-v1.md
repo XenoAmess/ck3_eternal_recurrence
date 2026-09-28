@@ -101,3 +101,25 @@ so the earlier direct `game_state+0xA538` lookup fails the focused test.
 Normal and optimized `/W4 /WX` fixture runs pass with the correction.
 This does not establish a live scheme observation; a newly paired candidate
 must repeat the bounded paused read before any typed sway action.
+
+## Same-frame target opinion input (source candidate)
+
+The exact 1.19.0.6 `sway_interaction` native AI source considers the
+**recipient's opinion of the actor** and assigns zero AI weight once that
+opinion is at least 100. That is the direction needed to value a sway of a
+direct vassal. The already implemented `ReadGiftOpinionExact11906V1` reads
+that direction from full character identities, checks the exact
+`gift_opinion` definition and two agreeing native samples, and distinguishes
+an observed opinion of zero from a failed read. It was previously consumed
+only by the faction gift path.
+
+The private sway mailbox now samples `recipient=target, player=actor` after
+the native Can Send evaluation and before publishing the same paused frame.
+Its new `target_opinion_of_actor` is an integer, including a legitimate zero;
+an unavailable receiver returns `native_sway_target_opinion_red` rather than
+publishing a guessed value. The Python private transport requires the field.
+This is a **source and focused test candidate only**: earlier paired DLLs,
+including R0331 if already frozen, do not acquire the field. A new exact
+paired DLL and paused read are needed to learn target 32716's actual opinion.
+Opinion plus Can Send still requires a policy value judgement before any
+typed sway submit; no action or date advance is claimed here.

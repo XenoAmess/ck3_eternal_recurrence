@@ -17,6 +17,7 @@ _ENVELOPE_KEYS = {
 _VALUE_KEYS = {
     "schema", "snapshot_revision", "capture_epoch", "container_generation",
     "date_raw", "actor_character_id", "target_character_id",
+    "target_opinion_of_actor",
     "active_scheme_count", "matching_sway_active", "native_complete_can_send",
     "native_legal_now", "native_failure_classification",
 }
@@ -98,6 +99,7 @@ def query_active_scheme_sway_target_private_v1(
         or value.get("date_raw") != before["date_raw"]
         or value.get("actor_character_id") != actor["character_id"]
         or value.get("target_character_id") != target_character_id
+        or type(value.get("target_opinion_of_actor")) is not int
         or type(value.get("active_scheme_count")) is not int
         or not 0 <= value["active_scheme_count"] <= 32
         or type(value.get("matching_sway_active")) is not bool

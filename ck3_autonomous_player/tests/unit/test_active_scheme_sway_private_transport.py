@@ -51,6 +51,7 @@ class State:
                     "capture_epoch": 8085, "container_generation": 17,
                     "date_raw": 53219928, "actor_character_id": 29829,
                     "target_character_id": 32716,
+                    "target_opinion_of_actor": -25,
                     "active_scheme_count": 0,
                     "matching_sway_active": False,
                     "native_complete_can_send": True,
@@ -78,6 +79,7 @@ class SwayPrivateTransportTest(unittest.TestCase):
             driver, expected_revision=5, target_character_id=32716,
         )
         self.assertTrue(result["native_legal_now"])
+        self.assertEqual(result["target_opinion_of_actor"], -25)
         self.assertEqual(len(driver.endpoint.sent), 1)
         self.assertEqual(driver.endpoint.sent[0]["step"], STEP_PREFIX + "32716")
         self.assertEqual(driver.endpoint.sent[0]["expected_revision"], 4)
@@ -89,6 +91,20 @@ class SwayPrivateTransportTest(unittest.TestCase):
                 driver, expected_revision=5, target_character_id=32716,
             )
         self.assertEqual(driver.endpoint.sent, [])
+
+    def test_missing_opinion_is_not_a_legal_value_input(self) -> None:
+        driver = Driver(True)
+        original = driver.state.wait_for_command_result
+        def without_opinion(request_id: str, timeout: float) -> dict[str, object]:
+            frame = original(request_id, timeout)
+            del frame["result"]["active_scheme_sway"]["target_opinion_of_actor"]
+            return frame
+        driver.state.wait_for_command_result = without_opinion
+        from xar_autoplayer.bridge.driver import BridgeUnavailableError
+        with self.assertRaises(BridgeUnavailableError):
+            query_active_scheme_sway_target_private_v1(
+                driver, expected_revision=5, target_character_id=32716,
+            )
 
 
 if __name__ == "__main__":
