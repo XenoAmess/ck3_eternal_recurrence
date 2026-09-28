@@ -132,6 +132,10 @@
       "v2_readiness_wait_seconds": 1500,
       "v2_managed_session_timeout_seconds": 2400,
       "v2_status": "py_compile_and_help_only_no_game_launch",
+      "passive_live_v3_script_sha256": "A3BEE827E0E7BB102E9B2F28DC275F4E84A76945B9B5C91B39E6F515799CC39F",
+      "v3_readiness_wait_seconds": 1800,
+      "v3_managed_session_timeout_seconds": 3300,
+      "v3_status": "py_compile_and_help_only_no_game_launch",
       "attempt_created": false,
       "cash_receipt_eligible_from_diagnostic_alone": false
     },
