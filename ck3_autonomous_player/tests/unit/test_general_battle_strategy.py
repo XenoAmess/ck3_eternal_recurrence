@@ -1,10 +1,13 @@
-from unittest import mock
+from unittest import TestCase, mock
 
 from xar_autoplayer.bridge.combat_phase_contract import query_combat_simulation_inputs_v3_step
 from xar_autoplayer.strategy import (
     _general_battle_forecast_ingress,
     query_route_contact_horizon_step,
 )
+
+
+_CHECK = TestCase()
 
 
 def _frame():
@@ -30,7 +33,7 @@ def _frame():
 
 
 def _call(frame, *, query_history=True, entry=30, extra_steps=(),
-          bridge_capabilities=None, baseline=None):
+          bridge_capabilities=None, baseline=None, action_steps=None):
     query = query_combat_simulation_inputs_v3_step(31, entry, [11], [21])
     commands = [{
         "index": 1, "command": query, "ok": True,
@@ -47,7 +50,10 @@ def _call(frame, *, query_history=True, entry=30, extra_steps=(),
         # The production driver excludes parameterized v3 literals from its
         # advertised action list.  The planner must construct this read-only
         # query from the observed encounter and check the bridge capability.
-        action_steps={"move-army-11-to-31", "preview-move-army-11-to-31", *extra_steps},
+        action_steps=(
+            {"move-army-11-to-31", "preview-move-army-11-to-31", *extra_steps}
+            if action_steps is None else action_steps
+        ),
         bridge_capabilities=(
             {"game.command.query-combat-simulation-inputs-v3-N"}
             if bridge_capabilities is None else bridge_capabilities
@@ -94,11 +100,11 @@ def test_observed_unmodeled_inbound_enemy_route_blocks_only_final_contact():
     ):
         result = _call(frame)
     model.assert_called_once()
-    assert result["phase"] == "native_war_general_battle_observed_inbound_reinforcement"
-    assert result["selected_step"] is None
-    assert result["battle_forecast"] == forecast
-    assert result["observed_unmodeled_inbound_enemy_army_ids"] == [22]
-    assert result["inbound_arrival_before_battle_resolution_proven"] is False
+    _CHECK.assertEqual(result["phase"], "native_war_general_battle_observed_inbound_reinforcement")
+    _CHECK.assertIsNone(result["selected_step"])
+    _CHECK.assertEqual(result["battle_forecast"], forecast)
+    _CHECK.assertEqual(result["observed_unmodeled_inbound_enemy_army_ids"], [22])
+    _CHECK.assertIs(result["inbound_arrival_before_battle_resolution_proven"], False)
 
 
 def test_observed_inbound_route_does_not_block_contact_free_first_waypoint():
@@ -183,7 +189,7 @@ def test_stale_native_revision_cannot_reuse_a_cached_battle_estimate():
         mock.patch("xar_autoplayer.strategy.forecast_fixed_contact") as model,
     ):
         result = _call(frame)
-        assert result["phase"] == "native_war_general_battle_inputs_query"
+        _CHECK.assertEqual(result["phase"], "native_war_general_battle_inputs_query")
         model.assert_not_called()
 
 
@@ -216,9 +222,9 @@ def test_long_route_uses_forecast_only_to_advance_one_contact_free_waypoint():
                 query_route_contact_horizon_step(11, 40, (21,)),
             },
         )
-        assert result["phase"] == "native_war_general_battle_short_move"
-        assert result["selected_step"] == "move-army-11-to-40"
-        assert result["general_battle_forecast_used_for_decision"] is True
+        _CHECK.assertEqual(result["phase"], "native_war_general_battle_short_move")
+        _CHECK.assertEqual(result["selected_step"], "move-army-11-to-40")
+        _CHECK.assertIs(result["general_battle_forecast_used_for_decision"], True)
 
 
 def test_long_route_with_origin_prefix_uses_first_travel_waypoint():
@@ -252,6 +258,106 @@ def test_long_route_with_origin_prefix_uses_first_travel_waypoint():
         )
     assert result["phase"] == "native_war_general_battle_short_move"
     assert result["selected_step"] == "move-army-11-to-40"
+
+
+def _distant_one_hop_contact():
+    # R0284's native timeline has the same shape: 2634 -> 2640, arrival in
+    # six days, while the current one-day horizon is contact-free.
+    return {
+        "one_day_contact_free": True,
+        "conflicts": [],
+        "horizon_start_date_raw": 100,
+        "horizon_end_date_raw": 124,
+        "subject_route": {
+            "timeline_observable": True,
+            "army_id": 11,
+            "current_province_id": 30,
+            "route_province_ids": [31],
+            "arrival_date_raws": [244],
+        },
+    }
+
+
+def test_distant_one_hop_contact_starts_only_a_daily_rechecked_route():
+    frame = _frame()
+    contact = _distant_one_hop_contact()
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+            "status": "available", "route_province_ids": [31],
+        }),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value=contact),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        plan = _call(frame)
+    _CHECK.assertEqual(plan["phase"], "native_war_general_battle_distant_route_start", plan)
+    _CHECK.assertEqual(plan["selected_step"], "move-army-11-to-31")
+    _CHECK.assertEqual(plan["future_arrival_date_raw"], 244)
+    _CHECK.assertEqual(plan["source_war_id"], 1)
+    _CHECK.assertIs(plan["contact_recheck_required_before_each_day"], True)
+    _CHECK.assertIs(plan["future_contact_authorized"], False)
+
+
+def test_distant_one_hop_contact_fails_closed_without_exact_first_day_proof():
+    frame = _frame()
+    for mutation in (
+        {"one_day_contact_free": False},
+        {"conflicts": [{"province_id": 31, "hostile_army_id": 21}]},
+        {"horizon_start_date_raw": 99},
+        {"horizon_end_date_raw": 148},
+        {"subject_route": {**_distant_one_hop_contact()["subject_route"], "army_id": 12}},
+        {"subject_route": {**_distant_one_hop_contact()["subject_route"], "route_province_ids": [40, 31]}},
+        {"subject_route": {**_distant_one_hop_contact()["subject_route"], "arrival_date_raws": []}},
+    ):
+        contact = {**_distant_one_hop_contact(), **mutation}
+        with (
+            mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+                "status": "available", "route_province_ids": [31],
+            }),
+            mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value=contact),
+            mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+            mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+        ):
+            plan = _call(frame)
+        _CHECK.assertEqual(plan["phase"], "native_war_general_battle_arrival_blocked")
+        _CHECK.assertIsNone(plan["selected_step"])
+    frame["active_wars"].append({"war_id": 2, "enemy_armies": []})
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+            "status": "available", "route_province_ids": [31],
+        }),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value=_distant_one_hop_contact()),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        plan = _call(frame)
+    _CHECK.assertEqual(plan["phase"], "native_war_general_battle_arrival_blocked")
+    _CHECK.assertIsNone(plan["selected_step"])
+
+
+def test_distant_one_hop_requires_typed_move_and_exact_target_preview():
+    frame = _frame()
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+            "status": "available", "route_province_ids": [31],
+        }),
+        mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value=_distant_one_hop_contact()),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        unavailable = _call(frame, action_steps={"preview-move-army-11-to-31"})
+    _CHECK.assertEqual(unavailable["phase"], "native_war_general_battle_arrival_blocked")
+    _CHECK.assertIsNone(unavailable["selected_step"])
+    with (
+        mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+            "status": "available", "route_province_ids": [32],
+        }),
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact") as model,
+    ):
+        wrong_target = _call(frame)
+    _CHECK.assertEqual(wrong_target["phase"], "native_war_general_battle_route_blocked")
+    _CHECK.assertIsNone(wrong_target["selected_step"])
+    model.assert_not_called()
 
 
 def test_nullable_enemy_roster_does_not_crash_generic_contact_review():
