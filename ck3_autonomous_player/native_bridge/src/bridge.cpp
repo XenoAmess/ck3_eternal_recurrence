@@ -10129,6 +10129,10 @@ void RunConnectedSession(
                              step, ransom_ordinal);
                    }()
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kPlayerPrisonerRansomSubmitPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1)
                    && ![&]() {
                      std::int32_t title_id = 0;

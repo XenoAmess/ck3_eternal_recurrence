@@ -510,6 +510,22 @@ may briefly restore an ordinary window if the owned instance demonstrably
 needs it, then return to minimized after the native call. A missing pump is
 not a ransom value of zero.
 
+R0285 on the frozen v2 candidate reached the formal consumer at H3446:
+the paused actor was 29829 on raw date 53219112, and it chose prisoner
+34486, redirected payer 30470 and a fixed 50-gold quote. Before attempting
+the native command, it persisted `submission_unresolved`. The connected
+bridge then returned `unsupported native gameplay step`; no ransom action
+or date advance occurred. The report is
+`Z:\m6ransom-formal-h3446-candidate-v2\evidence\R0285\formal-auto-run.json`
+(SHA-256 `35957185EEF2E75023E5B6EDDDFE3AB09312034C588FF654142BB1FC682DF3CA`);
+controlled cleanup proved the process tree gone. The exact source defect was
+the outer `game.supports_step` admission list omitting the private typed
+ransom step although its handler and opt-in build flag existed. The v3
+candidate adds only that flag-scoped admission. R0285's pending ledger and
+evidence remain untouched; the fresh H3446 pair needs a new live action,
+material postcondition, next turn and cold restore before claiming a formal
+loop.
+
 ```mermaid
 flowchart TD
     F[Paused player frame] --> W{Every active war source complete?}
