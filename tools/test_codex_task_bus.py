@@ -20,6 +20,23 @@ def invoke(*arguments: str) -> dict[str, object]:
 
 
 class TaskBusTests(unittest.TestCase):
+    def test_list_reads_bom_prefixed_task_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            common = ("--bus-dir", raw)
+            invoke(*common, "register", "--task", "alpha", "--summary", "build")
+            snapshot_path = root / "tasks" / "alpha.json"
+            snapshot = snapshot_path.read_bytes()
+            snapshot_path.write_bytes(b"\xef\xbb\xbf" + snapshot)
+
+            listing = invoke(*common, "list")
+            self.assertEqual([task["task_id"] for task in listing["tasks"]], ["alpha"])
+            self.assertEqual(listing["tasks"][0]["summary"], "build")
+            self.assertEqual(snapshot_path.read_bytes(), b"\xef\xbb\xbf" + snapshot)
+
+            invoke(*common, "heartbeat", "--task", "alpha")
+            self.assertFalse(snapshot_path.read_bytes().startswith(b"\xef\xbb\xbf"))
+
     def test_install_copies_executable_and_documentation(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             result = invoke("--bus-dir", raw, "install")

@@ -120,7 +120,7 @@ def git_identity(repo: Path) -> dict[str, object]:
 def read_json(path: Path) -> dict[str, object] | None:
     if not path.is_file():
         return None
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def next_sequence(bus: Path) -> int:
