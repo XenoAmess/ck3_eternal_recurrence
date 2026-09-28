@@ -1,0 +1,129 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "created_at_utc": "2026-09-28T03:09:58Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "blocks_formal_robert_continuation_after_r0271_h3446_checkpoint",
+  "related_requests": [
+    "WAR-ROBERT-H2825-SIEGE-PARTITION-20260928"
+  ],
+  "scope": "R0271 used the 7d414228 exact source/DLL and reached a new active-war siege participant gate after 35 successful formal turns. Please provide a war-owned, same-frame participant/arrival observation or a policy-valid bounded continuation. This request neither authorizes an attack or surrender nor transfers war research to the nonwar operator.",
+  "source": {
+    "formal_campaign": "1066_robert_and_legal_succession",
+    "run_round": "R0271",
+    "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0271",
+    "source_pair_round": "R0269",
+    "source_pair_history_index": 3388,
+    "source_pair_date_raw": 53218968,
+    "source_pair_index_sha256": "C8E0064F1324C848E0B166689D0EDEB66F7C3B07068022FF592AA54F052DAB5A",
+    "source_pair_save_sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17",
+    "source_pair_driver_sha256": "99C58301C212ABCDBBEDD74D92AE74FCFE23719B927377C93FE7C7D0F54C5C50",
+    "prepared_driver_sha256": "9F1CD53CC12C41984B9A5B12414352F9E81EFBFD8312FD34321CF4E1B735E21E",
+    "candidate_index_sha256": "8C25F789927D28BEBC69A6E33E238F550E5BF80C41C64F91A9B5B38E6DA7FAFC",
+    "runtime_source_commit": "7d414228c63c504c6e02904ffd905048dc834cbd",
+    "native_build_source_commit": "7d414228c63c504c6e02904ffd905048dc834cbd",
+    "runtime_dll_sha256": "0E0B7F5621917A3B9E51E3002AD58E79EF12F7372F912F3B9EA31CEA3CE98B6C",
+    "injector_sha256": "A0BC08BFE39BE5D5D2C477B3DE061061FDAF44F69C4C018FC6BAF972DAA06FC6",
+    "ck3_version": "1.19.0.6-steam23530548",
+    "ck3_exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "lifecycle": "ordinary_campaign_succession/xar_off",
+    "last_durable_checkpoint_history_index": 3446,
+    "last_durable_checkpoint_date_raw": 53219112,
+    "last_durable_checkpoint_save_sha256": "db1c897f1c4c93fa3927ddc0d901b225a797678b41687a9275744f898e712c65",
+    "post_failed_run_driver_sha256": "9fd591d32f5fd5f101af95a1182dcbc2e7b3d9ea6d9f03200ba6bd96f84b9fe1",
+    "post_failed_run_driver_is_source_pair": false
+  },
+  "observed": {
+    "formal_report_status": "blocked",
+    "formal_report_outcome": "failed",
+    "formal_report_sha256": "A5C5D21266D7ACFDC2CDD4C619B2846DE100BFF7F4CAD1E261DC116B880790CD",
+    "operator_receipt_sha256": "AECC87976F5E2146F54520F0A295F0AB3AB3128674735415B7E538E85037DE0B",
+    "attempted_turns": 36,
+    "successful_turns": 35,
+    "visible_gameplay_turns": 9,
+    "blocking_turn": 36,
+    "blocking_stage": "planning",
+    "phase": "native_war_siege_forecast_observation_blocked",
+    "selected_step": null,
+    "required_observation": "exact-attacker-defender-participant-scope",
+    "error": "the observed siege does not prove a complete one-encounter participant partition",
+    "frame": {
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "actor_character_id": 29829,
+      "war_id": 16777231,
+      "snapshot_id": "native:30",
+      "public_revision": 31,
+      "native_revision": 30,
+      "date_raw": 53219160,
+      "connection_generation": 1,
+      "paused": true,
+      "player_relative_war_score": -21,
+      "player_army_id": 83886367,
+      "target_province_id": 2629,
+      "war_enemy_army_ids": [
+        50331920,
+        83886484
+      ]
+    },
+    "same_frame_inputs": {
+      "player_army_current_province_id": 2610,
+      "player_route_target_arrival_date_raw": 53220216,
+      "target_hostile_army_id": 50331920,
+      "target_hostile_current_province_id": 2629,
+      "offsite_hostile_army_id": 83886484,
+      "offsite_hostile_current_province_id": 3719,
+      "offsite_hostile_route_target_arrival_date_raw": 53219928,
+      "route_contact_one_day_contact_free": true,
+      "route_contact_conflicts": [],
+      "participant_partition": {
+        "status": "unavailable",
+        "reason": "offsite_hostile_may_join_by_target_entry"
+      },
+      "forecast_status": "research_only",
+      "active_attack_allowed": false
+    },
+    "cleanup": {
+      "elapsed_seconds": 3.09,
+      "session_exit_reason": "stop",
+      "session_report_ok": true,
+      "shutdown_ok": true,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "driver_closed": true,
+      "reason": null,
+      "ok": true
+    }
+  },
+  "reproduction": {
+    "entry": "On the receiving machine, verify a transferred H3388 save/driver/sidecar and exact DLL/injector hashes, then use official prepare/rebind/no-launch and the bounded formal Robert entry with the R0271 candidate options. The source H3388 pair is the known verified start. R0271 reached this gate at turn 36 after 35 successful turns; do not physically pair the later H3446 save with the mutated post-failure driver.",
+    "actual": "At native:30/revision31/native revision30/raw53219160 the formal planner returned native_war_siege_forecast_observation_blocked, participant_partition unavailable: offsite_hostile_may_join_by_target_entry, and selected_step null. No turn-36 typed action or date advance occurred. The last durable checkpoint is H3446/raw53219112.",
+    "expected_contract": "Prove the complete same-frame attacker and defender participant set for the possible siege contact, including the hostile that is offsite now but whose current-route target arrival precedes the player's; otherwise choose a recoverable continuation supported by the existing bounded risk contract or identify the precise missing native observation. Preserve the offsite risk and do not infer battle outcome from aggregate war-roster strength, treat unknown arrival/participation as zero, or automatically surrender."
+  },
+  "requested_delivery": [
+    "Identify the native row or bridge query that can prove the R0271 encounter partition, including whether army 83886484 will be at target 2629 before army 83886367 under current orders. If its participation remains unprovable, state the exact missing field and a recoverable next-step boundary.",
+    "Deliver the smallest war-owned source/observation or bounded fallback fix. Keep same-frame binding, full hostile contact, pending/resources, and active combat forecast authorization separate from a favorable partial forecast.",
+    "Provide focused normal/optimized checks and an exact-source bounded live result when available. A static patch alone remains no-live; H3446 saved days and R0271 turn-36 blocked result are separate facts.",
+    "Respond through the Git war-requests channel; ask for verified cross-machine transfer before any exact-pair replay."
+  ],
+  "evidence": {
+    "blocker_excerpt_git_path": "../evidence/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0271-blocker-excerpt.json",
+    "blocker_excerpt_sha256": "BC34B3A8C041599992EAC23DDD6A05399AABA367FA772EDB7C63B4746290D30E",
+    "candidate_index_git_path": "../evidence/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.candidate-index.json",
+    "candidate_index_sha256": "8C25F789927D28BEBC69A6E33E238F550E5BF80C41C64F91A9B5B38E6DA7FAFC",
+    "source_pair_git_path": "../evidence/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.source-pair.json",
+    "source_pair_sha256": "C8E0064F1324C848E0B166689D0EDEB66F7C3B07068022FF592AA54F052DAB5A",
+    "operator_receipt_git_path": "../evidence/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.operator-receipt.json",
+    "operator_receipt_sha256": "AECC87976F5E2146F54520F0A295F0AB3AB3128674735415B7E538E85037DE0B",
+    "full_formal_report_sha256": "A5C5D21266D7ACFDC2CDD4C619B2846DE100BFF7F4CAD1E261DC116B880790CD",
+    "git_carries_raw_save_driver_dll": false,
+    "local_provenance_paths_are_not_remote_assets": true
+  },
+  "asset_transfer": {
+    "status": "receiver_availability_unverified",
+    "source_pair_location_on_origin_machine": "Z:\\h3388-source-freeze-20260928",
+    "replay_boundary": "Git carries exact report excerpt and identity only. Receiver must obtain, hash-check, and officially rebind the source H3388 save/driver/sidecar plus exact DLL/injector; no shared Z: path or existing remote transfer is assumed."
+  },
+  "coordination_boundary": "No verified active war-maintainer task or personal assignee in the local Z task bus at filing. Git request awaits war-maintainer claim; no CK3 instance, window, battle action, or public capability is authorized by this request."
+}

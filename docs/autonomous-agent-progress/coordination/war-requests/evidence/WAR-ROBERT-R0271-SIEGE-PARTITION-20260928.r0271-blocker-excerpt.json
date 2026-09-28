@@ -1,0 +1,415 @@
+{
+  "schema": "xar.g2.cross-team-war-failure-excerpt.v1",
+  "scope": "Exact R0271 formal report fields; extraction only, with no reconstructed native result",
+  "source_formal_report_sha256": "A5C5D21266D7ACFDC2CDD4C619B2846DE100BFF7F4CAD1E261DC116B880790CD",
+  "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0271",
+  "report_status": "blocked",
+  "report_outcome": "failed",
+  "report_ok": false,
+  "report_error": "AgentError: native planner is blocked: the observed siege does not prove a complete one-encounter participant partition",
+  "identity": {
+    "mode": "native-headless",
+    "pipe": "\\\\.\\pipe\\xar-g2-robert-1066-seed-66f926d",
+    "bridge_dll": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\build-native\\Release\\xar_ck3_bridge.dll",
+      "sha256": "0e0b7f5621917a3b9e51e3002ad58e79ef12f7372f912f3b9ea31cea3ce98b6c"
+    },
+    "bridge_injector": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\build-native\\Release\\xar_ck3_bridge_injector.exe",
+      "sha256": "a0bc08bfe39be5d5d2c477b3de061061fdaf44f69c4c018fc6baf972daa06fc6"
+    },
+    "ck3_executable_sha256": null,
+    "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+    "production_tree_sha256": "8471f6b4333d2d3d0c4dfb1be1dff11a586953ae7b920089dfc830164fbf0367",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": "xar_off",
+      "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+      "source": "prepared-environment-manifest",
+      "environment_sha256": "6d80cc209728cbfdbc2b2dc3d7e93ebfa90e3d575fce642ccb6c3d048f3d1037"
+    }
+  },
+  "auto_run_summary": {
+    "attempted_turns": 36,
+    "successful_turns": 35,
+    "counts": {
+      "query": 24,
+      "gameplay": 11,
+      "checkpoint": 2,
+      "recovery": 0,
+      "terminal": 1
+    },
+    "visible_gameplay_turns": 9,
+    "eligible_advances_since_checkpoint": 2,
+    "dirty_gameplay_since_checkpoint": true,
+    "checkpoint_deferred_for_player_decision": false
+  },
+  "first_blocker": {
+    "observed_at": "2026-09-28T03:04:02.608578+00:00",
+    "turn_index": 36,
+    "stage": "planning",
+    "kind": "planner_blocked",
+    "status": "blocked",
+    "completion_contract": "bounded",
+    "message": "the observed siege does not prove a complete one-encounter participant partition",
+    "error_type": null,
+    "error": "the observed siege does not prove a complete one-encounter participant partition",
+    "initial_episode": {
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "date_raw": 53218968,
+      "played_character_alive": true
+    },
+    "before": {
+      "bridge_pid": 17292,
+      "connection_generation": 1,
+      "heartbeat_sequence": 2319,
+      "snapshot_id": "native:30",
+      "revision": 31,
+      "native_revision": 30,
+      "date_raw": 53219160,
+      "phase": null,
+      "map_ready": true,
+      "paused": true,
+      "played_character_id": 29829,
+      "played_character_alive": true,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "episode_identity_pending": false,
+      "one_life_terminal": false,
+      "one_life_terminal_reason": null,
+      "one_life_settlement_status": "not_terminal",
+      "active_context": {
+        "active_event": null,
+        "pending_character_interaction": null,
+        "war_ids": [
+          16777231
+        ],
+        "army_ids": [
+          83886367
+        ],
+        "terminal": false,
+        "terminal_reason": null,
+        "settlement_status": "not_terminal"
+      },
+      "driver_state_restored": true,
+      "driver_state_restore_kind": "cold_checkpoint",
+      "episode_binding_state": "active_resumed",
+      "cold_candidate_rejection": null,
+      "executable_sha256": null,
+      "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+      "mailbox": {
+        "installed": true,
+        "stop": false,
+        "failure": 0,
+        "ready": true,
+        "executor_submission_enabled": true,
+        "date_raw": 53219160,
+        "paused": true,
+        "executed_requests": 127
+      }
+    },
+    "camera_follow": {
+      "status": "unavailable",
+      "reason": "_NativeCommandRejectedError: native gameplay step failed: state_changed"
+    },
+    "plan": {
+      "policy": "one-life-turn-v1",
+      "phase": "native_war_siege_forecast_observation_blocked",
+      "selected_step": null,
+      "required_observation": "exact-attacker-defender-participant-scope",
+      "reason": "the observed siege does not prove a complete one-encounter participant partition",
+      "siege_relief": {
+        "status": "forecast_required",
+        "selection_policy": "lowest-score-then-war-enemy-province",
+        "war_id": 16777231,
+        "player_relative_war_score": -21,
+        "army_id": 83886367,
+        "enemy_army_id": 50331920,
+        "target_province_id": 2629,
+        "army_strength_balance": {
+          "status": "available",
+          "war_id": 16777231,
+          "friendly_army_ids": [
+            83886367
+          ],
+          "enemy_army_ids": [
+            50331920,
+            83886484
+          ],
+          "friendly_current_soldiers": 2332,
+          "enemy_current_soldiers": 1747,
+          "friendly_maximum_soldiers": 2461,
+          "enemy_maximum_soldiers": 2210,
+          "friendly_ai_base_power_raw": 7584100000,
+          "enemy_ai_base_power_raw": 6240300000,
+          "hostile_operational_overmatch": false,
+          "interpretation": "operational_routing_risk_not_battle_win_odds"
+        },
+        "candidate_count": 1,
+        "reason": "qualified_same_frame_combat_forecast_required_for_siege_contact"
+      },
+      "baseline_phase": "native_war_stationary_objective_hold_sentinel",
+      "baseline_selected_step": "war-objective-hold-sentinel-advance-war-16777231-army-83886367-at-2610-until-53219304",
+      "forecast_status": "research_only",
+      "active_attack_allowed": false,
+      "route_preview": {
+        "status": "available",
+        "army_id": 83886367,
+        "origin_province_id": 2610,
+        "target_province_id": 2629,
+        "route_province_ids": [
+          2614,
+          2618,
+          2624,
+          2631,
+          2630,
+          2629
+        ],
+        "previewed_date_raw": 53219160
+      },
+      "route_contact_horizon": {
+        "status": "available",
+        "date_raw": 53219160,
+        "snapshot_revision": 30,
+        "subject_army_id": 83886367,
+        "target_province_id": 2629,
+        "hostile_army_ids": [
+          50331920,
+          83886484
+        ],
+        "subject_route": {
+          "timeline_observable": true,
+          "army_id": 83886367,
+          "current_province_id": 2610,
+          "effective_origin_province_id": 2610,
+          "route_province_ids": [
+            2614,
+            2618,
+            2624,
+            2631,
+            2630,
+            2629
+          ],
+          "arrival_date_raws": [
+            53219328,
+            53219496,
+            53219712,
+            53219856,
+            53220024,
+            53220216
+          ]
+        },
+        "hostile_routes": [
+          {
+            "timeline_observable": true,
+            "army_id": 50331920,
+            "current_province_id": 2629,
+            "effective_origin_province_id": 2629,
+            "route_province_ids": [],
+            "arrival_date_raws": []
+          },
+          {
+            "timeline_observable": true,
+            "army_id": 83886484,
+            "current_province_id": 3719,
+            "effective_origin_province_id": 8652,
+            "route_province_ids": [
+              8652,
+              1038,
+              1036,
+              2629
+            ],
+            "arrival_date_raws": [
+              53219352,
+              53219544,
+              53219688,
+              53219928
+            ]
+          }
+        ],
+        "horizon_start_date_raw": 53219160,
+        "horizon_end_date_raw": 53219184,
+        "one_day_contact_free": true,
+        "conflicts": []
+      },
+      "participant_partition": {
+        "status": "unavailable",
+        "reason": "offsite_hostile_may_join_by_target_entry"
+      },
+      "formal_defender_exit_observation": {
+        "policy": "formal-primary-defender-de-jure-exit-observation-v1",
+        "status": "current_native_options_required",
+        "frame": {
+          "snapshot_id": "native:30",
+          "revision": 31,
+          "native_revision": 30,
+          "date_raw": 53219160,
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "connection_generation": 1,
+          "played_character_id": 29829,
+          "war_id": 16777231,
+          "player_relative_war_score": -21
+        },
+        "required_observation_step": "query-war-termination-options-16777231",
+        "options": null,
+        "material_terms": null,
+        "recommended_outcome": null,
+        "action_literal": null
+      },
+      "lifestyle_receipt_consumed": {
+        "action_request_id": "life-perk-55de749aa64b48bf8a39f5ad5627f516",
+        "target_key": "centralization_perk",
+        "post_snapshot_id": "native:4",
+        "post_public_revision": 4,
+        "post_date_raw": 53215920,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "post_target_perk_owned": true,
+        "postcondition_verified": true,
+        "kind": "perk",
+        "post_has_current_focus": true,
+        "post_current_focus_key": "stewardship_wealth_focus"
+      },
+      "m5_joint_wartime_observation": {
+        "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+        "scope": "construction_vs_active_war_cash",
+        "status": "construction_observation_unavailable",
+        "read_only": true,
+        "formal_action_ready": false,
+        "frame": {
+          "played_character_id": 29829,
+          "native_revision": 30,
+          "date_raw": 53219160,
+          "snapshot_id": "native:30",
+          "revision": 31,
+          "episode_run_id": "native-29829-2bc2d599f7f9"
+        },
+        "war_ids": [
+          16777231
+        ],
+        "candidate": null,
+        "missing": [
+          "same_frame_native_budgeted_building",
+          "pending_war_cash_raw",
+          "immediate_war_action_cost_raw",
+          "future_war_cost_upper_raw",
+          "future_risk_budget_raw",
+          "policy_minimum_gold_reserve_raw",
+          "horizon_days",
+          "future_bound_assumptions"
+        ]
+      }
+    },
+    "selected_step": null,
+    "result": null,
+    "after": null,
+    "active_context": {
+      "active_event": null,
+      "pending_character_interaction": null,
+      "war_ids": [
+        16777231
+      ],
+      "army_ids": [
+        83886367
+      ],
+      "terminal": false,
+      "terminal_reason": null,
+      "settlement_status": "not_terminal"
+    },
+    "last_durable_checkpoint": {
+      "turn_index": 25,
+      "phase": "periodic_checkpoint",
+      "eligible_advance_ordinal": 3,
+      "status": "saved",
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 78503122,
+      "sha256": "db1c897f1c4c93fa3927ddc0d901b225a797678b41687a9275744f898e712c65",
+      "date_raw": 53219112,
+      "history_index": 3446,
+      "mtime_ns": 1790564510664868700,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "prepared-environment-manifest",
+        "environment_sha256": "6d80cc209728cbfdbc2b2dc3d7e93ebfa90e3d575fce642ccb6c3d048f3d1037"
+      }
+    },
+    "recoverable_from_checkpoint": true,
+    "checkpoint_recovery_invalidated": false,
+    "checkpoint_recovery_invalidation_reason": null,
+    "cleanup": {
+      "elapsed_seconds": 3.09,
+      "session_exit_reason": "stop",
+      "session_report_ok": true,
+      "shutdown_ok": true,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "driver_closed": true,
+      "reason": null,
+      "ok": true
+    },
+    "run_status": "blocked"
+  },
+  "checkpoints": [
+    {
+      "turn_index": 16,
+      "phase": "periodic_checkpoint",
+      "eligible_advance_ordinal": 3,
+      "status": "saved",
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 78508043,
+      "sha256": "6bc2040bbd3d1f448677f78dcb9c4d01ca079be76a55064e02ccad68b45d0397",
+      "date_raw": 53219040,
+      "history_index": 3424,
+      "mtime_ns": 1790564384199910600,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "prepared-environment-manifest",
+        "environment_sha256": "6d80cc209728cbfdbc2b2dc3d7e93ebfa90e3d575fce642ccb6c3d048f3d1037"
+      }
+    },
+    {
+      "turn_index": 25,
+      "phase": "periodic_checkpoint",
+      "eligible_advance_ordinal": 3,
+      "status": "saved",
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3388-7d41\\state-v2\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 78503122,
+      "sha256": "db1c897f1c4c93fa3927ddc0d901b225a797678b41687a9275744f898e712c65",
+      "date_raw": 53219112,
+      "history_index": 3446,
+      "mtime_ns": 1790564510664868700,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "prepared-environment-manifest",
+        "environment_sha256": "6d80cc209728cbfdbc2b2dc3d7e93ebfa90e3d575fce642ccb6c3d048f3d1037"
+      }
+    }
+  ],
+  "cleanup": {
+    "elapsed_seconds": 3.09,
+    "session_exit_reason": "stop",
+    "session_report_ok": true,
+    "shutdown_ok": true,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "driver_closed": true,
+    "reason": null,
+    "ok": true
+  }
+}

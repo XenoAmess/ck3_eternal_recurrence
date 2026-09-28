@@ -1,0 +1,132 @@
+{
+  "schema": "xar.ck3.h3388-robert-source-pair/v1",
+  "status": "source_bytes_pinned_official_family_resolved_pair_and_no_launch_passed_next_candidate_requires_new_frozen_profile",
+  "created_at_utc": "2026-09-28T01:36:11.146313+00:00",
+  "source_round": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0269",
+  "actor_character_id": 29829,
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "profile": "ordinary_campaign_succession/xar_off",
+  "history_index": 3388,
+  "date_raw": 53218968,
+  "prior_history_index": 3326,
+  "prior_date_raw": 53218776,
+  "increment_raw_ticks": 192,
+  "raw_ticks_per_game_day": 24,
+  "increment_game_days": 8,
+  "prior_persistent_game_days": 3102,
+  "persistent_game_days": 3110,
+  "source_runtime_commit": "98be42250294cbf88a9f0e1e0c0518de72264ccc",
+  "native_build_commit": "5e476c2f1e9e1ddef6c098649c56e5b2645f49f4",
+  "source_candidate_master_at_freeze": "98be42250294cbf88a9f0e1e0c0518de72264ccc",
+  "formal_run": {
+    "requested_turns": 36,
+    "successful_turns": 36,
+    "visible_gameplay_turns": 9,
+    "query_turns": 25,
+    "gameplay_turns": 11,
+    "checkpoint_turns": 3,
+    "outcome": "qualified",
+    "operator_exit_code": 0,
+    "checkpoint_saved": true,
+    "cleanup_tree_gone": true
+  },
+  "prior_source_pair_index": {
+    "path": "Z:\\h3326-source-freeze-20260928\\PAIR-IDENTITY.json",
+    "size_bytes": 6208,
+    "sha256": "C62C55A75693C6300D4F03AD1848DB285452D5597FFA4D60A2A96A6B8B8733F3"
+  },
+  "pinned_files": {
+    "checkpoint": {
+      "path": "Z:\\h3388-source-freeze-20260928\\source-pair\\xar_checkpoint.ck3",
+      "size_bytes": 78481694,
+      "sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17"
+    },
+    "driver": {
+      "path": "Z:\\h3388-source-freeze-20260928\\source-pair\\driver-state.json",
+      "size_bytes": 41767822,
+      "sha256": "99C58301C212ABCDBBEDD74D92AE74FCFE23719B927377C93FE7C7D0F54C5C50"
+    },
+    "family_sidecar": {
+      "path": "Z:\\h3388-source-freeze-20260928\\source-pair\\first-heir-marriage-formal-v1.json",
+      "size_bytes": 2742,
+      "sha256": "C5B0E9AF69928003F3AF34FAC05240E384BDEA44A9C4227CA66BC269F2979AEC"
+    },
+    "dll": {
+      "path": "Z:\\h3388-source-freeze-20260928\\identity\\xar_ck3_bridge.dll",
+      "size_bytes": 3748864,
+      "sha256": "87AD7A8A8E8A9D1113E0938D2532C7B456570C28EAC4A1ABBD75310A15F60AAA"
+    },
+    "injector": {
+      "path": "Z:\\h3388-source-freeze-20260928\\identity\\xar_ck3_bridge_injector.exe",
+      "size_bytes": 39936,
+      "sha256": "BFBC96130ADF101DFA43C055AA03AB7FEB92370536C8BB4E4EE19F9338D15A37"
+    },
+    "formal_report": {
+      "path": "Z:\\h3388-source-freeze-20260928\\evidence\\formal-report.txt",
+      "size_bytes": 449607,
+      "sha256": "310F673EC9D13DD4DC2F6250B5773D41830AB1D3C0772CAFAF255936D7F1F8C0"
+    },
+    "operator_receipt": {
+      "path": "Z:\\h3388-source-freeze-20260928\\evidence\\operator-receipt.json",
+      "size_bytes": 1798,
+      "sha256": "4CC944A4B1F57D8E5081EC1C3E1F20C8BE1D5890D197AD7E9CB4E153315A2577"
+    },
+    "live_run_identity": {
+      "path": "Z:\\h3388-source-freeze-20260928\\evidence\\live-run-identity.json",
+      "size_bytes": 587,
+      "sha256": "1C9847D9048829E278DCAA81BB66A6FF58051635D2C103FDB5714DD19FA125AF"
+    },
+    "source_candidate_index": {
+      "path": "Z:\\h3388-source-freeze-20260928\\identity\\H3326-CANDIDATE-INDEX.json",
+      "size_bytes": 7675,
+      "sha256": "87ACF80E821F81DE093E2EBC7BE4634A4FDC499789F892EF11B656997A5D33AD"
+    },
+    "source_operator_manifest": {
+      "path": "Z:\\h3388-source-freeze-20260928\\identity\\operator-manifest-h3326-next-36.json",
+      "size_bytes": 1791,
+      "sha256": "49D41BF9BB516AB0F14D358323D32EDF29559E09D8B32CF6447DE918E9864B28"
+    },
+    "source_operator_profile": {
+      "path": "Z:\\h3388-source-freeze-20260928\\identity\\operator-profile-h3326-next-36.json",
+      "size_bytes": 7350,
+      "sha256": "D202197C9B5DEDF0D78E370CCA1920001D5C95C4EC238F8E550A08FFF9869679"
+    },
+    "validation_manifest": {
+      "path": "Z:\\h3388-source-freeze-20260928\\identity\\operator-manifest-h3388-validation.json",
+      "size_bytes": 1776,
+      "sha256": "1424ABE1518CC131D254E38DFBF0AE4A0D95AD8D5330CEAA86638451292D9A82"
+    },
+    "official_prepare_log": {
+      "path": "Z:\\h3388-source-freeze-20260928\\evidence\\official-prepare-no-launch.log",
+      "size_bytes": 10477,
+      "sha256": "66DB9C8E2C757FC3A03F5E7552A8594F006B7BB331E36741119D58451CAF5EED"
+    },
+    "official_rebind_receipt": {
+      "path": "Z:\\h3388-source-freeze-20260928\\validation-state\\ordinary-seed-rebind-v1.json",
+      "size_bytes": 3985,
+      "sha256": "701C0F64F1CAC3FEB169A685DAB48AFB38ECC1024297BC8A7DB98153D56D6403"
+    },
+    "official_no_launch_report": {
+      "path": "Z:\\h3388-source-freeze-20260928\\validation-state\\preflights\\20260928T013606Z-one-generation-preflight-b050c941\\report.json",
+      "size_bytes": 3960,
+      "sha256": "D6263CBA8B2CFBECEDFDCA3D1A7357D6C800AA2DF3A4B5C3D82BB9A2B52AEF41"
+    }
+  },
+  "official_pair_validation": {
+    "validator": "g2_preview_operator.py prepare-state",
+    "exit_code": 0,
+    "family_resolved_sidecar_pair": "paired_no_launch",
+    "family_heir_character_id": 38822,
+    "family_candidate_character_id": 38718,
+    "family_relationship_status": "betrothal",
+    "alliance_status": "not_allied",
+    "ordinary_rebind": "rebound",
+    "native_one_generation_preflight": "ready",
+    "ck3_launch_attempted": false,
+    "resume_anchor_history_index": 3388,
+    "resume_anchor_date_raw": 53218968,
+    "resume_anchor_checkpoint_sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17",
+    "resume_anchor_driver_state_sha256": "ee303723d4e72e6564e92339a01cd9136085442395cfc34ead6f3dfaca9618dd"
+  },
+  "evidence_boundary": "Eight newly persisted Robert game days counted once from H3326. This is an OFFLINE source pair and no-launch check, not a new CK3 round or action. A future candidate requires its own frozen profile and preflight. G2 remains 3/8; M2/M4 in progress and M5-M7 not started."
+}
