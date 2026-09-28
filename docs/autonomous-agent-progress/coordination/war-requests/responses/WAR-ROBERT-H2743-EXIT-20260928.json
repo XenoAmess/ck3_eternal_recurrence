@@ -88,6 +88,7 @@
       "checks": "Windows Release xar_ck3_bridge build succeeded; focused Python contract tests 4/4 normal and 4/4 under -O; git diff --check passed.",
       "no_launch_preflight": "Exact four source SHA-256 values verified in external attempt-08-dejure-baseline-no-launch and attempt-09-dejure-baseline-no-launch. prepare-profile refused while R0271's ck3.exe was running; both environment RED attempts are preserved without launching H2743. A fresh attempt is required after screen release.",
       "v2_static_scope_factor_gate": "docs/ck3-native-ai/h2743-dejure-exit-v2-fail-closed-plan-2026-09-28.md; exact-build resolver and factor-input receipt ck3_autonomous_player/native_bridge/research/dejure_title_scope_resolution_gate_v2_1_19_0_6.json. Dynamic script-scope virtual dispatch, helper count semantics and factor storage are not yet proven pure/readable; scope target and F stay unavailable.",
+      "pure_comparison_contract": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_exit_comparison.py and docs/ck3-native-ai/h2743-formal-exit-comparison-contract-2026-09-28.md. Exact same-frame option, complete title/F/resources/truce/conditional terms and bounded continuation risk are required. Full synthetic evidence only yields componentwise comparable without a policy recommendation; the separate action-prerequisite structure never enables submission.",
       "live_h2743_readback": null,
       "material_complete": false
     },
