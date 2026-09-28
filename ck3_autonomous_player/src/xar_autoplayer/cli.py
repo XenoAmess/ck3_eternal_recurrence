@@ -440,6 +440,10 @@ def parser() -> argparse.ArgumentParser:
         help="read current-player realm-law final terms on one paused frame",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-planner-diag-query", action="store_true",
+        help="read private activity planner metadata on one paused frame",
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-prisoner-ransom-formal-trial",
         action="store_true",
         help="evaluate and submit one private native ransom in a bounded run",
@@ -1016,6 +1020,8 @@ def main(argv: list[str] | None = None) -> int:
                     **private_scheme_options,
                     **({"private_realm_law_paused_query": True}
                       if args.private_realm_law_paused_query else {}),
+                    **({"private_activity_planner_diag_query": True}
+                      if args.private_activity_planner_diag_query else {}),
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )

@@ -1443,6 +1443,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_prisoner_collection_query: bool = False,
         allow_private_active_scheme_sway_query: bool = False,
         allow_private_realm_law_paused_query: bool = False,
+        allow_private_activity_planner_diag_query: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
         allow_private_player_child_marriage_subject_query: bool = False,
@@ -1540,6 +1541,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_realm_law_paused_query = (
             allow_private_realm_law_paused_query is True
+        )
+        self.allow_private_activity_planner_diag_query = (
+            allow_private_activity_planner_diag_query is True
         )
         self.allow_private_prisoner_ransom_action = (
             allow_private_prisoner_ransom_action is True
@@ -2530,6 +2534,19 @@ class NativeHeadlessGameplayDriver:
         )
 
         return query_realm_law_final_terms_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_activity_planner_diag_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read activity planner metadata, never costs or final can_start."""
+        from .activity_planner_diag_private_transport import (
+            query_activity_planner_diag_private_v1,
+        )
+
+        return query_activity_planner_diag_private_v1(
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
         )

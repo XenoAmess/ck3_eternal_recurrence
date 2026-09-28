@@ -1,7 +1,7 @@
 #include "xar_bridge/activity_planner_diag_v1.hpp"
 
 #include <array>
-#include <cassert>
+#include <cstdlib>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -34,6 +34,7 @@ struct Fake {
                                    true};
   bool visible = false;
   bool visibility_called = false;
+  bool flip_visibility_after_call = false;
 
   template <typename T> void Put(std::uintptr_t at, const T &value) {
     const auto *data = reinterpret_cast<const std::uint8_t *>(&value);
@@ -45,6 +46,10 @@ struct Fake {
       bytes[at + i] = static_cast<std::uint8_t>(data[i]);
   }
 };
+
+void Expect(bool condition) {
+  if (!condition) std::abort();
+}
 
 bool Read(void *opaque, std::uintptr_t at, void *output,
           std::size_t size) noexcept {
@@ -78,6 +83,7 @@ bool Visible(void *opaque, std::uintptr_t planner, std::uintptr_t slot,
   fake.visibility_called = true;
   if (planner != kPlanner || slot != kBase + 0x1F30970) return false;
   output = fake.visible;
+  if (fake.flip_visibility_after_call) fake.visible = !fake.visible;
   return true;
 }
 
@@ -139,45 +145,56 @@ int main() {
   Populate(fake);
   const auto expected = fake.frame;
   auto result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::observed);
-  assert(result.value.planner_present && result.value.widget_attached);
-  assert(!result.value.widget_visible && fake.visibility_called);
-  assert(result.value.stage == 2);
-  assert(result.value.host_view_activity_key_known);
-  assert(std::string_view(result.value.host_view_activity_key.data(),
+  Expect(result.status == ActivityPlannerDiagStatusV1::observed);
+  Expect(result.value.planner_present && result.value.widget_attached);
+  Expect(!result.value.widget_visible && fake.visibility_called);
+  Expect(result.value.stage == 2);
+  Expect(result.value.host_view_activity_key_known);
+  Expect(std::string_view(result.value.host_view_activity_key.data(),
                           result.value.host_view_activity_key_size) ==
          "activity_feast");
 
   fake.visible = true;
   fake.Put(kPlanner + 0x1AB0, std::int32_t{5});
   result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::observed);
-  assert(result.value.widget_visible && result.value.stage == 5);
+  Expect(result.status == ActivityPlannerDiagStatusV1::observed);
+  Expect(result.value.widget_visible && result.value.stage == 5);
 
   fake.Put(kPlanner + 0x78, std::uintptr_t{0});
   fake.visible = false;
   result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::observed);
-  assert(!result.value.widget_attached && !result.value.widget_visible);
+  Expect(result.status == ActivityPlannerDiagStatusV1::observed);
+  Expect(!result.value.widget_attached && !result.value.widget_visible);
 
   fake.Put(kHandler + 0x3C0, std::uintptr_t{0});
   result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::planner_absent);
-  assert(!result.value.planner_present);
+  Expect(result.status == ActivityPlannerDiagStatusV1::planner_absent);
+  Expect(!result.value.planner_present);
 
   fake.Put(kHandler + 0x3C0, kPlanner);
   fake.Put(kPlanner + 0xD0, std::uintptr_t{0});
   result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::native_identity_mismatch);
+  Expect(result.status == ActivityPlannerDiagStatusV1::native_identity_mismatch);
   fake.Put(kPlanner + 0xD0, kHandler);
+
+  fake.Put(kPlanner + 0x78, kWidget);
+  fake.flip_visibility_after_call = true;
+  result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
+  Expect(result.status == ActivityPlannerDiagStatusV1::native_sample_changed);
+  fake.flip_visibility_after_call = false;
 
   auto environment = Env(fake);
   environment.admitted_executable_sha256 = "wrong-build";
   result = xar::bridge::ReadActivityPlannerDiagV1(environment, expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::exact_build_rejected);
+  Expect(result.status == ActivityPlannerDiagStatusV1::exact_build_rejected);
+  fake.Put(kBase + 0x1F3097A, std::array<std::uint8_t, 4>{});
+  result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
+  Expect(result.status == ActivityPlannerDiagStatusV1::exact_build_rejected);
+  fake.Put(kBase + 0x1F3097A,
+           std::array<std::uint8_t, 4>{0x48, 0x8B, 0x59, 0x78});
   fake.frame.revision = 4;
   result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
-  assert(result.status == ActivityPlannerDiagStatusV1::frame_changed);
+  Expect(result.status == ActivityPlannerDiagStatusV1::frame_changed);
 
   std::cout << "GREEN: exact-build private activity planner diagnostic\n";
 }
