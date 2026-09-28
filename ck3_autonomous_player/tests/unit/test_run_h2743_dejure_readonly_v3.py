@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 from pathlib import Path
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -34,6 +36,83 @@ def clean_receipt() -> dict[str, object]:
 
 
 class H2743RunnerGateTests(unittest.TestCase):
+    def test_partial_truce_candidate_is_exact_and_cannot_reuse_old_ready(self) -> None:
+        try:
+            runner.select_candidate(runner.TRUCE_CANDIDATE)
+            self.assertEqual(runner.DLL, runner.TRUCE_DLL)
+            self.assertEqual(runner.DLL_SHA, runner.TRUCE_DLL_SHA)
+            self.assertEqual(runner.LIVE_OUTPUT, "live-dejure-partial-truce-v4")
+            with tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                attempt = root / "attempt-12-dejure-baseline-no-launch"
+                attempt.mkdir()
+                legacy_ready = {
+                    "status": "no_launch_preflight_ready",
+                    "source_hashes": runner.SOURCE_HASHES,
+                    "candidate_dll_sha256": runner.TRUCE_DLL_SHA,
+                    "injector_sha256": runner.INJECTOR_SHA,
+                    "ck3_launch_attempted": False,
+                    "gameplay_action_submitted": False,
+                    "prepare": {"exit_code": 0},
+                    "rebind": {"exit_code": 0},
+                    "preflight": {"exit_code": 0},
+                }
+                (attempt / "ready-summary.json").write_text(json.dumps(legacy_ready), encoding="utf-8")
+                with patch.object(runner, "ROOT", root):
+                    with self.assertRaisesRegex(RuntimeError, "no-launch preflight READY absent"):
+                        runner.prepared_state(attempt)
+                    legacy_ready["candidate_kind"] = runner.TRUCE_CANDIDATE
+                    (attempt / "ready-summary.json").write_text(json.dumps(legacy_ready), encoding="utf-8")
+                    old_pair = {
+                        "candidate_kind": runner.DEFAULT_CANDIDATE,
+                        "candidate_dll": str(runner.DLL),
+                        "candidate_dll_sha256": runner.TRUCE_DLL_SHA,
+                        "source_hashes": runner.SOURCE_HASHES,
+                        "ck3_launch_attempted": False,
+                        "gameplay_action_submitted": False,
+                    }
+                    (attempt / "source-pair.json").write_text(json.dumps(old_pair), encoding="utf-8")
+                    with self.assertRaisesRegex(RuntimeError, "belongs to another candidate"):
+                        runner.prepared_state(attempt)
+            with self.assertRaises(ValueError):
+                runner.select_candidate("unreviewed-dll")
+        finally:
+            runner.select_candidate(runner.DEFAULT_CANDIDATE)
+
+    def test_partial_truce_wire_never_becomes_surrender_terms(self) -> None:
+        observed = lambda value: {"status": "observed", "value": value,
+                                  "unavailable_reason": None}
+        unavailable = lambda reason: {"status": "unavailable", "value": None,
+                                      "unavailable_reason": reason}
+        inputs = {
+            "schema": "xar.ck3.defender-de-jure-truce-inputs.v1",
+            "attacker_flexible_truces_perk": observed(False),
+            "attacker_government_is_nomadic": observed(True),
+            "defender_government_is_nomadic": observed(False),
+            "nomad_both": observed(False),
+            "short": unavailable("stock_condition_reader_unavailable"),
+            "long": unavailable("stock_condition_reader_unavailable"),
+            "border_raid_pair": unavailable("stock_condition_reader_unavailable"),
+            "evaluated_days": None,
+            "persisted_expiry_date_raw": None,
+        }
+        baseline = {"truce_inputs_v1": inputs, "material_complete": False,
+                    "directed_truce": None, "action_literal": None}
+        runner.require_partial_truce_inputs(baseline)
+        for mutation in (
+            lambda row: row.pop("truce_inputs_v1"),
+            lambda row: row["truce_inputs_v1"].update(evaluated_days=730),
+            lambda row: row["truce_inputs_v1"]["short"].update(
+                status="observed", value=False, unavailable_reason=None),
+            lambda row: row.update(directed_truce={"days": 730}),
+            lambda row: row.update(action_literal="surrender-war-16777231"),
+        ):
+            with self.subTest(mutation=mutation):
+                changed = copy.deepcopy(baseline)
+                mutation(changed)
+                with self.assertRaises(RuntimeError):
+                    runner.require_partial_truce_inputs(changed)
+
     def test_cold_map_wait_and_independent_lease_failure_gate(self) -> None:
         # R0004 first command took 23m37s; the old 300s frame gate was RED.
         self.assertGreaterEqual(runner.FRAME_SECONDS, 1800)

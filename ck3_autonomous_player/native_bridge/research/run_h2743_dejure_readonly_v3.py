@@ -46,12 +46,35 @@ SOURCE_HASHES = {
     "xar_ck3_bridge.dll": "8C3A9523D14DEDB6C44AC04F748BFC9D086E983B2A973A956CBADD21F07A8A5C",
 }
 DLL_SHA = "6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E"
+TRUCE_DLL = ROOT / "build-truce-inputs-002/xar_ck3_bridge.dll"
+TRUCE_DLL_SHA = "1361FC0991D1FA09CB7272112D73F7F50736B7BBAD6A3656C33F9FB200CA1BAA"
+DEFAULT_CANDIDATE = "title-prestate-v3"
+TRUCE_CANDIDATE = "partial-truce-inputs-v4"
+CANDIDATE = DEFAULT_CANDIDATE
+LIVE_OUTPUT = "live-dejure-readonly-v3"
 INJECTOR_SHA = "C89F1A919514A7E664AEE8FAF165B78C693ABA4EA2105289BDA2DB4BAC6A84FF"
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 READINESS_SECONDS = 1800
 SESSION_SECONDS = 3000
 FRAME_SECONDS = 1800
 TOOL_SECONDS = 120
+
+
+def select_candidate(name: str) -> None:
+    """Bind a single exact DLL for this process before any attempt is prepared."""
+    global CANDIDATE, DLL, DLL_SHA, LIVE_OUTPUT
+    if name == DEFAULT_CANDIDATE:
+        CANDIDATE = DEFAULT_CANDIDATE
+        DLL = ROOT / "build-title-prestate-001/xar_ck3_bridge.dll"
+        DLL_SHA = "6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E"
+        LIVE_OUTPUT = "live-dejure-readonly-v3"
+    elif name == TRUCE_CANDIDATE:
+        CANDIDATE = TRUCE_CANDIDATE
+        DLL = TRUCE_DLL
+        DLL_SHA = TRUCE_DLL_SHA
+        LIVE_OUTPUT = "live-dejure-partial-truce-v4"
+    else:
+        raise ValueError("unknown exact H2743 candidate")
 
 
 def sha256(path: Path) -> str:
@@ -106,7 +129,8 @@ def check_static() -> dict[str, object]:
                                capture_output=True, text=True, encoding="utf-8", timeout=30)
         if probe.returncode != 0 or "usage:" not in probe.stdout.lower():
             raise RuntimeError(f"branch CLI help probe failed: {help_args}")
-    return {"status": "static_bytes_verified_no_launch", "readiness_seconds": READINESS_SECONDS,
+    return {"status": "static_bytes_verified_no_launch", "candidate_kind": CANDIDATE,
+            "readiness_seconds": READINESS_SECONDS,
             "session_timeout_seconds": SESSION_SECONDS, "paths_sha256": {str(path): digest for path, digest in expected.items()},
             "allowed_query_steps": [QUERY, OPTIONS_QUERY],
             "process_module_map_probe": "self_readable",
@@ -181,6 +205,7 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
     state = attempt / "state"
     ready = json.loads((attempt / "ready-summary.json").read_text(encoding="utf-8"))
     if (ready.get("status") != "no_launch_preflight_ready"
+            or ready.get("candidate_kind", DEFAULT_CANDIDATE) != CANDIDATE
             or ready.get("source_hashes") != SOURCE_HASHES
             or ready.get("candidate_dll_sha256") != DLL_SHA
             or ready.get("injector_sha256") != INJECTOR_SHA
@@ -189,6 +214,14 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
         raise RuntimeError("new exact H2743 no-launch preflight READY absent")
     if any(ready.get(phase, {}).get("exit_code") != 0 for phase in ("prepare", "rebind", "preflight")):
         raise RuntimeError("new exact H2743 no-launch preflight phase failed")
+    pair = json.loads((attempt / "source-pair.json").read_text(encoding="utf-8"))
+    if (pair.get("candidate_kind", DEFAULT_CANDIDATE) != CANDIDATE
+            or pair.get("candidate_dll") != str(DLL)
+            or pair.get("candidate_dll_sha256") != DLL_SHA
+            or pair.get("source_hashes") != SOURCE_HASHES
+            or pair.get("ck3_launch_attempted") is not False
+            or pair.get("gameplay_action_submitted") is not False):
+        raise RuntimeError("prepared H2743 source pair belongs to another candidate")
     placed = {"xar_checkpoint.ck3": state / "profile/save games/xar_checkpoint.ck3",
               "first-heir-marriage-formal-v1.json": state / "first-heir-marriage-formal-v1.json"}
     for name, path in placed.items():
@@ -212,7 +245,8 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
     state = attempt / "state"
     attempt.mkdir(exist_ok=False)
     write_new(attempt / "source-pair.json", {"schema": "xar.ck3.h2743.dejure-exit-read-port-no-launch.v3",
-        "source_hashes": SOURCE_HASHES, "candidate_dll": str(DLL), "candidate_dll_sha256": DLL_SHA,
+        "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
+        "candidate_dll": str(DLL), "candidate_dll_sha256": DLL_SHA,
         "injector_sha256": INJECTOR_SHA, "ck3_launch_attempted": False, "gameplay_action_submitted": False})
 
     def call(name: str, arguments: list[str]) -> dict[str, object]:
@@ -259,7 +293,8 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
         "--expected-driver-state-sha256", derived, "--xar-enabled", "xar_off",
         "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact"])
     write_new(attempt / "ready-summary.json", {"status": "no_launch_preflight_ready",
-        "source_hashes": SOURCE_HASHES, "candidate_dll_sha256": DLL_SHA,
+        "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
+        "candidate_dll_sha256": DLL_SHA,
         "injector_sha256": INJECTOR_SHA, "derived_driver_sha256": derived,
         "prepare": prepare, "rebind": rebind, "preflight": preflight,
         "ck3_launch_attempted": False, "gameplay_action_submitted": False})
@@ -324,6 +359,22 @@ def require_target_holder_prestate(baseline: dict[str, object]) -> None:
             or (liege is not None and (type(liege) is not int or liege <= 0
                                        or liege == holder))):
         raise RuntimeError("H2743 target holder prestate identity is invalid")
+
+
+def require_partial_truce_inputs(baseline: dict[str, object]) -> None:
+    """Keep partial inputs typed and never promote them to a term or action."""
+    source = REPO / "ck3_autonomous_player/src"
+    if str(source) not in sys.path:
+        sys.path.insert(0, str(source))
+    from xar_autoplayer.bridge.defender_dejure_exit_terms_v1 import _normalize_truce_inputs
+    try:
+        _normalize_truce_inputs(baseline.get("truce_inputs_v1"))
+    except ValueError as error:
+        raise RuntimeError("H2743 partial truce input wire is missing or malformed") from error
+    if (baseline.get("material_complete") is not False
+            or baseline.get("directed_truce") is not None
+            or baseline.get("action_literal") is not None):
+        raise RuntimeError("H2743 partial truce input was promoted to an exit term")
 
 
 WAR_SIGNATURE_FIELDS = ("war_id", "player_side", "player_is_primary_war_leader",
@@ -502,6 +553,8 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                             or len(baseline.get("primary_monthly_gold_income", [])) != 2):
                         raise RuntimeError("baseline query unavailable, malformed or falsely material-complete")
                     require_target_holder_prestate(baseline)
+                    if CANDIDATE == TRUCE_CANDIDATE:
+                        require_partial_truce_inputs(baseline)
                     results.append(result)
                     if number == 1:
                         options_result = await call(session, "ck3_execute_step",
@@ -514,6 +567,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                         or results[0]["defender_de_jure_exit_terms_v1"] != results[1]["defender_de_jure_exit_terms_v1"]):
                     raise RuntimeError("H2743 baseline changed within the paused frame")
                 summary = {"status": "baseline_only_material_unavailable", "war_id": 16777231,
+                           "candidate_kind": CANDIDATE,
                            "frame": frame, "date_raw": before["date_raw"],
                            "native_revision": before.get("native_revision"),
                            "source_save_sha256": SOURCE_HASHES["xar_checkpoint.ck3"],
@@ -559,7 +613,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
     if any((item.info.get("name") or "").casefold() == "ck3.exe" for item in psutil.process_iter(["name"])):
         raise RuntimeError("CK3 is already running; do not join or disturb another owner")
     renew_screen_lease(task_id)
-    output = attempt / "live-dejure-readonly-v3"
+    output = attempt / LIVE_OUTPUT
     output.mkdir(exist_ok=False)
     argv = [str(PYTHON), "-c", CLI_ENTRY, "--state-dir", str(state), "--game-dir", str(GAME),
             "--bridge-mode", "native-headless", "--bridge-pipe", PIPE,
@@ -567,6 +621,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
             "native-session", "--cold-start-checkpoint", "--xar-enabled", "xar_off",
             "--timeout", str(SESSION_SECONDS)]
     write_new(output / "launch-plan.json", {"argv": argv, "source_pair": SOURCE_HASHES,
+             "candidate_kind": CANDIDATE, "candidate_dll_sha256": DLL_SHA,
              "ready_summary_sha256": sha256(attempt / "ready-summary.json"), "gate": gate,
              "readiness_seconds": READINESS_SECONDS, "session_timeout_seconds": SESSION_SECONDS,
              "allowed_query_steps": [QUERY, OPTIONS_QUERY],
@@ -692,6 +747,9 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--candidate", choices=(DEFAULT_CANDIDATE, TRUCE_CANDIDATE),
+                        default=DEFAULT_CANDIDATE,
+                        help="exact pinned read-only DLL; default preserves the v3 reader")
     parser.add_argument("--check-static", action="store_true", help="hash exact inputs; no profile or CK3 launch")
     parser.add_argument("--prepare-no-launch", action="store_true", help="new exact attempt; profile/preflight only")
     parser.add_argument("--attempt-name", help="fresh attempt-N-dejure-baseline-no-launch")
@@ -700,6 +758,7 @@ def main() -> None:
     parser.add_argument("--steam-gate", type=Path)
     parser.add_argument("--task-id")
     args = parser.parse_args()
+    select_candidate(args.candidate)
     if args.run:
         if not all((args.prepared_attempt, args.steam_gate, args.task_id)):
             parser.error("--run requires --prepared-attempt, --steam-gate and --task-id")
