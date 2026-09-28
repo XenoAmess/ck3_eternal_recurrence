@@ -473,6 +473,15 @@
       "response_sha256": null,
       "scope": "metadata_only_existing_receipts_no_new_large_transfer_or_game_action"
     },
+    "h3911_forecast_receiver_attempt2_notice_v1": {
+      "source_file": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-ATTEMPT2-RESULT-v1.json",
+      "source_sha256": "C03B5C52EFD4B3269FD5C58DBA85CA4A06EC97CC77D51B86679C2E2542B9CBFD",
+      "no_launch_status": "receiver_prepare_rebind_preflight_ready",
+      "live_status": "RED_native_map_unavailable_after_50_readiness_snapshots",
+      "read_only_queries_completed": false,
+      "war_cash_observation": null,
+      "scope": "separate_forecast_receiver_attempt_not_a_formal_cash_query_receipt"
+    },
     "h3446_exact_assets_received": true,
     "h3446_original_exact_assets_received": false,
     "same_frame_cash_receipt": null,
@@ -485,6 +494,7 @@
     "cash_receipt": null
   },
   "limitations": [
+    "A separate R0321 H3911 forecast receiver attempt reported receiver prepare/rebind/no-launch ready, then failed live readiness after 50 snapshots without an available native map. Its source notice records zero completed read-only queries and no war-cash observation. This is an environment/restore-readiness RED, not a #449 formal query or evidence for zero cash expense.",
     "Attempt-11 produced a live H2825 paused-frame diagnostic, but its private-readable memory scan was RED at the 8192 MiB ceiling before instance discovery. The supplied construction observation still publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
     "The native player_monthly_gold_income is a current monthly-income observation; its gross-income, expense and net composition is not established here, and it cannot independently bound future army upkeep or replenishment. H2908/raw53217816 is a different frame and cannot fill H2825 cash fields.",
     "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. H2743 save-layer inspection found other AI war-chest records but no AI strategy row keyed to the played Robert CharacterID 29829; that does not supply H2825 player-war cash. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off.",
