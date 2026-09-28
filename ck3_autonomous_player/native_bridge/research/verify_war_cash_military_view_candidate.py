@@ -23,6 +23,10 @@ REGISTRATION_CALLBACK_RVA = 0x11FCAA0
 REGISTRATION_WRAPPER_RVA = 0x11FCAB0
 GETTER_RVA = 0x11F7D90
 VALUE_BREAKDOWN_OFFSET = 0x758
+PREDICTED_MAX_GOLD_OBJECT_OFFSET = 0x6C8
+PREDICTED_MAX_GOLD_RAW_OFFSET = 0x740
+PREDICTED_MAX_GOLD_SCALE_OFFSET = 0x748
+GOLD_SCALE = 100_000
 CURRENT_NAME = b"GetGoldMilitaryExpenses\0"
 CURRENT_NAME_LOAD_RVA = 0x19E8A9
 CURRENT_CALLBACK_RVA = 0x11FC7B0
@@ -86,6 +90,39 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
             or getter.op_str != f"rax, [rcx + {VALUE_BREAKDOWN_OFFSET:#x}]"
             or getter_ret.mnemonic != "ret"):
         raise ValueError("expense getter is no longer a field reference")
+    breakdown_construction = _instruction(image, binary, 0x11F2F12)
+    breakdown_constructor_call = _instruction(image, binary, 0x11F2F1A)
+    zero_initializer = _instruction(image, binary, 0xBC3D7D)
+    raw_zero_initializer = _instruction(image, binary, 0xBC3DCA)
+    scale_initializer = _instruction(image, binary, 0xBC3DCE)
+    nonzero_guard = _instruction(image, binary, 0x11F7DD0)
+    refresh_target = _instruction(image, binary, 0x11F3B10)
+    refresh_append = _instruction(image, binary, 0x11F3BFB)
+    refresh_line_amount = _instruction(image, binary, 0x11F3C13)
+    if (breakdown_construction.mnemonic != "lea"
+            or breakdown_construction.op_str != "rcx, [r12 + 0x6c8]"
+            or breakdown_constructor_call.mnemonic != "call"
+            or _relative_target(breakdown_constructor_call) != base + 0xBC3D70
+            or zero_initializer.mnemonic != "xor"
+            or zero_initializer.op_str != "edx, edx"
+            or raw_zero_initializer.mnemonic != "mov"
+            or raw_zero_initializer.op_str != "qword ptr [rcx + 0x78], rdx"
+            or scale_initializer.mnemonic != "mov"
+            or scale_initializer.op_str
+            != f"qword ptr [rcx + 0x80], {GOLD_SCALE:#x}"
+            or nonzero_guard.mnemonic != "cmp"
+            or nonzero_guard.op_str != "qword ptr [rcx + 0x740], 0"
+            or refresh_target.mnemonic != "lea"
+            or refresh_target.op_str != "r14, [r15 + 0x6c8]"
+            or refresh_append.mnemonic != "call"
+            or _relative_target(refresh_append) != base + 0x21C7660
+            or refresh_line_amount.mnemonic != "mov"
+            or refresh_line_amount.op_str != "qword ptr [rdi + 0x78], rcx"
+            or PREDICTED_MAX_GOLD_OBJECT_OFFSET + 0x78
+            != PREDICTED_MAX_GOLD_RAW_OFFSET
+            or PREDICTED_MAX_GOLD_OBJECT_OFFSET + 0x80
+            != PREDICTED_MAX_GOLD_SCALE_OFFSET):
+        raise ValueError("predicted maximum gold breakdown raw/scale layout changed")
 
     current_name_offset = binary.find(CURRENT_NAME)
     if (current_name_offset < 0
@@ -152,6 +189,10 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "callback_rva": hex(REGISTRATION_CALLBACK_RVA),
         "getter_rva": hex(GETTER_RVA),
         "military_view_value_breakdown_offset": hex(VALUE_BREAKDOWN_OFFSET),
+        "predicted_max_gold_raw_candidate_offset": hex(PREDICTED_MAX_GOLD_RAW_OFFSET),
+        "predicted_max_gold_scale_offset": hex(PREDICTED_MAX_GOLD_SCALE_OFFSET),
+        "predicted_max_gold_scale": GOLD_SCALE,
+        "predicted_max_breakdown_refresh_rva": hex(0x11F3B10),
         "current_expense_getter_rva": hex(CURRENT_GETTER_RVA),
         "current_expense_helper_rva": hex(CURRENT_GETTER_HELPER_RVA),
         "current_expense_calculator_rva": hex(CURRENT_BREAKDOWN_CALCULATOR_RVA),
