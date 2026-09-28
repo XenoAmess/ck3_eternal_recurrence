@@ -31,7 +31,9 @@ class UiGuiImportTest(unittest.TestCase):
             output.mkdir()
             target = target_dir / "pdx_settings.txt"
             row = import_ui_saved_gui_block(target, self.template, source_path,
-                                            sha(source), output, requested_scale="1.0")
+                                            sha(source), output,
+                                            expected_gui_block_sha256=sha(self.block),
+                                            requested_scale="1.0")
             self.assertEqual(target.read_bytes(), self.template.encode() + self.block)
             self.assertEqual(source_path.read_bytes(), source)
             self.assertEqual(row["source_snapshot"]["sha256"], sha(source))
@@ -62,7 +64,8 @@ class UiGuiImportTest(unittest.TestCase):
             output.mkdir()
             target = root / "pdx_settings.txt"
             row = import_ui_saved_gui_block(target, template, source_path, sha(source),
-                                            output, requested_scale="1.0")
+                                            output, expected_gui_block_sha256=sha(self.block),
+                                            requested_scale="1.0")
             self.assertEqual(target.read_bytes(), template.encode() + self.block)
             self.assertEqual(row["vanilla_non_gui_template"]["bytes"], len(template.encode()))
             self.assertEqual(row["vanilla_non_gui_template"]["sha256"], sha(template.encode()))
@@ -85,7 +88,9 @@ class UiGuiImportTest(unittest.TestCase):
             output.mkdir()
             target = root / "pdx_settings.txt"
             row = import_ui_saved_gui_block(target, self.template, source_path,
-                                            sha(source), output, requested_scale="1.0")
+                                            sha(source), output,
+                                            expected_gui_block_sha256="F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593",
+                                            requested_scale="1.0")
             self.assertEqual(row["source_gui_block"]["sha256"],
                              "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593")
             self.assertEqual(target.read_bytes(), self.template.encode() + self.block)
@@ -103,10 +108,34 @@ class UiGuiImportTest(unittest.TestCase):
                 target = root / "pdx_settings.txt"
                 with self.assertRaisesRegex(Exception, "explicit 1.0 capture request"):
                     import_ui_saved_gui_block(target, self.template, source_path,
-                                              sha(source), output, requested_scale=requested)
+                                              sha(source), output,
+                                              expected_gui_block_sha256=sha(self.block),
+                                              requested_scale=requested)
                 self.assertFalse(target.exists())
                 self.assertEqual(json.loads(
                     (output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
+
+    def test_fake_source_cannot_self_report_block_sha(self) -> None:
+        fake_block = self.block.replace(b'\t\tversion=1', b'\tversion=1')
+        self.assertNotEqual(sha(fake_block), sha(self.block))
+        fake_source = self.template.encode() + fake_block
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source_path = root / "self-reported-source.txt"
+            source_path.write_bytes(fake_source)
+            output = root / "evidence"
+            output.mkdir()
+            target = root / "pdx_settings.txt"
+            with self.assertRaisesRegex(Exception, "block SHA-256 differs"):
+                import_ui_saved_gui_block(
+                    target, self.template, source_path, sha(fake_source), output,
+                    expected_gui_block_sha256="F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593",
+                    requested_scale="1.0")
+            self.assertFalse(target.exists())
+            receipt = json.loads((output / "gui-settings-ui-block-import.json").read_text())
+            self.assertEqual(receipt["status"], "RED")
+            self.assertEqual(receipt["expected_source_sha256"], sha(fake_source))
+            self.assertEqual(receipt["expected_gui_block_sha256"], sha(self.block))
 
     def test_rejects_mismatched_or_missing_sha_before_writing(self) -> None:
         source = self.block
@@ -120,7 +149,9 @@ class UiGuiImportTest(unittest.TestCase):
                 output.mkdir()
                 with self.assertRaises(Exception):
                     import_ui_saved_gui_block(target, self.template, source_path,
-                                              claimed, output, requested_scale="1.0")
+                                              claimed, output,
+                                              expected_gui_block_sha256=sha(self.block),
+                                              requested_scale="1.0")
                 self.assertFalse(target.exists())
                 self.assertEqual(json.loads(
                     (output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
@@ -149,7 +180,9 @@ class UiGuiImportTest(unittest.TestCase):
                 output.mkdir()
                 with self.assertRaises(Exception):
                     import_ui_saved_gui_block(target, self.template, source_path,
-                                              sha(source), output, requested_scale="1.0")
+                                              sha(source), output,
+                                              expected_gui_block_sha256=sha(self.block),
+                                              requested_scale="1.0")
                 self.assertFalse(target.exists())
                 self.assertEqual(json.loads(
                     (output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
@@ -167,6 +200,7 @@ class UiGuiImportTest(unittest.TestCase):
             with self.assertRaisesRegex(Exception, "Target settings already exist"):
                 import_ui_saved_gui_block(target, self.template, source,
                                           sha(source_bytes), existing_output,
+                                          expected_gui_block_sha256=sha(self.block),
                                           requested_scale="1.0")
             self.assertEqual(target.read_bytes(), b"old target")
             self.assertEqual(json.loads(
@@ -177,6 +211,7 @@ class UiGuiImportTest(unittest.TestCase):
             with self.assertRaisesRegex(Exception, "Vanilla template already defines GUI"):
                 import_ui_saved_gui_block(target, self.template + '"GUI"={}\n',
                                           source, sha(source_bytes), duplicate_output,
+                                          expected_gui_block_sha256=sha(self.block),
                                           requested_scale="1.0")
             self.assertFalse(target.exists())
             self.assertEqual(json.loads(
@@ -194,7 +229,9 @@ class UiGuiImportTest(unittest.TestCase):
             with mock.patch("capture_session.os.link", side_effect=OSError("link rejected")):
                 with self.assertRaisesRegex(OSError, "link rejected"):
                     import_ui_saved_gui_block(target, self.template, source,
-                                              sha(source_bytes), output, requested_scale="1.0")
+                                              sha(source_bytes), output,
+                                              expected_gui_block_sha256=sha(self.block),
+                                              requested_scale="1.0")
             self.assertFalse(target.exists())
             self.assertEqual(source.read_bytes(), source_bytes)
             self.assertEqual((output / "gui-settings-ui-import-prepared.pdx.txt").read_bytes(),
@@ -220,7 +257,9 @@ class UiGuiImportTest(unittest.TestCase):
             target = root / "pdx_settings.txt"
             with self.assertRaises(Exception):
                 import_ui_saved_gui_block(target, self.template, link,
-                                          sha(self.block), output, requested_scale="1.0")
+                                          sha(self.block), output,
+                                          expected_gui_block_sha256=sha(self.block),
+                                          requested_scale="1.0")
             self.assertFalse(target.exists())
 
 

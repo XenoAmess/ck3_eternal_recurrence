@@ -481,7 +481,8 @@ def write_profile_settings(settings_path: Path, base: str, gui_scale: str | None
 
 def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
                               source_snapshot: Path, expected_source_sha256: str,
-                              output_dir: Path, *, requested_scale: str) -> dict:
+                              output_dir: Path, *, expected_gui_block_sha256: str,
+                              requested_scale: str) -> dict:
     """Prepare one fresh profile from vanilla bytes plus an exact UI-saved GUI block.
 
     This candidate is deliberately not wired to the capture CLI.  An actual
@@ -496,6 +497,8 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
         "schema": "war-film-ui-saved-gui-block-import/v1", "at": utc(),
         "source_snapshot_path": str(source_snapshot.absolute()),
         "target_settings_path": str(settings_path.absolute()),
+        "expected_source_sha256": expected_source_sha256,
+        "expected_gui_block_sha256": expected_gui_block_sha256,
         "requested_scale": requested_scale, "native_ui_serialized_scale": None,
         "source_snapshot": None, "source_gui_block": None,
         "vanilla_non_gui_template": None, "staging_settings": None,
@@ -513,6 +516,8 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
                 "UI GUI import needs the explicit 1.0 capture request")
         require(re.fullmatch(r"[0-9A-Fa-f]{64}", expected_source_sha256) is not None,
                 "UI snapshot needs an explicit SHA-256")
+        require(re.fullmatch(r"[0-9A-Fa-f]{64}", expected_gui_block_sha256) is not None,
+                "UI GUI block needs an independent explicit SHA-256")
         require(settings_path.name == "pdx_settings.txt", "Target must be pdx_settings.txt")
         require(settings_path.parent.is_dir(), "Fresh profile directory is missing")
         require(not settings_path.exists() and not settings_path.is_symlink(),
@@ -548,6 +553,9 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
                 "UI snapshot has missing, ambiguous, extra-key or unreviewed GUI syntax")
         block = blocks[0].group()
         row["native_ui_serialized_scale"] = "1"
+        block_sha = hashlib.sha256(block).hexdigest().upper()
+        require(block_sha == expected_gui_block_sha256.upper(),
+                "UI GUI block SHA-256 differs from independently frozen expectation")
         non_gui_source = source[:blocks[0].start()] + source[blocks[0].end():]
         require(re.search(rb'(?m)^"[A-Za-z_][A-Za-z0-9_]*"[ \t]*=[ \t]*\{',
                           non_gui_source) is not None,
@@ -560,7 +568,7 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
         row["source_snapshot"] = {"path": str(source_snapshot.resolve()),
                                   "bytes": len(source), "sha256": source_sha}
         row["source_gui_block"] = {"bytes": len(block),
-                                   "sha256": hashlib.sha256(block).hexdigest().upper()}
+                                   "sha256": block_sha}
         row["vanilla_non_gui_template"] = {"bytes": len(template),
                                            "sha256": hashlib.sha256(template).hexdigest().upper()}
         require(source_snapshot.stat().st_mtime_ns == after.st_mtime_ns and
