@@ -86,6 +86,13 @@ def check_static() -> dict[str, object]:
             raise RuntimeError(f"selected interpreter lacks required dependency: {module}")
     if {item.name for item in SOURCE.iterdir() if item.name != "transfer-receipt.json"} != set(SOURCE_HASHES):
         raise RuntimeError("H2743 source set is no longer the exact four files")
+    for entry, help_args in ((CLI_ENTRY, ["--help"]),
+                             (CLI_ENTRY, ["native-session", "--help"]),
+                             (MCP_ENTRY, ["--help"])):
+        probe = subprocess.run([str(PYTHON), "-c", entry, *help_args], cwd=REPO,
+                               capture_output=True, text=True, encoding="utf-8", timeout=30)
+        if probe.returncode != 0 or "usage:" not in probe.stdout.lower():
+            raise RuntimeError(f"branch CLI help probe failed: {help_args}")
     return {"status": "static_bytes_verified_no_launch", "readiness_seconds": READINESS_SECONDS,
             "session_timeout_seconds": SESSION_SECONDS, "paths_sha256": {str(path): digest for path, digest in expected.items()},
             "query_step": QUERY, "gameplay_action_submitted": False}
