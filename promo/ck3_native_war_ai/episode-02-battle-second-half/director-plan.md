@@ -1,6 +1,6 @@
 # 《战斗后半笔账》导演案草稿
 
-2026-09-28 建立。本篇紧接墨西拿同场计算版 R7F；正式集数仍待系列编号统一。目标片长约 28–32 分钟，以已取得的原版证据和实际镜头节奏为准，不为凑时长加入未证分支。本文件是拍摄意图，不代表镜头已录制、媒体已审阅或成片已验。
+2026-09-28 建立。本篇紧接墨西拿同场计算版 R7F；正式集数仍待系列编号统一。初稿剪辑预算约 28–32 分钟，以已取得的原版证据和实际镜头节奏为准，不为凑时长加入未证分支。[旁白样片时长审计](narration-duration-audit-20260928.md)估计完整配音约 22–24 分钟；若补录镜头不足以支撑 29:50 的占位时码，自然剪辑可能落在约 25–28 分钟，正式时长须据全章音频与实拍 clean spans 确定。本文件是拍摄意图，不代表镜头已录制、媒体已审阅或成片已验。
 
 ## 本期回答的问题
 
@@ -24,4 +24,4 @@
 - 用户提供的 `Quiet Courtly Tension.wav` 是唯一主题音乐；棕金字幕/计算卡沿用第 0–1 集，原版游戏 UI 保持原色。旁白 0 dB、音乐默认固定 -17 dB，不做随旁白变化的 ducking；本片混音仍须单独审听。
 - 受管 CK3 录制须先领 `ck3-screen:acquired`，取得当次新鲜 Steam 离线画面，使用独立 run/workdir，保全原始录像、请求/响应、失败 attempt 与清场证据。旧外置 recorder 的 raw/可见性拼接尚未形成 `xar-promo` CK3 adapter 合格的 capture bundle；正式镜头需补齐 report、timeline、evidence index、ordered marks 和 clean gates。R0271 当前是 Robert 正式续跑的高优先级阻塞，本片实机录制须与其屏幕窗口协调。`xar-promo` 的机器 audit/review 不能代替人工 1× 全片审阅与签核。
 
-具体镜头及是否已有可用画面见 [shot-list.md](shot-list.md)。[旁白初稿](narration-script-draft.md)按 29:50 的剪辑预算分段，实际 TTS 时长及新回放数字尚待验证；[六章项目配置与无启动预检](project/README.md)记录新 run 的入口。[085 增援和 024 战分计算卡](cards/README.md)已可从原始回执重建，卡片不能替代缺失的同身份原速游戏镜头。
+具体镜头及是否已有可用画面见 [shot-list.md](shot-list.md)。[旁白初稿](narration-script-draft.md)按 29:50 的剪辑预算分段；四段 TTS 样片与[时长审计](narration-duration-audit-20260928.md)已取得，完整六章音频和新回放数字尚待验证。[六章项目配置与无启动预检](project/README.md)记录新 run 的入口。[085 增援和 024 战分计算卡](cards/README.md)已可从原始回执重建，卡片不能替代缺失的同身份原速游戏镜头。
