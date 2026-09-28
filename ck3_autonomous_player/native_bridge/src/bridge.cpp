@@ -10151,6 +10151,7 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
                    && step != kMarriageCandidateAllianceProjectionStepV1
                    && step != kCurrentFirstHeirRelationshipStepV1
+                   && step != kPlayerChildMarriageSubjectStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
                    && step != kObservedFirstHeirMarriageSubmitStepV1
