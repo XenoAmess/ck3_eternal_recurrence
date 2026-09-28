@@ -436,6 +436,14 @@ def active_defensive_war_continuation_proposal(
     if (gold != cash["immediate_war_action_cost_raw"]
             or reserve != cash["joint_gold_reserve_raw"]):
         raise ValueError("defensive-war proposal cash differs from war resource")
+    from .m5_war_cash_binding_candidate import require_structural_action_quote_binding_v1
+
+    quote = observation.get("immediate_action_quote")
+    binding = require_structural_action_quote_binding_v1(
+        plan=plan, quote=quote, frame=frame, war_id=war_id,
+    )
+    if binding["quoted_cost_raw"] != gold:
+        raise ValueError("defensive-war action quote differs from immediate cash")
     return _proposal(
         frame=frame, candidate_id=f"war:continue:defender:{war_id}",
         domain="war", source_policy=str(plan["policy"]),
@@ -453,6 +461,7 @@ def active_defensive_war_continuation_proposal(
             "phase": plan.get("phase"), "selected_step": plan["selected_step"],
             "active_war_slot_already_occupied": True,
             "war_cash_resource": cash,
+            "immediate_action_quote_binding": binding,
         },
         war_operation="active_defensive_continuation",
     )
@@ -619,7 +628,15 @@ def select_observed_m5_opportunity(
         seen.add(candidate_id)
         claims = {key: set(proposal[key]) for key in _CLAIM_FIELDS}
         reason = "eligible"
-        reserve = max(gold_reserve_raw, proposal["minimum_gold_reserve_raw"])
+        # During an active war, the global reserve contains future war cash.
+        # A non-war proposal's own floor must still remain after that war cash
+        # is paid.  Only the war proposal's floor may overlap its global war
+        # reserve; the overlap is checked by the war cash receipt upstream.
+        reserve = (
+            max(gold_reserve_raw, proposal["minimum_gold_reserve_raw"])
+            if not wars or proposal["domain"] == "war"
+            else gold_reserve_raw + proposal["minimum_gold_reserve_raw"]
+        )
         if proposal["gold_cost_raw"] + reserved_gold + reserve > gold["raw"]:
             reason = "shared_gold_budget"
         elif claims["army_ids"] - usable_armies:

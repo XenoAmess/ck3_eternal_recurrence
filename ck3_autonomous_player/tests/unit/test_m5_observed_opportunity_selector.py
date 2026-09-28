@@ -158,6 +158,10 @@ def _defensive_plan(*, selected_step: str = "query-war-termination-options-16777
         "policy": "one-life-turn-v1",
         "phase": "native_war_termination_query",
         "selected_step": selected_step,
+        "priced_command": {
+            "kind": "read_only_query", "war_id": 16777231,
+            "query_name": "war_termination_options",
+        },
         "war_id": 16777231,
         "active_wars": [{
             "war_id": 16777231,
@@ -195,6 +199,16 @@ def _continuation_observation(**updates: object) -> dict[str, object]:
         "incremental_gold_cost_raw": 0,
         "minimum_gold_reserve_raw": 5_000_000,
         "war_cash_resource": cash,
+        "immediate_action_quote": {
+            "source_frame": dict(_FRAME), "war_id": 16777231,
+            "selected_step": "query-war-termination-options-16777231",
+            "priced_command": {
+                "kind": "read_only_query", "war_id": 16777231,
+                "query_name": "war_termination_options",
+            },
+            "quoted_cost_raw": 0, "scale": 100_000,
+            "native_quote_id": "synthetic-read-only-query-fixture",
+        },
     }
     value.update(updates)
     return value
@@ -315,6 +329,35 @@ class M5ObservedOpportunitySelectorTests(unittest.TestCase):
         self.assertEqual(result["selected_candidate_id"],
                          "diplomacy:faction-gift:801:41003")
 
+    def test_wartime_building_floor_survives_separate_war_reserve(self) -> None:
+        building = _construction()
+        building["gold_cost_raw"] = 8_000_000
+        building["minimum_gold_reserve_raw"] = 2_000_000
+        war_snapshot = _defensive_snapshot()
+        war_snapshot["played_character_gold"]["raw"] = 10_000_000
+        blocked = select_observed_m5_opportunity(
+            snapshot=war_snapshot, proposals=[building],
+            commitments=_commitments(), gold_reserve_raw=1_500_000,
+            max_active_wars=1,
+        )
+        self.assertEqual(blocked["status"], "wait")
+        self.assertEqual(blocked["evaluated"][0]["reason"], "shared_gold_budget")
+        # The same two floors fit when both can survive the purchase.
+        war_snapshot["played_character_gold"]["raw"] = 12_000_000
+        allowed = select_observed_m5_opportunity(
+            snapshot=war_snapshot, proposals=[building],
+            commitments=_commitments(), gold_reserve_raw=1_500_000,
+            max_active_wars=1,
+        )
+        self.assertEqual(allowed["selected_candidate_id"], "building:501:701:1")
+        # The existing peacetime max policy remains a separate contract.
+        peace = select_observed_m5_opportunity(
+            snapshot=_snapshot(gold_raw=10_000_000), proposals=[building],
+            commitments=_commitments(), gold_reserve_raw=1_500_000,
+            max_active_wars=1,
+        )
+        self.assertEqual(peace["selected_candidate_id"], "building:501:701:1")
+
     def test_war_and_marriage_require_missing_material_observations(self) -> None:
         base = _gift()
         war = copy.deepcopy(base)
@@ -375,6 +418,15 @@ class M5ObservedOpportunitySelectorTests(unittest.TestCase):
         observation = _continuation_observation()
         observation["war_cash_resource"]["observed_treasury_raw"] += 1
         with self.assertRaisesRegex(ValueError, "treasury differs"):
+            active_defensive_war_continuation_proposal(
+                frame=_FRAME, snapshot=_defensive_snapshot(),
+                plan=_defensive_plan(), observation=observation,
+            )
+
+    def test_defensive_continuation_rejects_other_step_quote_at_same_price(self) -> None:
+        observation = _continuation_observation()
+        observation["immediate_action_quote"]["selected_step"] = "query-other-war-step"
+        with self.assertRaisesRegex(ValueError, "quote changed frame, WarID or selected command"):
             active_defensive_war_continuation_proposal(
                 frame=_FRAME, snapshot=_defensive_snapshot(),
                 plan=_defensive_plan(), observation=observation,

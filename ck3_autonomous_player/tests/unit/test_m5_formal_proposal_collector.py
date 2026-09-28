@@ -78,6 +78,10 @@ def _war_source() -> dict[str, object]:
             "policy": "one-life-turn-v1",
             "phase": "native_war_termination_query",
             "selected_step": "query-war-termination-options-16777231",
+            "priced_command": {
+                "kind": "read_only_query", "war_id": 16777231,
+                "query_name": "war_termination_options",
+            },
             "war_id": 16777231,
             "active_wars": [{
                 "war_id": 16777231,
@@ -98,6 +102,16 @@ def _war_source() -> dict[str, object]:
             "incremental_gold_cost_raw": 0,
             "minimum_gold_reserve_raw": 5_000_000,
             "war_cash_resource": _war_cash(),
+            "immediate_action_quote": {
+                "source_frame": dict(_FRAME), "war_id": 16777231,
+                "selected_step": "query-war-termination-options-16777231",
+                "priced_command": {
+                    "kind": "read_only_query", "war_id": 16777231,
+                    "query_name": "war_termination_options",
+                },
+                "quoted_cost_raw": 0, "scale": 100_000,
+                "native_quote_id": "synthetic-read-only-query-fixture",
+            },
         },
     }
 
@@ -492,6 +506,13 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         sources = _sources(domains={"building": _building_source()})
         sources["war_cash_resource"]["observed_treasury_raw"] += 1
         with self.assertRaisesRegex(ValueError, "treasury differs"):
+            collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
+
+    def test_war_quote_cannot_be_reused_for_another_step_at_same_price(self) -> None:
+        sources = _sources()
+        quote = sources["domains"]["war"]["observation"]["immediate_action_quote"]
+        quote["selected_step"] = "query-different-war-step"
+        with self.assertRaisesRegex(ValueError, "quote changed frame, WarID or selected command"):
             collect_m5_formal_proposals(snapshot=_snapshot(), sources=sources)
 
     def test_pending_war_cash_must_enter_existing_commitments_once(self) -> None:

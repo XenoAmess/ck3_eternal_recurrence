@@ -135,7 +135,11 @@ def select_m5_assessed_candidate(
         reason = "eligible"
         if net <= 0:
             reason = "nonpositive_net_value"
-        elif gold_claim + reserved_gold + max(gold_reserve_raw, minimum_reserve) > gold["raw"]:
+        elif gold_claim + reserved_gold + (
+            gold_reserve_raw + minimum_reserve
+            if wars and domain != "war"
+            else max(gold_reserve_raw, minimum_reserve)
+        ) > gold["raw"]:
             reason = "shared_gold_budget"
         elif supply_margin < 0:
             reason = "projected_supply_deficit"

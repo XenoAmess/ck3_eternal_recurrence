@@ -4,7 +4,7 @@
 
 ## 即时费用必须绑定被选择的动作
 
-`active_defensive_war_continuation_proposal` 要求 `plan.selected_step`，但目前只比较 `observation.incremental_gold_cost_raw` 与战争现金收据的即时金额，然后把 step 作为另一份 evidence 保存（`ck3_autonomous_player/src/xar_autoplayer/m5_observed_opportunity_selector.py:341-365,428-456`）。收据中的每项金额只核 `{raw, scale, source, source_frame, war_id}`；`source` 可以是任意非空字符串（`m5_war_cash_resource_v1.py:24-77,124-184`）。因此**同帧改选另一条动作时，当前 schema 没有阻止重用旧报价**。接线时应增加并核对一个结构化 `priced_action`：
+`active_defensive_war_continuation_proposal` 现在要求 `plan.selected_step`、计划中的 typed `priced_command` 与观测中的 `immediate_action_quote` 在同帧、WarID、命令参数和金额上逐项匹配；同价的另一条 step 会被拒绝。收据中的每项金额仍只核 `{raw, scale, source, source_frame, war_id}`；`source` 可以是任意非空字符串（`m5_war_cash_resource_v1.py`）。此结构门**不证明**报价来自安全原生读口、新鲜缓存或游戏实际扣款，当前正式读数仍不存在。未来生产者须提供并核对结构化 `priced_action`：
 
 ```text
 {selected_step, parsed_command_kind, typed_arguments, army_id?,

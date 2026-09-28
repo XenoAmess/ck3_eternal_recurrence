@@ -112,6 +112,40 @@ class M5JointBudgetSelectorTests(unittest.TestCase):
         self.assertEqual(result["status"], "wait")
         self.assertTrue(all(row["reason"] == "existing_commitment_conflict" for row in result["evaluated"]))
 
+    def test_active_war_keeps_independent_building_floor_after_war_reserve(self) -> None:
+        intake = _intake()
+        rows = _assessments()
+        candidate = intake["candidates"][0]
+        assessment = rows[0]
+        candidate["domain"] = "building"
+        assessment["gold_raw"] = 7_000_000
+        candidate["observed_proposal"] = {
+            "candidate_id": candidate["candidate_id"], "domain": "building",
+            "domain_policy_ready": True,
+            "frame": {key: intake.get(key) for key in (
+                "played_character_id", "native_revision", "date_raw",
+                "snapshot_id", "revision", "episode_run_id",
+            )},
+            "gold_cost_raw": assessment["gold_raw"],
+            "minimum_gold_reserve_raw": 2_000_000,
+            "war_slot_claim": 0,
+            "army_ids": assessment["army_ids"],
+            "ally_character_ids": assessment["ally_character_ids"],
+            "character_ids": assessment["character_ids"],
+            "commitment_keys": assessment["commitment_keys"],
+        }
+        snapshot = _snapshot(gold_raw=10_000_000, active_wars=[{"war_id": 22}])
+        wartime = _select(
+            intake=intake, snapshot=snapshot, assessments=rows,
+            gold_reserve_raw=1_000_000,
+        )
+        self.assertEqual(wartime["evaluated"][0]["reason"], "shared_gold_budget")
+        peacetime = _select(
+            intake=intake, snapshot=_snapshot(gold_raw=10_000_000),
+            assessments=rows, gold_reserve_raw=1_000_000,
+        )
+        self.assertEqual(peacetime["evaluated"][0]["reason"], "eligible")
+
     def test_ally_and_long_term_claims_are_exclusive(self) -> None:
         rows = _assessments()
         rows[-1]["ally_character_ids"] = [40010]
