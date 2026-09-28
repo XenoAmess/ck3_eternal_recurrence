@@ -28,6 +28,7 @@ MARTIAL_LIFESTYLE = "martial_lifestyle"
 PERK_TARGETS = frozenset({
     "cutting_corners_perk", "professional_workforce_perk", "centralization_perk",
     "tax_man_perk",
+    "serve_the_crown_perk",
 })
 
 

@@ -38,6 +38,17 @@
     "live_status": "static_candidate_only; R0187 confirms parent owned and one unspent point, not centralization final legality or action",
     "public_advertised": false
   },
+  "martial_authority_first_policy_target": {
+    "stable_key": "serve_the_crown_perk",
+    "lifestyle_key": "martial_lifestyle",
+    "exact_definition": "common/lifestyle_perks/00_martial_2_authority_tree_perks.txt:1-41",
+    "exact_definition_sha256": "738E9097253F25CFF7F8473832D2E2374815A75139EA8B442F855A33BCFA6E28",
+    "value": "landed non-adventurer monthly_county_control_growth_add=0.3 and dread_baseline_add=15",
+    "selection": "only when LIFE2 current lifestyle is martial; use its own target-lifestyle pointer, points, owned-state callback, two same-frame native final verdicts, and existing private typed submit",
+    "scope": "one named policy target, not martial perk enumeration",
+    "live_status": "source/static candidate only; R757 state-only read had one point but no final legality or action; current Robert H3388 has zero points",
+    "public_advertised": false
+  },
   "stock_final_legality": {
     "window_wrapper_rva": "0x132D640",
     "window_wrapper_region_length": "0xBA",

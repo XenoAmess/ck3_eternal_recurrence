@@ -88,6 +88,8 @@ int main() {
     Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
             ck3::kStockPerkLegalityTargetV1);
     Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+                ck3::kMartialServeTheCrownPerkV1));
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 ck3::kStockPerkLegalityFollowupTargetV1) &&
             ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 ck3::kStockPerkLegalityNextTargetV1) &&
@@ -200,6 +202,18 @@ int main() {
             ck3::PlayerLifestyleWindowStableKeyViewV1(
                 out->candidates.perks[0].key) ==
                 ck3::kStockPerkLegalityCollectTaxesTargetV1);
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        "martial_authority_focus", state->state.current_focus_key));
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        ck3::kMartialPerkLifestyleV1,
+        state->state.current_lifestyle_key));
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
+            ck3::kMartialServeTheCrownPerkV1);
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        "stewardship_wealth_focus", state->state.current_focus_key));
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        ck3::kStockPerkLegalityLifestyleV1,
+        state->state.current_lifestyle_key));
     ++candidates->public_revision;
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(
                 candidates->public_revision, action_pump) !=
@@ -289,7 +303,7 @@ int main() {
     Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
                 *state, stock, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::frame_mismatch);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 17/17 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 18/18 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

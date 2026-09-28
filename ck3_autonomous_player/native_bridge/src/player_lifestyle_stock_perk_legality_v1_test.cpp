@@ -65,15 +65,19 @@ struct Fixture {
   std::uintptr_t expected_definition = 0;
   static Fixture *active;
 
-  void Init(bool diplomacy_target = false) {
+  void Init(bool diplomacy_target = false, bool martial_target = false) {
     const std::string_view target = diplomacy_target
                                         ? kDiplomacyThoughtfulPerkV1
+                                        : martial_target
+                                              ? kMartialServeTheCrownPerkV1
                                         : kStockPerkLegalityTargetV1;
     constexpr std::string_view followup = "professional_workforce_perk";
     constexpr std::string_view next = "centralization_perk";
     constexpr std::string_view tax_man = "tax_man_perk";
     const std::string_view lifestyle = diplomacy_target
                                            ? "diplomacy_lifestyle"
+                                           : martial_target
+                                                 ? kMartialPerkLifestyleV1
                                            : kStockPerkLegalityLifestyleV1;
     std::memcpy(target_key_text.data(), target.data(), target.size());
     std::memcpy(followup_key_text.data(), followup.data(), followup.size());
@@ -233,7 +237,8 @@ struct Fixture {
     if ((target_key != kStockPerkLegalityFollowupTargetV1 &&
          target_key != kStockPerkLegalityNextTargetV1 &&
          target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
-         target_key != kDiplomacyThoughtfulPerkV1) ||
+         target_key != kDiplomacyThoughtfulPerkV1 &&
+         target_key != kMartialServeTheCrownPerkV1) ||
         !ReadPlayer(context, frame, target_lifestyle, output)) {
       return false;
     }
@@ -288,7 +293,8 @@ struct Fixture {
     if (target_key != kStockPerkLegalityTargetV1 && bind_followup) {
       access.read_target_player_state = &Fixture::ReadTargetPlayer;
       expected_definition =
-          target_key == kDiplomacyThoughtfulPerkV1
+          target_key == kDiplomacyThoughtfulPerkV1 ||
+                  target_key == kMartialServeTheCrownPerkV1
               ? database_rows[0]
               : target_key == kStockPerkLegalityCollectTaxesTargetV1
               ? database_rows[3]
@@ -356,6 +362,33 @@ void TestDiplomacyPerkUsesTargetStateAndFinalValidator() {
   Require(missing.Run(true, kDiplomacyThoughtfulPerkV1, false).status ==
               Status::unavailable_binding,
           "alternative target cannot reuse stewardship callback");
+}
+
+void TestMartialAuthorityFirstPerkUsesExactFinalValidator() {
+  Fixture f{};
+  f.Init(false, true);
+  const auto result = f.Run(true, kMartialServeTheCrownPerkV1);
+  Require(result.status == Status::observed_native_legal &&
+              result.validator_invoked_twice && f.validator_calls == 2 &&
+              f.capture_calls == 3 && f.command_fields_valid &&
+              result.target_definition == f.database_rows[0] &&
+              result.observed_unspent_points == 1 &&
+              std::string_view(result.lifestyle_key.bytes.data(),
+                               result.lifestyle_key.size) ==
+                  kMartialPerkLifestyleV1,
+          "martial authority perk needs its own lifestyle and final verdict");
+  Fixture denied{};
+  denied.Init(false, true);
+  denied.native_validator_result = false;
+  denied.player_state.unspent_perk_points = 0;
+  Require(denied.Run(true, kMartialServeTheCrownPerkV1).status ==
+              Status::observed_native_illegal,
+          "zero points and native false cannot become an action");
+  Fixture missing{};
+  missing.Init(false, true);
+  Require(missing.Run(true, kMartialServeTheCrownPerkV1, false).status ==
+              Status::unavailable_binding,
+          "martial target needs target-specific owned-state callback");
 }
 
 void TestCentralizationUsesItsOwnFinalValidatorAndOwnedState() {
@@ -541,6 +574,7 @@ int main() {
     TestLegalWithoutWindowOrCurrentFocus();
     TestProfessionalWorkforceUsesExactFinalValidator();
     TestDiplomacyPerkUsesTargetStateAndFinalValidator();
+    TestMartialAuthorityFirstPerkUsesExactFinalValidator();
     TestCentralizationUsesItsOwnFinalValidatorAndOwnedState();
     TestTaxManUsesItsOwnFinalValidatorAndOwnedState();
     TestProfessionalWorkforceDenialsRemainTyped();
@@ -550,7 +584,7 @@ int main() {
     TestBoundedDatabaseWithoutCapacityGuess();
     TestFrameDriftAndManualReservationBoundary();
     TestProductionBinder();
-    std::cout << "stock perk legality private fixture: 12/12 green\n";
+    std::cout << "stock perk legality private fixture: 13/13 green\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock perk legality private fixture RED: " << error.what()

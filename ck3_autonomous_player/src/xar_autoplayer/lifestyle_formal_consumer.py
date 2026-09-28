@@ -251,7 +251,7 @@ def consume_lifestyle_private_query(
                 "lifestyle_action": dict(action),
                 "lifestyle_query": dict(query),
                 "lifestyle_decision": recommendation,
-                "reason": "one native-final-legal stewardship construction perk",
+                "reason": "one native-final-legal lifestyle perk",
             }
         if (
             isinstance(action, Mapping)

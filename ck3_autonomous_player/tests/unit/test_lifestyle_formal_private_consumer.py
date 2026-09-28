@@ -1268,6 +1268,34 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         self.assertTrue(applied["post_target_perk_owned"])
         self.assertIsNone(unresolved_lifestyle_perk_action(driver.frame, driver.history))
 
+    def test_martial_authority_one_point_uses_private_typed_perk_route(self) -> None:
+        driver = _Driver()
+        query = query_player_lifestyle_private_v1(driver, expected_revision=3)
+        self.assertEqual(query["status"], "available")
+        life = query["snapshot"]
+        life["current_focus"] = {
+            "presence": "present", "key": "martial_authority_focus",
+            "lifestyle_key": "martial_lifestyle",
+        }
+        life["current_lifestyle_progress"]["lifestyle_key"] = "martial_lifestyle"
+        life["legal_perk_candidates"]["items"] = [{
+            "key": "serve_the_crown_perk", "lifestyle_key": "martial_lifestyle",
+        }]
+        plan = consume_lifestyle_private_query(
+            {"selected_step": "life-advance", "phase": "peacetime"},
+            scope=same_frame_feudal_peace_scope(driver.frame, _scope_root()),
+            query=query,
+        )
+        self.assertEqual(plan["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(plan["lifestyle_action"]["target_key"],
+                         "serve_the_crown_perk")
+        pending = submit_player_lifestyle_perk_private_v1(
+            driver, query=query, action=plan["lifestyle_action"],
+            expected_revision=3,
+        )
+        self.assertEqual(pending["status"], "submitted_verification_pending")
+        self.assertEqual(pending["target_key"], "serve_the_crown_perk")
+
     def test_missing_native_window_is_red_observation_not_legal_empty(self) -> None:
         driver = _Driver()
         driver.state.fail_query = True

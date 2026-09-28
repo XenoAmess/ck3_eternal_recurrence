@@ -53,7 +53,8 @@ inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
   return target == kStockPerkLegalityTargetV1 ||
          target == kStockPerkLegalityFollowupTargetV1 ||
          target == kStockPerkLegalityNextTargetV1 ||
-         target == kStockPerkLegalityCollectTaxesTargetV1;
+         target == kStockPerkLegalityCollectTaxesTargetV1 ||
+         target == kMartialServeTheCrownPerkV1;
 }
 
 // The domain parent chain is cutting_corners -> professional_workforce ->
@@ -67,6 +68,13 @@ inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
       snapshot.state.owned_perk_count >
           game::kPlayerLifestyleWindowMaximumPerksV1) {
     return {};
+  }
+  if (snapshot.state.current_focus_presence ==
+          game::PlayerLifestyleFocusPresenceV1::present &&
+      PlayerLifestyleStableKeyViewV1(
+          snapshot.state.current_lifestyle_key) ==
+          kMartialPerkLifestyleV1) {
+    return kMartialServeTheCrownPerkV1;
   }
   bool cutting_corners_owned = false;
   bool professional_workforce_owned = false;
