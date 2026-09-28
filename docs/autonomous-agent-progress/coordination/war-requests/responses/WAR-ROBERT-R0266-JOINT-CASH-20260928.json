@@ -68,7 +68,7 @@
       "zero_pending_war_cash_proven": false,
       "continuity_across_driver_restart_proven": false
     },
-    "immediate_action_fee_status": "No next war action or native Q100000 fee is selected by the H2825 observation turn; the M5 war adapter requires a separately sourced incremental_gold_cost_raw and does not calculate it.",
+    "immediate_action_fee_status": "No next war action or native Q100000 fee is selected by the H2825 observation turn. M5 selector currently checks only numeric incremental_gold_cost_raw == immediate_war_action_cost_raw; its amount object lacks selected_step, parameters, target, route and quote-snapshot binding. A future consumer must prove the native quote belongs to the exact selected action. MoveArmy preview/ACK lacks a gold quote and sea/embark fee classification, so missing expense cannot be filled as zero.",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "getter_name": "MilitaryView.GetAllRaisedGoldMilitaryExpenses",
     "getter_rva": "0x11F7D90",

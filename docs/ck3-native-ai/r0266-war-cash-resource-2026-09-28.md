@@ -76,7 +76,7 @@ R0265 正式报告 `identity.bridge_injector` 给出同源 injector SHA-256 `521
 全项齐备时，三种现金用途分别进入**现有** M5 资源合同：
 
 1. `existing_shared_gold_commitment_raw = pending_war_cash_raw`，计入 `existing_commitments.gold_raw` 一次；先前其他领域的承诺仍应叠加。
-2. `immediate_war_action_cost_raw` 与战争提案 `gold_cost_raw` 相同，仅在选择该战争动作时由 M5 预留。
+2. `immediate_war_action_cost_raw` 与战争提案 `gold_cost_raw` 相同，仅在选择该战争动作时由 M5 预留。**金额相等不足以证明报价属于所选动作**：当前 `m5_observed_opportunity_selector.py:428-438` 只比数值，现金收据的单笔对象也仅有 `{raw,scale,source,source_frame,war_id}`，没有把报价绑定到 `plan.selected_step`、动作参数、军队、目标、路线及报价快照。后续消费门必须验证结构化动作身份和报价的同帧一致性，防止复用同一 WarID 中另一动作的价格。原生 MoveArmy 路线预览和动作 ACK 未给出金币报价或海路/上船费用分类，不能因缺字段而把即时费写成 0。
 3. `joint_gold_reserve_raw = future_war_cost_upper_raw + future_risk_budget_raw + policy_minimum_gold_reserve_raw`，作为所有候选共享的 `gold_reserve_raw` 下界；即使战争动作不是本次候选，建造也不能挪用这笔保留金。
 
 `active_defensive_war_continuation_proposal` 核对战争提案的费用与收据相同，并将收据放入提案证据。`collect_m5_formal_proposals` 在有一个现役战争时核对收据、既有承诺与共享保留额；缺失、不完整、跨帧、跨 WarID 或预算遗漏都会拒绝这次联合比较。现有 `M5FrameDispatcher` 仍负责单帧唯一分析预留。该预留只存在于这一帧的 dispatcher 实例；状态改变时需创建新实例、重新观察和预留，不能沿用旧帧。这里没有第二个建造 consumer，也没有开启 `COMBAT_ENTRY_EU_ACTIVATION_ENABLED`。多个同时进行的战争尚无合并合同，明确拒绝，避免只为其中一场战争保留现金。
