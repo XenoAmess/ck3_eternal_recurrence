@@ -185,7 +185,10 @@ def main() -> None:
         argv = [ffmpeg, "-hide_banner", "-loglevel", "info", "-nostdin", "-n",
                 "-threads", "1", "-filter_threads", "1", "-ss", str(second),
                 "-copyts", "-i", str(raw), "-map", "0:v:0", "-an",
-                "-vf", "showinfo", "-frames:v", "1", "-compression_level", "1",
+                # FFmpeg may decode one extra frame before -frames:v stops the
+                # output. Select the first frame before showinfo so its log
+                # names exactly the frame written to the PNG.
+                "-vf", r"select=eq(n\,0),showinfo", "-frames:v", "1", "-compression_level", "1",
                 str(still)]
         write_new_json(step_intent_path, {
             "schema": "xar.war-promo.e2-05-sparse-seek-intent/v1",

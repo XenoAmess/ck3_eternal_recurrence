@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -61,6 +63,33 @@ def patched_fixture_identity(argv: list[str]):
 
 
 class SparseSamplerSafetyTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"),
+                         "FFmpeg tools are unavailable")
+    def test_real_ffmpeg_select_logs_only_written_first_frame(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "three-frames.mkv"
+            still = root / "first-frame.png"
+            subprocess.run([shutil.which("ffmpeg"), "-hide_banner", "-loglevel", "error",
+                            "-f", "lavfi", "-i", "testsrc=size=32x32:rate=10:duration=0.3",
+                            "-frames:v", "3", "-c:v", "ffv1", str(source)],
+                           check=True, capture_output=True)
+            command = [shutil.which("ffmpeg"), "-hide_banner", "-loglevel", "info",
+                       "-nostdin", "-n", "-threads", "1", "-filter_threads", "1",
+                       "-ss", "0", "-copyts", "-i", str(source), "-map", "0:v:0",
+                       "-an", "-vf", r"select=eq(n\,0),showinfo", "-frames:v", "1",
+                       "-compression_level", "1", str(still)]
+            completed = subprocess.run(command, check=True, capture_output=True)
+            self.assertEqual(sampler.unique_showinfo_pts(completed.stderr), 0)
+            self.assertEqual(sampler.png_dimensions(still), (32, 32))
+            probe = subprocess.run([shutil.which("ffprobe"), "-v", "error",
+                                    "-select_streams", "v:0", "-show_frames",
+                                    "-show_entries", "frame=best_effort_timestamp_time",
+                                    "-of", "json", str(source)],
+                                   check=True, capture_output=True)
+            source_first_pts = json.loads(probe.stdout)["frames"][0]["best_effort_timestamp_time"]
+            self.assertEqual(source_first_pts, "0.000000")
+
     def test_self_consistent_other_run_is_rejected_by_frozen_identity(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -102,6 +131,8 @@ class SparseSamplerSafetyTests(unittest.TestCase):
             _, output, argv = make_tiny_fixture(root)
 
             def failed_ffmpeg(command, *, stdout, stderr, check):
+                self.assertEqual(command[command.index("-vf") + 1],
+                                 r"select=eq(n\,0),showinfo")
                 stdout.write(b"stdout-partial\x00")
                 stderr.write(b"stderr-failure\x00")
                 Path(command[-1]).write_bytes(b"PNG-partial")
