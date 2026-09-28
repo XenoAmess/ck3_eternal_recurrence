@@ -101,6 +101,8 @@ def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
                        *, synthetic_smoke: bool) -> list[dict]:
     if synthetic_smoke and inputs.get("synthetic") is not True:
         raise ValueError("Synthetic smoke requires explicitly synthetic production inputs")
+    if not synthetic_smoke and inputs.get("synthetic") is True:
+        raise ValueError("Synthetic production inputs cannot become a real technical candidate")
     dimensions = []
     for row in inputs["chapters"]:
         receipt_path = _artifact(manifest_path, run, row["reel_receipt_artifact_id"])
@@ -109,6 +111,8 @@ def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         if synthetic_smoke and receipt.get("synthetic") is not True:
             raise ValueError(f"Synthetic smoke cannot relabel a real reel: {row['id']}")
+        if not synthetic_smoke and receipt.get("synthetic") is True:
+            raise ValueError(f"Synthetic reel cannot become a real candidate: {row['id']}")
         spans = receipt.get("capture_spans", [])
         if not spans:
             raise ValueError(f"Chapter lacks source capture dimensions: {row['id']}")
@@ -118,6 +122,8 @@ def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
                 if (not span.get("attempt_id", "").startswith("SYNTHETIC-")
                         or cold.read_bytes() != b"SYNTHETIC TEST BYTES -- NOT A CK3 SAVE\n"):
                     raise ValueError("Synthetic smoke requires the generated non-game source marker")
+            elif span.get("attempt_id", "").startswith("SYNTHETIC-"):
+                raise ValueError("Synthetic capture span cannot become a real candidate")
             dimensions.append({
                 "chapter_id": row["id"], "attempt_id": span["attempt_id"],
                 "cold_load_save_artifact_id": span["cold_load_save_artifact_id"],
