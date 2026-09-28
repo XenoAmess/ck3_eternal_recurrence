@@ -413,6 +413,11 @@ def parser() -> argparse.ArgumentParser:
         help="40-hex receiver source commit for that isolated query receipt",
     )
     native_auto_run_parser.add_argument(
+        "--formal-war-query-passive-topbar", action="store_true",
+        help=("opt in to a bounded, read-only same-PID topbar diagnostic "
+              "after the formal query; never promotes a cash amount"),
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-lifestyle-formal-trial",
         action="store_true",
         help=(
@@ -972,9 +977,13 @@ def main(argv: list[str] | None = None) -> int:
                         "formal_war_query_source_commit": (
                             args.formal_war_query_source_commit
                         ),
+                        "formal_war_query_passive_topbar": (
+                            args.formal_war_query_passive_topbar
+                        ),
                     }
                     if (args.formal_war_query_receipt_dir is not None
-                        or args.formal_war_query_source_commit is not None)
+                        or args.formal_war_query_source_commit is not None
+                        or args.formal_war_query_passive_topbar)
                     else {}
                 )
                 result = native_auto_run(

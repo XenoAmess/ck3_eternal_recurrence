@@ -1868,6 +1868,16 @@ class NativeAutoRunTests(unittest.TestCase):
             )
         self.assertFalse(attempt.exists())
 
+    def test_passive_topbar_requires_formal_isolated_query(self) -> None:
+        with self.assertRaisesRegex(
+            AgentError, "passive topbar requires an isolated formal war query"
+        ):
+            native_auto_run_module.native_auto_run(
+                self.spec, turn_count=1, timeout_seconds=2.0,
+                readiness_timeout_seconds=0.25, native_bridge=self.config,
+                formal_war_query_passive_topbar=True,
+            )
+
     def test_cli_wires_formal_war_query_attempt_only_when_requested(self) -> None:
         attempt = self.spec.state_dir.parent / "cli-formal-query"
         with mock.patch.object(
@@ -1886,12 +1896,15 @@ class NativeAutoRunTests(unittest.TestCase):
                 "native-auto-run", "--turns", "1", "--cold-start-checkpoint",
                 "--formal-war-query-receipt-dir", str(attempt),
                 "--formal-war-query-source-commit", "a" * 40,
+                "--formal-war-query-passive-topbar",
             ])
         self.assertEqual(code, 1)
         self.assertEqual(run_mock.call_args.kwargs["formal_war_query_receipt_dir"],
                          attempt)
         self.assertEqual(run_mock.call_args.kwargs[
             "formal_war_query_source_commit"], "a" * 40)
+        self.assertIs(run_mock.call_args.kwargs[
+            "formal_war_query_passive_topbar"], True)
 
     def test_war_camera_follows_observed_battle_before_gameplay_turn(self) -> None:
         title_dir = self.spec.game_dir / "game" / "common" / "landed_titles"

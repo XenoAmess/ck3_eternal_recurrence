@@ -101,6 +101,9 @@ from .war_cash_formal_query_runtime_receipt_v1 import (
     build_formal_query_session_receipt,
     capture_query_process_binding,
 )
+from .war_cash_formal_query_passive_topbar_v1 import (
+    capture_formal_query_passive_topbar,
+)
 
 
 PURE_NATIVE_MODE = "native-headless"
@@ -367,6 +370,7 @@ def native_auto_run(
     | None = None,
     formal_war_query_receipt_dir: Path | None = None,
     formal_war_query_source_commit: str | None = None,
+    formal_war_query_passive_topbar: bool = False,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -478,6 +482,10 @@ def native_auto_run(
     if ((formal_war_query_receipt_dir is None)
             != (formal_war_query_source_commit is None)):
         raise AgentError("formal war query receipt dir and source commit must be paired")
+    if (type(formal_war_query_passive_topbar) is not bool
+            or (formal_war_query_passive_topbar
+                and formal_war_query_receipt_dir is None)):
+        raise AgentError("passive topbar requires an isolated formal war query")
     if formal_war_query_receipt_dir is not None:
         if (not isinstance(formal_war_query_receipt_dir, Path)
                 or turn_count != 1 or completion_contract != "bounded"
@@ -607,6 +615,7 @@ def native_auto_run(
     current_attempt: dict[str, object] | None = None
     formal_query_receipt_candidate: dict[str, object] | None = None
     formal_query_receipt_summary: dict[str, object] | None = None
+    formal_query_passive_topbar_summary: dict[str, object] | None = None
     first_failure: dict[str, object] | None = None
     readiness_timeout_diagnostics: dict[str, object] | None = None
     candidate_interception: dict[str, object] | None = None
@@ -1547,6 +1556,62 @@ def native_auto_run(
                         "formal selected war query receipt failed closed: "
                         + str(formal_query_receipt_candidate.get("missing_reasons"))
                     )
+                if formal_war_query_passive_topbar:
+                    def _post_passive_topbar_check() -> dict[str, object]:
+                        post_sample = _runner_semantic_snapshot(driver)
+                        post_process = capture_query_process_binding(
+                            pid=getattr(driver, "_session_bridge_pid", None),
+                            game_exe=spec.game_exe,
+                            native_dll=config.dll_path,
+                            injector=config.injector_path,
+                            driver_state=(spec.state_dir / "native-session" /
+                                          "driver-state.json"),
+                        )
+                        return build_formal_query_session_receipt(
+                            before=before, after=post_sample,
+                            outcome=outcome, wire=wire,
+                            process_before=formal_query_process_before or {},
+                            process_after=post_process,
+                            gameplay_submits_before=(
+                                formal_query_submits_before
+                                if formal_query_submits_before is not None else -1
+                            ),
+                            gameplay_submits_after=counts["gameplay"],
+                            source_commit=formal_war_query_source_commit,
+                            paired_prelaunch_driver_state_sha256=(
+                                formal_query_prelaunch_driver_sha256
+                            ),
+                        )
+
+                    try:
+                        (formal_query_passive_topbar_summary,
+                         post_passive_candidate) = (
+                            capture_formal_query_passive_topbar(
+                                attempt_dir=formal_war_query_receipt_dir,
+                                candidate=formal_query_receipt_candidate,
+                                postcheck=_post_passive_topbar_check,
+                            )
+                        )
+                        if not formal_query_passive_topbar_summary.get(
+                            "post_sample_formal_query_check_passed"
+                        ):
+                            formal_query_receipt_candidate = {
+                                "status": "blocked_after_passive_sample",
+                                "missing_reasons": [
+                                    "post_sample_same_pid_or_six_field_frame_unproven"
+                                ],
+                                "formal_cash_receipt_eligible": False,
+                                "immediate_war_action_cost_raw": None,
+                            }
+                    except Exception as error:
+                        # The observer never replaces the native action result.
+                        formal_query_passive_topbar_summary = {
+                            "status": "RED_observer_fault",
+                            "missing_reasons": [
+                                f"passive_topbar_observer_fault:{type(error).__name__}"
+                            ],
+                            "formal_cash_eligible": False,
+                        }
             merge_observation: dict[str, object] | None = None
             if parse_merge_armies_step(step) is not None:
                 result = outcome.get("result")
@@ -2882,6 +2947,14 @@ def native_auto_run(
                 "managed_session_pid": session_process_pid,
                 "runner_status": status,
             }
+        if formal_war_query_passive_topbar:
+            formal_receipt["passive_topbar_diagnostic"] = copy.deepcopy(
+                formal_query_passive_topbar_summary or {
+                    "status": "RED_not_reached",
+                    "missing_reasons": ["formal_query_postcheck_not_reached"],
+                    "formal_cash_eligible": False,
+                }
+            )
         formal_receipt_path = (
             formal_war_query_receipt_dir / "formal-selected-query-receipt.json"
         )
@@ -3102,6 +3175,14 @@ def native_auto_run(
         **(
             {"formal_war_query_receipt": copy.deepcopy(formal_query_receipt_summary)}
             if formal_war_query_receipt_dir is not None else {}
+        ),
+        **(
+            {"formal_war_query_passive_topbar": copy.deepcopy(
+                formal_query_passive_topbar_summary or {
+                    "status": "RED_not_reached", "formal_cash_eligible": False,
+                }
+            )}
+            if formal_war_query_passive_topbar else {}
         ),
         "initial_lifestyle_focus_gate": copy.deepcopy(opening_focus_gate),
         **(

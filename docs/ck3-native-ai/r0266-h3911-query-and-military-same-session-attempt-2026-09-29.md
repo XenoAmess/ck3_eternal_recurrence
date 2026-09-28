@@ -35,3 +35,25 @@
 - **动作与政策**：owner 侧完整 pending/committed 账本，选定 typed action、army/route/target/preview/报价同帧严格绑定；Robert 战时 liquidity floor 的发布 owner、ID/version、金额、用途、有效期。来源明确没有已发布政策；建设 200 金 floor 与 AI war chest 均不能借用。
 
 本计划预计占屏和受管清理约 35–65 分钟；只有 screen owner 释放、no-launch 与二进制静态门 GREEN、同会话诊断接点完成后才排队。任何步骤 RED 留新 attempt，不重用其部分现金读数到另一帧。
+
+# Optional passive topbar diagnostic hook
+
+The formal one-turn runner now accepts `--formal-war-query-passive-topbar`
+only together with its fresh `--formal-war-query-receipt-dir` and source
+commit. The option defaults off. After the selected termination-options
+query passes its normal after-snapshot check, and before managed cleanup, the
+runner calls the exact checked-in topbar sampler in a child Python process.
+It opens the same PID with query/read access, uses `ReadProcessMemory` only,
+and allows at most 64 KiB per pass across two bounded passes. On a reached
+attempt, the raw sampler file and `passive-topbar-diagnostic.json` use exclusive creation in that attempt
+directory; a second attempt cannot overwrite them. The diagnostic verifies
+the sampler's PID, process creation time, exact EXE disk hash, intent receipt
+hash, read budget and six-field frame after a second runner postcheck. A
+changed frame or PID invalidates the original formal query candidate.
+
+Every path remains `RED_diagnostic_only` for cash: the topbar cache may be
+stale even when two reads match, and its expense rows do not establish a
+war-only monthly debit, a selected action price, a cash settlement cadence,
+or an upper bound. Sampler errors are recorded as typed RED observations and
+do not replace the native query result. The existing five cash fields and
+horizon remain null. No H3911 live sample has been taken with this option.
