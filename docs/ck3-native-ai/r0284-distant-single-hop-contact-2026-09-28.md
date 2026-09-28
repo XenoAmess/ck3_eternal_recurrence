@@ -18,6 +18,6 @@
 
 ## 已验证与待验证
 
-本地纯 Python 聚焦测试：`test_general_battle_strategy.py` 常规 14/14、`-O` 14/14；新断言使用 `unittest` 方法，优化模式仍执行。另两项 `test_gameplay_bridge.py` 聚焦测试分别通过，覆盖既有行军每日新查询和不安全接触日拒绝盲推。测试使用本 worktree 的 `ck3_autonomous_player/src` 与主 worktree `tools/.venv` 解释器；没有 C++ 构建或游戏启动。
+本地纯 Python 聚焦测试：`test_general_battle_strategy.py` 常规 15/15、`-O` 15/15；新断言使用 `unittest` 方法，优化模式仍执行。新增源绑定回归直接读取 h928/h930/h932 的 Git 冻结摘录，验证精确路线只发起移动；把 native revision 改旧或加入另一敌军时，规划器只选择重新查询。另两项 `test_gameplay_bridge.py` 聚焦测试分别通过，覆盖既有行军每日新查询和不安全接触日拒绝盲推。测试使用本 worktree 的 `ck3_autonomous_player/src` 与主 worktree `tools/.venv` 解释器；没有 C++ 构建或游戏启动。
 
 **本机 exact-source 实机仍待执行。**官方 ordinary-seed rebind 要求 CK3 进程数为零；当前屏幕由 R0271 持有。R0284 将在其释放后用独立 profile/attempt 完成官方重绑、no-launch，再依次证明本机同帧读数、typed move/poststate、下一天 fresh full-hostile recheck；任何失败保留为新的 RED attempt，不覆盖源 run 或旧素材。

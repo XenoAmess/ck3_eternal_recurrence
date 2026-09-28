@@ -52,7 +52,7 @@
     "source_pair_and_binary_bytes_in_git": false
   },
   "checks": [
-    "test_general_battle_strategy.py: 14/14 normal and 14/14 under -O using this worktree source; focused R0284 admission and rejection assertions execute in optimized mode.",
+    "test_general_battle_strategy.py: 15/15 normal and 15/15 under -O using this worktree source; the new source-bound h928/h930/h932 regression and rejection assertions execute in optimized mode.",
     "test_gameplay_bridge.py::test_committed_route_requires_fresh_daily_horizon_even_when_sentinel_live: passed.",
     "test_gameplay_bridge.py::test_committed_route_contact_blocks_even_above_two_to_one_base_power: passed.",
     "git diff --check: passed."
