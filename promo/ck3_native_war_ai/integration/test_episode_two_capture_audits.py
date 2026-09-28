@@ -15,6 +15,7 @@ import war_ai_promo  # noqa: E402
 # Other integration tests may have imported an editable install first.
 war_ai_promo.__path__.insert(0, str(Path(__file__).resolve().parent / "src" / "war_ai_promo"))
 from war_ai_promo.episode_two_second_half import _artifact, _capture_audit_contract  # noqa: E402
+from war_ai_promo.assemble_episode_two import _stream_coverage  # noqa: E402
 
 
 class EpisodeTwoCaptureAuditTest(unittest.TestCase):
@@ -82,6 +83,15 @@ class EpisodeTwoCaptureAuditTest(unittest.TestCase):
                               sha256=hashlib.sha256(b"outside").hexdigest().upper())
         with self.assertRaisesRegex(ValueError, "escapes native run"):
             _artifact(SimpleNamespace(artifacts=[row]), run / "run-manifest.json", "outside")
+
+    def test_full_length_music_bed_cannot_hide_short_narration_stream(self):
+        probe = {"streams": [{"codec_type": "video", "duration": "60.000"},
+                             {"codec_type": "audio", "duration": "42.000"}],
+                 "format": {"duration": "60.000"}}
+        with self.assertRaisesRegex(ValueError, "audio stream does not cover"):
+            _stream_coverage(probe, 60000, "unmixed narration film")
+        probe["streams"][1]["duration"] = "59.990"
+        _stream_coverage(probe, 60000, "unmixed narration film")
 
 
 if __name__ == "__main__":

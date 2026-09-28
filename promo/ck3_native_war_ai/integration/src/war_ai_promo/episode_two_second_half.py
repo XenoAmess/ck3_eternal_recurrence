@@ -194,7 +194,7 @@ def _capture_audit_contract(clean: dict, label: dict, span: dict, reel_sha: str,
             or not math.isfinite(frame_at) or not 0 <= frame_at <= reel_duration
             or label.get("frame_sha256", "").upper() != _sha(label_frame)
             or label.get("frame_bytes") != label_frame.stat().st_size):
-        raise ValueError(f"Source label lacks same-attempt visible-frame binding: {span['attempt_id']}")
+        raise ValueError(f"Source label lacks same-attempt declared-frame binding: {span['attempt_id']}")
 
 
 def _capture_audits(run, run_path: Path, span: dict, reel_sha: str,

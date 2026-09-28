@@ -206,9 +206,11 @@ def _technical_gate(probe: dict, rows: list[dict], expected_ms: int) -> None:
     audio = [stream for stream in streams if stream["codec_type"] == "audio"]
     if (len(video) != 1 or len(audio) != 1 or video[0]["width"] != 2560
             or video[0]["height"] != 1440 or video[0]["r_frame_rate"] != "30/1"
+            or video[0]["avg_frame_rate"] != "30/1"
             or audio[0]["codec_name"] != "aac" or int(audio[0]["sample_rate"]) != 48000
             or audio[0]["channels"] != 2):
         raise ValueError("Final MP4 does not have one 2560x1440/30 video and one 48 kHz stereo AAC stream")
+    _stream_coverage(probe, expected_ms, "final MP4")
     chapters = probe.get("chapters", [])
     if len(chapters) != len(CHAPTER_IDS):
         raise ValueError("Final MP4 does not have six chapters")
@@ -222,6 +224,20 @@ def _technical_gate(probe: dict, rows: list[dict], expected_ms: int) -> None:
         cursor = stop
     if abs(float(probe["format"]["duration"]) * 1000 - expected_ms) > 150:
         raise ValueError("Final MP4 duration differs from measured chapters")
+
+
+def _stream_coverage(probe: dict, expected_ms: int, label: str) -> None:
+    """A full-length music bed must not mask a shortened video or audio stream."""
+    for kind in ("video", "audio"):
+        streams = [stream for stream in probe["streams"] if stream["codec_type"] == kind]
+        if len(streams) != 1:
+            raise ValueError(f"{label} needs exactly one {kind} stream")
+        try:
+            duration = float(streams[0]["duration"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValueError(f"{label} lacks measured {kind} stream duration") from exc
+        if not math.isfinite(duration) or abs(duration * 1000 - expected_ms) > 150:
+            raise ValueError(f"{label} {kind} stream does not cover the chapter timeline")
 
 
 def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
@@ -279,13 +295,14 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
     if len(candidates) != 1:
         raise ValueError(f"Expected one unmixed six-chapter film, got {len(candidates)}")
     unmixed = candidates[0]
-    _probe(attempt, "unmixed", unmixed, env)
+    metadata, expected_ms = _chapter_metadata(inputs["chapters"])
+    unmixed_probe = _probe(attempt, "unmixed", unmixed, env)
+    _stream_coverage(unmixed_probe, expected_ms, "unmixed narration film")
     mixed = attempt / "episode-02-theme-mixed-before-chapters.mp4"
     _command(attempt, "theme-mix", [sys.executable, "-m", "war_ai_promo.theme_mix",
              "--film", str(unmixed), "--music", str(music), "--output", str(mixed),
              "--work-directory", str(attempt / "theme-mix-work"),
              f"--music-gain-db={music_gain_db}"], env=env)
-    metadata, expected_ms = _chapter_metadata(inputs["chapters"])
     chapter_path = attempt / "chapters.ffmeta"
     with chapter_path.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(metadata)
