@@ -184,36 +184,36 @@
     }
   ],
   "current_work_package": {
-    "id": "GEN-034",
-    "completed_packages": 4,
+    "id": "NW-2026-09-26",
+    "completed_packages": 0,
     "total_packages": 4,
     "packages": [
       {
-        "id": "GEN-034-A",
-        "name": "policy-level campaign dominance certificate",
-        "status": "complete",
-        "latest_evidence": "R471-derived campaign dominance receipt AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569"
+        "id": "NW-LIFE",
+        "name": "timely lifestyle focus and perk consumption",
+        "status": "in_progress",
+        "latest_evidence": "R0186 private professional_workforce_perk submit, independent point and perk readback, next-turn receipt consumption; R0187 new-PID cold restore. R0301 first-frame Robert read had a valid existing focus and zero unspent stewardship points, so no omitted legal action was proven there. Broader timely formal consumption remains open."
       },
       {
-        "id": "GEN-034-B",
-        "name": "versioned repository strategy budget and operator override",
-        "status": "complete",
-        "latest_evidence": "raiktor_exit_budget_v1.json and GREEN offline provider receipt BB20D87233DF6C854DD668FD1641AE590DFFA3BD87CF82099A1A97EBF20C7981"
+        "id": "NW-ECON",
+        "name": "affordable construction and realized economic benefit",
+        "status": "in_progress",
+        "latest_evidence": "R0081 privately closed one construction submit, material receipt, next turn and new-PID recovery. An independent h90 derived branch started hill_farms_01 and carried the same construction across a cold restore, but completion and realized income remain unproven. R0302 Robert read showed one affordable farm_estates_01 candidate without a formal submit."
       },
       {
-        "id": "GEN-034-C",
-        "name": "same-frame white-peace comparison",
-        "status": "complete",
-        "latest_evidence": "R839 compared continue, white peace and surrender on one paused frame: continue was ineligible under complete primary-attacker terminal control, white peace was native-unavailable and surrender was the sole eligible result. It submitted surrender-war-33554473 once, verified typed raiktor_claim_cb/-100 terms, observed independent WarID and both-army disappearance, consumed the result later and saved history671; report BD798BAE...1FEE6, checkpoint 5D040C7E...7B236, driver 842CCC35...97CC7."
+        "id": "NW-FAMILY",
+        "name": "marriage and inheritance value with accepted outcomes",
+        "status": "in_progress",
+        "latest_evidence": "The first heir 38822 to candidate 38718 proposal resolved to betrothal and was cold recovered, with native alliance result not_allied. R0315 and R0316 Emma child-query attempts failed before a qualified proposal; broader child marriage and long-term value remain open."
       },
       {
-        "id": "GEN-034-D",
-        "name": "three-way recommendation, one action and postwar verification",
-        "status": "complete",
-        "latest_evidence": "R0043 compared continue, white peace and surrender on one paused frame and submitted surrender-war-16777285 exactly once. An independent successor frame verified WarID absence, gold 65753016 to 43253016, prestige 233114400 to 133114400, directional persisted truce 29829 to 35991 for 1825 days with expiry 53234616, and destruction of all 24 source-bound regiments. It saved checkpoint A89BCF2642E0136B6624AC42F76BDC2314FA01427B3EC62B64A51FBFCBDFB296, cold-restored PID 77580 to 41264, consumed the result on the next formal turn and did not replay surrender; outer report 9294D8B8D6F8B5485FB69A3B0E1C0E5AAC8F13F6D5D7FB996D3160DC890513EE, native report 2B726601160586AEEF71E4204441EDD13D50C697F6EAF6975514E68DA5AC82D6."
+        "id": "NW-JOINT",
+        "name": "single-frame resource allocation across nonwar proposals",
+        "status": "in_progress",
+        "latest_evidence": "One h90 derived frame exposed six distinct legal candidates, five marriages and one construction. The formal selector chose the first-heir betrothal, then on a changed frame chose and submitted hill_farms_01 with matching same-slot receipt and gold debit. Long-term value and war cash comparison remain incomplete; the h90 actions and dates are excluded from Robert mainline progress."
       }
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-22T00:00:00+08:00"
+  "updated_at": "2026-09-28T21:38:33+08:00"
 }

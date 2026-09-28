@@ -277,7 +277,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "97D0454DAA21E765C3F8C927CE5539B1FC0B0C91F22726C1D5517E16E08136ED"
+        "sha256": "79251A458EF6924C53AE9CB50ECF65979F8A88479CB032E2B350EA2A41ABC2D3"
       },
       "raw_footage": {
         "passed": 0,
@@ -470,33 +470,54 @@
       "G2-M1",
       "G2-M3"
     ],
+    "current_nonwar_queue": {
+      "authority_locator": "docs/autonomous-agent-progress/g2-requirements-v1.json#current_work_package",
+      "conditional_modal_override": "NW-EVENT is P0 only when a real non-religious modal blocks play",
+      "latest_robert_nonwar_result": "R0319 had zero new nonwar typed actions",
+      "parallel": [
+        "NW-JOINT"
+      ],
+      "primary_order": [
+        "NW-LIFE",
+        "NW-ECON",
+        "NW-FAMILY"
+      ],
+      "work_package_id": "NW-2026-09-26"
+    },
     "current_robert_source_pair": {
       "active_war_ids_at_last_formal_turn": [
         16777231
       ],
       "alliance_result": "not_allied",
-      "bridge_dll_sha256": "0E0B7F5621917A3B9E51E3002AD58E79EF12F7372F912F3B9EA31CEA3CE98B6C",
+      "bridge_dll_sha256": "05F810CEAD9C8E25700068E29B608C8DBB43E67B4866383F9516078ABCE6662A",
       "campaign_identity": "Robert_1066",
-      "checkpoint_save_sha256": "DB1C897F1C4C93FA3927DDC0D901B225A797678B41687A9275744F898E712C65",
-      "date_raw": 53219112,
-      "driver_state_sha256": "9FD591D32F5FD5F101AF95A1182DCBC2E7B3D9EA6D9F03200BA6BD96F84B9FE1",
-      "durable_game_days": 3116,
-      "durable_game_days_increment_from_H3388": 6,
-      "family_sidecar_sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3",
+      "checkpoint_save_locator_on_origin_machine": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3778-e695\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "checkpoint_save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+      "date_raw": 53219784,
+      "driver_state_locator_on_origin_machine": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3778-e695\\state\\native-session\\driver-state.json",
+      "driver_state_sha256": "CD0F2CE72BF55A122A6A868DE9F2C456B52575C0269758F2D45F6EB38C726868",
+      "durable_game_days": 3144,
+      "durable_game_days_increment_from_H3388": 34,
+      "family_sidecar_sha256": "3410CA2DAB0C527478284338A172FCC4A608B7CCB8AAB648BD4FBFA1E7CCEFC0",
       "first_heir_relationship": "betrothal_38822_to_38718_cold_recovered",
-      "formal_turns": "35/36 successful; turn36 war RED",
-      "history_index": 3446,
+      "formal_report_locator_on_origin_machine": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3778-e695\\run-formal-36\\formal-report.txt",
+      "formal_report_sha256": "DE3BA372C21A2D542108C320E4A71AA3B377154721AA602D7FE2F000E6BB177D",
+      "formal_turns": "36/36 qualified; R0319 war route advance and move, no nonwar typed action",
+      "history_index": 3860,
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
       "new_nonwar_typed_actions": 0,
-      "next_candidate_status": "R0271_H3446_source_pair_official_prepare_rebind_no_launch_passed_war_siege_partition_RED_pending",
-      "pair_identity_sha256": "2C9A358C7AE196ACAF04ED51F1438DD4353E9A0080774A7EE5B4565A6179EA0B",
+      "next_candidate_status": "H3860 continuation candidate not yet prepared or no-launch verified",
+      "operator_receipt_locator_on_origin_machine": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3778-e695\\run-formal-36\\operator-receipt.json",
+      "operator_receipt_sha256": "7EF1F538B74B4BBD96663FE27F6BE5A24C8DB450CC18D6BF8990A496DA7802DE",
+      "pair_identity_sha256": null,
       "profile": "ordinary_campaign_succession/xar_off",
-      "round": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0271",
-      "scope": "Canonical R0271 resumed the officially paired H3388 Robert mainline with 35 successful bounded turns and a turn36 war siege participant-partition RED. The last durable turn25 checkpoint H3446/raw53219112 saved six additional mainline days; the later failed raw53219160 frame is excluded. Frozen source save, driver and family sidecar passed official family pair, rebind and no-launch in an independent recovery candidate. War 16777231 remains unresolved. No new mainline nonwar typed action or G2 milestone is claimed. R0270 and R0272 h90 derivative days are excluded. The origin-machine locator is not a portable download address.",
-      "source_commit": "7d414228c63c504c6e02904ffd905048dc834cbd",
-      "source_pair_locator_on_origin_machine": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-r0271-checkpoint-20260928\\PAIR-IDENTITY.json",
-      "source_pair_status": "frozen_source_bytes_official_family_resolved_pair_and_no_launch_passed",
+      "ransom_sidecar_sha256": "D60736FB035B6E77D9F71641AD76B2006FB975CC1187C77CC2FB0BA91BAA115F",
+      "round": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0319",
+      "scope": "R0319 officially resumed the R0317 H3778 Robert pair, qualified all 36 bounded turns and saved H3860/raw53219784: nine new durable mainline days, 3144/36524 total. The run advanced the war route and moved army 83886367 to province 2610. It made zero new nonwar typed actions. The first-heir betrothal and resolved prisoner ledger remain sidecar history; they are not new R0319 actions. The new save and driver hashes are paired in the completed operator receipt, and managed cleanup was proven. No H3860 cold restore, new candidate no-launch, hundred-year, whole-campaign, second-seed or additional G2 milestone is claimed. The origin-machine locators are not portable download addresses.",
+      "source_commit": "e695d07d12c90018681f63ddd3abe9f5199196ee",
+      "source_pair_locator_on_origin_machine": null,
+      "source_pair_status": "R0319_qualified_bounded_checkpoint_save_driver_pair; no new cold restore claimed",
       "target_game_days": 36524,
       "whole_campaign_gate": "0/1"
     },
@@ -714,7 +735,7 @@
     },
     "latest_restore_attempt_round": "R0188",
     "latest_restore_attempt_status": "official_h2127_new_pid_cold_restore_combat_v3_inputs_read_only_green",
-    "legacy_latest_fields_scope": "latest_durable_continuation and latest_paired_checkpoint retain their R0181 and R0186 historical object shapes for existing readers; current_robert_source_pair is now canonical full R0271 H3446 and its officially validated frozen source-byte authority. R0271 turn36 failed at raw53219160; only the turn25 H3446 checkpoint adds six Robert mainline days from H3388. R0270/R0272 h90 derivative days are excluded. Earlier short R0263-R0267 labels were unallocated historical attempts distinct from canonical machine/mod identities. Historical war scores remain scoped reads, not a new H3446 final score.",
+    "legacy_latest_fields_scope": "latest_durable_continuation and latest_paired_checkpoint retain their R0181 and R0186 historical object shapes for existing readers; current_robert_source_pair is canonical R0319 H3860 from a qualified 36/36 formal run. R0319 adds nine durable days over H3778 and no nonwar typed action. R0270/R0272 h90 derivative days are excluded. Earlier short R0263-R0267 labels were unallocated historical attempts distinct from canonical machine/mod identities. Historical war scores remain scoped reads, not a new H3860 final score.",
     "m4_focus_first_primitive": {
       "actor_id": 29829,
       "checkpoint_history_indices": [
@@ -2038,5 +2059,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-28T11:21:37+08:00"
+  "updated_at": "2026-09-28T21:38:33+08:00"
 }
