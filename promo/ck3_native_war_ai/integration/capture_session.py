@@ -21,6 +21,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -523,6 +524,108 @@ def require_gui_scale_disk_gate(settings_path: Path, requested_scale: str | None
             f"GUI.scale disk gate failed at {phase}; see {receipt_path}")
 
 
+def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
+                                  output_dir: Path) -> None:
+    """Restore the isolated profile after warm-up has exited, before final launch.
+
+    The warm-up's RED readback and full settings bytes remain separate evidence.
+    Only the value in the one recognized GUI.scale block may change.  The final
+    game's post-map gate still has to pass; this does not prove runtime geometry.
+    """
+    require(requested_scale == "1.0", "Only the reviewed 1.0 GUI scale is supported")
+    before_path = output_dir / "gui-settings-before-final-launch.json"
+    snapshot_path = output_dir / "gui-settings-warmup-before-reseed.pdx.txt"
+    reseed_path = output_dir / "gui-settings-warmup-reseed.json"
+    after_path = output_dir / "gui-settings-after-reseed-before-final-launch.json"
+    before = gui_scale_disk_readback(settings_path, requested_scale,
+                                     "after-warmup-before-final-launch")
+    write_new(before_path, before)
+    row = {"schema": "war-film-gui-scale-warmup-reseed/v1", "at": utc(),
+           "requested_scale": requested_scale, "before_readback": str(before_path.resolve()),
+           "before_disk_gate_passed": before["disk_gate_passed"],
+           "before_observed_scale": before["observed_scale"],
+           "source_snapshot": None, "replacement_performed": False,
+           "atomic_same_directory_replace": False, "after_readback": str(after_path.resolve()),
+           "runtime_scale_proven": False, "visual_geometry_reviewed": False,
+           "recording_authorized_by_this_receipt": False, "status": "RED"}
+    temp_path = None
+    try:
+        require(not settings_path.is_symlink(), "GUI settings path must not be a symlink")
+        require(before["settings"] is not None, "Warm-up GUI settings identity unavailable")
+        source_stat = settings_path.stat()
+        source = settings_path.read_bytes()
+        require(source_stat.st_mtime_ns == before["settings"]["mtime_ns"] and
+                source_stat.st_size == before["settings"]["bytes"] == len(source) and
+                hashlib.sha256(source).hexdigest().upper() == before["settings"]["sha256"],
+                "Warm-up GUI settings changed after RED readback")
+        with snapshot_path.open("xb") as snapshot:
+            snapshot.write(source)
+            snapshot.flush()
+            os.fsync(snapshot.fileno())
+        row["source_snapshot"] = identity(snapshot_path)
+        require(row["source_snapshot"]["sha256"] == before["settings"]["sha256"],
+                "Warm-up settings snapshot differs from readback")
+
+        declarations = list(re.finditer(rb'(?m)^"GUI"\s*=\s*\{', source))
+        blocks = list(re.finditer(
+            rb'(?ms)^"GUI"\s*=\s*\{\s*"scale"\s*=\s*\{\s*'
+            rb'version\s*=\s*1\s*value\s*=\s*"(?P<value>[^"\r\n]+)"\s*\}\s*\}',
+            source))
+        require(len(declarations) == len(blocks) == 1,
+                "Warm-up GUI block is missing, ambiguous or not the reviewed syntax")
+        observed = blocks[0].group("value").decode("ascii")
+        require(observed == before["observed_scale"],
+                "Warm-up GUI block differs from RED readback")
+        require(observed in ("1.0", "1.3"),
+                "Warm-up GUI scale is outside the reviewed 1.0/1.3 values")
+        row["source_settings"] = {**before["settings"]}
+        if observed == "1.3":
+            target = source[:blocks[0].start("value")] + b"1.0" + source[blocks[0].end("value"):]
+            row["expected_target"] = {"bytes": len(target),
+                                      "sha256": hashlib.sha256(target).hexdigest().upper()}
+            # The native-session callback runs only after verified warm-up shutdown.
+            # Recheck its exact bytes immediately before same-directory replacement.
+            require(settings_path.stat().st_mtime_ns == source_stat.st_mtime_ns and
+                    settings_path.read_bytes() == source,
+                    "Warm-up GUI settings changed before reseed")
+            descriptor, temp_name = tempfile.mkstemp(
+                prefix=".pdx_settings.gui_reseed-", suffix=".tmp", dir=settings_path.parent)
+            temp_path = Path(temp_name)
+            with os.fdopen(descriptor, "wb") as staging:
+                staging.write(target)
+                staging.flush()
+                os.fsync(staging.fileno())
+            require(temp_path.read_bytes() == target,
+                    "GUI settings temporary bytes differ before replace")
+            require(settings_path.stat().st_mtime_ns == source_stat.st_mtime_ns and
+                    settings_path.read_bytes() == source,
+                    "Warm-up GUI settings changed while staging reseed")
+            os.replace(temp_path, settings_path)
+            temp_path = None
+            row["replacement_performed"] = True
+            row["atomic_same_directory_replace"] = True
+            require(settings_path.read_bytes() == target,
+                    "GUI settings bytes differ after atomic replace")
+        else:
+            row["expected_target"] = {"bytes": len(source),
+                                      "sha256": hashlib.sha256(source).hexdigest().upper()}
+        row["after_settings"] = {**identity(settings_path),
+                                 "mtime_ns": settings_path.stat().st_mtime_ns}
+        require(row["after_settings"]["bytes"] == row["expected_target"]["bytes"] and
+                row["after_settings"]["sha256"] == row["expected_target"]["sha256"],
+                "GUI settings target identity differs after reseed")
+        require_gui_scale_disk_gate(settings_path, requested_scale,
+                                    "after-reseed-before-final-launch", after_path)
+        row["status"] = "GREEN_DISK_ONLY"
+    except Exception as error:
+        row["error"] = repr(error)
+        raise
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
+        write_new(reseed_path, row)
+
+
 def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
     from xar_autoplayer.environment import make_spec, render_settings
     from xar_autoplayer.rules import declared_vanilla_rule_defaults, render_presets
@@ -771,10 +874,9 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                 require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()
             before_final_launch = (
-                lambda current_spec: require_gui_scale_disk_gate(
+                lambda current_spec: reseed_gui_scale_after_warmup(
                     current_spec.profile_dir / "pdx_settings.txt", args.gui_scale,
-                    "after-warmup-before-final-launch",
-                    args.output_dir / "gui-settings-before-final-launch.json")
+                    args.output_dir)
             ) if checkpoint is not None and args.gui_scale is not None else None
             session_result = native_session(
                 # Startup, map publication and post-ready pump have separate waits.

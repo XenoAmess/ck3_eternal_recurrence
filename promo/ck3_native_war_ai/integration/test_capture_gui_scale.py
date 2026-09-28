@@ -1,12 +1,15 @@
 """Pure profile-rendering checks; never launches CK3."""
 
 import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 from capture_session import (gui_scale_disk_readback, render_profile_settings,
-                             require_gui_scale_disk_gate, write_profile_settings)
+                             require_gui_scale_disk_gate,
+                             reseed_gui_scale_after_warmup, write_profile_settings)
 
 
 class CaptureGuiScaleTest(unittest.TestCase):
@@ -89,6 +92,87 @@ class CaptureGuiScaleTest(unittest.TestCase):
                         b'"GUI"={"scale"={version=1 value="1.0"}}\n'):
                 settings.write_bytes(raw)
                 self.assertFalse(gui_scale_disk_readback(settings, "1.0", "test")["disk_gate_passed"])
+
+    def test_warmup_reseed_preserves_complete_settings_except_scale_value(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "evidence"
+            output.mkdir()
+            settings = root / "pdx_settings.txt"
+            source = (b'\xef\xbb\xbf"Graphics"={\r\n\t"display_mode"={ value="fullscreen" }\r\n}\r\n'
+                      b'"GUI"={\r\n\t"scale"={\r\n\t\tversion=1\r\n'
+                      b'\t\tvalue="1.3"\r\n\t}\r\n}\r\n'
+                      b'"Audio"={\r\n\t"music"={ value="1.3" }\r\n}\r\n')
+            settings.write_bytes(source)
+            reseed_gui_scale_after_warmup(settings, "1.0", output)
+            target = source.replace(b'value="1.3"\r\n\t}', b'value="1.0"\r\n\t}', 1)
+            self.assertEqual(settings.read_bytes(), target)
+            self.assertEqual((output / "gui-settings-warmup-before-reseed.pdx.txt").read_bytes(), source)
+            before = json.loads((output / "gui-settings-before-final-launch.json").read_text())
+            receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
+            after = json.loads((output / "gui-settings-after-reseed-before-final-launch.json").read_text())
+            self.assertEqual(before["observed_scale"], "1.3")
+            self.assertFalse(before["disk_gate_passed"])
+            self.assertEqual(before["settings"]["sha256"], hashlib.sha256(source).hexdigest().upper())
+            self.assertEqual(receipt["status"], "GREEN_DISK_ONLY")
+            self.assertTrue(receipt["replacement_performed"])
+            self.assertTrue(receipt["atomic_same_directory_replace"])
+            self.assertFalse(receipt["runtime_scale_proven"])
+            self.assertFalse(receipt["recording_authorized_by_this_receipt"])
+            self.assertTrue(after["disk_gate_passed"])
+            self.assertEqual(after["settings"]["sha256"], hashlib.sha256(target).hexdigest().upper())
+
+    def test_already_1_0_is_preserved_without_replacement(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "evidence"
+            output.mkdir()
+            settings = root / "pdx_settings.txt"
+            source = b'"Graphics"={}\r\n"GUI"={\r\n"scale"={ version=1 value="1.0" }\r\n}\r\n'
+            settings.write_bytes(source)
+            reseed_gui_scale_after_warmup(settings, "1.0", output)
+            receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
+            self.assertEqual(settings.read_bytes(), source)
+            self.assertFalse(receipt["replacement_performed"])
+            self.assertEqual(receipt["status"], "GREEN_DISK_ONLY")
+
+    def test_ambiguous_or_unreviewed_gui_syntax_stays_red_and_unmodified(self) -> None:
+        variants = (
+            b'"Graphics"={}\n',
+            b'"GUI"={"scale"={version=1 value="1.3"}}\n'
+            b'"GUI"={"scale"={version=1 value="1.3"}}\n',
+            b'"GUI"={"scale"={version=1 value="0.9"}}\n',
+            b'"GUI"={"scale"={version=1 value="1.3"} "extra"=yes}\n',
+        )
+        for source in variants:
+            with self.subTest(source=source), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                output = root / "evidence"
+                output.mkdir()
+                settings = root / "pdx_settings.txt"
+                settings.write_bytes(source)
+                with self.assertRaises(Exception):
+                    reseed_gui_scale_after_warmup(settings, "1.0", output)
+                self.assertEqual(settings.read_bytes(), source)
+                receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
+                self.assertEqual(receipt["status"], "RED")
+                self.assertFalse(receipt["replacement_performed"])
+
+    def test_replace_failure_leaves_source_and_no_temp_file(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "evidence"
+            output.mkdir()
+            settings = root / "pdx_settings.txt"
+            source = b'"GUI"={"scale"={version=1 value="1.3"}}\n'
+            settings.write_bytes(source)
+            with mock.patch("capture_session.os.replace", side_effect=OSError("replace denied")):
+                with self.assertRaisesRegex(OSError, "replace denied"):
+                    reseed_gui_scale_after_warmup(settings, "1.0", output)
+            self.assertEqual(settings.read_bytes(), source)
+            self.assertEqual(list(root.glob(".pdx_settings.gui_reseed-*.tmp")), [])
+            receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
+            self.assertEqual(receipt["status"], "RED")
 
 
 if __name__ == "__main__":
