@@ -50,7 +50,7 @@ INJECTOR_SHA = "C89F1A919514A7E664AEE8FAF165B78C693ABA4EA2105289BDA2DB4BAC6A84FF
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 READINESS_SECONDS = 1800
 SESSION_SECONDS = 3000
-FRAME_SECONDS = 300
+FRAME_SECONDS = 1800
 TOOL_SECONDS = 120
 
 
@@ -435,7 +435,12 @@ def audit_loaded_binaries(pid: int, state: Path) -> dict[str, object]:
             "loaded_in_memory_image_sha256": None}
 
 
-async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, object]:
+def require_lease_watchdog_healthy(failures: list[str]) -> None:
+    if failures:
+        raise RuntimeError(f"screen lease watchdog failed: {failures[0]}")
+
+
+async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> dict[str, object]:
     from mcp.client.session import ClientSession
     from mcp.client.stdio import StdioServerParameters, stdio_client
 
@@ -447,9 +452,10 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                                          "allowed_execute_steps": [QUERY, OPTIONS_QUERY],
                                          "gameplay_action_submitted": False})
     async def call(session: ClientSession, name: str, arguments: dict[str, object], stem: str) -> dict[str, object]:
-        renew_screen_lease(task_id)
+        require_lease_watchdog_healthy(lease_failures)
         write_new(output / f"{stem}-request.json", {"tool": name, "arguments": arguments})
         response = await asyncio.wait_for(session.call_tool(name, arguments), timeout=TOOL_SECONDS)
+        require_lease_watchdog_healthy(lease_failures)
         write_new(output / f"{stem}-envelope.json", response.model_dump(mode="json", by_alias=True))
         if response.is_error or not isinstance(response.structured_content, dict):
             raise RuntimeError(f"{name} failed; envelope preserved")
@@ -464,8 +470,10 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                 deadline = time.monotonic() + FRAME_SECONDS
                 count = 0
                 while True:
+                    require_lease_watchdog_healthy(lease_failures)
                     count += 1
                     response = await asyncio.wait_for(session.call_tool("ck3_take_snapshot", {}), timeout=TOOL_SECONDS)
+                    require_lease_watchdog_healthy(lease_failures)
                     write_new(output / f"readiness-{count:03d}.json", response.model_dump(mode="json", by_alias=True))
                     if not response.is_error and isinstance(response.structured_content, dict):
                         before = response.structured_content
@@ -475,7 +483,7 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                         expected_wars = full_war_signature(before)
                         break
                     if time.monotonic() >= deadline:
-                        raise RuntimeError("H2743 paused MCP frame not ready within 300 seconds")
+                        raise RuntimeError(f"H2743 paused MCP frame not ready within {FRAME_SECONDS} seconds")
                     await asyncio.sleep(15)
                 ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
                 require_snapshot_bridge_pid(before, ready.get("pid"))
@@ -527,7 +535,7 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                 return summary
 
 
-def require_clean_session_exit(receipt: dict[str, object]) -> None:
+def require_clean_session_exit(receipt: dict[str, object], *, require_read_audit: bool = True) -> None:
     """A baseline result is publishable only after the managed game has exited."""
     if (receipt.get("returncode") != 0
             or receipt.get("ck3_pids_after") != []
@@ -536,8 +544,8 @@ def require_clean_session_exit(receipt: dict[str, object]) -> None:
             or receipt.get("candidate_dll_sha256_after") != DLL_SHA
             or receipt.get("injector_sha256_after") != INJECTOR_SHA
             or receipt.get("exe_sha256_after") != EXE_SHA
-            or not isinstance(receipt.get("binary_audit_live_sha256"), str)
-            or len(receipt["binary_audit_live_sha256"]) != 64
+            or (require_read_audit and (not isinstance(receipt.get("binary_audit_live_sha256"), str)
+                or len(receipt["binary_audit_live_sha256"]) != 64))
             or receipt.get("prepared_save_sha256_after") != SOURCE_HASHES["xar_checkpoint.ck3"]
             or receipt.get("prepared_sidecar_sha256_after") != SOURCE_HASHES["first-heir-marriage-formal-v1.json"]):
         raise RuntimeError("managed H2743 session exit, process cleanup or exact inputs are RED")
@@ -595,7 +603,35 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
             else:
                 raise RuntimeError("native session not ready within 1800 seconds")
             renew_screen_lease(task_id)
-            summary = asyncio.run(read_frame(state, output, task_id))
+            lease_failures: list[str] = []
+            watchdog_stop = threading.Event()
+            with (output / "lease-heartbeats.jsonl").open("x", encoding="utf-8", newline="\n") as lease_log:
+                def lease_watchdog() -> None:
+                    while not watchdog_stop.wait(60):
+                        try:
+                            renew_screen_lease(task_id)
+                            row = {"at_utc": utc_now().isoformat(), "status": "renewed"}
+                        except BaseException as error:
+                            lease_failures.append(f"{type(error).__name__}: {error}")
+                            row = {"at_utc": utc_now().isoformat(), "status": "failed",
+                                   "reason": lease_failures[-1]}
+                        lease_log.write(json.dumps(row, ensure_ascii=False) + "\n")
+                        lease_log.flush()
+                        if lease_failures:
+                            return
+                watchdog_thread = threading.Thread(target=lease_watchdog, daemon=True)
+                watchdog_thread.start()
+                try:
+                    summary = asyncio.run(read_frame(state, output, lease_failures))
+                    require_lease_watchdog_healthy(lease_failures)
+                    if not watchdog_thread.is_alive():
+                        raise RuntimeError("screen lease watchdog exited before paused read completed")
+                finally:
+                    watchdog_stop.set()
+                    watchdog_thread.join(timeout=20)
+                    if watchdog_thread.is_alive():
+                        lease_failures.append("watchdog did not stop after paused read")
+            require_lease_watchdog_healthy(lease_failures)
         except BaseException as error:
             write_new(output / "failure.json", {"type": type(error).__name__, "message": str(error),
                          "at_utc": utc_now().isoformat(), "gameplay_action_submitted": False})
@@ -637,7 +673,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
                     "ck3_pids_after": [item.pid for item in psutil.process_iter(["name"])
                         if (item.info.get("name") or "").casefold() == "ck3.exe"]}
                 write_new(output / "session-exit.json", receipt)
-                require_clean_session_exit(receipt)
+                require_clean_session_exit(receipt, require_read_audit="summary" in locals())
                 if "summary" in locals() and receipt["binary_audit_live_sha256"] != summary["binary_audit_live_sha256"]:
                     raise RuntimeError("loaded binary audit changed between paused read and managed exit")
                 if lease_error is not None:

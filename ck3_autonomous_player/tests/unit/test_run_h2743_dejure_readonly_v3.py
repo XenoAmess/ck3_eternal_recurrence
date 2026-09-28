@@ -34,6 +34,24 @@ def clean_receipt() -> dict[str, object]:
 
 
 class H2743RunnerGateTests(unittest.TestCase):
+    def test_cold_map_wait_and_independent_lease_failure_gate(self) -> None:
+        # R0004 first command took 23m37s; the old 300s frame gate was RED.
+        self.assertGreaterEqual(runner.FRAME_SECONDS, 1800)
+        self.assertLessEqual(runner.FRAME_SECONDS, runner.SESSION_SECONDS)
+        runner.require_lease_watchdog_healthy([])
+        with self.assertRaisesRegex(RuntimeError, "screen lease watchdog failed"):
+            runner.require_lease_watchdog_healthy(["lease owner changed"])
+
+    def test_failed_read_can_prove_cleanup_without_publishing_success(self) -> None:
+        receipt = clean_receipt()
+        receipt["binary_audit_live_sha256"] = None
+        runner.require_clean_session_exit(receipt, require_read_audit=False)
+        with self.assertRaises(RuntimeError):
+            runner.require_clean_session_exit(receipt)
+        receipt["ck3_pids_after"] = [1234]
+        with self.assertRaises(RuntimeError):
+            runner.require_clean_session_exit(receipt, require_read_audit=False)
+
     def test_final_result_requires_clean_managed_exit_and_unchanged_inputs(self) -> None:
         runner.require_clean_session_exit(clean_receipt())
         failures = (
