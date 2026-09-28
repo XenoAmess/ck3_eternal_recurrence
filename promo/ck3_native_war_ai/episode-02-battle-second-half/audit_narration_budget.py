@@ -105,11 +105,15 @@ def main() -> None:
     parser.add_argument("--draft", type=Path, required=True)
     parser.add_argument("--reference-speech", type=Path, required=True)
     parser.add_argument("--sample-manifest", type=Path)
+    parser.add_argument("--expected-draft-sha256")
     parser.add_argument("--ffprobe", default="ffprobe")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
+    draft_identity = identity(args.draft)
+    if args.expected_draft_sha256 and draft_identity["sha256"] != args.expected_draft_sha256.upper():
+        raise ValueError("draft bytes changed from the selected SHA-256")
     draft = args.draft.read_text(encoding="utf-8-sig")
     chapters = extract_narration(draft)
     cues = reference_cues(args.reference_speech, args.ffprobe)
@@ -120,8 +124,22 @@ def main() -> None:
     sample_summary = None
     if args.sample_manifest:
         manifest = json.loads(args.sample_manifest.read_text(encoding="utf-8"))
-        if manifest["status"] != "samples-rendered-not-human-reviewed":
+        if manifest["status"] not in ("samples-rendered-not-human-reviewed",
+                                      "six-samples-rendered-not-human-reviewed"):
             raise ValueError("sample run is not fully rendered")
+        if manifest["source_draft"]["sha256"] != draft_identity["sha256"]:
+            raise ValueError("sample run belongs to different draft bytes")
+        if manifest["snapshot"]["sha256"] != draft_identity["sha256"] or \
+                identity(Path(manifest["snapshot"]["path"]))["sha256"] != draft_identity["sha256"]:
+            raise ValueError("sample draft snapshot changed")
+        if manifest["status"] == "six-samples-rendered-not-human-reviewed":
+            sample_names = [row["name"] for row in manifest["samples"]]
+            if sample_names != [key for key, _ in CHAPTERS]:
+                raise ValueError("six-chapter sample coverage/order changed")
+            selection_plan = json.loads((args.sample_manifest.parent / "selection-plan.json").read_text(encoding="utf-8"))
+            if selection_plan["draft"]["sha256"] != draft_identity["sha256"]:
+                raise ValueError("sample selection plan belongs to different draft")
+            planned = {row["name"]: row for row in selection_plan["selection"]}
         samples = []
         for row in manifest["samples"]:
             request = Path(row["request"]["path"])
@@ -131,6 +149,18 @@ def main() -> None:
             payload = json.loads(request.read_text(encoding="utf-8"))
             if (payload["provider"], payload["voice"], payload["rate"]) != ("edge-tts", "zh-CN-XiaoxiaoNeural", "-12%"):
                 raise ValueError("sample voice or rate mismatch")
+            if manifest["status"] == "six-samples-rendered-not-human-reviewed":
+                selected = planned[row["name"]]
+                if (row["chapter_index"], row["paragraph_index"], row["source_paragraph_sha256"],
+                    row["text_sha256"]) != (selected["chapter_index"], selected["paragraph_index"],
+                                            selected["source_paragraph_sha256"], selected["text_sha256"]):
+                    raise ValueError("sample paragraph selection changed")
+                if payload["source_paragraph_sha256"] != row["source_paragraph_sha256"] or \
+                        hashlib.sha256(payload["text"].encode("utf-8")).hexdigest().upper() != row["text_sha256"]:
+                    raise ValueError("sample request differs from source paragraph")
+                for key in ("events", "probe"):
+                    if identity(Path(row[key]["path"]))["sha256"] != row[key]["sha256"]:
+                        raise ValueError(f"sample {key} changed")
             duration = probe_duration(args.ffprobe, media)
             if abs(duration - row["duration_seconds"]) > 0.01:
                 raise ValueError("sample duration disagrees with preserved manifest")
@@ -145,14 +175,28 @@ def main() -> None:
                           "audio_seconds": round(sample_seconds, 3),
                           "cjk_characters_per_second": round(sample_cjk / sample_seconds, 4),
                           "full_draft_extrapolation_seconds": round(sum(row["cjk_characters"] for row in chapters) * sample_seconds / sample_cjk, 1)}
+        if manifest["status"] == "six-samples-rendered-not-human-reviewed":
+            chapter_samples = {row["name"]: row for row in samples}
+            sample_summary["chapter_extrapolation_seconds"] = {
+                chapter["id"]: round(chapter["cjk_characters"] *
+                                     chapter_samples[chapter["id"]]["duration_seconds"] /
+                                     chapter_samples[chapter["id"]]["cjk_characters"], 1)
+                for chapter in chapters
+            }
     for chapter in chapters:
         chapter["estimated_speech_seconds"] = round(chapter["cjk_characters"] / rate, 1)
         chapter["estimated_headroom_seconds"] = round(chapter["budget_seconds"] - chapter["estimated_speech_seconds"], 1)
+        if sample_summary and "chapter_extrapolation_seconds" in sample_summary:
+            chapter["sample_extrapolated_speech_seconds"] = sample_summary["chapter_extrapolation_seconds"][chapter["id"]]
+            chapter["sample_extrapolated_headroom_seconds"] = round(
+                chapter["budget_seconds"] - chapter["sample_extrapolated_speech_seconds"], 1)
         del chapter["text"]
     result = {
         "schema": "ck3.episode02.narration-budget-audit.v1",
-        "status": "historical-voice-rate-estimate-not-new-tts",
-        "draft": identity(args.draft),
+        "status": ("six-chapter-sample-timing-estimate-not-final-voice"
+                   if sample_summary and "chapter_extrapolation_seconds" in sample_summary
+                   else "historical-voice-rate-estimate-not-new-tts"),
+        "draft": draft_identity,
         "normalization": "only bounded **旁白** blocks; remove footnote citations and markdown markers; keep spoken words/numerals",
         "reference_voice": {"provider": "edge-tts", "voice": "zh-CN-XiaoxiaoNeural", "rate": "-12%",
                             "cue_count": len(cues), "cjk_characters": total_chars,
@@ -171,7 +215,11 @@ def main() -> None:
         "draft_latin_characters": sum(chapter["latin_characters"] for chapter in chapters),
         "draft_punctuation_marks": sum(chapter["punctuation_marks"] for chapter in chapters),
         "estimated_speech_seconds": round(sum(chapter["estimated_speech_seconds"] for chapter in chapters), 1),
-        "limits": ["Not a provider render or measured duration for this draft.",
+        "sample_chapter_extrapolated_speech_seconds": (
+            round(sum(sample_summary["chapter_extrapolation_seconds"].values()), 1)
+            if sample_summary and "chapter_extrapolation_seconds" in sample_summary else None),
+        "limits": [("Six selected paragraphs are provider renders; all full-chapter durations remain extrapolations."
+                    if sample_summary else "No provider render of the current draft is included."),
                    "Arabic numerals, abbreviations, pauses, sentence boundaries and edits may change pacing.",
                    "Opening/closing chapter cards and required picture holds are outside the speech estimate."],
     }
@@ -194,8 +242,12 @@ def main() -> None:
                                    "seconds": x["duration_seconds"], "historical_prediction": x["historical_rate_prediction_seconds"]}
                                   for x in sample_summary["samples"]] if sample_summary else None,
                       "estimated_speech_seconds": result["estimated_speech_seconds"],
+                      "sample_chapter_extrapolated_speech_seconds": result["sample_chapter_extrapolated_speech_seconds"],
                       "chapters": [{"id": c["id"], "cjk": c["cjk_characters"], "speech": c["estimated_speech_seconds"],
-                                    "headroom": c["estimated_headroom_seconds"]} for c in chapters]}, ensure_ascii=False))
+                                    "headroom": c["estimated_headroom_seconds"],
+                                    "sample_speech": c.get("sample_extrapolated_speech_seconds"),
+                                    "sample_headroom": c.get("sample_extrapolated_headroom_seconds")}
+                                   for c in chapters]}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
