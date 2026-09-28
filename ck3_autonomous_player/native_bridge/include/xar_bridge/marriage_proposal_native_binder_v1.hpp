@@ -25,6 +25,10 @@ inline constexpr std::uintptr_t
     kMarriageSendInteractionPrimaryVtableRvaV1 = 0x40829F8;
 inline constexpr std::uintptr_t
     kMarriageSendInteractionSecondaryVtableRvaV1 = 0x40829C8;
+inline constexpr std::uintptr_t kMarriageSubmitMatrilinealOptionSlotRvaV1 =
+    0x57EB680;
+inline constexpr std::uintptr_t kMarriageSubmitReadOptionRvaV1 = 0x2C40770;
+inline constexpr std::uintptr_t kMarriageSubmitSetOptionRvaV1 = 0x2C407D0;
 
 inline constexpr std::size_t kMarriageCharacterFamilyDataOffsetV1 = 0x1A0;
 inline constexpr std::size_t kMarriageFamilyBetrothedIdOffsetV1 = 0x10;
@@ -60,6 +64,7 @@ enum class MarriageProposalNativeBinderFailureV1 : std::uint32_t {
   context_roles_mismatch,
   complete_can_send_rejected,
   recipient_answer_changed,
+  selected_option_unavailable,
   command_construction_failed,
   command_identity_mismatch,
   command_queue_rejected,
@@ -87,6 +92,10 @@ using ConstructMarriageSendInteractionCommandV1 = void *(*)(
     void *command, const void *context);
 using SubmitMarriageCommandV1 = bool (*)(void *manager, void *command,
                                          std::uint32_t channel_flags);
+using ReadMarriageSubmitBooleanOptionV1 =
+    bool (*)(const void *context, std::uint32_t option_id);
+using SetMarriageSubmitBooleanOptionV1 =
+    void (*)(void *context, std::uint32_t option_id, bool selected);
 
 struct MarriageProposalReceiptFrameV1 {
   bool available = false;
@@ -142,6 +151,9 @@ struct MarriageProposalNativeBinderEnvironmentV1 {
   ConstructMarriageSendInteractionCommandV1 construct_send_command = nullptr;
   std::uintptr_t send_command_primary_vtable = 0;
   std::uintptr_t send_command_secondary_vtable = 0;
+  std::uintptr_t matrilineal_option_id_slot = 0;
+  ReadMarriageSubmitBooleanOptionV1 read_boolean_option = nullptr;
+  SetMarriageSubmitBooleanOptionV1 set_boolean_option = nullptr;
 
   bool ranked_container_lifecycle_certified = false;
   bool outcome_classifier_certified = false;

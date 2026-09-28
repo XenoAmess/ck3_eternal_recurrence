@@ -15,6 +15,8 @@ struct ObservedHeirMarriagePendingV1 {
   std::int32_t played_character_id = -1;
   std::int32_t heir_character_id = -1;
   std::int32_t candidate_character_id = -1;
+  std::int32_t recipient_character_id = -1;
+  bool matrilineal_option_selected = false;
 };
 
 enum class ObservedHeirMarriageMaterialStatusV1 : std::uint8_t {

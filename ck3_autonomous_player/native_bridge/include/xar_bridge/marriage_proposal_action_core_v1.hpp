@@ -106,6 +106,9 @@ struct MarriageProposalSubmissionV1 {
   // Only the controlled observed-first-heir route may omit human-player AI
   // rank and outcome. The direct ranked action retains its original gates.
   bool rankless_observed_heir = false;
+  // Private player-child path only: preserve the exact selected lineality
+  // option when the native send command copies this interaction context.
+  bool request_matrilineal_option = false;
 
   friend bool operator==(const MarriageProposalSubmissionV1 &,
                          const MarriageProposalSubmissionV1 &) = default;

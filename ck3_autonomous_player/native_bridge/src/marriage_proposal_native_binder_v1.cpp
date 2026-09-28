@@ -188,6 +188,9 @@ bool ValidDirectSubmission(const MarriageProposalSubmissionV1 &submission) {
       submission.recipient_answer_status_raw <= 1;
   return submission.subject_character_id != 0 &&
       submission.candidate_character_id != 0 &&
+      (!submission.request_matrilineal_option ||
+       (submission.rankless_observed_heir &&
+        submission.recipient_ai_accept_raw > 0)) &&
       (ranked_direct || observed_heir) &&
       submission.roles.actor_character_id != 0 &&
       submission.roles.recipient_character_id != 0 &&
@@ -450,14 +453,23 @@ BindMarriageProposalNativeBinderEnvironmentV1(
              output.construct_send_command) &&
       AddRva(module_base, kMarriageSendInteractionPrimaryVtableRvaV1,
              output.send_command_primary_vtable) &&
-      AddRva(module_base, kMarriageSendInteractionSecondaryVtableRvaV1,
-             output.send_command_secondary_vtable);
+       AddRva(module_base, kMarriageSendInteractionSecondaryVtableRvaV1,
+              output.send_command_secondary_vtable) &&
+       AddRva(module_base, kMarriageSubmitMatrilinealOptionSlotRvaV1,
+              output.matrilineal_option_id_slot) &&
+       AddRva(module_base, kMarriageSubmitReadOptionRvaV1,
+              output.read_boolean_option) &&
+       AddRva(module_base, kMarriageSubmitSetOptionRvaV1,
+              output.set_boolean_option);
   if (!complete) {
     output.command_manager = nullptr;
     output.submit_command = nullptr;
     output.construct_send_command = nullptr;
     output.send_command_primary_vtable = 0;
     output.send_command_secondary_vtable = 0;
+    output.matrilineal_option_id_slot = 0;
+    output.read_boolean_option = nullptr;
+    output.set_boolean_option = nullptr;
   }
   return output;
 }
@@ -622,10 +634,55 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
   env.source_adapter.finalize_context(native_context);
   NativeRolesV1 context_roles{};
   if (!ReadContextRoles(env, reinterpret_cast<std::uintptr_t>(native_context),
-                        context_roles) ||
+                         context_roles) ||
       context_roles != roles || !ResolveRoles(env, context_roles)) {
     destroy_context();
     return fail(MarriageProposalNativeBinderFailureV1::context_roles_mismatch);
+  }
+  std::uint32_t selected_option_id = 0;
+  if (submission.request_matrilineal_option) {
+    bool binding_ready = env.matrilineal_option_id_slot != 0 &&
+        env.read_boolean_option != nullptr &&
+        env.set_boolean_option != nullptr;
+    if (binding_ready && !env.offline_fixture) {
+      std::uintptr_t expected_slot = 0;
+      ReadMarriageSubmitBooleanOptionV1 expected_reader = nullptr;
+      SetMarriageSubmitBooleanOptionV1 expected_setter = nullptr;
+      constexpr std::array<std::uint8_t, 16> setter_signature{
+          0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24,
+          0x10, 0x57, 0x48, 0x83, 0xEC, 0x20, 0x4C};
+      std::array<std::uint8_t, 16> actual{};
+      binding_ready =
+          AddRva(env.module_base, kMarriageSubmitMatrilinealOptionSlotRvaV1,
+                 expected_slot) &&
+          AddRva(env.module_base, kMarriageSubmitReadOptionRvaV1,
+                 expected_reader) &&
+          AddRva(env.module_base, kMarriageSubmitSetOptionRvaV1,
+                 expected_setter) &&
+          env.matrilineal_option_id_slot == expected_slot &&
+          env.read_boolean_option == expected_reader &&
+          env.set_boolean_option == expected_setter &&
+          ReadMemory(env, env.module_base + kMarriageSubmitSetOptionRvaV1,
+                     actual.data(), actual.size()) &&
+          actual == setter_signature;
+    }
+    if (!binding_ready ||
+        !ReadMemory(env, env.matrilineal_option_id_slot,
+                    &selected_option_id, sizeof(selected_option_id)) ||
+        selected_option_id == 0) {
+      destroy_context();
+      return fail(MarriageProposalNativeBinderFailureV1::
+                      selected_option_unavailable);
+    }
+    if (!env.read_boolean_option(native_context, selected_option_id))
+      env.set_boolean_option(native_context, selected_option_id, true);
+    if (!env.read_boolean_option(native_context, selected_option_id)) {
+      destroy_context();
+      SetFailure(binder,
+                 MarriageProposalNativeBinderFailureV1::
+                     selected_option_unavailable);
+      return MarriageProposalNativeSubmitResultV1::rejected;
+    }
   }
   if (!env.source_adapter.complete_can_send(native_context, nullptr)) {
     destroy_context();
@@ -681,6 +738,18 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
       command_context_constructed = false;
     }
   };
+  if (submission.request_matrilineal_option &&
+      !env.read_boolean_option(
+          command_storage.bytes.data() +
+              kMarriageSendInteractionContextOffsetV1,
+          selected_option_id)) {
+    destroy_command_context();
+    destroy_context();
+    SetFailure(binder,
+               MarriageProposalNativeBinderFailureV1::
+                   selected_option_unavailable);
+    return MarriageProposalNativeSubmitResultV1::rejected;
+  }
   std::uintptr_t primary = 0;
   std::uintptr_t secondary = 0;
   NativeRolesV1 copied_roles{};
@@ -1005,6 +1074,7 @@ std::string_view MarriageProposalNativeBinderFailureKeyV1(
   case MarriageProposalNativeBinderFailureV1::context_roles_mismatch: return "context_roles_mismatch";
   case MarriageProposalNativeBinderFailureV1::complete_can_send_rejected: return "complete_can_send_rejected";
   case MarriageProposalNativeBinderFailureV1::recipient_answer_changed: return "recipient_answer_changed";
+  case MarriageProposalNativeBinderFailureV1::selected_option_unavailable: return "selected_option_unavailable";
   case MarriageProposalNativeBinderFailureV1::command_construction_failed: return "command_construction_failed";
   case MarriageProposalNativeBinderFailureV1::command_identity_mismatch: return "command_identity_mismatch";
   case MarriageProposalNativeBinderFailureV1::command_queue_rejected: return "command_queue_rejected";
