@@ -300,6 +300,14 @@ def frame_signature(snapshot: dict[str, object]) -> dict[str, object]:
     return frame
 
 
+def require_snapshot_bridge_pid(snapshot: dict[str, object], pid: int) -> None:
+    diagnostics = snapshot.get("diagnostics")
+    if (type(pid) is not int or pid <= 0 or not isinstance(diagnostics, dict)
+            or type(diagnostics.get("bridge_pid")) is not int
+            or diagnostics["bridge_pid"] != pid):
+        raise RuntimeError("paused snapshot bridge PID differs from managed CK3 process")
+
+
 WAR_SIGNATURE_FIELDS = ("war_id", "player_side", "player_is_primary_war_leader",
                         "primary_opponent_character_id", "player_relative_war_score",
                         "targeted_title_ids")
@@ -452,6 +460,7 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                         raise RuntimeError("H2743 paused MCP frame not ready within 300 seconds")
                     await asyncio.sleep(15)
                 ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
+                require_snapshot_bridge_pid(before, ready.get("pid"))
                 write_new(output / "binary-audit-live.json", audit_loaded_binaries(ready.get("pid"), state))
                 results = []
                 for number in (1, 2):
@@ -472,6 +481,7 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                                                     {"step": OPTIONS_QUERY}, "war-options-query")
                         require_options_query(options_result, frame, war, expected_wars)
                 after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
+                require_snapshot_bridge_pid(after, ready["pid"])
                 if (require_snapshot(after) != war or frame_signature(after) != frame
                         or full_war_signature(after) != expected_wars
                         or results[0]["defender_de_jure_exit_terms_v1"] != results[1]["defender_de_jure_exit_terms_v1"]):

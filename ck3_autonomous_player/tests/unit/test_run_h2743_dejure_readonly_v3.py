@@ -91,8 +91,15 @@ class H2743RunnerGateTests(unittest.TestCase):
     def test_war_options_rejects_any_of_six_frame_drifts_or_wrong_war(self) -> None:
         snapshot = {"snapshot_id": "native:3", "revision": 4, "native_revision": 3,
                     "date_raw": 53217264, "episode_run_id": runner.EPISODE,
-                    "diagnostics": {"connection_generation": 1}}
+                    "diagnostics": {"connection_generation": 1, "bridge_pid": 1234}}
         frame = runner.frame_signature(snapshot)
+        runner.require_snapshot_bridge_pid(snapshot, 1234)
+        with self.assertRaises(RuntimeError):
+            runner.require_snapshot_bridge_pid(snapshot, 4321)
+        missing_pid = copy.deepcopy(snapshot)
+        missing_pid["diagnostics"].pop("bridge_pid")
+        with self.assertRaises(RuntimeError):
+            runner.require_snapshot_bridge_pid(missing_pid, 1234)
         war = {"war_id": 16777231, "player_side": "defender",
                "player_is_primary_war_leader": True,
                "primary_opponent_character_id": 30097,
