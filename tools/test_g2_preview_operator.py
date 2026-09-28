@@ -212,6 +212,68 @@ class G2PreviewOperatorTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "prior checkpoint"):
             paired(later_sidecar, later_driver, {}, later_hash,
                    [proof, changed])
+
+        sway_hash = "d" * 64
+        sway_checkpoint = {**later_checkpoint, "history_index": 3924,
+                           "sha256": sway_hash, "size": 78515535,
+                           "phase": "private_active_scheme_sway_receipt_pending"}
+        sway_driver = {**driver, "last_checkpoint": sway_checkpoint}
+        sway_pending = {"stage": "receipt_pending", "action_id":
+                        "sway-9e297c964fd243839fedb26bf6c7ed1a"}
+        sway_ledger = {"schema": g2_preview_operator.SWAY_FORMAL_PENDING_V1_SCHEMA,
+                       "pending": sway_pending, "resolved": None}
+        sway_report = {
+            "kind": "ck3_native_auto_run", "mode": "native-headless",
+            "status": "private_active_scheme_sway_receipt_pending",
+            "ok": False,
+            "fixed_seed": {"sha256": later_hash, "history_index": 3922,
+                           "saved_date_raw": 53219928},
+            "session": {"pid": 171504},
+            "readiness": {"bridge_pid": 171504,
+                          "episode_character_id": 29829,
+                          "episode_run_id": episode, "date_raw": 53219928},
+            "auto_run": {"attempted_turns": 0, "turns": []},
+            "private_active_scheme_sway_formal": {
+                "status": "receipt_pending", "pending": sway_pending,
+                "checkpoint_saved": True, "postcondition_verified": False},
+            "checkpoints": [sway_checkpoint],
+            "first_blocker": {"last_durable_checkpoint": sway_checkpoint},
+            "cleanup": {"ok": True},
+        }
+        self.assertEqual(paired(
+            later_sidecar, sway_driver, {}, sway_hash, [proof, continuation],
+            sway_continuation=sway_report, sway_sidecar=sway_ledger), 37267)
+        for changed_key, changed_value in (
+            ("fixed_seed", {**sway_report["fixed_seed"], "sha256": "b" * 64}),
+            ("auto_run", {"attempted_turns": 1, "turns": [{
+                "selected_step": g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP}]}),
+            ("private_active_scheme_sway_formal", {
+                **sway_report["private_active_scheme_sway_formal"],
+                "pending": {**sway_pending, "action_id": "sway-" + "f" * 32}}),
+        ):
+            changed = copy.deepcopy(sway_report)
+            changed[changed_key] = changed_value
+            with self.assertRaisesRegex(ValueError, "Sway continuation"):
+                paired(later_sidecar, sway_driver, {}, sway_hash,
+                       [proof, continuation], sway_continuation=changed,
+                       sway_sidecar=sway_ledger)
+        with self.assertRaisesRegex(ValueError, "Sway continuation"):
+            paired(later_sidecar, sway_driver, {}, sway_hash,
+                   [proof, continuation], sway_continuation=sway_report,
+                   sway_sidecar={**sway_ledger, "resolved": {"status": "applied"}})
+        with self.assertRaisesRegex(ValueError, "paired save"):
+            paired(later_sidecar, sway_driver, {}, "e" * 64,
+                   [proof, continuation], sway_continuation=sway_report,
+                   sway_sidecar=sway_ledger)
+        parsed = g2_preview_operator.parser().parse_args([
+            "prepare-state", "--manifest", "Z:/candidate/operator-manifest.json",
+            "--sample-dir", "Z:/sample", "--child-matrilineal-sidecar",
+            "Z:/sample/child.json", "--child-matrilineal-proof-report",
+            "Z:/proof/R0328.json", "--child-matrilineal-continuation-report",
+            "Z:/proof/R0339.json",
+        ])
+        self.assertEqual(parsed.child_matrilineal_continuation_report,
+                         Path("Z:/proof/R0339.json"))
         changed = copy.deepcopy(continuation)
         changed["formal_auto_run"]["auto_run"]["turns"].append({
             "selected_step": g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP})
