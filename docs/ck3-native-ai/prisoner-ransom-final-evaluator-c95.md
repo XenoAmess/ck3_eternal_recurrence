@@ -588,6 +588,44 @@ unqualified. The gold gain is an observed near-date delta that may include
 other income; the prisoner release and at-least-quote gain are the bounded
 postcondition, not an exclusive attribution of every coin.
 
+## R0296 prisoner 47028: option selection remains unresolved
+
+The read-only R0296 formal report at
+`Z:/m6ransom-44484-observe-h3564-v2/evidence/R0296/formal-auto-run.json`
+has SHA-256 `66121C1C56E731A1FBEE4917EF635D64C4D9CC84F622E5865F892A22A365C590`.
+At paused `native:4`, date raw `53219304`, actor `29829` held prisoners
+`44484` and `47028`. The separate ordinal query returned a legal, accepted
+30-gold ordinary quote for `44484`, while `47028` returned
+`option_mask_unexpected`. The latter is a **query classification gap**:
+the native option setter was called, but the current reader discarded the
+actual eight-option selected mask when it differed from the requested gold
+option. This does not establish a zero amount, a legal alternate offer, or
+that no gold option exists. The stock source at
+`00_prison_interactions.txt:1921-2065,2355-2362` permits several distinct
+option kinds, including a non-gold favor and a mass-only invalid fallback.
+The exact loaded eight-option order and application-main context reader are
+already bound; no new game ABI is inferred here.
+
+The private read-only quote now carries `requested_option_index` and
+`observed_option_mask_bits` **only** for `option_mask_unexpected`. The bits
+are copied from the same validated eight-byte native option vector before
+the owned context is destroyed. An unexpected mask still returns
+`status=unavailable`; neither the formal consumer nor the native submit path
+may turn it into an action. A future matching paused readback can identify
+whether stock selected favor, another monetary option, multiple options, or
+an unexpected mask, then use the stock final gate and value source for that
+specific option. R0296 itself predates this diagnostic and cannot answer
+which mask was present. No new CK3 run or M6 action is claimed by this change.
+
+```mermaid
+flowchart LR
+    R[Requested ordinary gold option] --> M{Native selected mask equals requested?}
+    M -->|yes| V[Existing final legality and quote path]
+    M -->|no| D[Typed unavailable plus requested index and observed mask]
+    D -. matching paused readback pending .-> N[Identify native option and value]
+    N -. final gate and benefit pending .-> A[Formal action]
+```
+
 ```mermaid
 flowchart TD
     F[Paused player frame] --> W{Every active war source complete?}
