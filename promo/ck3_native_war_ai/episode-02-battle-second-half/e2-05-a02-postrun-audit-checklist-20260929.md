@@ -44,10 +44,17 @@ AGENTS 查询最新正式 `xar-promo` wheel，记录实际版本/SHA。本清单
 ```text
 mkdir D:/workspace/ck3_native_war_ai_promo_work/e2-05-a02-postrun-audit-20260929-next01
 D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_native_war_ai/episode-02-battle-second-half/audit_raw_video_pts.py --recorder-workdir D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-05-d26-live-20260929-a02/recording-e2-05-d26-a01 --output D:/workspace/ck3_native_war_ai_promo_work/e2-05-a02-postrun-audit-20260929-next01/pts-audit.json --min-duration 590 --max-frame-gap 0.2
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_native_war_ai/episode-02-battle-second-half/audit_e2_05_postrun_links.py --recorder-workdir D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-05-d26-live-20260929-a02/recording-e2-05-d26-a01 --session-output D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-05-d26-live-20260929-a02/ck3-output --pts-audit D:/workspace/ck3_native_war_ai_promo_work/e2-05-a02-postrun-audit-20260929-next01/pts-audit.json --output D:/workspace/ck3_native_war_ai_promo_work/e2-05-a02-postrun-audit-20260929-next01/postrun-links.json
 ```
 
-记录 `frame_count_with_pts`、首末实际 PTS、缺失/倒退帧数、`gap_count` 与全部超过 0.2 秒
-的区间。若整条报告 `RED_PRESERVED`，仍可在后续单独挑选缺口两侧的连续候选窗；不能跨
+第二条小文件关联器只使用前一条已完成的 raw/ffprobe SHA 报告，**不第二次重哈希原 raw**；
+它重核 recorder intent/start/end/final、marks 首末 monotonic 与中间 screenshot/control/report、
+session cleanup，并将结果固定为 `MEDIA_PTS_CANDIDATE_UNREVIEWED`、
+`MEDIA_PTS_GAPS_OR_RED_UNREVIEWED` 或 `RED_PRESERVED`。它仅在前条报告真实产生后执行。
+
+记录 `frame_count_with_pts`、首末实际 PTS、缺失/倒退帧数、`gap_count` 与前 20 处超过
+0.2 秒的间隔；若超过 20 处，当前审计器不列出余下位置，须另开完整间隔索引后才能规划
+覆盖全片的候选窗。若整条报告 `RED_PRESERVED`，仍可在后续单独挑选缺口两侧的连续候选窗；不能跨
 缺口或把整条 RED 写成 clean。机器报告即使是 `PTS_CONTINUOUS_UNREVIEWED`，也只证明
 该规则下的媒体时间轴，**不证明**目标 event、完整战斗 UI、字幕来源、原速观片或成片签核。
 
