@@ -298,7 +298,9 @@ def plan_construction_private(
     # can be observed during war, but an unassessed war cash commitment never
     # admits a new spend or replaces the already selected formal action.
     wars = snapshot.get("active_wars")
-    if isinstance(wars, list) and wars and original_step is not None:
+    if (isinstance(wars, list) and wars
+            and (original_step is not None or getattr(
+                driver, "allow_private_m5_joint_collector", False) is True)):
         binding = (snapshot.get("episode_run_id"), snapshot.get("snapshot_id"),
                    snapshot.get("revision"), snapshot.get("date_raw"),
                    snapshot.get("played_character", {}).get("character_id")

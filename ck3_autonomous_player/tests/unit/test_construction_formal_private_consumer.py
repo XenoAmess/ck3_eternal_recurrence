@@ -251,6 +251,35 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
+    def test_blocked_war_plan_still_observes_same_frame_m5_building(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.allow_private_m5_joint_collector = True
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.snapshot["player_armies"] = [{"army_id": 791}]
+            baseline = {"plan": {"selected_step": None,
+                                 "reason": "war forecast inputs blocked"},
+                        "revision": 3}
+            observed = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())["plan"]
+            self.assertIsNone(observed["selected_step"])
+            self.assertEqual(observed["reason"], "war forecast inputs blocked")
+            self.assertEqual(observed["construction_wartime_observation"]
+                             ["native_source_status"], "selected")
+            self.assertFalse(observed["construction_wartime_observation"]
+                             ["formal_action_ready"])
+            repeated = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())["plan"]
+            self.assertEqual(repeated["construction_wartime_observation"],
+                             observed["construction_wartime_observation"])
+            self.assertEqual([row["step"] for row in driver.requests],
+                             [transport.QUERY_NATIVE])
+            driver.allow_private_m5_joint_collector = False
+            without_m5 = plan_construction_private(
+                driver, baseline, driver.snapshot, [], set())["plan"]
+            self.assertNotIn("construction_wartime_observation", without_m5)
+            self.assertEqual(len(driver.requests), 1)
+
     def test_wartime_construction_observes_native_choice_without_spend(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

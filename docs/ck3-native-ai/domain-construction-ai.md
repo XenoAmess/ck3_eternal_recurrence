@@ -74,6 +74,30 @@ a bounded failure summary rather than repeating the full response.
 Normal and optimized focused Python tests pass; no new paused CK3 readback,
 war-spend admission, building action, completion, or income result is claimed.
 
+## 2026-09-28 R0321: blocked war plan lost a same-frame building read
+
+The exact CK3 1.19.0.6 source and private `farm_estates_01` choice are unchanged.
+In R0321's formal report (SHA-256
+`7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30`),
+turn 26 observed the native-legal barony 2103/province 2635/slot 1 building at
+gold cost raw 18,000,000 on `native:23`/revision 24/date raw 53219928.
+Turn 27 stayed on that frame and WarID 16777231, but the war forecast blocked
+with `selected_step=null`. The lifestyle early-return gate skipped construction
+when the prior selected step was null; the construction consumer independently
+skipped its wartime read when the selected step was null. M5 therefore reported
+`construction_observation_unavailable` and an eighth missing field even though
+the previous turn had observed the candidate. No native legality change or
+construction action was observed.
+
+The formal path now reuses or performs the existing same-frame read for a
+blocked war plan only when M5's private collector is enabled. It carries only
+`construction_wartime_observation` into the blocked plan, leaving the war
+phase, reason and null selected step intact. The read remains private and
+cannot submit a building; seven war cash fields remain unknown, so M5 still
+cannot mark wartime construction action-ready. A fresh independent live frame
+must confirm the new classification. Normal and optimized production-path
+fixtures cover the previously missed query and unchanged war RED.
+
 ## 2026-09-27 NW-ECON/JOIN-C87: warm completion watch in the M5 formal path
 
 The ordinary construction consumer already schedules a material completion watch when an applied, still-in-progress building reaches 30 game days after its last check. The M5 formal collector previously sent same-PID, later-date applied ledgers directly to the joint proposal source. A production-path `GameplayBridgeService.plan_turn` fixture reproduced the missed watch: with the same process identity and a due `completion_last_check_date_raw`, it selected `life-advance` instead of `private-query-player-construction-receipt-v1`. This is a source/fixture result, not a live completion or income observation.

@@ -1844,6 +1844,61 @@ class GameplayBridgeTests(unittest.TestCase):
         construction_call.assert_called_once()
         joint_call.assert_called_once()
 
+    def test_wartime_m5_observes_construction_when_war_plan_is_blocked(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 16777231}],
+                 "player_armies": [{"army_id": 83886367}],
+                 "episode_run_id": "robert-test", "date_raw": 53219928,
+                 "played_character": {"character_id": 29829}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("query-army-strengths-v1", "life-advance"),
+        )
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_m5_joint_collector = True
+        blocked = {"policy": "one-life-turn-v1", "selected_step": None,
+                   "phase": "native_war_siege_forecast_inputs_observed",
+                   "reason": "war forecast inputs blocked"}
+        observed = {"status": "observed", "native_source_status": "selected",
+                    "candidate": {"building_key": "farm_estates_01",
+                                  "stock_gold_cost_raw": 18_000_000},
+                    "formal_action_ready": False}
+
+        def construction(_driver, planned, _snapshot, _history, _steps, **_kwargs):
+            self.assertIsNone(planned["plan"]["selected_step"])
+            return {**planned, "plan": {**planned["plan"],
+                "construction_wartime_observation": observed}}
+
+        def joint(_driver, planned, **_kwargs):
+            self.assertEqual(planned["plan"]["construction_wartime_observation"],
+                             observed)
+            return {**planned, "plan": {**planned["plan"],
+                "m5_joint_wartime_observation": {
+                    "status": "incomplete_war_cash",
+                    "missing": ["future_war_cost_upper_raw"],
+                    "formal_action_ready": False}}}
+
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=blocked),
+              mock.patch.object(GameplayBridgeService,
+                                "_plan_private_lifestyle_trial_v1",
+                                side_effect=lambda planned, _steps: planned),
+              mock.patch("xar_autoplayer.bridge.service.plan_construction_private",
+                         side_effect=construction) as construction_call,
+              mock.patch("xar_autoplayer.bridge.service.plan_m5_wartime_query_only",
+                         side_effect=joint) as joint_call):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["phase"], blocked["phase"])
+        self.assertEqual(plan["reason"], blocked["reason"])
+        self.assertEqual(plan["m5_joint_wartime_observation"]["status"],
+                         "incomplete_war_cash")
+        construction_call.assert_called_once()
+        joint_call.assert_called_once()
+
     def test_wartime_m5_observes_after_lifestyle_early_return_and_receipt(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,

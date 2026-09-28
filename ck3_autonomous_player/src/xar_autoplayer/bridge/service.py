@@ -1021,22 +1021,37 @@ class GameplayBridgeService:
                 and not prewar_arbitration):
             construction_snapshot = planned.get("_private_construction_snapshot_v1")
             construction_history = planned.get("_private_construction_history_v1")
-            if (before_lifestyle_step is not None
-                    and plan.get("selected_step") == before_lifestyle_step
-                    and getattr(self.driver, "allow_private_construction_formal_trial", False) is True
+            if (getattr(self.driver, "allow_private_construction_formal_trial", False) is True
                     and isinstance(construction_snapshot, dict)
                     and isinstance(construction_history, list)
+                    and plan.get("selected_step") == before_lifestyle_step
+                    and (before_lifestyle_step is not None
+                         or (m5_enabled
+                             and isinstance(construction_snapshot.get("active_wars"), list)
+                             and bool(construction_snapshot["active_wars"])))
                     and construction_snapshot.get("paused") is True
                     and construction_snapshot.get("map_ready") is True
                     and construction_snapshot.get("active_event") is None
                     and construction_snapshot.get("pending_character_interaction") is None):
-                # The lifestyle early return must not hide an existing
-                # construction receipt on a normal war turn. The consumer
-                # admits no new spend for this non-life step.
-                planned = plan_construction_private(
+                # Keep old receipts visible on ordinary war turns and feed a
+                # blocked war plan's same-frame building read to M5. Neither
+                # path admits a new spend or clears the selected war RED.
+                construction_result = plan_construction_private(
                     self.driver, planned, construction_snapshot,
                     construction_history, available_steps,
                 )
+                if before_lifestyle_step is None:
+                    # The war planner's blocked decision remains authoritative.
+                    # Only the read-only source can enrich its M5 diagnosis.
+                    construction_plan = construction_result.get("plan")
+                    observation = (construction_plan.get(
+                        "construction_wartime_observation")
+                        if isinstance(construction_plan, dict) else None)
+                    if isinstance(observation, dict):
+                        planned = {**planned, "plan": {**plan,
+                            "construction_wartime_observation": observation}}
+                else:
+                    planned = construction_result
             family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
             planned = self._plan_private_family_wartime_v1(
                 planned, family_snapshot,
