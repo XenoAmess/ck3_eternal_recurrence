@@ -366,6 +366,7 @@ def native_auto_run(
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
     allow_private_prisoner_collection_observation: bool = False,
+    private_active_scheme_sway_target: int | None = None,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -483,6 +484,12 @@ def native_auto_run(
         raise AgentError(
             "private prisoner collection observation only admits a bounded contract"
         )
+    if private_active_scheme_sway_target is not None and (
+        completion_contract != "bounded"
+        or type(private_active_scheme_sway_target) is not int
+        or not 0 < private_active_scheme_sway_target <= 0xFFFFFFFF
+    ):
+        raise AgentError("private sway read needs a bounded full target ID")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -614,6 +621,7 @@ def native_auto_run(
     exact_move_poststate: dict[str, object] | None = None
     exact_move_checkpoint: dict[str, object] | None = None
     private_prisoner_collection_observation: dict[str, object] | None = None
+    private_active_scheme_sway_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -805,6 +813,10 @@ def native_auto_run(
             if (allow_private_prisoner_collection_observation is True
                 or allow_private_prisoner_ransom_formal_trial is True) else {}
         )
+        private_scheme_driver_options = (
+            {"allow_private_active_scheme_sway_query": True}
+            if private_active_scheme_sway_target is not None else {}
+        )
         ordinary_succession_driver_options = (
             {
                 "allow_private_current_timeline_blocker_query": True,
@@ -831,6 +843,7 @@ def native_auto_run(
             **private_child_driver_options,
             **private_epidemic_driver_options,
             **private_prisoner_driver_options,
+            **private_scheme_driver_options,
             **ordinary_succession_driver_options,
         )
         # This controlled, private Python route does not change the native
@@ -1105,6 +1118,17 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if private_active_scheme_sway_target is not None:
+                current_attempt["stage"] = "private_active_scheme_sway_read"
+                private_active_scheme_sway_observation = (
+                    _observe_private_active_scheme_sway_once(
+                        driver, service=service, before=before,
+                        target_character_id=private_active_scheme_sway_target,
+                        turn_index=turn_index,
+                    )
+                )
+                status = "private_active_scheme_sway_observed"
+                break
             if (
                 allow_private_prisoner_collection_observation is True
                 and private_prisoner_collection_observation is None
@@ -2981,6 +3005,16 @@ def native_auto_run(
             )
             and cleanup.get("ok") is True
         )
+        if private_active_scheme_sway_target is not None:
+            qualified = bool(
+                primary_error is None
+                and status == "private_active_scheme_sway_observed"
+                and isinstance(private_active_scheme_sway_observation, dict)
+                and private_active_scheme_sway_observation.get("same_frame") is True
+                and cleanup.get("ok") is True
+                and not turns
+                and not date_advanced
+            )
     candidate_intercept_qualified = bool(
         before_submit is not None
         and opening_focus_gate is None
@@ -3068,6 +3102,8 @@ def native_auto_run(
             if candidate_resolved
             else "candidate_intercepted"
             if candidate_intercept_qualified
+            else "read_only_observed"
+            if private_active_scheme_sway_target is not None and qualified
             else outcome
         ),
         "ok": qualified,
@@ -3083,6 +3119,11 @@ def native_auto_run(
         ),
         "cold_start_checkpoint": cold_start_checkpoint,
         "initial_lifestyle_focus_gate": copy.deepcopy(opening_focus_gate),
+        **(
+            {"private_active_scheme_sway_observation": copy.deepcopy(
+                private_active_scheme_sway_observation)}
+            if private_active_scheme_sway_target is not None else {}
+        ),
         **(
             {
                 "private_prisoner_collection_observation": copy.deepcopy(
@@ -4946,6 +4987,50 @@ def _retried_root_query_binding(
     ):
         return None
     return fresh_binding
+
+
+def _observe_private_active_scheme_sway_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    target_character_id: int,
+    turn_index: int,
+) -> dict[str, object]:
+    """Read one native final sway precondition, then verify the paused frame."""
+    readback = driver.query_active_scheme_sway_target_private_v1(
+        expected_revision=before["revision"],
+        target_character_id=target_character_id,
+    )
+    after = service.snapshot()
+    after_actor = after.get("played_character")
+    same_frame = bool(
+        all(before.get(key) == after.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and before.get("paused") is True
+        and after.get("paused") is True
+        and before.get("map_ready") is True
+        and after.get("map_ready") is True
+        and isinstance(after_actor, dict)
+        and before.get("played_character_id") == after_actor.get("character_id")
+        and before.get("played_character_alive") == after_actor.get("alive")
+        and readback.get("queried_snapshot_id") == before.get("snapshot_id")
+        and readback.get("queried_revision") == before.get("revision")
+        and readback.get("queried_native_revision") == before.get("native_revision")
+    )
+    if not same_frame:
+        raise AgentError("private sway read crossed its paused source frame")
+    return {
+        "status": "observed",
+        "turn_index": turn_index,
+        "target_character_id": target_character_id,
+        "same_frame": True,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "readback": copy.deepcopy(readback),
+    }
 
 
 def _observe_private_prisoner_collection_once(

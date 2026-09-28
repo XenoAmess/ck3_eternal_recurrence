@@ -429,6 +429,13 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--private-active-scheme-sway-target", type=int,
+        help=(
+            "read one explicit target's native sway precondition on a paused "
+            "frame, then stop without a gameplay action; private bounded run"
+        ),
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-prisoner-ransom-formal-trial",
         action="store_true",
         help="evaluate and submit one private native ransom in a bounded run",
@@ -955,6 +962,11 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_prisoner_collection_observation
                     else {}
                 )
+                private_scheme_options = (
+                    {"private_active_scheme_sway_target":
+                     args.private_active_scheme_sway_target}
+                    if args.private_active_scheme_sway_target is not None else {}
+                )
                 if args.allow_private_prisoner_ransom_formal_trial:
                     private_prisoner_options[
                         "allow_private_prisoner_ransom_formal_trial"
@@ -997,6 +1009,7 @@ def main(argv: list[str] | None = None) -> int:
                     **private_lifestyle_options,
                     **private_epidemic_options,
                     **private_prisoner_options,
+                    **private_scheme_options,
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )

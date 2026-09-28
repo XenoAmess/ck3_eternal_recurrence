@@ -39,8 +39,14 @@ misrepresented as a specific `is_shown`, validity, or `can_start_scheme` leaf.
 The caller verifies the paused actor/date again after the read.
 
 The Python caller must opt in with `allow_private_active_scheme_sway_query=True`
-and call `query_active_scheme_sway_target_private_v1`. The normal autonomous
-turn has no sway proposal or action. The next stage needs a real value input
+and call `query_active_scheme_sway_target_private_v1`. The managed
+`native-auto-run --private-active-scheme-sway-target <full-ID>` route passes
+that opt-in only for a bounded run, reads once on its first paused frame,
+compares the source and post-read actor/date/revision, then exits before
+planning or submitting a gameplay action. Its report records
+`private_active_scheme_sway_observation`, `outcome=read_only_observed`, and
+zero gameplay turns. The normal autonomous turn has no sway proposal or
+action. The next stage needs a real value input
 (including current opinion), a fixed formal target, one typed submit, a fresh
 owner/type/target scheme-instance readback, next-turn consumption, and paired
 cold recovery. The existing SCHEME8 harness supplies raw-first attempt and
@@ -54,8 +60,9 @@ receipt accounting once a concrete target and checkpoint are frozen.
   `850DF730D27B4B39CFCBF39066126E06DB72EAD71275EE9838AFF01F07E15829`.
   This is a source/build check, not an official Robert paired candidate.
 - SCHEME10 normal and optimized `/W4 /WX` fixtures GREEN, including a
-  generation-zero character precondition; private Python transport 2 tests
-  GREEN. No new game action or date has occurred.
+  generation-zero character precondition; private Python transport and
+  bounded owning-thread route focused tests GREEN. No new game action or
+  date has occurred.
 - H3911 exact paused `sway_interaction` legality, opinion, scheme instance,
   value, action receipt, next turn, and cold restore remain **unobserved**.
 
