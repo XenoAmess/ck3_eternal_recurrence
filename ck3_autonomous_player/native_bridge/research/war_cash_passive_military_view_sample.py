@@ -98,7 +98,8 @@ def _decode_candidate(data: bytes, address: int, base: int, player_id: int):
     }
 
 
-def _scan(process: WindowsReadOnlyProcess, player_id: int, max_bytes: int):
+def _private_readable_regions(process: WindowsReadOnlyProcess):
+    """Survey VADs before reading bytes so the cap can be chosen on this PID."""
     kernel = process.k
     kernel.VirtualQueryEx.argtypes = [
         wintypes.HANDLE, ctypes.c_void_p,
@@ -107,12 +108,9 @@ def _scan(process: WindowsReadOnlyProcess, player_id: int, max_bytes: int):
     kernel.VirtualQueryEx.restype = ctypes.c_size_t
     if ctypes.sizeof(MemoryBasicInformation) != 48:
         raise RuntimeError("64-bit MEMORY_BASIC_INFORMATION layout changed")
-    marker = struct.pack("<Q", process.base + VIEW_VTABLE_RVA)
     position = 0x10000
-    scanned_bytes = 0
-    unreadable_bytes = 0
-    hits: set[int] = set()
-    regions = 0
+    regions: list[tuple[int, int]] = []
+    total_bytes = 0
     while position < MAX_USER_ADDRESS:
         info = MemoryBasicInformation()
         ctypes.set_last_error(0)
@@ -133,9 +131,33 @@ def _scan(process: WindowsReadOnlyProcess, player_id: int, max_bytes: int):
                 or info.Protect & PAGE_GUARD
                 or (info.Protect & 0xFF) not in READABLE_PRIVATE_PROTECTIONS):
             continue
-        regions += 1
-        if scanned_bytes + info.RegionSize > max_bytes:
-            raise RuntimeError("private readable scan byte ceiling reached")
+        regions.append((region_start, region_end))
+        total_bytes += int(info.RegionSize)
+    return regions, total_bytes
+
+
+def _scan(process: WindowsReadOnlyProcess, player_id: int, max_bytes: int,
+          regions: list[tuple[int, int]], total_bytes: int):
+    if total_bytes > max_bytes:
+        return {
+            "private_regions_considered": len(regions),
+            "private_readable_bytes_surveyed": total_bytes,
+            "largest_region_bytes": max(
+                (end - start for start, end in regions), default=0),
+            "minimum_full_scan_ceiling_mib":
+                (total_bytes + 1024 * 1024 - 1) // (1024 * 1024),
+            "private_bytes_read": 0,
+            "unreadable_bytes": 0,
+            "vtable_marker_hits": 0,
+            "structurally_matching_views": [],
+            "scan_complete": False,
+            "scan_budget_insufficient": True,
+        }
+    marker = struct.pack("<Q", process.base + VIEW_VTABLE_RVA)
+    scanned_bytes = 0
+    unreadable_bytes = 0
+    hits: set[int] = set()
+    for region_start, region_end in regions:
         offset = region_start
         tail = b""
         while offset < region_end:
@@ -176,12 +198,16 @@ def _scan(process: WindowsReadOnlyProcess, player_id: int, max_bytes: int):
         if candidate is not None:
             candidates.append(candidate)
     return {
-        "private_regions_considered": regions,
+        "private_regions_considered": len(regions),
+        "private_readable_bytes_surveyed": total_bytes,
+        "largest_region_bytes": max(
+            (end - start for start, end in regions), default=0),
         "private_bytes_read": scanned_bytes,
         "unreadable_bytes": unreadable_bytes,
         "vtable_marker_hits": len(hits),
         "structurally_matching_views": candidates,
         "scan_complete": unreadable_bytes == 0,
+        "scan_budget_insufficient": False,
     }
 
 
@@ -192,9 +218,12 @@ def main() -> int:
     parser.add_argument("--session-receipt", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-private-mib", type=int, default=8192)
+    parser.add_argument("--survey-only", action="store_true",
+                        help="enumerate readable private VADs without reading them")
     args = parser.parse_args()
-    if args.pid <= 0 or args.expected_player_id <= 0 or args.max_private_mib <= 0:
-        parser.error("PID, player ID and scan ceiling must be positive")
+    if (args.pid <= 0 or args.expected_player_id <= 0
+            or not 0 < args.max_private_mib <= 32768):
+        parser.error("PID/player ID must be positive; scan ceiling must be 1..32768 MiB")
     if args.output.exists() or not args.session_receipt.is_file():
         parser.error("output must be new and managed-session receipt must exist")
     receipt_sha = hashlib.sha256(args.session_receipt.read_bytes()).hexdigest().upper()
@@ -228,13 +257,29 @@ def main() -> int:
         output["global_played_character_id"] = global_player_id
         if global_player_id != args.expected_player_id:
             raise ValueError("global player ID differs from expected paused frame")
-        sample = _scan(process, global_player_id, args.max_private_mib * 1024 * 1024)
-        output["scan"] = sample
-        count = len(sample["structurally_matching_views"])
-        output["status"] = (
-            "diagnostic_unique_cache_candidate"
-            if sample["scan_complete"] and count == 1
-            else "missing_or_ambiguous_cache_candidate")
+        regions, total_bytes = _private_readable_regions(process)
+        output["private_readable_survey"] = {
+            "region_count": len(regions),
+            "total_bytes": total_bytes,
+            "largest_region_bytes": max(
+                (end - start for start, end in regions), default=0),
+            "minimum_full_scan_ceiling_mib":
+                (total_bytes + 1024 * 1024 - 1) // (1024 * 1024),
+        }
+        if args.survey_only:
+            output["status"] = "private_readable_survey_only"
+        else:
+            sample = _scan(process, global_player_id,
+                           args.max_private_mib * 1024 * 1024,
+                           regions, total_bytes)
+            output["scan"] = sample
+            count = len(sample["structurally_matching_views"])
+            output["status"] = (
+                "scan_budget_insufficient"
+                if sample["scan_budget_insufficient"]
+                else "diagnostic_unique_cache_candidate"
+                if sample["scan_complete"] and count == 1
+                else "missing_or_ambiguous_cache_candidate")
     except (OSError, RuntimeError, ValueError) as error:
         output["error"] = str(error)
     finally:
@@ -245,7 +290,9 @@ def main() -> int:
             json.dump(output, stream, ensure_ascii=False, indent=2)
             stream.write("\n")
     print(json.dumps({"status": output["status"], "output": str(args.output)}))
-    return 0 if output["status"] == "diagnostic_unique_cache_candidate" else 1
+    return 0 if output["status"] in {
+        "diagnostic_unique_cache_candidate", "private_readable_survey_only"
+    } else 1
 
 
 if __name__ == "__main__":
