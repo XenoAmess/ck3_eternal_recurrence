@@ -30,6 +30,7 @@ CURRENT_GETTER_RVA = 0x11F7D00
 CURRENT_GETTER_HELPER_RVA = 0x11F7370
 CURRENT_BREAKDOWN_CALCULATOR_RVA = 0x290A720
 VIEW_SUBJECT_HANDLE_OFFSET = 0x248
+PLAYED_CHARACTER_ID_GLOBAL_RVA = 0x4FE7EE0
 
 
 def _instruction(image: pefile.PE, binary: bytes, rva: int):
@@ -104,6 +105,9 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     subject_handle = _instruction(image, binary, 0x11F739C)
     expense_calculation = _instruction(image, binary, 0x11F73F1)
     current_helper_write = _instruction(image, binary, 0x11F7426)
+    auto_subject_guard = _instruction(image, binary, 0x11F36F6)
+    auto_subject_source = _instruction(image, binary, 0x11F3702)
+    auto_subject_write = _instruction(image, binary, 0x11F3708)
     if (current_getter.mnemonic != "lea"
             or current_getter.op_str != "rdx, [rcx + 0x268]"
             or current_jump.mnemonic != "jmp"
@@ -114,7 +118,14 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
             or _relative_target(expense_calculation)
             != base + CURRENT_BREAKDOWN_CALCULATOR_RVA
             or current_helper_write.mnemonic != "mov"
-            or current_helper_write.op_str != "byte ptr [rsi + 0xb38], cl"):
+            or current_helper_write.op_str != "byte ptr [rsi + 0xb38], cl"
+            or auto_subject_guard.mnemonic != "cmp"
+            or auto_subject_guard.op_str != "dword ptr [rcx + 0x248], -1"
+            or auto_subject_source.mnemonic != "mov"
+            or _relative_target(auto_subject_source)
+            != base + PLAYED_CHARACTER_ID_GLOBAL_RVA
+            or auto_subject_write.mnemonic != "mov"
+            or auto_subject_write.op_str != "dword ptr [rcx + 0x248], eax"):
         raise ValueError("current expense getter/helper control flow changed")
 
     gui_path = game_root / "game/gui/window_military.gui"
@@ -145,6 +156,8 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "current_expense_helper_rva": hex(CURRENT_GETTER_HELPER_RVA),
         "current_expense_calculator_rva": hex(CURRENT_BREAKDOWN_CALCULATOR_RVA),
         "military_view_subject_handle_offset": hex(VIEW_SUBJECT_HANDLE_OFFSET),
+        "played_character_id_global_rva": hex(PLAYED_CHARACTER_ID_GLOBAL_RVA),
+        "view_autofills_player_id_only_when_subject_minus_one": True,
         "current_expense_helper_writes_view": True,
         "gui_sha256": hashlib.sha256(gui_path.read_bytes()).hexdigest().upper(),
         "english_localization_sha256": hashlib.sha256(loc_path.read_bytes()).hexdigest().upper(),

@@ -57,6 +57,8 @@
     "current_expense_helper_rva": "0x11F7370",
     "current_expense_calculator_rva": "0x290A720",
     "military_view_subject_handle_offset": "0x248; candidate identity slot, not live-bound to played_character_id",
+    "played_character_id_global_rva": "0x4FE7EE0",
+    "view_autofill_rule": "Only when subject handle is -1, 0x11F36F6..0x11F3708 copies the played CharacterID global into MilitaryView+0x248; a preselected different subject can remain",
     "current_expense_helper_writes_view": true,
     "stock_gui_semantics": "predicted monthly maintenance with all forces raised and at full strength; fleets can make actual expense higher",
     "same_frame_player_amount_observed": false,
