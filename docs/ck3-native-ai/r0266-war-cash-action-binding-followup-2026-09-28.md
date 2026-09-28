@@ -16,6 +16,8 @@
 
 当前 `PreviewMoveArmy` 只返回路线省份和状态，`SubmitMoveArmy` 只检合法性并提交命令（`native_bridge/src/ck3_11906.cpp:11359-11431,11434-11649`）。Python owner 只复核同帧路线/日期及移动后目标状态（`bridge/native_driver.py:10006-10129,10131-10233`）。这些回执没有上船标志、原生费用、月费变化或国库前后值。原版另有上船即时费与舰队维护费（`game/common/defines/00_defines.txt:695-699`）；因此“移动 preview 可用”或“move ACK 成功”都**不能**证明即时费用为零。最小扩展是同帧路线 sea/embark 分类、原生上船 Q100000 报价、并在实际提交后核国库和军费；若限定纯陆地，也要有路线逐段为陆地及该命令无其他即时费用的原生证据。只读 native query 如有纯读实现证明和同帧国库前后不变的回读，可为**该次实际选中的查询 step**提出 0 费用证据。终战动作涉及 CB 特定代价，不能沿用移动或查询的零费证明。
 
+精确 EXE 的只读[上船 getter 名称探针](../../ck3_autonomous_player/native_bridge/research/war_cash_embark_cost_candidate.py)在 RVA `0x4101938` 找到唯一 `GetEmbarkCost` 字符串，并验证其 RIP 相对引用指令 RVA `0xE1659`；普通与 `-O` 均通过。该引用位于 GUI 名称构造路径，**还没有**定位 callback、参数、原生数值单位、海路费用关联或纯读性。探针固定输出 `safe_to_call_from_live_bridge=false`、`same_frame_amount_observed=false`；不能把它当报价接口或 R0266 实测。
+
 ## 待办现金须有完整所有权
 
 owner 的 `_record_command` 保存的是历史命令、成功与结果，`_driver_state_payload_locked` 保存 checkpoint、命令历史等（`bridge/native_driver.py:7029-7086,7374-7417`）；这不是带金额与结算状态的**待办支出账本**。它不能覆盖未经过该 driver 的游戏行为，也没有在每条历史命令上给出尚待付款的 Q100000 金额。当前 M5 collector 只要求外部 `existing_commitments.gold_raw` 不小于战争收据的 `pending_war_cash_raw`（`m5_formal_proposal_collector.py:140-180`），不能从 collector 空预留或历史尾部没有支出命令推断待办战争现金为 0。
