@@ -4,16 +4,16 @@
 [`g2-requirements-v1.json`](g2-requirements-v1.json) 为准；工作包投影见
 [`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
 **Operator live source `operator_get_status`** 实时核查，不能以 Git 缓存投影或本页历史段落代替。
-当天增量与最新合法配对见[09-28 日报](daily/2026-09-28.md)及[W40 滚动周报](weekly/2026-W40.md)。
-本次修订时 `current-state.json` 的 Robert 配对仍投影 H3446，`g2-requirements-v1.json` 的 `current_work_package` 仍列已关闭的 GEN-034（4/4）；两项旧字段不覆盖下方 h3778 和非战争实际调度。
+已归档的当天增量见[09-28 日报](daily/2026-09-28.md)及[W40 滚动周报](weekly/2026-W40.md)；下方 R0319 最新配对以其正式报告为据。
+本次修订时 `current-state.json` 的 Robert 配对仍投影 H3446，`g2-requirements-v1.json` 的 `current_work_package` 仍列已关闭的 GEN-034（4/4）；两项旧字段不覆盖下方 h3860 和非战争实际调度。
 玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
 ### 2026-09-28 当前执行状态
 
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
-- 正式 Robert 最近合法持久配对为 **h3778/raw53219568、3,135/36,524 游戏日**；百年门 **0/1**、首整局 **0/1**、独立种子 **0/2**。派生 h90 日期和失败尝试均不计入 Robert。
-- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。R0318 Emma attempt 位于 `Z:\family-child-h3778-native-v3\operator-runs\xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0318\attempt-report.json`，SHA-256 `11F011DE86BB108757F1EF68FCC9B6D6E313253B8AF46F08565EA02C88F0BC68`；它在原生婚配查询处 `BridgeUnavailableError`，没有查询结果、动作或日期，**不能判定 Emma 婚配阴性**。R0319 仍在途，不预写结果。
+- 正式 Robert 最近合法持久配对为 **h3860/raw53219784、3,144/36,524 游戏日**；百年门 **0/1**、首整局 **0/1**、独立种子 **0/2**。派生 h90 日期和失败尝试均不计入 Robert。R0319 36/36 turn 合格、25 次查询/11 次 gameplay，较 h3778 持久 **+9 日**；路线推进与一次军队 move 属战争动作，**0 新非战争动作**、不提升 G2 里程碑。正式报告 `Z:\ck3_mod_rewrite\.task-tmp\M7-ROBERT-H3778-e695\run-formal-36\formal-report.txt` SHA-256 `DE3BA372C21A2D542108C320E4A71AA3B377154721AA602D7FE2F000E6BB177D`，save/driver SHA-256 分别为 `7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A` / `CD0F2CE72BF55A122A6A868DE9F2C456B52575C0269758F2D45F6EB38C726868`。
+- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。R0318 Emma attempt 位于 `Z:\family-child-h3778-native-v3\operator-runs\xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0318\attempt-report.json`，SHA-256 `11F011DE86BB108757F1EF68FCC9B6D6E313253B8AF46F08565EA02C88F0BC68`；它在原生婚配查询处 `BridgeUnavailableError`，没有查询结果、动作或日期，**不能判定 Emma 婚配阴性**。
 - 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0301 生活方式首帧未用点数 **0**、有效财富 focus，未证实本帧漏消费；R0302–R0303 建设有预计正收益的原生合法候选，但战时现金比较字段和完整同帧可行动门尚缺，未在 Robert 开工；Emma 家庭查询 RED 待修；联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
 
 ## 口径纠正
