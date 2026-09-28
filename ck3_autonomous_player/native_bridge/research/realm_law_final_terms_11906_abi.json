@@ -1,0 +1,55 @@
+{
+  "contract": "realm_law_final_terms_11906_abi",
+  "status": "exact-build static-ready; paused H3911 readback and production registration pending",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable": "binaries/ck3.exe",
+    "architecture": "x86_64",
+    "file_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "preferred_image_base": "0x140000000",
+    "image_size": "0x5C2D000"
+  },
+  "entrypoints": {
+    "gui_can_enact": "0x3DDF770",
+    "candidate_kind_allowed": "0x2C7E900",
+    "already_active": "0x28BC040",
+    "engine_final_can_enact": "0x2C7D930",
+    "law_numeric_cost": "0x2C7E490",
+    "engine_cost_evaluator": "0x2CDB7B0",
+    "cost_block_offset_from_law": "0xCD8",
+    "native_cost_raw_scale": 100000,
+    "native_cost_slot_count": 10
+  },
+  "native_cost_slots": [
+    "gold",
+    "prestige",
+    "piety",
+    "renown",
+    "influence",
+    "herd",
+    "treasury",
+    "treasury_or_gold",
+    "merit",
+    "barter_goods"
+  ],
+  "slot_identity_source": "pending_character_interaction_context_v1_abi.json generic_authored_costs.mapping and ordinal_cross_proof: same 0x2CDB7B0 evaluator and 0x2CDCFF0 affordability dispatcher",
+  "instruction_spans": [
+    {"name": "gui_can_enact", "rva": "0x3DDF770", "end_rva": "0x3DDF819", "sha256": "99878CBEA6C1F72BF956B042B3DC0EA99498B838401A3D118F9DA1C4F2F8F552", "runtime_function": ["0x3DDF770", "0x3DDF819", "0x4C39588"]},
+    {"name": "candidate_kind_allowed_with_jump_table", "rva": "0x2C7E900", "end_rva": "0x2C7E950", "sha256": "252B57EBCA9452C233C9F19A98363C089645E96EF7469081C81398401F8E3F0E"},
+    {"name": "already_active", "rva": "0x28BC040", "end_rva": "0x28BC0D1", "sha256": "CC83E8985CBB67DA9E7883901F8515DEB0EE9533A7E981A83761AEA1C07678BB", "runtime_function": ["0x28BC040", "0x28BC0D1", "0x4C39588"]},
+    {"name": "engine_final_can_enact", "rva": "0x2C7D930", "end_rva": "0x2C7DA9D", "sha256": "19DF78424757D57F98B4AC0A3A4483B71A0262F61361E22DB9343D05FAFBB053", "runtime_function": ["0x2C7D930", "0x2C7DA9D", "0x4DE29BC"]},
+    {"name": "law_numeric_cost", "rva": "0x2C7E490", "end_rva": "0x2C7E5AD", "sha256": "2B7DD1FEAC3BB30EBCC829CF6C880645A4F9BFC6FCEBA8A6064FC7A520DE48CF", "runtime_function": ["0x2C7E490", "0x2C7E5AD", "0x4DE2B08"]},
+    {"name": "engine_cost_evaluator", "rva": "0x2CDB7B0", "end_rva": "0x2CDB9C1", "sha256": "50B06EB5A730BF0962B9B2A782F1566A86CCE39B131282E7714B10A465AC01F6", "runtime_function": ["0x2CDB7B0", "0x2CDB9C1", "0x4DE694C"]}
+  ],
+  "relative_calls": [
+    {"site": "0x3DDF7DB", "target": "0x2C7E900"},
+    {"site": "0x3DDF7EA", "target": "0x28BC040"},
+    {"site": "0x3DDF7FC", "target": "0x2C7D930"},
+    {"site": "0x2C7D9F2", "target": "0x2C7E490"},
+    {"site": "0x2C7DA05", "target": "0x2CDCFF0"},
+    {"site": "0x2C7E50B", "target": "0x98C0F0"},
+    {"site": "0x2C7E530", "target": "0x2CDB7B0"}
+  ],
+  "boundary": "This proves only the exact native read path. No CK3 launch, paused sample, CanEnact result, payment, law change, or succession benefit is claimed. Per-component can_have/can_pass and blocked-reason extraction remain unresolved."
+}
