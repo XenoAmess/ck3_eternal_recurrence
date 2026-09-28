@@ -526,6 +526,19 @@ evidence remain untouched; the fresh H3446 pair needs a new live action,
 material postcondition, next turn and cold restore before claiming a formal
 loop.
 
+R0286 on v3 again selected prisoner 34486, payer 30470 and 50 gold in the
+same paused H3446 frame. The outer step admission now passed, but the typed
+submit returned `private ransom executor unavailable` before a main-thread
+ticket was published; there was no action, date advance or material receipt.
+Its report is
+`Z:\m6ransom-formal-h3446-candidate-v3\evidence\R0286\formal-auto-run.json`
+(SHA-256 `8C5FEA42719AEB5EF519711690672988078E38AFDE2D3DB6AAB04FFA696B6182`).
+The bridge had not registered the submit callback in the mailbox's exact
+executor identities. V4 adds one flag-scoped fixed slot for that callback.
+R0286's pending ledger and original evidence remain preserved. V4 still
+requires the actual native submit and independent material result before its
+action can be qualified.
+
 ```mermaid
 flowchart TD
     F[Paused player frame] --> W{Every active war source complete?}
