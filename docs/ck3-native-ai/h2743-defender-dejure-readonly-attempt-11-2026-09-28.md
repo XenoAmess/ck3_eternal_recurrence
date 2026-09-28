@@ -21,4 +21,8 @@ baseline 只证明目标 Title2128 当时 holder 33435、其直接个人领主 2
 
 同会话 `query-war-termination-options-16777231` 的 request/envelope/payload SHA-256 分别为 `FD2C5068A33C0D4673145A8533F2F4FFF834E5485B25030AF192A6535AD498D8`、`A15347875644C005FB5975FA5F09AD2464E457EBA52CF5FC2BBFD30F58FF0D2D`、`D7C6A50F5120944B4C53C42B52D0C64734BE9B169235F1C5764B3AABEA0DD2EB`。原生 CB 为 index 17 `individual_county_de_jure_cb`；此帧守方投降合法、对方会接受，white peace 和 victory 不可用。投降选项本身仍明确 `terms_observable=false`、`terms.status=unavailable`、`terms.reason=cb_specific_terms_not_observable`。这是**直接只读查询**，并无正式 planner `selected_step` 或 `priced_command` 身份，不能单凭它填 R0266 即时费用 0。
 
-本次未执行投降、白和平、日期推进或其他游戏动作。V2 比较器仍拒绝 H2743：runtime target scope、终态 title/vassal 图、动态 CB 威望因子、14 行资源签名差额与条件支路、实际单向休战期限、同帧续战风险均缺。当前可复用退出动作前置合同继续 fail closed，不授权终战提交。
+本次未执行投降、白和平、日期推进或其他游戏动作。V2 比较器仍拒绝 H2743：runtime target scope、终态 title/vassal 图、动态 CB 威望因子、14 行资源签名差额与条件支路、实际单向休战期限、同帧续战损失上界均缺。当前可复用退出动作前置合同继续 fail closed，不授权终战提交。
+
+## 同帧续战风险的窄投影
+
+[只读投影器](../../ck3_autonomous_player/native_bridge/research/project_h2743_attempt11_continue_risk.py)将上述已清理的精确 `read-only-result.json` 与其 SHA 绑定的前快照喂给已交付的 `formal-defender-continue-risk-envelope-v1`。外置 `continuation-risk-v1.json` SHA-256 为 `2C9458861E5E03F8C095AC6324E003F86221DDC6DBF713DE807A75CC4777E68F`。同帧只确认玩家相对战分 `-12`、敌军 `50331920` 在玩家附庸省份 `2628` 围城、当前计时估计剩 `1` 日；`date_raw 53217288` 是估计完成点，**不是上界**。本次没有同帧路线接触查询，接触边界仍为 `typed_unavailable`。投影固定 `continuation_loss_upper_raw=null`、`material_comparison_ready=false`、`recommended_outcome=null`、`action_literal=null`，不能用一日围城时钟推出应投降或应继续。投影聚焦测试检查同帧估计和源/清理/时钟缺失拒绝，普通及 `-O` 模式各 2/2。
