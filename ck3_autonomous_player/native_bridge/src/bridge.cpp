@@ -9155,6 +9155,10 @@ public:
     environment.permitted_executor_triquinquagintary =
         &xar::ck3_11906::ExecutePlayerPrisonerCollectionPrivateQueryV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+    environment.permitted_executor_quattuorquinquagintary =
+        &xar::ck3_11906::ExecutePlayerPrisonerRansomPrivateSubmitV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
