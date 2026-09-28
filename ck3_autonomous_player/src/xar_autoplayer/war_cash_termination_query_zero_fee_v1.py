@@ -308,12 +308,16 @@ def observe_termination_query_zero_fee_v1(
         return _blocked("official_no_launch_pair_receipt_mismatch")
     if (managed.get("schema") != "xar.ck3.war-cash-query-managed-session.v1"
             or managed.get("status") != "same_paused_query_postcheck_passed"
+            or not isinstance(managed.get("managed_cleanup"), dict)
+            or managed["managed_cleanup"].get("ok") is not True
+            or managed.get("runner_status") != "turn_limit"
             or not _exact_fields(managed.get("source_frame_before"), frame)
             or not _exact_fields(managed.get("source_frame_after"), frame)
             or not _exact_fields(managed.get("query_result"), query)
             or managed.get("source_commit") != pair["source_commit"]
             or type(managed.get("process_pid")) is not int
             or managed.get("process_pid") != run["process_pid"]
+            or managed.get("managed_session_pid") != run["process_pid"]
             or type(managed.get("process_created_filetime")) is not int
             or managed.get("process_created_filetime")
             != run["process_created_filetime"]
@@ -325,11 +329,60 @@ def observe_termination_query_zero_fee_v1(
             != run["gameplay_submits_after"]
             or _sha256(managed.get("loaded_game_exe_sha256")) != EXE_SHA256
             or _sha256(managed.get("loaded_native_dll_sha256")) != dll_sha
-            or _sha256(managed.get("loaded_injector_sha256"))
+            or _sha256(managed.get("launch_injector_sha256"))
             != _sha256(pair["injector_sha256"])
-            or _sha256(managed.get("loaded_driver_state_sha256"))
-            != _sha256(pair["driver_state_sha256"])):
+            or _sha256(managed.get("paired_prelaunch_driver_state_sha256"))
+            != _sha256(pair["driver_state_sha256"])
+            or _sha256(managed.get("bound_driver_state_sha256")) is None
+            or _sha256(managed.get("postquery_driver_state_sha256")) is None
+            or managed.get("module_hash_scope")
+            != "process_mapped_path_disk_bytes_not_memory_pages"
+            or any(
+                not isinstance(managed.get(key), dict)
+                or type(managed[key].get("bridge_pid")) is not int
+                or managed[key]["bridge_pid"] != run["process_pid"]
+                or type(managed[key].get("episode_character_id")) is not int
+                or managed[key]["episode_character_id"]
+                != frame["played_character_id"]
+                or managed[key].get("episode_run_id")
+                != frame["episode_run_id"]
+                for key in (
+                    "bound_driver_state_binding",
+                    "postquery_driver_state_binding",
+                )
+            )):
         return _blocked("managed_loaded_binary_or_query_postcheck_mismatch")
+    request = managed.get("query_request")
+    envelope = managed.get("query_response_envelope")
+    native_result = (
+        envelope.get("result") if isinstance(envelope, dict) else None
+    )
+    if (not isinstance(request, dict)
+            or not isinstance(envelope, dict)
+            or not isinstance(native_result, dict)
+            or type(request.get("protocol_version")) is not int
+            or request["protocol_version"] != 1
+            or type(envelope.get("protocol_version")) is not int
+            or envelope["protocol_version"] != 1
+            or request.get("type") != "execute_step"
+            or request.get("step") != step
+            or type(request.get("expected_revision")) is not int
+            or request["expected_revision"] != frame["native_revision"]
+            or type(request.get("request_id")) is not str
+            or not request["request_id"]
+            or envelope.get("type") != "command_result"
+            or envelope.get("request_id") != request["request_id"]
+            or envelope.get("ok") is not True
+            or native_result.get("step") != step
+            or native_result.get("accepted") is not True
+            or native_result.get("status") != "available"
+            or type(native_result.get("query_sequence")) is not int
+            or native_result["query_sequence"] != query["query_sequence"]
+            or not isinstance(native_result.get("war_termination_options"), dict)
+            or type(native_result["war_termination_options"].get("war_id"))
+            is not int
+            or native_result["war_termination_options"]["war_id"] != war_id):
+        return _blocked("managed_query_protocol_identity_mismatch")
     if (binary_audit.get("schema")
             != "xar.ck3.war-cash-query-binary-audit.v1"
             or binary_audit.get("status")

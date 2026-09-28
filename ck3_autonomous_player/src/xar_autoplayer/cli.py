@@ -402,6 +402,17 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--formal-war-query-receipt-dir", type=Path,
+        help=(
+            "fresh external attempt directory for one exact formally selected "
+            "Robert war-options read-only query; never prices cash by itself"
+        ),
+    )
+    native_auto_run_parser.add_argument(
+        "--formal-war-query-source-commit",
+        help="40-hex receiver source commit for that isolated query receipt",
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-lifestyle-formal-trial",
         action="store_true",
         help=(
@@ -953,6 +964,19 @@ def main(argv: list[str] | None = None) -> int:
                     )
                     else {}
                 )
+                formal_query_options = (
+                    {
+                        "formal_war_query_receipt_dir": (
+                            args.formal_war_query_receipt_dir
+                        ),
+                        "formal_war_query_source_commit": (
+                            args.formal_war_query_source_commit
+                        ),
+                    }
+                    if (args.formal_war_query_receipt_dir is not None
+                        or args.formal_war_query_source_commit is not None)
+                    else {}
+                )
                 result = native_auto_run(
                     spec,
                     turn_count=args.turns,
@@ -974,6 +998,7 @@ def main(argv: list[str] | None = None) -> int:
                     **private_epidemic_options,
                     **private_prisoner_options,
                     **succession_options,
+                    **formal_query_options,
                     operator_stop_event=operator_stop_event,
                 )
         elif args.command == "native-query-current-timeline-blocker-context-v1":

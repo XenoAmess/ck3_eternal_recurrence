@@ -358,6 +358,40 @@
     "h3674_official_rebound_no_launch_status": "not_run_no_whitelist_no_transfer",
     "h3674_no_command_window_granted": false,
     "latest_source_completed_raw_pair_as_of_2026_09_28T100520Z": "H3674/raw53219496/history3674/actor29829/save-4C091DF5C3BD24BF66350F7C9EBE4A5624CC0295F09C4122E7863DEBDB79A860",
+    "latest_source_pair_notice_v2": {
+      "source_file": "WAR/M5-WAR-CASH-20260928/CASH-PAIR-LATEST-ADDENDUM-R0317-H3778-v1.json",
+      "source_sha256": "298610ABFB4238CFC5A9D0ED123D487C34C9911EAB15F6D72B93FCF58673EBDB",
+      "supersedes_h3774_notice_sha256": "6E6920AEB79D17C3AF4E8D4C6D46EA25DEA145FA8DE1D743166560924CCEEE41",
+      "source_round": "R0317",
+      "history_index": 3778,
+      "date_raw": 53219568,
+      "actor_character_id": 29829,
+      "war_id": 16777231,
+      "save_sha256": "C9B11D67C88065AE66A807AAA1FBD8AD5442700B16F552E3BFE285221DF20C25",
+      "driver_sha256": "CE630C3412D09DCF0714BEDA833D3779B5153B1020F32089E1CD28009BDF7AAB",
+      "receiver_rebind_no_launch": null,
+      "source_hold_granted": false,
+      "large_assets_transferred": false,
+      "war_cash_receipt": null,
+      "scope": "metadata_only_historical_if_source_advances"
+    },
+    "latest_source_pair_notice_v3": {
+      "source_file": "WAR/M5-WAR-CASH-20260928/CASH-PAIR-LATEST-ADDENDUM-R0319-H3860-v1.json",
+      "source_sha256": "BD775201A4D45EB9B44E2476BFD53C11CF9CE4BAC0DEA9F322890A14F275E61F",
+      "supersedes_h3778_notice_sha256": "298610ABFB4238CFC5A9D0ED123D487C34C9911EAB15F6D72B93FCF58673EBDB",
+      "source_round": "R0319",
+      "history_index": 3860,
+      "date_raw": 53219784,
+      "actor_character_id": 29829,
+      "war_id": 16777231,
+      "save_sha256": "7133DCE3B04C47CF27F0DF4D23F2871494EEA71DDC3EC9ACA209AD59D43C372A",
+      "driver_sha256": "CD0F2CE72BF55A122A6A868DE9F2C456B52575C0269758F2D45F6EB38C726868",
+      "receiver_rebind_no_launch": null,
+      "source_hold_granted": false,
+      "large_assets_transferred": false,
+      "war_cash_receipt": null,
+      "scope": "metadata_only_historical_if_source_advances"
+    },
     "h3446_exact_assets_received": true,
     "h3446_original_exact_assets_received": false,
     "same_frame_cash_receipt": null,
@@ -380,8 +414,8 @@
     "Exact-build GetEmbarkCost static audit now binds GUI callback, the icon's vtable update method, Q100000 rounded line-item aggregation and a player-gold comparison. The update fills a potentially multi-row forecast set before summing its quotes; a cached total is not automatically the single selected MoveArmy fee. The underlying quote function's pure-read safety, complete set-to-selected-action/route identity, cache freshness and any same-frame amount remain unproved. It cannot fill the immediate war fee or prove zero.",
     "The H3446 original driver 9FD5 has post-checkpoint history and cannot be paired as-is; a distinct official rebound driver 048D and its six assets passed transfer hash verification, but receiver-side official no-launch pairing awaits video CK3 cleanup. H3492 origin-side official rebound six files and separate historical M6 DLL/injector are all independently hash-verified transfer-only; receiver no-launch and live WarID verification remain pending. H3568/H3603/H3670 are historical; H3603 seven assets are hash-verified transfer only, H3670 seven accepted assets were not transferred. Source R0303 reports a later H3686 final read-only raw save/driver identity but no receiver rebind or transfer request. Its construction price and treasury are not war cash. Historical amounts cannot be substituted into current M5 cash. The resolved 44484 prisoner ransom 30-gold income is not war cash.",
     "Topbar GetGoldExpensesBreakdown is an exact-build static GUI candidate; calling its getter may refresh/write cache. An exact HUD owner path and bounded passive double-read sampler are prepared but never attached to CK3, and they explicitly do not prove paused-frame revision, cache freshness, account debit timing, or a formal cash amount.",
-    "R0313 H3770 was the latest source-selected official durable raw pair at its metadata response time, but R0314 H3774 superseded it later the same date. H3774 likewise has no output-frame official rebind/no-launch receipt, published final native/public revision, source hold, large transfer, receiver run, or cash amount. The earlier input rebind cannot qualify either output. The receiver's initial H3770 ACK copied a truncated response SHA; an append-only same-folder erratum binds the correct SHA and keeps the no-transfer decision. The source has now read back and accepted that erratum.",
-    "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove the DLL/driver actually used in H3770 or H3774. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan now emits typed priced_command identity only for the selected termination-options query; this is not a trusted native fee or managed postquery receipt. No historical immediate fee is filled."
+    "R0313 H3770 was the latest source-selected official durable raw pair at its metadata response time, but R0314 H3774, R0317 H3778, and R0319 H3860 superseded it. H3860 has no output-frame official rebind/no-launch receipt, source hold, large transfer, receiver run, or cash amount; the earlier input rebind cannot qualify it. Prior notices remain historical pointers. The receiver's initial H3770 ACK copied a truncated response SHA; an append-only same-folder erratum binds the correct SHA and keeps the no-transfer decision. The source has read back and accepted that erratum.",
+    "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove the DLL/driver actually used in a Robert output pair. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan emits typed priced_command identity only for the selected termination-options query. A new opt-in, one-turn runner path can append a managed receipt for that exact formal selection, parsed protocol request/envelope, six-field paused frame, process PID/creation time and mapped module disk-file hashes after cleanup, but it has not run against CK3. It is documented at docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md. Direct H2743 query evidence cannot substitute for formal selection, and no historical immediate fee is filled."
   ],
-  "next_step": "Do not chase historical assets or interrupt source LIFE/ECON continuation. During E2 video screen use, continue static producer research without CK3/no-launch. The bounded HUD sampler and exact read-only query zero-fee gate are prepared but cannot supply a formal cash field by themselves. For the query gate, obtain a newly frozen output-pair official rebind/no-launch, exact DLL/driver binary audit, a managed same-frame postquery receipt, trusted typed command production and reviewed SHA promotion before any zero observation; H3770/H3774 metadata cannot substitute. Connect and authenticate an auditable owner-side commitment source, a native selected-action/route/quote fee for nonquery actions, bounded future fee with debit cadence and risk, and a newly published versioned player war reserve policy. Source has explicitly reported no current Robert war liquidity floor policy. Keep all five typed null and the M5 spend gate closed meanwhile."
+  "next_step": "Do not chase historical assets or interrupt source LIFE/ECON continuation. During E2 video screen use, continue static producer research without CK3/no-launch. The bounded HUD sampler and exact read-only query zero-fee gate are prepared but cannot supply a formal cash field by themselves. For the query gate, obtain a newly frozen output-pair official rebind/no-launch, exact DLL/driver binary audit, a managed same-frame formal selected postquery receipt and reviewed SHA promotion before any zero observation; H3770/H3774/H3778/H3860 metadata cannot substitute. Connect and authenticate an auditable owner-side commitment source, a native selected-action/route/quote fee for nonquery actions, bounded future fee with debit cadence and risk, and a newly published versioned player war reserve policy. Source has explicitly reported no current Robert war liquidity floor policy. Keep all five typed null and the M5 spend gate closed meanwhile."
 }

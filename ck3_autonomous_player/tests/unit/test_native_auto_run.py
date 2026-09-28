@@ -1627,6 +1627,8 @@ class NativeAutoRunTests(unittest.TestCase):
         focus_post_xp_available: bool = True,
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
+        formal_war_query_receipt_dir: Path | None = None,
+        formal_war_query_source_commit: str | None = None,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         use_cold_start_checkpoint = (
             completion_contract in {"one_generation", "next_episode"}
@@ -1782,6 +1784,8 @@ class NativeAutoRunTests(unittest.TestCase):
                 allow_private_prisoner_collection_observation=(
                     allow_private_prisoner_collection_observation
                 ),
+                formal_war_query_receipt_dir=formal_war_query_receipt_dir,
+                formal_war_query_source_commit=formal_war_query_source_commit,
             )
         return report, harness
 
@@ -1817,6 +1821,77 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(
             args.require_initial_lifestyle_focus_before_date_advance
         )
+
+    def test_formal_war_query_mode_rejects_nonquery_before_submit(self) -> None:
+        attempt = self.spec.state_dir.parent / "formal-query-attempt"
+        title_dir = self.spec.game_dir / "game" / "common" / "landed_titles"
+        title_dir.mkdir(parents=True)
+        (title_dir / "00_landed_titles.txt").write_text(
+            "c_messina = { b_messina = { province = 2633 } }",
+            encoding="utf-8",
+        )
+        driver_state = self.spec.state_dir / "native-session" / "driver-state.json"
+        driver_state.parent.mkdir(parents=True)
+        driver_state.write_text("{}", encoding="utf-8")
+        with mock.patch.object(
+            native_auto_run_module, "capture_query_process_binding",
+            return_value={"status": "read_only_process_and_files_sampled"},
+        ):
+            report, harness = self._run(
+                ["candidate_intercept"], cold_start_checkpoint=True,
+                war_hotspot_army=True,
+                formal_war_query_receipt_dir=attempt,
+                formal_war_query_source_commit="a" * 40,
+            )
+        self.assertFalse(report["ok"])
+        self.assertNotIn("auto_turn:candidate_intercept", harness.events)
+        self.assertNotIn("camera_center:b_messina", harness.events)
+        self.assertTrue((attempt / "intent.json").is_file())
+        receipt = json.loads(
+            (attempt / "formal-selected-query-receipt.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(receipt["status"], "blocked")
+        self.assertIsNone(receipt["immediate_war_action_cost_raw"])
+
+    def test_formal_war_query_mode_requires_cold_single_turn(self) -> None:
+        attempt = self.spec.state_dir.parent / "formal-query-guard"
+        with self.assertRaisesRegex(
+            AgentError, "requires one bounded cold turn"
+        ):
+            native_auto_run_module.native_auto_run(
+                self.spec, turn_count=2, timeout_seconds=2.0,
+                readiness_timeout_seconds=0.25, native_bridge=self.config,
+                formal_war_query_receipt_dir=attempt,
+                formal_war_query_source_commit="a" * 40,
+            )
+        self.assertFalse(attempt.exists())
+
+    def test_cli_wires_formal_war_query_attempt_only_when_requested(self) -> None:
+        attempt = self.spec.state_dir.parent / "cli-formal-query"
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment",
+            return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run",
+            return_value={"ok": False, "status": "blocked", "outcome": "failed"},
+        ) as run_mock, contextlib.redirect_stdout(io.StringIO()):
+            code = cli.main([
+                "--bridge-mode", "native-headless",
+                "--bridge-dll", str(self.dll_path),
+                "--bridge-injector", str(self.injector_path),
+                "native-auto-run", "--turns", "1", "--cold-start-checkpoint",
+                "--formal-war-query-receipt-dir", str(attempt),
+                "--formal-war-query-source-commit", "a" * 40,
+            ])
+        self.assertEqual(code, 1)
+        self.assertEqual(run_mock.call_args.kwargs["formal_war_query_receipt_dir"],
+                         attempt)
+        self.assertEqual(run_mock.call_args.kwargs[
+            "formal_war_query_source_commit"], "a" * 40)
 
     def test_war_camera_follows_observed_battle_before_gameplay_turn(self) -> None:
         title_dir = self.spec.game_dir / "game" / "common" / "landed_titles"

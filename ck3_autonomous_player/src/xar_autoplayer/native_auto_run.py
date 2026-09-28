@@ -96,6 +96,11 @@ from .runtime import (
     utc_now,
     validate_native_bridge_launch_config,
 )
+from .war_cash_formal_query_runtime_receipt_v1 import (
+    STEP as FORMAL_WAR_QUERY_STEP,
+    build_formal_query_session_receipt,
+    capture_query_process_binding,
+)
 
 
 PURE_NATIVE_MODE = "native-headless"
@@ -360,6 +365,8 @@ def native_auto_run(
         dict[str, object],
     ]
     | None = None,
+    formal_war_query_receipt_dir: Path | None = None,
+    formal_war_query_source_commit: str | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -468,6 +475,22 @@ def native_auto_run(
         raise AgentError(
             "after_intercept requires a before_submit candidate interceptor"
         )
+    if ((formal_war_query_receipt_dir is None)
+            != (formal_war_query_source_commit is None)):
+        raise AgentError("formal war query receipt dir and source commit must be paired")
+    if formal_war_query_receipt_dir is not None:
+        if (not isinstance(formal_war_query_receipt_dir, Path)
+                or turn_count != 1 or completion_contract != "bounded"
+                or cold_start_checkpoint is not True
+                or before_submit is not None or after_intercept is not None
+                or type(formal_war_query_source_commit) is not str
+                or len(formal_war_query_source_commit) != 40
+                or any(char not in "0123456789abcdefABCDEF"
+                       for char in formal_war_query_source_commit)):
+            raise AgentError(
+                "formal war query receipt requires one bounded cold turn, "
+                "no interceptors, a fresh Path, and a 40-hex source commit"
+            )
 
     ensure_state_path_safe(spec.state_dir)
     try:
@@ -503,6 +526,28 @@ def native_auto_run(
         or cold_start_checkpoint
         else None
     )
+    formal_query_prelaunch_driver_sha256: str | None = None
+    if formal_war_query_receipt_dir is not None:
+        try:
+            formal_query_prelaunch_driver_sha256 = _sha256_file(
+                spec.state_dir / "native-session" / "driver-state.json"
+            ).upper()
+            formal_war_query_receipt_dir.mkdir(exist_ok=False)
+            with (formal_war_query_receipt_dir / "intent.json").open("xb") as stream:
+                stream.write(json.dumps({
+                    "schema": "xar.ck3.war-cash-formal-query-attempt.v1",
+                    "status": "created_no_query_claim",
+                    "selected_step_required": FORMAL_WAR_QUERY_STEP,
+                    "source_commit": formal_war_query_source_commit,
+                    "paired_prelaunch_driver_state_sha256": (
+                        formal_query_prelaunch_driver_sha256
+                    ),
+                    "formal_cash_receipt_eligible": False,
+                }, sort_keys=True, indent=2).encode("utf-8"))
+        except OSError as error:
+            raise AgentError(
+                f"fresh formal war query receipt attempt unavailable: {error}"
+            ) from error
     if succession_lifecycle_binding["lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION:
         if not cold_start_checkpoint or not isinstance(fixed_seed, dict):
             raise AgentError(
@@ -560,6 +605,8 @@ def native_auto_run(
     status = "starting"
     primary_error: str | None = None
     current_attempt: dict[str, object] | None = None
+    formal_query_receipt_candidate: dict[str, object] | None = None
+    formal_query_receipt_summary: dict[str, object] | None = None
     first_failure: dict[str, object] | None = None
     readiness_timeout_diagnostics: dict[str, object] | None = None
     candidate_interception: dict[str, object] | None = None
@@ -861,6 +908,20 @@ def native_auto_run(
             candidate: dict[str, object],
         ) -> dict[str, object] | None:
             nonlocal epidemic_recovery_pre
+            if formal_war_query_receipt_dir is not None:
+                candidate_plan = candidate.get("plan")
+                if (candidate.get("selected_step") != FORMAL_WAR_QUERY_STEP
+                        or not isinstance(candidate_plan, dict)
+                        or candidate_plan.get("selected_step")
+                        != FORMAL_WAR_QUERY_STEP
+                        or candidate_plan.get("priced_command") != {
+                            "kind": "read_only_query", "war_id": 16777231,
+                            "query_name": "war_termination_options",
+                        }):
+                    raise AgentError(
+                        "formal war cash attempt refuses every unselected "
+                        "or non-query gameplay step before submission"
+                    )
             if opening_focus_gate is not None:
                 selected = candidate.get("selected_step")
                 plan = candidate.get("plan")
@@ -1079,7 +1140,7 @@ def native_auto_run(
                 opening_date_raw = before.get("date_raw")
                 driver.require_initial_lifestyle_focus_before_date_advance = True
                 driver.initial_lifestyle_focus_gate_stage = "await_submit"
-            if camera_index is not None:
+            if camera_index is not None and formal_war_query_receipt_dir is None:
                 try:
                     semantic = before.get("_semantic")
                     if not isinstance(semantic, dict):
@@ -1134,14 +1195,34 @@ def native_auto_run(
             # canonical checkpoint path.
             current_attempt["stage"] = "opaque_auto_turn"
             pre_submission_revision_replans = 0
+            formal_query_process_before: dict[str, object] | None = None
+            formal_query_process_after: dict[str, object] | None = None
+            formal_query_submits_before: int | None = None
             while True:
                 try:
+                    if formal_war_query_receipt_dir is not None:
+                        formal_query_submits_before = counts["gameplay"]
+                        formal_query_process_before = capture_query_process_binding(
+                            pid=getattr(driver, "_session_bridge_pid", None),
+                            game_exe=spec.game_exe,
+                            native_dll=config.dll_path,
+                            injector=config.injector_path,
+                            driver_state=spec.state_dir / "native-session" / "driver-state.json",
+                        )
+                        if formal_query_process_before.get("status") != (
+                            "read_only_process_and_files_sampled"
+                        ):
+                            raise AgentError(
+                                "formal war query pre-run process/module binding failed: "
+                                + str(formal_query_process_before.get("missing_reasons"))
+                            )
                     outcome = (
                         service.auto_turn(before_submit=opening_guard_before_submit)
                         if (
                             opening_focus_gate is not None
                             or before_submit is not None
                             or allow_private_epidemic_recovery_near_pair is True
+                            or formal_war_query_receipt_dir is not None
                         )
                         else service.auto_turn()
                     )
@@ -1207,6 +1288,16 @@ def native_auto_run(
             if not isinstance(selected_step, str) and isinstance(plan, dict):
                 selected_step = plan.get("selected_step")
             step = selected_step if isinstance(selected_step, str) else None
+            if (formal_war_query_receipt_dir is not None
+                    and outcome_status == "executed"
+                    and step == FORMAL_WAR_QUERY_STEP):
+                formal_query_process_after = capture_query_process_binding(
+                    pid=getattr(driver, "_session_bridge_pid", None),
+                    game_exe=spec.game_exe,
+                    native_dll=config.dll_path,
+                    injector=config.injector_path,
+                    driver_state=spec.state_dir / "native-session" / "driver-state.json",
+                )
             current_attempt["plan"] = copy.deepcopy(plan)
             current_attempt["selected_step"] = step
             current_attempt["result"] = copy.deepcopy(outcome.get("result"))
@@ -1429,6 +1520,33 @@ def native_auto_run(
                 if step == "save-checkpoint"
                 else _runner_semantic_snapshot(driver)
             )
+            if formal_war_query_receipt_dir is not None:
+                wire_reader = getattr(driver, "termination_query_wire_audit_v1", None)
+                wire = wire_reader() if callable(wire_reader) else None
+                formal_query_receipt_candidate = build_formal_query_session_receipt(
+                    before=before,
+                    after=after_snapshot,
+                    outcome=outcome,
+                    wire=wire,
+                    process_before=formal_query_process_before or {},
+                    process_after=formal_query_process_after or {},
+                    gameplay_submits_before=(
+                        formal_query_submits_before
+                        if formal_query_submits_before is not None else -1
+                    ),
+                    gameplay_submits_after=counts["gameplay"],
+                    source_commit=formal_war_query_source_commit,
+                    paired_prelaunch_driver_state_sha256=(
+                        formal_query_prelaunch_driver_sha256
+                    ),
+                )
+                if formal_query_receipt_candidate["status"] != (
+                    "same_paused_query_postcheck_passed"
+                ):
+                    raise AgentError(
+                        "formal selected war query receipt failed closed: "
+                        + str(formal_query_receipt_candidate.get("missing_reasons"))
+                    )
             merge_observation: dict[str, object] | None = None
             if parse_merge_armies_step(step) is not None:
                 result = outcome.get("result")
@@ -2727,6 +2845,66 @@ def native_auto_run(
             else f"{primary_error}; cleanup: {cleanup_error}"
         )
 
+    if formal_war_query_receipt_dir is not None:
+        receipt_process_pid = (
+            formal_query_receipt_candidate.get("process_pid")
+            if isinstance(formal_query_receipt_candidate, dict) else None
+        )
+        session_process_pid = (
+            session_report.get("pid")
+            if isinstance(session_report, dict) else None
+        )
+        if (not isinstance(formal_query_receipt_candidate, dict)
+                or formal_query_receipt_candidate.get("status")
+                != "same_paused_query_postcheck_passed"
+                or primary_error is not None
+                or cleanup.get("ok") is not True
+                or status != "turn_limit"
+                or type(receipt_process_pid) is not int
+                or receipt_process_pid != session_process_pid):
+            formal_receipt = {
+                "schema": "xar.ck3.war-cash-query-managed-session.v1",
+                "status": "blocked",
+                "missing_reasons": [
+                    "formal_selected_query_or_managed_cleanup_unproven"
+                ],
+                "candidate": copy.deepcopy(formal_query_receipt_candidate),
+                "runner_status": status,
+                "runner_error": primary_error,
+                "cleanup": copy.deepcopy(cleanup),
+                "formal_cash_receipt_eligible": False,
+                "immediate_war_action_cost_raw": None,
+            }
+        else:
+            formal_receipt = {
+                **formal_query_receipt_candidate,
+                "managed_cleanup": copy.deepcopy(cleanup),
+                "managed_session_pid": session_process_pid,
+                "runner_status": status,
+            }
+        formal_receipt_path = (
+            formal_war_query_receipt_dir / "formal-selected-query-receipt.json"
+        )
+        formal_receipt_bytes = json.dumps(
+            formal_receipt, sort_keys=True, indent=2, ensure_ascii=False,
+        ).encode("utf-8")
+        try:
+            with formal_receipt_path.open("xb") as stream:
+                stream.write(formal_receipt_bytes)
+            formal_query_receipt_summary = {
+                "path": str(formal_receipt_path),
+                "sha256": hashlib.sha256(formal_receipt_bytes).hexdigest().upper(),
+                "status": formal_receipt["status"],
+                "formal_cash_receipt_eligible": False,
+            }
+        except OSError as error:
+            detail = f"formal war query append-only receipt write failed: {error}"
+            primary_error = detail if primary_error is None else f"{primary_error}; {detail}"
+            formal_query_receipt_summary = {
+                "status": "blocked_receipt_write_failed", "error": detail,
+                "formal_cash_receipt_eligible": False,
+            }
+
     qualification_gates = {
         "start_alive": bool(
             isinstance(readiness, dict)
@@ -2921,6 +3099,10 @@ def native_auto_run(
             succession_lifecycle_binding
         ),
         "cold_start_checkpoint": cold_start_checkpoint,
+        **(
+            {"formal_war_query_receipt": copy.deepcopy(formal_query_receipt_summary)}
+            if formal_war_query_receipt_dir is not None else {}
+        ),
         "initial_lifestyle_focus_gate": copy.deepcopy(opening_focus_gate),
         **(
             {

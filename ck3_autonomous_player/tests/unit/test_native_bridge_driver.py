@@ -11407,6 +11407,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 expected_revision=selected_revision,
             )
         self.assertEqual(options_history_snapshot.call_count, 0)
+        wire = driver.termination_query_wire_audit_v1()
+        self.assertIsInstance(wire, dict)
+        assert wire is not None
+        self.assertEqual(wire["request"]["protocol_version"], 1)
+        self.assertEqual(wire["request"]["step"],
+                         "query-war-termination-options-16777290")
+        self.assertEqual(wire["response_envelope"]["request_id"],
+                         wire["request"]["request_id"])
+        self.assertEqual(wire["response_envelope"]["result"]["query_sequence"], 9)
+        self.assertEqual(wire["before"]["active_war_ids"], [war_id])
+        self.assertEqual(wire["before"], wire["after"])
         self.assertEqual(
             driver.take_snapshot()["native_command_history"][-1]["command"],
             "query-war-termination-options-16777290",

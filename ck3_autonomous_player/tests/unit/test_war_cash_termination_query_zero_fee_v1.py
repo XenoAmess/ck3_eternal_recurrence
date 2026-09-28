@@ -101,19 +101,48 @@ def _fixture(root: Path) -> tuple[dict[str, object], dict[str, Path], dict[str, 
         paths["official_no_launch_receipt"].read_bytes())
     query = {"step": STEP, "war_id": WAR_ID, "accepted": True,
              "status": "available", "query_sequence": 7}
+    native_query = {
+        "step": STEP, "accepted": True, "status": "available",
+        "query_sequence": 7,
+        "war_termination_options": {"war_id": WAR_ID},
+    }
     managed = {
         "schema": "xar.ck3.war-cash-query-managed-session.v1",
         "status": "same_paused_query_postcheck_passed",
+        "managed_cleanup": {"ok": True}, "runner_status": "turn_limit",
         "source_commit": source_commit,
         "source_frame_before": dict(FRAME),
         "source_frame_after": dict(FRAME),
         "query_result": query,
-        "process_pid": 2000, "process_created_filetime": 123456,
+        "query_request": {
+            "protocol_version": 1, "type": "execute_step",
+            "request_id": "query-7", "step": STEP,
+            "expected_revision": FRAME["native_revision"],
+        },
+        "query_response_envelope": {
+            "protocol_version": 1, "type": "command_result",
+            "request_id": "query-7", "ok": True, "result": native_query,
+        },
+        "process_pid": 2000, "managed_session_pid": 2000,
+        "process_created_filetime": 123456,
         "gameplay_submits_before": 3, "gameplay_submits_after": 3,
         "loaded_game_exe_sha256": raw["game_exe"],
         "loaded_native_dll_sha256": raw["native_dll"],
-        "loaded_injector_sha256": raw["injector"],
-        "loaded_driver_state_sha256": raw["driver_state"],
+        "launch_injector_sha256": raw["injector"],
+        "module_hash_scope": "process_mapped_path_disk_bytes_not_memory_pages",
+        "paired_prelaunch_driver_state_sha256": raw["driver_state"],
+        "bound_driver_state_sha256": raw["driver_state"],
+        "postquery_driver_state_sha256": raw["driver_state"],
+        "bound_driver_state_binding": {
+            "bridge_pid": 2000,
+            "episode_character_id": FRAME["played_character_id"],
+            "episode_run_id": FRAME["episode_run_id"],
+        },
+        "postquery_driver_state_binding": {
+            "bridge_pid": 2000,
+            "episode_character_id": FRAME["played_character_id"],
+            "episode_run_id": FRAME["episode_run_id"],
+        },
     }
     paths["managed_session_receipt"].write_bytes(_bytes(managed))
     raw["managed_session_receipt"] = _sha(
@@ -200,6 +229,46 @@ class TerminationQueryZeroFeeTests(unittest.TestCase):
             self.assertIsNone(result["policy_minimum_gold_reserve_raw"])
             self.assertFalse(result["formal_cash_receipt_eligible"])
 
+    def test_postrestore_driver_bytes_may_differ_from_prelaunch_pair(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence, paths, hashes = _fixture(Path(temporary))
+            managed = json.loads(paths["managed_session_receipt"].read_bytes())
+            managed["bound_driver_state_sha256"] = "D" * 64
+            managed["postquery_driver_state_sha256"] = "E" * 64
+            paths["managed_session_receipt"].write_bytes(_bytes(managed))
+            evidence["run"]["session_receipt_sha256"] = _sha(
+                paths["managed_session_receipt"].read_bytes())
+            result = self._run(_bytes(evidence), paths, hashes)
+            self.assertEqual(result["status"],
+                             "selected_read_only_query_zero_fee_proven")
+            self.assertFalse(result["formal_cash_receipt_eligible"])
+
+    def test_postrestore_driver_pid_cannot_switch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence, paths, hashes = _fixture(Path(temporary))
+            managed = json.loads(paths["managed_session_receipt"].read_bytes())
+            managed["bound_driver_state_binding"]["bridge_pid"] = 3000
+            paths["managed_session_receipt"].write_bytes(_bytes(managed))
+            evidence["run"]["session_receipt_sha256"] = _sha(
+                paths["managed_session_receipt"].read_bytes())
+            result = self._run(_bytes(evidence), paths, hashes)
+            self.assertEqual(result["missing_reasons"],
+                             ["managed_loaded_binary_or_query_postcheck_mismatch"])
+
+    def test_restored_driver_hashes_and_scope_are_required(self) -> None:
+        for key in ("bound_driver_state_sha256",
+                    "postquery_driver_state_sha256", "module_hash_scope"):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as temporary:
+                evidence, paths, hashes = _fixture(Path(temporary))
+                managed = json.loads(paths["managed_session_receipt"].read_bytes())
+                managed.pop(key)
+                paths["managed_session_receipt"].write_bytes(_bytes(managed))
+                evidence["run"]["session_receipt_sha256"] = _sha(
+                    paths["managed_session_receipt"].read_bytes())
+                result = self._run(_bytes(evidence), paths, hashes)
+                self.assertEqual(result["missing_reasons"],
+                                 ["managed_loaded_binary_or_query_postcheck_mismatch"])
+
     def test_plan_or_same_frame_mismatch_blocks(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             evidence, paths, hashes = _fixture(Path(temporary))
@@ -221,6 +290,7 @@ class TerminationQueryZeroFeeTests(unittest.TestCase):
             result = self._run(_bytes(evidence), paths, hashes)
             self.assertEqual(result["missing_reasons"],
                              ["exact_runtime_and_source_artifact_bytes_unverified"])
+
         with tempfile.TemporaryDirectory() as temporary:
             evidence, paths, hashes = _fixture(Path(temporary))
             managed = json.loads(paths["managed_session_receipt"].read_bytes())
@@ -237,6 +307,24 @@ class TerminationQueryZeroFeeTests(unittest.TestCase):
             self.assertEqual(self._run(_bytes(evidence), paths, hashes)[
                 "missing_reasons"],
                 ["exact_runtime_and_source_artifact_bytes_unverified"])
+
+    def test_managed_protocol_version_or_request_identity_blocks(self) -> None:
+        for mutation in ("request_version", "response_version", "request_id"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                evidence, paths, hashes = _fixture(Path(temporary))
+                managed = json.loads(paths["managed_session_receipt"].read_bytes())
+                if mutation == "request_version":
+                    managed["query_request"].pop("protocol_version")
+                elif mutation == "response_version":
+                    managed["query_response_envelope"]["protocol_version"] = 0
+                else:
+                    managed["query_response_envelope"]["request_id"] = "other"
+                paths["managed_session_receipt"].write_bytes(_bytes(managed))
+                evidence["run"]["session_receipt_sha256"] = _sha(
+                    paths["managed_session_receipt"].read_bytes())
+                result = self._run(_bytes(evidence), paths, hashes)
+                self.assertEqual(result["missing_reasons"],
+                                 ["managed_query_protocol_identity_mismatch"])
 
     def test_unsubmitted_or_duplicate_key_receipt_blocks(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

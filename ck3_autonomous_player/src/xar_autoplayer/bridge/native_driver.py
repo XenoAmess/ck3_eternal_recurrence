@@ -1593,6 +1593,9 @@ class NativeHeadlessGameplayDriver:
         self._command_history: list[dict[str, object]] = []
         self._owner_command_ledger = NativeOwnerCommandLedger()
         self._owner_command_ledger_errors: list[dict[str, object]] = []
+        # Diagnostic only: the exact protocol objects for the most recent
+        # termination-options query.  Never use this as a cash quote.
+        self._termination_query_wire_audit: dict[str, object] | None = None
         self._owner_command_context = threading.local()
         self._rollback_war_failures: list[dict[str, object]] = []
         self._rollback_war_failures_migration_required = False
@@ -2390,6 +2393,15 @@ class NativeHeadlessGameplayDriver:
             "native_rollback_war_failure": rollback_war_failure,
             "native_rollback_war_failures": rollback_war_failures,
         }
+
+    def termination_query_wire_audit_v1(self) -> dict[str, object] | None:
+        """Return exact parsed protocol objects from the last options query.
+
+        This is an observation of Python's request and received envelope,
+        not a native cash amount, write-free proof, or raw pipe byte capture.
+        """
+        with self._driver_state_lock:
+            return copy.deepcopy(self._termination_query_wire_audit)
 
     def owner_command_lifecycle_receipt_v1(self) -> dict[str, object]:
         """Read local protocol ownership without asserting cash amounts or zero."""
@@ -8106,6 +8118,12 @@ class NativeHeadlessGameplayDriver:
                     "native request_fields attempted to replace protocol fields"
                 )
             request.update(request_fields)
+        termination_query = (
+            parse_query_war_termination_options_step(step) is not None
+        )
+        if termination_query:
+            with self._driver_state_lock:
+                self._termination_query_wire_audit = None
         played = snapshot.get("played_character")
         wars = snapshot.get("active_wars")
         source_frame = {
@@ -8170,6 +8188,16 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
+        if termination_query:
+            try:
+                observed_wire = {
+                    "request": copy.deepcopy(request),
+                    "response_envelope": copy.deepcopy(frame),
+                }
+            except Exception:
+                observed_wire = None
+            with self._driver_state_lock:
+                self._termination_query_wire_audit = observed_wire
         self._observe_owner_command_ledger(
             "response", request_id,
             lambda: self._owner_command_ledger.response(
@@ -16123,6 +16151,33 @@ class NativeHeadlessGameplayDriver:
                     "query_sequence": query_sequence,
                     "cache_binding": cache_binding,
                 }
+                if isinstance(self._termination_query_wire_audit, dict):
+                    def cash_frame(value: dict[str, object]) -> dict[str, object]:
+                        played = value.get("played_character")
+                        return {
+                            "snapshot_id": value.get("snapshot_id"),
+                            "revision": value.get("revision"),
+                            "native_revision": value.get("native_revision"),
+                            "date_raw": value.get("date_raw"),
+                            "episode_run_id": value.get("episode_run_id"),
+                            "played_character_id": (
+                                played.get("character_id")
+                                if isinstance(played, dict) else None
+                            ),
+                            "paused": value.get("paused"),
+                            "map_ready": value.get("map_ready"),
+                            "active_war_ids": [
+                                row.get("war_id")
+                                for row in (
+                                    value.get("active_wars")
+                                    if isinstance(value.get("active_wars"), list)
+                                    else []
+                                )
+                                if isinstance(row, dict)
+                            ],
+                        }
+                    self._termination_query_wire_audit["before"] = cash_frame(starting)
+                    self._termination_query_wire_audit["after"] = cash_frame(current)
             return {
                 **result,
                 "war_termination_options": options,
