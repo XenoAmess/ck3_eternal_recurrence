@@ -35,7 +35,21 @@ receipt from the H3911 pair.
 | Bridge dispatch | `bridge.cpp:16513-16628` | The exact query branch checks WarID and revision, reads admission/completion snapshots, calls `ReadWarTerminationOptions`, and emits a query result. There is no direct `submit_command` in this source branch. It increments `war_termination_query_sequence` after a successful write; a changed snapshot may invoke `PublishSnapshot` and reject. These are bridge bookkeeping mutations. |
 | Native reader | `ck3_11906.cpp:17763-17891`, `6723-6817` | The reader resolves one active war, computes options, and for the war leader constructs temporary character-interaction contexts, validates them, reads acceptance and optionally evaluates a recipient answer. Source-level call tracing reaches game-native functions; it does not establish that every nested call is pure. |
 | Snapshot treasury | `ck3_11906.cpp:10577-10582`, `game_contract.hpp:925-953` | Gold comes from the played character extension at `+0x100` as signed 64-bit raw at scale 100,000. `Snapshot::operator==` is defaulted over all members, including gold. Thus the bridge's admission/completion snapshot comparison detects a changed observed treasury value. It cannot rule out a transient debit followed by a credit, another side effect, or a later deferred command. |
-| Driver cache | `native_driver.py:16088-16192` | After postquery war identity and paused-frame checks, the driver updates `_war_termination_options`, query audit, and ledger. `_same_paused_native_frame` at `27427` does not compare gold. The #449 receiver's additional outer/inner four-sample raw treasury equality gate addresses this particular omission before producing a diagnostic receipt. |
+| Driver cache | `native_driver.py:872-893`, `995-1018`, `2343-2350`, `16088-16192`, `27427` | `state.semantic_snapshot()` projects the last published `state_snapshot` held in `_semantic_snapshot`; `take_internal_semantic_snapshot()` does not request a fresh native `ReadSnapshot`. After postquery war identity and paused-frame checks, the driver updates `_war_termination_options`, query audit, and ledger. `_same_paused_native_frame` does not compare gold. The #449 receiver compares four outer/inner cached semantic projections for raw gold equality. This detects disagreement among published projections; the four reads are **not** four independent CK3 treasury measurements. |
+
+The #449 receipt builder at
+`war_cash_formal_query_runtime_receipt_v1.py:175-240` compares two outer
+snapshots with the query wire audit's inner before/after projections. All four
+come through the driver's cached semantic state. If no new `state_snapshot`
+arrives, all four can repeat the same published value while the current CK3
+treasury differs. The bridge's own admission and completion `ReadSnapshot`
+calls are distinct direct native reads. Its source-level defaulted snapshot
+equality includes gold, but the query response does not separately serialize
+either native gold raw value. The receiver cannot independently inspect those
+two values from its four cached projections. Even the bridge comparison
+cannot exclude a transient debit followed by a credit between its reads, or
+a deferred debit after completion. Consequently four-sample receiver equality
+is a provenance and consistency check, not a native no-spend proof.
 
 The exact EXE bounded disassembly confirms that native interaction evaluation
 is **not memory-read-only** in the literal sense:
@@ -73,9 +87,15 @@ SHA, obtain all of the following for one exact #449 managed receiver run:
 3. An independent exact-DLL branch and native call audit with verified no
    gameplay `submit_command` reachability or a sufficiently narrow runtime
    no-submit observer. Record the actual scope of any cache or context writes.
-4. The same paused native frame, direct gold raw value at all bridge and
-   receiver before/after observations, and an unchanged gameplay submission
-   counter. This supports only the completed query's immediate cash cost.
+4. Prove that the loaded DLL actually enforces the bridge's direct native
+   admission/completion snapshot equality, including gold. The existing wire
+   result does not expose the two native raw values; an independent value
+   audit would require new native diagnostic fields or equivalent narrowly
+   bound evidence. Separately verify one paused frame, equality of the four
+   **cached** receiver gold projections, and an unchanged gameplay submission
+   counter. A binary or runtime no-submit audit must cover effects that
+   snapshot equality cannot see. Even all these checks cannot, by themselves,
+   exclude transient debit/credit or deferred effects.
 
 The current diagnostic producer deliberately returns `None` for the query
 cost and all other four war cash fields until the exact receipts are promoted.
