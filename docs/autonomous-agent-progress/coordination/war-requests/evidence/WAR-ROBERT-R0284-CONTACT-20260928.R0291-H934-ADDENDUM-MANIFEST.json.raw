@@ -1,0 +1,14 @@
+{
+  "schema": "xar.war.r0284-h934-addendum-manifest/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "status": "sender_small_file_written_receiver_ack_pending",
+  "addendum_file": {
+    "name": "H934-NEXT-CANDIDATE.json",
+    "size": 3152,
+    "sha256": "8896319227FA51C4A7F69D89D06F456703881030A26E3A7C9047D83829A5A105"
+  },
+  "source_round": "R0291",
+  "source_pair_index_sha256": "894994E267E0E8EAF95AF5B9E52CCB33A673EF7E99BB99364363FE7B26B7F8C5",
+  "source_qualification_sha256": "8D0722E4E06138007D7FB4D3B6F58E0FE85B2E6095822EBEF2E9E10ACFB71E71",
+  "receiver_ack_requested": "Please verify H934-NEXT-CANDIDATE.json SHA and keep semantic status preview-only; no typed move occurred in R0291."
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "xar.g2.cross-team-war-verification.v1",
+  "request_id": "WAR-ROBERT-R0284-CONTACT-20260928",
+  "checked_at_utc": "2026-09-28T08:44:13Z",
+  "status": "source_r0291_transport_green_semantic_red_preview_only",
+  "source_kind": "H90 derivative only; formal Robert date credit 0",
+  "source_attempt_round": "R0291",
+  "source_commit": "f6e27d579ccd9f8444d0ae289f0c5f269a6dfadb",
+  "required_merged_ancestor": "b93b595e483db915c7694e0b09f85563dbec49f4",
+  "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+  "strategy_matches_static_candidate_bytes": true,
+  "receiver_byte_verified_files": [
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0291-RESULT.json.raw", "size": 6468, "sha256": "28875B0C5D14CED26767E57170AA2AD388CC78931E51F5D72689805214CF359F"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0291-FOCUSED-EXCERPT.json.raw", "size": 11610, "sha256": "F3EE5883EA10CBA17109B8961BBBF34A5830F9DE58A08C89F5023937610E44B9"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0291-TRANSFER-MANIFEST.json.raw", "size": 2675, "sha256": "985DC108EE4719028C9CE55D673DE449F86EE6A0EEA2197F7445BD2428E32C6E"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0291-H934-NEXT-CANDIDATE.json.raw", "size": 3152, "sha256": "8896319227FA51C4A7F69D89D06F456703881030A26E3A7C9047D83829A5A105"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0291-H934-ADDENDUM-MANIFEST.json.raw", "size": 703, "sha256": "B44E91A72A23FB57608932C4199D6AC8293750B71098306F0B76B537E3521761"}
+  ],
+  "r0291_observed": {
+    "bounded_turns": "12/12",
+    "date_raw_before": 53157768,
+    "date_raw_after": 53157816,
+    "selected_last_step": "preview-move-army-16777450-to-2640",
+    "preview_origin_province_id": 2634,
+    "preview_target_province_id": 2640,
+    "typed_move_count": 0,
+    "target_full_hostile_contact_query": false,
+    "target_v3_inputs": false,
+    "typed_move_poststate": false,
+    "next_day_recheck": false,
+    "distant_route_branch_exercised": false
+  },
+  "source_only_h934_pair": {
+    "status": "hashes_from_sender_addendum_not_receiver_bytes",
+    "history_index": 934,
+    "date_raw": 53157816,
+    "save_sha256": "F1E1075D5EF0BF9985FC9BC78C4A4839D7645248325FFE270D88B4EDB4DE42A3",
+    "driver_sha256": "243F8A98259288FF3367B3032AA941498F0B0A277E9B812AB6F0E459FFEDF783",
+    "official_no_launch": "source reports ready; full receipts not transferred",
+    "action_job": "not_frozen_or_run"
+  },
+  "new_blocker": "Fixed --turns cannot safely stop after exactly one selected typed move plus independent poststate when cold sidecar query turns vary. A fail-closed semantic stop gate is required before an h934 single-action job; the separate implementation review is pending.",
+  "onedrive_receiver_ack_sha256": "62C08F0A0644287EE63CF115E2F4F2623879E974DB46DD61DEAC109A3DEDE54A",
+  "onedrive_next_bounded_request_sha256": "FF9220C8483B9CC35F46440B7DA17C1A098919363E0C0610B9AC0A22258EB055",
+  "onedrive_h934_addendum_ack_sha256": "019A4B31C60A8FFCB5E41298C5DA5DDD0C6BE9F4F28BA81A62ADEE4ED38CC4B4",
+  "receiver_gameplay": "not_run; R0266 currently owns local ck3-screen",
+  "interpretation": "Preview-only bounded run is a semantic RED, not evidence the merged route-start planner failed or succeeded. Zero typed moves and zero formal Robert date credit."
+}

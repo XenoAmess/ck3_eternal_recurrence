@@ -1,0 +1,46 @@
+{
+  "schema": "xar.war.r0284-source-live-verify-transfer-manifest/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "status": "sender_small_files_written_receiver_ack_pending",
+  "source_attempt_path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\stage1-first12",
+  "source_commit": "f6e27d579ccd9f8444d0ae289f0c5f269a6dfadb",
+  "runtime_strategy_import_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\WAR-R0284-SOURCE-LIVE-VERIFY-20260928\\src\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+  "dll_sha256": "FD2AE3485B39DAC3202FDF0400FE15D1EC47D1BA86DFB533455B0ED7A175325F",
+  "injector_sha256": "53E181FE56725B6AF4DFBA50EF0C42DE0651D84DC6E66FEBB232D6B00AC8B6B2",
+  "game_build": "1.19.0.6-steam23530548",
+  "returned_files": {
+    "RESULT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-20260928\\RESULT.json",
+      "size": 6468,
+      "sha256": "28875B0C5D14CED26767E57170AA2AD388CC78931E51F5D72689805214CF359F"
+    },
+    "FOCUSED-EXCERPT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-20260928\\FOCUSED-EXCERPT.json",
+      "size": 11610,
+      "sha256": "F3EE5883EA10CBA17109B8961BBBF34A5830F9DE58A08C89F5023937610E44B9"
+    }
+  },
+  "large_artifacts_retained_at_source": {
+    "formal_report": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\stage1-first12\\formal-report.txt",
+      "size": 214806,
+      "sha256": "378BE3C3C121A0FF087FA04B34EE1B290302285590D188D303BCC18110529F7D"
+    },
+    "operator_receipt": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\stage1-first12\\operator-receipt.json",
+      "size": 2035,
+      "sha256": "ED06070CF357158931F8CB4E6F86DCBB14EF2E087751C95EF9754B1828EAB367"
+    },
+    "final_checkpoint_save": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 59558173,
+      "sha256": "F1E1075D5EF0BF9985FC9BC78C4A4839D7645248325FFE270D88B4EDB4DE42A3"
+    },
+    "final_checkpoint_driver": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\native-session\\driver-state.json",
+      "size": 11256323,
+      "sha256": "243F8A98259288FF3367B3032AA941498F0B0A277E9B812AB6F0E459FFEDF783"
+    }
+  },
+  "requested_receiver_receipt": "RECEIVER-ACK.json in this directory with verified SHA/size and semantic status; no move success should be claimed"
+}

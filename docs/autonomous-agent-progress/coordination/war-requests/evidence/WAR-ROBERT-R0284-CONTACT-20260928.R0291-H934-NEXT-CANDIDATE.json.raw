@@ -1,0 +1,42 @@
+{
+  "schema": "xar.war.r0284-h934-next-candidate-addendum/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "source_attempt_round": "R0291",
+  "status": "ready_no_launch_action_bound_pending",
+  "semantic_source_status": "preview_only_no_typed_move",
+  "source_commit": "f6e27d579ccd9f8444d0ae289f0c5f269a6dfadb",
+  "required_ancestor_commit": "b93b595e483db915c7694e0b09f85563dbec49f4",
+  "source_pair": {
+    "history_index": 934,
+    "date_raw": 53157816,
+    "save_sha256": "F1E1075D5EF0BF9985FC9BC78C4A4839D7645248325FFE270D88B4EDB4DE42A3",
+    "driver_sha256": "243F8A98259288FF3367B3032AA941498F0B0A277E9B812AB6F0E459FFEDF783",
+    "index_path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h934-next-action-f6e27d5-20260928\\R0291-h934-frozen-pair\\PAIR-IDENTITY.json",
+    "index_sha256": "894994E267E0E8EAF95AF5B9E52CCB33A673EF7E99BB99364363FE7B26B7F8C5"
+  },
+  "official_no_launch": {
+    "qualification_path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h934-next-action-f6e27d5-20260928\\QUALIFICATION.json",
+    "qualification_sha256": "8D0722E4E06138007D7FB4D3B6F58E0FE85B2E6095822EBEF2E9E10ACFB71E71",
+    "operator_manifest_sha256": "982296B8CF62FE5E4983DE3C0F3CBC8B59D3230D6A01E89ECCFCC0AF6E124F91",
+    "official_rebound_driver_sha256": "DC2BF69475206A0E6798632FE07A38A16D02417365DAC4D420DA152515A4C6F3",
+    "official_rebind_receipt_sha256": "BD83EA23D3C20A853A2B86134643AC7349BB5148AE042860B9C9BAC9272E1783",
+    "official_preflight_sha256": "3AF64B76CB361C8A548A60CB3E5C3BDBA7CE18972A39AF8C218F132512D2444A",
+    "ck3_launch_attempted": false
+  },
+  "next_minimal_action_window": {
+    "start": "Cold restore exact h934 pair at raw 53157816 with current source; preserve original R0291 attempt.",
+    "necessary_fresh_inputs": [
+      "Complete same-frame nonretreating hostile roster and WarID-to-controllable-ArmyID membership",
+      "Exact single-hop preview and one-day full-hostile route-contact horizon for ArmyID 16777450 from 2634 to 2640",
+      "Same-frame v3 battle inputs and risk admission"
+    ],
+    "permitted_typed_action": "At most one move-army-16777450-to-2640 only if the formal planner selects it; require independent route-start poststate and no date advance by that move.",
+    "later_date": "Prepare a separate bounded stage only after route-start poststate; fresh global army safety and full-hostile horizon before at most 24 raw hours.",
+    "cold_recovery_sidecar_queries_possible": true,
+    "exact_planner_turn_count_to_move": null
+  },
+  "missing_safe_operator_entry": "The existing g2_preview_operator run/native-auto-run offers numeric --turns and stop request only. A fixed turn count from h934 cannot guarantee both one move and no unintended later date advance when cold sidecar queries vary. A semantic stop after the selected typed move plus independent poststate, before any date advance, is needed for a strict single-action job. No action job/profile is frozen or authorized by this addendum.",
+  "large_pair_transfer": "Retained on source Z asset root; not copied into OneDrive pending receiver review/request.",
+  "robert_formal_date_credit": 0,
+  "h90_derivative_only": true
+}
