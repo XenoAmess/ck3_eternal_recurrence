@@ -11,7 +11,7 @@ R0266 的 `H2825/raw53217624` 是一个已暂停的同帧观察：`snapshot_id=n
 | 已提交、尚待执行的战争现金 | `null` | 缺少同帧战争待办动作账本及费用读回；`null` 不代表无待办。 |
 | 本次战争动作的即时费用 | `null` | 缺少所选战争动作的原生费用或能证明免费之证据。只读查询可以是 0，但必须与同一计划动作及来源绑定。 |
 | 战争政策最低现金保留 | `null` | 目前没有适用于该战争的已发布保留金政策。建造自身 200 金保留额不得冒充战争政策。 |
-| 未来战争现金上界与风险预算 | `null` | 缺少带期限的费用上界来源和政策风险额；`player_monthly_gold_income` 是当前净收入观察，不能倒推出总维护费，也不能证明未来费用上界。 |
+| 未来战争现金上界与风险预算 | `null` | 缺少带期限的费用上界来源和政策风险额；`player_monthly_gold_income` 仅有当前月收入读数合同，尚未证明其总收入、支出及净额构成，不能倒推出总维护费，也不能证明未来费用上界。 |
 
 `H2908/raw53217816` 是后来的另一帧，只能作后续检查点，不能填补 H2825 的同帧现金字段。以上数据来自 [R0266 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)和其[证据摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0266-JOINT-CASH-20260928.construction-frame.json)。本机在 UTC 20:38 的独立恢复 attempt `D:/ck3-research-artifacts/war31-h2743-20260928/attempt-06-r0266-cash/steam-stale-recovery-07/` 取得窗口位移的新桌面像素，人工查看到 Steam“离线模式”；任务栏时钟仍停在旧时间，任何实际启动前须重新取证。此处没有新的 CK3 实机读回。
 
