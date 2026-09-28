@@ -26,6 +26,9 @@ ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY = (
     "game.command.query-war-termination-options-N"
 )
+QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY = (
+    "game.command.query-war-prisoner-release-pairs-v1-N"
+)
 QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY = (
     "game.command.query-outbound-war-white-peace-status-v1-N"
 )
@@ -1646,6 +1649,13 @@ def query_war_termination_options_step(war_id: int) -> str:
     )
 
 
+def query_war_prisoner_release_pairs_v1_step(war_id: int) -> str:
+    return (
+        "query-war-prisoner-release-pairs-v1-"
+        f"{_positive_int32_id(war_id, 'war_id')}"
+    )
+
+
 def query_outbound_war_white_peace_status_step(war_id: int) -> str:
     return (
         "query-outbound-war-white-peace-status-v1-"
@@ -2373,6 +2383,12 @@ def parse_enforce_demands_step(step: object) -> int | None:
 def parse_query_war_termination_options_step(step: object) -> int | None:
     return _parse_generation_war_step(
         step, prefix="query-war-termination-options-"
+    )
+
+
+def parse_query_war_prisoner_release_pairs_v1_step(step: object) -> int | None:
+    return _parse_generation_war_step(
+        step, prefix="query-war-prisoner-release-pairs-v1-"
     )
 
 
@@ -3845,6 +3861,7 @@ def is_native_war_step(step: object) -> bool:
         or parse_stop_assault_step(step) is not None
         or parse_enforce_demands_step(step) is not None
         or parse_query_war_termination_options_step(step) is not None
+        or parse_query_war_prisoner_release_pairs_v1_step(step) is not None
         or parse_query_outbound_war_white_peace_status_step(step) is not None
         or parse_query_war_termination_terms_step(step) is not None
         or parse_surrender_war_step(step) is not None

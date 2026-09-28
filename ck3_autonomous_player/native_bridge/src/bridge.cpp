@@ -3826,6 +3826,49 @@ void AppendRaiktorCharacterIds(
   result += ']';
 }
 
+void AppendWarPrisonerReleasePairsObservationV1(
+    std::string &result,
+    const xar::ck3_11906::WarPrisonerReleasePairsObservationV1 &value) {
+  result += "{\"war_id\":" + SignedNumber(value.war_id);
+  result += ",\"date_raw\":" + SignedNumber(value.date_raw);
+  result += ",\"active_casus_belli_database_index\":" +
+            SignedNumber(value.active_casus_belli_database_index);
+  result += ",\"active_casus_belli_key\":";
+  AppendJsonString(result, value.active_casus_belli_key);
+  result += ",\"primary_attacker_character_id\":" +
+            SignedNumber(value.primary_attacker_character_id);
+  result += ",\"primary_defender_character_id\":" +
+            SignedNumber(value.primary_defender_character_id);
+  result += ",\"attacker_participant_ids\":";
+  AppendRaiktorCharacterIds(result, value.attacker_participant_ids);
+  result += ",\"defender_participant_ids\":";
+  AppendRaiktorCharacterIds(result, value.defender_participant_ids);
+  result += ",\"attacker_release_candidate_ids\":";
+  AppendRaiktorCharacterIds(result, value.attacker_release_candidate_ids);
+  result += ",\"defender_release_candidate_ids\":";
+  AppendRaiktorCharacterIds(result, value.defender_release_candidate_ids);
+  result += ",\"release_pairs\":[";
+  for (std::size_t index = 0; index < value.release_pairs.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &pair = value.release_pairs[index];
+    result += "{\"jailer_character_id\":" +
+              SignedNumber(pair.jailer_character_id);
+    result += ",\"prisoner_character_id\":" +
+              SignedNumber(pair.prisoner_character_id);
+    result += ",\"reason\":";
+    AppendJsonString(result, pair.reason);
+    result += '}';
+  }
+  result += "]";
+  result += ",\"full_participant_scan\":";
+  result += value.full_participant_scan ? "true" : "false";
+  result += ",\"primary_and_first_three_successors_scanned\":";
+  result += value.primary_and_first_three_successors_scanned ? "true" : "false";
+  result += ",\"same_frame_stable\":";
+  result += value.same_frame_stable ? "true" : "false";
+  result += '}';
+}
+
 void AppendRaiktorPrisonerReleasePairs(
     std::string &result,
     const std::vector<xar::game::WarRaiktorPrisonerReleaseSnapshot> &pairs) {
@@ -7713,6 +7756,24 @@ std::string WarTerminationOptionsResultFrame(
   return result;
 }
 
+std::string WarPrisonerReleasePairsResultFrameV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t snapshot_revision,
+    const xar::ck3_11906::WarPrisonerReleasePairsObservationV1 &value) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":" + Number(snapshot_revision);
+  result += ",\"war_prisoner_release_pairs_v1\":";
+  AppendWarPrisonerReleasePairsObservationV1(result, value);
+  result += ",\"read_only\":true,\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string OutboundWarWhitePeaceStatusResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -8813,6 +8874,14 @@ std::optional<std::int32_t> WarTerminationQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> WarPrisonerReleasePairsQueryStepV1(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-war-prisoner-release-pairs-v1-";
+  if (!step.starts_with(prefix)) return std::nullopt;
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
 std::optional<std::int32_t> OutboundWarWhitePeaceStatusQueryStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix =
@@ -9409,6 +9478,7 @@ struct WorkerState {
       experimental_combat_phase_trace;
 #endif
   std::uint64_t war_termination_query_sequence = 0;
+  std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
@@ -9824,6 +9894,8 @@ void RunConnectedSession(
       state.combat_phase_event_trace_query_sequence;
   auto &war_termination_query_sequence =
       state.war_termination_query_sequence;
+  auto &war_prisoner_release_pairs_query_sequence =
+      state.war_prisoner_release_pairs_query_sequence;
   auto &outbound_war_white_peace_status_query_sequence =
       state.outbound_war_white_peace_status_query_sequence;
   auto &war_termination_terms_query_sequence =
@@ -16529,6 +16601,70 @@ void RunConnectedSession(
                       pipe,
                       CommandResultFrame(request_id, step, false, error));
                 }
+              }
+            }
+          }
+        } else if (step.starts_with(
+                       "query-war-prisoner-release-pairs-v1-")) {
+          const auto war_id = WarPrisonerReleasePairsQueryStepV1(step);
+          std::uint64_t expected_revision = 0;
+          if (!war_id.has_value() ||
+              !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision) ||
+              expected_revision != state_revision ||
+              !previous_snapshot.has_value() || state_revision == 0) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "war prisoner release query identity or revision is invalid"));
+          } else {
+            xar::game::Snapshot admission{};
+            if (!xar::game::ReadSnapshot(game, admission) ||
+                admission != previous_snapshot.value() ||
+                !admission.paused || !admission.map_ready ||
+                !admission.has_played_character ||
+                !admission.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "war prisoner release query requires a stable paused map"));
+            } else {
+              xar::ck3_11906::WarPrisonerReleasePairsObservationV1 value{};
+              const auto read = xar::ck3_11906::ReadWarPrisonerReleasePairsV1(
+                  xar::ck3_11906::BindCurrentProcess(true),
+                  war_id.value(), value);
+              xar::game::Snapshot completion{};
+              if (!xar::game::ReadSnapshot(game, completion) ||
+                  completion != admission) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "war prisoner release query frame changed"));
+                }
+              } else if (read == xar::ck3_11906::
+                                     ReadWarPrisonerReleasePairsResultV1::
+                                         available &&
+                         value.same_frame_stable &&
+                         value.full_participant_scan &&
+                         value.primary_and_first_three_successors_scanned) {
+                const auto next_prisoner_query_sequence =
+                    war_prisoner_release_pairs_query_sequence + 1;
+                connected = xar::bridge::WriteFrame(
+                    pipe, WarPrisonerReleasePairsResultFrameV1(
+                              request_id, step, next_prisoner_query_sequence, state_revision,
+                              value));
+                if (connected)
+                  war_prisoner_release_pairs_query_sequence =
+                      next_prisoner_query_sequence;
+              } else {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "war prisoner release source scan is unavailable"));
               }
             }
           }

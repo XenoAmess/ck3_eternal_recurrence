@@ -489,6 +489,7 @@ from .war_contract import (
     QUERY_ARMY_STRENGTHS_STEP,
     QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY,
     QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+    QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY,
     QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
     RAISE_TROOPS_STEP,
     SPLIT_ARMY_HALF_CAPABILITY,
@@ -537,6 +538,7 @@ from .war_contract import (
     parse_query_route_contact_horizon_step,
     parse_query_outbound_war_white_peace_status_step,
     parse_query_war_termination_options_step,
+    parse_query_war_prisoner_release_pairs_v1_step,
     parse_query_war_termination_terms_step,
     parse_split_army_half_step,
     parse_start_assault_step,
@@ -547,6 +549,7 @@ from .war_contract import (
     player_armies_from_state,
     query_outbound_war_white_peace_status_step,
     query_war_termination_options_step,
+    query_war_prisoner_release_pairs_v1_step,
     query_war_termination_terms_step,
     stationary_province_contact_free_in_horizon,
     split_army_half_step,
@@ -561,6 +564,7 @@ from .war_contract import (
 from .raiktor_surrender_public_aggregate import (
     project_raiktor_surrender_six_domain,
 )
+from .prisoner_war_retention import normalize_war_prisoner_release_pairs_v1
 from .raiktor_war_bound_regiment_contract import (
     bind_raiktor_war_bound_regiment_public_frame,
 )
@@ -2277,6 +2281,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "war_termination_query_supported": (
                 QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "war_prisoner_release_pairs_v1_query_supported": (
+                QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "outbound_war_white_peace_status_query_supported": (
@@ -6583,6 +6591,23 @@ class NativeHeadlessGameplayDriver:
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
             )
+        prisoner_release_war_id = (
+            parse_query_war_prisoner_release_pairs_v1_step(step)
+        )
+        if prisoner_release_war_id is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query war prisoner release pairs"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         if war_bound_loss_cleanup_war_id is not None:
             bridge_capabilities = set(
                 _string_list(capabilities.get("bridge_capabilities"))
@@ -9328,6 +9353,9 @@ class NativeHeadlessGameplayDriver:
         termination_query_war_id = (
             parse_query_war_termination_options_step(step)
         )
+        prisoner_release_war_id = (
+            parse_query_war_prisoner_release_pairs_v1_step(step)
+        )
         outbound_white_peace_query_war_id = (
             parse_query_outbound_war_white_peace_status_step(step)
         )
@@ -9342,6 +9370,7 @@ class NativeHeadlessGameplayDriver:
         )
         internal_read_only_query = bool(
             termination_query_war_id is not None
+            or prisoner_release_war_id is not None
             or outbound_white_peace_query_war_id is not None
             or termination_terms_query_war_id is not None
             or actual_truce_expiry_toward is not None
@@ -9360,6 +9389,28 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        if prisoner_release_war_id is not None:
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=(
+                    QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY
+                ),
+                internal_semantic_snapshot=True,
+            )
+            try:
+                proof = normalize_war_prisoner_release_pairs_v1(
+                    raw,
+                    expected_step=step,
+                    expected_war_id=prisoner_release_war_id,
+                    expected_snapshot_revision=starting.get("native_revision"),
+                    expected_date_raw=starting.get("date_raw"),
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native prisoner release result is malformed: {error}"
+                ) from error
+            return {**raw, "war_prisoner_release_pairs_proof": proof}
         if actual_truce_expiry_toward is not None:
             native_revision = starting.get("native_revision")
             if (
@@ -24761,6 +24812,7 @@ def _action_steps(
     expand_enforce_demands = False
     advertise_army_strength_query = False
     expand_termination_queries = False
+    expand_prisoner_release_queries = False
     expand_outbound_white_peace_status_queries = False
     expand_termination_terms_queries = False
     expand_termination_exit_terms_queries = False
@@ -24948,6 +25000,8 @@ def _action_steps(
             continue
         elif capability == QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY:
             expand_termination_queries = True
+        elif capability == QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY:
+            expand_prisoner_release_queries = True
         elif (
             capability
             == QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY
@@ -24996,6 +25050,7 @@ def _action_steps(
                 QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
                 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
                 "query-war-termination-options-",
+                "query-war-prisoner-release-pairs-v1-",
                 "query-outbound-war-white-peace-status-v1-",
                 "query-war-termination-terms-v1-",
                 QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
@@ -25076,6 +25131,13 @@ def _action_steps(
     if expand_termination_queries and paused is True:
         steps.update(
             query_war_termination_options_step(int(war["war_id"]))
+            for war in wars
+            if _positive_native_id(war.get("war_id"))
+            and int(war["war_id"]) <= 2**31 - 1
+        )
+    if expand_prisoner_release_queries and paused is True:
+        steps.update(
+            query_war_prisoner_release_pairs_v1_step(int(war["war_id"]))
             for war in wars
             if _positive_native_id(war.get("war_id"))
             and int(war["war_id"]) <= 2**31 - 1

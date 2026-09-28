@@ -554,6 +554,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       step.starts_with("query-war-termination-options-")) {
     capability = "game.command.query-war-termination-options-N";
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
+             step, "query-war-prisoner-release-pairs-v1-")) {
+    capability = "game.command.query-war-prisoner-release-pairs-v1-N";
+  } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, "query-outbound-war-white-peace-status-v1-")) {
     capability =
         "game.command.query-outbound-war-white-peace-status-v1-N";

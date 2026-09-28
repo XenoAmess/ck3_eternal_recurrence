@@ -657,6 +657,39 @@ struct RaiktorSurrenderPrisonerReleaseObservation {
       const RaiktorSurrenderPrisonerReleaseObservation &) = default;
 };
 
+// Generic release_prisoners_of_war_effect candidate set for one active WarID.
+// This is an effect-input observation, not proof that an exit was submitted or
+// that any particular exit interaction is currently legal.  Empty pairs are
+// meaningful only when both explicit scan flags and same_frame_stable are true.
+struct WarPrisonerReleasePairsObservationV1 {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t active_casus_belli_database_index = -1;
+  std::string active_casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::vector<std::int32_t> attacker_participant_ids;
+  std::vector<std::int32_t> defender_participant_ids;
+  std::vector<std::int32_t> attacker_release_candidate_ids;
+  std::vector<std::int32_t> defender_release_candidate_ids;
+  std::vector<game::WarExitPrisonerReleaseSnapshot> release_pairs;
+  bool full_participant_scan = false;
+  bool primary_and_first_three_successors_scanned = false;
+  bool same_frame_stable = false;
+
+  friend bool operator==(const WarPrisonerReleasePairsObservationV1 &,
+                         const WarPrisonerReleasePairsObservationV1 &) = default;
+};
+
+enum class ReadWarPrisonerReleasePairsResultV1 : std::uint8_t {
+  available = 0,
+  requires_paused = 1,
+  no_played_character = 2,
+  war_not_found = 3,
+  player_not_participant = 4,
+  unavailable = 5,
+};
+
 enum class ReadRaiktorSurrenderGoldResult : std::uint8_t {
   available = 0,
   requires_paused = 1,
@@ -1220,6 +1253,13 @@ ReadRaiktorSurrenderPrisonerReleasesResult
 ReadRaiktorSurrenderPrisonerReleases(
     const Bindings &bindings, std::int32_t war_id,
     RaiktorSurrenderPrisonerReleaseObservation &output) noexcept;
+
+// Reads the generic PoW-release input graph for any active WarID on either
+// player side, without loading or previewing CB effects.  A separate native
+// termination query must establish which exit interaction is attainable.
+ReadWarPrisonerReleasePairsResultV1 ReadWarPrisonerReleasePairsV1(
+    const Bindings &bindings, std::int32_t war_id,
+    WarPrisonerReleasePairsObservationV1 &output) noexcept;
 
 // Reads only the primary attacker->defender final gold callback from
 // raiktor_claim_cb's original visible attacker-defeat root. It never enters

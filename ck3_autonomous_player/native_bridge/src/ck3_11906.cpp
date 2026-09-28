@@ -5561,6 +5561,150 @@ ReadRaiktorSurrenderPrisonerReleasesCore(
   return ReadRaiktorSurrenderPrisonerReleasesResult::available;
 }
 
+bool ReadWarPrisonerReleasePairsOnceV1(
+    const Bindings &bindings, void *game_state, void *war,
+    std::int32_t war_id, std::int32_t date_raw,
+    std::int32_t cb_database_index, const std::string &cb_key,
+    std::int32_t attacker_id, std::int32_t defender_id,
+    WarPrisonerReleasePairsObservationV1 &output) noexcept {
+  output = {};
+  void *const attacker = ResolveTermsCharacter(bindings, attacker_id);
+  void *const defender = ResolveTermsCharacter(bindings, defender_id);
+  if (attacker == nullptr || defender == nullptr || attacker == defender) {
+    return false;
+  }
+  output.war_id = war_id;
+  output.date_raw = date_raw;
+  output.active_casus_belli_database_index = cb_database_index;
+  output.primary_attacker_character_id = attacker_id;
+  output.primary_defender_character_id = defender_id;
+  try {
+    output.active_casus_belli_key = cb_key;
+  } catch (...) {
+    output = {};
+    return false;
+  }
+  if (!ReadWarParticipantIds(
+          bindings, static_cast<std::byte *>(war) + kWarAttackersOffset,
+          output.attacker_participant_ids) ||
+      !ReadWarParticipantIds(
+          bindings, static_cast<std::byte *>(war) + kWarDefendersOffset,
+          output.defender_participant_ids) ||
+      std::find(output.attacker_participant_ids.begin(),
+                output.attacker_participant_ids.end(), attacker_id) ==
+          output.attacker_participant_ids.end() ||
+      std::find(output.defender_participant_ids.begin(),
+                output.defender_participant_ids.end(), defender_id) ==
+          output.defender_participant_ids.end() ||
+      !ReadPrimaryAndSuccessors(bindings, game_state, attacker, attacker_id,
+                                output.attacker_release_candidate_ids) ||
+      !ReadPrimaryAndSuccessors(bindings, game_state, defender, defender_id,
+                                output.defender_release_candidate_ids) ||
+      !ReadWarExitPrisonerReleases(bindings, game_state, war, attacker,
+                                   attacker_id, defender, defender_id,
+                                   output.release_pairs)) {
+    output = {};
+    return false;
+  }
+  output.full_participant_scan = true;
+  output.primary_and_first_three_successors_scanned = true;
+  return true;
+}
+
+ReadWarPrisonerReleasePairsResultV1 ReadWarPrisonerReleasePairsCoreV1(
+    const Bindings &bindings, std::int32_t war_id,
+    WarPrisonerReleasePairsObservationV1 &output,
+    void (*between_samples)() noexcept) noexcept {
+  output = {};
+  using Result = ReadWarPrisonerReleasePairsResultV1;
+  if (!bindings.enabled || war_id <= 0 ||
+      bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.get_character_primary_title == nullptr) {
+    return Result::unavailable;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) return Result::unavailable;
+  if (!before.paused) return Result::requires_paused;
+  if (!before.has_played_character || !before.played_character_alive)
+    return Result::no_played_character;
+  void *const game_state = *bindings.game_state_slot;
+  void *const jomini_state = *bindings.jomini_state_slot;
+  if (game_state == nullptr || jomini_state == nullptr)
+    return Result::unavailable;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) return Result::war_not_found;
+  if (std::none_of(before.active_wars.begin(), before.active_wars.end(),
+                   [war_id](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == war_id;
+                   }))
+    return Result::player_not_participant;
+
+  const auto attacker_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryAttackerCharacterIdOffset);
+  const auto defender_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryDefenderCharacterIdOffset);
+  void *const cb = LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (attacker_id <= 0 || defender_id <= 0 || attacker_id == defender_id ||
+      cb == nullptr)
+    return Result::unavailable;
+  const auto cb_index = LoadAt<std::int32_t>(
+      cb, kCasusBelliTypeDatabaseIndexOffset);
+  std::string cb_key;
+  if (cb_index < 0 || cb_index >= kMaximumCasusBelliTypes ||
+      !ReadCasusBelliTypeKey(cb, cb_key) || cb_key.empty())
+    return Result::unavailable;
+
+  WarPrisonerReleasePairsObservationV1 first{};
+  WarPrisonerReleasePairsObservationV1 second{};
+  if (!ReadWarPrisonerReleasePairsOnceV1(
+          bindings, game_state, war, war_id, before.date_raw, cb_index,
+          cb_key, attacker_id, defender_id, first))
+    return Result::unavailable;
+  if (std::find(first.attacker_participant_ids.begin(),
+                first.attacker_participant_ids.end(),
+                before.played_character_id) ==
+          first.attacker_participant_ids.end() &&
+      std::find(first.defender_participant_ids.begin(),
+                first.defender_participant_ids.end(),
+                before.played_character_id) ==
+          first.defender_participant_ids.end())
+    return Result::player_not_participant;
+  if (between_samples != nullptr) between_samples();
+
+  Snapshot after{};
+  std::string cb_key_after;
+  if (*bindings.game_state_slot != game_state ||
+      *bindings.jomini_state_slot != jomini_state ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) != cb ||
+      LoadAt<std::int32_t>(cb, kCasusBelliTypeDatabaseIndexOffset) !=
+          cb_index ||
+      !ReadCasusBelliTypeKey(cb, cb_key_after) ||
+      cb_key_after != cb_key ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          attacker_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          defender_id ||
+      !ReadSnapshot(bindings, after) || !after.paused ||
+      !after.has_played_character || !after.played_character_alive ||
+      after.date_raw != before.date_raw ||
+      after.played_character_id != before.played_character_id ||
+      std::none_of(after.active_wars.begin(), after.active_wars.end(),
+                   [war_id](const ActiveWarSnapshot &candidate) {
+                     return candidate.war_id == war_id;
+                   }) ||
+      !ReadWarPrisonerReleasePairsOnceV1(
+          bindings, game_state, war, war_id, after.date_raw, cb_index,
+          cb_key, attacker_id, defender_id, second) ||
+      first != second)
+    return Result::unavailable;
+  second.same_frame_stable = true;
+  output = std::move(second);
+  return Result::available;
+}
+
 bool ReadRaiktorGoldFinanceCharacter(
     const Bindings &bindings, void *character,
     std::int32_t character_id,
@@ -18557,6 +18701,12 @@ ReadRaiktorSurrenderPrisonerReleases(
     RaiktorSurrenderPrisonerReleaseObservation &output) noexcept {
   return ReadRaiktorSurrenderPrisonerReleasesCore(
       bindings, war_id, output, nullptr);
+}
+
+ReadWarPrisonerReleasePairsResultV1 ReadWarPrisonerReleasePairsV1(
+    const Bindings &bindings, std::int32_t war_id,
+    WarPrisonerReleasePairsObservationV1 &output) noexcept {
+  return ReadWarPrisonerReleasePairsCoreV1(bindings, war_id, output, nullptr);
 }
 
 ReadRaiktorSurrenderGoldResult ReadRaiktorSurrenderGold(

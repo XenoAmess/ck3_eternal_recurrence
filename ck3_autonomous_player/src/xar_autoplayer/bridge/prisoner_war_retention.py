@@ -47,6 +47,70 @@ def _same_frame(
                for field in _FRAME_FIELDS)
 
 
+def normalize_war_prisoner_release_pairs_v1(
+    raw: Mapping[str, object], *, expected_step: str,
+    expected_war_id: int, expected_snapshot_revision: object,
+    expected_date_raw: object,
+) -> dict[str, object]:
+    """Fail closed on a native generic PoW source scan and its frame binding."""
+    if (raw.get("step") != expected_step or raw.get("accepted") is not True
+            or raw.get("status") != "available" or raw.get("read_only") is not True
+            or raw.get("backend_id") != "native-headless"):
+        raise ValueError("native query envelope is not an available read-only result")
+    revision = raw.get("snapshot_revision")
+    if (type(revision) is not int or revision <= 0
+            or revision != expected_snapshot_revision):
+        raise ValueError("native query revision differs from the paused frame")
+    sequence = raw.get("query_sequence")
+    if type(sequence) is not int or sequence <= 0:
+        raise ValueError("native query sequence is invalid")
+    value = raw.get("war_prisoner_release_pairs_v1")
+    if not isinstance(value, Mapping):
+        raise ValueError("native prisoner release observation is missing")
+    if value.get("war_id") != expected_war_id or value.get("date_raw") != expected_date_raw:
+        raise ValueError("native prisoner release identity or date differs")
+    cb_index = value.get("active_casus_belli_database_index")
+    cb_key = value.get("active_casus_belli_key")
+    if (type(cb_index) is not int or cb_index < 0
+            or not isinstance(cb_key, str) or not cb_key):
+        raise ValueError("native prisoner release CB identity is unavailable")
+    attacker = _positive_id(value.get("primary_attacker_character_id"), "primary attacker")
+    defender = _positive_id(value.get("primary_defender_character_id"), "primary defender")
+    attackers = _ids(value.get("attacker_participant_ids"), "attacker participants")
+    defenders = _ids(value.get("defender_participant_ids"), "defender participants")
+    attacker_candidates = _ids(value.get("attacker_release_candidate_ids"), "attacker candidates")
+    defender_candidates = _ids(value.get("defender_release_candidate_ids"), "defender candidates")
+    if (value.get("same_frame_stable") is not True
+            or value.get("full_participant_scan") is not True
+            or value.get("primary_and_first_three_successors_scanned") is not True
+            or attackers is None or defenders is None
+            or attacker_candidates is None or defender_candidates is None
+            or attacker not in attackers or defender not in defenders
+            or attacker_candidates[:1] != [attacker]
+            or defender_candidates[:1] != [defender]
+            or len(attacker_candidates) > 4 or len(defender_candidates) > 4
+            or set(attackers) & set(defenders)):
+        raise ValueError("native participant/successor scan is incomplete")
+    pairs = value.get("release_pairs")
+    if not isinstance(pairs, list):
+        raise ValueError("native release pairs are unavailable")
+    seen: set[tuple[int, int]] = set()
+    for pair in pairs:
+        if not isinstance(pair, Mapping):
+            raise ValueError("native release pair is malformed")
+        jailer = _positive_id(pair.get("jailer_character_id"), "jailer")
+        prisoner = _positive_id(pair.get("prisoner_character_id"), "prisoner")
+        if (jailer, prisoner) in seen or not (
+            (jailer in attackers and prisoner in defender_candidates)
+            or (jailer in defenders and prisoner in attacker_candidates)
+        ):
+            raise ValueError("native release pair contradicts the complete scan")
+        seen.add((jailer, prisoner))
+        if not isinstance(pair.get("reason"), str):
+            raise ValueError("native release reason is malformed")
+    return dict(value)
+
+
 def project_prisoner_war_retention(
     *,
     war: Mapping[str, object],
@@ -124,7 +188,11 @@ def project_prisoner_war_retention(
         if custody_status not in {"held_by_jailer", "unavailable"}:
             raise ValueError("custody status must be explicit")
         pow_side: str | None = None
-        if not complete or custody_status != "held_by_jailer" or jailer_id is None:
+        if cb_key == "fp3_free_house_member_cb":
+            # Stock surrender / white peace / victory interactions skip
+            # release_prisoners_of_war_effect for this CB.
+            pow_status = "not_applicable_cb"
+        elif not complete or custody_status != "held_by_jailer" or jailer_id is None:
             pow_status = "unavailable"
         elif jailer_id in defenders and prisoner_id in attacker_candidates:
             pow_status, pow_side = "matched_pair", "defender_jailer"
