@@ -21,7 +21,7 @@ from xar_promo.adapters.ck3.capture import load_capture_bundle  # noqa: E402
 from war_ai_promo.episode_two_second_half import (  # noqa: E402
     CARD_REPLAYS, CHAPTER_CARDS, CHAPTER_IDS, HISTORICAL_PRIMARY,
     _bound_tts_sentences, _capture_audit_contract, _card_replays,
-    _replay_primary, script_chapters,
+    _replay_primary, card_filename, script_chapters,
 )
 from war_ai_promo.episode_two_subtitle_contract import identity  # noqa: E402
 from war_ai_promo.episode_two_pts_contract import validate_pts_span  # noqa: E402
@@ -73,26 +73,54 @@ def _subtitle_sources(declaration: dict, script: Path, config: Path) -> tuple[li
             or plan.get("subtitle_fragments") != {"source": str(fragments_path), **identity(fragments_path)}
             or [row.get("id") for row in fragments.get("chapters", [])] != list(CHAPTER_IDS)):
         raise ValueError("Subtitle fragments/plan do not bind the frozen six-chapter script/config")
+    group_source = fragments.get("source_groups", {})
+    if (not isinstance(group_source, dict) or not isinstance(group_source.get("path"), str)
+            or not Path(group_source["path"]).is_absolute()
+            or identity(Path(group_source["path"]).resolve(strict=True)) !=
+            {"bytes": group_source.get("bytes"),
+             "sha256": str(group_source.get("sha256", "")).upper()}):
+        raise ValueError("Subtitle group selection manifest changed")
     source_root = Path(declaration["subtitle_source_root"])
     if not source_root.is_absolute():
         raise ValueError("TTS source root must be absolute")
     source_root = source_root.resolve(strict=True)
+    preflight_root = Path(source_root.anchor)
+    a05_fact_source = (Path(declaration["card_index"]["source"]).resolve(strict=True).parent /
+                       "e2-09-a05-writer-facts-20260928.json").resolve(strict=True)
     source_rows = []
     namespace = []
     for row in plan.get("artifacts", []):
         artifact_id = row.get("artifact_id")
         path, bound = _source(row, f"TTS {artifact_id}")
-        if not path.is_relative_to(source_root):
+        if artifact_id == "episode02-tts-a05-facts":
+            if path != a05_fact_source or row.get("role") != "a05-writer-facts":
+                raise ValueError("A05 TTS facts must use the indexed checked-in receipt")
+        elif not path.is_relative_to(source_root):
             raise ValueError(f"TTS source escapes explicit source root: {artifact_id}")
+        if not path.is_relative_to(preflight_root):
+            raise ValueError(f"TTS source cannot be preflighted across volumes: {artifact_id}")
         source_rows.append({"artifact_id": artifact_id, **bound,
                             "collection": "raw", "role": row["role"]})
-        namespace.append(SimpleNamespace(artifact_id=artifact_id, path=path.relative_to(source_root),
+        namespace.append(SimpleNamespace(artifact_id=artifact_id, path=path.relative_to(preflight_root),
                                          bytes=bound["bytes"], sha256=bound["sha256"]))
-    if len({row.artifact_id for row in namespace}) != len(namespace) or len(namespace) != 70:
-        raise ValueError("Episode 2 requires exactly 70 distinct original TTS source artifacts")
+    expected_tts_ids = {"episode02-tts-source-groups"}
+    for row in fragments["chapters"]:
+        chapter_id, source = row["id"], row["tts_source"]
+        expected_tts_ids.update((f"audio.{chapter_id}", source["native_run_artifact_id"],
+                                 source["render_manifest_artifact_id"]))
+        if source.get("source_draft_artifact_id"):
+            expected_tts_ids.add(source["source_draft_artifact_id"])
+        if source.get("a05_facts_artifact_id"):
+            expected_tts_ids.add(source["a05_facts_artifact_id"])
+        for paragraph in source["paragraphs"]:
+            expected_tts_ids.update((paragraph["request_artifact_id"],
+                                     paragraph["events_artifact_id"]))
+    if (len({row.artifact_id for row in namespace}) != len(namespace)
+            or {row.artifact_id for row in namespace} != expected_tts_ids):
+        raise ValueError("Episode 2 original TTS artifacts differ from six chapter declarations")
     by_id = {row.artifact_id: row for row in namespace}
     fake_run = SimpleNamespace(artifacts=tuple(namespace))
-    fake_manifest = source_root / "__production_preflight_only__.json"
+    fake_manifest = preflight_root / "__production_preflight_only__.json"
     narration = script_chapters(script)
     for row in fragments["chapters"]:
         audio = by_id.get(f"audio.{row['id']}")
@@ -247,12 +275,12 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
     replay_by_card = _card_replays(card_data)
     card_sources = declaration.get("cards", {})
     if set(card_sources) != set(CARD_REPLAYS):
-        raise ValueError("Nine exact card SVG source bindings are required")
+        raise ValueError("Nine exact formal card SVG source bindings are required")
     cards = {}
     card_sha, card_bytes = {}, {}
     for card_id in CARD_REPLAYS:
         path, item = _item(f"episode02-card-{card_id}", card_sources[card_id], "source-calculation-card")
-        expected = card_path.parent / f"{card_id.lower()}-calculation.svg"
+        expected = card_path.parent / card_filename(card_id)
         if path != expected.resolve(strict=True):
             raise ValueError(f"{card_id} must use the SVG beside the indexed card JSON")
         cards[card_id] = item

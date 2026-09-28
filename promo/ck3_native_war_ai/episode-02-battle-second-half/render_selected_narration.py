@@ -26,6 +26,8 @@ VOICE = "zh-CN-XiaoxiaoNeural"
 RATE = "-12%"
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
 HISTORICAL_CANDIDATE_IDS = frozenset(("terminal", "closing"))
+A05_SCOPE = "current-a05-paired-writer-edit-proxy"
+A05_FACTS_NAME = "e2-09-a05-writer-facts-20260928.json"
 BUDGETS = (90, 340, 400, 515, 350, 95)
 HEADER = re.compile(r"^## (\d{2}:\d{2})[–-](\d{2}:\d{2}) (.+)$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
@@ -137,7 +139,48 @@ def concat(ffmpeg: Path, chapter_dir: Path, paragraph_count: int) -> tuple[Path,
     return output, list_file, receipt
 
 
-def validate_inputs(args: argparse.Namespace) -> tuple[dict, Path, Path]:
+def validate_a05_facts(args: argparse.Namespace) -> dict | None:
+    if args.a05_facts is None:
+        if args.expected_a05_facts_sha256 is not None:
+            raise ValueError("A05 expected SHA requires --a05-facts")
+        return None
+    path = args.a05_facts.resolve(strict=True)
+    expected = (args.draft.resolve(strict=True).parent / "cards" / A05_FACTS_NAME).resolve(strict=True)
+    if (path != expected or not args.expected_a05_facts_sha256
+            or identity(path)["sha256"] != args.expected_a05_facts_sha256.upper()):
+        raise ValueError("A05 facts must be the exact checked-in card receipt bytes")
+    facts = json.loads(path.read_text(encoding="utf-8"))
+    run = facts.get("run_identity", {})
+    writer = facts.get("native_writer_facts", {})
+    after = facts.get("paused_poststate_facts", {})
+    if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v1"
+            or facts.get("usage_scope") != A05_SCOPE
+            or facts.get("media_review_status") != "ENCODED_UNREVIEWED"
+            or facts.get("clean_spans_certified") is not False
+            or facts.get("human_review_completed") is not False
+            or run.get("source_relation") !=
+            "independent_cold_load_of_checkpoint_produced_within_004_not_004_original_cold_load"
+            or run.get("source_save_sha256") !=
+            "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+            or run.get("combat_id") != 16777218 or run.get("war_id") != 4
+            or writer.get("hard_loss_numerator_raw_q100000") != 53662042
+            or writer.get("denominator_people") != 996
+            or writer.get("integer_ratio_raw_q100000") != 53877
+            or writer.get("selected_cb_battle_scale_raw_q100000") != 15000000
+            or writer.get("uncapped_score_raw_q100000") != 8081550
+            or writer.get("war_attacker_relative_delta_raw_q100000") != -5000000
+            or after.get("player_relative_war_score") != -50):
+        raise ValueError("A05 fact receipt is not the exact paired writer/poststate case")
+    verifier = path.parent / "verify_e2_09_a05_fact_receipt.py"
+    check = subprocess.run([sys.executable, str(verifier)], capture_output=True, text=True,
+                           timeout=60, check=False)
+    if check.returncode or "A05 fact receipt GREEN" not in check.stdout:
+        raise ValueError(f"A05 native fact verifier RED: {check.stdout} {check.stderr}")
+    return {"identity": identity(path), "verifier": identity(verifier),
+            "verifier_stdout": check.stdout.strip()}
+
+
+def validate_inputs(args: argparse.Namespace) -> tuple[dict, Path, Path, dict | None]:
     wheel = identity(args.wheel_file)
     if wheel["sha256"] != args.wheel_sha256.upper():
         raise ValueError("downloaded wheel SHA differs from selected release")
@@ -152,25 +195,35 @@ def validate_inputs(args: argparse.Namespace) -> tuple[dict, Path, Path]:
     config = json.loads(args.project_config.read_text(encoding="utf-8"))
     if [chapter["id"] for chapter in config["chapters"]] != list(CHAPTER_IDS):
         raise ValueError("ProjectConfig chapter order changed")
+    a05_facts = validate_a05_facts(args)
     if HISTORICAL_CANDIDATE_IDS.intersection(args.chapters):
-        if not args.history_only:
-            raise ValueError("terminal/closing require --history-only until new E2-09 live evidence exists")
+        if args.history_only == (a05_facts is not None):
+            raise ValueError("terminal/closing require exactly one historical or A05 fact scope")
         draft = args.draft.read_text(encoding="utf-8-sig")
-        if "terminal" in args.chapters and ("历史独立回放 024 的原始研究记录" not in draft or
-                                           "024 不是 004 的同一随机轨迹" not in draft):
-            raise ValueError("terminal draft lacks explicit historical 024 identity boundary")
-        if "closing" in args.chapters and "历史 024 的普通终局" not in draft:
-            raise ValueError("closing draft lacks explicit historical 024 identity boundary")
+        if args.history_only:
+            if "terminal" in args.chapters and ("历史独立回放 024 的原始研究记录" not in draft or
+                                               "024 不是 004 的同一随机轨迹" not in draft):
+                raise ValueError("terminal draft lacks explicit historical 024 identity boundary")
+            if "closing" in args.chapters and "历史 024 的普通终局" not in draft:
+                raise ValueError("closing draft lacks explicit historical 024 identity boundary")
+        elif tuple(args.chapters) != CHAPTER_IDS[4:]:
+            raise ValueError("Current A05 TTS must render terminal and closing together")
+        elif ("A05" not in draft or "53,662,042" not in draft or "九百九十六" not in draft
+              or "原生暂停后态" not in draft or "旧 024" not in draft):
+            raise ValueError("A05 draft lacks current writer and independent-source wording")
+    elif args.history_only or a05_facts is not None:
+        raise ValueError("Historical/A05 fact scope may only render terminal/closing")
     if not args.run_manifest.is_file():
         raise FileNotFoundError(args.run_manifest)
     ffprobe = Path(shutil.which(args.ffprobe) or args.ffprobe).resolve()
     ffmpeg = Path(shutil.which(args.ffmpeg) or args.ffmpeg).resolve()
     if not ffprobe.is_file() or not ffmpeg.is_file():
         raise FileNotFoundError("ffprobe or ffmpeg missing")
-    return wheel, ffprobe, ffmpeg
+    return wheel, ffprobe, ffmpeg, a05_facts
 
 
-async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Path, ffmpeg: Path) -> None:
+async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Path,
+                 ffmpeg: Path, a05_facts: dict | None) -> None:
     args.output.mkdir(parents=True, exist_ok=False)
     out = args.output
     snapshots = {}
@@ -180,9 +233,12 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
         write_new(destination, source.read_bytes())
         snapshots[label] = identity(destination)
     write_json_new(out / "selection-plan.json", plan)
+    if a05_facts is not None:
+        write_new(out / f"snapshot-{A05_FACTS_NAME}", args.a05_facts.read_bytes())
+        write_json_new(out / "a05-fact-verification.json", a05_facts)
     events = out / "attempt-events.jsonl"
-    usage_scope = ("historical-independent-replays-candidate-only" if args.history_only
-                   else "source-bound-edit-proxy")
+    usage_scope = ("historical-independent-replays-candidate-only" if args.history_only else
+                   A05_SCOPE if a05_facts is not None else "source-bound-edit-proxy")
     manifest = {"schema": "ck3.episode02.selected-narration-render.v1",
                 "status": "started", "created_utc": now(),
                 "source_draft": plan["draft"], "snapshots": snapshots,
@@ -192,6 +248,8 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
                 "edge_tts_version": importlib.metadata.version("edge-tts"),
                 "provider": "edge-tts", "voice": VOICE, "rate": RATE,
                 "usage_scope": usage_scope, "new_e2_09_live_verified": False,
+                "a05_fact_evidence": a05_facts["identity"] if a05_facts is not None else None,
+                "a05_writer_facts_checked": a05_facts is not None,
                 "ffprobe": str(ffprobe), "ffmpeg": str(ffmpeg),
                 "selected_chapters": plan["selected_chapters"], "held_chapters": plan["held_chapters"],
                 "paragraphs": [], "chapters": []}
@@ -209,6 +267,8 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
                 request = paragraph_dir / "request.json"
                 write_json_new(request, {"provider": "edge-tts", "voice": VOICE, "rate": RATE,
                                          "usage_scope": usage_scope,
+                                         **({"a05_facts_sha256": a05_facts["identity"]["sha256"]}
+                                            if a05_facts is not None else {}),
                                          "edge_tts_version": manifest["edge_tts_version"],
                                          "chapter_id": chapter["id"], "paragraph_index": piece["index"],
                                          "source_paragraph_sha256": piece["source_sha256"],
@@ -246,6 +306,7 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
         report = {"schema": "ck3.episode02.selected-narration-duration-report.v1",
                   "status": "selected-chapters-rendered-not-human-reviewed",
                   "usage_scope": usage_scope, "new_e2_09_live_verified": False,
+                  "a05_fact_evidence": a05_facts["identity"] if a05_facts is not None else None,
                   "draft_sha256": plan["draft"]["sha256"],
                   "selected_chapters": plan["selected_chapters"], "held_chapters": plan["held_chapters"],
                   "voice": VOICE, "rate": RATE,
@@ -259,6 +320,9 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
                               "Terminal/closing audio is a candidate for visibly labelled historical 004/024 research boards only; no new E2-09 live result is asserted.",
                               "If new E2-09 live numbers or identity differ, revise text and render a fresh attempt."]
                              if args.history_only else
+                             ["A05 native writer and paused poststate are paired; raw media remains unreviewed.",
+                              "EdgeTTS edit proxy, not final IndexTTS voice or human signoff."]
+                             if a05_facts is not None else
                              ["EdgeTTS edit proxy, not final IndexTTS voice or human signoff.",
                               "New live CK3 attempts require their own source cards and number verification."])}
         write_json_new(out / "duration-report.json", report)
@@ -294,6 +358,9 @@ def main() -> None:
     parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument("--history-only", action="store_true",
                         help="Required for terminal/closing candidates; forbids treating historical 024 as new live E2-09")
+    parser.add_argument("--a05-facts", type=Path,
+                        help="Exact checked-in A05 writer/paused-poststate fact receipt for current terminal/closing")
+    parser.add_argument("--expected-a05-facts-sha256")
     parser.add_argument("--plan-only", action="store_true")
     args = parser.parse_args()
     selected = tuple(args.chapters)
@@ -302,11 +369,13 @@ def main() -> None:
     plan = parse_draft(args.draft, selected)
     if plan["draft"]["sha256"] != args.expected_draft_sha256.upper():
         raise ValueError("draft SHA differs from frozen selected bytes")
-    wheel, ffprobe, ffmpeg = validate_inputs(args)
+    wheel, ffprobe, ffmpeg, a05_facts = validate_inputs(args)
     if args.plan_only:
         print(json.dumps({"draft": plan["draft"], "selected_chapters": list(selected),
                           "usage_scope": ("historical-independent-replays-candidate-only"
-                                          if args.history_only else "source-bound-edit-proxy"),
+                                          if args.history_only else A05_SCOPE if a05_facts is not None
+                                          else "source-bound-edit-proxy"),
+                          "a05_fact_evidence": a05_facts["identity"] if a05_facts is not None else None,
                           "held_chapters": plan["held_chapters"],
                           "paragraphs": {chapter["id"]: [{"characters": x["characters"],
                                                              "text_sha256": x["text_sha256"]}
@@ -316,7 +385,7 @@ def main() -> None:
                                                   for chapter in plan["chapters"] if chapter["selected"]},
                           "wheel": wheel, "ffprobe": str(ffprobe), "ffmpeg": str(ffmpeg)}, ensure_ascii=False))
         return
-    asyncio.run(render(args, plan, wheel, ffprobe, ffmpeg))
+    asyncio.run(render(args, plan, wheel, ffprobe, ffmpeg, a05_facts))
 
 
 if __name__ == "__main__":

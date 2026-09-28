@@ -25,7 +25,7 @@ from xar_promo.sources import VIDEO, VisualProbeResult, VisualSource
 
 from .captions import caption_cues, subtitle_document
 from .episode_two_subtitle_contract import (
-    HISTORICAL_SCOPE, compact, derive_boundaries, require_audio_coverage,
+    A05_SCOPE, HISTORICAL_SCOPE, compact, derive_boundaries, require_audio_coverage,
 )
 from .episode_two_pts_contract import validate_pts_span
 
@@ -34,7 +34,7 @@ CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "cl
 CARD_REPLAYS = {
     "E2-02": "004", "E2-03": "004", "E2-04": "039_040",
     "E2-05A": "020", "E2-05B": "070", "E2-05C": "036_038",
-    "E2-06": "085", "E2-07": "085", "E2-09": "024",
+    "E2-06": "085", "E2-07": "085", "E2-09": "A05",
 }
 CHAPTER_CARDS = {
     "pursuit": ("E2-02", "E2-03"),
@@ -51,6 +51,7 @@ HISTORICAL_PRIMARY = {
     "085": "A7F01C89BE66B34A6F2862BAEFC4354EF74507B6D5178E2949C381DEDC32FD88",
     "024": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F",
 }
+HISTORICAL_024_CARD_SHA = "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31"
 HEADING = re.compile(r"^## \d\d:\d\d[–-]\d\d:\d\d .+$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
 
@@ -99,6 +100,18 @@ def _card_replays(data: dict) -> dict[str, str]:
                     replays["E2-05B"], replays["E2-05C"]}) != 4
             or any(replay not in data["replays"] for replay in replays.values())):
         raise ValueError("Nine cards lack separate source replay identities")
+    if replays["E2-09"] != "A05":
+        raise ValueError("The formal E2-09 card must use the current A05 replay")
+    terminal_card = next(row for row in rows if row["id"] == "E2-09")
+    old_cards = data.get("historical_cards")
+    if (terminal_card.get("artifact") != card_filename("E2-09")
+            or not isinstance(old_cards, list) or len(old_cards) != 1
+            or old_cards[0].get("id") != "E2-09"
+            or old_cards[0].get("replay") != "024"
+            or old_cards[0].get("artifact") != "e2-09-calculation.svg"
+            or old_cards[0].get("sha256", "").upper() != HISTORICAL_024_CARD_SHA
+            or _replay_primary(data["replays"]["024"]) != HISTORICAL_PRIMARY["024"]):
+        raise ValueError("Historical 024 must remain a separate exact-byte card sidecar")
     terminal = _replay_primary(data["replays"][replays["E2-09"]])
     reinforcement = _replay_primary(data["replays"][replays["E2-06"]])
     if terminal == reinforcement:
@@ -124,7 +137,9 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
     card_index = cards_dir / "calculation-cards.json"
     data = json.loads(card_index.read_text(encoding="utf-8"))
     replay_by_card = _card_replays(data)
-    cards = {key: _sha(cards_dir / f"{key.lower()}-calculation.svg") for key in CARD_REPLAYS}
+    cards = {key: _sha(cards_dir / card_filename(key)) for key in CARD_REPLAYS}
+    if _sha(cards_dir / "e2-09-calculation.svg") != HISTORICAL_024_CARD_SHA:
+        raise ValueError("Historical 024 card bytes changed")
     return {"schema": "ck3-war-ai.episode02.editorial-check.v1",
             "status": "editorial-inputs-present-not-media-ready",
             "project_config_sha256": _sha(config_path), "narration_script_sha256": _sha(draft_path),
@@ -132,6 +147,15 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
             "chapter_ids": list(narration),
             "chapter_narration_characters": {key: len(value) for key, value in narration.items()},
             "replay_by_card": replay_by_card}
+
+
+def card_filename(card_id: str) -> str:
+    """Formal E2-09 uses A05 bytes; the old SVG remains a 024 sidecar."""
+    if card_id not in CARD_REPLAYS:
+        raise ValueError(f"Unknown Episode 2 calculation card: {card_id}")
+    if card_id == "E2-09":
+        return "e2-09-a05-calculation.svg"
+    return f"{card_id.lower()}-calculation.svg"
 
 
 def _artifact(run, run_path: Path | None, artifact_id: str) -> Path:
@@ -255,6 +279,12 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
     render_path = _checked_source(
         run, run_path, source["render_manifest_artifact_id"],
         source["render_manifest_sha256"], source["render_manifest_bytes"])
+    draft_id = source.get("source_draft_artifact_id")
+    source_draft = (_checked_source(run, run_path, draft_id,
+                                    source["source_draft_sha256"], source["source_draft_bytes"])
+                    if draft_id else script)
+    if script_chapters(source_draft)[chapter_id] != row["zh"]:
+        raise ValueError(f"{chapter_id} original TTS draft differs from current chapter text")
     native = json.loads(native_path.read_text(encoding="utf-8"))
     RunManifest.from_mapping(native)
     render = json.loads(render_path.read_text(encoding="utf-8"))
@@ -263,13 +293,13 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
             or native["project_config"]["bytes"] != snapshot.stat().st_size
             or render.get("schema") != "ck3.episode02.selected-narration-render.v1"
             or render.get("status") != "selected-chapters-rendered-not-human-reviewed"
-            or render.get("source_draft", {}).get("sha256", "").upper() != _sha(script)
-            or render.get("source_draft", {}).get("bytes") != script.stat().st_size):
+            or render.get("source_draft", {}).get("sha256", "").upper() != _sha(source_draft)
+            or render.get("source_draft", {}).get("bytes") != source_draft.stat().st_size):
         raise ValueError(f"{chapter_id} TTS run/render does not bind the frozen script")
     original = {item["id"]: item for item in native["artifacts"]}
     for item_id, expected_sha, expected_bytes in (
             ("render-manifest", source["render_manifest_sha256"], source["render_manifest_bytes"]),
-            ("source-draft", _sha(script), script.stat().st_size),
+            ("source-draft", _sha(source_draft), source_draft.stat().st_size),
             (f"chapter-{chapter_id}", row["audio_sha256"], row["audio_bytes"])):
         item = original.get(item_id)
         if (item is None or item["sha256"].upper() != expected_sha.upper()
@@ -281,18 +311,41 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
             or chapters[0]["audio"]["bytes"] != row["audio_bytes"]
             or chapters[0].get("speech_seconds") != row["speech_duration_seconds"]):
         raise ValueError(f"{chapter_id} source TTS chapter audio/duration changed")
-    historical = chapter_id in ("terminal", "closing")
-    scope = HISTORICAL_SCOPE if historical else "general-edit-proxy"
-    selected = CHAPTER_IDS[4:] if historical else CHAPTER_IDS[:4]
-    held = CHAPTER_IDS[:4] if historical else CHAPTER_IDS[4:]
+    a05 = chapter_id in ("terminal", "closing")
+    scope = A05_SCOPE if a05 else "general-edit-proxy"
+    selected = tuple(source.get("run_selected_chapters", ()))
+    valid_selection = (selected == CHAPTER_IDS[4:] if a05 else
+                       bool(selected) and selected ==
+                       tuple(item for item in CHAPTER_IDS[:4] if item in selected)
+                       and chapter_id in selected)
+    held = tuple(item for item in CHAPTER_IDS if item not in selected)
     if (source.get("source_audio_artifact_id") != f"chapter-{chapter_id}"
             or source.get("usage_scope") != scope
+            or not valid_selection
             or tuple(render.get("selected_chapters", ())) != selected
             or tuple(render.get("held_chapters", ())) != held
-            or (historical and (render.get("usage_scope") != HISTORICAL_SCOPE
-                                or render.get("new_e2_09_live_verified") is not False))
-            or (not historical and render.get("usage_scope") is not None)):
+            or (a05 and (render.get("usage_scope") != A05_SCOPE
+                         or render.get("a05_writer_facts_checked") is not True
+                         or render.get("new_e2_09_live_verified") is not False))
+            or (not a05 and render.get("usage_scope") not in
+                (None, "source-bound-edit-proxy"))):
         raise ValueError(f"{chapter_id} TTS usage boundary changed")
+    if a05:
+        facts = _checked_source(run, run_path, source["a05_facts_artifact_id"],
+                                source["a05_facts_sha256"], source["a05_facts_bytes"])
+        fact_data = json.loads(facts.read_text(encoding="utf-8"))
+        preserved_facts = original.get("a05-facts")
+        render_facts = render.get("a05_fact_evidence") or {}
+        if (preserved_facts is None
+                or preserved_facts["sha256"].upper() != _sha(facts)
+                or preserved_facts["bytes"] != facts.stat().st_size
+                or render_facts.get("sha256", "").upper() != _sha(facts)
+                or render_facts.get("bytes") != facts.stat().st_size
+                or fact_data.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v1"
+                or fact_data.get("usage_scope") != A05_SCOPE
+                or fact_data.get("run_identity", {}).get("run") !=
+                "episode02-terminal-pair-20260928-a05-live"):
+            raise ValueError(f"{chapter_id} TTS fact receipt differs from its A05 native source")
     expected = [item for item in render["paragraphs"] if item["chapter_id"] == chapter_id]
     paragraphs = source.get("paragraphs")
     if not isinstance(paragraphs, list) or len(paragraphs) != len(expected):
@@ -316,8 +369,9 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
             run, run_path, actual["events_artifact_id"],
             actual["events_sha256"], actual["events_bytes"])
         request = json.loads(request_path.read_text(encoding="utf-8"))
-        if (historical and request.get("usage_scope") != HISTORICAL_SCOPE):
-            raise ValueError(f"{chapter_id} historical TTS request lost its usage boundary")
+        if a05 and (request.get("usage_scope") != A05_SCOPE
+                    or request.get("a05_facts_sha256", "").upper() != _sha(facts)):
+            raise ValueError(f"{chapter_id} current A05 TTS request lost its fact scope")
         files[index] = (request_path, events_path)
     boundaries, source_text, last_end = derive_boundaries(
         chapter_id, paragraphs, lambda item: files[item["paragraph_index"]])
@@ -483,7 +537,7 @@ def compose(config, run, *, config_path, run_path, workdir,
     card_hashes = inputs["card_sha256"]
     card_bytes = inputs["card_bytes"]
     if set(card_hashes) != set(CARD_REPLAYS) or set(card_bytes) != set(CARD_REPLAYS):
-        raise ValueError("All nine source-bound cards are required")
+        raise ValueError("All nine formal source-bound cards are required")
     for card_id, digest in card_hashes.items():
         _checked_source(run, run_path, f"episode02-card-{card_id}", digest, card_bytes[card_id])
     narration = script_chapters(script)

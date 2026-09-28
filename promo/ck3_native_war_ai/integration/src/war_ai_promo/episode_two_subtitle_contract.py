@@ -10,6 +10,7 @@ import re
 
 
 HISTORICAL_SCOPE = "historical-independent-replays-candidate-only"
+A05_SCOPE = "current-a05-paired-writer-edit-proxy"
 TICKS_PER_SECOND = 10_000_000
 
 

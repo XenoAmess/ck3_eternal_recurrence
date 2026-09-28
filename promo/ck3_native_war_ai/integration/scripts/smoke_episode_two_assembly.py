@@ -20,7 +20,9 @@ from PIL import Image, ImageDraw, ImageFont
 SRC = Path(__file__).resolve().parents[1] / "src"
 sys.path.insert(0, str(SRC))
 from war_ai_promo.assemble_episode_two import assemble  # noqa: E402
-from war_ai_promo.episode_two_second_half import CHAPTER_CARDS, CHAPTER_IDS, _replay_primary  # noqa: E402
+from war_ai_promo.episode_two_second_half import (  # noqa: E402
+    CHAPTER_CARDS, CHAPTER_IDS, _replay_primary, card_filename,
+)
 
 
 def sha(path: Path) -> str:
@@ -114,7 +116,7 @@ def main() -> None:
     card_sha = {}
     card_bytes = {}
     for card_id in replay_by_card:
-        path = cards_dir / f"{card_id.lower()}-calculation.svg"
+        path = cards_dir / card_filename(card_id)
         preserve(root, manifest, f"episode02-card-{card_id}", path, "source-card")
         card_sha[card_id] = sha(path)
         card_bytes[card_id] = path.stat().st_size
@@ -133,7 +135,7 @@ def main() -> None:
              str(audio)])
     for row in chapters:
         chapter = row["id"]
-        labels = [f"{card_id} · 历史研究 {replay_by_card[card_id]} · 非当前录制"
+        labels = [f"{card_id} · 合成测试 {replay_by_card[card_id]} · 非游戏实拍"
                   for card_id in CHAPTER_CARDS.get(chapter, ())]
         picture = media / f"{chapter}.png"
         frame(picture, chapter, labels)
@@ -158,6 +160,31 @@ def main() -> None:
         card_rows = {}
         for card_id in CHAPTER_CARDS.get(chapter, ()):
             replay = replay_by_card[card_id]
+            label_text = f"{card_id} · 合成测试 {replay} · 非游戏实拍"
+            if card_id == "E2-09":
+                recomputed = media / f"synthetic-recomputed-{card_id}.json"
+                new_json(recomputed, {
+                    "schema": "ck3-war-ai.episode02.recomputed-card.v1",
+                    "card_id": card_id, "card_sha256": card_sha[card_id],
+                    "source_primary_receipt_sha256": _replay_primary(cards["replays"][replay]),
+                    "capture_attempt_id": "SYNTHETIC-" + chapter,
+                    "cold_load_save_sha256": sha(source_save), "synthetic": True,
+                })
+                preserve(root, manifest, f"recomputed.{card_id}", recomputed,
+                         "synthetic-recomputed-card-receipt")
+                card_rows[card_id] = {
+                    "sha256": card_sha[card_id], "replay": replay,
+                    "primary_receipt_sha256": _replay_primary(cards["replays"][replay]),
+                    "evidence_mode": "current_run_recomputed",
+                    "recomputed_receipt_artifact_id": f"recomputed.{card_id}",
+                }
+                source = cards["replays"][replay]
+                if "source_save_sha256" in source:
+                    card_rows[card_id]["indexed_cold_load_save_sha256"] = source["source_save_sha256"]
+                if "source_day27_checkpoint_sha256" in source:
+                    card_rows[card_id]["indexed_midrun_checkpoint_save_sha256"] = source[
+                        "source_day27_checkpoint_sha256"]
+                continue
             label_text = f"{card_id} · 历史研究 {replay} · 非当前录制"
             audit = media / f"card-label-{card_id}.json"
             new_json(audit, {"schema": "ck3-war-ai.episode02.card-label-audit.v1",
