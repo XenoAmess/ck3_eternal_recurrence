@@ -190,16 +190,40 @@ so it cannot be cached between frames. This static constructor path does not
 prove the planner is present, selected for `activity_feast`, or populated on
 H3911's opening paused frame.
 
-The getter entry RVAs/signatures, output lifetime, and whether their outputs
-are copied values or transient planner-owned containers remain unverified.
-The planner constructor initializes stage `planner+0x1AB0` to `2`; that does
-not establish this is the final start stage or that configured costs exist.
+The exact GUI `AccessCostBreakdown` binding registers at `0x1590B9` /
+`0x1590FE`; wrappers `0x10B57D0` / `0x10B57E0` reach the pure accessor
+`0x10AB170`, which only returns `planner+0x1AD8`. The result is the address
+of a planner-owned embedded cost object, not a copied cost value. The next
+same-shape object begins at `planner+0x23E8` (`0x910` stride). Constructor
+`0x10AC352` initializes the first object; it does not price a selected feast.
+Any future query must copy values while its freshly checked planner/frame is
+held and must establish that the object was refreshed.
 
-The next executable diagnostic is a bounded registration and field trace for
-these exact GUI getter names on the freshly resolved `CActivityPlanner`:
-resolve the getter functions and their non-mutating preconditions, then map
-the returned location/configuration/cost data to the `CStartActivityCommand`
-validator.
-Only after that can a private paused query read a complete same-frame sample;
-absent planner context must be reported as absent, not silently synthesized
-from `feast.txt` or the AI activity path.
+`CActivityPlanner` vtable slot 12 (`0x10AE180`) calls `0x10B2B30`, which
+clears `+0x1AD8` via `0x10AAFD0` and recomputes through `0x10B6A60`,
+`0x10CC1E0`, and `0x3DDB850`. This is a write path, not an observer. A bounded
+trace of `0x10B2B30..0x10B2EFC` found no planner generation, valid or timestamp
+write after the recomputation. The `0xA90430` creation path invokes vtable
+slot 7 and conditionally slot 4, not slot 12; thus it does not prove that
+the cost object is fresh before the planner window opens. Empty cost data
+cannot be interpreted as zero cost.
+
+The `CanProgressPlanningStage` boolean wrapper `0x10B4D20` calls evaluator
+`0x10B0DA0` (optional native string output). This branches on
+`planner+0x1AB0` stages 0..5. Only stage 5 constructs a temporary
+`CStartActivityCommand` and calls its slot 6 validator; other stages decide
+whether the current planning stage may advance. The constructor sets stage
+to `2`, so `CanProgressPlanningStage=true` at that stage is not final
+`can_start`. Neither the current snapshot schema nor the constructor path
+proves a selected feast, complete configuration, authoritative costs or
+player-stage final eligibility on H3911's paused frame.
+
+The next executable diagnostic is to trace the actual UI/runtime caller of
+slot 12 and find a non-mutating refresh indicator or independent native cost
+evaluator. A later one-frame private paused query can then capture the fresh
+planner pointer, stage, selected type/configuration, and cost values with
+explicit `cost_ready` evidence. If that trace cannot establish freshness,
+`configured_cost` and `can_start` remain typed unknown. No activity action or
+private semantic callback is eligible on this evidence alone; absent planner
+context must be reported as absent, not synthesized from `feast.txt` or the
+AI activity path.
