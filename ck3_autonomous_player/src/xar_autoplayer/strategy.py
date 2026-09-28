@@ -16877,7 +16877,9 @@ def _provisional_defense_research_assessment(
         and scenario.get("attacker_side") == "player_or_allied"
         and scenario.get("defender_side") == "enemy"
         and scenario.get("actual_route_dependency") is False
-        and len(defender_army_ids) == 1
+        # The frozen v3 input and native helper bind the complete ordered
+        # roster; a second current defender does not change this identity.
+        and bool(defender_army_ids)
         and friendly_current_soldiers > 0
     ):
         return {"status": "same_frame_encounter_scope_mismatch"}

@@ -15,6 +15,8 @@ from xar_autoplayer.strategy import (
     query_combat_simulation_inputs_v3_step,
     query_route_contact_horizon_step,
 )
+from xar_autoplayer.simulation.general_battle_forecast import forecast_fixed_contact
+from xar_autoplayer.simulation.combat_input import freeze_combat_simulation_input
 
 from ck3_autonomous_player.tests.unit.test_gameplay_bridge import (
     _army,
@@ -476,6 +478,62 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         self.assertFalse(result["calibrated_win_probability_available"])
         self.assertIn(result["status"],
                       {"provisional_admissible", "model_risk_budget_exceeded"})
+
+    def test_two_exact_target_defenders_keep_full_ordered_forecast_scope(self):
+        fixture = json.loads(
+            (FIXTURES / "live_rev4_player_attacks_357.json").read_text(encoding="utf-8")
+        )
+        base = copy.deepcopy(fixture["combat_simulation_inputs"])
+        second = copy.deepcopy(base["armies"][1])
+        second["army_id"] = 358
+        second["native_carmy_id"] += 1
+        if second["commander"]["character_id"] is not None:
+            second["commander"]["character_id"] += 100_000
+        for regiment in second["regiments"]:
+            regiment["regiment_id"] += 100_000_000
+        for knight in second["knights"]["members"]:
+            knight["character_id"] += 100_000
+            knight["source_regiment_id"] += 100_000_000
+            knight["army_id"] = second["native_carmy_id"]
+        base["armies"].append(second)
+        base["scenario"]["defender_army_ids"] = [357, 358]
+        frame = {
+            "diagnostics": {"hello": {
+                "ck3_build_match": True,
+                "expected_ck3_sha256": fixture["executable_sha256"],
+            }},
+            "succession_lifecycle": {
+                "lifecycle": "ordinary_campaign_succession", "xar_enabled": "xar_off",
+            },
+            "combat_simulation_inputs_v3": {
+                "completeness": {"input_observation_ready": True},
+                "base_inputs": base,
+            },
+            **fixture["capture"],
+        }
+        freeze_combat_simulation_input(base, capture=fixture["capture"])
+        forecast = forecast_fixed_contact(
+            frame["combat_simulation_inputs_v3"],
+            target_province_id=2581, attacker_entry_province_id=2587,
+            attacker_army_ids=(83_886_341,), defender_army_ids=(357, 358),
+            capture=fixture["capture"], sample_count=16, horizon_days=4,
+        )
+        self.assertEqual(forecast["status"], "estimated", forecast)
+        exact = _provisional_defense_research_assessment(
+            frame, target_province_id=2581, entry_province_id=2587,
+            attacker_army_id=83_886_341, defender_army_ids=(357, 358),
+            friendly_current_soldiers=1_482,
+        )
+        self.assertIn(exact["status"],
+                      {"provisional_admissible", "model_risk_budget_exceeded"}, exact)
+        self.assertEqual(exact["sample_count"], 512)
+        self.assertFalse(exact["calibrated_win_probability_available"])
+        reversed_roster = _provisional_defense_research_assessment(
+            frame, target_province_id=2581, entry_province_id=2587,
+            attacker_army_id=83_886_341, defender_army_ids=(358, 357),
+            friendly_current_soldiers=1_482,
+        )
+        self.assertEqual(reversed_roster["status"], "same_frame_encounter_scope_mismatch")
 
     def test_complete_base_survives_unavailable_v3_phase_for_provisional_trial(self):
         fixture = json.loads(
