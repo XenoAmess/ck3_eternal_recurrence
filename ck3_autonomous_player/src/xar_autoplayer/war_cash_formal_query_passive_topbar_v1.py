@@ -80,9 +80,12 @@ def _bounded_sample(sample: object, candidate: dict[str, object]) -> bool:
     return (
         sample.get("status") == "stable_supplied_bytes_diagnostic_only"
         and diagnostic.get("status") == sample.get("status")
-        and sample.get("sampler_exit_code") == 0
-        and sample.get("pid") == candidate.get("process_pid")
-        and sample.get("process_created_filetime")
+        and type(sample.get("sampler_exit_code")) is int
+        and sample["sampler_exit_code"] == 0
+        and type(sample.get("pid")) is int
+        and sample["pid"] == candidate.get("process_pid")
+        and type(sample.get("process_created_filetime")) is int
+        and sample["process_created_filetime"]
         == candidate.get("process_created_filetime")
         and sample.get("process_exe_sha256")
         == candidate.get("loaded_game_exe_sha256")
@@ -96,6 +99,8 @@ def _bounded_sample(sample: object, candidate: dict[str, object]) -> bool:
         and sample.get("formal_cash_eligible") is False
         and sample.get("game_code_called") is False
         and sample.get("game_memory_written") is False
+        and sample.get("same_native_frame_before_after_proven_by_this_tool")
+        is False
     )
 
 
