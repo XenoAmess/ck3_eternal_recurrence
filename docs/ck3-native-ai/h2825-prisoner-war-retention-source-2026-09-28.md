@@ -26,3 +26,5 @@ H2825 同一暂停帧为 `native:3` / native revision `3` / `date_raw=53217624`�
 4. 把 `matched_pair`、`fp3 matched` 与未解决的战俘/赎金价值映射成独立的 pending retention commitment，供非战争囚犯价值消费者按**同一帧** join。`not_in_pairs` 只否定一般 PoW 释放配对，不否定所有战争价值；无自动释放动作。
 
 已有 `ReadWarExitPrisonerReleases` 原生函数做过一般配对枚举，但公开 `query-war-termination-exit-terms-v2` 因 `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668` 返回 unavailable；窄 `ReadRaiktorSurrenderPrisonerReleases` 只覆盖 Raiktor CB。下一步应把前者作为**不调用 loaded-effect preview** 的独立只读查询暴露，并与原生战争身份、囚犯集合做同帧稳定性复读，再用 H2825 精确 DLL 或重新正式配对的候选实机验收。不能为了取配对重新启用已禁用的 loaded-effect preview。
+
+目前已落地[只读 source join](../../ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_war_retention.py)：严格比较六项暂停帧身份；只有参与者和前 3 顺位继承人两类原生扫描都明确完整，才允许发布 `not_in_pairs`；否则一般 PoW 一律 `unavailable`。它把 `matched_pair`、FP3 House 分支和当前终战选项可达性分开输出，保留脚本威望 value 与未知实际金额，不提交释放动作。H2825 的现有输入可经此接口得到三人 `fp3_house_member_status=not_applicable_cb`、`generic_pow_pair_status=unavailable`。聚焦单测覆盖同帧、精确阳性配对与不完整扫描拒绝，常规及 `-O` 模式各 3 passed。当前这只是消费端 adapter：缺少独立的通用原生 PoW producer，不能把它写成三名囚犯已经完成 live PoW 分类。
