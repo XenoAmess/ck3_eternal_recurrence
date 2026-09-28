@@ -57,6 +57,7 @@ class RansomChoiceTest(unittest.TestCase):
                     "status": "available", "played_character_id": 29829,
                     "played_dynasty_id": 174,
                     "date_raw": 53219112, "collection_complete": True,
+                    "returned_count": 3,
                     "prisoners": copy.deepcopy(self.rows),
                 },
             })
@@ -90,6 +91,41 @@ class RansomChoiceTest(unittest.TestCase):
             "full_participant_scan"] = False
         self.assertIsNone(select_ransom_candidate(
             self.snapshot, self.reads, self.war))
+
+    def test_ransom_precedes_a_bounded_war_date_advance(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
+            class Driver:
+                allow_private_prisoner_ransom_action = True
+
+                def __init__(self):
+                    self.state_dir = Path(temporary)
+                    self.ordinals = []
+
+                def execute_step(self, step, *, expected_revision):
+                    assert step == "query-war-prisoner-release-pairs-v1-16777231"
+                    assert expected_revision == 4
+                    return war_reads[0]
+
+                def query_player_prisoner_collection_private_v1(
+                    self, *, expected_revision, ransom_ordinal,
+                ):
+                    assert expected_revision == 4
+                    self.ordinals.append(ransom_ordinal)
+                    return reads[ransom_ordinal]
+
+            war_reads, reads = self.war, self.reads
+            driver = Driver()
+            planned = plan_ransom_private(
+                driver,
+                {"plan": {"selected_step":
+                    "advance-route-contact-horizon-v1-83886367-to-2610-h-2-50331920-83886484"}},
+                {**self.snapshot, "revision": 4},
+            )
+            self.assertEqual(planned["plan"]["selected_step"],
+                             "private-submit-player-prisoner-ransom-v1")
+            self.assertEqual(planned["plan"]["prisoner_ransom_choice"][
+                "prisoner_character_id"], 34486)
+            self.assertEqual(driver.ordinals, [0, 1, 2, 0])
 
     def test_cold_pending_receipt_precedes_a_war_step_and_needs_material_reads(self):
         with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:

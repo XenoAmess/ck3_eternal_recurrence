@@ -181,7 +181,10 @@ def plan_ransom_private(
                 "selected_step": RECEIPT_STEP,
                 "prisoner_ransom_pending": pending}}
         return planned
-    if (plan.get("selected_step") != "life-advance"
+    baseline_step = plan.get("selected_step")
+    if (not (baseline_step == "life-advance"
+             or isinstance(baseline_step, str)
+             and baseline_step.startswith("advance-route-contact-horizon-v1-"))
             or snapshot.get("active_event") is not None
             or snapshot.get("pending_character_interaction") is not None):
         return planned
