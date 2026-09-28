@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T06:47:00Z",
+  "updated_at_utc": "2026-09-28T08:02:36Z",
   "source_request_commit": "5d2070f",
   "work_branch": "war/r0271-siege-partition-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/450",
@@ -11,7 +11,7 @@
   "delivery_route": "rebase-only PR merge after both Official Runner static checks and CLA passed",
   "problem": "At native:30/raw53219160 the offsite hostile army 83886484 is projected to enter target 2629 at raw53219928, before the player's raw53220216 arrival. The existing partition returns offsite_hostile_may_join_by_target_entry before a contact-free first-waypoint continuation can be considered.",
   "work_plan": "Preserve full-hostile same-frame identity, the final siege contact gate, and no automatic surrender. Check a bounded first-waypoint continuation against the existing route/contact and war-risk contract, with focused normal and optimized tests. Exact-source live remains pending verified assets and managed screen ownership.",
-  "implementation_status": "source_integrated_matching_live_36_turn_preview_passed_continuation_pending",
+  "implementation_status": "source_integrated_matching_live_recoverable_first_hop_daily_gate_passed",
   "implementation_document": "docs/ck3-native-ai/r0271-uncertain-siege-first-hop-2026-09-28.md",
   "interface_contract": "At the R0271 participant gate, only the exact offsite_hostile_may_join_by_target_entry reason may select an exact first-hop preview, full-hostile same-frame first-hop contact query, and typed first-hop move when next-day contact is proven absent. The future target participant set remains unknown; the moving route is checked again before every one-day advance. No target contact, partial v3 forecast or surrender is authorized.",
   "implementation_contract": {
@@ -34,28 +34,24 @@
     "do_not_pair": "Do not pair the later H3446 save with the mutated post-failure R0271 driver."
   },
   "live_evidence": {
-    "status": "partial_matching_live_first_hop_preview_only",
-    "receiver_run_id": "desktop-3fevhd2-1c74096080--eternal-recurrence--R0002",
-    "receiver_execution_id": "f21b4740-c269-44f8-bca9-d67d999ecd41",
+    "status": "matching_live_recoverable_first_hop_and_six_fresh_daily_gates_passed",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0004-r0005-recoverable.json",
     "source_save_sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17",
     "source_driver_sha256": "99C58301C212ABCDBBEDD74D92AE74FCFE23719B927377C93FE7C7D0F54C5C50",
     "candidate_dll_sha256": "0E0B7F5621917A3B9E51E3002AD58E79EF12F7372F912F3B9EA31CEA3CE98B6C",
     "candidate_injector_sha256": "A0BC08BFE39BE5D5D2C477B3DE061061FDAF44F69C4C018FC6BAF972DAA06FC6",
-    "official_formal_report_sha256": "51AA7EF44600EC1D2BEA7BCB7FA16E2F839CF779A1451952AC261AB103E34338",
-    "official_operator_receipt_sha256": "54FC293242AD693B4BE998E11917DF4D1684CDCCE991C2E3EC22B9B3F050E63D",
-    "frozen_evidence_manifest_sha256": "E854315B472A837BB3C2FF28DD6CBCAA67B9D673A1BD0D1E601BA70CCD72B0A7",
-    "formal_status": "turn_limit, 36 attempted and 36 successful, first_blocker null, no gameplay RED",
-    "turn_34": "preview-move-army-83886367-to-2629",
-    "turn_35": "query-route-contact-horizon-v1-83886367-to-2629-h-2-50331920-83886484",
-    "turn_36": "preview-move-army-83886367-to-2614; exact first hop from current province 2610 at raw53219160",
-    "final_checkpoint": "history_index=3436; date_raw=53219160; SHA-256 E33A9B887AB76A448514D11F2982F7BBC3258BF729760997443C8E79768B8ED9",
-    "final_driver_state_sha256": "5A43CA84F8D419A247D757FA94D956F3D90FFC72AEA3E2E7A2F338825A6B720C",
-    "continuation": "Same-frame first-hop contact query, typed first-hop move and post-move daily recheck remain pending a separate R0003 receiver run. Future siege participants remain unknown; attack is not authorized."
+    "receiver_run_chain": [
+      "R0002: 36/36 first-hop preview at old blocking frame raw53219160, final save E33A9B887AB76A448514D11F2982F7BBC3258BF729760997443C8E79768B8ED9, frozen manifest E854315B472A837BB3C2FF28DD6CBCAA67B9D673A1BD0D1E601BA70CCD72B0A7",
+      "R0004: 12/12 same-frame full-hostile short-hop contact at history3445, typed move to2614 history3446 submitted, poststate moving, new full-hostile contact history3449, final save 3D8E689641ED299DFE5921ADF2952CDE6BC9439F7F8AE6B7334061EACC5D0F5F, frozen manifest F6D6DA5B9288B42ABE369F44FA3616B5FBFF808E4A20F77361A2B179898A0627",
+      "R0005: 24/24 six day-by-day advances raw53219160 to53219304, each preceded by fresh full-hostile one-day contact in its own frame; first cross-day proof history3460 raw53219184 after history3457 advance, final save 8A00FEF601F722BF5028563AF4A1E7680D8E6EF25C3C019CB260D6C9DBA3D2EC, frozen manifest 429ECA005996563F14AB2E94CBB1E6AB8108CFBB048F2A09503DA61EC3941DD9"
+    ],
+    "formal_status": "R0002 36/36, R0004 12/12, R0005 24/24: all turn_limit, first_blocker null, no gameplay RED",
+    "risk_boundary": "The first-hop ETA is raw53219328, one day after the R0005 final persisted raw53219304. Arrival at2614 and future target2629 siege participant set are not proven. No target attack, V3 partial combat forecast, surrender, or war exit is authorized."
   },
   "limitations": [
-    "The original R0271 attempt remains RED. The receiver R0002 exact-source attempt reached 36/36 with no blocker and selected an exact first-hop preview at the old blocking frame, but did not yet query first-hop contact or submit the first-hop move. Delivered means code and this partial live evidence are available; full matching consumer verification remains pending.",
+    "The original R0271 attempt remains historical RED. Independent exact-source receiver runs R0002/R0004/R0005 prove a recoverable first-hop command and six fresh daily full-hostile gates, but do not prove arrival at2614 or settle future siege participants at2629. Delivered means the bounded recovery contract is available; the war objective itself remains open.",
     "The route read says offsite army 83886484 may enter target 2629 before the player, but future participation remains unknown. The first-hop contact horizon covers one day, not its entire current seven-day ETA; each later day needs a fresh full-hostile proof.",
-    "Git contains only hashes and bounded excerpts; the raw H3388 source and exact candidate binaries remain in the verified receiver artifact store. Receiver R0001 failed its 300-second map readiness at turn zero and its profile logs were overwritten by R0002 because the same prepared profile was reused; that environment RED and evidence-retention gap are retained, not presented as algorithm proof. R0002 has a separate frozen 33-file evidence manifest."
+    "Git contains only hashes and bounded excerpts; the raw H3388 source and exact candidate binaries remain in the verified receiver artifact store. Receiver R0001 failed its 300-second map readiness at turn zero and its profile logs were overwritten by R0002 because the same prepared profile was reused; R0003 separately failed 900-second readiness at turn zero. Those environment REDs and the R0001 evidence-retention gap are not algorithm proof. R0002/R0004/R0005 each have separate frozen evidence manifests."
   ],
-  "next_step": "Continue from the exact R0002 final checkpoint and driver in a new independent profile and local run, with a fresh Steam offline frame. Verify same-frame first-hop contact query, typed move to 2614, post-move state and renewed one-day full-hostile gate before treating the fallback as live closed."
+  "next_step": "Robert can consume the recoverable first-hop contract: use current same-frame full-hostile contact proof before each further one-day advance, re-evaluate war/route/siege at each new frame, and leave target siege participation unresolved until new native evidence proves it. R0266 cash inputs and H2743 war-exit comparison remain separate pending war-side deliveries."
 }
