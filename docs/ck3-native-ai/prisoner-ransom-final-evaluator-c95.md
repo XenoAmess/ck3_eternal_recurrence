@@ -478,7 +478,9 @@ claimed to be zero. Among eligible ordinary positive gold offers, the
 candidate chooses the highest observed amount, then re-reads the selected
 ordinal so the native submit consumes the most recent same-frame quote.
 Existing non-advance actions retain priority. This narrow policy can submit
-during a war only if the current formal plan otherwise advances time.
+during a war only if the current formal plan otherwise advances time through
+`life-advance` or the existing bounded route/contact horizon step; the ransom
+command consumes one paused turn before that unchanged war continuation.
 
 The private typed submit binds actor, prisoner, redirected payer, quoted
 amount, quote query sequence, native revision, all eight loaded option flags,
