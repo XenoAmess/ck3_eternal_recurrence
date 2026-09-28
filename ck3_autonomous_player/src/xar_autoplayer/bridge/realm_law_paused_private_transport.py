@@ -42,7 +42,7 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
         } or group["group_key"] != expected_key:
             return False
         rows = group["candidates"]
-        if not isinstance(rows, list) or not 1 <= len(rows) <= 24:
+        if not isinstance(rows, list) or not 1 <= len(rows) <= 8:
             return False
         keys: set[str] = set()
         active: list[str] = []
