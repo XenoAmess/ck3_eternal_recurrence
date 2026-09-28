@@ -19,6 +19,23 @@ In the Episode 2 branch, `promo/ck3_native_war_ai/integration/capture_session.py
 
 The native 1.19.0.6 `game/settings_layout.txt:103-134` puts category `GUI`, item `scale`, in the **Graphics** top-level tab, after Screen and Styling. The Chinese localization labels that tab `图像` and the category `图形用户界面` (`jomini/localization/settings/settings_l_simp_chinese.yml:2,25`). `game/gui/settings/setting_types.gui:142-146` calls `JominiSettingsWindow.SaveAndClose`; line 198 displays `RequireRestart` when the selected native setting requests it. These static files do not state whether `GUI.scale` requires a restart. Both the successful disk reseed and CK3's generated 1.3 block use `version=1`, so a version mismatch has not been observed.
 
+## Native UI Save and Close in the same process
+
+The a04 operator used the original Graphics page in final PID 23124 and selected 100% from the `图形用户界面缩放比例` control. Preserved original screenshots `graphics-tab-click-a01.png` (SHA-256 `F02C92BFE223D3BCD24873F61588536B9D3EF055AFCA8AA4B5D74872F82E8363`) and `scale-100-select-a01.png` (SHA-256 `5BFDC23C7A598678768BDCADA550765DC468D1DA90337B29C8D0A7E0125C046F`) show the control changing from 130% to 100% and the settings panel shrinking immediately. `ui-after-save-a01.png` (SHA-256 `CE2620160563D24B0569FEDA0C0CA3E39DC7C85AB89D11474061FDE217CD596B`) shows the settings menu closed. These images do not prove a fresh cold process or the complete battle panel's geometry.
+
+The complete UI-saved file was frozen as `episode02-e2-04-d05-screen-lease-20260928-a04/native-ui-saved-settings-a01.pdx.txt`, 6,891 bytes, SHA-256 `E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D`. Preservation receipt `native-ui-saved-settings-a01.json` at 2026-09-28 16:45:53.161516 UTC records source mtime `1790613698040308000` ns (16:41:38.040308 UTC), matching source before and after the copy, and the original screenshot hashes. The hot readback `ck3-output/recovery-requests-responses/gui-scale-after-ui-save-a01.json`, SHA-256 `D3F1837AB33FD5541CA2696FF51DD27A114FEACFD332431D2CAC48691D68D337`, saw that same 6,891-byte SHA at 16:44:04.407494 UTC. The native save wrote `GUI.scale="1"` for 100%; its previous warmup file had `"1.3"`. The diagnostic's `disk_gate_passed=false` compares the literal string with requested `"1.0"`, so it is a parser false negative for the disk value; its `runtime_scale_proven=false` and the capture's RED status remain unchanged.
+
+The 6,861-byte frozen warmup file `ck3-output/gui-settings-warmup-before-reseed.pdx.txt` and the 6,891-byte UI-saved copy both have 466 lines. An exact byte reconstruction needs only four string-value changes, once each:
+
+| Setting | Warmup value | UI-saved value | Byte delta |
+| --- | --- | --- | ---: |
+| `Graphics.hud_skin` | `"DEFAULT"` | `"hud_skin_auto"` | +6 |
+| `Graphics.map_table_style` | `"DEFAULT"` | `"map_table_style_auto"` | +13 |
+| `Graphics.paper_map_style` | `"DEFAULT"` | `"paper_map_style_auto"` | +13 |
+| `GUI.scale` | `"1.3"` | `"1"` | -2 |
+
+The sum is exactly +30 bytes; replacing these four blocks reproduces all 6,891 bytes and SHA-256 `E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D`. No separate persistence flag, version change, or extra field appears in this file. The three Graphics changes are UI normalization candidates; their causal role in later startup behavior is untested. The native save establishes a valid 100% value for the current process and file, not persistence across a new cold process.
+
 ## Other local sources checked
 
 - The real Documents CK3 `pdx_settings.txt` is a separate 322-byte file, SHA-256 `3AFC0F3F9CA93B58F92C90FB14F4F54FFF473A3C4717ADF5FB60E0AD627F0BE6`, and contains no `GUI.scale` block.
@@ -28,4 +45,4 @@ The native 1.19.0.6 `game/settings_layout.txt:103-134` puts category `GUI`, item
 
 ## Next falsifiable check
 
-In the paused a04 session, use the native pause menu's Settings → **图像 / Graphics** → **图形用户界面 / GUI** → scale control, inspect any restart marker, choose `1.0`, then invoke Save and Close. Preserve an immediate and delayed disk SHA/value readback plus an original desktop screenshot of the complete battle panel. If the UI requires restart, use a managed restart with the same isolated profile and exact checkpoint, recording pre-resume and postmap file identities. Compare the complete UI-saved settings bytes against the before-final reseed: a different companion field is a concrete candidate for the missing persistence contract; exact equality followed by a different cold-start outcome points to state outside that file. A positive postmap screenshot and file readback in the new process are required before any 600-second raw.
+In a separate managed cold attempt, seed the exact frozen 6,891-byte UI-saved file into a new isolated profile and verify its SHA-256 before process resume. Record the warmup and final PID/start times, settings SHA/value/mtime before resume and after map load, and original screenshots showing the complete battle panel. The parser must accept numeric spellings `1` and `1.0` as the same 100% scale while retaining an exact-byte record of which spelling CK3 wrote. If the cold process preserves 100%, this complete UI-saved file is a usable seed for that attempt; if it returns to 130%, the four observed differences alone are insufficient to explain persistence. Do not reclassify the a04 RED capture or start a 600-second raw until the new process meets its visual and disk gates.
