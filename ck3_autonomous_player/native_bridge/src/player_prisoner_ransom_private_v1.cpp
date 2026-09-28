@@ -329,25 +329,60 @@ enum class OptionMaskState : std::uint8_t {
   unexpected,
 };
 
-OptionMaskState ReadOptionMaskState(const void *context,
-                                    std::int32_t expected) noexcept {
+OptionMaskState ReadOptionMaskState(
+    const void *context, std::int32_t expected,
+    PlayerPrisonerRansomQuoteFailureV1 &failure) noexcept {
   void *data = nullptr;
   std::int32_t count = 0;
   const void *definition = nullptr;
   std::int32_t definition_count = 0;
-  if (!Read(context, 0, definition) || definition == nullptr ||
-      !Read(definition, kDefinitionOptionCountOffset, definition_count) ||
-      !Read(context, kOptionDataOffset, data) || data == nullptr ||
-      !Read(context, kOptionCountOffset, count) ||
-      definition_count != static_cast<std::int32_t>(kOptionCount) ||
-      count != definition_count)
+  failure = PlayerPrisonerRansomQuoteFailureV1::none;
+  if (!Read(context, 0, definition) || definition == nullptr) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_definition_pointer_unreadable;
     return OptionMaskState::unreadable;
+  }
+  if (!Read(definition, kDefinitionOptionCountOffset, definition_count)) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_definition_count_unreadable;
+    return OptionMaskState::unreadable;
+  }
+  if (definition_count != static_cast<std::int32_t>(kOptionCount)) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_definition_count_unexpected;
+    return OptionMaskState::unreadable;
+  }
+  if (!Read(context, kOptionDataOffset, data)) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_data_pointer_unreadable;
+    return OptionMaskState::unreadable;
+  }
+  if (data == nullptr) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::option_data_pointer_null;
+    return OptionMaskState::unreadable;
+  }
+  if (!Read(context, kOptionCountOffset, count)) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_context_count_unreadable;
+    return OptionMaskState::unreadable;
+  }
+  if (count != definition_count) {
+    failure = PlayerPrisonerRansomQuoteFailureV1::
+        option_context_count_mismatch;
+    return OptionMaskState::unreadable;
+  }
   std::int32_t selected_count = 0;
   std::int32_t selected_index = -1;
   for (std::int32_t i = 0; i < count; ++i) {
     std::uint8_t selected = 0;
-    if (!Read(data, static_cast<std::size_t>(i), selected) || selected > 1)
+    if (!Read(data, static_cast<std::size_t>(i), selected)) {
+      failure = PlayerPrisonerRansomQuoteFailureV1::option_byte_unreadable;
       return OptionMaskState::unreadable;
+    }
+    if (selected > 1) {
+      failure = PlayerPrisonerRansomQuoteFailureV1::option_byte_out_of_range;
+      return OptionMaskState::unreadable;
+    }
     if (selected != 0) {
       ++selected_count;
       selected_index = i;
@@ -378,6 +413,24 @@ std::string_view FailureName(PlayerPrisonerRansomQuoteFailureV1 value) {
     return "option_context_roles_unverified";
   case PlayerPrisonerRansomQuoteFailureV1::option_mask_unreadable:
     return "option_mask_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_definition_pointer_unreadable:
+    return "option_definition_pointer_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_definition_count_unreadable:
+    return "option_definition_count_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_definition_count_unexpected:
+    return "option_definition_count_unexpected";
+  case PlayerPrisonerRansomQuoteFailureV1::option_data_pointer_unreadable:
+    return "option_data_pointer_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_data_pointer_null:
+    return "option_data_pointer_null";
+  case PlayerPrisonerRansomQuoteFailureV1::option_context_count_unreadable:
+    return "option_context_count_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_context_count_mismatch:
+    return "option_context_count_mismatch";
+  case PlayerPrisonerRansomQuoteFailureV1::option_byte_unreadable:
+    return "option_byte_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_byte_out_of_range:
+    return "option_byte_out_of_range";
   case PlayerPrisonerRansomQuoteFailureV1::option_mask_unexpected:
     return "option_mask_unexpected";
   case PlayerPrisonerRansomQuoteFailureV1::payer_below_one_gold:
@@ -476,7 +529,9 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
         context, option);
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
-    const auto mask = roles_ok ? ReadOptionMaskState(context, option)
+    auto mask_failure = PlayerPrisonerRansomQuoteFailureV1::none;
+    const auto mask = roles_ok ? ReadOptionMaskState(context, option,
+                                                    mask_failure)
                                : OptionMaskState::unreadable;
     if (!roles_ok || mask == OptionMaskState::unreadable ||
         mask == OptionMaskState::unexpected) {
@@ -485,8 +540,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
                            ? PlayerPrisonerRansomQuoteFailureV1::
                                  option_context_roles_unverified
                            : mask == OptionMaskState::unreadable
-                                 ? PlayerPrisonerRansomQuoteFailureV1::
-                                       option_mask_unreadable
+                                 ? mask_failure
                                  : PlayerPrisonerRansomQuoteFailureV1::
                                        option_mask_unexpected;
       return result;
@@ -569,7 +623,9 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
         context, option);
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
-    const auto mask = roles_ok ? ReadOptionMaskState(context, option)
+    auto mask_failure = PlayerPrisonerRansomQuoteFailureV1::none;
+    const auto mask = roles_ok ? ReadOptionMaskState(context, option,
+                                                    mask_failure)
                                : OptionMaskState::unreadable;
     if (!roles_ok || mask == OptionMaskState::unreadable ||
         mask == OptionMaskState::unexpected) {
@@ -578,8 +634,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
                            ? PlayerPrisonerRansomQuoteFailureV1::
                                  option_context_roles_unverified
                            : mask == OptionMaskState::unreadable
-                                 ? PlayerPrisonerRansomQuoteFailureV1::
-                                       option_mask_unreadable
+                                 ? mask_failure
                                  : PlayerPrisonerRansomQuoteFailureV1::
                                        option_mask_unexpected;
       return result;
