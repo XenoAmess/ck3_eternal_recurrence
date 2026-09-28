@@ -32,7 +32,7 @@ from .episode_two_pts_contract import validate_pts_span
 
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
 CARD_REPLAYS = {
-    "E2-02": "004", "E2-03": "004", "E2-04": "039_040",
+    "E2-02": "A05", "E2-03": "A05", "E2-04": "039_040",
     "E2-05A": "020", "E2-05B": "070", "E2-05C": "036_038",
     "E2-06": "A01", "E2-07": "A01", "E2-09": "A05",
 }
@@ -52,6 +52,21 @@ HISTORICAL_PRIMARY = {
     "024": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F",
 }
 HISTORICAL_024_CARD_SHA = "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31"
+HISTORICAL_004_CARD_SHA = {
+    "E2-02": "D3EF3FA32AA96CBD2E120F950498069352B9385B5E4B02EE0EE8794C44BDF509",
+    "E2-03": "A5C13BB2A34974D7D01B7038AD7AB53C14F0F2966A5137BBF6D76087ECD8772D",
+}
+A05_PURSUIT_CONTROL_SHA = {
+    "E2-02": "5693FDBED5B6EDDC077729A5C4C8E9AF68DDE5C5D5E1E59D4B3DF12426D059C7",
+    "E2-03": "85269149AB826FEFAD52D7397892F28180F0195655CE7B7D2DD9B8A6EF2AA20D",
+}
+A05_PURSUIT_DAY_SHA = {
+    28: "5693FDBED5B6EDDC077729A5C4C8E9AF68DDE5C5D5E1E59D4B3DF12426D059C7",
+    29: "5DB5FECEB82644F6B9917960612EF9802E8D6BD97504FB03B7DD6C28BE392725",
+    30: "2C44360FCABE4854767AAD71F7E633ED258D4E9C9ABFA0207DD97A2D51C8E13C",
+    31: "85269149AB826FEFAD52D7397892F28180F0195655CE7B7D2DD9B8A6EF2AA20D",
+}
+A05_PURSUIT_PARITY_SHA = "66E257FB4E9963AF8BFD68B68501E9D2E67536E538B16DA34A901D10624353E5"
 A05_WRITER_SHA = "3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782"
 A05_COLD_LOAD_SHA = "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
 A05_POSTSTATE_SHA = "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
@@ -107,24 +122,38 @@ def _card_replays(data: dict) -> dict[str, str]:
                     replays["E2-05B"], replays["E2-05C"]}) != 4
             or any(replay not in data["replays"] for replay in replays.values())):
         raise ValueError("Nine cards lack separate source replay identities")
-    if (replays["E2-06"] != "A01" or replays["E2-07"] != "A01"
+    if (replays["E2-02"] != "A05" or replays["E2-03"] != "A05"
+            or replays["E2-06"] != "A01" or replays["E2-07"] != "A01"
             or replays["E2-09"] != "A05"):
-        raise ValueError("The formal join and terminal cards must use current A01/A05 replays")
-    for card_id in ("E2-06", "E2-07", "E2-09"):
-        if next(row for row in rows if row["id"] == card_id).get("artifact") != card_filename(card_id):
+        raise ValueError("The formal pursuit, join and terminal cards must use current A05/A01 replays")
+    for card_id in ("E2-02", "E2-03", "E2-06", "E2-07", "E2-09"):
+        row = next(row for row in rows if row["id"] == card_id)
+        if row.get("artifact") != card_filename(card_id):
             raise ValueError(f"Formal {card_id} card lacks its current-run SVG identity")
     a05_source = data["replays"]["A05"]
     if (a05_source.get("source_terminal_sha256", "").upper() != A05_WRITER_SHA
             or a05_source.get("source_save_sha256", "").upper() != A05_COLD_LOAD_SHA
             or a05_source.get("source_post_snapshot_sha256", "").upper() != A05_POSTSTATE_SHA):
         raise ValueError("Formal A05 card must bind its exact writer, cold load and paused poststate")
+    for card_id, digest in A05_PURSUIT_CONTROL_SHA.items():
+        row = next(row for row in rows if row["id"] == card_id)
+        key = "source_day28_control_sha256" if card_id == "E2-02" else "source_day31_control_sha256"
+        if (row.get("source_receipt_sha256", "").upper() != digest
+                or a05_source.get(key, "").upper() != digest):
+            raise ValueError(f"Formal {card_id} pursuit card lost its exact A05 native control")
+    if (any(a05_source.get(f"source_day{day}_control_sha256", "").upper() != digest
+            for day, digest in A05_PURSUIT_DAY_SHA.items())
+            or a05_source.get("source_pursuit_parity_sha256", "").upper() != A05_PURSUIT_PARITY_SHA):
+        raise ValueError("Formal A05 pursuit cards lost their four-day native controls or parity")
     old_cards = data.get("historical_cards")
-    if not isinstance(old_cards, list) or len(old_cards) != 3:
-        raise ValueError("Historical 085/024 card sidecars are missing")
+    if not isinstance(old_cards, list) or len(old_cards) != 5:
+        raise ValueError("Historical 004/085/024 card sidecars are missing")
     historical = {row.get("id"): row for row in old_cards}
-    if set(historical) != {"E2-06", "E2-07", "E2-09"}:
-        raise ValueError("Historical 085/024 card sidecar IDs changed")
+    if set(historical) != {"E2-02", "E2-03", "E2-06", "E2-07", "E2-09"}:
+        raise ValueError("Historical 004/085/024 card sidecar IDs changed")
     for card_id, replay, digest in (
+            ("E2-02", "004", HISTORICAL_004_CARD_SHA["E2-02"]),
+            ("E2-03", "004", HISTORICAL_004_CARD_SHA["E2-03"]),
             ("E2-06", "085", HISTORICAL_085_CARD_SHA["E2-06"]),
             ("E2-07", "085", HISTORICAL_085_CARD_SHA["E2-07"]),
             ("E2-09", "024", HISTORICAL_024_CARD_SHA)):
@@ -138,13 +167,12 @@ def _card_replays(data: dict) -> dict[str, str]:
     reinforcement = _replay_primary(data["replays"][replays["E2-06"]])
     if terminal == reinforcement:
         raise ValueError("Terminal writer and reinforcement cannot share a replay receipt")
-    pursuit = data["replays"][replays["E2-02"]]
-    if replays["E2-02"] == "004" and (
-            pursuit.get("source_save_sha256", "").upper() !=
+    historical_pursuit = data["replays"]["004"]
+    if (historical_pursuit.get("source_save_sha256", "").upper() !=
             "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F"
-            or pursuit.get("source_day27_checkpoint_sha256", "").upper() !=
+            or historical_pursuit.get("source_day27_checkpoint_sha256", "").upper() !=
             "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"):
-        raise ValueError("004 card index must distinguish contact cold-load from day-27 checkpoint")
+        raise ValueError("Historical 004 must distinguish contact cold-load from day-27 checkpoint")
     return replays
 
 
@@ -162,6 +190,9 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
     cards = {key: _sha(cards_dir / card_filename(key)) for key in CARD_REPLAYS}
     if _sha(cards_dir / "e2-09-calculation.svg") != HISTORICAL_024_CARD_SHA:
         raise ValueError("Historical 024 card bytes changed")
+    for card_id, digest in HISTORICAL_004_CARD_SHA.items():
+        if _sha(cards_dir / f"{card_id.lower()}-calculation.svg") != digest:
+            raise ValueError(f"Historical 004 {card_id} card bytes changed")
     for card_id, digest in HISTORICAL_085_CARD_SHA.items():
         if _sha(cards_dir / f"{card_id.lower()}-calculation.svg") != digest:
             raise ValueError(f"Historical 085 {card_id} card bytes changed")
@@ -175,13 +206,13 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
 
 
 def card_filename(card_id: str) -> str:
-    """Formal E2-09 uses A05 bytes; the old SVG remains a 024 sidecar."""
+    """Return the formal current-run SVG while keeping old SVGs as sidecars."""
     if card_id not in CARD_REPLAYS:
         raise ValueError(f"Unknown Episode 2 calculation card: {card_id}")
+    if card_id in ("E2-02", "E2-03", "E2-09"):
+        return f"{card_id.lower()}-a05-calculation.svg"
     if card_id in ("E2-06", "E2-07"):
         return f"{card_id.lower()}-a01-calculation.svg"
-    if card_id == "E2-09":
-        return "e2-09-a05-calculation.svg"
     return f"{card_id.lower()}-calculation.svg"
 
 
