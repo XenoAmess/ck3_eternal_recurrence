@@ -312,6 +312,8 @@ def parser() -> argparse.ArgumentParser:
         required=True,
         help="maximum number of planner turns",
     )
+    native_auto_run_parser.add_argument("--exact-war-move-stop-contract", type=Path)
+    native_auto_run_parser.add_argument("--exact-war-move-stop-sha256")
     native_auto_run_parser.add_argument("--timeout", type=float, default=21600)
     native_auto_run_parser.add_argument(
         "--readiness-timeout",
@@ -895,6 +897,15 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "native-auto-run":
             from .native_auto_run import native_auto_run
+            from .exact_war_move_stop import read_contract as read_exact_war_move_stop_contract
+
+            if bool(args.exact_war_move_stop_contract) != bool(args.exact_war_move_stop_sha256):
+                raise AgentError("exact war move stop requires both contract path and SHA-256")
+            exact_war_move_stop_contract = (
+                read_exact_war_move_stop_contract(
+                    args.exact_war_move_stop_contract, args.exact_war_move_stop_sha256
+                ) if args.exact_war_move_stop_contract is not None else None
+            )
 
             operator_stop_event = threading.Event()
             stop_request_file = (
@@ -968,6 +979,10 @@ def main(argv: list[str] | None = None) -> int:
                     timeout_seconds=args.timeout,
                     readiness_timeout_seconds=args.readiness_timeout,
                     cold_start_checkpoint=args.cold_start_checkpoint,
+                    **(
+                        {"exact_war_move_stop_contract": exact_war_move_stop_contract}
+                        if exact_war_move_stop_contract is not None else {}
+                    ),
                     route_contact_timeline_speed=args.route_contact_speed,
                     allow_route_contact_high_speed_ab=(
                         args.allow_route_contact_high_speed_ab
