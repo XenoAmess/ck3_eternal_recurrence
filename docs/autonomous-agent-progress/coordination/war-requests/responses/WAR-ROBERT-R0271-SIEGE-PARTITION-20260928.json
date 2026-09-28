@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T12:41:40Z",
+  "updated_at_utc": "2026-09-28T14:26:18Z",
   "source_request_commit": "5d2070f",
   "work_branch": "war/r0271-siege-partition-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/450",
@@ -59,6 +59,14 @@
     "next_source_request": "WAR/R0271-H3388/REQUEST-R0312-H3774-SIEGE-FRAME-v1.json",
     "next_source_request_sha256": "3B3B1514568F7BE5ABB882E3CC158F67DB5C9206C47A6258F1CE4586E9314CC8",
     "next_source_request_status": "receiver_local_request_written_and_verified; source ACK pending"
+  },
+  "later_r0321_source_partition_audit": {
+    "status": "later_source_reported_partition_available_original_r0271_red_unchanged",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0321-source-boundary.json",
+    "source_handoff_sha256": "6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20",
+    "bounded_finding": "R0321 source metadata reports formal h3911/raw53219928 in the same campaign/WarID, 32 game days after the original H3388 RED. Both hostile armies 50331920 and 83886484 are now reported at target2629, so participant_partition_status=available and offsite_hostile_army_ids=[] at that later frame. This is a changed battlefield state, not retrospective proof that the original offsite participant set was knowable.",
+    "new_red": "The later planner remains blocked before attack: accepted v3 read, qualified forecast producer_unavailable, provisional same_frame_encounter_scope_mismatch, no usable win probability or expected-utility authorization, active_attack_allowed=false, selected_step=null.",
+    "receiver_boundary": "Only the 5777-byte handoff JSON was receiver verified. The source formal report/raw frame, checkpoint pair, exact later binaries and matching receiver replay are pending; source recovery_qualified_for_receiver=false. Earlier R0271 receiver recovery and historical RED statuses are unchanged."
   },
   "limitations": [
     "The original R0271 attempt remains historical RED. Independent exact-source receiver runs R0002/R0004/R0005 prove a recoverable first-hop command and six fresh daily full-hostile gates, but do not prove arrival at2614 or settle future siege participants at2629. Delivered means the bounded recovery contract is available; the war objective itself remains open.",
