@@ -54,6 +54,10 @@
     "git_request": "../requests/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.json",
     "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
     "onedrive_sha256": "E515F2EF8C47B989D095431B41B16C72F8660D75A5D86A5405AD0885169AC7BC",
+    "routing_addendum_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-FORECAST-REQUEST-ROUTING-ADDENDUM-v1.json",
+    "routing_addendum_sha256": "D43CF44522010F040948A368376FDC469B3B590DB263F2B84EEC69479E755DAA",
+    "single_formal_report_receiver_filename": "R0321-formal-report.txt",
+    "superseded_duplicate_filename": "R0321-formal-report-a6d1ae8.txt in overlapping diagnostic request; file itself retained append-only, alternate target name withdrawn",
     "purpose": "Obtain immutable full formal report or exact same-frame V3/partition excerpt first, then qualified recovery pair/binaries and any existing trial-tape/accuracy evidence; no CK3 action requested."
   }
 }
