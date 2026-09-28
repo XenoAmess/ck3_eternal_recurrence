@@ -58,6 +58,10 @@ READINESS_SECONDS = 1800
 SESSION_SECONDS = 3000
 FRAME_SECONDS = 1800
 TOOL_SECONDS = 120
+# The checked-in CLI can take over 30 seconds to import on the shared host.
+# Keep this a bounded no-launch probe rather than treating a slow import as a
+# source-identity failure.
+STATIC_HELP_SECONDS = 90
 
 
 def select_candidate(name: str) -> None:
@@ -126,7 +130,8 @@ def check_static() -> dict[str, object]:
                              (CLI_ENTRY, ["native-session", "--help"]),
                              (MCP_ENTRY, ["--help"])):
         probe = subprocess.run([str(PYTHON), "-c", entry, *help_args], cwd=REPO,
-                               capture_output=True, text=True, encoding="utf-8", timeout=30)
+                               capture_output=True, text=True, encoding="utf-8",
+                               timeout=STATIC_HELP_SECONDS)
         if probe.returncode != 0 or "usage:" not in probe.stdout.lower():
             raise RuntimeError(f"branch CLI help probe failed: {help_args}")
     return {"status": "static_bytes_verified_no_launch", "candidate_kind": CANDIDATE,
