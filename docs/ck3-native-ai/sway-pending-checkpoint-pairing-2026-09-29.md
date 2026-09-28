@@ -37,3 +37,27 @@ files under a flat `sample-dir`; use that candidate's manifest for
 pending sidecar through their established flags and proof reports. Complete
 the official no-launch preflight before using the unique CK3 instance. This
 source change has no new CK3 live action or cold recovery evidence.
+
+## Child pending ledger across the Sway checkpoint
+
+The child proposal proof chain R0328/R0329 ends at H3922, save SHA-256
+`1BCB1FD30A097A2E8EBA9F96F013AB22A4B6490E0819CF8548B8F337473628A3`.
+R0339's formal report (SHA-256
+`A0453509B1A8EACCB16DEB090FC1623CDCC7B5F055B8CFABFD6D760ABF1E79FD`)
+names that exact save/history/date as its fixed seed. It reports zero automatic
+turns, a Sway pending ACK matching the preserved Sway ledger, and one saved
+H3924 checkpoint with SHA-256 `4BBB0615DEC505E9759E936950754EAA40D634E8A75D63C3C615FDF97C71ECB0`.
+The child ledger in the current state equals the R0329 child ledger. R0340
+started from H3924 and saved no new checkpoint. These observations support
+carrying both **pending** ledgers into a newly paired candidate; they do not
+resolve either action.
+
+For this exact kind of cross-domain advance, `prepare-state` accepts
+`--child-matrilineal-continuation-report <R0339 formal-report.txt>` in addition
+to the existing R0328/R0329 `--child-matrilineal-proof-report` chain and
+`--sway-formal-sidecar`. It checks the preceding checkpoint identity, a fresh
+session with no child turn, the pending Sway action and its saved checkpoint
+against the current save/driver, and unchanged child ledger. The report's
+top-level `ok=false` is expected because the Sway receipt remained RED; it is
+not treated as action success. Without this report, the H3924 child pairing
+continues to reject because R0329 alone only reaches H3922.

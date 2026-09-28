@@ -758,6 +758,8 @@ def child_matrilineal_pending_sidecar_pair(
     sidecar: dict[str, Any], driver: dict[str, Any],
     manifest: dict[str, Any], save_sha256: str,
     attempt: dict[str, Any] | list[dict[str, Any]],
+    *, sway_continuation: dict[str, Any] | None = None,
+    sway_sidecar: dict[str, Any] | None = None,
 ) -> int:
     """Pair a child proposal through consecutive saved formal pending reads."""
     reports = attempt if isinstance(attempt, list) else [attempt]
@@ -928,6 +930,65 @@ def child_matrilineal_pending_sidecar_pair(
             raise ValueError("child proof chain disagrees with pending ledger")
         previous = paired
         previous_pid = later_session["pid"]
+    if sway_continuation is not None:
+        sway_run = sway_continuation
+        sway_action = sway_run.get("private_active_scheme_sway_formal")
+        sway_fixed = sway_run.get("fixed_seed")
+        sway_readiness = sway_run.get("readiness")
+        sway_session = sway_run.get("session")
+        sway_auto = sway_run.get("auto_run")
+        sway_checkpoints = sway_run.get("checkpoints")
+        sway_cleanup = sway_run.get("cleanup")
+        sway_blocker = sway_run.get("first_blocker")
+        if (not isinstance(sway_sidecar, dict)
+                or sway_sidecar.get("schema") != SWAY_FORMAL_PENDING_V1_SCHEMA
+                or sway_sidecar.get("resolved") is not None
+                or not isinstance(sway_sidecar.get("pending"), dict)
+                or sway_run.get("kind") != "ck3_native_auto_run"
+                or sway_run.get("mode") != "native-headless"
+                or sway_run.get("status") != "private_active_scheme_sway_receipt_pending"
+                or sway_run.get("ok") is not False
+                or not isinstance(sway_fixed, dict)
+                or sway_fixed.get("sha256") != previous["sha256"]
+                or sway_fixed.get("history_index") != previous["history_index"]
+                or sway_fixed.get("saved_date_raw") != previous["date_raw"]
+                or not isinstance(sway_session, dict)
+                or type(sway_session.get("pid")) is not int
+                or sway_session["pid"] == previous_pid
+                or not isinstance(sway_readiness, dict)
+                or sway_readiness.get("bridge_pid") != sway_session["pid"]
+                or sway_readiness.get("episode_character_id") != actor
+                or sway_readiness.get("episode_run_id") != episode
+                or sway_readiness.get("date_raw") != previous["date_raw"]
+                or not isinstance(sway_auto, dict)
+                or sway_auto.get("attempted_turns") != 0
+                or sway_auto.get("turns") != []
+                or not isinstance(sway_action, dict)
+                or sway_action.get("status") != "receipt_pending"
+                or sway_action.get("pending") != sway_sidecar["pending"]
+                or sway_action.get("checkpoint_saved") is not True
+                or sway_action.get("postcondition_verified") is not False
+                or not isinstance(sway_checkpoints, list)
+                or len(sway_checkpoints) != 1
+                or not isinstance(sway_checkpoints[0], dict)
+                or not isinstance(sway_cleanup, dict)
+                or sway_cleanup.get("ok") is not True
+                or not isinstance(sway_blocker, dict)
+                or sway_blocker.get("last_durable_checkpoint") != sway_checkpoints[0]
+                or reports[-1].get("child_ledger") != sidecar):
+            raise ValueError("Sway continuation does not preserve child pending chain")
+        saved = sway_checkpoints[0]
+        if (saved.get("phase") != "private_active_scheme_sway_receipt_pending"
+                or saved.get("status") != "saved"
+                or type(saved.get("history_index")) is not int
+                or saved["history_index"] <= previous["history_index"]
+                or saved.get("date_raw") != previous["date_raw"]
+                or saved.get("sha256") != save_sha256
+                or saved.get("episode_character_id") != actor
+                or saved.get("episode_run_id") != episode
+                or saved.get("size") != checkpoint.get("size")):
+            raise ValueError("Sway continuation does not reach paired checkpoint")
+        previous = saved
     if (previous["history_index"] != index
             or previous["date_raw"] != checkpoint["date_raw"]
             or previous["sha256"] != save_sha256
@@ -1215,6 +1276,11 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         raise ValueError("child pending sidecar requires its formal proof report")
     child_source = child_sidecar_arg.resolve() if child_sidecar_arg else None
     child_proof_sources = [path.resolve() for path in child_proof_sources]
+    child_continuation_arg = getattr(args, "child_matrilineal_continuation_report", None)
+    if child_continuation_arg is not None and child_source is None:
+        raise ValueError("child continuation requires pending sidecar and proof chain")
+    child_continuation_source = (child_continuation_arg.resolve()
+                                 if child_continuation_arg is not None else None)
     faction_sidecar_arg = getattr(args, "faction_gift_sidecar", None)
     faction_source = (faction_sidecar_arg.resolve() if faction_sidecar_arg is not None
                       else sample_dir / "faction-gift-pending-v1.json")
@@ -1284,11 +1350,28 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 sha256(save_source))
             family_kind = "resolved"
         family_source_sha256 = sha256(family_source)
+    sway_action_id = None
+    sway_source_sha256 = None
+    sway_record = None
+    if sway_sidecar_arg is not None and not sway_source.is_file():
+        raise FileNotFoundError(sway_source)
+    if sway_source.exists():
+        if not sway_source.is_file():
+            raise FileNotFoundError(sway_source)
+        if sway_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {sway_target}")
+        sway_record = read_json(sway_source)
+        sway_action_id = sway_formal_pending_sidecar_request(
+            sway_record, driver_source_record,
+            sha256(save_source), save_source.stat().st_size)
+        sway_source_sha256 = sha256(sway_source)
     child_candidate = None
     child_source_sha256 = None
     child_proof_sha256 = None
     child_record = None
     child_proof = None
+    child_continuation = None
+    child_continuation_sha256 = None
     if child_source is not None and child_proof_sources:
         if not child_source.is_file() or any(
                 not path.is_file() for path in child_proof_sources):
@@ -1297,9 +1380,15 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             raise FileExistsError(f"refusing to overwrite prepared state: {child_target}")
         child_record = read_json(child_source)
         child_proof = [read_json(path) for path in child_proof_sources]
+        if child_continuation_source is not None:
+            if not child_continuation_source.is_file():
+                raise FileNotFoundError(child_continuation_source)
+            child_continuation = read_json(child_continuation_source)
+            child_continuation_sha256 = sha256(child_continuation_source)
         child_candidate = child_matrilineal_pending_sidecar_pair(
             child_record, driver_source_record, manifest,
-            sha256(save_source), child_proof)
+            sha256(save_source), child_proof,
+            sway_continuation=child_continuation, sway_sidecar=sway_record)
         child_source_sha256 = sha256(child_source)
         child_proof_sha256 = [sha256(path) for path in child_proof_sources]
     faction_request_id = None
@@ -1334,21 +1423,6 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 faction_record, driver_source_record, manifest, sha256(save_source)
             )
             faction_source_sha256 = sha256(faction_source)
-    sway_action_id = None
-    sway_source_sha256 = None
-    sway_record = None
-    if sway_sidecar_arg is not None and not sway_source.is_file():
-        raise FileNotFoundError(sway_source)
-    if sway_source.exists():
-        if not sway_source.is_file():
-            raise FileNotFoundError(sway_source)
-        if sway_target.exists():
-            raise FileExistsError(f"refusing to overwrite prepared state: {sway_target}")
-        sway_record = read_json(sway_source)
-        sway_action_id = sway_formal_pending_sidecar_request(
-            sway_record, driver_source_record,
-            sha256(save_source), save_source.stat().st_size)
-        sway_source_sha256 = sha256(sway_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -1509,7 +1583,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     if child_candidate is not None:
         if child_matrilineal_pending_sidecar_pair(
             child_record, read_json(driver_target), manifest,
-            sha256(save_target), child_proof
+            sha256(save_target), child_proof,
+            sway_continuation=child_continuation, sway_sidecar=sway_record,
         ) != child_candidate:
             raise RuntimeError("prepared driver no longer matches child proposal")
         shutil.copy2(child_source, child_target)
@@ -1526,6 +1601,9 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 child_proof_sha256[0] if len(child_proof_sources) == 1 else None),
             "formal_proof_reports": [str(path) for path in child_proof_sources],
             "formal_proof_reports_sha256": child_proof_sha256,
+            "cross_domain_continuation_report": (
+                str(child_continuation_source) if child_continuation_source else None),
+            "cross_domain_continuation_report_sha256": child_continuation_sha256,
             "candidate_character_id": child_candidate,
         }
     if faction_request_id is not None:
@@ -2473,6 +2551,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--family-proof-report", type=Path, action="append")
     prepare.add_argument("--child-matrilineal-sidecar", type=Path)
     prepare.add_argument("--child-matrilineal-proof-report", type=Path, action="append")
+    prepare.add_argument("--child-matrilineal-continuation-report", type=Path)
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.add_argument("--sway-formal-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
