@@ -259,17 +259,41 @@ bool ExecuteRealmLawPausedPrivateQueryV1(
     if (!private_law::ReadRealmLawCandidateCollectionWithObserver11906(
             access, module_base, &capture, &ObserveCandidate,
             query->collection)) {
-      if (query->failure.empty()) query->failure = "native_law_collection_red";
+      if (query->failure.empty()) {
+        query->failure = "native_law_collection_red:";
+        query->failure += private_law::RealmLawCandidateCollectionFailureName(
+            query->collection.failure);
+        if (query->collection.failure == private_law::
+                RealmLawCandidateCollectionFailure::active_collection_unavailable) {
+          query->failure += ":";
+          query->failure += private_law::RealmLawActiveCollectionFailureName(
+              query->collection.active_failure);
+        }
+      }
       query->completed = true;
       return true;
     }
     private_law::RealmLawCandidateCollection11906 second{};
     decltype(query->final) final_second{};
     capture.final = &final_second;
-    if (!private_law::ReadRealmLawCandidateCollectionWithObserver11906(
-            access, module_base, &capture, &ObserveCandidate, second) ||
-        !SameCapture(*query, second, final_second)) {
-      if (query->failure.empty()) query->failure = "native_law_samples_differ";
+    const bool second_read =
+        private_law::ReadRealmLawCandidateCollectionWithObserver11906(
+            access, module_base, &capture, &ObserveCandidate, second);
+    if (!second_read || !SameCapture(*query, second, final_second)) {
+      if (query->failure.empty()) {
+        query->failure = second_read ? "native_law_samples_differ"
+                                     : "native_law_second_collection_red:";
+        if (!second_read) {
+          query->failure +=
+              private_law::RealmLawCandidateCollectionFailureName(second.failure);
+          if (second.failure == private_law::
+                  RealmLawCandidateCollectionFailure::active_collection_unavailable) {
+            query->failure += ":";
+            query->failure += private_law::RealmLawActiveCollectionFailureName(
+                second.active_failure);
+          }
+        }
+      }
       query->completed = true;
       return true;
     }

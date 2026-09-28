@@ -70,6 +70,45 @@ normal Python and `-O`, both 9/9 GREEN. Its standalone reader fixture ran under
 MSVC `/std:c++20 /W4 /WX` in `/Od` and `/O2`, both 6/6 GREEN. Fixture memory is
 not a CK3 paused readback.
 
+## R0332 H3922 paused read failure and bounded correction
+
+R0332 loaded the paired H3922 Robert frame (actor 29829, paused,
+raw53219928) and invoked the private realm-law query once. The query returned
+`native_law_collection_red` before any candidate visitor ran; no law command,
+date advance, or durable save change occurred. The old error string hid the
+candidate reader's own failure enum, so that one report cannot prove which
+pre-visitor read was first to fail.
+
+The stock `common/laws/00_succession_laws.txt` defines 29 entries inside
+`succession_order_laws`, including government-specific and holy-order laws.
+The previous reader required a whole native group to fit into its 24-row
+output buffer **before** filtering. Consequently, reaching this stock group
+deterministically returns `candidate_count_invalid`, even though only four
+standard feudal succession choices are needed for the current split-successor
+decision. The 24-row fixture contained only two entries and did not cover the
+stock collection size.
+
+The revised reader bounds the native group at 64 entries, copies only the four
+`crown_authority` levels and the four standard partition/single-heir laws,
+and retains a currently enacted law even if its key is outside that small
+choice set. It never invokes final-term evaluation for an unrelated
+holy-order candidate. Its value-only output is bounded at eight rows per
+group. Candidate and active-collection failure names now reach the private
+RED string, so the next paused read identifies the actual native stage if a
+different read is still failing. The normal/optimized fixture exercises a
+29-entry succession group and confirms the holy-order entry does not reach
+the observer; these are source tests pending a new paused CK3 result.
+
+```mermaid
+flowchart LR
+  A[stock succession group: 29 native entries] --> B{native count <= 64?}
+  B -->|yes| C[copy native law keys]
+  C --> D{feudal choice or current active?}
+  D -->|yes| E[bounded value-only candidate and final observer]
+  D -->|no| F[skip unrelated candidate]
+  B -->|no| G[precise candidate_count_invalid RED]
+```
+
 ## Next exact input
 
 Resolve the current H3911 active and candidate keys in a paused frame. For each

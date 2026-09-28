@@ -24,6 +24,22 @@ std::string_view KeyText(const RealmLawActiveKey &key) noexcept {
   return {key.bytes.data(), key.size};
 }
 
+bool IsRelevantCandidate(std::size_t group_index, std::string_view key,
+                         bool active) noexcept {
+  if (active) return true;
+  constexpr std::array<std::string_view, 4> crown{
+      "crown_authority_0", "crown_authority_1", "crown_authority_2",
+      "crown_authority_3"};
+  constexpr std::array<std::string_view, 4> succession{
+      "confederate_partition_succession_law", "partition_succession_law",
+      "high_partition_succession_law", "single_heir_succession_law"};
+  const auto &allowlist = group_index == 0 ? crown : succession;
+  for (const auto admitted : allowlist) {
+    if (key == admitted) return true;
+  }
+  return false;
+}
+
 bool IsActiveKey(const RealmLawActiveCollection &active,
                  const RealmLawActiveKey &key) noexcept {
   for (std::uint32_t i = 0; i < active.count; ++i) {
@@ -54,8 +70,8 @@ bool ReadGroup(const RealmLawActiveCollectionAccess &access,
     return false;
   }
   if (candidate_count < 1 ||
-      candidate_count >
-          static_cast<std::int32_t>(kRealmLawMaximumRelevantCandidates11906) ||
+      candidate_count > static_cast<std::int32_t>(
+                            kRealmLawMaximumNativeGroupCandidates11906) ||
       candidate_slots == 0) {
     failure = RealmLawCandidateCollectionFailure::candidate_count_invalid;
     return false;
@@ -74,13 +90,21 @@ bool ReadGroup(const RealmLawActiveCollectionAccess &access,
       failure = RealmLawCandidateCollectionFailure::candidate_group_mismatch;
       return false;
     }
-    auto &candidate = group.candidates[static_cast<std::size_t>(i)];
-    if (!ReadRealmLawNativeKey11906(access, law_address + kLawKeyOffset,
-                                   candidate.key)) {
+    RealmLawActiveKey key{};
+    if (!ReadRealmLawNativeKey11906(access, law_address + kLawKeyOffset, key)) {
       failure = RealmLawCandidateCollectionFailure::candidate_key_invalid;
       return false;
     }
-    candidate.active = IsActiveKey(active, candidate.key);
+    const bool is_active = IsActiveKey(active, key);
+    if (!IsRelevantCandidate(group_index, KeyText(key), is_active)) continue;
+    if (group.candidate_count >= kRealmLawMaximumRelevantCandidates11906) {
+      failure = RealmLawCandidateCollectionFailure::candidate_count_invalid;
+      return false;
+    }
+    const auto output_index = static_cast<std::size_t>(group.candidate_count++);
+    auto &candidate = group.candidates[output_index];
+    candidate.key = key;
+    candidate.active = is_active;
     if (candidate.active) {
       if (group.active_found) {
         failure = RealmLawCandidateCollectionFailure::active_law_ambiguous;
@@ -90,13 +114,16 @@ bool ReadGroup(const RealmLawActiveCollectionAccess &access,
       group.active_law_key = candidate.key;
     }
     if (observer != nullptr &&
-        !observer(observer_context, group_index, static_cast<std::size_t>(i),
+        !observer(observer_context, group_index, output_index,
                   law_address, candidate)) {
       failure = RealmLawCandidateCollectionFailure::candidate_observer_failed;
       return false;
     }
   }
-  group.candidate_count = static_cast<std::uint32_t>(candidate_count);
+  if (group.candidate_count == 0) {
+    failure = RealmLawCandidateCollectionFailure::relevant_candidate_missing;
+    return false;
+  }
   return true;
 }
 
@@ -111,6 +138,7 @@ bool ReadRealmLawCandidateCollectionWithObserver11906(
   if (!ReadRealmLawActiveCollection11906(access, active)) {
     output.failure =
         RealmLawCandidateCollectionFailure::active_collection_unavailable;
+    output.active_failure = active.failure;
     return false;
   }
   if (module_base == 0) {
@@ -180,6 +208,46 @@ bool ReadRealmLawCandidateCollection11906(
     RealmLawCandidateCollection11906 &output) noexcept {
   return ReadRealmLawCandidateCollectionWithObserver11906(
       access, module_base, nullptr, nullptr, output);
+}
+
+std::string_view RealmLawCandidateCollectionFailureName(
+    RealmLawCandidateCollectionFailure failure) noexcept {
+  switch (failure) {
+  case RealmLawCandidateCollectionFailure::none: return "none";
+  case RealmLawCandidateCollectionFailure::active_collection_unavailable:
+    return "active_collection_unavailable";
+  case RealmLawCandidateCollectionFailure::module_base_unavailable:
+    return "module_base_unavailable";
+  case RealmLawCandidateCollectionFailure::database_unavailable:
+    return "database_unavailable";
+  case RealmLawCandidateCollectionFailure::database_groups_unavailable:
+    return "database_groups_unavailable";
+  case RealmLawCandidateCollectionFailure::database_group_count_invalid:
+    return "database_group_count_invalid";
+  case RealmLawCandidateCollectionFailure::group_unavailable:
+    return "group_unavailable";
+  case RealmLawCandidateCollectionFailure::group_key_invalid:
+    return "group_key_invalid";
+  case RealmLawCandidateCollectionFailure::duplicate_relevant_group:
+    return "duplicate_relevant_group";
+  case RealmLawCandidateCollectionFailure::relevant_group_missing:
+    return "relevant_group_missing";
+  case RealmLawCandidateCollectionFailure::candidate_count_invalid:
+    return "candidate_count_invalid";
+  case RealmLawCandidateCollectionFailure::candidate_unavailable:
+    return "candidate_unavailable";
+  case RealmLawCandidateCollectionFailure::candidate_group_mismatch:
+    return "candidate_group_mismatch";
+  case RealmLawCandidateCollectionFailure::candidate_key_invalid:
+    return "candidate_key_invalid";
+  case RealmLawCandidateCollectionFailure::active_law_ambiguous:
+    return "active_law_ambiguous";
+  case RealmLawCandidateCollectionFailure::candidate_observer_failed:
+    return "candidate_observer_failed";
+  case RealmLawCandidateCollectionFailure::relevant_candidate_missing:
+    return "relevant_candidate_missing";
+  }
+  return "unknown";
 }
 
 } // namespace xar::ck3_11906::private_law

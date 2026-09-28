@@ -11,7 +11,8 @@ namespace xar::ck3_11906::private_law {
 inline constexpr std::array<std::string_view, 2>
     kRealmLawRelevantFeudalGroups11906 = {
         "crown_authority", "succession_order_laws"};
-inline constexpr std::size_t kRealmLawMaximumRelevantCandidates11906 = 24;
+inline constexpr std::size_t kRealmLawMaximumRelevantCandidates11906 = 8;
+inline constexpr std::size_t kRealmLawMaximumNativeGroupCandidates11906 = 64;
 
 enum class RealmLawCandidateCollectionFailure : std::uint8_t {
   none,
@@ -30,6 +31,7 @@ enum class RealmLawCandidateCollectionFailure : std::uint8_t {
   candidate_key_invalid,
   active_law_ambiguous,
   candidate_observer_failed,
+  relevant_candidate_missing,
 };
 
 struct RealmLawCandidateCollectionRow11906 {
@@ -49,8 +51,13 @@ struct RealmLawRelevantGroup11906 {
 struct RealmLawCandidateCollection11906 {
   RealmLawCandidateCollectionFailure failure =
       RealmLawCandidateCollectionFailure::active_collection_unavailable;
+  RealmLawActiveCollectionFailure active_failure =
+      RealmLawActiveCollectionFailure::none;
   std::array<RealmLawRelevantGroup11906, 2> groups{};
 };
+
+std::string_view RealmLawCandidateCollectionFailureName(
+    RealmLawCandidateCollectionFailure failure) noexcept;
 
 // Invoked synchronously while the native CLaw* is known. The address must
 // remain inside this paused application-main callback; it is not part of the

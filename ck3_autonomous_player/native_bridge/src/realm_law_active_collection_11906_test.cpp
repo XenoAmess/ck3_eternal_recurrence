@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <string>
 #include <string_view>
 
 namespace {
@@ -16,7 +17,7 @@ using namespace xar::ck3_11906::private_law;
 constexpr std::uintptr_t kBase = 0x10000000;
 
 struct Fixture {
-  std::array<std::byte, 0x5000> memory{};
+  std::array<std::byte, 0x8000> memory{};
   std::uintptr_t database_singleton = 0;
 
   template <typename T> void Store(std::uintptr_t address, const T &value) {
@@ -109,6 +110,13 @@ int main() {
   assert(!ReadRealmLawActiveCollection11906(access, result));
   assert(result.failure ==
          RealmLawActiveCollectionFailure::exact_build_mismatch);
+  RealmLawCandidateCollection11906 diagnostic{};
+  assert(!ReadRealmLawCandidateCollection11906(
+      access, 0x140000000, diagnostic));
+  assert(diagnostic.failure ==
+         RealmLawCandidateCollectionFailure::active_collection_unavailable);
+  assert(diagnostic.active_failure ==
+         RealmLawActiveCollectionFailure::exact_build_mismatch);
   access.admitted_executable_sha256 = kRealmLawActiveCollectionExeSha256;
 
   fixture.Store(context + 0x20C, std::int32_t{65});
@@ -177,11 +185,39 @@ int main() {
   assert(candidates.failure ==
          RealmLawCandidateCollectionFailure::candidate_observer_failed);
 
+  // The stock succession_order_laws group contains more than 24 definitions.
+  // Visit its full native collection but only emit the feudal decisions plus
+  // any current active law. Unrelated holy-order final terms are not queried.
+  constexpr std::uintptr_t filler_base = kBase + 0x4000;
+  for (std::uintptr_t i = 0; i < 27; ++i) {
+    const auto law = filler_base + i * 0x100;
+    fixture.Store(succession_slots + (i + 1) * 8, law);
+    fixture.Store(law + 0x38, succession_group);
+    if (i == 0) {
+      fixture.Key(law, "holy_order_succession_law", kBase + 0x7000);
+    } else {
+      const std::string key = "other_" + std::to_string(i);
+      fixture.Key(law, key);
+    }
+  }
+  fixture.Store(succession_slots + 28 * 8, law4);
+  fixture.Store(succession_group + 0x5C, std::int32_t{29});
+  seen = {};
+  assert(ReadRealmLawCandidateCollectionWithObserver11906(
+      access, 0x140000000, &seen, &ObserveCandidate, candidates));
+  assert(candidates.groups[1].candidate_count == 2);
+  assert(RealmLawCandidateCollectionFailureName(
+             RealmLawCandidateCollectionFailure::candidate_count_invalid) ==
+         "candidate_count_invalid");
+  assert(seen.count == 4);
+  assert(seen.addresses ==
+         (std::array<std::uintptr_t, 4>{law1, law3, law2, law4}));
+
   fixture.Key(succession_group, "other_group");
   assert(!ReadRealmLawCandidateCollection11906(access, 0x140000000,
                                               candidates));
   assert(candidates.failure ==
          RealmLawCandidateCollectionFailure::relevant_group_missing);
 
-  std::cout << "realm_law_candidate_collection_11906_test: 8/8 GREEN\n";
+  std::cout << "realm_law_candidate_collection_11906_test: 9/9 GREEN\n";
 }
