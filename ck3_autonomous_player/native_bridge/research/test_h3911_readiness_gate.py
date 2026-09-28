@@ -159,6 +159,13 @@ class ReadinessGateTests(unittest.IsolatedAsyncioTestCase):
         result = source_rows[3913]["result"]
         rows = result["army_strengths"]
         self.assertEqual(receiver.require_h3911_strength_rows(rows), rows)
+        from xar_autoplayer import strategy
+        balance = strategy._same_frame_army_strength_balance(
+            {"paused": True, "army_strengths_status": result["status"],
+             "army_strengths": rows}, 16777231,
+        )
+        self.assertEqual(balance["friendly_army_ids"], [83886367])
+        self.assertEqual(balance["enemy_army_ids"], [50331920, 83886484])
         missing_war = [dict(row) for row in rows]
         missing_war[0]["war_ids"] = []
         with self.assertRaisesRegex(RuntimeError, "WarID differs"):
