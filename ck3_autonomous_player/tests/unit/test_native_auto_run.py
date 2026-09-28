@@ -564,6 +564,22 @@ class _NativeAutoRunHarness:
                 "accepted": True,
                 "status": "queried",
             }
+        elif action in {"ransom_receipt_applied", "ransom_receipt_changed"}:
+            step = "private-read-player-prisoner-ransom-receipt-v1"
+            if action == "ransom_receipt_changed":
+                self.date_raw += 1
+                self.native_revision += 1
+                self.public_revision += 1
+            result = {
+                "status": "applied",
+                "material_result": True,
+                "postcondition_verified": True,
+                "prisoner_no_longer_held": True,
+                "observed_player_gold_gain_raw": 5_019_222,
+                "quoted_gold_raw": 5_000_000,
+                "post_native_revision": self.native_revision,
+                "post_date_raw": self.date_raw,
+            }
         elif action == "existing_focus":
             step = "query-campaign-root-context-v1"
             result = {
@@ -4893,6 +4909,37 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(report["outcome"], "failed")
         self.assertIn("read-only native query changed", report["error"])
         self.assertEqual(report["auto_run"]["counts"]["query"], 1)
+        self.assertIn(
+            "date_advanced", report["auto_run"]["turns"][0]["evidence"]
+        )
+
+    def test_ransom_material_receipt_is_read_only_observation(self) -> None:
+        report, _harness = self._run(["ransom_receipt_applied"])
+
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertIsNone(report["error"])
+        turn = report["auto_run"]["turns"][0]
+        self.assertTrue(turn["ok"])
+        self.assertEqual(
+            turn["selected_step"],
+            "private-read-player-prisoner-ransom-receipt-v1",
+        )
+        self.assertEqual(turn["result"]["status"], "applied")
+        self.assertTrue(turn["result"]["prisoner_no_longer_held"])
+        self.assertEqual(turn["result"]["observed_player_gold_gain_raw"], 5_019_222)
+        self.assertIn(
+            "prisoner_ransom_custody_and_gold_material_readback",
+            turn["evidence"],
+        )
+
+    def test_ransom_receipt_still_rejects_native_frame_mutation(self) -> None:
+        report, _harness = self._run(["ransom_receipt_changed"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(
+            report["first_blocker"]["kind"],
+            "read_only_query_changed_frame",
+        )
         self.assertIn(
             "date_advanced", report["auto_run"]["turns"][0]["evidence"]
         )
