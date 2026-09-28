@@ -50,3 +50,42 @@ This is source/fixture evidence only. The preserved Robert roots checked for
 C60 have targeting-faction count zero, so there is still no gift-positive
 formal submit, independent gold/opinion/faction postcondition, next-turn
 consumption or live cold-restore qualification.
+
+## H3388 archived Robert root: targeting faction observed (2026-09-28)
+
+The earlier zero-count statement applies only to the roots checked for C60.
+The immutable H3388 driver at
+`Z:/h3388-source-freeze-20260928/source-pair/driver-state.json`
+(SHA-256 `99C58301C212ABCDBBEDD74D92AE74FCFE23719B927377C93FE7C7D0F54C5C50`)
+contains 640 successful `query-campaign-root-context-v1` commands: 592 report
+`player_targeting_faction_count=0` and 48 report `1`. The first positive is
+history index 3030/date raw 53218056. The latest positive is command index
+3384, native revision 27/date raw 53218944, actor 29829, feudal government,
+with 10 published direct landed vassal IDs. This is an actual targeting-faction
+root, not a fabricated candidate. The paired H3388 checkpoint is at date raw
+53218968, so the index-3384 count must be refreshed after loading that save;
+it is not a same-frame H3388 gift preview.
+
+The R0269 formal report
+(`Z:/h3388-source-freeze-20260928/evidence/formal-report.txt`, SHA-256
+`310F673EC9D13DD4DC2F6250B5773D41830AB1D3C0772CAFAF255936D7F1F8C0`)
+has WarID 16777231 active throughout all 36 turns. Its 35 wartime M5
+observations are `incomplete_war_cash`. The frozen H3326 candidate's
+`native_private_flags_on` omits
+`XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1`, and its
+operator command omits `--private-faction-gift-formal-trial`. The H3388 driver
+history has no faction-gift private query, submit or receipt. Existing private
+`plan_faction_gift_private_v1` only augments a `life-advance` plan; the formal
+M5 gift producer is peaceful. Thus this archived positive count proves neither
+a native-legal/affordable gift nor a missed approved wartime submit. It does
+not change public advertisement or M4 qualification.
+
+Next matching candidate: retain the H3388 save/driver/family pairing, build
+the already present default-OFF private gift capability into a new DLL, and
+enable the bounded private trial with a newly allocated round ID. Obtain a
+fresh same-frame targeting root and exact native member/gift preview before
+deciding whether there is a legal gift and a concrete mitigation objective.
+Any wartime spending decision must consume the war cash/resource contract or
+remain a documented comparison gap. Only a formal typed submit followed by
+independent gold, recipient opinion, original-faction readback, next-turn
+consumption and paired cold recovery can extend the live capability claim.
