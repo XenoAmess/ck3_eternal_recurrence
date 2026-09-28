@@ -43,8 +43,10 @@
 | retreat / forced-result core | true | day14/15、allow/disallow、skip-pursuit、force mapping 与 tick order已落地 |
 | exact original fixture | absent | 独立于待测模拟器生成的 exact-build trace SHA-256 |
 
-只有四项同时满足，manifest 才能把输出标成 `exact-native-parity`。当前常量
-`CURRENT_BOUNDED_CORE_MANIFEST` 明确列出缺口；不允许由调用方覆盖 `planner_usable`。
+四项同时声明满足时，核心摘要只标成 `transition-parity-manifest-claim`，
+`planner_usable` 仍为 false。manifest 的布尔值与单个 trace SHA 不能独立证明
+原版逐日 parity、跨存档胜率校准或同帧三行动效用；`exact-native-parity` 只可由后续独立
+证据核验后的生产者使用。当前常量 `CURRENT_BOUNDED_CORE_MANIFEST` 仍明确列出缺口。
 
 [implementation-confirmed] stock 13-row phase-event manifest 已有严格 immutable loader
 `xar_autoplayer.simulation.phase_event_manifest`。loader 固定 canonical SHA-256
@@ -71,10 +73,13 @@ flowchart TD
     T --> O["wins / losses / no-resolution<br/>days and hard-loss tails"]
     O --> W["resolved-win Wilson 95%<br/>nearest-rank p10/p50/p90"]
     K --> G{"loaded effects + battle end<br/>+ retreat + original trace exact?"}
-    G -->|yes| P["exact-native-parity<br/>planner_usable=true"]
+    G -->|yes, declared| P["transition-parity-manifest-claim<br/>planner_usable=false"]
     G -. "current: no" .-> B["research-only-bounded-core<br/>planner_usable=false"]
     W --> P
     W --> B
+    P --> H{"independent native trace, holdout<br/>and same-frame EU verified?"}
+    H -->|yes, future separate producer| Q["qualified forecast candidate<br/>separate activation still required"]
+    H -->|no| B
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class B unknown;
 ```

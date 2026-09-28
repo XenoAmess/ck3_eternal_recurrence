@@ -695,7 +695,7 @@ class MonteCarloContractTests(unittest.TestCase):
             manifest=manifest,
         )
         self.assertTrue(summary.fidelity_gate)
-        self.assertEqual(summary.model_fidelity, "exact-native-parity")
+        self.assertEqual(summary.model_fidelity, "transition-parity-manifest-claim")
         self.assertFalse(summary.planner_usable)
 
 

@@ -34,4 +34,4 @@
 3. 在看结果前固定独立存档 lineage 的校准与留出计划，对胜负、未决、p90 硬伤、灭队与一命人物尾部做逐日 parity 和留出概率评估。同一存档重复回放、同一次 battle 的多个视频或 512 个纯模拟 trial 均不能算独立原版胜负样本。H3911 尚未开战，当前没有其真实胜负标签。
 4. 同一 paused frame 的 `attack`、`avoid`、`wait_reinforce` 可实现反事实、逐 trial 成分、现金与政策版本，按 `combat_entry_eu_v1` 完整合同校验。源二进制 SHA、date、connection generation 若加入 EU 身份，应升级合同版本并同步严格验证；不能仅把外层布尔值设为 true。最后的 activation 仍是单独门。
 
-代码上还修正了一个未来误放行链：原 `summarize_trial_outcomes()` 将 `planner_usable` 直接等于 `TransitionFidelityManifest.fidelity_gate`；单一 trace SHA 和转移布尔声明本身没有独立概率校准或三行动 EU。现在 trial 摘要始终 `planner_usable=false`，即使合成 manifest 声称 transition parity；聚焦负例确保这一点。`engagement_readiness()` 原本也始终 false，此改动使两处边界一致。正式生产者须单独实现并验证上述校准/效用合同，当前 H3911 继续 RED。
+代码上还修正了一个未来误放行链：原 `summarize_trial_outcomes()` 将 `planner_usable` 直接等于 `TransitionFidelityManifest.fidelity_gate`，并把模型称作 `exact-native-parity`；单一 trace SHA 和转移布尔声明本身没有独立原版 trace 核验、概率校准或三行动 EU。现在 trial 摘要始终 `planner_usable=false`；即使合成 manifest 声称转移闭合，标签也只写 `transition-parity-manifest-claim`。聚焦负例确保这两点。`engagement_readiness()` 原本也始终 false，此改动使两处边界一致。正式生产者须单独实现并验证上述校准/效用合同，当前 H3911 继续 RED。

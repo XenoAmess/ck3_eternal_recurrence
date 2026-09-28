@@ -1422,7 +1422,8 @@ def summarize_trial_outcomes(
         # Only a separate qualified producer may later assert planner use.
         planner_usable=False,
         model_fidelity=(
-            "exact-native-parity" if fidelity_gate else "research-only-bounded-core"
+            "transition-parity-manifest-claim" if fidelity_gate
+            else "research-only-bounded-core"
         ),
         missing_required_domains=manifest.missing_required_domains,
     )
