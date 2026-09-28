@@ -284,11 +284,14 @@ def require_snapshot(value: dict[str, object]) -> dict[str, object]:
 
 
 FRAME_FIELDS = ("snapshot_id", "revision", "native_revision", "date_raw",
-                "episode_run_id", "connection_generation")
+                "episode_run_id")
 
 
 def frame_signature(snapshot: dict[str, object]) -> dict[str, object]:
     frame = {field: snapshot.get(field) for field in FRAME_FIELDS}
+    diagnostics = snapshot.get("diagnostics")
+    frame["connection_generation"] = (
+        diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None)
     if (not isinstance(frame["snapshot_id"], str) or not frame["snapshot_id"]
             or frame["episode_run_id"] != EPISODE
             or any(type(frame[field]) is not int or frame[field] <= 0

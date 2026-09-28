@@ -89,9 +89,10 @@ class H2743RunnerGateTests(unittest.TestCase):
             runner.screen_lease("h2743-review")
 
     def test_war_options_rejects_any_of_six_frame_drifts_or_wrong_war(self) -> None:
-        frame = {"snapshot_id": "native:3", "revision": 4, "native_revision": 3,
-                 "date_raw": 53217264, "episode_run_id": runner.EPISODE,
-                 "connection_generation": 1}
+        snapshot = {"snapshot_id": "native:3", "revision": 4, "native_revision": 3,
+                    "date_raw": 53217264, "episode_run_id": runner.EPISODE,
+                    "diagnostics": {"connection_generation": 1}}
+        frame = runner.frame_signature(snapshot)
         war = {"war_id": 16777231, "player_side": "defender",
                "player_is_primary_war_leader": True,
                "primary_opponent_character_id": 30097,
@@ -144,15 +145,25 @@ class H2743RunnerGateTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     runner.require_options_query(changed, frame, war)
 
-        for field in runner.FRAME_FIELDS:
+        for field in (*runner.FRAME_FIELDS, "connection_generation"):
             with self.subTest(snapshot_field=field):
-                changed = dict(frame)
-                changed[field] = "other" if isinstance(changed[field], str) else changed[field] + 1
+                changed = copy.deepcopy(snapshot)
+                target = changed["diagnostics"] if field == "connection_generation" else changed
+                target[field] = "other" if isinstance(target[field], str) else target[field] + 1
                 if field == "episode_run_id":
                     with self.assertRaises(RuntimeError):
                         runner.frame_signature(changed)
                 else:
                     self.assertNotEqual(runner.frame_signature(changed), frame)
+
+        for diagnostics in (None, {}, {"connection_generation": None},
+                            {"connection_generation": True}):
+            with self.subTest(diagnostics=diagnostics):
+                missing = dict(snapshot)
+                missing["diagnostics"] = diagnostics
+                missing["connection_generation"] = 1  # Top-level value is not authoritative.
+                with self.assertRaises(RuntimeError):
+                    runner.frame_signature(missing)
 
     def test_loaded_binary_audit_rejects_wrong_process_module(self) -> None:
         process = SimpleNamespace(exe=lambda: str(runner.EXE),
