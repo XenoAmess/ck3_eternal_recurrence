@@ -20,11 +20,15 @@ import pefile
 
 EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 NAME_RVAS = {
+    "GetEmbarkCostValueBreakdown": 0x41018F8,
     "GetEmbarkCost": 0x4101938,
     "IsCostOverOwned": 0x4101308,
 }
 # Exact instruction anchors, not a claim about all paths through the callees.
 ANCHORS = {
+    0xE12CE: ("movups", "xmm0, xmmword ptr [rip + 0x4020623]"),
+    0xE135E: ("lea", "rdx, [rip + 0xda502b]"),
+    0xE136A: ("call", "0x140ec2550"),
     0xE1659: ("movsd", "xmm0, qword ptr [rip + 0x40202d7]"),
     0xE16DD: ("lea", "rdx, [rip + 0xda7dac]"),
     0xE16E8: ("call", "0x140ec33a0"),
@@ -35,6 +39,7 @@ ANCHORS = {
     0xE894AA: ("mov", "rcx, qword ptr [rax + 0x78]"),
     0xE894B6: ("call", "0x14096d5d0"),
     0xE894E2: ("call", "0x140e823a0"),
+    0xE86390: ("mov", "rax, qword ptr [rcx + 0x70]"),
     0xE816DD: ("lea", "rax, [rip + 0x327ed0c]"),
     0xE816E4: ("mov", "qword ptr [rsi], rax"),
     0xE81728: ("xor", "ebp, ebp"),
@@ -43,6 +48,9 @@ ANCHORS = {
     0xE81CDB: ("mov", "dword ptr [rcx + rdx*4 - 0xc], eax"),
     0xE81CE6: ("mov", "qword ptr [rcx + rdx*4 - 8], rax"),
     0xE81D2D: ("cmp", "r15, 0x20"),
+    0xE817A1: ("mov", "qword ptr [r14], rax"),
+    0xE817C0: ("mov", "qword ptr [rax], rcx"),
+    0xE817FE: ("mov", "qword ptr [rdi], rbx"),
     0xE81F62: ("xor", "r12d, r12d"),
     0xE81F99: ("mov", "rbx, r12"),
     0xE81FBF: ("mov", "r8d, dword ptr [rdi]"),
@@ -50,6 +58,8 @@ ANCHORS = {
     0xE81FFA: ("call", "0x1422775f0"),
     0xE81FFF: ("add", "rbx, qword ptr [rax]"),
     0xE820E2: ("mov", "qword ptr [rax + 0x78], rbx"),
+    0xE820E6: ("mov", "rcx, qword ptr [r15 + 0x70]"),
+    0xE820EE: ("mov", "qword ptr [rcx], rax"),
     0xE8248F: ("mov", "rax, qword ptr [rax + 0x100]"),
     0xE82496: ("mov", "rcx, qword ptr [rdi + 0x68]"),
     0xE8249F: ("cmp", "rax, qword ptr [rcx + 0x78]"),
@@ -97,7 +107,8 @@ def inspect(exe: Path) -> dict[str, object]:
 
     # Verify name references and registration pointers really target their
     # expected data and callback code, rather than merely matching mnemonics.
-    for rva, name in ((0xE1659, "GetEmbarkCost"), (0xE17C9, "IsCostOverOwned")):
+    for rva, name in ((0xE12CE, "GetEmbarkCostValueBreakdown"),
+                      (0xE1659, "GetEmbarkCost"), (0xE17C9, "IsCostOverOwned")):
         offset = pe.get_offset_from_rva(rva)
         row = next(decoder.disasm(binary[offset:offset + 16], base + rva, count=1))
         operand = row.operands[1]
@@ -106,14 +117,16 @@ def inspect(exe: Path) -> dict[str, object]:
             raise ValueError(f"name reference changed at {rva:#x}")
 
     callbacks = {}
-    for rva, name in ((0xE16DD, "GetEmbarkCost"), (0xE1858, "IsCostOverOwned")):
+    for rva, name in ((0xE135E, "GetEmbarkCostValueBreakdown"),
+                      (0xE16DD, "GetEmbarkCost"), (0xE1858, "IsCostOverOwned")):
         offset = pe.get_offset_from_rva(rva)
         row = next(decoder.disasm(binary[offset:offset + 16], base + rva, count=1))
         operand = row.operands[1]
         if operand.type != X86_OP_MEM or operand.mem.base != X86_REG_RIP:
             raise ValueError(f"callback pointer changed at {rva:#x}")
         callbacks[name] = row.address + row.size + operand.mem.disp - base
-    if callbacks != {"GetEmbarkCost": 0xE89490, "IsCostOverOwned": 0xE894D0}:
+    if callbacks != {"GetEmbarkCostValueBreakdown": 0xE86390,
+                     "GetEmbarkCost": 0xE89490, "IsCostOverOwned": 0xE894D0}:
         raise ValueError(f"callback targets changed: {callbacks}")
 
     # The cost accumulator is a virtual method of the icon whose data object
@@ -129,10 +142,12 @@ def inspect(exe: Path) -> dict[str, object]:
         "exe_sha256": digest,
         "name_rvas": {k: hex(v) for k, v in NAME_RVAS.items()},
         "callback_rvas": {k: hex(v) for k, v in callbacks.items()},
-        "cache_object_offset": "0x78",
         "icon_prediction_row_bytes": 12,
         "prediction_rows_may_be_multiple": True,
         "prediction_row_selected_action_binding_proven": False,
+        "cache_row_raw_offset": "0x78",
+        "breakdown_wrapper_offset": "0x70",
+        "breakdown_row_offset": "0x68",
         "quote_calculator_rva": "0x22775f0",
         "icon_vtable_rva": hex(vtable_rva),
         "fixed_point_scale_candidate": 100000,
