@@ -1,4 +1,5 @@
 #include "xar_bridge/realm_law_active_collection_11906.hpp"
+#include "xar_bridge/realm_law_candidate_collection_11906.hpp"
 
 #include <array>
 #include <cassert>
@@ -15,7 +16,8 @@ using namespace xar::ck3_11906::private_law;
 constexpr std::uintptr_t kBase = 0x10000000;
 
 struct Fixture {
-  std::array<std::byte, 0x2000> memory{};
+  std::array<std::byte, 0x5000> memory{};
+  std::uintptr_t database_singleton = 0;
 
   template <typename T> void Store(std::uintptr_t address, const T &value) {
     assert(address >= kBase && address + sizeof(value) <= kBase + memory.size());
@@ -42,6 +44,11 @@ struct Fixture {
   static bool Read(void *context, std::uintptr_t address, void *output,
                    std::size_t size) noexcept {
     auto *self = static_cast<Fixture *>(context);
+    if (address == 0x140000000 + 0x57C0508 &&
+        size == sizeof(self->database_singleton)) {
+      std::memcpy(output, &self->database_singleton, size);
+      return true;
+    }
     if (address < kBase || size > self->memory.size() ||
         address - kBase > self->memory.size() - size) {
       return false;
@@ -97,5 +104,55 @@ int main() {
   assert(!ReadRealmLawActiveCollection11906(access, result));
   assert(result.failure == RealmLawActiveCollectionFailure::duplicate_key);
 
-  std::cout << "realm_law_active_collection_11906_test: 4/4 GREEN\n";
+  fixture.Key(law2, "confederate_partition_succession_law", heap);
+  constexpr std::uintptr_t database = kBase + 0x1000;
+  constexpr std::uintptr_t authority_group = kBase + 0x1400;
+  constexpr std::uintptr_t succession_group = kBase + 0x1800;
+  constexpr std::uintptr_t group_slots = kBase + 0x1C00;
+  constexpr std::uintptr_t authority_slots = kBase + 0x2000;
+  constexpr std::uintptr_t succession_slots = kBase + 0x2100;
+  constexpr std::uintptr_t law3 = kBase + 0x2500;
+  constexpr std::uintptr_t law4 = kBase + 0x2700;
+  fixture.database_singleton = database;
+  fixture.Store(database + 0x68, group_slots);
+  fixture.Store(database + 0x74, std::int32_t{2});
+  fixture.Store(group_slots, authority_group);
+  fixture.Store(group_slots + 8, succession_group);
+  fixture.Key(authority_group, "crown_authority");
+  fixture.Key(succession_group, "succession_order_laws", kBase + 0x3000);
+  fixture.Store(authority_group + 0x50, authority_slots);
+  fixture.Store(authority_group + 0x5C, std::int32_t{2});
+  fixture.Store(succession_group + 0x50, succession_slots);
+  fixture.Store(succession_group + 0x5C, std::int32_t{2});
+  fixture.Store(authority_slots, law1);
+  fixture.Store(authority_slots + 8, law3);
+  fixture.Store(succession_slots, law2);
+  fixture.Store(succession_slots + 8, law4);
+  fixture.Store(law1 + 0x38, authority_group);
+  fixture.Store(law2 + 0x38, succession_group);
+  fixture.Store(law3 + 0x38, authority_group);
+  fixture.Store(law4 + 0x38, succession_group);
+  fixture.Key(law3, "crown_authority_3", kBase + 0x3100);
+  fixture.Key(law4, "high_partition_succession_law", kBase + 0x3200);
+  RealmLawCandidateCollection11906 candidates{};
+  assert(ReadRealmLawCandidateCollection11906(access, 0x140000000,
+                                             candidates));
+  assert(candidates.failure == RealmLawCandidateCollectionFailure::none);
+  assert(candidates.groups[0].active_found);
+  assert(candidates.groups[0].candidate_count == 2);
+  assert(KeyText(candidates.groups[0].active_law_key) == "short_law");
+  assert(KeyText(candidates.groups[0].candidates[1].key) ==
+         "crown_authority_3");
+  assert(candidates.groups[1].active_found);
+  assert(KeyText(candidates.groups[1].active_law_key) ==
+         "confederate_partition_succession_law");
+  assert(!candidates.groups[1].candidates[1].active);
+
+  fixture.Key(succession_group, "other_group");
+  assert(!ReadRealmLawCandidateCollection11906(access, 0x140000000,
+                                              candidates));
+  assert(candidates.failure ==
+         RealmLawCandidateCollectionFailure::relevant_group_missing);
+
+  std::cout << "realm_law_candidate_collection_11906_test: 6/6 GREEN\n";
 }

@@ -18,9 +18,10 @@ bool Read(const RealmLawActiveCollectionAccess &access,
 }
 
 bool CopyKey(const RealmLawActiveCollectionAccess &access,
-             std::uintptr_t law_address, RealmLawActiveKey &output) noexcept {
+             std::uintptr_t key_storage_address,
+             RealmLawActiveKey &output) noexcept {
   std::array<std::byte, 32> storage{};
-  if (!access.read_memory(access.context, law_address + kLawKeyOffset,
+  if (!access.read_memory(access.context, key_storage_address,
                           storage.data(), storage.size())) {
     return false;
   }
@@ -49,6 +50,18 @@ bool CopyKey(const RealmLawActiveCollectionAccess &access,
 }
 
 } // namespace
+
+bool ReadRealmLawNativeKey11906(
+    const RealmLawActiveCollectionAccess &access,
+    std::uintptr_t key_storage_address,
+    RealmLawActiveKey &output) noexcept {
+  if (access.admitted_executable_sha256 !=
+          kRealmLawActiveCollectionExeSha256 ||
+      access.read_memory == nullptr || key_storage_address == 0) {
+    return false;
+  }
+  return CopyKey(access, key_storage_address, output);
+}
 
 bool ReadRealmLawActiveCollection11906(
     const RealmLawActiveCollectionAccess &access,
@@ -98,7 +111,7 @@ bool ReadRealmLawActiveCollection11906(
       return false;
     }
     auto &key = output.keys[static_cast<std::size_t>(i)];
-    if (!CopyKey(access, law, key)) {
+    if (!ReadRealmLawNativeKey11906(access, law + kLawKeyOffset, key)) {
       output.failure = RealmLawActiveCollectionFailure::key_invalid;
       return false;
     }

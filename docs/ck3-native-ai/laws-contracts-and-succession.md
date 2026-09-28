@@ -177,9 +177,9 @@ contract 是下一片：`subject_contract_governance_snapshot_v1` 先发布 full
 
 2026-09-29 H3911 的第一条只读原生锚点见
 [realm-law-active-collection-11906.md](realm-law-active-collection-11906.md)：
-已由 exact EXE 冻结现任角色的 active `CLaw*` 集合与 key 读取偏移，并有私有
+已由 exact EXE 冻结现任角色的 active `CLaw*` 集合、DB/组/候选集合与 key 读取偏移，并有私有
 reader/ABI 聚焦测试。H3911 的封建政府与分割继承人是实际观测到的治理价值信号；
-候选法、最终合法性、费用和 paused 实机法律读回仍缺，不能据此提交法律动作或
+候选的最终合法性、费用和 paused 实机法律读回仍缺，不能据此提交法律动作或
 称 LAW3 observer 已 live。
 
 仍未闭合的内容必须保持 unknown，不能用 GUI ACK 或静态字符串冒充状态观测：

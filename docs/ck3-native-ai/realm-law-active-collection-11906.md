@@ -1,6 +1,6 @@
 # H3911 realm law active collection: first read-only native anchor
 
-Status: `static-ready private first anchor`; no CK3 was launched for this work
+Status: `static-ready private active and candidate key read`; no CK3 was launched for this work
 package. This does not qualify a law candidate or enable a law action.
 
 ## Why this frame matters
@@ -38,8 +38,11 @@ flowchart LR
   C --> E[+0x0C signed count]
   D --> F[each CLaw +0x18 MSVC string]
   F --> G[copied active law keys]
-  G -. next native research .-> H[candidate law objects]
-  H -. missing .-> I[engine-final CanEnact and cost]
+  J[CLawDatabase module+0x57C0508] --> K[+0x68 CLawGroup array]
+  K --> L[+0x50 candidate CLaw array]
+  L --> M[copied candidate keys]
+  G --> M
+  M -. missing .-> I[engine-final CanEnact and cost]
 ```
 
 `0x260AC30` returns `CCharacter+0x1B8 -> +0x200`, or the native empty
@@ -48,23 +51,29 @@ walk the collection's data pointer and signed count as an array of `CLaw*`.
 `0x2C7B300` reads the law object's MSVC string at `+0x18`; its size and
 capacity fields are at `+0x28/+0x30`, with inline characters or a heap pointer
 at `+0x18`. The current private reader copies these keys through a supplied
-read-memory callback and returns no native pointers. The value at `CLaw+0x38`
-is compared to choose the old law when enacting another one, but its semantic
-identity remains unknown and is not exported as a group key.
+read-memory callback and returns no native pointers. `0x2A55F50` stores the
+`CLawDatabase` singleton at module `+0x57C0508`; `0x25FF5D5` enumerates its
+group pointer array at `+0x68` with signed count at `+0x74`. The same routine
+compares each active `CLaw+0x38` with a database group pointer, proving the
+field is its `CLawGroup*`. `0x2C7F300` enumerates each group's candidate law
+array at `+0x50` with signed count at `+0x5C`; `0x2C7F410` reads the group's
+MSVC key at `+0x18`. The private candidate reader admits only
+`crown_authority` and `succession_order_laws`, copying group and candidate keys
+and indicating which candidate is enacted. It does not evaluate legal passage.
 
-The reader lives in `realm_law_active_collection_11906.cpp`. It is not wired to
+The readers live in `realm_law_active_collection_11906.cpp` and
+`realm_law_candidate_collection_11906.cpp`. They are not wired to
 shared bridge, CMake, mailbox, protocol or MCP. The caller must still supply a
 fresh full-generation played-character resolution on the paused application
 main thread; this work does not add that caller. The exact span verifier ran in
-normal Python and `-O`, both 4/4 GREEN. Its standalone reader fixture ran under
-MSVC `/std:c++20 /W4 /WX` in `/Od` and `/O2`, both 4/4 GREEN. Fixture memory is
+normal Python and `-O`, both 9/9 GREEN. Its standalone reader fixture ran under
+MSVC `/std:c++20 /W4 /WX` in `/Od` and `/O2`, both 6/6 GREEN. Fixture memory is
 not a CK3 paused readback.
 
 ## Next exact input
 
-Resolve the current H3911 law keys in a paused frame, then locate candidate
-`CLaw` objects for the observed feudal crown-authority and succession groups.
-For each relevant candidate, read the same-source final `can_have`, `can_pass`,
+Resolve the current H3911 active and candidate keys in a paused frame. For each
+relevant candidate, read the same-source final `can_have`, `can_pass`,
 `CanEnact`, opaque failure reason and charged currency cost. LAW3's existing
 two-sample source adapter can then compare the full value snapshot. A legal
 beneficial action and its formal consumer remain separate later gates. No

@@ -1,5 +1,5 @@
 {
-  "contract": "realm_law_active_collection_11906_abi",
+  "contract": "realm_law_feudal_candidate_collection_11906_abi",
   "contract_version": 1,
   "status": "exact-build static research; paused live read and final candidate legality pending",
   "build": {
@@ -18,7 +18,17 @@
     "law_key_string_size_offset": "0x28",
     "law_key_string_capacity_offset": "0x30",
     "law_group_equality_field_offset": "0x38",
-    "law_group_equality_field_semantics": "unknown; do not publish as a group key"
+    "law_group_equality_field_semantics": "CLawGroup pointer, proven by comparison to CLawDatabase group entries",
+    "law_database_singleton_rva": "0x57C0508",
+    "database_group_array_offset": "0x68",
+    "database_group_count_int32_offset": "0x74",
+    "group_key_msvc_string_offset": "0x18",
+    "group_candidate_array_offset": "0x50",
+    "group_candidate_count_int32_offset": "0x5C",
+    "read_only_group_allowlist": [
+      "crown_authority",
+      "succession_order_laws"
+    ]
   },
   "instruction_spans": [
     {
@@ -44,10 +54,39 @@
       "rva": "0x2C7B320",
       "end_rva": "0x2C7B406",
       "sha256": "7DDA414B641DE21A5FFB7CF68425D87B4A0A6E80C12BA577ECBE9D17FB6B69D4"
+    },
+    {
+      "name": "law_database_singleton_store",
+      "rva": "0x2A55F50",
+      "end_rva": "0x2A55F6A",
+      "sha256": "948B58A599FCE4973CED10EE2E97DF07812CDB39F56405E19C22649B45D69149"
+    },
+    {
+      "name": "database_group_array",
+      "rva": "0x25FF5D5",
+      "end_rva": "0x25FF5E4",
+      "sha256": "2975EFBF010082146DABEDB8A88DF9B981F76E2BDEE92F630AC9D18BDFB69C4D"
+    },
+    {
+      "name": "active_law_group_pointer_match",
+      "rva": "0x25FF603",
+      "end_rva": "0x25FF654",
+      "sha256": "3ED58BDDF3FAF056ACC9B2423AD550EC673E873800476E34490212F7925E4DC9"
+    },
+    {
+      "name": "group_candidate_array",
+      "rva": "0x2C7F345",
+      "end_rva": "0x2C7F391",
+      "sha256": "2E4F18A88A9D8BFEF49625648EBC8C3D4BF47C5E3265F5846F461125E5A90C26"
+    },
+    {
+      "name": "group_key_string",
+      "rva": "0x2C7F410",
+      "end_rva": "0x2C7F42A",
+      "sha256": "E9B8BF6446AE68576E7055C3AC90D6BFCCE642EC0AD48F6760D371E997129F5B"
     }
   ],
   "remaining_to_final_observer": [
-    "candidate CLaw resolution for crown authority and succession law groups",
     "same-source engine-final can-have, can-pass and CanEnact for each candidate",
     "engine-final currency costs and opaque blocked reason",
     "paused H3911 readback and same-frame equality"

@@ -58,6 +58,12 @@ bool ReadRealmLawActiveCollection11906(
     const RealmLawActiveCollectionAccess &access,
     RealmLawActiveCollection &output) noexcept;
 
+// Both CLaw and CLawGroup carry their native MSVC key string at +0x18.
+bool ReadRealmLawNativeKey11906(
+    const RealmLawActiveCollectionAccess &access,
+    std::uintptr_t key_storage_address,
+    RealmLawActiveKey &output) noexcept;
+
 std::string_view RealmLawActiveCollectionFailureName(
     RealmLawActiveCollectionFailure failure) noexcept;
 
