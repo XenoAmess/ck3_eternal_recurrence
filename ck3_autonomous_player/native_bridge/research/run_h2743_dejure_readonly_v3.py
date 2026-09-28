@@ -108,8 +108,11 @@ def check_static() -> dict[str, object]:
 
 def screen_lease(task_id: str) -> None:
     listed = subprocess.run([str(PYTHON), str(TASK_BUS), "list"], capture_output=True,
-                            text=True, encoding="utf-8", timeout=15, check=True)
-    bus = json.loads(listed.stdout)
+                            timeout=15, check=True)
+    # Older task summaries can contain legacy local-codepage bytes. The bus
+    # control keys and task IDs are ASCII; decode malformed summary text only
+    # for routing, without letting a reader-thread Unicode error hide owners.
+    bus = json.loads(listed.stdout.decode("utf-8-sig", errors="replace"))
     if bus.get("ok") is not True or not isinstance(bus.get("tasks"), list):
         raise RuntimeError("task bus unavailable")
     owners = [row.get("task_id") for row in bus["tasks"]
@@ -124,9 +127,9 @@ def renew_screen_lease(task_id: str) -> None:
     screen_lease(task_id)
     heartbeat = subprocess.run(
         [str(PYTHON), str(TASK_BUS), "heartbeat", "--task", task_id],
-        capture_output=True, text=True, encoding="utf-8", timeout=15, check=True,
+        capture_output=True, timeout=15, check=True,
     )
-    receipt = json.loads(heartbeat.stdout)
+    receipt = json.loads(heartbeat.stdout.decode("utf-8-sig", errors="replace"))
     task = receipt.get("task")
     if (receipt.get("ok") is not True or not isinstance(task, dict)
             or task.get("task_id") != task_id or task.get("state") != "running"

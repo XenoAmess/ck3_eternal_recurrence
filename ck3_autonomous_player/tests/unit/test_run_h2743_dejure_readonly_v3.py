@@ -54,8 +54,8 @@ class H2743RunnerGateTests(unittest.TestCase):
 
     def test_renewed_lease_rechecks_owner_after_heartbeat(self) -> None:
         heartbeat = SimpleNamespace(stdout=(
-            '{"ok":true,"task":{"task_id":"h2743-review","state":"running",'
-            '"resources":["ck3-screen:acquired"]}}'
+            b'{"ok":true,"task":{"task_id":"h2743-review","state":"running",'
+            b'"resources":["ck3-screen:acquired"]}}'
         ))
         with (patch.object(runner, "screen_lease") as check,
               patch.object(runner.subprocess, "run", return_value=heartbeat) as call):
@@ -65,14 +65,23 @@ class H2743RunnerGateTests(unittest.TestCase):
 
     def test_rejected_heartbeat_cannot_validate_exclusive_screen(self) -> None:
         heartbeat = SimpleNamespace(stdout=(
-            '{"ok":true,"task":{"task_id":"h2743-review","state":"done",'
-            '"resources":[]}}'
+            b'{"ok":true,"task":{"task_id":"h2743-review","state":"done",'
+            b'"resources":[]}}'
         ))
         with (patch.object(runner, "screen_lease") as check,
               patch.object(runner.subprocess, "run", return_value=heartbeat)):
             with self.assertRaises(RuntimeError):
                 runner.renew_screen_lease("h2743-review")
         self.assertEqual(check.call_count, 1)
+
+    def test_screen_lease_routes_through_legacy_non_utf8_summary(self) -> None:
+        listed = SimpleNamespace(stdout=(
+            b'{"ok":true,"tasks":[{"task_id":"h2743-review","state":"running",'
+            b'"stale":false,"resources":["ck3-screen:acquired"],'
+            b'"summary":"legacy-\xff"}]}'
+        ))
+        with patch.object(runner.subprocess, "run", return_value=listed):
+            runner.screen_lease("h2743-review")
 
 
 if __name__ == "__main__":
