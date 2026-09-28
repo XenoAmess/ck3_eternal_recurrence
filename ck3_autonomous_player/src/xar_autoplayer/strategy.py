@@ -7176,12 +7176,31 @@ def choose_one_life_turn(
     plan = _annotate_active_combat_resume_input(plan, snapshot)
     defender_exit_observation = observe_primary_defender_de_jure_exit(snapshot)
     if defender_exit_observation is not None:
+        observed_war_id = defender_exit_observation["frame"]["war_id"]
+        terminal_for_observed_war = {
+            surrender_war_step(observed_war_id),
+            offer_white_peace_step(observed_war_id),
+        }
+        if plan.get("selected_step") in terminal_for_observed_war:
+            blocked_step = plan["selected_step"]
+            plan = {
+                key: value for key, value in plan.items()
+                if key not in {"decision", "required_step"}
+            }
+            plan.update({
+                "phase": "native_war_defender_exit_material_blocked",
+                "selected_step": None,
+                "blocked_terminal_step": blocked_step,
+                "reason": (
+                    "primary-defender de-jure exit has no current material "
+                    "comparison or reusable typed action authority"
+                ),
+            })
         if defender_exit_observation.get("status") == "native_legality_observed_material_comparison_open":
             candidate_step = plan.get("selected_step")
-            war_id = defender_exit_observation["frame"]["war_id"]
-            if candidate_step in {
-                surrender_war_step(war_id), offer_white_peace_step(war_id)
-            }:
+            if isinstance(candidate_step, str) and candidate_step.startswith(
+                ("surrender-war-", "offer-white-peace-")
+            ):
                 candidate_step = None
             defender_exit_observation = {
                 **defender_exit_observation,

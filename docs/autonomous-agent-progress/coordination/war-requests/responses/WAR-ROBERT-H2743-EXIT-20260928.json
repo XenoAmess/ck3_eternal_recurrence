@@ -74,7 +74,9 @@
     "document": "docs/ck3-native-ai/h2743-exit-readiness-handoff-2026-09-28.md",
     "interface": "formal_defender_exit_observation.decision_readiness and continuation_handoff",
     "exact_native_gap": "ReadWarTerminationTerms supports claim_cb and raiktor_claim_cb only; individual_county_de_jure_cb is unsupported. Production ReadWarTerminationExitTerms is disabled after a prior live crash.",
-    "consumer_boundary": "The existing tactical planner's candidate step is carried as a recoverable handoff requiring its own current-frame revalidation; the observer neither selects an exit nor submits an action.",
+    "consumer_boundary": "The existing tactical planner's nonterminal candidate step is carried as a recoverable handoff requiring its own current-frame revalidation. If the current de-jure primary-defender WarID has a surrender or white-peace selected_step, strategy clears that actual step while material comparison and typed authority remain absent; terminal steps for other WarIDs are not changed.",
+    "observed_h2743_to_h2825_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.h2743-h2825-continuation.json",
+    "observed_continuation_boundary": "Exact historical 15-day continuation showed player war score -12 to -25 after one day, then -24 at H2825; attacker occupation score rose 13, ticking score fell 1. Three queried army sizes and Robert gold/current-prestige endpoint balances had zero net change. This is not future risk calibration or a surrender resource delta.",
     "gameplay_action_submitted": false,
     "formal_exit_decision_complete": false
   },

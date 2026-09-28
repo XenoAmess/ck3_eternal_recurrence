@@ -130,12 +130,39 @@ class FormalDefenderExitObservationTests(unittest.TestCase):
         self.assertTrue(handoff["current_frame_revalidation_required"])
         self.assertFalse(handoff["exit_action_authorized"])
 
-    def test_terminal_step_cannot_be_laundered_as_continuation(self) -> None:
-        original_plan = {
-            "policy": "one-life-turn-v1",
-            "phase": "untrusted_terminal_candidate",
-            "selected_step": "surrender-war-16777231",
-        }
+    def test_current_war_terminal_step_is_really_blocked(self) -> None:
+        for selected_step in (
+            "surrender-war-16777231", "offer-white-peace-16777231"
+        ):
+            with self.subTest(selected_step=selected_step):
+                original_plan = {
+                    "policy": "one-life-turn-v1",
+                    "phase": "untrusted_terminal_candidate",
+                    "selected_step": selected_step,
+                    "decision": {"outcome": "untrusted"},
+                }
+                with (
+                    patch.object(strategy, "_choose_one_life_turn_core", return_value=original_plan),
+                    patch.object(strategy, "_primary_defender_siege_forecast_ingress", side_effect=lambda plan, **_: plan),
+                    patch.object(strategy, "_general_battle_forecast_ingress", side_effect=lambda plan, **_: plan),
+                    patch.object(strategy, "_annotate_active_combat_resume_input", side_effect=lambda plan, _: plan),
+                ):
+                    plan = strategy.choose_one_life_turn(
+                        [], snapshot=_h2743_snapshot_with_current_options(),
+                        action_steps=[selected_step],
+                    )
+                self.assertIsNone(plan["selected_step"])
+                self.assertEqual(plan["phase"], "native_war_defender_exit_material_blocked")
+                self.assertEqual(plan["blocked_terminal_step"], selected_step)
+                self.assertNotIn("decision", plan)
+                handoff = plan["formal_defender_exit_observation"]["continuation_handoff"]
+                self.assertEqual(handoff["status"], "no_tactical_candidate")
+                self.assertIsNone(handoff["candidate_selected_step"])
+                self.assertFalse(handoff["exit_action_authorized"])
+
+    def test_other_war_terminal_step_is_not_blocked_by_this_war(self) -> None:
+        selected_step = "surrender-war-16777232"
+        original_plan = {"policy": "one-life-turn-v1", "selected_step": selected_step}
         with (
             patch.object(strategy, "_choose_one_life_turn_core", return_value=original_plan),
             patch.object(strategy, "_primary_defender_siege_forecast_ingress", side_effect=lambda plan, **_: plan),
@@ -144,12 +171,13 @@ class FormalDefenderExitObservationTests(unittest.TestCase):
         ):
             plan = strategy.choose_one_life_turn(
                 [], snapshot=_h2743_snapshot_with_current_options(),
-                action_steps=[original_plan["selected_step"]],
+                action_steps=[selected_step],
             )
-        handoff = plan["formal_defender_exit_observation"]["continuation_handoff"]
-        self.assertEqual(handoff["status"], "no_tactical_candidate")
-        self.assertIsNone(handoff["candidate_selected_step"])
-        self.assertFalse(handoff["exit_action_authorized"])
+        self.assertEqual(plan["selected_step"], selected_step)
+        self.assertIsNone(
+            plan["formal_defender_exit_observation"]["continuation_handoff"]
+            ["candidate_selected_step"]
+        )
 
     def test_formal_turn_attaches_read_only_observation_to_tactical_plan(self) -> None:
         original_plan = {

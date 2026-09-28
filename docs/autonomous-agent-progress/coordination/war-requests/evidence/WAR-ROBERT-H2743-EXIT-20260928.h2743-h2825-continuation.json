@@ -1,0 +1,55 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-excerpt.v1",
+  "evidence_id": "WAR-ROBERT-H2743-EXIT-20260928.h2743-h2825-continuation",
+  "scope": "observed historical continuation on one Robert episode; no surrender counterfactual or future battle forecast",
+  "external_projection": "D:/ck3-research-artifacts/war31-h2743-20260928/observed-continuation-02.json",
+  "external_projection_sha256": "FECDC23B556353D4FB9CB08D9E5842EC726C20E47E6333AAE6AE70D1E893195C",
+  "source_sha256": {
+    "h2743_checkpoint": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+    "h2743_driver": "F31460BAA126BAED289CBA20A6FEFF59AAF6EF87BA3B29943C892236B6D15069",
+    "h2743_native_armies": "0D1701AFEAECEABB992CD67085297FF76E7B83CD4D8CD666CD16CD7503C08A23",
+    "h2743_native_snapshot": "6975EF26573D3B1695B5C9623BF30A4084556BBC16F7D89200361C00E4D3009E",
+    "h2825_checkpoint": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+    "h2825_driver": "B8E50A281AFB9A5DAA7AC1ED55DD68C4305816302B71B14EDF79F1060177D872",
+    "h2825_native_armies": "0D1701AFEAECEABB992CD67085297FF76E7B83CD4D8CD666CD16CD7503C08A23",
+    "h2825_native_snapshot": "D84C15F5E584AA180B0F1B25AAF22A85D7BEF76344F410E3B62BA3800B18C7FC"
+  },
+  "identity": {
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id": 16777231,
+    "player_character_id": 29829,
+    "player_side": "defender",
+    "casus_belli": "individual_county_de_jure_cb",
+    "h2743_date_raw": 53217264,
+    "h2825_date_raw": 53217624,
+    "days_observed": 15,
+    "driver_common_prefix_rows": 2742,
+    "h2825_restored_h2743_at_history_index": 2744,
+    "qualified_contiguous_advance_segments": 9
+  },
+  "observed": {
+    "player_relative_war_score": [-12, -25, -24],
+    "score_samples": ["H2743", "after first day", "H2825"],
+    "first_day_attacker_occupation_score": [39, 52],
+    "attacker_ticking_score_endpoints": [-27, -28],
+    "battle_and_imprisonment_score_at_endpoints": 0,
+    "player_relative_score_net_delta": -12,
+    "three_army_current_soldiers_h2743_and_h2825": {
+      "83886367": [2329, 2329],
+      "50331920": [1462, 1462],
+      "83886484": [311, 311]
+    },
+    "robert_gold_raw_scale_100000": [111861020, 111861020],
+    "robert_prestige_currency_raw_scale_100000": [253090010, 253090010],
+    "terminal_war_action_submitted_in_segment": false
+  },
+  "unknowns": [
+    "future_contact_and_siege_participants",
+    "future_continue_war_loss_distribution",
+    "current_de_jure_surrender_title_holder_vassal_delta",
+    "current_de_jure_surrender_signed_resource_delta",
+    "current_de_jure_surrender_truce_expiry",
+    "player_piety_and_opponent_resource_net_delta_over_segment"
+  ],
+  "boundary": "Two checkpoint endpoints and their matched native paused frames show a historical net change, not a same-frame surrender consequence. Zero net gold/prestige/soldier change at endpoints cannot prove no intervening writes or future safety."
+}
