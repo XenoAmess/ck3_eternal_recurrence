@@ -263,3 +263,50 @@ selected configuration or cost validity cannot be established,
 private semantic callback is eligible on this evidence alone; absent planner
 context must be reported as absent, not synthesized from `feast.txt` or the
 AI activity path.
+
+## 2026-09-29 paused-query wiring decision
+
+This check used master `38085f9bb6d7494dcac951373cc9df2e4157a486` and
+rehashed the local `ck3.exe` to the frozen SHA-256 above. It did not start CK3,
+read a save, or obtain a paused-frame activity result. The bounded static
+reproduction is:
+
+```text
+py native_bridge/research/disasm_ck3.py 0x10AB170 --size 0x20 --exe "<exact ck3.exe>"
+py native_bridge/research/disasm_ck3.py 0x10B2B30 --size 0x230 --exe "<exact ck3.exe>"
+py native_bridge/research/disasm_ck3.py 0x10B0DA0 --size 0x420 --exe "<exact ck3.exe>"
+```
+
+Run these from `ck3_autonomous_player/`. At `0x10AB170`, the reflected
+`AccessCostBreakdown` getter only returns `planner+0x1AD8`. The update at
+`0x10B2B52..0x10B2B60` first clears that object; it then reads planner
+fields at `+0x1530` and `+0x1538`, and later walks selected rows at
+`+0x1578`/`+0x1584` before accumulating costs. Those reads show that the
+cost is configuration-dependent, not a constant obtainable from
+`activity_feast` alone. The actual caller is the handler update described
+above, gated by the planner widget being visible. At `0x10B0DC3`, the
+`CanProgressPlanningStage` evaluator reads `planner+0x1AB0`; only its stage-5
+branch builds and validates `CStartActivityCommand`. The constructor starts
+at stage 2. A true earlier-stage result cannot be labeled final `can_start`.
+
+The available exact-build path supports a **private diagnostic** read of a
+freshly resolved planner pointer, owner round trip, attached widget,
+visibility, stage, and selected type/configuration. It does **not** yet
+support the requested same-frame `native_authoritative_configured_cost` plus
+final `can_start` sample on an unopened paused frame. Wiring the existing
+Activity5 semantic callback or a runner now would either publish stale/empty
+costs or invent final legality, so this package leaves both unwired. An empty
+`+0x1AD8` container is `unknown`, never zero.
+
+The smallest executable next step is a default-off paused diagnostic for
+`handler+0x3C0`, validating both planner vtables, `planner+0xD0 == handler`,
+widget attachment/visibility, `+0x1AB0` stage and the current activity key.
+It can run against the existing paired Robert save without an action or date
+advance. If the window is closed and the widget is absent/invisible, the
+next source task is to identify a separate native evaluator that prices a
+fully copied feast configuration without mutating the live planner. If the
+widget is visible, a separately bounded capture must prove that slot 12
+completed before reading the embedded cost and that stage 5 final validation
+uses that same configuration. The current instance owner must coordinate any
+brief visible-window step and minimize afterward. A complete copied semantic
+sample is still required before a private bridge or formal activity action.
