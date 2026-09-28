@@ -123,13 +123,13 @@ struct Fixture {
     auto &row = observation.rows[observation.row_count++];
     row.scheme_instance_id = 0x0000000200000042ULL;
     row.scheme_instance_generation = 8;
-    row.owner_character_id = kActor;
+    row.owner_character_id = precondition.actor_character_id;
     SetKey(row.scheme_type_key, precondition.scheme_type_key);
     SetKey(row.category_key,
            precondition.scheme_type_key == "murder" ? "hostile" :
                                                        "personal");
     row.target_kind = ActiveSchemeStateV1PrivateTargetKind::character;
-    row.target_id = kTarget;
+    row.target_id = precondition.target_id;
     row.is_basic = precondition.scheme_type_key == "sway";
     row.is_secret = precondition.scheme_type_key == "murder";
     row.progress = {ActiveSchemeStateV1PrivateValueStatus::available, 0};
@@ -436,6 +436,26 @@ void TestSwayAndMurderStayPendingUntilFreshReceipt() {
   }
 }
 
+void TestZeroGenerationRobertIdentityRoundTripsBeforeSubmit() {
+  Fixture fixture{};
+  fixture.observation.played_character_id = 29829;
+  fixture.precondition.actor_character_id = 29829;
+  fixture.precondition.target_id = 32716;
+  BoundFixture bound{};
+  Bind(fixture, bound);
+  const auto ack = Execute(fixture, bound);
+  Require(ack.status ==
+          ActiveSchemeSemanticActionV1PrivateAckStatus::
+              submitted_verification_pending);
+  Require(ack.submit_call_count == 1 && fixture.native_submits == 1);
+  Require(fixture.character_resolves == 4);
+  ActiveSchemeSemanticActionV1PrivateReceipt receipt{};
+  Require(VerifyActiveSchemeSemanticActionReceiptV1PrivateFresh(
+              bound.access, ack, receipt) ==
+          ActiveSchemeSemanticActionV1PrivateReceiptStatus::applied);
+  Require(receipt.postcondition_verified);
+}
+
 void TestExactImageAndProofBindingGates() {
   {
     Fixture fixture{};
@@ -560,6 +580,7 @@ void TestNativeSubmitFailureIsCalledOnceAndNotRetried() {
 int main() {
   try {
     TestSwayAndMurderStayPendingUntilFreshReceipt();
+    TestZeroGenerationRobertIdentityRoundTripsBeforeSubmit();
     TestExactImageAndProofBindingGates();
     TestIdentityGenerationAndProofGates();
     TestNativeSubmitFailureIsCalledOnceAndNotRetried();

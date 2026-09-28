@@ -292,6 +292,66 @@ paused，现有 SCHEME8 manifest 也没有 episode/revision；同帧的正式 ro
 
 ## 未闭合项与风险边界
 
+### R0336 Robert → 直属封臣 Sway 的窄策略输入（2026-09-29）
+
+此处只冻结 `sway_interaction` / `sway` 的 exact-build 1.19.0.6
+决策分支。原版 `00_scheme_interactions.txt` 的 sway 入口先通过
+`is_shown` 与 `can_start_scheme(type=sway,target_character=recipient)`，
+`auto_accept=yes`，`on_accept` 执行 `begin_scheme_basic_effect`。
+原版 AI 对直属封臣加 10 权重，封臣对 actor 的 opinion <0 时再乘 3，
+opinion ≥100 时权重归零。`sway_scheme.txt` 定义 basic/non-secret
+personal scheme，`base_progress_goal=365`，`minimum_success=20`；
+实际完成时间与结果依角色技能和后续事件，不能从这两个基数推断保证收益。
+文件 SHA 分别为现有 exact-build 帐本中的
+`F2B8D8D21433A28580589FAB77DA2CEFA2F9CEAA33A4EE862D86DF44C69372BB`
+和本轮实读的
+`B2B1A4BAA88315E329EFFF3F194A09DA11E29BC397961A125F922F742A1632B1`。
+
+```mermaid
+flowchart LR
+  A["同一 paused Robert 帧"] --> B{"native Can Send 且无同目标活跃 sway?"}
+  B -->|否| N["不提交"]
+  B -->|是| C{"直属有地封臣且对 Robert opinion < 0?"}
+  C -->|否或未知| N
+  C -->|是| D{"当前 personal scheme 槽空闲、无更高价值已知提案?"}
+  D -->|否或未知| N
+  D -->|是| Y["可选择一次 sway；动作前再次读 native 状态"]
+  Y -. "成功率、后续事件与实际 opinion 收益待实机" .-> U["结果 unknown"]
+  classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+  class U unknown;
+```
+
+R0336 官方 H3922 只读报告
+`Z:\m6swayh3922optionsfix\operator-runs\sway-h3922-options-read-1\formal-report.txt`
+SHA-256 `7A42B388A8EE612A16DF4BC326C6F4AFC2FB924C297920CC082AC8F20B18E316`
+证明玩家 29829、目标 32716、目标对玩家 opinion -5、活跃谋略数 0、
+同目标活跃 sway=false、native complete Can Send=true、native legal now=true。
+目标直属有地封臣兼 steward 来自 H3922 的 campaign-root/council 原有配对读回；
+本轮策略判定是有明确关系收益机会、无即时金钱费用、现有 personal scheme
+槽空闲，代价为一段 scheme 时间及占槽。此判定**不表示**已发送、已生效、
+最终成功或已经获得 opinion。正式候选必须重新官方配对并在新 PID 同帧核 actor、
+目标、关系、opinion、空槽和 native 合法性；在这些条件成立前保持动作默认关闭。
+
+现有 SCHEME6/7/9/10 已有一次 typed submit 与独立 fresh receipt 原语，但
+原 DLL 只暴露只读 Sway step。本轮源码新增由
+`XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=ON`
+单独编译的私有 submit/receipt mailbox；该开关默认 OFF，且要求原
+`XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=ON`。
+独立 paused receipt 要观察一条 owner/type/target 匹配的新 scheme instance，
+ACK 本身仍是 pending。新 DLL 的聚焦构建与实机后置分别记账。此前 SCHEME7 action adapter
+错误要求人物 ID 的高 8 位 generation 非零；H3922 的 29829/32716 均属
+generation 0。原生 resolver 已按完整 32 位 ID 对人物对象做两次 round-trip，
+所以 action adapter 只需允许合法的 zero generation，仍拒绝空 slot 与不匹配身份。
+
+私有动作 step 为 `submit-active-scheme-sway-v1-private-<full-ID>`，要求新
+application-main pump 上的 `capture_epoch` 大于只读资格帧，
+container generation、日期、actor、目标 opinion 与读回一致；typed action
+内部再求值完整 native validator 和同目标活跃实例。独立
+`receipt-active-scheme-sway-v1-private-<full-ID>` 只消费进程内 pending ACK，
+并在后续 paused pump 读一条新 scheme instance。跨 PID 时 ACK 消失，
+不得重新提交；driver/checkpoint 应先只读查匹配实例，将无法区分的状态
+保留 pending/RED，直到独立冷恢复证据闭合。本包不扩大公共广告。
+
 - [unknown] `CSchemeManager` 全局/root、player-owned active container 及 stable instance ID 布局。
 - [unknown] `CActiveScheme` 数值字段偏移；GUI literal 和脚本 getter 名只证明语义存在。
 - [unknown] `CInteractionSchemeInfo` preview 布局、候选集合与结构化 failure reason callback；

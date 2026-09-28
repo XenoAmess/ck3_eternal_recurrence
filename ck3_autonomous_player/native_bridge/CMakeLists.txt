@@ -227,6 +227,16 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1
+  "Expose the private typed sway submit/receipt mailbox only in a formal action candidate"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1 AND
+   NOT XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  message(FATAL_ERROR "Private sway action requires the exact active-scheme candidate core")
+endif()
+
+option(
   XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1
   "Compile the private exact-build paused realm-law final-terms query"
   OFF
@@ -775,6 +785,12 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/active_scheme_sway_formal_private_transport_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   target_sources(xar_ck3_bridge PRIVATE
