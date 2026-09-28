@@ -122,10 +122,23 @@ identify a legal feast or provide a planning collector.
   before the copy, `0x18E10BB` supplies a populated source pointer in `RDX`
   to `0x18E1160`. The writer and layout relationship among those objects is
   not yet decoded; this is a bounded provenance trail, not a field map.
+- `0x18DF5B0` starts from AI manager/type inputs, builds 16-byte candidate
+  rows, and reaches selection arithmetic before returning. `0x28CD3C0`
+  writes into its caller-supplied object and expands a local pointer array;
+  `0x28CD8E0` also writes through caller-supplied output and traverses type
+  data at `+0xA88`/`+0x3E30`. Their caller-controlled output layouts and
+  side effects are not proven safe for a player-facing paused read. Calling
+  them to manufacture a supposedly authoritative default configuration
+  would copy the AI route rather than observe the player's planner.
 - HostView slot 26 at `0x1505230` calls `0xA79700` with event ID `0x65`.
   `0xA79700` routes through an event handler and can update a handler-owned
   list via `0xA95A40`; calling slot 26 as a supposedly read-only semantic
   collector would be unjustified.
+- The primary HostView vtable starts at `0x4166528` and ends with slot 29
+  (`0x1505340`); the following qword at slot position 30 is the secondary
+  vtable's COL, immediately before the secondary vtable at `0x4166620`.
+  Thus there is no unexamined primary slot after 29 that directly supplies
+  the complete location/configuration/cost sample.
 
 Reproduce the bounded spans with `native_bridge/research/disasm_ck3.py` at
 `0x219A8B0` (size `0x280`), `0x219AB20` (size `0x100`), `0x2CE2C80`
@@ -134,13 +147,44 @@ Reproduce the bounded spans with `native_bridge/research/disasm_ck3.py` at
 (size `0x90`), `0x1505230` (size `0x100`), and `0xA79700`
 (size `0x150`). All are RVAs against the exact executable above.
 
-The first executable construction task is to follow the normal planner's
-`0x18DF5B0 -> 0x28CD3C0/0x28CD8E0 -> 0x18E1160` provenance,
-identify the source object copied by `0x18E1160`, and map its stable
-location/configuration fields to the validator's `+0x10` and `+0x4C8`
-consumers. In the same trace, identify the authoritative configured cost
-evaluator and final `can_start` result, including input ownership and
-non-mutating lifetime. Only then can `read_semantics` safely copy a complete
-feast sample in the private application-main glue. The H3911 driver contains
-no activity snapshot, so it cannot establish current feast eligibility or
-cost. No CK3 process was started for this follow-up.
+This AI provenance does not expose a safe player-side collector. The next
+construction task is to locate a non-mutating planner getter for legal
+locations, selected configuration, authoritative configured cost and final
+`can_start`, then map its outputs to the validator's `+0x10` and `+0x4C8`
+consumers. Only then can `read_semantics` safely copy a complete feast sample
+in the private application-main glue. The H3911 driver contains no activity
+snapshot, so it cannot establish current feast eligibility or cost. No CK3
+process was started for this follow-up.
+
+## Planner state getter lead (same exact build)
+
+The original `game/gui/window_activity_planner.gui` is SHA-256
+`ADB96B79A36E43F444410B85A80D0E393A2CC1B3D0D6380EA76EB2F515D382C7`.
+Its start button at lines 1758-1767 binds
+`ActivityPlanner.CanProgressPlanningStage` and
+`GetCanProgressPlanningStageTooltip`; lines 1744-1746 and 1978-1990 bind
+`ActivityPlanner.AccessCostBreakdown`. The button's `onclick` is
+`ProgressPlanningStage`, an operation that must not be used for a read-only
+capture. The GUI also reads `GetSelectedSpecialOption` and
+`GetSelectedHostIntent`. A progress boolean may describe an intermediate
+planning stage, so it cannot be renamed to final `can_start` without the
+stage value and command validation.
+
+The EXE embeds `source\\interface\\activity_planner_window.cpp` beside these
+binding names. RTTI for `CActivityPlanner` is at type descriptor RVA
+`0x52395F8`. Its object-offset-0 COL is `0x46A49B8`, primary vtable
+`0x41205F0`; an object-offset-`0x10` COL is `0x46A4990`, secondary vtable
+`0x41206C8`. This distinguishes the planning object from the already bound
+`CActivityListDetailHostView` (`0x4166528`). The present trace has not
+identified a stable pointer from the current UI root to `CActivityPlanner`,
+the getter entry RVAs and signatures, or whether their outputs are copied
+values or transient planner-owned containers. It also has not established
+that the planner object exists on the H3911 opening paused frame.
+
+The next executable diagnostic is a bounded registration and field trace for
+these exact GUI getter names on `CActivityPlanner`: resolve the getter
+functions and their non-mutating preconditions, then map the returned
+location/configuration/cost data to the `CStartActivityCommand` validator.
+Only after that can a private paused query read a complete same-frame sample;
+absent planner context must be reported as absent, not silently synthesized
+from `feast.txt` or the AI activity path.
