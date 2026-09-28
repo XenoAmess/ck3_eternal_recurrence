@@ -110,6 +110,9 @@
     "superseded_duplicate_filename": "R0321-formal-report-a6d1ae8.txt in overlapping diagnostic request; file itself retained append-only, alternate target name withdrawn",
     "later_raw_v3_excerpt_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-V3-RAW-EXCERPT-v1.json",
     "later_raw_v3_excerpt_request_sha256": "969231232C6FEC4B22B6B42F7A801081707803EEDC0302D373FB8F5FEEEB3658",
+    "matching_receiver_pair_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-MATCHED-PAIR-v1.json",
+    "matching_receiver_pair_request_sha256": "1C82BD10B526179AE1AEC4CF8F8A452190089D5204DF031212B501371601769F",
+    "matching_receiver_pair_request_status_at_audit": "six_exact_files_selected; source ACK, copy and receiver qualification pending",
     "purpose": "Full formal report, small source proofs and bounded V3 input row excerpt are now receiver byte-verified. A future matching receiver replay still requires exact H3911 pair/binaries plus a qualified forecast producer and separately validated risk/expected-utility contract. No CK3 action requested or authorized by this audit."
   }
 }
