@@ -107,6 +107,35 @@ class CharacterStatusTest(unittest.TestCase):
             verify_checkpoint_receipt(json.dumps(body).encode(), expected_sha="B" * 64,
                                       expected_date_raw=53146848, actor_id=29829)
 
+    def test_receipt_missing_or_wrong_type_return_fields_are_unknown(self) -> None:
+        base = {
+            "result": "CALL_COMPLETED",
+            "body": {"step": "save-checkpoint", "accepted": True,
+                     "submission": {"date_raw": 53146848},
+                     "checkpoint": {"status": "saved", "name": "xar_checkpoint.ck3",
+                                    "sha256": "A" * 64, "size": 5, "date_raw": 53146848,
+                                    "episode_character_id": 29829, "path": "save.ck3"}},
+            "driver_state": {"hello": {"expected_ck3_sha256": CK3_SHA256,
+                                        "ck3_build_match": True,
+                                        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+                                        "bridge_version": "0.1.0"}},
+        }
+        for field, value in (("size", None), ("size", True), ("size", 0),
+                             ("path", None), ("path", ""), ("bridge_version", None),
+                             ("bridge_version", "wrong")):
+            with self.subTest(field=field, value=value):
+                payload = json.loads(json.dumps(base))
+                branch = (payload["driver_state"]["hello"] if field == "bridge_version"
+                          else payload["body"]["checkpoint"])
+                if value is None:
+                    branch.pop(field)
+                else:
+                    branch[field] = value
+                with self.assertRaises(StatusUnknown):
+                    verify_checkpoint_receipt(json.dumps(payload).encode(),
+                                              expected_sha="A" * 64,
+                                              expected_date_raw=53146848, actor_id=29829)
+
 
 if __name__ == "__main__":
     unittest.main()

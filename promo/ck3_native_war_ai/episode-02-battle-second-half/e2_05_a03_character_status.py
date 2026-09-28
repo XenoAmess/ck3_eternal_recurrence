@@ -201,6 +201,9 @@ def verify_checkpoint_receipt(receipt_bytes: bytes, *, expected_sha: str,
         checkpoint = body["checkpoint"]
         submission = body["submission"]
         hello = receipt["driver_state"]["hello"]
+        size = checkpoint["size"]
+        path = checkpoint["path"]
+        bridge_version = hello["bridge_version"]
         if not (
             receipt["result"] == "CALL_COMPLETED"
             and body["step"] == "save-checkpoint"
@@ -214,13 +217,16 @@ def verify_checkpoint_receipt(receipt_bytes: bytes, *, expected_sha: str,
             and hello["expected_ck3_sha256"].upper() == CK3_SHA256
             and hello["ck3_build_match"] is True
             and hello["game_adapter_id"] == "ck3-1.19.0.6-msvc-x64"
+            and type(size) is int and size > 0
+            and isinstance(path, str) and bool(path.strip())
+            and bridge_version == "0.1.0"
         ):
             raise StatusUnknown("checkpoint receipt identity or state mismatch")
+        return {"checkpoint_size": size, "checkpoint_path": path,
+                "bridge_version": bridge_version,
+                "game_adapter_id": hello["game_adapter_id"]}
     except (KeyError, TypeError, AttributeError, ValueError) as exc:
         raise StatusUnknown("checkpoint receipt is incomplete or inconsistent") from exc
-    return {"checkpoint_size": checkpoint["size"], "checkpoint_path": checkpoint["path"],
-            "bridge_version": hello["bridge_version"],
-            "game_adapter_id": hello["game_adapter_id"]}
 
 
 def run(args: argparse.Namespace) -> dict[str, object]:

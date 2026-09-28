@@ -41,28 +41,29 @@ Its native `e2-05-d26-before-save.json` receipt SHA-256 is
 receipt checkpoint SHA, size, actor `29829` and date_raw `53146848` match.
 The final reader reran the pinned Rakaly against those raw bytes into fresh
 external
-`D:/ck3-research-artifacts/e2-05-a03-offline-reader-20260929-a05/`.
+`D:/ck3-research-artifacts/e2-05-a03-offline-reader-20260929-a06/`.
 Its melted file is 81,787,801 bytes, SHA-256
 `ADCF4A4ED9F784313D95C84CBE30F5026B7271C952C7E772B38211CE7D6D89D3`.
 The report SHA-256 is
-`DAB5904F754199D132E9C3651BCB0665ABF80C540722CE93C9E7B4A35DB3E3D9`.
+`B395C7F0ED0D61CBACEFEFA43BB1DECCAA95C812878E0CECD5ADF9E5C03D7CCF`.
 It observes CharacterID `33437` **alive in the saved 1066.12.29 d26 state**.
 This says nothing about d27 after the next combat fire.
 
-A separate negative attempt pinned the same d26 bytes and receipt but supplied
-`1066.12.30` as the required save date. It exited `2`, reported
+A separate negative attempt using an earlier candidate handler pinned the same
+d26 bytes and receipt but supplied `1066.12.30` as the required save date.
+It exited `2`, reported
 `admission=false` / `life_status=UNKNOWN`, and preserved the fresh external
 `D:/ck3-research-artifacts/e2-05-a03-offline-reader-20260929-a04/failure.json`
 (SHA-256
 `9DD71BA89E4DE67353E4BE33EC6F3735B8FB0B4520AB3A28C0175AE5ABDDDFCA6`).
 The failed attempt and melted text remain immutable.
 Earlier successful a02/a03 reader development attempts are also retained
-under their separate external directories; the a05 report is the final-code
+under their separate external directories; the a06 report is the final-code
 reference.
 
 [`test_e2_05_a03_character_status.py`](test_e2_05_a03_character_status.py)
-contains ten synthetic tests for valid alive/dead, duplicate life blocks,
+contains eleven synthetic tests for valid alive/dead, duplicate life blocks,
 both kinds, nested life/death-field shadows, missing/duplicate death fields,
 duplicate target/database/date, malformed braces/quotes, unrelated same-ID
-scopes and a fake receipt self-reporting its own SHA. Normal Python and
-`-O` each passed 10/10.
+scopes, a fake receipt self-reporting its own SHA, and missing/wrongly typed
+receipt fields. Normal Python and `-O` each passed 11/11.
