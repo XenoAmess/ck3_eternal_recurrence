@@ -539,6 +539,20 @@ R0286's pending ledger and original evidence remain preserved. V4 still
 requires the actual native submit and independent material result before its
 action can be qualified.
 
+R0287 reached a typed submit ACK for the same 50-gold offer and saved a
+pending action; a same-date receipt remained pending. R0288 cold restored
+that checkpoint in a new PID, made no duplicate ransom submission, and read
+pending receipts on turns 1 and 6. It ended its 12-turn bound at raw date
+53219160 with the prisoner action still unresolved. The R0288 report is
+`Z:\m6ransom-r0287-cold-receipt-candidate-v1\evidence\R0288\formal-auto-run.json`
+(SHA-256 `0C4A771213937B1405200366F772D2BDBAF32F1A88485E9A8523142A2EFEBEDB`).
+The run's compact receipt rows retained only `status` and
+`postcondition_verified`, which prevented auditing whether custody or gold
+was the remaining condition. The compact report now retains the bounded
+prisoner-held flag, observed player-gold gain, quote, post native revision
+and post date from each independent receipt; the full ledger remains the
+authority for pending identity. No ransom material result is claimed yet.
+
 ```mermaid
 flowchart TD
     F[Paused player frame] --> W{Every active war source complete?}

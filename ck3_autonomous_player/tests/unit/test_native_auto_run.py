@@ -2080,6 +2080,29 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(compact["outbound_pending_id"], -2013265918)
         self.assertEqual(compact["outbound_pending_age_days"], 9)
 
+    def test_compact_ransom_receipt_keeps_material_readback(self) -> None:
+        compact = native_auto_run_module._compact_step_result({
+            "status": "pending",
+            "postcondition_verified": False,
+            "material_result": False,
+            "prisoner_no_longer_held": False,
+            "observed_player_gold_gain_raw": 0,
+            "quoted_gold_raw": 5_000_000,
+            "post_native_revision": 6,
+            "post_date_raw": 53_219_160,
+            "source_pending": {"action_ack": {"request_id": "opaque"}},
+        })
+        self.assertEqual(compact, {
+            "status": "pending",
+            "postcondition_verified": False,
+            "material_result": False,
+            "prisoner_no_longer_held": False,
+            "observed_player_gold_gain_raw": 0,
+            "quoted_gold_raw": 5_000_000,
+            "post_native_revision": 6,
+            "post_date_raw": 53_219_160,
+        })
+
     def test_compact_success_keeps_native_battle_sentinel_evidence(self) -> None:
         sentinel = {
             "state": "triggered",
