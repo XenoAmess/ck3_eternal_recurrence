@@ -32,6 +32,30 @@ def _positive(value: object) -> bool:
     return type(value) is int and value > 0
 
 
+def _province_income_observation(
+        world: Mapping[str, object], candidate: Mapping[str, object],
+        source_frame: Mapping[str, object]) -> dict[str, object]:
+    """Copy the target province's aggregate from this material source frame."""
+    rows = world.get("active_constructions")
+    matches = ([row for row in rows if isinstance(row, Mapping)
+                and row.get("barony_title_id") == candidate.get("barony_title_id")
+                and row.get("province_id") == candidate.get("province_id")]
+               if isinstance(rows, list) else [])
+    row = matches[0] if len(matches) == 1 else None
+    raw = row.get("native_province_monthly_income_raw") if row else None
+    observed = bool(row and row.get("native_province_monthly_income_observed") is True
+                    and type(raw) is int)
+    return {
+        "status": "observed" if observed else "unavailable",
+        "barony_title_id": candidate.get("barony_title_id"),
+        "province_id": candidate.get("province_id"),
+        "snapshot_id": source_frame.get("snapshot_id"),
+        "native_revision": source_frame.get("native_revision"),
+        "date_raw": source_frame.get("date_raw"),
+        "native_province_monthly_income_raw": raw if observed else None,
+    }
+
+
 def _identity(driver: object) -> tuple[int, str]:
     pid = getattr(driver, "_session_bridge_pid", None)
     identity = _process_identity(pid) if _positive(pid) else None
@@ -410,6 +434,8 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
     history = starting.get("native_command_history")
     _, pre_income = same_frame_construction_income(
         starting, history if isinstance(history, list) else [])
+    pre_province_income = _province_income_observation(
+        query["world"], candidate, source)
     pending = {"status": "action_state_unknown", "action_request_id": request_id,
                "episode_run_id": starting["episode_run_id"],
                "actor_character_id": source["actor_character_id"],
@@ -419,6 +445,7 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
                "pre_proof_epoch": query["proof_epoch"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
                "pre_player_monthly_gold_income_raw": pre_income,
+               "pre_province_income_observation": pre_province_income,
                "candidate": dict(candidate)}
     write_construction_ledger(state_dir, {**ledger, "pending": pending})
     driver._record_command(SUBMIT_STEP, ok=True, result=pending)
@@ -578,6 +605,16 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         "native_progress_divisor_raw": (progress_divisor
                                         if type(progress_divisor) is int else None),
     }
+    province_income = _province_income_observation(world, candidate, starting)
+    if cold_recheck and completed and province_income["status"] != "observed":
+        previous = pending.get("construction_province_income_observation")
+        if isinstance(previous, Mapping) and previous.get("status") == "observed":
+            province_income = dict(previous)
+    pre_province_income = pending.get("pre_province_income_observation")
+    pre_province_raw = (pre_province_income.get("native_province_monthly_income_raw")
+                        if isinstance(pre_province_income, Mapping)
+                        and pre_province_income.get("status") == "observed" else None)
+    post_province_raw = province_income["native_province_monthly_income_raw"]
     history = starting.get("native_command_history")
     _, observed_income = same_frame_construction_income(
         starting, history if isinstance(history, list) else [])
@@ -594,6 +631,12 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     receipt = {"status": "applied", "postcondition_verified": True,
                "completion_status": "completed" if completed else "in_progress",
                "construction_progress_observation": progress_observation,
+               "construction_province_income_observation": province_income,
+               "pre_province_income_observation": pre_province_income,
+               "observed_province_monthly_income_delta_raw": (
+                   post_province_raw - pre_province_raw if completed
+                   and type(post_province_raw) is int
+                   and type(pre_province_raw) is int else None),
                "completion_last_check_date_raw": starting["date_raw"],
                "completion_observed_date_raw": (
                    starting["date_raw"] if completed else None),

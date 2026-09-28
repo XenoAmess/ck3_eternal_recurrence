@@ -17,3 +17,22 @@ The private world construction source uses its already validated held `Province*
 `_ck3_query_construction_province_income_private_v1` is the local MCP facade seam over that same-frame transport. It is deliberately absent from the registered/public MCP tool list and does not advertise a construction effect capability. Its `observed` status only means the raw province aggregate was read from the matched province row.
 
 Next live step: on the already scheduled construction completion watch, read the same barony/province row before and after the completed slot appears, with date and other changes recorded; confirm the field is readable and compare alongside the independent completed-slot and player-income sources. No extra CK3 run is needed solely for this field.
+
+## 2026-09-28 formal receipt connection
+
+The formal construction submit now saves the selected province's aggregate
+from its existing same-frame native candidate query. Each subsequent material
+receipt saves the matching province's current raw aggregate and its source
+snapshot, revision and date. Only a matching completed slot with both observed
+raw values gets a before/after aggregate delta. A completed receipt with an
+unreadable field keeps the previous observed value on cold recheck, preserving
+its original observation date. Old ledgers without a pre-submit province
+reading retain `null` for the delta. This adds no native query or action and
+does not change the 30-game-day completion watch.
+
+The delta measures the **province aggregate** across elapsed time; it is not
+a building-specific tax effect or a measured increase in the player's gold.
+The completed slot and public player-income read remain separate receipts.
+Focused production-path fixture tests cover submit, active start, completion,
+durable ledger and cold recovery. No new CK3 paused frame, completed building
+or realized income is claimed by this source change.

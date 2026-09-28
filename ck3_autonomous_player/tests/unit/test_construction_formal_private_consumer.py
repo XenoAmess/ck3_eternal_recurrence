@@ -88,6 +88,8 @@ class Driver:
         self.r0227_material_without_completion = False
         self.positive_coverage_incomplete = False
         self.gold_override = None
+        self.province_income_after_completion_raw = None
+        self.province_income_unavailable = False
 
     def take_snapshot(self):
         return {**self.snapshot, "native_command_history": [
@@ -126,6 +128,15 @@ class Driver:
                 source["completed_buildings"] = [{
                     "barony_title_id": 2103, "province_id": 2635,
                     "building_type_id": 24, "slot_index": 1}]
+                if self.province_income_after_completion_raw is not None:
+                    source["active_constructions"][0][
+                        "native_province_monthly_income_raw"] = (
+                            self.province_income_after_completion_raw)
+            if self.province_income_unavailable:
+                source["active_constructions"][0][
+                    "native_province_monthly_income_observed"] = False
+                source["active_constructions"][0][
+                    "native_province_monthly_income_raw"] = None
             if self.completed_source_unavailable:
                 source["completed_buildings_observed"] = False
                 source["completed_buildings"] = None
@@ -421,6 +432,56 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(result["source_frame"]["snapshot_id"], "native:3")
             self.assertEqual(result["source_frame"]["actor_character_id"], 29829)
             self.assertEqual(driver.requests[-1]["step"], transport.QUERY_NATIVE)
+
+    def test_formal_receipt_retains_target_province_aggregate_through_completion_and_cold_read(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                before = pending["pre_province_income_observation"]
+                self.assertEqual(before["native_province_monthly_income_raw"],
+                                 2_468_000)
+                self.assertEqual(before["snapshot_id"], "native:3")
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                self.assertEqual(start["completion_status"], "in_progress")
+                self.assertIsNone(start["observed_province_monthly_income_delta_raw"])
+
+                later = frame(5)
+                later["date_raw"] += 31 * 24
+                driver.snapshot = later
+                driver.completed_construction = True
+                driver.province_income_after_completion_raw = 2_504_000
+                completed = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+                self.assertEqual(completed["completion_status"], "completed")
+                self.assertEqual(completed["construction_province_income_observation"], {
+                    "status": "observed", "barony_title_id": 2103,
+                    "province_id": 2635, "snapshot_id": "native:5",
+                    "native_revision": 5, "date_raw": later["date_raw"],
+                    "native_province_monthly_income_raw": 2_504_000,
+                })
+                self.assertEqual(completed[
+                    "observed_province_monthly_income_delta_raw"], 36_000)
+                self.assertEqual(read_construction_ledger(driver.state_dir)
+                                 ["applied"]["observed_province_monthly_income_delta_raw"],
+                                 36_000)
+
+            driver.snapshot = frame(1)
+            driver.snapshot["date_raw"] = later["date_raw"]
+            driver.province_income_unavailable = True
+            with mock.patch.object(transport, "_identity", return_value=(124, "t2")):
+                cold = transport.query_construction_receipt(
+                    driver, pending=completed, expected_revision=1)
+            self.assertEqual(cold["construction_province_income_observation"],
+                             completed["construction_province_income_observation"])
+            self.assertEqual(cold["observed_province_monthly_income_delta_raw"],
+                             36_000)
+            self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
+                                 for row in driver.requests), 1)
 
     def test_unavailable_completed_observer_keeps_prewar_legality_and_start_source(self):
         with TemporaryDirectory() as location:
