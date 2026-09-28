@@ -45,8 +45,15 @@ checkpoint 分支不调用 New Game 或 StartGame，也不把发出加载参数�
 
 需要缩小 UI 以拍全战斗面板时，新隔离 run 显式使用 `--gui-scale 1.0`。runner 先写入并读回该 profile 的
 `pdx_settings.txt`，在 frontend warmup 退出且最终读档进程启动前再次只读核对，并在地图完整暂停后、
-hold 结束后分别保存 `gui-settings-*.json`。任一阶段的磁盘读数缺失、重复、无法解析或不是 1.0，
-该 attempt 为 RED；后续不能把它追认为 GREEN。未指定此选项时保持原设置写入和运行路径。
+hold 结束后分别保存 `gui-settings-*.json`。默认门仍只认可唯一且精确的 `value="1.0"`；
+磁盘读数缺失、重复、无法解析或其他字面值均为 RED，不能追认旧 attempt。未指定此选项时保持原设置写入和运行路径。
+
+CK3 原生设置界面保存 100% 时可能把 `value="1.0"` 写成 `value="1"`。v2 磁盘回执同时保留
+`observed_scale_serialized` 原字面、`observed_scale_token` 完整赋值 token 与 `observed_scale_ratio` 精确十进制规范化比率。
+`"1"`、`"1.0"`、`"1.00"` 均为诊断比率 `1`，但默认只放行 `"1.0"`；仅未来经 UI 源文件、原图、热回读及
+importer 收据绑定的新 run 可在函数级显式 `allow_native_ui_one=True` 后额外放行精确 `"1"`。`"1.00"` 即使数值相等仍不放行。
+指数、符号、前导零、非数值、重复 GUI/scale/value 字段或未知结构继续拒绝。该参数本身不核对 importer 来源，
+调用方必须在启用前完成来源门；a04 既有 RED、未录制结论保持原样。
 
 2026-09-28 的 E2-04 a01 在预启动设置 1.0 后仍由 CK3 最终进程写回 1.3；a02 未指定该参数，最终读数也为 1.3。因此预启动回执、
 warmup 后回执或磁盘上的 1.0 都不能单独证明正在运行的 UI 是 1.0。postmap RED 后，operator 可在原生设置

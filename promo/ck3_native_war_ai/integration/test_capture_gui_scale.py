@@ -7,12 +7,38 @@ import tempfile
 import unittest
 from unittest import mock
 
-from capture_session import (gui_scale_disk_readback, render_profile_settings,
+from capture_session import (gui_scale_disk_readback, normalize_gui_scale_ratio,
+                             render_profile_settings,
                              require_gui_scale_disk_gate,
                              reseed_gui_scale_after_warmup, write_profile_settings)
 
 
 class CaptureGuiScaleTest(unittest.TestCase):
+    def test_native_ui_saved_one_needs_explicit_future_run_opt_in(self) -> None:
+        # The complete a04 Save and Close source stays outside the repository:
+        # 6891 B, SHA-256 E6AD4D44...FDF7D; only its GUI block is needed here.
+        source = b'"GUI"={\r\n\t"scale"={\r\n\t\tversion=1\r\n\t\tvalue="1"\r\n\t}\r\n}\r\n'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            settings = root / "pdx_settings.txt"
+            settings.write_bytes(source)
+            default = gui_scale_disk_readback(settings, "1.0", "a04-diagnostic")
+            self.assertEqual(default["observed_scale_token"], 'value="1"')
+            self.assertEqual(default["observed_scale_ratio"], "1")
+            self.assertTrue(default["ratio_equivalent_to_request"])
+            self.assertFalse(default["disk_gate_passed"])
+            self.assertEqual(default["reason"], "ratio_equal_but_literal_not_admitted")
+            admitted = gui_scale_disk_readback(settings, "1.0", "future-candidate",
+                                               allow_native_ui_one=True)
+            self.assertTrue(admitted["disk_gate_passed"])
+            self.assertEqual(admitted["admission"], "explicit_native_ui_one")
+            self.assertFalse(admitted["runtime_scale_proven"])
+            self.assertFalse(admitted["recording_authorized_by_this_gate"])
+            receipt_path = root / "future-candidate-gate.json"
+            require_gui_scale_disk_gate(settings, "1.0", "future-candidate",
+                                        receipt_path, allow_native_ui_one=True)
+            self.assertTrue(json.loads(receipt_path.read_text())["disk_gate_passed"])
+
     def test_real_a03_warmup_6861_byte_reseed_changes_only_gui_value(self) -> None:
         # Exact, unnormalized bytes from the immutable E2-04 a03 warm-up profile.
         fixture = (Path(__file__).parent / "fixtures" /
@@ -118,12 +144,76 @@ class CaptureGuiScaleTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             settings = Path(directory) / "pdx_settings.txt"
             settings.write_bytes(b'"Graphics"={}\r\n"GUI"={\r\n\t"scale"={\r\n'
-                                 b'\t\tversion=1\r\n\t\tvalue="1.0"\r\n\t}\r\n}\r\n')
-            result = gui_scale_disk_readback(settings, "1.0", "after-native-UI-save")
+                                 b'\t\tversion=1\r\n\t\tvalue="1"\r\n\t}\r\n}\r\n')
+            result = gui_scale_disk_readback(settings, "1.0", "after-native-UI-save",
+                                             allow_native_ui_one=True)
             self.assertTrue(result["disk_gate_passed"])
+            self.assertEqual(result["schema"], "war-film-gui-scale-disk-gate/v2")
+            self.assertEqual(result["observed_scale_serialized"], "1")
+            self.assertEqual(result["observed_scale_token"], 'value="1"')
+            self.assertEqual(result["observed_scale_ratio"], "1")
+            self.assertEqual(result["requested_scale_ratio"], "1")
             self.assertFalse(result["runtime_scale_proven"])
             self.assertFalse(result["visual_geometry_reviewed"])
             self.assertFalse(result["recording_authorized_by_this_gate"])
+
+    def test_decimal_normalization_is_diagnostic_until_literal_admitted(self) -> None:
+        for value in ("1", "1.0", "1.00", "1.000000"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as directory:
+                settings = Path(directory) / "pdx_settings.txt"
+                settings.write_bytes((f'"GUI"={{"scale"={{version=1 value="{value}"}}}}\n').encode("ascii"))
+                result = gui_scale_disk_readback(settings, "1.0", "test")
+                self.assertEqual(result["observed_scale_serialized"], value)
+                self.assertEqual(result["observed_scale_ratio"], "1")
+                self.assertTrue(result["ratio_equivalent_to_request"])
+                self.assertEqual(result["disk_gate_passed"], value == "1.0")
+                opted_in = gui_scale_disk_readback(settings, "1.0", "test",
+                                                    allow_native_ui_one=True)
+                self.assertEqual(opted_in["disk_gate_passed"], value in ("1", "1.0"))
+
+    def test_noncanonical_numeric_forms_remain_red(self) -> None:
+        for value in ("1e0", "+1", "01", "1.", " 1", "1,0", "NaN",
+                      "Infinity", "0", "0.0", "1.0.0", "1%", ""):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as directory:
+                settings = Path(directory) / "pdx_settings.txt"
+                settings.write_bytes((f'"GUI"={{"scale"={{version=1 value="{value}"}}}}\n').encode("ascii"))
+                result = gui_scale_disk_readback(settings, "1.0", "test",
+                                                 allow_native_ui_one=True)
+                self.assertEqual(result["observed_scale_serialized"], value)
+                self.assertIsNone(result["observed_scale_ratio"])
+                self.assertFalse(result["disk_gate_passed"])
+                self.assertEqual(normalize_gui_scale_ratio(value), None)
+
+    def test_native_ui_opt_in_must_be_boolean(self) -> None:
+        for value in (0, 1, "true", None):
+            with self.subTest(value=value), self.assertRaisesRegex(RuntimeError, "must be boolean"):
+                gui_scale_disk_readback(Path("missing.txt"), "1.0", "test",
+                                        allow_native_ui_one=value)
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "requires an explicit"):
+                require_gui_scale_disk_gate(Path("missing.txt"), None, "test",
+                                            Path(directory) / "not-created.json",
+                                            allow_native_ui_one=True)
+
+    def test_ambiguous_gui_or_scale_fields_remain_red(self) -> None:
+        variants = (
+            b'"GUI"={"scale"={version=1 value="1"}}\n"GUI"=bad\n',
+            b'"GUI"={"scale"={version=1 value="1"}}\n  "GUI"=bad\n',
+            b'  "GUI"={"scale"={version=1 value="1.0"}}\n',
+            b'"GUI"={"scale"={version=1 value="1"} "scale"={version=1 value="1"}}\n',
+            b'"GUI"={"scale"={version=1 value="1" value="1"}}\n',
+            b'"GUI"={"scale"={version=1 version=1 value="1"}}\n',
+            b'"GUI"={"scale"={version=1 value=1}}\n',
+            b'"GUI"={"scale"={version=2 value="1"}}\n',
+        )
+        for raw in variants:
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as directory:
+                settings = Path(directory) / "pdx_settings.txt"
+                settings.write_bytes(raw)
+                result = gui_scale_disk_readback(settings, "1.0", "test",
+                                                 allow_native_ui_one=True)
+                self.assertFalse(result["disk_gate_passed"])
+                self.assertIsNone(result["observed_scale_ratio"])
 
     def test_missing_or_duplicate_gui_block_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -163,19 +253,41 @@ class CaptureGuiScaleTest(unittest.TestCase):
             self.assertTrue(after["disk_gate_passed"])
             self.assertEqual(after["settings"]["sha256"], hashlib.sha256(target).hexdigest().upper())
 
-    def test_already_1_0_is_preserved_without_replacement(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            output = root / "evidence"
-            output.mkdir()
-            settings = root / "pdx_settings.txt"
-            source = b'"Graphics"={}\r\n"GUI"={\r\n"scale"={ version=1 value="1.0" }\r\n}\r\n'
-            settings.write_bytes(source)
-            reseed_gui_scale_after_warmup(settings, "1.0", output)
-            receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
-            self.assertEqual(settings.read_bytes(), source)
-            self.assertFalse(receipt["replacement_performed"])
-            self.assertEqual(receipt["status"], "GREEN_DISK_ONLY")
+    def test_already_100_percent_is_preserved_without_replacement(self) -> None:
+        for serialized, allow_native_ui_one in (("1.0", False), ("1", True)):
+            with self.subTest(serialized=serialized), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                output = root / "evidence"
+                output.mkdir()
+                settings = root / "pdx_settings.txt"
+                source = (f'"Graphics"={{}}\r\n"GUI"={{\r\n"scale"={{ version=1 value="{serialized}" }}\r\n}}\r\n').encode("ascii")
+                settings.write_bytes(source)
+                reseed_gui_scale_after_warmup(settings, "1.0", output,
+                                              allow_native_ui_one=allow_native_ui_one)
+                receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
+                self.assertEqual(settings.read_bytes(), source)
+                self.assertFalse(receipt["replacement_performed"])
+                self.assertEqual(receipt["before_observed_scale"], serialized)
+                self.assertEqual(receipt["before_observed_scale_ratio"], "1")
+                self.assertEqual(receipt["status"], "GREEN_DISK_ONLY")
+
+    def test_reseed_rejects_unreviewed_equivalent_literal(self) -> None:
+        for serialized, allow_native_ui_one in (("1", False), ("1.00", False),
+                                                ("1.00", True)):
+            with self.subTest(serialized=serialized, opt_in=allow_native_ui_one), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                output = root / "evidence"
+                output.mkdir()
+                settings = root / "pdx_settings.txt"
+                source = f'"GUI"={{"scale"={{version=1 value="{serialized}"}}}}\n'.encode("ascii")
+                settings.write_bytes(source)
+                with self.assertRaisesRegex(RuntimeError, "reviewed 100%/130%"):
+                    reseed_gui_scale_after_warmup(settings, "1.0", output,
+                                                  allow_native_ui_one=allow_native_ui_one)
+                self.assertEqual(settings.read_bytes(), source)
+                receipt = json.loads((output / "gui-settings-warmup-reseed.json").read_text())
+                self.assertEqual(receipt["status"], "RED")
+                self.assertFalse(receipt["replacement_performed"])
 
     def test_ambiguous_or_unreviewed_gui_syntax_stays_red_and_unmodified(self) -> None:
         variants = (

@@ -623,13 +623,37 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
     return row
 
 
-def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: str) -> dict:
+GUI_SCALE_DECIMAL = re.compile(r"(?:0|[1-9][0-9]*)(?:\.[0-9]+)?\Z", re.ASCII)
+
+
+def normalize_gui_scale_ratio(serialized: str) -> str | None:
+    """Normalize a quoted fixed decimal without float rounding or loose parsing."""
+    if (not isinstance(serialized, str) or len(serialized) > 32 or
+            GUI_SCALE_DECIMAL.fullmatch(serialized) is None):
+        return None
+    integer, separator, fraction = serialized.partition(".")
+    fraction = fraction.rstrip("0") if separator else ""
+    if integer == "0" and not fraction:
+        return None
+    return integer + ("." + fraction if fraction else "")
+
+
+def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: str,
+                            *, allow_native_ui_one: bool = False) -> dict:
     """Read the isolated profile's persisted GUI setting without claiming runtime state."""
     require(requested_scale == "1.0", "Only the reviewed 1.0 GUI scale is supported")
-    row = {"schema": "war-film-gui-scale-disk-gate/v1", "observed_at": utc(),
+    require(type(allow_native_ui_one) is bool, "Native UI one opt-in must be boolean")
+    requested_ratio = normalize_gui_scale_ratio(requested_scale)
+    require(requested_ratio is not None, "Requested GUI scale is not a fixed decimal ratio")
+    row = {"schema": "war-film-gui-scale-disk-gate/v2", "observed_at": utc(),
            "phase": phase, "requested_scale": requested_scale,
+           "requested_scale_ratio": requested_ratio,
            "settings_path": str(settings_path.resolve()), "settings": None,
-           "observed_scale": None, "disk_gate_passed": False,
+           "observed_scale": None, "observed_scale_serialized": None,
+           "observed_scale_token": None,
+           "observed_scale_ratio": None, "native_ui_one_opt_in": allow_native_ui_one,
+           "ratio_equivalent_to_request": False, "admission": None,
+           "disk_gate_passed": False,
            "runtime_scale_proven": False, "visual_geometry_reviewed": False,
            "recording_authorized_by_this_gate": False}
     try:
@@ -644,13 +668,27 @@ def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: st
                 disk_identity["sha256"] == content_sha,
                 "GUI settings changed during readback")
         row["settings"] = {**disk_identity, "mtime_ns": after.st_mtime_ns}
-        gui_declarations = re.findall(rb'(?m)^"GUI"\s*=\s*\{', raw)
+        gui_declarations = re.findall(rb'(?m)^[ \t]*"GUI"\s*=', raw)
         known_gui_block = re.findall(
             rb'(?ms)^"GUI"\s*=\s*\{\s*"scale"\s*=\s*\{\s*'
-            rb'version\s*=\s*1\s*value\s*=\s*"([^"\r\n]+)"\s*\}\s*\}', raw)
+            rb'version\s*=\s*1\s*value\s*=\s*"([^"\r\n]*)"\s*\}\s*\}', raw)
         if len(gui_declarations) == 1 and len(known_gui_block) == 1:
-            row["observed_scale"] = known_gui_block[0].decode("ascii")
-            row["disk_gate_passed"] = row["observed_scale"] == requested_scale
+            serialized = known_gui_block[0].decode("ascii")
+            ratio = normalize_gui_scale_ratio(serialized)
+            row["observed_scale"] = serialized
+            row["observed_scale_serialized"] = serialized
+            row["observed_scale_token"] = f'value="{serialized}"'
+            row["observed_scale_ratio"] = ratio
+            row["ratio_equivalent_to_request"] = ratio == requested_ratio
+            if serialized == requested_scale:
+                row["admission"] = "requested_literal"
+            elif allow_native_ui_one and serialized == "1":
+                row["admission"] = "explicit_native_ui_one"
+            row["disk_gate_passed"] = row["admission"] is not None
+            if ratio is None:
+                row["reason"] = "noncanonical_numeric_gui_scale"
+            elif row["admission"] is None and ratio == requested_ratio:
+                row["reason"] = "ratio_equal_but_literal_not_admitted"
         else:
             row["reason"] = "missing_ambiguous_or_unrecognized_GUI_block"
     except (OSError, UnicodeError, RuntimeError) as error:
@@ -659,17 +697,22 @@ def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: st
 
 
 def require_gui_scale_disk_gate(settings_path: Path, requested_scale: str | None,
-                                phase: str, receipt_path: Path) -> None:
+                                phase: str, receipt_path: Path,
+                                *, allow_native_ui_one: bool = False) -> None:
     if requested_scale is None:
+        require(allow_native_ui_one is False,
+                "Native UI one opt-in requires an explicit requested GUI scale")
         return
-    receipt = gui_scale_disk_readback(settings_path, requested_scale, phase)
+    receipt = gui_scale_disk_readback(settings_path, requested_scale, phase,
+                                      allow_native_ui_one=allow_native_ui_one)
     write_new(receipt_path, receipt)
     require(receipt["disk_gate_passed"],
             f"GUI.scale disk gate failed at {phase}; see {receipt_path}")
 
 
 def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
-                                  output_dir: Path) -> None:
+                                  output_dir: Path,
+                                  *, allow_native_ui_one: bool = False) -> None:
     """Restore the isolated profile after warm-up has exited, before final launch.
 
     The warm-up's RED readback and full settings bytes remain separate evidence.
@@ -682,12 +725,14 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
     reseed_path = output_dir / "gui-settings-warmup-reseed.json"
     after_path = output_dir / "gui-settings-after-reseed-before-final-launch.json"
     before = gui_scale_disk_readback(settings_path, requested_scale,
-                                     "after-warmup-before-final-launch")
+                                     "after-warmup-before-final-launch",
+                                     allow_native_ui_one=allow_native_ui_one)
     write_new(before_path, before)
     row = {"schema": "war-film-gui-scale-warmup-reseed/v1", "at": utc(),
            "requested_scale": requested_scale, "before_readback": str(before_path.resolve()),
            "before_disk_gate_passed": before["disk_gate_passed"],
            "before_observed_scale": before["observed_scale"],
+           "before_observed_scale_ratio": before["observed_scale_ratio"],
            "source_snapshot": None, "replacement_performed": False,
            "atomic_same_directory_replace": False, "after_readback": str(after_path.resolve()),
            "runtime_scale_proven": False, "visual_geometry_reviewed": False,
@@ -713,18 +758,18 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
         require(row["source_snapshot"]["sha256"] == before["settings"]["sha256"],
                 "Warm-up settings snapshot differs from readback")
 
-        declarations = list(re.finditer(rb'(?m)^"GUI"\s*=\s*\{', source))
+        declarations = list(re.finditer(rb'(?m)^[ \t]*"GUI"\s*=', source))
         blocks = list(re.finditer(
             rb'(?ms)^"GUI"\s*=\s*\{\s*"scale"\s*=\s*\{\s*'
-            rb'version\s*=\s*1\s*value\s*=\s*"(?P<value>[^"\r\n]+)"\s*\}\s*\}',
+            rb'version\s*=\s*1\s*value\s*=\s*"(?P<value>[^"\r\n]*)"\s*\}\s*\}',
             source))
         require(len(declarations) == len(blocks) == 1,
                 "Warm-up GUI block is missing, ambiguous or not the reviewed syntax")
         observed = blocks[0].group("value").decode("ascii")
         require(observed == before["observed_scale"],
                 "Warm-up GUI block differs from RED readback")
-        require(observed in ("1.0", "1.3"),
-                "Warm-up GUI scale is outside the reviewed 1.0/1.3 values")
+        require(observed == "1.3" or before["disk_gate_passed"],
+                "Warm-up GUI scale is outside the reviewed 100%/130% values")
         row["source_settings"] = {**before["settings"]}
         if observed == "1.3":
             target = source[:blocks[0].start("value")] + b"1.0" + source[blocks[0].end("value"):]
@@ -762,7 +807,8 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
                 row["after_settings"]["sha256"] == row["expected_target"]["sha256"],
                 "GUI settings target identity differs after reseed")
         require_gui_scale_disk_gate(settings_path, requested_scale,
-                                    "after-reseed-before-final-launch", after_path)
+                                    "after-reseed-before-final-launch", after_path,
+                                    allow_native_ui_one=allow_native_ui_one)
         row["status"] = "GREEN_DISK_ONLY"
     except Exception as error:
         row["error"] = repr(error)
