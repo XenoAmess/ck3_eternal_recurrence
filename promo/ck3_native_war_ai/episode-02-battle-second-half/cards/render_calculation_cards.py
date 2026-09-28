@@ -236,8 +236,17 @@ def validate(data: dict) -> None:
                     f"{key} {field} SHA")
     require([row["id"] for row in data["cards"]] ==
             ["E2-02", "E2-03", "E2-04", "E2-05A", "E2-05B", "E2-05C",
-             "E2-06", "E2-07", "E2-09", "E2-09-A05"],
+             "E2-06", "E2-07", "E2-09"] and
+            data["cards"][-1]["replay"] == "A05" and
+            data["cards"][-1]["artifact"] == "e2-09-a05-calculation.svg",
             "card order")
+    historical = data["historical_cards"]
+    require(len(historical) == 1 and historical[0]["id"] == "E2-09" and
+            historical[0]["replay"] == "024" and
+            historical[0]["artifact"] == "e2-09-calculation.svg" and
+            historical[0]["sha256"] ==
+            "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31",
+            "024 historical card remains archived")
 
 
 def pursuit_save_sha(replays: dict) -> str:
@@ -566,7 +575,6 @@ RENDERERS = {
     "E2-02": card_02, "E2-03": card_03, "E2-04": card_04,
     "E2-05A": card_05a, "E2-05B": card_05b, "E2-05C": card_05c,
     "E2-06": card_06, "E2-07": card_07, "E2-09": card_09,
-    "E2-09-A05": card_09,
 }
 
 
@@ -685,8 +693,13 @@ def main() -> None:
     validate(data)
     if args.verify_sources:
         verify_sources(data)
+    archived = data["historical_cards"][0]
+    archive_path = ROOT / archived["artifact"]
+    require(archive_path.is_file() and
+            hashlib.sha256(archive_path.read_bytes()).hexdigest().upper() ==
+            archived["sha256"], "024 historical SVG bytes")
     for card in data["cards"]:
-        path = ROOT / f'{card["id"].lower()}-calculation.svg'
+        path = ROOT / card.get("artifact", f'{card["id"].lower()}-calculation.svg')
         rendered = RENDERERS[card["id"]](data, card)
         if args.check:
             require(path.is_file() and path.read_bytes() == rendered,

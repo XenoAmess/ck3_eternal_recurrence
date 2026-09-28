@@ -34,6 +34,11 @@ def main() -> None:
             receipt["clean_spans_certified"] is False and
             receipt["human_review_completed"] is False,
             "A05 fact receipt scope")
+    provenance = receipt["field_provenance"]
+    require("writer does not expose" in provenance["uncapped_score"] and
+            "not a separate cap field" in provenance["single_battle_cap"] and
+            "does not expose a separate battle-score component" in provenance["war_total"],
+            "A05 writer versus derived/static versus poststate boundaries")
     for name, source in receipt["sources"].items():
         path = Path(source["path"])
         require(path.is_file(), f"missing A05 source {name}")
@@ -61,12 +66,17 @@ def main() -> None:
                 f"A05 receipt/index source: {source_name}")
     verify_a05_sources(a)
     run = receipt["run_identity"]
+    preflight = json.loads(Path(receipt["sources"]["preflight"]["path"]).read_text(encoding="utf-8"))
     require((run["source_save_sha256"], run["start_date_raw"],
              run["terminal_date_raw"], run["combat_id"], run["war_id"],
              run["army_id"], run["province_id"], run["player_character_id"]) ==
             (a["source_save_sha256"], a["start_date_raw"],
              a["terminal_date_raw"], 16777218, 4, 18, 2633, 29829),
             "A05 receipt run identity")
+    require(run["game_exe_sha256"] == preflight["game"]["sha256"] ==
+            index["game"]["exe_sha256"] and
+            run["bridge_dll_sha256"] == preflight["bridge_dll"]["sha256"],
+            "A05 exact build and candidate DLL")
     facts = receipt["native_writer_facts"]
     expected = {
         "hard_loss_numerator_raw_q100000": a["hard_loss_numerator_raw_q100000"],

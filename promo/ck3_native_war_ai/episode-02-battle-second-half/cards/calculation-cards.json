@@ -244,7 +244,9 @@
     {"id": "E2-05C", "replay": "036_038", "source_label": "036→038 后档复载", "title": "阵亡之后：下一帧名单少了谁", "purpose": "036 后存档由 038 逐字节复载；不得接到 020 或 070"},
     {"id": "E2-06", "replay": "085", "title": "增援：先对齐参战账", "purpose": "同钩子旧 entry、缓存差额与新增 current 的算术板"},
     {"id": "E2-07", "replay": "085", "title": "战宽：从入场写到首次出伤", "purpose": "同一 attempt 的 join 前后战宽与 R8D 实参"},
-    {"id": "E2-09", "replay": "024", "source_label": "024 · 历史原始回执", "title": "终局：一场仗怎样入战争账", "purpose": "历史 024 同一次原生 writer 的分子、八桶分母、战分系数、封顶与相对符号；不是新拍 run 的读数"},
-    {"id": "E2-09-A05", "replay": "A05", "source_label": "A05 · 新同源实拍", "title": "终局：一场仗怎样入战争账", "purpose": "A05 新独立 run 的原生 writer、同录制器终局标记和第32日暂停后态；媒体未完成 clean-span 与人工审阅"}
+    {"id": "E2-09", "replay": "A05", "artifact": "e2-09-a05-calculation.svg", "source_label": "A05 · 新同源实拍", "title": "终局：一场仗怎样入战争账", "purpose": "A05 新独立 run 的原生 writer、同录制器终局标记和第32日暂停后态；媒体未完成 clean-span 与人工审阅"}
+  ],
+  "historical_cards": [
+    {"id": "E2-09", "replay": "024", "artifact": "e2-09-calculation.svg", "sha256": "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31", "source_label": "024 · 历史原始回执", "title": "终局：一场仗怎样入战争账", "purpose": "历史 024 同一次原生 writer 的分子、八桶分母、战分系数、封顶与相对符号；不是新拍 run 的读数"}
   ]
 }

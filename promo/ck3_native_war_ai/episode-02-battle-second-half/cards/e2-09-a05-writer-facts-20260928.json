@@ -92,6 +92,14 @@
     "army_retreating": true,
     "army_in_combat": false
   },
+  "field_provenance": {
+    "hard_loss_inputs_and_denominator_buckets": "A05 native terminal writer response",
+    "cb_battle_scale_and_signed_row": "A05 native terminal writer response",
+    "uncapped_score": "integer derivation from A05 writer ratio and selected CB scale; writer does not expose this derived value",
+    "single_battle_cap": "CK3 1.19.0.6 stock NCombat WAR_DEFENDER_COMBAT_MAX_SCORE static rule at docs/ck3-native-ai/battle-terminal-and-reentry.md lines 313-322; A05 writer exposes the resulting capped row, not a separate cap field",
+    "war_total": "A05 native day-32 paused snapshot active_wars WarID 4 player_relative_war_score; snapshot does not expose a separate battle-score component",
+    "media": "recorder reports raw SHA and complete PTS; clean spans and full human review remain pending"
+  },
   "arithmetic": {
     "hard_loss": "129800000 - 0 - 57753614 - 18384344 = 53662042 Q100000",
     "denominator": "0 + 675 + 310 + 0 + 0 + 0 + 11 + 0 = 996 people",
@@ -103,18 +111,18 @@
   "artifacts": {
     "card_index": {
       "path_relative_to_this_file": "calculation-cards.json",
-      "bytes": 17571,
-      "sha256": "9D6035244B128D193103A338A1AF0ED15028493A6A843D4EAFD0BCF3E7B20FB8"
+      "bytes": 17751,
+      "sha256": "BA8989D92CAD1FD4F4772429B37E3E0290D00B67AC1671D9F3BED81D155A49EC"
     },
     "renderer": {
       "path_relative_to_this_file": "render_calculation_cards.py",
-      "bytes": 37709,
-      "sha256": "111C71F71F8E4F24916A9D7FA49E1DF1B7694557B4FE5EFFB05325ACD6FF3F50"
+      "bytes": 38491,
+      "sha256": "C194FE272DF61D4EDEFAED942F952D7446432BC5C68C6630E1AA66E0060F67D9"
     },
     "current_a05_card": {
       "path_relative_to_this_file": "e2-09-a05-calculation.svg",
-      "bytes": 7073,
-      "sha256": "18DACA2739B654E49EF8998BC002EEA5525883486AAECA7F1D71C883F63F5E4C"
+      "bytes": 7069,
+      "sha256": "677ECBCCAD05EC58F322AE66139F311625427C12E208E57BAF25C6E98B7E10B4"
     },
     "historical_024_card_preserved_sha256": "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31"
   }
