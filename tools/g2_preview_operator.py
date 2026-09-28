@@ -987,6 +987,7 @@ def native_auto_run_command(
     private_m5_joint_collector: bool = False,
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
+    private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
     private_activity_planner_diag_query: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
@@ -1032,6 +1033,8 @@ def native_auto_run_command(
             "--private-active-scheme-sway-target",
             str(private_active_scheme_sway_target),
         ])
+    if private_active_scheme_sway_formal_trial:
+        command.append("--allow-private-active-scheme-sway-formal-trial")
     if private_realm_law_paused_query:
         command.append("--private-realm-law-paused-query")
     if private_activity_planner_diag_query:
@@ -1470,6 +1473,9 @@ def command_prepare_state(args: argparse.Namespace) -> int:
 
 
 def command_run(args: argparse.Namespace) -> int:
+    if (args.private_active_scheme_sway_formal_trial
+            and args.private_active_scheme_sway_target is None):
+        raise ValueError("private Sway formal trial requires an explicit target")
     if args.private_active_scheme_sway_target is not None and not (
         0 < args.private_active_scheme_sway_target <= 0xFFFFFFFF
     ):
@@ -1545,6 +1551,9 @@ def command_run(args: argparse.Namespace) -> int:
             args.private_prisoner_collection_observation
         ),
         "private_active_scheme_sway_target": args.private_active_scheme_sway_target,
+        "private_active_scheme_sway_formal_trial": (
+            args.private_active_scheme_sway_formal_trial
+        ),
         "private_realm_law_paused_query": args.private_realm_law_paused_query,
         "private_activity_planner_diag_query": (
             args.private_activity_planner_diag_query
@@ -1610,6 +1619,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_active_scheme_sway_target=(
                     args.private_active_scheme_sway_target
+                ),
+                private_active_scheme_sway_formal_trial=(
+                    args.private_active_scheme_sway_formal_trial
                 ),
                 private_realm_law_paused_query=args.private_realm_law_paused_query,
                 private_activity_planner_diag_query=(
@@ -2412,6 +2424,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-active-scheme-sway-target", type=int,
         help="read one explicit sway target on a paused frame and stop before action",
+    )
+    run.add_argument(
+        "--private-active-scheme-sway-formal-trial", action="store_true",
+        help="run the bounded, unadvertised Sway submit/receipt/recovery consumer",
     )
     run.add_argument(
         "--private-realm-law-paused-query", action="store_true",

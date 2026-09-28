@@ -64,6 +64,11 @@ from .prisoner_ransom_formal_consumer import (
     RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
     read_ransom_ledger,
 )
+from .sway_formal_consumer import (
+    LEDGER_FILE as PRIVATE_SWAY_LEDGER_FILE,
+    consume_sway_private_once,
+    consume_sway_following_turn,
+)
 from .bridge.service import GameplayBridgeService
 from .bridge.war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
 from .bridge.camera_cursor_parking import park_foreground_ck3_cursor
@@ -367,6 +372,7 @@ def native_auto_run(
     allow_private_epidemic_recovery_near_pair: bool = False,
     allow_private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
+    allow_private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
     private_activity_planner_diag_query: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
@@ -492,6 +498,11 @@ def native_auto_run(
         or not 0 < private_active_scheme_sway_target <= 0xFFFFFFFF
     ):
         raise AgentError("private sway read needs a bounded full target ID")
+    if allow_private_active_scheme_sway_formal_trial is True and (
+        private_active_scheme_sway_target is None
+        or completion_contract != "bounded"
+    ):
+        raise AgentError("private Sway action needs a bounded explicit target")
     if private_realm_law_paused_query is True and completion_contract != "bounded":
         raise AgentError("private realm-law read needs a bounded contract")
     if private_activity_planner_diag_query is True and completion_contract != "bounded":
@@ -628,6 +639,8 @@ def native_auto_run(
     exact_move_checkpoint: dict[str, object] | None = None
     private_prisoner_collection_observation: dict[str, object] | None = None
     private_active_scheme_sway_observation: dict[str, object] | None = None
+    private_active_scheme_sway_formal: dict[str, object] | None = None
+    private_active_scheme_sway_following_turn: dict[str, object] | None = None
     private_realm_law_paused_observation: dict[str, object] | None = None
     private_activity_planner_diag_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
@@ -822,7 +835,10 @@ def native_auto_run(
                 or allow_private_prisoner_ransom_formal_trial is True) else {}
         )
         private_scheme_driver_options = (
-            {"allow_private_active_scheme_sway_query": True}
+            {"allow_private_active_scheme_sway_query": True,
+             "allow_private_active_scheme_sway_action": (
+                 allow_private_active_scheme_sway_formal_trial is True
+             )}
             if private_active_scheme_sway_target is not None else {}
         )
         private_realm_law_driver_options = (
@@ -1165,7 +1181,52 @@ def native_auto_run(
                         turn_index=turn_index,
                     )
                 )
-                status = "private_active_scheme_sway_observed"
+                if allow_private_active_scheme_sway_formal_trial is True:
+                    current_attempt["stage"] = "private_active_scheme_sway_formal"
+                    private_active_scheme_sway_formal = consume_sway_private_once(
+                        driver,
+                        target_character_id=private_active_scheme_sway_target,
+                        snapshot=before,
+                        readback=private_active_scheme_sway_observation["readback"],
+                    )
+                    if private_active_scheme_sway_formal["status"] in {
+                        "receipt_pending", "postcondition_pending", "applied",
+                    }:
+                        current_attempt["stage"] = "private_active_scheme_sway_checkpoint"
+                        sway_checkpoint, sway_checkpoint_snapshot = (
+                            _materialize_checkpoint(
+                                service, driver,
+                                spec.profile_dir / "save games",
+                                session_done=session_done,
+                                session_state=session_state,
+                                timeout_seconds=min(
+                                    readiness_timeout,
+                                    max(0.001, run_deadline - time.monotonic()),
+                                ),
+                                poll_interval_seconds=poll_seconds,
+                                on_checkpoint_submit=mark_checkpoint_submit_started,
+                            )
+                        )
+                        sway_checkpoint_actor = sway_checkpoint_snapshot.get(
+                            "played_character")
+                        if (sway_checkpoint.get("date_raw") != before.get("date_raw")
+                                or not isinstance(sway_checkpoint_actor, dict)
+                                or sway_checkpoint_actor.get("character_id")
+                                != before.get("played_character_id")):
+                            raise AgentError(
+                                "private Sway checkpoint changed actor/date")
+                        counts["checkpoint"] += 1
+                        checkpoints.append({
+                            "turn_index": turn_index,
+                            "phase": "private_active_scheme_sway_" + str(
+                                private_active_scheme_sway_formal["status"]),
+                            **sway_checkpoint,
+                        })
+                        private_active_scheme_sway_formal["checkpoint_saved"] = True
+                    status = "private_active_scheme_sway_" + str(
+                        private_active_scheme_sway_formal["status"])
+                else:
+                    status = "private_active_scheme_sway_observed"
                 break
             if (
                 allow_private_prisoner_collection_observation is True
@@ -2452,6 +2513,11 @@ def native_auto_run(
                     camera_follow=current_attempt["camera_follow"],
                 )
             )
+            if (turn_class == "gameplay" and evidence
+                    and (spec.state_dir / PRIVATE_SWAY_LEDGER_FILE).exists()):
+                private_active_scheme_sway_following_turn = (
+                    consume_sway_following_turn(spec.state_dir, after)
+                )
             if exact_move_poststate is not None:
                 status = "exact_war_move_poststate_verified"
                 break
@@ -3044,15 +3110,27 @@ def native_auto_run(
             and cleanup.get("ok") is True
         )
         if private_active_scheme_sway_target is not None:
-            qualified = bool(
+            common_sway_proof = bool(
                 primary_error is None
-                and status == "private_active_scheme_sway_observed"
                 and isinstance(private_active_scheme_sway_observation, dict)
                 and private_active_scheme_sway_observation.get("same_frame") is True
                 and cleanup.get("ok") is True
                 and not turns
                 and not date_advanced
             )
+            if allow_private_active_scheme_sway_formal_trial is True:
+                qualified = bool(
+                    common_sway_proof
+                    and status == "private_active_scheme_sway_applied"
+                    and isinstance(private_active_scheme_sway_formal, dict)
+                    and private_active_scheme_sway_formal.get(
+                        "postcondition_verified") is True
+                    and private_active_scheme_sway_formal.get(
+                        "checkpoint_saved") is True
+                )
+            else:
+                qualified = bool(common_sway_proof
+                                 and status == "private_active_scheme_sway_observed")
         if private_realm_law_paused_query is True:
             qualified = bool(
                 primary_error is None
@@ -3160,8 +3238,14 @@ def native_auto_run(
             if candidate_resolved
             else "candidate_intercepted"
             if candidate_intercept_qualified
+            else "private_action_applied"
+            if (private_active_scheme_sway_target is not None
+                and allow_private_active_scheme_sway_formal_trial is True
+                and qualified)
             else "read_only_observed"
-            if private_active_scheme_sway_target is not None and qualified
+            if (private_active_scheme_sway_target is not None
+                and allow_private_active_scheme_sway_formal_trial is not True
+                and qualified)
             or private_realm_law_paused_query is True and qualified
             or private_activity_planner_diag_query is True and qualified
             else outcome
@@ -3183,6 +3267,16 @@ def native_auto_run(
             {"private_active_scheme_sway_observation": copy.deepcopy(
                 private_active_scheme_sway_observation)}
             if private_active_scheme_sway_target is not None else {}
+        ),
+        **(
+            {"private_active_scheme_sway_formal": copy.deepcopy(
+                private_active_scheme_sway_formal)}
+            if allow_private_active_scheme_sway_formal_trial is True else {}
+        ),
+        **(
+            {"private_active_scheme_sway_following_turn": copy.deepcopy(
+                private_active_scheme_sway_following_turn)}
+            if private_active_scheme_sway_following_turn is not None else {}
         ),
         **(
             {"private_realm_law_paused_observation": copy.deepcopy(

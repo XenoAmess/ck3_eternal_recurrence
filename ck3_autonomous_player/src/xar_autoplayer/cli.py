@@ -436,6 +436,12 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-active-scheme-sway-formal-trial",
+        action="store_true",
+        help=("submit one native-legal Sway action for the explicit target "
+              "using a bounded, unadvertised trial and durable recovery"),
+    )
+    native_auto_run_parser.add_argument(
         "--private-realm-law-paused-query", action="store_true",
         help="read current-player realm-law final terms on one paused frame",
     )
@@ -972,8 +978,12 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 private_scheme_options = (
                     {"private_active_scheme_sway_target":
-                     args.private_active_scheme_sway_target}
-                    if args.private_active_scheme_sway_target is not None else {}
+                     args.private_active_scheme_sway_target,
+                     "allow_private_active_scheme_sway_formal_trial":
+                     args.allow_private_active_scheme_sway_formal_trial}
+                    if (args.private_active_scheme_sway_target is not None
+                        or args.allow_private_active_scheme_sway_formal_trial)
+                    else {}
                 )
                 if args.allow_private_prisoner_ransom_formal_trial:
                     private_prisoner_options[

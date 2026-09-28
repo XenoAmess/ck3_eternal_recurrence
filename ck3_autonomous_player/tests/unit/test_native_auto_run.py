@@ -218,6 +218,7 @@ class _NativeAutoRunHarness:
         allow_private_lifestyle_formal_trial: bool = False,
         allow_private_prisoner_collection_query: bool = False,
         allow_private_active_scheme_sway_query: bool = False,
+        allow_private_active_scheme_sway_action: bool = False,
         allow_private_realm_law_paused_query: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
@@ -239,6 +240,9 @@ class _NativeAutoRunHarness:
         )
         self.allow_private_active_scheme_sway_query = (
             allow_private_active_scheme_sway_query
+        )
+        self.allow_private_active_scheme_sway_action = (
+            allow_private_active_scheme_sway_action
         )
         self.allow_private_realm_law_paused_query = (
             allow_private_realm_law_paused_query
@@ -1824,6 +1828,7 @@ class NativeAutoRunTests(unittest.TestCase):
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
         private_active_scheme_sway_target: int | None = None,
+        allow_private_active_scheme_sway_formal_trial: bool = False,
         private_realm_law_paused_query: bool = False,
         private_activity_planner_diag_query: bool = False,
         exact_war_move_stop: bool = False,
@@ -2002,6 +2007,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 private_active_scheme_sway_target=(
                     private_active_scheme_sway_target
                 ),
+                allow_private_active_scheme_sway_formal_trial=(
+                    allow_private_active_scheme_sway_formal_trial
+                ),
                 private_realm_law_paused_query=private_realm_law_paused_query,
                 private_activity_planner_diag_query=(
                     private_activity_planner_diag_query
@@ -2161,6 +2169,43 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
         self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_sway_formal_runner_pairs_applied_result_with_checkpoint(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "1", "--timeout", "900"]
+        assert cli.parser().parse_args([
+            *common, "--private-active-scheme-sway-target", "32716",
+            "--allow-private-active-scheme-sway-formal-trial",
+        ]).allow_private_active_scheme_sway_formal_trial
+        with mock.patch.object(
+            native_auto_run_module, "consume_sway_private_once",
+            return_value={"status": "applied", "postcondition_verified": True},
+        ) as consumer:
+            report, harness = self._run(
+                ["advance"], private_active_scheme_sway_target=32716,
+                allow_private_active_scheme_sway_formal_trial=True)
+        assert consumer.call_count == 1
+        assert harness.allow_private_active_scheme_sway_action is True
+        assert report["ok"] is True
+        assert report["status"] == "private_active_scheme_sway_applied"
+        assert report["outcome"] == "private_action_applied"
+        assert report["private_active_scheme_sway_formal"]["checkpoint_saved"] is True
+        assert report["auto_run"]["turns"] == []
+        assert len(report["checkpoints"]) == 1
+
+    def test_private_sway_unknown_submit_does_not_save_inflight_state(self) -> None:
+        with mock.patch.object(
+            native_auto_run_module, "consume_sway_private_once",
+            return_value={"status": "submission_unresolved",
+                          "postcondition_verified": False},
+        ):
+            report, harness = self._run(
+                ["advance"], private_active_scheme_sway_target=32716,
+                allow_private_active_scheme_sway_formal_trial=True)
+        assert report["ok"] is False
+        assert report["status"] == "private_active_scheme_sway_submission_unresolved"
+        assert report["checkpoints"] == []
+        assert harness.active_scheme_sway_query_count == 1
 
     def test_private_realm_law_reads_once_and_stops_before_any_action(self) -> None:
         common = ["--bridge-mode", "native-headless", "native-auto-run",
