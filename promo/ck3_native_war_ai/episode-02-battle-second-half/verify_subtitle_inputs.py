@@ -16,10 +16,9 @@ from types import SimpleNamespace
 SRC = Path(__file__).resolve().parents[1] / "integration" / "src"
 sys.path.insert(0, str(SRC))
 from war_ai_promo.episode_two_second_half import (  # noqa: E402
-    CHAPTER_IDS, _bound_tts_sentences, script_chapters,
+    CHAPTER_IDS, _bound_tts_sentences, _rendered_subtitle_gate, script_chapters,
 )
 from war_ai_promo.episode_two_subtitle_contract import identity  # noqa: E402
-from war_ai_promo.captions import caption_cues  # noqa: E402
 
 
 def main() -> None:
@@ -69,13 +68,15 @@ def main() -> None:
     for row in fragments["chapters"]:
         candidate = {**row, "zh": narration[row["id"]]}
         events = _bound_tts_sentences(run, fake_path, candidate, script, config)
-        zh_cues = [cue for cue in caption_cues({
-            **candidate, "en": "", "subtitle_mode": "short",
-        }) if cue.track_id == "zh"]
-        if not zh_cues or len(events) > len(zh_cues):
-            raise ValueError(f"{row['id']} source timed events did not reach caption renderer")
+        # The production row provides translation; use a bounded fixture value
+        # here to verify source timing and exact Chinese text without claiming
+        # that the final English translation has been supplied or reviewed.
+        candidate.update({"en": "English subtitle fixture.",
+                          "title": row["id"],
+                          "duration_seconds": row["speech_duration_seconds"] + 1})
+        zh_count, _ = _rendered_subtitle_gate(candidate, row["speech_duration_seconds"])
         checked.append({"id": row["id"], "sentences": len(events),
-                        "source_timed_zh_cues": len(zh_cues),
+                        "source_timed_zh_cues": zh_count,
                         "source_run_id": row["tts_source"]["run_id"],
                         "source_usage_scope": row["tts_source"]["usage_scope"],
                         "audio_sha256": row["audio_sha256"]})

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import math
 import os
@@ -22,7 +23,7 @@ from xar_promo.process import run_command
 from xar_promo.render import RenderOptions
 from xar_promo.sources import VIDEO, VisualProbeResult, VisualSource
 
-from .captions import subtitle_document
+from .captions import caption_cues, subtitle_document
 from .episode_two_subtitle_contract import (
     HISTORICAL_SCOPE, compact, derive_boundaries, require_audio_coverage,
 )
@@ -269,8 +270,12 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
         raise ValueError(f"{chapter_id} source TTS chapter audio/duration changed")
     historical = chapter_id in ("terminal", "closing")
     scope = HISTORICAL_SCOPE if historical else "general-edit-proxy"
+    selected = CHAPTER_IDS[4:] if historical else CHAPTER_IDS[:4]
+    held = CHAPTER_IDS[:4] if historical else CHAPTER_IDS[4:]
     if (source.get("source_audio_artifact_id") != f"chapter-{chapter_id}"
             or source.get("usage_scope") != scope
+            or tuple(render.get("selected_chapters", ())) != selected
+            or tuple(render.get("held_chapters", ())) != held
             or (historical and (render.get("usage_scope") != HISTORICAL_SCOPE
                                 or render.get("new_e2_09_live_verified") is not False))
             or (not historical and render.get("usage_scope") is not None)):
@@ -308,6 +313,25 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
         raise ValueError(f"{chapter_id} subtitles do not match source Edge sentence events")
     require_audio_coverage(chapter_id, boundaries, row["speech_duration_seconds"], last_end)
     return boundaries
+
+
+def _rendered_subtitle_gate(row: dict, measured_audio_seconds: float) -> tuple[int, int]:
+    """Check every source word survives caption grouping within the actual MP3."""
+    if row.get("visual_kind") not in (None, "card"):
+        raise ValueError("Episode 2 requires a bilingual subtitle layout for every reel")
+    cues = caption_cues(row)
+    chinese = [cue for cue in cues if cue.track_id == "zh"]
+    english = [cue for cue in cues if cue.track_id == "en"]
+    if (not chinese or not english
+            or compact("".join(cue.text for cue in chinese)) != compact(html.unescape(row["zh"]))
+            or compact("".join(cue.text for cue in english)) != compact(row["en"])):
+        raise ValueError(f"Caption grouping lost spoken or translated text: {row['id']}")
+    for cue in cues:
+        if (not math.isfinite(cue.start_seconds) or not math.isfinite(cue.end_seconds)
+                or not 0 <= cue.start_seconds < cue.end_seconds <= measured_audio_seconds + .002
+                or cue.end_seconds > row["duration_seconds"] + .002):
+            raise ValueError(f"Caption cue exceeds measured MP3/chapter duration: {row['id']}")
+    return len(chinese), len(english)
 
 
 def _reel_receipt(run, run_path: Path, row: dict, media: Path,
@@ -464,6 +488,8 @@ def compose(config, run, *, config_path, run_path, workdir,
             raise ValueError(f"Invalid measured chapter duration: {chapter_id}")
         if row["zh"] != narration[chapter_id] or not row["en"].strip():
             raise ValueError(f"Chapter subtitles do not match frozen spoken script: {chapter_id}")
+        if row.get("visual_kind") not in (None, "card"):
+            raise ValueError("Episode 2 requires a bilingual subtitle layout for every reel")
         if row["title"] != config.chapters[chapter_index].title.get("zh-CN"):
             raise ValueError(f"Chapter metadata title differs from ProjectConfig: {chapter_id}")
         if synthetic:
@@ -525,6 +551,7 @@ def compose(config, run, *, config_path, run_path, workdir,
                                segment.segment_id).require_duration()
         if abs(measured - row["speech_duration_seconds"]) > .15:
             raise ValueError(f"Measured audio duration differs: {segment.segment_id}")
+        _rendered_subtitle_gate(row, measured)
         return subtitle_document(row)
 
     return PipelineInvocation(
