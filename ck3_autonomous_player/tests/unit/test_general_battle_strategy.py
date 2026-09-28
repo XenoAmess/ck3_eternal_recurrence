@@ -1,3 +1,7 @@
+import copy
+import hashlib
+import json
+from pathlib import Path
 from unittest import TestCase, mock
 
 from xar_autoplayer.bridge.combat_phase_contract import query_combat_simulation_inputs_v3_step
@@ -358,6 +362,105 @@ def test_distant_one_hop_requires_typed_move_and_exact_target_preview():
     _CHECK.assertEqual(wrong_target["phase"], "native_war_general_battle_route_blocked")
     _CHECK.assertIsNone(wrong_target["selected_step"])
     model.assert_not_called()
+
+
+def test_r0284_frozen_native_rows_reach_only_route_start():
+    evidence_path = (
+        Path(__file__).parents[3]
+        / "docs/autonomous-agent-progress/coordination/war-requests/evidence"
+        / "WAR-ROBERT-R0284-CONTACT-20260928.blocker-excerpt.json"
+    )
+    frozen_bytes = evidence_path.read_bytes()
+    _CHECK.assertEqual(
+        hashlib.sha256(frozen_bytes).hexdigest().upper(),
+        "71995745DBC64576701A2F5F838E46A0B127DE2ED48AB3634F9D0F45A2336D5A",
+    )
+    frozen = json.loads(frozen_bytes)
+    source = frozen["formal"]
+    preview = frozen["route_preview_h928"]
+    contact = frozen["contact_horizon_h930"]
+    contact_binding = frozen["contact_query_binding_h930"]
+    v3 = frozen["v3_query_h932"]
+    army_id = preview["army_id"]
+    target_id = preview["target_province_id"]
+    enemy_id = contact["hostile_army_ids"][0]
+    _CHECK.assertEqual(preview["origin_province_id"], 2634)
+    _CHECK.assertEqual(target_id, 2640)
+    _CHECK.assertEqual(contact["subject_route"]["arrival_date_raws"], [source["date_raw"] + 144])
+    frame = {
+        "paused": True,
+        "snapshot_id": source["snapshot_id"],
+        "revision": source["revision"],
+        "native_revision": source["native_revision"],
+        "date_raw": source["date_raw"],
+        "episode_run_id": source["episode_run_id"],
+        "diagnostics": {"connection_generation": contact_binding["queried_connection_generation"]},
+        "player_armies": [{"army_id": army_id, "current_province_id": preview["origin_province_id"]}],
+        "active_wars": [{"war_id": source["war_ids"][0], "enemy_armies": [
+            {"army_id": enemy_id, "current_province_id": target_id, "army_state": "sieging"}
+        ]}],
+        "combat_simulation_inputs_v3": {"base_inputs": {}, "completeness": {}},
+        "combat_simulation_inputs_v3_status": v3["status"],
+        "combat_simulation_inputs_v3_target_province_id": target_id,
+        "combat_simulation_inputs_v3_attacker_entry_province_id": preview["origin_province_id"],
+        "combat_simulation_inputs_v3_attacker_army_ids": [army_id],
+        "combat_simulation_inputs_v3_defender_army_ids": [enemy_id],
+        "combat_simulation_inputs_v3_queried_snapshot_id": v3["queried_snapshot_id"],
+        "combat_simulation_inputs_v3_queried_revision": v3["queried_revision"],
+    }
+    preview_step = f"preview-move-army-{army_id}-to-{target_id}"
+    move_step = f"move-army-{army_id}-to-{target_id}"
+    contact_step = query_route_contact_horizon_step(army_id, target_id, (enemy_id,))
+    commands = [
+        {"index": 928, "command": preview_step, "ok": True, "result": {
+            "route_preview": preview, **contact_binding,
+        }},
+        {"index": 930, "command": contact_step, "ok": True, "result": {
+            "route_contact_horizon": contact, **contact_binding,
+        }},
+        {"index": 932, "command": v3["command"], "ok": True, "result": {
+            "status": v3["status"],
+            "queried_snapshot_id": v3["queried_snapshot_id"],
+            "queried_revision": v3["queried_revision"],
+            "queried_native_revision": v3["queried_native_revision"],
+        }},
+    ]
+    with (
+        mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+        mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+    ):
+        plan = _general_battle_forecast_ingress(
+            {"policy": "one-life-turn-v1", "phase": "native_war_route", "selected_step": move_step},
+            commands=commands, snapshot=frame,
+            action_steps={preview_step, contact_step, move_step},
+            bridge_capabilities={"game.command.query-combat-simulation-inputs-v3-N"},
+        )
+    _CHECK.assertEqual(plan["phase"], "native_war_general_battle_distant_route_start", plan)
+    _CHECK.assertEqual(plan["selected_step"], move_step)
+    _CHECK.assertIs(plan["future_contact_authorized"], False)
+    stale = {**frame, "native_revision": source["native_revision"] + 1}
+    stale_plan = _general_battle_forecast_ingress(
+        {"policy": "one-life-turn-v1", "phase": "native_war_route", "selected_step": move_step},
+        commands=commands, snapshot=stale,
+        action_steps={preview_step, contact_step, move_step},
+        bridge_capabilities={"game.command.query-combat-simulation-inputs-v3-N"},
+    )
+    _CHECK.assertEqual(stale_plan["phase"], "native_war_general_battle_contact_query")
+    _CHECK.assertEqual(stale_plan["selected_step"], contact_step)
+    changed_roster = copy.deepcopy(frame)
+    changed_roster["active_wars"][0]["enemy_armies"].append({
+        "army_id": enemy_id + 1,
+        "current_province_id": target_id + 1,
+        "army_state": "moving",
+    })
+    changed_plan = _general_battle_forecast_ingress(
+        {"policy": "one-life-turn-v1", "phase": "native_war_route", "selected_step": move_step},
+        commands=commands, snapshot=changed_roster,
+        action_steps={preview_step, contact_step, move_step},
+        bridge_capabilities={"game.command.query-combat-simulation-inputs-v3-N"},
+    )
+    _CHECK.assertEqual(changed_plan["phase"], "native_war_general_battle_contact_query")
+    _CHECK.assertIsNone(changed_plan["selected_step"])
 
 
 def test_nullable_enemy_roster_does_not_crash_generic_contact_review():
