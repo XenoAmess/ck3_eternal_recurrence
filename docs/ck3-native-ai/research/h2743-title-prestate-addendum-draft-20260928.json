@@ -1,0 +1,34 @@
+{
+  "schema": "xar.ck3.war.h2743.title-prestate-readonly-addendum.draft.v1",
+  "status": "draft_not_sent",
+  "related_request": "WAR-ROBERT-H2743-EXIT-20260928",
+  "transport": "C:/Users/1/OneDrive/WAR/H2743-EXIT-READONLY-V3-20260928/ as a new named addendum, never overwrite REQUEST.json or prior evidence",
+  "source_identity": {
+    "war_id": 16777231,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "date_raw": 53217264,
+    "played_primary_defender_character_id": 29829,
+    "primary_attacker_character_id": 30097,
+    "casus_belli_database_index": 17,
+    "casus_belli_key": "individual_county_de_jure_cb",
+    "target_title_ids": [2128],
+    "source_save_sha256": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9"
+  },
+  "requested_same_paused_frame_prestate": {
+    "direct_target_title_holder_character_id": "Resolve target TitleID 2128 through current native LandedTitle storage; read CLandedTitle+0x258 and roundtrip full-generation CharacterID. Return typed unavailable on failure.",
+    "holder_personal_immediate_liege_character_id": "Use exact-build CharacterImmediateLiege 0x2613480 on the observed current title holder, and roundtrip any non-null CharacterID; do not substitute province holder.",
+    "target_title_de_jure_and_de_facto_liege_title_ids": "Return only if an exact nonmutating native producer and generation checks are proven; otherwise typed unavailable. Character personal liege is a separate field.",
+    "holder_complete_direct_vassal_contract_ids": "Return only after a bounded full contract-database read that covers all current contracts and validates generation and reverse owner links; direct landed vassals alone are insufficient. Otherwise typed unavailable."
+  },
+  "measurement_gate": {
+    "two_identical_native_samples": true,
+    "same_snapshot_id_public_and_native_revision_connection_generation": true,
+    "before_after_full_active_war_signature": true,
+    "zero_gameplay_actions": true,
+    "zero_date_advance": true,
+    "fresh_steam_offline_screen_and_exclusive_lease": true,
+    "exact_loaded_exe_dll_save_driver_hashes_and_cleanup_receipt": true
+  },
+  "comparison_boundary": "These are before-state identities only. They do not determine setup_de_jure_cb runtime scope:target, resolve_title_and_vassal_change operations, signed resource deltas, truce, or a surrender choice. No effect execution, broad loaded-effect preview, title-change queue call or war termination is requested.",
+  "safe_response": "A JSON response may mark each unavailable field null with a precise reason; do not fill missing values from H2743 save text, province ownership, R0197 post-action state or another checkpoint."
+}

@@ -35,6 +35,10 @@ def _candidate() -> dict[str, object]:
         "primary_attacker_character_id": 30097,
         "primary_defender_character_id": 29829,
         "target_title_ids": [2128],
+        "target_title_holder_prestate": [
+            {"title_id": 2128, "holder_character_id": 33435,
+             "holder_immediate_liege_character_id": 29829}
+        ],
         "primary_resource_balances": rows,
         "primary_monthly_gold_income": [
             {"character_id": character_id, "value": {"raw": 1, "scale": 100_000}}
@@ -67,6 +71,10 @@ class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
     def test_current_baseline_projects_without_exit_authority(self) -> None:
         projected = _project(_candidate())
         self.assertEqual(projected["target_title_ids"], [2128])
+        self.assertEqual(projected["target_title_holder_prestate"], [
+            {"title_id": 2128, "holder_character_id": 33435,
+             "holder_immediate_liege_character_id": 29829}
+        ])
         self.assertEqual(len(projected["primary_resource_balances"]), 14)
         self.assertIsNone(projected["title_vassal_delta"])
         self.assertIsNone(projected["signed_resource_delta"])
@@ -108,6 +116,33 @@ class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             _project(candidate)
+
+    def test_title_holder_prestate_is_typed_and_not_a_transfer(self) -> None:
+        for row in (
+            {"title_id": 2129, "holder_character_id": 33435,
+             "holder_immediate_liege_character_id": 29829},
+            {"title_id": 2128, "holder_character_id": 33435,
+             "holder_immediate_liege_character_id": 33435},
+            {"title_id": 2128, "holder_character_id": None,
+             "holder_immediate_liege_character_id": 29829},
+            {"title_id": 2128, "holder_character_id": 33435,
+             "holder_immediate_liege_character_id": True},
+        ):
+            with self.subTest(row=row):
+                candidate = _candidate()
+                candidate["target_title_holder_prestate"] = [row]
+                with self.assertRaises(ValueError):
+                    _project(candidate)
+        candidate = _candidate()
+        candidate["target_title_holder_prestate"] = []
+        with self.assertRaises(ValueError):
+            _project(candidate)
+        candidate = _candidate()
+        candidate["target_title_holder_prestate"][0][
+            "holder_immediate_liege_character_id"] = None
+        self.assertIsNone(_project(candidate)["target_title_holder_prestate"][0][
+            "holder_immediate_liege_character_id"])
+        self.assertIsNone(_project(_candidate())["title_vassal_delta"])
 
     def test_real_zero_baseline_is_distinct_from_missing_material_effect(self) -> None:
         candidate = _candidate()

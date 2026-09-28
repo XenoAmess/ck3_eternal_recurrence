@@ -40,6 +40,7 @@ KEYS = frozenset(
         "primary_attacker_character_id",
         "primary_defender_character_id",
         "target_title_ids",
+        "target_title_holder_prestate",
         "primary_resource_balances",
         "primary_monthly_gold_income",
         "title_vassal_delta",
@@ -126,6 +127,28 @@ def normalize_defender_dejure_exit_terms_v1(
         or any(_native_int(title, positive=True) != title for title in titles)
     ):
         raise ValueError("defender de-jure baseline target titles differ")
+    prestate = value["target_title_holder_prestate"]
+    if not isinstance(prestate, list) or len(prestate) != len(titles):
+        raise ValueError("defender de-jure title-holder prestate is incomplete")
+    normalized_prestate = []
+    for title_id, row in zip(titles, prestate, strict=True):
+        if not isinstance(row, dict) or set(row) != {
+            "title_id", "holder_character_id", "holder_immediate_liege_character_id"
+        }:
+            raise ValueError("malformed title-holder prestate row")
+        holder_id = _native_int(row["holder_character_id"], positive=True)
+        liege_id = row["holder_immediate_liege_character_id"]
+        if (
+            _native_int(row["title_id"], positive=True) != title_id
+            or (liege_id is not None and
+                (_native_int(liege_id, positive=True) == holder_id))
+        ):
+            raise ValueError("title-holder prestate identity differs")
+        normalized_prestate.append({
+            "title_id": title_id,
+            "holder_character_id": holder_id,
+            "holder_immediate_liege_character_id": liege_id,
+        })
     if value["same_frame_stable"] is not True or value["material_complete"] is not False:
         raise ValueError("defender de-jure baseline readiness was laundered")
     for field, reason in UNAVAILABLE_REASONS.items():
@@ -173,6 +196,7 @@ def normalize_defender_dejure_exit_terms_v1(
         "primary_attacker_character_id": expected_attacker_id,
         "primary_defender_character_id": expected_defender_id,
         "target_title_ids": list(titles),
+        "target_title_holder_prestate": normalized_prestate,
         "primary_resource_balances": normalized_balances,
         "primary_monthly_gold_income": normalized_income,
         "title_vassal_delta": None,

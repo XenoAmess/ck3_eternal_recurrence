@@ -902,6 +902,7 @@ constexpr std::size_t kLandedTitleStorageOffset = 0x20;
 constexpr std::size_t kLandedTitleIdOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
 constexpr std::size_t kLandedTitleDeJureVassalIdsOffset = 0x240;
+constexpr std::size_t kLandedTitleHolderCharacterIdOffset = 0x258;
 constexpr std::size_t kLandedTitleTemplateTierOffset = 0x5C;
 constexpr std::size_t kLandedTitleTemplateProvinceIdOffset = 0x80;
 constexpr std::size_t kLandedTitleSuccessionIdsOffset = 0x278;
@@ -18739,6 +18740,9 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
       casus_belli_key != "individual_county_de_jure_cb") {
     return Result::unsupported_casus_belli;
   }
+  if (bindings.character_immediate_liege == nullptr) {
+    return Result::unavailable;
+  }
   std::vector<std::int32_t> target_title_ids;
   if (!ReadNativeIntArray(
           static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
@@ -18757,6 +18761,46 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
       return Result::unavailable;
     }
   }
+  // This reads only the current holder of each declared target title.  The
+  // script's runtime scope:target and the conquest change remain unobserved.
+  const auto read_target_holders = [&]() noexcept
+      -> std::optional<std::vector<game::DefenderDeJureTargetHolderPrestateV1>> {
+    std::vector<game::DefenderDeJureTargetHolderPrestateV1> rows;
+    try {
+      rows.reserve(target_title_ids.size());
+      for (const auto title_id : target_title_ids) {
+        void *const title = ResolveLandedTitle(bindings, game_state, title_id);
+        if (title == nullptr) return std::nullopt;
+        const auto holder_id = LoadAt<std::int32_t>(
+            title, kLandedTitleHolderCharacterIdOffset);
+        void *const holder = ResolveTermsCharacter(bindings, holder_id);
+        if (holder_id <= 0 || holder == nullptr) return std::nullopt;
+        void *const liege = bindings.character_immediate_liege(holder);
+        std::optional<std::int32_t> liege_id;
+        if (liege != nullptr && liege != holder) {
+          const auto candidate = LoadAt<std::int32_t>(liege, kCharacterIdOffset);
+          if (candidate <= 0 ||
+              ResolveTermsCharacter(bindings, candidate) != liege) {
+            return std::nullopt;
+          }
+          liege_id = candidate;
+        }
+        if (ResolveLandedTitle(bindings, game_state, title_id) != title ||
+            LoadAt<std::int32_t>(title,
+                                 kLandedTitleHolderCharacterIdOffset) !=
+                holder_id ||
+            ResolveTermsCharacter(bindings, holder_id) != holder) {
+          return std::nullopt;
+        }
+        rows.push_back({title_id, holder_id, liege_id});
+      }
+    } catch (...) {
+      return std::nullopt;
+    }
+    return rows;
+  };
+  const auto target_holders = read_target_holders();
+  if (!target_holders) return Result::unavailable;
   const auto attacker_id = published->primary_opponent_character_id;
   const auto defender_id = before.played_character_id;
   if (LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
@@ -18785,7 +18829,9 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
   std::vector<std::int32_t> targets_after;
   std::string key_after;
   Snapshot after{};
-  if (!ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
+  const auto target_holders_after = read_target_holders();
+  if (!target_holders_after || *target_holders_after != *target_holders ||
+      !ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
                                 defender_id, balances_after, income_after) ||
       balances_after != balances || income_after != income ||
       ResolveWar(bindings, game_state, war_id) != war ||
@@ -18820,6 +18866,7 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
   output.primary_attacker_character_id = attacker_id;
   output.primary_defender_character_id = defender_id;
   output.target_title_ids = std::move(target_title_ids);
+  output.target_title_holder_prestate = *target_holders;
   output.primary_resource_balances = std::move(balances);
   output.primary_monthly_gold_income = std::move(income);
   output.same_frame_stable = true;

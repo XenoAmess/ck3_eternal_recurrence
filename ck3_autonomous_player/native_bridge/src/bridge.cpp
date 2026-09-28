@@ -4351,6 +4351,23 @@ void AppendDefenderDeJureExitTermsV1(
     if (index != 0) result += ',';
     result += SignedNumber(terms.target_title_ids[index]);
   }
+  result += "],\"target_title_holder_prestate\":[";
+  for (std::size_t index = 0;
+       index < terms.target_title_holder_prestate.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &row = terms.target_title_holder_prestate[index];
+    result += "{\"title_id\":";
+    result += SignedNumber(row.title_id);
+    result += ",\"holder_character_id\":";
+    result += SignedNumber(row.holder_character_id);
+    result += ",\"holder_immediate_liege_character_id\":";
+    if (row.holder_immediate_liege_character_id) {
+      result += SignedNumber(*row.holder_immediate_liege_character_id);
+    } else {
+      result += "null";
+    }
+    result += '}';
+  }
   result += "],\"primary_resource_balances\":[";
   for (std::size_t index = 0; index < terms.primary_resource_balances.size();
        ++index) {

@@ -906,6 +906,15 @@ struct WarTerminationExitTermsSnapshot {
 // de-jure war.  The typed unavailable fields are deliberate: this reader does
 // not execute or preview setup_de_jure_cb / resolve_title_and_vassal_change.
 // No caller may turn an observed balance or target ID into a surrender delta.
+struct DefenderDeJureTargetHolderPrestateV1 {
+  std::int32_t title_id = -1;
+  std::int32_t holder_character_id = -1;
+  std::optional<std::int32_t> holder_immediate_liege_character_id;
+
+  friend bool operator==(const DefenderDeJureTargetHolderPrestateV1 &,
+                         const DefenderDeJureTargetHolderPrestateV1 &) = default;
+};
+
 struct DefenderDeJureExitTermsV1 {
   std::int32_t war_id = -1;
   std::int32_t date_raw = 0;
@@ -914,6 +923,7 @@ struct DefenderDeJureExitTermsV1 {
   std::int32_t primary_attacker_character_id = -1;
   std::int32_t primary_defender_character_id = -1;
   std::vector<std::int32_t> target_title_ids;
+  std::vector<DefenderDeJureTargetHolderPrestateV1> target_title_holder_prestate;
   std::vector<WarExitResourceSnapshot> primary_resource_balances;
   std::vector<WarExitCharacterFixedPointSnapshot> primary_monthly_gold_income;
   std::string title_vassal_delta_unavailable_reason =
