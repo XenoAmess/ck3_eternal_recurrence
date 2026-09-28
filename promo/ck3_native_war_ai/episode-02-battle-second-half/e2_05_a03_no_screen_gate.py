@@ -95,6 +95,10 @@ def source_gate(save_path: Path, receipt_path: Path, dll_path: Path,
 def d27_checkpoint_gate(save_path: Path, expected_save_sha: str,
                         receipt_path: Path, expected_receipt_sha: str,
                         advance_path: Path, expected_advance_sha: str) -> dict[str, Any]:
+    _require(advance_path.parent.name == "operator-steps" and
+             receipt_path.parent.name == "interactive-requests-responses" and
+             advance_path.parent.parent.resolve() == receipt_path.parent.parent.resolve(),
+             "d27 receipt and advance report are not from one managed output")
     save = _pin(save_path, expected_save_sha)
     receipt = _pin(receipt_path, expected_receipt_sha)
     advance = _pin(advance_path, expected_advance_sha)
@@ -102,8 +106,14 @@ def d27_checkpoint_gate(save_path: Path, expected_save_sha: str,
     _receipt_matches(_json(receipt_path), save, D27)
     step = _json(advance_path)
     values = step.get("post_values") or {}
+    source = (step.get("source_binding") or {}).get("spec") or {}
     _require(step.get("mode") == "advance" and step.get("track") == "e2-05-d26" and
              step.get("result") == "ONE_DAY_ADVANCED_UNREVIEWED" and
+             source.get("save") == SOURCE_SAVE_SHA and
+             source.get("receipt") == SOURCE_RECEIPT_SHA and
+             source.get("date") == D26 and source.get("dll") != OLD_DLL_SHA and
+             isinstance(source.get("dll"), str) and len(source["dll"]) == 64 and
+             all(c in "0123456789ABCDEF" for c in source["dll"]) and
              values.get("date_raw") == D27 and values.get("paused") is True and
              values.get("actor") == ACTOR and type(values.get("revision")) is int and
              isinstance(step.get("trace_finish"), dict) and

@@ -64,11 +64,20 @@ class GateTests(unittest.TestCase):
             root = Path(temp)
             save = root / "d27.ck3"
             save_sha = write(save, b"new independent day27 bytes")
-            response = root / "d27-save.json"
+            output = root / "ck3-output"
+            (output / "interactive-requests-responses").mkdir(parents=True)
+            (output / "operator-steps").mkdir()
+            response = output / "interactive-requests-responses" / "d27-save.json"
             receipt_sha = write(response, json.dumps(receipt(save, gate.D27)).encode())
-            advance = root / "advance.json"
+            advance = output / "operator-steps" / "advance.json"
             step = {"mode": "advance", "track": "e2-05-d26",
                     "result": "ONE_DAY_ADVANCED_UNREVIEWED",
+                    "source_binding": {"spec": {
+                        "save": gate.SOURCE_SAVE_SHA,
+                        "receipt": gate.SOURCE_RECEIPT_SHA,
+                        "date": gate.D26,
+                        "dll": "A" * 64,
+                    }},
                     "post_values": {"date_raw": gate.D27, "paused": True,
                                     "actor": gate.ACTOR, "revision": 8},
                     "trace_finish": {"response": {"sha256": "A" * 64}},
@@ -79,6 +88,12 @@ class GateTests(unittest.TestCase):
             self.assertTrue(result["saved_day27_bytes_verified"])
             self.assertFalse(result["character_status_proven"])
             self.assertFalse(result["live_admission"])
+            step["source_binding"]["spec"]["dll"] = gate.OLD_DLL_SHA
+            advance_sha = write(advance, json.dumps(step).encode())
+            with self.assertRaisesRegex(gate.GateRed, "paused d27"):
+                gate.d27_checkpoint_gate(save, save_sha, response,
+                                         receipt_sha, advance, advance_sha)
+            step["source_binding"]["spec"]["dll"] = "A" * 64
             step["post_values"]["paused"] = False
             advance_sha = write(advance, json.dumps(step).encode())
             with self.assertRaisesRegex(gate.GateRed, "paused d27"):
