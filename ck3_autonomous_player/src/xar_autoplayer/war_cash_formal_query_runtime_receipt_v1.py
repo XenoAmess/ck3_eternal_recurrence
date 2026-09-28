@@ -41,6 +41,17 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
+def _treasury_raw(snapshot: Mapping[str, object]) -> int | None:
+    gold = snapshot.get("played_character_gold")
+    if (type(gold) is not dict or set(gold) != {"raw", "scale"}
+            or type(gold.get("raw")) is not int
+            or not -(2**63) <= gold["raw"] <= 2**63 - 1
+            or type(gold.get("scale")) is not int
+            or gold["scale"] != 100_000):
+        return None
+    return gold["raw"]
+
+
 def _driver_state_bytes_and_binding(path: Path) -> tuple[str, dict[str, object]]:
     """Hash and parse the same bounded, opened driver-state bytes."""
     with path.open("rb") as stream:
@@ -178,6 +189,11 @@ def build_formal_query_session_receipt(
             or before.get("map_ready") is not True
             or after.get("map_ready") is not True):
         return _blocked("same_ready_paused_frame_unproven")
+    treasury_before_raw = _treasury_raw(before)
+    treasury_after_raw = _treasury_raw(after)
+    if (treasury_before_raw is None
+            or treasury_after_raw != treasury_before_raw):
+        return _blocked("same_paused_treasury_unproven")
     for snapshot in (before, after):
         wars = snapshot.get("active_wars")
         if (not isinstance(wars, list) or len(wars) != 1
@@ -214,7 +230,10 @@ def build_formal_query_session_receipt(
         if (any(projected.get(key) != frame_before[key] for key in frame_before)
                 or projected.get("paused") is not True
                 or projected.get("map_ready") is not True
-                or projected.get("active_war_ids") != [WAR_ID]):
+                or projected.get("active_war_ids") != [WAR_ID]
+                or projected.get("played_character_gold") != {
+                    "raw": treasury_before_raw, "scale": 100_000,
+                }):
             return _blocked(f"driver_inner_{name}_frame_mismatch")
     if (type(request.get("protocol_version")) is not int
             or request["protocol_version"] != 1
@@ -297,6 +316,9 @@ def build_formal_query_session_receipt(
         "schema": SCHEMA, "status": "same_paused_query_postcheck_passed",
         "source_frame_before": frame_before,
         "source_frame_after": frame_after,
+        "treasury_before_raw": treasury_before_raw,
+        "treasury_after_raw": treasury_after_raw,
+        "treasury_scale": 100_000,
         "selected_step": STEP, "priced_command": expected_command,
         "query_result": {
             "step": STEP, "accepted": True, "status": "available",

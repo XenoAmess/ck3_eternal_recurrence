@@ -58,6 +58,17 @@ def _exact_fields(value: object, expected: Mapping[str, object]) -> bool:
                     for key, item in expected.items()))
 
 
+def _treasury_raw(snapshot: Mapping[str, object]) -> int | None:
+    gold = snapshot.get("played_character_gold")
+    if (type(gold) is not dict or set(gold) != {"raw", "scale"}
+            or type(gold.get("raw")) is not int
+            or not -(2**63) <= gold["raw"] <= 2**63 - 1
+            or type(gold.get("scale")) is not int
+            or gold["scale"] != 100_000):
+        return None
+    return gold["raw"]
+
+
 def _unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
     result: dict[str, object] = {}
     for key, value in pairs:
@@ -141,6 +152,9 @@ def observe_termination_query_zero_fee_v1(
         frame = observed_frame(snapshot)
     except (TypeError, ValueError, KeyError):
         return _blocked("native_frame_missing_or_invalid")
+    treasury_raw = _treasury_raw(snapshot)
+    if treasury_raw is None:
+        return _blocked("current_same_frame_treasury_unavailable")
     if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
         return _blocked("ready_paused_frame_unproven")
     wars = snapshot.get("active_wars")
@@ -194,6 +208,12 @@ def observe_termination_query_zero_fee_v1(
             or evidence.get("status") != "receiver_verified_postquery"
             or not _exact_fields(evidence.get("source_frame_before"), frame)
             or not _exact_fields(evidence.get("source_frame_after"), frame)
+            or type(evidence.get("treasury_before_raw")) is not int
+            or evidence["treasury_before_raw"] != treasury_raw
+            or type(evidence.get("treasury_after_raw")) is not int
+            or evidence["treasury_after_raw"] != treasury_raw
+            or type(evidence.get("treasury_scale")) is not int
+            or evidence["treasury_scale"] != 100_000
             or type(evidence.get("war_id")) is not int
             or evidence["war_id"] != war_id
             or evidence.get("selected_step") != step):
@@ -313,6 +333,12 @@ def observe_termination_query_zero_fee_v1(
             or managed.get("runner_status") != "turn_limit"
             or not _exact_fields(managed.get("source_frame_before"), frame)
             or not _exact_fields(managed.get("source_frame_after"), frame)
+            or type(managed.get("treasury_before_raw")) is not int
+            or managed["treasury_before_raw"] != treasury_raw
+            or type(managed.get("treasury_after_raw")) is not int
+            or managed["treasury_after_raw"] != treasury_raw
+            or type(managed.get("treasury_scale")) is not int
+            or managed["treasury_scale"] != 100_000
             or not _exact_fields(managed.get("query_result"), query)
             or managed.get("source_commit") != pair["source_commit"]
             or type(managed.get("process_pid")) is not int
@@ -408,6 +434,7 @@ def observe_termination_query_zero_fee_v1(
         "source_frame": frame,
         "war_id": war_id,
         "selected_step": step,
+        "observed_treasury_raw": treasury_raw,
         "runtime_receipt_sha256": receipt_sha,
         "native_dll_sha256": dll_sha,
         "immediate_war_action_cost_raw": {

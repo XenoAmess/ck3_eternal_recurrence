@@ -40,6 +40,7 @@ def _bytes(value: dict[str, object]) -> bytes:
 def _snapshot() -> dict[str, object]:
     return {**FRAME, "paused": True, "map_ready": True,
             "played_character": {"character_id": 29829},
+            "played_character_gold": {"raw": 120_644_281, "scale": 100_000},
             "active_wars": [{"war_id": WAR_ID}]}
 
 
@@ -113,6 +114,9 @@ def _fixture(root: Path) -> tuple[dict[str, object], dict[str, Path], dict[str, 
         "source_commit": source_commit,
         "source_frame_before": dict(FRAME),
         "source_frame_after": dict(FRAME),
+        "treasury_before_raw": 120_644_281,
+        "treasury_after_raw": 120_644_281,
+        "treasury_scale": 100_000,
         "query_result": query,
         "query_request": {
             "protocol_version": 1, "type": "execute_step",
@@ -152,6 +156,9 @@ def _fixture(root: Path) -> tuple[dict[str, object], dict[str, Path], dict[str, 
         "status": "receiver_verified_postquery",
         "source_frame_before": dict(FRAME),
         "source_frame_after": dict(FRAME),
+        "treasury_before_raw": 120_644_281,
+        "treasury_after_raw": 120_644_281,
+        "treasury_scale": 100_000,
         "war_id": WAR_ID, "selected_step": STEP,
         "pair": {
             "status": "receiver_official_no_launch_passed",
@@ -224,6 +231,7 @@ class TerminationQueryZeroFeeTests(unittest.TestCase):
             self.assertEqual(result["status"],
                              "selected_read_only_query_zero_fee_proven")
             self.assertEqual(result["immediate_war_action_cost_raw"]["raw"], 0)
+            self.assertEqual(result["observed_treasury_raw"], 120_644_281)
             self.assertIsNone(result["pending_war_cash_raw"])
             self.assertIsNone(result["future_war_cost_upper_raw"])
             self.assertIsNone(result["policy_minimum_gold_reserve_raw"])
@@ -282,6 +290,29 @@ class TerminationQueryZeroFeeTests(unittest.TestCase):
             self.assertEqual(self._run(_bytes(altered), paths, hashes)[
                 "missing_reasons"],
                 ["receiver_runtime_receipt_frame_or_action_mismatch"])
+
+    def test_current_evidence_or_managed_treasury_mismatch_blocks(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence, paths, hashes = _fixture(Path(temporary))
+            current = _snapshot()
+            current["played_character_gold"]["raw"] += 1
+            self.assertEqual(self._run(_bytes(evidence), paths, hashes,
+                                       snapshot=current)["missing_reasons"],
+                             ["receiver_runtime_receipt_frame_or_action_mismatch"])
+            current["played_character_gold"]["raw"] -= 1
+            altered = deepcopy(evidence)
+            altered["treasury_after_raw"] -= 1
+            self.assertEqual(self._run(_bytes(altered), paths, hashes)[
+                "missing_reasons"],
+                ["receiver_runtime_receipt_frame_or_action_mismatch"])
+            managed = json.loads(paths["managed_session_receipt"].read_bytes())
+            managed["treasury_after_raw"] -= 1
+            paths["managed_session_receipt"].write_bytes(_bytes(managed))
+            evidence["run"]["session_receipt_sha256"] = _sha(
+                paths["managed_session_receipt"].read_bytes())
+            self.assertEqual(self._run(_bytes(evidence), paths, hashes)[
+                "missing_reasons"],
+                ["managed_loaded_binary_or_query_postcheck_mismatch"])
 
     def test_actual_artifact_or_external_receipt_mismatch_blocks(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -11353,6 +11353,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(
                 40,
                 played_character={"character_id": 707, "alive": True},
+                played_character_gold={"raw": 120_644_281, "scale": 100_000},
                 active_wars=[_war(war_id=war_id, score=41)],
             )
         )
@@ -11417,6 +11418,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                          wire["request"]["request_id"])
         self.assertEqual(wire["response_envelope"]["result"]["query_sequence"], 9)
         self.assertEqual(wire["before"]["active_war_ids"], [war_id])
+        self.assertEqual(wire["before"]["played_character_gold"],
+                         {"raw": 120_644_281, "scale": 100_000})
         self.assertEqual(wire["before"], wire["after"])
         self.assertEqual(
             driver.take_snapshot()["native_command_history"][-1]["command"],

@@ -24,6 +24,7 @@ def _fixture() -> dict[str, object]:
     snapshot = {
         **FRAME, "paused": True, "map_ready": True,
         "active_wars": [{"war_id": subject.WAR_ID}],
+        "played_character_gold": {"raw": 120_644_281, "scale": 100_000},
     }
     command = {
         "kind": "read_only_query", "war_id": subject.WAR_ID,
@@ -73,9 +74,13 @@ def _fixture() -> dict[str, object]:
                 "ok": True, "result": native,
             },
             "before": {**FRAME, "paused": True, "map_ready": True,
-                       "active_war_ids": [subject.WAR_ID]},
+                       "active_war_ids": [subject.WAR_ID],
+                       "played_character_gold": {
+                           "raw": 120_644_281, "scale": 100_000}},
             "after": {**FRAME, "paused": True, "map_ready": True,
-                      "active_war_ids": [subject.WAR_ID]},
+                      "active_war_ids": [subject.WAR_ID],
+                      "played_character_gold": {
+                          "raw": 120_644_281, "scale": 100_000}},
         },
         "process_before": binding,
         "process_after": deepcopy(binding),
@@ -91,6 +96,8 @@ class FormalQueryRuntimeReceiptTests(unittest.TestCase):
         receipt = subject.build_formal_query_session_receipt(**_fixture())
         self.assertEqual(receipt["status"], "same_paused_query_postcheck_passed")
         self.assertEqual(receipt["query_result"]["war_id"], subject.WAR_ID)
+        self.assertEqual(receipt["treasury_before_raw"], 120_644_281)
+        self.assertEqual(receipt["treasury_after_raw"], 120_644_281)
         self.assertIsNone(receipt["immediate_war_action_cost_raw"])
         self.assertFalse(receipt["formal_cash_receipt_eligible"])
 
@@ -114,6 +121,25 @@ class FormalQueryRuntimeReceiptTests(unittest.TestCase):
                         "war_termination_options"]["war_id"] = 1
                 receipt = subject.build_formal_query_session_receipt(**sample)
                 self.assertEqual(receipt["status"], "blocked")
+
+    def test_treasury_change_missing_or_wrong_inner_read_blocks(self) -> None:
+        for mutation in ("outer_changed", "outer_missing", "inner_changed",
+                         "inner_missing", "invalid_scale"):
+            with self.subTest(mutation=mutation):
+                sample = _fixture()
+                if mutation == "outer_changed":
+                    sample["after"]["played_character_gold"]["raw"] -= 1
+                elif mutation == "outer_missing":
+                    sample["before"].pop("played_character_gold")
+                elif mutation == "inner_changed":
+                    sample["wire"]["after"]["played_character_gold"]["raw"] -= 1
+                elif mutation == "inner_missing":
+                    sample["wire"]["before"].pop("played_character_gold")
+                else:
+                    sample["after"]["played_character_gold"]["scale"] = True
+                receipt = subject.build_formal_query_session_receipt(**sample)
+                self.assertEqual(receipt["status"], "blocked")
+                self.assertIsNone(receipt["immediate_war_action_cost_raw"])
 
     def test_missing_protocol_version_or_wrong_request_id_is_blocked(self) -> None:
         for mutation in ("request_version", "response_version", "request_id"):

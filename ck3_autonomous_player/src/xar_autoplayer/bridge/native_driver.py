@@ -16164,6 +16164,9 @@ class NativeHeadlessGameplayDriver:
                                 played.get("character_id")
                                 if isinstance(played, dict) else None
                             ),
+                            "played_character_gold": copy.deepcopy(
+                                value.get("played_character_gold")
+                            ),
                             "paused": value.get("paused"),
                             "map_ready": value.get("map_ready"),
                             "active_war_ids": [
