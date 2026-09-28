@@ -26,6 +26,10 @@ VALUE_BREAKDOWN_OFFSET = 0x758
 PREDICTED_MAX_GOLD_OBJECT_OFFSET = 0x6C8
 PREDICTED_MAX_GOLD_RAW_OFFSET = 0x740
 PREDICTED_MAX_GOLD_SCALE_OFFSET = 0x748
+CURRENT_GOLD_OBJECT_OFFSET = 0x268
+CURRENT_GOLD_RAW_CANDIDATE_OFFSET = 0x2E0
+CURRENT_GOLD_SCALE_OFFSET = 0x2E8
+CURRENT_GOLD_BACK_POINTER_OFFSET = 0x2F8
 GOLD_SCALE = 100_000
 CURRENT_NAME = b"GetGoldMilitaryExpenses\0"
 CURRENT_NAME_LOAD_RVA = 0x19E8A9
@@ -94,6 +98,8 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         raise ValueError("expense getter is no longer a field reference")
     breakdown_construction = _instruction(image, binary, 0x11F2F12)
     breakdown_constructor_call = _instruction(image, binary, 0x11F2F1A)
+    current_breakdown_construction = _instruction(image, binary, 0x11F2ECC)
+    current_breakdown_constructor_call = _instruction(image, binary, 0x11F2ED4)
     zero_initializer = _instruction(image, binary, 0xBC3D7D)
     raw_zero_initializer = _instruction(image, binary, 0xBC3DCA)
     scale_initializer = _instruction(image, binary, 0xBC3DCE)
@@ -111,6 +117,11 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
             or breakdown_construction.op_str != "rcx, [r12 + 0x6c8]"
             or breakdown_constructor_call.mnemonic != "call"
             or _relative_target(breakdown_constructor_call) != base + 0xBC3D70
+            or current_breakdown_construction.mnemonic != "lea"
+            or current_breakdown_construction.op_str != "rcx, [r12 + 0x268]"
+            or current_breakdown_constructor_call.mnemonic != "call"
+            or _relative_target(current_breakdown_constructor_call)
+            != base + 0xBC3D70
             or zero_initializer.mnemonic != "xor"
             or zero_initializer.op_str != "edx, edx"
             or raw_zero_initializer.mnemonic != "mov"
@@ -143,7 +154,13 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
             or PREDICTED_MAX_GOLD_OBJECT_OFFSET + 0x78
             != PREDICTED_MAX_GOLD_RAW_OFFSET
             or PREDICTED_MAX_GOLD_OBJECT_OFFSET + 0x80
-            != PREDICTED_MAX_GOLD_SCALE_OFFSET):
+            != PREDICTED_MAX_GOLD_SCALE_OFFSET
+            or CURRENT_GOLD_OBJECT_OFFSET + 0x78
+            != CURRENT_GOLD_RAW_CANDIDATE_OFFSET
+            or CURRENT_GOLD_OBJECT_OFFSET + 0x80
+            != CURRENT_GOLD_SCALE_OFFSET
+            or CURRENT_GOLD_OBJECT_OFFSET + 0x90
+            != CURRENT_GOLD_BACK_POINTER_OFFSET):
         raise ValueError("predicted maximum gold breakdown raw/scale layout changed")
 
     current_name_offset = binary.find(CURRENT_NAME)
@@ -214,6 +231,9 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "predicted_max_gold_raw_candidate_offset": hex(PREDICTED_MAX_GOLD_RAW_OFFSET),
         "predicted_max_gold_scale_offset": hex(PREDICTED_MAX_GOLD_SCALE_OFFSET),
         "predicted_max_gold_scale": GOLD_SCALE,
+        "current_gold_raw_candidate_offset": hex(CURRENT_GOLD_RAW_CANDIDATE_OFFSET),
+        "current_gold_scale_offset": hex(CURRENT_GOLD_SCALE_OFFSET),
+        "current_gold_back_pointer_offset": hex(CURRENT_GOLD_BACK_POINTER_OFFSET),
         "view_constructor_vtable_rva": hex(VIEW_CONSTRUCTOR_VTABLE_RVA),
         "view_constructor_secondary_vtable_rva": hex(VIEW_CONSTRUCTOR_SECONDARY_VTABLE_RVA),
         "value_breakdown_back_pointer_offset": hex(VALUE_BREAKDOWN_OFFSET),
