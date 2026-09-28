@@ -10,6 +10,8 @@
     {"name":"ui_projection_producer","rva_start":"0x126D4E0","rva_end_exclusive":"0x126D742","sha256":"E072510D1FBF43C1717DA0662A85983D9D0FE70BA5BAB05AA93E85441384A83A"},
     {"name":"actual_marriage_alliance_consumer","rva_start":"0x2283470","rva_end_exclusive":"0x22836C1","sha256":"1B2BDD42F0DC4539BE5CECB991297BB2C174678E10DCBC3DE277DA8640AD7C23"},
     {"name":"candidate_context_pair_wrapper","rva_start":"0x22846B0","rva_end_exclusive":"0x22847D4","sha256":"7AC656F24E5B4D474980960CD1E7E15F7F395B7B44D75A154C40BC1FD88A27CD"},
+    {"name":"stock_matrilineal_toggle_callback_prefix","rva_start":"0x126E360","rva_end_exclusive":"0x126E370","sha256":"2E5313C34C9328E7B1F2E8727B53882588AE99126465CF4D0541FE7016668297"},
+    {"name":"stock_option_setter_prefix","rva_start":"0x2C407D0","rva_end_exclusive":"0x2C407E0","sha256":"DAF83E90E64722EBB932A159CAEBD5240AEA91D677EAFCD2216CE4E5AA65D7E0"},
     {"name":"maximum_three_pair_generator","rva_start":"0x29615E0","rva_end_exclusive":"0x29616C4","sha256":"9EB76961B88A02891400265DB7BF81F1741B3756B22DD77E42A47F90A6CA3799"},
     {"name":"native_three_row_inline_owner_vtable","rva_start":"0x413C270","rva_end_exclusive":"0x413C2B0","sha256":"715FC40A822B931E8E8F22270359D7E5D211C3A85248E87010A85D75BCE2D046"}
   ],

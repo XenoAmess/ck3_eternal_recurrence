@@ -18,6 +18,8 @@ alignas(8) std::array<std::byte, 0x200> heir{};
 alignas(8) std::array<std::byte, 0x200> candidate{};
 bool emit_pair = true;
 std::uint32_t option_seen = 0;
+bool option_selected = true;
+bool option_selectable = true;
 
 template <typename Value>
 void WriteAt(void *base, std::size_t offset, Value value) {
@@ -33,7 +35,11 @@ bool ReadMemory(void *, std::uintptr_t address, void *output,
 
 bool ReadOption(const void *, std::uint32_t option_id) {
   option_seen = option_id;
-  return option_id == 42;
+  return option_id == 42 && option_selected;
+}
+
+void SetOption(void *, std::uint32_t option_id, bool selected) {
+  if (option_id == 42 && option_selectable) option_selected = selected;
 }
 
 bool IsAllied(const void *, const void *) { return false; }
@@ -99,6 +105,7 @@ int main() {
   env.read_memory = &ReadMemory;
   env.project_pairs = &Project;
   env.read_boolean_option = &ReadOption;
+  env.set_boolean_option = &SetOption;
   env.is_allied = &IsAllied;
   env.matrilineal_option_id_slot =
       reinterpret_cast<std::uintptr_t>(&option_id);
@@ -130,8 +137,19 @@ int main() {
   result = ReadMarriageCandidateAllianceProjectionV1(
       env, context.data(), 29829, 38713, 38822, 16778252, projection);
   if (!Check(result == MarriageCandidateAllianceProjectionFailureV1::
-                           context_roles_mismatch,
-             "stale candidate identity was accepted"))
+                            context_roles_mismatch,
+              "stale candidate identity was accepted"))
+    return 1;
+  option_selected = false;
+  if (!Check(SelectMarriageCandidateMatrilinealOptionV1(
+                 env, context.data()) && option_selected,
+             "disposable context did not select the matrilineal option"))
+    return 1;
+  option_selected = false;
+  option_selectable = false;
+  if (!Check(!SelectMarriageCandidateMatrilinealOptionV1(
+                  env, context.data()) && !option_selected,
+             "rejected native option was incorrectly reported selected"))
     return 1;
   std::cout << "marriage candidate alliance projection v1 GREEN\n";
   return 0;

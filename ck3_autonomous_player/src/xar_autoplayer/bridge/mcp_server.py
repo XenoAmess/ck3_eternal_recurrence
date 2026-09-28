@@ -1376,10 +1376,12 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_child_marriage_value_private_v1(
             legality: dict[str, object], candidate_character_id: int,
+            request_matrilineal_option: bool = False,
         ) -> dict[str, object]:
-            """Read one final-legal player-child match's default native value."""
+            """Read one player's child match, optionally selecting matrilineal."""
             return driver.query_player_child_marriage_value_private_v1(
                 legality=legality, candidate_character_id=candidate_character_id,
+                request_matrilineal_option=request_matrilineal_option,
             )
 
     @server.tool()

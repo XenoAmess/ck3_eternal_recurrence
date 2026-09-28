@@ -147,7 +147,9 @@ BindMarriageCandidateAllianceProjectionEnvironmentV1(
       AddRva(module_base, kMarriageCandidateAlliancePairsRvaV1,
              output.project_pairs) &&
       AddRva(module_base, kMarriageCandidateReadOptionRvaV1,
-             output.read_boolean_option) &&
+              output.read_boolean_option) &&
+      AddRva(module_base, kMarriageCandidateSetOptionRvaV1,
+              output.set_boolean_option) &&
       AddRva(module_base, kMarriageCandidateIsAlliedRvaV1,
              output.is_allied) &&
       AddRva(module_base, kMarriageCandidateMatrilinealOptionSlotRvaV1,
@@ -156,6 +158,34 @@ BindMarriageCandidateAllianceProjectionEnvironmentV1(
              output.native_owner_vtable);
   if (!bound) return {};
   return output;
+}
+
+bool SelectMarriageCandidateMatrilinealOptionV1(
+    const MarriageCandidateAllianceProjectionEnvironmentV1 &env,
+    void *disposable_context) noexcept {
+  if (Validate(env) != MarriageCandidateAllianceProjectionFailureV1::none ||
+      disposable_context == nullptr || env.set_boolean_option == nullptr)
+    return false;
+  if (!env.offline_fixture) {
+    SetMarriageCandidateBooleanOptionV1 expected_setter = nullptr;
+    if (!AddRva(env.module_base, kMarriageCandidateSetOptionRvaV1,
+                expected_setter) || env.set_boolean_option != expected_setter)
+      return false;
+    constexpr std::array<std::uint8_t, 16> signature{
+        0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24,
+        0x10, 0x57, 0x48, 0x83, 0xEC, 0x20, 0x4C};
+    std::array<std::uint8_t, 16> actual{};
+    if (!ReadMemory(env, env.module_base + kMarriageCandidateSetOptionRvaV1,
+                    actual.data(), actual.size()) || actual != signature)
+      return false;
+  }
+  std::uint32_t option_id = 0;
+  if (!ReadMemory(env, env.matrilineal_option_id_slot, &option_id,
+                  sizeof(option_id)) || option_id == 0)
+    return false;
+  if (env.read_boolean_option(disposable_context, option_id)) return true;
+  env.set_boolean_option(disposable_context, option_id, true);
+  return env.read_boolean_option(disposable_context, option_id);
 }
 
 MarriageCandidateAllianceProjectionFailureV1
