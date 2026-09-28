@@ -444,6 +444,32 @@ def render_profile_settings(base: str, gui_scale: str | None) -> str:
     return base.rstrip("\n") + '\n"GUI"={\n\t"scale"={ version=1 value="1.0" }\n}\n'
 
 
+def write_profile_settings(settings_path: Path, base: str, gui_scale: str | None) -> dict:
+    settings_text = render_profile_settings(base, gui_scale)
+    expected_utf8 = settings_text.encode("utf-8")
+    if gui_scale is None:
+        # Preserve the existing default Windows newline behavior byte for byte.
+        settings_path.write_text(settings_text, encoding="utf-8")
+    else:
+        with settings_path.open("xb") as stream:
+            stream.write(expected_utf8)
+    actual = settings_path.read_bytes()
+    require(gui_scale is None or actual == expected_utf8,
+            "Prepared GUI settings disk bytes differ from the frozen UTF-8 render")
+    require(settings_path.read_text(encoding="utf-8") == settings_text,
+            "Prepared GUI settings text readback differs")
+    settings_identity = identity(settings_path)
+    require(settings_identity["sha256"] == hashlib.sha256(actual).hexdigest().upper(),
+            "Prepared GUI settings identity differs from disk bytes")
+    return {
+        "requested_scale": gui_scale,
+        "settings": settings_identity,
+        "expected_utf8_sha256": hashlib.sha256(expected_utf8).hexdigest().upper() if gui_scale else None,
+        "exact_utf8_disk_match": actual == expected_utf8 if gui_scale else None,
+        "text_readback_matches": True,
+    }
+
+
 def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
     from xar_autoplayer.environment import make_spec, render_settings
     from xar_autoplayer.rules import declared_vanilla_rule_defaults, render_presets
@@ -459,16 +485,8 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) ->
     presets = render_presets({"profile": [{"rule": r, "setting": s} for r, s in rules], "ironman": False})
     (spec.profile_dir / "player/game_rules/presets.txt").write_text(presets, encoding="utf-8")
     settings_path = spec.profile_dir / "pdx_settings.txt"
-    settings_text = render_profile_settings(render_settings(), args.gui_scale)
-    settings_path.write_text(settings_text, encoding="utf-8")
-    require(settings_path.read_text(encoding="utf-8") == settings_text,
-            "Prepared GUI settings readback differs")
-    write_new(args.output_dir / "gui-settings-prelaunch.json", {
-        "requested_scale": args.gui_scale,
-        "settings": identity(settings_path),
-        "rendered_bytes_sha256": hashlib.sha256(settings_text.encode("utf-8")).hexdigest(),
-        "readback_matches": True,
-    })
+    write_new(args.output_dir / "gui-settings-prelaunch.json",
+              write_profile_settings(settings_path, render_settings(), args.gui_scale))
     (spec.profile_dir / "tutorial.txt").write_text('last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n', encoding="utf-8")
     if args.shader_cache_source is not None:
         source_cache = args.shader_cache_source.resolve()
