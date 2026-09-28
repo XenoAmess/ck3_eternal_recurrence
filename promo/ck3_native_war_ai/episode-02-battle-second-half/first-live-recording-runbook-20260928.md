@@ -69,7 +69,11 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_nat
 
 ## 4. 封口、冻结、释放
 
-1. 等 600 秒 recorder 自行退出，保存 `recorder-intent/start/end/final.json`、`marks.jsonl`、FFmpeg stdout/stderr、raw、完整 `ffprobe.json`、逐 stream 首末 PTS 与每帧原件；检查 `ffmpeg_exit_code=0`、probe 成功、尺寸门。中断、异常、短片和 partial 均保留为 RED，不复用同目录。**`ENCODED_UNREVIEWED` 不等于 clean span**：随后逐帧核 PTS 单调/断档、HUD/日期/CombatID/面板可见性和一倍速原速审片，才能出新 clean span。
+1. 等 600 秒 recorder 自行退出，保存 `recorder-intent/start/end/final.json`、`marks.jsonl`、FFmpeg stdout/stderr、raw、完整 `ffprobe.json`、逐 stream 首末 PTS 与每帧原件；检查 `ffmpeg_exit_code=0`、probe 成功、尺寸门。中断、异常、短片和 partial 均保留为 RED，不复用同目录。紧接着在新外置 `<PTS_AUDIT_DIR>` 执行 [`audit_raw_video_pts.py`](audit_raw_video_pts.py)，逐帧查 PTS 非单调、缺失、超过 0.2 秒断档与不足 590 秒片长；不合格保留 `RED_PRESERVED`。**`ENCODED_UNREVIEWED` 和 `PTS_CONTINUOUS_UNREVIEWED` 均不等于 clean span**：仍须人工核 HUD/日期/CombatID/面板可见性和一倍速原速审片，才能出新 clean span。
+
+```text
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\audit_raw_video_pts.py --recorder-workdir <LIVE_ATTEMPT>\recording-e2-02-03-a01 --output <PTS_AUDIT_DIR>\pts-audit.json
+```
 2. Recorder 封口后运行 `pursuit_live_step.py finish --session-output <LIVE_ATTEMPT>\ck3-output --day <LAST_OBSERVED_DAY>`，等待受管 `capture_session.py` 退出，保存 `capture-report.json` 或 `entry-failure.json`、`session-result.json`、MCP 请求/响应、`operator-steps`、截图、游戏日志及原始 state/profile。受管报告即便仍为 `raw_video:null`，也不覆盖外部 recorder 的 raw 身份；adapter bundle 必须另建、只读校验。
 
 ```text
@@ -83,6 +87,7 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_nat
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\freeze_capture_attempt.py --attempt-root <LIVE_ATTEMPT> --offline-attempt <OFFLINE_ATTEMPT> --source-save D:\workspace\ck3_native_war_ai_promo_work\episode01-full-edge-attempt-004\trace-d27-immutable.ck3 --source-receipt D:\workspace\ck3_native_war_ai_promo_work\episode01-full-edge-attempt-004\ck3-output\interactive-requests-responses\trace-d27-save.json --run-manifest <NEW_EXTERNAL_XAR_RUN>\run-manifest.json --recorder-workdir <LIVE_ATTEMPT>\recording-e2-02-03-a01 --output <CLOSURE_DIR>\asset-index.json
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m xar_promo preserve --run-manifest <NEW_EXTERNAL_XAR_RUN>\run-manifest.json --artifact-id e2-02-03-raw --collection raw --role capture <LIVE_ATTEMPT>\recording-e2-02-03-a01\raw\e2-pursuit-d27-d32.mkv
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m xar_promo preserve --run-manifest <NEW_EXTERNAL_XAR_RUN>\run-manifest.json --artifact-id e2-02-03-closure-index --collection derived --role report <CLOSURE_DIR>\asset-index.json
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m xar_promo preserve --run-manifest <NEW_EXTERNAL_XAR_RUN>\run-manifest.json --artifact-id e2-02-03-pts-audit --collection derived --role audit <PTS_AUDIT_DIR>\pts-audit.json
 ```
 
 补完整 `report.json`/timeline/evidence-index/clean-frame-gates 后才调用 CK3 adapter 只读验证；没有真实 clean span 不得宣称成片可用。
