@@ -150,13 +150,13 @@
   "artifacts": {
     "card_index": {
       "path_relative_to_this_file": "calculation-cards.json",
-      "bytes": 28189,
-      "sha256": "0CE227802B07DB98353655A9711DEF33B0390EC864CC729FF8D329E0E64C4CAD"
+      "bytes": 27681,
+      "sha256": "AF6B27757423E81355DBA965BD867AE43AF12844BC61C22277C9CFCD58429690"
     },
     "renderer": {
       "path_relative_to_this_file": "render_calculation_cards.py",
-      "bytes": 53739,
-      "sha256": "E3EF921DFBDC90F4E971AC6F39C37371F4D9E5971DB7434636ABE63D204D232B"
+      "bytes": 52796,
+      "sha256": "32C52164DA73EB2286EB9BDFD8A656A05EABA2BAA30DBE29711CD640132C49C9"
     },
     "current_a05_e2_02_card": {
       "path_relative_to_this_file": "e2-02-a05-calculation.svg",
