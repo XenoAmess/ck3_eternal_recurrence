@@ -2,6 +2,7 @@
 #include "xar_bridge/campaign_root_context_v1.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
+#include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
 #include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -883,7 +884,6 @@ constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
 constexpr std::size_t kFamilyBetrothedCharacterIdOffset = 0x10;
 constexpr std::size_t kFamilyPrimarySpouseCharacterIdOffset = 0x14;
 constexpr std::size_t kFamilySpouseCharacterIdsOffset = 0x20;
-constexpr std::size_t kFamilyChildrenCharacterIdsOffset = 0x50;
 constexpr std::size_t kCharacterCourtRelationOffset = 0x1B0;
 constexpr std::size_t kCourtRelationEmployerIdOffset = 0xC8;
 constexpr std::size_t kWarStorageOffset = 0x20;
@@ -10355,6 +10355,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.get_character_primary_title =
       reinterpret_cast<GetCharacterPrimaryTitle>(
           module + kGetCharacterPrimaryTitleRva);
+  result.is_character_child_of = reinterpret_cast<IsCharacterChildOf>(
+      module + bridge::kPlayerPrisonerChildOfPredicateRvaV1);
   result.read_monthly_gold_income =
       reinterpret_cast<ReadMonthlyGoldIncome>(
           module + kReadMonthlyGoldIncomeRva);
@@ -17358,16 +17360,9 @@ PlayerChildMarriageSubjectReadV1 ReadPlayerChildMarriageSubjectV1(
         subject_character_id == before.played_character_id ||
         LoadAt<void *>(subject, kCharacterDeathDataOffset) != nullptr)
       return Failure::subject_unavailable;
-    const void *const family =
-        LoadAt<const void *>(played, kCharacterFamilyDataOffset);
-    if (family == nullptr) return Failure::not_player_child;
-    std::vector<std::int32_t> children;
-    if (!ReadNativeIntArray(static_cast<const std::byte *>(family) +
-                                kFamilyChildrenCharacterIdsOffset,
-                            children, 256))
+    if (bindings.is_character_child_of == nullptr)
       return Failure::relationship_unavailable;
-    if (std::find(children.begin(), children.end(), subject_character_id) ==
-        children.end())
+    if (!bindings.is_character_child_of(subject, played))
       return Failure::not_player_child;
     value.adult_measure_raw = LoadAt<std::int16_t>(
         subject, bridge::kMarriageCharacterAdultMeasureOffsetV1);

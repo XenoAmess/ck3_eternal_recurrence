@@ -10,6 +10,25 @@ The qualified R0319 h3860 save (SHA-256 `7133DCE3B04C47CF27F0DF4D23F2871494EEA71
 
 `ReadPlayerChildMarriageSubjectV1` currently treats `played+0x1A0 -> family+0x50` as a native `int32` child array. The exact-build source record had **not** proven the child semantics/layout of `family+0x50`; its focused test populated that assumed slot by hand. The h3860/R0320 pair disproves relying on this read for Emma. Exact EXE analysis still proves the family pointer and spouse/betrothal offsets, but has not yet resolved a callable native `GetChildren` accessor. Until a corrected reader has both ABI and paused-frame evidence, retain `player_child_verified=false` and do not borrow the first-heir action or send a marriage proposal. A default-off private diagnostic now samples typed array headers and at most 16 generation-checked IDs at family offsets `0x20..0x70` in one paused revision, without changing the action gate. Its live result will identify the next exact-build reader fix; it is not proposal eligibility by itself.
 
+## R0322: exact paused layout and existing native child predicate
+
+R0322 queried Emma on the recoverable Robert h3911 pair at one paused `raw53219928` / native revision `3`. The bounded diagnostic found `family+0x20` contains the independently read spouse `34730`, while `family+0x50` is a valid **empty** native int array. `+0x30/+0x40/+0x60/+0x70` did not have native int-array headers. The query still returned `not_player_child` at the preliminary bridge gate, without invoking marriage Can Send. It used one read-only query, zero actions and zero date advances, left the checkpoint unchanged, minimized the window, and recovered the process tree. The [small immutable verdict](Z:/family-child-h3911-probe-v5/evidence/R0322/VERDICT.json) has SHA-256 `15A9D7D933E2E723393331E2C876532D8C53A025D943FA7AC8F9C4B42FEEB068`; the full attempt report has SHA-256 `407E02A23F68B866E5F3BDD2F3F72DF138F31D6110607235234F4EDAA921DA55`. The checkpoint SHA-256 stayed `5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746`; driver state changed during startup as recorded in the verdict.
+
+The already frozen [native `is_child_of` ABI](prisoner-child-of-private-abi-2026-09-28.md) resolves the stock predicate at RVA `0x26085E0` on this exact EXE. It accepts `(child CCharacter*, parent CCharacter*)`, validates the parent's generation-bearing ID, then compares the child's two full parent IDs at `child+0x1A0 -> family+0x00/+0x04`. The private prisoner reader already binds this function, and R0296 obtained a real negative prisoner relation through it. The next private Emma reader can reuse this predicate for the **same specified pair**, sampling twice within the paused revision. A positive Emma result still needs the downstream five-role native Can Send/final answer and option-specific value; R0322 itself proves none of those.
+
+```mermaid
+flowchart TD
+    A["Paused exact-build player and Emma full IDs"] --> B["Resolve both CCharacter pointers with generation checks"]
+    B --> C{"Native is_child_of Emma, player?"}
+    C -->|No| X["No player-child claim or proposal"]
+    C -->|Yes| D["Read Emma age, lineage, employer and relationships"]
+    D --> E["Recheck native child predicate and unchanged paused revision"]
+    E --> F["Read exact five-role Can Send, answer and selected option"]
+    F -. "Emma result pending" .-> U["Unknown: actionable dynasty-aligned proposal"]
+    classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
 ## Exact native branch
 
 The stock `arrange_marriage_interaction` uses player `actor` and the recipient matchmaker as `recipient`; the people who marry are `secondary_actor` and `secondary_recipient` (`_character_interactions.info:576-587`). Its `matrilineal` send option is at `00_marriage_interactions.txt:877-967`. `is_shown` excludes the both-male pair. `is_valid` has a TGP ceremonial-house exception, so visible does not imply selectable. `can_be_changed` also depends on whether the pair is already betrothed and excludes a both-female change. `starts_enabled` first preserves an existing matrilinear betrothal, then handles a **female player marrying herself**, then tests the actor/recipient/secondary pair conditions. Emma as the player's child is a distinct secondary actor: neither her name nor a default context proves that the option starts enabled or is legal. Faith is consumed only through these stock final conditions.

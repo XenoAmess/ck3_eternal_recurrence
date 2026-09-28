@@ -207,6 +207,8 @@ using EvaluateTruceDurationDays = std::int32_t (*)(
 using HasCharacterTruce = bool (*)(void *owner, void *toward);
 using GetCharacterTruceEndDate = const void *(*)(void *owner, void *toward);
 using GetCharacterPrimaryTitle = void *(*)(void *character);
+using IsCharacterChildOf = bool (*)(void *child_character,
+                                    void *parent_character);
 using ReadMonthlyGoldIncome = std::int64_t *(*)(
     std::int64_t *output, void *character, void *optional_breakdown,
     void *evaluation_context);
@@ -464,6 +466,7 @@ struct Bindings {
   HasCharacterTruce has_character_truce = nullptr;
   GetCharacterTruceEndDate get_character_truce_end_date = nullptr;
   GetCharacterPrimaryTitle get_character_primary_title = nullptr;
+  IsCharacterChildOf is_character_child_of = nullptr;
   ReadMonthlyGoldIncome read_monthly_gold_income = nullptr;
   EvaluateCharacterInteractionAnswer evaluate_character_interaction_answer =
       nullptr;

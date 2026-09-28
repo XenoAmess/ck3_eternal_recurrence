@@ -4,11 +4,11 @@
 
 当前 Robert h3690 的首继承人 `38822` 已与 `38718` 订婚；仅反复扫描首继承人不会找到下一项家庭动作。h3686 的正式存档（SHA-256 `BCCF0B016CA1FED9D9993F3B529692458803D830194BA96A5EC922DB9D68DC09`）离线读到玩家 `29829` 的子女 `37265`（Emma），当时年满 16 岁、无婚约或配偶、House `174`、雇主 `29829`。这是指定 subject 的线索，**不是** h3690 当前关系或玩家可提案权限的实机证明。
 
-exact-build EXE `1.19.0.6`，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_marriage_interactions.txt`，SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`，其 `populate_actor_list` 包含玩家、廷臣及符合条件的子女；这只提供入口，不证明特定提案可发送。EXE 的 family 访问链显示 `CCharacter+0x1A0` 指向 family data，`family+0x50` 按 4 字节 CharacterID 数组迭代；既有原生婚配关系读 `family+0x10/+0x14/+0x20`。同构建的 `combat_v3` 读回链使用 `CCharacter+0x1B0 → relation+0xC8` 取得雇主。新私有只读查询把指定 ID 限于当前玩家的 `family+0x50` 子女数组，再读年龄、House/Dynasty、雇主及双边配偶/婚约。`family+0x50` 的子女语义和 Emma 当前状态仍需 paused live 逐项核验。
+exact-build EXE `1.19.0.6`，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_marriage_interactions.txt`，SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`，其 `populate_actor_list` 包含玩家、廷臣及符合条件的子女；这只提供入口，不证明特定提案可发送。EXE 的 family 访问链显示 `CCharacter+0x1A0` 指向 family data；既有原生婚配关系读 `family+0x10/+0x14/+0x20`。同构建的 `combat_v3` 读回链使用 `CCharacter+0x1B0 → relation+0xC8` 取得雇主。R0322 实机证实先前误认的 `family+0x50` 对 Robert 是空数组，不能据此否认其子女 Emma。新的私有指定 subject 读口复用同一 EXE 已冻结的原生 `is_child_of` 谓词 RVA `0x26085E0`，再读年龄、House/Dynasty、雇主及双边配偶/婚约；Emma 的正向 paused 结果及具体提案权限仍待实机核验，详见 [R0322 诊断](emma-matrilineal-option-2026-09-28.md#r0322-exact-paused-layout-and-existing-native-child-predicate)。
 
 ```mermaid
 flowchart TD
-    A["同版本 paused 玩家帧；指定 subject ID"] --> B{"原生玩家子女数组含 ID？"}
+    A["同版本 paused 玩家帧；指定 subject ID"] --> B{"原生 is_child_of(subject, player)？"}
     B -->|否| X["unavailable；不能借首继承人权限"]
     B -->|是| C["读年龄、House、雇主、双边婚约/配偶"]
     C --> D{"五角色 context 的 actor 仍是玩家、secondary actor 仍是 subject？"}
