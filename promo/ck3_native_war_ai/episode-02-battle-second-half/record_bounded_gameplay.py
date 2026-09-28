@@ -56,15 +56,17 @@ def append_mark(workdir: Path, row: dict[str, Any]) -> None:
         os.close(fd)
 
 
-def desktop_primary_size() -> tuple[int, int]:
+def desktop_primary_size() -> dict[str, int | bool]:
     if sys.platform != "win32":
         raise RuntimeError("gdigrab requires Windows")
     import ctypes
+    import pyautogui
     user32 = ctypes.windll.user32
-    size = (int(user32.GetSystemMetrics(0)), int(user32.GetSystemMetrics(1)))
-    if min(size) <= 0:
-        raise RuntimeError(f"invalid desktop size: {size}")
-    return size
+    gdi = (int(user32.GetSystemMetrics(0)), int(user32.GetSystemMetrics(1)))
+    automation = tuple(int(value) for value in pyautogui.size())
+    return {"gdi_width": gdi[0], "gdi_height": gdi[1],
+            "pyautogui_width": automation[0], "pyautogui_height": automation[1],
+            "valid_and_equal": min(gdi + automation) > 0 and gdi == automation}
 
 
 def bound_file(path: Path) -> dict[str, Any]:
@@ -107,6 +109,14 @@ def run(args: argparse.Namespace) -> int:
         raise FileNotFoundError("ffmpeg and ffprobe must both be installed")
     desktop = desktop_primary_size()
     args.workdir.mkdir()
+    write_new(args.workdir / "geometry-admission.json", {
+        "observed_at": utc(), **desktop,
+        "source": "GetSystemMetrics primary display and pyautogui.size"})
+    if not desktop["valid_and_equal"]:
+        write_new(args.workdir / "recorder-failure.json", {
+            "failed_at": utc(), "error": "desktop DPI/size mismatch before FFmpeg launch",
+            "geometry_admission": digest(args.workdir / "geometry-admission.json")})
+        raise RuntimeError("desktop DPI/size mismatch; new workdir and failure receipt preserved")
     raw_dir = args.workdir / "raw"
     raw_dir.mkdir()
     raw = raw_dir / (args.track + ".mkv")
@@ -128,7 +138,10 @@ def run(args: argparse.Namespace) -> int:
         "recorder_script": digest(Path(__file__)),
         "ffmpeg_executable": digest(Path(ffmpeg)),
         "ffprobe_executable": digest(Path(ffprobe)),
-        "desktop_primary_width": desktop[0], "desktop_primary_height": desktop[1],
+        "desktop_primary_width": desktop["gdi_width"],
+        "desktop_primary_height": desktop["gdi_height"],
+        "desktop_pyautogui_width": desktop["pyautogui_width"],
+        "desktop_pyautogui_height": desktop["pyautogui_height"],
         "raw_path": str(raw.resolve()), "max_seconds": args.seconds,
         "media_policy": "native desktop pixels; no crop, scale, loop or audio"})
     start_ns = time.monotonic_ns()
@@ -257,11 +270,15 @@ def probe(workdir: Path, ffprobe: str | None = None) -> int:
                 if type(index) is not int:
                     continue
                 row = frame_pts.setdefault(index, {"count": 0, "first_pts_time": None,
-                                                   "last_pts_time": None})
+                                                   "last_pts_time": None,
+                                                   "first_frame_width": None,
+                                                   "first_frame_height": None})
                 row["count"] += 1
                 pts = frame.get("best_effort_timestamp_time") or frame.get("pts_time")
                 if row["first_pts_time"] is None:
                     row["first_pts_time"] = pts
+                    row["first_frame_width"] = frame.get("width")
+                    row["first_frame_height"] = frame.get("height")
                 row["last_pts_time"] = pts
         except (OSError, ValueError, TypeError) as exc:
             probe_error = repr(exc)
@@ -271,6 +288,8 @@ def probe(workdir: Path, ffprobe: str | None = None) -> int:
                   video[0]["width"] == intent["desktop_primary_width"] and
                   video[0]["height"] == intent["desktop_primary_height"])
     video_frames = frame_pts.get(video[0]["index"], {}) if len(video) == 1 else {}
+    first_frame_size_match = (video_frames.get("first_frame_width") == intent["desktop_primary_width"]
+                              and video_frames.get("first_frame_height") == intent["desktop_primary_height"])
     try:
         duration_seconds = float(duration) if duration is not None else 0.0
     except ValueError:
@@ -280,7 +299,8 @@ def probe(workdir: Path, ffprobe: str | None = None) -> int:
                     video_frames.get("last_pts_time") is not None and
                     duration_seconds > 0)
     result = "ENCODED_UNREVIEWED" if (end["ffmpeg_exit_code"] == 0 and
-             probe_exit == 0 and exact_size and pts_complete and raw.is_file()) else "RED_PRESERVED"
+             probe_exit == 0 and exact_size and first_frame_size_match
+             and pts_complete and raw.is_file()) else "RED_PRESERVED"
     final = {
         "schema": "xar.war-promo.bounded-recorder-final/v1", "created_at": utc(),
         "result": result, "clean_spans_certified": False,
@@ -291,6 +311,7 @@ def probe(workdir: Path, ffprobe: str | None = None) -> int:
         "ffprobe_stderr": digest(workdir / "ffprobe.stderr.txt") if raw.is_file() else None,
         "format_duration_seconds": duration, "streams": streams,
         "frame_pts_by_stream": frame_pts, "native_desktop_size_match": exact_size,
+        "first_frame_size_match": first_frame_size_match,
         "video_pts_complete": pts_complete,
         "marks": digest(workdir / "marks.jsonl")}
     write_new(workdir / "recorder-final.json", final)
