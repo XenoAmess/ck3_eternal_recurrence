@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_static_candidate_only",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T05:22:10Z",
+  "updated_at_utc": "2026-09-28T05:27:32Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -47,7 +47,8 @@
     "Per-amount receipt provenance regression: six war-cash and twenty formal-collector tests pass under both normal Python and -O at master 922cb379b; tools/validate_python_only.py GREEN.",
     "2026-09-28 follow-up: exact-build MilitaryView getter/GUI/localization verifier passed under normal Python and -O against CK3 1.19.0.6. This is static source discovery only; no same-frame amount was read.",
     "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained.",
-    "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. This is no-launch only and has no matching local DLL/injector pair or same-frame cash amount."
+    "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. This is no-launch only and has no matching local DLL/injector pair or same-frame cash amount.",
+    "2026-09-28 follow-up: passive MilitaryView process-reader research script compiled, --help passed, and Python-only validation passed; an external synthetic cache fixture passed normal/-O valid, wrong-player, wrong-back-pointer and negative-raw gates. The script has not attached to CK3 and always marks its cache output ineligible for the war-cash receipt."
   ],
   "followup_research": {
     "status": "static_source_candidate_only",
@@ -84,6 +85,12 @@
       "requested_file_count": 1,
       "source": "R0265 formal report identity.bridge_injector",
       "remote_peer_receipt_observed": false
+    },
+    "passive_view_sampler": {
+      "source": "ck3_autonomous_player/native_bridge/research/war_cash_passive_military_view_sample.py",
+      "status": "static_prepared_never_attached",
+      "requires_managed_before_after_frame": true,
+      "cash_receipt_eligible": false
     },
     "predicted_max_gold_refresh_rva": "0x11F3B10; adds breakdown rows through 0x11F3BFB, but no bridge invocation is authorized",
     "current_expense_getter_rva": "0x11F7D00",

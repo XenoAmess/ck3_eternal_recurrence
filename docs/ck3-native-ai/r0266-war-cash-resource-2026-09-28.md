@@ -51,6 +51,8 @@ R0265 正式报告 `identity.bridge_injector` 给出同源 injector SHA-256 `521
 
 取得当次新鲜 Steam 离线画面、任务总线独占和 R0271 释放屏幕后，才可在新托管进程的已暂停地图帧采样。最小数据包为：前后原生帧的 `snapshot_id`、公开/原生修订、日期、episode、玩家 ID、WarID、暂停状态和 PID；进程模块基址与 EXE 哈希；全局玩家 ID；由两张虚表、`view+0x758 == view+0x6C8`、`view+0x248` 玩家 ID 唯一筛出的 View 地址；预测值 `view+0x740/+0x748` 与当前值 `view+0x2E0/+0x2E8` 的 raw/scale 候选及当前对象 back-pointer。进程外读取只申请查询与读取权限，使用 `VirtualQueryEx` / `ReadProcessMemory`，不执行、写入或调用游戏代码。若没有 View、多于一个候选、玩家 ID 不匹配、scale 非 `100000`、读前读后帧变化或缓存值反复不一致，则给出对应 `missing` 原因，不挑一个貌似合理的金额。缓存值还需与同一窗口实际 GUI 金额及更新时机交叉核对；headless 没有窗口时只能记为研究诊断值。
 
+已备好未运行于游戏的[被动采样器](../../ck3_autonomous_player/native_bridge/research/war_cash_passive_military_view_sample.py)：它复用既有只读 `OpenProcess` 封装，核进程 EXE SHA 与创建时间，按精确版本两张虚表筛选私有可读页，再双读对象缓存与全局玩家 ID；任何区域无法读完或匹配不唯一都不产出唯一候选。它的会话回执仅哈希附带，**不验证任务总线所有权或前后原生同帧**；输出固定 `cash_receipt_eligible=false`，即便找到唯一候选也只标 `diagnostic_unique_cache_candidate`。`py -m py_compile`、`--help` 与 Python-only 校验通过；外置离线夹具在普通 Python 和 `-O` 下均验证有效对象、错误玩家、错误 back-pointer、负金额四条路径。它尚未连接 CK3 进程。实际运行时必须另由托管会话取得前后原生帧并对照上述 postcheck，不能把探针退出码或地址扫描当成金额验收。
+
 采样后再次查询正式帧和命令历史，要求日期/episode/WarID/玩家身份/修订不变、没有动作/推进/新 checkpoint、源存档哈希不变，并证明托管进程和注入器完全退出。若任何条件失败，保留本次 RED attempt 及原始字节，另开新 attempt。即使读到最大月军费，也只可记录该预测费率：待办战争现金、所选动作即时费用、战争政策 floor、完整期限内的未来费用上界及风险预算仍分别需要自己的来源。尤其完整月账期、舰队、补员、雇佣、新征召和费率变化未闭合时，`future_war_cost_upper_raw` 与 `future_risk_budget_raw` 继续为 `null`。
 
 后续要在**新的同一暂停帧**先证明 MilitaryView 属于玩家 Robert，读回 `ValueBreakdown` 的真实定点数值与单位，并与可见窗口值交叉核对；再确认窗口缓存更新时机。若用它构造有限期维护费预算，必须同时冻结兵团/雇佣与舰队状态、期限、可能改变维护倍率的条件，并把舰队及其他未覆盖战争开支列入单独有来源的风险额。还必须证明原版现金扣款账期或保守覆盖下一次完整月费：即使规划期限只有 1 日，也不能把一个月的费率机械除以 30 当成该日扣款上界；跨月结算时可能整月扣费。待办战争动作账本、所选动作的即时费用和战争政策最低保留额仍需分别提供来源。只有这些输入共同闭合，才能将未来上界、风险额与政策保留额写入同帧收据。R0266 H2825 历史帧没有这些读数，仍保持 `null`。
