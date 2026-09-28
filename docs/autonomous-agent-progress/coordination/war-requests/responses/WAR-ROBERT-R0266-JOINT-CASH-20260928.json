@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_static_candidate_only",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T05:50:18Z",
+  "updated_at_utc": "2026-09-28T06:06:17Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -47,7 +47,7 @@
     "Per-amount receipt provenance regression: six war-cash and twenty formal-collector tests pass under both normal Python and -O at master 922cb379b; tools/validate_python_only.py GREEN.",
     "2026-09-28 follow-up: exact-build MilitaryView getter/GUI/localization verifier passed under normal Python and -O against CK3 1.19.0.6. This is static source discovery only; no same-frame amount was read.",
     "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained.",
-    "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. This is no-launch only and has no matching local DLL/injector pair or same-frame cash amount.",
+    "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. At that attempt time the matching injector was still missing; the subsequent exact asset transfer is recorded below. This was no-launch only and had no same-frame cash amount.",
     "2026-09-28 follow-up: passive MilitaryView process-reader research script compiled, --help passed, and Python-only validation passed; an external synthetic cache fixture passed normal/-O valid, wrong-player, wrong-back-pointer and negative-raw gates. The script has not attached to CK3 and always marks its cache output ineligible for the war-cash receipt."
   ],
   "followup_research": {
@@ -89,14 +89,24 @@
       "source_fingerprint": "A1D748118D1BA3FEF682F72CAD60008C93CF0EC27FF065DDED30293C7D940AE1",
       "r0265_binary_identity_reused": false
     },
-    "missing_injector_asset_request": {
-      "status": "local_onedrive_request_written_remote_receipt_pending",
+    "injector_asset_transfer": {
+      "status": "received_verified_local_ack_remote_readback_pending",
       "request_relative_path": "WAR/R0266-CASH-20260928/ASSET-REQUEST.json",
       "request_sha256": "77B95206231CE2544A2064A67589FE90FCAE67747AC330D91FC89BD578098102",
       "requested_injector_sha256": "521EB12E5B3F8AFCFF01B2B2B8D9D6B6690B24CC59BE7C25E0E101F438766710",
       "requested_file_count": 1,
       "source": "R0265 formal report identity.bridge_injector",
-      "remote_peer_receipt_observed": false
+      "sender_response_sha256": "303E54A405E9FF8CD31B6DBFD2FD726DBBDDF32A102D2DEF7BCA5281394A3BAB",
+      "sender_response_status": "available",
+      "injector_size_bytes": 39936,
+      "immutable_external_copy_path": "D:/ck3-research-artifacts/war-intake-20260928/r0266-asset-received-001/source-copies/xar_ck3_bridge_injector.exe",
+      "transfer_receipt_sha256": "44DD6BB9F6A4E0D1B164E7873A209378147584D934B68CAAF6F52903DE59A8E4",
+      "receiver_ack_relative_path": "WAR/R0266-CASH-20260928/RECEIVER-ACK.json",
+      "receiver_ack_sha256": "635207B2BC8852DD1E6C8C69ADC8C457295E1181773771C2285785A60486E54E",
+      "receiver_ack_remote_readback_observed": false,
+      "exact_r0265_dll_injector_assets_verified": true,
+      "new_attempt_no_launch_preflight_done": false,
+      "same_frame_cash_amount_observed": false
     },
     "passive_view_sampler": {
       "source": "ck3_autonomous_player/native_bridge/research/war_cash_passive_military_view_sample.py",
