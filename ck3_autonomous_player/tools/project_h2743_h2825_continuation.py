@@ -155,8 +155,11 @@ def project(
     ):
         raise ValueError("H2743 to H2825 source lineage is not proven")
     for row in after_history[2743:2825]:
-        if isinstance(row.get("command"), str) and row["command"].startswith(
-            ("surrender-war-", "offer-white-peace-", "enforce-war-demands-")
+        if isinstance(row.get("command"), str) and (
+            row["command"].startswith(
+                ("surrender-war-", "offer-white-peace-", "enforce-demands-")
+            )
+            or row["command"] == "war-enforce-demands"
         ):
             raise ValueError("a terminal war action appears in continuation")
     first = _options(after_history, 2751)
