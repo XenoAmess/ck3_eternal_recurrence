@@ -8,6 +8,7 @@ from pathlib import Path
 
 from xar_autoplayer.prisoner_ransom_formal_consumer import (
     plan_ransom_private,
+    read_ransom_ledger,
     read_ransom_receipt_private,
     select_ransom_candidate,
     submit_ransom_private,
@@ -45,6 +46,7 @@ class RansomChoiceTest(unittest.TestCase):
                 "selected_option": "gold", "can_send": True,
                 "would_accept_now": True, "recipient_answer_status_raw": 0,
                 "quoted_gold_raw": amount, "raw_scale": 100_000,
+                "amount_is_acceptance_time_quote": False,
             }
         self.rows[2]["ransom_quote_preview"] = {
             "status": "unavailable", "unavailable_reason": "option_mask_unexpected"}
@@ -88,6 +90,31 @@ class RansomChoiceTest(unittest.TestCase):
         self.assertEqual(choice["prisoner_character_id"], 44484)
         self.assertEqual(choice["payer_character_id"], 44484)
         self.assertEqual(choice["quoted_gold_raw"], 3_000_000)
+
+    def test_current_gold_offer_preserves_acceptance_time_quote(self):
+        for read in self.reads:
+            rows = read["player_prisoner_collection"]["prisoners"]
+            rows[0]["ransom_quote_preview"] = {"status": "unavailable"}
+            rows[1]["ransom_quote_preview"] = {"status": "unavailable"}
+            rows[2]["ransom_quote_preview"] = {
+                "status": "available", "definition_key": "ransom_interaction",
+                "jailer_character_id": 29829, "prisoner_character_id": 47028,
+                "payer_character_id": 47028, "native_revision": 3,
+                "date_raw": 53219112, "selected_option": "current_gold",
+                "can_send": True, "would_accept_now": True,
+                "recipient_answer_status_raw": 0,
+                "quoted_gold_raw": 1_250_000, "raw_scale": 100_000,
+                "amount_is_acceptance_time_quote": True,
+            }
+        choice = select_ransom_candidate(self.snapshot, self.reads, self.war)
+        self.assertEqual(choice["prisoner_character_id"], 47028)
+        self.assertEqual(choice["selected_option"], "current_gold")
+        self.assertTrue(choice["amount_is_acceptance_time_quote"])
+        for read in self.reads:
+            read["player_prisoner_collection"]["prisoners"][2][
+                "ransom_quote_preview"]["amount_is_acceptance_time_quote"] = False
+        self.assertIsNone(select_ransom_candidate(
+            self.snapshot, self.reads, self.war))
 
     def test_county_and_missing_title_value_remain_unselected(self):
         for read in self.reads:
@@ -146,6 +173,53 @@ class RansomChoiceTest(unittest.TestCase):
             self.assertEqual(planned["plan"]["prisoner_ransom_choice"][
                 "prisoner_character_id"], 34486)
             self.assertEqual(driver.ordinals, [0, 1, 2, 0])
+
+    def test_changed_current_gold_option_is_not_submitted(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
+            for read in self.reads:
+                rows = read["player_prisoner_collection"]["prisoners"]
+                rows[0]["ransom_quote_preview"] = {"status": "unavailable"}
+                rows[1]["ransom_quote_preview"] = {"status": "unavailable"}
+                rows[2]["ransom_quote_preview"] = {
+                    **self.rows[1]["ransom_quote_preview"],
+                    "prisoner_character_id": 47028,
+                    "payer_character_id": 47028,
+                    "selected_option": "current_gold",
+                    "quoted_gold_raw": 1_250_000,
+                    "amount_is_acceptance_time_quote": True,
+                }
+
+            class Driver:
+                allow_private_prisoner_ransom_action = True
+
+                def __init__(self):
+                    self.state_dir = Path(temporary)
+                    self.calls = 0
+
+                def execute_step(self, step, *, expected_revision):
+                    return war_reads[0]
+
+                def query_player_prisoner_collection_private_v1(
+                    self, *, expected_revision, ransom_ordinal,
+                ):
+                    self.calls += 1
+                    result = copy.deepcopy(reads[ransom_ordinal])
+                    if self.calls == 4:
+                        quote = result["player_prisoner_collection"][
+                            "prisoners"][2]["ransom_quote_preview"]
+                        quote["selected_option"] = "gold"
+                        quote["amount_is_acceptance_time_quote"] = False
+                    return result
+
+            war_reads, reads = self.war, self.reads
+            driver = Driver()
+            planned = plan_ransom_private(
+                driver, {"plan": {"selected_step": "life-advance"}},
+                {**self.snapshot, "revision": 4})
+            self.assertEqual(driver.calls, 4)
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+            self.assertEqual(planned["plan"]["prisoner_ransom_observation"][
+                "status"], "unavailable")
 
     def test_cold_pending_receipt_precedes_a_war_step_and_needs_material_reads(self):
         with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
@@ -238,6 +312,56 @@ class RansomChoiceTest(unittest.TestCase):
             self.assertEqual(receipt["status"], "ambiguous")
             self.assertFalse(receipt["material_result"])
 
+    def test_current_gold_receipt_uses_actual_positive_gain_not_quote(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
+            state_dir = Path(temporary)
+            pending = {"pre_native_revision": 3, "pre_date_raw": 53219112,
+                       "player_character_id": 29829,
+                       "prisoner_character_id": 47028,
+                       "payer_character_id": 47028,
+                       "selected_option": "current_gold",
+                       "amount_is_acceptance_time_quote": True,
+                       "quoted_gold_raw": 1_250_000,
+                       "pre_player_gold_raw": 10_000_000}
+            (state_dir / "player-prisoner-ransom-formal-v1.json").write_text(
+                json.dumps({"schema": "xar.ck3.prisoner-ransom-formal.v1",
+                            "pending": pending, "resolved": None}),
+                encoding="utf-8",
+            )
+
+            class Driver:
+                def __init__(self):
+                    self.state_dir = state_dir
+                    self.gold_raw = 10_000_000
+
+                def take_snapshot(self):
+                    return {**self_snapshot, "native_revision": 4,
+                            "date_raw": 53219113, "revision": 5,
+                            "played_character_gold": {"raw": self.gold_raw,
+                                                      "scale": 100_000}}
+
+                def query_player_prisoner_collection_private_v1(
+                    self, *, expected_revision, ransom_ordinal=None,
+                ):
+                    return {"snapshot_revision": 4,
+                            "player_prisoner_collection": {
+                                "collection_complete": True,
+                                "played_character_id": 29829,
+                                "date_raw": 53219113, "prisoners": []}}
+
+            self_snapshot = self.snapshot
+            driver = Driver()
+            first = read_ransom_receipt_private(driver, pending=pending)
+            self.assertEqual(first["status"], "ambiguous")
+            self.assertIsNotNone(read_ransom_ledger(state_dir)["pending"])
+            driver.gold_raw = 10_500_000
+            receipt = read_ransom_receipt_private(
+                driver, pending=read_ransom_ledger(state_dir)["pending"])
+            self.assertEqual(receipt["status"], "applied")
+            self.assertEqual(receipt["observed_player_gold_gain_raw"], 500_000)
+            self.assertEqual(receipt["quoted_gold_raw"], 1_250_000)
+            self.assertTrue(receipt["amount_is_acceptance_time_quote"])
+
     def test_unresolved_fence_is_durable_before_native_submit(self):
         with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
             state_dir = Path(temporary)
@@ -268,6 +392,7 @@ class RansomChoiceTest(unittest.TestCase):
                       "prisoner_character_id": 34486,
                       "payer_character_id": 30470,
                       "selected_option": "gold",
+                      "amount_is_acceptance_time_quote": False,
                       "quoted_gold_raw": 5_000_000}
             pending = submit_ransom_private(
                 Driver(), plan={"prisoner_ransom_choice": choice})
