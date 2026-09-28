@@ -1532,6 +1532,35 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // R0338 read a legal sway target, but its formal callback lacked a mailbox
+  // slot. Exercise the same admission and completed receipt path here.
+  auto sway_environment =
+      runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  sway_environment.permitted_executor_octoquinquagintary =
+      &ExecutePhaseEvent;
+  ExecutorContext sway_context{};
+  MainThreadQueryTicketV1 sway_ticket{};
+  g_failure_stage = "sway_formal_dedicated_executor_slot";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, sway_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      TrySubmitMainThreadQueryV1(mailbox, &ExecutePhaseEvent,
+                                 &sway_context, sway_ticket) !=
+          MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      WaitForMainThreadQueryV1(mailbox, sway_ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, sway_ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      sway_context.calls != 1 ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
   runtime.protection.fail_next_readonly_restore = true;
   g_failure_stage = "iat_protection_rollback";
   if (InstallMainThreadQueryMailboxV1(
@@ -1789,6 +1818,16 @@ bool TestSourceContract(int argc, char **argv) {
       begin_binding - begin_slot > 160 ||
       finish_binding - finish_slot > 160) {
     std::fprintf(stderr, "managed phase trace mailbox bindings are missing\n");
+    return false;
+  }
+  const auto sway_formal_slot = bridge.find(
+      "environment.permitted_executor_octoquinquagintary =");
+  const auto sway_formal_binding = bridge.find(
+      "ExecuteActiveSchemeSwayFormalPrivateCommandV1;", sway_formal_slot);
+  if (sway_formal_slot == std::string::npos ||
+      sway_formal_binding == std::string::npos ||
+      sway_formal_binding - sway_formal_slot > 160) {
+    std::fprintf(stderr, "formal sway mailbox binding is missing\n");
     return false;
   }
   using namespace xar::ck3_11906;

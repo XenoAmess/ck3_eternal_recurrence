@@ -9349,6 +9349,10 @@ public:
     environment.permitted_executor_septenquinquagintary =
         &xar::ck3_11906::ExecuteActivityPlannerDiagPrivateQueryV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+    environment.permitted_executor_octoquinquagintary =
+        &xar::ck3_11906::ExecuteActiveSchemeSwayFormalPrivateCommandV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
