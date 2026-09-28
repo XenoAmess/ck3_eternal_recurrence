@@ -20,7 +20,7 @@
 
 ## 条件 effect：为何一个被动 dispatch 点不够
 
-原生 `loaded_effect_execute` 在 `0x3380492` 调用 `0x3380A00`；通用路径 `0x3380CFB` 经 vtable `+0xB0` 执行节点，`0x3380EE9` 在子节点循环中再次调用同一路径。这里有适合将来复制“已进入的节点指针”的候选观察点，但 `0x3380C66` 还写入执行上下文计数；主动调用此函数或其 preview 都会改变语义，禁止作为查询。被动 trace 只知道**到达的节点**；条件为 false、被脚本或原生共享 war-end 路径跳过的节点不会产生记录。vtable 指针也还没有一一映射到 `00_dejure_war.txt`、其 scripted-effect 展开及全部原生子效果的源 node ID。故即使一次克隆投降的资源净额可测，也不能把它包装为 `conditional_resource_effects.status=complete`。
+原生 `loaded_effect_execute` 在 `0x3380492` 调用 `0x3380A00`；`0x3380CFB` 只是 dispatcher 的一个分支，经 vtable `+0xB0` 执行节点，邻近 `0x3380D10` 还有 vtable `+0x30` 路径；`0x3380EE9` 在子节点循环中再次进入 dispatcher。因此单独观察 `0x3380CFB` 不能覆盖所有调用路径。这里有适合将来复制“已进入的节点指针”的候选观察点，但 `0x3380C66` 还写入执行上下文计数；主动调用此函数或其 preview 都会改变语义，禁止作为查询。被动 trace 只知道**到达的节点**；条件为 false、被脚本或原生共享 war-end 路径跳过的节点不会产生记录。vtable 指针也还没有一一映射到 `00_dejure_war.txt`、其 scripted-effect 展开及全部原生子效果的源 node ID。故即使一次克隆投降的资源净额可测，也不能把它包装为 `conditional_resource_effects.status=complete`。
 
 要关闭这个缺口，先在精确构建上只读枚举编译后的 `attacker_victory` CB 根、所有间接 scripted-effect 和通用 war-end 根，建立完整的 node 指针／source ID 映射与子边；再对每个条件记录其**被求值**及 true/false、该条件下资源写入的 before/after 和受影响人物。枚举树、root 到实际 War/CB 的关系、调用轨迹无遗漏，以及静态脚本 SHA 必须相互闭合。只看到执行节点或两方七类余额差、看见某个通用虚调用，都不满足该证明；当前没有可信任的完整 root/tree producer，也没有可证明无损且无副作用的 detour，故本轮不实现或启用 native hook。
 

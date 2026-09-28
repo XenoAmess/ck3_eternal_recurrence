@@ -87,7 +87,7 @@ def verify(exe: Path = EXE, dejure: Path = DEJURE) -> dict[str, object]:
             "war_context_id": "populate 0x27A470E/71A writes tag 0x12 and 0x27A4720/731 copies War+8 to context+8; prove the same context pointer reaches setup and resolve the actual War+CB before use",
             "runtime_target_title": "setup 0x2E9F5B6 returns CLandedTitle pointer; capture only on natural clone execution and validate full ID against title storage",
             "cb_prestige_factor_raw": "setup 0x2E9F717 computes dynamic count * 100000; pair pre/post 0x2E9F722 writer and verify identifier row before treating as produced",
-            "generic_effect_dispatch": "0x3380492 calls 0x3380A00, whose 0x3380CFB virtual dispatch and 0x3380EE9 child recursion are candidate trace sites, but 0x3380C66 writes context state and executed nodes alone cannot prove complete conditional coverage",
+            "generic_effect_dispatch": "0x3380492 calls 0x3380A00; 0x3380CFB is one virtual +0xB0 branch, with a nearby +0x30 branch at 0x3380D10, and 0x3380EE9 child recursion reenters the dispatcher; 0x3380C66 writes context state, so executed nodes alone cannot prove complete conditional coverage",
         },
         "unproven": [
             "detour relocation and rollback safety",
