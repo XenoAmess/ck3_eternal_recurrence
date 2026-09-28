@@ -241,6 +241,17 @@ class ReadinessGateTests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaisesRegex(RuntimeError, "exclusive live CK3 screen lease absent"):
                 receiver.screen_lease("this-attempt")
 
+    def test_postread_image_diagnostic_never_swallows_lost_lease(self) -> None:
+        output = self.root / "postread-evidence"
+        output.mkdir()
+        with patch.object(receiver, "screen_lease", side_effect=RuntimeError("lost lease")):
+            with self.assertRaisesRegex(RuntimeError, "lost lease"):
+                receiver.capture_postread_desktop(output, [], "this-attempt")
+        self.assertEqual(list(output.iterdir()), [])
+        with self.assertRaisesRegex(RuntimeError, "watchdog failed"):
+            receiver.capture_postread_desktop(output, ["watchdog gone"], "this-attempt")
+        self.assertEqual(list(output.iterdir()), [])
+
     def test_source_strength_rows_are_three_exact_war_participants(self) -> None:
         driver = receiver.SOURCE / "R0321-H3911-source-driver-state.json"
         source_rows = json.loads(driver.read_text(encoding="utf-8"))["command_history"]

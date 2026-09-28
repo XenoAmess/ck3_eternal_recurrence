@@ -479,6 +479,30 @@ def require_lease_watchdog_healthy(failures: list[str]) -> None:
         raise RuntimeError(f"screen lease watchdog failed: {failures[0]}")
 
 
+def capture_postread_desktop(output: Path, lease_failures: list[str],
+                             task_id: str) -> None:
+    """Keep the screen lease a hard gate; image capture is diagnostic only."""
+    require_lease_watchdog_healthy(lease_failures)
+    screen_lease(task_id)
+    try:
+        import pyautogui
+        desktop = pyautogui.screenshot()
+        desktop_path = output / "postread-desktop-original.png"
+        desktop.save(desktop_path)
+        write_new(output / "postread-desktop-receipt.json", {
+            "path": str(desktop_path), "sha256": sha256(desktop_path),
+            "image_size": list(desktop.size),
+            "desktop_size": list(pyautogui.size()),
+            "observed_at_utc": utc_now().isoformat(),
+            "role": "visual cold-load diagnostic only; not gameplay identity",
+        })
+    except Exception as error:
+        write_new(output / "postread-desktop-error.json", {
+            "type": type(error).__name__, "message": str(error),
+            "at_utc": utc_now().isoformat(),
+        })
+
+
 
 
 
@@ -742,25 +766,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
                         launch_time, deadline=deadline, record_probe=record_probe,
                     )
                 write_new(output / "coldload-gate.json", coldload_gate)
-                try:
-                    require_lease_watchdog_healthy(lease_failures)
-                    screen_lease(task_id)
-                    import pyautogui
-                    desktop = pyautogui.screenshot()
-                    desktop_path = output / "postread-desktop-original.png"
-                    desktop.save(desktop_path)
-                    write_new(output / "postread-desktop-receipt.json", {
-                        "path": str(desktop_path), "sha256": sha256(desktop_path),
-                        "image_size": list(desktop.size),
-                        "desktop_size": list(pyautogui.size()),
-                        "observed_at_utc": utc_now().isoformat(),
-                        "role": "visual cold-load diagnostic only; not gameplay identity",
-                    })
-                except Exception as error:
-                    write_new(output / "postread-desktop-error.json", {
-                        "type": type(error).__name__, "message": str(error),
-                        "at_utc": utc_now().isoformat(),
-                    })
+                capture_postread_desktop(output, lease_failures, task_id)
                 ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
                 previous_heartbeat: tuple[int, int] | None = None
                 diagnostic_count = 0
