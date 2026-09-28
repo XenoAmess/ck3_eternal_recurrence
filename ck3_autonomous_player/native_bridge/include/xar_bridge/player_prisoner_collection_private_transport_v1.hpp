@@ -46,6 +46,38 @@ inline bool ParsePlayerPrisonerCollectionPrivateStepV1(
 inline constexpr std::uint32_t kPlayerPrisonerCollectionQueuedWaitMsV1 = 8'000;
 inline constexpr std::uint32_t kPlayerPrisonerCollectionExecutingWaitMsV1 = 2'000;
 
+// Keep the read-only query fail-closed while identifying which independent
+// same-frame gate rejected it. A generic failure hides queued timeouts and
+// executor failures behind the same error as a serializer failure.
+inline constexpr std::string_view PlayerPrisonerCollectionFailureDetailV1(
+    MainThreadQueryWaitResultV1 wait, bool completed, bool frame_changed,
+    bool completion_snapshot_read, bool completion_snapshot_matches) noexcept {
+  switch (wait) {
+  case MainThreadQueryWaitResultV1::completed: break;
+  case MainThreadQueryWaitResultV1::executor_failed:
+    return "prisoner collection main-thread executor failed";
+  case MainThreadQueryWaitResultV1::infrastructure_failed:
+    return "prisoner collection main-thread infrastructure failed";
+  case MainThreadQueryWaitResultV1::cancelled:
+    return "prisoner collection main-thread query was cancelled";
+  case MainThreadQueryWaitResultV1::timeout_cancelled_before_execution:
+    return "prisoner collection main-thread query timed out before execution";
+  case MainThreadQueryWaitResultV1::timeout_executor_already_running:
+    return "prisoner collection main-thread executor did not finish";
+  case MainThreadQueryWaitResultV1::ticket_mismatch:
+    return "prisoner collection main-thread ticket mismatched";
+  }
+  if (!completed)
+    return "prisoner collection executor did not mark completion";
+  if (frame_changed)
+    return "prisoner collection main-thread frame changed";
+  if (!completion_snapshot_read)
+    return "prisoner collection completion snapshot was unreadable";
+  if (!completion_snapshot_matches)
+    return "prisoner collection completion snapshot changed";
+  return "prisoner collection result serialization failed";
+}
+
 struct PlayerPrisonerCollectionMailboxContextV1 {
   MainThreadQueryMailboxV1 *mailbox = nullptr;
   MainThreadQueryTicketV1 ticket{};

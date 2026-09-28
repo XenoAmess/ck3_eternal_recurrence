@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from argparse import Namespace
+from datetime import datetime, timedelta, timezone
+import json
 import os
 from pathlib import Path
 import tempfile
@@ -32,6 +34,27 @@ def snapshot() -> dict:
 
 
 class DesktopRecoveryTests(unittest.TestCase):
+    def test_repeated_full_frame_after_two_minutes_is_stale(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            reference = root / "reference.json"
+            probe = root / "probe"
+            probe.mkdir()
+            captured = (datetime.now(timezone.utc) - timedelta(minutes=3)).isoformat()
+            receipt = {
+                "schema": "ck3.steam_fresh_desktop_frame.v1",
+                "captured_at_utc": captured,
+                "steam_hwnd": 123,
+                "desktop_size": [1024, 768],
+                "moved_rect": [20, 0, 982, 768],
+                "moved_identity": {"bytes": 63699, "sha256": "same"},
+            }
+            reference.write_text(json.dumps(receipt), encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, recovery.STALE_CAPTURE_ERROR):
+                recovery.reject_repeated_frame(reference, receipt, probe)
+            stale = json.loads((probe / "steam-frame-stale.json").read_text(encoding="utf-8"))
+            self.assertEqual(stale["moved_identity"]["sha256"], "same")
+
     def test_old_clock_pixels_detect_composited_stale_desktop(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             reference = Path(temp) / "old.png"

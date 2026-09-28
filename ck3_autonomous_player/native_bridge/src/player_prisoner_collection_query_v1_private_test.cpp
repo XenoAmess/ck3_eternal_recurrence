@@ -1,4 +1,5 @@
 #include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
+#include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 
 #include <array>
 #include <cstddef>
@@ -339,7 +340,47 @@ int main() {
                              PlayerPrisonerCollectionFailureV1::sample_drift,
                      "second-sample drift rejected");
   }
+  {
+    using Wait = xar::ck3_11906::MainThreadQueryWaitResultV1;
+    using xar::ck3_11906::PlayerPrisonerCollectionFailureDetailV1;
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::timeout_cancelled_before_execution, false, false,
+            false, false) ==
+            "prisoner collection main-thread query timed out before execution",
+        "queued timeout remains distinct");
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::executor_failed, false, false, false, false) ==
+            "prisoner collection main-thread executor failed",
+        "executor failure remains distinct");
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::completed, false, false, false, false) ==
+            "prisoner collection executor did not mark completion",
+        "missing executor completion remains distinct");
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::completed, true, true, false, false) ==
+            "prisoner collection main-thread frame changed",
+        "main-thread frame drift remains distinct");
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::completed, true, false, false, false) ==
+            "prisoner collection completion snapshot was unreadable",
+        "completion read failure remains distinct");
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::completed, true, false, true, false) ==
+            "prisoner collection completion snapshot changed",
+        "completion frame drift remains distinct");
+    passed += Expect(
+        PlayerPrisonerCollectionFailureDetailV1(
+            Wait::completed, true, false, true, true) ==
+            "prisoner collection result serialization failed",
+        "serialization failure remains distinct");
+  }
   std::cout << "player_prisoner_collection_query_v1_private " << passed
-            << "/16 GREEN\n";
-  return passed == 16 ? 0 : 1;
+            << "/23 GREEN\n";
+  return passed == 23 ? 0 : 1;
 }

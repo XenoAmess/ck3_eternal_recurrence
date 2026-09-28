@@ -87,6 +87,30 @@ def test_private_prisoner_collection_valid_paused_result() -> None:
     assert driver.endpoint.request["expected_revision"] == 5
 
 
+@pytest.mark.parametrize(
+    ("native_error", "expected_message"),
+    [
+        ("prisoner collection frame is not ready", "native RED: prisoner collection frame is not ready"),
+        (None, "command_result timed out"),
+    ],
+)
+def test_private_prisoner_collection_distinguishes_native_red_from_timeout(
+    native_error: str | None, expected_message: str,
+) -> None:
+    driver = _Driver(_result())
+
+    def wait(request_id: str, timeout: float) -> dict[str, object] | None:
+        if native_error is None:
+            return None
+        return {"type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": False, "error": native_error}
+
+    driver.state.wait_for_command_result = wait
+    with pytest.raises(BridgeUnavailableError, match=expected_message):
+        query_player_prisoner_collection_private_v1(
+            driver, expected_revision=4)
+
+
 def test_private_prisoner_collection_rejects_unpaired_owner() -> None:
     result = _result()
     result["player_prisoner_collection"]["prisoners"][0]["collection_owner_character_id"] = 99
