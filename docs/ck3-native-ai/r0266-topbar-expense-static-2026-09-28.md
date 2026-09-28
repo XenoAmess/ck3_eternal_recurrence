@@ -28,3 +28,11 @@
 来源已把 H3568 升级为 R0298 正式 H3603/raw53219352，随后 R0299 于约 09:40Z 继续推进，因此 H3603 已是历史帧。接收端对 H3603 七件完成 7/7 精确传输哈希验收，未完成本机配对。在当时**最新**帧自身官方 save/driver/sidecar/DLL/injector family pair、接收端无启动配对及受管暂停帧证明齐备后，才可尝试**被动**读回：先确认唯一顶栏实例及其 vtable/生命周期来源（目前缺），再在 GUI 正常刷新后取得 `+0xB68` 指回、`+0xB50/+0xB58` raw/scale、`+0xF88` 渲染帧标记、玩家全局 ID 和原生玩家角色 ID。刷新前后要由正式桥接双读同一 episode、snapshot/public/native revision、date、WarID、gold 与暂停状态，并核可见 tooltip 费用。任何一处失配或未定位唯一对象，即标为诊断 RED。若需鼠标触发 tooltip，应由拥有 `ck3-screen` 的执行者按桌面坐标合同操作；本静态研究不做该步。
 
 取得总额候选后，还需以同一帧的 `ValueBreakdown.GetSubValues` 或原生独立军费 readout 精确识别军费行，并与 `MilitaryView` 当前值交叉核对；光有总额不足。未来成本上界仍需实际付款节奏、舰队和补员等完整风险合同。历史 H3603 即使被动读到总额也无法证明现行 R0299 条件，当前战争现金各输入继续为 `null`。
+
+## 2026-09-29 渲染帧时钟被动诊断
+
+在精确 EXE SHA `2D00FF31…F83DB86` 上，新锚点核对 `0xD47686` 从全局 RVA `0x576CC68` 取候选渲染上下文指针、`0xD4769B` 读该对象 `+0x180` 的计数，`0xD47694` 从 RVA `0x570D8D0` 取刷新间隔；getter 比较此计数与顶栏 `+0xF88`，达到间隔时于 `0xD476B1` **先写标记**，再于 `0xD476B8` 调用缓存刷新。扩展后的静态校验器普通 Python 与 `-O` 在同一 EXE/GUI 均通过。
+
+新增 [`war_cash_topbar_render_epoch.py`](../../ck3_autonomous_player/native_bridge/research/war_cash_topbar_render_epoch.py) 只解析外部提供的精确字节；既有有界采样器额外通过 `ReadProcessMemory` 读取全局指针 8 字节、渲染对象 `0x188` 字节和间隔 4 字节，两次仍各限 64 KiB。它输出候选当前 tick、上次更新 tick、间隔和若 getter 此刻被调用是否会刷新。**这些 tick 是 GUI 渲染时钟，不是游戏 native revision。**由于标记写在刷新调用之前，即使 tick 相等，也不能证明刷新已完成；双读稳定只证明两次提供的字节相同。无界面自然刷新后完整行树、Robert 身份及原生同帧交叉回执时，`same_frame_cache_freshness_proven`、`formal_cash_eligible` 固定为 `false`。本轮没有 CK3 附着或军费真值。
+
+R0326 H3911 来源现金补证响应 `WAR/M5-WAR-CASH-20260928/RESPONSE-NW-ECON-R0326-H3911-QUERY-CASH-PROVENANCE-v1.json` SHA `1820D49D4E6CD85017AA06BED8B78DCDC5CA30EC2FC1155FBB30F134122FA5A8` 明确：来源只留 compact 暂停帧，正式选中的 termination query 未派发；当前/全征召预测两条军费率均无 Q100000 读数或缓存 epoch，五项战争现金及期限继续为 `null`。后续接收端须在自己的新暂停帧读原始军事行与自然刷新证据，不得用该来源的建设国库 raw 或历史 GUI 缓存代填军费。

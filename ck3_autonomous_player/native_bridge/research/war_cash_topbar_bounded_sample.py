@@ -26,6 +26,10 @@ from war_cash_topbar_passive_layout import (
     MAX_DIAGNOSTIC_ROWS, ROW_STRIDE,
     inspect_supplied_topbar_expense_bytes,
 )
+from war_cash_topbar_render_epoch import (
+    EXPENSE_REFRESH_INTERVAL_RVA, RENDER_CONTEXT_READ_SIZE,
+    RENDER_CONTEXT_SLOT_RVA, inspect_supplied_topbar_render_epoch,
+)
 from war_film_retreat_paused_sample import EXE_SHA, WindowsReadOnlyProcess
 
 
@@ -87,6 +91,8 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         "owner_path": owner_path,
         "expense_layout": None,
         "expense_missing_reason": "expense_row_vector_not_checked",
+        "render_epoch": None,
+        "render_epoch_missing_reason": "render_clock_not_checked",
         "unique_live_topbar_instance_proven": False,
         "same_frame_cache_freshness_proven": False,
         "formal_cash_eligible": False,
@@ -117,6 +123,26 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         result["status"] = "supplied_owner_and_expense_bytes_structurally_matching"
     except (OSError, ValueError, struct.error) as error:
         result["expense_missing_reason"] = str(error)
+    try:
+        render_slot = base + RENDER_CONTEXT_SLOT_RVA
+        slot_bytes = reader.read(render_slot, 8)
+        render_context = _address(struct.unpack("<Q", slot_bytes)[0],
+                                  "render context")
+        context_bytes = reader.read(render_context, RENDER_CONTEXT_READ_SIZE)
+        interval_address = base + EXPENSE_REFRESH_INTERVAL_RVA
+        interval_bytes = reader.read(interval_address, 4)
+        result["render_epoch"] = inspect_supplied_topbar_render_epoch(
+            image_base=base, topbar_bytes=topbar_bytes,
+            render_context_slot_address=render_slot,
+            render_context_slot_bytes=slot_bytes,
+            render_context_address=render_context,
+            render_context_bytes=context_bytes,
+            refresh_interval_address=interval_address,
+            refresh_interval_bytes=interval_bytes,
+        )
+        result["render_epoch_missing_reason"] = None
+    except (KeyError, OSError, ValueError, struct.error) as error:
+        result["render_epoch_missing_reason"] = str(error)
     result["target_memory_bytes_read"] = reader.total
     result["target_memory_read_calls"] = reader.reads
     return result
@@ -150,6 +176,18 @@ def sample_bounded_topbar_twice(process: object) -> dict[str, object]:
         == second_expense.get("expense_total_signed_raw_candidate")
         and first_expense.get("rows") == second_expense.get("rows")
     )
+    first_epoch = first.get("render_epoch")
+    second_epoch = second.get("render_epoch")
+    render_clock_monotonic = (
+        isinstance(first_epoch, dict)
+        and isinstance(second_epoch, dict)
+        and first_epoch.get("render_context_address")
+        == second_epoch.get("render_context_address")
+        and type(first_epoch.get("current_render_tick_candidate")) is int
+        and type(second_epoch.get("current_render_tick_candidate")) is int
+        and first_epoch["current_render_tick_candidate"]
+        <= second_epoch["current_render_tick_candidate"]
+    )
     return {
         "schema": "xar.ck3.war-cash-topbar-bounded-double-read.v1",
         "status": ("stable_supplied_bytes_diagnostic_only"
@@ -161,6 +199,7 @@ def sample_bounded_topbar_twice(process: object) -> dict[str, object]:
         "same_owner_path_addresses": same_owner_path,
         "same_owner_path_bytes": same_owner_path_bytes,
         "same_expense_rows": same_expense_rows,
+        "render_clock_monotonic_candidate": render_clock_monotonic,
         "total_target_memory_bytes_read": (
             first["target_memory_bytes_read"]
             + second["target_memory_bytes_read"]),

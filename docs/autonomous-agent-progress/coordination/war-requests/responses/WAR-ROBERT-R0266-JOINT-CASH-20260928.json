@@ -470,8 +470,18 @@
       "request_sha256": "91E0026E884DA25AE121F576C1A7DDDB19A9C5E7D340B7C447E399091DADEBE5",
       "in_reply_to_sha256": "226FA2E747AD64E1D0B408C4612D3F39B216AC01ACF15713E04DB60916A3BED3",
       "response_file": "WAR/M5-WAR-CASH-20260928/RESPONSE-NW-ECON-R0326-H3911-QUERY-CASH-PROVENANCE-v1.json",
-      "response_sha256": null,
+      "response_sha256": "1820D49D4E6CD85017AA06BED8B78DCDC5CA30EC2FC1155FBB30F134122FA5A8",
       "scope": "metadata_only_existing_receipts_no_new_large_transfer_or_game_action"
+    },
+    "nw_econ_h3911_query_cash_provenance_response_v1": {
+      "source_file": "WAR/M5-WAR-CASH-20260928/RESPONSE-NW-ECON-R0326-H3911-QUERY-CASH-PROVENANCE-v1.json",
+      "source_sha256": "1820D49D4E6CD85017AA06BED8B78DCDC5CA30EC2FC1155FBB30F134122FA5A8",
+      "in_reply_to_sha256": "91E0026E884DA25AE121F576C1A7DDDB19A9C5E7D340B7C447E399091DADEBE5",
+      "selected_war_query_dispatched": false,
+      "full_raw_before_after_receipt": null,
+      "military_expense_rates_q100000": null,
+      "cash_fields_and_horizon": null,
+      "scope": "source_metadata_only_compact_frame_and_construction_query_not_formal_war_query_or_price"
     },
     "h3911_forecast_receiver_attempt2_notice_v1": {
       "source_file": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-ATTEMPT2-RESULT-v1.json",
@@ -494,6 +504,7 @@
     "cash_receipt": null
   },
   "limitations": [
+    "The R0326 NW-ECON provenance response preserves compact paused before/after fields but no full raw snapshot receipt; its exact selected war termination query was never dispatched, so it has no war protocol request, result envelope or price. Its construction treasury observation lacks a retained numeric scale. Both military rate getters, GUI cache freshness, all five cash inputs and the horizon remain unobserved. The source disk DLL hash and PID do not supply process creation time or mapped code-page proof.",
     "A separate R0321 H3911 forecast receiver attempt reported receiver prepare/rebind/no-launch ready, then failed live readiness after 50 snapshots without an available native map. Its source notice records zero completed read-only queries and no war-cash observation. This is an environment/restore-readiness RED, not a #449 formal query or evidence for zero cash expense.",
     "Attempt-11 produced a live H2825 paused-frame diagnostic, but its private-readable memory scan was RED at the 8192 MiB ceiling before instance discovery. The supplied construction observation still publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
     "The native player_monthly_gold_income is a current monthly-income observation; its gross-income, expense and net composition is not established here, and it cannot independently bound future army upkeep or replenishment. H2908/raw53217816 is a different frame and cannot fill H2825 cash fields.",

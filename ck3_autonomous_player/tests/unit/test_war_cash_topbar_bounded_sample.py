@@ -24,7 +24,8 @@ class FakeReadOnlyProcess:
 
     def __init__(self, *, changing_rows: bool = False,
                  changing_total: bool = False,
-                 changing_render_frame: bool = False) -> None:
+                 changing_render_frame: bool = False,
+                 render_clock: bool = False) -> None:
         supplied = fixture()
         topbar = bytearray(supplied["topbar_bytes"])
         struct.pack_into("<QII", topbar, 0xAD8, ROW_ADDRESS, 1, 1)
@@ -52,6 +53,12 @@ class FakeReadOnlyProcess:
             supplied["topbar_address"]: bytes(topbar),
             0x700000: self.name,
         }
+        if render_clock:
+            context = bytearray(0x188)
+            struct.pack_into("<Q", context, 0x180, 45)
+            self.blocks[self.base + 0x576CC68] = struct.pack("<Q", 0x800000)
+            self.blocks[0x800000] = bytes(context)
+            self.blocks[self.base + 0x570D8D0] = struct.pack("<i", 8)
 
     def read(self, address: int, size: int) -> bytes:
         self.reads.append((address, size))
@@ -108,6 +115,26 @@ class BoundedTopbarSampleTests(unittest.TestCase):
                          "RED_owner_or_expense_bytes_changed_or_unavailable")
         self.assertFalse(sample["same_owner_path_bytes"])
         self.assertTrue(sample["same_expense_rows"])
+
+    def test_bounded_render_epoch_is_only_a_diagnostic(self) -> None:
+        sample = sample_bounded_topbar_twice(
+            FakeReadOnlyProcess(render_clock=True))
+        self.assertEqual(sample["status"], "stable_supplied_bytes_diagnostic_only")
+        self.assertTrue(sample["render_clock_monotonic_candidate"])
+        epoch = sample["first"]["render_epoch"]
+        self.assertEqual(epoch["current_render_tick_candidate"], 45)
+        self.assertEqual(epoch["topbar_last_update_tick_candidate"], 42)
+        self.assertEqual(epoch["stock_refresh_interval_render_ticks_candidate"], 8)
+        self.assertFalse(epoch["getter_refresh_due_if_called_candidate"])
+        self.assertFalse(epoch["cache_refresh_completed_proven"])
+        self.assertFalse(sample["same_frame_cache_freshness_proven"])
+
+    def test_missing_render_context_does_not_claim_freshness(self) -> None:
+        sample = sample_bounded_topbar_twice(FakeReadOnlyProcess())
+        self.assertIsNone(sample["first"]["render_epoch"])
+        self.assertIsNotNone(sample["first"]["render_epoch_missing_reason"])
+        self.assertFalse(sample["render_clock_monotonic_candidate"])
+        self.assertFalse(sample["same_frame_cache_freshness_proven"])
 
     def test_wrong_global_owner_pointer_fails_before_other_reads(self) -> None:
         process = FakeReadOnlyProcess()

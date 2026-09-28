@@ -16,6 +16,10 @@ from capstone import CS_ARCH_X86, CS_MODE_64, Cs
 from capstone.x86 import X86_OP_IMM, X86_OP_MEM, X86_REG_RIP
 import pefile
 
+from war_cash_topbar_render_epoch import (
+    EXPENSE_REFRESH_INTERVAL_RVA, RENDER_CONTEXT_SLOT_RVA,
+)
+
 
 EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 EXPENSE_NAME = b"GetGoldExpensesBreakdown\0"
@@ -105,6 +109,8 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     # Getter returns the ValueBreakdown back-pointer slot, but it can refresh
     # that cache and write the last-update frame.  Never call it as pure-read.
     _expect(image, binary, 0xD4768D, "lea", "rbx, [rcx + 0xb68]")
+    _expect_target(image, binary, 0xD47686, "mov", RENDER_CONTEXT_SLOT_RVA)
+    _expect_target(image, binary, 0xD47694, "movsxd", EXPENSE_REFRESH_INTERVAL_RVA)
     _expect(image, binary, 0xD4769B, "mov", "r9, qword ptr [rax + 0x180]")
     _expect(image, binary, 0xD476A5, "sub", "r8, qword ptr [rcx + 0xf88]")
     _expect(image, binary, 0xD476AC, "cmp", "r8, rdx")
@@ -215,6 +221,10 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "expense_total_scale_candidate_offset": hex(0xB58),
         "expense_breakdown_back_pointer_offset": hex(0xB68),
         "last_update_frame_offset": hex(0xF88),
+        "render_context_slot_rva": hex(RENDER_CONTEXT_SLOT_RVA),
+        "render_context_counter_offset": hex(0x180),
+        "expense_refresh_interval_rva": hex(EXPENSE_REFRESH_INTERVAL_RVA),
+        "cache_last_update_written_before_refresh_call": True,
         "hud_gui_sha256": hashlib.sha256(hud.read_bytes()).hexdigest().upper(),
         "value_breakdown_gui_sha256": hashlib.sha256(
             breakdown.read_bytes()).hexdigest().upper(),
