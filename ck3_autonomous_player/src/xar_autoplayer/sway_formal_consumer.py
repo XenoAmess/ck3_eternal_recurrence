@@ -227,11 +227,12 @@ def consume_sway_following_turn(state_dir: Path,
     resolved = ledger["resolved"]
     if not isinstance(resolved, dict) or resolved.get("next_turn_consumed") is True:
         return None
-    actor = snapshot.get("played_character")
-    if (not isinstance(actor, Mapping)
-            or actor.get("character_id") != resolved.get("actor_character_id")
-            or not _positive(snapshot.get("native_revision"))
-            or type(snapshot.get("date_raw")) is not int
+    try:
+        actor_id, _, _, _ = _identity(
+            snapshot, resolved.get("target_character_id"))
+    except ValueError:
+        return None
+    if (actor_id != resolved.get("actor_character_id")
             or (snapshot["native_revision"] <= resolved["post_native_revision"]
                 and snapshot["date_raw"] <= resolved["post_date_raw"])):
         return None

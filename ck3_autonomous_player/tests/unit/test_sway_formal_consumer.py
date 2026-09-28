@@ -96,7 +96,8 @@ def test_formal_sway_applied_with_independent_read_and_later_turn(tmp_path: Path
     assert driver.submits == driver.receipts == driver.reads == 1
     assert read_sway_ledger(tmp_path)["pending"] is None
     assert consume_sway_following_turn(tmp_path, SNAPSHOT) is None
-    following = {**SNAPSHOT, "native_revision": 4, "date_raw": 53219929}
+    following = {**R0337_PUBLIC_BINDING,
+                 "native_revision": 4, "date_raw": 53219929}
     consumed = consume_sway_following_turn(tmp_path, following)
     assert consumed is not None and consumed["next_turn_consumed"] is True
     assert consume_sway_following_turn(tmp_path, following) is None
