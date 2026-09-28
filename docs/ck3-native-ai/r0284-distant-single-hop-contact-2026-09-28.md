@@ -20,4 +20,4 @@
 
 本地纯 Python 聚焦测试：`test_general_battle_strategy.py` 常规 16/16、`-O` 16/16；新断言使用 `unittest` 方法，优化模式仍执行。新增源绑定回归直接读取 h928/h930/h932 的 Git 冻结摘录，验证精确路线只发起移动；把 native revision 改旧或加入另一敌军时，规划器只选择重新查询。另有 WarID/我军关联缺失、异军、异省、不可控、contact 敌军名单不一致的拒绝测试。源摘录没有携带完整 `active_wars.allied_armies` 帧；测试的战事成员行是合成的，实际成员关联仍须实机读取。另两项 `test_gameplay_bridge.py` 聚焦测试分别通过，覆盖既有行军每日新查询和不安全接触日拒绝盲推。测试使用本 worktree 的 `ck3_autonomous_player/src` 与主 worktree `tools/.venv` 解释器；没有 C++ 构建或游戏启动。
 
-**本机 exact-source 实机仍待执行。**官方 ordinary-seed rebind 要求 CK3 进程数为零；当前屏幕由 R0271 持有。R0284 将在其释放后用独立 profile/attempt 完成官方重绑、no-launch，再依次证明本机同帧读数、typed move/poststate、下一天 fresh full-hostile recheck；任何失败保留为新的 RED attempt，不覆盖源 run 或旧素材。
+**本机 exact-source 实机仍待执行。**官方 ordinary-seed rebind 要求 CK3 进程数为零，且必须取得无争用的 `ck3-screen` 窗口。R0284 将用独立 profile/attempt 完成官方重绑、no-launch，再依次证明本机同帧读数、typed move/poststate、下一天 fresh full-hostile recheck；任何失败保留为新的 RED attempt，不覆盖源 run 或旧素材。来源机 R0291 的 12/12 有界 turn 只走到路线预览，没有 target full-hostile/v3 查询或 typed move，因此仍是语义 RED；详情见本请求的 R0291 验证记录。

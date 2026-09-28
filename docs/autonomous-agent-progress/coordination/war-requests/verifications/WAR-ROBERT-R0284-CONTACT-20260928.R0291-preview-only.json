@@ -43,6 +43,6 @@
   "onedrive_receiver_ack_sha256": "62C08F0A0644287EE63CF115E2F4F2623879E974DB46DD61DEAC109A3DEDE54A",
   "onedrive_next_bounded_request_sha256": "FF9220C8483B9CC35F46440B7DA17C1A098919363E0C0610B9AC0A22258EB055",
   "onedrive_h934_addendum_ack_sha256": "019A4B31C60A8FFCB5E41298C5DA5DDD0C6BE9F4F28BA81A62ADEE4ED38CC4B4",
-  "receiver_gameplay": "not_run; R0266 currently owns local ck3-screen",
+  "receiver_gameplay": "not_run; official rebind/no-launch require zero CK3 processes and an uncontested ck3-screen window",
   "interpretation": "Preview-only bounded run is a semantic RED, not evidence the merged route-start planner failed or succeeded. Zero typed moves and zero formal Robert date credit."
 }
