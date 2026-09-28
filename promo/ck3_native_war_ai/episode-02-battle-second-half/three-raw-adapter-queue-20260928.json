@@ -34,7 +34,8 @@
       "frame_count_from_pts_audit": 16934,
       "pts_audit_result": "STRICT_INCREASING_UNREVIEWED_MAX_GAP_0.067",
       "candidate_windows_seconds": [
-        {"purpose": "WarID4 before", "begin": 245, "end": 270, "exact_endpoints_verified": true},
+        {"purpose": "WarID4 before", "begin": 245, "end": 270, "exact_endpoints_verified": false,
+         "frame_pts_correction": {"begin": "245.000000", "end": "269.967000"}},
         {"purpose": "day27 to day28", "begin": 350, "end": 450, "exact_endpoints_verified": true}
       ],
       "source_note": "Exact candidate endpoints and per-window machine gap are in A05 attempt-03; visual/source-label review pending."
@@ -52,7 +53,8 @@
       "candidate_windows_seconds": [
         {"purpose": "day28 to day29", "begin": 60, "end": 170, "exact_endpoints_verified": true},
         {"purpose": "day30", "begin": 200, "end": 250, "exact_endpoints_verified": true},
-        {"purpose": "day31", "begin": 300, "end": 350, "exact_endpoints_verified": true},
+        {"purpose": "day31", "begin": 300, "end": 350, "exact_endpoints_verified": false,
+         "frame_pts_correction": {"begin": "300.000000", "end": "349.967000"}},
         {"purpose": "day32 writer and WarID4 after", "begin": 385, "end": 500, "exact_endpoints_verified": true,
          "visual_risk": "Event modal overlays the upper war panel in the after screenshot; no_foreign_overlay gate unproven."}
       ],
