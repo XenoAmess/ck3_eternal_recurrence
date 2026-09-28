@@ -19,7 +19,9 @@ from decimal import Decimal
 from pathlib import Path
 
 
-SHOWINFO_PTS = re.compile(r"\bpts_time:([0-9]+(?:\.[0-9]+)?)")
+SHOWINFO_FRAME = re.compile(r"\bn:\s*(\d+)\b.*?\bpts_time:([0-9]+(?:\.[0-9]+)?)")
+ATTEMPT_NAME = re.compile(r"episode02-e2-05-a02-visual-index-20260929-a\d{2}\Z")
+EXTERNAL_PARENT = Path("D:/workspace/ck3_native_war_ai_promo_work")
 
 
 def sha256(path: Path) -> str:
@@ -32,6 +34,40 @@ def sha256(path: Path) -> str:
 
 def file_identity(path: Path) -> dict[str, object]:
     return {"path": str(path), "bytes": path.stat().st_size, "sha256": sha256(path)}
+
+
+def write_new_json(path: Path, payload: dict) -> None:
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(payload, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+
+
+def validate_output_directory(output: Path, external_parent: Path, protected: list[Path]) -> None:
+    if not output.is_absolute():
+        raise ValueError("output must be an absolute external attempt path")
+    parent = output.parent.resolve(strict=True)
+    external = external_parent.resolve(strict=True)
+    if parent != external or not ATTEMPT_NAME.fullmatch(output.name):
+        raise ValueError("output must be a new named child of the external promo work root")
+    if output.exists():
+        raise ValueError("output already exists; do not overwrite an attempt")
+    for source in protected:
+        root = source.resolve(strict=True)
+        if output == root or root in output.parents:
+            raise ValueError(f"output is inside a protected source tree: {root}")
+
+
+def unique_showinfo_pts(stderr_bytes: bytes) -> Decimal:
+    records = []
+    for line in stderr_bytes.decode("utf-8", errors="replace").splitlines():
+        if "showinfo" not in line:
+            continue
+        match = SHOWINFO_FRAME.search(line)
+        if match:
+            records.append((int(match.group(1)), Decimal(match.group(2))))
+    if len(records) != 1 or records[0][0] != 0:
+        raise ValueError(f"expected exactly one showinfo n:0 output frame, got {records}")
+    return records[0][1]
 
 
 def png_dimensions(path: Path) -> tuple[int, int]:
@@ -50,6 +86,14 @@ def pinned_source(path: Path, row: dict, stat: dict) -> None:
         raise ValueError(f"source size differs from frozen link: {path}")
     if current.st_mtime_ns != stat["mtime_ns"]:
         raise ValueError(f"source mtime differs from frozen link: {path}")
+
+
+def stat_snapshot(path: Path) -> dict[str, int] | None:
+    try:
+        current = path.stat()
+    except OSError:
+        return None
+    return {"bytes": current.st_size, "mtime_ns": current.st_mtime_ns}
 
 
 def probe_video_pts(path: Path) -> tuple[list[Decimal], list[str]]:
@@ -85,8 +129,6 @@ def main() -> None:
     ffmpeg = shutil.which("ffmpeg")
     if ffmpeg is None:
         parser.error("ffmpeg not found")
-    if args.output.exists():
-        parser.error("output already exists; use a fresh append-only attempt")
     if len(set(args.seek)) != len(args.seek) or any(value < 0 or value >= 600 for value in args.seek):
         parser.error("seek values must be distinct integers in [0, 600)")
 
@@ -98,6 +140,9 @@ def main() -> None:
         raise ValueError("unexpected frozen postrun link status")
     raw = args.raw.resolve(strict=True)
     probe = args.ffprobe_json.resolve(strict=True)
+    validate_output_directory(args.output, EXTERNAL_PARENT,
+                              [raw, raw.parents[2], probe, links_path.parent,
+                               Path(__file__).resolve().parents[3]])
     pinned_source(raw, links["raw_from_prior_full_sha_audit"], links["raw_stat_during_link_audit"])
     pinned_source(probe, links["ffprobe_from_prior_full_sha_audit"],
                   links["ffprobe_stat_during_link_audit"])
@@ -122,48 +167,122 @@ def main() -> None:
         "full_speed_human_review": False,
         "clean_spans_certified": False,
     }
-    (args.output / "intent.json").write_text(
-        json.dumps(intent, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    write_new_json(args.output / "intent.json", intent)
     samples = []
     for second in args.seek:
         still = args.output / f"seek-{second:03d}.png"
-        stderr_path = args.output / f"seek-{second:03d}.ffmpeg.stderr.txt"
+        stdout_path = args.output / f"seek-{second:03d}.ffmpeg.stdout.bin"
+        stderr_path = args.output / f"seek-{second:03d}.ffmpeg.stderr.bin"
+        step_intent_path = args.output / f"seek-{second:03d}.intent.json"
+        step_exit_path = args.output / f"seek-{second:03d}.exit.json"
         argv = [ffmpeg, "-hide_banner", "-loglevel", "info", "-nostdin", "-n",
                 "-threads", "1", "-filter_threads", "1", "-ss", str(second),
                 "-copyts", "-i", str(raw), "-map", "0:v:0", "-an",
                 "-vf", "showinfo", "-frames:v", "1", "-compression_level", "1",
                 str(still)]
-        result = subprocess.run(argv, capture_output=True, text=True, check=False)
-        stderr_path.write_text(result.stderr, encoding="utf-8")
-        if result.returncode != 0 or not still.is_file():
-            raise RuntimeError(f"FFmpeg seek {second} failed; partial attempt preserved")
-        showinfo = SHOWINFO_PTS.findall(result.stderr)
-        if not showinfo:
-            raise ValueError(f"seek {second} has no showinfo PTS; partial attempt preserved")
-        measured = Decimal(showinfo[0])
-        if abs(measured - Decimal(second)) > Decimal("0.5"):
-            raise ValueError(f"seek {second} decoded distant frame {measured}; partial preserved")
-        matched = match_probe_pts(measured, pts_values, pts_strings)
-        width, height = png_dimensions(still)
-        if (width, height) != (2560, 1440):
-            raise ValueError(f"seek {second} PNG geometry {width}x{height} differs from raw")
+        write_new_json(step_intent_path, {
+            "schema": "xar.war-promo.e2-05-sparse-seek-intent/v1",
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+            "requested_seek_seconds": second,
+            "argv": argv,
+            "raw_frozen_identity": links["raw_from_prior_full_sha_audit"],
+            "raw_rehash_performed": False,
+        })
+        exit_code = None
+        measured = None
+        matched = None
+        dimensions = None
+        errors = []
+        raw_before = stat_snapshot(raw)
+        # The exact byte streams exist even if launch or validation fails.
+        with stdout_path.open("xb") as stdout_stream, stderr_path.open("xb") as stderr_stream:
+            try:
+                pinned_source(raw, links["raw_from_prior_full_sha_audit"],
+                              links["raw_stat_during_link_audit"])
+                completed = subprocess.run(argv, stdout=stdout_stream, stderr=stderr_stream,
+                                           check=False)
+                exit_code = completed.returncode
+            except BaseException as exc:
+                errors.append(f"launch_or_source_before: {type(exc).__name__}: {exc}")
+        raw_after = stat_snapshot(raw)
+        try:
+            pinned_source(raw, links["raw_from_prior_full_sha_audit"],
+                          links["raw_stat_during_link_audit"])
+        except Exception as exc:
+            errors.append(f"source_after: {type(exc).__name__}: {exc}")
+        if exit_code is None or exit_code != 0 or not still.is_file():
+            errors.append(f"ffmpeg_exit_or_png_missing: exit_code={exit_code}, png={still.is_file()}")
+        if not errors:
+            try:
+                measured = unique_showinfo_pts(stderr_path.read_bytes())
+                if abs(measured - Decimal(second)) > Decimal("0.5"):
+                    raise ValueError(f"seek {second} decoded distant frame {measured}")
+                matched = match_probe_pts(measured, pts_values, pts_strings)
+                dimensions = png_dimensions(still)
+                if dimensions != (2560, 1440):
+                    raise ValueError(f"PNG geometry {dimensions} differs from raw")
+            except Exception as exc:
+                errors.append(f"pts_or_png: {type(exc).__name__}: {exc}")
+        step_exit = {
+            "schema": "xar.war-promo.e2-05-sparse-seek-exit/v1",
+            "completed_at_utc": datetime.now(timezone.utc).isoformat(),
+            "result": "RED_PARTIAL_PRESERVED" if errors else "SPARSE_SAMPLE_UNREVIEWED",
+            "requested_seek_seconds": second,
+            "ffmpeg_exit_code": exit_code,
+            "raw_stat_before": raw_before,
+            "raw_stat_after": raw_after,
+            "ffmpeg_stdout": file_identity(stdout_path),
+            "ffmpeg_stderr": file_identity(stderr_path),
+            "png_or_partial": file_identity(still) if still.is_file() else None,
+            "png_dimensions": dimensions,
+            "ffmpeg_showinfo_pts_seconds": str(measured) if measured is not None else None,
+            "frozen_ffprobe_frame_pts_seconds": matched,
+            "errors": errors,
+            "argv": argv,
+        }
+        write_new_json(step_exit_path, step_exit)
+        if errors:
+            raise RuntimeError(f"seek {second} RED; exact logs and partial preserved at {step_exit_path}")
         samples.append({
             "requested_seek_seconds": second,
             "ffmpeg_showinfo_pts_seconds": str(measured),
             "frozen_ffprobe_frame_pts_seconds": matched,
             "still": file_identity(still),
-            "png_width": width,
-            "png_height": height,
+            "png_width": dimensions[0],
+            "png_height": dimensions[1],
+            "seek_intent": file_identity(step_intent_path),
+            "seek_exit": file_identity(step_exit_path),
+            "ffmpeg_stdout": file_identity(stdout_path),
             "ffmpeg_stderr": file_identity(stderr_path),
-            "ffmpeg_exit_code": result.returncode,
+            "ffmpeg_exit_code": exit_code,
             "argv": argv,
         })
+    final_errors = []
+    for label, source, row, snapshot in (
+        ("raw", raw, links["raw_from_prior_full_sha_audit"], links["raw_stat_during_link_audit"]),
+        ("ffprobe", probe, links["ffprobe_from_prior_full_sha_audit"],
+         links["ffprobe_stat_during_link_audit"]),
+    ):
+        try:
+            pinned_source(source, row, snapshot)
+        except Exception as exc:
+            final_errors.append(f"{label}: {type(exc).__name__}: {exc}")
+    write_new_json(args.output / "final-source-audit.json", {
+        "schema": "xar.war-promo.e2-05-sparse-final-source-audit/v1",
+        "completed_at_utc": datetime.now(timezone.utc).isoformat(),
+        "result": "RED_SOURCE_DRIFT" if final_errors else "STABLE_STAT_ONLY",
+        "raw": stat_snapshot(raw),
+        "ffprobe": stat_snapshot(probe),
+        "raw_rehash_performed": False,
+        "errors": final_errors,
+    })
+    if final_errors:
+        raise RuntimeError("source stat drift after final seek; partial attempt preserved")
     index = {**intent, "schema": "xar.war-promo.e2-05-sparse-visual-index/v1",
-             "completed_at_utc": datetime.now(timezone.utc).isoformat(), "samples": samples}
-    (args.output / "sample-index.json").write_text(
-        json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+             "completed_at_utc": datetime.now(timezone.utc).isoformat(),
+             "final_source_audit": file_identity(args.output / "final-source-audit.json"),
+             "samples": samples}
+    write_new_json(args.output / "sample-index.json", index)
     print(args.output / "sample-index.json")
 
 
