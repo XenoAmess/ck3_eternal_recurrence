@@ -74,8 +74,21 @@
     "source_checkpoint_save_size_bytes": 78514751,
     "source_checkpoint_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
     "source_checkpoint_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
-    "receiver_qualification": "not_yet_possible_from_metadata_only"
+    "receiver_qualification": "source_side_no_launch_now_qualified_but_receiver_bytes_unverified"
+  },
+  "later_source_qualification_correction": {
+    "supersedes_only_notice_field": "SOURCE-R0321-WAR-FORECAST-RED-v1.json recovery.recovery_qualified_for_receiver=false",
+    "source_master_commit": "32c0dd3706b95426977d787886b44f5545105772",
+    "source_git_path": "docs/project-state/current-state.source.json",
+    "source_git_file_size_bytes": 132004,
+    "source_git_file_sha256": "76B21C3F6E41A79AA9B919594CCE9EC7B28F2BD027391E973578ED1BE7419507",
+    "source_claim": "Frozen H3911 save, source driver and sidecars passed official source-machine pairing, rebind and no-launch in an independent recovery candidate at 2eb9cb952; no H3911 cold restore or live forecast RED closure.",
+    "source_pair_identity_sha256": "FDE4CC3A64DF5BB5D83F7B132FE5CC2985D31ACA28F0883A1C6245C197B5915E",
+    "source_no_launch_report_sha256": "1067E8468BE61A6B0240E12B145FD173D6DCD4E786FED3991E7E436253E75712",
+    "receiver_war_addendum_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-QUALIFICATION-ADDENDUM-v1.json",
+    "receiver_war_addendum_sha256": "BAB04D146FE399F52685B73F8B595F8F32864372F94D9C140E760834C7D811DD",
+    "receiver_limit": "Source-side qualification is not receiver byte verification, receiver no-launch, cold restore, or an authorized attack. The report remains first transfer priority; later H3911 assets require exact manifest and selective receipt."
   },
   "relation_to_prior": "R0271 original turn36 future-siege-participant RED remains historical. R0004/R0005 proved only a bounded first-hop/day-by-day recovery; R0319 reported later progress to h3860. R0321's source-reported participant_partition=available at h3911 is a new frame and does not retroactively prove the old frame. R0266 cash amount fields are independent and remain unfilled by this forecast notice.",
-  "receiver_boundary": "Only the 5777-byte OneDrive notice and its preceding R0319 notice were byte-verified here. The R0321 formal report, h3911 save/driver, V3 raw envelope, and exact new binaries were not transferred or independently checked. No receiver CK3 launch, formal replay, cash receipt, or war model accuracy claim."
+  "receiver_boundary": "Only the 5777-byte OneDrive notice and its preceding R0319 notice were byte-verified here. Later Git master 32c0dd370 reports source-side H3911 official pair/rebind/no-launch, but the R0321 formal report, h3911 save/driver, V3 raw envelope, and exact new binaries were not transferred or independently checked on this receiver. No receiver CK3 launch, formal replay, cash receipt, or war model accuracy claim."
 }

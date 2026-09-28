@@ -49,7 +49,17 @@
     "r0266": "No pending war cash, selected-action fee, future cost upper bound, risk budget, policy reserve or horizon is delivered by either metadata notice. R0266 joint cash remains incomplete."
   },
   "static_triage_boundary": "Current source has a one-defender-only research canary and disabled production combat-entry expected-utility activation. These facts help locate the reported provisional mismatch but are not a qualified probability, accuracy trial, or action approval; raw R0321 V3 payload is not yet receiver-verified.",
-  "receiver_unverified": "R0321 388302-byte formal report, exact V3 result/partition native rows, H3911 checkpoint pair qualification, source DLL/injector bytes, trial tape, model accuracy, and any receiver live replay. The notice itself states recovery_qualified_for_receiver=false.",
+  "later_source_qualification_update": {
+    "source_master_commit": "32c0dd3706b95426977d787886b44f5545105772",
+    "source_git_path": "docs/project-state/current-state.source.json",
+    "source_git_file_size_bytes": 132004,
+    "source_git_file_sha256": "76B21C3F6E41A79AA9B919594CCE9EC7B28F2BD027391E973578ED1BE7419507",
+    "source_side_claim": "H3911 frozen pair with save 5EFB3B3C...A4746 and driver DE09EA8B...AAEE33 passed official source-side pairing/rebind/no-launch at candidate source commit 2eb9cb952; pair identity FDE4CC3A...B5915E, no-launch report 1067E846...75712. No H3911 cold restore or forecast GREEN.",
+    "war_addendum_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-QUALIFICATION-ADDENDUM-v1.json",
+    "war_addendum_sha256": "BAB04D146FE399F52685B73F8B595F8F32864372F94D9C140E760834C7D811DD",
+    "effect": "Supersedes the older source notice's recovery_qualified_for_receiver=false for source-side candidate preparation only; it does not establish receiver asset availability or battle decision."
+  },
+  "receiver_unverified": "R0321 388302-byte formal report, exact V3 result/partition native rows, H3911 source pair/no-launch proof file bytes on this receiver, source DLL/injector bytes, trial tape, model accuracy, and any receiver live replay. The older notice's recovery_qualified_for_receiver=false was later superseded on the source machine by Git master 32c0dd370, without a receiver transfer.",
   "next_request": {
     "git_request": "../requests/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.json",
     "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
