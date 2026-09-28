@@ -496,9 +496,8 @@ formal turn consumes that receipt. A cold restart reads the same ledger and
 observes before allowing any new ransom; it never repeats an unresolved
 submission. Gold gain is a near-date co-observation rather than proof that
 no other income occurred, so the live report must retain the source date and
-other actions. No action, material receipt, next-turn consumption or cold
-restore has yet been observed for this candidate. Public prisoner action and
-advertising remain OFF pending those gates.
+other actions. Public prisoner action and advertising remain OFF pending
+their separate publication gates.
 
 The H3446 private native calls require a fresh verified paused
 application-main pump before each war-source, prisoner-ordinal, selected
@@ -567,6 +566,27 @@ the independent native frame comparison, while keeping the material-readback
 label in the report. Genuine query frame changes remain RED. A new PID must
 still confirm the resolved ledger and consume it on a following turn before
 claiming a complete cold-recovery loop.
+
+R0290 used the R0289 final durable checkpoint (history 3547, raw date
+53219304; save SHA-256 `B809FD507B3EB7FFB16AFC7AE1B63B93BE58A40FEDEBF1C6386F89E1FE5F4CC8`)
+and the resolved ledger in a new PID after official rebind/no-launch. The
+formal strategy executed one read-only `query-war-termination-options-16777231`
+turn. Before submitting its next `query-army-strengths-v1` plan, the runner
+saved a candidate checkpoint and independently read the prisoner collection
+and player gold on the same paused frame. Prisoner 34486 remained absent;
+the observed player-gold gain remained 5,019,222 raw against the 5,000,000
+raw quote. The ledger retained `pending=null` and `resolved=applied`, with no
+duplicate ransom submission or game-date advance. Its verdict was
+`material_reconfirmed_with_next_turn`, and controlled cleanup removed the
+process tree. The formal report is
+`Z:\m6ransom-r0289-resolved-cold-candidate-v1\evidence\R0290\formal-auto-run.json`
+(SHA-256 `11C5AB1F4D41547498257E2A78B1CC9F24C3522A859556C23792D58B4F97B536`).
+This closes the one-off private 50-gold ransom action, independent material
+readback, next-turn consumption and cold recovery for this exact H3446
+candidate. The other two prisoners and public action coverage remain
+unqualified. The gold gain is an observed near-date delta that may include
+other income; the prisoner release and at-least-quote gain are the bounded
+postcondition, not an exclusive attribution of every coin.
 
 ```mermaid
 flowchart TD
