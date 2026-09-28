@@ -77,6 +77,8 @@ FAMILY_SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
 CHILD_MATRILINEAL_SCHEMA = "xar.ck3.player-child-matrilineal-private-action.v1"
 CHILD_MATRILINEAL_SUBMIT_STEP = "submit-player-child-matrilineal-marriage-v1-private"
 CHILD_MATRILINEAL_PROOF_SCHEMA = "xar.ck3.child-matrilineal-formal-job/v1"
+CHILD_MATRILINEAL_COLD_PROOF_SCHEMA = "xar.ck3.child-matrilineal-cold-result-job/v1"
+CHILD_MATRILINEAL_RESULT_STEP = "query-player-child-matrilineal-marriage-result-v1-private"
 FACTION_GIFT_PENDING_V1_SCHEMA = "xar.ck3.faction_gift_pending_v1"
 PRIVATE_LIFESTYLE_CMAKE_OPTION = (
     "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1"
@@ -697,22 +699,29 @@ def family_resolved_sidecar_pair(
 def child_matrilineal_pending_sidecar_pair(
     sidecar: dict[str, Any], driver: dict[str, Any],
     manifest: dict[str, Any], save_sha256: str,
-    attempt: dict[str, Any],
+    attempt: dict[str, Any] | list[dict[str, Any]],
 ) -> int:
-    """Pair a submitted child proposal, its save, and the formal run receipt."""
+    """Pair a child proposal through consecutive saved formal pending reads."""
+    reports = attempt if isinstance(attempt, list) else [attempt]
+    if not reports or any(not isinstance(row, dict) for row in reports):
+        raise ValueError("child proposal lacks a saved formal pending proof")
+    submit_attempt = reports[0]
     pending = sidecar.get("pending")
     checkpoint = driver.get("last_checkpoint")
-    formal = attempt.get("formal_auto_run")
+    formal = submit_attempt.get("formal_auto_run")
     turns = formal.get("auto_run", {}).get("turns") if isinstance(formal, dict) else None
     checkpoints = formal.get("checkpoints") if isinstance(formal, dict) else None
     session = formal.get("session") if isinstance(formal, dict) else None
+    submit_ledger = submit_attempt.get("child_ledger")
+    submit_pending = submit_ledger.get("pending") if isinstance(submit_ledger, dict) else None
     if (sidecar.get("schema") != CHILD_MATRILINEAL_SCHEMA
             or sidecar.get("resolved") is not None or not isinstance(pending, dict)
             or not isinstance(checkpoint, dict)
-            or attempt.get("schema") != CHILD_MATRILINEAL_PROOF_SCHEMA
-            or attempt.get("status") != "receipt_pending_checkpointed"
-            or attempt.get("ok") is not True
-            or attempt.get("child_ledger") != sidecar
+            or submit_attempt.get("schema") != CHILD_MATRILINEAL_PROOF_SCHEMA
+            or submit_attempt.get("status") != "receipt_pending_checkpointed"
+            or submit_attempt.get("ok") is not True
+            or not isinstance(submit_pending, dict)
+            or (len(reports) == 1 and submit_ledger != sidecar)
             or not isinstance(formal, dict)
             or formal.get("status") != "turn_limit"
             or not isinstance(formal.get("cleanup"), dict)
@@ -738,13 +747,19 @@ def child_matrilineal_pending_sidecar_pair(
             or pending.get("played_character_id") != actor
             or pending.get("episode_run_id") != episode
             or pending.get("source_bridge_pid") != session.get("pid")
+            or any(submit_pending.get(key) != pending.get(key) for key in (
+                "schema", "status", "submission_state", "material_result",
+                "accepted", "matrilineal_option_selected", "played_character_id",
+                "heir_character_id", "candidate_character_id", "recipient_character_id",
+                "episode_run_id", "source_bridge_pid", "source_date_raw"))
             or type(heir) is not int or heir <= 0 or heir == actor
             or type(candidate) is not int or candidate <= 0
             or type(recipient) is not int or recipient <= 0
             or type(date_raw) is not int
             or checkpoint.get("episode_character_id") != actor
             or checkpoint.get("episode_run_id") != episode
-            or checkpoint.get("date_raw") != date_raw
+            or type(checkpoint.get("date_raw")) is not int
+            or checkpoint["date_raw"] < date_raw
             or checkpoint.get("sha256") != save_sha256
             or type(index) is not int or index <= 0):
         raise ValueError("child pending identity disagrees with paired save")
@@ -753,9 +768,10 @@ def child_matrilineal_pending_sidecar_pair(
     matching = [row for row in checkpoints if isinstance(row, dict)
                 and row.get("phase") == "player_child_matrilineal_submitted_pending"
                 and row.get("status") == "saved"
-                and row.get("history_index") == index
+                and type(row.get("history_index")) is int
+                and 0 < row["history_index"] <= index
                 and row.get("date_raw") == date_raw
-                and row.get("sha256") == save_sha256
+                and isinstance(row.get("sha256"), str)
                 and row.get("episode_character_id") == actor
                 and row.get("episode_run_id") == episode]
     if (turn.get("selected_step") != CHILD_MATRILINEAL_SUBMIT_STEP
@@ -777,6 +793,88 @@ def child_matrilineal_pending_sidecar_pair(
                 ("heir_character_id", heir), ("candidate_character_id", candidate),
                 ("recipient_character_id", recipient), ("episode_run_id", episode)))):
         raise ValueError("child pending proposal is not paired with its saved submit")
+    previous = matching[0]
+    previous_pid = session["pid"]
+    for continuation in reports[1:]:
+        later = continuation.get("formal_auto_run")
+        later_turns = later.get("auto_run", {}).get("turns") if isinstance(later, dict) else None
+        later_checkpoints = later.get("checkpoints") if isinstance(later, dict) else None
+        later_session = later.get("session") if isinstance(later, dict) else None
+        fixed_seed = later.get("fixed_seed") if isinstance(later, dict) else None
+        readiness = later.get("readiness") if isinstance(later, dict) else None
+        if (continuation.get("schema") != CHILD_MATRILINEAL_COLD_PROOF_SCHEMA
+                or not isinstance(later, dict) or later.get("ok") is not True
+                or not isinstance(later.get("cleanup"), dict)
+                or later["cleanup"].get("ok") is not True
+                or not isinstance(later_turns, list)
+                or not isinstance(later_checkpoints, list)
+                or not isinstance(later_session, dict)
+                or not isinstance(fixed_seed, dict)
+                or not isinstance(readiness, dict)
+                or type(later_session.get("pid")) is not int
+                or later_session["pid"] == previous_pid
+                or readiness.get("bridge_pid") != later_session["pid"]
+                or readiness.get("episode_character_id") != actor
+                or readiness.get("episode_run_id") != episode
+                or fixed_seed.get("sha256") != previous["sha256"]
+                or fixed_seed.get("history_index") != previous["history_index"]
+                or fixed_seed.get("saved_date_raw") != previous["date_raw"]
+                or any(isinstance(row, dict)
+                       and row.get("selected_step") == CHILD_MATRILINEAL_SUBMIT_STEP
+                       for row in later_turns)):
+            raise ValueError("child proof chain does not continue prior checkpoint")
+        reads = [row for row in later_turns if isinstance(row, dict)
+                 and row.get("selected_step") == CHILD_MATRILINEAL_RESULT_STEP
+                 and row.get("status") == "executed"
+                 and isinstance(row.get("result"), dict)]
+        if (not reads or any(
+                row["result"].get("status") != "pending"
+                or row["result"].get("accepted") is not True
+                or row["result"].get("material_result") is not False
+                or row["result"].get("heir_character_id") != heir
+                or row["result"].get("candidate_character_id") != candidate
+                or row["result"].get("recipient_character_id") != recipient
+                for row in reads)):
+            raise ValueError("child proof chain lacks matching pending result read")
+        saved = [row for row in later_checkpoints if isinstance(row, dict)
+                 and row.get("status") == "saved"
+                 and type(row.get("history_index")) is int
+                 and type(row.get("date_raw")) is int
+                 and isinstance(row.get("sha256"), str)
+                 and row.get("episode_character_id") == actor
+                 and row.get("episode_run_id") == episode]
+        if not saved:
+            raise ValueError("child proof chain lacks saved checkpoint")
+        paired = max(saved, key=lambda row: row["history_index"])
+        if (sum(row["history_index"] == paired["history_index"] for row in saved) != 1
+                or paired["history_index"] <= previous["history_index"]
+                or paired["date_raw"] < previous["date_raw"]):
+            raise ValueError("child proof chain has ambiguous checkpoint")
+        later_ledger = continuation.get("child_ledger")
+        last_read = reads[-1]["result"]
+        if (not isinstance(later_ledger, dict)
+                or later_ledger.get("schema") != CHILD_MATRILINEAL_SCHEMA
+                or not isinstance(later_ledger.get("pending"), dict)
+                or later_ledger.get("resolved") is not None
+                or later_ledger["pending"].get("last_checked_bridge_pid") != later_session["pid"]
+                or type(last_read.get("post_native_revision")) is not int
+                or later_ledger["pending"].get("last_checked_native_revision") !=
+                   last_read["post_native_revision"]
+                or later_ledger["pending"].get("last_outbound_pending_state") !=
+                   last_read.get("outbound_pending_state")
+                or any(later_ledger["pending"].get(key) != pending.get(key)
+                       for key in ("played_character_id", "heir_character_id",
+                                   "candidate_character_id", "recipient_character_id",
+                                   "episode_run_id", "source_bridge_pid", "source_date_raw",
+                                   "matrilineal_option_selected"))):
+            raise ValueError("child proof chain disagrees with pending ledger")
+        previous = paired
+        previous_pid = later_session["pid"]
+    if (previous["history_index"] != index
+            or previous["date_raw"] != checkpoint["date_raw"]
+            or previous["sha256"] != save_sha256
+            or reports[-1].get("child_ledger") != sidecar):
+        raise ValueError("child proof chain does not reach paired save and ledger")
     return candidate
 
 
@@ -1036,10 +1134,14 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     family_report_sources = [path.resolve() for path in family_report_sources]
     child_sidecar_arg = getattr(args, "child_matrilineal_sidecar", None)
     child_proof_arg = getattr(args, "child_matrilineal_proof_report", None)
-    if (child_sidecar_arg is None) != (child_proof_arg is None):
+    child_proof_sources = (
+        [child_proof_arg] if isinstance(child_proof_arg, Path)
+        else list(child_proof_arg or [])
+    )
+    if (child_sidecar_arg is None) != (not child_proof_sources):
         raise ValueError("child pending sidecar requires its formal proof report")
     child_source = child_sidecar_arg.resolve() if child_sidecar_arg else None
-    child_proof_source = child_proof_arg.resolve() if child_proof_arg else None
+    child_proof_sources = [path.resolve() for path in child_proof_sources]
     faction_sidecar_arg = getattr(args, "faction_gift_sidecar", None)
     faction_source = (faction_sidecar_arg.resolve() if faction_sidecar_arg is not None
                       else sample_dir / "faction-gift-pending-v1.json")
@@ -1110,18 +1212,19 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     child_proof_sha256 = None
     child_record = None
     child_proof = None
-    if child_source is not None and child_proof_source is not None:
-        if not child_source.is_file() or not child_proof_source.is_file():
+    if child_source is not None and child_proof_sources:
+        if not child_source.is_file() or any(
+                not path.is_file() for path in child_proof_sources):
             raise FileNotFoundError("child pending sidecar or formal proof report missing")
         if child_target.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {child_target}")
         child_record = read_json(child_source)
-        child_proof = read_json(child_proof_source)
+        child_proof = [read_json(path) for path in child_proof_sources]
         child_candidate = child_matrilineal_pending_sidecar_pair(
             child_record, driver_source_record, manifest,
             sha256(save_source), child_proof)
         child_source_sha256 = sha256(child_source)
-        child_proof_sha256 = sha256(child_proof_source)
+        child_proof_sha256 = [sha256(path) for path in child_proof_sources]
     faction_request_id = None
     faction_source_sha256 = None
     faction_record = None
@@ -1325,8 +1428,12 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "status": "paired_no_launch",
             "source": str(child_source), "path": str(child_target),
             "sha256": child_source_sha256,
-            "formal_proof_report": str(child_proof_source),
-            "formal_proof_report_sha256": child_proof_sha256,
+            "formal_proof_report": (
+                str(child_proof_sources[0]) if len(child_proof_sources) == 1 else None),
+            "formal_proof_report_sha256": (
+                child_proof_sha256[0] if len(child_proof_sources) == 1 else None),
+            "formal_proof_reports": [str(path) for path in child_proof_sources],
+            "formal_proof_reports_sha256": child_proof_sha256,
             "candidate_character_id": child_candidate,
         }
     if faction_request_id is not None:
@@ -2229,7 +2336,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--family-sidecar", type=Path)
     prepare.add_argument("--family-proof-report", type=Path, action="append")
     prepare.add_argument("--child-matrilineal-sidecar", type=Path)
-    prepare.add_argument("--child-matrilineal-proof-report", type=Path)
+    prepare.add_argument("--child-matrilineal-proof-report", type=Path, action="append")
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
