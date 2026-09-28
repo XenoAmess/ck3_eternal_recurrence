@@ -1,0 +1,29 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3492-historical-binaries-request.v1",
+  "created_at_utc": "2026-09-28T08:56:06Z",
+  "status": "requested_exact_two_file_transfer_or_source_mismatch_response",
+  "owner": "r0266_resume",
+  "source_addendum_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-ADDENDUM-H3492-REBIND-v1.json",
+  "source_addendum_sha256": "FF5A5E86B5E6E8F00BF38B0AA465106F667FFFE7BF8F0EFCCCE826F8119BA659",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "source_binary_commit": "a5c37bbd4c35e67afde6051e023cf98559d61c59",
+  "files": [
+    {
+      "role": "historical H3492 M6 bridge DLL",
+      "source_path": "Z:/m6ransom-r0288-cold-receipt-candidate-v1/candidate-bin/xar_ck3_bridge.dll",
+      "receiver_file": "H3492-m6-v1-xar_ck3_bridge.dll",
+      "bytes": 3366912,
+      "sha256": "278CC296428ECF58F40DAF1661AF9BA5A2356441852A1920D82E47488BE6A72D"
+    },
+    {
+      "role": "historical H3492 M6 bridge injector",
+      "source_path": "Z:/m6ransom-r0288-cold-receipt-candidate-v1/candidate-bin/xar_ck3_bridge_injector.exe",
+      "receiver_file": "H3492-m6-v1-xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "358F15B63102F5F8CA5DC3E253DB2E47ABA260930A0926347182A56D144C00D9"
+    }
+  ],
+  "origin_action": "Rehash only these two named source files. If either exact byte sequence is absent, return an explicit mismatch response and transfer no substitute. If both match, copy only these two into the fixed WAR folder and append a transfer manifest binding this request SHA and both hashes.",
+  "receiver_boundary": "The separate H3492 six-file save/driver transfer acceptance remains unchanged. These binaries are a historical H3492 M6 pair, not a new war-cash producer. Receiver will separately verify their exact pair and use only for an explicitly bounded read-only diagnostic after official no-launch and fresh Steam offline gates.",
+  "cash_boundary": "No paused cash observation or new cash function is claimed. Five R0266 cash inputs remain null, and H3492 pending ransom sidecar remains outside this request."
+}
