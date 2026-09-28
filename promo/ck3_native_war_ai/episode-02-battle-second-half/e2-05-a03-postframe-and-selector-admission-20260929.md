@@ -1,6 +1,6 @@
 # E2-05 a03: independent d26 replay, d27 seal and scoped status read
 
-Prepared 2026-09-29 CST without a screen lease or CK3 launch. **Admission is RED at this review**: the day-27 save operator and scoped offline character reader still need independent review, and the a02 pinned DLL lacks selector-ring output. This is a future attempt plan, not evidence of an a03 run. Keep a02's failed trace, raw and every earlier replay unchanged. Separate static audit commit `0a8783626` is a candidate input and must be integrated before this plan is treated as a complete reviewed package; it is not live admission.
+Prepared 2026-09-29 CST without a screen lease or CK3 launch. **Admission is RED at this review**: the day-27 save operator and scoped offline character reader still need independent review, and the a02 pinned DLL lacks selector-ring output. This is a future attempt plan, not evidence of an a03 run. Keep a02's failed trace, raw and every earlier replay unchanged. Separate static audit commits `0a8783626` and its reviewed correction `65cc562f9` are candidate inputs and must both be integrated before this plan is treated as a complete reviewed package; they are not live admission.
 
 ## Why a03 is separate
 
