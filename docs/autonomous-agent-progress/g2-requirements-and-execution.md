@@ -5,7 +5,7 @@
 [`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
 **Operator live source `operator_get_status`** 实时核查，不能以 Git 缓存投影或本页历史段落代替。
 已归档的当天增量见[09-28 日报](daily/2026-09-28.md)及[W40 滚动周报](weekly/2026-W40.md)；下方最新配对以 R0321 的持久 checkpoint 与官方配对/no-launch 回执为据。
-Robert 最新可恢复持久配对为 **h3911/raw53219928、3,150 日**；`current-state.json` 的 H3911 投影由状态工作包另行交付，查询时以其实际版本为准。`g2-requirements-v1.json` 的 `current_work_package` 为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
+Robert 最新可恢复持久配对为 **h3911/raw53219928、3,150 日**；`current-state.json` 已投影该 H3911 高水位及 R0321 战争 RED。`g2-requirements-v1.json` 的 `current_work_package` 为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
 玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
