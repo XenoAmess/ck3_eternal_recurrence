@@ -1,8 +1,20 @@
-# G2 全游戏自治需求与现行施工队列
+# G2 全游戏自治需求与执行记录
 
-状态日期：2026-09-15（Asia/Shanghai）。机器可读权威状态为
-[`g2-requirements-v1.json`](g2-requirements-v1.json)；玩法覆盖、Native/MCP 缺口与资料依据见
+本页状态摘要更新于 **2026-09-28（Asia/Shanghai）**。8 项里程碑的定义、分母、状态和通过条件以
+[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准；工作包投影见
+[`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
+**Operator live source `operator_get_status`** 实时核查，不能以 Git 缓存投影或本页历史段落代替。
+当天增量与最新合法配对见[09-28 日报](daily/2026-09-28.md)及[W40 滚动周报](weekly/2026-W40.md)。
+本次修订时 `current-state.json` 的 Robert 配对仍投影 H3446，`g2-requirements-v1.json` 的 `current_work_package` 仍列已关闭的 GEN-034（4/4）；两项旧字段不覆盖下方 h3778 和非战争实际调度。
+玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
+
+### 2026-09-28 当前执行状态
+
+- G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
+- 正式 Robert 最近合法持久配对为 **h3778/raw53219568、3,135/36,524 游戏日**；百年门 **0/1**、首整局 **0/1**、独立种子 **0/2**。派生 h90 日期和失败尝试均不计入 Robert。
+- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。[R0318 Emma attempt](Z:/family-child-h3778-native-v3/operator-runs/xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0318/attempt-report.json) SHA-256 `11F011DE86BB108757F1EF68FCC9B6D6E313253B8AF46F08565EA02C88F0BC68` 在原生婚配查询处 `BridgeUnavailableError`，没有查询结果、动作或日期，**不能判定 Emma 婚配阴性**；R0319 仍在途，不预写结果。
+- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0301 生活方式首帧未用点数 **0**、有效财富 focus，未证实本帧漏消费；R0302–R0303 建设有正收益候选，但战时现金比较字段和完整同帧可行动门尚缺，未在 Robert 开工；Emma 家庭查询 RED 待修；联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
 
 ## 口径纠正
 
@@ -10,16 +22,16 @@ G2 的终点是能够跨继承、跨玩法域持续完成“观察 → 决策 �
 `start-next-episode` 和第二寿命证明了进程接管、恢复与 episode 生命周期；它们不等于普通 campaign 的真实继承，也不等于
 整套玩法覆盖。
 
-G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **2/8 complete**。以后只汇报 `完成里程碑/8`、当前里程碑及其子包，
+G2 采用固定的 **8 个可见 OODA 里程碑**，截至本页状态摘要为 **3/8 complete**。以后只汇报 `完成里程碑/8`、当前里程碑及其子包，
 不再汇报没有固定分母的“G2 90%”。旧 `T1=90%` 只曾表示 GEN-034 这个窄战争退出包接近当时定义的收口，且随着真实证据
 改写了剩余输入，它已失去可比性。
 
-| 里程碑 | 优先级 | 当前状态 | 可见验收结果 |
+| 里程碑 | 合同优先级 | 2026-09-28 状态 | 可见验收结果 |
 |---|---:|---|---|
 | G2-M0 GEN-034 三路战争退出 | P0 | complete | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
 | G2-M1 实体发现与 core turn bundle | P1-A | complete | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
 | G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
-| G2-M3 继承与 realm survival | P1-C | in progress | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
+| G2-M3 继承与 realm survival | P1-C | complete | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
 | G2-M4 和平治理纵向切片 | P1-D | in progress | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
 | G2-M5 家庭、外交与完整战争 | P2 | not started | 比较至少五个候选，执行一条从机会选择到最终后置的完整路径 |
 | G2-M6 谋略、制度与活动 | P3 | not started | 谋略、囚犯/制度、非宗教决议/法律与活动各完成一个 OODA |
@@ -30,13 +42,15 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **2/8 complete*
 `planner_consumer` 和 `visible_outcome`，三者由机器可读文件固定。`py tools/validate_g2_requirements.py` 校验固定 8 项分母、
 当前完成数、状态词汇与 GEN-034 子包计数；需求或进度修改后必须运行一次。
 
-## 当前 P0：GEN-034
+以下 GEN-034 与各域施工段落保留原写作时点的研究和证据；段内“当前”“现行”及 `2/8` 等数字描述的是**当时状态**，不覆盖上方日期摘要、里程碑表和机器合同。
 
-GEN-034 当前是 **4/4 子包完成**。R459 已真实提交一次 surrender，证明 source-specific
+## 历史执行记录：GEN-034（M0 已完成）
+
+GEN-034 在 R0043 后为 **4/4 子包完成**。R459 已真实提交一次 surrender，证明 source-specific
 `3000→0`、persisted truce expiry `53227656` 与战后生命周期；R471 已在同一 paused frame 两次读取玩家
 `13075500000`、对手 `16770900000` 的 strategic power，原生 ratio 为 `128262/100000`。
 
-现行四包为：
+当时四包为：
 
 1. `GEN-034-A`（**complete**）：把 R471 strategic-power 原语接成 policy-level campaign dominance certificate；
 2. `GEN-034-B`（**complete**）：提供有版本、来源、仓库默认值和显式 operator override 的 strategy budget/profile；
@@ -85,7 +99,7 @@ surrender；正式策略选择并仅提交一次 `surrender-war-16777285`。独�
 `2B726601160586AEEF71E4204441EDD13D50C697F6EAF6975514E68DA5AC82D6`。因此 GEN-034 A-D 为 `4/4`，G2-M0 为
 `complete`，固定 G2 完成数为 `2/8`。
 
-## GEN-034 后的固定顺序
+## GEN-034 后的历史施工顺序
 
 GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 ABI：
 
@@ -198,8 +212,8 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 
 ## 报告规则
 
-- 总进度只写 `G2-Mx / 8`，当前为 `2/8`；
-- 当前工作包另写 `完成子包/总子包`，GEN-034 已为 `4/4`；
+- 总进度只写 `G2-Mx / 8`，2026-09-28 状态为 `3/8`；
+- 活跃工作包另写 `完成子包/总子包`；历史 GEN-034 为 `4/4`，不是当前 P0；
 - query/tool 数量只作 surface inventory，不得换算为玩法完成率；
 - 任何 `live` 提升必须链接 paused artifact；ACK、schema、单元测试和单场 fixture 不得冒充 OODA；
 - 对已取得证据的输入直接复用，新的 live 只验证本包新增的最小事实或动作后置。
