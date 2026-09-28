@@ -288,6 +288,44 @@ void TestMetricsFailClosed() {
          ValueStatus::not_applicable);
 }
 
+void TestBasicSwayProgressGoalRange() {
+  auto capture = StableCapture();
+  SetAvailable(capture.rows[1].progress, 0);
+  SetAvailable(capture.rows[1].progress_goal, 355);
+  Observation observation{};
+  assert(xar::bridge::ObserveActiveSchemeStateV1Private(capture,
+                                                        observation));
+  assert(observation.rows[1].progress.value == 0);
+  assert(observation.rows[1].progress_goal.value == 355);
+
+  SetAvailable(capture.rows[1].progress, 365);
+  SetAvailable(capture.rows[1].progress_goal, 365);
+  assert(xar::bridge::ObserveActiveSchemeStateV1Private(capture,
+                                                        observation));
+
+  SetAvailable(capture.rows[1].progress_goal, 366);
+  ExpectFailure(capture, Failure::metric_invalid);
+
+  SetAvailable(capture.rows[1].progress, -1);
+  SetAvailable(capture.rows[1].progress_goal, 355);
+  ExpectFailure(capture, Failure::metric_invalid);
+
+  SetAvailable(capture.rows[1].progress, 356);
+  ExpectFailure(capture, Failure::metric_invalid);
+
+  SetAvailable(capture.rows[1].progress, 0);
+  SetKey(capture.rows[1].scheme_type_key, "other_basic_scheme");
+  ExpectFailure(capture, Failure::metric_invalid);
+
+  SetKey(capture.rows[1].scheme_type_key, "sway");
+  SetKey(capture.rows[1].category_key, "hostile");
+  ExpectFailure(capture, Failure::metric_invalid);
+
+  capture = StableCapture();
+  SetAvailable(capture.rows[0].progress_goal, 355);
+  ExpectFailure(capture, Failure::metric_invalid);
+}
+
 void TestCompleteEmptyContainerIsAvailable() {
   auto capture = StableCapture();
   capture.row_count_before = 0;
@@ -308,6 +346,7 @@ int main() {
   TestSameFrameAndEnumerationGates();
   TestIdentityAndOwnershipGates();
   TestMetricsFailClosed();
+  TestBasicSwayProgressGoalRange();
   TestCompleteEmptyContainerIsAvailable();
   return 0;
 }

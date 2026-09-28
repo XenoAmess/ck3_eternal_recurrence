@@ -95,7 +95,7 @@ struct Fixture {
     InitializeType(murder_type.data(), false, 5, 4);
     InitializeScheme(sway, kSwayIdentity,
                      reinterpret_cast<std::uintptr_t>(sway_type.data()),
-                     kSwayTarget, 3, 8, false, false, 0, 0, 0);
+                     kSwayTarget, 0, 355, false, false, 0, 0, 0);
     InitializeScheme(murder, kMurderIdentity,
                      reinterpret_cast<std::uintptr_t>(murder_type.data()),
                      kMurderTarget, 4, 10, false, true, 2, 1, 1);
@@ -328,8 +328,8 @@ void TestSwayAndMurder() {
   Expect(KeyEquals(sway.scheme_type_key, "sway") && sway.is_basic,
          "basic sway identity");
   Expect(KeyEquals(sway.category_key, "personal") &&
-             sway.target_id == kSwayTarget && sway.progress.value == 3 &&
-             sway.progress_goal.value == 8,
+             sway.target_id == kSwayTarget && sway.progress.value == 0 &&
+             sway.progress_goal.value == 355,
          "basic sway common fields");
   Expect(sway.success_chance.status ==
              ActiveSchemeStateV1PrivateValueStatus::not_applicable,

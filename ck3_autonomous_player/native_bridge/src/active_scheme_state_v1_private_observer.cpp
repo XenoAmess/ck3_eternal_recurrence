@@ -9,6 +9,10 @@ using Failure = ActiveSchemeStateV1PrivateFailure;
 using Observation = ActiveSchemeStateV1PrivateObservation;
 using ValueStatus = ActiveSchemeStateV1PrivateValueStatus;
 
+// Exact 1.19.0.6 sway_scheme.txt uses base_progress_goal = 365. A basic
+// Sway tracks this longer goal; the ordinary phase bound remains 10.
+constexpr std::int32_t kBasicSwayProgressMaximum = 365;
+
 void SetUnavailable(Observation &output, Failure reason) noexcept {
   output = {};
   output.status = ActiveSchemeStateV1PrivateStatus::unavailable;
@@ -190,8 +194,13 @@ bool ObserveActiveSchemeStateV1Private(
       SetUnavailable(output, Failure::metric_unavailable);
       return false;
     }
-    if (!AvailableInRange(source.progress, 0, 10) ||
-        !AvailableInRange(source.progress_goal, 1, 10) ||
+    const bool basic_sway = source.is_basic &&
+                            KeyEquals(source.scheme_type_key, "sway") &&
+                            KeyEquals(source.category_key, "personal");
+    const auto progress_maximum =
+        basic_sway ? kBasicSwayProgressMaximum : 10;
+    if (!AvailableInRange(source.progress, 0, progress_maximum) ||
+        !AvailableInRange(source.progress_goal, 1, progress_maximum) ||
         source.progress.value > source.progress_goal.value) {
       SetUnavailable(output, Failure::metric_invalid);
       return false;

@@ -379,6 +379,26 @@ that core enum and, only when a single captured row is rejected as
 an accepted value. Keep the pending intent and do not submit Sway again during
 recovery.
 
+### R0341 paused Sway metric read and bounded observer correction
+
+On H3924/raw53219928, the R0341 read-only paused run returned
+`native_scheme_observation_red:core_rejected:metric_invalid:row0_progress=0:row0_goal=355`
+for actor 29829 and target 32716. The report is
+`Z:\m6swayh3924crossproof-diag-live-20260929\operator-runs\sway-h3924-core-reason-read-2\formal-report.txt`.
+Its SHA-256 is
+`B8D07329860EF475A1B6719BBE0B7F3A756963B3B8F9BB20FB03BD796A341AAC`.
+The original exact 1.19.0.6 `sway_scheme.txt` is basic, personal and declares
+`base_progress_goal=365` (file SHA-256
+`B2B1A4BAA88315E329EFFF3F194A09DA11E29BC397961A125F922F742A1632B1`).
+The previously assumed `[1,10]` goal bound therefore rejected an observed
+native Sway instance. The observer now accepts progress `[0,365]` and goal
+`[1,365]` only when the copied row is basic, has exact type `sway`, and has
+category `personal`. It still requires progress no greater than goal. Other
+scheme types keep their `[0,10]` progress and `[1,10]` goal bounds. This is a
+source and focused-test correction; a new exact paired DLL must still read the
+H3924 instance independently before the R0339 Sway intent can resolve. R0341
+did not submit an action or advance the date.
+
 现有 SCHEME6/7/9/10 已有一次 typed submit 与独立 fresh receipt 原语，但
 原 DLL 只暴露只读 Sway step。本轮源码新增由
 `XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=ON`
