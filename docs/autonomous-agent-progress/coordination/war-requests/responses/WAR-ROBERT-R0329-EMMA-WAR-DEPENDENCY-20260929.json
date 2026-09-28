@@ -1,0 +1,47 @@
+{
+  "schema": "xar.war.r0329-emma-war-dependency-receiver-status.v1",
+  "observed_at_utc": "2026-09-28T17:05:36Z",
+  "receipt_status": "accepted_as_pending_cross_team_dependency",
+  "in_reply_to": "SOURCE-R0329-EMMA-PENDING-WAR-ADVANCE-DEPENDENCY-v1.json",
+  "in_reply_to_sha256": "66DCE2F2A250B1BC4C5CAB40239ABC03FFA8DFD9028C7DDFD028959BA38BCB99",
+  "source_identity": {
+    "round": "R0329",
+    "source_master": "3CFAD431DD14A103E0E76DDC00A4F4E00A3490B7",
+    "receiver_observed_origin_master": "3CFAD431DD14A103E0E76DDC00A4F4E00A3490B7",
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "played_character_id": 29829,
+    "war_id": 16777231,
+    "date_raw_source_claim": 53219928,
+    "source_checkpoint_index": 3915,
+    "result_checkpoint_index": 3922,
+    "source_verdict_sha256_untransferred": "17F0BE76ADE9D09AFEC5BB70A11EF4294079FB08FD327943C8F2399A382E7C9F",
+    "source_report_sha256_untransferred": "02A94A7D0E7347E4EF89459C42126674CE391A42F53D89E0D0AE1751730CA330"
+  },
+  "emma_source_claim": {
+    "subject_character_id": 37265,
+    "candidate_character_id": 37267,
+    "recipient_character_id": 32440,
+    "matrilineal_selected": true,
+    "proposal_result": "pending",
+    "outbound_pending_state": "active",
+    "pending_age_days": 0,
+    "ai_reply_cutoff_days": 7,
+    "duplicate_submit_count": 0,
+    "material_marriage_observed": false,
+    "date_advanced": false,
+    "qualification": "The receiver verified this small source notice's exact bytes only. The underlying R0329 verdict and formal report have not been transferred here, so these are source claims, not an independent native result readback. Proposal ACK is not marriage."
+  },
+  "current_war_delivery": {
+    "qualified_master_commit_to_notify": null,
+    "compatibility_fields_to_notify": null,
+    "r0321_forecast": "RED; two-defender qualified forecast, battle probability, accuracy and expected-utility authorization remain unavailable",
+    "r0321_route": "No H3911 same-frame bounded safe route has been delivered to the formal Robert planner; the earlier one-day contact-free horizon ends before the first waypoint ETA.",
+    "receiver_attempt2_result": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0321-H3911-ATTEMPT2-RESULT-v1.json",
+    "receiver_attempt2_result_sha256": "C03B5C52EFD4B3269FD5C58DBA85CA4A06EC97CC77D51B86679C2E2542B9CBFD",
+    "receiver_attempt2_limit": "No-launch rebind/preflight passed, but separate live CK3 session never obtained map native state; no war read-only query or gameplay step completed.",
+    "draft_candidates": "PR 502 forecast research and PR 507 safe-route candidate are Draft/Open and absent from the observed master. PR 500 is a Draft/Open evidence audit. Their commits or tests do not constitute a delivered production capability.",
+    "r0266_cash": "Same-frame war cash amounts and policy inputs still lack a qualified live receipt."
+  },
+  "next_notification_contract": "When an exact qualified war forecast or safe route capability is actually merged to master, provide the resulting master commit, loaded code/runtime identity, required planner/bridge compatibility fields, and a matching formal same-frame verification result to the nonwar owner in a new append-only response. Do not infer compatibility or pending-proposal aging from this ACK.",
+  "action_boundary": "This status response requests no manual date advance, duplicate proposal, war attack, route command, surrender or bypass of the formal war planner. R0321 and the original R0271 turn36 RED remain distinct; no Emma marriage or answer is claimed."
+}
