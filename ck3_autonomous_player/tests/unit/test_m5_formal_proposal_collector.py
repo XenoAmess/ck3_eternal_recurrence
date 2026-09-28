@@ -911,6 +911,23 @@ class M5WartimeObservationTests(unittest.TestCase):
                                  compact_forged)
                 self.assertIn("immediate_war_action_cost_raw",
                               compact_forged["missing"])
+        for forged_frame in (
+            None, {**_FRAME, "native_revision": False},
+            {**_FRAME, "unverified_context": "extra"},
+        ):
+            forged = deepcopy(result["plan"])
+            observation = forged["m5_joint_wartime_observation"]
+            observation["frame"] = forged_frame
+            fee = observation["immediate_war_action_cost_observation"]
+            fee["source_frame"] = forged_frame
+            fee["immediate_war_action_cost_raw"]["source_frame"] = forged_frame
+            compact_forged = _compact_plan(forged)[
+                "m5_joint_wartime_observation"]
+            with self.subTest(forged_frame=forged_frame):
+                self.assertNotIn("immediate_war_action_cost_observation",
+                                 compact_forged)
+                self.assertIn("immediate_war_action_cost_raw",
+                              compact_forged["missing"])
 
     def test_stale_no_step_plan_does_not_publish_immediate_zero(self):
         planned = self._plan(self._construction())

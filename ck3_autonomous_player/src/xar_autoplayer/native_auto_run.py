@@ -5133,8 +5133,20 @@ def _compact_m5_wartime_observation(
                 "future_bound_assumptions",
             ) if isinstance(reasons.get(key), str)
         }
+    verified_fee_frame = None
+    if isinstance(frame, dict):
+        from .m5_observed_opportunity_selector import observed_frame
+
+        try:
+            checked_frame = observed_frame(frame)
+        except ValueError:
+            pass
+        else:
+            if set(frame) == set(checked_frame):
+                verified_fee_frame = checked_frame
     fee = value.get("immediate_war_action_cost_observation")
     if (selected_step_present and selected_step is None
+            and verified_fee_frame is not None
             and value.get("schema") == "xar.ck3.m5-wartime-joint-observation.v1"
             and value.get("status") == "incomplete_war_cash"
             and value.get("read_only") is True
@@ -5147,7 +5159,7 @@ def _compact_m5_wartime_observation(
             and fee.get("read_only") is True
             and fee.get("selected_step") is None
             and fee.get("formal_cash_receipt_eligible") is False
-            and fee.get("source_frame") == frame
+            and fee.get("source_frame") == verified_fee_frame
             and type(fee.get("war_id")) is int
             and isinstance(war_ids, list) and war_ids == [fee["war_id"]]):
         amount = fee.get("immediate_war_action_cost_raw")
@@ -5158,18 +5170,18 @@ def _compact_m5_wartime_observation(
                 and amount["scale"] == 100_000
                 and amount.get("source")
                 == "formal_selected_step_absent_same_frame_v1"
-                and amount.get("source_frame") == frame
+                and amount.get("source_frame") == verified_fee_frame
                 and amount.get("war_id") == fee["war_id"]):
             result["immediate_war_action_cost_observation"] = {
                 "schema": fee["schema"], "status": fee["status"],
                 "read_only": True,
-                "source_frame": copy.deepcopy(frame),
+                "source_frame": copy.deepcopy(verified_fee_frame),
                 "war_id": fee["war_id"],
                 "selected_step": None,
                 "immediate_war_action_cost_raw": {
                     "raw": 0, "scale": 100_000,
                     "source": "formal_selected_step_absent_same_frame_v1",
-                    "source_frame": copy.deepcopy(frame),
+                    "source_frame": copy.deepcopy(verified_fee_frame),
                     "war_id": fee["war_id"],
                 },
                 "formal_cash_receipt_eligible": False,
