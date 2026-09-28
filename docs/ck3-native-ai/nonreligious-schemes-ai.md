@@ -258,6 +258,11 @@ fixture 成功外推到其它 definition。
 
 #### C91 私有 sway 只读查询的 exact-build 前置（2026-09-27，源码核查，无实机）
 
+2026-09-29 新增的默认关闭私有 paused sway 目标查询见
+[`active-scheme-sway-private-read-v1.md`](active-scheme-sway-private-read-v1.md)。
+它把既有 native Can Send 与活跃实例读口接到主线程邮箱，但 H3911
+仍待首次实机只读；因此本专题的完整谋略 OODA 状态不变。
+
 `SCHEME10` 已能以 `sway_interaction` 为 key 构造角色互动 context、运行 `0x2C43F00`
 complete Can Send，并在同一 paused application-main frame 返回布尔最终合法性。其原生函数
 已调用 ABI 是 `bool(context, void*)`；目前 SCHEME10、普通互动 preview 与 proposal binder 都向第二参数

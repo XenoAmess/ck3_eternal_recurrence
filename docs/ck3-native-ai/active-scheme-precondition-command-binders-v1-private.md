@@ -11,7 +11,8 @@ SCHEME9 glue state at a stable address and supplies SCHEME6/7 with production
 callbacks for:
 
 1. a full-generation CharacterID resolver through `module+0x570C130`, with
-   low-24-bit slot, high-8-bit generation, object `+0x18` round-trip, fallback
+   low-24-bit slot, high-8-bit generation (including zero for first-generation
+   H3911 identities), object `+0x18` round-trip, fallback
    rejection, and same-paused-frame double reads;
 2. the SCHEME7 character-interaction database getter, stable-key hash, and
    loaded-definition lookup calls;
