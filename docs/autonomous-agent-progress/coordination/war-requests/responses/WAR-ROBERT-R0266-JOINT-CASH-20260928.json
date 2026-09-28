@@ -465,6 +465,14 @@
       "action_or_date_advance": false,
       "scope": "source_dependency_only_not_formal_receiver_selected_query_or_cash_receipt"
     },
+    "nw_econ_h3911_query_cash_provenance_request_v1": {
+      "request_file": "WAR/M5-WAR-CASH-20260928/REQUEST-NW-ECON-R0326-H3911-QUERY-CASH-PROVENANCE-v1.json",
+      "request_sha256": "91E0026E884DA25AE121F576C1A7DDDB19A9C5E7D340B7C447E399091DADEBE5",
+      "in_reply_to_sha256": "226FA2E747AD64E1D0B408C4612D3F39B216AC01ACF15713E04DB60916A3BED3",
+      "response_file": "WAR/M5-WAR-CASH-20260928/RESPONSE-NW-ECON-R0326-H3911-QUERY-CASH-PROVENANCE-v1.json",
+      "response_sha256": null,
+      "scope": "metadata_only_existing_receipts_no_new_large_transfer_or_game_action"
+    },
     "h3446_exact_assets_received": true,
     "h3446_original_exact_assets_received": false,
     "same_frame_cash_receipt": null,
