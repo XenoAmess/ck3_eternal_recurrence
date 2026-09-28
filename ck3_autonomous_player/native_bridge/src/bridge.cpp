@@ -8038,6 +8038,8 @@ constexpr std::string_view kCurrentFirstHeirRelationshipStepV1 =
     "query-current-first-heir-relationship-v1-private";
 constexpr std::string_view kPlayerChildMarriageSubjectStepV1 =
     "query-player-child-marriage-subject-v1-private";
+constexpr std::string_view kPlayerChildMarriageValueStepV1 =
+    "query-player-child-marriage-value-v1-private";
 constexpr std::size_t kMarriageCandidateAllianceProjectionRowsV1 = 5;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
@@ -8314,6 +8316,7 @@ struct MarriageCandidateAllianceMailboxQueryV1 {
   std::array<xar::ck3_11906::MarriageCandidateAlliancePrivateReadV1,
              kMarriageCandidateAllianceProjectionRowsV1>
       reads{};
+  std::size_t row_count = kMarriageCandidateAllianceProjectionRowsV1;
   bool frame_observed = false;
 };
 
@@ -8328,7 +8331,7 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
     return true;
   }
   query.frame_observed = true;
-  for (std::size_t index = 0; index < query.observed.size(); ++index) {
+  for (std::size_t index = 0; index < query.row_count; ++index) {
     query.reads[index] =
         xar::ck3_11906::ReadMarriageCandidateAlliancePrivateV1(
             query.bindings, query.observed[index], query.environment,
@@ -8423,12 +8426,13 @@ std::string_view MarriageCandidateOutcomeFailureKeyV1(
 std::string MarriageCandidateAllianceProjectionFrameV1(
     std::string_view request_id, std::uint64_t revision,
     std::uint64_t legality_query_sequence,
-    const MarriageCandidateAllianceMailboxQueryV1 &query) {
+    const MarriageCandidateAllianceMailboxQueryV1 &query,
+    std::string_view step = kMarriageCandidateAllianceProjectionStepV1) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(result, request_id);
   result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, kMarriageCandidateAllianceProjectionStepV1);
+  AppendJsonString(result, step);
   result += ",\"accepted\":true,\"private_build\":true,\"read_only\":true,"
             "\"advertised\":false,\"native_revision\":";
   result += Number(revision);
@@ -8436,13 +8440,14 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
   result += Number(legality_query_sequence);
   result += ",\"status\":";
   const bool all_available = std::all_of(
-      query.reads.begin(), query.reads.end(), [](const auto &row) {
+      query.reads.begin(), query.reads.begin() + query.row_count,
+      [](const auto &row) {
         return row.failure == xar::ck3_11906::
                                   MarriageCandidateAlliancePrivateFailureV1::none;
       });
   AppendJsonString(result, all_available ? "available" : "unavailable");
   result += ",\"rows\":[";
-  for (std::size_t index = 0; index < query.observed.size(); ++index) {
+  for (std::size_t index = 0; index < query.row_count; ++index) {
     if (index != 0) result += ',';
     const auto &observed = query.observed[index];
     const auto &read = query.reads[index];
@@ -8520,6 +8525,34 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
         if (spouse_index != 0) result += ',';
         result += SignedNumber(
             read.heir_relationship.spouse_character_ids[spouse_index]);
+      }
+      result += ']';
+    }
+    result += ",\"candidate_betrothed_character_id\":";
+    if (available &&
+        read.candidate_relationship.betrothed_character_id > 0)
+      result += SignedNumber(
+          read.candidate_relationship.betrothed_character_id);
+    else
+      result += "null";
+    result += ",\"candidate_primary_spouse_character_id\":";
+    if (available &&
+        read.candidate_relationship.primary_spouse_character_id > 0)
+      result += SignedNumber(
+          read.candidate_relationship.primary_spouse_character_id);
+    else
+      result += "null";
+    result += ",\"candidate_spouse_character_ids\":";
+    if (!available) {
+      result += "null";
+    } else {
+      result += '[';
+      for (std::size_t spouse_index = 0;
+           spouse_index < read.candidate_relationship.spouse_character_ids.size();
+           ++spouse_index) {
+        if (spouse_index != 0) result += ',';
+        result += SignedNumber(
+            read.candidate_relationship.spouse_character_ids[spouse_index]);
       }
       result += ']';
     }
@@ -10189,6 +10222,7 @@ void RunConnectedSession(
                    && step != kMarriageCandidateAllianceProjectionStepV1
                    && step != kCurrentFirstHeirRelationshipStepV1
                    && step != kPlayerChildMarriageSubjectStepV1
+                   && step != kPlayerChildMarriageValueStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
                    && step != kObservedFirstHeirMarriageSubmitStepV1
@@ -11433,6 +11467,137 @@ void RunConnectedSession(
                         "specified_player_child", &child, state_revision,
                         family_probe ? &*family_probe : nullptr));
               }
+            }
+          }
+        } else if (step == kPlayerChildMarriageValueStepV1) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t legality_query_sequence = 0;
+          std::uint64_t subject_id = 0;
+          std::uint64_t candidate_id = 0;
+          const bool request_valid =
+              game.enabled() &&
+              game.descriptor().executable_sha256 ==
+                  xar::ck3_11906::kExecutableSha256 &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "legality_query_sequence",
+                  legality_query_sequence) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "subject_character_id", subject_id) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "candidate_character_id", candidate_id) &&
+              expected_revision != 0 && expected_revision == state_revision &&
+              legality_query_sequence != 0 &&
+              legality_query_sequence ==
+                  state.marriage_family_private_query_sequence &&
+              subject_id > 0 && subject_id <= INT32_MAX &&
+              candidate_id > 0 && candidate_id <= INT32_MAX &&
+              subject_id != candidate_id;
+          xar::game::Snapshot before{};
+          const bool frame_ready =
+              request_valid && previous_snapshot.has_value() &&
+              xar::game::ReadSnapshot(game, before) &&
+              before == *previous_snapshot && before.paused && before.map_ready &&
+              before.has_played_character && before.played_character_alive;
+          MarriageCandidateAllianceMailboxQueryV1 query{};
+          query.row_count = 1;
+          bool selected_ready = false;
+          if (frame_ready) {
+            const auto child =
+                xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
+                    xar::ck3_11906::BindCurrentProcess(true),
+                    static_cast<std::int32_t>(subject_id));
+            std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
+            xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
+            const auto read = child.failure == xar::ck3_11906::
+                                      PlayerChildMarriageSubjectFailureV1::none
+                ? xar::game::ReadArrangeMarriageFamilyCandidatesV1(
+                      game, static_cast<std::int32_t>(subject_id), rows,
+                      diagnostics)
+                : xar::game::
+                      ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+            xar::game::Snapshot checked{};
+            const auto matching = std::find_if(
+                rows.begin(), rows.end(), [&](const auto &row) {
+                  return row.candidate_character_id ==
+                             static_cast<std::int32_t>(candidate_id) &&
+                         row.played_character_id == before.played_character_id &&
+                         row.subject_character_id ==
+                             static_cast<std::int32_t>(subject_id) &&
+                         row.complete_can_send &&
+                         row.recipient_answer_allows_send &&
+                         row.recipient_answer_status_raw <= 1;
+                });
+            selected_ready =
+                child.played_character_id == before.played_character_id &&
+                read == xar::game::
+                            ReadArrangeMarriageFamilyCandidatesResultV1::
+                                available &&
+                matching != rows.end() &&
+                std::count_if(rows.begin(), rows.end(), [&](const auto &row) {
+                  return row.candidate_character_id ==
+                         static_cast<std::int32_t>(candidate_id);
+                }) == 1 &&
+                xar::game::ReadSnapshot(game, checked) && checked == before;
+            if (selected_ready) query.observed[0] = *matching;
+          }
+          if (!selected_ready) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "specified child and candidate need fresh same-frame native legality"));
+          } else {
+            query.expected_snapshot = before;
+            query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            query.environment = xar::bridge::
+                BindMarriageCandidateAllianceProjectionEnvironmentV1(
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                    true, xar::ck3_11906::kExecutableSha256);
+            query.environment.read_memory = &ReadMarriageCurrentProcessMemory;
+            query.outcome_environment = xar::bridge::
+                BindMarriageNativeOutcomeClassifierEnvironmentV1(
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                    true, xar::ck3_11906::kExecutableSha256);
+            query.outcome_environment.read_memory =
+                &ReadMarriageCurrentProcessMemory;
+            const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                g_main_thread_query_mailbox_v1,
+                &ExecuteMarriageCandidateAllianceMailboxQueryV1,
+                &query, query.ticket);
+            if (submit != xar::ck3_11906::
+                              MainThreadQuerySubmitResultV1::submitted) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      std::string("paused child marriage value query unavailable: ") +
+                      std::string(MarriageCandidateAllianceSubmitFailureKeyV1(submit))));
+            } else {
+              auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+              while (wait == xar::ck3_11906::
+                                 MainThreadQueryWaitResultV1::
+                                     timeout_executor_already_running) {
+                wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+              }
+              xar::game::Snapshot after{};
+              const bool stable =
+                  wait == xar::ck3_11906::
+                              MainThreadQueryWaitResultV1::completed &&
+                  query.frame_observed &&
+                  xar::game::ReadSnapshot(game, after) && after == before;
+              std::string response = stable
+                  ? MarriageCandidateAllianceProjectionFrameV1(
+                        request_id, state_revision, legality_query_sequence,
+                        query, step)
+                  : CommandResultFrame(request_id, step, false,
+                        "application-main child marriage value read changed frame");
+              if (xar::ck3_11906::ReclaimMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket) !=
+                  xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+                response = CommandResultFrame(request_id, step, false,
+                    "application-main child marriage value ticket not reclaimable");
+              }
+              connected = xar::bridge::WriteFrame(pipe, response);
             }
           }
         } else if (step == kMarriageCandidateAllianceProjectionStepV1) {

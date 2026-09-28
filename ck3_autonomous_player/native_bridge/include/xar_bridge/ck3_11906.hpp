@@ -1209,6 +1209,7 @@ struct MarriageCandidateAlliancePrivateReadV1 {
     std::int32_t heir_adult_threshold_raw = 0;
     std::int32_t candidate_adult_threshold_raw = 0;
   MarriageHeirRelationshipV1 heir_relationship{};
+  MarriageHeirRelationshipV1 candidate_relationship{};
   MarriageCharacterLineageV1 played_lineage{};
   MarriageCharacterLineageV1 heir_lineage{};
   MarriageCharacterLineageV1 candidate_lineage{};

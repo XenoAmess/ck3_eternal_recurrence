@@ -17675,6 +17675,14 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.failure = Failure::heir_relationship_unavailable;
     return result;
   }
+  if (!ReadCharacterRelationships(
+          bindings, candidate,
+          result.candidate_relationship.betrothed_character_id,
+          result.candidate_relationship.primary_spouse_character_id,
+          result.candidate_relationship.spouse_character_ids)) {
+    result.failure = Failure::heir_relationship_unavailable;
+    return result;
+  }
   if (!ReadMarriageCharacterLineageV1(played, result.played_lineage) ||
       !ReadMarriageCharacterLineageV1(heir, result.heir_lineage) ||
       !ReadMarriageCharacterLineageV1(candidate,
@@ -17785,6 +17793,7 @@ ReadMarriageCandidateAlliancePrivateV1(
           : result.projection.matrilineal_option_selected;
   Snapshot after{};
   MarriageHeirRelationshipV1 after_relationship{};
+  MarriageHeirRelationshipV1 after_candidate_relationship{};
   MarriageCharacterLineageV1 after_played_lineage{};
   MarriageCharacterLineageV1 after_heir_lineage{};
   MarriageCharacterLineageV1 after_candidate_lineage{};
@@ -17799,6 +17808,12 @@ ReadMarriageCandidateAlliancePrivateV1(
           after_relationship.primary_spouse_character_id,
           after_relationship.spouse_character_ids) ||
       after_relationship != result.heir_relationship ||
+      !ReadCharacterRelationships(
+          bindings, candidate,
+          after_candidate_relationship.betrothed_character_id,
+          after_candidate_relationship.primary_spouse_character_id,
+          after_candidate_relationship.spouse_character_ids) ||
+      after_candidate_relationship != result.candidate_relationship ||
       !ReadMarriageCharacterLineageV1(played, after_played_lineage) ||
       !ReadMarriageCharacterLineageV1(heir, after_heir_lineage) ||
       !ReadMarriageCharacterLineageV1(candidate, after_candidate_lineage) ||
@@ -17814,6 +17829,7 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.failure = Failure::frame_changed;
     result.projection = {};
     result.heir_relationship = {};
+    result.candidate_relationship = {};
     result.played_lineage = {};
     result.heir_lineage = {};
     result.candidate_lineage = {};
