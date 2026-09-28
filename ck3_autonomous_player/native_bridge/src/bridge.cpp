@@ -8061,7 +8061,8 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
         "public_campaign_root_primary_first_heir"
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     , const xar::ck3_11906::PlayerChildMarriageSubjectReadV1 *child = nullptr,
-    std::uint64_t native_revision = 0
+    std::uint64_t native_revision = 0,
+    const xar::ck3_11906::PlayerFamilyArrayProbeV1 *family_probe = nullptr
 #endif
     ) {
   const bool available =
@@ -8184,6 +8185,42 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
         result += SignedNumber(child->relationship.spouse_character_ids[index]);
       }
       result += ']';
+    }
+    if (family_probe != nullptr) {
+      result += ",\"family_array_diagnostic\":{\"available\":";
+      result += family_probe->available ? "true" : "false";
+      result += ",\"played_character_id\":";
+      result += SignedNumber(family_probe->played_character_id);
+      result += ",\"spouse_readable\":";
+      result += family_probe->spouse_readable ? "true" : "false";
+      result += ",\"primary_spouse_character_id\":";
+      result += SignedNumber(family_probe->primary_spouse_character_id);
+      result += ",\"slots\":[";
+      for (std::size_t index = 0; index < family_probe->slots.size(); ++index) {
+        if (index != 0) result += ',';
+        const auto &slot = family_probe->slots[index];
+        result += "{\"offset\":" + Number(slot.offset);
+        result += ",\"header_readable\":";
+        result += slot.header_readable ? "true" : "false";
+        result += ",\"data_pointer_present\":";
+        result += slot.data_pointer_present ? "true" : "false";
+        result += ",\"capacity\":" + SignedNumber(slot.capacity);
+        result += ",\"count\":" + SignedNumber(slot.count);
+        result += ",\"native_int_array_shape\":";
+        result += slot.native_int_array_shape ? "true" : "false";
+        result += ",\"sample_readable\":";
+        result += slot.sample_readable ? "true" : "false";
+        result += ",\"samples\":[";
+        for (std::size_t item = 0; item < slot.sample_ids.size(); ++item) {
+          if (item != 0) result += ',';
+          result += "{\"character_id\":" + SignedNumber(slot.sample_ids[item]);
+          result += ",\"generation_valid\":";
+          result += slot.sample_generation_valid[item] ? "true" : "false";
+          result += '}';
+        }
+        result += "]}";
+      }
+      result += "]}";
     }
   }
 #endif
@@ -11341,6 +11378,18 @@ void RunConnectedSession(
               const auto child =
                   xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
                       xar::ck3_11906::BindCurrentProcess(true), subject_id);
+              bool diagnose_family_arrays = false;
+              (void)xar::bridge::JsonBooleanField(
+                  incoming.payload, "diagnose_family_arrays",
+                  diagnose_family_arrays);
+              std::optional<xar::ck3_11906::PlayerFamilyArrayProbeV1>
+                  family_probe;
+              if (diagnose_family_arrays) {
+                family_probe.emplace(
+                    xar::ck3_11906::ReadPlayerFamilyArrayProbeV1(
+                        xar::ck3_11906::BindCurrentProcess(true),
+                        before.played_character_id));
+              }
               std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
               xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
               auto read_result = xar::game::
@@ -11381,7 +11430,8 @@ void RunConnectedSession(
                         request_id, step,
                         state.marriage_family_private_query_sequence,
                         subject_id, read_result, rows, diagnostics, reason,
-                        "specified_player_child", &child, state_revision));
+                        "specified_player_child", &child, state_revision,
+                        family_probe ? &*family_probe : nullptr));
               }
             }
           }
