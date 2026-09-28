@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import struct
 
+from capstone import CS_ARCH_X86, CS_MODE_64, Cs
 import pefile
 
 
@@ -82,6 +83,21 @@ def inspect(exe: Path) -> dict[str, object]:
             if "secondary_vtable_rva" in expected else None),
         }
 
+    decoder = Cs(CS_ARCH_X86, CS_MODE_64)
+    constructor_anchors = {
+        0xD4661D: ("mov", "qword ptr [r13 + 0xc8], rbx"),
+        0xD46624: ("mov", "qword ptr [r13 + 0xd0], rdi"),
+        0xD46649: ("lea", "rcx, [rip + 0x33a0918]"),
+        0xD46650: ("mov", "qword ptr [r13], rcx"),
+        0xD46654: ("lea", "rcx, [rip + 0x33a09dd]"),
+        0xD4665B: ("mov", "qword ptr [r13 + 0x10], rcx"),
+    }
+    for rva, expected_instruction in constructor_anchors.items():
+        offset = pe.get_offset_from_rva(rva)
+        rows = list(decoder.disasm(binary[offset:offset + 16], base + rva, count=1))
+        if len(rows) != 1 or (rows[0].mnemonic, rows[0].op_str) != expected_instruction:
+            raise ValueError(f"CHudTopBar constructor changed at {rva:#x}")
+
     # The primary CHudTopBar deleting destructor frees a 0xFA0-byte object.
     # This bounds a passive fingerprint read, not a live instance search.
     destructor_bytes = binary[pe.get_offset_from_rva(0xD46F79):
@@ -94,6 +110,8 @@ def inspect(exe: Path) -> dict[str, object]:
         "exe_sha256": digest,
         "hud_object_size_candidate": 0xFA0,
         "types": results,
+        "hud_constructor_rva": "0xd465a0",
+        "hud_constructor_owner_slot_candidate": "0xc8",
         "unique_live_instance_proven": False,
         "cache_same_native_revision_proven": False,
         "war_cash_formal_eligible": False,
