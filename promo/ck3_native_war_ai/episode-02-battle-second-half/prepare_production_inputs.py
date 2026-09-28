@@ -22,6 +22,7 @@ from xar_promo.adapters.ck3.capture import load_capture_bundle  # noqa: E402
 from war_ai_promo.episode_two_second_half import (  # noqa: E402
     CARD_REPLAYS, CHAPTER_CARDS, CHAPTER_IDS, HISTORICAL_PRIMARY,
     _bound_tts_sentences, _capture_audit_contract, _card_replays,
+    _formal_card_bytes_gate, _formal_fact_receipts_gate,
     _replay_primary, card_filename, script_chapters,
 )
 from war_ai_promo.episode_two_subtitle_contract import identity  # noqa: E402
@@ -307,6 +308,8 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
             raise ValueError(f"{card_id} must use the SVG beside the indexed card JSON")
         cards[card_id] = item
         card_sha[card_id], card_bytes[card_id] = item["sha256"], item["bytes"]
+    _formal_card_bytes_gate(card_binding["sha256"], card_sha)
+    _formal_fact_receipts_gate(card_path.parent)
     fragments, tts_sources = _subtitle_sources(declaration, script, config)
     music_id = declaration["music"].get("artifact_id")
     if music_id != "episode02-series-theme":

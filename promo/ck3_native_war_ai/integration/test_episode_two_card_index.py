@@ -9,8 +9,9 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from war_ai_promo.episode_two_second_half import (  # noqa: E402
+    FORMAL_CARD_INDEX_SHA, FORMAL_CARD_SHA,
     HISTORICAL_004_CARD_SHA, HISTORICAL_024_CARD_SHA, HISTORICAL_085_CARD_SHA,
-    _card_replays, _sha, editorial_check,
+    _card_replays, _formal_card_bytes_gate, _sha, editorial_check,
 )
 
 
@@ -60,6 +61,15 @@ class EpisodeTwoCardIndexTest(unittest.TestCase):
         next(row for row in index["cards"] if row["id"] == "E2-03")["source_receipt_sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "E2-03 pursuit"):
             _card_replays(index)
+
+    def test_formal_production_rejects_card_or_index_drift(self):
+        _formal_card_bytes_gate(FORMAL_CARD_INDEX_SHA, FORMAL_CARD_SHA)
+        with self.assertRaisesRegex(ValueError, "card index changed"):
+            _formal_card_bytes_gate("0" * 64, FORMAL_CARD_SHA)
+        cards = dict(FORMAL_CARD_SHA)
+        cards["E2-03"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "SVG bytes changed"):
+            _formal_card_bytes_gate(FORMAL_CARD_INDEX_SHA, cards)
 
     def test_a05_name_cannot_hide_an_old_writer_or_other_run(self):
         original = json.loads((CARDS / "calculation-cards.json").read_text(encoding="utf-8"))

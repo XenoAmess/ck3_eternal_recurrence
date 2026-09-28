@@ -67,6 +67,26 @@ A05_PURSUIT_DAY_SHA = {
     31: "85269149AB826FEFAD52D7397892F28180F0195655CE7B7D2DD9B8A6EF2AA20D",
 }
 A05_PURSUIT_PARITY_SHA = "66E257FB4E9963AF8BFD68B68501E9D2E67536E538B16DA34A901D10624353E5"
+FORMAL_CARD_INDEX_SHA = "AF6B27757423E81355DBA965BD867AE43AF12844BC61C22277C9CFCD58429690"
+FORMAL_CARD_SHA = {
+    "E2-02": "C201F33A1D0E7B4E20A3CD49F8589D5EBF3EE418A86F7E507E51F3A7D30599C8",
+    "E2-03": "778E1207213C95C2C249F40FB3600F5FAEB42B730B74BDBF6B5AEAB0CAA78BB8",
+    "E2-04": "06A320E1DF5EE316175F0208F06C0346330824A2F44B70C3F2707FCD76F0E0E0",
+    "E2-05A": "A4F254D2DC0A59549BF6AC8A7F1345E1ACF1A6BF0956F509D63F137B31E5F330",
+    "E2-05B": "7EA7E24139AB2CCC01CF38308004DC20DB5EAD32F6ED46FB755F084B0D0615EE",
+    "E2-05C": "0A735D50E6460BBA9EF78B30B1A3A1CC24F1F92C5664F379BD707EAEF9D72150",
+    "E2-06": "814C801E5CFAD07A07A4EC6DE4A1C46A699CF2D605A2FF54D12CD98CA9EAFFB3",
+    "E2-07": "3C4AC6DC781820B20352BE5F1D13CB05AA655DAE34C2065B910C74C3E696AE6F",
+    "E2-09": "677ECBCCAD05EC58F322AE66139F311625427C12E208E57BAF25C6E98B7E10B4",
+}
+FORMAL_FACT_SHA = {
+    "e2-02-03-a05-pursuit-facts-20260928.json":
+        "40BC4C8E5B2E4AF4CD86BD0D794C75047022E0DD456447FCCAE4918C169480A8",
+    "e2-06-07-a01-join-facts-20260928-v2.json":
+        "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6",
+    "e2-09-a05-writer-facts-20260928-v3.json":
+        "A6E8CDEBFC866DF7C73241B12946E5E83C543DE846A2B5D8290234AF71626EFE",
+}
 A05_WRITER_SHA = "3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782"
 A05_COLD_LOAD_SHA = "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
 A05_POSTSTATE_SHA = "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
@@ -84,6 +104,22 @@ def _sha(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def _formal_card_bytes_gate(index_sha: str, card_sha: dict[str, str]) -> None:
+    """Require the reviewed index and all nine exact SVG bytes for formal production."""
+    if index_sha.upper() != FORMAL_CARD_INDEX_SHA:
+        raise ValueError("Formal Episode 2 card index changed after fact review")
+    if (set(card_sha) != set(FORMAL_CARD_SHA)
+            or any(card_sha[card_id].upper() != digest
+                   for card_id, digest in FORMAL_CARD_SHA.items())):
+        raise ValueError("Formal Episode 2 SVG bytes changed after fact review")
+
+
+def _formal_fact_receipts_gate(cards_dir: Path) -> None:
+    for filename, digest in FORMAL_FACT_SHA.items():
+        if _sha(cards_dir / filename) != digest:
+            raise ValueError(f"Formal Episode 2 fact receipt bytes changed: {filename}")
 
 
 def _spoken(value: str) -> str:
@@ -188,6 +224,8 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
     data = json.loads(card_index.read_text(encoding="utf-8"))
     replay_by_card = _card_replays(data)
     cards = {key: _sha(cards_dir / card_filename(key)) for key in CARD_REPLAYS}
+    _formal_card_bytes_gate(_sha(card_index), cards)
+    _formal_fact_receipts_gate(cards_dir)
     if _sha(cards_dir / "e2-09-calculation.svg") != HISTORICAL_024_CARD_SHA:
         raise ValueError("Historical 024 card bytes changed")
     for card_id, digest in HISTORICAL_004_CARD_SHA.items():
@@ -594,6 +632,8 @@ def compose(config, run, *, config_path, run_path, workdir,
         raise ValueError("Production card replay bindings differ from the preserved index")
     card_hashes = inputs["card_sha256"]
     card_bytes = inputs["card_bytes"]
+    if not inputs.get("synthetic"):
+        _formal_card_bytes_gate(_sha(card_index), card_hashes)
     if set(card_hashes) != set(CARD_REPLAYS) or set(card_bytes) != set(CARD_REPLAYS):
         raise ValueError("All nine formal source-bound cards are required")
     for card_id, digest in card_hashes.items():
