@@ -22,6 +22,7 @@ ACTOR = 29829
 WAR = 4
 COMBAT = 16777218
 PLAYER_ARMY = 18
+PROVINCE = 2633
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 KNIGHT_DLL = "EB643577E0DE6214582A667B3C6C52DB712CA75E46374BECB9DB5C36204F67E7"
 KNIGHT_INJECTOR = "CE8A20C7B25A697058AB69B03629D6B7655BB2935AD147DF1E84895A826BF247"
@@ -139,6 +140,32 @@ def snapshot_case(body: dict[str, Any], date: int, *, require_combat: bool) -> t
     return okay, values
 
 
+def battle_control_case(body: dict[str, Any], revision: int,
+                        date: int) -> tuple[bool, dict[str, Any]]:
+    """Read the real v1 wire: subject and date live inside its snapshot row."""
+    row = body.get("battle_control_snapshot") or {}
+    values = {"accepted": body.get("accepted"), "status": body.get("status"),
+              "root_revision": body.get("snapshot_revision"),
+              "snapshot_revision": row.get("snapshot_revision"),
+              "observed_date_raw": row.get("observed_date_raw"),
+              "subject_army_id": row.get("subject_public_cunit_id"),
+              "native_army_id": row.get("subject_native_carmy_id"),
+              "owner_character_id": row.get("selected_owner_character_id"),
+              "combat_id": row.get("combat_id"),
+              "combat_province_id": row.get("combat_province_id"),
+              "battle_control_ready": row.get("battle_control_ready")}
+    okay = (values["accepted"] is True and values["status"] == "available" and
+            row.get("status") == "available" and
+            values["root_revision"] == values["snapshot_revision"] == revision and
+            values["observed_date_raw"] == date and
+            values["subject_army_id"] == values["native_army_id"] == PLAYER_ARMY and
+            values["owner_character_id"] == ACTOR and
+            values["combat_id"] == COMBAT and
+            values["combat_province_id"] == PROVINCE and
+            values["battle_control_ready"] is True)
+    return okay, values
+
+
 def observe(output: Path, track: str, binding: dict[str, Any], timeout: float) -> int:
     spec = TRACKS[track]
     target = output / "operator-steps" / f"{track}-observe.json"
@@ -152,20 +179,19 @@ def observe(output: Path, track: str, binding: dict[str, Any], timeout: float) -
                                "ck3_query_battle_control_snapshot_v1",
                                {"subject_army_id": PLAYER_ARMY,
                                 "expected_revision": values["revision"]}, timeout)
-        row = result.get("battle_control_snapshot") or {}
-        control_values = {"combat_id": row.get("combat_id"),
-                          "subject_army_id": result.get("subject_army_id"),
-                          "snapshot_revision": result.get("snapshot_revision")}
-        okay = (control_values["combat_id"] == COMBAT and
-                control_values["subject_army_id"] == PLAYER_ARMY)
+        okay, control_values = battle_control_case(
+            result, values["revision"], spec["date"])
     # 085's historical sibling battle-control query returned RED. Its same
     # CombatID is bound only when the private trace begin explicitly accepts it.
     row = {"schema": "xar.war-promo.remaining-live-step/v1", "created_at": utc(),
            "mode": "observe", "track": track, "source_binding": binding,
            "same_source_war_army_frame": okay, "snapshot": snapshot,
            "snapshot_values": values, "control": control, "control_values": control_values,
-           "combat_id_bound": bool(control_values and control_values["combat_id"] == COMBAT),
-           "next_action": "review raw HUD, start one recorder, mark before advance" if okay else
+           "combat_id_bound": bool(control_values and okay),
+           "subject_combat_membership_verified": bool(spec["control"] and okay),
+           "combat_membership_limit": None if spec["control"] else
+           "historical 085 control RED; private begin resolves CombatID but does not prove ArmyID 18 membership",
+           "next_action": "review raw HUD and mark before advance" if okay else
                           "stop; preserve this branch"}
     write_new(target, row)
     print(json.dumps(row, ensure_ascii=False))
@@ -247,8 +273,10 @@ def advance(output: Path, track: str, binding: dict[str, Any],
                                         "ck3_query_battle_control_snapshot_v1",
                                         {"subject_army_id": PLAYER_ARMY,
                                          "expected_revision": after_save_values["revision"]}, timeout)
-        require((control.get("battle_control_snapshot") or {}).get("combat_id") == COMBAT,
-                "combat identity changed before arming private trace")
+        control_ok, control_values = battle_control_case(
+            control, after_save_values["revision"], spec["date"])
+        require(control_ok,
+                f"same-frame combat identity changed before arming private trace: {control_values}")
     begin_args = {"action": "private_phase_trace",
                   "step": "experimental-combat-phase-event-trace-begin-v1",
                   "expected_revision": after_save_values["revision"], "combat_id": COMBAT,
@@ -283,6 +311,7 @@ def advance(output: Path, track: str, binding: dict[str, Any],
            "after_save_control": control_receipt, "trace_begin": begin_receipt,
            "one_day": advance_receipt, "trace_finish": end_receipt,
            "post_snapshot": post_receipt, "post_values": post_values,
+           "subject_combat_membership_verified": bool(spec["control"] and okay),
            "event_outcome_and_clean_span_verified": False,
            "next_action": "review this run's event, HUD, raw PTS and native trace; no old-number substitution"}
     write_new(steps / f"{track}-advance.json", row)
