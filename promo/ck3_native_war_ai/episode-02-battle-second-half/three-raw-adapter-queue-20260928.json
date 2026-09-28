@@ -1,0 +1,67 @@
+{
+  "schema": "xar.war-promo.episode02-adapter-queue/v1",
+  "status": "METADATA_PLAN_ONLY_NO_RAW_READ_THIS_PASS",
+  "adapter_eligible": false,
+  "human_1x_review_performed": false,
+  "toolchain_release_checked_for_planning": "v0.2.1",
+  "toolchain_wheel_sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621",
+  "sources": [
+    {
+      "id": "e2-02-03-a01",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/recording-e2-02-03-a01",
+      "small_pts_report": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-02-03-live-20260928-a01/pts-audit-a01/pts-audit.json",
+      "raw_bytes_from_recorder_final": 1304900034,
+      "raw_sha256_from_recorder_final": "29D11C77ABCE92B79608F5E82E66D3949C08FE30BF6219626E526ECCA5698AAB",
+      "ffprobe_bytes_from_recorder_final": 15439959,
+      "frame_count_from_pts_audit": 16247,
+      "pts_audit_result": "PTS_CONTINUOUS_UNREVIEWED",
+      "candidate_windows_seconds": [
+        {"purpose": "day27 context", "begin": 30, "end": 120, "exact_endpoints_verified": false},
+        {"purpose": "day28 pursuit", "begin": 220, "end": 260, "exact_endpoints_verified": false},
+        {"purpose": "day29 pursuit", "begin": 390, "end": 480, "exact_endpoints_verified": false}
+      ],
+      "source_note": "Sparse JPEG seek windows only; precise frame PTS must be selected from complete ffprobe after capture. No day31/day32."
+    },
+    {
+      "id": "e2-09-a05-a01",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01",
+      "small_pts_report": "D:/ck3-research-artifacts/episode02-a05-pts-span-verification-20260928/attempt-03/a05-pts-span-candidates.json",
+      "raw_bytes_from_recorder_final": 951186809,
+      "raw_sha256_from_recorder_final": "C2E3AB8B0E60171316DD445B999B95E91227211666FE78CCF797F733AFDA315B",
+      "ffprobe_bytes_from_recorder_final": 16086455,
+      "frame_count_from_pts_audit": 16934,
+      "pts_audit_result": "STRICT_INCREASING_UNREVIEWED_MAX_GAP_0.067",
+      "candidate_windows_seconds": [
+        {"purpose": "WarID4 before", "begin": 245, "end": 270, "exact_endpoints_verified": true},
+        {"purpose": "day27 to day28", "begin": 350, "end": 450, "exact_endpoints_verified": true}
+      ],
+      "source_note": "Exact candidate endpoints and per-window machine gap are in A05 attempt-03; visual/source-label review pending."
+    },
+    {
+      "id": "e2-09-a05-a02",
+      "attempt_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live",
+      "recorder_root": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a02",
+      "small_pts_report": "D:/ck3-research-artifacts/episode02-a05-pts-span-verification-20260928/attempt-03/a05-pts-span-candidates.json",
+      "raw_bytes_from_recorder_final": 840210967,
+      "raw_sha256_from_recorder_final": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC",
+      "ffprobe_bytes_from_recorder_final": 15730950,
+      "frame_count_from_pts_audit": 16560,
+      "pts_audit_result": "STRICT_INCREASING_UNREVIEWED_WITH_THREE_GAPS_OVER_0.2",
+      "candidate_windows_seconds": [
+        {"purpose": "day28 to day29", "begin": 60, "end": 170, "exact_endpoints_verified": true},
+        {"purpose": "day30", "begin": 200, "end": 250, "exact_endpoints_verified": true},
+        {"purpose": "day31", "begin": 300, "end": 350, "exact_endpoints_verified": true},
+        {"purpose": "day32 writer and WarID4 after", "begin": 385, "end": 500, "exact_endpoints_verified": true,
+         "visual_risk": "Event modal overlays the upper war panel in the after screenshot; no_foreign_overlay gate unproven."}
+      ],
+      "forbidden_window_seconds": {"begin": 250, "end": 300,
+        "reason": "Crosses 271.267–278.833 raw PTS gap of 7.566 seconds"},
+      "source_note": "Other gaps: 37.933–38.700 (0.767s), 179.600–180.067 (0.467s). Never bridge these in a clean span."
+    }
+  ],
+  "total_raw_bytes_from_original_receipts_not_rehashed_here": 3096297810,
+  "total_ffprobe_bytes_from_original_receipts_not_rehashed_here": 47257364,
+  "next_gate": "After E2-05 screen release: serial prepare, exact-frame extraction, real 1x review, then separate package per raw."
+}
