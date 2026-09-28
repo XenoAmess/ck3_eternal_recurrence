@@ -51,6 +51,7 @@ def run(root: Path, build_root: Path) -> None:
              "/permissive-", "/EHsc", "/UNDEBUG", flag,
              f"/I{native / 'include'}",
              str(native / "src/realm_law_active_collection_11906.cpp"),
+             str(native / "src/realm_law_candidate_collection_11906.cpp"),
              str(native / "src/realm_law_active_collection_11906_test.cpp"),
              f"/Fe:{output}"],
             cwd=build, env=environment, check=True,
