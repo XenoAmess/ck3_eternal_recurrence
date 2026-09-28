@@ -5144,6 +5144,13 @@ def _compact_m5_wartime_observation(
         else:
             if set(frame) == set(checked_frame):
                 verified_fee_frame = checked_frame
+    def exact_fee_frame(candidate: object) -> bool:
+        return (verified_fee_frame is not None
+                and isinstance(candidate, dict)
+                and set(candidate) == set(verified_fee_frame)
+                and all(type(candidate[key]) is type(expected)
+                        and candidate[key] == expected
+                        for key, expected in verified_fee_frame.items()))
     fee = value.get("immediate_war_action_cost_observation")
     if (selected_step_present and selected_step is None
             and verified_fee_frame is not None
@@ -5159,7 +5166,7 @@ def _compact_m5_wartime_observation(
             and fee.get("read_only") is True
             and fee.get("selected_step") is None
             and fee.get("formal_cash_receipt_eligible") is False
-            and fee.get("source_frame") == verified_fee_frame
+            and exact_fee_frame(fee.get("source_frame"))
             and type(fee.get("war_id")) is int
             and isinstance(war_ids, list) and war_ids == [fee["war_id"]]):
         amount = fee.get("immediate_war_action_cost_raw")
@@ -5170,7 +5177,7 @@ def _compact_m5_wartime_observation(
                 and amount["scale"] == 100_000
                 and amount.get("source")
                 == "formal_selected_step_absent_same_frame_v1"
-                and amount.get("source_frame") == verified_fee_frame
+                and exact_fee_frame(amount.get("source_frame"))
                 and amount.get("war_id") == fee["war_id"]):
             result["immediate_war_action_cost_observation"] = {
                 "schema": fee["schema"], "status": fee["status"],
