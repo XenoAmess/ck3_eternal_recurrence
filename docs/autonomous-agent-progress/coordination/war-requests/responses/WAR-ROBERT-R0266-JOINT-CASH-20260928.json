@@ -57,6 +57,8 @@
     "source": "ck3_autonomous_player/native_bridge/research/verify_war_cash_military_view_candidate.py",
     "document": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md",
     "cash_cadence_static_audit": "docs/ck3-native-ai/r0266-war-cash-cadence-static-audit-2026-09-28.md",
+    "action_binding_and_policy_audit": "docs/ck3-native-ai/r0266-war-cash-action-binding-followup-2026-09-28.md",
+    "embark_cost_name_probe": "ck3_autonomous_player/native_bridge/research/war_cash_embark_cost_candidate.py",
     "h2825_formal_selected_step": "query-observed-first-heir-marriage-result-v1-private",
     "pending_action_ledger_status": "No war cash producer: plan_m5_wartime_query_only discards history. NativeDriver sends a request and waits at native_driver.py:7997-8033 before appending its completed history row at :7074-7083; public snapshot at :2370-2383 copies only that history. An empty history cannot prove no in-flight command or zero war cash. Require an owner-side in-flight/committed ledger or an exact-frame no-in-flight plus no-unsettled-commitment proof.",
     "owner_request_lifecycle_candidate": {
@@ -126,6 +128,10 @@
       "new_attempt": "D:/ck3-research-artifacts/war31-h2825-20260928/attempt-11-r0266-exact-pair-cash-01",
       "prepare_script_sha256": "1929D306DD85403FA66955F5EC9B92630E4AF6FF7B4A9B07349FF9219B2D5B7",
       "passive_live_script_sha256": "10CDCA433ECF30F6EC4674841AC7275FE1D49C73C3C9DE7A12C6002F7E8683D0",
+      "passive_live_v2_script_sha256": "CC039CA982A4C7411269917C8DB1FC1E17244BF9369D3013C1F71BF14940AEA5",
+      "v2_readiness_wait_seconds": 1500,
+      "v2_managed_session_timeout_seconds": 2400,
+      "v2_status": "py_compile_and_help_only_no_game_launch",
       "attempt_created": false,
       "cash_receipt_eligible_from_diagnostic_alone": false
     },
@@ -156,7 +162,8 @@
     "The stock MilitaryView maximum-maintenance getter is a predicted GUI value, not a proved Q100000 same-frame read or a complete future war cash bound. The stock localization explicitly warns that fleets may raise actual expense beyond it.",
     "MilitaryView+0x248 is only a static subject-handle candidate; no headless view instance or exact player identity is proven. Both predicted maximum and current-expense raw/scale layouts are static cache candidates; freshness remains unknown. The existing M5 dispatcher reservation begins empty per instance and cannot prove that all external pending war cash is zero.",
     "A monthly predicted expense is a rate, not a proved one-day cash deduction cap. Before any horizon calculation, establish native payment cadence/next due boundary or conservatively reserve a potentially full monthly charge, then cover fleets, replenishment, hires, changed forces and rates with sourced bounds; future and risk remain null until then.",
-    "Consumer policy remains unresolved: the existing M5 selector takes max(global war reserve, proposal minimum reserve). If a building's 200-gold floor must survive payment of separate future war costs, taking max under-reserves; the consumer must define overlap versus addition and validate the joint gate before approving construction."
+    "Consumer policy remains unresolved: the existing M5 selector takes max(global war reserve, proposal minimum reserve). If a building's 200-gold floor must survive payment of separate future war costs, taking max under-reserves; the consumer must define overlap versus addition and validate the joint gate before approving construction.",
+    "Exact-build GetEmbarkCost research currently proves only a unique GUI name and RIP reference, not a callback, safe native call, Q100000 quote or same-frame amount. It cannot fill the immediate war fee or prove zero."
   ],
   "next_step": "After R0271 relinquishes the managed game and a fresh Steam-offline frame is proven, obtain a new same-frame player-owned MilitaryView ValueBreakdown amount and units, plus pending-action ledger, selected action fee, explicit bounded-horizon risk assumptions and war policy minimum reserve. The GUI predicted maximum alone cannot fill future_war_cost_upper_raw. Then hand a complete receipt to the nonwar operator for candidate integration, formal action and receipt validation."
 }

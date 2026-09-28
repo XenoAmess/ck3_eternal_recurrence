@@ -71,6 +71,8 @@ R0265 正式报告 `identity.bridge_injector` 给出同源 injector SHA-256 `521
 
 [月费节奏与短期上界静态审计](r0266-war-cash-cadence-static-audit-2026-09-28.md)逐项列出原版的补员、上船和舰队、佣兵与续约来源。它只给出一日重审和至少预留一个完整月费率的**条件性政策候选**；军队每 30 日事件 hook 不能证明金币扣款日，一日内最多扣一次月费、所有事件支出可界定等前提尚未证实。因此这份审计不改变上述 `null` 或联合建造门禁。
 
+R0271 同机实证显示 900 秒等待曾不足，首次正式 turn 约在启动后 912 秒。H2825 后续新 attempt 改用**另存**的 `run_r0266_exact_passive_live_v2.py`，外置 SHA-256 `CC039CA982A4C7411269917C8DB1FC1E17244BF9369D3013C1F71BF14940AEA5`：地图就绪等待 1500 秒、受管会话总时限 2400 秒；旧脚本与其已登记哈希不覆盖。V2 只通过 `py_compile` 和 `--help`，未启动 CK3。是否能采到玩家 View 缓存仍取决于 R0271 释放后的独立实测；冷启动时长不是现金读数证据。
+
 ## 已落入运行时的接口
 
 `m5_war_cash_resource_v1.observe_active_war_cash_resource_v1` 产出只读 `xar.ck3.m5-active-war-cash-resource.v1` 收据。输入必须包括完整 `source_frame`（玩家、`snapshot_id`、公开/原生修订、日期、episode）和 WarID。五项金额各使用 `{raw, scale:100000, source, source_frame, war_id}`，逐项核对同帧、同一场战争：已提交战争现金、本次动作即时费用、指定期限内未来费用上界、该期限的额外风险预算、战争政策最低保留额。收据的 `amount_observations` 保留每项金额的这五个原始证据字段，消费端再次逐项核对，不能仅信任收据顶层帧或来源字符串。未来上界还要声明 `horizon_days` 和文字假设。未知输入以 `null` 和机器可读 `missing` 原因输出；显式的 0 同样需要来源。收据始终 `formal_action_ready:false`。
