@@ -54,8 +54,11 @@ def sample(*, first: object = 1024, second: object = 2048,
         "game_memory_written": False,
         "diagnostic": {
             "status": "stable_supplied_bytes_diagnostic_only",
-            "first": {"target_memory_bytes_read": first},
-            "second": {"target_memory_bytes_read": second},
+            "first": {"target_memory_bytes_read": first,
+                      "global_played_character_id_candidate": 29829},
+            "second": {"target_memory_bytes_read": second,
+                       "global_played_character_id_candidate": 29829},
+            "same_global_played_character_id": True,
             "total_target_memory_bytes_read": first + second,
             "formal_cash_eligible": False,
         },
@@ -185,6 +188,16 @@ class FormalQueryPassiveTopbarTests(unittest.TestCase):
                     "read_only_pid_or_64k_budget_or_cache_diagnostic_unproven",
                     body["missing_reasons"],
                 )
+
+    def test_global_player_mismatch_is_diagnostic_red(self) -> None:
+        wrong = sample()
+        wrong["diagnostic"]["second"][
+            "global_played_character_id_candidate"] = 12345
+        _, _, body = self._run(sampler=lambda _pid, _dir: wrong)
+        self.assertIn(
+            "read_only_pid_or_64k_budget_or_cache_diagnostic_unproven",
+            body["missing_reasons"],
+        )
 
     def test_missing_six_field_candidate_never_reads(self) -> None:
         invalid = candidate()

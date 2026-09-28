@@ -69,6 +69,9 @@ def _same_frame(candidate: object, other: object) -> bool:
 def _bounded_sample(sample: object, candidate: dict[str, object]) -> bool:
     if not isinstance(sample, dict):
         return False
+    frame = candidate.get("source_frame_after")
+    if not isinstance(frame, dict):
+        return False
     diagnostic = sample.get("diagnostic")
     if not isinstance(diagnostic, dict):
         return False
@@ -95,6 +98,11 @@ def _bounded_sample(sample: object, candidate: dict[str, object]) -> bool:
         and type(diagnostic.get("total_target_memory_bytes_read")) is int
         and diagnostic["total_target_memory_bytes_read"]
         == first_size + second_size
+        and diagnostic.get("same_global_played_character_id") is True
+        and type(first.get("global_played_character_id_candidate")) is int
+        and first["global_played_character_id_candidate"]
+        == second.get("global_played_character_id_candidate")
+        == frame.get("played_character_id")
         and diagnostic.get("formal_cash_eligible") is False
         and sample.get("formal_cash_eligible") is False
         and sample.get("game_code_called") is False
