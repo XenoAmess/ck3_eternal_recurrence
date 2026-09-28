@@ -18759,9 +18759,19 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
   }
   const auto attacker_id = published->primary_opponent_character_id;
   const auto defender_id = before.played_character_id;
+  if (LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          attacker_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          defender_id) {
+    return Result::unavailable;
+  }
   void *const attacker = ResolveTermsCharacter(bindings, attacker_id);
   void *const defender = ResolveTermsCharacter(bindings, defender_id);
-  if (attacker == nullptr || defender == nullptr || attacker == defender) {
+  if (attacker == nullptr || defender == nullptr || attacker == defender ||
+      LoadAt<void *>(attacker, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(attacker, kCharacterLegitimacyDataOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterLegitimacyDataOffset) == nullptr) {
     return Result::unavailable;
   }
   std::vector<game::WarExitResourceSnapshot> balances;
@@ -18790,8 +18800,16 @@ ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
           static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
           targets_after, kMaximumWarObjectiveTitleIds) ||
       targets_after != target_title_ids ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          attacker_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          defender_id ||
       ResolveTermsCharacter(bindings, attacker_id) != attacker ||
       ResolveTermsCharacter(bindings, defender_id) != defender ||
+      LoadAt<void *>(attacker, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(attacker, kCharacterLegitimacyDataOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterLegitimacyDataOffset) == nullptr ||
       !ReadSnapshot(bindings, after) || after != before) {
     return Result::unavailable;
   }

@@ -83,10 +83,10 @@
     "native_baseline_candidate": {
       "status": "release_build_and_focused_tests_green_live_unverified",
       "query_step": "query-defender-de-jure-exit-terms-v1-16777231",
-      "candidate_dll_sha256": "15CB41149072A4CBE19A323A7907B270E49D7F4A75CC71BFF3A41CBA4254C7B7",
-      "scope": "Read-only same-frame CB, party and target identity with seven pre-action balances and monthly gold income for both primary parties. Title/vassal delta, signed resource delta and directed truce are typed unavailable; material_complete is always false. The query is not a planner action candidate.",
+      "candidate_dll_sha256": "FD8B5C7873C22BE32ACF2E421D2A9F625AE8FF3FB4D5408DB7F6E6AF15321470",
+      "scope": "Read-only same-frame CB, party and target identity with seven pre-action balances and monthly gold income for both primary parties. Missing character extension or legitimacy data fails closed rather than becoming zero. Title/vassal delta, signed resource delta and directed truce are typed unavailable; material_complete is always false. The query is not a planner action candidate.",
       "checks": "Windows Release xar_ck3_bridge build succeeded; focused Python contract tests 4/4 normal and 4/4 under -O; git diff --check passed.",
-      "no_launch_preflight": "Exact four source SHA-256 values verified in external attempt-08-dejure-baseline-no-launch. prepare-profile refused while R0271's ck3.exe was running; that RED attempt is preserved. A fresh attempt is required after screen release.",
+      "no_launch_preflight": "Exact four source SHA-256 values verified in external attempt-08-dejure-baseline-no-launch and attempt-09-dejure-baseline-no-launch. prepare-profile refused while R0271's ck3.exe was running; both environment RED attempts are preserved without launching H2743. A fresh attempt is required after screen release.",
       "live_h2743_readback": null,
       "material_complete": false
     },
