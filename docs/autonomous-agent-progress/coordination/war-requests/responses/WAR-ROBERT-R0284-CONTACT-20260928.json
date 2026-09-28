@@ -1,0 +1,72 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-ROBERT-R0284-CONTACT-20260928",
+  "status": "static_candidate_live_pending",
+  "maintainer": "Codex war maintainer",
+  "updated_at_utc": "2026-09-28T07:31:06Z",
+  "source_request_commit": "756e835243edd33da3b0b73718da92beb5590165",
+  "work_branch": "war/r0284-contact-20260928",
+  "source_pr": null,
+  "implementation_document": "docs/ck3-native-ai/r0284-distant-single-hop-contact-2026-09-28.md",
+  "source_kind": "H90 derivative; no formal Robert date credit",
+  "source_failure": {
+    "successful_turns": 256,
+    "blocked_turn": 257,
+    "blocked_phase": "native_war_general_battle_arrival_blocked",
+    "failed_date_raw": 53157816,
+    "last_durable_checkpoint_history_index": 907,
+    "last_durable_checkpoint_date_raw": 53157768,
+    "last_durable_save_sha256": "64D669CE72F3207855BB4E3A96BF2212551275A5088F881243064C7031702075",
+    "post_checkpoint_driver_tail_last_index": 933,
+    "source_report_sha256": "3DA7ACF518D8B88A8875456D484EB4521CE85B6C266C3612B7B3A0F949E1E4C6",
+    "source_blocker_excerpt_sha256": "71995745DBC64576701A2F5F838E46A0B127DE2ED48AB3634F9D0F45A2336D5A"
+  },
+  "observed_same_frame": {
+    "snapshot_id": "native:225",
+    "revision": 226,
+    "native_revision": 225,
+    "war_id": 16777237,
+    "player_army_id": 16777450,
+    "origin_province_id": 2634,
+    "target_province_id": 2640,
+    "hostile_army_ids": [16777537],
+    "target_arrival_date_raw": 53157960,
+    "first_day_end_date_raw": 53157840,
+    "one_day_contact_free": true,
+    "conflicts": [],
+    "note": "The source request names 2634 as target_province_id, while the frozen h928/h930 native records prove 2634 is the player's origin and 2640 is the hostile target. The code follows the native rows."
+  },
+  "implementation_contract": {
+    "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_general_battle_forecast_ingress",
+    "allowed_action": "Start one typed move-army order on a single-war, exact one-hop, full-hostile, same-frame v3-admitted route whose first 24h native horizon has no conflict.",
+    "daily_boundary": "The existing committed-route branch demands fresh same-frame full-hostile contact proof and global controllable-army safety before each subsequent advance of at most one day. A future contact day must be re-admitted through a new same-frame battle forecast; this patch does not authorize it.",
+    "future_contact_authorized": false,
+    "native_abi_changed": false,
+    "construction_completion_claimed": false
+  },
+  "receiver_transfer": {
+    "status": "nine_of_nine_verified",
+    "receiver_ack_sha256": "76B4CC72892F309DE79DE937EFCD78496229F5D14E88581FB00A6CF392432F1D",
+    "receiver_receipt_sha256": "1A5F264838BBC88EF27419F77FFCFCC728994FE1DADD99370185DD26A013094E",
+    "source_pair_and_binary_bytes_in_git": false
+  },
+  "checks": [
+    "test_general_battle_strategy.py: 14/14 normal and 14/14 under -O using this worktree source; focused R0284 admission and rejection assertions execute in optimized mode.",
+    "test_gameplay_bridge.py::test_committed_route_requires_fresh_daily_horizon_even_when_sentinel_live: passed.",
+    "test_gameplay_bridge.py::test_committed_route_contact_blocks_even_above_two_to_one_base_power: passed.",
+    "git diff --check: passed."
+  ],
+  "live_evidence": {
+    "status": "not_run_on_receiver",
+    "official_rebind": "pending_ck3_process_zero",
+    "no_launch_preflight": "pending_ck3_process_zero",
+    "typed_move_poststate": "pending",
+    "next_day_recheck": "pending"
+  },
+  "limitations": [
+    "The source 257th turn remains RED. The 256 successful source turns and its h907 checkpoint are preserved facts, not results of this candidate.",
+    "A contact-free first day does not prove the remaining five days, final participation or battle outcome. Future route changes, a new hostile or failed same-frame observation must stop or replan.",
+    "Official rebind and no-launch preflight require zero CK3 processes; R0271 currently owns the managed screen and CK3. No R0284 game launch or action has occurred."
+  ],
+  "next_step": "After R0271 releases CK3, officially rebind the verified h907 save and original h933-tail driver in a new append-only receiver attempt, run no-launch qualification, then perform a bounded exact-source live route-start and next-day contact recheck. Record any new RED without overwriting the source attempt."
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "xar.g2.r0284-h90-contact-blocker-excerpt/v1",
+  "source_kind": "H90 derivative; no formal Robert date credit",
+  "source_commit": "756e835243edd33da3b0b73718da92beb5590165",
+  "source_request_sha256": "ADDC173CAD0C25E329D461AA7561931660C22CE6BD57C184E70B1CB0ED6038AF",
+  "source_manifest_sha256": "3C8A6BF8232B3EFE7A358D56DD665D0B1B9191B9308DF0BC2F43692C9DDA8B4A",
+  "source_report_sha256": "3DA7ACF518D8B88A8875456D484EB4521CE85B6C266C3612B7B3A0F949E1E4C6",
+  "source_driver_sha256": "A3746996A5102C93839844AFCF41C2C6D30D4503AE57D5A53B132593168CFFD6",
+  "last_durable_checkpoint": {
+    "history_index": 907,
+    "date_raw": 53157768,
+    "sha256": "64d669ce72f3207855bb4e3a96bf2212551275a5088f881243064c7031702075"
+  },
+  "post_checkpoint_driver_tail_last_index": 933,
+  "formal": {
+    "successful_turns": 256,
+    "failed_turn_index": 257,
+    "status": "blocked",
+    "phase": "native_war_general_battle_arrival_blocked",
+    "selected_step": null,
+    "date_raw": 53157816,
+    "snapshot_id": "native:225",
+    "revision": 226,
+    "native_revision": 225,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_ids": [
+      16777237
+    ],
+    "army_ids": [
+      16777450
+    ],
+    "error": "AgentError: native planner is blocked: the single-step contact is outside the current one-day decision horizon"
+  },
+  "route_preview_h928": {
+    "status": "available",
+    "army_id": 16777450,
+    "origin_province_id": 2634,
+    "target_province_id": 2640,
+    "route_province_ids": [
+      2640
+    ],
+    "previewed_date_raw": 53157816
+  },
+  "contact_horizon_h930": {
+    "status": "available",
+    "date_raw": 53157816,
+    "snapshot_revision": 225,
+    "subject_army_id": 16777450,
+    "target_province_id": 2640,
+    "hostile_army_ids": [
+      16777537
+    ],
+    "subject_route": {
+      "timeline_observable": true,
+      "army_id": 16777450,
+      "current_province_id": 2634,
+      "effective_origin_province_id": 2634,
+      "route_province_ids": [
+        2640
+      ],
+      "arrival_date_raws": [
+        53157960
+      ]
+    },
+    "hostile_routes": [
+      {
+        "timeline_observable": true,
+        "army_id": 16777537,
+        "current_province_id": 2640,
+        "effective_origin_province_id": 2640,
+        "route_province_ids": [],
+        "arrival_date_raws": []
+      }
+    ],
+    "horizon_start_date_raw": 53157816,
+    "horizon_end_date_raw": 53157840,
+    "one_day_contact_free": true,
+    "conflicts": []
+  },
+  "contact_query_binding_h930": {
+    "queried_snapshot_id": "native:225",
+    "queried_revision": 226,
+    "queried_native_revision": 225,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "native-29829-2bc2d599f7f9"
+  },
+  "v3_query_h932": {
+    "command": "query-combat-simulation-inputs-v3-2640-2634-a-1-16777450-d-1-16777537",
+    "ok": true,
+    "status": "available",
+    "queried_snapshot_id": "native:225",
+    "queried_revision": 226,
+    "queried_native_revision": 225
+  },
+  "interpretation": "At h928/930 the player army is in Province 2634. Target Province 2640 is held by the observed hostile. Native ETA is six days; the current one-day horizon has no conflict. Neither six future contact-free days nor final battle participants are proven. The 257th turn selected no action."
+}

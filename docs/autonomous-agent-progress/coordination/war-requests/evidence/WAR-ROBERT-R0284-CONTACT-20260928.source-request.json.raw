@@ -1,0 +1,37 @@
+﻿{
+    "schema":  "xar.war.cross-machine-r0284-h90-contact-request/v1",
+    "created_utc":  "2026-09-28T07:08:50.4863287Z",
+    "request_id":  "R0284-H90-CONTACT-20260928",
+    "manifest_name":  "TRANSFER-MANIFEST.json",
+    "manifest_sha256":  "3C8A6BF8232B3EFE7A358D56DD665D0B1B9191B9308DF0BC2F43692C9DDA8B4A",
+    "owner_requested":  "war-maintainer",
+    "issue":  "War planner RED: single-step contact outside current one-day decision horizon",
+    "source_round":  "R0284",
+    "source_commit":  "756e835243edd33da3b0b73718da92beb5590165",
+    "source_live_dll_sha256":  "FD2AE3485B39DAC3202FDF0400FE15D1EC47D1BA86DFB533455B0ED7A175325F",
+    "source_live_injector_sha256":  "53E181FE56725B6AF4DFBA50EF0C42DE0651D84DC6E66FEBB232D6B00AC8B6B2",
+    "exact_error":  "AgentError: native planner is blocked: the single-step contact is outside the current one-day decision horizon",
+    "failed_turn_index":  257,
+    "successful_turn_count":  256,
+    "failed_frame_date_raw":  53157816,
+    "last_durable_checkpoint_date_raw":  53157768,
+    "last_durable_checkpoint_history_index":  907,
+    "post_checkpoint_driver_tail_last_index":  933,
+    "war_id":  16777237,
+    "player_army_id":  16777450,
+    "target_province_id":  2634,
+    "report_sha256":  "3DA7ACF518D8B88A8875456D484EB4521CE85B6C266C3612B7B3A0F949E1E4C6",
+    "checkpoint_recoverable":  {
+
+                               },
+    "game_launch_in_transfer":  {
+
+                                },
+    "request":  "Verify all nine file size/SHA entries against TRANSFER-MANIFEST.json; write RECEIVER-ACK.json with verified or failed status in this directory. Run official save/driver rebind and no-launch qualification on your machine before any CK3 run. Diagnose bounded contact planning; deliver safe typed route/contact and next-day recheck without treating this blocked turn as success. Return exact commit, test/live evidence, and remaining RED via this WAR directory.",
+    "no_claims":  [
+                      "This source is H90 derivative only; no formal Robert date credit.",
+                      "Sender hash verification is not receiver verification.",
+                      "Construction is still in progress; no completion or income effect claim.",
+                      "Do not overwrite the frozen PRV008 or formal Robert pair."
+                  ]
+}

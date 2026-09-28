@@ -15977,11 +15977,58 @@ def _general_battle_forecast_ingress(
     arrivals = subject_route.get("arrival_date_raws") if isinstance(subject_route, dict) else None
     final_arrival = _native_int(arrivals[-1]) if isinstance(arrivals, list) and arrivals else None
     date_raw = _native_int(snapshot.get("date_raw"))
-    if final_arrival is None or date_raw is None or not date_raw < final_arrival <= date_raw + 24:
+    if final_arrival is None or date_raw is None or final_arrival <= date_raw:
         return bounded(
             "native_war_general_battle_arrival_blocked", None,
-            "the single-step contact is outside the current one-day decision horizon",
+            "the single-step contact has no valid future arrival date",
             battle_forecast=forecast, contact_admission=admission,
+        )
+    if final_arrival > date_raw + 24:
+        # Issuing a one-hop order starts a route; it does not authorize the
+        # later battle.  The existing committed-route branch demands a fresh
+        # full-hostile horizon before *each* one-day advance, then the final
+        # contact must pass this same-frame forecast gate again.  An exact
+        # one-hop native timeline and a contact-free first day are required
+        # before starting that route.  Do not extend today's proof to the
+        # distant arrival date.
+        move_step = move_army_step(army_id, target)
+        one_war = (
+            len(active_wars) == 1
+            and isinstance(active_wars[0], dict)
+            and (_native_int(active_wars[0].get("war_id")) or 0) > 0
+        )
+        route_exact = bool(
+            isinstance(subject_route, dict)
+            and subject_route.get("timeline_observable") is True
+            and subject_route.get("army_id") == army_id
+            and subject_route.get("current_province_id") == origin
+            and subject_route.get("route_province_ids") == [target]
+            and arrivals == [final_arrival]
+        )
+        if not (
+            one_war
+            and route_exact
+            and contact.get("horizon_start_date_raw") == date_raw
+            and contact.get("horizon_end_date_raw") == date_raw + 24
+            and contact.get("one_day_contact_free") is True
+            and conflicts == []
+            and move_step in action_steps
+        ):
+            return bounded(
+                "native_war_general_battle_arrival_blocked", None,
+                "the distant single-step contact lacks an exact, contact-free first-day route order",
+                battle_forecast=forecast, contact_admission=admission,
+                future_arrival_date_raw=final_arrival,
+            )
+        return bounded(
+            "native_war_general_battle_distant_route_start", move_step,
+            "start the exact one-hop route; recheck every day and forecast the future contact again",
+            battle_forecast=forecast, contact_admission=admission,
+            future_arrival_date_raw=final_arrival,
+            source_war_id=active_wars[0]["war_id"],
+            contact_recheck_required_before_each_day=True,
+            future_contact_authorized=False,
+            general_battle_forecast_used_for_decision=True,
         )
     return {
         **baseline,

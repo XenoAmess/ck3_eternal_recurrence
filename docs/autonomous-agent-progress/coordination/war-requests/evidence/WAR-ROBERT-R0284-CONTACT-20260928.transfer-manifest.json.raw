@@ -1,0 +1,62 @@
+﻿{
+    "schema":  "xar.war.cross-machine-r0284-h90-contact-transfer/v1",
+    "created_utc":  "2026-09-28T07:08:50.4349379Z",
+    "sender":  "nonwar-machine",
+    "receiver":  "war-maintainer",
+    "transfer_status":  "sender_local_copy_verified_receiver_pending",
+    "source_round":  "R0284",
+    "source_commit":  "756e835243edd33da3b0b73718da92beb5590165",
+    "source_kind":  "H90 derivative, not formal Robert date credit",
+    "source_frozen_dir":  "Z:\\ck3_mod_rewrite_process_assets\\nw-econ-r0284-war-red-repro-756e835-20260928",
+    "source_qualification_status":  "ready_no_launch",
+    "source_qualification_sha256":  "EC046C662EFD6A113FFC8F1B68B5F4E33F3591882EEF4464DC453EF185CB9A88",
+    "source_official_preflight_sha256":  "CDAEC8F8BF5646935AFAB3F0F3DEACDFD0A254F06FA78CF1CA44532E4F8603FD",
+    "pairing_note":  "Transferred driver-state.json includes post-checkpoint tail through history index 933, while last durable save is history index 907. Receiver must run official rebind/preflight; do not force the raw pair.",
+    "files":  [
+                  {
+                      "name":  "xar_checkpoint.ck3",
+                      "bytes":  59634854,
+                      "sha256":  "64D669CE72F3207855BB4E3A96BF2212551275A5088F881243064C7031702075"
+                  },
+                  {
+                      "name":  "driver-state.json",
+                      "bytes":  12065608,
+                      "sha256":  "A3746996A5102C93839844AFCF41C2C6D30D4503AE57D5A53B132593168CFFD6"
+                  },
+                  {
+                      "name":  "construction-formal-pending-v1.json",
+                      "bytes":  4671,
+                      "sha256":  "D984B2A01434E952C1927BF0E25900D96FA5969DDF9D1AB2A9F3C489520D1871"
+                  },
+                  {
+                      "name":  "first-heir-marriage-formal-v1.json",
+                      "bytes":  4008,
+                      "sha256":  "AE58BA4B9C55D86DC9FCACBBEE110EE1321C7D7AC17D9F6FDFFD0894BCD3EBA8"
+                  },
+                  {
+                      "name":  "formal-report.txt",
+                      "bytes":  4580869,
+                      "sha256":  "3DA7ACF518D8B88A8875456D484EB4521CE85B6C266C3612B7B3A0F949E1E4C6"
+                  },
+                  {
+                      "name":  "PAIR-IDENTITY.json",
+                      "bytes":  2965,
+                      "sha256":  "6BB2E8426674B3383E5A1FCFE993C25690D8499EF9D8D141B4B1BEB7B5F28908"
+                  },
+                  {
+                      "name":  "QUALIFICATION.json",
+                      "bytes":  1083,
+                      "sha256":  "EC046C662EFD6A113FFC8F1B68B5F4E33F3591882EEF4464DC453EF185CB9A88"
+                  },
+                  {
+                      "name":  "xar_ck3_bridge.dll",
+                      "bytes":  3771392,
+                      "sha256":  "FD2AE3485B39DAC3202FDF0400FE15D1EC47D1BA86DFB533455B0ED7A175325F"
+                  },
+                  {
+                      "name":  "xar_ck3_bridge_injector.exe",
+                      "bytes":  39936,
+                      "sha256":  "53E181FE56725B6AF4DFBA50EF0C42DE0651D84DC6E66FEBB232D6B00AC8B6B2"
+                  }
+              ]
+}
