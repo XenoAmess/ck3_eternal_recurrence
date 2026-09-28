@@ -71,6 +71,14 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def valid_attempt_name(name: str) -> bool:
+    prefix, suffix = "attempt-", "-dejure-baseline-no-launch"
+    if not name.startswith(prefix) or not name.endswith(suffix):
+        return False
+    number = name[len(prefix):-len(suffix)]
+    return bool(number) and number.isascii() and number.isdecimal() and not number.startswith("0")
+
+
 def check_static() -> dict[str, object]:
     expected = {SOURCE / name: digest for name, digest in SOURCE_HASHES.items()}
     expected.update({DLL: DLL_SHA, INJECTOR: INJECTOR_SHA, EXE: EXE_SHA})
@@ -142,6 +150,8 @@ def live_gate(task_id: str, steam_gate_path: Path) -> dict[str, object]:
 
 
 def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
+    if attempt.resolve().parent != ROOT.resolve() or not valid_attempt_name(attempt.name):
+        raise RuntimeError("prepared attempt is not a fresh named H2743 child directory")
     state = attempt / "state"
     ready = json.loads((attempt / "ready-summary.json").read_text(encoding="utf-8"))
     if (ready.get("status") != "no_launch_preflight_ready"
@@ -165,7 +175,7 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
 
 def prepare_no_launch(attempt_name: str, task_id: str) -> None:
     """Fresh exact source pairing and native preflight, with no CK3 launch."""
-    if not attempt_name.startswith("attempt-") or not attempt_name[8:].replace("-dejure-baseline-no-launch", "").isdigit():
+    if not valid_attempt_name(attempt_name):
         raise RuntimeError("use a fresh literal attempt-N-dejure-baseline-no-launch name")
     check_static()
     screen_lease(task_id)
