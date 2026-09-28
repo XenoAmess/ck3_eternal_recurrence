@@ -119,6 +119,16 @@ def match_probe_pts(value: Decimal, values: list[Decimal], strings: list[str]) -
     return strings[best]
 
 
+def seek_text(value: Decimal) -> str:
+    """Keep subsecond seeks exact in FFmpeg argv and JSON receipts."""
+    return format(value.normalize(), "f")
+
+
+def seek_label(value: Decimal) -> str:
+    whole, dot, fraction = seek_text(value).partition(".")
+    return whole.zfill(3) + (f"p{fraction}" if dot else "")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--postrun-links", required=True, type=Path)
@@ -126,14 +136,15 @@ def main() -> None:
     parser.add_argument("--raw", required=True, type=Path)
     parser.add_argument("--ffprobe-json", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--seek", action="append", required=True, type=int,
-                        help="repeat for each requested whole-second source position")
+    parser.add_argument("--seek", action="append", required=True, type=Decimal,
+                        help="repeat for each requested exact source PTS in seconds")
     args = parser.parse_args()
     ffmpeg = shutil.which("ffmpeg")
     if ffmpeg is None:
         parser.error("ffmpeg not found")
-    if len(set(args.seek)) != len(args.seek) or any(value < 0 or value >= 600 for value in args.seek):
-        parser.error("seek values must be distinct integers in [0, 600)")
+    if len(set(args.seek)) != len(args.seek) or any(
+            not value.is_finite() or value < 0 or value >= 600 for value in args.seek):
+        parser.error("seek values must be distinct finite decimals in [0, 600)")
 
     links_path = args.postrun_links.resolve(strict=True)
     if args.postrun_links_sha256.upper() != EXPECTED_LINK_SHA256 or \
@@ -170,20 +181,21 @@ def main() -> None:
         "raw": links["raw_from_prior_full_sha_audit"],
         "raw_rehashed_by_sampler": False,
         "ffprobe": links["ffprobe_from_prior_full_sha_audit"],
-        "requested_seek_seconds": args.seek,
+        "requested_seek_seconds": [seek_text(value) for value in args.seek],
         "full_speed_human_review": False,
         "clean_spans_certified": False,
     }
     write_new_json(args.output / "intent.json", intent)
     samples = []
     for second in args.seek:
-        still = args.output / f"seek-{second:03d}.png"
-        stdout_path = args.output / f"seek-{second:03d}.ffmpeg.stdout.bin"
-        stderr_path = args.output / f"seek-{second:03d}.ffmpeg.stderr.bin"
-        step_intent_path = args.output / f"seek-{second:03d}.intent.json"
-        step_exit_path = args.output / f"seek-{second:03d}.exit.json"
+        label = seek_label(second)
+        still = args.output / f"seek-{label}.png"
+        stdout_path = args.output / f"seek-{label}.ffmpeg.stdout.bin"
+        stderr_path = args.output / f"seek-{label}.ffmpeg.stderr.bin"
+        step_intent_path = args.output / f"seek-{label}.intent.json"
+        step_exit_path = args.output / f"seek-{label}.exit.json"
         argv = [ffmpeg, "-hide_banner", "-loglevel", "info", "-nostdin", "-n",
-                "-threads", "1", "-filter_threads", "1", "-ss", str(second),
+                "-threads", "1", "-filter_threads", "1", "-ss", seek_text(second),
                 "-copyts", "-i", str(raw), "-map", "0:v:0", "-an",
                 # FFmpeg may decode one extra frame before -frames:v stops the
                 # output. Select the first frame before showinfo so its log
@@ -193,7 +205,7 @@ def main() -> None:
         write_new_json(step_intent_path, {
             "schema": "xar.war-promo.e2-05-sparse-seek-intent/v1",
             "created_at_utc": datetime.now(timezone.utc).isoformat(),
-            "requested_seek_seconds": second,
+            "requested_seek_seconds": seek_text(second),
             "argv": argv,
             "raw_frozen_identity": links["raw_from_prior_full_sha_audit"],
             "raw_rehash_performed": False,
@@ -225,7 +237,7 @@ def main() -> None:
         if not errors:
             try:
                 measured = unique_showinfo_pts(stderr_path.read_bytes())
-                if abs(measured - Decimal(second)) > Decimal("0.5"):
+                if abs(measured - second) > Decimal("0.5"):
                     raise ValueError(f"seek {second} decoded distant frame {measured}")
                 matched = match_probe_pts(measured, pts_values, pts_strings)
                 dimensions = png_dimensions(still)
@@ -237,7 +249,7 @@ def main() -> None:
             "schema": "xar.war-promo.e2-05-sparse-seek-exit/v1",
             "completed_at_utc": datetime.now(timezone.utc).isoformat(),
             "result": "RED_PARTIAL_PRESERVED" if errors else "SPARSE_SAMPLE_UNREVIEWED",
-            "requested_seek_seconds": second,
+            "requested_seek_seconds": seek_text(second),
             "ffmpeg_exit_code": exit_code,
             "raw_stat_before": raw_before,
             "raw_stat_after": raw_after,
@@ -254,7 +266,7 @@ def main() -> None:
         if errors:
             raise RuntimeError(f"seek {second} RED; exact logs and partial preserved at {step_exit_path}")
         samples.append({
-            "requested_seek_seconds": second,
+            "requested_seek_seconds": seek_text(second),
             "ffmpeg_showinfo_pts_seconds": str(measured),
             "frozen_ffprobe_frame_pts_seconds": matched,
             "still": file_identity(still),

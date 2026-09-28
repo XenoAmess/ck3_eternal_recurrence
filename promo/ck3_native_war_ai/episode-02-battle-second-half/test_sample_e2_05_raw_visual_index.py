@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 from contextlib import contextmanager
+from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -63,6 +64,40 @@ def patched_fixture_identity(argv: list[str]):
 
 
 class SparseSamplerSafetyTests(unittest.TestCase):
+    def test_fractional_seek_uses_exact_argv_and_unique_receipt_name(self) -> None:
+        self.assertEqual(sampler.seek_text(Decimal("210.033000")), "210.033")
+        self.assertEqual(sampler.seek_label(Decimal("210.033000")), "210p033")
+        self.assertEqual(sampler.seek_label(Decimal("0")), "000")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            _, output, argv = make_tiny_fixture(root)
+            argv[-1] = "210.033000"
+
+            def failed_ffmpeg(command, *, stdout, stderr, check):
+                self.assertEqual(command[command.index("-ss") + 1], "210.033")
+                self.assertEqual(Path(command[-1]).name, "seek-210p033.png")
+                Path(command[-1]).write_bytes(b"partial")
+                return SimpleNamespace(returncode=7)
+
+            with patched_fixture_identity(argv), patch.object(sampler, "EXTERNAL_PARENT", root), \
+                    patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
+                    patch.object(sampler.subprocess, "run", side_effect=failed_ffmpeg), \
+                    patch.object(sys, "argv", argv), self.assertRaises(RuntimeError):
+                sampler.main()
+            receipt = json.loads((output / "seek-210p033.exit.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["requested_seek_seconds"], "210.033")
+            self.assertEqual(receipt["png_or_partial"]["bytes"], 7)
+
+    def test_nonfinite_fractional_seek_rejected_before_attempt(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            _, output, argv = make_tiny_fixture(root)
+            argv[-1] = "NaN"
+            with patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
+                    patch.object(sys, "argv", argv), self.assertRaises(SystemExit):
+                sampler.main()
+            self.assertFalse(output.exists())
+
     @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"),
                          "FFmpeg tools are unavailable")
     def test_real_ffmpeg_select_logs_only_written_first_frame(self) -> None:
