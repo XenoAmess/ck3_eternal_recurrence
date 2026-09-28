@@ -1442,6 +1442,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_epidemic_treatment_presence_query: bool = False,
         allow_private_prisoner_collection_query: bool = False,
         allow_private_active_scheme_sway_query: bool = False,
+        allow_private_active_scheme_sway_action: bool = False,
         allow_private_realm_law_paused_query: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
@@ -1538,6 +1539,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_active_scheme_sway_query = (
             allow_private_active_scheme_sway_query is True
+        )
+        self.allow_private_active_scheme_sway_action = (
+            allow_private_active_scheme_sway_action is True
         )
         self.allow_private_realm_law_paused_query = (
             allow_private_realm_law_paused_query is True
@@ -2524,6 +2528,31 @@ class NativeHeadlessGameplayDriver:
             target_character_id=target_character_id,
             timeout_seconds=self.command_timeout_seconds,
         )
+
+    def submit_active_scheme_sway_private_v1(
+        self, *, readback: dict[str, object], action_id: str,
+    ) -> dict[str, object]:
+        """Submit one unadvertised Sway action using a paused native quote."""
+        from .active_scheme_sway_formal_private_transport import (
+            submit_active_scheme_sway_private_v1,
+        )
+
+        return submit_active_scheme_sway_private_v1(
+            self, readback=readback, action_id=action_id)
+
+    def query_active_scheme_sway_receipt_private_v1(
+        self, *, target_character_id: int, action_id: str,
+        expected_revision: int, pre_capture_epoch: int,
+    ) -> dict[str, object]:
+        """Read the pending action's independent native receipt."""
+        from .active_scheme_sway_formal_private_transport import (
+            query_active_scheme_sway_receipt_private_v1,
+        )
+
+        return query_active_scheme_sway_receipt_private_v1(
+            self, target_character_id=target_character_id,
+            action_id=action_id, expected_revision=expected_revision,
+            pre_capture_epoch=pre_capture_epoch)
 
     def query_realm_law_final_terms_private_v1(
         self, *, expected_revision: int,

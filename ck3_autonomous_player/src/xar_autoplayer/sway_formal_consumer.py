@@ -1,0 +1,220 @@
+"""One-target, default-off Sway action and durable recovery policy.
+
+The native submit ACK is deliberately pending-only.  A fresh native read,
+independent of the receipt, proves an active matching scheme before resolution.
+"""
+
+from __future__ import annotations
+
+import json
+import uuid
+from collections.abc import Mapping
+from pathlib import Path
+
+from .bridge.driver import BridgeUnavailableError
+from .environment import write_json_atomic
+
+
+LEDGER_FILE = "active-scheme-sway-formal-private-v1.json"
+SCHEMA = "xar.ck3.active-scheme-sway-formal-private.v1"
+
+
+def _positive(value: object) -> bool:
+    return type(value) is int and value > 0
+
+
+def read_sway_ledger(state_dir: Path) -> dict[str, object]:
+    path = state_dir / LEDGER_FILE
+    if not path.exists():
+        return {"schema": SCHEMA, "pending": None, "resolved": None}
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if (not isinstance(value, dict) or set(value) != {"schema", "pending", "resolved"}
+            or value.get("schema") != SCHEMA
+            or any(value[key] is not None and not isinstance(value[key], dict)
+                   for key in ("pending", "resolved"))):
+        raise ValueError("private Sway ledger is malformed")
+    return value
+
+
+def _write(state_dir: Path, ledger: Mapping[str, object]) -> None:
+    write_json_atomic(state_dir / LEDGER_FILE, dict(ledger))
+
+
+def _identity(snapshot: Mapping[str, object], target: int) -> tuple[int, int, int, int]:
+    actor = snapshot.get("played_character")
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or not isinstance(actor, Mapping) or actor.get("alive") is not True
+            or not _positive(actor.get("character_id"))
+            or not _positive(snapshot.get("revision"))
+            or not _positive(snapshot.get("native_revision"))
+            or type(snapshot.get("date_raw")) is not int
+            or not _positive(target) or target > 0xFFFFFFFF
+            or actor["character_id"] == target):
+        raise ValueError("private Sway requires a living player and paused map frame")
+    return (actor["character_id"], snapshot["revision"],
+            snapshot["native_revision"], snapshot["date_raw"])
+
+
+def _read_matches(snapshot: Mapping[str, object], read: Mapping[str, object],
+                  target: int) -> bool:
+    actor, revision, native, date = _identity(snapshot, target)
+    return bool(
+        read.get("schema") == "active-scheme-sway-private-read-v1"
+        and read.get("queried_revision") == revision
+        and read.get("queried_native_revision") == native
+        and read.get("snapshot_revision") == native
+        and read.get("date_raw") == date
+        and read.get("actor_character_id") == actor
+        and read.get("target_character_id") == target
+        and _positive(read.get("capture_epoch"))
+        and _positive(read.get("container_generation"))
+        and type(read.get("target_opinion_of_actor")) is int
+        and -100 <= read["target_opinion_of_actor"] <= 100
+        and type(read.get("active_scheme_count")) is int
+        and 0 <= read["active_scheme_count"] <= 32
+        and type(read.get("matching_sway_active")) is bool
+        and type(read.get("native_legal_now")) is bool
+    )
+
+
+def should_submit_sway(snapshot: Mapping[str, object], read: Mapping[str, object],
+                       target: int) -> bool:
+    """Use an empty personal-scheme slot to improve a negative opinion."""
+    if not _read_matches(snapshot, read, target):
+        raise ValueError("private Sway source differs from current paused frame")
+    context = snapshot.get("active_context")
+    if (isinstance(context, Mapping)
+            and (context.get("active_event") is not None
+                 or context.get("pending_character_interaction") is not None)):
+        return False
+    return bool(
+        read["target_opinion_of_actor"] < 0
+        and read["active_scheme_count"] == 0
+        and read["matching_sway_active"] is False
+        and read["native_complete_can_send"] is True
+        and read["native_legal_now"] is True
+    )
+
+
+def _read_now(driver: object, target: int) -> tuple[dict[str, object], dict[str, object]]:
+    snapshot = driver.take_snapshot()
+    _identity(snapshot, target)
+    read = driver.query_active_scheme_sway_target_private_v1(
+        expected_revision=snapshot["revision"], target_character_id=target)
+    if not _read_matches(snapshot, read, target):
+        raise BridgeUnavailableError("private Sway recovery read changed frame")
+    return snapshot, read
+
+
+def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
+              read: Mapping[str, object], receipt: Mapping[str, object] | None,
+              state_dir: Path) -> dict[str, object]:
+    if (read["matching_sway_active"] is not True
+            or read["active_scheme_count"] < 1
+            or (receipt is not None
+                and read["capture_epoch"] <= pending["pre_capture_epoch"])):
+        raise BridgeUnavailableError("private Sway has no independent active-scheme postcondition")
+    result = {
+        "status": "applied", "postcondition_verified": True,
+        "actor_character_id": pending["actor_character_id"],
+        "target_character_id": pending["target_character_id"],
+        "action_id": pending["action_id"],
+        "pre_capture_epoch": pending["pre_capture_epoch"],
+        "post_capture_epoch": read["capture_epoch"],
+        "post_native_revision": read["queried_native_revision"],
+        "post_date_raw": read["date_raw"],
+        "native_receipt": dict(receipt) if receipt is not None else None,
+        "next_turn_consumed": False,
+    }
+    _write(state_dir, {**ledger, "pending": None, "resolved": result})
+    return result
+
+
+def consume_sway_private_once(driver: object, *, target_character_id: int,
+                              snapshot: Mapping[str, object],
+                              readback: Mapping[str, object]) -> dict[str, object]:
+    """Submit at most once; on a new PID use a read-only recovery first."""
+    if getattr(driver, "allow_private_active_scheme_sway_action", False) is not True:
+        raise ValueError("private Sway formal trial is disabled")
+    state_dir = driver.state_dir
+    if not isinstance(state_dir, Path):
+        raise ValueError("private Sway requires managed state_dir")
+    actor, _, _, _ = _identity(snapshot, target_character_id)
+    if not _read_matches(snapshot, readback, target_character_id):
+        raise ValueError("private Sway source differs from current paused frame")
+    ledger = read_sway_ledger(state_dir)
+    pending = ledger["pending"]
+    if isinstance(pending, dict):
+        if (pending.get("actor_character_id") != actor
+                or pending.get("target_character_id") != target_character_id):
+            return {"status": "pending_other_actor_or_target", "pending": pending}
+        if readback["matching_sway_active"] is True:
+            return _resolved(ledger, pending, readback, None, state_dir)
+        return {"status": "pending_recovery", "pending": pending,
+                "postcondition_verified": False}
+    resolved = ledger["resolved"]
+    if (isinstance(resolved, dict)
+            and resolved.get("actor_character_id") == actor
+            and resolved.get("target_character_id") == target_character_id):
+        return {"status": "already_applied", "resolved": resolved}
+    if not should_submit_sway(snapshot, readback, target_character_id):
+        return {"status": "no_positive_opportunity", "readback": dict(readback)}
+
+    action_id = "sway-" + uuid.uuid4().hex
+    pending = {
+        "stage": "submission_unresolved", "action_id": action_id,
+        "actor_character_id": actor, "target_character_id": target_character_id,
+        "pre_capture_epoch": readback["capture_epoch"],
+        "pre_container_generation": readback["container_generation"],
+        "pre_date_raw": readback["date_raw"],
+        "pre_native_revision": readback["queried_native_revision"],
+        "pre_target_opinion_of_actor": readback["target_opinion_of_actor"],
+    }
+    # Durable intent precedes the native call.  If the call times out or the
+    # process dies, a later run only reads game state and never resubmits.
+    _write(state_dir, {**ledger, "pending": pending})
+    try:
+        ack = driver.submit_active_scheme_sway_private_v1(
+            readback=dict(readback), action_id=action_id)
+    except BridgeUnavailableError as error:
+        return {"status": "submission_unresolved", "pending": pending,
+                "submit_error": str(error), "postcondition_verified": False}
+    pending = {**pending, "stage": "receipt_pending", "ack": ack}
+    _write(state_dir, {**ledger, "pending": pending})
+    try:
+        receipt = driver.query_active_scheme_sway_receipt_private_v1(
+            target_character_id=target_character_id, action_id=action_id,
+            expected_revision=driver.take_snapshot()["native_revision"],
+            pre_capture_epoch=readback["capture_epoch"])
+    except BridgeUnavailableError as error:
+        return {"status": "receipt_pending", "pending": pending,
+                "receipt_error": str(error), "postcondition_verified": False}
+    try:
+        _, after_read = _read_now(driver, target_character_id)
+        return _resolved(ledger, pending, after_read, receipt, state_dir)
+    except BridgeUnavailableError as error:
+        return {"status": "postcondition_pending", "pending": pending,
+                "native_receipt": receipt, "postcondition_error": str(error),
+                "postcondition_verified": False}
+
+
+def consume_sway_following_turn(state_dir: Path,
+                                snapshot: Mapping[str, object]) -> dict[str, object] | None:
+    """Mark a later real turn as consuming the already proven action."""
+    ledger = read_sway_ledger(state_dir)
+    resolved = ledger["resolved"]
+    if not isinstance(resolved, dict) or resolved.get("next_turn_consumed") is True:
+        return None
+    actor = snapshot.get("played_character")
+    if (not isinstance(actor, Mapping)
+            or actor.get("character_id") != resolved.get("actor_character_id")
+            or not _positive(snapshot.get("native_revision"))
+            or type(snapshot.get("date_raw")) is not int
+            or (snapshot["native_revision"] <= resolved["post_native_revision"]
+                and snapshot["date_raw"] <= resolved["post_date_raw"])):
+        return None
+    resolved = {**resolved, "next_turn_consumed": True,
+                "following_native_revision": snapshot["native_revision"],
+                "following_date_raw": snapshot["date_raw"]}
+    _write(state_dir, {**ledger, "resolved": resolved})
+    return resolved

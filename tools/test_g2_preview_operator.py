@@ -2508,6 +2508,26 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertEqual(parsed.private_active_scheme_sway_target, 32716)
 
+    def test_private_sway_formal_trial_requires_opt_in_and_target(self) -> None:
+        base = dict(
+            common=["python", "agent.py"], turns=1, timeout=60,
+            readiness_timeout=30, private_faction_round_id_value=None,
+        )
+        flag = "--private-active-scheme-sway-formal-trial"
+        agent_flag = "--allow-private-active-scheme-sway-formal-trial"
+        self.assertNotIn(agent_flag,
+                         g2_preview_operator.native_auto_run_command(**base))
+        command = g2_preview_operator.native_auto_run_command(
+            **base, private_active_scheme_sway_target=32716,
+            private_active_scheme_sway_formal_trial=True)
+        self.assertIn(agent_flag, command)
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "output",
+            flag, "--private-active-scheme-sway-target", "32716",
+        ])
+        self.assertTrue(parsed.private_active_scheme_sway_formal_trial)
+        self.assertEqual(parsed.private_active_scheme_sway_target, 32716)
+
     def test_private_realm_law_paused_query_is_explicit_and_forwarded(self) -> None:
         base = dict(
             common=["python", "agent.py"], turns=1, timeout=60,
