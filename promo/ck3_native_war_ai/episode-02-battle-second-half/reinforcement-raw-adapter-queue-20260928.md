@@ -22,4 +22,6 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_nat
 
 从完整 ffprobe 选存在的真实首末 PTS，再抽帧；这两处 mark 只帮定位。原速看完整 600 秒和选中端点之后，审阅者才可填写与原 raw、PTS 帧、来源身份绑定的 `human-review.json`，由另一个新目录执行 `package`。`prepare` 的预期最多是 `PENDING_CLEAN_REVIEW`，绝非 adapter GREEN；终片还要另行完整 1× 人审和精确字节签核。
 
+搜片时可先看约 **200–255 秒**的第 11 日前态、约 **350–410 秒**的第 12 日后态。这只是按墙钟 mark 放宽的导航窗，首末数字未经媒体帧核验，既不保证整窗是同一画面，也不能直接填入 clean span。实际选段必须从完整 ffprobe 找真实帧 PTS，并在 1× 画面里确认身份、HUD、来源标签与无异物遮挡。
+
 四条已封口 raw 的原回执合计 **4,421,454,290 B（约 4.12 GiB）**，完整 ffprobe 合计 **63,119,422 B（约 60.2 MiB）**。按四条各 600 秒，完整原速人工审片的理论下限是 **40 分钟**，不含端点复查、章节成片复看和剪辑。四条 `package` 若都合格，会仅因 raw 复制额外占约 4.12 GiB；预留至少 **6 GiB** 给其余证据和中间资产。任一原片不合格时不能为了时码硬填：六章目标 29:50 中实测旁白 22:30.384，[桥接预算](production-six-chapter-handoff-20260928.md)尚有 7:19.616，**其中增援章 3:02.288**；预算不是现成 clean span。骑士章合格原片仍缺，四条旧 raw 也不能补这一章的当次画面。

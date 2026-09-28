@@ -54,6 +54,10 @@
       {"kind": "e2-06-d12-after", "approx_seconds": "374.0667917", "date_raw": 53146512, "combat_id": 16777218, "war_id": 4}
     ]
   },
+  "candidate_search_windows_seconds": [
+    {"purpose": "day11 before-state navigation", "begin": 200, "end": 255, "exact_media_pts_endpoints_verified": false, "visual_review_performed": false},
+    {"purpose": "day12 after-state navigation", "begin": 350, "end": 410, "exact_media_pts_endpoints_verified": false, "visual_review_performed": false}
+  ],
   "visual_limit": "GUI.scale=1.3 clipped the lower battle panel; this raw cannot prove lower regiment and combat-width UI visibility",
   "next_gate": "Serial prepare with a current verified xar-promo wheel; inspect full ffprobe and raw at 1x, extract exact PTS endpoint frames, then separately attest review and package selected spans."
 }
