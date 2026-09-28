@@ -16,7 +16,7 @@ E2-05 a02 受管 run 为 `D:/workspace/ck3_native_war_ai_promo_work/episode02-e2
 
 ## 获磁盘许可后的低负载取样顺序
 
-取样使用单线程 FFmpeg、输入 seek、每点一张原生尺寸 JPEG，不做全片解码、转码或循环抽帧。输出必须是新外置目录，不覆盖 `a01/a02` 旧索引及本次 recorder。逐张记录原片 SHA、输入 argv、请求 seek、实际解码帧 PTS、宽高、JPEG bytes/SHA-256；实际 PTS 从 `showinfo` 和已冻结的完整 `ffprobe.json` 交叉核对，若无法核准只写请求 seek 并保持 `PTS_UNRESOLVED`。
+取样使用单线程 FFmpeg、输入 seek、每点一张原生尺寸**无损 PNG**，不做全片解码、转码或循环抽帧。细小 CK3 字符只凭原始 PNG 判读；如另制 JPEG，最多作导航缩略图。输出必须是新外置目录，不覆盖 `a01/a02` 旧索引及本次 recorder。逐张记录原片 SHA、输入 argv、请求 seek、实际解码帧 PTS、PNG 宽高、PNG bytes/SHA-256；实际 PTS 从 `showinfo` 和已冻结的完整 `ffprobe.json` 交叉核对，若无法核准只写请求 seek 并保持 `PTS_UNRESOLVED`。
 
 | 目标 | 首轮 seek 秒点 | 要验证的画面事实 |
 | --- | --- | --- |
@@ -32,4 +32,4 @@ E2-05 a02 受管 run 为 `D:/workspace/ck3_native_war_ai_promo_work/episode02-e2
 1. **战斗窗可见**：同一原片的日期、墨西拿、完整双方兵数/骑士行/优势在具体 PTS 均可读，且有对应原生 control SHA。第 26/27 日分别绑定 `e2-05-d26-control.json` SHA `D41E384CE022C261E15E3761980A0A78E26BA0B21C9FCF3F2393F062F03CEC1F` 与 `e2-05-d26-post-snapshot.json` SHA `062907DC73AAD127C766F45E754BEC7457E8C6B956D842A87DB2BF35B6030249`。
 2. **名单变化可见**：raw 中分别看见标题 11 与 10、完整行列表；如名单只在独立截图而不在 raw，仅可给静态对照卡。名单差异是“有人离开战斗骑士行”，单凭 UI 不证明死亡、击杀者或抽签。
 3. **击杀事实与视觉分离**：`e2-05-d26-trace-finish.json` SHA `BFF0A9CFCE858C88B9FEA67D0FB646CDB7175BA7DC957898769BE02D5479C7D0` 的快速读取只报告 `knight_killed_by_enemy` 一行；完整 selector、CharacterID `34120/33437`、死亡/脱团须由同 run 原生事实审计单独确证。没有 `event-fire` mark 或可见事件弹窗，不能把 trace 行写成已经拍到击杀，也不能把历史 `020/070/036→038` 的 RNG/名单接到本 run 画面。
-4. **clean span 与使用门**：机器 PTS GREEN + 稀疏 JPEG 只产生剪辑候选。精确 cut 要有全段 1× 原速审看、字幕/来源标签可读性、同 run raw/report/timeline/evidence-index 精确哈希、无遮挡和 CK3 adapter 校验后，才可登记 `clean_span`。任何重新编码后都需绑定新 bytes 并重审。
+4. **clean span 与使用门**：机器 PTS GREEN + 稀疏 PNG 只产生剪辑候选。精确 cut 要有全段 1× 原速审看、字幕/来源标签可读性、同 run raw/report/timeline/evidence-index 精确哈希、无遮挡和 CK3 adapter 校验后，才可登记 `clean_span`。任何重新编码后都需绑定新 bytes 并重审。
