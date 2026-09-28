@@ -35,6 +35,8 @@ CURRENT_GETTER_HELPER_RVA = 0x11F7370
 CURRENT_BREAKDOWN_CALCULATOR_RVA = 0x290A720
 VIEW_SUBJECT_HANDLE_OFFSET = 0x248
 PLAYED_CHARACTER_ID_GLOBAL_RVA = 0x4FE7EE0
+VIEW_CONSTRUCTOR_VTABLE_RVA = 0x4135EE0
+VIEW_CONSTRUCTOR_SECONDARY_VTABLE_RVA = 0x4135FB0
 
 
 def _instruction(image: pefile.PE, binary: bytes, rva: int):
@@ -95,6 +97,12 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     zero_initializer = _instruction(image, binary, 0xBC3D7D)
     raw_zero_initializer = _instruction(image, binary, 0xBC3DCA)
     scale_initializer = _instruction(image, binary, 0xBC3DCE)
+    breakdown_this_save = _instruction(image, binary, 0xBC3D7A)
+    breakdown_back_pointer = _instruction(image, binary, 0xBC3DFF)
+    view_vtable_load = _instruction(image, binary, 0x11F2D75)
+    view_vtable_write = _instruction(image, binary, 0x11F2D7C)
+    view_secondary_vtable_load = _instruction(image, binary, 0x11F2D80)
+    view_secondary_vtable_write = _instruction(image, binary, 0x11F2D87)
     nonzero_guard = _instruction(image, binary, 0x11F7DD0)
     refresh_target = _instruction(image, binary, 0x11F3B10)
     refresh_append = _instruction(image, binary, 0x11F3BFB)
@@ -110,6 +118,20 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
             or scale_initializer.mnemonic != "mov"
             or scale_initializer.op_str
             != f"qword ptr [rcx + 0x80], {GOLD_SCALE:#x}"
+            or breakdown_this_save.mnemonic != "mov"
+            or breakdown_this_save.op_str != "rbx, rcx"
+            or breakdown_back_pointer.mnemonic != "mov"
+            or breakdown_back_pointer.op_str != "qword ptr [rcx], rbx"
+            or view_vtable_load.mnemonic != "lea"
+            or _relative_target(view_vtable_load)
+            != base + VIEW_CONSTRUCTOR_VTABLE_RVA
+            or view_vtable_write.mnemonic != "mov"
+            or view_vtable_write.op_str != "qword ptr [r12], rcx"
+            or view_secondary_vtable_load.mnemonic != "lea"
+            or _relative_target(view_secondary_vtable_load)
+            != base + VIEW_CONSTRUCTOR_SECONDARY_VTABLE_RVA
+            or view_secondary_vtable_write.mnemonic != "mov"
+            or view_secondary_vtable_write.op_str != "qword ptr [r12 + 0x10], rcx"
             or nonzero_guard.mnemonic != "cmp"
             or nonzero_guard.op_str != "qword ptr [rcx + 0x740], 0"
             or refresh_target.mnemonic != "lea"
@@ -192,6 +214,9 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "predicted_max_gold_raw_candidate_offset": hex(PREDICTED_MAX_GOLD_RAW_OFFSET),
         "predicted_max_gold_scale_offset": hex(PREDICTED_MAX_GOLD_SCALE_OFFSET),
         "predicted_max_gold_scale": GOLD_SCALE,
+        "view_constructor_vtable_rva": hex(VIEW_CONSTRUCTOR_VTABLE_RVA),
+        "view_constructor_secondary_vtable_rva": hex(VIEW_CONSTRUCTOR_SECONDARY_VTABLE_RVA),
+        "value_breakdown_back_pointer_offset": hex(VALUE_BREAKDOWN_OFFSET),
         "predicted_max_breakdown_refresh_rva": hex(0x11F3B10),
         "current_expense_getter_rva": hex(CURRENT_GETTER_RVA),
         "current_expense_helper_rva": hex(CURRENT_GETTER_HELPER_RVA),
