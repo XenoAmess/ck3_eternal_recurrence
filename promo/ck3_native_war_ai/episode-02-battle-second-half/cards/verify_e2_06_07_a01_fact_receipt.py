@@ -12,7 +12,8 @@ from pathlib import Path
 from render_calculation_cards import DATA, ROOT, require, validate, verify_a01_sources
 
 
-FACTS = ROOT / "e2-06-07-a01-join-facts-20260928.json"
+FACTS = ROOT / "e2-06-07-a01-join-facts-20260928-v2.json"
+HISTORICAL_FACTS = ROOT / "e2-06-07-a01-join-facts-20260928.json"
 
 
 def sha(path: Path) -> str:
@@ -29,7 +30,9 @@ def main() -> None:
     validate(index)
     a = index["replays"]["A01"]
     old = index["replays"]["085"]
-    require(receipt["schema"] == "xar.war-ai.episode02.a01-join-card-facts.v1" and
+    require(receipt["schema"] == "xar.war-ai.episode02.a01-join-card-facts.v2" and
+            receipt["supersedes_receipt_sha256"] == sha(HISTORICAL_FACTS) ==
+            "2F282D3B199524CDB6B39E837C7BEC52E150E77E7B14A0919BA0AC8D97C0A8CD" and
             receipt["usage_scope"] == "current-a01-private-join-edit-proxy" and
             receipt["media_status"] == "PTS_CONTINUOUS_UNREVIEWED" and
             receipt["clean_spans_certified"] is False and

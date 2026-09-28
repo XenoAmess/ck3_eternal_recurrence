@@ -44,6 +44,9 @@ SOURCE_FIELDS = {
             "source_pts_audit", "source_session_result"),
     "024": ("source_save", "source_terminal", "source_session_result"),
     "A05": ("source_save", "source_preflight", "source_start_readback",
+            "source_day28_control", "source_day29_control",
+            "source_day30_control", "source_day31_control",
+            "source_pursuit_parity", "source_pursuit_control_audit",
             "source_terminal", "source_post_snapshot", "source_observe",
             "source_same_recorder_verify",
             "source_recorder_final"),
@@ -200,6 +203,21 @@ def validate(data: dict) -> None:
             (72, 69, 72, 3), "004 native comparable rows")
     require(pursuit["terminal_kind"] == "normal_result" and
             pursuit["terminal_winner_side"] == 0, "004 terminal identity")
+    live_pursuit = replays["A05"]
+    for field in ("date_raw", "pursuit_begin_day", "retreater_regiments",
+                  "levy_soft_pool_raw_q100000", "men_at_arms_soft_pool_raw_q100000",
+                  "total_soft_pool_raw_q100000", "pursuit_damage_raw_q100000",
+                  "retreater_screen_raw_q100000", "daily_hard_raw_q100000",
+                  "daily_toughness_soft_raw_q100000", "total_hard_raw_q100000",
+                  "exact_soft_rows", "exact_hard_rows", "stable_current_rows",
+                  "unreadable_hard_rows", "terminal_winner_side", "terminal_kind"):
+        require(live_pursuit[field] == pursuit[field],
+                f"A05 independent pursuit parity: {field}")
+    require(live_pursuit["source_pursuit_parity_sha256"] !=
+            pursuit["source_index_sha256"] and
+            live_pursuit["source_day28_control_sha256"] !=
+            pursuit["source_day28_control_sha256"],
+            "A05 and 004 native control sources stay separate")
     maim = replays["039_040"]
     require(maim["source_day5_finish_sha256"] == maim["primary_receipt_sha256"] and
             maim["source_day6_save_sha256"] ==
@@ -269,10 +287,11 @@ def validate(data: dict) -> None:
     require([row["id"] for row in data["cards"]] ==
             ["E2-02", "E2-03", "E2-04", "E2-05A", "E2-05B", "E2-05C",
              "E2-06", "E2-07", "E2-09"] and
-            [data["cards"][i]["replay"] for i in (6, 7, 8)] ==
-            ["A01", "A01", "A05"] and
-            [data["cards"][i]["artifact"] for i in (6, 7, 8)] ==
-            ["e2-06-a01-calculation.svg", "e2-07-a01-calculation.svg",
+            [data["cards"][i]["replay"] for i in (0, 1, 6, 7, 8)] ==
+            ["A05", "A05", "A01", "A01", "A05"] and
+            [data["cards"][i]["artifact"] for i in (0, 1, 6, 7, 8)] ==
+            ["e2-02-a05-calculation.svg", "e2-03-a05-calculation.svg",
+             "e2-06-a01-calculation.svg", "e2-07-a01-calculation.svg",
              "e2-09-a05-calculation.svg"] and
             data["cards"][-1]["replay"] == "A05" and
             data["cards"][-1]["artifact"] == "e2-09-a05-calculation.svg",
@@ -280,7 +299,11 @@ def validate(data: dict) -> None:
     historical = data["historical_cards"]
     require([(row["id"], row["replay"], row["artifact"], row["sha256"])
              for row in historical] == [
-                ("E2-06", "085", "e2-06-calculation.svg",
+                 ("E2-02", "004", "e2-02-calculation.svg",
+                  "D3EF3FA32AA96CBD2E120F950498069352B9385B5E4B02EE0EE8794C44BDF509"),
+                 ("E2-03", "004", "e2-03-calculation.svg",
+                  "A5C13BB2A34974D7D01B7038AD7AB53C14F0F2966A5137BBF6D76087ECD8772D"),
+                 ("E2-06", "085", "e2-06-calculation.svg",
                  "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5"),
                 ("E2-07", "085", "e2-07-calculation.svg",
                  "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527"),
@@ -336,11 +359,11 @@ def frame(s: Svg, card: dict, replay: dict, data: dict, subtitle: str) -> None:
     s.line(90, 255, 2470, 255, "rule", 2)
     s.line(90, 1022, 2470, 1022, "gold", 2)
     game = data["game"]
-    date = replay.get("date_raw", replay.get("terminal_date_raw"))
+    date = card.get("date_raw", replay.get("date_raw", replay.get("terminal_date_raw")))
     s.text(92, 1060, f'{game["version"]}  ·  CombatID {game["combat_id"]}  ·  WarID {game["war_id"]}  ·  原生日戳 {date}',
            27, "muted")
-    sha = replay.get("primary_receipt_sha256",
-                     replay.get("source_finish_sha256", replay.get("source_terminal_sha256")))
+    sha = card.get("source_receipt_sha256", replay.get("primary_receipt_sha256",
+                      replay.get("source_finish_sha256", replay.get("source_terminal_sha256"))))
     s.text(92, 1100, f'原始回执 SHA-256  {sha}', 23, "gold")
     # A standalone card is inserted between gameplay shots. No CK3 UI is covered.
     s.line(0, 1120, 2560, 1120, "gold", 2)
@@ -355,9 +378,9 @@ def scaled_compact(raw: int) -> str:
 
 
 def card_02(data: dict, card: dict) -> bytes:
-    a = data["replays"]["004"]
+    a = data["replays"][card["replay"]]
     s = Svg()
-    frame(s, card, a, data, "004 第 28 日单帧起算；败方掩护聚合为 0 的条件样本")
+    frame(s, card, a, data, "A05 第 28 日单帧起算；败方掩护聚合为 0 的条件样本")
     s.rect(90, 284, 1138, 665)
     s.rect(1332, 284, 1138, 665)
     s.text(125, 344, "败方 · 24 团软伤池", 40, "gold", 700)
@@ -385,9 +408,9 @@ def card_02(data: dict, card: dict) -> bytes:
 
 
 def card_03(data: dict, card: dict) -> bytes:
-    a = data["replays"]["004"]
+    a = data["replays"][card["replay"]]
     s = Svg()
-    frame(s, card, a, data, "004 同一独立回放；第 29/30 日不重新喂入原版败方状态")
+    frame(s, card, a, data, "A05 同一独立回放；第 29/30 日不重新喂入原版败方状态")
     for i, x in enumerate((90, 895, 1700)):
         start_day = 28 + i
         s.rect(x, 290, 770, 615)

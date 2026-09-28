@@ -43,8 +43,16 @@
       "total_soft_pool_raw_q100000": 82432227,
       "pursuit_damage_raw_q100000": 75203000,
       "retreater_screen_raw_q100000": 0,
-      "daily_hard_raw_q100000": [2070677, 2097473, 2126119],
-      "daily_toughness_soft_raw_q100000": [1489459979, 1452047877, 1414150820],
+      "daily_hard_raw_q100000": [
+        2070677,
+        2097473,
+        2126119
+      ],
+      "daily_toughness_soft_raw_q100000": [
+        1489459979,
+        1452047877,
+        1414150820
+      ],
       "total_hard_raw_q100000": 6294269,
       "exact_soft_rows": 72,
       "exact_hard_rows": 69,
@@ -66,15 +74,39 @@
       "character_id": 34333,
       "opponent_id": 47032,
       "regiment_id": 61,
-      "new_traits": ["one_legged", "wounded_1"],
-      "knights_before_after": [24, 24],
-      "regiments_before_after": [51, 51],
-      "regiment_current_before_after": [1, 1],
-      "base_prowess_before_after": [3, 3],
-      "effective_prowess_before_after": [11, 7],
+      "new_traits": [
+        "one_legged",
+        "wounded_1"
+      ],
+      "knights_before_after": [
+        24,
+        24
+      ],
+      "regiments_before_after": [
+        51,
+        51
+      ],
+      "regiment_current_before_after": [
+        1,
+        1
+      ],
+      "base_prowess_before_after": [
+        3,
+        3
+      ],
+      "effective_prowess_before_after": [
+        11,
+        7
+      ],
       "effectiveness_raw_q100000": 175000,
-      "damage_raw_q100000_before_after": [96250000, 61250000],
-      "toughness_raw_q100000_before_after": [19250000, 12250000],
+      "damage_raw_q100000_before_after": [
+        96250000,
+        61250000
+      ],
+      "toughness_raw_q100000_before_after": [
+        19250000,
+        12250000
+      ],
       "opponent_prestige_delta": 150
     },
     "020": {
@@ -94,8 +126,14 @@
       "killed_character_id": 33437,
       "killed_regiment_id": 65,
       "killer_prestige_delta": 150,
-      "victim_base_prowess_before_after": [2, 2],
-      "victim_effective_prowess_before_after": [4, 2],
+      "victim_base_prowess_before_after": [
+        2,
+        2
+      ],
+      "victim_effective_prowess_before_after": [
+        4,
+        2
+      ],
       "full_effect_write_set_proven": false
     },
     "070": {
@@ -107,7 +145,11 @@
       "primary_receipt_sha256": "35ADD14D501D094B32D40564B39B713705AE5A46FB6670024ADA776A4C1A0A47",
       "date_raw": 53146848,
       "selected_killer_character_id": 34120,
-      "runtime_growth_weights": [40, 30, 15],
+      "runtime_growth_weights": [
+        40,
+        30,
+        15
+      ],
       "selection_draw31": 51510340,
       "positive_weight_total": 85,
       "threshold": 2,
@@ -129,8 +171,14 @@
       "date_raw": "53146848→53146872",
       "victim_character_id": 33437,
       "removed_regiment_id": 65,
-      "regiments_before_after": [69, 68],
-      "knights_before_after": [30, 29],
+      "regiments_before_after": [
+        69,
+        68
+      ],
+      "knights_before_after": [
+        30,
+        29
+      ],
       "other_base_inputs_identical": true,
       "full_mutable_write_set_proven": false
     },
@@ -236,7 +284,16 @@
       "loser_successor": "subject_retreating",
       "loser_baseline_raw_q100000": 129800000,
       "hard_loss_numerator_raw_q100000": 53662042,
-      "denominator_buckets_people": [0, 675, 310, 0, 0, 0, 11, 0],
+      "denominator_buckets_people": [
+        0,
+        675,
+        310,
+        0,
+        0,
+        0,
+        11,
+        0
+      ],
       "denominator_people": 996,
       "ratio_raw_q100000": 53877,
       "cb_scale_raw_q100000": 15000000,
@@ -276,7 +333,16 @@
       "loser_levy_soft_raw_q100000": 57753614,
       "loser_men_at_arms_soft_raw_q100000": 18384344,
       "hard_loss_numerator_raw_q100000": 53662042,
-      "denominator_buckets_people": [0, 675, 310, 0, 0, 0, 11, 0],
+      "denominator_buckets_people": [
+        0,
+        675,
+        310,
+        0,
+        0,
+        0,
+        11,
+        0
+      ],
       "denominator_people": 996,
       "ratio_raw_q100000": 53877,
       "cb_scale_raw_q100000": 15000000,
@@ -286,23 +352,161 @@
       "winner_is_war_attacker": false,
       "war_attacker_relative_delta_raw_q100000": -5000000,
       "post_snapshot_player_relative_war_score": -50,
-      "media_status": "ENCODED_UNREVIEWED"
+      "media_status": "ENCODED_UNREVIEWED",
+      "source_day28_control": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d28-control.json",
+      "source_day28_control_sha256": "5693FDBED5B6EDDC077729A5C4C8E9AF68DDE5C5D5E1E59D4B3DF12426D059C7",
+      "source_day29_control": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d29-control.json",
+      "source_day29_control_sha256": "5DB5FECEB82644F6B9917960612EF9802E8D6BD97504FB03B7DD6C28BE392725",
+      "source_day30_control": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d30-control.json",
+      "source_day30_control_sha256": "2C44360FCABE4854767AAD71F7E633ED258D4E9C9ABFA0207DD97A2D51C8E13C",
+      "source_day31_control": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/ck3-output/interactive-requests-responses/e2t-s02-d31-control.json",
+      "source_day31_control_sha256": "85269149AB826FEFAD52D7397892F28180F0195655CE7B7D2DD9B8A6EF2AA20D",
+      "source_pursuit_parity": "D:/workspace/ck3_native_war_ai_promo_work/episode02-a05-pursuit-parity-20260928-a01.json",
+      "source_pursuit_parity_sha256": "66E257FB4E9963AF8BFD68B68501E9D2E67536E538B16DA34A901D10624353E5",
+      "source_pursuit_control_audit": "D:/workspace/ck3_native_war_ai_promo_work/episode02-a05-vs-004-pursuit-20260928-a02.json",
+      "source_pursuit_control_audit_sha256": "29DAFCB16C34A994C41A1E950F4F46A5F39A73F97DDE7043BD2D41F339E03CD6",
+      "date_raw": 53146896,
+      "pursuit_begin_day": 28,
+      "retreater_regiments": 24,
+      "levy_soft_pool_raw_q100000": 62528090,
+      "men_at_arms_soft_pool_raw_q100000": 19904137,
+      "total_soft_pool_raw_q100000": 82432227,
+      "pursuit_damage_raw_q100000": 75203000,
+      "retreater_screen_raw_q100000": 0,
+      "daily_hard_raw_q100000": [
+        2070677,
+        2097473,
+        2126119
+      ],
+      "daily_toughness_soft_raw_q100000": [
+        1489459979,
+        1452047877,
+        1414150820
+      ],
+      "total_hard_raw_q100000": 6294269,
+      "exact_soft_rows": 72,
+      "exact_hard_rows": 69,
+      "stable_current_rows": 72,
+      "unreadable_hard_rows": 3,
+      "terminal_winner_side": 0
     }
   },
   "cards": [
-    {"id": "E2-02", "replay": "004", "title": "追击：先冻结第 28 日输入", "purpose": "同回放的软伤池、追击与掩护、首日两域预算"},
-    {"id": "E2-03", "replay": "004", "title": "三日追击：逐团写回", "purpose": "同回放连续三日软伤、可读硬伤和累计转化"},
-    {"id": "E2-04", "replay": "039_040", "source_label": "039→040 后档复载", "title": "骑士致残：人数未变，属性变了", "purpose": "039 致残与 040 同字节后档的下一暂停帧输入"},
-    {"id": "E2-05A", "replay": "020", "title": "骑士击杀：十四人如何抽中一人", "purpose": "020 无权重击杀者选择器与窄写回"},
-    {"id": "E2-05B", "replay": "070", "title": "成长列表：实际权重与空分支", "purpose": "070 独立运行时权重与子作用域抽签"},
-    {"id": "E2-05C", "replay": "036_038", "source_label": "036→038 后档复载", "title": "阵亡之后：下一帧名单少了谁", "purpose": "036 后存档由 038 逐字节复载；不得接到 020 或 070"},
-    {"id": "E2-06", "replay": "A01", "artifact": "e2-06-a01-calculation.svg", "source_label": "A01 · 新同源实拍", "title": "增援：先对齐参战账", "purpose": "A01 同钩子旧 entry、缓存差额与新增 current 的算术板；私有读口仅作视频算式"},
-    {"id": "E2-07", "replay": "A01", "artifact": "e2-07-a01-calculation.svg", "source_label": "A01 · 新同源实拍", "title": "战宽：从入场写到首次出伤", "purpose": "A01 同一独立 run 的 join 前后战宽与 R8D 实参；森林 0.9 仅由同版静态脚本提供"},
-    {"id": "E2-09", "replay": "A05", "artifact": "e2-09-a05-calculation.svg", "source_label": "A05 · 新同源实拍", "title": "终局：一场仗怎样入战争账", "purpose": "A05 新独立 run 的原生 writer、同录制器终局标记和第32日暂停后态；媒体未完成 clean-span 与人工审阅"}
+    {
+      "id": "E2-02",
+      "replay": "A05",
+      "title": "追击：先冻结第 28 日输入",
+      "purpose": "A05 新冷载第28日原生软伤池与有效属性，模型复算追击预算及首日写回",
+      "artifact": "e2-02-a05-calculation.svg",
+      "source_label": "A05 · 新同源实拍",
+      "source_receipt_sha256": "5693FDBED5B6EDDC077729A5C4C8E9AF68DDE5C5D5E1E59D4B3DF12426D059C7"
+    },
+    {
+      "id": "E2-03",
+      "replay": "A05",
+      "title": "三日追击：逐团写回",
+      "purpose": "A05 同一次新冷载的三日追击逐团原生写回与独立复算",
+      "artifact": "e2-03-a05-calculation.svg",
+      "source_label": "A05 · 新同源实拍",
+      "source_receipt_sha256": "85269149AB826FEFAD52D7397892F28180F0195655CE7B7D2DD9B8A6EF2AA20D"
+    },
+    {
+      "id": "E2-04",
+      "replay": "039_040",
+      "source_label": "039→040 后档复载",
+      "title": "骑士致残：人数未变，属性变了",
+      "purpose": "039 致残与 040 同字节后档的下一暂停帧输入"
+    },
+    {
+      "id": "E2-05A",
+      "replay": "020",
+      "title": "骑士击杀：十四人如何抽中一人",
+      "purpose": "020 无权重击杀者选择器与窄写回"
+    },
+    {
+      "id": "E2-05B",
+      "replay": "070",
+      "title": "成长列表：实际权重与空分支",
+      "purpose": "070 独立运行时权重与子作用域抽签"
+    },
+    {
+      "id": "E2-05C",
+      "replay": "036_038",
+      "source_label": "036→038 后档复载",
+      "title": "阵亡之后：下一帧名单少了谁",
+      "purpose": "036 后存档由 038 逐字节复载；不得接到 020 或 070"
+    },
+    {
+      "id": "E2-06",
+      "replay": "A01",
+      "artifact": "e2-06-a01-calculation.svg",
+      "source_label": "A01 · 新同源实拍",
+      "title": "增援：先对齐参战账",
+      "purpose": "A01 同钩子旧 entry、缓存差额与新增 current 的算术板；私有读口仅作视频算式"
+    },
+    {
+      "id": "E2-07",
+      "replay": "A01",
+      "artifact": "e2-07-a01-calculation.svg",
+      "source_label": "A01 · 新同源实拍",
+      "title": "战宽：从入场写到首次出伤",
+      "purpose": "A01 同一独立 run 的 join 前后战宽与 R8D 实参；森林 0.9 仅由同版静态脚本提供"
+    },
+    {
+      "id": "E2-09",
+      "replay": "A05",
+      "date_raw": 53146992,
+      "artifact": "e2-09-a05-calculation.svg",
+      "source_label": "A05 · 新同源实拍",
+      "title": "终局：一场仗怎样入战争账",
+      "purpose": "A05 新独立 run 的原生 writer、同录制器终局标记和第32日暂停后态；媒体未完成 clean-span 与人工审阅"
+    }
   ],
   "historical_cards": [
-    {"id": "E2-06", "replay": "085", "artifact": "e2-06-calculation.svg", "sha256": "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5", "source_label": "085 · 历史原始回执", "title": "增援：先对齐参战账", "purpose": "085 独立历史回放；不是 A01 录制的读数"},
-    {"id": "E2-07", "replay": "085", "artifact": "e2-07-calculation.svg", "sha256": "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527", "source_label": "085 · 历史原始回执", "title": "战宽：从入场写到首次出伤", "purpose": "085 独立历史回放；不是 A01 录制的读数"},
-    {"id": "E2-09", "replay": "024", "artifact": "e2-09-calculation.svg", "sha256": "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31", "source_label": "024 · 历史原始回执", "title": "终局：一场仗怎样入战争账", "purpose": "历史 024 同一次原生 writer 的分子、八桶分母、战分系数、封顶与相对符号；不是新拍 run 的读数"}
+    {
+      "id": "E2-02",
+      "replay": "004",
+      "artifact": "e2-02-calculation.svg",
+      "sha256": "D3EF3FA32AA96CBD2E120F950498069352B9385B5E4B02EE0EE8794C44BDF509",
+      "source_label": "004 · 历史原始回执",
+      "title": "追击：先冻结第 28 日输入",
+      "purpose": "旧 004 独立追击回放；不是 A05 录制的读数"
+    },
+    {
+      "id": "E2-03",
+      "replay": "004",
+      "artifact": "e2-03-calculation.svg",
+      "sha256": "A5C13BB2A34974D7D01B7038AD7AB53C14F0F2966A5137BBF6D76087ECD8772D",
+      "source_label": "004 · 历史原始回执",
+      "title": "三日追击：逐团写回",
+      "purpose": "旧 004 独立追击回放；不是 A05 录制的读数"
+    },
+    {
+      "id": "E2-06",
+      "replay": "085",
+      "artifact": "e2-06-calculation.svg",
+      "sha256": "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5",
+      "source_label": "085 · 历史原始回执",
+      "title": "增援：先对齐参战账",
+      "purpose": "085 独立历史回放；不是 A01 录制的读数"
+    },
+    {
+      "id": "E2-07",
+      "replay": "085",
+      "artifact": "e2-07-calculation.svg",
+      "sha256": "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527",
+      "source_label": "085 · 历史原始回执",
+      "title": "战宽：从入场写到首次出伤",
+      "purpose": "085 独立历史回放；不是 A01 录制的读数"
+    },
+    {
+      "id": "E2-09",
+      "replay": "024",
+      "artifact": "e2-09-calculation.svg",
+      "sha256": "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31",
+      "source_label": "024 · 历史原始回执",
+      "title": "终局：一场仗怎样入战争账",
+      "purpose": "历史 024 同一次原生 writer 的分子、八桶分母、战分系数、封顶与相对符号；不是新拍 run 的读数"
+    }
   ]
 }

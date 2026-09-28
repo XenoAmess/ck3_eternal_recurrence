@@ -12,8 +12,8 @@ from pathlib import Path
 from render_calculation_cards import DATA, ROOT, require, validate, verify_a05_sources
 
 
-FACTS = ROOT / "e2-09-a05-writer-facts-20260928-v2.json"
-HISTORICAL_FACTS = ROOT / "e2-09-a05-writer-facts-20260928.json"
+FACTS = ROOT / "e2-09-a05-writer-facts-20260928-v3.json"
+HISTORICAL_FACTS = ROOT / "e2-09-a05-writer-facts-20260928-v2.json"
 
 
 def sha(path: Path) -> str:
@@ -29,9 +29,9 @@ def main() -> None:
     index = json.loads(DATA.read_text(encoding="utf-8"))
     validate(index)
     a = index["replays"]["A05"]
-    require(receipt["schema"] == "xar.war-ai.episode02.a05-writer-card-facts.v2" and
+    require(receipt["schema"] == "xar.war-ai.episode02.a05-writer-card-facts.v3" and
             sha(HISTORICAL_FACTS) == receipt["supersedes_receipt_sha256"] ==
-            "22F3943DC4BF77CD64C4C74846253702C217966EBBABE3F265724D715E5E42B6" and
+            "5EA9CCE31A58510182EF13A02F88066ED218D787586C64F92B0C4C293FCB116F" and
             receipt["usage_scope"] == "current-a05-paired-writer-edit-proxy" and
             receipt["media_review_status"] == "ENCODED_UNREVIEWED" and
             receipt["clean_spans_certified"] is False and
