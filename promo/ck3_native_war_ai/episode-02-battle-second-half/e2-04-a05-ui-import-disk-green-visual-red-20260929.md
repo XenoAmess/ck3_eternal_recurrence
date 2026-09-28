@@ -1,0 +1,16 @@
+# E2-04 a05：原生 UI 100% 冷载保留，战斗窗视觉门仍 RED
+
+E2-04 的 a05 是新的第 5 日冷载几何诊断，**不是正式录像或第 5→6 日行动**。外置 `D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-a05-screen-lease-20260929-a01/visual-geometry-verdict-a01.json` SHA-256 `39D6F99685AA7C8DB40398D044FB8C4781168DE84A1A067ECCF23DB359B31A80` 绑定源档、配置、原图、受管清理和 RED 判定。此前 `episode02-e2-04-a05-preflight-20260929-a01` 误用了第 26 日源档，仅是未启动 CK3 的历史 no-launch 记录，不作为 E2-04 准入。正确第 5 日 `preflight-20260929-a02/ck3-output/preflight.json` 返回 `READY_FOR_BOUNDED_LIVE_ATTEMPT`、`ck3_started=false`；a01/a02 均保持原样。
+
+正确源档是 `episode01-paired-counter-trace-attempt-010/d05-immutable.ck3`，52,172,645 B，SHA-256 `695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885`；真实保存回执 `ck3-output/interactive-requests-responses/d05-save.json`，13,437 B，SHA-256 `6650C0DB79D063E066AB72402735C22FAE9FCB5D458A56CE1C10B9545CD1F3C7`，运行后再次哈希相同。a05 沿用精确 CK3 EXE `2D00FF…3DB86`、桥 DLL `EB6435…04F67E7`、injector `CE8A20…BF247`。本次重查最新正式 xar-promo 为 v0.2.1，wheel SHA-256 `F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621`；指定解释器 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe` 报 `xar-promo 0.2.1`。#451 当时两项官方 static CI 均 GREEN。
+
+全局任务总线在 H2743 清场后由 a05 领取 `ck3-screen:acquired`，seq 1960，180 秒 watchdog 的 owned 心跳持续至 seq 1968；18:03:42Z seq **1969** 明确 `done/resources=[]`。无 CK3/FFmpeg/OBS 时显示从原 1920×1080 切到原生 2560×1440，Win32 模式、`GetSystemMetrics`、`pyautogui.size()` 一致；新 `episode02-e2-04-a05-offline-20260929-a01/steam-moved.png` 原图中直接可见 Steam「离线模式」，Steam 窗口位移与桌面像素变化证明新鲜，审阅回执为同目录 `reviewed-steam-offline.json`。受管退出后显示恢复 1920×1080，`display-restore-a01.json` 的模式与双几何读数一致。
+
+| a05 门 | 精确结果 |
+| --- | --- |
+| 原生 UI GUI 块导入 | `live-20260929-a01/ck3-output/gui-settings-ui-block-import.json` 从 a04 冻结 6,891 B 原生 UI 设置只取 54 B GUI 块 SHA `F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593`；其余 375 B 等于新 vanilla 模板。新隔离 profile 429 B SHA `7AF37E943DA4A962EBE6DBB0E2BC8A9F7E7BBFCC1F7A0F3F43EDD880494359F6`，`GREEN_DISK_ONLY`。未复制 a04 整份设置。 |
+| warmup 与 final | warmup PID 13412 清理证明通过，`gui-settings-warmup-reseed.json` 表明 warmup 后仍是原生字面 `GUI.scale="1"`、精确 54 B 块，6,859 B SHA `9942D7B22484078E8B4C48CCEF9297B13F1CEA60FFABFCA27D88C33CA6C7E07C`；本次无需替换。final PID 25872 于 17:45:50Z 启动；`gui-settings-postmap.json`（17:53:13Z）和 `gui-settings-posthold.json`（17:54:14Z）均为 v2 数值比率 `1`、字面 `"1"`、原生块精确匹配、`disk_gate_passed=true`。这些读数没有声称视觉通过。 |
+| 同帧与画面 | 暂停快照第 5 日 `date_raw=53146344`、玩家 29829、WarID 4、ArmyID 18 于省份 2633 参战。原生 `ck3_center_map_on_landed_title_v1(c_messina, revision=4)` 回执 `a05-center-c-messina-a01.json` 将镜头停稳在首府 2633；原图 `centered-map-a01.png` 后，以 `desktop_coordinate_map.py --receipt` 根据真实 2560×1440 图及当前桌面尺寸点开战斗标记。`battle-panel-a01.png` SHA `0D0A7D057FC90EFE977DEE91139FE96DBA9A071BBEBCC2246BFB8BB10D0D8547`，原生全屏 2560×1440，显示底部战斗窗进入画面下缘。原版布局允许下缘外溢，故**仅凭此图不能证明所需下部子控件完整可见**；独立原图审阅一致，视觉判 `RED_VISUAL_UNPROVEN`，待子内容逐项审计。 |
+| 退出 | 18:01:45Z 受管 `finish`，`capture-report.json` 为 `ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO`、`raw_video=null`、`record_debug_desktop=false`；这只表示环境会话完成。`session-result.json` `shutdown.cleanup_proven=true/tree_gone=true`，CK3/FFmpeg/OBS 进程空、显示恢复后释放屏幕。没有正式 recorder、raw、日期推进或第 6 日观察。 |
+
+视觉门没有过，a05 不能列为 E2-04 可用镜头，也不能因配置连续保持 100% 就追认 a04。后续先用原版 `window_combat.gui` 的 bottom anchor/allow_outside 与原图逐项核对 E2-04 必需子控件，定出能证明完整内容的取景法；任何补拍都要新的独立 attempt、新鲜离线画面、同帧身份、原始截图、受管录像及下一日回执。历史 039→040 只保留研究板身份。
