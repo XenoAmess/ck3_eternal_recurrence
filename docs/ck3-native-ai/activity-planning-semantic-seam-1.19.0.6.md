@@ -90,3 +90,57 @@ authoritative configured cost and final shown/can-start may be wired to
 establish that a command would pass the remaining validator branches.
 Then a paired paused Robert frame must test the current feast legality before
 any consumer is enabled. No CK3 process was started or attached in this work.
+
+## H3911 follow-up: payload and UI dispatch boundary
+
+The frozen executable was rehashed as
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+This bounded trace narrows the missing semantic operation; it does not
+identify a legal feast or provide a planning collector.
+
+- At `0x219AB2B`, the validator passes the command's activity type, character
+  ID, and resolved character object to `0x2CE2C80`. One branch of that callee
+  uses `CActivityType+0xE98`; the other reads `CActivityType+0xEA0`. The
+  result is compared with command `+0x10` at `0x219AB3A`; the global
+  predicate at `0x28BCEB0` selects the branch. These addresses prove a
+  further type/payload identity check after the prerequisite. They do not
+  establish a province, selected option, configured cost, or `can_start`.
+- If the comparison passes, `0x219ABCE` calls `0x2517900` with command
+  `+0x10`, the command character ID, and the previously resolved object.
+  That function begins with a virtual predicate on the supplied object and
+  checks further fields. It is not a stand-alone location or affordability
+  evaluator on this evidence.
+- The AI path's `0x18E1160`, previously described as building command data,
+  actually copies an already populated object into a destination: it copies
+  the first `0x30` bytes, clones several owned containers, and handles the
+  list at `+0x4C8`. It does not show how stable activity, location, options,
+  invites, or costs were selected. The original producer of that source
+  object remains the construction lead.
+- In the caller, `0x18E0BB4` invokes `0x18DF5B0` with an output at stack
+  `+0x188`; the path then calls `0x28CD3C0` at `0x18E0C3F` and `0x28CD8E0`
+  at `0x18E0C61` while preparing an object at stack `+0x1020`. Immediately
+  before the copy, `0x18E10BB` supplies a populated source pointer in `RDX`
+  to `0x18E1160`. The writer and layout relationship among those objects is
+  not yet decoded; this is a bounded provenance trail, not a field map.
+- HostView slot 26 at `0x1505230` calls `0xA79700` with event ID `0x65`.
+  `0xA79700` routes through an event handler and can update a handler-owned
+  list via `0xA95A40`; calling slot 26 as a supposedly read-only semantic
+  collector would be unjustified.
+
+Reproduce the bounded spans with `native_bridge/research/disasm_ck3.py` at
+`0x219A8B0` (size `0x280`), `0x219AB20` (size `0x100`), `0x2CE2C80`
+(size `0x70`), `0x2517900` (size `0x200`), `0x28BCEB0` (size `0x60`),
+`0x18E1160` (size `0x220`), `0x18E0B90` (size `0x140`), `0x18E1080`
+(size `0x90`), `0x1505230` (size `0x100`), and `0xA79700`
+(size `0x150`). All are RVAs against the exact executable above.
+
+The first executable construction task is to follow the normal planner's
+`0x18DF5B0 -> 0x28CD3C0/0x28CD8E0 -> 0x18E1160` provenance,
+identify the source object copied by `0x18E1160`, and map its stable
+location/configuration fields to the validator's `+0x10` and `+0x4C8`
+consumers. In the same trace, identify the authoritative configured cost
+evaluator and final `can_start` result, including input ownership and
+non-mutating lifetime. Only then can `read_semantics` safely copy a complete
+feast sample in the private application-main glue. The H3911 driver contains
+no activity snapshot, so it cannot establish current feast eligibility or
+cost. No CK3 process was started for this follow-up.

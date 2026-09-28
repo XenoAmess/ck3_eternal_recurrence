@@ -148,7 +148,7 @@ flowchart LR
     E -- accepted --> G[0x18E0BB4 call 0x18DF5B0 planner rows]
     G --> H{final assembled candidate valid}
     H -- no --> I[invalid diagnostic + ai_activity.cpp anchor]
-    H -- yes --> J[0x18E10C5 call 0x18E1160 build command data]
+    H -- yes --> J[0x18E10C5 call 0x18E1160 copy populated command data]
     J --> K[0x18E10E8 call 0x973E00; flags=7]
 ```
 
