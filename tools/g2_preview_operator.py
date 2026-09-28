@@ -74,6 +74,9 @@ CONSTRUCTION_RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 FAMILY_PENDING_V1_SCHEMA = "xar.ck3.first-heir-marriage-formal.v1"
 FAMILY_ACTION_V1_SCHEMA = "xar.ck3.observed-first-heir-marriage-private-action.v1"
 FAMILY_SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
+CHILD_MATRILINEAL_SCHEMA = "xar.ck3.player-child-matrilineal-private-action.v1"
+CHILD_MATRILINEAL_SUBMIT_STEP = "submit-player-child-matrilineal-marriage-v1-private"
+CHILD_MATRILINEAL_PROOF_SCHEMA = "xar.ck3.child-matrilineal-formal-job/v1"
 FACTION_GIFT_PENDING_V1_SCHEMA = "xar.ck3.faction_gift_pending_v1"
 PRIVATE_LIFESTYLE_CMAKE_OPTION = (
     "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1"
@@ -691,6 +694,92 @@ def family_resolved_sidecar_pair(
     return candidate
 
 
+def child_matrilineal_pending_sidecar_pair(
+    sidecar: dict[str, Any], driver: dict[str, Any],
+    manifest: dict[str, Any], save_sha256: str,
+    attempt: dict[str, Any],
+) -> int:
+    """Pair a submitted child proposal, its save, and the formal run receipt."""
+    pending = sidecar.get("pending")
+    checkpoint = driver.get("last_checkpoint")
+    formal = attempt.get("formal_auto_run")
+    turns = formal.get("auto_run", {}).get("turns") if isinstance(formal, dict) else None
+    checkpoints = formal.get("checkpoints") if isinstance(formal, dict) else None
+    session = formal.get("session") if isinstance(formal, dict) else None
+    if (sidecar.get("schema") != CHILD_MATRILINEAL_SCHEMA
+            or sidecar.get("resolved") is not None or not isinstance(pending, dict)
+            or not isinstance(checkpoint, dict)
+            or attempt.get("schema") != CHILD_MATRILINEAL_PROOF_SCHEMA
+            or attempt.get("status") != "receipt_pending_checkpointed"
+            or attempt.get("ok") is not True
+            or attempt.get("child_ledger") != sidecar
+            or not isinstance(formal, dict)
+            or formal.get("status") != "turn_limit"
+            or not isinstance(formal.get("cleanup"), dict)
+            or formal["cleanup"].get("ok") is not True
+            or not isinstance(turns, list) or len(turns) != 1
+            or not isinstance(turns[0], dict)
+            or not isinstance(checkpoints, list)
+            or not isinstance(session, dict)):
+        raise ValueError("child proposal lacks a saved formal pending proof")
+    actor = episode_value(driver, manifest, "episode_character_id")
+    episode = episode_value(driver, manifest, "episode_run_id")
+    heir = pending.get("heir_character_id")
+    candidate = pending.get("candidate_character_id")
+    recipient = pending.get("recipient_character_id")
+    date_raw = pending.get("source_date_raw")
+    index = checkpoint.get("history_index")
+    if (pending.get("schema") != CHILD_MATRILINEAL_SCHEMA
+            or pending.get("status") != "receipt_pending"
+            or pending.get("submission_state") != "receipt_pending"
+            or pending.get("material_result") is not False
+            or pending.get("accepted") is not True
+            or pending.get("matrilineal_option_selected") is not True
+            or pending.get("played_character_id") != actor
+            or pending.get("episode_run_id") != episode
+            or pending.get("source_bridge_pid") != session.get("pid")
+            or type(heir) is not int or heir <= 0 or heir == actor
+            or type(candidate) is not int or candidate <= 0
+            or type(recipient) is not int or recipient <= 0
+            or type(date_raw) is not int
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != episode
+            or checkpoint.get("date_raw") != date_raw
+            or checkpoint.get("sha256") != save_sha256
+            or type(index) is not int or index <= 0):
+        raise ValueError("child pending identity disagrees with paired save")
+    turn = turns[0]
+    result = turn.get("result") if isinstance(turn, dict) else None
+    matching = [row for row in checkpoints if isinstance(row, dict)
+                and row.get("phase") == "player_child_matrilineal_submitted_pending"
+                and row.get("status") == "saved"
+                and row.get("history_index") == index
+                and row.get("date_raw") == date_raw
+                and row.get("sha256") == save_sha256
+                and row.get("episode_character_id") == actor
+                and row.get("episode_run_id") == episode]
+    if (turn.get("selected_step") != CHILD_MATRILINEAL_SUBMIT_STEP
+            or turn.get("status") != "executed"
+            or not isinstance(result, dict)
+            or result.get("step") != CHILD_MATRILINEAL_SUBMIT_STEP
+            or result.get("status") != "receipt_pending"
+            or result.get("accepted") is not True
+            or result.get("material_result") is not False
+            or any(result.get(key) != value for key, value in (
+                ("played_character_id", actor), ("heir_character_id", heir),
+                ("candidate_character_id", candidate),
+                ("recipient_character_id", recipient), ("episode_run_id", episode)))
+            or len(matching) != 1
+            or matching[0].get("turn_index") != turn.get("index")
+            or not isinstance(matching[0].get("pending_action"), dict)
+            or matching[0]["pending_action"].get("matrilineal_option_selected") is not True
+            or any(matching[0]["pending_action"].get(key) != value for key, value in (
+                ("heir_character_id", heir), ("candidate_character_id", candidate),
+                ("recipient_character_id", recipient), ("episode_run_id", episode)))):
+        raise ValueError("child pending proposal is not paired with its saved submit")
+    return candidate
+
+
 def run_logged(
     command: list[str], stdout_path: Path, stderr_path: Path,
     *, on_started: Callable[[int], None] | None = None,
@@ -945,6 +1034,12 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         raise ValueError("family proof report requires a family sidecar")
     family_source = family_sidecar_arg.resolve() if family_sidecar_arg else None
     family_report_sources = [path.resolve() for path in family_report_sources]
+    child_sidecar_arg = getattr(args, "child_matrilineal_sidecar", None)
+    child_proof_arg = getattr(args, "child_matrilineal_proof_report", None)
+    if (child_sidecar_arg is None) != (child_proof_arg is None):
+        raise ValueError("child pending sidecar requires its formal proof report")
+    child_source = child_sidecar_arg.resolve() if child_sidecar_arg else None
+    child_proof_source = child_proof_arg.resolve() if child_proof_arg else None
     faction_sidecar_arg = getattr(args, "faction_gift_sidecar", None)
     faction_source = (faction_sidecar_arg.resolve() if faction_sidecar_arg is not None
                       else sample_dir / "faction-gift-pending-v1.json")
@@ -952,6 +1047,7 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
     family_target = state_dir / "first-heir-marriage-formal-v1.json"
+    child_target = state_dir / "player-child-matrilineal-formal-v1.json"
     faction_target = state_dir / "native-session" / "faction-gift-pending-v1.json"
     for path in (save_source, driver_source):
         if not path.is_file():
@@ -1009,6 +1105,23 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 sha256(save_source))
             family_kind = "resolved"
         family_source_sha256 = sha256(family_source)
+    child_candidate = None
+    child_source_sha256 = None
+    child_proof_sha256 = None
+    child_record = None
+    child_proof = None
+    if child_source is not None and child_proof_source is not None:
+        if not child_source.is_file() or not child_proof_source.is_file():
+            raise FileNotFoundError("child pending sidecar or formal proof report missing")
+        if child_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {child_target}")
+        child_record = read_json(child_source)
+        child_proof = read_json(child_proof_source)
+        child_candidate = child_matrilineal_pending_sidecar_pair(
+            child_record, driver_source_record, manifest,
+            sha256(save_source), child_proof)
+        child_source_sha256 = sha256(child_source)
+        child_proof_sha256 = sha256(child_proof_source)
     faction_request_id = None
     faction_source_sha256 = None
     faction_record = None
@@ -1197,6 +1310,24 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "formal_proof_reports": [str(path) for path in family_report_sources],
             "formal_proof_reports_sha256": family_report_sha256,
             "candidate_character_id": family_candidate,
+        }
+    if child_candidate is not None:
+        if child_matrilineal_pending_sidecar_pair(
+            child_record, read_json(driver_target), manifest,
+            sha256(save_target), child_proof
+        ) != child_candidate:
+            raise RuntimeError("prepared driver no longer matches child proposal")
+        shutil.copy2(child_source, child_target)
+        make_derived_state_owner_writable(child_target)
+        if sha256(child_target) != child_source_sha256:
+            raise RuntimeError("prepared child pending sidecar hash mismatch")
+        preparation["child_matrilineal_pending_sidecar"] = {
+            "status": "paired_no_launch",
+            "source": str(child_source), "path": str(child_target),
+            "sha256": child_source_sha256,
+            "formal_proof_report": str(child_proof_source),
+            "formal_proof_report_sha256": child_proof_sha256,
+            "candidate_character_id": child_candidate,
         }
     if faction_request_id is not None:
         if faction_gift_pending_sidecar_request(
@@ -2097,6 +2228,8 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--construction-sidecar", type=Path)
     prepare.add_argument("--family-sidecar", type=Path)
     prepare.add_argument("--family-proof-report", type=Path, action="append")
+    prepare.add_argument("--child-matrilineal-sidecar", type=Path)
+    prepare.add_argument("--child-matrilineal-proof-report", type=Path)
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 

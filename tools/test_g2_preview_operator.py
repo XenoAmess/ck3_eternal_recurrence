@@ -19,6 +19,61 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_child_pending_sidecar_requires_saved_formal_submit_pair(self) -> None:
+        save_hash = "a" * 64
+        episode = "native-29829-test"
+        pending = {
+            "schema": g2_preview_operator.CHILD_MATRILINEAL_SCHEMA,
+            "status": "receipt_pending", "submission_state": "receipt_pending",
+            "material_result": False, "accepted": True,
+            "matrilineal_option_selected": True,
+            "played_character_id": 29829, "heir_character_id": 37265,
+            "candidate_character_id": 37267, "recipient_character_id": 32440,
+            "episode_run_id": episode, "source_bridge_pid": 1234,
+            "source_date_raw": 53219928,
+        }
+        sidecar = {"schema": g2_preview_operator.CHILD_MATRILINEAL_SCHEMA,
+                   "pending": pending, "resolved": None}
+        checkpoint = {"history_index": 3915, "date_raw": 53219928,
+                      "sha256": save_hash, "episode_character_id": 29829,
+                      "episode_run_id": episode}
+        driver = {"episode_character_id": 29829, "episode_run_id": episode,
+                  "last_checkpoint": checkpoint}
+        result = {"step": g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP,
+                  "status": "receipt_pending", "accepted": True,
+                  "material_result": False, "played_character_id": 29829,
+                  "heir_character_id": 37265, "candidate_character_id": 37267,
+                  "recipient_character_id": 32440, "episode_run_id": episode}
+        proof = {
+            "schema": g2_preview_operator.CHILD_MATRILINEAL_PROOF_SCHEMA,
+            "status": "receipt_pending_checkpointed", "ok": True,
+            "child_ledger": sidecar,
+            "formal_auto_run": {
+                "status": "turn_limit", "cleanup": {"ok": True},
+                "session": {"pid": 1234},
+                "auto_run": {"turns": [{"index": 1,
+                    "selected_step": g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP,
+                    "status": "executed", "result": result}]},
+                "checkpoints": [{**checkpoint, "turn_index": 1,
+                    "phase": "player_child_matrilineal_submitted_pending",
+                    "status": "saved", "pending_action": {
+                        "heir_character_id": 37265,
+                        "candidate_character_id": 37267,
+                        "recipient_character_id": 32440,
+                        "episode_run_id": episode,
+                        "matrilineal_option_selected": True}}],
+            },
+        }
+        paired = g2_preview_operator.child_matrilineal_pending_sidecar_pair
+        self.assertEqual(paired(sidecar, driver, {}, save_hash, proof), 37267)
+        with self.assertRaisesRegex(ValueError, "paired save"):
+            paired(sidecar, driver, {}, "b" * 64, proof)
+        changed = copy.deepcopy(proof)
+        changed["formal_auto_run"]["checkpoints"][0]["pending_action"][
+            "matrilineal_option_selected"] = False
+        with self.assertRaisesRegex(ValueError, "saved submit"):
+            paired(sidecar, driver, {}, save_hash, changed)
+
     def test_exact_war_move_contract_is_bound_in_formal_argv(self) -> None:
         path = Path("D:/frozen/exact-move.json")
         command = g2_preview_operator.native_auto_run_command(
