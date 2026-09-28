@@ -17,6 +17,7 @@
     "engine_final_can_enact": "0x2C7D930",
     "law_numeric_cost": "0x2C7E490",
     "engine_cost_evaluator": "0x2CDB7B0",
+    "native_reason_string_destructor": "0x7E97D0",
     "cost_block_offset_from_law": "0xCD8",
     "native_cost_raw_scale": 100000,
     "native_cost_slot_count": 10
@@ -40,7 +41,8 @@
     {"name": "already_active", "rva": "0x28BC040", "end_rva": "0x28BC0D1", "sha256": "CC83E8985CBB67DA9E7883901F8515DEB0EE9533A7E981A83761AEA1C07678BB", "runtime_function": ["0x28BC040", "0x28BC0D1", "0x4C39588"]},
     {"name": "engine_final_can_enact", "rva": "0x2C7D930", "end_rva": "0x2C7DA9D", "sha256": "19DF78424757D57F98B4AC0A3A4483B71A0262F61361E22DB9343D05FAFBB053", "runtime_function": ["0x2C7D930", "0x2C7DA9D", "0x4DE29BC"]},
     {"name": "law_numeric_cost", "rva": "0x2C7E490", "end_rva": "0x2C7E5AD", "sha256": "2B7DD1FEAC3BB30EBCC829CF6C880645A4F9BFC6FCEBA8A6064FC7A520DE48CF", "runtime_function": ["0x2C7E490", "0x2C7E5AD", "0x4DE2B08"]},
-    {"name": "engine_cost_evaluator", "rva": "0x2CDB7B0", "end_rva": "0x2CDB9C1", "sha256": "50B06EB5A730BF0962B9B2A782F1566A86CCE39B131282E7714B10A465AC01F6", "runtime_function": ["0x2CDB7B0", "0x2CDB9C1", "0x4DE694C"]}
+    {"name": "engine_cost_evaluator", "rva": "0x2CDB7B0", "end_rva": "0x2CDB9C1", "sha256": "50B06EB5A730BF0962B9B2A782F1566A86CCE39B131282E7714B10A465AC01F6", "runtime_function": ["0x2CDB7B0", "0x2CDB9C1", "0x4DE694C"]},
+    {"name": "native_reason_string_destructor", "rva": "0x7E97D0", "end_rva": "0x7E982E", "sha256": "2F3FE5B285D638C568290524322A27DCAF4A7B8E938A0B3A6483F1B3C528CD8A", "runtime_function": ["0x7E97D0", "0x7E982E", "0x4C38E20"]}
   ],
   "relative_calls": [
     {"site": "0x3DDF7DB", "target": "0x2C7E900"},

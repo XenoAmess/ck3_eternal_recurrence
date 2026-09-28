@@ -62,6 +62,22 @@ std::string_view KeyText(const RealmLawActiveKey &key) {
   return {key.bytes.data(), key.size};
 }
 
+struct SeenCandidates {
+  std::array<std::uintptr_t, 4> addresses{};
+  std::size_t count = 0;
+  bool reject = false;
+};
+
+bool ObserveCandidate(void *context, std::size_t group,
+                      std::size_t index, std::uintptr_t law,
+                      const RealmLawCandidateCollectionRow11906 &row) noexcept {
+  auto &seen = *static_cast<SeenCandidates *>(context);
+  assert(group < 2 && index < 2 && seen.count < seen.addresses.size());
+  assert(row.key.size != 0);
+  seen.addresses[seen.count++] = law;
+  return !seen.reject;
+}
+
 } // namespace
 
 int main() {
@@ -148,11 +164,24 @@ int main() {
          "confederate_partition_succession_law");
   assert(!candidates.groups[1].candidates[1].active);
 
+  SeenCandidates seen{};
+  assert(ReadRealmLawCandidateCollectionWithObserver11906(
+      access, 0x140000000, &seen, &ObserveCandidate, candidates));
+  assert(seen.count == 4);
+  assert(seen.addresses ==
+         (std::array<std::uintptr_t, 4>{law1, law3, law2, law4}));
+  seen = {};
+  seen.reject = true;
+  assert(!ReadRealmLawCandidateCollectionWithObserver11906(
+      access, 0x140000000, &seen, &ObserveCandidate, candidates));
+  assert(candidates.failure ==
+         RealmLawCandidateCollectionFailure::candidate_observer_failed);
+
   fixture.Key(succession_group, "other_group");
   assert(!ReadRealmLawCandidateCollection11906(access, 0x140000000,
                                               candidates));
   assert(candidates.failure ==
          RealmLawCandidateCollectionFailure::relevant_group_missing);
 
-  std::cout << "realm_law_candidate_collection_11906_test: 6/6 GREEN\n";
+  std::cout << "realm_law_candidate_collection_11906_test: 8/8 GREEN\n";
 }

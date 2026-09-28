@@ -367,6 +367,7 @@ def native_auto_run(
     allow_private_epidemic_recovery_near_pair: bool = False,
     allow_private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
+    private_realm_law_paused_query: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -490,6 +491,8 @@ def native_auto_run(
         or not 0 < private_active_scheme_sway_target <= 0xFFFFFFFF
     ):
         raise AgentError("private sway read needs a bounded full target ID")
+    if private_realm_law_paused_query is True and completion_contract != "bounded":
+        raise AgentError("private realm-law read needs a bounded contract")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -622,6 +625,7 @@ def native_auto_run(
     exact_move_checkpoint: dict[str, object] | None = None
     private_prisoner_collection_observation: dict[str, object] | None = None
     private_active_scheme_sway_observation: dict[str, object] | None = None
+    private_realm_law_paused_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -817,6 +821,10 @@ def native_auto_run(
             {"allow_private_active_scheme_sway_query": True}
             if private_active_scheme_sway_target is not None else {}
         )
+        private_realm_law_driver_options = (
+            {"allow_private_realm_law_paused_query": True}
+            if private_realm_law_paused_query is True else {}
+        )
         ordinary_succession_driver_options = (
             {
                 "allow_private_current_timeline_blocker_query": True,
@@ -844,6 +852,7 @@ def native_auto_run(
             **private_epidemic_driver_options,
             **private_prisoner_driver_options,
             **private_scheme_driver_options,
+            **private_realm_law_driver_options,
             **ordinary_succession_driver_options,
         )
         # This controlled, private Python route does not change the native
@@ -1118,6 +1127,16 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if private_realm_law_paused_query is True:
+                current_attempt["stage"] = "private_realm_law_paused_read"
+                private_realm_law_paused_observation = (
+                    _observe_private_realm_law_paused_once(
+                        driver, service=service, before=before,
+                        turn_index=turn_index,
+                    )
+                )
+                status = "private_realm_law_paused_observed"
+                break
             if private_active_scheme_sway_target is not None:
                 current_attempt["stage"] = "private_active_scheme_sway_read"
                 private_active_scheme_sway_observation = (
@@ -3015,6 +3034,16 @@ def native_auto_run(
                 and not turns
                 and not date_advanced
             )
+        if private_realm_law_paused_query is True:
+            qualified = bool(
+                primary_error is None
+                and status == "private_realm_law_paused_observed"
+                and isinstance(private_realm_law_paused_observation, dict)
+                and private_realm_law_paused_observation.get("same_frame") is True
+                and cleanup.get("ok") is True
+                and not turns
+                and not date_advanced
+            )
     candidate_intercept_qualified = bool(
         before_submit is not None
         and opening_focus_gate is None
@@ -3104,6 +3133,7 @@ def native_auto_run(
             if candidate_intercept_qualified
             else "read_only_observed"
             if private_active_scheme_sway_target is not None and qualified
+            or private_realm_law_paused_query is True and qualified
             else outcome
         ),
         "ok": qualified,
@@ -3123,6 +3153,11 @@ def native_auto_run(
             {"private_active_scheme_sway_observation": copy.deepcopy(
                 private_active_scheme_sway_observation)}
             if private_active_scheme_sway_target is not None else {}
+        ),
+        **(
+            {"private_realm_law_paused_observation": copy.deepcopy(
+                private_realm_law_paused_observation)}
+            if private_realm_law_paused_query is True else {}
         ),
         **(
             {
@@ -4987,6 +5022,45 @@ def _retried_root_query_binding(
     ):
         return None
     return fresh_binding
+
+
+def _observe_private_realm_law_paused_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Read current-player final law terms without changing date or law."""
+    readback = driver.query_realm_law_final_terms_private_v1(
+        expected_revision=before["revision"],
+    )
+    after = service.snapshot()
+    after_actor = after.get("played_character")
+    same_frame = bool(
+        all(before.get(key) == after.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and before.get("paused") is True
+        and after.get("paused") is True
+        and before.get("map_ready") is True
+        and after.get("map_ready") is True
+        and isinstance(after_actor, dict)
+        and before.get("played_character_id") == after_actor.get("character_id")
+        and before.get("played_character_alive") == after_actor.get("alive")
+        and readback.get("queried_snapshot_id") == before.get("snapshot_id")
+        and readback.get("queried_revision") == before.get("revision")
+        and readback.get("queried_native_revision") == before.get("native_revision")
+    )
+    if not same_frame:
+        raise AgentError("private realm-law read crossed its paused source frame")
+    return {
+        "status": "observed", "turn_index": turn_index, "same_frame": True,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "readback": copy.deepcopy(readback),
+    }
 
 
 def _observe_private_active_scheme_sway_once(
