@@ -16,6 +16,15 @@ EXE 的完整 SHA 为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96
 | `F` 写入 | `0x2E9F2C0` 把传入的 Q100000 数值纳入结构并调用 `0x33590D0`；后者 `0x3359123–158` 在容器中查找 identifier，`0x335953F–560` 可更新已有 row，`0x3359566–57A` 可插入新 row。 | 这是**修改上下文容器**的路径，不是纯只读 getter。既有 claim CB 的 root-proxy/loaded-effect traversal 不自动适用于此 de-jure effect；本项目已记录该类预览崩溃，禁止在原游戏态重试。 |
 | `resolve_title_and_vassal_change` | [预入队回执](../../ck3_autonomous_player/native_bridge/research/dejure_resolve_prequeue_gate_1_19_0_6.json)仅证明 type `0x17` 对比、其他类型的条件处理和五个容器计数检查；[预览回执](../../ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json)证明其 preview `0x7E9220` 只是返回 true。 | 任何入口都没有给出当前完整 title／holder／人物 liege／vassal 的最终操作图。构造时 `type=0` 和历史 R0197 迁移不能填 H2743 delta。 |
 
+定向休战的静态方向来自原版 `00_dejure_war.txt:486–487` 和
+`00_war_effects.txt:1895–1903`，为攻方 Landolf `30097 →` 守方 Robert
+`29829`；它没有给出已设置的 truce slot。`standard_truce_duration_days`
+仍需要本帧 perk、struggle、nomadic 和其他战争参数。
+`00_casus_belli_effects.txt:35–160` 只提供由未知 `F` 参数化的直接威望
+分量，曼荼罗、legitimacy、佣兵合同等条件效果没有逐项求值，因此双方
+14 个有符号终战资源 delta 均不可用。静态分支缺少直接金币支付，也不证明
+总金币 delta 为零。
+
 因此，**当前可证明纯只读的最窄 live 入口只到已交付的 V1 战争身份、
 `targeted_title_ids` 和双方行动前余额**；它们的语义分别是输入列表和前态。
 本次找不到可单独调用、能返回运行时 `scope:target`、最终 `F` 或完整变更图的
@@ -23,3 +32,14 @@ EXE 的完整 SHA 为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96
 或取得游戏已经物化的、绑定同一 effect/WarID/revision/generation 的结果槽并双采样。
 在此之前，三个结果字段继续是 `null`，`material_complete=false`、
 `recommended_outcome=null`、`action_literal=null`。
+
+## 可施工的下一只读 producer
+
+沿用 `ReadDefenderDeJureExitTermsV1` 的精确 CB／主守方／目标验证和
+暂停帧前后双读，先追加**行动前输入**：逐目标 title 的对象 ID／generation、
+当前 holder 与上下级关系，以及影响定向休战和 Mandala 的已审计条件读数。
+每个域均需独立的原生字段来源、对象非空和前后相等门；尚未审计字段不能
+先填 `0` 或 `false`。这些读数可以缩小计算器输入缺口，但仍不能输出
+`runtime_target_scope_title_id`、`cb_prestige_factor`、title／vassal delta、
+签名资源 delta、truce days 或终战建议。`#448` 的 V1 Python 投影现保留
+原生逐域 `unavailable_reason`，零余额与缺失结果各有负例测试。

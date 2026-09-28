@@ -71,6 +71,8 @@ class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
         self.assertIsNone(projected["title_vassal_delta"])
         self.assertIsNone(projected["signed_resource_delta"])
         self.assertIsNone(projected["directed_truce"])
+        for field, reason in UNAVAILABLE_REASONS.items():
+            self.assertEqual(projected[f"{field}_unavailable_reason"], reason)
         self.assertIsNone(projected["recommended_outcome"])
         self.assertIsNone(projected["action_literal"])
         self.assertFalse(projected["material_complete"])
@@ -106,6 +108,39 @@ class DefenderDeJureExitTermsV1Tests(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             _project(candidate)
+
+    def test_real_zero_baseline_is_distinct_from_missing_material_effect(self) -> None:
+        candidate = _candidate()
+        for row in candidate["primary_resource_balances"]:
+            row["value"]["raw"] = 0
+        for row in candidate["primary_monthly_gold_income"]:
+            row["value"]["raw"] = 0
+        projected = _project(candidate)
+        self.assertTrue(all(row["value"]["raw"] == 0 for row in projected["primary_resource_balances"]))
+        self.assertIsNone(projected["signed_resource_delta"])
+        self.assertIsNone(projected["title_vassal_delta"])
+        self.assertIsNone(projected["directed_truce"])
+        for field, reason in UNAVAILABLE_REASONS.items():
+            self.assertEqual(projected[f"{field}_unavailable_reason"], reason)
+        self.assertFalse(projected["material_complete"])
+
+    def test_missing_native_read_cannot_be_filled_with_zero(self) -> None:
+        mutations = (
+            lambda item: item["primary_resource_balances"][0]["value"].update(raw=None),
+            lambda item: item["primary_resource_balances"][0].pop("value"),
+            lambda item: item["primary_monthly_gold_income"][1]["value"].update(raw=None),
+            lambda item: item["primary_monthly_gold_income"].pop(),
+            lambda item: item.update(signed_resource_delta=[]),
+            lambda item: item.update(title_vassal_delta=[]),
+            lambda item: item.update(directed_truce={"days": 0}),
+            lambda item: item.update(material_complete=True),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=index):
+                candidate = _candidate()
+                mutate(candidate)
+                with self.assertRaises(ValueError):
+                    _project(candidate)
 
     def test_step_requires_canonical_positive_war_id(self) -> None:
         step = query_defender_dejure_exit_terms_v1_step(16777231)
