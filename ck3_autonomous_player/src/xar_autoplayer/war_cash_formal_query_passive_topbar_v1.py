@@ -207,6 +207,8 @@ def capture_formal_query_passive_topbar(
         "future_war_cost_upper_raw": None,
         "future_risk_budget_raw": None,
         "minimum_war_gold_reserve_raw": None,
+        "horizon_days": None,
+        "future_war_cost_assumptions": None,
     }
     path = attempt_dir / RECEIPT_NAME
     try:
@@ -231,3 +233,29 @@ def capture_formal_query_passive_topbar(
         "formal_cash_eligible": False,
     }
     return summary, post
+
+
+def formal_candidate_after_passive_topbar(
+    candidate: dict[str, object] | None,
+    summary: dict[str, object] | None,
+) -> dict[str, object]:
+    """Keep a formal query receipt only after an appended post-sample check."""
+    if (
+        isinstance(candidate, dict)
+        and candidate.get("status") == "same_paused_query_postcheck_passed"
+        and isinstance(summary, dict)
+        and summary.get("status") == "RED_diagnostic_only"
+        and summary.get("post_sample_formal_query_check_passed") is True
+        and isinstance(summary.get("path"), str)
+        and summary["path"]
+        and _sha256(summary.get("sha256"))
+    ):
+        return candidate
+    return {
+        "status": "blocked_after_passive_sample",
+        "missing_reasons": [
+            "append_only_post_sample_same_pid_six_field_check_unproven"
+        ],
+        "formal_cash_receipt_eligible": False,
+        "immediate_war_action_cost_raw": None,
+    }

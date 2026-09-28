@@ -103,6 +103,7 @@ from .war_cash_formal_query_runtime_receipt_v1 import (
 )
 from .war_cash_formal_query_passive_topbar_v1 import (
     capture_formal_query_passive_topbar,
+    formal_candidate_after_passive_topbar,
 )
 
 
@@ -1592,17 +1593,6 @@ def native_auto_run(
                                 postcheck=_post_passive_topbar_check,
                             )
                         )
-                        if not formal_query_passive_topbar_summary.get(
-                            "post_sample_formal_query_check_passed"
-                        ):
-                            formal_query_receipt_candidate = {
-                                "status": "blocked_after_passive_sample",
-                                "missing_reasons": [
-                                    "post_sample_same_pid_or_six_field_frame_unproven"
-                                ],
-                                "formal_cash_receipt_eligible": False,
-                                "immediate_war_action_cost_raw": None,
-                            }
                     except Exception as error:
                         # The observer never replaces the native action result.
                         formal_query_passive_topbar_summary = {
@@ -1612,6 +1602,12 @@ def native_auto_run(
                             ],
                             "formal_cash_eligible": False,
                         }
+                    formal_query_receipt_candidate = (
+                        formal_candidate_after_passive_topbar(
+                            formal_query_receipt_candidate,
+                            formal_query_passive_topbar_summary,
+                        )
+                    )
             merge_observation: dict[str, object] | None = None
             if parse_merge_armies_step(step) is not None:
                 result = outcome.get("result")

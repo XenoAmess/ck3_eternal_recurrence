@@ -13,6 +13,7 @@ from xar_autoplayer.native_auto_run import native_auto_run
 from xar_autoplayer.cli import parser
 from xar_autoplayer.war_cash_formal_query_passive_topbar_v1 import (
     MAX_READ, RECEIPT_NAME, capture_formal_query_passive_topbar,
+    formal_candidate_after_passive_topbar,
 )
 
 
@@ -101,6 +102,7 @@ class FormalQueryPassiveTopbarTests(unittest.TestCase):
                 "pending_war_cash_raw", "immediate_war_action_cost_raw",
                 "future_war_cost_upper_raw", "future_risk_budget_raw",
                 "minimum_war_gold_reserve_raw",
+                "horizon_days", "future_war_cost_assumptions",
             ):
                 self.assertIsNone(body[key])
             self.assertEqual(body["status"], "RED_diagnostic_only")
@@ -117,6 +119,10 @@ class FormalQueryPassiveTopbarTests(unittest.TestCase):
     def test_stable_same_pid_is_still_diagnostic_red(self) -> None:
         receipt, post, body = self._run()
         self.assertTrue(receipt["post_sample_formal_query_check_passed"])
+        self.assertEqual(
+            formal_candidate_after_passive_topbar(candidate(), receipt)["status"],
+            "same_paused_query_postcheck_passed",
+        )
         self.assertEqual(post["source_frame_after"], FRAME)
         self.assertEqual(body["missing_reasons"], [
             "gui_cache_natural_refresh_and_military_cash_composition_unproven"
@@ -189,6 +195,26 @@ class FormalQueryPassiveTopbarTests(unittest.TestCase):
         self.assertIsNone(post)
         self.assertFalse(receipt["post_sample_formal_query_check_passed"])
         self.assertIn("candidate_frame_or_pid_incomplete", body["missing_reasons"])
+
+    def test_observer_fault_or_unwritten_receipt_revokes_formal_candidate(self) -> None:
+        for diagnostic in (
+            None,
+            {"status": "RED_observer_fault",
+             "post_sample_formal_query_check_passed": True},
+            {"status": "RED_diagnostic_only",
+             "post_sample_formal_query_check_passed": False,
+             "path": "fake", "sha256": "A" * 64},
+            {"status": "RED_observer_receipt_write_failed",
+             "post_sample_formal_query_check_passed": True,
+             "path": "fake", "sha256": "A" * 64},
+        ):
+            with self.subTest(diagnostic=diagnostic):
+                protected = formal_candidate_after_passive_topbar(
+                    candidate(), diagnostic,
+                )
+                self.assertEqual(protected["status"],
+                                 "blocked_after_passive_sample")
+                self.assertIsNone(protected["immediate_war_action_cost_raw"])
 
 
 if __name__ == "__main__":
