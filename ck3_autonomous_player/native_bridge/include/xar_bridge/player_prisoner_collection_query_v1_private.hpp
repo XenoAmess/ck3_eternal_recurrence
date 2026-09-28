@@ -38,6 +38,8 @@ enum class PlayerPrisonerCollectionFailureV1 : std::uint8_t {
   custody_relation_invalid,
   lineage_unavailable,
   child_relation_unavailable,
+  title_tier_unavailable,
+  dread_unavailable,
   sample_drift,
   frame_drift,
 };
@@ -49,6 +51,7 @@ struct PlayerPrisonerCollectionRowV1 {
   std::int32_t house_id = -1;
   std::int32_t dynasty_id = -1;
   bool child_of_played_character = false;
+  std::int32_t primary_title_tier_raw = -1;
 
   friend bool operator==(const PlayerPrisonerCollectionRowV1 &,
                          const PlayerPrisonerCollectionRowV1 &) = default;
@@ -61,6 +64,7 @@ struct PlayerPrisonerCollectionSnapshotV1 {
   PlayerPrisonerFrameV1 frame{};
   std::int32_t played_house_id = -1;
   std::int32_t played_dynasty_id = -1;
+  std::int64_t played_dread_raw = 0;
   std::uint32_t total_count = 0;
   std::uint32_t returned_count = 0;
   bool collection_complete = false;
@@ -75,11 +79,14 @@ using ReadPlayerPrisonerCollectionMemoryV1 = bool (*)(
     std::size_t size) noexcept;
 using IsPlayerPrisonerChildOfV1 = bool (*)(void *child_character,
                                            void *parent_character);
+using GetPlayerPrisonerPrimaryTitleV1 = void *(*)(void *character);
 
 struct PlayerPrisonerCollectionAccessV1 {
   bool exact_build_admitted = false;
   bool read_lineage = false;
   bool read_child_relation = false;
+  bool read_title_tier = false;
+  bool read_dread = false;
   std::string_view admitted_executable_sha256{};
   std::uintptr_t module_base = 0;
   std::uint32_t current_thread_id = 0;
@@ -88,6 +95,7 @@ struct PlayerPrisonerCollectionAccessV1 {
   CapturePlayerPrisonerCollectionFrameV1 capture_frame = nullptr;
   ReadPlayerPrisonerCollectionMemoryV1 read_memory = nullptr;
   IsPlayerPrisonerChildOfV1 is_child_of = nullptr;
+  GetPlayerPrisonerPrimaryTitleV1 get_primary_title = nullptr;
 };
 
 // One synchronous paused application-main transaction. All borrowed addresses

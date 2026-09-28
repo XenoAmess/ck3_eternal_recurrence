@@ -264,6 +264,16 @@ if(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1 AND
 endif()
 
 option(
+  XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1
+  "Read private exact-build prisoner title tiers and player dread for release value"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+  message(FATAL_ERROR "prisoner title tier v6 requires the private v5 collection")
+endif()
+
+option(
   XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1
   "Run one private exact-build paused culture/innovation snapshot query"
   OFF
@@ -754,6 +764,10 @@ endif()
 if(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1=1)
+endif()
+if(XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   target_sources(xar_ck3_bridge PRIVATE

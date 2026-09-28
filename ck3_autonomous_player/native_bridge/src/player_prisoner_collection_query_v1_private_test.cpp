@@ -1,5 +1,6 @@
 #include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
+#include "xar_bridge/campaign_root_context_v1.hpp"
 
 #include <array>
 #include <cstddef>
@@ -30,6 +31,11 @@ constexpr std::uintptr_t kHouse = 0x282000000;
 constexpr std::uintptr_t kDynastyStorage = 0x290000000;
 constexpr std::uintptr_t kDynastySlots = 0x291000000;
 constexpr std::uintptr_t kDynasty = 0x292000000;
+constexpr std::uintptr_t kTitleStorage = 0x2A0000000;
+constexpr std::uintptr_t kTitleSlots = 0x2A1000000;
+constexpr std::uintptr_t kTitle = 0x2A2000000;
+constexpr std::uintptr_t kTitleTemplate = 0x2A3000000;
+constexpr std::uint32_t kTitleId = 0x04000005;
 constexpr std::uint32_t kPlayerId = 0x01000002;
 constexpr std::uint32_t kPrisonerId = 0x02000003;
 constexpr std::uint32_t kSecondPrisonerId = 0x03000004;
@@ -40,7 +46,9 @@ struct Fixture {
   int frame_captures = 0;
   bool drift_frame = false;
   bool drift_array_on_second_read = false;
+  bool drift_dread_on_second_read = false;
   int prisoner_array_reads = 0;
+  int dread_reads = 0;
 
   template <typename T>
   void Put(std::uintptr_t address, T value) {
@@ -81,9 +89,20 @@ struct Fixture {
     Put(kPrisonerRelation, kPlayerId);
     Put(kSecondPrisonerRelation, kPlayerId);
     Put(kPlayer + 0x1B8, kLand);
+    Put(kLand + 0x350, std::int64_t{4'000'000});
     Put(kLand + 0xD8, kArray);
     Put(kLand + 0xD8 + 0x0C, std::int32_t{1});
     Put(kArray, kPrisonerId);
+    Put(kBase + xar::ck3_11906::kCampaignRootLandedTitleStorageSlotRva,
+        kTitleStorage);
+    Put(kBase + xar::ck3_11906::kCampaignRootLandedTitleFallbackSlotRva,
+        static_cast<std::uintptr_t>(0x2A4000000));
+    Put(kTitleStorage + 0x20, kTitleSlots);
+    Put(kTitleStorage + 0x2C, std::int32_t{8});
+    Put(kTitleSlots + 5 * 0x10 + 0x08, kTitle);
+    Put(kTitle + 0x10, kTitleId);
+    Put(kTitle + 0x160, kTitleTemplate);
+    Put(kTitleTemplate + 0x5C, std::int32_t{3});
   }
 };
 
@@ -106,6 +125,12 @@ bool Read(void *context, std::uintptr_t address, void *output,
     std::memcpy(output, &other, sizeof(other));
     return true;
   }
+  if (address == kLand + 0x350 && size == sizeof(std::int64_t) &&
+      fixture.drift_dread_on_second_read && ++fixture.dread_reads == 2) {
+    const std::int64_t changed = 4'100'000;
+    std::memcpy(output, &changed, sizeof(changed));
+    return true;
+  }
   auto *bytes = static_cast<std::uint8_t *>(output);
   for (std::size_t index = 0; index < size; ++index) {
     const auto found = fixture.memory.find(address + index);
@@ -120,6 +145,12 @@ bool IsChildOf(void *child, void *parent) {
   ++child_relation_calls;
   return child == reinterpret_cast<void *>(kPrisoner) &&
          parent == reinterpret_cast<void *>(kPlayer);
+}
+
+void *GetPrimaryTitle(void *character) {
+  return character == reinterpret_cast<void *>(kPrisoner)
+             ? reinterpret_cast<void *>(kTitle)
+             : nullptr;
 }
 
 PlayerPrisonerCollectionAccessV1 Access(Fixture &fixture) {
@@ -245,6 +276,61 @@ int main() {
                              PlayerPrisonerCollectionFailureV1::
                                  child_relation_unavailable,
                      "missing child relation callback is unavailable");
+  }
+  {
+    Fixture fixture;
+    fixture.Put(kLand + 0xD8 + 0x0C, std::int32_t{2});
+    fixture.Put(kArray + sizeof(kPrisonerId), kSecondPrisonerId);
+    auto access = Access(fixture);
+    access.read_title_tier = true;
+    access.get_primary_title = GetPrimaryTitle;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.rows[0].primary_title_tier_raw == 3 &&
+                         result.rows[1].primary_title_tier_raw == -1,
+                     "same-frame duke tier and unlanded prisoner");
+    fixture.Put(kTitle + 0x10, kTitleId + 1);
+    passed += Expect(!ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.failure ==
+                             PlayerPrisonerCollectionFailureV1::
+                                 title_tier_unavailable,
+                     "stale title generation unavailable");
+  }
+  {
+    Fixture fixture;
+    auto access = Access(fixture);
+    access.read_title_tier = true;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(!ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.failure ==
+                             PlayerPrisonerCollectionFailureV1::
+                                 title_tier_unavailable,
+                     "missing title getter unavailable");
+  }
+  {
+    Fixture fixture;
+    auto access = Access(fixture);
+    access.read_dread = true;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.played_dread_raw == 4'000'000,
+                     "same-frame player dread fixed-point raw value");
+    fixture.memory.erase(kLand + 0x350);
+    passed += Expect(!ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.failure ==
+                             PlayerPrisonerCollectionFailureV1::dread_unavailable,
+                     "missing dread memory unavailable");
+  }
+  {
+    Fixture fixture;
+    fixture.drift_dread_on_second_read = true;
+    auto access = Access(fixture);
+    access.read_dread = true;
+    PlayerPrisonerCollectionSnapshotV1 result{};
+    passed += Expect(!ReadPlayerPrisonerCollectionV1Private(access, result) &&
+                         result.failure ==
+                             PlayerPrisonerCollectionFailureV1::sample_drift,
+                     "dread second sample drift rejected");
   }
   {
     Fixture fixture;
@@ -381,6 +467,6 @@ int main() {
         "serialization failure remains distinct");
   }
   std::cout << "player_prisoner_collection_query_v1_private " << passed
-            << "/23 GREEN\n";
-  return passed == 23 ? 0 : 1;
+            << "/29 GREEN\n";
+  return passed == 29 ? 0 : 1;
 }

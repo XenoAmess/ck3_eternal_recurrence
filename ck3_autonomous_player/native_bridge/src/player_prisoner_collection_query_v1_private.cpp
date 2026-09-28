@@ -1,4 +1,5 @@
 #include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
+#include "xar_bridge/campaign_root_context_v1.hpp"
 
 #include <algorithm>
 #include <limits>
@@ -18,9 +19,14 @@ constexpr std::size_t kStorageSlotObjectOffset = 0x08;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
 constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
 constexpr std::size_t kCharacterLandStateOffset = 0x1B8;
+// CDreadTrigger exact-build getter RVA 0x28780E0 reads this CFixedPoint
+// directly from the character land state (and returns zero if absent).
+constexpr std::size_t kLandStateDreadOffset = 0x350;
 constexpr std::size_t kCharacterHouseIdOffset = 0x150;
 constexpr std::size_t kHouseDynastyIdOffset = 0x2C;
 constexpr std::size_t kLineageIdentityOffset = 0x10;
+constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
+constexpr std::size_t kLandedTitleTierOffset = 0x5C;
 constexpr std::uintptr_t kHouseStorageSlotRva = 0x570C408;
 constexpr std::uintptr_t kHouseFallbackSlotRva = 0x570C400;
 constexpr std::uintptr_t kDynastyStorageSlotRva = 0x570C748;
@@ -37,6 +43,7 @@ struct SourceSample {
   std::uintptr_t player_address = 0;
   std::int32_t player_house_id = -1;
   std::int32_t player_dynasty_id = -1;
+  std::int64_t player_dread_raw = 0;
   std::uintptr_t collector_address = 0;
   std::uintptr_t data_address = 0;
   std::uint32_t count = 0;
@@ -153,6 +160,38 @@ bool ReadLineage(const PlayerPrisonerCollectionAccessV1 &access,
                                  dynasty);
 }
 
+bool ReadPrimaryTitleTier(const PlayerPrisonerCollectionAccessV1 &access,
+                          std::uintptr_t character,
+                          std::int32_t &tier_raw) noexcept {
+  tier_raw = -1;
+  if (access.get_primary_title == nullptr) return false;
+  std::uintptr_t fallback = 0;
+  if (!Read(access, access.module_base,
+            xar::ck3_11906::kCampaignRootLandedTitleFallbackSlotRva,
+            fallback)) return false;
+  const auto title = reinterpret_cast<std::uintptr_t>(
+      access.get_primary_title(reinterpret_cast<void *>(character)));
+  if (title == 0 || title == fallback) return true;
+  std::int32_t title_id = -1;
+  std::uintptr_t resolved_title = 0;
+  std::uintptr_t title_template = 0;
+  if (!Read(access, title, kLineageIdentityOffset, title_id) ||
+      title_id < 0 ||
+      !ResolveLineageComponent(
+          access, xar::ck3_11906::kCampaignRootLandedTitleStorageSlotRva,
+          xar::ck3_11906::kCampaignRootLandedTitleFallbackSlotRva,
+          title_id, resolved_title) ||
+      resolved_title != title ||
+      !Read(access, title, kLandedTitleTemplateOffset, title_template) ||
+      title_template == 0 ||
+      !Read(access, title_template, kLandedTitleTierOffset, tier_raw) ||
+      tier_raw < 1 || tier_raw > 6) {
+    tier_raw = -1;
+    return false;
+  }
+  return true;
+}
+
 Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
                    std::uint32_t player_id, SourceSample &sample) noexcept {
   sample = {};
@@ -178,6 +217,11 @@ Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
   if (!Read(access, sample.player_address, kCharacterLandStateOffset,
             land_state)) {
     return Failure::memory_unavailable;
+  }
+  if (access.read_dread && land_state != 0 &&
+      !Read(access, land_state, kLandStateDreadOffset,
+            sample.player_dread_raw)) {
+    return Failure::dread_unavailable;
   }
   if (land_state == 0) {
     // Exact getter 0x2614F30 returns its process-global empty container.
@@ -241,13 +285,19 @@ Failure ReadSample(const PlayerPrisonerCollectionAccessV1 &access,
           reinterpret_cast<void *>(prisoner_address),
           reinterpret_cast<void *>(sample.player_address));
     }
+    std::int32_t primary_title_tier_raw = -1;
+    if (access.read_title_tier &&
+        !ReadPrimaryTitleTier(access, prisoner_address,
+                              primary_title_tier_raw)) {
+      return Failure::title_tier_unavailable;
+    }
     for (std::uint32_t prior = 0; prior < index; ++prior) {
       if (sample.rows[prior].full_character_id == full_id) {
         return Failure::collection_invalid;
       }
     }
     sample.rows[index] = {index, full_id, jailer_id, house_id, dynasty_id,
-                          child_of_played_character};
+                          child_of_played_character, primary_title_tier_raw};
   }
   return Failure::none;
 }
@@ -275,6 +325,10 @@ bool ReadPlayerPrisonerCollectionV1Private(
   }
   if (access.read_child_relation && access.is_child_of == nullptr) {
     Fail(output, Failure::child_relation_unavailable);
+    return false;
+  }
+  if (access.read_title_tier && access.get_primary_title == nullptr) {
+    Fail(output, Failure::title_tier_unavailable);
     return false;
   }
   if (access.current_thread_id == 0 ||
@@ -317,6 +371,7 @@ bool ReadPlayerPrisonerCollectionV1Private(
   if (first.player_address != second.player_address ||
       first.player_house_id != second.player_house_id ||
       first.player_dynasty_id != second.player_dynasty_id ||
+      first.player_dread_raw != second.player_dread_raw ||
       first.collector_address != second.collector_address ||
       first.data_address != second.data_address || first.count != second.count ||
       !std::equal(first.rows.begin(), first.rows.begin() + first.count,
@@ -339,6 +394,7 @@ bool ReadPlayerPrisonerCollectionV1Private(
   output.frame = before;
   output.played_house_id = first.player_house_id;
   output.played_dynasty_id = first.player_dynasty_id;
+  output.played_dread_raw = first.player_dread_raw;
   output.total_count = first.count;
   output.returned_count = first.count;
   output.collection_complete = true;
@@ -364,6 +420,8 @@ std::string_view PlayerPrisonerCollectionFailureNameV1(Failure failure) noexcept
   case Failure::lineage_unavailable: return "lineage_unavailable";
   case Failure::child_relation_unavailable:
     return "child_relation_unavailable";
+  case Failure::title_tier_unavailable: return "title_tier_unavailable";
+  case Failure::dread_unavailable: return "dread_unavailable";
   case Failure::sample_drift: return "sample_drift";
   case Failure::frame_drift: return "frame_drift";
   }
