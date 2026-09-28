@@ -745,6 +745,27 @@ void TestStageTypedRed() {
   }
   {
     Fixture fixture{};
+    fixture.ApplyPostcondition();
+    fixture.observation.rows[0].progress_goal.value = 365;
+    BoundFixture bound{};
+    Bind(fixture, bound);
+    ActiveSchemeStateV1PrivateObservation observation{};
+    ActiveSchemePausedLiveNativeGlueV1PrivateFailure failure{};
+    Require(!CaptureActiveSchemePausedLiveSnapshotV1Private(
+        bound.state, {42, 42}, observation, failure));
+    Require(failure == ActiveSchemePausedLiveNativeGlueV1PrivateFailure::
+                           observation_red);
+    Require(bound.state.last_source_failure ==
+            ActiveSchemeStateV1PrivateSourceFailure::core_rejected);
+    Require(bound.state.last_source_core_failure ==
+            ActiveSchemeStateV1PrivateFailure::metric_invalid);
+    Require(bound.state.last_source_single_row_metrics_present);
+    Require(bound.state.last_source_single_row_progress == 0);
+    Require(bound.state.last_source_single_row_progress_goal == 365);
+    Require(fixture.native_submits == 0);
+  }
+  {
+    Fixture fixture{};
     BoundFixture bound{};
     Bind(fixture, bound);
     fixture.return_fallback = true;
@@ -786,6 +807,34 @@ void TestStageTypedRed() {
                            receipt_red);
     Require(receipt.failure == ActiveSchemeSemanticActionV1PrivateFailure::
                                    post_observation_not_fresh);
+    Require(fixture.native_submits == 1);
+  }
+  {
+    Fixture fixture{};
+    BoundFixture bound{};
+    Bind(fixture, bound);
+    ActiveSchemePausedLiveNativeGlueV1PrivateFailure failure{};
+    ActiveSchemeSemanticActionV1PrivateAck ack{};
+    Require(ExecuteActiveSchemePausedLiveNativeGlueV1Private(
+                bound.state, {42, 42}, Request(fixture), ack, failure) ==
+            ActiveSchemeSemanticActionV1PrivateAckStatus::
+                submitted_verification_pending);
+    fixture.observation.rows[0].progress_goal.value = 365;
+    ActiveSchemeSemanticActionV1PrivateReceipt receipt{};
+    Require(VerifyActiveSchemePausedLiveNativeGlueReceiptV1Private(
+                bound.state, {42, 42}, ack, receipt, failure) ==
+            ActiveSchemeSemanticActionV1PrivateReceiptStatus::red);
+    Require(failure == ActiveSchemePausedLiveNativeGlueV1PrivateFailure::
+                           receipt_red);
+    Require(receipt.failure == ActiveSchemeSemanticActionV1PrivateFailure::
+                                   post_observation_unavailable);
+    Require(bound.state.last_source_failure ==
+            ActiveSchemeStateV1PrivateSourceFailure::core_rejected);
+    Require(bound.state.last_source_core_failure ==
+            ActiveSchemeStateV1PrivateFailure::metric_invalid);
+    Require(bound.state.last_source_single_row_metrics_present);
+    Require(bound.state.last_source_single_row_progress == 0);
+    Require(bound.state.last_source_single_row_progress_goal == 365);
     Require(fixture.native_submits == 1);
   }
 }

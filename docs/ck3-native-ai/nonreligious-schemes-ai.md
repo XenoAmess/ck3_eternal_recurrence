@@ -345,6 +345,40 @@ read-only Sway callback had its own slot. The next candidate must use the
 original H3922 save/driver/sidecars, because R0338 left a conservative
 unresolved intent ledger in its isolated candidate state.
 
+R0339 used an exact-master H3922 formal candidate after the mailbox-slot fix.
+The owning-thread native submit returned `submitted_verification_pending`
+with `submit_call_count=1`; the fresh receipt returned
+`native_sway_receipt_red:glue_red`. The consumer retained a pending intent and
+saved same-date H3924/raw53219928 (checkpoint SHA-256
+`4BBB0615DEC505E9759E936950754EAA40D634E8A75D63C3C615FDF97C71ECB0`); it did not consume a next turn. Report:
+`Z:\m6swayh3922pr545formal-live-20260929\operator-runs\sway-h3922-formal-slot-fix-1\formal-report.txt`,
+SHA-256 `A0453509B1A8EACCB16DEB090FC1623CDCC7B5F055B8CFABFD6D760ABF1E79FD`.
+A read-only comparison of the original H3922 save and H3924 checkpoint found
+zero versus one `sway` row for owner 29829 and target 32716; the sole new row
+is at byte offset 56,907,848 in H3924. This supports persisted submission,
+but neither the ACK nor save diff replaces the required independent native
+instance receipt.
+
+R0340 started a new PID from H3924 and made no action or date advance. Its
+paused Sway query returned `native_scheme_observation_red:core_rejected`
+instead of an active-instance identity. Report:
+`Z:\m6swayh3922pr545formal-live-20260929\operator-runs\sway-h3924-pending-cold-read-1\formal-report.txt`,
+SHA-256 `14F8D0EBD839A1B03C6E6DC96091E0EFAD3A403774232B7CCE43DF3188E4D2E7`.
+In the current source adapter, `core_rejected` occurs after paused frame,
+root/container resolution, and two stable row reads; it means the typed
+observer rejected the captured row. The adapter already records a specific
+`core_failure`, but the glue and Sway transport discard it. The same observer
+feeds the formal receipt, making this a concrete candidate cause for R0339's
+`glue_red`. The observer currently requires `progress_goal` in `[1,10]`, while
+the original `sway_scheme.txt` declares `base_progress_goal=365`; fixture Sway
+rows used 8 or 10. This is a diagnostic lead, not a measured H3924 native
+progress value. The next exact-build read must report the specific core
+failure before adjusting any metric bound. The private diagnostic now preserves
+that core enum and, only when a single captured row is rejected as
+`metric_invalid`, reports its raw progress and goal without treating either as
+an accepted value. Keep the pending intent and do not submit Sway again during
+recovery.
+
 现有 SCHEME6/7/9/10 已有一次 typed submit 与独立 fresh receipt 原语，但
 原 DLL 只暴露只读 Sway step。本轮源码新增由
 `XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=ON`

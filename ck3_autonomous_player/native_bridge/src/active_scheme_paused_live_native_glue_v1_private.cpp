@@ -56,6 +56,12 @@ bool CaptureObservationThunk(
   ActiveSchemeStateV1PrivateSourceResult result{};
   const bool ok = ObserveActiveSchemeStateV1PrivateSource(access, result);
   state.last_source_failure = result.failure;
+  state.last_source_core_failure = result.core_failure;
+  state.last_source_single_row_metrics_present =
+      result.single_row_metrics_present;
+  state.last_source_single_row_progress = result.single_row_progress;
+  state.last_source_single_row_progress_goal =
+      result.single_row_progress_goal;
   output = result.observation;
   return ok;
 }
@@ -144,6 +150,7 @@ bool BindActiveSchemePausedLiveNativeGlueV1Private(
   state.readiness = readiness;
   state.last_source_failure =
       ActiveSchemeStateV1PrivateSourceFailure::none;
+  state.last_source_core_failure = ActiveSchemeStateV1PrivateFailure::none;
   state.last_action_failure = ActiveSchemeSemanticActionV1PrivateFailure::none;
   state.attached = true;
   return true;

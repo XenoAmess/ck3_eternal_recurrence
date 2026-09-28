@@ -87,6 +87,10 @@ struct ActiveSchemeStateV1PrivateSourceResult {
       ActiveSchemeStateV1PrivateSourceFailure::callbacks_unavailable;
   ActiveSchemeStateV1PrivateFailure core_failure =
       ActiveSchemeStateV1PrivateFailure::source_adapter_unavailable;
+  // Diagnostic only: a single fully captured row rejected for invalid metrics.
+  bool single_row_metrics_present = false;
+  std::int32_t single_row_progress = 0;
+  std::int32_t single_row_progress_goal = 0;
   ActiveSchemeStateV1PrivateObservation observation{};
 };
 

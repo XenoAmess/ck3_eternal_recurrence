@@ -147,6 +147,20 @@ bool ExecuteActiveSchemeSwayPrivateQueryV1(
       query->failure +=
           ActiveSchemeStateV1PrivateSourceFailureName(
               binder.glue.last_source_failure);
+      if (binder.glue.last_source_failure ==
+          ActiveSchemeStateV1PrivateSourceFailure::core_rejected) {
+        query->failure += ":";
+        query->failure += ActiveSchemeStateV1PrivateFailureName(
+            binder.glue.last_source_core_failure);
+        if (binder.glue.last_source_single_row_metrics_present) {
+          query->failure += ":row0_progress=";
+          query->failure += std::to_string(
+              binder.glue.last_source_single_row_progress);
+          query->failure += ":row0_goal=";
+          query->failure += std::to_string(
+              binder.glue.last_source_single_row_progress_goal);
+        }
+      }
       query->completed = true;
       return true;
     }
