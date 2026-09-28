@@ -1,0 +1,17 @@
+# E2-06/04/05 接屏队列与新 attempt 名称
+
+2026-09-28 10:55 UTC 接屏前准备；尚未领取屏幕、运行新 preflight、启动 CK3 或录制。先等 E2-09 的 PID、FFmpeg PID 与 `ck3-screen` owner 同时清零，并取得主代理的明确交接。精确来源与风险边界见 `remaining-live-tracks-runbook-20260928.md` 和 `remaining-live-static-readiness-20260928.md`。
+
+| 顺序 | 轨道 | 新离线证据目录 | 新无启动预检目录 | 新受管 live 目录、run ID | `capture_session.py` 精确输入 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `e2-06-d11` | `episode02-e2-06-d11-offline-20260928-a01` | `episode02-e2-06-d11-preflight-20260928-a01` | `episode02-e2-06-d11-live-20260928-a01`；`e2-06-d11-20260928-a01` | `episode01-full-edge-attempt-004/trace-d11-immutable.ck3`、同 attempt 的 `ck3-output/interactive-requests-responses/trace-d11-save.json`；历史 085 DLL `D:/wai/ck3_autonomous_player/native_bridge/build-fresh-20260927T025104Z-572e2125/xar_ck3_bridge.dll` 与 injector `D:/workspace/ck3_build_join_width_phase_thread_20260927/xar_ck3_bridge_injector.exe`；新 pipe `xar_ck3_e2_06_d11_live_20260928_a01` |
+| 2 | `e2-04-d05` | `episode02-e2-04-d05-offline-20260928-a01` | `episode02-e2-04-d05-preflight-20260928-a01` | `episode02-e2-04-d05-live-20260928-a01`；`e2-04-d05-20260928-a01` | `episode01-paired-counter-trace-attempt-010/d05-immutable.ck3`、同 attempt 的 `ck3-output/interactive-requests-responses/d05-save.json`；`D:/workspace/cwb2/` DLL/injector；新 pipe `xar_ck3_e2_04_d05_live_20260928_a01` |
+| 3 | `e2-05-d26` | `episode02-e2-05-d26-offline-20260928-a01` | `episode02-e2-05-d26-preflight-20260928-a01` | `episode02-e2-05-d26-live-20260928-a01`；`e2-05-d26-20260928-a01` | `episode01-paired-counter-trace-attempt-010/d26-immutable.ck3`、同 attempt 的 `ck3-output/interactive-requests-responses/d26-save.json`；`D:/workspace/cwb2/` DLL/injector；新 pipe `xar_ck3_e2_05_d26_live_20260928_a01` |
+
+以上新目录在 10:55 UTC 时均不存在；启动每轨前再检查，已存在即递增 attempt 编号，绝不覆盖。所有目录的共同父目录是 `D:/workspace/ck3_native_war_ai_promo_work/`。每轨 `xar_promo start-run --run-id <该行 run ID> --run-directory <该行 live 目录>/xar-run D:/w/e2/promo/ck3_native_war_ai/episode-02-battle-second-half/project/promo-project.json`，当前 config SHA-256 `B00B4EA61EC2240ED1CBF718F654137F5ABED3953E1E3BF7F204CC38332F2778`；实际运行前重新验哈并保存新快照。开始新 run 前还需重新查 latest 正式 promo release，本次预核是 v0.2.1。
+
+取得屏幕与当次离线回执后，按每行精确参数对新 preflight 目录运行不带 `--capture` 的 `capture_session.py`，设 `--frontend-timeout 900 --enable-private-phase-trace --steam-offline-receipt <该行新回执>`；须读 `ck3_started=false` 与源、DLL 的新 SHA。然后在另一新 live 目录与不同新 pipe 运行 `--frontend-timeout 900 --interactive-seconds 3600 --enable-private-phase-trace --steam-offline-receipt <同次新回执> --capture`。两个尝试均写各自 `ck3-state`、`ck3-output` 和 `command.json`。保持 180 秒续租日志，禁止在等待 600 秒 FFmpeg 时租约过期。
+
+地图/source readback、桌面几何及完整 UI 过门后，每轨使用独立 `<live>/recording-<track>-a01/` 执行 `record_bounded_gameplay.py record --track <该行轨道> --seconds 600 --session-output <live>/ck3-output --source-save <该行源档> --source-receipt <该行回执> --steam-offline-receipt <该行新回执>`。`remaining_live_step.py observe` 后，前帧 mark 必须附同 run 截图：E2-04/05 的 `--control <live>/ck3-output/interactive-requests-responses/<track>-control.json`，E2-06 的 `--report <live>/ck3-output/interactive-requests-responses/<track>-snapshot.json`。同日 revision、精确源及仍运行的 recorder 都成立，才用新正整数 `--sequence-token` 调一次 `advance`。后帧画面另立 mark；不跨第二天。FFmpeg 自然封口、原始 PTS 与 stderr 保全后才 `finish`、核 CK3 清场、停止续租并释放 screen。
+
+任何日期、成员、私有 trace 或录制 RED 即停止该轨原生推进，保存 partial/失败 attempt。E2-06 旧 battle-control sibling RED 尚未自动解决；只有本次同 run 的 join/full-entry trace 与对应 UI 能支持窄范围结论。全部新画面数字由本 run 重算，旧 085/020/070/036→038/039→040 卡仍按历史研究板标注。
