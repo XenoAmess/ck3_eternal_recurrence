@@ -310,3 +310,24 @@ completed before reading the embedded cost and that stage 5 final validation
 uses that same configuration. The current instance owner must coordinate any
 brief visible-window step and minimize afterward. A complete copied semantic
 sample is still required before a private bridge or formal activity action.
+
+## Private paused planner metadata diagnostic
+
+`activity_planner_diag_v1` implements that narrow next read, behind
+`XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1=OFF` by default.
+The exact-build ABI verifier checks the frozen EXE hash, planner owner/widget/
+stage instruction bytes and primary/secondary vtable slots. The private
+application-main mailbox uses slot 57 only after a matching paused actor/date
+snapshot; the native reader takes two complete metadata samples and reads the
+frame again before copying a pointer-free result. The bounded operator flag
+is `--private-activity-planner-diag-query`.
+
+The result distinguishes planner absent from planner present, reports native
+widget attachment/slot-7 visibility and stage 0–5, and optionally copies the
+**HostView current activity-type key** with that source named explicitly. It
+does not claim that this HostView key is the planner's selected type. There is
+no configured-cost value, final `can_start`, activity action, public query or
+advertised capability; both decision fields remain typed `unknown`. A closed
+widget with an empty cost container remains unknown. Static ABI and no-launch
+tests establish only source/build readiness; a paired paused CK3 capture is
+still required to learn which diagnostic state Robert actually presents.

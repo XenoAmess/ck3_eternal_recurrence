@@ -5,6 +5,9 @@
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
 #include "realm_law_paused_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+#include "activity_planner_diag_private_transport_v1.hpp"
+#endif
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -9333,6 +9336,10 @@ public:
     environment.permitted_executor_sexquinquagintary =
         &xar::ck3_11906::ExecuteRealmLawPausedPrivateQueryV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+    environment.permitted_executor_septenquinquagintary =
+        &xar::ck3_11906::ExecuteActivityPlannerDiagPrivateQueryV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -10337,6 +10344,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
                    && step != xar::ck3_11906::kRealmLawPausedPrivateQueryStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+                   && step != xar::ck3_11906::kActivityPlannerDiagPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kPlayerPrisonerRansomSubmitPrivateStepV1
@@ -10396,6 +10406,89 @@ void RunConnectedSession(
                       : ExecuteFactionGiftPrivateStepV1(
                             request_id, step, incoming.payload, game,
                             *previous_snapshot, state_revision));
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+          if (step == xar::ck3_11906::kActivityPlannerDiagPrivateStepV1) {
+            std::uint64_t expected_revision = 0;
+            xar::game::Snapshot current{};
+            if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
+                    incoming.payload, expected_revision) ||
+                expected_revision == 0 || expected_revision != state_revision ||
+                !previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current) ||
+                current != *previous_snapshot || !current.paused ||
+                !current.map_ready || !current.has_played_character ||
+                !current.played_character_alive ||
+                current.played_character_id <= 0) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "activity planner private frame or request invalid"));
+            } else {
+              xar::ck3_11906::ActivityPlannerDiagPrivateQueryV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.expected_snapshot = current;
+              query.expected_revision = expected_revision;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteActivityPlannerDiagPrivateQueryV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "activity planner private executor unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                }
+                xar::game::Snapshot after{};
+                const bool stable =
+                    wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                completed &&
+                    query.completed && !query.frame_changed &&
+                    xar::game::ReadSnapshot(game, after) && after == current;
+                const auto native =
+                    stable ? xar::ck3_11906::
+                                 SerializeActivityPlannerDiagPrivateQueryV1(query)
+                           : std::string{};
+                std::string response;
+                if (!native.empty()) {
+                  response =
+                      "{\"type\":\"command_result\",\"protocol_version\":1,"
+                      "\"request_id\":";
+                  AppendJsonString(response, request_id);
+                  response += ",\"ok\":true,\"result\":{\"step\":";
+                  AppendJsonString(response, step);
+                  response +=
+                      ",\"accepted\":true,\"status\":\"available\","
+                      "\"private_build\":true,\"read_only\":true,"
+                      "\"advertised\":false,\"activity_planner_diag\":" +
+                      native + ",\"backend_id\":\"native-headless\"}}";
+                } else {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      query.failure.empty()
+                          ? "activity planner private paused read unavailable"
+                          : query.failure);
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(request_id, step, false,
+                                                "activity planner private reclaim red");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
             }
           } else
 #endif
