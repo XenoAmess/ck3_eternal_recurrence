@@ -395,11 +395,11 @@ def _rank_five_family_candidates(
                     "projected_count": len(picked)}
 
 
-def choose_first_heir_marriage_candidate(
+def rank_first_heir_marriage_candidates(
     legality: Mapping[str, object], projection: Mapping[str, object],
     *, rejected_candidate_ids: frozenset[int] = frozenset(),
-) -> dict[str, object] | None:
-    """Value an adult marriage or an age-aligned heir partnership betrothal.
+) -> list[dict[str, object]]:
+    """Value each distinct projected heir partnership on the same native frame.
 
     A projected realm alliance attempt is a separate possible consequence, not
     the marriage value or an alliance receipt. Positive recipient AI raw is
@@ -409,11 +409,11 @@ def choose_first_heir_marriage_candidate(
             or projection.get("status") != "available"
             or projection.get("native_revision") != legality.get("native_revision")
             or projection.get("legality_query_sequence") != legality.get("query_sequence")):
-        return None
+        return []
     legal = legality.get("native_legal_candidates")
     rows = projection.get("rows")
     if not isinstance(legal, list) or not isinstance(rows, list) or len(rows) != 5:
-        return None
+        return []
     by_id = {row.get("candidate_character_id"): row for row in legal
              if isinstance(row, dict)}
     choices = []
@@ -432,21 +432,21 @@ def choose_first_heir_marriage_candidate(
                         -age_gap,
                         source["recipient_ai_accept_raw"], -candidate_id,
                         outcome, candidate_id))
-    if not choices:
-        return None
-    _, _, acceptance_raw, _, outcome, candidate_id = max(choices)
-    selected = next(row for row in rows
-                    if row["candidate_character_id"] == candidate_id)
-    source = by_id[candidate_id]
-    alliance_attempt = any(
-        pair.get("first_character_id") == source.get("played_character_id")
-        and pair.get("second_character_id") == selected.get("recipient_character_id")
-        and pair.get("already_allied") is False
-        and pair.get("both_have_realm_data") is True
-        and pair.get("would_attempt_if_accepted") is True
-        for pair in selected["possible_alliance_pairs"]
-    )
-    return {"candidate_character_id": candidate_id,
+    valued = []
+    for _, _, acceptance_raw, _, outcome, candidate_id in sorted(choices, reverse=True):
+        selected = next(row for row in rows
+                        if row["candidate_character_id"] == candidate_id)
+        source = by_id[candidate_id]
+        alliance_attempt = any(
+            pair.get("first_character_id") == source.get("played_character_id")
+            and pair.get("second_character_id") == selected.get("recipient_character_id")
+            and pair.get("already_allied") is False
+            and pair.get("both_have_realm_data") is True
+            and pair.get("would_attempt_if_accepted") is True
+            for pair in selected["possible_alliance_pairs"]
+        )
+        valued.append({
+            "candidate_character_id": candidate_id,
             "value": ("unpartnered_first_heir_adult_marriage_opportunity"
                       if outcome == "marriage" else
                       "bounded_first_heir_betrothal_and_realm_alliance_attempt"
@@ -456,7 +456,19 @@ def choose_first_heir_marriage_candidate(
             "realm_alliance_attempt_if_accepted": alliance_attempt,
             "recipient_ai_accept_raw": acceptance_raw,
             "unpriced": ["child_dynasty_result", "alliance_result",
-                         "alliance_war_obligation", "betrothal_break_cost"]}
+                         "alliance_war_obligation", "betrothal_break_cost"],
+        })
+    return valued
+
+
+def choose_first_heir_marriage_candidate(
+    legality: Mapping[str, object], projection: Mapping[str, object],
+    *, rejected_candidate_ids: frozenset[int] = frozenset(),
+) -> dict[str, object] | None:
+    """Keep the formal single-action policy on the highest ranked choice."""
+    valued = rank_first_heir_marriage_candidates(
+        legality, projection, rejected_candidate_ids=rejected_candidate_ids)
+    return valued[0] if valued else None
 
 
 def plan_family_marriage_private(driver: object, planned: dict[str, object],
@@ -616,8 +628,9 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                     or row.get("heir_spouse_character_ids") !=
                         relation["spouse_character_ids"]):
                 raise ValueError("current first-heir relation and proposal projection differ")
-    choice = choose_first_heir_marriage_candidate(
+    choices = rank_first_heir_marriage_candidates(
         legality, projection, rejected_candidate_ids=rejected_candidate_ids)
+    choice = choices[0] if choices else None
     diagnostic = _private_five_candidate_diagnostic(
         legality, projection, snapshot, choice, ranking,
         rejected_candidate_ids=rejected_candidate_ids)
@@ -655,6 +668,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
         }}
     return {**planned, "plan": {**plan, "phase": "first_heir_marriage_typed_submit",
         "selected_step": SUBMIT_STEP, "family_marriage_choice": choice,
+        "family_marriage_valued_choices": choices,
         "family_marriage_rejected_candidate_ids": sorted(rejected_candidate_ids),
         "family_marriage_legality": legality,
         "family_marriage_current_relationship": relation,
