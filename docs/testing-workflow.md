@@ -812,6 +812,16 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   回执 `after_minimized=true` 只证明窗口状态。首次有界运行还须分别核后台心跳、turn/动作回执，以及该阶段应推进时的
   游戏日期；paused frame 不以日期不变判故障。`native-session` 已按 PID 在托管恢复时保持先前最小化状态，
   此入口不会周期性恢复或抢焦点。视觉输入/截图前仍须由 owner 恢复窗口并核对当前视口与坐标。
+- 暂停地图上的最小化原生查询还要确认 application-main pump 有新进展。H3446 私有囚犯 v6 的 R0277 在
+  `map_ready=true`、`paused=true` 后立即最小化，首个查询因 `pump_start=pump_end=4509`、32 次 wake 后仍未执行而超时；
+  同一原始配对的 R0278 用 `xar_autoplayer.bridge.application_main_pump_readiness.wait_for_verified_pump`
+  在最小化状态取得 fresh pump 后提交**一次**查询，读回成功，查询后仍最小化且受控回收。R0276 的 v5 私有查询也曾在
+  最小化后成功，故不能把 R0277 泛化为所有后台原生读口失败。对需要主线程的只读查询，在已核 paused/map frame
+  后有界等待 fresh pump；没有新 pump 就记录独立 harness RED，不盲目重试动作或把进程存活当成查询可用。
+  需要短时恢复普通窗口的候选必须由当前 owner 控制、核视口并在查询后立即最小化；R0278 未触发该可见窗口回退，
+  不能把它记为已实测的前台恢复路径。R0277/R0278 原始报告分别在
+  `Z:\m6releasev6-candidate\evidence\R0277\report.json` 与
+  `Z:\m6releasev6-candidate-v2\evidence\R0278\report.json`。
 - preview operator 的 `run --private-construction-formal-trial` 只在显式指定时转发
   `native-auto-run --allow-private-construction-formal-trial`，默认保持 OFF；operator receipt 记录实际 opt-in。
 - 正式一代续跑前先执行 `native-one-generation-preflight`。这是严格的 no-launch/no-desktop 检查，不需要 DLL 或 injector，也不会调用
