@@ -96,6 +96,47 @@ def _fixture() -> dict[str, object]:
 
 
 class FormalQueryRuntimeReceiptTests(unittest.TestCase):
+    def test_full_pre_query_cash_view_matches_compact_readiness(self) -> None:
+        sample = _fixture()
+        readiness = {**FRAME, "paused": True, "map_ready": True}
+        full = subject.bind_formal_query_cash_before(
+            readiness=readiness, semantic=sample["before"],
+        )
+        self.assertEqual(full["played_character_gold"],
+                         {"raw": 120_644_281, "scale": 100_000})
+        self.assertEqual(full["active_wars"], [{"war_id": subject.WAR_ID}])
+        full["played_character_gold"]["raw"] = 1
+        self.assertEqual(sample["before"]["played_character_gold"]["raw"],
+                         120_644_281)
+
+    def test_full_pre_query_cash_view_blocks_missing_or_crossed_identity(self) -> None:
+        for mutation in (
+            "missing_gold", "malformed_gold", "wrong_war",
+            "revision", "actor", "date", "not_paused",
+        ):
+            with self.subTest(mutation=mutation):
+                sample = _fixture()
+                readiness = {**FRAME, "paused": True, "map_ready": True}
+                full = sample["before"]
+                if mutation == "missing_gold":
+                    full.pop("played_character_gold")
+                elif mutation == "malformed_gold":
+                    full["played_character_gold"]["scale"] = 1
+                elif mutation == "wrong_war":
+                    full["active_wars"][0]["war_id"] = 1
+                elif mutation == "revision":
+                    full["native_revision"] += 1
+                elif mutation == "actor":
+                    full["played_character_id"] += 1
+                elif mutation == "date":
+                    full["date_raw"] += 24
+                else:
+                    full["paused"] = False
+                with self.assertRaises(ValueError):
+                    subject.bind_formal_query_cash_before(
+                        readiness=readiness, semantic=full,
+                    )
+
     def test_exact_formal_selected_query_emits_diagnostic_without_cash(self) -> None:
         receipt = subject.build_formal_query_session_receipt(**_fixture())
         self.assertEqual(receipt["status"], "same_paused_query_postcheck_passed")

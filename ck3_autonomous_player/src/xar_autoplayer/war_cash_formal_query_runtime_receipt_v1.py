@@ -53,6 +53,38 @@ def _treasury_raw(snapshot: Mapping[str, object]) -> int | None:
     return gold["raw"]
 
 
+def bind_formal_query_cash_before(
+    *, readiness: Mapping[str, object], semantic: Mapping[str, object],
+) -> dict[str, object]:
+    """Freeze the full receiver cached semantic view before the query is sent.
+
+    Runner readiness is intentionally compact and omits treasury and wars.
+    This copies the latest transport state_snapshot cache; it does not invoke
+    a native getter or prove a naturally fresh cash balance. Its frame must
+    match the compact paused readiness projection exactly.
+    """
+    try:
+        ready_frame = observed_frame(readiness)
+        cash_frame = observed_frame(semantic)
+    except (TypeError, ValueError, KeyError) as error:
+        raise ValueError("formal query pre-read six-field frame unavailable") from error
+    if (ready_frame != cash_frame
+            or readiness.get("paused") is not True
+            or readiness.get("map_ready") is not True
+            or semantic.get("paused") is not True
+            or semantic.get("map_ready") is not True):
+        raise ValueError("formal query pre-read crossed the ready paused frame")
+    if _treasury_raw(semantic) is None:
+        raise ValueError("formal query pre-read treasury unavailable")
+    wars = semantic.get("active_wars")
+    if (not isinstance(wars, list) or len(wars) != 1
+            or not isinstance(wars[0], Mapping)
+            or type(wars[0].get("war_id")) is not int
+            or wars[0]["war_id"] != WAR_ID):
+        raise ValueError("formal query pre-read unique WarID unavailable")
+    return copy.deepcopy(dict(semantic))
+
+
 def build_formal_query_attempt_diagnostic(
     *, before: Mapping[str, object], after: Mapping[str, object],
     outcome: Mapping[str, object], wire: object,

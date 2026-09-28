@@ -98,6 +98,7 @@ from .runtime import (
 )
 from .war_cash_formal_query_runtime_receipt_v1 import (
     STEP as FORMAL_WAR_QUERY_STEP,
+    bind_formal_query_cash_before,
     build_formal_query_attempt_diagnostic,
     build_formal_query_session_receipt,
     capture_query_process_binding,
@@ -1211,6 +1212,7 @@ def native_auto_run(
             formal_query_process_before: dict[str, object] | None = None
             formal_query_process_after: dict[str, object] | None = None
             formal_query_submits_before: int | None = None
+            formal_query_cash_before: dict[str, object] | None = None
             while True:
                 try:
                     if formal_war_query_receipt_dir is not None:
@@ -1229,6 +1231,16 @@ def native_auto_run(
                                 "formal war query pre-run process/module binding failed: "
                                 + str(formal_query_process_before.get("missing_reasons"))
                             )
+                        try:
+                            formal_query_cash_before = bind_formal_query_cash_before(
+                                readiness=before,
+                                semantic=_runner_semantic_snapshot(driver),
+                            )
+                        except ValueError as error:
+                            raise AgentError(
+                                "formal war query pre-submission cash frame failed: "
+                                + str(error)
+                            ) from error
                     outcome = (
                         service.auto_turn(before_submit=opening_guard_before_submit)
                         if (
@@ -1537,7 +1549,7 @@ def native_auto_run(
                 wire_reader = getattr(driver, "termination_query_wire_audit_v1", None)
                 wire = wire_reader() if callable(wire_reader) else None
                 formal_query_receipt_candidate = build_formal_query_session_receipt(
-                    before=before,
+                    before=formal_query_cash_before or {},
                     after=after_snapshot,
                     outcome=outcome,
                     wire=wire,
@@ -1558,7 +1570,7 @@ def native_auto_run(
                         receipt_dir=formal_war_query_receipt_dir,
                         candidate=formal_query_receipt_candidate,
                         build_diagnostic=lambda: build_formal_query_attempt_diagnostic(
-                            before=before,
+                            before=formal_query_cash_before or {},
                             after=after_snapshot,
                             outcome=outcome,
                             wire=wire,
@@ -1591,7 +1603,7 @@ def native_auto_run(
                                           "driver-state.json"),
                         )
                         return build_formal_query_session_receipt(
-                            before=before, after=post_sample,
+                            before=formal_query_cash_before or {}, after=post_sample,
                             outcome=outcome, wire=wire,
                             process_before=formal_query_process_before or {},
                             process_after=post_process,
