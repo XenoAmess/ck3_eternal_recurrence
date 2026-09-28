@@ -22,6 +22,8 @@ NAMES = ("GetAllRaisedGoldMilitaryExpenses", "GetGoldMilitaryExpenses",
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", required=True, type=Path)
+    parser.add_argument("--name", action="append", dest="names",
+                        help="Override default getter names (repeatable)")
     args = parser.parse_args()
     raw = args.exe.read_bytes()
     if hashlib.sha256(raw).hexdigest() != EXPECTED_SHA:
@@ -29,7 +31,7 @@ def main() -> None:
     image = pefile.PE(data=raw, fast_load=True)
     base = image.OPTIONAL_HEADER.ImageBase
     targets = {}
-    for name in NAMES:
+    for name in args.names or NAMES:
         position = raw.find(name.encode() + b"\0")
         if position < 0:
             print(f"{name}: absent")

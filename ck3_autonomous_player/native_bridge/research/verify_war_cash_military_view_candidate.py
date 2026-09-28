@@ -28,6 +28,8 @@ CURRENT_NAME_LOAD_RVA = 0x19E8A9
 CURRENT_CALLBACK_RVA = 0x11FC7B0
 CURRENT_GETTER_RVA = 0x11F7D00
 CURRENT_GETTER_HELPER_RVA = 0x11F7370
+CURRENT_BREAKDOWN_CALCULATOR_RVA = 0x290A720
+VIEW_SUBJECT_HANDLE_OFFSET = 0x248
 
 
 def _instruction(image: pefile.PE, binary: bytes, rva: int):
@@ -99,11 +101,18 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         raise ValueError("current expense getter callback changed")
     current_getter = _instruction(image, binary, CURRENT_GETTER_RVA)
     current_jump = _instruction(image, binary, 0x11F7D0A)
+    subject_handle = _instruction(image, binary, 0x11F739C)
+    expense_calculation = _instruction(image, binary, 0x11F73F1)
     current_helper_write = _instruction(image, binary, 0x11F7426)
     if (current_getter.mnemonic != "lea"
             or current_getter.op_str != "rdx, [rcx + 0x268]"
             or current_jump.mnemonic != "jmp"
             or _relative_target(current_jump) != base + CURRENT_GETTER_HELPER_RVA
+            or subject_handle.mnemonic != "mov"
+            or subject_handle.op_str != "edx, dword ptr [rcx + 0x248]"
+            or expense_calculation.mnemonic != "call"
+            or _relative_target(expense_calculation)
+            != base + CURRENT_BREAKDOWN_CALCULATOR_RVA
             or current_helper_write.mnemonic != "mov"
             or current_helper_write.op_str != "byte ptr [rsi + 0xb38], cl"):
         raise ValueError("current expense getter/helper control flow changed")
@@ -134,6 +143,8 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "military_view_value_breakdown_offset": hex(VALUE_BREAKDOWN_OFFSET),
         "current_expense_getter_rva": hex(CURRENT_GETTER_RVA),
         "current_expense_helper_rva": hex(CURRENT_GETTER_HELPER_RVA),
+        "current_expense_calculator_rva": hex(CURRENT_BREAKDOWN_CALCULATOR_RVA),
+        "military_view_subject_handle_offset": hex(VIEW_SUBJECT_HANDLE_OFFSET),
         "current_expense_helper_writes_view": True,
         "gui_sha256": hashlib.sha256(gui_path.read_bytes()).hexdigest().upper(),
         "english_localization_sha256": hashlib.sha256(loc_path.read_bytes()).hexdigest().upper(),
