@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from test_war_cash_topbar_owner_path import fixture
 from war_cash_topbar_bounded_sample import (
+    PLAYED_CHARACTER_ID_GLOBAL_RVA,
     sample_bounded_topbar_once, sample_bounded_topbar_twice,
 )
 
@@ -25,6 +26,7 @@ class FakeReadOnlyProcess:
     def __init__(self, *, changing_rows: bool = False,
                  changing_total: bool = False,
                  changing_render_frame: bool = False,
+                 changing_player_after_read: int | None = None,
                  render_clock: bool = False) -> None:
         supplied = fixture()
         topbar = bytearray(supplied["topbar_bytes"])
@@ -44,6 +46,8 @@ class FakeReadOnlyProcess:
         self.changing_render_frame = changing_render_frame
         self.row_reads = 0
         self.topbar_reads = 0
+        self.player_reads = 0
+        self.changing_player_after_read = changing_player_after_read
         self.reads: list[tuple[int, int]] = []
         self.blocks = {
             supplied["global_slot_address"]: supplied["global_slot_bytes"],
@@ -51,6 +55,8 @@ class FakeReadOnlyProcess:
             supplied["idler_address"]: supplied["idler_bytes"],
             supplied["handler_address"]: supplied["handler_bytes"],
             supplied["topbar_address"]: bytes(topbar),
+            self.base + PLAYED_CHARACTER_ID_GLOBAL_RVA:
+                struct.pack("<I", 29829),
             0x700000: self.name,
         }
         if render_clock:
@@ -62,6 +68,11 @@ class FakeReadOnlyProcess:
 
     def read(self, address: int, size: int) -> bytes:
         self.reads.append((address, size))
+        if address == self.base + PLAYED_CHARACTER_ID_GLOBAL_RVA:
+            self.player_reads += 1
+            if (self.changing_player_after_read is not None
+                    and self.player_reads > self.changing_player_after_read):
+                return struct.pack("<I", 29830)
         if address == 0x400000:
             self.topbar_reads += 1
             if (self.changing_total or self.changing_render_frame
@@ -94,6 +105,9 @@ class BoundedTopbarSampleTests(unittest.TestCase):
                          ["signed_raw_candidate"], -2_500_000)
         self.assertLess(sample["total_target_memory_bytes_read"], 128 * 1024)
         self.assertEqual(process.row_reads, 2)
+        self.assertTrue(sample["same_global_played_character_id"])
+        self.assertEqual(sample["first"]["global_played_character_id_candidate"],
+                         29829)
         self.assertFalse(sample["same_frame_cache_freshness_proven"])
         self.assertFalse(sample["formal_cash_eligible"])
 
@@ -135,6 +149,17 @@ class BoundedTopbarSampleTests(unittest.TestCase):
         self.assertIsNotNone(sample["first"]["render_epoch_missing_reason"])
         self.assertFalse(sample["render_clock_monotonic_candidate"])
         self.assertFalse(sample["same_frame_cache_freshness_proven"])
+
+    def test_player_switch_during_or_between_passes_fails_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "CharacterID changed"):
+            sample_bounded_topbar_once(FakeReadOnlyProcess(
+                changing_player_after_read=1))
+        sample = sample_bounded_topbar_twice(FakeReadOnlyProcess(
+            changing_player_after_read=2))
+        self.assertFalse(sample["same_global_played_character_id"])
+        self.assertEqual(sample["status"],
+                         "RED_owner_or_expense_bytes_changed_or_unavailable")
+        self.assertFalse(sample["formal_cash_eligible"])
 
     def test_wrong_global_owner_pointer_fails_before_other_reads(self) -> None:
         process = FakeReadOnlyProcess()

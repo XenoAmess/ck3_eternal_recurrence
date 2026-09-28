@@ -34,6 +34,8 @@ from war_film_retreat_paused_sample import EXE_SHA, WindowsReadOnlyProcess
 
 
 MAX_SAMPLE_READ_BYTES = 64 * 1024
+# Exact EXE getter refresh reads this DWORD; also pinned by the static verifier.
+PLAYED_CHARACTER_ID_GLOBAL_RVA = 0x4FE7EE0
 
 
 class BoundedReader:
@@ -85,6 +87,10 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         handler_address=handler, handler_bytes=handler_bytes,
         topbar_address=topbar, topbar_bytes=topbar_bytes,
     )
+    player_slot = base + PLAYED_CHARACTER_ID_GLOBAL_RVA
+    player_before = struct.unpack("<I", reader.read(player_slot, 4))[0]
+    if not 0 < player_before <= 0x7FFFFFFF:
+        raise ValueError("global played CharacterID is unavailable")
     result: dict[str, object] = {
         "schema": "xar.ck3.war-cash-topbar-bounded-sample.v1",
         "status": "owner_path_structurally_matching_expense_unavailable",
@@ -143,6 +149,11 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         result["render_epoch_missing_reason"] = None
     except (KeyError, OSError, ValueError, struct.error) as error:
         result["render_epoch_missing_reason"] = str(error)
+    player_after = struct.unpack("<I", reader.read(player_slot, 4))[0]
+    if player_after != player_before:
+        raise ValueError("global played CharacterID changed during topbar sample")
+    result["global_played_character_id_candidate"] = player_before
+    result["global_played_character_id_stable_within_sample"] = True
     result["target_memory_bytes_read"] = reader.total
     result["target_memory_read_calls"] = reader.reads
     return result
@@ -162,6 +173,10 @@ def sample_bounded_topbar_twice(process: object) -> dict[str, object]:
     same_owner_path_bytes = (
         first["owner_path"]["supplied_bytes_sha256"]
         == second["owner_path"]["supplied_bytes_sha256"]
+    )
+    same_player_id = (
+        first["global_played_character_id_candidate"]
+        == second["global_played_character_id_candidate"]
     )
     first_expense = first.get("expense_layout")
     second_expense = second.get("expense_layout")
@@ -192,12 +207,14 @@ def sample_bounded_topbar_twice(process: object) -> dict[str, object]:
         "schema": "xar.ck3.war-cash-topbar-bounded-double-read.v1",
         "status": ("stable_supplied_bytes_diagnostic_only"
                    if same_owner_path and same_owner_path_bytes
+                   and same_player_id
                    and same_expense_rows
                    else "RED_owner_or_expense_bytes_changed_or_unavailable"),
         "first": first,
         "second": second,
         "same_owner_path_addresses": same_owner_path,
         "same_owner_path_bytes": same_owner_path_bytes,
+        "same_global_played_character_id": same_player_id,
         "same_expense_rows": same_expense_rows,
         "render_clock_monotonic_candidate": render_clock_monotonic,
         "total_target_memory_bytes_read": (
