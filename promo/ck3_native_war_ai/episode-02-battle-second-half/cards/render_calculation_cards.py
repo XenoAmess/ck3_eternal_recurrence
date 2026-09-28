@@ -475,7 +475,7 @@ def card_07(data: dict, card: dict) -> bytes:
 def card_09(data: dict, card: dict) -> bytes:
     b = data["replays"]["024"]
     s = Svg()
-    frame(s, card, b, data, "另一次第 27→32 日回放；原生 writer 当场读取，非 UI 封顶值倒推")
+    frame(s, card, b, data, "历史研究板：024 第 27→32 日独立回放；本板不是新拍 run 的读数")
     widths = [(90, 730), (870, 730), (1650, 820)]
     for x, width in widths:
         s.rect(x, 284, width, 665)
@@ -495,7 +495,7 @@ def card_09(data: dict, card: dict) -> bytes:
     s.text(905, 502, "= 53,877 / 100,000", 44, "ink", 700)
     s.text(905, 562, "= 53.877%", 37, "muted")
     s.line(905, 602, 1565, 602)
-    s.text(905, 669, "CB 战分倍率 150", 40)
+    s.text(905, 669, "CB 战分系数 150", 40)
     s.text(905, 757, "未封顶", 33, "muted")
     s.text(905, 851, "80.8155", 75, "gold", 700)
     s.text(905, 910, "战分", 30, "muted")
@@ -508,7 +508,7 @@ def card_09(data: dict, card: dict) -> bytes:
     s.text(1685, 735, "胜者：战争防守方", 37)
     s.text(1685, 831, "进攻方相对战分", 35, "muted")
     s.text(1685, 927, "−50", 97, "gold", 700)
-    s.text(95, 997, "一场战斗的 row；不等于战争总分。败方为正常败退，并非主动撤退证据。", 28, "muted")
+    s.text(95, 997, "仅对应历史 024 的单场 row；新拍镜头须另取同 run writer 与战争面板回执。", 28, "muted")
     return s.finish()
 
 

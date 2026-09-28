@@ -5,9 +5,9 @@
 <line x1="64" y1="30" x2="174" y2="30" stroke="#CBA56A" stroke-width="2"/>
 <line x1="2386" y1="30" x2="2496" y2="30" stroke="#CBA56A" stroke-width="2"/>
 <text x="90" y="105" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="700" text-anchor="start">战斗后半笔账  /  E2-09</text>
-<text x="2470" y="105" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="end">独立原版回放 024</text>
+<text x="2470" y="105" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="400" text-anchor="end">独立原版回放 024 · 历史原始回执</text>
 <text x="90" y="188" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="70" font-weight="700" text-anchor="start">终局：一场仗怎样入战争账</text>
-<text x="92" y="238" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">另一次第 27→32 日回放；原生 writer 当场读取，非 UI 封顶值倒推</text>
+<text x="92" y="238" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="400" text-anchor="start">历史研究板：024 第 27→32 日独立回放；本板不是新拍 run 的读数</text>
 <line x1="90" y1="255" x2="2470" y2="255" stroke="#61503C" stroke-width="2"/>
 <line x1="90" y1="1022" x2="2470" y2="1022" stroke="#CBA56A" stroke-width="2"/>
 <text x="92" y="1060" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="400" text-anchor="start">CK3 1.19.0.6  ·  CombatID 16777218  ·  WarID 4  ·  原生日戳 53146992</text>
@@ -32,7 +32,7 @@
 <text x="905" y="502" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="44" font-weight="700" text-anchor="start">= 53,877 / 100,000</text>
 <text x="905" y="562" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="37" font-weight="400" text-anchor="start">= 53.877%</text>
 <line x1="905" y1="602" x2="1565" y2="602" stroke="#61503C" stroke-width="2"/>
-<text x="905" y="669" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="400" text-anchor="start">CB 战分倍率 150</text>
+<text x="905" y="669" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="40" font-weight="400" text-anchor="start">CB 战分系数 150</text>
 <text x="905" y="757" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="400" text-anchor="start">未封顶</text>
 <text x="905" y="851" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="75" font-weight="700" text-anchor="start">80.8155</text>
 <text x="905" y="910" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="30" font-weight="400" text-anchor="start">战分</text>
@@ -45,5 +45,5 @@
 <text x="1685" y="735" fill="#F0E5CF" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="37" font-weight="400" text-anchor="start">胜者：战争防守方</text>
 <text x="1685" y="831" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="35" font-weight="400" text-anchor="start">进攻方相对战分</text>
 <text x="1685" y="927" fill="#CBA56A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="97" font-weight="700" text-anchor="start">−50</text>
-<text x="95" y="997" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="400" text-anchor="start">一场战斗的 row；不等于战争总分。败方为正常败退，并非主动撤退证据。</text>
+<text x="95" y="997" fill="#BBA98D" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="400" text-anchor="start">仅对应历史 024 的单场 row；新拍镜头须另取同 run writer 与战争面板回执。</text>
 </svg>
