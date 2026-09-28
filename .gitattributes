@@ -9,6 +9,7 @@ docs/autonomous-agent-progress/coordination/war-requests/evidence/*.json binary
 *.png binary
 *.zip binary
 *.gz binary
+promo/ck3_native_war_ai/integration/fixtures/e2-04-a03-warmup-pdx-settings.bin binary
 
 # Frozen browser export: preserve the exact CRLF clipboard payload and its documented SHA-256.
 docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v3/coat_of_arms.txt binary

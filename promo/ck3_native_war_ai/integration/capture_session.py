@@ -549,6 +549,9 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
            "runtime_scale_proven": False, "visual_geometry_reviewed": False,
            "recording_authorized_by_this_receipt": False, "status": "RED"}
     temp_path = None
+    primary_error = None
+    cleanup_error = None
+    receipt_error = None
     try:
         require(not settings_path.is_symlink(), "GUI settings path must not be a symlink")
         require(before["settings"] is not None, "Warm-up GUI settings identity unavailable")
@@ -619,11 +622,26 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
         row["status"] = "GREEN_DISK_ONLY"
     except Exception as error:
         row["error"] = repr(error)
-        raise
+        primary_error = error
     finally:
         if temp_path is not None:
-            temp_path.unlink(missing_ok=True)
-        write_new(reseed_path, row)
+            try:
+                temp_path.unlink(missing_ok=True)
+            except Exception as error:
+                cleanup_error = error
+                row["cleanup_error"] = repr(error)
+                row["cleanup_path"] = str(temp_path.resolve())
+                row["status"] = "RED"
+        try:
+            write_new(reseed_path, row)
+        except Exception as error:
+            receipt_error = error
+    if primary_error is not None:
+        raise primary_error.with_traceback(primary_error.__traceback__)
+    if cleanup_error is not None:
+        raise RuntimeError(f"GUI reseed temporary cleanup failed; see {reseed_path}") from cleanup_error
+    if receipt_error is not None:
+        raise receipt_error.with_traceback(receipt_error.__traceback__)
 
 
 def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
