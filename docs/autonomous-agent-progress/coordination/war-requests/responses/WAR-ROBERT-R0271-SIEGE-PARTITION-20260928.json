@@ -1,15 +1,19 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
-  "status": "claimed",
+  "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T04:47:56Z",
+  "updated_at_utc": "2026-09-28T04:55:26Z",
   "source_request_commit": "5d2070f",
   "work_branch": "war/r0271-siege-partition-20260928",
+  "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/450",
+  "master_commit": "5953e4c65e31b89a02aab57cc7a33d369993c44f",
+  "delivery_route": "rebase-only PR merge after both Official Runner static checks and CLA passed",
   "problem": "At native:30/raw53219160 the offsite hostile army 83886484 is projected to enter target 2629 at raw53219928, before the player's raw53220216 arrival. The existing partition returns offsite_hostile_may_join_by_target_entry before a contact-free first-waypoint continuation can be considered.",
   "work_plan": "Preserve full-hostile same-frame identity, the final siege contact gate, and no automatic surrender. Check a bounded first-waypoint continuation against the existing route/contact and war-risk contract, with focused normal and optimized tests. Exact-source live remains pending verified assets and managed screen ownership.",
-  "implementation_status": "source_patch_tested_no_live",
+  "implementation_status": "source_integrated_no_matching_live_yet",
   "implementation_document": "docs/ck3-native-ai/r0271-uncertain-siege-first-hop-2026-09-28.md",
+  "interface_contract": "At the R0271 participant gate, only the exact offsite_hostile_may_join_by_target_entry reason may select an exact first-hop preview, full-hostile same-frame first-hop contact query, and typed first-hop move when next-day contact is proven absent. The future target participant set remains unknown; the moving route is checked again before every one-day advance. No target contact, partial v3 forecast or surrender is authorized.",
   "implementation_contract": {
     "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_primary_defender_siege_forecast_ingress",
     "entry": "Only offsite_hostile_may_join_by_target_entry with a multi-hop route and full-hostile one-day contact-free target query can enter the fallback.",
@@ -19,7 +23,8 @@
   "checks": [
     "test_combat_provisional_defense_canary.py: 8 passed normal and 8 passed under -O, including exact R0271 route/ETA replay and stale/conflicting first-hop readouts.",
     "test_gameplay_bridge.py -k committed_route_requires_fresh_daily_horizon: 1 passed, proving the moving route asks for a new daily proof after the date changes.",
-    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check: passed."
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check: passed.",
+    "PR #450: both Official Runner CI static checks passed; CLA check passed before merge."
   ],
   "requested_transfer": {
     "status": "not_received_on_this_machine",
@@ -30,8 +35,9 @@
   },
   "live_evidence": null,
   "limitations": [
-    "The R0271 failed attempt remains RED; the new source branch has static checks but no exact H3388/R0271 live run, gameplay action or persisted Robert date advance. Status remains claimed until source integration and matched consumption evidence are available.",
+    "The R0271 failed attempt remains RED. The source patch is on master and statically verified, but there is no exact H3388/R0271 live run, gameplay action or additional persisted Robert date. Delivered means code and contract are available; matching consumer verification remains pending.",
     "The route read says offsite army 83886484 may enter target 2629 before the player, but future participation remains unknown. The first-hop contact horizon covers one day, not its entire current seven-day ETA; each later day needs a fresh full-hostile proof.",
     "The Git excerpt does not carry the raw H3388 save, original driver and family sidecar or the exact DLL/injector. No cross-machine source-pair replay can be claimed from Git alone."
-  ]
+  ],
+  "next_step": "After the selective OneDrive transfer arrives, hash-check the H3388 source save, original driver, family sidecar and pairing index plus R0271 7d414228 DLL/injector; use official prepare/rebind/no-launch, obtain managed CK3 screen ownership and a fresh Steam offline frame, then run a new exact-source bounded attempt. The consumer records a separate verification only from actual matching results."
 }
