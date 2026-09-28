@@ -1,0 +1,245 @@
+{
+  "schema": "xar.war.r0284-h987-stage4-focused/v1",
+  "round": "R0297",
+  "pre_action_binding": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53157816
+  },
+  "pre_action_preview": {
+    "status": "available",
+    "army_id": 16777450,
+    "origin_province_id": 2634,
+    "target_province_id": 2640,
+    "route_province_ids": [
+      2640
+    ],
+    "previewed_date_raw": 53157816
+  },
+  "full_hostile_route_contact_horizon": {
+    "status": "available",
+    "date_raw": 53157816,
+    "snapshot_revision": 3,
+    "subject_army_id": 16777450,
+    "target_province_id": 2640,
+    "hostile_army_ids": [
+      16777537
+    ],
+    "subject_route": {
+      "timeline_observable": true,
+      "army_id": 16777450,
+      "current_province_id": 2634,
+      "effective_origin_province_id": 2634,
+      "route_province_ids": [
+        2640
+      ],
+      "arrival_date_raws": [
+        53157960
+      ]
+    },
+    "hostile_routes": [
+      {
+        "timeline_observable": true,
+        "army_id": 16777537,
+        "current_province_id": 2640,
+        "effective_origin_province_id": 2640,
+        "route_province_ids": [],
+        "arrival_date_raws": []
+      }
+    ],
+    "horizon_start_date_raw": 53157816,
+    "horizon_end_date_raw": 53157840,
+    "one_day_contact_free": true,
+    "conflicts": []
+  },
+  "v3_payload_summary": {
+    "schema_version": 3,
+    "contract_stage": "production_exact_132_refs",
+    "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+    "scenario": {
+      "kind": "explicit_hypothetical_contact",
+      "attacker_entry_province_id": 2634,
+      "attacker_army_ids": [
+        16777450
+      ],
+      "defender_army_ids": [
+        16777537
+      ],
+      "attacker_side": "player_or_allied",
+      "defender_side": "enemy",
+      "attacker_position_policy": "fixed_at_entry_hypothetical",
+      "defender_position_policy": "fixed_at_target_hypothetical",
+      "defender_insertion_order_policy": "explicit_request_order_hypothetical",
+      "actual_route_dependency": false
+    },
+    "completeness": {
+      "observation_slice": "precontact-phase-event-inputs-v3",
+      "base_input_observation_ready": true,
+      "phase_raw_observation_ready": true,
+      "offline_exact_state_refs_ready": true,
+      "phase_event_inputs_ready": true,
+      "input_observation_ready": true,
+      "monte_carlo_ready": false,
+      "transition_fidelity_gate": false,
+      "planner_usable": false,
+      "active_attack_allowed": false,
+      "phase_event_manifest_fidelity": {
+        "loaded_playset_verified": false,
+        "ast_evaluator_ready": false,
+        "original_trace_ready": false,
+        "fidelity_gate": false
+      },
+      "missing_observation_domains": [],
+      "missing_fidelity_gates": [
+        "loaded_playset_verified",
+        "ast_evaluator_ready",
+        "original_trace_ready"
+      ],
+      "missing_required_domains": [
+        "damage_to_casualty_allocation",
+        "pursuit_transition",
+        "battle_end_and_retreat_transition",
+        "phase_event_rng_and_effects"
+      ]
+    }
+  },
+  "offline_exact_input_bounded_forecast": {
+    "source_file": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\WAR-R0284-H934-STAGE2-20260928\\src\\ck3_autonomous_player\\src\\xar_autoplayer\\simulation\\general_battle_forecast.py",
+      "size": 16177,
+      "sha256": "35225B85E338DD10A0836C340E6E16BE44B69D6100C2A8780DC8F991FAA7C6CC"
+    },
+    "status": "estimated",
+    "model_fidelity": "research-only-bounded-core",
+    "native_parity": false,
+    "input_sha256": "40EA7AEC3B7B2D57B65E77A2915452B5A47DBA73FC086ED3ED6ED9BEE3960FD0",
+    "simulator_build": "ck3-1.19.0.6-phase-events-disabled-envelope-v4",
+    "sample_count": 256,
+    "horizon_days": 120,
+    "advantage_input": {
+      "source": "same_frame_v3_native_zero_roll_frozen_future",
+      "zero_roll_raw": -300000,
+      "model_sha256": "A70CE2277CEA470542E81C6D5F27EA018DF4D9FDEFB2E5DCE61FDFBD491550C7",
+      "fallback_reason": null,
+      "selected_commander_character_ids": [
+        29829,
+        33621
+      ],
+      "selected_commander_army_ids": [
+        16777450,
+        16777537
+      ],
+      "future_daily_refresh_modeled": false
+    },
+    "player_wins": 256,
+    "player_losses": 0,
+    "no_resolution": 0,
+    "resolved_win_wilson95": {
+      "lower": 0.9852161435741286,
+      "upper": 0.9999999999999999
+    },
+    "player_p90_hard_loss_fraction": 0.06409122439024391,
+    "player_stack_wipe_probability": 0.0,
+    "character_death_risk_status": "unmodeled_phase_events",
+    "assumptions": [
+      "phase_events_disabled",
+      "no_voluntary_retreat",
+      "fixed_participants",
+      "unobserved_modifiers_omitted",
+      "future_daily_effective_stat_refresh_unmodeled",
+      "future_daily_combat_width_refresh_unmodeled",
+      "future_daily_non_roll_advantage_refresh_unmodeled",
+      "same_frame_native_advantage_frozen_for_future_days"
+    ],
+    "capture": {
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "date_raw": 53157816
+    },
+    "contact_admission": {
+      "admitted": true,
+      "reason": "within_bounded_model_risk_budget",
+      "risk_limits": {
+        "win_lower": 0.65,
+        "hard_loss": 0.25,
+        "wipe": 0.05,
+        "death": null
+      },
+      "character_death_risk_modeled": false,
+      "unquantified_risks": [
+        "commander_or_knight_death",
+        "future_reinforcement_and_participant_exit",
+        "voluntary_retreat",
+        "future_daily_effective_stat_refresh",
+        "future_daily_combat_width_refresh",
+        "future_daily_non_roll_advantage_refresh"
+      ],
+      "native_parity_required": false
+    }
+  },
+  "turn9_selected_phase": "native_war_general_battle_distant_route_start",
+  "private_before_submit_gate": {
+    "schema": "xar.war.r0284-private-semantic-stop/v1",
+    "source_commit": "8a3d51f4b0e55f4e8f3b82b00e6cf080dd3ab900",
+    "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+    "selected_move_count": 1,
+    "selected_move_snapshot_id": "native:3",
+    "selected_move_revision": 4,
+    "operator_stop_event_set": true,
+    "move_poststate": "read_formal_turn_result_and_after_snapshot",
+    "date_advance_after_move": "forbidden_by_stop_before_next_turn"
+  },
+  "typed_action": {
+    "step": "move-army-16777450-to-2640",
+    "accepted": true,
+    "status": "submitted",
+    "war_action": {
+      "status": "moving",
+      "army_id": 16777450,
+      "target_province_id": 2640,
+      "submitted_date_raw": 53157816
+    },
+    "snapshot_id": "native:4",
+    "revision": 5
+  },
+  "independent_native_post_snapshot_army": {
+    "army_id": 16777450,
+    "owner_character_id": 29829,
+    "soldiers": null,
+    "current_province_id": 2634,
+    "move_target_province_id": 2640,
+    "move_target_observable": true,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [
+      2640
+    ],
+    "in_combat": false,
+    "retreating": false,
+    "army_state": "moving",
+    "army_state_code": 7,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  },
+  "turn9_before": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53157816,
+    "bridge_pid": 55416
+  },
+  "turn9_after": {
+    "snapshot_id": "native:4",
+    "revision": 5,
+    "native_revision": 4,
+    "date_raw": 53157816,
+    "bridge_pid": 55416
+  },
+  "turn9_evidence": [
+    "war_changed",
+    "army_changed"
+  ]
+}

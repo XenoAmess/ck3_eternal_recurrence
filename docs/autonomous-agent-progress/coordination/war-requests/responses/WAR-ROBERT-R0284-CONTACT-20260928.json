@@ -1,9 +1,9 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-ROBERT-R0284-CONTACT-20260928",
-  "status": "source_merged_r0295_repeated_prefix_no_move_stage4_pending",
+  "status": "source_r0297_route_start_live_green_cold_restore_daily_pending",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T09:12:27Z",
+  "updated_at_utc": "2026-09-28T09:27:31Z",
   "source_request_commit": "756e835243edd33da3b0b73718da92beb5590165",
   "work_branch": "war/r0284-contact-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/462",
@@ -60,7 +60,7 @@
     "git diff --check: passed."
   ],
   "live_evidence": {
-    "status": "source_r0295_repeated_cold_prefix_no_move_semantic_red; receiver_live_not_run",
+    "status": "source_r0297_route_start_live_green_cold_restore_daily_pending; receiver_live_not_run",
     "source_r0291": {
       "source_commit": "f6e27d579ccd9f8444d0ae289f0c5f269a6dfadb",
       "source_strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
@@ -124,6 +124,46 @@
       "result_receiver_ack_sha256": "95C173D98D1FFA07BB4B91228AC3CA394B1454BBE7ED8BF02EF358C99CBBEDDF",
       "next_boundary": "Receiver accepted one new exact h968 cold-pair attempt at most nine planner turns, one typed move, zero date advance and 1200 wall seconds after official rebind/no-launch and operator preflight. A ninth read-only query or forecast rejection remains semantic RED."
     },
+    "source_r0297": {
+      "source_commit": "8a3d51f4b0e55f4e8f3b82b00e6cf080dd3ab900",
+      "source_strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+      "operator_turns": "9/9 bounded turns; h968 to h987; date raw53157816 unchanged",
+      "pre_action_binding": "native:3; revision 4; native revision 3; raw53157816",
+      "war_id": 16777237,
+      "player_army_id": 16777450,
+      "origin_province_id": 2634,
+      "target_province_id": 2640,
+      "full_hostile_roster": [16777537],
+      "first_day_contact_free": true,
+      "v3_input_observation_ready": true,
+      "v3_planner_usable": false,
+      "bounded_forecast_admitted": true,
+      "forecast_wilson95_win_lower": 0.9852161435741286,
+      "forecast_player_p90_hard_loss_fraction": 0.06409122439024391,
+      "forecast_stack_wipe_probability": 0.0,
+      "forecast_native_parity": false,
+      "selected_phase": "native_war_general_battle_distant_route_start",
+      "typed_action": "move-army-16777450-to-2640",
+      "typed_move_count": 1,
+      "typed_move_accepted": true,
+      "post_action_binding": "native:4; revision 5; native revision 4; raw53157816",
+      "independent_native_route_poststate": "ArmyID16777450 controllable and moving from province2634 to target2640 with remaining route [2640], not in combat or retreating",
+      "action_history_index": 986,
+      "checkpoint_history_index": 987,
+      "formal_report_status": "operator_stop_checkpointed; report ok=false is expected requested stop after action and checkpoint",
+      "date_advanced_raw": 0,
+      "formal_robert_date_credit": 0,
+      "source_only_h987_save_sha256": "D7009DCD1DCA45B88140543B65E2BF0970030EACB7AAFAB71D8CA9EAF6CB87DC",
+      "source_only_h987_driver_sha256": "81686CC333C25CCAC4D773CC79DC19D8C0A1669D37673FB6484AA61499FC2DBD",
+      "cold_restore_readback": "pending",
+      "first_daily_recheck": "pending",
+      "result_evidence_sha256": "5C1B8EC8F29D3DDD34F62BB4E81B647F2F066C441FA520A1A1D56AA82F84DF97",
+      "focused_evidence_sha256": "FF1BB143A831105C744E66086D740A5F4248BC84661A896092521D8D880738D0",
+      "transfer_manifest_sha256": "09F102D6AAECE47DD7EF0A9B9DCFFCC3AA796359C00D8EEDB8043EE0BC9064A6",
+      "next_day_conditions_sha256": "6FFF39C08CC017638A744EECA725B14B62C4BD25B52FCF471B9C4A1DCDA91649",
+      "result_receiver_ack_sha256": "0E48AB1070FB54F37E04E83428DBEF0B8A25E1B9017AB19B104EFFB645542CAA",
+      "next_day_receiver_ack_sha256": "16DEB4F15C1F41B53D5062A0B8351E520999F6AE55A595C247F967141F64B84E"
+    },
     "source_h934_next_candidate": {
       "source_only_save_sha256": "F1E1075D5EF0BF9985FC9BC78C4A4839D7645248325FFE270D88B4EDB4DE42A3",
       "source_only_driver_sha256": "243F8A98259288FF3367B3032AA941498F0B0A277E9B812AB6F0E459FFEDF783",
@@ -149,17 +189,17 @@
     },
     "official_rebind": "not_run_on_receiver; source h951 reports ready with source-only full receipts",
     "no_launch_preflight": "not_run_on_receiver; source reports ready_no_launch",
-    "typed_move_poststate": "pending",
+    "typed_move_poststate": "source R0297 same-PID native route-start GREEN; h987 cold restore and receiver live pending",
     "next_day_recheck": "pending"
   },
   "limitations": [
     "The source 257th turn remains RED. The 256 successful source turns and its h907 checkpoint are preserved facts, not results of this candidate.",
     "A contact-free first day does not prove the remaining five days, final participation or battle outcome. Future route changes, a new hostile or failed same-frame observation must stop or replan.",
     "The transferred h928/h930/h932 excerpt does not include the full active_wars.allied_armies frame. WarID-to-ArmyID membership is enforced in source and tested with a synthetic row, but remains exact-live pending.",
-    "R0291 bounded operator success is a preview-only semantic RED. R0293 and R0295 reach full-hostile and v3 inputs but end before forecast admission or typed move; none can count as a move or formal Robert date progress.",
-    "The h934, h951 and h968 save/driver pairs and full official rebind/preflight reports remain only on the source machine. Their hashes are source claims; the small R0291, R0293 and R0295 results and Stage3 preparation files are receiver byte-verified.",
-    "The source-private Stage2/Stage3 operators ran bounded read-only turns. Their stop mechanism is transport control and does not prove movement. A selected typed move still requires an independent after-snapshot and checkpoint before movement credit.",
+    "R0291 bounded operator success is a preview-only semantic RED. R0293 and R0295 reach full-hostile and v3 inputs but end before forecast admission or typed move; those historical attempts have zero moves. R0297 proves one same-PID source route-start move, but zero date advance or formal Robert date credit.",
+    "The h934, h951, h968 and h987 save/driver pairs and full official rebind/preflight reports remain only on the source machine. Their hashes are source claims; the small R0291, R0293, R0295 and R0297 results, Stage3 preparation and next-day conditions are receiver byte-verified.",
+    "The source-private Stage2/Stage3 operators ran bounded read-only turns. R0297's stop mechanism alone does not prove movement, but its accepted typed action and independent native:4 post-snapshot do prove same-PID route start. Source-reported h987 checkpoint still requires new-PID cold readback; a later safe +24 remains unproved.",
     "Receiver official rebind and no-launch require zero CK3 processes and an uncontested ck3-screen window; neither has run on the receiver. No R0284 game launch or action has occurred on the receiver."
   ],
-  "next_step": "Keep R0291, R0293 and R0295 semantic RED. From the exact source-only h968 pair, run at most nine turns after official rebind/no-launch and operator preflight to observe the next same-frame forecast/admission decision. If admitted, submit at most one selected typed move and independently verify after-snapshot route plus checkpoint without date advance; if rejected or still read-only, preserve its exact reason. Any later +24 daily recheck is a separate bounded stage. Receiver no-launch can follow an uncontested CK3 window."
+  "next_step": "Preserve R0291, R0293 and R0295 semantic RED and R0297 same-PID route-start GREEN. From the exact source-only h987 pair, first perform official new-PID cold readback with no action to prove ArmyID16777450 retains target2640 and route [2640] at raw53157816. Only if that is GREEN, use a separate bounded attempt with fresh full-hostile and all-controllable-army safety to let the formal committed-route planner advance at most one day to raw53157840, then independently verify after-state and checkpoint. Any route loss, changed hostile scope, unknown safety or different selected action is RED. This H90 derivative never contributes formal Robert date credit; receiver no-launch still requires an uncontested CK3 window."
 }

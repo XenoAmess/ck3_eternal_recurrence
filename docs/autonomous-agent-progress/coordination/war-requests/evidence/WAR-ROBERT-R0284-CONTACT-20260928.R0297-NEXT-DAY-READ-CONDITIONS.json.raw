@@ -1,0 +1,44 @@
+{
+  "schema": "xar.war.r0284-h987-next-day-read-conditions/v1",
+  "status": "read_conditions_prepared_no_action_candidate_no_game_launch",
+  "source_round": "R0297",
+  "source_history_index": 987,
+  "source_date_raw": 53157816,
+  "source_pair": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h987-next-day-read-8a3d51f-20260928\\R0297-h987-frozen-pair",
+  "source_pair_index_sha256": "3C30FC181CD38457EB3CFC153849AF75EFA8C164B591BAECBB09B2F2549CE97A",
+  "source_save_sha256": "D7009DCD1DCA45B88140543B65E2BF0970030EACB7AAFAB71D8CA9EAF6CB87DC",
+  "source_driver_sha256": "81686CC333C25CCAC4D773CC79DC19D8C0A1669D37673FB6484AA61499FC2DBD",
+  "source_commit": "8a3d51f4b0e55f4e8f3b82b00e6cf080dd3ab900",
+  "read_sequence": [
+    {
+      "gate": "official_cold_pair_and_new_pid",
+      "requirement": "Before any new instance, fetch current master and assess affected strategy/runner bytes, verify exact frozen h987 save/driver/sidecars and bridge/profile, run official rebind/no-launch; only the sole local operator may launch. New PID readback must confirm actor29829, episode native-29829-2bc2d599f7f9 and raw53157816."
+    },
+    {
+      "gate": "committed_route_postrestore",
+      "requirement": "At first paused frame read WarID16777237 and all controllable armies. ArmyID16777450 must retain current province2634 and an active route/move target2640 with exact native route to2640. A missing route or different state is recovery RED, not permission to reissue the move."
+    },
+    {
+      "gate": "full_hostile_scope",
+      "requirement": "From the fresh paused active-war frame enumerate every nonretreating hostile army and its current/native route; do not reuse R0297 hostile list [16777537] if the new frame differs."
+    },
+    {
+      "gate": "fresh_one_day_horizon",
+      "requirement": "Query the native route-contact horizon for ArmyID16777450 to2640 with the complete hostile roster bound to the current snapshot/revision/native revision/date. Require one_day_contact_free=true, conflicts=[], horizon_start_date_raw=current raw and horizon_end_date_raw=current raw+24, with exact subject route. If there are other moving controllable armies, query their own fresh horizons."
+    },
+    {
+      "gate": "global_controllable_army_safety",
+      "requirement": "Apply existing formal strategy conjunction to every controllable army, including moving siblings, unsafe routes, threatened stationary armies and combat/retreat states. Unknown or unsupported safety does not authorize date advance."
+    },
+    {
+      "gate": "bounded_day_only_after_reads",
+      "requirement": "Only if formal planner selects the existing advance-route-contact-horizon step under its current safety gate may a separate attempt advance at most 24 raw hours once. Observe native after-state/date, save checkpoint, then stop. Each later day needs a new fresh full-hostile horizon; final contact requires the merged forecast admission again."
+    }
+  ],
+  "current_evidence_limits": "R0297 proved a same-PID route start and saved h987 after it. No cold restore of h987, next-day query, or +24 raw hour action has occurred.",
+  "proposal_only": true,
+  "typed_day_advance_count": 0,
+  "game_launched_by_preparer": false,
+  "h90_derivative_only": true,
+  "formal_robert_date_credit": 0
+}

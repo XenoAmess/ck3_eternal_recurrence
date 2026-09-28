@@ -1,0 +1,17 @@
+{
+  "schema": "xar.war.r0284-h987-stage4-transfer/v1",
+  "files": {
+    "FOCUSED-EXCERPT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE4-20260928\\FOCUSED-EXCERPT.json",
+      "size": 7820,
+      "sha256": "FF1BB143A831105C744E66086D740A5F4248BC84661A896092521D8D880738D0"
+    },
+    "RESULT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE4-20260928\\RESULT.json",
+      "size": 3658,
+      "sha256": "5C1B8EC8F29D3DDD34F62BB4E81B647F2F066C441FA520A1A1D56AA82F84DF97"
+    }
+  },
+  "large_pair_transfer": "The h987 save/driver remain at exact source paths. They have not been uploaded to OneDrive.",
+  "append_only": true
+}
