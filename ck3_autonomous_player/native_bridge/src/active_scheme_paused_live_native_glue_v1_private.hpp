@@ -78,6 +78,11 @@ struct ActiveSchemePausedLiveNativeGlueV1PrivateState {
   ActiveSchemePausedLiveNativeGlueV1PrivateReadiness readiness{};
   ActiveSchemeStateV1PrivateSourceFailure last_source_failure =
       ActiveSchemeStateV1PrivateSourceFailure::callbacks_unavailable;
+  ActiveSchemeStateV1PrivateFailure last_source_core_failure =
+      ActiveSchemeStateV1PrivateFailure::source_adapter_unavailable;
+  bool last_source_single_row_metrics_present = false;
+  std::int32_t last_source_single_row_progress = 0;
+  std::int32_t last_source_single_row_progress_goal = 0;
   ActiveSchemeSemanticActionV1PrivateFailure last_action_failure =
       ActiveSchemeSemanticActionV1PrivateFailure::action_route_unavailable;
 };

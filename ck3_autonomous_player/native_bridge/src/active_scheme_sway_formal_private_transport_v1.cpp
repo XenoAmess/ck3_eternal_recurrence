@@ -168,6 +168,30 @@ bool ExecuteActiveSchemeSwayFormalPrivateCommandV1(
             ? ActiveSchemePreconditionCommandBindersV1PrivateFailureName(failure)
             : ActiveSchemeSemanticActionV1PrivateFailureName(
                   command->receipt.failure);
+        if (failure ==
+            ActiveSchemePreconditionCommandBindersV1PrivateFailure::glue_red) {
+          command->failure += ":";
+          command->failure += ActiveSchemeSemanticActionV1PrivateFailureName(
+              command->receipt.failure);
+          if (!command->receipt.reason.empty()) {
+            command->failure += ":";
+            command->failure += command->receipt.reason;
+          }
+          if (binder.glue.last_source_failure ==
+              ActiveSchemeStateV1PrivateSourceFailure::core_rejected) {
+            command->failure += ":core_rejected:";
+            command->failure += ActiveSchemeStateV1PrivateFailureName(
+                binder.glue.last_source_core_failure);
+            if (binder.glue.last_source_single_row_metrics_present) {
+              command->failure += ":row0_progress=";
+              command->failure += std::to_string(
+                  binder.glue.last_source_single_row_progress);
+              command->failure += ":row0_goal=";
+              command->failure += std::to_string(
+                  binder.glue.last_source_single_row_progress_goal);
+            }
+          }
+        }
       }
       command->completed = true;
       return true;
@@ -177,6 +201,20 @@ bool ExecuteActiveSchemeSwayFormalPrivateCommandV1(
       command->failure = "native_scheme_observation_red:";
       command->failure += ActiveSchemeStateV1PrivateSourceFailureName(
           binder.glue.last_source_failure);
+      if (binder.glue.last_source_failure ==
+          ActiveSchemeStateV1PrivateSourceFailure::core_rejected) {
+        command->failure += ":";
+        command->failure += ActiveSchemeStateV1PrivateFailureName(
+            binder.glue.last_source_core_failure);
+        if (binder.glue.last_source_single_row_metrics_present) {
+          command->failure += ":row0_progress=";
+          command->failure += std::to_string(
+              binder.glue.last_source_single_row_progress);
+          command->failure += ":row0_goal=";
+          command->failure += std::to_string(
+              binder.glue.last_source_single_row_progress_goal);
+        }
+      }
       command->completed = true;
       return true;
     }

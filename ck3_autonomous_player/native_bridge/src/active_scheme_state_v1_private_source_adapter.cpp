@@ -262,6 +262,16 @@ bool ObserveActiveSchemeStateV1PrivateSource(
   if (!ObserveActiveSchemeStateV1Private(capture, observation)) {
     const auto core_failure = observation.unavailable_reason;
     Fail(output, Failure::core_rejected, core_failure);
+    if (core_failure == ActiveSchemeStateV1PrivateFailure::metric_invalid &&
+        capture.row_count_after == 1 &&
+        capture.rows[0].progress.status ==
+            ActiveSchemeStateV1PrivateValueStatus::available &&
+        capture.rows[0].progress_goal.status ==
+            ActiveSchemeStateV1PrivateValueStatus::available) {
+      output.single_row_metrics_present = true;
+      output.single_row_progress = capture.rows[0].progress.value;
+      output.single_row_progress_goal = capture.rows[0].progress_goal.value;
+    }
     return false;
   }
 
