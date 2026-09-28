@@ -65,7 +65,8 @@
     "2026-09-28 M5 selectors now add an independent non-war proposal floor to the global war reserve during an active war; war-domain overlap retains max. Synthetic regressions cover the underspending counterexample in both selector paths. Active defender continuation now requires the same-frame typed selected step/command/route quote structure and matching immediate amount; a same-price different-step quote is rejected. This structural gate does not authenticate the native quote or fill any war cash amount.",
     "2026-09-28 exact EXE embark ABI correction: icon+0x68 points to a fee row whose +0x78 is the raw quote; icon+0x70 is the ValueBreakdown wrapper. The old direct icon+0x78 reading was wrong. The corrected static verifier passed normal/-O and remains unsafe for live calls. Separate exact-build audit found mercenary/reinforcement GUI cost descriptors are strings and no proved gold debit cadence; future bound stays null.",
     "2026-09-28 source R0303 construction gap notice SHA 42FA7F4F reports same-frame native:3/public revision 4/date_raw 53219496/WarID 16777231, 18,000,000 raw construction cost and 119,944,281 raw treasury. M5 returned incomplete_war_cash with all five amounts and horizon/assumptions null, no selected war action, no gameplay action and no date advance. Receiver WAR ACK SHA BEB40561 records the gap without authorizing construction or claiming a receiver live read. Final H3686 raw pair identity is metadata only; no receiver rebind/transfer is requested.",
-    "2026-09-28 independent quote-binding review tightened the only mapped read-only query: query_name war_termination_options must equal selected_step query-war-termination-options-{WarID}. Matching plan and quote with a different query step, or an unknown query name, now fail even if their amounts match. This remains structural only; no zero-cost native query was observed."
+    "2026-09-28 independent quote-binding review tightened the only mapped read-only query: query_name war_termination_options must equal selected_step query-war-termination-options-{WarID}. Matching plan and quote with a different query step, or an unknown query name, now fail even if their amounts match. This remains structural only; no zero-cost native query was observed.",
+    "2026-09-28 R0303 policy-floor static audit found no versioned Robert active-war minimum reserve source. AI pre-declaration war chest, building 200-gold post-action floor, and faction gift floor are separate policies and cannot fill the war field. A standalone policy-byte/SHA/frame/horizon/purpose claim gate passed synthetic regressions but always returns formal_cash_receipt_eligible=false; H3686 policy and risk remain null."
   ],
   "followup_research": {
     "status": "static_sources_plus_h2825_live_diagnostic_red",
@@ -88,6 +89,8 @@
     "embark_quote_abi_static_audit": "docs/ck3-native-ai/r0266-embark-quote-abi-static-2026-09-28.md",
     "embark_quote_abi_static_verifier": "ck3_autonomous_player/native_bridge/research/verify_war_cash_embark_quote_candidate.py",
     "other_war_cash_static_boundaries": "docs/ck3-native-ai/r0266-other-war-cash-static-boundaries-2026-09-28.md",
+    "r0303_policy_floor_static_audit": "docs/ck3-native-ai/r0303-war-cash-policy-floor-static-audit-2026-09-28.md",
+    "policy_floor_provenance_candidate": "ck3_autonomous_player/src/xar_autoplayer/war_cash_floor_policy_provenance_v1.py",
     "r0303_gap_notice_sha256": "42FA7F4FE73BFEDB28EF8B80F27E174A599B9A0D176EC824DC8FB31836904406",
     "r0303_gap_ack_sha256": "BEB4056129A85FC36BF0E19C0EEA87498DB9D07D20641699E9A52C1CA0EAFC59",
     "h2825_formal_selected_step": "query-observed-first-heir-marriage-result-v1-private",
