@@ -96,7 +96,7 @@ class WarCashBindingCandidateTests(unittest.TestCase):
             "selected_step": "query-war-termination-options-16777231",
             "priced_command": {
                 "kind": "read_only_query", "war_id": WAR_ID,
-                "query_name": "war-termination-options",
+                "query_name": "war_termination_options",
             },
         }
         candidate = quote(plan)
@@ -107,6 +107,27 @@ class WarCashBindingCandidateTests(unittest.TestCase):
         self.assertEqual(result["quoted_cost_raw"], 0)
         self.assertFalse(result["native_quote_pure_read_proven"])
         self.assertFalse(result["formal_cash_eligible"])
+
+    def test_query_name_cannot_price_another_selected_query_step(self) -> None:
+        plan = {
+            "selected_step": "query-other-war-step",
+            "priced_command": {
+                "kind": "read_only_query", "war_id": WAR_ID,
+                "query_name": "war_termination_options",
+            },
+        }
+        # Even a quote which repeats all the plan's mislabeled identity must
+        # not price another command through the same zero-cost query.
+        with self.assertRaisesRegex(ValueError, "read-only query identity"):
+            require_structural_action_quote_binding_v1(
+                plan=plan, quote=quote(plan), frame=FRAME, war_id=WAR_ID,
+            )
+        plan["selected_step"] = f"query-unknown-options-{WAR_ID}"
+        plan["priced_command"]["query_name"] = "unknown_options"
+        with self.assertRaisesRegex(ValueError, "read-only query identity"):
+            require_structural_action_quote_binding_v1(
+                plan=plan, quote=quote(plan), frame=FRAME, war_id=WAR_ID,
+            )
 
     def test_independent_reserves_close_max_gap(self) -> None:
         # With 400 gold treasury, 100 gold action and independent 200 + 150

@@ -49,11 +49,17 @@ def require_structural_action_quote_binding_v1(
         raise ValueError("war quote changed frame, WarID or selected command")
     kind = command.get("kind")
     if kind == "read_only_query":
+        # This is the only query step with a reviewed typed projection.  A
+        # matching plan/quote pair is still unsafe if both carry a different
+        # selected step for the same query.  Extend this table only alongside
+        # the corresponding native bridge step and its argument contract.
+        query_steps = {
+            "war_termination_options": f"query-war-termination-options-{war_id}",
+        }
         if (set(command) != {"kind", "war_id", "query_name"}
                 or command.get("war_id") != war_id
                 or type(command.get("query_name")) is not str
-                or not command["query_name"]
-                or not selected_step.startswith("query-")):
+                or selected_step != query_steps.get(command["query_name"])):
             raise ValueError("read-only query identity is incomplete")
     elif kind == "move_army":
         if set(command) != {
