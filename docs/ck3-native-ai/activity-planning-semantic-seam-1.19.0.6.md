@@ -218,11 +218,47 @@ to `2`, so `CanProgressPlanningStage=true` at that stage is not final
 proves a selected feast, complete configuration, authoritative costs or
 player-stage final eligibility on H3911's paused frame.
 
-The next executable diagnostic is to trace the actual UI/runtime caller of
-slot 12 and find a non-mutating refresh indicator or independent native cost
-evaluator. A later one-frame private paused query can then capture the fresh
-planner pointer, stage, selected type/configuration, and cost values with
-explicit `cost_ready` evidence. If that trace cannot establish freshness,
+## Proven handler-update caller of planner slot 12
+
+The handler's primary vtable slot 7 points to update function `0xA75C40`.
+Within it, `0xA76ABC` sets `rdi = handler+0x98`, and
+`0xA76AD8..0xA76B9D` iterates `0xA4` pointer slots. The planner publication
+at `handler+0x3C0` is table index `(0x3C0-0x98)/8 = 0x65`, so this path
+includes it. For each non-null view, `0xA76B55` calls primary vtable slot 7.
+Only on true does `0xA76B65` invoke slot 11; the `CActivityPlanner` slot 11
+target `0xAA33F0` tail-jumps through slot 12 (`[vtable+0x60]`) to
+`0x10AE180`, which calls the cost recomputation `0x10B2B30` at `0x10AE1AA`.
+The planner slot 7 implementation is shared `0x1F30970`, which returns false
+when `planner+0x78` has no attached widget and otherwise tests the widget's
+visibility state. This is an actual runtime caller, conditional on the
+planner widget visibility gate. It does not establish that the H3911 paused
+frame has an attached/visible planner widget, a selected feast, or a complete
+configuration. The creation path invokes slot 7 and conditionally slot 4,
+but not slot 11/12.
+
+```mermaid
+flowchart TD
+    H[CIngameInterfaceHandler slot 7 update] --> L[scan handler+0x98, 0xA4 views]
+    L --> P[planner at table index 0x65]
+    P --> V{planner slot 7 widget visibility}
+    V -- false --> U[cost freshness unknown]
+    V -- true --> S[slot 11 thunk to slot 12]
+    S --> R[0x10B2B30 clears and recomputes cost]
+    R -. no verified generation or paused query order .-> U
+```
+
+No read-only freshness/authoritative marker has been identified in the
+recomputed `+0x1AD8` container or surrounding planner fields. A caller can
+read a fresh planner pointer, attached-widget presence, stage and selected
+type/configuration without changing state, but those fields alone do not
+prove that slot 12 completed before the paused query or that its output is a
+final configured feast cost. They are a narrow private diagnostic readout,
+not a complete semantic collector or `can_start` answer. The next executable
+diagnostic is an official paused-frame capture of those fields with the
+planner window closed, followed by a separately bounded visible-window
+capture or a proven independent native cost evaluator. Any visual step must
+follow the current CK3 owner and minimize the window afterward. If the
+selected configuration or cost validity cannot be established,
 `configured_cost` and `can_start` remain typed unknown. No activity action or
 private semantic callback is eligible on this evidence alone; absent planner
 context must be reported as absent, not synthesized from `feast.txt` or the
