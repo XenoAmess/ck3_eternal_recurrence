@@ -52,7 +52,7 @@ std::array<std::byte, 0x290> g_dead_character_extension{};
 std::array<std::byte, 0x30> g_played_legitimacy_data{};
 std::array<std::byte, 0x30> g_target_legitimacy_data{};
 std::array<std::byte, 0x08> g_dead_prison_relation{};
-std::array<std::byte, 0x70> g_played_family_data{};
+std::array<std::byte, 0x80> g_played_family_data{};
 std::array<std::int32_t, 2> g_played_spouse_ids{};
 std::array<std::int32_t, 1> g_played_child_ids{};
 std::array<std::byte, 0xE0> g_player_character_entry{};
@@ -9149,6 +9149,20 @@ int main() {
       specified_child.relationship.primary_spouse_character_id != -1 ||
       !specified_child.relationship.spouse_character_ids.empty()) {
     return Fail("specified player child native relation read unavailable");
+  }
+  const auto family_probe =
+      xar::ck3_11906::ReadPlayerFamilyArrayProbeV1(bindings,
+                                                   played_character_id);
+  if (!family_probe.available || family_probe.slots.size() != 6 ||
+      family_probe.slots[3].offset != 0x50 ||
+      !family_probe.slots[3].header_readable ||
+      !family_probe.slots[3].native_int_array_shape ||
+      !family_probe.slots[3].sample_readable ||
+      family_probe.slots[3].sample_ids !=
+          std::vector<std::int32_t>{kFixtureAllyCharacterId} ||
+      family_probe.slots[3].sample_generation_valid !=
+          std::vector<bool>{true}) {
+    return Fail("private family array diagnostic lost bounded native IDs");
   }
   if (xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
           bindings, enemy_character_id).failure !=

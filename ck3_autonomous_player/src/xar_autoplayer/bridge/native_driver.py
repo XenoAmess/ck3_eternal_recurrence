@@ -2579,6 +2579,7 @@ class NativeHeadlessGameplayDriver:
     def query_player_child_marriage_subject_private_v1(
         self, *, expected_native_revision: int, subject_character_id: int,
         timeout_seconds: float = 360.0,
+        diagnose_family_arrays: bool = False,
     ) -> dict[str, object]:
         """Read one specified current player child and native proposal authority."""
         from .player_child_marriage_subject_private_transport import (
@@ -2589,6 +2590,7 @@ class NativeHeadlessGameplayDriver:
             self, expected_native_revision=expected_native_revision,
             subject_character_id=subject_character_id,
             timeout_seconds=timeout_seconds,
+            diagnose_family_arrays=diagnose_family_arrays,
         )
 
     def query_observed_first_heir_marriage_legality_v1(

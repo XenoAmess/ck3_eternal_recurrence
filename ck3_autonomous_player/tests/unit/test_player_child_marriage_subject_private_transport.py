@@ -53,6 +53,23 @@ def _reply(**fields: object) -> dict[str, object]:
     }}
 
 
+def _probe() -> dict[str, object]:
+    slots = []
+    for offset in (0x20, 0x30, 0x40, 0x50, 0x60, 0x70):
+        slots.append({"offset": offset, "header_readable": True,
+                      "data_pointer_present": offset == 0x50,
+                      "capacity": 1 if offset == 0x50 else 0,
+                      "count": 1 if offset == 0x50 else 0,
+                      "native_int_array_shape": True,
+                      "sample_readable": True,
+                      "samples": [{"character_id": 37265,
+                                   "generation_valid": True}]
+                      if offset == 0x50 else []})
+    return {"available": True, "played_character_id": 29829,
+            "spouse_readable": True, "primary_spouse_character_id": 34730,
+            "slots": slots}
+
+
 class _Endpoint:
     request: dict[str, object] | None = None
 
@@ -107,6 +124,30 @@ class PlayerChildMarriageSubjectPrivateTests(unittest.TestCase):
         self.assertEqual(result["unavailable_reason"], "not_player_child")
         self.assertNotIn("candidates", result)
 
+    def test_private_array_probe_is_explicit_and_preserves_unavailable(self) -> None:
+        unavailable = _reply(status="unavailable",
+                             unavailable_reason="not_player_child",
+                             player_child_verified=False,
+                             family_candidates=[],
+                             family_array_diagnostic=_probe())
+        driver = _Driver(unavailable, [_frame(), _frame()])
+        result = query_player_child_marriage_subject_private_v1(
+            driver, expected_native_revision=3, subject_character_id=37265,
+            diagnose_family_arrays=True)
+        self.assertTrue(driver.endpoint.request["diagnose_family_arrays"])
+        self.assertEqual(result["status"], "unavailable")
+        self.assertEqual(result["family_array_diagnostic"]["slots"][3]
+                         ["samples"][0]["character_id"], 37265)
+        malformed = deepcopy(unavailable)
+        malformed_slot = malformed["result"]["family_array_diagnostic"]["slots"][3]
+        malformed_slot["samples"][0]["generation_valid"] = "yes"
+        with self.assertRaisesRegex(BridgeUnavailableError,
+                                    "array slot malformed"):
+            query_player_child_marriage_subject_private_v1(
+                _Driver(malformed, [_frame(), _frame()]),
+                expected_native_revision=3, subject_character_id=37265,
+                diagnose_family_arrays=True)
+
     def test_answer_and_frame_are_independent_gates(self) -> None:
         refused = _reply(family_candidates=[_row(2)])
         result = query_player_child_marriage_subject_private_v1(
@@ -141,6 +182,7 @@ class PlayerChildMarriageSubjectPrivateTests(unittest.TestCase):
 
             def query_player_child_marriage_subject_private_v1(
                 self, *, expected_native_revision: int, subject_character_id: int,
+                diagnose_family_arrays: bool = False,
             ) -> dict[str, object]:
                 return {"native_revision": expected_native_revision,
                         "subject_character_id": subject_character_id}

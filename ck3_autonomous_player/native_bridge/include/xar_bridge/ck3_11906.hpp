@@ -1157,6 +1157,31 @@ struct PlayerChildMarriageSubjectReadV1 {
   MarriageHeirRelationshipV1 relationship{};
 };
 
+// Private, bounded ABI diagnostic. These offsets are observations only; no
+// slot is treated as a child list or as proposal authority.
+struct PlayerFamilyArrayProbeSlotV1 {
+  std::uint32_t offset = 0;
+  bool header_readable = false;
+  bool data_pointer_present = false;
+  std::int32_t capacity = -1;
+  std::int32_t count = -1;
+  bool native_int_array_shape = false;
+  bool sample_readable = false;
+  std::vector<std::int32_t> sample_ids;
+  std::vector<bool> sample_generation_valid;
+};
+
+struct PlayerFamilyArrayProbeV1 {
+  bool available = false;
+  std::int32_t played_character_id = -1;
+  bool spouse_readable = false;
+  std::int32_t primary_spouse_character_id = -1;
+  std::vector<PlayerFamilyArrayProbeSlotV1> slots;
+};
+
+PlayerFamilyArrayProbeV1 ReadPlayerFamilyArrayProbeV1(
+    const Bindings &bindings, std::int32_t played_character_id) noexcept;
+
 // Exact-build read for one caller-specified child of the currently played
 // character. The caller still needs the native five-role Can Send/final-answer
 // query to prove proposal authority for any particular match.

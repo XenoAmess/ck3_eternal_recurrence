@@ -1364,11 +1364,13 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_child_marriage_subject_private_v1(
             expected_native_revision: int, subject_character_id: int,
+            diagnose_family_arrays: bool = False,
         ) -> dict[str, object]:
             """Read one player child and current native marriage proposal legality."""
             return driver.query_player_child_marriage_subject_private_v1(
                 expected_native_revision=expected_native_revision,
                 subject_character_id=subject_character_id,
+                diagnose_family_arrays=diagnose_family_arrays,
             )
 
     @server.tool()

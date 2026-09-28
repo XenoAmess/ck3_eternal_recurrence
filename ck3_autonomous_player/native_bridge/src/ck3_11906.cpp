@@ -17271,6 +17271,74 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
 bool ReadMarriageCharacterLineageV1(
     const void *character, MarriageCharacterLineageV1 &output) noexcept;
 
+PlayerFamilyArrayProbeV1 ReadPlayerFamilyArrayProbeV1(
+    const Bindings &bindings, std::int32_t played_character_id) noexcept {
+  PlayerFamilyArrayProbeV1 result{};
+  result.played_character_id = played_character_id;
+  void *const played = ResolveCharacter(bindings, played_character_id);
+  if (played == nullptr) return result;
+  const auto *const family = static_cast<const std::byte *>(
+      LoadAt<const void *>(played, kCharacterFamilyDataOffset));
+  if (family == nullptr) return result;
+  result.available = true;
+  std::int32_t betrothed = -1;
+  std::vector<std::int32_t> spouses;
+  result.spouse_readable = ReadCharacterRelationships(
+      bindings, played, betrothed, result.primary_spouse_character_id, spouses);
+
+  struct NativeIntArrayHeader {
+    const std::int32_t *data;
+    std::int32_t capacity;
+    std::int32_t count;
+  };
+  static_assert(sizeof(NativeIntArrayHeader) == 16);
+  constexpr std::array<std::uint32_t, 6> offsets = {
+      0x20, 0x30, 0x40, 0x50, 0x60, 0x70};
+  constexpr std::size_t kSampleLimit = 16;
+  for (const auto offset : offsets) {
+    PlayerFamilyArrayProbeSlotV1 slot{};
+    slot.offset = offset;
+    NativeIntArrayHeader header{};
+    SIZE_T bytes_read = 0;
+    slot.header_readable =
+        ReadProcessMemory(GetCurrentProcess(), family + offset, &header,
+                          sizeof(header), &bytes_read) != FALSE &&
+        bytes_read == sizeof(header);
+    if (!slot.header_readable) {
+      result.slots.push_back(std::move(slot));
+      continue;
+    }
+    slot.data_pointer_present = header.data != nullptr;
+    slot.capacity = header.capacity;
+    slot.count = header.count;
+    slot.native_int_array_shape =
+        header.capacity >= 0 && header.capacity <= 256 &&
+        header.count >= 0 && header.count <= header.capacity &&
+        (header.count == 0 || header.data != nullptr);
+    if (slot.native_int_array_shape) {
+      const auto sample_count = static_cast<std::size_t>(
+          (std::min)(header.count, static_cast<std::int32_t>(kSampleLimit)));
+      std::array<std::int32_t, kSampleLimit> sample{};
+      bytes_read = 0;
+      slot.sample_readable = sample_count == 0 ||
+          (ReadProcessMemory(GetCurrentProcess(), header.data, sample.data(),
+                             sample_count * sizeof(sample[0]), &bytes_read) !=
+               FALSE &&
+           bytes_read == sample_count * sizeof(sample[0]));
+      if (slot.sample_readable) {
+        for (std::size_t index = 0; index < sample_count; ++index) {
+          const auto id = sample[index];
+          slot.sample_ids.push_back(id);
+          slot.sample_generation_valid.push_back(
+              id > 0 && ResolveCharacter(bindings, id) != nullptr);
+        }
+      }
+    }
+    result.slots.push_back(std::move(slot));
+  }
+  return result;
+}
+
 PlayerChildMarriageSubjectReadV1 ReadPlayerChildMarriageSubjectV1(
     const Bindings &bindings, std::int32_t subject_character_id) noexcept {
   using Failure = PlayerChildMarriageSubjectFailureV1;

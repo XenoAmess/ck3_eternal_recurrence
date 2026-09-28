@@ -15,6 +15,7 @@ SCHEMA = "xar.ck3.player-child-marriage-subject.v1"
 def query_player_child_marriage_subject_private_v1(
     driver: object, *, expected_native_revision: int,
     subject_character_id: int, timeout_seconds: float = 360.0,
+    diagnose_family_arrays: bool = False,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_player_child_marriage_subject_query", False) is not True:
         raise UnsupportedStepError("private player-child marriage query is disabled")
@@ -38,12 +39,15 @@ def query_player_child_marriage_subject_private_v1(
         raise ValueError("subject_character_id must be a positive native CharacterID")
     if type(timeout_seconds) not in {int, float} or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
+    if type(diagnose_family_arrays) is not bool:
+        raise ValueError("diagnose_family_arrays must be bool")
     request_id = "family-child-" + uuid.uuid4().hex
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": STEP,
         "expected_revision": expected_native_revision,
         "subject_character_id": subject_character_id,
+        "diagnose_family_arrays": diagnose_family_arrays,
     })
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
     if frame is None:
@@ -78,6 +82,39 @@ def query_player_child_marriage_subject_private_v1(
         "subject_character_id": subject_character_id,
         "query_sequence": result["query_sequence"],
     }
+    probe = result.get("family_array_diagnostic")
+    if diagnose_family_arrays:
+        if (
+            not isinstance(probe, dict)
+            or probe.get("available") is not True
+            or probe.get("played_character_id") != played_id
+            or type(probe.get("spouse_readable")) is not bool
+            or type(probe.get("primary_spouse_character_id")) is not int
+            or not isinstance(probe.get("slots"), list)
+            or len(probe["slots"]) != 6
+            or any(not isinstance(slot, dict) for slot in probe["slots"])
+            or [slot.get("offset") for slot in probe["slots"]]
+            != [0x20, 0x30, 0x40, 0x50, 0x60, 0x70]
+        ):
+            raise BridgeUnavailableError("player family array diagnostic malformed")
+        for slot in probe["slots"]:
+            samples = slot.get("samples")
+            if (
+                any(type(slot.get(key)) is not bool for key in (
+                    "header_readable", "data_pointer_present",
+                    "native_int_array_shape", "sample_readable"))
+                or type(slot.get("capacity")) is not int
+                or type(slot.get("count")) is not int
+                or not isinstance(samples, list) or len(samples) > 16
+                or any(not isinstance(sample, dict)
+                       or type(sample.get("character_id")) is not int
+                       or type(sample.get("generation_valid")) is not bool
+                       for sample in samples)
+            ):
+                raise BridgeUnavailableError("player family array slot malformed")
+        base["family_array_diagnostic"] = probe
+    elif probe is not None:
+        raise BridgeUnavailableError("unsolicited player family array diagnostic")
     if result.get("status") == "unavailable":
         reason = result.get("unavailable_reason")
         if (
