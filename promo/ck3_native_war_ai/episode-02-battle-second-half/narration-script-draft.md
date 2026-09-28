@@ -135,7 +135,7 @@
 [^width]: [085 战宽与首次出伤第三点](../../../docs/ck3-native-ai/join-width-production-and-fire.md#085-双方-full-entry-同钩子实采与缓存差额)。森林 `90000/100000` 来源为原版脚本静态定义；本案 final、出伤入参为原生运行时实采。
 [^join_limit]: [未来增援路线输入边界](../../../docs/ck3-native-ai/future-reinforcement-trial-input-boundary-2026-09-27.md)。
 [^terminal]: [004 同源第 32 日正常终局](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md#2026-09-26-追击三日同一独立回放的逐团与账本对拍)。
-[^score]: [A05 新配对 writer、同 run WarID4 前后态及原始媒体](e2-09-a05-new-pair-evidence-20260928.md)。旧 [024 原生 writer 原件](../../../docs/ck3-native-ai/battle-terminal-and-reentry.md#2026-09-26-梅西纳单场战分同一次原生-writer-的完整输入与写回)只作历史对照。
+[^score]: [A05 新 writer 与第 32 日原生暂停后态逐项回执](cards/e2-09-a05-writer-facts-20260928.json)、[A05 实机与媒体准入边界](terminal-pair-a05-integrated-admission-20260928.md)。旧 [024 原生 writer 原件](../../../docs/ck3-native-ai/battle-terminal-and-reentry.md#2026-09-26-梅西纳单场战分同一次原生-writer-的完整输入与写回)只作历史对照。
 [^limits]: [后半篇研究门槛](../../../docs/ck3-native-ai/battle-second-half-research-plan-2026-09-26.md)、[系列路线图当前取材边界](../series-roadmap.md)。
 [^footage]: [本篇追击与骑士原件审片索引](pursuit-knight-evidence-audit-20260928.md)、[项目镜头门](shot-list.md)。旧录像、地图截图和单项原生回执均不足以自动生成 clean span 或人工签核。
 
