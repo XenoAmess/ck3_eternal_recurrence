@@ -154,6 +154,21 @@
     "complete_future_war_cost_upper_bound": false,
     "safe_to_call_from_live_bridge": false
   },
+  "m5_cross_machine_intake": {
+    "request_relative_path": "WAR/M5-WAR-CASH-20260928/REQUEST.json",
+    "request_sha256": "B93693573017D6DEEE72D0DE5AF491B739B321F2FCFA1495F6633E8C09A5FCDA",
+    "requested_checkpoint": "H3446/raw53219112",
+    "requested_war_id": 16777231,
+    "owner": "r0266_resume",
+    "routed_to": "WAR/R0266-CASH-20260928",
+    "response_relative_path": "WAR/M5-WAR-CASH-20260928/RESPONSE.json",
+    "response_sha256": "20FF00F92C6E97FEDA6F330FDCC1CDC4427066D03185BD70290D8F7DEA769309",
+    "response_index_sha256": "1DE75CC0A674D17A09F0A9351DB2D93E66AED67370720C27C29DBF1E64A83DB1",
+    "status": "accepted_routed_incomplete_no_live_cash_receipt",
+    "h3446_exact_assets_received": false,
+    "same_frame_cash_receipt": null,
+    "consumer_mapping_status": "specified_in_response_but_not_eligible_for_formal_spend"
+  },
   "live_evidence": null,
   "limitations": [
     "Static-only/no-live delivery. The supplied H2825 construction observation is same-frame evidence of treasury and building cost, but publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
