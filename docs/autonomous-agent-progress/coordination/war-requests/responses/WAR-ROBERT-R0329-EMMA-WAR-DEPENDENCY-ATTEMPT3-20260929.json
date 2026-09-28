@@ -1,0 +1,28 @@
+{
+  "schema": "xar.war.r0329-emma-war-dependency-attempt3-addendum.v1",
+  "observed_at_utc": "2026-09-28T17:17:42Z",
+  "earlier_receiver_status": "RECEIVER-R0329-EMMA-WAR-DEPENDENCY-STATUS-v1.json",
+  "earlier_receiver_status_sha256": "6707CED8EAEFC1875D03F748CA1D1D54C6725E3994857BBE218B7C54DAEE59C7",
+  "source_dependency": "SOURCE-R0329-EMMA-PENDING-WAR-ADVANCE-DEPENDENCY-v1.json",
+  "source_dependency_sha256": "66DCE2F2A250B1BC4C5CAB40239ABC03FFA8DFD9028C7DDFD028959BA38BCB99",
+  "new_receiver_attempt": {
+    "result": "RECEIVER-R0321-H3911-ATTEMPT3-RESULT-v1.json",
+    "result_sha256": "C40EED0164B864CAF3F9C7F1E466BA679EDE8D76428FD0AC0E3E2D54A946FFD0",
+    "receiver_code_commit": "f5c4f0250f37029f124c7a7c42d64545d42f128f",
+    "no_launch": "Exact H3911 receiver prepare, ordinary rebind and preflight succeeded without CK3 launch; source save unchanged.",
+    "live": "A separate native session reached log-based postread/vassals coldload gate and MCP initialize. Its first ck3_take_snapshot call timed out after the bounded 120-second wait without a response envelope or readiness-001 receipt; failure.json records ExceptionGroup. No native snapshot or four allowed war queries completed.",
+    "cleanup": "Session supervisor returncode zero, CK3 PIDs after empty, original source hashes unchanged; no gameplay action submitted.",
+    "limit": "The exact nested TimeoutError was observed in the receiver CLI failure stack; the preserved failure.json records only ExceptionGroup. No lower-level timeout cause is established, and log-based postread is not an H3911 map-frame proof."
+  },
+  "master_review": {
+    "previous_observed_master": "3CFAD431DD14A103E0E76DDC00A4F4E00A3490B7",
+    "later_observed_master": "D459FF4D493EAB33459A9B406C39EFCAA163A992",
+    "intervening_commits": "Four REPORT-20260929 Emma pending records; no forecast or route capability merge observed in this range.",
+    "pr_502_forecast_research": "Draft/Open",
+    "pr_507_safe_route_candidate": "Draft/Open",
+    "qualified_war_capability_master_commit_to_notify": null,
+    "compatibility_fields_to_notify": null
+  },
+  "emma_status": "R0329 notice's proposal=pending and date_advanced=false remain source claims; this failed receiver attempt adds no marriage result or pending-age advance.",
+  "action_boundary": "The dependency remains open. No manual date advance, duplicate proposal, attack, route command, surrender or formal planner bypass is requested or authorized. A future successful, same-frame war capability and formal continuation require their own new evidence and exact master commit before a compatibility notification."
+}

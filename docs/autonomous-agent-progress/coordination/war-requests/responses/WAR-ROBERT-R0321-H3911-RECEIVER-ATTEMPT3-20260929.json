@@ -1,0 +1,45 @@
+{
+  "schema": "xar.war.r0321-h3911-receiver-attempt3-result.v1",
+  "observed_at_utc": "2026-09-28T17:15:35Z",
+  "relationship_to_attempt2": {
+    "earlier_response": "RECEIVER-R0321-H3911-ATTEMPT2-RESULT-v1.json",
+    "earlier_response_sha256": "C03B5C52EFD4B3269FD5C58DBA85CA4A06EC97CC77D51B86679C2E2542B9CBFD",
+    "status": "new_receiver_attempt; preserves_attempt2_receipt_and_RED"
+  },
+  "source_pair": {
+    "immutable_intake_receipt_sha256": "25B832ED62BC6C75081B353BA1CFA018892AE357C6BAD7099F8C32E6C312C174",
+    "source_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "source_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "actual_runtime_dll_sha256": "C71F6A5DFE8D23374B5B73F9DFA18AD9455CFF087D36EC93D2D29F7F610E8786",
+    "actual_runtime_injector_sha256": "F9F2472C5969A248E7942AC79CC17A03CFDDA24C7FF79E78DA810A66A0E30C15"
+  },
+  "receiver_attempt_3": {
+    "artifact_dir": "D:/ck3-research-artifacts/r0321-h3911-receiver-20260928/attempt-3-h3911-readonly-no-launch",
+    "receiver_code_commit_from_ready_summary": "f5c4f0250f37029f124c7a7c42d64545d42f128f",
+    "ready_summary_sha256": "DBAA008E957EEC2F6A0D692B39E0E2007974F6A365FCD0D12DDDF316C8C1B4A3",
+    "ordinary_rebind_receipt_sha256": "E89227B836E2DAACFAF6C218D54D9B7CDC664C9CFD331D2ADA14BCE4E25E9717",
+    "no_launch_status": "prepare, ordinary rebind and preflight exit zero without CK3 launch; source save bytes unchanged",
+    "live_subattempt_dir": "live-h3911-readonly-v1",
+    "session_ready_sha256": "7E21101CBE25C2A77C0D05D8533D7CBA45131DB616588132BF41622A67E32081",
+    "coldload_gate_sha256": "2FFBC5DE9014873DA43C86C0355EB0B9CA8A0225FF27643D05A6BB923B4FE6B1",
+    "coldload_gate_stage": "postread_vassals_seen; source debug.log showed CGameState::InitPostRead and Setup powerful vassals, but no later native snapshot was captured",
+    "mcp_initialize_envelope_sha256": "364A071366C23A3CF419DB68A77B1973B3AE6F486324B102AA664828E966F72F",
+    "failure_sha256": "B7C052938C7449B7B3F6F54CC8DBF66586332164716EDF3A801B7A44D2F0552D",
+    "failure": "ExceptionGroup at 2026-09-28T17:13:37.258011Z; the preserved failure.json does not identify the sub-exception root cause",
+    "session_exit_sha256": "9EFFF136BBFE7A5C2C4444AD427E2C57FD599394DDC37BD69631D63964ED36CF",
+    "cleanup": "supervisor returncode zero, CK3 PIDs after empty, original source-file hashes unchanged; live binary audit field null",
+    "native_snapshot_obtained": false,
+    "war_read_only_queries_completed": false,
+    "gameplay_action_submitted": false,
+    "boundary": "No-launch preflight, log-based coldload progress, MCP initialize and cleanup are separate facts; none proves the paused H3911 map state or a same-frame war query."
+  },
+  "war_decision_status": {
+    "r0321_two_defender_forecast": "RED; no qualified forecast, battle probability, trial-tape accuracy or expected-utility authorization obtained",
+    "r0321_selected_step": null,
+    "active_attack_allowed": false,
+    "r0266_war_cash": "No same-frame war amount or policy quote obtained in this attempt",
+    "r0271_original_turn36": "historical RED unchanged; H3911 attempt-3 does not prove the older future siege participant set",
+    "emma_r0329": "Pending proposal remains a source-only claim; this failed receiver attempt supplies no formal war date advance or marriage result"
+  },
+  "next_step_boundary": "Any diagnosis or retry requires its own versioned attempt and receipts. This result requests no CK3 action, date advance, route command, attack or surrender."
+}
