@@ -4,9 +4,11 @@
 
 ## 费用缓存何时可能自然重算
 
-精确 EXE 的 `ResetLastUpdateFrame` 名称 RVA `0x40E5F28` 经注册 `0xB1063`、回调 `0xD49B20` 到 `0xD462B0`；后者把顶栏 `this+0xF88` 的 qword 上次更新 tick 写成 `0`。原版 `game/gui/hud.gui:6109-6131` 把金币 widget 的 `_mouse_enter` 绑定该 reset，并把 tooltip 费用区绑定 `GetGoldExpensesBreakdown`。独立静态校验器 [`verify_war_cash_topbar_mouse_enter_refresh_edge.py`](../../ck3_autonomous_player/native_bridge/research/verify_war_cash_topbar_mouse_enter_refresh_edge.py) 以 EXE SHA、精确指令/RVA 和 GUI 绑定拒绝版本漂移；普通及 `-O` 对原版 EXE/GUI 均通过。
+精确 EXE 的 `ResetLastUpdateFrame` 名称 RVA `0x40E5F28` 经注册 `0xB1063`、回调 `0xD49B20` 到 `0xD462B0`；后者把顶栏 `this+0xF88` 的 qword 上次更新 tick 写成 `0`。原版 `game/gui/hud.gui:6109-6131`（SHA-256 `1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312`）把金币 widget 的 `_mouse_enter` 绑定该 reset，并把 tooltip 费用区绑定 `GetGoldExpensesBreakdown`。独立静态校验器 [`verify_war_cash_topbar_mouse_enter_refresh_edge.py`](../../ck3_autonomous_player/native_bridge/research/verify_war_cash_topbar_mouse_enter_refresh_edge.py) 以 EXE/GUI 双 SHA、精确指令/RVA 和 GUI 绑定拒绝版本漂移；普通及 `-O` 对原版 EXE/GUI 均通过。
 
 费用 getter `0xD47680` 读 GUI 渲染上下文全局 RVA `0x576CC68` 所指对象 `+0x180` 的 qword tick，读 RVA `0x570D8D0` 的 signed dword 刷新间隔，比较 `tick - this+0xF88`。若不低于间隔，它在 `0xD476B1` **先**写新 tick，才在 `0xD476B8` 调用 `0xD476D0` 重算。故鼠标进入后、当前 tick 达到正间隔时，下一次实际执行 getter 应进入重算分支；但 `+0xF88=当前 tick` 可以出现在重算完成前。`tick` 相等、两次 RPM 相同、甚至稳定的行数组，都不能单独证明完成或属于同一个游戏 native revision。严禁 headless reader 直接调用 reset/getter；它们写 GUI 状态。GUI owner 可以在独占屏幕与新鲜 Steam 离线证据下自然悬停，读取器仍只用 `ReadProcessMemory`。
+
+独立复核以另一限界反汇编器重读上述 RVA，普通与 `-O` 校验均返回 `formal_cash_eligible=false`；把非 EXE 文件作为输入会在 EXE SHA 门退出 1，把原版 GUI 拷贝末尾附加无关注释会在 GUI SHA 门退出 1。此项负例只验证版本身份失败关闭，未观察游戏或任何费用刷新完成。
 
 要把顶栏行从**诊断候选**升级为当前军费率，至少要有独立的、绑定该具体实例与这次鼠标进入的 tooltip/render **完成后**回执；证明 reset 后执行了对应 getter 且重算返回，不能用 tick 代替。还要在前后各取一次正式 paused native snapshot，精确绑定 PID+creation、EXE/DLL、唯一 live 顶栏 owner 链、玩家完整 CharacterID、WarID、episode、snapshot/public/native revision、date 和 treasury；任何变化即撤销。被动读取全部根行、嵌套行、名称字节、`+0xB50` signed raw/`+0xB58` scale 与各行 `+0x78/+0x80`，scale 必须精确 `100000`。将军费行树与同帧 `MilitaryView.GetGoldMilitaryExpenses` 原生总额和可见 tooltip 交叉核对；六个军费标签可能嵌套或重复，不能逐名盲加。刷新函数的 played ID 比较及 fallback 分支亦须排除错误玩家。若无法取得完成后回执，**当前军费率仍是 null**；当前 `war_cash_topbar_bounded_sample.py` 的输出固定 `formal_cash_eligible=false` 是正确边界。
 

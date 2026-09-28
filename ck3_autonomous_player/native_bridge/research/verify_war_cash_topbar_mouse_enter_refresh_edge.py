@@ -18,6 +18,7 @@ import pefile
 
 
 EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+HUD_GUI_SHA256 = "1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312"
 RESET_NAME = b"ResetLastUpdateFrame\0"
 RESET_NAME_RVA = 0x40E5F28
 
@@ -86,7 +87,11 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     _expect_target(image, binary, 0xD476B8, "call", 0xD476D0)
 
     hud = game_root / "game/gui/hud.gui"
-    gui = hud.read_text(encoding="utf-8-sig")
+    hud_bytes = hud.read_bytes()
+    hud_digest = hashlib.sha256(hud_bytes).hexdigest().upper()
+    if hud_digest != HUD_GUI_SHA256:
+        raise ValueError("stock hud.gui SHA-256 mismatch")
+    gui = hud_bytes.decode("utf-8-sig")
     reset = 'on_start = "[InGameTopbar.ResetLastUpdateFrame]"'
     expense = 'datacontext = "[InGameTopbar.GetGoldExpensesBreakdown]"'
     if gui.count(expense) != 1:
@@ -102,7 +107,7 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "schema": "xar.ck3.war-cash-topbar-mouse-enter-refresh-static.v1",
         "status": "exact_build_gui_reset_edge_only",
         "exe_sha256": digest,
-        "hud_gui_sha256": hashlib.sha256(hud.read_bytes()).hexdigest().upper(),
+        "hud_gui_sha256": hud_digest,
         "reset_name_rva": hex(RESET_NAME_RVA),
         "reset_callback_rva": hex(0xD49B20),
         "reset_method_rva": hex(0xD462B0),
