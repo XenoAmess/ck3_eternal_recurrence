@@ -1,0 +1,55 @@
+{
+  "contract": "realm_law_active_collection_11906_abi",
+  "contract_version": 1,
+  "status": "exact-build static research; paused live read and final candidate legality pending",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable": "binaries/ck3.exe",
+    "size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "read_only_chain": {
+    "played_character_law_context_offset": "0x1B8",
+    "law_collection_offset_from_context": "0x200",
+    "collection_data_pointer_offset": "0x00",
+    "collection_count_int32_offset": "0x0C",
+    "collection_element": "CLaw pointer, 8 bytes",
+    "law_key_msvc_string_offset": "0x18",
+    "law_key_string_size_offset": "0x28",
+    "law_key_string_capacity_offset": "0x30",
+    "law_group_equality_field_offset": "0x38",
+    "law_group_equality_field_semantics": "unknown; do not publish as a group key"
+  },
+  "instruction_spans": [
+    {
+      "name": "actor_law_collection_getter",
+      "rva": "0x260AC30",
+      "end_rva": "0x260ACA9",
+      "sha256": "B9477C21358323765E7236E5F8CB37173D6D06E8E25AD9A30F043ACEFD1790AF"
+    },
+    {
+      "name": "law_mutation_active_collection_walk",
+      "rva": "0x260ACB0",
+      "end_rva": "0x260AD6A",
+      "sha256": "86F49D059BBC84A1C26DAFB646F8446313505FB25221E74DD0D9F3DB0040A53B"
+    },
+    {
+      "name": "active_law_membership_lookup",
+      "rva": "0x28BC040",
+      "end_rva": "0x28BC0D1",
+      "sha256": "CC83E8985CBB67DA9E7883901F8515DEB0EE9533A7E981A83761AEA1C07678BB"
+    },
+    {
+      "name": "law_key_std_string_read",
+      "rva": "0x2C7B320",
+      "end_rva": "0x2C7B406",
+      "sha256": "7DDA414B641DE21A5FFB7CF68425D87B4A0A6E80C12BA577ECBE9D17FB6B69D4"
+    }
+  ],
+  "remaining_to_final_observer": [
+    "candidate CLaw resolution for crown authority and succession law groups",
+    "same-source engine-final can-have, can-pass and CanEnact for each candidate",
+    "engine-final currency costs and opaque blocked reason",
+    "paused H3911 readback and same-frame equality"
+  ]
+}
