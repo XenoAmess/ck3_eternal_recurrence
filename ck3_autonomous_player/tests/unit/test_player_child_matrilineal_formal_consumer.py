@@ -82,6 +82,36 @@ class Driver:
 
 
 class ConsumerTest(unittest.TestCase):
+    def test_exact_read_only_war_query_can_be_deferred_once(self) -> None:
+        with tempfile.TemporaryDirectory(dir=os.environ.get("XAR_TEST_TEMP_ROOT")) as folder:
+            driver = Driver(Path(folder))
+            frame = {**_frame(), "active_wars": [{"war_id": 16777231}]}
+            allowed = {"plan": {"selected_step":
+                               "query-war-termination-options-16777231"}}
+            chosen = consumer.plan_child_matrilineal_private(
+                driver, allowed, frame, subject_character_id=37265,
+                candidate_character_id=37267)
+            self.assertEqual(chosen["plan"]["selected_step"], consumer.SUBMIT_STEP)
+            self.assertEqual(chosen["plan"]["child_matrilineal_deferred_step"],
+                             "query-war-termination-options-16777231")
+            unrelated = {"plan": {"selected_step": "query-declarable-wars"}}
+            self.assertIs(consumer.plan_child_matrilineal_private(
+                driver, unrelated, frame, subject_character_id=37265,
+                candidate_character_id=37267), unrelated)
+            action = {"plan": {"selected_step": "enforce-demands-16777231"}}
+            self.assertIs(consumer.plan_child_matrilineal_private(
+                driver, action, frame, subject_character_id=37265,
+                candidate_character_id=37267), action)
+            with patch.object(consumer, "bridge_process_identity", return_value=(123, "creation")):
+                with self.assertRaises(TimeoutError):
+                    consumer.submit_child_matrilineal_private(
+                        driver, plan=chosen["plan"], snapshot=frame)
+            pending = consumer.read_child_matrilineal_ledger(driver.state_dir)["pending"]
+            self.assertEqual(pending["deferred_war_query"],
+                             "query-war-termination-options-16777231")
+            self.assertEqual(pending["claimed_character_ids"],
+                             [29829, 37265, 37267, 32440])
+
     def test_selected_option_determines_action_and_ambiguous_send_stays_pending(self) -> None:
         with tempfile.TemporaryDirectory(dir=os.environ.get("XAR_TEST_TEMP_ROOT")) as folder:
             driver = Driver(Path(folder))

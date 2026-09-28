@@ -23,6 +23,15 @@ def _positive(value: object) -> bool:
     return type(value) is int and 0 < value < 2**31
 
 
+def _deferrable_war_query(selected: object,
+                          snapshot: Mapping[str, object]) -> bool:
+    wars = snapshot.get("active_wars")
+    return (isinstance(selected, str) and isinstance(wars, list)
+            and any(isinstance(war, dict) and _positive(war.get("war_id"))
+                    and selected == f"query-war-termination-options-{war['war_id']}"
+                    for war in wars))
+
+
 def read_child_matrilineal_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.is_file():
@@ -96,6 +105,10 @@ def plan_child_matrilineal_private(
         return planned
     pending = ledger["pending"]
     if isinstance(pending, dict):
+        selected = plan.get("selected_step")
+        if (selected not in {None, "life-advance"}
+                and not _deferrable_war_query(selected, snapshot)):
+            return planned
         if (pending.get("episode_run_id") != snapshot.get("episode_run_id")
                 or pending.get("heir_character_id") != subject_character_id
                 or pending.get("candidate_character_id") != candidate_character_id):
@@ -129,7 +142,9 @@ def plan_child_matrilineal_private(
         return planned
     if read_family_marriage_ledger(state_dir)["pending"] is not None:
         return planned
-    if plan.get("selected_step") != "life-advance":
+    selected = plan.get("selected_step")
+    wartime_wait = _deferrable_war_query(selected, snapshot)
+    if selected != "life-advance" and not wartime_wait:
         return planned
     if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
             or not _positive(snapshot.get("native_revision"))):
@@ -150,6 +165,13 @@ def plan_child_matrilineal_private(
         "selected_step": SUBMIT_STEP, "phase": "child_matrilineal_submit",
         "child_matrilineal_legality": legality,
         "child_matrilineal_value": value,
+        "child_matrilineal_deferred_step": selected if wartime_wait else None,
+        "child_matrilineal_wartime_source": ({
+            "date_raw": snapshot.get("date_raw"),
+            "native_revision": snapshot.get("native_revision"),
+            "active_war_ids": [war.get("war_id") for war in snapshot["active_wars"]
+                               if isinstance(war, dict)],
+        } if wartime_wait else None),
         "reason": "submit native-final selected maternal-line marriage"}}
 
 
@@ -164,6 +186,16 @@ def submit_child_matrilineal_private(driver: object, *,
             or value.get("native_revision") != snapshot.get("native_revision")
             or snapshot.get("date_raw") is None):
         raise ValueError("child proposal source frame changed")
+    deferred = plan.get("child_matrilineal_deferred_step")
+    if deferred is not None and (
+            not _deferrable_war_query(deferred, snapshot)
+            or plan.get("child_matrilineal_wartime_source") != {
+                "date_raw": snapshot.get("date_raw"),
+                "native_revision": snapshot.get("native_revision"),
+                "active_war_ids": [war.get("war_id") for war in snapshot["active_wars"]
+                                   if isinstance(war, dict)],
+            }):
+        raise ValueError("deferred read-only war query changed before child proposal")
     state_dir = driver.state_dir
     ledger = read_child_matrilineal_ledger(state_dir)
     if ledger["pending"] is not None or ledger["resolved"] is not None:
@@ -180,6 +212,11 @@ def submit_child_matrilineal_private(driver: object, *,
         "candidate_character_id": value["candidate_character_id"],
         "recipient_character_id": row["recipient_character_id"],
         "matrilineal_option_selected": True,
+        "claimed_character_ids": [snapshot["played_character"]["character_id"],
+                                  legality["subject_character_id"],
+                                  value["candidate_character_id"],
+                                  row["recipient_character_id"]],
+        "deferred_war_query": plan.get("child_matrilineal_deferred_step"),
         "selected_value_projection": dict(row),
         "episode_run_id": snapshot.get("episode_run_id"),
         "source_bridge_pid": pid, "source_bridge_creation_date": creation,
