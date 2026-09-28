@@ -187,6 +187,7 @@
     "id": "NW-2026-09-26",
     "completed_packages": 0,
     "total_packages": 4,
+    "scope": "0/4 counts completed full NW work packages in this current queue. It does not mean zero prior focus, perk, construction, betrothal, or joint-selection actions; those narrower outcomes remain in the package evidence and milestone records.",
     "packages": [
       {
         "id": "NW-LIFE",
@@ -204,7 +205,7 @@
         "id": "NW-FAMILY",
         "name": "marriage and inheritance value with accepted outcomes",
         "status": "in_progress",
-        "latest_evidence": "The first heir 38822 to candidate 38718 proposal resolved to betrothal and was cold recovered, with native alliance result not_allied. R0315 and R0316 Emma child-query attempts failed before a qualified proposal; broader child marriage and long-term value remain open."
+        "latest_evidence": "The first heir 38822 to candidate 38718 proposal resolved to betrothal and was cold recovered, with native alliance result not_allied. R0315 and R0316 Emma attempts failed before a qualified proposal; R0318 reached a private child query RED with zero proposal/date. PR #493 merged the specified-child query admission fix at 62d50524; that source fix is not itself an Emma live outcome. Broader child marriage and long-term value remain open."
       },
       {
         "id": "NW-JOINT",

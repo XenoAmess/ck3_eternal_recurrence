@@ -507,7 +507,7 @@
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
       "new_nonwar_typed_actions": 0,
-      "next_candidate_status": "H3860 continuation candidate not yet prepared or no-launch verified",
+      "next_candidate_status": "Formal Robert H3860 continuation has not yet passed official rebind or no-launch; the separate Emma H3860 v4 private read-only candidate passed those checks",
       "operator_receipt_locator_on_origin_machine": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3778-e695\\run-formal-36\\operator-receipt.json",
       "operator_receipt_sha256": "7EF1F538B74B4BBD96663FE27F6BE5A24C8DB450CC18D6BF8990A496DA7802DE",
       "pair_identity_sha256": null,
