@@ -553,6 +553,21 @@ prisoner-held flag, observed player-gold gain, quote, post native revision
 and post date from each independent receipt; the full ledger remains the
 authority for pending identity. No ransom material result is claimed yet.
 
+R0289 independently read an applied ransom at raw date 53219304: prisoner
+34486 was no longer held and the player's observed gold gain was 5,019,222
+raw against a 5,000,000 raw quote. Its ledger resolved `applied` with no
+duplicate submit. The report is
+`Z:\m6ransom-r0288-cold-receipt-candidate-v1\evidence\R0289\formal-auto-run.json`
+(SHA-256 `63BBCC33F454108C4B9EA8F634DA6902858C737CEECDAF248CE514B36F0805E0`).
+The harness nonetheless stopped RED before a following turn: it appended
+the observation-only material-readback label to the same list used to detect
+semantic mutation by read-only queries. Its before/after native paused frame
+was unchanged. The turn gate now checks only the actual semantic delta plus
+the independent native frame comparison, while keeping the material-readback
+label in the report. Genuine query frame changes remain RED. A new PID must
+still confirm the resolved ledger and consume it on a following turn before
+claiming a complete cold-recovery loop.
+
 ```mermaid
 flowchart TD
     F[Paused player frame] --> W{Every active war source complete?}

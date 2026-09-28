@@ -1481,7 +1481,8 @@ def native_auto_run(
             modal_decision_pending = _player_decision_pending(after_snapshot)
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
-            evidence = _semantic_delta(before, after_snapshot, after)
+            semantic_evidence = _semantic_delta(before, after_snapshot, after)
+            evidence = list(semantic_evidence)
             if step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
                 ransom_result = outcome.get("result")
                 if (not isinstance(ransom_result, dict)
@@ -2389,7 +2390,7 @@ def native_auto_run(
                     )
                     raise
             if turn_class == "query" and (
-                evidence or not _same_native_frame(before, after)
+                semantic_evidence or not _same_native_frame(before, after)
             ):
                 capture_first_failure(
                     stage="postcondition",
