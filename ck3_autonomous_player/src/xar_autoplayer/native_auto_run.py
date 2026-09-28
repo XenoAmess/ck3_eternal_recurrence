@@ -55,6 +55,11 @@ from .family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
     read_family_marriage_ledger,
 )
+from .prisoner_ransom_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_PRISONER_RANSOM_SUBMIT_STEP,
+    RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
+    read_ransom_ledger,
+)
 from .bridge.service import GameplayBridgeService
 from .bridge.war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
 from .bridge.camera_cursor_parking import park_foreground_ck3_cursor
@@ -349,6 +354,7 @@ def native_auto_run(
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
     allow_private_prisoner_collection_observation: bool = False,
+    allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -456,6 +462,9 @@ def native_auto_run(
         raise AgentError(
             "private prisoner collection observation only admits a bounded contract"
         )
+    if (allow_private_prisoner_ransom_formal_trial is True
+            and completion_contract != "bounded"):
+        raise AgentError("private prisoner ransom only admits a bounded contract")
     if allow_private_faction_gift_formal_trial is True and not (
         isinstance(private_faction_round_id, str)
         and private_faction_round_id.startswith("R")
@@ -746,9 +755,11 @@ def native_auto_run(
             else {}
         )
         private_prisoner_driver_options = (
-            {"allow_private_prisoner_collection_query": True}
-            if allow_private_prisoner_collection_observation is True
-            else {}
+            {"allow_private_prisoner_collection_query": True,
+             **({"allow_private_prisoner_ransom_action": True}
+                if allow_private_prisoner_ransom_formal_trial is True else {})}
+            if (allow_private_prisoner_collection_observation is True
+                or allow_private_prisoner_ransom_formal_trial is True) else {}
         )
         ordinary_succession_driver_options = (
             {
@@ -1471,6 +1482,17 @@ def native_auto_run(
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
             evidence = _semantic_delta(before, after_snapshot, after)
+            if step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
+                ransom_result = outcome.get("result")
+                if (not isinstance(ransom_result, dict)
+                        or ransom_result.get("status") == "ambiguous"):
+                    raise AgentError("prisoner ransom receipt lacks material attribution")
+                if ransom_result.get("status") == "applied":
+                    if (ransom_result.get("postcondition_verified") is not True
+                            or ransom_result.get("prisoner_no_longer_held") is not True
+                            or ransom_result.get("material_result") is not True):
+                        raise AgentError("prisoner ransom applied receipt is incomplete")
+                    evidence.append("prisoner_ransom_custody_and_gold_material_readback")
             if (
                 opening_focus_gate is not None
                 and opening_focus_gate["stage"] != "complete"
@@ -1946,6 +1968,37 @@ def native_auto_run(
                 current_attempt["after"] = _public_binding(after)
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
+            if step == PRIVATE_PRISONER_RANSOM_SUBMIT_STEP:
+                if terminal_pending or modal_decision_pending:
+                    raise AgentError("pending prisoner ransom cannot be checkpointed on a decision frame")
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service, driver, spec.profile_dir / "save games",
+                    session_done=session_done, session_state=session_state,
+                    timeout_seconds=min(readiness_timeout,
+                                        max(0.001, run_deadline - time.monotonic())),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                pending = read_ransom_ledger(driver.state_dir)["pending"]
+                played = checkpoint_snapshot.get("played_character")
+                if (not isinstance(pending, dict)
+                        or pending != outcome.get("result")
+                        or pending.get("stage") != "receipt_pending"
+                        or pending.get("pre_date_raw") != checkpoint.get("date_raw")
+                        or pending.get("pre_date_raw") != checkpoint_snapshot.get("date_raw")
+                        or not isinstance(played, dict)
+                        or pending.get("player_character_id") != played.get("character_id")):
+                    raise AgentError("ransom ACK lacks a paired pending checkpoint")
+                counts["checkpoint"] += 1
+                checkpoints.append({"turn_index": turn_index,
+                                    "phase": "prisoner_ransom_submitted_pending",
+                                    "pending_action": copy.deepcopy(pending), **checkpoint})
+                evidence.append("prisoner_ransom_pending_checkpoint_saved")
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
+                current_attempt["after"] = _public_binding(after)
+                eligible_since_checkpoint = 0
+                dirty_gameplay_since_checkpoint = False
             if completion_contract in strict_completion_contracts:
                 try:
                     if (
@@ -2241,6 +2294,7 @@ def native_auto_run(
                 and not war_termination_submission_pending
                 and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
                 and step != PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP
+                and step != PRIVATE_PRISONER_RANSOM_SUBMIT_STEP
                 and step != PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
             ):
                 visible_gameplay_turns += 1
@@ -5499,7 +5553,7 @@ def _turn_class(
         return "terminal"
     if step is None:
         return "terminal" if isinstance(plan, dict) else "gameplay"
-    if step.startswith("query-"):
+    if step.startswith("query-") or step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
         return "query"
     if step == "save-checkpoint":
         return "checkpoint"

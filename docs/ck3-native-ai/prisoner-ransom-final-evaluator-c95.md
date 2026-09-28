@@ -445,3 +445,72 @@ flowchart TD
     G -->|at least one| N[stock shown/scope mismatch to investigate]
     Q -. formal action not qualified .-> A[proposal and material outcome]
 ```
+
+## Bounded formal gold consumer candidate (source only)
+
+The exact `1.19.0.6-steam23530548` script
+`00_prison_interactions.txt` SHA-256
+`3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`
+selects the ordinary `gold` option at authored ordinal 2 when the redirected
+payer can afford `prisoner.ransom_cost_value`. Its `on_accept` calls
+`ransom_interaction_effect`; the exact
+`00_prison_effects.txt` SHA-256
+`F745201EFD827EFF9F4AE8BF61060FE81D1048C47F7C7B487AB5476218D26A66`
+transfers gold from payer to imprisoner, then releases the prisoner. A payer
+may gain an opinion or hook relationship with the released prisoner; neither
+is a gold payment to the player. `current_gold` is an acceptance-time amount,
+so the first controlled policy admits only the fixed ordinary `gold` quote.
+The stock `ai_will_do` has a wartime `factor=0`; that is an AI preference,
+not an `is_shown` or `is_valid` gate. Our candidate evaluates native legality
+and observed treasury benefit separately, retaining this wartime policy
+difference for outcome review.
+
+The opt-in private consumer uses the current paused collection, one quote
+read per prisoner, and the native full WarID participant/successor release
+scan. It considers a prisoner only when the current player is the verified
+jailer; player dynasty is readable; the prisoner is outside that dynasty,
+not the player's child, and has no primary landed title; and every active
+war's completed source scan excludes the prisoner from its generic PoW
+release pairs and primary/first-three candidate sets. A matching FP3 free
+House CB is excluded. This limits known succession and war-exit custody
+costs; ransom, hook, diplomatic, or other future retention value is not
+claimed to be zero. Among eligible ordinary positive gold offers, the
+candidate chooses the highest observed amount, then re-reads the selected
+ordinal so the native submit consumes the most recent same-frame quote.
+Existing non-advance actions retain priority. This narrow policy can submit
+during a war only if the current formal plan otherwise advances time.
+
+The private typed submit binds actor, prisoner, redirected payer, quoted
+amount, quote query sequence, native revision, all eight loaded option flags,
+selected mask, native final Can Send and current answer before sending the
+stock interaction command. Authored ordinal 7 (`invalid`) is never selected.
+Its command ACK is `submitted_verification_pending` only. Before sending,
+the consumer persists an unresolved action record; after ACK it writes the
+pending request and saves a game/driver checkpoint. A later paused frame
+reads the exact prison collection and player gold. Only prisoner absence
+plus a player-gold gain at least equal to the fixed quote is marked applied;
+absence without that gain is ambiguous and remains unresolved. The next
+formal turn consumes that receipt. A cold restart reads the same ledger and
+observes before allowing any new ransom; it never repeats an unresolved
+submission. Gold gain is a near-date co-observation rather than proof that
+no other income occurred, so the live report must retain the source date and
+other actions. No action, material receipt, next-turn consumption or cold
+restore has yet been observed for this candidate. Public prisoner action and
+advertising remain OFF pending those gates.
+
+```mermaid
+flowchart TD
+    F[Paused player frame] --> W{Every active war source complete?}
+    W -->|no| U[Keep value unknown]
+    W -->|yes| C{Outside dynasty, landless, no player-child or war-release match?}
+    C -->|no| D[Retain custody]
+    C -->|yes| Q{Native ordinary gold quote sendable and accepted?}
+    Q -->|no| U
+    Q -->|yes| P{Formal plan would advance time?}
+    P -->|no| D
+    P -->|yes| S[Persist unresolved ID and typed submit]
+    S --> R[ACK is pending only]
+    R -. next frame or cold restore .-> M{Custody absent and gold gained?}
+    M -->|yes| A[Consume applied receipt]
+    M -->|no| X[Pending or ambiguous; no repeat]
+```
