@@ -1,0 +1,56 @@
+{
+  "schema": "xar.ck3.dejure-title-scope-resolution-gate.v1",
+  "status": "STATIC_DYNAMIC_DISPATCH_BOUNDARY_ONLY",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "effect_title_scope_input": {
+    "rva": "0x2E9FB8A",
+    "bytes": "488D8B60020000"
+  },
+  "effect_title_scope_resolver": {
+    "rva": "0x2E9FB98",
+    "target_rva": "0x995CB0",
+    "bytes": "E81361AFFD"
+  },
+  "resolver": {
+    "rva": "0x995CB0",
+    "embedded_scope_payload_offset": {
+      "rva": "0x995CCC",
+      "bytes": "4883C110"
+    },
+    "dynamic_scope_evaluation": {
+      "rva": "0x995CD0",
+      "target_rva": "0x336AB40",
+      "bytes": "E86B4E9D02"
+    },
+    "expected_landed_title_result_tag_5": {
+      "rva": "0x995CD5",
+      "bytes": "66837C243005"
+    },
+    "resolved_title_generation_identity_check": {
+      "rva": "0x995D1E",
+      "bytes": "41394010"
+    }
+  },
+  "dynamic_scope_evaluator": {
+    "rva": "0x336AB40",
+    "scope_node_virtual_slot_30": {
+      "rva": "0x336AC47",
+      "bytes": "FF5030"
+    },
+    "scope_node_virtual_slot_20": {
+      "rva": "0x336AC8B",
+      "bytes": "FF5020"
+    },
+    "transitive_write_set_proven": false
+  },
+  "boundary": {
+    "ck3_launched": false,
+    "effect_or_preview_called": false,
+    "runtime_scope_target_referent_observed": false,
+    "resolver_safe_as_standalone_live_query": false,
+    "reason": "The title resolver calls a dynamic scope evaluator with two indirect virtual dispatches. The transitive write set and valid effect/context lifetime are not proven. A tag-5 result shape does not establish this War's runtime target referent."
+  }
+}
