@@ -69,5 +69,14 @@
     "The previously frozen/black Steam desktop failed the fresh offline visual gate and ToDesk service restart was denied by Windows code 5. User-authorized machine reboot restored a fresh offline frame; post-reboot attempt-03 stopped before launch due runtime-fingerprint drift, then new attempt-04 completed the army read-only query. No CK3 process remained afterward.",
     "Same-frame soldier and AI-base-power totals are observed. The claimed 40/39 player regiment discrepancy was a save-projection transcription error: the exact saved list has 40 unique IDs and 40 rows, so the counts agree at 40/40. The native read-only query still does not expose the ordered live IDs; neither contact timing nor battle victory odds is implied."
   ],
+  "bounded_followup_2026_09_28": {
+    "status": "read_only_continuation_handoff_delivered_exit_decision_open",
+    "document": "docs/ck3-native-ai/h2743-exit-readiness-handoff-2026-09-28.md",
+    "interface": "formal_defender_exit_observation.decision_readiness and continuation_handoff",
+    "exact_native_gap": "ReadWarTerminationTerms supports claim_cb and raiktor_claim_cb only; individual_county_de_jure_cb is unsupported. Production ReadWarTerminationExitTerms is disabled after a prior live crash.",
+    "consumer_boundary": "The existing tactical planner's candidate step is carried as a recoverable handoff requiring its own current-frame revalidation; the observer neither selects an exit nor submits an action.",
+    "gameplay_action_submitted": false,
+    "formal_exit_decision_complete": false
+  },
   "next_step": "Receive only the exact H2825 source files through selective OneDrive synchronization and verify each SHA-256; on a fresh Steam-offline desktop, run a new paired read-only H2825 siege/route/v3/exit observation. The R0264/R0265 risk excerpt is now in master, but CB-specific current material terms and whole-war outcomes remain unobserved. Do not reuse the R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
 }

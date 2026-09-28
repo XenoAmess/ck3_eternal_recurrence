@@ -128,6 +128,22 @@ def observe_primary_defender_de_jure_exit(
             "directed_truce": None,
             "continue_war_risk": None,
         },
+        "decision_readiness": {
+            "status": "exit_selection_blocked",
+            "legal_outcomes_now": [
+                name for name in ("victory", "white_peace", "surrender")
+                if results[name]["native_legal_now"]
+                and results[name]["recipient_accepts_now"] is True
+            ],
+            "blocking_observations": [
+                "de_jure_cb_current_title_and_vassal_effects",
+                "same_frame_signed_actor_and_opponent_resource_deltas",
+                "same_frame_directed_truce",
+                "bounded_continue_war_loss_and_contact_risk",
+            ],
+            "generic_claim_cb_terms_query_applicable": False,
+            "historical_surrender_result_reusable_as_current_terms": False,
+        },
         "recommended_outcome": None,
         "action_literal": None,
     }

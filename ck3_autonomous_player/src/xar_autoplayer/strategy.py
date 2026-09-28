@@ -7176,6 +7176,25 @@ def choose_one_life_turn(
     plan = _annotate_active_combat_resume_input(plan, snapshot)
     defender_exit_observation = observe_primary_defender_de_jure_exit(snapshot)
     if defender_exit_observation is not None:
+        if defender_exit_observation.get("status") == "native_legality_observed_material_comparison_open":
+            candidate_step = plan.get("selected_step")
+            war_id = defender_exit_observation["frame"]["war_id"]
+            if candidate_step in {
+                surrender_war_step(war_id), offer_white_peace_step(war_id)
+            }:
+                candidate_step = None
+            defender_exit_observation = {
+                **defender_exit_observation,
+                "continuation_handoff": {
+                    "status": (
+                        "existing_tactical_candidate_requires_revalidation"
+                        if isinstance(candidate_step, str) else "no_tactical_candidate"
+                    ),
+                    "candidate_selected_step": candidate_step,
+                    "current_frame_revalidation_required": True,
+                    "exit_action_authorized": False,
+                },
+            }
         plan = {**plan, "formal_defender_exit_observation": defender_exit_observation}
     if not isinstance(formal, dict):
         return plan

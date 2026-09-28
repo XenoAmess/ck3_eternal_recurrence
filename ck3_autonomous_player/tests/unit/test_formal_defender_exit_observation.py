@@ -43,6 +43,26 @@ def _h2743_snapshot() -> dict[str, object]:
     }
 
 
+def _h2743_snapshot_with_current_options() -> dict[str, object]:
+    snapshot = _h2743_snapshot()
+    historical = json.loads(EVIDENCE.read_text(encoding="utf-8"))
+    options = copy.deepcopy(historical["war_termination_options"])
+    options["player_relative_war_score"] = -12
+    options["attacker_war_score"] = 12
+    options["defender_war_score"] = -12
+    options["war_score_breakdown"]["occupation"] = 36
+    snapshot["war_termination_options"] = [{
+        **options,
+        "query_sequence": 1,
+        "queried_snapshot_id": snapshot["snapshot_id"],
+        "queried_revision": snapshot["revision"],
+        "queried_native_revision": snapshot["native_revision"],
+        "queried_connection_generation": 1,
+        "episode_run_id": snapshot["episode_run_id"],
+    }]
+    return snapshot
+
+
 class FormalDefenderExitObservationTests(unittest.TestCase):
     def test_h2743_excerpt_requires_its_own_native_options(self) -> None:
         result = observe_primary_defender_de_jure_exit(_h2743_snapshot())
@@ -72,23 +92,9 @@ class FormalDefenderExitObservationTests(unittest.TestCase):
         self.assertIsNone(result["action_literal"])
 
     def test_current_frame_legality_does_not_fill_unknown_material_terms(self) -> None:
-        snapshot = _h2743_snapshot()
-        historical = json.loads(EVIDENCE.read_text(encoding="utf-8"))
-        options = copy.deepcopy(historical["war_termination_options"])
-        options["player_relative_war_score"] = -12
-        options["attacker_war_score"] = 12
-        options["defender_war_score"] = -12
-        options["war_score_breakdown"]["occupation"] = 36
-        snapshot["war_termination_options"] = [{
-            **options,
-            "query_sequence": 1,
-            "queried_snapshot_id": snapshot["snapshot_id"],
-            "queried_revision": snapshot["revision"],
-            "queried_native_revision": snapshot["native_revision"],
-            "queried_connection_generation": 1,
-            "episode_run_id": snapshot["episode_run_id"],
-        }]
-        result = observe_primary_defender_de_jure_exit(snapshot)
+        result = observe_primary_defender_de_jure_exit(
+            _h2743_snapshot_with_current_options()
+        )
         self.assertEqual(
             result["status"],
             "native_legality_observed_material_comparison_open",
@@ -96,8 +102,54 @@ class FormalDefenderExitObservationTests(unittest.TestCase):
         self.assertTrue(result["options"]["surrender"]["native_legal_now"])
         self.assertFalse(result["options"]["surrender"]["material_terms_observable"])
         self.assertIsNone(result["material_terms"]["signed_actor_and_opponent_resources"])
+        self.assertEqual(result["decision_readiness"]["status"], "exit_selection_blocked")
+        self.assertEqual(result["decision_readiness"]["legal_outcomes_now"], ["surrender"])
+        self.assertFalse(result["decision_readiness"]["generic_claim_cb_terms_query_applicable"])
         self.assertIsNone(result["recommended_outcome"])
         self.assertIsNone(result["action_literal"])
+
+    def test_formal_turn_preserves_bounded_tactical_candidate_without_exit_authority(self) -> None:
+        original_plan = {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_route",
+            "selected_step": "advance-route-contact-horizon-v1-candidate",
+        }
+        with (
+            patch.object(strategy, "_choose_one_life_turn_core", return_value=original_plan),
+            patch.object(strategy, "_primary_defender_siege_forecast_ingress", side_effect=lambda plan, **_: plan),
+            patch.object(strategy, "_general_battle_forecast_ingress", side_effect=lambda plan, **_: plan),
+            patch.object(strategy, "_annotate_active_combat_resume_input", side_effect=lambda plan, _: plan),
+        ):
+            plan = strategy.choose_one_life_turn(
+                [], snapshot=_h2743_snapshot_with_current_options(),
+                action_steps=[original_plan["selected_step"]],
+            )
+        self.assertEqual(plan["selected_step"], original_plan["selected_step"])
+        handoff = plan["formal_defender_exit_observation"]["continuation_handoff"]
+        self.assertEqual(handoff["candidate_selected_step"], original_plan["selected_step"])
+        self.assertTrue(handoff["current_frame_revalidation_required"])
+        self.assertFalse(handoff["exit_action_authorized"])
+
+    def test_terminal_step_cannot_be_laundered_as_continuation(self) -> None:
+        original_plan = {
+            "policy": "one-life-turn-v1",
+            "phase": "untrusted_terminal_candidate",
+            "selected_step": "surrender-war-16777231",
+        }
+        with (
+            patch.object(strategy, "_choose_one_life_turn_core", return_value=original_plan),
+            patch.object(strategy, "_primary_defender_siege_forecast_ingress", side_effect=lambda plan, **_: plan),
+            patch.object(strategy, "_general_battle_forecast_ingress", side_effect=lambda plan, **_: plan),
+            patch.object(strategy, "_annotate_active_combat_resume_input", side_effect=lambda plan, _: plan),
+        ):
+            plan = strategy.choose_one_life_turn(
+                [], snapshot=_h2743_snapshot_with_current_options(),
+                action_steps=[original_plan["selected_step"]],
+            )
+        handoff = plan["formal_defender_exit_observation"]["continuation_handoff"]
+        self.assertEqual(handoff["status"], "no_tactical_candidate")
+        self.assertIsNone(handoff["candidate_selected_step"])
+        self.assertFalse(handoff["exit_action_authorized"])
 
     def test_formal_turn_attaches_read_only_observation_to_tactical_plan(self) -> None:
         original_plan = {
