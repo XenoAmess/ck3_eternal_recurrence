@@ -228,14 +228,38 @@ def main() -> None:
                                         {"subject_army_id": 18, "expected_revision": revision},
                                         args.recorder_workdir, frozen, args.request_seconds)
                 control = body.get("battle_control_snapshot") or {}
-                require(control.get("status") == "available" and
-                        control.get("combat_id") == frozen["expected_combat_id"],
-                        "original CombatID no longer available")
-                result.update({"status": "observed-await-visible-mark",
-                               "native_response": receipt,
-                               "native_kind": "control",
-                               "queried_revision": body.get("queried_revision"),
-                               "battle_phase": control.get("phase")})
+                result["control_probe"] = receipt
+                if control.get("status") == "available":
+                    require(control.get("combat_id") == frozen["expected_combat_id"],
+                            "available combat is not original CombatID")
+                    result.update({"status": "observed-await-visible-mark",
+                                   "native_response": receipt,
+                                   "native_kind": "control",
+                                   "queried_revision": body.get("queried_revision"),
+                                   "battle_phase": control.get("phase")})
+                else:
+                    # Early normal terminal can precede the historical day-32
+                    # boundary. Keep the unavailable control response, then
+                    # query the writer at that exact paused revision.
+                    require(body.get("queried_revision") == revision,
+                            "control probe changed the paused revision")
+                    body, receipt, _ = call(args.session_output, prefix + "-early-terminal",
+                                            "ck3_query_battle_terminal_transition_v1",
+                                            {"prior_combat_id": frozen["expected_combat_id"],
+                                             "subject_public_cunit_id": 18,
+                                             "expected_revision": revision},
+                                            args.recorder_workdir, frozen, args.request_seconds)
+                    terminal = body.get("battle_terminal_transition") or {}
+                    prior = terminal.get("prior") or {}
+                    result.update({"native_response": receipt,
+                                   "native_kind": "report",
+                                   "queried_revision": body.get("queried_revision"),
+                                   "terminal_kind": prior.get("terminal_kind")})
+                    if prior.get("terminal_kind") in ("normal_result", "no_normal_result"):
+                        result["writer"] = validate_writer(terminal, frozen)
+                        result["status"] = "new-run-writer-captured-await-after-panel"
+                    else:
+                        result["status"] = "observed-await-visible-mark"
             else:
                 body, receipt, _ = call(args.session_output, prefix + "-terminal",
                                         "ck3_query_battle_terminal_transition_v1",
