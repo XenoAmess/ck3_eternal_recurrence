@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from capture_session import import_ui_saved_gui_block
+from capture_session import gui_scale_disk_readback, import_ui_saved_gui_block
 
 
 def sha(raw: bytes) -> str:
@@ -95,6 +95,17 @@ class UiGuiImportTest(unittest.TestCase):
                              "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593")
             self.assertEqual(target.read_bytes(), self.template.encode() + self.block)
             self.assertFalse(row["recording_authorized_by_this_receipt"])
+            default_gate = gui_scale_disk_readback(target, "1.0", "candidate-default")
+            self.assertEqual(default_gate["observed_scale_serialized"], "1")
+            self.assertTrue(default_gate["ratio_equivalent_to_request"])
+            self.assertFalse(default_gate["disk_gate_passed"])
+            opt_in_gate = gui_scale_disk_readback(
+                target, "1.0", "candidate-with-reviewed-import",
+                allow_native_ui_one=True)
+            self.assertEqual(opt_in_gate["observed_scale_token"], 'value="1"')
+            self.assertEqual(opt_in_gate["admission"], "explicit_native_ui_one")
+            self.assertTrue(opt_in_gate["disk_gate_passed"])
+            self.assertFalse(opt_in_gate["recording_authorized_by_this_gate"])
 
     def test_rejects_unreviewed_requested_scale(self) -> None:
         source = self.template.encode() + self.block
