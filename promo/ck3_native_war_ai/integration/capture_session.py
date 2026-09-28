@@ -48,6 +48,22 @@ def identity(path: Path) -> dict:
     return {"path": str(path.resolve()), "bytes": path.stat().st_size, "sha256": digest}
 
 
+A04_UI_SETTINGS_BYTES = 6891
+A04_UI_SETTINGS_SHA256 = "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D"
+A04_UI_GUI_BLOCK_SHA256 = "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593"
+A04_UI_GUI_BLOCK_START = 6642
+A04_UI_GUI_BLOCK_END = 6696
+A04_UI_PRESERVATION_SHA256 = "69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779"
+A04_UI_HOT_READBACK_SHA256 = "D3F1837AB33FD5541CA2696FF51DD27A114FEACFD332431D2CAC48691D68D337"
+A04_UI_IMAGE_IDENTITIES = {
+    "graphics-tab-click-a01.png": (3005761, "F02C92BFE223D3BCD24873F61588536B9D3EF055AFCA8AA4B5D74872F82E8363"),
+    "scale-dropdown-click-a01.png": (2984451, "6DA98F13104402525BEBFE678839F143F16E17F4981B30145F2DC5EC07EB365E"),
+    "scale-100-select-a01.png": (3070090, "5BFDC23C7A598678768BDCADA550765DC468D1DA90337B29C8D0A7E0125C046F"),
+    "scale-save-close-a01.png": (3610940, "BEB4268D0E3C4915BD05C0CADDD64C77E0A789339ABD65DA535F6E926909A793"),
+    "ui-after-save-a01.png": (4050867, "CE2620160563D24B0569FEDA0C0CA3E39DC7C85AB89D11474061FDE217CD596B"),
+}
+
+
 def write_new(path: Path, value: object) -> None:
     with path.open("x", encoding="utf-8", newline="\n") as target:
         json.dump(value, target, ensure_ascii=False, indent=2)
@@ -346,6 +362,112 @@ async def service_requests(directory: Path, *, call, stopped: threading.Event,
     })
 
 
+def validate_a04_ui_gui_source_binding(args: argparse.Namespace) -> dict | None:
+    """Bind this project's reviewed a04 UI SaveAndClose evidence without a game launch.
+
+    Callers cannot submit expected hashes on the command line.  This is only a
+    byte/source admission for a fresh a05 profile, never a visual or recorder gate.
+    """
+    enabled = getattr(args, "import_a04_ui_gui_100", False)
+    snapshot_path = getattr(args, "a04_ui_settings_snapshot", None)
+    preservation_path = getattr(args, "a04_ui_preservation_receipt", None)
+    require(type(enabled) is bool, "A04 UI import opt-in must be boolean")
+    if not enabled:
+        require(snapshot_path is None and preservation_path is None,
+                "A04 UI source paths require --import-a04-ui-gui-100")
+        return None
+    require(getattr(args, "gui_scale", None) == "1.0",
+            "A04 UI import requires explicit --gui-scale 1.0")
+    require(getattr(args, "checkpoint_save", None) is not None and
+            getattr(args, "checkpoint_receipt", None) is not None,
+            "A04 UI import requires a source-bound checkpoint pair")
+    require(not getattr(args, "record_debug_desktop", False),
+            "A04 UI import cannot start a debug recorder before visual review")
+    require(isinstance(snapshot_path, Path) and isinstance(preservation_path, Path),
+            "A04 UI import needs both frozen source and preservation receipt paths")
+    for path in (snapshot_path, preservation_path):
+        require(all(not part.is_symlink() for part in (path, *path.parents)),
+                "A04 UI evidence paths must not contain symlinks")
+        require(path.is_file(), "A04 UI evidence file is missing")
+    source = identity(snapshot_path)
+    require((source["bytes"], source["sha256"]) ==
+            (A04_UI_SETTINGS_BYTES, A04_UI_SETTINGS_SHA256),
+            "A04 UI settings differ from the frozen full snapshot")
+    source_bytes = snapshot_path.read_bytes()
+    gui_block = source_bytes[A04_UI_GUI_BLOCK_START:A04_UI_GUI_BLOCK_END]
+    require(len(source_bytes) == A04_UI_SETTINGS_BYTES and
+            hashlib.sha256(source_bytes).hexdigest().upper() == A04_UI_SETTINGS_SHA256 and
+            source_bytes.count(b'"GUI"=') == 1 and
+            len(gui_block) == A04_UI_GUI_BLOCK_END - A04_UI_GUI_BLOCK_START and
+            hashlib.sha256(gui_block).hexdigest().upper() == A04_UI_GUI_BLOCK_SHA256,
+            "A04 UI exact GUI block differs from the frozen 54-byte source")
+    preservation = identity(preservation_path)
+    require(preservation["sha256"] == A04_UI_PRESERVATION_SHA256,
+            "A04 UI preservation receipt differs from the reviewed bytes")
+    receipt = json.loads(preservation_path.read_text(encoding="utf-8"))
+    require(receipt.get("schema") == "xar.war-promo.native-ui-settings-preservation/v1" and
+            receipt.get("source_stable_before_and_after_copy") is True and
+            receipt.get("whole_settings_copy_used_as_new_profile") is False and
+            receipt.get("gui_import_requires_separate_review") is True and
+            receipt.get("a04_capture_status") == "RED",
+            "A04 UI preservation contract is missing or changed")
+    require(receipt.get("preserved") == source,
+            "A04 UI preserved settings reference differs from supplied source")
+    original_source = receipt.get("source") or {}
+    require((original_source.get("bytes"), original_source.get("sha256")) ==
+            (A04_UI_SETTINGS_BYTES, A04_UI_SETTINGS_SHA256),
+            "A04 UI original settings identity differs")
+
+    hot = receipt.get("hot_readback") or {}
+    hot_path = Path(hot.get("path", ""))
+    require(all(not part.is_symlink() for part in (hot_path, *hot_path.parents)),
+            "A04 UI hot readback path contains a symlink")
+    hot_identity = identity(hot_path)
+    require(hot_identity == hot and hot_identity["sha256"] == A04_UI_HOT_READBACK_SHA256,
+            "A04 UI hot readback differs from the reviewed receipt")
+    hot_result = json.loads(hot_path.read_text(encoding="utf-8"))
+    body = hot_result.get("body") or {}
+    settings = body.get("settings") or {}
+    require(hot_result.get("result") == "RED" and
+            body.get("phase") == "hot-service-after-native-UI-save" and
+            body.get("requested_scale") == "1.0" and
+            body.get("observed_scale") == "1" and
+            body.get("disk_gate_passed") is False and
+            (settings.get("bytes"), settings.get("sha256")) ==
+            (A04_UI_SETTINGS_BYTES, A04_UI_SETTINGS_SHA256),
+            "A04 UI hot readback does not bind the native 100% setting")
+
+    image_rows = receipt.get("original_ui_images")
+    require(isinstance(image_rows, list) and len(image_rows) == len(A04_UI_IMAGE_IDENTITIES),
+            "A04 UI original screenshot set is missing or ambiguous")
+    images = {}
+    for row in image_rows:
+        require(isinstance(row, dict) and isinstance(row.get("path"), str),
+                "A04 UI screenshot identity is malformed")
+        path = Path(row["path"])
+        name = path.name
+        require(name in A04_UI_IMAGE_IDENTITIES and name not in images,
+                "A04 UI screenshot name is unexpected or repeated")
+        require(all(not part.is_symlink() for part in (path, *path.parents)),
+                "A04 UI screenshot path contains a symlink")
+        actual = identity(path)
+        require(actual == row and (actual["bytes"], actual["sha256"]) ==
+                A04_UI_IMAGE_IDENTITIES[name],
+                "A04 UI original screenshot bytes differ")
+        images[name] = actual
+    require(set(images) == set(A04_UI_IMAGE_IDENTITIES),
+            "A04 UI screenshot set is incomplete")
+    return {"schema": "war-film-a05-a04-ui-source-binding/v1",
+            "opt_in": True, "source_snapshot": source,
+            "expected_source_sha256": A04_UI_SETTINGS_SHA256,
+            "expected_gui_block_sha256": A04_UI_GUI_BLOCK_SHA256,
+            "preservation_receipt": preservation, "hot_readback": hot_identity,
+            "original_ui_images": images,
+            "a04_capture_status": "RED", "a05_runtime_scale_proven": False,
+            "a05_visual_geometry_reviewed": False,
+            "recording_authorized_by_this_binding": False}
+
+
 def preflight(args: argparse.Namespace) -> dict:
     from xar_autoplayer.environment import ck3_process_inventory, make_spec
     from xar_autoplayer.runtime import NativeBridgeLaunchConfig, validate_native_bridge_launch_config
@@ -359,6 +481,7 @@ def preflight(args: argparse.Namespace) -> dict:
     require(versions["mcp"] == "2.0.0", "MCP SDK must be 2.0.0")
     spec = make_spec(state_dir=args.state_dir, game_dir=args.game_dir)
     checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)
+    a04_ui_binding = validate_a04_ui_gui_source_binding(args)
     executable = identity(spec.game_exe)
     require(executable["sha256"] == EXACT_SHA, "Exact CK3 build mismatch")
     validate_native_bridge_launch_config(NativeBridgeLaunchConfig(
@@ -437,6 +560,7 @@ def preflight(args: argparse.Namespace) -> dict:
         "launch_mode": "managed-frontend-first-checkpoint" if checkpoint else "fresh-1066-bookmark",
         "record_debug_desktop": args.record_debug_desktop,
         "gui_scale_requested": args.gui_scale,
+        "a04_ui_gui_source_binding": a04_ui_binding,
         "process_inventory": processes, "state_dir": str(args.state_dir),
         "pipe_name": args.pipe_name,
         "codex_global_registration_required": False,
@@ -485,9 +609,8 @@ def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
                               requested_scale: str) -> dict:
     """Prepare one fresh profile from vanilla bytes plus an exact UI-saved GUI block.
 
-    This candidate is deliberately not wired to the capture CLI.  An actual
-    UI-saved snapshot and original screenshot must be reviewed before a05 can
-    opt in; the caller must also have proved its state directory is new.
+    The a05 CLI may call this only after binding the frozen source, UI images,
+    and hot readback.  The caller must also prove its state directory is new.
     """
     receipt_path = output_dir / "gui-settings-ui-block-import.json"
     require(output_dir.is_dir() and not output_dir.is_symlink() and
@@ -834,7 +957,45 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
         raise receipt_error.with_traceback(receipt_error.__traceback__)
 
 
-def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
+def prepare_a05_ui_settings(settings_path: Path, vanilla_settings: str,
+                            output_dir: Path, binding: dict) -> dict:
+    """Publish one a05 profile's settings using the project-frozen a04 GUI block."""
+    require(binding.get("schema") == "war-film-a05-a04-ui-source-binding/v1" and
+            binding.get("expected_source_sha256") == A04_UI_SETTINGS_SHA256 and
+            binding.get("expected_gui_block_sha256") == A04_UI_GUI_BLOCK_SHA256 and
+            binding.get("source_snapshot", {}).get("sha256") == A04_UI_SETTINGS_SHA256 and
+            binding.get("preservation_receipt", {}).get("sha256") == A04_UI_PRESERVATION_SHA256 and
+            binding.get("hot_readback", {}).get("sha256") == A04_UI_HOT_READBACK_SHA256,
+            "A05 profile lacks the reviewed a04 UI source and evidence binding")
+    source_path = Path(binding["source_snapshot"]["path"])
+    imported = import_ui_saved_gui_block(
+        settings_path, vanilla_settings, source_path,
+        A04_UI_SETTINGS_SHA256, output_dir,
+        expected_gui_block_sha256=A04_UI_GUI_BLOCK_SHA256,
+        requested_scale="1.0")
+    prepared = (output_dir / "gui-settings-ui-import-prepared.pdx.txt").read_bytes()
+    require(settings_path.read_bytes() == prepared and
+            imported["prepared_settings"]["sha256"] ==
+            hashlib.sha256(prepared).hexdigest().upper(),
+            "A05 imported profile differs from frozen prepared bytes")
+    result = {
+        "requested_scale": "1.0", "settings": imported["prepared_settings"],
+        "expected_utf8_sha256": imported["prepared_settings"]["sha256"],
+        "exact_utf8_disk_match": True,
+        "text_readback_matches": settings_path.read_bytes().decode("utf-8") ==
+                                 prepared.decode("utf-8"),
+        "profile_settings_origin": "reviewed_a04_ui_gui_block_only",
+        "ui_import_receipt": identity(output_dir / "gui-settings-ui-block-import.json"),
+        "ui_source_preservation_receipt": binding["preservation_receipt"],
+        "runtime_scale_proven": False, "visual_geometry_reviewed": False,
+        "recording_authorized_by_prelaunch": False,
+    }
+    require(result["text_readback_matches"], "A05 imported settings text readback differs")
+    return result
+
+
+def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None,
+                    a04_ui_binding: dict | None = None) -> tuple[object, dict]:
     from xar_autoplayer.environment import make_spec, render_settings
     from xar_autoplayer.rules import declared_vanilla_rule_defaults, render_presets
     from xar_autoplayer.bridge.succession_transition_contract import (
@@ -849,8 +1010,13 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) ->
     presets = render_presets({"profile": [{"rule": r, "setting": s} for r, s in rules], "ironman": False})
     (spec.profile_dir / "player/game_rules/presets.txt").write_text(presets, encoding="utf-8")
     settings_path = spec.profile_dir / "pdx_settings.txt"
-    write_new(args.output_dir / "gui-settings-prelaunch.json",
-              write_profile_settings(settings_path, render_settings(), args.gui_scale))
+    if a04_ui_binding is None:
+        settings_prelaunch = write_profile_settings(settings_path, render_settings(), args.gui_scale)
+    else:
+        require(args.gui_scale == "1.0", "A05 profile needs explicit 1.0 capture request")
+        settings_prelaunch = prepare_a05_ui_settings(
+            settings_path, render_settings(), args.output_dir, a04_ui_binding)
+    write_new(args.output_dir / "gui-settings-prelaunch.json", settings_prelaunch)
     (spec.profile_dir / "tutorial.txt").write_text('last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n', encoding="utf-8")
     if args.shader_cache_source is not None:
         source_cache = args.shader_cache_source.resolve()
@@ -909,15 +1075,24 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     require(identity(screenshot) == receipt["screenshot"], "Steam screenshot identity changed")
     observed = datetime.fromisoformat(receipt["observed_at"])
     require(0 <= (datetime.now(timezone.utc) - observed).total_seconds() <= 900, "Steam offline receipt stale")
+    a04_ui_binding = checked.get("a04_ui_gui_source_binding")
+    require(validate_a04_ui_gui_source_binding(args) == a04_ui_binding,
+            "A04 UI source or evidence changed after no-launch preflight")
+    allow_native_ui_one = a04_ui_binding is not None
     run = allocate_live_run_id("vanilla")
     write_identity_receipt(args.output_dir, (run,))
     checkpoint = checked.get("checkpoint_source")
-    spec, lifecycle = prepare_profile(args, checkpoint)
+    try:
+        spec, lifecycle = prepare_profile(args, checkpoint, a04_ui_binding)
+    except Exception as error:
+        record_live_run_status(run, "completed-red", reason=str(error))
+        raise
     settings_path = spec.profile_dir / "pdx_settings.txt"
     try:
         require_gui_scale_disk_gate(
             settings_path, args.gui_scale, "before-native-session",
-            args.output_dir / "gui-settings-before-native-session.json")
+            args.output_dir / "gui-settings-before-native-session.json",
+            allow_native_ui_one=allow_native_ui_one)
     except Exception as error:
         record_live_run_status(run, "completed-red", reason=str(error))
         raise
@@ -1013,7 +1188,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     write_new(args.output_dir / "initial-snapshot.json", snapshot)
                     require_gui_scale_disk_gate(
                         settings_path, args.gui_scale, "postmap-before-capture",
-                        args.output_dir / "gui-settings-postmap.json")
+                        args.output_dir / "gui-settings-postmap.json",
+                        allow_native_ui_one=allow_native_ui_one)
                     load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
                     require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
                     from PIL import ImageGrab
@@ -1025,7 +1201,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     write_new(args.output_dir / "final-snapshot.json", final)
                     require_gui_scale_disk_gate(
                         settings_path, args.gui_scale, "posthold-before-service",
-                        args.output_dir / "gui-settings-posthold.json")
+                        args.output_dir / "gui-settings-posthold.json",
+                        allow_native_ui_one=allow_native_ui_one)
                     ImageGrab.grab().save(args.output_dir / "map-end.png")
                     worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
                                               "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
@@ -1059,7 +1236,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                         private_ai_reentry_call=(lambda request: private_ai_reentry_readback(
                             request, driver=driver)) if args.enable_private_ai_reentry_observer else None,
                         gui_scale_readback=(lambda: gui_scale_disk_readback(
-                            settings_path, args.gui_scale, "hot-service-after-native-UI-save"))
+                            settings_path, args.gui_scale, "hot-service-after-native-UI-save",
+                            allow_native_ui_one=allow_native_ui_one))
                             if args.gui_scale is not None else None,
                     )
 
@@ -1084,7 +1262,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
             before_final_launch = (
                 lambda current_spec: reseed_gui_scale_after_warmup(
                     current_spec.profile_dir / "pdx_settings.txt", args.gui_scale,
-                    args.output_dir)
+                    args.output_dir, allow_native_ui_one=allow_native_ui_one)
             ) if checkpoint is not None and args.gui_scale is not None else None
             session_result = native_session(
                 # Startup, map publication and post-ready pump have separate waits.
@@ -1171,6 +1349,12 @@ def main() -> int:
                         help="Per frontend readiness wait; checkpoint map wait is twice this value")
     parser.add_argument("--gui-scale", choices=("1.0",),
                         help="Set only this new isolated capture profile's CK3 GUI scale before launch")
+    parser.add_argument("--import-a04-ui-gui-100", action="store_true",
+                        help="Explicit a05 opt-in: import only the reviewed a04 UI-saved GUI block into a new profile")
+    parser.add_argument("--a04-ui-settings-snapshot", type=Path,
+                        help="Frozen full a04 UI SaveAndClose settings copy; project SHA is fixed in this adapter")
+    parser.add_argument("--a04-ui-preservation-receipt", type=Path,
+                        help="Frozen a04 UI screenshot and hot-readback preservation receipt; project SHA is fixed")
     parser.add_argument("--hold-seconds", type=float, default=60)
     parser.add_argument("--shader-cache-source", type=Path, help="Reuse only a prior exact-build shadercache")
     parser.add_argument("--recovery-seconds", type=float, default=1800, help="Keep the same MCP owner available after Python failure")
