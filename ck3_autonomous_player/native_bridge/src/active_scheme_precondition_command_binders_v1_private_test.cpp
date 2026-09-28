@@ -383,10 +383,27 @@ void TestScheme10GenerationZeroCharacterIds() {
       bound.state, {77, 77}, Request(fixture.base), precondition, failure));
   Require(precondition.available && precondition.actor_character_id == actor &&
           precondition.target_id == target && precondition.can_start_scheme &&
-          fixture.submits == 0);
+          fixture.submits == 0 &&
+          bound.state.precondition_failure_stage.empty());
 }
 
 void TestScheme10TypedRedAndSingleSubmit() {
+  {
+    Scheme10Fixture fixture{};
+    Scheme10Bound bound{};
+    BindScheme10(fixture, bound);
+    auto request = Request(fixture.base);
+    request.target_id = kTarget + 1;
+    ActiveSchemeSemanticActionV1PrivatePrecondition precondition{};
+    ActiveSchemePreconditionCommandBindersV1PrivateFailure failure{};
+    Require(!CaptureActiveSchemePreconditionCommandPreconditionV1Private(
+        bound.state, {88, 88}, request, precondition, failure));
+    Require(failure ==
+                ActiveSchemePreconditionCommandBindersV1PrivateFailure::
+                    native_precondition_red &&
+            bound.state.precondition_failure_stage == "target_identity" &&
+            fixture.submits == 0);
+  }
   {
     Scheme10Fixture fixture{};
     fixture.validator_result = false;
@@ -416,6 +433,7 @@ void TestScheme10TypedRedAndSingleSubmit() {
     Require(failure ==
             ActiveSchemePreconditionCommandBindersV1PrivateFailure::
                 native_precondition_red);
+    Require(bound.state.precondition_failure_stage == "context_options");
     Require(fixture.submits == 0);
   }
   {
@@ -430,6 +448,7 @@ void TestScheme10TypedRedAndSingleSubmit() {
     Require(failure ==
             ActiveSchemePreconditionCommandBindersV1PrivateFailure::
                 native_precondition_red);
+    Require(bound.state.precondition_failure_stage == "context_release");
   }
   {
     Scheme10Fixture fixture{};

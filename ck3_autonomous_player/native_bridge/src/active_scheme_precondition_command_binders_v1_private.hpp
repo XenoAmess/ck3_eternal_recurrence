@@ -174,6 +174,9 @@ struct ActiveSchemePreconditionCommandBindersV1PrivateState {
   ActiveSchemePreconditionCommandBindersV1PrivateOperations operations{};
   ActiveSchemeStateV1PrivateSourceAccess source_access{};
   ActiveSchemeSemanticActionV1PrivateRequest armed_request{};
+  // Transient diagnostic for a failed paused precondition. No native pointer
+  // or game state is retained after the owning-thread query.
+  std::string_view precondition_failure_stage{};
   alignas(8) std::array<std::byte, kActiveSchemeNativeContextSize>
       context_storage{};
   alignas(8) std::array<std::byte, kActiveSchemeNativeCommandSize>
