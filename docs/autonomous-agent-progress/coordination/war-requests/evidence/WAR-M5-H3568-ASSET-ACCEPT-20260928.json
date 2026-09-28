@@ -1,0 +1,60 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3568-rebound-asset-accept.v1",
+  "created_at_utc": "2026-09-28T09:35:27Z",
+  "status": "accepted_for_exact_seven_file_transfer_only",
+  "owner": "r0266_resume",
+  "source_addendum_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-ADDENDUM-H3547-REBIND-v1.json",
+  "source_addendum_sha256": "88137CC4AD9E8597090455F45082A5511E54AEE49C3F285352593CE09F0CBCB0",
+  "source_response_sha256": "AF137DB4B64A1C9E7D0E93B3174344C3710231E813189712824FDEB5B0DE1B9D",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "frame_identity": {
+    "checkpoint": "H3568",
+    "history_index": 3568,
+    "date_raw": 53219304,
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id_to_recheck": 16777231,
+    "source_round": "R0296",
+    "r0298_new_final_pair_claimed_by_addendum": false
+  },
+  "accepted_files": [
+    {
+      "file": "H3568-rebound-v1-xar_checkpoint.ck3",
+      "bytes": 78455296,
+      "sha256": "9C960CA0063AC4771B457A2CD5A5D320E2DD7536553167004D54E780B83CF4A9"
+    },
+    {
+      "file": "H3568-rebound-v1-driver-state.json",
+      "bytes": 89110883,
+      "sha256": "27703386647381B0BEEA8DDDC1B034C43F0ED5C66EA0F956CAE9AAB5430A837A"
+    },
+    {
+      "file": "H3568-rebound-v1-first-heir-marriage-formal-v1.json",
+      "bytes": 2740,
+      "sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3"
+    },
+    {
+      "file": "H3568-rebound-v1-player-prisoner-ransom-formal-v1.json",
+      "bytes": 1281,
+      "sha256": "861CC2F7CF95E36B6DAE068C7B25413BC53D7F7A6A48CE95E21F555994062398"
+    },
+    {
+      "file": "H3568-rebound-v1-rebind-receipt.json",
+      "bytes": 4165,
+      "sha256": "50294FF18A4517604CFEA5A7029F47BC30893ABDA3320339F18971F8FCB5601F"
+    },
+    {
+      "file": "H3568-rebound-v1-no-launch-preflight.json",
+      "bytes": 4110,
+      "sha256": "4272DFF7CDABEF41C57B4408C70BCB7970242C958ADEB92DE221E6156CF13BC4"
+    },
+    {
+      "file": "H3568-rebound-v1-candidate-index.json",
+      "bytes": 4838,
+      "sha256": "32D90BD8C81F19E80B41603D28887487C54AD45EF71F07D03F6B83C3D79BFC45"
+    }
+  ],
+  "transfer_boundary": "Only these seven files are accepted. The source raw driver 07A5, mutable R0298 driver 962A, DLL, injector and unrelated OneDrive files are excluded. A new R0298 durable frame, if any, needs a separate identity and acceptance.",
+  "verification_boundary": "Transfer alone does not establish receiver-side official pairing, a same-frame WarID or a war-cash amount. Receiver must independently hash all seven and run isolated official rebind/no-launch after local CK3 and recorder cleanup. The resolved 34486 ransom ledger is continuity evidence, not pending war spending or a war cash receipt.",
+  "cash_boundary": "Five wartime Q100000 fields remain null; no H3568 same-frame safe producer, horizon or player war policy reserve has been demonstrated. This acceptance authorizes no gameplay or M5 spend."
+}

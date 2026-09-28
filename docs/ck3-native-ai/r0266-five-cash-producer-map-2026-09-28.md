@@ -1,6 +1,6 @@
 # R0266 / M5：五类现金输入的最小生产者和失效门禁
 
-状态：**静态设计候选；没有 Robert 的新增现金实值。**基线为 R0266 工作树 `0489f49d6191d77b2afb46cdc71fc2a99217df95`、原版 CK3 1.19.0.6。H3446 官方 rebound 六资产、H3492 官方 rebound 六资产及其历史 M6 二进制均已有精确传输验收，但没有受管同帧现金读回。09:28Z 来源回执已把最新验证持久原始配对推进至 H3568/raw53219304，接收端官方 rebound/no-launch 尚待 R0298 退出；H3492 此后只能作历史诊断。历史 H2825 五金额仍是 `null`。本文不填零，不批准建设或战争费用。
+状态：**静态设计候选；没有 Robert 的新增现金实值。**基线为 R0266 工作树 `0489f49d6191d77b2afb46cdc71fc2a99217df95`、原版 CK3 1.19.0.6。H3446 官方 rebound 六资产、H3492 官方 rebound 六资产及其历史 M6 二进制均已有精确传输验收，但没有受管同帧现金读回。来源 09:39Z 新增 R0298 正式 H3603/raw53219352 冻结配对，取代 H3568；接收端仅精确接受七件传输，尚未收到/独立配对。H3492/H3568 此后只能作历史诊断。五金额仍是 `null`。本文不填零，不批准建设或战争费用。
 
 | 输入 | 最小生产者 | 同帧证据和失效条件 |
 | --- | --- | --- |
@@ -12,9 +12,11 @@
 
 ## 最短实机路径
 
-1. 先确定**当前最新已冻结**的 Robert checkpoint；来源在 R0298 退出后需给该帧官方 rebound/family/no-launch 精确配对，再在接收端完成官方 no-launch 与受管暂停帧前后身份双读。H3446/H3492 的既有资产仅作各自历史帧诊断；不跨帧借数。
+1. 先确定**当前最新已冻结**的 Robert checkpoint；来源给出 H3603 七件官方 rebound/family/no-launch 白名单，接收端在精确传输哈希验证后仍需独立官方 no-launch 与受管暂停帧前后身份双读。H3446/H3492/H3568 的既有资产仅作各自历史帧诊断；不跨帧借数。若来源继续推进，又须换用当时最新帧。
 2. 在暂停帧只读读取 gold、WarID、唯一 owner 请求状态；被动扫描 `MilitaryView` 缓存并核玩家 subject、刷新、新鲜度和 GUI 值。此步最多得到**月费率候选**，不能生成未来上界或任何零证明。
 3. 冻结具体下一战争 step，按上表收集原生报价与完整未结账本；补出付款时点和政策文本。任一项缺失时继续输出 typed `null` 和明确缺口。
 4. 在 M5 消费前重读同一 frame/step/路线/国库，按用途相加独立建设最低额与战争未来成本、风险额、战争最低额；现有 `max(global reserve, proposal reserve)` 仅在有**明确重叠证明**时能代表两个独立用途。纯结构候选见 `m5_war_cash_binding_candidate.py`，其返回值固定为 `formal_action_ready=false`。
 
 精确源链参见 [现金节奏静态审计](r0266-war-cash-cadence-static-audit-2026-09-28.md)、[动作绑定门禁](r0266-war-cash-action-binding-followup-2026-09-28.md)和[上船报价 ABI](r0266-embark-quote-abi-static-2026-09-28.md)。
+
+**额外原版 GUI 线索。**`game/gui/hud.gui:6121-6131` 的常驻黄金 tooltip 将 `InGameTopbar.GetGoldIncomeBreakdown` 和 `GetGoldExpensesBreakdown` 分开，`6183-6193` 又显示 `GetGoldBalance`。精确 EXE 静态校验定位 callback、渲染帧驱动的缓存刷新与 played CharacterID 来源，见[顶栏费用 ABI 审计](r0266-topbar-expense-static-2026-09-28.md)。getter 会刷新并写缓存，不能直接作为纯读桥接调用；被动缓存也没有 H3603 同帧实例、新鲜度、独立军事行或现金账期证明。总支出即使取得，也不能自行分离战争未结占款或形成未来费用上界，不能代填五项现金字段。
