@@ -24,6 +24,10 @@ owner 的 `_record_command` 保存的是历史命令、成功与结果，`_drive
 
 可实现的最小账本行是 `{transaction_id, episode_run_id, war_id, priced_action, amount_raw, scale:100000, submitted_frame, settlement_state, settled_frame?}`。只对本回合唯一 owner 所有、且确认没有未纳管写入者的动作集合求和；恢复 checkpoint、会话更替和跨进程历史必须保留未结项或显式拒绝。`pending_war_cash_raw=0` 仅在同帧完成**全部写入者和全部未结交易**的扫描、无未知交易后成立。账本金额与本次新动作即时金额分开，M5 只叠加一次。
 
+独立候选实现 [`war_cash_pending_ledger_v1.py`](../../ck3_autonomous_player/src/xar_autoplayer/war_cash_pending_ledger_v1.py) 把这条边界编码成按 `episode_run_id + WarID` 分文件的 append-only SHA-256 链。`scope_open` 绑定 owner/checkpoint；`reserve` 必须在提交动作前保存同帧 `source_frame`、精确 Q100000 报价、`selected_step`、原生命令种类、typed arguments、路线哈希及报价证据哈希；`ack` 只登记“已提交、待验证”；`resolve` 要求另给与动作身份、玩家、战局、后验帧和实收金额相符的独立回执。每次写入都锁文件、重读链并检查预期前一哈希，拒绝并发写入导致的旧状态追加。截断、篡改、跨 episode、重复 request、不同动作和回档到报价前日期都会拒绝或返回 unknown；未结项可由新进程从 `state_dir/native-session/war-cash/` 读回。
+
+该实现故意只给 `recorded_unresolved_quote_sum_raw`（**记录中未结报价之和**），始终输出 `pending_war_cash_raw=null`、`formal_cash_receipt_eligible=false`。报价不等于已实际扣款，也没有证据证明此 driver 覆盖全部游戏内写入者；即使账本为空也不能推导正式 0。`price_evidence_sha256` 和 `independent_receipt.source_sha256` 只是外部证据引用，账本本身不验证那些文件或原生 getter 的真实性。它目前是可复用的持久化门和审计夹具，**未接入正式 owner 提交路径，也不能据此将 H2825/R0266 的五项实际输入填值**。接入时仍需原生无损报价生产者、动作提交前 reserve、后验核销来源及全部写入者范围证明；如果任何一项缺失，正式资源收据保持 `incomplete`。
+
 ## 一日未来费用、风险与政策最低保留
 
 原版 `MilitaryView.GetAllRaisedGoldMilitaryExpenses` 是“全军征召且满员”的预测**月费率**，其英文 tooltip 警告舰队可能更高（`game/localization/english/gui/militaryview_l_english.yml:47`）。如果以后实机确认该 rate 的玩家身份、Q100000 缓存、新鲜度和组成，并核对实际扣款节奏，战争侧可以提出 `horizon_days=1`、截止**下一个游戏日首次暂停帧**的政策：在本日保留至少整整一次 `max(当前军费率, 预测全征召满员军费率)`，再加已报价的上船/到期续约等期限内费用；一天推进后重读所有值，第二天前没有新收据就停止消费。该式仍需单独覆盖舰队、补员状态变化、额外军队、自动事件和终战支出；缺任何必需项时 `future_war_cost_upper_raw=null`，不能把月费率除以 30。
