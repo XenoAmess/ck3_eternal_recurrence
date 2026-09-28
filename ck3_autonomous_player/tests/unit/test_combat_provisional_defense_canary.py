@@ -12,6 +12,7 @@ from xar_autoplayer.strategy import (
     _primary_defender_siege_relief_assessment,
     _provisional_defense_research_assessment,
     _siege_forecast_participant_partition,
+    choose_one_life_turn,
     query_combat_simulation_inputs_v3_step,
     query_route_contact_horizon_step,
 )
@@ -137,10 +138,13 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
     def test_r0321_cash_and_two_horizons_allow_only_contact_free_first_hop(self):
         frame, rows, actions, step = self._r0321_two_defender_inputs()
 
-        def plan(current_frame=frame, current_rows=rows, current_actions=actions):
+        def plan(current_frame=frame, current_rows=rows, current_actions=actions,
+                 provisional=None):
             with mock.patch(
                 "xar_autoplayer.strategy._provisional_defense_research_assessment",
-                return_value={"status": "same_frame_encounter_scope_mismatch"},
+                return_value=provisional or {
+                    "status": "same_frame_encounter_scope_mismatch"
+                },
             ):
                 return _primary_defender_siege_forecast_ingress(
                     {"phase": "native_war_no_safe_exact_route", "selected_step": None},
@@ -160,6 +164,10 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
         self.assertFalse(admitted["active_attack_allowed"])
         self.assertEqual(admitted["forecast_status"], "research_only")
         self.assertTrue(admitted["daily_recheck_required"])
+        multi = {"status": "multi_defender_research_only", "planner_usable": False}
+        self.assertEqual(plan(provisional=multi)["selected_step"], step)
+        self.assertIsNone(plan(provisional={**multi, "planner_usable": True})["selected_step"])
+        self.assertIsNone(plan(provisional={"status": "provisional_admissible"})["selected_step"])
 
         for change in (
             lambda f, r, a: r[1]["result"]["route_contact_horizon"].update(
@@ -196,6 +204,59 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             result = plan(f, r, a)
             self.assertIsNone(result["selected_step"], result)
             self.assertIsNot(result.get("active_attack_allowed"), True)
+
+    def test_r0321_formal_plan_requires_cash_and_never_uses_first_hop_as_attack(self):
+        frame, rows, actions, step = self._r0321_two_defender_inputs()
+        baseline = {"phase": "native_war_no_safe_exact_route", "selected_step": None}
+
+        def formal(current_frame=frame, current_rows=rows):
+            with (
+                mock.patch("xar_autoplayer.strategy.plan_raiktor_formal_exit",
+                           return_value=None),
+                mock.patch("xar_autoplayer.strategy._choose_one_life_turn_core",
+                           return_value=baseline),
+                mock.patch(
+                    "xar_autoplayer.strategy._provisional_defense_research_assessment",
+                    return_value={"status": "multi_defender_research_only",
+                                  "planner_usable": False},
+                ),
+            ):
+                return choose_one_life_turn(
+                    current_rows, snapshot=current_frame, action_steps=actions,
+                    bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+                )
+
+        without_cash = formal()
+        self.assertIsNone(without_cash["selected_step"], without_cash)
+        self.assertFalse(without_cash["active_attack_allowed"])
+        frame["war_first_hop_cash_bound_v1"] = self._r0321_cash_package(frame, step)
+        safe = formal()
+        self.assertEqual(safe["selected_step"], step, safe)
+        self.assertFalse(safe["active_attack_allowed"])
+        self.assertTrue(safe["daily_recheck_required"])
+
+        # Even with a complete cash package, an adjacent target is a battle.
+        # Rebind the synthetic V3 query to that exact direct-contact edge.
+        direct_frame, direct_rows = copy.deepcopy(frame), copy.deepcopy(rows)
+        direct_rows[0]["result"]["route_preview"]["route_province_ids"] = [2629]
+        direct_horizon = direct_rows[1]["result"]["route_contact_horizon"]
+        direct_horizon["subject_route"]["route_province_ids"] = [2629]
+        direct_horizon["subject_route"]["arrival_date_raws"] = [
+            direct_frame["date_raw"] + 24
+        ]
+        direct_horizon["one_day_contact_free"] = False
+        direct_horizon["conflicts"] = [
+            {"hostile_army_id": 50331920, "province_id": 2629}
+        ]
+        direct_step = query_combat_simulation_inputs_v3_step(
+            2629, 2610, [83886367], [50331920, 83886484]
+        )
+        direct_frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 2610
+        direct_rows[4]["command"] = direct_step
+        direct_rows[4]["result"]["step"] = direct_step
+        direct = formal(direct_frame, direct_rows)
+        self.assertIsNone(direct["selected_step"], direct)
+        self.assertFalse(direct["active_attack_allowed"])
 
     def _r0271_replay_inputs(self):
         report = json.loads(R0265_REPORT.with_name(

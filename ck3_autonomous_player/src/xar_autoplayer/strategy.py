@@ -16786,7 +16786,13 @@ def _primary_defender_siege_forecast_ingress(
             return short_waypoint(trial, qualified_trial=False)
         if (
             qualified.get("status") == "producer_unavailable"
-            and provisional.get("status") == "same_frame_encounter_scope_mismatch"
+            and (
+                provisional.get("status") == "same_frame_encounter_scope_mismatch"
+                or (
+                    provisional.get("status") == "multi_defender_research_only"
+                    and provisional.get("planner_usable") is False
+                )
+            )
             and result.get("accepted") is True
             and result.get("status") == "available"
             and len(defenders) > 1
