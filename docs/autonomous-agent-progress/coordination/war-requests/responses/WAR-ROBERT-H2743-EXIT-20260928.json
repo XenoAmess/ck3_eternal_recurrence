@@ -80,6 +80,16 @@
     "observed_h2743_to_h2825_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.h2743-h2825-continuation.json",
     "observed_continuation_boundary": "Exact historical 15-day continuation showed player war score -12 to -25 after one day, then -24 at H2825; attacker occupation score rose 13, ticking score fell 1. Three queried army sizes and Robert gold/current-prestige endpoint balances had zero net change. This is not future risk calibration or a surrender resource delta.",
     "surrender_static_resource_boundary": "Stock on_victory and modify_all_participants_fame_values give Robert a direct prestige component max(-10 x cb_prestige_factor, -1000), but the exact-frame factor and conditional effects are unread. The on_defeat short-term gold reparations row is not this route, and neither fact establishes the H2743 total resource delta.",
+    "native_baseline_candidate": {
+      "status": "release_build_and_focused_tests_green_live_unverified",
+      "query_step": "query-defender-de-jure-exit-terms-v1-16777231",
+      "candidate_dll_sha256": "15CB41149072A4CBE19A323A7907B270E49D7F4A75CC71BFF3A41CBA4254C7B7",
+      "scope": "Read-only same-frame CB, party and target identity with seven pre-action balances and monthly gold income for both primary parties. Title/vassal delta, signed resource delta and directed truce are typed unavailable; material_complete is always false. The query is not a planner action candidate.",
+      "checks": "Windows Release xar_ck3_bridge build succeeded; focused Python contract tests 4/4 normal and 4/4 under -O; git diff --check passed.",
+      "no_launch_preflight": "Exact four source SHA-256 values verified in external attempt-08-dejure-baseline-no-launch. prepare-profile refused while R0271's ck3.exe was running; that RED attempt is preserved. A fresh attempt is required after screen release.",
+      "live_h2743_readback": null,
+      "material_complete": false
+    },
     "gameplay_action_submitted": false,
     "formal_exit_decision_complete": false
   },

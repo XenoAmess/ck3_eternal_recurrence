@@ -97,6 +97,11 @@ from .war_exit_terms_contract import (
     parse_query_war_termination_exit_terms_step,
     query_war_termination_exit_terms_step,
 )
+from .defender_dejure_exit_terms_v1 import (
+    CAPABILITY as QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY,
+    normalize_defender_dejure_exit_terms_v1,
+    parse_query_defender_dejure_exit_terms_v1_step,
+)
 from .war_entry_contract import (
     QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
     QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX,
@@ -6895,6 +6900,18 @@ class NativeHeadlessGameplayDriver:
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
             )
+        if parse_query_defender_dejure_exit_terms_v1_step(step) is not None:
+            # Explicit research query only.  It is not an advertised planner
+            # action and cannot authorize a war resolution.
+            if QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY not in set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the defender de-jure exit baseline"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         if step == "save-checkpoint" and step in capabilities["action_steps"]:
             return self._execute_save_checkpoint(
                 expected_revision=expected_revision
@@ -9362,6 +9379,9 @@ class NativeHeadlessGameplayDriver:
         termination_terms_query_war_id = (
             parse_query_war_termination_terms_step(step)
         )
+        defender_dejure_exit_query_war_id = (
+            parse_query_defender_dejure_exit_terms_v1_step(step)
+        )
         actual_truce_expiry_toward = (
             parse_query_raiktor_actual_truce_expiry_v1_step(step)
         )
@@ -9373,6 +9393,7 @@ class NativeHeadlessGameplayDriver:
             or prisoner_release_war_id is not None
             or outbound_white_peace_query_war_id is not None
             or termination_terms_query_war_id is not None
+            or defender_dejure_exit_query_war_id is not None
             or actual_truce_expiry_toward is not None
             or war_bound_loss_cleanup_war_id is not None
             or parse_preview_move_army_step(step) is not None
@@ -9562,6 +9583,13 @@ class NativeHeadlessGameplayDriver:
                 starting=starting,
                 selected_revision=selected_revision,
                 war_id=termination_terms_query_war_id,
+            )
+        if defender_dejure_exit_query_war_id is not None:
+            return self._execute_defender_dejure_exit_terms_v1_query(
+                step,
+                starting=starting,
+                selected_revision=selected_revision,
+                war_id=defender_dejure_exit_query_war_id,
             )
         if outbound_white_peace_query_war_id is not None:
             return self._execute_outbound_war_white_peace_status_query(
@@ -15426,6 +15454,86 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,
+        }
+
+    def _execute_defender_dejure_exit_terms_v1_query(
+        self,
+        step: str,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+        war_id: int,
+    ) -> dict[str, object]:
+        """Read a current-frame baseline; no material outcome is authorized."""
+        war = _war_by_id(starting, war_id)
+        played = starting.get("played_character")
+        defender_id = played.get("character_id") if isinstance(played, dict) else None
+        if (
+            starting.get("paused") is not True
+            or not isinstance(war, dict)
+            or war.get("player_side") != "defender"
+            or war.get("player_is_primary_war_leader") is not True
+            or type(defender_id) is not int
+            or type(war.get("primary_opponent_character_id")) is not int
+            or not isinstance(war.get("targeted_title_ids"), list)
+            or not war["targeted_title_ids"]
+        ):
+            raise BridgeUnavailableError(
+                "native defender de-jure exit baseline requires a paused primary defender war"
+            )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY,
+            internal_semantic_snapshot=True,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "defender_de_jure_exit_terms_v1",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "baseline_only"
+            or type(result.get("query_sequence")) is not int
+            or result["query_sequence"] < 1
+            or result["query_sequence"] > 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native defender de-jure exit baseline returned malformed frame"
+            )
+        try:
+            baseline = normalize_defender_dejure_exit_terms_v1(
+                result.get("defender_de_jure_exit_terms_v1"),
+                expected_war_id=war_id,
+                expected_native_revision=starting["native_revision"],
+                expected_date_raw=starting["date_raw"],
+                expected_defender_id=defender_id,
+                expected_attacker_id=war["primary_opponent_character_id"],
+                expected_target_title_ids=war["targeted_title_ids"],
+            )
+        except (KeyError, ValueError) as error:
+            raise BridgeUnavailableError(
+                f"native defender de-jure exit baseline is malformed: {error}"
+            ) from error
+        current = self.take_internal_semantic_snapshot()
+        if not _same_paused_native_frame(starting, current) or _war_by_id(
+            current, war_id
+        ) != war:
+            raise BridgeUnavailableError(
+                "native defender de-jure exit baseline crossed a war frame"
+            )
+        return {
+            **result,
+            "defender_de_jure_exit_terms_v1": baseline,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
         }
 
     def _execute_war_termination_terms_query(
@@ -25009,6 +25117,9 @@ def _action_steps(
             expand_outbound_white_peace_status_queries = True
         elif capability == QUERY_WAR_TERMINATION_TERMS_CAPABILITY:
             expand_termination_terms_queries = True
+        elif capability == QUERY_DEFENDER_DEJURE_EXIT_TERMS_V1_CAPABILITY:
+            # Research-only baseline; never advertise a planner step.
+            continue
         elif capability == QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY:
             # The post-result target may no longer appear in active wars.
             # Callers must supply the generation-safe prior opponent identity;
@@ -25053,6 +25164,7 @@ def _action_steps(
                 "query-war-prisoner-release-pairs-v1-",
                 "query-outbound-war-white-peace-status-v1-",
                 "query-war-termination-terms-v1-",
+                "query-defender-de-jure-exit-terms-v1-",
                 QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
                 "surrender-war-",

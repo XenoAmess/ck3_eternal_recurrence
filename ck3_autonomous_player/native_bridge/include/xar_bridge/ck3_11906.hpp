@@ -510,6 +510,7 @@ using game::WarObjectiveProvinceState;
 using game::WarTerminationOptionsSnapshot;
 using game::WarTerminationTermsSnapshot;
 using game::WarTerminationExitTermsSnapshot;
+using game::DefenderDeJureExitTermsV1;
 using game::PauseSubmitResult;
 using game::ResumeSubmitResult;
 using game::SetPlayedCharacterResult;
@@ -1223,6 +1224,14 @@ using game::ReadWarTerminationTermsResult;
 ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept;
+
+using game::ReadDefenderDeJureExitTermsV1Result;
+
+// Baseline-only, fail-closed de-jure defender read.  Never calls loaded-effect
+// preview or submits a resolution; material deltas remain typed unavailable.
+ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
+    const Bindings &bindings, std::int32_t war_id,
+    DefenderDeJureExitTermsV1 &output) noexcept;
 
 using game::RaiktorActualTruceExpirySnapshotV1;
 using game::ReadRaiktorActualTruceExpiryResultV1;

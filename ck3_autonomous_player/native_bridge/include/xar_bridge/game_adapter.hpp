@@ -148,6 +148,12 @@ public:
   virtual ReadWarTerminationTermsResult read_war_termination_terms(
       std::int32_t war_id,
       WarTerminationTermsSnapshot &output) const noexcept = 0;
+  virtual ReadDefenderDeJureExitTermsV1Result
+  read_defender_de_jure_exit_terms_v1(
+      std::int32_t, DefenderDeJureExitTermsV1 &output) const noexcept {
+    output = {};
+    return ReadDefenderDeJureExitTermsV1Result::unavailable;
+  }
   virtual ReadRaiktorActualTruceExpiryResultV1
   read_raiktor_actual_truce_expiry(
       std::int32_t toward_character_id,
@@ -356,6 +362,11 @@ inline ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const GameAdapter &game, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept {
   return game.read_war_termination_terms(war_id, output);
+}
+inline ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
+    const GameAdapter &game, std::int32_t war_id,
+    DefenderDeJureExitTermsV1 &output) noexcept {
+  return game.read_defender_de_jure_exit_terms_v1(war_id, output);
 }
 inline ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
     const GameAdapter &game, std::int32_t toward_character_id,

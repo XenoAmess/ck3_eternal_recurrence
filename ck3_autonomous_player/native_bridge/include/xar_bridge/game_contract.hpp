@@ -902,6 +902,33 @@ struct WarTerminationExitTermsSnapshot {
                          const WarTerminationExitTermsSnapshot &) = default;
 };
 
+// Native read-only baseline for a primary defender in an individual county
+// de-jure war.  The typed unavailable fields are deliberate: this reader does
+// not execute or preview setup_de_jure_cb / resolve_title_and_vassal_change.
+// No caller may turn an observed balance or target ID into a surrender delta.
+struct DefenderDeJureExitTermsV1 {
+  std::int32_t war_id = -1;
+  std::int32_t date_raw = 0;
+  std::int32_t casus_belli_database_index = -1;
+  std::string casus_belli_key;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  std::vector<std::int32_t> target_title_ids;
+  std::vector<WarExitResourceSnapshot> primary_resource_balances;
+  std::vector<WarExitCharacterFixedPointSnapshot> primary_monthly_gold_income;
+  std::string title_vassal_delta_unavailable_reason =
+      "runtime_target_scope_and_de_jure_change_semantics_unproven";
+  std::string signed_resource_delta_unavailable_reason =
+      "conditional_effects_and_cb_prestige_factor_unread";
+  std::string directed_truce_unavailable_reason =
+      "attacker_victory_truce_duration_unread";
+  bool same_frame_stable = false;
+  bool material_complete = false;
+
+  friend bool operator==(const DefenderDeJureExitTermsV1 &,
+                         const DefenderDeJureExitTermsV1 &) = default;
+};
+
 // One fully published Rogue one-life settlement. Adapters expose this object
 // only after the Mod's ready gate is exactly 1 and every required global can
 // be decoded without coercion. Integer fields are semantic values after exact
@@ -1984,6 +2011,15 @@ enum class ReadWarTerminationTermsResult {
   no_played_character,
   war_not_found,
   player_not_participant,
+  unavailable,
+};
+enum class ReadDefenderDeJureExitTermsV1Result {
+  available_baseline,
+  unsupported_casus_belli,
+  requires_paused,
+  no_played_character,
+  war_not_found,
+  player_not_primary_defender,
   unavailable,
 };
 enum class ReadWarTerminationExitTermsResult {

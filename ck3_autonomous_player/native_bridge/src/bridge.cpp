@@ -4327,6 +4327,70 @@ void AppendWarTerminationTerms(
   result += '}';
 }
 
+void AppendDefenderDeJureExitTermsV1(
+    std::string &result,
+    const xar::game::DefenderDeJureExitTermsV1 &terms,
+    std::uint64_t native_revision) {
+  result += "{\"schema\":\"xar.ck3.defender-de-jure-exit-terms.v1\",";
+  result += "\"native_revision\":";
+  result += Number(native_revision);
+  result += ",\"war_id\":";
+  result += SignedNumber(terms.war_id);
+  result += ",\"date_raw\":";
+  result += SignedNumber(terms.date_raw);
+  result += ",\"casus_belli_database_index\":";
+  result += SignedNumber(terms.casus_belli_database_index);
+  result += ",\"casus_belli_key\":";
+  AppendJsonString(result, terms.casus_belli_key);
+  result += ",\"primary_attacker_character_id\":";
+  result += SignedNumber(terms.primary_attacker_character_id);
+  result += ",\"primary_defender_character_id\":";
+  result += SignedNumber(terms.primary_defender_character_id);
+  result += ",\"target_title_ids\":[";
+  for (std::size_t index = 0; index < terms.target_title_ids.size(); ++index) {
+    if (index != 0) result += ',';
+    result += SignedNumber(terms.target_title_ids[index]);
+  }
+  result += "],\"primary_resource_balances\":[";
+  for (std::size_t index = 0; index < terms.primary_resource_balances.size();
+       ++index) {
+    if (index != 0) result += ',';
+    const auto &row = terms.primary_resource_balances[index];
+    result += "{\"character_id\":";
+    result += SignedNumber(row.character_id);
+    result += ",\"resource\":";
+    AppendJsonString(result, row.resource_kind);
+    result += ",\"value\":";
+    AppendFixedPoint(result, row.value);
+    result += '}';
+  }
+  result += "],\"primary_monthly_gold_income\":[";
+  for (std::size_t index = 0;
+       index < terms.primary_monthly_gold_income.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &row = terms.primary_monthly_gold_income[index];
+    result += "{\"character_id\":";
+    result += SignedNumber(row.character_id);
+    result += ",\"value\":";
+    AppendFixedPoint(result, row.value);
+    result += '}';
+  }
+  result += "],\"title_vassal_delta\":null,";
+  result += "\"title_vassal_delta_unavailable_reason\":";
+  AppendJsonString(result, terms.title_vassal_delta_unavailable_reason);
+  result += ",\"signed_resource_delta\":null,";
+  result += "\"signed_resource_delta_unavailable_reason\":";
+  AppendJsonString(result, terms.signed_resource_delta_unavailable_reason);
+  result += ",\"directed_truce\":null,";
+  result += "\"directed_truce_unavailable_reason\":";
+  AppendJsonString(result, terms.directed_truce_unavailable_reason);
+  result += ",\"same_frame_stable\":";
+  result += terms.same_frame_stable ? "true" : "false";
+  result += ",\"material_complete\":";
+  result += terms.material_complete ? "true" : "false";
+  result += '}';
+}
+
 void AppendMarriageQueryDiagnostics(
     std::string &result,
     const xar::game::ArrangeMarriageQueryDiagnostics &diagnostics) {
@@ -7825,6 +7889,25 @@ std::string WarTerminationTermsResultFrame(
   return result;
 }
 
+std::string DefenderDeJureExitTermsResultFrameV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t native_revision,
+    const xar::game::DefenderDeJureExitTermsV1 &terms) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"baseline_only\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"defender_de_jure_exit_terms_v1\":";
+  AppendDefenderDeJureExitTermsV1(result, terms, native_revision);
+  result += "}}";
+  return result;
+}
+
 std::string ArmyStrengthsResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     xar::game::ReadArmyStrengthsResult query_result,
@@ -8902,6 +8985,14 @@ std::optional<std::int32_t> WarTerminationTermsQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> DefenderDeJureExitTermsQueryStepV1(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-defender-de-jure-exit-terms-v1-";
+  if (!step.starts_with(prefix)) return std::nullopt;
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
 std::optional<std::int32_t> RaiktorActualTruceExpiryQueryStep(
     std::string_view step) noexcept {
   const auto prefix =
@@ -9481,6 +9572,7 @@ struct WorkerState {
   std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
+  std::uint64_t defender_de_jure_exit_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   std::uint64_t raiktor_war_bound_loss_cleanup_query_sequence = 0;
@@ -9900,6 +9992,8 @@ void RunConnectedSession(
       state.outbound_war_white_peace_status_query_sequence;
   auto &war_termination_terms_query_sequence =
       state.war_termination_terms_query_sequence;
+  auto &defender_de_jure_exit_terms_query_sequence =
+      state.defender_de_jure_exit_terms_query_sequence;
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
   auto &raiktor_actual_truce_expiry_query_sequence =
       state.raiktor_actual_truce_expiry_query_sequence;
@@ -16914,6 +17008,94 @@ void RunConnectedSession(
         }
 #endif
         else if (step.starts_with(
+                       "query-defender-de-jure-exit-terms-v1-")) {
+          const auto war_id = DefenderDeJureExitTermsQueryStepV1(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-defender-de-jure-exit-terms-v1-<war_id> step"));
+          } else {
+            std::uint64_t expected_revision = 0;
+            if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                    incoming.payload, expected_revision) ||
+                expected_revision != state_revision || state_revision == 0 ||
+                !previous_snapshot.has_value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "de-jure exit baseline expected revision is stale or malformed"));
+            } else {
+              xar::game::Snapshot admission_snapshot{};
+              if (!xar::game::ReadSnapshot(game, admission_snapshot) ||
+                  admission_snapshot != previous_snapshot.value()) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "de-jure exit baseline admission snapshot changed; retry after heartbeat"));
+                }
+              } else if (!admission_snapshot.paused ||
+                         !admission_snapshot.map_ready ||
+                         !admission_snapshot.has_played_character ||
+                         !admission_snapshot.played_character_alive) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "de-jure exit baseline requires a ready paused living player snapshot"));
+              } else {
+                xar::game::DefenderDeJureExitTermsV1 baseline{};
+                const auto read_result =
+                    xar::game::ReadDefenderDeJureExitTermsV1(
+                        game, war_id.value(), baseline);
+                xar::game::Snapshot completion_snapshot{};
+                if (!xar::game::ReadSnapshot(game, completion_snapshot) ||
+                    completion_snapshot != admission_snapshot) {
+                  connected = PublishSnapshot(
+                      pipe, game, previous_snapshot, state_revision,
+                      checkpoint_submission, published_checkpoint_sequence);
+                  if (connected) {
+                    connected = xar::bridge::WriteFrame(
+                        pipe, CommandResultFrame(
+                                  request_id, step, false,
+                                  "de-jure exit baseline completion snapshot changed; retry after heartbeat"));
+                  }
+                } else if (
+                    read_result == xar::game::
+                                       ReadDefenderDeJureExitTermsV1Result::
+                                           available_baseline &&
+                    baseline.same_frame_stable && !baseline.material_complete) {
+                  const auto next_query_sequence =
+                      defender_de_jure_exit_terms_query_sequence + 1;
+                  connected = xar::bridge::WriteFrame(
+                      pipe, DefenderDeJureExitTermsResultFrameV1(
+                                request_id, step, next_query_sequence,
+                                state_revision, baseline));
+                  if (connected) {
+                    defender_de_jure_exit_terms_query_sequence =
+                        next_query_sequence;
+                  }
+                } else {
+                  const auto error =
+                      read_result == xar::game::
+                                         ReadDefenderDeJureExitTermsV1Result::
+                                             unsupported_casus_belli
+                          ? "de-jure exit baseline unsupported casus belli"
+                          : read_result == xar::game::
+                                               ReadDefenderDeJureExitTermsV1Result::
+                                                   player_not_primary_defender
+                                ? "played character is not the primary de-jure defender"
+                                : "de-jure exit baseline native read unavailable";
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(request_id, step, false, error));
+                }
+              }
+            }
+          }
+        } else if (step.starts_with(
                        "query-war-termination-terms-v1-")) {
           const auto war_id = WarTerminationTermsQueryStep(step);
           if (!war_id.has_value()) {

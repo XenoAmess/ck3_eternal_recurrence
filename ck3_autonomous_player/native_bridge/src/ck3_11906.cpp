@@ -5570,7 +5570,9 @@ bool ReadWarPrisonerReleasePairsOnceV1(
   output = {};
   void *const attacker = ResolveTermsCharacter(bindings, attacker_id);
   void *const defender = ResolveTermsCharacter(bindings, defender_id);
-  if (attacker == nullptr || defender == nullptr || attacker == defender) {
+  if (attacker == nullptr || defender == nullptr || attacker == defender ||
+      LoadAt<void *>(attacker, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterExtensionOffset) == nullptr) {
     return false;
   }
   output.war_id = war_id;
@@ -18684,6 +18686,126 @@ ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
   access.has_truce = bindings.has_character_truce;
   access.get_truce_end_date = bindings.get_character_truce_end_date;
   return ReadRaiktorActualTruceExpiryV1(access, toward_character_id, output);
+}
+
+ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
+    const Bindings &bindings, std::int32_t war_id,
+    DefenderDeJureExitTermsV1 &output) noexcept {
+  using Result = ReadDefenderDeJureExitTermsV1Result;
+  output = {};
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.read_monthly_gold_income == nullptr || war_id <= 0) {
+    return Result::unavailable;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) return Result::unavailable;
+  if (!before.paused || !before.map_ready) return Result::requires_paused;
+  if (!before.has_played_character || !before.played_character_alive)
+    return Result::no_played_character;
+  const auto published = std::find_if(
+      before.active_wars.begin(), before.active_wars.end(),
+      [war_id](const ActiveWarSnapshot &candidate) {
+        return candidate.war_id == war_id;
+      });
+  if (published == before.active_wars.end()) return Result::war_not_found;
+  if (std::count_if(before.active_wars.begin(), before.active_wars.end(),
+                    [war_id](const ActiveWarSnapshot &candidate) {
+                      return candidate.war_id == war_id;
+                    }) != 1 ||
+      published->player_side != PlayerWarSide::defender ||
+      !published->player_is_primary_war_leader ||
+      published->primary_opponent_character_id <= 0 ||
+      published->primary_opponent_character_id ==
+          before.played_character_id) {
+    return Result::player_not_primary_defender;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr) return Result::unavailable;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) return Result::war_not_found;
+  void *const casus_belli_type =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (casus_belli_type == nullptr) return Result::unavailable;
+  const auto casus_belli_index = LoadAt<std::int32_t>(
+      casus_belli_type, kCasusBelliTypeDatabaseIndexOffset);
+  std::string casus_belli_key;
+  if (casus_belli_index < 0 ||
+      casus_belli_index >= kMaximumCasusBelliTypes ||
+      !ReadCasusBelliTypeKey(casus_belli_type, casus_belli_key)) {
+    return Result::unavailable;
+  }
+  if (casus_belli_index != 17 ||
+      casus_belli_key != "individual_county_de_jure_cb") {
+    return Result::unsupported_casus_belli;
+  }
+  std::vector<std::int32_t> target_title_ids;
+  if (!ReadNativeIntArray(
+          static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+          target_title_ids, kMaximumWarObjectiveTitleIds) ||
+      target_title_ids.empty() ||
+      target_title_ids != published->targeted_title_ids) {
+    return Result::unavailable;
+  }
+  for (std::size_t index = 0; index < target_title_ids.size(); ++index) {
+    if (target_title_ids[index] <= 0 ||
+        std::find(target_title_ids.begin(),
+                  target_title_ids.begin() + index,
+                  target_title_ids[index]) != target_title_ids.begin() + index ||
+        ResolveLandedTitle(bindings, game_state, target_title_ids[index]) ==
+            nullptr) {
+      return Result::unavailable;
+    }
+  }
+  const auto attacker_id = published->primary_opponent_character_id;
+  const auto defender_id = before.played_character_id;
+  void *const attacker = ResolveTermsCharacter(bindings, attacker_id);
+  void *const defender = ResolveTermsCharacter(bindings, defender_id);
+  if (attacker == nullptr || defender == nullptr || attacker == defender) {
+    return Result::unavailable;
+  }
+  std::vector<game::WarExitResourceSnapshot> balances;
+  std::vector<game::WarExitCharacterFixedPointSnapshot> income;
+  if (!ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
+                                defender_id, balances, income)) {
+    return Result::unavailable;
+  }
+  std::vector<game::WarExitResourceSnapshot> balances_after;
+  std::vector<game::WarExitCharacterFixedPointSnapshot> income_after;
+  std::vector<std::int32_t> targets_after;
+  std::string key_after;
+  Snapshot after{};
+  if (!ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
+                                defender_id, balances_after, income_after) ||
+      balances_after != balances || income_after != income ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::int32_t>(casus_belli_type,
+                           kCasusBelliTypeDatabaseIndexOffset) !=
+          casus_belli_index ||
+      !ReadCasusBelliTypeKey(casus_belli_type, key_after) ||
+      key_after != casus_belli_key ||
+      !ReadNativeIntArray(
+          static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+          targets_after, kMaximumWarObjectiveTitleIds) ||
+      targets_after != target_title_ids ||
+      ResolveTermsCharacter(bindings, attacker_id) != attacker ||
+      ResolveTermsCharacter(bindings, defender_id) != defender ||
+      !ReadSnapshot(bindings, after) || after != before) {
+    return Result::unavailable;
+  }
+  output.war_id = war_id;
+  output.date_raw = before.date_raw;
+  output.casus_belli_database_index = casus_belli_index;
+  output.casus_belli_key = std::move(casus_belli_key);
+  output.primary_attacker_character_id = attacker_id;
+  output.primary_defender_character_id = defender_id;
+  output.target_title_ids = std::move(target_title_ids);
+  output.primary_resource_balances = std::move(balances);
+  output.primary_monthly_gold_income = std::move(income);
+  output.same_frame_stable = true;
+  return Result::available_baseline;
 }
 
 ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
