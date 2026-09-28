@@ -8,6 +8,11 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from .environment import write_json_atomic
+from .bridge.application_main_pump_readiness import (
+    PumpReadinessError,
+    exact_build_pump_gate_required,
+    wait_for_verified_pump,
+)
 from .bridge.war_contract import query_war_prisoner_release_pairs_v1_step
 
 
@@ -37,6 +42,16 @@ def read_ransom_ledger(state_dir: Path) -> dict[str, object]:
 
 def _write(state_dir: Path, ledger: Mapping[str, object]) -> None:
     write_json_atomic(state_dir / _LEDGER, dict(ledger))
+
+
+def _fresh_private_pump(driver: object, date_raw: int) -> None:
+    capabilities = getattr(driver, "capabilities", None)
+    if not callable(capabilities):
+        return  # Offline policy fixtures have no native application main.
+    baseline = capabilities()
+    if exact_build_pump_gate_required(baseline):
+        wait_for_verified_pump(capabilities, baseline, date_raw,
+                               timeout_seconds=5)
 
 
 def _frame(snapshot: Mapping[str, object]) -> tuple[int, int, int]:
@@ -192,24 +207,31 @@ def plan_ransom_private(
     if not isinstance(wars, list):
         return planned
     try:
-        war_reads = [driver.execute_step(
-            query_war_prisoner_release_pairs_v1_step(war["war_id"]),
-            expected_revision=snapshot["revision"])
-            for war in wars]
+        war_reads = []
+        for war in wars:
+            _fresh_private_pump(driver, date)
+            war_reads.append(driver.execute_step(
+                query_war_prisoner_release_pairs_v1_step(war["war_id"]),
+                expected_revision=snapshot["revision"]))
+        _fresh_private_pump(driver, date)
         first = driver.query_player_prisoner_collection_private_v1(
             expected_revision=snapshot["revision"], ransom_ordinal=0)
         value = first["player_prisoner_collection"]
         count = value["returned_count"]
         if type(count) is not int or not 0 <= count <= 64:
             raise ValueError("prisoner collection count is invalid")
-        reads = [first] + [driver.query_player_prisoner_collection_private_v1(
-            expected_revision=snapshot["revision"], ransom_ordinal=i)
-            for i in range(1, count)]
+        reads = [first]
+        for ordinal in range(1, count):
+            _fresh_private_pump(driver, date)
+            reads.append(driver.query_player_prisoner_collection_private_v1(
+                expected_revision=snapshot["revision"],
+                ransom_ordinal=ordinal))
         choice = select_ransom_candidate(snapshot, reads, war_reads)
         if choice is None:
             return planned
         # The native bridge stores only its most recent quote. Re-read the
         # chosen ordinal immediately before exposing the typed submit step.
+        _fresh_private_pump(driver, date)
         latest = driver.query_player_prisoner_collection_private_v1(
             expected_revision=snapshot["revision"],
             ransom_ordinal=choice["source_ordinal"])
@@ -220,6 +242,12 @@ def plan_ransom_private(
                 or refreshed["prisoner_character_id"] != choice["prisoner_character_id"]
                 or refreshed["quoted_gold_raw"] != choice["quoted_gold_raw"]):
             raise ValueError("chosen ransom offer changed before submit")
+    except PumpReadinessError as error:
+        return {**planned, "plan": {**plan,
+            "selected_step": None,
+            "reason": "prisoner_ransom_application_main_pump_unavailable",
+            "prisoner_ransom_observation": {"status": "source_red",
+                                            "reason": str(error)}}}
     except (KeyError, TypeError, ValueError) as error:
         return {**planned, "plan": {**plan,
             "prisoner_ransom_observation": {"status": "unavailable",
@@ -257,6 +285,7 @@ def submit_ransom_private(driver: object, *, plan: Mapping[str, object]) -> dict
                "quoted_gold_raw": choice["quoted_gold_raw"],
                "pre_player_gold_raw": gold["raw"],
                "last_checked_native_revision": None}
+    _fresh_private_pump(driver, date)
     _write(state_dir, {**ledger, "pending": pending})
     result = driver.submit_player_prisoner_ransom_private_v1(
         collection=collection, prisoner_character_id=choice["prisoner_character_id"])
@@ -278,6 +307,7 @@ def read_ransom_receipt_private(driver: object, *, pending: Mapping[str, object]
     actor, native, date = _frame(now)
     if actor != pending.get("player_character_id"):
         raise ValueError("ransom recovery changed played character")
+    _fresh_private_pump(driver, date)
     collection = driver.query_player_prisoner_collection_private_v1(
         expected_revision=now["revision"])
     value = collection.get("player_prisoner_collection")
