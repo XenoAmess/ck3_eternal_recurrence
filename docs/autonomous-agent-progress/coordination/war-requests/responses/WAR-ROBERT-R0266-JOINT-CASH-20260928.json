@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-R0266-JOINT-CASH-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T20:36:00Z",
+  "updated_at_utc": "2026-09-28T04:42:52Z",
   "source_pr": null,
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -42,13 +42,31 @@
     "Focused M5 war cash, observed selector and formal collector: 36 tests passed normal and 36 under python -O, including exact treasury binding and horizonless-cost-null regression.",
     "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN.",
     "H2825 typed-null replay in test_m5_war_cash_resource_v1.py; no real same-frame war cash values inferred.",
-    "Per-amount receipt provenance regression: six war-cash and twenty formal-collector tests pass under both normal Python and -O at master 922cb379b; tools/validate_python_only.py GREEN."
+    "Per-amount receipt provenance regression: six war-cash and twenty formal-collector tests pass under both normal Python and -O at master 922cb379b; tools/validate_python_only.py GREEN.",
+    "2026-09-28 follow-up: exact-build MilitaryView getter/GUI/localization verifier passed under normal Python and -O against CK3 1.19.0.6. This is static source discovery only; no same-frame amount was read."
   ],
+  "followup_research": {
+    "status": "static_source_candidate_only",
+    "source": "ck3_autonomous_player/native_bridge/research/verify_war_cash_military_view_candidate.py",
+    "document": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "getter_name": "MilitaryView.GetAllRaisedGoldMilitaryExpenses",
+    "getter_rva": "0x11F7D90",
+    "getter_result": "address of MilitaryView+0x758 ValueBreakdown field, not a Q100000 amount",
+    "current_expense_getter_rva": "0x11F7D00",
+    "current_expense_helper_rva": "0x11F7370",
+    "current_expense_helper_writes_view": true,
+    "stock_gui_semantics": "predicted monthly maintenance with all forces raised and at full strength; fleets can make actual expense higher",
+    "same_frame_player_amount_observed": false,
+    "complete_future_war_cost_upper_bound": false,
+    "safe_to_call_from_live_bridge": false
+  },
   "live_evidence": null,
   "limitations": [
     "Static-only/no-live delivery. The supplied H2825 construction observation is same-frame evidence of treasury and building cost, but publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
     "The native player_monthly_gold_income is a current net-income observation and cannot independently bound future gross army upkeep or replenishment. H2908/raw53217816 is a different frame and cannot fill H2825 cash fields.",
-    "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. H2743 save-layer inspection found other AI war-chest records but no AI strategy row keyed to the played Robert CharacterID 29829; that does not supply H2825 player-war cash. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off."
+    "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. H2743 save-layer inspection found other AI war-chest records but no AI strategy row keyed to the played Robert CharacterID 29829; that does not supply H2825 player-war cash. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off.",
+    "The stock MilitaryView maximum-maintenance getter is a predicted GUI value, not a proved Q100000 same-frame read or a complete future war cash bound. The stock localization explicitly warns that fleets may raise actual expense beyond it."
   ],
-  "next_step": "Once a fresh Steam-offline frame and source pair are available, measure or derive an explicit short-horizon war cash upper bound and pending-action ledger on the same paused frame; then hand the completed war cash receipt to the nonwar operator for candidate integration, formal action and receipt validation."
+  "next_step": "After R0271 relinquishes the managed game and a fresh Steam-offline frame is proven, obtain a new same-frame player-owned MilitaryView ValueBreakdown amount and units, plus pending-action ledger, selected action fee, explicit bounded-horizon risk assumptions and war policy minimum reserve. The GUI predicted maximum alone cannot fill future_war_cost_upper_raw. Then hand a complete receipt to the nonwar operator for candidate integration, formal action and receipt validation."
 }

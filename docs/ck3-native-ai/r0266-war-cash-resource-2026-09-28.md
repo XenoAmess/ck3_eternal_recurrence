@@ -27,6 +27,14 @@ H2743 的另一次只读存档检查进一步提醒这个区别。已在接收�
 
 进一步的精确版本校验把两个下层函数的完整边界也冻结了：`0x290B8A0..0x290BA64` SHA-256 为 `DBA09E9FC922EF274A31DAA2C029053BE39E20DC127E2DF606A5B3E515069A1D`，在 `0x290BA44` 向选定输出槽累加；`0x2395370..0x2395604` SHA-256 为 `6AE006D6CA955A245D37429596864593CAC71625AC4A81728A8D46D0D45BB7B9`，在 `0x23953C1` 经虚表间接调用，还可能在 `0x23954F2/0x2395509` 递归调用自身，或走 `0xC883C0/0xC88270` 两条计算路径。校验器在普通 Python 和 `-O` 下均对精确 EXE 通过，但这些静态锚点**没有**闭合虚表目标、所有下层副作用或槽位经济含义，`safe_to_call_from_live_bridge` 仍为 `false`。精确函数反汇编另保存在同一 attempt 的 `helper-290b8a0-exact-function.txt` 和 `helper-2395370-exact-function.txt`。
 
+### 原版军事窗口的维护费来源候选（2026-09-28 只读静态结果）
+
+另一个更直接的取数入口来自原版 `game/gui/window_military.gui:643,1037`：`MilitaryView.GetAllRaisedGoldMilitaryExpenses` 是“每月最大维护费”栏的 `ValueBreakdown`，与当前军费栏 `GetGoldMilitaryExpenses` 分开。原版英文 `game/localization/english/gui/militaryview_l_english.yml:47` 将最大值解释为**全军征召且满员时的预测军事费用**，并明确警告舰队上的军队可让实际维护费更高。因此它并非当前已花费金币，也不是无条件的未来费用上界；尤其不能替代补员、雇佣、运输或临时动作的单独预算。
+
+只读探针 [`war_cash_military_view_probe.py`](../../ck3_autonomous_player/native_bridge/research/war_cash_military_view_probe.py) 在 SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的原版 EXE 中定位了注册字符串；[`verify_war_cash_military_view_candidate.py`](../../ck3_autonomous_player/native_bridge/research/verify_war_cash_military_view_candidate.py) 进一步核对 RVA `0x19EDE9` 的注册引用、`0x11FCAA0` 回调与 `0x11F7D90` getter。最大费用 getter 只返回 `MilitaryView+0x758` 的 `ValueBreakdown` 字段地址；这不是可直接填入 Q100000 收据的金额。当前费用 getter `0x11F7D00` 进入共享 helper `0x11F7370`，后者在 `0x11F7426` 写回 `MilitaryView+0xB38`；不能把当前费用查询也视为已证明的纯读取。校验同时核对原版 GUI 与英文语义文本，普通 Python 和 `-O` 均 GREEN。其输出明确标为 `same_frame_player_amount_observed=false`、`complete_future_war_cost_upper_bound=false`、`safe_to_call_from_live_bridge=false`；没有调用游戏函数或写入任何 H2825 数值。
+
+后续要在**新的同一暂停帧**先证明 MilitaryView 属于玩家 Robert，读回 `ValueBreakdown` 的真实定点数值与单位，并与可见窗口值交叉核对；再确认窗口缓存更新时机。若用它构造有限期维护费预算，必须同时冻结兵团/雇佣与舰队状态、期限、可能改变维护倍率的条件，并把舰队及其他未覆盖战争开支列入单独有来源的风险额。待办战争动作账本、所选动作的即时费用和战争政策最低保留额仍需分别提供来源。只有这些输入共同闭合，才能将未来上界、风险额与政策保留额写入同帧收据。R0266 H2825 历史帧没有这些读数，仍保持 `null`。
+
 ## 已落入运行时的接口
 
 `m5_war_cash_resource_v1.observe_active_war_cash_resource_v1` 产出只读 `xar.ck3.m5-active-war-cash-resource.v1` 收据。输入必须包括完整 `source_frame`（玩家、`snapshot_id`、公开/原生修订、日期、episode）和 WarID。五项金额各使用 `{raw, scale:100000, source, source_frame, war_id}`，逐项核对同帧、同一场战争：已提交战争现金、本次动作即时费用、指定期限内未来费用上界、该期限的额外风险预算、战争政策最低保留额。收据的 `amount_observations` 保留每项金额的这五个原始证据字段，消费端再次逐项核对，不能仅信任收据顶层帧或来源字符串。未来上界还要声明 `horizon_days` 和文字假设。未知输入以 `null` 和机器可读 `missing` 原因输出；显式的 0 同样需要来源。收据始终 `formal_action_ready:false`。
