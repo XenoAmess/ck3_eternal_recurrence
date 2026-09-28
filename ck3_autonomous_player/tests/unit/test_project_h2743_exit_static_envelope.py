@@ -34,6 +34,29 @@ class H2743StaticEnvelopeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "exact source SHA mismatch"):
                 module.project(fake_game)
 
+    def test_truce_arithmetic_keeps_floor_before_multiplier_and_rejects_missing_inputs(self) -> None:
+        module = _module()
+        conditions = {
+            "flexible_perk": True,
+            "shorter_struggle": True,
+            "longer_struggle": False,
+            "both_nomadic": True,
+            "matching_border_raid": True,
+        }
+        self.assertEqual(module.project_truce_days_from_verified_conditions(conditions), 1460)
+        self.assertEqual(module.project_truce_days_from_verified_conditions({key: False for key in conditions}), 1825)
+        with self.assertRaisesRegex(ValueError, "explicit booleans"):
+            module.project_truce_days_from_verified_conditions({**conditions, "shorter_struggle": None})
+        with self.assertRaisesRegex(ValueError, "explicit booleans"):
+            module.project_truce_days_from_verified_conditions({key: value for key, value in conditions.items() if key != "matching_border_raid"})
+        with tempfile.TemporaryDirectory() as temporary:
+            fake_game = Path(temporary)
+            exe = fake_game / "binaries/ck3.exe"
+            exe.parent.mkdir(parents=True)
+            exe.write_bytes(b"wrong build")
+            with self.assertRaisesRegex(ValueError, "exact source SHA mismatch"):
+                module.project_truce_days_from_verified_conditions(conditions, fake_game)
+
     @unittest.skipUnless((GAME / "binaries/ck3.exe").is_file(), "exact game unavailable")
     def test_changed_h2743_frame_fails_closed(self) -> None:
         module = _module()

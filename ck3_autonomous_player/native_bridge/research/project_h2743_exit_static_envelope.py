@@ -58,6 +58,31 @@ def _requires(text: str, *parts: str) -> None:
             raise ValueError(f"script structure changed: {part}")
 
 
+def project_truce_days_from_verified_conditions(
+    conditions: dict[str, bool], game_dir: Path = GAME
+) -> int:
+    """Apply the stock script's arithmetic to separately verified conditions.
+
+    The caller must independently prove every boolean on one native frame.
+    This helper verifies the exact EXE/script bytes but cannot authenticate
+    condition provenance or predict persisted expiry.
+    """
+    keys = {"flexible_perk", "shorter_struggle", "longer_struggle", "both_nomadic", "matching_border_raid"}
+    if set(conditions) != keys or any(type(value) is not bool for value in conditions.values()):
+        raise ValueError("all five truce conditions must be explicit booleans")
+    _read_exact(game_dir / "binaries/ck3.exe", EXE_SHA)
+    _read_exact(
+        game_dir / "game/common/script_values/00_war_values.txt",
+        SCRIPT_SHA["script_values/00_war_values.txt"],
+    )
+    base = 1825
+    base -= 450 * conditions["flexible_perk"]
+    base -= 900 * conditions["shorter_struggle"]
+    base += 900 * conditions["longer_struggle"]
+    base -= 730 * conditions["both_nomadic"]
+    return max(730, base) * (2 if conditions["matching_border_raid"] else 1)
+
+
 def project(game_dir: Path = GAME, frame_path: Path = FRAME) -> dict[str, object]:
     _read_exact(game_dir / "binaries/ck3.exe", EXE_SHA)
     source = {
