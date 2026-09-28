@@ -46,7 +46,15 @@ compares the source and post-read actor/date/revision, then exits before
 planning or submitting a gameplay action. Its report records
 `private_active_scheme_sway_observation`, `outcome=read_only_observed`, and
 zero gameplay turns. The normal autonomous turn has no sway proposal or
-action. The next stage needs a real value input
+action.
+
+The managed Operator `run` command forwards the same explicit
+`--private-active-scheme-sway-target <full-ID>` value to `native-auto-run` and
+records the target in its receipt. It still performs the official paired
+no-launch preflight and ownership allocation before a run; an operator receipt
+alone does not establish live Can Send or any scheme action.
+
+The action stage needs a real value input
 (including current opinion), a fixed formal target, one typed submit, a fresh
 owner/type/target scheme-instance readback, next-turn consumption, and paired
 cold recovery. The existing SCHEME8 harness supplies raw-first attempt and

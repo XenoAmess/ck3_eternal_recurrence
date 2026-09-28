@@ -986,6 +986,7 @@ def native_auto_run_command(
     private_family_marriage_formal_trial: bool = False,
     private_m5_joint_collector: bool = False,
     private_prisoner_collection_observation: bool = False,
+    private_active_scheme_sway_target: int | None = None,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1024,6 +1025,11 @@ def native_auto_run_command(
         command.append("--allow-private-m5-joint-collector")
     if private_prisoner_collection_observation:
         command.append("--allow-private-prisoner-collection-observation")
+    if private_active_scheme_sway_target is not None:
+        command.extend([
+            "--private-active-scheme-sway-target",
+            str(private_active_scheme_sway_target),
+        ])
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -1458,6 +1464,10 @@ def command_prepare_state(args: argparse.Namespace) -> int:
 
 
 def command_run(args: argparse.Namespace) -> int:
+    if args.private_active_scheme_sway_target is not None and not (
+        0 < args.private_active_scheme_sway_target <= 0xFFFFFFFF
+    ):
+        raise ValueError("private sway target must be a full positive character ID")
     if (
         args.require_initial_lifestyle_focus_before_date_advance
         and not args.private_lifestyle_formal_trial
@@ -1528,6 +1538,7 @@ def command_run(args: argparse.Namespace) -> int:
         "private_prisoner_collection_observation": (
             args.private_prisoner_collection_observation
         ),
+        "private_active_scheme_sway_target": args.private_active_scheme_sway_target,
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -1586,6 +1597,9 @@ def command_run(args: argparse.Namespace) -> int:
                 private_m5_joint_collector=args.private_m5_joint_collector,
                 private_prisoner_collection_observation=(
                     args.private_prisoner_collection_observation
+                ),
+                private_active_scheme_sway_target=(
+                    args.private_active_scheme_sway_target
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -2380,6 +2394,10 @@ def parser() -> argparse.ArgumentParser:
         "--private-prisoner-collection-observation",
         action="store_true",
         help="read one paused private prisoner collection without prisoner actions",
+    )
+    run.add_argument(
+        "--private-active-scheme-sway-target", type=int,
+        help="read one explicit sway target on a paused frame and stop before action",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
