@@ -26,7 +26,7 @@
 
 ## 下一次无屏幕/有屏幕接力
 
-从本仓根目录可只读重验冻结 a02（本脚本使用标准库，不启动新 `xar-promo` run）：
+从本仓根目录可只读重验冻结 a03（本脚本使用标准库，不启动新 `xar-promo` run）：
 
 ```text
 D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_native_war_ai/episode-02-battle-second-half/plan_four_raw_pts_candidates.py --check promo/ck3_native_war_ai/episode-02-battle-second-half/four-raw-pts-candidates-20260929-a03.json

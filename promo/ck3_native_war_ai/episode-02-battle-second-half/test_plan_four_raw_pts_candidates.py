@@ -3,10 +3,24 @@
 from decimal import Decimal
 import unittest
 
-from plan_four_raw_pts_candidates import select_window
+from plan_four_raw_pts_candidates import require_managed_session, select_window
 
 
 class CandidateWindowTests(unittest.TestCase):
+    def test_shutdown_ok_is_required_even_when_tree_is_gone(self) -> None:
+        capture = {"result": "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO",
+                   "environment_session_complete": True,
+                   "adapter_bundle_validated": False,
+                   "worker": {"ok": True},
+                   "cleanup_process_inventory": {"processes": []}}
+        session = {"ok": True,
+                   "shutdown": {"ok": False, "tree_gone": True,
+                                "cleanup_proven": True}}
+        with self.assertRaisesRegex(ValueError, "not cleanly shut down"):
+            require_managed_session(capture, session, "test-source")
+        session["shutdown"]["ok"] = True
+        require_managed_session(capture, session, "test-source")
+
     def test_requested_boundaries_are_not_assumed_to_be_frames(self) -> None:
         pts = [Decimal("269.900000"), Decimal("269.933000"),
                Decimal("269.967000"), Decimal("270.033000")]

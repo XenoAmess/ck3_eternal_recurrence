@@ -55,6 +55,20 @@ def checked_sidecar(path: Path, expected: dict[str, Any] | None = None) -> dict[
     return found
 
 
+def require_managed_session(capture: dict[str, Any], session: dict[str, Any],
+                            source_id: str) -> None:
+    shutdown = session.get("shutdown") or {}
+    require(capture.get("result") == "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO" and
+            capture.get("environment_session_complete") is True and
+            capture.get("adapter_bundle_validated") is False and
+            (capture.get("worker") or {}).get("ok") is True and
+            not (capture.get("cleanup_process_inventory") or {}).get("processes") and
+            session.get("ok") is True and shutdown.get("ok") is True and
+            shutdown.get("tree_gone") is True and
+            shutdown.get("cleanup_proven") is True,
+            f"managed capture was not cleanly shut down: {source_id}")
+
+
 def select_window(pts: list[Decimal], begin: Decimal, end: Decimal) -> dict[str, Any]:
     """Use only frames inside the requested window; reject every >200ms gap."""
     require(begin < end, "window begin must precede end")
@@ -126,15 +140,7 @@ def audit_source(row: dict[str, Any]) -> dict[str, Any]:
     final = read_json(final_path)
     capture = read_json(capture_path)
     session = read_json(session_path)
-    shutdown = session.get("shutdown") or {}
-    require(capture.get("result") == "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO" and
-            capture.get("environment_session_complete") is True and
-            capture.get("adapter_bundle_validated") is False and
-            (capture.get("worker") or {}).get("ok") is True and
-            not (capture.get("cleanup_process_inventory") or {}).get("processes") and
-            session.get("ok") is True and shutdown.get("tree_gone") is True and
-            shutdown.get("cleanup_proven") is True,
-            f"managed capture was not cleanly shut down: {row['id']}")
+    require_managed_session(capture, session, row["id"])
     require(final.get("result") == "ENCODED_UNREVIEWED" and
             final.get("clean_spans_certified") is False and
             final.get("human_review_completed") is False and
