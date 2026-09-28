@@ -9,6 +9,7 @@ Robert 最新已投影来源为 **h3911/raw53219928、3,150 日**；`current-sta
 玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
+R0329 原始 wrapper 将第三步安全截停误计为重复提交风险；基于原始报告的独立纠正回执 SHA-256 为 220428EF332EE187D58D704102F4EFB9674D2CECB4D7C4B6454C26D678173997，确认内层正式冷读合格、提案仍 pending 且没有物质婚姻结果。原始 RED 报告保留。战争维护者在固定 OneDrive WAR 目录返回 H3911 attempt3：no-launch 预检通过，但实机首次 native snapshot 超时，未完成同帧战争查询，也未交付可消费的战争现金、预测或安全路线；因此 Robert 日期和 Emma pending 年龄不增加。来源见[09-29 滚动日报](daily/2026-09-29.md)。
 ### 2026-09-29 当前执行状态
 
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
