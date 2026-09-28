@@ -1,0 +1,22 @@
+{
+  "schema": "xar.g2.cross-team-war-response.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "status": "claimed",
+  "maintainer": "Codex war maintainer",
+  "updated_at_utc": "2026-09-28T04:30:00Z",
+  "source_request_commit": "5d2070f",
+  "work_branch": "war/r0271-siege-partition-20260928",
+  "problem": "At native:30/raw53219160 the offsite hostile army 83886484 is projected to enter target 2629 at raw53219928, before the player's raw53220216 arrival. The existing partition returns offsite_hostile_may_join_by_target_entry before a contact-free first-waypoint continuation can be considered.",
+  "work_plan": "Preserve full-hostile same-frame identity, the final siege contact gate, and no automatic surrender. Check a bounded first-waypoint continuation against the existing route/contact and war-risk contract, with focused normal and optimized tests. Exact-source live remains pending verified assets and managed screen ownership.",
+  "requested_transfer": {
+    "status": "not_received_on_this_machine",
+    "source_pair": "R0269 H3388 save, original driver-state.json, family sidecar, PAIR-IDENTITY.json",
+    "binaries": "DLL SHA-256 0E0B7F5621917A3B9E51E3002AD58E79EF12F7372F912F3B9EA31CEA3CE98B6C and injector SHA-256 A0BC08BFE39BE5D5D2C477B3DE061061FDAF44F69C4C018FC6BAF972DAA06FC6",
+    "route": "Source-machine colleague should transfer the exact files by the agreed selective OneDrive channel; receiver must verify every supplied byte/size/SHA before official prepare/rebind/no-launch. Historical Z: paths are not available on this machine.",
+    "do_not_pair": "Do not pair the later H3446 save with the mutated post-failure R0271 driver."
+  },
+  "live_evidence": null,
+  "limitations": [
+    "Claim is an ownership acknowledgment only. R0271 turn 36 remains blocked; no source fix, gameplay action, persisted date advance or exact live verification is claimed."
+  ]
+}
