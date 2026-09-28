@@ -1,0 +1,68 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-ROBERT-R0271-H3388-ASSETS-20260928",
+  "created_at_utc": "2026-09-28T04:54:31Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "related_request": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "scope": "Exact H3388 source pair and R0271 candidate binary transfer notice for the blocked siege-partition reproduction. This notice adds no war policy decision or gameplay authorization.",
+  "asset_delivery": {
+    "channel": "OneDrive sync",
+    "folder_relative_to_each_machine_onedrive_root": "WAR/R0271-H3388",
+    "source_pair_round": "R0269",
+    "source_pair_history_index": 3388,
+    "source_pair_date_raw": 53218968,
+    "source_pair_index_sha256": "C8E0064F1324C848E0B166689D0EDEB66F7C3B07068022FF592AA54F052DAB5A",
+    "r0271_candidate_source_commit": "7d414228c63c504c6e02904ffd905048dc834cbd",
+    "r0271_candidate_index_sha256": "8C25F789927D28BEBC69A6E33E238F550E5BF80C41C64F91A9B5B38E6DA7FAFC",
+    "files": [
+      {
+        "name": "xar_checkpoint.ck3",
+        "role": "H3388 source save",
+        "size_bytes": 78481694,
+        "sha256": "9FC52CD2E59F65683FBDACF71FA46DDEB25F60E32606CF9DC60D361EBBEC1B17"
+      },
+      {
+        "name": "driver-state.json",
+        "role": "H3388 source driver before R0271 failed run",
+        "size_bytes": 41767822,
+        "sha256": "99C58301C212ABCDBBEDD74D92AE74FCFE23719B927377C93FE7C7D0F54C5C50"
+      },
+      {
+        "name": "first-heir-marriage-formal-v1.json",
+        "role": "H3388 source family sidecar",
+        "size_bytes": 2742,
+        "sha256": "C5B0E9AF69928003F3AF34FAC05240E384BDEA44A9C4227CA66BC269F2979AEC"
+      },
+      {
+        "name": "xar_ck3_bridge.dll",
+        "role": "R0271 candidate DLL, not prior H3388 identity DLL",
+        "size_bytes": 3770368,
+        "sha256": "0E0B7F5621917A3B9E51E3002AD58E79EF12F7372F912F3B9EA31CEA3CE98B6C"
+      },
+      {
+        "name": "xar_ck3_bridge_injector.exe",
+        "role": "R0271 candidate injector, not prior H3388 identity injector",
+        "size_bytes": 39936,
+        "sha256": "A0BC08BFE39BE5D5D2C477B3DE061061FDAF44F69C4C018FC6BAF972DAA06FC6"
+      }
+    ],
+    "transfer_manifest_name": "TRANSFER-MANIFEST.json",
+    "transfer_manifest_size_bytes": 2058,
+    "transfer_manifest_sha256": "C7FD314BBC2F19174999A8218AEB1A0A42938AF9AE55994CDF8564E624CE34DC",
+    "receiver_ack_contract_name": "RECEIVER-ACK-CONTRACT.md",
+    "receiver_ack_contract_sha256": "4A0112192AE5C74DC14AB16074E16861AEF4D87326F654220CCD4A374783B46B",
+    "receiver_ack_relative_to_each_machine_onedrive_root": "WAR/R0271-H3388/RECEIVER-ACK.json",
+    "source_machine_verification": "The five files and transfer manifest exist in the source machine's local OneDrive WAR/R0271-H3388 folder; each size and SHA-256 was freshly verified after copying.",
+    "onedrive_cloud_sync_status": "not_verified",
+    "receiver_machine_availability": "not_verified"
+  },
+  "requested_delivery": [
+    "On the receiving machine, locate WAR/R0271-H3388 under that machine's own OneDrive root and verify all five file sizes and SHA-256 hashes plus the transfer manifest before any replay.",
+    "Write WAR/R0271-H3388/RECEIVER-ACK.json directly in the shared WAR folder following RECEIVER-ACK-CONTRACT.md. Only the receiving machine may assert received_verified; record a missing or mismatched file as blocked with the reason. The user need not relay the result.",
+    "If the assets are verified, use the official prepare/rebind/no-launch path before any exact-pair run. Do not substitute the H3388 identity DLL/injector or physically pair an H3446 save with the post-failure driver.",
+    "Continue the substantive siege-partition work through the related R0271 war-request response channel."
+  ],
+  "coordination_boundary": "Git carries this cross-machine notice, not the save, driver, sidecar, DLL, or injector. Sender-local OneDrive verification is not proof of cloud sync, receiver verification, no-launch readiness, or CK3 gameplay."
+}
