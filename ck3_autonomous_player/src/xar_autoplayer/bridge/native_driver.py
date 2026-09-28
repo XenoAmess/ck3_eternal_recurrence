@@ -7,7 +7,7 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 import copy
 import ctypes
 from ctypes import wintypes
@@ -1441,6 +1441,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_minor_religious_war_defenders_query: bool = False,
         allow_private_epidemic_treatment_presence_query: bool = False,
         allow_private_prisoner_collection_query: bool = False,
+        allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
         allow_private_epidemic_recovery_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
@@ -1530,6 +1531,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_prisoner_collection_query = (
             allow_private_prisoner_collection_query is True
+        )
+        self.allow_private_prisoner_ransom_action = (
+            allow_private_prisoner_ransom_action is True
         )
         self.allow_private_current_first_heir_relationship_query = (
             allow_private_current_first_heir_relationship_query is True
@@ -2487,6 +2491,19 @@ class NativeHeadlessGameplayDriver:
             self,
             expected_revision=expected_revision,
             ransom_ordinal=ransom_ordinal,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def submit_player_prisoner_ransom_private_v1(
+        self, *, collection: Mapping[str, object], prisoner_character_id: int,
+    ) -> dict[str, object]:
+        from .player_prisoner_ransom_private_action import (
+            submit_player_prisoner_ransom_private_v1,
+        )
+
+        return submit_player_prisoner_ransom_private_v1(
+            self, collection=collection,
+            prisoner_character_id=prisoner_character_id,
             timeout_seconds=self.command_timeout_seconds,
         )
 

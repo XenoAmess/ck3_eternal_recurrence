@@ -59,6 +59,22 @@ struct PlayerPrisonerRansomQuoteV1 {
   bool amount_is_acceptance_time_quote = false;
 };
 
+// A queue result is only an ACK. The prisoner relation and the actual gold
+// transfer must be read independently after CK3 processes the interaction.
+enum class PlayerPrisonerRansomSubmitV1 : std::uint8_t {
+  unavailable,
+  quote_changed,
+  final_legality_changed,
+  command_unavailable,
+  submitted_verification_pending,
+};
+
+PlayerPrisonerRansomSubmitV1 SubmitPlayerPrisonerRansomPrivateV1(
+    const Bindings &bindings, std::uintptr_t module_base,
+    const PlayerPrisonerRansomQuoteV1 &observed_quote,
+    std::uint64_t expected_native_revision,
+    std::int64_t expected_date_raw) noexcept;
+
 PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     const Bindings &bindings, std::uintptr_t module_base,
     std::int32_t jailer_character_id,

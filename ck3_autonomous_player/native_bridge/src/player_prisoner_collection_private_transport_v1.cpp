@@ -258,6 +258,56 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
   }
 }
 
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+bool ExecutePlayerPrisonerRansomPrivateSubmitV1(
+    void *opaque, const MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *query = static_cast<PlayerPrisonerRansomSubmitMailboxContextV1 *>(opaque);
+  if (query == nullptr || query->mailbox == nullptr ||
+      query->ticket.sequence == 0 || query->expected_revision == 0 ||
+      query->invocations != 0 || stamp.pump_epoch == 0 ||
+      stamp.thread_id == 0 || !stamp.paused ||
+      stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
+      stamp.tls_context == 0 || stamp.tls_main_thread_marker != 1 ||
+      stamp.jomini_state == 0 || stamp.game_state == 0 ||
+      GetCurrentThreadId() != stamp.thread_id)
+    return false;
+  auto &mailbox = *query->mailbox;
+  if (mailbox.state.load(std::memory_order_acquire) !=
+          MainThreadQueryMailboxStateV1::executing ||
+      mailbox.stop_requested.load(std::memory_order_acquire) ||
+      mailbox.failure_flags.load(std::memory_order_acquire) != 0 ||
+      mailbox.published_sequence.load(std::memory_order_acquire) !=
+          query->ticket.sequence ||
+      mailbox.owner_thread_id.load(std::memory_order_acquire) != stamp.thread_id ||
+      mailbox.paused_owner_verified_pump_epochs.load(
+          std::memory_order_acquire) <
+          kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
+      mailbox.executor != &ExecutePlayerPrisonerRansomPrivateSubmitV1 ||
+      mailbox.executor_context != query)
+    return false;
+  try {
+    ++query->invocations;
+    game::Snapshot current{};
+    if (!ReadSnapshot(query->bindings, current) ||
+        current != query->expected_snapshot || !current.paused ||
+        !current.map_ready || !current.has_played_character ||
+        !current.played_character_alive || current.date_raw != stamp.date_raw) {
+      query->frame_changed = true;
+      query->completed = true;
+      return true;
+    }
+    query->result = SubmitPlayerPrisonerRansomPrivateV1(
+        query->bindings,
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        query->quote, query->expected_revision, current.date_raw);
+    query->completed = true;
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+#endif
+
 std::string SerializePlayerPrisonerCollectionPrivateV1(
     const xar::bridge::PlayerPrisonerCollectionSnapshotV1 &snapshot,
     std::uint64_t snapshot_revision

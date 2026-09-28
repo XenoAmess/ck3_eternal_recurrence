@@ -9467,6 +9467,13 @@ struct WorkerState {
   std::uint64_t player_epidemic_treatment_presence_query_sequence = 0;
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   std::uint64_t player_prisoner_collection_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  std::optional<xar::ck3_11906::PlayerPrisonerRansomQuoteV1>
+      player_prisoner_ransom_current_quote;
+  std::uint64_t player_prisoner_ransom_quote_revision = 0;
+  std::uint64_t player_prisoner_ransom_quote_query_sequence = 0;
+  bool player_prisoner_ransom_may_have_submitted = false;
+#endif
 #endif
   std::uint64_t player_epidemic_recovery_query_sequence = 0;
   std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
@@ -15273,8 +15280,25 @@ void RunConnectedSession(
                       query.ransom_quotes_complete
 #endif
                   );
-                  if (!response.empty())
+                  if (!response.empty()) {
                     ++player_prisoner_collection_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+                    state.player_prisoner_ransom_current_quote.reset();
+                    state.player_prisoner_ransom_quote_revision = 0;
+                    state.player_prisoner_ransom_quote_query_sequence = 0;
+                    if (query.requested_ransom_ordinal <
+                            query.result.returned_count &&
+                        query.ransom_quotes[query.requested_ransom_ordinal]
+                            .available) {
+                      state.player_prisoner_ransom_current_quote =
+                          query.ransom_quotes[query.requested_ransom_ordinal];
+                      state.player_prisoner_ransom_quote_revision =
+                          expected_revision;
+                      state.player_prisoner_ransom_quote_query_sequence =
+                          player_prisoner_collection_query_sequence;
+                    }
+#endif
+                  }
                 }
                 if (response.empty()) {
                   std::string error(
@@ -15315,6 +15339,109 @@ void RunConnectedSession(
               }
             }
           }
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+        } else if (step == xar::ck3_11906::
+                               kPlayerPrisonerRansomSubmitPrivateStepV1) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t query_sequence = 0;
+          std::uint64_t prisoner_id = 0;
+          std::uint64_t payer_id = 0;
+          std::uint64_t quoted_gold_raw = 0;
+          const auto &quote = state.player_prisoner_ransom_current_quote;
+          const bool request_ready =
+              xar::bridge::JsonUnsignedField(incoming.payload,
+                                              "expected_revision",
+                                              expected_revision) &&
+              xar::bridge::JsonUnsignedField(incoming.payload,
+                                              "quote_query_sequence",
+                                              query_sequence) &&
+              xar::bridge::JsonUnsignedField(incoming.payload,
+                                              "prisoner_character_id",
+                                              prisoner_id) &&
+              xar::bridge::JsonUnsignedField(incoming.payload,
+                                              "payer_character_id", payer_id) &&
+              xar::bridge::JsonUnsignedField(incoming.payload,
+                                              "quoted_gold_raw",
+                                              quoted_gold_raw) &&
+              quote.has_value() && quote->available &&
+              expected_revision != 0 && expected_revision == state_revision &&
+              expected_revision ==
+                  state.player_prisoner_ransom_quote_revision &&
+              query_sequence != 0 && query_sequence ==
+                  state.player_prisoner_ransom_quote_query_sequence &&
+              prisoner_id == static_cast<std::uint64_t>(
+                                 quote->prisoner_character_id) &&
+              payer_id == static_cast<std::uint64_t>(
+                              quote->payer_character_id) &&
+              quoted_gold_raw == static_cast<std::uint64_t>(
+                                     quote->quoted_gold_raw) &&
+              !state.player_prisoner_ransom_may_have_submitted;
+          xar::game::Snapshot before{};
+          const bool frame_ready =
+              request_ready && previous_snapshot.has_value() &&
+              xar::game::ReadSnapshot(game, before) &&
+              before == *previous_snapshot && before.paused && before.map_ready &&
+              before.has_played_character && before.played_character_alive &&
+              before.played_character_id == quote->jailer_character_id;
+          if (!frame_ready) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "private ransom quote or frame is stale"));
+          } else {
+            xar::ck3_11906::PlayerPrisonerRansomSubmitMailboxContextV1
+                action{};
+            action.mailbox = &g_main_thread_query_mailbox_v1;
+            action.bindings = xar::ck3_11906::BindCurrentProcess(true);
+            action.expected_snapshot = before;
+            action.expected_revision = expected_revision;
+            action.quote = *quote;
+            state.player_prisoner_ransom_may_have_submitted = true;
+            const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                g_main_thread_query_mailbox_v1,
+                &xar::ck3_11906::ExecutePlayerPrisonerRansomPrivateSubmitV1,
+                &action, action.ticket);
+            if (submit != xar::ck3_11906::
+                              MainThreadQuerySubmitResultV1::submitted) {
+              state.player_prisoner_ransom_may_have_submitted = false;
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "private ransom executor unavailable"));
+            } else {
+              auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1, action.ticket,
+                  xar::ck3_11906::
+                      kPlayerPrisonerCollectionQueuedWaitMsV1);
+              while (wait == xar::ck3_11906::
+                                 MainThreadQueryWaitResultV1::
+                                     timeout_executor_already_running) {
+                wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, action.ticket,
+                    xar::ck3_11906::
+                        kPlayerPrisonerCollectionExecutingWaitMsV1);
+              }
+              const bool pending =
+                  wait == xar::ck3_11906::
+                              MainThreadQueryWaitResultV1::completed &&
+                  action.completed && !action.frame_changed &&
+                  action.result == xar::ck3_11906::
+                                       PlayerPrisonerRansomSubmitV1::
+                                           submitted_verification_pending;
+              const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1, action.ticket);
+              const bool reclaim_ok =
+                  reclaimed == xar::ck3_11906::
+                                   MainThreadQueryReclaimResultV1::reclaimed;
+              connected = xar::bridge::WriteFrame(
+                  pipe, pending && reclaim_ok
+                            ? CommandResultFrame(
+                                  request_id, step, true,
+                                  "submitted_verification_pending")
+                            : CommandResultFrame(
+                                  request_id, step, false,
+                                  "private ransom submit unresolved or rejected"));
+            }
+          }
+#endif
 #endif
 #if defined(XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1)
         } else if (step == xar::ck3_11906::

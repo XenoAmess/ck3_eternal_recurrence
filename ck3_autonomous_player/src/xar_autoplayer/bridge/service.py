@@ -406,6 +406,13 @@ from ..family_marriage_formal_consumer import (
     query_family_marriage_result_private,
     query_family_marriage_alliance_result_private,
 )
+from ..prisoner_ransom_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_PRISONER_RANSOM_SUBMIT_STEP,
+    RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
+    plan_ransom_private,
+    submit_ransom_private,
+    read_ransom_receipt_private,
+)
 from .domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
     submit_construction_private, query_construction_receipt,
@@ -1100,7 +1107,10 @@ class GameplayBridgeService:
             planned = {**planned, "plan": {**planned["plan"],
                 "selected_step": None,
                 "reason": construction_red_plan["reason"]}}
-        return observe_m5_wartime(planned)
+        planned = observe_m5_wartime(planned)
+        if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
+            planned = plan_ransom_private(self.driver, planned, snapshot)
+        return planned
 
     def _plan_private_family_wartime_v1(
         self, planned: dict[str, object], snapshot: object,
@@ -2146,6 +2156,15 @@ class GameplayBridgeService:
                         "controlled first-heir alliance lacks resolved identity")
                 result = query_family_marriage_alliance_result_private(
                     self.driver, resolved=resolved)
+            elif selected_step == PRIVATE_PRISONER_RANSOM_SUBMIT_STEP:
+                result = submit_ransom_private(self.driver, plan=plan)
+            elif selected_step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
+                pending = plan.get("prisoner_ransom_pending")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError(
+                        "controlled prisoner ransom lacks pending identity")
+                result = read_ransom_receipt_private(
+                    self.driver, pending=pending)
             elif selected_step == PRIVATE_FACTION_SUBMIT_STEP:
                 candidate = plan.get("faction_gift_action")
                 checkpoint = plan.get("faction_gift_pre_submit_checkpoint")
