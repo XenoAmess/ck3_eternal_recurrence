@@ -1,4 +1,4 @@
-"""Print a compact, read-only schema summary of one preserved phase-trace receipt."""
+"""Print a non-admitting, read-only schema summary of a candidate phase-trace receipt."""
 
 import argparse
 import hashlib
@@ -13,11 +13,25 @@ def main() -> None:
     args = parser.parse_args()
     source = args.receipt.read_bytes()
     payload = json.loads(source)
-    body = payload.get("body") or {}
-    managed = body.get("managed_trace") or {}
-    trace = managed.get("trace") or {}
-    records = trace.get("records") or []
+    if not isinstance(payload, dict):
+        raise ValueError("Trace candidate must have a JSON object envelope")
+    body = payload.get("body") if isinstance(payload.get("body"), dict) else {}
+    managed = body.get("managed_trace") if isinstance(body.get("managed_trace"), dict) else {}
+    trace = managed.get("trace") if isinstance(managed.get("trace"), dict) else {}
+    records = trace.get("records") if isinstance(trace.get("records"), list) else []
+    source_shape_supported = (
+        payload.get("result") == "CALL_COMPLETED"
+        and body.get("step") == "experimental-combat-phase-event-trace-finish-v1"
+        and managed.get("schema_version") == 1
+        and trace.get("schema_version") == 1
+        and isinstance(trace.get("records"), list)
+    )
     summary = {
+        "admission": False,
+        "observation_only": True,
+        "source_shape_supported": source_shape_supported,
+        "target_33437_day27_life_status": "UNKNOWN",
+        "life_status_reason": "no targeted paused-day query or strict same-run saved-state reader",
         "source": str(args.receipt.resolve()),
         "bytes": len(source),
         "sha256": hashlib.sha256(source).hexdigest().upper(),
