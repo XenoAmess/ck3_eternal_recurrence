@@ -1,0 +1,54 @@
+{
+  "schema": "xar.war.r0321-h3911-receiver-attempt2-result.v1",
+  "observed_at_utc": "2026-09-28T16:09:32Z",
+  "in_reply_to": "RECEIVER-REQUEST-R0321-H3911-MATCHED-PAIR-v1.json",
+  "in_reply_to_sha256": "1C82BD10B526179AE1AEC4CF8F8A452190089D5204DF031212B501371601769F",
+  "source_transfer": {
+    "source_ack_sha256": "7F23727C9A7DEFBF457302D53C97C4BE51C0D0CA50E207F3CDBF9DAF2528E32D",
+    "transfer_manifest_sha256": "4227CDB460C5B9D5F962C4234B19F25B6342537B31166D3ED7101A7E484CFF50",
+    "receiver_immutable_receipt_path": "D:/ck3-research-artifacts/war-intake-20260928/r0321-h3911-matched-pair-001/receipt.json",
+    "receiver_immutable_receipt_sha256": "25B832ED62BC6C75081B353BA1CFA018892AE357C6BAD7099F8C32E6C312C174",
+    "verified_file_count": 6,
+    "verified_total_bytes": 128617719,
+    "source_driver_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "source_save_sha256": "5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746",
+    "boundary": "Six exact bytes sets were copied and independently SHA-256 verified; transfer alone does not prove CK3 restore, read-only query, war cash, forecast or safe action."
+  },
+  "parent_v3_row_comparison": {
+    "source_driver_json_pointer": "/command_history/3919",
+    "source_row_index": 3920,
+    "earlier_excerpt_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "earlier_excerpt_sha256": "865EA7B7AC1B4A680E2BE3A1D84012C67CF9550474075E4A917EFE043CCCDD51",
+    "excerpt_json_pointer": "/command_row",
+    "comparison": "Receiver parsed the verified immutable 46,002,331-byte parent driver and earlier verified 2,080,166-byte excerpt; their complete command-row JSON objects compare equal, including /result/combat_simulation_inputs. This verifies excerpt-to-parent semantic equality, not game runtime truth or a qualified combat simulation.",
+    "original_row_missing_fields": ["request", "before", "after", "episode_run_id", "connection_generation"]
+  },
+  "receiver_attempt_2": {
+    "artifact_dir": "D:/ck3-research-artifacts/r0321-h3911-receiver-20260928/attempt-2-h3911-readonly-no-launch",
+    "ready_summary_sha256": "1E7FF924D79A7B38532889AEDE4D0CDC3867B7847646EAF828FD24A65524D485",
+    "ordinary_rebind_receipt_sha256": "66E43F0E4CC78030934890BAECB7898531759579015F66A450D82ECF052BCD50",
+    "no_launch_status": "prepare_rebind_preflight_exit_zero; ready_summary_status_no_launch_preflight_ready; original save bytes unchanged; this phase did not launch CK3",
+    "derived_driver_sha256_before_live": "C30C725C05D2EE3016DC951E3B51D3F99C0277E9EC8269F16A9A506A0B53AEB2",
+    "live_subattempt_dir": "live-h3911-readonly-v1",
+    "launch_plan_sha256": "4DFFAFB4C79CA30EDE0CB7D73A5AFB27099171D39491D64424217AEF40993BD5",
+    "session_ready_sha256": "4FCB282C9487FABC341EEA7BA501CEA491ED1422FAC86990C567D70A0FF5EAC8",
+    "readiness_050_sha256": "CF2543AD1549C2A6E1728B6611164A360773C61CE891E666A8FACC5F17A9F544",
+    "failure_sha256": "460DABE02C1BA11D37FF79758A471AFA6F2060E3C59A51B0612B73710DD18EC2",
+    "session_exit_sha256": "9E1E948C076BFAFCF0EF98D6A2DFDC3B0C8C1B387E0B30ECAA410E72A235E456",
+    "live_status": "CK3 native session launched but 50 readiness snapshots did not observe an available native map state; final ck3_take_snapshot returned native game state is not available yet. The wrapper ended with ExceptionGroup at 2026-09-28T16:07:25.656222Z.",
+    "gameplay_action_submitted": false,
+    "read_only_queries_completed": false,
+    "binary_audit_live_sha256": null,
+    "ck3_pids_after": [],
+    "source_files_unchanged_after": true,
+    "boundary": "A supervisor process return code of zero in session-exit is cleanup evidence, not a successful map load, read-only query or forecast. The failure is an environment/restore-readiness RED for this receiver attempt."
+  },
+  "war_decision_status": {
+    "r0321_two_defender_forecast": "RED; no qualified producer, measured battle probability, trial-tape accuracy or three-action expected utility was delivered by this attempt",
+    "r0321_selected_step": null,
+    "active_attack_allowed": false,
+    "r0271_h3388_original_turn36": "historical RED unchanged; this later H3911 pair and failed receiver attempt do not retroactively prove the old future participant set",
+    "r0266_same_frame_cash": "war amounts and policy inputs still require a successful same-frame native read; this attempt completed none",
+    "scope": "This is an append-only receiver result. A later attempt may add evidence; it must have its own receipt and must not overwrite this RED. No attack, surrender, move or date advance is authorized by this response."
+  }
+}

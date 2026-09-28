@@ -99,7 +99,16 @@
     "original_row_absent": ["request", "before", "after", "episode_run_id", "connection_generation"],
     "parent_driver_boundary": "Original 46002331-byte driver SHA DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33 was not transferred. Source-side complete-row semantic equality against it is not independently receiver-verified."
   },
-  "receiver_unverified": "Parent H3911 source driver and full command-history binding, H3911 save/rebound driver/sidecar bytes, source DLL/injector bytes, qualified combat forecast probability, trial tape or measured model accuracy, receiver-side rebind/cold restore and live continuation. The bounded V3 input excerpt is receiver byte-verified but not a production simulation or attack approval.",
+  "later_receiver_attempt2": {
+    "response_path": "../responses/WAR-ROBERT-R0321-H3911-RECEIVER-ATTEMPT2-20260928.json",
+    "response_sha256": "C03B5C52EFD4B3269FD5C58DBA85CA4A06EC97CC77D51B86679C2E2542B9CBFD",
+    "source_pair_status": "Receiver copied and SHA-verified all six selected exact H3911 assets, 128617719 bytes; immutable receipt SHA 25B832ED62BC6C75081B353BA1CFA018892AE357C6BAD7099F8C32E6C312C174.",
+    "v3_parent_row_status": "Original parent driver /command_history/3919 now compares semantically equal to the earlier V3 excerpt /command_row. This closes only the excerpt-to-parent equality gap; the V3 payload remains input-only and unqualified for forecast.",
+    "no_launch_status": "Attempt-2 receiver ordinary rebind/preflight passed without CK3 launch; ready-summary SHA 1E7FF924D79A7B38532889AEDE4D0CDC3867B7847646EAF828FD24A65524D485.",
+    "live_status": "Separate CK3 native session never obtained map state after 50 readiness reads; failure SHA 460DABE02C1BA11D37FF79758A471AFA6F2060E3C59A51B0612B73710DD18EC2 and cleanup/session-exit SHA 9E1E948C076BFAFCF0EF98D6A2DFDC3B0C8C1B387E0B30ECAA410E72A235E456. No war read-only query or gameplay action completed.",
+    "r0271_boundary": "The original turn36 future siege participant RED is unchanged. The newer H3911 pair does not backfill that historical frame."
+  },
+  "receiver_unverified": "A successful H3911 receiver map load/cold restore and same-frame native read, qualified two-defender combat forecast probability, trial-tape or measured model accuracy, war cash quote and formal expected-utility/action gate. The byte-verified V3 input and parent driver do not imply production simulation or attack approval; R0271 original turn36 RED remains unchanged.",
   "next_request": {
     "git_request": "../requests/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.json",
     "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
