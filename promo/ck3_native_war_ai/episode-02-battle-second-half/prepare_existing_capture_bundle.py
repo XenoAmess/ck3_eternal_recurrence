@@ -9,7 +9,7 @@ command starts CK3, decodes video, infers screen content, or signs off a film.
 from __future__ import annotations
 
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 import hashlib
 import importlib.metadata
@@ -101,11 +101,15 @@ def decimal_pts(value: Any, label: str) -> Decimal:
     return result
 
 
-def checked_marks(path: Path, recorder: Path, attempt: Path, elapsed: Decimal) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def checked_marks(path: Path, recorder: Path, attempt: Path, elapsed: Decimal,
+                  start_ns: int, end_ns: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
     require(len(rows) >= 2 and all(isinstance(row, dict) for row in rows), "marks journal missing")
     require(rows[0].get("kind") == "recorder-start" and rows[-1].get("kind") == "recorder-end",
             "marks journal lacks recorder boundaries")
+    require(rows[0].get("monotonic_ns") == start_ns and
+            rows[-1].get("monotonic_ns") == end_ns,
+            "marks journal boundaries differ from recorder start/end")
     require(all(type(row.get("monotonic_ns")) is int for row in rows), "invalid mark monotonic clock")
     require(all(a["monotonic_ns"] < b["monotonic_ns"] for a, b in zip(rows, rows[1:])),
             "marks journal is not monotonic")
@@ -169,12 +173,14 @@ def prepare(attempt: Path, recorder: Path, output: Path, requirements: Path) -> 
             "recorder intent belongs to a different managed session")
     require(end.get("ffmpeg_exit_code") == 0 and end.get("interrupted") is False,
             "recorder end was interrupted")
-    verified(end.get("raw"), within=recorder)
+    require(verified(end.get("raw"), within=recorder) == raw,
+            "recorder end raw differs from final raw")
     require(type(start.get("monotonic_ns")) is int, "invalid recorder start")
     elapsed = decimal_pts(end.get("elapsed_monotonic_seconds"), "recorder duration")
     require(elapsed > 0 and end.get("monotonic_ns") > start.get("monotonic_ns"),
             "invalid recorder duration")
-    projected, mark_refs = checked_marks(Path(marks["path"]), recorder, attempt, elapsed)
+    projected, mark_refs = checked_marks(Path(marks["path"]), recorder, attempt, elapsed,
+                                        start["monotonic_ns"], end["monotonic_ns"])
     frame_counts = final.get("frame_pts_by_stream") or {}
     require(any(type(row.get("count")) is int and row["count"] > 1
                 for row in frame_counts.values() if isinstance(row, dict)), "no video frames")
@@ -204,6 +210,99 @@ def prepare(attempt: Path, recorder: Path, output: Path, requirements: Path) -> 
     return {"status": manifest["status"], "source_manifest": record(output / "source-manifest.json")}
 
 
+def validate_source_inventory(source: dict[str, Any]) -> tuple[Path, Path]:
+    """Reprove a pending manifest from original bytes before extraction/package.
+
+    The manifest itself is a claim. Schema/status and its declared hashes alone
+    cannot turn hand-written JSON into a completed capture/recorder pairing.
+    """
+    require(source.get("schema") == SCHEMA and source.get("status") == "PENDING_CLEAN_REVIEW" and
+            source.get("adapter_eligible") is False and
+            source.get("human_1x_review_performed") is False and
+            source.get("clean_spans") == [], "source manifest is not an unreviewed inventory")
+    toolchain = source.get("toolchain") or {}
+    require(isinstance(toolchain.get("version"), str) and
+            toolchain.get("release_tag") == f"v{toolchain['version']}" and
+            isinstance(toolchain.get("wheel_sha256"), str) and
+            SHA.fullmatch(toolchain["wheel_sha256"]) is not None and
+            isinstance(toolchain.get("wheel_url"), str) and
+            toolchain["wheel_url"].startswith(
+                f"https://github.com/XenoAmess/xar_promo_toolchain/releases/download/{toolchain['release_tag']}/"),
+            "source toolchain release identity is incomplete")
+    attempt = Path(source["attempt_root"]).resolve(strict=True)
+    recorder = Path(source["recorder_root"]).resolve(strict=True)
+    require(recorder.parent == attempt, "source recorder is not a child of capture attempt")
+    rows = source.get("files")
+    require(isinstance(rows, list), "source file inventory missing")
+    inventory: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        item = verified(row, within=attempt)
+        require(item == row and item["path"] not in inventory, "source file inventory is forged or repeated")
+        inventory[item["path"]] = item
+    paths = {
+        "capture": attempt / "ck3-output/capture-report.json",
+        "session": attempt / "ck3-output/session-result.json",
+        "final": recorder / "recorder-final.json",
+        "intent": recorder / "recorder-intent.json",
+        "start": recorder / "recorder-start.json",
+        "end": recorder / "recorder-end.json",
+        "probe_command": recorder / "ffprobe-command.json",
+        "geometry": recorder / "geometry-admission.json",
+        "ffmpeg_stderr": recorder / "ffmpeg.stderr.txt",
+    }
+    for name, path in paths.items():
+        require(inventory.get(str(path.resolve())) == record(path), f"source inventory lacks {name}")
+    capture = read_json(paths["capture"])
+    require(capture.get("result") == "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO" and
+            capture.get("environment_session_complete") is True and
+            capture.get("adapter_bundle_validated") is False and
+            (capture.get("worker") or {}).get("ok") is True and
+            not (capture.get("cleanup_process_inventory") or {}).get("processes") and
+            source.get("capture_report_result") == capture["result"],
+            "original capture report is not a clean completed no-video session")
+    session = read_json(paths["session"])
+    shutdown = session.get("shutdown") or {}
+    require(session.get("ok") is True and shutdown.get("ok") is True and
+            shutdown.get("tree_gone") is True and shutdown.get("cleanup_proven") is True,
+            "original session shutdown is not proven")
+    final = read_json(paths["final"])
+    intent = read_json(paths["intent"])
+    start = read_json(paths["start"])
+    end = read_json(paths["end"])
+    require(final.get("result") == "ENCODED_UNREVIEWED" and
+            final.get("clean_spans_certified") is False and
+            final.get("human_review_completed") is False and
+            final.get("ffmpeg_exit_code") == 0 and final.get("ffprobe_exit_code") == 0 and
+            final.get("video_pts_complete") is True and
+            source.get("recorder_result") == final["result"] and
+            end.get("ffmpeg_exit_code") == 0 and end.get("interrupted") is False,
+            "original recorder has not finished unreviewed and clean")
+    raw = verified(final.get("raw"), within=recorder)
+    probe = verified(final.get("ffprobe_output"), within=recorder)
+    marks = verified(final.get("marks"), within=recorder)
+    require(source.get("raw") == raw and source.get("ffprobe") == probe and
+            source.get("marks_journal") == marks and
+            verified(end.get("raw"), within=recorder) == raw and
+            Path(intent.get("raw_path", "")).resolve() == Path(raw["path"]) and
+            Path(intent.get("session_output", "")).resolve() == (attempt / "ck3-output").resolve(),
+            "source raw/probe/marks identity differs from recorder receipts")
+    elapsed = decimal_pts(end.get("elapsed_monotonic_seconds"), "recorder duration")
+    require(elapsed > 0 and type(start.get("monotonic_ns")) is int and
+            type(end.get("monotonic_ns")) is int and
+            end["monotonic_ns"] > start["monotonic_ns"], "invalid recorder clocks")
+    projected, mark_refs = checked_marks(Path(marks["path"]), recorder, attempt, elapsed,
+                                        start["monotonic_ns"], end["monotonic_ns"])
+    require(source.get("navigation_marks") == projected, "navigation marks differ from original journal")
+    expected = [*paths.values(), Path(raw["path"]), Path(probe["path"]),
+                Path(marks["path"]), *(Path(item["path"]) for item in mark_refs)]
+    require(set(inventory) == {str(path.resolve()) for path in expected},
+            "source file inventory has missing or unexpected originals")
+    require(source.get("format_duration_seconds") ==
+            str(decimal_pts(final.get("format_duration_seconds"), "format duration")),
+            "source duration differs from original recorder")
+    return attempt, recorder
+
+
 def frame_pts(probe: Path) -> list[Decimal]:
     payload = read_json(probe)
     streams = [row for row in payload.get("streams", []) if row.get("codec_type") == "video"]
@@ -216,6 +315,13 @@ def frame_pts(probe: Path) -> list[Decimal]:
     return pts
 
 
+def extract_argv_tail(raw_path: str, index: int, image_path: str) -> list[str]:
+    return ["-hide_banner", "-loglevel", "info", "-nostdin", "-n",
+            "-threads", "1", "-i", raw_path, "-map", "0:v:0",
+            "-vf", f"select=eq(n\\,{index}),showinfo", "-vsync", "0",
+            "-frames:v", "1", image_path]
+
+
 def extract_frame(source_manifest: Path, exact_pts: str, output: Path,
                   ffmpeg_name: str = "ffmpeg") -> dict[str, Any]:
     """Extract one raw-derived PNG at an existing FFprobe PTS for later review.
@@ -225,9 +331,8 @@ def extract_frame(source_manifest: Path, exact_pts: str, output: Path,
     """
     source_manifest = source_manifest.resolve(strict=True)
     source = read_json(source_manifest)
-    require(source.get("schema") == SCHEMA and source.get("status") == "PENDING_CLEAN_REVIEW",
-            "source manifest is not an unreviewed inventory")
-    attempt = Path(source["attempt_root"]).resolve(strict=True)
+    attempt, _ = validate_source_inventory(source)
+    output = output.resolve()
     require(not output.exists() and output.parent.is_dir() and
             not output.resolve().is_relative_to(attempt),
             "frame output must be a new directory outside original attempt")
@@ -241,10 +346,7 @@ def extract_frame(source_manifest: Path, exact_pts: str, output: Path,
     require(ffmpeg is not None, f"FFmpeg unavailable: {ffmpeg_name}")
     output.mkdir()
     image = output / "frame.png"
-    argv = [ffmpeg, "-hide_banner", "-loglevel", "info", "-nostdin", "-n",
-            "-threads", "1", "-i", raw["path"], "-map", "0:v:0",
-            "-vf", f"select=eq(n\\,{index}),showinfo", "-vsync", "0",
-            "-frames:v", "1", str(image)]
+    argv = [ffmpeg, *extract_argv_tail(raw["path"], index, str(image))]
     write_new(output / "command.json", {"argv": argv, "requested_pts_seconds": str(selected),
                                          "selected_decoded_index": index,
                                          "source_manifest": record(source_manifest),
@@ -292,8 +394,7 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
     require(not output.exists() and output.parent.is_dir(), "output must be a new child of an existing directory")
     source = read_json(source_manifest)
     review = read_json(review_path)
-    require(source.get("schema") == SCHEMA and source.get("status") == "PENDING_CLEAN_REVIEW",
-            "source manifest is not an unreviewed inventory")
+    validate_source_inventory(source)
     require(review.get("schema") == REVIEW_SCHEMA and
             review.get("reviewer", {}).get("kind") == "human" and
             isinstance(review.get("reviewer", {}).get("id"), str) and
@@ -303,6 +404,11 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
             "explicit human 1x raw/endpoint review is required")
     reviewed_at = datetime.fromisoformat(review["reviewed_at_utc"])
     require(reviewed_at.utcoffset() is not None, "review time needs timezone")
+    recorder_end = read_json(Path(source["recorder_root"]) / "recorder-end.json")
+    ended_at = datetime.fromisoformat(recorder_end["ended_at"])
+    require(ended_at.utcoffset() is not None and
+            ended_at <= reviewed_at <= datetime.now(timezone.utc) + timedelta(minutes=5),
+            "human review time must follow actual recorder end and not be future")
     require(review.get("gameplay_hud_visible_at_recording_start") is True and
             review.get("loading_excluded_from_selected_spans") is True,
             "human review must attest gameplay HUD and no loading in selected spans")
@@ -312,12 +418,9 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
     require(not output.resolve().is_relative_to(Path(source["attempt_root"]).resolve()),
             "bundle output must be outside original attempt")
     require(isinstance(review.get("spans"), list) and review["spans"], "review has no spans")
-    for item in source["files"]:
-        verified(item)
     pts = frame_pts(Path(source["ffprobe"]["path"]))
     pts_set = set(pts)
     duration = decimal_pts(source["format_duration_seconds"], "format duration")
-    required_refs: dict[str, dict[str, Any]] = {}
     checked_spans = []
     span_ids: set[str] = set()
     for span in review["spans"]:
@@ -350,10 +453,29 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
             require(receipt.get("raw") == source["raw"] and
                     receipt.get("image") == image and
                     decimal_pts(receipt.get("pts_seconds"), "extraction PTS") == expected and
-                    receipt.get("result") == "EXTRACTED_UNREVIEWED",
+                    receipt.get("result") == "EXTRACTED_UNREVIEWED" and
+                    receipt.get("ffprobe") == source["ffprobe"] and
+                    receipt.get("decoded_index") == pts.index(expected) and
+                    receipt.get("human_review_performed") is False,
                     f"{phase} extraction receipt does not bind raw, image, exact PTS")
-            required_refs[image["path"]] = image
-            required_refs[extraction["path"]] = extraction
+            command = verified(receipt.get("command"))
+            stdout = verified(receipt.get("stdout"))
+            stderr = verified(receipt.get("stderr"))
+            command_payload = read_json(Path(command["path"]))
+            argv = command_payload.get("argv")
+            require(command_payload.get("source_manifest") == record(source_manifest) and
+                    command_payload.get("ffprobe") == source["ffprobe"] and
+                    command_payload.get("selected_decoded_index") == pts.index(expected) and
+                    decimal_pts(command_payload.get("requested_pts_seconds"), "command PTS") == expected and
+                    isinstance(argv, list) and len(argv) > 1 and
+                    isinstance(argv[0], str) and bool(argv[0]) and
+                    argv[1:] == extract_argv_tail(source["raw"]["path"],
+                                                  pts.index(expected), image["path"]),
+                    f"{phase} extraction command does not bind selected frame")
+            showinfo = Path(stderr["path"]).read_text(encoding="utf-8", errors="replace")
+            shown = [decimal_pts(value, "stored FFmpeg showinfo PTS")
+                     for value in re.findall(r"pts_time:([^\s]+)", showinfo)]
+            require(shown == [expected], f"{phase} stored FFmpeg PTS does not match")
         checked_spans.append((span, begin, end, str(max_gap)))
     output.mkdir()
     try:
@@ -387,9 +509,17 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
                 prefix = output / "cell/promo/proof" / sid
                 image = copy_bound(original["image"], prefix / f"{phase}.png")
                 extraction = copy_bound(original["extraction_receipt"], prefix / f"{phase}-extraction.json")
-                indexed.extend((indexed_row(image), indexed_row(extraction)))
+                extraction_source = read_json(Path(original["extraction_receipt"]["path"]))
+                command = copy_bound(extraction_source["command"], prefix / f"{phase}-command.json")
+                stdout = copy_bound(extraction_source["stdout"], prefix / f"{phase}-stdout.bin")
+                stderr = copy_bound(extraction_source["stderr"], prefix / f"{phase}-stderr.txt")
+                indexed.extend(indexed_row(row) for row in
+                               (image, extraction, command, stdout, stderr))
                 frame = {"schema_version": 1, "result": "GREEN", "span": sid,
                          "phase": phase, "image": image, "extraction": extraction,
+                         "extraction_command": command,
+                         "extraction_stdout": stdout,
+                         "extraction_stderr": stderr,
                          "human_review": indexed_row(record(output / "source/human-review.json")),
                          "producer_assertions": {"exact_pts": original["pts_seconds"],
                                                  "gameplay_hud": True,
@@ -422,7 +552,9 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
         report = {"schema_version": 1, "result": "GREEN",
                   "cell": {"schema_version": 1, "result": "GREEN", "promo_capture": timeline},
                   "source_capture_report_result": source["capture_report_result"],
-                  "human_review_completed": True, "film_signoff_granted": False}
+                  "human_review_attested_by_external_record": True,
+                  "human_review_observed_by_tool": False,
+                  "film_signoff_granted": False}
         write_new(output / "report.json", report)
         indexed.append(indexed_row(record(output / "report.json")))
         write_new(output / "evidence-index.json", {"schema_version": 1, "result": "GREEN",
@@ -433,6 +565,7 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
         result = {"status": "ADAPTER_VALIDATED_SELECTED_SPANS_ONLY",
                   "adapter_bundle": str(output.resolve()), "source_capture_report_result": source["capture_report_result"],
                   "human_raw_review": record(output / "source/human-review.json"),
+                  "human_review_attestation_only": True,
                   "report": record(output / "report.json"), "timeline": record(timeline_path),
                   "evidence_index": record(output / "evidence-index.json"),
                   "raw": copied_raw, "span_ids": sorted(span_ids), "film_signoff_granted": False}

@@ -48,13 +48,19 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_nat
   "raw": {"path": "ABSOLUTE_ORIGINAL_RAW", "bytes": 0, "sha256": "64_HEX"},
   "image": {"path": "ABSOLUTE_EXTRACTED_PNG", "bytes": 0, "sha256": "64_HEX"},
   "pts_seconds": "EXACT_FFPROBE_FRAME_PTS",
+  "decoded_index": 0,
+  "ffprobe": {"path": "ABSOLUTE_ORIGINAL_FFPROBE", "bytes": 0, "sha256": "64_HEX"},
+  "command": {"path": "ABSOLUTE_EXTRACT_COMMAND_JSON", "bytes": 0, "sha256": "64_HEX"},
+  "stdout": {"path": "ABSOLUTE_FFMPEG_STDOUT", "bytes": 0, "sha256": "64_HEX"},
+  "stderr": {"path": "ABSOLUTE_FFMPEG_STDERR", "bytes": 0, "sha256": "64_HEX"},
   "human_review_performed": false
 }
 ```
 
-该回执必须记录实际抽出的帧 PTS，不能用墙钟 mark、帧序号÷30 或标称 fps 猜测。阶段二只核回执
-的文件绑定、PTS 是否存在于完整 ffprobe、区间内最大相邻 PTS gap ≤0.2 秒；它不会解码画面或
-替人审片。A05 a02 的 271.267–278.833 秒 gap 为 7.566 秒，跨它的候选必拒。
+该回执必须记录实际抽出的帧 PTS，不能用墙钟 mark、帧序号÷30 或标称 fps 猜测。阶段二重核
+原 session/recorder 清单关系、抽帧命令所选 raw/帧号、原始 FFmpeg `showinfo` PTS、区间内最大相邻
+PTS gap ≤0.2 秒；它不会解码画面或替人审片。A05 a02 的 271.267–278.833 秒 gap 为 7.566 秒，
+跨它的候选必拒。
 
 审阅者另立不可变 `human-review.json`，字段为：
 
@@ -105,8 +111,10 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_nat
 `cell/promo/capture-timeline.json`、`evidence-index.json` 及逐端点 gate，然后**实际调用**
 `xar_promo.adapters.ck3.load_capture_bundle(...).verify_unchanged()`。只在这一步成功后写
 `bundle-receipt.json`；失败保留新目录及 `failure.json`，重试另开目录。adapter GREEN 仅覆盖
-这份 human review 显式审过的所选 spans，不把旧 no-video report 改写为 GREEN，也不代表
-成片已按 1× 完整观看或签核。成片重新编码后仍须对精确成片 bytes 单独人工签核。
+这份 human review **声称**已审过的所选 spans；工具只能核其时间和文件绑定，不能观察人是否
+真的全程观看。它不把旧 no-video report 改写为 GREEN，也不代表成片已按 1× 完整观看或签核。
+新 bundle 中 adapter 消费的媒体与证据文件齐备，但复制的来源清单和审阅回执仍含原 attempt
+的绝对路径；完整来源追溯仍需保留旧 attempt。成片重新编码后须对精确成片 bytes 单独人工签核。
 
 轻量夹具测试：
 

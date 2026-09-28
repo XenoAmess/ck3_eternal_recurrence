@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -60,6 +61,7 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         write(self.recorder / "recorder-start.json", {"monotonic_ns": 100})
         write(self.recorder / "recorder-end.json", {
             "monotonic_ns": 300, "elapsed_monotonic_seconds": 0.12,
+            "ended_at": "2026-09-28T10:00:00+00:00",
             "ffmpeg_exit_code": 0, "interrupted": False, "raw": bundle.record(raw)})
         write(self.recorder / "ffprobe-command.json", ["ffprobe", str(raw)])
         write(self.recorder / "geometry-admission.json", {"valid_and_equal": True})
@@ -76,7 +78,8 @@ class ExistingCaptureBundleTest(unittest.TestCase):
     def prepare(self) -> dict:
         with patch.object(bundle, "toolchain_identity", return_value={
             "version": "0.2.1", "release_tag": "v0.2.1",
-            "wheel_sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621"}):
+            "wheel_sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621",
+            "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"}):
             bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused.txt")
         return bundle.read_json(self.output / "source-manifest.json")
 
@@ -85,9 +88,23 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         for phase, pts in (("begin", "0.033"), ("end", end_pts)):
             image = self.root / f"{phase}.png"
             image.write_bytes(f"raw-derived {phase} frame".encode())
+            index = ("0.000", "0.033", "0.066", end_pts).index(pts)
+            command = self.root / f"{phase}-command.json"
+            write(command, {"argv": ["fixture-ffmpeg", *bundle.extract_argv_tail(
+                                      source["raw"]["path"], index, str(image))],
+                            "source_manifest": bundle.record(self.output / "source-manifest.json"),
+                            "ffprobe": source["ffprobe"], "selected_decoded_index": index,
+                            "requested_pts_seconds": pts})
+            stdout = self.root / f"{phase}-stdout.bin"
+            stdout.write_bytes(b"")
+            stderr = self.root / f"{phase}-stderr.txt"
+            stderr.write_text(f"pts_time:{pts}\n", encoding="utf-8")
             extraction = self.root / f"{phase}-extraction.json"
             write(extraction, {"result": "EXTRACTED_UNREVIEWED", "raw": source["raw"],
-                               "image": bundle.record(image), "pts_seconds": pts})
+                               "image": bundle.record(image), "pts_seconds": pts,
+                               "ffprobe": source["ffprobe"], "decoded_index": index,
+                               "command": bundle.record(command), "stdout": bundle.record(stdout),
+                               "stderr": bundle.record(stderr), "human_review_performed": False})
             frames[f"{phase}_frame"] = {"pts_seconds": pts, "image": bundle.record(image),
                                            "extraction_receipt": bundle.record(extraction),
                                            "reviewed_at_1x": True, "gameplay_hud": True,
@@ -141,6 +158,23 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         self.assertEqual(result["pts_seconds"], "0.033")
         self.assertEqual(result["decoded_index"], 1)
 
+    def test_exact_frame_extractor_records_absolute_image_when_output_relative(self) -> None:
+        self.prepare()
+        def fake_run(argv, **kwargs):
+            self.assertTrue(Path(argv[-1]).is_absolute())
+            Path(argv[-1]).write_bytes(b"frame")
+            kwargs["stderr"].write(b"pts_time:0.033\n")
+            return SimpleNamespace(returncode=0)
+        previous = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(bundle.shutil, "which", return_value="fixture-ffmpeg"), \
+                    patch.object(bundle.subprocess, "run", side_effect=fake_run):
+                bundle.extract_frame(self.output / "source-manifest.json", "0.033",
+                                     Path("relative-frame"))
+        finally:
+            os.chdir(previous)
+
     def test_explicit_review_packages_and_loads_adapter_bundle(self) -> None:
         source = self.prepare()
         review = self.review(source)
@@ -178,6 +212,56 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "raw PTS gap"):
             bundle.package(self.output / "source-manifest.json", review, self.root / "gap-bundle")
         self.assertFalse((self.root / "gap-bundle").exists())
+
+    def test_forged_pending_manifest_cannot_package_green(self) -> None:
+        source = self.prepare()
+        source["files"] = [item for item in source["files"] if item["path"] != source["raw"]["path"]]
+        manifest = self.output / "source-manifest.json"
+        write(manifest, source)
+        review = self.review(source)
+        target = self.root / "forged-bundle"
+        with self.assertRaisesRegex(ValueError, "missing or unexpected originals"):
+            bundle.package(manifest, review, target)
+        self.assertFalse(target.exists())
+
+    def test_review_before_recording_end_cannot_package_green(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        payload = bundle.read_json(review)
+        payload["reviewed_at_utc"] = "2026-09-28T09:59:00+00:00"
+        write(review, payload)
+        with self.assertRaisesRegex(ValueError, "must follow actual recorder end"):
+            bundle.package(self.output / "source-manifest.json", review,
+                           self.root / "early-review-bundle")
+
+    def test_prepare_rejects_recorder_end_raw_mismatch(self) -> None:
+        end_path = self.recorder / "recorder-end.json"
+        end = bundle.read_json(end_path)
+        end["raw"] = bundle.record(self.recorder / "ffprobe.json")
+        write(end_path, end)
+        with patch.object(bundle, "toolchain_identity", return_value={"version": "0.2.1"}):
+            with self.assertRaisesRegex(ValueError, "recorder end raw differs"):
+                bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused")
+        self.assertFalse(self.output.exists())
+
+    def test_package_rejects_extraction_from_other_video(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        payload = bundle.read_json(review)
+        frame = payload["spans"][0]["begin_frame"]
+        receipt_path = Path(frame["extraction_receipt"]["path"])
+        receipt = bundle.read_json(receipt_path)
+        command_path = Path(receipt["command"]["path"])
+        command = bundle.read_json(command_path)
+        command["argv"][command["argv"].index("-i") + 1] = "D:/unrelated-video.mkv"
+        write(command_path, command)
+        receipt["command"] = bundle.record(command_path)
+        write(receipt_path, receipt)
+        frame["extraction_receipt"] = bundle.record(receipt_path)
+        write(review, payload)
+        with self.assertRaisesRegex(ValueError, "command does not bind selected frame"):
+            bundle.package(self.output / "source-manifest.json", review,
+                           self.root / "wrong-video-bundle")
 
 
 if __name__ == "__main__":
