@@ -300,8 +300,42 @@ def frame_signature(snapshot: dict[str, object]) -> dict[str, object]:
     return frame
 
 
+WAR_SIGNATURE_FIELDS = ("war_id", "player_side", "player_is_primary_war_leader",
+                        "primary_opponent_character_id", "player_relative_war_score",
+                        "targeted_title_ids")
+
+
+def full_war_signature(snapshot: dict[str, object]) -> list[dict[str, object]]:
+    """Project every active war using the producer's sorted six-field signature."""
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list) or not wars:
+        raise RuntimeError("paused snapshot lacks a complete active-war list")
+    signature = []
+    seen = set()
+    for war in wars:
+        if not isinstance(war, dict):
+            raise RuntimeError("paused snapshot has a malformed active-war row")
+        row = {key: war.get(key) for key in WAR_SIGNATURE_FIELDS}
+        war_id = row["war_id"]
+        targets = row["targeted_title_ids"]
+        if (type(war_id) is not int or war_id <= 0 or war_id in seen
+                or row["player_side"] not in {"attacker", "defender"}
+                or (row["player_is_primary_war_leader"] is not None
+                    and type(row["player_is_primary_war_leader"]) is not bool)
+                or (row["primary_opponent_character_id"] is not None
+                    and (type(row["primary_opponent_character_id"]) is not int
+                         or row["primary_opponent_character_id"] < 0))
+                or type(row["player_relative_war_score"]) is not int
+                or not isinstance(targets, list)
+                or any(type(title) is not int or title < 0 for title in targets)):
+            raise RuntimeError("paused snapshot active-war signature is malformed or duplicated")
+        seen.add(war_id)
+        signature.append({**row, "targeted_title_ids": list(targets)})
+    return sorted(signature, key=lambda row: row["war_id"])
+
+
 def require_options_query(result: dict[str, object], frame: dict[str, object],
-                          war: dict[str, object]) -> None:
+                          war: dict[str, object], expected_wars: list[dict[str, object]]) -> None:
     """Bind the exact war-options read to all six paused-frame fields and WarID."""
     context = result.get("termination_query_context")
     options = result.get("war_termination_options")
@@ -336,38 +370,43 @@ def require_options_query(result: dict[str, object], frame: dict[str, object],
             or surrender["recipient_response"].get("would_accept_now") is not True):
         raise RuntimeError("H2743 surrender button legality or acceptance is unavailable")
     signatures = context.get("active_war_signature")
-    if (not isinstance(signatures, list) or len(signatures) != 1
-            or not isinstance(signatures[0], dict)
-            or any(signatures[0].get(key) != war.get(key) for key in (
-                "war_id", "player_side", "player_is_primary_war_leader",
-                "primary_opponent_character_id", "player_relative_war_score",
-                "targeted_title_ids"))):
-        raise RuntimeError("war-options signature changed WarID, parties or target")
+    targets = ([row for row in signatures if isinstance(row, dict)
+                and row.get("war_id") == 16777231] if isinstance(signatures, list) else [])
+    if (signatures != expected_wars or len(targets) != 1
+            or targets[0] != {key: war.get(key) for key in WAR_SIGNATURE_FIELDS}):
+        raise RuntimeError("war-options signature changed the full war set or target war")
 
 
 def audit_loaded_binaries(pid: int, state: Path) -> dict[str, object]:
-    """Read the actual CK3 process module map, not merely launch arguments."""
+    """Bind mapped module paths to exact current disk files, not memory bytes."""
     import psutil
     if type(pid) is not int or pid <= 0:
         raise RuntimeError("session ready event has no CK3 PID")
+    def same_disk_file(left: Path, right: Path) -> bool:
+        try:
+            return left.samefile(right)
+        except OSError:
+            return False
     process = psutil.Process(pid)
     actual_exe = Path(process.exe()).resolve()
-    if actual_exe != EXE.resolve() or sha256(actual_exe) != EXE_SHA:
-        raise RuntimeError("running CK3 EXE path or bytes differ")
+    if not same_disk_file(actual_exe, EXE) or sha256(actual_exe) != EXE_SHA:
+        raise RuntimeError("running CK3 EXE mapped path or current disk bytes differ")
     loaded = sorted({str(Path(mapping.path).resolve())
                      for mapping in process.memory_maps(grouped=False)
                      if Path(mapping.path).name.casefold() == "xar_ck3_bridge.dll"})
-    if loaded != [str(DLL.resolve())] or sha256(Path(loaded[0])) != DLL_SHA:
-        raise RuntimeError("actual loaded bridge DLL path or bytes differ")
-    return {"schema": "xar.ck3.h2743.readonly-loaded-binary-audit.v1",
+    if (not loaded or any(not same_disk_file(Path(path), DLL) or sha256(Path(path)) != DLL_SHA
+                          for path in loaded)):
+        raise RuntimeError("loaded bridge DLL mapped path or current disk bytes differ")
+    return {"schema": "xar.ck3.h2743.readonly-loaded-path-disk-audit.v1",
             "ck3_pid": pid, "ck3_process_create_time": process.create_time(),
-            "loaded_exe_path": str(actual_exe), "loaded_exe_sha256": EXE_SHA,
-            "loaded_bridge_paths": loaded, "loaded_bridge_sha256": DLL_SHA,
+            "running_exe_path": str(actual_exe), "running_exe_disk_sha256": EXE_SHA,
+            "loaded_bridge_paths": loaded, "loaded_bridge_disk_sha256": DLL_SHA,
             "candidate_injector_path": str(INJECTOR.resolve()),
             "candidate_injector_sha256": sha256(INJECTOR),
             "source_input_sha256": dict(SOURCE_HASHES),
             "derived_driver_sha256_at_query": sha256(state / "native-session/driver-state.json"),
-            "loaded_binary_identity_proven": True}
+            "loaded_module_path_and_disk_sha_verified": True,
+            "loaded_in_memory_image_sha256": None}
 
 
 async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, object]:
@@ -407,6 +446,7 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                         write_new(output / "before-payload.json", before)
                         war = require_snapshot(before)
                         frame = frame_signature(before)
+                        expected_wars = full_war_signature(before)
                         break
                     if time.monotonic() >= deadline:
                         raise RuntimeError("H2743 paused MCP frame not ready within 300 seconds")
@@ -430,9 +470,10 @@ async def read_frame(state: Path, output: Path, task_id: str) -> dict[str, objec
                     if number == 1:
                         options_result = await call(session, "ck3_execute_step",
                                                     {"step": OPTIONS_QUERY}, "war-options-query")
-                        require_options_query(options_result, frame, war)
+                        require_options_query(options_result, frame, war, expected_wars)
                 after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
                 if (require_snapshot(after) != war or frame_signature(after) != frame
+                        or full_war_signature(after) != expected_wars
                         or results[0]["defender_de_jure_exit_terms_v1"] != results[1]["defender_de_jure_exit_terms_v1"]):
                     raise RuntimeError("H2743 baseline changed within the paused frame")
                 summary = {"status": "baseline_only_material_unavailable", "war_id": 16777231,

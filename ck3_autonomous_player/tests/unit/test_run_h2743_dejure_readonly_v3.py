@@ -97,6 +97,13 @@ class H2743RunnerGateTests(unittest.TestCase):
                "player_is_primary_war_leader": True,
                "primary_opponent_character_id": 30097,
                "player_relative_war_score": -12, "targeted_title_ids": [2128]}
+        other_war = {"war_id": 16777230, "player_side": "attacker",
+                     "player_is_primary_war_leader": False,
+                     "primary_opponent_character_id": 31000,
+                     "player_relative_war_score": 5, "targeted_title_ids": [2200]}
+        snapshot["active_wars"] = [war, other_war]
+        expected_wars = runner.full_war_signature(snapshot)
+        self.assertEqual([row["war_id"] for row in expected_wars], [16777230, 16777231])
         result = {"step": runner.OPTIONS_QUERY, "accepted": True,
                   "status": "available", "query_sequence": 2,
                   "queried_snapshot_id": "native:3", "queried_revision": 4,
@@ -108,7 +115,7 @@ class H2743RunnerGateTests(unittest.TestCase):
                       "queried_connection_generation": 1,
                       "queried_episode_run_id": runner.EPISODE,
                       "queried_character_id": 29829,
-                      "active_war_signature": [copy.deepcopy(war)]},
+                      "active_war_signature": copy.deepcopy(expected_wars)},
                   "war_termination_options": {
                       "war_id": 16777231, "player_side": "defender",
                       "player_is_primary_war_leader": True,
@@ -120,7 +127,7 @@ class H2743RunnerGateTests(unittest.TestCase):
                           "native_validator_passed": True, "available": True,
                           "recipient_response": {"would_accept_now": True}},
                           "white_peace": {}, "victory": {}}}}
-        runner.require_options_query(result, frame, war)
+        runner.require_options_query(result, frame, war, expected_wars)
         mutations = (
             ("queried_snapshot_id", "native:4"),
             ("queried_revision", 5),
@@ -143,7 +150,21 @@ class H2743RunnerGateTests(unittest.TestCase):
                     current = current[part]
                 current[parts[-1]] = bad
                 with self.assertRaises(RuntimeError):
-                    runner.require_options_query(changed, frame, war)
+                    runner.require_options_query(changed, frame, war, expected_wars)
+
+        for changed_wars in ([copy.deepcopy(war)],
+                             [copy.deepcopy(other_war), copy.deepcopy(war), copy.deepcopy(war)],
+                             [{**other_war, "player_relative_war_score": 6}, copy.deepcopy(war)]):
+            with self.subTest(active_wars=changed_wars):
+                changed = copy.deepcopy(result)
+                changed["termination_query_context"]["active_war_signature"] = changed_wars
+                with self.assertRaises(RuntimeError):
+                    runner.require_options_query(changed, frame, war, expected_wars)
+
+        duplicate_before = copy.deepcopy(snapshot)
+        duplicate_before["active_wars"].append(copy.deepcopy(war))
+        with self.assertRaises(RuntimeError):
+            runner.full_war_signature(duplicate_before)
 
         for field in (*runner.FRAME_FIELDS, "connection_generation"):
             with self.subTest(snapshot_field=field):
@@ -179,7 +200,8 @@ class H2743RunnerGateTests(unittest.TestCase):
         with (patch("psutil.Process", return_value=process),
               patch.object(runner, "sha256", side_effect=hashed)):
             audit = runner.audit_loaded_binaries(1234, Path("D:/synthetic-state"))
-            self.assertTrue(audit["loaded_binary_identity_proven"])
+            self.assertTrue(audit["loaded_module_path_and_disk_sha_verified"])
+            self.assertIsNone(audit["loaded_in_memory_image_sha256"])
             process.memory_maps = lambda grouped=False: [
                 SimpleNamespace(path="D:/wrong/xar_ck3_bridge.dll")]
             with self.assertRaises(RuntimeError):
