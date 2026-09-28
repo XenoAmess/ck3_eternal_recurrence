@@ -1,15 +1,38 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
-  "status": "claimed",
+  "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-27T22:02:45Z",
-  "current_evidence": {
-    "exact_h2825_source_pair_local": true,
-    "source_pair_receipt": "docs/ck3-native-ai/h2825-onedrive-exact-input-2026-09-28.md",
-    "same_frame_war_row_document": "docs/ck3-native-ai/h2825-readonly-partition-live-2026-09-28.md",
-    "prisoner_war_retention_queried": false,
-    "prisoner_action_submitted": false
+  "updated_at_utc": "2026-09-28T01:19:52Z",
+  "source_pr": null,
+  "master_commit": "b164b0a3707c189b5cbb77dcc3601676445fd6ed",
+  "delivery_route": "direct rebase-only master push",
+  "interface_contract": {
+    "document": "docs/ck3-native-ai/h2825-prisoner-war-retention-source-2026-09-28.md",
+    "native_query_step": "query-war-prisoner-release-pairs-v1-16777231",
+    "native_query_source": "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp:ReadWarPrisonerReleasePairsV1",
+    "driver_source": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py:_execute_native_war_step",
+    "consumer_join_source": "ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_war_retention.py:project_prisoner_war_retention",
+    "same_frame_contract": "The read-only native query requires a paused, stable WarID/CB/participant/primary-successor scan and returns jailer/prisoner pairs only after double sampling. The driver binds native revision and date, rejects incomplete or contradictory scans, and leaves actual exit feasibility and prisoner relationship value to separate same-frame consumers.",
+    "h2825_confirmed_cb": "individual_county_de_jure_cb, database index 17, player defender 29829, native:3/native revision 3/date_raw 53217624",
+    "named_prisoner_static_result": [
+      {"character_id": 34486, "house_id": 2370, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "unavailable"},
+      {"character_id": 44484, "house_id": null, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "unavailable"},
+      {"character_id": 47028, "house_id": null, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "unavailable"}
+    ],
+    "action_boundary": "No prisoner release, ransom, war exit, army movement or game-date advance was submitted by this request. Generic PoW source candidates do not by themselves prove exit availability or actual release."
   },
-  "next_step": "Inspect exact CK3 war/CB/prisoner source and existing bridge readouts, then provide a typed same-frame read-only retention interface or precise unavailable reasons for CharacterIDs 34486, 44484 and 47028. Do not submit prisoner actions."
+  "checks": [
+    "Native ck3_11906.cpp, bridge.cpp, ck3_11906_adapter.cpp and game_adapter.cpp changed objects compiled with the external MSVC/Ninja build; no full DLL link or live injection was claimed.",
+    "test_prisoner_war_retention.py plus test_war_termination_contract.py: 14 passed, 27 subtests passed; focused prisoner tests: 6 passed after final added literal test.",
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN."
+  ],
+  "live_evidence": null,
+  "limitations": [
+    "The independent generic PoW producer has not been read from H2825 with a newly linked and officially paired DLL. Thus the three named prisoners' actual current-war generic release pairs remain unavailable, not false or zero.",
+    "The original R0265 injector binary was not available in the local H2825 read-only replay; the verified local R0221 injector differs, and full original binary identity is not claimed.",
+    "The FP3 CB consequence is inapplicable to this observed WarID. For other wars, the House and war-specific conditions must be evaluated independently; script prestige values are not numeric actual amounts in this response.",
+    "Ransom quotes, nonwar relationship value, future terminal outcomes and any legal prisoner action belong to the requesting nonwar consumer and are not inferred here."
+  ],
+  "next_step": "The nonwar consumer may join this source-bound adapter to its private prisoner collection now, preserving generic PoW unavailable. If it needs exact generic PoW classification, the next operator must link a new bridge DLL, create an independent officially paired read-only H2825 attempt, confirm fresh Steam offline evidence, query the same paused WarID/prisoner frame, and write verification with raw payloads and hashes. No prisoner action is authorized by this delivery."
 }
