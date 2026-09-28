@@ -1,9 +1,9 @@
 {
   "schema": "xar.g2.cross-team-war-response.v1",
   "request_id": "WAR-ROBERT-R0284-CONTACT-20260928",
-  "status": "source_merged_r0291_preview_only_live_pending",
+  "status": "source_merged_r0295_repeated_prefix_no_move_stage4_pending",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T08:44:13Z",
+  "updated_at_utc": "2026-09-28T09:12:27Z",
   "source_request_commit": "756e835243edd33da3b0b73718da92beb5590165",
   "work_branch": "war/r0284-contact-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/462",
@@ -60,7 +60,7 @@
     "git diff --check: passed."
   ],
   "live_evidence": {
-    "status": "source_r0291_preview_only_semantic_red; receiver_live_not_run",
+    "status": "source_r0295_repeated_cold_prefix_no_move_semantic_red; receiver_live_not_run",
     "source_r0291": {
       "source_commit": "f6e27d579ccd9f8444d0ae289f0c5f269a6dfadb",
       "source_strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
@@ -79,16 +79,75 @@
       "focused_evidence_sha256": "F3EE5883EA10CBA17109B8961BBBF34A5830F9DE58A08C89F5023937610E44B9",
       "transfer_manifest_sha256": "985DC108EE4719028C9CE55D673DE449F86EE6A0EEA2197F7445BD2428E32C6E"
     },
+    "source_r0293": {
+      "source_commit": "ae36b14d861b2ef8ec68265bdebe2d32a7e0c7ff",
+      "source_strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+      "operator_turns": "8/8 bounded turns; h934 to h951; date raw53157816 unchanged",
+      "observed_steps": "preview turn6, full-hostile first-day contact query turn7, v3 fixed hypothetical input query turn8",
+      "binding": "native:3; public revision 4; native revision 3; episode native-29829-2bc2d599f7f9",
+      "war_id": 16777237,
+      "player_army_id": 16777450,
+      "origin_province_id": 2634,
+      "target_province_id": 2640,
+      "full_hostile_roster": [16777537],
+      "first_day_contact_free": true,
+      "v3_input_observation_ready": true,
+      "v3_planner_usable": false,
+      "v3_monte_carlo_ready": false,
+      "forecast_admission_decision_observed": false,
+      "typed_move_count": 0,
+      "route_start_poststate": false,
+      "date_advanced_raw": 0,
+      "formal_robert_date_credit": 0,
+      "interpretation": "The v3 payload is a read-only fixed hypothetical input. planner_usable=false does not prove the merged bounded forecast will reject: the forecast can use input_observation_ready, and the next planner decision was not observed.",
+      "result_evidence_sha256": "61EEFB54A9789830C605D5A32BC8C5C3B078ABD493B460BA6289A5F6D4FB56B7",
+      "focused_evidence_sha256": "35765CED296D6C42A8A2A9331C3B970E9CC6325F81ADDD8861F0F18F79897E92",
+      "transfer_manifest_sha256": "31C925EC5DFE9D4DC4730277A81A4E3F2606D016B05D91FD58D31D8D331EA318"
+    },
+    "source_r0295": {
+      "source_commit": "ae36b14d861b2ef8ec68265bdebe2d32a7e0c7ff",
+      "source_strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+      "operator_turns": "8/8 bounded turns; h951 to h968; date raw53157816 unchanged",
+      "selected_steps_identical_to_r0293": true,
+      "last_step": "query-combat-simulation-inputs-v3-2640-2634-a-1-16777450-d-1-16777537",
+      "forecast_decision_observed": false,
+      "typed_move_count": 0,
+      "route_start_poststate": false,
+      "date_advanced_raw": 0,
+      "formal_robert_date_credit": 0,
+      "source_only_h968_save_sha256": "4CF887AA99C5479F552595112D19886B12E1F089F87F12B1D37D105619ABEEFA",
+      "source_only_h968_driver_sha256": "8DB5FC8CD204B4A04A550461CD7C0B62BC3A15F9B3D89218F76868A8853BF347",
+      "result_evidence_sha256": "816BD9A51B1AD6F296961C5116F111ECBF6BE5C96EC274C98792A8F30B2248E0",
+      "focused_evidence_sha256": "39D4E9D856CB5467A4E43D9C7AA7ECFDCF15E01DC0160C068308C6820A20B9F4",
+      "next_bounded_proposal_sha256": "C4A85122CB3C84E29439846D95B1096E6025D4FFD96EBC296E08501F4629DEB2",
+      "transfer_manifest_sha256": "16A526FD9B1B3D617CC5C78DD9BC009A1FC6E5845E93448123557760BD4610E8",
+      "result_receiver_ack_sha256": "95C173D98D1FFA07BB4B91228AC3CA394B1454BBE7ED8BF02EF358C99CBBEDDF",
+      "next_boundary": "Receiver accepted one new exact h968 cold-pair attempt at most nine planner turns, one typed move, zero date advance and 1200 wall seconds after official rebind/no-launch and operator preflight. A ninth read-only query or forecast rejection remains semantic RED."
+    },
     "source_h934_next_candidate": {
       "source_only_save_sha256": "F1E1075D5EF0BF9985FC9BC78C4A4839D7645248325FFE270D88B4EDB4DE42A3",
       "source_only_driver_sha256": "243F8A98259288FF3367B3032AA941498F0B0A277E9B812AB6F0E459FFEDF783",
       "history_index": 934,
       "date_raw": 53157816,
       "source_reported_official_rebind_no_launch": "ready; source receipts identified by hash but not transferred",
-      "action_status": "not_run; semantic stop after one typed move and independent poststate is not available in the fixed-turn operator",
+      "action_status": "R0293 Stage2 completed eight read-only turns using a source-private bounded operator; no typed move or route poststate",
       "addendum_sha256": "8896319227FA51C4A7F69D89D06F456703881030A26E3A7C9047D83829A5A105"
     },
-    "official_rebind": "not_run_on_receiver; source R0291 and h934 reported ready with source-only full receipts",
+    "source_h951_stage3_preparation": {
+      "status": "historical no-launch preparation; subsequent R0295 result attached",
+      "source_only_save_sha256": "EF060252A5E63A80B8FCD400A6D28ADD3DCA89240A30D09C963F8BE63D78FA3E",
+      "source_only_driver_sha256": "AF66DC2E7592051C735008AEE6E8010F73FB47F918BC4B757412347A1D42A5EE",
+      "history_index": 951,
+      "date_raw": 53157816,
+      "max_planner_turns": 8,
+      "max_typed_moves": 1,
+      "allowed_date_advance_raw": 0,
+      "formal_robert_date_credit": 0,
+      "prep_candidate_sha256": "B2663B8F16B075D79EBA02405E42066299FAE52A87D3C03C52948A8BC4E2FDEB",
+      "prep_manifest_sha256": "7C318DC4F2425C9465F03725A243497FCD86E6C0898DB19007C51429C2303B71",
+      "receiver_ack_sha256": "88838F36F7F680E8C768EE219E5F7169DF72EC0CDEFE10C8C815E297BD0A547F"
+    },
+    "official_rebind": "not_run_on_receiver; source h951 reports ready with source-only full receipts",
     "no_launch_preflight": "not_run_on_receiver; source reports ready_no_launch",
     "typed_move_poststate": "pending",
     "next_day_recheck": "pending"
@@ -97,10 +156,10 @@
     "The source 257th turn remains RED. The 256 successful source turns and its h907 checkpoint are preserved facts, not results of this candidate.",
     "A contact-free first day does not prove the remaining five days, final participation or battle outcome. Future route changes, a new hostile or failed same-frame observation must stop or replan.",
     "The transferred h928/h930/h932 excerpt does not include the full active_wars.allied_armies frame. WarID-to-ArmyID membership is enforced in source and tested with a synthetic row, but remains exact-live pending.",
-    "R0291 bounded operator success is a preview-only semantic RED; the new route-start branch was not exercised. The source live attempt cannot be counted as a move or formal Robert date progress.",
-    "The h934 save/driver and full official rebind/preflight reports remain only on the source machine. Their hashes are source claims, whereas the five small R0291 result/addendum files are receiver byte-verified.",
-    "The existing fixed-turn operator cannot guarantee exactly one typed move followed by independent poststate and immediate stop when cold sidecar query counts vary. No h934 action job is authorized by the source addendum; a semantic stop gate is under separate review.",
+    "R0291 bounded operator success is a preview-only semantic RED. R0293 and R0295 reach full-hostile and v3 inputs but end before forecast admission or typed move; none can count as a move or formal Robert date progress.",
+    "The h934, h951 and h968 save/driver pairs and full official rebind/preflight reports remain only on the source machine. Their hashes are source claims; the small R0291, R0293 and R0295 results and Stage3 preparation files are receiver byte-verified.",
+    "The source-private Stage2/Stage3 operators ran bounded read-only turns. Their stop mechanism is transport control and does not prove movement. A selected typed move still requires an independent after-snapshot and checkpoint before movement credit.",
     "Receiver official rebind and no-launch require zero CK3 processes and an uncontested ck3-screen window; neither has run on the receiver. No R0284 game launch or action has occurred on the receiver."
   ],
-  "next_step": "Keep R0291 preview-only RED. Merge and verify a fail-closed operator stop after one selected typed move plus independent poststate, then freeze a new append-only action job from exact source-only h934 pair and run full-hostile/v3 to move/poststate; any later +24 recheck is a separate bounded stage. Receiver no-launch can follow an uncontested CK3 window."
+  "next_step": "Keep R0291, R0293 and R0295 semantic RED. From the exact source-only h968 pair, run at most nine turns after official rebind/no-launch and operator preflight to observe the next same-frame forecast/admission decision. If admitted, submit at most one selected typed move and independently verify after-snapshot route plus checkpoint without date advance; if rejected or still read-only, preserve its exact reason. Any later +24 daily recheck is a separate bounded stage. Receiver no-launch can follow an uncontested CK3 window."
 }

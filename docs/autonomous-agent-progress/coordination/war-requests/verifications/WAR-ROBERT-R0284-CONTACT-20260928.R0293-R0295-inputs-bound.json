@@ -1,0 +1,66 @@
+{
+  "schema": "xar.g2.cross-team-war-verification.v1",
+  "request_id": "WAR-ROBERT-R0284-CONTACT-20260928",
+  "checked_at_utc": "2026-09-28T09:12:27Z",
+  "status": "source_r0293_r0295_transport_green_semantic_red_no_move",
+  "source_kind": "H90 derivative only; formal Robert date credit 0",
+  "required_merged_ancestor": "b93b595e483db915c7694e0b09f85563dbec49f4",
+  "source_commit": "ae36b14d861b2ef8ec68265bdebe2d32a7e0c7ff",
+  "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+  "receiver_byte_verified_files": [
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0293-RESULT.json.raw", "size": 2973, "sha256": "61EEFB54A9789830C605D5A32BC8C5C3B078ABD493B460BA6289A5F6D4FB56B7"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0293-FOCUSED-EXCERPT.json.raw", "size": 6764, "sha256": "35765CED296D6C42A8A2A9331C3B970E9CC6325F81ADDD8861F0F18F79897E92"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0293-TRANSFER-MANIFEST.json.raw", "size": 795, "sha256": "31C925EC5DFE9D4DC4730277A81A4E3F2606D016B05D91FD58D31D8D331EA318"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0295-RESULT.json.raw", "size": 2612, "sha256": "816BD9A51B1AD6F296961C5116F111ECBF6BE5C96EC274C98792A8F30B2248E0"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0295-FOCUSED-EXCERPT.json.raw", "size": 6297, "sha256": "39D4E9D856CB5467A4E43D9C7AA7ECFDCF15E01DC0160C068308C6820A20B9F4"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0295-NEXT-BOUNDED-PROPOSAL.json.raw", "size": 2648, "sha256": "C4A85122CB3C84E29439846D95B1096E6025D4FFD96EBC296E08501F4629DEB2"},
+    {"path": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-R0284-CONTACT-20260928.R0295-TRANSFER-MANIFEST.json.raw", "size": 1072, "sha256": "16A526FD9B1B3D617CC5C78DD9BC009A1FC6E5845E93448123557760BD4610E8"}
+  ],
+  "r0293_observed": {
+    "source_history_index_before": 934,
+    "source_history_index_after": 951,
+    "bounded_turns": "8/8",
+    "last_step": "query-combat-simulation-inputs-v3-2640-2634-a-1-16777450-d-1-16777537",
+    "full_hostile_roster": [16777537],
+    "one_day_contact_free": true,
+    "v3_input_observation_ready": true,
+    "v3_planner_usable": false,
+    "forecast_admission_decision_observed": false,
+    "typed_move_count": 0,
+    "date_raw_before": 53157816,
+    "date_raw_after": 53157816
+  },
+  "r0295_observed": {
+    "source_history_index_before": 951,
+    "source_history_index_after": 968,
+    "bounded_turns": "8/8",
+    "selected_steps_identical_to_r0293": true,
+    "last_step": "query-combat-simulation-inputs-v3-2640-2634-a-1-16777450-d-1-16777537",
+    "forecast_admission_decision_observed": false,
+    "typed_move_count": 0,
+    "date_raw_before": 53157816,
+    "date_raw_after": 53157816
+  },
+  "forecast_boundary": "v3 planner_usable=false does not independently prove forecast rejection. The merged bounded forecast accepts input_observation_ready as input but no subsequent planner decision has been observed in these source runs.",
+  "source_only_h968_pair": {
+    "history_index": 968,
+    "date_raw": 53157816,
+    "save_sha256": "4CF887AA99C5479F552595112D19886B12E1F089F87F12B1D37D105619ABEEFA",
+    "driver_sha256": "8DB5FC8CD204B4A04A550461CD7C0B62BC3A15F9B3D89218F76868A8853BF347",
+    "receiver_has_full_pair_bytes": false
+  },
+  "next_boundary": {
+    "accepted": true,
+    "scope": "one new exact h968 cold-pair attempt only",
+    "planner_turns_max": 9,
+    "typed_move_count_max": 1,
+    "date_advance_allowed_raw": 0,
+    "wall_seconds_max": 1200,
+    "official_rebind_no_launch_and_operator_preflight_required": true,
+    "independent_route_poststate_required_for_move_credit": true,
+    "following_day_run_authorized": false,
+    "onedrive_result_receiver_ack_sha256": "95C173D98D1FFA07BB4B91228AC3CA394B1454BBE7ED8BF02EF358C99CBBEDDF"
+  },
+  "receiver_gameplay": "not_run; local CK3 screen remains separate",
+  "formal_robert_date_credit": 0
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "xar.war.r0284-h951-stage2-result/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "round": "R0293",
+  "operator_status": {
+    "ok": true,
+    "status": "completed",
+    "formal_exit_code": 0,
+    "qualified_turns": 8,
+    "cleanup_proven": true
+  },
+  "semantic_status": "inputs_bound_move_not_submitted",
+  "typed_move_count": 0,
+  "reason": "Stage ended at the v3 read-only input query on turn 8. No later planner decision, forecast admission, typed move, or route postcondition was observed.",
+  "history_index_before": 934,
+  "history_index_after": 951,
+  "date_raw_before": 53157816,
+  "date_raw_after": 53157816,
+  "date_advanced_raw": 0,
+  "binding": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53157816,
+    "episode_run_id": "native-29829-2bc2d599f7f9"
+  },
+  "full_hostile_roster": [
+    16777537
+  ],
+  "one_day_contact_free": true,
+  "horizon_end_date_raw": 53157840,
+  "v3_input_observation_ready": true,
+  "v3_planner_usable": false,
+  "v3_monte_carlo_ready": false,
+  "v3_missing_fidelity_gates": [
+    "loaded_playset_verified",
+    "ast_evaluator_ready",
+    "original_trace_ready"
+  ],
+  "v3_missing_required_domains": [
+    "damage_to_casualty_allocation",
+    "pursuit_transition",
+    "battle_end_and_retreat_transition",
+    "phase_event_rng_and_effects"
+  ],
+  "interpretation": "The queried v3 payload is a fixed hypothetical contact input with no actual-route dependency. Its completeness flags do not report a planner-usable simulation. The merged strategy may choose another bounded forecast on the next turn; that decision has not been observed.",
+  "source_commit": "ae36b14d861b2ef8ec68265bdebe2d32a7e0c7ff",
+  "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+  "formal_report": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h934-stage2-ae36b14-20260928\\stage2-first8\\formal-report.txt",
+    "size": 133679,
+    "sha256": "63BA8CD5F62829BBAF23A8205B99E0D2BEC8714FA77DCEB46081F594F874FF77"
+  },
+  "operator_receipt": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h934-stage2-ae36b14-20260928\\stage2-first8\\operator-receipt.json",
+    "size": 1996,
+    "sha256": "35BEAA0F17A77CA922647CB850A792B19670DE9CA78F0A9874024B9A2C2E84A3"
+  },
+  "after_save": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h934-stage2-ae36b14-20260928\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "size": 59558015,
+    "sha256": "EF060252A5E63A80B8FCD400A6D28ADD3DCA89240A30D09C963F8BE63D78FA3E"
+  },
+  "after_driver": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h934-stage2-ae36b14-20260928\\state\\native-session\\driver-state.json",
+    "size": 12115294,
+    "sha256": "AF66DC2E7592051C735008AEE6E8010F73FB47F918BC4B757412347A1D42A5EE"
+  },
+  "h90_derivative_only": true,
+  "formal_robert_date_credit": 0
+}

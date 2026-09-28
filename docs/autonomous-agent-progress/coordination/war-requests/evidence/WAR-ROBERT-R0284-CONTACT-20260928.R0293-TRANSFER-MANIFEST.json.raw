@@ -1,0 +1,17 @@
+{
+  "schema": "xar.war.r0284-h951-stage2-transfer/v1",
+  "files": {
+    "FOCUSED-EXCERPT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE2-20260928\\FOCUSED-EXCERPT.json",
+      "size": 6764,
+      "sha256": "35765CED296D6C42A8A2A9331C3B970E9CC6325F81ADDD8861F0F18F79897E92"
+    },
+    "RESULT.json": {
+      "path": "C:\\Users\\xenoa\\OneDrive\\WAR\\R0284-H90-CONTACT-20260928\\SOURCE-LIVE-VERIFY-R0284-STAGE2-20260928\\RESULT.json",
+      "size": 2973,
+      "sha256": "61EEFB54A9789830C605D5A32BC8C5C3B078ABD493B460BA6289A5F6D4FB56B7"
+    }
+  },
+  "large_pair_transfer": "Source save and driver remain in the exact source asset paths above; they have not been uploaded to OneDrive.",
+  "append_only": true
+}

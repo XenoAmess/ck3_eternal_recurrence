@@ -1,0 +1,60 @@
+{
+  "schema": "xar.war.r0284-h968-stage3-result/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "round": "R0295",
+  "operator_status": {
+    "ok": true,
+    "status": "completed",
+    "formal_exit_code": 0,
+    "qualified_turns": 8,
+    "cleanup_proven": true
+  },
+  "semantic_status": "repeated_cold_restore_prefix_no_typed_move",
+  "typed_move_count": 0,
+  "history_index_before": 951,
+  "history_index_after": 968,
+  "date_raw_before": 53157816,
+  "date_raw_after": 53157816,
+  "date_advanced_raw": 0,
+  "selected_steps_identical_to_R0293": true,
+  "repeat_interpretation": "The second cold PID re-queried construction and marriage recovery (turns 1-3), then termination, strengths, preview, horizon and v3 inputs (turns 4-8). The eight-turn cap again ended before a following planner decision. A new eight-turn cold restart would repeat the same prefix and is not an evidence-backed next action.",
+  "binding": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53157816,
+    "episode_run_id": "native-29829-2bc2d599f7f9"
+  },
+  "full_hostile_roster": [
+    16777537
+  ],
+  "one_day_contact_free": true,
+  "v3_input_observation_ready": true,
+  "v3_planner_usable": false,
+  "v3_monte_carlo_ready": false,
+  "forecast_decision_observed": false,
+  "source_commit": "ae36b14d861b2ef8ec68265bdebe2d32a7e0c7ff",
+  "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+  "formal_report": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h951-stage3-ae36b14-20260928\\stage3-first8\\formal-report.txt",
+    "size": 133650,
+    "sha256": "AAAB7677AC7AB0AFAB4F2EAC784DAA05660DD12A6319EFAF09074EFE71280292"
+  },
+  "operator_receipt": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h951-stage3-ae36b14-20260928\\stage3-first8\\operator-receipt.json",
+    "size": 1994,
+    "sha256": "88B44D5B807A7C67E7029E9BE7D207712A3AA46025BCAABE563A34C606B95502"
+  },
+  "after_save": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h951-stage3-ae36b14-20260928\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "size": 59558015,
+    "sha256": "4CF887AA99C5479F552595112D19886B12E1F089F87F12B1D37D105619ABEEFA"
+  },
+  "after_driver": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h951-stage3-ae36b14-20260928\\state\\native-session\\driver-state.json",
+    "size": 12974263,
+    "sha256": "8DB5FC8CD204B4A04A550461CD7C0B62BC3A15F9B3D89218F76868A8853BF347"
+  },
+  "h90_derivative_only": true,
+  "formal_robert_date_credit": 0
+}
