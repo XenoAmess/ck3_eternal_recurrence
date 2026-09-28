@@ -95,5 +95,23 @@
     "gameplay_action_submitted": false,
     "formal_exit_decision_complete": false
   },
-  "next_step": "Implement the separately versioned, fail-closed de-jure defender exit terms producer described in minimal_native_producer_plan. First close setup_de_jure_cb/resolve semantics and conditional resources statically, then obtain H2743 same-frame title graph, factor, both resource baselines and directed-truce parameters in a new read-only live attempt after R0271/R0266 screen priority. Pair its result with current R0271 contact/siege risk before a typed decision. Do not reuse R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
+  "h2743_v3_live_followup_2026_09_28": {
+    "observed_at_utc": "2026-09-28T14:51:03Z",
+    "draft_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/448",
+    "status": "read_only_candidate_live_verified_material_unavailable",
+    "candidate_dll_sha256": "6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E",
+    "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-11-dejure-baseline-no-launch/live-dejure-readonly-v3",
+    "read_only_result_sha256": "647D0A2804E6F5E7F6402813332E40885578496E8474129FFC52A45F47B00F8D",
+    "evidence_document": "docs/ck3-native-ai/h2743-defender-dejure-readonly-attempt-11-2026-09-28.md",
+    "same_frame": "native:3, public/native revisions 4/3, raw date 53217264, connection generation 1, WarID 16777231, Robert 29829 primary defender, Landolf 30097 attacker",
+    "native_readback": "Two identical read-only baselines include target Title2128 current holder33435 and holder immediate personal liege29829, both primary parties' fourteen pre-action resource balances and two monthly gold incomes. These are prestate only; runtime target referent, actual title/vassal delta, F, signed resource delta, conditional effects and directed truce remain unavailable.",
+    "direct_options": "Same paused session proves surrender legal and recipient would accept; white peace/victory unavailable. Surrender terms_observable=false and cb_specific_terms_not_observable. Direct query lacks formal planner selected_step and priced_command, so R0266 cannot infer immediate fee zero from it.",
+    "bounded_continuation_risk_projection_sha256": "2C9458861E5E03F8C095AC6324E003F86221DDC6DBF713DE807A75CC4777E68F",
+    "continuation_boundary": "Same-frame score -12 and enemy siege at province2628 with one-day current timer estimate; no completion upper bound, contact proof, finite-horizon loss upper bound or exit comparison.",
+    "cleanup_and_action": "Fresh Steam offline frame, exclusive screen lease heartbeats, loaded path plus disk SHA audit, supervisor exit0, CK3 PID empty and input hashes unchanged. No gameplay action submitted; ck3-screen released task-bus seq1862.",
+    "material_complete": false,
+    "formal_exit_decision_complete": false,
+    "gameplay_action_submitted": false
+  },
+  "next_step": "Close the actual de-jure setup/resolve target and change semantics and conditional resource branches before attempting a separately versioned full terms producer. The v3 live query verified only same-frame prestate and legal surrender; obtain signed title/vassal/resource deltas, dynamic factor and truce duration through audited side-effect-free sources, plus finite-horizon continuation loss and cash bounds. Keep the formal comparison unavailable and the terminal selected-step guard active until those facts and a sourced policy threshold exist. Do not reuse R0197 one-shot authorization or submit H2743/H2825 exit based on this response."
 }
