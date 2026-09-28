@@ -25,6 +25,17 @@ The H3911 family sidecar has `pending=null`, a resolved betrothal and `future_wa
 | War minimum reserve | Requires a published Robert owner policy with ID/version, actor/WarID, purpose, amount and validity window. | R0326 reports all those fields absent; construction's 200-gold floor and stock AI war chest are different policies. |
 | Existing committed cross-domain spend | The M5 collector checks that `existing_commitments.gold_raw` is at least pending war cash, but does not certify complete owner coverage or deduplicate overlapping action and commitment IDs. | H3911 driver and sidecars cannot establish the complete cash commitment set. |
 
+Each receipt amount uses signed nonnegative **Q100000 gold raw**, not displayed whole gold. The temporal contract is separate for each field:
+
+| Field | As-of / valid-through boundary | Missing proof that blocks promotion |
+| --- | --- | --- |
+| `pending_war_cash_raw` | All accepted but unsettled obligations at the paused source frame, carried across owner reconnect until a native settlement receipt; the current selected action is excluded until actually submitted. | Complete command-writer coverage, exact native quote and settlement/debit reconciliation. |
+| `immediate_war_action_cost_raw` | Exact selected typed command and preview at the same paused frame, invalid on any step/route/revision change; classify by **actual debit stage**, not a GUI forecast label. | H3911 query was not dispatched; no selected move price or debit-time proof. |
+| `policy_minimum_gold_reserve_raw` | Robert owner policy ID/version must be active for this player/WarID at the paused decision and remain applicable throughout the selected comparison horizon. | No published floor, amount, purpose or validity window. This is a policy input, not a native getter. |
+| `future_war_cost_upper_raw` | Cumulative cash upper bound from the current paused date through an explicit positive `horizon_days` and forced recheck; include each due debit at its actual date and every quoted one-off fee excluded from immediate/pending. | Next maintenance debit cadence/amount and full fleet, reinforcement and contract coverage. A monthly rate is not this cumulative amount. |
+| `future_risk_budget_raw` | Additional Q100000 cash for explicitly named uncertainty over the **same** horizon, additive to the future upper bound and policy floor. | No versioned risk policy or quantified scenario coverage. |
+| `existing_commitments.gold_raw` | Cross-domain accepted unsettled amounts at the same paused frame; insert each pending war request once by stable request/action identity. | No complete cross-domain writer inventory or overlap proof; numeric `>= pending` is only a lower-bound gate. |
+
 ## Smallest source-bound follow-up
 
 1. **For the selected query**, use the existing [H3911 formal receiver plan](r0266-h3911-query-and-military-same-session-attempt-2026-09-29.md): a fresh #449 exact pair/no-launch, one guarded `service.auto_turn()`, real request/envelope and native sequence, same six-field frame and treasury before/after, same PID/create time, zero gameplay submits and clean teardown. Audit the actual loaded DLL/EXE read-only query path before any SHA-pinned zero approval. If the selected step is null or different, preserve RED and do not borrow R0326's text or row 3868.
