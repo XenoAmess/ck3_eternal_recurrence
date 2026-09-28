@@ -45,11 +45,11 @@ def main() -> None:
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--ready-seconds", type=int, default=600)
     parser.add_argument("--request-seconds", type=int, default=150)
-    parser.add_argument("--total-seconds", type=int, default=900)
+    parser.add_argument("--total-seconds", type=int, default=1800)
     parser.add_argument("--max-day", type=int, default=36)
     args = parser.parse_args()
     require(30 <= args.ready_seconds <= 900 and 30 <= args.request_seconds <= 180 and
-            60 <= args.total_seconds <= 1800 and 32 <= args.max_day <= 36, "bounded timers/day invalid")
+            60 <= args.total_seconds <= 2100 and 32 <= args.max_day <= 36, "bounded timers/day invalid")
     frozen = json.loads(args.static_receipt.read_text(encoding="utf-8"))
     require(frozen["status"] == "STATIC_GREEN_FOR_NEW_NO_LAUNCH_PREFLIGHT_ONLY",
             "selected static receipt is not GREEN")

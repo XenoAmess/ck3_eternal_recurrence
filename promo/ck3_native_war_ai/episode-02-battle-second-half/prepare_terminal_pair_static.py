@@ -24,6 +24,11 @@ EXPECTED_ACTOR_ID = 29829
 EXPECTED_COMBAT_ID = 16777218
 EXPECTED_WAR_ID = 4
 REQUIRED_DLL_STRINGS = (b"game.state.snapshot", b"game.state.map-ready", b"game.state.played-character")
+FRONTEND_TIMEOUT_SECONDS = 900
+MAP_TIMEOUT_SECONDS = 2 * FRONTEND_TIMEOUT_SECONDS
+INTERACTIVE_SECONDS = 2400
+RECOVERY_SECONDS = 600
+HOLD_SECONDS = 30
 
 
 def identity(path: Path) -> dict:
@@ -125,7 +130,10 @@ def main() -> None:
     capture_script = identity(args.capture_script)
     source = args.capture_script.read_text(encoding="utf-8")
     require("--capture" in source and "--checkpoint-receipt" in source and
-            "--interactive-seconds" in source, "capture_session CLI contract changed")
+            "--interactive-seconds" in source and
+            "30 <= args.frontend_timeout <= 900" in source and
+            "timeout_seconds=2 * args.frontend_timeout" in source,
+            "capture_session 900s frontend / 1800s map contract changed")
 
     dependencies = {name: importlib.metadata.version(name)
                     for name in ("mcp", "pywin32", "Pillow", "psutil")}
@@ -139,8 +147,10 @@ def main() -> None:
               "--bridge-dll", bridge["path"], "--bridge-injector", injector["path"],
               "--pipe-name", pipe, "--checkpoint-save", saved["path"],
               "--checkpoint-receipt", source_receipt["path"],
-              "--hold-seconds", "30", "--frontend-timeout", "360",
-              "--interactive-seconds", "1200", "--recovery-seconds", "300"]
+              "--hold-seconds", str(HOLD_SECONDS),
+              "--frontend-timeout", str(FRONTEND_TIMEOUT_SECONDS),
+              "--interactive-seconds", str(INTERACTIVE_SECONDS),
+              "--recovery-seconds", str(RECOVERY_SECONDS)]
     preflight_root = planned.with_name(planned.name + "-preflight")
     live_root = planned.with_name(planned.name + "-live")
     preflight_argv = common + ["--state-dir", str(preflight_root / "ck3-state"),
@@ -160,6 +170,14 @@ def main() -> None:
         "checkpoint_save": saved, "checkpoint_receipt": source_receipt,
         "checkpoint_date_raw": EXPECTED_SAVE_DATE_RAW, "actor_id": EXPECTED_ACTOR_ID,
         "expected_combat_id": EXPECTED_COMBAT_ID, "expected_war_id": EXPECTED_WAR_ID,
+        "bounded_timing_seconds": {
+            "frontend": FRONTEND_TIMEOUT_SECONDS,
+            "checkpoint_map": MAP_TIMEOUT_SECONDS,
+            "interactive_hot_service": INTERACTIVE_SECONDS,
+            "recovery": RECOVERY_SECONDS,
+            "outer_native_session": 3 * FRONTEND_TIMEOUT_SECONDS + HOLD_SECONDS +
+                max(RECOVERY_SECONDS, INTERACTIVE_SECONDS) + 90,
+        },
         "static_capability_strings": capabilities, "capture_script": capture_script,
         "interpreter": sys.executable, "dependencies": dependencies,
         "ffmpeg_path": shutil.which("ffmpeg"), "ffprobe_path": shutil.which("ffprobe"),
