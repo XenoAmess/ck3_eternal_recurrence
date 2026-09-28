@@ -12,7 +12,7 @@ import unittest
 from unittest.mock import patch
 
 from h3911_readiness_gate import (
-    probe_postread, remaining_snapshot_timeout, require_absent_prelaunch_log,
+    bridge_diagnostic_progress, probe_postread, remaining_snapshot_timeout, require_absent_prelaunch_log,
     wait_for_postread_grace,
 )
 import run_r0321_h3911_receiver_readonly as receiver
@@ -144,6 +144,94 @@ class ReadinessGateTests(unittest.IsolatedAsyncioTestCase):
         self.assertAlmostEqual(remaining_snapshot_timeout(1800, 1799.5, 120), 0.5)
         with self.assertRaises(TimeoutError):
             remaining_snapshot_timeout(1800, 1800, 120)
+
+    def test_bridge_requires_matching_hello_and_advancing_heartbeat(self) -> None:
+        diagnostics = {"connected": True, "transport_fatal_error": None,
+                       "bridge_pid": 1234, "connection_generation": 1,
+                       "hello": {"pid": 1234, "connection_generation": 1,
+                                 "expected_ck3_sha256": receiver.EXE_SHA},
+                       "last_heartbeat": {"sequence": 40},
+                       "semantic_state_available": True}
+        first, progress = bridge_diagnostic_progress(
+            diagnostics, expected_pid=1234,
+            expected_exe_sha256=receiver.EXE_SHA, previous=None)
+        self.assertFalse(first)
+        self.assertEqual(progress, (1, 40))
+        stalled, progress = bridge_diagnostic_progress(
+            diagnostics, expected_pid=1234,
+            expected_exe_sha256=receiver.EXE_SHA, previous=progress)
+        self.assertFalse(stalled)
+        diagnostics["last_heartbeat"] = {"sequence": 41}
+        ready, progress = bridge_diagnostic_progress(
+            diagnostics, expected_pid=1234,
+            expected_exe_sha256=receiver.EXE_SHA, previous=progress)
+        self.assertTrue(ready)
+        self.assertEqual(progress, (1, 41))
+        diagnostics["connection_generation"] = 2
+        with self.assertRaisesRegex(RuntimeError, "regressed"):
+            bridge_diagnostic_progress(
+                diagnostics, expected_pid=1234,
+                expected_exe_sha256=receiver.EXE_SHA, previous=progress)
+        diagnostics["connection_generation"] = 1
+        diagnostics["bridge_pid"] = 999
+        with self.assertRaisesRegex(RuntimeError, "managed CK3 identity"):
+            bridge_diagnostic_progress(
+                diagnostics, expected_pid=1234,
+                expected_exe_sha256=receiver.EXE_SHA, previous=progress)
+        diagnostics["connected"] = False
+        with self.assertRaisesRegex(RuntimeError, "disconnected"):
+            bridge_diagnostic_progress(
+                diagnostics, expected_pid=1234,
+                expected_exe_sha256=receiver.EXE_SHA, previous=progress)
+
+    def test_bridge_semantic_absence_and_no_hello_are_pending(self) -> None:
+        missing = {"connected": False, "transport_fatal_error": None}
+        self.assertEqual(bridge_diagnostic_progress(
+            missing, expected_pid=1234,
+            expected_exe_sha256=receiver.EXE_SHA, previous=None), (False, None))
+        connected = {"connected": True, "transport_fatal_error": None,
+                     "bridge_pid": 1234, "connection_generation": 1,
+                     "hello": {"pid": 1234, "connection_generation": 1,
+                               "expected_ck3_sha256": receiver.EXE_SHA},
+                     "last_heartbeat": {"sequence": 41},
+                     "semantic_state_available": False}
+        self.assertEqual(bridge_diagnostic_progress(
+            connected, expected_pid=1234,
+            expected_exe_sha256=receiver.EXE_SHA, previous=(1, 40)),
+            (False, (1, 41)))
+
+    def test_restored_history_is_frozen_after_playable_binding(self) -> None:
+        state = self.root / "state"
+        (state / "native-session").mkdir(parents=True)
+        output = self.root / "evidence"
+        output.mkdir()
+        save_sha = receiver.SOURCE_HASHES["R0321-H3911-source-xar_checkpoint.ck3"]
+        history = [{"index": index, "command": "earlier"}
+                   for index in range(1, 3912)]
+        history.append({"index": 3912, "command": "restore-checkpoint", "ok": True,
+                        "result": {"status": "restored", "restored_date_raw": 53219928,
+                                   "checkpoint": {"sha256": save_sha}}})
+        sidecar = state / "native-session" / "driver-state.json"
+        sidecar.write_text(json.dumps({"pipe_name": receiver.PIPE,
+                                       "bridge_pid": 1234,
+                                       "episode_character_id": 29829,
+                                       "episode_run_id": receiver.EPISODE,
+                                       "command_history": history}), encoding="utf-8")
+        receipt = receiver.preserve_restored_history(state, output, 1234)
+        self.assertEqual(receipt["history_rows"], 3912)
+        self.assertEqual(receipt["sha256"], receiver.sha256(
+            output / "restored-driver-state.json"))
+        self.assertEqual(receipt["save_sha256"], save_sha)
+        history.pop()
+        sidecar.write_text(json.dumps({"pipe_name": receiver.PIPE,
+                                       "bridge_pid": 1234,
+                                       "episode_character_id": 29829,
+                                       "episode_run_id": receiver.EPISODE,
+                                       "command_history": history}), encoding="utf-8")
+        another = self.root / "another"
+        another.mkdir()
+        with self.assertRaisesRegex(RuntimeError, "3912-row"):
+            receiver.preserve_restored_history(state, another, 1234)
 
     async def test_lost_screen_resource_rejects_synchronous_submission_gate(self) -> None:
         payload = {"ok": True, "tasks": [{"task_id": "this-attempt", "state": "running",

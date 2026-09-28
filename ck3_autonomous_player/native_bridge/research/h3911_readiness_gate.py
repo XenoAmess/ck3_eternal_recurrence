@@ -18,6 +18,49 @@ POSTREAD = "CGameState::InitPostRead"
 VASSALS = "Setup powerful vassals among"
 
 
+def bridge_diagnostic_progress(
+    value: dict[str, object], *, expected_pid: int, expected_exe_sha256: str,
+    previous: tuple[int, int] | None,
+) -> tuple[bool, tuple[int, int] | None]:
+    """Require a live DLL/pipe and two advancing heartbeats before a game read.
+
+    This is only transport readiness. A complete paused episode still requires
+    two matching semantic snapshots and the exact war identity checks.
+    """
+    if not isinstance(value, dict):
+        raise RuntimeError("H3911 bridge diagnostic response is malformed")
+    if value.get("transport_fatal_error") is not None:
+        raise RuntimeError("H3911 native bridge transport has a fatal error")
+    if value.get("connected") is not True:
+        if previous is not None:
+            raise RuntimeError("H3911 bridge disconnected after an observed heartbeat")
+        return False, None
+    hello = value.get("hello")
+    if (type(expected_pid) is not int or expected_pid <= 0
+            or type(value.get("bridge_pid")) is not int
+            or value["bridge_pid"] != expected_pid
+            or not isinstance(hello, dict)
+            or hello.get("pid") != expected_pid
+            or hello.get("expected_ck3_sha256") != expected_exe_sha256):
+        raise RuntimeError("H3911 bridge hello differs from the managed CK3 identity")
+    generation = value.get("connection_generation")
+    heartbeat = value.get("last_heartbeat")
+    sequence = heartbeat.get("sequence") if isinstance(heartbeat, dict) else None
+    if (type(generation) is not int or generation <= 0
+            or hello.get("connection_generation") != generation):
+        raise RuntimeError("H3911 bridge connection generation regressed or mismatched")
+    if type(sequence) is not int or sequence < 0:
+        return False, None
+    current = (generation, sequence)
+    if previous is not None:
+        if generation != previous[0] or sequence < previous[1]:
+            raise RuntimeError("H3911 bridge connection or heartbeat regressed")
+        if (value.get("semantic_state_available") is True
+                and sequence > previous[1]):
+            return True, current
+    return False, current
+
+
 def remaining_snapshot_timeout(deadline: float, now: float, tool_seconds: float) -> float:
     """Cap one snapshot call by both its original limit and readiness time."""
     if tool_seconds <= 0 or now >= deadline:

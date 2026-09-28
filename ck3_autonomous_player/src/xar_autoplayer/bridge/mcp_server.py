@@ -1360,7 +1360,7 @@ def create_server(
                 expected_native_revision=expected_native_revision,
             )
 
-    @server.tool()
+    @server.tool(annotations=read_only_tool)
     def ck3_get_bridge_diagnostics() -> dict[str, object]:
         """Return live transport diagnostics without claiming CK3 game state."""
         return service.bridge_diagnostics()
@@ -1410,6 +1410,27 @@ def create_server(
     def ck3_take_snapshot() -> dict[str, object]:
         """Return the latest backend-neutral CK3 session snapshot."""
         return service.snapshot()
+
+    semantic_snapshot = getattr(driver, "take_internal_semantic_snapshot", None)
+    if (getattr(driver, "allow_private_semantic_snapshot_readonly", False) is True
+            and callable(semantic_snapshot)):
+        @server.tool(annotations=read_only_tool)
+        def ck3_take_semantic_snapshot_private_v1() -> dict[str, object]:
+            """Read one native semantic frame without the command transcript."""
+            frame = semantic_snapshot()
+            if (not isinstance(frame, dict)
+                    or any(key in frame for key in (
+                        "native_command_history", "native_rollback_war_failure",
+                        "native_rollback_war_failures",
+                    ))):
+                raise RuntimeError(
+                    "native semantic snapshot must exclude driver transcript fields"
+                )
+            # MCP emits both pretty text and structured content. Keep the one
+            # line stdio response well below the full campaign transcript.
+            if len(json.dumps(frame, ensure_ascii=False).encode("utf-8")) > 8 * 1024 * 1024:
+                raise RuntimeError("native semantic snapshot exceeds the 8 MiB read bound")
+            return frame
 
     @server.tool()
     def ck3_get_one_life_settlement() -> dict[str, object]:
@@ -2987,6 +3008,11 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="enable the local stdio-only read of the current first-heir relation",
     )
+    result.add_argument(
+        "--private-semantic-snapshot-readonly",
+        action="store_true",
+        help="enable the local stdio-only native frame read without command history",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3048,6 +3074,12 @@ def main(argv: list[str] | None = None) -> int:
             "private current first-heir relationship MCP query requires "
             "native-headless stdio"
         )
+    if args.private_semantic_snapshot_readonly and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError(
+            "private semantic snapshot MCP query requires native-headless stdio"
+        )
     selected_state_dir = Path(args.state_dir) if args.state_dir else _default_state_dir()
     driver = load_driver(
         args.driver,
@@ -3059,6 +3091,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     if args.private_current_first_heir_relationship_query:
         driver.allow_private_current_first_heir_relationship_query = True
+    if args.private_semantic_snapshot_readonly:
+        driver.allow_private_semantic_snapshot_readonly = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

@@ -22,7 +22,7 @@ import threading
 import time
 
 from h3911_readiness_gate import (
-    remaining_snapshot_timeout, require_absent_prelaunch_log,
+    bridge_diagnostic_progress, remaining_snapshot_timeout, require_absent_prelaunch_log,
     wait_for_postread_grace,
 )
 
@@ -422,6 +422,7 @@ def audit_loaded_binaries(pid: int, state: Path) -> dict[str, object]:
                           for path in loaded)):
         raise RuntimeError("loaded bridge DLL mapped path or current disk bytes differ")
     return {"schema": "xar.ck3.r0321-h3911.readonly-loaded-path-disk-audit.v1",
+            "observed_at_utc": utc_now().isoformat(),
             "ck3_pid": pid, "ck3_process_create_time": process.create_time(),
             "running_exe_path": str(actual_exe), "running_exe_disk_sha256": EXE_SHA,
             "loaded_bridge_paths": loaded, "loaded_bridge_disk_sha256": DLL_SHA,
@@ -431,6 +432,46 @@ def audit_loaded_binaries(pid: int, state: Path) -> dict[str, object]:
             "derived_driver_sha256_at_query": sha256(state / "native-session/driver-state.json"),
             "loaded_module_path_and_disk_sha_verified": True,
             "loaded_in_memory_image_sha256": None}
+
+
+def preserve_restored_history(state: Path, output: Path, pid: int) -> dict[str, object]:
+    """Freeze the full local transcript after the first playable binding."""
+    source = state / "native-session" / "driver-state.json"
+    frozen = output / "restored-driver-state.json"
+    before_sha = sha256(source)
+    with frozen.open("xb") as target, source.open("rb") as original:
+        shutil.copyfileobj(original, target, 1024 * 1024)
+    frozen_sha = sha256(frozen)
+    if frozen_sha != before_sha or sha256(source) != before_sha:
+        raise RuntimeError("H3911 restored driver transcript changed during preservation")
+    value = json.loads(frozen.read_text(encoding="utf-8"))
+    history = value.get("command_history")
+    tail = history[-1] if isinstance(history, list) and history else None
+    result = tail.get("result") if isinstance(tail, dict) else None
+    checkpoint = result.get("checkpoint") if isinstance(result, dict) else None
+    if (value.get("pipe_name") != PIPE or value.get("bridge_pid") != pid
+            or value.get("episode_character_id") != 29829
+            or value.get("episode_run_id") != EPISODE
+            or not isinstance(history, list) or len(history) != 3912
+            or not isinstance(tail, dict) or tail.get("index") != 3912
+            or tail.get("command") != "restore-checkpoint" or tail.get("ok") is not True
+            or not isinstance(result, dict) or result.get("status") != "restored"
+            or result.get("restored_date_raw") != 53219928
+            or not isinstance(checkpoint, dict)
+            or checkpoint.get("sha256", "").upper()
+            != SOURCE_HASHES["R0321-H3911-source-xar_checkpoint.ck3"]):
+        raise RuntimeError("H3911 restored 3912-row transcript identity differs")
+    receipt = {"schema": "xar.ck3.r0321-h3911.restored-history-preservation.v1",
+               "source_path": str(source), "source_sha256_before": before_sha,
+               "source_sha256_after": before_sha,
+               "path": str(frozen), "bytes": frozen.stat().st_size,
+               "sha256": frozen_sha, "history_rows": len(history),
+               "restore_index": 3912, "restore_status": "restored",
+               "episode_run_id": EPISODE, "episode_character_id": 29829,
+               "bridge_pid": pid, "save_sha256": checkpoint["sha256"].upper(),
+               "gameplay_action_submitted": False}
+    write_new(output / "restored-history-receipt.json", receipt)
+    return receipt
 
 
 def require_lease_watchdog_healthy(failures: list[str]) -> None:
@@ -500,6 +541,8 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
             else:
                 raise RuntimeError("native session not ready within 1800 seconds")
             renew_screen_lease(task_id)
+            write_new(output / "binary-audit-at-session-ready.json",
+                      audit_loaded_binaries(event["pid"], state))
             lease_failures: list[str] = []
             watchdog_stop = threading.Event()
             with (output / "lease-heartbeats.jsonl").open("x", encoding="utf-8", newline="\n") as lease_log:
@@ -650,6 +693,9 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
     write_new(output / "mcp-plan.json", {
         "python": str(PYTHON), "entry": MCP_ENTRY,
         "state_dir": str(state), "pipe": PIPE, "allowed_execute_steps": list(QUERIES),
+        "snapshot_tool": "ck3_take_semantic_snapshot_private_v1",
+        "diagnostic_tool": "ck3_get_bridge_diagnostics",
+        "full_transcript_transport_allowed": False,
         "gameplay_action_submitted": False,
     })
 
@@ -670,7 +716,8 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
     args = ["-c", MCP_ENTRY, "--driver", "native-headless", "--transport", "stdio",
             "--state-dir", str(state), "--pipe-name", PIPE,
             "--environment-manifest", str(state / "profile/xar-autoplayer-environment.json"),
-            "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact"]
+            "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact",
+            "--private-semantic-snapshot-readonly"]
     with (output / "mcp-stderr.txt").open("x", encoding="utf-8") as stderr:
         params = StdioServerParameters(command=str(PYTHON), args=args, cwd=str(REPO))
         async with stdio_client(params, errlog=stderr) as (reader, writer):
@@ -695,13 +742,68 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
                         launch_time, deadline=deadline, record_probe=record_probe,
                     )
                 write_new(output / "coldload-gate.json", coldload_gate)
+                try:
+                    require_lease_watchdog_healthy(lease_failures)
+                    screen_lease(task_id)
+                    import pyautogui
+                    desktop = pyautogui.screenshot()
+                    desktop_path = output / "postread-desktop-original.png"
+                    desktop.save(desktop_path)
+                    write_new(output / "postread-desktop-receipt.json", {
+                        "path": str(desktop_path), "sha256": sha256(desktop_path),
+                        "image_size": list(desktop.size),
+                        "desktop_size": list(pyautogui.size()),
+                        "observed_at_utc": utc_now().isoformat(),
+                        "role": "visual cold-load diagnostic only; not gameplay identity",
+                    })
+                except Exception as error:
+                    write_new(output / "postread-desktop-error.json", {
+                        "type": type(error).__name__, "message": str(error),
+                        "at_utc": utc_now().isoformat(),
+                    })
+                ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
+                previous_heartbeat: tuple[int, int] | None = None
+                diagnostic_count = 0
+                while True:
+                    require_lease_watchdog_healthy(lease_failures)
+                    screen_lease(task_id)
+                    diagnostic_count += 1
+                    stem = f"bridge-readiness-{diagnostic_count:03d}"
+                    write_new(output / f"{stem}-request.json", {
+                        "tool": "ck3_get_bridge_diagnostics", "arguments": {},
+                    })
+                    response = await asyncio.wait_for(
+                        session.call_tool("ck3_get_bridge_diagnostics", {}),
+                        timeout=remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS),
+                    )
+                    write_new(output / f"{stem}-envelope.json",
+                              response.model_dump(mode="json", by_alias=True))
+                    screen_lease(task_id)
+                    remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS)
+                    if response.is_error or not isinstance(response.structured_content, dict):
+                        raise RuntimeError("H3911 bridge diagnostic MCP read failed")
+                    bridge_ready, previous_heartbeat = bridge_diagnostic_progress(
+                        response.structured_content, expected_pid=ready["pid"],
+                        expected_exe_sha256=EXE_SHA, previous=previous_heartbeat,
+                    )
+                    if bridge_ready:
+                        write_new(output / "bridge-readiness-gate.json", {
+                            "last_envelope_sha256": sha256(output / f"{stem}-envelope.json"),
+                            "probes": diagnostic_count,
+                            "connection_generation": previous_heartbeat[0],
+                            "heartbeat_sequence": previous_heartbeat[1],
+                            "semantic_state_available": True,
+                            "gameplay_identity_proven": False,
+                        })
+                        break
+                    await asyncio.sleep(min(5, deadline - time.monotonic()))
                 count = 0
                 while True:
                     require_lease_watchdog_healthy(lease_failures)
                     screen_lease(task_id)
                     count += 1
                     response = await asyncio.wait_for(
-                        session.call_tool("ck3_take_snapshot", {}),
+                        session.call_tool("ck3_take_semantic_snapshot_private_v1", {}),
                         timeout=remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS),
                     )
                     write_new(output / f"readiness-{count:03d}.json",
@@ -721,7 +823,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
                         await asyncio.sleep(1)
                         screen_lease(task_id)
                         stable = await asyncio.wait_for(
-                            session.call_tool("ck3_take_snapshot", {}),
+                            session.call_tool("ck3_take_semantic_snapshot_private_v1", {}),
                             timeout=remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS),
                         )
                         write_new(output / f"readiness-{count:03d}-stable.json",
@@ -743,6 +845,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
                     await asyncio.sleep(15)
                 ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
                 require_snapshot_bridge_pid(before, ready.get("pid"))
+                preserve_restored_history(state, output, ready["pid"])
                 write_new(output / "binary-audit-live.json", audit_loaded_binaries(ready["pid"], state))
                 results: dict[str, dict[str, object]] = {}
                 for stem, step in (("strength", STRENGTH_QUERY), ("preview", PREVIEW_QUERY),
@@ -750,7 +853,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
                     result = await call(session, "ck3_execute_step", {"step": step}, stem)
                     require_query_result(result, step, frame)
                     results[stem] = result
-                after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
+                after = await call(session, "ck3_take_semantic_snapshot_private_v1", {}, "after-snapshot")
                 require_snapshot_bridge_pid(after, ready["pid"])
                 if (require_h3911_snapshot(after) != war or frame_signature(after) != frame
                         or full_war_signature(after) != wars):
@@ -816,6 +919,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str],
                     "after_snapshot_sha256": sha256(output / "after-snapshot-payload.json"),
                     "v3_payload_sha256": sha256(output / "v3-payload.json"),
                     "binary_audit_live_sha256": sha256(output / "binary-audit-live.json"),
+                    "restored_history_receipt_sha256": sha256(output / "restored-history-receipt.json"),
                     "selected_step": None, "active_attack_allowed": False,
                     "gameplay_action_submitted": False,
                 }
