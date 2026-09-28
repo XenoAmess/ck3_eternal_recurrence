@@ -135,7 +135,7 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             },
         }
 
-    def test_r0321_attempt4_can_read_short_route_before_cash_but_cannot_move(self):
+    def test_r0321_synthetic_two_defender_route_reads_before_cash_without_move(self):
         frame, rows, actions, move_step = self._r0321_two_defender_inputs()
         first_hop = 2614
         short_preview_step = f"preview-move-army-83886367-to-{first_hop}"
