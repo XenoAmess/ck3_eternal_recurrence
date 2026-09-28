@@ -2,6 +2,30 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-29 NW-ECON: keep an applied-building readout under blocked war
+
+The H90-derived `hill_farms_01` at barony 2174/province 2629/slot 1 has an
+applied construction receipt. R0306's paired cold state at raw 53157816 still
+shows `in_progress`, remaining work raw 90,722,241, and province monthly income
+raw 87,000. No completed slot or realized income increase has been observed.
+
+The exact 1.19.0.6 native path continues to distinguish the active tuple from
+the built slot and reads the same province aggregate after completion. The
+formal Python consumer already schedules a due material receipt, a same-frame
+public income root query when needed, a subsequent turn's receipt consumption,
+and a new-PID cold recheck. A service dispatch condition dropped those
+read-only steps when the war planner's selected step was null, even though an
+already submitted building may need a due follow-up during war. It retained
+only the optional wartime new-building observation.
+
+The service now accepts only the existing applied receipt's root-income query
+or typed material receipt in that blocked-war case. The plan records the
+original blocked war phase and reason as deferred RED; it does not submit a
+building, advance the game date, declare war readiness, or clear unknown war
+cash. The next formal turn runs the war planner again. This is a source and
+fixture repair; H90 completion, actual effect and income, and a matching live
+next-turn/cold-restore acceptance remain open.
+
 ## 2026-09-28 NW-ECON: disabled gift no longer masks peaceful construction
 
 The private peaceful M5 collector previously required a same-frame faction

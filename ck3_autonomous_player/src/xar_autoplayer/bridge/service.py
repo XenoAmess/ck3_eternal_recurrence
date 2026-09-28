@@ -394,6 +394,7 @@ from ..lifestyle_min_policy import choose_first_focus_target
 from ..construction_formal_consumer import (
     SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP,
+    ROOT_QUERY_STEP as PRIVATE_CONSTRUCTION_INCOME_QUERY_STEP,
     plan_construction_private,
     read_construction_ledger,
 )
@@ -1050,13 +1051,35 @@ class GameplayBridgeService:
                     construction_history, available_steps,
                 )
                 if before_lifestyle_step is None:
-                    # The war planner's blocked decision remains authoritative.
-                    # Only the read-only source can enrich its M5 diagnosis.
+                    # A due receipt for an already submitted building is a
+                    # read-only follow-up, even when the war planner is RED.
+                    # Retain the blocked war plan for the next formal turn;
+                    # this query cannot spend resources or advance the date.
                     construction_plan = construction_result.get("plan")
                     observation = (construction_plan.get(
                         "construction_wartime_observation")
                         if isinstance(construction_plan, dict) else None)
-                    if isinstance(observation, dict):
+                    readout_step = (construction_plan.get("selected_step")
+                                    if isinstance(construction_plan, dict) else None)
+                    due_receipt = (
+                        (readout_step == PRIVATE_CONSTRUCTION_RECEIPT_STEP
+                         and isinstance(construction_plan.get(
+                             "construction_pending_action"), dict))
+                        or (readout_step == PRIVATE_CONSTRUCTION_INCOME_QUERY_STEP
+                            and isinstance(construction_plan.get(
+                                "construction_receipt_consumed"), dict))
+                    )
+                    if due_receipt:
+                        planned = {**construction_result, "plan": {
+                            **construction_plan,
+                            "construction_readout_war_red": {
+                                "status": "blocked_deferred_for_read_only_receipt",
+                                "phase": plan.get("phase"),
+                                "reason": plan.get("reason"),
+                                "selected_step": None,
+                            },
+                        }}
+                    elif isinstance(observation, dict):
                         planned = {**planned, "plan": {**plan,
                             "construction_wartime_observation": observation}}
                 else:

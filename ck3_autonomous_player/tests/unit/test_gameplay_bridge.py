@@ -1899,6 +1899,94 @@ class GameplayBridgeTests(unittest.TestCase):
         construction_call.assert_called_once()
         joint_call.assert_called_once()
 
+    def test_blocked_war_keeps_due_existing_construction_readout(self) -> None:
+        state = {**_snapshot(7), "paused": True, "map_ready": True,
+                 "active_event": None, "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 16777237}],
+                 "player_armies": [{"army_id": 16777450}],
+                 "episode_run_id": "native-29829-2bc2d599f7f9",
+                 "date_raw": 53158536,
+                 "played_character": {"character_id": 29829}}
+        blocked = {"policy": "one-life-turn-v1", "selected_step": None,
+                   "phase": "native_war_route_evidence_blocked",
+                   "reason": "war route evidence unavailable"}
+        receipt = {"action_request_id":
+                   "construction-submit-1d1b6afc73a74fdbab1755d81f067cbd",
+                   "completion_status": "in_progress"}
+        readouts = (
+            ("query-campaign-root-context-v1",
+             "construction_receipt_consumed"),
+            ("private-query-player-construction-receipt-v1",
+             "construction_pending_action"),
+        )
+        for readout_step, receipt_key in readouts:
+            with self.subTest(readout_step=readout_step):
+                driver = CallbackGameplayDriver(
+                    backend_id="native-headless", snapshot=lambda: state,
+                    execute=lambda _step, _revision: {},
+                    action_steps=("life-advance", readout_step),
+                )
+                driver.allow_private_lifestyle_formal_trial = True
+                driver.allow_private_construction_formal_trial = True
+                driver.allow_private_m5_joint_collector = True
+
+                def construction(_driver, planned, _snapshot, _history,
+                                 _steps, **_kwargs):
+                    self.assertIsNone(planned["plan"]["selected_step"])
+                    return {**planned, "plan": {**planned["plan"],
+                        "selected_step": readout_step, receipt_key: receipt,
+                        "phase": "construction_completion_watch"}}
+
+                with (mock.patch(
+                        "xar_autoplayer.bridge.service.choose_one_life_turn",
+                        return_value=blocked),
+                      mock.patch.object(
+                        GameplayBridgeService,
+                        "_plan_private_lifestyle_trial_v1",
+                        side_effect=lambda planned, _steps: planned),
+                      mock.patch(
+                        "xar_autoplayer.bridge.service.plan_construction_private",
+                        side_effect=construction),
+                      mock.patch(
+                        "xar_autoplayer.bridge.service.plan_m5_wartime_query_only",
+                        side_effect=lambda _driver, planned, **_kwargs: planned)):
+                    plan = GameplayBridgeService(driver).plan_turn()["plan"]
+                self.assertEqual(plan["selected_step"], readout_step)
+                self.assertEqual(plan[receipt_key], receipt)
+                self.assertEqual(plan["construction_readout_war_red"], {
+                    "status": "blocked_deferred_for_read_only_receipt",
+                    "phase": blocked["phase"], "reason": blocked["reason"],
+                    "selected_step": None,
+                })
+                self.assertNotIn(plan["selected_step"], {
+                    "life-advance", "private-submit-player-construction-v1"})
+
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance", "query-campaign-root-context-v1"),
+        )
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_construction_formal_trial = True
+        driver.allow_private_m5_joint_collector = True
+        with (mock.patch(
+                "xar_autoplayer.bridge.service.choose_one_life_turn",
+                return_value=blocked),
+              mock.patch.object(
+                GameplayBridgeService, "_plan_private_lifestyle_trial_v1",
+                side_effect=lambda planned, _steps: planned),
+              mock.patch(
+                "xar_autoplayer.bridge.service.plan_construction_private",
+                side_effect=lambda _driver, planned, *_args, **_kwargs:
+                    {**planned, "plan": {**planned["plan"],
+                        "selected_step": "query-campaign-root-context-v1"}}),
+              mock.patch(
+                "xar_autoplayer.bridge.service.plan_m5_wartime_query_only",
+                side_effect=lambda _driver, planned, **_kwargs: planned)):
+            unbound = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertIsNone(unbound["selected_step"])
+        self.assertEqual(unbound["phase"], blocked["phase"])
+
     def test_wartime_m5_observes_after_lifestyle_early_return_and_receipt(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,
