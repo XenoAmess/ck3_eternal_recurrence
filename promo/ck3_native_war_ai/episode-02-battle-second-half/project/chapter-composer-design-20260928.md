@@ -47,10 +47,10 @@ composer 读取上述 run artifact，重新验 SHA、章节次序、旁白全文
 
 保全 `episode02-production-inputs-v1` 时，在已有字段外必须加入本 run `project_config_sha256` 与 `project_config_bytes`；`narration_script_sha256`/`narration_script_bytes`；`card_index_sha256`/`card_index_bytes`；九卡 `card_sha256` 和 `card_bytes` 字典；`replay_by_card`；以及本 run 单一音乐的 `music_artifact_id`/`music_sha256`/`music_bytes`。每一章的音频、reel、reel receipt 还需各自的 artifact ID、SHA-256 与 byte length，例如 `audio_artifact_id`/`audio_sha256`/`audio_bytes`。composer 会把这些声明与 native run manifest 及配置快照的实际字节逐一核对。
 
-reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，source save、raw video、control 的 artifact ID、SHA-256 与 byte length，以及 clean-span 与来源标签审查 artifact ID。`cards[card_id]` 必须有卡 SHA、replay、该 replay 的 `primary_receipt_sha256` 与 `evidence_mode`：
+reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，实际冷载存档 `cold_load_save`、raw video、control 的 artifact ID、SHA-256 与 byte length，以及 clean-span 与来源标签审查 artifact ID。运行中另存的 checkpoint 只能放在可选的 `midrun_checkpoint_save` 三字段，不能替代冷载来源；004 的冷载是 45CCE7…，第 27 日 F085… 是运行中生成的 checkpoint。`cards[card_id]` 必须有卡 SHA、replay、该 replay 的 `primary_receipt_sha256` 与 `evidence_mode`；若卡目录声明 `source_save_sha256`，还须对应 `indexed_cold_load_save_sha256`，004 卡另须 `indexed_midrun_checkpoint_save_sha256` 分别绑定两份存档：
 
 - `historical_research_card` 仅对应冻结的 004/039→040/020/070/036→038/085/024 旧研究回执；还需 `visible_label_audit_artifact_id` 与实际 `visible_label_text`，标签写明“历史研究”、该研究编号、“非当前录制”，审查回执绑定 reel SHA 和卡 ID。
-- `current_run_recomputed` 必须先按新拍 attempt 重算数字、重建卡与旁白，再给出 `recomputed_receipt_artifact_id`。该回执绑定新卡 SHA、来源主回执、捕获 attempt 与 source save SHA；旧 024 的 `-50` 不能改称新轨 writer 证据。
+- `current_run_recomputed` 必须先按新拍 attempt 重算数字、重建卡与旁白，再给出 `recomputed_receipt_artifact_id`。该回执绑定新卡 SHA、来源主回执、捕获 attempt 与实际冷载存档 SHA；旧 024 的 `-50` 不能改称新轨 writer 证据。
 
 新 run 前再次查询正式 xar-promo Release、安装所选 wheel 并核 SHA。六章素材齐全时，命令形状是：
 

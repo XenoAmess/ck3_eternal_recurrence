@@ -124,6 +124,15 @@ def _checked_source(run, run_path: Path, artifact_id: str, expected_sha: str,
     return path
 
 
+def _replay_primary(source: dict) -> str:
+    """The older 085/024 rows identify their primary receipt by source kind."""
+    digest = (source.get("primary_receipt_sha256") or source.get("source_finish_sha256")
+              or source.get("source_terminal_sha256"))
+    if not isinstance(digest, str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", digest):
+        raise ValueError("Replay lacks an exact primary receipt SHA-256")
+    return digest.upper()
+
+
 def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                   card_hashes: dict[str, str], card_data: dict,
                   card_replays: dict[str, str]) -> None:
@@ -145,27 +154,38 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path,
     if not isinstance(spans, list) or not spans:
         raise ValueError(f"Chapter {row['id']} requires a sourced capture span")
     for span in spans:
-        required = ("attempt_id", "source_save_sha256", "source_save_bytes",
-                    "source_save_artifact_id", "raw_video_sha256", "raw_video_bytes",
+        required = ("attempt_id", "cold_load_save_sha256", "cold_load_save_bytes",
+                    "cold_load_save_artifact_id", "raw_video_sha256", "raw_video_bytes",
                     "raw_video_artifact_id", "control_sha256", "control_bytes",
                     "control_artifact_id", "clean_span_receipt_artifact_id",
                     "label_audit_artifact_id")
         if any(not span.get(key) for key in required):
             raise ValueError(f"Incomplete capture span provenance in {row['id']}")
-        for prefix in ("source_save", "raw_video", "control"):
+        for prefix in ("cold_load_save", "raw_video", "control"):
             _checked_source(run, run_path, span[f"{prefix}_artifact_id"],
                             span[f"{prefix}_sha256"], span[f"{prefix}_bytes"])
+        checkpoint = span.get("midrun_checkpoint_save_artifact_id")
+        if checkpoint is not None:
+            _checked_source(run, run_path, checkpoint,
+                            span["midrun_checkpoint_save_sha256"],
+                            span["midrun_checkpoint_save_bytes"])
         _artifact(run, run_path, span["clean_span_receipt_artifact_id"])
         _artifact(run, run_path, span["label_audit_artifact_id"])
     for card_id in expected_cards:
         card = actual_cards[card_id]
         replay = card_replays[card_id]
         source = card_data["replays"][replay]
-        primary = source["primary_receipt_sha256"].upper()
+        primary = _replay_primary(source)
         if (card.get("sha256", "").upper() != card_hashes[card_id]
                 or card.get("replay") != replay
                 or card.get("primary_receipt_sha256", "").upper() != primary):
             raise ValueError(f"Card {card_id} is not bound to its indexed replay")
+        indexed_cold = source.get("source_save_sha256")
+        if indexed_cold and card.get("indexed_cold_load_save_sha256", "").upper() != indexed_cold.upper():
+            raise ValueError(f"Card {card_id} confuses cold-load save with replay checkpoint")
+        checkpoint = source.get("source_day27_checkpoint_sha256")
+        if checkpoint and card.get("indexed_midrun_checkpoint_save_sha256", "").upper() != checkpoint.upper():
+            raise ValueError(f"Card {card_id} omits the separate in-run checkpoint")
         mode = card.get("evidence_mode")
         if mode == "historical_research_card":
             if HISTORICAL_PRIMARY.get(replay) != primary:
@@ -192,8 +212,8 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                     or recomputed.get("card_sha256", "").upper() != card_hashes[card_id]
                     or recomputed.get("source_primary_receipt_sha256", "").upper() != primary
                     or not any(span["attempt_id"] == recomputed.get("capture_attempt_id")
-                               and span["source_save_sha256"].upper() ==
-                               recomputed.get("source_save_sha256", "").upper()
+                               and span["cold_load_save_sha256"].upper() ==
+                               recomputed.get("cold_load_save_sha256", "").upper()
                                for span in spans)):
                 raise ValueError(f"Current card {card_id} lacks same-attempt recomputation")
         else:
@@ -238,10 +258,17 @@ def compose(config, run, *, config_path, run_path, workdir,
                     card_replays["E2-05B"], card_replays["E2-05C"]}) != 4
             or any(replay not in card_data["replays"] for replay in card_replays.values())):
         raise ValueError("Nine cards lack separate source replay identities")
-    terminal_primary = card_data["replays"][card_replays["E2-09"]]["primary_receipt_sha256"]
-    reinforcement_primary = card_data["replays"][card_replays["E2-06"]]["primary_receipt_sha256"]
+    terminal_primary = _replay_primary(card_data["replays"][card_replays["E2-09"]])
+    reinforcement_primary = _replay_primary(card_data["replays"][card_replays["E2-06"]])
     if terminal_primary == reinforcement_primary:
         raise ValueError("Terminal writer and reinforcement cannot share a replay receipt")
+    pursuit = card_data["replays"][card_replays["E2-02"]]
+    if card_replays["E2-02"] == "004" and (
+            pursuit.get("source_save_sha256", "").upper() !=
+            "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F"
+            or pursuit.get("source_day27_checkpoint_sha256", "").upper() !=
+            "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"):
+        raise ValueError("004 card index must distinguish contact cold-load from day-27 checkpoint")
     card_hashes = inputs["card_sha256"]
     card_bytes = inputs["card_bytes"]
     if set(card_hashes) != set(CARD_REPLAYS) or set(card_bytes) != set(CARD_REPLAYS):
