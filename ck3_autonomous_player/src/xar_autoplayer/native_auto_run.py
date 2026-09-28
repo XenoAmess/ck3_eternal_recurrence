@@ -101,7 +101,7 @@ from .war_cash_formal_query_runtime_receipt_v1 import (
     build_formal_query_attempt_diagnostic,
     build_formal_query_session_receipt,
     capture_query_process_binding,
-    preserve_formal_query_attempt_diagnostic,
+    observe_formal_query_attempt_diagnostic,
 )
 from .war_cash_formal_query_passive_topbar_v1 import (
     capture_formal_query_passive_topbar,
@@ -1536,24 +1536,6 @@ def native_auto_run(
             if formal_war_query_receipt_dir is not None:
                 wire_reader = getattr(driver, "termination_query_wire_audit_v1", None)
                 wire = wire_reader() if callable(wire_reader) else None
-                diagnostic = build_formal_query_attempt_diagnostic(
-                    before=before,
-                    after=after_snapshot,
-                    outcome=outcome,
-                    wire=wire,
-                    process_before=formal_query_process_before or {},
-                    process_after=formal_query_process_after or {},
-                    gameplay_submits_before=(
-                        formal_query_submits_before
-                        if formal_query_submits_before is not None else -1
-                    ),
-                    gameplay_submits_after=counts["gameplay"],
-                )
-                formal_query_diagnostic_summary = (
-                    preserve_formal_query_attempt_diagnostic(
-                        formal_war_query_receipt_dir, diagnostic,
-                    )
-                )
                 formal_query_receipt_candidate = build_formal_query_session_receipt(
                     before=before,
                     after=after_snapshot,
@@ -1570,6 +1552,25 @@ def native_auto_run(
                     paired_prelaunch_driver_state_sha256=(
                         formal_query_prelaunch_driver_sha256
                     ),
+                )
+                formal_query_receipt_candidate, formal_query_diagnostic_summary = (
+                    observe_formal_query_attempt_diagnostic(
+                        receipt_dir=formal_war_query_receipt_dir,
+                        candidate=formal_query_receipt_candidate,
+                        build_diagnostic=lambda: build_formal_query_attempt_diagnostic(
+                            before=before,
+                            after=after_snapshot,
+                            outcome=outcome,
+                            wire=wire,
+                            process_before=formal_query_process_before or {},
+                            process_after=formal_query_process_after or {},
+                            gameplay_submits_before=(
+                                formal_query_submits_before
+                                if formal_query_submits_before is not None else -1
+                            ),
+                            gameplay_submits_after=counts["gameplay"],
+                        ),
+                    )
                 )
                 if formal_query_receipt_candidate["status"] != (
                     "same_paused_query_postcheck_passed"

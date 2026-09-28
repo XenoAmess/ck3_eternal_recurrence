@@ -7,7 +7,7 @@ it to a zero-fee observation without separate pair and DLL review.
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 import copy
 import ctypes
 from ctypes import wintypes
@@ -145,6 +145,27 @@ def preserve_formal_query_attempt_diagnostic(
         "sha256": hashlib.sha256(payload).hexdigest().upper(),
         "status": "diagnostic_only_formal_cash_unapproved",
     }
+
+
+def observe_formal_query_attempt_diagnostic(
+    *, receipt_dir: Path, candidate: dict[str, object],
+    build_diagnostic: Callable[[], Mapping[str, object]],
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Keep the cash gate's original RED when optional evidence cannot be saved."""
+    try:
+        diagnostic = build_diagnostic()
+        summary = preserve_formal_query_attempt_diagnostic(
+            receipt_dir, diagnostic,
+        )
+    except Exception as error:
+        summary = {
+            "status": "RED_observer_fault",
+            "error_type": type(error).__name__,
+            "formal_cash_receipt_eligible": False,
+        }
+        if candidate.get("status") == "same_paused_query_postcheck_passed":
+            return _blocked("formal_query_attempt_diagnostic_unavailable"), summary
+    return candidate, summary
 
 
 def _driver_state_bytes_and_binding(path: Path) -> tuple[str, dict[str, object]]:

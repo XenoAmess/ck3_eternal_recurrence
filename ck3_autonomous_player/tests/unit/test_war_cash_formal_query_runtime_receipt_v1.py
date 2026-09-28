@@ -9,6 +9,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
@@ -217,6 +218,53 @@ class FormalQueryRuntimeReceiptTests(unittest.TestCase):
                 subject.preserve_formal_query_attempt_diagnostic(
                     root / "unused", {"invalid_number": float("nan")},
                 )
+
+    def test_diagnostic_failures_preserve_original_cash_red(self) -> None:
+        sample = _fixture()
+        sample["before"].pop("played_character_gold")
+        candidate = subject.build_formal_query_session_receipt(**sample)
+        self.assertEqual(candidate["missing_reasons"],
+                         ["same_paused_treasury_unproven"])
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "formal-query-attempt-diagnostic.json").write_text(
+                "existing", encoding="utf-8",
+            )
+            for diagnostic, error_type in (
+                ({"ordinary": True}, "FileExistsError"),
+                ({"oversized": "x" * (2 * 1024 * 1024)}, "ValueError"),
+            ):
+                with self.subTest(error_type=error_type):
+                    observed, summary = (
+                        subject.observe_formal_query_attempt_diagnostic(
+                            receipt_dir=root, candidate=candidate,
+                            build_diagnostic=lambda value=diagnostic: value,
+                        )
+                    )
+                    self.assertEqual(observed, candidate)
+                    self.assertEqual(summary["status"], "RED_observer_fault")
+                    self.assertEqual(summary["error_type"], error_type)
+
+    def test_diagnostic_write_fault_blocks_positive_candidate(self) -> None:
+        candidate = subject.build_formal_query_session_receipt(**_fixture())
+        self.assertEqual(candidate["status"],
+                         "same_paused_query_postcheck_passed")
+        with tempfile.TemporaryDirectory() as temp:
+            with mock.patch.object(
+                subject, "preserve_formal_query_attempt_diagnostic",
+                side_effect=OSError("write failed"),
+            ):
+                observed, summary = (
+                    subject.observe_formal_query_attempt_diagnostic(
+                        receipt_dir=Path(temp), candidate=candidate,
+                        build_diagnostic=lambda: {"ordinary": True},
+                    )
+                )
+        self.assertEqual(observed["status"], "blocked")
+        self.assertEqual(observed["missing_reasons"],
+                         ["formal_query_attempt_diagnostic_unavailable"])
+        self.assertIsNone(observed["immediate_war_action_cost_raw"])
+        self.assertEqual(summary["error_type"], "OSError")
 
     def test_missing_protocol_version_or_wrong_request_id_is_blocked(self) -> None:
         for mutation in ("request_version", "response_version", "request_id"):
