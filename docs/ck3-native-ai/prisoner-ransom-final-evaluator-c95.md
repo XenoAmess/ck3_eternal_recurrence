@@ -7,7 +7,7 @@
 CK3 `1.19.0.6` 的 `ck3.exe` 为 95,206,008 字节，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_prison_interactions.txt`、`00_prison_effects.txt`、`00_interaction_values.txt` 的完整 SHA 与行段在版本化证据中。校验器逐字节核对三份来源及 EXE。以下对应**玩家作为监禁者提出 `ransom_interaction`**；本节 C95 当时尚无自然囚犯帧，后续实测边界见下文 R0276。
 
 1. `00_prison_interactions.txt:1718-1730`：最初选中的囚犯成为 `secondary_recipient`；若囚犯不是统治者且有领主，`recipient` 被重定向为领主，即实际提案对象/付款者。`1747-1760` 要求该囚犯正被 actor 监禁，且 actor 不能与 recipient 相同；后续还有拷问、摄政与清洗等有效性限制。不能只用玩家与囚犯的二角色预览。
-2. `1921-2065`：选择普通、加价、付款者现有黄金、favor、influence、herd 等不同 `send_option`，原版按付款者资金、监禁者宗族特性与具体资源判定显示/有效。`2070-2222` 的 AI 接受权重含付款者与囚犯的本人、配偶、亲属、朋友、宿敌等关系；关系分数只是原版输入，**最终接受结果**仍由 finalized context 判定。
+2. `1921-2065`：选择普通、加价、付款者现有黄金、favor、influence、herd 等不同 `send_option`；`2355-2362` 还有仅用于 mass ransom 失败的第八项 `invalid`。原版按付款者资金、监禁者宗族特性与具体资源判定显示/有效。`2070-2222` 的 AI 接受权重含付款者与囚犯的本人、配偶、亲属、朋友、宿敌等关系；关系分数只是原版输入，**最终接受结果**仍由 finalized context 判定。
 3. `1778-1871`：接受时重新检查监禁关系，设 `prisoner=secondary_recipient`、`payer=recipient`、`imprisoner=actor`；`current_gold` 类选项先保存当时的 `payer.current_gold_value`，再调用 `ransom_interaction_effect`。这段存在角色与金额的求值时点，早先的预估金额不能冒充实际付款。
 4. `00_prison_effects.txt:2-51,138-183,225`：未手选选项的 mass action 会自行选项；普通黄金和加价黄金分别按囚犯的 `ransom_cost_value`、`increased_ransom_cost_value` 转账，现有黄金选项按保存的金额转账，最后释放囚犯。`00_interaction_values.txt:161-322` 的脚本值包含 native `ransom_cost` 等输入；需要在正确作用域求值。favor、influence、herd 也有不同义务，不能统一当作金钱零成本。
 
@@ -239,7 +239,7 @@ remains unavailable to formal policy and M6 readiness is unchanged.
 ## H2825/R0271 `option_unavailable` narrowing candidate
 
 R0271 still proves no payable gold quote for `34486`, `44484`, or `47028`; it
-does not prove a broken quote reader. The exact stock definition has seven
+does not prove a broken quote reader. The exact stock definition has eight
 authored options. Ordinary `gold` (index 2) is shown when the actual payer
 has at least `ransom_cost_value`; ordinary `current_gold` (index 3) requires
 at least one gold but less than that value. Both are hidden for an actor with
@@ -251,8 +251,9 @@ Exact-build `ck3.exe` disassembly of the existing bridge calls confirms
 `0x2C405F0` sizes/clears the context option byte vector to the definition's
 option count, `0x2C406D0` sets the requested authored index, and its
 `0x2C40B20` finalizer clears an option when the native shown/valid check
-fails. The current seven-byte vector read is therefore consistent with the
-native setter. `option_unavailable` alone cannot distinguish a payer with
+fails. The selected-option byte vector follows this native setter; its
+previous seven-byte bound missed the final authored `invalid` option.
+`option_unavailable` alone cannot distinguish a payer with
 less than one gold, an extortionate-only opportunity, or another stock gate.
 
 The narrow private candidate keeps the same unavailable payload shape and
@@ -324,7 +325,7 @@ while distinguishing independently observed states:
 | Typed reason | Native readback represented |
 | --- | --- |
 | `option_context_roles_unverified` | The constructed, finalized context did not yield the exact actor, redirected payer, prisoner, and definition roles; the other option/funds gates cannot be trusted. |
-| `option_mask_unreadable` / `option_mask_unexpected` | The seven authored option bytes/count could not be read consistently, or the setter left a different/multiple option selected. This is an observer/native-binding gap, not a zero-value prisoner. |
+| `option_mask_unreadable` / `option_mask_unexpected` | The authored option bytes/count could not be read consistently, or the setter left a different/multiple option selected. This is an observer/native-binding gap, not a zero-value prisoner. |
 | `final_can_send_false` / `extortionate_final_can_send_false` | An ordinary or extortionate gold option was selected with verified roles, but native final Can Send rejected it. |
 | `payer_gold_read_unavailable` | No gold option survived; the redirected payer's gold could not be double-read, so funds are unknown. |
 | `payer_below_one_gold` | No gold option survived and the redirected payer's double-read gold was below one. Other non-gold ransom terms are outside this gold-only conclusion. |
@@ -343,7 +344,7 @@ All three prisoners returned `unavailable/option_mask_unreadable`. Three
 fresh minimized pump gates and three main-thread queries completed; the paused
 date and source save were unchanged, zero gameplay actions ran, and the CK3
 tree was removed. The unavailable reason combines multiple possible failures
-within the observer's seven-byte read. It does **not** establish an absent
+within the observer's option-vector read. It does **not** establish an absent
 native option, payer funds, zero quote, or a release decision.
 
 ## R0279 option-mask read discriminator
@@ -353,8 +354,9 @@ The exact EXE's `0x2C405F0` reads the interaction definition's option count at
 the context pointer at `+0x300`. The `0x2C406D0` setter writes one byte into
 that same vector and calls refresh/finalize. The script file SHA-256
 `3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`
-contains seven ransom `send_option` rows, in the expected order. Thus the
-offsets and authored count are supported statically, but R0279 cannot tell
+contains seven ransom `send_option` rows at `1922-2042` and an eighth at
+`2355-2362` after the AI blocks. Thus the
+offsets are supported statically, but R0279 cannot tell
 which runtime read failed. The next private candidate keeps the same
 read-only ordinal query and unavailable payload. It splits the former
 `option_mask_unreadable` into a specific reason for definition pointer/count,
@@ -373,17 +375,37 @@ verified pump while minimized; no gameplay action or date advance occurred,
 the source save hash stayed unchanged, and cleanup removed the CK3 tree.
 This pins the first failed read to a **readable** value at the loaded
 definition's `+0x2554` that differs from the hardcoded seven; it does not
-record that value. The frozen stock script has seven authored rows, so a
-runtime count mismatch may reflect a loaded definition difference or an
-incorrect identity/layout assumption. The count cannot be guessed from this
+record that value. The earlier source review missed the definition's eighth
+authored row. The count cannot be guessed from this
 reason, and neither the payer gold nor ransom value was reached.
 
 The next private failure payload includes the observed signed 32-bit
 definition count and a separate context count read at `+0x30C`, with `null`
-only if that read fails. The reader still rejects any count other than seven
+only if that read fails. This candidate still rejects any count other than seven
 and makes no ransom action available. A matching paused readback must show
 the actual numbers before changing the option index mapping or loaded
 definition assumption.
+
+R0281 reported `observed_definition_option_count=8` and
+`observed_context_option_count=8` for each of the three prisoners. Its
+read-only report at
+`Z:\m6ransom-gate-h3446-candidate-v4\evidence\R0281\report.json` has
+SHA-256 `AC3B78D67FBCCCC2B1AA0ACB5468288CF912CAB53B23C661B51B5A9CB2C8CDB8`.
+The frozen script's final `send_option` at `2355-2362` has `flag = invalid`;
+its `is_shown` requires `scope:mass_action = yes`. It is deliberately last
+so a bulk ransom with no valid money option fails explicitly. The eight
+native option rows therefore correspond to indices 0-6 (the previously
+identified gold, favor, influence and herd options) and index 7 (`invalid`).
+The exact `0x2C408B0` uses the loaded definition's `+0x2554` count and
+`+0x2548` row vector with stride `0x7D0`. The narrow correction requires
+count eight and round-trips the eight authored flag IDs at each row's
+`+0x3A8` through the existing exact-build script identifier lookup. A
+different loaded order returns `option_flag_identity_unverified` without
+pricing. It reads all eight selected bytes while probing only gold indices
+0-3; index 7 cannot become a ransom quote. R0281 still contains no payer
+gold or price, no
+proposal, and no gameplay action. A fresh candidate must prove the corrected
+reader's result on H3446 before any formal value or readiness claim.
 
 ```mermaid
 flowchart TD
