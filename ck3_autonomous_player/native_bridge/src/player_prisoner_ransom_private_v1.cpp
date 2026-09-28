@@ -291,15 +291,35 @@ bool ReadNamedRansomCost(std::uintptr_t module, const Bindings &bindings,
   return true;
 }
 
-bool ReadCurrentGold(void *payer, std::int64_t &raw) noexcept {
+bool ReadPayerGold(void *payer, std::int64_t &raw) noexcept {
   void *extension = nullptr;
   std::int64_t first = 0;
   std::int64_t second = 0;
   return Read(payer, kCharacterExtensionOffset, extension) &&
          extension != nullptr && Read(extension, kGoldOffset, first) &&
-         Read(extension, kGoldOffset, second) && first == second && first >=
-             kFixedScale &&
+         Read(extension, kGoldOffset, second) && first == second &&
          (raw = first, true);
+}
+
+bool ReadCurrentGold(void *payer, std::int64_t &raw) noexcept {
+  return ReadPayerGold(payer, raw) && raw >= kFixedScale;
+}
+
+bool ContextRolesMatch(const void *context, const void *definition,
+                       std::int32_t jailer_id, std::int32_t payer_id,
+                       std::int32_t prisoner_id) noexcept {
+  std::int32_t observed_actor = -1;
+  std::int32_t observed_payer = -1;
+  std::int32_t observed_prisoner = -1;
+  void *observed_definition = nullptr;
+  return Read(context, 0, observed_definition) &&
+         Read(context, 0x2D8, observed_actor) &&
+         Read(context, 0x2DC, observed_payer) &&
+         Read(context, 0x2E4, observed_prisoner) &&
+         observed_definition == definition &&
+         observed_actor == jailer_id &&
+         observed_payer == payer_id &&
+         observed_prisoner == prisoner_id;
 }
 
 bool ExactOneOption(const void *context, std::int32_t expected) noexcept {
@@ -338,6 +358,10 @@ std::string_view FailureName(PlayerPrisonerRansomQuoteFailureV1 value) {
     return "role_unavailable";
   case PlayerPrisonerRansomQuoteFailureV1::option_unavailable:
     return "option_unavailable";
+  case PlayerPrisonerRansomQuoteFailureV1::payer_below_one_gold:
+    return "payer_below_one_gold";
+  case PlayerPrisonerRansomQuoteFailureV1::extortionate_gold_option_requires_valuation:
+    return "extortionate_gold_option_requires_valuation";
   case PlayerPrisonerRansomQuoteFailureV1::final_can_send_false:
     return "final_can_send_false";
   case PlayerPrisonerRansomQuoteFailureV1::final_legality_unavailable:
@@ -422,18 +446,8 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
     reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
         context, option);
-    std::int32_t observed_actor = -1;
-    std::int32_t observed_payer = -1;
-    std::int32_t observed_prisoner = -1;
-    void *observed_definition = nullptr;
-    const bool roles_ok = Read(context, 0, observed_definition) &&
-                          Read(context, 0x2D8, observed_actor) &&
-                          Read(context, 0x2DC, observed_payer) &&
-                          Read(context, 0x2E4, observed_prisoner) &&
-                          observed_definition == definition &&
-                          observed_actor == jailer_id &&
-                          observed_payer == payer_id &&
-                          observed_prisoner == prisoner_id;
+    const bool roles_ok = ContextRolesMatch(
+        context, definition, jailer_id, payer_id, prisoner_id);
     const bool selected = roles_ok && ExactOneOption(context, option);
     any_option_selected = any_option_selected || selected;
     const bool can_send = selected &&
@@ -490,8 +504,42 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     result.amount_is_acceptance_time_quote = option == 3;
     return result;
   }
-  result.failure = any_option_selected
-                       ? PlayerPrisonerRansomQuoteFailureV1::final_can_send_false
+  if (any_option_selected) {
+    result.failure = PlayerPrisonerRansomQuoteFailureV1::final_can_send_false;
+    return result;
+  }
+  // The first two authored options are the stock FP1 extortionate variants.
+  // Their payment uses increased_ransom_cost_value, so the ordinary quote
+  // cannot price them. Identify a legal opportunity without inventing value.
+  for (std::int32_t option : {0, 1}) {
+    alignas(8) std::array<std::byte, kContextSize> storage{};
+    void *const context = storage.data();
+    if (bindings.construct_character_interaction_context_all_roles(
+            context, definition, actor, payer_id, secondary_actor,
+            secondary_recipient, intermediary, nullptr) != context) {
+      result.failure = PlayerPrisonerRansomQuoteFailureV1::binding_unavailable;
+      return result;
+    }
+    reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
+    reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
+        context, option);
+    const bool selected =
+        ContextRolesMatch(context, definition, jailer_id, payer_id,
+                          prisoner_id) &&
+        ExactOneOption(context, option);
+    const bool can_send = selected &&
+        bindings.validate_character_interaction_context(context, nullptr);
+    bindings.destroy_character_interaction_context(context);
+    if (can_send) {
+      result.failure = PlayerPrisonerRansomQuoteFailureV1::
+          extortionate_gold_option_requires_valuation;
+      return result;
+    }
+  }
+  std::int64_t payer_gold_raw = 0;
+  result.failure = ReadPayerGold(payer, payer_gold_raw) &&
+                           payer_gold_raw < kFixedScale
+                       ? PlayerPrisonerRansomQuoteFailureV1::payer_below_one_gold
                        : PlayerPrisonerRansomQuoteFailureV1::option_unavailable;
   return result;
 }

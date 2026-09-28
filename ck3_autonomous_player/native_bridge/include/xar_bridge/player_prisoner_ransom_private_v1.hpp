@@ -16,6 +16,8 @@ enum class PlayerPrisonerRansomQuoteFailureV1 : std::uint8_t {
   definition_unavailable,
   role_unavailable,
   option_unavailable,
+  payer_below_one_gold,
+  extortionate_gold_option_requires_valuation,
   final_legality_unavailable,
   quote_unavailable,
   final_can_send_false,

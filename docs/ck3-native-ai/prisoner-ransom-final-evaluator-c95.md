@@ -235,3 +235,32 @@ refusal reason, alter option selection, or authorize an action. A future
 matching paused readback is needed to classify the three actual prisoners.
 Until a sendable option and same-frame positive quote are observed, ransom
 remains unavailable to formal policy and M6 readiness is unchanged.
+
+## H2825/R0271 `option_unavailable` narrowing candidate
+
+R0271 still proves no payable gold quote for `34486`, `44484`, or `47028`; it
+does not prove a broken quote reader. The exact stock definition has seven
+authored options. Ordinary `gold` (index 2) is shown when the actual payer
+has at least `ransom_cost_value`; ordinary `current_gold` (index 3) requires
+at least one gold but less than that value. Both are hidden for an actor with
+`fp1_pillage_legacy_3`; that actor instead gets the two extortionate variants
+(indices 0–1) against `increased_ransom_cost_value`. These conditions are at
+`00_prison_interactions.txt:1921–1995` under the frozen source hash above.
+
+Exact-build `ck3.exe` disassembly of the existing bridge calls confirms
+`0x2C405F0` sizes/clears the context option byte vector to the definition's
+option count, `0x2C406D0` sets the requested authored index, and its
+`0x2C40B20` finalizer clears an option when the native shown/valid check
+fails. The current seven-byte vector read is therefore consistent with the
+native setter. `option_unavailable` alone cannot distinguish a payer with
+less than one gold, an extortionate-only opportunity, or another stock gate.
+
+The narrow private candidate keeps the same unavailable payload shape and
+adds two exact reasons after both ordinary options fail: it checks the two
+extortionate options with their owned finalized native contexts and reports
+`extortionate_gold_option_requires_valuation` only if final `Can Send` passes;
+otherwise a double read of the redirected payer's current gold reports
+`payer_below_one_gold` when it is below one. Any other case remains
+`option_unavailable`. Neither reason is a ransom quote or an action. A new
+matching paused frame is required to learn which reason applies to the three
+prisoners; H2825 values are not backfilled from source inspection.
