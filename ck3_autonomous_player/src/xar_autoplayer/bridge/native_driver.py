@@ -1592,6 +1592,7 @@ class NativeHeadlessGameplayDriver:
         self._last_checkpoint: dict[str, object] | None = None
         self._command_history: list[dict[str, object]] = []
         self._owner_command_ledger = NativeOwnerCommandLedger()
+        self._owner_command_ledger_errors: list[dict[str, object]] = []
         self._owner_command_context = threading.local()
         self._rollback_war_failures: list[dict[str, object]] = []
         self._rollback_war_failures_migration_required = False
@@ -1658,7 +1659,9 @@ class NativeHeadlessGameplayDriver:
         frame_type = self.state.ingest(frame)
         if frame_type == "hello":
             # A reconnected worker cannot prove how an earlier send ended.
-            self._owner_command_ledger.reconnect()
+            self._observe_owner_command_ledger(
+                "reconnect", None, self._owner_command_ledger.reconnect
+            )
             bridge_pid = frame.get("pid")
             if isinstance(bridge_pid, int) and not isinstance(bridge_pid, bool):
                 self._adopt_bridge_session(bridge_pid)
@@ -2390,7 +2393,52 @@ class NativeHeadlessGameplayDriver:
 
     def owner_command_lifecycle_receipt_v1(self) -> dict[str, object]:
         """Read local protocol ownership without asserting cash amounts or zero."""
-        return self._owner_command_ledger.receipt()
+        try:
+            receipt = self._owner_command_ledger.receipt()
+        except Exception as error:
+            self._record_owner_command_ledger_error("receipt", None, error)
+            receipt = {
+                "schema": "xar.ck3.native-owner-command-lifecycle.v1",
+                "requests": [], "pending_war_cash_raw": None,
+                "zero_pending_war_cash_proven": False,
+                "continuity_across_driver_restart_proven": False,
+                "history_index_stable_across_restore": False,
+                "typed_history_link_complete": False,
+            }
+        with self._driver_state_lock:
+            errors = copy.deepcopy(self._owner_command_ledger_errors)
+        if errors:
+            receipt["status"] = "incomplete_observer_error"
+            receipt["observer_errors"] = errors
+        return receipt
+
+    def _record_owner_command_ledger_error(
+        self, operation: str, request_id: str | None, error: Exception
+    ) -> None:
+        with self._driver_state_lock:
+            self._owner_command_ledger_errors.append({
+                "operation": operation,
+                "request_id": request_id,
+                "exception_type": type(error).__name__,
+            })
+            # A bounded diagnostic is enough: any error permanently makes this
+            # process-local receipt incomplete, without growing with retries.
+            del self._owner_command_ledger_errors[:-32]
+
+    def _observe_owner_command_ledger(
+        self, operation: str, request_id: str | None,
+        observe: Callable[[], None],
+    ) -> None:
+        try:
+            observe()
+        except Exception as error:
+            self._record_owner_command_ledger_error(operation, request_id, error)
+
+    def _invalidate_owner_command_history_links(self) -> None:
+        self._observe_owner_command_ledger(
+            "history_rebased", None,
+            self._owner_command_ledger.history_rebased,
+        )
 
     def query_ranked_marriage_private_v1(
         self, *, expected_native_revision: int,
@@ -7081,6 +7129,7 @@ class NativeHeadlessGameplayDriver:
                         ):
                             retained.pop()
                         self._command_history = retained
+                        self._invalidate_owner_command_history_links()
                     self._managed_restore_transaction = None
                 elif (
                     isinstance(self._managed_restore_transaction, dict)
@@ -7104,12 +7153,15 @@ class NativeHeadlessGameplayDriver:
             if error is not None:
                 row["error"] = error
             self._command_history.append(row)
-            if owner_request_ids:
-                self._owner_command_ledger.recorded(
-                    owner_request_ids, history_index=row["index"],
-                    history_ok=ok,
-                )
             self._driver_state_dirty = True
+            if owner_request_ids:
+                self._observe_owner_command_ledger(
+                    "recorded", owner_request_ids[0],
+                    lambda: self._owner_command_ledger.recorded(
+                        owner_request_ids, history_index=row["index"],
+                        history_ok=ok,
+                    ),
+                )
         if not (ok and _is_deferred_read_only_history_step(step)):
             self._persist_driver_state()
 
@@ -7217,6 +7269,7 @@ class NativeHeadlessGameplayDriver:
                 return True
             previous_run_id = self._episode_run_id
             self._command_history = []
+            self._invalidate_owner_command_history_links()
             self._last_checkpoint = None
             self._rollback_war_failures = []
             self._rollback_war_failures_migration_required = False
@@ -7528,6 +7581,7 @@ class NativeHeadlessGameplayDriver:
         with self._driver_state_lock:
             if self._session_bridge_pid is None:
                 self._command_history = []
+                self._invalidate_owner_command_history_links()
                 self._episode_character_id = None
                 self._episode_run_id = None
                 self._last_checkpoint = None
@@ -7563,6 +7617,7 @@ class NativeHeadlessGameplayDriver:
                     self._command_history = copy.deepcopy(
                         restored["command_history"]
                     )
+                    self._invalidate_owner_command_history_links()
                     self._episode_character_id = restored[
                         "episode_character_id"
                     ]
@@ -7878,6 +7933,7 @@ class NativeHeadlessGameplayDriver:
                     }
                 )
                 self._command_history = history
+                self._invalidate_owner_command_history_links()
                 self._episode_character_id = int(
                     candidate["episode_character_id"]
                 )
@@ -7899,6 +7955,7 @@ class NativeHeadlessGameplayDriver:
                 self._cold_candidate_rejection = None
             else:
                 self._command_history = []
+                self._invalidate_owner_command_history_links()
                 self._episode_character_id = current_character_id
                 self._episode_run_id = (
                     f"native-{current_character_id}-{uuid.uuid4().hex[:12]}"
@@ -8065,18 +8122,27 @@ class NativeHeadlessGameplayDriver:
             [war.get("war_id") for war in wars if isinstance(war, dict)]
             if isinstance(wars, list) else None
         )
-        self._owner_command_ledger.begin(
-            request_id, step, snapshot["native_revision"],
-            source_frame=source_frame,
+        self._observe_owner_command_ledger(
+            "begin", request_id,
+            lambda: self._owner_command_ledger.begin(
+                request_id, step, snapshot["native_revision"],
+                source_frame=source_frame,
+            ),
         )
         contexts = getattr(self._owner_command_context, "stack", ())
         if contexts:
             contexts[-1].append(request_id)
         try:
             self.endpoint.send(request)
-            self._owner_command_ledger.sent(request_id)
+            self._observe_owner_command_ledger(
+                "sent", request_id,
+                lambda: self._owner_command_ledger.sent(request_id),
+            )
         except BaseException:
-            self._owner_command_ledger.unknown(request_id)
+            self._observe_owner_command_ledger(
+                "unknown_after_send", request_id,
+                lambda: self._owner_command_ledger.unknown(request_id),
+            )
             raise
         command_timeout_seconds = (
             self.command_timeout_seconds
@@ -8089,17 +8155,26 @@ class NativeHeadlessGameplayDriver:
                 request_id, command_timeout_seconds
             )
         except BaseException:
-            self._owner_command_ledger.unknown(request_id)
+            self._observe_owner_command_ledger(
+                "unknown_after_wait", request_id,
+                lambda: self._owner_command_ledger.unknown(request_id),
+            )
             raise
         if frame is None:
-            self._owner_command_ledger.unknown(request_id)
+            self._observe_owner_command_ledger(
+                "unknown_after_timeout", request_id,
+                lambda: self._owner_command_ledger.unknown(request_id),
+            )
             if step == QUERY_DECLARABLE_WARS_STEP:
                 raise _NativeCommandResultTimeoutError(step, request_id)
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
-        self._owner_command_ledger.response(
-            request_id, native_ok=frame.get("ok") is True
+        self._observe_owner_command_ledger(
+            "response", request_id,
+            lambda: self._owner_command_ledger.response(
+                request_id, native_ok=frame.get("ok") is True,
+            ),
         )
         if frame.get("ok") is not True:
             native_error = frame.get("error")
@@ -17176,6 +17251,7 @@ class NativeHeadlessGameplayDriver:
             # strategy by death-terminal. The natural successor starts a new
             # life history in the same live campaign and current CK3 process.
             self._command_history = []
+            self._invalidate_owner_command_history_links()
             self._last_checkpoint = None
             self._rollback_war_failures = []
             self._rollback_war_failures_migration_required = False

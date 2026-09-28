@@ -49,7 +49,7 @@
     "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained.",
     "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. At that attempt time the matching injector was still missing; the subsequent exact asset transfer is recorded below. This was no-launch only and had no same-frame cash amount.",
     "2026-09-28 follow-up: passive MilitaryView process-reader research script compiled, --help passed, and Python-only validation passed; an external synthetic cache fixture passed normal/-O valid, wrong-player, wrong-back-pointer and negative-raw gates. The script has not attached to CK3 and always marks its cache output ineligible for the war-cash receipt.",
-    "2026-09-28 owner request lifecycle: six targeted native ledger/driver tests pass under normal Python and -O; one existing protocol send/response/history regression passes. The receipt remains process-local, unpriced and ineligible to prove pending war cash zero."
+    "2026-09-28 owner request lifecycle: nine targeted native ledger/driver tests pass under normal Python and -O, covering send/response/history, failure, timeout, reconnect, native rejection, and observer fault isolation; recorded-hook fault still persists formal history. Three existing protocol/restore history regressions pass. Receipt remains process-local, unpriced and ineligible to prove pending war cash zero."
   ],
   "followup_research": {
     "status": "static_source_candidate_only",
@@ -64,6 +64,9 @@
       "read_method": "NativeHeadlessGameplayDriver.owner_command_lifecycle_receipt_v1",
       "status": "process_local_unpriced_diagnostic_only",
       "send_response_record_and_uncertainty_tracked": true,
+      "observer_fault_isolated_from_command_result": true,
+      "typed_history_link_complete": false,
+      "history_index_stable_across_restore": false,
       "pending_war_cash_raw": null,
       "zero_pending_war_cash_proven": false,
       "continuity_across_driver_restart_proven": false

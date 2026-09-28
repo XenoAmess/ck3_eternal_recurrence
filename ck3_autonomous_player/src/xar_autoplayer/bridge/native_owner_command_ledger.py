@@ -21,6 +21,7 @@ class NativeOwnerCommandLedger:
         self._lock = threading.RLock()
         self._rows: dict[str, dict[str, object]] = {}
         self._sequence = 0
+        self._history_epoch = 0
 
     def _event(self, row: dict[str, object], state: str) -> None:
         self._sequence += 1
@@ -43,7 +44,9 @@ class NativeOwnerCommandLedger:
                 "source_frame": (copy.deepcopy(dict(source_frame))
                                  if source_frame is not None else None),
                 "native_ok": None, "late_native_ok": None,
-                "history_index": None,
+                "history_index_at_record": None,
+                "history_epoch_at_record": None,
+                "history_link_invalidated": False,
                 "history_ok": None, "events": [],
             }
             self._rows[request_id] = row
@@ -103,18 +106,35 @@ class NativeOwnerCommandLedger:
                     raise ValueError("native request already linked to history")
             for request_id in request_ids:
                 row = self._rows[request_id]
-                row["history_index"] = history_index
+                row["history_index_at_record"] = history_index
+                row["history_epoch_at_record"] = self._history_epoch
                 row["history_ok"] = history_ok
                 self._event(row, "history_recorded_cash_unreconciled")
+
+    def history_rebased(self) -> None:
+        """Invalidate positional links when the formal history is replaced."""
+        with self._lock:
+            self._history_epoch += 1
+            for row in self._rows.values():
+                if row["history_index_at_record"] is not None:
+                    row["history_index_at_record"] = None
+                    row["history_link_invalidated"] = True
+                    self._sequence += 1
+                    row["events"].append({
+                        "sequence": self._sequence,
+                        "state": "history_link_invalidated",
+                    })
 
     def receipt(self) -> dict[str, object]:
         with self._lock:
             rows = copy.deepcopy(list(self._rows.values()))
             sequence = self._sequence
+            history_epoch = self._history_epoch
         return {
             "schema": SCHEMA,
             "status": "incomplete_unpriced_process_local",
             "sequence": sequence,
+            "history_epoch": history_epoch,
             "requests": rows,
             "unreconciled_request_ids": [row["request_id"] for row in rows],
             "in_flight_request_ids": [
@@ -124,5 +144,10 @@ class NativeOwnerCommandLedger:
             "pending_war_cash_raw": None,
             "zero_pending_war_cash_proven": False,
             "continuity_across_driver_restart_proven": False,
-            "scope": "execute_step native protocol requests owned by this driver instance",
+            "history_index_stable_across_restore": False,
+            "typed_history_link_complete": False,
+            "scope": (
+                "all _execute_primitive_step requests in this driver; "
+                "formal history links cover execute_step only"
+            ),
         }

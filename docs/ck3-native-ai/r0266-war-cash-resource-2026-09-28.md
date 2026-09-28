@@ -33,6 +33,8 @@ H2743 的另一次只读存档检查进一步提醒这个区别。已在接收�
 
 进一步的精确版本校验把两个下层函数的完整边界也冻结了：`0x290B8A0..0x290BA64` SHA-256 为 `DBA09E9FC922EF274A31DAA2C029053BE39E20DC127E2DF606A5B3E515069A1D`，在 `0x290BA44` 向选定输出槽累加；`0x2395370..0x2395604` SHA-256 为 `6AE006D6CA955A245D37429596864593CAC71625AC4A81728A8D46D0D45BB7B9`，在 `0x23953C1` 经虚表间接调用，还可能在 `0x23954F2/0x2395509` 递归调用自身，或走 `0xC883C0/0xC88270` 两条计算路径。校验器在普通 Python 和 `-O` 下均对精确 EXE 通过，但这些静态锚点**没有**闭合虚表目标、所有下层副作用或槽位经济含义，`safe_to_call_from_live_bridge` 仍为 `false`。精确函数反汇编另保存在同一 attempt 的 `helper-290b8a0-exact-function.txt` 和 `helper-2395370-exact-function.txt`。
 
+账本是旁路观测器：`begin`、`sent`、`response`、`unknown`、`recorded` 或重连处理若自身报错，正式命令原结果、正式历史与持久化不能被覆盖；只读收据转为 `incomplete_observer_error`，金额继续为 `null`。现阶段只有 `execute_step` 上下文将原生 request ID 绑定到正式历史；`assign_councillor_v1`、`center_map_on_landed_title_v1` 等 typed 路径仍会留下未关联行，收据明确 `typed_history_link_complete=false`。每次正式历史替换/截断会失效旧的 `history_index_at_record`，收据也不声明该索引跨 restore 稳定。请求生命周期、报价身份和游戏侧结算必须分别闭合，才能计算待办现金。
+
 ### 原版军事窗口的维护费来源候选（2026-09-28 只读静态结果）
 
 另一个更直接的取数入口来自原版 `game/gui/window_military.gui:643,1037`：`MilitaryView.GetAllRaisedGoldMilitaryExpenses` 是“每月最大维护费”栏的 `ValueBreakdown`，与当前军费栏 `GetGoldMilitaryExpenses` 分开。原版英文 `game/localization/english/gui/militaryview_l_english.yml:47` 将最大值解释为**全军征召且满员时的预测军事费用**，并明确警告舰队上的军队可让实际维护费更高。因此它并非当前已花费金币，也不是无条件的未来费用上界；尤其不能替代补员、雇佣、运输或临时动作的单独预算。

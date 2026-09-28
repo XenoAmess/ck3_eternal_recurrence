@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import sys
+import tempfile
 import threading
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
@@ -29,6 +32,12 @@ class NativeOwnerCommandLedgerTests(unittest.TestCase):
         self.assertEqual(receipt["unreconciled_request_ids"], ["r1"])
         self.assertIsNone(receipt["pending_war_cash_raw"])
         self.assertIs(receipt["continuity_across_driver_restart_proven"], False)
+        self.assertEqual(receipt["requests"][0]["history_index_at_record"], 1)
+        ledger.history_rebased()
+        rebased = ledger.receipt()
+        self.assertEqual(rebased["history_epoch"], 1)
+        self.assertIsNone(rebased["requests"][0]["history_index_at_record"])
+        self.assertIs(rebased["requests"][0]["history_link_invalidated"], True)
 
     def test_reconnect_leaves_unanswered_request_unknown(self) -> None:
         ledger = NativeOwnerCommandLedger()
@@ -48,11 +57,13 @@ class NativeOwnerCommandLedgerTests(unittest.TestCase):
 
 
 class NativeOwnerCommandDriverTests(unittest.TestCase):
-    def driver(self, *, timeout: float = 0.05):
+    def driver(self, *, timeout: float = 0.05,
+               state_dir: Path | None = None):
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name, endpoint=endpoint,
             command_timeout_seconds=timeout,
+            state_dir=state_dir,
         )
         endpoint.publish(_hello("game.state.snapshot",
                                 "game.command.cash-probe-noop"))
@@ -95,7 +106,8 @@ class NativeOwnerCommandDriverTests(unittest.TestCase):
             receipt = driver.owner_command_lifecycle_receipt_v1()
             row = receipt["requests"][0]
             self.assertEqual(row["state"], "history_recorded_cash_unreconciled")
-            self.assertEqual(row["history_index"], 1)
+            self.assertEqual(row["history_index_at_record"], 1)
+            self.assertIs(receipt["history_index_stable_across_restore"], False)
             self.assertEqual(row["source_frame"]["native_revision"], 1)
             self.assertIs(row["native_ok"], True)
             self.assertIs(row["history_ok"], True)
@@ -174,6 +186,112 @@ class NativeOwnerCommandDriverTests(unittest.TestCase):
             self.assertIs(row["history_ok"], False)
             self.assertEqual(row["state"], "history_recorded_cash_unreconciled")
             self.assertIsNone(receipt["pending_war_cash_raw"])
+        finally:
+            driver.close()
+
+    def test_observer_faults_do_not_change_success_or_history(self) -> None:
+        for operation in ("begin", "response", "recorded"):
+            with self.subTest(operation=operation):
+                temporary = tempfile.TemporaryDirectory()
+                driver, endpoint = self.driver(state_dir=Path(temporary.name))
+
+                def answer(frame):
+                    if frame.get("type") == "execute_step":
+                        endpoint.publish({
+                            "type": "command_result", "protocol_version": 1,
+                            "request_id": frame["request_id"], "ok": True,
+                            "result": {"accepted": True},
+                        })
+
+                endpoint.send_hook = answer
+                try:
+                    with (mock.patch.object(
+                        driver._owner_command_ledger, operation,
+                        side_effect=RuntimeError("ledger fault"),
+                    ), mock.patch.object(
+                        driver, "_persist_driver_state",
+                        wraps=driver._persist_driver_state,
+                    ) as persist):
+                        result = driver.execute_step("cash-probe-noop")
+                    self.assertIs(result["accepted"], True)
+                    sends = [row for row in endpoint.frames
+                             if row.get("type") == "execute_step"]
+                    self.assertEqual(len(sends), 1)
+                    history = driver._history_snapshot()
+                    self.assertEqual(len(history), 1)
+                    self.assertIs(history[0]["ok"], True)
+                    self.assertGreaterEqual(persist.call_count, 1)
+                    if operation == "recorded":
+                        persisted = json.loads((
+                            Path(temporary.name) / "native-session"
+                            / "driver-state.json"
+                        ).read_text(encoding="utf-8"))
+                        self.assertIs(
+                            persisted["command_history"][-1]["ok"], True
+                        )
+                    receipt = driver.owner_command_lifecycle_receipt_v1()
+                    self.assertEqual(receipt["status"], "incomplete_observer_error")
+                    self.assertIsNone(receipt["pending_war_cash_raw"])
+                    self.assertIs(receipt["zero_pending_war_cash_proven"], False)
+                finally:
+                    driver.close()
+                    temporary.cleanup()
+
+    def test_observer_fault_cannot_mask_native_rejection_or_send_failure(self) -> None:
+        for original, observer_operation in (("rejection", "response"),
+                                             ("send", "unknown")):
+            with self.subTest(original=original):
+                driver, endpoint = self.driver()
+
+                def answer(frame):
+                    if frame.get("type") != "execute_step":
+                        return
+                    if original == "send":
+                        raise BridgeUnavailableError("send failed")
+                    endpoint.publish({
+                        "type": "command_result", "protocol_version": 1,
+                        "request_id": frame["request_id"], "ok": False,
+                        "error": "native rejection",
+                    })
+
+                endpoint.send_hook = answer
+                try:
+                    with mock.patch.object(
+                        driver._owner_command_ledger, observer_operation,
+                        side_effect=RuntimeError("ledger fault"),
+                    ):
+                        with self.assertRaisesRegex(
+                            Exception,
+                            "send failed" if original == "send"
+                            else "native rejection",
+                        ):
+                            driver.execute_step("cash-probe-noop")
+                    history = driver._history_snapshot()
+                    self.assertEqual(len(history), 1)
+                    self.assertIs(history[0]["ok"], False)
+                    self.assertIn("send failed" if original == "send"
+                                  else "native rejection", history[0]["error"])
+                    receipt = driver.owner_command_lifecycle_receipt_v1()
+                    self.assertEqual(receipt["status"], "incomplete_observer_error")
+                    self.assertIsNone(receipt["pending_war_cash_raw"])
+                finally:
+                    driver.close()
+
+    def test_reconnect_observer_fault_does_not_interrupt_hello(self) -> None:
+        driver, endpoint = self.driver()
+        try:
+            with mock.patch.object(
+                driver._owner_command_ledger, "reconnect",
+                side_effect=RuntimeError("ledger fault"),
+            ):
+                endpoint.publish(_hello("game.state.snapshot",
+                                        "game.command.cash-probe-noop"))
+            endpoint.publish(_snapshot(2))
+            self.assertEqual(driver.take_snapshot()["native_revision"], 2)
+            self.assertEqual(
+                driver.owner_command_lifecycle_receipt_v1()["status"],
+                "incomplete_observer_error",
+            )
         finally:
             driver.close()
 
