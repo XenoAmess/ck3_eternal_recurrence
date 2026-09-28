@@ -309,6 +309,35 @@ def test_private_child_relation_v5_preserves_true_false_and_unavailable() -> Non
             _Driver(result), expected_revision=4)
 
 
+def test_private_title_tier_v6_distinguishes_duke_unlanded_and_malformed() -> None:
+    result = _result_with_ransom_quote()
+    value = result["player_prisoner_collection"]
+    value["schema_version"] = 6
+    value["played_dread_raw"] = 4_000_000
+    row = value["prisoners"][0]
+    row["is_child_of_played_character"] = False
+    row["primary_title_tier_raw"] = 3
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["primary_title_tier_raw"] == 3
+    assert observed["player_prisoner_collection"]["played_dread_raw"] == 4_000_000
+
+    row["primary_title_tier_raw"] = None
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["primary_title_tier_raw"] is None
+
+    row["primary_title_tier_raw"] = False
+    with pytest.raises(BridgeUnavailableError, match="title tier"):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4)
+    row["primary_title_tier_raw"] = 3
+    value["played_dread_raw"] = False
+    with pytest.raises(BridgeUnavailableError, match="count or binding"):
+        query_player_prisoner_collection_private_v1(
+            _Driver(result), expected_revision=4)
+
+
 def test_private_ransom_ordinal_queries_one_bound_second_prisoner() -> None:
     result = _result_with_ransom_quote()
     value = result["player_prisoner_collection"]

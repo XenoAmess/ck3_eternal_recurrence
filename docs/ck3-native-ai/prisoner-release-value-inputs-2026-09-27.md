@@ -1,6 +1,18 @@
 # 囚犯释放的关系与战争价值输入（CK3 1.19.0.6）
 
-状态：**exact-build 原版脚本已核、现有 ABI 可复用范围已核；策略与动作未接线**。本篇只处理玩家已关押囚犯的 `release_from_prison_interaction` 无条件选项。宗教释放条件、处决、赎金金额和战争决策模型均不在本次施工范围。
+状态：**exact-build 原版脚本已核；主头衔等级及玩家 dread 私有 v6 读口仅 static-ready，策略与动作未接线**。本篇只处理玩家已关押囚犯的 `release_from_prison_interaction` 无条件选项。宗教释放条件、处决、赎金金额和战争决策模型均不在本次施工范围。
+
+## 2026-09-28 增量：实际收益与当前缺项
+
+原版 `00_prison_interactions.txt` 第 4615–4830 行明确显示，无条件释放会给被释放者对玩家的 `released_from_prison` 好感修正，并让玩家承受 `minor_dread_loss`；若被释放者有公爵及以上主头衔，还给玩家 `miniscule_legitimacy_gain × (title_tier−2)`。冻结的 `00_prison_opinions.txt`（1,369 字节，SHA-256 `8215ED7EEAAF9CEB859E13EE9E13262DD99EDB31A27F6C7B2844E3AB488F6FEB`）把好感定为 **+20、10 年衰减**；`00_basic_values.txt` 的 `minor_dread_loss` 为 **−10**；`00_legitimacy_values.txt`（27,465 字节，SHA-256 `13E43166356B5DD99358F435330B03CB9BE95AB5913280318B01681186E23A2E`）的 `miniscule_legitimacy_gain` 为 **20**。原版还可能调整 House 关系、sadistic/callous 压力或地区 struggle 收益；不能把这些未知分支填零，也不能直接把不同资源数值相加当效用。
+
+已合入的 R0268 private v5 实机首帧读回 34486、44484、47028 三人均 **不是玩家的子女**；这只排除 `is_child_of`。战争同事的 H2825 attempt-08 同帧只读 join 已证明三人均不在**该战争**的 generic PoW release pairs，且当前 CB 不适用 FP3 House 条款；结果是 `not_from_these_two_rules`，没有证明赎金、关系或其它扣留价值为零。来源分别见[当日日报](../autonomous-agent-progress/daily/2026-09-28.md)和[同帧战争摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempt-08-same-frame-green.json)。
+
+新增的 private v6 `primary_title_tier_raw` 复用已冻结的 `GetCharacterPrimaryTitle`（RVA `0x25F3350`）和 [campaign root ABI](../../ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json)：在现有囚犯 full ID、反向狱卒和双采样暂停帧内，核 LandedTitle storage generation，再读 template `+0x5C` 等级。`null` 表示该人物没有原生主头衔；读取失败则整个私有查询给 `title_tier_unavailable`，不把失败当无头衔。此字段默认关闭，**尚无 H2825/H3446 paused readback、官方 no-launch、释放动作或新 PID 恢复**。其目的只是判断上述合法性收益能否发生，不单独构成正收益释放资格。
+
+同一 v6 同帧加入 `played_dread_raw`。在冻结的 `ck3.exe` SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 中，由 RTTI `CDreadTrigger` 的 vtable 追到原生 getter RVA `0x28780E0`：它用完整 CharacterID 校验角色槽，再读取 `CCharacter+0x1B8` 的 land-state 指针和 `land-state+0x350` 的 64 位 `CFixedPoint` dread 原值；land-state 不存在时原生返回 0。固定点 1 单位为 100,000 raw，因此实际 −10 dread 必须与当前值比较，不能总按 −10 扣。私有查询复用已校验的玩家 full ID，在同一个暂停帧双采样；read 失败给 `dread_unavailable`，两次原值不同给 `sample_drift`。v6 编译开关默认关闭；**尚无 H2825/H3446 paused readback、官方 no-launch、释放动作或新 PID 恢复**。
+
+当前 H2825 同帧净值仍缺：三人各自主头衔等级、玩家释放前实际 dread（决定 −10 的边际损失）、可兑现赎金及付款方、close-family/rival/nemesis/feud、House 关系和其他扣留义务。若下次正式候选要消费释放，先在同一 paused frame 读这些实际输入，比较某名囚犯与保留、赎金两条路线，再提交 typed action 和独立后置；眼下不能从 +20 好感或两条战争规则未命中直接挑人释放。
 
 ## 自然阳性与缺口
 
@@ -36,11 +48,12 @@ flowchart TD
 | --- | --- | --- |
 | 囚犯与 jailer、finalized 无条件释放 preview | `player_prisoner_collection_query_v1_private` 对完整 32 位 CharacterID 双采样；`CCharacter+0x1A8` extension、`+0x288` prison relation、其 `+0x00` jailer；R0262 自然 paused 阳性 | 三人可合法释放；仍是 private/read-only |
 | House/Dynasty | C211 同 reader 扩展：`CCharacter+0x150` HouseID、`CHouse+0x2C` DynastyID，完整 ID 回读；H2825 paused 私有报告 | 玩家 `174/174`；34486 `2370/2370`，另两人 `null/null`；不能代替 close family |
-| 近亲、亲子、rival/nemesis、世仇与囚禁时长 | 原版 release AI 第 6030–6140、6198–6204 行 | 原生判定树已知；这三个囚犯的同帧 callable ABI / 值未取得。只查反射字符串或猜 House 关系均不够 |
+| 玩家当前 dread | `CDreadTrigger` getter RVA `0x28780E0` → `CCharacter+0x1B8` land-state → `+0x350` CFixedPoint，private v6 同帧双采样 | 源码及 ABI static-ready；H2825/H3446 实值未读，不能判定 −10 的实际边际代价 |
+| 近亲、亲子、rival/nemesis、世仇与囚禁时长 | 原版 release AI 第 6030–6140、6198–6204 行 | 亲子 private v5 已有三人实机 `false`；其余原生关系和时长仍未取得。只查反射字符串或猜 House 关系均不够 |
 | 当前战争身份 | 现有 `ck3_11906.cpp` 的 WarID/参与者 reader；`CWar+0x100` CB type、`+0x288/+0x28C` primary attacker/defender、`+0x20/+0x80` 参战方集合；`ResolveWar` 与 full CharacterID 回读 | ABI 已用于战争读口；囚犯集合查询尚未把同帧 WarID/CB 和候选 House 绑定。战斗模型不由本包更改 |
 | 窄战争释放配对 | `ReadRaiktorSurrenderPrisonerReleases` 已能在 **Raiktor claim CB 的投降条款预览**读双方 primary 与前三顺位继承人及效果中的 release pair | 仅该 CB/结果的 PoW 条款预览，不是已经发生的释放。匹配是保留候选的强信号；空 pair 不说明囚犯在其它战争、赎金或关系上无价值 |
 | FP3 解救家族成员 CB 后果 | 第 4880–4906 行的原版 `on_accept` 条件，加已有 CB/primary 与 C211 House 输入 | 当前 WarID 是否为该 CB、House 是否匹配尚无同帧结果；不能填 false 或估成零 |
 
-下一项最小施工是**同一 paused native revision** 为这三名囚犯补原生 close-family/child/rival/nemesis 判定，并将已有战局 CB、primary、参战方与 C211 House 值绑定到 prisoner row；每个字段明确来源、完整身份回读和 unavailable。当前 bridge/research 没有这四个关系的可调用 exact-build ABI：EXE 中出现 `IsChildOf`、`GetMother` 等字符串，不证明函数入口、参数和结果语义，不能把它们接成 false 或静态完成。战争 PoW 保留与 FP3 结果由 [WAR-PRISONER-RETENTION-H2825 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-PRISONER-RETENTION-H2825-20260928.json)交给战争维护者，关系判定仍由非战争包逆向。应先对实际有价值差异的一名囚犯做只读 paused readback。若发现同一人属于当前 Raiktor PoW release pair 或 FP3 条款，优先保留并核战争合同；若原生关系为近亲且无已知扣留/赎金/战争义务，再评估释放的正收益。未知赎金金额、长期义务或战争机会成本仍标缺项，不能强行选人。
+下一项最小施工是将 v6 主头衔等级和当前玩家 dread 的实测值，与赎金结果及 close-family/rival/nemesis 判定接到**同一 paused native revision**。亲子谓词已有 exact-build callable ABI 与 R0268 负例；其余关系不能用 House/Dynasty 代替。H2825 战争 PoW/FP3 已有窄结果，未来新战局仍需重新绑定。应先只读比较实际有价值差异的一名囚犯；未知赎金金额、长期义务或战争机会成本仍标缺项，不能强行选人。
 
 正式动作验收：同帧重新构造 exact `release_from_prison_interaction` 无条件选项，提交 typed 动作后在下一 paused revision 读**该 full CharacterID** 已不在玩家 prisoner 集合且 prison relation 不再指向玩家；读玩家与目标的实际资源/威望/关系变化以及如适用的 WarID/CB 后果，避免把 ACK 当生效。再由下一 turn 消费 action receipt/checkpoint，并由新 PID 从官方配对冷恢复确认囚禁关系仍已解除且不重复提交。R0262 未执行这一步，M6 readiness 不提升。

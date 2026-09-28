@@ -225,6 +225,11 @@ bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
     access.read_child_relation = true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1)
+    access.read_title_tier = true;
+    access.read_dread = true;
+    access.get_primary_title = query->bindings.get_character_primary_title;
+#endif
     access.admitted_executable_sha256 =
         xar::bridge::kPlayerPrisonerManagementSnapshotV1ExecutableSha256;
     access.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
@@ -281,7 +286,9 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   }
   std::string result =
       "{\"schema\":\"player-prisoner-collection-private-v1\","
-#if defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1)
+      "\"schema_version\":6,\"snapshot_revision\":" +
+#elif defined(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
       "\"schema_version\":5,\"snapshot_revision\":" +
 #elif defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
       "\"schema_version\":4,\"snapshot_revision\":" +
@@ -314,6 +321,11 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   result += ",\"played_dynasty_id\":";
   result += snapshot.available && snapshot.played_dynasty_id >= 0
                 ? std::to_string(snapshot.played_dynasty_id) : "null";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1)
+  result += ",\"played_dread_raw\":";
+  result += snapshot.available
+                ? std::to_string(snapshot.played_dread_raw) : "null";
 #endif
   result += ",\"total_count\":";
   result += snapshot.available ? std::to_string(snapshot.total_count) : "null";
@@ -355,6 +367,12 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
       result += ",\"is_child_of_played_character\":";
       result += snapshot.rows[index].child_of_played_character
                     ? "true" : "false";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1)
+      result += ",\"primary_title_tier_raw\":";
+      result += snapshot.rows[index].primary_title_tier_raw >= 1
+                    ? std::to_string(snapshot.rows[index].primary_title_tier_raw)
+                    : "null";
 #endif
       result += ",\"unconditional_release_preview\":" +
                 SerializeCharacterInteractionPreviewV1(
