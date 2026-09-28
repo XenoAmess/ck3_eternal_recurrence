@@ -28,7 +28,8 @@ PALETTE = {
 }
 FONT = "Microsoft YaHei, Noto Sans CJK SC, sans-serif"
 SOURCE_FIELDS = {
-    "004": ("source_save", "source_index", "source_day28_control",
+    "004": ("source_save", "source_capture_report", "source_day27_checkpoint",
+            "source_index", "source_day28_control",
             "source_day29_control", "source_day30_control", "source_day31_control",
             "source_day32_terminal"),
     "039_040": ("source_day5_finish", "source_day6_save", "source_day6_v3"),

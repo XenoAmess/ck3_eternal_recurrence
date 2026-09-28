@@ -17,7 +17,7 @@
 1. 先查远端 `master` 的战争请求；R0271 围城参与者判定直接阻塞 Robert，优先让出 CK3 屏幕。录制开始前取任务总线 `ck3-screen:acquired`，检查排他占用和本次新鲜 Steam“离线模式”画面。画面陈旧时按项目桌面恢复合同处理；未取得离线证据不启动 CK3。
 2. 为每个目标轨迹创建全新外置 attempt/workdir、独立 state/profile/pipe 和 run manifest；冻结当前 ProjectConfig 精确字节、游戏 EXE SHA、DLL/injector SHA、原版 `enabled_mods=[]`、来源 `.ck3` bytes/SHA 与其真实 checkpoint 回执。先用选定解释器无启动预检，再显式 `--capture`。`capture_session.py` 不负责正式桌面录像，须另设唯一 recorder；启动、停止、失败 stderr 和 ffprobe 都永久保留。
 3. 暂停源帧先保存原生身份：run/attempt ID、source save SHA、actor、WarID、CombatID、ProvinceID、日期 raw、phase/day、双侧 army/regiment/knight 身份和 revision。每次推进一日只发一次命令，前后均保存原始 MCP 请求/响应与截图；另存录像时间基准、命令 UTC/monotonic 时间及 PTS mark。战斗 UI、人物 UI 和战争面板都要前后同身份回读。鼠标停在非地图边缘；相机请求后的可见性需在镜头开始及停留末尾复核。
-4. 分轨拍摄：004 的第 27 日源档可用于追击到终局候选；039 的第 5 日事件前源档用于致残，040 只读复载 039 的第 6 日后存档；020 的第 26 日源档用于击杀，085 的第 11 日源档用于增援与战宽，024 的第 27 日源档用于战分 writer。每次新加载都须核查是否仍走同一随机轨迹；若新 run 的具体事件、逐团伤亡、入场或战分与旧研究不同，保留新实况并重新计算新回执，不能给新画面配旧数字。085 本身已有 full-entry 与三点战宽/首次出伤，083 是另一次独立复证；两次不能剪成一个连续实况。
+4. 分轨拍摄：004 实际从 attempt-002 接战存档 `45CCE7E9...6245F` 冷载；004 **运行中生成**的第 27 日检查点 `F085D8AB...FEEB3` 可供新 attempt 独立拍追击到终局，也曾是 024 的冷载源。它不是 004 的冷载源，新 attempt 与 004 只共享该检查点字节，不自动共享之后的随机轨迹。039 的第 5 日事件前源档用于致残，040 只读复载 039 的第 6 日后存档；020 的第 26 日源档用于击杀，085 的第 11 日源档用于增援与战宽。每次新加载都须核查自己的身份和数值；即使新 run 恰好复现旧数值，也要另标来源并用其自身回执。085 本身已有 full-entry 与三点战宽/首次出伤，083 是另一次独立复证；两次不能剪成一个连续实况。
 5. 每条拟入片区间保存原 raw SHA、PTS 起止、对应原生日期/控制回执 SHA、开始与结束的确切截图和可见性检查，形成按序 marks、clean spans 与 evidence index。执行 adapter 只读加载及精确字节检查；RED/中断保持原样，重试另开 run。机器 audit 与 review 包仅为待人工审阅；最终成片需实际 1× 完整观看后才可由审阅人对精确成片 bytes/SHA 签核。
 
 ## 已核工具入口

@@ -16,8 +16,12 @@
   "replays": {
     "004": {
       "kind": "independent_replay_from_contact_checkpoint",
-      "source_save": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
-      "source_save_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+      "source_save": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-002/contact-combat-16777218-raw53146248.ck3",
+      "source_save_sha256": "45CCE7E9A7E505C878F661333DE30D6B459DA638259A9E99990A226CE564245F",
+      "source_capture_report": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/ck3-output/capture-report.json",
+      "source_capture_report_sha256": "099286BD46C3D0308CA92AFFBCD7D95B13BBE4BE52D4CC6D6E0C3DCBAB529614",
+      "source_day27_checkpoint": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
+      "source_day27_checkpoint_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
       "source_index": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/terminal-replay-d28-d32.jsonl",
       "source_index_sha256": "B4F8C8D4E2827650E4401E9FBAB34DE62558641A424382A4C460FEDBD261E160",
       "source_day28_control": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/term-d28-control.json",
