@@ -99,7 +99,10 @@ bool FullCharacterId(std::int64_t value, std::uint32_t &output) noexcept {
     return false;
   }
   output = static_cast<std::uint32_t>(value);
-  return (output >> kIdentityGenerationShift) != 0;
+  // Zero is the first incarnation on this build. The native lease below
+  // round-trips the complete 32-bit identity against the resolved object;
+  // a missing slot still fails native resolution.
+  return true;
 }
 
 bool ValidCharacterLease(const CharacterLease &lease, std::uint32_t full_id,
@@ -108,7 +111,7 @@ bool ValidCharacterLease(const CharacterLease &lease, std::uint32_t full_id,
          lease.observed_full_id == full_id &&
          lease.slot_index == (full_id & kIdentitySlotMask) &&
          lease.generation == (full_id >> kIdentityGenerationShift) &&
-         lease.generation != 0 && lease.proof_epoch != 0 &&
+         lease.proof_epoch != 0 &&
          (expected_proof_epoch == 0 ||
           lease.proof_epoch == expected_proof_epoch);
 }

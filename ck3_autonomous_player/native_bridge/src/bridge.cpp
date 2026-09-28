@@ -2,6 +2,9 @@
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "active_scheme_sway_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+#include "active_scheme_sway_formal_private_transport_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
 #include "realm_law_paused_private_transport_v1.hpp"
 #endif
@@ -289,6 +292,12 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+static std::optional<xar::bridge::ActiveSchemeSemanticActionV1PrivateAck>
+    g_active_scheme_sway_pending_ack_v1{};
+// A missing ACK after an executing mailbox is unknown, never retryable.
+static bool g_active_scheme_sway_may_have_submitted_v1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
 // A second private submit is forbidden while the first command's material
 // status is unresolved. Cold recovery must query stock Province state first.
@@ -10341,6 +10350,15 @@ void RunConnectedSession(
                                                                   target_id);
                    }()
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+                   && ![&]() {
+                     std::uint32_t target_id = 0;
+                     xar::ck3_11906::ActiveSchemeSwayFormalModeV1 mode{};
+                     return xar::ck3_11906::
+                         ParseActiveSchemeSwayFormalStepV1(step, mode,
+                                                            target_id);
+                   }()
+#endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
                    && step != xar::ck3_11906::kRealmLawPausedPrivateQueryStepV1
 #endif
@@ -10569,6 +10587,164 @@ void RunConnectedSession(
                                      MainThreadQueryReclaimResultV1::reclaimed) {
                   response = CommandResultFrame(request_id, step, false,
                                                 "realm-law private reclaim red");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+          if ([&]() {
+                std::uint32_t target_id = 0;
+                xar::ck3_11906::ActiveSchemeSwayFormalModeV1 mode{};
+                return xar::ck3_11906::ParseActiveSchemeSwayFormalStepV1(
+                    step, mode, target_id);
+              }()) {
+            using namespace xar::ck3_11906;
+            ActiveSchemeSwayFormalModeV1 mode{};
+            std::uint32_t target_id = 0;
+            (void)ParseActiveSchemeSwayFormalStepV1(step, mode, target_id);
+            const bool is_submit = mode == ActiveSchemeSwayFormalModeV1::submit;
+            std::uint64_t expected_revision = 0;
+            std::uint64_t expected_epoch = 0;
+            std::uint64_t expected_generation = 0;
+            std::string action_id;
+            std::string opinion_text;
+            std::int32_t opinion = 0;
+            const bool opinion_valid = !is_submit || [&]() {
+              if (!xar::bridge::JsonStringField(
+                      incoming.payload, "expected_target_opinion_of_actor",
+                      opinion_text, 16) || opinion_text.empty()) return false;
+              const auto [end, error] = std::from_chars(
+                  opinion_text.data(), opinion_text.data() +
+                                           opinion_text.size(), opinion);
+              return error == std::errc{} &&
+                     end == opinion_text.data() + opinion_text.size() &&
+                     opinion >= -100 && opinion <= 100;
+            }();
+            xar::game::Snapshot current{};
+            if (!xar::bridge::JsonUnsignedField(
+                    incoming.payload, "expected_revision",
+                    expected_revision) ||
+                !xar::bridge::JsonStringField(
+                    incoming.payload, "action_id", action_id, 64) ||
+                !IsSimpleRequestId(action_id) || !opinion_valid ||
+                (is_submit &&
+                 (!xar::bridge::JsonUnsignedField(
+                      incoming.payload, "expected_capture_epoch",
+                      expected_epoch) ||
+                  !xar::bridge::JsonUnsignedField(
+                      incoming.payload, "expected_container_generation",
+                      expected_generation) ||
+                  expected_epoch == 0 || expected_generation == 0)) ||
+                expected_revision == 0 ||
+                expected_revision != state_revision ||
+                !previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current) ||
+                current != *previous_snapshot || !current.paused ||
+                !current.map_ready || !current.has_played_character ||
+                !current.played_character_alive ||
+                current.played_character_id <= 0 ||
+                static_cast<std::uint32_t>(current.played_character_id) ==
+                    target_id ||
+                (is_submit &&
+                 g_active_scheme_sway_may_have_submitted_v1) ||
+                (!is_submit &&
+                 (!g_active_scheme_sway_pending_ack_v1.has_value() ||
+                  g_active_scheme_sway_pending_ack_v1->request_id !=
+                      action_id ||
+                  g_active_scheme_sway_pending_ack_v1->target_id !=
+                      target_id ||
+                  g_active_scheme_sway_pending_ack_v1->actor_character_id !=
+                      current.played_character_id))) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "sway formal frame, ledger or request invalid"));
+            } else {
+              ActiveSchemeSwayFormalPrivateCommandV1 command{};
+              command.mailbox = &g_main_thread_query_mailbox_v1;
+              command.bindings = BindCurrentProcess(true);
+              command.expected_snapshot = current;
+              command.expected_revision = expected_revision;
+              command.target_character_id = target_id;
+              command.mode = mode;
+              command.action_id = action_id;
+              command.expected_capture_epoch = expected_epoch;
+              command.expected_container_generation = expected_generation;
+              command.expected_target_opinion_of_actor = opinion;
+              if (!is_submit) {
+                command.prior_ack = *g_active_scheme_sway_pending_ack_v1;
+              }
+              if (is_submit) {
+                g_active_scheme_sway_may_have_submitted_v1 = true;
+              }
+              const auto submitted = TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &ExecuteActiveSchemeSwayFormalPrivateCommandV1,
+                  &command, command.ticket);
+              if (submitted != MainThreadQuerySubmitResultV1::submitted) {
+                if (is_submit) {
+                  g_active_scheme_sway_may_have_submitted_v1 = false;
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                                             "sway formal executor unavailable"));
+              } else {
+                auto wait = WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, command.ticket, 8'000);
+                while (wait == MainThreadQueryWaitResultV1::
+                                   timeout_executor_already_running) {
+                  wait = WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      command.ticket, 2'000);
+                }
+                xar::game::Snapshot after{};
+                const bool stable =
+                    wait == MainThreadQueryWaitResultV1::completed &&
+                    command.completed && !command.frame_changed &&
+                    xar::game::ReadSnapshot(game, after) && after == current;
+                const auto native = stable
+                    ? SerializeActiveSchemeSwayFormalPrivateCommandV1(command)
+                    : std::string{};
+                std::string response;
+                if (!native.empty()) {
+                  if (is_submit) {
+                    g_active_scheme_sway_pending_ack_v1 = command.ack;
+                  } else {
+                    g_active_scheme_sway_pending_ack_v1.reset();
+                    g_active_scheme_sway_may_have_submitted_v1 = false;
+                  }
+                  response =
+                      "{\"type\":\"command_result\",\"protocol_version\":1,"
+                      "\"request_id\":";
+                  AppendJsonString(response, request_id);
+                  response += ",\"ok\":true,\"result\":{\"step\":";
+                  AppendJsonString(response, step);
+                  response += ",\"accepted\":true,\"status\":";
+                  AppendJsonString(response,
+                      is_submit ? "submitted_verification_pending" : "applied");
+                  response +=
+                      ",\"private_build\":true,\"advertised\":false,"
+                      "\"active_scheme_sway_formal\":" + native +
+                      ",\"backend_id\":\"native-headless\"}}";
+                } else {
+                  if (is_submit && command.invocations == 1 &&
+                      command.completed &&
+                      command.ack.submit_attempted == false &&
+                      !command.failure.empty()) {
+                    g_active_scheme_sway_may_have_submitted_v1 = false;
+                  }
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      command.failure.empty()
+                          ? "sway formal native result unavailable"
+                          : command.failure);
+                }
+                const auto reclaimed = ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, command.ticket);
+                if (reclaimed != MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(request_id, step, false,
+                                                "sway formal reclaim red");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
