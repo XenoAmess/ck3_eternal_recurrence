@@ -19,6 +19,93 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_sway_pending_ack_pairs_and_copies_exact_ledger(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sample = root / "sample"
+            sample.mkdir()
+            save_bytes = b"R0340 paired checkpoint"
+            save_hash = hashlib.sha256(save_bytes).hexdigest()
+            (sample / "xar_checkpoint.ck3").write_bytes(save_bytes)
+            driver = {
+                "episode_character_id": 29829,
+                "episode_run_id": "native-29829-test",
+                "last_checkpoint": {
+                    "episode_character_id": 29829,
+                    "episode_run_id": "native-29829-test",
+                    "date_raw": 53219928,
+                    "sha256": save_hash, "size": len(save_bytes),
+                },
+            }
+            (sample / "driver-state.json").write_text(
+                json.dumps(driver), encoding="utf-8")
+            action_id = "sway-9e297c964fd243839fedb26bf6c7ed1a"
+            ledger = {
+                "schema": g2_preview_operator.SWAY_FORMAL_PENDING_V1_SCHEMA,
+                "pending": {
+                    "stage": "receipt_pending", "action_id": action_id,
+                    "actor_character_id": 29829,
+                    "target_character_id": 32716,
+                    "pre_capture_epoch": 7502,
+                    "pre_container_generation": 13183742510539082018,
+                    "pre_date_raw": 53219928, "pre_native_revision": 3,
+                    "pre_target_opinion_of_actor": -5,
+                    "ack": {
+                        "schema": "active-scheme-sway-formal-private-v1",
+                        "stage": "submitted_verification_pending",
+                        "action_id": action_id,
+                        "actor_character_id": 29829,
+                        "target_character_id": 32716,
+                        "pre_capture_epoch": 7852,
+                        "pre_container_generation": 13183742510539082018,
+                        "pre_date_raw": 53219928,
+                        "submit_call_count": 1, "receipt_pending": True,
+                    },
+                }, "resolved": None,
+            }
+            source = root / "sway-ledger.json"
+            source_bytes = json.dumps(ledger, indent=2).encode("utf-8")
+            source.write_bytes(source_bytes)
+            pair = g2_preview_operator.sway_formal_pending_sidecar_request
+            self.assertEqual(pair(ledger, driver, save_hash, len(save_bytes)),
+                             action_id)
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                pair(ledger, {**driver, "last_checkpoint": {
+                    **driver["last_checkpoint"], "sha256": "b" * 64,
+                }}, save_hash, len(save_bytes))
+            with self.assertRaisesRegex(ValueError, "saved pending"):
+                pair({**ledger, "resolved": {"status": "applied"}},
+                     driver, save_hash, len(save_bytes))
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(root / "state"),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\sway-pending-test",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            parsed = g2_preview_operator.parser().parse_args([
+                "prepare-state", "--manifest", str(manifest_path),
+                "--sample-dir", str(sample),
+                "--sway-formal-sidecar", str(source),
+            ])
+            stdout = io.StringIO()
+            with (mock.patch.object(g2_preview_operator.subprocess, "run",
+                                    return_value=mock.Mock(returncode=0)),
+                  contextlib.redirect_stdout(stdout)):
+                self.assertEqual(g2_preview_operator.command_prepare_state(parsed), 0)
+            receipt = json.loads(stdout.getvalue())["sway_formal_pending_sidecar"]
+            self.assertEqual(receipt["status"], "paired_no_launch")
+            self.assertEqual(receipt["ledger_status"], "pending")
+            self.assertEqual(receipt["action_id"], action_id)
+            self.assertEqual(Path(receipt["path"]).read_bytes(), source_bytes)
+            self.assertEqual(receipt["sha256"],
+                             hashlib.sha256(source_bytes).hexdigest())
+            self.assertIsNone(json.loads(Path(receipt["path"]).read_text(
+                encoding="utf-8"))["resolved"])
+
     def test_child_pending_sidecar_requires_saved_formal_submit_pair(self) -> None:
         save_hash = "a" * 64
         episode = "native-29829-test"
