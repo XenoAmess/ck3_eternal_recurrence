@@ -49,6 +49,8 @@ composer 读取上述 run artifact，重新验 SHA、章节次序、旁白全文
 
 reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，实际冷载存档 `cold_load_save`、raw video、control 的 artifact ID、SHA-256 与 byte length，以及 clean-span 与来源标签审查 artifact ID。运行中另存的 checkpoint 只能放在可选的 `midrun_checkpoint_save` 三字段，不能替代冷载来源；004 的冷载是 45CCE7…，第 27 日 F085… 是运行中生成的 checkpoint。`cards[card_id]` 必须有卡 SHA、replay、该 replay 的 `primary_receipt_sha256` 与 `evidence_mode`；若卡目录声明 `source_save_sha256`，还须对应 `indexed_cold_load_save_sha256`，004 卡另须 `indexed_midrun_checkpoint_save_sha256` 分别绑定两份存档：
 
+每条 span 同时记录原始 raw 的 `raw_video_width`/`raw_video_height`、`upscaled_to_reel` 和 `resampled_to_reel`；reel receipt 记录实测 `reel_width`/`reel_height`。composer 用 ffprobe 回查，不从最终 2560×1440 推断原生拍摄分辨率。组装回执逐条列出原始和输出尺寸，1920×1080 源被上采样时必须明确为 `upscaled_to_reel=true`。
+
 - `historical_research_card` 仅对应冻结的 004/039→040/020/070/036→038/085/024 旧研究回执；还需 `visible_label_audit_artifact_id` 与实际 `visible_label_text`，标签写明“历史研究”、该研究编号、“非当前录制”，审查回执绑定 reel SHA 和卡 ID。
 - `current_run_recomputed` 必须先按新拍 attempt 重算数字、重建卡与旁白，再给出 `recomputed_receipt_artifact_id`。该回执绑定新卡 SHA、来源主回执、捕获 attempt 与实际冷载存档 SHA；旧 024 的 `-50` 不能改称新轨 writer 证据。
 
@@ -59,3 +61,5 @@ reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，实际冷�
 ```
 
 版本和 SHA 是 2026-09-28 本次已核值，不代表后续 run 永久使用 0.2.1。组装后的自动检查尚不涵盖整片真实画面、字幕安全区、色彩、逐帧 PTS 连续性或人工审片；这些门仍须使用独立证据和精确成片 SHA 收口。
+
+`--synthetic-technical-smoke` 只用于合成素材技术测试。它仍走相同的来源卡、artifact SHA/长度、reel、字幕、混音和完整解码门，并额外要求 production inputs 和每条 reel receipt 显式 `synthetic=true`、每条 span 有 `SYNTHETIC-` attempt ID 和固定的非游戏存档 marker；输出状态写为 `SYNTHETIC_TECHNICAL_SMOKE`，回执列出每条合成源身份，不能充当真实画面或人工签核。公开入口脚本 `integration/scripts/smoke_episode_two_assembly.py` 只在全新外置 attempt 中生成测试视频、音频和 native run。

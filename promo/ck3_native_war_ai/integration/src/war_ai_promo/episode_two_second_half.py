@@ -133,7 +133,7 @@ def _replay_primary(source: dict) -> str:
     return digest.upper()
 
 
-def _reel_receipt(run, run_path: Path, row: dict, media: Path,
+def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
                   card_hashes: dict[str, str], card_data: dict,
                   card_replays: dict[str, str]) -> None:
     receipt_path = _checked_source(run, run_path, row["reel_receipt_artifact_id"],
@@ -146,6 +146,11 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path,
         raise ValueError(f"Reel receipt media identity mismatch for {row['id']}")
     if receipt.get("duration_seconds") != row["duration_seconds"]:
         raise ValueError(f"Reel receipt duration mismatch for {row['id']}")
+    reel_stream = probe_media(ffprobe, media).video_streams[0]
+    if (receipt.get("reel_width") != reel_stream.width
+            or receipt.get("reel_height") != reel_stream.height
+            or reel_stream.width != 2560 or reel_stream.height != 1440):
+        raise ValueError(f"Chapter reel resolution is not measured 2560x1440: {row['id']}")
     expected_cards = set(CHAPTER_CARDS.get(row["id"], ()))
     actual_cards = receipt.get("cards", {})
     if set(actual_cards) != expected_cards:
@@ -161,9 +166,19 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                     "label_audit_artifact_id")
         if any(not span.get(key) for key in required):
             raise ValueError(f"Incomplete capture span provenance in {row['id']}")
-        for prefix in ("cold_load_save", "raw_video", "control"):
+        for prefix in ("cold_load_save", "control"):
             _checked_source(run, run_path, span[f"{prefix}_artifact_id"],
                             span[f"{prefix}_sha256"], span[f"{prefix}_bytes"])
+        raw = _checked_source(run, run_path, span["raw_video_artifact_id"],
+                              span["raw_video_sha256"], span["raw_video_bytes"])
+        raw_stream = probe_media(ffprobe, raw).video_streams[0]
+        upscaled = (raw_stream.width < reel_stream.width or raw_stream.height < reel_stream.height)
+        if (span.get("raw_video_width") != raw_stream.width
+                or span.get("raw_video_height") != raw_stream.height
+                or span.get("upscaled_to_reel") is not upscaled
+                or span.get("resampled_to_reel") is not
+                (raw_stream.width != reel_stream.width or raw_stream.height != reel_stream.height)):
+            raise ValueError(f"Raw capture dimensions/upscale claim differs: {row['id']}")
         checkpoint = span.get("midrun_checkpoint_save_artifact_id")
         if checkpoint is not None:
             _checked_source(run, run_path, checkpoint,
@@ -297,7 +312,7 @@ def compose(config, run, *, config_path, run_path, workdir,
                                 row["audio_sha256"], row["audio_bytes"])
         reel = _checked_source(run, run_path, row["reel_artifact_id"],
                                row["reel_sha256"], row["reel_bytes"])
-        _reel_receipt(run, run_path, row, reel, card_hashes, card_data, card_replays)
+        _reel_receipt(run, run_path, row, reel, ffprobe, card_hashes, card_data, card_replays)
         measured_audio = probe_media(ffprobe, audio).require_duration()
         measured_reel = probe_media(ffprobe, reel).require_duration()
         if abs(measured_audio - speech) > .15 or measured_reel + .05 < duration:

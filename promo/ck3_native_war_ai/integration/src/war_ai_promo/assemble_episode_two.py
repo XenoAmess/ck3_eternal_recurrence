@@ -90,6 +90,40 @@ def _inputs(manifest_path: Path) -> tuple[dict, dict, Path, Path]:
     return run, inputs, snapshot, music
 
 
+def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
+                       *, synthetic_smoke: bool) -> list[dict]:
+    if synthetic_smoke and inputs.get("synthetic") is not True:
+        raise ValueError("Synthetic smoke requires explicitly synthetic production inputs")
+    dimensions = []
+    for row in inputs["chapters"]:
+        receipt_path = _artifact(manifest_path, run, row["reel_receipt_artifact_id"])
+        _expect(receipt_path, row["reel_receipt_sha256"], row["reel_receipt_bytes"],
+                f"{row['id']} reel receipt")
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        if synthetic_smoke and receipt.get("synthetic") is not True:
+            raise ValueError(f"Synthetic smoke cannot relabel a real reel: {row['id']}")
+        spans = receipt.get("capture_spans", [])
+        if not spans:
+            raise ValueError(f"Chapter lacks source capture dimensions: {row['id']}")
+        for span in spans:
+            if synthetic_smoke:
+                cold = _artifact(manifest_path, run, span["cold_load_save_artifact_id"])
+                if (not span.get("attempt_id", "").startswith("SYNTHETIC-")
+                        or cold.read_bytes() != b"SYNTHETIC TEST BYTES -- NOT A CK3 SAVE\n"):
+                    raise ValueError("Synthetic smoke requires the generated non-game source marker")
+            dimensions.append({
+                "chapter_id": row["id"], "attempt_id": span["attempt_id"],
+                "raw_video_artifact_id": span["raw_video_artifact_id"],
+                "raw_video_sha256": span["raw_video_sha256"],
+                "source_width": span["raw_video_width"],
+                "source_height": span["raw_video_height"],
+                "reel_width": receipt["reel_width"], "reel_height": receipt["reel_height"],
+                "upscaled_to_reel": span["upscaled_to_reel"],
+                "resampled_to_reel": span["resampled_to_reel"],
+            })
+    return dimensions
+
+
 def _installed_wheel_digest() -> str:
     dist = importlib.metadata.distribution("xar-promo-toolchain")
     direct = json.loads(dist.read_text("direct_url.json") or "{}")
@@ -180,6 +214,8 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
     if not math.isfinite(music_gain_db) or not -120 <= music_gain_db <= 0:
         raise ValueError("Invalid fixed music gain")
     run, inputs, snapshot, music = _inputs(manifest_path)
+    source_dimensions = _source_dimensions(manifest_path, run, inputs,
+                                           synthetic_smoke=synthetic_smoke)
     if (importlib.metadata.version("xar-promo-toolchain") != selected_version
             or _installed_wheel_digest() != selected_wheel_sha256.upper()):
         raise ValueError("Selected interpreter differs from the checked official wheel")
@@ -196,6 +232,7 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
         "run_id": run["run"]["id"], "manifest_at_start": _binding(manifest_path),
         "project_config_snapshot": {"path": str(snapshot), **_binding(snapshot)},
         "production_inputs": _binding(_artifact(manifest_path, run, "episode02-production-inputs-v1")),
+        "source_capture_dimensions": source_dimensions,
         "music": {"artifact_id": inputs["music_artifact_id"], "path": str(music), **_binding(music)},
         "toolchain": {"version": selected_version, "wheel_sha256": selected_wheel_sha256.upper(),
                       "interpreter": sys.executable},
@@ -251,6 +288,8 @@ def assemble(manifest_path: Path, attempt: Path, *, selected_version: str,
         "final": {"artifact_id": artifact_id, "path": str(final), **_binding(final),
                   "duration_seconds": float(probe["format"]["duration"])},
         "chapter_ids": list(CHAPTER_IDS), "chapter_count": len(probe["chapters"]),
+        "output_video_width": 2560, "output_video_height": 1440,
+        "source_capture_dimensions": source_dimensions,
         "full_decode": "passed", "technical_probe": str(attempt / "probes" / "final.json"),
         "toolchain_version": selected_version,
         "toolchain_wheel_sha256": selected_wheel_sha256.upper(),

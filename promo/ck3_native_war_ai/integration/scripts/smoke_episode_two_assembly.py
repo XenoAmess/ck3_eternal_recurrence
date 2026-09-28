@@ -180,6 +180,8 @@ def main() -> None:
                 "cold_load_save_sha256": sha(source_save), "cold_load_save_bytes": source_save.stat().st_size,
                 "raw_video_artifact_id": f"raw.{chapter}",
                 "raw_video_sha256": sha(reel), "raw_video_bytes": reel.stat().st_size,
+                "raw_video_width": 2560, "raw_video_height": 1440,
+                "upscaled_to_reel": False, "resampled_to_reel": False,
                 "control_artifact_id": f"control.{chapter}",
                 "control_sha256": sha(control), "control_bytes": control.stat().st_size,
                 "clean_span_receipt_artifact_id": f"clean.{chapter}",
@@ -188,6 +190,7 @@ def main() -> None:
         new_json(receipt, {"schema": "ck3-war-ai.episode02.chapter-reel.v1",
                            "chapter_id": chapter, "media_sha256": sha(reel),
                            "media_bytes": reel.stat().st_size, "duration_seconds": 1.5,
+                           "reel_width": 2560, "reel_height": 1440,
                            "cards": card_rows, "capture_spans": [span],
                            "different_attempts_explicitly_labelled": True,
                            "synthetic": True})
