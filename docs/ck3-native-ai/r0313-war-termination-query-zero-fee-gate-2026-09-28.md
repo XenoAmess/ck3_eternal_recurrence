@@ -38,6 +38,9 @@ DLL、driver 和帧身份。
 没有可信 DLL/driver 运行期身份输入，而且正式规划器尚不生产 `priced_command`
 typed 查询身份；不能把计划内自报标志接成现金证明。单测里的批准表注入与
 小文件都是**合成夹具**，仅覆盖条件分支，不是任何 Robert 帧的批准或实值。
+若收到新的 H2743 受管查询证据，按
+[H2743 接收核验清单](r0266-h2743-query-zero-fee-receiver-checklist-2026-09-28.md)
+逐件核验；旧 attempt-02 不能事后补造成费用计划。
 
 来源 R0313 H3770 与 R0314 H3774 都没有**输出检查点本身**的 receiver official
 rebind/no-launch 和最终可绑定的同帧运行回执，也没有 source hold。H3766 的
