@@ -332,6 +332,19 @@ SHA-256 `7A42B388A8EE612A16DF4BC326C6F4AFC2FB924C297920CC082AC8F20B18E316`
 最终成功或已经获得 opinion。正式候选必须重新官方配对并在新 PID 同帧核 actor、
 目标、关系、opinion、空槽和 native 合法性；在这些条件成立前保持动作默认关闭。
 
+R0338 used the same H3922 source pair in a new minimized PID and reconfirmed
+actor 29829, target 32716, opinion -5, zero active schemes, and native
+`CanSend=true`. Its formal Sway command returned
+`sway formal executor unavailable` before mailbox admission; there was no
+game action, date advance, or checkpoint. The immutable report is
+`Z:\m6swayh3922formal-fix-live-20260929\operator-runs\sway-h3922-formal-fix-1\formal-report.txt`,
+SHA-256 `8858186F7CE286F076E1183EC6D50384F93522D9DACD0D76CF74F907E83F48B1`.
+The exact-build cause is that the formal submit/receipt callback was passed to
+`TrySubmitMainThreadQueryV1` without a permitted executor slot, while the
+read-only Sway callback had its own slot. The next candidate must use the
+original H3922 save/driver/sidecars, because R0338 left a conservative
+unresolved intent ledger in its isolated candidate state.
+
 现有 SCHEME6/7/9/10 已有一次 typed submit 与独立 fresh receipt 原语，但
 原 DLL 只暴露只读 Sway step。本轮源码新增由
 `XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=ON`
