@@ -1,0 +1,1083 @@
+{
+  "first_blocker": {
+    "before": {
+      "active_context": {
+        "active_event": null,
+        "army_ids": [
+          83886367
+        ],
+        "pending_character_interaction": null,
+        "settlement_status": "not_terminal",
+        "terminal": false,
+        "terminal_reason": null,
+        "war_ids": [
+          16777231
+        ]
+      },
+      "bridge_pid": 118364,
+      "cold_candidate_rejection": null,
+      "connection_generation": 1,
+      "date_raw": 53219928,
+      "driver_state_restore_kind": "cold_checkpoint",
+      "driver_state_restored": true,
+      "episode_binding_state": "active_resumed",
+      "episode_character_id": 29829,
+      "episode_identity_pending": false,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "executable_sha256": null,
+      "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+      "heartbeat_sequence": 2471,
+      "mailbox": {
+        "date_raw": 53219928,
+        "executed_requests": 215,
+        "executor_submission_enabled": true,
+        "failure": 0,
+        "installed": true,
+        "paused": true,
+        "ready": true,
+        "stop": false
+      },
+      "map_ready": true,
+      "native_revision": 23,
+      "one_life_settlement_status": "not_terminal",
+      "one_life_terminal": false,
+      "one_life_terminal_reason": null,
+      "paused": true,
+      "phase": null,
+      "played_character_alive": true,
+      "played_character_id": 29829,
+      "revision": 24,
+      "snapshot_id": "native:23"
+    },
+    "error": "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
+    "kind": "planner_blocked",
+    "last_durable_checkpoint": {
+      "date_raw": 53219928,
+      "eligible_advance_ordinal": 3,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "history_index": 3911,
+      "mtime_ns": 1790604548664810000,
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\M7-ROBERT-H3860-a6d1\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "phase": "periodic_checkpoint",
+      "sha256": "5efb3b3cf3ee7368c6c12d4c984b4a0366aa8a971409165016e3dc24725a4746",
+      "size": 78514751,
+      "status": "saved",
+      "succession_lifecycle": {
+        "environment_sha256": "156c7602b2cb7b51914831190b25c053832d4c8e51f9952c84ff07363591f790",
+        "lifecycle": "ordinary_campaign_succession",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "source": "prepared-environment-manifest",
+        "xar_enabled": "xar_off"
+      },
+      "turn_index": 22
+    },
+    "plan": {
+      "active_attack_allowed": false,
+      "baseline_phase": "native_war_stationary_objective_hold_sentinel",
+      "baseline_selected_step": "war-objective-hold-sentinel-advance-war-16777231-army-83886367-at-2610-until-53219952",
+      "combat_inputs_v3_query": {
+        "accepted": true,
+        "monte_carlo_ready": false,
+        "planner_usable": false,
+        "queried_native_revision": 23,
+        "queried_revision": 24,
+        "queried_snapshot_id": "native:23",
+        "status": "available",
+        "step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484"
+      },
+      "forecast_status": "research_only",
+      "formal_defender_exit_observation": {
+        "action_literal": null,
+        "frame": {
+          "connection_generation": 1,
+          "date_raw": 53219928,
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "native_revision": 23,
+          "played_character_id": 29829,
+          "player_relative_war_score": -19,
+          "revision": 24,
+          "snapshot_id": "native:23",
+          "war_id": 16777231
+        },
+        "material_terms": null,
+        "options": null,
+        "policy": "formal-primary-defender-de-jure-exit-observation-v1",
+        "recommended_outcome": null,
+        "required_observation_step": "query-war-termination-options-16777231",
+        "status": "current_native_options_required"
+      },
+      "lifestyle_receipt_consumed": {
+        "action_request_id": "life-perk-55de749aa64b48bf8a39f5ad5627f516",
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "kind": "perk",
+        "post_current_focus_key": "stewardship_wealth_focus",
+        "post_date_raw": 53215920,
+        "post_has_current_focus": true,
+        "post_public_revision": 4,
+        "post_snapshot_id": "native:4",
+        "post_target_perk_owned": true,
+        "postcondition_verified": true,
+        "target_key": "centralization_perk"
+      },
+      "m5_joint_wartime_observation": {
+        "candidate": null,
+        "formal_action_ready": false,
+        "frame": {
+          "date_raw": 53219928,
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "native_revision": 23,
+          "played_character_id": 29829,
+          "revision": 24,
+          "snapshot_id": "native:23"
+        },
+        "missing": [
+          "same_frame_native_budgeted_building",
+          "pending_war_cash_raw",
+          "immediate_war_action_cost_raw",
+          "future_war_cost_upper_raw",
+          "future_risk_budget_raw",
+          "policy_minimum_gold_reserve_raw",
+          "horizon_days",
+          "future_bound_assumptions"
+        ],
+        "read_only": true,
+        "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+        "scope": "construction_vs_active_war_cash",
+        "status": "construction_observation_unavailable",
+        "war_ids": [
+          16777231
+        ]
+      },
+      "participant_partition": {
+        "defender_army_ids": [
+          50331920,
+          83886484
+        ],
+        "offsite_arrival_risk": "none_observed",
+        "offsite_hostile_army_ids": [],
+        "status": "available"
+      },
+      "phase": "native_war_siege_forecast_inputs_observed",
+      "policy": "one-life-turn-v1",
+      "provisional_forecast": {
+        "status": "same_frame_encounter_scope_mismatch"
+      },
+      "qualified_forecast": {
+        "status": "producer_unavailable"
+      },
+      "reason": "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
+      "required_observation": "qualified-same-frame-combat-forecast-and-expected-utility",
+      "route_contact_horizon": {
+        "conflicts": [],
+        "date_raw": 53219928,
+        "horizon_end_date_raw": 53219952,
+        "horizon_start_date_raw": 53219928,
+        "hostile_army_ids": [
+          50331920,
+          83886484
+        ],
+        "hostile_routes": [
+          {
+            "army_id": 50331920,
+            "arrival_date_raws": [],
+            "current_province_id": 2629,
+            "effective_origin_province_id": 2629,
+            "route_province_ids": [],
+            "timeline_observable": true
+          },
+          {
+            "army_id": 83886484,
+            "arrival_date_raws": [],
+            "current_province_id": 2629,
+            "effective_origin_province_id": 2629,
+            "route_province_ids": [],
+            "timeline_observable": true
+          }
+        ],
+        "one_day_contact_free": true,
+        "snapshot_revision": 23,
+        "status": "available",
+        "subject_army_id": 83886367,
+        "subject_route": {
+          "army_id": 83886367,
+          "arrival_date_raws": [
+            53220096,
+            53220264,
+            53220480,
+            53220624,
+            53220792,
+            53220984
+          ],
+          "current_province_id": 2610,
+          "effective_origin_province_id": 2610,
+          "route_province_ids": [
+            2614,
+            2618,
+            2624,
+            2631,
+            2630,
+            2629
+          ],
+          "timeline_observable": true
+        },
+        "target_province_id": 2629
+      },
+      "route_preview": {
+        "army_id": 83886367,
+        "origin_province_id": 2610,
+        "previewed_date_raw": 53219928,
+        "route_province_ids": [
+          2614,
+          2618,
+          2624,
+          2631,
+          2630,
+          2629
+        ],
+        "status": "available",
+        "target_province_id": 2629
+      },
+      "selected_step": null,
+      "siege_relief": {
+        "army_id": 83886367,
+        "army_strength_balance": {
+          "enemy_ai_base_power_raw": 6204200000,
+          "enemy_army_ids": [
+            50331920,
+            83886484
+          ],
+          "enemy_current_soldiers": 1734,
+          "enemy_maximum_soldiers": 2210,
+          "friendly_ai_base_power_raw": 7586100000,
+          "friendly_army_ids": [
+            83886367
+          ],
+          "friendly_current_soldiers": 2333,
+          "friendly_maximum_soldiers": 2461,
+          "hostile_operational_overmatch": false,
+          "interpretation": "operational_routing_risk_not_battle_win_odds",
+          "status": "available",
+          "war_id": 16777231
+        },
+        "candidate_count": 2,
+        "enemy_army_id": 50331920,
+        "player_relative_war_score": -19,
+        "reason": "qualified_same_frame_combat_forecast_required_for_siege_contact",
+        "selection_policy": "lowest-score-then-war-enemy-province",
+        "status": "forecast_required",
+        "target_province_id": 2629,
+        "war_id": 16777231
+      }
+    },
+    "source_pointer": "/first_blocker"
+  },
+  "formal_result": {
+    "attempted_turns": 27,
+    "ok": false,
+    "outcome": "failed",
+    "status": "blocked",
+    "successful_turns": 26
+  },
+  "late_turns": [
+    {
+      "after": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2376,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 210,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "before": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2344,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 209,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "class": "gameplay",
+      "index": 24,
+      "plan": {
+        "construction_wartime_observation": {
+          "advertised": false,
+          "candidate": {
+            "authored_monthly_income_hundredths": 70,
+            "barony_title_id": 2103,
+            "building_key": "farm_estates_01",
+            "building_type_id": 596,
+            "gold_before_raw": 120644281,
+            "province_id": 2635,
+            "slot_index": 1,
+            "stock_gold_cost_raw": 18000000
+          },
+          "existing_shared_gold_commitment_raw": null,
+          "formal_action_ready": false,
+          "joint_budget_affordability": "unassessed",
+          "native_budgeted_positive_income_candidate": true,
+          "native_proof_epoch": 54804,
+          "native_query_request_id": "construction-read-9927dbd5436041218767adacd274d97a",
+          "native_source_status": "selected",
+          "observed_active_war_count": 1,
+          "observed_player_army_count": 1,
+          "observed_player_gold_raw": 120644281,
+          "positive_income_coverage_complete": false,
+          "read_only": true,
+          "reason": null,
+          "source_frame": {
+            "actor_character_id": 29829,
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "status": "observed",
+          "war_future_gold_cost_raw": null
+        },
+        "lifestyle_receipt_consumed": {
+          "action_request_id": "life-perk-55de749aa64b48bf8a39f5ad5627f516",
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "kind": "perk",
+          "post_current_focus_key": "stewardship_wealth_focus",
+          "post_date_raw": 53215920,
+          "post_has_current_focus": true,
+          "post_public_revision": 4,
+          "post_snapshot_id": "native:4",
+          "post_target_perk_owned": true,
+          "postcondition_verified": true,
+          "target_key": "centralization_perk"
+        },
+        "m5_joint_wartime_observation": {
+          "candidate": {
+            "authored_monthly_income_hundredths": 70,
+            "barony_title_id": 2103,
+            "building_key": "farm_estates_01",
+            "building_type_id": 596,
+            "gold_before_raw": 120644281,
+            "province_id": 2635,
+            "slot_index": 1,
+            "stock_gold_cost_raw": 18000000
+          },
+          "formal_action_ready": false,
+          "frame": {
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "played_character_id": 29829,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "missing": [
+            "pending_war_cash_raw",
+            "immediate_war_action_cost_raw",
+            "future_war_cost_upper_raw",
+            "future_risk_budget_raw",
+            "policy_minimum_gold_reserve_raw",
+            "horizon_days",
+            "future_bound_assumptions"
+          ],
+          "missing_count": 7,
+          "missing_truncated": false,
+          "read_only": true,
+          "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+          "scope": "construction_vs_active_war_cash",
+          "status": "incomplete_war_cash",
+          "war_count": 1,
+          "war_ids": [
+            16777231
+          ],
+          "war_ids_truncated": false
+        },
+        "phase": "native_war_siege_forecast_route_preview",
+        "reason": "read the route to the observed enemy siege before deriving its battle entry Province",
+        "selected_step": "preview-move-army-83886367-to-2629"
+      },
+      "result": {
+        "accepted": true,
+        "queried_native_revision": 23,
+        "queried_revision": 24,
+        "queried_snapshot_id": "native:23",
+        "status": "available",
+        "step": "preview-move-army-83886367-to-2629"
+      },
+      "selected_step": "preview-move-army-83886367-to-2629",
+      "source_pointer": "/auto_run/turns/23",
+      "status": "executed"
+    },
+    {
+      "after": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2407,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 211,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "before": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2376,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 210,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "class": "query",
+      "index": 25,
+      "plan": {
+        "construction_wartime_observation": {
+          "advertised": false,
+          "candidate": {
+            "authored_monthly_income_hundredths": 70,
+            "barony_title_id": 2103,
+            "building_key": "farm_estates_01",
+            "building_type_id": 596,
+            "gold_before_raw": 120644281,
+            "province_id": 2635,
+            "slot_index": 1,
+            "stock_gold_cost_raw": 18000000
+          },
+          "existing_shared_gold_commitment_raw": null,
+          "formal_action_ready": false,
+          "joint_budget_affordability": "unassessed",
+          "native_budgeted_positive_income_candidate": true,
+          "native_proof_epoch": 54804,
+          "native_query_request_id": "construction-read-9927dbd5436041218767adacd274d97a",
+          "native_source_status": "selected",
+          "observed_active_war_count": 1,
+          "observed_player_army_count": 1,
+          "observed_player_gold_raw": 120644281,
+          "positive_income_coverage_complete": false,
+          "read_only": true,
+          "reason": null,
+          "source_frame": {
+            "actor_character_id": 29829,
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "status": "observed",
+          "war_future_gold_cost_raw": null
+        },
+        "lifestyle_receipt_consumed": {
+          "action_request_id": "life-perk-55de749aa64b48bf8a39f5ad5627f516",
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "kind": "perk",
+          "post_current_focus_key": "stewardship_wealth_focus",
+          "post_date_raw": 53215920,
+          "post_has_current_focus": true,
+          "post_public_revision": 4,
+          "post_snapshot_id": "native:4",
+          "post_target_perk_owned": true,
+          "postcondition_verified": true,
+          "target_key": "centralization_perk"
+        },
+        "m5_joint_wartime_observation": {
+          "candidate": {
+            "authored_monthly_income_hundredths": 70,
+            "barony_title_id": 2103,
+            "building_key": "farm_estates_01",
+            "building_type_id": 596,
+            "gold_before_raw": 120644281,
+            "province_id": 2635,
+            "slot_index": 1,
+            "stock_gold_cost_raw": 18000000
+          },
+          "formal_action_ready": false,
+          "frame": {
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "played_character_id": 29829,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "missing": [
+            "pending_war_cash_raw",
+            "immediate_war_action_cost_raw",
+            "future_war_cost_upper_raw",
+            "future_risk_budget_raw",
+            "policy_minimum_gold_reserve_raw",
+            "horizon_days",
+            "future_bound_assumptions"
+          ],
+          "missing_count": 7,
+          "missing_truncated": false,
+          "read_only": true,
+          "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+          "scope": "construction_vs_active_war_cash",
+          "status": "incomplete_war_cash",
+          "war_count": 1,
+          "war_ids": [
+            16777231
+          ],
+          "war_ids_truncated": false
+        },
+        "phase": "native_war_siege_forecast_contact_query",
+        "reason": "read the full hostile contact timeline before forming a hypothetical siege battle input",
+        "selected_step": "query-route-contact-horizon-v1-83886367-to-2629-h-2-50331920-83886484"
+      },
+      "result": {
+        "accepted": true,
+        "queried_native_revision": 23,
+        "queried_revision": 24,
+        "queried_snapshot_id": "native:23",
+        "query_sequence": 7,
+        "snapshot_revision": 23,
+        "status": "available",
+        "step": "query-route-contact-horizon-v1-83886367-to-2629-h-2-50331920-83886484"
+      },
+      "selected_step": "query-route-contact-horizon-v1-83886367-to-2629-h-2-50331920-83886484",
+      "source_pointer": "/auto_run/turns/24",
+      "status": "executed"
+    },
+    {
+      "after": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2468,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 215,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "before": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2407,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 211,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "class": "query",
+      "index": 26,
+      "plan": {
+        "construction_wartime_observation": {
+          "advertised": false,
+          "candidate": {
+            "authored_monthly_income_hundredths": 70,
+            "barony_title_id": 2103,
+            "building_key": "farm_estates_01",
+            "building_type_id": 596,
+            "gold_before_raw": 120644281,
+            "province_id": 2635,
+            "slot_index": 1,
+            "stock_gold_cost_raw": 18000000
+          },
+          "existing_shared_gold_commitment_raw": null,
+          "formal_action_ready": false,
+          "joint_budget_affordability": "unassessed",
+          "native_budgeted_positive_income_candidate": true,
+          "native_proof_epoch": 54804,
+          "native_query_request_id": "construction-read-9927dbd5436041218767adacd274d97a",
+          "native_source_status": "selected",
+          "observed_active_war_count": 1,
+          "observed_player_army_count": 1,
+          "observed_player_gold_raw": 120644281,
+          "positive_income_coverage_complete": false,
+          "read_only": true,
+          "reason": null,
+          "source_frame": {
+            "actor_character_id": 29829,
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "status": "observed",
+          "war_future_gold_cost_raw": null
+        },
+        "lifestyle_decision": {
+          "policy_id": "g2-lifestyle-wartime-stewardship-perk-v1",
+          "selected_action": null,
+          "status": "no_legal_minimum"
+        },
+        "lifestyle_opportunity_status": "native_war_siege_forecast_inputs_query",
+        "lifestyle_receipt_consumed": {
+          "action_request_id": "life-perk-55de749aa64b48bf8a39f5ad5627f516",
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "kind": "perk",
+          "post_current_focus_key": "stewardship_wealth_focus",
+          "post_date_raw": 53215920,
+          "post_has_current_focus": true,
+          "post_public_revision": 4,
+          "post_snapshot_id": "native:4",
+          "post_target_perk_owned": true,
+          "postcondition_verified": true,
+          "target_key": "centralization_perk"
+        },
+        "m5_joint_wartime_observation": {
+          "candidate": {
+            "authored_monthly_income_hundredths": 70,
+            "barony_title_id": 2103,
+            "building_key": "farm_estates_01",
+            "building_type_id": 596,
+            "gold_before_raw": 120644281,
+            "province_id": 2635,
+            "slot_index": 1,
+            "stock_gold_cost_raw": 18000000
+          },
+          "formal_action_ready": false,
+          "frame": {
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "played_character_id": 29829,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "missing": [
+            "pending_war_cash_raw",
+            "immediate_war_action_cost_raw",
+            "future_war_cost_upper_raw",
+            "future_risk_budget_raw",
+            "policy_minimum_gold_reserve_raw",
+            "horizon_days",
+            "future_bound_assumptions"
+          ],
+          "missing_count": 7,
+          "missing_truncated": false,
+          "read_only": true,
+          "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+          "scope": "construction_vs_active_war_cash",
+          "status": "incomplete_war_cash",
+          "war_count": 1,
+          "war_ids": [
+            16777231
+          ],
+          "war_ids_truncated": false
+        },
+        "phase": "native_war_siege_forecast_inputs_query",
+        "reason": "read exact same-frame combat v3 inputs for the observed siege encounter; no attack is authorized",
+        "selected_step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484"
+      },
+      "result": {
+        "accepted": true,
+        "queried_native_revision": 23,
+        "queried_revision": 24,
+        "queried_snapshot_id": "native:23",
+        "query_sequence": 1,
+        "status": "available",
+        "step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484"
+      },
+      "selected_step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484",
+      "source_pointer": "/auto_run/turns/25",
+      "status": "executed"
+    },
+    {
+      "after": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2471,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 215,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "before": {
+        "active_context": {
+          "active_event": null,
+          "army_ids": [
+            83886367
+          ],
+          "pending_character_interaction": null,
+          "settlement_status": "not_terminal",
+          "terminal": false,
+          "terminal_reason": null,
+          "war_ids": [
+            16777231
+          ]
+        },
+        "bridge_pid": 118364,
+        "cold_candidate_rejection": null,
+        "connection_generation": 1,
+        "date_raw": 53219928,
+        "driver_state_restore_kind": "cold_checkpoint",
+        "driver_state_restored": true,
+        "episode_binding_state": "active_resumed",
+        "episode_character_id": 29829,
+        "episode_identity_pending": false,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "executable_sha256": null,
+        "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+        "heartbeat_sequence": 2471,
+        "mailbox": {
+          "date_raw": 53219928,
+          "executed_requests": 215,
+          "executor_submission_enabled": true,
+          "failure": 0,
+          "installed": true,
+          "paused": true,
+          "ready": true,
+          "stop": false
+        },
+        "map_ready": true,
+        "native_revision": 23,
+        "one_life_settlement_status": "not_terminal",
+        "one_life_terminal": false,
+        "one_life_terminal_reason": null,
+        "paused": true,
+        "phase": null,
+        "played_character_alive": true,
+        "played_character_id": 29829,
+        "revision": 24,
+        "snapshot_id": "native:23"
+      },
+      "class": "terminal",
+      "index": 27,
+      "plan": {
+        "lifestyle_receipt_consumed": {
+          "action_request_id": "life-perk-55de749aa64b48bf8a39f5ad5627f516",
+          "episode_run_id": "native-29829-2bc2d599f7f9",
+          "kind": "perk",
+          "post_current_focus_key": "stewardship_wealth_focus",
+          "post_date_raw": 53215920,
+          "post_has_current_focus": true,
+          "post_public_revision": 4,
+          "post_snapshot_id": "native:4",
+          "post_target_perk_owned": true,
+          "postcondition_verified": true,
+          "target_key": "centralization_perk"
+        },
+        "m5_joint_wartime_observation": {
+          "candidate": null,
+          "formal_action_ready": false,
+          "frame": {
+            "date_raw": 53219928,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+            "native_revision": 23,
+            "played_character_id": 29829,
+            "revision": 24,
+            "snapshot_id": "native:23"
+          },
+          "missing": [
+            "same_frame_native_budgeted_building",
+            "pending_war_cash_raw",
+            "immediate_war_action_cost_raw",
+            "future_war_cost_upper_raw",
+            "future_risk_budget_raw",
+            "policy_minimum_gold_reserve_raw",
+            "horizon_days",
+            "future_bound_assumptions"
+          ],
+          "missing_count": 8,
+          "missing_truncated": false,
+          "read_only": true,
+          "schema": "xar.ck3.m5-wartime-joint-observation.v1",
+          "scope": "construction_vs_active_war_cash",
+          "status": "construction_observation_unavailable",
+          "war_count": 1,
+          "war_ids": [
+            16777231
+          ],
+          "war_ids_truncated": false
+        },
+        "phase": "native_war_siege_forecast_inputs_observed",
+        "reason": "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
+        "selected_step": null
+      },
+      "result": null,
+      "selected_step": null,
+      "source_pointer": "/auto_run/turns/26",
+      "status": "blocked"
+    }
+  ],
+  "raw_v3_boundary": "The report's /auto_run/turns/25/result is a query envelope, not the full combat_simulation_inputs object. Source response points to frozen H3911 driver /command_history/3919/result/combat_simulation_inputs, which is not part of this excerpt.",
+  "schema": "xar.g2.war-r0321-formal-report-parsed-excerpt.v1",
+  "source": {
+    "bytes": 388302,
+    "extraction": "Python json.loads and direct value projection of the specified JSON pointers; this file is not a byte-identical raw report",
+    "onedrive_relative_path": "WAR/M5-WAR-CASH-20260928/R0321-formal-report.txt",
+    "sha256": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30"
+  }
+}

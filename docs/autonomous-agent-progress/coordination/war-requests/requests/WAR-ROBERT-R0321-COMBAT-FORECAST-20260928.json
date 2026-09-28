@@ -89,6 +89,21 @@
     "receiver_war_addendum_sha256": "BAB04D146FE399F52685B73F8B595F8F32864372F94D9C140E760834C7D811DD",
     "receiver_limit": "Source-side qualification is not receiver byte verification, receiver no-launch, cold restore, or an authorized attack. The report remains first transfer priority; later H3911 assets require exact manifest and selective receipt."
   },
+  "later_receiver_formal_report_update": {
+    "source_transfer_manifest_sha256": "7F0C05B4286497521B9D69EF580FD9ECE0167E674FD7EBC57ABB800751841B8C",
+    "report_filename": "R0321-formal-report.txt",
+    "report_bytes_verified": 388302,
+    "report_sha256_verified": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30",
+    "parsed_excerpt_git_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.formal-report-excerpt.json",
+    "parsed_excerpt_sha256": "86241A5632FD02F64EFB788378E6F6B29ED834EA0849A6346835CD4DE17CAD88",
+    "source_side_small_proofs": "H3911 pair identity 1490B/FDE4CC3A..., no-launch report 4005B/1067E846..., rebind receipt 4039B/57B571A0... were individually verified on receiver; save/driver/binaries were not transferred.",
+    "receiver_ack_sha256": "08C26D2FB60FB614E494213CEEFD62B5139461561FBF713F1EE56B5CC9F6040B",
+    "receiver_ack_erratum_sha256": "4A9DDD1E240256BD04618A8AE708B260DB293E9495AA9DFF8ECA0BEF563DF680",
+    "report_readback": "26/27 formal turns; R0321 turn27 paused native:23/public24/native23/raw53219928. Both defenders are at target2629 and partition available. Route contact is only one-day-free to raw53219952 while first hop2614 ETA raw53220096. V3 query result is accepted/available envelope with monte_carlo_ready=false and planner_usable=false. selected_step remains null; no attack or blocked-turn advance.",
+    "raw_v3_status": "not_in_formal_report; source points to untransferred H3911 46002331-byte frozen driver /command_history/3919/result/combat_simulation_inputs",
+    "next_raw_excerpt_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "next_raw_excerpt_request_sha256": "969231232C6FEC4B22B6B42F7A801081707803EEDC0302D373FB8F5FEEEB3658"
+  },
   "relation_to_prior": "R0271 original turn36 future-siege-participant RED remains historical. R0004/R0005 proved only a bounded first-hop/day-by-day recovery; R0319 reported later progress to h3860. R0321's source-reported participant_partition=available at h3911 is a new frame and does not retroactively prove the old frame. R0266 cash amount fields are independent and remain unfilled by this forecast notice.",
-  "receiver_boundary": "Only the 5777-byte OneDrive notice and its preceding R0319 notice were byte-verified here. Later Git master 32c0dd370 reports source-side H3911 official pair/rebind/no-launch, but the R0321 formal report, h3911 save/driver, V3 raw envelope, and exact new binaries were not transferred or independently checked on this receiver. No receiver CK3 launch, formal replay, cash receipt, or war model accuracy claim."
+  "receiver_boundary": "The 5777-byte source notice, R0319 predecessor, R0321 388302-byte formal report, source-side H3911 pair identity, rebind receipt and no-launch report were byte-verified here. The formal report contains a V3 query envelope but not the raw combat_simulation_inputs object. H3911 save/source driver/rebound driver/sidecars and exact runtime binaries are not transferred; no receiver CK3 launch, cold restore, formal replay, cash receipt, model accuracy or attack authorization is claimed."
 }

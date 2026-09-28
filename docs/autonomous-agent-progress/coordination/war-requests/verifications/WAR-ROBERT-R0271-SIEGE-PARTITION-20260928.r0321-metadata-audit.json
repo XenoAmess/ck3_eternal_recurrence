@@ -2,7 +2,7 @@
   "schema": "xar.g2.war-r0271-subsequent-metadata-audit.v1",
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "audit_at_utc": "2026-09-28T14:22:11Z",
-  "status": "newer_r0321_forecast_red_metadata_only",
+  "status": "r0321_formal_report_verified_raw_v3_pending",
   "historical_r0271_status": "original_turn36_red_unchanged",
   "earlier_receiver_recovery": "R0004/R0005 proved bounded first-hop submission and six fresh full-hostile one-day gates only; they did not prove target2629 participant scope, combat forecast or attack authorization.",
   "verified_receiver_bytes": {
@@ -59,7 +59,31 @@
     "war_addendum_sha256": "BAB04D146FE399F52685B73F8B595F8F32864372F94D9C140E760834C7D811DD",
     "effect": "Supersedes the older source notice's recovery_qualified_for_receiver=false for source-side candidate preparation only; it does not establish receiver asset availability or battle decision."
   },
-  "receiver_unverified": "R0321 388302-byte formal report, exact V3 result/partition native rows, H3911 source pair/no-launch proof file bytes on this receiver, source DLL/injector bytes, trial tape, model accuracy, and any receiver live replay. The older notice's recovery_qualified_for_receiver=false was later superseded on the source machine by Git master 32c0dd370, without a receiver transfer.",
+  "later_receiver_report_transfer": {
+    "transfer_manifest_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-FORECAST-ASSETS-MANIFEST-v1.json",
+    "transfer_manifest_sha256": "7F0C05B4286497521B9D69EF580FD9ECE0167E674FD7EBC57ABB800751841B8C",
+    "formal_report_path": "WAR/M5-WAR-CASH-20260928/R0321-formal-report.txt",
+    "formal_report_bytes": 388302,
+    "formal_report_sha256": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30",
+    "formal_report_parsed_excerpt_git_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.formal-report-excerpt.json",
+    "formal_report_parsed_excerpt_sha256": "86241A5632FD02F64EFB788378E6F6B29ED834EA0849A6346835CD4DE17CAD88",
+    "small_source_proofs": [
+      "R0321-H3911-SOURCE-PAIR-IDENTITY.json: 1490 bytes, FDE4CC3A64DF5BB5D83F7B132FE5CC2985D31ACA28F0883A1C6245C197B5915E",
+      "R0321-H3911-official-no-launch-report.json: 4005 bytes, 1067E8468BE61A6B0240E12B145FD173D6DCD4E786FED3991E7E436253E75712",
+      "R0321-H3911-ordinary-seed-rebind-v1.json: 4039 bytes, 57B571A0E316FC57F9948B8610716632760293704F040971430F6BFE77C26D80"
+    ],
+    "receiver_ack_sha256": "08C26D2FB60FB614E494213CEEFD62B5139461561FBF713F1EE56B5CC9F6040B",
+    "receiver_ack_erratum_sha256": "4A9DDD1E240256BD04618A8AE708B260DB293E9495AA9DFF8ECA0BEF563DF680",
+    "report_source_pointers": [
+      "/first_blocker/plan",
+      "/auto_run/turns/24/plan and /result",
+      "/auto_run/turns/25/plan and /result",
+      "/auto_run/turns/26/plan"
+    ],
+    "readback": "Report confirms 26/27 formal turns, paused native:23/public24/native23/raw53219928, two hostiles already in target2629, participant partition available, full-hostile one-day contact-free horizon ending raw53219952, and route first hop2614 ETA raw53220096. V3 result is only accepted/available envelope, monte_carlo_ready=false and planner_usable=false; no selected attack or date advance on blocked turn. Same-frame M5 joint cash still lacks all seven war amount/policy fields.",
+    "raw_v3_boundary": "The report does not contain the raw combat_simulation_inputs object. Source diagnostic response locates it in frozen H3911 driver 46002331 bytes/SHA DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33 at /command_history/3919/result/combat_simulation_inputs; the driver is not transferred."
+  },
+  "receiver_unverified": "Exact raw V3 input payload and parent command row, H3911 save/source driver/rebound driver and sidecar bytes, source DLL/injector bytes, any trial tape or measured model accuracy, receiver-side rebind/cold restore and live continuation. The verified small source proof files establish source-side no-launch only, not receiver replay or a qualified forecast.",
   "next_request": {
     "git_request": "../requests/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.json",
     "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
@@ -68,6 +92,8 @@
     "routing_addendum_sha256": "D43CF44522010F040948A368376FDC469B3B590DB263F2B84EEC69479E755DAA",
     "single_formal_report_receiver_filename": "R0321-formal-report.txt",
     "superseded_duplicate_filename": "R0321-formal-report-a6d1ae8.txt in overlapping diagnostic request; file itself retained append-only, alternate target name withdrawn",
-    "purpose": "Obtain immutable full formal report or exact same-frame V3/partition excerpt first, then qualified recovery pair/binaries and any existing trial-tape/accuracy evidence; no CK3 action requested."
+    "later_raw_v3_excerpt_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "later_raw_v3_excerpt_request_sha256": "969231232C6FEC4B22B6B42F7A801081707803EEDC0302D373FB8F5FEEEB3658",
+    "purpose": "Full formal report and small source proof bytes are now verified; obtain the exact same-frame raw V3 parent row via bounded frozen-driver excerpt, then decide whether a qualified receiver recovery pair is needed. No CK3 action requested."
   }
 }
