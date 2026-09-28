@@ -81,7 +81,7 @@ def source_group(render_path: Path, native_path: Path, group: str,
         {"artifact_id": render_id, "source": str(render_path), **identity(render_path), "role": "tts-render-manifest"},
     ]
     facts_id = None
-    facts_path = script.parent / "cards" / "e2-09-a05-writer-facts-20260928.json"
+    facts_path = script.parent / "cards" / "e2-09-a05-writer-facts-20260928-v2.json"
     if a05:
         facts_path = facts_path.resolve(strict=True)
         facts_identity = identity(facts_path)
@@ -95,7 +95,7 @@ def source_group(render_path: Path, native_path: Path, group: str,
                 or preserved["bytes"] != facts_identity["bytes"]):
             raise ValueError("A05 TTS run lacks its exact checked-in writer fact receipt")
         facts = json.loads(facts_path.read_text(encoding="utf-8"))
-        if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v1"
+        if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v2"
                 or facts.get("usage_scope") != A05_SCOPE
                 or facts.get("run_identity", {}).get("run") !=
                 "episode02-terminal-pair-20260928-a05-live"):

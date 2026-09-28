@@ -27,7 +27,7 @@ RATE = "-12%"
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
 HISTORICAL_CANDIDATE_IDS = frozenset(("terminal", "closing"))
 A05_SCOPE = "current-a05-paired-writer-edit-proxy"
-A05_FACTS_NAME = "e2-09-a05-writer-facts-20260928.json"
+A05_FACTS_NAME = "e2-09-a05-writer-facts-20260928-v2.json"
 BUDGETS = (90, 340, 400, 515, 350, 95)
 HEADER = re.compile(r"^## (\d{2}:\d{2})[–-](\d{2}:\d{2}) (.+)$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
@@ -153,7 +153,7 @@ def validate_a05_facts(args: argparse.Namespace) -> dict | None:
     run = facts.get("run_identity", {})
     writer = facts.get("native_writer_facts", {})
     after = facts.get("paused_poststate_facts", {})
-    if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v1"
+    if (facts.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v2"
             or facts.get("usage_scope") != A05_SCOPE
             or facts.get("media_review_status") != "ENCODED_UNREVIEWED"
             or facts.get("clean_spans_certified") is not False

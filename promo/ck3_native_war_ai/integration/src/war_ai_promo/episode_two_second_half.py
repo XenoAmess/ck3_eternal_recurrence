@@ -34,7 +34,7 @@ CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "cl
 CARD_REPLAYS = {
     "E2-02": "004", "E2-03": "004", "E2-04": "039_040",
     "E2-05A": "020", "E2-05B": "070", "E2-05C": "036_038",
-    "E2-06": "085", "E2-07": "085", "E2-09": "A05",
+    "E2-06": "A01", "E2-07": "A01", "E2-09": "A05",
 }
 CHAPTER_CARDS = {
     "pursuit": ("E2-02", "E2-03"),
@@ -55,6 +55,10 @@ HISTORICAL_024_CARD_SHA = "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C
 A05_WRITER_SHA = "3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782"
 A05_COLD_LOAD_SHA = "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
 A05_POSTSTATE_SHA = "29BDBFEE374FD817DC6B63605C549CEA86594039F5FCBD2E2DB884CAE4DD05D7"
+HISTORICAL_085_CARD_SHA = {
+    "E2-06": "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5",
+    "E2-07": "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527",
+}
 HEADING = re.compile(r"^## \d\d:\d\d[–-]\d\d:\d\d .+$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
 
@@ -103,23 +107,33 @@ def _card_replays(data: dict) -> dict[str, str]:
                     replays["E2-05B"], replays["E2-05C"]}) != 4
             or any(replay not in data["replays"] for replay in replays.values())):
         raise ValueError("Nine cards lack separate source replay identities")
-    if replays["E2-09"] != "A05":
-        raise ValueError("The formal E2-09 card must use the current A05 replay")
+    if (replays["E2-06"] != "A01" or replays["E2-07"] != "A01"
+            or replays["E2-09"] != "A05"):
+        raise ValueError("The formal join and terminal cards must use current A01/A05 replays")
+    for card_id in ("E2-06", "E2-07", "E2-09"):
+        if next(row for row in rows if row["id"] == card_id).get("artifact") != card_filename(card_id):
+            raise ValueError(f"Formal {card_id} card lacks its current-run SVG identity")
     a05_source = data["replays"]["A05"]
     if (a05_source.get("source_terminal_sha256", "").upper() != A05_WRITER_SHA
             or a05_source.get("source_save_sha256", "").upper() != A05_COLD_LOAD_SHA
             or a05_source.get("source_post_snapshot_sha256", "").upper() != A05_POSTSTATE_SHA):
         raise ValueError("Formal A05 card must bind its exact writer, cold load and paused poststate")
-    terminal_card = next(row for row in rows if row["id"] == "E2-09")
     old_cards = data.get("historical_cards")
-    if (terminal_card.get("artifact") != card_filename("E2-09")
-            or not isinstance(old_cards, list) or len(old_cards) != 1
-            or old_cards[0].get("id") != "E2-09"
-            or old_cards[0].get("replay") != "024"
-            or old_cards[0].get("artifact") != "e2-09-calculation.svg"
-            or old_cards[0].get("sha256", "").upper() != HISTORICAL_024_CARD_SHA
-            or _replay_primary(data["replays"]["024"]) != HISTORICAL_PRIMARY["024"]):
-        raise ValueError("Historical 024 must remain a separate exact-byte card sidecar")
+    if not isinstance(old_cards, list) or len(old_cards) != 3:
+        raise ValueError("Historical 085/024 card sidecars are missing")
+    historical = {row.get("id"): row for row in old_cards}
+    if set(historical) != {"E2-06", "E2-07", "E2-09"}:
+        raise ValueError("Historical 085/024 card sidecar IDs changed")
+    for card_id, replay, digest in (
+            ("E2-06", "085", HISTORICAL_085_CARD_SHA["E2-06"]),
+            ("E2-07", "085", HISTORICAL_085_CARD_SHA["E2-07"]),
+            ("E2-09", "024", HISTORICAL_024_CARD_SHA)):
+        row = historical[card_id]
+        if (row.get("replay") != replay
+                or row.get("artifact") != f"{card_id.lower()}-calculation.svg"
+                or row.get("sha256", "").upper() != digest
+                or _replay_primary(data["replays"][replay]) != HISTORICAL_PRIMARY[replay]):
+            raise ValueError(f"Historical {replay} card sidecar bytes/source changed")
     terminal = _replay_primary(data["replays"][replays["E2-09"]])
     reinforcement = _replay_primary(data["replays"][replays["E2-06"]])
     if terminal == reinforcement:
@@ -148,6 +162,9 @@ def editorial_check(config_path: Path, draft_path: Path, cards_dir: Path) -> dic
     cards = {key: _sha(cards_dir / card_filename(key)) for key in CARD_REPLAYS}
     if _sha(cards_dir / "e2-09-calculation.svg") != HISTORICAL_024_CARD_SHA:
         raise ValueError("Historical 024 card bytes changed")
+    for card_id, digest in HISTORICAL_085_CARD_SHA.items():
+        if _sha(cards_dir / f"{card_id.lower()}-calculation.svg") != digest:
+            raise ValueError(f"Historical 085 {card_id} card bytes changed")
     return {"schema": "ck3-war-ai.episode02.editorial-check.v1",
             "status": "editorial-inputs-present-not-media-ready",
             "project_config_sha256": _sha(config_path), "narration_script_sha256": _sha(draft_path),
@@ -161,6 +178,8 @@ def card_filename(card_id: str) -> str:
     """Formal E2-09 uses A05 bytes; the old SVG remains a 024 sidecar."""
     if card_id not in CARD_REPLAYS:
         raise ValueError(f"Unknown Episode 2 calculation card: {card_id}")
+    if card_id in ("E2-06", "E2-07"):
+        return f"{card_id.lower()}-a01-calculation.svg"
     if card_id == "E2-09":
         return "e2-09-a05-calculation.svg"
     return f"{card_id.lower()}-calculation.svg"
@@ -349,7 +368,7 @@ def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
                 or preserved_facts["bytes"] != facts.stat().st_size
                 or render_facts.get("sha256", "").upper() != _sha(facts)
                 or render_facts.get("bytes") != facts.stat().st_size
-                or fact_data.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v1"
+                or fact_data.get("schema") != "xar.war-ai.episode02.a05-writer-card-facts.v2"
                 or fact_data.get("usage_scope") != A05_SCOPE
                 or fact_data.get("run_identity", {}).get("run") !=
                 "episode02-terminal-pair-20260928-a05-live"):
@@ -552,13 +571,28 @@ def compose(config, run, *, config_path, run_path, workdir,
     rows = inputs["chapters"]
     if [row["id"] for row in rows] != list(CHAPTER_IDS):
         raise ValueError("Episode 2 production chapters must match ProjectConfig order")
+    synthetic = inputs.get("synthetic") is True
+    if not synthetic:
+        english = _checked_source(run, run_path, "episode02-english-subtitles",
+                                  inputs["english_subtitles_sha256"],
+                                  inputs["english_subtitles_bytes"])
+        translated = json.loads(english.read_text(encoding="utf-8"))
+        translations = translated.get("chapters", [])
+        if (translated.get("schema") != "ck3-war-ai.episode02.english-subtitles.v1"
+                or translated.get("status") != "translation-source-reviewed-not-video-reviewed"
+                or [item.get("id") for item in translations] != list(CHAPTER_IDS)):
+            raise ValueError("Production English subtitles lack six reviewed source rows")
+        for row, translation in zip(rows, translations):
+            spoken_sha = hashlib.sha256(narration[row["id"]].encode("utf-8")).hexdigest().upper()
+            if (translation.get("source_zh_sha256", "").upper() != spoken_sha
+                    or translation.get("en") != row["en"]):
+                raise ValueError(f"English subtitle source differs from chapter {row['id']}")
     ffmpeg = os.environ.get("WAR_PROMO_FFMPEG", "ffmpeg")
     ffprobe = os.environ.get("WAR_PROMO_FFPROBE", "ffprobe")
     segments = []
     by_id = {}
     reel_sources = {}
     audio_sources = {}
-    synthetic = inputs.get("synthetic") is True
     for chapter_index, row in enumerate(rows):
         chapter_id = row["id"]
         duration = row["duration_seconds"]

@@ -9,6 +9,7 @@ plan in a later, separate attempt before the production composer can run.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -86,7 +87,7 @@ def _subtitle_sources(declaration: dict, script: Path, config: Path) -> tuple[li
     source_root = source_root.resolve(strict=True)
     preflight_root = Path(source_root.anchor)
     a05_fact_source = (Path(declaration["card_index"]["source"]).resolve(strict=True).parent /
-                       "e2-09-a05-writer-facts-20260928.json").resolve(strict=True)
+                       "e2-09-a05-writer-facts-20260928-v2.json").resolve(strict=True)
     source_rows = []
     namespace = []
     for row in plan.get("artifacts", []):
@@ -130,6 +131,26 @@ def _subtitle_sources(declaration: dict, script: Path, config: Path) -> tuple[li
         candidate = {**row, "zh": narration[row["id"]]}
         _bound_tts_sentences(fake_run, fake_manifest, candidate, script, config)
     return fragments["chapters"], source_rows
+
+
+def _english_source(declaration: dict, narration: dict[str, str]) -> tuple[dict, dict]:
+    path, item = _item("episode02-english-subtitles", declaration["english_subtitles"],
+                       "english-translation-source")
+    english = _json(path)
+    rows = english.get("chapters", [])
+    if (english.get("schema") != "ck3-war-ai.episode02.english-subtitles.v1"
+            or english.get("status") != "translation-source-reviewed-not-video-reviewed"
+            or [row.get("id") for row in rows] != list(CHAPTER_IDS)):
+        raise ValueError("English subtitles need six source-reviewed chapters in order")
+    translated = {}
+    for row in rows:
+        chapter = row["id"]
+        source_sha = hashlib.sha256(narration[chapter].encode("utf-8")).hexdigest().upper()
+        if (row.get("source_zh_sha256", "").upper() != source_sha
+                or not isinstance(row.get("en"), str) or not row["en"].strip()):
+            raise ValueError(f"{chapter} English subtitle does not bind its Chinese chapter")
+        translated[chapter] = row["en"]
+    return item, translated
 
 
 def _capture_source_gate(span: dict, extras: dict[str, tuple[Path, dict]],
@@ -272,6 +293,7 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
             or [item["id"] for item in config_data.get("chapters", [])] != list(CHAPTER_IDS)):
         raise ValueError("Declaration ProjectConfig is not the six-chapter Episode 2 config")
     narration = script_chapters(script)
+    english_item, translated = _english_source(declaration, narration)
     replay_by_card = _card_replays(card_data)
     card_sources = declaration.get("cards", {})
     if set(card_sources) != set(CARD_REPLAYS):
@@ -308,7 +330,7 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
     for index, (declared, subtitles) in enumerate(zip(chapters, fragments)):
         chapter = declared["id"]
         if (declared.get("title") != config_data["chapters"][index]["title"]["zh-CN"]
-                or not isinstance(declared.get("en"), str) or not declared["en"].strip()):
+                or ("en" in declared and declared["en"] != translated[chapter])):
             raise ValueError(f"{chapter} title/English text missing or differs from ProjectConfig")
         duration = _positive_duration(declared.get("duration_seconds"), chapter)
         if duration < subtitles["speech_duration_seconds"]:
@@ -317,7 +339,7 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
         receipt_path, receipt_item = _item(f"reel-receipt.{chapter}", declared["reel_receipt"],
                                            "chapter-reel-receipt")
         row = {**subtitles, "title": declared["title"], "zh": narration[chapter],
-               "en": declared["en"], "duration_seconds": declared["duration_seconds"],
+               "en": translated[chapter], "duration_seconds": declared["duration_seconds"],
                "audio_artifact_id": f"audio.{chapter}",
                "reel_artifact_id": reel["artifact_id"], "reel_sha256": reel["sha256"],
                "reel_bytes": reel["bytes"],
@@ -351,7 +373,7 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
               "collection": "raw", "role": "frozen-narration-script"},
              {"artifact_id": "episode02-card-index", **card_binding,
               "collection": "raw", "role": "frozen-calculation-card-index"}]
-            + list(cards.values()) + tts_sources + [music]
+            + list(cards.values()) + [english_item] + tts_sources + [music]
             + [item for _, item in extra_sources.values()] + reel_sources)
     ids = [item["artifact_id"] for item in plan]
     if len(ids) != len(set(ids)):
@@ -366,6 +388,8 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
         "card_index_sha256": card_binding["sha256"],
         "card_index_bytes": card_binding["bytes"],
         "card_sha256": card_sha, "card_bytes": card_bytes,
+        "english_subtitles_sha256": english_item["sha256"],
+        "english_subtitles_bytes": english_item["bytes"],
         "replay_by_card": replay_by_card,
         "music_artifact_id": music_id,
         "music_sha256": music["sha256"], "music_bytes": music["bytes"],

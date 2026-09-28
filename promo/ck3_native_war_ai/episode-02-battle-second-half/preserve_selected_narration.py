@@ -60,7 +60,7 @@ def plan(render_dir: Path, native_path: Path) -> list[tuple[str, Path, str, str]
         aliases.append((f"chapter-{chapter['id']}", media, "derived", "tts-chapter-audio"))
     facts = render.get("a05_fact_evidence")
     if facts is not None:
-        path = render_dir / "snapshot-e2-09-a05-writer-facts-20260928.json"
+        path = render_dir / ("snapshot-" + Path(facts["path"]).name)
         if identity(path) != {key: facts[key] for key in ("bytes", "sha256")}:
             raise ValueError("A05 writer fact snapshot differs from render")
         aliases.append(("a05-facts", path, "raw", "a05-writer-fact-receipt"))
