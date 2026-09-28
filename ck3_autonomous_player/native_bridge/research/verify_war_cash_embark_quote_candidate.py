@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import struct
 
 from capstone import CS_ARCH_X86, CS_MODE_64, Cs
 from capstone.x86 import X86_OP_MEM, X86_REG_RIP
@@ -34,6 +35,8 @@ ANCHORS = {
     0xE894AA: ("mov", "rcx, qword ptr [rax + 0x78]"),
     0xE894B6: ("call", "0x14096d5d0"),
     0xE894E2: ("call", "0x140e823a0"),
+    0xE816DD: ("lea", "rax, [rip + 0x327ed0c]"),
+    0xE816E4: ("mov", "qword ptr [rsi], rax"),
     0xE81728: ("xor", "ebp, ebp"),
     0xE81778: ("mov", "qword ptr [rax + 0x78], rbp"),
     0xE81F62: ("xor", "r12d, r12d"),
@@ -109,6 +112,14 @@ def inspect(exe: Path) -> dict[str, object]:
     if callbacks != {"GetEmbarkCost": 0xE89490, "IsCostOverOwned": 0xE894D0}:
         raise ValueError(f"callback targets changed: {callbacks}")
 
+    # The cost accumulator is a virtual method of the icon whose data object
+    # is read by GetEmbarkCost, not merely nearby unrelated code.
+    vtable_rva = 0x41003F0
+    vtable_offset = pe.get_offset_from_rva(vtable_rva)
+    vtable_entries = struct.unpack_from("<QQQ", binary, vtable_offset)
+    if vtable_entries != (base + 0xE81850, base + 0xE818E0, base + 0xE82130):
+        raise ValueError("FleetPredictionMapIcon vtable changed")
+
     return {
         "status": "static_cached_embark_quote_candidate_only",
         "exe_sha256": digest,
@@ -116,6 +127,7 @@ def inspect(exe: Path) -> dict[str, object]:
         "callback_rvas": {k: hex(v) for k, v in callbacks.items()},
         "cache_object_offset": "0x78",
         "quote_calculator_rva": "0x22775f0",
+        "icon_vtable_rva": hex(vtable_rva),
         "fixed_point_scale_candidate": 100000,
         "checked_instruction_rvas": checked,
         "safe_to_call_from_live_bridge": False,
