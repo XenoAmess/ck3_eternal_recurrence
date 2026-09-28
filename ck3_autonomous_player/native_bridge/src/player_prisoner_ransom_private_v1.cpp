@@ -731,6 +731,130 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
   return result;
 }
 
+PlayerPrisonerRansomSubmitV1 SubmitPlayerPrisonerRansomPrivateV1(
+    const Bindings &bindings, std::uintptr_t module,
+    const PlayerPrisonerRansomQuoteV1 &observed,
+    std::uint64_t expected_native_revision,
+    std::int64_t expected_date_raw) noexcept {
+  using Result = PlayerPrisonerRansomSubmitV1;
+  if (!bindings.enabled || module == 0 || !observed.available ||
+      observed.failure != PlayerPrisonerRansomQuoteFailureV1::none ||
+      observed.jailer_character_id <= 0 || observed.payer_character_id <= 0 ||
+      observed.prisoner_character_id <= 0 || observed.quoted_gold_raw <= 0 ||
+      (observed.selected_option != "gold" &&
+       observed.selected_option != "current_gold") ||
+      !observed.would_accept_now || observed.recipient_answer_status_raw > 1 ||
+      expected_native_revision == 0 || expected_date_raw <= 0 ||
+      bindings.command_manager == nullptr || bindings.submit_command == nullptr ||
+      bindings.construct_send_character_interaction_command == nullptr ||
+      bindings.send_character_interaction_primary_vtable !=
+          module + 0x40829F8 ||
+      bindings.send_character_interaction_secondary_vtable !=
+          module + 0x40829C8)
+    return Result::unavailable;
+
+  game::Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || !before.paused || !before.map_ready ||
+      !before.has_played_character || !before.played_character_alive ||
+      before.played_character_id != observed.jailer_character_id ||
+      before.date_raw != expected_date_raw)
+    return Result::unavailable;
+
+  // The observed value chooses an option; the engine decides whether it is
+  // still the same legal offer at the actual application-main submit point.
+  const auto fresh = ReadPlayerPrisonerRansomQuotePrivateV1(
+      bindings, module, observed.jailer_character_id,
+      observed.prisoner_character_id);
+  if (!fresh.available || fresh.failure != observed.failure ||
+      fresh.jailer_character_id != observed.jailer_character_id ||
+      fresh.payer_character_id != observed.payer_character_id ||
+      fresh.prisoner_character_id != observed.prisoner_character_id ||
+      fresh.selected_option != observed.selected_option ||
+      fresh.quoted_gold_raw != observed.quoted_gold_raw ||
+      fresh.amount_is_acceptance_time_quote !=
+          observed.amount_is_acceptance_time_quote ||
+      !fresh.would_accept_now || fresh.recipient_answer_status_raw > 1)
+    return Result::quote_changed;
+
+  void *const database = bindings.get_character_interaction_database();
+  if (database == nullptr) return Result::unavailable;
+  const auto hash = bindings.hash_stable_key(
+      database, kRansom.data(), static_cast<std::uint32_t>(kRansom.size()));
+  void *const definition = bindings.lookup_character_interaction(database, hash);
+  std::int32_t option_count = 0;
+  if (definition == nullptr || !DefinitionKey(definition, hash, kRansom) ||
+      !Read(definition, kDefinitionOptionCountOffset, option_count) ||
+      option_count != static_cast<std::int32_t>(kOptionCount) ||
+      !LoadedOptionFlagsMatch(bindings, definition))
+    return Result::unavailable;
+
+  const auto option = observed.selected_option == "gold" ? 2 : 3;
+  alignas(8) std::array<std::byte, kContextSize> context_storage{};
+  void *const context = context_storage.data();
+  if (bindings.construct_character_interaction_context_all_roles(
+          context, definition, observed.jailer_character_id,
+          observed.payer_character_id, -1, observed.prisoner_character_id,
+          -1, nullptr) != context)
+    return Result::command_unavailable;
+  reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
+  reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
+      context, option);
+  const auto context_ok = [&](const void *value) noexcept {
+    auto failure = PlayerPrisonerRansomQuoteFailureV1::none;
+    std::optional<std::int32_t> definition_count;
+    std::optional<std::int32_t> context_count;
+    return ContextRolesMatch(value, definition, observed.jailer_character_id,
+                             observed.payer_character_id,
+                             observed.prisoner_character_id) &&
+           ReadOptionMaskState(value, option, failure, definition_count,
+                               context_count) == OptionMaskState::expected_only;
+  };
+  if (!context_ok(context) ||
+      !bindings.validate_character_interaction_context(context, nullptr)) {
+    bindings.destroy_character_interaction_context(context);
+    return Result::final_legality_changed;
+  }
+  game::Snapshot checked{};
+  if (!ReadSnapshot(bindings, checked) || checked != before ||
+      bindings.get_character_interaction_database() != database ||
+      bindings.lookup_character_interaction(database, hash) != definition) {
+    bindings.destroy_character_interaction_context(context);
+    return Result::quote_changed;
+  }
+
+  alignas(8) std::array<std::byte, 0x368> command_storage{};
+  void *const command = command_storage.data();
+  void *const copied_context = command_storage.data() + 0x20;
+  const auto destroy_copy_if_owned = [&]() noexcept {
+    void *copied_definition = nullptr;
+    if (Read(copied_context, 0, copied_definition) &&
+        copied_definition == definition)
+      bindings.destroy_character_interaction_context(copied_context);
+  };
+  if (bindings.construct_send_character_interaction_command(command, context) !=
+          command) {
+    destroy_copy_if_owned();
+    bindings.destroy_character_interaction_context(context);
+    return Result::command_unavailable;
+  }
+  std::uintptr_t primary = 0;
+  std::uintptr_t secondary = 0;
+  if (!Read(command, 0, primary) || !Read(command, 0x18, secondary) ||
+      primary != bindings.send_character_interaction_primary_vtable ||
+      secondary != bindings.send_character_interaction_secondary_vtable ||
+      !context_ok(copied_context)) {
+    destroy_copy_if_owned();
+    bindings.destroy_character_interaction_context(context);
+    return Result::command_unavailable;
+  }
+  const bool submitted = bindings.submit_command(
+      bindings.command_manager, command, 0x0E);
+  destroy_copy_if_owned();
+  bindings.destroy_character_interaction_context(context);
+  return submitted ? Result::submitted_verification_pending
+                   : Result::command_unavailable;
+}
+
 std::string SerializePlayerPrisonerRansomQuotePrivateV1(
     const PlayerPrisonerRansomQuoteV1 &quote, std::uint64_t revision,
     std::int64_t date_raw, std::uint64_t proof_epoch) {

@@ -107,6 +107,28 @@ struct PlayerPrisonerCollectionMailboxContextV1 {
 bool ExecutePlayerPrisonerCollectionPrivateQueryV1(
     void *context, const MainThreadExecutionStampV1 &stamp) noexcept;
 
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+inline constexpr std::string_view kPlayerPrisonerRansomSubmitPrivateStepV1 =
+    "submit-player-prisoner-ransom-private-v1";
+
+struct PlayerPrisonerRansomSubmitMailboxContextV1 {
+  MainThreadQueryMailboxV1 *mailbox = nullptr;
+  MainThreadQueryTicketV1 ticket{};
+  Bindings bindings{};
+  game::Snapshot expected_snapshot{};
+  PlayerPrisonerRansomQuoteV1 quote{};
+  std::uint64_t expected_revision = 0;
+  PlayerPrisonerRansomSubmitV1 result =
+      PlayerPrisonerRansomSubmitV1::unavailable;
+  bool completed = false;
+  bool frame_changed = false;
+  std::uint32_t invocations = 0;
+};
+
+bool ExecutePlayerPrisonerRansomPrivateSubmitV1(
+    void *context, const MainThreadExecutionStampV1 &stamp) noexcept;
+#endif
+
 // Value-only result for one exact paused native frame. Collection membership
 // never infers legality; the separately enabled native-final release preview
 // records its own result for each exact prisoner ID.

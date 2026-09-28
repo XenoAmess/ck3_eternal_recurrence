@@ -427,6 +427,11 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-prisoner-ransom-formal-trial",
+        action="store_true",
+        help="evaluate and submit one private native ransom in a bounded run",
+    )
+    native_auto_run_parser.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
         action="store_true",
         help=(
@@ -939,6 +944,10 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_prisoner_collection_observation
                     else {}
                 )
+                if args.allow_private_prisoner_ransom_formal_trial:
+                    private_prisoner_options[
+                        "allow_private_prisoner_ransom_formal_trial"
+                    ] = True
                 succession_options = (
                     {
                         "succession_lifecycle": args.succession_lifecycle,

@@ -254,6 +254,16 @@ if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1 AND
 endif()
 
 option(
+  XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1
+  "Allow a bounded private native ransom submission from a current quote"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
+  message(FATAL_ERROR "private ransom action requires the exact ransom quote")
+endif()
+
+option(
   XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1
   "Read an exact-build private child-of-player predicate in prisoner rows"
   OFF
@@ -760,6 +770,10 @@ if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
     src/player_prisoner_ransom_private_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1=1)
+endif()
+if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
