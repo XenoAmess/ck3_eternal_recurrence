@@ -338,6 +338,8 @@ std::string_view FailureName(PlayerPrisonerRansomQuoteFailureV1 value) {
     return "role_unavailable";
   case PlayerPrisonerRansomQuoteFailureV1::option_unavailable:
     return "option_unavailable";
+  case PlayerPrisonerRansomQuoteFailureV1::final_can_send_false:
+    return "final_can_send_false";
   case PlayerPrisonerRansomQuoteFailureV1::final_legality_unavailable:
     return "final_legality_unavailable";
   case PlayerPrisonerRansomQuoteFailureV1::quote_unavailable:
@@ -405,6 +407,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     return result;
   }
 
+  bool any_option_selected = false;
   for (std::int32_t option : {2, 3}) {
     alignas(8) std::array<std::byte, kContextSize> storage{};
     void *const context = storage.data();
@@ -432,6 +435,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
                           observed_payer == payer_id &&
                           observed_prisoner == prisoner_id;
     const bool selected = roles_ok && ExactOneOption(context, option);
+    any_option_selected = any_option_selected || selected;
     const bool can_send = selected &&
         bindings.validate_character_interaction_context(context, nullptr);
     std::int64_t accept_raw = 0;
@@ -486,7 +490,9 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     result.amount_is_acceptance_time_quote = option == 3;
     return result;
   }
-  result.failure = PlayerPrisonerRansomQuoteFailureV1::option_unavailable;
+  result.failure = any_option_selected
+                       ? PlayerPrisonerRansomQuoteFailureV1::final_can_send_false
+                       : PlayerPrisonerRansomQuoteFailureV1::option_unavailable;
   return result;
 }
 

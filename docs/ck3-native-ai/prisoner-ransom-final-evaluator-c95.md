@@ -212,3 +212,26 @@ rooted at the prisoner; current-gold is only a quote because the stock
 selected option and amount units require a natural paused readback before
 any formal consumer. All other options and any missing input stay typed
 unavailable. No action, readiness or M6 claim follows from this static entry.
+
+## R0271 paused quote gap and narrow failure split (2026-09-28)
+
+The formal R0271 report (SHA-256
+`A5C5D21266D7ACFDC2CDD4C619B2846DE100BFF7F4CAD1E261DC116B880790CD`)
+queried all three complete prisoner rows on the first H3388 paused frame,
+`date_raw=53218968`: `34486`, `44484`, and `47028`. Their independent
+unconditional release previews remain sendable, but each ransom quote attempt
+returned `option_unavailable`; no payer, payable amount, or
+positive ransom value was observed. The later H3446/raw53219112 checkpoint
+has an official no-launch pair but no new prisoner query; its paused prisoner
+state cannot be inferred from the earlier frame.
+
+The private quote reader previously used `option_unavailable` both when
+neither authored gold option was selected with verified roles and when one was
+selected but native final `Can Send` returned false. The source now retains
+`option_unavailable` for the first case and returns
+`final_can_send_false` for the second. This is a read-only distinction from
+the same owned interaction context; it does not provide a detailed native
+refusal reason, alter option selection, or authorize an action. A future
+matching paused readback is needed to classify the three actual prisoners.
+Until a sendable option and same-frame positive quote are observed, ransom
+remains unavailable to formal policy and M6 readiness is unchanged.

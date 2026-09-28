@@ -18,6 +18,7 @@ enum class PlayerPrisonerRansomQuoteFailureV1 : std::uint8_t {
   option_unavailable,
   final_legality_unavailable,
   quote_unavailable,
+  final_can_send_false,
 };
 
 struct PlayerPrisonerRansomQuoteV1 {
