@@ -24,4 +24,4 @@
 - 用户提供的 `Quiet Courtly Tension.wav` 是唯一主题音乐；棕金字幕/计算卡沿用第 0–1 集，原版游戏 UI 保持原色。旁白 0 dB、音乐默认固定 -17 dB，不做随旁白变化的 ducking；本片混音仍须单独审听。
 - 受管 CK3 录制须先领 `ck3-screen:acquired`，取得当次新鲜 Steam 离线画面，使用独立 run/workdir，保全原始录像、请求/响应、失败 attempt 与清场证据。旧外置 recorder 的 raw/可见性拼接尚未形成 `xar-promo` CK3 adapter 合格的 capture bundle；正式镜头需补齐 report、timeline、evidence index、ordered marks 和 clean gates。R0271 当前是 Robert 正式续跑的高优先级阻塞，本片实机录制须与其屏幕窗口协调。`xar-promo` 的机器 audit/review 不能代替人工 1× 全片审阅与签核。
 
-具体镜头及是否已有可用画面见 [shot-list.md](shot-list.md)。
+具体镜头及是否已有可用画面见 [shot-list.md](shot-list.md)。[旁白初稿](narration-script-draft.md)按 29:50 的剪辑预算分段，实际 TTS 时长及新回放数字尚待验证；[六章项目配置与无启动预检](project/README.md)记录新 run 的入口。[085 增援和 024 战分计算卡](cards/README.md)已可从原始回执重建，卡片不能替代缺失的同身份原速游戏镜头。
