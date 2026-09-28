@@ -1,0 +1,70 @@
+{
+  "schema": "xar.war-ai.episode02.join-terminal-no-launch-inputs.v1",
+  "game_exe": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "tracks": {
+    "085": {
+      "role": "E2-06/E2-07_join_and_first_fire",
+      "source_save": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d11-immutable.ck3",
+        "sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"
+      },
+      "source_receipt": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/trace-d11-save.json",
+        "sha256": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5"
+      },
+      "bridge_dll": {
+        "path": "D:/wai/ck3_autonomous_player/native_bridge/build-fresh-20260927T025104Z-572e2125/xar_ck3_bridge.dll",
+        "sha256": "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F"
+      },
+      "bridge_injector": {
+        "path": "D:/workspace/ck3_build_join_width_phase_thread_20260927/xar_ck3_bridge_injector.exe",
+        "sha256": "34A1AB183F5173844A74E52A7F68195AAD859C380DFCA6B7E76F40611A51FB2D"
+      },
+      "historical_capture_report": "D:/workspace/ck3_native_war_ai_promo_work/episode01-join-full-entry-live-attempt-085/ck3-output/capture-report.json",
+      "historical_checkpoint_copy": "D:/workspace/ck3_native_war_ai_promo_work/episode01-join-full-entry-live-attempt-085/ck3-output/checkpoint-copy.json",
+      "historical_result": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-join-full-entry-live-attempt-085/ck3-output/interactive-requests-responses/jfull085-finish.json",
+        "sha256": "A7F01C89BE66B34A6F2862BAEFC4354EF74507B6D5178E2949C381DEDC32FD88"
+      },
+      "date_raw": 53146488,
+      "actor": 29829,
+      "combat_id": 16777218,
+      "war_id": 4,
+      "candidate_joining_army_id": 22,
+      "requires_private_phase_trace": true
+    },
+    "024": {
+      "role": "E2-09_normal_terminal_writer",
+      "source_save": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d27-immutable.ck3",
+        "sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3"
+      },
+      "source_receipt": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/trace-d27-save.json",
+        "sha256": "5198123BD71842624A3FB933492F78C3BB11C65D2DED634E3965FDC79B90A012"
+      },
+      "bridge_dll": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-build-007/xar_ck3_bridge.dll",
+        "sha256": "5FA16EABCD2FD77730E96F11A3C030401EA14B58926E6504007008533B6929DE"
+      },
+      "bridge_injector": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-build-007/xar_ck3_bridge_injector.exe",
+        "sha256": "3773042110D9E207FD02E00BF5376A033E71B70433B6B650088550A522B581C5"
+      },
+      "historical_capture_report": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/ck3-output/capture-report.json",
+      "historical_checkpoint_copy": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/ck3-output/checkpoint-copy.json",
+      "historical_result": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-denominator-live-attempt-024/ck3-output/interactive-requests-responses/d32-terminal.json",
+        "sha256": "E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F"
+      },
+      "date_raw": 53146872,
+      "actor": 29829,
+      "combat_id": 16777218,
+      "war_id": 4,
+      "requires_private_phase_trace": false
+    }
+  }
+}
