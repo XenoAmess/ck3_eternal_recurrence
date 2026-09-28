@@ -5,7 +5,7 @@
 [`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
 **Operator live source `operator_get_status`** 实时核查，不能以 Git 缓存投影或本页历史段落代替。
 已收口的 09-28 增量见[09-28 日报](daily/2026-09-28.md)；新提交见[09-29 滚动日报](daily/2026-09-29.md)及[W40 滚动周报](weekly/2026-W40.md)。下方最新**已验证持久配对**仍以 R0321 checkpoint 与官方配对/no-launch 回执为据，R0328 同日新候选尚未完成官方下一配对。
-Robert 最新已验证可恢复持久配对为 **h3911/raw53219928、3,150 日**；`current-state.json` 已投影该 H3911 高水位及 R0321 战争 RED。R0328 Emma 母系提案有正式 typed 提交和 `receipt_pending` checkpoint，尚无物质婚姻结果、下一 turn 或新 PID 恢复；h3915 同日候选不增加天数。`g2-requirements-v1.json` 的 `current_work_package` 为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
+Robert 最新已验证可恢复持久配对为 **h3911/raw53219928、3,150 日**；`current-state.json` 已投影该 H3911 高水位及 R0321 战争 RED。R0328 Emma 母系提案在私有 opt-in 候选中有 typed 提交和 `receipt_pending` checkpoint，尚无物质婚姻结果、下一 turn 或新 PID 恢复；h3915 同日候选不增加天数。`g2-requirements-v1.json` 的 `current_work_package` 为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
 玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
