@@ -41,17 +41,31 @@ def _write(state_dir: Path, ledger: Mapping[str, object]) -> None:
 
 
 def _identity(snapshot: Mapping[str, object], target: int) -> tuple[int, int, int, int]:
-    actor = snapshot.get("played_character")
+    played = snapshot.get("played_character")
+    if isinstance(played, Mapping):
+        actor_id = played.get("character_id")
+        alive = played.get("alive")
+        if (("played_character_id" in snapshot
+             and snapshot["played_character_id"] != actor_id)
+                or ("played_character_alive" in snapshot
+                    and snapshot["played_character_alive"] is not alive)):
+            raise ValueError("private Sway player identity differs across frame views")
+    elif played is None:
+        # _wait_for_readiness returns the verified compact binding, while
+        # driver.take_snapshot() returns the full played_character object.
+        actor_id = snapshot.get("played_character_id")
+        alive = snapshot.get("played_character_alive")
+    else:
+        raise ValueError("private Sway played character is malformed")
     if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
-            or not isinstance(actor, Mapping) or actor.get("alive") is not True
-            or not _positive(actor.get("character_id"))
+            or alive is not True or not _positive(actor_id)
             or not _positive(snapshot.get("revision"))
             or not _positive(snapshot.get("native_revision"))
             or type(snapshot.get("date_raw")) is not int
             or not _positive(target) or target > 0xFFFFFFFF
-            or actor["character_id"] == target):
+            or actor_id == target):
         raise ValueError("private Sway requires a living player and paused map frame")
-    return (actor["character_id"], snapshot["revision"],
+    return (actor_id, snapshot["revision"],
             snapshot["native_revision"], snapshot["date_raw"])
 
 
@@ -83,9 +97,17 @@ def should_submit_sway(snapshot: Mapping[str, object], read: Mapping[str, object
     if not _read_matches(snapshot, read, target):
         raise ValueError("private Sway source differs from current paused frame")
     context = snapshot.get("active_context")
-    if (isinstance(context, Mapping)
-            and (context.get("active_event") is not None
-                 or context.get("pending_character_interaction") is not None)):
+    if context is not None and not isinstance(context, Mapping):
+        return False
+    if isinstance(context, Mapping):
+        if (context.get("active_event") is not None
+                or context.get("pending_character_interaction") is not None):
+            return False
+    elif ("active_event" not in snapshot
+          or "pending_character_interaction" not in snapshot):
+        return False
+    if (snapshot.get("active_event") is not None
+            or snapshot.get("pending_character_interaction") is not None):
         return False
     return bool(
         read["target_opinion_of_actor"] < 0

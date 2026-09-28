@@ -36,14 +36,24 @@ READ = {
     "native_failure_classification": "", "queried_revision": 4,
     "queried_native_revision": 3,
 }
+R0337_PUBLIC_BINDING = {
+    "paused": True, "map_ready": True, "revision": 4,
+    "native_revision": 3, "date_raw": 53219928,
+    "played_character_id": 29829, "played_character_alive": True,
+    "active_context": {"active_event": None,
+                       "pending_character_interaction": None},
+}
 
 
 class Driver:
     allow_private_active_scheme_sway_action = True
 
-    def __init__(self, state_dir: Path, *, fail_submit: bool = False):
+    def __init__(self, state_dir: Path, *, fail_submit: bool = False,
+                 source_epoch: int = 4493, post_epoch: int = 4496):
         self.state_dir = state_dir
         self.fail_submit = fail_submit
+        self.source_epoch = source_epoch
+        self.post_epoch = post_epoch
         self.submits = 0
         self.receipts = 0
         self.reads = 0
@@ -55,9 +65,10 @@ class Driver:
         self.submits += 1
         if self.fail_submit:
             raise BridgeUnavailableError("native submit result unavailable")
-        assert readback["capture_epoch"] == 4493
+        assert readback["capture_epoch"] == self.source_epoch
         return {"stage": "submitted_verification_pending",
-                "action_id": action_id, "pre_capture_epoch": 4494}
+                "action_id": action_id,
+                "pre_capture_epoch": self.source_epoch + 1}
 
     def query_active_scheme_sway_receipt_private_v1(self, **kwargs):
         self.receipts += 1
@@ -68,7 +79,7 @@ class Driver:
     def query_active_scheme_sway_target_private_v1(self, **kwargs):
         self.reads += 1
         assert kwargs == {"expected_revision": 4, "target_character_id": 32716}
-        return {**READ, "capture_epoch": 4496,
+        return {**READ, "capture_epoch": self.post_epoch,
                 "active_scheme_count": 1, "matching_sway_active": True,
                 "native_complete_can_send": False,
                 "native_legal_now": False}
@@ -93,6 +104,23 @@ def test_formal_sway_applied_with_independent_read_and_later_turn(tmp_path: Path
         driver, target_character_id=32716, snapshot=SNAPSHOT,
         readback=READ)
     assert duplicate["status"] == "already_applied"
+    assert driver.submits == 1
+
+
+def test_r0337_verified_compact_binding_can_submit_and_modal_still_blocks(
+    tmp_path: Path,
+):
+    observed = {**READ, "capture_epoch": 7689}
+    driver = Driver(tmp_path, source_epoch=7689, post_epoch=7692)
+    assert should_submit_sway(R0337_PUBLIC_BINDING, observed, 32716)
+    modal = {**R0337_PUBLIC_BINDING,
+             "active_context": {"active_event": {"instance_id": 1},
+                                "pending_character_interaction": None}}
+    assert not should_submit_sway(modal, observed, 32716)
+    result = consume_sway_private_once(
+        driver, target_character_id=32716,
+        snapshot=R0337_PUBLIC_BINDING, readback=observed)
+    assert result["status"] == "applied"
     assert driver.submits == 1
 
 
