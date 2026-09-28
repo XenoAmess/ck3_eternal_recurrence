@@ -57,7 +57,7 @@
     "document": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md",
     "cash_cadence_static_audit": "docs/ck3-native-ai/r0266-war-cash-cadence-static-audit-2026-09-28.md",
     "h2825_formal_selected_step": "query-observed-first-heir-marriage-result-v1-private",
-    "pending_action_ledger_status": "No war cash producer: plan_m5_wartime_query_only explicitly discards history and only publishes missing reasons; native command history alone does not prove a war cash zero.",
+    "pending_action_ledger_status": "No war cash producer: plan_m5_wartime_query_only discards history. NativeDriver sends a request and waits at native_driver.py:7997-8033 before appending its completed history row at :7074-7083; public snapshot at :2370-2383 copies only that history. An empty history cannot prove no in-flight command or zero war cash. Require an owner-side in-flight/committed ledger or an exact-frame no-in-flight plus no-unsettled-commitment proof.",
     "immediate_action_fee_status": "No next war action or native Q100000 fee is selected by the H2825 observation turn; the M5 war adapter requires a separately sourced incremental_gold_cost_raw and does not calculate it.",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "getter_name": "MilitaryView.GetAllRaisedGoldMilitaryExpenses",
