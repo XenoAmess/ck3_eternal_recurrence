@@ -305,3 +305,52 @@ gold read status on the same paused frame. Only then can the policy decide
 whether a gold proposal exists or whether another prisoner disposition has
 greater value. No quote amount, ransom action, next-turn consumption, cold
 restore, or M6 readiness increase follows from R0276.
+
+## H3446 next private discriminator: role, option mask, final gate, payer funds
+
+R0276's three `option_unavailable` results remain a decision blocker, because
+the old reason combined a failed role equality with an unselected native option
+mask and also combined payer gold read failure with a nonzero payer. The
+exact-build stock `00_prison_interactions.txt:1921-1995` partitions each of
+the ordinary and extortionate gold pair at its ransom cost. For a readable
+payer with at least one gold, one member of the applicable pair should be
+shown under the stock funds rule. The jailed person's `secondary_recipient`
+and redirected payer's `recipient` roles are required before applying that
+inference; it is not a quote or proof of final Can Send.
+
+The narrow private observer now keeps the same unavailable response shape
+while distinguishing independently observed states:
+
+| Typed reason | Native readback represented |
+| --- | --- |
+| `option_context_roles_unverified` | The constructed, finalized context did not yield the exact actor, redirected payer, prisoner, and definition roles; the other option/funds gates cannot be trusted. |
+| `option_mask_unreadable` / `option_mask_unexpected` | The seven authored option bytes/count could not be read consistently, or the setter left a different/multiple option selected. This is an observer/native-binding gap, not a zero-value prisoner. |
+| `final_can_send_false` / `extortionate_final_can_send_false` | An ordinary or extortionate gold option was selected with verified roles, but native final Can Send rejected it. |
+| `payer_gold_read_unavailable` | No gold option survived; the redirected payer's gold could not be double-read, so funds are unknown. |
+| `payer_below_one_gold` | No gold option survived and the redirected payer's double-read gold was below one. Other non-gold ransom terms are outside this gold-only conclusion. |
+| `gold_options_not_selected_with_funded_payer` | The four gold options had verified roles and readable, all-zero selected masks, yet redirected payer gold was at least one. The exact native shown predicate or context scope remains to be resolved. |
+
+The ordinary option still returns a same-frame amount and final answer only
+when selected and sendable. An extortionate option remains unavailable to
+formal policy until `increased_ransom_cost_value` is valued. The private
+ordinal query, Python transport and public action surface stay unchanged.
+This source change is **not yet live qualified**; a separate H3446 official
+pair/no-launch candidate and one bounded paused read are needed to learn
+which reason applies to the three prisoners. A positive reason is not a
+submitted proposal, payment, release, next turn, or cold restore.
+
+```mermaid
+flowchart TD
+    C[Owned all-role ransom context] --> R{Exact roles readable?}
+    R -->|no| U[typed roles-unverified]
+    R -->|yes| O{Authored gold option mask}
+    O -->|unreadable or unexpected| B[typed native-binding gap]
+    O -->|selected| V{Final Can Send?}
+    V -->|yes| Q[ordinary quote or extortionate valuation gap]
+    V -->|no| F[typed final gate false]
+    O -->|all four absent| G{Redirected payer gold read}
+    G -->|failed| X[funds unknown]
+    G -->|below one| L[gold funding absent]
+    G -->|at least one| N[stock shown/scope mismatch to investigate]
+    Q -. formal action not qualified .-> A[proposal and material outcome]
+```

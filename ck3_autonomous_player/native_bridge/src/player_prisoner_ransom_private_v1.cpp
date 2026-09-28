@@ -322,7 +322,15 @@ bool ContextRolesMatch(const void *context, const void *definition,
          observed_prisoner == prisoner_id;
 }
 
-bool ExactOneOption(const void *context, std::int32_t expected) noexcept {
+enum class OptionMaskState : std::uint8_t {
+  unreadable,
+  none_selected,
+  expected_only,
+  unexpected,
+};
+
+OptionMaskState ReadOptionMaskState(const void *context,
+                                    std::int32_t expected) noexcept {
   void *data = nullptr;
   std::int32_t count = 0;
   const void *definition = nullptr;
@@ -333,14 +341,22 @@ bool ExactOneOption(const void *context, std::int32_t expected) noexcept {
       !Read(context, kOptionCountOffset, count) ||
       definition_count != static_cast<std::int32_t>(kOptionCount) ||
       count != definition_count)
-    return false;
+    return OptionMaskState::unreadable;
+  std::int32_t selected_count = 0;
+  std::int32_t selected_index = -1;
   for (std::int32_t i = 0; i < count; ++i) {
     std::uint8_t selected = 0;
-    if (!Read(data, static_cast<std::size_t>(i), selected) ||
-        selected != static_cast<std::uint8_t>(i == expected))
-      return false;
+    if (!Read(data, static_cast<std::size_t>(i), selected) || selected > 1)
+      return OptionMaskState::unreadable;
+    if (selected != 0) {
+      ++selected_count;
+      selected_index = i;
+    }
   }
-  return true;
+  if (selected_count == 0) return OptionMaskState::none_selected;
+  return selected_count == 1 && selected_index == expected
+             ? OptionMaskState::expected_only
+             : OptionMaskState::unexpected;
 }
 
 std::string_view FailureName(PlayerPrisonerRansomQuoteFailureV1 value) {
@@ -358,10 +374,22 @@ std::string_view FailureName(PlayerPrisonerRansomQuoteFailureV1 value) {
     return "role_unavailable";
   case PlayerPrisonerRansomQuoteFailureV1::option_unavailable:
     return "option_unavailable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_context_roles_unverified:
+    return "option_context_roles_unverified";
+  case PlayerPrisonerRansomQuoteFailureV1::option_mask_unreadable:
+    return "option_mask_unreadable";
+  case PlayerPrisonerRansomQuoteFailureV1::option_mask_unexpected:
+    return "option_mask_unexpected";
   case PlayerPrisonerRansomQuoteFailureV1::payer_below_one_gold:
     return "payer_below_one_gold";
+  case PlayerPrisonerRansomQuoteFailureV1::payer_gold_read_unavailable:
+    return "payer_gold_read_unavailable";
+  case PlayerPrisonerRansomQuoteFailureV1::gold_options_not_selected_with_funded_payer:
+    return "gold_options_not_selected_with_funded_payer";
   case PlayerPrisonerRansomQuoteFailureV1::extortionate_gold_option_requires_valuation:
     return "extortionate_gold_option_requires_valuation";
+  case PlayerPrisonerRansomQuoteFailureV1::extortionate_final_can_send_false:
+    return "extortionate_final_can_send_false";
   case PlayerPrisonerRansomQuoteFailureV1::final_can_send_false:
     return "final_can_send_false";
   case PlayerPrisonerRansomQuoteFailureV1::final_legality_unavailable:
@@ -448,7 +476,22 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
         context, option);
     const bool roles_ok = ContextRolesMatch(
         context, definition, jailer_id, payer_id, prisoner_id);
-    const bool selected = roles_ok && ExactOneOption(context, option);
+    const auto mask = roles_ok ? ReadOptionMaskState(context, option)
+                               : OptionMaskState::unreadable;
+    if (!roles_ok || mask == OptionMaskState::unreadable ||
+        mask == OptionMaskState::unexpected) {
+      bindings.destroy_character_interaction_context(context);
+      result.failure = !roles_ok
+                           ? PlayerPrisonerRansomQuoteFailureV1::
+                                 option_context_roles_unverified
+                           : mask == OptionMaskState::unreadable
+                                 ? PlayerPrisonerRansomQuoteFailureV1::
+                                       option_mask_unreadable
+                                 : PlayerPrisonerRansomQuoteFailureV1::
+                                       option_mask_unexpected;
+      return result;
+    }
+    const bool selected = mask == OptionMaskState::expected_only;
     any_option_selected = any_option_selected || selected;
     const bool can_send = selected &&
         bindings.validate_character_interaction_context(context, nullptr);
@@ -511,6 +554,7 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
   // The first two authored options are the stock FP1 extortionate variants.
   // Their payment uses increased_ransom_cost_value, so the ordinary quote
   // cannot price them. Identify a legal opportunity without inventing value.
+  bool any_extortionate_option_selected = false;
   for (std::int32_t option : {0, 1}) {
     alignas(8) std::array<std::byte, kContextSize> storage{};
     void *const context = storage.data();
@@ -523,10 +567,25 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     reinterpret_cast<LocalOptionStep>(module + kClearLocalOptionsRva)(context);
     reinterpret_cast<SelectLocalOption>(module + kSelectLocalOptionRva)(
         context, option);
-    const bool selected =
-        ContextRolesMatch(context, definition, jailer_id, payer_id,
-                          prisoner_id) &&
-        ExactOneOption(context, option);
+    const bool roles_ok = ContextRolesMatch(
+        context, definition, jailer_id, payer_id, prisoner_id);
+    const auto mask = roles_ok ? ReadOptionMaskState(context, option)
+                               : OptionMaskState::unreadable;
+    if (!roles_ok || mask == OptionMaskState::unreadable ||
+        mask == OptionMaskState::unexpected) {
+      bindings.destroy_character_interaction_context(context);
+      result.failure = !roles_ok
+                           ? PlayerPrisonerRansomQuoteFailureV1::
+                                 option_context_roles_unverified
+                           : mask == OptionMaskState::unreadable
+                                 ? PlayerPrisonerRansomQuoteFailureV1::
+                                       option_mask_unreadable
+                                 : PlayerPrisonerRansomQuoteFailureV1::
+                                       option_mask_unexpected;
+      return result;
+    }
+    const bool selected = mask == OptionMaskState::expected_only;
+    any_extortionate_option_selected |= selected;
     const bool can_send = selected &&
         bindings.validate_character_interaction_context(context, nullptr);
     bindings.destroy_character_interaction_context(context);
@@ -536,11 +595,21 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
       return result;
     }
   }
+  if (any_extortionate_option_selected) {
+    result.failure =
+        PlayerPrisonerRansomQuoteFailureV1::extortionate_final_can_send_false;
+    return result;
+  }
   std::int64_t payer_gold_raw = 0;
-  result.failure = ReadPayerGold(payer, payer_gold_raw) &&
-                           payer_gold_raw < kFixedScale
-                       ? PlayerPrisonerRansomQuoteFailureV1::payer_below_one_gold
-                       : PlayerPrisonerRansomQuoteFailureV1::option_unavailable;
+  if (!ReadPayerGold(payer, payer_gold_raw)) {
+    result.failure =
+        PlayerPrisonerRansomQuoteFailureV1::payer_gold_read_unavailable;
+  } else if (payer_gold_raw < kFixedScale) {
+    result.failure = PlayerPrisonerRansomQuoteFailureV1::payer_below_one_gold;
+  } else {
+    result.failure = PlayerPrisonerRansomQuoteFailureV1::
+        gold_options_not_selected_with_funded_payer;
+  }
   return result;
 }
 
