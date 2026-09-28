@@ -233,8 +233,12 @@ ActivityPlannerDiagStatusV1 ReadOne(
       return ActivityPlannerDiagStatusV1::native_read_failed;
     if (host_primary != environment.module_base + kHostPrimaryVtable ||
         host_secondary != environment.module_base + kHostSecondaryVtable ||
-        host_owner != handler || host_actor_id != frame.actor_character_id)
+        host_owner != handler)
       return ActivityPlannerDiagStatusV1::native_identity_mismatch;
+    // The HostView may exist before any player activity is selected. Its
+    // previous/empty owner must never be reported as the planner's type.
+    if (host_actor_id != frame.actor_character_id)
+      return ActivityPlannerDiagStatusV1::observed;
     if (type != 0) {
       std::uintptr_t type_vtable = 0;
       if (!ReadAt(environment, type, 0, type_vtable) ||

@@ -154,6 +154,12 @@ int main() {
                           result.value.host_view_activity_key_size) ==
          "activity_feast");
 
+  fake.Put(kHost + 0x100, std::int32_t{0});
+  result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
+  Expect(result.status == ActivityPlannerDiagStatusV1::observed);
+  Expect(!result.value.host_view_activity_key_known);
+  fake.Put(kHost + 0x100, kActorId);
+
   fake.visible = true;
   fake.Put(kPlanner + 0x1AB0, std::int32_t{5});
   result = xar::bridge::ReadActivityPlannerDiagV1(Env(fake), expected);
