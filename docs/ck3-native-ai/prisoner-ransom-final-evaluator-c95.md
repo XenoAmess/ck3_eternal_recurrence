@@ -500,6 +500,16 @@ other actions. No action, material receipt, next-turn consumption or cold
 restore has yet been observed for this candidate. Public prisoner action and
 advertising remain OFF pending those gates.
 
+The H3446 private native calls require a fresh verified paused
+application-main pump before each war-source, prisoner-ordinal, selected
+ordinal re-read, typed submit and material receipt. R0277 proved that a
+previous heartbeat plus minimized window can leave a ticket queued until
+timeout. This candidate stops before a query or action on a five-second
+`no_fresh_pump` result, with the epoch reason preserved. The sole operator
+may briefly restore an ordinary window if the owned instance demonstrably
+needs it, then return to minimized after the native call. A missing pump is
+not a ransom value of zero.
+
 ```mermaid
 flowchart TD
     F[Paused player frame] --> W{Every active war source complete?}
