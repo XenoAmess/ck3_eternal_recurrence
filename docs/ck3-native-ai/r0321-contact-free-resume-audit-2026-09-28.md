@@ -20,4 +20,4 @@ R0321 的暂停帧为 `native:23` / public revision 24 / native revision 23 / ra
 
 ## 来源机下一份最小回执
 
-已有固定 WAR 请求只接收唯一 `R0321-formal-report.txt`，无需另开第二份报告传输。收到并核对 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30` 后，先从报告抽出 exact `native:23` 的完整基线计划、全军/全敌及待处理状态、2610→2629 原生 preview、full-hostile route-contact query 的原文与行号、V3 query 原文，以及同帧现金/动作价格是否存在。若报告不含短路点 preview/horizon，来源机在**独立、已哈希绑定的只读 attempt** 中补这些查询；不得把后来的帧或另一次会话拼为一帧。路线只有一跳直达 2629、首跳碰敌、短查询敌军位置不一致、其他可控军队不安全、价格/军费无界时，保持 `selected_step=null`。即使安全首路点成立，也只准有限行军和逐日复核，不准接敌或把预测标为合格。
+已有固定 WAR 请求对正式报告只指定一个接收名 `R0321-formal-report.txt`，无需另开第二份报告传输。收到并核对 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30` 后，先从报告抽出 exact `native:23` 的完整基线计划、全军/全敌及待处理状态、2610→2629 原生 preview、full-hostile route-contact query 的原文与行号、V3 query 原文，以及同帧现金/动作价格是否存在。若报告不含短路点 preview/horizon，来源机在**独立、已哈希绑定的只读 attempt** 中补这些查询；不得把后来的帧或另一次会话拼为一帧。路线只有一跳直达 2629、首跳碰敌、短查询敌军位置不一致、其他可控军队不安全、价格/军费无界时，保持 `selected_step=null`。即使安全首路点成立，也只准有限行军和逐日复核，不准接敌或把预测标为合格。
