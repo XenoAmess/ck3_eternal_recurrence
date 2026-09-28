@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from xar_autoplayer import player_child_matrilineal_formal_consumer as consumer
+from xar_autoplayer.bridge import player_child_matrilineal_private_action_v1 as transport
 
 
 def _frame() -> dict[str, object]:
@@ -88,6 +89,96 @@ class Driver:
 
 
 class ConsumerTest(unittest.TestCase):
+    def test_later_refusal_is_a_warm_result_after_r0329_cold_read(self) -> None:
+        driver = Driver(Path("Z:/unused-child-marriage-test-state"))
+        driver.allow_private_player_child_matrilineal_action = True
+        pending = {"schema": consumer.SCHEMA, "status": "receipt_pending",
+                   "played_character_id": 29829, "heir_character_id": 37265,
+                   "candidate_character_id": 37267, "recipient_character_id": 32440,
+                   "matrilineal_option_selected": True, "pre_native_revision": 3,
+                   "source_date_raw": 53219928}
+        frame = {**_frame(), "native_revision": 4}
+        result = {"step": transport.RESULT_STEP, "status": "refused",
+                  "material_result": False, "cold_recovery": False,
+                  "post_native_revision": 4, "pre_native_revision": 3,
+                  "heir_character_id": 37265, "candidate_character_id": 37267,
+                  "recipient_character_id": 32440,
+                  "matrilineal_option_selected": True,
+                  "outbound_pending_state": "not_applicable"}
+        with (patch.object(transport, "_paused", return_value=frame),
+              patch.object(transport, "_command", return_value=result)):
+            self.assertEqual(transport.query_player_child_matrilineal_result_private_v1(
+                driver, pending=pending, cold=False)["status"], "refused")
+            cold_reply = {**result, "cold_recovery": True,
+                          "pre_native_revision": 0}
+            with patch.object(transport, "_command", return_value=cold_reply):
+                with self.assertRaisesRegex(Exception, "identity changed"):
+                    transport.query_player_child_matrilineal_result_private_v1(
+                        driver, pending=pending, cold=True)
+
+    def test_r0329_pending_consumes_next_revision_before_war_action(self) -> None:
+        """The real cold read stayed active at revision 3 on PID 75760."""
+        with tempfile.TemporaryDirectory(dir=os.environ.get("XAR_TEST_TEMP_ROOT")) as folder:
+            driver = Driver(Path(folder))
+            pending = {
+                "schema": consumer.SCHEMA, "status": "receipt_pending",
+                "submission_state": "receipt_pending", "material_result": False,
+                "episode_run_id": "native-29829-test",
+                "played_character_id": 29829, "heir_character_id": 37265,
+                "candidate_character_id": 37267, "recipient_character_id": 32440,
+                "matrilineal_option_selected": True, "pre_native_revision": 3,
+                "source_date_raw": 53219928, "source_bridge_pid": 181880,
+                "source_bridge_creation_date": "submit",
+                "last_checked_native_revision": 3,
+                "last_checked_bridge_pid": 75760,
+                "last_checked_bridge_creation_date": "cold-read",
+                "last_outbound_pending_state": "active",
+            }
+            consumer._write(driver.state_dir, {
+                "schema": consumer.SCHEMA, "pending": pending, "resolved": None})
+            war_action = {"plan": {"selected_step": "move-army-16777231"}}
+            frame = {**_frame(), "native_revision": 3,
+                     "active_wars": [{"war_id": 16777231}]}
+            with patch.object(consumer, "bridge_process_identity",
+                              return_value=(88888, "another-cold-pid")):
+                another_cold = consumer.plan_child_matrilineal_private(
+                    driver, war_action, frame, subject_character_id=37265,
+                    candidate_character_id=37267)
+                self.assertEqual(another_cold["plan"]["selected_step"],
+                                 consumer.RESULT_STEP)
+                self.assertIs(another_cold["plan"]["child_matrilineal_cold_recovery"],
+                              True)
+            with patch.object(consumer, "bridge_process_identity",
+                              return_value=(75760, "cold-read")):
+                self.assertIs(consumer.plan_child_matrilineal_private(
+                    driver, war_action, frame, subject_character_id=37265,
+                    candidate_character_id=37267), war_action)
+                later = {**frame, "native_revision": 4}
+                chosen = consumer.plan_child_matrilineal_private(
+                    driver, war_action, later, subject_character_id=37265,
+                    candidate_character_id=37267)
+                self.assertEqual(chosen["plan"]["selected_step"], consumer.RESULT_STEP)
+                self.assertIs(chosen["plan"]["child_matrilineal_cold_recovery"], False)
+                self.assertEqual(chosen["plan"]["child_matrilineal_deferred_step"],
+                                 "move-army-16777231")
+                with patch.object(driver, "query_player_child_matrilineal_result_private_v1",
+                                  return_value={"status": "refused", "material_result": False,
+                                                "post_native_revision": 4,
+                                                "heir_character_id": 37265,
+                                                "candidate_character_id": 37267}) as read:
+                    result = consumer.query_child_matrilineal_result_private(
+                        driver, pending=chosen["plan"]["child_matrilineal_pending"],
+                        cold=chosen["plan"]["child_matrilineal_cold_recovery"])
+                self.assertEqual(result["status"], "refused")
+                self.assertIs(read.call_args.kwargs["cold"], False)
+                ledger = consumer.read_child_matrilineal_ledger(driver.state_dir)
+                self.assertIsNone(ledger["pending"])
+                self.assertEqual(ledger["resolved"]["status"], "refused")
+                self.assertIs(consumer.plan_child_matrilineal_private(
+                    driver, war_action, later, subject_character_id=37265,
+                    candidate_character_id=37267), war_action)
+                self.assertEqual(driver.calls, 0)
+
     def test_exact_read_only_war_query_can_be_deferred_once(self) -> None:
         with tempfile.TemporaryDirectory(dir=os.environ.get("XAR_TEST_TEMP_ROOT")) as folder:
             driver = Driver(Path(folder))

@@ -106,28 +106,29 @@ def plan_child_matrilineal_private(
     pending = ledger["pending"]
     if isinstance(pending, dict):
         selected = plan.get("selected_step")
-        if (selected not in {None, "life-advance"}
-                and not _deferrable_war_query(selected, snapshot)):
-            return planned
         if (pending.get("episode_run_id") != snapshot.get("episode_run_id")
                 or pending.get("heir_character_id") != subject_character_id
                 or pending.get("candidate_character_id") != candidate_character_id):
             raise ValueError("unresolved child proposal belongs to a different target")
         pid, creation = bridge_process_identity(driver)
-        cold = (pid, creation) != (pending.get("source_bridge_pid"),
-                                   pending.get("source_bridge_creation_date"))
         last = pending.get("last_checked_native_revision",
                            pending.get("pre_native_revision"))
         already_checked_cold = (pending.get("last_checked_bridge_pid") == pid
                                 and pending.get("last_checked_bridge_creation_date") == creation)
-        if ((cold and not already_checked_cold)
-                or (_positive(snapshot.get("native_revision"))
+        cold = ((pid, creation) != (pending.get("source_bridge_pid"),
+                                    pending.get("source_bridge_creation_date"))
+                and not already_checked_cold)
+        if (cold or (_positive(snapshot.get("native_revision"))
                     and type(last) is int and snapshot["native_revision"] > last)):
             return {**planned, "plan": {**plan,
                 "selected_step": RESULT_STEP, "phase": "child_marriage_result_read",
                 "child_matrilineal_pending": dict(pending),
                 "child_matrilineal_cold_recovery": cold,
+                "child_matrilineal_deferred_step": selected,
                 "reason": "read bilateral proposal result before another send"}}
+        if (selected not in {None, "life-advance"}
+                and not _deferrable_war_query(selected, snapshot)):
+            return planned
         return {**planned, "plan": {**plan,
             "child_matrilineal_pending": dict(pending),
             "reason": "await later paused child proposal result"}}
