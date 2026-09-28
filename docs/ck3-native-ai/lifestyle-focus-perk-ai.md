@@ -53,6 +53,31 @@ flowchart LR
   E -. independent receipt and restore pending .-> R[Future live closure]
 ```
 
+### R0269 opportunity trigger audit (2026-09-28)
+
+The current formal path enables the private LIFE consumer only with
+`--allow-private-lifestyle-formal-trial`. The separate opening gate requires
+`--require-initial-lifestyle-focus-before-date-advance`; an existing focus is
+read and consumed without a duplicate submit. After that gate, the consumer
+checks a paused feudal frame before `life-advance`, a combat-v3 input read, a
+peaceful campaign-root read, or the first war query on a new game date. A
+pending focus or perk request takes the independent receipt path before a new
+spend. Other selected actions retain their existing priority.
+
+The [R0269 formal report](Z:/h3388-source-freeze-20260928/evidence/formal-report.txt)
+(SHA-256 `310F673EC9D13DD4DC2F6250B5773D41830AB1D3C0772CAFAF255936D7F1F8C0`)
+shows actor 29829 at opening `native:3` with the existing
+`stewardship_wealth_focus`, stewardship XP raw 65,000,000, unspent/used points
+`0/7`, and the previous `centralization_perk` receipt consumed. The alternative
+`martial_authority_focus` was native-legal but read-only; its target XP was 0
+and its unspent/used points were `0/13`. Seven later war-query opportunity
+reads each recorded zero unspent stewardship points and `no_legal_minimum`.
+This run proves that the trigger executed on those frames and found no spendable
+point in its scoped policy. It supplies no positive missed-perk example and no
+reason to switch an already effective focus; the martial perk coverage gap for
+a future focused successor remains as described below. No new LIFE typed action
+or M4 qualification comes from this audit.
+
 ## NW-LIFE martial authority target observation candidate (2026-09-28; exact CK3 1.19.0.6)
 
 R0264's first paused Robert frame (`native:3`, raw date `53217264`, actor
