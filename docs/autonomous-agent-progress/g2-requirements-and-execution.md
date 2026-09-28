@@ -25,6 +25,8 @@ R0329 原始 wrapper 将第三步安全截停误计为重复提交风险；基�
 09-29 03:23 源码增量：#535 活动 planner 默认关闭的私有 paused 诊断已合入 master `29df397cd05996c9b21fb9d1bdc64b72f39259a6`，exact CI #36471580131 于 03:26 复核 SUCCESS；**没有活动 CK3 live**，费用、最终 CanStart 和活动动作仍未知。此局部源码不改 G2 **3/8** 或 Robert **3,150/36,524 日**。
 
 09-29 03:39 增量：#536 私有 Sway 预条件阶段诊断已合入 master `03f688e94d9a1dd14591d3b2ae79a3850721668b`，exact CI #36472017769 SUCCESS、topic 清理。R0335 H3922 最小化实机首帧返回 **`native_sway_precondition_red:native_precondition_red:context_options`**（报告 SHA-256 `4D07E95205547080D3F705878B64389783AFA1622FAE3E956A8A0C099B822056`），没有完整 Sway 查询、typed 动作或日期；来源 save 未变、树回收。#539 尚在源码 PR 检查，未实机验收，不能宣称修复或目标不合法。Robert 仍 **H3911/raw53219928、3,150/36,524 日**，G2 **3/8**；详见[09-29 滚动日报](daily/2026-09-29.md)。
+
+09-29 03:57 实机增量：#539 原生空 context option 处理已合入 master `c72bd4ba808e04fe344422361eab26066f466802`、exact CI #36474116242 SUCCESS；R0336 H3922 私有 Sway paused read-only 首次 **GREEN**，target32716 对玩家 opinion -5、active scheme0、native complete CanSend=true/`legal_now=true`，报告 SHA-256 `7A42B388A8EE612A16DF4BC326C6F4AFC2FB924C297920CC082AC8F20B18E316`。这是合法机会的观测，**没有正式价值选择、typed 动作、下一 turn或恢复**；来源 save 不变，Robert 仍 **H3911/raw53219928、3,150/36,524 日**，G2 **3/8**。详见[09-29 日报](daily/2026-09-29.md)。
 ### 2026-09-29 当前执行状态
 
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
