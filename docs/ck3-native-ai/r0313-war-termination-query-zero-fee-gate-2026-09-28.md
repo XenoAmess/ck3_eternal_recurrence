@@ -35,8 +35,8 @@ DLL、driver 和帧身份。
 未结战争占款、未来成本上界、风险预算和战争政策最低保留额仍是 `null`，
 `formal_cash_receipt_eligible=false`。任一门不满足时，金额保持 `null` 并返回
 明确 `missing_reasons`。本模块尚未接入正式 M5 收据，因为当前 formal collector
-没有可信 DLL/driver 运行期身份输入，而且正式规划器尚不生产 `priced_command`
-typed 查询身份；不能把计划内自报标志接成现金证明。单测里的批准表注入与
+没有可信 DLL/driver 运行期身份输入。正式规划器现仅为这条查询输出
+`priced_command` typed 命令身份；不能把计划内身份当成原生费用证明。单测里的批准表注入与
 小文件都是**合成夹具**，仅覆盖条件分支，不是任何 Robert 帧的批准或实值。
 若收到新的 H2743 受管查询证据，按
 [H2743 接收核验清单](r0266-h2743-query-zero-fee-receiver-checklist-2026-09-28.md)

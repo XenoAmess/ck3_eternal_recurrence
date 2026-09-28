@@ -8930,6 +8930,14 @@ def _choose_one_life_turn_core(
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_termination_query",
                         "selected_step": query_step,
+                        # Identity only.  A selected read-only query has no
+                        # cash quote until its exact completed native run is
+                        # independently attested by the war-cash observer.
+                        "priced_command": {
+                            "kind": "read_only_query",
+                            "war_id": war_id,
+                            "query_name": "war_termination_options",
+                        },
                         "war_id": war_id,
                         "reason": (
                             "read the exact native termination contexts, "

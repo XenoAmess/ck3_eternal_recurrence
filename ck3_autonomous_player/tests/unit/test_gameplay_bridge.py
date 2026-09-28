@@ -4309,6 +4309,14 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(
             plan["selected_step"], "query-war-termination-options-88"
         )
+        self.assertEqual(
+            plan["priced_command"],
+            {
+                "kind": "read_only_query",
+                "war_id": 88,
+                "query_name": "war_termination_options",
+            },
+        )
 
     def test_r794_de_jure_white_peace_does_not_override_safe_route(self) -> None:
         player = _army(
