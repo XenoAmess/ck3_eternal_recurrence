@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 import prepare_existing_capture_bundle as bundle
 
@@ -124,6 +125,21 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         self.assertEqual(identity["version"], "0.2.1")
         self.assertEqual(identity["wheel_sha256"],
                          "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621")
+
+    def test_exact_frame_extractor_binds_showinfo_pts_without_review(self) -> None:
+        self.prepare()
+        def fake_run(argv, **kwargs):
+            Path(argv[-1]).write_bytes(b"raw-derived fixture frame")
+            kwargs["stderr"].write(b"[Parsed_showinfo_1] n: 0 pts: 33 pts_time:0.033\n")
+            return SimpleNamespace(returncode=0)
+        with patch.object(bundle.shutil, "which", return_value="fixture-ffmpeg"), \
+                patch.object(bundle.subprocess, "run", side_effect=fake_run):
+            result = bundle.extract_frame(self.output / "source-manifest.json", "0.033",
+                                          self.root / "exact-frame-a01")
+        self.assertEqual(result["result"], "EXTRACTED_UNREVIEWED")
+        self.assertFalse(result["human_review_performed"])
+        self.assertEqual(result["pts_seconds"], "0.033")
+        self.assertEqual(result["decoded_index"], 1)
 
     def test_explicit_review_packages_and_loads_adapter_bundle(self) -> None:
         source = self.prepare()

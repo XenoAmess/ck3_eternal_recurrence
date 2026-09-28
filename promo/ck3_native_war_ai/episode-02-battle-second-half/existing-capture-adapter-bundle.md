@@ -30,15 +30,25 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_nat
 
 ## 阶段二：真实审帧后生成正式 bundle
 
-审阅者需先按原速完整看该条 raw，并对**每个**拟用区间审阅精确首末媒体 PTS 帧及连续画面；
-另以 FFmpeg 从原 raw 提取首末 PNG，为每张图保存 `EXTRACTED_UNREVIEWED` 回执：
+审阅者需先按原速完整看该条 raw，并对**每个**拟用区间审阅精确首末媒体 PTS 帧及连续画面。
+用同一脚本的 `extract-frame` 从完整 ffprobe 选**真实存在的 PTS**，生成 PNG、FFmpeg 原始
+stdout/stderr、命令和 `EXTRACTED_UNREVIEWED` 回执。首末帧各开一个新目录；此命令会解码
+原 raw，须在录制结束后执行：
+
+```text
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe promo/ck3_native_war_ai/episode-02-battle-second-half/prepare_existing_capture_bundle.py extract-frame --source-manifest D:/workspace/ck3_native_war_ai_promo_work/episode02-a05-a02-adapter-pending-NEW/source-manifest.json --pts-seconds EXACT_EXISTING_FRAME_PTS --output D:/workspace/ck3_native_war_ai_promo_work/episode02-a05-a02-begin-frame-NEW
+```
+
+抽帧器用 `select=eq(n\,INDEX),showinfo`，将 FFmpeg 实际解码 PTS 与原 ffprobe 精确比对；
+不匹配则保留 RED attempt，不交付可审图。其回执结构为：
 
 ```json
 {
   "result": "EXTRACTED_UNREVIEWED",
   "raw": {"path": "ABSOLUTE_ORIGINAL_RAW", "bytes": 0, "sha256": "64_HEX"},
   "image": {"path": "ABSOLUTE_EXTRACTED_PNG", "bytes": 0, "sha256": "64_HEX"},
-  "pts_seconds": "EXACT_FFPROBE_FRAME_PTS"
+  "pts_seconds": "EXACT_FFPROBE_FRAME_PTS",
+  "human_review_performed": false
 }
 ```
 

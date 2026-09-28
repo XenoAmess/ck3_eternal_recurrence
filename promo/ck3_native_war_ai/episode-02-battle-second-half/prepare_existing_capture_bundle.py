@@ -18,6 +18,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 from typing import Any
 
 
@@ -215,6 +216,65 @@ def frame_pts(probe: Path) -> list[Decimal]:
     return pts
 
 
+def extract_frame(source_manifest: Path, exact_pts: str, output: Path,
+                  ffmpeg_name: str = "ffmpeg") -> dict[str, Any]:
+    """Extract one raw-derived PNG at an existing FFprobe PTS for later review.
+
+    This records the selected FFmpeg ``showinfo`` PTS and leaves every failed
+    attempt intact. It does not review the image or certify any clean interval.
+    """
+    source_manifest = source_manifest.resolve(strict=True)
+    source = read_json(source_manifest)
+    require(source.get("schema") == SCHEMA and source.get("status") == "PENDING_CLEAN_REVIEW",
+            "source manifest is not an unreviewed inventory")
+    attempt = Path(source["attempt_root"]).resolve(strict=True)
+    require(not output.exists() and output.parent.is_dir() and
+            not output.resolve().is_relative_to(attempt),
+            "frame output must be a new directory outside original attempt")
+    raw = verified(source["raw"], within=attempt)
+    probe = verified(source["ffprobe"], within=attempt)
+    pts = frame_pts(Path(probe["path"]))
+    selected = decimal_pts(exact_pts, "requested frame PTS")
+    require(selected in pts, "requested PTS is not an exact raw video frame")
+    index = pts.index(selected)
+    ffmpeg = shutil.which(ffmpeg_name)
+    require(ffmpeg is not None, f"FFmpeg unavailable: {ffmpeg_name}")
+    output.mkdir()
+    image = output / "frame.png"
+    argv = [ffmpeg, "-hide_banner", "-loglevel", "info", "-nostdin", "-n",
+            "-threads", "1", "-i", raw["path"], "-map", "0:v:0",
+            "-vf", f"select=eq(n\\,{index}),showinfo", "-vsync", "0",
+            "-frames:v", "1", str(image)]
+    write_new(output / "command.json", {"argv": argv, "requested_pts_seconds": str(selected),
+                                         "selected_decoded_index": index,
+                                         "source_manifest": record(source_manifest),
+                                         "ffprobe": probe})
+    try:
+        with (output / "stdout.bin").open("xb") as stdout, \
+                (output / "stderr.txt").open("xb") as stderr:
+            completed = subprocess.run(argv, stdin=subprocess.DEVNULL, stdout=stdout,
+                                       stderr=stderr, check=False)
+        require(completed.returncode == 0 and image.is_file(),
+                f"FFmpeg frame extraction failed: exit {completed.returncode}")
+        stderr_text = (output / "stderr.txt").read_text(encoding="utf-8", errors="replace")
+        shown = [decimal_pts(value, "FFmpeg showinfo PTS")
+                 for value in re.findall(r"pts_time:([^\s]+)", stderr_text)]
+        require(len(shown) == 1 and shown[0] == selected,
+                f"FFmpeg decoded frame PTS differs from requested PTS: {shown}")
+        result = {"result": "EXTRACTED_UNREVIEWED", "raw": raw,
+                  "image": record(image), "pts_seconds": str(selected),
+                  "decoded_index": index, "ffprobe": probe,
+                  "command": record(output / "command.json"),
+                  "stdout": record(output / "stdout.bin"),
+                  "stderr": record(output / "stderr.txt"),
+                  "human_review_performed": False}
+        write_new(output / "extraction-receipt.json", result)
+        return result
+    except Exception as exc:
+        write_new(output / "failure.json", {"result": "FAILED_PRESERVED", "error": repr(exc)})
+        raise
+
+
 def copy_bound(reference: dict[str, Any], destination: Path) -> dict[str, Any]:
     original = verified(reference)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -392,14 +452,22 @@ def main() -> int:
     prep.add_argument("--output", required=True, type=Path)
     prep.add_argument("--requirements", type=Path,
                       default=Path(__file__).resolve().parents[3] / "tools/requirements-promo-toolchain.txt")
+    extract = commands.add_parser("extract-frame", help="extract one exact FFprobe PTS PNG; still unreviewed")
+    extract.add_argument("--source-manifest", required=True, type=Path)
+    extract.add_argument("--pts-seconds", required=True)
+    extract.add_argument("--output", required=True, type=Path)
+    extract.add_argument("--ffmpeg", default="ffmpeg")
     pack = commands.add_parser("package", help="require exact human review, then validate new adapter bundle")
     pack.add_argument("--source-manifest", required=True, type=Path)
     pack.add_argument("--human-review", required=True, type=Path)
     pack.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
-    result = (prepare(args.attempt, args.recorder, args.output, args.requirements)
-              if args.command == "prepare" else
-              package(args.source_manifest, args.human_review, args.output))
+    if args.command == "prepare":
+        result = prepare(args.attempt, args.recorder, args.output, args.requirements)
+    elif args.command == "extract-frame":
+        result = extract_frame(args.source_manifest, args.pts_seconds, args.output, args.ffmpeg)
+    else:
+        result = package(args.source_manifest, args.human_review, args.output)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
