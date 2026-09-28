@@ -49,7 +49,7 @@ composer 读取上述 run artifact，重新验 SHA、章节次序、旁白全文
 
 reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，实际冷载存档 `cold_load_save`、raw video、control 的 artifact ID、SHA-256 与 byte length，以及 clean-span 与来源标签审查 artifact ID。运行中另存的 checkpoint 只能放在可选的 `midrun_checkpoint_save` 三字段，不能替代冷载来源；004 的冷载是 45CCE7…，第 27 日 F085… 是运行中生成的 checkpoint。`cards[card_id]` 必须有卡 SHA、replay、该 replay 的 `primary_receipt_sha256` 与 `evidence_mode`；若卡目录声明 `source_save_sha256`，还须对应 `indexed_cold_load_save_sha256`，004 卡另须 `indexed_midrun_checkpoint_save_sha256` 分别绑定两份存档：
 
-每条 span 同时记录原始 raw 的 `raw_video_width`/`raw_video_height`、`upscaled_to_reel` 和 `resampled_to_reel`；reel receipt 记录实测 `reel_width`/`reel_height`。composer 用 ffprobe 回查，不从最终 2560×1440 推断原生拍摄分辨率。组装回执逐条列出原始和输出尺寸，1920×1080 源被上采样时必须明确为 `upscaled_to_reel=true`。
+每条 span 同时记录原始 raw 的 `raw_video_width`/`raw_video_height`、`upscaled_to_reel` 和 `resampled_to_reel`；reel receipt 记录 `reel_width`/`reel_height`。只读 `plan` 校验这些字段与已保全素材的 SHA/长度，不创建 workdir 或调用媒体探测。实际 `build` 在新 workdir 内对 audio、reel 和每条 raw 调用 FFprobe 并保存 argv/stdout/stderr，校对声长、reel 的 2560×1440/30fps、原始分辨率和上采样声明；不从最终 2560×1440 推断原生拍摄分辨率。组装回执逐条列出原始和输出尺寸，1920×1080 源被上采样时必须明确为 `upscaled_to_reel=true`。
 
 - `historical_research_card` 仅对应冻结的 004/039→040/020/070/036→038/085/024 旧研究回执；还需 `visible_label_audit_artifact_id` 与实际 `visible_label_text`，标签写明“历史研究”、该研究编号、“非当前录制”，审查回执绑定 reel SHA 和卡 ID。
 - `current_run_recomputed` 必须先按新拍 attempt 重算数字、重建卡与旁白，再给出 `recomputed_receipt_artifact_id`。该回执绑定新卡 SHA、来源主回执、捕获 attempt 与实际冷载存档 SHA；旧 024 的 `-50` 不能改称新轨 writer 证据。

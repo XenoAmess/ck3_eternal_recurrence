@@ -36,9 +36,9 @@ def new_json(path: Path, data: dict) -> None:
 def command(root: Path, name: str, argv: list[str]) -> None:
     logs = root / "commands" / name
     logs.mkdir(parents=True, exist_ok=False)
-    new_json(logs / "argv.json", {"argv": argv, "synthetic": True})
+    new_json(logs / "argv.json", {"argv": argv, "cwd": str(root), "synthetic": True})
     with (logs / "stdout.txt").open("xb") as stdout, (logs / "stderr.txt").open("xb") as stderr:
-        result = subprocess.run(argv, stdout=stdout, stderr=stderr, check=False)
+        result = subprocess.run(argv, cwd=root, stdout=stdout, stderr=stderr, check=False)
     if result.returncode:
         raise RuntimeError(f"{name} failed: exit {result.returncode}; see {logs}")
 

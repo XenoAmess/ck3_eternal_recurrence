@@ -159,9 +159,9 @@ def _replay_primary(source: dict) -> str:
     return digest.upper()
 
 
-def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
+def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                   card_hashes: dict[str, str], card_data: dict,
-                  card_replays: dict[str, str]) -> None:
+                  card_replays: dict[str, str]) -> dict:
     receipt_path = _checked_source(run, run_path, row["reel_receipt_artifact_id"],
                                    row["reel_receipt_sha256"], row["reel_receipt_bytes"])
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
@@ -173,11 +173,8 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
         raise ValueError(f"Reel receipt media identity mismatch for {row['id']}")
     if receipt.get("duration_seconds") != row["duration_seconds"]:
         raise ValueError(f"Reel receipt duration mismatch for {row['id']}")
-    reel_stream = probe_media(ffprobe, media).video_streams[0]
-    if (receipt.get("reel_width") != reel_stream.width
-            or receipt.get("reel_height") != reel_stream.height
-            or reel_stream.width != 2560 or reel_stream.height != 1440):
-        raise ValueError(f"Chapter reel resolution is not measured 2560x1440: {row['id']}")
+    if receipt.get("reel_width") != 2560 or receipt.get("reel_height") != 1440:
+        raise ValueError(f"Chapter reel lacks a 2560x1440 resolution claim: {row['id']}")
     expected_cards = set(CHAPTER_CARDS.get(row["id"], ()))
     actual_cards = receipt.get("cards", {})
     if set(actual_cards) != expected_cards:
@@ -196,16 +193,13 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
         for prefix in ("cold_load_save", "control"):
             _checked_source(run, run_path, span[f"{prefix}_artifact_id"],
                             span[f"{prefix}_sha256"], span[f"{prefix}_bytes"])
-        raw = _checked_source(run, run_path, span["raw_video_artifact_id"],
-                              span["raw_video_sha256"], span["raw_video_bytes"])
-        raw_stream = probe_media(ffprobe, raw).video_streams[0]
-        upscaled = (raw_stream.width < reel_stream.width or raw_stream.height < reel_stream.height)
-        if (span.get("raw_video_width") != raw_stream.width
-                or span.get("raw_video_height") != raw_stream.height
-                or span.get("upscaled_to_reel") is not upscaled
-                or span.get("resampled_to_reel") is not
-                (raw_stream.width != reel_stream.width or raw_stream.height != reel_stream.height)):
-            raise ValueError(f"Raw capture dimensions/upscale claim differs: {row['id']}")
+        _checked_source(run, run_path, span["raw_video_artifact_id"],
+                        span["raw_video_sha256"], span["raw_video_bytes"])
+        width, height = span.get("raw_video_width"), span.get("raw_video_height")
+        if (type(width) is not int or type(height) is not int or min(width, height) < 1
+                or span.get("upscaled_to_reel") is not (width < 2560 or height < 1440)
+                or span.get("resampled_to_reel") is not (width != 2560 or height != 1440)):
+            raise ValueError(f"Raw capture resolution claim is inconsistent: {row['id']}")
         checkpoint = span.get("midrun_checkpoint_save_artifact_id")
         if checkpoint is not None:
             _checked_source(run, run_path, checkpoint,
@@ -262,6 +256,7 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path, ffprobe: str,
             raise ValueError(f"Card {card_id} needs explicit historical or current evidence mode")
     if receipt.get("different_attempts_explicitly_labelled") is not True:
         raise ValueError(f"Replay boundary labels unverified in {row['id']}")
+    return receipt
 
 
 def compose(config, run, *, config_path, run_path, workdir,
@@ -305,6 +300,8 @@ def compose(config, run, *, config_path, run_path, workdir,
     ffprobe = os.environ.get("WAR_PROMO_FFPROBE", "ffprobe")
     segments = []
     by_id = {}
+    reel_sources = {}
+    audio_sources = {}
     for row in rows:
         chapter_id = row["id"]
         duration = row["duration_seconds"]
@@ -319,11 +316,11 @@ def compose(config, run, *, config_path, run_path, workdir,
                                 row["audio_sha256"], row["audio_bytes"])
         reel = _checked_source(run, run_path, row["reel_artifact_id"],
                                row["reel_sha256"], row["reel_bytes"])
-        _reel_receipt(run, run_path, row, reel, ffprobe, card_hashes, card_data, card_replays)
-        measured_audio = probe_media(ffprobe, audio).require_duration()
-        measured_reel = probe_media(ffprobe, reel).require_duration()
-        if abs(measured_audio - speech) > .15 or measured_reel + .05 < duration:
-            raise ValueError(f"Audio/reel duration does not cover chapter {chapter_id}")
+        receipt = _reel_receipt(run, run_path, row, reel, card_hashes, card_data, card_replays)
+        if reel.resolve() in reel_sources:
+            raise ValueError("Each chapter requires its own labelled reel")
+        reel_sources[reel.resolve()] = (row, receipt)
+        audio_sources[chapter_id] = audio
         segment = SegmentDraft(
             segment_id=chapter_id,
             visual_source=VisualSource(chapter_id, VIDEO, reel, "source-bound-episode02-chapter-reel"),
@@ -337,12 +334,38 @@ def compose(config, run, *, config_path, run_path, workdir,
 
     def visual_probe(path):
         measured = probe_media(ffprobe, path, audit_directory=work / "audit" / "reel-probe" / path.stem)
+        row, receipt = reel_sources[path.resolve()]
+        duration = measured.require_duration()
         stream = measured.video_streams[0]
+        if (stream.width != receipt["reel_width"] or stream.height != receipt["reel_height"]
+                or stream.average_frame_rate != 30
+                or duration + .002 < row["duration_seconds"]):
+            raise ValueError(f"Measured reel resolution/fps/duration differs: {row['id']}")
+        for index, span in enumerate(receipt["capture_spans"]):
+            raw = _artifact(run, run_path, span["raw_video_artifact_id"])
+            source_probe = probe_media(
+                ffprobe, raw, audit_directory=work / "audit" / "raw-probe" /
+                f"{row['id']}-{index:02d}")
+            source = source_probe.video_streams[0]
+            if (source.width != span["raw_video_width"]
+                    or source.height != span["raw_video_height"]
+                    or span["upscaled_to_reel"] is not
+                    (source.width < stream.width or source.height < stream.height)
+                    or span["resampled_to_reel"] is not
+                    (source.width != stream.width or source.height != stream.height)):
+                raise ValueError(f"Measured raw capture dimensions differ: {row['id']}")
         return VisualProbeResult("video/mp4", stream.width, stream.height)
 
     def subtitle_renderer(segment, narration_artifact, *, workdir):
         del narration_artifact, workdir
-        return subtitle_document(by_id[segment.segment_id])
+        row = by_id[segment.segment_id]
+        audio = audio_sources[segment.segment_id]
+        measured = probe_media(ffprobe, audio,
+                               audit_directory=work / "audit" / "audio-probe" /
+                               segment.segment_id).require_duration()
+        if abs(measured - row["speech_duration_seconds"]) > .15:
+            raise ValueError(f"Measured audio duration differs: {segment.segment_id}")
+        return subtitle_document(row)
 
     return PipelineInvocation(
         PipelineDraft(config, tuple(segments), Path("episode-02-second-half-unmixed.mp4"),
