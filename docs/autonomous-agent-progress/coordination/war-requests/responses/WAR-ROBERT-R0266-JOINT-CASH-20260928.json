@@ -48,7 +48,8 @@
     "2026-09-28 follow-up: exact-build MilitaryView getter/GUI/localization verifier passed under normal Python and -O against CK3 1.19.0.6. This is static source discovery only; no same-frame amount was read.",
     "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained.",
     "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. At that attempt time the matching injector was still missing; the subsequent exact asset transfer is recorded below. This was no-launch only and had no same-frame cash amount.",
-    "2026-09-28 follow-up: passive MilitaryView process-reader research script compiled, --help passed, and Python-only validation passed; an external synthetic cache fixture passed normal/-O valid, wrong-player, wrong-back-pointer and negative-raw gates. The script has not attached to CK3 and always marks its cache output ineligible for the war-cash receipt."
+    "2026-09-28 follow-up: passive MilitaryView process-reader research script compiled, --help passed, and Python-only validation passed; an external synthetic cache fixture passed normal/-O valid, wrong-player, wrong-back-pointer and negative-raw gates. The script has not attached to CK3 and always marks its cache output ineligible for the war-cash receipt.",
+    "2026-09-28 owner request lifecycle: six targeted native ledger/driver tests pass under normal Python and -O; one existing protocol send/response/history regression passes. The receipt remains process-local, unpriced and ineligible to prove pending war cash zero."
   ],
   "followup_research": {
     "status": "static_source_candidate_only",
@@ -58,6 +59,15 @@
     "cash_cadence_static_audit": "docs/ck3-native-ai/r0266-war-cash-cadence-static-audit-2026-09-28.md",
     "h2825_formal_selected_step": "query-observed-first-heir-marriage-result-v1-private",
     "pending_action_ledger_status": "No war cash producer: plan_m5_wartime_query_only discards history. NativeDriver sends a request and waits at native_driver.py:7997-8033 before appending its completed history row at :7074-7083; public snapshot at :2370-2383 copies only that history. An empty history cannot prove no in-flight command or zero war cash. Require an owner-side in-flight/committed ledger or an exact-frame no-in-flight plus no-unsettled-commitment proof.",
+    "owner_request_lifecycle_candidate": {
+      "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_owner_command_ledger.py",
+      "read_method": "NativeHeadlessGameplayDriver.owner_command_lifecycle_receipt_v1",
+      "status": "process_local_unpriced_diagnostic_only",
+      "send_response_record_and_uncertainty_tracked": true,
+      "pending_war_cash_raw": null,
+      "zero_pending_war_cash_proven": false,
+      "continuity_across_driver_restart_proven": false
+    },
     "immediate_action_fee_status": "No next war action or native Q100000 fee is selected by the H2825 observation turn; the M5 war adapter requires a separately sourced incremental_gold_cost_raw and does not calculate it.",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "getter_name": "MilitaryView.GetAllRaisedGoldMilitaryExpenses",

@@ -33,6 +33,7 @@ from .driver import (
     StepPostconditionError,
     UnsupportedStepError,
 )
+from .native_owner_command_ledger import NativeOwnerCommandLedger
 from .application_main_pump_readiness import (
     PumpReadinessError,
     exact_build_pump_gate_required,
@@ -1590,6 +1591,8 @@ class NativeHeadlessGameplayDriver:
         self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
         self._command_history: list[dict[str, object]] = []
+        self._owner_command_ledger = NativeOwnerCommandLedger()
+        self._owner_command_context = threading.local()
         self._rollback_war_failures: list[dict[str, object]] = []
         self._rollback_war_failures_migration_required = False
         self._managed_restore_transaction: dict[str, object] | None = None
@@ -1654,6 +1657,8 @@ class NativeHeadlessGameplayDriver:
     def _ingest(self, frame: dict[str, object]) -> None:
         frame_type = self.state.ingest(frame)
         if frame_type == "hello":
+            # A reconnected worker cannot prove how an earlier send ended.
+            self._owner_command_ledger.reconnect()
             bridge_pid = frame.get("pid")
             if isinstance(bridge_pid, int) and not isinstance(bridge_pid, bool):
                 self._adopt_bridge_session(bridge_pid)
@@ -2382,6 +2387,10 @@ class NativeHeadlessGameplayDriver:
             "native_rollback_war_failure": rollback_war_failure,
             "native_rollback_war_failures": rollback_war_failures,
         }
+
+    def owner_command_lifecycle_receipt_v1(self) -> dict[str, object]:
+        """Read local protocol ownership without asserting cash amounts or zero."""
+        return self._owner_command_ledger.receipt()
 
     def query_ranked_marriage_private_v1(
         self, *, expected_native_revision: int,
@@ -5837,24 +5846,37 @@ class NativeHeadlessGameplayDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        contexts = getattr(self._owner_command_context, "stack", None)
+        if contexts is None:
+            contexts = []
+            self._owner_command_context.stack = contexts
+        request_ids: list[str] = []
+        contexts.append(request_ids)
         try:
-            result = self._execute_step_unrecorded(
-                step, expected_revision=expected_revision
-            )
-        except Exception as error:
+            try:
+                result = self._execute_step_unrecorded(
+                    step, expected_revision=expected_revision
+                )
+            except Exception as error:
+                self._record_command(
+                    step,
+                    ok=False,
+                    result=(
+                        error.step_result
+                        if isinstance(error, StepPostconditionError)
+                        else None
+                    ),
+                    error=f"{type(error).__name__}: {error}",
+                    owner_request_ids=tuple(request_ids),
+                )
+                raise
             self._record_command(
-                step,
-                ok=False,
-                result=(
-                    error.step_result
-                    if isinstance(error, StepPostconditionError)
-                    else None
-                ),
-                error=f"{type(error).__name__}: {error}",
+                step, ok=True, result=result,
+                owner_request_ids=tuple(request_ids),
             )
-            raise
-        self._record_command(step, ok=True, result=result)
-        return result
+            return result
+        finally:
+            contexts.pop()
 
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
@@ -7033,6 +7055,7 @@ class NativeHeadlessGameplayDriver:
         ok: bool,
         result: dict[str, object] | None = None,
         error: str | None = None,
+        owner_request_ids: tuple[str, ...] = (),
     ) -> None:
         with self._history_lock:
             if step == _RESTORE_CHECKPOINT_STEP:
@@ -7081,6 +7104,11 @@ class NativeHeadlessGameplayDriver:
             if error is not None:
                 row["error"] = error
             self._command_history.append(row)
+            if owner_request_ids:
+                self._owner_command_ledger.recorded(
+                    owner_request_ids, history_index=row["index"],
+                    history_ok=ok,
+                )
             self._driver_state_dirty = True
         if not (ok and _is_deferred_read_only_history_step(step)):
             self._persist_driver_state()
@@ -8021,22 +8049,58 @@ class NativeHeadlessGameplayDriver:
                     "native request_fields attempted to replace protocol fields"
                 )
             request.update(request_fields)
-        self.endpoint.send(request)
+        played = snapshot.get("played_character")
+        wars = snapshot.get("active_wars")
+        source_frame = {
+            key: snapshot.get(key)
+            for key in (
+                "snapshot_id", "revision", "native_revision",
+                "date_raw", "episode_run_id",
+            )
+        }
+        source_frame["played_character_id"] = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        source_frame["active_war_ids"] = (
+            [war.get("war_id") for war in wars if isinstance(war, dict)]
+            if isinstance(wars, list) else None
+        )
+        self._owner_command_ledger.begin(
+            request_id, step, snapshot["native_revision"],
+            source_frame=source_frame,
+        )
+        contexts = getattr(self._owner_command_context, "stack", ())
+        if contexts:
+            contexts[-1].append(request_id)
+        try:
+            self.endpoint.send(request)
+            self._owner_command_ledger.sent(request_id)
+        except BaseException:
+            self._owner_command_ledger.unknown(request_id)
+            raise
         command_timeout_seconds = (
             self.command_timeout_seconds
             if timeout_seconds is None
             else _positive_seconds(timeout_seconds, "timeout_seconds")
         )
         command_deadline = time.monotonic() + command_timeout_seconds
-        frame = self.state.wait_for_command_result(
-            request_id, command_timeout_seconds
-        )
+        try:
+            frame = self.state.wait_for_command_result(
+                request_id, command_timeout_seconds
+            )
+        except BaseException:
+            self._owner_command_ledger.unknown(request_id)
+            raise
         if frame is None:
+            self._owner_command_ledger.unknown(request_id)
             if step == QUERY_DECLARABLE_WARS_STEP:
                 raise _NativeCommandResultTimeoutError(step, request_id)
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
+        self._owner_command_ledger.response(
+            request_id, native_ok=frame.get("ok") is True
+        )
         if frame.get("ok") is not True:
             native_error = frame.get("error")
             raise _NativeCommandRejectedError(
