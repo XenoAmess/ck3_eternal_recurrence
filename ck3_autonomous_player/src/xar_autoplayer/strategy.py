@@ -16690,7 +16690,10 @@ def _primary_defender_siege_forecast_ingress(
             defender_army_ids=defenders,
             friendly_current_soldiers=int(balance["friendly_current_soldiers"]),
         )
-        if provisional.get("status") == "provisional_admissible":
+        if (
+            len(defenders) == 1
+            and provisional.get("status") == "provisional_admissible"
+        ):
             # The native route is a real proposal, but the v3 battle is a
             # conditional encounter at its final entry.  A long route must
             # stop at its first waypoint; it cannot spend today's model result
@@ -16916,8 +16919,17 @@ def _provisional_defense_research_assessment(
         and isinstance(p90_hard_loss, int)
         and p90_hard_loss <= hard_loss_budget_raw
     )
+    # A multi-army native v3 frame can be sampled for research, but this
+    # canary's contact action was accepted only for the single-defender case.
+    # Keep multi-defender estimates outside the formal action seam until a
+    # separate qualified decision and participant-risk review are delivered.
+    multi_defender_research_only = len(defender_army_ids) > 1
     return {
-        "status": "provisional_admissible" if admitted else "model_risk_budget_exceeded",
+        "status": (
+            "multi_defender_research_only" if multi_defender_research_only
+            else "provisional_admissible" if admitted else "model_risk_budget_exceeded"
+        ),
+        **({"planner_usable": False} if multi_defender_research_only else {}),
         "model_fidelity": "research_only_phase_events_disabled",
         "calibrated_win_probability_available": False,
         "input_sha256": forecast["input_sha256"],
