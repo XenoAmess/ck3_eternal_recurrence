@@ -22,6 +22,9 @@ from pathlib import Path
 SHOWINFO_FRAME = re.compile(r"\bn:\s*(\d+)\b.*?\bpts_time:([0-9]+(?:\.[0-9]+)?)")
 ATTEMPT_NAME = re.compile(r"episode02-e2-05-a02-visual-index-20260929-a\d{2}\Z")
 EXTERNAL_PARENT = Path("D:/workspace/ck3_native_war_ai_promo_work")
+EXPECTED_LINK_SHA256 = "213988D4278A26EFD4AA93BD8FE8DA2A56234D9B5EC3B1AE019EB53212B0EB0C"
+EXPECTED_RAW_SHA256 = "7FC3D614C50AD958DA57359248A196A230BD2B0B5B511EF242596837042C1C0F"
+EXPECTED_FFPROBE_SHA256 = "06A9C1FB92983390F6EE5FA48352732B09E01C4336B4D956F9CECC19F7C3A1FB"
 
 
 def sha256(path: Path) -> str:
@@ -133,11 +136,15 @@ def main() -> None:
         parser.error("seek values must be distinct integers in [0, 600)")
 
     links_path = args.postrun_links.resolve(strict=True)
-    if sha256(links_path) != args.postrun_links_sha256.upper():
-        raise ValueError("postrun link bytes do not match the pinned SHA-256")
+    if args.postrun_links_sha256.upper() != EXPECTED_LINK_SHA256 or \
+            sha256(links_path) != EXPECTED_LINK_SHA256:
+        raise ValueError("postrun link bytes do not match the E2-05 a02 frozen SHA-256")
     links = json.loads(links_path.read_text(encoding="utf-8"))
     if links.get("result") != "MEDIA_PTS_CANDIDATE_UNREVIEWED":
         raise ValueError("unexpected frozen postrun link status")
+    if links["raw_from_prior_full_sha_audit"]["sha256"] != EXPECTED_RAW_SHA256 or \
+            links["ffprobe_from_prior_full_sha_audit"]["sha256"] != EXPECTED_FFPROBE_SHA256:
+        raise ValueError("postrun link does not bind the exact E2-05 a02 raw and ffprobe")
     raw = args.raw.resolve(strict=True)
     probe = args.ffprobe_json.resolve(strict=True)
     validate_output_directory(args.output, EXTERNAL_PARENT,
