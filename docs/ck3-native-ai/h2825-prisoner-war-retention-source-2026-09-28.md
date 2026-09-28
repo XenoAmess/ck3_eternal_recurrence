@@ -15,7 +15,7 @@ H2825 同一暂停帧为 `native:3` / native revision `3` / `date_raw=53217624`�
 
 本机独立 attempt `D:\ck3-research-artifacts\war31-h2825-20260928\attempt-04\live-plan-readonly-04` 的 `query-01-payload.json` SHA-256 `4FA460AC977EF9C25C2FAAE5E41630CB146A2903D03860B110CF28B2D721F4BD`，由正式规划器先选 `query-war-termination-options-16777231` 后在同一 `native:3`、native revision `3`、日期 `53217624` 只读得到：`active_casus_belli_identity={database_index:17, canonical_key:individual_county_de_jure_cb}`，玩家为 defender、主战分 `-24`。因此对**这场 WarID**，三名囚犯的 FP3 释放威望分支均是 `not_applicable_cb`，优先依据精确 CB 而非只看囚犯 House。此结论不自动适用于玩家可能参与的其他战争；本帧 public active wars 只列此一场。
 
-当前还缺主攻方 full CharacterID 与 House、两侧参与者和两侧 primary title 前三继承人；同帧按囚犯 ID 得到的实际一般 PoW 配对也未发布。一般 PoW、赎金和其他扣留价值仍是 `unavailable`。任何一个人的释放动作均未提交。
+主攻方 House、赎金和其他扣留价值仍未读得。下文 attempt-05 单独取得该战争的主攻方 full CharacterID、双方参与者、两侧 primary title 前三继承人和通用 PoW 配对输入图；attempt-08 才完成三名囚犯、配对图和终战选项的同次暂停帧 join。所有 attempt 均未提交囚犯或战争动作。
 
 ## 可交付的只读接口合同
 
@@ -28,4 +28,32 @@ H2825 同一暂停帧为 `native:3` / native revision `3` / `date_raw=53217624`�
 
 已有 `ReadWarExitPrisonerReleases` 原生函数做过一般配对枚举，但公开 `query-war-termination-exit-terms-v2` 因 `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668` 返回 unavailable；窄 `ReadRaiktorSurrenderPrisonerReleases` 只覆盖 Raiktor CB。现在新增独立 `query-war-prisoner-release-pairs-v1-<WarID>`：它从暂停帧读实际 War/CB/双方参战者、primary 与前三顺位继承人及通用效果的 jailer→prisoner 候选，双采样校验日期和集合，不调用 loaded-effect preview，也不提交动作。Python 驱动只在该 WarID 的暂停快照暴露步骤，校验 native revision、日期、完整扫描和配对一致性；不完整或漂移直接拒绝。新接口**只证明通用效果的输入图**，不证明某个终战按钮此刻可用、已执行或 FP3 专用出口会调用此效果。
 
-目前已落地[只读 source join](../../ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_war_retention.py)：严格比较六项暂停帧身份；只有参与者和前 3 顺位继承人两类原生扫描都明确完整，才允许发布 `not_in_pairs`；否则一般 PoW 一律 `unavailable`。它把 `matched_pair`、FP3 House 分支和当前终战选项可达性分开输出，保留脚本威望 value 与未知实际金额，不提交释放动作。H2825 的**现有实机输入**只能给三人 `fp3_house_member_status=not_applicable_cb`、`generic_pow_pair_status=unavailable`。独立通用 PoW producer 已完成源码接线和离线编译/测试，但**尚无使用新 DLL 的 H2825 实机读回**，不能把三人写成已完成 live PoW 分类，也不能声称赎金价值或完整扣留价值已求出。非战争消费者可把新 producer 的 `war_prisoner_release_pairs_proof` 与同一帧的私有囚犯集合接入上述 source join；只要帧身份不合，保持 `unavailable`。
+目前已落地[只读 source join](../../ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_war_retention.py)：严格比较六项暂停帧身份；只有参与者和前 3 顺位继承人两类原生扫描都明确完整，才允许发布 `not_in_pairs`；否则一般 PoW 一律 `unavailable`。它把 `matched_pair`、FP3 House 分支和当前终战选项可达性分开输出，保留脚本威望 value 与未知实际金额，不提交释放动作。
+
+## attempt-05：新 DLL 的 H2825 通用 PoW producer 只读回执
+
+本机外置 `D:\ck3-research-artifacts\war31-h2825-20260928\attempt-05\live-prisoner-readonly-01` 从原始 H2825 checkpoint SHA-256 `231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D` 冷恢复，以新构建的桥接 DLL SHA-256 `D5AE5B199007D29F0B5B928921FF7B7055C27A866169C62F41B15C6E49C17893` 执行 `query-war-prisoner-release-pairs-v1-16777231`。`query-release-pairs-payload.json` SHA-256 `DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E`：`accepted=true`、`status=available`、`read_only=true`、native revision `3`、`date_raw=53217624`、CB index `17` / `individual_county_de_jure_cb`，主攻 `30097`、主守 `29829`，攻方参与者 `[30097,35357]`、守方 `[29829]`。攻方 primary 加前三继承候选 `[30097,34729,31729,31044]`，守方 `[29829,38822,38988,38293]`；`release_pairs=[]`，`full_participant_scan=true`、`primary_and_first_three_successors_scanned=true`、`same_frame_stable=true`。这些是该战争通用释放效果的原生输入图，不是任何终战动作的执行结果。
+
+同 attempt 后续 `ck3_query_player_prisoner_collection_private_v1` 返回 `private prisoner collection query returned RED or timed out`；正式终战可达性查询未执行。进程已退出，`session-exit.json` 记录原始与本次准备的 checkpoint 哈希相等；其 `error=ExceptionGroup` 表示整次三源 join 验收 **RED**。因此三人的 `generic_pow_pair_status` 在本次已完成的同帧验收中仍保持 `unavailable`；既有旧版私有集合和本次 producer 不应被冒充成一次成功的完整新 DLL 三源读回。FP3 对这场已确认非 FP3 CB 的战争仍是 `not_applicable_cb`。[attempt-05/06 精确摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempts-05-06-readonly.json)随 Git 保存，原始 save/DLL/MCP 回执继续留在外置目录。
+
+## attempts 06–07：私有集合独立复验 RED，07 定位在主线程执行前
+
+attempt-06 用同一原始 checkpoint 和 build-04 配对 DLL/注入器独立冷恢复，**先**发私有集合查询，原生命令回执 `ok=false`、`prisoner collection query did not complete on stable paused frame`；120 秒传输上限没有掩盖该原生 RED。没有囚犯行，也没有继续查询 PoW producer 或终战选项。其六项帧字段与 attempt-05 的冷恢复相同，但分属两次进程，不能拼接成一次成功的三源同帧验收。
+
+attempt-07 使用新 build-05 配对 DLL/注入器和独立 Steam 离线新鲜画面，再从 checkpoint 冷恢复。私有集合仍先于其他 rich query；原生 `command_result` 明确为 `ok=false`：`prisoner collection main-thread query timed out before execution (pump_start=16951, pump_end=16951, wake_attempts=32, wake_succeeded=32, wake_failed=0, last_wake_error=0)`。失败后的两次原生快照跨约 `5.61` 秒保持同一 `native:3`、public revision `4`、native revision `3`、日期 `53217624`、玩家 `29829` 与 episode；均 paused/map ready。心跳序号 `1455→1467`，但 main-thread `pump_epochs` 均为 `16951`，`executor_started_requests=0`、`executed_requests=0`。这把 RED 收窄到**排队后、执行器开始前**：32 次 wake API 成功不等于目标主线程实际继续 pump；当前证据尚不能确定为何 pump 停住。回执和精确 SHA 见[attempt-07 Git 摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempt-07-main-thread-queued-wake-red.json)。进程正常退出且源/准备 checkpoint 哈希未变。
+
+attempt-07 未取得私有囚犯行，也未查询通用 PoW producer 或终战选项。因此**截至该次 RED**，三人的同帧 `generic_pow_pair_status` 仍是 `unavailable`，终战可达性也未验收；attempt-05 的空通用配对扫描只保留为那次独立的 producer 证据。没有提交释放、赎金或战争退出动作。
+
+## attempt-08：三源同一暂停帧只读 GREEN
+
+新 attempt 从 SHA-256 `231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D` 的原始 checkpoint 冷恢复，使用 build-05 配对 DLL `307A3C752C95EA246738DC73A792EF376B0C5E2144BD547403F6153ADA4A6A27` 与注入器 `1C792EA3DE0779ACCCF3CE069A793C75947B17F0590B4A3C642E49A0436272AD`。本次 Steam 离线新鲜画面已独立目视回读。正式 read-only 脚本先等到暂停主线程的 `pump_epochs` 在同一 H2825 帧内前进：首次 gate `16571→16577`，私有查询前 gate `16577→16613`，两 gate 都是 `GREEN`，均未替查询提交原生 ticket。随后依次读取通用 PoW producer、正式终战选项和私有囚犯集合；两次查询间及最终的原生快照均保持 `snapshot_id=native:3`、public revision `4`、native revision `3`、日期 `53217624`、玩家 `29829`、episode `native-29829-2bc2d599f7f9`。
+
+通用 PoW producer `query-release-pairs-payload.json` SHA-256 `DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E`，再次给出完整扫描和 `release_pairs=[]`。私有囚犯集合 `query-prisoners-payload.json` SHA-256 `B82ECF6BD529146815048011724AE10C2B5D4D18EB829F33E9032A90C16868B8`，返回完整三行、玩家 `29829` 为每人 jailer、custody relation 均已核验，House 分别为 `2370/null/null`。三人的独立**无条件释放 preview** 均为 `status=available`、`can_send=true`、`auto_accept=true`、`would_accept_now=true`，且 `read_only=true`、`action_surface_present=false`；这证明该个人释放预览合法，不表示已提交释放，也不与一般 PoW 配对为空冲突。source join `same-frame-source-join.json` SHA-256 `9217C85FFAF5A7B782801E7A3DD3F05FB751022E2A7284AE47ED9588B06EC34E` 给出三人相同的结果：
+
+| 囚犯 full CharacterID | `generic_pow_pair_status` | `fp3_house_member_status` | `pending_war_retention_commitment` |
+| --- | --- | --- | --- |
+| `34486` | `not_in_pairs` | `not_applicable_cb` | `not_from_these_two_rules` |
+| `44484` | `not_in_pairs` | `not_applicable_cb` | `not_from_these_two_rules` |
+| `47028` | `not_in_pairs` | `not_applicable_cb` | `not_from_these_two_rules` |
+
+正式 `query-war-termination-options-16777231` payload SHA-256 `955217CD4772EF0EEF6312DFC6B581FFB41A2C8444447BF77C11671A3D104DE2`：当前**投降可用**，白和平与胜利**不可用**，所以 join 中 `war_exit_option_available_now=true` 只对应投降这一项；三个选项的 CB 专用终战条款均 `cb_specific_terms_not_observable`，不能据此列出实际投降释放、资源转移或最终结算。`not_in_pairs` 只否定这场战争当前通用 PoW 效果中的配对，不否定上述个人释放预览；`not_from_these_two_rules` 只否定此 join 所覆盖的两条战争规则。赎金、关系价值、其他囚犯保留理由及未来日期仍未定价。只读结果 `read-only-result.json` SHA-256 `36C348A60E08E7BE816B9EC0BA57EF134FBD712A2590C16B5BC6AB360AF7FA51`，退出回执记录 CK3 进程为空、源与准备存档 SHA 未变、`error=null`；没有提交投降、释放、赎金、军队移动或日期推进。精确原始回执哈希及 gate 详情随[attempt-08 Git 摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempt-08-same-frame-green.json)保存。build-05 CTest `172/172` GREEN，但静态测试不代替上述实机读回。

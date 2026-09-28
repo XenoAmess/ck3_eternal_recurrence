@@ -178,6 +178,41 @@ def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool,
                     receipt["foreground_restore_error"] = str(exc)
 
 
+def reject_repeated_frame(reference_path: Path, receipt: dict,
+                          probe_dir: Path) -> None:
+    """Reject an identical moved desktop frame from an older probe."""
+    reference = json.loads(reference_path.read_text(encoding="utf-8"))
+    if reference.get("schema") != "ck3.steam_fresh_desktop_frame.v1":
+        raise ValueError("stale-frame reference is not a capture receipt")
+    captured = datetime.fromisoformat(reference["captured_at_utc"])
+    if captured.tzinfo is None or (
+        datetime.now(timezone.utc) - captured.astimezone(timezone.utc)
+    ).total_seconds() < 120:
+        raise ValueError("stale-frame reference must be at least 120 seconds old")
+    identity = reference.get("moved_identity")
+    current = receipt.get("moved_identity")
+    if not isinstance(identity, dict) or not isinstance(current, dict):
+        raise ValueError("stale-frame comparison lacks image identities")
+    if any(reference.get(key) != receipt.get(key) for key in (
+        "steam_hwnd", "desktop_size", "moved_rect"
+    )):
+        raise ValueError("stale-frame reference has different capture geometry")
+    if (identity.get("sha256") == current.get("sha256")
+            and identity.get("bytes") == current.get("bytes")):
+        stale = {
+            "reason": "identical moved desktop frame after at least 120 seconds",
+            "reference_receipt": str(reference_path),
+            "reference_captured_at_utc": reference["captured_at_utc"],
+            "moved_identity": current,
+        }
+        with (probe_dir / "steam-frame-stale.json").open(
+            "x", encoding="utf-8", newline="\n"
+        ) as stream:
+            json.dump(stale, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+        raise RuntimeError(STALE_CAPTURE_ERROR)
+
+
 def inspect(bus: Path) -> dict:
     try:
         tasks = task_bus_tasks(bus)
@@ -252,6 +287,9 @@ def recover(args: argparse.Namespace) -> dict:
                         receipt = capture_fresh_frame(
                             probe_dir, hwnd, args.bring_steam_forward,
                             clock_reference=clock_reference, clock_rect=tuple(clock_rect))
+                    frame_reference = getattr(args, "stale_frame_reference", None)
+                    if frame_reference is not None:
+                        reject_repeated_frame(frame_reference, receipt, probe_dir)
                     record("fresh_frame", attempt=attempt, receipt=receipt)
                     fresh_frame = {"receipt_path": str(probe_dir / "steam-frame-freshness.json"),
                                    "image_identity": receipt.get("moved_identity")}
@@ -304,6 +342,8 @@ def main() -> None:
                           help="previously reviewed desktop screenshot with a visible clock")
     recovery.add_argument("--stale-clock-rect", type=int, nargs=4,
                           metavar=("LEFT", "TOP", "RIGHT", "BOTTOM"))
+    recovery.add_argument("--stale-frame-reference", type=Path,
+                          help="capture receipt at least 120 seconds old; identical moved pixels are stale")
     recovery.add_argument("--service-timeout-seconds", type=int, default=20)
     args = parser.parse_args()
     if args.mode == "recover" and args.service_timeout_seconds <= 0:

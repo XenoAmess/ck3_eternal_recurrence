@@ -1,0 +1,188 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-extract.v1",
+  "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
+  "attempt": "attempt-08/live-prisoner-readonly-01",
+  "extract_created_at_utc": "2026-09-28T03:12:31Z",
+  "scope": "Independent read-only H2825 cold restore: generic PoW source scan, war termination options, and private three-prisoner collection completed against one paused six-field frame. Source join passed. No game action was submitted.",
+  "local_artifact_root": "D:\\ck3-research-artifacts\\war31-h2825-20260928",
+  "local_artifact_root_is_not_remote_asset_delivery": true,
+  "source_checkpoint_sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "paired_build_05_bridge_dll_sha256": "307A3C752C95EA246738DC73A792EF376B0C5E2144BD547403F6153ADA4A6A27",
+  "paired_build_05_injector_sha256": "1C792EA3DE0779ACCCF3CE069A793C75947B17F0590B4A3C642E49A0436272AD",
+  "paused_frame": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53217624,
+    "played_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "paused": true,
+    "map_ready": true
+  },
+  "steam_offline_fresh_frame": {
+    "human_readback": "Steam lower bar visibly shows 离线模式; independent desktop challenge tokens and changed pixels are recorded in the local receipt.",
+    "image_relative_to_local_artifact_root": "attempt-08/desktop-challenge-01/desktop-challenge-2.png",
+    "image_sha256": "19EBAFA7F2774E0BC0D409C1666144D960BE752D2C0559BEAD53C61677DE8F2E",
+    "receipt_sha256": "810E0164CFE533283D8DDB4D4735857F04DF04CCE38FCBCC3164EA0EBBA8BACD"
+  },
+  "paused_main_thread_pump_gates": {
+    "post_ready": {
+      "status": "GREEN",
+      "elapsed_seconds": 17.143,
+      "sample_count": 16,
+      "heartbeat_first_last": [1433, 1491],
+      "pump_epochs_first_last": [16571, 16577],
+      "same_h2825_frame": true,
+      "native_ticket_submitted_by_gate": false,
+      "gate_sha256": "ADF1571B3B6036743E4095264F8808E46E75FCCAEA829E407B813A5A0B3A7314",
+      "post_snapshot_sha256": "A44936F769A716700CC1C1A1BA1005E3E1BE49DCA240AB00AE0BF17F7CA5FAD3"
+    },
+    "pre_private": {
+      "status": "GREEN",
+      "elapsed_seconds": 4.807,
+      "sample_count": 4,
+      "heartbeat_first_last": [1526, 1535],
+      "pump_epochs_first_last": [16577, 16613],
+      "same_h2825_frame": true,
+      "native_ticket_submitted_by_gate": false,
+      "gate_sha256": "2F749E0552FDE4971DD21101537B2FA44FED238A5505838FA07F6767D247ADC8",
+      "post_snapshot_sha256": "204A7BE95484FC74BF170154F46DF5E2D5DB45C2BB64BA66526633EC1934A939"
+    }
+  },
+  "query_order": [
+    "query-war-prisoner-release-pairs-v1-16777231",
+    "query-war-termination-options-16777231",
+    "ck3_query_player_prisoner_collection_private_v1"
+  ],
+  "generic_pow_source_query": {
+    "accepted": true,
+    "status": "available",
+    "read_only": true,
+    "snapshot_revision": 3,
+    "war_id": 16777231,
+    "date_raw": 53217624,
+    "active_casus_belli_database_index": 17,
+    "active_casus_belli_key": "individual_county_de_jure_cb",
+    "primary_attacker_character_id": 30097,
+    "primary_defender_character_id": 29829,
+    "attacker_participant_ids": [30097, 35357],
+    "defender_participant_ids": [29829],
+    "attacker_release_candidate_ids": [30097, 34729, 31729, 31044],
+    "defender_release_candidate_ids": [29829, 38822, 38988, 38293],
+    "release_pairs": [],
+    "full_participant_scan": true,
+    "primary_and_first_three_successors_scanned": true,
+    "same_frame_stable": true,
+    "payload_sha256": "DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E"
+  },
+  "war_termination_options_query": {
+    "accepted": true,
+    "status": "available",
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3,
+    "war_id": 16777231,
+    "player_side": "defender",
+    "player_relative_war_score": -24,
+    "active_casus_belli_key": "individual_county_de_jure_cb",
+    "surrender_available": true,
+    "white_peace_available": false,
+    "victory_available": false,
+    "cb_specific_terms_observable_for_any_option": false,
+    "terms_unavailable_reason": "cb_specific_terms_not_observable",
+    "payload_sha256": "955217CD4772EF0EEF6312DFC6B581FFB41A2C8444447BF77C11671A3D104DE2"
+  },
+  "private_prisoner_collection_query": {
+    "status": "available",
+    "private_build": true,
+    "read_only": true,
+    "advertised": false,
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3,
+    "observation_revision": 17158,
+    "schema_version": 3,
+    "collection_complete": true,
+    "total_count": 3,
+    "returned_count": 3,
+    "played_character_id": 29829,
+    "played_house_id": 174,
+    "jailer_character_id_for_all_rows": 29829,
+    "custody_relation_verified_for_all_rows": true,
+    "unconditional_release_preview_for_all_three": {
+      "status": "available",
+      "can_send": true,
+      "auto_accept": true,
+      "would_accept_now": true,
+      "read_only": true,
+      "action_surface_present": false,
+      "preview_is_not_an_action_submission": true
+    },
+    "native_command_result_ok": true,
+    "payload_sha256": "B82ECF6BD529146815048011724AE10C2B5D4D18EB829F33E9032A90C16868B8",
+    "native_command_result_sha256": "07348282096C70380F424C06D23C9EAF43B167E6DFF5BBC7A880CD21296986FE"
+  },
+  "same_frame_source_join": {
+    "status": "GREEN",
+    "generic_pow_source_scan_complete": true,
+    "war_exit_option_available_now": true,
+    "named_prisoners": [
+      {
+        "character_id": 34486,
+        "jailer_character_id": 29829,
+        "house_id": 2370,
+        "generic_pow_pair_status": "not_in_pairs",
+        "fp3_house_member_status": "not_applicable_cb",
+        "pending_war_retention_commitment": "not_from_these_two_rules"
+      },
+      {
+        "character_id": 44484,
+        "jailer_character_id": 29829,
+        "house_id": null,
+        "generic_pow_pair_status": "not_in_pairs",
+        "fp3_house_member_status": "not_applicable_cb",
+        "pending_war_retention_commitment": "not_from_these_two_rules"
+      },
+      {
+        "character_id": 47028,
+        "jailer_character_id": 29829,
+        "house_id": null,
+        "generic_pow_pair_status": "not_in_pairs",
+        "fp3_house_member_status": "not_applicable_cb",
+        "pending_war_retention_commitment": "not_from_these_two_rules"
+      }
+    ],
+    "join_sha256": "9217C85FFAF5A7B782801E7A3DD3F05FB751022E2A7284AE47ED9588B06EC34E",
+    "read_only_result_sha256": "36C348A60E08E7BE816B9EC0BA57EF134FBD712A2590C16B5BC6AB360AF7FA51"
+  },
+  "frame_and_exit_invariants": {
+    "after_producer_same_six_fields": true,
+    "after_termination_same_six_fields": true,
+    "after_private_same_six_fields": true,
+    "before_snapshot_sha256": "6777D9A3CA1AAB2DD5EC2B3F39EBE426DA9440A8ACB04408F4CD53F793F02E55",
+    "after_producer_snapshot_sha256": "B554D8FB1F2E3EF2927205499226FF8F2AFDAA09F281F81320D0D34E2DCEC6AB",
+    "after_termination_snapshot_sha256": "6C93506CFA6F4DFC0C0D55D7887E5D862569670C9C9F1D718AB9A508BC5A21AB",
+    "after_private_snapshot_sha256": "795319CD2B1E804D95E72A36926DFE0589FAD05C02C8AE0FD03A51E5F5BF4A84",
+    "source_checkpoint_sha256_after": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+    "prepared_checkpoint_sha256_after": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+    "ck3_processes_after_exit": [],
+    "native_session_returncode": 0,
+    "harness_error": null,
+    "gameplay_action_submitted": false,
+    "date_advanced": false,
+    "launch_plan_sha256": "43D472D050024C89C6EB52B2410EADFFFC3BE13367EFC0762DCDE45B2D7E5FF9",
+    "session_exit_sha256": "0F6DE49714971F8666D5401141622E97F6D818EBDEACD2C420ADB44E661FE98C"
+  },
+  "native_build_05_static_tests": {
+    "ctest_count": 172,
+    "ctest_passed": 172,
+    "ctest_failed": 0,
+    "last_test_log_sha256": "E90BED20984D87AB11EB1E487C717F5B85123759A38F9CE4F4C9661A1548EBC1"
+  },
+  "limitations": [
+    "not_in_pairs denies only the generic release-prisoners-of-war input pair for this war and paused frame; it does not price ransom, relationship, or every future custody consequence",
+    "surrender is available now, while white peace and victory are unavailable; CB-specific termination terms are unavailable for all three options",
+    "no surrender, release, ransom, movement, or date-advance command was submitted"
+  ]
+}

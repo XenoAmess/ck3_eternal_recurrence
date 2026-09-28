@@ -22,3 +22,9 @@
 本机任务总线 `ck3-next-war-battle-ledger-research-20260926` 已设为 `waiting`，不持有屏幕资源；其下一步指向本交接页。没有后台 CK3 采集或编译流程留给接手者。
 
 跨团队请求以 [`war-requests/README.md`](../autonomous-agent-progress/coordination/war-requests/README.md) 为准：`delivered` 只是战争维护者交付，消费方需单独写 `verifications/` 的真实匹配验证。接手时先 `git fetch origin master`、核对最新 request/response，再在隔离工作区复现；Steam 默认离线，OneDrive 客户端仍只允许已选择同步目录及精确文件，不能为了取其他资产启动无约束下载。
+
+## 2026-09-28 续办补记：H2825 attempt-08
+
+上文“尚无新 DLL 实机证据”及一般 PoW `unavailable` 是本页最初交接时的状态，保留作历史记录。续办者在独立 attempt-08 以新配对 DLL 从同一 H2825 checkpoint 冷恢复，完成通用 PoW、私有三囚犯集合及正式终战选项的同次暂停帧只读 join；三人 `34486/44484/47028` 均为 `generic_pow_pair_status=not_in_pairs`、`fp3_house_member_status=not_applicable_cb`。原始哈希和门禁见[attempt-08 精确摘录](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempt-08-same-frame-green.json)，结论与保留边界见[更新响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-PRISONER-RETENTION-H2825-20260928.json)及[战俘文档](../ck3-native-ai/h2825-prisoner-war-retention-source-2026-09-28.md)。
+
+当前只有投降选项可用，白和平与胜利不可用；CB 专用终战条款仍不可观测。三人的独立无条件释放预览均可发送且自动接受，但未提交释放、投降或其他游戏动作，未推进日期。较早 attempts 05–07 的 RED/部分证据仍保留；本次新响应和摘录须进入 `master` 后才可由非战争消费方正式引用，其 `verifications/` 仍由消费方另行填写。

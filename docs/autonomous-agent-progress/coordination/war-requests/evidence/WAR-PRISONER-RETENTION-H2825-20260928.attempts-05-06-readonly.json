@@ -1,0 +1,129 @@
+{
+  "schema": "xar.g2.cross-team-war-evidence-extract.v1",
+  "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
+  "extract_created_at_utc": "2026-09-28T02:37:37Z",
+  "scope": "Two independent local H2825 cold restores: attempt-05 generic PoW producer available, attempt-05 private collection MCP error, attempt-06 private collection native RED. This is an exact compact extract, not the raw save or complete MCP envelopes.",
+  "local_artifact_root": "D:\\ck3-research-artifacts\\war31-h2825-20260928",
+  "local_artifact_root_is_not_remote_asset_delivery": true,
+  "source_checkpoint_sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+  "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "paired_build_04_bridge_dll_sha256": "D5AE5B199007D29F0B5B928921FF7B7055C27A866169C62F41B15C6E49C17893",
+  "paired_build_04_injector_sha256": "ABA84C7155B2FB412647E6585B7A7A44B34D24A49A3FD450A44D96F858576A42",
+  "requested_war_id": 16777231,
+  "request_named_prisoner_ids": [34486, 44484, 47028],
+  "attempts": [
+    {
+      "attempt": "attempt-05/live-prisoner-readonly-01",
+      "query_order": [
+        "query-war-prisoner-release-pairs-v1-16777231",
+        "ck3_query_player_prisoner_collection_private_v1"
+      ],
+      "paused_frame_before_queries": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53217624,
+        "played_character_id": 29829,
+        "episode_run_id": "native-29829-2bc2d599f7f9"
+      },
+      "steam_offline_fresh_frame": {
+        "human_readback": "Steam lower bar visibly shows 离线模式; independent desktop challenge token and pixels changed are recorded in the local receipt.",
+        "image_relative_to_local_artifact_root": "attempt-05/desktop-challenge-01/desktop-challenge-2.png",
+        "image_sha256": "8D3BCC0DC718520DE351F5F13D06AAB77C598E3C12AB905E548E870C7EEBF8FA",
+        "receipt_sha256": "E7610E5C74934D11F7C34264F0CD93A9AE61351D387616F879187FFA75093949"
+      },
+      "generic_pow_producer": {
+        "step": "query-war-prisoner-release-pairs-v1-16777231",
+        "accepted": true,
+        "status": "available",
+        "read_only": true,
+        "query_sequence": 1,
+        "snapshot_revision": 3,
+        "war_id": 16777231,
+        "date_raw": 53217624,
+        "active_casus_belli_database_index": 17,
+        "active_casus_belli_key": "individual_county_de_jure_cb",
+        "primary_attacker_character_id": 30097,
+        "primary_defender_character_id": 29829,
+        "attacker_participant_ids": [30097, 35357],
+        "defender_participant_ids": [29829],
+        "attacker_release_candidate_ids": [30097, 34729, 31729, 31044],
+        "defender_release_candidate_ids": [29829, 38822, 38988, 38293],
+        "release_pairs": [],
+        "full_participant_scan": true,
+        "primary_and_first_three_successors_scanned": true,
+        "same_frame_stable": true,
+        "payload_sha256": "DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E"
+      },
+      "private_prisoner_collection": {
+        "status": "mcp_error",
+        "error_text": "private prisoner collection query returned RED or timed out",
+        "named_rows_available": false,
+        "envelope_sha256": "BE57122F1FB9EAC36CBF17072DFF24BF8AC6699DAD7EFF1915660A6822E7224E"
+      },
+      "war_termination_options_queried": false,
+      "artifact_sha256": {
+        "before-payload.json": "FB943FE33A350468E3A05644B81779CEBB92F328F49425FF69D71FCB1D4C7829",
+        "launch-plan.json": "72AA8BE6CED2293BCF039417A83BAA93BF4C001A3747271837A8362E3C8B43FC",
+        "session-exit.json": "513DF991E32F1FAEA52613627D4F1839A77AC8633038DCA10C8C0BDD47917A12"
+      },
+      "managed_exit": {
+        "returncode": 0,
+        "ck3_processes": [],
+        "source_and_prepared_checkpoint_unchanged": true,
+        "full_same_frame_join": "RED"
+      }
+    },
+    {
+      "attempt": "attempt-06/live-prisoner-readonly-01",
+      "query_order": ["ck3_query_player_prisoner_collection_private_v1"],
+      "paused_frame_before_queries": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53217624,
+        "played_character_id": 29829,
+        "episode_run_id": "native-29829-2bc2d599f7f9"
+      },
+      "steam_offline_fresh_frame": {
+        "human_readback": "Steam lower bar visibly shows 离线模式; independent desktop challenge token and pixels changed are recorded in the local receipt.",
+        "image_relative_to_local_artifact_root": "attempt-06/desktop-challenge-01/desktop-challenge-2.png",
+        "image_sha256": "477FCB5BAA3D73F5B74AC6ED569FA35880F845CDCDB60F3547E82371BAB124FC",
+        "receipt_sha256": "AE0193E9838D836BB378A56F1A696DF66EC8F7D740C98DB85950824285817940"
+      },
+      "private_prisoner_collection": {
+        "status": "native_red",
+        "native_command_result_ok": false,
+        "native_error": "prisoner collection query did not complete on stable paused frame",
+        "transport_timeout_seconds": 120,
+        "named_rows_available": false,
+        "native_command_result_sha256": "04F86AA1F26B4D5451CD3283F139824BB5AB22578C9DD3F8A9C9A11B63339A78",
+        "mcp_envelope_sha256": "931993CCBEAE9FA1805252509E8547EBB3188A13DC9062A83B61271F8F87494F"
+      },
+      "generic_pow_producer_queried": false,
+      "war_termination_options_queried": false,
+      "artifact_sha256": {
+        "before-payload.json": "92BE3D5B3C7510B541D9113D02EE8053745AAEA31AEF2875CD1FE13BF5A7A257",
+        "launch-plan.json": "FED3DA9F4E23AB043038511D6BDB72425336235BE542B18584B7BB19A280E995",
+        "session-exit.json": "A958DE9B9984AAA7AE147538C40CBE239550C2D53D728C437E5E722438DF83B4"
+      },
+      "managed_exit": {
+        "returncode": 0,
+        "ck3_processes": [],
+        "source_and_prepared_checkpoint_unchanged": true,
+        "full_same_frame_join": "RED"
+      }
+    }
+  ],
+  "conclusion": {
+    "generic_pow_input_graph_for_war_16777231": "available_in_attempt_05_only",
+    "private_three_prisoner_rows_with_new_dll": "unavailable",
+    "three_prisoner_same_attempt_join": "not_completed",
+    "generic_pow_pair_status_for_named_prisoners": "unavailable_in_this_evidence",
+    "fp3_status_for_this_war": "not_applicable_cb_because_confirmed_cb_is_individual_county_de_jure_cb",
+    "actual_war_exit_release_or_option_availability": "unavailable",
+    "prisoner_release_or_ransom_action_submitted": false,
+    "game_date_advance_submitted": false,
+    "cross_attempt_equivalent_frame_fields_are_not_a_completed_same_attempt_join": true
+  }
+}

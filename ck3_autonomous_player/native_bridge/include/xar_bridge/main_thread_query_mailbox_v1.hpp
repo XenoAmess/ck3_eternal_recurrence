@@ -491,7 +491,7 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
 void SignalMainThreadQueryMailboxProcessDetachV1(
     MainThreadQueryMailboxV1 &mailbox) noexcept;
 
-// Optional observation for the battle-control queued wait. A wake is the
+// Optional observation for queued application-main waits. A wake is the
 // existing inert WM_NULL thread message; it never executes a gameplay step.
 struct MainThreadQueryQueuedWakeTraceV1 {
   std::uint64_t pump_epoch_at_start = 0;

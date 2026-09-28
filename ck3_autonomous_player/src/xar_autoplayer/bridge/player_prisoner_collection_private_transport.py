@@ -84,8 +84,17 @@ def query_player_prisoner_collection_private_v1(
         "expected_revision": native_revision,
     })
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
-    if not isinstance(frame, dict) or frame.get("type") != "command_result" or frame.get("protocol_version") != 1 or frame.get("request_id") != request_id or frame.get("ok") is not True:
-        raise BridgeUnavailableError("private prisoner collection query returned RED or timed out")
+    if frame is None:
+        raise BridgeUnavailableError("private prisoner collection command_result timed out")
+    if not isinstance(frame, dict) or frame.get("type") != "command_result" or frame.get("protocol_version") != 1 or frame.get("request_id") != request_id:
+        raise BridgeUnavailableError("private prisoner collection command_result is malformed")
+    if frame.get("ok") is not True:
+        native_error = frame.get("error")
+        if not isinstance(native_error, str) or not native_error:
+            native_error = "unknown native error"
+        raise BridgeUnavailableError(
+            f"private prisoner collection native RED: {native_error}"
+        )
     envelope = frame.get("result")
     if (
         not isinstance(envelope, dict) or set(envelope) != _ENVELOPE_KEYS

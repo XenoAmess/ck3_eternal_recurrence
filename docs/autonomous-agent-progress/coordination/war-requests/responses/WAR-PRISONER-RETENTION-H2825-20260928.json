@@ -3,7 +3,7 @@
   "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T01:19:52Z",
+  "updated_at_utc": "2026-09-28T03:16:34Z",
   "source_pr": null,
   "master_commit": "b164b0a3707c189b5cbb77dcc3601676445fd6ed",
   "delivery_route": "direct rebase-only master push",
@@ -15,24 +15,102 @@
     "consumer_join_source": "ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_war_retention.py:project_prisoner_war_retention",
     "same_frame_contract": "The read-only native query requires a paused, stable WarID/CB/participant/primary-successor scan and returns jailer/prisoner pairs only after double sampling. The driver binds native revision and date, rejects incomplete or contradictory scans, and leaves actual exit feasibility and prisoner relationship value to separate same-frame consumers.",
     "h2825_confirmed_cb": "individual_county_de_jure_cb, database index 17, player defender 29829, native:3/native revision 3/date_raw 53217624",
-    "named_prisoner_static_result": [
-      {"character_id": 34486, "house_id": 2370, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "unavailable"},
-      {"character_id": 44484, "house_id": null, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "unavailable"},
-      {"character_id": 47028, "house_id": null, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "unavailable"}
+    "named_prisoner_current_result": [
+      {"character_id": 34486, "jailer_character_id": 29829, "house_id": 2370, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "not_in_pairs", "pending_war_retention_commitment": "not_from_these_two_rules"},
+      {"character_id": 44484, "jailer_character_id": 29829, "house_id": null, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "not_in_pairs", "pending_war_retention_commitment": "not_from_these_two_rules"},
+      {"character_id": 47028, "jailer_character_id": 29829, "house_id": null, "fp3_house_member_status": "not_applicable_cb", "generic_pow_pair_status": "not_in_pairs", "pending_war_retention_commitment": "not_from_these_two_rules"}
     ],
     "action_boundary": "No prisoner release, ransom, war exit, army movement or game-date advance was submitted by this request. Generic PoW source candidates do not by themselves prove exit availability or actual release."
   },
   "checks": [
-    "Native ck3_11906.cpp, bridge.cpp, ck3_11906_adapter.cpp and game_adapter.cpp changed objects compiled with the external MSVC/Ninja build; no full DLL link or live injection was claimed.",
+    "The source delivery at master commit b164b0a compiled changed native objects; attempt-05 subsequently linked and loaded a separate new build-04 DLL and injector. This response does not turn its incomplete three-source readback into a passing live join.",
     "test_prisoner_war_retention.py plus test_war_termination_contract.py: 14 passed, 27 subtests passed; focused prisoner tests: 6 passed after final added literal test.",
-    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN."
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check GREEN.",
+    "attempt-05 query-release-pairs-payload.json SHA-256 DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E independently hash-verified; accepted read-only producer result, native revision 3/date_raw 53217624, complete scans, empty release_pairs. The private prisoner collection returned RED or timed out; the full same-frame join is RED.",
+    "attempt-06 queried private prisoner collection first and received native RED: prisoner collection query did not complete on stable paused frame. No private rows, PoW producer or termination option result was obtained in that attempt.",
+    "attempt-07 with build-05 DLL SHA-256 307A3C752C95EA246738DC73A792EF376B0C5E2144BD547403F6153ADA4A6A27 returned a more specific native RED before main-thread execution: pump 16951 to 16951, 32/32 successful queued wake calls, zero failed wakes. Immediate/post-heartbeat snapshots retained the paused H2825 frame; heartbeat 1455 to 1467 while pump and executor-start counts did not advance. Raw hashes and an exact Git extract are recorded separately.",
+    "build-05 CTest LastTest.log SHA-256 E90BED20984D87AB11EB1E487C717F5B85123759A38F9CE4F4C9661A1548EBC1: 172/172 Test Passed, zero LastTestsFailed.log; CMake private prisoner collection and release preview flags ON.",
+    "attempt-08 independent cold restore GREEN: post-ready and pre-private pump gates advanced on the unchanged H2825 frame without submitting a query ticket; generic PoW producer, war termination options and complete private three-prisoner collection all returned available in one native:3/public 4/native 3/date_raw 53217624/episode frame. Source join classified all three not_in_pairs and FP3 not_applicable_cb. Session exit 0, no CK3 processes, original/prepared saves unchanged; no gameplay action or date advance."
   ],
-  "live_evidence": null,
+  "live_evidence": {
+    "scope": "attempts-05-07 preserved RED or producer-only; attempt-08 three-query same-frame source join GREEN",
+    "git_extracts": [
+      "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempts-05-06-readonly.json",
+      "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempt-07-main-thread-queued-wake-red.json",
+      "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-PRISONER-RETENTION-H2825-20260928.attempt-08-same-frame-green.json"
+    ],
+    "git_extract_sha256": {
+      "attempts-05-06-readonly": "EA0A8F2F378B47FE6B4692230C3B30CACFCC1DA25FDD629F71ABE03087805D0B",
+      "attempt-07-main-thread-queued-wake-red": "F2FD37B70CEBD3C8607CD8532C37AF1F313BE4C7EFA1498C84C611A0B11F6CDE",
+      "attempt-08-same-frame-green": "A9DD3916B0BDC804DC7BD8DE8CDF481611386E2FECD9CF7D3F093539C25FB529"
+    },
+    "attempt_05_producer_only": {
+      "artifact_dir": "D:\\ck3-research-artifacts\\war31-h2825-20260928\\attempt-05\\live-prisoner-readonly-01",
+      "bridge_dll_sha256": "D5AE5B199007D29F0B5B928921FF7B7055C27A866169C62F41B15C6E49C17893",
+      "checkpoint_sha256": "231513D308A7D62D2F9CBF354D872C9F15FF1FB2B24B2CCAFF2480CF5E14B13D",
+      "query_step": "query-war-prisoner-release-pairs-v1-16777231",
+      "query_payload_sha256": "DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E",
+      "native_revision": 3,
+      "date_raw": 53217624,
+      "cb_key": "individual_county_de_jure_cb",
+      "primary_attacker_character_id": 30097,
+      "primary_defender_character_id": 29829,
+      "attacker_participant_ids": [30097, 35357],
+      "defender_participant_ids": [29829],
+      "attacker_release_candidate_ids": [30097, 34729, 31729, 31044],
+      "defender_release_candidate_ids": [29829, 38822, 38988, 38293],
+      "release_pairs": [],
+      "full_participant_scan": true,
+      "primary_and_first_three_successors_scanned": true,
+      "same_frame_stable": true
+    },
+    "private_collection_status": "attempt-08_available_complete_three_rows; attempts-05-07_preserved_red",
+    "attempt_07": {
+      "artifact_dir": "D:\\ck3-research-artifacts\\war31-h2825-20260928\\attempt-07\\live-prisoner-readonly-01",
+      "bridge_dll_sha256": "307A3C752C95EA246738DC73A792EF376B0C5E2144BD547403F6153ADA4A6A27",
+      "native_command_result_sha256": "0383CF39E34AE1C73E6E43D5E93C086D23D26E0BC611938BF44D4EC66526B5C2",
+      "native_error": "prisoner collection main-thread query timed out before execution (pump_start=16951, pump_end=16951, wake_attempts=32, wake_succeeded=32, wake_failed=0, last_wake_error=0)",
+      "post_heartbeat_observation_receipt_sha256": "DA3749E55BD0080BA5BBE47431E36ADE4E140A801BA05276C12183DA44994673",
+      "heartbeat_sequence_before_after": [1455, 1467],
+      "pump_epochs_before_after": [16951, 16951],
+      "executor_started_requests_before_after": [0, 0],
+      "same_paused_frame_after_error": true,
+      "source_and_prepared_checkpoint_unchanged": true,
+      "managed_processes_after_exit": []
+    },
+    "attempt_08": {
+      "artifact_dir": "D:\\ck3-research-artifacts\\war31-h2825-20260928\\attempt-08\\live-prisoner-readonly-01",
+      "bridge_dll_sha256": "307A3C752C95EA246738DC73A792EF376B0C5E2144BD547403F6153ADA4A6A27",
+      "frame": {"snapshot_id": "native:3", "revision": 4, "native_revision": 3, "date_raw": 53217624, "played_character_id": 29829, "episode_run_id": "native-29829-2bc2d599f7f9"},
+      "generic_pow_payload_sha256": "DA66D81DFA1A3252A3427BF6BB15D919FE35E0689CB1D021F33B482F2261305E",
+      "private_collection_payload_sha256": "B82ECF6BD529146815048011724AE10C2B5D4D18EB829F33E9032A90C16868B8",
+      "war_termination_payload_sha256": "955217CD4772EF0EEF6312DFC6B581FFB41A2C8444447BF77C11671A3D104DE2",
+      "same_frame_source_join_sha256": "9217C85FFAF5A7B782801E7A3DD3F05FB751022E2A7284AE47ED9588B06EC34E",
+      "read_only_result_sha256": "36C348A60E08E7BE816B9EC0BA57EF134FBD712A2590C16B5BC6AB360AF7FA51",
+      "source_scan_complete": true,
+      "release_pairs": [],
+      "named_prisoner_generic_pow_pair_status": {"34486": "not_in_pairs", "44484": "not_in_pairs", "47028": "not_in_pairs"},
+      "named_prisoner_fp3_house_member_status": {"34486": "not_applicable_cb", "44484": "not_applicable_cb", "47028": "not_applicable_cb"},
+      "unconditional_release_preview_for_all_three": {"status": "available", "can_send": true, "auto_accept": true, "would_accept_now": true, "read_only": true, "action_surface_present": false},
+      "surrender_available": true,
+      "white_peace_available": false,
+      "victory_available": false,
+      "cb_specific_terms_observable": false,
+      "session_exit_sha256": "0F6DE49714971F8666D5401141622E97F6D818EBDEACD2C420ADB44E661FE98C",
+      "source_and_prepared_checkpoint_unchanged": true,
+      "managed_processes_after_exit": [],
+      "gameplay_action_submitted": false,
+      "date_advanced": false
+    },
+    "war_termination_options_status": "surrender_available; white_peace_and_victory_unavailable; cb_specific_terms_unobservable",
+    "three_prisoner_join_status": "available_attempt-08"
+  },
   "limitations": [
-    "The independent generic PoW producer has not been read from H2825 with a newly linked and officially paired DLL. Thus the three named prisoners' actual current-war generic release pairs remain unavailable, not false or zero.",
-    "The original R0265 injector binary was not available in the local H2825 read-only replay; the verified local R0221 injector differs, and full original binary identity is not claimed.",
+    "Attempt-08 completed the three-source current-frame classification for generic PoW and the FP3 House rule. All three are not_in_pairs and not_applicable_cb; not_from_these_two_rules is not a zero valuation of all custody consequences. Each prisoner separately has a legal read-only unconditional-release preview; not_in_pairs does not deny personal release. Earlier attempts-05/06/07 remain preserved RED/partial evidence, not silently converted to GREEN.",
+    "Surrender is currently available, white peace and victory are unavailable, but CB-specific termination terms are unobservable for all three options. No actual surrender effect, release list, resource transfer or final result was executed or inferred.",
+    "The original R0265 injector binary was not available in the local H2825 read-only replay; attempt-05 used the newly built paired injector and DLL, not the original R0265 binary identity.",
     "The FP3 CB consequence is inapplicable to this observed WarID. For other wars, the House and war-specific conditions must be evaluated independently; script prestige values are not numeric actual amounts in this response.",
     "Ransom quotes, nonwar relationship value, future terminal outcomes and any legal prisoner action belong to the requesting nonwar consumer and are not inferred here."
   ],
-  "next_step": "The nonwar consumer may join this source-bound adapter to its private prisoner collection now, preserving generic PoW unavailable. If it needs exact generic PoW classification, the next operator must link a new bridge DLL, create an independent officially paired read-only H2825 attempt, confirm fresh Steam offline evidence, query the same paused WarID/prisoner frame, and write verification with raw payloads and hashes. No prisoner action is authorized by this delivery."
+  "next_step": "The nonwar consumer may join the attempt-08 same-frame war rule result to its relationship and ransom readback after this delivery reaches master, preserving those other values as unavailable until independently read. Any future prisoner action requires its own legal typed choice, postcondition, next-turn receipt and official cold restore; this war request authorizes no such action."
 }

@@ -15221,11 +15221,13 @@ void RunConnectedSession(
               query.expected_revision = expected_revision;
               query.requested_ransom_ordinal = requested_ransom_ordinal;
               query.expected_snapshot = current_snapshot;
+              xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1
+                  queued_wake_trace{};
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::
                       ExecutePlayerPrisonerCollectionPrivateQueryV1,
-                  &query, query.ticket);
+                  &query, query.ticket, &queued_wake_trace);
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
                 connected = xar::bridge::WriteFrame(
@@ -15235,7 +15237,8 @@ void RunConnectedSession(
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                     g_main_thread_query_mailbox_v1, query.ticket,
                     xar::ck3_11906::
-                        kPlayerPrisonerCollectionQueuedWaitMsV1);
+                        kPlayerPrisonerCollectionQueuedWaitMsV1,
+                    &queued_wake_trace, 250);
                 while (wait == xar::ck3_11906::
                                    MainThreadQueryWaitResultV1::
                                        timeout_executor_already_running) {
@@ -15245,12 +15248,15 @@ void RunConnectedSession(
                           kPlayerPrisonerCollectionExecutingWaitMsV1);
                 }
                 xar::game::Snapshot completion_snapshot{};
-                const bool stable =
+                const bool completion_snapshot_read =
                     wait == xar::ck3_11906::
                                 MainThreadQueryWaitResultV1::completed &&
                     query.completed && !query.frame_changed &&
-                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    xar::game::ReadSnapshot(game, completion_snapshot);
+                const bool completion_snapshot_matches =
+                    completion_snapshot_read &&
                     completion_snapshot == current_snapshot;
+                const bool stable = completion_snapshot_matches;
                 std::string response;
                 if (stable) {
                   response = PlayerPrisonerCollectionPrivateResultFrame(
@@ -15271,9 +15277,31 @@ void RunConnectedSession(
                     ++player_prisoner_collection_query_sequence;
                 }
                 if (response.empty()) {
+                  std::string error(
+                      xar::ck3_11906::PlayerPrisonerCollectionFailureDetailV1(
+                          wait, query.completed, query.frame_changed,
+                          completion_snapshot_read,
+                          completion_snapshot_matches));
+                  if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                  timeout_cancelled_before_execution) {
+                    error += " (pump_start=" +
+                             std::to_string(
+                                 queued_wake_trace.pump_epoch_at_start) +
+                             ", pump_end=" +
+                             std::to_string(
+                                 queued_wake_trace.pump_epoch_at_end) +
+                             ", wake_attempts=" +
+                             std::to_string(queued_wake_trace.wake_attempts) +
+                             ", wake_succeeded=" +
+                             std::to_string(queued_wake_trace.wake_succeeded) +
+                             ", wake_failed=" +
+                             std::to_string(queued_wake_trace.wake_failed) +
+                             ", last_wake_error=" +
+                             std::to_string(queued_wake_trace.last_wake_error) +
+                             ")";
+                  }
                   response = CommandResultFrame(
-                      request_id, step, false,
-                      "prisoner collection query did not complete on stable paused frame");
+                      request_id, step, false, error);
                 }
                 const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
                     g_main_thread_query_mailbox_v1, query.ticket);
