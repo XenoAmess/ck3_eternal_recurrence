@@ -44,6 +44,15 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -B promo\ck3_
 ffmpeg -nostdin -n -hide_banner -loglevel warning -f gdigrab -framerate 30 -draw_mouse 0 -i desktop -t 600 -c:v libx264 -preset ultrafast -crf 18 -pix_fmt yuv420p -an <NEW_LIVE_ATTEMPT>\raw\e2-pursuit-d27-d32.mkv
 ```
 
+实际操作使用本目录的 `record_bounded_gameplay.py`，在受管地图已稳定加载并写出与源档配对的 `native-start-readback.json` 后启动一个**新子目录**（例如 `<NEW_LIVE_ATTEMPT>\recording-e2-02-03-a01`），脚本核对本次 preflight 和受管加载回读的源档/真实回执 SHA，再负责唯一 600 秒 FFmpeg 进程、create-exclusive raw、start/end/异常回执、stdout/stderr、原始 SHA/bytes 和完整逐帧 ffprobe。它阻塞至录像封口，应放在单独命令会话运行；`mark` 可在另一命令会话追加控制回执和实时桌面截图。`<FRESH...>` 仍须是本次人工审阅的真实离线回执；占屏期间**不要**仅为试命令运行 `record` 或 `mark --capture-screenshot`。
+
+```text
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\record_bounded_gameplay.py record --workdir <NEW_LIVE_ATTEMPT>\recording-e2-02-03-a01 --track e2-pursuit-d27-d32 --session-output <NEW_LIVE_ATTEMPT>\ck3-output --source-save D:\workspace\ck3_native_war_ai_promo_work\episode01-full-edge-attempt-004\trace-d27-immutable.ck3 --source-receipt D:\workspace\ck3_native_war_ai_promo_work\episode01-full-edge-attempt-004\ck3-output\interactive-requests-responses\trace-d27-save.json --steam-offline-receipt <FRESH_REVIEWED_OFFLINE_RECEIPT> --seconds 600
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\record_bounded_gameplay.py mark --workdir <NEW_LIVE_ATTEMPT>\recording-e2-02-03-a01 --kind d28-pursuit --date-raw 53146896 --combat-id 16777218 --war-id 4 --control <CURRENT_RUN_CONTROL_RESPONSE> --capture-screenshot
+```
+
+第二行仅是第 28 日**格式示例**；当前 run 若日期、CombatID 或事件分叉，必须用实际回读值。`recorder-final.json` 最多给 `ENCODED_UNREVIEWED`，完整 probe 与 marks 仍须逐 PTS 人工审核后才可能产生 clean span。外置无屏幕合成片探测 smoke：`D:/workspace/ck3_native_war_ai_promo_work/episode02-recorder-smoke-20260928-a02/smoke-results.json`，30 帧/1 秒 probe 成功，尺寸不符路径为 `RED_PRESERVED`；这不是游戏录制。
+
 时间锚点采用**追加写入** `marks.jsonl`：每条记录 `kind`（recorder-start、d27-paused、d28-pursuit、d29、d30、d31、d32-terminal、recorder-end）、UTC、monotonic ns、相对 recorder-start 的近似墙钟秒数、原生日期/phase/CombatID/WarID、该次控制回执与截图的 bytes/SHA。截图本身也保全。mark 的墙钟秒数**不是视频 PTS**；录制启动、编码器和桌面采样会有偏移。实际媒体封口后运行下列 ffprobe 读取完整 decoded frame PTS（将 stdout/stderr、argv、退出码保全到新文件），并通过逐帧可见 HUD 与 mark 对齐，再给每一段 clean span 的**实际 PTS 起止**、可见性审核和来源身份。第 31 日、终局若仍不可见，该 span 为 RED，不借静帧或文件名补洞。
 
 ```text

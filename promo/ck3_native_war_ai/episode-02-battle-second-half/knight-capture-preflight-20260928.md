@@ -49,6 +49,8 @@ R0271 释放屏幕后仍须先查任务总线 `ck3-screen:acquired` 和战争高
 ffmpeg -nostdin -n -hide_banner -loglevel warning -f gdigrab -framerate 30 -draw_mouse 0 -i desktop -t 600 -c:v libx264 -preset ultrafast -crf 18 -pix_fmt yuv420p -an <NEW_LIVE_ATTEMPT>\raw\<TRACK>.mkv
 ```
 
+实际启动一个 recorder、追加 mark 与生成 raw/probe 回执时，使用同目录 `record_bounded_gameplay.py`；具体 `record`/`mark` 命令与新子目录要求见[追击补录方案](pursuit-capture-preflight-20260928.md#一个正式-recorder-与时间锚点)。E2-04/05 的每条独立来源轨必须各建 recorder 子目录，分别传入本表对应的源档和真实回执，不可复用 E2-02/03 的源档或 raw。
+
 1. **E2-04 优先同一新 run 拍第 5 日到第 6 日**：暂停前的战斗、双方人物/骑士名册、目标伤势；日推进和事件 UI；次暂停帧目标伤势、仍在名册和属性。`marks.jsonl` 追加 `recorder-start`、`d05-before`、`event-fire`、`d06-after`、`recorder-end`。若随机结果不是骑士 `34333` 致残，以新原生回执重写数字与旁白；历史 039→040 的数字只用来源明确的研究卡。039 后档可另开短对照 run，镜头之间必须显式来源卡。
 2. **E2-05 第 26 日独立三轨**：020 型 selector 轨拍事件前名册、被击杀者 `33437`/团 `65`、击杀者 `34120`、事件后人物/战报；070 型 weight 轨单独拍，其 `[40,30,15]` 和 draw 来自原生研究回执，原版 UI 本身不展示；036 型轨从第 26 日一直拍到其**自身**第 27 日暂停帧名册，再以新回执绑定前后。只在该新 run 确实复现目标和名单时才给“69→68、30→29”旁白。各轨 marks 追加 `d26-before`、`event-fire`、`d27-after` 等实际出现的节点。历史 036 后档/038 对照必须独立标注，不能替代新 036 型 run 的后档。
 3. 每条 mark 记录 UTC、`monotonic_ns`、近似录像起点墙钟秒、原生日期/CombatID/WarID/人物与兵团 ID、原始请求/响应和截图的 bytes/SHA。墙钟 mark 不是视频 PTS。媒体封口后保存完整 `ffprobe -v error -select_streams v:0 -show_streams -show_format -show_frames -of json <raw>` 的命令、stdout/stderr、退出码；用实际 decoded PTS 对齐 HUD 与回执，为每段给 clean frame 两端可见性门和精确 clean span。调用当前正式 `xar_promo.adapters.ck3.load_capture_bundle` 只读验证，不修写旧 RED；最终 1× 人工审片另行记录精确成片 SHA。
