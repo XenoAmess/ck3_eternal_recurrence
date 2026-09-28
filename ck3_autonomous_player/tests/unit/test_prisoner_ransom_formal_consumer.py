@@ -80,9 +80,29 @@ class RansomChoiceTest(unittest.TestCase):
         self.assertEqual(choice["payer_character_id"], 30470)
         self.assertEqual(choice["quoted_gold_raw"], 5_000_000)
 
+    def test_current_baron_offer_is_not_dropped_for_title_alone(self):
+        for read in self.reads:
+            read["player_prisoner_collection"]["prisoners"][0][
+                "ransom_quote_preview"] = {"status": "unavailable"}
+        choice = select_ransom_candidate(self.snapshot, self.reads, self.war)
+        self.assertEqual(choice["prisoner_character_id"], 44484)
+        self.assertEqual(choice["payer_character_id"], 44484)
+        self.assertEqual(choice["quoted_gold_raw"], 3_000_000)
+
+    def test_county_and_missing_title_value_remain_unselected(self):
+        for read in self.reads:
+            rows = read["player_prisoner_collection"]["prisoners"]
+            rows[0]["ransom_quote_preview"] = {"status": "unavailable"}
+            rows[1]["primary_title_tier_raw"] = 2
+        self.assertIsNone(select_ransom_candidate(self.snapshot, self.reads, self.war))
+        for read in self.reads:
+            del read["player_prisoner_collection"]["prisoners"][1][
+                "primary_title_tier_raw"]
+        self.assertIsNone(select_ransom_candidate(self.snapshot, self.reads, self.war))
+
     def test_war_release_candidate_cannot_be_ransomed(self):
         self.war[0]["war_prisoner_release_pairs_proof"][
-            "attacker_release_candidate_ids"].append(34486)
+            "attacker_release_candidate_ids"].extend((34486, 44484))
         self.assertIsNone(select_ransom_candidate(
             self.snapshot, self.reads, self.war))
 
