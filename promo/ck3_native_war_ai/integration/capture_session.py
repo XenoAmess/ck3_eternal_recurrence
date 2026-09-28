@@ -1284,7 +1284,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     await initial_capture()
                 except Exception as error:
                     failed = True
-                    worker["error"] = repr(error)
+                    record_observer_failure(worker, repr(error), supervisor_error=supervisor_error)
                     failure = {"at": utc(), "error": repr(error), "bridge": driver.diagnostics()}
                     try:
                         failure["snapshot"] = driver.take_snapshot()

@@ -142,10 +142,14 @@ class CheckpointSessionTests(unittest.TestCase):
         prioritize_supervisor_failure(direct, supervisor)
         self.assertNotIn("observer_error", direct)
 
-        # The observer may leave after the supervisor has already failed.
-        record_observer_failure(direct, observer, supervisor_error=supervisor)
-        self.assertEqual(direct["error"], supervisor)
-        self.assertEqual(direct["observer_error"], observer)
+    def test_late_inner_observer_exception_cannot_replace_session_failure(self):
+        supervisor = "UnsafeCleanupError('watchdog bootstrap failed')"
+        observer = "RuntimeError('map publication is still incomplete')"
+        worker = {"ok": False, "error": supervisor, "marks": []}
+        # Models initial_capture's inner except after the supervisor exception.
+        record_observer_failure(worker, observer, supervisor_error=supervisor)
+        self.assertEqual(worker["error"], supervisor)
+        self.assertEqual(worker["observer_error"], observer)
 
 
 def main():
