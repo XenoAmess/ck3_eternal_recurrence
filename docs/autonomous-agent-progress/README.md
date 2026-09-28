@@ -21,6 +21,10 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 
 ## 导航
 
+- [2026-09-28 日报（已收口；对照当日早会）](daily/2026-09-28.md)
+- [2026-W40 周报（滚动）](weekly/2026-W40.md)
+- [2026-09-29 早会（真实时间）](meetings/daily/2026-09-29.md)
+- [2026-09-28 早会](meetings/daily/2026-09-28.md)
 - [跨团队战争需求 Git 文件通道与 R0244 实际 RED](coordination/war-requests/README.md)
 - [2026-09-26 G2 非战争优先交接：生活方式、经济、家庭与联合调度](2026-09-26-g2-nonwar-priority-handoff.md)
 - [2026-09-22 G2 休假交接：预览、RED 与接班入口](2026-09-22-g2-holiday-handoff.md)
