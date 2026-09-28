@@ -11,7 +11,6 @@ import hashlib
 import importlib.metadata
 import json
 import re
-import shutil
 import subprocess
 import sys
 import traceback
@@ -57,20 +56,35 @@ async def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--draft", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--project-config", type=Path, default=Path(__file__).parent / "project" / "promo-project.json")
     parser.add_argument("--ffprobe", default="ffprobe")
     args = parser.parse_args()
-    args.output.mkdir(parents=True, exist_ok=False)
     draft_bytes = args.draft.read_bytes()
+    project_bytes = args.project_config.read_bytes()
+    script_bytes = Path(__file__).read_bytes()
+    extractor_bytes = (Path(__file__).parent / "audit_narration_budget.py").read_bytes()
+    args.output.mkdir(parents=True, exist_ok=False)
     draft = draft_bytes.decode("utf-8-sig")
     snapshot = args.output / "narration-script-draft.md"
     with snapshot.open("xb") as stream:
         stream.write(draft_bytes)
+    project_snapshot = args.output / "promo-project.json"
+    with project_snapshot.open("xb") as stream:
+        stream.write(project_bytes)
+    script_snapshot = args.output / "sample_narration_tts.py"
+    with script_snapshot.open("xb") as stream:
+        stream.write(script_bytes)
+    extractor_snapshot = args.output / "audit_narration_budget.py"
+    with extractor_snapshot.open("xb") as stream:
+        stream.write(extractor_bytes)
     result = {
         "schema": "ck3.episode02.tts-samples.v1",
         "status": "started",
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "source_draft": identity(args.draft),
         "snapshot": identity(snapshot),
+        "project_config_snapshot": identity(project_snapshot),
+        "scripts": [identity(script_snapshot), identity(extractor_snapshot)],
         "interpreter": sys.executable,
         "python": sys.version,
         "versions": {"edge-tts": importlib.metadata.version("edge-tts"),
@@ -81,6 +95,9 @@ async def main() -> None:
         "samples": [],
     }
     manifest = args.output / "manifest.json"
+    journal = args.output / "attempt-events.jsonl"
+    with journal.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps({"event": "started", "utc": result["created_utc"]}, ensure_ascii=False) + "\n")
     try:
         for name, chapter_index, paragraph_index in SELECTION:
             source = paragraphs(draft, chapter_index)[paragraph_index]
@@ -104,7 +121,9 @@ async def main() -> None:
                                       "request": identity(request), "audio": identity(media),
                                       "events": identity(events), "probe": identity(probe_file)})
             result["status"] = "partial"
-            manifest.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            with journal.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({"event": "sample-rendered", "utc": datetime.now(timezone.utc).isoformat(),
+                                         "sample": result["samples"][-1]}, ensure_ascii=False) + "\n")
         result["status"] = "samples-rendered-not-human-reviewed"
     except Exception:
         result["status"] = "red-preserved"
@@ -112,7 +131,11 @@ async def main() -> None:
         raise
     finally:
         result["finished_utc"] = datetime.now(timezone.utc).isoformat()
-        manifest.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        with journal.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps({"event": result["status"], "utc": result["finished_utc"]}, ensure_ascii=False) + "\n")
+        result["attempt_events"] = identity(journal)
+        with manifest.open("x", encoding="utf-8") as stream:
+            stream.write(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps({"manifest": str(manifest), "samples": [{"name": x["name"], "seconds": x["duration_seconds"]}
                                                          for x in result["samples"]]}, ensure_ascii=False))
 
