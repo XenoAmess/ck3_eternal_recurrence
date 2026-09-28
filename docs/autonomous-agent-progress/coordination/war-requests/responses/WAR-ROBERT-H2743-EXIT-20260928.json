@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-H2743-EXIT-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer (ck3-next-war-battle-ledger-research-20260926)",
-  "updated_at_utc": "2026-09-27T19:53:22Z",
+  "updated_at_utc": "2026-09-28T05:12:27Z",
   "source_pr": null,
   "master_commit": "d8d54a58afaecb6114357dea87f225d93e4c10fb",
   "delivery_route": "direct rebase-only master push",
@@ -32,7 +32,7 @@
     "kind": "scoped_missing-field_and_formal_read-only_observation_handoff",
     "source": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_exit_observation.py and strategy.py choose_one_life_turn",
     "selection": "One paused primary-defender war with negative player-relative score; current native options must match WarID, snapshot ID, public/native revision, connection generation, episode, side, CB and score. Other CBs are out of scope.",
-    "observed_output": "formal_defender_exit_observation contains current option native legality, recipient acceptance and material visibility for victory, white peace and surrender. It is attached to the existing tactical plan without changing selected_step.",
+    "observed_output": "formal_defender_exit_observation contains current option native legality, recipient acceptance and material visibility for victory, white peace and surrender. The later bounded follow-up attaches this read-only observation to the tactical plan and blocks an actual selected_step for surrender or white peace on the currently observed de-jure primary-defender WarID while material terms and typed authority remain absent.",
     "unknowns": "Unobserved title/vassal effects, signed actor/opponent resources, directed truce and continue-war risk remain null. recommended_outcome and action_literal are always null; no exit submission is authorized.",
     "first_query": "query-war-termination-options-16777231 on a qualified h2743 paused frame; existing strategy/native driver already implement and cache the query. Historical R0221 options are rejected on h2743.",
     "document": "docs/ck3-native-ai/h2743-formal-defender-exit-observation-2026-09-28.md"
@@ -71,14 +71,17 @@
   ],
   "bounded_followup_2026_09_28": {
     "status": "read_only_continuation_handoff_delivered_exit_decision_open",
+    "draft_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/448",
     "document": "docs/ck3-native-ai/h2743-exit-readiness-handoff-2026-09-28.md",
+    "minimal_native_producer_plan": "docs/ck3-native-ai/h2743-dejure-exit-read-port-plan-2026-09-28.md",
     "interface": "formal_defender_exit_observation.decision_readiness and continuation_handoff",
     "exact_native_gap": "ReadWarTerminationTerms supports claim_cb and raiktor_claim_cb only; individual_county_de_jure_cb is unsupported. Production ReadWarTerminationExitTerms is disabled after a prior live crash.",
     "consumer_boundary": "The existing tactical planner's nonterminal candidate step is carried as a recoverable handoff requiring its own current-frame revalidation. If the current de-jure primary-defender WarID has a surrender or white-peace selected_step, strategy clears that actual step while material comparison and typed authority remain absent; terminal steps for other WarIDs are not changed.",
     "observed_h2743_to_h2825_continuation": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2743-EXIT-20260928.h2743-h2825-continuation.json",
     "observed_continuation_boundary": "Exact historical 15-day continuation showed player war score -12 to -25 after one day, then -24 at H2825; attacker occupation score rose 13, ticking score fell 1. Three queried army sizes and Robert gold/current-prestige endpoint balances had zero net change. This is not future risk calibration or a surrender resource delta.",
+    "surrender_static_resource_boundary": "Stock on_victory and modify_all_participants_fame_values give Robert a direct prestige component max(-10 x cb_prestige_factor, -1000), but the exact-frame factor and conditional effects are unread. The on_defeat short-term gold reparations row is not this route, and neither fact establishes the H2743 total resource delta.",
     "gameplay_action_submitted": false,
     "formal_exit_decision_complete": false
   },
-  "next_step": "Receive only the exact H2825 source files through selective OneDrive synchronization and verify each SHA-256; on a fresh Steam-offline desktop, run a new paired read-only H2825 siege/route/v3/exit observation. The R0264/R0265 risk excerpt is now in master, but CB-specific current material terms and whole-war outcomes remain unobserved. Do not reuse the R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
+  "next_step": "Implement the separately versioned, fail-closed de-jure defender exit terms producer described in minimal_native_producer_plan. First close setup_de_jure_cb/resolve semantics and conditional resources statically, then obtain H2743 same-frame title graph, factor, both resource baselines and directed-truce parameters in a new read-only live attempt after R0271/R0266 screen priority. Pair its result with current R0271 contact/siege risk before a typed decision. Do not reuse R0197 one-shot authorization or submit an H2743/H2825 exit based on this delivery."
 }

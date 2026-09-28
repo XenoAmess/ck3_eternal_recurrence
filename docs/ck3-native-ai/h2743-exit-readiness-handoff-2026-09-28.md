@@ -10,6 +10,8 @@
 
 生产版 `ReadWarTerminationTerms` 在 `ck3_autonomous_player/native_bridge/src/ck3_11906.cpp` 只接受 `claim_cb` 和 `raiktor_claim_cb`；`individual_county_de_jure_cb` 被明确标为 `unsupported_casus_belli`。生产版 `ReadWarTerminationExitTerms` 因历史实机崩溃禁用，返回 `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668`。因此对 H2743 反复调用通用 claim 条款查询不会补齐 de-jure 的实际代价，也不能用静态脚本推演或早期投降净变化填零。
 
+[最小只读 producer 合同](h2743-dejure-exit-read-port-plan-2026-09-28.md)列出需要补的当前目标／title／人物图、`cb_prestige_factor`、双方资源、定向休战和条件效果，以及错误 WarID／换帧时的拒绝条件。原版脚本只确定 Robert 的直接威望效果形式 `max(-10 × F, -1000)`，其中 `F` 尚未同帧取得，其他条件效果未闭合；这仍不是本场有符号总差额。该合同禁止复开导致崩溃的 loaded-effect preview，也不声称已有投降条款。
+
 退出排序还缺一份**同一当前帧**的有界续战损失与接触风险。H2743 三军当前人数原生/存档核对分别为 `2329`、`1462`、`311`，但敌人处于不同省份，围城余一天；总人数相加不是接触时间、实际参战阵容或胜率。R0271 的围城参战集合判定是正式续跑的直接门禁，退出决策不能抢用其尚未闭合的风险结论。
 
 ## 正式策略交接
