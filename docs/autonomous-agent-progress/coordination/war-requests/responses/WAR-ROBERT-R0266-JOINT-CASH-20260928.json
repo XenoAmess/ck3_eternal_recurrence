@@ -78,6 +78,14 @@
       "dll_injector_pair_ready": false,
       "same_frame_amount_observed": false
     },
+    "new_pair_fallback_plan": {
+      "status": "plan_only_build_not_executed",
+      "external_plan_path": "D:/ck3-research-artifacts/war31-h2825-20260928/r0266-new-pair-build-plan.json",
+      "plan_sha256": "0F993D663D9BA203642ED2B62981F9D32965720A0A6620AAC9EAA800368C1CD6",
+      "build_source_commit": "d4bb8dc7e0334e12796dc637dfc60b69bca7d23f",
+      "source_fingerprint": "A1D748118D1BA3FEF682F72CAD60008C93CF0EC27FF065DDED30293C7D940AE1",
+      "r0265_binary_identity_reused": false
+    },
     "missing_injector_asset_request": {
       "status": "local_onedrive_request_written_remote_receipt_pending",
       "request_relative_path": "WAR/R0266-CASH-20260928/ASSET-REQUEST.json",
