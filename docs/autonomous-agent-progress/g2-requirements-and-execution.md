@@ -1,20 +1,20 @@
 # G2 全游戏自治需求与执行记录
 
-本页状态摘要更新于 **2026-09-28（Asia/Shanghai）**。8 项里程碑的定义、分母、状态和通过条件以
+本页状态摘要更新于 **2026-09-29（Asia/Shanghai）**。8 项里程碑的定义、分母、状态和通过条件以
 [`g2-requirements-v1.json`](g2-requirements-v1.json) 为准；工作包投影见
 [`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
 **Operator live source `operator_get_status`** 实时核查，不能以 Git 缓存投影或本页历史段落代替。
-已归档的当天增量见[09-28 日报](daily/2026-09-28.md)及[W40 滚动周报](weekly/2026-W40.md)；下方最新配对以 R0321 的持久 checkpoint 与官方配对/no-launch 回执为据。
-Robert 最新可恢复持久配对为 **h3911/raw53219928、3,150 日**；`current-state.json` 已投影该 H3911 高水位及 R0321 战争 RED。`g2-requirements-v1.json` 的 `current_work_package` 为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
+已收口的 09-28 增量见[09-28 日报](daily/2026-09-28.md)；新提交见[09-29 滚动日报](daily/2026-09-29.md)及[W40 滚动周报](weekly/2026-W40.md)。下方最新**已验证持久配对**仍以 R0321 checkpoint 与官方配对/no-launch 回执为据，R0328 同日新候选尚未完成官方下一配对。
+Robert 最新已验证可恢复持久配对为 **h3911/raw53219928、3,150 日**；`current-state.json` 已投影该 H3911 高水位及 R0321 战争 RED。R0328 Emma 母系提案有正式 typed 提交和 `receipt_pending` checkpoint，尚无物质婚姻结果、下一 turn 或新 PID 恢复；h3915 同日候选不增加天数。`g2-requirements-v1.json` 的 `current_work_package` 为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
 玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
-### 2026-09-28 当前执行状态
+### 2026-09-29 当前执行状态
 
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
 - 正式 Robert 最近可恢复持久配对为 **h3911/raw53219928、3,150/36,524 游戏日**；百年门 **0/1**、首整局 **0/1**、独立种子 **0/2**。派生 h90 日期不计入 Robert。R0321 从 h3860 继续，前 26/27 turn 成功，持久 **+6 日**；第 27 turn 因战争接触同帧 forecast producer `unavailable`、encounter scope 不匹配而阻断，**0 新非战争动作**，整轮仍为 RED，不提升 G2 里程碑。正式报告 `Z:\ck3_mod_rewrite\.task-tmp\M7-ROBERT-H3860-a6d1\run-formal-36\formal-report.txt` SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30`；H3911 save SHA-256 `5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746`、源 driver SHA-256 `DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33`，配对身份 SHA-256 `FDE4CC3A64DF5BB5D83F7B132FE5CC2985D31ACA28F0883A1C6245C197B5915E`、官方 no-launch 报告 SHA-256 `1067E8468BE61A6B0240E12B145FD173D6DCD4E786FED3991E7E436253E75712` 为 `ready`。R0319 的 36/36 合格结果仍见[日报](daily/2026-09-28.md)。
-- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。Emma 的旧 `not_player_child` 读数已由 #504 的原生 `is_child_of` 预门替换；R0323 同帧读到真实亲子与默认五角色 Can Send/最终答复阳性。#508/R0324 读到 Emma37265 与 Gerard37267 的默认婚配母系未生效，政策不提交；#510/R0325 读到 `selected=true` 的母系选项最终 Can Send/答复阳性且若接受可成婚。两轮都是**只读、0 动作/日期**，唯一潜在联盟 pair 的 `would_attempt_if_accepted=false`；subject-bound 正式提案、实际关系、下一 turn 与恢复仍未验收。[日报](daily/2026-09-28.md)列出原生读回及 SHA。
-- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0321 多帧生活方式机会复核均为有效财富 focus、未用点数 **0**，无可证明漏消费；R0326 在 Robert 战时同帧读到合法且预计增收的空槽农庄，但 M5 战争现金七字段缺项、`cost_ready/action_ready=false`，未开工或实收；#505 的 `selected_step=null` 修复分支在该帧未走到。Emma 母系选项已有只读合法与答复阳性，待正式价值/资源选择及动作闭环；R0327 派系只读在当前窄政策下无直属有地成员赠礼目标，未进入成本/合法动作。联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
+- R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。Emma 的旧 `not_player_child` 读数已由 #504 的原生 `is_child_of` 预门替换；R0323 同帧读到真实亲子与默认五角色 Can Send/最终答复阳性。#508/R0324 读到 Emma37265 与 Gerard37267 的默认婚配母系未生效，政策不提交；#510/R0325 读到 `selected=true` 的母系选项最终 Can Send/答复阳性且若接受可成婚。R0324/R0325 均是**只读、0 动作/日期**，唯一潜在联盟 pair 的 `would_attempt_if_accepted=false`。R0328 已对该 subject-bound 选项完成一次 typed 提交，native ACK accepted、持久 ledger `receipt_pending`；**没有实际关系或联盟、下一 turn、冷恢复证明**，官方 prepare-state 的 child pending sidecar 接线待补。详见[09-29 日报](daily/2026-09-29.md)。
+- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0321 多帧生活方式机会复核均为有效财富 focus、未用点数 **0**，无可证明漏消费；R0326 在 Robert 战时同帧读到合法且预计增收的空槽农庄，但 M5 战争现金七字段缺项、`cost_ready/action_ready=false`，未开工或实收；#505 的 `selected_step=null` 修复分支在该帧未走到。Emma 母系选项已提交且待物质后置及恢复，不能从 ACK 推断已婚；R0327 派系只读在当前窄政策下无直属有地成员赠礼目标，未进入成本/合法动作。联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
 
 ## 口径纠正
 
@@ -26,7 +26,7 @@ G2 采用固定的 **8 个可见 OODA 里程碑**，截至本页状态摘要为 
 不再汇报没有固定分母的“G2 90%”。旧 `T1=90%` 只曾表示 GEN-034 这个窄战争退出包接近当时定义的收口，且随着真实证据
 改写了剩余输入，它已失去可比性。
 
-| 里程碑 | 合同优先级 | 2026-09-28 状态 | 可见验收结果 |
+| 里程碑 | 合同优先级 | 2026-09-29 状态 | 可见验收结果 |
 |---|---:|---|---|
 | G2-M0 GEN-034 三路战争退出 | P0 | complete | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
 | G2-M1 实体发现与 core turn bundle | P1-A | complete | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
