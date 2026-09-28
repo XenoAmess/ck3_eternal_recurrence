@@ -54,7 +54,8 @@ def main() -> int:
     intent = json.loads(intent_path.read_text(encoding="utf-8"))
     final = json.loads(final_path.read_text(encoding="utf-8"))
     raw_path = Path(intent["raw_path"])
-    if raw_path.parent.resolve() != (args.recorder_workdir / "raw").resolve():
+    if raw_path.is_symlink() or raw_path.resolve().parent != \
+            (args.recorder_workdir / "raw").resolve():
         parser.error("raw path escapes this recorder workdir")
     raw_id = identity(raw_path)
     probe_id = identity(probe_path)

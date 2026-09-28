@@ -69,7 +69,7 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_nat
 
 ## 4. 封口、冻结、释放
 
-1. 等 600 秒 recorder 自行退出，保存 `recorder-intent/start/end/final.json`、`marks.jsonl`、FFmpeg stdout/stderr、raw、完整 `ffprobe.json`、逐 stream 首末 PTS 与每帧原件；检查 `ffmpeg_exit_code=0`、probe 成功、尺寸门。中断、异常、短片和 partial 均保留为 RED，不复用同目录。紧接着在新外置 `<PTS_AUDIT_DIR>` 执行 [`audit_raw_video_pts.py`](audit_raw_video_pts.py)，逐帧查 PTS 非单调、缺失、超过 0.2 秒断档与不足 590 秒片长；不合格保留 `RED_PRESERVED`。**`ENCODED_UNREVIEWED` 和 `PTS_CONTINUOUS_UNREVIEWED` 均不等于 clean span**：仍须人工核 HUD/日期/CombatID/面板可见性和一倍速原速审片，才能出新 clean span。
+1. 等 600 秒 recorder 自行退出，保存 `recorder-intent/start/end/final.json`、`marks.jsonl`、FFmpeg stdout/stderr、raw、完整 `ffprobe.json`、逐 stream 首末 PTS 与每帧原件；检查 `ffmpeg_exit_code=0`、probe 成功、尺寸门。中断、异常、短片和 partial 均保留为 RED，不复用同目录。紧接着在新外置 `<PTS_AUDIT_DIR>` 执行 [`audit_raw_video_pts.py`](audit_raw_video_pts.py)，逐帧查 PTS 非单调、缺失、超过 0.2 秒的显著断档与不足 590 秒片长；不合格保留 `RED_PRESERVED`。0.2 秒阈值不证明每个 30fps 帧都齐全。**`ENCODED_UNREVIEWED` 和 `PTS_CONTINUOUS_UNREVIEWED` 均不等于 clean span**：仍须人工核 HUD/日期/CombatID/面板可见性和一倍速原速审片，才能出新 clean span。
 
 ```text
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\episode-02-battle-second-half\audit_raw_video_pts.py --recorder-workdir <LIVE_ATTEMPT>\recording-e2-02-03-a01 --output <PTS_AUDIT_DIR>\pts-audit.json

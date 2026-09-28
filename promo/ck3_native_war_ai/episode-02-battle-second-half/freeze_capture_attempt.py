@@ -78,7 +78,8 @@ def main() -> None:
         formal_recorder = json.loads(recorder_final.read_text(encoding="utf-8"))
         intent = json.loads(recorder_intent.read_text(encoding="utf-8"))
         raw_path = Path(intent["raw_path"])
-        if raw_path.parent.resolve() != (args.recorder_workdir / "raw").resolve():
+        if raw_path.is_symlink() or raw_path.resolve().parent != \
+                (args.recorder_workdir / "raw").resolve():
             parser.error("formal recorder raw path escapes this recorder workdir")
         if formal_recorder.get("raw") != file_identity(raw_path):
             parser.error("formal recorder final does not bind its raw bytes")
