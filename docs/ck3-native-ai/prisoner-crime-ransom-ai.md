@@ -489,3 +489,51 @@ flowchart LR
 及 owner/context；当前战争数组虽已有其他查询的 exact reader，囚犯集合
 入口尚无绑定的当前 War 对象。因此 C211 不把这两项猜成 false，也不据
 宗族身份提交释放动作或开放公共能力。新增代码仍须聚焦验证和匹配实机读回。
+
+### R0296：男爵囚犯赎金的同帧价值输入（2026-09-28）
+
+Robert `29829` 的正式只读轮次 R0296 从 history `3564` 冷恢复，暂停在
+`native:4`、`date_raw=53219304`。私有集合对囚犯 `44484` 读得完整狱卒关系、
+`primary_title_tier_raw=1`（男爵）、`same_dynasty=false`、
+`is_child_of_played_character=false`，House/Dynasty 均为原生无身份。
+同一选项绑定的原生 `ransom_interaction` 最终预览选择普通 `gold`：
+付款者就是 `44484`，报价 raw `3,000,000` / `100,000` = **30 金币**，
+`can_send=true`、`would_accept_now=true`、`recipient_answer_status_raw=0`，
+且 `amount_is_acceptance_time_quote=false`。此报价不是 `on_send` 成本，实际到账
+仍须按接受后的金钱与囚禁关系独立读回。
+
+同帧唯一战争 WarID `16777231` 为 `individual_county_de_jure_cb`，玩家为
+defender；完整参与者与前四继承顺位扫描得到 `release_pairs=[]`，
+`44484` 不在两方 release candidate 集合。故本战争已冻结的通用 PoW
+释放条件不命中，FP3 House 专用条件因 CB 类型不适用。这两项不证明所有
+未知的政治、关系或未来扣留价值为零。原版 `ransom_interaction` 的 stock AI
+在 actor 战时会把主动发送意愿归零，**但**本次最终原生合法性与 recipient
+接受结果均为真；玩家自动策略可以有独立价值判断，不能把 stock 意愿当作
+`Can Send=false`。男爵 tier `1` 也不满足原版无条件释放才有的公爵以上
+legitimacy 门；它不能解释赎金策略对所有有头衔者的一刀切排除。
+
+当前正式选择器的 `primary_title_tier_raw is not None` 门把 `44484` 唯一排除；
+另一个仍在狱中的 `47028` 报价为 `option_mask_unexpected`，没有可计价的
+普通金币选项。因此 R0296 的 `formal_policy_selected_prisoner_id=null`
+是已观测的策略漏消费，**不是**战争模型已证明应扣留男爵。最小下一步只放宽
+无主头衔与 tier `1` 的普通金币候选，同时保留同帧完整战争配对、宗族、亲子、
+最终合法性与正金额门；tier `2` 及以上和未知等级继续等待独立估值。
+
+```mermaid
+flowchart TD
+    P[同帧玩家狱卒与精确囚犯 ID] --> Q[最终 gold 付款者、金额、Can Send、接受结果]
+    Q -->|缺失或非正| U[不提交；保留原生原因]
+    Q -->|30 金且合法| T{主头衔等级}
+    T -->|无或男爵 tier 1| W[当前战争 CB 与完整释放配对]
+    T -. tier 2 以上或未知价值 .-> U
+    W -->|通用配对或 FP3 House 命中| U
+    W -->|本帧两条均不命中| V[正式净正金币候选]
+    V -. 本轮尚未提交 .-> A[typed 赎金与实际到账/囚禁后置]
+    A -. 尚未验收 .-> C[下一 turn 与新 PID 冷恢复]
+```
+
+原始证据：[R0296 当前同帧囚犯回执](Z:/m6ransom-44484-observe-h3564-v2/evidence/R0296/current-prisoners.json)
+SHA-256 `527B56B22D9C602D0D6F092565EC051211B905F1CF74A05165DAC5D7FAC90104`；
+[正式报告](Z:/m6ransom-44484-observe-h3564-v2/evidence/R0296/formal-auto-run.json)
+SHA-256 `66121C1C56E731A1FBEE4917EF635D64C4D9CC84F622E5865F892A22A365C590`。
+两者只证明只读机会，没有赎金动作、收入或 M6 readiness 提升。

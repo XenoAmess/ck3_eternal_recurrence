@@ -139,7 +139,7 @@ def select_ransom_candidate(
     snapshot: Mapping[str, object], reads: list[dict[str, object]],
     war_reads: list[dict[str, object]],
 ) -> dict[str, object] | None:
-    """Prefer a positive ordinary-gold offer for a landless outside-dynasty prisoner."""
+    """Prefer a positive ordinary-gold offer for an unrelated landless/baron prisoner."""
     actor, native, date = _frame(snapshot)
     choices: list[dict[str, object]] = []
     for ordinal, read, row in _collections(snapshot, reads):
@@ -158,7 +158,10 @@ def select_ransom_candidate(
                 or quote.get("recipient_answer_status_raw") not in (0, 1)
                 or not _positive(quote.get("quoted_gold_raw"))
                 or quote.get("raw_scale") != 100_000
-                or row.get("primary_title_tier_raw") is not None
+                or "primary_title_tier_raw" not in row
+                or not (row["primary_title_tier_raw"] is None
+                        or type(row["primary_title_tier_raw"]) is int
+                        and row["primary_title_tier_raw"] == 1)
                 or row.get("same_dynasty") is not False
                 or row.get("is_child_of_played_character") is not False
                 or not _war_uncommitted(snapshot, prisoner_id, war_reads)):
