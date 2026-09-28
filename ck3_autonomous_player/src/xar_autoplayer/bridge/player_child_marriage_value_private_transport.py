@@ -14,6 +14,7 @@ SCHEMA = "xar.ck3.player-child-marriage-value.v1"
 
 def query_player_child_marriage_value_private_v1(
     driver: object, *, legality: dict[str, object], candidate_character_id: int,
+    request_matrilineal_option: bool = False,
     timeout_seconds: float = 360.0,
 ) -> dict[str, object]:
     """Recheck a specified child and candidate on one paused native revision."""
@@ -50,6 +51,8 @@ def query_player_child_marriage_value_private_v1(
         raise BridgeUnavailableError("child marriage value lacks same-frame final legality")
     if type(timeout_seconds) not in {int, float} or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
+    if type(request_matrilineal_option) is not bool:
+        raise ValueError("request_matrilineal_option must be bool")
     request_id = "family-child-value-" + uuid.uuid4().hex
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
@@ -58,6 +61,7 @@ def query_player_child_marriage_value_private_v1(
         "legality_query_sequence": legality["query_sequence"],
         "subject_character_id": subject_id,
         "candidate_character_id": candidate_character_id,
+        "request_matrilineal_option": request_matrilineal_option,
     })
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
     if frame is None:
@@ -92,6 +96,8 @@ def query_player_child_marriage_value_private_v1(
         or row.get("recipient_character_id") !=
             source.get("recipient_matchmaker_character_id")
         or row.get("status") != result["status"]
+        or (request_matrilineal_option and
+            row.get("requested_matrilineal_option") is not True)
     ):
         raise BridgeUnavailableError("child marriage value five-role identity changed")
     if result["status"] == "available":
@@ -128,7 +134,17 @@ def query_player_child_marriage_value_private_v1(
                    any(type(pair.get(key)) is not bool for key in
                        ("already_allied", "both_have_realm_data",
                         "would_attempt_if_accepted"))
-                   for pair in pairs)
+                    for pair in pairs)
+            or (request_matrilineal_option and (
+                row.get("selected_option_readback") is not True
+                or selected is not True
+                or row.get("final_legality_sampled") is not True
+                or row.get("complete_can_send") is not True
+                or type(row.get("recipient_ai_accept_raw")) is not int
+                or row["recipient_ai_accept_raw"] <= 0
+                or type(row.get("recipient_answer_status_raw")) is not int
+                or row["recipient_answer_status_raw"] not in {0, 1}
+            ))
         ):
             raise BridgeUnavailableError("child marriage value native fields malformed")
     return {
@@ -138,5 +154,6 @@ def query_player_child_marriage_value_private_v1(
         "legality_query_sequence": legality["query_sequence"],
         "played_character_id": played_id, "subject_character_id": subject_id,
         "candidate_character_id": candidate_character_id,
+        "request_matrilineal_option": request_matrilineal_option,
         "status": result["status"], "row": row,
     }

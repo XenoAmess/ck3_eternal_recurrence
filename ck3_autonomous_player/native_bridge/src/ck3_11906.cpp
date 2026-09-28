@@ -17626,8 +17626,10 @@ ReadMarriageCandidateAlliancePrivateV1(
     const bridge::MarriageCandidateAllianceProjectionEnvironmentV1
         &projection_environment,
     const bridge::MarriageNativeOutcomeClassifierEnvironmentV1
-        &outcome_environment) noexcept {
+        &outcome_environment,
+    bool request_matrilineal_option) noexcept {
   MarriageCandidateAlliancePrivateReadV1 result{};
+  result.requested_matrilineal_option = request_matrilineal_option;
   using Failure = MarriageCandidateAlliancePrivateFailureV1;
   if (!HasArrangeMarriageReadBindings(bindings) ||
       bindings.read_character_interaction_answer_score == nullptr ||
@@ -17720,6 +17722,16 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.failure = Failure::role_changed;
     return result;
   }
+  if (request_matrilineal_option) {
+    result.selected_option_readback =
+        bridge::SelectMarriageCandidateMatrilinealOptionV1(
+            projection_environment, context);
+    if (!result.selected_option_readback) {
+      bindings.destroy_character_interaction_context(context);
+      result.failure = Failure::selected_option_unavailable;
+      return result;
+    }
+  }
   std::int64_t acceptance = 0;
   const bool can_send =
       bindings.validate_character_interaction_context(context, nullptr);
@@ -17729,10 +17741,17 @@ ReadMarriageCandidateAlliancePrivateV1(
   const auto answer = acceptance_ready
       ? bindings.evaluate_character_interaction_answer(
             context, 1, 1, nullptr, nullptr)
-      : std::uint8_t{3};
+       : std::uint8_t{3};
+  result.final_legality_sampled = true;
+  result.complete_can_send = can_send;
+  result.recipient_acceptance_ready = acceptance_ready;
+  result.recipient_ai_accept_raw = acceptance;
+  result.recipient_answer_status_raw = answer;
   if (!can_send || !acceptance_ready ||
-      acceptance != observed.recipient_ai_accept_raw ||
-      answer != observed.recipient_answer_status_raw || answer > 1) {
+      (request_matrilineal_option
+           ? acceptance <= 0 || answer > 1
+           : acceptance != observed.recipient_ai_accept_raw ||
+                 answer != observed.recipient_answer_status_raw || answer > 1)) {
     bindings.destroy_character_interaction_context(context);
     result.failure = Failure::final_legality_changed;
     return result;
@@ -17770,6 +17789,14 @@ ReadMarriageCandidateAlliancePrivateV1(
     }
   }
   bindings.destroy_character_interaction_context(context);
+  if (request_matrilineal_option &&
+      result.projection_failure ==
+          bridge::MarriageCandidateAllianceProjectionFailureV1::none &&
+      !result.projection.matrilineal_option_selected) {
+    result.failure = Failure::selected_option_unavailable;
+    result.projection = {};
+    return result;
+  }
   if (result.projection_failure !=
       bridge::MarriageCandidateAllianceProjectionFailureV1::none) {
     result.failure = Failure::projection_unavailable;

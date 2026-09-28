@@ -8317,6 +8317,7 @@ struct MarriageCandidateAllianceMailboxQueryV1 {
              kMarriageCandidateAllianceProjectionRowsV1>
       reads{};
   std::size_t row_count = kMarriageCandidateAllianceProjectionRowsV1;
+  bool request_matrilineal_option = false;
   bool frame_observed = false;
 };
 
@@ -8334,8 +8335,8 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
   for (std::size_t index = 0; index < query.row_count; ++index) {
     query.reads[index] =
         xar::ck3_11906::ReadMarriageCandidateAlliancePrivateV1(
-            query.bindings, query.observed[index], query.environment,
-            query.outcome_environment);
+             query.bindings, query.observed[index], query.environment,
+             query.outcome_environment, query.request_matrilineal_option);
   }
   xar::game::Snapshot after{};
   if (!xar::ck3_11906::ReadSnapshot(query.bindings, after) ||
@@ -8381,6 +8382,8 @@ std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
     return "heir_relationship_unavailable";
   case Failure::lineage_unavailable: return "lineage_unavailable";
   case Failure::sex_selector_unavailable: return "sex_selector_unavailable";
+  case Failure::selected_option_unavailable:
+    return "selected_option_unavailable";
   }
   return "unknown";
 }
@@ -8461,8 +8464,25 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
     result += SignedNumber(observed.recipient_matchmaker_character_id);
     result += ",\"status\":";
     const bool available = read.failure == xar::ck3_11906::
-                                              MarriageCandidateAlliancePrivateFailureV1::none;
+                                               MarriageCandidateAlliancePrivateFailureV1::none;
     AppendJsonString(result, available ? "available" : "unavailable");
+    result += ",\"requested_matrilineal_option\":";
+    result += read.requested_matrilineal_option ? "true" : "false";
+    result += ",\"selected_option_readback\":";
+    result += read.requested_matrilineal_option
+                  ? (read.selected_option_readback ? "true" : "false")
+                  : "null";
+    result += ",\"final_legality_sampled\":";
+    result += read.final_legality_sampled ? "true" : "false";
+    result += ",\"complete_can_send\":";
+    result += read.final_legality_sampled
+                  ? (read.complete_can_send ? "true" : "false") : "null";
+    result += ",\"recipient_ai_accept_raw\":";
+    result += read.final_legality_sampled && read.recipient_acceptance_ready
+                  ? SignedNumber(read.recipient_ai_accept_raw) : "null";
+    result += ",\"recipient_answer_status_raw\":";
+    result += read.final_legality_sampled && read.recipient_acceptance_ready
+                  ? Number(read.recipient_answer_status_raw) : "null";
     result += ",\"failure\":";
     AppendJsonString(result,
                      MarriageCandidateAlliancePrivateFailureKeyV1(read.failure));
@@ -11502,6 +11522,9 @@ void RunConnectedSession(
               before.has_played_character && before.played_character_alive;
           MarriageCandidateAllianceMailboxQueryV1 query{};
           query.row_count = 1;
+          (void)xar::bridge::JsonBooleanField(
+              incoming.payload, "request_matrilineal_option",
+              query.request_matrilineal_option);
           bool selected_ready = false;
           if (frame_ready) {
             const auto child =

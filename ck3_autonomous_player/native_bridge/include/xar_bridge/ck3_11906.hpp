@@ -1098,6 +1098,7 @@ enum class MarriageCandidateAlliancePrivateFailureV1 : std::uint8_t {
   heir_relationship_unavailable,
   lineage_unavailable,
   sex_selector_unavailable,
+  selected_option_unavailable,
 };
 
 struct MarriageCharacterLineageV1 {
@@ -1216,6 +1217,13 @@ struct MarriageCandidateAlliancePrivateReadV1 {
   std::uint8_t heir_sex_selector_raw = 0xFF;
   std::uint8_t candidate_sex_selector_raw = 0xFF;
   bool effective_matrilineal_if_accepted = false;
+  bool requested_matrilineal_option = false;
+  bool selected_option_readback = false;
+  bool final_legality_sampled = false;
+  bool complete_can_send = false;
+  bool recipient_acceptance_ready = false;
+  std::int64_t recipient_ai_accept_raw = 0;
+  std::uint8_t recipient_answer_status_raw = 3;
 };
 
 // Recreates and finalizes one exact five-role context on application-main.
@@ -1228,7 +1236,8 @@ ReadMarriageCandidateAlliancePrivateV1(
     const bridge::MarriageCandidateAllianceProjectionEnvironmentV1
         &projection_environment,
     const bridge::MarriageNativeOutcomeClassifierEnvironmentV1
-        &outcome_environment) noexcept;
+        &outcome_environment,
+    bool request_matrilineal_option = false) noexcept;
 #endif
 
 using game::ArrangeMarriageResult;

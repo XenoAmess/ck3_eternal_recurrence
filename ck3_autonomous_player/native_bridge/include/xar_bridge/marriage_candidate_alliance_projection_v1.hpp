@@ -21,6 +21,8 @@ inline constexpr std::uintptr_t kMarriageCandidateMatrilinealOptionSlotRvaV1 =
     0x57EB680;
 inline constexpr std::uintptr_t kMarriageCandidateReadOptionRvaV1 =
     0x2C40770;
+inline constexpr std::uintptr_t kMarriageCandidateSetOptionRvaV1 =
+    0x2C407D0;
 inline constexpr std::uintptr_t kMarriageCandidateIsAlliedRvaV1 =
     0x2661E00;
 inline constexpr std::size_t kMarriageCandidateRealmDataOffsetV1 = 0x1B8;
@@ -30,6 +32,8 @@ using ProjectMarriageCandidateAlliancePairsV1 =
     void (*)(const void *finalized_context, void *native_vector);
 using ReadMarriageCandidateBooleanOptionV1 =
     bool (*)(const void *finalized_context, std::uint32_t option_id);
+using SetMarriageCandidateBooleanOptionV1 =
+    void (*)(void *context, std::uint32_t option_id, bool selected);
 using ReadMarriageCandidateIsAlliedV1 =
     bool (*)(const void *first_character, const void *second_character);
 
@@ -75,6 +79,7 @@ struct MarriageCandidateAllianceProjectionEnvironmentV1 {
   MarriageSourceAdapterMemoryReadV1 read_memory = nullptr;
   ProjectMarriageCandidateAlliancePairsV1 project_pairs = nullptr;
   ReadMarriageCandidateBooleanOptionV1 read_boolean_option = nullptr;
+  SetMarriageCandidateBooleanOptionV1 set_boolean_option = nullptr;
   ReadMarriageCandidateIsAlliedV1 is_allied = nullptr;
   std::uintptr_t matrilineal_option_id_slot = 0;
   std::uintptr_t native_owner_vtable = 0;
@@ -94,5 +99,12 @@ ReadMarriageCandidateAllianceProjectionV1(
     std::uint32_t recipient_character_id, std::uint32_t heir_character_id,
     std::uint32_t candidate_character_id,
     MarriageCandidateAllianceProjectionV1 &output) noexcept;
+
+// Uses the exact stock UI option setter on a disposable, finalized context.
+// The setter consults the option predicate; its void return is accepted only
+// when the selected bit reads back true. No game command is sent.
+bool SelectMarriageCandidateMatrilinealOptionV1(
+    const MarriageCandidateAllianceProjectionEnvironmentV1 &environment,
+    void *disposable_context) noexcept;
 
 } // namespace xar::bridge

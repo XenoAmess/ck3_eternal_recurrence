@@ -109,6 +109,28 @@ class PlayerChildMarriageValueTests(unittest.TestCase):
                 _Driver(reply, [_frame(), _frame()]),
                 legality=_legality(), candidate_character_id=37267)
 
+    def test_selected_option_requires_its_own_final_answer(self) -> None:
+        reply = _reply()
+        row = reply["result"]["rows"][0]
+        row.update({"requested_matrilineal_option": True,
+                    "selected_option_readback": True,
+                    "final_legality_sampled": True,
+                    "complete_can_send": True,
+                    "recipient_ai_accept_raw": 400000,
+                    "recipient_answer_status_raw": 0})
+        driver = _Driver(reply, [_frame(), _frame()])
+        value = query_player_child_marriage_value_private_v1(
+            driver, legality=_legality(), candidate_character_id=37267,
+            request_matrilineal_option=True)
+        self.assertTrue(driver.request["request_matrilineal_option"])
+        self.assertTrue(value["row"]["matrilineal_option_selected"])
+        row["recipient_answer_status_raw"] = 3
+        with self.assertRaises(BridgeUnavailableError):
+            query_player_child_marriage_value_private_v1(
+                _Driver(reply, [_frame(), _frame()]), legality=_legality(),
+                candidate_character_id=37267,
+                request_matrilineal_option=True)
+
     def test_stale_paused_revision_is_rejected(self) -> None:
         later = deepcopy(_frame())
         later["native_revision"] = 4
