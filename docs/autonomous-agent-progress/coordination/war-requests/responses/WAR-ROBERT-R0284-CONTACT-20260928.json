@@ -6,7 +6,8 @@
   "updated_at_utc": "2026-09-28T07:31:06Z",
   "source_request_commit": "756e835243edd33da3b0b73718da92beb5590165",
   "work_branch": "war/r0284-contact-20260928",
-  "source_pr": null,
+  "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/462",
+  "static_candidate_commit": "1f4ae7a59",
   "implementation_document": "docs/ck3-native-ai/r0284-distant-single-hop-contact-2026-09-28.md",
   "source_kind": "H90 derivative; no formal Robert date credit",
   "source_failure": {
