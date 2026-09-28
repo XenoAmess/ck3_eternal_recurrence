@@ -1,0 +1,77 @@
+{
+  "schema": "xar.war.r0284-h987-stage4-result/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "round": "R0297",
+  "semantic_status": "route_start_live_green_cold_restore_and_daily_progress_pending",
+  "semantic_gate_assessment": "Formal planner selected the exact gated route start after same-frame full-hostile horizon and bounded forecast admission. Typed action was accepted, and a fresh native snapshot independently showed the controllable army moving along the exact route at unchanged raw date; a checkpoint was saved after that state.",
+  "operator_status": {
+    "receipt_ok": true,
+    "formal_exit_code": 0,
+    "formal_report_status": "operator_stop_checkpointed",
+    "formal_report_outcome": "operator_stopped",
+    "formal_report_ok": false,
+    "operator_stop_event_set": true,
+    "successful_turns": 9,
+    "cleanup_proven": true,
+    "interpretation": "The formal report ok=false is the requested operator stop after the ninth successful action and final checkpoint; it is not an action failure."
+  },
+  "typed_move_count": 1,
+  "action_history_index": 986,
+  "checkpoint_history_index": 987,
+  "date_raw_before": 53157816,
+  "date_raw_after": 53157816,
+  "date_advanced_raw": 0,
+  "before_snapshot": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53157816,
+    "bridge_pid": 55416
+  },
+  "after_snapshot": {
+    "snapshot_id": "native:4",
+    "revision": 5,
+    "native_revision": 4,
+    "date_raw": 53157816,
+    "bridge_pid": 55416
+  },
+  "native_route_poststate": {
+    "army_id": 16777450,
+    "current_province_id": 2634,
+    "move_target_province_id": 2640,
+    "route_province_ids": [
+      2640
+    ],
+    "army_state": "moving",
+    "controllable": true,
+    "in_combat": false,
+    "retreating": false
+  },
+  "model_boundary": "The v3 payload's own planner_usable=false flag does not prohibit the separately merged bounded forecast. The exact input replay admitted this contact under stated assumptions; native parity, character-death risk and future reinforcements remain unproven.",
+  "recovery_boundary": "The h987 checkpoint was saved after native route poststate, but no new-PID cold readback of its contents or +24 raw hour progress has occurred.",
+  "source_commit": "8a3d51f4b0e55f4e8f3b82b00e6cf080dd3ab900",
+  "strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+  "receiver_ack_sha256": "95C173D98D1FFA07BB4B91228AC3CA394B1454BBE7ED8BF02EF358C99CBBEDDF",
+  "formal_report": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h968-stage4-8a3d51f-20260928\\stage4-first9\\formal-report.txt",
+    "size": 148006,
+    "sha256": "C46B2EF1BC989353C33F1D1B3675BA03EB76C987573E3FC1FBD3380916B2CAB0"
+  },
+  "operator_receipt": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h968-stage4-8a3d51f-20260928\\stage4-first9\\operator-receipt.json",
+    "size": 1995,
+    "sha256": "A085E954636F45372D534A1C5397481C461F4FF17025CD5241DDBB583F1A1158"
+  },
+  "after_save": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h968-stage4-8a3d51f-20260928\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "size": 59558043,
+    "sha256": "D7009DCD1DCA45B88140543B65E2BF0970030EACB7AAFAB71D8CA9EAF6CB87DC"
+  },
+  "after_driver": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-h968-stage4-8a3d51f-20260928\\state\\native-session\\driver-state.json",
+    "size": 13835167,
+    "sha256": "81686CC333C25CCAC4D773CC79DC19D8C0A1669D37673FB6484AA61499FC2DBD"
+  },
+  "h90_derivative_only": true,
+  "formal_robert_date_credit": 0
+}
