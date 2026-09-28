@@ -377,11 +377,16 @@ bool Enumerate(const State &state, std::uintptr_t storage,
       !Read(state, storage, kStorageSlotsOffset, slots) ||
       !Read(state, storage, kStorageCapacityOffset, capacity) ||
       !Read(state, storage, kStorageActiveCountOffset, active_count) ||
-      block_table == 0 || slots == 0 || capacity <= 0 ||
-      capacity > kMaximumStorageCapacity || active_count < 0 ||
-      active_count > capacity) {
+      capacity < 0 || capacity > kMaximumStorageCapacity ||
+      active_count < 0 || active_count > capacity) {
     return false;
   }
+  if (active_count == 0) {
+    if (select_row) return false;
+    output.generation = HashValue(output.generation, 0);
+    return true;
+  }
+  if (block_table == 0 || slots == 0) return false;
 
   std::int32_t observed_active = 0;
   for (std::int32_t index = 0; index < capacity; ++index) {
@@ -417,7 +422,6 @@ bool Enumerate(const State &state, std::uintptr_t storage,
                         kActiveSchemeStateV1PrivateActiveSchemeVtableRva) ||
         !Read(state, scheme, kSchemeIdentityOffset, identity) ||
         (identity & 0x00FFFFFFU) != static_cast<std::uint32_t>(index) ||
-        (identity >> 24U) == 0 ||
         !Read(state, scheme, kSchemeOwnerOffset, owner)) {
       return false;
     }
