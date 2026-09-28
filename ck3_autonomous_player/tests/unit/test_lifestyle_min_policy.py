@@ -65,6 +65,40 @@ def _choose(snapshot: dict[str, object], **kwargs: object) -> dict[str, object]:
 
 
 class LifestyleMinPolicyTests(unittest.TestCase):
+    def test_martial_authority_first_perk_needs_point_and_final_legality(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["current_focus"] = {
+            "presence": "present", "key": "martial_authority_focus",
+            "lifestyle_key": "martial_lifestyle",
+        }
+        snapshot["current_lifestyle_progress"]["lifestyle_key"] = "martial_lifestyle"
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "serve_the_crown_perk", "lifestyle_key": "martial_lifestyle",
+        }]
+        selected = _choose(snapshot)
+        self.assertEqual(selected["selected_action"]["target_key"],
+                         "serve_the_crown_perk")
+        self.assertEqual(selected["selected_action"]["reason"],
+                         "feudal_county_control_growth_add_0_3")
+        wartime = choose_min_feudal_lifestyle_action(
+            snapshot, feudal_scope_admitted=True, at_peace=False,
+            allow_wartime_perk=True,
+        )
+        self.assertEqual(wartime["policy_id"],
+                         "g2-lifestyle-wartime-martial-perk-v1")
+        self.assertEqual(wartime["selected_action"]["target_key"],
+                         "serve_the_crown_perk")
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 1
+        snapshot["legal_perk_candidates"]["items"] = []
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "serve_the_crown_perk", "lifestyle_key": "martial_lifestyle",
+        }]
+        snapshot["owned_perk_keys"].append("serve_the_crown_perk")
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+
     def test_focusless_martial_education_and_war_choose_legal_authority(self) -> None:
         def observed(key: str, lifestyle: str, points: int) -> dict[str, object]:
             return {"status": "observed", "native_legal": True,

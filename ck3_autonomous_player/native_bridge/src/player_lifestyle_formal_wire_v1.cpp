@@ -252,7 +252,8 @@ bool ReadStockPerkTargetPlayerState(
        target_key != kStockPerkLegalityFollowupTargetV1 &&
        target_key != kStockPerkLegalityNextTargetV1 &&
        target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
-       target_key != kDiplomacyThoughtfulPerkV1) ||
+       target_key != kDiplomacyThoughtfulPerkV1 &&
+       target_key != kMartialServeTheCrownPerkV1) ||
       !OnMain(*context) ||
       context->snapshot == nullptr ||
       context->snapshot->status !=
@@ -280,11 +281,14 @@ bool ReadStockPerkTargetPlayerState(
     return false;
   }
   const auto &state = context->snapshot->state;
+  const auto lifestyle_key =
+      target_key == kDiplomacyThoughtfulPerkV1
+          ? kDiplomacyThoughtfulLifestyleV1
+          : target_key == kMartialServeTheCrownPerkV1
+                ? kMartialPerkLifestyleV1
+                : kStockPerkLegalityLifestyleV1;
   if (!AssignPlayerLifestyleWindowStableKeyV1(
-          target_key == kDiplomacyThoughtfulPerkV1
-              ? kDiplomacyThoughtfulLifestyleV1
-              : kStockPerkLegalityLifestyleV1,
-          output.target_lifestyle_key)) {
+          lifestyle_key, output.target_lifestyle_key)) {
     return false;
   }
   const auto environment = BindPlayerLifestyleSnapshotEnvironmentV1(

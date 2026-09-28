@@ -27,6 +27,10 @@ inline constexpr std::string_view kDiplomacyThoughtfulPerkV1 =
     "thoughtful_perk";
 inline constexpr std::string_view kDiplomacyThoughtfulLifestyleV1 =
     "diplomacy_lifestyle";
+inline constexpr std::string_view kMartialServeTheCrownPerkV1 =
+    "serve_the_crown_perk";
+inline constexpr std::string_view kMartialPerkLifestyleV1 =
+    "martial_lifestyle";
 
 struct StockPerkLegalityFrameV1 {
   std::array<char, 64> episode_run_id{};

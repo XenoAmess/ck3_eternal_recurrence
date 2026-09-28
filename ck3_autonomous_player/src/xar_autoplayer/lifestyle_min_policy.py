@@ -12,6 +12,7 @@ from typing import Mapping
 
 POLICY_ID = "g2-m4-lifestyle-min-v1"
 WAR_PERK_POLICY_ID = "g2-lifestyle-wartime-stewardship-perk-v1"
+WAR_MARTIAL_PERK_POLICY_ID = "g2-lifestyle-wartime-martial-perk-v1"
 _STEWARDSHIP = "stewardship_lifestyle"
 _BUILD_COST_PERK = "cutting_corners_perk"
 _BUILD_SPEED_PERK = "professional_workforce_perk"
@@ -20,6 +21,7 @@ _COLLECT_TAXES_PERK = "tax_man_perk"
 _WEALTH_FOCUS = "stewardship_wealth_focus"
 _MARTIAL_FOCUS = "martial_authority_focus"
 _MARTIAL = "martial_lifestyle"
+_MARTIAL_CONTROL_PERK = "serve_the_crown_perk"
 _REQUIRED_READINESS = (
     "current_focus_ready",
     "lifestyle_progress_ready",
@@ -233,11 +235,6 @@ def choose_min_feudal_lifestyle_action(
     if focus.get("presence") == "present":
         if readiness.get("legal_perk_candidates_ready") is not True:
             return {**result, "status": "legal_candidates_unavailable"}
-        perk_keys = _available_keys(
-            snapshot.get("legal_perk_candidates"), _STEWARDSHIP
-        )
-        if perk_keys is None:
-            return {**result, "status": "legal_candidates_unavailable"}
         current_key = focus.get("key")
         current_lifestyle = focus.get("lifestyle_key")
         if (
@@ -249,6 +246,30 @@ def choose_min_feudal_lifestyle_action(
             or progress.get("lifestyle_key") != current_lifestyle
         ):
             return {**result, "status": "observation_unavailable"}
+        perk_keys = _available_keys(
+            snapshot.get("legal_perk_candidates"), current_lifestyle
+        )
+        if perk_keys is None:
+            return {**result, "status": "legal_candidates_unavailable"}
+        if current_lifestyle == _MARTIAL:
+            if at_peace is False:
+                result["policy_id"] = WAR_MARTIAL_PERK_POLICY_ID
+            points = progress.get("unspent_perk_points")
+            if not isinstance(points, int) or isinstance(points, bool) or points < 0:
+                return {**result, "status": "observation_unavailable"}
+            if (points > 0 and _MARTIAL_CONTROL_PERK in perk_keys
+                    and _MARTIAL_CONTROL_PERK not in owned):
+                return {
+                    **result,
+                    "status": "recommend_action",
+                    "selected_action": {
+                        "kind": "perk",
+                        "target_key": _MARTIAL_CONTROL_PERK,
+                        "target_lifestyle_key": _MARTIAL,
+                        "expected": binding,
+                        "reason": "feudal_county_control_growth_add_0_3",
+                    },
+                }
         if current_lifestyle == _STEWARDSHIP:
             points = progress.get("unspent_perk_points")
             if not isinstance(points, int) or isinstance(points, bool) or points < 0:
