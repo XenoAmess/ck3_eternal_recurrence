@@ -80,6 +80,8 @@ CHILD_MATRILINEAL_PROOF_SCHEMA = "xar.ck3.child-matrilineal-formal-job/v1"
 CHILD_MATRILINEAL_COLD_PROOF_SCHEMA = "xar.ck3.child-matrilineal-cold-result-job/v1"
 CHILD_MATRILINEAL_RESULT_STEP = "query-player-child-matrilineal-marriage-result-v1-private"
 FACTION_GIFT_PENDING_V1_SCHEMA = "xar.ck3.faction_gift_pending_v1"
+SWAY_FORMAL_PENDING_V1_SCHEMA = "xar.ck3.active-scheme-sway-formal-private.v1"
+SWAY_FORMAL_PENDING_FILENAME = "active-scheme-sway-formal-private-v1.json"
 PRIVATE_LIFESTYLE_CMAKE_OPTION = (
     "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1"
 )
@@ -442,6 +444,62 @@ def faction_gift_pending_sidecar_request(
             or pending.get("checkpoint_sha256_before_submit") != save_sha256):
         raise ValueError("faction gift sidecar does not match pre-submit save/driver")
     return request_id
+
+
+def sway_formal_pending_sidecar_request(
+    sidecar: dict[str, Any], driver: dict[str, Any],
+    save_sha256: str, save_size: int,
+) -> str:
+    """Pair one unresolved native Sway ACK with its material checkpoint."""
+    pending = sidecar.get("pending")
+    checkpoint = driver.get("last_checkpoint")
+    if (sidecar.get("schema") != SWAY_FORMAL_PENDING_V1_SCHEMA
+            or sidecar.get("resolved") is not None
+            or not isinstance(pending, dict)
+            or pending.get("stage") != "receipt_pending"
+            or not isinstance(checkpoint, dict)):
+        raise ValueError("Sway sidecar lacks a saved pending native ACK")
+    ack = pending.get("ack")
+    actor = pending.get("actor_character_id")
+    target = pending.get("target_character_id")
+    action_id = pending.get("action_id")
+    epoch = pending.get("pre_capture_epoch")
+    generation = pending.get("pre_container_generation")
+    date_raw = pending.get("pre_date_raw")
+    opinion = pending.get("pre_target_opinion_of_actor")
+    if (not isinstance(ack, dict)
+            or not isinstance(action_id, str)
+            or re.fullmatch(r"sway-[0-9a-f]{32}", action_id) is None
+            or type(actor) is not int or actor <= 0
+            or type(target) is not int or not 0 < target <= 0xFFFFFFFF
+            or target == actor
+            or type(epoch) is not int or epoch <= 0
+            or type(generation) is not int or generation <= 0
+            or type(date_raw) is not int
+            or type(opinion) is not int or not -100 <= opinion <= 100
+            or type(pending.get("pre_native_revision")) is not int
+            or pending["pre_native_revision"] <= 0
+            or ack.get("schema") != "active-scheme-sway-formal-private-v1"
+            or ack.get("stage") != "submitted_verification_pending"
+            or ack.get("action_id") != action_id
+            or ack.get("actor_character_id") != actor
+            or ack.get("target_character_id") != target
+            or type(ack.get("pre_capture_epoch")) is not int
+            or ack["pre_capture_epoch"] <= epoch
+            or ack.get("pre_container_generation") != generation
+            or ack.get("pre_date_raw") != date_raw
+            or ack.get("submit_call_count") != 1
+            or ack.get("receipt_pending") is not True
+            or driver.get("episode_character_id") != actor
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != driver.get("episode_run_id")
+            or not isinstance(driver.get("episode_run_id"), str)
+            or not driver["episode_run_id"]
+            or checkpoint.get("date_raw") != date_raw
+            or checkpoint.get("sha256") != save_sha256
+            or checkpoint.get("size") != save_size):
+        raise ValueError("Sway pending ACK does not match source save/driver")
+    return action_id
 
 
 def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bool:
@@ -1160,12 +1218,16 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     faction_sidecar_arg = getattr(args, "faction_gift_sidecar", None)
     faction_source = (faction_sidecar_arg.resolve() if faction_sidecar_arg is not None
                       else sample_dir / "faction-gift-pending-v1.json")
+    sway_sidecar_arg = getattr(args, "sway_formal_sidecar", None)
+    sway_source = (sway_sidecar_arg.resolve() if sway_sidecar_arg is not None
+                   else sample_dir / SWAY_FORMAL_PENDING_FILENAME)
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
     family_target = state_dir / "first-heir-marriage-formal-v1.json"
     child_target = state_dir / "player-child-matrilineal-formal-v1.json"
     faction_target = state_dir / "native-session" / "faction-gift-pending-v1.json"
+    sway_target = state_dir / SWAY_FORMAL_PENDING_FILENAME
     for path in (save_source, driver_source):
         if not path.is_file():
             raise FileNotFoundError(path)
@@ -1272,6 +1334,21 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 faction_record, driver_source_record, manifest, sha256(save_source)
             )
             faction_source_sha256 = sha256(faction_source)
+    sway_action_id = None
+    sway_source_sha256 = None
+    sway_record = None
+    if sway_sidecar_arg is not None and not sway_source.is_file():
+        raise FileNotFoundError(sway_source)
+    if sway_source.exists():
+        if not sway_source.is_file():
+            raise FileNotFoundError(sway_source)
+        if sway_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {sway_target}")
+        sway_record = read_json(sway_source)
+        sway_action_id = sway_formal_pending_sidecar_request(
+            sway_record, driver_source_record,
+            sha256(save_source), save_source.stat().st_size)
+        sway_source_sha256 = sha256(sway_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -1467,6 +1544,25 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "sha256": faction_source_sha256,
             "action_request_id": faction_request_id,
             "pre_submit_checkpoint_sha256": sha256(save_target),
+        }
+    if sway_action_id is not None:
+        if sway_formal_pending_sidecar_request(
+            sway_record, read_json(driver_target),
+            sha256(save_target), save_target.stat().st_size,
+        ) != sway_action_id:
+            raise RuntimeError("prepared driver no longer matches Sway pending ACK")
+        shutil.copy2(sway_source, sway_target)
+        make_derived_state_owner_writable(sway_target)
+        if sha256(sway_target) != sway_source_sha256:
+            raise RuntimeError("prepared Sway pending sidecar hash mismatch")
+        preparation["sway_formal_pending_sidecar"] = {
+            "status": "paired_no_launch",
+            "ledger_status": "pending",
+            "source": str(sway_source), "path": str(sway_target),
+            "sha256": sway_source_sha256,
+            "action_id": sway_action_id,
+            "checkpoint_sha256": sha256(save_target),
+            "driver_state_sha256": sha256(driver_target),
         }
     print(json.dumps(preparation))
     return 0
@@ -2378,6 +2474,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--child-matrilineal-sidecar", type=Path)
     prepare.add_argument("--child-matrilineal-proof-report", type=Path, action="append")
     prepare.add_argument("--faction-gift-sidecar", type=Path)
+    prepare.add_argument("--sway-formal-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
     verify_life_dll = commands.add_parser("verify-private-lifestyle-dll")
