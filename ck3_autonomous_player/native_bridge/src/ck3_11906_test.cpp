@@ -52,8 +52,9 @@ std::array<std::byte, 0x290> g_dead_character_extension{};
 std::array<std::byte, 0x30> g_played_legitimacy_data{};
 std::array<std::byte, 0x30> g_target_legitimacy_data{};
 std::array<std::byte, 0x08> g_dead_prison_relation{};
-std::array<std::byte, 0x40> g_played_family_data{};
+std::array<std::byte, 0x70> g_played_family_data{};
 std::array<std::int32_t, 2> g_played_spouse_ids{};
+std::array<std::int32_t, 1> g_played_child_ids{};
 std::array<std::byte, 0xE0> g_player_character_entry{};
 std::array<std::byte, sizeof(void *)> g_player_character_entries{};
 std::array<std::byte, 0x40> g_war_storage{};
@@ -9125,6 +9126,37 @@ int main() {
   g_family_marriage_fixture_active = true;
   g_family_marriage_answer = 0;
   g_family_marriage_accept_raw = 1'250'000;
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  g_played_child_ids = {kFixtureAllyCharacterId};
+  Store(g_played_family_data, 0x50,
+        static_cast<void *>(g_played_child_ids.data()));
+  Store(g_played_family_data, 0x58, std::int32_t{1});
+  Store(g_played_family_data, 0x5C, std::int32_t{1});
+  Store(g_played_character, 0x150, std::int32_t{-1});
+  Store(g_ally_character, 0x150, std::int32_t{-1});
+  Store(g_target_character, 0x150, std::int32_t{-1});
+  Store(g_ally_character, 0x68, std::int16_t{18});
+  const auto specified_child =
+      xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
+          bindings, kFixtureAllyCharacterId);
+  if (specified_child.failure !=
+          xar::ck3_11906::PlayerChildMarriageSubjectFailureV1::none ||
+      specified_child.played_character_id != played_character_id ||
+      specified_child.subject_character_id != kFixtureAllyCharacterId ||
+      specified_child.adult_measure_raw != 18 ||
+      specified_child.relationship.betrothed_character_id != -1 ||
+      specified_child.relationship.primary_spouse_character_id != -1 ||
+      !specified_child.relationship.spouse_character_ids.empty()) {
+    return Fail("specified player child native relation read unavailable");
+  }
+  if (xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
+          bindings, enemy_character_id).failure !=
+      xar::ck3_11906::PlayerChildMarriageSubjectFailureV1::not_player_child) {
+    return Fail("specified marriage subject borrowed player-child authority");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{0});
+#endif
   std::vector<xar::ck3_11906::ArrangeMarriageFamilyCandidateV1>
       family_candidates;
   xar::ck3_11906::ArrangeMarriageQueryDiagnostics family_diagnostics{};
@@ -9187,6 +9219,9 @@ int main() {
     return Fail("stale heir generation reached marriage context");
   }
   g_family_marriage_fixture_active = false;
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  Store(g_played_family_data, 0x5C, std::int32_t{0});
+#endif
   Store(g_character_storage, 0x2C, std::int32_t{6});
 
   auto stale_marriage_choice = marriage_choices[0];

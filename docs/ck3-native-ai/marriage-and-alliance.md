@@ -1,5 +1,28 @@
 # CK3 1.19.0.6 婚姻、联盟与战争召集：主动婚配与入站回复树
 
+## 2026-09-28：指定玩家子女的婚配入口（待 paused 实机）
+
+当前 Robert h3690 的首继承人 `38822` 已与 `38718` 订婚；仅反复扫描首继承人不会找到下一项家庭动作。h3686 的正式存档（SHA-256 `BCCF0B016CA1FED9D9993F3B529692458803D830194BA96A5EC922DB9D68DC09`）离线读到玩家 `29829` 的子女 `37265`（Emma），当时年满 16 岁、无婚约或配偶、House `174`、雇主 `29829`。这是指定 subject 的线索，**不是** h3690 当前关系或玩家可提案权限的实机证明。
+
+exact-build EXE `1.19.0.6`，SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `00_marriage_interactions.txt`，SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`，其 `populate_actor_list` 包含玩家、廷臣及符合条件的子女；这只提供入口，不证明特定提案可发送。EXE 的 family 访问链显示 `CCharacter+0x1A0` 指向 family data，`family+0x50` 按 4 字节 CharacterID 数组迭代；既有原生婚配关系读 `family+0x10/+0x14/+0x20`。同构建的 `combat_v3` 读回链使用 `CCharacter+0x1B0 → relation+0xC8` 取得雇主。新私有只读查询把指定 ID 限于当前玩家的 `family+0x50` 子女数组，再读年龄、House/Dynasty、雇主及双边配偶/婚约。`family+0x50` 的子女语义和 Emma 当前状态仍需 paused live 逐项核验。
+
+```mermaid
+flowchart TD
+    A["同版本 paused 玩家帧；指定 subject ID"] --> B{"原生玩家子女数组含 ID？"}
+    B -->|否| X["unavailable；不能借首继承人权限"]
+    B -->|是| C["读年龄、House、雇主、双边婚约/配偶"]
+    C --> D{"五角色 context 的 actor 仍是玩家、secondary actor 仍是 subject？"}
+    D -->|否| X
+    D -->|是| E{"原生完整 Can Send 与 recipient 最终答复？"}
+    E -->|否| F["本候选不可提案"]
+    E -->|是| G["当前帧合法候选；仍需价值选择与动作后置"]
+    C -. "h3690 待验" .-> U["unknown：Emma 当前关系、House/雇主与有价值候选"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+此查询仅解锁指定玩家子女的当前观测与原生最终合法性；不向正式婚配消费者登记动作、不把候选行数当收益。后续若 Emma 的所有答复均拒绝或已婚，优先检查同帧其他真实子女机会，再决定策略范围。
+
 R0260 跨 PID 后的发件方提案状态观测与未闭合终态见
 [C198 exact pending 读回](m5-outbound-marriage-pending-readback-2026-09-27.md)。
 

@@ -8036,6 +8036,8 @@ constexpr std::string_view kMarriageCandidateAllianceProjectionStepV1 =
     "query-first-heir-candidate-alliance-projection-v1-private";
 constexpr std::string_view kCurrentFirstHeirRelationshipStepV1 =
     "query-current-first-heir-relationship-v1-private";
+constexpr std::string_view kPlayerChildMarriageSubjectStepV1 =
+    "query-player-child-marriage-subject-v1-private";
 constexpr std::size_t kMarriageCandidateAllianceProjectionRowsV1 = 5;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
@@ -8054,7 +8056,14 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
     xar::game::ReadArrangeMarriageFamilyCandidatesResultV1 read_result,
     const std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> &candidates,
     const xar::game::ArrangeMarriageQueryDiagnostics &diagnostics,
-    std::string_view override_unavailable_reason = {}) {
+    std::string_view override_unavailable_reason = {},
+    std::string_view subject_source =
+        "public_campaign_root_primary_first_heir"
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    , const xar::ck3_11906::PlayerChildMarriageSubjectReadV1 *child = nullptr,
+    std::uint64_t native_revision = 0
+#endif
+    ) {
   const bool available =
       read_result == xar::game::ReadArrangeMarriageFamilyCandidatesResultV1::
                          available;
@@ -8069,8 +8078,9 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
   AppendJsonString(result, available ? "available" : "unavailable");
   result += ",\"query_sequence\":";
   result += Number(query_sequence);
-  result += ",\"subject_source\":\"public_campaign_root_primary_first_heir\","
-            "\"subject_character_id\":";
+  result += ",\"subject_source\":";
+  AppendJsonString(result, subject_source);
+  result += ",\"subject_character_id\":";
   result += SignedNumber(subject_character_id);
   result += ",\"unavailable_reason\":";
   if (available) {
@@ -8136,6 +8146,47 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
   AppendMarriageQueryDiagnostics(result, diagnostics);
   result += ",\"family_subject_role_mismatches\":";
   result += SignedNumber(diagnostics.family_subject_role_mismatches);
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  if (child != nullptr) {
+    result += ",\"native_revision\":" + Number(native_revision);
+    result += ",\"player_child_verified\":";
+    result += available ? "true" : "false";
+    result += ",\"adult_measure_raw\":";
+    result += available ? SignedNumber(child->adult_measure_raw) : "null";
+    result += ",\"adult_threshold_raw\":16,\"adult\":";
+    result += available ? (child->adult_measure_raw >= 16 ? "true" : "false")
+                        : "null";
+    result += ",\"house_id\":";
+    result += available && child->lineage.house_id >= 0
+        ? SignedNumber(child->lineage.house_id) : "null";
+    result += ",\"dynasty_id\":";
+    result += available && child->lineage.dynasty_id >= 0
+        ? SignedNumber(child->lineage.dynasty_id) : "null";
+    result += ",\"employer_character_id\":";
+    result += available && child->employer_character_id > 0
+        ? SignedNumber(child->employer_character_id) : "null";
+    result += ",\"bilateral_verified\":";
+    result += available ? "true" : "false";
+    result += ",\"betrothed_character_id\":";
+    result += available && child->relationship.betrothed_character_id > 0
+        ? SignedNumber(child->relationship.betrothed_character_id) : "null";
+    result += ",\"primary_spouse_character_id\":";
+    result += available && child->relationship.primary_spouse_character_id > 0
+        ? SignedNumber(child->relationship.primary_spouse_character_id) : "null";
+    result += ",\"spouse_character_ids\":";
+    if (!available) {
+      result += "null";
+    } else {
+      result += '[';
+      for (std::size_t index = 0;
+           index < child->relationship.spouse_character_ids.size(); ++index) {
+        if (index != 0) result += ',';
+        result += SignedNumber(child->relationship.spouse_character_ids[index]);
+      }
+      result += ']';
+    }
+  }
+#endif
   result += "}}";
   return result;
 }
@@ -11255,6 +11306,81 @@ void RunConnectedSession(
                     pipe, CurrentFirstHeirRelationshipResultFrameV1(
                         request_id, state_revision, heir_id, read,
                         unavailable_reason));
+              }
+            }
+          }
+        } else if (step == kPlayerChildMarriageSubjectStepV1) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t requested_subject_id = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision == 0 || expected_revision != state_revision ||
+              !xar::bridge::JsonUnsignedField(
+                  incoming.payload, "subject_character_id",
+                  requested_subject_id) ||
+              requested_subject_id == 0 ||
+              requested_subject_id > static_cast<std::uint64_t>(
+                  (std::numeric_limits<std::int32_t>::max)())) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "player-child marriage subject needs current revision and ID"));
+          } else {
+            xar::game::Snapshot before{};
+            if (!previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, before) ||
+                before != *previous_snapshot || !before.paused ||
+                !before.map_ready || !before.has_played_character ||
+                !before.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "player-child marriage subject admission frame changed"));
+            } else {
+              const auto subject_id =
+                  static_cast<std::int32_t>(requested_subject_id);
+              const auto child =
+                  xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
+                      xar::ck3_11906::BindCurrentProcess(true), subject_id);
+              std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
+              xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
+              auto read_result = xar::game::
+                  ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+              std::string_view reason;
+              using Failure = xar::ck3_11906::
+                  PlayerChildMarriageSubjectFailureV1;
+              if (child.failure == Failure::none &&
+                  child.played_character_id == before.played_character_id) {
+                read_result = xar::game::ReadArrangeMarriageFamilyCandidatesV1(
+                    game, subject_id, rows, diagnostics);
+              } else {
+                switch (child.failure) {
+                case Failure::none: reason = "played_identity_changed"; break;
+                case Failure::frame_changed: reason = "frame_changed"; break;
+                case Failure::subject_unavailable:
+                  reason = "subject_unavailable"; break;
+                case Failure::not_player_child:
+                  reason = "not_player_child"; break;
+                case Failure::relationship_unavailable:
+                  reason = "relationship_unavailable"; break;
+                case Failure::lineage_unavailable:
+                  reason = "lineage_unavailable"; break;
+                case Failure::employer_unavailable:
+                  reason = "employer_unavailable"; break;
+                }
+              }
+              xar::game::Snapshot after{};
+              if (!xar::game::ReadSnapshot(game, after) || after != before ||
+                  child.failure == Failure::frame_changed) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                        "player-child marriage subject changed during read"));
+              } else {
+                ++state.marriage_family_private_query_sequence;
+                connected = xar::bridge::WriteFrame(
+                    pipe, ObservedHeirMarriagePrivateResultFrameV1(
+                        request_id, step,
+                        state.marriage_family_private_query_sequence,
+                        subject_id, read_result, rows, diagnostics, reason,
+                        "specified_player_child", &child, state_revision));
               }
             }
           }

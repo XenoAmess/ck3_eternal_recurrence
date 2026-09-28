@@ -1136,6 +1136,33 @@ struct CurrentFirstHeirRelationshipReadV1 {
 CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
     const Bindings &bindings, std::int32_t heir_character_id) noexcept;
 
+enum class PlayerChildMarriageSubjectFailureV1 : std::uint8_t {
+  none = 0,
+  frame_changed,
+  subject_unavailable,
+  not_player_child,
+  relationship_unavailable,
+  lineage_unavailable,
+  employer_unavailable,
+};
+
+struct PlayerChildMarriageSubjectReadV1 {
+  PlayerChildMarriageSubjectFailureV1 failure =
+      PlayerChildMarriageSubjectFailureV1::subject_unavailable;
+  std::int32_t played_character_id = -1;
+  std::int32_t subject_character_id = -1;
+  std::int16_t adult_measure_raw = 0;
+  MarriageCharacterLineageV1 lineage{};
+  std::int32_t employer_character_id = -1;
+  MarriageHeirRelationshipV1 relationship{};
+};
+
+// Exact-build read for one caller-specified child of the currently played
+// character. The caller still needs the native five-role Can Send/final-answer
+// query to prove proposal authority for any particular match.
+PlayerChildMarriageSubjectReadV1 ReadPlayerChildMarriageSubjectV1(
+    const Bindings &bindings, std::int32_t subject_character_id) noexcept;
+
 struct MarriageCandidateAlliancePrivateReadV1 {
   MarriageCandidateAlliancePrivateFailureV1 failure =
       MarriageCandidateAlliancePrivateFailureV1::binding_unavailable;

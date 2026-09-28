@@ -883,6 +883,9 @@ constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
 constexpr std::size_t kFamilyBetrothedCharacterIdOffset = 0x10;
 constexpr std::size_t kFamilyPrimarySpouseCharacterIdOffset = 0x14;
 constexpr std::size_t kFamilySpouseCharacterIdsOffset = 0x20;
+constexpr std::size_t kFamilyChildrenCharacterIdsOffset = 0x50;
+constexpr std::size_t kCharacterCourtRelationOffset = 0x1B0;
+constexpr std::size_t kCourtRelationEmployerIdOffset = 0xC8;
 constexpr std::size_t kWarStorageOffset = 0x20;
 constexpr std::size_t kWarIdOffset = 0x08;
 constexpr std::size_t kWarAttackersOffset = 0x20;
@@ -17267,6 +17270,76 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
 
 bool ReadMarriageCharacterLineageV1(
     const void *character, MarriageCharacterLineageV1 &output) noexcept;
+
+PlayerChildMarriageSubjectReadV1 ReadPlayerChildMarriageSubjectV1(
+    const Bindings &bindings, std::int32_t subject_character_id) noexcept {
+  using Failure = PlayerChildMarriageSubjectFailureV1;
+  PlayerChildMarriageSubjectReadV1 result{};
+  result.subject_character_id = subject_character_id;
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || !before.paused || !before.map_ready ||
+      !before.has_played_character || !before.played_character_alive) {
+    result.failure = Failure::frame_changed;
+    return result;
+  }
+  result.played_character_id = before.played_character_id;
+  const auto read_once = [&](PlayerChildMarriageSubjectReadV1 &value) -> Failure {
+    void *const played = ResolveCharacter(bindings, before.played_character_id);
+    void *const subject = ResolveCharacter(bindings, subject_character_id);
+    if (played == nullptr || subject == nullptr ||
+        subject_character_id == before.played_character_id ||
+        LoadAt<void *>(subject, kCharacterDeathDataOffset) != nullptr)
+      return Failure::subject_unavailable;
+    const void *const family =
+        LoadAt<const void *>(played, kCharacterFamilyDataOffset);
+    if (family == nullptr) return Failure::not_player_child;
+    std::vector<std::int32_t> children;
+    if (!ReadNativeIntArray(static_cast<const std::byte *>(family) +
+                                kFamilyChildrenCharacterIdsOffset,
+                            children, 256))
+      return Failure::relationship_unavailable;
+    if (std::find(children.begin(), children.end(), subject_character_id) ==
+        children.end())
+      return Failure::not_player_child;
+    value.adult_measure_raw = LoadAt<std::int16_t>(
+        subject, bridge::kMarriageCharacterAdultMeasureOffsetV1);
+    if (!ReadMarriageCharacterLineageV1(subject, value.lineage))
+      return Failure::lineage_unavailable;
+    const void *const court_relation =
+        LoadAt<const void *>(subject, kCharacterCourtRelationOffset);
+    value.employer_character_id = court_relation == nullptr
+        ? -1 : LoadAt<std::int32_t>(court_relation,
+                                  kCourtRelationEmployerIdOffset);
+    if (value.employer_character_id > 0 &&
+        ResolveCharacter(bindings, value.employer_character_id) == nullptr)
+      return Failure::employer_unavailable;
+    return Failure::none;
+  };
+  PlayerChildMarriageSubjectReadV1 first = result;
+  result.failure = read_once(first);
+  if (result.failure != Failure::none) return result;
+  const auto relationship =
+      ReadCurrentFirstHeirRelationshipV1(bindings, subject_character_id);
+  if (relationship.failure != CurrentFirstHeirRelationshipFailureV1::none) {
+    result.failure = relationship.failure ==
+                             CurrentFirstHeirRelationshipFailureV1::frame_changed
+                         ? Failure::frame_changed
+                         : Failure::relationship_unavailable;
+    return result;
+  }
+  result.failure = read_once(result);
+  Snapshot after{};
+  if (result.failure == Failure::none &&
+      (!ReadSnapshot(bindings, after) || after != before ||
+       first.adult_measure_raw != result.adult_measure_raw ||
+       first.lineage != result.lineage ||
+       first.employer_character_id != result.employer_character_id)) {
+    result.failure = Failure::frame_changed;
+  }
+  if (result.failure == Failure::none)
+    result.relationship = relationship.relationship;
+  return result;
+}
 #endif
 
 ReadArrangeMarriageFamilyCandidatesResultV1

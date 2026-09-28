@@ -1443,6 +1443,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_prisoner_collection_query: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
+        allow_private_player_child_marriage_subject_query: bool = False,
         allow_private_epidemic_recovery_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
@@ -1537,6 +1538,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_current_first_heir_relationship_query = (
             allow_private_current_first_heir_relationship_query is True
+        )
+        self.allow_private_player_child_marriage_subject_query = (
+            allow_private_player_child_marriage_subject_query is True
         )
         self.allow_private_epidemic_recovery_query = (
             allow_private_epidemic_recovery_query is True
@@ -2569,6 +2573,21 @@ class NativeHeadlessGameplayDriver:
 
         return query_current_first_heir_relationship_private_v1(
             self, expected_native_revision=expected_native_revision,
+            timeout_seconds=timeout_seconds,
+        )
+
+    def query_player_child_marriage_subject_private_v1(
+        self, *, expected_native_revision: int, subject_character_id: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Read one specified current player child and native proposal authority."""
+        from .player_child_marriage_subject_private_transport import (
+            query_player_child_marriage_subject_private_v1,
+        )
+
+        return query_player_child_marriage_subject_private_v1(
+            self, expected_native_revision=expected_native_revision,
+            subject_character_id=subject_character_id,
             timeout_seconds=timeout_seconds,
         )
 

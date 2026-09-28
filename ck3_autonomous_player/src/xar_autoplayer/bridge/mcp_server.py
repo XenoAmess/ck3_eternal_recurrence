@@ -1360,6 +1360,17 @@ def create_server(
                 expected_native_revision=expected_native_revision,
             )
 
+    if getattr(driver, "allow_private_player_child_marriage_subject_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_child_marriage_subject_private_v1(
+            expected_native_revision: int, subject_character_id: int,
+        ) -> dict[str, object]:
+            """Read one player child and current native marriage proposal legality."""
+            return driver.query_player_child_marriage_subject_private_v1(
+                expected_native_revision=expected_native_revision,
+                subject_character_id=subject_character_id,
+            )
+
     @server.tool()
     def ck3_get_bridge_diagnostics() -> dict[str, object]:
         """Return live transport diagnostics without claiming CK3 game state."""
@@ -2987,6 +2998,11 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="enable the local stdio-only read of the current first-heir relation",
     )
+    result.add_argument(
+        "--private-player-child-marriage-subject-query",
+        action="store_true",
+        help="enable a local stdio-only read of one specified player child",
+    )
     for name in (
         "authorization-receipt",
         "source-checkpoint",
@@ -3048,6 +3064,12 @@ def main(argv: list[str] | None = None) -> int:
             "private current first-heir relationship MCP query requires "
             "native-headless stdio"
         )
+    if args.private_player_child_marriage_subject_query and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError(
+            "private player-child marriage MCP query requires native-headless stdio"
+        )
     selected_state_dir = Path(args.state_dir) if args.state_dir else _default_state_dir()
     driver = load_driver(
         args.driver,
@@ -3059,6 +3081,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     if args.private_current_first_heir_relationship_query:
         driver.allow_private_current_first_heir_relationship_query = True
+    if args.private_player_child_marriage_subject_query:
+        driver.allow_private_player_child_marriage_subject_query = True
     server = create_server(
         driver,
         profile_dir=selected_state_dir / "profile",

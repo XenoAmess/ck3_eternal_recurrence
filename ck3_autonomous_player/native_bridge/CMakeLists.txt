@@ -1765,6 +1765,14 @@ if(BUILD_TESTING)
     _UNICODE
     XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST
   )
+  if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    target_sources(xar_ck3_game_access_test PRIVATE
+      src/current_first_heir_relationship_v1.cpp
+      src/marriage_candidate_alliance_projection_v1.cpp
+      src/marriage_native_outcome_classifier_v1.cpp)
+    target_compile_definitions(xar_ck3_game_access_test PRIVATE
+      XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1=1)
+  endif()
   if(MSVC)
     target_compile_options(xar_ck3_game_access_test PRIVATE
       /W4 /permissive- /EHsc)
