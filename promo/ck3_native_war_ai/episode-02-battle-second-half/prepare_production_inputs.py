@@ -24,6 +24,7 @@ from war_ai_promo.episode_two_second_half import (  # noqa: E402
     _replay_primary, script_chapters,
 )
 from war_ai_promo.episode_two_subtitle_contract import identity  # noqa: E402
+from war_ai_promo.episode_two_pts_contract import validate_pts_span  # noqa: E402
 
 
 def _json(path: Path) -> dict:
@@ -109,7 +110,8 @@ def _capture_source_gate(span: dict, extras: dict[str, tuple[Path, dict]],
     if not isinstance(attempt, str) or not attempt or attempt.startswith("SYNTHETIC-"):
         raise ValueError("Real capture needs a non-synthetic attempt ID")
     for key in ("cold_load_save_artifact_id", "raw_video_artifact_id", "control_artifact_id",
-                "clean_span_receipt_artifact_id", "label_audit_artifact_id"):
+                "clean_span_receipt_artifact_id", "label_audit_artifact_id",
+                "raw_video_pts_probe_artifact_id", "raw_video_recorder_final_artifact_id"):
         if span.get(key) not in extras:
             raise ValueError(f"{attempt} lacks preserved source {key}")
     for prefix in ("cold_load_save", "raw_video", "control"):
@@ -146,6 +148,19 @@ def _capture_source_gate(span: dict, extras: dict[str, tuple[Path, dict]],
         raise ValueError(f"{attempt} clean span lacks an absolute CK3 bundle root")
     bundle = load_capture_bundle(root, required_span_ids=[clean.get("span_id", "")])
     _capture_audit_contract(clean, label, span, reel_sha, duration, bundle, frame_path)
+    probe_id = span["raw_video_pts_probe_artifact_id"]
+    recorder_id = span["raw_video_recorder_final_artifact_id"]
+    for field, artifact_id in (("raw_video_pts_probe", probe_id),
+                               ("raw_video_recorder_final", recorder_id)):
+        item = extras[artifact_id][1]
+        if (span.get(f"{field}_sha256", "").upper() != item["sha256"]
+                or span.get(f"{field}_bytes") != item["bytes"]):
+            raise ValueError(f"{attempt} {field} differs from preserved source")
+    source_span = bundle.clean_span(clean["span_id"])
+    validate_pts_span(extras[span["raw_video_artifact_id"]][0],
+                      extras[probe_id][0], extras[recorder_id][0],
+                      source_span.begin_seconds, source_span.end_seconds,
+                      verified_raw_identity=extras[span["raw_video_artifact_id"]][1])
 
 
 def _reel_source_gate(chapter: str, row: dict, receipt: dict,
@@ -293,7 +308,8 @@ def prepare(declaration_path: Path) -> tuple[dict, list[dict], dict]:
         for span in receipt["capture_spans"]:
             required_extras.update(span[key] for key in (
                 "cold_load_save_artifact_id", "raw_video_artifact_id", "control_artifact_id",
-                "clean_span_receipt_artifact_id", "label_audit_artifact_id"))
+                "clean_span_receipt_artifact_id", "label_audit_artifact_id",
+                "raw_video_pts_probe_artifact_id", "raw_video_recorder_final_artifact_id"))
             label = _json(extra_sources[span["label_audit_artifact_id"]][0])
             required_extras.add(label["frame_artifact_id"])
             if span.get("midrun_checkpoint_save_artifact_id"):

@@ -124,7 +124,7 @@ def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
                     raise ValueError("Synthetic smoke requires the generated non-game source marker")
             elif span.get("attempt_id", "").startswith("SYNTHETIC-"):
                 raise ValueError("Synthetic capture span cannot become a real candidate")
-            dimensions.append({
+            source_record = {
                 "chapter_id": row["id"], "attempt_id": span["attempt_id"],
                 "cold_load_save_artifact_id": span["cold_load_save_artifact_id"],
                 "cold_load_save_sha256": span["cold_load_save_sha256"],
@@ -140,7 +140,13 @@ def _source_dimensions(manifest_path: Path, run: dict, inputs: dict,
                 "reel_width": receipt["reel_width"], "reel_height": receipt["reel_height"],
                 "upscaled_to_reel": span["upscaled_to_reel"],
                 "resampled_to_reel": span["resampled_to_reel"],
-            })
+            }
+            if not synthetic_smoke:
+                source_record.update({key: span[key] for key in (
+                    "raw_video_pts_probe_artifact_id", "raw_video_pts_probe_sha256",
+                    "raw_video_pts_probe_bytes", "raw_video_recorder_final_artifact_id",
+                    "raw_video_recorder_final_sha256", "raw_video_recorder_final_bytes")})
+            dimensions.append(source_record)
     return dimensions
 
 

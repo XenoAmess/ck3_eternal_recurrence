@@ -27,6 +27,7 @@ from .captions import caption_cues, subtitle_document
 from .episode_two_subtitle_contract import (
     HISTORICAL_SCOPE, compact, derive_boundaries, require_audio_coverage,
 )
+from .episode_two_pts_contract import validate_pts_span
 
 
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
@@ -227,6 +228,18 @@ def _capture_audits(run, run_path: Path, span: dict, reel_sha: str,
     frame = _checked_source(run, run_path, label["frame_artifact_id"],
                             label["frame_sha256"], label["frame_bytes"])
     _capture_audit_contract(clean, label, span, reel_sha, reel_duration, bundle, frame)
+    source_span = bundle.clean_span(clean["span_id"])
+    raw = _checked_source(run, run_path, span["raw_video_artifact_id"],
+                          span["raw_video_sha256"], span["raw_video_bytes"])
+    probe = _checked_source(run, run_path, span["raw_video_pts_probe_artifact_id"],
+                            span["raw_video_pts_probe_sha256"], span["raw_video_pts_probe_bytes"])
+    recorder = _checked_source(run, run_path, span["raw_video_recorder_final_artifact_id"],
+                               span["raw_video_recorder_final_sha256"],
+                               span["raw_video_recorder_final_bytes"])
+    validate_pts_span(raw, probe, recorder, source_span.begin_seconds,
+                      source_span.end_seconds,
+                      verified_raw_identity={"bytes": span["raw_video_bytes"],
+                                             "sha256": span["raw_video_sha256"].upper()})
 
 
 def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
@@ -363,6 +376,12 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                     "raw_video_artifact_id", "control_sha256", "control_bytes",
                     "control_artifact_id", "clean_span_receipt_artifact_id",
                     "label_audit_artifact_id")
+        if not synthetic:
+            required += ("raw_video_pts_probe_artifact_id", "raw_video_pts_probe_sha256",
+                         "raw_video_pts_probe_bytes",
+                         "raw_video_recorder_final_artifact_id",
+                         "raw_video_recorder_final_sha256",
+                         "raw_video_recorder_final_bytes")
         if any(not span.get(key) for key in required):
             raise ValueError(f"Incomplete capture span provenance in {row['id']}")
         for prefix in ("cold_load_save", "control"):

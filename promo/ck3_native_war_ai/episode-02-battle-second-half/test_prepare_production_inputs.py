@@ -31,7 +31,8 @@ class ProductionPreflightTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             original = {}
-            for artifact_id in ("save", "raw", "control", "clean", "label", "frame"):
+            for artifact_id in ("save", "raw", "control", "clean", "label", "frame",
+                                "probe", "recorder"):
                 path = root / artifact_id
                 if artifact_id == "clean":
                     path.write_text(json.dumps({"result": "RED", "span_id": "not-reviewed"}), encoding="utf-8")
@@ -44,6 +45,8 @@ class ProductionPreflightTests(unittest.TestCase):
                     "cold_load_save_artifact_id": "save", "raw_video_artifact_id": "raw",
                     "control_artifact_id": "control", "clean_span_receipt_artifact_id": "clean",
                     "label_audit_artifact_id": "label",
+                    "raw_video_pts_probe_artifact_id": "probe",
+                    "raw_video_recorder_final_artifact_id": "recorder",
                     "raw_video_width": 1920, "raw_video_height": 1080,
                     "upscaled_to_reel": True, "resampled_to_reel": True}
             for field, artifact_id in (("cold_load_save", "save"), ("raw_video", "raw"),

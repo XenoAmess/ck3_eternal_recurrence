@@ -21,9 +21,11 @@
 | `subtitle_source_root` | 覆盖 70 件原始 TTS run、manifest、MP3、请求与 Edge 事件的绝对目录 |
 | `cards` | 9 个卡 ID 对应的 SVG `{source, bytes, sha256}`；须是卡索引旁的原件 |
 | `music` | `{artifact_id: "episode02-series-theme", source, bytes, sha256}` |
-| `source_artifacts` | 六章 reel receipt 引用的 save、raw、control、clean span、label、label frame、历史卡可见标签或当次重算回执的 `{artifact_id, source, bytes, sha256, role}`；集合必须恰好匹配 receipt 所引用的 ID |
+| `source_artifacts` | 六章 reel receipt 引用的 save、raw、control、clean span、label、label frame、完整逐帧 ffprobe JSON、`recorder-final.json`、历史卡可见标签或当次重算回执的 `{artifact_id, source, bytes, sha256, role}`；集合必须恰好匹配 receipt 所引用的 ID |
 | `chapters` | 按 `opening,pursuit,knights,reinforcement,terminal,closing` 排列的 6 条 `{id,title,en,duration_seconds,reel,reel_receipt}`，其中 `reel` 和 `reel_receipt` 均为 `{source,bytes,sha256}` |
 
 所有声明文件须先由实际原件产生，绝不能把样片、静态计划、命令 ACK、稀疏帧索引填进真实 reel 或 GREEN clean span 字段。`title` 与 run 配置快照逐章相同；`en` 是实际采用的英语字幕文案；时长不短于来源 TTS。
+
+每条真实 `capture_spans` 还须给 `raw_video_pts_probe_artifact_id/sha256/bytes` 和 `raw_video_recorder_final_artifact_id/sha256/bytes`。预检与正式 composer 均核对 recorder-final 对 raw 与完整 ffprobe 的精确身份，按 CK3 adapter clean span 的 begin/end 在完整 frame PTS 表中逐帧检查：首尾各有 200 ms 内的实际帧、内部 PTS 严格递增、相邻帧间隔不超过 200 ms。整条 raw 可在别处断档，但任何跨越断档的 clean span 必须 RED。`ENCODED_UNREVIEWED` 或稀疏 mark 的最近帧仅供定位，不能代替该检验。
 
 通过预检后，另用最新正式 `xar-promo start-run` 从同一 `ProjectConfig` 建新原生 run；检查 run 快照字节与清单一致。随后按 `preserve-plan.json` 每项的 `artifact_id`、`collection`、`role` 和 `source`，用 `xar-promo preserve` 在该 run 中保全，逐项回读 artifact ID / SHA / bytes。`preserve-plan.json` 最后一项是生成的 `episode02-production-inputs-v1`。只有完成原生 run 保全并再次运行 `validate` / `plan` 后，才能在新的外置 build attempt 调正式六章组装。任何失败 attempt 保留原样，重做使用新的 run/workdir。
