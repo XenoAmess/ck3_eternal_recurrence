@@ -548,6 +548,7 @@ bool ConstructContextThunk(
     const DefinitionLease &interaction, ContextLease &output) noexcept {
   auto &state = *static_cast<BinderState *>(context);
   output = {};
+  state.precondition_failure_stage = "context_input";
   if (!state.attached || !state.operation_active ||
       state.native_context_active || state.native_command_active ||
       actor.proof_epoch == 0 || actor.proof_epoch != target.proof_epoch ||
@@ -557,6 +558,7 @@ bool ConstructContextThunk(
   std::uintptr_t constructor = 0;
   std::uintptr_t refresh = 0;
   std::uintptr_t finalize = 0;
+  state.precondition_failure_stage = "context_entry_rva";
   if (!CheckedAddress(
           state.module_base,
           kActiveSchemeSemanticActionV1PrivateConstructContextRva,
@@ -570,6 +572,7 @@ bool ConstructContextThunk(
   state.context_storage.fill(std::byte{});
   void *const storage = state.context_storage.data();
   const auto address = reinterpret_cast<std::uintptr_t>(storage);
+  state.precondition_failure_stage = "context_construct";
   if (!state.operations.construct_context(
           state.operation_context, constructor, storage,
           interaction.native_address,
@@ -588,18 +591,31 @@ bool ConstructContextThunk(
   std::uint32_t observed_target = 0;
   const bool murder =
       semantic_command.interaction_key == "start_murder_interaction";
+  state.precondition_failure_stage = "context_identity";
   if (!Read(state, address, kActiveSchemeContextActorOffset, observed_actor) ||
       !Read(state, address, kActiveSchemeContextRecipientOffset,
             observed_target) ||
       observed_actor != actor.observed_full_id ||
-      observed_target != target.observed_full_id ||
-      !ReadOptions(state, interaction.native_address, address, murder,
-                   semantic_command.selected_starter_package) ||
-      !state.operations.refresh_context(state.operation_context, refresh,
-                                        storage) ||
-      !state.operations.finalize_context(state.operation_context, finalize,
-                                         storage) ||
-      !VerifySelectedOptions(state, address, murder,
+      observed_target != target.observed_full_id) {
+    return false;
+  }
+  state.precondition_failure_stage = "context_options";
+  if (!ReadOptions(state, interaction.native_address, address, murder,
+                   semantic_command.selected_starter_package)) {
+    return false;
+  }
+  state.precondition_failure_stage = "context_refresh";
+  if (!state.operations.refresh_context(state.operation_context, refresh,
+                                        storage)) {
+    return false;
+  }
+  state.precondition_failure_stage = "context_finalize";
+  if (!state.operations.finalize_context(state.operation_context, finalize,
+                                         storage)) {
+    return false;
+  }
+  state.precondition_failure_stage = "context_options_verify";
+  if (!VerifySelectedOptions(state, address, murder,
                              semantic_command.selected_starter_package)) {
     return false;
   }
@@ -818,10 +834,12 @@ bool NativePreconditionThunk(
     ActiveSchemeSemanticActionV1PrivatePrecondition &output) noexcept {
   auto &state = *static_cast<BinderState *>(context);
   output = {};
+  state.precondition_failure_stage = "entry";
   if (!state.attached || !state.operation_active || !state.request_armed) {
     return false;
   }
   std::string_view scheme_type;
+  state.precondition_failure_stage = "request";
   if (!ValidRequest(state.armed_request, scheme_type)) return false;
   const auto &request = state.armed_request;
   if (request.actor_character_id >
@@ -836,8 +854,12 @@ bool NativePreconditionThunk(
   const auto target_id = static_cast<std::uint32_t>(request.target_id);
   Frame before{};
   Frame after{};
-  if (!CurrentFrame(state, before) ||
-      before.played_character_id != request.actor_character_id) {
+  state.precondition_failure_stage = "initial_frame";
+  if (!CurrentFrame(state, before)) {
+    return false;
+  }
+  state.precondition_failure_stage = "played_character";
+  if (before.played_character_id != request.actor_character_id) {
     return false;
   }
   const auto &operations = state.glue.command_state.operations;
@@ -845,11 +867,21 @@ bool NativePreconditionThunk(
   CharacterLease actor{};
   CharacterLease target{};
   DefinitionLease interaction{};
-  if (!operations.resolve_character(operation_context, actor_id, actor) ||
-      !operations.resolve_character(operation_context, target_id, target) ||
-      !operations.resolve_interaction(operation_context,
-                                      request.interaction_key, interaction) ||
-      actor.proof_epoch != before.capture_epoch ||
+  state.precondition_failure_stage = "actor_identity";
+  if (!operations.resolve_character(operation_context, actor_id, actor)) {
+    return false;
+  }
+  state.precondition_failure_stage = "target_identity";
+  if (!operations.resolve_character(operation_context, target_id, target)) {
+    return false;
+  }
+  state.precondition_failure_stage = "interaction_definition";
+  if (!operations.resolve_interaction(operation_context,
+                                      request.interaction_key, interaction)) {
+    return false;
+  }
+  state.precondition_failure_stage = "identity_epoch";
+  if (actor.proof_epoch != before.capture_epoch ||
       target.proof_epoch != before.capture_epoch ||
       interaction.proof_epoch != before.capture_epoch) {
     return false;
@@ -867,12 +899,20 @@ bool NativePreconditionThunk(
     return false;
   }
   ValidationProof proof{};
+  state.precondition_failure_stage = "native_validator";
   const bool evaluated = operations.validate_context(
       operation_context, native_context, proof);
   operations.release_context(operation_context, native_context);
-  if (state.native_release_failed || !evaluated || !proof.evaluated ||
-      proof.proof_epoch != before.capture_epoch ||
-      !CurrentFrame(state, after) || !SameFrame(before, after)) {
+  if (state.native_release_failed) {
+    state.precondition_failure_stage = "context_release";
+    return false;
+  }
+  if (!evaluated || !proof.evaluated ||
+      proof.proof_epoch != before.capture_epoch) {
+    return false;
+  }
+  state.precondition_failure_stage = "final_frame";
+  if (!CurrentFrame(state, after) || !SameFrame(before, after)) {
     return false;
   }
 
@@ -905,6 +945,7 @@ bool NativePreconditionThunk(
       ActiveSchemeSemanticActionV1PrivatePreviewStatus::explicitly_unavailable;
   output.secrecy.status =
       ActiveSchemeSemanticActionV1PrivatePreviewStatus::explicitly_unavailable;
+  state.precondition_failure_stage = {};
   return true;
 }
 
@@ -1066,11 +1107,13 @@ bool CaptureActiveSchemePreconditionCommandPreconditionV1Private(
     ActiveSchemeSemanticActionV1PrivatePrecondition &output,
     BinderFailure &failure) noexcept {
   output = {};
+  state.precondition_failure_stage = "request";
   std::string_view scheme_type;
   if (!ValidRequest(request, scheme_type)) {
     failure = BinderFailure::request_contract;
     return false;
   }
+  state.precondition_failure_stage = "execution_gate";
   if (!Begin(state, execution, failure)) return false;
   state.armed_request = request;
   state.request_armed = true;

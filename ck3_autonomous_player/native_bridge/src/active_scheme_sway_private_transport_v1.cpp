@@ -171,6 +171,10 @@ bool ExecuteActiveSchemeSwayPrivateQueryV1(
       query->failure = "native_sway_precondition_red:";
       query->failure +=
           ActiveSchemePreconditionCommandBindersV1PrivateFailureName(failure);
+      if (!binder.precondition_failure_stage.empty()) {
+        query->failure += ":";
+        query->failure += binder.precondition_failure_stage;
+      }
       query->completed = true;
       return true;
     }
