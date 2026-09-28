@@ -129,11 +129,13 @@ def main() -> None:
             "current candidate and historical DLL unexpectedly match; re-audit legacy identity")
     capture_script = identity(args.capture_script)
     source = args.capture_script.read_text(encoding="utf-8")
+    frontend_limit_match = re.search(r"30 <= args\.frontend_timeout <= (\d+)", source)
+    frontend_limit = int(frontend_limit_match.group(1)) if frontend_limit_match else None
     require("--capture" in source and "--checkpoint-receipt" in source and
             "--interactive-seconds" in source and
-            "30 <= args.frontend_timeout <= 900" in source and
+            frontend_limit is not None and frontend_limit >= FRONTEND_TIMEOUT_SECONDS and
             "timeout_seconds=2 * args.frontend_timeout" in source,
-            "capture_session 900s frontend / 1800s map contract changed")
+            "capture_session cannot support selected 900s frontend / 1800s map budget")
 
     dependencies = {name: importlib.metadata.version(name)
                     for name in ("mcp", "pywin32", "Pillow", "psutil")}
@@ -172,6 +174,7 @@ def main() -> None:
         "expected_combat_id": EXPECTED_COMBAT_ID, "expected_war_id": EXPECTED_WAR_ID,
         "bounded_timing_seconds": {
             "frontend": FRONTEND_TIMEOUT_SECONDS,
+            "capture_script_frontend_limit": frontend_limit,
             "checkpoint_map": MAP_TIMEOUT_SECONDS,
             "interactive_hot_service": INTERACTIVE_SECONDS,
             "recovery": RECOVERY_SECONDS,

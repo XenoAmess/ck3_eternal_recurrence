@@ -1,5 +1,7 @@
 # E2-09 a04：长冷启动的新配对终局轨准入
 
+**集成后续：**a04 静态回执绑定本工作树当时的入口字节；集成树 `D:/w/e2` 的 `capture_session.py` SHA 不同。下一次屏幕窗口改用 [a05 集成字节回执](terminal-pair-a05-integrated-admission-20260928.md)。a04 回执保持历史原样。
+
 2026-09-28，屏幕前静态修订。a03 的 `frontend-timeout=360` 对同事回报的本机约 **912 秒**冷启动不足；a03 静态回执与[原流程](terminal-pair-new-run-preflight-20260928.md)保留为历史。本次**只**增新的 a04 静态/准入回执并放宽[受管入口](../integration/capture_session.py)的 frontend 上限；未执行 `--capture`、任何 no-launch 实例、Steam/CK3、桌面录制或高负载测试。
 
 ## a04 冻结条件
