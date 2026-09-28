@@ -334,10 +334,34 @@ The ordinary option still returns a same-frame amount and final answer only
 when selected and sendable. An extortionate option remains unavailable to
 formal policy until `increased_ransom_cost_value` is valued. The private
 ordinal query, Python transport and public action surface stay unchanged.
-This source change is **not yet live qualified**; a separate H3446 official
-pair/no-launch candidate and one bounded paused read are needed to learn
-which reason applies to the three prisoners. A positive reason is not a
-submitted proposal, payment, release, next turn, or cold restore.
+R0279 tested this first split on the same H3446/raw53219112 official paired
+source: report SHA-256
+`690911DC540EAF5FB4C91B10FCE9C5BC155DE3C209EF638E6C741F08CE94B8F8`,
+candidate private DLL SHA-256
+`BB6F9C4B05F87908008E90F9060B0E5618ABF5CFB831A402C5C76E61E91DEFF6`.
+All three prisoners returned `unavailable/option_mask_unreadable`. Three
+fresh minimized pump gates and three main-thread queries completed; the paused
+date and source save were unchanged, zero gameplay actions ran, and the CK3
+tree was removed. The unavailable reason combines multiple possible failures
+within the observer's seven-byte read. It does **not** establish an absent
+native option, payer funds, zero quote, or a release decision.
+
+## R0279 option-mask read discriminator
+
+The exact EXE's `0x2C405F0` reads the interaction definition's option count at
+`+0x2554`, updates the context count at `+0x30C`, and clears the bytes from
+the context pointer at `+0x300`. The `0x2C406D0` setter writes one byte into
+that same vector and calls refresh/finalize. The script file SHA-256
+`3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`
+contains seven ransom `send_option` rows, in the expected order. Thus the
+offsets and authored count are supported statically, but R0279 cannot tell
+which runtime read failed. The next private candidate keeps the same
+read-only ordinal query and unavailable payload. It splits the former
+`option_mask_unreadable` into a specific reason for definition pointer/count,
+definition count mismatch, context vector pointer/count, count mismatch, or
+invalid/unreadable selected byte. A typed reason will identify the next native
+binding repair; it is not a quote or a formal ransom consumer. Payer gold is
+still unknown until all preceding option reads are sound.
 
 ```mermaid
 flowchart TD
