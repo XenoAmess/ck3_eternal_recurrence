@@ -51,7 +51,7 @@ receipt accounting once a concrete target and checkpoint are frozen.
 - Baseline: origin/master `d459ff4d493eab33459a9b406c39efcaa163a992`.
 - `xar_ck3_bridge` Release compiled with only
   `XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=ON`; local DLL SHA-256
-  `FE2910B5621C236ACDABDDA8C7CC9E9510513D3B42A3C4BBC1061CCEF407BB08`.
+  `850DF730D27B4B39CFCBF39066126E06DB72EAD71275EE9838AFF01F07E15829`.
   This is a source/build check, not an official Robert paired candidate.
 - SCHEME10 normal and optimized `/W4 /WX` fixtures GREEN, including a
   generation-zero character precondition; private Python transport 2 tests
