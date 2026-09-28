@@ -3,10 +3,10 @@
   "request_id": "WAR-PRISONER-RETENTION-H2825-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T03:16:34Z",
-  "source_pr": null,
-  "master_commit": "b164b0a3707c189b5cbb77dcc3601676445fd6ed",
-  "delivery_route": "direct rebase-only master push",
+  "updated_at_utc": "2026-09-28T03:26:11Z",
+  "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/441",
+  "master_commit": "fdecc860a1f93ffb809b06b799ea4cefd30f9b48",
+  "delivery_route": "PR #441 rebase-only merge after CLA and two Windows static checks passed",
   "interface_contract": {
     "document": "docs/ck3-native-ai/h2825-prisoner-war-retention-source-2026-09-28.md",
     "native_query_step": "query-war-prisoner-release-pairs-v1-16777231",
@@ -112,5 +112,5 @@
     "The FP3 CB consequence is inapplicable to this observed WarID. For other wars, the House and war-specific conditions must be evaluated independently; script prestige values are not numeric actual amounts in this response.",
     "Ransom quotes, nonwar relationship value, future terminal outcomes and any legal prisoner action belong to the requesting nonwar consumer and are not inferred here."
   ],
-  "next_step": "The nonwar consumer may join the attempt-08 same-frame war rule result to its relationship and ransom readback after this delivery reaches master, preserving those other values as unavailable until independently read. Any future prisoner action requires its own legal typed choice, postcondition, next-turn receipt and official cold restore; this war request authorizes no such action."
+  "next_step": "The nonwar consumer may now join the attempt-08 same-frame war rule result on master fdecc860a1f93ffb809b06b799ea4cefd30f9b48 to its relationship and ransom readback, preserving those other values as unavailable until independently read. Any future prisoner action requires its own legal typed choice, postcondition, next-turn receipt and official cold restore; this war request authorizes no such action."
 }
