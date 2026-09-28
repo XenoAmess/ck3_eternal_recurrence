@@ -57,6 +57,8 @@ bool PrepareObservedHeirMarriageSubmissionV1(
   pending.played_character_id = played_character_id;
   pending.heir_character_id = heir_character_id;
   pending.candidate_character_id = cached.candidate_character_id;
+  pending.recipient_character_id =
+      cached.recipient_matchmaker_character_id;
   return true;
 }
 

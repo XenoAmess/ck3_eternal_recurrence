@@ -55,6 +55,10 @@ from .family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
     read_family_marriage_ledger,
 )
+from .player_child_matrilineal_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
+    read_child_matrilineal_ledger,
+)
 from .prisoner_ransom_formal_consumer import (
     SUBMIT_STEP as PRIVATE_PRISONER_RANSOM_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
@@ -357,6 +361,7 @@ def native_auto_run(
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     allow_private_construction_formal_trial: bool = False,
     allow_private_family_marriage_formal_trial: bool = False,
+    private_child_matrilineal_target: tuple[int, int] | None = None,
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
@@ -442,6 +447,14 @@ def native_auto_run(
         raise AgentError("private construction trial only admits a bounded contract")
     if allow_private_family_marriage_formal_trial is True and completion_contract != "bounded":
         raise AgentError("private first-heir marriage trial only admits a bounded contract")
+    if private_child_matrilineal_target is not None:
+        if (completion_contract != "bounded"
+                or not isinstance(private_child_matrilineal_target, tuple)
+                or len(private_child_matrilineal_target) != 2
+                or any(type(value) is not int or not 0 < value < 2**31
+                       for value in private_child_matrilineal_target)
+                or private_child_matrilineal_target[0] == private_child_matrilineal_target[1]):
+            raise AgentError("private child proposal needs bounded positive subject/candidate IDs")
     if (
         allow_private_faction_gift_formal_trial is True
         and completion_contract != "bounded"
@@ -776,6 +789,10 @@ def native_auto_run(
             if allow_private_m5_joint_collector is True
             else {}
         )
+        private_child_driver_options = (
+            {"allow_private_player_child_marriage_subject_query": True}
+            if private_child_matrilineal_target is not None else {}
+        )
         private_epidemic_driver_options = (
             {"allow_private_epidemic_recovery_query": True}
             if allow_private_epidemic_recovery_near_pair is True
@@ -811,6 +828,7 @@ def native_auto_run(
             **private_lifestyle_driver_options,
             **private_faction_driver_options,
             **private_m5_driver_options,
+            **private_child_driver_options,
             **private_epidemic_driver_options,
             **private_prisoner_driver_options,
             **ordinary_succession_driver_options,
@@ -823,6 +841,10 @@ def native_auto_run(
         driver.allow_private_family_marriage_formal_trial = (
             allow_private_family_marriage_formal_trial is True
         )
+        driver.allow_private_player_child_matrilineal_action = (
+            private_child_matrilineal_target is not None
+        )
+        driver.child_matrilineal_target_v1 = private_child_matrilineal_target
         # Reuse the same bounded family opt-in for the exact current-heir read.
         # The query remains private and unadvertised by the driver.
         driver.allow_private_current_first_heir_relationship_query = (
@@ -1986,7 +2008,8 @@ def native_auto_run(
                 )
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
-            if step == PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP:
+            if step in {PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+                        PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP}:
                 if terminal_pending or modal_decision_pending:
                     raise AgentError("pending first-heir marriage cannot be checkpointed on a decision frame")
                 checkpoint, checkpoint_snapshot = _materialize_checkpoint(
@@ -1997,16 +2020,24 @@ def native_auto_run(
                     poll_interval_seconds=poll_seconds,
                     on_checkpoint_submit=mark_checkpoint_submit_started,
                 )
+                child_proposal = step == PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
                 pending_fence = _verify_pending_family_marriage_checkpoint(
                     checkpoint, snapshot=checkpoint_snapshot,
                     submitted_result=outcome.get("result"),
-                    ledger=read_family_marriage_ledger(driver.state_dir),
+                    ledger=(read_child_matrilineal_ledger(driver.state_dir)
+                            if child_proposal else
+                            read_family_marriage_ledger(driver.state_dir)),
+                    expected_step=step,
                 )
                 counts["checkpoint"] += 1
                 checkpoints.append({"turn_index": turn_index,
-                                    "phase": "first_heir_marriage_submitted_pending",
+                                    "phase": ("player_child_matrilineal_submitted_pending"
+                                              if child_proposal else
+                                              "first_heir_marriage_submitted_pending"),
                                     "pending_action": pending_fence, **checkpoint})
-                evidence.append("first_heir_marriage_pending_checkpoint_saved")
+                evidence.append("child_matrilineal_pending_checkpoint_saved"
+                                if child_proposal else
+                                "first_heir_marriage_pending_checkpoint_saved")
                 after_snapshot = checkpoint_snapshot
                 after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
                 current_attempt["after"] = _public_binding(after)
@@ -2338,6 +2369,7 @@ def native_auto_run(
                 and not war_termination_submission_pending
                 and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
                 and step != PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP
+                and step != PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
                 and step != PRIVATE_PRISONER_RANSOM_SUBMIT_STEP
                 and step != PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
             ):
@@ -5095,6 +5127,12 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "family_marriage_private_diagnostic",
         "family_marriage_current_relationship",
         "family_marriage_cold_recovery",
+        "child_matrilineal_legality",
+        "child_matrilineal_value",
+        "child_matrilineal_pending",
+        "child_matrilineal_resolved",
+        "child_matrilineal_cold_recovery",
+        "child_matrilineal_observation",
         "lifestyle_query_status",
         "lifestyle_native_error",
         "exact_active_war_set_watch",
@@ -6000,7 +6038,7 @@ def _verify_pending_construction_checkpoint(
 
 def _verify_pending_family_marriage_checkpoint(
     checkpoint: object, *, snapshot: object, submitted_result: object,
-    ledger: object,
+    ledger: object, expected_step: str = PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
 ) -> dict[str, object]:
     """Keep the ACK, durable pending identity and game save on one turn."""
     pending = ledger.get("pending") if isinstance(ledger, dict) else None
@@ -6016,10 +6054,12 @@ def _verify_pending_family_marriage_checkpoint(
             == snapshot.get("episode_run_id")
             and pending.get("source_date_raw") == checkpoint.get("date_raw")
             == snapshot.get("date_raw")
+            and (expected_step != PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
+                 or pending.get("matrilineal_option_selected") is True)
             and isinstance(played, dict)
             and pending.get("played_character_id") == played.get("character_id")):
         raise AgentError("first-heir marriage ACK lacks a paired pending checkpoint")
-    return {"step": PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+    return {"step": expected_step,
             "status": "receipt_pending", "material_postcondition": "unobserved",
             "heir_character_id": pending["heir_character_id"],
             "candidate_character_id": pending["candidate_character_id"],
@@ -6027,7 +6067,10 @@ def _verify_pending_family_marriage_checkpoint(
                if type(pending.get("recipient_character_id")) is int
                and pending["recipient_character_id"] > 0 else {}),
             "date_raw": checkpoint["date_raw"],
-            "episode_run_id": checkpoint["episode_run_id"]}
+            "episode_run_id": checkpoint["episode_run_id"],
+            **({"matrilineal_option_selected": True}
+               if expected_step == PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
+               and pending.get("matrilineal_option_selected") is True else {})}
 
 
 def _cleanup_report(

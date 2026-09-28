@@ -384,6 +384,11 @@ option(
   OFF
 )
 option(
+  XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1
+  "Enable unadvertised selected-option player-child marriage submit"
+  OFF
+)
+option(
   XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1
   "Enable unadvertised five-candidate paused application-main alliance projection"
   OFF
@@ -395,6 +400,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1 AND
    NOT XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
   message(FATAL_ERROR "First-heir marriage action requires its private legality query")
+endif()
+if(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1 AND
+   (NOT XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1 OR
+    NOT XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1))
+  message(FATAL_ERROR "Player-child marriage action requires private submit and selected value query")
 endif()
 
 option(
@@ -1172,6 +1182,10 @@ if(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
   target_sources(xar_ck3_bridge PRIVATE
