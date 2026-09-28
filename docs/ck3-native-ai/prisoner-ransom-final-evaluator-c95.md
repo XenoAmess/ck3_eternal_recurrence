@@ -690,3 +690,41 @@ flowchart LR
     C -. R0304 尚未读回 .-> F[final Can Send + answer + payer current gold]
     F -. 正式策略价值与恢复仍待验证 .-> A[动作]
 ```
+
+## Current-gold formal consumer boundary (2026-09-28, static)
+
+The frozen `00_prison_interactions.txt` (SHA-256
+`3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`,
+lines 1954-1995) makes `gold` and `current_gold` mutually exclusive according
+to the redirected payer's funds. The frozen `00_prison_effects.txt` (SHA-256
+`F745201EFD827EFF9F4AE8BF61060FE81D1048C47F7C7B487AB5476218D26A66`,
+lines 1-52 and 137-177) saves `scope:payer.current_gold_value` during
+`on_accept`, pays that saved value to the imprisoner for `current_gold`, then
+releases the prisoner. The paused quote is therefore a value input, not a
+fixed payment promise. The native typed submit already refreshes the exact
+option, payer, value and final legality at send time. The independent receipt
+can only observe a positive net player-gold gain together with the precise
+prisoner's release; it must retain the quote and actual net gain separately.
+Unrelated income or expenses between frames remain a material attribution
+limit, and an absent prisoner without positive gain stays unresolved.
+
+The narrow formal policy may compare a positive same-frame `current_gold`
+quote for an unrelated landless or baron prisoner once the existing complete
+war-release proof, final Can Send, acceptance and pending-action checks pass.
+It must preserve `amount_is_acceptance_time_quote=true` through the selected
+choice and durable ledger. A selected quote that changes on the immediate
+re-read is not submitted. R0304 only proved the fallback mask; no accepted
+47028 quote or new ransom action is claimed here.
+
+```mermaid
+flowchart TD
+    Q[Exact paused current_gold quote] --> V{Positive value and custody / war value checks?}
+    V -->|yes| R[Re-read same ordinal and compare payer, option, amount]
+    V -->|no or unknown| U[Do not submit]
+    R -->|stable| S[Typed submit with durable pending ledger]
+    R -->|changed| U
+    S --> A[ACK: unresolved]
+    A --> P{Later exact prisoner absent and player net gold gain positive?}
+    P -->|yes| D[Applied co-observation; retain quote and actual gain]
+    P -->|no| H[Keep pending or ambiguous; no repeat submit]
+```

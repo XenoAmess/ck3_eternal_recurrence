@@ -139,7 +139,7 @@ def select_ransom_candidate(
     snapshot: Mapping[str, object], reads: list[dict[str, object]],
     war_reads: list[dict[str, object]],
 ) -> dict[str, object] | None:
-    """Prefer a positive ordinary-gold offer for an unrelated landless/baron prisoner."""
+    """Prefer a positive gold quote for an unrelated landless/baron prisoner."""
     actor, native, date = _frame(snapshot)
     choices: list[dict[str, object]] = []
     for ordinal, read, row in _collections(snapshot, reads):
@@ -152,7 +152,9 @@ def select_ransom_candidate(
                 or quote.get("prisoner_character_id") != prisoner_id
                 or quote.get("native_revision") != native
                 or quote.get("date_raw") != date
-                or quote.get("selected_option") != "gold"
+                or quote.get("selected_option") not in ("gold", "current_gold")
+                or quote.get("amount_is_acceptance_time_quote") is not (
+                    quote["selected_option"] == "current_gold")
                 or quote.get("can_send") is not True
                 or quote.get("would_accept_now") is not True
                 or quote.get("recipient_answer_status_raw") not in (0, 1)
@@ -170,7 +172,10 @@ def select_ransom_candidate(
                         "prisoner_character_id": prisoner_id,
                         "payer_character_id": quote["payer_character_id"],
                         "quoted_gold_raw": quote["quoted_gold_raw"],
-                        "selected_option": "gold", "collection": read})
+                        "selected_option": quote["selected_option"],
+                        "amount_is_acceptance_time_quote":
+                            quote["amount_is_acceptance_time_quote"],
+                        "collection": read})
     return max(choices, key=lambda row: (row["quoted_gold_raw"],
                                           -row["prisoner_character_id"])) if choices else None
 
@@ -243,6 +248,10 @@ def plan_ransom_private(
         refreshed = select_ransom_candidate(snapshot, current_reads, war_reads)
         if (refreshed is None
                 or refreshed["prisoner_character_id"] != choice["prisoner_character_id"]
+                or refreshed["payer_character_id"] != choice["payer_character_id"]
+                or refreshed["selected_option"] != choice["selected_option"]
+                or refreshed["amount_is_acceptance_time_quote"]
+                   != choice["amount_is_acceptance_time_quote"]
                 or refreshed["quoted_gold_raw"] != choice["quoted_gold_raw"]):
             raise ValueError("chosen ransom offer changed before submit")
     except PumpReadinessError as error:
@@ -285,6 +294,8 @@ def submit_ransom_private(driver: object, *, plan: Mapping[str, object]) -> dict
                "prisoner_character_id": choice["prisoner_character_id"],
                "payer_character_id": choice["payer_character_id"],
                "selected_option": choice["selected_option"],
+               "amount_is_acceptance_time_quote":
+                   choice["amount_is_acceptance_time_quote"],
                "quoted_gold_raw": choice["quoted_gold_raw"],
                "pre_player_gold_raw": gold["raw"],
                "last_checked_native_revision": None}
@@ -328,13 +339,22 @@ def read_ransom_receipt_private(driver: object, *, pending: Mapping[str, object]
     held = any(row.get("prisoner_character_id") ==
                pending["prisoner_character_id"] for row in rows)
     gain = gold["raw"] - pending["pre_player_gold_raw"]
-    applied = not held and gain >= pending["quoted_gold_raw"]
+    acceptance_time_quote = pending.get("amount_is_acceptance_time_quote", False)
+    if (type(acceptance_time_quote) is not bool
+            or acceptance_time_quote != (
+                pending.get("selected_option") == "current_gold")):
+        raise ValueError("ransom pending quote timing is inconsistent")
+    # Stock current_gold saves the payer's gold at acceptance, after the
+    # paused quote. Only the observed player gain is a postcondition there.
+    applied = not held and (gain > 0 if acceptance_time_quote
+                            else gain >= pending["quoted_gold_raw"])
     result = {"status": "applied" if applied else "pending" if held else "ambiguous",
               "material_result": applied,
               "postcondition_verified": applied,
               "prisoner_no_longer_held": not held,
               "observed_player_gold_gain_raw": gain,
               "quoted_gold_raw": pending["quoted_gold_raw"],
+              "amount_is_acceptance_time_quote": acceptance_time_quote,
               "post_native_revision": native,
               "post_date_raw": date,
               "source_pending": dict(pending)}
