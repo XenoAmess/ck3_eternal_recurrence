@@ -36,7 +36,7 @@ class PostrunLinksTest(unittest.TestCase):
         put(self.recorder / "recorder-start.json", {"monotonic_ns": 100, "pid": 42,
                                                     "started_at": "2026-09-28T19:00:00+00:00"})
         put(self.recorder / "recorder-end.json", {
-            "monotonic_ns": 300, "pid": 42, "ended_at": "2026-09-28T19:10:00+00:00",
+            "monotonic_ns": 300, "ended_at": "2026-09-28T19:10:00+00:00",
             "ffmpeg_exit_code": 0,
             "interrupted": False, "raw": audit.identity(raw)})
         screenshot = self.recorder / "screens/d26.png"
@@ -153,6 +153,21 @@ class PostrunLinksTest(unittest.TestCase):
         marks = self.recorder / "marks.jsonl"
         rows = [json.loads(line) for line in marks.read_text(encoding="utf-8").splitlines()]
         rows[0]["pid"] = 999
+        marks.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+        final_path = self.recorder / "recorder-final.json"
+        final = audit.read_object(final_path)
+        final["marks"] = audit.identity(marks)
+        put(final_path, final)
+        pts = audit.read_object(self.pts)
+        pts["recorder_final"] = audit.identity(final_path)
+        put(self.pts, pts)
+        with self.assertRaisesRegex(ValueError, "boundaries or order"):
+            audit.link(self.recorder, self.session, self.pts)
+
+    def test_end_mark_pid_must_match_recorder_start_pid(self) -> None:
+        marks = self.recorder / "marks.jsonl"
+        rows = [json.loads(line) for line in marks.read_text(encoding="utf-8").splitlines()]
+        rows[-1]["pid"] = 999
         marks.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
         final_path = self.recorder / "recorder-final.json"
         final = audit.read_object(final_path)

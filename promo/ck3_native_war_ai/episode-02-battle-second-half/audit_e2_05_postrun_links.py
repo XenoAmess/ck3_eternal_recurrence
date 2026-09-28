@@ -101,7 +101,7 @@ def link(recorder: Path, session_output: Path, pts_audit: Path) -> dict[str, Any
             rows[0].get("monotonic_ns") == start.get("monotonic_ns") and
             rows[-1].get("monotonic_ns") == end.get("monotonic_ns") and
             rows[0].get("pid") == start.get("pid") and
-            rows[-1].get("pid") == end.get("pid") and
+            rows[-1].get("pid") == start.get("pid") and
             rows[0].get("utc") == start.get("started_at") and
             rows[-1].get("utc") == end.get("ended_at") and
             all(type(row.get("monotonic_ns")) is int for row in rows) and
