@@ -1,0 +1,30 @@
+{
+  "schema": "xar.g2.cross-team-war-verification.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "status": "partial_pass_first_hop_preview_only",
+  "verified_at_utc": "2026-09-28T06:47:00Z",
+  "verifier_role": "war_receiver_operator",
+  "candidate_source_commit": "5953e4c65e31b89a02aab57cc7a33d369993c44f",
+  "source_pair_sha256": "C8E0064F1324C848E0B166689D0EDEB66F7C3B07068022FF592AA54F052DAB5A",
+  "candidate_index_sha256": "8C25F789927D28BEBC69A6E33E238F550E5BF80C41C64F91A9B5B38E6DA7FAFC",
+  "receiver_transfer_receipt_sha256": "A5FAA910E25ADD1D9002C1C239440C2EB6ADEC729156EB3A1D68520E6F65974D",
+  "run_id": "desktop-3fevhd2-1c74096080--eternal-recurrence--R0002",
+  "execution_id": "f21b4740-c269-44f8-bca9-d67d999ecd41",
+  "formal_report_sha256": "51AA7EF44600EC1D2BEA7BCB7FA16E2F839CF779A1451952AC261AB103E34338",
+  "operator_receipt_sha256": "54FC293242AD693B4BE998E11917DF4D1684CDCCE991C2E3EC22B9B3F050E63D",
+  "frozen_evidence_manifest_sha256": "E854315B472A837BB3C2FF28DD6CBCAA67B9D673A1BD0D1E601BA70CCD72B0A7",
+  "observed_result": {
+    "bounded_run": "36/36 formal turns, exit code 0, status turn_limit, first_blocker null",
+    "old_red_frame": "raw53219160; WarID16777231; player army83886367 at province2610; target province2629; full hostile army ids50331920,83886484",
+    "turn_34": "exact target2629 route preview",
+    "turn_35": "full-hostile target2629 one-day route-contact query",
+    "turn_36": "exact first-hop2614 route preview, no RED",
+    "final_save_sha256": "E33A9B887AB76A448514D11F2982F7BBC3258BF729760997443C8E79768B8ED9",
+    "final_driver_sha256": "5A43CA84F8D419A247D757FA94D956F3D90FFC72AEA3E2E7A2F338825A6B720C",
+    "final_history_index": 3436,
+    "final_date_raw": 53219160,
+    "cleanup_tree_gone": true,
+    "receiver_ck3_and_recorder_pids_after_run": []
+  },
+  "remaining_blocker": "R0002 turn limit ended after first-hop preview. A fresh independent continuation must show same-frame first-hop contact query, typed move, post-move state and next-day full-hostile recheck. Future siege participant set is still unknown and no active attack is authorized."
+}
