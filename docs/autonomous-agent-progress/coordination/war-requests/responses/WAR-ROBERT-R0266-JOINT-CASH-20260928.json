@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_static_candidate_only",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T06:13:16Z",
+  "updated_at_utc": "2026-09-28T08:31:32Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -49,7 +49,9 @@
     "2026-09-28 follow-up: constructor vtable and ValueBreakdown back-pointer anchors passed normal/-O exact-EXE verification. H2825 six-file source hashes and no-launch preparation plan were reviewed; no new managed CK3 process or player cash amount was obtained.",
     "2026-09-28 follow-up: fresh H2825 attempt-09 prepare-profile/verify-profile/ordinary rebind/native-one-generation-preflight returned ready/ok=true with zero CK3 processes and unchanged source save; preflight report SHA-256 1CDDFCE2D978EEBF9B4C2ABF6D097CE939773BA895D34C3B99085EC399EEDC10. At that attempt time the matching injector was still missing; the subsequent exact asset transfer is recorded below. This was no-launch only and had no same-frame cash amount.",
     "2026-09-28 follow-up: passive MilitaryView process-reader research script compiled, --help passed, and Python-only validation passed; an external synthetic cache fixture passed normal/-O valid, wrong-player, wrong-back-pointer and negative-raw gates. The script has not attached to CK3 and always marks its cache output ineligible for the war-cash receipt.",
-    "2026-09-28 owner request lifecycle: nine targeted native ledger/driver tests pass under normal Python and -O, covering send/response/history, failure, timeout, reconnect, native rejection, and observer fault isolation; recorded-hook fault still persists formal history. Three existing protocol/restore history regressions pass. Receipt remains process-local, unpriced and ineligible to prove pending war cash zero."
+    "2026-09-28 owner request lifecycle: nine targeted native ledger/driver tests pass under normal Python and -O, covering send/response/history, failure, timeout, reconnect, native rejection, and observer fault isolation; recorded-hook fault still persists formal history. Three existing protocol/restore history regressions pass. Receipt remains process-local, unpriced and ineligible to prove pending war cash zero.",
+    "2026-09-28 H2825 exact attempt-11: official no-launch pairing and managed paused-frame before/after postcheck passed, but passive MilitaryView scan hit the prior 8192 MiB private-readable byte ceiling. The sampler is RED and observed no monthly cash amount; the game and source save cleaned/unchanged.",
+    "2026-09-28 scanner follow-up: VAD survey/budget branch py_compile and synthetic 9 GiB versus 8 GiB fail-closed fixture passed normal/-O. External attempt-12 V4 script py_compile/--help only; no second CK3 launch while video holds the screen."
   ],
   "followup_research": {
     "status": "static_source_candidate_only",
@@ -57,6 +59,7 @@
     "source": "ck3_autonomous_player/native_bridge/research/verify_war_cash_military_view_candidate.py",
     "document": "docs/ck3-native-ai/r0266-war-cash-resource-2026-09-28.md",
     "cash_cadence_static_audit": "docs/ck3-native-ai/r0266-war-cash-cadence-static-audit-2026-09-28.md",
+    "h2825_attempt11_red_document": "docs/ck3-native-ai/r0266-h2825-attempt11-red-2026-09-28.md",
     "action_binding_and_policy_audit": "docs/ck3-native-ai/r0266-war-cash-action-binding-followup-2026-09-28.md",
     "embark_cost_name_probe": "ck3_autonomous_player/native_bridge/research/war_cash_embark_cost_candidate.py",
     "h2825_formal_selected_step": "query-observed-first-heir-marriage-result-v1-private",
@@ -124,7 +127,7 @@
       "same_frame_cash_amount_observed": false
     },
     "exact_pair_live_diagnostic_plan": {
-      "status": "scripts_compiled_not_executed_waiting_r0271_screen_release",
+      "status": "v3_executed_attempt11_scan_ceiling_red",
       "new_attempt": "D:/ck3-research-artifacts/war31-h2825-20260928/attempt-11-r0266-exact-pair-cash-01",
       "prepare_script_sha256": "1929D306DD85403FA66955F5EC9B92630E4AF6FF7B4A9B07349FF9219B2D5B7",
       "passive_live_script_sha256": "10CDCA433ECF30F6EC4674841AC7275FE1D49C73C3C9DE7A12C6002F7E8683D0",
@@ -135,7 +138,33 @@
       "passive_live_v3_script_sha256": "A3BEE827E0E7BB102E9B2F28DC275F4E84A76945B9B5C91B39E6F515799CC39F",
       "v3_readiness_wait_seconds": 1800,
       "v3_managed_session_timeout_seconds": 3300,
-      "v3_status": "py_compile_and_help_only_no_game_launch",
+      "v3_status": "executed_2026-09-28T08:07:49Z_paused_frame_postcheck_passed_scan_ceiling_red",
+      "attempt_created": true,
+      "cash_receipt_eligible_from_diagnostic_alone": false
+    },
+    "h2825_attempt11_live_diagnostic": {
+      "status": "RED_private_readable_scan_byte_ceiling_reached",
+      "source_frame": "native:3/public:4/native:3/raw53217624/actor:29829/WarID:16777231",
+      "ck3_pid": 25160,
+      "sampler_error": "private readable scan byte ceiling reached",
+      "old_scan_limit_mib": 8192,
+      "military_view_presence_determined": false,
+      "monthly_gold_expense_amount_observed": false,
+      "same_frame_postcheck_passed": true,
+      "source_and_prepared_save_unchanged": true,
+      "ck3_cleanup_passed": true,
+      "evidence_index_external_path": "D:/ck3-research-artifacts/war31-h2825-20260928/attempt-11-r0266-exact-pair-cash-01/evidence-index.json",
+      "evidence_index_sha256": "2E6F0A775F1782668E1A663196E69C449828DF23F912680D36CC1CB59A2AB83F",
+      "passive_sample_sha256": "15C0FF7F94E884925A086F5E0300ED8DB221D5CCAD7A9F096752F2914865FAAB",
+      "cash_receipt_eligible": false
+    },
+    "h2825_attempt12_static_plan": {
+      "status": "scripts_compiled_and_synthetic_vad_budget_green_no_game_launch",
+      "new_attempt": "D:/ck3-research-artifacts/war31-h2825-20260928/attempt-12-r0266-exact-pair-cash-02",
+      "prepare_script_sha256": "9FE332D6D5B4F680A09D673B6380F94EB3CF8F958F6E4BDDD9173CFFEF1AE122",
+      "live_v4_script_sha256": "C3EF7783426D10A84BCDA67B3FEE28DBCE0906043C94B4C87599B779C121DE7C",
+      "vad_survey_only": true,
+      "max_full_scan_mib": 32768,
       "attempt_created": false,
       "cash_receipt_eligible_from_diagnostic_alone": false
     },
@@ -168,21 +197,43 @@
     "response_relative_path": "WAR/M5-WAR-CASH-20260928/RESPONSE.json",
     "response_sha256": "20FF00F92C6E97FEDA6F330FDCC1CDC4427066D03185BD70290D8F7DEA769309",
     "response_index_sha256": "1DE75CC0A674D17A09F0A9351DB2D93E66AED67370720C27C29DBF1E64A83DB1",
+    "response_v2_relative_path": "WAR/M5-WAR-CASH-20260928/RESPONSE-v2.json",
+    "response_v2_sha256": "B63A4E53FCCFD23F74CBF2FCFD2A0E2ABAB49B849929FEA48ADA27500FD3ADA6",
+    "response_index_v2_sha256": "4119EA932A91FD2B6C080687A370275C942C783A8DE6CE431F5C755BA7B2867A",
     "status": "accepted_routed_incomplete_no_live_cash_receipt",
+    "sender_ack_relative_path": "WAR/M5-WAR-CASH-20260928/SENDER-ACK.json",
+    "sender_ack_sha256": "1D9717A91FE1F9C5B7D439BB7E1B0ABB1C51BCDE363198B718F2BCBB24D3F161",
+    "sender_ack_scope": "The M5 sender accepted routed/incomplete/no-live status and awaits a versioned response; it did not authorize a cash value or game launch.",
+    "h3446_asset_request_relative_path": "WAR/M5-WAR-CASH-20260928/ASSET-REQUEST-H3446.json",
+    "h3446_asset_request_sha256": "A54A02B6A2771F6387C3ADC1B61065BA301BF9A3C8F0B082CEEA631FF0864176",
+    "h3446_asset_request_git_evidence": "docs/autonomous-agent-progress/coordination/war-requests/evidence/WAR-M5-H3446-CASH-ASSET-REQUEST-20260928.json",
+    "h3446_asset_transfer_status": "original_9FD5_pair_conflict_new_048D_rebind_whitelist_accepted_assets_not_yet_verified",
+    "h3446_pair_conflict_response_sha256": "AF4EA3A1437860840F91DE780E4463372D9B5722CBA56AE9501E333890787B6E",
+    "h3446_rebind_addendum_sha256": "ED7F5BE58AB6C37BD54BC8DA9199B1E0AA1A04C646E75296699B35D928EF8A54",
+    "h3446_rebind_asset_accept_sha256": "453E8E3B2DEE911D95A0EA3A4A9F3A246CB33D601A780FC36CE4501EFA5F27B9",
+    "h3492_latest_pair_request_relative_path": "WAR/M5-WAR-CASH-20260928/PAIR-REQUEST-H3492-v1.json",
+    "h3492_latest_pair_request_sha256": "8D42A83C9D5BD6A43CE27EE76A06B39B7BD23D4E1E2A2A5A50DB2D275F948774",
+    "h3492_latest_official_pair_status": "requested_identity_only_unverified",
     "h3446_exact_assets_received": false,
     "same_frame_cash_receipt": null,
     "consumer_mapping_status": "specified_in_response_but_not_eligible_for_formal_spend"
   },
-  "live_evidence": null,
+  "live_evidence": {
+    "scope": "H2825 separate paused-frame read-only diagnostic, not an H3446 or H3492 cash observation",
+    "status": "RED_scan_ceiling_no_cash_amount",
+    "evidence_index_sha256": "2E6F0A775F1782668E1A663196E69C449828DF23F912680D36CC1CB59A2AB83F",
+    "cash_receipt": null
+  },
   "limitations": [
-    "Static-only/no-live delivery. The supplied H2825 construction observation is same-frame evidence of treasury and building cost, but publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
+    "Attempt-11 produced a live H2825 paused-frame diagnostic, but its private-readable memory scan was RED at the 8192 MiB ceiling before instance discovery. The supplied construction observation still publishes no pending-war cash, war action fee, future war cost upper bound or war policy reserve. Null is not zero; no construction approval or formal action is claimed.",
     "The native player_monthly_gold_income is a current monthly-income observation; its gross-income, expense and net composition is not established here, and it cannot independently bound future army upkeep or replenishment. H2908/raw53217816 is a different frame and cannot fill H2825 cash fields.",
     "This interface supports one active WarID; multiple concurrent wars still need an aggregate cash policy. H2743 save-layer inspection found other AI war-chest records but no AI strategy row keyed to the played Robert CharacterID 29829; that does not supply H2825 player-war cash. No new CK3 readback was possible while local desktop capture was stale, and COMBAT_ENTRY_EU_ACTIVATION_ENABLED remains off.",
     "The stock MilitaryView maximum-maintenance getter is a predicted GUI value, not a proved Q100000 same-frame read or a complete future war cash bound. The stock localization explicitly warns that fleets may raise actual expense beyond it.",
     "MilitaryView+0x248 is only a static subject-handle candidate; no headless view instance or exact player identity is proven. Both predicted maximum and current-expense raw/scale layouts are static cache candidates; freshness remains unknown. The existing M5 dispatcher reservation begins empty per instance and cannot prove that all external pending war cash is zero.",
     "A monthly predicted expense is a rate, not a proved one-day cash deduction cap. Before any horizon calculation, establish native payment cadence/next due boundary or conservatively reserve a potentially full monthly charge, then cover fleets, replenishment, hires, changed forces and rates with sourced bounds; future and risk remain null until then.",
     "Consumer policy remains unresolved: the existing M5 selector takes max(global war reserve, proposal minimum reserve). If a building's 200-gold floor must survive payment of separate future war costs, taking max under-reserves; the consumer must define overlap versus addition and validate the joint gate before approving construction.",
-    "Exact-build GetEmbarkCost research currently proves only a unique GUI name and RIP reference, not a callback, safe native call, Q100000 quote or same-frame amount. It cannot fill the immediate war fee or prove zero."
+    "Exact-build GetEmbarkCost research currently proves only a unique GUI name and RIP reference, not a safe native call, selected-action quote or same-frame amount. It cannot fill the immediate war fee or prove zero.",
+    "The H3446 original driver 9FD5 has post-checkpoint history and cannot be paired as-is; a distinct official rebound driver 048D is offered but its six assets have not yet been receiver-verified. Newer H3492 has only a published save hash and awaits its own official paired identity. None of these frames can consume H2825 cash candidates."
   ],
-  "next_step": "After R0271 relinquishes the managed game and a fresh Steam-offline frame is proven, obtain a new same-frame player-owned MilitaryView ValueBreakdown amount and units, plus pending-action ledger, selected action fee, explicit bounded-horizon risk assumptions and war policy minimum reserve. The GUI predicted maximum alone cannot fill future_war_cost_upper_raw. Then hand a complete receipt to the nonwar operator for candidate integration, formal action and receipt validation."
+  "next_step": "After video releases ck3-screen, run new H2825 attempt-12 with a fresh Steam-offline visual, VAD-only total survey and a bounded full private-readable scan. A unique cache still needs visible GUI freshness and player binding before a monthly-rate amount can be used. Separately verify H3446 rebound assets and request an official H3492 pair for the latest frame. Pending-action cash, selected action fee, bounded future cost/risk and explicit war policy reserve remain independently required before any M5 spend."
 }

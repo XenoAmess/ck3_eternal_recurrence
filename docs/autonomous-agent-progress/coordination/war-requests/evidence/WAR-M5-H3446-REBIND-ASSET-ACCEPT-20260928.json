@@ -1,0 +1,44 @@
+{
+  "schema": "xar.g2.m5-war-cash-h3446-rebind-asset-accept.v1",
+  "created_at_utc": "2026-09-28T08:29:37Z",
+  "status": "accepted_for_exact_six_file_transfer_only",
+  "owner": "r0266_resume",
+  "source_addendum_relative_path": "WAR/M5-WAR-CASH-20260928/ASSET-ADDENDUM-H3446-REBIND-v1.json",
+  "source_addendum_sha256": "ED7F5BE58AB6C37BD54BC8DA9199B1E0AA1A04C646E75296699B35D928EF8A54",
+  "receiver_relative_folder": "WAR/M5-WAR-CASH-20260928",
+  "accepted_files": [
+    {
+      "file": "H3446-rebound-v1-xar_checkpoint.ck3",
+      "bytes": 78503122,
+      "sha256": "DB1C897F1C4C93FA3927DDC0D901B225A797678B41687A9275744F898E712C65"
+    },
+    {
+      "file": "H3446-rebound-v1-driver-state.json",
+      "bytes": 88495863,
+      "sha256": "048D44A5E179E1CE6DDA3237ABD93F285453314B08EA21B904F0F33489D22148"
+    },
+    {
+      "file": "H3446-rebound-v1-first-heir-marriage-formal-v1.json",
+      "bytes": 2740,
+      "sha256": "18350BBCF019331A2E821E9DE59D9B2A58424A4A8B7D5E8C8E82DE73CA36BFC3"
+    },
+    {
+      "file": "H3446-rebound-v1-rebind-receipt.json",
+      "bytes": 3955,
+      "sha256": "E301A16DCBCD5E14EEF3BF7CAE5C10527550548BEFC057082C8CF44A354DE584"
+    },
+    {
+      "file": "H3446-rebound-v1-no-launch-preflight.json",
+      "bytes": 3935,
+      "sha256": "2031E7BCCD5F86BD306FC48FA2B3B6D4A09491BE03FB1E1B3D80CE4F370D6E32"
+    },
+    {
+      "file": "H3446-rebound-v1-candidate-index.json",
+      "bytes": 1067,
+      "sha256": "75251821B574BD24F784EA3534FF4EB534B5901AFE88C82FC6BE91E90ECEE3AC"
+    }
+  ],
+  "transfer_boundary": "Only these six exact files may be placed in this WAR folder. The original 9FD5 driver is rejected; no substitute, unrelated OneDrive file, DLL or injector is requested here.",
+  "verification_boundary": "Arrival is not a cash observation or official receiver-side pairing. Receiver will rehash all six, read rebind/no-launch proofs and independently run the official no-launch checks before any CK3 use. R0271-H3388 binaries cannot automatically be treated as a new cash build.",
+  "h3492_latest_frame_boundary": "H3446 is a historical M5 requested frame; newer formal H3492/raw53219160 requires its own official pair and same-frame cash receipt."
+}
