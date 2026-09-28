@@ -113,5 +113,44 @@
     "formal_exit_decision_complete": false,
     "gameplay_action_submitted": false
   },
+  "h2743_v4_partial_truce_live_followup_2026_09_29": {
+    "status": "read_only_partial_truce_inputs_live_verified_exit_decision_open",
+    "draft_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/448",
+    "document": "docs/ck3-native-ai/h2743-defender-dejure-partial-truce-attempt-12-2026-09-29.md",
+    "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-12-dejure-baseline-no-launch/live-dejure-partial-truce-v4",
+    "read_only_result_sha256": "9414C6D397553F1C00D974DB179EF8C96630C2CAB4C75020E1CDED4FAB37DC9E",
+    "candidate_dll_sha256": "1361FC0991D1FA09CB7272112D73F7F50736B7BBAD6A3656C33F9FB200CA1BAA",
+    "local_war_exchange_file": "C:/Users/1/OneDrive/WAR/H2743-EXIT-READONLY-V3-20260928/LOCAL-RESPONSE-PARTIAL-TRUCE-V4-ATTEMPT12-v1.json",
+    "local_war_exchange_sha256": "271D3EBDA6BAF1F3B75720C3A6E2AE73A01AFE97D88DB810EDA391566171EDB4",
+    "local_war_exchange_boundary": "Independent local intake verified exact bytes; source-machine receipt or ACK is pending. This is not the source machine's response or a complete de-jure terms delivery.",
+    "same_frame": "Two baseline queries and one direct termination-options query in the same paused native:3, revision 4/native 3, raw date 53217264, connection generation 1, WarID 16777231, Robert 29829 primary defender, Landolf 30097 primary attacker, CB index 17 targeting Title2128.",
+    "partial_truce_inputs": {
+      "attacker_flexible_truces_perk_owned_span_key_observed": false,
+      "attacker_government_is_nomadic_observed": false,
+      "defender_government_is_nomadic_observed": false,
+      "nomad_both_observed": false,
+      "short": null,
+      "long": null,
+      "border_raid_pair": null,
+      "missing_reason": "stock_condition_reader_unavailable",
+      "evaluated_days": null,
+      "persisted_expiry_date_raw": null
+    },
+    "interpretation": "FLEX is a key lookup in the attacker's owned-perk span, not a proven complete stock has_perk predicate. SHORT, LONG and BORDER_RAID_PAIR lack safe same-frame readers. No actual directed truce duration follows from these partial values.",
+    "direct_options": "Surrender legal and recipient accepts, but terms_observable=false/cb_specific_terms_not_observable. This direct query lacks formal selected_step and typed priced_command and does not establish R0266 immediate fee zero.",
+    "missing_for_exit_comparison": [
+      "runtime_target_scope",
+      "title_vassal_delta",
+      "cb_prestige_factor",
+      "signed_resource_delta_14_rows",
+      "conditional_resource_effects",
+      "directed_truce_duration",
+      "same_frame_continuation_risk"
+    ],
+    "cleanup_and_action": "Fresh visually reviewed Steam offline frame, exclusive ck3-screen lease with heartbeats, source/candidate and loaded-path-plus-disk-SHA checks, supervisor exit 0, CK3 PID empty, screen RELEASE seq1959. No termination, white peace, date advancement or other gameplay action was submitted.",
+    "material_complete": false,
+    "formal_exit_decision_complete": false,
+    "gameplay_action_submitted": false
+  },
   "next_step": "Close the actual de-jure setup/resolve target and change semantics and conditional resource branches before attempting a separately versioned full terms producer. The v3 live query verified only same-frame prestate and legal surrender; obtain signed title/vassal/resource deltas, dynamic factor and truce duration through audited side-effect-free sources, plus finite-horizon continuation loss and cash bounds. Keep the formal comparison unavailable and the terminal selected-step guard active until those facts and a sourced policy threshold exist. Do not reuse R0197 one-shot authorization or submit H2743/H2825 exit based on this response."
 }
