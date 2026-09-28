@@ -1,9 +1,11 @@
 """No-screen tests for the candidate UI-saved GUI block importer."""
 
 import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 from capture_session import import_ui_saved_gui_block
 
@@ -41,6 +43,24 @@ class UiGuiImportTest(unittest.TestCase):
             self.assertEqual(row["status"], "GREEN_DISK_ONLY")
             self.assertFalse(row["recording_authorized_by_this_receipt"])
             self.assertTrue((output / "gui-settings-ui-block-import.json").is_file())
+            self.assertEqual((output / "gui-settings-ui-import-prepared.pdx.txt").read_bytes(),
+                             target.read_bytes())
+            self.assertFalse(Path(row["staging_path"]).exists())
+
+    def test_preserves_every_vanilla_template_byte(self) -> None:
+        template = self.template + "\n\n"
+        source = self.template.encode() + self.block
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source_path = root / "source.txt"
+            source_path.write_bytes(source)
+            output = root / "evidence"
+            output.mkdir()
+            target = root / "pdx_settings.txt"
+            row = import_ui_saved_gui_block(target, template, source_path, sha(source), output)
+            self.assertEqual(target.read_bytes(), template.encode() + self.block)
+            self.assertEqual(row["vanilla_non_gui_template"]["bytes"], len(template.encode()))
+            self.assertEqual(row["vanilla_non_gui_template"]["sha256"], sha(template.encode()))
 
     def test_rejects_mismatched_or_missing_sha_before_writing(self) -> None:
         source = self.block
@@ -56,6 +76,8 @@ class UiGuiImportTest(unittest.TestCase):
                     import_ui_saved_gui_block(target, self.template, source_path,
                                               claimed, output)
                 self.assertFalse(target.exists())
+                self.assertEqual(json.loads(
+                    (output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
 
     def test_rejects_unreviewed_gui_syntax(self) -> None:
         cases = {
@@ -80,24 +102,57 @@ class UiGuiImportTest(unittest.TestCase):
                     import_ui_saved_gui_block(target, self.template, source_path,
                                               sha(source), output)
                 self.assertFalse(target.exists())
+                self.assertEqual(json.loads(
+                    (output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
 
     def test_rejects_existing_target_and_duplicate_template_gui(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "source.txt"
-            source.write_bytes(self.block)
+            source_bytes = self.template.encode() + self.block
+            source.write_bytes(source_bytes)
             target = root / "pdx_settings.txt"
+            existing_output = root / "existing-evidence"
+            existing_output.mkdir()
+            target.write_bytes(b"old target")
+            with self.assertRaisesRegex(Exception, "Target settings already exist"):
+                import_ui_saved_gui_block(target, self.template, source,
+                                          sha(source_bytes), existing_output)
+            self.assertEqual(target.read_bytes(), b"old target")
+            self.assertEqual(json.loads(
+                (existing_output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
+            target.unlink()
+            duplicate_output = root / "duplicate-evidence"
+            duplicate_output.mkdir()
+            with self.assertRaisesRegex(Exception, "Vanilla template already defines GUI"):
+                import_ui_saved_gui_block(target, self.template + '"GUI"={}\n',
+                                          source, sha(source_bytes), duplicate_output)
+            self.assertFalse(target.exists())
+            self.assertEqual(json.loads(
+                (duplicate_output / "gui-settings-ui-block-import.json").read_text())["status"], "RED")
+
+    def test_atomic_publish_failure_keeps_red_receipt_and_no_partial_target(self) -> None:
+        source_bytes = self.template.encode() + self.block
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.txt"
+            source.write_bytes(source_bytes)
             output = root / "evidence"
             output.mkdir()
-            target.write_bytes(b"old target")
-            with self.assertRaises(Exception):
-                import_ui_saved_gui_block(target, self.template, source, sha(self.block), output)
-            self.assertEqual(target.read_bytes(), b"old target")
-            target.unlink()
-            with self.assertRaises(Exception):
-                import_ui_saved_gui_block(target, self.template + '"GUI"={}\n',
-                                          source, sha(self.block), output)
+            target = root / "pdx_settings.txt"
+            with mock.patch("capture_session.os.link", side_effect=OSError("link rejected")):
+                with self.assertRaisesRegex(OSError, "link rejected"):
+                    import_ui_saved_gui_block(target, self.template, source,
+                                              sha(source_bytes), output)
             self.assertFalse(target.exists())
+            self.assertEqual(source.read_bytes(), source_bytes)
+            self.assertEqual((output / "gui-settings-ui-import-prepared.pdx.txt").read_bytes(),
+                             self.template.encode() + self.block)
+            receipt = json.loads(
+                (output / "gui-settings-ui-block-import.json").read_text())
+            self.assertEqual(receipt["status"], "RED")
+            self.assertFalse(receipt["atomic_exclusive_publish"])
+            self.assertTrue(Path(receipt["staging_path"]).is_file())
 
     def test_rejects_symlink_source_if_platform_allows_it(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
