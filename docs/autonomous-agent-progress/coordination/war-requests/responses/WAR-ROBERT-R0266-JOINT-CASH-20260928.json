@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_live_diagnostic_red_no_cash_values",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T12:50:10Z",
+  "updated_at_utc": "2026-09-28T20:31:08Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -74,7 +74,9 @@
     "2026-09-28 fixed WAR R0303 follow-up SHA 32A0749C gave the source the current all-null cash state, conditional no-action diagnostic limits, and missing native producer edges. Independent local readback and immutable preservation passed; source-machine readback and policy-source response remain pending.",
     "2026-09-28 prepared a bounded CHudTopBar process-reader diagnostic that follows the exact owner chain and reads no more than 128 KiB across two samples, with no VAD scan or GUI getter. Four fake-process tests pass normal/-O and --help works. This sampler has not run against CK3; its output is never a formal cash receipt and the five Robert cash values remain null.",
     "2026-09-28 conditional exact war-termination read-only query fee producer candidate checks selected query/typed command/WarID/six-field frame, then requires promoted runtime and DLL-audit hashes, actual bytes of eleven source/run artifacts, an official output-pair no-launch receipt and managed loaded-binary/query/postcheck crosswalk. Both approval registries are empty, the current formal planner does not produce the trusted typed command or runtime receipt, and the module is not connected to the M5 collector. Six synthetic focused tests pass normal/-O, but no Robert frame obtains immediate fee zero; all five live cash values remain null.",
-    "2026-09-28 source policy response SHA 26D2F543 confirmed no published Robert active-war liquidity floor in checked master 965a8205; policy ID/version/owner/amount/validity are null. Receiver ACK SHA 33243C75 records that absence is not a zero reserve. Construction 20,000,000 raw floor and AI war chest are not substitute war policy; all five R0303 cash inputs remain null."
+    "2026-09-28 source policy response SHA 26D2F543 confirmed no published Robert active-war liquidity floor in checked master 965a8205; policy ID/version/owner/amount/validity are null. Receiver ACK SHA 33243C75 records that absence is not a zero reserve. Construction 20,000,000 raw floor and AI war chest are not substitute war policy; all five R0303 cash inputs remain null.",
+    "2026-09-28 H3911 formal cash attempt-01: fresh receiver six-file rebind/no-launch and guarded one-turn reached paused native:3/public revision 4/native revision 3/date_raw 53219928. The formal selector chose exact typed query-war-termination-options-16777231; native query result was accepted/available, sequence 1, with zero gameplay actions and zero date advance. The formal receipt SHA 63CA8398 blocked on same_paused_treasury_unproven before passive topbar sampling; independent audit SHA EB26B6F7 confirms the frozen driver history row 3914 and absent before/after gold and parsed wire in the blocked receipt. Managed cleanup and screen release sequence 2112 passed; all five cash inputs, horizon and zero-fee approval remain null/closed.",
+    "2026-09-28 H3911 policy-owner response SHA ACED0B0D4BCA99FA06D2CE175BCB9B2C7C4DA5C72392D303C77B789C8D7C41E3 explicitly deferred a Robert war liquidity floor, horizon, risk upper and future-cost-bound method. Defer/null is not a zero reserve; M5 spend remains false."
   ],
   "followup_research": {
     "status": "static_sources_plus_h2825_live_diagnostic_red",
@@ -108,6 +110,15 @@
     "termination_read_only_query_zero_fee_candidate": "ck3_autonomous_player/src/xar_autoplayer/war_cash_termination_query_zero_fee_v1.py",
     "termination_read_only_query_zero_fee_gate_document": "docs/ck3-native-ai/r0313-war-termination-query-zero-fee-gate-2026-09-28.md",
     "termination_read_only_query_zero_fee_status": "unpromoted_approval_registries_empty_not_connected_to_formal_collector_no_live_zero",
+    "h3911_formal_query_attempt01_document": "docs/ck3-native-ai/r0266-h3911-formal-query-attempt01-red-2026-09-29.md",
+    "h3911_formal_query_attempt01_receipt_path": "D:/ck3-research-artifacts/r0266-h3911-formal-cash-20260929/attempt-01/formal-query-receipt/formal-selected-query-receipt.json",
+    "h3911_formal_query_attempt01_receipt_sha256": "63CA839846B49493FF375D421F86616EAE3CABC12649328345186E6DF6F31918",
+    "h3911_formal_query_attempt01_independent_audit_sha256": "EB26B6F7C4AB7D4B29DBC634C19139A6CA8116E666BF96AA53BA8968A865ABB7",
+    "h3911_formal_query_attempt01_status": "native_query_accepted_formal_cash_receipt_RED_same_paused_treasury_unproven_no_gameplay_or_date_advance",
+    "h3911_formal_query_attempt01_passive_topbar": "RED_not_reached",
+    "h3911_formal_query_attempt01_zero_fee_approved": false,
+    "h3911_robert_liquidity_policy_response_sha256": "ACED0B0D4BCA99FA06D2CE175BCB9B2C7C4DA5C72392D303C77B789C8D7C41E3",
+    "h3911_robert_liquidity_policy_status": "deferred_floor_horizon_risk_future_bound_all_null",
     "r0303_gap_followup_relative_path": "WAR/M5-WAR-CASH-20260928/WAR-CASH-GAP-R0303-FOLLOWUP-v1.json",
     "r0303_gap_followup_sha256": "32A0749CF560FA4AAE4EC1EDCCF7A824F8927A070A3FE8A73F5E4463785AFE11",
     "r0303_gap_followup_receiver_readback_verified": true,
@@ -448,6 +459,23 @@
       "same_frame_cash_receipt": null,
       "scope": "exact_transfer_verified_only_not_receiver_pair_or_live_cash"
     },
+    "h3911_receiver_formal_query_state_v7": {
+      "supersedes_transfer_only_phase": "latest_source_pair_state_v6",
+      "receiver_source_commit": "01c73c63ffff3c65c157c050e31413a0f6c9ce7a",
+      "receiver_rebind_no_launch": "ready_exact_save_and_derived_driver",
+      "receiver_derived_driver_sha256": "B13E970A4AAD1508B7A61684BF85CE8558F40B5630D4968E9919AAF8DC6DAEC7",
+      "receiver_live_formal_query": "exact_selected_typed_query_native_accepted_available_sequence_1",
+      "receiver_formal_cash_receipt": "RED_same_paused_treasury_unproven",
+      "receiver_formal_cash_receipt_sha256": "63CA839846B49493FF375D421F86616EAE3CABC12649328345186E6DF6F31918",
+      "receiver_independent_audit_sha256": "EB26B6F7C4AB7D4B29DBC634C19139A6CA8116E666BF96AA53BA8968A865ABB7",
+      "gameplay_actions": 0,
+      "date_advance": false,
+      "managed_cleanup_proven": true,
+      "screen_release_sequence": 2112,
+      "same_frame_cash_receipt": null,
+      "query_fee_zero_approval": false,
+      "scope": "historical_H3911_diagnostic_only_not_current_M5_cash"
+    },
     "nw_econ_h3911_dependency_notice_v1": {
       "source_file": "WAR/M5-WAR-CASH-20260928/SOURCE-NW-ECON-R0326-H3911-WAR-CASH-DEPENDENCY-v1.json",
       "source_sha256": "226FA2E747AD64E1D0B408C4612D3F39B216AC01ACF15713E04DB60916A3BED3",
@@ -498,9 +526,26 @@
     "consumer_mapping_status": "specified_in_response_but_not_eligible_for_formal_spend"
   },
   "live_evidence": {
-    "scope": "H2825 separate paused-frame read-only diagnostic, not an H3446 or H3492 cash observation",
-    "status": "RED_scan_ceiling_no_cash_amount",
+    "scope": "Separate historical H2825 passive scan and H3911 formal selected query diagnostics; neither supplies a current M5 cash amount",
+    "status": "RED_no_same_frame_cash_amount_or_zero_fee_approval",
     "evidence_index_sha256": "2E6F0A775F1782668E1A663196E69C449828DF23F912680D36CC1CB59A2AB83F",
+    "h2825_status": "RED_scan_ceiling_no_cash_amount",
+    "h3911_formal_selected_query": {
+      "source_frame": "native:3/public_revision:4/native_revision:3/date_raw:53219928/episode:native-29829-2bc2d599f7f9/WarID:16777231",
+      "selected_step": "query-war-termination-options-16777231",
+      "typed_command": "read_only_query/war_termination_options/WarID:16777231",
+      "native_query_result": "accepted_available_sequence_1",
+      "formal_cash_receipt_status": "blocked_same_paused_treasury_unproven",
+      "formal_cash_receipt_sha256": "63CA839846B49493FF375D421F86616EAE3CABC12649328345186E6DF6F31918",
+      "independent_audit_sha256": "EB26B6F7C4AB7D4B29DBC634C19139A6CA8116E666BF96AA53BA8968A865ABB7",
+      "gameplay_actions_submitted": 0,
+      "date_advanced": false,
+      "passive_topbar": "RED_not_reached",
+      "managed_cleanup_proven": true,
+      "screen_release_sequence": 2112,
+      "query_fee_zero_approved": false,
+      "cash_values_and_horizon": null
+    },
     "cash_receipt": null
   },
   "limitations": [
@@ -518,7 +563,9 @@
     "Topbar GetGoldExpensesBreakdown is an exact-build static GUI candidate; calling its getter may refresh/write cache. An exact HUD owner path and bounded passive double-read sampler are prepared but never attached to CK3, and they explicitly do not prove paused-frame revision, cache freshness, account debit timing, or a formal cash amount.",
     "R0313 H3770 was the latest source-selected official durable raw pair at its metadata response time, but R0314 H3774, R0317 H3778, R0319 H3860, and R0321 H3911 superseded it. The first R0321 WAR notice marked h3911/raw53219928 recovery_qualified_for_receiver=false. Later master 32c0dd370 records a frozen H3911 source pair with official rebind and no-launch PASS on source 2eb9, superseding that earlier qualification status. At the v5 cutoff the receiver had not transferred or independently qualified the H3911 assets. The v6 transfer receipt now verifies all six source bytes, but receiver rebind/no-launch, live query and cash remain absent. R0321 forecast remains RED at producer_unavailable/same_frame_encounter_scope_mismatch; selected_step at its failed turn was null. Earlier notices remain historical. The receiver's initial H3770 ACK copied a truncated response SHA; an append-only same-folder erratum binds the correct SHA and keeps the no-transfer decision. The source read back and accepted that erratum.",
     "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove the DLL/driver actually used in a Robert output pair. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan emits typed priced_command identity only for the selected termination-options query. A new opt-in, one-turn runner path can append a managed receipt for that exact formal selection, parsed protocol request/envelope, six-field paused frame, process PID/creation time and mapped module disk-file hashes after cleanup, but it has not run against CK3. It is documented at docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md. Direct H2743 query evidence cannot substitute for formal selection, and no historical immediate fee is filled.",
-    "R0326 NW-ECON reported a source-side H3911 selected termination-options query, construction cost 18,000,000 raw and treasury 120,644,281 raw with zero action/date advance. That metadata raises the chance that a new receiver formal turn selects the same query, but it contains no complete six-field frame, typed priced command, raw request/envelope, actual loaded-module audit or war cash amount. It cannot be spliced with R0321's failed forecast turn or the receiver's future attempt, nor price the construction candidate."
+    "R0326 NW-ECON reported a source-side H3911 selected termination-options query, construction cost 18,000,000 raw and treasury 120,644,281 raw with zero action/date advance. That source query was not dispatched and has no protocol or price. The separate #449 receiver attempt later formally selected and executed the exact typed query, but its cash receipt blocked before parsed wire/after-frame preservation. These two sources cannot be spliced into a zero-fee or current M5 construction decision.",
+    "H3911 receiver attempt-01 reached the exact native termination-options query, but same_paused_treasury_unproven covers both absent/malformed and changed gold raw. Its frozen blocked receipt does not distinguish them or retain before/after gold and protocol objects. The native result accepted/available is a query result, not a cash price or proof of no deferred debit. Passive topbar was not reached. An append-only diagnostic has been implemented for a future new attempt; it does not retroactively fill H3911.",
+    "The H3911 Robert policy owner explicitly deferred publication of the war liquidity floor, horizon, future-cost upper-bound method and risk assumptions. Null must remain null; no AI war chest, building floor or same-frame treasury balance is an adopted player war policy."
   ],
-  "next_step": "Do not interrupt source LIFE/ECON continuation or the current screen owner. H3911 six exact assets passed receiver transfer SHA only; the separate forecast receiver's no-launch PASS followed by 50 native-map readiness failures is not a #449 formal query. Follow docs/ck3-native-ai/r0266-h3911-query-and-military-same-session-attempt-2026-09-29.md for a fresh #449 receiver pair/ABI audit, managed same-session selected-query receipt and bounded passive military diagnostics after screen release. The runner now has a default-off, bounded, append-only, same-PID passive topbar diagnostic hook; it has static tests but no H3911 live receipt, does not prove cache freshness or military debit, and cannot price the formal query. R0326 source metadata selected but never dispatched the war query, and cannot provide its price. Connect an auditable owner-side commitment source, action-bound nonquery quote, bounded future fee with debit cadence and risk, and a newly published versioned player war reserve policy. Source reported no Robert war liquidity floor policy. Keep all five typed null, horizon null and the M5 spend gate closed meanwhile."
+  "next_step": "Review H3911 attempt-01 RED evidence and independent audit before any new diagnostic. Its formal selected query executed, then cash gate blocked at same_paused_treasury_unproven; the receiver cleaned CK3 and released screen sequence 2112. For a new attempt use a new external root, fresh exact pair/rebind/no-launch and Steam/screen evidence, and the append-only pre-gate diagnostic to distinguish missing versus changed receiver gold while retaining parsed request/envelope. Only then evaluate passive topbar owner/cache freshness as a separate diagnostic. Do not promote query fee zero from accepted native query or cached receiver projections; both approval registries stay empty. Connect a priced all-owner pending ledger, typed selected action quote, sourced future debit cadence and upper/risk bounds, and a newly adopted player war policy floor/horizon. The policy owner explicitly deferred H3911 publication. Keep all five typed cash values and horizon null and M5 spend closed."
 }

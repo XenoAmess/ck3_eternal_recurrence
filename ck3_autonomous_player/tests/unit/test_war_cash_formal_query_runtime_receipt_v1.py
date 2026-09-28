@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import hashlib
+import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -140,6 +143,80 @@ class FormalQueryRuntimeReceiptTests(unittest.TestCase):
                 receipt = subject.build_formal_query_session_receipt(**sample)
                 self.assertEqual(receipt["status"], "blocked")
                 self.assertIsNone(receipt["immediate_war_action_cost_raw"])
+
+    def test_rejected_treasury_keeps_precise_diagnostic_without_cash_claim(self) -> None:
+        for mutation, relation, before_raw, after_raw in (
+            ("outer_missing", "before_unavailable", None, 120_644_281),
+            ("outer_changed", "changed", 120_644_281, 120_644_280),
+        ):
+            with self.subTest(mutation=mutation):
+                sample = _fixture()
+                if mutation == "outer_missing":
+                    sample["before"].pop("played_character_gold")
+                else:
+                    sample["after"]["played_character_gold"]["raw"] -= 1
+                diagnostic = subject.build_formal_query_attempt_diagnostic(**{
+                    key: sample[key] for key in (
+                        "before", "after", "outcome", "wire",
+                        "process_before", "process_after",
+                        "gameplay_submits_before", "gameplay_submits_after",
+                    )
+                })
+                self.assertEqual(diagnostic["receiver_gold_relation"], relation)
+                self.assertEqual(
+                    diagnostic["receiver_semantic_before"]["played_character_gold_raw"],
+                    before_raw,
+                )
+                self.assertEqual(
+                    diagnostic["receiver_semantic_after"]["played_character_gold_raw"],
+                    after_raw,
+                )
+                self.assertEqual(
+                    diagnostic["parsed_protocol_objects"]["request"]["request_id"],
+                    "query-1",
+                )
+                self.assertEqual(
+                    diagnostic["parsed_protocol_objects"]["response_envelope"][
+                        "request_id"], "query-1",
+                )
+                self.assertFalse(diagnostic["formal_cash_receipt_eligible"])
+                self.assertIsNone(diagnostic["immediate_war_action_cost_raw"])
+                self.assertEqual(
+                    subject.build_formal_query_session_receipt(**sample)["status"],
+                    "blocked",
+                )
+
+    def test_diagnostic_is_bounded_append_only_and_hashes_written_bytes(self) -> None:
+        sample = _fixture()
+        sample["after"]["played_character_gold"]["raw"] -= 1
+        diagnostic = subject.build_formal_query_attempt_diagnostic(**{
+            key: sample[key] for key in (
+                "before", "after", "outcome", "wire",
+                "process_before", "process_after",
+                "gameplay_submits_before", "gameplay_submits_after",
+            )
+        })
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            summary = subject.preserve_formal_query_attempt_diagnostic(
+                root, diagnostic,
+            )
+            payload = Path(summary["path"]).read_bytes()
+            self.assertEqual(summary["sha256"],
+                             hashlib.sha256(payload).hexdigest().upper())
+            self.assertEqual(json.loads(payload)["receiver_gold_relation"],
+                             "changed")
+            with self.assertRaises(FileExistsError):
+                subject.preserve_formal_query_attempt_diagnostic(root, diagnostic)
+            self.assertEqual(Path(summary["path"]).read_bytes(), payload)
+            with self.assertRaises(ValueError):
+                subject.preserve_formal_query_attempt_diagnostic(
+                    root / "unused", {"oversized": "x" * (2 * 1024 * 1024)},
+                )
+            with self.assertRaises(ValueError):
+                subject.preserve_formal_query_attempt_diagnostic(
+                    root / "unused", {"invalid_number": float("nan")},
+                )
 
     def test_missing_protocol_version_or_wrong_request_id_is_blocked(self) -> None:
         for mutation in ("request_version", "response_version", "request_id"):

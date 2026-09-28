@@ -8,6 +8,7 @@ it to a zero-fee observation without separate pair and DLL review.
 from __future__ import annotations
 
 from collections.abc import Mapping
+import copy
 import ctypes
 from ctypes import wintypes
 import hashlib
@@ -50,6 +51,100 @@ def _treasury_raw(snapshot: Mapping[str, object]) -> int | None:
             or gold["scale"] != 100_000):
         return None
     return gold["raw"]
+
+
+def build_formal_query_attempt_diagnostic(
+    *, before: Mapping[str, object], after: Mapping[str, object],
+    outcome: Mapping[str, object], wire: object,
+    process_before: Mapping[str, object], process_after: Mapping[str, object],
+    gameplay_submits_before: int, gameplay_submits_after: int,
+) -> dict[str, object]:
+    """Freeze parsed query evidence even when the cash gate rejects it.
+
+    This is a diagnostic of receiver projections and parsed protocol objects.
+    It is not a pipe-byte capture, an independent gold read, or a fee quote.
+    """
+    def sampled(snapshot: Mapping[str, object]) -> dict[str, object]:
+        try:
+            frame = observed_frame(snapshot)
+        except (TypeError, ValueError, KeyError):
+            frame = None
+        gold_raw = _treasury_raw(snapshot)
+        gold = snapshot.get("played_character_gold")
+        wars = snapshot.get("active_wars")
+        war_ids = (
+            [row.get("war_id") for row in wars]
+            if isinstance(wars, list) and all(isinstance(row, Mapping) for row in wars)
+            else None
+        )
+        return {
+            "source_frame": frame,
+            "paused": snapshot.get("paused"),
+            "map_ready": snapshot.get("map_ready"),
+            "played_character_gold_status": (
+                "valid_q100000" if gold_raw is not None else
+                "missing" if gold is None else "malformed"
+            ),
+            "played_character_gold_raw": gold_raw,
+            "active_war_ids": war_ids,
+        }
+
+    before_sample = sampled(before)
+    after_sample = sampled(after)
+    before_gold = before_sample["played_character_gold_raw"]
+    after_gold = after_sample["played_character_gold_raw"]
+    gold_relation = (
+        "before_unavailable" if before_gold is None else
+        "after_unavailable" if after_gold is None else
+        "changed" if before_gold != after_gold else "equal"
+    )
+    plan = outcome.get("plan")
+    return {
+        "schema": "xar.ck3.war-cash-formal-query-attempt-diagnostic.v1",
+        "status": "diagnostic_only_formal_cash_unapproved",
+        "receiver_semantic_before": before_sample,
+        "receiver_semantic_after": after_sample,
+        "receiver_gold_relation": gold_relation,
+        "selected_step": outcome.get("selected_step"),
+        "selected_priced_command": (
+            copy.deepcopy(plan.get("priced_command"))
+            if isinstance(plan, Mapping) else None
+        ),
+        "outcome_status": outcome.get("status"),
+        "outcome_result_step": (
+            outcome["result"].get("step")
+            if isinstance(outcome.get("result"), Mapping) else None
+        ),
+        "parsed_protocol_objects": copy.deepcopy(dict(wire))
+        if isinstance(wire, Mapping) else None,
+        "protocol_scope": "python_parsed_request_and_envelope_not_pipe_bytes",
+        "process_before": copy.deepcopy(dict(process_before)),
+        "process_after": copy.deepcopy(dict(process_after)),
+        "gameplay_submits_before": gameplay_submits_before,
+        "gameplay_submits_after": gameplay_submits_after,
+        "formal_cash_receipt_eligible": False,
+        "immediate_war_action_cost_raw": None,
+    }
+
+
+def preserve_formal_query_attempt_diagnostic(
+    receipt_dir: Path, diagnostic: Mapping[str, object],
+) -> dict[str, object]:
+    """Write one bounded append-only diagnostic before a cash gate may block."""
+    payload = json.dumps(
+        diagnostic, sort_keys=True, indent=2, ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+    if len(payload) > 2 * 1024 * 1024:
+        raise ValueError("formal war query diagnostic exceeds 2 MiB")
+    path = receipt_dir / "formal-query-attempt-diagnostic.json"
+    with path.open("xb") as stream:
+        stream.write(payload)
+    return {
+        "path": str(path),
+        "sha256": hashlib.sha256(payload).hexdigest().upper(),
+        "status": "diagnostic_only_formal_cash_unapproved",
+    }
 
 
 def _driver_state_bytes_and_binding(path: Path) -> tuple[str, dict[str, object]]:
