@@ -107,6 +107,7 @@ class _NativeAutoRunHarness:
         self.operator_stop_after_action_count = operator_stop_after_action_count
         self.auto_turn_count = 0
         self.prisoner_collection_query_count = 0
+        self.active_scheme_sway_query_count = 0
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -214,6 +215,7 @@ class _NativeAutoRunHarness:
         allow_stationary_objective_hold_sentinel_canary: bool,
         allow_private_lifestyle_formal_trial: bool = False,
         allow_private_prisoner_collection_query: bool = False,
+        allow_private_active_scheme_sway_query: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
     ) -> "_FakeNativeDriver":
@@ -230,6 +232,9 @@ class _NativeAutoRunHarness:
         )
         self.allow_private_prisoner_collection_query = (
             allow_private_prisoner_collection_query
+        )
+        self.allow_private_active_scheme_sway_query = (
+            allow_private_active_scheme_sway_query
         )
         self.allow_private_current_timeline_blocker_query = (
             allow_private_current_timeline_blocker_query
@@ -1434,6 +1439,23 @@ class _FakeNativeDriver:
             },
         }
 
+    def query_active_scheme_sway_target_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+    ) -> dict[str, object]:
+        assert self.harness.allow_private_active_scheme_sway_query
+        assert expected_revision == self.harness.public_revision
+        self.harness.active_scheme_sway_query_count += 1
+        return {
+            "schema": "active-scheme-sway-private-read-v1",
+            "actor_character_id": self.harness.played_character_id,
+            "target_character_id": target_character_id,
+            "native_complete_can_send": True,
+            "native_legal_now": True,
+            "queried_snapshot_id": f"native:{self.harness.native_revision}",
+            "queried_revision": expected_revision,
+            "queried_native_revision": self.harness.native_revision,
+        }
+
     def bind_succession_lifecycle_v1(self, binding: object) -> None:
         if not isinstance(binding, dict):
             raise AssertionError("fake lifecycle binding must be a mapping")
@@ -1756,6 +1778,7 @@ class NativeAutoRunTests(unittest.TestCase):
         focus_post_xp_available: bool = True,
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
+        private_active_scheme_sway_target: int | None = None,
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
@@ -1929,6 +1952,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 allow_private_prisoner_collection_observation=(
                     allow_private_prisoner_collection_observation
                 ),
+                private_active_scheme_sway_target=(
+                    private_active_scheme_sway_target
+                ),
             )
         return report, harness
 
@@ -2062,6 +2088,33 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertEqual(failed["status"], "query_failed")
         self.assertEqual(failed["error_type"], "BridgeUnavailableError")
+
+    def test_private_sway_target_reads_once_and_stops_before_any_action(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "2", "--timeout", "900"]
+        self.assertIsNone(cli.parser().parse_args(common).private_active_scheme_sway_target)
+        self.assertEqual(cli.parser().parse_args([
+            *common, "--private-active-scheme-sway-target", "32716",
+        ]).private_active_scheme_sway_target, 32716)
+        report, harness = self._run(
+            ["advance", "advance"], private_active_scheme_sway_target=32716,
+        )
+        self.assertTrue(report["ok"])
+        self.assertEqual(report["status"], "private_active_scheme_sway_observed")
+        observed = report["private_active_scheme_sway_observation"]
+        self.assertTrue(observed["same_frame"])
+        self.assertEqual(observed["readback"]["target_character_id"], 32716)
+        self.assertEqual(observed["source_frame"]["date_raw"],
+                         observed["post_frame"]["date_raw"])
+        self.assertEqual(harness.active_scheme_sway_query_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_sway_target_rejects_nonbounded_and_invalid_id(self) -> None:
+        for target in (0, -1, 0x100000000, True):
+            with self.assertRaises(AgentError):
+                self._run(["advance"], private_active_scheme_sway_target=target)
 
     def test_private_prisoner_ransom_quotes_follow_current_three_rows_once(self) -> None:
         ids = [34486, 44484, 47028]
@@ -5766,6 +5819,30 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIs(
             run_mock.call_args.kwargs["allow_private_prisoner_collection_observation"],
             True,
+        )
+
+    def test_cli_wires_explicit_private_sway_target(self) -> None:
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment",
+            return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run",
+            return_value={"ok": True, "status": "private_active_scheme_sway_observed",
+                          "outcome": "read_only_observed"},
+        ) as run_mock, contextlib.redirect_stdout(io.StringIO()):
+            code = cli.main([
+                "--bridge-mode", "native-headless",
+                "--bridge-dll", str(self.dll_path),
+                "--bridge-injector", str(self.injector_path),
+                "native-auto-run", "--turns", "1", "--timeout", "900",
+                "--private-active-scheme-sway-target", "32716",
+            ])
+        self.assertEqual(code, 0)
+        self.assertEqual(
+            run_mock.call_args.kwargs["private_active_scheme_sway_target"],
+            32716,
         )
 
     def test_cli_reports_checkpointed_operator_stop_separately_from_qualification(self) -> None:
