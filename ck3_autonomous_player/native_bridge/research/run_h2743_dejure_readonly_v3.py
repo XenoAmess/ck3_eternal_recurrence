@@ -119,6 +119,22 @@ def screen_lease(task_id: str) -> None:
         raise RuntimeError(f"exclusive live CK3 screen lease absent: {owners}")
 
 
+def renew_screen_lease(task_id: str) -> None:
+    """Keep the exclusive screen lease fresh during a long CK3 cold start."""
+    screen_lease(task_id)
+    heartbeat = subprocess.run(
+        [str(PYTHON), str(TASK_BUS), "heartbeat", "--task", task_id],
+        capture_output=True, text=True, encoding="utf-8", timeout=15, check=True,
+    )
+    receipt = json.loads(heartbeat.stdout)
+    task = receipt.get("task")
+    if (receipt.get("ok") is not True or not isinstance(task, dict)
+            or task.get("task_id") != task_id or task.get("state") != "running"
+            or "ck3-screen:acquired" not in task.get("resources", [])):
+        raise RuntimeError("screen lease heartbeat did not preserve the running owner")
+    screen_lease(task_id)
+
+
 def live_gate(task_id: str, steam_gate_path: Path) -> dict[str, object]:
     gate = json.loads(steam_gate_path.read_text(encoding="utf-8"))
     if set(gate) != {"schema", "task_id", "reviewer", "reviewed_at_utc", "screenshot_path",
@@ -195,12 +211,18 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
         with (attempt / f"{name}-stdout.txt").open("x", encoding="utf-8") as stdout, \
              (attempt / f"{name}-stderr.txt").open("x", encoding="utf-8") as stderr:
             completed = subprocess.Popen(argv, cwd=REPO, stdout=stdout, stderr=stderr)
-            try:
-                code = completed.wait(timeout=1200)
-            except subprocess.TimeoutExpired as error:
-                completed.terminate()
-                completed.wait(timeout=30)
-                raise RuntimeError(f"{name} timed out; partial logs preserved") from error
+            deadline = time.monotonic() + 1200
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    completed.terminate()
+                    completed.wait(timeout=30)
+                    raise RuntimeError(f"{name} timed out; partial logs preserved")
+                try:
+                    code = completed.wait(timeout=min(60, remaining))
+                    break
+                except subprocess.TimeoutExpired:
+                    renew_screen_lease(task_id)
         if code != 0:
             raise RuntimeError(f"{name} failed: {code}; preserve this attempt")
         return {"exit_code": code, "stdout_sha256": sha256(attempt / f"{name}-stdout.txt"),
@@ -320,8 +342,20 @@ async def read_frame(state: Path, output: Path) -> dict[str, object]:
                                 "same_frame_continuation_risk"],
                            "comparison_status": "unavailable", "action_literal": None,
                            "gameplay_action_submitted": False}
-                write_new(output / "read-only-result.json", summary)
                 return summary
+
+
+def require_clean_session_exit(receipt: dict[str, object]) -> None:
+    """A baseline result is publishable only after the managed game has exited."""
+    if (receipt.get("returncode") != 0
+            or receipt.get("ck3_pids_after") != []
+            or receipt.get("stdout_reader_alive_after") is not False
+            or receipt.get("source_sha256_after") != SOURCE_HASHES
+            or receipt.get("candidate_dll_sha256_after") != DLL_SHA
+            or receipt.get("injector_sha256_after") != INJECTOR_SHA
+            or receipt.get("prepared_save_sha256_after") != SOURCE_HASHES["xar_checkpoint.ck3"]
+            or receipt.get("prepared_sidecar_sha256_after") != SOURCE_HASHES["first-heir-marriage-formal-v1.json"]):
+        raise RuntimeError("managed H2743 session exit, process cleanup or exact inputs are RED")
 
 
 def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
@@ -331,6 +365,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
     import psutil
     if any((item.info.get("name") or "").casefold() == "ck3.exe" for item in psutil.process_iter(["name"])):
         raise RuntimeError("CK3 is already running; do not join or disturb another owner")
+    renew_screen_lease(task_id)
     output = attempt / "live-dejure-readonly-v3"
     output.mkdir(exist_ok=False)
     argv = [str(PYTHON), "-c", CLI_ENTRY, "--state-dir", str(state), "--game-dir", str(GAME),
@@ -357,7 +392,11 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
         thread.start()
         try:
             deadline = time.monotonic() + READINESS_SECONDS
+            next_heartbeat = time.monotonic()
             while time.monotonic() < deadline:
+                if time.monotonic() >= next_heartbeat:
+                    renew_screen_lease(task_id)
+                    next_heartbeat = time.monotonic() + 60
                 if process.poll() is not None:
                     raise RuntimeError(f"native session exited before ready: {process.returncode}")
                 try:
@@ -369,31 +408,59 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
                     break
             else:
                 raise RuntimeError("native session not ready within 1800 seconds")
-            screen_lease(task_id)
+            renew_screen_lease(task_id)
             summary = asyncio.run(read_frame(state, output))
-            print(json.dumps(summary, ensure_ascii=False), flush=True)
         except BaseException as error:
             write_new(output / "failure.json", {"type": type(error).__name__, "message": str(error),
                          "at_utc": utc_now().isoformat(), "gameplay_action_submitted": False})
             raise
         finally:
-            if process.poll() is None and process.stdin is not None:
-                process.stdin.write("stop\n")
-                process.stdin.flush()
+            try:
+                # Even a failed read must release the CK3 process. A lost lease is
+                # recorded after cleanup, never used as a reason to skip cleanup.
+                lease_error = None
                 try:
-                    process.wait(timeout=180)
-                except subprocess.TimeoutExpired:
-                    write_new(output / "cleanup-red.json", {"reason": "managed_stop_timeout",
-                        "supervisor_pid": process.pid, "manual_recovery_required": True})
-                    raise RuntimeError("native session stop timed out; manual recovery required")
-            thread.join(timeout=5)
-            write_new(output / "session-exit.json", {"returncode": process.returncode,
-                "supervisor_pid": process.pid, "source_sha256_after": {name: sha256(SOURCE / name)
-                    for name in SOURCE_HASHES}, "candidate_dll_sha256_after": sha256(DLL),
-                "injector_sha256_after": sha256(INJECTOR),
-                "prepared_save_sha256_after": sha256(state / "profile/save games/xar_checkpoint.ck3"),
-                "ck3_pids_after": [item.pid for item in psutil.process_iter(["name"])
-                    if (item.info.get("name") or "").casefold() == "ck3.exe"]})
+                    renew_screen_lease(task_id)
+                except BaseException as error:
+                    lease_error = error
+                if process.poll() is None:
+                    if process.stdin is None:
+                        raise RuntimeError("native session stop pipe is absent")
+                    try:
+                        process.stdin.write("stop\n")
+                        process.stdin.flush()
+                    except (BrokenPipeError, OSError):
+                        pass  # The supervisor may have exited between poll and write.
+                    try:
+                        process.wait(timeout=180)
+                    except subprocess.TimeoutExpired as error:
+                        raise RuntimeError("native session stop timed out; manual recovery required") from error
+                thread.join(timeout=5)
+                receipt = {"returncode": process.returncode,
+                    "supervisor_pid": process.pid,
+                    "stdout_reader_alive_after": thread.is_alive(),
+                    "source_sha256_after": {name: sha256(SOURCE / name) for name in SOURCE_HASHES},
+                    "candidate_dll_sha256_after": sha256(DLL),
+                    "injector_sha256_after": sha256(INJECTOR),
+                    "prepared_save_sha256_after": sha256(state / "profile/save games/xar_checkpoint.ck3"),
+                    "prepared_sidecar_sha256_after": sha256(state / "first-heir-marriage-formal-v1.json"),
+                    "derived_driver_sha256_after": sha256(state / "native-session/driver-state.json"),
+                    "ck3_pids_after": [item.pid for item in psutil.process_iter(["name"])
+                        if (item.info.get("name") or "").casefold() == "ck3.exe"]}
+                write_new(output / "session-exit.json", receipt)
+                require_clean_session_exit(receipt)
+                if lease_error is not None:
+                    raise RuntimeError("screen lease lost before managed session exit") from lease_error
+            except BaseException as error:
+                write_new(output / "cleanup-red.json", {"reason": str(error),
+                    "supervisor_pid": process.pid, "at_utc": utc_now().isoformat(),
+                    "manual_recovery_required": process.poll() is None,
+                    "gameplay_action_submitted": False})
+                raise
+    summary = {**summary, "session_exit_sha256": sha256(output / "session-exit.json"),
+               "cleanup_proven": True}
+    write_new(output / "read-only-result.json", summary)
+    print(json.dumps(summary, ensure_ascii=False), flush=True)
 
 
 def main() -> None:

@@ -55,10 +55,12 @@ R0271 R0004 本机外置报告 `D:/ck3-research-artifacts/war-r0271-replay-20260
    D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ck3_autonomous_player\native_bridge\research\run_h2743_dejure_readonly_v3.py --run --prepared-attempt D:\ck3-research-artifacts\war31-h2743-20260928\attempt-N-dejure-baseline-no-launch --steam-gate D:\ck3-research-artifacts\war31-h2743-20260928\attempt-N-dejure-baseline-no-launch\steam-gate.json --task-id <当前独占屏幕任务ID>
    ```
 
-   若任何哈希、READY、屏幕占用、新鲜画面或当前已有 CK3 进程不符，驱动在启动前拒绝。live 输出固定为该 attempt 下全新的 `live-dejure-readonly-v3/`；失败保留，不重试同一输出目录。会话退出后检查 `session-exit.json`、CK3 PID 清空与原件后哈希，再释放任务总线资源。
+   若任何哈希、READY、屏幕占用、新鲜画面或当前已有 CK3 进程不符，驱动在启动前拒绝。冷启动可能超过任务总线默认 15 分钟 stale 门限，驱动在等待 ready 时每 60 秒校验独占 owner 并续租；预检命令长时间运行时亦续租。live 输出固定为该 attempt 下全新的 `live-dejure-readonly-v3/`；失败保留，不重试同一输出目录。会话退出后检查 `session-exit.json`、CK3 PID 清空与原件后哈希，再释放任务总线资源。
 
 ## 读数与缺项判定
 
 v1 native reader 预计只给双方身份、同帧目标 Title ID、**14 行当前资源余额**（双方各 7 种：gold、prestige、prestige_experience、piety、piety_experience、legitimacy、stress）和双方每月 gold income 2 行。余额与收入不是终战 signed delta；Title `2128` 的前态或目标列表也不是转移结果。两次查询必须保持 `material_complete=false`，`title_vassal_delta=null`、`signed_resource_delta=null`、`directed_truce=null`。若原生读口意外宣称 material complete，脚本拒绝该 run，不据此提交动作。
+
+`read-only-result.json` 是**退出后**回执：只有受管 session 返回码为 0、stdout 读取线程结束、CK3 PID 清空，源四件／候选 DLL／注入器／已放置 save 与 sidecar 的后哈希均匹配时才创建，并绑定 `session-exit.json` SHA。查询成功但清理失败会留下原始查询和 `cleanup-red.json`，不会生成最终结果；运维需处理遗留进程，不能把查询 payload 单独升级为本轮 GREEN。普通查询失败留下 `failure.json`；每次失败仍保留该 attempt 全部已写文件。
 
 完整比较仍需同一 native revision 绑定的：运行时 `scope:target` referent；`setup_de_jure_cb` 的 F 原始数值与倍率；`resolve_title_and_vassal_change` 的 Title holder、title liege、character liege、claim 完整 before→after 操作；双方 7 种资源的 **14 行有符号终战 delta** 与条件效果覆盖；单向停战 owner/toward、期限和结束日期；候选 surrender 按钮当前合法且对方接受；以及给定时域内战分、资源、领土与 R0271 围城参与者的续战风险界。任何一项缺失、同帧身份漂移或不同 WarID 均由比较合同返回 `unavailable` / `action_literal=null`。即使将来可逐项比较，效用排序、风险阈值和精确 checkpoint 退出授权仍需单独合同与新鲜原生重验。本 v3 不调用已发生崩溃的广义 loaded-effect preview，也不调用 `surrender-war-*` 或 `offer-white-peace-*`。
