@@ -12,7 +12,9 @@
 
 H2825 同一暂停帧为 `native:3` / native revision `3` / `date_raw=53217624`，WarID `16777231`，玩家 `29829` 为 defender。私有囚犯集合读回三名 full CharacterID：`34486` 的 House `2370`，`44484` 与 `47028` 的 House 为 `null`；他们都由玩家关押，无条件释放 preview 合法且自动接受。这些证据见 [正式报告](../autonomous-agent-progress/coordination/war-requests/evidence/WAR-ROBERT-H2825-SIEGE-PARTITION-20260928.r0265-formal-report.json)及[本机同源只读复验](h2825-readonly-partition-live-2026-09-28.md)。`null` 仅是本次 House reader 的结果，不赋予人物其他未知关系的否定值。
 
-当前还缺 WarID 的精确 CB key、主攻方 full CharacterID 与 House、两侧参与者和两侧 primary title 前三继承人，同帧按囚犯 ID 得到的实际 PoW 配对也未发布。因此 `34486` 对 FP3 是 `unavailable`；`44484` 和 `47028` 的 FP3 脚本条件因 `exists = scope:recipient.house` 不满足，可在这一冻结帧标 `not_applicable_no_house`，但一般 PoW、赎金和其他扣留价值仍是 `unavailable`。任何一个人的释放动作均未提交。
+本机独立 attempt `D:\ck3-research-artifacts\war31-h2825-20260928\attempt-04\live-plan-readonly-04` 的 `query-01-payload.json` SHA-256 `4FA460AC977EF9C25C2FAAE5E41630CB146A2903D03860B110CF28B2D721F4BD`，由正式规划器先选 `query-war-termination-options-16777231` 后在同一 `native:3`、native revision `3`、日期 `53217624` 只读得到：`active_casus_belli_identity={database_index:17, canonical_key:individual_county_de_jure_cb}`，玩家为 defender、主战分 `-24`。因此对**这场 WarID**，三名囚犯的 FP3 释放威望分支均是 `not_applicable_cb`，优先依据精确 CB 而非只看囚犯 House。此结论不自动适用于玩家可能参与的其他战争；本帧 public active wars 只列此一场。
+
+当前还缺主攻方 full CharacterID 与 House、两侧参与者和两侧 primary title 前三继承人；同帧按囚犯 ID 得到的实际一般 PoW 配对也未发布。一般 PoW、赎金和其他扣留价值仍是 `unavailable`。任何一个人的释放动作均未提交。
 
 ## 可交付的只读接口合同
 
