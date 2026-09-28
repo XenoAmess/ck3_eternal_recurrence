@@ -134,3 +134,28 @@ show which leaf failed, so this source correction and diagnostic require a
 new exact-build paused read before closing that RED. Gift submit, formal
 consumer, independent gold/opinion/faction postcondition, next turn and cold
 restore remain unproven; public registration stays off.
+
+R0317 used the integrated `047b75a9` private DLL on the paired Robert h3774
+checkpoint at raw date 53219568. Its fresh application-main pump advanced
+9334 to 9394, the public root showed one targeting faction and ten direct
+landed vassals, and the private query executed once. It returned
+`no_eligible_direct_vassal` with `failure_flags=2` (recipient selector only),
+`frame_failure_stage=none` and `direct_source_failure=none`. The reader had
+therefore accepted its complete bounded source, faction, leader and character
+member scan; the R0314 native receiver RED is cleared for this exact frame.
+The readback and verdict are under
+`Z:/ck3_mod_rewrite_process_assets/nw-faction-robert-h3774-direct-leaf-047b75a-20260928/evidence/R0317/`;
+their SHA-256 values are respectively
+`7002BB52FE31920BF8EF1C5F15714C3A01D3BEAEB8DC99AD8EF49B37D4D46241`
+and `71C34436CEA5E36D741699140E42AC237B2112E523747A88E51A920F8495AE83`.
+
+In this exact source, `ReadDirectSourceSampleV1` checks every targeting row
+and character member and compares two samples before publishing. The selector
+then tests each accepted leader and member against the independently queried,
+sorted direct-landed-vassal list. This makes R0317 a current-scene negative
+for that narrow gift policy, not a missing native observation. The native
+response does not serialize the raw faction/member IDs on this negative path,
+so it does not prove the faction has no members or that no other character
+could receive a gift. Final interaction legality, cost, material postcondition,
+next turn and cold recovery were not exercised. R0317 took zero gameplay
+actions and advanced zero game days; no formal gift loop is claimed.
