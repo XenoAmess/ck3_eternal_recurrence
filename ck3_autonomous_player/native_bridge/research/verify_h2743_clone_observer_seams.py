@@ -23,7 +23,10 @@ DEJURE_SHA256 = "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6E
 # detour would preserve CK3 behavior. A future implementation must separately
 # prove its relocation, register/flag preservation, rollback, and clone scope.
 ANCHORS = {
+    0x27A470E: "B812000000",        # context type tag 0x12
+    0x27A471A: "668901",            # context+0 receives the tag
     0x27A4720: "48634208",          # source War+8 full ID
+    0x27A472E: "4C8BF1",            # populated context pointer -> R14
     0x27A4731: "48894108",          # populated WarEffectContext+8
     0x2E9F445: "4C8BF2",            # setup execute keeps RDX context in R14
     0x2E9F5AF: "488D8E60020000",    # embedded title scope
@@ -39,6 +42,10 @@ ANCHORS = {
     0x2E9F727: "80BE5802000000",  # first instruction after writer
     0x2E9F2D9: "8B1575C49402",      # writer loads factor identifier
     0x2E9F319: "E8B29D4B00",        # mutable identifier row writer
+    0x3380492: "E869050000",        # loaded-effect entry dispatches 0x3380A00
+    0x3380C66: "418901",            # generic dispatcher writes context counter
+    0x3380CFB: "FF90B0000000",      # generic virtual node execute
+    0x3380EE9: "E812FBFFFF",        # child iteration reenters dispatcher
 }
 
 
@@ -77,13 +84,15 @@ def verify(exe: Path = EXE, dejure: Path = DEJURE) -> dict[str, object]:
         "dejure_script_sha256": DEJURE_SHA256,
         "disk_rva_anchors": {f"0x{rva:X}": value for rva, value in ANCHORS.items()},
         "candidate_only": {
-            "war_context_id": "populate 0x27A4720/731 copies War+8 to context+8; prove same context reaches setup before use",
+            "war_context_id": "populate 0x27A470E/71A writes tag 0x12 and 0x27A4720/731 copies War+8 to context+8; prove the same context pointer reaches setup and resolve the actual War+CB before use",
             "runtime_target_title": "setup 0x2E9F5B6 returns CLandedTitle pointer; capture only on natural clone execution and validate full ID against title storage",
             "cb_prestige_factor_raw": "setup 0x2E9F717 computes dynamic count * 100000; pair pre/post 0x2E9F722 writer and verify identifier row before treating as produced",
+            "generic_effect_dispatch": "0x3380492 calls 0x3380A00, whose 0x3380CFB virtual dispatch and 0x3380EE9 child recursion are candidate trace sites, but 0x3380C66 writes context state and executed nodes alone cannot prove complete conditional coverage",
         },
         "unproven": [
             "detour relocation and rollback safety",
             "same WarEffectContext instance from populate to setup",
+            "actual War object and active CB pointer/key at the same natural callback",
             "conditional effect tree coverage and signed resource causality",
             "full post-surrender title/vassal operation graph",
             "persisted directed truce and deterministic clone equivalence",
