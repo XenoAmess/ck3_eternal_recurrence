@@ -737,6 +737,7 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   query.completion = FactionGiftMitigationAsyncCompletionV1::unavailable;
   query.failure_flags = faction_gift_async_failure_none;
   query.frame_failure_stage = FactionGiftMitigationFrameFailureStageV1::none;
+  query.direct_source_failure = FactionGiftDirectSourceFailureV1::none;
   query.observation = {};
   query.ack = {};
   query.preflight = {};
@@ -781,7 +782,7 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
             {true, stamp.pump_epoch, query.expected_public_revision,
              current.date_raw,
              static_cast<std::uint32_t>(current.played_character_id)},
-            query.targeting_rows)) {
+             query.targeting_rows, &query.direct_source_failure)) {
       query.frame_failure_stage =
           FactionGiftMitigationFrameFailureStageV1::direct_targeting_rows;
       query.failure_flags |= faction_gift_async_failure_frame;
@@ -941,6 +942,29 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
     }
     return "unknown";
   }();
+  const auto direct_source_failure = [&]() -> std::string_view {
+    switch (context.direct_source_failure) {
+    case FactionGiftDirectSourceFailureV1::none: return "none";
+    case FactionGiftDirectSourceFailureV1::binding: return "binding";
+    case FactionGiftDirectSourceFailureV1::storage: return "storage";
+    case FactionGiftDirectSourceFailureV1::source_span: return "source_span";
+    case FactionGiftDirectSourceFailureV1::faction_identity:
+      return "faction_identity";
+    case FactionGiftDirectSourceFailureV1::target_identity:
+      return "target_identity";
+    case FactionGiftDirectSourceFailureV1::leader_identity:
+      return "leader_identity";
+    case FactionGiftDirectSourceFailureV1::member_span: return "member_span";
+    case FactionGiftDirectSourceFailureV1::member_identity:
+      return "member_identity";
+    case FactionGiftDirectSourceFailureV1::member_ownership:
+      return "member_ownership";
+    case FactionGiftDirectSourceFailureV1::duplicate_identity:
+      return "duplicate_identity";
+    case FactionGiftDirectSourceFailureV1::unstable: return "unstable";
+    }
+    return "unknown";
+  }();
   const auto completion =
       context.completion ==
               FactionGiftMitigationAsyncCompletionV1::preview_ready
@@ -982,9 +1006,10 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
   std::string output =
       "{\"schema_version\":1,\"private\":true,\"completion\":" +
        Quote(completion) + ",\"failure_flags\":" +
-       std::to_string(context.failure_flags) +
-       ",\"frame_failure_stage\":" + Quote(frame_failure_stage) +
-       ",\"typed_reds\":" + typed_reds +
+        std::to_string(context.failure_flags) +
+        ",\"frame_failure_stage\":" + Quote(frame_failure_stage) +
+        ",\"direct_source_failure\":" + Quote(direct_source_failure) +
+        ",\"typed_reds\":" + typed_reds +
       ",\"source_faction_id\":" +
       std::to_string(context.source_faction_id) +
       ",\"recipient_character_id\":" +

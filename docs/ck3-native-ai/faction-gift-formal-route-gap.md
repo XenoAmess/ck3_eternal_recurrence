@@ -113,3 +113,24 @@ now preserves that branch while keeping the candidate unavailable and the
 public capability off. A replacement exact-build DLL and one bounded paused
 query are needed to identify the leaf; repeating the R0310 DLL would not add
 evidence. No gift submit or M4 completion is claimed.
+
+R0314 retried the integrated stage field on the validated Robert h3770
+save/driver at raw date 53219568 and actor 29829. The verified fresh pump
+(8373 to 8401) found public targeting count 1 and ten direct landed vassals.
+The private query executed once, returned `receiver_red`, `failure_flags=1`,
+and pinpointed `frame_failure_stage=direct_targeting_rows`; it published no
+candidate, took no action, and advanced no game date. The readback is
+`Z:/ck3_mod_rewrite_process_assets/nw-faction-robert-h3770-frame-stage-965a820-20260928/evidence/R0314/faction-readback.json`.
+The public count proves the land-state source count, not that the private
+reader accepted its faction identity, leader and member fields.
+
+Source comparison found one exact contract mismatch: the canonical row
+observer and `faction_targeting_row_observer_v1_abi.json` accept a nonzero
+leader ID whose character resolver returns null as a legal nullable leader;
+the private direct reader rejected the entire frame. The direct reader now
+uses the same nullable rule, and records a typed private `direct_source_failure`
+leaf if another source/span/identity check fails. The R0314 artifact does not
+show which leaf failed, so this source correction and diagnostic require a
+new exact-build paused read before closing that RED. Gift submit, formal
+consumer, independent gold/opinion/faction postcondition, next turn and cold
+restore remain unproven; public registration stays off.

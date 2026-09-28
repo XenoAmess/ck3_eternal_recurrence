@@ -405,24 +405,34 @@ struct DirectSourceSampleV1 {
 bool ReadDirectSourceSampleV1(
     const FactionGiftDirectSourceStoresV1 &stores,
     const bridge::FactionTargetingRowProbeBindingV1 &required,
-    DirectSourceSampleV1 &sample) noexcept {
+    DirectSourceSampleV1 &sample,
+    FactionGiftDirectSourceFailureV1 &failure) noexcept {
   sample = {};
+  failure = FactionGiftDirectSourceFailureV1::none;
+  const auto reject = [&](FactionGiftDirectSourceFailureV1 reason) {
+    failure = reason;
+    return false;
+  };
   if (!required.paused || required.proof_epoch == 0 ||
       required.proof_epoch >
           (std::numeric_limits<std::uint64_t>::max)() / 2 ||
       required.snapshot_revision == 0 ||
-      required.player_character_id == 0 ||
-      stores.character_storage == nullptr ||
+      required.player_character_id == 0) {
+    return reject(FactionGiftDirectSourceFailureV1::binding);
+  }
+  if (stores.character_storage == nullptr ||
       stores.faction_storage == nullptr ||
       stores.faction_fallback == nullptr ||
-      stores.expected_faction_vtable == 0 ||
-      !ResolveStoredExact(stores.character_storage,
+      stores.expected_faction_vtable == 0) {
+    return reject(FactionGiftDirectSourceFailureV1::storage);
+  }
+  if (!ResolveStoredExact(stores.character_storage,
                           required.player_character_id, 0x18,
                           sample.player) ||
       sample.player == nullptr ||
       !TryLoad(sample.player, kGiftPlayerLandStateOffsetV1,
                sample.land_state)) {
-    return false;
+    return reject(FactionGiftDirectSourceFailureV1::target_identity);
   }
   sample.rows.required_binding = required;
   sample.rows.observed_binding = required;
@@ -436,7 +446,7 @@ bool ReadDirectSourceSampleV1(
         sample.source_count > static_cast<std::int32_t>(
             bridge::kFactionTargetingRowObserverMaximumRowsV1) ||
         (sample.source_count != 0 && sample.source_ids == nullptr)) {
-      return false;
+      return reject(FactionGiftDirectSourceFailureV1::source_span);
     }
   }
   sample.rows.faction_count =
@@ -447,7 +457,7 @@ bool ReadDirectSourceSampleV1(
                  static_cast<std::size_t>(index) * sizeof(std::uint32_t),
                  row.faction_id) ||
         row.faction_id == 0) {
-      return false;
+      return reject(FactionGiftDirectSourceFailureV1::source_span);
     }
     void *faction = nullptr;
     std::uintptr_t vtable = 0;
@@ -458,24 +468,30 @@ bool ReadDirectSourceSampleV1(
         !TryLoad(faction, 0, vtable) ||
         vtable != stores.expected_faction_vtable ||
         !TryLoad(faction, kFactionIdentityOffset, generation) ||
-        generation != row.faction_id ||
-        !TryLoad(faction, kGiftFactionTargetOffsetV1,
+        generation != row.faction_id) {
+      return reject(FactionGiftDirectSourceFailureV1::faction_identity);
+    }
+    if (!TryLoad(faction, kGiftFactionTargetOffsetV1,
                  row.target_character_id) ||
         row.target_character_id != required.player_character_id) {
-      return false;
+      return reject(FactionGiftDirectSourceFailureV1::target_identity);
     }
     std::uint32_t raw_leader = 0;
     if (!TryLoad(faction, kGiftFactionLeaderOffsetV1, raw_leader)) {
-      return false;
+      return reject(FactionGiftDirectSourceFailureV1::leader_identity);
     }
     if (raw_leader != 0) {
       void *leader = nullptr;
       if (!ResolveStoredExact(stores.character_storage, raw_leader,
-                              0x18, leader) || leader == nullptr) {
-        return false;
+                              0x18, leader)) {
+        return reject(FactionGiftDirectSourceFailureV1::leader_identity);
       }
-      row.leader_present = true;
-      row.leader_character_id = raw_leader;
+      // The stock row observer treats an unresolved nonzero canonical leader
+      // as a legal nullable absence. Only a failed storage read is RED.
+      if (leader != nullptr) {
+        row.leader_present = true;
+        row.leader_character_id = raw_leader;
+      }
     }
     void *members = nullptr;
     std::int32_t member_count = 0;
@@ -486,7 +502,7 @@ bool ReadDirectSourceSampleV1(
         member_count > static_cast<std::int32_t>(
             bridge::kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1) ||
         (member_count != 0 && members == nullptr)) {
-      return false;
+      return reject(FactionGiftDirectSourceFailureV1::member_span);
     }
     row.character_member_count =
         static_cast<std::uint32_t>(member_count);
@@ -500,12 +516,17 @@ bool ReadDirectSourceSampleV1(
       if (!TryLoad(members, offset + kGiftMemberCharacterOffsetV1,
                    member_id) ||
           !TryLoad(members, offset + kGiftMemberOwnerOffsetV1,
-                   owner_id) ||
-          owner_id != row.faction_id || member_id == 0 ||
+                   owner_id)) {
+        return reject(FactionGiftDirectSourceFailureV1::member_span);
+      }
+      if (owner_id != row.faction_id) {
+        return reject(FactionGiftDirectSourceFailureV1::member_ownership);
+      }
+      if (member_id == 0 ||
           !ResolveStoredExact(stores.character_storage, member_id,
                               0x18, member_character) ||
           member_character == nullptr) {
-        return false;
+        return reject(FactionGiftDirectSourceFailureV1::member_identity);
       }
       row.character_member_ids[static_cast<std::size_t>(member_index)] =
           member_id;
@@ -513,7 +534,9 @@ bool ReadDirectSourceSampleV1(
     auto begin = row.character_member_ids.begin();
     auto end = begin + row.character_member_count;
     std::sort(begin, end);
-    if (std::adjacent_find(begin, end) != end) return false;
+    if (std::adjacent_find(begin, end) != end) {
+      return reject(FactionGiftDirectSourceFailureV1::duplicate_identity);
+    }
     row.leader_present_in_character_members =
         row.leader_present &&
         std::binary_search(begin, end, row.leader_character_id);
@@ -524,7 +547,9 @@ bool ReadDirectSourceSampleV1(
     return a.faction_id < b.faction_id;
   });
   for (auto row = begin + (begin != end ? 1 : 0); row != end; ++row) {
-    if ((row - 1)->faction_id == row->faction_id) return false;
+    if ((row - 1)->faction_id == row->faction_id) {
+      return reject(FactionGiftDirectSourceFailureV1::duplicate_identity);
+    }
   }
   sample.rows.terminal =
       sample.source_count == 0
@@ -570,13 +595,20 @@ bool SameDirectSourceSampleV1(const DirectSourceSampleV1 &a,
 bool ReadFactionGiftDirectTargetingRowsFromStoresV1(
     const FactionGiftDirectSourceStoresV1 &stores,
     const bridge::FactionTargetingRowProbeBindingV1 &required,
-    bridge::FactionTargetingRowProbeResultV1 &rows) noexcept {
+    bridge::FactionTargetingRowProbeResultV1 &rows,
+    FactionGiftDirectSourceFailureV1 *failure) noexcept {
   rows = {};
+  if (failure != nullptr) *failure = FactionGiftDirectSourceFailureV1::none;
   DirectSourceSampleV1 first{};
   DirectSourceSampleV1 second{};
-  if (!ReadDirectSourceSampleV1(stores, required, first) ||
-      !ReadDirectSourceSampleV1(stores, required, second) ||
-      !SameDirectSourceSampleV1(first, second)) {
+  FactionGiftDirectSourceFailureV1 reason{};
+  if (!ReadDirectSourceSampleV1(stores, required, first, reason) ||
+      !ReadDirectSourceSampleV1(stores, required, second, reason)) {
+    if (failure != nullptr) *failure = reason;
+    return false;
+  }
+  if (!SameDirectSourceSampleV1(first, second)) {
+    if (failure != nullptr) *failure = FactionGiftDirectSourceFailureV1::unstable;
     return false;
   }
   rows = first.rows;
@@ -586,9 +618,12 @@ bool ReadFactionGiftDirectTargetingRowsFromStoresV1(
 bool ReadFactionGiftDirectTargetingRowsExact11906V1(
     std::uintptr_t module_base, const Bindings &bindings,
     const bridge::FactionTargetingRowProbeBindingV1 &required,
-    bridge::FactionTargetingRowProbeResultV1 &rows) noexcept {
+    bridge::FactionTargetingRowProbeResultV1 &rows,
+    FactionGiftDirectSourceFailureV1 *failure) noexcept {
   rows = {};
+  if (failure != nullptr) *failure = FactionGiftDirectSourceFailureV1::none;
   if (!bindings.enabled || bindings.character_storage_slot == nullptr) {
+    if (failure != nullptr) *failure = FactionGiftDirectSourceFailureV1::binding;
     return false;
   }
   std::uintptr_t faction_slot = 0;
@@ -606,10 +641,11 @@ bool ReadFactionGiftDirectTargetingRowsExact11906V1(
                stores.faction_storage) ||
       !TryLoad(reinterpret_cast<const void *>(fallback_slot), 0,
                stores.faction_fallback)) {
+    if (failure != nullptr) *failure = FactionGiftDirectSourceFailureV1::storage;
     return false;
   }
   return ReadFactionGiftDirectTargetingRowsFromStoresV1(
-      stores, required, rows);
+      stores, required, rows, failure);
 }
 
 namespace {

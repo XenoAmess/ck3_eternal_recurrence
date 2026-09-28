@@ -212,7 +212,7 @@ int main() {
       true, 12, 11, 100, 101};
   xar::bridge::FactionTargetingRowProbeResultV1 direct_rows{};
   if (!Check(xar::ck3_11906::
-                 ReadFactionGiftDirectTargetingRowsFromStoresV1(
+                  ReadFactionGiftDirectTargetingRowsFromStoresV1(
                      direct_stores, direct_binding, direct_rows) &&
                  direct_rows.terminal == xar::bridge::
                      FactionTargetingRowProbeTerminalV1::ready &&
@@ -226,11 +226,28 @@ int main() {
              "no-UI direct source identity/member fixture failed")) {
     return 1;
   }
+  Store(g_faction.data(), 0x44, std::uint32_t{99999});
+  xar::ck3_11906::FactionGiftDirectSourceFailureV1 direct_failure{};
+  if (!Check(xar::ck3_11906::
+                  ReadFactionGiftDirectTargetingRowsFromStoresV1(
+                      direct_stores, direct_binding, direct_rows,
+                      &direct_failure) &&
+                  direct_failure == xar::ck3_11906::
+                      FactionGiftDirectSourceFailureV1::none &&
+                  direct_rows.factions[0].character_member_count == 1 &&
+                  !direct_rows.factions[0].leader_present,
+              "unresolved canonical leader must be legal nullable absence")) {
+    return 1;
+  }
+  Store(g_faction.data(), 0x44, std::uint32_t{202});
   Store(g_member_rows.data(), 0x0C, std::uint32_t{304});
   if (!Check(!xar::ck3_11906::
-                 ReadFactionGiftDirectTargetingRowsFromStoresV1(
-                     direct_stores, direct_binding, direct_rows),
-             "foreign member owner accepted")) {
+                  ReadFactionGiftDirectTargetingRowsFromStoresV1(
+                      direct_stores, direct_binding, direct_rows,
+                      &direct_failure) &&
+                  direct_failure == xar::ck3_11906::
+                      FactionGiftDirectSourceFailureV1::member_ownership,
+              "foreign member owner accepted")) {
     return 1;
   }
   Store(g_member_rows.data(), 0x0C, std::uint32_t{303});
@@ -612,6 +629,8 @@ int main() {
                                faction_gift_async_failure_opinion_receiver;
   context.source_faction_id = 303;
   context.recipient_character_id = 202;
+  context.direct_source_failure = xar::ck3_11906::
+      FactionGiftDirectSourceFailureV1::member_ownership;
   context.observation.available = true;
   context.observation.gift_preview = preview;
   const auto json = xar::ck3_11906::
@@ -624,8 +643,10 @@ int main() {
                      std::string::npos &&
                   json.find("gift_opinion_receiver_unavailable") !=
                       std::string::npos &&
-                  json.find("\"frame_failure_stage\":\"none\"") !=
-                      std::string::npos &&
+                   json.find("\"frame_failure_stage\":\"none\"") !=
+                       std::string::npos &&
+                   json.find("\"direct_source_failure\":\"member_ownership\"") !=
+                       std::string::npos &&
                  json.find("\"receipt_pending\":false") !=
                      std::string::npos,
              "serializer mismatch")) {

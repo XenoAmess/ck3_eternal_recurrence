@@ -89,6 +89,8 @@ struct FactionGiftMitigationAsyncContextV1 {
   std::uint32_t failure_flags = faction_gift_async_failure_none;
   FactionGiftMitigationFrameFailureStageV1 frame_failure_stage =
       FactionGiftMitigationFrameFailureStageV1::none;
+  FactionGiftDirectSourceFailureV1 direct_source_failure =
+      FactionGiftDirectSourceFailureV1::none;
   game::FactionGiftMitigationObservationV1 observation{};
   game::FactionGiftMitigationAckV1 ack{};
   FactionGiftMitigationIntegrationGateResultV1 preflight{};

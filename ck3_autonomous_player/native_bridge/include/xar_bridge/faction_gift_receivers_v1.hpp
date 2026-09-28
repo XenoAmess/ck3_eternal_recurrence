@@ -150,14 +150,30 @@ struct FactionGiftDirectSourceStoresV1 {
   void *faction_fallback = nullptr;
   std::uintptr_t expected_faction_vtable = 0;
 };
+enum class FactionGiftDirectSourceFailureV1 : std::uint8_t {
+  none = 0,
+  binding,
+  storage,
+  source_span,
+  faction_identity,
+  target_identity,
+  leader_identity,
+  member_span,
+  member_identity,
+  member_ownership,
+  duplicate_identity,
+  unstable,
+};
 bool ReadFactionGiftDirectTargetingRowsFromStoresV1(
     const FactionGiftDirectSourceStoresV1 &stores,
     const bridge::FactionTargetingRowProbeBindingV1 &required,
-    bridge::FactionTargetingRowProbeResultV1 &rows) noexcept;
+    bridge::FactionTargetingRowProbeResultV1 &rows,
+    FactionGiftDirectSourceFailureV1 *failure = nullptr) noexcept;
 bool ReadFactionGiftDirectTargetingRowsExact11906V1(
     std::uintptr_t module_base, const Bindings &bindings,
     const bridge::FactionTargetingRowProbeBindingV1 &required,
-    bridge::FactionTargetingRowProbeResultV1 &rows) noexcept;
+    bridge::FactionTargetingRowProbeResultV1 &rows,
+    FactionGiftDirectSourceFailureV1 *failure = nullptr) noexcept;
 
 // Independent post-action entity lookup. The player targeting vector is only
 // a view; absence from that vector does not mean the full-generation faction
