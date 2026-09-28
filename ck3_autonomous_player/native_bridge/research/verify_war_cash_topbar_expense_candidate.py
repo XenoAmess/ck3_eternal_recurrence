@@ -20,9 +20,22 @@ import pefile
 EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 EXPENSE_NAME = b"GetGoldExpensesBreakdown\0"
 INCOME_NAME = b"GetGoldIncomeBreakdown\0"
+SUBVALUES_NAME = b"GetSubValues\0"
+ROW_NAME = b"GetName\0"
 EXPENSE_NAME_RVA = 0x40E5F08
 INCOME_NAME_RVA = 0x40E5FD0
+SUBVALUES_NAME_RVA = 0x40CC348
+ROW_NAME_RVA = 0x40835C0
+TOPBAR_TYPE_NAME_RVA = 0x40E5FF8
 PLAYED_CHARACTER_ID_GLOBAL_RVA = 0x4FE7EE0
+MILITARY_LABELS = (
+    (0x290A771, 0x43BDF00, b"BREAKDOWN_ARMY_MAINTENANCE\0"),
+    (0x290A884, 0x43BDD80, b"BREAKDOWN_ARMY_MAINTENANCE_EMBARKED\0"),
+    (0x290B0C5, 0x43BDDA8, b"BD_UNRAISED_MAA_MAINTENANCE\0"),
+    (0x290B1CC, 0x43BDDC8, b"BD_UNRAISED_MAA_MAINTENANCE_BASE\0"),
+    (0x290B2BC, 0x43BDDF0, b"BD_UNCONTROLLED_MAA_MAINTENANCE\0"),
+    (0x290B3BB, 0x43BDE10, b"BD_UNCONTROLLED_MAA_MAINTENANCE_BASE\0"),
+)
 
 
 def _instruction(image: pefile.PE, binary: bytes, rva: int):
@@ -73,6 +86,9 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     for name, expected_rva in (
         (EXPENSE_NAME, EXPENSE_NAME_RVA),
         (INCOME_NAME, INCOME_NAME_RVA),
+        (SUBVALUES_NAME, SUBVALUES_NAME_RVA),
+        (ROW_NAME, ROW_NAME_RVA),
+        (b"InGameTopbar\0", TOPBAR_TYPE_NAME_RVA),
     ):
         offset = binary.find(name)
         if (offset < 0 or binary.find(name, offset + 1) >= 0
@@ -84,6 +100,7 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     _expect_target(image, binary, 0xB0843, "lea", 0xD49920)
     _expect_target(image, binary, 0xB084A, "lea", 0xD49910)
     _expect_target(image, binary, 0xD49910, "jmp", 0xD47680)
+    _expect_target(image, binary, 0xD4B330, "lea", TOPBAR_TYPE_NAME_RVA)
 
     # Getter returns the ValueBreakdown back-pointer slot, but it can refresh
     # that cache and write the last-update frame.  Never call it as pure-read.
@@ -117,20 +134,55 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
     _expect(image, binary, 0x28DC78C, "add", "rsi, r14")
     _expect(image, binary, 0x28DC8A4, "mov", "qword ptr [rdi], rsi")
 
+    # ValueBreakdown.GetSubValues exposes the wrapper's child model.  The
+    # underlying row array at the root object is cleared and grown in 0x90
+    # byte entries; row names and Q100000 values have fixed field anchors.
+    _expect_target(image, binary, 0x68649, "movsd", SUBVALUES_NAME_RVA)
+    _expect_target(image, binary, 0x686C3, "lea", 0xBAFC90)
+    _expect(image, binary, 0xBAFC9C, "lea", "rax, [rcx + 8]")
+    _expect_target(image, binary, 0x6811D, "mov", ROW_NAME_RVA)
+    _expect_target(image, binary, 0x6819F, "lea", 0xBAFAA0)
+    _expect(image, binary, 0xBAFAB3, "mov", "rbx, qword ptr [rcx]")
+    _expect(image, binary, 0xBAFABE, "lea", "rdx, [rbx + 0x18]")
+    _expect(image, binary, 0x98BE5A, "mov", "ebx, dword ptr [rcx + 0xc]")
+    _expect(image, binary, 0x98BE69, "mov", "rdi, qword ptr [rcx]")
+    _expect(image, binary, 0x98BE7A, "add", "rdi, 0x90")
+    _expect(image, binary, 0x21C7687, "movsxd", "rax, dword ptr [rcx + 0xc]")
+    _expect(image, binary, 0x21C768B, "mov", "ecx, dword ptr [rcx + 8]")
+    _expect(image, binary, 0x21C76DA, "lea", "rcx, [rcx + rcx*8]")
+    _expect(image, binary, 0x21C76DE, "shl", "rcx, 4")
+    _expect(image, binary, 0x21C775F, "inc", "dword ptr [r14 + 0xc]")
+    _expect(image, binary, 0xBC3D95, "mov", "qword ptr [rcx + 0x28], rdx")
+    _expect(image, binary, 0xBC3D99, "mov", "qword ptr [rcx + 0x30], 0xf")
+    _expect(image, binary, 0xBC3DCA, "mov", "qword ptr [rcx + 0x78], rdx")
+    _expect(image, binary, 0xBC3DCE, "mov", "qword ptr [rcx + 0x80], 0x186a0")
+    _expect(image, binary, 0xBC3DFF, "mov", "qword ptr [rcx], rbx")
+    for instruction_rva, label_rva, label in MILITARY_LABELS:
+        _expect_target(image, binary, instruction_rva, "lea", label_rva)
+        label_offset = image.get_offset_from_rva(label_rva)
+        if binary[label_offset:label_offset + len(label)] != label:
+            raise ValueError(f"military breakdown label changed at {label_rva:#x}")
+    for rva in (0x290A7FD, 0x290B19A, 0x290B274, 0x290B38A, 0x290B463):
+        _expect_target(image, binary, rva, "call", 0x21C7660)
+
     hud = game_root / "game/gui/hud.gui"
     breakdown = game_root / "game/gui/shared/value_breakdown.gui"
     military_loc = (
         game_root / "game/localization/english/gui/militaryview_l_english.yml"
     )
+    core_loc = game_root / "game/localization/english/core_l_english.yml"
     hud_text = hud.read_text(encoding="utf-8-sig")
     breakdown_text = breakdown.read_text(encoding="utf-8-sig")
     military_text = military_loc.read_text(encoding="utf-8-sig")
+    core_text = core_loc.read_text(encoding="utf-8-sig")
     if (hud_text.count("[InGameTopbar.GetGoldIncomeBreakdown]") != 1
             or hud_text.count("[InGameTopbar.GetGoldExpensesBreakdown]") != 1
             or "[InGameTopbar.ResetLastUpdateFrame]" not in hud_text
             or breakdown_text.count("[ValueBreakdown.GetSubValues]") < 1
             or "Having [armies|E] on [fleets|E] can make actual maintenance higher."
-            not in military_text):
+            not in military_text
+            or "BREAKDOWN_ARMY_MAINTENANCE:" not in core_text
+            or "BD_UNRAISED_MAA_MAINTENANCE:" not in military_text):
         raise ValueError("stock topbar expense GUI semantics changed")
 
     return {
@@ -146,7 +198,19 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "expense_refresh_rva": hex(0xD476D0),
         "played_character_id_global_rva": hex(PLAYED_CHARACTER_ID_GLOBAL_RVA),
         "current_military_expense_calculator_rva": hex(0x290A720),
+        "topbar_type_name_rva": hex(TOPBAR_TYPE_NAME_RVA),
+        "topbar_type_registration_rva": hex(0xD4B330),
         "expense_breakdown_object_offset": hex(0xAD8),
+        "expense_row_array_pointer_offset": hex(0xAD8),
+        "expense_row_capacity_offset": hex(0xAE0),
+        "expense_row_count_offset": hex(0xAE4),
+        "expense_row_stride_bytes": 0x90,
+        "expense_row_name_string_offset": hex(0x18),
+        "expense_row_signed_raw_offset": hex(0x78),
+        "expense_row_scale_offset": hex(0x80),
+        "military_row_label_keys_static": [
+            label[:-1].decode("ascii") for _, _, label in MILITARY_LABELS
+        ],
         "expense_total_signed_raw_candidate_offset": hex(0xB50),
         "expense_total_scale_candidate_offset": hex(0xB58),
         "expense_breakdown_back_pointer_offset": hex(0xB68),
@@ -157,6 +221,8 @@ def verify(exe: Path, game_root: Path) -> dict[str, object]:
         "getter_can_refresh_and_write_gui_cache": True,
         "safe_to_call_from_live_bridge": False,
         "unique_live_topbar_instance_proven": False,
+        "passive_row_array_live_validated": False,
+        "military_row_membership_live_validated": False,
         "same_frame_cache_freshness_proven": False,
         "same_frame_player_expense_amount_observed": False,
         "military_component_live_raw_observed": False,

@@ -11,6 +11,16 @@
 | 总额布局 | `0xD47867` 取 ValueBreakdown 对象 `this+0xAD8`；`0xD478BC` 调用费用汇总；`0xD478C8..0xD478CB` 将汇总结果**取负**写入 `this+0xB50`；`0xD47993..0xD4799A` 在 `this+0xB68` 写回指向 `this+0xAD8` 的指针。`+0xB58` 按通用 ValueBreakdown 布局是 scale 候选。 | 被动采样须核 `*(this+0xB68)==this+0xAD8`、scale 精确 `100000`、有符号 raw 与可见总费用相符；取负代表 GUI 支出方向，不能在无行核对时直接把负值绝对化。 |
 | 军费子项 | 费用汇总 `0x28DC5A0` 的 `0x28DC635` 调用 RVA `0x290A720`，与 R0266 已验证的 `MilitaryView.GetGoldMilitaryExpenses` 当前军费计算器相同；`0x28DC63A` 取其 raw，`0x28DC78C` 继续加别的支出。 | 顶栏总支出**包含当前军费计算链**，但军费行的独立 live raw、名称/子项、舰队组成和刷新时点均未核。总支出不能直接替代战争军费。 |
 
+## 行结构与实例定位补充
+
+精确 EXE 的 `ValueBreakdown.GetSubValues` 名称 RVA `0x40CC348` 经注册 `0x68649` 到 callback `0xBAFC90`，`0xBAFC9C` 从 GUI wrapper `+8` 返回子行数据模型；`ValueBreakdown.GetName` 经 `0x6811D/0x6819F` 到 `0xBAFAA0`，解引用 wrapper 指向的行对象并取该行 `+0x18` 名称字段。不能把 `GetSubValues` 的 wrapper `+8` 误认作费用根对象的行数组地址。
+
+费用根对象从顶栏 `+0xAD8` 开始：数组指针在 `+0xAD8`，容量 DWORD 在 `+0xAE0`，数量 DWORD 在 `+0xAE4`。精确 `0x98BE50` 的清理循环每次走 `0x90` 字节，`0x21C7660` 的追加逻辑也按 `9×16=0x90` 步进并更新数量。每个行对象的 `+0x18` 是名称字符串，`+0x28/+0x30` 是长度/容量，`+0x78/+0x80` 是有符号 raw / Q100000 scale；通用构造函数 `0xBC3D70` 初始化这些字段。这是**离线解码布局**，不是 live 行值。
+
+`0x290A720` 的原生军费链静态引用六个标签键：`BREAKDOWN_ARMY_MAINTENANCE`、`BREAKDOWN_ARMY_MAINTENANCE_EMBARKED`、`BD_UNRAISED_MAA_MAINTENANCE`、`BD_UNRAISED_MAA_MAINTENANCE_BASE`、`BD_UNCONTROLLED_MAA_MAINTENANCE`、`BD_UNCONTROLLED_MAA_MAINTENANCE_BASE`，其中多个分支直接调用 `0x21C7660` 追加 breakdown 行。原版英文分别称已征召军队、上船军队、未征召兵团及转隶兵团。**同名/嵌套行可能不是互斥费用桶**；不能盲加所有六行，也不能以缺一行推断其费用为零。需要实际行树、当前 army/舰队状态与 `0x290A720` 独立总额交叉核对。
+
+`InGameTopbar` 类型名 RVA `0x40E5FF8` 的已核引用在注册 RVA `0xD4B330`，这里只说明 GUI 类型注册，**没有定位唯一 live 对象指针**。因此本轮没有能在 H3568 直接使用的无扫描实例 locator。新增纯离线工具 `war_cash_topbar_passive_layout.py` 只接受外部已取的精确顶栏字节、行数组字节及名称字节，核 back-pointer、Q100000 scale、数组边界、步长和标签；它不连接 CK3、不读取任何进程，并固定 `unique_live_topbar_instance_proven=false`、`same_frame_cache_freshness_proven=false`、`formal_cash_eligible=false`。其诊断不能进入 R0266 正式现金收据。
+
 原版军队窗口称其费用为月度维护，顶栏金币余额也呈现收支速率；这不证明金币实际扣款日、次序或每次扣款上界。舰队还可使实际军费高于全军征召满员预测值，见 [月费节奏审计](r0266-war-cash-cadence-static-audit-2026-09-28.md)。因此本候选即使取得总月费，也**不能**填 `future_war_cost_upper_raw`、最低保留、待办现金或动作即时费用。
 
 ## 最新来源帧可验证路径与当前门禁
