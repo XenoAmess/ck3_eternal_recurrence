@@ -214,10 +214,12 @@ class _Driver:
         faction: dict[str, object] | None = None,
         drift_on_internal_read: int | None = None,
         family_enabled: bool = False,
+        gift_enabled: bool = True,
     ) -> None:
         self.state_dir = state_dir
         self.allow_private_m5_joint_collector = enabled
         self.allow_private_family_marriage_formal_trial = family_enabled
+        self.allow_private_faction_gift_formal_trial = gift_enabled
         self.allow_private_current_first_heir_relationship_query = False
         self._snapshot = deepcopy(snapshot or _snapshot())
         self._faction = deepcopy(faction or _faction())
@@ -666,12 +668,6 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self,
     ) -> None:
         driver = _Driver(self.state_dir)
-        baseline = {
-            "policy": "one-life-turn-v1",
-            "phase": "peace_growth",
-            "selected_step": "life-advance",
-            "reason": "ordinary peacetime planning",
-        }
         original = M5FrameDispatcher.choose_observed
 
         def call_original(
@@ -680,9 +676,6 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             return original(dispatcher, **kwargs)
 
         with mock.patch(
-            "xar_autoplayer.bridge.service.choose_one_life_turn",
-            return_value=deepcopy(baseline),
-        ), mock.patch(
             "xar_autoplayer.m5_peacetime_proposal_sources_v1."
             "query_construction_private",
             return_value=_construction(),
@@ -692,12 +685,13 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             autospec=True,
             side_effect=call_original,
         ) as dispatch:
-            planned = GameplayBridgeService(driver).plan_turn()
+            sources = self._query(driver)
+            collection = collect_m5_formal_proposals(
+                snapshot=driver.take_snapshot(), sources=sources,
+            )
 
-        self.assertEqual(driver.source_reads, 1)
         self.assertEqual(driver.faction_reads, 1)
         self.assertEqual(dispatch.call_count, 1)
-        collection = planned["plan"]["m5_joint_query_only"]
         self.assertCountEqual(
             collection["collected_domains"], ["building", "diplomacy"]
         )
@@ -741,10 +735,8 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             "building-slot:501:1",
             reservation["commitments_after"]["commitment_keys"],
         )
-        self.assertEqual(planned["plan"]["selected_step"], "life-advance")
-        self.assertEqual(planned["plan"]["m5_joint_status"],
-                         "selected_gift_formal_consumer_disabled")
-        self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
+        self.assertIsNone(collection["selected_step"])
+        self.assertFalse(collection["formal_action_ready"])
 
     def test_m5_selected_gift_uses_existing_pre_submit_checkpoint_gate(self) -> None:
         driver = _Driver(self.state_dir)
@@ -802,6 +794,35 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertEqual(result["max_active_wars"], 0)
         self.assertEqual(result["gold_reserve_raw"], 0)
         self.assertEqual(result["existing_commitments"]["commitment_keys"], [])
+
+    def test_disabled_gift_cannot_mask_affordable_building(self) -> None:
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        building = _construction()
+        building["candidate"]["authored_monthly_income_hundredths"] = 35
+        for root_observed in (False, True):
+            snapshot = _snapshot()
+            if not root_observed:
+                snapshot["native_command_history"] = []
+            driver = _Driver(self.state_dir, snapshot=snapshot,
+                             gift_enabled=False)
+            with (self.subTest(root_observed=root_observed), mock.patch(
+                "xar_autoplayer.bridge.service.choose_one_life_turn",
+                return_value=deepcopy(baseline),
+            ), mock.patch(
+                "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+                "query_construction_private", return_value=building,
+            )):
+                planned = GameplayBridgeService(driver).plan_turn()
+            plan = planned["plan"]
+            self.assertEqual(plan["selected_step"],
+                             "private-submit-player-construction-v1")
+            self.assertTrue(plan["m5_joint_formal_action_ready"])
+            self.assertEqual(plan["m5_joint_query_only"]["collected_domains"],
+                             ["building"])
+            self.assertEqual(plan["m5_joint_query_only"]["dispatch"]
+                             ["reservation"]["domain"], "building")
+            self.assertEqual(driver.faction_reads, 0)
 
     def test_positive_income_building_routes_one_typed_joint_action(self) -> None:
         driver = _Driver(self.state_dir)
@@ -1056,7 +1077,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             "diplomacy:faction-gift:801:41003",
         )
 
-    def test_same_frame_consumed_building_still_evaluates_faction_choice(
+    def test_same_frame_consumed_building_does_not_reopen_disabled_gift(
         self,
     ) -> None:
         self.state_dir.mkdir(parents=True, exist_ok=True)
@@ -1077,7 +1098,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                 "applied": applied,
             }), encoding="utf-8",
         )
-        driver = _Driver(self.state_dir)
+        driver = _Driver(self.state_dir, gift_enabled=False)
         baseline = {
             "policy": "one-life-turn-v1", "phase": "peace_growth",
             "selected_step": "life-advance",
@@ -1107,18 +1128,14 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         construction_fallback.assert_not_called()
         construction_query.assert_not_called()
         self.assertEqual(driver.source_reads, 1)
-        self.assertEqual(driver.faction_reads, 1)
+        self.assertEqual(driver.faction_reads, 0)
         plan = planned["plan"]
         self.assertEqual(plan["construction_receipt_consumed"], applied)
         self.assertEqual(plan["m5_joint_query_only"]["collected_domains"],
-                         ["diplomacy"])
-        self.assertEqual(
-            plan["m5_joint_query_only"]["dispatch"]["selected_candidate_id"],
-            "diplomacy:faction-gift:801:41003",
-        )
+                         [])
+        self.assertIsNone(
+            plan["m5_joint_query_only"]["dispatch"]["selected_candidate_id"])
         self.assertEqual(plan["selected_step"], "life-advance")
-        self.assertEqual(plan["m5_joint_status"],
-                         "selected_gift_formal_consumer_disabled")
         self.assertFalse(plan["m5_joint_formal_action_ready"])
 
     def test_due_warm_construction_watch_precedes_new_joint_proposals(
@@ -1411,7 +1428,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                 self._query(driver)
 
     def test_default_off_preserves_plan_and_never_reads_sources(self) -> None:
-        driver = _Driver(self.state_dir, enabled=False)
+        driver = _Driver(self.state_dir, enabled=False, gift_enabled=False)
         baseline = {
             "policy": "one-life-turn-v1",
             "phase": "peace_growth",

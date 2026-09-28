@@ -425,11 +425,11 @@ def plan_m5_formal_query_only(
             raise
         except (RuntimeError, TypeError, ValueError) as error:
             return blocked(f"M5 prior action receipt RED: {error}")
-    # The source needs a public faction root before it can compare a gift to
-    # an otherwise ready building. Read the missing same-frame root first;
-    # never interpret an absent root as an empty faction opportunity.
-    root_status = latest_same_frame_faction_root_v1(snapshot, history)["status"]
-    if root_status == "same_frame_root_not_observed":
+    # A gift needs a public faction root before it can compete with a
+    # building. An opted-out gift has no resource claim or root dependency.
+    root_status = (latest_same_frame_faction_root_v1(snapshot, history)["status"]
+                   if gift_enabled else "gift_consumer_disabled")
+    if gift_enabled and root_status == "same_frame_root_not_observed":
         if _same_frame_root_returned_unavailable(snapshot, history):
             return root_unavailable(
                 "M5 same-frame root returned unavailable; joint inputs remain RED"

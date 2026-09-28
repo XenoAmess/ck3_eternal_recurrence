@@ -2,6 +2,27 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-28 NW-ECON: disabled gift no longer masks peaceful construction
+
+The private peaceful M5 collector previously required a same-frame faction
+root even when `allow_private_faction_gift_formal_trial=false`. With no root,
+it selected a root query or held the turn at `selected_step=null` before
+reading a native-legal building. With a root, the source could include a gift
+which the formal consumer was disabled from submitting; that analytic choice
+could replace an affordable positive-income building. This is a deterministic
+production-path source condition, not a newly observed CK3 action.
+
+The collector and source now include faction facts only when that formal gift
+opt-in is true. With it off, the existing same-frame construction source,
+native final legality, 200-gold reserve, M5 resource selector, typed submit,
+and durable receipt path remain in force. Focused service-path fixtures show
+that both absent and present faction roots select the same approved building
+for typed submission without reading a gift; the existing gift-enabled source
+and independent receipt tests remain green. No construction was submitted in
+CK3 by this change. The H3075 wartime missing shared-cash amounts below and
+the separate material, completion, income, next-turn, and cold-restore gates
+remain open.
+
 ## 2026-09-28 NW-ECON: H3075 wartime opportunity and consumer boundary
 
 The Robert H2992→H3075 formal report (SHA-256

@@ -644,6 +644,7 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         driver.state_dir = Path("c146-inert-state-dir")
         self.assertFalse(driver.state_dir.exists())
         driver.allow_private_family_marriage_formal_trial = True
+        driver.allow_private_faction_gift_formal_trial = True
         baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
                     "selected_step": "life-advance"}
 

@@ -67,6 +67,9 @@ def query_m5_peacetime_proposal_sources_v1(
 
     construction_ledger = read_construction_ledger(state_dir)
     faction_ledger = read_faction_gift_ledger_v1(state_dir)
+    gift_enabled = getattr(
+        driver, "allow_private_faction_gift_formal_trial", False
+    ) is True
     family_enabled = getattr(
         driver, "allow_private_family_marriage_formal_trial", False
     ) is True
@@ -103,9 +106,11 @@ def query_m5_peacetime_proposal_sources_v1(
     )
 
     _require_driver_frame(driver, frame, expected_gold_raw=observed_gold_raw)
-    root_view = latest_same_frame_faction_root_v1(snapshot, history)
-    root_status = root_view.get("status")
-    if root_status not in {"known_empty", "targeting_present"}:
+    root_view = (latest_same_frame_faction_root_v1(snapshot, history)
+                 if gift_enabled else None)
+    root_status = (root_view.get("status") if isinstance(root_view, Mapping)
+                   else "gift_consumer_disabled")
+    if gift_enabled and root_status not in {"known_empty", "targeting_present"}:
         raise BridgeUnavailableError(
             "M5 peacetime source lacks a complete same-frame feudal faction root: "
             f"{root_status or 'unknown'}"
@@ -142,7 +147,14 @@ def query_m5_peacetime_proposal_sources_v1(
     construction_status = construction["status"]
 
     faction: dict[str, object]
-    if root_status == "known_empty":
+    if not gift_enabled:
+        faction = {
+            "status": "consumer_disabled",
+            "reason": "formal_gift_trial_off",
+            "public_capability_advertised": False,
+            "gift_submission_enabled": False,
+        }
+    elif root_status == "known_empty":
         faction = {
             "status": "known_empty",
             "reason": "same_frame_public_targeting_count_zero",
@@ -150,7 +162,7 @@ def query_m5_peacetime_proposal_sources_v1(
             "gift_submission_enabled": False,
         }
     else:
-        root = root_view.get("root")
+        root = root_view.get("root") if isinstance(root_view, Mapping) else None
         reader = getattr(driver, "query_faction_gift_private_candidate_v1", None)
         if not isinstance(root, Mapping) or not callable(reader):
             raise BridgeUnavailableError(
