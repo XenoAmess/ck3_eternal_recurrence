@@ -743,7 +743,8 @@ def main() -> int:
                         help="Opt in to a separate startup/debug desktop recorder; default off to avoid parallel gameplay recording")
     parser.add_argument("--checkpoint-save", type=Path, help="Exact .ck3 source copied into a new isolated vanilla profile")
     parser.add_argument("--checkpoint-receipt", type=Path, help="Actual MCP save-checkpoint response with byte, actor/date and build evidence")
-    parser.add_argument("--frontend-timeout", type=float, default=360)
+    parser.add_argument("--frontend-timeout", type=float, default=360,
+                        help="Per frontend readiness wait; checkpoint map wait is twice this value")
     parser.add_argument("--hold-seconds", type=float, default=60)
     parser.add_argument("--shader-cache-source", type=Path, help="Reuse only a prior exact-build shadercache")
     parser.add_argument("--recovery-seconds", type=float, default=1800, help="Keep the same MCP owner available after Python failure")
@@ -759,7 +760,7 @@ def main() -> int:
     parser.add_argument("--capture", action="store_true", help="Explicitly launch CK3 after preflight; default is no launch")
     args = parser.parse_args()
     require(30 <= args.hold_seconds <= 90, "Hold must be 30..90 seconds")
-    require(30 <= args.frontend_timeout <= 600, "Frontend timeout must be 30..600 seconds")
+    require(30 <= args.frontend_timeout <= 1500, "Frontend timeout must be 30..1500 seconds")
     require(0 <= args.recovery_seconds <= 3600 and 0 <= args.interactive_seconds <= 3600, "Hot service must be 0..3600 seconds")
     require(not args.enable_private_ai_reentry_observer or
             (isinstance(args.private_ai_reentry_dll_sha256, str)
