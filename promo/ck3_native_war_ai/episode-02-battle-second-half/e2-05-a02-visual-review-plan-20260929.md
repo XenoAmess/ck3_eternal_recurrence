@@ -16,7 +16,7 @@ E2-05 a02 受管 run 为 `D:/workspace/ck3_native_war_ai_promo_work/episode02-e2
 
 ## 获磁盘许可后的低负载取样顺序
 
-取样使用单线程 FFmpeg、输入 seek、每点一张原生尺寸**无损 PNG**，不做全片解码、转码或循环抽帧。细小 CK3 字符只凭原始 PNG 判读；如另制 JPEG，最多作导航缩略图。输出必须是新外置目录，不覆盖 `a01/a02` 旧索引及本次 recorder。逐张记录原片 SHA、输入 argv、请求 seek、实际解码帧 PTS、PNG 宽高、PNG bytes/SHA-256；实际 PTS 从 `showinfo` 和已冻结的完整 `ffprobe.json` 交叉核对，若无法核准只写请求 seek 并保持 `PTS_UNRESOLVED`。
+取样使用单线程 FFmpeg、输入 seek、每点一张原生尺寸**无损 PNG**，不做全片解码、转码或循环抽帧。细小 CK3 字符只凭原始 PNG 判读；如另制 JPEG，最多作导航缩略图。输出只能是外置 `ck3_native_war_ai_promo_work` 根目录下**新建的平级专用 attempt**，不能落在 raw、live、audit 或仓库源树中，也不覆盖 `a01/a02` 旧索引及本次 recorder。每次 seek 启动前写精确 argv/意图，完成或 RED 后保全原样 stdout/stderr、退出码与 PNG partial；每次前后以及最终重核源原片 size/mtime。逐张记录原片的先前完整 SHA 来源、请求 seek、实际解码帧 PTS、PNG 宽高、PNG bytes/SHA-256；实际 PTS 只接受唯一 `showinfo n:0` 并与已冻结的完整 `ffprobe.json` 交叉核对，多帧或无法核准保持 `PTS_UNRESOLVED`，不得生成成功索引。
 
 | 目标 | 首轮 seek 秒点 | 要验证的画面事实 |
 | --- | --- | --- |
