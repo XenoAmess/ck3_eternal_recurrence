@@ -17,7 +17,7 @@ from queue import Empty, SimpleQueue
 import sys
 import threading
 import time
-from typing import Iterator, TextIO
+from typing import Callable, Iterator, TextIO
 
 from .bridge.session_queue import PersistentSessionQueue, SessionQueueRequest
 from .environment import EnvironmentSpec, ensure_state_path_safe, write_json_atomic
@@ -727,6 +727,7 @@ def native_session(
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    frontend_first_before_final_launch: Callable[[EnvironmentSpec], None] | None = None,
     startup_slot0_probe_output: Path | None = None,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
@@ -762,6 +763,13 @@ def native_session(
     ):
         raise AgentError(
             "frontend-first warm-up bridge requires a frontend-first load save"
+        )
+    if (
+        frontend_first_before_final_launch is not None
+        and frontend_first_load_save_name is None
+    ):
+        raise AgentError(
+            "frontend-first pre-final-launch gate requires a frontend-first load save"
         )
     startup_slot0_probe_plan = (
         prepare_startup_slot0_probe(spec.game_exe, startup_slot0_probe_output)
@@ -814,6 +822,7 @@ def native_session(
                     frontend_first_timeout_seconds
                 ),
                 frontend_first_warmup_bridge=warmup_bridge,
+                frontend_first_before_final_launch=frontend_first_before_final_launch,
                 startup_slot0_probe_plan=startup_slot0_probe_plan,
             )
 
@@ -835,6 +844,7 @@ def _native_session_locked(
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    frontend_first_before_final_launch: Callable[[EnvironmentSpec], None] | None = None,
     startup_slot0_probe_plan: StartupSlot0ProbePlan | None = None,
 ) -> dict[str, object]:
     started_wall = utc_now()
@@ -1126,6 +1136,14 @@ def _native_session_locked(
                     "the final launch"
                 )
             frontend_first_warmup["target_before_final_launch"] = final_target
+            if frontend_first_before_final_launch is not None:
+                try:
+                    frontend_first_before_final_launch(spec)
+                except Exception:
+                    frontend_first_warmup["status"] = "before_final_launch_gate_failed"
+                    _write_frontend_first_evidence(spec, frontend_first_warmup)
+                    raise
+                frontend_first_warmup["before_final_launch_gate_passed"] = True
             frontend_first_warmup["status"] = "final_launch_starting"
             _write_frontend_first_evidence(spec, frontend_first_warmup)
             final_launch_options: dict[str, object] = {

@@ -17,6 +17,7 @@ import importlib.metadata
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -275,7 +276,7 @@ def private_phase_trace_call(request: dict, *, enabled: bool, driver) -> dict:
 
 async def service_requests(directory: Path, *, call, stopped: threading.Event,
                            seconds: float, state_reader, private_phase_call=None,
-                           private_ai_reentry_call=None) -> None:
+                           private_ai_reentry_call=None, gui_scale_readback=None) -> None:
     """Keep the one owning MCP connection available for bounded hot diagnosis.
 
     Requests are explicit local JSON files, never inferred retries of StartGame.
@@ -316,6 +317,13 @@ async def service_requests(directory: Path, *, call, stopped: threading.Event,
                             "Private AI reentry is not enabled for this capture")
                     row["body"] = private_ai_reentry_call(request)
                     row["result"] = "CALL_COMPLETED"
+                elif request.get("action") == "gui_scale_disk_readback":
+                    require(set(request) == {"action"}, "GUI scale readback takes no arguments")
+                    require(gui_scale_readback is not None,
+                            "GUI scale readback requires an explicit --gui-scale capture")
+                    row["body"] = gui_scale_readback()
+                    row["result"] = ("DISK_MATCH_REQUIRES_VISUAL_REVIEW"
+                                     if row["body"]["disk_gate_passed"] else "RED")
                 else:
                     require(request.get("action") == "mcp", "Unknown request action")
                     name = request.get("tool")
@@ -470,6 +478,51 @@ def write_profile_settings(settings_path: Path, base: str, gui_scale: str | None
     }
 
 
+def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: str) -> dict:
+    """Read the isolated profile's persisted GUI setting without claiming runtime state."""
+    require(requested_scale == "1.0", "Only the reviewed 1.0 GUI scale is supported")
+    row = {"schema": "war-film-gui-scale-disk-gate/v1", "observed_at": utc(),
+           "phase": phase, "requested_scale": requested_scale,
+           "settings_path": str(settings_path.resolve()), "settings": None,
+           "observed_scale": None, "disk_gate_passed": False,
+           "runtime_scale_proven": False, "visual_geometry_reviewed": False,
+           "recording_authorized_by_this_gate": False}
+    try:
+        before = settings_path.stat()
+        raw = settings_path.read_bytes()
+        after = settings_path.stat()
+        content_sha = hashlib.sha256(raw).hexdigest().upper()
+        disk_identity = identity(settings_path)
+        require(before.st_mtime_ns == after.st_mtime_ns and
+                before.st_size == after.st_size == len(raw) and
+                disk_identity["bytes"] == len(raw) and
+                disk_identity["sha256"] == content_sha,
+                "GUI settings changed during readback")
+        row["settings"] = {**disk_identity, "mtime_ns": after.st_mtime_ns}
+        gui_declarations = re.findall(rb'(?m)^"GUI"\s*=\s*\{', raw)
+        known_gui_block = re.findall(
+            rb'(?ms)^"GUI"\s*=\s*\{\s*"scale"\s*=\s*\{\s*'
+            rb'version\s*=\s*1\s*value\s*=\s*"([^"\r\n]+)"\s*\}\s*\}', raw)
+        if len(gui_declarations) == 1 and len(known_gui_block) == 1:
+            row["observed_scale"] = known_gui_block[0].decode("ascii")
+            row["disk_gate_passed"] = row["observed_scale"] == requested_scale
+        else:
+            row["reason"] = "missing_ambiguous_or_unrecognized_GUI_block"
+    except (OSError, UnicodeError, RuntimeError) as error:
+        row["reason"] = repr(error)
+    return row
+
+
+def require_gui_scale_disk_gate(settings_path: Path, requested_scale: str | None,
+                                phase: str, receipt_path: Path) -> None:
+    if requested_scale is None:
+        return
+    receipt = gui_scale_disk_readback(settings_path, requested_scale, phase)
+    write_new(receipt_path, receipt)
+    require(receipt["disk_gate_passed"],
+            f"GUI.scale disk gate failed at {phase}; see {receipt_path}")
+
+
 def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
     from xar_autoplayer.environment import make_spec, render_settings
     from xar_autoplayer.rules import declared_vanilla_rule_defaults, render_presets
@@ -549,6 +602,14 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     write_identity_receipt(args.output_dir, (run,))
     checkpoint = checked.get("checkpoint_source")
     spec, lifecycle = prepare_profile(args, checkpoint)
+    settings_path = spec.profile_dir / "pdx_settings.txt"
+    try:
+        require_gui_scale_disk_gate(
+            settings_path, args.gui_scale, "before-native-session",
+            args.output_dir / "gui-settings-before-native-session.json")
+    except Exception as error:
+        record_live_run_status(run, "completed-red", reason=str(error))
+        raise
     record_live_run_status(run, "launch-started", reason="Bounded vanilla map capture; no strategic player actions")
     stopped = threading.Event()
     worker: dict = {"ok": False, "error": None, "marks": []}
@@ -639,6 +700,9 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     write_new(args.output_dir / "native-start-readback.json", started)
                     require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
                     write_new(args.output_dir / "initial-snapshot.json", snapshot)
+                    require_gui_scale_disk_gate(
+                        settings_path, args.gui_scale, "postmap-before-capture",
+                        args.output_dir / "gui-settings-postmap.json")
                     load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
                     require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
                     from PIL import ImageGrab
@@ -648,6 +712,9 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     await asyncio.sleep(args.hold_seconds)
                     final = await call("ck3_take_snapshot")
                     write_new(args.output_dir / "final-snapshot.json", final)
+                    require_gui_scale_disk_gate(
+                        settings_path, args.gui_scale, "posthold-before-service",
+                        args.output_dir / "gui-settings-posthold.json")
                     ImageGrab.grab().save(args.output_dir / "map-end.png")
                     worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
                                               "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
@@ -680,6 +747,9 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                         private_phase_call=private_phase_call if args.enable_private_phase_trace else None,
                         private_ai_reentry_call=(lambda request: private_ai_reentry_readback(
                             request, driver=driver)) if args.enable_private_ai_reentry_observer else None,
+                        gui_scale_readback=(lambda: gui_scale_disk_readback(
+                            settings_path, args.gui_scale, "hot-service-after-native-UI-save"))
+                            if args.gui_scale is not None else None,
                     )
 
     def worker_main() -> None:
@@ -700,6 +770,12 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                 time.sleep(1)
                 require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()
+            before_final_launch = (
+                lambda current_spec: require_gui_scale_disk_gate(
+                    current_spec.profile_dir / "pdx_settings.txt", args.gui_scale,
+                    "after-warmup-before-final-launch",
+                    args.output_dir / "gui-settings-before-final-launch.json")
+            ) if checkpoint is not None and args.gui_scale is not None else None
             session_result = native_session(
                 # Startup, map publication and post-ready pump have separate waits.
                 spec, timeout_seconds=3 * args.frontend_timeout + args.hold_seconds + max(args.recovery_seconds, args.interactive_seconds) + 90,
@@ -709,6 +785,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                 verify_prepared_profile=False, prepared_xar_enabled="xar_off",
                 frontend_first_load_save_name=CHECKPOINT_LOAD_NAME if checkpoint is not None else None,
                 frontend_first_timeout_seconds=args.frontend_timeout,
+                frontend_first_before_final_launch=before_final_launch,
             )
     except BaseException as error:
         worker["error"] = worker["error"] or repr(error)

@@ -41,6 +41,19 @@ checkpoint 分支不调用 New Game 或 StartGame，也不把发出加载参数�
 `--recovery-seconds`、同一 owner 的请求目录、失败后热诊断、显式 finish 与所有旧 attempt 保全保持原逻辑。
 本改动的离线检查不等于 R0004 存档已在新 run 中成功加载，实际结果由下一次 live readback 决定。
 
+## GUI 缩放与录制前核验
+
+需要缩小 UI 以拍全战斗面板时，新隔离 run 显式使用 `--gui-scale 1.0`。runner 先写入并读回该 profile 的
+`pdx_settings.txt`，在 frontend warmup 退出且最终读档进程启动前再次只读核对，并在地图完整暂停后、
+hold 结束后分别保存 `gui-settings-*.json`。任一阶段的磁盘读数缺失、重复、无法解析或不是 1.0，
+该 attempt 为 RED；后续不能把它追认为 GREEN。未指定此选项时保持原设置写入和运行路径。
+
+2026-09-28 的 E2-04 a01 在预启动设置 1.0 后仍由 CK3 最终进程写回 1.3；a02 未指定该参数，最终读数也为 1.3。因此预启动回执、
+warmup 后回执或磁盘上的 1.0 都不能单独证明正在运行的 UI 是 1.0。postmap RED 后，operator 可在原生设置
+界面选择 1.0、保存，再向同一热服务提交 `{"action":"gui_scale_disk_readback"}` 请求；响应只说明当前隔离
+profile 的磁盘读数，字段 `recording_authorized_by_this_gate=false`。开始正式录制还须审阅原始桌面截图，确认
+当前游戏设置的缩放与完整无遮挡战斗面板；该请求不执行 UI 输入，也不签发画面审核或成片签核。
+
 ## R0005 的实际时序故障及保存档检查
 
 2026-09-23 的 R0005 首次 `native:2` 已 `map_ready=true`、日期正确，但 `played_character=null`，

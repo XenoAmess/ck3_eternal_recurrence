@@ -160,6 +160,37 @@ class PrivatePhaseTraceContractTests(unittest.TestCase):
 
 
 class HotServiceTests(unittest.IsolatedAsyncioTestCase):
+    async def test_gui_scale_recheck_after_native_ui_save_is_disk_only(self):
+        with tempfile.TemporaryDirectory() as temp:
+            requests = Path(temp) / "requests"
+            values = iter(({"disk_gate_passed": False, "observed_scale": "1.3",
+                            "recording_authorized_by_this_gate": False},
+                           {"disk_gate_passed": True, "observed_scale": "1.0",
+                            "recording_authorized_by_this_gate": False}))
+
+            async def no_mcp(*args):
+                self.fail("GUI disk readback must not call MCP")
+
+            async def producer():
+                while not requests.exists():
+                    await asyncio.sleep(0.01)
+                for index, row in enumerate(({"action": "gui_scale_disk_readback"},
+                                             {"action": "gui_scale_disk_readback"},
+                                             {"action": "finish"})):
+                    pending = requests / f"{index:03}.pending"
+                    pending.write_text(json.dumps(row), encoding="utf-8")
+                    pending.rename(pending.with_suffix(".json"))
+
+            await asyncio.gather(
+                service_requests(requests, call=no_mcp, stopped=threading.Event(),
+                                 seconds=3, state_reader=lambda: {},
+                                 gui_scale_readback=lambda: next(values)), producer())
+            responses = Path(temp) / "requests-responses"
+            self.assertEqual(json.loads((responses / "000.json").read_text())["result"], "RED")
+            second = json.loads((responses / "001.json").read_text())
+            self.assertEqual(second["result"], "DISK_MATCH_REQUIRES_VISUAL_REVIEW")
+            self.assertFalse(second["body"]["recording_authorized_by_this_gate"])
+
     async def test_failed_call_keeps_owner_available_and_never_retries_mutation(self):
         with tempfile.TemporaryDirectory() as temp:
             requests = Path(temp) / "requests"

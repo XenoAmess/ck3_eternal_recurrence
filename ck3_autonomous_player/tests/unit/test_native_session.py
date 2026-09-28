@@ -381,6 +381,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         handle = SimpleNamespace(process=process)
         shutdown = {"ok": True, "contract_errors": []}
         output = io.StringIO()
+
         config = NativeBridgeLaunchConfig(
             mode="native-headless",
             pipe_name=r"\\.\pipe\native-session-test",
@@ -476,6 +477,11 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         }
         output = io.StringIO()
 
+        def before_final_launch(spec) -> None:
+            self.assertIs(spec, self.spec)
+            self.assertEqual(launch_mock.call_count, 1)
+            self.assertEqual(stop_mock.call_count, 1)
+
         with mock.patch(
             "xar_autoplayer.native_session.launch",
             side_effect=(first_handle, second_handle),
@@ -499,6 +505,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 verify_prepared_profile=False,
                 frontend_first_load_save_name="last_save",
                 frontend_first_timeout_seconds=1.0,
+                frontend_first_before_final_launch=before_final_launch,
             )
 
         self.assertEqual(
@@ -530,6 +537,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertEqual(warmup["status"], "ready")
         self.assertEqual(warmup["warmup_pid"], 4801)
         self.assertEqual(warmup["final_pid"], 4802)
+        self.assertTrue(warmup["before_final_launch_gate_passed"])
         self.assertEqual(warmup["pipe"], config.pipe_name)
         self.assertEqual(warmup["load_save_name"], "last_save")
         self.assertEqual(
@@ -566,6 +574,46 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertTrue(
             any('"type": "native_session_ready"' in line for line in lines)
         )
+
+    def test_frontend_first_disk_gate_failure_blocks_final_launch(self) -> None:
+        process = mock.Mock(pid=4901)
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-first-gate-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        save_path = self.spec.profile_dir / "save games" / "last_save.ck3"
+        save_path.parent.mkdir(parents=True)
+        save_path.write_bytes(b"frozen frontend-first save")
+
+        def fail_gate(_spec) -> None:
+            raise RuntimeError("GUI.scale was rewritten to 1.3")
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle,
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            return_value={"ok": True, "contract_errors": []},
+        ) as stop_mock, mock.patch(
+            "xar_autoplayer.native_session._wait_for_frontend_marker",
+            return_value={"marker": NATIVE_SESSION_FRONTEND_MARKER, "seen": True},
+        ), self.assertRaisesRegex(AgentError, "GUI.scale was rewritten to 1.3"):
+            _native_session_locked(
+                self.spec, config, 5.0, input_stream=None,
+                output_stream=io.StringIO(), poll_interval_seconds=0.001,
+                verify_prepared_profile=False,
+                frontend_first_load_save_name="last_save",
+                frontend_first_before_final_launch=fail_gate,
+            )
+        launch_mock.assert_called_once()
+        stop_mock.assert_called_once_with(handle, require_running=False)
+        evidence_path = self.spec.state_dir / "native-session" / "frontend-first-warmup.json"
+        evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+        self.assertEqual(evidence["status"], "failed")
+        self.assertNotIn("final_pid", evidence)
 
     def test_frontend_first_warmup_can_use_independent_native_bridge(self) -> None:
         process_one = mock.Mock(pid=5801)
