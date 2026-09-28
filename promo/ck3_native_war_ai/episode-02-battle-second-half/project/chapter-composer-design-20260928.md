@@ -54,6 +54,8 @@ reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，实际冷�
 - `historical_research_card` 仅对应冻结的 004/039→040/020/070/036→038/085/024 旧研究回执；还需 `visible_label_audit_artifact_id` 与实际 `visible_label_text`，标签写明“历史研究”、该研究编号、“非当前录制”，审查回执绑定 reel SHA 和卡 ID。
 - `current_run_recomputed` 必须先按新拍 attempt 重算数字、重建卡与旁白，再给出 `recomputed_receipt_artifact_id`。该回执绑定新卡 SHA、来源主回执、捕获 attempt 与实际冷载存档 SHA；旧 024 的 `-50` 不能改称新轨 writer 证据。
 
+真实 reel 的 `clean_span_receipt_artifact_id` 必须指向 `ck3-war-ai.episode02.clean-span-audit.v1` JSON，含 `result="GREEN"`、`attempt_id`、`span_id`、`capture_artifact_root` 绝对路径、`raw_video_sha256`/`raw_video_bytes`、`report_sha256`、`timeline_sha256`、`evidence_index_sha256` 及 `begin_seconds`/`end_seconds`。composer 只读调用正式 CK3 adapter 的 `load_capture_bundle`，对精确 `span_id` 重新验证报告、timeline、索引、raw、两端 clean frame 和时段；自称 GREEN 的占位 JSON 不能代替 adapter 结果。`label_audit_artifact_id` 必须指向 `ck3-war-ai.episode02.source-label-audit.v1` JSON，含 `status="visible"`、相同 `attempt_id`、raw/reel SHA、含 attempt ID 的 `label_text`、处于 reel 时长内的 `frame_at_seconds`，以及已保全标记帧的 `frame_artifact_id`/`frame_sha256`/`frame_bytes`。这些自动关联不能代替对标记帧和完整成片的人工观看。合成 smoke 仍使用显式 `synthetic.clean-span.v1` 与 `synthetic.source-label.v1`，不能流入真实候选。
+
 新 run 前再次查询正式 xar-promo Release、安装所选 wheel 并核 SHA。六章素材齐全时，命令形状是：
 
 ```text

@@ -14,6 +14,7 @@ import os
 import re
 from pathlib import Path
 
+from xar_promo.adapters.ck3.capture import load_capture_bundle
 from xar_promo.media import probe_media
 from xar_promo.pipeline import PipelineDependencies, PipelineDraft, PipelineInvocation, SegmentDraft
 from xar_promo.process import run_command
@@ -134,6 +135,8 @@ def _artifact(run, run_path: Path | None, artifact_id: str) -> Path:
     if len(hits) != 1:
         raise ValueError(f"Expected exactly one preserved artifact {artifact_id}: found {len(hits)}")
     path = (Path(run_path).parent / hits[0].path).resolve(strict=True)
+    if not path.is_relative_to(Path(run_path).parent.resolve()):
+        raise ValueError(f"Preserved artifact escapes native run: {artifact_id}")
     if path.stat().st_size != hits[0].bytes or _sha(path) != hits[0].sha256.upper():
         raise ValueError(f"Preserved artifact bytes changed: {artifact_id}")
     return path
@@ -159,9 +162,71 @@ def _replay_primary(source: dict) -> str:
     return digest.upper()
 
 
+def _capture_audit_contract(clean: dict, label: dict, span: dict, reel_sha: str,
+                            reel_duration: float, bundle, label_frame: Path) -> None:
+    """Bind a real reel span to the CK3 adapter's verified clean frames."""
+    span_id = clean.get("span_id")
+    if (clean.get("schema") != "ck3-war-ai.episode02.clean-span-audit.v1"
+            or clean.get("result") != "GREEN"
+            or not isinstance(span_id, str) or not span_id
+            or clean.get("attempt_id") != span["attempt_id"]
+            or clean.get("raw_video_sha256", "").upper() != span["raw_video_sha256"].upper()
+            or clean.get("raw_video_bytes") != span["raw_video_bytes"]
+            or clean.get("report_sha256", "").upper() != bundle.report.sha256
+            or clean.get("timeline_sha256", "").upper() != bundle.timeline.sha256
+            or clean.get("evidence_index_sha256", "").upper() != bundle.evidence_index.sha256
+            or bundle.raw_capture.sha256 != span["raw_video_sha256"].upper()
+            or bundle.raw_capture.bytes != span["raw_video_bytes"]):
+        raise ValueError(f"Clean-span audit is not bound to the real capture: {span['attempt_id']}")
+    source_span = bundle.clean_span(span_id)
+    if (clean.get("begin_seconds") != source_span.begin_seconds
+            or clean.get("end_seconds") != source_span.end_seconds):
+        raise ValueError(f"Clean-span bounds differ from CK3 adapter: {span_id}")
+    frame_at = label.get("frame_at_seconds")
+    label_text = label.get("label_text")
+    if (label.get("schema") != "ck3-war-ai.episode02.source-label-audit.v1"
+            or label.get("status") != "visible"
+            or label.get("attempt_id") != span["attempt_id"]
+            or label.get("raw_video_sha256", "").upper() != span["raw_video_sha256"].upper()
+            or label.get("reel_sha256", "").upper() != reel_sha
+            or not isinstance(label_text, str) or span["attempt_id"] not in label_text
+            or not isinstance(frame_at, (int, float)) or isinstance(frame_at, bool)
+            or not math.isfinite(frame_at) or not 0 <= frame_at <= reel_duration
+            or label.get("frame_sha256", "").upper() != _sha(label_frame)
+            or label.get("frame_bytes") != label_frame.stat().st_size):
+        raise ValueError(f"Source label lacks same-attempt visible-frame binding: {span['attempt_id']}")
+
+
+def _capture_audits(run, run_path: Path, span: dict, reel_sha: str,
+                    reel_duration: float,
+                    *, synthetic: bool) -> None:
+    clean_path = _artifact(run, run_path, span["clean_span_receipt_artifact_id"])
+    label_path = _artifact(run, run_path, span["label_audit_artifact_id"])
+    clean = json.loads(clean_path.read_text(encoding="utf-8"))
+    label = json.loads(label_path.read_text(encoding="utf-8"))
+    if synthetic:
+        if (clean.get("schema") != "synthetic.clean-span.v1"
+                or label.get("schema") != "synthetic.source-label.v1"):
+            raise ValueError("Synthetic smoke requires explicit synthetic span audits")
+        return
+    if (clean.get("schema") != "ck3-war-ai.episode02.clean-span-audit.v1"
+            or clean.get("result") != "GREEN"
+            or clean.get("attempt_id") != span["attempt_id"]
+            or not isinstance(clean.get("span_id"), str)
+            or not clean["span_id"]):
+        raise ValueError("Real capture needs a same-attempt GREEN clean-span audit")
+    root = clean.get("capture_artifact_root")
+    if not isinstance(root, str) or not Path(root).is_absolute():
+        raise ValueError("Real clean-span audit requires an absolute CK3 capture bundle root")
+    bundle = load_capture_bundle(root, required_span_ids=[clean.get("span_id", "")])
+    frame = _checked_source(run, run_path, label["frame_artifact_id"],
+                            label["frame_sha256"], label["frame_bytes"])
+    _capture_audit_contract(clean, label, span, reel_sha, reel_duration, bundle, frame)
+
+
 def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                   card_hashes: dict[str, str], card_data: dict,
-                  card_replays: dict[str, str]) -> dict:
+                  card_replays: dict[str, str], *, synthetic: bool) -> dict:
     receipt_path = _checked_source(run, run_path, row["reel_receipt_artifact_id"],
                                    row["reel_receipt_sha256"], row["reel_receipt_bytes"])
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
@@ -205,8 +270,8 @@ def _reel_receipt(run, run_path: Path, row: dict, media: Path,
             _checked_source(run, run_path, checkpoint,
                             span["midrun_checkpoint_save_sha256"],
                             span["midrun_checkpoint_save_bytes"])
-        _artifact(run, run_path, span["clean_span_receipt_artifact_id"])
-        _artifact(run, run_path, span["label_audit_artifact_id"])
+        _capture_audits(run, run_path, span, media_sha, row["duration_seconds"],
+                        synthetic=synthetic)
     for card_id in expected_cards:
         card = actual_cards[card_id]
         replay = card_replays[card_id]
@@ -316,7 +381,8 @@ def compose(config, run, *, config_path, run_path, workdir,
                                 row["audio_sha256"], row["audio_bytes"])
         reel = _checked_source(run, run_path, row["reel_artifact_id"],
                                row["reel_sha256"], row["reel_bytes"])
-        receipt = _reel_receipt(run, run_path, row, reel, card_hashes, card_data, card_replays)
+        receipt = _reel_receipt(run, run_path, row, reel, card_hashes, card_data,
+                                card_replays, synthetic=inputs.get("synthetic") is True)
         if reel.resolve() in reel_sources:
             raise ValueError("Each chapter requires its own labelled reel")
         reel_sources[reel.resolve()] = (row, receipt)
