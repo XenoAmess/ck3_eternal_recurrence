@@ -15992,10 +15992,31 @@ def _general_battle_forecast_ingress(
         # before starting that route.  Do not extend today's proof to the
         # distant arrival date.
         move_step = move_army_step(army_id, target)
+        sole_war = active_wars[0] if len(active_wars) == 1 else None
+        war_allies = sole_war.get("allied_armies") if isinstance(sole_war, dict) else None
+        war_enemies = sole_war.get("enemy_armies") if isinstance(sole_war, dict) else None
+        war_hostile_ids = tuple(sorted({
+            enemy_id
+            for enemy in war_enemies if isinstance(enemy, dict)
+            if _army_tactical_state(enemy) != "retreating"
+            and (enemy_id := _native_int(enemy.get("army_id"))) is not None
+            and enemy_id > 0
+        })) if isinstance(war_enemies, list) else ()
         one_war = (
-            len(active_wars) == 1
-            and isinstance(active_wars[0], dict)
-            and (_native_int(active_wars[0].get("war_id")) or 0) > 0
+            isinstance(sole_war, dict)
+            and (_native_int(sole_war.get("war_id")) or 0) > 0
+            and isinstance(war_allies, list)
+            and sum(
+                isinstance(ally, dict)
+                and ally.get("controllable") is True
+                and ally.get("army_id") == army_id
+                and ally.get("current_province_id") == origin
+                for ally in war_allies
+            ) == 1
+            and isinstance(war_enemies, list)
+            and war_hostile_ids == hostile_ids
+            and isinstance(contact.get("hostile_army_ids"), list)
+            and tuple(contact["hostile_army_ids"]) == hostile_ids
         )
         route_exact = bool(
             isinstance(subject_route, dict)
