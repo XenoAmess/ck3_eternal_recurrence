@@ -11,6 +11,8 @@ Robert 最新已投影来源为 **h3911/raw53219928、3,150 日**；`current-sta
 
 R0329 原始 wrapper 将第三步安全截停误计为重复提交风险；基于原始报告的独立纠正回执 SHA-256 为 220428EF332EE187D58D704102F4EFB9674D2CECB4D7C4B6454C26D678173997，确认内层正式冷读合格、提案仍 pending 且没有物质婚姻结果。原始 RED 报告保留。战争维护者在固定 OneDrive WAR 目录返回 H3911 attempt3：no-launch 预检通过，但实机首次 native snapshot 超时，未完成同帧战争查询，也未交付可消费的战争现金、预测或安全路线；因此 Robert 日期和 Emma pending 年龄不增加。来源见[09-29 滚动日报](daily/2026-09-29.md)。
 #517 已把 R0329 类型的在途子女提案后续结果读回接入正式消费：同一 PID 首次 cold 读后，较新 native revision 可走 ordinary 结果；战争 gameplay 步骤会在只读结果之后下一 turn 重新选择。#518 已保留战争 planner 无 selected_step 时既有建筑的到期回执/收入只读查询，原战争 RED 单独保留。两项分别进入 master 738dc2f 与 67a5219，精确官方 CI 成功，临时源码分支及工作树已清理。它们是源码/测试修复；尚无新的 Emma 接受/拒绝或 h90 完工/实收实机证明，G2 仍为 3/8。
+
+09-29 02:00 增量：H3922 连续提交与冷读两份证明的官方配对源码已到 master `5e8806f4d66867ab545e0421d6593d5b07fcd6df`，isolated prepare/rebind/no-launch `ready`（报告 SHA-256 `E9390C166A7C557545EC4ECC362F72A3F74057A8B2F4BBA68DA9DA2BB4ECC921`）；**尚无新 revision 的 CK3 运行或 Emma 婚姻结果**。该提交由集成负责人隔离 rebase 后直接线性推 master，exact CI #36461010717 SUCCESS、临时源码已清；原 PR #523 在 GitHub 为 CLOSED/无 mergeCommit，推送时 expected CLA gate 被 bypass，不写作受保护 PR 合入。#520 法律私有 active/candidate key 读口与 #519 feast ABI 缺口文档分别经 GitHub rebase merge 至 master `e23f32b`、`eda8487`，exact CI #36461409774、#36461444189 均 SUCCESS；尚无对应 H3911 live 资格/成本或活动查询。#521 sway 私有 paused query 源码经 GitHub rebase merge 至 master `dfd7995`，提交前 exact CI #36461679206 **SUCCESS**，负责人已回报远端/本地临时分支与源码 worktree 清理；无 sway live 读回或动作。**没有新增 CK3 动作、持久日期或 G2 里程碑**；Robert 仍 H3911/raw53219928、**3,150/36,524 日**，G2 **3/8**，Sway 仅为默认关闭的私有读口。
 ### 2026-09-29 当前执行状态
 
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
