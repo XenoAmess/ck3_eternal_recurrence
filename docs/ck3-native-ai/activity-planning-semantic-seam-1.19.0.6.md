@@ -175,16 +175,31 @@ binding names. RTTI for `CActivityPlanner` is at type descriptor RVA
 `0x52395F8`. Its object-offset-0 COL is `0x46A49B8`, primary vtable
 `0x41205F0`; an object-offset-`0x10` COL is `0x46A4990`, secondary vtable
 `0x41206C8`. This distinguishes the planning object from the already bound
-`CActivityListDetailHostView` (`0x4166528`). The present trace has not
-identified a stable pointer from the current UI root to `CActivityPlanner`,
-the getter entry RVAs and signatures, or whether their outputs are copied
-values or transient planner-owned containers. It also has not established
-that the planner object exists on the H3911 opening paused frame.
+`CActivityListDetailHostView` (`0x4166528`). The same EXE supplies a bounded
+owner path: `CIngameInterfaceHandler` initializer `0xA734B0` calls `0xA90430`
+at `0xA7519E`. `0xA90430` allocates `0x73A0` bytes, calls the planner
+constructor `0x10AC080` at `0xA90459`, then publishes the returned pointer at
+`handler+0x3C0` (`0xA90468`). The constructor writes `planner+0xD0 = handler`
+at `0x10AC0F3`, allowing a fresh owner round-trip. The existing private
+activity binder already resolves this handler from
+`*(module+0x570F7B8) -> idler -> handler`; it currently reads the separate
+HostView at `handler+0x3D8`. Thus a paused query can read `handler+0x3C0`
+afresh and check the exact primary/secondary vtables and owner round-trip.
+The published pointer is replaced and the old object destroyed in `0xA90430`,
+so it cannot be cached between frames. This static constructor path does not
+prove the planner is present, selected for `activity_feast`, or populated on
+H3911's opening paused frame.
+
+The getter entry RVAs/signatures, output lifetime, and whether their outputs
+are copied values or transient planner-owned containers remain unverified.
+The planner constructor initializes stage `planner+0x1AB0` to `2`; that does
+not establish this is the final start stage or that configured costs exist.
 
 The next executable diagnostic is a bounded registration and field trace for
-these exact GUI getter names on `CActivityPlanner`: resolve the getter
-functions and their non-mutating preconditions, then map the returned
-location/configuration/cost data to the `CStartActivityCommand` validator.
+these exact GUI getter names on the freshly resolved `CActivityPlanner`:
+resolve the getter functions and their non-mutating preconditions, then map
+the returned location/configuration/cost data to the `CStartActivityCommand`
+validator.
 Only after that can a private paused query read a complete same-frame sample;
 absent planner context must be reported as absent, not silently synthesized
 from `feast.txt` or the AI activity path.
