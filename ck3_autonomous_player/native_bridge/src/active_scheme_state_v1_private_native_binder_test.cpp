@@ -353,6 +353,44 @@ void TestSwayAndMurder() {
          "root is re-resolved instead of cached");
 }
 
+void TestEmptyPool() {
+  Fixture fixture{};
+  Store(fixture.storage.data(), 0x08, std::uintptr_t{0});
+  Store(fixture.storage.data(), 0x20, std::uintptr_t{0});
+  Store(fixture.storage.data(), 0x2C, std::int32_t{0});
+  Store(fixture.storage.data(), 0x3C, std::int32_t{0});
+  auto environment = Environment(fixture);
+  auto access = Access();
+  ActiveSchemeStateV1PrivateNativeBindingState state{};
+  Expect(BindActiveSchemeStateV1PrivateNative(environment, state, access),
+         "empty pool binder attaches");
+  ActiveSchemeStateV1PrivateSourceResult result{};
+  Expect(ObserveActiveSchemeStateV1PrivateSource(access, result) &&
+             result.observation.row_count == 0 &&
+             result.failure == ActiveSchemeStateV1PrivateSourceFailure::none,
+         "zero issued schemes are a valid empty container");
+}
+
+void TestSparseGenerationZeroPool() {
+  Fixture fixture{};
+  Store(fixture.scheme_slots.data(), 8 * 0x10 + 0x08,
+        std::uintptr_t{0});
+  Store(fixture.storage.data(), 0x3C, std::int32_t{1});
+  Store(reinterpret_cast<void *>(fixture.Sway()), 0x10,
+        std::uint32_t{5});
+  auto environment = Environment(fixture);
+  auto access = Access();
+  ActiveSchemeStateV1PrivateNativeBindingState state{};
+  Expect(BindActiveSchemeStateV1PrivateNative(environment, state, access),
+         "sparse pool binder attaches");
+  ActiveSchemeStateV1PrivateSourceResult result{};
+  Expect(ObserveActiveSchemeStateV1PrivateSource(access, result) &&
+             result.observation.row_count == 1 &&
+             KeyEquals(result.observation.rows[0].scheme_type_key, "sway") &&
+             result.failure == ActiveSchemeStateV1PrivateSourceFailure::none,
+         "active count tolerates a tombstone and a generation-zero ID");
+}
+
 void TestExactImageGates() {
   {
     Fixture fixture{};
@@ -402,6 +440,8 @@ void TestSecondPassDriftFailsClosed() {
 
 int main() {
   TestSwayAndMurder();
+  TestEmptyPool();
+  TestSparseGenerationZeroPool();
   TestExactImageGates();
   TestSecondPassDriftFailsClosed();
   if (failures != 0) return 1;

@@ -204,6 +204,15 @@ void TestIdentityAndOwnershipGates() {
   ExpectFailure(capture, Failure::scheme_identity_unavailable);
 
   capture = StableCapture();
+  capture.rows[0].scheme_instance_id = 5;
+  capture.rows[0].scheme_instance_generation = 0;
+  Observation generation_zero_observation{};
+  assert(xar::bridge::ObserveActiveSchemeStateV1Private(
+      capture, generation_zero_observation));
+  assert(generation_zero_observation.rows[0].scheme_instance_id == 5);
+  assert(generation_zero_observation.rows[0].scheme_instance_generation == 0);
+
+  capture = StableCapture();
   SetKey(capture.rows[0].scheme_type_key, "Murder");
   ExpectFailure(capture, Failure::scheme_type_unavailable);
 

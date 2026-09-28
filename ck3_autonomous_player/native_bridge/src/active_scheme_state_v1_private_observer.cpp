@@ -151,8 +151,7 @@ bool ObserveActiveSchemeStateV1Private(
   for (std::size_t index = 0; index < candidate.row_count; ++index) {
     const auto &source = capture.rows[index];
     if (!source.scheme_identity_round_trip ||
-        source.scheme_instance_id == 0 ||
-        source.scheme_instance_generation == 0) {
+        source.scheme_instance_id == 0) {
       SetUnavailable(output, Failure::scheme_identity_unavailable);
       return false;
     }
