@@ -301,6 +301,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_duoquinquagintary = nullptr;
   // Private paused current-player prisoner collection query (slot 53).
   MainThreadQueryExecutorV1 permitted_executor_triquinquagintary = nullptr;
+  // Private typed prisoner ransom submit (slot 54), absent by default.
+  MainThreadQueryExecutorV1 permitted_executor_quattuorquinquagintary = nullptr;
   // The frontend route executor is the only fixed callback admitted before a
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
@@ -448,6 +450,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_unquinquagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duoquinquagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_triquinquagintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quattuorquinquagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes

@@ -1504,6 +1504,34 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // R0286 reached this gate but its private ransom callback had no slot.
+  auto ransom_environment =
+      runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  ransom_environment.permitted_executor_quattuorquinquagintary =
+      &ExecutePhaseEvent;
+  ExecutorContext ransom_context{};
+  MainThreadQueryTicketV1 ransom_ticket{};
+  g_failure_stage = "ransom_submit_dedicated_executor_slot";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, ransom_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      TrySubmitMainThreadQueryV1(mailbox, &ExecutePhaseEvent,
+                                 &ransom_context, ransom_ticket) !=
+          MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      WaitForMainThreadQueryV1(mailbox, ransom_ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, ransom_ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      ransom_context.calls != 1 ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
   runtime.protection.fail_next_readonly_restore = true;
   g_failure_stage = "iat_protection_rollback";
   if (InstallMainThreadQueryMailboxV1(
