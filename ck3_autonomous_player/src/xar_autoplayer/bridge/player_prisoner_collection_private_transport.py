@@ -267,10 +267,24 @@ def query_player_prisoner_collection_private_v1(
                     ):
                         raise BridgeUnavailableError("private ransom final quote is malformed")
                 elif quote.get("status") == "unavailable":
+                    count_mismatch = quote.get("unavailable_reason") == "option_definition_count_unexpected"
+                    expected_keys = {"private_build", "read_only", "advertised", "action_surface_present", "status", "unavailable_reason"}
+                    if count_mismatch:
+                        expected_keys |= {"observed_definition_option_count", "observed_context_option_count"}
+                    definition_count = quote.get("observed_definition_option_count")
+                    context_count = quote.get("observed_context_option_count")
                     if (
-                        set(quote) != {"private_build", "read_only", "advertised", "action_surface_present", "status", "unavailable_reason"}
+                        set(quote) != expected_keys
                         or not isinstance(quote.get("unavailable_reason"), str)
                         or not quote["unavailable_reason"]
+                        or (count_mismatch and (
+                            type(definition_count) is not int
+                            or not -(2 ** 31) <= definition_count < 2 ** 31
+                            or (context_count is not None and (
+                                type(context_count) is not int
+                                or not -(2 ** 31) <= context_count < 2 ** 31
+                            ))
+                        ))
                     ):
                         raise BridgeUnavailableError("private ransom unavailable quote is malformed")
                 else:

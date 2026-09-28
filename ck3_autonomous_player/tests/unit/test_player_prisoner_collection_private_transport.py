@@ -288,6 +288,26 @@ def test_private_ransom_quote_keeps_refused_or_unavailable_distinct() -> None:
     assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]["status"] == "unavailable"
 
 
+def test_private_ransom_definition_count_mismatch_preserves_both_reads() -> None:
+    result = _result_with_ransom_quote()
+    quote = result["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"]
+    quote.clear()
+    quote.update({"private_build": True, "read_only": True,
+                  "advertised": False, "action_surface_present": False,
+                  "status": "unavailable",
+                  "unavailable_reason": "option_definition_count_unexpected",
+                  "observed_definition_option_count": 8,
+                  "observed_context_option_count": 8})
+    observed = query_player_prisoner_collection_private_v1(
+        _Driver(result), expected_revision=4)
+    assert observed["player_prisoner_collection"]["prisoners"][0]["ransom_quote_preview"] == quote
+    quote["observed_context_option_count"] = None
+    query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
+    quote["observed_definition_option_count"] = None
+    with pytest.raises(BridgeUnavailableError):
+        query_player_prisoner_collection_private_v1(_Driver(result), expected_revision=4)
+
+
 def test_private_child_relation_v5_preserves_true_false_and_unavailable() -> None:
     result = _result_with_ransom_quote()
     value = result["player_prisoner_collection"]
