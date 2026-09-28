@@ -25,6 +25,7 @@ import edge_tts
 VOICE = "zh-CN-XiaoxiaoNeural"
 RATE = "-12%"
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
+HISTORICAL_CANDIDATE_IDS = frozenset(("terminal", "closing"))
 BUDGETS = (90, 340, 400, 515, 350, 95)
 HEADER = re.compile(r"^## (\d{2}:\d{2})[–-](\d{2}:\d{2}) (.+)$", re.M)
 FOOTNOTE = re.compile(r"\[\^[^\]]+\]")
@@ -151,6 +152,15 @@ def validate_inputs(args: argparse.Namespace) -> tuple[dict, Path, Path]:
     config = json.loads(args.project_config.read_text(encoding="utf-8"))
     if [chapter["id"] for chapter in config["chapters"]] != list(CHAPTER_IDS):
         raise ValueError("ProjectConfig chapter order changed")
+    if HISTORICAL_CANDIDATE_IDS.intersection(args.chapters):
+        if not args.history_only:
+            raise ValueError("terminal/closing require --history-only until new E2-09 live evidence exists")
+        draft = args.draft.read_text(encoding="utf-8-sig")
+        if "terminal" in args.chapters and ("历史独立回放 024 的原始研究记录" not in draft or
+                                           "024 不是 004 的同一随机轨迹" not in draft):
+            raise ValueError("terminal draft lacks explicit historical 024 identity boundary")
+        if "closing" in args.chapters and "历史 024 的普通终局" not in draft:
+            raise ValueError("closing draft lacks explicit historical 024 identity boundary")
     if not args.run_manifest.is_file():
         raise FileNotFoundError(args.run_manifest)
     ffprobe = Path(shutil.which(args.ffprobe) or args.ffprobe).resolve()
@@ -171,6 +181,8 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
         snapshots[label] = identity(destination)
     write_json_new(out / "selection-plan.json", plan)
     events = out / "attempt-events.jsonl"
+    usage_scope = ("historical-independent-replays-candidate-only" if args.history_only
+                   else "source-bound-edit-proxy")
     manifest = {"schema": "ck3.episode02.selected-narration-render.v1",
                 "status": "started", "created_utc": now(),
                 "source_draft": plan["draft"], "snapshots": snapshots,
@@ -179,6 +191,7 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
                 "interpreter": str(Path(sys.executable).resolve()), "python": sys.version,
                 "edge_tts_version": importlib.metadata.version("edge-tts"),
                 "provider": "edge-tts", "voice": VOICE, "rate": RATE,
+                "usage_scope": usage_scope, "new_e2_09_live_verified": False,
                 "ffprobe": str(ffprobe), "ffmpeg": str(ffmpeg),
                 "selected_chapters": plan["selected_chapters"], "held_chapters": plan["held_chapters"],
                 "paragraphs": [], "chapters": []}
@@ -195,6 +208,7 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
                 paragraph_dir.mkdir(exist_ok=False)
                 request = paragraph_dir / "request.json"
                 write_json_new(request, {"provider": "edge-tts", "voice": VOICE, "rate": RATE,
+                                         "usage_scope": usage_scope,
                                          "edge_tts_version": manifest["edge_tts_version"],
                                          "chapter_id": chapter["id"], "paragraph_index": piece["index"],
                                          "source_paragraph_sha256": piece["source_sha256"],
@@ -231,6 +245,7 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
             event(events, "chapter_completed", chapter=chapter["id"], seconds=chapter_duration)
         report = {"schema": "ck3.episode02.selected-narration-duration-report.v1",
                   "status": "selected-chapters-rendered-not-human-reviewed",
+                  "usage_scope": usage_scope, "new_e2_09_live_verified": False,
                   "draft_sha256": plan["draft"]["sha256"],
                   "selected_chapters": plan["selected_chapters"], "held_chapters": plan["held_chapters"],
                   "voice": VOICE, "rate": RATE,
@@ -240,9 +255,12 @@ async def render(args: argparse.Namespace, plan: dict, wheel: dict, ffprobe: Pat
                                 "paragraph_count": row["paragraph_count"], "audio": row["audio"]}
                                for row in manifest["chapters"]],
                   "selected_speech_seconds": round(sum(row["speech_seconds"] for row in manifest["chapters"]), 3),
-                  "limits": ["EdgeTTS edit proxy, not final IndexTTS voice or human signoff.",
-                             "Terminal and closing chapters are intentionally held for E2-09 fact correction.",
-                             "New live CK3 attempts require their own source cards and number verification."]}
+                  "limits": (["EdgeTTS edit proxy, not final IndexTTS voice or human signoff.",
+                              "Terminal/closing audio is a candidate for visibly labelled historical 004/024 research boards only; no new E2-09 live result is asserted.",
+                              "If new E2-09 live numbers or identity differ, revise text and render a fresh attempt."]
+                             if args.history_only else
+                             ["EdgeTTS edit proxy, not final IndexTTS voice or human signoff.",
+                              "New live CK3 attempts require their own source cards and number verification."])}
         write_json_new(out / "duration-report.json", report)
         manifest["duration_report"] = identity(out / "duration-report.json")
         manifest["status"] = "selected-chapters-rendered-not-human-reviewed"
@@ -274,6 +292,8 @@ def main() -> None:
     parser.add_argument("--release-receipt", type=Path, required=True)
     parser.add_argument("--ffprobe", default="ffprobe")
     parser.add_argument("--ffmpeg", default="ffmpeg")
+    parser.add_argument("--history-only", action="store_true",
+                        help="Required for terminal/closing candidates; forbids treating historical 024 as new live E2-09")
     parser.add_argument("--plan-only", action="store_true")
     args = parser.parse_args()
     selected = tuple(args.chapters)
@@ -285,6 +305,8 @@ def main() -> None:
     wheel, ffprobe, ffmpeg = validate_inputs(args)
     if args.plan_only:
         print(json.dumps({"draft": plan["draft"], "selected_chapters": list(selected),
+                          "usage_scope": ("historical-independent-replays-candidate-only"
+                                          if args.history_only else "source-bound-edit-proxy"),
                           "held_chapters": plan["held_chapters"],
                           "paragraphs": {chapter["id"]: [{"characters": x["characters"],
                                                              "text_sha256": x["text_sha256"]}
