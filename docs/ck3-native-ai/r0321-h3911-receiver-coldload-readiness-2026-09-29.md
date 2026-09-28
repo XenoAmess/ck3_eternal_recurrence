@@ -17,8 +17,8 @@
 
 ## 下次修正与检验
 
-新接收 runner 在 MCP 初始化后先**只读**新 attempt 自己的 `state\profile\logs\debug.log`。仅当日志出现按顺序排列的 `CGameState::InitPostRead` 和 `Setup powerful vassals among`，且文件修改时间不早于本次启动，才等待额外 60 秒缓冲，然后发出第一条 `ck3_take_snapshot`。每次观察追加到 `coldload-gate-probes.jsonl`，通过后另存 `coldload-gate.json`。此日志阶段只控制**何时查询**，不代表地图、角色、战争或帧已被证明。
+新接收 runner 在启动 CK3 前记录 `prelaunch-debug-log.json`，并要求该 attempt 的 `debug.log` **不存在**，拒绝复用旧日志。MCP 初始化后只读这个新 attempt 自己的日志；仅当日志出现按顺序排列的 `CGameState::InitPostRead` 和 `Setup powerful vassals among`，且文件修改时间不早于本次启动，才等待额外 60 秒缓冲，然后发出第一条 `ck3_take_snapshot`。缓冲中如 marker 消失、文件身份改变或长度回退，立即 RED。每次观察追加到 `coldload-gate-probes.jsonl`，通过后另存 `coldload-gate.json`。此日志阶段只控制**何时查询**，不代表地图、角色、战争或帧已被证明。
 
-该等待仍占用原有 1800 秒帧就绪期限；每个 MCP 调用仍为 120 秒，总 session 仍为 3000 秒。进入快照阶段后，必须连续两次读到完整稳定的暂停 H3911 帧、CharacterID `29829`、WarID `16777231`、源日期和 episode 身份，才允许原定四个只读查询。任何身份、哈希、能力或查询结果不匹配仍记 RED；正式战斗预测和攻击始终禁用。
+该等待仍占用原有 1800 秒帧就绪期限；快照单调用仍至多 120 秒，且不得越过 1800 秒剩余期限；总 session 仍为 3000 秒。MCP 初始化、每次快照和只读查询的提交前、返回后同步核对独占屏幕租约，原有租约 watchdog 也继续运行。收到响应后先保存原始 envelope，再检查租约和期限；即使门随后 RED，也保留已收到的字节。进入快照阶段后，必须连续两次读到完整稳定的暂停 H3911 帧、CharacterID `29829`、WarID `16777231`、源日期和 episode 身份，才允许原定四个只读查询。四项查询均要求精确 snapshot/revision/native revision；强度查询的源合同是三行 list（一支我军、两支敌军），并要求 WarID、角色和同帧缓存完全匹配，再通过现有 `strategy._same_frame_army_strength_balance` 导出正式分区入参。任何身份、哈希、能力或查询结果不匹配仍记 RED；正式战斗预测和攻击始终禁用。
 
-无游戏聚焦测试 `test_h3911_readiness_gate.py` 覆盖缺日志超时、后读阶段与完整缓冲、缓冲不得越过既定截止、跨 attempt 日志拒绝、旧同路径字节拒绝。已通过 5/5；`py_compile`、`git diff --check`、`--check-static` 均通过。**这些静态检查不构成 H3911 接收实机复现**。第三次尝试需等待屏幕重新释放，重新取得 Steam 离线新鲜原图、独占租约、新外置 attempt 与正式 no-launch 准备。
+无游戏聚焦测试 `test_h3911_readiness_gate.py` 覆盖缺日志超时、后读阶段与完整缓冲、缓冲不得越过既定截止、跨 attempt 日志拒绝、旧同路径字节拒绝、预启动旧日志拒绝、marker 回退/文件替换拒绝、日志扫描完成时期限重读以及快照单次期限裁剪。`py_compile`、`git diff --check`、`--check-static` 也必须通过。**这些静态检查不构成 H3911 接收实机复现**。第三次尝试需等待屏幕重新释放，重新取得 Steam 离线新鲜原图、独占租约、新外置 attempt 与正式 no-launch 准备。

@@ -21,7 +21,10 @@ import sys
 import threading
 import time
 
-from h3911_readiness_gate import wait_for_postread_grace
+from h3911_readiness_gate import (
+    remaining_snapshot_timeout, require_absent_prelaunch_log,
+    wait_for_postread_grace,
+)
 
 
 REPO = Path("D:/w/r0321recv")
@@ -449,6 +452,12 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
     renew_screen_lease(task_id)
     output = attempt / "live-h3911-readonly-v1"
     output.mkdir(exist_ok=False)
+    debug_log = state / "profile" / "logs" / "debug.log"
+    write_new(output / "prelaunch-debug-log.json", {
+        "path": str(debug_log), "exists_before_launch": debug_log.exists(),
+        "checked_at_utc": utc_now().isoformat(),
+    })
+    require_absent_prelaunch_log(attempt, debug_log)
     argv = [str(PYTHON), "-c", CLI_ENTRY, "--state-dir", str(state), "--game-dir", str(GAME),
             "--bridge-mode", "native-headless", "--bridge-pipe", PIPE,
             "--bridge-dll", str(DLL), "--bridge-injector", str(INJECTOR),
@@ -510,7 +519,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
                 watchdog_thread = threading.Thread(target=lease_watchdog, daemon=True)
                 watchdog_thread.start()
                 try:
-                    summary = asyncio.run(read_frame(state, output, lease_failures))
+                    summary = asyncio.run(read_frame(state, output, lease_failures, task_id))
                     require_lease_watchdog_healthy(lease_failures)
                     if not watchdog_thread.is_alive():
                         raise RuntimeError("screen lease watchdog exited before paused read completed")
@@ -579,8 +588,9 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
 
 
 def require_h3911_snapshot(value: dict[str, object]) -> dict[str, object]:
+    played = value.get("played_character")
     if (value.get("episode_run_id") != EPISODE or value.get("date_raw") != 53219928
-            or value.get("played_character", {}).get("character_id") != 29829
+            or not isinstance(played, dict) or played.get("character_id") != 29829
             or value.get("paused") is not True):
         raise RuntimeError("H3911 paused checkpoint identity differs")
     wars = [row for row in value.get("active_wars", [])
@@ -588,7 +598,7 @@ def require_h3911_snapshot(value: dict[str, object]) -> dict[str, object]:
     if len(wars) != 1 or wars[0].get("player_side") != "defender":
         raise RuntimeError("H3911 primary defensive war is absent or ambiguous")
     enemy = wars[0].get("enemy_armies")
-    if (not isinstance(enemy, list) or
+    if (not isinstance(enemy, list) or len(enemy) != 2 or
             {row.get("army_id"): row.get("current_province_id") for row in enemy
              if isinstance(row, dict)} != {50331920: 2629, 83886484: 2629}):
         raise RuntimeError("H3911 two target defenders differ from frozen source frame")
@@ -597,16 +607,40 @@ def require_h3911_snapshot(value: dict[str, object]) -> dict[str, object]:
 
 def require_query_result(result: dict[str, object], step: str,
                          frame: dict[str, object]) -> None:
-    if result.get("step") != step or result.get("accepted") is not True:
+    if (result.get("step") != step or result.get("accepted") is not True
+            or result.get("status") != "available"):
         raise RuntimeError(f"H3911 exact read-only query was not accepted: {step}")
     for key, expected in (("queried_snapshot_id", frame["snapshot_id"]),
                           ("queried_revision", frame["revision"]),
                           ("queried_native_revision", frame["native_revision"])):
+        if result.get(key) != expected:
+            raise RuntimeError(f"H3911 query identity {key} differs: {step}")
+    for key, expected in (("queried_episode_run_id", frame["episode_run_id"]),
+                          ("queried_connection_generation", frame["connection_generation"])):
         if key in result and result[key] != expected:
             raise RuntimeError(f"H3911 query identity {key} differs: {step}")
 
 
-async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> dict[str, object]:
+def require_h3911_strength_rows(rows: object) -> list[dict[str, object]]:
+    expected = {83886367: "player", 50331920: "active_war_enemy",
+                83886484: "active_war_enemy"}
+    if not isinstance(rows, list) or len(rows) != len(expected):
+        raise RuntimeError("H3911 exact three-army strength roster missing")
+    by_id = {row.get("army_id"): row for row in rows if isinstance(row, dict)}
+    if (len(by_id) != len(expected) or set(by_id) != set(expected)
+            or any(row.get("scope_role") != expected[army_id]
+                   or row.get("status") != "available"
+                   or not isinstance(row.get("war_ids"), list)
+                   or 16777231 not in row["war_ids"]
+                   or type(row.get("current_soldiers")) is not int
+                   or row["current_soldiers"] < 0
+                   for army_id, row in by_id.items())):
+        raise RuntimeError("H3911 strength row identity, side or WarID differs")
+    return rows
+
+
+async def read_frame(state: Path, output: Path, lease_failures: list[str],
+                     task_id: str) -> dict[str, object]:
     """Read only the four exact source-matched commands in one paused frame."""
     from mcp.client.session import ClientSession
     from mcp.client.stdio import StdioServerParameters, stdio_client
@@ -622,10 +656,12 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
     async def call(session: ClientSession, name: str, arguments: dict[str, object],
                    stem: str) -> dict[str, object]:
         require_lease_watchdog_healthy(lease_failures)
+        screen_lease(task_id)
         write_new(output / f"{stem}-request.json", {"tool": name, "arguments": arguments})
         response = await asyncio.wait_for(session.call_tool(name, arguments), timeout=TOOL_SECONDS)
-        require_lease_watchdog_healthy(lease_failures)
         write_new(output / f"{stem}-envelope.json", response.model_dump(mode="json", by_alias=True))
+        require_lease_watchdog_healthy(lease_failures)
+        screen_lease(task_id)
         if response.is_error or not isinstance(response.structured_content, dict):
             raise RuntimeError(f"H3911 {name} returned an error; exact envelope preserved")
         write_new(output / f"{stem}-payload.json", response.structured_content)
@@ -639,13 +675,18 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
         params = StdioServerParameters(command=str(PYTHON), args=args, cwd=str(REPO))
         async with stdio_client(params, errlog=stderr) as (reader, writer):
             async with ClientSession(reader, writer) as session:
-                await asyncio.wait_for(session.initialize(), timeout=TOOL_SECONDS)
+                screen_lease(task_id)
+                initialized = await asyncio.wait_for(session.initialize(), timeout=TOOL_SECONDS)
+                write_new(output / "mcp-initialize-envelope.json",
+                          initialized.model_dump(mode="json", by_alias=True))
+                screen_lease(task_id)
                 deadline = time.monotonic() + FRAME_SECONDS
                 launch_plan = json.loads((output / "launch-plan.json").read_text(encoding="utf-8"))
                 launch_time = datetime.fromisoformat(launch_plan["started_at_utc"])
                 with (output / "coldload-gate-probes.jsonl").open("x", encoding="utf-8", newline="\n") as probes:
                     def record_probe(value: dict[str, object]) -> None:
                         require_lease_watchdog_healthy(lease_failures)
+                        screen_lease(task_id)
                         probes.write(json.dumps(value, ensure_ascii=False) + "\n")
                         probes.flush()
 
@@ -657,10 +698,16 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                 count = 0
                 while True:
                     require_lease_watchdog_healthy(lease_failures)
+                    screen_lease(task_id)
                     count += 1
-                    response = await asyncio.wait_for(session.call_tool("ck3_take_snapshot", {}), timeout=TOOL_SECONDS)
+                    response = await asyncio.wait_for(
+                        session.call_tool("ck3_take_snapshot", {}),
+                        timeout=remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS),
+                    )
                     write_new(output / f"readiness-{count:03d}.json",
                               response.model_dump(mode="json", by_alias=True))
+                    screen_lease(task_id)
+                    remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS)
                     if not response.is_error and isinstance(response.structured_content, dict):
                         candidate = response.structured_content
                         if candidate.get("episode_identity_pending") is True:
@@ -672,9 +719,15 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                         first_frame = frame_signature(candidate)
                         first_wars = full_war_signature(candidate)
                         await asyncio.sleep(1)
-                        stable = await asyncio.wait_for(session.call_tool("ck3_take_snapshot", {}), timeout=TOOL_SECONDS)
+                        screen_lease(task_id)
+                        stable = await asyncio.wait_for(
+                            session.call_tool("ck3_take_snapshot", {}),
+                            timeout=remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS),
+                        )
                         write_new(output / f"readiness-{count:03d}-stable.json",
                                   stable.model_dump(mode="json", by_alias=True))
+                        screen_lease(task_id)
+                        remaining_snapshot_timeout(deadline, time.monotonic(), TOOL_SECONDS)
                         if stable.is_error or not isinstance(stable.structured_content, dict):
                             raise RuntimeError("H3911 stable paused re-read returned an error")
                         before = stable.structured_content
@@ -703,7 +756,13 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                         or full_war_signature(after) != wars):
                     raise RuntimeError("H3911 date, war or paused six-field frame changed during read")
 
-                balance = results["strength"].get("army_strengths")
+                strength_rows = require_h3911_strength_rows(results["strength"].get("army_strengths"))
+                if (after.get("army_strengths") != strength_rows
+                        or after.get("army_strengths_status") != results["strength"].get("status")
+                        or after.get("army_strengths_queried_snapshot_id") != frame["snapshot_id"]
+                        or after.get("army_strengths_queried_revision") != frame["revision"]):
+                    raise RuntimeError("H3911 same-frame strength rows or cached readback differ")
+                balance = strategy._same_frame_army_strength_balance(after, 16777231)
                 contact = results["contact"].get("route_contact_horizon")
                 if not isinstance(balance, dict) or not isinstance(contact, dict):
                     raise RuntimeError("H3911 strength or all-hostile route horizon unavailable")
