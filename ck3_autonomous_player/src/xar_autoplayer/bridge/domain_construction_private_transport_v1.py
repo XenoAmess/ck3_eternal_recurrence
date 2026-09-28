@@ -606,9 +606,14 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                                         if type(progress_divisor) is int else None),
     }
     province_income = _province_income_observation(world, candidate, starting)
-    if cold_recheck and completed and province_income["status"] != "observed":
+    if (cold_recheck and completed and province_income["status"] != "observed"
+            and pending.get("completion_status") == "completed"):
         previous = pending.get("construction_province_income_observation")
-        if isinstance(previous, Mapping) and previous.get("status") == "observed":
+        completion_date = pending.get("completion_observed_date_raw")
+        if (isinstance(previous, Mapping) and previous.get("status") == "observed"
+                and type(previous.get("date_raw")) is int
+                and type(completion_date) is int
+                and previous["date_raw"] >= completion_date):
             province_income = dict(previous)
     pre_province_income = pending.get("pre_province_income_observation")
     pre_province_raw = (pre_province_income.get("native_province_monthly_income_raw")

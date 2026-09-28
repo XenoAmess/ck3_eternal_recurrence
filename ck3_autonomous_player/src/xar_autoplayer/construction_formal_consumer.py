@@ -115,6 +115,16 @@ def priority_construction_receipt(
                 and row.get("observed_player_monthly_gold_income_raw") is None):
             return row
     for row in receipts:
+        province = row.get("construction_province_income_observation")
+        last_check = row.get("completion_last_check_date_raw",
+                             row.get("post_date_raw"))
+        if (row.get("completion_status") == "completed"
+                and (not isinstance(province, Mapping)
+                     or province.get("status") != "observed")
+                and type(date) is int and type(last_check) is int
+                and date >= last_check + COMPLETION_WATCH_INTERVAL_RAW):
+            return row
+    for row in receipts:
         last_check = row.get("completion_last_check_date_raw",
                              row.get("post_date_raw"))
         if (row.get("completion_status") != "completed"
@@ -241,6 +251,19 @@ def plan_construction_private(
                     "reason": "completed construction income remains unavailable"}}
         last_completion_check = applied.get(
             "completion_last_check_date_raw", applied.get("post_date_raw"))
+        province = applied.get("construction_province_income_observation")
+        if (applied.get("completion_status") == "completed"
+                and (not isinstance(province, Mapping)
+                     or province.get("status") != "observed")
+                and type(snapshot.get("date_raw")) is int
+                and type(last_completion_check) is int
+                and snapshot["date_raw"] >= (
+                    last_completion_check + COMPLETION_WATCH_INTERVAL_RAW)):
+            return {**planned, "plan": {**plan,
+                "phase": "construction_completed_province_income_watch",
+                "selected_step": RECEIPT_STEP,
+                "construction_pending_action": dict(applied),
+                "reason": "retry target province aggregate after completed-slot proof"}}
         if (applied.get("completion_status") != "completed"
                 and type(snapshot.get("date_raw")) is int
                 and type(last_completion_check) is int
