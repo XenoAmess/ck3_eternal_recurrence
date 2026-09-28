@@ -802,6 +802,8 @@ def native_auto_run_command(
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
+    exact_war_move_stop_contract: Path | None = None,
+    exact_war_move_stop_sha256: str | None = None,
 ) -> list[str]:
     command = [
         *common,
@@ -818,6 +820,13 @@ def native_auto_run_command(
     ]
     if ordinary_campaign_no_pact:
         command.append("--ordinary-campaign-no-pact")
+    if exact_war_move_stop_contract is not None:
+        if exact_war_move_stop_sha256 is None:
+            raise ValueError("exact war move stop contract requires SHA-256")
+        command.extend([
+            "--exact-war-move-stop-contract", str(exact_war_move_stop_contract),
+            "--exact-war-move-stop-sha256", exact_war_move_stop_sha256,
+        ])
     if private_lifestyle_formal_trial:
         command.append("--allow-private-lifestyle-formal-trial")
     if private_construction_formal_trial:
@@ -1227,6 +1236,21 @@ def command_run(args: argparse.Namespace) -> int:
         raise FileExistsError(f"attempt output already exists: {output}")
     output.mkdir(parents=True)
     save, driver_path, driver = current_checkpoint_identity(manifest)
+    exact_stop_path = args.exact_war_move_stop_contract
+    exact_stop_sha = args.exact_war_move_stop_sha256
+    if bool(exact_stop_path) != bool(exact_stop_sha):
+        raise ValueError("exact war move stop requires both contract path and SHA-256")
+    if exact_stop_path is not None:
+        exact_stop_path = exact_stop_path.resolve()
+        raw_contract = exact_stop_path.read_bytes()
+        if hashlib.sha256(raw_contract).hexdigest() != exact_stop_sha.lower():
+            raise ValueError("exact war move stop contract SHA-256 changed")
+        exact_contract = json.loads(raw_contract.decode("utf-8-sig"))
+        if not isinstance(exact_contract, dict) or (
+            str(exact_contract.get("source_save_sha256", "")).lower() != sha256(save)
+            or str(exact_contract.get("source_driver_sha256", "")).lower() != sha256(driver_path)
+        ):
+            raise ValueError("exact war move stop contract source pair differs from prepared state")
     character_id = episode_value(driver, manifest, "episode_character_id")
     episode_run_id = episode_value(driver, manifest, "episode_run_id")
     common = agent_command(manifest)
@@ -1254,6 +1278,8 @@ def command_run(args: argparse.Namespace) -> int:
         "output": str(output),
         "checkpoint_sha256_before": sha256(save),
         "driver_state_sha256_before": sha256(driver_path),
+        "exact_war_move_stop_contract": str(exact_stop_path) if exact_stop_path else None,
+        "exact_war_move_stop_sha256": exact_stop_sha,
         "preflight_exit_code": preflight_exit,
         "lifecycle": lifecycle,
         "display_mode": display_mode_contract(manifest),
@@ -1330,6 +1356,8 @@ def command_run(args: argparse.Namespace) -> int:
                 ordinary_campaign_no_pact=(
                     lifecycle["ordinary_campaign_no_pact"] is True
                 ),
+                exact_war_move_stop_contract=exact_stop_path,
+                exact_war_move_stop_sha256=exact_stop_sha,
             ),
             formal_report,
             formal_stderr,
@@ -2082,6 +2110,8 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--turns", type=int)
     run.add_argument("--timeout", type=int)
     run.add_argument("--readiness-timeout", type=int)
+    run.add_argument("--exact-war-move-stop-contract", type=Path)
+    run.add_argument("--exact-war-move-stop-sha256")
     run.add_argument(
         "--live-run-state-root", type=Path,
         help=f"persistent machine-local live-run allocator root; defaults to {STATE_ROOT_ENV}",

@@ -19,6 +19,20 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_exact_war_move_contract_is_bound_in_formal_argv(self) -> None:
+        path = Path("D:/frozen/exact-move.json")
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"],
+            turns=8, timeout=7200, readiness_timeout=1800,
+            private_faction_round_id_value=None,
+            exact_war_move_stop_contract=path,
+            exact_war_move_stop_sha256="a" * 64,
+        )
+        self.assertEqual(command[-4:], [
+            "--exact-war-move-stop-contract", str(path),
+            "--exact-war-move-stop-sha256", "a" * 64,
+        ])
+
     def test_logged_child_start_callback_runs_only_after_spawn(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

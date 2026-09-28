@@ -112,6 +112,8 @@ class _NativeAutoRunHarness:
         self.native_revision = 1
         self.public_revision = 101
         self.opening_focus_gate_trial = False
+        self.exact_war_stop_trial = False
+        self.exact_war_checkpoint_drop_route = False
         self.opening_focus_receipt_seen = False
         self.opening_focus_target_key = "stewardship_wealth_focus"
         self.heartbeat_date_raw = self.date_raw
@@ -176,6 +178,17 @@ class _NativeAutoRunHarness:
             if any(action.startswith("merge_") for action in actions)
             else []
         )
+        if any(action.startswith("exact_war_") for action in actions):
+            army = {
+                "army_id": 16777450, "owner_character_id": 707,
+                "current_province_id": 2634, "controllable": True,
+                "move_target_province_id": None, "route_province_ids": [],
+            }
+            self.player_armies = [copy.deepcopy(army)]
+            self.active_wars = [{
+                "war_id": 16777237, "allied_armies": [copy.deepcopy(army)],
+                "enemy_armies": [{"army_id": 200, "current_province_id": 2640}],
+            }]
         if any(
             action == "surrender_pending_then_applied"
             for action in actions
@@ -553,7 +566,7 @@ class _NativeAutoRunHarness:
             }
             raise failure
 
-        if action in {"query", "query_change"}:
+        if action in {"query", "query_change", "exact_war_query"}:
             step = "query-declarable-wars"
             if action == "query_change":
                 self.date_raw += 1
@@ -563,6 +576,21 @@ class _NativeAutoRunHarness:
                 "step": step,
                 "accepted": True,
                 "status": "queried",
+            }
+        elif action in {"exact_war_move", "exact_war_move_ack_only"}:
+            step = "move-army-16777450-to-2640"
+            if action == "exact_war_move":
+                for army in (self.player_armies[0], self.active_wars[0]["allied_armies"][0]):
+                    army["move_target_province_id"] = 2640
+                    army["route_province_ids"] = [2634, 2640]
+            self.native_revision += 1
+            self.public_revision += 1
+            result = {
+                "step": step, "status": "submitted", "accepted": True,
+                "war_action": {
+                    "status": "moving", "army_id": 16777450,
+                    "target_province_id": 2640, "submitted_date_raw": self.date_raw,
+                },
             }
         elif action in {"ransom_receipt_applied", "ransom_receipt_changed"}:
             step = "private-read-player-prisoner-ransom-receipt-v1"
@@ -1151,6 +1179,14 @@ class _NativeAutoRunHarness:
             "phase": "fixture",
             "selected_step": step,
         }
+        if action in {"exact_war_move", "exact_war_move_ack_only"}:
+            plan.update({
+                "phase": "native_war_general_battle_distant_route_start",
+                "source_war_id": 16777237,
+                "contact_recheck_required_before_each_day": True,
+                "future_contact_authorized": False,
+                "general_battle_forecast_used_for_decision": True,
+            })
         if action == "raiktor_continue":
             synthetic_war_id = self.native_revision * 1000 + 17
             plan["war_exit_decision"] = {
@@ -1248,6 +1284,10 @@ class _NativeAutoRunHarness:
         self.events.append("save_checkpoint")
         if self.fail_save_checkpoint:
             raise OSError("fixture checkpoint failed")
+        if self.exact_war_checkpoint_drop_route:
+            for army in (self.player_armies[0], self.active_wars[0]["allied_armies"][0]):
+                army["move_target_province_id"] = None
+                army["route_province_ids"] = []
         path = self.spec.profile_dir / "save games" / "xar_checkpoint.ck3"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(_CHECKPOINT_PAYLOAD)
@@ -1428,6 +1468,27 @@ class _FakeGameplayService:
         *,
         before_submit: object = None,
     ) -> dict[str, object]:
+        if before_submit is not None and self.harness.exact_war_stop_trial and self.harness.actions:
+            action = self.harness.actions[0]
+            step = (
+                "query-declarable-wars" if action == "exact_war_query"
+                else "move-army-16777450-to-2640" if action.startswith("exact_war_move")
+                else "life-advance"
+            )
+            plan: dict[str, object] = {"phase": "fixture", "selected_step": step}
+            if action.startswith("exact_war_move"):
+                plan.update({
+                    "phase": "native_war_general_battle_distant_route_start",
+                    "source_war_id": 16777237,
+                    "contact_recheck_required_before_each_day": True,
+                    "future_contact_authorized": False,
+                    "general_battle_forecast_used_for_decision": True,
+                })
+            before_submit({
+                "plan": plan, "selected_step": step,
+                "snapshot_id": f"native:{self.harness.native_revision}",
+                "revision": self.harness.public_revision,
+            })  # type: ignore[operator]
         if before_submit is not None and self.harness.opening_focus_gate_trial:
             action = self.harness.actions[0]
             selected = {
@@ -1617,6 +1678,58 @@ class NativeAutoRunTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
+    def test_exact_war_move_stops_after_independent_poststate_and_checkpoint(self) -> None:
+        report, harness = self._run(
+            ["exact_war_query", "exact_war_move", "advance"],
+            cold_start_checkpoint=True, exact_war_move_stop=True,
+        )
+        self.assertTrue(report["ok"])
+        self.assertEqual(report["status"], "exact_war_move_checkpointed")
+        self.assertEqual(report["auto_run"]["attempted_turns"], 2)
+        self.assertEqual(harness.actions, ["advance"])
+        self.assertEqual(report["exact_war_move_stop"]["independent_poststate"]["remaining_route_province_ids"], [2640])
+        self.assertEqual(report["exact_war_move_stop"]["checkpoint_poststate"]["date_raw"], harness.date_raw)
+        self.assertEqual(harness.date_raw, 53_171_400)
+
+    def test_exact_war_move_ack_without_route_is_red_and_cannot_advance(self) -> None:
+        report, harness = self._run(
+            ["exact_war_move_ack_only", "advance"],
+            cold_start_checkpoint=True, exact_war_move_stop=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["exact_war_move_stop"]["independent_poststate"], None)
+        self.assertEqual(harness.actions, ["advance"])
+        self.assertEqual(harness.date_raw, 53_171_400)
+
+    def test_exact_war_move_turn_limit_without_move_is_red(self) -> None:
+        report, _ = self._run(
+            ["exact_war_query"],
+            cold_start_checkpoint=True, exact_war_move_stop=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "exact_war_move_not_reached")
+
+    def test_exact_war_move_refuses_date_advance_before_submit(self) -> None:
+        report, harness = self._run(
+            ["advance", "exact_war_move"],
+            cold_start_checkpoint=True, exact_war_move_stop=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(harness.actions, ["advance", "exact_war_move"])
+        self.assertEqual(harness.date_raw, 53_171_400)
+        self.assertEqual(report["first_blocker"]["selected_step"], "life-advance")
+
+    def test_exact_war_move_checkpoint_must_retain_route(self) -> None:
+        report, harness = self._run(
+            ["exact_war_move", "advance"],
+            cold_start_checkpoint=True, exact_war_move_stop=True,
+            exact_war_checkpoint_drop_route=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["exact_war_move_stop"]["independent_poststate"]["status"], "independent_poststate_verified")
+        self.assertIsNone(report["exact_war_move_stop"]["checkpoint_poststate"])
+        self.assertEqual(harness.actions, ["advance"])
+
     def _run(
         self,
         actions: list[str],
@@ -1643,6 +1756,8 @@ class NativeAutoRunTests(unittest.TestCase):
         focus_post_xp_available: bool = True,
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
+        exact_war_move_stop: bool = False,
+        exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         use_cold_start_checkpoint = (
             completion_contract in {"one_generation", "next_episode"}
@@ -1686,6 +1801,21 @@ class NativeAutoRunTests(unittest.TestCase):
                 operator_stop_after_action_count
             ),
         )
+        exact_stop_contract = None
+        if exact_war_move_stop:
+            harness.exact_war_stop_trial = True
+            harness.exact_war_checkpoint_drop_route = exact_war_checkpoint_drop_route
+            driver_path = self.spec.state_dir / "native-session" / "driver-state.json"
+            driver_path.parent.mkdir(parents=True, exist_ok=True)
+            driver_path.write_bytes(b"exact war move driver state")
+            exact_stop_contract = {
+                "schema": "xar.ck3.exact-war-move-stop.v1",
+                "date_raw": harness.date_raw, "war_id": 16777237,
+                "army_id": 16777450, "origin_province_id": 2634,
+                "target_province_id": 2640,
+                "source_save_sha256": hashlib.sha256(_CHECKPOINT_PAYLOAD).hexdigest(),
+                "source_driver_sha256": hashlib.sha256(driver_path.read_bytes()).hexdigest(),
+            }
         if war_hotspot_army:
             harness.active_wars = [{
                 "war_id": 4,
@@ -1788,6 +1918,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 operator_stop_event=harness.operator_stop_event,
                 before_submit=before_submit,  # type: ignore[arg-type]
+                exact_war_move_stop_contract=exact_stop_contract,
                 after_intercept=after_intercept,  # type: ignore[arg-type]
                 allow_private_lifestyle_formal_trial=(
                     require_initial_lifestyle_focus_before_date_advance

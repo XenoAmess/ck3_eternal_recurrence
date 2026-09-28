@@ -91,6 +91,13 @@ from .epidemic_recovery_formal_observer import (
     observe_epidemic_recovery_after_option,
 )
 from .errors import AgentError
+from .exact_war_move_stop import (
+    validate_contract as validate_exact_war_move_stop_contract,
+    expected_step as exact_war_move_step,
+    check_before as check_exact_war_move_before,
+    check_poststate as check_exact_war_move_poststate,
+    check_checkpoint as check_exact_war_move_checkpoint,
+)
 from .native_session import (
     native_session,
     validate_cold_start_checkpoint_for_pipe,
@@ -358,6 +365,7 @@ def native_auto_run(
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
+    exact_war_move_stop_contract: dict[str, object] | None = None,
     operator_stop_event: threading.Event | None = None,
     before_submit: Callable[[dict[str, object]], dict[str, object] | None]
     | None = None,
@@ -477,6 +485,12 @@ def native_auto_run(
         raise AgentError(
             "after_intercept requires a before_submit candidate interceptor"
         )
+    exact_move_contract = (
+        validate_exact_war_move_stop_contract(exact_war_move_stop_contract)
+        if exact_war_move_stop_contract is not None else None
+    )
+    if exact_move_contract is not None and (completion_contract != "bounded" or before_submit is not None):
+        raise AgentError("exact war move stop requires a bounded run without another interceptor")
 
     ensure_state_path_safe(spec.state_dir)
     try:
@@ -512,6 +526,16 @@ def native_auto_run(
         or cold_start_checkpoint
         else None
     )
+    if exact_move_contract is not None:
+        if not cold_start_checkpoint or not isinstance(fixed_seed, dict):
+            raise AgentError("exact war move stop requires an exact cold-start checkpoint")
+        driver_state_path = spec.state_dir / "native-session" / "driver-state.json"
+        if (str(fixed_seed.get("sha256", "")).lower()
+                != str(exact_move_contract["source_save_sha256"]).lower()
+                or not driver_state_path.is_file()
+                or hashlib.sha256(driver_state_path.read_bytes()).hexdigest()
+                != str(exact_move_contract["source_driver_sha256"]).lower()):
+            raise AgentError("exact war move stop source pair differs from prepared state")
     if succession_lifecycle_binding["lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION:
         if not cold_start_checkpoint or not isinstance(fixed_seed, dict):
             raise AgentError(
@@ -573,6 +597,9 @@ def native_auto_run(
     readiness_timeout_diagnostics: dict[str, object] | None = None
     candidate_interception: dict[str, object] | None = None
     candidate_resolution: dict[str, object] | None = None
+    exact_move_pre_submit_seen = False
+    exact_move_poststate: dict[str, object] | None = None
+    exact_move_checkpoint: dict[str, object] | None = None
     private_prisoner_collection_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
@@ -871,7 +898,14 @@ def native_auto_run(
         def opening_guard_before_submit(
             candidate: dict[str, object],
         ) -> dict[str, object] | None:
-            nonlocal epidemic_recovery_pre
+            nonlocal epidemic_recovery_pre, exact_move_pre_submit_seen
+            if exact_move_contract is not None:
+                current_attempt["plan"] = copy.deepcopy(candidate.get("plan"))
+                current_attempt["selected_step"] = candidate.get("selected_step")
+                if exact_move_pre_submit_seen:
+                    raise AgentError("exact war move already submitted; refusing a second action")
+                if check_exact_war_move_before(candidate, before, exact_move_contract):
+                    exact_move_pre_submit_seen = True
             if opening_focus_gate is not None:
                 selected = candidate.get("selected_step")
                 plan = candidate.get("plan")
@@ -1152,12 +1186,14 @@ def native_auto_run(
                         if (
                             opening_focus_gate is not None
                             or before_submit is not None
+                            or exact_move_contract is not None
                             or allow_private_epidemic_recovery_near_pair is True
                         )
                         else service.auto_turn()
                     )
                     break
                 except PreSubmissionRevisionMismatchError as error:
+                    exact_move_pre_submit_seen = False
                     epidemic_recovery_pre = None
                     current_attempt.pop("epidemic_recovery_pre", None)
                     if isinstance(error.plan, dict):
@@ -1481,6 +1517,13 @@ def native_auto_run(
             modal_decision_pending = _player_decision_pending(after_snapshot)
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
+            if exact_move_contract is not None and step == exact_war_move_step(exact_move_contract):
+                if not exact_move_pre_submit_seen or terminal_pending or modal_decision_pending:
+                    raise AgentError("exact war move poststate has no gated submit or is unsafe")
+                exact_move_poststate = check_exact_war_move_poststate(
+                    before, outcome.get("result"), after_snapshot, exact_move_contract
+                )
+                current_attempt["exact_war_move_poststate"] = copy.deepcopy(exact_move_poststate)
             semantic_evidence = _semantic_delta(before, after_snapshot, after)
             evidence = list(semantic_evidence)
             if step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
@@ -2315,6 +2358,9 @@ def native_auto_run(
                     camera_follow=current_attempt["camera_follow"],
                 )
             )
+            if exact_move_poststate is not None:
+                status = "exact_war_move_poststate_verified"
+                break
             if (
                 opening_focus_gate is not None
                 and step in {
@@ -2546,6 +2592,12 @@ def native_auto_run(
                 if modal_decision_pending
                 else "turn_limit"
             )
+        if exact_move_contract is not None and status == "turn_limit":
+            status = "exact_war_move_not_reached"
+            capture_first_failure(
+                stage="bound", kind="exact_war_move_not_reached",
+                message="bounded run ended before the exact typed move and independent poststate",
+            )
         if (
             status == "turn_limit"
             and opening_focus_gate is not None
@@ -2569,13 +2621,15 @@ def native_auto_run(
         ):
             status = "operator_stop_checkpoint_deferred"
         final_checkpoint_needed = (
-            status == "operator_stop_requested"
+            status in {"operator_stop_requested", "exact_war_move_poststate_verified"}
             or (status == "turn_limit" and dirty_gameplay_since_checkpoint)
         )
         if final_checkpoint_needed:
             last_after = turns[-1].get("after") if turns else readiness
             final_phase = (
-                "operator_stop_checkpoint"
+                "exact_war_move_checkpoint"
+                if status == "exact_war_move_poststate_verified"
+                else "operator_stop_checkpoint"
                 if status == "operator_stop_requested"
                 else "final_checkpoint"
             )
@@ -2628,6 +2682,15 @@ def native_auto_run(
                     error=error,
                 )
                 raise
+            if status == "exact_war_move_poststate_verified":
+                current_attempt["stage"] = "checkpoint"
+                exact_move_checkpoint = check_exact_war_move_checkpoint(
+                    checkpoint, _snapshot, exact_move_contract
+                )
+                if (_snapshot.get("episode_run_id") != readiness.get("episode_run_id")
+                        or _snapshot.get("episode_character_id") != readiness.get("episode_character_id")):
+                    raise AgentError("exact war move checkpoint changed campaign identity")
+                status = "exact_war_move_checkpointed"
             counts["checkpoint"] += 1
             checkpoints.append(
                 {
@@ -2867,7 +2930,12 @@ def native_auto_run(
         )
         qualified = bool(
             primary_error is None
-            and status in {"turn_limit", "episode_complete"}
+            and status in {"turn_limit", "episode_complete", "exact_war_move_checkpointed"}
+            and (exact_move_contract is None or (
+                status == "exact_war_move_checkpointed"
+                and exact_move_poststate is not None
+                and exact_move_checkpoint is not None
+            ))
             and (
                 visible_gameplay_turns > 0
                 or existing_opening_focus_readback
@@ -2972,6 +3040,12 @@ def native_auto_run(
         ),
         "ok": qualified,
         "completion_contract": completion_contract,
+        "exact_war_move_stop": {
+            "contract": copy.deepcopy(exact_move_contract),
+            "pre_submit_seen": exact_move_pre_submit_seen,
+            "independent_poststate": copy.deepcopy(exact_move_poststate),
+            "checkpoint_poststate": copy.deepcopy(exact_move_checkpoint),
+        } if exact_move_contract is not None else None,
         "succession_lifecycle": copy.deepcopy(
             succession_lifecycle_binding
         ),
