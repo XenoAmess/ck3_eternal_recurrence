@@ -275,7 +275,7 @@
       "ransom_sidecar_sha256": "D60736FB035B6E77D9F71641AD76B2006FB975CC1187C77CC2FB0BA91BAA115F",
       "pair_identity_sha256": null,
       "source_pair_status": "R0319_qualified_bounded_checkpoint_save_driver_pair; no new cold restore claimed",
-      "next_candidate_status": "H3860 continuation candidate not yet prepared or no-launch verified",
+      "next_candidate_status": "Formal Robert H3860 continuation has not yet passed official rebind or no-launch; the separate Emma H3860 v4 private read-only candidate passed those checks",
       "hundred_year_gate": "0/1",
       "whole_campaign_gate": "0/1",
       "independent_seeds": "0/2",
