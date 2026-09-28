@@ -35,6 +35,8 @@ bool IsActiveKey(const RealmLawActiveCollection &active,
 bool ReadGroup(const RealmLawActiveCollectionAccess &access,
                std::uintptr_t group_address,
                const RealmLawActiveCollection &active,
+               std::size_t group_index, void *observer_context,
+               ObserveRealmLawCandidate11906 observer,
                RealmLawRelevantGroup11906 &group,
                RealmLawCandidateCollectionFailure &failure) noexcept {
   if (!ReadRealmLawNativeKey11906(access, group_address + kGroupKeyOffset,
@@ -87,6 +89,12 @@ bool ReadGroup(const RealmLawActiveCollectionAccess &access,
       group.active_found = true;
       group.active_law_key = candidate.key;
     }
+    if (observer != nullptr &&
+        !observer(observer_context, group_index, static_cast<std::size_t>(i),
+                  law_address, candidate)) {
+      failure = RealmLawCandidateCollectionFailure::candidate_observer_failed;
+      return false;
+    }
   }
   group.candidate_count = static_cast<std::uint32_t>(candidate_count);
   return true;
@@ -94,8 +102,9 @@ bool ReadGroup(const RealmLawActiveCollectionAccess &access,
 
 } // namespace
 
-bool ReadRealmLawCandidateCollection11906(
+bool ReadRealmLawCandidateCollectionWithObserver11906(
     const RealmLawActiveCollectionAccess &access, std::uintptr_t module_base,
+    void *observer_context, ObserveRealmLawCandidate11906 observer,
     RealmLawCandidateCollection11906 &output) noexcept {
   output = {};
   RealmLawActiveCollection active{};
@@ -151,7 +160,8 @@ bool ReadRealmLawCandidateCollection11906(
         return false;
       }
       found[relevant] = true;
-      if (!ReadGroup(access, group_address, active, output.groups[relevant],
+      if (!ReadGroup(access, group_address, active, relevant,
+                     observer_context, observer, output.groups[relevant],
                      output.failure)) {
         return false;
       }
@@ -163,6 +173,13 @@ bool ReadRealmLawCandidateCollection11906(
   }
   output.failure = RealmLawCandidateCollectionFailure::none;
   return true;
+}
+
+bool ReadRealmLawCandidateCollection11906(
+    const RealmLawActiveCollectionAccess &access, std::uintptr_t module_base,
+    RealmLawCandidateCollection11906 &output) noexcept {
+  return ReadRealmLawCandidateCollectionWithObserver11906(
+      access, module_base, nullptr, nullptr, output);
 }
 
 } // namespace xar::ck3_11906::private_law

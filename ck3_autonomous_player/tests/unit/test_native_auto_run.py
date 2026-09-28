@@ -108,6 +108,7 @@ class _NativeAutoRunHarness:
         self.auto_turn_count = 0
         self.prisoner_collection_query_count = 0
         self.active_scheme_sway_query_count = 0
+        self.realm_law_paused_query_count = 0
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -216,6 +217,7 @@ class _NativeAutoRunHarness:
         allow_private_lifestyle_formal_trial: bool = False,
         allow_private_prisoner_collection_query: bool = False,
         allow_private_active_scheme_sway_query: bool = False,
+        allow_private_realm_law_paused_query: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
     ) -> "_FakeNativeDriver":
@@ -235,6 +237,9 @@ class _NativeAutoRunHarness:
         )
         self.allow_private_active_scheme_sway_query = (
             allow_private_active_scheme_sway_query
+        )
+        self.allow_private_realm_law_paused_query = (
+            allow_private_realm_law_paused_query
         )
         self.allow_private_current_timeline_blocker_query = (
             allow_private_current_timeline_blocker_query
@@ -1456,6 +1461,24 @@ class _FakeNativeDriver:
             "queried_native_revision": self.harness.native_revision,
         }
 
+    def query_realm_law_final_terms_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        assert self.harness.allow_private_realm_law_paused_query
+        assert expected_revision == self.harness.public_revision
+        self.harness.realm_law_paused_query_count += 1
+        return {
+            "schema": "realm-law-final-terms-private-read-v1",
+            "actor_character_id": self.harness.played_character_id,
+            "cost_slots": ["gold", "prestige", "piety", "renown",
+                           "influence", "herd", "treasury",
+                           "treasury_or_gold", "merit", "barter_goods"],
+            "groups": [],
+            "queried_snapshot_id": f"native:{self.harness.native_revision}",
+            "queried_revision": expected_revision,
+            "queried_native_revision": self.harness.native_revision,
+        }
+
     def bind_succession_lifecycle_v1(self, binding: object) -> None:
         if not isinstance(binding, dict):
             raise AssertionError("fake lifecycle binding must be a mapping")
@@ -1779,6 +1802,7 @@ class NativeAutoRunTests(unittest.TestCase):
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
         private_active_scheme_sway_target: int | None = None,
+        private_realm_law_paused_query: bool = False,
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
@@ -1955,6 +1979,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 private_active_scheme_sway_target=(
                     private_active_scheme_sway_target
                 ),
+                private_realm_law_paused_query=private_realm_law_paused_query,
             )
         return report, harness
 
@@ -2109,6 +2134,26 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.active_scheme_sway_query_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_realm_law_reads_once_and_stops_before_any_action(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "2", "--timeout", "900"]
+        self.assertFalse(cli.parser().parse_args(common).private_realm_law_paused_query)
+        self.assertTrue(cli.parser().parse_args([
+            *common, "--private-realm-law-paused-query",
+        ]).private_realm_law_paused_query)
+        report, harness = self._run(
+            ["advance", "advance"], private_realm_law_paused_query=True,
+        )
+        self.assertTrue(report["ok"])
+        self.assertEqual(report["status"], "private_realm_law_paused_observed")
+        observed = report["private_realm_law_paused_observation"]
+        self.assertTrue(observed["same_frame"])
+        self.assertEqual(observed["source_frame"]["date_raw"],
+                         observed["post_frame"]["date_raw"])
+        self.assertEqual(harness.realm_law_paused_query_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["turns"], [])
 
     def test_private_sway_target_rejects_nonbounded_and_invalid_id(self) -> None:

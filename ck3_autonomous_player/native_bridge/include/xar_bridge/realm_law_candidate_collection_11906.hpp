@@ -29,6 +29,7 @@ enum class RealmLawCandidateCollectionFailure : std::uint8_t {
   candidate_group_mismatch,
   candidate_key_invalid,
   active_law_ambiguous,
+  candidate_observer_failed,
 };
 
 struct RealmLawCandidateCollectionRow11906 {
@@ -50,6 +51,19 @@ struct RealmLawCandidateCollection11906 {
       RealmLawCandidateCollectionFailure::active_collection_unavailable;
   std::array<RealmLawRelevantGroup11906, 2> groups{};
 };
+
+// Invoked synchronously while the native CLaw* is known. The address must
+// remain inside this paused application-main callback; it is not part of the
+// value-only candidate collection or any durable snapshot.
+using ObserveRealmLawCandidate11906 = bool (*)(
+    void *context, std::size_t group_index, std::size_t candidate_index,
+    std::uintptr_t native_law, const RealmLawCandidateCollectionRow11906 &row)
+    noexcept;
+
+bool ReadRealmLawCandidateCollectionWithObserver11906(
+    const RealmLawActiveCollectionAccess &access, std::uintptr_t module_base,
+    void *observer_context, ObserveRealmLawCandidate11906 observer,
+    RealmLawCandidateCollection11906 &output) noexcept;
 
 // Private paused-frame candidate enumeration for H3911's feudal governance
 // decision. It reports native keys and enacted membership only. It does not

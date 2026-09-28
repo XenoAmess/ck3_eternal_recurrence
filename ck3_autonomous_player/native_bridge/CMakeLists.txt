@@ -227,6 +227,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1
+  "Compile the private exact-build paused realm-law final-terms query"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1
   "Compile the private exact-build paused prisoner collection reader"
   OFF
@@ -761,6 +767,15 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/realm_law_active_collection_11906.cpp
+    src/realm_law_candidate_collection_11906.cpp
+    src/realm_law_final_terms_11906.cpp
+    src/realm_law_paused_private_transport_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   target_sources(xar_ck3_bridge PRIVATE

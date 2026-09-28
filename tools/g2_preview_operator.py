@@ -987,6 +987,7 @@ def native_auto_run_command(
     private_m5_joint_collector: bool = False,
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
+    private_realm_law_paused_query: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1030,6 +1031,8 @@ def native_auto_run_command(
             "--private-active-scheme-sway-target",
             str(private_active_scheme_sway_target),
         ])
+    if private_realm_law_paused_query:
+        command.append("--private-realm-law-paused-query")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -1539,6 +1542,7 @@ def command_run(args: argparse.Namespace) -> int:
             args.private_prisoner_collection_observation
         ),
         "private_active_scheme_sway_target": args.private_active_scheme_sway_target,
+        "private_realm_law_paused_query": args.private_realm_law_paused_query,
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -1601,6 +1605,7 @@ def command_run(args: argparse.Namespace) -> int:
                 private_active_scheme_sway_target=(
                     args.private_active_scheme_sway_target
                 ),
+                private_realm_law_paused_query=args.private_realm_law_paused_query,
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
                 ),
@@ -2398,6 +2403,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-active-scheme-sway-target", type=int,
         help="read one explicit sway target on a paused frame and stop before action",
+    )
+    run.add_argument(
+        "--private-realm-law-paused-query", action="store_true",
+        help="read current-player final realm-law terms on a paused frame",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",

@@ -1442,6 +1442,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_epidemic_treatment_presence_query: bool = False,
         allow_private_prisoner_collection_query: bool = False,
         allow_private_active_scheme_sway_query: bool = False,
+        allow_private_realm_law_paused_query: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
         allow_private_player_child_marriage_subject_query: bool = False,
@@ -1536,6 +1537,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_active_scheme_sway_query = (
             allow_private_active_scheme_sway_query is True
+        )
+        self.allow_private_realm_law_paused_query = (
+            allow_private_realm_law_paused_query is True
         )
         self.allow_private_prisoner_ransom_action = (
             allow_private_prisoner_ransom_action is True
@@ -2514,6 +2518,19 @@ class NativeHeadlessGameplayDriver:
             self,
             expected_revision=expected_revision,
             target_character_id=target_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_realm_law_final_terms_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read current-player realm-law final terms on one paused frame."""
+        from .realm_law_paused_private_transport import (
+            query_realm_law_final_terms_private_v1,
+        )
+
+        return query_realm_law_final_terms_private_v1(
+            self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
         )
 

@@ -90,7 +90,54 @@ run one matched, paused H3911 observation. Record active law, all relevant
 candidates, full costs, final CanEnact, and the same-frame resource and
 successor baseline. A read-only result is still not an enactment receipt.
 
-## Focused verification
+## Private paused query candidate (2026-09-29)
+
+The default-off `query-realm-law-final-terms-v1-private` step now binds the
+current full-generation player character through the exact component storage,
+then visits only the two frozen feudal law groups. Each candidate is evaluated
+on the application-main thread by the GUI type/active/final path and the
+ten-slot numeric cost helper. The same command validator at `0x2C7DAA0`
+copies its engine reason into an engine-owned MSVC string sink; the native
+destructor at `0x7E97D0` releases the sink after copying. The collector takes
+two complete samples inside the same paused callback and rejects any key,
+membership, final status, cost, or reason difference. The pipe handler also
+checks the published frame and its revision before and after the callback.
+
+```mermaid
+flowchart LR
+  A[paused current player and revision] --> B[main-thread mailbox slot 56]
+  B --> C[exact ABI and full-generation actor]
+  C --> D[crown and succession candidate groups]
+  D --> E[final CanEnact and ten native costs]
+  E --> F[command-validator reason copied]
+  F --> G{two samples identical?}
+  G -->|yes| H[private value-only result]
+  G -->|no| I[RED]
+  H -. no law command .-> J[future strategy/action gate]
+```
+
+The CMake option is OFF by default. The Python one-shot operator opt-in exits
+after this read without submitting a law command or advancing a date. The
+result retains all ten signed Q100000 slots and reports current active key,
+candidate key, `final_can_enact`, status, and copied reason. A blank native
+reason remains blank; it is not replaced by a guessed script cause. H3911 and
+the newer H3922 paired Robert frame have **not** been queried with this build
+yet, so no current lawful or beneficial enactment is claimed.
+
+The exact-build binder currently uses the published mutation ABI proof for
+the command validator and final evaluator, plus the pinned EXE identity and
+the numeric helper ABI in `realm_law_final_terms_11906_abi.json`. The private
+query does not fill the old six-slot LAW2 schema or advertise a public law
+action. A later formal decision must compare the observed successor baseline
+and resources with the candidate value, then submit and independently read
+the enacted law and successors.
+
+The focused normal/optimized MSVC candidate fixture is 8/8 in each mode;
+the private route builds with its option enabled in VS 18 Release. The
+no-launch Python transport checks full ten-slot preservation, frame change,
+and default-off gating. These are source and fixture evidence, not live proof.
+
+## Focused verification commands
 
 ```text
 py ck3_autonomous_player/native_bridge/research/verify_realm_law_final_terms_11906.py --exe "Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe"
