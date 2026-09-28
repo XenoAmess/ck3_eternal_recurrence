@@ -479,6 +479,97 @@ def write_profile_settings(settings_path: Path, base: str, gui_scale: str | None
     }
 
 
+def import_ui_saved_gui_block(settings_path: Path, vanilla_settings: str,
+                              source_snapshot: Path, expected_source_sha256: str,
+                              output_dir: Path) -> dict:
+    """Prepare one fresh profile from vanilla bytes plus an exact UI-saved GUI block.
+
+    This candidate is deliberately not wired to the capture CLI.  An actual
+    UI-saved snapshot and original screenshot must be reviewed before a05 can
+    opt in; the caller must also have proved its state directory is new.
+    """
+    require(re.fullmatch(r"[0-9A-Fa-f]{64}", expected_source_sha256) is not None,
+            "UI snapshot needs an explicit SHA-256")
+    require(settings_path.name == "pdx_settings.txt", "Target must be pdx_settings.txt")
+    require(settings_path.parent.is_dir(), "Fresh profile directory is missing")
+    require(not settings_path.exists() and not settings_path.is_symlink(),
+            "Target settings already exist")
+    receipt_path = output_dir / "gui-settings-ui-block-import.json"
+    require(output_dir.is_dir() and not receipt_path.exists() and not receipt_path.is_symlink(),
+            "Import receipt directory must exist without an old receipt")
+    for path in (source_snapshot, settings_path, output_dir):
+        require(all(not part.is_symlink() for part in (path, *path.parents)),
+                "GUI import paths must not contain symlinks")
+    require(source_snapshot.is_file(), "UI-saved full settings snapshot is missing")
+    require(source_snapshot.resolve() != settings_path.resolve(),
+            "Source snapshot and target must be different files")
+
+    before = source_snapshot.stat()
+    source = source_snapshot.read_bytes()
+    after = source_snapshot.stat()
+    source_sha = hashlib.sha256(source).hexdigest().upper()
+    require((before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) ==
+            (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns) and
+            len(source) == after.st_size, "UI snapshot changed during read")
+    require(source_sha == expected_source_sha256.upper(), "UI snapshot SHA-256 differs")
+    require(len(source) <= 1024 * 1024, "UI snapshot exceeds reviewed size limit")
+    source.decode("utf-8")
+    declarations = list(re.finditer(rb'(?m)^[ \t]*"GUI"\s*=\s*\{', source))
+    # The complete GUI block contains exactly one scale key and no other key.
+    # The closing line break is part of the imported bytes, including CRLF.
+    blocks = list(re.finditer(
+        rb'(?m)^"GUI"[ \t]*=[ \t]*\{[ \t\r\n]*'
+        rb'"scale"[ \t]*=[ \t]*\{[ \t\r\n]*version[ \t]*=[ \t]*1[ \t\r\n]+'
+        rb'value[ \t]*=[ \t]*"1\.0"[ \t\r\n]*\}[ \t\r\n]*\}[ \t]*(?:\r?\n|$)',
+        source))
+    require(len(declarations) == len(blocks) == 1 and
+            declarations[0].start() == blocks[0].start(),
+            "UI snapshot has missing, ambiguous, extra-key or unreviewed GUI syntax")
+    block = blocks[0].group()
+    non_gui_source = source[:blocks[0].start()] + source[blocks[0].end():]
+    require(re.search(rb'(?m)^"[A-Za-z_][A-Za-z0-9_]*"[ \t]*=[ \t]*\{',
+                      non_gui_source) is not None,
+            "UI snapshot must contain full non-GUI settings, not only a GUI fragment")
+    template = (vanilla_settings.rstrip("\n") + "\n").encode("utf-8")
+    require(re.search(rb'(?m)^[ \t]*"GUI"\s*=', template) is None,
+            "Vanilla template already defines GUI")
+    require(template.endswith(b"\n"), "Vanilla template must end with a line break")
+    prepared = template + block
+    require(prepared[:-len(block)] == template and prepared[-len(block):] == block,
+            "Prepared non-GUI bytes differ from vanilla template")
+    require(source_snapshot.stat().st_mtime_ns == after.st_mtime_ns and
+            source_snapshot.read_bytes() == source,
+            "UI snapshot changed before target creation")
+    with settings_path.open("xb") as stream:
+        stream.write(prepared)
+        stream.flush()
+        os.fsync(stream.fileno())
+    actual = settings_path.read_bytes()
+    require(actual == prepared, "Prepared GUI settings disk bytes differ")
+    require(actual[:-len(block)] == template and actual[-len(block):] == block,
+            "Prepared GUI settings changed outside the imported block")
+    row = {
+        "schema": "war-film-ui-saved-gui-block-import/v1", "at": utc(),
+        "source_snapshot": {"path": str(source_snapshot.resolve()),
+                            "bytes": len(source), "sha256": source_sha},
+        "source_gui_block": {"bytes": len(block),
+                             "sha256": hashlib.sha256(block).hexdigest().upper()},
+        "vanilla_non_gui_template": {"bytes": len(template),
+                                     "sha256": hashlib.sha256(template).hexdigest().upper()},
+        "prepared_settings": identity(settings_path),
+        "exact_source_gui_block_preserved": True,
+        "non_gui_bytes_equal_vanilla_template": True,
+        "runtime_scale_proven": False, "visual_geometry_reviewed": False,
+        "recording_authorized_by_this_receipt": False,
+        "status": "GREEN_DISK_ONLY",
+    }
+    require(row["prepared_settings"]["bytes"] == len(prepared) and
+            row["prepared_settings"]["sha256"] == hashlib.sha256(prepared).hexdigest().upper(),
+            "Prepared GUI settings identity differs")
+    write_new(receipt_path, row)
+    return row
+
+
 def gui_scale_disk_readback(settings_path: Path, requested_scale: str, phase: str) -> dict:
     """Read the isolated profile's persisted GUI setting without claiming runtime state."""
     require(requested_scale == "1.0", "Only the reviewed 1.0 GUI scale is supported")
