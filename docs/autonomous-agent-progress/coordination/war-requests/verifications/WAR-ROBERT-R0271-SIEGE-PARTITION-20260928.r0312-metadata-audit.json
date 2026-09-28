@@ -1,0 +1,51 @@
+{
+  "schema": "xar.g2.war-r0271-subsequent-metadata-audit.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "audit_at_utc": "2026-09-28T12:41:40Z",
+  "status": "subsequent_source_metadata_only_siege_participants_unresolved",
+  "historical_r0271_status": "original_turn36_red_unchanged",
+  "verified_receiver_bytes": {
+    "onedrive_source_status_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0312-ROBERT-MOVE-STATUS-v1.json",
+    "size_bytes": 4067,
+    "sha256": "A60E8DB1149B4C20DE36E1FE498A7904029EF78FAC824604ACC61A4CED445603",
+    "onedrive_receiver_ack_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-R0312-ROBERT-MOVE-ACK-v1.json",
+    "receiver_ack_sha256": "5F8ED75E535FDE28A312962405A76FCCB3C63E48BE7A6FA00A1DBEF61ACF3839"
+  },
+  "source_reported_r0312": {
+    "source_master_commit": "9fec3be11137246e06e43c64fc00755caf42f8cf",
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id": 16777231,
+    "army_id": 83886367,
+    "selected_move": "move-army-83886367-to-2614",
+    "start_history_index": 3735,
+    "start_date_raw": 53219544,
+    "end_history_index": 3766,
+    "end_date_raw": 53219568,
+    "reported_war_moves": 1,
+    "reported_date_advances": 1,
+    "formal_report_size_bytes_source_claim": 207664213,
+    "formal_report_sha256_source_claim": "597D3A67D101E863A8E671901B8454EA46F3800BF09973F095D5078746AA02E2",
+    "verdict_sha256_source_claim": "4E0F4C95C79D9E1F27FD3B0FA2F25391F8A94C9DCAD39AF15BB67A72949AD080",
+    "final_save_sha256_source_claim": "61BF4F93BE47A8939EFE30556BA056972079E40C68FC3C3580CEA739D5D8A95A",
+    "final_driver_sha256_source_claim": "EB6ED6EB5766FD60D5190FB5BE9675DEC9C74CA840AF0BC853DE6C99D030C359"
+  },
+  "later_git_source_scope": {
+    "r0313": "New PID cold readback from R0312 pair, zero gameplay/date; h3770/raw53219568, as recorded in docs/autonomous-agent-progress/daily/2026-09-28.md. The source-only full report and checkpoint bytes were not transferred for this audit.",
+    "r0314": "Private faction read from R0313 pair, zero gameplay/date; h3774/raw53219568, save SHA 06B15F336750C0D0A6785FB4721E6FAB42EF33318D88197AF53A8214C2647B41 and driver SHA 6761BE0148C30AD70AB6BE1A40A7471D53FF3EEBDB054C4255687FC10ED522A9 are Git source claims."
+  },
+  "proof_boundary": {
+    "receiver_verified": "Only the small R0312 status JSON and its receiver ACK bytes/SHA were independently read here.",
+    "not_receiver_verified": "R0312 207 MB formal report, verdict, final save/driver, R0313 and R0314 full reports and checkpoint bytes, intervening Robert continuity, and any same-frame siege participant set at target2629.",
+    "r0312_credit": "A subsequent source-reported formal WarID16777231 move and one +24 raw day; not retroactive success for original R0271 turn36 or an exact siege-participant observation.",
+    "r0284_pr_472_scope": "PR #472 merged at 2026-09-28T09:30:45Z, merge commit 24d42194b06593145cdd96d3532a1b457092f6ef. It adds an optional exact move stop for phase native_war_general_battle_distant_route_start and does not implement the R0271 native_war_siege_uncertain_first_hop_move phase or native target2629 participant query. Source R0297 private operator evidence is separate from this repository's untested optional stop contract.",
+    "still_missing": "At a future actual target contact or an equivalent native participant-scope proof, observe same-frame complete attacking/defending armies including offsite ArmyID83886484 under current orders. Until then keep participant_scope_unresolved, active_attack_allowed=false and fresh full-hostile one-day contact gate for each date advance."
+  },
+  "next_request": {
+    "onedrive_path": "WAR/R0271-H3388/REQUEST-R0312-H3774-SIEGE-FRAME-v1.json",
+    "sha256": "3B3B1514568F7BE5ABB882E3CC158F67DB5C9206C47A6258F1CE4586E9314CC8",
+    "purpose": "Ask source machine for small immutable excerpts from existing R0312 move/day and R0314 h3774 frame evidence, with parent report hashes and explicit absent fields; no new CK3 action or large asset transfer.",
+    "issued_receipt": "WAR/R0271-H3388/RECEIVER-REQUEST-ISSUED-R0312-H3774-SIEGE-FRAME-v1.json",
+    "source_ack_status_at_audit": "pending"
+  }
+}

@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "status": "delivered",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T08:02:36Z",
+  "updated_at_utc": "2026-09-28T12:41:40Z",
   "source_request_commit": "5d2070f",
   "work_branch": "war/r0271-siege-partition-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/450",
@@ -47,6 +47,18 @@
     ],
     "formal_status": "R0002 36/36, R0004 12/12, R0005 24/24: all turn_limit, first_blocker null, no gameplay RED",
     "risk_boundary": "The first-hop ETA is raw53219328, one day after the R0005 final persisted raw53219304. Arrival at2614 and future target2629 siege participant set are not proven. No target attack, V3 partial combat forecast, surrender, or war exit is authorized."
+  },
+  "subsequent_source_metadata_audit": {
+    "status": "r0312_source_status_byte_verified_formal_report_and_siege_participants_not_receiver_verified",
+    "verification": "docs/autonomous-agent-progress/coordination/war-requests/verifications/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0312-metadata-audit.json",
+    "source_status_sha256": "A60E8DB1149B4C20DE36E1FE498A7904029EF78FAC824604ACC61A4CED445603",
+    "source_reported_segment": "R0312 reports one formal WarID16777231/ArmyID83886367 move to2614 and one +24 raw day from h3735/raw53219544 to h3766/raw53219568 in the same episode. The receiver verified only this small status JSON, not the source-only 207 MB formal report, verdict, save/driver, or intervening checkpoint chain. It does not retroactively repair the original R0271 turn36 RED.",
+    "later_read_only_source_claims": "Git daily records R0313 h3770 and R0314 h3774 at raw53219568 with zero additional gameplay/date. Their full native war frame bytes were not transferred in this audit.",
+    "operator_472_boundary": "Merged PR #472 (24d42194b06593145cdd96d3532a1b457092f6ef) is an opt-in semantic stop for native_war_general_battle_distant_route_start, not the R0271 native_war_siege_uncertain_first_hop_move phase and not a future target2629 participant observation. Its repository implementation has no matching live verification; source R0297's private operator evidence is separate.",
+    "target_siege_status": "participant_scope_unresolved; no proof whether offsite ArmyID83886484 joins the actual target2629 encounter, no partial V3 authorization, no attack or surrender.",
+    "next_source_request": "WAR/R0271-H3388/REQUEST-R0312-H3774-SIEGE-FRAME-v1.json",
+    "next_source_request_sha256": "3B3B1514568F7BE5ABB882E3CC158F67DB5C9206C47A6258F1CE4586E9314CC8",
+    "next_source_request_status": "receiver_local_request_written_and_verified; source ACK pending"
   },
   "limitations": [
     "The original R0271 attempt remains historical RED. Independent exact-source receiver runs R0002/R0004/R0005 prove a recoverable first-hop command and six fresh daily full-hostile gates, but do not prove arrival at2614 or settle future siege participants at2629. Delivered means the bounded recovery contract is available; the war objective itself remains open.",
