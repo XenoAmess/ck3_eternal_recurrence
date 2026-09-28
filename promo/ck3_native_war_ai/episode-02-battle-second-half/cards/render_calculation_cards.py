@@ -38,6 +38,10 @@ SOURCE_FIELDS = {
     "036_038": ("source_day26_finish", "source_day27_save", "source_day27_v3",
                 "source_day27_capture_report"),
     "085": ("source_save", "source_finish", "source_cleanup"),
+    "A01": ("source_save", "source_preflight", "source_start_readback",
+            "source_pre_snapshot", "source_trace_begin", "source_trace_finish",
+            "source_post_snapshot", "source_advance", "source_recorder_final",
+            "source_pts_audit", "source_session_result"),
     "024": ("source_save", "source_terminal", "source_session_result"),
     "A05": ("source_save", "source_preflight", "source_start_readback",
             "source_terminal", "source_post_snapshot", "source_observe",
@@ -94,6 +98,34 @@ def validate(data: dict) -> None:
             "final width and native fire argument")
     require(a["forest_multiplier_source"].endswith("not attempt-085 runtime field"),
             "forest multiplier source must stay explicit")
+    join_live = replays["A01"]
+    require(join_live["kind"] == "new_recorded_day11_to_day12_join_from_004_checkpoint" and
+            join_live["source_save_sha256"] == a["source_save_sha256"] and
+            join_live["source_trace_finish_sha256"] != a["source_finish_sha256"] and
+            join_live["primary_receipt_sha256"] ==
+            join_live["source_trace_finish_sha256"] and
+            (join_live["pre_date_raw"], join_live["date_raw"],
+             join_live["joining_army_id"]) == (53146488, 53146512, 22),
+            "A01 independent join run identity")
+    shared_join_fields = (
+        "incoming_regiments", "incoming_starting_people", "incoming_current_people",
+        "zero_current_regiment_id", "zero_current_regiment_starting_people",
+        "side0_before_cache_raw_q100000", "side0_before_entry_sum_raw_q100000",
+        "side0_cache_minus_entry_raw_q100000", "side1_before_cache_raw_q100000",
+        "side1_before_entry_sum_raw_q100000", "side1_cache_minus_entry_raw_q100000",
+        "side0_after_cache_and_entry_raw_q100000",
+        "side1_after_cache_and_entry_raw_q100000", "base_width_before",
+        "final_width_before", "base_width_after", "final_width_after",
+        "first_side0_fire_width_argument", "forest_width_multiplier_raw_q100000",
+    )
+    require(all(join_live[field] == a[field] for field in shared_join_fields) and
+            join_live["forest_multiplier_source"].endswith(
+                "not attempt-A01 runtime field") and
+            join_live["post_war4_player_relative_score"] == 0 and
+            join_live["army18_exact_battle_control_membership_proven"] is False and
+            join_live["media_status"] == "PTS_CONTINUOUS_UNREVIEWED" and
+            len(join_live["raw_video_sha256_reported_by_recorder"]) == 64,
+            "A01 join numbers equal historical 085 only after new source validation")
     require(b["terminal_kind"] == "normal_result" and b["winner_side"] == 0 and
             b["loser_side"] == 1 and b["loser_successor"] == "subject_retreating",
             "normal terminal identity")
@@ -237,16 +269,24 @@ def validate(data: dict) -> None:
     require([row["id"] for row in data["cards"]] ==
             ["E2-02", "E2-03", "E2-04", "E2-05A", "E2-05B", "E2-05C",
              "E2-06", "E2-07", "E2-09"] and
+            [data["cards"][i]["replay"] for i in (6, 7, 8)] ==
+            ["A01", "A01", "A05"] and
+            [data["cards"][i]["artifact"] for i in (6, 7, 8)] ==
+            ["e2-06-a01-calculation.svg", "e2-07-a01-calculation.svg",
+             "e2-09-a05-calculation.svg"] and
             data["cards"][-1]["replay"] == "A05" and
             data["cards"][-1]["artifact"] == "e2-09-a05-calculation.svg",
             "card order")
     historical = data["historical_cards"]
-    require(len(historical) == 1 and historical[0]["id"] == "E2-09" and
-            historical[0]["replay"] == "024" and
-            historical[0]["artifact"] == "e2-09-calculation.svg" and
-            historical[0]["sha256"] ==
-            "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31",
-            "024 historical card remains archived")
+    require([(row["id"], row["replay"], row["artifact"], row["sha256"])
+             for row in historical] == [
+                ("E2-06", "085", "e2-06-calculation.svg",
+                 "767543A90732DC811BB9930929E4651971944CE92EE359BC9CFAB8675D866AF5"),
+                ("E2-07", "085", "e2-07-calculation.svg",
+                 "91BCCA2B3B540E90C28A1FAE3117F522039312300B8C6702B779379E980CD527"),
+                ("E2-09", "024", "e2-09-calculation.svg",
+                 "1A9EDC4CAEDC662F2F3AA44925CE1C8F7493A154273A78B258D8C020F2F5DE31")],
+            "historical cards remain archived")
 
 
 def pursuit_save_sha(replays: dict) -> str:
@@ -472,7 +512,7 @@ def card_05c(data: dict, card: dict) -> bytes:
 
 
 def card_06(data: dict, card: dict) -> bytes:
-    a = data["replays"]["085"]
+    a = data["replays"][card["replay"]]
     s = Svg()
     frame(s, card, a, data, "同一 join wrapper 入口与返回；全部人数先换成 Q100000 原生量")
     s.rect(90, 284, 1138, 665)
@@ -504,9 +544,9 @@ def card_06(data: dict, card: dict) -> bytes:
 
 
 def card_07(data: dict, card: dict) -> bytes:
-    a = data["replays"]["085"]
+    a = data["replays"][card["replay"]]
     s = Svg()
-    frame(s, card, a, data, "085 自己捕获 join 前、join 后、首次 side 0 出伤三点")
+    frame(s, card, a, data, f'{card["replay"]} 自己捕获 join 前、join 后、首次 side 0 出伤三点')
     panels = [(90, "入口 · phase day 7", "历史 base", "1,645", "final  1,480"),
               (895, "返回 · phase day 7", "更新 base", "2,467", "final  2,220"),
               (1700, "首次出伤 · day 8", "R8D 实参", "2,220", "= 存储 final")]
@@ -520,7 +560,7 @@ def card_07(data: dict, card: dict) -> bytes:
     s.rect(90, 788, 2380, 165)
     s.text(130, 850, "返回参战量  (410,690,163 + 82,785,368) ÷ 100,000 ÷ 2", 39)
     s.text(130, 922, "向下取整 → 2,467；森林 0.9 → 2,220", 53, "gold", 700)
-    s.text(95, 997, "0.9 来自同版本原版森林脚本；085 未读到同帧运行时地形倍率。", 28, "muted")
+    s.text(95, 997, f'0.9 来自同版本原版森林脚本；{card["replay"]} 未读到同帧运行时地形倍率。', 28, "muted")
     return s.finish()
 
 
@@ -593,7 +633,175 @@ def verify_sources(data: dict) -> None:
                 checked[path] = digest.hexdigest().upper()
             require(checked[path] == replay[field + "_sha256"],
                     f"source SHA mismatch: replay {key}, {field}")
+    verify_a01_sources(data["replays"]["A01"])
     verify_a05_sources(data["replays"]["A05"])
+
+
+def verify_a01_sources(a: dict) -> None:
+    """Recompute the filmed join numbers from A01's private native trace."""
+    preflight = json.loads(Path(a["source_preflight"]).read_text(encoding="utf-8"))
+    start = json.loads(Path(a["source_start_readback"]).read_text(encoding="utf-8"))
+    before = json.loads(Path(a["source_pre_snapshot"]).read_text(encoding="utf-8"))
+    begin = json.loads(Path(a["source_trace_begin"]).read_text(encoding="utf-8"))
+    finish = json.loads(Path(a["source_trace_finish"]).read_text(encoding="utf-8"))
+    after = json.loads(Path(a["source_post_snapshot"]).read_text(encoding="utf-8"))
+    advance = json.loads(Path(a["source_advance"]).read_text(encoding="utf-8"))
+    recorder = json.loads(Path(a["source_recorder_final"]).read_text(encoding="utf-8"))
+    pts = json.loads(Path(a["source_pts_audit"]).read_text(encoding="utf-8"))
+    session = json.loads(Path(a["source_session_result"]).read_text(encoding="utf-8"))
+    require(preflight["result"] == "READY_FOR_BOUNDED_LIVE_ATTEMPT" and
+            preflight["game"]["sha256"] ==
+            "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86" and
+            preflight["bridge_dll"]["sha256"] ==
+            "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F" and
+            preflight["checkpoint_source"]["save"]["sha256"] ==
+            a["source_save_sha256"] and
+            start["postcondition_verified"] is True and
+            start["source_checkpoint"]["save"]["sha256"] ==
+            a["source_save_sha256"] and
+            start["snapshot"]["date_raw"] == a["pre_date_raw"],
+            "A01 source cold-load identity")
+    require(before["result"] == after["result"] == "CALL_COMPLETED" and
+            (before["body"]["date_raw"], after["body"]["date_raw"]) ==
+            (a["pre_date_raw"], a["date_raw"]) and
+            before["body"]["paused"] is after["body"]["paused"] is True,
+            "A01 exact paused pre/post day")
+    for snapshot, joined in ((before, False), (after, True)):
+        wars = [w for w in snapshot["body"]["active_wars"] if w["war_id"] == 4]
+        require(len(wars) == 1 and wars[0]["player_relative_war_score"] ==
+                a["post_war4_player_relative_score"] and
+                any(army["army_id"] == 22 and army["in_combat"] is joined
+                    for army in wars[0]["enemy_armies"]) and
+                any(army["army_id"] == 18 and army["in_combat"] is True
+                    for army in wars[0]["allied_armies"]),
+                "A01 WarID 4 and army state pre/post")
+    require(begin["result"] == finish["result"] == "CALL_COMPLETED" and
+            begin["body"]["status"] == "armed" and
+            finish["body"]["status"] == "bounded_trace_available" and
+            begin["body"]["private_build"] is True and
+            finish["body"]["private_build"] is True and
+            begin["body"]["production_trace_ready"] is False and
+            finish["body"]["production_trace_ready"] is False and
+            begin["body"]["managed_daily_sequence_token"] ==
+            finish["body"]["managed_daily_sequence_token"] and
+            finish["body"]["combat_id"] == 16777218,
+            "A01 bounded private trace identity")
+    managed = finish["body"]["managed_trace"]
+    checkpoint = managed["managed_checkpoint"]
+    require(checkpoint["exact_one_day_observed"] is True and
+            checkpoint["boundary_dates_match_checkpoint"] is True and
+            checkpoint["detours_uninstalled"] is True,
+            "A01 exactly one day and detached hook")
+    trace = managed["trace"]
+    require(trace["status"] == "captured" and trace["failure_flags"] == 0 and
+            trace["readiness"]["original_trace_ready"] is False and
+            trace["readiness"]["full_mutable_transition_bundle_complete"] is False,
+            "A01 trace scope")
+    full = trace["runtime_join_full_entries"]
+    width = trace["runtime_join_width"]
+    require(full["status"] == "captured" and full["count"] == 2 and
+            full["first_failure_code"] == 0 and
+            width["status"] == "captured" and width["count"] == 3 and
+            width["first_failure_code"] == 0,
+            "A01 entry and width boundary counts")
+    entry_before, entry_after = full["boundaries"]
+    require([row["boundary"] for row in full["boundaries"]] == [0, 1] and
+            all(row["native_date_raw"] == a["date_raw"] and
+                row["combat_id"] == 16777218 and
+                row["incoming_army_id"] == a["joining_army_id"]
+                for row in full["boundaries"]) and
+            (entry_before["joined_side_index"],
+             entry_after["joined_side_index"]) == (-1, 0),
+            "A01 same join hook before and after")
+    require(entry_before["incoming_regiments"] ==
+            entry_after["incoming_regiments"] and
+            len(entry_before["incoming_regiments"]) == a["incoming_regiments"] and
+            sum(row[1] for row in entry_before["incoming_regiments"]) ==
+            a["incoming_starting_people"] and
+            [row for row in entry_before["incoming_regiments"] if
+             row[0] == a["zero_current_regiment_id"]] ==
+            [[a["zero_current_regiment_id"],
+              a["zero_current_regiment_starting_people"]]],
+            "A01 incoming 13 regiments and basic soldiers")
+    joined_entries = [row for row in entry_after["sides"][0]["entries"]
+                      if row[1] == a["joining_army_id"]]
+    require(len(joined_entries) == a["incoming_regiments"] and
+            sum(row[5] for row in joined_entries) ==
+            a["incoming_current_people"] * Q and
+            [row[5] for row in joined_entries
+             if row[0] == a["zero_current_regiment_id"]] == [0],
+            "A01 incoming current, including zero-current regiment")
+    expected_sides = (
+        (a["side0_before_cache_raw_q100000"],
+         a["side0_before_entry_sum_raw_q100000"],
+         a["side0_cache_minus_entry_raw_q100000"],
+         a["side0_after_cache_and_entry_raw_q100000"]),
+        (a["side1_before_cache_raw_q100000"],
+         a["side1_before_entry_sum_raw_q100000"],
+         a["side1_cache_minus_entry_raw_q100000"],
+         a["side1_after_cache_and_entry_raw_q100000"]),
+    )
+    for side_index, (old_cache, old_entries, residual, new_cache) in enumerate(expected_sides):
+        old_side = entry_before["sides"][side_index]
+        new_side = entry_after["sides"][side_index]
+        require((old_side["cached_fighting_total_raw"],
+                 old_side["entry_current_sum_raw"],
+                 old_side["cache_minus_entry_raw"],
+                 new_side["cached_fighting_total_raw"],
+                 new_side["entry_current_sum_raw"],
+                 new_side["cache_minus_entry_raw"]) ==
+                (old_cache, old_entries, residual, new_cache, new_cache, 0),
+                f"A01 side {side_index} cache and entry arithmetic")
+    require(entry_before["sides"][1]["army_ids"] ==
+            entry_after["sides"][1]["army_ids"] == [18] and
+            a["army18_exact_battle_control_membership_proven"] is False,
+            "A01 side1 trace list is narrower than battle-control membership")
+    width_rows = width["boundaries"]
+    require([row["boundary"] for row in width_rows] == [0, 1, 2] and
+            [(row["native_date_raw"], row["combat_id"], row["army_id"],
+              row["side_index"], row["base_width"], row["final_width"],
+              row["outgoing_width_argument"]) for row in width_rows] == [
+                (a["date_raw"], 16777218, 22, -1,
+                 a["base_width_before"], a["final_width_before"], -1),
+                (a["date_raw"], 16777218, 22, 0,
+                 a["base_width_after"], a["final_width_after"], -1),
+                (a["date_raw"], 16777218, 22, 0,
+                 a["base_width_after"], a["final_width_after"],
+                 a["first_side0_fire_width_argument"])],
+            "A01 same trace three width points")
+    require([row["side_fighting_total_raw"] for row in width_rows] == [
+                [a["side0_before_cache_raw_q100000"],
+                 a["side1_before_cache_raw_q100000"]],
+                [a["side0_after_cache_and_entry_raw_q100000"],
+                 a["side1_after_cache_and_entry_raw_q100000"]],
+                [a["side0_after_cache_and_entry_raw_q100000"],
+                 a["side1_after_cache_and_entry_raw_q100000"]]],
+            "A01 width calculations share the same before/after fighting totals")
+    require(advance["result"] == "ONE_DAY_ADVANCED_UNREVIEWED" and
+            advance["trace_finish"]["response"]["sha256"] ==
+            a["source_trace_finish_sha256"] and
+            advance["post_snapshot"]["response"]["sha256"] ==
+            a["source_post_snapshot_sha256"] and
+            advance["subject_combat_membership_verified"] is False and
+            advance["event_outcome_and_clean_span_verified"] is False,
+            "A01 operator receipt scope")
+    raw = recorder["raw"]
+    require(recorder["result"] == "ENCODED_UNREVIEWED" and
+            recorder["clean_spans_certified"] is False and
+            recorder["human_review_completed"] is False and
+            recorder["video_pts_complete"] is True and
+            pts["result"] == a["media_status"] == "PTS_CONTINUOUS_UNREVIEWED" and
+            pts["clean_spans_certified"] is False and
+            pts["human_visual_review_completed"] is False and
+            pts["recorder_final"]["sha256"] ==
+            a["source_recorder_final_sha256"] and
+            pts["raw"]["sha256"] == raw["sha256"] ==
+            a["raw_video_sha256_reported_by_recorder"] and
+            Path(raw["path"]).stat().st_size == raw["bytes"] and
+            session["ok"] is True and
+            session["exit_reason"] == "stop" and
+            session["shutdown"]["cleanup_proven"] is True,
+            "A01 sealed raw and unreviewed boundary")
 
 
 def verify_a05_sources(a: dict) -> None:
@@ -693,11 +901,11 @@ def main() -> None:
     validate(data)
     if args.verify_sources:
         verify_sources(data)
-    archived = data["historical_cards"][0]
-    archive_path = ROOT / archived["artifact"]
-    require(archive_path.is_file() and
-            hashlib.sha256(archive_path.read_bytes()).hexdigest().upper() ==
-            archived["sha256"], "024 historical SVG bytes")
+    for archived in data["historical_cards"]:
+        archive_path = ROOT / archived["artifact"]
+        require(archive_path.is_file() and
+                hashlib.sha256(archive_path.read_bytes()).hexdigest().upper() ==
+                archived["sha256"], f'{archived["replay"]} historical SVG bytes')
     for card in data["cards"]:
         path = ROOT / card.get("artifact", f'{card["id"].lower()}-calculation.svg')
         rendered = RENDERERS[card["id"]](data, card)
