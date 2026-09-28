@@ -16304,6 +16304,143 @@ def _primary_defender_siege_forecast_ingress(
         war, balance, contact, army_id=army_id, target_province_id=target
     )
     if partition["status"] != "available":
+        if partition.get("reason") == "offsite_hostile_may_join_by_target_entry":
+            # The current target defenders are not a valid future battle
+            # roster.  R0271 can still scout one non-contact waypoint, then
+            # re-read every hostile and the siege on the next paused day.
+            # This path never consumes a partial v3 forecast or approves the
+            # final target entry.
+            uncertain = {
+                "route_preview": preview,
+                "route_contact_horizon": contact,
+                "participant_partition": partition,
+                "forecast_status": "participant_scope_unresolved",
+                "active_attack_allowed": False,
+            }
+            if not (
+                len(route) > 1
+                and contact.get("one_day_contact_free") is True
+                and contact_conflicts == []
+            ):
+                return blocked(
+                    "future target participants are unknown and no contact-free first segment is proved",
+                    "fresh-contact-free-first-segment",
+                    detail=uncertain,
+                )
+            first_hop = route[0]
+            short_preview_step = preview_move_army_step(army_id, first_hop)
+            short_preview = _fresh_move_route_preview(
+                commands, army_id=army_id, origin_province_id=origin,
+                target_province_id=first_hop,
+                date_raw=_native_int(snapshot.get("date_raw")),
+            )
+            if short_preview is None:
+                if short_preview_step not in action_steps:
+                    return blocked(
+                        "first-hop route preview is unavailable",
+                        short_preview_step, detail=uncertain,
+                    )
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_siege_uncertain_first_hop_preview",
+                    "selected_step": short_preview_step,
+                    "reason": "read a first-hop route without committing the unresolved siege contact",
+                    **evidence, **uncertain,
+                }
+            if not (
+                short_preview.get("status") == "available"
+                and short_preview.get("route_province_ids") == [first_hop]
+            ):
+                return blocked(
+                    "first-hop preview has another route",
+                    "exact-one-hop-preview",
+                    detail={**uncertain, "short_route_preview": short_preview},
+                )
+            short_contact_step = query_route_contact_horizon_step(
+                army_id, first_hop, hostile_ids
+            )
+            short_contact = _fresh_route_contact_horizon(
+                commands, snapshot, army_id=army_id,
+                origin_province_id=origin,
+                target_province_id=first_hop,
+                hostile_army_ids=hostile_ids,
+                route_province_ids=[first_hop],
+            )
+            if short_contact is None:
+                if short_contact_step not in action_steps:
+                    return blocked(
+                        "first-hop contact query is unavailable",
+                        short_contact_step,
+                        detail={**uncertain, "short_route_preview": short_preview},
+                    )
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_siege_uncertain_first_hop_contact_query",
+                    "selected_step": short_contact_step,
+                    "reason": "read next-day full-hostile contact safety for the first segment",
+                    "short_route_preview": short_preview,
+                    **evidence, **uncertain,
+                }
+            if not (
+                short_contact.get("one_day_contact_free") is True
+                and short_contact.get("conflicts") == []
+            ):
+                return blocked(
+                    "the first segment has a possible next-day contact",
+                    "contact-free-first-segment",
+                    detail={**uncertain, "short_route_preview": short_preview,
+                            "short_route_contact_horizon": short_contact},
+                )
+            # A no-contact flag is insufficient if the short query lost or
+            # relocated any enemy already bound by the full-route query.
+            full_routes = contact.get("hostile_routes")
+            short_routes = short_contact.get("hostile_routes")
+            full_by_id = {
+                _native_int(row.get("army_id")): row
+                for row in full_routes if isinstance(row, dict)
+            } if isinstance(full_routes, list) else {}
+            short_by_id = {
+                _native_int(row.get("army_id")): row
+                for row in short_routes if isinstance(row, dict)
+            } if isinstance(short_routes, list) else {}
+            if not (
+                isinstance(short_routes, list)
+                and len(short_routes) == len(hostile_ids) == len(short_by_id)
+                and all(
+                    isinstance(full_by_id.get(hostile_id), dict)
+                    and isinstance(short_by_id.get(hostile_id), dict)
+                    and short_by_id[hostile_id].get("timeline_observable") is True
+                    and (_native_int(
+                        short_by_id[hostile_id].get("current_province_id")
+                    ) or 0) > 0
+                    and short_by_id[hostile_id].get("current_province_id")
+                    == full_by_id[hostile_id].get("current_province_id")
+                    for hostile_id in hostile_ids
+                )
+            ):
+                return blocked(
+                    "the first-hop contact query does not preserve the full hostile positions",
+                    "same-frame-first-hop-hostile-roster",
+                    detail={**uncertain, "short_route_preview": short_preview,
+                            "short_route_contact_horizon": short_contact},
+                )
+            move_step = move_army_step(army_id, first_hop)
+            if move_step not in action_steps:
+                return blocked(
+                    "typed first-hop move is unavailable", move_step,
+                    detail={**uncertain, "short_route_preview": short_preview,
+                            "short_route_contact_horizon": short_contact},
+                )
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_siege_uncertain_first_hop_move",
+                "selected_step": move_step,
+                "reason": "move one contact-free waypoint, then re-read the full hostile roster before any further advance",
+                "short_route_preview": short_preview,
+                "short_route_contact_horizon": short_contact,
+                "daily_recheck_required": True,
+                **evidence, **uncertain,
+            }
         return blocked(
             "the observed siege does not prove a complete one-encounter participant partition",
             "exact-attacker-defender-participant-scope",
