@@ -1,0 +1,140 @@
+{
+  "schema": "xar.war.r0284-source-live-verify-result/v1",
+  "request_id": "R0284-H90-CONTACT-20260928",
+  "attempt_round": "R0291",
+  "status": "semantic_red_preview_only",
+  "operator_bounded_run": "turn_limit_qualified",
+  "source_commit": "f6e27d579ccd9f8444d0ae289f0c5f269a6dfadb",
+  "required_ancestor_commit": "b93b595e483db915c7694e0b09f85563dbec49f4",
+  "runtime_strategy_import_path_pinned": "Z:\\ck3_mod_rewrite\\.task-tmp\\WAR-R0284-SOURCE-LIVE-VERIFY-20260928\\src\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+  "runtime_strategy_sha256": "FC103659367C667646FB2BBA9B745761BF3FDEC958F650DA62153947ECC3F292",
+  "official_rebind_no_launch": {
+    "status": "ready_no_launch",
+    "original_save_sha256": "64D669CE72F3207855BB4E3A96BF2212551275A5088F881243064C7031702075",
+    "original_driver_sha256": "A3746996A5102C93839844AFCF41C2C6D30D4503AE57D5A53B132593168CFFD6",
+    "rebound_driver_sha256": "EAE0FCC821ECF9715607458F75669A1BABE2EA4DC0CD6E1059541159D82C2216",
+    "receipt": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\ordinary-seed-rebind-v1.json",
+      "size": 4212,
+      "sha256": "6C450C12D6551F3F7DCCDA85AEEF8E3D009C9273774545C29FA53DEB615D87AD"
+    },
+    "preflight": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\preflights\\20260928T082244Z-one-generation-preflight-71cdca75\\report.json",
+      "size": 4149,
+      "sha256": "8F1C945E9959551D054620DC817ACF2BEF6A459742F1E4288DCE7B2D1A72394A"
+    }
+  },
+  "actual_live_preflight": {
+    "status": "ready",
+    "ok": true,
+    "ck3_launch_attempted": false,
+    "expected": {
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "checkpoint_sha256": "64d669ce72f3207855bb4e3a96bf2212551275a5088f881243064c7031702075",
+      "driver_state_sha256": "eae0fcc821ecf9715607458f75669a1babe2ea4dc0cd6e1059541159d82c2216",
+      "xar_enabled": "xar_off",
+      "succession_lifecycle": "ordinary_campaign_succession",
+      "ordinary_campaign_no_pact": true
+    },
+    "report": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\preflights\\20260928T082612Z-one-generation-preflight-d6793cab\\report.json",
+      "size": 4149,
+      "sha256": "73F0DEC95DAD5ABA8CC817FFBC6F907562B939F7A3FCB9964B8FCD76DCE20614"
+    }
+  },
+  "bridge": {
+    "dll_sha256": "FD2AE3485B39DAC3202FDF0400FE15D1EC47D1BA86DFB533455B0ED7A175325F",
+    "injector_sha256": "53E181FE56725B6AF4DFBA50EF0C42DE0651D84DC6E66FEBB232D6B00AC8B6B2",
+    "game_exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "game_build": "1.19.0.6-steam23530548"
+  },
+  "stage1": {
+    "requested_turns": 12,
+    "attempted_turns": 12,
+    "successful_turns": 12,
+    "date_raw_before": 53157768,
+    "date_raw_after": 53157816,
+    "date_advance_raw": 48,
+    "date_advance_steps": [
+      {
+        "turn": 7,
+        "from": 53157768,
+        "to": 53157792
+      },
+      {
+        "turn": 10,
+        "from": 53157792,
+        "to": 53157816
+      }
+    ],
+    "last_turn": {
+      "index": 12,
+      "selected_step": "preview-move-army-16777450-to-2640",
+      "result_status": "available",
+      "accepted": true,
+      "before": {
+        "snapshot_id": "native:9",
+        "revision": 10,
+        "native_revision": 9,
+        "date_raw": 53157816,
+        "paused": true,
+        "map_ready": true
+      },
+      "after": {
+        "snapshot_id": "native:9",
+        "revision": 10,
+        "native_revision": 9,
+        "date_raw": 53157816,
+        "paused": true,
+        "map_ready": true
+      }
+    },
+    "typed_move_count": 0,
+    "typed_move_poststate_verified": false,
+    "same_frame_full_hostile_contact_query_at_target": false,
+    "same_frame_v3_risk_inputs_at_target": false,
+    "final_checkpoint": {
+      "history_index": 934,
+      "date_raw": 53157816,
+      "save": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "size": 59558173,
+        "sha256": "F1E1075D5EF0BF9985FC9BC78C4A4839D7645248325FFE270D88B4EDB4DE42A3"
+      },
+      "driver": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\state\\native-session\\driver-state.json",
+        "size": 11256323,
+        "sha256": "243F8A98259288FF3367B3032AA941498F0B0A277E9B812AB6F0E459FFEDF783"
+      }
+    },
+    "cleanup_proven": true
+  },
+  "precise_deviation": "The 12-turn bound ended at a native preview, not at the corrected typed move. The original h907 replay includes three cold sidecar rechecks before the war prefix; turn 12 only previewed ArmyID 16777450 from 2634 to 2640. No move was submitted; no route-start poststate or next-day recheck exists.",
+  "next_action": "Treat stage1 semantic gate as RED. Preserve R0291; prepare a new official h934 cold pair with a strictly bounded next attempt and inspect its actual selected steps before any date-credit or war success claim.",
+  "robert_formal_date_credit": 0,
+  "h90_derivative_only": true,
+  "source_artifacts": {
+    "full_report": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\stage1-first12\\formal-report.txt",
+      "size": 214806,
+      "sha256": "378BE3C3C121A0FF087FA04B34EE1B290302285590D188D303BCC18110529F7D"
+    },
+    "operator_receipt": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\stage1-first12\\operator-receipt.json",
+      "size": 2035,
+      "sha256": "ED06070CF357158931F8CB4E6F86DCBB14EF2E087751C95EF9754B1828EAB367"
+    },
+    "formal_stderr": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\stage1-first12\\formal-stderr.txt",
+      "size": 136,
+      "sha256": "453A2085C884C518F44490A7316339919A921C14A22E9D16E6F589F326735D6E"
+    },
+    "source_freeze_index": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\war-r0284-source-live-verify-f6e27d5-20260928\\SOURCE-FREEZE-INDEX.json",
+      "size": 1630,
+      "sha256": "135BC73A1D5F53FA5187CCC8904C43452C7C2E638C67EC6BD4CD2060E9AAC574"
+    }
+  },
+  "receiver_ack_requested": true
+}
