@@ -1,0 +1,168 @@
+"""Fixture gates for the two-stage external CK3 capture bundle producer."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+import prepare_existing_capture_bundle as bundle
+
+
+def write(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+
+
+class ExistingCaptureBundleTest(unittest.TestCase):
+    def setUp(self) -> None:
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name).resolve()
+        self.attempt = self.root / "source-attempt"
+        self.recorder = self.attempt / "recording-a01"
+        self.recorder.mkdir(parents=True)
+        self.output = self.root / "pending-a01"
+        write(self.attempt / "ck3-output/capture-report.json", {
+            "result": "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO",
+            "environment_session_complete": True, "adapter_bundle_validated": False,
+            "worker": {"ok": True}, "cleanup_process_inventory": {"processes": []}})
+        write(self.attempt / "ck3-output/session-result.json", {
+            "ok": True, "shutdown": {"ok": True, "tree_gone": True,
+                                     "cleanup_proven": True}})
+        raw = self.recorder / "raw/take.mkv"
+        raw.parent.mkdir()
+        raw.write_bytes(b"fixture raw bytes")
+        probe = self.recorder / "ffprobe.json"
+        self.pts = ["0.000", "0.033", "0.066", "0.100"]
+        write(probe, {"streams": [{"index": 0, "codec_type": "video"}],
+                      "frames": [{"stream_index": 0, "best_effort_timestamp_time": value}
+                                 for value in self.pts]})
+        screen = self.recorder / "screens/one.png"
+        screen.parent.mkdir()
+        screen.write_bytes(b"original screenshot")
+        control = self.attempt / "ck3-output/interactive-requests-responses/control.json"
+        write(control, {"result": "CALL_COMPLETED"})
+        marks = self.recorder / "marks.jsonl"
+        rows = [{"kind": "recorder-start", "monotonic_ns": 100},
+                {"kind": "day-visible", "monotonic_ns": 200,
+                 "approx_seconds_from_recorder_start": 0.05,
+                 "approx_seconds_are_not_video_pts": True,
+                 "date_raw": 53146992, "combat_id": 16777218, "war_id": 4,
+                 "control": bundle.record(control), "screenshot": bundle.record(screen)},
+                {"kind": "recorder-end", "monotonic_ns": 300}]
+        marks.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+        write(self.recorder / "recorder-intent.json", {
+            "raw_path": str(raw), "session_output": str(self.attempt / "ck3-output")})
+        write(self.recorder / "recorder-start.json", {"monotonic_ns": 100})
+        write(self.recorder / "recorder-end.json", {
+            "monotonic_ns": 300, "elapsed_monotonic_seconds": 0.12,
+            "ffmpeg_exit_code": 0, "interrupted": False, "raw": bundle.record(raw)})
+        write(self.recorder / "ffprobe-command.json", ["ffprobe", str(raw)])
+        write(self.recorder / "geometry-admission.json", {"valid_and_equal": True})
+        (self.recorder / "ffmpeg.stderr.txt").write_bytes(b"")
+        write(self.recorder / "recorder-final.json", {
+            "result": "ENCODED_UNREVIEWED", "clean_spans_certified": False,
+            "human_review_completed": False, "ffmpeg_exit_code": 0, "ffprobe_exit_code": 0,
+            "video_pts_complete": True, "raw": bundle.record(raw),
+            "ffprobe_output": bundle.record(probe), "marks": bundle.record(marks),
+            "frame_pts_by_stream": {"0": {"count": len(self.pts)}},
+            "format_duration_seconds": "0.120"})
+        self.raw = raw
+
+    def prepare(self) -> dict:
+        with patch.object(bundle, "toolchain_identity", return_value={
+            "version": "0.2.1", "release_tag": "v0.2.1",
+            "wheel_sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621"}):
+            bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused.txt")
+        return bundle.read_json(self.output / "source-manifest.json")
+
+    def review(self, source: dict, *, end_pts: str = "0.100") -> Path:
+        frames = {}
+        for phase, pts in (("begin", "0.033"), ("end", end_pts)):
+            image = self.root / f"{phase}.png"
+            image.write_bytes(f"raw-derived {phase} frame".encode())
+            extraction = self.root / f"{phase}-extraction.json"
+            write(extraction, {"result": "EXTRACTED_UNREVIEWED", "raw": source["raw"],
+                               "image": bundle.record(image), "pts_seconds": pts})
+            frames[f"{phase}_frame"] = {"pts_seconds": pts, "image": bundle.record(image),
+                                           "extraction_receipt": bundle.record(extraction),
+                                           "reviewed_at_1x": True, "gameplay_hud": True,
+                                           "source_identity_visible": True, "no_loading": True}
+        review = self.root / "human-review.json"
+        write(review, {"schema": bundle.REVIEW_SCHEMA,
+                       "reviewer": {"kind": "human", "id": "fixture reviewer"},
+                       "reviewed_at_utc": "2026-09-28T11:00:00+00:00",
+                       "review_scope": "full_raw_1x_and_exact_span_endpoints",
+                       "human_1x_full_raw_review_performed": True,
+                       "gameplay_hud_visible_at_recording_start": True,
+                       "loading_excluded_from_selected_spans": True,
+                       "source_manifest": bundle.record(self.output / "source-manifest.json"),
+                       "raw": source["raw"],
+                       "spans": [{"span_id": "terminal_window", "begin_pts_seconds": "0.033",
+                                  "end_pts_seconds": end_pts,
+                                  "continuous_visual_review_performed": True,
+                                  "source_identity_visible_and_checked": True,
+                                  "no_foreign_overlay": True, **frames}]})
+        return review
+
+    def test_pending_inventory_does_not_create_adapter_green(self) -> None:
+        source = self.prepare()
+        self.assertEqual(source["status"], "PENDING_CLEAN_REVIEW")
+        self.assertFalse(source["adapter_eligible"])
+        self.assertIsNone(source["navigation_marks"][0]["media_pts_seconds"])
+        self.assertEqual(source["navigation_marks"][0]["wall_clock_navigation_seconds"], "0.05")
+        self.assertFalse((self.output / "report.json").exists())
+        self.assertFalse((self.output / "evidence-index.json").exists())
+        self.assertTrue(self.raw.exists())
+
+    def test_exact_release_pin_matches_installed_toolchain(self) -> None:
+        requirements = Path(__file__).resolve().parents[3] / "tools/requirements-promo-toolchain.txt"
+        identity = bundle.toolchain_identity(requirements)
+        self.assertEqual(identity["version"], "0.2.1")
+        self.assertEqual(identity["wheel_sha256"],
+                         "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621")
+
+    def test_explicit_review_packages_and_loads_adapter_bundle(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        result = bundle.package(self.output / "source-manifest.json", review, self.root / "bundle-a01")
+        self.assertEqual(result["status"], "ADAPTER_VALIDATED_SELECTED_SPANS_ONLY")
+        self.assertFalse(result["film_signoff_granted"])
+        self.assertEqual(result["span_ids"], ["terminal_window"])
+        self.assertEqual(bundle.read_json(self.attempt / "ck3-output/capture-report.json")["result"],
+                         "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO")
+
+    def test_package_refuses_missing_human_attestation_without_writing(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        payload = bundle.read_json(review)
+        payload["reviewer"]["kind"] = "agent"
+        write(review, payload)
+        target = self.root / "should-not-exist"
+        with self.assertRaisesRegex(ValueError, "human 1x"):
+            bundle.package(self.output / "source-manifest.json", review, target)
+        self.assertFalse(target.exists())
+
+    def test_package_refuses_pts_gap(self) -> None:
+        probe = self.recorder / "ffprobe.json"
+        values = bundle.read_json(probe)
+        values["frames"][2]["best_effort_timestamp_time"] = "0.400"
+        values["frames"][3]["best_effort_timestamp_time"] = "0.433"
+        write(probe, values)
+        final_path = self.recorder / "recorder-final.json"
+        final = bundle.read_json(final_path)
+        final["ffprobe_output"] = bundle.record(probe)
+        final["format_duration_seconds"] = "0.500"
+        write(final_path, final)
+        source = self.prepare()
+        review = self.review(source, end_pts="0.433")
+        with self.assertRaisesRegex(ValueError, "raw PTS gap"):
+            bundle.package(self.output / "source-manifest.json", review, self.root / "gap-bundle")
+        self.assertFalse((self.root / "gap-bundle").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()
