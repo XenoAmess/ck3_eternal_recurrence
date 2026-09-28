@@ -22,7 +22,9 @@ def _frame():
         "native_revision": 9,
         "date_raw": 100,
         "player_armies": [{"army_id": 11, "current_province_id": 30}],
-        "active_wars": [{"war_id": 1, "enemy_armies": [
+        "active_wars": [{"war_id": 1, "allied_armies": [
+            {"army_id": 11, "current_province_id": 30, "controllable": True}
+        ], "enemy_armies": [
             {"army_id": 21, "current_province_id": 31, "army_state": "sieging"}
         ]}],
         "combat_simulation_inputs_v3": {"base_inputs": {}, "completeness": {}},
@@ -270,6 +272,7 @@ def _distant_one_hop_contact():
     return {
         "one_day_contact_free": True,
         "conflicts": [],
+        "hostile_army_ids": [21],
         "horizon_start_date_raw": 100,
         "horizon_end_date_raw": 124,
         "subject_route": {
@@ -339,6 +342,32 @@ def test_distant_one_hop_contact_fails_closed_without_exact_first_day_proof():
     _CHECK.assertIsNone(plan["selected_step"])
 
 
+def test_distant_one_hop_requires_subject_and_full_hostile_roster_in_same_war():
+    for change in (
+        lambda frame, contact: frame["active_wars"][0].pop("allied_armies"),
+        lambda frame, contact: frame["active_wars"][0]["allied_armies"][0].update({"army_id": 12}),
+        lambda frame, contact: frame["active_wars"][0]["allied_armies"][0].update({"current_province_id": 29}),
+        lambda frame, contact: frame["active_wars"][0]["allied_armies"][0].update({"controllable": False}),
+        lambda frame, contact: frame["active_wars"][0].update({"war_id": 0}),
+        lambda frame, contact: contact.update({"hostile_army_ids": [22]}),
+        lambda frame, contact: contact.update({"hostile_army_ids": None}),
+    ):
+        frame = _frame()
+        contact = _distant_one_hop_contact()
+        change(frame, contact)
+        with (
+            mock.patch("xar_autoplayer.strategy._fresh_move_route_preview", return_value={
+                "status": "available", "route_province_ids": [31],
+            }),
+            mock.patch("xar_autoplayer.strategy._fresh_route_contact_horizon", return_value=contact),
+            mock.patch("xar_autoplayer.strategy.forecast_fixed_contact", return_value={"status": "estimated"}),
+            mock.patch("xar_autoplayer.strategy.contact_admission", return_value={"admitted": True}),
+        ):
+            plan = _call(frame)
+        _CHECK.assertEqual(plan["phase"], "native_war_general_battle_arrival_blocked", plan)
+        _CHECK.assertIsNone(plan["selected_step"])
+
+
 def test_distant_one_hop_requires_typed_move_and_exact_target_preview():
     frame = _frame()
     with (
@@ -396,7 +425,10 @@ def test_r0284_frozen_native_rows_reach_only_route_start():
         "episode_run_id": source["episode_run_id"],
         "diagnostics": {"connection_generation": contact_binding["queried_connection_generation"]},
         "player_armies": [{"army_id": army_id, "current_province_id": preview["origin_province_id"]}],
-        "active_wars": [{"war_id": source["war_ids"][0], "enemy_armies": [
+        "active_wars": [{"war_id": source["war_ids"][0], "allied_armies": [
+            {"army_id": army_id, "current_province_id": preview["origin_province_id"],
+             "controllable": True}
+        ], "enemy_armies": [
             {"army_id": enemy_id, "current_province_id": target_id, "army_state": "sieging"}
         ]}],
         "combat_simulation_inputs_v3": {"base_inputs": {}, "completeness": {}},

@@ -3,7 +3,7 @@
   "request_id": "WAR-ROBERT-R0284-CONTACT-20260928",
   "status": "static_candidate_live_pending",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T07:31:06Z",
+  "updated_at_utc": "2026-09-28T07:55:34Z",
   "source_request_commit": "756e835243edd33da3b0b73718da92beb5590165",
   "work_branch": "war/r0284-contact-20260928",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/462",
@@ -39,7 +39,7 @@
   },
   "implementation_contract": {
     "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_general_battle_forecast_ingress",
-    "allowed_action": "Start one typed move-army order on a single-war, exact one-hop, full-hostile, same-frame v3-admitted route whose first 24h native horizon has no conflict.",
+    "allowed_action": "Start one typed move-army order on a single-war, exact one-hop, full-hostile, same-frame v3-admitted route whose first 24h native horizon has no conflict. The sole positive WarID must list this controllable ArmyID at its observed origin in allied_armies, and its full nonretreating enemy roster must equal the native contact query roster.",
     "daily_boundary": "The existing committed-route branch demands fresh same-frame full-hostile contact proof and global controllable-army safety before each subsequent advance of at most one day. A future contact day must be re-admitted through a new same-frame battle forecast; this patch does not authorize it.",
     "future_contact_authorized": false,
     "native_abi_changed": false,
@@ -52,7 +52,7 @@
     "source_pair_and_binary_bytes_in_git": false
   },
   "checks": [
-    "test_general_battle_strategy.py: 15/15 normal and 15/15 under -O using this worktree source; the new source-bound h928/h930/h932 regression and rejection assertions execute in optimized mode.",
+    "test_general_battle_strategy.py: 16/16 normal and 16/16 under -O using this worktree source; the new source-bound h928/h930/h932 regression and WarID membership rejection assertions execute in optimized mode.",
     "test_gameplay_bridge.py::test_committed_route_requires_fresh_daily_horizon_even_when_sentinel_live: passed.",
     "test_gameplay_bridge.py::test_committed_route_contact_blocks_even_above_two_to_one_base_power: passed.",
     "git diff --check: passed."
@@ -67,6 +67,7 @@
   "limitations": [
     "The source 257th turn remains RED. The 256 successful source turns and its h907 checkpoint are preserved facts, not results of this candidate.",
     "A contact-free first day does not prove the remaining five days, final participation or battle outcome. Future route changes, a new hostile or failed same-frame observation must stop or replan.",
+    "The transferred h928/h930/h932 excerpt does not include the full active_wars.allied_armies frame. WarID-to-ArmyID membership is enforced in source and tested with a synthetic row, but remains exact-live pending.",
     "Official rebind and no-launch preflight require zero CK3 processes; R0271 currently owns the managed screen and CK3. No R0284 game launch or action has occurred."
   ],
   "next_step": "After R0271 releases CK3, officially rebind the verified h907 save and original h933-tail driver in a new append-only receiver attempt, run no-launch qualification, then perform a bounded exact-source live route-start and next-day contact recheck. Record any new RED without overwriting the source attempt."
