@@ -95,7 +95,8 @@ def main() -> None:
     manifest = run / "run-manifest.json"
     snapshot = run / json.loads(manifest.read_text(encoding="utf-8"))["project_config"]["path"]
     script = media / "synthetic-narration.md"
-    title = ["开场", "追击", "骑士", "增援", "终局", "收束"]
+    title = [chapter["title"]["zh-CN"] for chapter in
+             json.loads(snapshot.read_text(encoding="utf-8"))["chapters"]]
     chapters = []
     with script.open("x", encoding="utf-8", newline="\n") as stream:
         for index, chapter in enumerate(CHAPTER_IDS):

@@ -1,6 +1,6 @@
 # 第二期六章 composer 最小入口
 
-2026-09-28，无屏幕技术准备。项目 composer 是 `war_ai_promo.episode_two_second_half:compose`，按当前正式 [xar-promo v0.2.1](https://github.com/XenoAmess/xar_promo_toolchain/releases/latest) 的 `plan`/`build --composer MODULE:ATTRIBUTE` 合同实现；它只读取同一 native run 已保全的音频、六段 chapter reel、来源稿与九张计算卡。**现在只有编辑资产检查能 GREEN；没有六章 reel、正式配音或英文字幕，不存在可通过的成片 plan/build。** `plan` 是只读，`build` 必须用新 workdir，均不启动 CK3或发布。
+2026-09-28，无屏幕技术准备。项目 composer 是 `war_ai_promo.episode_two_second_half:compose`，按当前正式 [xar-promo v0.2.1](https://github.com/XenoAmess/xar_promo_toolchain/releases/latest) 的 `plan`/`build --composer MODULE:ATTRIBUTE` 合同实现；它只读取同一 native run 已保全的音频、六段 chapter reel、来源稿与九张计算卡。六章已有跨两次 TTS run 的 EdgeTTS **剪辑代理** 21:47.472；尚无六章 reel、最终声线或完成的英文字幕审阅，不存在可通过的真实成片 plan/build。`plan` 是只读，`build` 必须用新 workdir，均不启动 CK3 或发布。
 
 ## 已完成的无 run 编辑门
 
@@ -10,7 +10,7 @@
 D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m war_ai_promo.episode_two_second_half --editorial-check --config D:\w\e2\promo\ck3_native_war_ai\episode-02-battle-second-half\project\promo-project.json --draft D:\w\e2\promo\ck3_native_war_ai\episode-02-battle-second-half\narration-script-draft.md --cards-dir D:\w\e2\promo\ck3_native_war_ai\episode-02-battle-second-half\cards
 ```
 
-返回 `editorial-inputs-present-not-media-ready`：ProjectConfig 六章顺序正确；当次 e2 稿 SHA-256 `7F0972E042016D7D7B6B558CF54B866E139512FCE481DB6696F895D1BCAEBCA3`（`f9ef02bf4` 修正了骑士段来源说明）。此前四段 TTS 样片和时长审计绑定的是旧稿 `7352B0E4...6BFE7C`，正式配音需按新稿重新量时。九卡目录表 SHA-256 `FD3D3A9EBC39CB43B09BEE6864CDC9A765C53826AF05DC45DCAE1CB49AE8160E`；九张 SVG 的原始生成器 `--check --verify-sources` 通过，004、039→040、020、070、036→038、085、024 各守来源分区。编辑门只读存在性、字节与来源分区，不进行视频渲染、游戏接入或 TTS。
+上述编辑门回执属于较早的稿件版本：当时 e2 稿 SHA-256 为 `7F0972E042016D7D7B6B558CF54B866E139512FCE481DB6696F895D1BCAEBCA3`，九卡目录为 `FD3D3A9EBC39CB43B09BEE6864CDC9A765C53826AF05DC45DCAE1CB49AE8160E`。当前六章 TTS 使用修订后的精确稿 SHA-256 `6F970C3C144646F6ACC74B113E1886AA537563045A48D2F041F1F74B6581EB6E`；编辑门只读，不进行视频渲染、游戏接入或 TTS。
 
 ## 真正的生产输入
 
@@ -18,7 +18,7 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m war_ai_pro
 
 1. 精确 `ProjectConfig` snapshot 由 `start-run` 创建；额外保全当次正式 `narration-script-draft.md` 为 `episode02-narration-script`。录音前须按新实机轨迹校对每个数字、ID 与口读，更新稿并在新 run 冻结。composer 要求每章 `zh` 字符串与该冻结稿的**旁白段落**一致，不读脚注、画面指令或来源路径。
 2. 九张独立计算卡的 `calculation-cards.json` 和 SVG，artifact IDs 为 `episode02-card-index` 及各自的 `episode02-card-<ID>`。E2-02/03 属追击章 004；E2-04/05A/05B/05C 属骑士章的四条分轨；E2-06/07 属增援章 085；E2-09 属终局章 024。若新录制轨迹改变数字，先改卡源 JSON、重建 SVG 和旁白，再冻结**新** run。
-3. 六章已测时音频 `audio.<chapter-id>`，连同原 TTS request/response/事件/版本、`ffprobe` 与字幕边界分别保全。样片时长估算不是正式六章配音；默认同声线 EdgeTTS `zh-CN-XiaoxiaoNeural/-12%`，必要改声线要记新 run。每章还要有实际英文字幕文本。
+3. 六章已测时音频 `audio.<chapter-id>`，连同原 TTS native run、render manifest、每段 request 与 `response-events.jsonl`、版本、`ffprobe` 与字幕边界分别保全。前四章代理来自 a02，后两章历史研究板代理来自 a03；两者不能合称同一次 TTS run 或正式配音。默认声线为 EdgeTTS `zh-CN-XiaoxiaoNeural/-12%`，必要改声线要记新 run。每章还要有实际英文字幕文本并另行人工审阅。
 4. 经 CK3 adapter 只读验过 raw、report、timeline、evidence index、marks 和 clean spans 后，剪成六条 1× chapter reel `reel.<chapter-id>`。每条 reel 的私有 `reel-receipt.<chapter-id>` 记录精确媒体 bytes/SHA/时长、捕获 span 的 attempt/save/raw/control/clean-span 与来源卡标记审核回执。不同 attempt 的镜头只在明确可见来源卡和分隔处接合，不接作同一段连续游戏。计算卡以**全屏独立插页**放进 reinforcement/terminal reel；字幕安全区 `y=1120..1439` 不覆盖原版 UI。当前旧录像不能用来证明新回放的逐日数字。
 5. 最后保全 `episode02-production-inputs-v1` JSON，schema 为 `ck3-war-ai.episode02.production-inputs.v1`、`human_signoff="not-provided"`，包括上面源稿/卡 SHA 与六章有序行。每行 `id`、`title`、`zh`、`en`、`speech_duration_seconds`、`duration_seconds`、`audio_artifact_id`、`reel_artifact_id`、`reel_receipt_artifact_id`；时长来自本 run 的音频与 reel probe，不能沿用初稿 29:50 占位码。
 
@@ -48,6 +48,10 @@ composer 读取上述 run artifact，重新验 SHA、章节次序、旁白全文
 组装还需分别量测未混音乐影片与终片的**视频、音频各自流时长**，与六章总时长在 150 ms 内一致。仅检查容器总时长会让循环主题曲遮住过短的原始旁白音轨。该检查不证明旁白内容正确或整片无静音；仍要完整听看。
 
 保全 `episode02-production-inputs-v1` 时，在已有字段外必须加入本 run `project_config_sha256` 与 `project_config_bytes`；`narration_script_sha256`/`narration_script_bytes`；`card_index_sha256`/`card_index_bytes`；九卡 `card_sha256` 和 `card_bytes` 字典；`replay_by_card`；以及本 run 单一音乐的 `music_artifact_id`/`music_sha256`/`music_bytes`。每一章的音频、reel、reel receipt 还需各自的 artifact ID、SHA-256 与 byte length，例如 `audio_artifact_id`/`audio_sha256`/`audio_bytes`。composer 会把这些声明与 native run manifest 及配置快照的实际字节逐一核对。
+
+真实 production 的每章还必须把 `prepare_subtitle_inputs.py` 输出的 `sentence_boundaries` 和 `tts_source` 合入该章输入行，并按其 `preserve-plan.json` 将两份原 TTS native run、两份 render manifest、六段 MP3 和每段 request/Edge events 保全到**组装** native run。composer 对原 run/artifact、每段 request/event 精确 SHA/长度、逐句文本、单调时间边界、音频覆盖、冻结稿和章音频 SHA 逐一复核；`terminal`/`closing` 的 `historical-independent-replays-candidate-only` 边界必须留在 render manifest、request 与章输入。每章 `title` 也必须与 ProjectConfig 的 `zh-CN` 标题一致。真实输入缺少 Edge 边界时 `plan` 直接拒绝；仅显式 synthetic smoke 可用合成字幕等分回退。
+
+2026-09-28 对现有 a02/a03 作了无 FFmpeg 来源审计：外置 `D:/ck3-research-artifacts/episode02-subtitle-inputs-20260928/attempt-03/` 的 fragments 含六章 **146** 条 Edge `SentenceBoundary`，preserve plan 列出 **70** 条来源文件；`verify_subtitle_inputs.py` 对原文件复核 GREEN，实调字幕引擎得到 330 条中文短 cue，并拒绝改写首句文本与历史使用范围的两次负向试验。审计状态严格为 `machine-source-checked-not-human-reviewed`，`assembly_run_preservation=not-checked`；这些文件尚未保全进六章组装 run，也没有声称听审、英文字幕审阅或成片。
 
 reel receipt 的每条 `capture_spans[]` 必须写出 `attempt_id`，实际冷载存档 `cold_load_save`、raw video、control 的 artifact ID、SHA-256 与 byte length，以及 clean-span 与来源标签审查 artifact ID。运行中另存的 checkpoint 只能放在可选的 `midrun_checkpoint_save` 三字段，不能替代冷载来源；004 的冷载是 45CCE7…，第 27 日 F085… 是运行中生成的 checkpoint。`cards[card_id]` 必须有卡 SHA、replay、该 replay 的 `primary_receipt_sha256` 与 `evidence_mode`；若卡目录声明 `source_save_sha256`，还须对应 `indexed_cold_load_save_sha256`，004 卡另须 `indexed_midrun_checkpoint_save_sha256` 分别绑定两份存档：
 

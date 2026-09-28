@@ -16,12 +16,16 @@ from pathlib import Path
 
 from xar_promo.adapters.ck3.capture import load_capture_bundle
 from xar_promo.media import probe_media
+from xar_promo.model import RunManifest
 from xar_promo.pipeline import PipelineDependencies, PipelineDraft, PipelineInvocation, SegmentDraft
 from xar_promo.process import run_command
 from xar_promo.render import RenderOptions
 from xar_promo.sources import VIDEO, VisualProbeResult, VisualSource
 
 from .captions import subtitle_document
+from .episode_two_subtitle_contract import (
+    HISTORICAL_SCOPE, compact, derive_boundaries, require_audio_coverage,
+)
 
 
 CHAPTER_IDS = ("opening", "pursuit", "knights", "reinforcement", "terminal", "closing")
@@ -224,6 +228,88 @@ def _capture_audits(run, run_path: Path, span: dict, reel_sha: str,
     _capture_audit_contract(clean, label, span, reel_sha, reel_duration, bundle, frame)
 
 
+def _bound_tts_sentences(run, run_path: Path, row: dict, script: Path,
+                         snapshot: Path) -> list[dict]:
+    """Require original native TTS run, render, request and Edge event bytes."""
+    chapter_id = row["id"]
+    source = row.get("tts_source")
+    if not isinstance(source, dict):
+        raise ValueError(f"{chapter_id} lacks native TTS source identity")
+    native_path = _checked_source(
+        run, run_path, source["native_run_artifact_id"],
+        source["native_run_sha256"], source["native_run_bytes"])
+    render_path = _checked_source(
+        run, run_path, source["render_manifest_artifact_id"],
+        source["render_manifest_sha256"], source["render_manifest_bytes"])
+    native = json.loads(native_path.read_text(encoding="utf-8"))
+    RunManifest.from_mapping(native)
+    render = json.loads(render_path.read_text(encoding="utf-8"))
+    if (native["run"]["id"] != source.get("run_id")
+            or native["project_config"]["sha256"].upper() != _sha(snapshot)
+            or native["project_config"]["bytes"] != snapshot.stat().st_size
+            or render.get("schema") != "ck3.episode02.selected-narration-render.v1"
+            or render.get("status") != "selected-chapters-rendered-not-human-reviewed"
+            or render.get("source_draft", {}).get("sha256", "").upper() != _sha(script)
+            or render.get("source_draft", {}).get("bytes") != script.stat().st_size):
+        raise ValueError(f"{chapter_id} TTS run/render does not bind the frozen script")
+    original = {item["id"]: item for item in native["artifacts"]}
+    for item_id, expected_sha, expected_bytes in (
+            ("render-manifest", source["render_manifest_sha256"], source["render_manifest_bytes"]),
+            ("source-draft", _sha(script), script.stat().st_size),
+            (f"chapter-{chapter_id}", row["audio_sha256"], row["audio_bytes"])):
+        item = original.get(item_id)
+        if (item is None or item["sha256"].upper() != expected_sha.upper()
+                or item["bytes"] != expected_bytes):
+            raise ValueError(f"{chapter_id} source TTS artifact changed: {item_id}")
+    chapters = [item for item in render.get("chapters", []) if item.get("id") == chapter_id]
+    if (len(chapters) != 1 or
+            chapters[0]["audio"]["sha256"].upper() != row["audio_sha256"].upper()
+            or chapters[0]["audio"]["bytes"] != row["audio_bytes"]
+            or chapters[0].get("speech_seconds") != row["speech_duration_seconds"]):
+        raise ValueError(f"{chapter_id} source TTS chapter audio/duration changed")
+    historical = chapter_id in ("terminal", "closing")
+    scope = HISTORICAL_SCOPE if historical else "general-edit-proxy"
+    if (source.get("source_audio_artifact_id") != f"chapter-{chapter_id}"
+            or source.get("usage_scope") != scope
+            or (historical and (render.get("usage_scope") != HISTORICAL_SCOPE
+                                or render.get("new_e2_09_live_verified") is not False))
+            or (not historical and render.get("usage_scope") is not None)):
+        raise ValueError(f"{chapter_id} TTS usage boundary changed")
+    expected = [item for item in render["paragraphs"] if item["chapter_id"] == chapter_id]
+    paragraphs = source.get("paragraphs")
+    if not isinstance(paragraphs, list) or len(paragraphs) != len(expected):
+        raise ValueError(f"{chapter_id} TTS paragraph identities missing")
+    files = {}
+    for index, (actual, recorded) in enumerate(zip(paragraphs, expected)):
+        if (actual.get("paragraph_index") != index
+                or recorded["paragraph_index"] != index
+                or actual.get("duration_seconds") != recorded["duration_seconds"]
+                or actual.get("text_sha256", "").upper() != recorded["text_sha256"].upper()):
+            raise ValueError(f"{chapter_id} TTS paragraph order/text changed: {index}")
+        for prefix, field in (("request", "request"), ("events", "response_events")):
+            old = recorded[field]
+            if (actual.get(f"{prefix}_sha256", "").upper() != old["sha256"].upper()
+                    or actual.get(f"{prefix}_bytes") != old["bytes"]):
+                raise ValueError(f"{chapter_id} TTS {prefix} identity changed: {index}")
+        request_path = _checked_source(
+            run, run_path, actual["request_artifact_id"],
+            actual["request_sha256"], actual["request_bytes"])
+        events_path = _checked_source(
+            run, run_path, actual["events_artifact_id"],
+            actual["events_sha256"], actual["events_bytes"])
+        request = json.loads(request_path.read_text(encoding="utf-8"))
+        if (historical and request.get("usage_scope") != HISTORICAL_SCOPE):
+            raise ValueError(f"{chapter_id} historical TTS request lost its usage boundary")
+        files[index] = (request_path, events_path)
+    boundaries, source_text, last_end = derive_boundaries(
+        chapter_id, paragraphs, lambda item: files[item["paragraph_index"]])
+    if (source_text != compact(row["zh"])
+            or row.get("sentence_boundaries") != boundaries):
+        raise ValueError(f"{chapter_id} subtitles do not match source Edge sentence events")
+    require_audio_coverage(chapter_id, boundaries, row["speech_duration_seconds"], last_end)
+    return boundaries
+
+
 def _reel_receipt(run, run_path: Path, row: dict, media: Path,
                   card_hashes: dict[str, str], card_data: dict,
                   card_replays: dict[str, str], *, synthetic: bool) -> dict:
@@ -367,7 +453,8 @@ def compose(config, run, *, config_path, run_path, workdir,
     by_id = {}
     reel_sources = {}
     audio_sources = {}
-    for row in rows:
+    synthetic = inputs.get("synthetic") is True
+    for chapter_index, row in enumerate(rows):
         chapter_id = row["id"]
         duration = row["duration_seconds"]
         speech = row["speech_duration_seconds"]
@@ -377,12 +464,19 @@ def compose(config, run, *, config_path, run_path, workdir,
             raise ValueError(f"Invalid measured chapter duration: {chapter_id}")
         if row["zh"] != narration[chapter_id] or not row["en"].strip():
             raise ValueError(f"Chapter subtitles do not match frozen spoken script: {chapter_id}")
+        if row["title"] != config.chapters[chapter_index].title.get("zh-CN"):
+            raise ValueError(f"Chapter metadata title differs from ProjectConfig: {chapter_id}")
+        if synthetic:
+            if row.get("tts_source") is not None or row.get("sentence_boundaries"):
+                raise ValueError("Synthetic smoke may only use its explicit synthetic subtitle fallback")
+        else:
+            _bound_tts_sentences(run, run_path, row, script, snapshot)
         audio = _checked_source(run, run_path, row["audio_artifact_id"],
                                 row["audio_sha256"], row["audio_bytes"])
         reel = _checked_source(run, run_path, row["reel_artifact_id"],
                                row["reel_sha256"], row["reel_bytes"])
         receipt = _reel_receipt(run, run_path, row, reel, card_hashes, card_data,
-                                card_replays, synthetic=inputs.get("synthetic") is True)
+                                card_replays, synthetic=synthetic)
         if reel.resolve() in reel_sources:
             raise ValueError("Each chapter requires its own labelled reel")
         reel_sources[reel.resolve()] = (row, receipt)
