@@ -92,7 +92,7 @@ successor baseline. A read-only result is still not an enactment receipt.
 
 ## Focused verification
 
-```powershell
+```text
 py ck3_autonomous_player/native_bridge/research/verify_realm_law_final_terms_11906.py --exe "Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe"
 py -O ck3_autonomous_player/native_bridge/research/verify_realm_law_final_terms_11906.py --exe "Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe"
 ```
