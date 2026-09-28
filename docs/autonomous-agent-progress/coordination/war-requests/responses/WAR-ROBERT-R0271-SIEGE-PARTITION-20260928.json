@@ -3,11 +3,24 @@
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "status": "claimed",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T04:30:00Z",
+  "updated_at_utc": "2026-09-28T04:47:56Z",
   "source_request_commit": "5d2070f",
   "work_branch": "war/r0271-siege-partition-20260928",
   "problem": "At native:30/raw53219160 the offsite hostile army 83886484 is projected to enter target 2629 at raw53219928, before the player's raw53220216 arrival. The existing partition returns offsite_hostile_may_join_by_target_entry before a contact-free first-waypoint continuation can be considered.",
   "work_plan": "Preserve full-hostile same-frame identity, the final siege contact gate, and no automatic surrender. Check a bounded first-waypoint continuation against the existing route/contact and war-risk contract, with focused normal and optimized tests. Exact-source live remains pending verified assets and managed screen ownership.",
+  "implementation_status": "source_patch_tested_no_live",
+  "implementation_document": "docs/ck3-native-ai/r0271-uncertain-siege-first-hop-2026-09-28.md",
+  "implementation_contract": {
+    "source": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:_primary_defender_siege_forecast_ingress",
+    "entry": "Only offsite_hostile_may_join_by_target_entry with a multi-hop route and full-hostile one-day contact-free target query can enter the fallback.",
+    "selected_actions": "Exact first-hop route preview, same-frame full-hostile first-hop contact query, then one typed move to the first hop only. Any short-query contact, stale frame, missing hostile or changed hostile position blocks or requeries.",
+    "risk_boundary": "The first hop has a current 7-day ETA but is not declared 7-day safe. Existing managed moving-route and native-driver gates require fresh full-hostile one-day contact proof before each new day. The future siege participant set remains unresolved; no v3 partial combat forecast, final target attack, surrender, or war exit is authorized."
+  },
+  "checks": [
+    "test_combat_provisional_defense_canary.py: 8 passed normal and 8 passed under -O, including exact R0271 route/ETA replay and stale/conflicting first-hop readouts.",
+    "test_gameplay_bridge.py -k committed_route_requires_fresh_daily_horizon: 1 passed, proving the moving route asks for a new daily proof after the date changes.",
+    "tools/validate_python_only.py: PYTHON-ONLY GREEN; git diff --check: passed."
+  ],
   "requested_transfer": {
     "status": "not_received_on_this_machine",
     "source_pair": "R0269 H3388 save, original driver-state.json, family sidecar, PAIR-IDENTITY.json",
@@ -17,6 +30,8 @@
   },
   "live_evidence": null,
   "limitations": [
-    "Claim is an ownership acknowledgment only. R0271 turn 36 remains blocked; no source fix, gameplay action, persisted date advance or exact live verification is claimed."
+    "The R0271 failed attempt remains RED; the new source branch has static checks but no exact H3388/R0271 live run, gameplay action or persisted Robert date advance. Status remains claimed until source integration and matched consumption evidence are available.",
+    "The route read says offsite army 83886484 may enter target 2629 before the player, but future participation remains unknown. The first-hop contact horizon covers one day, not its entire current seven-day ETA; each later day needs a fresh full-hostile proof.",
+    "The Git excerpt does not carry the raw H3388 save, original driver and family sidecar or the exact DLL/injector. No cross-machine source-pair replay can be claimed from Git alone."
   ]
 }

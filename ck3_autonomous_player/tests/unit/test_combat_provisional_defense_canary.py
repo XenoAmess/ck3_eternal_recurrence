@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 import unittest
@@ -34,6 +35,123 @@ R0265_REPORT = (
 
 
 class ProvisionalDefenseCanaryTests(unittest.TestCase):
+    def _r0271_replay_inputs(self):
+        report = json.loads(R0265_REPORT.with_name(
+            "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0271-blocker-excerpt.json"
+        ).read_text(encoding="utf-8"))
+        plan = report["first_blocker"]["plan"]
+        observed = plan["route_contact_horizon"]
+        date_raw = observed["date_raw"]
+        frame = self._frame(date_raw=date_raw)
+        player = _army(
+            83886367, soldiers=2332, province_id=2610, controllable=True,
+            army_state="regular", army_state_code=1,
+            route_province_ids=[], in_combat=False, retreating=False,
+        )
+        siege = _army(
+            50331920, soldiers=1436, province_id=2629, controllable=False,
+            army_state="sieging", army_state_code=3,
+            route_province_ids=[], in_combat=False, retreating=False,
+        )
+        approaching = _army(
+            83886484, soldiers=311, province_id=3719, controllable=False,
+            move_target_province_id=2629, army_state="moving", army_state_code=7,
+            route_province_ids=[8652, 1038, 1036, 2629],
+            in_combat=False, retreating=False,
+        )
+        frame["player_armies"] = [player]
+        frame["active_wars"] = [_war(
+            war_id=16777231, allied_armies=[player],
+            enemy_armies=[siege, approaching], score=-21,
+            player_side="defender", player_is_primary_war_leader=True,
+            war_objective_province_ids=[2610],
+        )]
+        frame["army_strengths"] = [
+            _army_strength(83886367, "player", [16777231], current=2332),
+            _army_strength(50331920, "active_war_enemy", [16777231], current=1436),
+            _army_strength(83886484, "active_war_enemy", [16777231], current=311),
+        ]
+        route = plan["route_preview"]["route_province_ids"]
+        preview = _preview_row(
+            1, army_id=83886367, origin=2610, target=2629,
+            date_raw=date_raw, route=route,
+        )
+        contact = _route_contact_row(
+            2, army_id=83886367, origin=2610, target=2629,
+            date_raw=date_raw, route=route,
+            hostile_ids=(50331920, 83886484), contact_free=True,
+        )
+        contact["result"]["route_contact_horizon"] = copy.deepcopy(observed)
+        contact["result"]["route_contact_horizon"]["snapshot_revision"] = 90
+        return frame, [preview, contact]
+
+    def test_r0271_earlier_hostile_arrival_allows_only_bounded_first_hop(self):
+        frame, rows = self._r0271_replay_inputs()
+        steps = {
+            "preview-move-army-83886367-to-2614",
+            query_route_contact_horizon_step(
+                83886367, 2614, (50331920, 83886484)
+            ),
+            "move-army-83886367-to-2614",
+        }
+
+        def plan():
+            return _primary_defender_siege_forecast_ingress(
+                {"phase": "native_war_stationary_objective_hold_sentinel",
+                 "selected_step": "war-objective-hold-sentinel"},
+                commands=rows, snapshot=frame, action_steps=steps,
+                bridge_capabilities=set(),
+            )
+
+        first = plan()
+        self.assertEqual(first["selected_step"], "preview-move-army-83886367-to-2614", first)
+        self.assertEqual(first["participant_partition"]["reason"],
+                         "offsite_hostile_may_join_by_target_entry")
+        self.assertFalse(first["active_attack_allowed"])
+        rows.append(_preview_row(
+            3, army_id=83886367, origin=2610, target=2614,
+            date_raw=frame["date_raw"], route=[2614],
+        ))
+        second = plan()
+        self.assertEqual(second["selected_step"],
+                         query_route_contact_horizon_step(
+                             83886367, 2614, (50331920, 83886484)))
+        short_contact = _route_contact_row(
+            4, army_id=83886367, origin=2610, target=2614,
+            date_raw=frame["date_raw"], route=[2614],
+            hostile_ids=(50331920, 83886484), contact_free=True,
+            hostile_provinces={50331920: 2629, 83886484: 3719},
+        )
+        rows.append(short_contact)
+        third = plan()
+        self.assertEqual(third["phase"], "native_war_siege_uncertain_first_hop_move")
+        self.assertEqual(third["selected_step"], "move-army-83886367-to-2614")
+        self.assertEqual(third["forecast_status"], "participant_scope_unresolved")
+        self.assertTrue(third["daily_recheck_required"])
+        self.assertFalse(third["active_attack_allowed"])
+
+        short_contact["result"]["route_contact_horizon"]["conflicts"] = [
+            {"hostile_army_id": 83886484, "province_id": 2614}
+        ]
+        self.assertIsNone(plan()["selected_step"])
+        short_contact["result"]["route_contact_horizon"]["conflicts"] = []
+        short_contact["result"]["route_contact_horizon"]["one_day_contact_free"] = False
+        self.assertIsNone(plan()["selected_step"])
+        short_contact["result"]["route_contact_horizon"]["one_day_contact_free"] = True
+        short_contact["result"]["route_contact_horizon"]["hostile_routes"][1]["current_province_id"] = 2629
+        self.assertIsNone(plan()["selected_step"])
+        short_contact["result"]["route_contact_horizon"]["hostile_routes"][1]["current_province_id"] = 3719
+        short_contact["result"]["route_contact_horizon"]["date_raw"] += 24
+        self.assertEqual(plan()["selected_step"],
+                         query_route_contact_horizon_step(
+                             83886367, 2614, (50331920, 83886484)))
+        short_contact["result"]["route_contact_horizon"]["date_raw"] -= 24
+        rows[1]["result"]["route_contact_horizon"]["hostile_routes"][1]["current_province_id"] = 2629
+        mismatch = plan()
+        self.assertIsNone(mismatch["selected_step"])
+        self.assertEqual(mismatch["participant_partition"]["reason"],
+                         "war_contact_position_mismatch")
+
     def test_r0265_route_only_partitions_if_war_row_positions_agree(self):
         report = json.loads(R0265_REPORT.read_text(encoding="utf-8"))
         plan = report["first_blocker"]["plan"]
