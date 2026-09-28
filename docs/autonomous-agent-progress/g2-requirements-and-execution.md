@@ -5,7 +5,7 @@
 [`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
 **Operator live source `operator_get_status`** 实时核查，不能以 Git 缓存投影或本页历史段落代替。
 已归档的当天增量见[09-28 日报](daily/2026-09-28.md)及[W40 滚动周报](weekly/2026-W40.md)；下方 R0319 最新配对以其正式报告为据。
-本次修订时 `current-state.json` 的 Robert 配对仍投影 H3446，`g2-requirements-v1.json` 的 `current_work_package` 仍列已关闭的 GEN-034（4/4）；两项旧字段不覆盖下方 h3860 和非战争实际调度。
+当前 `current-state.json` 已投影 Robert **h3860/raw53219784、3,144 日**，`g2-requirements-v1.json` 的 `current_work_package` 已为 **NW-2026-09-26**；实际 PID、owner 和 RED 仍须查询上述 Operator live source。
 玩法覆盖与 Native/MCP 研究依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
