@@ -1,0 +1,213 @@
+{
+  "command_row": {
+    "command": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484",
+    "index": 3920,
+    "not_observed_in_original_row": [
+      {
+        "reason": "Key absent from the original command_history[3919] row; no other frame was used to fill it.",
+        "source_json_pointer": "/command_history/3919/request",
+        "status": "not_observed"
+      },
+      {
+        "reason": "Key absent from the original command_history[3919] row; no other frame was used to fill it.",
+        "source_json_pointer": "/command_history/3919/before",
+        "status": "not_observed"
+      },
+      {
+        "reason": "Key absent from the original command_history[3919] row; no other frame was used to fill it.",
+        "source_json_pointer": "/command_history/3919/after",
+        "status": "not_observed"
+      },
+      {
+        "reason": "Key absent from the original command_history[3919] row; no other frame was used to fill it.",
+        "source_json_pointer": "/command_history/3919/episode_run_id",
+        "status": "not_observed"
+      },
+      {
+        "reason": "Key absent from the original command_history[3919] row; no other frame was used to fill it.",
+        "source_json_pointer": "/command_history/3919/connection_generation",
+        "status": "not_observed"
+      }
+    ],
+    "ok": true,
+    "result_wrapper": {
+      "accepted": true,
+      "backend_id": "native-headless",
+      "queried_native_revision": 23,
+      "queried_revision": 24,
+      "queried_snapshot_id": "native:23",
+      "query_sequence": 1,
+      "status": "available",
+      "step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484"
+    }
+  },
+  "matched_formal_report": {
+    "bytes": 388302,
+    "full_same_frame_identity_proven_by_row_alone": false,
+    "onedrive_relative_path": "WAR/M5-WAR-CASH-20260928/R0321-formal-report.txt",
+    "reason": "The original command row lacks before/after, episode_run_id and connection_generation; the shared query projection matches but does not replace those fields.",
+    "result_pointer": "/auto_run/turns/25/result",
+    "sha256": "7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30",
+    "shared_query_fields_exact_match": {
+      "accepted": true,
+      "queried_native_revision": 23,
+      "queried_revision": 24,
+      "queried_snapshot_id": "native:23",
+      "query_sequence": 1,
+      "status": "available",
+      "step": "query-combat-simulation-inputs-v3-2629-2630-a-1-83886367-d-2-50331920-83886484"
+    }
+  },
+  "receiver_boundary": "V3 input observation is available for a hypothetical two-defender encounter, while monte_carlo_ready, transition_fidelity_gate, planner_usable and active_attack_allowed are false. This summary contains no battle outcome distribution, calibration evidence, expected-utility decision or contact authorization.",
+  "schema": "xar.g2.war-r0321-v3-receiver-parsed-summary.v1",
+  "source": {
+    "bytes": 2080166,
+    "driver_claim_sha256": "DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33",
+    "driver_claim_size_bytes": 46002331,
+    "extraction": "Python json.loads and direct value projection from receiver-verified excerpt. Parent driver unavailable on receiver; semantic equality to parent is a source-machine claim.",
+    "onedrive_relative_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "raw_result_json_pointer": "/command_history/3919/result/combat_simulation_inputs",
+    "receiver_ack_sha256": "EF4F896561F87F35B3433A80F19F6E2E8A697ABB59E7B3034DFDA5875B4F03FE",
+    "row_json_pointer": "/command_history/3919",
+    "sha256": "865EA7B7AC1B4A680E2BE3A1D84012C67CF9550474075E4A917EFE043CCCDD51",
+    "source_manifest_sha256": "F0ADF5B0DDA0A8E237C76BF9A8EE03D8CAECFEA61FE25640B9DD80231F597B4F"
+  },
+  "v3": {
+    "base_inputs": {
+      "army_count": 3,
+      "army_rows": [
+        {
+          "army_id": 83886367,
+          "current_province_id": 2610,
+          "encounter_role": "attacker",
+          "scope_role": "player",
+          "status": "available",
+          "war_ids": [
+            16777231
+          ]
+        },
+        {
+          "army_id": 50331920,
+          "current_province_id": 2629,
+          "encounter_role": "defender",
+          "scope_role": "active_war_enemy",
+          "status": "available",
+          "war_ids": [
+            16777231
+          ]
+        },
+        {
+          "army_id": 83886484,
+          "current_province_id": 2629,
+          "encounter_role": "defender",
+          "scope_role": "active_war_enemy",
+          "status": "available",
+          "war_ids": [
+            16777231
+          ]
+        }
+      ],
+      "completeness": {
+        "input_observation_ready": true,
+        "missing_required_domains": [
+          "damage_to_casualty_allocation",
+          "pursuit_transition",
+          "battle_end_and_retreat_transition",
+          "phase_event_rng_and_effects"
+        ],
+        "monte_carlo_ready": false,
+        "observation_slice": "precontact-composition-context-v2"
+      },
+      "counter_resolution_count": 2,
+      "ongoing_combat_count": 0,
+      "scenario": {
+        "actual_route_dependency": false,
+        "attacker_army_ids": [
+          83886367
+        ],
+        "attacker_entry_province_id": 2630,
+        "attacker_position_policy": "fixed_at_entry_hypothetical",
+        "attacker_side": "player_or_allied",
+        "defender_army_ids": [
+          50331920,
+          83886484
+        ],
+        "defender_insertion_order_policy": "explicit_request_order_hypothetical",
+        "defender_position_policy": "fixed_at_target_hypothetical",
+        "defender_side": "enemy",
+        "kind": "explicit_hypothetical_contact"
+      },
+      "target_province": {
+        "crossing": {
+          "kind": "none",
+          "status": "available",
+          "unavailable_reason": null
+        },
+        "defender_context": {
+          "defender_side": "enemy",
+          "holding_defender": false,
+          "holding_defender_status": "available",
+          "holding_unavailable_reason": null,
+          "status": "available",
+          "unavailable_reason": null
+        },
+        "precontact_width": {
+          "base": 2033,
+          "final": 1626,
+          "status": "available",
+          "unavailable_reason": null
+        },
+        "province_id": 2629,
+        "status": "available",
+        "terrain": {
+          "combat_width_multiplier_raw": 80000,
+          "key": "hills",
+          "scale": 100000,
+          "status": "available",
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      "target_province_id": 2629
+    },
+    "completeness": {
+      "active_attack_allowed": false,
+      "base_input_observation_ready": true,
+      "input_observation_ready": true,
+      "missing_fidelity_gates": [
+        "loaded_playset_verified",
+        "ast_evaluator_ready",
+        "original_trace_ready"
+      ],
+      "missing_observation_domains": [],
+      "missing_required_domains": [
+        "damage_to_casualty_allocation",
+        "pursuit_transition",
+        "battle_end_and_retreat_transition",
+        "phase_event_rng_and_effects"
+      ],
+      "monte_carlo_ready": false,
+      "observation_slice": "precontact-phase-event-inputs-v3",
+      "offline_exact_state_refs_ready": true,
+      "phase_event_inputs_ready": true,
+      "phase_event_manifest_fidelity": {
+        "ast_evaluator_ready": false,
+        "fidelity_gate": false,
+        "loaded_playset_verified": false,
+        "original_trace_ready": false
+      },
+      "phase_raw_observation_ready": true,
+      "planner_usable": false,
+      "transition_fidelity_gate": false
+    },
+    "contract_stage": "production_exact_132_refs",
+    "phase_event_inputs": {
+      "evaluation_context_count": 26,
+      "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+      "scope_mode": "hypothetical_precontact_offline_ast",
+      "status": "available"
+    },
+    "rules_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+    "schema_version": 3
+  }
+}

@@ -2,7 +2,7 @@
   "schema": "xar.g2.war-r0271-subsequent-metadata-audit.v1",
   "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
   "audit_at_utc": "2026-09-28T14:22:11Z",
-  "status": "r0321_formal_report_verified_raw_v3_pending",
+  "status": "r0321_raw_v3_input_received_forecast_red",
   "historical_r0271_status": "original_turn36_red_unchanged",
   "earlier_receiver_recovery": "R0004/R0005 proved bounded first-hop submission and six fresh full-hostile one-day gates only; they did not prove target2629 participant scope, combat forecast or attack authorization.",
   "verified_receiver_bytes": {
@@ -81,9 +81,25 @@
       "/auto_run/turns/26/plan"
     ],
     "readback": "Report confirms 26/27 formal turns, paused native:23/public24/native23/raw53219928, two hostiles already in target2629, participant partition available, full-hostile one-day contact-free horizon ending raw53219952, and route first hop2614 ETA raw53220096. V3 result is only accepted/available envelope, monte_carlo_ready=false and planner_usable=false; no selected attack or date advance on blocked turn. Same-frame M5 joint cash still lacks all seven war amount/policy fields.",
-    "raw_v3_boundary": "The report does not contain the raw combat_simulation_inputs object. Source diagnostic response locates it in frozen H3911 driver 46002331 bytes/SHA DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33 at /command_history/3919/result/combat_simulation_inputs; the driver is not transferred."
+    "raw_v3_boundary_at_report_transfer": "The report does not contain the raw combat_simulation_inputs object. Source diagnostic response locates it in frozen H3911 driver 46002331 bytes/SHA DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33 at /command_history/3919/result/combat_simulation_inputs; the driver was not transferred. A later bounded excerpt was separately transferred and audited below."
   },
-  "receiver_unverified": "Exact raw V3 input payload and parent command row, H3911 save/source driver/rebound driver and sidecar bytes, source DLL/injector bytes, any trial tape or measured model accuracy, receiver-side rebind/cold restore and live continuation. The verified small source proof files establish source-side no-launch only, not receiver replay or a qualified forecast.",
+  "later_receiver_v3_excerpt_transfer": {
+    "request_sha256": "969231232C6FEC4B22B6B42F7A801081707803EEDC0302D373FB8F5FEEEB3658",
+    "transfer_manifest_sha256": "F0ADF5B0DDA0A8E237C76BF9A8EE03D8CAECFEA61FE25640B9DD80231F597B4F",
+    "excerpt_path": "WAR/M5-WAR-CASH-20260928/SOURCE-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "excerpt_bytes": 2080166,
+    "excerpt_sha256": "865EA7B7AC1B4A680E2BE3A1D84012C67CF9550474075E4A917EFE043CCCDD51",
+    "receiver_ack_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-ACK-R0321-H3911-V3-RAW-EXCERPT-v1.json",
+    "receiver_ack_sha256": "EF4F896561F87F35B3433A80F19F6E2E8A697ABB59E7B3034DFDA5875B4F03FE",
+    "receiver_summary_git_path": "../evidence/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.v3-receiver-summary.json",
+    "receiver_summary_sha256": "EB2ABAE2425C681A25C5FC48983ECCFD78C15EDF5CE82F169FFDE21BA2CB8E02",
+    "shared_query_projection": "Frozen excerpt row3920 and formal report /auto_run/turns/25/result match accepted=true/status=available, the full V3 step, queried native:23/public24/native23 and query_sequence=1. This is a seven-field match, not a replacement for missing row episode/connection/before/after identity.",
+    "native_input": "V3 schema_version=3 and contract_stage=production_exact_132_refs; hypothetical contact from attacker ArmyID83886367 via entry2630 to target2629 against ordered defenders [50331920,83886484]. Three army rows are available: attacker currently2610 and both defenders currently2629; no ongoing combats. Phase-event inputs status available and rules manifest hash matches top-level V3 field.",
+    "fidelity_and_action": "input_observation_ready=true and phase_event_inputs_ready=true, but monte_carlo_ready=false, transition_fidelity_gate=false, planner_usable=false, active_attack_allowed=false. Missing required domains: damage_to_casualty_allocation, pursuit_transition, battle_end_and_retreat_transition, phase_event_rng_and_effects. Missing fidelity gates: loaded_playset_verified, ast_evaluator_ready, original_trace_ready. There is no qualified probability, trial-tape accuracy or expected-utility authorization.",
+    "original_row_absent": ["request", "before", "after", "episode_run_id", "connection_generation"],
+    "parent_driver_boundary": "Original 46002331-byte driver SHA DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33 was not transferred. Source-side complete-row semantic equality against it is not independently receiver-verified."
+  },
+  "receiver_unverified": "Parent H3911 source driver and full command-history binding, H3911 save/rebound driver/sidecar bytes, source DLL/injector bytes, qualified combat forecast probability, trial tape or measured model accuracy, receiver-side rebind/cold restore and live continuation. The bounded V3 input excerpt is receiver byte-verified but not a production simulation or attack approval.",
   "next_request": {
     "git_request": "../requests/WAR-ROBERT-R0321-COMBAT-FORECAST-20260928.json",
     "onedrive_path": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-FORECAST-ASSETS-v1.json",
@@ -94,6 +110,6 @@
     "superseded_duplicate_filename": "R0321-formal-report-a6d1ae8.txt in overlapping diagnostic request; file itself retained append-only, alternate target name withdrawn",
     "later_raw_v3_excerpt_request": "WAR/M5-WAR-CASH-20260928/RECEIVER-REQUEST-R0321-H3911-V3-RAW-EXCERPT-v1.json",
     "later_raw_v3_excerpt_request_sha256": "969231232C6FEC4B22B6B42F7A801081707803EEDC0302D373FB8F5FEEEB3658",
-    "purpose": "Full formal report and small source proof bytes are now verified; obtain the exact same-frame raw V3 parent row via bounded frozen-driver excerpt, then decide whether a qualified receiver recovery pair is needed. No CK3 action requested."
+    "purpose": "Full formal report, small source proofs and bounded V3 input row excerpt are now receiver byte-verified. A future matching receiver replay still requires exact H3911 pair/binaries plus a qualified forecast producer and separately validated risk/expected-utility contract. No CK3 action requested or authorized by this audit."
   }
 }
