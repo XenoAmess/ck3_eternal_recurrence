@@ -122,6 +122,13 @@ def _formal_fact_receipts_gate(cards_dir: Path) -> None:
             raise ValueError(f"Formal Episode 2 fact receipt bytes changed: {filename}")
 
 
+def _synthetic_flag(inputs: dict) -> bool:
+    value = inputs.get("synthetic", False)
+    if type(value) is not bool:
+        raise ValueError("Episode 2 synthetic flag must be a boolean")
+    return value
+
+
 def _spoken(value: str) -> str:
     return re.sub(r"\s+", " ", FOOTNOTE.sub("", value).replace("**", "").replace("`", "")).strip()
 
@@ -616,6 +623,7 @@ def compose(config, run, *, config_path, run_path, workdir,
     inputs = json.loads(input_path.read_text(encoding="utf-8"))
     if inputs.get("schema") != "ck3-war-ai.episode02.production-inputs.v1" or inputs.get("human_signoff") != "not-provided":
         raise ValueError("Expected unsigned Episode 2 production inputs")
+    synthetic = _synthetic_flag(inputs)
     snapshot = Path(config_path).resolve(strict=True)
     if (snapshot.stat().st_size != run.project_config.bytes
             or _sha(snapshot) != run.project_config.sha256.upper()
@@ -632,7 +640,7 @@ def compose(config, run, *, config_path, run_path, workdir,
         raise ValueError("Production card replay bindings differ from the preserved index")
     card_hashes = inputs["card_sha256"]
     card_bytes = inputs["card_bytes"]
-    if not inputs.get("synthetic"):
+    if not synthetic:
         _formal_card_bytes_gate(_sha(card_index), card_hashes)
     if set(card_hashes) != set(CARD_REPLAYS) or set(card_bytes) != set(CARD_REPLAYS):
         raise ValueError("All nine formal source-bound cards are required")
@@ -642,7 +650,6 @@ def compose(config, run, *, config_path, run_path, workdir,
     rows = inputs["chapters"]
     if [row["id"] for row in rows] != list(CHAPTER_IDS):
         raise ValueError("Episode 2 production chapters must match ProjectConfig order")
-    synthetic = inputs.get("synthetic") is True
     if not synthetic:
         english = _checked_source(run, run_path, "episode02-english-subtitles",
                                   inputs["english_subtitles_sha256"],

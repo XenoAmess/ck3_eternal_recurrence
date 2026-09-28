@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from war_ai_promo.episode_two_second_half import (  # noqa: E402
     FORMAL_CARD_INDEX_SHA, FORMAL_CARD_SHA,
     HISTORICAL_004_CARD_SHA, HISTORICAL_024_CARD_SHA, HISTORICAL_085_CARD_SHA,
-    _card_replays, _formal_card_bytes_gate, _sha, editorial_check,
+    _card_replays, _formal_card_bytes_gate, _sha, _synthetic_flag, editorial_check,
 )
 
 
@@ -70,6 +70,13 @@ class EpisodeTwoCardIndexTest(unittest.TestCase):
         cards["E2-03"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "SVG bytes changed"):
             _formal_card_bytes_gate(FORMAL_CARD_INDEX_SHA, cards)
+
+    def test_synthetic_flag_cannot_skip_formal_gate_with_truthy_nonboolean(self):
+        self.assertFalse(_synthetic_flag({}))
+        self.assertTrue(_synthetic_flag({"synthetic": True}))
+        for value in ("false", 1, [], None):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "boolean"):
+                _synthetic_flag({"synthetic": value})
 
     def test_a05_name_cannot_hide_an_old_writer_or_other_run(self):
         original = json.loads((CARDS / "calculation-cards.json").read_text(encoding="utf-8"))
