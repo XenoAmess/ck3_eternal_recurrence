@@ -483,6 +483,66 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(sum(row["step"] == transport.ACTION_NATIVE
                                  for row in driver.requests), 1)
 
+    def test_first_completion_with_unreadable_province_income_keeps_delta_unknown(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=root(3)[0]["result"])
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+
+                later = frame(5)
+                later["date_raw"] += 31 * 24
+                driver.snapshot = later
+                driver.completed_construction = True
+                driver.province_income_unavailable = True
+                later_root = root(5)[0]["result"]
+                later_root["campaign_root_context"]["date_raw"] = later["date_raw"]
+                later_root["campaign_root_context"][
+                    "player_monthly_gold_income"]["raw"] = 1_050_000
+                driver._record_command(ROOT_QUERY_STEP, ok=True,
+                                       result=later_root)
+                completed = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=5)
+
+                self.assertEqual(completed["completion_status"], "completed")
+                self.assertEqual(completed["construction_province_income_observation"]
+                                 ["status"], "unavailable")
+                self.assertIsNone(completed["observed_province_monthly_income_delta_raw"])
+                self.assertEqual(completed["observed_player_monthly_income_delta_raw"],
+                                 50_000)
+                self.assertEqual(completed["completion_observed_date_raw"],
+                                 later["date_raw"])
+
+                next_day = frame(6)
+                next_day["date_raw"] = later["date_raw"] + 24
+                driver.snapshot = next_day
+                not_due = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"},
+                             "revision": 6}, next_day, [], set())
+                self.assertNotEqual(not_due["plan"]["selected_step"], RECEIPT_STEP)
+
+                later_month = frame(7)
+                later_month["date_raw"] = later["date_raw"] + 30 * 24
+                driver.snapshot = later_month
+                due = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"},
+                             "revision": 7}, later_month, [], set())
+                self.assertEqual(due["plan"]["selected_step"], RECEIPT_STEP)
+                driver.province_income_unavailable = False
+                driver.province_income_after_completion_raw = 2_504_000
+                refreshed = transport.query_construction_receipt(
+                    driver, pending=completed, expected_revision=7)
+                self.assertEqual(refreshed["observed_province_monthly_income_delta_raw"],
+                                 36_000)
+                self.assertEqual(refreshed["completion_observed_date_raw"],
+                                 later["date_raw"])
+
     def test_unavailable_completed_observer_keeps_prewar_legality_and_start_source(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

@@ -36,3 +36,34 @@ The completed slot and public player-income read remain separate receipts.
 Focused production-path fixture tests cover submit, active start, completion,
 durable ledger and cold recovery. No new CK3 paused frame, completed building
 or realized income is claimed by this source change.
+
+## 2026-09-28 completed-frame unavailable read
+
+On source `77e1950318fa51c5e06e1a747a1398b7c503c4e2`, the formal receipt
+could first see the exact completed slot while the province aggregate read was
+unavailable. Its cold-recheck fallback then reused the last **in-progress**
+province reading and computed a false zero completed delta. A focused test
+reproduced this through the production transport. The fallback now preserves
+an older aggregate only if the prior receipt was already completed and that
+aggregate was observed on or after its recorded completion frame. Otherwise
+the completed slot remains valid, but the aggregate delta stays `null`.
+
+A completed receipt with an unreadable aggregate now gets a new material read
+after 30 game days, using the existing private source and the original slot
+identity. A new PID's normal cold recheck can read sooner. The retry changes
+neither construction legality nor the original completed-slot proof. Normal
+and optimized focused tests cover the false-zero reproduction, a non-due
+turn, the due retry and recovered raw delta. This is source/fixture evidence;
+no CK3 completion or realized building income was observed.
+
+R0284's separate h90 derivative last read `hill_farms_01` at barony 2174,
+province 2629, slot 1 as `in_progress` on raw date 53157696, with remaining
+work raw 91277796 and province aggregate raw 87000. Its durable checkpoint
+date 53157768 is 27 game days before the ordinary next watch at raw 53158416;
+the next qualified PID must first requery the applied receipt. A completion
+acceptance needs the same building type and slot in `completed_buildings`, no
+matching active tuple, the original request/actor/episode binding, and a
+same-frame observed province aggregate. The public root's player monthly
+income is a separate actual total. Changes in either aggregate are not by
+themselves building-exclusive causal effects; other changes during elapsed
+time must be accounted for before attributing an increase to this building.
