@@ -135,6 +135,70 @@ class ProvisionalDefenseCanaryTests(unittest.TestCase):
             },
         }
 
+    def test_r0321_attempt4_can_read_short_route_before_cash_but_cannot_move(self):
+        frame, rows, actions, move_step = self._r0321_two_defender_inputs()
+        first_hop = 2614
+        short_preview_step = f"preview-move-army-83886367-to-{first_hop}"
+        short_contact_step = query_route_contact_horizon_step(
+            83886367, first_hop, (50331920, 83886484)
+        )
+        actions.update((short_preview_step, short_contact_step))
+        full_horizon = rows[1]["result"]["route_contact_horizon"]
+        self.assertEqual(
+            full_horizon["subject_route"]["arrival_date_raws"][0]
+            - frame["date_raw"], 168,
+        )
+        self.assertEqual(
+            full_horizon["horizon_end_date_raw"] - frame["date_raw"], 24,
+        )
+        short_preview, short_contact = rows[2:4]
+        rows = [rows[0], rows[1], rows[4]]
+
+        def plan(current_frame=frame, current_rows=rows):
+            with (
+                mock.patch("xar_autoplayer.strategy.plan_raiktor_formal_exit",
+                           return_value=None),
+                mock.patch("xar_autoplayer.strategy._choose_one_life_turn_core",
+                           return_value={"phase": "native_war_no_safe_exact_route",
+                                         "selected_step": None}),
+                mock.patch(
+                    "xar_autoplayer.strategy._provisional_defense_research_assessment",
+                    return_value={"status": "same_frame_encounter_scope_mismatch"},
+                ),
+            ):
+                return choose_one_life_turn(
+                    current_rows, snapshot=current_frame, action_steps=actions,
+                    bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+                )
+
+        first = plan()
+        self.assertEqual(first["selected_step"], short_preview_step, first)
+        self.assertFalse(first["active_attack_allowed"])
+        failed_preview = {"index": 7, "command": short_preview_step, "ok": False}
+        self.assertIsNone(plan(current_rows=rows + [failed_preview])["selected_step"])
+
+        rows.append(short_preview)
+        second = plan()
+        self.assertEqual(second["selected_step"], short_contact_step, second)
+        self.assertFalse(second["active_attack_allowed"])
+        failed_contact = {"index": 8, "command": short_contact_step, "ok": False}
+        self.assertIsNone(plan(current_rows=rows + [failed_contact])["selected_step"])
+
+        rows.append(short_contact)
+        without_cash = plan()
+        self.assertIsNone(without_cash["selected_step"], without_cash)
+        self.assertFalse(without_cash["active_attack_allowed"])
+        frame["native_revision"] += 1
+        stale = plan()
+        self.assertNotEqual(stale["selected_step"], move_step, stale)
+        frame["native_revision"] -= 1
+        frame["war_first_hop_cash_bound_v1"] = self._r0321_cash_package(
+            frame, move_step
+        )
+        admitted = plan()
+        self.assertEqual(admitted["selected_step"], move_step, admitted)
+        self.assertFalse(admitted["active_attack_allowed"])
+
     def test_r0321_cash_and_two_horizons_allow_only_contact_free_first_hop(self):
         frame, rows, actions, step = self._r0321_two_defender_inputs()
 

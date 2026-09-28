@@ -16807,32 +16807,76 @@ def _primary_defender_siege_forecast_ingress(
         ):
             first_hop = route[0]
             move_step = move_army_step(army_id, first_hop)
-            if (
-                move_step in action_steps
-                and _r0321_first_hop_cash_ready(
-                    snapshot, war_id=war_id, army_id=army_id,
-                    origin=origin, first_hop=first_hop, move_step=move_step,
-                )
-            ):
+            if move_step in action_steps:
                 short_preview = _fresh_move_route_preview(
                     commands, army_id=army_id, origin_province_id=origin,
                     target_province_id=first_hop, date_raw=date_raw,
                 )
+                short_preview_step = preview_move_army_step(army_id, first_hop)
+                if short_preview is None and (
+                    short_preview_step in action_steps
+                    and not _r0321_query_attempted_this_date(
+                        commands, short_preview_step
+                    )
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_siege_first_hop_preview_query",
+                        "selected_step": short_preview_step,
+                        "reason": "read the exact first-waypoint route before evaluating a cash-bound move",
+                        "route_preview": preview,
+                        "route_contact_horizon": contact,
+                        "qualified_forecast": qualified,
+                        "provisional_forecast": provisional,
+                        **evidence,
+                    }
+                if not (
+                    isinstance(short_preview, dict)
+                    and short_preview.get("status") == "available"
+                    and short_preview.get("route_province_ids") == [first_hop]
+                ):
+                    return blocked(
+                        "the first-waypoint route preview is missing or mismatched",
+                        "fresh-exact-first-hop-preview",
+                        detail={"short_route_preview": short_preview},
+                    )
                 short_contact = _fresh_route_contact_horizon(
                     commands, snapshot, army_id=army_id,
                     origin_province_id=origin, target_province_id=first_hop,
                     hostile_army_ids=hostile_ids, route_province_ids=[first_hop],
                 )
+                short_contact_step = query_route_contact_horizon_step(
+                    army_id, first_hop, hostile_ids
+                )
+                if short_contact is None and (
+                    short_contact_step in action_steps
+                    and not _r0321_query_attempted_this_date(
+                        commands, short_contact_step
+                    )
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_siege_first_hop_contact_query",
+                        "selected_step": short_contact_step,
+                        "reason": "read the same-frame full-hostile one-day first-waypoint timeline before evaluating a cash-bound move",
+                        "route_preview": preview,
+                        "route_contact_horizon": contact,
+                        "short_route_preview": short_preview,
+                        "qualified_forecast": qualified,
+                        "provisional_forecast": provisional,
+                        **evidence,
+                    }
                 if (
-                    isinstance(short_preview, dict)
-                    and short_preview.get("status") == "available"
-                    and short_preview.get("route_province_ids") == [first_hop]
-                    and isinstance(short_contact, dict)
+                    isinstance(short_contact, dict)
                     and short_contact.get("one_day_contact_free") is True
                     and short_contact.get("conflicts") == []
                     and _r0321_one_day_contact_free(short_contact, date_raw)
                     and _r0321_same_hostile_positions(
                         contact, short_contact, hostile_ids
+                    )
+                    and _r0321_first_hop_cash_ready(
+                        snapshot, war_id=war_id, army_id=army_id,
+                        origin=origin, first_hop=first_hop, move_step=move_step,
                     )
                 ):
                     return {
@@ -16904,6 +16948,19 @@ def _r0321_one_day_contact_free(contact: dict[str, object], date_raw: int) -> bo
         and contact.get("horizon_end_date_raw") == date_raw + 24
         and contact.get("one_day_contact_free") is True
         and contact.get("conflicts") == []
+    )
+
+
+def _r0321_query_attempted_this_date(
+    commands: list[dict[str, object]], step: str
+) -> bool:
+    """Stop a failed read-only query from looping in the same date epoch."""
+    last_advance = _latest_life_advance_index(commands)
+    return any(
+        _effective_command(row) == step
+        and (index := _native_int(row.get("index"))) is not None
+        and index > last_advance
+        for row in _history_after_latest_restore(commands)
     )
 
 
