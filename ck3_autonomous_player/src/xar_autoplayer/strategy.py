@@ -129,6 +129,8 @@ from .errors import AgentError
 from .runtime import utc_now
 from .raiktor_formal_exit import plan_raiktor_formal_exit
 from .formal_defender_exit_observation import observe_primary_defender_de_jure_exit
+from .m5_observed_opportunity_selector import observed_frame
+from .m5_war_cash_resource_v1 import require_complete_war_cash_resource_v1
 from .lifestyle_formal_consumer import consume_lifestyle_private_query
 from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
@@ -16779,6 +16781,66 @@ def _primary_defender_siege_forecast_ingress(
                     **{**evidence, "forecast_status": "provisional_trial", "active_attack_allowed": True},
                 }
             return short_waypoint(trial, qualified_trial=False)
+        if (
+            qualified.get("status") == "producer_unavailable"
+            and provisional.get("status") == "same_frame_encounter_scope_mismatch"
+            and result.get("accepted") is True
+            and result.get("status") == "available"
+            and len(defenders) > 1
+            and len(route) > 1
+            and route[0] not in {origin, target}
+            and contact.get("one_day_contact_free") is True
+            and contact_conflicts == []
+            and date_raw is not None
+            and _r0321_one_day_contact_free(contact, date_raw)
+            and len(active_wars) == 1
+            and len(player_armies) == 1
+        ):
+            first_hop = route[0]
+            move_step = move_army_step(army_id, first_hop)
+            if (
+                move_step in action_steps
+                and _r0321_first_hop_cash_ready(
+                    snapshot, war_id=war_id, army_id=army_id,
+                    origin=origin, first_hop=first_hop, move_step=move_step,
+                )
+            ):
+                short_preview = _fresh_move_route_preview(
+                    commands, army_id=army_id, origin_province_id=origin,
+                    target_province_id=first_hop, date_raw=date_raw,
+                )
+                short_contact = _fresh_route_contact_horizon(
+                    commands, snapshot, army_id=army_id,
+                    origin_province_id=origin, target_province_id=first_hop,
+                    hostile_army_ids=hostile_ids, route_province_ids=[first_hop],
+                )
+                if (
+                    isinstance(short_preview, dict)
+                    and short_preview.get("status") == "available"
+                    and short_preview.get("route_province_ids") == [first_hop]
+                    and isinstance(short_contact, dict)
+                    and short_contact.get("one_day_contact_free") is True
+                    and short_contact.get("conflicts") == []
+                    and _r0321_one_day_contact_free(short_contact, date_raw)
+                    and _r0321_same_hostile_positions(
+                        contact, short_contact, hostile_ids
+                    )
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_siege_forecast_unavailable_first_hop_move",
+                        "selected_step": move_step,
+                        "reason": "only the exact first waypoint is proved contact-free; replan before any further date advance or siege contact",
+                        "route_preview": preview,
+                        "route_contact_horizon": contact,
+                        "short_route_preview": short_preview,
+                        "short_route_contact_horizon": short_contact,
+                        "qualified_forecast": qualified,
+                        "provisional_forecast": provisional,
+                        "daily_recheck_required": True,
+                        "cash_bound_status": "same_frame_complete_for_selected_first_hop",
+                        **evidence,
+                    }
         return blocked(
             "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
             "qualified-same-frame-combat-forecast-and-expected-utility",
@@ -16825,6 +16887,91 @@ def _primary_defender_siege_forecast_ingress(
         "route_contact_horizon": contact,
         **evidence,
     }
+
+
+def _r0321_one_day_contact_free(contact: dict[str, object], date_raw: int) -> bool:
+    return (
+        contact.get("horizon_start_date_raw") == date_raw
+        and contact.get("horizon_end_date_raw") == date_raw + 24
+        and contact.get("one_day_contact_free") is True
+        and contact.get("conflicts") == []
+    )
+
+
+def _r0321_same_hostile_positions(
+    full: dict[str, object], short: dict[str, object], hostile_ids: tuple[int, ...]
+) -> bool:
+    def positions(contact: dict[str, object]) -> dict[int, int] | None:
+        rows = contact.get("hostile_routes")
+        if not isinstance(rows, list) or len(rows) != len(hostile_ids):
+            return None
+        found: dict[int, int] = {}
+        for row in rows:
+            if not isinstance(row, dict) or row.get("timeline_observable") is not True:
+                return None
+            army_id = _native_int(row.get("army_id"))
+            province_id = _native_int(row.get("current_province_id"))
+            if (army_id not in hostile_ids or army_id in found
+                    or province_id is None or province_id <= 0):
+                return None
+            found[army_id] = province_id
+        return found
+
+    full_positions = positions(full)
+    return full_positions is not None and full_positions == positions(short)
+
+
+def _r0321_first_hop_cash_ready(
+    snapshot: dict[str, object], *, war_id: int, army_id: int,
+    origin: int, first_hop: int, move_step: str,
+) -> bool:
+    """Consume a future exact-step cash producer; no such live producer is implied."""
+    package = snapshot.get("war_first_hop_cash_bound_v1")
+    diagnostics = snapshot.get("diagnostics")
+    if not isinstance(package, dict) or not isinstance(diagnostics, dict):
+        return False
+    generation = _native_int(diagnostics.get("connection_generation"))
+    if generation is None or generation <= 0:
+        return False
+    try:
+        frame = observed_frame(snapshot)
+        receipt = require_complete_war_cash_resource_v1(
+            package.get("war_cash_resource"), frame=frame, war_id=war_id,
+        )
+    except ValueError:
+        return False
+    quote = package.get("selected_step_quote")
+    gold = snapshot.get("played_character_gold")
+    if not (
+        package.get("schema") == "xar.ck3.war-first-hop-cash-bound.v1"
+        and package.get("source_frame") == frame
+        and package.get("connection_generation") == generation
+        and isinstance(quote, dict)
+        and quote.get("status") == "native_selected_step_bound"
+        and quote.get("source_frame") == frame
+        and quote.get("connection_generation") == generation
+        and quote.get("war_id") == war_id
+        and quote.get("army_id") == army_id
+        and quote.get("origin_province_id") == origin
+        and quote.get("target_province_id") == first_hop
+        and quote.get("selected_step") == move_step
+        and quote.get("source_kind") == "native_selected_step_price"
+        and isinstance(quote.get("source"), str) and quote["source"]
+        and quote.get("source") == receipt["amount_sources"]["immediate_war_action_cost_raw"]
+        and type(quote.get("upper_bound_raw")) is int
+        and quote["upper_bound_raw"] == receipt["immediate_war_action_cost_raw"]
+        and receipt["horizon_days"] >= 1
+        and isinstance(gold, dict) and type(gold.get("raw")) is int
+        and gold.get("scale") == 100_000
+        and receipt["observed_treasury_raw"] == gold["raw"]
+    ):
+        return False
+    return (
+        receipt["existing_shared_gold_commitment_raw"]
+        + receipt["immediate_war_action_cost_raw"]
+        + receipt["joint_gold_reserve_raw"]
+        <= gold["raw"]
+    )
 
 
 def _provisional_defense_research_assessment(

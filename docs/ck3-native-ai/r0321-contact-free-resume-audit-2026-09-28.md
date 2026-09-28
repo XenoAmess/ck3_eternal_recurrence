@@ -1,17 +1,17 @@
 # R0321：战斗预测 RED 后的无接敌续跑边界
 
-2026-09-28 静态审查，基于 `origin/master` `78aa76afe`、固定 OneDrive `WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json`（SHA-256 `6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20`）和 `WAR-ROBERT-R0271-SIEGE-PARTITION-20260928` 请求。来源记录只是元数据；未提供 R0321 的 388302 字节正式报告、3911 checkpoint、路线查询回执或同帧现金读数。本审查没有启动 CK3、选择动作或推进日期。
+2026-09-28 静态审查，基于 `origin/master` `32c0dd370`、固定 OneDrive `WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json`（SHA-256 `6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20`）、同目录 `R0321-formal-report.txt`（388302 字节，SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30`，接收 ACK 已核）和 `WAR-ROBERT-R0271-SIEGE-PARTITION-20260928` 请求。H3911 原始 driver/V3 payload、完整存档和当前帧现金读数尚未收到。本审查没有启动 CK3、选择动作或推进日期。
 
 ## 当前硬边界
 
-R0321 的暂停帧为 `native:23` / public revision 24 / native revision 23 / raw date 53219928，Robert 29829、War 16777231、我军 83886367 位于 2610、敌军 50331920 和 83886484 位于目标 2629。参与者分区已是 `available`，但精确 V3 输入查询仅 `accepted`，正式预测生产者 `producer_unavailable`；临时研究预测为 `same_frame_encounter_scope_mismatch`，因为现行 `_provisional_defense_research_assessment` 明确要求**只有一支**目标守军（`strategy.py:16861-16883`）。正式规划器 `selected_step=null`、`active_attack_allowed=false`，错误要求合格同帧战斗预测与期望效用（`strategy.py:16782-16810`）。不能把两个敌军的兵力总数、V3 查询成功、R0271 的旧首路点或无接敌的一日证明解释为进攻授权。
+R0321 的暂停帧为 `native:23` / public revision 24 / native revision 23 / raw date 53219928，Robert 29829、War 16777231、我军 83886367 位于 2610、敌军 50331920 和 83886484 位于目标 2629。正式报告的 `plan.route_preview` 给出 2610→2614→2618→2624→2631→2630→2629；全敌 route horizon 在 raw 53219928→53219952 的一日内无接敌，2614 的预测抵达却在 raw 53220096，即 **7 日后**。该一日证明只能约束发令后的首日，后续必须逐日重查。参与者分区已是 `available`，但精确 V3 输入查询仅 `accepted`，正式预测生产者 `producer_unavailable`；临时研究预测为 `same_frame_encounter_scope_mismatch`，因为现行 `_provisional_defense_research_assessment` 明确要求**只有一支**目标守军。正式规划器 `selected_step=null`、`active_attack_allowed=false`。不能把两个敌军的兵力总数、V3 查询成功、R0271 的旧首路点或无接敌的一日证明解释为进攻授权。
 
 ## 候选动作及门禁
 
 | 候选 | 现有合同下的结论 | 最小同帧证据 |
 | --- | --- | --- |
 | 攻入 2629 | **禁止**。两敌军预测未合格。 | 精确双方集合、全敌接触范围、合格概率/尾部风险、三行动期望效用和正式激活门；V3 输入本身不够。 |
-| 向围城目标走一个**无接敌**首路点 | **有条件可恢复**，尚不能声称 R0321 当前可走。R0271 已有独立模式，只提交精确首路点，之后每天重读，最终接敌仍回到预测门（`strategy.py:16375-16511`）。R0321 的分区已可用，现行 `short_waypoint` 却只在合格或临时预测通过后调用（`strategy.py:16580-16656,16781-16784`），所以正式 RED。若要扩展，复用 R0271 的更严格全敌位置一致性门，不能借当前 RED 的基线 `life-advance` 绕过它。 | 同一 `snapshot_id/revision/native_revision/date_raw/connection_generation` 下：完整路线长度大于一且首路点不等于 2629；完整敌军名册、路线与 `one_day_contact_free=true`、`conflicts=[]`；短路点 preview 精确 `[first_hop]`；短路点 full-hostile horizon 同样无接敌、两次查询全部敌军 ID/当前位置一致且时间窗精确覆盖下一日；唯一可控我军、无活动战斗/待处理事项、typed move 可用；移动后仍需全军日推进门。 |
+| 向围城目标走一个**无接敌**首路点 | **有条件可恢复**，尚不能声称 R0321 当前可走。R0271 已有独立模式，只提交精确首路点，之后每天重读，最终接敌仍回到预测门（`strategy.py` 的 `_primary_defender_siege_forecast_ingress`）。R0321 的分区已可用，原 `short_waypoint` 却只在合格或临时预测通过后调用，所以正式 RED。新增候选复用 R0271 更严格的全敌位置一致性门，不能借当前 RED 的基线 `life-advance` 绕过它。 | 同一 `snapshot_id/revision/native_revision/date_raw/connection_generation` 下：完整路线长度大于一且首路点不等于 2629；完整敌军名册、路线与 `one_day_contact_free=true`、`conflicts=[]`；短路点 preview 精确 `[first_hop]`；短路点 full-hostile horizon 同样无接敌、两次查询全部敌军 ID/当前位置一致且时间窗精确覆盖下一日；唯一可控我军、无活动战斗/待处理事项、typed move 可用；移动后仍需全军日推进门。 |
 | 原地等一日或继续已提交路线 | **有条件**，不能从 R0321 元数据推出可走。现行原地/已提交路线的推进门要求覆盖全部可控军队，任何军队威胁或接敌都会拒绝（`strategy.py:10750-10885,11213-11236`）。围城仍在推进，原地等候还需要同帧目标风险判断；不能仅靠我军眼前无战斗。 | 全军一日接触范围、在地/路线原生时序、围城占领和下一日损失边界、精确当前/目标帧；下一日重新规划。 |
 | 改目标、转进、避战 | **仅在原有独立安全路线实际被正式规划器选中时可行**。围城 forecast ingress 保留合法终战、首都或防御性撤离基线（`strategy.py:16179-16190`）；但不能凭口头假设硬改目标。 | 新目标的合法性、原生完整路线及每一日全敌接触审计、全部我军状态、目标价值/损失与当前围城义务的风险比较。 |
 | 投降或白和 | **不可据此自动执行**。终战是独立的 H2743 成本与行动闭环；R0321 的预测 RED 不是终战代价。 | 同帧合法性、实际条款/资源/头衔变更、续战风险和正式退出决策。 |
@@ -20,4 +20,6 @@ R0321 的暂停帧为 `native:23` / public revision 24 / native revision 23 / ra
 
 ## 来源机下一份最小回执
 
-已有固定 WAR 请求只接收唯一 `R0321-formal-report.txt`，无需另开第二份报告传输。收到并核对 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30` 后，先从报告抽出 exact `native:23` 的完整基线计划、全军/全敌及待处理状态、2610→2629 原生 preview、full-hostile route-contact query 的原文与行号、V3 query 原文，以及同帧现金/动作价格是否存在。若报告不含短路点 preview/horizon，来源机在**独立、已哈希绑定的只读 attempt** 中补这些查询；不得把后来的帧或另一次会话拼为一帧。路线只有一跳直达 2629、首跳碰敌、短查询敌军位置不一致、其他可控军队不安全、价格/军费无界时，保持 `selected_step=null`。即使安全首路点成立，也只准有限行军和逐日复核，不准接敌或把预测标为合格。
+固定 WAR 的正式报告已到货并核验，但只含全路段预览与一日接触回执。要实际启用首路点，仍需从 H3911 精确配对的来源读取同一 `native:23` 帧的 2610→2614 短路点 preview、full-hostile 短 horizon、完整可控军队/待处理事项及与 `move-army-83886367-to-2614` 精确绑定的现金报价和一日维护上界。新的候选代码只消费已存在的同帧回执；缺任一项仍保留原 RED，不自动发送额外查询。不能把后来的帧或另一次会话拼为一帧。首跳碰敌、短查询敌军位置不一致、其他可控军队不安全、价格/军费无界时，保持 `selected_step=null`。即使安全首路点成立，也只准有限行军和逐日复核，不准接敌或把预测标为合格。
+
+独立候选实现位于 `strategy.py` 的原预测 RED 分支：仅 `producer_unavailable`、双守军和 `same_frame_encounter_scope_mismatch` 同时成立时，才检查精确首跳；完整与短 horizon 都必须原生证明未来 24 raw 小时无接敌、敌军逐 ID 位置一致、只一支我军和一个活跃战争。现金门要求已有完整 M5 战争现金回执，以及同帧、同连接代、同 WarID/ArmyID/起终省份/动作字面的上限报价；待付 + 本次上限 + 一日未来成本/风险/最低储备必须不超过当帧现金。实际原生现金报价生产者尚无，此门在 R0321 实况中关闭。单测的现金数据纯属合成门禁测试，不是 Robert 的费用测量或实机放行。

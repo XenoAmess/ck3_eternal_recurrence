@@ -15,6 +15,8 @@ from xar_autoplayer.strategy import (
     query_combat_simulation_inputs_v3_step,
     query_route_contact_horizon_step,
 )
+from xar_autoplayer.m5_observed_opportunity_selector import observed_frame
+from xar_autoplayer.m5_war_cash_resource_v1 import observe_active_war_cash_resource_v1
 
 from ck3_autonomous_player.tests.unit.test_gameplay_bridge import (
     _army,
@@ -35,6 +37,164 @@ R0265_REPORT = (
 
 
 class ProvisionalDefenseCanaryTests(unittest.TestCase):
+    def _r0321_two_defender_inputs(self):
+        frame, rows = self._r0271_replay_inputs()
+        frame["episode_run_id"] = "native-29829-r0321-test"
+        frame["played_character_id"] = 29829
+        frame["played_character_gold"] = {"raw": 100_000_000, "scale": 100_000}
+        second = frame["active_wars"][0]["enemy_armies"][1]
+        second.update({
+            "current_province_id": 2629, "army_state": "sieging",
+            "army_state_code": 3, "move_target_province_id": None,
+            "route_province_ids": [],
+        })
+        full = rows[1]["result"]["route_contact_horizon"]
+        full["hostile_routes"][1].update({
+            "current_province_id": 2629,
+            "route_province_ids": [], "arrival_date_raws": [],
+        })
+        rows[1]["result"]["queried_episode_run_id"] = frame["episode_run_id"]
+        route = rows[0]["result"]["route_preview"]["route_province_ids"]
+        first_hop = route[0]
+        rows.append(_preview_row(
+            4, army_id=83886367, origin=2610, target=first_hop,
+            date_raw=frame["date_raw"], route=[first_hop],
+        ))
+        rows.append(_route_contact_row(
+            5, army_id=83886367, origin=2610, target=first_hop,
+            date_raw=frame["date_raw"], route=[first_hop],
+            hostile_ids=(50331920, 83886484), contact_free=True,
+            episode_run_id=frame["episode_run_id"],
+            hostile_provinces={50331920: 2629, 83886484: 2629},
+        ))
+        query_step = query_combat_simulation_inputs_v3_step(
+            2629, route[-2], [83886367], [50331920, 83886484]
+        )
+        rows.append({
+            "index": 6, "command": query_step, "ok": True,
+            "result": {
+                "step": query_step, "accepted": True, "status": "available",
+                "queried_snapshot_id": frame["snapshot_id"],
+                "queried_revision": frame["revision"],
+                "queried_native_revision": frame["native_revision"],
+            },
+        })
+        frame.update({
+            "combat_simulation_inputs_v3": {"completeness": {}},
+            "combat_simulation_inputs_v3_status": "available",
+            "combat_simulation_inputs_v3_target_province_id": 2629,
+            "combat_simulation_inputs_v3_attacker_entry_province_id": route[-2],
+            "combat_simulation_inputs_v3_attacker_army_ids": [83886367],
+            "combat_simulation_inputs_v3_defender_army_ids": [50331920, 83886484],
+            "combat_simulation_inputs_v3_queried_snapshot_id": frame["snapshot_id"],
+            "combat_simulation_inputs_v3_queried_revision": frame["revision"],
+        })
+        step = f"move-army-83886367-to-{first_hop}"
+        actions = {step}
+        return frame, rows, actions, step
+
+    def _r0321_cash_package(self, frame, step):
+        source_frame = observed_frame(frame)
+        war_id = 16777231
+        quote_source = "synthetic-exact-selected-step-price"
+
+        def amount(raw, source):
+            return {
+                "raw": raw, "scale": 100_000, "source": source,
+                "source_frame": dict(source_frame), "war_id": war_id,
+            }
+
+        receipt = observe_active_war_cash_resource_v1(
+            snapshot=frame, war_id=war_id,
+            inputs={
+                "source_frame": dict(source_frame), "war_id": war_id,
+                "pending_war_cash_raw": amount(1_000_000, "synthetic-pending"),
+                "immediate_war_action_cost_raw": amount(0, quote_source),
+                "future_war_cost_upper_raw": amount(2_000_000, "synthetic-one-day-upkeep"),
+                "future_risk_budget_raw": amount(1_000_000, "synthetic-risk"),
+                "policy_minimum_gold_reserve_raw": amount(5_000_000, "synthetic-policy"),
+                "horizon_days": 1,
+                "future_bound_assumptions": ["synthetic one-day bound"],
+            },
+        )
+        return {
+            "schema": "xar.ck3.war-first-hop-cash-bound.v1",
+            "source_frame": dict(source_frame), "connection_generation": 1,
+            "war_cash_resource": receipt,
+            "selected_step_quote": {
+                "status": "native_selected_step_bound",
+                "source_frame": dict(source_frame), "connection_generation": 1,
+                "war_id": war_id, "army_id": 83886367,
+                "origin_province_id": 2610,
+                "target_province_id": int(step.rsplit("-", 1)[-1]),
+                "selected_step": step, "source_kind": "native_selected_step_price",
+                "source": quote_source, "upper_bound_raw": 0,
+            },
+        }
+
+    def test_r0321_cash_and_two_horizons_allow_only_contact_free_first_hop(self):
+        frame, rows, actions, step = self._r0321_two_defender_inputs()
+
+        def plan(current_frame=frame, current_rows=rows, current_actions=actions):
+            with mock.patch(
+                "xar_autoplayer.strategy._provisional_defense_research_assessment",
+                return_value={"status": "same_frame_encounter_scope_mismatch"},
+            ):
+                return _primary_defender_siege_forecast_ingress(
+                    {"phase": "native_war_no_safe_exact_route", "selected_step": None},
+                    commands=current_rows, snapshot=current_frame,
+                    action_steps=current_actions,
+                    bridge_capabilities={QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY},
+                )
+
+        blocked = plan()
+        self.assertEqual(blocked["phase"], "native_war_siege_forecast_inputs_observed")
+        self.assertIsNone(blocked["selected_step"])
+        frame["war_first_hop_cash_bound_v1"] = self._r0321_cash_package(frame, step)
+        admitted = plan()
+        self.assertEqual(admitted["selected_step"], step, admitted)
+        self.assertEqual(admitted["phase"],
+                         "native_war_siege_forecast_unavailable_first_hop_move")
+        self.assertFalse(admitted["active_attack_allowed"])
+        self.assertEqual(admitted["forecast_status"], "research_only")
+        self.assertTrue(admitted["daily_recheck_required"])
+
+        for change in (
+            lambda f, r, a: r[1]["result"]["route_contact_horizon"].update(
+                horizon_end_date_raw=f["date_raw"] + 48),
+            lambda f, r, a: r[3]["result"]["route_contact_horizon"].update(
+                one_day_contact_free=False),
+            lambda f, r, a: r[3]["result"]["route_contact_horizon"].update(
+                horizon_end_date_raw=f["date_raw"] + 48),
+            lambda f, r, a: r[3]["result"]["route_contact_horizon"]
+                ["hostile_routes"][1].update(current_province_id=3719),
+            lambda f, r, a: r[4]["result"].update(accepted=False),
+            lambda f, r, a: r.pop(2),
+            lambda f, r, a: r.pop(3),
+            lambda f, r, a: a.clear(),
+            lambda f, r, a: f.update(active_event={"event_id": 1}),
+            lambda f, r, a: f["war_first_hop_cash_bound_v1"]
+                ["selected_step_quote"].update(selected_step="move-army-83886367-to-2629"),
+            lambda f, r, a: f["war_first_hop_cash_bound_v1"]
+                ["selected_step_quote"].update(connection_generation=2),
+            lambda f, r, a: f["war_first_hop_cash_bound_v1"]
+                ["selected_step_quote"].update(source="unbound-fee"),
+            lambda f, r, a: f["war_first_hop_cash_bound_v1"]
+                ["war_cash_resource"].update(horizon_days=0),
+            lambda f, r, a: f["war_first_hop_cash_bound_v1"]
+                ["war_cash_resource"].update(observed_treasury_raw=0),
+            lambda f, r, a: (
+                f["played_character_gold"].update(raw=1_000_000),
+                f["war_first_hop_cash_bound_v1"]["war_cash_resource"]
+                    .update(observed_treasury_raw=1_000_000),
+            ),
+        ):
+            f, r, a = copy.deepcopy(frame), copy.deepcopy(rows), set(actions)
+            change(f, r, a)
+            result = plan(f, r, a)
+            self.assertIsNone(result["selected_step"], result)
+            self.assertIsNot(result.get("active_attack_allowed"), True)
+
     def _r0271_replay_inputs(self):
         report = json.loads(R0265_REPORT.with_name(
             "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r0271-blocker-excerpt.json"
