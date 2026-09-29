@@ -62,14 +62,22 @@ def _fixture() -> dict[str, object]:
         "before": snapshot, "after": deepcopy(snapshot),
         "outcome": {
             "status": "executed", "selected_step": subject.STEP,
-            "snapshot_id": FRAME["snapshot_id"],
-            "revision": FRAME["revision"],
             "plan": {
                 "policy": "one-life-turn-v1",
                 "selected_step": subject.STEP,
                 "priced_command": command,
             },
-            "result": {**native, "backend_id": "native-headless"},
+            "result": {
+                **native, "backend_id": "native-headless",
+                "queried_snapshot_id": FRAME["snapshot_id"],
+                "queried_revision": FRAME["revision"],
+                "queried_native_revision": FRAME["native_revision"],
+                "queried_episode_run_id": FRAME["episode_run_id"],
+                "termination_query_context": {
+                    "queried_date_raw": FRAME["date_raw"],
+                    "queried_character_id": FRAME["played_character_id"],
+                },
+            },
         },
         "wire": {
             "request": request,
@@ -152,6 +160,45 @@ class FormalQueryRuntimeReceiptTests(unittest.TestCase):
         receipt = subject.build_formal_query_session_receipt(**sample)
         self.assertEqual(receipt["missing_reasons"],
                          ["actual_auto_turn_selected_typed_query_unproven"])
+
+    def test_real_executed_outcome_uses_query_result_frame_not_missing_top_level(self) -> None:
+        sample = _fixture()
+        self.assertNotIn("snapshot_id", sample["outcome"])
+        self.assertNotIn("revision", sample["outcome"])
+        receipt = subject.build_formal_query_session_receipt(**sample)
+        self.assertEqual(receipt["status"], "same_paused_query_postcheck_passed")
+
+    def test_query_result_frame_missing_or_changed_blocks(self) -> None:
+        for key, value in (
+            ("queried_snapshot_id", "native:other"),
+            ("queried_revision", None),
+            ("queried_revision", FRAME["revision"] + 1),
+            ("queried_native_revision", False),
+            ("queried_native_revision", FRAME["native_revision"] + 1),
+            ("queried_episode_run_id", "different-episode"),
+        ):
+            with self.subTest(key=key, value=value):
+                sample = _fixture()
+                sample["outcome"]["result"][key] = value
+                receipt = subject.build_formal_query_session_receipt(**sample)
+                self.assertEqual(receipt["status"], "blocked")
+                self.assertEqual(receipt["missing_reasons"],
+                                 ["query_result_or_war_id_mismatch"])
+
+    def test_query_result_context_date_and_character_must_match(self) -> None:
+        for key, value in (
+            ("queried_date_raw", False),
+            ("queried_date_raw", FRAME["date_raw"] + 24),
+            ("queried_character_id", None),
+            ("queried_character_id", FRAME["played_character_id"] + 1),
+        ):
+            with self.subTest(key=key, value=value):
+                sample = _fixture()
+                sample["outcome"]["result"]["termination_query_context"][key] = value
+                receipt = subject.build_formal_query_session_receipt(**sample)
+                self.assertEqual(receipt["status"], "blocked")
+                self.assertEqual(receipt["missing_reasons"],
+                                 ["query_result_or_war_id_mismatch"])
 
     def test_cross_frame_or_wrong_war_is_blocked(self) -> None:
         for mutation in ("after_revision", "wire_war", "native_war"):

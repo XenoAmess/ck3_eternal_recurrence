@@ -356,9 +356,6 @@ def build_formal_query_session_receipt(
     }
     if (outcome.get("status") != "executed"
             or outcome.get("selected_step") != STEP
-            or outcome.get("snapshot_id") != frame_before["snapshot_id"]
-            or type(outcome.get("revision")) is not int
-            or outcome["revision"] != frame_before["revision"]
             or not isinstance(plan, Mapping)
             or plan.get("policy") != "one-life-turn-v1"
             or plan.get("selected_step") != STEP
@@ -410,6 +407,17 @@ def build_formal_query_session_receipt(
             or result.get("backend_id") != "native-headless"
             or result.get("accepted") is not True
             or result.get("status") != "available"
+            or result.get("queried_snapshot_id") != frame_before["snapshot_id"]
+            or type(result.get("queried_revision")) is not int
+            or result["queried_revision"] != frame_before["revision"]
+            or type(result.get("queried_native_revision")) is not int
+            or result["queried_native_revision"] != frame_before["native_revision"]
+            or result.get("queried_episode_run_id") != frame_before["episode_run_id"]
+            or not isinstance(result.get("termination_query_context"), Mapping)
+            or type(result["termination_query_context"].get("queried_date_raw")) is not int
+            or result["termination_query_context"]["queried_date_raw"] != frame_before["date_raw"]
+            or type(result["termination_query_context"].get("queried_character_id")) is not int
+            or result["termination_query_context"]["queried_character_id"] != frame_before["played_character_id"]
             or result.get("query_sequence") != native_result["query_sequence"]
             or not isinstance(result.get("war_termination_options"), Mapping)
             or result["war_termination_options"].get("war_id") != WAR_ID
