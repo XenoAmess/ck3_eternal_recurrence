@@ -88,7 +88,8 @@ def _timed_route(army_id: int, province: int,
 def _contact_result(step: str) -> dict[str, object]:
     return {
         "step": step, "accepted": True, "status": "available",
-        "query_sequence": 2, "snapshot_revision": 4,
+        # Native query_sequence counters are per query family, not global.
+        "query_sequence": 1, "snapshot_revision": 4,
         "backend_id": "native-headless",
         "queried_snapshot_id": "native:4", "queried_revision": 5,
         "queried_native_revision": 4,
