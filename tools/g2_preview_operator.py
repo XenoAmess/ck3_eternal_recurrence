@@ -650,6 +650,14 @@ def post_sway_child_pending_result_pair(
     after = turn.get("after") if isinstance(turn, dict) else None
     pending = sidecar.get("pending")
     checkpoint = driver.get("last_checkpoint")
+    history = driver.get("command_history")
+    saved_index = saved.get("history_index") if isinstance(saved, dict) else None
+    saved_row = (history[saved_index - 1]
+                 if isinstance(history, list) and type(saved_index) is int
+                 and 0 < saved_index <= len(history) else None)
+    saved_result = saved_row.get("result") if isinstance(saved_row, dict) else None
+    materialized = (saved_result.get("checkpoint")
+                    if isinstance(saved_result, dict) else None)
     actor = driver.get("episode_character_id")
     episode = driver.get("episode_run_id")
     bound_red = (
@@ -675,6 +683,14 @@ def post_sway_child_pending_result_pair(
             or not isinstance(turn, dict) or not isinstance(result, dict)
             or not isinstance(before, dict) or not isinstance(after, dict)
             or not isinstance(saved, dict) or not isinstance(checkpoint, dict)
+            or not isinstance(saved_row, dict)
+            or saved_row.get("index") != saved_index
+            or saved_row.get("command") != "save-checkpoint"
+            or saved_row.get("ok") is not True
+            or not isinstance(materialized, dict)
+            or any(materialized.get(key) != saved.get(key) for key in (
+                "sha256", "size", "history_index", "date_raw",
+                "episode_character_id", "episode_run_id"))
             or not isinstance(pending, dict) or sidecar.get("resolved") is not None
             or fixed.get("sha256") != previous.get("sha256")
             or fixed.get("history_index") != previous.get("history_index")

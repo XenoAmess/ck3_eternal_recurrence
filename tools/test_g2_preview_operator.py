@@ -401,7 +401,11 @@ class G2PreviewOperatorTest(unittest.TestCase):
                            "sha256": post_hash, "turn_index": 1,
                            "phase": "player_child_matrilineal_result_pending",
                            "ledger_status": "pending", "status": "saved"}
-        post_driver = {**driver, "last_checkpoint": post_checkpoint}
+        post_history = [None] * 3933
+        post_history[3932] = {"index": 3933, "command": "save-checkpoint",
+                              "ok": True, "result": {"checkpoint": post_checkpoint}}
+        post_driver = {**driver, "last_checkpoint": post_checkpoint,
+                       "command_history": post_history}
         # H3933's real checkpoint cannot validate the earlier R0342 Sway
         # effect. The prepared copy must recheck Sway against H3928, while
         # child pairing below still checks the genuine H3933 driver/save.
@@ -478,7 +482,11 @@ class G2PreviewOperatorTest(unittest.TestCase):
         final_hash = "e" * 64
         final_checkpoint = {**post_checkpoint, "history_index": 3937,
                             "sha256": final_hash}
-        final_driver = {**driver, "last_checkpoint": final_checkpoint}
+        final_history = [*post_history, None, None, None, {
+            "index": 3937, "command": "save-checkpoint", "ok": True,
+            "result": {"checkpoint": final_checkpoint}}]
+        final_driver = {**driver, "last_checkpoint": final_checkpoint,
+                        "command_history": final_history}
         followup = copy.deepcopy(post_report)
         followup.update({
             "ok": True, "outcome": "qualified", "first_blocker": None,
@@ -497,6 +505,16 @@ class G2PreviewOperatorTest(unittest.TestCase):
             sway_applied_continuation=applied_report,
             post_sway_result=post_report,
             post_sway_followups=[followup]), 37267)
+        tampered_driver = copy.deepcopy(final_driver)
+        tampered_driver["command_history"][3932]["result"]["checkpoint"][
+            "sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "post-Sway child pending read"):
+            paired(final_sidecar, tampered_driver, {}, final_hash,
+                   [proof, continuation], sway_continuation=sway_report,
+                   sway_sidecar=resolved_ledger,
+                   sway_applied_continuation=applied_report,
+                   post_sway_result=post_report,
+                   post_sway_followups=[followup])
         broken = copy.deepcopy(followup)
         broken["fixed_seed"]["sha256"] = applied_hash
         with self.assertRaisesRegex(ValueError, "post-Sway child pending read"):

@@ -179,8 +179,10 @@ H3937 preparation must retain both result checkpoints in order:
 R0342 H3928 → R0352 H3933 → R0357 H3937. The preparer now accepts an
 additional `--child-matrilineal-followup-result-report` after the existing
 post-Sway result report. Each read must show the same pending pair and link
-its fixed seed to the prior saved checkpoint; the final read must match the
-actual H3937 save, driver and latest pending ledger. This is a cold-restore
+its fixed seed to the prior saved checkpoint, and every reported checkpoint
+must match the saved checkpoint in the final driver's command history. The
+final read must also match the actual H3937 save, driver and latest pending
+ledger. This is a cold-restore
 pairing change, not evidence of an accepted proposal.
 
 The same raw date has a separate normal eight-turn war attempt ending RED
