@@ -68,6 +68,51 @@ receipt; a future Start action requires its own game postcondition.
 The structured receipt includes the two row ID arrays, stages, gold values,
 `submitted`, `needs_recovery`, and each postcondition flag. After the call
 starts, any read failure or mismatch remains `submitted=true` and
-`needs_recovery=true`; neither a retry nor a bare ACK may erase it. This is
-static-ready registration only. A matched frozen candidate and real paused
-run must prove the action and later recovery before production-live status.
+`needs_recovery=true`; neither a retry nor a bare ACK may erase it.
+
+R0364 now proves this exact-build private action in one paused run. The
+receipt does not establish ordinary autoplay consumption, a next turn, or
+cold restore after selection. The public capability remains OFF.
+
+## R0364 bounded live selection
+
+The frozen H3928 candidate used source and latest master
+`58d6bf8ec8d8ca8055aed06657fea6275ca8988e` (official push CI
+#36544818252 SUCCESS), Release DLL SHA-256
+`4E8EE05B9FCE4AFE168111261F384C5EBC0FB7813526AF0C7CAD1D26CC3565D0`,
+and [candidate index](Z:/m6-activity-h3928-stage2-destination-candidate-20260929/CANDIDATE-INDEX.json)
+SHA-256 `A194B6629B8B24CAC7D179D77E9187F9AEABC81D6EA5ADE3D51F8186F9928ED1`.
+Official rebind/no-launch returned `ready`. The source H3928 save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+was paired with its driver and sidecars. New CK3 PID 7924 was minimized after
+window verification; the [owner window receipt](Z:/m6-activity-h3928-stage2-destination-candidate-20260929/OWNER-WINDOW-RECEIPT.json)
+has SHA-256 `74784088197976BE5703A1160D2991B12C991ECEB87E1D6D3D55BD608DD1B83F`.
+
+On the same paused `native:3` frame (native revision 3, actor 29829, date
+raw53219928), the private runner reopened the feast planner and submitted the
+Stage 1 generic Confirm. It re-read Stage 2 with both province IDs zero, active
+row 0, the single-location flag, previous stage 1, and original
+`CanSelectDestination(2619)=true`. It then submitted exactly one typed
+`select-activity-feast-stage2-destination-v1-private` call with explicit
+ProvinceID 2619. The action receipt says `submitted=true`,
+`needs_recovery=false`, `status=verified_stage_five`,
+`planning_stage_before=2`, `planning_stage_after=5`, and independent post-read
+row IDs `[2619,2619]` after `[0,0]`. The selected generic option remained
+bound. Gold raw `120644281` and date raw53219928 were unchanged. The two
+filled rows match the original `0x10AF407` active-row `+8` write and
+`0x219A500` single-location propagation under this exact branch. This is a
+material configuration change, not merely an ACK.
+
+The [formal report](Z:/m6-activity-h3928-stage2-destination-candidate-20260929/operator-runs/feast-stage2-destination-2619-1/formal-report.txt)
+SHA-256 `679E860EC1F4FBBA852CD9BA7BD27A45D1389CF08538485B4DF0B0CC973FA54E`
+records `private_activity_feast_stage2_destination_selected/`
+`planning_stage_advanced/ok=true`; the [operator receipt](Z:/m6-activity-h3928-stage2-destination-candidate-20260929/operator-runs/feast-stage2-destination-2619-1/operator-receipt.json)
+SHA-256 `450AD1AE8F842A5FCD5B0C746614DA55F1E67B1B80913762165B9C8E69CB658C`
+records completion/exit 0. Normal `auto_run` attempted, successful, and visible
+gameplay turns are all zero. Checkpoint save SHA remained the original value;
+`cleanup.tree_gone=true`. The receipt's `no_activity_started=true` is bounded
+by the verified Stage 5 planner state and the exact static no-Start route; it
+is **not** an independent hosted-activity census. No Stage 5 cost, final
+CanStart, Start, payment, reward, next-turn consumption, or post-selection cold
+restore was observed. The next branch is named Stage 5 resource/cost and
+CanStart readback, followed by a separately verified Start and recovery.
