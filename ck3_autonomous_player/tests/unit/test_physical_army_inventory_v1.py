@@ -82,10 +82,16 @@ def mailbox_fixture() -> tuple[dict, dict, dict]:
         "mailbox_paused": True, "same_source_across_route": True,
     })
     snapshot = {
-        "paused": True, "snapshot_id": "native:7", "revision": 8,
+        "map_ready": True, "paused": True, "snapshot_id": "native:7", "revision": 8,
         "native_revision": 7, "episode_run_id": "native-29829-2bc2d599f7f9",
         "date_raw": DATE, "diagnostics": {"connection_generation": 3},
-        "player_armies": [{"army_id": SUBJECT}],
+        "episode_character_id": 29_829, "active_event": None,
+        "pending_character_interaction": None,
+        "route_contact_horizon_supported": True,
+        "played_character": {"character_id": 29_829},
+        "player_armies": [{"army_id": SUBJECT,
+                            "owner_character_id": 29_829,
+                            "controllable": True}],
         "active_wars": [{"war_id": WAR,
                          "allied_armies": [{"army_id": SUBJECT}],
                          "enemy_armies": [{"army_id": ENEMY}]}],
@@ -132,6 +138,30 @@ class PhysicalInventoryShapeTests(unittest.TestCase):
         changed_snapshot["revision"] = 9
         self.assertFalse(check_mailbox(native, snapshot, horizon,
                                        current=changed_snapshot).valid)
+        changed_snapshot = copy.deepcopy(snapshot)
+        changed_snapshot["played_character"]["character_id"] = 29_830
+        self.assertEqual(check_mailbox(native, snapshot, horizon,
+                                       current=changed_snapshot).reason,
+                         "public_frame_changed")
+        changed_snapshot = copy.deepcopy(snapshot)
+        changed_snapshot["map_ready"] = False
+        self.assertFalse(check_mailbox(native, snapshot, horizon,
+                                       current=changed_snapshot).valid)
+        for key, value in (
+            ("active_event", {"instance_id": 7}),
+            ("pending_character_interaction", {"interaction_id": 9}),
+            ("route_contact_horizon_supported", False),
+        ):
+            with self.subTest(key=key):
+                changed_snapshot = copy.deepcopy(snapshot)
+                changed_snapshot[key] = value
+                self.assertFalse(check_mailbox(native, snapshot, horizon,
+                                               current=changed_snapshot).valid)
+        wrong_actor = copy.deepcopy(snapshot)
+        wrong_actor["played_character"]["character_id"] = 29_830
+        wrong_actor["player_armies"][0]["owner_character_id"] = 29_830
+        self.assertEqual(check_mailbox(native, wrong_actor, horizon).reason,
+                         "h3937_actor_binding_mismatch")
 
     def test_mailbox_rejects_retreat_and_ambiguous_war(self) -> None:
         native, snapshot, horizon = mailbox_fixture()

@@ -27,6 +27,8 @@ _MAILBOX_UNIT_KEYS = frozenset({
     "army_state_code", "in_combat", "retreating", "controllable",
     "war_side",
 })
+_H3937_EPISODE_RUN_ID = "native-29829-2bc2d599f7f9"
+_H3937_ACTOR_CHARACTER_ID = 29_829
 
 
 @dataclass(frozen=True)
@@ -233,7 +235,9 @@ def validate_native_physical_inventory_mailbox_v1(
     ):
         return red("mailbox_unit_rows_malformed")
     if not (
-        starting.get("paused") is True
+        starting.get("map_ready") is True
+        and current.get("map_ready") is True
+        and starting.get("paused") is True
         and current.get("paused") is True
         and type(native_receipt.get("mailbox_pump_epoch")) is int
         and native_receipt["mailbox_pump_epoch"] > 0
@@ -250,11 +254,36 @@ def validate_native_physical_inventory_mailbox_v1(
         and native_receipt.get("native_revision") == starting.get("native_revision")
     ):
         return red("mailbox_source_or_frame_mismatch")
-    if any(starting.get(key) != current.get(key) for key in (
+    identity_keys = (
         "snapshot_id", "revision", "native_revision", "date_raw",
-        "episode_run_id", "active_wars", "player_armies",
-    )):
+        "episode_run_id", "played_character", "active_wars", "player_armies",
+        "map_ready", "paused", "episode_character_id", "active_event",
+        "pending_character_interaction", "route_contact_horizon_supported",
+    )
+    if (any(key not in starting or key not in current for key in identity_keys) or
+            any(starting[key] != current[key] for key in identity_keys)):
         return red("public_frame_changed")
+    capability_keys = {key for key in set(starting) | set(current)
+                       if key.endswith("_supported") or key == "capabilities"}
+    if any(key not in starting or key not in current or
+           starting[key] != current[key] for key in capability_keys):
+        return red("capability_frame_changed")
+    actor = starting.get("played_character")
+    actor_id = actor.get("character_id") if isinstance(actor, Mapping) else None
+    if type(actor_id) is not int or actor_id <= 0:
+        return red("played_character_missing")
+    if (starting.get("episode_run_id") == _H3937_EPISODE_RUN_ID and
+            actor_id != _H3937_ACTOR_CHARACTER_ID):
+        return red("h3937_actor_binding_mismatch")
+    if starting.get("episode_character_id") != actor_id:
+        return red("episode_actor_binding_mismatch")
+    player_rows = starting.get("player_armies")
+    subject_rows = [row for row in player_rows if isinstance(row, Mapping)
+                    and row.get("army_id") == subject_army_id] if isinstance(player_rows, list) else []
+    if (len(subject_rows) != 1 or
+            subject_rows[0].get("owner_character_id") != actor_id or
+            subject_rows[0].get("controllable") is not True):
+        return red("played_character_subject_mismatch")
     start_diag = starting.get("diagnostics")
     current_diag = current.get("diagnostics")
     if not isinstance(start_diag, Mapping) or not isinstance(current_diag, Mapping):
