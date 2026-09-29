@@ -35,6 +35,16 @@ aggregate force count, partial V3 forecast or automatic surrender to resolve
 it. H3937 is at 2610 on raw 53219928; a hold there is a new decision, not the
 old move to 2614.
 
+There is an **existing formal date seam** outside this disabled H3937
+collector. `native_driver._fresh_route_contact_advance_proofs` derives its
+hostile IDs from the published war row without a physical-inventory
+certificate, and `strategy.py`'s stationary branch can select
+`native_war_stationary_contact_horizon_progress` when that published-roster
+horizon is contact-free. This document and its new bare-boolean test do **not**
+close that formal path. A separate formal driver/selector hard gate with
+negative tests is required before any H3937 read may be used for a date step;
+the current H3937 research result remains date RED.
+
 | Evidence after a hypothetical GREEN read | Established | Still unknown |
 | --- | --- | --- |
 | S0/S1/S2 war rows and per-army route statuses | Current native-published IDs, positions and complete routes | Whether the physical live-CUnit scan omitted a hostile |
@@ -59,17 +69,23 @@ read cannot be serialized as an empty hostile set. The result needs:
    unresolved candidate slots. A valid empty slot is distinct from an
    unreadable or truncated slot. `complete` requires a fully scanned valid
    capacity, no truncation and **zero unresolved potentially live units**.
-3. The sorted full-generation IDs of all live units classified as hostile to
-   Army 83886367 in War 16777231 by an authoritative native relation, with
-   their current Province, retreat/combat status and route-read status. The
+3. The sorted full-generation IDs of **all** live units classified as hostile
+   to Army 83886367 in War 16777231 by an authoritative native relation,
+   including retreating units, with their current Province, retreat/combat
+   status and route-read status. The
    classification must account for every live CUnit, including a unit absent
    from the existing `enemy_armies` projection; third-party or neutral units
    need explicit nonhostile classification, not silent omission. Any
    ambiguous owner/side/hostility relation makes the result `partial`.
-4. Exact equality between that hostile set, the published war row's query
-   set and the route-contact request/result set. Every included hostile and
-   the subject needs a complete, generation-checked route read. If these
-   sets disagree, fail before date selection and preserve the differing IDs.
+4. A distinct sorted `query_eligible_nonretreating_hostile_ids` set, derived
+   from the complete physical set by the exact reviewed engine predicate.
+   This second set must equal the published war row's query set and the
+   route-contact request/result set. The currently different Python and C++
+   retreat predicates must be reconciled or fail closed. Each excluded
+   retreating unit needs independent native proof that it cannot contact the
+   subject during this day; otherwise date selection remains RED. Every
+   included hostile and the subject needs a complete, generation-checked
+   route read. Preserve any set disagreement or excluded-unit uncertainty.
 
 A bare `complete_physical_army_inventory_proven=true` flag in a Python
 snapshot or a saved report is insufficient. Native source identity, scan
@@ -88,7 +104,9 @@ contact; no such guard is proven here.
 
 ## Proposed date and action gate
 
-For the present H3937 source, the result is `RED: inventory_completeness_unproven`.
+For the present H3937 research source, the result is
+`RED: inventory_completeness_unproven`; the existing formal date seam above
+also remains open until its own hard gate is reviewed.
 Do not emit `life-advance`, `advance-route-contact-horizon`, `move-army`, an
 attack, a siege assault or a surrender from the read-only collector. Do not
 reuse the old H3928 enemy positions, the R0271 move authorization, or a
@@ -107,7 +125,8 @@ would need **all** of the following for one candidate day:
    armies and all hostiles. The stationary subject must still be at 2610
    without a committed move, combat or retreat. If it is moving, use that
    actual route and the existing moving-route policy instead.
-3. A fresh contact query over exactly the certified hostile set, bound to the
+3. A fresh contact query over exactly the certified nonretreating query set,
+   with every excluded retreating hostile independently cleared, bound to the
    current frame and raw `[D, D+24]`, with `one_day_contact_free=true` and
    `conflicts=[]`. Its subject route/position must match the snapshot.
    Reject missing, partial, stale, conflicting or target-only evidence.
@@ -134,7 +153,8 @@ day never authorizes that battle.
 The inner-collector unit fixture's contact result is explicitly
 `one_day_contact_free=true`, while its physical-inventory and date flags
 remain false. Its normal and `-O` tests verify that a caller-supplied bare
-inventory boolean cannot promote the read. The existing formal
+inventory boolean cannot promote **that inner read**; they do not assert a
+formal selector or driver block. The existing formal
 `test_committed_route_requires_fresh_daily_horizon_even_when_sentinel_live`
 checks that a date change invalidates the preceding day's proof. These are
 static invariants; no CK3 date was advanced for this design.
