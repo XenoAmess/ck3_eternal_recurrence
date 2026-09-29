@@ -367,6 +367,14 @@ def admit_ready_snapshot(snapshot: dict[str, object]) -> tuple[dict[str, object]
     return require_snapshot(snapshot), frame_signature(snapshot), full_war_signature(snapshot)
 
 
+def require_same_ready_frame(after: dict[str, object], war: dict[str, object],
+                             frame: dict[str, object], expected_wars: list[dict[str, object]]) -> None:
+    """Reject a post-query frame that lost the map even if other IDs remain cached."""
+    admitted = admit_ready_snapshot(after)
+    if admitted is None or admitted != (war, frame, expected_wars):
+        raise RuntimeError("H2743 baseline changed within the paused frame")
+
+
 def require_snapshot_bridge_pid(snapshot: dict[str, object], pid: int) -> None:
     diagnostics = snapshot.get("diagnostics")
     if (type(pid) is not int or pid <= 0 or not isinstance(diagnostics, dict)
@@ -622,9 +630,8 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                         require_options_query(options_result, frame, war, expected_wars)
                 after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
                 require_snapshot_bridge_pid(after, ready["pid"])
-                if (require_snapshot(after) != war or frame_signature(after) != frame
-                        or full_war_signature(after) != expected_wars
-                        or results[0]["defender_de_jure_exit_terms_v1"] != results[1]["defender_de_jure_exit_terms_v1"]):
+                require_same_ready_frame(after, war, frame, expected_wars)
+                if results[0]["defender_de_jure_exit_terms_v1"] != results[1]["defender_de_jure_exit_terms_v1"]:
                     raise RuntimeError("H2743 baseline changed within the paused frame")
                 summary = {"status": "baseline_only_material_unavailable", "war_id": 16777231,
                            "candidate_kind": CANDIDATE,

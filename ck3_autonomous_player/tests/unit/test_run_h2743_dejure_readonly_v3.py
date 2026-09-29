@@ -175,6 +175,33 @@ class H2743RunnerGateTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "screen lease watchdog failed"):
             runner.require_lease_watchdog_healthy(["lease owner changed"])
 
+    def test_after_frame_cannot_reuse_identity_with_map_not_ready(self) -> None:
+        war = {"war_id": 16777231, "player_side": "defender",
+               "player_is_primary_war_leader": True,
+               "primary_opponent_character_id": 30097,
+               "player_relative_war_score": -12, "targeted_title_ids": [2128]}
+        snapshot = {"episode_run_id": runner.EPISODE, "date_raw": 53217264,
+                    "played_character": {"character_id": 29829}, "paused": True,
+                    "map_ready": True, "active_wars": [war], "snapshot_id": "native:3",
+                    "revision": 4, "native_revision": 3,
+                    "diagnostics": {"connection_generation": 1}}
+        admitted = runner.admit_ready_snapshot(snapshot)
+        self.assertIsNotNone(admitted)
+        current_war, frame, wars = admitted
+        runner.require_same_ready_frame(snapshot, current_war, frame, wars)
+        for bad_ready in (False, None, 0, "true"):
+            with self.subTest(map_ready=bad_ready):
+                changed = dict(snapshot, map_ready=bad_ready)
+                with self.assertRaises(RuntimeError):
+                    runner.require_same_ready_frame(changed, current_war, frame, wars)
+        missing_ready = dict(snapshot)
+        missing_ready.pop("map_ready")
+        with self.assertRaises(RuntimeError):
+            runner.require_same_ready_frame(missing_ready, current_war, frame, wars)
+        changed = dict(snapshot, active_wars=[dict(war, player_relative_war_score=-13)])
+        with self.assertRaises(RuntimeError):
+            runner.require_same_ready_frame(changed, current_war, frame, wars)
+
     def test_failed_read_can_prove_cleanup_without_publishing_success(self) -> None:
         receipt = clean_receipt()
         receipt["binary_audit_live_sha256"] = None
