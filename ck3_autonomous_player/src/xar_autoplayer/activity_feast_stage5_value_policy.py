@@ -35,8 +35,9 @@ def assess_feast_stage5_start(
     ``reserved_raw`` counts already committed resources once.  ``gold_floor``
     is an independent peaceful cash floor, and ``war_cash_reserve`` is a
     separately assessed claim while a war is active.  Neither unknown is zero.
-    ``expected_nonhost_guest_count`` is a caller-observed credible invite or
-    attendance route, not a guarantee that those guests arrive.
+    ``expected_nonhost_guest_count`` is a caller-observed non-host invite route
+    with positive native join chance and viable arrival timing, not a promise
+    that those guests will actually attend.
     """
     costs = _cost_vector(configured_cost_raw)
     balances = _vector(balance_raw, "balance_raw")

@@ -40,6 +40,24 @@ single meal phase one month after activation. This is calendar occupancy, not
 an asserted total completion date or guaranteed guest acceptance. The Stage 5
 final native gate and Start branch are traced in
 [`activity-stage5-feast-start-command-1.19.0.6.md`](activity-stage5-feast-start-command-1.19.0.6.md).
+The base host prestige below is **only** inside the `on_complete` reward call;
+`on_start` does not pay it. With no attending guest, the active-phase validity
+check fails and `on_invalidated` dispatches `feast.2003`, so even a zero-cost
+feast cannot be assigned this successful-completion value solely from Start.
+
+The guest-list GUI gives a narrow original source for a credible invite:
+`window_activity_guest_list.gui:332,429` enumerates character items;
+lines 568-580 display `GetJoinChance(item)>0` as will-accept and separately
+warn through `MayNotArriveInTime(item)`. A bounded observer should bind one
+non-host selected guest to the current planner/invite rules and copy its
+CharacterID, positive native join chance, and viable arrival result in the
+same paused frame. It is an expectation, not an acceptance postcondition.
+The Stage 5 `0x10B1910` branch reads planner `+0x1678/+0x1684` as 16-byte
+rows and tests row `+8 != -1` with planner `+0x1A30[index] == 0` before
+constructing a confirmation list. That list's guest identity and acceptance
+meaning are **not yet proven**; counting its rows as ready guests would be a
+false shortcut. The exact `ActivityGuestListWindow.GetJoinChance` callback
+ABI, selected-list binding and safe lifetime remain unknown.
 
 On successful completion, `feast.txt:4793-4815` calls
 `disburse_feast_activity_rewards`. Its `00_activity_effects.txt:3280-3440`
@@ -106,3 +124,9 @@ the preexisting reservation vector.
 H3928 Stage 2 R0363 read two native-selectable locations but never selected
 one. Until the later Stage 5 frame supplies the real cost, final gate, guest
 route and cash allocation, the value decision remains **hold / missing input**.
+The next independent source package is a default-OFF, exact-build Stage 5
+private read of one selected non-host guest's native join chance and arrival
+warning, followed by paused live readback. It should reuse the current planner
+frame and only copy stable IDs and values. It must not open a second CK3
+instance, infer acceptance from an invite count, or expand into the full
+activity/guest matrix.
