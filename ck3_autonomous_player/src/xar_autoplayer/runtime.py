@@ -34,6 +34,7 @@ from .environment import (
     ensure_state_path_safe,
     is_relative_to,
     mod_source_fingerprint,
+    process_creation_utc,
     same_process_creation_time,
     sha256_file,
     snapshot_digest,
@@ -1909,7 +1910,14 @@ def _authenticated_watchdog_state(
         identity = _process_identity(pid)
     except Exception:
         return "unknown"
-    if identity is None or identity["creation_date"] != creation_date:
+    if identity is None:
+        return "absent"
+    try:
+        actual_creation = process_creation_utc(identity["creation_date"])
+        expected_creation = process_creation_utc(creation_date)
+    except (TypeError, ValueError, OverflowError):
+        return "unknown"
+    if actual_creation != expected_creation:
         return "absent"
     command = str(identity["command_line"]).casefold()
     matches = (
@@ -2060,8 +2068,9 @@ def _nonce_bound_watchdog_identities(
                 continue
             toolhelp = _toolhelp_process_identity(pid)
             if toolhelp is None:
-                # The WMI row may have exited between the two inventories.
-                continue
+                raise UnsafeCleanupError(
+                    f"WMI watchdog PID {pid} lacks Toolhelp identity"
+                )
             if (
                 not same_process_creation_time(
                     str(row.CreationDate), toolhelp["creation_date"]
@@ -2276,6 +2285,8 @@ def _start_process_watchdog(
                     and loaded_start.get("parent_pid") == parent_pid
                     and type(loaded_start.get("watchdog_pid")) is int
                     and loaded_start["watchdog_pid"] > 0
+                    and type(loaded_start.get("watchdog_parent_pid")) is int
+                    and loaded_start["watchdog_parent_pid"] > 0
                 ):
                     start_receipt = loaded_start
                 else:
@@ -2302,10 +2313,14 @@ def _start_process_watchdog(
             int(start_receipt["watchdog_pid"])
             if start_receipt is not None else None
         )
+        known_launcher_pid = (
+            int(start_receipt["watchdog_parent_pid"])
+            if start_receipt is not None else bootstrap_pid
+        )
         try:
             nonce_before = _nonce_bound_watchdog_identities(
                 parent_pid, nonce, known_child_pid=known_child_pid,
-                launcher_pid=bootstrap_pid,
+                launcher_pid=known_launcher_pid,
             )
         except Exception as error:
             nonce_scan_errors.append(
@@ -2348,7 +2363,7 @@ def _start_process_watchdog(
         try:
             nonce_after = _nonce_bound_watchdog_identities(
                 parent_pid, nonce, known_child_pid=known_child_pid,
-                launcher_pid=bootstrap_pid,
+                launcher_pid=known_launcher_pid,
             )
         except Exception as error:
             nonce_scan_errors.append(

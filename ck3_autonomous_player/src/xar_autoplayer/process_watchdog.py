@@ -50,6 +50,7 @@ def _record_early_import_error(error: BaseException) -> None:
             "nonce": sys.argv[4],
             "parent_pid": int(sys.argv[1]),
             "watchdog_pid": os.getpid(),
+            "watchdog_parent_pid": os.getppid(),
             "python": sys.executable,
             "error_type": type(error).__name__,
             "error": str(error),
@@ -69,6 +70,7 @@ if start_path is not None:
             "nonce": sys.argv[4],
             "parent_pid": int(sys.argv[1]),
             "watchdog_pid": os.getpid(),
+            "watchdog_parent_pid": os.getppid(),
             "python": sys.executable,
         })
     except OSError:

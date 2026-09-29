@@ -955,6 +955,7 @@ class TrackedShutdownTests(unittest.TestCase):
                 )
             )
             self.assertEqual(start["watchdog_pid"], os.getpid())
+            self.assertEqual(start["watchdog_parent_pid"], os.getppid())
             self.assertFalse((root / "ready.json").exists())
 
     def test_watchdog_nonce_scan_finds_real_redirector_child_only(self) -> None:
@@ -1024,6 +1025,25 @@ class TrackedShutdownTests(unittest.TestCase):
             with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "lacks WMI identity"):
                 runtime_module._nonce_bound_watchdog_identities(
                     456, "exact-nonce", known_child_pid=8056, launcher_pid=8044,
+                )
+
+    def test_watchdog_nonce_scan_rejects_wmi_match_without_toolhelp_identity(self) -> None:
+        nonce = "exact-nonce"
+        service = SimpleNamespace(ExecQuery=lambda _: [SimpleNamespace(
+            ProcessId=8056, ParentProcessId=8044, Name="pythonw.exe",
+            ExecutablePath="C:/Python/pythonw.exe",
+            CreationDate="20260930120000.000000+000",
+            CommandLine=(f'pythonw.exe "{runtime_module.PROCESS_WATCHDOG}" '
+                         f"456 parent.exe created {nonce} ready.json ck3.json marker.json ck3.exe"),
+        )])
+        with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_entries", return_value=[],
+        ), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_identity", return_value=None,
+        ):
+            with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "lacks Toolhelp identity"):
+                runtime_module._nonce_bound_watchdog_identities(
+                    456, nonce, known_child_pid=8056, launcher_pid=8044,
                 )
 
     def test_watchdog_nonce_scan_falls_back_from_com_moniker_error(self) -> None:
@@ -1272,6 +1292,34 @@ class TrackedShutdownTests(unittest.TestCase):
                 _authenticated_watchdog_state(
                     123, "same-object", 456, "expected-nonce"
                 ),
+                "unknown",
+            )
+
+    def test_watchdog_utc_and_local_creation_are_same_identity(self) -> None:
+        identity = {
+            "pid": 17512, "parent_pid": 30288, "name": "pythonw.exe",
+            "executable": "C:/Python/pythonw.exe",
+            "creation_date": "20260929225502.942462+000",
+            "command_line": (
+                f'pythonw.exe "{runtime_module.PROCESS_WATCHDOG}" '
+                "456 parent.exe created exact-nonce ready.json ck3.json marker.json ck3.exe"
+            ),
+        }
+        with mock.patch("xar_autoplayer.runtime._process_identity", return_value=identity):
+            self.assertEqual(
+                _authenticated_watchdog_state(
+                    17512, "20260930065502.942462+480", 456, "exact-nonce"
+                ),
+                "running",
+            )
+            self.assertEqual(
+                _authenticated_watchdog_state(
+                    17512, "20260930065503.942462+480", 456, "exact-nonce"
+                ),
+                "absent",
+            )
+            self.assertEqual(
+                _authenticated_watchdog_state(17512, "malformed", 456, "exact-nonce"),
                 "unknown",
             )
 
