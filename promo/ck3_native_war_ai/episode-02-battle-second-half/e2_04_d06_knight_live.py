@@ -104,17 +104,19 @@ def verify_preflight(preflight: dict[str, Any]) -> None:
 
 def verify_gui(output: Path) -> dict[str, Any]:
     receipts = {}
-    for phase in ("before-native-session", "postmap", "posthold"):
-        path = output / f"gui-settings-{phase}.json"
+    for filename_phase, receipt_phase in (("before-native-session", "before-native-session"),
+                                          ("postmap", "postmap-before-capture"),
+                                          ("posthold", "posthold-before-service")):
+        path = output / f"gui-settings-{filename_phase}.json"
         row = read(path)
-        require(row.get("phase") == phase and row.get("disk_gate_passed") is True and
+        require(row.get("phase") == receipt_phase and row.get("disk_gate_passed") is True and
                 row.get("observed_scale_serialized") == "1" and
                 row.get("native_ui_one_opt_in") is True and
                 row.get("native_a04_gui_block_required") is True and
                 row.get("native_a04_gui_block_passed") is True and
                 row.get("native_a04_gui_block_sha256") == GUI_BLOCK,
-                f"{phase}: native 54-byte GUI block or disk gate differs")
-        receipts[phase] = identity(path)
+                f"{filename_phase}: native 54-byte GUI block or disk gate differs")
+        receipts[filename_phase] = identity(path)
     return receipts
 
 

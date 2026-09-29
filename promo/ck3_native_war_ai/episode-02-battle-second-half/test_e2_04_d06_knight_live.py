@@ -11,12 +11,13 @@ from unittest.mock import patch
 
 from e2_04_d06_knight_live import (
     ACTOR, ARMY, CHARACTER, COMBAT, DATE, PROVINCE, REGIMENT, WAR,
-    control_case, knight_case, snapshot_case, verify_no_launch, verify_session,
+    control_case, knight_case, snapshot_case, verify_gui, verify_no_launch, verify_session,
 )
 
 
 PREFLIGHT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a02")
 OLD_CONTROL = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-v3-live-20260929-a08-a02/ck3-output/interactive-requests-responses/a08-d06-cold-control.json")
+OLD_GUI = OLD_CONTROL.parents[1]
 
 
 def frame() -> dict:
@@ -108,6 +109,11 @@ class D06KnightOperatorTest(unittest.TestCase):
                      "snapshot_id": source["snapshot_id"]}
         parsed = control_case(body, old_frame)
         self.assertEqual(parsed["regiment_61_stored_entry"]["regiment_id"], 61)
+
+    def test_old_gui_receipts_only_check_phase_parser_shape(self) -> None:
+        if not (OLD_GUI / "gui-settings-posthold.json").is_file():
+            self.skipTest("archived a08 GUI receipts not mounted")
+        self.assertEqual(len(verify_gui(OLD_GUI)), 3)
 
     def test_current_values_distinguish_fresh_from_stored(self) -> None:
         f = snapshot_case(frame())
