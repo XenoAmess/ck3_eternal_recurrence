@@ -25,6 +25,7 @@ from .environment import (
     VISIBLE_UI_BASELINE_GAME_VERSION,
     _contract_digest,
     _is_access_denied,
+    _toolhelp_process_entries,
     _toolhelp_process_identity,
     EnvironmentSpec,
     ck3_process_inventory,
@@ -1990,7 +1991,8 @@ def _rebind_fallback_watchdog(bootstrap_pid: int, actual_pid: int) -> None:
 
 
 def _nonce_bound_watchdog_identities(
-    parent_pid: int, nonce: str
+    parent_pid: int, nonce: str, *, known_child_pid: int | None = None,
+    launcher_pid: int | None = None,
 ) -> list[dict[str, object]]:
     """Locate redirector children by watchdog script and nonce.
 
@@ -2013,17 +2015,50 @@ def _nonce_bound_watchdog_identities(
             "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate,CommandLine "
             "FROM Win32_Process WHERE Name='python.exe' OR Name='pythonw.exe'"
         )
+        wmi_rows = list(rows)
+        roots = {parent_pid}
+        if launcher_pid is not None:
+            roots.add(launcher_pid)
+        # Include intermediate redirectors while they are visible. A stopped
+        # launcher still remains a root through its recorded PID.
+        for _ in range(len(wmi_rows)):
+            expanded = roots | {
+                int(row.ProcessId) for row in wmi_rows
+                if int(row.ParentProcessId) in roots
+            }
+            if expanded == roots:
+                break
+            roots = expanded
+        wmi_by_pid = {int(row.ProcessId): row for row in wmi_rows}
+        toolhelp_candidates = [
+            entry for entry in _toolhelp_process_entries()
+            if str(entry["name"]).casefold() in {"python.exe", "pythonw.exe"}
+            and (int(entry["pid"]) == known_child_pid
+                 or int(entry["parent_pid"]) in roots)
+        ]
+        for entry in toolhelp_candidates:
+            if int(entry["pid"]) not in wmi_by_pid:
+                raise UnsafeCleanupError(
+                    f"Toolhelp watchdog candidate PID {int(entry['pid'])} lacks WMI identity"
+                )
         found: list[dict[str, object]] = []
-        for row in rows:
+        for row in wmi_rows:
+            pid = int(row.ProcessId)
             command = str(row.CommandLine or "")
             folded = command.casefold()
-            if (
-                str(PROCESS_WATCHDOG).casefold() not in folded
-                or nonce.casefold() not in folded
-                or f" {parent_pid} " not in command
-            ):
+            matches = (
+                str(PROCESS_WATCHDOG).casefold() in folded
+                and nonce.casefold() in folded
+                and f" {parent_pid} " in command
+            )
+            related = pid == known_child_pid or pid in roots - {parent_pid}
+            if related and not matches:
+                raise UnsafeCleanupError(
+                    f"watchdog-related Python PID {pid} command line unavailable or differs"
+                )
+            if not matches:
                 continue
-            toolhelp = _toolhelp_process_identity(int(row.ProcessId))
+            toolhelp = _toolhelp_process_identity(pid)
             if toolhelp is None:
                 # The WMI row may have exited between the two inventories.
                 continue
@@ -2034,10 +2069,10 @@ def _nonce_bound_watchdog_identities(
                 or not _same_executable(row.ExecutablePath, toolhelp["executable"])
             ):
                 raise UnsafeCleanupError(
-                    f"WMI/Toolhelp watchdog PID {int(row.ProcessId)} identity differs"
+                    f"WMI/Toolhelp watchdog PID {pid} identity differs"
                 )
             found.append({
-                "pid": int(row.ProcessId),
+                "pid": pid,
                 "parent_pid": int(row.ParentProcessId),
                 "name": str(row.Name),
                 "executable": str(row.ExecutablePath or ""),
@@ -2236,8 +2271,11 @@ def _start_process_watchdog(
                 loaded_start = json.loads(start_path.read_text(encoding="utf-8"))
                 if (
                     isinstance(loaded_start, dict)
+                    and loaded_start.get("schema") == "xar.watchdog-early-start.v1"
                     and loaded_start.get("nonce") == nonce
                     and loaded_start.get("parent_pid") == parent_pid
+                    and type(loaded_start.get("watchdog_pid")) is int
+                    and loaded_start["watchdog_pid"] > 0
                 ):
                     start_receipt = loaded_start
                 else:
@@ -2260,8 +2298,15 @@ def _start_process_watchdog(
                 )
         nonce_before: list[dict[str, object]] = []
         nonce_scan_errors: list[str] = []
+        known_child_pid = (
+            int(start_receipt["watchdog_pid"])
+            if start_receipt is not None else None
+        )
         try:
-            nonce_before = _nonce_bound_watchdog_identities(parent_pid, nonce)
+            nonce_before = _nonce_bound_watchdog_identities(
+                parent_pid, nonce, known_child_pid=known_child_pid,
+                launcher_pid=bootstrap_pid,
+            )
         except Exception as error:
             nonce_scan_errors.append(
                 f"before: {type(error).__name__}: {error}"
@@ -2271,7 +2316,7 @@ def _start_process_watchdog(
             int(item["pid"]): item for item in nonce_before
         }
         if start_receipt is not None:
-            start_pid = int(start_receipt["watchdog_pid"])
+            start_pid = known_child_pid
             try:
                 start_identity = _process_identity(start_pid)
                 if start_identity is not None:
@@ -2301,7 +2346,10 @@ def _start_process_watchdog(
                 )
         nonce_after: list[dict[str, object]] = []
         try:
-            nonce_after = _nonce_bound_watchdog_identities(parent_pid, nonce)
+            nonce_after = _nonce_bound_watchdog_identities(
+                parent_pid, nonce, known_child_pid=known_child_pid,
+                launcher_pid=bootstrap_pid,
+            )
         except Exception as error:
             nonce_scan_errors.append(
                 f"after: {type(error).__name__}: {error}"

@@ -980,7 +980,7 @@ class TrackedShutdownTests(unittest.TestCase):
                 "pid": pid, "creation_date": "20260930120000.000000+000",
                 "executable": "C:/Python/pythonw.exe",
             },
-        ):
+        ), mock.patch("xar_autoplayer.runtime._toolhelp_process_entries", return_value=[]):
             found = runtime_module._nonce_bound_watchdog_identities(456, nonce)
         self.assertEqual([item["pid"] for item in found], [8056])
         self.assertEqual(found[0]["creation_date"], "20260930120000.000000+000")
@@ -996,9 +996,35 @@ class TrackedShutdownTests(unittest.TestCase):
         with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
             "xar_autoplayer.runtime._toolhelp_process_identity",
             return_value={"creation_date": "other", "executable": "C:/Python/pythonw.exe"},
-        ):
+        ), mock.patch("xar_autoplayer.runtime._toolhelp_process_entries", return_value=[]):
             with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "identity differs"):
                 runtime_module._nonce_bound_watchdog_identities(456, nonce)
+
+    def test_watchdog_nonce_scan_rejects_blank_child_command_line(self) -> None:
+        service = SimpleNamespace(ExecQuery=lambda _: [SimpleNamespace(
+            ProcessId=8056, ParentProcessId=8044, Name="pythonw.exe",
+            ExecutablePath="C:/Python/pythonw.exe",
+            CreationDate="20260930120000.000000+000", CommandLine=None,
+        )])
+        entries = [{"pid": 8056, "parent_pid": 8044, "name": "pythonw.exe"}]
+        with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_entries", return_value=entries,
+        ):
+            with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "command line unavailable"):
+                runtime_module._nonce_bound_watchdog_identities(
+                    456, "exact-nonce", known_child_pid=8056, launcher_pid=8044,
+                )
+
+    def test_watchdog_nonce_scan_rejects_toolhelp_candidate_missing_wmi(self) -> None:
+        service = SimpleNamespace(ExecQuery=lambda _: [])
+        entries = [{"pid": 8056, "parent_pid": 8044, "name": "pythonw.exe"}]
+        with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_entries", return_value=entries,
+        ):
+            with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "lacks WMI identity"):
+                runtime_module._nonce_bound_watchdog_identities(
+                    456, "exact-nonce", known_child_pid=8056, launcher_pid=8044,
+                )
 
     def test_watchdog_nonce_scan_falls_back_from_com_moniker_error(self) -> None:
         import pythoncom
@@ -1008,7 +1034,9 @@ class TrackedShutdownTests(unittest.TestCase):
         with mock.patch(
             "win32com.client.GetObject",
             side_effect=pythoncom.com_error(-2147221020, "invalid syntax", None, None),
-        ), mock.patch("win32com.client.Dispatch", return_value=locator) as dispatch:
+        ), mock.patch("win32com.client.Dispatch", return_value=locator) as dispatch, mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_entries", return_value=[],
+        ):
             found = runtime_module._nonce_bound_watchdog_identities(456, "nonce")
         self.assertEqual(found, [])
         dispatch.assert_called_once_with("WbemScripting.SWbemLocator")
