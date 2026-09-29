@@ -46,7 +46,14 @@ def complete_inputs() -> dict[str, object]:
         "future_risk_budget_raw": amount(2_000_000, "test-risk-allowance"),
         "policy_minimum_gold_reserve_raw": amount(3_000_000, "test-policy"),
         "horizon_days": 7,
-        "future_bound_assumptions": ["synthetic seven-day bound"],
+        "future_bound_assumptions": {
+            "version": "synthetic-v1",
+            "source_frame": dict(FRAME),
+            "war_id": WAR_ID,
+            "horizon_days": 7,
+            "assumptions": ["synthetic seven-day bound"],
+            "source_ref": "synthetic-source-only",
+        },
     }
 
 
@@ -77,6 +84,13 @@ class WarCashResourceTests(unittest.TestCase):
         self.assertEqual(receipt["war_future_gold_cost_raw"], 8_000_000)
         self.assertEqual(receipt["joint_gold_reserve_raw"], 11_000_000)
         self.assertEqual(receipt["horizon_days"], 7)
+        self.assertEqual(
+            receipt["future_bound_assumptions"]["version"], "synthetic-v1",
+        )
+        self.assertEqual(
+            receipt["future_bound_assumptions"]["source_ref"],
+            "synthetic-source-only",
+        )
         self.assertEqual(
             receipt["amount_observations"]["future_war_cost_upper_raw"]["source_frame"],
             FRAME,
@@ -154,6 +168,57 @@ class WarCashResourceTests(unittest.TestCase):
         self.assertIsNone(receipt["joint_gold_reserve_raw"])
         self.assertEqual(receipt["missing"]["horizon_days"],
                          "bounded_future_war_horizon_not_observed")
+
+    def test_assumptions_require_a_versioned_same_frame_object(self) -> None:
+        for name, value in (
+            ("legacy_list", ["synthetic seven-day bound"]),
+            ("versionless", {"assumptions": ["synthetic bound"]}),
+            ("empty_statements", {**complete_inputs()["future_bound_assumptions"],
+                                   "assumptions": []}),
+            ("stale_frame", {**complete_inputs()["future_bound_assumptions"],
+                             "source_frame": {**FRAME, "revision": 5}}),
+            ("other_war", {**complete_inputs()["future_bound_assumptions"],
+                           "war_id": WAR_ID + 1}),
+            ("other_horizon", {**complete_inputs()["future_bound_assumptions"],
+                               "horizon_days": 8}),
+            ("boolean_horizon", {**complete_inputs()["future_bound_assumptions"],
+                                 "horizon_days": True}),
+        ):
+            with self.subTest(name=name):
+                inputs = complete_inputs()
+                inputs["future_bound_assumptions"] = value
+                receipt = observe_active_war_cash_resource_v1(
+                    snapshot=snapshot(), war_id=WAR_ID, inputs=inputs,
+                )
+                self.assertEqual(receipt["status"], "incomplete")
+                self.assertIsNone(receipt["war_future_gold_cost_raw"])
+                self.assertIn("future_bound_assumptions", receipt["missing"])
+
+    def test_assumptions_are_copied_and_rechecked_at_consumption(self) -> None:
+        inputs = complete_inputs()
+        receipt = observe_active_war_cash_resource_v1(
+            snapshot=snapshot(), war_id=WAR_ID, inputs=inputs,
+        )
+        inputs["future_bound_assumptions"]["assumptions"].clear()
+        self.assertEqual(
+            receipt["future_bound_assumptions"]["assumptions"],
+            ["synthetic seven-day bound"],
+        )
+        for name, value in (
+            ("version", ""),
+            ("source_frame", {**FRAME, "revision": 5}),
+            ("war_id", WAR_ID + 1),
+            ("horizon_days", 8),
+            ("assumptions", []),
+        ):
+            forged = deepcopy(receipt)
+            forged["future_bound_assumptions"][name] = value
+            with self.subTest(name=name), self.assertRaisesRegex(
+                ValueError, "bound provenance or horizon",
+            ):
+                require_complete_war_cash_resource_v1(
+                    forged, frame=FRAME, war_id=WAR_ID,
+                )
 
 
 if __name__ == "__main__":

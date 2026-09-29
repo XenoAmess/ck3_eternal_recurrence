@@ -134,7 +134,11 @@ def _war_cash(
             "future_risk_budget_raw": amount(1_000_000, "test-risk"),
             "policy_minimum_gold_reserve_raw": amount(3_000_000, "test-policy"),
             "horizon_days": 1,
-            "future_bound_assumptions": ["synthetic bounded test only"],
+            "future_bound_assumptions": {
+                "version": "synthetic-v1", "source_frame": dict(_FRAME),
+                "war_id": 16777231, "horizon_days": 1,
+                "assumptions": ["synthetic bounded test only"],
+            },
         },
     )
 

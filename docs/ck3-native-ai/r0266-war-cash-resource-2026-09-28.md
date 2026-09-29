@@ -79,6 +79,8 @@ R0271 新受管冷启动的首条原生命令约在启动后 23.5 分钟，1500 
 
 `m5_war_cash_resource_v1.observe_active_war_cash_resource_v1` 产出只读 `xar.ck3.m5-active-war-cash-resource.v1` 收据。输入必须包括完整 `source_frame`（玩家、`snapshot_id`、公开/原生修订、日期、episode）和 WarID。五项金额各使用 `{raw, scale:100000, source, source_frame, war_id}`，逐项核对同帧、同一场战争：已提交战争现金、本次动作即时费用、指定期限内未来费用上界、该期限的额外风险预算、战争政策最低保留额。收据的 `amount_observations` 保留每项金额的这五个原始证据字段，消费端再次逐项核对，不能仅信任收据顶层帧或来源字符串。未来上界还要声明 `horizon_days` 和文字假设。未知输入以 `null` 和机器可读 `missing` 原因输出；显式的 0 同样需要来源。收据始终 `formal_action_ready:false`。
 
+固定 `WAR/R0266-H3937-WAR-CASH-20260929/RECEIVER-REQUEST-R0266-H3937-FIVE-CASH-NATIVE-SOURCES-v1.json` 的来源回件合同要求 `future_bound_assumptions` 为带版本对象或 `null`。M5 现在接受并保留 `{version, assumptions, source_frame, war_id, horizon_days}` 对象，其中 `version` 是非空字符串，`assumptions` 是非空字符串列表，其余三项必须与当前暂停帧、战争及期限相等。对象可另附来源和失效条件；旧的裸字符串列表被标记为缺失。这个结构校验不证明来源政策已发布、费用上界成立或五项现金已有实值。
+
 全项齐备时，三种现金用途分别进入**现有** M5 资源合同：
 
 1. `existing_shared_gold_commitment_raw = pending_war_cash_raw`，计入 `existing_commitments.gold_raw` 一次；先前其他领域的承诺仍应叠加。

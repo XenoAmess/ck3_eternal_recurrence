@@ -8,6 +8,7 @@ nonnegative raw Q100000 gold amounts for one explicitly bounded horizon.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from copy import deepcopy
 
 from .m5_observed_opportunity_selector import observed_frame
 
@@ -19,6 +20,28 @@ _AMOUNTS = (
     "future_risk_budget_raw",
     "policy_minimum_gold_reserve_raw",
 )
+
+
+def _bound_future_assumptions(
+    value: object, *, frame: Mapping[str, object], war_id: int,
+    horizon_days: int | None,
+) -> dict[str, object] | None:
+    """Keep the source's versioned assumptions object on this exact horizon."""
+    if not isinstance(value, Mapping):
+        return None
+    version = value.get("version")
+    statements = value.get("assumptions")
+    if (type(version) is not str or not version
+            or not isinstance(statements, list) or not statements
+            or any(type(item) is not str or not item for item in statements)
+            or value.get("source_frame") != dict(frame)
+            or type(value.get("war_id")) is not int
+            or value["war_id"] != war_id
+            or type(horizon_days) is not int
+            or type(value.get("horizon_days")) is not int
+            or value.get("horizon_days") != horizon_days):
+        return None
+    return deepcopy(dict(value))
 
 
 def observe_active_war_cash_resource_v1(
@@ -81,10 +104,11 @@ def observe_active_war_cash_resource_v1(
     if type(horizon) is not int or horizon <= 0:
         missing["horizon_days"] = "bounded_future_war_horizon_not_observed"
         horizon = None
-    if (not isinstance(assumptions, list) or not assumptions
-            or any(type(item) is not str or not item for item in assumptions)):
+    assumptions = _bound_future_assumptions(
+        assumptions, frame=frame, war_id=war_id, horizon_days=horizon,
+    )
+    if assumptions is None:
         missing["future_bound_assumptions"] = "future_war_cost_bound_assumptions_not_observed"
-        assumptions = None
     complete = not missing
     pending = amounts["pending_war_cash_raw"]
     immediate = amounts["immediate_war_action_cost_raw"]
@@ -157,8 +181,10 @@ def require_complete_war_cash_resource_v1(
                    for name in _AMOUNTS)
             or type(receipt.get("horizon_days")) is not int
             or receipt["horizon_days"] <= 0
-            or not isinstance(receipt.get("future_bound_assumptions"), list)
-            or not receipt["future_bound_assumptions"]):
+            or _bound_future_assumptions(
+                receipt.get("future_bound_assumptions"), frame=frame,
+                war_id=war_id, horizon_days=receipt.get("horizon_days"),
+            ) is None):
         raise ValueError("war cash lacks bound provenance or horizon")
     for name in _AMOUNTS:
         observation = observations.get(name)
