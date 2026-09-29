@@ -47,15 +47,18 @@ class D11BattleControlPairTest(unittest.TestCase):
              *, junit_failure: bool = False, ctest_exit: int = 0,
              dependency_failure: bool = False) -> tuple[Path, Path]:
         source_sha = fingerprint()
+        build_script = root / "build_release_candidate.py"
+        build_script.write_text("# focused build fixture\n", encoding="utf-8")
         def receipt(stem: str, value: object) -> dict:
             path = write_json(root / f"{stem}.json", value)
-            return {f"{stem}_path": str(path), f"{stem}_sha": identity(path)["sha256"]}
+            return {f"{stem}_path": str(path), f"{stem}_sha256": identity(path)["sha256"]}
 
         source = {
             "head": "a58f4331f470ff27f0b07553e55cbf0868e96ed6",
             "source_fingerprint_sha256": source_sha,
             "native_bridge_fingerprint_sha256": source_sha,
             "build_fresh_helper": identity(HELPER),
+            "build_script_sha256": identity(build_script)["sha256"],
             "configuration": "Release",
         }
         parts = {}
@@ -79,7 +82,7 @@ class D11BattleControlPairTest(unittest.TestCase):
             ):
                 path = write_json(root / f"dependency-{index}-{kind}.json", value)
                 refs[f"{kind}_path"] = str(path)
-                refs[f"{kind}_sha"] = identity(path)["sha256"]
+                refs[f"{kind}_sha256"] = identity(path)["sha256"]
             for kind, content in (
                 ("stdout", "#deps 2\n" + ("wrong_header.hpp" if dependency_failure else "ck3_11906.hpp") + "\n"),
                 ("stderr", ""),
@@ -87,7 +90,7 @@ class D11BattleControlPairTest(unittest.TestCase):
                 path = root / f"dependency-{index}-{kind}.txt"
                 path.write_text(content, encoding="utf-8")
                 refs[f"{kind}_path"] = str(path)
-                refs[f"{kind}_sha"] = identity(path)["sha256"]
+                refs[f"{kind}_sha256"] = identity(path)["sha256"]
             dependency_rows.append({"object": obj, **refs,
                                     "ck3_11906_header_recorded": True,
                                     "positive_dependency_count": True})
@@ -112,14 +115,14 @@ class D11BattleControlPairTest(unittest.TestCase):
         stdout = root / "ctest-stdout.txt"
         stdout.write_text(f"1/1 Test #1: {TEST_NAME}\n100% tests passed\n", encoding="utf-8")
         parts.update({"ctest_stdout_path": str(stdout),
-                      "ctest_stdout_sha": identity(stdout)["sha256"],
+                      "ctest_stdout_sha256": identity(stdout)["sha256"],
                       "ctest_junit_path": str(junit),
-                      "ctest_junit_sha": identity(junit)["sha256"]})
+                      "ctest_junit_sha256": identity(junit)["sha256"]})
         normal = write_json(root / "python-normal-result.json", {"exit_code": 0})
         optimized = write_json(root / "python-optimized-result.json", {"exit_code": 0})
         tests = {
             "ctest": {"result_path": parts["ctest_result_path"],
-                      "result_sha256": parts["ctest_result_sha"]},
+                      "result_sha256": parts["ctest_result_sha256"]},
             "python-normal": {"result_path": str(normal),
                               "result_sha256": identity(normal)["sha256"]},
             "python-optimized": {"result_path": str(optimized),
@@ -139,6 +142,7 @@ class D11BattleControlPairTest(unittest.TestCase):
             "tests_ran": True,
             "test_scope": "current-battle-knight-mailbox-and-python-port",
             "dependency_gate": "ck3_11906.hpp-recorded",
+            "build_script_sha256": identity(build_script)["sha256"],
             "ctest_name": TEST_NAME, "tests": tests, **parts,
         })
         pair = write_json(root / "pair.json", {

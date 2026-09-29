@@ -190,18 +190,20 @@ def validate_d11_battle_control_pair(
         "source_fingerprint_sha256", "native_serializer_sha256",
         "python_contracts_sha256", "dll", "injector", "dll_sha256",
         "injector_sha256", "tests_ran", "test_scope", "dependency_gate",
-        "dependency_receipt_path", "dependency_receipt_sha",
-        "source_before_path", "source_before_sha", "source_after_path",
-        "source_after_sha", "configure_argv_path", "configure_argv_sha",
-        "configure_result_path", "configure_result_sha", "build_argv_path",
-        "build_argv_sha", "build_result_path", "build_result_sha",
-        "ctest_name", "ctest_argv_path", "ctest_argv_sha",
-        "ctest_result_path", "ctest_result_sha", "ctest_stdout_path",
-        "ctest_stdout_sha", "ctest_junit_path", "ctest_junit_sha", "tests",
+        "dependency_receipt_path", "dependency_receipt_sha256",
+        "source_before_path", "source_before_sha256", "source_after_path",
+        "source_after_sha256", "configure_argv_path", "configure_argv_sha256",
+        "configure_result_path", "configure_result_sha256", "build_argv_path",
+        "build_argv_sha256", "build_result_path", "build_result_sha256",
+        "ctest_name", "ctest_argv_path", "ctest_argv_sha256",
+        "ctest_result_path", "ctest_result_sha256", "ctest_stdout_path",
+        "ctest_stdout_sha256", "ctest_junit_path", "ctest_junit_sha256",
+        "build_script_sha256", "tests",
     }
     require(isinstance(build, dict) and required_build_keys <= set(build),
             "D11 focused build report lacks required provenance")
     build_dir = Path(build["build_dir"])
+    build_script = report_path.parent / "build_release_candidate.py"
     require(build["status"] == "STATIC_RELEASE_CANDIDATE_NO_CK3_LAUNCH" and
             build["build_status"] == "READY" and
             build["configuration"] == "Release" and
@@ -209,7 +211,9 @@ def validate_d11_battle_control_pair(
             build["test_scope"] == "current-battle-knight-mailbox-and-python-port" and
             build["dependency_gate"] == "ck3_11906.hpp-recorded" and
             build_dir.is_absolute() and build_dir.resolve() == dll_path.resolve().parent and
-            build_dir.resolve() == injector_path.resolve().parent,
+            build_dir.resolve() == injector_path.resolve().parent and
+            build_script.is_file() and
+            identity(build_script)["sha256"] == build["build_script_sha256"],
             "D11 focused build status or directory is not admissible")
     require(build["source_fingerprint_sha256"] == fingerprint and
             build["native_serializer_sha256"] == expected["native_serializer_sha256"] and
@@ -232,7 +236,7 @@ def validate_d11_battle_control_pair(
     def bound(name: str) -> Path:
         path = Path(build[f"{name}_path"])
         require(path.is_absolute() and path.is_file() and
-                identity(path)["sha256"] == build[f"{name}_sha"],
+                identity(path)["sha256"] == build[f"{name}_sha256"],
                 f"D11 focused build {name} receipt bytes changed")
         return path
 
@@ -249,7 +253,7 @@ def validate_d11_battle_control_pair(
         def dependency_bound(kind: str) -> Path:
             path = Path(row[f"{kind}_path"])
             require(path.is_absolute() and path.is_file() and
-                    identity(path)["sha256"] == row[f"{kind}_sha"],
+                    identity(path)["sha256"] == row[f"{kind}_sha256"],
                     f"D11 focused dependency {kind} bytes changed")
             return path
 
@@ -275,6 +279,7 @@ def validate_d11_battle_control_pair(
                 source.get("native_bridge_fingerprint_sha256") == fingerprint and
                 (source.get("build_fresh_helper") or {}).get("sha256") ==
                 identity(helper)["sha256"] and source.get("head") == build["head"] and
+                source.get("build_script_sha256") == build["build_script_sha256"] and
                 source.get("configuration") == "Release",
                 f"D11 focused build {name} source changed")
         source_evidence[name] = source
