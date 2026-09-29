@@ -140,3 +140,27 @@ view and agreement between the native getter and active vector. Exact-key
 focused Debug and Release fixtures passed. This remains source and fixture
 evidence until a newly paired paused live read succeeds; OS minimization has
 not been shown to cause the window binding failure.
+
+## R0378 exact-master active-vector live read
+
+Merged master `09af7b0` passed exact official CI `36581705781`. The paired
+H3928 [candidate index](Z:/m6-gr376-rule-vector-candidate-20260929/CANDIDATE-INDEX.json)
+has SHA-256 `A71FDEAD985F8C668F07C75F437B091F4B1E8FC6804B506C138F0DE8DA638E94`,
+and its Release DLL has SHA-256
+`FC94BFA0097604C43575A58E1AC497323B9BE95BDD41C212E3223C409A20B706`.
+Official no-launch was `ready`. CK3 PID157880 was minimized after loading.
+After Stage-1 Confirm, Stage-2 typed Province2619 and Stage-5 cost reads,
+the same paused `native:3` frame at revision4, actor29829, raw53219928
+returned `observed_active` for `activity_invite_rule_vassals`:
+`active=true`, `invoked=false`, native key hash `1267957912`, 20 ordered
+rules, 15 active rules, six filtered groups and 22 filtered characters.
+Queried and post snapshot IDs both equal `native:3`. The formal policy held
+with `category_already_active`, avoiding a duplicate toggle. No gameplay
+turn, date change, save change, toggle, invitation or Start occurred; the
+CK3 process tree was reclaimed. The [formal report](Z:/m6-gr376-rule-vector-candidate-20260929/operator-runs/feast-guest-rule-vassals-vector-read-1/formal-report.txt)
+has SHA-256 `B5316E9DD7F85741C42797CD79D9E5D582616A172A352A224FC0F54B64297ABC`,
+and the [operator receipt](Z:/m6-gr376-rule-vector-candidate-20260929/operator-runs/feast-guest-rule-vassals-vector-read-1/operator-receipt.json)
+has SHA-256 `95DC2879112E00BD6DC017D3C9F2596DAA3F89B7B13A22DDCF1174785D52F605`.
+This closes the R0374/R0376 private read RED for this exact build and
+scenario. It does not validate the toggle action or supply candidate 38293's
+specific rule membership, final invite legality or feast Start readiness.
