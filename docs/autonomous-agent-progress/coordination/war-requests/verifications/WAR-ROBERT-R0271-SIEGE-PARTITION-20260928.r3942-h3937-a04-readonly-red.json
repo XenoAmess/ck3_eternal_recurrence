@@ -1,0 +1,40 @@
+{
+  "schema": "xar.g2.war-verification.r0271-r3942-h3937-a04.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "scope": "append-only receiver R3942 H3937 a04 two-query paused-readonly attempt",
+  "status": "RED_NATIVE_READINESS_TIMEOUT",
+  "response": "docs/autonomous-agent-progress/coordination/war-requests/responses/WAR-ROBERT-R0271-SIEGE-PARTITION-20260928.r3942-h3937-a04-red.json",
+  "response_sha256": "DC39BECFD3872DF18EA8DA51A255DF69C11D25759725EBE2ADF35449425E0BE5",
+  "fixed_war_response": "WAR/R0271-R3942-H3937-READONLY-RED-20260929/RESPONSE-WAR-ROBERT-R0271-R3942-H3937-A04-RED-v1.json",
+  "fixed_war_response_sha256": "DC39BECFD3872DF18EA8DA51A255DF69C11D25759725EBE2ADF35449425E0BE5",
+  "evidence_hashes_recomputed_from_local_immutable_attempt": {
+    "outer_report": "3C3AD85BAF8AC5EDAFE03B7FDFCD77AEF7F33A70AC462B076017AD9FB7CBD9AA",
+    "worker_completion": "E8720E792FA9BA951FDB9F2D03B9500BA4D93B2129620527F2C59911FADE22C1",
+    "supervisor_completion": "83809E5A3733A88D89AA86393289AC866EADBBFB9604FB3AB7B377CF05B5B44D",
+    "red_closeout": "3ABF91B974E45567C607B1AFEFFFBEA21A96558558C4AC1A394AE84FB6A35D35",
+    "taskbus_release": "C793B784C8CEFEE1955C65D201B22F3675DD8EE5836B5FFE2E736F23AAD570FE",
+    "post_cleanup_inspect": "725ACF344D345536B284B9DC8404E8F7BC71E0214C9152BBC01F46BEE640D468"
+  },
+  "observed": {
+    "native_readiness_timeout_seconds": 300,
+    "native_paused_snapshot": false,
+    "target_readonly_queries_submitted": 0,
+    "readiness_polling_did_occur": true,
+    "gameplay_actions": 0,
+    "action_authorized": false,
+    "date_advance_authorized": false,
+    "date_unchanged_poststate_proven": false,
+    "outer_cleanup_proven": true,
+    "taskbus_done_and_resources_empty": true
+  },
+  "not_observed": [
+    "H3937 live native same-frame local siege query",
+    "H3937 live full-hostile route-contact query",
+    "complete physical army inventory at target province 2629",
+    "same-frame native siege/actual-contact participant set",
+    "live game date poststate",
+    "war cash pending spending, immediate costs, minimum reserve and timed future costs"
+  ],
+  "boundary": "The source H3937 checkpoint date raw53219928 is an input identity, not a receiver live poststate. No target query ran; the source-only H3937 and historical H3388/R0005 evidence cannot fill the new same-frame participant set. The original R0271 H3388 RED and the earlier delivered bounded first-hop recovery remain separate historical facts. R3942 gives no Robert date advance or attack permission.",
+  "source_readback_status": "pending"
+}
