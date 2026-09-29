@@ -34,6 +34,7 @@ using ActivityStage1PredicateV1 = bool (*)(void *, std::uintptr_t,
                                             std::uintptr_t, bool &) noexcept;
 using ActivityStage1CanProgressV1 = bool (*)(void *, std::uintptr_t,
                                               bool &) noexcept;
+using ActivityStage1SetStageTwoV1 = bool (*)(void *, std::uintptr_t) noexcept;
 
 struct ActivityStage1OptionEnvironmentV1 {
   ActivityPlannerDiagEnvironmentV1 diagnostic{};
@@ -41,6 +42,7 @@ struct ActivityStage1OptionEnvironmentV1 {
   ActivityStage1SelectedOptionV1 selected_option = nullptr;
   ActivityStage1PredicateV1 option_predicate = nullptr;
   ActivityStage1CanProgressV1 can_progress = nullptr;
+  ActivityStage1SetStageTwoV1 set_stage_two = nullptr;
 };
 
 struct ActivityStage1OptionReadResultV1 {
@@ -58,6 +60,32 @@ struct ActivityStage1OptionReadResultV1 {
 ActivityStage1OptionReadResultV1 ReadActivityStage1OptionV1(
     const ActivityStage1OptionEnvironmentV1 &environment,
     const ActivityPlannerDiagFrameV1 &expected) noexcept;
+
+enum class ActivityStage1ConfirmStatusV1 {
+  stage_two_verified,
+  precondition_rejected,
+  native_transition_failed,
+  postcondition_failed,
+};
+
+struct ActivityStage1ConfirmResultV1 {
+  ActivityStage1ConfirmStatusV1 status =
+      ActivityStage1ConfirmStatusV1::precondition_rejected;
+  ActivityStage1OptionReadResultV1 precondition{};
+  bool submitted = false;
+  bool stage_two_visible = false;
+  bool selected_option_retained = false;
+};
+
+// Calls only the original stage setter at 0x10B1BD0 with argument 2. The
+// public ProgressPlanningStage routine auto-advances later stages, including
+// the activity-start branch, and must not be used for this bounded action.
+ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
+    const ActivityStage1OptionEnvironmentV1 &environment,
+    const ActivityPlannerDiagFrameV1 &expected) noexcept;
+
+std::string_view ActivityStage1ConfirmStatusKeyV1(
+    ActivityStage1ConfirmStatusV1 status) noexcept;
 
 std::string_view ActivityStage1OptionReadStatusKeyV1(
     ActivityStage1OptionReadStatusV1 status) noexcept;
