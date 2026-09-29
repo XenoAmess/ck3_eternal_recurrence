@@ -168,6 +168,21 @@ class H3937StationaryGateTests(unittest.TestCase):
 
 
 class H3937OperatorGateTests(unittest.TestCase):
+    def test_exact_h3937_readonly_check_set_is_accepted(self) -> None:
+        checks = {key: True for key in operator.H3937_REQUIRED_CHECKS}
+        self.assertIn("guarded_subject_unchanged", checks)
+        self.assertTrue(operator.h3937_required_checks_green(checks))
+
+    def test_h3937_check_set_rejects_missing_false_and_extra_fields(self) -> None:
+        complete = {key: True for key in operator.H3937_REQUIRED_CHECKS}
+        for malformed in (
+            {key: value for key, value in complete.items() if key != "guarded_subject_unchanged"},
+            {**complete, "guarded_subject_unchanged": False},
+            {**complete, "unreviewed_extra": True},
+        ):
+            with self.subTest(keys=sorted(malformed)):
+                self.assertFalse(operator.h3937_required_checks_green(malformed))
+
     def test_metadata_candidate_refuses_before_manifest_or_output(self) -> None:
         with TemporaryDirectory() as root, patch.object(operator, "load_manifest") as load, patch.object(
             operator, "run_logged"
