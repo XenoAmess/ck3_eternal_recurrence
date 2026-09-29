@@ -92,6 +92,9 @@ def _exact_h3928_paused_subject(snapshot: object) -> bool:
         and all(
             isinstance(enemy, dict)
             and enemy.get("current_province_id") == 2629
+            and "move_target_province_id" in enemy
+            and enemy.get("move_target_province_id") is None
+            and enemy.get("route_province_ids") == []
             and enemy.get("retreating") is False
             and enemy.get("in_combat") is False
             and enemy.get("army_state") in {"regular", "sieging"}
