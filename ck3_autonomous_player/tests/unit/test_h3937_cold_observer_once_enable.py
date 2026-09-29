@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import sys
 from datetime import datetime, timedelta, timezone
@@ -39,6 +40,17 @@ def test_new_entry_is_isolated_and_outer_observer_stays_default_off() -> None:
     check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is False)
     check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is False)
     check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is False)
+
+
+def test_worker_completion_stdout_survives_legacy_gbk_console(monkeypatch) -> None:
+    raw = io.BytesIO()
+    stream = io.TextIOWrapper(raw, encoding="gbk", errors="strict")
+    monkeypatch.setattr(once, "run_exact_once", lambda nonce: {
+        "status": "RED", "error": "unencodable \U0001f9ea diagnostic"})
+    monkeypatch.setattr(sys, "stdout", stream)
+    check(once.main("nonce") == 1)
+    stream.flush()
+    check(b"\\ud83e\\uddea" in raw.getvalue())
 
 
 def test_wrong_interpreter_refuses_before_admission_or_go(

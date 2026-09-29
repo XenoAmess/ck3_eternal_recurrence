@@ -290,6 +290,8 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-army-strengths-v1") ||
       !Contains(known.capabilities,
+                "game.command.query-province-local-siege-v1-N") ||
+      !Contains(known.capabilities,
                 "game.command.query-campaign-root-context-v1") ||
       !Contains(known.capabilities,
                 "game.command.query-player-faction-alerts-v1") ||
@@ -570,6 +572,7 @@ int main() {
   if (exact_adapter == nullptr || !exact_adapter->enabled() ||
       !exact_adapter->supports_step(canonical_combat_step) ||
       !exact_adapter->supports_step(canonical_v3_combat_step) ||
+      !exact_adapter->supports_step("query-province-local-siege-v1-2610") ||
       !exact_adapter->supports_step("query-campaign-root-context-v1") ||
       !exact_adapter->supports_step("query-player-faction-alerts-v1") ||
       exact_adapter->supports_step("query-player-faction-alerts-v1-x") ||
@@ -757,6 +760,21 @@ int main() {
       return Fail("exact adapter advertised a malformed combat query step");
     }
   }
+  constexpr std::array<std::string_view, 8> invalid_province_siege_steps{
+      "query-province-local-siege-v1-",
+      "query-province-local-siege-v1-0",
+      "query-province-local-siege-v1-02610",
+      "query-province-local-siege-v1--1",
+      "query-province-local-siege-v1-2610x",
+      "query-province-local-siege-v1-2610-extra",
+      "query-province-local-siege-v1-2147483648",
+      "prefix-query-province-local-siege-v1-2610",
+  };
+  for (const auto invalid : invalid_province_siege_steps) {
+    if (exact_adapter->supports_step(invalid)) {
+      return Fail("exact adapter advertised a noncanonical province siege query");
+    }
+  }
 
   StubAdapter partial(kFutureDescriptor, true);
   std::vector<xar::game::DeclarableWarSnapshot> target_declarations;
@@ -774,6 +792,7 @@ int main() {
       partial.supports("game.state.war-objective-siege-progress") ||
       partial.supports("game.command.declare-war-N") ||
       partial.supports_step("query-army-strengths-v1") ||
+      partial.supports_step("query-province-local-siege-v1-2610") ||
       partial.supports_step("query-war-termination-options-16777217") ||
       partial.supports_step(
           "query-war-termination-terms-v1-16777217") ||
@@ -793,7 +812,8 @@ int main() {
     return Fail("capability lookup did not use the selected adapter set");
   }
   StubAdapter disabled(kFutureDescriptor, false);
-  if (disabled.supports("game.state.snapshot")) {
+  if (disabled.supports("game.state.snapshot") ||
+      disabled.supports_step("query-province-local-siege-v1-2610")) {
     return Fail("disabled adapter exposed gameplay capabilities");
   }
 

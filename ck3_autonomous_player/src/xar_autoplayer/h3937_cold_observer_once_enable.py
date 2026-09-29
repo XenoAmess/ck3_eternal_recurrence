@@ -736,7 +736,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
 
 def main(claim_nonce: str) -> int:
     completion = run_exact_once(claim_nonce)
-    print(json.dumps(completion, ensure_ascii=False))
+    print(json.dumps(completion, ensure_ascii=True))
     return 0 if completion["status"] == "GREEN_READ_ONLY" else 1
 
 

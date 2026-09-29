@@ -334,6 +334,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.enforce-demands-N";
   } else if (step == "query-army-strengths-v1") {
     capability = "game.command.query-army-strengths-v1";
+  } else if (IsCanonicalPositiveIdStep(
+                 step, "query-province-local-siege-v1-")) {
+    capability = "game.command.query-province-local-siege-v1-N";
   } else if (ck3_11906::ParseCampaignRootContextV1Step(step)) {
     capability = ck3_11906::kCampaignRootContextV1Capability;
   } else if (ck3_11906::ParsePlayerFactionAlertsV1Step(step)) {
