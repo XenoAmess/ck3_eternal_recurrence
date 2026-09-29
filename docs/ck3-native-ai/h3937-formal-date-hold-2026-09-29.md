@@ -14,6 +14,8 @@ driver omits date controls from capabilities and refuses public, composite,
 and primitive date submission before a native timeline command is sent. This
 covers `life-advance`, battle/committed-route/objective-hold sentinels,
 `advance-route-contact-horizon`, direct `resume-map`, and speed controls.
+Frontend revision-zero execution rejects all date controls for every episode;
+its synthetic frame cannot certify the H3937 episode identity.
 Same-frame read-only route queries and snapshots remain available.
 
 The separate route-contact inventory guard applies to all episodes. It does

@@ -8172,6 +8172,20 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
+        if is_date_control_step(step):
+            # Frontend revision zero has no map/episode snapshot and cannot be
+            # used as a back door to submit a timeline primitive.
+            if allow_frontend_revision_zero:
+                raise UnsupportedStepError(
+                    "frontend revision zero cannot execute date controls"
+                )
+            with self._episode_identity_lock:
+                held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
+            if held_episode:
+                raise BridgeUnavailableError(
+                    "H3937 date hold: physical hostile inventory and formal "
+                    "war/cash policy remain uncertified"
+                )
         capabilities = (
             self.state.capabilities()
             if internal_semantic_snapshot

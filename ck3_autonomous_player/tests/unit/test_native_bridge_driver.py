@@ -884,6 +884,21 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertIn("resume-map", old_actions)
         self.assertIn("set-speed-3", old_actions)
         self.assertIn(query_step, old_actions)
+        for step in date_steps:
+            with self.subTest(frontend_zero_step=step):
+                with self.assertRaisesRegex(
+                    UnsupportedStepError,
+                    "frontend revision zero cannot execute date",
+                ):
+                    driver._execute_primitive_step(
+                        step,
+                        expected_revision=0,
+                        required_capability="game.command." + step,
+                        allow_frontend_revision_zero=True,
+                    )
+        self.assertFalse(
+            any(frame.get("type") == "execute_step" for frame in endpoint.frames)
+        )
         driver._with_one_life_episode = original_projection
 
     def _run_life_advance_speed_fixture(
