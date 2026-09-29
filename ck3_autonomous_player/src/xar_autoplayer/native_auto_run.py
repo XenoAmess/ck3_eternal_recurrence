@@ -51,6 +51,10 @@ from .bridge.activity_feast_guest_rule_private_transport import (
     QUERY_STEP as _PRIVATE_ACTIVITY_GUEST_RULE_QUERY_STEP,
     query_activity_feast_guest_rule_private_v1,
 )
+from .bridge.activity_feast_guest_rule_provenance_private_transport import (
+    STEP as _PRIVATE_ACTIVITY_GUEST_RULE_PROVENANCE_STEP,
+    query_activity_feast_guest_rule_provenance_private_v1,
+)
 from .activity_feast_stage5_start_formal_consumer import (
     LEDGER_FILE as PRIVATE_FEAST_START_LEDGER_FILE,
     consume_feast_start_following_turn,
@@ -435,6 +439,7 @@ def native_auto_run(
     private_activity_feast_guest_candidate_read: bool = False,
     private_activity_feast_guest_opinion_character_id: int | None = None,
     private_activity_feast_guest_rule_key: str | None = None,
+    private_activity_feast_guest_rule_candidate_id: int | None = None,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -674,6 +679,14 @@ def native_auto_run(
                for ch in private_activity_feast_guest_rule_key)
     ):
         raise AgentError("private feast guest rule key is malformed")
+    if private_activity_feast_guest_rule_candidate_id is not None and (
+        completion_contract != "bounded"
+        or type(private_activity_feast_guest_rule_candidate_id) is not int
+        or not 0 < private_activity_feast_guest_rule_candidate_id <= 0x7FFFFFFF
+        or private_activity_feast_guest_rule_key is None
+        or private_activity_feast_guest_candidate_read is not True
+    ):
+        raise AgentError("private feast rule provenance needs a named rule and same-run candidate read")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -1086,6 +1099,9 @@ def native_auto_run(
         )
         driver.allow_private_activity_feast_guest_rule_query = (
             private_activity_feast_guest_rule_key is not None
+        )
+        driver.allow_private_activity_feast_guest_rule_provenance_query = (
+            private_activity_feast_guest_rule_candidate_id is not None
         )
         # Category membership and target value are not yet observable.  A
         # successful category read does not authorize activation.
@@ -1527,6 +1543,12 @@ def native_auto_run(
                                                     private_activity_feast_stage5_full_cost_observation
                                                 ),
                                                 authored_rule_key=private_activity_feast_guest_rule_key,
+                                                candidate_character_id=(
+                                                    private_activity_feast_guest_rule_candidate_id
+                                                ),
+                                                candidate_observation=(
+                                                    private_activity_feast_guest_candidate_observation
+                                                ),
                                                 turn_index=turn_index,
                                             )
                                         )
@@ -7233,10 +7255,15 @@ def _read_private_activity_feast_guest_candidate_once(
 def _read_private_activity_feast_guest_rule_once(
     driver: NativeHeadlessGameplayDriver,
     *, service: GameplayBridgeService, before: dict[str, object],
-    cost_observation: dict[str, object], authored_rule_key: str, turn_index: int,
+    cost_observation: dict[str, object], authored_rule_key: str,
+    candidate_character_id: int | None = None,
+    candidate_observation: dict[str, object] | None = None,
+    turn_index: int,
 ) -> dict[str, object]:
-    """Observe a named category and hold pending native membership/value inputs."""
-    step = _PRIVATE_ACTIVITY_GUEST_RULE_QUERY_STEP
+    """Observe one category, optionally binding passive provenance to a guest."""
+    step = (_PRIVATE_ACTIVITY_GUEST_RULE_PROVENANCE_STEP
+            if candidate_character_id is not None
+            else _PRIVATE_ACTIVITY_GUEST_RULE_QUERY_STEP)
     pre = service.snapshot()
     if (cost_observation.get("same_frame") is not True
             or not _private_activity_same_paused_frame(before, pre)):
@@ -7244,12 +7271,34 @@ def _read_private_activity_feast_guest_rule_once(
             "private feast guest rule read lacks same-frame Stage-5 cost source",
             step_result={"step": step, "status": "red", "accepted": False,
                          "postcondition_verified": False}, selected_step=step)
+    if candidate_character_id is not None:
+        candidate_read = (candidate_observation.get("candidate_read")
+                          if isinstance(candidate_observation, dict) else None)
+        candidate = (candidate_read.get("candidate")
+                     if isinstance(candidate_read, dict) else None)
+        if (not isinstance(candidate_observation, dict)
+                or candidate_observation.get("same_frame") is not True
+                or not isinstance(candidate, dict)
+                or candidate_read.get("status") != "observed"
+                or candidate.get("character_id") != candidate_character_id):
+            raise StepPostconditionError(
+                "private feast rule provenance lacks same-frame filtered candidate",
+                step_result={"step": step, "status": "red", "accepted": False,
+                             "postcondition_verified": False}, selected_step=step)
     try:
-        read = query_activity_feast_guest_rule_private_v1(
-            driver, authored_rule_key=authored_rule_key,
-            expected_revision=pre["revision"],
-            timeout_seconds=float(driver.command_timeout_seconds),
-        )
+        if candidate_character_id is None:
+            read = query_activity_feast_guest_rule_private_v1(
+                driver, authored_rule_key=authored_rule_key,
+                expected_revision=pre["revision"],
+                timeout_seconds=float(driver.command_timeout_seconds),
+            )
+        else:
+            read = query_activity_feast_guest_rule_provenance_private_v1(
+                driver, authored_rule_key=authored_rule_key,
+                candidate_character_id=candidate_character_id,
+                expected_revision=pre["revision"],
+                timeout_seconds=float(driver.command_timeout_seconds),
+            )
         post = service.snapshot()
     except Exception as exc:
         raise StepPostconditionError(
@@ -7273,7 +7322,9 @@ def _read_private_activity_feast_guest_rule_once(
             step_result={"step": step, "status": "red", "accepted": False,
                          "postcondition_verified": False, "rule_read": read},
             selected_step=step)
-    if read["status"] not in {"observed_active", "observed_inactive"}:
+    observed_statuses = ({"observed"} if candidate_character_id is not None
+                         else {"observed_active", "observed_inactive"})
+    if read["status"] not in observed_statuses:
         raise StepPostconditionError(
             "private feast guest rule source unavailable: " + str(read["status"]),
             step_result={"step": step, "status": "red", "accepted": False,
@@ -7287,9 +7338,17 @@ def _read_private_activity_feast_guest_rule_once(
         "post_frame": _public_binding(post),
         "rule_read": read,
         "decision": "hold", "formal_action_ready": False,
-        "reason": ("category_already_active" if read["status"] == "observed_active"
-                   else "category_membership_and_value_unobserved"),
-        "candidate_category_membership": None,
+        "reason": (
+            "candidate_in_active_category_final_invite_unproven"
+            if candidate_character_id is not None and read["candidate_membership"] is True
+            else "candidate_not_in_named_category"
+            if candidate_character_id is not None
+            else "category_already_active" if read["status"] == "observed_active"
+            else "category_membership_and_value_unobserved"
+        ),
+        "candidate_category_membership": (
+            read["candidate_membership"] if candidate_character_id is not None else None
+        ),
         "candidate_value": None,
         "final_invite_legal": None, "feast_start_ready": None,
     }

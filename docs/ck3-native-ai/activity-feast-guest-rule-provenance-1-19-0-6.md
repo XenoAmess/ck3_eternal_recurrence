@@ -65,3 +65,14 @@ cold-recovery contract. Its focused MSVC fixture checks exact instruction
 anchors, rule-specific ID capture, post-filter intersection, negative
 candidate membership and stale-group rejection. A separate frozen DLL,
 official pair/no-launch check and paused live read are still required.
+
+The bounded Python runner and operator now expose this read only when a named
+rule and the same run's filtered candidate read are requested. The transport
+checks the exact envelope, candidate identity and unchanged paused frame;
+observed membership still yields `hold` with invitation and Start disabled.
+This is source and fixture coverage, not a live membership result. In H3928,
+R0378 separately found Stage-5 `final_can_start=false`: actor 29829 failed
+`is_available_adult` because `in_army=no`. A future action trial therefore
+needs a fresh legal paused frame with `final_can_start=true`, a matching
+candidate/rule membership read, native invitation legality, and the action's
+independent postcondition before any Start or invitation claim.

@@ -509,6 +509,10 @@ def parser() -> argparse.ArgumentParser:
               "category activation remains disabled without member and value evidence"),
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-guest-rule-candidate-id", type=int,
+        help="passively read one same-run filtered candidate's membership in the named rule; no action",
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
         help=("read one passive normal slot-12 raw cost capture; combine with "
               "--private-activity-feast-planner-open to open first"),
@@ -1142,6 +1146,9 @@ def main(argv: list[str] | None = None) -> int:
                     **({"private_activity_feast_guest_rule_key":
                         args.private_activity_feast_guest_rule_key}
                       if args.private_activity_feast_guest_rule_key is not None else {}),
+                    **({"private_activity_feast_guest_rule_candidate_id":
+                        args.private_activity_feast_guest_rule_candidate_id}
+                      if args.private_activity_feast_guest_rule_candidate_id is not None else {}),
                     **({"private_activity_cost_slot12_raw_read": True}
                       if args.private_activity_cost_slot12_raw_read else {}),
                     **succession_options,

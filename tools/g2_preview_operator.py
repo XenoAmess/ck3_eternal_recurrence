@@ -1404,6 +1404,7 @@ def native_auto_run_command(
     private_activity_feast_guest_candidate_read: bool = False,
     private_activity_feast_guest_opinion_character_id: int | None = None,
     private_activity_feast_guest_rule_key: str | None = None,
+    private_activity_feast_guest_rule_candidate_id: int | None = None,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1499,6 +1500,11 @@ def native_auto_run_command(
         command.extend([
             "--private-activity-feast-guest-rule-key",
             private_activity_feast_guest_rule_key,
+        ])
+    if private_activity_feast_guest_rule_candidate_id is not None:
+        command.extend([
+            "--private-activity-feast-guest-rule-candidate-id",
+            str(private_activity_feast_guest_rule_candidate_id),
         ])
     if private_activity_cost_slot12_raw_read:
         command.append("--private-activity-cost-slot12-raw-read")
@@ -2116,6 +2122,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_feast_guest_candidate_read
                 or args.private_activity_feast_guest_opinion_character_id is not None
                 or args.private_activity_feast_guest_rule_key is not None
+                or args.private_activity_feast_guest_rule_candidate_id is not None
                 or args.private_activity_planner_diag_query
                 or args.private_construction_formal_trial
                 or args.private_family_marriage_formal_trial
@@ -2179,7 +2186,8 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_feast_stage5_full_cost_read
                 or args.private_activity_feast_stage5_start_read
                 or args.private_activity_feast_guest_candidate_read
-                or args.private_activity_feast_guest_rule_key is not None):
+                or args.private_activity_feast_guest_rule_key is not None
+                or args.private_activity_feast_guest_rule_candidate_id is not None):
             raise ValueError("private feast guest opinion uses its own paused frame run")
     if (args.private_activity_feast_guest_rule_key is not None
             and not args.private_activity_feast_stage5_full_cost_read):
@@ -2189,6 +2197,12 @@ def command_run(args: argparse.Namespace) -> int:
                  or re.fullmatch(r"activity_invite_rule_[a-z0-9_]+",
                                  args.private_activity_feast_guest_rule_key) is None)):
         raise ValueError("private feast guest rule key is malformed")
+    if args.private_activity_feast_guest_rule_candidate_id is not None and (
+        not 0 < args.private_activity_feast_guest_rule_candidate_id <= 0x7FFFFFFF
+        or args.private_activity_feast_guest_rule_key is None
+        or not args.private_activity_feast_guest_candidate_read
+    ):
+        raise ValueError("private feast rule provenance needs a named rule and same-run filtered candidate")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")
@@ -2389,6 +2403,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_guest_rule_key": (
             args.private_activity_feast_guest_rule_key
         ),
+        "private_activity_feast_guest_rule_candidate_id": (
+            args.private_activity_feast_guest_rule_candidate_id
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -2507,6 +2524,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_guest_rule_key=(
                     args.private_activity_feast_guest_rule_key
+                ),
+                private_activity_feast_guest_rule_candidate_id=(
+                    args.private_activity_feast_guest_rule_candidate_id
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -3389,6 +3409,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-guest-rule-key", type=str,
         help="after Stage-5 cost read, inspect a named guest category; no activation",
+    )
+    run.add_argument(
+        "--private-activity-feast-guest-rule-candidate-id", type=int,
+        help="passively read a same-run filtered guest's membership in the named rule; no action",
     )
     run.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
