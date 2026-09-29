@@ -398,6 +398,7 @@ def native_auto_run(
     private_activity_feast_stage1_option_read: bool = False,
     private_activity_cost_slot12_raw_read: bool = False,
     private_activity_feast_stage1_confirm: bool = False,
+    private_activity_feast_stage2_gate_read: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -575,6 +576,9 @@ def native_auto_run(
             or private_activity_cost_slot12_raw_read is True
         ):
             raise AgentError("stage-1 Confirm needs its own private paused frame run")
+    if (private_activity_feast_stage2_gate_read is True
+            and private_activity_feast_stage1_confirm is not True):
+        raise AgentError("private stage-2 gate read requires stage-1 Confirm")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -717,6 +721,7 @@ def native_auto_run(
     private_activity_cost_slot12_raw_observation: dict[str, object] | None = None
     private_activity_feast_stage1_confirm_observation: dict[str, object] | None = None
     private_activity_feast_stage2_option_observation: dict[str, object] | None = None
+    private_activity_feast_stage2_gate_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -1292,7 +1297,23 @@ def native_auto_run(
                                 turn_index=turn_index,
                             )
                         )
-                        status = "private_activity_feast_stage1_confirm_verified"
+                        if private_activity_feast_stage2_gate_read is True:
+                            current_attempt["stage"] = "private_activity_feast_stage2_gate_read"
+                            private_activity_feast_stage2_gate_observation = (
+                                _read_private_activity_feast_stage2_gate_once(
+                                    driver, service=service, before=before,
+                                    confirm_observation=(
+                                        private_activity_feast_stage1_confirm_observation
+                                    ),
+                                    option_observation=(
+                                        private_activity_feast_stage2_option_observation
+                                    ),
+                                    turn_index=turn_index,
+                                )
+                            )
+                            status = "private_activity_feast_stage2_gate_observed"
+                        else:
+                            status = "private_activity_feast_stage1_confirm_verified"
                     else:
                         status = "private_activity_feast_stage1_option_observed"
                 elif private_activity_cost_slot12_raw_read is True:
@@ -3436,13 +3457,21 @@ def native_auto_run(
         if private_activity_feast_stage1_confirm is True:
             qualified = bool(
                 primary_error is None
-                and status == "private_activity_feast_stage1_confirm_verified"
+                and status == (
+                    "private_activity_feast_stage2_gate_observed"
+                    if private_activity_feast_stage2_gate_read is True
+                    else "private_activity_feast_stage1_confirm_verified"
+                )
                 and isinstance(private_activity_feast_stage1_confirm_observation, dict)
                 and private_activity_feast_stage1_confirm_observation.get("submitted") is True
                 and private_activity_feast_stage1_confirm_observation.get("same_frame") is True
                 and isinstance(private_activity_feast_stage2_option_observation, dict)
                 and private_activity_feast_stage2_option_observation.get("same_frame") is True
                 and private_activity_feast_stage2_option_observation.get("stage_two_verified") is True
+                and (private_activity_feast_stage2_gate_read is not True
+                     or (isinstance(private_activity_feast_stage2_gate_observation, dict)
+                         and private_activity_feast_stage2_gate_observation.get("same_frame") is True
+                         and private_activity_feast_stage2_gate_observation.get("gate_observed") is True))
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -3635,6 +3664,11 @@ def native_auto_run(
             {"private_activity_feast_stage2_option_observation": copy.deepcopy(
                 private_activity_feast_stage2_option_observation)}
             if private_activity_feast_stage1_confirm is True else {}
+        ),
+        **(
+            {"private_activity_feast_stage2_gate_observation": copy.deepcopy(
+                private_activity_feast_stage2_gate_observation)}
+            if private_activity_feast_stage2_gate_read is True else {}
         ),
         **(
             {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
@@ -5549,6 +5583,7 @@ _PRIVATE_ACTIVITY_FEAST_OPEN_STEP = "open-activity-feast-planner-v1-private"
 _PRIVATE_ACTIVITY_STAGE1_OPTION_READ_STEP = "query-activity-stage1-option-v1-private"
 _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP = "confirm-activity-feast-stage1-v1-private"
 _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP = "query-activity-feast-stage2-option-v1-private"
+_PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP = "query-activity-feast-stage2-gate-v1-private"
 _PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP = "query-activity-cost-slot12-raw-v1-private"
 
 
@@ -6122,6 +6157,165 @@ def _read_private_activity_feast_stage2_option_once(
                 "confirm_native_receipt": confirm_receipt,
             },
             selected_step=_PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+        )
+    return observation
+
+
+def _read_private_activity_feast_stage2_gate_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    confirm_observation: dict[str, object],
+    option_observation: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Read the exact native stage-2 gate without progressing the planner."""
+    revision = before["native_revision"]
+    date_raw = before["date_raw"]
+    actor_id = before["played_character_id"]
+    confirm_receipt = copy.deepcopy(confirm_observation.get("native_receipt"))
+    option_receipt = copy.deepcopy(option_observation.get("native_receipt"))
+    if (confirm_observation.get("submitted") is not True
+            or confirm_observation.get("same_frame") is not True
+            or option_observation.get("stage_two_verified") is not True
+            or option_observation.get("same_frame") is not True):
+        raise StepPostconditionError(
+            "private feast stage-2 gate lacks verified Confirm and option read",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": confirm_observation.get("submitted"),
+                "pending": True, "postcondition_verified": False,
+                "confirm_native_receipt": confirm_receipt,
+                "stage2_option_native_receipt": option_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+        )
+    request_id = "activity-stage2-gate-" + uuid.uuid4().hex
+    try:
+        driver.endpoint.send({
+            "type": "execute_step", "protocol_version": 1,
+            "request_id": request_id,
+            "step": _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+            "expected_revision": revision,
+            "expected_date_raw": date_raw,
+            "expected_actor_character_id": actor_id,
+            "expected_activity_key": "activity_feast",
+            "expected_option_key": "feast_type_generic",
+        })
+        frame = driver.state.wait_for_command_result(
+            request_id, float(driver.command_timeout_seconds),
+        )
+        after = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast stage-2 gate read unresolved after Confirm",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "postcondition_verified": False,
+                "confirm_native_receipt": confirm_receipt,
+                "stage2_option_native_receipt": option_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+        ) from exc
+    same_frame = _private_activity_same_paused_frame(before, after)
+    envelope = frame.get("result") if isinstance(frame, dict) else None
+    native = (envelope.get("activity_stage2_gate")
+              if isinstance(envelope, dict) else None)
+    rows = native.get("failing_rows") if isinstance(native, dict) else None
+    row_count = (native.get("configuration_row_count")
+                 if isinstance(native, dict) else None)
+    rows_valid = bool(
+        type(row_count) is int and 0 <= row_count <= 128
+        and isinstance(rows, list) and len(rows) <= row_count
+        and all(
+            isinstance(row, dict) and set(row) == {"index", "raw_dword"}
+            and type(row.get("index")) is int and 0 <= row["index"] < row_count
+            and type(row.get("raw_dword")) is int
+            and 0 <= row["raw_dword"] <= 0xFFFFFFFF
+            for row in rows
+        )
+        and len({row["index"] for row in rows}) == len(rows)
+    )
+    native_shape = bool(
+        isinstance(native, dict)
+        and set(native) == {
+            "schema", "snapshot_revision", "date_raw", "actor_character_id",
+            "activity_key", "planning_stage", "selected_option_key",
+            "configuration_row_count", "failing_rows",
+            "can_progress_stage2", "generic_feast_stage2_advance_ready",
+            "read_only", "raw_pointer_fields_persisted", "advertised",
+        }
+        and native.get("schema") == "activity-stage2-gate-private-read-v1"
+        and native.get("snapshot_revision") == revision
+        and native.get("date_raw") == date_raw
+        and native.get("actor_character_id") == actor_id
+        and native.get("activity_key") == "activity_feast"
+        and type(native.get("planning_stage")) is int
+        and native["planning_stage"] == 2
+        and native.get("selected_option_key") == "feast_type_generic"
+        and rows_valid
+        and type(native.get("can_progress_stage2")) is bool
+        and type(native.get("generic_feast_stage2_advance_ready")) is bool
+        and native["can_progress_stage2"] is native["generic_feast_stage2_advance_ready"]
+        and native.get("read_only") is True
+        and native.get("raw_pointer_fields_persisted") is False
+        and native.get("advertised") is False
+    )
+    accepted = bool(
+        isinstance(frame, dict)
+        and frame.get("type") == "command_result"
+        and frame.get("protocol_version") == 1
+        and frame.get("request_id") == request_id
+        and frame.get("ok") is True
+        and isinstance(envelope, dict)
+        and set(envelope) == {
+            "step", "accepted", "status", "private_build", "read_only",
+            "advertised", "activity_stage2_gate", "backend_id",
+        }
+        and envelope.get("step") == _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP
+        and envelope.get("accepted") is True
+        and envelope.get("status") == "available"
+        and envelope.get("private_build") is True
+        and envelope.get("read_only") is True
+        and envelope.get("advertised") is False
+        and envelope.get("backend_id") == "native-headless"
+        and native_shape and same_frame
+    )
+    observation = {
+        "status": "stage_two_gate_observed" if accepted else "red",
+        "turn_index": turn_index,
+        "same_frame": same_frame,
+        "gate_observed": accepted,
+        "advance_ready": native["generic_feast_stage2_advance_ready"]
+        if accepted else None,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "gate": copy.deepcopy(native),
+        "native_receipt": copy.deepcopy(frame),
+        "confirm_native_receipt": confirm_receipt,
+        "stage2_option_native_receipt": option_receipt,
+    }
+    if not accepted:
+        raise StepPostconditionError(
+            "private feast stage-2 gate read RED: "
+            + str(frame.get("error", "invalid_native_readback")
+                  if isinstance(frame, dict) else "missing_command_result"),
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "postcondition_verified": False,
+                "same_frame": same_frame,
+                "activity_stage2_gate": copy.deepcopy(native),
+                "native_receipt": copy.deepcopy(frame),
+                "confirm_native_receipt": confirm_receipt,
+                "stage2_option_native_receipt": option_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
         )
     return observation
 
@@ -7094,10 +7288,12 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
     if result.get("step") in {
         _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
         _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+        _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
     }:
         for key in (
             "submitted", "pending", "same_frame", "activity_stage1_confirm",
-            "activity_stage2_option", "native_receipt", "confirm_native_receipt",
+            "activity_stage2_option", "activity_stage2_gate", "native_receipt",
+            "confirm_native_receipt", "stage2_option_native_receipt",
         ):
             if key in result:
                 compact[key] = copy.deepcopy(result[key])

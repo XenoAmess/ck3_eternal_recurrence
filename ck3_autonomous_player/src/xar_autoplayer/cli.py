@@ -472,6 +472,10 @@ def parser() -> argparse.ArgumentParser:
         help="confirm one legal feast stage-1 option and read stage 2 without Start",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-stage2-gate-read", action="store_true",
+        help="after private stage-1 Confirm, read the stage-2 native gate without advancing",
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
         help=("read one passive normal slot-12 raw cost capture; combine with "
               "--private-activity-feast-planner-open to open first"),
@@ -1077,6 +1081,8 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_stage1_option_read else {}),
                     **({"private_activity_feast_stage1_confirm": True}
                       if args.private_activity_feast_stage1_confirm else {}),
+                    **({"private_activity_feast_stage2_gate_read": True}
+                      if args.private_activity_feast_stage2_gate_read else {}),
                     **({"private_activity_cost_slot12_raw_read": True}
                       if args.private_activity_cost_slot12_raw_read else {}),
                     **succession_options,

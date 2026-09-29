@@ -1395,6 +1395,7 @@ def native_auto_run_command(
     private_activity_feast_stage1_option_read: bool = False,
     private_activity_cost_slot12_raw_read: bool = False,
     private_activity_feast_stage1_confirm: bool = False,
+    private_activity_feast_stage2_gate_read: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1460,6 +1461,8 @@ def native_auto_run_command(
         command.append("--private-activity-feast-stage1-option-read")
     if private_activity_feast_stage1_confirm:
         command.append("--private-activity-feast-stage1-confirm")
+    if private_activity_feast_stage2_gate_read:
+        command.append("--private-activity-feast-stage2-gate-read")
     if private_activity_cost_slot12_raw_read:
         command.append("--private-activity-cost-slot12-raw-read")
     if require_initial_lifestyle_focus_before_date_advance:
@@ -2064,6 +2067,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_feast_stage1_option_read
                 or args.private_activity_cost_slot12_raw_read
                 or args.private_activity_feast_stage1_confirm
+                or args.private_activity_feast_stage2_gate_read
                 or args.private_activity_planner_diag_query
                 or args.private_construction_formal_trial
                 or args.private_family_marriage_formal_trial
@@ -2086,6 +2090,9 @@ def command_run(args: argparse.Namespace) -> int:
                     or args.private_activity_feast_stage1_option_read
                     or args.private_activity_cost_slot12_raw_read))):
             raise ValueError("select one private feast paused frame route")
+    if (args.private_activity_feast_stage2_gate_read
+            and not args.private_activity_feast_stage1_confirm):
+        raise ValueError("private stage-2 gate read requires stage-1 Confirm")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")
@@ -2259,6 +2266,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_stage1_confirm": (
             args.private_activity_feast_stage1_confirm
         ),
+        "private_activity_feast_stage2_gate_read": (
+            args.private_activity_feast_stage2_gate_read
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -2347,6 +2357,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_stage1_confirm=(
                     args.private_activity_feast_stage1_confirm
+                ),
+                private_activity_feast_stage2_gate_read=(
+                    args.private_activity_feast_stage2_gate_read
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -3191,6 +3204,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-stage1-confirm", action="store_true",
         help="confirm one legal feast stage-1 option then independently read stage 2",
+    )
+    run.add_argument(
+        "--private-activity-feast-stage2-gate-read", action="store_true",
+        help="after private stage-1 Confirm, read the native stage-2 gate",
     )
     run.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
