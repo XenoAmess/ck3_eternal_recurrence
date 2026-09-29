@@ -45,6 +45,8 @@
 
 独立历史核对显示，039 的同日 trace 也仍是 prowess11、regiment61 攻防 raw 96250000/19250000；039 后续真实 d06 存档才见 `one_legged` + `wounded_1`，040 是**另一次冷载**读到 prowess7、团攻防 61250000/12250000。该 11→7 计算卡只能明确标为 039→040 的历史研究板。a07 没有对应同源后态存档，视频不得将该数值卡接作 a07 战斗窗的下一帧或同轨结果。
 
+来源身份勘误：039 live 的 command/checkpoint-copy/source-receipt 与 a07 均绑定 attempt-010 的 d05 存档 SHA-256 `695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885` 和 sidecar `6650C0DB79D063E066AB72402735C22FAE9FCB5D458A56CE1C10B9545CD1F3C7`。它们是**同源字节的独立运行**；039→040 的后态仍不能当作 a07 的实机次帧，DLL 与 RNG 路径也须各自核验。历史 `D978…` 只见于后续 projection recheck，不是 039 的 live 冷载源。
+
 本次**没有可冷载的 d06 受管存档及真实保存回执**。`e2-04-d05-before-save.json` 的保存发生在 23:59:06Z 左右、date_raw=53146344；隔离 profile 的 `autosave.ck3`、`last_save.ck3`、`xar_checkpoint.ck3`、`xar_episode_seed.ck3` 的 mtime 均在 23:58:57–23:59:10Z，先于 23:59:23Z 的一次日期动作。`war_film_checkpoint.ck3` 是启动前 d05 源档副本。不能将这些文件的存在或 d06 post snapshot 当作 d06 checkpoint，更不能下次按 d06 冷载。若需续拍角色特质，应从有新真实 save receipt 的新 attempt 再做。
 
 ## 收尾
