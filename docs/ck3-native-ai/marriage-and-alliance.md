@@ -1190,3 +1190,35 @@ units from adulthood. The county partition already assigns `2173` to Guy, so
 this betrothal does not prevent that split. Long marriage obligation and
 relative value versus other legal rows remain unpriced. Native legality and
 acceptance do not constitute positive formal strategy value.
+
+### R0384: adult candidate 37909 for Guy, still no approved value (2026-09-30)
+
+The separately paired H3911 read-only round R0384 sampled the same paused
+`raw53219928` / `native:3` frame. Guy `38988` remains a verified player child,
+unpartnered and assigned county `2173` by the existing partition. Of 146
+final-legal rows, candidate `37909` has an available default-context projection:
+recipient `34332`, positive native acceptance raw `1000000`, final answer `0`,
+predicted **betrothal**, effective matrilineal `false`, no qualifying alliance
+attempt and all ten immediate generic cost terms zero. Guy's age measure is
+`13/16`; candidate `37909` is `18/16`, so their current age difference is five.
+The [immutable R0384 report](Z:/ck3_mod_rewrite_process_assets/nw-family-guy37909-h3911-20260930-c3/live-R0384/report.json)
+has SHA-256 `856E1778EF0E726904A1B74418488BE536E58895058D30BD24500D7D2141DC32`;
+the [one-candidate native value](Z:/ck3_mod_rewrite_process_assets/nw-family-guy37909-h3911-20260930-c3/live-R0384/guy37909-one-candidate-value.json)
+has SHA-256 `2011EBA53881B524260437EF679B9EB8D0D1AB673B2E72D5ABF5D79F4003A0C9`.
+No action or date advance occurred, and the minimized CK3 process was recovered.
+
+This row does not satisfy the existing betrothal age-difference limit `2`.
+The alternative `39380` differs by three measures, but is herself only
+`10/16`; neither is presently an approved policy choice. The stock
+`marriage_ai_accept_modifier` at
+`00_marriage_scripted_modifiers.txt:1496-1564` considers whether an adult
+woman would become infertile before an underage boy matures. The positive
+recipient answer incorporates the native acceptance decision; it does **not**
+publish either candidate's fertility or establish a positive dynasty value for
+Guy. The title partition itself is unchanged by either betrothal. A next
+value-bearing read must compare a small number of actual legal alternatives
+on the same frame using the native candidate fertility/childbearing input and
+future partnership timing, then decide whether the age limit should change.
+The existing private specified-child default submit and bilateral result
+transport can be reused after that decision; the current formal consumer only
+selects the separate adult matrilineal child case.
