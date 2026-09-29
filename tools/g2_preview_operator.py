@@ -2746,6 +2746,9 @@ def command_query_r0345_stationary_route_contact_v1(
 # Source assets are verified, but the H3937 paused hostile scope and a fresh
 # official prepared pair for this checkout are still missing.
 H3937_RECEIVER_ASSETS_AND_SCOPE_VERIFIED = False
+H3937_SOURCE_HISTORICAL_PREPARED_STATE_DIR = Path(
+    r"Z:\nw-family-h3937-12turn-20260929\state"
+)
 H3937_REQUIRED_CHECKS = frozenset({
     "exact_one_read_only_query",
     "query_source_bound_to_before_frame",
@@ -2772,6 +2775,16 @@ def h3937_required_checks_green(checks: object) -> bool:
     )
 
 
+def h3937_same_absolute_path(value: object, expected: Path) -> bool:
+    return bool(
+        isinstance(value, str)
+        and value
+        and Path(value).is_absolute()
+        and str(Path(value).resolve()).casefold()
+        == str(expected.resolve()).casefold()
+    )
+
+
 def command_query_h3937_stationary_route_contact_v1(
     args: argparse.Namespace,
 ) -> int:
@@ -2793,18 +2806,24 @@ def command_query_h3937_stationary_route_contact_v1(
     expected_dll = "A8EAC0CD5BEEDF90778C76C14679629A96EDD4F7E7B398EB035B865F776786E9"
     expected_injector = "8C8277EC27602C35A3868E17DD60A954151E13E38DCA1456B6F3B34D60EB3544"
     expected_child_sidecar = "798F16F572FB83399CC9AB7ABD16561E87C47CEF7109CF23D255DAE660A8D8A7"
-    child_sidecar_path = manifest_path(manifest["state_dir"], "state_dir") / "player-child-matrilineal-formal-v1.json"
+    state_dir = manifest_path(manifest["state_dir"], "state_dir")
+    child_sidecar_path = state_dir / "player-child-matrilineal-formal-v1.json"
     child_sidecar_before = sha256(child_sidecar_path)
     dll_path = manifest_path(manifest["dll"], "dll")
     injector_path = manifest_path(manifest["injector"], "injector")
     dll_before = sha256(dll_path)
     injector_before = sha256(injector_path)
-    rebind_path = manifest_path(manifest["state_dir"], "state_dir") / "ordinary-seed-rebind-v1.json"
+    rebind_path = state_dir / "ordinary-seed-rebind-v1.json"
     rebind = read_json(rebind_path)
     rebind_driver = rebind.get("driver_state")
     rebind_save = rebind.get("save")
     rebind_expectations = rebind.get("no_launch_preflight_expectations")
     rebind_post = rebind.get("post_rebind_validation")
+    rebind_post_checkpoint = (
+        rebind_post.get("checkpoint")
+        if isinstance(rebind_post, dict) else None
+    )
+    rebind_environment = rebind.get("environment")
     prepared_driver = (
         rebind_driver.get("target_sha256")
         if isinstance(rebind_driver, dict) else None
@@ -2829,7 +2848,18 @@ def command_query_h3937_stationary_route_contact_v1(
         or rebind.get("status") != "rebound"
         or rebind.get("ck3_launch_attempted") is not False
         or rebind.get("pipe_name") != manifest["pipe"]
+        or not h3937_same_absolute_path(rebind.get("state_dir"), state_dir)
+        or h3937_same_absolute_path(
+            rebind.get("state_dir"), H3937_SOURCE_HISTORICAL_PREPARED_STATE_DIR
+        )
+        or not h3937_same_absolute_path(rebind.get("profile_dir"), state_dir / "profile")
+        or not isinstance(rebind_environment, dict)
+        or not isinstance(manifest.get("environment_sha256"), str)
+        or re.fullmatch(r"[0-9a-fA-F]{64}", manifest["environment_sha256"]) is None
+        or str(rebind_environment.get("target_sha256", "")).casefold()
+        != manifest["environment_sha256"].casefold()
         or not isinstance(rebind_driver, dict)
+        or not h3937_same_absolute_path(rebind_driver.get("path"), driver_path)
         or str(rebind_driver.get("source_sha256", "")).casefold()
         != expected_source_driver.casefold()
         or not isinstance(prepared_driver, str)
@@ -2839,9 +2869,11 @@ def command_query_h3937_stationary_route_contact_v1(
         or not isinstance(rebind_save, dict)
         or rebind_save.get("bytes_unchanged") is not True
         or not isinstance(rebind_save.get("source"), dict)
+        or not h3937_same_absolute_path(rebind_save["source"].get("path"), save)
         or str(rebind_save["source"].get("sha256", "")).casefold()
         != expected_save.casefold()
         or not isinstance(rebind_save.get("target"), dict)
+        or not h3937_same_absolute_path(rebind_save["target"].get("path"), save)
         or str(rebind_save["target"].get("sha256", "")).casefold()
         != expected_save.casefold()
         or not isinstance(rebind_expectations, dict)
@@ -2860,6 +2892,11 @@ def command_query_h3937_stationary_route_contact_v1(
         or not isinstance(rebind_post, dict)
         or rebind_post.get("native_driver_consumer") != "passed"
         or rebind_post.get("cold_checkpoint_validator") != "passed"
+        or not isinstance(rebind_post_checkpoint, dict)
+        or not h3937_same_absolute_path(rebind_post_checkpoint.get("path"), save)
+        or rebind_post_checkpoint.get("history_index") != 3937
+        or str(rebind_post_checkpoint.get("sha256", "")).casefold()
+        != expected_save.casefold()
         or actor != 29829
         or episode != "native-29829-2bc2d599f7f9"
     ):
