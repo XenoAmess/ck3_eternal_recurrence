@@ -46,3 +46,38 @@ attempts use fresh external directories. Attempt 01 was compiling while the
 Python validator changed after `81d3cdc77`; its combined source/build
 provenance is RED and cannot certify the repaired HEAD. A fresh attempt is
 required for the final source tree.
+
+## Integration correction — local dry run, 2026-09-29
+
+The isolation statement above describes the original `4e622c6ce2cb3ee629f63722bc1e0b2b12e211f5`
+candidate. The later local integration branch
+`research/h3937-mailbox-dateguard-dry` starts from #612's all-date hold
+`b1f49428d55f0b06428adaef030c270865cc3341` and replays all seven mailbox
+candidate commits without conflicts or patch changes. Its frozen dry-run HEAD
+is `88f0ec98cbbc04477ec032b277871ec167a36ef9`; the range-diff marks all
+seven patches equivalent. The all-date hold, strategy finalizer, and formal
+`authenticated_physical_inventory_for_route_contact` seam have no diff from
+`b1f49428`. The mailbox adds optional read-only native receipt validation and
+returns `date_or_action_authorized: false`. Even a shape-valid receipt remains
+candidate evidence; the authenticated formal seam stays closed, and the joint
+war/cash risk decision is still absent. The dry run did not build or launch.
+
+The append-only local dry-run receipt is
+`D:/ck3-research-artifacts/h3937-mailbox-datehold-dry-attempt01/receipt.json`
+(SHA-256 `0C3E7E4F94EE5879B71B3135DD3CC76FA2BF2F3BBECACDF40E6F9F4CA66601C8`).
+It pins the full diff and range-diff plus normal and optimized Python logs:
+24 focused inventory/date-hold/combined tests and 231 native-driver tests
+passed in each mode. These are static checks, not a live inventory readback.
+
+Attempt 01's mixed source/build provenance remains RED as recorded above.
+The separate native mailbox build attempt 02 under
+`D:/ck3-research-artifacts/h3937-physical-inventory-mailbox-attempt02/`
+recorded clean before/after source HEAD `4e622c6ce2cb3ee629f63722bc1e0b2b12e211f5`.
+Its native fixture executable returned exit code 0 when invoked directly;
+CTest found no tests in that attempt and must not be reported as a CTest pass.
+Its DLL and injector belong to that source attempt. The integrated
+`88f0ec98c` source is a different checkout and needs
+a new exact Release build, official pair, no-launch checks, and independent
+review before any live use. It cannot inherit executable authorization from
+the `4e622c6ce` artifacts. Complete physical inventory, formal date credit,
+war action, and gameplay remain **RED**.
