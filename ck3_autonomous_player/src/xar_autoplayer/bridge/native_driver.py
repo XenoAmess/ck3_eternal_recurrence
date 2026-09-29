@@ -2728,6 +2728,43 @@ class NativeHeadlessGameplayDriver:
             self, resolved=resolved, timeout_seconds=timeout_seconds,
         )
 
+    def submit_player_child_default_private_v1(
+        self, *, legality: dict[str, object], value: dict[str, object],
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Submit one bound default-option child proposal; ACK stays pending."""
+        from .player_child_matrilineal_private_action_v1 import (
+            submit_player_child_matrilineal_private_v1,
+        )
+        return submit_player_child_matrilineal_private_v1(
+            self, legality=legality, value=value,
+            timeout_seconds=timeout_seconds, default_route=True,
+        )
+
+    def query_player_child_default_result_private_v1(
+        self, *, pending: dict[str, object], cold: bool = False,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        from .player_child_matrilineal_private_action_v1 import (
+            query_player_child_matrilineal_result_private_v1,
+        )
+        return query_player_child_matrilineal_result_private_v1(
+            self, pending=pending, cold=cold,
+            timeout_seconds=timeout_seconds, default_route=True,
+        )
+
+    def query_player_child_default_alliance_private_v1(
+        self, *, resolved: dict[str, object],
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        from .player_child_matrilineal_private_action_v1 import (
+            query_player_child_matrilineal_alliance_private_v1,
+        )
+        return query_player_child_matrilineal_alliance_private_v1(
+            self, resolved=resolved, timeout_seconds=timeout_seconds,
+            default_route=True,
+        )
+
     def query_observed_first_heir_marriage_legality_v1(
         self, *, expected_native_revision: int,
         timeout_seconds: float = 360.0,

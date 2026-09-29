@@ -8164,6 +8164,12 @@ constexpr std::string_view kPlayerChildMatrilinealResultStepV1 =
     "query-player-child-matrilineal-marriage-result-v1-private";
 constexpr std::string_view kPlayerChildMatrilinealAllianceResultStepV1 =
     "query-player-child-matrilineal-alliance-result-v1-private";
+constexpr std::string_view kPlayerChildDefaultSubmitStepV1 =
+    "submit-player-child-default-marriage-v1-private";
+constexpr std::string_view kPlayerChildDefaultResultStepV1 =
+    "query-player-child-default-marriage-result-v1-private";
+constexpr std::string_view kPlayerChildDefaultAllianceResultStepV1 =
+    "query-player-child-default-alliance-result-v1-private";
 #endif
 
 std::string ObservedHeirMarriagePrivateResultFrameV1(
@@ -10467,6 +10473,9 @@ void RunConnectedSession(
                    && step != kPlayerChildMatrilinealSubmitStepV1
                    && step != kPlayerChildMatrilinealResultStepV1
                    && step != kPlayerChildMatrilinealAllianceResultStepV1
+                   && step != kPlayerChildDefaultSubmitStepV1
+                   && step != kPlayerChildDefaultResultStepV1
+                   && step != kPlayerChildDefaultAllianceResultStepV1
 #endif
 #endif
 #endif
@@ -13717,13 +13726,16 @@ void RunConnectedSession(
               } else if (stable) {
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
                 const auto &selected = query.reads[0];
-                if (query.request_matrilineal_option &&
-                    selected.failure == xar::ck3_11906::
+                if (selected.failure == xar::ck3_11906::
                         MarriageCandidateAlliancePrivateFailureV1::none &&
-                    selected.requested_matrilineal_option &&
-                    selected.selected_option_readback &&
-                    selected.projection.matrilineal_option_selected &&
-                    selected.effective_matrilineal_if_accepted &&
+                    selected.requested_matrilineal_option ==
+                        query.request_matrilineal_option &&
+                    (!query.request_matrilineal_option ||
+                     selected.selected_option_readback) &&
+                    selected.projection.matrilineal_option_selected ==
+                        query.request_matrilineal_option &&
+                    selected.effective_matrilineal_if_accepted ==
+                        query.request_matrilineal_option &&
                     selected.final_legality_sampled &&
                     selected.complete_can_send &&
                     selected.recipient_acceptance_ready &&
@@ -13878,7 +13890,10 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
-        } else if (step == kPlayerChildMatrilinealSubmitStepV1) {
+        } else if (step == kPlayerChildMatrilinealSubmitStepV1 ||
+                   step == kPlayerChildDefaultSubmitStepV1) {
+          const bool default_child_route =
+              step == kPlayerChildDefaultSubmitStepV1;
           std::uint64_t expected_revision = 0;
           std::uint64_t query_sequence = 0;
           std::uint64_t subject_id = 0;
@@ -13952,7 +13967,7 @@ void RunConnectedSession(
             bool selected_ready = false;
             if (native_identity_ready) {
               query.row_count = 1;
-              query.request_matrilineal_option = true;
+              query.request_matrilineal_option = !default_child_route;
               query.observed[0] = *matching;
               query.expected_snapshot = before;
               query.bindings = xar::ck3_11906::BindCurrentProcess(true);
@@ -13989,10 +14004,13 @@ void RunConnectedSession(
                     query.frame_observed &&
                     selected.failure == xar::ck3_11906::
                         MarriageCandidateAlliancePrivateFailureV1::none &&
-                    selected.requested_matrilineal_option &&
-                    selected.selected_option_readback &&
-                    selected.projection.matrilineal_option_selected &&
-                    selected.effective_matrilineal_if_accepted &&
+                    selected.requested_matrilineal_option ==
+                        !default_child_route &&
+                    (!default_child_route || selected.selected_option_readback) &&
+                    selected.projection.matrilineal_option_selected ==
+                        !default_child_route &&
+                    selected.effective_matrilineal_if_accepted ==
+                        !default_child_route &&
                     selected.final_legality_sampled &&
                     selected.complete_can_send &&
                     selected.recipient_acceptance_ready &&
@@ -14044,12 +14062,13 @@ void RunConnectedSession(
                   CommandResultFrame(request_id, step, false,
                       "selected player-child native legality or lineage changed"));
             } else {
-              submission.request_matrilineal_option = true;
+              submission.request_matrilineal_option = !default_child_route;
+              submission.require_matrilineal_option_off = default_child_route;
               submission.recipient_ai_accept_raw =
                   query.reads[0].recipient_ai_accept_raw;
               submission.recipient_answer_status_raw =
                   query.reads[0].recipient_answer_status_raw;
-              pending.matrilineal_option_selected = true;
+              pending.matrilineal_option_selected = !default_child_route;
               // Preserve uncertainty after any attempted native queue call.
               state.child_matrilineal_may_have_submitted = true;
               const auto submitted =
@@ -14064,7 +14083,7 @@ void RunConnectedSession(
                 state.child_matrilineal_pending_submission = pending;
                 connected = xar::bridge::WriteFrame(pipe,
                     ObservedHeirMarriageSubmitFrameV1(request_id, pending,
-                        kPlayerChildMatrilinealSubmitStepV1));
+                        step));
                 if (connected) connected = PublishSnapshot(
                     pipe, game, previous_snapshot, state_revision,
                     checkpoint_submission, published_checkpoint_sequence);
@@ -14196,6 +14215,7 @@ void RunConnectedSession(
         } else if (step == kObservedFirstHeirMarriageAllianceResultStepV1
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
                    || step == kPlayerChildMatrilinealAllianceResultStepV1
+                   || step == kPlayerChildDefaultAllianceResultStepV1
 #endif
                    ) {
           std::uint64_t expected_revision = 0;
@@ -14221,7 +14241,8 @@ void RunConnectedSession(
               candidate_id == 0 || candidate_id > INT32_MAX ||
               played_id == recipient_id || heir_id == candidate_id ||
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
-              (step == kPlayerChildMatrilinealAllianceResultStepV1 &&
+              ((step == kPlayerChildMatrilinealAllianceResultStepV1 ||
+                step == kPlayerChildDefaultAllianceResultStepV1) &&
                xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
                    xar::ck3_11906::BindCurrentProcess(true),
                    static_cast<std::int32_t>(heir_id)).failure !=
@@ -14306,12 +14327,17 @@ void RunConnectedSession(
         } else if (step == kObservedFirstHeirMarriageResultStepV1
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
                    || step == kPlayerChildMatrilinealResultStepV1
+                   || step == kPlayerChildDefaultResultStepV1
 #endif
                    ) {
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
+          const bool child_default_route =
+              step == kPlayerChildDefaultResultStepV1;
           const bool child_route =
-              step == kPlayerChildMatrilinealResultStepV1;
+              step == kPlayerChildMatrilinealResultStepV1 ||
+              child_default_route;
 #else
+          const bool child_default_route = false;
           const bool child_route = false;
 #endif
           std::uint64_t expected_revision = 0;
@@ -14353,7 +14379,8 @@ void RunConnectedSession(
                            ? (!xar::bridge::JsonBooleanField(
                                   incoming.payload,
                                   "matrilineal_option_selected",
-                                  cold_matrilineal) || !cold_matrilineal ||
+                                  cold_matrilineal) ||
+                              cold_matrilineal == child_default_route ||
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
                               xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
                                   xar::ck3_11906::BindCurrentProcess(true),
@@ -14372,6 +14399,9 @@ void RunConnectedSession(
                    : (child_route
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
                           ? (!state.child_matrilineal_pending_submission.has_value() ||
+                             state.child_matrilineal_pending_submission
+                                     ->matrilineal_option_selected ==
+                                 child_default_route ||
                              expected_revision <= state.child_matrilineal_pending_submission
                                                       ->pre_native_revision)
 #else
@@ -14393,7 +14423,8 @@ void RunConnectedSession(
                   static_cast<std::int32_t>(cold_candidate);
               pending.recipient_character_id =
                   static_cast<std::int32_t>(cold_recipient);
-              pending.matrilineal_option_selected = child_route;
+              pending.matrilineal_option_selected =
+                  child_route && !child_default_route;
             } else {
 #if defined(XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1)
               pending = child_route
