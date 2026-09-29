@@ -215,7 +215,7 @@ ActivityFeastGuestRuleStatusV1 Bind(
   const auto diag = Diag(env, expected);
   if (diag.status != ActivityPlannerDiagStatusV1::observed ||
       !diag.value.planner_present || diag.value.stage != 5 ||
-      !diag.value.widget_attached || !diag.value.widget_visible ||
+      !diag.value.widget_attached ||
       !diag.value.host_view_activity_key_known ||
       std::string_view(diag.value.host_view_activity_key.data(),
                        diag.value.host_view_activity_key_size) !=

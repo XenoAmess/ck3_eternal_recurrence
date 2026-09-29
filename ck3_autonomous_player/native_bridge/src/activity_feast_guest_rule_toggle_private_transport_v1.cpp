@@ -225,6 +225,10 @@ std::string SerializeActivityFeastGuestRulePrivateV1(
   if (!query.completed || !query.failure.empty() || query.frame_changed)
     return {};
   const auto &rule = query.rule;
+  const bool observed =
+      rule.status == bridge::ActivityFeastGuestRuleStatusV1::observed_inactive ||
+      rule.status == bridge::ActivityFeastGuestRuleStatusV1::observed_active ||
+      rule.status == bridge::ActivityFeastGuestRuleStatusV1::activated;
   std::string payload =
       "{\"schema\":\"activity-feast-guest-rule-private-v1\",";
   payload += "\"snapshot_revision\":" +
@@ -237,16 +241,19 @@ std::string SerializeActivityFeastGuestRulePrivateV1(
   payload += "\"status\":\"" +
              std::string(bridge::ActivityFeastGuestRuleStatusKeyV1(rule.status)) +
              "\",\"invoked\":" + (rule.invoked ? "true" : "false") +
-             ",\"active\":" + (rule.active ? "true" : "false") +
-             ",\"native_key_hash\":" + std::to_string(rule.native_key_hash) +
+             ",\"active\":" +
+             (observed ? (rule.active ? "true" : "false") : "null") +
+             ",\"native_key_hash\":" +
+             (observed ? std::to_string(rule.native_key_hash) : "null") +
              ",\"ordered_rule_count\":" +
-             std::to_string(rule.ordered_rule_count) +
+             (observed ? std::to_string(rule.ordered_rule_count) : "null") +
              ",\"active_rule_count\":" +
-             std::to_string(rule.active_rule_count) +
+             (observed ? std::to_string(rule.active_rule_count) : "null") +
              ",\"filtered_group_count\":" +
-             std::to_string(rule.filtered_group_count) +
+             (observed ? std::to_string(rule.filtered_group_count) : "null") +
              ",\"filtered_character_count\":" +
-             std::to_string(rule.filtered_character_count) + "}";
+             (observed ? std::to_string(rule.filtered_character_count) : "null") +
+             "}";
   return payload;
 }
 

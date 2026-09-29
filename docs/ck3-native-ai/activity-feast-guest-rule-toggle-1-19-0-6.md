@@ -52,4 +52,7 @@ The ordinary guest list is category based; `planner+0x1678` individual
 selection count may stay zero. `activated` only states this category toggle
 and readback succeeded. It does not claim an accepted guest, activity Start,
 the next turn, or cold recovery. Those require separate formal consumption
-and live evidence. The build option is default OFF and adds no public ad.
+and live evidence. Unavailable wire results carry `null` for active, native
+hash and counts; `invoked` remains a known boolean so a failed postcondition
+does not invite an automatic second toggle. The build option is default OFF
+and adds no public ad.
