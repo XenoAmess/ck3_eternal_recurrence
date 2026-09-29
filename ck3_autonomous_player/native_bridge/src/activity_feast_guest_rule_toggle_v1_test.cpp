@@ -167,7 +167,7 @@ struct Fixture {
 } // namespace
 
 int main() {
-  constexpr std::string_view key = "activity_invite_rule_close_family";
+  constexpr std::string_view key = "activity_invite_rule_vassals";
   {
     Fixture f;
     f.host_view_key_known = false;
@@ -201,9 +201,29 @@ int main() {
   {
     Fixture f;
     f.Put(Fixture::window + 0x100, std::uintptr_t{0});
-    assert(ReadActivityFeastGuestRuleV1(f.environment, f.frame, key).status ==
-           ActivityFeastGuestRuleStatusV1::window_unbound);
+    const auto inactive =
+        ReadActivityFeastGuestRuleV1(f.environment, f.frame, key);
+    assert(inactive.status == ActivityFeastGuestRuleStatusV1::observed_inactive);
+    assert(!inactive.active && inactive.active_rule_count == 0);
+    const auto blocked = ActivateActivityFeastGuestRuleV1(
+        f.environment, f.frame, key, true);
+    assert(blocked.status == ActivityFeastGuestRuleStatusV1::window_unbound);
+    assert(!blocked.invoked && f.toggles == 0);
+    f.Put(Fixture::active_rows, Fixture::definition);
+    f.Put(Fixture::planner + 0x1A24, std::int32_t{1});
+    const auto active = ReadActivityFeastGuestRuleV1(f.environment, f.frame, key);
+    assert(active.status == ActivityFeastGuestRuleStatusV1::observed_active);
+    assert(active.active && active.active_rule_count == 1 && f.toggles == 0);
     f.Put(Fixture::window + 0x100, Fixture::planner);
+    assert(ReadActivityFeastGuestRuleV1(f.environment, f.frame, key).status ==
+           ActivityFeastGuestRuleStatusV1::observed_active);
+    assert(ActivateActivityFeastGuestRuleV1(f.environment, f.frame, key, true)
+               .status == ActivityFeastGuestRuleStatusV1::postcondition_failed);
+    f.Put(Fixture::planner + 0x1A24, std::int32_t{0});
+    f.Put(Fixture::owner + 0x3F0, std::uintptr_t{0});
+    assert(ReadActivityFeastGuestRuleV1(f.environment, f.frame, key).status ==
+           ActivityFeastGuestRuleStatusV1::observed_inactive);
+    f.Put(Fixture::owner + 0x3F0, Fixture::window);
     f.Put(Fixture::type + 0xD2C, std::int32_t{2});
     f.Put(Fixture::rows + 16, Fixture::definition);
     assert(ReadActivityFeastGuestRuleV1(f.environment, f.frame, key).status ==
