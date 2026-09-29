@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -49,10 +50,17 @@ def bounded(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     monkeypatch.setattr(once, "_require_exact_admission", lambda: {"head": "pinned"})
     monkeypatch.setattr(once, "_git", lambda *args: "pinned")
     monkeypatch.setattr(once, "_require_go", lambda identity: {
+        "screen_task_last_sequence": 101,
         "steam_original_path": str(go), "steam_original_sha256": digest(go),
+        "steam_frame_receipt_path": str(go),
+        "steam_frame_receipt_sha256": digest(go),
+        "screen_challenge_path": str(go),
+        "screen_challenge_sha256": digest(go),
         "screen_lease_receipt_path": str(go),
         "screen_lease_receipt_sha256": digest(go),
     })
+    monkeypatch.setattr(once, "_require_live_screen_lease",
+                        lambda sequence=None: {"last_sequence": sequence or 101})
     monkeypatch.setattr(once, "_image_inventory", zero_image)
     monkeypatch.setattr(once.outer, "H3937_COMBINED_OUTER_LIVE_AUTHORIZED", False)
     monkeypatch.setattr(once.inner, "H3937_COMBINED_LIVE_AUTHORIZED", False)
@@ -85,6 +93,24 @@ def test_one_call_enables_only_during_read_and_restores_gates(bounded, monkeypat
     with pytest.raises(FileExistsError):
         once.run_exact_once("nonce")
     check(calls == [1])
+
+
+def test_live_lease_lost_during_read_marks_result_red(bounded, monkeypatch):
+    checks = []
+
+    def lease(sequence=None):
+        checks.append(sequence)
+        if len(checks) == 2:
+            raise ValueError("screen lease was released")
+        return {"last_sequence": 101}
+
+    monkeypatch.setattr(once, "_require_live_screen_lease", lease)
+    monkeypatch.setattr(once.outer, "collect_h3937_combined_paused_war_scope_once",
+                        lambda *a, **k: green_outer())
+    completion = once.run_exact_once("nonce")
+    check(completion["status"] == "RED")
+    check(completion["gates_restored"] is True)
+    check("screen lease" in str(completion["error"]))
 
 
 @pytest.mark.parametrize("failure", ["bad_claim", "bad_admission", "bad_go", "busy_process"])
@@ -139,18 +165,53 @@ def test_readonly_contract_mismatch_is_red(bounded, monkeypatch, bad_field, valu
     check(completion["date_advance_authorized"] is False)
 
 
-def test_go_receipt_rejects_wrong_round_and_output(monkeypatch, tmp_path):
+def fresh_go_fixture(monkeypatch, tmp_path):
+    bus = tmp_path / "bus"
+    tasks = bus / "tasks"
+    tasks.mkdir(parents=True)
+    screen = tmp_path / "screen-attempt"
+    screen.mkdir()
     state = tmp_path / "prepared" / "state"
     output = tmp_path / "live"
     go_path = tmp_path / "go.json"
-    steam = tmp_path / "steam.png"
-    lease = tmp_path / "lease.json"
-    steam.write_bytes(b"screen")
-    lease.write_bytes(b"lease")
     monkeypatch.setattr(once, "STATE", state)
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "GO", go_path)
-    monkeypatch.setattr(once, "SCREEN", tmp_path)
+    monkeypatch.setattr(once, "SCREEN", screen)
+    monkeypatch.setattr(once, "TASK_BUS", bus)
+    now = datetime.now(timezone.utc)
+    stamp = lambda seconds: (now + timedelta(seconds=seconds)).isoformat()
+    owner = {"schema": "codex.task_bus.v1", "task_id": once.SCREEN_TASK_ID,
+             "state": "running", "resources": ["ck3-screen:acquired"],
+             "last_sequence": 101, "updated_at_utc": stamp(-55)}
+    task_path = tasks / f"{once.SCREEN_TASK_ID}.json"
+    task_path.write_text(json.dumps(owner), encoding="utf-8")
+    lease = screen / "screen-lease-snapshot.json"
+    lease.write_text(json.dumps(owner), encoding="utf-8")
+    challenge = {"schema": "xar.war.h3937-combined-screen-challenge.v1",
+                 "issued_at_utc": stamp(-50), "challenge_nonce": "a" * 48,
+                 "candidate_head": "a" * 40, "round": once.ROUND,
+                 "screen_attempt_dir": str(screen.resolve()),
+                 "task_bus_dir": str(bus.resolve()),
+                 "screen_task_id": once.SCREEN_TASK_ID,
+                 "screen_task_last_sequence": 101}
+    challenge_path = screen / "screen-challenge.json"
+    challenge_path.write_text(json.dumps(challenge), encoding="utf-8")
+    steam = screen / "steam-moved.png"
+    steam.write_bytes(b"newly-moved-screen")
+    before = screen / "steam-before.png"
+    before.write_bytes(b"screen-before-window-movement")
+    frame = {"schema": "ck3.steam_fresh_desktop_frame.v1",
+             "captured_at_utc": stamp(-40), "moving_edge_changed": True,
+             "pixel_difference_bbox": [1, 2, 20, 30],
+             "before_path": str(before), "before_sha256": digest(before),
+             "before_rect": [0, 0, 100, 100], "moved_rect": [20, 0, 120, 100],
+             "restored_rect": [0, 0, 100, 100], "clock_check": None,
+             "moved_path": str(steam), "moved_sha256": digest(steam),
+             "moved_identity": {"path": str(steam), "bytes": steam.stat().st_size,
+                                "sha256": digest(steam)}}
+    frame_path = screen / "steam-frame-freshness.json"
+    frame_path.write_text(json.dumps(frame), encoding="utf-8")
     identity = {"head": "a" * 40, "admission_sha256": "A" * 64,
                 "manifest_sha256": "B" * 64, "preflight_sha256": "C" * 64,
                 "rebind_sha256": "D" * 64}
@@ -162,64 +223,125 @@ def test_go_receipt_rejects_wrong_round_and_output(monkeypatch, tmp_path):
         "operator_manifest_sha256": identity["manifest_sha256"],
         "preflight_sha256": identity["preflight_sha256"],
         "rebind_sha256": identity["rebind_sha256"],
+        "task_bus_dir": str(bus.resolve()), "screen_task_id": once.SCREEN_TASK_ID,
+        "screen_task_last_sequence": 101, "screen_attempt_dir": str(screen.resolve()),
         "screen_lease_exclusive": True,
         "steam_offline_direct_visual_reviewed": True,
         "account_single_instance_clear": True,
         "ck3_zero_process_before": True, "recorder_zero_before": True,
         "authorized_scope": "two_paused_readonly_queries",
+        "issued_at_utc": stamp(-20), "steam_direct_reviewed_at_utc": stamp(-30),
+        "screen_challenge_nonce": challenge["challenge_nonce"],
         "steam_original_path": str(steam), "steam_original_sha256": digest(steam),
+        "steam_frame_receipt_path": str(frame_path),
+        "steam_frame_receipt_sha256": digest(frame_path),
+        "screen_challenge_path": str(challenge_path),
+        "screen_challenge_sha256": digest(challenge_path),
         "screen_lease_receipt_path": str(lease),
         "screen_lease_receipt_sha256": digest(lease),
     }
     go_path.write_text(json.dumps(value), encoding="utf-8")
+    return identity, value, owner, task_path, steam, challenge_path, frame_path
+
+
+def test_go_receipt_rejects_wrong_round_output_and_modified_screen(monkeypatch, tmp_path):
+    identity, value, _, _, steam, _, _ = fresh_go_fixture(monkeypatch, tmp_path)
     check(once._require_go(identity) == value)
     value["round"] = "R9999"
-    go_path.write_text(json.dumps(value), encoding="utf-8")
+    once.GO.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ValueError, match="GO receipt"):
         once._require_go(identity)
     value["round"] = once.ROUND
     value["output_dir"] = str(tmp_path / "wrong-output")
-    go_path.write_text(json.dumps(value), encoding="utf-8")
+    once.GO.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ValueError, match="GO receipt"):
         once._require_go(identity)
-
-
-def test_go_receipt_rejects_modified_screen_bytes(monkeypatch, tmp_path):
-    state = tmp_path / "state"
-    output = tmp_path / "output"
-    go_path = tmp_path / "go.json"
-    screen = tmp_path / "screen.png"
-    lease = tmp_path / "lease.json"
-    screen.write_bytes(b"original")
-    lease.write_bytes(b"lease")
-    monkeypatch.setattr(once, "STATE", state)
-    monkeypatch.setattr(once, "OUTPUT", output)
-    monkeypatch.setattr(once, "GO", go_path)
-    monkeypatch.setattr(once, "SCREEN", tmp_path)
-    identity = {"head": "a" * 40, "admission_sha256": "A" * 64,
-                "manifest_sha256": "B" * 64, "preflight_sha256": "C" * 64,
-                "rebind_sha256": "D" * 64}
-    value = {
-        "schema": "xar.war.h3937-combined-once-go.v1",
-        "decision": "GO_READ_ONLY_H3937_COMBINED", "candidate_head": identity["head"],
-        "round": once.ROUND, "state_dir": str(state), "output_dir": str(output),
-        "pipe": once.PIPE, "admission_sha256": identity["admission_sha256"],
-        "operator_manifest_sha256": identity["manifest_sha256"],
-        "preflight_sha256": identity["preflight_sha256"],
-        "rebind_sha256": identity["rebind_sha256"],
-        "screen_lease_exclusive": True,
-        "steam_offline_direct_visual_reviewed": True,
-        "account_single_instance_clear": True,
-        "ck3_zero_process_before": True, "recorder_zero_before": True,
-        "authorized_scope": "two_paused_readonly_queries",
-        "steam_original_path": str(screen), "steam_original_sha256": digest(screen),
-        "screen_lease_receipt_path": str(lease),
-        "screen_lease_receipt_sha256": digest(lease),
-    }
-    go_path.write_text(json.dumps(value), encoding="utf-8")
-    screen.write_bytes(b"modified")
+    value["output_dir"] = str(once.OUTPUT)
+    once.GO.write_text(json.dumps(value), encoding="utf-8")
+    steam.write_bytes(b"modified")
     with pytest.raises(ValueError, match="steam_original"):
         once._require_go(identity)
+
+
+@pytest.mark.parametrize("failure", ["other_owner", "changed_sequence", "stale_owner",
+                                    "stale_go", "stale_challenge", "old_frame",
+                                    "wrong_challenge", "wrong_frame", "wrong_lease_copy",
+                                    "wrong_task_id", "before_modified", "clock_stale",
+                                    "old_attempt_image"])
+def test_go_rejects_stale_or_mismatched_live_screen(monkeypatch, tmp_path, failure):
+    identity, value, owner, task_path, steam, challenge_path, frame_path = (
+        fresh_go_fixture(monkeypatch, tmp_path))
+    now = datetime.now(timezone.utc)
+    if failure == "other_owner":
+        other = {**owner, "task_id": "another-live-task"}
+        (task_path.parent / "another-live-task.json").write_text(
+            json.dumps(other), encoding="utf-8")
+    elif failure == "changed_sequence":
+        owner["last_sequence"] = 102
+        task_path.write_text(json.dumps(owner), encoding="utf-8")
+    elif failure == "stale_owner":
+        owner["updated_at_utc"] = (now - timedelta(minutes=11)).isoformat()
+        task_path.write_text(json.dumps(owner), encoding="utf-8")
+    elif failure == "stale_go":
+        value["issued_at_utc"] = (now - timedelta(minutes=6)).isoformat()
+    elif failure == "stale_challenge":
+        challenge = json.loads(challenge_path.read_text(encoding="utf-8"))
+        challenge["issued_at_utc"] = (now - timedelta(minutes=11)).isoformat()
+        challenge_path.write_text(json.dumps(challenge), encoding="utf-8")
+        value["screen_challenge_sha256"] = digest(challenge_path)
+    elif failure == "old_frame":
+        frame = json.loads(frame_path.read_text(encoding="utf-8"))
+        frame["captured_at_utc"] = (now - timedelta(minutes=6)).isoformat()
+        frame_path.write_text(json.dumps(frame), encoding="utf-8")
+        value["steam_frame_receipt_sha256"] = digest(frame_path)
+    elif failure == "wrong_challenge":
+        value["screen_challenge_nonce"] = "b" * 48
+    elif failure == "wrong_frame":
+        frame = json.loads(frame_path.read_text(encoding="utf-8"))
+        frame["moved_sha256"] = "E" * 64
+        frame_path.write_text(json.dumps(frame), encoding="utf-8")
+        value["steam_frame_receipt_sha256"] = digest(frame_path)
+    elif failure == "wrong_lease_copy":
+        lease = Path(value["screen_lease_receipt_path"])
+        lease.write_text(json.dumps({**owner, "last_sequence": 999}), encoding="utf-8")
+        value["screen_lease_receipt_sha256"] = digest(lease)
+    elif failure == "wrong_task_id":
+        value["screen_task_id"] = "old-screen-task"
+    elif failure == "before_modified":
+        before = steam.with_name("steam-before.png")
+        before.write_bytes(b"different-before")
+    elif failure == "clock_stale":
+        frame = json.loads(frame_path.read_text(encoding="utf-8"))
+        frame["clock_check"] = {"clock_pixels_unchanged": True}
+        frame_path.write_text(json.dumps(frame), encoding="utf-8")
+        value["steam_frame_receipt_sha256"] = digest(frame_path)
+    elif failure == "old_attempt_image":
+        old = tmp_path / "old-attempt" / "steam-moved.png"
+        old.parent.mkdir()
+        old.write_bytes(steam.read_bytes())
+        value["steam_original_path"] = str(old)
+    once.GO.write_text(json.dumps(value), encoding="utf-8")
+    with pytest.raises(ValueError):
+        once._require_go(identity)
+
+
+def test_challenge_requires_current_unique_owner_and_is_exclusive(monkeypatch, tmp_path):
+    identity, _, owner, task_path, _, challenge_path, _ = fresh_go_fixture(
+        monkeypatch, tmp_path)
+    challenge_path.unlink()
+    monkeypatch.setattr(once, "_require_entry_blob", lambda entry: {
+        "head": identity["head"]})
+    result = once.issue_screen_challenge(tmp_path / "entry.py")
+    check(result["screen_task_id"] == once.SCREEN_TASK_ID)
+    check(result["screen_task_last_sequence"] == 101)
+    check(len(result["challenge_nonce"]) == 48)
+    with pytest.raises(FileExistsError):
+        once.issue_screen_challenge(tmp_path / "entry.py")
+    challenge_path.unlink()
+    owner["state"] = "done"
+    task_path.write_text(json.dumps(owner), encoding="utf-8")
+    with pytest.raises(ValueError, match="uniquely owned"):
+        once.issue_screen_challenge(tmp_path / "entry.py")
 
 
 def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
@@ -358,6 +480,7 @@ def test_supervisor_hard_timeout_retains_red_and_kill_receipt(
     entry.write_text("", encoding="utf-8")
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "_image_inventory", zero_image)
+    monkeypatch.setattr(once, "_require_preworker_screen_gate", lambda entry: None)
     monkeypatch.setattr(once, "_require_entry_blob", lambda entry: {
         "head": "pinned", "entry_blob": "b" * 40, "entry_sha256": "A" * 64})
     calls = []
@@ -420,6 +543,7 @@ def test_supervisor_accepts_only_green_child_and_zero_processes(monkeypatch, tmp
     entry.write_text("", encoding="utf-8")
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "_image_inventory", zero_image)
+    monkeypatch.setattr(once, "_require_preworker_screen_gate", lambda entry: None)
     monkeypatch.setattr(once, "_require_entry_blob", lambda entry: {
         "head": "pinned", "entry_blob": "b" * 40, "entry_sha256": "A" * 64})
 
@@ -447,3 +571,73 @@ def test_supervisor_accepts_only_green_child_and_zero_processes(monkeypatch, tmp
     check(result["status"] == "GREEN_READ_ONLY")
     check(result["processes_gone"] is True)
     check(result["timeout"] is False)
+
+
+def test_supervisor_refuses_lost_screen_lease_before_worker(monkeypatch, tmp_path):
+    identity, _, owner, task_path, _, _, _ = fresh_go_fixture(monkeypatch, tmp_path)
+    entry = tmp_path / "entry.py"
+    entry.write_text("", encoding="utf-8")
+    monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
+        "head": identity["head"], "entry_blob": "b" * 40,
+        "entry_sha256": "A" * 64})
+    monkeypatch.setattr(once, "_require_exact_admission", lambda: identity)
+    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: (_ for _ in ()).throw(
+        AssertionError("worker must not start")))
+    owner["state"] = "done"
+    task_path.write_text(json.dumps(owner), encoding="utf-8")
+    check(once.supervise_exact_once(entry) == 1)
+    result = json.loads((once.OUTPUT / "supervisor-completion.json").read_text(encoding="utf-8"))
+    check(result["status"] == "RED")
+    check(result["worker_pid"] is None)
+    check(result["processes_gone"] is False)
+
+
+@pytest.mark.parametrize("failure", ["inventory_error", "broken_child_json",
+                                    "taskkill_failed_worker_alive"])
+def test_supervisor_postcheck_failures_retain_red(monkeypatch, tmp_path, failure):
+    output = tmp_path / "one-shot"
+    entry = tmp_path / "entry.py"
+    entry.write_text("", encoding="utf-8")
+    monkeypatch.setattr(once, "OUTPUT", output)
+    monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
+        "head": "pinned", "entry_blob": "b" * 40,
+        "entry_sha256": "A" * 64})
+    monkeypatch.setattr(once, "_require_preworker_screen_gate", lambda entry: None)
+    monkeypatch.setattr(once, "_image_inventory",
+                        lambda image: (_ for _ in ()).throw(OSError("inventory failed"))
+                        if failure == "inventory_error" else zero_image(image))
+
+    class Worker:
+        pid = 9999
+        returncode = None if failure == "taskkill_failed_worker_alive" else 0
+        calls = 0
+
+        def communicate(self, *, timeout):
+            self.calls += 1
+            if failure == "taskkill_failed_worker_alive":
+                raise once.subprocess.TimeoutExpired("worker", timeout)
+            report = output / "outer-report.json"
+            report.write_text(json.dumps(green_outer()), encoding="utf-8")
+            child = {"status": "GREEN_READ_ONLY", "action_authorized": False,
+                     "date_advance_authorized": False, "outer_cleanup_proven": True,
+                     "gates_restored": True, "processes_gone": True,
+                     "outer_report_sha256": digest(report)}
+            (output / "completion.json").write_text(
+                "{broken" if failure == "broken_child_json" else json.dumps(child),
+                encoding="utf-8")
+            return b"done", b""
+
+        def kill(self):
+            raise OSError("worker still alive")
+
+    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: Worker())
+    if failure == "taskkill_failed_worker_alive":
+        monkeypatch.setattr(once.subprocess, "run", lambda *a, **k: SimpleNamespace(
+            returncode=1, stdout=b"", stderr=b"taskkill failed"))
+    check(once.supervise_exact_once(entry) == 1)
+    result = json.loads((output / "supervisor-completion.json").read_text(encoding="utf-8"))
+    check(result["status"] == "RED")
+    check(result["processes_gone"] is False if failure != "broken_child_json"
+          else result["processes_gone"] is True)
+    check((output / "supervisor.stdout.txt").exists())
+    check((output / "supervisor.stderr.txt").exists())

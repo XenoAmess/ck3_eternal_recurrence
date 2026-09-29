@@ -25,6 +25,11 @@ from .runtime import NativeBridgeLaunchConfig
 
 ROUND = "R3940"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
+TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
+SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a02"
+LEASE_MAX_AGE_SECONDS = 600
+GO_MAX_AGE_SECONDS = 300
+CLOCK_SKEW_SECONDS = 10
 NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-02")
 STATE = NO_LAUNCH / "state"
 OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-02")
@@ -60,6 +65,24 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _time(value: object, label: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(str(value))
+    except ValueError as error:
+        raise ValueError(f"invalid {label} time") from error
+    if parsed.tzinfo is None:
+        raise ValueError(f"unqualified {label} time")
+    return parsed.astimezone(timezone.utc)
+
+
+def _recent(value: object, label: str, limit_seconds: int, now: datetime) -> datetime:
+    observed = _time(value, label)
+    age = (now - observed).total_seconds()
+    if age < -CLOCK_SKEW_SECONDS or age > limit_seconds:
+        raise ValueError(f"stale or future {label}")
+    return observed
+
+
 def _git(*args: str) -> str:
     checkout = Path(__file__).resolve().parents[3]
     result = subprocess.run(["git", *args], cwd=checkout, capture_output=True,
@@ -73,6 +96,53 @@ def _image_inventory(image: str) -> dict[str, object]:
     raw = result.stdout.decode("utf-8", errors="replace")
     return {"image": image, "returncode": result.returncode,
             "found": image.casefold() in raw.casefold(), "raw": raw}
+
+
+def _require_live_screen_lease(expected_sequence: object | None = None) -> dict[str, object]:
+    """Read the main cooperative bus, never a worktree-relative bus copy."""
+    if not TASK_BUS.is_dir() or not (TASK_BUS / "tasks").is_dir():
+        raise ValueError("main task bus unavailable")
+    now = datetime.now(timezone.utc)
+    owners = []
+    for path in (TASK_BUS / "tasks").glob("*.json"):
+        snapshot = _read_json(path)
+        if "ck3-screen:acquired" not in snapshot.get("resources", []):
+            continue
+        updated = _time(snapshot.get("updated_at_utc"), "screen task")
+        age = (now - updated).total_seconds()
+        if age < -CLOCK_SKEW_SECONDS:
+            raise ValueError("future screen task snapshot")
+        if snapshot.get("state") != "done" and age <= LEASE_MAX_AGE_SECONDS:
+            owners.append(snapshot)
+    if len(owners) != 1 or owners[0].get("task_id") != SCREEN_TASK_ID:
+        raise ValueError("current ck3-screen task is not uniquely owned by this attempt")
+    owner = owners[0]
+    sequence = owner.get("last_sequence")
+    if (owner.get("schema") != "codex.task_bus.v1"
+            or owner.get("state") != "running"
+            or type(sequence) is not int or sequence <= 0
+            or (expected_sequence is not None and sequence != expected_sequence)):
+        raise ValueError("current ck3-screen task state or sequence changed")
+    return owner
+
+
+def issue_screen_challenge(entry_path: Path) -> dict[str, object]:
+    """After screen acquisition, create a unique pre-capture challenge only."""
+    entry = _require_entry_blob(entry_path)
+    owner = _require_live_screen_lease()
+    if not SCREEN.is_dir():
+        raise ValueError("new screen attempt directory missing")
+    challenge = {
+        "schema": "xar.war.h3937-combined-screen-challenge.v1",
+        "issued_at_utc": _now(), "challenge_nonce": secrets.token_hex(24),
+        "candidate_head": entry["head"], "round": ROUND,
+        "screen_attempt_dir": str(SCREEN.resolve()),
+        "task_bus_dir": str(TASK_BUS.resolve()),
+        "screen_task_id": SCREEN_TASK_ID,
+        "screen_task_last_sequence": owner["last_sequence"],
+    }
+    _write_json(SCREEN / "screen-challenge.json", challenge)
+    return challenge
 
 
 def _require_entry_blob(entry_path: Path) -> dict[str, str]:
@@ -242,6 +312,10 @@ def _require_go(identity: dict[str, object]) -> dict[str, object]:
         and go.get("operator_manifest_sha256") == identity["manifest_sha256"]
         and go.get("preflight_sha256") == identity["preflight_sha256"]
         and go.get("rebind_sha256") == identity["rebind_sha256"]
+        and Path(str(go.get("task_bus_dir"))).resolve() == TASK_BUS.resolve()
+        and go.get("screen_task_id") == SCREEN_TASK_ID
+        and type(go.get("screen_task_last_sequence")) is int
+        and go.get("screen_attempt_dir") == str(SCREEN.resolve())
         and go.get("screen_lease_exclusive") is True
         and go.get("steam_offline_direct_visual_reviewed") is True
         and go.get("account_single_instance_clear") is True
@@ -250,13 +324,79 @@ def _require_go(identity: dict[str, object]) -> dict[str, object]:
         and go.get("authorized_scope") == "two_paused_readonly_queries"
     ):
         raise ValueError("one-shot external GO receipt missing or mismatched")
-    for name in ("steam_original", "screen_lease_receipt"):
+    owner = _require_live_screen_lease(go["screen_task_last_sequence"])
+    for name in ("steam_original", "steam_frame_receipt", "screen_challenge",
+                 "screen_lease_receipt"):
         path = Path(str(go.get(f"{name}_path")))
         if not path.resolve().is_relative_to(SCREEN.resolve()):
             raise ValueError(f"one-shot {name} outside exact screen attempt")
         if _sha(path) != str(go.get(f"{name}_sha256", "")).upper():
             raise ValueError(f"one-shot {name} bytes changed")
+    if (Path(str(go["screen_challenge_path"])).resolve()
+            != (SCREEN / "screen-challenge.json").resolve()
+            or Path(str(go["screen_lease_receipt_path"])).resolve()
+            != (SCREEN / "screen-lease-snapshot.json").resolve()):
+        raise ValueError("one-shot screen challenge or lease copy path changed")
+    if _read_json(Path(str(go["screen_lease_receipt_path"]))) != owner:
+        raise ValueError("screen lease receipt differs from current task bus")
+    now = datetime.now(timezone.utc)
+    challenge = _read_json(Path(str(go["screen_challenge_path"])))
+    frame = _read_json(Path(str(go["steam_frame_receipt_path"])))
+    before_path = Path(str(frame.get("before_path")))
+    if (not before_path.resolve().is_relative_to(SCREEN.resolve())
+            or _sha(before_path) != frame.get("before_sha256")):
+        raise ValueError("Steam before-frame bytes or attempt changed")
+    if not (
+        challenge.get("schema") == "xar.war.h3937-combined-screen-challenge.v1"
+        and challenge.get("candidate_head") == identity["head"]
+        and challenge.get("round") == ROUND
+        and challenge.get("screen_attempt_dir") == str(SCREEN.resolve())
+        and challenge.get("task_bus_dir") == str(TASK_BUS.resolve())
+        and challenge.get("screen_task_id") == SCREEN_TASK_ID
+        and challenge.get("screen_task_last_sequence") == owner["last_sequence"]
+        and isinstance(challenge.get("challenge_nonce"), str)
+        and len(challenge["challenge_nonce"]) == 48
+        and all(ch in "0123456789abcdef" for ch in challenge["challenge_nonce"])
+        and go.get("screen_challenge_nonce") == challenge["challenge_nonce"]
+        and frame.get("schema") == "ck3.steam_fresh_desktop_frame.v1"
+        and frame.get("moving_edge_changed") is True
+        and isinstance(frame.get("pixel_difference_bbox"), list)
+        and len(frame["pixel_difference_bbox"]) == 4
+        and frame.get("before_sha256") != frame.get("moved_sha256")
+        and frame.get("before_rect") != frame.get("moved_rect")
+        and frame.get("restored_rect") == frame.get("before_rect")
+        and not (isinstance(frame.get("clock_check"), dict)
+                 and frame["clock_check"].get("clock_pixels_unchanged") is True)
+        and Path(str(frame.get("moved_path"))).resolve()
+            == Path(str(go["steam_original_path"])).resolve()
+        and frame.get("moved_sha256") == go["steam_original_sha256"]
+        and isinstance(frame.get("moved_identity"), dict)
+        and frame["moved_identity"].get("sha256") == go["steam_original_sha256"]
+        and Path(str(frame["moved_identity"].get("path"))).resolve()
+            == Path(str(go["steam_original_path"])).resolve()
+        and frame["moved_identity"].get("bytes")
+            == Path(str(go["steam_original_path"])).stat().st_size
+    ):
+        raise ValueError("screen challenge or fresh Steam frame mismatched")
+    challenge_at = _recent(challenge.get("issued_at_utc"), "screen challenge",
+                           LEASE_MAX_AGE_SECONDS, now)
+    capture_at = _recent(frame.get("captured_at_utc"), "Steam frame",
+                         GO_MAX_AGE_SECONDS, now)
+    review_at = _recent(go.get("steam_direct_reviewed_at_utc"), "direct Steam review",
+                        GO_MAX_AGE_SECONDS, now)
+    go_at = _recent(go.get("issued_at_utc"), "external GO",
+                    GO_MAX_AGE_SECONDS, now)
+    if not (challenge_at <= capture_at <= review_at <= go_at):
+        raise ValueError("screen challenge, fresh frame, review, and GO out of order")
     return go
+
+
+def _require_preworker_screen_gate(entry: dict[str, str]) -> None:
+    """Refuse even worker creation until the exact current screen proof is valid."""
+    identity = _require_exact_admission()
+    if identity["head"] != entry["head"]:
+        raise ValueError("preworker source HEAD changed")
+    _require_go(identity)
 
 
 def run_exact_once(claim_nonce: str) -> dict[str, object]:
@@ -275,6 +415,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
     go_attestation: dict[str, object] | None = None
     before: dict[str, object] | None = None
     after: dict[str, object] | None = None
+    screen_lease_after: dict[str, object] | None = None
     original_outer = outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED
     original_inner = inner.H3937_COMBINED_LIVE_AUTHORIZED
     try:
@@ -293,6 +434,9 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         before = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
         if any(item["returncode"] != 0 or item["found"] is True for item in before.values()):
             raise ValueError("one-shot live process inventory not empty")
+        _require_live_screen_lease(go_attestation["screen_task_last_sequence"])
+        if _sha(GO) != go_sha:
+            raise ValueError("GO receipt changed immediately before native session")
         _write_json(OUTPUT / "invocation.json", {
             "schema": "xar.war.h3937-combined-once-invocation.v1",
             "at_utc": _now(), "round": ROUND, "candidate": identity,
@@ -333,10 +477,12 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
             if go_sha is not None and _sha(GO) != go_sha:
                 primary_error = primary_error or "GO receipt bytes changed"
             if go_attestation is not None:
-                for name in ("steam_original", "screen_lease_receipt"):
+                for name in ("steam_original", "steam_frame_receipt",
+                             "screen_challenge", "screen_lease_receipt"):
                     path = Path(str(go_attestation[f"{name}_path"]))
                     if _sha(path) != str(go_attestation[f"{name}_sha256"]).upper():
                         primary_error = primary_error or f"{name} bytes changed"
+                screen_lease_after = _require_live_screen_lease()
         except BaseException as error:
             primary_error = primary_error or f"GO/screen readback: {type(error).__name__}: {error}"
     cleanup = outer_report.get("cleanup") if isinstance(outer_report, dict) else None
@@ -370,6 +516,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         "gates_restored": gates_restored,
         "process_inventory_after": after,
         "processes_gone": processes_gone,
+        "screen_lease_after": screen_lease_after,
         "outer_cleanup_proven": isinstance(cleanup, dict) and cleanup.get("ok") is True,
         "action_authorized": False, "date_advance_authorized": False,
         "one_shot_output_consumed": True,
@@ -446,6 +593,7 @@ def supervise_exact_once(entry_path: Path) -> int:
             return receipt
 
     try:
+        _require_preworker_screen_gate(entry)
         worker = subprocess.Popen(
             [sys.executable, str(entry_path), "--worker", claim_nonce],
             cwd=entry_path.resolve().parent,
@@ -470,17 +618,40 @@ def supervise_exact_once(entry_path: Path) -> int:
         supervisor_error = f"{type(error).__name__}: {error}"
         if worker is not None and worker.returncode is None and kill_result is None:
             kill_result = kill_tree(worker)
-    with (OUTPUT / "supervisor.stdout.txt").open("x", encoding="utf-8") as target:
-        target.write(stdout.decode("utf-8", errors="replace"))
-    with (OUTPUT / "supervisor.stderr.txt").open("x", encoding="utf-8") as target:
-        target.write(stderr.decode("utf-8", errors="replace"))
-    after = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
-    processes_gone = all(
+    for name, data in (("stdout", stdout), ("stderr", stderr)):
+        try:
+            with (OUTPUT / f"supervisor.{name}.txt").open("x", encoding="utf-8") as target:
+                target.write(data.decode("utf-8", errors="replace"))
+        except BaseException as error:
+            supervisor_error = supervisor_error or (
+                f"supervisor {name} retention: {type(error).__name__}: {error}")
+    after: dict[str, object] | None = None
+    try:
+        after = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
+    except BaseException as error:
+        supervisor_error = supervisor_error or (
+            f"post inventory: {type(error).__name__}: {error}")
+    worker_exited = worker is not None and worker.returncode is not None
+    kill_proven = not timeout or bool(
+        kill_result and kill_result.get("returncode") == 0 and worker_exited)
+    processes_gone = bool(after and worker_exited and kill_proven and all(
         item["returncode"] == 0 and item["found"] is False for item in after.values()
-    )
+    ))
     child_completion_path = OUTPUT / "completion.json"
-    child_completion = _read_json(child_completion_path) if child_completion_path.is_file() else None
+    child_completion = None
+    try:
+        if child_completion_path.is_file():
+            child_completion = _read_json(child_completion_path)
+    except BaseException as error:
+        supervisor_error = supervisor_error or (
+            f"child completion readback: {type(error).__name__}: {error}")
     child_report_path = OUTPUT / "outer-report.json"
+    try:
+        report_sha = _sha(child_report_path) if child_report_path.is_file() else None
+    except BaseException as error:
+        report_sha = None
+        supervisor_error = supervisor_error or (
+            f"outer report readback: {type(error).__name__}: {error}")
     ok = bool(
         not timeout and supervisor_error is None and worker is not None
         and worker.returncode == 0 and processes_gone
@@ -491,9 +662,24 @@ def supervise_exact_once(entry_path: Path) -> int:
         and child_completion.get("outer_cleanup_proven") is True
         and child_completion.get("gates_restored") is True
         and child_completion.get("processes_gone") is True
-        and child_report_path.is_file()
-        and child_completion.get("outer_report_sha256") == _sha(child_report_path)
+        and report_sha is not None
+        and child_completion.get("outer_report_sha256") == report_sha
     )
+    def receipt_sha(path: Path) -> str | None:
+        nonlocal supervisor_error, ok
+        try:
+            return _sha(path) if path.is_file() else None
+        except BaseException as error:
+            ok = False
+            supervisor_error = supervisor_error or (
+                f"supervisor receipt hash: {type(error).__name__}: {error}")
+            return None
+
+    stdout_sha = receipt_sha(OUTPUT / "supervisor.stdout.txt")
+    stderr_sha = receipt_sha(OUTPUT / "supervisor.stderr.txt")
+    completion_sha = receipt_sha(child_completion_path)
+    if stdout_sha is None or stderr_sha is None or completion_sha is None:
+        ok = False
     _write_json(OUTPUT / "supervisor-completion.json", {
         "schema": "xar.war.h3937-combined-once-supervisor.v1",
         "started_at_utc": started, "finished_at_utc": _now(),
@@ -502,10 +688,9 @@ def supervise_exact_once(entry_path: Path) -> int:
         "worker_returncode": worker.returncode if worker is not None else None,
         "timeout": timeout, "timeout_seconds": SUPERVISOR_TIMEOUT_SECONDS,
         "taskkill": kill_result, "error": supervisor_error,
-        "stdout_sha256": _sha(OUTPUT / "supervisor.stdout.txt"),
-        "stderr_sha256": _sha(OUTPUT / "supervisor.stderr.txt"),
-        "child_completion_sha256": _sha(child_completion_path)
-            if child_completion_path.is_file() else None,
+        "stdout_sha256": stdout_sha,
+        "stderr_sha256": stderr_sha,
+        "child_completion_sha256": completion_sha,
         "process_inventory_after": after, "processes_gone": processes_gone,
         "action_authorized": False, "date_advance_authorized": False,
     })
