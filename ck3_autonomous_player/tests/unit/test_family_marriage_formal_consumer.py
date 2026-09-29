@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.family_marriage_formal_consumer import (
+    _rank_five_family_candidates,
     choose_first_heir_marriage_candidate,
     plan_family_marriage_private,
     query_family_marriage_alliance_result_private,
@@ -637,6 +638,25 @@ class FamilyConsumerTest(unittest.TestCase):
                               diagnostic["rows"]][:2], [306, 305])
             self.assertEqual(diagnostic["ranking"]["prefilter_eligible_count"], 2)
             self.assertEqual(diagnostic["ranking"]["value_input_unavailable_count"], 0)
+
+    def test_c9_absent_dynasty_is_known_exclusion_not_unread_value(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            legal = self._c9_rank_driver(Path(temporary)).legality[
+                "native_legal_candidates"]
+            peer = next(row for row in legal
+                        if row["candidate_character_id"] == 306)
+            absent = {**peer, "candidate_character_id": 999,
+                      "candidate_dynasty_id": -1,
+                      "recipient_ai_accept_raw": 10_000}
+            unread = {**peer, "candidate_character_id": 1000,
+                      "candidate_dynasty_id": None}
+            ranked, ranking = _rank_five_family_candidates(
+                [*legal, absent, unread])
+            self.assertEqual([row["candidate_character_id"]
+                              for row in ranked[:2]], [306, 305])
+            self.assertEqual(ranking["prefilter_eligible_count"], 2)
+            self.assertEqual(ranking["candidate_dynasty_absent_count"], 1)
+            self.assertEqual(ranking["value_input_unavailable_count"], 1)
 
     def test_c9_no_external_age_matched_candidate_is_a_real_no_op(self):
         with tempfile.TemporaryDirectory() as temporary:

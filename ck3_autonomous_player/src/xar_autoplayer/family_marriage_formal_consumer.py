@@ -342,6 +342,7 @@ def _rank_five_family_candidates(
     """Prefer native-final external Dynasty peers before the fixed five-row read."""
     eligible = []
     unknown = 0
+    absent_dynasty = 0
     fresh_rows = [row for row in legal_rows
                   if row["candidate_character_id"] not in rejected_candidate_ids]
     for row in fresh_rows:
@@ -352,11 +353,19 @@ def _rank_five_family_candidates(
         candidate_dynasty = row.get("candidate_dynasty_id")
         realm_backed = row.get("realm_backed_actor_recipient")
         if (any(type(value) is not int or value <= 0 for value in (
-                played_dynasty, heir_dynasty, candidate_dynasty))
+                played_dynasty, heir_dynasty))
+                or type(candidate_dynasty) is not int
+                or candidate_dynasty == 0 or candidate_dynasty < -1
                 or type(heir_age) is not int
                 or type(candidate_age) is not int
                 or type(realm_backed) is not bool):
             unknown += 1
+            continue
+        # The exact-build House/Dynasty reader uses -1 for native absence.
+        # This candidate is known to lack the external Dynasty required by
+        # this policy; it is not an unread value.
+        if candidate_dynasty == -1:
+            absent_dynasty += 1
             continue
         if (heir_dynasty != played_dynasty
                 or candidate_dynasty == played_dynasty
@@ -387,6 +396,7 @@ def _rank_five_family_candidates(
                     "age_gap_max_raw": _MAX_BETROTHAL_AGE_GAP_RAW,
                     "prefilter_eligible_count": len(eligible),
                     "value_input_unavailable_count": unknown,
+                    "candidate_dynasty_absent_count": absent_dynasty,
                     "conclusion": (
                         "no_age_matched_external_realm_candidate"
                         if not eligible and not unknown else
