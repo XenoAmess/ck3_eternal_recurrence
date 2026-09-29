@@ -6417,6 +6417,10 @@ class NativeAutoRunTests(unittest.TestCase):
             "unspent_perk_points": 0,
             "policy_decision_status": "no_legal_minimum",
         }
+        deferred_war_red = {
+            "policy": "one-life-turn-v1", "phase": "native_war_route_red",
+            "selected_step": None, "reason": "route input unavailable",
+        }
         binding = {"snapshot_id": "native:123", "revision": 456,
                    "date_raw": 53_216_040, "paused": True}
         turn = native_auto_run_module._turn_record(
@@ -6431,6 +6435,7 @@ class NativeAutoRunTests(unittest.TestCase):
                     "lifestyle_decision": {"status": "no_legal_minimum"},
                     "lifestyle_opportunity_status": "no_legal_minimum",
                     "lifestyle_war_observation": observation,
+                    "lifestyle_deferred_war_red": deferred_war_red,
                     "unbounded_private_query": {"discard": True},
                 },
             },
@@ -6446,6 +6451,10 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             serialized["plan"]["lifestyle_opportunity_status"],
             "no_legal_minimum",
+        )
+        self.assertEqual(
+            serialized["plan"]["lifestyle_deferred_war_red"],
+            deferred_war_red,
         )
         self.assertNotIn("unbounded_private_query", serialized["plan"])
 
