@@ -111,9 +111,45 @@ native source gate fixture mutates each header and sampled field, and the
 Python tests exercise episode, war, army membership, connection, event and
 capability drift under normal and optimized Python.
 
-The implementation is source-only until a separately scheduled native build
-and a future new paused game attempt produce exact DLL hashes and a typed live
-row. The completed R0368 report cannot be upgraded by this source change.
+## Release build and offline acceptance
+
+The corrected candidate is at `7457ef060cdfa1c943c86be619df02dbbb247dd0`.
+Its only change after the independent source review at `4996e2763` replaces
+a fixture's MSVC-invalid `-1ULL` with the explicit maximum `uint64_t` value.
+The same `/W4 /WX` fixture compiles and runs independently. Earlier build
+attempts remain separate: 001 and 002 were resource/performance interruptions;
+003 failed at that C4146 fixture warning; 004 linked all 915 targets but
+its default, nonexistent worktree `ck3.exe` made 16/173 CTest cases fail.
+Those attempts are not upgraded to GREEN.
+
+Fresh Release [attempt 005](D:/ck3-research-artifacts/r0368-role-release-pair-attempt-005.json)
+pins the installed CK3 `1.19.0.6` executable at
+`C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe`,
+SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The default-off private option is explicitly ON for this isolated build.
+All 915/915 targets linked; the build script's dependency-record gate passed;
+offline CTest passed 173/173, including
+`xar_ck3_actor_army_role_source_gate_v1`. A separate
+[JUnit XML](D:/ck3-research-artifacts/r0368-role-ctest-junit-005.xml)
+run also passed 173/173 with zero failures or skips. The frozen
+[pair manifest](D:/ck3-research-artifacts/r0368-role-release-pair-attempt-005.json)
+has SHA-256 `798A3E8ADC055C39B170D2F37F2BC2074A7994882D078DFDACB74C73CF71149C`;
+the [build log](D:/ck3-research-artifacts/r0368-role-build-stdout-005.log)
+has SHA-256 `EC4390F728508D910CBB74507BE5A5758C4039111BF61062CDA061D784163BBA`,
+and JUnit XML has SHA-256
+`873FB98E4CA4BB4012FEC244E5061349F5714842B22A91007A15B870567DE368`.
+The paired Release DLL is 3,148,800 bytes, SHA-256
+`F360FA9F55F1628A03CE111458983A67E769BB9E78BA85EA202CB819BA805425`;
+the same-directory injector is 39,936 bytes, SHA-256
+`6EB871817A6861F431DB50759B2EC607B80E0DAE269A8B1B2610F98212355C01`.
+No CK3 process was started or screen acquired for these offline checks.
+
+`open_kaishek` has no deterministic parser/IR/runtime subset for this exact
+native memory-pointer, storage-header, commander-helper and regiment-link ABI;
+its configured `Z:/workspace/open_kaishek` path is also inaccessible here.
+The C++ source gate and offline CTest suite are the applicable prevalidation.
+This is static build acceptance only. No typed paused-frame role row exists,
+and the completed R0368 report cannot be retroactively upgraded.
 
 The release decision is a later war-policy step. It needs the exact current
 assignment, a complete army and contact/siege state, a valid replacement plan,
