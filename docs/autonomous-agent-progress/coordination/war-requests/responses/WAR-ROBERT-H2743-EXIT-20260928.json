@@ -179,5 +179,16 @@
     "gameplay_action_submitted": false,
     "formal_exit_decision_complete": false
   },
+  "h2743_v5_attempt_14_transitional_map_red_2026_09_29": {
+    "status": "red_map_ready_before_campaign_binding_no_native_query",
+    "document": "docs/ck3-native-ai/h2743-war-storage-attempt-14-red-2026-09-29.md",
+    "external_attempt": "D:/ck3-research-artifacts/war31-h2743-20260928/attempt-14-dejure-baseline-no-launch/live-dejure-war-storage-v5",
+    "readiness_067_sha256": "A03175FBAC5901A73BE193441C3C4B5928B800FFC2D7C992DE455809808553D0",
+    "session_exit_sha256": "AFEE030A27F5CC1B32C9615CB02BD2F92D053784BA9745D995E255B69F43EA25",
+    "finding": "map_ready=true and raw H2743 date paused, but episode_run_id and played_character remain null with active_wars=[]; strict identity rejected before baseline or war-options query.",
+    "cleanup": "Managed stop supervisor code 0, CK3 PID empty, exact source and candidate hashes unchanged; screen RELEASE seq2314.",
+    "gameplay_action_submitted": false,
+    "formal_exit_decision_complete": false
+  },
   "next_step": "Close the actual de-jure setup/resolve target and change semantics and conditional resource branches before attempting a separately versioned full terms producer. The v3/v4 live queries verified only same-frame prestate, partial truce inputs and legal surrender; v5 is a static WarManager structural candidate without a live result or proven stock any_character_war equivalence. Obtain signed title/vassal/resource deltas, dynamic factor and truce duration through audited side-effect-free sources, plus finite-horizon continuation loss and cash bounds. Keep the formal comparison unavailable and the terminal selected-step guard active until those facts and a sourced policy threshold exist. Do not reuse R0197 one-shot authorization or submit H2743/H2825 exit based on this response."
 }

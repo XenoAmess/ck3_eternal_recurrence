@@ -164,9 +164,52 @@ class H2743RunnerGateTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
             runner.require_snapshot(loading)
         ready = dict(loading, map_ready=True)
-        self.assertFalse(runner.cold_map_snapshot_pending(ready))
+        # attempt-14 reached map_ready=true before episode, actor and wars bound.
+        ready["local_player_id"] = 1
+        self.assertTrue(runner.cold_map_snapshot_pending(ready))
+        with patch.object(runner, "require_snapshot") as identity:
+            self.assertIsNone(runner.admit_ready_snapshot(ready))
+            identity.assert_not_called()
+        for changed in (dict(ready, paused=False), dict(ready, date_raw=53217265)):
+            with self.subTest(early_contradiction=changed):
+                self.assertFalse(runner.cold_map_snapshot_pending(changed))
+                with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
+                    runner.admit_ready_snapshot(changed)
+        for changed in (dict(ready, paused=0), dict(ready, date_raw=53217264.0)):
+            with self.subTest(malformed_clock=changed), self.assertRaisesRegex(
+                    RuntimeError, "type is malformed"):
+                runner.cold_map_snapshot_pending(changed)
+        wrong_episode = dict(ready, episode_run_id="other-campaign")
+        self.assertFalse(runner.cold_map_snapshot_pending(wrong_episode))
         with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
-            runner.admit_ready_snapshot(ready)
+            runner.admit_ready_snapshot(wrong_episode)
+        wrong_actor = dict(ready, played_character={"character_id": 12345})
+        self.assertFalse(runner.cold_map_snapshot_pending(wrong_actor))
+        with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
+            runner.admit_ready_snapshot(wrong_actor)
+        complete_war = {"war_id": 16777231, "player_side": "defender",
+                        "player_is_primary_war_leader": True,
+                        "primary_opponent_character_id": 30097,
+                        "player_relative_war_score": -12,
+                        "targeted_title_ids": [2128]}
+        float_actor = dict(ready, episode_run_id=runner.EPISODE,
+                           played_character={"character_id": 29829.0},
+                           active_wars=[complete_war])
+        with self.assertRaisesRegex(RuntimeError, "played-character ID type"):
+            runner.admit_ready_snapshot(float_actor)
+        with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
+            runner.require_snapshot(float_actor)
+        partially_bound = dict(ready, episode_run_id=runner.EPISODE,
+                               played_character={"character_id": 29829})
+        self.assertTrue(runner.cold_map_snapshot_pending(partially_bound))
+        for malformed in ("unknown", 29829):
+            with self.subTest(played_character=malformed), self.assertRaisesRegex(
+                    RuntimeError, "played-character shape"):
+                runner.cold_map_snapshot_pending(dict(ready, played_character=malformed))
+        for malformed in (None, {}, "none"):
+            with self.subTest(active_wars=malformed), self.assertRaisesRegex(
+                    RuntimeError, "active-war shape"):
+                runner.cold_map_snapshot_pending(dict(ready, active_wars=malformed))
         for malformed in (None, 0, 1, "false"):
             with self.subTest(malformed=malformed), self.assertRaisesRegex(
                     RuntimeError, "map readiness field"):
@@ -194,6 +237,10 @@ class H2743RunnerGateTests(unittest.TestCase):
                 changed = dict(snapshot, map_ready=bad_ready)
                 with self.assertRaises(RuntimeError):
                     runner.require_same_ready_frame(changed, current_war, frame, wars)
+        transitional = dict(snapshot, episode_run_id=None, played_character=None,
+                            active_wars=[])
+        with self.assertRaisesRegex(RuntimeError, "baseline changed"):
+            runner.require_same_ready_frame(transitional, current_war, frame, wars)
         missing_ready = dict(snapshot)
         missing_ready.pop("map_ready")
         with self.assertRaises(RuntimeError):

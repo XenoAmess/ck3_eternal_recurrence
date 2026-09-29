@@ -320,27 +320,59 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
 def require_snapshot(value: dict[str, object]) -> dict[str, object]:
     played = value.get("played_character")
     if (value.get("episode_run_id") != EPISODE or value.get("date_raw") != 53217264
-            or not isinstance(played, dict) or played.get("character_id") != 29829
+            or not isinstance(played, dict)
+            or type(played.get("character_id")) is not int
+            or played.get("character_id") != 29829
             or value.get("paused") is not True):
         raise RuntimeError("H2743 paused snapshot identity differs")
-    wars = [row for row in value.get("active_wars", []) if isinstance(row, dict) and row.get("war_id") == 16777231]
+    wars = [row for row in value.get("active_wars", []) if isinstance(row, dict)
+            and type(row.get("war_id")) is int and row.get("war_id") == 16777231]
     if len(wars) != 1:
         raise RuntimeError("H2743 WarID is not unique and active")
     war = wars[0]
     if (war.get("player_side") != "defender" or war.get("player_is_primary_war_leader") is not True
+            or type(war.get("primary_opponent_character_id")) is not int
             or war.get("primary_opponent_character_id") != 30097
+            or type(war.get("player_relative_war_score")) is not int
             or war.get("player_relative_war_score") != -12
-            or war.get("targeted_title_ids") != [2128]):
+            or war.get("targeted_title_ids") != [2128]
+            or type(war["targeted_title_ids"][0]) is not int):
         raise RuntimeError("H2743 primary defender war row differs")
     return war
 
 
 def cold_map_snapshot_pending(value: dict[str, object]) -> bool:
-    """A connected native bridge can publish a valid snapshot before the map loads."""
+    """Transport and map readiness may precede episode, actor and war binding."""
     ready = value.get("map_ready")
     if type(ready) is not bool:
         raise RuntimeError("H2743 map readiness field is missing or malformed")
-    return not ready
+    if not ready:
+        return True
+    date = value.get("date_raw")
+    paused = value.get("paused")
+    if date is not None and type(date) is not int:
+        raise RuntimeError("H2743 date type is malformed")
+    if paused is not None and type(paused) is not bool:
+        raise RuntimeError("H2743 paused type is malformed")
+    if (date is not None and date != 53217264) or paused is False:
+        return False  # An explicit wrong date or running map is never loading.
+    episode = value.get("episode_run_id")
+    played = value.get("played_character")
+    wars = value.get("active_wars")
+    if episode is not None and episode != EPISODE:
+        return False  # The strict identity gate rejects a different campaign.
+    if played is not None:
+        if not isinstance(played, dict):
+            raise RuntimeError("H2743 played-character shape is malformed")
+        actor = played.get("character_id")
+        if actor is not None and type(actor) is not int:
+            raise RuntimeError("H2743 played-character ID type is malformed")
+        if actor is not None and actor != 29829:
+            return False  # A real wrong actor must not be treated as loading.
+    if not isinstance(wars, list):
+        raise RuntimeError("H2743 active-war shape is malformed")
+    return (date is None or paused is None or episode is None or played is None
+            or played.get("character_id") is None or not wars)
 
 
 FRAME_FIELDS = ("snapshot_id", "revision", "native_revision", "date_raw",

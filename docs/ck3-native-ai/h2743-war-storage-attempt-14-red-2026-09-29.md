@@ -1,0 +1,9 @@
+# H2743 v5 attempt-14：地图就绪早于战局绑定（2026-09-29）
+
+新外置 `attempt-14-dejure-baseline-no-launch/` 在 #448 head `6fbcf2cc2020524e675f4f5f8ab0d0ed3b74c119` 下运行。受管屏幕租约 `war-h2743-v5-attempt14-20260929` 于 `2026-09-29T02:10:04Z` 领取，Steam 移窗原图 `steam-frame-v5-attempt14-001/steam-moved.png` SHA-256 `58A3F74C3BB77551C7E0D73532EE7C43B8478D42D8596CEEE3B339D9E145B522` 经人工确认底栏“离线模式”。v5 七件输入与原版 war-values SHA 静态核验 GREEN；profile prepare、rebind、官方无启动 preflight GREEN，`ready-summary.json` SHA-256 `FE7BFDAB56A3815399EB852F73F60D1DDA65CCDFC992238109D825C93DDEB22F`。
+
+受管 CK3 冷加载期间，前 66 次轮询未取得可用 H2743 帧。`live-dejure-war-storage-v5/readiness-067.json`（SHA-256 `A03175FBAC5901A73BE193441C3C4B5928B800FFC2D7C992DE455809808553D0`）首次给出 `map_ready=true`，但仍是过渡状态：`date_raw=53217264`、`paused=true`、`local_player_id=1`、`episode_run_id=null`、`played_character=null`、`active_wars=[]`。runner 的严格 H2743 身份门在此拒绝，未生成 `before-payload.json`，也未调用 v5 baseline 或直接终战选项查询。`failure.json` SHA-256 `17A2282844923DCB13432638C6455D88F858166F86ED9A3853B3BEE072B21798`。
+
+受管 stop 后 supervisor 返回 0，CK3 PID 空、stdout reader 结束，H2743 四件原件、v5 DLL、injector、EXE 与放置件哈希未变；`session-exit.json` SHA-256 `AFEE030A27F5CC1B32C9615CB02BD2F92D053784BA9745D995E255B69F43EA25`。任务总线 append-only `D:/workspace/.codex-task-bus/events.jsonl` 第 2314 行记录 `2026-09-29T02:34:10.959849Z` 的 `completed` 事件，task `war-h2743-v5-attempt14-20260929`、`resources=[]`；当前 task 原件 `D:/workspace/.codex-task-bus/tasks/war-h2743-v5-attempt14-20260929.json` 同为 seq2314。无日期推进、无投降、无任何 gameplay action。本 attempt 永久为 RED，不得追认为 v5 实机读数。
+
+下一版准入只可在原 1800 秒内把已连接但未绑定 episode、角色或在役战争的帧继续作为 readiness；一旦非空 episode 或角色 ID 与 H2743 冲突，立即拒绝。查询后的 after 帧不能轮询或沿用旧身份，任何未绑定状态立即 RED。下一次必须使用新的外置 attempt、独立屏幕租约和新鲜 Steam 离线原图。即使 v5 查询成功，WarManager 结果也仍只是 `structural_candidate_only`；原版 `any_character_war` 等价性、实际休战天数、具体终战代价与退出动作仍不可用。
