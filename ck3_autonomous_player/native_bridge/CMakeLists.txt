@@ -454,6 +454,11 @@ option(
   OFF
 )
 option(
+  XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1
+  "Enable default-off paused native feast stage-2 CanProgress read"
+  OFF
+)
+option(
   XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1
   "Enable default-off paused native feast stage-5 final CanStart read"
   OFF
@@ -465,6 +470,10 @@ endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1 AND
    NOT XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
   message(FATAL_ERROR "Activity stage-2 option read requires stage-1 reader")
+endif()
+if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
+  message(FATAL_ERROR "Activity stage-2 gate read requires stage-1 reader")
 endif()
 option(
   XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1
@@ -1347,6 +1356,12 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
     target_compile_definitions(xar_ck3_bridge PRIVATE
       XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1=1)
   endif()
+  if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1)
+    target_sources(xar_ck3_bridge PRIVATE
+      src/activity_stage2_gate_read_v1.cpp)
+    target_compile_definitions(xar_ck3_bridge PRIVATE
+      XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1=1)
+  endif()
 endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1)
   if(NOT XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1 AND
@@ -1515,6 +1530,25 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME xar_ck3_native_bridge_activity_stage1_option_read_v1
       COMMAND xar_ck3_activity_stage1_option_read_v1_test)
+  endif()
+  if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1)
+    add_executable(xar_ck3_activity_stage2_gate_read_v1_test
+      src/activity_planner_diag_v1.cpp
+      src/activity_stage1_option_read_v1.cpp
+      src/activity_stage2_gate_read_v1.cpp
+      src/activity_stage2_gate_read_v1_test.cpp)
+    target_include_directories(
+      xar_ck3_activity_stage2_gate_read_v1_test PRIVATE include)
+    target_compile_definitions(
+      xar_ck3_activity_stage2_gate_read_v1_test PRIVATE
+      NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(
+        xar_ck3_activity_stage2_gate_read_v1_test PRIVATE
+        /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_native_bridge_activity_stage2_gate_read_v1
+      COMMAND xar_ck3_activity_stage2_gate_read_v1_test)
   endif()
   if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1)
     add_executable(xar_ck3_activity_stage5_canstart_read_v1_test
