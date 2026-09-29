@@ -33,6 +33,18 @@ class CharacterStatusTest(unittest.TestCase):
         self.assertEqual(result["life_status"], "alive")
         self.assertIsNone(result["death"])
 
+    def test_alive_focus_date_is_not_a_death_field(self) -> None:
+        data = save(character('\t\talive_data={\n\t\t\tfocus={\n'
+                              '\t\t\t\ttype=martial\n\t\t\t\tdate=1066.9.15\n'
+                              '\t\t\t}\n\t\t}'))
+        result = parse_melted(data, 33437, DATE)
+        self.assertEqual(result["life_status"], "alive")
+        self.assertIsNone(result["death"])
+
+    def test_alive_direct_death_field_remains_unknown(self) -> None:
+        self.assert_unknown(save(character('reason="death_battle"\n'
+                                           'alive_data={ focus={ date=1066.9.15 } }')))
+
     def test_dead_exact_direct_fields(self) -> None:
         data = save(character('\t\tdead_data={\n\t\t\tdate=1066.12.29\n'
                               '\t\t\treason="death_battle"\n\t\t\tkiller=34120\n\t\t}'))

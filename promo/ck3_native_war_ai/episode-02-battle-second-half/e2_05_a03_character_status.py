@@ -82,6 +82,7 @@ def parse_melted(data: bytes, character_id: int, expected_date: str) -> dict[str
     death_fields: dict[bytes, list[bytes]] = {key: [] for key in (b"date", b"reason", b"killer")}
     death_field_assignments: dict[bytes, int] = {key: 0 for key in death_fields}
     death_field_shadow = False
+    direct_target_death_field_shadow = False
     target_name = str(character_id).encode("ascii")
 
     for match in TOKEN.finditer(data):
@@ -105,6 +106,9 @@ def parse_melted(data: bytes, character_id: int, expected_date: str) -> dict[str
                     and pending_key in death_field_assignments
                     and len(stack) == 3 and stack[2][0] == b"dead_data"):
                 death_field_assignments[pending_key] += 1
+            if (target_start is not None and target_end is None
+                    and pending_key in death_field_assignments and len(stack) == 2):
+                direct_target_death_field_shadow = True
             previous = token
             continue
         if token == b"{":
@@ -165,8 +169,11 @@ def parse_melted(data: bytes, character_id: int, expected_date: str) -> dict[str
         raise StatusUnknown("life blocks are missing, duplicated or nested-shadowed")
     kind, status_start = status_blocks[0]
     if kind == b"alive_data":
-        if any(death_fields.values()) or death_field_shadow:
-            raise StatusUnknown("alive character contains death-field shadow")
+        # Living characters can legitimately have dates in nested structures
+        # (for example alive_data.focus.date). Only a death-field assignment
+        # directly on the character conflicts with the scoped life block.
+        if any(death_fields.values()) or direct_target_death_field_shadow:
+            raise StatusUnknown("alive character contains direct death-field shadow")
         status = "alive"
         death: dict[str, object] | None = None
     else:
