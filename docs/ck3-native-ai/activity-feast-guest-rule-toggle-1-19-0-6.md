@@ -124,3 +124,19 @@ the [operator receipt](Z:/m6-gr374-redfix-20260929/operator-runs/feast-guest-rul
 has SHA-256 `5D8D5D58E935E87452C57D41239CA700F705F04FD991CEFE2E8F26D2DCBFBA69`.
 This artifact supersedes a source-only inference, while retaining the exact
 unresolved live boundary for the native reader.
+
+The `window_unbound` status proves the query passed the feast planner and
+actor guards before failing one guest-list view binding check: owner+0x3F0,
+the exact window vtable, its bound planner at +0x100, or mode at +0xF8. The
+report does not distinguish those checks. In vanilla
+`window_activity_planner.gui`, the `activity_guest_list` view opens separately
+through `OpenGameViewData('activity_guest_list', ActivityPlanner.AccessSelf)`;
+Stage-1/2 and Stage-5 cost success alone do not establish that view.
+
+The next bounded source change reads a named rule's active state from the
+planner's +0x1A18/+0x1A24 vector, which the original guest filter consumes,
+without requiring the guest-list view. The typed toggle still requires that
+view and agreement between the native getter and active vector. Exact-key
+focused Debug and Release fixtures passed. This remains source and fixture
+evidence until a newly paired paused live read succeeds; OS minimization has
+not been shown to cause the window binding failure.
