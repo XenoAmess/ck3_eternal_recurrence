@@ -62,6 +62,30 @@ monthly income deltas remain `null`. The 30-day warm watch is therefore due
 at raw `53155440`; normal play can carry this unfinished build until
 then. The observed progress does not prove a completion date or realized gain.
 
+## 2026-09-29 R0358: due warm watch during normal continuation
+
+R0358 continued the paired R0355 H90-derived state on new PID `69120`. Its
+[24-turn formal report](Z:/ck3_mod_rewrite_process_assets/nw-econ-r0355-continuation-73e5540-20260929/run-watch-24/formal-report.txt)
+has SHA-256 `FB74A464AA7EA6C1051EF7D020614A16E3418F484725D53F473F475237C191D7`
+and `turn_limit/qualified`, 24/24 successful turns. The first turn cold-read
+the original `construction-submit-8f68de28d7aa4d159ad2708d55ba0a84`
+receipt at raw `53154720`, still `applied/in_progress` with remaining work raw
+`105055560`. Turn 4 advanced to raw `53155464`, 31 game days after the last
+R0355 material check. Turn 5 therefore queried the due native receipt on the
+same barony 2174/province 2629/slot 1: it remained `in_progress`, with remaining
+work raw `101611119` and progress divisor raw `90000`; turn 6 consumed that
+receipt. The game reached raw `53155704`, a total of **41 derived game days**
+after the R0355 start, and the CK3 process tree was recovered. These dates do
+not add to durable Robert mainline progress.
+
+The [final construction ledger](Z:/ck3_mod_rewrite_process_assets/nw-econ-r0355-continuation-73e5540-20260929/state/construction-formal-pending-v1.json)
+has SHA-256 `7BD3DC2F7B73D5B374037E83140E85A6DE9005CC8C73B6164051F26B6CB4282C`.
+It keeps `completion_status=in_progress`, `completion_observed_date_raw=null`,
+and both province and player monthly income deltas `null`; no second building
+submission was made. The next warm watch is due at raw `53156184`, 20 game days
+after the final R0358 date. The later war decisions in this run do not prove a
+completed building, its effect, or a realized income gain.
+
 ## 2026-09-29 NW-ECON: keep an applied-building readout under blocked war
 
 The H90-derived `hill_farms_01` at barony 2174/province 2629/slot 1 has an
