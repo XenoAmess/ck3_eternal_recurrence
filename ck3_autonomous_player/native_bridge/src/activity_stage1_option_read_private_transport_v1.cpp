@@ -187,6 +187,41 @@ bool SetStageTwo(void *opaque, std::uintptr_t planner) noexcept {
     return false;
   }
 }
+
+bool FindAutoRow(void *opaque, std::uintptr_t planner,
+                 std::uintptr_t &output) noexcept {
+  auto &context = *static_cast<CaptureContext *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id || planner == 0 ||
+      context.module_base == 0)
+    return false;
+  using Finder = void *(*)(void *);
+  const auto finder =
+      reinterpret_cast<Finder>(context.module_base + 0x10ADFA0);
+  __try {
+    output = reinterpret_cast<std::uintptr_t>(
+        finder(reinterpret_cast<void *>(planner)));
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = 0;
+    return false;
+  }
+}
+
+bool ProgressNonzero(void *opaque, std::uintptr_t planner) noexcept {
+  auto &context = *static_cast<CaptureContext *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id || planner == 0 ||
+      context.module_base == 0)
+    return false;
+  using Progress = void (*)(void *);
+  const auto progress =
+      reinterpret_cast<Progress>(context.module_base + 0x10B1330);
+  __try {
+    progress(reinterpret_cast<void *>(planner));
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+}
 #endif
 
 } // namespace
@@ -248,7 +283,11 @@ bool ExecuteActivityStage1OptionReadPrivateV1(
     environment.option_predicate = &OptionPredicate;
     environment.can_progress = &CanProgress;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
-    if (query->confirm_stage_one) environment.set_stage_two = &SetStageTwo;
+    if (query->confirm_stage_one) {
+      environment.set_stage_two = &SetStageTwo;
+      environment.find_auto_row = &FindAutoRow;
+      environment.progress_nonzero = &ProgressNonzero;
+    }
 #endif
     const bridge::ActivityPlannerDiagFrameV1 expected{
         query->expected_revision, current.date_raw,
