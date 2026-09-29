@@ -148,12 +148,22 @@ class H3937CombinedReadOnlyQueriesTests(unittest.TestCase):
         self.assertEqual(result["steps"], [province["step"], contact_step])
         self.assertEqual(result["scope"]["query_eligible_hostile_army_ids"],
                          [40001, 40002])
+        self.assertTrue(
+            result["envelopes"][1]["route_contact_horizon"]["one_day_contact_free"])
+        self.assertFalse(result["scope"]["complete_physical_army_inventory_proven"])
         self.assertFalse(result["physical_army_inventory_completeness_proven"])
         self.assertFalse(result["outer_session_cleanup_verified"])
         self.assertFalse(result["action_authorized"])
         self.assertFalse(result["date_advance_authorized"])
         self.assertEqual(service.execute_step.call_args_list[1].kwargs,
                          {"expected_revision": 5})
+
+    def test_bare_inventory_claim_cannot_promote_published_scope(self) -> None:
+        first = _frame()
+        first["complete_physical_army_inventory_proven"] = True
+        scope = combined._complete_published_scope(first)
+        self.assertIsNotNone(scope)
+        self.assertFalse(scope["complete_physical_army_inventory_proven"])
 
     def test_unresolved_route_stops_before_any_query(self) -> None:
         first = _frame()
