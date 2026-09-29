@@ -2042,6 +2042,7 @@ def _nonce_bound_watchdog_identities(
             entry for entry in _toolhelp_process_entries()
             if str(entry["name"]).casefold() in {"python.exe", "pythonw.exe"}
             and (int(entry["pid"]) == known_child_pid
+                 or int(entry["pid"]) == launcher_pid
                  or int(entry["parent_pid"]) in roots)
         ]
         for entry in toolhelp_candidates:

@@ -1027,6 +1027,19 @@ class TrackedShutdownTests(unittest.TestCase):
                     456, "exact-nonce", known_child_pid=8056, launcher_pid=8044,
                 )
 
+    def test_watchdog_nonce_scan_rejects_toolhelp_only_launcher(self) -> None:
+        service = SimpleNamespace(ExecQuery=lambda _: [])
+        # Win32_Process.Create's launcher is parented to WMI provider, not
+        # the caller. Its PID must therefore be checked as a root itself.
+        entries = [{"pid": 8044, "parent_pid": 21444, "name": "pythonw.exe"}]
+        with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_entries", return_value=entries,
+        ):
+            with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "lacks WMI identity"):
+                runtime_module._nonce_bound_watchdog_identities(
+                    456, "exact-nonce", known_child_pid=8056, launcher_pid=8044,
+                )
+
     def test_watchdog_nonce_scan_rejects_wmi_match_without_toolhelp_identity(self) -> None:
         nonce = "exact-nonce"
         service = SimpleNamespace(ExecQuery=lambda _: [SimpleNamespace(
