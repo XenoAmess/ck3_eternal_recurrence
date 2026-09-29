@@ -368,6 +368,8 @@ std::int32_t g_inventory_state_reads = 0;
 std::int32_t g_inventory_replace_at_state_read = -1;
 void **g_inventory_game_state_slot = nullptr;
 void *g_inventory_replacement_game_state = nullptr;
+std::byte *g_inventory_header_swap_target = nullptr;
+void *g_inventory_header_swap_value = nullptr;
 std::int32_t g_army_current_soldiers_calls = 0;
 std::int32_t g_army_maximum_soldiers_calls = 0;
 std::int32_t g_effective_stats_calls = 0;
@@ -1027,9 +1029,15 @@ void *FixtureDestroyRaiseTroopsCommand(void *command,
 
 std::int32_t FixtureGetUnitState(void *unit) {
   ++g_inventory_state_reads;
-  if (g_inventory_state_reads == g_inventory_replace_at_state_read &&
-      g_inventory_game_state_slot != nullptr) {
-    *g_inventory_game_state_slot = g_inventory_replacement_game_state;
+  if (g_inventory_state_reads == g_inventory_replace_at_state_read) {
+    if (g_inventory_game_state_slot != nullptr) {
+      *g_inventory_game_state_slot = g_inventory_replacement_game_state;
+    }
+    if (g_inventory_header_swap_target != nullptr) {
+      std::memcpy(g_inventory_header_swap_target,
+                  &g_inventory_header_swap_value,
+                  sizeof(g_inventory_header_swap_value));
+    }
     g_inventory_replace_at_state_read = -1;
   }
   if (unit == g_player_army.data()) {
@@ -4932,6 +4940,44 @@ int main() {
       physical_inventory.status != InventoryStatus::partial ||
       g_inventory_state_reads < 5) {
     return Fail("physical inventory joined two equal-valued game states");
+  }
+  auto replacement_internal_slots = g_internal_army_slots;
+  g_inventory_state_reads = 0;
+  g_inventory_replace_at_state_read = 5;
+  g_inventory_header_swap_target = g_internal_army_storage.data() + 0x20;
+  g_inventory_header_swap_value = replacement_internal_slots.data();
+  physical_inventory = {};
+  const auto internal_table_result =
+      xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory);
+  Store(g_internal_army_storage, 0x20,
+        static_cast<void *>(g_internal_army_slots.data()));
+  g_inventory_header_swap_target = nullptr;
+  g_inventory_header_swap_value = nullptr;
+  g_inventory_replace_at_state_read = -1;
+  if (internal_table_result != InventoryStatus::partial ||
+      physical_inventory.status != InventoryStatus::partial ||
+      g_inventory_state_reads < 5) {
+    return Fail("physical inventory joined two CArmy slot generations");
+  }
+  auto replacement_character_slots = g_character_slots;
+  g_inventory_state_reads = 0;
+  g_inventory_replace_at_state_read = 5;
+  g_inventory_header_swap_target = g_character_storage.data() + 0x20;
+  g_inventory_header_swap_value = replacement_character_slots.data();
+  physical_inventory = {};
+  const auto character_table_result =
+      xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory);
+  Store(g_character_storage, 0x20,
+        static_cast<void *>(g_character_slots.data()));
+  g_inventory_header_swap_target = nullptr;
+  g_inventory_header_swap_value = nullptr;
+  g_inventory_replace_at_state_read = -1;
+  if (character_table_result != InventoryStatus::partial ||
+      physical_inventory.status != InventoryStatus::partial ||
+      g_inventory_state_reads < 5) {
+    return Fail("physical inventory joined two Character slot generations");
   }
   Store(g_enemy_army, 0x10, std::int32_t{0x01000003});
   physical_inventory = {};

@@ -10643,6 +10643,7 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
       bindings.jomini_state_slot == nullptr ||
       bindings.army_storage_slot == nullptr ||
       bindings.army_internal_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
       bindings.contains_war_participant == nullptr ||
       bindings.get_unit_state == nullptr) {
     return output.status;
@@ -10693,6 +10694,7 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
   void *const jomini_state = *bindings.jomini_state_slot;
   void *const army_storage = *bindings.army_storage_slot;
   void *const internal_army_storage = *bindings.army_internal_storage_slot;
+  void *const character_storage = *bindings.character_storage_slot;
   void *const game_data = LoadAt<void *>(
       game_state, kGameStateGameDataOffset);
   void *const army_slots = army_storage != nullptr
@@ -10700,6 +10702,22 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
   const auto army_capacity = army_storage != nullptr
       ? LoadAt<std::int32_t>(army_storage, kComponentStorageCapacityOffset)
       : -1;
+  void *const internal_army_slots = internal_army_storage != nullptr
+      ? LoadAt<void *>(internal_army_storage, kComponentStorageSlotsOffset)
+      : nullptr;
+  const auto internal_army_capacity = internal_army_storage != nullptr
+      ? LoadAt<std::int32_t>(internal_army_storage,
+                             kComponentStorageCapacityOffset) : -1;
+  void *const character_slots = character_storage != nullptr
+      ? LoadAt<void *>(character_storage, kComponentStorageSlotsOffset)
+      : nullptr;
+  const auto character_capacity = character_storage != nullptr
+      ? LoadAt<std::int32_t>(character_storage,
+                             kComponentStorageCapacityOffset) : -1;
+  void *const province_array = game_data != nullptr
+      ? LoadAt<void *>(game_data, kGameDataProvinceArrayOffset) : nullptr;
+  const auto province_count = game_data != nullptr
+      ? LoadAt<std::int32_t>(game_data, kGameDataProvinceCountOffset) : -1;
   void *const war_manager = game_data != nullptr
       ? static_cast<std::byte *>(game_data) + bindings.war_manager_offset
       : nullptr;
@@ -10715,14 +10733,32 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
            *bindings.jomini_state_slot == jomini_state &&
            *bindings.army_storage_slot == army_storage &&
            *bindings.army_internal_storage_slot == internal_army_storage &&
+           *bindings.character_storage_slot == character_storage &&
            game_data != nullptr &&
            LoadAt<void *>(game_state, kGameStateGameDataOffset) == game_data &&
+           LoadAt<void *>(game_data, kGameDataProvinceArrayOffset) ==
+               province_array &&
+           LoadAt<std::int32_t>(game_data, kGameDataProvinceCountOffset) ==
+               province_count &&
            army_storage != nullptr &&
            LoadAt<void *>(army_storage, kComponentStorageSlotsOffset) ==
                army_slots &&
            LoadAt<std::int32_t>(army_storage,
                                 kComponentStorageCapacityOffset) ==
                army_capacity &&
+           internal_army_storage != nullptr &&
+           LoadAt<void *>(internal_army_storage,
+                          kComponentStorageSlotsOffset) ==
+               internal_army_slots &&
+           LoadAt<std::int32_t>(internal_army_storage,
+                                kComponentStorageCapacityOffset) ==
+               internal_army_capacity &&
+           character_storage != nullptr &&
+           LoadAt<void *>(character_storage,
+                          kComponentStorageSlotsOffset) == character_slots &&
+           LoadAt<std::int32_t>(character_storage,
+                                kComponentStorageCapacityOffset) ==
+               character_capacity &&
            war_manager != nullptr && war_storage != nullptr &&
            LoadAt<void *>(war_manager, kWarStorageOffset) == war_storage &&
            LoadAt<void *>(war_storage, kComponentStorageSlotsOffset) ==
