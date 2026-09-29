@@ -450,7 +450,10 @@ def _resolve_media_tool(command: str) -> tuple[str, dict]:
 def build(spec_path: Path, attempt: Path, *, selected_version: str,
           selected_wheel_sha256: str, ffmpeg: str = "ffmpeg", ffprobe: str = "ffprobe") -> dict:
     spec_path = spec_path.resolve(strict=True)
-    spec = _read(spec_path)
+    plan_bytes = spec_path.read_bytes()
+    spec = json.loads(plan_bytes)
+    if not isinstance(spec, dict):
+        raise ValueError("Reel edit plan must be a JSON object")
     check_shape(spec)
     if not attempt.is_absolute() or attempt.exists() or "'" in str(attempt):
         raise ValueError("A new absolute external attempt directory is required")
@@ -463,7 +466,6 @@ def build(spec_path: Path, attempt: Path, *, selected_version: str,
     attempt.mkdir(parents=True, exist_ok=False)
     for directory in ("commands", "probes", "segments", "reels"):
         (attempt / directory).mkdir()
-    plan_bytes = spec_path.read_bytes()
     (attempt / "input-plan.json").write_bytes(plan_bytes)
     try:
         sources, bundles = verify_sources(spec)
