@@ -301,3 +301,31 @@ attendance, next-turn consumption, or post-selection cold restore.
 The next native investigation is the actual final-gate failure branch
 and the unavailable planner guest route; neither may be guessed from
 an empty hosted list.
+
+## Post-R0367 final CanStart failure display: source and fixture only
+
+Source master `dee29e5c588e81da532d5085a65413aaf8a7640a` (#641) adds
+`final_can_start_failure_display` to the private full-cost read. Exact-build
+`0x10B0DA0(planner, native_string*)` writes an optional native display
+message into a caller-initialized 32-byte MSVC string (size 0, capacity
+15). The bridge copies its UTF-8 bytes during the **same** final CanStart
+evaluation and calls the original game string destructor at `0x7E97D0`
+before publishing the value. The full-cost read retains its paused frame,
+planner identity and before/after configuration checks. This message is
+display text, not a stable reason key.
+
+| Final CanStart | Native display | Typed field |
+| --- | --- | --- |
+| `false` | nonempty | `{state: "known", value: "<display text>", unknown_reason: null}` |
+| `false` | empty | `{state: "unknown", value: null, unknown_reason: "native_failure_display_empty"}` |
+| `true` | not needed | `{state: "not_applicable", value: null, unknown_reason: null}` |
+
+The native helper and Python parser have focused tests, and Debug/Release
+DLL builds passed. This is not a new paused CK3 observation: R0367 used the
+earlier transport, passed `nullptr` to the evaluator, and read only
+`final_can_start=false`. Its exact failure display and cause remain unknown.
+There has been no post-change Start, resource debit, new activity identity,
+next turn or cold restore. The formal Start action remains OFF while the
+same-frame native gate is false and the guest route is unqualified; a new
+frozen candidate and paired paused read must observe the display and guest
+status before policy can reconsider Start.

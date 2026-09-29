@@ -151,3 +151,27 @@ The R0367 report does not expose each prerequisite independently, so it
 cannot establish which one failed. In particular, an unknown HostView key
 is a source-level possibility, not a proven R0367 value. A focused status
 split and paired readback are needed to localize the live gate.
+
+## Post-R0367 guest guard split: source and fixture only
+
+Source master `61d4549490103cef74ff1d2bc292007bccacfdd0` (#640), paired
+with Python status parsing at `bc6bd47f5fc06ccd3b6cc37613c4054af03a0545`
+(#639), replaces the combined pre-capture `planner_unavailable` branch with
+six distinct status keys: `planner_diagnostic_unavailable`, `planner_absent`,
+`not_stage_five`, `widget_detached`, `widget_hidden`, and
+`host_view_type_mismatch`. The Python Start-input parser accepts these exact
+keys. A known HostView key other than `activity_feast` still fails. When
+that key is unknown, the core proceeds only if a **normal slot-12 capture**
+validates the current planner `+0x1530` as the exact feast activity type,
+planning stage 5, actor and date. It still requires the same normal refresh,
+matching before/after planner diagnostics, sequence, planner identity and
+configuration fingerprint; an unavailable capture is not a guest count.
+
+The focused native Debug/Release guest tests and Release DLL build passed;
+these are source/fixture checks. No paused run using this changed DLL and
+parser has yet localized the R0367 guard or read a selected guest. R0367's
+`planner_unavailable` and null guest counts remain its recorded live result.
+Neither the source change nor an empty hosted-activity list proves zero
+guests, a positive timely join, or permission to Start. The next paired
+paused read must report the new exact status and, when observed, the
+selected non-host expectation and arrival on that frame.
