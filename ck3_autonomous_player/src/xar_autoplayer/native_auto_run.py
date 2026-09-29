@@ -43,6 +43,10 @@ from .bridge.activity_feast_guest_candidate_private_transport import (
     STEP as _PRIVATE_ACTIVITY_GUEST_CANDIDATE_STEP,
     query_activity_feast_guest_candidate_private_v1,
 )
+from .bridge.activity_feast_guest_route_proof_private_transport import (
+    STEP as _PRIVATE_ACTIVITY_GUEST_ROUTE_PROOF_STEP,
+    query_activity_feast_guest_route_proof_private_v1,
+)
 from .bridge.activity_feast_guest_opinion_private_transport import (
     STEP as _PRIVATE_ACTIVITY_GUEST_OPINION_STEP,
     query_activity_feast_guest_opinion_private_v1,
@@ -438,6 +442,7 @@ def native_auto_run(
     private_activity_feast_stage5_full_cost_read: bool = False,
     private_activity_feast_stage5_start_read: bool = False,
     private_activity_feast_guest_candidate_read: bool = False,
+    private_activity_feast_guest_route_proof_read: bool = False,
     private_activity_feast_guest_opinion_character_id: int | None = None,
     private_activity_feast_guest_rule_key: str | None = None,
     private_activity_feast_guest_rule_candidate_id: int | None = None,
@@ -652,6 +657,9 @@ def native_auto_run(
     if (private_activity_feast_guest_candidate_read is True
             and private_activity_feast_stage5_full_cost_read is not True):
         raise AgentError("private feast guest candidate read requires the full-cost Stage-5 route")
+    if (private_activity_feast_guest_route_proof_read is True
+            and private_activity_feast_stage5_full_cost_read is not True):
+        raise AgentError("private feast guest route proof requires the full-cost Stage-5 route")
     if private_activity_feast_guest_opinion_character_id is not None:
         if (completion_contract != "bounded"
                 or type(private_activity_feast_guest_opinion_character_id) is not int
@@ -666,6 +674,7 @@ def native_auto_run(
                 or private_activity_feast_stage5_full_cost_read is True
                 or private_activity_feast_stage5_start_read is True
                 or private_activity_feast_guest_candidate_read is True
+                or private_activity_feast_guest_route_proof_read is True
                 or private_activity_feast_guest_rule_key is not None):
             raise AgentError("private feast guest opinion read uses its own paused frame run")
     if (private_activity_feast_guest_rule_key is not None
@@ -837,6 +846,7 @@ def native_auto_run(
     private_activity_feast_stage5_full_cost_observation: dict[str, object] | None = None
     private_activity_feast_stage5_start_observation: dict[str, object] | None = None
     private_activity_feast_guest_candidate_observation: dict[str, object] | None = None
+    private_activity_feast_guest_route_proof_observation: dict[str, object] | None = None
     private_activity_feast_guest_opinion_observation: dict[str, object] | None = None
     private_activity_feast_guest_rule_observation: dict[str, object] | None = None
     private_activity_feast_stage5_start_following_turn: dict[str, object] | None = None
@@ -1094,6 +1104,9 @@ def native_auto_run(
         )
         driver.allow_private_activity_feast_guest_candidate_query = (
             private_activity_feast_guest_candidate_read is True
+        )
+        driver.allow_private_activity_feast_guest_route_proof_query = (
+            private_activity_feast_guest_route_proof_read is True
         )
         driver.allow_private_activity_feast_guest_opinion_query = (
             private_activity_feast_guest_opinion_character_id is not None
@@ -1535,6 +1548,18 @@ def native_auto_run(
                                             )
                                         )
                                         status = "private_activity_feast_guest_candidate_read"
+                                    if private_activity_feast_guest_route_proof_read is True:
+                                        current_attempt["stage"] = "private_activity_feast_guest_route_proof_read"
+                                        status = "private_activity_feast_guest_route_proof_unresolved"
+                                        private_activity_feast_guest_route_proof_observation = (
+                                            _read_private_activity_feast_guest_route_proof_once(
+                                                driver, service=service, before=before,
+                                                cost_observation=(
+                                                    private_activity_feast_stage5_full_cost_observation
+                                                ), turn_index=turn_index,
+                                            )
+                                        )
+                                        status = "private_activity_feast_guest_route_proof_read"
                                     if private_activity_feast_guest_rule_key is not None:
                                         current_attempt["stage"] = "private_activity_feast_guest_rule_read"
                                         private_activity_feast_guest_rule_observation = (
@@ -3732,6 +3757,8 @@ def native_auto_run(
                     if private_activity_feast_stage5_start_read is True
                     else "private_activity_feast_guest_rule_read"
                     if private_activity_feast_guest_rule_key is not None
+                    else "private_activity_feast_guest_route_proof_read"
+                    if private_activity_feast_guest_route_proof_read is True
                     else "private_activity_feast_guest_candidate_read"
                     if private_activity_feast_guest_candidate_read is True
                     else "private_activity_feast_stage5_full_cost_observed"
@@ -3775,6 +3802,11 @@ def native_auto_run(
                      or (isinstance(private_activity_feast_guest_candidate_observation, dict)
                          and private_activity_feast_guest_candidate_observation.get("same_frame") is True
                          and private_activity_feast_guest_candidate_observation.get("read_only") is True))
+                and (private_activity_feast_guest_route_proof_read is not True
+                     or (isinstance(private_activity_feast_guest_route_proof_observation, dict)
+                         and private_activity_feast_guest_route_proof_observation.get("same_frame") is True
+                         and private_activity_feast_guest_route_proof_observation.get("read_only") is True
+                         and private_activity_feast_guest_route_proof_observation.get("decision") == "hold"))
                 and (private_activity_feast_guest_rule_key is None
                      or (isinstance(private_activity_feast_guest_rule_observation, dict)
                          and private_activity_feast_guest_rule_observation.get("same_frame") is True
@@ -4008,6 +4040,11 @@ def native_auto_run(
             {"private_activity_feast_guest_candidate_observation": copy.deepcopy(
                 private_activity_feast_guest_candidate_observation)}
             if private_activity_feast_guest_candidate_read is True else {}
+        ),
+        **(
+            {"private_activity_feast_guest_route_proof_observation": copy.deepcopy(
+                private_activity_feast_guest_route_proof_observation)}
+            if private_activity_feast_guest_route_proof_read is True else {}
         ),
         **(
             {"private_activity_feast_guest_opinion_observation": copy.deepcopy(
@@ -7250,6 +7287,60 @@ def _read_private_activity_feast_guest_candidate_once(
         "candidate_status": read["status"],
         "native_filtered_pre_invitation": read["native_filtered_pre_invitation"],
         "final_invite_legal": None, "feast_start_ready": None,
+    }
+
+
+def _read_private_activity_feast_guest_route_proof_once(
+    driver: NativeHeadlessGameplayDriver,
+    *, service: GameplayBridgeService, before: dict[str, object],
+    cost_observation: dict[str, object], turn_index: int,
+) -> dict[str, object]:
+    """Bind the native selected-guest and candidate proof to one Stage-5 frame."""
+    step = _PRIVATE_ACTIVITY_GUEST_ROUTE_PROOF_STEP
+    pre = service.snapshot()
+    if (cost_observation.get("same_frame") is not True
+            or not _private_activity_same_paused_frame(before, pre)):
+        raise StepPostconditionError(
+            "private feast guest route proof lacks same-frame Stage-5 cost source",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False}, selected_step=step)
+    try:
+        read = query_activity_feast_guest_route_proof_private_v1(
+            driver, expected_revision=pre["revision"],
+            timeout_seconds=float(driver.command_timeout_seconds),
+        )
+        post = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast guest route proof unresolved",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False,
+                         "native_error": type(exc).__name__ + ": " + str(exc)},
+            selected_step=step) from exc
+    same_frame = bool(
+        _private_activity_same_paused_frame(before, post)
+        and all(pre.get(key) == post.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and read["queried_snapshot_id"] == pre["snapshot_id"]
+        and read["post_snapshot_id"] == post["snapshot_id"]
+    )
+    if not same_frame or read["status"] != "observed":
+        raise StepPostconditionError(
+            "private feast guest route proof unavailable or crossed paused frame",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False,
+                         "proof_status": read["status"], "proof_read": read},
+            selected_step=step)
+    return {
+        "status": "guest_route_proof_read", "turn_index": turn_index,
+        "same_frame": True, "read_only": True,
+        "source_frame": _public_binding(pre),
+        "post_frame": _public_binding(post),
+        "proof_read": read,
+        "decision": "hold", "formal_action_ready": False,
+        "native_guest_route_qualified": False,
     }
 
 

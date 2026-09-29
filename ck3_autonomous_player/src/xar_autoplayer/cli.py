@@ -500,6 +500,10 @@ def parser() -> argparse.ArgumentParser:
         help="after four-cost read, read one native filtered pre-invitation guest candidate without inviting",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-guest-route-proof-read", action="store_true",
+        help="after four-cost read, compare selected guests, pre-invitation candidate and CanStart on one paused frame; no Start",
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-feast-guest-opinion-character-id", type=int,
         help="read one guest's opinion of the played host on a paused frame; no feast action",
     )
@@ -1140,6 +1144,8 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_stage5_start_read else {}),
                     **({"private_activity_feast_guest_candidate_read": True}
                       if args.private_activity_feast_guest_candidate_read else {}),
+                    **({"private_activity_feast_guest_route_proof_read": True}
+                      if args.private_activity_feast_guest_route_proof_read else {}),
                     **({"private_activity_feast_guest_opinion_character_id":
                         args.private_activity_feast_guest_opinion_character_id}
                       if args.private_activity_feast_guest_opinion_character_id is not None else {}),
