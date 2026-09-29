@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 from contextlib import ExitStack
 import hashlib
+import inspect
 import json
 from pathlib import Path
 import subprocess
@@ -12,13 +13,14 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 import xar_autoplayer.h3937_combined_paused_war_scope_run as producer
+import xar_autoplayer.h3937_combined_once_enable as once
 from xar_autoplayer.bridge.succession_transition_contract import (
     ORDINARY_CAMPAIGN_SUCCESSION,
     bind_succession_lifecycle_from_environment_v1,
@@ -26,6 +28,43 @@ from xar_autoplayer.bridge.succession_transition_contract import (
 
 
 class H3937CombinedOuterTests(unittest.TestCase):
+    def test_timeout_screenshot_requires_live_lease_check_before_session(self) -> None:
+        spec = SimpleNamespace(state_dir=Path("missing"), profile_dir=Path("missing"))
+        with patch.object(producer, "H3937_COMBINED_OUTER_LIVE_AUTHORIZED", True), patch.object(
+            producer, "native_session") as session:
+            with self.assertRaisesRegex(producer.AgentError, "current screen lease check"):
+                producer.collect_h3937_combined_paused_war_scope_once(
+                    spec, ownership_round_id="R999", cold_start_checkpoint=True,
+                    readiness_timeout_screenshot_path=Path("unused.png"))
+            session.assert_not_called()
+
+    def test_timeout_desktop_capture_is_bounded_and_never_overwrites(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            image = Path(temp_dir) / "readiness.png"
+            with patch.object(producer.subprocess, "run", side_effect=subprocess.TimeoutExpired(
+                cmd=["python"], timeout=20)) as capture:
+                result = producer._capture_timeout_desktop(image)
+            self.assertEqual(result["status"], "RED_CAPTURE_FAILED")
+            self.assertFalse(result["desktop_interaction"])
+            capture.assert_called_once()
+            self.assertEqual(capture.call_args.kwargs["timeout"], 20)
+            self.assertEqual(capture.call_args.args[0][1], "-c")
+            image.write_bytes(b"historical-original")
+            with patch.object(producer.subprocess, "run") as capture:
+                refused = producer._capture_timeout_desktop(image)
+            self.assertEqual(refused["status"], "RED_CAPTURE_PATH")
+            capture.assert_not_called()
+            self.assertEqual(image.read_bytes(), b"historical-original")
+
+    def test_a05_time_budgets_remain_bounded_and_ordered(self) -> None:
+        parameters = inspect.signature(
+            producer.collect_h3937_combined_paused_war_scope_once).parameters
+        self.assertEqual(parameters["readiness_timeout_seconds"].default, 600)
+        self.assertEqual(parameters["timeout_seconds"].default, 690)
+        self.assertEqual(once.SUPERVISOR_TIMEOUT_SECONDS, 840)
+        self.assertLess(600, 690)
+        self.assertLess(690, once.SUPERVISOR_TIMEOUT_SECONDS)
+
     def test_dirty_checkout_or_module_blob_drift_refuses_before_launch(self) -> None:
         source = Path(producer.__file__)
         with patch.object(producer, "_checkout_commit", return_value="a" * 40), patch.object(
@@ -74,7 +113,10 @@ class H3937CombinedOuterTests(unittest.TestCase):
 
     def test_managed_two_query_history_assets_cleanup_and_lifecycle(self) -> None:
         for outcome in ("green", "inner_red", "inner_contract_red", "history_red", "cleanup_red",
-                        "asset_red", "checkout_red", "binary_red"):
+                        "asset_red", "checkout_red", "binary_red",
+                        "readiness_timeout", "readiness_timeout_capture_exception",
+                        "readiness_timeout_lease_red",
+                        "readiness_error"):
             with (self.subTest(outcome=outcome),
                   tempfile.TemporaryDirectory() as temp_dir,
                   ExitStack() as stack):
@@ -125,7 +167,11 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     "command_history": history,
                 }
                 after_driver = copy.deepcopy(before_driver)
-                after_driver["command_history"] = history + appended
+                after_driver["command_history"] = (
+                    history if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
+                                           "readiness_timeout_lease_red",
+                                           "readiness_error"}
+                    else history + appended)
                 if outcome == "history_red":
                     after_driver["command_history"][-1]["command"] = "different"
                 first = {
@@ -209,11 +255,50 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         key: "a" * 40 for key in paths
                         if key == "producer_module" or key.startswith("source_module_")
                     })))
+                readiness_failure = None
+                if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
+                               "readiness_timeout_lease_red"}:
+                    readiness_failure = producer.NativeReadinessTimeoutError(
+                        "synthetic no semantic state",
+                        readiness_diagnostics={
+                            "mode": "native-headless", "backend_id": "native-headless",
+                            "transport_ready": True, "snapshot": False,
+                            "full_hello": "forbidden-hello",
+                            "diagnostics": {
+                                "connected": True, "connection_generation": 3,
+                                "bridge_pid": 55, "semantic_state_available": False,
+                                "last_error": {"code": "loading", "message": "still loading",
+                                               "raw_frame": "forbidden-frame"},
+                                "hello": {"game_adapter_status": "bound",
+                                          "capabilities": "forbidden-capabilities"},
+                                "last_heartbeat": {"sequence": 7, "pid": 55,
+                                    "main_thread_query_mailbox_v1": {
+                                        "installed": True, "ready": False,
+                                        "pump_epochs": 4, "raw_history": "forbidden-history"}},
+                            },
+                        },
+                        last_observation={"snapshot_id": "native:4",
+                                          "date_raw": producer.EXPECTED_DATE_RAW,
+                                          "full_snapshot": "forbidden-snapshot"},
+                    )
+                elif outcome == "readiness_error":
+                    readiness_failure = RuntimeError("synthetic ordinary failure")
                 stack.enter_context(patch.object(
-                    producer, "_wait_for_readiness", return_value=readiness))
+                    producer, "_wait_for_readiness", return_value=readiness,
+                    side_effect=readiness_failure))
                 stack.enter_context(patch.object(
                     producer, "_cleanup_report",
                     return_value={"ok": outcome != "cleanup_red"}))
+                screenshot = stack.enter_context(patch.object(
+                    producer, "_capture_timeout_desktop",
+                    return_value={"status": "CAPTURED_UNREVIEWED", "sha256": "d" * 64},
+                    side_effect=(OSError("capture broke")
+                                 if outcome == "readiness_timeout_capture_exception"
+                                 else None)))
+                lease_check = Mock(
+                    return_value={"task_id": "synthetic"},
+                    side_effect=(ValueError("stale screen lease")
+                                 if outcome == "readiness_timeout_lease_red" else None))
                 stack.enter_context(patch.object(
                     producer, "_cold_restore_bookkeeping", return_value={"exact": True}))
                 stack.enter_context(patch.object(
@@ -235,9 +320,49 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     continue
                 result = producer.collect_h3937_combined_paused_war_scope_once(
                     spec, ownership_round_id="R999", cold_start_checkpoint=True,
-                    native_bridge=config)
+                    native_bridge=config,
+                    readiness_timeout_screenshot_path=Path(temp_dir) / "timeout.png",
+                    readiness_timeout_screen_lease_check=lease_check)
                 session.assert_called_once()
-                collector.assert_called_once()
+                if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
+                               "readiness_timeout_lease_red",
+                               "readiness_error"}:
+                    collector.assert_not_called()
+                    self.assertEqual(result["query_actions"], 0)
+                    self.assertFalse(result["checks"]["date_unchanged"])
+                    self.assertTrue(result["cleanup"]["ok"])
+                    if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
+                                   "readiness_timeout_lease_red"}:
+                        lease_check.assert_called_once_with()
+                        if outcome == "readiness_timeout_lease_red":
+                            screenshot.assert_not_called()
+                        else:
+                            screenshot.assert_called_once_with(Path(temp_dir) / "timeout.png")
+                        self.assertEqual(
+                            result["readiness_timeout_screenshot"]["status"],
+                            "RED_CAPTURE_OR_SCREEN_LEASE" if outcome != "readiness_timeout"
+                            else "CAPTURED_UNREVIEWED")
+                        diagnostics = result["readiness_timeout_diagnostics"]
+                        self.assertTrue(diagnostics["diagnostics"]["connected"])
+                        self.assertFalse(diagnostics["diagnostics"]["semantic_state_available"])
+                        self.assertEqual(diagnostics["diagnostics"]["last_heartbeat"]["sequence"], 7)
+                        self.assertEqual(result["readiness_timeout_last_observation"]["date_raw"],
+                                         producer.EXPECTED_DATE_RAW)
+                        encoded = json.dumps(result)
+                        for forbidden in ("forbidden-hello", "forbidden-frame",
+                                          "forbidden-capabilities", "forbidden-history",
+                                          "forbidden-snapshot"):
+                            self.assertNotIn(forbidden, encoded)
+                    else:
+                        lease_check.assert_not_called()
+                        screenshot.assert_not_called()
+                        self.assertIsNone(result["readiness_timeout_diagnostics"])
+                        self.assertIsNone(result["readiness_timeout_last_observation"])
+                        self.assertIsNone(result["readiness_timeout_screenshot"])
+                else:
+                    lease_check.assert_not_called()
+                    screenshot.assert_not_called()
+                    collector.assert_called_once()
                 native_driver.assert_called_once_with(
                     config.pipe_name, state_dir=spec.state_dir,
                     save_dir=spec.profile_dir / "save games",
@@ -247,7 +372,11 @@ class H3937CombinedOuterTests(unittest.TestCase):
                 self.assertFalse(result["date_advance_authorized"])
                 self.assertFalse(result["physical_army_inventory_completeness_proven"])
                 self.assertEqual(result["gameplay_actions"], 0)
-                self.assertEqual(result["query_actions"], 2)
+                self.assertEqual(result["query_actions"],
+                                 0 if outcome in {"readiness_timeout",
+                                                 "readiness_timeout_capture_exception",
+                                                  "readiness_timeout_lease_red",
+                                                  "readiness_error"} else 2)
                 self.assertEqual(result["source"]["rebind_receipt_sha256"], "c" * 64)
 
 

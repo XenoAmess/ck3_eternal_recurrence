@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import subprocess
 import sys
@@ -23,22 +24,22 @@ from .environment import EnvironmentSpec
 from .runtime import NativeBridgeLaunchConfig
 
 
-ROUND = "R3942"
+ROUND = "R3943"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
-SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a04"
+SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a05"
 LEASE_MAX_AGE_SECONDS = 600
 GO_MAX_AGE_SECONDS = 300
 CLOCK_SKEW_SECONDS = 10
-NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-04")
+NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-05")
 STATE = NO_LAUNCH / "state"
-OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-04")
-GO = OUTPUT.parent / "go-attempt-04.json"
-SCREEN = OUTPUT.parent / "screen-attempt-04"
+OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-05")
+GO = OUTPUT.parent / "go-attempt-05.json"
+SCREEN = OUTPUT.parent / "screen-attempt-05"
 GAME = Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III")
 DLL = NO_LAUNCH / "source-verified" / "xar_ck3_bridge.dll"
 INJECTOR = NO_LAUNCH / "source-verified" / "xar_ck3_bridge_injector.exe"
-SUPERVISOR_TIMEOUT_SECONDS = 540
+SUPERVISOR_TIMEOUT_SECONDS = 840
 
 
 def _sha(path: Path) -> str:
@@ -162,6 +163,11 @@ def _require_entry_blob(entry_path: Path) -> dict[str, str]:
 
 
 def _require_exact_admission() -> dict[str, object]:
+    if not all(
+        isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value)
+        for value in (outer.COMBINED_DLL_SHA256, outer.COMBINED_INJECTOR_SHA256)
+    ):
+        raise ValueError("a05 exact Release binary pins are not frozen")
     if _git("status", "--porcelain=v1", "--untracked-files=all"):
         raise ValueError("one-shot checkout is dirty")
     head = _git("rev-parse", "HEAD")
@@ -458,6 +464,9 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
             outer_report = outer.collect_h3937_combined_paused_war_scope_once(
                 EnvironmentSpec(state_dir=STATE, game_dir=GAME),
                 ownership_round_id=ROUND, cold_start_checkpoint=True,
+                readiness_timeout_screenshot_path=(
+                    OUTPUT / "readiness-timeout-desktop.png"),
+                readiness_timeout_screen_lease_check=_require_live_screen_lease,
                 native_bridge=NativeBridgeLaunchConfig(
                     mode="native-headless", pipe_name=PIPE,
                     dll_path=DLL, injector_path=INJECTOR,

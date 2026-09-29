@@ -34,6 +34,16 @@ def green_outer() -> dict[str, object]:
     }
 
 
+def test_a05_unpinned_release_refuses_before_git_or_session(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(once.outer, "COMBINED_DLL_SHA256", None)
+    monkeypatch.setattr(once.outer, "COMBINED_INJECTOR_SHA256", None)
+    monkeypatch.setattr(once, "_git", lambda *args: check(False))
+    with pytest.raises(ValueError, match="binary pins are not frozen"):
+        once._require_exact_admission()
+
+
 @pytest.fixture
 def bounded(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     output = tmp_path / "live-attempt"

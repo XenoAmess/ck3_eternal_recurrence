@@ -10,8 +10,10 @@ import importlib
 from pathlib import Path
 import re
 import subprocess
+import sys
 import threading
 import time
+from typing import Callable
 
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
@@ -34,7 +36,7 @@ from .h3937_stationary_route_contact_query_run import (
     _same_frame, _sha256, _snapshot_history,
 )
 from .native_auto_run import (
-    READINESS_POLL_SECONDS, READINESS_STABLE_SECONDS,
+    NativeReadinessTimeoutError, READINESS_POLL_SECONDS, READINESS_STABLE_SECONDS,
     SESSION_TIMEOUT_GRACE_SECONDS, _cleanup_report, _public_binding,
     _wait_for_readiness,
 )
@@ -45,11 +47,12 @@ from .runtime import (
 )
 
 
-# Exact Release binaries built from the master58 combined native tree in
-# D:/ck3-research-artifacts/h3937-master58-native-build-attempt07/.
+# Candidate Release build from integrated #612 source HEAD 9b54496a5e2c,
+# D:/ck3-research-artifacts/h3937-physical-inventory-mailbox-attempt03/.
+# This pin is static only until its independent source/binary review is GREEN.
 H3937_COMBINED_OUTER_LIVE_AUTHORIZED = False
-COMBINED_DLL_SHA256 = "310E58F50A9B66360B9FDC761B05AC52F3BD99096E19723A2DAB69F015D5A7A0"
-COMBINED_INJECTOR_SHA256 = "ED3FBCA683D570BE5B7835894B35CDF4217EC15051FFB2A04F0C53131FE6B99A"
+COMBINED_DLL_SHA256 = "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61233793F"
+COMBINED_INJECTOR_SHA256 = "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E"
 _SOURCE_MODULES = (
     ".h3937_combined_readonly_queries",
     ".h3937_paused_war_scope_run",
@@ -63,6 +66,139 @@ _SOURCE_MODULES = (
     ".native_session",
     ".runtime",
 )
+
+
+def _bounded_readiness_value(value: object) -> object:
+    """Keep a scalar diagnostic without exporting a native frame or history."""
+    if value is None or type(value) in (bool, int):
+        return value
+    if isinstance(value, str):
+        return value[:256]
+    return None
+
+
+def _bounded_readiness_error(value: object) -> object:
+    if isinstance(value, dict):
+        return {
+            key: _bounded_readiness_value(value.get(key))
+            for key in ("type", "code", "status", "message")
+        }
+    return _bounded_readiness_value(value)
+
+
+def _bounded_readiness_timeout_diagnostics(
+    value: object,
+) -> dict[str, object] | None:
+    """Project only transport and mailbox fields already compacted by readiness."""
+    if not isinstance(value, dict):
+        return None
+    diagnostics = value.get("diagnostics")
+    diagnostics = diagnostics if isinstance(diagnostics, dict) else {}
+    hello = diagnostics.get("hello")
+    hello = hello if isinstance(hello, dict) else {}
+    heartbeat = diagnostics.get("last_heartbeat")
+    heartbeat = heartbeat if isinstance(heartbeat, dict) else {}
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1")
+    mailbox = mailbox if isinstance(mailbox, dict) else {}
+    return {
+        key: _bounded_readiness_value(value.get(key))
+        for key in ("mode", "backend_id", "transport_ready", "snapshot")
+    } | {
+        "diagnostics": {
+            **{
+                key: _bounded_readiness_value(diagnostics.get(key))
+                for key in (
+                    "connected", "connection_generation", "bridge_pid",
+                    "semantic_state_available", "rejected_state_snapshot_count",
+                    "snapshot_publish_diagnostic_count",
+                )
+            },
+            "transport_fatal_error": _bounded_readiness_error(
+                diagnostics.get("transport_fatal_error")),
+            "last_error": _bounded_readiness_error(diagnostics.get("last_error")),
+            "hello": {
+                key: _bounded_readiness_value(hello.get(key))
+                for key in (
+                    "ck3_build_match", "game_adapter_id",
+                    "game_adapter_status", "executable_sha256",
+                )
+            },
+            "last_heartbeat": {
+                "sequence": _bounded_readiness_value(heartbeat.get("sequence")),
+                "pid": _bounded_readiness_value(heartbeat.get("pid")),
+                "main_thread_query_mailbox_v1": {
+                    key: _bounded_readiness_value(mailbox.get(key))
+                    for key in (
+                        "installed", "stop", "failure", "pump_epochs",
+                        "consecutive_verified", "ready",
+                        "executor_submission_enabled", "date_raw", "paused",
+                        "executed_requests",
+                    )
+                },
+            },
+        },
+    }
+
+
+def _bounded_readiness_last_observation(
+    value: object,
+) -> dict[str, object] | None:
+    if not isinstance(value, dict):
+        return None
+    return {
+        key: _bounded_readiness_value(value.get(key))
+        for key in (
+            "bridge_pid", "connection_generation", "snapshot_id", "revision",
+            "native_revision", "date_raw", "episode_run_id",
+            "played_character_id", "episode_character_id", "paused", "map_ready",
+        )
+    }
+
+
+def _capture_timeout_desktop(path: Path) -> dict[str, object]:
+    """Take one diagnostic original frame before stopping CK3, never input."""
+    if path.suffix.lower() != ".png" or not path.parent.is_dir() or path.exists():
+        return {"status": "RED_CAPTURE_PATH", "path": str(path), "sha256": None}
+    script = (
+        "from pathlib import Path\n"
+        "from PIL import ImageGrab\n"
+        "import sys\n"
+        "with Path(sys.argv[1]).open('xb') as output:\n"
+        "    ImageGrab.grab().save(output, format='PNG')\n"
+    )
+    try:
+        result = subprocess.run(
+            [sys.executable, "-c", script, str(path)], capture_output=True,
+            check=False, timeout=20,
+        )
+        status = (
+            "CAPTURED_UNREVIEWED"
+            if result.returncode == 0 and path.is_file()
+            else "RED_CAPTURE_FAILED"
+        )
+        error = (
+            result.stderr.decode("utf-8", errors="replace")[:256]
+            if result.returncode else None
+        )
+    except (OSError, subprocess.SubprocessError) as failure:
+        status = "RED_CAPTURE_FAILED"
+        error = f"{type(failure).__name__}: {failure}"[:256]
+    digest: str | None = None
+    size: int | None = None
+    if path.is_file():
+        try:
+            digest = _sha256(path)
+            size = path.stat().st_size
+        except OSError as failure:
+            status = "RED_CAPTURE_READBACK"
+            error = f"{type(failure).__name__}: {failure}"[:256]
+    return {
+        "status": status, "path": str(path),
+        "sha256": digest, "bytes": size,
+        "error": error,
+        "desktop_interaction": False,
+        "image_visual_reviewed": False,
+    }
 
 
 def _clean_checkout_and_blob_identity(
@@ -104,16 +240,21 @@ def _clean_checkout_and_blob_identity(
 
 
 def collect_h3937_combined_paused_war_scope_once(
-    spec: EnvironmentSpec, *, timeout_seconds: float = 390,
-    readiness_timeout_seconds: float = 300,
+    spec: EnvironmentSpec, *, timeout_seconds: float = 690,
+    readiness_timeout_seconds: float = 600,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
     poll_interval_seconds: float = READINESS_POLL_SECONDS,
     ownership_round_id: str, cold_start_checkpoint: bool = False,
     native_bridge: NativeBridgeLaunchConfig | None = None,
+    readiness_timeout_screenshot_path: Path | None = None,
+    readiness_timeout_screen_lease_check: Callable[[], object] | None = None,
 ) -> dict[str, object]:
     """One managed session, at most two read-only queries, never gameplay."""
     if H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not True:
         raise AgentError("H3937 combined only: no live authorization")
+    if (readiness_timeout_screenshot_path is not None
+            and readiness_timeout_screen_lease_check is None):
+        raise AgentError("H3937 timeout screenshot requires current screen lease check")
     timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
     readiness_timeout = _positive_seconds(
         readiness_timeout_seconds, "readiness_timeout_seconds")
@@ -199,6 +340,9 @@ def collect_h3937_combined_paused_war_scope_once(
     readiness: dict[str, object] | None = None
     inner: dict[str, object] | None = None
     primary_error: str | None = None
+    readiness_timeout_diagnostics: dict[str, object] | None = None
+    readiness_timeout_last_observation: dict[str, object] | None = None
+    readiness_timeout_screenshot: dict[str, object] | None = None
 
     def supervise() -> None:
         try:
@@ -232,6 +376,27 @@ def collect_h3937_combined_paused_war_scope_once(
             raise AgentError("H3937 combined timeout before native snapshot")
         inner = collect_h3937_combined_reads_in_session(service)
     except BaseException as error:
+        if isinstance(error, NativeReadinessTimeoutError):
+            readiness_timeout_diagnostics = _bounded_readiness_timeout_diagnostics(
+                error.readiness_diagnostics)
+            readiness_timeout_last_observation = _bounded_readiness_last_observation(
+                error.last_observation)
+            if readiness_timeout_screenshot_path is not None:
+                try:
+                    if readiness_timeout_screen_lease_check is None:
+                        raise AgentError("screen lease check absent before timeout capture")
+                    readiness_timeout_screen_lease_check()
+                    readiness_timeout_screenshot = _capture_timeout_desktop(
+                        readiness_timeout_screenshot_path)
+                except BaseException as capture_error:
+                    readiness_timeout_screenshot = {
+                        "status": "RED_CAPTURE_OR_SCREEN_LEASE",
+                        "path": str(readiness_timeout_screenshot_path),
+                        "sha256": None,
+                        "error": f"{type(capture_error).__name__}: {capture_error}"[:256],
+                        "desktop_interaction": False,
+                        "image_visual_reviewed": False,
+                    }
         primary_error = f"{type(error).__name__}: {error}"
     finally:
         stop_started = time.monotonic()
@@ -341,6 +506,9 @@ def collect_h3937_combined_paused_war_scope_once(
         "asset_sha256_before": before_hashes,
         "asset_sha256_after": after_hashes,
         "readiness": _public_binding(readiness) if isinstance(readiness, dict) else None,
+        "readiness_timeout_diagnostics": readiness_timeout_diagnostics,
+        "readiness_timeout_last_observation": readiness_timeout_last_observation,
+        "readiness_timeout_screenshot": readiness_timeout_screenshot,
         "frame": {**{key: first.get(key) for key in (
             "snapshot_id", "revision", "native_revision", "date_raw",
             "episode_run_id", "episode_character_id", "paused", "map_ready")},
