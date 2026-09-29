@@ -9,7 +9,11 @@ from __future__ import annotations
 import copy
 from typing import Protocol
 
-from .bridge.native_driver import _route_contact_hostile_ids
+from .bridge.native_driver import (
+    _army_in_combat_or_retreat,
+    _army_is_known_stationary,
+    _route_contact_hostile_ids,
+)
 from .bridge.war_contract import (
     normalize_province_local_siege_result,
     normalize_route_contact_horizon,
@@ -44,6 +48,16 @@ def _complete_published_scope(frame: object) -> dict[str, object] | None:
     if scope is None or not isinstance(frame, dict):
         return None
     war = frame["active_wars"][0]
+    subject = next((row for row in frame["player_armies"]
+                    if isinstance(row, dict) and row.get("army_id") == ARMY_ID), None)
+    if not (
+        isinstance(subject, dict)
+        and subject.get("route_read_status") == "complete_empty"
+        and subject.get("route_source_count") == 0
+        and _army_is_known_stationary(subject)
+        and not _army_in_combat_or_retreat(subject)
+    ):
+        return None
     rows = [*frame["player_armies"], *war["allied_armies"],
             *war["enemy_armies"]]
     evidence: dict[int, dict[str, object]] = {}

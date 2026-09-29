@@ -165,6 +165,20 @@ class H3937CombinedReadOnlyQueriesTests(unittest.TestCase):
         self.assertEqual(result["query_attempts"], 0)
         service.execute_step.assert_not_called()
 
+    def test_player_moving_stops_before_any_query(self) -> None:
+        first = _frame()
+        moving = _army(combined.ARMY_ID, 29829, 2610,
+                       controllable=True, route=[2614])
+        first["player_armies"] = [moving]
+        first["active_wars"][0]["allied_armies"] = [copy.deepcopy(moving)]
+        service = SimpleNamespace(
+            snapshot=Mock(return_value=first), execute_step=Mock())
+        with patch.object(combined, "H3937_COMBINED_LIVE_AUTHORIZED", True):
+            result = combined.collect_h3937_combined_reads_in_session(service)
+        self.assertFalse(result["observed"])
+        self.assertEqual(result["query_attempts"], 0)
+        service.execute_step.assert_not_called()
+
     def test_partial_province_stops_before_contact(self) -> None:
         first = _frame()
         province = _province_result(partial=True)
