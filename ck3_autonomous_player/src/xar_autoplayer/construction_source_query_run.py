@@ -11,7 +11,9 @@ import re
 import threading
 import time
 
-from .bridge.domain_construction_private_transport_v1 import query_construction_private
+from .bridge.domain_construction_private_transport_v1 import (
+    query_construction_private, query_construction_wartime_observation_private,
+)
 from .bridge.native_driver import (
     NativeHeadlessGameplayDriver,
     _checkpoint_history_with_restore_lineage,
@@ -123,11 +125,12 @@ def query_private_construction_source_once(
     readiness_timeout_seconds: float,
     ownership_round_id: str,
     cold_start_checkpoint: bool,
+    wartime_observation: bool = False,
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
     poll_interval_seconds: float = READINESS_POLL_SECONDS,
 ) -> dict[str, object]:
-    """Read exactly one native construction source; never plan or submit."""
+    """Read one native construction source, including an optional wartime frame."""
     if (isinstance(timeout_seconds, bool) or timeout_seconds <= 0
             or isinstance(readiness_timeout_seconds, bool)
             or readiness_timeout_seconds <= 0
@@ -212,7 +215,10 @@ def query_private_construction_source_once(
         revision = before.get("revision")
         if type(revision) is not int or revision < 0:
             raise AgentError("private construction source lacks a bound public revision")
-        query = query_construction_private(driver, expected_revision=revision)
+        query = (query_construction_wartime_observation_private(
+            driver, expected_revision=revision, include_world=True)
+            if wartime_observation else
+            query_construction_private(driver, expected_revision=revision))
         after = driver.take_snapshot()
     except BaseException as failure:
         error = f"{type(failure).__name__}: {failure}"
@@ -249,9 +255,14 @@ def query_private_construction_source_once(
                          if isinstance(after_driver, dict) else None)
     checks = {
         "single_cold_restore": bookkeeping["exact"] is True,
-        "one_read_only_native_probe": isinstance(query, dict)
-            and query.get("status") in ("selected", "no_legal_budgeted_building",
-                                        "evidence_insufficient", "source_red"),
+        "one_read_only_native_probe": isinstance(query, dict) and (
+            (wartime_observation and query.get("read_only") is True
+             and query.get("formal_action_ready") is False
+             and query.get("joint_budget_affordability") == "unassessed"
+             and query.get("status") in ("observed", "source_red"))
+            or (not wartime_observation and query.get("status") in (
+                "selected", "no_legal_budgeted_building",
+                "evidence_insufficient", "source_red"))),
         "paused_frame_unchanged": _same_frame(before, after),
         "no_gameplay_command": before_history is not None
             and after_history == before_history
@@ -268,7 +279,11 @@ def query_private_construction_source_once(
         "private_build": True, "advertised": False,
         "round": ownership_round_id, "started_at": started_at,
         "finished_at": utc_now(),
-        "scope": "original pre-action source only; not R0066 post-action material proof",
+        "scope": ("original wartime source only; no construction spend or war cash admission"
+                  if wartime_observation else
+                  "original pre-action source only; not R0066 post-action material proof"),
+        **({"wartime_observation": True, "formal_action_ready": False}
+           if wartime_observation else {}),
         "checkpoint_sha256": before_save_sha,
         "driver_state_sha256_before": before_driver_sha,
         "readiness": copy.deepcopy(readiness),

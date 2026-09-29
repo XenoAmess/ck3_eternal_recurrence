@@ -2,6 +2,35 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-29 H3928 wartime construction opportunity: one-shot source candidate
+
+The exact CK3 1.19.0.6 EXE SHA-256 remains
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+H3928's original paired checkpoint is raw `53219928`, actor `29829`; a prior
+paused cold read observed active WarID `16777231`, one player army, and no
+active event or pending interaction. This supports a fresh read attempt from
+the original save/driver pair, but does not itself establish a building
+candidate in that new process.
+
+The private native `g2_player_construction_view_probe_v1` already reads the
+player's holding slots, final legal samples, exact native gold costs, and
+province income observations. The private Python selector requires positive
+authored monthly income, an idle slot, a gold-only native cost, and at least
+200 gold remaining. Its wartime observer binds the native gold to the public
+treasury on the same paused revision and records active wars and armies. This
+new one-shot cold runner mode uses that observer and includes its source world
+in the diagnostic report; it never calls a construction action or advances a
+gameplay turn. The ordinary no-war source mode is unchanged.
+
+The R0368 H3928 DLL was built with the private construction view probe OFF,
+so its frozen artifact cannot execute this query. A separate candidate needs
+that query flag ON and the private building action flag OFF, with official
+pairing and no-launch checks before the unique CK3 window is used. Source
+tests alone are not a paused game result. Native affordability and authored
+income are decision inputs; wartime cash commitments and future war costs
+remain unknown. The observation therefore keeps joint affordability
+`unassessed` and `formal_action_ready=false`; it cannot authorize spending.
+
 ## 2026-09-29 NW-ECON: preserve the completion-watch deadline across cold restores
 
 R0369 followed the H90-derived `hill_farms_01` start for 48 formal turns, from

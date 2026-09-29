@@ -535,6 +535,10 @@ def parser() -> argparse.ArgumentParser:
         "--cold-start-checkpoint", action="store_true",
     )
     construction_source_parser.add_argument(
+        "--wartime-observation", action="store_true",
+        help="observe a paused active-war building source without admitting spend",
+    )
+    construction_source_parser.add_argument(
         "--ownership-round-id", required=True,
         help="monotonic CK3 ownership round R<number>; diagnostic remains private",
     )
@@ -1175,6 +1179,7 @@ def main(argv: list[str] | None = None) -> int:
                 readiness_timeout_seconds=args.readiness_timeout,
                 ownership_round_id=args.ownership_round_id,
                 cold_start_checkpoint=args.cold_start_checkpoint,
+                wartime_observation=args.wartime_observation,
             )
         elif args.command == "native-query-outbound-war-white-peace-status-v1":
             from .outbound_white_peace_status_query_run import (

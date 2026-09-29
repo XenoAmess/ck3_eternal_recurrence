@@ -319,6 +319,20 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                                          "stable admitted paused actor frame"):
                 transport.query_construction_private(driver, expected_revision=3)
 
+    def test_wartime_one_shot_can_include_source_world_without_spend(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.snapshot["player_armies"] = [{"army_id": 83886367}]
+            observation = transport.query_construction_wartime_observation_private(
+                driver, expected_revision=3, include_world=True)
+            self.assertEqual(observation["status"], "observed")
+            self.assertEqual(observation["world"]["player_gold_raw"],
+                             observation["observed_player_gold_raw"])
+            self.assertTrue(observation["world"]["legal_samples"])
+            self.assertEqual([row["step"] for row in driver.requests],
+                             [transport.QUERY_NATIVE])
+
     def test_wartime_construction_cash_mismatch_is_read_only_red(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))

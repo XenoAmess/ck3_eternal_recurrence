@@ -238,7 +238,8 @@ def query_construction_private(driver: object, *, expected_revision: int,
 
 
 def query_construction_wartime_observation_private(
-        driver: object, *, expected_revision: int) -> dict[str, object]:
+        driver: object, *, expected_revision: int,
+        include_world: bool = False) -> dict[str, object]:
     """Observe one native building choice while war spend remains unassessed.
 
     The distinct result is never a construction submit query. Native budget
@@ -344,6 +345,10 @@ def query_construction_wartime_observation_private(
         "positive_income_coverage_complete": (
             world.get("positive_income_coverage_complete")
             if isinstance(world, Mapping) else None),
+        **({"world": dict(world)} if include_world and bound
+           and source_status in {"selected", "no_legal_budgeted_building",
+                                 "evidence_insufficient"}
+           and isinstance(world, Mapping) else {}),
         "source_frame": dict(source_frame) if isinstance(source_frame, Mapping) else None,
         "native_query_request_id": source.get("native_query_request_id"),
         "native_proof_epoch": source.get("proof_epoch"),
