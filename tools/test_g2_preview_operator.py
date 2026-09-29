@@ -402,6 +402,25 @@ class G2PreviewOperatorTest(unittest.TestCase):
             "--exact-war-move-stop-sha256", "a" * 64,
         ])
 
+    def test_child_pending_read_is_explicit_and_query_only(self) -> None:
+        common = ["python", "-m", "xar_autoplayer"]
+        args = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "Z:/candidate/manifest.json",
+            "--output", "Z:/candidate/run",
+            "--private-child-matrilineal-pending-read", "37265", "37267",
+        ])
+        self.assertEqual(args.private_child_matrilineal_pending_read,
+                         [37265, 37267])
+        command = g2_preview_operator.native_auto_run_command(
+            common, turns=2, timeout=600, readiness_timeout=300,
+            private_faction_round_id_value=None,
+            private_child_matrilineal_pending_read=(37265, 37267),
+        )
+        self.assertEqual(command[-3:], [
+            "--private-child-matrilineal-pending-read", "37265", "37267",
+        ])
+        self.assertNotIn("--allow-private-family-marriage-formal-trial", command)
+
     def test_logged_child_start_callback_runs_only_after_spawn(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

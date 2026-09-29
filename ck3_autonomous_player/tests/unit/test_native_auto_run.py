@@ -108,6 +108,7 @@ class _NativeAutoRunHarness:
         self.auto_turn_count = 0
         self.prisoner_collection_query_count = 0
         self.active_scheme_sway_query_count = 0
+        self.child_pending_query_count = 0
         self.realm_law_paused_query_count = 0
         self.activity_planner_diag_query_count = 0
         self.events: list[str] = []
@@ -219,6 +220,7 @@ class _NativeAutoRunHarness:
         allow_private_prisoner_collection_query: bool = False,
         allow_private_active_scheme_sway_query: bool = False,
         allow_private_active_scheme_sway_action: bool = False,
+        allow_private_player_child_marriage_subject_query: bool = False,
         allow_private_realm_law_paused_query: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
@@ -243,6 +245,9 @@ class _NativeAutoRunHarness:
         )
         self.allow_private_active_scheme_sway_action = (
             allow_private_active_scheme_sway_action
+        )
+        self.allow_private_player_child_marriage_subject_query = (
+            allow_private_player_child_marriage_subject_query
         )
         self.allow_private_realm_law_paused_query = (
             allow_private_realm_law_paused_query
@@ -1488,6 +1493,22 @@ class _FakeNativeDriver:
             "queried_native_revision": self.harness.native_revision,
         }
 
+    def query_player_child_matrilineal_result_private_v1(
+        self, *, pending: dict[str, object], cold: bool,
+    ) -> dict[str, object]:
+        assert self.allow_private_player_child_matrilineal_action is True
+        assert cold is True
+        self.harness.child_pending_query_count += 1
+        return {
+            "status": "pending", "material_result": False,
+            "cold_recovery": True,
+            "post_native_revision": self.harness.native_revision,
+            "heir_character_id": pending["heir_character_id"],
+            "candidate_character_id": pending["candidate_character_id"],
+            "recipient_character_id": pending["recipient_character_id"],
+            "outbound_pending_state": "active",
+        }
+
     def query_activity_planner_diag_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:
@@ -1828,6 +1849,7 @@ class NativeAutoRunTests(unittest.TestCase):
         war_hotspot_army: bool = False,
         allow_private_prisoner_collection_observation: bool = False,
         private_active_scheme_sway_target: int | None = None,
+        private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
         allow_private_active_scheme_sway_formal_trial: bool = False,
         private_realm_law_paused_query: bool = False,
         private_activity_planner_diag_query: bool = False,
@@ -1876,6 +1898,21 @@ class NativeAutoRunTests(unittest.TestCase):
                 operator_stop_after_action_count
             ),
         )
+        if private_child_matrilineal_pending_read_target is not None:
+            self.spec.state_dir.mkdir(parents=True, exist_ok=True)
+            (self.spec.state_dir / "player-child-matrilineal-formal-v1.json").write_text(
+                json.dumps({
+                    "schema": "xar.ck3.player-child-matrilineal-private-action.v1",
+                    "pending": {
+                        "played_character_id": harness.played_character_id,
+                        "episode_run_id": harness.episode_run_id,
+                        "heir_character_id": private_child_matrilineal_pending_read_target[0],
+                        "candidate_character_id": private_child_matrilineal_pending_read_target[1],
+                        "recipient_character_id": 42424,
+                    },
+                    "resolved": None,
+                }), encoding="utf-8",
+            )
         exact_stop_contract = None
         if exact_war_move_stop:
             harness.exact_war_stop_trial = True
@@ -2006,6 +2043,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_active_scheme_sway_target=(
                     private_active_scheme_sway_target
+                ),
+                private_child_matrilineal_pending_read_target=(
+                    private_child_matrilineal_pending_read_target
                 ),
                 allow_private_active_scheme_sway_formal_trial=(
                     allow_private_active_scheme_sway_formal_trial
@@ -2246,6 +2286,46 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.activity_planner_diag_query_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_child_pending_read_stops_before_planner_without_submit(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "2", "--timeout", "900"]
+        parsed = cli.parser().parse_args([
+            *common, "--private-child-matrilineal-pending-read", "37265", "37267",
+        ])
+        self.assertEqual(parsed.private_child_matrilineal_pending_read,
+                         [37265, 37267])
+        report, harness = self._run(
+            ["advance", "advance"],
+            private_child_matrilineal_pending_read_target=(37265, 37267),
+        )
+        self.assertTrue(report["ok"], report.get("error") or report.get("first_blocker"))
+        self.assertEqual(report["status"],
+                         "private_child_matrilineal_pending_observed")
+        read = report["private_child_matrilineal_pending_observation"]
+        self.assertTrue(read["same_frame"])
+        self.assertEqual(read["readback"]["outbound_pending_state"], "active")
+        self.assertEqual(harness.child_pending_query_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_child_pending_read_rejects_invalid_pair(self) -> None:
+        for pair in ((0, 37267), (37265, 37265), (True, 37267)):
+            with self.assertRaises(AgentError):
+                self._run(["advance"],
+                          private_child_matrilineal_pending_read_target=pair)
+
+    def test_private_child_pending_read_never_submits_without_ledger(self) -> None:
+        with mock.patch.object(native_auto_run_module,
+                               "read_child_matrilineal_ledger",
+                               return_value={"pending": None, "resolved": None}):
+            report, harness = self._run(
+                ["advance"],
+                private_child_matrilineal_pending_read_target=(37265, 37267),
+            )
+        self.assertFalse(report["ok"])
+        self.assertEqual(harness.child_pending_query_count, 0)
+        self.assertEqual(harness.auto_turn_count, 0)
 
     def test_private_sway_target_rejects_nonbounded_and_invalid_id(self) -> None:
         for target in (0, -1, 0x100000000, True):
