@@ -290,6 +290,14 @@ def collect_h3937_combined_paused_war_scope_once(
     checks = {
         "inner_combined_observed": bool(
             isinstance(inner, dict) and inner.get("observed") is True),
+        "inner_readonly_contract": bool(
+            isinstance(inner, dict)
+            and inner.get("schema") == "xar.ck3.h3937-combined-readonly-inner-v1"
+            and inner.get("action_authorized") is False
+            and inner.get("date_advance_authorized") is False
+            and inner.get("gameplay_actions") == 0
+            and inner.get("physical_army_inventory_completeness_proven") is False
+            and inner.get("outer_session_cleanup_verified") is False),
         "readiness_bound_to_snapshot": _same_frame(readiness, first),
         "single_cold_restore_bookkeeping": restore.get("exact") is True,
         "same_paused_frame": _same_frame(first, last),

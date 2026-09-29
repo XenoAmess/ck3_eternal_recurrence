@@ -73,7 +73,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
             session.assert_not_called()
 
     def test_managed_two_query_history_assets_cleanup_and_lifecycle(self) -> None:
-        for outcome in ("green", "inner_red", "history_red", "cleanup_red",
+        for outcome in ("green", "inner_red", "inner_contract_red", "history_red", "cleanup_red",
                         "asset_red", "checkout_red", "binary_red"):
             with (self.subTest(outcome=outcome),
                   tempfile.TemporaryDirectory() as temp_dir,
@@ -144,10 +144,17 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     "snapshot_id", "revision", "native_revision", "date_raw",
                     "episode_run_id", "paused", "map_ready", "connection_generation")}
                 inner = {
+                    "schema": "xar.ck3.h3937-combined-readonly-inner-v1",
                     "observed": outcome != "inner_red",
+                    "action_authorized": False, "date_advance_authorized": False,
+                    "gameplay_actions": 0,
+                    "physical_army_inventory_completeness_proven": False,
+                    "outer_session_cleanup_verified": False,
                     "query_attempts": 2, "steps": steps, "envelopes": envelopes,
                     "frames": [first, middle, last], "scope": {"war_id": 16777231},
                 }
+                if outcome == "inner_contract_red":
+                    inner["action_authorized"] = True
                 receipt_reads = 0
                 checkout_reads = 0
 
