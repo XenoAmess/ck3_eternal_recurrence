@@ -2626,6 +2626,115 @@ def command_query_current_timeline_blocker_context_v1(
     return 0 if ok else (query_exit if query_exit != 0 else 1)
 
 
+def command_query_r0345_stationary_route_contact_v1(
+    args: argparse.Namespace,
+) -> int:
+    """Run the fixed H3928 read-only query through the paired operator state."""
+    manifest = load_manifest(args.manifest.resolve())
+    source = frozen_source_identity(manifest)
+    output = args.output.resolve()
+    if output.exists():
+        raise FileExistsError(f"attempt output already exists: {output}")
+    save, driver_path, driver = current_checkpoint_identity(manifest)
+    checkpoint_before = sha256(save)
+    driver_before = sha256(driver_path)
+    episode = episode_value(driver, manifest, "episode_run_id")
+    actor = episode_value(driver, manifest, "episode_character_id")
+    expected_save = "A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C"
+    expected_driver = "9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0"
+    if (
+        checkpoint_before.casefold() != expected_save.casefold()
+        or driver_before.casefold() != expected_driver.casefold()
+        or actor != 29829
+        or episode != "native-29829-2bc2d599f7f9"
+    ):
+        raise ValueError("R0345 paired H3928 source identity differs; no launch")
+    output.mkdir(parents=True)
+    common = agent_command(manifest)
+    receipt: dict[str, Any] = {
+        "schema": "xar-g2-r0345-stationary-route-contact-operator-v1",
+        "mode": "query-r0345-stationary-route-contact-v1",
+        "source": source,
+        "manifest": str(args.manifest.resolve()),
+        "round": args.ownership_round_id,
+        "step": "query-route-contact-horizon-v1-83886367-to-2610-h-2-50331920-83886484",
+        "checkpoint_sha256_before": checkpoint_before,
+        "driver_state_sha256_before": driver_before,
+        "gameplay_actions": 0,
+        "date_advance_actions": 0,
+        "ui_inputs": 0,
+        "action_authorized": False,
+    }
+    receipt_path = output / "operator-receipt.json"
+    preflight = [
+        *common, "native-one-generation-preflight",
+        "--expected-character-id", str(actor),
+        "--expected-episode-run-id", str(episode),
+        "--expected-checkpoint-sha256", checkpoint_before,
+        "--expected-driver-state-sha256", driver_before,
+        *preflight_lifecycle_arguments(lifecycle_contract(manifest)),
+    ]
+    preflight_exit = run_logged(
+        preflight, output / "preflight-stdout.txt", output / "preflight-stderr.txt"
+    )
+    receipt["preflight_exit_code"] = preflight_exit
+    if preflight_exit != 0:
+        receipt.update({"ok": False, "status": "preflight_blocked", "game_launched": False})
+        receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+        return preflight_exit
+    timeout = args.timeout if args.timeout is not None else int(manifest.get("timeout_seconds", 390))
+    readiness_timeout = (
+        args.readiness_timeout
+        if args.readiness_timeout is not None
+        else int(manifest.get("readiness_timeout_seconds", 300))
+    )
+    query_report_path = output / "query-report.json"
+    query_exit = run_logged(
+        [
+            *common, "native-query-r0345-stationary-route-contact-v1",
+            "--timeout", str(timeout),
+            "--readiness-timeout", str(readiness_timeout),
+            "--cold-start-checkpoint",
+            "--ownership-round-id", args.ownership_round_id,
+        ],
+        query_report_path,
+        output / "query-stderr.txt",
+    )
+    try:
+        report = read_json(query_report_path)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+        report = None
+    checks = report.get("checks") if isinstance(report, dict) else None
+    checkpoint_after = sha256(save) if save.is_file() else None
+    driver_after = sha256(driver_path) if driver_path.is_file() else None
+    ok = bool(
+        query_exit == 0
+        and isinstance(report, dict)
+        and report.get("ok") is True
+        and report.get("round") == args.ownership_round_id
+        and isinstance(checks, dict)
+        and all(checks.values())
+        and checkpoint_after == checkpoint_before
+    )
+    receipt.update({
+        "ok": ok,
+        "status": "GREEN_READ_ONLY" if ok else "query_failed",
+        "game_launched": report is not None,
+        "query_exit_code": query_exit,
+        "query_report": str(query_report_path),
+        "checkpoint_sha256_after": checkpoint_after,
+        "driver_state_sha256_after": driver_after,
+        "query_envelope": report.get("query_envelope") if isinstance(report, dict) else None,
+        "checks": checks,
+        "cleanup": report.get("cleanup") if isinstance(report, dict) else None,
+    })
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    print(json.dumps(receipt, ensure_ascii=False))
+    return 0 if ok else (query_exit if query_exit != 0 else 1)
+
+
 def command_query_first_heir_marriage_alliance_result_v1(
     args: argparse.Namespace,
 ) -> int:
@@ -3300,6 +3409,22 @@ def parser() -> argparse.ArgumentParser:
     )
     timeline_query.set_defaults(
         handler=command_query_current_timeline_blocker_context_v1
+    )
+
+    stationary_query = commands.add_parser(
+        "query-r0345-stationary-route-contact-v1",
+        help="paired H3928 read-only target-2610 query; no planner or date action",
+    )
+    stationary_query.add_argument("--manifest", type=Path, required=True)
+    stationary_query.add_argument("--output", type=Path, required=True)
+    stationary_query.add_argument("--timeout", type=int)
+    stationary_query.add_argument("--readiness-timeout", type=int)
+    stationary_query.add_argument(
+        "--ownership-round-id", type=private_timeline_query_round_id,
+        required=True,
+    )
+    stationary_query.set_defaults(
+        handler=command_query_r0345_stationary_route_contact_v1
     )
 
     family_alliance_query = commands.add_parser(
