@@ -77,3 +77,31 @@ paused scenario, independent stage-2 and resource readback, subsequent turn,
 and required checkpoint/cold restore before any live ability claim. Stage-5
 cost and final CanStart remain separate unknowns; the opaque slot-25 event
 also remains a live observation item.
+
+## R0360 first live Confirm: submitted false, reason pending
+
+R0360 used the official H3928/raw53219928 pair with source master
+`3e249604a7805acc72f5e583cae416997bbf0a2b`. The immutable
+[`formal-report.txt`](Z:/m6-activity-h3928-confirm-candidate-20260929/operator-runs/feast-stage1-confirm-1/formal-report.txt)
+has SHA-256
+`D59B08B4D2514FA6D56EFC495E2EEE15BA1B8ECEF1E19060BBB2DB3244F5C01D`.
+The planner opened and the separate stage-1 read found selected
+`feast_type_generic`, shown, valid, able to progress, and
+`generic_feast_confirm_ready=true` on native revision 3. The Confirm
+receipt returned `precondition_rejected`, `submitted=false`,
+`accepted=false`, `pending=false`; gold stayed at 120644281 raw and the
+game snapshot/date stayed at raw53219928. The independent stage-2 read was
+not called. The formal run is RED, with zero gameplay turns, unchanged
+checkpoint save, and proven process-tree cleanup. There is no stage
+transition or activity Start evidence.
+
+The precondition result does not identify which later guard rejected it.
+Offline bytes in the same frozen EXE confirm the setter signature at RVA
+`0x10B1BD0` and planner vtable slot at RVA `0x41206B8` pointing to
+`0x10AEC20`; those checks should not be presumed to be the live failure.
+After the observed option, the remaining checks are a fresh planner
+identity read, `planner+0x1AD0` read and zero comparison, and a fresh
+same-frame read. A focused source change records a stable rejection reason
+and the raw `+0x1AD0` byte when observed. It does not relax admission or
+retry Confirm. Only a new, correctly paired candidate can establish the
+actual failing guard and support a targeted action fix.

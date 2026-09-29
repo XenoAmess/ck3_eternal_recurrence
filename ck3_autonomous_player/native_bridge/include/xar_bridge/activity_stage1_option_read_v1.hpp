@@ -94,10 +94,26 @@ enum class ActivityStage1ConfirmStatusV1 {
   postcondition_failed,
 };
 
+enum class ActivityStage1ConfirmRejectReasonV1 {
+  none,
+  option_not_ready,
+  stage_setter_callback_missing,
+  stage_setter_abi_mismatch,
+  stage_notification_slot_mismatch,
+  planner_identity_changed,
+  stage_auto_read_failed,
+  stage_auto_nonzero,
+  frame_changed,
+};
+
 struct ActivityStage1ConfirmResultV1 {
   ActivityStage1ConfirmStatusV1 status =
       ActivityStage1ConfirmStatusV1::precondition_rejected;
   ActivityStage1OptionReadResultV1 precondition{};
+  ActivityStage1ConfirmRejectReasonV1 reject_reason =
+      ActivityStage1ConfirmRejectReasonV1::none;
+  bool planner_stage_auto_observed = false;
+  std::uint8_t planner_stage_auto_raw = 0;
   bool submitted = false;
   bool stage_two_visible = false;
   bool selected_option_retained = false;
@@ -112,6 +128,8 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
 
 std::string_view ActivityStage1ConfirmStatusKeyV1(
     ActivityStage1ConfirmStatusV1 status) noexcept;
+std::string_view ActivityStage1ConfirmRejectReasonKeyV1(
+    ActivityStage1ConfirmRejectReasonV1 reason) noexcept;
 
 std::string_view ActivityStage1OptionReadStatusKeyV1(
     ActivityStage1OptionReadStatusV1 status) noexcept;

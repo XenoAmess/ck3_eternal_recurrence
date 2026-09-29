@@ -335,27 +335,54 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
   result.precondition = ReadActivityStage1OptionV1(env, expected);
   if (result.precondition.status !=
           ActivityStage1OptionReadStatusV1::observed ||
-      !result.precondition.generic_feast_confirm_ready ||
-      env.set_stage_two == nullptr)
+      !result.precondition.generic_feast_confirm_ready) {
+    result.reject_reason = ActivityStage1ConfirmRejectReasonV1::option_not_ready;
     return result;
+  }
+  if (env.set_stage_two == nullptr) {
+    result.reject_reason =
+        ActivityStage1ConfirmRejectReasonV1::stage_setter_callback_missing;
+    return result;
+  }
   constexpr std::array<std::uint8_t, 10> kStageSetterSignature{
       0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x8B, 0x81, 0xB0, 0x1A};
   std::uintptr_t stage_notification = 0;
-  if (!MatchCode(env.diagnostic, kSetStageRva, kStageSetterSignature) ||
-      !ReadAt(env.diagnostic, env.diagnostic.module_base,
+  if (!MatchCode(env.diagnostic, kSetStageRva, kStageSetterSignature)) {
+    result.reject_reason =
+        ActivityStage1ConfirmRejectReasonV1::stage_setter_abi_mismatch;
+    return result;
+  }
+  if (!ReadAt(env.diagnostic, env.diagnostic.module_base,
               kPlannerVtable + 0xC8, stage_notification) ||
-      stage_notification != env.diagnostic.module_base + 0x10AEC20)
+      stage_notification != env.diagnostic.module_base + 0x10AEC20) {
+    result.reject_reason =
+        ActivityStage1ConfirmRejectReasonV1::stage_notification_slot_mismatch;
     return result;
+  }
   NativeIdentity first{};
-  std::uint8_t stage_auto = 1;
-  if (!ResolveNative(env, expected, first) ||
-      !ReadAt(env.diagnostic, first.planner, 0x1AD0, stage_auto) ||
-      stage_auto != 0)
+  if (!ResolveNative(env, expected, first)) {
+    result.reject_reason =
+        ActivityStage1ConfirmRejectReasonV1::planner_identity_changed;
     return result;
+  }
+  if (!ReadAt(env.diagnostic, first.planner, 0x1AD0,
+              result.planner_stage_auto_raw)) {
+    result.reject_reason =
+        ActivityStage1ConfirmRejectReasonV1::stage_auto_read_failed;
+    return result;
+  }
+  result.planner_stage_auto_observed = true;
+  if (result.planner_stage_auto_raw != 0) {
+    result.reject_reason =
+        ActivityStage1ConfirmRejectReasonV1::stage_auto_nonzero;
+    return result;
+  }
   ActivityPlannerDiagFrameV1 immediate{};
   if (!env.diagnostic.read_frame(env.diagnostic.context, immediate) ||
-      immediate != expected)
+      immediate != expected) {
+    result.reject_reason = ActivityStage1ConfirmRejectReasonV1::frame_changed;
     return result;
+  }
   result.submitted = true;
   if (!env.set_stage_two(env.diagnostic.context, first.planner)) {
     result.status = ActivityStage1ConfirmStatusV1::native_transition_failed;
@@ -393,6 +420,31 @@ std::string_view ActivityStage1ConfirmStatusKeyV1(
     return "native_transition_failed";
   case ActivityStage1ConfirmStatusV1::postcondition_failed:
     return "postcondition_failed";
+  }
+  return "unknown";
+}
+
+std::string_view ActivityStage1ConfirmRejectReasonKeyV1(
+    ActivityStage1ConfirmRejectReasonV1 reason) noexcept {
+  switch (reason) {
+  case ActivityStage1ConfirmRejectReasonV1::none:
+    return "none";
+  case ActivityStage1ConfirmRejectReasonV1::option_not_ready:
+    return "option_not_ready";
+  case ActivityStage1ConfirmRejectReasonV1::stage_setter_callback_missing:
+    return "stage_setter_callback_missing";
+  case ActivityStage1ConfirmRejectReasonV1::stage_setter_abi_mismatch:
+    return "stage_setter_abi_mismatch";
+  case ActivityStage1ConfirmRejectReasonV1::stage_notification_slot_mismatch:
+    return "stage_notification_slot_mismatch";
+  case ActivityStage1ConfirmRejectReasonV1::planner_identity_changed:
+    return "planner_identity_changed";
+  case ActivityStage1ConfirmRejectReasonV1::stage_auto_read_failed:
+    return "stage_auto_read_failed";
+  case ActivityStage1ConfirmRejectReasonV1::stage_auto_nonzero:
+    return "stage_auto_nonzero";
+  case ActivityStage1ConfirmRejectReasonV1::frame_changed:
+    return "frame_changed";
   }
   return "unknown";
 }
