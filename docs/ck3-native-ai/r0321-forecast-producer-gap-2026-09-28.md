@@ -1,6 +1,6 @@
 # R0321 围城接战预测生产缺口（2026-09-28）
 
-本记录基于固定 OneDrive `WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json` 的精确 SHA-256 `6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20`、来源 commit `a6d1ae845f11e1e0bae79cac3fd9c30b00afae59` 的静态代码，以及已按 388302 字节/SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30` 验收的来源正式报告。接收侧只取得报告和三份小型配对证明；检查点存档、driver 与原生二进制字节尚未到货。本文不是接收侧实机预测或行动授权。
+本记录基于固定 OneDrive `WAR/M5-WAR-CASH-20260928/SOURCE-R0321-WAR-FORECAST-RED-v1.json` 的精确 SHA-256 `6CCA6BE7CD31828F662271C9FF0B58E9C7D48081A587C9D5833DA9A7C2D6DD20`、来源 commit `a6d1ae845f11e1e0bae79cac3fd9c30b00afae59` 的静态代码，以及已按 388302 字节/SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30` 验收的来源正式报告。以下“本轮”记录首次收到正式报告时的状态；后续到货和 R0345 复现见文末 2026-09-29 补录。本文不是接收侧实机预测或行动授权。
 
 ## 精确停顿
 
@@ -28,3 +28,15 @@ R0321 在第 27 turn、`native:23`、public revision 24、native revision 23、�
 正式报告与前后帧已核；接下来应从 H3911 source driver 提取 `/command_history/3919/result/combat_simulation_inputs` 的完整原文及父命令身份，由来源机在固定 WAR append-only 交付，接收机再独立核对字节与查询范围。随后才决定是否需要 78 MB 检查点/driver/二进制的隔离只读复现。固定 WAR 的 `RECEIVER-REQUEST-R0321-H3911-V3-RAW-EXCERPT-v1.json` 已提出这项有界只读请求。
 
 独立静态补丁 `8e2c1b424` 把单守军硬门改为非空有序守军，并用合成双守军覆盖研究输入；它未提供 qualified producer 或效用比较。更须审阅其**动作域扩张**：多守军可由 `same_frame_encounter_scope_mismatch` 进入 `provisional_admissible`，现有围城策略对未来一日直达帧可能下达接战 move（`strategy.py:16760–16780`）。R0321 当前六路点只能继续核首路点，不代表该补丁在其它场景也只读。若短期只需双守军诊断，应另加显式无接触门，保留 `selected_step=null` 或仅允许经独立证明的无接触路点，不得把研究结果包装成正式预测 GREEN。
+
+## 2026-09-29 补录：R0345 同类停顿与接收顺序
+
+H3911 原始 V3 有界摘录已经按 2080166 字节/SHA-256 `865EA7B7AC1B4A680E2BE3A1D84012C67CF9550474075E4A917EFE043CCCDD51` 接收；H3911 六件匹配资产也已在外置目录逐件验收。接收侧 attempt 4 对原生查询给出同帧只读回执，且其完整 `combat_simulation_inputs` 与来源摘录的该对象语义相等。该观察只确证输入读取和两支守军的分区；没有产生合格胜率、期望效用或首路点行动许可。
+
+静态双守军研究补丁的后续草案 [#502](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/502) 在 head `6374697d0ee18a0098864d14bd7fe72cc0a7d0bc` 加了正式动作口的单守军硬门：多守军结果标为 `multi_defender_research_only`、`planner_usable=false`，所以前述 `8e2c1b424` 早期版本的动作域扩张风险在该草案 head 已封住。叠加其上的 [#512](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/512) head `3af6fdd2f00ac89430878848f8af35c71f07967d` 加入伤亡转换的只读诊断；两者均为 draft，均未提供合格预测生产者或激活攻击。不能把研究损伤包络当成已校准的原生战斗结果。
+
+固定 WAR 的 `R0345-H3928-WAR-SIEGE-FORECAST-RED` 再现于来源 master `16d6806aae6a76f1d5fc244e3f67eec5b19ed9f0`、同一 WarID 16777231、ArmyID 83886367、目标 2629、raw 53219928。正式报告 44795 字节/SHA-256 `5DDFB67E006E44A1C60258BD4C669EC737E55861BADEA271EF77AABE52C79C57` 在 `/auto_run/turns/4` 记录 turn 5 的 V3 查询 `available/accepted=true`、`native:3/public4/native3`，但只含查询 envelope，不含原始 V3 对象。turn 6 的 `qualified_forecast.status=producer_unavailable`、`provisional_forecast.status=same_frame_encounter_scope_mismatch`、`monte_carlo_ready=false`、`planner_usable=false`、`selected_step=null`，维持预测 RED。来源报告显示首路点 raw 53220096，比一日无接触窗终点 raw 53219952 晚 144 小时；一日窗不能证明七日首跳安全。一次 route preview 虽被 runner 计入 gameplay 类，却明确 `no_semantic_delta`；无已证实的移动或日期前进。
+
+R0345 来源交接清单后来原位更新为 8685 字节/SHA-256 `0CBEB305B7A89654755BBAB9C4FE60849533E4CDDFBB4D5B5A84CC16F26366C`，新增精确 Release DLL/injector。旧 `RECEIVER-PARTIAL-ACK.json` 仅绑定旧清单；接收侧另以 `RECEIVER-PARTIAL-ACK-ADDENDUM-v2.json` 验了新清单和九件小件，六件大资产仍未读、未 hash。固定目录内的 `RECEIVER-REQUEST-R0345-V3-RAW-EXCERPT-v1.json` 3893 字节/SHA-256 `60E7A60FC8E199ABDCA07CC185E70E6236EE264C17C840D80BB75CEACEF4E258` 只要求从 R0345 **post-run** driver（SHA-256 `63D21B31C6E501E9B1430B87CB47BB208FD35B977D8E1302831A54AF29A77509`）抽出该 turn 的完整原始 V3 命令行。它不能被 H3928 原始配对 driver（SHA-256 `9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0`）替换，也不能与原始 save 混配。
+
+当前诊断只需先接收上述有界摘录。若以后已有可审的预测/路线候选并需对 H3928 正式复现，且本机 CK3/IO 独占任务结束，再串行核 Release 二进制 3440128 字节、原始 save+driver 122470763 字节、四份 Emma/Sway provenance proof 430309883 字节，逐件按更新清单校验；正式 `prepare-state` 的清单参数需要这些 proof。总大件 556220774 字节。在此之前，文件名投影和来源端清单都不构成接收侧配对验收，更不构成预测 GREEN 或接战授权。
