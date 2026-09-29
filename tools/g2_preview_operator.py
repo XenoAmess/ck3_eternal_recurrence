@@ -1402,6 +1402,7 @@ def native_auto_run_command(
     private_activity_feast_stage5_full_cost_read: bool = False,
     private_activity_feast_stage5_start_read: bool = False,
     private_activity_feast_guest_candidate_read: bool = False,
+    private_activity_feast_guest_route_proof_read: bool = False,
     private_activity_feast_guest_opinion_character_id: int | None = None,
     private_activity_feast_guest_rule_key: str | None = None,
     private_activity_feast_guest_rule_candidate_id: int | None = None,
@@ -1491,6 +1492,8 @@ def native_auto_run_command(
         command.append("--private-activity-feast-stage5-start-read")
     if private_activity_feast_guest_candidate_read:
         command.append("--private-activity-feast-guest-candidate-read")
+    if private_activity_feast_guest_route_proof_read:
+        command.append("--private-activity-feast-guest-route-proof-read")
     if private_activity_feast_guest_opinion_character_id is not None:
         command.extend([
             "--private-activity-feast-guest-opinion-character-id",
@@ -2120,6 +2123,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_feast_stage5_full_cost_read
                 or args.private_activity_feast_stage5_start_read
                 or args.private_activity_feast_guest_candidate_read
+                or args.private_activity_feast_guest_route_proof_read
                 or args.private_activity_feast_guest_opinion_character_id is not None
                 or args.private_activity_feast_guest_rule_key is not None
                 or args.private_activity_feast_guest_rule_candidate_id is not None
@@ -2174,6 +2178,9 @@ def command_run(args: argparse.Namespace) -> int:
     if (args.private_activity_feast_guest_candidate_read
             and not args.private_activity_feast_stage5_full_cost_read):
         raise ValueError("private feast guest candidate read requires the full-cost route")
+    if (args.private_activity_feast_guest_route_proof_read
+            and not args.private_activity_feast_stage5_full_cost_read):
+        raise ValueError("private feast guest route proof requires the full-cost route")
     if args.private_activity_feast_guest_opinion_character_id is not None:
         if not 0 < args.private_activity_feast_guest_opinion_character_id <= 0x7FFFFFFF:
             raise ValueError("private feast guest opinion needs a full positive CharacterID")
@@ -2186,6 +2193,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_feast_stage5_full_cost_read
                 or args.private_activity_feast_stage5_start_read
                 or args.private_activity_feast_guest_candidate_read
+                or args.private_activity_feast_guest_route_proof_read
                 or args.private_activity_feast_guest_rule_key is not None
                 or args.private_activity_feast_guest_rule_candidate_id is not None):
             raise ValueError("private feast guest opinion uses its own paused frame run")
@@ -2397,6 +2405,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_guest_candidate_read": (
             args.private_activity_feast_guest_candidate_read
         ),
+        "private_activity_feast_guest_route_proof_read": (
+            args.private_activity_feast_guest_route_proof_read
+        ),
         "private_activity_feast_guest_opinion_character_id": (
             args.private_activity_feast_guest_opinion_character_id
         ),
@@ -2518,6 +2529,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_guest_candidate_read=(
                     args.private_activity_feast_guest_candidate_read
+                ),
+                private_activity_feast_guest_route_proof_read=(
+                    args.private_activity_feast_guest_route_proof_read
                 ),
                 private_activity_feast_guest_opinion_character_id=(
                     args.private_activity_feast_guest_opinion_character_id
@@ -3401,6 +3415,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-guest-candidate-read", action="store_true",
         help="after Stage-5 cost read, query one filtered guest before invitation",
+    )
+    run.add_argument(
+        "--private-activity-feast-guest-route-proof-read", action="store_true",
+        help="after Stage-5 cost read, read selected guests and candidate on one paused frame without Start",
     )
     run.add_argument(
         "--private-activity-feast-guest-opinion-character-id", type=int,
