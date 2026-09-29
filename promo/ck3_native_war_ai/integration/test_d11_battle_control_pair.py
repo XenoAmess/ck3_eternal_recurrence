@@ -14,6 +14,7 @@ sys.path.insert(0, str(REPO / "ck3_autonomous_player" / "src"))
 
 from capture_session import (  # noqa: E402
     A04_UI_TARGETS, BATTLE_CONTROL_PAIR_SCHEMA, BATTLE_CONTROL_WIRE_MARKERS,
+    PRIVATE_PHASE_TRACE_CMAKE_OPTION, PRIVATE_PHASE_TRACE_WIRE_MARKERS,
     identity, validate_d11_battle_control_pair,
 )
 from xar_autoplayer.bridge import battle_control_contract  # noqa: E402
@@ -43,18 +44,27 @@ def checkpoint() -> dict:
     return {"save": {"sha256": A04_UI_TARGETS["e2-06-d11"]["save"][2]}}
 
 
+def write_candidate(dll: Path, *, trace_markers: bool = True) -> None:
+    markers = BATTLE_CONTROL_WIRE_MARKERS + (
+        PRIVATE_PHASE_TRACE_WIRE_MARKERS if trace_markers else ())
+    dll.write_bytes(b"MZ" + b"\0".join(markers))
+
+
 class D11BattleControlPairTest(unittest.TestCase):
     def pair(self, root: Path, dll: Path, injector: Path,
              *, junit_failure: bool = False, ctest_exit: int = 0,
              dependency_failure: bool = False, cache_release: bool = True,
-             tracked_status: str = "") -> tuple[Path, Path]:
+             tracked_status: str = "", trace_option: bool = True,
+             trace_configure_arg: bool = True) -> tuple[Path, Path]:
         source_sha = fingerprint()
         build_script = root / "build_release_candidate.py"
         build_script.write_text("# focused build fixture\n", encoding="utf-8")
         cmake_cache = root / "CMakeCache.txt"
         cmake_cache.write_text(
-            "CMAKE_BUILD_TYPE:STRING=Release\n" if cache_release else
-            "CMAKE_BUILD_TYPE:STRING=Debug\n", encoding="utf-8")
+            ("CMAKE_BUILD_TYPE:STRING=Release\n" if cache_release else
+             "CMAKE_BUILD_TYPE:STRING=Debug\n") +
+            f"{PRIVATE_PHASE_TRACE_CMAKE_OPTION}:BOOL={'ON' if trace_option else 'OFF'}\n",
+            encoding="utf-8")
         def receipt(stem: str, value: object) -> dict:
             path = write_json(root / f"{stem}.json", value)
             return {f"{stem}_path": str(path), f"{stem}_sha256": identity(path)["sha256"]}
@@ -72,9 +82,12 @@ class D11BattleControlPairTest(unittest.TestCase):
         parts = {}
         for stem in ("source_before", "source_after"):
             parts.update(receipt(stem, source))
-        parts.update(receipt("configure_argv", {"argv": [
+        configure_argv = [
             "cmake", "-S", str(NATIVE), "-B", str(root), "-DCMAKE_BUILD_TYPE=Release",
-        ]}))
+        ]
+        if trace_configure_arg:
+            configure_argv.append(f"-D{PRIVATE_PHASE_TRACE_CMAKE_OPTION}=ON")
+        parts.update(receipt("configure_argv", {"argv": configure_argv}))
         parts.update(receipt("configure_result", {"exit_code": 0}))
         parts.update(receipt("build_argv", {"argv": [
             "cmake", "--build", str(root), "--target", "xar_ck3_bridge",
@@ -177,18 +190,39 @@ class D11BattleControlPairTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             dll, injector = root / "current.dll", root / "injector.exe"
-            dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+            write_candidate(dll)
             injector.write_bytes(b"fixture injector")
             pair, _ = self.pair(root, dll, injector)
             result = validate_d11_battle_control_pair(checkpoint(), pair, dll, injector)
             self.assertTrue(result["wire_markers_present"])
+            self.assertTrue(result["private_phase_trace_static_ready"])
             self.assertFalse(result["native_query_verified"])
+
+    def test_phase_trace_option_and_dll_markers_are_both_required(self) -> None:
+        for trace_option, trace_configure_arg, trace_markers, error in (
+            (False, True, True, "status or directory"),
+            (True, False, True, "configure did not use"),
+            (True, True, False, "managed phase-trace wire fields"),
+        ):
+            with self.subTest(trace_option=trace_option,
+                              trace_configure_arg=trace_configure_arg,
+                              trace_markers=trace_markers):
+                with tempfile.TemporaryDirectory() as folder:
+                    root = Path(folder)
+                    dll, injector = root / "current.dll", root / "injector.exe"
+                    write_candidate(dll, trace_markers=trace_markers)
+                    injector.write_bytes(b"fixture injector")
+                    pair, _ = self.pair(root, dll, injector,
+                                        trace_option=trace_option,
+                                        trace_configure_arg=trace_configure_arg)
+                    with self.assertRaisesRegex(RuntimeError, error):
+                        validate_d11_battle_control_pair(checkpoint(), pair, dll, injector)
 
     def test_fake_build_report_rejected_even_when_pair_hash_matches(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             dll, injector = root / "current.dll", root / "injector.exe"
-            dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+            write_candidate(dll)
             injector.write_bytes(b"fixture injector")
             pair, report = self.pair(root, dll, injector)
             write_json(report, {"status": "READY", "ctest": "PASS"})
@@ -204,7 +238,7 @@ class D11BattleControlPairTest(unittest.TestCase):
                 with tempfile.TemporaryDirectory() as folder:
                     root = Path(folder)
                     dll, injector = root / "current.dll", root / "injector.exe"
-                    dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+                    write_candidate(dll)
                     injector.write_bytes(b"fixture injector")
                     pair, _ = self.pair(root, dll, injector,
                                         junit_failure=junit_failure, ctest_exit=ctest_exit)
@@ -215,7 +249,7 @@ class D11BattleControlPairTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             dll, injector = root / "current.dll", root / "injector.exe"
-            dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+            write_candidate(dll)
             injector.write_bytes(b"fixture injector")
             pair, _ = self.pair(root, dll, injector, dependency_failure=True)
             with self.assertRaisesRegex(RuntimeError, "Ninja dependency evidence"):
@@ -230,7 +264,7 @@ class D11BattleControlPairTest(unittest.TestCase):
                 with tempfile.TemporaryDirectory() as folder:
                     root = Path(folder)
                     dll, injector = root / "current.dll", root / "injector.exe"
-                    dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+                    write_candidate(dll)
                     injector.write_bytes(b"fixture injector")
                     pair, _ = self.pair(root, dll, injector, **options)
                     with self.assertRaisesRegex(RuntimeError, error):
@@ -240,7 +274,7 @@ class D11BattleControlPairTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             dll, injector = root / "current.dll", root / "injector.exe"
-            dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+            write_candidate(dll)
             injector.write_bytes(b"fixture injector")
             pair, _ = self.pair(root, dll, injector)
             rogue = root / "battle_control_contract.py"

@@ -115,6 +115,14 @@ BATTLE_CONTROL_WIRE_MARKERS = (
     b"side_1_selected_commander_next_roll_bounds",
     b"battle_side_mapping",
 )
+PRIVATE_PHASE_TRACE_CMAKE_OPTION = "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1"
+PRIVATE_PHASE_TRACE_WIRE_MARKERS = (
+    b"experimental-combat-phase-event-trace-begin-v1",
+    b"experimental-combat-phase-event-trace-finish-v1",
+    b"capture_runtime_counter_output",
+    b"capture_runtime_advantage_components",
+    b"native_cache_0x2308d50_original_calls",
+)
 
 
 def write_new(path: Path, value: object) -> None:
@@ -228,7 +236,9 @@ def validate_d11_battle_control_pair(
             (build_dir / "CMakeCache.txt").resolve() and
             identity(cmake_cache)["sha256"] == build["cmake_cache_sha256"] and
             "CMAKE_BUILD_TYPE:STRING=Release" in
-            cmake_cache.read_text(encoding="utf-8", errors="replace"),
+            cmake_cache.read_text(encoding="utf-8", errors="replace").splitlines() and
+            f"{PRIVATE_PHASE_TRACE_CMAKE_OPTION}:BOOL=ON" in
+            cmake_cache.read_text(encoding="utf-8", errors="replace").splitlines(),
             "D11 focused build status or directory is not admissible")
     require(build["source_fingerprint_sha256"] == fingerprint and
             build["native_serializer_sha256"] == expected["native_serializer_sha256"] and
@@ -310,6 +320,7 @@ def validate_d11_battle_control_pair(
             Path(configure_argv[configure_argv.index("-B") + 1]).resolve() ==
             build_dir.resolve() and
             "-DCMAKE_BUILD_TYPE=Release" in configure_argv and
+            f"-D{PRIVATE_PHASE_TRACE_CMAKE_OPTION}=ON" in configure_argv and
             configure_result.get("exit_code") == 0,
             "D11 focused configure did not use the current Release source")
     builder_root = Path(configure_argv[configure_argv.index("-S") + 1]).resolve()
@@ -378,12 +389,15 @@ def validate_d11_battle_control_pair(
                 json.loads(result_path.read_text(encoding="utf-8")).get("exit_code") == 0,
                 f"D11 focused {name} tests are not GREEN")
     dll = dll_path.read_bytes()
-    require(all(marker in dll for marker in BATTLE_CONTROL_WIRE_MARKERS),
-            "D11 DLL lacks current battle-control resume wire fields")
+    require(dll.startswith(b"MZ") and
+            all(marker in dll for marker in BATTLE_CONTROL_WIRE_MARKERS) and
+            all(marker in dll for marker in PRIVATE_PHASE_TRACE_WIRE_MARKERS),
+            "D11 DLL lacks current battle-control or managed phase-trace wire fields")
     return {"manifest": identity(manifest_path), "build_report": identity(report_path),
             "source_fingerprint_sha256": fingerprint,
             "python_contract_sha256": expected["python_contract_sha256"],
             "wire_markers_present": True,
+            "private_phase_trace_static_ready": True,
             "native_query_verified": False}
 
 
