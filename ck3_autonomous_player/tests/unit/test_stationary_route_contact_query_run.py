@@ -271,6 +271,48 @@ class StationaryOperatorNegativeTests(unittest.TestCase):
             run_logged.assert_not_called()
             self.assertFalse(args.output.exists())
 
+    def test_prepared_driver_and_raw_receipt_mismatches_stop_before_preflight(self) -> None:
+        for mismatch in ("prepared_target", "manifest_target", "raw_source"):
+            with self.subTest(mismatch=mismatch), TemporaryDirectory() as root, ExitStack() as stack:
+                args = SimpleNamespace(
+                    manifest=Path(root) / "operator-manifest.json",
+                    output=Path(root) / "attempt",
+                    ownership_round_id="R999", timeout=390,
+                    readiness_timeout=300,
+                )
+                manifest = {
+                    "state_dir": root, "pipe": "test",
+                    "driver_state_sha256": PREPARED_SHA256,
+                }
+                rebind = _rebind_receipt()
+                if mismatch == "prepared_target":
+                    rebind["driver_state"]["target_sha256"] = "0" * 64
+                elif mismatch == "manifest_target":
+                    manifest["driver_state_sha256"] = "0" * 64
+                else:
+                    rebind["driver_state"]["source_sha256"] = "0" * 64
+                stack.enter_context(patch.object(operator, "load_manifest", return_value=manifest))
+                stack.enter_context(patch.object(operator, "frozen_source_identity", return_value={}))
+                stack.enter_context(patch.object(operator, "read_json", return_value=rebind))
+                stack.enter_context(patch.object(
+                    operator, "current_checkpoint_identity", return_value=(
+                        Path(root) / "save.ck3", Path(root) / "driver.json",
+                        {"episode_character_id": 29829,
+                         "episode_run_id": "native-29829-2bc2d599f7f9"},
+                    ),
+                ))
+                stack.enter_context(patch.object(
+                    operator, "sha256", side_effect=lambda path: (
+                        runner.CHECKPOINT_SHA256 if path.suffix == ".ck3"
+                        else PREPARED_SHA256
+                    ),
+                ))
+                run_logged = stack.enter_context(patch.object(operator, "run_logged"))
+                with self.assertRaisesRegex(ValueError, "paired H3928 source identity differs"):
+                    operator.command_query_r0345_stationary_route_contact_v1(args)
+                run_logged.assert_not_called()
+                self.assertFalse(args.output.exists())
+
     def test_missing_required_checks_cannot_be_green(self) -> None:
         with TemporaryDirectory() as root, ExitStack() as stack:
             save = Path(root) / "save.ck3"
