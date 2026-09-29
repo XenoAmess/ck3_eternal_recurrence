@@ -2743,6 +2743,224 @@ def command_query_r0345_stationary_route_contact_v1(
     return 0 if ok else (query_exit if query_exit != 0 else 1)
 
 
+# Source assets are verified, but the H3937 paused hostile scope and a fresh
+# official prepared pair for this checkout are still missing.
+H3937_RECEIVER_ASSETS_AND_SCOPE_VERIFIED = False
+
+
+def command_query_h3937_stationary_route_contact_v1(
+    args: argparse.Namespace,
+) -> int:
+    """Run the fixed H3937 read-only query through the paired operator state."""
+    if H3937_RECEIVER_ASSETS_AND_SCOPE_VERIFIED is not True:
+        raise RuntimeError("H3937 candidate: paused hostile scope and current official prepared pair are not qualified; no preflight or launch")
+    manifest = load_manifest(args.manifest.resolve())
+    source = frozen_source_identity(manifest)
+    output = args.output.resolve()
+    if output.exists():
+        raise FileExistsError(f"attempt output already exists: {output}")
+    save, driver_path, driver = current_checkpoint_identity(manifest)
+    checkpoint_before = sha256(save)
+    driver_before = sha256(driver_path)
+    episode = driver.get("episode_run_id")
+    actor = driver.get("episode_character_id")
+    expected_save = "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6"
+    expected_source_driver = "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722"
+    expected_dll = "A8EAC0CD5BEEDF90778C76C14679629A96EDD4F7E7B398EB035B865F776786E9"
+    expected_injector = "8C8277EC27602C35A3868E17DD60A954151E13E38DCA1456B6F3B34D60EB3544"
+    expected_child_sidecar = "798F16F572FB83399CC9AB7ABD16561E87C47CEF7109CF23D255DAE660A8D8A7"
+    child_sidecar_path = manifest_path(manifest["state_dir"], "state_dir") / "player-child-matrilineal-formal-v1.json"
+    child_sidecar_before = sha256(child_sidecar_path)
+    dll_path = manifest_path(manifest["dll"], "dll")
+    injector_path = manifest_path(manifest["injector"], "injector")
+    dll_before = sha256(dll_path)
+    injector_before = sha256(injector_path)
+    rebind_path = manifest_path(manifest["state_dir"], "state_dir") / "ordinary-seed-rebind-v1.json"
+    rebind = read_json(rebind_path)
+    rebind_driver = rebind.get("driver_state")
+    rebind_save = rebind.get("save")
+    rebind_expectations = rebind.get("no_launch_preflight_expectations")
+    rebind_post = rebind.get("post_rebind_validation")
+    prepared_driver = (
+        rebind_driver.get("target_sha256")
+        if isinstance(rebind_driver, dict) else None
+    )
+    if (
+        checkpoint_before.casefold() != expected_save.casefold()
+        or child_sidecar_before.casefold() != expected_child_sidecar.casefold()
+        or str(manifest.get("checkpoint_sha256", "")).casefold()
+        != expected_save.casefold()
+        or str(manifest.get("raw_source_driver_sha256", "")).casefold()
+        != expected_source_driver.casefold()
+        or str(manifest.get("dll_sha256", "")).casefold()
+        != expected_dll.casefold()
+        or dll_before.casefold() != expected_dll.casefold()
+        or str(manifest.get("injector_sha256", "")).casefold()
+        != expected_injector.casefold()
+        or injector_before.casefold() != expected_injector.casefold()
+        or manifest.get("checkpoint_history_index") != 3937
+        or manifest.get("date_raw") != 53219928
+        or rebind.get("schema") != ORDINARY_SEED_REBIND_V1_SCHEMA
+        or rebind.get("ok") is not True
+        or rebind.get("status") != "rebound"
+        or rebind.get("ck3_launch_attempted") is not False
+        or rebind.get("pipe_name") != manifest["pipe"]
+        or not isinstance(rebind_driver, dict)
+        or str(rebind_driver.get("source_sha256", "")).casefold()
+        != expected_source_driver.casefold()
+        or not isinstance(prepared_driver, str)
+        or prepared_driver.casefold() != driver_before.casefold()
+        or str(manifest.get("driver_state_sha256", "")).casefold()
+        != driver_before.casefold()
+        or not isinstance(rebind_save, dict)
+        or rebind_save.get("bytes_unchanged") is not True
+        or not isinstance(rebind_save.get("source"), dict)
+        or str(rebind_save["source"].get("sha256", "")).casefold()
+        != expected_save.casefold()
+        or not isinstance(rebind_save.get("target"), dict)
+        or str(rebind_save["target"].get("sha256", "")).casefold()
+        != expected_save.casefold()
+        or not isinstance(rebind_expectations, dict)
+        or rebind_expectations.get("pipe_name") != manifest["pipe"]
+        or rebind_expectations.get("expected_character_id") != 29829
+        or rebind_expectations.get("expected_episode_run_id")
+        != "native-29829-2bc2d599f7f9"
+        or str(rebind_expectations.get("expected_checkpoint_sha256", "")).casefold()
+        != expected_save.casefold()
+        or str(rebind_expectations.get("expected_driver_state_sha256", "")).casefold()
+        != driver_before.casefold()
+        or rebind_expectations.get("xar_enabled") != "xar_off"
+        or rebind_expectations.get("succession_lifecycle")
+        != ORDINARY_CAMPAIGN_SUCCESSION
+        or rebind_expectations.get("ordinary_campaign_no_pact") is not True
+        or not isinstance(rebind_post, dict)
+        or rebind_post.get("native_driver_consumer") != "passed"
+        or rebind_post.get("cold_checkpoint_validator") != "passed"
+        or actor != 29829
+        or episode != "native-29829-2bc2d599f7f9"
+    ):
+        raise ValueError("H3937 paired H3937 source identity differs; no launch")
+    output.mkdir(parents=True)
+    common = agent_command(manifest)
+    receipt: dict[str, Any] = {
+        "schema": "xar-g2-h3937-stationary-route-contact-operator-v1",
+        "mode": "query-h3937-stationary-route-contact-v1",
+        "source": source,
+        "manifest": str(args.manifest.resolve()),
+        "round": args.ownership_round_id,
+        "step": "query-route-contact-horizon-v1-83886367-to-2610-h-2-50331920-83886484",
+        "checkpoint_sha256_before": checkpoint_before,
+        "driver_state_sha256_before": driver_before,
+        "source_pair_raw_driver_sha256": expected_source_driver,
+        "dll_sha256_before": expected_dll,
+        "injector_sha256_before": expected_injector,
+        "child_pending_sidecar_sha256_before": child_sidecar_before,
+        "ordinary_seed_rebind_receipt": str(rebind_path.resolve()),
+        "ordinary_seed_rebind_receipt_sha256": sha256(rebind_path),
+        "gameplay_actions": 0,
+        "date_advance_actions": 0,
+        "ui_inputs": 0,
+        "action_authorized": False,
+    }
+    receipt_path = output / "operator-receipt.json"
+    preflight = [
+        *common, "native-one-generation-preflight",
+        "--expected-character-id", str(actor),
+        "--expected-episode-run-id", str(episode),
+        "--expected-checkpoint-sha256", checkpoint_before,
+        "--expected-driver-state-sha256", driver_before,
+        *preflight_lifecycle_arguments(lifecycle_contract(manifest)),
+    ]
+    preflight_exit = run_logged(
+        preflight, output / "preflight-stdout.txt", output / "preflight-stderr.txt"
+    )
+    receipt["preflight_exit_code"] = preflight_exit
+    if preflight_exit != 0:
+        receipt.update({"ok": False, "status": "preflight_blocked", "game_launched": False})
+        receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+        return preflight_exit
+    timeout = args.timeout if args.timeout is not None else int(manifest.get("timeout_seconds", 390))
+    readiness_timeout = (
+        args.readiness_timeout
+        if args.readiness_timeout is not None
+        else int(manifest.get("readiness_timeout_seconds", 300))
+    )
+    query_report_path = output / "query-report.json"
+    query_exit = run_logged(
+        [
+            *common, "native-query-h3937-stationary-route-contact-v1",
+            "--timeout", str(timeout),
+            "--readiness-timeout", str(readiness_timeout),
+            "--cold-start-checkpoint",
+            "--ownership-round-id", args.ownership_round_id,
+        ],
+        query_report_path,
+        output / "query-stderr.txt",
+    )
+    try:
+        report = read_json(query_report_path)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+        report = None
+    checks = report.get("checks") if isinstance(report, dict) else None
+    required_checks = {
+        "exact_one_read_only_query",
+        "query_source_bound_to_before_frame",
+        "readiness_bound_to_query_before",
+        "single_cold_restore_bookkeeping",
+        "paused_frame_unchanged",
+        "stationary_scope_unchanged",
+        "exact_one_appended_query",
+        "driver_history_matches_query_after",
+        "date_unchanged",
+        "checkpoint_unchanged",
+        "child_pending_sidecar_unchanged",
+        "abi_unchanged",
+        "cleanup_proven",
+    }
+    checkpoint_after = sha256(save) if save.is_file() else None
+    driver_after = sha256(driver_path) if driver_path.is_file() else None
+    child_sidecar_after = sha256(child_sidecar_path) if child_sidecar_path.is_file() else None
+    dll_after = sha256(dll_path) if dll_path.is_file() else None
+    injector_after = sha256(injector_path) if injector_path.is_file() else None
+    ok = bool(
+        query_exit == 0
+        and isinstance(report, dict)
+        and report.get("ok") is True
+        and report.get("status") == "GREEN_READ_ONLY"
+        and report.get("action_authorized") is False
+        and report.get("round") == args.ownership_round_id
+        and isinstance(checks, dict)
+        and set(checks) == required_checks
+        and all(checks.values())
+        and isinstance(report.get("cleanup"), dict)
+        and report["cleanup"].get("ok") is True
+        and checkpoint_after == checkpoint_before
+        and child_sidecar_after == child_sidecar_before
+        and dll_after == dll_before
+        and injector_after == injector_before
+    )
+    receipt.update({
+        "ok": ok,
+        "status": "GREEN_READ_ONLY" if ok else "query_failed",
+        "game_launched": report is not None,
+        "query_exit_code": query_exit,
+        "query_report": str(query_report_path),
+        "checkpoint_sha256_after": checkpoint_after,
+        "driver_state_sha256_after": driver_after,
+        "child_pending_sidecar_sha256_after": child_sidecar_after,
+        "dll_sha256_after": dll_after,
+        "injector_sha256_after": injector_after,
+        "query_envelope": report.get("query_envelope") if isinstance(report, dict) else None,
+        "checks": checks,
+        "cleanup": report.get("cleanup") if isinstance(report, dict) else None,
+    })
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    print(json.dumps(receipt, ensure_ascii=False))
+    return 0 if ok else (query_exit if query_exit != 0 else 1)
+
+
 def command_query_first_heir_marriage_alliance_result_v1(
     args: argparse.Namespace,
 ) -> int:
@@ -3420,6 +3638,22 @@ def parser() -> argparse.ArgumentParser:
     )
     stationary_query.set_defaults(
         handler=command_query_r0345_stationary_route_contact_v1
+    )
+
+    h3937_stationary_query = commands.add_parser(
+        "query-h3937-stationary-route-contact-v1",
+        help="H3937 metadata-only target-2610 query candidate; launch blocked pending receiver asset review",
+    )
+    h3937_stationary_query.add_argument("--manifest", type=Path, required=True)
+    h3937_stationary_query.add_argument("--output", type=Path, required=True)
+    h3937_stationary_query.add_argument("--timeout", type=int)
+    h3937_stationary_query.add_argument("--readiness-timeout", type=int)
+    h3937_stationary_query.add_argument(
+        "--ownership-round-id", type=private_timeline_query_round_id,
+        required=True,
+    )
+    h3937_stationary_query.set_defaults(
+        handler=command_query_h3937_stationary_route_contact_v1
     )
 
     family_alliance_query = commands.add_parser(

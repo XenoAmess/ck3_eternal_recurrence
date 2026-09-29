@@ -541,6 +541,14 @@ def parser() -> argparse.ArgumentParser:
     stationary_query_parser.add_argument("--readiness-timeout", type=float, default=300)
     stationary_query_parser.add_argument("--cold-start-checkpoint", action="store_true")
     stationary_query_parser.add_argument("--ownership-round-id", required=True)
+    h3937_stationary_query_parser = commands.add_parser(
+        "native-query-h3937-stationary-route-contact-v1",
+        help="H3937 target-2610 read-only candidate; metadata-only no-launch gate",
+    )
+    h3937_stationary_query_parser.add_argument("--timeout", type=float, default=390)
+    h3937_stationary_query_parser.add_argument("--readiness-timeout", type=float, default=300)
+    h3937_stationary_query_parser.add_argument("--cold-start-checkpoint", action="store_true")
+    h3937_stationary_query_parser.add_argument("--ownership-round-id", required=True)
     family_alliance_query_parser = commands.add_parser(
         "native-query-first-heir-marriage-alliance-result-v1",
         help="one private read-only material marriage and actual alliance query",
@@ -851,6 +859,7 @@ def main(argv: list[str] | None = None) -> int:
                 "native-auto-run",
                 "native-query-current-timeline-blocker-context-v1",
                 "native-query-r0345-stationary-route-contact-v1",
+                "native-query-h3937-stationary-route-contact-v1",
                 "native-query-first-heir-marriage-alliance-result-v1",
                 "native-query-private-construction-source-v1",
                 "native-query-outbound-war-white-peace-status-v1",
@@ -1117,6 +1126,18 @@ def main(argv: list[str] | None = None) -> int:
                 ownership_round_id=args.ownership_round_id,
                 cold_start_checkpoint=args.cold_start_checkpoint,
             )
+        elif args.command == "native-query-h3937-stationary-route-contact-v1":
+            from .h3937_stationary_route_contact_query_run import (
+                query_h3937_stationary_route_contact_once,
+            )
+
+            result = query_h3937_stationary_route_contact_once(
+                spec,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                ownership_round_id=args.ownership_round_id,
+                cold_start_checkpoint=args.cold_start_checkpoint,
+            )
         elif args.command == "native-query-first-heir-marriage-alliance-result-v1":
             from .family_alliance_result_query_run import (
                 query_first_heir_marriage_alliance_once,
@@ -1258,6 +1279,7 @@ def main(argv: list[str] | None = None) -> int:
             "native-auto-run",
             "native-query-current-timeline-blocker-context-v1",
             "native-query-r0345-stationary-route-contact-v1",
+            "native-query-h3937-stationary-route-contact-v1",
             "native-query-first-heir-marriage-alliance-result-v1",
             "native-query-private-construction-source-v1",
             "native-query-outbound-war-white-peace-status-v1",
