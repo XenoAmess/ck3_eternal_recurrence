@@ -11102,6 +11102,69 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "query-declarable-wars", driver.capabilities()["action_steps"]
         )
 
+    def test_province_local_siege_query_uses_frozen_native_frame(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-province-local-siege-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                4,
+                date_raw=53_219_928,
+                played_character={"character_id": 29_829, "alive": True},
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 1,
+                        "snapshot_revision": 4,
+                        "date_raw": 53_219_928,
+                        "province_state": {
+                            "province_id": 2610,
+                            "occupation_observable": True,
+                            "is_occupied": False,
+                            "occupying_character_id": None,
+                            "fort_level": 2,
+                            "garrison_size": 500,
+                            "besieging_strength": 0,
+                            "siege_observable": True,
+                            "active_siege": None,
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        starting = driver.take_snapshot()
+        result = driver.execute_step(
+            "query-province-local-siege-v1-2610",
+            expected_revision=int(starting["revision"]),
+        )
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(result["province_state"]["province_id"], 2610)
+        self.assertEqual(result["date_raw"], 53_219_928)
+        self.assertEqual(driver.take_snapshot()["date_raw"], 53_219_928)
+
     def test_army_strength_query_is_atomic_cached_and_mcp_subset_filtered(
         self,
     ) -> None:

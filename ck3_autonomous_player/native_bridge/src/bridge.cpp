@@ -7925,6 +7925,31 @@ std::string ArmyStrengthsResultFrame(
   return result;
 }
 
+std::string ProvinceLocalSiegeResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t snapshot_revision,
+    std::int32_t date_raw, bool complete,
+    const xar::game::WarObjectiveProvinceState &state) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"";
+  result += complete ? "available" : "partial";
+  result += "\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot_revision);
+  result += ",\"date_raw\":";
+  result += SignedNumber(date_raw);
+  result += ",\"province_state\":";
+  AppendWarObjectiveProvinceState(result, state);
+  result += "}}";
+  return result;
+}
+
 std::string CombatSimulationInputsResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -9107,6 +9132,21 @@ std::optional<std::int32_t> WarTerminationQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> ProvinceLocalSiegeQueryStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-province-local-siege-v1-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  const auto suffix = step.substr(prefix.size());
+  const auto parsed = PositiveNativeId(suffix);
+  if (!parsed.has_value() || std::to_string(parsed.value()) != suffix) {
+    return std::nullopt;
+  }
+  return parsed;
+}
+
 std::optional<std::int32_t> WarPrisonerReleasePairsQueryStepV1(
     std::string_view step) noexcept {
   constexpr std::string_view prefix =
@@ -9755,6 +9795,7 @@ struct WorkerState {
   std::uint64_t player_epidemic_recovery_query_sequence = 0;
   std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
+  std::uint64_t province_local_siege_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t combat_phase_event_trace_query_sequence = 0;
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -10172,6 +10213,8 @@ void RunConnectedSession(
       state.coat_of_arms_designer_probe_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
+  auto &province_local_siege_query_sequence =
+      state.province_local_siege_query_sequence;
   auto &combat_inputs_query_sequence =
       state.combat_inputs_query_sequence;
   auto &combat_phase_event_trace_query_sequence =
@@ -17831,6 +17874,85 @@ void RunConnectedSession(
                       "application-main war-entry result was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step.starts_with("query-province-local-siege-v1-")) {
+          const auto province_id = ProvinceLocalSiegeQueryStep(step);
+          std::uint64_t expected_revision = 0;
+          if (!province_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-province-local-siege-v1-<province_id> step"));
+          } else if (!xar::ck3_11906::
+                         ParseCampaignRootContextExpectedRevisionV1(
+                             incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "province-local-siege expected revision is malformed"));
+          } else if (state_revision == 0 ||
+                     expected_revision != state_revision ||
+                     !previous_snapshot.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "province-local-siege snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot admission{};
+            if (!xar::game::ReadSnapshot(game, admission) ||
+                admission != previous_snapshot.value() ||
+                !admission.map_ready || !admission.paused ||
+                !admission.has_played_character ||
+                !admission.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "province-local-siege admission frame is unavailable"));
+            } else {
+              xar::game::WarObjectiveProvinceState province_state{};
+              const auto query_result = xar::game::ReadProvinceLocalSiege(
+                  game, province_id.value(), province_state);
+              xar::game::Snapshot completion{};
+              if (!xar::game::ReadSnapshot(game, completion) ||
+                  completion != admission) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "province-local-siege completion frame changed"));
+              } else if (query_result ==
+                             xar::game::ReadProvinceLocalSiegeResult::available ||
+                         query_result ==
+                             xar::game::ReadProvinceLocalSiegeResult::partial) {
+                ++province_local_siege_query_sequence;
+                connected = xar::bridge::WriteFrame(
+                    pipe, ProvinceLocalSiegeResultFrame(
+                              request_id, step,
+                              province_local_siege_query_sequence,
+                              state_revision, admission.date_raw,
+                              query_result == xar::game::
+                                                  ReadProvinceLocalSiegeResult::
+                                                      available,
+                              province_state));
+              } else {
+                std::string_view error =
+                    "province-local-siege native read is unavailable";
+                if (query_result == xar::game::
+                                        ReadProvinceLocalSiegeResult::
+                                            province_not_found) {
+                  error = "CK3 Province was not found";
+                } else if (query_result == xar::game::
+                                               ReadProvinceLocalSiegeResult::
+                                                   state_changed) {
+                  error = "province-local-siege native state changed";
+                } else if (query_result == xar::game::
+                                               ReadProvinceLocalSiegeResult::
+                                                   requires_paused) {
+                  error = "province-local-siege requires a paused map";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
               }
             }
           }

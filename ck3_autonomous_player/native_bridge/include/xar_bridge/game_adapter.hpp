@@ -128,6 +128,11 @@ public:
   submit_enforce_demands(std::int32_t war_id) const noexcept = 0;
   virtual ReadArmyStrengthsResult read_army_strengths(
       std::vector<ArmyStrengthSnapshot> &output) const noexcept = 0;
+  virtual ReadProvinceLocalSiegeResult read_province_local_siege(
+      std::int32_t, WarObjectiveProvinceState &output) const noexcept {
+    output = {};
+    return ReadProvinceLocalSiegeResult::unavailable;
+  }
   virtual ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const CombatSimulationInputsRequest &request,
       CombatSimulationInputsSnapshot &output) const noexcept = 0;
@@ -330,6 +335,11 @@ inline ReadArmyStrengthsResult ReadArmyStrengths(
     const GameAdapter &game,
     std::vector<ArmyStrengthSnapshot> &output) noexcept {
   return game.read_army_strengths(output);
+}
+inline ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
+    const GameAdapter &game, std::int32_t province_id,
+    WarObjectiveProvinceState &output) noexcept {
+  return game.read_province_local_siege(province_id, output);
 }
 inline ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
     const GameAdapter &game, const CombatSimulationInputsRequest &request,

@@ -487,6 +487,8 @@ from .war_contract import (
     QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
     QUERY_ARMY_STRENGTHS_CAPABILITY,
     QUERY_ARMY_STRENGTHS_STEP,
+    QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY,
+    QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX,
     QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY,
     QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
     QUERY_WAR_PRISONER_RELEASE_PAIRS_V1_CAPABILITY,
@@ -518,6 +520,7 @@ from .war_contract import (
     move_army_step,
     normalize_active_wars,
     normalize_army_strengths,
+    normalize_province_local_siege_result,
     normalize_route_contact_horizon,
     normalize_outbound_war_white_peace_status,
     normalize_war_termination_options,
@@ -536,6 +539,7 @@ from .war_contract import (
     parse_preview_move_army_step,
     parse_advance_route_contact_horizon_step,
     parse_query_route_contact_horizon_step,
+    parse_query_province_local_siege_step,
     parse_query_outbound_war_white_peace_status_step,
     parse_query_war_termination_options_step,
     parse_query_war_prisoner_release_pairs_v1_step,
@@ -6426,6 +6430,15 @@ class NativeHeadlessGameplayDriver:
                 "malformed active-combat retreat order step"
             )
         route_contact_query = parse_query_route_contact_horizon_step(step)
+        province_local_siege_query = parse_query_province_local_siege_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX)
+            and province_local_siege_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed province-local-siege ProvinceID step"
+            )
         route_contact_advance = parse_advance_route_contact_horizon_step(step)
         if (
             isinstance(step, str)
@@ -6746,6 +6759,17 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise UnsupportedStepError(
                     "native DLL cannot query the actual contact scope"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
+        if province_local_siege_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY not in bridge_capabilities:
+                raise UnsupportedStepError(
+                    "native DLL cannot query local Province siege state"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -9541,6 +9565,7 @@ class NativeHeadlessGameplayDriver:
         war_bound_loss_cleanup_war_id = (
             parse_query_raiktor_war_bound_loss_cleanup_v1_step(step)
         )
+        province_local_siege_id = parse_query_province_local_siege_step(step)
         internal_read_only_query = bool(
             termination_query_war_id is not None
             or prisoner_release_war_id is not None
@@ -9548,6 +9573,7 @@ class NativeHeadlessGameplayDriver:
             or termination_terms_query_war_id is not None
             or actual_truce_expiry_toward is not None
             or war_bound_loss_cleanup_war_id is not None
+            or province_local_siege_id is not None
             or parse_preview_move_army_step(step) is not None
             or parse_query_route_contact_horizon_step(step) is not None
         )
@@ -9562,6 +9588,41 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        if province_local_siege_id is not None:
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError(
+                    "native province-local-siege query requires a paused map"
+                )
+            native_revision = starting.get("native_revision")
+            date_raw = starting.get("date_raw")
+            if (
+                isinstance(native_revision, bool)
+                or not isinstance(native_revision, int)
+                or native_revision <= 0
+                or isinstance(date_raw, bool)
+                or not isinstance(date_raw, int)
+            ):
+                raise BridgeUnavailableError(
+                    "native province-local-siege query lacks a frozen frame"
+                )
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY,
+                internal_semantic_snapshot=True,
+            )
+            try:
+                return normalize_province_local_siege_result(
+                    raw,
+                    expected_step=step,
+                    expected_province_id=province_local_siege_id,
+                    expected_snapshot_revision=native_revision,
+                    expected_date_raw=date_raw,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native province-local-siege result is malformed: {error}"
+                ) from error
         if prisoner_release_war_id is not None:
             raw = self._execute_primitive_step(
                 step,
@@ -25170,6 +25231,10 @@ def _action_steps(
             # This query needs the current paused declarable-target set. The
             # concrete literal is added below from that snapshot; never expose
             # the adapter's `-N` capability template as an executable action.
+            continue
+        elif capability == QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY:
+            # Explicit callers provide a canonical ProvinceID; never expose
+            # the adapter's -N template as an executable action.
             continue
         elif capability == QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY:
             expand_termination_queries = True

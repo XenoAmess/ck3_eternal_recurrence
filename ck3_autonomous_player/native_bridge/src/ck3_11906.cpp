@@ -10619,6 +10619,61 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   return true;
 }
 
+game::ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
+    const Bindings &bindings, std::int32_t province_id,
+    game::WarObjectiveProvinceState &output) noexcept {
+  using Result = game::ReadProvinceLocalSiegeResult;
+  output = {};
+  if (province_id <= 0) {
+    return Result::province_not_found;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    return Result::unavailable;
+  }
+  if (!before.map_ready) {
+    return Result::unavailable;
+  }
+  if (!before.paused) {
+    return Result::requires_paused;
+  }
+  if (!before.has_played_character || !before.played_character_alive) {
+    return Result::no_played_character;
+  }
+  if (bindings.game_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      *bindings.army_storage_slot == nullptr) {
+    return Result::unavailable;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr || ResolveProvince(game_state, province_id) == nullptr) {
+    return Result::province_not_found;
+  }
+
+  // The original rich Province reader already validates every exact-build
+  // pointer and leaves unavailable subdomains unobservable. This direct read
+  // does not consume or change the active-war objective-row budget.
+  const auto armies = ReadArmies(bindings, game_state,
+                                before.played_character_id, true);
+  const auto first = ReadWarObjectiveProvinceState(
+      bindings, game_state, province_id, before.played_character_id, armies,
+      true);
+  const auto second = ReadWarObjectiveProvinceState(
+      bindings, game_state, province_id, before.played_character_id, armies,
+      true);
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before || first != second) {
+    return Result::state_changed;
+  }
+  output = second;
+  const bool complete = output.occupation_observable &&
+                        output.fort_level_observable &&
+                        output.garrison_size_observable &&
+                        output.besieging_strength_observable &&
+                        output.siege_observable;
+  return complete ? Result::available : Result::partial;
+}
+
 ReadArmyStrengthsResult ReadArmyStrengths(
     const Bindings &bindings,
     std::vector<ArmyStrengthSnapshot> &output) noexcept {

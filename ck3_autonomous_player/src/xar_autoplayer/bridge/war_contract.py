@@ -39,6 +39,10 @@ QUERY_ARMY_STRENGTHS_CAPABILITY = (
     "game.command.query-army-strengths-v1"
 )
 QUERY_ARMY_STRENGTHS_STEP = "query-army-strengths-v1"
+QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY = (
+    "game.command.query-province-local-siege-v1-N"
+)
+QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX = "query-province-local-siege-v1-"
 SURRENDER_WAR_CAPABILITY = "game.command.surrender-war-N"
 OFFER_WHITE_PEACE_CAPABILITY = "game.command.offer-white-peace-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
@@ -562,6 +566,78 @@ def _normalize_objective_province_state(
         "siege_observable": siege_observable,
         "active_siege": active_siege,
     }
+
+
+def query_province_local_siege_step(province_id: int) -> str:
+    """Build one canonical read-only local Province query literal."""
+    return (
+        QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX
+        + str(_positive_int32_id(province_id, "province_id"))
+    )
+
+
+def parse_query_province_local_siege_step(step: object) -> int | None:
+    if not isinstance(step, str) or not step.startswith(
+        QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX
+    ):
+        return None
+    suffix = step.removeprefix(QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX)
+    if not suffix or not suffix.isascii() or not suffix.isdecimal():
+        return None
+    try:
+        province_id = _positive_int32_id(int(suffix), "province_id")
+    except ValueError:
+        return None
+    return province_id if str(province_id) == suffix else None
+
+
+def normalize_province_local_siege_result(
+    value: object,
+    *,
+    expected_step: str,
+    expected_province_id: int,
+    expected_snapshot_revision: int,
+    expected_date_raw: int,
+) -> dict[str, object]:
+    """Keep partial native fields typed; this never proves hostile scope."""
+    if not isinstance(value, dict) or set(value) != {
+        "step", "accepted", "status", "query_sequence",
+        "snapshot_revision", "date_raw", "province_state", "backend_id",
+    }:
+        raise ValueError("native province-local-siege result schema is malformed")
+    if (
+        value.get("step") != expected_step
+        or value.get("accepted") is not True
+        or value.get("backend_id") != "native-headless"
+    ):
+        raise ValueError("native province-local-siege query identity changed")
+    sequence = value.get("query_sequence")
+    revision = value.get("snapshot_revision")
+    date_raw = value.get("date_raw")
+    if (
+        isinstance(sequence, bool) or not isinstance(sequence, int)
+        or not 1 <= sequence <= 2**64 - 1
+        or revision != expected_snapshot_revision
+        or isinstance(revision, bool)
+        or date_raw != expected_date_raw
+        or isinstance(date_raw, bool)
+    ):
+        raise ValueError("native province-local-siege frame binding changed")
+    state = _normalize_objective_province_state(
+        value.get("province_state"), name="province_state"
+    )
+    if state["province_id"] != expected_province_id:
+        raise ValueError("native province-local-siege ProvinceID changed")
+    complete = bool(
+        state["occupation_observable"]
+        and state["fort_level"] is not None
+        and state["garrison_size"] is not None
+        and state["besieging_strength"] is not None
+        and state["siege_observable"]
+    )
+    if value.get("status") != ("available" if complete else "partial"):
+        raise ValueError("native province-local-siege status disagrees with fields")
+    return {**value, "province_state": state}
 
 
 def _normalize_active_siege(
@@ -3851,6 +3927,7 @@ def is_native_war_step(step: object) -> bool:
     return (
         step == RAISE_TROOPS_STEP
         or step == QUERY_ARMY_STRENGTHS_STEP
+        or parse_query_province_local_siege_step(step) is not None
         or parse_preview_move_army_step(step) is not None
         or parse_query_route_contact_horizon_step(step) is not None
         or parse_move_army_step(step) is not None
