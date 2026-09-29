@@ -2647,15 +2647,33 @@ def command_query_r0345_stationary_route_contact_v1(
     except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
         report = None
     checks = report.get("checks") if isinstance(report, dict) else None
+    required_checks = {
+        "exact_one_read_only_query",
+        "query_source_bound_to_before_frame",
+        "readiness_bound_to_query_before",
+        "single_cold_restore_bookkeeping",
+        "paused_frame_unchanged",
+        "stationary_scope_unchanged",
+        "exact_one_appended_query",
+        "driver_history_matches_query_after",
+        "date_unchanged",
+        "checkpoint_unchanged",
+        "cleanup_proven",
+    }
     checkpoint_after = sha256(save) if save.is_file() else None
     driver_after = sha256(driver_path) if driver_path.is_file() else None
     ok = bool(
         query_exit == 0
         and isinstance(report, dict)
         and report.get("ok") is True
+        and report.get("status") == "GREEN_READ_ONLY"
+        and report.get("action_authorized") is False
         and report.get("round") == args.ownership_round_id
         and isinstance(checks, dict)
+        and set(checks) == required_checks
         and all(checks.values())
+        and isinstance(report.get("cleanup"), dict)
+        and report["cleanup"].get("ok") is True
         and checkpoint_after == checkpoint_before
     )
     receipt.update({

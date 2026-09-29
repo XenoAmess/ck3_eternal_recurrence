@@ -61,8 +61,11 @@ def _exact_h3928_paused_subject(snapshot: object) -> bool:
     if not isinstance(snapshot, dict):
         return False
     wars = snapshot.get("active_wars")
+    armies = snapshot.get("player_armies")
     subject = _army_by_id(snapshot, ARMY_ID)
     played = snapshot.get("played_character")
+    war = wars[0] if isinstance(wars, list) and len(wars) == 1 else None
+    enemies = war.get("enemy_armies") if isinstance(war, dict) else None
     return bool(
         snapshot.get("paused") is True
         and snapshot.get("map_ready") is True
@@ -72,11 +75,32 @@ def _exact_h3928_paused_subject(snapshot: object) -> bool:
         and played.get("character_id") == 29829
         and snapshot.get("episode_character_id") == 29829
         and snapshot.get("route_contact_horizon_supported") is True
-        and isinstance(wars, list)
-        and any(
-            isinstance(war, dict) and war.get("war_id") == 16777231
-            for war in wars
+        and isinstance(war, dict)
+        and war.get("war_id") == 16777231
+        and isinstance(armies, list)
+        and sorted(
+            army.get("army_id")
+            for army in armies
+            if isinstance(army, dict) and army.get("controllable") is True
+        ) == [ARMY_ID]
+        and isinstance(enemies, list)
+        and len(enemies) == 2
+        and sorted(
+            enemy.get("army_id")
+            for enemy in enemies if isinstance(enemy, dict)
+        ) == list(HOSTILE_ARMY_IDS)
+        and all(
+            isinstance(enemy, dict)
+            and enemy.get("current_province_id") == 2629
+            and enemy.get("retreating") is False
+            and enemy.get("in_combat") is False
+            and enemy.get("army_state") in {"regular", "sieging"}
+            for enemy in enemies
         )
+        and "active_event" in snapshot
+        and snapshot.get("active_event") is None
+        and "pending_character_interaction" in snapshot
+        and snapshot.get("pending_character_interaction") is None
         and _route_contact_hostile_ids(snapshot) == HOSTILE_ARMY_IDS
         and isinstance(subject, dict)
         and subject.get("controllable") is True
@@ -239,6 +263,15 @@ def _same_frame(left: object, right: object) -> bool:
     return bool(
         isinstance(left, dict)
         and isinstance(right, dict)
+        and isinstance(left.get("snapshot_id"), str)
+        and bool(left.get("snapshot_id"))
+        and type(left.get("revision")) is int
+        and left.get("revision") >= 0
+        and type(left.get("native_revision")) is int
+        and left.get("native_revision") > 0
+        and type(left.get("date_raw")) is int
+        and left.get("date_raw") == EXPECTED_DATE_RAW
+        and left.get("episode_run_id") == EXPECTED_EPISODE_RUN_ID
         and all(
             left.get(key) == right.get(key)
             for key in (
@@ -314,6 +347,7 @@ def query_r0345_stationary_route_contact_once(
     save_path = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
     driver_state_path = spec.state_dir / "native-session" / "driver-state.json"
     before_driver_state = _read_driver_state(driver_state_path)
+    lifecycle = checkpoint.get("succession_lifecycle")
     before_files = {
         "checkpoint": {"path": str(save_path.resolve()), "sha256": _sha256(save_path)},
         "driver_state": {
@@ -329,6 +363,11 @@ def query_r0345_stationary_route_contact_once(
         or checkpoint.get("saved_date_raw") != EXPECTED_DATE_RAW
         or checkpoint.get("episode_run_id") != EXPECTED_EPISODE_RUN_ID
         or before_driver_state.get("episode_run_id") != EXPECTED_EPISODE_RUN_ID
+        or not isinstance(lifecycle, dict)
+        or lifecycle.get("xar_enabled") != "xar_off"
+        or lifecycle.get("lifecycle") != "ordinary_campaign_succession"
+        or lifecycle.get("pact_contract")
+        != "absent_by_fresh_campaign_xar_off_contract"
     ):
         raise AgentError("R0345 source pair identity differs; launch refused")
     started_at = utc_now()
@@ -357,6 +396,7 @@ def query_r0345_stationary_route_contact_once(
                 poll_interval_seconds=poll_seconds,
                 cold_start_checkpoint=True,
                 stop_event=stop_event,
+                prepared_xar_enabled="xar_off",
             )
         except BaseException as error:  # returned to the owning thread
             session_state["error"] = f"{type(error).__name__}: {error}"
@@ -517,6 +557,7 @@ def query_r0345_stationary_route_contact_once(
             restore_bookkeeping.get("exact") is True
         ),
         "paused_frame_unchanged": _same_frame(query_before, query_after),
+        "stationary_scope_unchanged": _exact_h3928_paused_subject(query_after),
         "exact_one_appended_query": _exact_one_appended_query(
             query_before, query_after, query_envelope
         ),
@@ -569,6 +610,15 @@ def query_r0345_stationary_route_contact_once(
             "date_raw": before_date,
         },
         "query_envelope": copy.deepcopy(query_envelope),
+        "observed_horizon": (
+            {
+                "one_day_contact_free": horizon.get("one_day_contact_free"),
+                "horizon_start_date_raw": horizon.get("horizon_start_date_raw"),
+                "horizon_end_date_raw": horizon.get("horizon_end_date_raw"),
+                "action_authorized": False,
+            }
+            if isinstance(horizon, dict) else None
+        ),
         "after": {
             "files": after_files,
             "frame": copy.deepcopy(query_after),
