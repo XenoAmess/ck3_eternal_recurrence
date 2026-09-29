@@ -5,11 +5,13 @@ from __future__ import annotations
 import copy
 import json
 from pathlib import Path
+import tempfile
 import unittest
+from unittest.mock import patch
 
 from e2_04_d06_knight_live import (
     ACTOR, ARMY, CHARACTER, COMBAT, DATE, PROVINCE, REGIMENT, WAR,
-    control_case, knight_case, snapshot_case, verify_no_launch,
+    control_case, knight_case, snapshot_case, verify_no_launch, verify_session,
 )
 
 
@@ -120,6 +122,39 @@ class D06KnightOperatorTest(unittest.TestCase):
             mutation(changed)
             with self.assertRaises(ValueError):
                 knight_case(changed, f)
+
+    def test_cleanup_binding_does_not_require_gui_observation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            live = root / "episode02-e2-04-d06-knight-live-20260929-test"
+            output = live / "ck3-output"
+            output.mkdir(parents=True)
+            (output / "interactive-requests").mkdir()
+            (output / "interactive-requests-responses").mkdir()
+            offline = root / "episode02-e2-04-d06-knight-offline-20260929-test" / "steam-offline-reviewed.json"
+            offline.parent.mkdir()
+            offline.write_text("{}", encoding="utf-8")
+            script = root / "capture_session.py"
+            script.write_text("capture", encoding="utf-8")
+            no_launch = root / "episode02-e2-04-d06-knight-preflight-20260929-test"
+            no_launch.mkdir()
+            (no_launch / "run-argv.json").write_text(
+                json.dumps({"argv": ["python", str(script)]}), encoding="utf-8")
+            (output / "preflight.json").write_text(json.dumps({"result": "READY_FOR_BOUNDED_LIVE_ATTEMPT"}), encoding="utf-8")
+            (output / "native-start-readback.json").write_text(
+                json.dumps({"postcondition_verified": True}), encoding="utf-8")
+            (output / "command.json").write_text(json.dumps({
+                "argv": [str(script), "--steam-offline-receipt", str(offline), "--capture"]}),
+                encoding="utf-8")
+            from e2_04_d06_knight_live import identity
+            prior = {"capture_script_sha256": identity(script)["sha256"]}
+            with patch("e2_04_d06_knight_live.verify_no_launch", return_value=prior), \
+                    patch("e2_04_d06_knight_live.verify_preflight"), \
+                    patch("e2_04_d06_knight_live.bound_source"):
+                self.assertEqual(verify_session(output, no_launch, require_gui=False)["gui"],
+                                 "not_a_cleanup_prerequisite")
+                with self.assertRaises(FileNotFoundError):
+                    verify_session(output, no_launch)
 
 
 if __name__ == "__main__":

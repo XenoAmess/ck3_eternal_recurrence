@@ -118,7 +118,7 @@ def verify_gui(output: Path) -> dict[str, Any]:
     return receipts
 
 
-def verify_session(output: Path, no_launch: Path) -> dict[str, Any]:
+def verify_session(output: Path, no_launch: Path, *, require_gui: bool = True) -> dict[str, Any]:
     require(output.name == "ck3-output" and output.parent.name.startswith(
             "episode02-e2-04-d06-knight-live-20260929-"),
             "output must belong to a new d06 knight live attempt")
@@ -149,7 +149,8 @@ def verify_session(output: Path, no_launch: Path) -> dict[str, Any]:
             "managed request directories missing")
     return {"no_launch": prior, "preflight": identity(preflight_path),
             "managed_load": identity(loaded_path), "command": identity(command_path),
-            "steam_receipt": identity(offline), "gui": verify_gui(output),
+            "steam_receipt": identity(offline),
+            "gui": verify_gui(output) if require_gui else "not_a_cleanup_prerequisite",
             "operator": identity(Path(__file__)),
             "request_primitive": identity(Path(__file__).with_name("pursuit_live_step.py"))}
 
@@ -308,7 +309,8 @@ def main() -> int:
     args = parser.parse_args()
     if not 10 <= args.timeout <= 900:
         parser.error("timeout must be 10..900 seconds")
-    binding = verify_session(args.session_output, args.no_launch_attempt)
+    binding = verify_session(args.session_output, args.no_launch_attempt,
+                             require_gui=args.mode == "observe")
     (args.session_output / "operator-steps").mkdir(exist_ok=True)
     if args.mode == "observe":
         return observe(args.session_output, binding, args.timeout)
