@@ -157,3 +157,12 @@ with `--child-matrilineal-recovery-post-sway-result-report` for a bounded
 no-duplicate read, or a normal bounded continuation to give the recipient's
 reply time to arrive. Any later resolved marriage still needs its own material
 readback and following-turn consumption.
+
+The first H3933 source preparation from exact master `8f90916` proved the
+ordinary rebind and no-launch check, then stopped while copying the older
+resolved Sway ledger. Its final prepared-sidecar recheck mistakenly compared
+R0342's H3928 Sway effect to the later H3933 checkpoint. The source-side
+Sway and child proof checks already passed. The prepared Sway recheck now
+uses R0342's saved checkpoint/SHA/size for that earlier effect; the child
+proof still checks the actual H3933 prepared driver and save. The failed
+candidate is retained as a failed preparation, with no CK3 launch.
