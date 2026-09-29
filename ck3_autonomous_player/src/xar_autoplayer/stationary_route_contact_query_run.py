@@ -24,6 +24,10 @@ from .bridge.native_driver import (
     _route_contact_hostile_ids,
 )
 from .bridge.service import GameplayBridgeService
+from .bridge.succession_transition_contract import (
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    bind_succession_lifecycle_from_environment_v1,
+)
 from .bridge.war_contract import query_route_contact_horizon_step
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
@@ -303,6 +307,36 @@ def _read_driver_state(path: Path) -> dict[str, object]:
     return value
 
 
+def _bind_exact_ordinary_lifecycle(
+    spec: EnvironmentSpec,
+    checkpoint: dict[str, object],
+    driver_state: dict[str, object],
+) -> dict[str, object]:
+    """Bind the query driver to the prepared ordinary profile before launch."""
+    try:
+        manifest = json.loads(spec.manifest_path.read_text(encoding="utf-8-sig"))
+        binding = bind_succession_lifecycle_from_environment_v1(
+            manifest,
+            lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+        raise AgentError(
+            f"R0345 stationary lifecycle profile is not runnable: {error}"
+        ) from error
+    anchor = driver_state.get("last_checkpoint")
+    if (
+        checkpoint.get("succession_lifecycle") != binding
+        or driver_state.get("succession_lifecycle") != binding
+        or not isinstance(anchor, dict)
+        or anchor.get("succession_lifecycle") != binding
+    ):
+        raise AgentError(
+            "R0345 stationary lifecycle differs from the prepared ordinary profile"
+        )
+    return binding
+
+
 def _command_history(value: object) -> list[object] | None:
     history = value.get("command_history") if isinstance(value, dict) else None
     if not isinstance(history, list):
@@ -530,6 +564,9 @@ def query_r0345_stationary_route_contact_once(
         != "absent_by_fresh_campaign_xar_off_contract"
     ):
         raise AgentError("R0345 source pair identity differs; launch refused")
+    lifecycle = _bind_exact_ordinary_lifecycle(
+        spec, checkpoint, before_driver_state
+    )
     started_at = utc_now()
     started = time.monotonic()
     deadline = started + timeout
@@ -568,6 +605,7 @@ def query_r0345_stationary_route_contact_once(
             config.pipe_name,
             state_dir=spec.state_dir,
             save_dir=spec.profile_dir / "save games",
+            succession_lifecycle_binding=lifecycle,
         )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(

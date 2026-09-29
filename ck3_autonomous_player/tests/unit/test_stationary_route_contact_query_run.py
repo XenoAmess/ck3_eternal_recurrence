@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT.parent / "tools"))
 from xar_autoplayer.stationary_route_contact_query_run import (
     QUERY_STEP,
     _bound_route_result,
+    _bind_exact_ordinary_lifecycle,
     _exact_h3928_paused_subject,
     _exact_one_appended_query,
     _exact_validated_checkpoint_episode,
@@ -128,17 +129,22 @@ def _real_validator_pair(root: str) -> tuple[object, object, dict[str, object], 
     spec = SimpleNamespace(
         state_dir=Path(root) / "state",
         profile_dir=Path(root) / "profile",
+        manifest_path=Path(root) / "profile" / "xar-autoplayer-environment.json",
     )
     config = SimpleNamespace(mode="native-headless", pipe_name="test")
     save = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
     save.parent.mkdir(parents=True)
     save.write_bytes(b"synthetic H3928-shaped checkpoint")
     save_sha = hashlib.sha256(save.read_bytes()).hexdigest()
-    lifecycle = {
-        "xar_enabled": "xar_off",
-        "lifecycle": "ordinary_campaign_succession",
-        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+    manifest = {
+        "rules": {"profile": [{"rule": "xar_enabled", "setting": "xar_off"}]},
+        "environment_sha256": "e" * 64,
     }
+    spec.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    lifecycle = runner.bind_succession_lifecycle_from_environment_v1(
+        manifest, lifecycle=runner.ORDINARY_CAMPAIGN_SUCCESSION,
+        ordinary_campaign_no_pact=True,
+    )
     driver = {
         "format_version": 2,
         "pipe_name": "test",
@@ -179,6 +185,101 @@ def _real_validator_pair(root: str) -> tuple[object, object, dict[str, object], 
 
 
 class StationaryRouteContactReadOnlyTests(unittest.TestCase):
+    def test_real_validator_and_manifest_bind_exact_ordinary_driver_lifecycle(self) -> None:
+        with TemporaryDirectory() as root:
+            spec, config, driver, _, _ = _real_validator_pair(root)
+            validated = runner.validate_cold_start_checkpoint_for_pipe(
+                spec, config.pipe_name
+            )
+            binding = _bind_exact_ordinary_lifecycle(spec, validated, driver)
+            self.assertEqual(binding, driver["succession_lifecycle"])
+            self.assertEqual(binding, validated["succession_lifecycle"])
+            self.assertEqual(binding["lifecycle"], "ordinary_campaign_succession")
+            self.assertEqual(binding["xar_enabled"], "xar_off")
+            self.assertEqual(binding["environment_sha256"], "e" * 64)
+
+    def test_lifecycle_mismatch_refuses_before_driver_or_session(self) -> None:
+        for mismatch in ("manifest_missing", "manifest_xar_on", "checkpoint", "driver"):
+            with (
+                self.subTest(mismatch=mismatch),
+                TemporaryDirectory() as root,
+                ExitStack() as stack,
+            ):
+                spec, config, driver, save_sha, _ = _real_validator_pair(root)
+                manifest_path = spec.profile_dir / "xar-autoplayer-environment.json"
+                if mismatch == "manifest_missing":
+                    manifest_path.unlink()
+                elif mismatch == "manifest_xar_on":
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                    manifest["rules"]["profile"][0]["setting"] = "xar_on"
+                    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+                elif mismatch == "checkpoint":
+                    driver["last_checkpoint"]["succession_lifecycle"] = {
+                        **driver["succession_lifecycle"],
+                        "environment_sha256": "f" * 64,
+                    }
+                else:
+                    driver["succession_lifecycle"] = {
+                        **driver["succession_lifecycle"],
+                        "environment_sha256": "f" * 64,
+                    }
+                if mismatch in {"checkpoint", "driver"}:
+                    state = spec.state_dir / "native-session" / "driver-state.json"
+                    state.write_text(json.dumps(driver), encoding="utf-8")
+                stack.enter_context(patch.object(
+                    runner, "validate_native_bridge_launch_config", return_value=config,
+                ))
+                stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
+                stack.enter_context(patch.object(runner, "CHECKPOINT_SHA256", save_sha))
+                session = stack.enter_context(patch.object(runner, "native_session"))
+                native_driver = stack.enter_context(patch.object(
+                    runner, "NativeHeadlessGameplayDriver",
+                ))
+                expected_error = (
+                    "stationary lifecycle profile is not runnable"
+                    if mismatch in {"manifest_missing", "manifest_xar_on"}
+                    else "cold checkpoint succession lifecycle anchor is incomplete"
+                )
+                with self.assertRaisesRegex(runner.AgentError, expected_error):
+                    runner.query_r0345_stationary_route_contact_once(
+                        spec, timeout_seconds=390, readiness_timeout_seconds=300,
+                        ownership_round_id="R999", cold_start_checkpoint=True,
+                        native_bridge=config,
+                    )
+                session.assert_not_called()
+                native_driver.assert_not_called()
+
+    def test_real_pair_passes_exact_lifecycle_to_constructed_driver(self) -> None:
+        with TemporaryDirectory() as root, ExitStack() as stack:
+            spec, config, driver_state, save_sha, _ = _real_validator_pair(root)
+            stack.enter_context(patch.object(
+                runner, "validate_native_bridge_launch_config", return_value=config,
+            ))
+            stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
+            stack.enter_context(patch.object(runner, "CHECKPOINT_SHA256", save_sha))
+            stack.enter_context(patch.object(
+                runner, "_wait_for_readiness",
+                side_effect=runner.AgentError("bounded stop"),
+            ))
+            stack.enter_context(patch.object(runner, "native_session", return_value={"ok": True}))
+            stack.enter_context(patch.object(runner, "_cleanup_report", return_value={"ok": True}))
+            native_driver = stack.enter_context(patch.object(
+                runner, "NativeHeadlessGameplayDriver",
+            ))
+            report = runner.query_r0345_stationary_route_contact_once(
+                spec, timeout_seconds=390, readiness_timeout_seconds=300,
+                ownership_round_id="R999", cold_start_checkpoint=True,
+                native_bridge=config,
+            )
+            self.assertEqual(report["status"], "RED")
+            self.assertIn("bounded stop", report["error"])
+            native_driver.assert_called_once_with(
+                config.pipe_name,
+                state_dir=spec.state_dir,
+                save_dir=spec.profile_dir / "save games",
+                succession_lifecycle_binding=driver_state["succession_lifecycle"],
+            )
+
     def test_actual_validator_return_binds_only_persisted_episode_and_save_row(self) -> None:
         with TemporaryDirectory() as root:
             spec, config, driver, _, _ = _real_validator_pair(root)
