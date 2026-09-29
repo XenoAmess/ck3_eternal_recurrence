@@ -210,7 +210,7 @@ struct Binding {
 ActivityFeastGuestRuleStatusV1 Bind(
     const ActivityFeastGuestRuleEnvironmentV1 &env,
     const ActivityPlannerDiagFrameV1 &expected, std::string_view key,
-    Binding &binding) noexcept {
+    bool require_window, Binding &binding) noexcept {
   const auto &source = env.diagnostic;
   const auto diag = Diag(env, expected);
   if (diag.status != ActivityPlannerDiagStatusV1::observed ||
@@ -228,8 +228,8 @@ ActivityFeastGuestRuleStatusV1 Bind(
       binding.capture.owner == 0 ||
       !FeastType(source, binding.capture.activity_type))
     return ActivityFeastGuestRuleStatusV1::planner_unavailable;
-  std::uintptr_t planner = 0, owner = 0, vtable = 0, bound = 0;
-  std::int32_t mode = 0, host_id = 0;
+  std::uintptr_t planner = 0, owner = 0;
+  std::int32_t host_id = 0;
   std::uint32_t played_id = 0;
   if (!ReadAt(source, binding.capture.owner, 0x3C0, planner) ||
       !ReadAt(source, binding.capture.planner, 0xD0, owner) ||
@@ -239,13 +239,20 @@ ActivityFeastGuestRuleStatusV1 Bind(
       host_id != expected.actor_character_id ||
       played_id != static_cast<std::uint32_t>(expected.actor_character_id))
     return ActivityFeastGuestRuleStatusV1::planner_unavailable;
-  if (!ReadAt(source, binding.capture.owner, 0x3F0, binding.window) ||
-      binding.window == 0 || !ReadAt(source, binding.window, 0, vtable) ||
-      !ReadAt(source, binding.window, 0x100, bound) ||
-      !ReadAt(source, binding.window, 0xF8, mode) ||
-      vtable != source.module_base + kWindowVtableRva ||
-      bound != binding.capture.planner || mode != -1)
-    return ActivityFeastGuestRuleStatusV1::window_unbound;
+  // The planner's active-rule vector drives guest filtering even before the
+  // separate guest-list view binds. Only the native toggle needs that view.
+  if (require_window) {
+    std::uintptr_t window = 0, vtable = 0, bound = 0;
+    std::int32_t mode = 0;
+    if (!ReadAt(source, binding.capture.owner, 0x3F0, window) ||
+        window == 0 || !ReadAt(source, window, 0, vtable) ||
+        !ReadAt(source, window, 0x100, bound) ||
+        !ReadAt(source, window, 0xF8, mode) ||
+        vtable != source.module_base + kWindowVtableRva ||
+        bound != binding.capture.planner || mode != -1)
+      return ActivityFeastGuestRuleStatusV1::window_unbound;
+    binding.window = window;
+  }
   std::uintptr_t database = 0, database_vtable = 0, sub_vtable = 0;
   std::uintptr_t missing = 0;
   if (!ReadAt(source, source.module_base, kDatabaseSlotRva, database) ||
@@ -290,11 +297,8 @@ ActivityFeastGuestRuleStatusV1 Observe(
   const auto &source = env.diagnostic;
   std::uintptr_t bound = 0, planner = 0, active_rows = 0, groups = 0;
   std::int32_t mode = 0, active_count = 0, group_count = 0;
-  if (!ReadAt(source, binding.window, 0x100, bound) ||
-      !ReadAt(source, binding.window, 0xF8, mode) ||
-      !ReadAt(source, binding.capture.owner, 0x3C0, planner) ||
-      bound != binding.capture.planner || planner != binding.capture.planner ||
-      mode != -1 ||
+  if (!ReadAt(source, binding.capture.owner, 0x3C0, planner) ||
+      planner != binding.capture.planner ||
       !ReadAt(source, binding.capture.planner, 0x1A18, active_rows) ||
       !ReadAt(source, binding.capture.planner, 0x1A24, active_count) ||
       !ReadAt(source, binding.capture.planner, 0x1590, groups) ||
@@ -304,11 +308,7 @@ ActivityFeastGuestRuleStatusV1 Observe(
       (active_count != 0 && active_rows == 0) ||
       (group_count != 0 && groups == 0))
     return ActivityFeastGuestRuleStatusV1::native_read_failed;
-  const auto active = env.read_active != nullptr ? env.read_active : &NativeActive;
-  bool getter_active = false, vector_active = false;
-  if (!active(env.context, source.module_base, binding.window, binding.row,
-              getter_active))
-    return ActivityFeastGuestRuleStatusV1::native_read_failed;
+  bool vector_active = false;
   for (std::int32_t i = 0; i < active_count; ++i) {
     std::uintptr_t definition = 0;
     if (!ReadAt(source, active_rows, static_cast<std::size_t>(i) * 16,
@@ -316,10 +316,21 @@ ActivityFeastGuestRuleStatusV1 Observe(
       return ActivityFeastGuestRuleStatusV1::native_read_failed;
     if (definition == binding.definition) vector_active = true;
   }
-  // This vector is independently populated by the native toggle's planner
-  // refresh. An ACK or getter alone cannot establish the postcondition.
-  if (getter_active != vector_active)
-    return ActivityFeastGuestRuleStatusV1::postcondition_failed;
+  if (binding.window != 0) {
+    if (!ReadAt(source, binding.window, 0x100, bound) ||
+        !ReadAt(source, binding.window, 0xF8, mode) ||
+        bound != binding.capture.planner || mode != -1)
+      return ActivityFeastGuestRuleStatusV1::window_unbound;
+    const auto active =
+        env.read_active != nullptr ? env.read_active : &NativeActive;
+    bool getter_active = false;
+    if (!active(env.context, source.module_base, binding.window, binding.row,
+                getter_active))
+      return ActivityFeastGuestRuleStatusV1::native_read_failed;
+    // A bound window supplies a second source, particularly after a toggle.
+    if (getter_active != vector_active)
+      return ActivityFeastGuestRuleStatusV1::postcondition_failed;
+  }
   std::size_t character_count = 0;
   for (std::int32_t i = 0; i < group_count; ++i) {
     std::uintptr_t ids = 0;
@@ -335,11 +346,11 @@ ActivityFeastGuestRuleStatusV1 Observe(
   if (source.read_frame == nullptr ||
       !source.read_frame(source.context, current) || current != expected)
     return ActivityFeastGuestRuleStatusV1::frame_changed;
-  result.active = getter_active;
+  result.active = vector_active;
   result.active_rule_count = active_count;
   result.filtered_group_count = group_count;
   result.filtered_character_count = static_cast<std::int32_t>(character_count);
-  return getter_active ? ActivityFeastGuestRuleStatusV1::observed_active
+  return vector_active ? ActivityFeastGuestRuleStatusV1::observed_active
                        : ActivityFeastGuestRuleStatusV1::observed_inactive;
 }
 
@@ -361,7 +372,7 @@ ActivityFeastGuestRuleResultV1 Run(
     return result;
   }
   Binding binding{};
-  result.status = Bind(env, expected, key, binding);
+  result.status = Bind(env, expected, key, activate, binding);
   if (result.status != ActivityFeastGuestRuleStatusV1::observed_inactive)
     return result;
   result.native_key_hash = binding.hash;
