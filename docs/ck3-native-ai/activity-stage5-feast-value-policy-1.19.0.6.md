@@ -130,3 +130,33 @@ warning, followed by paused live readback. It should reuse the current planner
 frame and only copy stable IDs and values. It must not open a second CK3
 instance, infer acceptance from an invite count, or expand into the full
 activity/guest matrix.
+
+## 2026-09-30 private budget composition and current action boundary
+
+The later R0378 paused H3928 read observed Gold cost 100, an active named guest
+rule, and `final_can_start=false` because actor 29829 failed the original
+`in_army=no` adult availability trigger. The current native Stage-5 Start input
+transport still marks its guest route unqualified. These are live blockers for
+that frame; the earlier candidate 38293 and separate positive opinion read
+cannot be combined into a later same-frame Start decision.
+
+`activity_feast_stage5_budget_v1.observe_feast_start_budget_v1` now composes a
+**private read-only** budget for the current Start-input frame. It requires the
+paused actor/date/revision, native active-war list, no pending native character
+interaction, and no unresolved construction, faction gift, first-heir marriage
+or child-marriage ledger. This exclusive activity lane has made no paid
+submission on the frame, so its current reservation vector is zero. It uses
+the existing 200-Gold peaceful cash floor. An active war retains an unknown
+war cash reserve: a positive-Gold feast remains a policy hold until that
+reserve is observed. Unavailable frame or pending facts do not become zero.
+
+The runner sends the same-frame native Start inputs and this budget to the
+pure value assessor, recording its conditional `start` or `hold` verdict while
+keeping the actual decision `hold`, Start action OFF and
+`formal_action_ready=false`. This is source and focused-test coverage only;
+there is no new paused readback, Start, hosted activity, debit, game date or
+cold-restore proof. A future formal action package needs a genuinely qualified
+native guest route, `final_can_start=true` on a fresh frame, and a paired
+checkpoint/recovery path for a submitted Start whose poststate is temporarily
+unreadable. An ACK or same-date native revision cannot count as a following
+gameplay turn.

@@ -3530,6 +3530,8 @@ class NativeAutoRunTests(unittest.TestCase):
         observed = report["private_activity_feast_stage5_start_observation"]
         self.assertEqual(observed["decision"], "hold")
         self.assertEqual(observed["decision_reason"], "native_guest_route_unqualified")
+        self.assertEqual(observed["budget_observation"]["status"], "observed")
+        self.assertIs(observed["formal_action_ready"], False)
         self.assertTrue(observed["same_frame"])
         self.assertEqual(harness.activity_stage5_start_inputs_query_count, 1)
         self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_query, True)
