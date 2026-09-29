@@ -65,6 +65,9 @@ void AddCandidate(Fixture &fixture) {
   fixture.Put(kBase + 0x28D07A1,
               std::array<std::uint8_t, 5>{0xE8, 0xBA, 0xE4, 0xFF, 0xFF});
   fixture.Put(kBase + 0x151CD6E,
+              std::array<std::uint8_t, 7>{0x48, 0x8B, 0x81, 0x00,
+                                           0x01, 0, 0});
+  fixture.Put(kBase + 0x151CD75,
               std::array<std::uint8_t, 7>{0x48, 0x8B, 0x90, 0x90,
                                            0x15, 0, 0});
   fixture.Put(kPlanner + 0x1538, kActorId);
@@ -161,6 +164,15 @@ int main() {
   Expect(result.status ==
          ActivityFeastGuestCandidateStatusV1::configuration_changed);
   candidate.mutate_group = false;
+
+  fixture.Put(kBase + 0x151CD75,
+              std::array<std::uint8_t, 7>{0, 0, 0, 0, 0, 0, 0});
+  result = ReadActivityFeastGuestCandidateV1(env, expected);
+  Expect(result.status ==
+         ActivityFeastGuestCandidateStatusV1::exact_build_rejected);
+  fixture.Put(kBase + 0x151CD75,
+              std::array<std::uint8_t, 7>{0x48, 0x8B, 0x90, 0x90,
+                                           0x15, 0, 0});
 
   fixture.Put(kBase + 0x28D07A1,
               std::array<std::uint8_t, 5>{0, 0, 0, 0, 0});

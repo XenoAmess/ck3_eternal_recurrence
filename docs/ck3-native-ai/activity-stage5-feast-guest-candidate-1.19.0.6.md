@@ -1,6 +1,6 @@
 # Stage 5 feast ordinary guest candidate: exact-build native read path
 
-Status: **source-confirmed, typed private transport and fixture tested; paused live pending**. This is a read-only pre-invitation input. It neither selects a guest nor proves final invitation legality, attendance, acceptance, or the start action.
+Status: **typed private transport and fixture tested; R0371 paused live RED at the exact-build gate; RVA repair pending fresh live read**. This is a read-only pre-invitation input. It neither selects a guest nor proves final invitation legality, attendance, acceptance, or the start action.
 
 ## Build and stock sources
 
@@ -29,7 +29,7 @@ flowchart TD
     G -.-> U[unknown: final invite command legality and actual outcome]
 ```
 
-Exact EXE disassembly establishes the links: `0x10B0796` loads destination group vector `planner+0x1590`, `0x10B07A3` supplies active rules `planner+0x1A18` to `0x28CF2B0`; `0x10B0A5C` calls `0x28CF3A0` to populate groups. In that routine `0x28CF72E` supplies a 4-byte CharacterID vector to `0x28D06C0`. At `0x28D07A1` the filter calls `0x28CEC60` for each ID; the latter uses `0x28AF3B0` and a script predicate at type `+0xD58`. GUI refresh `0x151CD6E` reads the same `+0x1590` group vector, each row 24 bytes with an ID pointer at `+0` and count at `+0xC`. The GUI copies those IDs into its character selection list. This establishes **current native-filtered candidates**, not a final legal invitation result.
+Exact EXE disassembly establishes the links: `0x10B0796` loads destination group vector `planner+0x1590`, `0x10B07A3` supplies active rules `planner+0x1A18` to `0x28CF2B0`; `0x10B0A5C` calls `0x28CF3A0` to populate groups. In that routine `0x28CF72E` supplies a 4-byte CharacterID vector to `0x28D06C0`. At `0x28D07A1` the filter calls `0x28CEC60` for each ID; the latter uses `0x28AF3B0` and a script predicate at type `+0xD58`. GUI refresh first loads the HostView at `0x151CD6E` (`48 8B 81 00 01 00 00`), then reads its `+0x1590` group vector at `0x151CD75` (`48 8B 90 90 15 00 00`); each row is 24 bytes with an ID pointer at `+0` and count at `+0xC`. The GUI copies those IDs into its character selection list. This establishes **current native-filtered candidates**, not a final legal invitation result.
 
 The separate stock category-toggle path changes active rules and refreshes both planner and GUI. Its exact ABI is recorded by the corresponding rule-toggle work package. `planner+0x1678/+0x1684` holds **already selected** rows; a zero selected count cannot imply a zero candidate count.
 
@@ -45,6 +45,11 @@ The native step is `query-activity-feast-guest-candidate-v1`. It accepts the sam
 
 ## Verification and remaining delivery
 
-- CMake focused target `xar_ck3_activity_feast_guest_candidate_v1_test` passed Debug and Release under MSVC `/W4 /WX` on this exact source branch. Fixtures cover no normal refresh, one positive timely guest, nonpositive join, late arrival, invalid group ID, content change across reads, and ABI mismatch.
-- No CK3 instance was launched for this package. No paused R0368 candidate ID, MCP result, action receipt, acceptance or recovery is claimed.
-- Next integration step: expose the native step through the Python service/MCP and query a paused current planner after a **normal** refresh. Bind an actually positive candidate to the separate category-toggle action and verify selected/pending state and later activity outcome. Final command legality and any acceptance/attendance consequence require their own stock evaluator or independent postcondition.
+### R0371 exact-build rejection and repair boundary
+
+R0371 used the H3928 paired save, source `3ed73d6d3681cbec25ec350f78788454c6b0c17d`, and Release DLL SHA-256 `2E45D9E10735B0F25E861661966B8DCE209E0BC53BF0D0719DD8D1B2D38B19BD`. The operator completed and Stage 1/2 reached a paused Stage 5 frame, but the private guest result was `candidate_status=exact_build_rejected`. That is neither a candidate nor a complete empty set. The [formal report](Z:/m6-activity-h3928-stage5-ordinary-guest-prep-20260929/operator-runs/feast-stage5-ordinary-guest-candidate-read-1/formal-report.txt) SHA-256 `30BBADD71B34C0A76B0DE8B8EE70DDEED40EEAA12D749E0D39F9288CA5FCFF79` and operator receipt SHA-256 `37C237E44E2F1A0469D7839E4C6FD708660217D70E711E99E2197AE17E473AA4` preserve the RED; the CK3 process was recovered without a gameplay date turn.
+
+Read-only inspection confirmed the loaded candidate DLL and frozen EXE matched their manifest SHA-256 values and the guest CMake option was ON. Three of the four `VerifyAbi` instruction comparisons match the exact EXE. The fourth expected `48 8B 90 90 15 00 00` at RVA `0x151CD6E`, where the EXE actually has the preceding `48 8B 81 00 01 00 00`; the expected seven bytes occur at `0x151CD75`. The old fixture placed the vector-read bytes at the wrong address, so it passed while the live build deterministically rejected the query. The narrow repair changes that RVA and makes the fixture reproduce both consecutive instructions, including a rejection when the vector-read bytes change. It remains source and fixture evidence until an independently paired new DLL returns a non-rejected paused result.
+
+- The original CMake focused target passed Debug and Release under MSVC `/W4 /WX`, but its ABI fixture held the wrong GUI instruction RVA; R0371 exposed that gap. The corrected fixture now models the two adjacent instructions. On the repair branch based on master `593c72bdd14ae97d8ef4030c1e1f531a80e66bd5`, the full bridge DLL built in Release and Debug and `xar_ck3_native_bridge_activity_feast_guest_candidate_v1` passed 1/1 in both configurations. These are source/fixture checks, not a new paused result.
+- R0371 did not observe a candidate ID, complete empty set, invitation, acceptance, attendance or Start. A fresh paired paused query is required to close this RED. If it returns a positive native-filtered candidate, final invitation legality, selected/pending state and later outcome still need independent evidence.
