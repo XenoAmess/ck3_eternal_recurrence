@@ -17,6 +17,7 @@ constexpr std::uintptr_t kActivity = 0x10013000;
 constexpr std::uintptr_t kActivityRows = 0x10014000;
 constexpr std::uintptr_t kRecords = 0x10015000;
 constexpr std::uintptr_t kLocationRow = 0x10016000;
+constexpr std::uintptr_t kOtherType = 0x10017000;
 constexpr std::int32_t kGuestId = 31000;
 
 struct GuestFixture {
@@ -56,6 +57,13 @@ bool Travel(void *opaque, std::uintptr_t base,
       destination != kDestination)
     return false;
   days = fixture.travel_days;
+  return true;
+}
+
+bool Hidden(void *, std::uintptr_t planner,
+            std::uintptr_t slot, bool &visible) noexcept {
+  if (planner != kPlanner || slot != kBase + 0x1F30970) return false;
+  visible = false;
   return true;
 }
 
@@ -157,6 +165,56 @@ int main() {
   Expect(result.arrival_time_observed);
   Expect(guest.calls == 2);
   Expect(guest.travel_calls == 2);
+
+  // The live Stage 5 path can have a stale/empty HostView even though the
+  // selected planner type and normal slot-12 refresh still identify a feast.
+  fixture.Put(kHost + 0x100, std::int32_t{0});
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status == ActivityFeastGuestJoinStatusV1::observed);
+  Expect(result.selected_nonhost_count == 1 && result.positive_join_count == 1);
+  fixture.Put(kHost + 0x100, kActorId);
+
+  fixture.Put(kOtherType, kBase + 0x440E308);
+  fixture.PutBytes(kOtherType + 0x18, "activity_hunt");
+  fixture.Put(kOtherType + 0x28, std::uint64_t{13});
+  fixture.Put(kOtherType + 0x30, std::uint64_t{15});
+  fixture.Put(kHost + 0x268, kOtherType);
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status ==
+         ActivityFeastGuestJoinStatusV1::host_view_type_mismatch);
+  NoRowsPublished(result);
+  fixture.Put(kHost + 0x268, kType);
+
+  ++fixture.frame.revision;
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status ==
+         ActivityFeastGuestJoinStatusV1::planner_diagnostic_unavailable);
+  NoRowsPublished(result);
+  fixture.frame = expected;
+  fixture.Put(kHandler + 0x3C0, std::uintptr_t{0});
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status == ActivityFeastGuestJoinStatusV1::planner_absent);
+  NoRowsPublished(result);
+  fixture.Put(kHandler + 0x3C0, kPlanner);
+  fixture.Put(kPlanner + 0x1AB0, std::int32_t{4});
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status == ActivityFeastGuestJoinStatusV1::not_stage_five);
+  NoRowsPublished(result);
+  fixture.Put(kPlanner + 0x1AB0, std::int32_t{5});
+  env.diagnostic.invoke_visibility = &Hidden;
+  fixture.Put(kPlanner + 0x78, std::uintptr_t{0});
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status == ActivityFeastGuestJoinStatusV1::widget_detached);
+  NoRowsPublished(result);
+  fixture.Put(kPlanner + 0x78, kWidget);
+  result = ReadActivityFeastGuestJoinV1(env, expected);
+  Expect(result.status == ActivityFeastGuestJoinStatusV1::widget_hidden);
+  NoRowsPublished(result);
+  env.diagnostic.invoke_visibility = &Visible;
+
+  Expect(ActivityFeastGuestJoinStatusKeyV1(
+             ActivityFeastGuestJoinStatusV1::host_view_type_mismatch) ==
+         "host_view_type_mismatch");
 
   fixture.Put(kCache + 1, std::uint8_t{0});
   result = ReadActivityFeastGuestJoinV1(env, expected);
