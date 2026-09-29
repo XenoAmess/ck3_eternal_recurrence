@@ -331,3 +331,81 @@ advertised capability; both decision fields remain typed `unknown`. A closed
 widget with an empty cost container remains unknown. Static ABI and no-launch
 tests establish only source/build readiness; a paired paused CK3 capture is
 still required to learn which diagnostic state Robert actually presents.
+
+## 2026-09-29 original feast planner entry trace
+
+This bounded read used the same frozen 1.19.0.6 executable and SHA-256 stated
+above, plus original `game/gui/window_activity_list.gui` lines 410–418 and
+849–860. No CK3 process, save or input was used. The list entry opens
+`activity_list_detail_host_window` with its `ActivityType` data. That window's
+Confirm button calls `ActivityListDetailHostView.Confirm`.
+
+- `CActivityListDetailHostView` primary slot 26 at RVA `0x1505230` obtains
+  `HostView+0x268` (`CActivityType*`), wraps it in a native event payload, and
+  calls `0xA79700(handler, 0x65, payload)`. The function then closes the
+  HostView. `0xA79700` inserts an event into the handler-owned queue using
+  `0xA95A40`; it is an effectful operation, not a semantic getter.
+- `handler+0x3C0` contains the `CActivityPlanner` registered as handler table
+  index `0x65`. Its primary vtable slot 18 at RVA `0x10AE120` receives a
+  payload, calls `0x10AE040` to resolve a `CActivityType*`, then calls
+  `0x10AD7C0(planner, type)`. The latter copies the type's initial planner
+  data to `planner+0x1530`, sets stage `planner+0x1AB0 = 2` at `0x10AD929`,
+  and proceeds with more initialization. Slot 18 then calls `0x10CCF90`.
+  Slot 19 at `0x10AE150` resolves the same payload type and compares it with
+  `planner+0x1530`, consistent with the event's selected-type identity.
+- The handler's queue consumer at `0xA794D0` pops a 0x30-byte event from
+  `handler+0x5D0`/`+0x5DC`, resolves its event ID to the corresponding handler
+  table object via `0xA942C0`, calls that object's virtual slot 21
+  (`+0xA8`) to test the payload, and on success calls virtual slot 18
+  (`+0x90`) at `0xA795D2`. Planner slot 21 resolves to the constant-true
+  `0x7E9220`, and slot 18 is `0x10AE120` for event `0x65`; slot 19 is a
+  separate selected-type comparison, not this queue gate. The queue consumer is
+  reached from `0xA23B32`, and `0xA79200` handles the relevant widget state.
+  This closes the event delivery shape; live timing and resulting planner
+  visibility remain unobserved.
+- The separate HostView at `handler+0x3D8` is handler table index `0x68`.
+  Its primary slot 18 is `0x15050E0`: it calls `0x1506E70` on an incoming
+  payload and writes the resulting type pointer to `HostView+0x268` at
+  `0x15050F1`. Slot 19 at `0x1505100` compares an incoming payload type with
+  that field. This is the original route by which a type-bearing view event
+  selects the detail HostView; it does not identify a stable-key lookup or
+  prove that an unopened paused frame already has `activity_feast` selected.
+- The original planner GUI binds `ActivityPlanner.ProgressPlanningStage` to
+  stage buttons and `CanProgressPlanningStage` to the enabled state at lines
+  1762–1767 and 1987–1991. The native evaluator `0x10B0DA0` treats
+  stage 5 specially: it constructs a temporary `CStartActivityCommand` and
+  invokes the final command validator. A stage-2 positive result is only an
+  earlier planning gate. The planner's cost container at `+0x1AD8` is still
+  refreshed by visible-widget slot 12, with no independent validity marker.
+- The GUI's `ProgressPlanningStage` registration at `0x1574B3..0x157546`
+  supplies wrapper `0x10B4CE0`, which calls `0x10B1330`. Its jump table at
+  `0x10B13D8` sends stage 2 to `0x10B13B3`, setting stage 5 through
+  `0x10B1BD0`; its stage-5 branch goes to `0x10B1910`, which initiates the
+  start path. A bounded planner-preparation operation could call it at stage
+  2 only after the original `CanProgressPlanningStage` gate and then stop at
+  stage 5. It must never call the same method at stage 5 merely to observe
+  the final validator. Whether the selected feast defaults pass the stage-2
+  gate is unobserved.
+- A direct-call cross-reference scan of `0x10B2B30` found only
+  `0x10AE1AA`, inside planner slot 12. `SetActivityType` does not itself call
+  that cost update. Thus a newly initialized stage-5 planner has no proven
+  fresh configured cost until the visible-widget update has occurred.
+
+```mermaid
+flowchart LR
+    A[Activity list type] --> B[HostView Confirm: 0x1505230]
+    A -. detail view event 0x68 requires native type payload .-> H[HostView slot 18: 0x15050E0]
+    H --> B
+    B --> C[handler event 0x65: 0xA79700]
+    C --> Q[queue consumer: 0xA794D0]
+    Q --> D[planner slot 21 then 18: 0x7E9220 / 0x10AE120]
+    D --> E[SetActivityType: 0x10AD7C0, stage 2]
+    E -. stage 2 gate and one transition require paused proof .-> F[stage 5 command validator]
+    E -. visible refresh unproved .-> G[configured cost at +0x1AD8]
+```
+
+The next bounded proof is a stable-key-to-`CActivityType*` original lookup,
+native payload construction for the detail view, and actual planner widget
+visibility after event `0x65`. A private action
+cannot claim an opened/configured feast or use stage-2 `true` as `can_start`
+until those branches and a paired paused readback are established.
