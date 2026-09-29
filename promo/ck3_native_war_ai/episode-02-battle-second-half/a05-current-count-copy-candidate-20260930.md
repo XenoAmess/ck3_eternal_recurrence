@@ -19,6 +19,6 @@
 
 只改 [中文旁白](narration-script-draft.md)追击段第 40 行及其证据脚注、[英文字幕源](english-subtitles.json)对应句和 `pursuit.source_zh_sha256`。英文源中的其余五章文本及绑定 SHA、[九卡索引](cards/calculation-cards.json)和 [ProjectConfig](project/promo-project.json)均不改。候选句明确 24 团逐团字段稳定、面板人数下降及 UI 公式未证，不再说面板“大号人数”不变。
 
-`script_chapters()` 提取的候选 `pursuit` 中文可听文本 SHA-256 为 `9A03BE2373061B104EFE6D66C18268D8DE65FCB7956BBDC6F014E174C27745A8`；旧章 SHA 为 `92367A922AF5278EA585484DDBE3BF6A73872462E875F697C4004653886B2619`。新英文源文件 SHA-256 为 `BDE65C4DCF9B076A440A3F908D98F4ED5374C79CB1F37C1C4E49E7302E111B83`。这两个新 SHA 只标记**文本候选**，不是音频、镜头或译文人工签核。
+`script_chapters()` 提取的候选 `pursuit` 中文可听文本 SHA-256 为 `3CC4CBB4F2FCD482391F5EF67A0234B0DC5FDBA03B145ABDC54752EFF763ED9A`；旧章 SHA 为 `92367A922AF5278EA585484DDBE3BF6A73872462E875F697C4004653886B2619`。新英文源文件 SHA-256 为 `ACDE81AE16D1DB589B605EC1FEC50457EF5E6BA30FF395B86CF6F5DE31F7B559`。这两个新 SHA 只标记**文本候选**，不是音频、镜头或译文人工签核。
 
 `render_selected_narration.py` 将 TTS 请求与源稿精确字节绑定；`prepare_subtitle_inputs.py` 校验各源组的 render/native manifest、source draft、章文本和音频边界，并要求新选定的 source-groups 绑定当前整稿 SHA。下一 run 至少需要为变动的追击章创建**新的独立 TTS attempt**，再创建新 source-groups、六章 subtitle fragments 与 readback；未改章节能否引用旧 TTS，仍须由该精确源组门逐项验证。随后按新时长重新检查追击章时轴、双语字幕、画面同步及完整真人 1× 审阅。旧追击 MP3/字幕回执不适用于新句，不能复制或改写为新准入。
