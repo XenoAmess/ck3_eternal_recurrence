@@ -127,6 +127,9 @@ class _NativeAutoRunHarness:
         self.activity_guest_opinion_status = "observed"
         self.activity_guest_rule_query_count = 0
         self.activity_guest_rule_status = "observed_inactive"
+        self.activity_guest_rule_provenance_query_count = 0
+        self.activity_guest_rule_provenance_status = "observed"
+        self.activity_guest_rule_candidate_member = True
         self.activity_cost_slot12_raw_read_count = 0
         self.activity_feast_open_status = "opened"
         self.activity_feast_open_stage = 2
@@ -1501,6 +1504,7 @@ class _FakeActivityFeastEndpoint:
             "query-activity-feast-guest-candidate-v1",
             "query-activity-feast-guest-opinion-v1",
             "query-activity-feast-guest-rule-v1",
+            "query-activity-feast-guest-rule-provenance-v1",
         }
         assert request["expected_revision"] == self.harness.native_revision
         if request["step"] in {
@@ -1530,13 +1534,18 @@ class _FakeActivityFeastEndpoint:
             assert request["expected_actor_character_id"] == self.harness.played_character_id
             assert request["expected_activity_key"] == "activity_feast"
             assert request["expected_planning_stage"] == 5
-        if request["step"] == "query-activity-feast-guest-rule-v1":
+        if request["step"] in {
+            "query-activity-feast-guest-rule-v1",
+            "query-activity-feast-guest-rule-provenance-v1",
+        }:
             assert request["expected_date_raw"] == self.harness.date_raw
             assert request["expected_actor_character_id"] == self.harness.played_character_id
             assert request["expected_activity_key"] == "activity_feast"
             assert request["expected_planning_stage"] == 5
             assert request["authored_rule_key"] == "activity_invite_rule_vassals"
             assert "policy_approved" not in request
+            if request["step"] == "query-activity-feast-guest-rule-provenance-v1":
+                assert request["candidate_character_id"] == 32716
         if request["step"] == "query-activity-feast-guest-opinion-v1":
             assert request["expected_date_raw"] == self.harness.date_raw
             assert request["expected_actor_character_id"] == self.harness.played_character_id
@@ -1569,6 +1578,8 @@ class _FakeActivityFeastEndpoint:
             self.harness.activity_guest_opinion_query_count += 1
         elif request["step"] == "query-activity-feast-guest-rule-v1":
             self.harness.activity_guest_rule_query_count += 1
+        elif request["step"] == "query-activity-feast-guest-rule-provenance-v1":
+            self.harness.activity_guest_rule_provenance_query_count += 1
         else:
             self.harness.activity_stage1_option_read_count += 1
 
@@ -1922,6 +1933,42 @@ class _FakeActivityFeastState:
                         "active_rule_count": 2 if observed else None,
                         "filtered_group_count": 2 if observed else None,
                         "filtered_character_count": 8 if observed else None,
+                    },
+                },
+            }
+        if request["step"] == "query-activity-feast-guest-rule-provenance-v1":
+            assert self.harness.activity_feast_open_stage == 5
+            assert request["candidate_character_id"] == 32716
+            status = self.harness.activity_guest_rule_provenance_status
+            observed = status == "observed"
+            ids = ([32716, 33000] if self.harness.activity_guest_rule_candidate_member
+                   else [33000])
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {
+                    "step": request["step"], "accepted": True,
+                    "status": "available" if observed else "unavailable",
+                    "private_build": True, "read_only": True,
+                    "advertised": False, "backend_id": "native-headless",
+                    "activity_feast_guest_rule_provenance": {
+                        "schema": "activity-feast-guest-rule-provenance-private-v1",
+                        "snapshot_revision": self.harness.native_revision,
+                        "date_raw": self.harness.date_raw,
+                        "actor_character_id": self.harness.played_character_id,
+                        "activity_key": "activity_feast", "planning_stage": 5,
+                        "authored_rule_key": request["authored_rule_key"],
+                        "rule_status": "observed_active", "status": status,
+                        "candidate_character_id": request["candidate_character_id"],
+                        "rule_active": True,
+                        "native_key_hash": 1234 if observed else None,
+                        "normal_refresh_sequence": 1 if observed else None,
+                        "raw_rule_character_count": 3 if observed else None,
+                        "filtered_rule_character_count": len(ids) if observed else None,
+                        "candidate_membership": (
+                            self.harness.activity_guest_rule_candidate_member if observed else None
+                        ),
+                        "filtered_rule_character_ids": ids if observed else None,
                     },
                 },
             }
@@ -2522,6 +2569,9 @@ class NativeAutoRunTests(unittest.TestCase):
         activity_guest_opinion_status: str = "observed",
         private_activity_feast_guest_rule_key: str | None = None,
         activity_guest_rule_status: str = "observed_inactive",
+        private_activity_feast_guest_rule_candidate_id: int | None = None,
+        activity_guest_rule_provenance_status: str = "observed",
+        activity_guest_rule_candidate_member: bool = True,
         private_activity_cost_slot12_raw_read: bool = False,
         activity_feast_open_status: str = "opened",
         activity_feast_open_stage: int = 2,
@@ -2647,6 +2697,8 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_guest_candidate_status = activity_guest_candidate_status
         harness.activity_guest_opinion_status = activity_guest_opinion_status
         harness.activity_guest_rule_status = activity_guest_rule_status
+        harness.activity_guest_rule_provenance_status = activity_guest_rule_provenance_status
+        harness.activity_guest_rule_candidate_member = activity_guest_rule_candidate_member
         harness.activity_cost_slot12_raw_error = activity_cost_slot12_raw_error
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
@@ -2807,6 +2859,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_activity_feast_guest_rule_key=(
                     private_activity_feast_guest_rule_key
+                ),
+                private_activity_feast_guest_rule_candidate_id=(
+                    private_activity_feast_guest_rule_candidate_id
                 ),
                 private_activity_cost_slot12_raw_read=(
                     private_activity_cost_slot12_raw_read
@@ -3616,6 +3671,54 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(unavailable["first_blocker"]["result"]["rule_status"],
                          "window_unbound")
         self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_rule_provenance_requires_same_run_candidate_and_holds(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run", "--turns", "1"]
+        self.assertIsNone(cli.parser().parse_args(common)
+                          .private_activity_feast_guest_rule_candidate_id)
+        self.assertEqual(cli.parser().parse_args([
+            *common, "--private-activity-feast-guest-rule-candidate-id", "32716",
+        ]).private_activity_feast_guest_rule_candidate_id, 32716)
+        opts = dict(
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_candidate_read=True,
+            private_activity_feast_guest_rule_key="activity_invite_rule_vassals",
+            private_activity_feast_guest_rule_candidate_id=32716,
+            activity_feast_open_stage=1,
+        )
+        report, harness = self._run(["advance"], **opts)
+        self.assertTrue(report["ok"], report.get("first_blocker"))
+        read = report["private_activity_feast_guest_rule_observation"]
+        self.assertIs(read["candidate_category_membership"], True)
+        self.assertEqual(read["reason"],
+                         "candidate_in_active_category_final_invite_unproven")
+        self.assertIs(read["formal_action_ready"], False)
+        self.assertIsNone(read["final_invite_legal"])
+        self.assertEqual(harness.activity_guest_candidate_query_count, 1)
+        self.assertEqual(harness.activity_guest_rule_provenance_query_count, 1)
+        self.assertIs(harness.driver.allow_private_activity_feast_guest_rule_action, False)
+        self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
+        self.assertEqual(harness.auto_turn_count, 0)
+
+        absent, harness = self._run(
+            ["advance"], **{**opts, "activity_guest_rule_candidate_member": False})
+        self.assertTrue(absent["ok"], absent.get("first_blocker"))
+        self.assertIs(absent["private_activity_feast_guest_rule_observation"]
+                      ["candidate_category_membership"], False)
+        self.assertEqual(absent["private_activity_feast_guest_rule_observation"]
+                         ["reason"], "candidate_not_in_named_category")
+        red, harness = self._run(
+            ["advance"], **{**opts, "activity_guest_rule_provenance_status":
+                            "no_normal_refresh"})
+        self.assertFalse(red["ok"])
+        self.assertIn("no_normal_refresh", red["first_blocker"]["message"])
+        self.assertEqual(harness.auto_turn_count, 0)
+        with self.assertRaisesRegex(AgentError, "same-run candidate read"):
+            self._run(["advance"], **{**opts,
+                "private_activity_feast_guest_candidate_read": False})
 
     def test_private_feast_stage5_full_cost_requires_destination(self) -> None:
         with self.assertRaisesRegex(AgentError, "requires verified stage-2 destination"):
