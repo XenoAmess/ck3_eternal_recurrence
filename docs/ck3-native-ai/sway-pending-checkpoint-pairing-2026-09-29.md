@@ -61,3 +61,31 @@ against the current save/driver, and unchanged child ledger. The report's
 top-level `ok=false` is expected because the Sway receipt remained RED; it is
 not treated as action success. Without this report, the H3924 child pairing
 continues to reject because R0329 alone only reaches H3922.
+
+## R0342 cold Sway readback and H3928
+
+R0342 resumed H3924 under a new PID. Its formal report, SHA-256
+`EC5BFA99018974AE09C0423D6F24431295194604F9D2B99EADFD9C7EA12EA1A0`,
+records the same Sway action ID as R0339, no new submit or game date advance,
+and an independent native readback with `active_scheme_count=1` and
+`matching_sway_active=true` for actor 29829 and target 32716. It saved one
+H3928 checkpoint. The current paired source is
+`Z:\m6swayh3924goalfix-recovery-live-20260929\state`:
+
+| Asset | SHA-256 |
+| --- | --- |
+| `profile\save games\xar_checkpoint.ck3` | `A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C` |
+| `native-session\driver-state.json` | `BCC6F5C45CE454E3C76B4A12E12098342B89795BE2DD0ACDE89566188886A143` |
+| `active-scheme-sway-formal-private-v1.json` | `1D5056F76DC876FDAEDC65F3A7D36C85AC1CFE866DC3B6D20E5225FDF333BFC3` |
+| `player-child-matrilineal-formal-v1.json` | `984F140CCAF733CA66A0377C271DFB0A8152EEE5D296E3DE245168A76FE331FC` |
+
+The Sway ledger is now `resolved.status=applied`; the child ledger remains
+`receipt_pending`. To prepare a later candidate, provide the same R0328/R0329
+child proof chain, R0339 via `--child-matrilineal-continuation-report`, and
+R0342 via the new `--sway-formal-applied-report`, plus both current sidecars.
+The operator requires R0342's fixed seed to be R0339's saved H3924, the
+resolved Sway result to match the native readback and current H3928
+save/driver, and the child ledger still to equal its R0329 version. It copies
+both ledgers unchanged. R0342 verified Sway application; it did not consume
+the next turn or resolve the child proposal. This source change itself adds no
+new live evidence.
