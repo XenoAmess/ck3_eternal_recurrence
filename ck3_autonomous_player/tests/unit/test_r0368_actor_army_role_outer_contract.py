@@ -179,6 +179,76 @@ def test_prepared_or_source_mismatch_refused_before_asset_hashing(
             pipe_name="r0368-test")
 
 
+def test_real_rebind_digest_shapes_match_distinct_manifest_file_hash(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = {"candidate_manifest_sha256": "A" * 64,
+              "release_pair_manifest_sha256": "B" * 64}
+    monkeypatch.setattr(contract, "verify_no_launch_source_pair", lambda **_: source)
+    state = tmp_path / "state"
+    profile = state / "profile"
+    checkpoint = profile / "save games" / "xar_checkpoint.ck3"
+    checkpoint.parent.mkdir(parents=True)
+    checkpoint.write_bytes(b"raw checkpoint fixture")
+    sidecar = state / "player-child-matrilineal-formal-v1.json"
+    sidecar.write_bytes(b"sidecar fixture")
+    driver = state / "native-session" / "driver-state.json"
+    driver.parent.mkdir(parents=True)
+    driver.write_bytes(b"rebound driver fixture")
+    raw_driver_sha = "D" * 64
+    monkeypatch.setattr(contract, "_ASSET_SHA256", {
+        "xar_checkpoint.ck3": contract._sha256(checkpoint),
+        "player-child-matrilineal-formal-v1.json": contract._sha256(sidecar),
+        "driver-state.json": raw_driver_sha,
+    })
+    environment = tmp_path / "environment.json"
+    internal_binding_sha = "C" * 64
+    environment_sha = _write(environment, {
+        "environment_sha256": internal_binding_sha.lower(),
+    })
+    rebind = state / "ordinary-seed-rebind-v1.json"
+    rebind_sha = _write(rebind, {
+        "schema": "xar.ck3.ordinary-seed-rebind/v1", "ok": True,
+        "status": "rebound", "ck3_launch_attempted": False,
+        "desktop_interaction": False, "state_dir": str(state),
+        "profile_dir": str(profile), "pipe_name": "r0368-test",
+        "driver_state": {"source_sha256": raw_driver_sha.lower(),
+                         "target_sha256": contract._sha256(driver).lower()},
+        "environment": {"target_sha256": internal_binding_sha.lower()},
+        "save": {"bytes_unchanged": True},
+    })
+    prepared = tmp_path / "prepared.json"
+    _write(prepared, {
+        "schema": "xar.war.r0368.role-only-prepared-source.v1",
+        "status": "READY_NO_LAUNCH", "live_authorized": False,
+        "ck3_launch_attempted": False, "state_dir": str(state),
+        "profile_dir": str(profile), "pipe_name": "r0368-test",
+        **source, "raw_driver_sha256": raw_driver_sha,
+        "prepared_driver_sha256": contract._sha256(driver),
+        "rebind_receipt_sha256": rebind_sha,
+        "environment_sha256": environment_sha,
+    })
+    result = contract.check_source_and_prepared_bytes(
+        candidate_manifest=tmp_path / "candidate.json",
+        release_pair_manifest=tmp_path / "pair.json", checkout=tmp_path,
+        prepared_manifest=prepared, state_dir=state, profile_dir=profile,
+        environment_manifest=environment, pipe_name="r0368-test")
+    _check(result["status"] == "PREPARED_BYTES_VERIFIED_LIVE_CLOSED")
+    _check(result["live_go"] is False)
+    changed_rebind = json.loads(rebind.read_text(encoding="utf-8"))
+    changed_rebind["environment"]["target_sha256"] = "F" * 64
+    changed_rebind_sha = _write(rebind, changed_rebind)
+    changed_prepared = json.loads(prepared.read_text(encoding="utf-8"))
+    changed_prepared["rebind_receipt_sha256"] = changed_rebind_sha
+    _write(prepared, changed_prepared)
+    with pytest.raises(contract.AdmissionError, match="official prepared rebind"):
+        contract.check_source_and_prepared_bytes(
+            candidate_manifest=tmp_path / "candidate.json",
+            release_pair_manifest=tmp_path / "pair.json", checkout=tmp_path,
+            prepared_manifest=prepared, state_dir=state, profile_dir=profile,
+            environment_manifest=environment, pipe_name="r0368-test")
+
+
 def _frame_pair() -> tuple[dict[str, object], dict[str, object]]:
     readiness = {
         "snapshot_id": "native:3", "revision": 4, "native_revision": 3,

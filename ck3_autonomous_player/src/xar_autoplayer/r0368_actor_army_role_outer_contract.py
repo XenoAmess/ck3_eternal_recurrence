@@ -72,6 +72,11 @@ def _attested_file(row: object) -> tuple[Path, str]:
     return path, digest.upper()
 
 
+def _same_sha256(actual: object, expected: str) -> bool:
+    return (isinstance(actual, str) and _SHA.fullmatch(actual) is not None
+            and actual.upper() == expected.upper())
+
+
 def check_source_and_prepared_bytes(
     *, candidate_manifest: Path, release_pair_manifest: Path,
     checkout: Path, prepared_manifest: Path,
@@ -119,6 +124,11 @@ def check_source_and_prepared_bytes(
             raise AdmissionError(f"prepared {name} bytes changed")
         hashes[name] = actual
     rebind = _json(required["rebind"][0])
+    environment_manifest_data = _json(environment_manifest)
+    environment_binding_sha = environment_manifest_data.get("environment_sha256")
+    if (not isinstance(environment_binding_sha, str)
+            or _SHA.fullmatch(environment_binding_sha) is None):
+        raise AdmissionError("prepared environment binding digest missing")
     driver = rebind.get("driver_state")
     environment = rebind.get("environment")
     save = rebind.get("save")
@@ -128,11 +138,15 @@ def check_source_and_prepared_bytes(
             or rebind.get("ck3_launch_attempted") is not False
             or rebind.get("desktop_interaction") is not False
             or rebind.get("pipe_name") != pipe_name
+            or Path(str(rebind.get("state_dir"))).resolve() != state_dir.resolve()
+            or Path(str(rebind.get("profile_dir"))).resolve() != profile_dir.resolve()
             or not isinstance(driver, dict)
-            or driver.get("source_sha256") != _ASSET_SHA256["driver-state.json"]
-            or driver.get("target_sha256") != hashes["driver"]
+            or not _same_sha256(driver.get("source_sha256"),
+                                _ASSET_SHA256["driver-state.json"])
+            or not _same_sha256(driver.get("target_sha256"), hashes["driver"])
             or not isinstance(environment, dict)
-            or environment.get("target_sha256") != hashes["environment"]
+            or not _same_sha256(environment.get("target_sha256"),
+                                environment_binding_sha)
             or not isinstance(save, dict)
             or save.get("bytes_unchanged") is not True):
         raise AdmissionError("official prepared rebind receipt differs")
