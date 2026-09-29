@@ -54,6 +54,16 @@ def assess_feast_start_private_v1(
         return _hold("native_final_start_unavailable", status="not_actionable")
     if inputs.get("native_guest_route_qualified") is not True:
         return _hold("native_guest_route_unqualified")
+    if guest is None and "guest_join_status" in inputs:
+        guest = {
+            "status": inputs["guest_join_status"],
+            "arrival_time_observed": inputs.get("arrival_time_observed"),
+            "same_frame": True,
+            "snapshot_revision": inputs.get("snapshot_revision"),
+            "date_raw": inputs.get("date_raw"),
+            "actor_character_id": inputs.get("actor_character_id"),
+            "timely_positive_join_count": inputs.get("timely_positive_join_count"),
+        }
     if (not isinstance(guest, Mapping)
             or guest.get("status") != "observed"
             or guest.get("arrival_time_observed") is not True

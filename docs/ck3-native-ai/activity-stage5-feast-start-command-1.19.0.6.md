@@ -131,10 +131,11 @@ intent is written before any Start call; a timed-out or pending submission is
 reconciled through a separate hosted-identity/resource read, never resent.
 That reconciliation requires exactly one new hosted feast ID with the actor
 as host and the same-date configured resource debit. This is no-launch
-consumer wiring, not a live Start result. The native guest route remains
-unqualified until the exact-build arrival/join read is connected and proven
-in a paused fixture; the current bounded route therefore only observes and
-holds. A Start ACK would remain pending until material poststate is read.
+consumer wiring, not a live Start result. The same-frame guest join/arrival
+counts are copied when observed, but the native guest route remains
+unqualified until that source is proven in a paused fixture; the current
+bounded route therefore only observes and holds. A Start ACK would remain
+pending until material poststate is read.
 
 The next native read-only implementation point is the activity manager
 reached by `0x26C8050`, with the `0x2700340` allocation path as its exact
