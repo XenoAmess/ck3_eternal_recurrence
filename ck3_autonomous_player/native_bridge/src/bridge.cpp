@@ -10458,6 +10458,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityStage2GateReadPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1)
+                   && step != xar::ck3_11906::kActivityStage2LocationReadPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityStage5CanStartPrivateStepV1
 #endif
@@ -10793,6 +10796,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1)
               || step == xar::ck3_11906::kActivityStage2GateReadPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1)
+              || step == xar::ck3_11906::kActivityStage2LocationReadPrivateStepV1
+#endif
               ) {
             const bool confirm =
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
@@ -10812,8 +10818,19 @@ void RunConnectedSession(
 #else
                 false;
 #endif
+            const bool stage_two_location_read =
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1)
+                step == xar::ck3_11906::kActivityStage2LocationReadPrivateStepV1;
+#else
+                false;
+#endif
             const bool typed_option =
-                confirm || stage_two_read || stage_two_gate_read;
+                confirm || stage_two_read || stage_two_gate_read ||
+                stage_two_location_read;
+            std::array<std::int32_t,
+                       xar::bridge::kActivityStage2MaximumCandidatesV1>
+                candidate_province_ids{};
+            std::uint16_t candidate_province_count = 0;
             std::uint64_t expected_revision = 0;
             std::uint64_t expected_date_raw = 0;
             std::uint64_t expected_actor_id = 0;
@@ -10836,6 +10853,10 @@ void RunConnectedSession(
                       expected_option_key, 96) ||
                   expected_activity_key != "activity_feast" ||
                   expected_option_key != "feast_type_generic")) ||
+                (stage_two_location_read &&
+                 !xar::ck3_11906::ParseActivityStage2CandidateIdsV1(
+                     incoming.payload, candidate_province_ids,
+                     candidate_province_count)) ||
                 expected_revision == 0 || expected_revision != state_revision ||
                 !previous_snapshot.has_value() ||
                 !xar::game::ReadSnapshot(game, current) ||
@@ -10860,6 +10881,9 @@ void RunConnectedSession(
               query.confirm_stage_one = confirm;
               query.stage_two_read = stage_two_read;
               query.stage_two_gate_read = stage_two_gate_read;
+              query.stage_two_location_read = stage_two_location_read;
+              query.candidate_province_ids = candidate_province_ids;
+              query.candidate_province_count = candidate_province_count;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActivityStage1OptionReadPrivateV1,
@@ -10891,6 +10915,9 @@ void RunConnectedSession(
                   if (confirm)
                     native = xar::ck3_11906::
                         SerializeActivityStage1ConfirmPrivateV1(query);
+                  else if (stage_two_location_read)
+                    native = xar::ck3_11906::
+                        SerializeActivityStage2LocationReadPrivateV1(query);
                   else if (stage_two_gate_read)
                     native = xar::ck3_11906::
                         SerializeActivityStage2GateReadPrivateV1(query);
@@ -10931,11 +10958,13 @@ void RunConnectedSession(
                       std::string(confirm ? "false" : "true") +
                       ",\"advertised\":false,\"" +
                       std::string(confirm ? "activity_stage1_confirm"
-                                          : (stage_two_gate_read
+                                          : (stage_two_location_read
+                                                 ? "activity_stage2_location"
+                                                 : (stage_two_gate_read
                                                  ? "activity_stage2_gate"
                                                  : (stage_two_read
                                                         ? "activity_stage2_option"
-                                                        : "activity_stage1_option"))) +
+                                                        : "activity_stage1_option")))) +
                       "\":" + native +
                       ",\"backend_id\":\"native-headless\"}}";
                 } else {
