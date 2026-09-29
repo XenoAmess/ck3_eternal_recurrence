@@ -17,6 +17,7 @@ _COST_TERMS = (
 )
 _MAX_CHILD_WAIT_RAW = 3
 _NATIVE_REVERSE_FERTILE_AGE_CUTOFF = 43
+_BOUNDED_FULL_VALUE_COMPARISON = 2
 
 
 def _positive(value: object) -> bool:
@@ -43,7 +44,7 @@ def _native_fertility_available(value: object) -> bool:
 
 
 def shortlist_specified_child_default_candidates(
-    legality: Mapping[str, object], *, limit: int = 5,
+    legality: Mapping[str, object], *, limit: int = _BOUNDED_FULL_VALUE_COMPARISON,
 ) -> list[int]:
     """Pick bounded full-value reads from native final-legal compact rows.
 
@@ -126,8 +127,17 @@ def _reason(legality: Mapping[str, object], value: Mapping[str, object],
             or row.get("recipient_answer_status_raw") not in {0, 1}
             or not _positive(row.get("recipient_ai_accept_raw"))
             or row.get("recipient_ai_accept_raw") != legal_row.get(
-                "recipient_ai_accept_raw")):
+                "recipient_ai_accept_raw")
+            or row.get("heir_adult_measure_raw") != legal_row.get(
+                "heir_adult_measure_raw")
+            or row.get("candidate_adult_measure_raw") != legal_row.get(
+                "candidate_adult_measure_raw")):
         return "native_final_or_frame_unavailable"
+    if (row.get("heir_sex_selector_raw") != 0
+            or row.get("candidate_sex_selector_raw") != 1
+            or row.get("effective_matrilineal_if_accepted") is not
+                bool(row.get("heir_sex_selector_raw"))):
+        return "sex_lineality_mismatch"
     if (row.get("requested_matrilineal_option") is not False
             or row.get("matrilineal_option_selected") is not False
             or row.get("effective_matrilineal_if_accepted") is not False
@@ -213,12 +223,17 @@ def choose_specified_child_default_value(
             if candidate_id in legal_rows:
                 duplicates.add(candidate_id)
             legal_rows[candidate_id] = row
+    shortlist = shortlist_specified_child_default_candidates(legality)
     evaluated: list[dict[str, object]] = []
-    ranked: list[tuple[int, int, int, int]] = []
+    value_by_id: dict[int, Mapping[str, object]] = {}
     for value in values:
         candidate_id = value.get("candidate_character_id")
         if not _positive(candidate_id):
             continue
+        if candidate_id in value_by_id:
+            return {"status": "no_positive_value", "selected_candidate_character_id": None,
+                    "evaluated": evaluated, "reason": "duplicate_full_value"}
+        value_by_id[candidate_id] = value
         reason = ("duplicate_final_legal_candidate" if candidate_id in duplicates
                   else _reason(legality, value, legal_rows))
         row = value.get("row")
@@ -230,13 +245,25 @@ def choose_specified_child_default_value(
             item.update({"child_wait_raw": child_wait,
                          "candidate_age_at_child_adulthood_raw": future_age,
                          "recipient_ai_accept_raw": row["recipient_ai_accept_raw"]})
-            ranked.append((child_wait, future_age,
-                           -row["recipient_ai_accept_raw"], candidate_id))
         evaluated.append(item)
-    if not ranked:
+    reasons = {item["candidate_character_id"]: item["reason"]
+               for item in evaluated}
+    if any(candidate_id not in value_by_id for candidate_id in shortlist):
         return {"status": "no_positive_value", "selected_candidate_character_id": None,
-                "evaluated": evaluated, "reason": "no_bounded_positive_pair"}
-    ranked.sort()
-    return {"status": "selected", "selected_candidate_character_id": ranked[0][3],
-            "evaluated": evaluated,
-            "reason": "early_zero_upfront_cost_split_successor_betrothal"}
+                "evaluated": evaluated,
+                "reason": "incomplete_top_two_full_value_comparison"}
+    if any(reasons[candidate_id] in {
+            "missing_exact_legal_value", "native_final_or_frame_unavailable",
+            "adult_timing_unavailable", "duplicate_final_legal_candidate",
+            "sex_lineality_mismatch"}
+            for candidate_id in shortlist):
+        return {"status": "no_positive_value", "selected_candidate_character_id": None,
+                "evaluated": evaluated, "reason": "incomplete_same_frame_full_value"}
+    for candidate_id in shortlist:
+        if reasons[candidate_id] == "positive_early_split_successor_betrothal":
+            return {"status": "selected",
+                    "selected_candidate_character_id": candidate_id,
+                    "evaluated": evaluated,
+                    "reason": "early_zero_upfront_cost_split_successor_betrothal"}
+    return {"status": "no_positive_value", "selected_candidate_character_id": None,
+            "evaluated": evaluated, "reason": "no_bounded_positive_pair"}

@@ -1352,6 +1352,12 @@ younger candidate at the shared adult date are **project policy bounds**, not
 native rules or a fertility formula. With equal native fertility input and
 equal wait/cost/lineality, `37909` ranks ahead of `37571` by candidate age at
 Guy's adulthood; `39380` waits six units and misses the project bound.
+The compact final-legal rows for the next three eligible adult candidates
+`35632`, `35585`, and `35302` give current measures `31`, `31`, and `32`,
+so they would be `34`, `34`, and `35` when Guy reaches adulthood. They lose
+to both younger rows under this bounded **age-first** goal. Their full native
+fertility, costs, and alliance outcomes remain unread and are not treated as
+zero; this policy cannot claim a global best marriage across all benefits.
 Locking the marriage slot, conditional dissolution prestige/opinion/unity,
 future spouse quality, actual children, and future diplomatic consequences
 remain unpriced. This choice does not claim those outcomes or global optimum.
@@ -1361,7 +1367,7 @@ flowchart TD
     A[Same paused frame: child and split title successor] --> B{No existing spouse or betrothal}
     B -- no --> H[Hold]
     B -- yes --> C[Compact final-legal shortlist by adult timing and positive answer]
-    C --> D[Read full native value for candidate in rank order]
+    C --> D[Read full native value for both top two candidates]
     D --> E{Default fatherline; native fertility gates; cost zero; no alliance attempt}
     E -- no --> D
     E -- yes --> F{Child adult wait <= 3; candidate adult; future age < 43}
@@ -1371,8 +1377,14 @@ flowchart TD
     I -. unknown .-> J[Actual children or lasting dynasty effect]
 ```
 
-The compact shortlist only orders expensive full-value reads; it does not
-assign a positive value to any unread row. The formal consumer must prove
+The compact shortlist restricts this private decision to the two youngest
+eligible adult rows and orders their expensive full-value reads. The policy
+requires **both** top-two values on the same native revision before choosing;
+giving only the second candidate cannot authorize a proposal. It does not
+assign a positive value to any unread row. The full values must also show
+the observed raw selector alignment (`Guy=0`, candidate `=1`, effective
+lineality `false`); the raw sex selector is not relabeled as a general CK3
+gender API. The formal consumer must prove
 the split title from its **current** held-title partition, independently
 re-read Guy and the selected pair on that frame, and use the existing typed
 default-child action. A send ACK is only pending; bilateral betrothal,
