@@ -37,21 +37,28 @@ session; output from distinct DLL sessions cannot be called same-frame.
    Preserve nulls as unknown; do not infer no siege from a missing siege
    pointer or from an H3928 report. A `partial` response is a bounded RED
    observation, never a substitute for occupation proof.
-4. Only when the full **published** roster/route/2610 observation succeeds,
-   consider a route-contact query in the same session. The #595 route-contact
-   runner is fixed to hostile IDs 50331920 and 83886484, both stationary at
-   2629, while H3937 has not observed that state. Its exact subject predicate
-   must independently pass on `S1`; otherwise stop after the province query,
-   record `route_contact_not_queried`, and request a new reviewed dynamic
-   query design for the actual roster. Never issue its fixed query merely
-   because an earlier H3928 frame matched. If eligible, issue its canonical
-   read-only `QUERY_STEP` at `S1.revision` and take `S2`.
+4. Only when the full **native-published** roster/route/2610 observation
+   succeeds, consider a route-contact query in the same session. Preserve all
+   unique enemy IDs from `S1.active_wars[0].enemy_armies`; derive the sorted
+   nonretreating `dynamic_hostile_ids` with the same predicate as
+   `_route_contact_hostile_ids(S1)`, and require it to be nonempty. Build
+   `query_route_contact_horizon_step(83886367, 2610,
+   dynamic_hostile_ids)` from that current row and require the native mailbox
+   to re-scan the same current war row before answering. Bind its one-day
+   window to raw 53219928 through 53219952. The #595 runner hardcodes two
+   historical enemy IDs and positions; leave its existing CLI disabled and
+   create a distinct reviewed dynamic read-only collector path. H3928 IDs or
+   positions are never fallback inputs. If the roster or query set changes,
+   stop after the province query and record `route_contact_not_queried`.
+   Otherwise issue the dynamic read-only step at `S1.revision` and take `S2`.
 5. Require `S0/S1/S2` to have the same snapshot ID, native/public revision,
    date, episode and connection generation; identical war/army scope; one or
    two exact query-only appended rows; route-contact result bound to the
    complete observed hostile set and same snapshot; unchanged save, child
    sidecar, DLL, injector, rebind receipt and checkout; and proven managed
-   cleanup. Save full raw envelopes and a bounded projection. Any failed
+   cleanup. Match the dynamic result's hostile IDs to the `S1` query set and
+   its native source revision to the paused frame. Save full raw envelopes
+   and a bounded projection. Any failed
    check is RED, with no date or gameplay step. Even a successful read-only
    route-contact result gives no date credit until war risk, cash and formal
    selected-step contracts are evaluated independently.
@@ -60,8 +67,11 @@ session; output from distinct DLL sessions cannot be called same-frame.
 
 The #612 phase-0 CLI currently requires the old DLL hash and forbids all
 queries; the #595 CLI independently pins old assets and assumes historical
-stationary enemies. Neither CLI may be reused unchanged for the combined
-session. A future collector needs a separate entry and tests for malformed
+stationary enemies. Both existing driver constructors also omit the exact
+`succession_lifecycle_binding` required by the current cold restore path;
+that live mismatch is RED pending separately reviewed fixes. Neither CLI may
+be reused unchanged for the combined session. A future collector needs a
+separate entry and tests for malformed
 route status/count, province partial response, changed frame/history, absent
 physical-inventory proof, mismatched hostiles, cleanup failure and no-query
 fallback. This design does not flip either launch gate or alter an action
