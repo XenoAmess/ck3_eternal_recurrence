@@ -28,9 +28,9 @@ def zero_image(image: str) -> dict[str, object]:
 
 def green_outer() -> dict[str, object]:
     return {
-        "ok": True, "status": "GREEN_READ_ONLY_COMBINED",
+        "ok": True, "status": "GREEN_READ_ONLY_TARGET",
         "action_authorized": False, "date_advance_authorized": False,
-        "gameplay_actions": 0, "query_actions": 2, "cleanup": {"ok": True},
+        "gameplay_actions": 0, "query_actions": 6, "cleanup": {"ok": True},
     }
 
 
@@ -74,6 +74,7 @@ def bounded(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     monkeypatch.setattr(once, "_image_inventory", zero_image)
     monkeypatch.setattr(once.outer, "H3937_COMBINED_OUTER_LIVE_AUTHORIZED", False)
     monkeypatch.setattr(once.inner, "H3937_COMBINED_LIVE_AUTHORIZED", False)
+    monkeypatch.setattr(once.target_reads, "H3937_TARGET_LIVE_AUTHORIZED", False)
     return output
 
 
@@ -83,6 +84,7 @@ def test_one_call_enables_only_during_read_and_restores_gates(bounded, monkeypat
     def collect(*args, **kwargs):
         check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is True)
         check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is True)
+        check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is True)
         check(kwargs["ownership_round_id"] == once.ROUND)
         check(kwargs["cold_start_checkpoint"] is True)
         check(kwargs["native_bridge"].mode == "native-headless")
@@ -98,6 +100,7 @@ def test_one_call_enables_only_during_read_and_restores_gates(bounded, monkeypat
     check(calls == [1])
     check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is False)
     check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is False)
+    check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is False)
     check((bounded / "outer-report.json").exists())
     check((bounded / "completion.json").exists())
     with pytest.raises(FileExistsError):
@@ -145,10 +148,11 @@ def test_prelaunch_refusals_preserve_red_and_never_call_outer(
     check(not (bounded / "outer-report.json").exists())
 
 
-def test_outer_exception_restores_both_gates_and_retains_trace(bounded, monkeypatch):
+def test_outer_exception_restores_all_gates_and_retains_trace(bounded, monkeypatch):
     def broken(*args, **kwargs):
         check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is True)
         check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is True)
+        check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is True)
         raise RuntimeError("simulated native failure")
 
     monkeypatch.setattr(once.outer, "collect_h3937_combined_paused_war_scope_once", broken)
@@ -159,6 +163,7 @@ def test_outer_exception_restores_both_gates_and_retains_trace(bounded, monkeypa
     check("simulated native failure" in (bounded / "error-traceback.txt").read_text(encoding="utf-8"))
     check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is False)
     check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is False)
+    check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is False)
 
 
 @pytest.mark.parametrize("bad_field,value", [
@@ -239,7 +244,8 @@ def fresh_go_fixture(monkeypatch, tmp_path):
         "steam_offline_direct_visual_reviewed": True,
         "account_single_instance_clear": True,
         "ck3_zero_process_before": True, "recorder_zero_before": True,
-        "authorized_scope": "two_paused_readonly_queries",
+        "authorized_scope": "six_paused_readonly_queries",
+        "maximum_query_actions": 6,
         "issued_at_utc": stamp(-20), "steam_direct_reviewed_at_utc": stamp(-30),
         "screen_challenge_nonce": challenge["challenge_nonce"],
         "steam_original_path": str(steam), "steam_original_sha256": digest(steam),
@@ -267,6 +273,12 @@ def test_go_receipt_rejects_wrong_round_output_and_modified_screen(monkeypatch, 
     with pytest.raises(ValueError, match="GO receipt"):
         once._require_go(identity)
     value["output_dir"] = str(once.OUTPUT)
+    once.GO.write_text(json.dumps(value), encoding="utf-8")
+    value["maximum_query_actions"] = 2
+    once.GO.write_text(json.dumps(value), encoding="utf-8")
+    with pytest.raises(ValueError, match="GO receipt"):
+        once._require_go(identity)
+    value["maximum_query_actions"] = 6
     once.GO.write_text(json.dumps(value), encoding="utf-8")
     steam.write_bytes(b"modified")
     with pytest.raises(ValueError, match="steam_original"):
@@ -443,6 +455,7 @@ def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
         "actor": 29829, "date_raw": 53219928, "history_index": 3937,
         "raw_driver_sha256": "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722",
         "combined_outer_hard_gate": False, "combined_inner_hard_gate": False,
+        "target_inner_hard_gate": False,
         "ck3_launch_attempted": False, "live_authorized": False,
         "prepared_driver_sha256": digest(driver),
         "official_rebind_receipt_sha256": digest(rebind),
@@ -458,6 +471,7 @@ def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
         "bridge_dll": str(dll), "bridge_injector": str(injector),
         "game_dir": str(tmp_path / "game"),
         "outer_hard_gate": False, "inner_hard_gate": False,
+        "target_hard_gate": False,
         "ck3_launch_attempted": False, "live_output_created": False,
         "bridge_dll_sha256": digest(dll),
         "bridge_injector_sha256": digest(injector),
@@ -468,7 +482,7 @@ def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
         "rebind_receipt_sha256": admission["official_rebind_receipt_sha256"],
         "preflight_report_sha256": admission["official_preflight_report_sha256"],
         "environment_sha256": admission["environment_sha256"],
-        "source_git_blobs": {f"source_{number}": "b" * 40 for number in range(12)},
+        "source_git_blobs": {f"source_{number}": "b" * 40 for number in range(15)},
     }
     (root / "admission.json").write_text(json.dumps(admission), encoding="utf-8")
     (root / "operator-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
@@ -481,6 +495,7 @@ def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
     monkeypatch.setattr(once.outer, "COMBINED_INJECTOR_SHA256", digest(injector))
     monkeypatch.setattr(once.outer, "H3937_COMBINED_OUTER_LIVE_AUTHORIZED", False)
     monkeypatch.setattr(once.inner, "H3937_COMBINED_LIVE_AUTHORIZED", False)
+    monkeypatch.setattr(once.target_reads, "H3937_TARGET_LIVE_AUTHORIZED", False)
 
     def fake_git(*args):
         if args[0] == "status":
@@ -503,6 +518,12 @@ def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
 
     monkeypatch.setattr(once, "_sha", synthetic_large_source_hash)
     check(once._require_exact_admission()["head"] == head)
+    admission["target_inner_hard_gate"] = True
+    (root / "admission.json").write_text(json.dumps(admission), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    admission["target_inner_hard_gate"] = False
+    (root / "admission.json").write_text(json.dumps(admission), encoding="utf-8")
     driver.write_bytes(b"driver changed")
     with pytest.raises(ValueError, match="source asset hash"):
         once._require_exact_admission()

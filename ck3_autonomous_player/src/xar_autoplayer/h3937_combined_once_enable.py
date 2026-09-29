@@ -1,7 +1,7 @@
 """One exact, isolated H3937 combined read-only observation entry.
 
 Only an external, reviewed GO receipt can admit this one managed session. The
-two underlying module gates are enabled in memory for the call and restored in
+three underlying module gates are enabled in memory for the call and restored in
 all outcomes. This module never authorizes a game date or gameplay action.
 """
 
@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 
 from . import h3937_combined_paused_war_scope_run as outer
 from . import h3937_combined_readonly_queries as inner
+from . import h3937_target_readonly_queries as target_reads
 from .environment import EnvironmentSpec
 from .runtime import NativeBridgeLaunchConfig
 
@@ -214,14 +215,16 @@ def _require_exact_admission() -> dict[str, object]:
         and admission.get("injector_sha256") == outer.COMBINED_INJECTOR_SHA256
         and admission.get("combined_outer_hard_gate") is False
         and admission.get("combined_inner_hard_gate") is False
+        and admission.get("target_inner_hard_gate") is False
         and admission.get("ck3_launch_attempted") is False
         and admission.get("live_authorized") is False
         and manifest.get("outer_hard_gate") is False
         and manifest.get("inner_hard_gate") is False
+        and manifest.get("target_hard_gate") is False
         and manifest.get("ck3_launch_attempted") is False
         and manifest.get("live_output_created") is False
         and isinstance(manifest.get("source_git_blobs"), dict)
-        and len(manifest["source_git_blobs"]) == 12
+        and len(manifest["source_git_blobs"]) == 15
     ):
         raise ValueError("one-shot no-launch identity mismatch")
     expected = {
@@ -291,7 +294,9 @@ def _require_exact_admission() -> dict[str, object]:
             == _sha(GAME / "binaries" / "ck3.exe")
     ):
         raise ValueError("one-shot official preflight contract mismatch")
-    if outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not False or inner.H3937_COMBINED_LIVE_AUTHORIZED is not False:
+    if (outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not False
+            or inner.H3937_COMBINED_LIVE_AUTHORIZED is not False
+            or target_reads.H3937_TARGET_LIVE_AUTHORIZED is not False):
         raise ValueError("combined candidate gates already enabled")
     if not (
         _sha(DLL) == str(manifest.get("bridge_dll_sha256", "")).upper()
@@ -331,7 +336,9 @@ def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
         and go.get("account_single_instance_clear") is True
         and go.get("ck3_zero_process_before") is True
         and go.get("recorder_zero_before") is True
-        and go.get("authorized_scope") == "two_paused_readonly_queries"
+        and go.get("authorized_scope") == "six_paused_readonly_queries"
+        and type(go.get("maximum_query_actions")) is int
+        and go.get("maximum_query_actions") == 6
     ):
         raise ValueError("one-shot external GO receipt missing or mismatched")
     owner = _require_live_screen_lease(go["screen_task_last_sequence"])
@@ -430,6 +437,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
     screen_lease_after: dict[str, object] | None = None
     original_outer = outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED
     original_inner = inner.H3937_COMBINED_LIVE_AUTHORIZED
+    original_target = target_reads.H3937_TARGET_LIVE_AUTHORIZED
     try:
         claim = _read_json(OUTPUT / "supervisor-claim.json")
         if not (
@@ -460,6 +468,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         })
         outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = True
         inner.H3937_COMBINED_LIVE_AUTHORIZED = True
+        target_reads.H3937_TARGET_LIVE_AUTHORIZED = True
         try:
             outer_report = outer.collect_h3937_combined_paused_war_scope_once(
                 EnvironmentSpec(state_dir=STATE, game_dir=GAME),
@@ -475,6 +484,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         finally:
             outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = original_outer
             inner.H3937_COMBINED_LIVE_AUTHORIZED = original_inner
+            target_reads.H3937_TARGET_LIVE_AUTHORIZED = original_target
         _write_json(OUTPUT / "outer-report.json", outer_report)
     except BaseException as error:
         primary_error = f"{type(error).__name__}: {error}"
@@ -483,6 +493,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
     finally:
         outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = original_outer
         inner.H3937_COMBINED_LIVE_AUTHORIZED = original_inner
+        target_reads.H3937_TARGET_LIVE_AUTHORIZED = original_target
         try:
             after = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
         except BaseException as error:
@@ -503,6 +514,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
     gates_restored = (
         outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is original_outer is False
         and inner.H3937_COMBINED_LIVE_AUTHORIZED is original_inner is False
+        and target_reads.H3937_TARGET_LIVE_AUTHORIZED is original_target is False
     )
     processes_gone = bool(after and all(
         item["returncode"] == 0 and item["found"] is False for item in after.values()
@@ -510,11 +522,11 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
     green = bool(
         primary_error is None and isinstance(outer_report, dict)
         and outer_report.get("ok") is True
-        and outer_report.get("status") == "GREEN_READ_ONLY_COMBINED"
+        and outer_report.get("status") == "GREEN_READ_ONLY_TARGET"
         and outer_report.get("action_authorized") is False
         and outer_report.get("date_advance_authorized") is False
         and outer_report.get("gameplay_actions") == 0
-        and outer_report.get("query_actions") == 2
+        and outer_report.get("query_actions") == 6
         and isinstance(cleanup, dict) and cleanup.get("ok") is True
         and gates_restored and processes_gone
     )

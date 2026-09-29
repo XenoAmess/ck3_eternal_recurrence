@@ -111,8 +111,9 @@ class H3937CombinedOuterTests(unittest.TestCase):
             safe.assert_not_called()
             session.assert_not_called()
 
-    def test_managed_two_query_history_assets_cleanup_and_lifecycle(self) -> None:
-        for outcome in ("green", "inner_red", "inner_contract_red", "history_red", "cleanup_red",
+    def test_managed_six_query_history_assets_cleanup_and_lifecycle(self) -> None:
+        for outcome in ("green", "inner_red", "inner_contract_red", "combined_contract_red",
+                        "target_proof_red", "history_red", "cleanup_red",
                         "asset_red", "checkout_red", "binary_red",
                         "readiness_timeout", "readiness_timeout_capture_exception",
                         "readiness_timeout_lease_red",
@@ -146,9 +147,12 @@ class H3937CombinedOuterTests(unittest.TestCase):
                 }
                 history = [{"command": "restore-checkpoint", "ok": True}]
                 steps = ["query-province-local-siege province=2610",
-                         "query-route-contact-horizon own=83886367"]
-                envelopes = [{"accepted": True, "query": 1},
-                             {"accepted": True, "query": 2}]
+                         "query-route-contact-horizon own=83886367",
+                         "query-army-strengths-v1", "query-province-local-siege province=2629",
+                         "preview-move-army-83886367-to-2629",
+                         "query-route-contact-horizon own=83886367 target=2629"]
+                envelopes = [{"accepted": True, "query": index + 1}
+                             for index in range(6)]
                 appended = [
                     {"command": step, "ok": True, "result": envelope}
                     for step, envelope in zip(steps, envelopes)
@@ -182,25 +186,47 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     "map_ready": True, "connection_generation": 1,
                     "native_command_history": history,
                 }
-                middle = copy.deepcopy(first)
-                middle["native_command_history"] = history + appended[:1]
-                last = copy.deepcopy(first)
-                last["native_command_history"] = history + appended
+                frames = []
+                for index in range(7):
+                    frame = copy.deepcopy(first)
+                    frame["native_command_history"] = history + appended[:index]
+                    frames.append(frame)
+                last = frames[-1]
                 readiness = {key: first[key] for key in (
                     "snapshot_id", "revision", "native_revision", "date_raw",
                     "episode_run_id", "paused", "map_ready", "connection_generation")}
-                inner = {
+                combined = {
                     "schema": "xar.ck3.h3937-combined-readonly-inner-v1",
-                    "observed": outcome != "inner_red",
+                    "observed": True,
                     "action_authorized": False, "date_advance_authorized": False,
                     "gameplay_actions": 0,
                     "physical_army_inventory_completeness_proven": False,
                     "outer_session_cleanup_verified": False,
-                    "query_attempts": 2, "steps": steps, "envelopes": envelopes,
-                    "frames": [first, middle, last], "scope": {"war_id": 16777231},
+                    "query_attempts": 2, "steps": steps[:2],
+                    "envelopes": envelopes[:2], "frames": frames[:3],
+                    "scope": {"war_id": 16777231},
+                }
+                inner = {
+                    "schema": "xar.ck3.h3937-target-readonly-inner-v1",
+                    "observed": outcome != "inner_red",
+                    "action_authorized": False, "date_advance_authorized": False,
+                    "gameplay_actions": 0,
+                    "physical_army_inventory_completeness_proven": False,
+                    "first_hop_contact_observed": False,
+                    "participant_scope_proven": False,
+                    "forecast_qualified": False,
+                    "outer_session_cleanup_verified": False,
+                    "query_attempts": 6, "steps": steps, "envelopes": envelopes,
+                    "frames": frames, "combined": combined,
+                    "selected_siege": {"target_province_id": 2629},
+                    "target_route_province_ids": [2614, 2629],
                 }
                 if outcome == "inner_contract_red":
                     inner["action_authorized"] = True
+                if outcome == "combined_contract_red":
+                    combined["action_authorized"] = True
+                if outcome == "target_proof_red":
+                    inner["forecast_qualified"] = True
                 receipt_reads = 0
                 checkout_reads = 0
 
@@ -311,7 +337,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     producer, "NativeHeadlessGameplayDriver"))
                 stack.enter_context(patch.object(producer, "GameplayBridgeService"))
                 collector = stack.enter_context(patch.object(
-                    producer, "collect_h3937_combined_reads_in_session", return_value=inner))
+                    producer, "collect_h3937_target_reads_in_session", return_value=inner))
                 if outcome == "binary_red":
                     with self.assertRaisesRegex(producer.AgentError, "launch refused"):
                         producer.collect_h3937_combined_paused_war_scope_once(
@@ -383,7 +409,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                                  0 if outcome in {"readiness_timeout",
                                                  "readiness_timeout_capture_exception",
                                                   "readiness_timeout_lease_red",
-                                                  "readiness_error"} else 2)
+                                                 "readiness_error"} else 6)
                 self.assertEqual(result["source"]["rebind_receipt_sha256"], "c" * 64)
 
 

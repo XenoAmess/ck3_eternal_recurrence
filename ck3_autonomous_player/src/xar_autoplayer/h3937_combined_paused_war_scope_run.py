@@ -19,8 +19,8 @@ from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
-from .h3937_combined_readonly_queries import (
-    collect_h3937_combined_reads_in_session,
+from .h3937_target_readonly_queries import (
+    collect_h3937_target_reads_in_session,
 )
 from .h3937_paused_war_scope_run import (
     _checkout_commit,
@@ -55,9 +55,11 @@ COMBINED_DLL_SHA256 = "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61
 COMBINED_INJECTOR_SHA256 = "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E"
 _SOURCE_MODULES = (
     ".h3937_combined_readonly_queries",
+    ".h3937_target_readonly_queries",
     ".h3937_paused_war_scope_run",
     ".h3937_stationary_route_contact_query_run",
     ".bridge.native_driver",
+    ".bridge.h3937_date_hold",
     ".bridge.service",
     ".bridge.war_contract",
     ".bridge.succession_transition_contract",
@@ -65,6 +67,7 @@ _SOURCE_MODULES = (
     ".native_auto_run",
     ".native_session",
     ".runtime",
+    ".strategy",
 )
 
 
@@ -249,7 +252,7 @@ def collect_h3937_combined_paused_war_scope_once(
     readiness_timeout_screenshot_path: Path | None = None,
     readiness_timeout_screen_lease_check: Callable[[], object] | None = None,
 ) -> dict[str, object]:
-    """One managed session, at most two read-only queries, never gameplay."""
+    """One managed session, at most six read-only queries, never gameplay."""
     if H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not True:
         raise AgentError("H3937 combined only: no live authorization")
     if (readiness_timeout_screenshot_path is not None
@@ -374,7 +377,7 @@ def collect_h3937_combined_paused_war_scope_once(
             require_post_ready_pump=True)
         if time.monotonic() >= deadline:
             raise AgentError("H3937 combined timeout before native snapshot")
-        inner = collect_h3937_combined_reads_in_session(service)
+        inner = collect_h3937_target_reads_in_session(service)
     except BaseException as error:
         if isinstance(error, NativeReadinessTimeoutError):
             readiness_timeout_diagnostics = _bounded_readiness_timeout_diagnostics(
@@ -438,42 +441,60 @@ def collect_h3937_combined_paused_war_scope_once(
     steps = inner.get("steps") if isinstance(inner, dict) else None
     envelopes = inner.get("envelopes") if isinstance(inner, dict) else None
     first = frames[0] if isinstance(frames, list) and frames else None
-    last = frames[-1] if isinstance(frames, list) and len(frames) == 3 else None
+    last = frames[-1] if isinstance(frames, list) and len(frames) == 7 else None
     first_history = _snapshot_history(first)
     last_history = _snapshot_history(last)
     restore = _cold_restore_bookkeeping(driver_before, first, checkpoint)
-    exact_two_queries = bool(
+    combined = inner.get("combined") if isinstance(inner, dict) else None
+    exact_six_queries = bool(
         isinstance(inner, dict) and inner.get("observed") is True
-        and inner.get("query_attempts") == 2
-        and isinstance(steps, list) and len(steps) == 2
-        and isinstance(envelopes, list) and len(envelopes) == 2
-        and isinstance(frames, list) and len(frames) == 3
+        and inner.get("query_attempts") == 6
+        and isinstance(steps, list) and len(steps) == 6
+        and isinstance(envelopes, list) and len(envelopes) == 6
+        and isinstance(frames, list) and len(frames) == 7
+        and isinstance(combined, dict)
+        and combined.get("observed") is True
+        and combined.get("query_attempts") == 2
+        and combined.get("frames") == frames[:3]
+        and combined.get("envelopes") == envelopes[:2]
+        and combined.get("steps") == steps[:2]
         and isinstance(first_history, list) and isinstance(last_history, list)
-        and len(last_history) == len(first_history) + 2
+        and len(last_history) == len(first_history) + 6
         and last_history[:len(first_history)] == first_history
         and all(
             isinstance(last_history[len(first_history) + index], dict)
             and last_history[len(first_history) + index].get("command") == steps[index]
             and last_history[len(first_history) + index].get("ok") is True
             and last_history[len(first_history) + index].get("result") == envelopes[index]
-            for index in range(2)
+            for index in range(6)
         )
     )
     checks = {
-        "inner_combined_observed": bool(
+        "inner_target_observed": bool(
             isinstance(inner, dict) and inner.get("observed") is True),
-        "inner_readonly_contract": bool(
+        "inner_target_readonly_contract": bool(
             isinstance(inner, dict)
-            and inner.get("schema") == "xar.ck3.h3937-combined-readonly-inner-v1"
+            and inner.get("schema") == "xar.ck3.h3937-target-readonly-inner-v1"
             and inner.get("action_authorized") is False
             and inner.get("date_advance_authorized") is False
             and inner.get("gameplay_actions") == 0
             and inner.get("physical_army_inventory_completeness_proven") is False
+            and inner.get("first_hop_contact_observed") is False
+            and inner.get("participant_scope_proven") is False
+            and inner.get("forecast_qualified") is False
             and inner.get("outer_session_cleanup_verified") is False),
+        "inner_combined_readonly_contract": bool(
+            isinstance(combined, dict)
+            and combined.get("schema") == "xar.ck3.h3937-combined-readonly-inner-v1"
+            and combined.get("action_authorized") is False
+            and combined.get("date_advance_authorized") is False
+            and combined.get("gameplay_actions") == 0
+            and combined.get("physical_army_inventory_completeness_proven") is False
+            and combined.get("outer_session_cleanup_verified") is False),
         "readiness_bound_to_snapshot": _same_frame(readiness, first),
         "single_cold_restore_bookkeeping": restore.get("exact") is True,
         "same_paused_frame": _same_frame(first, last),
-        "exact_two_appended_queries": exact_two_queries,
+        "exact_six_appended_queries": exact_six_queries,
         "date_unchanged": isinstance(first, dict) and isinstance(last, dict)
         and first.get("date_raw") == last.get("date_raw") == EXPECTED_DATE_RAW,
         "persisted_history_matches_snapshot": bool(
@@ -490,7 +511,7 @@ def collect_h3937_combined_paused_war_scope_once(
     ok = primary_error is None and all(checks.values())
     return {
         "schema": "xar.ck3.h3937-combined-paused-war-readonly-v1",
-        "ok": ok, "status": "GREEN_READ_ONLY_COMBINED" if ok else "RED",
+        "ok": ok, "status": "GREEN_READ_ONLY_TARGET" if ok else "RED",
         "action_authorized": False, "date_advance_authorized": False,
         "gameplay_actions": 0,
         "query_actions": inner.get("query_attempts", 0) if isinstance(inner, dict) else 0,
@@ -525,7 +546,10 @@ def collect_h3937_combined_paused_war_scope_once(
                 else first.get("connection_generation"))}
             if isinstance(first, dict) else None,
         "inner": inner,
-        "scope": inner.get("scope") if isinstance(inner, dict) else None,
+        "scope": combined.get("scope") if isinstance(combined, dict) else None,
+        "selected_siege": inner.get("selected_siege") if isinstance(inner, dict) else None,
+        "target_route_province_ids": inner.get("target_route_province_ids")
+            if isinstance(inner, dict) else None,
         "checks": checks, "cleanup": cleanup,
         "error": primary_error,
     }
