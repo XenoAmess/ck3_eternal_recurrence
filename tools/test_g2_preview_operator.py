@@ -388,6 +388,78 @@ class G2PreviewOperatorTest(unittest.TestCase):
             paired(later_sidecar, later_driver, {}, later_hash,
                    [proof, changed])
 
+        # R0352 saved a later child result beside an active pending ledger,
+        # while the old generic bounded qualifier still returned RED.
+        post_sidecar = copy.deepcopy(later_sidecar)
+        post_sidecar["pending"].update({
+            "last_checked_bridge_pid": 56288,
+            "last_checked_native_revision": 3,
+            "last_outbound_pending_state": "active",
+        })
+        post_hash = "f" * 64
+        post_checkpoint = {**applied_checkpoint, "history_index": 3933,
+                           "sha256": post_hash, "turn_index": 1,
+                           "phase": "player_child_matrilineal_result_pending",
+                           "ledger_status": "pending", "status": "saved"}
+        post_driver = {**driver, "last_checkpoint": post_checkpoint}
+        binding = {"paused": True, "date_raw": 53219928,
+                   "episode_character_id": 29829, "episode_run_id": episode}
+        post_report = {
+            "kind": "ck3_native_auto_run", "completion_contract": "bounded",
+            "status": "turn_limit", "outcome": "not_qualified", "ok": False,
+            "first_blocker": {"kind": "run_bound_exhausted",
+                              "last_durable_checkpoint": post_checkpoint},
+            "cleanup": {"ok": True}, "session": {"pid": 56288},
+            "fixed_seed": {"sha256": applied_hash, "history_index": 3928,
+                           "saved_date_raw": 53219928},
+            "readiness": {"bridge_pid": 56288,
+                          "episode_character_id": 29829,
+                          "episode_run_id": episode, "date_raw": 53219928},
+            "auto_run": {"attempted_turns": 1, "visible_gameplay_turns": 0,
+                         "turns": [{
+                             "index": 1, "ok": True, "status": "executed",
+                             "class": "query", "selected_step":
+                             g2_preview_operator.CHILD_MATRILINEAL_RESULT_STEP,
+                             "before": binding, "after": binding,
+                             "evidence": ["child_matrilineal_result_checkpoint_saved"],
+                             "result": {"status": "pending", "material_result": False,
+                                        "heir_character_id": 37265,
+                                        "candidate_character_id": 37267,
+                                        "recipient_character_id": 32440,
+                                        "post_native_revision": 3,
+                                        "outbound_pending_state": "active"}}]},
+            "checkpoints": [post_checkpoint],
+        }
+        self.assertEqual(paired(
+            post_sidecar, post_driver, {}, post_hash, [proof, continuation],
+            sway_continuation=sway_report, sway_sidecar=resolved_ledger,
+            sway_applied_continuation=applied_report,
+            post_sway_result=post_report), 37267)
+        changed = copy.deepcopy(post_report)
+        changed["auto_run"]["turns"][0]["selected_step"] = (
+            g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP)
+        with self.assertRaisesRegex(ValueError, "post-Sway child pending read"):
+            paired(post_sidecar, post_driver, {}, post_hash,
+                   [proof, continuation], sway_continuation=sway_report,
+                   sway_sidecar=resolved_ledger,
+                   sway_applied_continuation=applied_report,
+                   post_sway_result=changed)
+        changed = copy.deepcopy(post_report)
+        changed["checkpoints"][0]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "post-Sway child pending read"):
+            paired(post_sidecar, post_driver, {}, post_hash,
+                   [proof, continuation], sway_continuation=sway_report,
+                   sway_sidecar=resolved_ledger,
+                   sway_applied_continuation=applied_report,
+                   post_sway_result=changed)
+        parsed = g2_preview_operator.parser().parse_args([
+            "prepare-state", "--manifest", "Z:/candidate/operator-manifest.json",
+            "--sample-dir", "Z:/sample",
+            "--child-matrilineal-post-sway-result-report", "Z:/proof/R0352.json",
+        ])
+        self.assertEqual(parsed.child_matrilineal_post_sway_result_report,
+                         Path("Z:/proof/R0352.json"))
+
     def test_exact_war_move_contract_is_bound_in_formal_argv(self) -> None:
         path = Path("D:/frozen/exact-move.json")
         command = g2_preview_operator.native_auto_run_command(
@@ -428,9 +500,13 @@ class G2PreviewOperatorTest(unittest.TestCase):
             "--private-lifestyle-formal-trial",
             "--private-child-matrilineal-pending-recovery", "37265", "37267",
             "--child-matrilineal-recovery-proof-report", "Z:/proof/R0328.json",
+            "--child-matrilineal-recovery-post-sway-result-report",
+            "Z:/proof/R0352.json",
         ])
         self.assertEqual(parsed.private_child_matrilineal_pending_recovery,
                          [37265, 37267])
+        self.assertEqual(parsed.child_matrilineal_recovery_post_sway_result_report,
+                         Path("Z:/proof/R0352.json"))
         command = g2_preview_operator.native_auto_run_command(
             ["python", "-m", "xar_autoplayer"],
             turns=1, timeout=600, readiness_timeout=300,
