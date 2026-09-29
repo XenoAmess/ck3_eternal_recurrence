@@ -335,14 +335,35 @@ ActivityFeastGuestJoinResultV1 ReadActivityFeastGuestJoinV1(
     return result;
   }
   const auto before = ReadActivityPlannerDiagV1(env.diagnostic, expected);
-  if (before.status != ActivityPlannerDiagStatusV1::observed ||
-      !before.value.planner_present || before.value.stage != 5 ||
-      !before.value.widget_attached || !before.value.widget_visible ||
-      !before.value.host_view_activity_key_known ||
+  if (before.status == ActivityPlannerDiagStatusV1::planner_absent) {
+    result.status = ActivityFeastGuestJoinStatusV1::planner_absent;
+    return result;
+  }
+  if (before.status != ActivityPlannerDiagStatusV1::observed) {
+    result.status = ActivityFeastGuestJoinStatusV1::planner_diagnostic_unavailable;
+    return result;
+  }
+  if (!before.value.planner_present) {
+    result.status = ActivityFeastGuestJoinStatusV1::planner_absent;
+    return result;
+  }
+  if (before.value.stage != 5) {
+    result.status = ActivityFeastGuestJoinStatusV1::not_stage_five;
+    return result;
+  }
+  if (!before.value.widget_attached) {
+    result.status = ActivityFeastGuestJoinStatusV1::widget_detached;
+    return result;
+  }
+  if (!before.value.widget_visible) {
+    result.status = ActivityFeastGuestJoinStatusV1::widget_hidden;
+    return result;
+  }
+  if (before.value.host_view_activity_key_known &&
       std::string_view(before.value.host_view_activity_key.data(),
                        before.value.host_view_activity_key_size) !=
           "activity_feast") {
-    result.status = ActivityFeastGuestJoinStatusV1::planner_unavailable;
+    result.status = ActivityFeastGuestJoinStatusV1::host_view_type_mismatch;
     return result;
   }
   ActivityCostSlot12CaptureV1 capture{};
@@ -352,10 +373,14 @@ ActivityFeastGuestJoinResultV1 ReadActivityFeastGuestJoinV1(
   }
   if (capture.planning_stage != 5 || capture.frame.actor_character_id !=
                                          expected.actor_character_id ||
-      capture.frame.date_raw != expected.date_raw) {
+      capture.frame.date_raw != expected.date_raw ||
+      capture.activity_type == 0) {
     result.status = ActivityFeastGuestJoinStatusV1::configuration_changed;
     return result;
   }
+  // The HostView can still point at an earlier/empty activity while the
+  // planner has selected a feast. The normal slot-12 capture independently
+  // validates planner+0x1530 as the exact feast type and its configuration.
   ActivityFeastGuestJoinResultV1 first{};
   ActivityFeastGuestJoinResultV1 second{};
   const auto first_status = ReadOne(env, capture, expected, first);
@@ -402,6 +427,18 @@ std::string_view ActivityFeastGuestJoinStatusKeyV1(
   case ActivityFeastGuestJoinStatusV1::frame_changed: return "frame_changed";
   case ActivityFeastGuestJoinStatusV1::planner_unavailable:
     return "planner_unavailable";
+  case ActivityFeastGuestJoinStatusV1::planner_diagnostic_unavailable:
+    return "planner_diagnostic_unavailable";
+  case ActivityFeastGuestJoinStatusV1::planner_absent:
+    return "planner_absent";
+  case ActivityFeastGuestJoinStatusV1::not_stage_five:
+    return "not_stage_five";
+  case ActivityFeastGuestJoinStatusV1::widget_detached:
+    return "widget_detached";
+  case ActivityFeastGuestJoinStatusV1::widget_hidden:
+    return "widget_hidden";
+  case ActivityFeastGuestJoinStatusV1::host_view_type_mismatch:
+    return "host_view_type_mismatch";
   case ActivityFeastGuestJoinStatusV1::no_normal_refresh:
     return "no_normal_refresh";
   case ActivityFeastGuestJoinStatusV1::configuration_changed:
