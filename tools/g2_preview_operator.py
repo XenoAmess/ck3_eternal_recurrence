@@ -2555,10 +2555,55 @@ def command_query_r0345_stationary_route_contact_v1(
     episode = episode_value(driver, manifest, "episode_run_id")
     actor = episode_value(driver, manifest, "episode_character_id")
     expected_save = "A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C"
-    expected_driver = "9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0"
+    expected_source_driver = "9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0"
+    rebind_path = manifest_path(manifest["state_dir"], "state_dir") / "ordinary-seed-rebind-v1.json"
+    rebind = read_json(rebind_path)
+    rebind_driver = rebind.get("driver_state")
+    rebind_save = rebind.get("save")
+    rebind_expectations = rebind.get("no_launch_preflight_expectations")
+    rebind_post = rebind.get("post_rebind_validation")
+    prepared_driver = (
+        rebind_driver.get("target_sha256")
+        if isinstance(rebind_driver, dict) else None
+    )
     if (
         checkpoint_before.casefold() != expected_save.casefold()
-        or driver_before.casefold() != expected_driver.casefold()
+        or rebind.get("schema") != ORDINARY_SEED_REBIND_V1_SCHEMA
+        or rebind.get("ok") is not True
+        or rebind.get("status") != "rebound"
+        or rebind.get("ck3_launch_attempted") is not False
+        or rebind.get("pipe_name") != manifest["pipe"]
+        or not isinstance(rebind_driver, dict)
+        or str(rebind_driver.get("source_sha256", "")).casefold()
+        != expected_source_driver.casefold()
+        or not isinstance(prepared_driver, str)
+        or prepared_driver.casefold() != driver_before.casefold()
+        or str(manifest.get("driver_state_sha256", "")).casefold()
+        != driver_before.casefold()
+        or not isinstance(rebind_save, dict)
+        or rebind_save.get("bytes_unchanged") is not True
+        or not isinstance(rebind_save.get("source"), dict)
+        or str(rebind_save["source"].get("sha256", "")).casefold()
+        != expected_save.casefold()
+        or not isinstance(rebind_save.get("target"), dict)
+        or str(rebind_save["target"].get("sha256", "")).casefold()
+        != expected_save.casefold()
+        or not isinstance(rebind_expectations, dict)
+        or rebind_expectations.get("pipe_name") != manifest["pipe"]
+        or rebind_expectations.get("expected_character_id") != 29829
+        or rebind_expectations.get("expected_episode_run_id")
+        != "native-29829-2bc2d599f7f9"
+        or str(rebind_expectations.get("expected_checkpoint_sha256", "")).casefold()
+        != expected_save.casefold()
+        or str(rebind_expectations.get("expected_driver_state_sha256", "")).casefold()
+        != driver_before.casefold()
+        or rebind_expectations.get("xar_enabled") != "xar_off"
+        or rebind_expectations.get("succession_lifecycle")
+        != ORDINARY_CAMPAIGN_SUCCESSION
+        or rebind_expectations.get("ordinary_campaign_no_pact") is not True
+        or not isinstance(rebind_post, dict)
+        or rebind_post.get("native_driver_consumer") != "passed"
+        or rebind_post.get("cold_checkpoint_validator") != "passed"
         or actor != 29829
         or episode != "native-29829-2bc2d599f7f9"
     ):
@@ -2574,6 +2619,9 @@ def command_query_r0345_stationary_route_contact_v1(
         "step": "query-route-contact-horizon-v1-83886367-to-2610-h-2-50331920-83886484",
         "checkpoint_sha256_before": checkpoint_before,
         "driver_state_sha256_before": driver_before,
+        "source_pair_raw_driver_sha256": expected_source_driver,
+        "ordinary_seed_rebind_receipt": str(rebind_path.resolve()),
+        "ordinary_seed_rebind_receipt_sha256": sha256(rebind_path),
         "gameplay_actions": 0,
         "date_advance_actions": 0,
         "ui_inputs": 0,
