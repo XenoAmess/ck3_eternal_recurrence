@@ -98,6 +98,12 @@ flowchart TD
 
 ### 宴会 `activity_feast`：P0
 
+成功完成宴会的收益与启用费用的窄政策证据，见
+[`activity-stage5-feast-value-policy-1.19.0.6.md`](activity-stage5-feast-value-policy-1.19.0.6.md)。
+这些收益发生在 `on_complete`，不由 Stage 5 `CanProgressPlanningStage`
+或 Start 命令 ACK 保证；来宾未到场时 `is_valid` 可使宴会失效。当前 H3928
+Stage 5 尚无实机费用、来宾与最终启动资格读回。
+
 | 层 | exact 规则 |
 |---|---|
 | 可见 | landed 或 landless administrative，最高头衔高于 barony（`feast.txt:11-13`） |
