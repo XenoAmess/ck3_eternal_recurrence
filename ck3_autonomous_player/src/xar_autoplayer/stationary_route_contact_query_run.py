@@ -62,12 +62,15 @@ def _exact_h3928_paused_subject(snapshot: object) -> bool:
         return False
     wars = snapshot.get("active_wars")
     subject = _army_by_id(snapshot, ARMY_ID)
+    played = snapshot.get("played_character")
     return bool(
         snapshot.get("paused") is True
         and snapshot.get("map_ready") is True
         and snapshot.get("date_raw") == EXPECTED_DATE_RAW
         and snapshot.get("episode_run_id") == EXPECTED_EPISODE_RUN_ID
-        and snapshot.get("played_character_id") == 29829
+        and isinstance(played, dict)
+        and played.get("character_id") == 29829
+        and snapshot.get("episode_character_id") == 29829
         and snapshot.get("route_contact_horizon_supported") is True
         and isinstance(wars, list)
         and any(
@@ -225,11 +228,13 @@ def _same_frame(left: object, right: object) -> bool:
     right_diagnostics = right.get("diagnostics") if isinstance(right, dict) else None
     left_generation = (
         left_diagnostics.get("connection_generation")
-        if isinstance(left_diagnostics, dict) else None
+        if isinstance(left_diagnostics, dict)
+        else left.get("connection_generation") if isinstance(left, dict) else None
     )
     right_generation = (
         right_diagnostics.get("connection_generation")
-        if isinstance(right_diagnostics, dict) else None
+        if isinstance(right_diagnostics, dict)
+        else right.get("connection_generation") if isinstance(right, dict) else None
     )
     return bool(
         isinstance(left, dict)
