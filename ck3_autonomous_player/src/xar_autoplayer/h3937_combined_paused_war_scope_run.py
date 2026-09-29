@@ -19,6 +19,7 @@ from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
+from .h3937_cold_load_observer import ColdLoadObserver
 from .h3937_target_readonly_queries import (
     collect_h3937_target_reads_in_session,
 )
@@ -55,6 +56,7 @@ H3937_COMBINED_OUTER_LIVE_AUTHORIZED = False
 COMBINED_DLL_SHA256 = "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61233793F"
 COMBINED_INJECTOR_SHA256 = "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E"
 _SOURCE_MODULES = (
+    ".h3937_cold_load_observer",
     ".h3937_combined_readonly_queries",
     ".h3937_target_readonly_queries",
     ".h3937_paused_war_scope_run",
@@ -302,8 +304,10 @@ class _ColdLoadProgressWatchdog:
     SAMPLE_SECONDS = 20.0
     STALL_SECONDS = 300.0
 
-    def __init__(self, shader_dir: Path) -> None:
+    def __init__(self, shader_dir: Path, *,
+                 observer: ColdLoadObserver | None = None) -> None:
         self.shader_dir = shader_dir
+        self.observer = observer
         self.started = time.monotonic()
         self.last_progress = self.started
         self.last_sample = float("-inf")
@@ -312,6 +316,10 @@ class _ColdLoadProgressWatchdog:
         self.samples: list[dict[str, object]] = []
 
     def __call__(self, capabilities: dict[str, object]) -> str | None:
+        if self.observer is not None:
+            reason = self.observer.tick(capabilities)
+            if reason is not None:
+                return f"cold-load observer: {reason}"
         now = time.monotonic()
         if now - self.last_sample < self.SAMPLE_SECONDS:
             return None
@@ -358,6 +366,7 @@ def collect_h3937_combined_paused_war_scope_once(
     readiness_timeout_screen_lease_check: Callable[[], object] | None = None,
     readiness_timeout_diagnostic_probe: bool = False,
     readiness_stall_watchdog: bool = False,
+    cold_load_observation_dir: Path | None = None,
 ) -> dict[str, object]:
     """One managed session, at most six read-only queries, never gameplay."""
     if H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not True:
@@ -369,6 +378,14 @@ def collect_h3937_combined_paused_war_scope_once(
         raise AgentError("H3937 readiness timeout diagnostic probe must be boolean")
     if not isinstance(readiness_stall_watchdog, bool):
         raise AgentError("H3937 readiness stall watchdog must be boolean")
+    if cold_load_observation_dir is not None:
+        if (not readiness_stall_watchdog
+                or readiness_timeout_screenshot_path is None
+                or readiness_timeout_screen_lease_check is None
+                or cold_load_observation_dir.name != "cold-load-observation"
+                or cold_load_observation_dir.parent.resolve()
+                    != readiness_timeout_screenshot_path.parent.resolve()):
+            raise AgentError("H3937 cold-load observation requires fresh output and screen lease")
     timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
     readiness_timeout = _positive_seconds(
         readiness_timeout_seconds, "readiness_timeout_seconds")
@@ -446,10 +463,15 @@ def collect_h3937_combined_paused_war_scope_once(
     started = time.monotonic()
     deadline = started + timeout
     stop_event = threading.Event()
+    observer = (ColdLoadObserver(
+        cold_load_observation_dir, spec.game_dir / "binaries" / "ck3.exe",
+        readiness_timeout_screen_lease_check)
+        if cold_load_observation_dir is not None
+        and readiness_timeout_screen_lease_check is not None else None)
     diagnostic_event = (threading.Event()
-                        if readiness_timeout_diagnostic_probe else None)
+                         if readiness_timeout_diagnostic_probe else None)
     progress_watchdog = (_ColdLoadProgressWatchdog(
-        spec.profile_dir / "shadercache" / "dx11")
+        spec.profile_dir / "shadercache" / "dx11", observer=observer)
         if readiness_stall_watchdog else None)
     session_done = threading.Event()
     session_state: dict[str, object] = {"report": None, "error": None}
@@ -459,6 +481,7 @@ def collect_h3937_combined_paused_war_scope_once(
     readiness: dict[str, object] | None = None
     inner: dict[str, object] | None = None
     primary_error: str | None = None
+    observer_close_error: str | None = None
     readiness_timeout_diagnostics: dict[str, object] | None = None
     readiness_timeout_last_observation: dict[str, object] | None = None
     readiness_timeout_screenshot: dict[str, object] | None = None
@@ -503,6 +526,13 @@ def collect_h3937_combined_paused_war_scope_once(
         inner = collect_h3937_target_reads_in_session(service)
     except BaseException as error:
         if isinstance(error, NativeReadinessTimeoutError):
+            if observer is not None:
+                try:
+                    observer.close()
+                except BaseException as observer_error:
+                    observer_close_error = (
+                        f"cold-load observer close: {type(observer_error).__name__}: "
+                        f"{observer_error}")
             if diagnostic_event is not None:
                 diagnostic_event.set()
             readiness_timeout_diagnostics = _bounded_readiness_timeout_diagnostics(
@@ -537,6 +567,8 @@ def collect_h3937_combined_paused_war_scope_once(
             if isinstance(error, NativeReadinessTimeoutError)
             else f"{type(error).__name__}: {error}"
         )
+        if observer_close_error is not None:
+            primary_error = f"{primary_error}; {observer_close_error}"
     finally:
         stop_started = time.monotonic()
         stop_event.set()
@@ -549,6 +581,11 @@ def collect_h3937_combined_paused_war_scope_once(
                 driver_closed = True
             except BaseException as error:
                 primary_error = f"{primary_error or ''}; close: {error}"
+        if observer is not None:
+            try:
+                observer.close()
+            except BaseException as error:
+                primary_error = f"{primary_error or ''}; observer close: {error}"
 
     cleanup = _cleanup_report(session_state.get("report"),
                               session_error=session_state.get("error"),
@@ -673,6 +710,7 @@ def collect_h3937_combined_paused_war_scope_once(
         "readiness_timeout_diagnostics": readiness_timeout_diagnostics,
         "readiness_progress_watchdog": (
             progress_watchdog.report() if progress_watchdog is not None else None),
+        "cold_load_observation": observer.report() if observer is not None else None,
         "readiness_timeout_last_observation": readiness_timeout_last_observation,
         "readiness_timeout_screenshot": readiness_timeout_screenshot,
         "readiness_timeout_frontend_route": readiness_timeout_frontend_route,
