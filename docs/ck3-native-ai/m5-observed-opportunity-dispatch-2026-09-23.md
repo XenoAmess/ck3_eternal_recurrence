@@ -485,3 +485,9 @@ R0239 在同一 C26/C27 提案来源、C27 h114 官方配对上执行只读原�
 ### 2026-09-27 R0240/R0241：M5 家庭来源的结果消费扩至当前实际联盟
 
 #303 在原首继承人正式消费者中持久绑定接收方，再于独立订婚物质结果后消费已有实际双向联盟只读口；旧无接收方账本保持 `recipient_unbound`。R0240 从原始 h90 官方配对，12/12 turn 同帧 M5 仍先选建设后选家庭，typed 订婚提案最终得到 `betrothal`；第 11 turn当前双向 `allied`，第 12 turn durable 结果已消费。[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance-h90-c30-20260927/attempt-01/formal-report.txt) SHA `E886352A09B434A38003237F46D06F045AA10C7F2A944CB4FD07C1B4BC72D8A3`。R0241 新 PID 以 h107 原始四件配对，在第 3/4 turn 冷复核订婚与双向联盟，第 5 turn消费新 PID 账本，6/6 turn无重复建设/婚配提交；[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-family-alliance-h107-c31-20260927/attempt-01/formal-report.txt) SHA `3951CF81F294E1D7CAFD8EA86611723E40697F97E536DAC02BF0379FC27DBB72`。两轮最小化后台 turn/日期均推进并受控回收；配对、窗口与完整 SHA 见[09-27 日报](../autonomous-agent-progress/daily/2026-09-27.md)。这补齐结果状态的正式消费与恢复可靠性；同帧仍只有两个真实 eligible 候选，当前 `allied` 不能倒推提案造成的联盟增量或替代长期义务/收益估值，M5 五候选合同仍未完成。
+
+### 2026-09-29：R0273 五婚配候选暴露域内排序反转
+
+R0273 [正式报告](Z:/ck3_mod_rewrite_process_assets/m5-family-h90-candidate-20260928/run-formal-12/formal-report.txt) SHA-256 `6142715223BCF84A7AF9618AE1DD71E0035AFA488CD1462518C9AB209A59C743` 的首帧 `native:3` / raw53153760 有五项不同的最终合法婚配提案和一项合法建设，六项均为 `eligible`。其中候选38710与38718均预计订婚、年龄度量同为6/6；前者原生接受值 raw9,300,000，且若接受会尝试领地联盟；后者 raw5,500,000，联盟尝试为 false。既有家庭策略 `rank_first_heir_marriage_candidates` 按结果、年龄差、接受值对这两项排序，故在这组已知输入下优先38710。旧 M5 `_opportunity_key` 先比较潜在盟友占用数量，因而选了38718，随后实测订婚但双向 `not_allied`。这证明选择器反转了已批准的家庭域内排序；不能倒推38710必被接受、必结盟或其净长期收益较高。
+
+私有修正先在**可行的婚配子集**中沿原家庭结果/年龄/接受排序取一项，再把这一项与建设、礼金等域按原共享资源键比较。盟友、角色、金币及承诺仍按实际候选占用并参与冲突检查；若38710已被占用，38718仍可成为可行候选。此修正不赋予联盟尝试正收益，不把订婚/建设放到同一个长期效用量纲，也不改正式动作 gate。R0273 原轮次不重算，修正后的同帧选择、typed 消费及恢复需新的 exact-build 候选实机验证。

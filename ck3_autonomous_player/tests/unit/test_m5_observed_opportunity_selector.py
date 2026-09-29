@@ -141,6 +141,33 @@ def _gift() -> dict[str, object]:
     )
 
 
+def _heir_betrothal(
+    candidate: int, recipient: int, acceptance_raw: int, *,
+    alliance_attempt: bool,
+) -> dict[str, object]:
+    proposal = copy.deepcopy(_gift())
+    proposal.update({
+        "candidate_id": f"marriage:first-heir:38822:{candidate}:{recipient}",
+        "domain": "marriage",
+        "source_policy": "first-heir-marriage-formal-v1",
+        "gold_cost_raw": 0,
+        "minimum_gold_reserve_raw": 0,
+        "ally_character_ids": [recipient] if alliance_attempt else [],
+        "character_ids": sorted([38822, candidate, recipient]),
+        "commitment_keys": ["first-heir-marriage:38822"],
+        "evidence": {
+            "candidate_character_id": candidate,
+            "predicted_outcome_if_accepted": "betrothal",
+            "heir_adult_measure_raw": 6,
+            "candidate_adult_measure_raw": 6,
+            "recipient_ai_accept_raw": acceptance_raw,
+            "realm_alliance_attempt_if_accepted": alliance_attempt,
+            "alliance_established": None,
+        },
+    })
+    return proposal
+
+
 def _defensive_snapshot() -> dict[str, object]:
     value = _snapshot()
     war = {
@@ -247,6 +274,46 @@ def _wartime_lifestyle() -> tuple[dict[str, object], dict[str, object]]:
 
 
 class M5ObservedOpportunitySelectorTests(unittest.TestCase):
+    def test_family_value_rank_precedes_potential_ally_claim_within_family(self) -> None:
+        # R0273 native:3 observed these two same-age final-legal betrothals.
+        # The earlier M5 cost order chose 38718 solely for claiming no ally,
+        # reversing the family policy's 9.3M > 5.5M acceptance ordering.
+        best = _heir_betrothal(38710, 32266, 9_300_000,
+                               alliance_attempt=True)
+        cheaper_claim = _heir_betrothal(38718, 32897, 5_500_000,
+                                        alliance_attempt=False)
+        result = select_observed_m5_opportunity(
+            snapshot=_snapshot(), proposals=[cheaper_claim, best],
+            commitments=_commitments(), gold_reserve_raw=0,
+            max_active_wars=0,
+        )
+        self.assertEqual(result["selected_candidate_id"], best["candidate_id"])
+        self.assertEqual(len(result["evaluated"]), 2)
+        self.assertTrue(all(row["reason"] == "eligible"
+                            for row in result["evaluated"]))
+
+        occupied = select_observed_m5_opportunity(
+            snapshot=_snapshot(), proposals=[best, cheaper_claim],
+            commitments=_commitments(ally_character_ids=[32266]),
+            gold_reserve_raw=0, max_active_wars=0,
+        )
+        self.assertEqual(occupied["selected_candidate_id"],
+                         cheaper_claim["candidate_id"])
+        self.assertEqual(occupied["evaluated"][0]["reason"],
+                         "existing_commitment_conflict")
+
+        with_building = select_observed_m5_opportunity(
+            snapshot=_snapshot(),
+            proposals=[cheaper_claim, _construction(), best],
+            commitments=_commitments(), gold_reserve_raw=0,
+            max_active_wars=0,
+        )
+        # Cross-domain resource ordering is unchanged. A building with no
+        # potential ally claim can still precede the family's best proposal.
+        self.assertEqual(with_building["selected_candidate_id"],
+                         _construction()["candidate_id"])
+        self.assertEqual(len(with_building["evaluated"]), 3)
+
     def test_formal_adapters_preserve_observed_fields_without_utility(self) -> None:
         council, building, gift = _council(), _construction(), _gift()
         self.assertEqual(council["evidence"]["candidate_stewardship"], 17)
