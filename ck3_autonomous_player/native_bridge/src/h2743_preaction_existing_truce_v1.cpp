@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <limits>
 #include <string>
 
 namespace xar::ck3_11906 {
@@ -91,6 +92,30 @@ std::string_view StatusName(game::H2743ExistingTruceStatusV1 status) noexcept {
 }
 
 } // namespace
+
+bool AdmitH2743PreactionFrameClaimV1(
+    const H2743PreactionFrameClaimV1 &claim,
+    std::uint64_t state_revision,
+    const game::Snapshot &actual) {
+  if (state_revision == 0 ||
+      state_revision == std::numeric_limits<std::uint64_t>::max() ||
+      claim.native_revision != state_revision ||
+      claim.public_revision != state_revision + 1 ||
+      claim.snapshot_id != "native:" + std::to_string(state_revision) ||
+      claim.date_raw != static_cast<std::uint64_t>(kH2743TruceDateRawV1) ||
+      claim.actor_character_id !=
+          static_cast<std::uint64_t>(kH2743TruceDefenderIdV1) ||
+      claim.war_id != static_cast<std::uint64_t>(kH2743TruceWarIdV1) ||
+      claim.episode_id != kH2743EpisodeIdV1 ||
+      claim.checkpoint_sha256 != kH2743CheckpointSha256V1 ||
+      claim.exe_sha256 != kH2743ExeSha256V1) {
+    return false;
+  }
+  return IsExactPausedFrame(actual) &&
+         actual.date_raw == static_cast<std::int32_t>(claim.date_raw) &&
+         actual.played_character_id ==
+             static_cast<std::int32_t>(claim.actor_character_id);
+}
 
 game::H2743ExistingTruceStatusV1 ReadH2743PreactionExistingTruceV1(
     const H2743ExistingTruceAccessV1 &access,

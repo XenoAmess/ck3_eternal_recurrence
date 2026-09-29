@@ -1435,10 +1435,14 @@ def create_server(
 
     @server.tool()
     def ck3_execute_step(
-        step: str, expected_revision: int | None = None
+        step: str, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Execute one semantic gameplay step through the selected backend."""
-        return service.execute_step(step, expected_revision=expected_revision)
+        return service.execute_step(
+            step, expected_revision=expected_revision,
+            expected_h2743_frame=expected_h2743_frame,
+        )
 
     @server.tool()
     def ck3_save_checkpoint(

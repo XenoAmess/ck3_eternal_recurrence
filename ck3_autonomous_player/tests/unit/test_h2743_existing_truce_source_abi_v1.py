@@ -62,6 +62,11 @@ class H2743ExistingTruceSourceAbiTests(unittest.TestCase):
             ("src/ck3_11906.cpp", "kWarTargetedTitleIdsOffset"),
             ("src/bridge.cpp", "expected_episode_id"),
             ("src/bridge.cpp", "expected_checkpoint_sha256"),
+            ("src/bridge.cpp", "expected_native_revision"),
+            ("src/bridge.cpp", "expected_actor_character_id"),
+            ("src/bridge.cpp", "expected_war_id"),
+            ("src/h2743_preaction_existing_truce_v1.cpp",
+             "claim.snapshot_id != \"native:\" + std::to_string(state_revision)"),
             ("src/h2743_preaction_existing_truce_v1.cpp",
              "war_after != war_before"),
         )

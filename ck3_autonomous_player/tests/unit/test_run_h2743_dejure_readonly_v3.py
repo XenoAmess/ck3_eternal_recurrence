@@ -283,6 +283,26 @@ class H2743RunnerGateTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             runner.require_same_ready_frame(changed, current_war, frame, wars)
 
+    def test_r0110_native_four_explicit_query_claim_and_drift_denial(self) -> None:
+        war = {"war_id": 16777231, "player_side": "defender",
+               "player_is_primary_war_leader": True,
+               "primary_opponent_character_id": 30097,
+               "player_relative_war_score": -12, "targeted_title_ids": [2128]}
+        before = {"episode_run_id": runner.EPISODE, "date_raw": 53217264,
+                  "played_character": {"character_id": 29829, "alive": True},
+                  "paused": True, "map_ready": True, "active_wars": [war],
+                  "snapshot_id": "native:4", "revision": 5, "native_revision": 4,
+                  "diagnostics": {"connection_generation": 1}}
+        frame = runner.frame_signature(before)
+        arguments = runner.existing_truce_query_arguments(before, frame)
+        self.assertEqual(arguments["step"], runner.QUERY)
+        self.assertEqual(arguments["expected_revision"], 5)
+        self.assertEqual(arguments["expected_h2743_frame"]["snapshot_id"], "native:4")
+        for key, value in (("snapshot_id", "native:3"), ("revision", 6),
+                           ("native_revision", 5), ("connection_generation", 2)):
+            with self.subTest(key=key), self.assertRaises(RuntimeError):
+                runner.existing_truce_query_arguments(before, dict(frame, **{key: value}))
+
     def test_failed_read_can_prove_cleanup_without_publishing_success(self) -> None:
         receipt = clean_receipt()
         receipt["binary_audit_live_sha256"] = None

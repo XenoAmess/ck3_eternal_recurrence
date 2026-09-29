@@ -464,6 +464,7 @@ from .h2743_preaction_existing_truce_v1 import (
     EPISODE as H2743_PREACTION_EPISODE,
     QUERY_STEP as H2743_PREACTION_EXISTING_TRUCE_STEP,
     normalize_result as normalize_h2743_preaction_existing_truce,
+    require_frame_claim as require_h2743_preaction_frame_claim,
 )
 from .raiktor_war_bound_loss_cleanup_contract import (
     QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
@@ -9382,8 +9383,29 @@ class NativeHeadlessGameplayDriver:
             payload, request=request
         )
 
+    def query_h2743_preaction_existing_truce_v1(
+        self, frame_claim: dict[str, object], *, expected_revision: int
+    ) -> dict[str, object]:
+        """Execute only the old-slot reader against an explicit before frame."""
+        try:
+            result = self._execute_native_war_step(
+                H2743_PREACTION_EXISTING_TRUCE_STEP,
+                expected_revision=expected_revision,
+                expected_h2743_frame=frame_claim,
+            )
+        except Exception as error:
+            self._record_command(
+                H2743_PREACTION_EXISTING_TRUCE_STEP,
+                ok=False, result=None, error=f"{type(error).__name__}: {error}",
+            )
+            raise
+        self._record_command(H2743_PREACTION_EXISTING_TRUCE_STEP,
+                             ok=True, result=result)
+        return result
+
     def _execute_native_war_step(
-        self, step: str, *, expected_revision: int | None
+        self, step: str, *, expected_revision: int | None,
+        expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         termination_query_war_id = (
             parse_query_war_termination_options_step(step)
@@ -9431,22 +9453,31 @@ class NativeHeadlessGameplayDriver:
             else starting_revision
         )
         if h2743_existing_truce_query:
-            native_revision = starting.get("native_revision")
-            if (type(native_revision) is not int or native_revision < 1
-                    or starting.get("snapshot_id") != "native:3"
-                    or starting.get("date_raw") != H2743_PREACTION_DATE_RAW
-                    or starting.get("episode_run_id") != H2743_PREACTION_EPISODE
-                    or starting.get("paused") is not True):
-                raise BridgeUnavailableError(
-                    "exact H2743 native source/frame claim unavailable"
+            try:
+                frame_claim = require_h2743_preaction_frame_claim(
+                    expected_h2743_frame, starting
                 )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"exact H2743 native source/frame claim unavailable: {error}"
+                ) from error
+            if (type(expected_revision) is not int
+                    or expected_revision != frame_claim["revision"]):
+                raise BridgeUnavailableError(
+                    "exact H2743 public before-frame revision unavailable"
+                )
+            native_revision = frame_claim["native_revision"]
             raw = self._execute_primitive_step(
                 step,
                 expected_revision=selected_revision,
                 required_capability=H2743_PREACTION_EXISTING_TRUCE_CAPABILITY,
                 request_fields={
                     "expected_date_raw": H2743_PREACTION_DATE_RAW,
-                    "expected_snapshot_id": "native:3",
+                    "expected_snapshot_id": frame_claim["snapshot_id"],
+                    "expected_public_revision": frame_claim["revision"],
+                    "expected_native_revision": native_revision,
+                    "expected_actor_character_id": frame_claim["actor_character_id"],
+                    "expected_war_id": frame_claim["war_id"],
                     "expected_episode_id": H2743_PREACTION_EPISODE,
                     "expected_checkpoint_sha256": H2743_PREACTION_CHECKPOINT_SHA256,
                     "expected_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",

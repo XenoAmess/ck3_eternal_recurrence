@@ -17118,6 +17118,10 @@ void RunConnectedSession(
         else if (step == xar::ck3_11906::kH2743ExistingTruceV1Step) {
           std::uint64_t expected_revision = 0;
           std::uint64_t expected_date_raw = 0;
+          std::uint64_t expected_public_revision = 0;
+          std::uint64_t expected_native_revision = 0;
+          std::uint64_t expected_actor_character_id = 0;
+          std::uint64_t expected_war_id = 0;
           std::string expected_snapshot_id;
           std::string expected_episode_id;
           std::string expected_checkpoint_sha256;
@@ -17126,7 +17130,18 @@ void RunConnectedSession(
               xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) &&
               xar::bridge::JsonUnsignedField(
-                  incoming.payload, "expected_date_raw", expected_date_raw) &&
+                   incoming.payload, "expected_date_raw", expected_date_raw) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_public_revision",
+                  expected_public_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_native_revision",
+                  expected_native_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_actor_character_id",
+                  expected_actor_character_id) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_war_id", expected_war_id) &&
               xar::bridge::JsonStringField(
                   incoming.payload, "expected_snapshot_id",
                   expected_snapshot_id, 48) &&
@@ -17139,15 +17154,7 @@ void RunConnectedSession(
               xar::bridge::JsonStringField(
                   incoming.payload, "expected_exe_sha256",
                   expected_exe_sha256, 64) &&
-              expected_revision == state_revision && state_revision != 0 &&
-              expected_date_raw == static_cast<std::uint64_t>(
-                  xar::ck3_11906::kH2743TruceDateRawV1) &&
-              expected_snapshot_id == "native:3" &&
-              expected_episode_id == xar::ck3_11906::kH2743EpisodeIdV1 &&
-              expected_checkpoint_sha256 ==
-                  xar::ck3_11906::kH2743CheckpointSha256V1 &&
-              expected_exe_sha256 ==
-                  "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+              expected_revision == state_revision && state_revision != 0;
           if (!request_bound || !previous_snapshot.has_value()) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
@@ -17166,6 +17173,17 @@ void RunConnectedSession(
                               request_id, step, false,
                               "H2743 preaction existing-truce admission frame changed"));
               }
+            } else if (!xar::ck3_11906::AdmitH2743PreactionFrameClaimV1(
+                           {expected_public_revision, expected_native_revision,
+                            expected_date_raw, expected_actor_character_id,
+                            expected_war_id, expected_snapshot_id,
+                            expected_episode_id, expected_checkpoint_sha256,
+                            expected_exe_sha256},
+                           state_revision, admission)) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "H2743 preaction existing-truce source/frame claim invalid"));
             } else {
               xar::game::H2743ExistingTruceSnapshotV1 existing{};
               xar::game::ReadH2743PreactionExistingTruceV1(game, existing);

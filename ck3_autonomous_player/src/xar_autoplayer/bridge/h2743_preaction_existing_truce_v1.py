@@ -24,6 +24,60 @@ OUTER_KEYS = {
     "step", "accepted", "query_sequence", "snapshot_revision",
     "h2743_preaction_existing_truce", "backend_id",
 }
+FRAME_CLAIM_KEYS = {
+    "snapshot_id", "revision", "native_revision", "date_raw",
+    "actor_character_id", "episode_run_id", "war_id", "connection_generation",
+}
+
+
+def frame_claim_from_snapshot(snapshot: dict[str, object]) -> dict[str, object]:
+    """Bind a fresh paused read to the actual native frame, never a saved ID."""
+    if not isinstance(snapshot, dict):
+        raise ValueError("H2743 frame is absent")
+    native = snapshot.get("native_revision")
+    public = snapshot.get("revision")
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    wars = snapshot.get("active_wars")
+    if (type(native) is not int or native < 1 or type(public) is not int
+            or public != native + 1 or snapshot.get("snapshot_id") != f"native:{native}"
+            or snapshot.get("date_raw") != DATE_RAW or snapshot.get("paused") is not True
+            or snapshot.get("map_ready") is not True
+            or snapshot.get("episode_run_id") != EPISODE
+            or not isinstance(played, dict) or played.get("alive") is not True
+            or type(played.get("character_id")) is not int
+            or played["character_id"] != TOWARD_ID
+            or not isinstance(diagnostics, dict)
+            or type(diagnostics.get("connection_generation")) is not int
+            or diagnostics["connection_generation"] < 1
+            or not isinstance(wars, list)):
+        raise ValueError("H2743 paused source frame identity differs")
+    matched = [war for war in wars if isinstance(war, dict)
+               and type(war.get("war_id")) is int and war["war_id"] == WAR_ID]
+    if (len(matched) != 1 or matched[0].get("player_side") != "defender"
+            or matched[0].get("player_is_primary_war_leader") is not True
+            or type(matched[0].get("primary_opponent_character_id")) is not int
+            or matched[0]["primary_opponent_character_id"] != OWNER_ID
+            or matched[0].get("targeted_title_ids") != [2128]):
+        raise ValueError("H2743 paused WarID or primary parties differ")
+    return {
+        "snapshot_id": snapshot["snapshot_id"], "revision": public,
+        "native_revision": native, "date_raw": DATE_RAW,
+        "actor_character_id": TOWARD_ID, "episode_run_id": EPISODE,
+        "war_id": WAR_ID,
+        "connection_generation": diagnostics["connection_generation"],
+    }
+
+
+def require_frame_claim(claim: dict[str, object] | None,
+                        snapshot: dict[str, object]) -> dict[str, object]:
+    if not isinstance(claim, dict) or set(claim) != FRAME_CLAIM_KEYS:
+        raise ValueError("H2743 explicit before-frame claim is absent or malformed")
+    actual = frame_claim_from_snapshot(snapshot)
+    if any(type(claim[key]) is not type(value) or claim[key] != value
+           for key, value in actual.items()):
+        raise ValueError("H2743 explicit before-frame claim drifted")
+    return actual
 
 
 def normalize_result(value: dict[str, object], *, native_revision: int) -> dict[str, object]:

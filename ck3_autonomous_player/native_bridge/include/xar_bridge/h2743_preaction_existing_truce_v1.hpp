@@ -42,6 +42,25 @@ inline constexpr std::int32_t kH2743TruceWarIdV1 = 16777231;
 inline constexpr std::int32_t kH2743TruceAttackerIdV1 = 30097;
 inline constexpr std::int32_t kH2743TruceDefenderIdV1 = 29829;
 inline constexpr std::int32_t kH2743TruceDateRawV1 = 53217264;
+inline constexpr std::string_view kH2743ExeSha256V1 =
+    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+
+struct H2743PreactionFrameClaimV1 {
+  std::uint64_t public_revision = 0;
+  std::uint64_t native_revision = 0;
+  std::uint64_t date_raw = 0;
+  std::uint64_t actor_character_id = 0;
+  std::uint64_t war_id = 0;
+  std::string snapshot_id;
+  std::string episode_id;
+  std::string checkpoint_sha256;
+  std::string exe_sha256;
+};
+
+bool AdmitH2743PreactionFrameClaimV1(
+    const H2743PreactionFrameClaimV1 &claim,
+    std::uint64_t state_revision,
+    const game::Snapshot &actual);
 
 struct H2743TruceWarIdentityV1 {
   const void *war_object = nullptr;

@@ -463,6 +463,21 @@ def frame_signature(snapshot: dict[str, object]) -> dict[str, object]:
     return frame
 
 
+def existing_truce_query_arguments(before: dict[str, object],
+                                   frame: dict[str, object]) -> dict[str, object]:
+    from xar_autoplayer.bridge.h2743_preaction_existing_truce_v1 import (
+        frame_claim_from_snapshot,
+    )
+    claim = frame_claim_from_snapshot(before)
+    if (claim["revision"] != frame["revision"]
+            or claim["native_revision"] != frame["native_revision"]
+            or claim["snapshot_id"] != frame["snapshot_id"]
+            or claim["connection_generation"] != frame["connection_generation"]):
+        raise RuntimeError("H2743 explicit before frame differs")
+    return {"step": QUERY, "expected_revision": claim["revision"],
+            "expected_h2743_frame": claim}
+
+
 def admit_ready_snapshot(snapshot: dict[str, object]) -> tuple[dict[str, object], dict[str, object], list[dict[str, object]]] | None:
     """Return identity evidence only after a fully loaded H2743 map frame."""
     if cold_map_snapshot_pending(snapshot):
@@ -712,9 +727,10 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                     from xar_autoplayer.bridge.h2743_preaction_existing_truce_v1 import (
                         OUTER_KEYS, normalize_result,
                     )
+                    query_arguments = existing_truce_query_arguments(before, frame)
                     truce_results = []
                     for number in (1, 2):
-                        result = await call(session, "ck3_execute_step", {"step": QUERY},
+                        result = await call(session, "ck3_execute_step", query_arguments,
                                             f"existing-truce-query-{number}")
                         if not OUTER_KEYS.issubset(result):
                             raise RuntimeError("H2743 existing-truce result fields missing")
@@ -728,7 +744,9 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                         truce_results.append((result, wire))
                         if number == 1:
                             options_result = await call(session, "ck3_execute_step",
-                                                        {"step": OPTIONS_QUERY}, "war-options-query")
+                                                        {"step": OPTIONS_QUERY,
+                                                         "expected_revision": query_arguments["expected_revision"]},
+                                                        "war-options-query")
                             require_options_query(options_result, frame, war, expected_wars)
                     after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
                     require_snapshot_bridge_pid(after, ready["pid"])

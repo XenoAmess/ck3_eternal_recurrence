@@ -2558,12 +2558,24 @@ class GameplayBridgeService:
         }
 
     def execute_step(
-        self, step: str, *, expected_revision: int | None = None
+        self, step: str, *, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
             raise UnsupportedStepError(
                 "title-map navigation requires its typed MCP facade"
             )
+        from .h2743_preaction_existing_truce_v1 import QUERY_STEP
+        if step == QUERY_STEP or expected_h2743_frame is not None:
+            if (step != QUERY_STEP or type(expected_revision) is not int
+                    or expected_h2743_frame is None):
+                raise BridgeUnavailableError(
+                    "H2743 read-only query requires an explicit before-frame claim"
+                )
+            reader = getattr(self.driver, "query_h2743_preaction_existing_truce_v1", None)
+            if reader is None:
+                raise BridgeUnavailableError("H2743 native read-only reader unavailable")
+            return reader(expected_h2743_frame, expected_revision=expected_revision)
         return self.driver.execute_step(step, expected_revision=expected_revision)
 
     def save_checkpoint(

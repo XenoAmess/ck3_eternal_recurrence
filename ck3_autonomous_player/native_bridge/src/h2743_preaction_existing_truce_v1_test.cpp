@@ -108,11 +108,75 @@ Fixture ReadyFixture() {
   return fixture;
 }
 
+xar::ck3_11906::H2743PreactionFrameClaimV1 FrameClaim(
+    std::uint64_t native_revision) {
+  return {native_revision + 1, native_revision, 53217264, 29829, 16777231,
+          "native:" + std::to_string(native_revision),
+          std::string(xar::ck3_11906::kH2743EpisodeIdV1),
+          std::string(xar::ck3_11906::kH2743CheckpointSha256V1),
+          std::string(xar::ck3_11906::kH2743ExeSha256V1)};
+}
+
 } // namespace
 
 int main() {
   using Status = xar::game::H2743ExistingTruceStatusV1;
   using xar::ck3_11906::ReadH2743PreactionExistingTruceV1;
+  using xar::ck3_11906::AdmitH2743PreactionFrameClaimV1;
+  {
+    const auto ready = ReadyFixture();
+    for (const auto native_revision : {std::uint64_t{3}, std::uint64_t{4}}) {
+      const auto claim = FrameClaim(native_revision);
+      Require(AdmitH2743PreactionFrameClaimV1(
+          claim, native_revision, ready.snapshot));
+      auto wrong = claim;
+      wrong.snapshot_id = "native:3";
+      if (native_revision == 4) {
+        Require(!AdmitH2743PreactionFrameClaimV1(
+            wrong, native_revision, ready.snapshot));
+      }
+      wrong = claim;
+      ++wrong.public_revision;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      ++wrong.native_revision;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      ++wrong.date_raw;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      ++wrong.actor_character_id;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      ++wrong.war_id;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      wrong.episode_id = "wrong";
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      wrong.checkpoint_sha256 = "wrong";
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      wrong = claim;
+      wrong.exe_sha256 = "wrong";
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          wrong, native_revision, ready.snapshot));
+      auto changed = ready.snapshot;
+      changed.paused = false;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          claim, native_revision, changed));
+      changed = ready.snapshot;
+      changed.active_wars[0].war_id = 16777232;
+      Require(!AdmitH2743PreactionFrameClaimV1(
+          claim, native_revision, changed));
+    }
+  }
   {
     auto fixture = ReadyFixture();
     xar::game::H2743ExistingTruceSnapshotV1 output{};
