@@ -175,3 +175,32 @@ Neither the source change nor an empty hosted-activity list proves zero
 guests, a positive timely join, or permission to Start. The next paired
 paused read must report the new exact status and, when observed, the
 selected non-host expectation and arrival on that frame.
+
+## R0368 paired paused read: empty selected-guest route observed
+
+The frozen [R0368 candidate](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/CANDIDATE-INDEX.json)
+SHA-256 `E7A3B2AACBA9DD26ECD2018E561164D9F6789047D68FE10AD1BF629968FDA039`
+used source master `dee29e5c588e81da532d5085a65413aaf8a7640a` and Release
+DLL SHA-256 `6242EA7A7B15DF65888E7512696BE6232E7434FA02DF62936ACF792B91A198F2`.
+On actual live run **R0368**, CK3 PID 152300, actor 29829, paused `native:3`
+and date raw53219928, the Stage 1/2 configuration again reached Stage 5.
+The paired guest collector returned `guest_join_status=observed`,
+`selected_nonhost_count=0`, `positive_join_count=0`,
+`timely_positive_join_count=0`, and `arrival_time_observed=true`.
+These are **observed zero selected rows** on this configuration, unlike the
+null counts from R0367. They do not count every eligible invitee, prove a
+guest accepted or arrived, or provide a per-guest ETA from a selected row.
+`native_guest_route_qualified=false` because no positive timely non-host
+was selected; the final native CanStart was also false. Neither result
+alone establishes the cause of the other.
+
+The [formal report](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/operator-runs/feast-stage5-guest-failure-read-1/formal-report.txt)
+SHA-256 `883CC43B513CE7F01A18A61DB27ACCA923F2D781F5836306AC0B7FCEE39EB6`
+and [operator receipt](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/operator-runs/feast-stage5-guest-failure-read-1/operator-receipt.json)
+SHA-256 `114FBD23FC3B66084074D5E9650DC88E6A13938AEC12454B475DB1AA28A04A7B`
+record a completed bounded read, zero normal gameplay/date turns, unchanged
+original H3928 save, and process-tree cleanup. No invitation, Start, guest
+arrival, activity creation, reward, next-turn consumption or post-selection
+cold restore was tested. A future positive-guest valuation needs a
+native-legal selected non-host and an expectation/arrival read; final
+CanStart must be re-read separately on the decision frame.

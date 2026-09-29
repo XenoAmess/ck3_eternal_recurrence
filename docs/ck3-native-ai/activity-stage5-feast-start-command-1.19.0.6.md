@@ -329,3 +329,43 @@ next turn or cold restore. The formal Start action remains OFF while the
 same-frame native gate is false and the guest route is unqualified; a new
 frozen candidate and paired paused read must observe the display and guest
 status before policy can reconsider Start.
+
+## R0368 paired paused failure display and Start hold
+
+The [frozen R0368 candidate](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/CANDIDATE-INDEX.json)
+SHA-256 `E7A3B2AACBA9DD26ECD2018E561164D9F6789047D68FE10AD1BF629968FDA039`
+used exact source master `dee29e5c588e81da532d5085a65413aaf8a7640a`
+(official CI #36554357856 SUCCESS), Release DLL SHA-256
+`6242EA7A7B15DF65888E7512696BE6232E7434FA02DF62936ACF792B91A198F2`,
+and a ready official pair/no-launch check. Its Stage 5 Start **query** opt-in
+was ON and Start **action** opt-in remained OFF. On live run R0368, new CK3
+PID 152300, the owner [window receipt](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/OWNER-WINDOW-RECEIPT.json)
+SHA-256 `6EDB93157AB1B3514C723ECEADD3009B7313934C0820BB45998DECB5BFA097B3`
+confirms the verified window was minimized after load.
+
+Stage 1 Confirm and the typed ProvinceID 2619 destination again reached
+Stage 5 on paused `native:3`, actor 29829/date raw53219928. The same-frame
+named costs were Gold 100 at scale 100000, treasury/piety/barter goods 0;
+`final_can_start=false`. This time
+`final_can_start_failure_display.state=known` with native display text
+containing **“你不能在军队中担任将领或骑士”**. The original value includes CK3
+formatting/control codes and is a display explanation, **not a stable
+machine reason key**. It does not independently prove the actor's current
+commander/knight assignment or authorize changing a war role. The paired
+guest read observed zero selected non-host rows and no qualified positive
+timely guest route; the formal policy held with
+`decision_reason=native_final_start_unavailable` and submitted no Start.
+
+The [formal report](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/operator-runs/feast-stage5-guest-failure-read-1/formal-report.txt)
+SHA-256 `883CC43B513CE7F01A18A61DB27ACCA923F2D781F5836306AC0B7FCEE39EB6`
+has `private_activity_feast_stage5_start_assessed/planning_stage_advanced/ok=true`;
+the [operator receipt](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/operator-runs/feast-stage5-guest-failure-read-1/operator-receipt.json)
+SHA-256 `114FBD23FC3B66084074D5E9650DC88E6A13938AEC12454B475DB1AA28A04A7B`
+has completed/exit 0. Ordinary `auto_run` attempted/successful/visible
+gameplay turns are zero, date raw53219928 and original H3928 save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+are unchanged, and cleanup proved the CK3 tree gone. The operator's one
+bounded request is not a normal gameplay turn. This is a new paused native
+failure display and guest observation, not Start, payment, a hosted feast,
+benefit, next turn or post-selection cold restore. Final CanStart remains
+false and formal Start remains OFF.
