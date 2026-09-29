@@ -45,6 +45,8 @@
 | `future_risk_budget_raw` | 由另行审阅并固定 hash 的玩家战争政策给出风险覆盖集合、每类有界金额、claim ID、有效截止日和强制重审点；它补偿已经明确列出的未能精确报价风险，不可由费用缓存自证。 | 与未来 due event 和最低储备的 claim ID 两两不交。开放式或无法给上界的风险类不能靠任意有限金额掩盖，应使期限内消费决策失败关闭。 |
 | `policy_minimum_gold_reserve_raw` | 独立发布/pin 的玩家战争政策 bytes，`war_cash_floor_policy_provenance_v1.py` 已提供候选形状门：政策版本、玩家、episode、WarID、Q100000 floor、`terminal_liquidity_after_horizon` 用途、有效起止及不交叠 claim ID。 | 这是**付款后仍须留在国库**的政策底线，不能用原版 AI 的 `MIN_WAR_CHEST`/18 个月目标或建造域 200 金静默代入；候选 helper 固定 `formal_cash_receipt_eligible=false`，直到审阅来源和其余费用真实来源闭合。 |
 
+候选政策门在 #449 `ac7d93be5` 已对 `gold_scale`、`played_character_id`、`war_id` 要求精确整数类型，拒绝 JSON 浮点/布尔身份；普通与优化 Python 的负例均通过。该修补只验证文档候选形状，不发布 Robert 战争政策，也不把底线从 null 改为零。
+
 `next_review_date_raw` 应由受管推进器给出一个实际可执行的首个暂停重审点；`horizon_end_date_raw` 不得晚于它，且政策有效期须覆盖终点。在下一次花费授权前强制重新读完整输入。只声明 `horizon_days=1`、读取到当天月费或读到稳定 GUI tick，均不证明这一天的扣款次数或未来上界。若当前步只做纯读查询，查询零费只处理当次动作，未来战费和旧待付账仍在原分区。
 
 ## 需要先跑成 RED 的负例
