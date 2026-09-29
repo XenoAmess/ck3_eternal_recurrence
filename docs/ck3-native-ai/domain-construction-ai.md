@@ -18,18 +18,29 @@ Turn 3 consumed the applied receipt and selected a separate family proposal;
 turn 5 advanced raw `53153760` to `53153976`, **nine game days**. No duplicate
 construction action or spend appears in these 12 turns.
 
-The final receipt is still `in_progress`, with native remaining work raw
+The R0351 final receipt is still `in_progress`, with native remaining work raw
 `109500000`, progress divisor raw `0`, and province monthly income raw `87000`
 both before and just after the start. The authored +0.35 monthly income is a
 definition-backed selection input, not a realized gain. The ordinary consumer
 already prioritizes a new-PID material recheck, a due same-PID 30-day watch,
 and a root-income query after observed completion. R0351 proves the actual
-opportunity trigger, material start, and next-turn consumption; it does not
-close a cold-recovery or completed-slot/effect/income gate. The immediate
-independent task is to cold-recheck this exact paired save and ledger on a new
-PID, then continue the existing bounded completion watch until a built slot
-and later income/effect readback exist. The nine-day continuation cannot
-establish a 1095-day authored building's completion.
+opportunity trigger, material start, and next-turn consumption. The nine-day
+continuation cannot establish a 1095-day authored building's completion.
+
+R0354 then cold-restored the exact R0351 save, driver and construction ledger
+on new PID `150508`. Its [four-turn formal report](Z:/ck3_mod_rewrite_process_assets/m5-family-r0351-cold-restore-acbc3ed-20260929/run-cold-4/formal-report.txt)
+has SHA-256 `0E78580B20773C1ED499A0B4D2CC3C1DB8E36F249DDEAB407479B5DC6B165037`
+and `turn_limit/qualified`, 4/4 successful turns. Turn 1 queried the original
+`construction-submit-8f68de28d7aa4d159ad2708d55ba0a84` action on a new
+native frame at raw `53153976`: the same tuple remained `applied/in_progress`,
+`postcondition_verified=true`, with remaining work raw `108500001`. Turn 2
+consumed this receipt, and no new construction was submitted. Turn 4 advanced
+to raw `53154720`, 31 derived game days later. This closes the matched cold
+recheck gate for this start receipt, but is not durable Robert mainline time.
+The ledger's last material check was raw `53153976`; the ordinary 30-day watch
+threshold is `53154696`, so a subsequent formal paused turn is due to attempt
+the existing income-root and material completion readback. A built slot,
+building effect and realized income increase remain unobserved.
 
 ## 2026-09-29 NW-ECON: keep an applied-building readout under blocked war
 
