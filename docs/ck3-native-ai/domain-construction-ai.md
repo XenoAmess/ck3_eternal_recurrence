@@ -101,8 +101,10 @@ threshold is `53154696`. A new-PID formal turn therefore immediately rechecks
 the same material tuple; that cold read has priority over a warm same-PID watch.
 If it finds a completed slot without same-frame income, the following formal
 turn requests the existing public income root before another typed receipt.
-If the slot remains active, the consumer records its new progress and restarts
-the 30-day watch. A built slot, building effect and realized income increase
+Because this checkpoint is already past the deadline, an active result
+records new progress and starts a new 30-day watch; an early new-PID
+recheck keeps the earlier due date as described above. A built slot,
+building effect and realized income increase
 remain unobserved.
 
 R0355 cold-restored that due checkpoint on new PID `112500`. Its
