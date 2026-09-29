@@ -83,6 +83,7 @@ class ConstructionSourceQueryRunTest(unittest.TestCase):
         self.assertEqual(args.command, "native-query-private-construction-source-v1")
         self.assertEqual(args.ownership_round_id, "R0073")
         self.assertTrue(args.cold_start_checkpoint)
+        self.assertFalse(args.wartime_observation)
 
     def test_round_validation_matches_live_allocator_without_accepting_zero(self) -> None:
         for round_id in ("R0001", "R0073", "R0999", "R1000", "R900"):
@@ -113,12 +114,103 @@ class ConstructionSourceQueryRunTest(unittest.TestCase):
                 "--bridge-injector", str(config.injector_path),
                 "native-query-private-construction-source-v1",
                 "--ownership-round-id", "R900", "--cold-start-checkpoint",
+                "--wartime-observation",
                 "--timeout", "30", "--readiness-timeout", "20",
             ])
         self.assertEqual(code, 0)
         self.assertEqual(run.call_count, 1)
         self.assertEqual(run.call_args.kwargs["ownership_round_id"], "R900")
         self.assertTrue(run.call_args.kwargs["cold_start_checkpoint"])
+        self.assertTrue(run.call_args.kwargs["wartime_observation"])
+
+    def test_wartime_one_shot_keeps_cash_unassessed_and_issues_no_action(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            state = Path(directory)
+            save = state / "profile" / "save games" / "xar_checkpoint.ck3"
+            driver_path = state / "native-session" / "driver-state.json"
+            save.parent.mkdir(parents=True)
+            driver_path.parent.mkdir(parents=True)
+            save.write_bytes(b"paired H3928 wartime checkpoint")
+            sha = subject._sha256(save)
+            driver_path.write_text(json.dumps({
+                "bridge_pid": 100, "episode_character_id": 29829,
+                "last_checkpoint": {"sha256": sha, "date_raw": 53219928},
+                "command_history": [],
+            }), encoding="utf-8")
+            frame = {
+                "snapshot_id": "native:3", "revision": 4,
+                "native_revision": 3, "date_raw": 53219928,
+                "paused": True, "map_ready": True,
+                "active_wars": [{"war_id": 16777231}],
+                "player_armies": [{"army_id": 83886367}],
+                "native_command_history": [],
+            }
+            query = {
+                "status": "observed", "native_source_status": "selected",
+                "read_only": True, "formal_action_ready": False,
+                "joint_budget_affordability": "unassessed",
+                "existing_shared_gold_commitment_raw": None,
+                "war_future_gold_cost_raw": None,
+                "observed_player_gold_raw": 50_000_000,
+                "candidate": {"stock_gold_cost_raw": 15_000_000,
+                              "authored_monthly_income_hundredths": 35},
+                "world": {"legal_samples": [{"cost_raw_native": [15_000_000] + [0] * 9}],
+                          "active_constructions": [], "cost_ready": True},
+            }
+            spec = SimpleNamespace(state_dir=state, profile_dir=state / "profile")
+            config = NativeBridgeLaunchConfig(
+                mode="native-headless", pipe_name=r"\\.\pipe\construction-war-test",
+                dll_path=state / "bridge.dll", injector_path=state / "injector.exe",
+            )
+
+            class Driver:
+                def take_snapshot(self):
+                    return copy.deepcopy(frame)
+
+                def close(self):
+                    pass
+
+            driver = Driver()
+
+            def session(*args, stop_event: threading.Event, **kwargs):
+                self.assertTrue(stop_event.wait(2))
+                return {"ok": True, "exit_reason": "stop",
+                        "shutdown": {"ok": True, "tree_gone": True,
+                                     "cleanup_proven": True}}
+
+            with (
+                mock.patch.object(subject, "ensure_state_path_safe"),
+                mock.patch.object(subject, "validate_native_bridge_launch_config",
+                                  return_value=config),
+                mock.patch.object(subject, "validate_cold_start_checkpoint_for_pipe",
+                                  return_value={"sha256": sha,
+                                                "saved_date_raw": 53219928,
+                                                "history_index": 3928}),
+                mock.patch.object(subject, "NativeHeadlessGameplayDriver",
+                                  return_value=driver),
+                mock.patch.object(subject, "native_session", side_effect=session),
+                mock.patch.object(subject, "_wait_for_readiness",
+                                  return_value=copy.deepcopy(frame)),
+                mock.patch.object(subject, "_restore_lineage_bookkeeping",
+                                  return_value={"exact": True}),
+                mock.patch.object(subject, "query_construction_wartime_observation_private",
+                                  return_value=query) as wartime_read,
+                mock.patch.object(subject, "query_construction_private") as peace_read,
+            ):
+                report = subject.query_private_construction_source_once(
+                    spec, timeout_seconds=10, readiness_timeout_seconds=5,
+                    ownership_round_id="R1000", cold_start_checkpoint=True,
+                    wartime_observation=True, native_bridge=config,
+                )
+            self.assertEqual(report["status"], "GREEN_READ_ONLY_SOURCE")
+            self.assertTrue(all(report["checks"].values()))
+            self.assertFalse(report["formal_action_ready"])
+            self.assertEqual(report["query"]["candidate"], query["candidate"])
+            self.assertIsNone(report["query"]["war_future_gold_cost_raw"])
+            self.assertEqual(subject._sha256(save), sha)
+            wartime_read.assert_called_once_with(
+                driver, expected_revision=4, include_world=True)
+            peace_read.assert_not_called()
 
     def test_r0066_source_red_is_persisted_without_planning_or_action(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
