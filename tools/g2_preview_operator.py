@@ -2088,7 +2088,6 @@ def command_run(args: argparse.Namespace) -> int:
         raise ValueError("private child pending read needs two distinct positive IDs")
     if args.private_child_matrilineal_first_heir_companion and (
         child_pair is None or args.private_family_marriage_formal_trial
-        or args.turns not in {None, 1}
     ):
         raise ValueError("first-heir companion needs one child pending read turn")
     if child_recovery_pair is not None:
@@ -2379,6 +2378,8 @@ def command_run(args: argparse.Namespace) -> int:
         return preflight_exit
     turns = (1 if child_recovery_pair is not None else args.turns
              if args.turns is not None else int(manifest.get("formal_turns", 20)))
+    if args.private_child_matrilineal_first_heir_companion and turns != 1:
+        raise ValueError("first-heir companion needs one child pending read turn")
     timeout = args.timeout if args.timeout is not None else int(manifest.get("timeout_seconds", 390))
     readiness_timeout = args.readiness_timeout if args.readiness_timeout is not None else int(
         manifest.get("readiness_timeout_seconds", 300)
