@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import runpy
 import subprocess
 import sys
 import tempfile
@@ -919,6 +920,139 @@ class TrackedShutdownTests(unittest.TestCase):
         assignment = source.index("sys.dont_write_bytecode = True")
         package_import = source.index("from .environment")
         self.assertLess(assignment, package_import)
+
+    def test_watchdog_early_import_failure_writes_error_without_stderr(self) -> None:
+        script = PACKAGE_ROOT / "xar_autoplayer" / "process_watchdog.py"
+        original_import = __import__
+
+        def fail_win32api(name, *args, **kwargs):
+            if name == "win32api":
+                raise ImportError("simulated pre-main win32api failure")
+            return original_import(name, *args, **kwargs)
+
+        with tempfile.TemporaryDirectory(prefix="xar-watchdog-early-import-") as temporary:
+            root = Path(temporary)
+            record = root / "ck3.json"
+            args = [str(script), "456", str(Path(sys.executable)), "created",
+                    "early-import-nonce", str(root / "ready.json"), str(record),
+                    str(root / "unsafe-cleanup.json"), str(root / "ck3.exe")]
+            with mock.patch.object(sys, "argv", args), mock.patch(
+                "builtins.__import__", side_effect=fail_win32api
+            ):
+                with self.assertRaisesRegex(ImportError, "simulated pre-main"):
+                    runpy.run_path(str(script))
+            error = record.with_suffix(".watchdog_error")
+            payload = json.loads(error.read_text(encoding="utf-8"))
+            self.assertEqual(payload["stage"], "early-import")
+            self.assertEqual(payload["nonce"], "early-import-nonce")
+            self.assertEqual(payload["parent_pid"], 456)
+            self.assertEqual(payload["watchdog_pid"], os.getpid())
+            self.assertEqual(payload["error_type"], "ImportError")
+            self.assertIn("simulated pre-main", payload["traceback"])
+            start = json.loads(record.with_suffix(".watchdog_start.json").read_text(encoding="utf-8"))
+            self.assertEqual(start["watchdog_pid"], os.getpid())
+            self.assertFalse((root / "ready.json").exists())
+
+    def test_watchdog_nonce_scan_finds_real_redirector_child_only(self) -> None:
+        nonce = "unit-watchdog-nonce"
+        command = (
+            f'pythonw.exe -B "{runtime_module.PROCESS_WATCHDOG}" '
+            f"456 parent.exe created {nonce} ready.json ck3.json marker.json ck3.exe"
+        )
+        row = lambda pid, line: SimpleNamespace(
+            ProcessId=pid, ParentProcessId=8044, Name="pythonw.exe",
+            ExecutablePath="C:/Python/pythonw.exe",
+            CreationDate="20260930120000.000000+000",
+            CommandLine=line,
+        )
+        service = SimpleNamespace(ExecQuery=lambda _: [
+            row(8044, command.replace(nonce, "other-nonce")),
+            row(8056, command),
+            row(8057, "pythonw.exe unrelated.py 456 " + nonce),
+        ])
+        with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_identity",
+            side_effect=lambda pid: {
+                "pid": pid, "creation_date": "20260930120000.000000+000",
+                "executable": "C:/Python/pythonw.exe",
+            },
+        ):
+            found = runtime_module._nonce_bound_watchdog_identities(456, nonce)
+        self.assertEqual([item["pid"] for item in found], [8056])
+        self.assertEqual(found[0]["creation_date"], "20260930120000.000000+000")
+
+    def test_watchdog_nonce_scan_rejects_wmi_toolhelp_identity_drift(self) -> None:
+        nonce = "unit-watchdog-nonce"
+        service = SimpleNamespace(ExecQuery=lambda _: [SimpleNamespace(
+            ProcessId=8056, ParentProcessId=8044, Name="pythonw.exe",
+            ExecutablePath="C:/Python/pythonw.exe", CreationDate="created-8056",
+            CommandLine=(f'pythonw.exe "{runtime_module.PROCESS_WATCHDOG}" '
+                         f"456 parent.exe created {nonce} ready.json ck3.json marker.json ck3.exe"),
+        )])
+        with mock.patch("win32com.client.GetObject", return_value=service), mock.patch(
+            "xar_autoplayer.runtime._toolhelp_process_identity",
+            return_value={"creation_date": "other", "executable": "C:/Python/pythonw.exe"},
+        ):
+            with self.assertRaisesRegex(runtime_module.UnsafeCleanupError, "identity differs"):
+                runtime_module._nonce_bound_watchdog_identities(456, nonce)
+
+    def test_watchdog_nonce_scan_falls_back_from_com_moniker_error(self) -> None:
+        import pythoncom
+
+        service = SimpleNamespace(ExecQuery=lambda _: [])
+        locator = SimpleNamespace(ConnectServer=lambda *_: service)
+        with mock.patch(
+            "win32com.client.GetObject",
+            side_effect=pythoncom.com_error(-2147221020, "invalid syntax", None, None),
+        ), mock.patch("win32com.client.Dispatch", return_value=locator) as dispatch:
+            found = runtime_module._nonce_bound_watchdog_identities(456, "nonce")
+        self.assertEqual(found, [])
+        dispatch.assert_called_once_with("WbemScripting.SWbemLocator")
+
+    def test_watchdog_timeout_records_launcher_and_real_child_without_ready(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-watchdog-timeout-") as temporary:
+            root = Path(temporary)
+            ready, record = root / "ready.json", root / "ck3.json"
+            marker = root / "unsafe-cleanup.json"
+            marker.write_text('{"nonce":"timeout-nonce","ck3_pid":null}\n', encoding="ascii")
+            child = {
+                "pid": 8056, "parent_pid": 8044, "name": "pythonw.exe",
+                "executable": "C:/Python/pythonw.exe",
+                "creation_date": "child-created", "command_line": "nonce-bound",
+            }
+            try:
+                with mock.patch.object(runtime_module, "WATCHDOG_READY_TIMEOUT_SECONDS", 0.02), mock.patch(
+                    "xar_autoplayer.runtime.create_process_via_windows_management",
+                    return_value=8044,
+                ), mock.patch(
+                    "xar_autoplayer.runtime._process_identity", return_value=None,
+                ), mock.patch(
+                    "xar_autoplayer.runtime._nonce_bound_watchdog_identities",
+                    side_effect=[[child], []],
+                ), mock.patch(
+                    "xar_autoplayer.runtime._authenticated_watchdog_state",
+                    return_value="running",
+                ), mock.patch(
+                    "xar_autoplayer.runtime._stop_authenticated_watchdog",
+                    return_value=True,
+                ) as stop:
+                    with self.assertRaisesRegex(AgentError, "did not become ready"):
+                        _start_process_watchdog(
+                            456, Path(sys.executable), "created", "timeout-nonce",
+                            ready, record, marker, GAME_DIR / "binaries" / "ck3.exe",
+                        )
+                stop.assert_called_once_with(8056, "child-created", 456, "timeout-nonce")
+                diagnostic = json.loads(
+                    record.with_suffix(".watchdog_bootstrap.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual(diagnostic["bootstrap_pid"], 8044)
+                self.assertEqual(diagnostic["nonce_bound_identities_before"][0]["pid"], 8056)
+                self.assertEqual(diagnostic["nonce_bound_identities_after"], [])
+                self.assertFalse(diagnostic["watchdog_absence_proven"])
+                self.assertFalse(diagnostic["ck3_launch_attempted"])
+                self.assertTrue(marker.exists())
+            finally:
+                runtime_module._FALLBACK_WATCHDOG_COMMAND_LINES.pop(8044, None)
 
     @unittest.skipUnless(os.name == "nt", "Windows Job Object contract")
     def test_suspended_process_is_assigned_before_resume(self) -> None:

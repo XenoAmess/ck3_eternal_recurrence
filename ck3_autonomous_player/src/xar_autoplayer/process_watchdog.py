@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import sys
 import time
+import traceback
 from types import SimpleNamespace
 
 # This process may be launched by Win32_Process.Create without inheriting the
@@ -14,27 +15,89 @@ from types import SimpleNamespace
 # export, so never leave __pycache__ artefacts in that export.
 sys.dont_write_bytecode = True
 
-import win32api
-import win32com.client
-import win32con
-import win32event
-import win32process
+def _early_receipt_path(suffix: str) -> Path | None:
+    if len(sys.argv) not in {9, 10}:
+        return None
+    return Path(sys.argv[6]).with_suffix(suffix)
+
+
+def _write_early_receipt(path: Path, payload: dict[str, object]) -> None:
+    """Publish complete bytes under a new name; never replace another receipt."""
+    temporary = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+    try:
+        with temporary.open("x", encoding="utf-8") as output:
+            json.dump(payload, output, ensure_ascii=True, sort_keys=True)
+            output.write("\n")
+            output.flush()
+            os.fsync(output.fileno())
+        os.link(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def _record_early_import_error(error: BaseException) -> None:
+    """Leave a nonce/PID-bound traceback when pythonw has no stderr."""
+    path = _early_receipt_path(".watchdog_error")
+    if path is None:
+        return
+    try:
+        _write_early_receipt(path, {
+            "schema": "xar.watchdog-early-import-error.v1",
+            "stage": "early-import",
+            "nonce": sys.argv[4],
+            "parent_pid": int(sys.argv[1]),
+            "watchdog_pid": os.getpid(),
+            "python": sys.executable,
+            "error_type": type(error).__name__,
+            "error": str(error),
+            "traceback": "".join(traceback.format_exception(error)),
+        })
+    except OSError:
+        # The parent still times out and preserves its unsafe marker if even
+        # this control channel cannot be written.
+        pass
+
+
+start_path = _early_receipt_path(".watchdog_start.json")
+if start_path is not None:
+    try:
+        _write_early_receipt(start_path, {
+            "schema": "xar.watchdog-early-start.v1",
+            "nonce": sys.argv[4],
+            "parent_pid": int(sys.argv[1]),
+            "watchdog_pid": os.getpid(),
+            "python": sys.executable,
+        })
+    except OSError:
+        # The parent still requires authenticated ready and fails closed.
+        pass
+
 
 try:
-    from .environment import (
-        _is_access_denied,
-        _toolhelp_ck3_processes,
-        _toolhelp_process_identity,
-        same_process_creation_time,
-    )
-except ImportError:  # Direct execution by the detached watchdog launcher.
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from xar_autoplayer.environment import (  # type: ignore[no-redef]
-        _is_access_denied,
-        _toolhelp_ck3_processes,
-        _toolhelp_process_identity,
-        same_process_creation_time,
-    )
+    import win32api
+    import win32com.client
+    import win32con
+    import win32event
+    import win32process
+
+    try:
+        from .environment import (
+            _is_access_denied,
+            _toolhelp_ck3_processes,
+            _toolhelp_process_identity,
+            same_process_creation_time,
+        )
+    except ImportError:  # Direct execution by the detached watchdog launcher.
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from xar_autoplayer.environment import (  # type: ignore[no-redef]
+            _is_access_denied,
+            _toolhelp_ck3_processes,
+            _toolhelp_process_identity,
+            same_process_creation_time,
+        )
+except BaseException as error:
+    _record_early_import_error(error)
+    raise
 
 
 EXACT_PROCESS_DRAIN_MS = 20_000

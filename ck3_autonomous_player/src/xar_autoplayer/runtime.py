@@ -51,6 +51,7 @@ from .windows_process import create_process_via_windows_management
 MAIN_MENU_REGION = (0.18, 0.28, 0.30, 0.50)
 EXPECTED_RESOLUTION = (2560, 1440)
 PROCESS_WATCHDOG = Path(__file__).with_name("process_watchdog.py")
+WATCHDOG_READY_TIMEOUT_SECONDS = 10.0
 NORMAL_REPORT_BINDING_EXCLUSIONS = frozenset(
     {
         "finalized",
@@ -1988,6 +1989,67 @@ def _rebind_fallback_watchdog(bootstrap_pid: int, actual_pid: int) -> None:
         _FALLBACK_WATCHDOG_COMMAND_LINES[actual_pid] = command
 
 
+def _nonce_bound_watchdog_identities(
+    parent_pid: int, nonce: str
+) -> list[dict[str, object]]:
+    """Locate redirector children by watchdog script and nonce.
+
+    Win32_Process.Create may return a venv launcher PID rather than the Python
+    process that writes the ready file. This scan never authorizes CK3 launch
+    or unsafe-marker removal.
+    """
+    import pythoncom
+    import win32com.client
+
+    pythoncom.CoInitialize()
+    try:
+        try:
+            service = win32com.client.GetObject("winmgmts:")
+        except pythoncom.com_error:
+            service = win32com.client.Dispatch(
+                "WbemScripting.SWbemLocator"
+            ).ConnectServer(".", r"root\cimv2")
+        rows = service.ExecQuery(
+            "SELECT ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate,CommandLine "
+            "FROM Win32_Process WHERE Name='python.exe' OR Name='pythonw.exe'"
+        )
+        found: list[dict[str, object]] = []
+        for row in rows:
+            command = str(row.CommandLine or "")
+            folded = command.casefold()
+            if (
+                str(PROCESS_WATCHDOG).casefold() not in folded
+                or nonce.casefold() not in folded
+                or f" {parent_pid} " not in command
+            ):
+                continue
+            toolhelp = _toolhelp_process_identity(int(row.ProcessId))
+            if toolhelp is None:
+                # The WMI row may have exited between the two inventories.
+                continue
+            if (
+                not same_process_creation_time(
+                    str(row.CreationDate), toolhelp["creation_date"]
+                )
+                or not _same_executable(row.ExecutablePath, toolhelp["executable"])
+            ):
+                raise UnsafeCleanupError(
+                    f"WMI/Toolhelp watchdog PID {int(row.ProcessId)} identity differs"
+                )
+            found.append({
+                "pid": int(row.ProcessId),
+                "parent_pid": int(row.ParentProcessId),
+                "name": str(row.Name),
+                "executable": str(row.ExecutablePath or ""),
+                "creation_date": str(row.CreationDate),
+                "command_line": command,
+                "toolhelp_identity": toolhelp,
+            })
+    finally:
+        pythoncom.CoUninitialize()
+    return sorted(found, key=lambda item: int(item["pid"]))
+
+
 def _start_process_watchdog(
     parent_pid: int,
     parent_executable: Path,
@@ -1999,6 +2061,7 @@ def _start_process_watchdog(
     game_exe: Path,
     final_evidence: Path | None = None,
 ) -> tuple[int, str]:
+    bootstrap_started = time.monotonic()
     watchdog_python = Path(sys.executable).with_name("pythonw.exe")
     if not watchdog_python.is_file():
         watchdog_python = Path(sys.executable)
@@ -2024,10 +2087,13 @@ def _start_process_watchdog(
     command = subprocess.list2cmdline(arguments)
     management_pid: int | None = None
     management_error: Exception | None = None
+    bootstrap_process: subprocess.Popen[bytes] | None = None
+    management_started = time.monotonic()
     try:
         management_pid = create_process_via_windows_management(command)
     except Exception as error:
         management_error = error
+    management_seconds = time.monotonic() - management_started
     detached_fallback = management_error is not None and _is_access_denied(
         management_error
     )
@@ -2063,7 +2129,7 @@ def _start_process_watchdog(
     else:
         # The management provider succeeded but suppressed ProcessId. The
         # child still proves its exact PID through the nonce-bound ready file.
-        no_pid_deadline = time.monotonic() + 10
+        no_pid_deadline = time.monotonic() + WATCHDOG_READY_TIMEOUT_SECONDS
         error_file = record_file.with_suffix(".watchdog_error")
         while time.monotonic() < no_pid_deadline:
             if error_file.is_file():
@@ -2108,7 +2174,7 @@ def _start_process_watchdog(
     actual_pid: int | None = None
     creation_date = ""
     try:
-        deadline = time.monotonic() + 10
+        deadline = time.monotonic() + WATCHDOG_READY_TIMEOUT_SECONDS
         while time.monotonic() < deadline:
             if error_file.is_file():
                 detail = error_file.read_text(
@@ -2159,30 +2225,146 @@ def _start_process_watchdog(
         )
     except Exception as bootstrap_error:
         candidate = actual_pid if actual_pid is not None else bootstrap_pid
-        cleanup_error: Exception | None = None
+        diagnostic_path = record_file.with_suffix(".watchdog_bootstrap.json")
+        start_path = record_file.with_suffix(".watchdog_start.json")
+        start_receipt: dict[str, object] | None = None
+        start_error: str | None = None
+        if start_path.is_file():
+            try:
+                loaded_start = json.loads(start_path.read_text(encoding="utf-8"))
+                if (
+                    isinstance(loaded_start, dict)
+                    and loaded_start.get("nonce") == nonce
+                    and loaded_start.get("parent_pid") == parent_pid
+                ):
+                    start_receipt = loaded_start
+                else:
+                    start_error = "watchdog start receipt identity mismatch"
+            except (OSError, ValueError) as error:
+                start_error = f"{type(error).__name__}: {error}"
+        identity: dict[str, object] | None = None
+        identity_error: str | None = None
         try:
             identity = _process_identity(candidate)
-            if identity is not None:
-                candidate_creation = str(identity["creation_date"])
-                _stop_authenticated_watchdog(
-                    candidate, candidate_creation, parent_pid, nonce
-                )
         except Exception as error:
-            cleanup_error = error
-        if cleanup_error is None:
+            identity_error = f"{type(error).__name__}: {error}"
+        fallback_returncode: int | None = None
+        if bootstrap_process is not None:
+            try:
+                fallback_returncode = bootstrap_process.poll()
+            except Exception as error:
+                identity_error = identity_error or (
+                    f"fallback poll: {type(error).__name__}: {error}"
+                )
+        nonce_before: list[dict[str, object]] = []
+        nonce_scan_errors: list[str] = []
+        try:
+            nonce_before = _nonce_bound_watchdog_identities(parent_pid, nonce)
+        except Exception as error:
+            nonce_scan_errors.append(
+                f"before: {type(error).__name__}: {error}"
+            )
+        cleanup_errors: list[str] = []
+        candidates = {
+            int(item["pid"]): item for item in nonce_before
+        }
+        if start_receipt is not None:
+            start_pid = int(start_receipt["watchdog_pid"])
+            try:
+                start_identity = _process_identity(start_pid)
+                if start_identity is not None:
+                    candidates[start_pid] = start_identity
+            except Exception as error:
+                cleanup_errors.append(
+                    f"start PID {start_pid}: {type(error).__name__}: {error}"
+                )
+        if identity is not None:
+            candidates[int(identity["pid"])] = identity
+        for watchdog_candidate in candidates.values():
+            pid = int(watchdog_candidate["pid"])
+            creation = str(watchdog_candidate["creation_date"])
+            try:
+                state = _authenticated_watchdog_state(
+                    pid, creation, parent_pid, nonce
+                )
+                if state == "running":
+                    _stop_authenticated_watchdog(
+                        pid, creation, parent_pid, nonce
+                    )
+                elif state == "unknown":
+                    cleanup_errors.append(f"PID {pid} identity unknown")
+            except Exception as error:
+                cleanup_errors.append(
+                    f"PID {pid}: {type(error).__name__}: {error}"
+                )
+        nonce_after: list[dict[str, object]] = []
+        try:
+            nonce_after = _nonce_bound_watchdog_identities(parent_pid, nonce)
+        except Exception as error:
+            nonce_scan_errors.append(
+                f"after: {type(error).__name__}: {error}"
+            )
+        if nonce_after:
+            cleanup_errors.append("nonce-bound watchdog process remains")
+        if nonce_scan_errors:
+            cleanup_errors.append("nonce-bound process inventory unavailable")
+        if actual_pid is None:
+            cleanup_errors.append("no authenticated ready PID; watchdog absence unproven")
+        diagnostic_error: str | None = None
+        try:
+            write_json_atomic(diagnostic_path, {
+                "schema": "xar.process-watchdog-bootstrap-diagnostic.v1",
+                "at_utc": datetime.now(timezone.utc).isoformat(),
+                "nonce": nonce,
+                "parent_pid": parent_pid,
+                "bootstrap_pid": bootstrap_pid,
+                "actual_ready_pid": actual_pid,
+                "launch_mode": (
+                    "detached_fallback" if bootstrap_process is not None
+                    else "windows_management"
+                ),
+                "watchdog_python": str(watchdog_python),
+                "management_pid": management_pid,
+                "management_error": (
+                    f"{type(management_error).__name__}: {management_error}"
+                    if management_error is not None else None
+                ),
+                "management_seconds": round(management_seconds, 3),
+                "elapsed_seconds": round(time.monotonic() - bootstrap_started, 3),
+                "ready_file_exists": ready_file.is_file(),
+                "error_file_exists": error_file.is_file(),
+                "start_receipt": start_receipt,
+                "start_receipt_error": start_error,
+                "bootstrap_identity": identity,
+                "bootstrap_identity_error": identity_error,
+                "fallback_process_returncode": fallback_returncode,
+                "nonce_bound_identities_before": nonce_before,
+                "nonce_bound_identities_after": nonce_after,
+                "nonce_scan_errors": nonce_scan_errors,
+                "watchdog_cleanup_errors": cleanup_errors,
+                "watchdog_absence_proven": False,
+                "failure": f"{type(bootstrap_error).__name__}: {bootstrap_error}",
+                "ck3_launch_attempted": False,
+            })
+        except Exception as error:
+            diagnostic_error = f"{type(error).__name__}: {error}"
+        if not cleanup_errors:
             ready_file.unlink(missing_ok=True)
         else:
             try:
-                error_file.write_text(
-                    f"bootstrap-cleanup:{cleanup_error}\n", encoding="utf-8"
-                )
+                with error_file.open("a", encoding="utf-8") as output:
+                    output.write(
+                        f"bootstrap-cleanup:{'; '.join(cleanup_errors)}\n"
+                    )
             except OSError:
                 pass
         detail = (
-            f"; watchdog cleanup unproven: {cleanup_error}"
-            if cleanup_error is not None
+            f"; watchdog cleanup unproven: {'; '.join(cleanup_errors)}"
+            if cleanup_errors
             else ""
         )
+        if diagnostic_error is not None:
+            detail += f"; bootstrap diagnostic unavailable: {diagnostic_error}"
         raise UnsafeCleanupError(
             f"process watchdog bootstrap failed: {bootstrap_error}{detail}"
         ) from bootstrap_error
