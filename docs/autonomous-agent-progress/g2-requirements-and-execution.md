@@ -674,3 +674,7 @@ postcondition or next-cycle policy response. G2-M4 therefore remains
 `in_progress`: public/formal candidate semantics, legal assignment,
 independent postcondition and subsequent policy consumption remain open, as do
 construction and a real vassal/faction intervention. Global G2 stays `1/8`.
+
+## 2026-09-29 晚间交接更新
+
+用户要求当前执行者收口并停止新工作。R0373 仍为本机最后一场 CK3：已读到角色38293的宴会邀请前候选，未邀请或 Start。后续 #657 LIFE 同日重试、#658/#660 私有规则只读、#663 家庭同帧只读、#662 战时建设只读为源码/测试与配对增量；冻结的宾客规则和建设候选均未运行，#664/#665 为未合入草稿。**G2 仍 3/8，Robert H3911/raw53219928、3,150/36,524 日，长期门 0/1、0/1、0/2。** 当前 master、官方 CI、证据哈希、待清理分支和接手命令见[非战争休假交接](../handover/2026-09-29-nonwar-maintainer-vacation-handoff.md)。当前 PID/owner/RED 仍须从 live source 实时核查。
