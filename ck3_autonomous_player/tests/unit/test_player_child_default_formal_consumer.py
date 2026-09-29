@@ -265,6 +265,15 @@ class ChildDefaultFormalTest(unittest.TestCase):
             self.assertIs(
                 consumer.plan_child_default_private(driver, action, driver.frame),
                 action)
+            war_query = {"plan": {
+                "selected_step": "query-war-termination-options-16777231",
+                "phase": "native_war_termination_query",
+                "reason": "read exact native terms",
+            }}
+            self.assertIs(
+                consumer.plan_child_default_private(
+                    driver, war_query, driver.frame),
+                war_query)
             modal = {**driver.frame, "active_event": {"instance_id": 1}}
             war_red = {"plan": {"selected_step": None,
                                 "phase": "native_war_red", "reason": "RED"}}

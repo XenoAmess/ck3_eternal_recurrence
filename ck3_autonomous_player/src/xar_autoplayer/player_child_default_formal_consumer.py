@@ -108,16 +108,12 @@ def _eligible_base_step(plan: Mapping[str, object],
     selected = plan.get("selected_step")
     if selected == "life-advance":
         return True
+    if selected is not None:
+        return False
     wars = snapshot.get("active_wars")
     if not isinstance(wars, list) or not wars:
         return False
-    if isinstance(selected, str):
-        return any(isinstance(war, dict) and _positive(war.get("war_id"))
-                   and selected ==
-                   f"query-war-termination-options-{war['war_id']}"
-                   for war in wars)
-    return (selected is None
-            and isinstance(plan.get("phase"), str)
+    return (isinstance(plan.get("phase"), str)
             and plan["phase"].startswith("native_war")
             and isinstance(plan.get("reason"), str)
             and bool(plan["reason"]))
