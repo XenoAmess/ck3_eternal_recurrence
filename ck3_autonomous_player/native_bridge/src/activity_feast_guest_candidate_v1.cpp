@@ -71,8 +71,9 @@ bool VerifyAbi(const ActivityFeastGuestJoinEnvironmentV1 &env) noexcept {
          // 0x28D06C0 removes IDs rejected by the native guest predicate.
          BytesAt(source, 0x28D07A1,
                  std::array<std::uint8_t, 5>{0xE8, 0xBA, 0xE4, 0xFF, 0xFF}) &&
-         // Stock planning guest list reads that same filtered group vector.
-         BytesAt(source, 0x151CD6E,
+         // Stock list first loads the host view at 0x151CD6E, then reads its
+         // filtered group vector at 0x151CD75.
+         BytesAt(source, 0x151CD75,
                  std::array<std::uint8_t, 7>{0x48, 0x8B, 0x90, 0x90,
                                              0x15, 0x00, 0x00});
 }
