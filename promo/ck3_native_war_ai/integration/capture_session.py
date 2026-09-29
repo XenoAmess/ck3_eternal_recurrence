@@ -14,6 +14,7 @@ from contextlib import ExitStack, closing
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
+import runpy
 import json
 import os
 from pathlib import Path
@@ -98,6 +99,12 @@ A04_UI_TARGETS = {
     },
 }
 A04_UI_SOURCE_ROOT = Path("D:/workspace/ck3_native_war_ai_promo_work")
+BATTLE_CONTROL_PAIR_SCHEMA = "xar.promo.battle-control-pair/v1"
+BATTLE_CONTROL_WIRE_MARKERS = (
+    b"side_0_selected_commander_next_roll_bounds",
+    b"side_1_selected_commander_next_roll_bounds",
+    b"battle_side_mapping",
+)
 
 
 def write_new(path: Path, value: object) -> None:
@@ -115,6 +122,68 @@ def append(path: Path, value: object) -> None:
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise RuntimeError(message)
+
+
+def validate_d11_battle_control_pair(
+    checkpoint: dict | None, manifest_path: Path | None,
+    dll_path: Path, injector_path: Path,
+) -> dict | None:
+    """Reject an unpaired d11 DLL before CK3 is launched.
+
+    Static wire markers reject the known R0107 legacy producer. The immutable
+    build/test report and exact source hashes are still independently reviewed;
+    this gate does not turn a static check into a native query result.
+    """
+    d11_sha = A04_UI_TARGETS["e2-06-d11"]["save"][2]
+    is_d11 = checkpoint is not None and checkpoint["save"]["sha256"] == d11_sha
+    if not is_d11:
+        require(manifest_path is None,
+                "Battle-control pair manifest is only for the exact d11 checkpoint")
+        return None
+    require(manifest_path is not None and manifest_path.is_file(),
+            "D11 battle-control pair manifest is required before launch")
+    pair = json.loads(manifest_path.read_text(encoding="utf-8"))
+    expected_keys = {
+        "schema", "build_status", "build_report", "source_fingerprint_sha256",
+        "native_serializer_sha256", "python_contract_sha256", "dll_sha256",
+        "injector_sha256", "battle_control_ctest_passed",
+    }
+    require(isinstance(pair, dict) and set(pair) == expected_keys and
+            pair["schema"] == BATTLE_CONTROL_PAIR_SCHEMA and
+            pair["build_status"] == "READY" and
+            pair["battle_control_ctest_passed"] is True,
+            "D11 battle-control pair manifest is incomplete or untested")
+    report = pair["build_report"]
+    require(isinstance(report, dict) and set(report) == {"path", "sha256"} and
+            isinstance(report["path"], str) and isinstance(report["sha256"], str),
+            "D11 battle-control build report reference is malformed")
+    report_path = Path(report["path"])
+    require(report_path.is_absolute() and report_path.is_file() and
+            identity(report_path)["sha256"] == report["sha256"],
+            "D11 battle-control build report bytes changed")
+    native_root = Path(__file__).resolve().parents[3] / "ck3_autonomous_player" / "native_bridge"
+    serializer = native_root / "src" / "battle_control_snapshot_v1_mailbox.cpp"
+    fingerprint = runpy.run_path(str(native_root / "tools" / "build_fresh.py"))[
+        "native_bridge_source_fingerprint"
+    ](native_root)
+    from xar_autoplayer.bridge import battle_control_contract
+    expected = {
+        "source_fingerprint_sha256": fingerprint,
+        "native_serializer_sha256": identity(serializer)["sha256"],
+        "python_contract_sha256": identity(Path(battle_control_contract.__file__))["sha256"],
+        "dll_sha256": identity(dll_path)["sha256"],
+        "injector_sha256": identity(injector_path)["sha256"],
+    }
+    require(all(pair[key] == value for key, value in expected.items()),
+            "D11 battle-control native/Python source pair differs from the exact build")
+    dll = dll_path.read_bytes()
+    require(all(marker in dll for marker in BATTLE_CONTROL_WIRE_MARKERS),
+            "D11 DLL lacks current battle-control resume wire fields")
+    return {"manifest": identity(manifest_path), "build_report": identity(report_path),
+            "source_fingerprint_sha256": fingerprint,
+            "python_contract_sha256": expected["python_contract_sha256"],
+            "wire_markers_present": True,
+            "native_query_verified": False}
 
 
 def private_ai_reentry_readback(request: dict, *, driver) -> dict:
@@ -582,6 +651,10 @@ def preflight(args: argparse.Namespace) -> dict:
         mode="native-headless", pipe_name=args.pipe_name,
         dll_path=args.bridge_dll, injector_path=args.bridge_injector,
     ))
+    battle_control_pair = validate_d11_battle_control_pair(
+        checkpoint, getattr(args, "battle_control_pair_manifest", None),
+        args.bridge_dll, args.bridge_injector,
+    )
     binary = args.bridge_dll.read_bytes()
     required_capabilities = [
         front.QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
@@ -655,6 +728,7 @@ def preflight(args: argparse.Namespace) -> dict:
         "record_debug_desktop": args.record_debug_desktop,
         "gui_scale_requested": args.gui_scale,
         "a04_ui_gui_source_binding": a04_ui_binding,
+        "d11_battle_control_pair": battle_control_pair,
         "process_inventory": processes, "state_dir": str(args.state_dir),
         "pipe_name": args.pipe_name,
         "codex_global_registration_required": False,
@@ -1232,9 +1306,17 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     observed = datetime.fromisoformat(receipt["observed_at"])
     require(0 <= (datetime.now(timezone.utc) - observed).total_seconds() <= 900, "Steam offline receipt stale")
     a04_ui_binding = checked.get("a04_ui_gui_source_binding")
+    current_checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)
+    require(current_checkpoint == checked.get("checkpoint_source"),
+            "Checkpoint source changed after no-launch preflight")
     require(validate_a04_ui_gui_source_binding(
-        args, checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)) == a04_ui_binding,
+        args, current_checkpoint) == a04_ui_binding,
             "A04 UI source or evidence changed after no-launch preflight")
+    require(validate_d11_battle_control_pair(
+        current_checkpoint, getattr(args, "battle_control_pair_manifest", None),
+        args.bridge_dll, args.bridge_injector,
+    ) == checked.get("d11_battle_control_pair"),
+            "D11 battle-control source pair changed after no-launch preflight")
     allow_native_ui_one = a04_ui_binding is not None
     run = allocate_live_run_id("vanilla")
     write_identity_receipt(args.output_dir, (run,))
@@ -1501,6 +1583,8 @@ def main() -> int:
     parser.add_argument("--game-dir", type=Path, required=True)
     parser.add_argument("--bridge-dll", type=Path, required=True)
     parser.add_argument("--bridge-injector", type=Path, required=True)
+    parser.add_argument("--battle-control-pair-manifest", type=Path,
+                        help="Required for exact d11 checkpoint: fresh native/Python source pair and CTest evidence")
     parser.add_argument("--state-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--pipe-name", required=True)
