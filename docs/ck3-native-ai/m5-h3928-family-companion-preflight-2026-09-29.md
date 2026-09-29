@@ -55,3 +55,7 @@ live result must report the child pending/resolved status separately from the
 first-heir relation. Any later gameplay turn and cold restore require their
 own paired evidence. This candidate is separate from PRV008 and does not
 expand its qualification or change G2's `3/8` count.
+
+## R0375 matched live result (2026-09-29)
+
+The indexed H3928 candidate was executed once by the single local owner in a new minimized CK3 PID171476. The same paused native:3/revision4/actor29829/raw53219928 frame read Emma37265→Gerard37267 as outbound `active` pending, pending ID `-469762048`, age 0 with a 7-day AI reply cutoff, and `material_result=false`. The companion independently read primary first heir 38822 and 38718 as bilaterally betrothed, with no spouse, and `new_proposal_eligible=false`. [Formal report](<Z:/family-h3928-companion-v2-20260929/operator-runs/companion-read-1/formal-report.txt>) SHA-256 `5B4278C03CFA64D5F470FF8A2D2AB2ADDA8FBAAA72228617F4941DC4051B75B5`; [operator receipt](<Z:/family-h3928-companion-v2-20260929/operator-runs/companion-read-1/operator-receipt.json>) SHA-256 `E7F16A58D15C79B814E523FC75ED287DAA877511AD464CEA250E946871466E9D` completed/exit0. The source save hash stayed `A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`; gold stayed raw120644281; no gameplay turn/date or proposal was submitted; process tree and owner were released. This is a private same-frame cold result read, not an acceptance, marriage, alliance, next-turn consumer or public capability.
