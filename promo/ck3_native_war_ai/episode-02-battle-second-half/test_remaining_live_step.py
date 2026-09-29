@@ -416,6 +416,8 @@ class RemainingLiveStepTest(unittest.TestCase):
                                                   "source": body["source"],
                                                   "queried_revision": 5})
         self.assertFalse(live.battle_control_case(misplaced, snapshot, 53146344)[0])
+        self.assertFalse(live.battle_control_case(
+            body, {**snapshot, "snapshot_id": ""}, 53146344)[0])
 
     def test_snapshot_requires_exact_paused_actor_war_and_army(self) -> None:
         body = {"date_raw": 53146344, "paused": True, "revision": 4,

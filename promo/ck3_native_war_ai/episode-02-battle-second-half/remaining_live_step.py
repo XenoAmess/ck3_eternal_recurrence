@@ -172,6 +172,7 @@ def battle_control_case(body: dict[str, Any], snapshot_values: dict[str, Any],
             type(snapshot_values.get("revision")) is int and
             type(snapshot_values.get("native_revision")) is int and
             isinstance(snapshot_values.get("snapshot_id"), str) and
+            bool(snapshot_values["snapshot_id"]) and
             values["queried_revision"] == values["source_revision"] == snapshot_values["revision"] and
             values["root_native_revision"] == values["snapshot_native_revision"] ==
             values["queried_native_revision"] == values["source_native_revision"] ==
@@ -202,8 +203,7 @@ def observe(output: Path, track: str, binding: dict[str, Any], timeout: float) -
                                {"subject_army_id": PLAYER_ARMY,
                                 "expected_revision": values["revision"]}, timeout)
         okay, control_values = battle_control_case(result, values, spec["date"])
-    # 085's historical sibling battle-control query returned RED. Its same
-    # CombatID is bound only when the private trace begin explicitly accepts it.
+    # A historical sibling's RED control cannot prove this run's membership.
     row = {"schema": "xar.war-promo.remaining-live-step/v1", "created_at": utc(),
            "mode": "observe", "track": track, "source_binding": binding,
            "same_source_war_army_frame": okay, "snapshot": snapshot,
@@ -350,9 +350,7 @@ def advance(output: Path, track: str, binding: dict[str, Any],
                 {"subject_army_id": PLAYER_ARMY,
                  "expected_revision": post_values["revision"]}, timeout)
             post_ok, post_control_values = battle_control_case(
-                post_control, post_values["revision"],
-                post_values["native_revision"], post_values["snapshot_id"],
-                spec["date"] + 24)
+                post_control, post_values, spec["date"] + 24)
         except (OSError, RuntimeError, TimeoutError, ValueError) as exc:
             # The day has already advanced. Preserve the failed native request
             # and a RED receipt; no d12 formal mark or retry on this attempt.
