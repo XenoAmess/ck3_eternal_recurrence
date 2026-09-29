@@ -2,6 +2,35 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-29 R0351: formal M5 construction start and the remaining effect gap
+
+R0351 is an H90-derived Robert run, not durable Robert mainline time. Its
+[12-turn formal report](Z:/ck3_mod_rewrite_process_assets/m5-family-h90-sort571-candidate-20260929/run-formal-12/formal-report.txt)
+has SHA-256 `C9BAD73D1756E0180F93C4A2A0AC1616363BEBB502666A22740FD058F03FFE23`
+and `turn_limit/qualified`, 12/12 successful turns. On one peaceful paused
+frame at raw `53153760`, the existing M5 formal selector compared six distinct
+eligible proposals and chose `hill_farms_01` at barony 2174/province 2629/slot
+1. Turn 1 sent the typed construction action; turn 2 independently read the
+same active tuple, with gold falling from raw `34490601` to `24490601` by the
+native raw `10000000` cost. Its [final construction ledger](Z:/ck3_mod_rewrite_process_assets/m5-family-h90-sort571-candidate-20260929/state/construction-formal-pending-v1.json)
+has SHA-256 `4F15EA07E7A8D5FAB22C20E92859D510692F3D9548004F69E324ED6021406721`.
+Turn 3 consumed the applied receipt and selected a separate family proposal;
+turn 5 advanced raw `53153760` to `53153976`, **nine game days**. No duplicate
+construction action or spend appears in these 12 turns.
+
+The final receipt is still `in_progress`, with native remaining work raw
+`109500000`, progress divisor raw `0`, and province monthly income raw `87000`
+both before and just after the start. The authored +0.35 monthly income is a
+definition-backed selection input, not a realized gain. The ordinary consumer
+already prioritizes a new-PID material recheck, a due same-PID 30-day watch,
+and a root-income query after observed completion. R0351 proves the actual
+opportunity trigger, material start, and next-turn consumption; it does not
+close a cold-recovery or completed-slot/effect/income gate. The immediate
+independent task is to cold-recheck this exact paired save and ledger on a new
+PID, then continue the existing bounded completion watch until a built slot
+and later income/effect readback exist. The nine-day continuation cannot
+establish a 1095-day authored building's completion.
+
 ## 2026-09-29 NW-ECON: keep an applied-building readout under blocked war
 
 The H90-derived `hill_farms_01` at barony 2174/province 2629/slot 1 has an
