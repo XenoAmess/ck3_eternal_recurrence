@@ -1269,12 +1269,6 @@ class GameplayBridgeService:
         except Exception as error:
             return {**unknown, "query_status": "query_error",
                     "error_type": type(error).__name__}
-        played = before.get("played_character")
-        self._last_war_lifestyle_observation = (
-            before.get("episode_run_id"),
-            played.get("character_id") if isinstance(played, dict) else None,
-            before.get("date_raw"),
-        )
         if not isinstance(query, dict) or query.get("status") != "available":
             return {**unknown, "query_status": (
                 query.get("status") if isinstance(query, dict) else "malformed_result"
@@ -1871,8 +1865,6 @@ class GameplayBridgeService:
                 if callable(reader)
                 else {"status": "private_query_route_missing"}
             )
-            if war_read_due:
-                self._last_war_lifestyle_observation = war_frame
             formal_life = query.get("snapshot") if isinstance(query, dict) else None
             formal_focus = (
                 formal_life.get("current_focus")
@@ -1908,6 +1900,20 @@ class GameplayBridgeService:
             same_frame_feudal_scope=scope,
             private_query=query,
         )
+        if war_read_due and isinstance(query, dict) and query.get("status") == "available":
+            decision = consumed.get("lifestyle_decision")
+            if (
+                consumed.get("selected_step") == PRIVATE_LIFESTYLE_PERK_STEP
+                or (
+                    isinstance(decision, dict)
+                    and decision.get("status") in {
+                        "no_legal_minimum", "outside_admitted_scene",
+                    }
+                )
+            ):
+                # A failed native read or incomplete policy assessment cannot
+                # consume this war date's only LIFE opportunity check.
+                self._last_war_lifestyle_observation = war_frame
         if war_read_due and isinstance(query, dict):
             life = query.get("snapshot")
             progress = (
