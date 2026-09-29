@@ -129,3 +129,31 @@ flowchart TD
     classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
     class F unknown;
 ```
+
+R0352 used this H3928 candidate under a new PID and did select the typed
+`query-player-child-matrilineal-marriage-result-v1-private` once. The native
+outbound proposal was still `active`, age 0 days; the result was `pending` with
+`material_result=false`. The same-date H3933 checkpoint was saved at raw
+53219928 (SHA-256
+`EBFCE4E115C8E6D9DD78D073F709A695E74A2460859144D715D961DA8C2CB2B2`),
+the pending ledger remained unresolved, and managed cleanup removed the process
+tree. The [unchanged R0352 formal report](Z:/nw-family-h3928-pending-recovery-20260929/operator-runs/pending-recovery-1/formal-report.txt)
+still records `ok=false`, `turn_limit`, `run_bound_exhausted`: the generic bounded
+qualifier requires visible gameplay, while this one-turn route deliberately
+reads a paused result. R0351's separate 12-turn bounded run qualified because
+it had three visible gameplay turns and advanced the date. Neither report
+proves acceptance, marriage or alliance; the deferred war query remains open.
+
+The default-off result-only qualifier now requires exactly that typed pending
+read, the specified Emma/Gerard pair, a still nonmaterial result, a same-date
+paired ledger checkpoint and complete process cleanup. Other bounded runs keep
+their normal visible-gameplay rule. To prepare a cold H3933 successor without
+editing the RED report, pass it as
+`--child-matrilineal-post-sway-result-report` after the existing R0328/R0329
+and R0339/R0342 proofs. The preparer binds R0342's H3928 checkpoint to
+R0352's fixed seed, then binds R0352's result, new PID, pending ledger and
+H3933 save/driver. An independent next PID may use the one-turn recovery flag
+with `--child-matrilineal-recovery-post-sway-result-report` for a bounded
+no-duplicate read, or a normal bounded continuation to give the recipient's
+reply time to arrive. Any later resolved marriage still needs its own material
+readback and following-turn consumption.

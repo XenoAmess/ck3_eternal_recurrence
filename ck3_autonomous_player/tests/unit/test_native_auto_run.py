@@ -2567,6 +2567,12 @@ class NativeAutoRunTests(unittest.TestCase):
             ["child_pending_result"],
             private_child_matrilineal_pending_recovery_target=(37265, 37267),
         )
+        self.assertTrue(report["ok"], report.get("first_blocker"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["outcome"], "qualified")
+        self.assertIsNone(report["first_blocker"])
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertFalse(report["qualification_gates"]["date_advanced"])
         self.assertEqual(harness.auto_turn_count, 1)
         self.assertEqual(harness.date_raw, 53_171_400)
         self.assertEqual(report["auto_run"]["turns"][0]["selected_step"],
@@ -2575,12 +2581,25 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(report["checkpoints"][0]["phase"],
                          "player_child_matrilineal_result_pending")
         self.assertEqual(report["checkpoints"][0]["date_raw"], harness.date_raw)
+        self.assertEqual(report["auto_run"]["turns"][0]["result"]["status"], "pending")
+        self.assertFalse(report["auto_run"]["turns"][0]["result"]["material_result"])
         ledger = json.loads((self.spec.state_dir /
                              "player-child-matrilineal-formal-v1.json").read_text(
                                  encoding="utf-8"))
         self.assertEqual(ledger["pending"]["last_checked_bridge_pid"],
                          harness.bridge_pid)
         self.assertIsNone(ledger["resolved"])
+
+    def test_private_child_pending_result_without_paired_save_stays_red(self) -> None:
+        report, harness = self._run(
+            ["child_pending_result"],
+            private_child_matrilineal_pending_recovery_target=(37265, 37267),
+            fail_save_checkpoint=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["outcome"], "failed")
+        self.assertEqual(report["checkpoints"], [])
+        self.assertEqual(harness.auto_turn_count, 1)
 
     def test_private_sway_target_rejects_nonbounded_and_invalid_id(self) -> None:
         for target in (0, -1, 0x100000000, True):

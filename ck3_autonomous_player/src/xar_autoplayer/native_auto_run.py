@@ -3272,6 +3272,44 @@ def native_auto_run(
                 and private_child_matrilineal_pending_observation.get("same_frame") is True
                 and cleanup.get("ok") is True and not turns and not date_advanced
             )
+        if private_child_matrilineal_pending_recovery_only is True:
+            # This opt-in is one typed result read, not a bounded campaign turn.
+            # A still-pending proposal is a valid read only when its updated
+            # ledger has already been paired with a same-date checkpoint.
+            turn = turns[0] if len(turns) == 1 else None
+            result = turn.get("result") if isinstance(turn, dict) else None
+            before = turn.get("before") if isinstance(turn, dict) else None
+            after = turn.get("after") if isinstance(turn, dict) else None
+            checkpoint = checkpoints[0] if len(checkpoints) == 1 else None
+            qualified = bool(
+                primary_error is None and status == "turn_limit"
+                and isinstance(turn, dict)
+                and turn.get("ok") is True
+                and turn.get("status") == "executed"
+                and turn.get("class") == "query"
+                and turn.get("selected_step") == PRIVATE_CHILD_MATRILINEAL_RESULT_STEP
+                and isinstance(result, dict)
+                and result.get("status") == "pending"
+                and result.get("material_result") is False
+                and result.get("heir_character_id") == private_child_matrilineal_target[0]
+                and result.get("candidate_character_id") == private_child_matrilineal_target[1]
+                and isinstance(before, dict) and isinstance(after, dict)
+                and before.get("paused") is True and after.get("paused") is True
+                and before.get("date_raw") == after.get("date_raw") == opening_date_raw
+                and before.get("episode_run_id") == after.get("episode_run_id")
+                and before.get("episode_character_id") == after.get("episode_character_id")
+                and isinstance(checkpoint, dict)
+                and checkpoint.get("phase") == "player_child_matrilineal_result_pending"
+                and checkpoint.get("ledger_status") == "pending"
+                and checkpoint.get("status") == "saved"
+                and checkpoint.get("turn_index") == turn.get("index") == 1
+                and checkpoint.get("date_raw") == opening_date_raw
+                and checkpoint.get("episode_run_id") == before.get("episode_run_id")
+                and checkpoint.get("episode_character_id") == before.get("episode_character_id")
+                and "child_matrilineal_result_checkpoint_saved" in turn.get("evidence", [])
+                and visible_gameplay_turns == 0 and not date_advanced
+                and cleanup.get("ok") is True
+            )
         if private_realm_law_paused_query is True:
             qualified = bool(
                 primary_error is None
