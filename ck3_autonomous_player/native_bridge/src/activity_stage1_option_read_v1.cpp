@@ -22,6 +22,7 @@ constexpr std::uintptr_t kGetSelectedOptionRva = 0x10AEAE0;
 constexpr std::uintptr_t kIsShownRva = 0x971270;
 constexpr std::uintptr_t kIsValidRva = 0x971370;
 constexpr std::uintptr_t kCanProgressRva = 0x10B0DA0;
+constexpr std::uintptr_t kSetStageRva = 0x10B1BD0;
 
 struct NativeIdentity {
   std::uintptr_t actor = 0;
@@ -101,7 +102,8 @@ bool IsFeastType(const ActivityPlannerDiagEnvironmentV1 &env,
 
 bool ResolveNative(const ActivityStage1OptionEnvironmentV1 &env,
                    const ActivityPlannerDiagFrameV1 &frame,
-                   NativeIdentity &output) noexcept {
+                   NativeIdentity &output,
+                   std::int32_t expected_stage = 1) noexcept {
   const auto &d = env.diagnostic;
   std::uintptr_t root = 0, idler = 0, gfx = 0, handler = 0;
   std::uintptr_t gfx_vtable = 0, handler_vtable = 0, planner_vtable = 0;
@@ -123,7 +125,8 @@ bool ResolveNative(const ActivityStage1OptionEnvironmentV1 &env,
       !ReadAt(d, output.planner, 0, planner_vtable) ||
       planner_vtable != d.module_base + kPlannerVtable ||
       !ReadAt(d, output.planner, 0xD0, owner) || owner != handler ||
-      !ReadAt(d, output.planner, 0x1AB0, stage) || stage != 1 ||
+      !ReadAt(d, output.planner, 0x1AB0, stage) ||
+      stage != expected_stage ||
       !ReadAt(d, d.module_base, kPlayedId, played_id) ||
       played_id != static_cast<std::uint32_t>(frame.actor_character_id))
     return false;
@@ -161,7 +164,9 @@ bool ResolveNative(const ActivityStage1OptionEnvironmentV1 &env,
       found = address;
     }
   }
-  if (found == 0 || selected_row != found ||
+  if (found == 0 ||
+      (expected_stage == 1 && selected_row != found) ||
+      (expected_stage == 2 && selected_row != 0) ||
       !ReadAt(d, found, 0x08, output.option) || output.option == 0 ||
       !ReadAt(d, output.option, 0, option_vtable) ||
       option_vtable != d.module_base + kOptionVtable ||
@@ -242,6 +247,75 @@ ActivityStage1OptionReadResultV1 ReadActivityStage1OptionV1(
       result.shown && result.valid && result.can_progress;
   result.status = ActivityStage1OptionReadStatusV1::observed;
   return result;
+}
+
+ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
+    const ActivityStage1OptionEnvironmentV1 &env,
+    const ActivityPlannerDiagFrameV1 &expected) noexcept {
+  ActivityStage1ConfirmResultV1 result{};
+  result.precondition = ReadActivityStage1OptionV1(env, expected);
+  if (result.precondition.status !=
+          ActivityStage1OptionReadStatusV1::observed ||
+      !result.precondition.generic_feast_confirm_ready ||
+      env.set_stage_two == nullptr)
+    return result;
+  constexpr std::array<std::uint8_t, 10> kStageSetterSignature{
+      0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x8B, 0x81, 0xB0, 0x1A};
+  std::uintptr_t stage_notification = 0;
+  if (!MatchCode(env.diagnostic, kSetStageRva, kStageSetterSignature) ||
+      !ReadAt(env.diagnostic, env.diagnostic.module_base,
+              kPlannerVtable + 0xC8, stage_notification) ||
+      stage_notification != env.diagnostic.module_base + 0x10AEC20)
+    return result;
+  NativeIdentity first{};
+  std::uint8_t stage_auto = 1;
+  if (!ResolveNative(env, expected, first) ||
+      !ReadAt(env.diagnostic, first.planner, 0x1AD0, stage_auto) ||
+      stage_auto != 0)
+    return result;
+  ActivityPlannerDiagFrameV1 immediate{};
+  if (!env.diagnostic.read_frame(env.diagnostic.context, immediate) ||
+      immediate != expected)
+    return result;
+  result.submitted = true;
+  if (!env.set_stage_two(env.diagnostic.context, first.planner)) {
+    result.status = ActivityStage1ConfirmStatusV1::native_transition_failed;
+    return result;
+  }
+  const auto post = ReadActivityPlannerDiagV1(env.diagnostic, expected);
+  result.stage_two_visible =
+      post.status == ActivityPlannerDiagStatusV1::observed &&
+      post.value.widget_attached && post.value.widget_visible &&
+      post.value.stage == 2;
+  NativeIdentity second{};
+  ActivityPlannerDiagFrameV1 final_frame{};
+  result.selected_option_retained =
+      result.stage_two_visible && ResolveNative(env, expected, second, 2) &&
+      first.actor == second.actor && first.planner == second.planner &&
+      first.option == second.option && first.option_id == second.option_id;
+  if (!result.selected_option_retained ||
+      !env.diagnostic.read_frame(env.diagnostic.context, final_frame) ||
+      final_frame != expected) {
+    result.status = ActivityStage1ConfirmStatusV1::postcondition_failed;
+    return result;
+  }
+  result.status = ActivityStage1ConfirmStatusV1::stage_two_verified;
+  return result;
+}
+
+std::string_view ActivityStage1ConfirmStatusKeyV1(
+    ActivityStage1ConfirmStatusV1 status) noexcept {
+  switch (status) {
+  case ActivityStage1ConfirmStatusV1::stage_two_verified:
+    return "stage_two_verified";
+  case ActivityStage1ConfirmStatusV1::precondition_rejected:
+    return "precondition_rejected";
+  case ActivityStage1ConfirmStatusV1::native_transition_failed:
+    return "native_transition_failed";
+  case ActivityStage1ConfirmStatusV1::postcondition_failed:
+    return "postcondition_failed";
+  }
+  return "unknown";
 }
 
 std::string_view ActivityStage1OptionReadStatusKeyV1(

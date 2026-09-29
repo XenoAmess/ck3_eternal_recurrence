@@ -171,6 +171,24 @@ bool CanProgress(void *opaque, std::uintptr_t planner, bool &output) noexcept {
   }
 }
 
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
+bool SetStageTwo(void *opaque, std::uintptr_t planner) noexcept {
+  auto &context = *static_cast<CaptureContext *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id || planner == 0 ||
+      context.module_base == 0)
+    return false;
+  using Setter = void (*)(void *, std::int32_t);
+  const auto setter =
+      reinterpret_cast<Setter>(context.module_base + 0x10B1BD0);
+  __try {
+    setter(reinterpret_cast<void *>(planner), 2);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+}
+#endif
+
 } // namespace
 
 bool ExecuteActivityStage1OptionReadPrivateV1(
@@ -229,15 +247,32 @@ bool ExecuteActivityStage1OptionReadPrivateV1(
     environment.selected_option = &SelectedOption;
     environment.option_predicate = &OptionPredicate;
     environment.can_progress = &CanProgress;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
+    if (query->confirm_stage_one) environment.set_stage_two = &SetStageTwo;
+#endif
     const bridge::ActivityPlannerDiagFrameV1 expected{
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true, true};
-    query->result = bridge::ReadActivityStage1OptionV1(environment, expected);
-    if (query->result.status !=
-        bridge::ActivityStage1OptionReadStatusV1::observed)
-      query->failure = "native_activity_stage1_option_red:" +
-          std::string(bridge::ActivityStage1OptionReadStatusKeyV1(
-              query->result.status));
+    if (query->confirm_stage_one) {
+      query->confirm_result = bridge::ConfirmActivityStage1V1(
+          environment, expected);
+      query->post_snapshot_read = ReadSnapshot(query->bindings,
+                                               query->post_snapshot);
+      if (query->confirm_result.status !=
+              bridge::ActivityStage1ConfirmStatusV1::stage_two_verified ||
+          !query->post_snapshot_read ||
+          query->post_snapshot != current)
+        query->failure = "native_activity_stage1_confirm_red:" +
+            std::string(bridge::ActivityStage1ConfirmStatusKeyV1(
+                query->confirm_result.status));
+    } else {
+      query->result = bridge::ReadActivityStage1OptionV1(environment, expected);
+      if (query->result.status !=
+          bridge::ActivityStage1OptionReadStatusV1::observed)
+        query->failure = "native_activity_stage1_option_red:" +
+            std::string(bridge::ActivityStage1OptionReadStatusKeyV1(
+                query->result.status));
+    }
     query->completed = true;
     return true;
   } catch (...) {
@@ -271,6 +306,79 @@ std::string SerializeActivityStage1OptionReadPrivateV1(
   out += ",\"generic_feast_confirm_ready\":";
   out += r.generic_feast_confirm_ready ? "true" : "false";
   out += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false}";
+  return out;
+}
+
+std::string SerializeActivityStage1ConfirmPrivateV1(
+    const ActivityStage1OptionReadPrivateQueryV1 &query) {
+  if (!query.completed || !query.confirm_stage_one) return {};
+  const auto &r = query.confirm_result;
+  const bool pre_observed = r.precondition.status ==
+      bridge::ActivityStage1OptionReadStatusV1::observed;
+  std::string out =
+      "{\"schema\":\"activity-stage1-confirm-private-v1\","
+      "\"snapshot_revision\":" + std::to_string(query.expected_revision) +
+      ",\"date_raw\":" +
+      std::to_string(query.expected_snapshot.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(query.expected_snapshot.played_character_id) +
+      ",\"activity_key\":\"activity_feast\","
+      "\"expected_option_key\":\"feast_type_generic\","
+      "\"selected_option_key\":";
+  if (pre_observed && r.precondition.option_key_size != 0) {
+    out += "\"";
+    out.append(r.precondition.option_key.data(),
+               r.precondition.option_key_size);
+    out += "\"";
+  } else {
+    out += "null";
+  }
+  out += ",\"precondition_status\":\"" +
+      std::string(bridge::ActivityStage1OptionReadStatusKeyV1(
+          r.precondition.status)) +
+      "\",\"selected_option_shown\":" +
+      std::string(pre_observed ? (r.precondition.shown ? "true" : "false")
+                               : "null") +
+      ",\"selected_option_valid\":" +
+      std::string(pre_observed ? (r.precondition.valid ? "true" : "false")
+                               : "null") +
+      ",\"can_progress_stage1\":" +
+      std::string(pre_observed ? (r.precondition.can_progress ? "true"
+                                                         : "false")
+                               : "null") +
+      ",\"generic_feast_confirm_ready\":" +
+      std::string(pre_observed
+                      ? (r.precondition.generic_feast_confirm_ready ? "true"
+                                                                    : "false")
+                      : "null") +
+      ",\"status\":\"" +
+      std::string(bridge::ActivityStage1ConfirmStatusKeyV1(r.status)) +
+      "\",\"submitted\":";
+  out += r.submitted ? "true" : "false";
+  out += ",\"stage_two_visible\":";
+  out += r.stage_two_visible ? "true" : "false";
+  out += ",\"selected_option_retained\":";
+  out += r.selected_option_retained ? "true" : "false";
+  out += ",\"planning_stage_after\":";
+  out += r.stage_two_visible ? "2" : "null";
+  out += ",\"gold_before_raw\":" +
+      std::to_string(query.expected_snapshot.played_character_gold.raw);
+  out += ",\"gold_after_raw\":";
+  out += query.post_snapshot_read
+             ? std::to_string(query.post_snapshot.played_character_gold.raw)
+             : "null";
+  out += ",\"snapshot_unchanged\":";
+  out += query.post_snapshot_read &&
+                 query.post_snapshot == query.expected_snapshot
+             ? "true" : "false";
+  out += ",\"activity_start_state\":\"";
+  out += r.status == bridge::ActivityStage1ConfirmStatusV1::stage_two_verified &&
+                 query.post_snapshot_read &&
+                 query.post_snapshot == query.expected_snapshot
+             ? "not_started_immediate" : "unknown";
+  out += "\",\"next_turn_verified\":false,"
+         "\"raw_pointer_fields_persisted\":false,"
+         "\"advertised\":false}";
   return out;
 }
 

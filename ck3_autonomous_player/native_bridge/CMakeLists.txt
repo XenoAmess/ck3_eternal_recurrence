@@ -444,6 +444,15 @@ option(
   OFF
 )
 option(
+  XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1
+  "Enable default-off paused native feast stage-1-only confirm action"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
+  message(FATAL_ERROR "Activity stage-1 confirm requires option read")
+endif()
+option(
   XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1
   "Enable default-off passive native activity cost slot12 raw capture"
   OFF
@@ -1316,6 +1325,10 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
     src/activity_stage1_option_read_private_transport_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1=1)
+  if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
+    target_compile_definitions(xar_ck3_bridge PRIVATE
+      XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1=1)
+  endif()
 endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
