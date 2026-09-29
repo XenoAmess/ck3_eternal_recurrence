@@ -26,4 +26,19 @@
 
 从修复提交 `8d29d14097bf22193070394bf256da9e23376f82`、本 worktree 的 `tools/requirements-promo-toolchain.txt` 和显式 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`，对原 K04-a07 attempt/recorder 运行项目 wrapper 的 `prepare`；输出到新外置目录 `D:/workspace/ck3_native_war_ai_promo_work/episode02-k04-a07-adapter-pending-20260929-a01/`。本轮开始前重新查询独立仓库 GitHub Latest 为 `v0.2.1`；解释器 `-m xar_promo --version` 为 `0.2.1`，精确 wheel SHA-256 `F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621`。清单 `source-manifest.json` **9066 bytes**，SHA-256 `67D2A09CE07B7195597C717F4371858CAD768E8B9E3871CD18465A6E5406D446`，状态 `PENDING_CLEAN_REVIEW`、`adapter_eligible=false`、`human_1x_review_performed=false`、`clean_spans=[]`。它重核原 raw `2459812208 bytes` / SHA `950D94FE20A937806A1A8976160D66D8BF04D5DE3C7CD85A67D7DF5ACE45D3C9` 与完整 FFprobe `12664704 bytes` / SHA `0AC16BCFD453DA10DF168E154EA0B67CA1EAB18CE08C8C17CA0EA7BF325C2A1F`，并将外部 sibling 截图 `4907043 bytes` / SHA `943A34223CFE5C19FFEE5488C5D4C9F2F678B1CBD6A5DA21DBC37AA566E425BD` 同时列入原 mark 投影和清单文件集合。外置目录目前仅有该清单；没有正式 `report.json`、timeline、evidence index 或 `package`。后续先由真人按原速审完整 raw、确定 d05 精确端点并审帧，再填真实审阅回执；不能为验证复制路径伪造真人 1×。
 
+### 其余六窗来源清单：前五份实跑，末窗等待屏幕释放
+
+在每个新外置 wrapper `prepare` 前，分别重新查询正式 [GitHub Latest](https://github.com/XenoAmess/xar_promo_toolchain/releases/latest)，五次均为 `v0.2.1`；沿用已验证的主 worktree 解释器 `xar-promo 0.2.1` 和精确 wheel SHA `F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621`。运行源码 HEAD 为 `d4d9ff6e693b8e3ce33252d1a8644438dce1d65b`。下表目录均相对 `D:/workspace/ck3_native_war_ai_promo_work/`，每个目录只创建 `source-manifest.json`；输出 SHA 由完成回执与随后 `certutil` 回读一致。每份为 `PENDING_CLEAN_REVIEW`、`adapter_eligible=false`、`human_1x_review_performed=false`、`clean_spans=[]`。
+
+| 窗口 | 独立新目录 | 清单 bytes / SHA-256 | 精确原 raw 来源 |
+| --- | --- | --- | --- |
+| A05-1 d27→28 | `episode02-a05-a01-d27d28-adapter-pending-20260929-a01/` | `9111` / `E066640F592440003CB46260EA0C04DA2F84BDB735FC44C2AC054672D876572A` | 951186809 bytes / `C2E3AB8B0E60171316DD445B999B95E91227211666FE78CCF797F733AFDA315B` |
+| A05-2 d28→29 | `episode02-a05-a02-d28d29-adapter-pending-20260929-a01/` | `13924` / `8115562E7924F5C6C6A2E76AB886563AB16FD1188449930D72484716FD2AC043` | 840210967 bytes / `25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC` |
+| A05-2 d30 | `episode02-a05-a02-d30-adapter-pending-20260929-a01/` | `13924` / `8115562E7924F5C6C6A2E76AB886563AB16FD1188449930D72484716FD2AC043` | 同上 |
+| A05-2 d31 | `episode02-a05-a02-d31-adapter-pending-20260929-a01/` | `13924` / `8115562E7924F5C6C6A2E76AB886563AB16FD1188449930D72484716FD2AC043` | 同上 |
+| K05-a02 d26 前态 | `episode02-k05-a02-d26-adapter-pending-20260929-a01/` | `10268` / `EB987A4BF8C15B5BF0E93380BA22FE5F4D33E6355CFD07617BD6786623319F05` | 2451530594 bytes / `7FC3D614C50AD958DA57359248A196A230BD2B0B5B511EF242596837042C1C0F` |
+| K04-a08 d06 panel | **未启动** | — | H3937 受管冷载优先；待屏幕实机和磁盘负载清场后再新建 attempt。 |
+
+A05-2 三份清单的 bytes/SHA 相同是预期：`prepare` 只绑定整条相同 recorder 的原件，窗口选择与真实 clean span 尚未写入它。K05 d26 清单保全了后续 d27 错型 mark，但不使后态 battle-control 有效；正式使用范围仍仅 d26 前态。五份实跑均未抽精确首末帧、没有真人原速全 raw 审看，也没有 `package` 或 adapter 三件套。H3937 准备受管实机时，K05 当前 `prepare` 自然完成后暂停了 K04-a08 的大文件读取。
+
 来源：[`control-known-gap-pregate-20260929.md`](control-known-gap-pregate-20260929.md)、[`six-chapter-clean-span-candidates-20260929.md`](six-chapter-clean-span-candidates-20260929.md)、[`four-raw-pts-candidates-20260929.md`](four-raw-pts-candidates-20260929.md)、[`existing-capture-adapter-bundle.md`](existing-capture-adapter-bundle.md)。所有原始文件位于上述表对应的 `D:/workspace/ck3_native_war_ai_promo_work/episode02-*/`；本页不覆盖它们。
