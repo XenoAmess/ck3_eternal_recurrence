@@ -31,6 +31,10 @@ from .bridge.native_driver import (
     DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
     NativeHeadlessGameplayDriver,
 )
+from .bridge.activity_stage5_feast_full_cost_private_transport import (
+    STEP as _PRIVATE_ACTIVITY_STAGE5_FULL_COST_READ_STEP,
+    query_activity_stage5_feast_full_cost_private_v1,
+)
 from .bridge.pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
 )
@@ -401,6 +405,7 @@ def native_auto_run(
     private_activity_feast_stage2_gate_read: bool = False,
     private_activity_feast_stage2_location_candidate_province_ids: tuple[int, ...] | None = None,
     private_activity_feast_stage2_destination_province_id: int | None = None,
+    private_activity_feast_stage5_full_cost_read: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -598,6 +603,9 @@ def native_auto_run(
                 or type(province_id) is not int
                 or not 0 < province_id <= 0x7FFFFFFF):
             raise AgentError("private stage-2 destination needs a queried positive int32 province ID and stage-1 Confirm")
+    if (private_activity_feast_stage5_full_cost_read is True
+            and private_activity_feast_stage2_destination_province_id is None):
+        raise AgentError("private stage-5 full-cost read requires verified stage-2 destination selection")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -743,6 +751,7 @@ def native_auto_run(
     private_activity_feast_stage2_gate_observation: dict[str, object] | None = None
     private_activity_feast_stage2_location_observation: dict[str, object] | None = None
     private_activity_feast_stage2_destination_observation: dict[str, object] | None = None
+    private_activity_feast_stage5_full_cost_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -988,6 +997,9 @@ def native_auto_run(
         )
         driver.allow_private_family_marriage_formal_trial = (
             allow_private_family_marriage_formal_trial is True
+        )
+        driver.allow_private_activity_stage5_feast_full_cost_query = (
+            private_activity_feast_stage5_full_cost_read is True
         )
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
@@ -1366,6 +1378,18 @@ def native_auto_run(
                                     )
                                 )
                                 status = "private_activity_feast_stage2_destination_selected"
+                                if private_activity_feast_stage5_full_cost_read is True:
+                                    current_attempt["stage"] = "private_activity_feast_stage5_full_cost_read"
+                                    private_activity_feast_stage5_full_cost_observation = (
+                                        _read_private_activity_feast_stage5_full_cost_once(
+                                            driver, service=service, before=before,
+                                            destination_observation=(
+                                                private_activity_feast_stage2_destination_observation
+                                            ),
+                                            turn_index=turn_index,
+                                        )
+                                    )
+                                    status = "private_activity_feast_stage5_full_cost_observed"
                     else:
                         status = "private_activity_feast_stage1_option_observed"
                 elif private_activity_cost_slot12_raw_read is True:
@@ -3510,7 +3534,9 @@ def native_auto_run(
             qualified = bool(
                 primary_error is None
                 and status == (
-                    "private_activity_feast_stage2_destination_selected"
+                    "private_activity_feast_stage5_full_cost_observed"
+                    if private_activity_feast_stage5_full_cost_read is True
+                    else "private_activity_feast_stage2_destination_selected"
                     if private_activity_feast_stage2_destination_province_id is not None
                     else
                     "private_activity_feast_stage2_location_observed"
@@ -3537,6 +3563,10 @@ def native_auto_run(
                      or (isinstance(private_activity_feast_stage2_destination_observation, dict)
                          and private_activity_feast_stage2_destination_observation.get("postcondition_verified") is True
                          and private_activity_feast_stage2_destination_observation.get("same_frame") is True))
+                and (private_activity_feast_stage5_full_cost_read is not True
+                     or (isinstance(private_activity_feast_stage5_full_cost_observation, dict)
+                         and private_activity_feast_stage5_full_cost_observation.get("same_frame") is True
+                         and private_activity_feast_stage5_full_cost_observation.get("read_only") is True))
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -3744,6 +3774,11 @@ def native_auto_run(
             {"private_activity_feast_stage2_destination_observation": copy.deepcopy(
                 private_activity_feast_stage2_destination_observation)}
             if private_activity_feast_stage2_destination_province_id is not None else {}
+        ),
+        **(
+            {"private_activity_feast_stage5_full_cost_observation": copy.deepcopy(
+                private_activity_feast_stage5_full_cost_observation)}
+            if private_activity_feast_stage5_full_cost_read is True else {}
         ),
         **(
             {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
@@ -6772,6 +6807,87 @@ def _select_private_activity_feast_stage2_destination_once(
     return observation
 
 
+def _read_private_activity_feast_stage5_full_cost_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    destination_observation: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Read four native costs and final CanStart after verified destination select."""
+    step = _PRIVATE_ACTIVITY_STAGE5_FULL_COST_READ_STEP
+    destination_receipt = copy.deepcopy(
+        destination_observation.get("native_receipt"))
+    pre = service.snapshot()
+    if (destination_observation.get("postcondition_verified") is not True
+            or destination_observation.get("same_frame") is not True
+            or not _private_activity_same_paused_frame(before, pre)):
+        raise StepPostconditionError(
+            "private stage-5 cost read lacks verified same-frame destination",
+            step_result={
+                "step": step, "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "destination_postcondition_verified": (
+                    destination_observation.get("postcondition_verified")),
+                "postcondition_verified": False,
+                "destination_native_receipt": destination_receipt,
+            },
+            selected_step=step,
+        )
+    try:
+        result = query_activity_stage5_feast_full_cost_private_v1(
+            driver, expected_revision=pre["revision"],
+            timeout_seconds=float(driver.command_timeout_seconds),
+        )
+        post = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private stage-5 full-cost read unresolved after destination selection",
+            step_result={
+                "step": step, "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "destination_postcondition_verified": True,
+                "postcondition_verified": False,
+                "destination_native_receipt": destination_receipt,
+            },
+            selected_step=step,
+        ) from exc
+    same_frame = bool(
+        _private_activity_same_paused_frame(before, post)
+        and all(pre.get(key) == post.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and result["queried_snapshot_id"] == pre["snapshot_id"]
+        and result["post_snapshot_id"] == post["snapshot_id"]
+        and result["queried_native_revision"] == pre["native_revision"]
+    )
+    observation = {
+        "status": "stage_five_full_cost_observed" if same_frame else "red",
+        "turn_index": turn_index, "same_frame": same_frame,
+        "read_only": True, "destination_postcondition_verified": True,
+        "source_frame": _public_binding(pre),
+        "post_frame": _public_binding(post),
+        "full_cost": copy.deepcopy(result),
+        "destination_native_receipt": destination_receipt,
+    }
+    if not same_frame:
+        raise StepPostconditionError(
+            "private stage-5 full-cost read crossed the destination frame",
+            step_result={
+                "step": step, "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "destination_postcondition_verified": True,
+                "postcondition_verified": False,
+                "full_cost": copy.deepcopy(result),
+                "destination_native_receipt": destination_receipt,
+            },
+            selected_step=step,
+        )
+    return observation
+
+
 def _read_private_activity_cost_slot12_raw_once(
     driver: NativeHeadlessGameplayDriver,
     *,
@@ -7743,6 +7859,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
         _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
         _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
         _PRIVATE_ACTIVITY_STAGE2_DESTINATION_SELECT_STEP,
+        _PRIVATE_ACTIVITY_STAGE5_FULL_COST_READ_STEP,
     }:
         for key in (
             "submitted", "pending", "same_frame", "activity_stage1_confirm",
@@ -7751,6 +7868,8 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
             "activity_stage2_destination_select", "province_id",
             "stage2_location_native_receipt", "postcondition_verified",
             "confirm_native_receipt", "stage2_option_native_receipt",
+            "destination_postcondition_verified", "destination_native_receipt",
+            "full_cost",
         ):
             if key in result:
                 compact[key] = copy.deepcopy(result[key])
