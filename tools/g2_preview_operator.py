@@ -1258,6 +1258,7 @@ def native_auto_run_command(
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
     private_child_matrilineal_pending_read: tuple[int, int] | None = None,
+    private_child_matrilineal_pending_recovery: tuple[int, int] | None = None,
     private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
     private_activity_planner_diag_query: bool = False,
@@ -1309,6 +1310,11 @@ def native_auto_run_command(
         command.extend([
             "--private-child-matrilineal-pending-read",
             *(str(value) for value in private_child_matrilineal_pending_read),
+        ])
+    if private_child_matrilineal_pending_recovery is not None:
+        command.extend([
+            "--private-child-matrilineal-pending-recovery",
+            *(str(value) for value in private_child_matrilineal_pending_recovery),
         ])
     if private_active_scheme_sway_formal_trial:
         command.append("--allow-private-active-scheme-sway-formal-trial")
@@ -1850,12 +1856,38 @@ def command_prepare_state(args: argparse.Namespace) -> int:
 
 def command_run(args: argparse.Namespace) -> int:
     child_pair = args.private_child_matrilineal_pending_read
+    child_recovery_pair = args.private_child_matrilineal_pending_recovery
+    recovery_proof_args = (
+        args.child_matrilineal_recovery_proof_report,
+        args.child_matrilineal_recovery_continuation_report,
+        args.child_matrilineal_recovery_sway_sidecar,
+        args.child_matrilineal_recovery_sway_applied_report,
+    )
+    if child_recovery_pair is None and any(value is not None for value in recovery_proof_args):
+        raise ValueError("child recovery proof inputs require the pending recovery route")
     if child_pair is not None and (
         len(child_pair) != 2 or any(type(value) is not int or not 0 < value < 2**31
                                     for value in child_pair)
         or child_pair[0] == child_pair[1]
     ):
         raise ValueError("private child pending read needs two distinct positive IDs")
+    if child_recovery_pair is not None:
+        if (child_pair is not None or not args.private_lifestyle_formal_trial
+                or args.turns not in {None, 1}
+                or len(child_recovery_pair) != 2
+                or any(type(value) is not int or not 0 < value < 2**31
+                       for value in child_recovery_pair)
+                or child_recovery_pair[0] == child_recovery_pair[1]):
+            raise ValueError("private child pending recovery needs one LIFE turn and a distinct pair")
+        if (args.private_activity_feast_planner_open
+                or args.private_activity_planner_diag_query
+                or args.private_construction_formal_trial
+                or args.private_family_marriage_formal_trial
+                or args.private_m5_joint_collector
+                or args.private_active_scheme_sway_target is not None
+                or args.private_active_scheme_sway_formal_trial
+                or args.private_faction_round_id is not None):
+            raise ValueError("private child pending recovery must run alone")
     if args.private_activity_feast_planner_open and (
         child_pair is not None or args.private_activity_planner_diag_query
     ):
@@ -1881,8 +1913,73 @@ def command_run(args: argparse.Namespace) -> int:
     output = args.output.resolve()
     if output.exists():
         raise FileExistsError(f"attempt output already exists: {output}")
-    output.mkdir(parents=True)
     save, driver_path, driver = current_checkpoint_identity(manifest)
+    child_recovery_proof = None
+    if child_recovery_pair is not None:
+        proof_paths = list(args.child_matrilineal_recovery_proof_report or [])
+        if not proof_paths:
+            raise ValueError("private child pending recovery requires saved formal proof")
+        state_dir = manifest_path(manifest["state_dir"], "state_dir")
+        rebind = read_json(state_dir / "ordinary-seed-rebind-v1.json")
+        rebound_driver = rebind.get("driver_state")
+        rebound_save = rebind.get("save")
+        prepared_driver_sha = sha256(driver_path)
+        prepared_save_sha = sha256(save)
+        if (lifecycle != {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}
+                or rebind.get("schema") != ORDINARY_SEED_REBIND_V1_SCHEMA
+                or rebind.get("ok") is not True
+                or rebind.get("status") != "rebound"
+                or not isinstance(rebound_driver, dict)
+                or not isinstance(rebound_save, dict)
+                or not isinstance(rebound_save.get("target"), dict)
+                or str(rebound_driver.get("source_sha256", "")).casefold()
+                != str(manifest.get("raw_source_driver_sha256", "")).casefold()
+                or str(rebound_driver.get("target_sha256", "")).casefold()
+                != prepared_driver_sha
+                or str(manifest.get("driver_state_sha256", "")).casefold()
+                != prepared_driver_sha
+                or str(manifest.get("checkpoint_sha256", "")).casefold()
+                != prepared_save_sha
+                or rebound_save.get("bytes_unchanged") is not True
+                or str(rebound_save.get("target", {}).get("sha256", "")).casefold()
+                != prepared_save_sha):
+            raise ValueError("private child recovery raw/prepared pair differs from official rebind")
+        child_ledger_path = (manifest_path(manifest["state_dir"], "state_dir")
+                             / "player-child-matrilineal-formal-v1.json")
+        child_ledger = read_json(child_ledger_path)
+        reports = [read_json(path.resolve()) for path in proof_paths]
+        continuation = (read_json(args.child_matrilineal_recovery_continuation_report.resolve())
+                        if args.child_matrilineal_recovery_continuation_report else None)
+        sway_sidecar = (read_json(args.child_matrilineal_recovery_sway_sidecar.resolve())
+                        if args.child_matrilineal_recovery_sway_sidecar else None)
+        sway_applied = (read_json(args.child_matrilineal_recovery_sway_applied_report.resolve())
+                        if args.child_matrilineal_recovery_sway_applied_report else None)
+        candidate = child_matrilineal_pending_sidecar_pair(
+            child_ledger, driver, manifest, sha256(save), reports,
+            sway_continuation=continuation, sway_sidecar=sway_sidecar,
+            sway_applied_continuation=sway_applied,
+        )
+        pending = child_ledger["pending"]
+        actor = episode_value(driver, manifest, "episode_character_id")
+        episode = episode_value(driver, manifest, "episode_run_id")
+        if (candidate != child_recovery_pair[1]
+                or pending.get("heir_character_id") != child_recovery_pair[0]
+                or pending.get("candidate_character_id") != child_recovery_pair[1]
+                or pending.get("played_character_id") != actor
+                or pending.get("episode_run_id") != episode):
+            raise ValueError("private child recovery target differs from paired pending proposal")
+        child_recovery_proof = {
+            "status": "paired_no_launch", "actor": actor, "episode": episode,
+            "heir_character_id": child_recovery_pair[0],
+            "candidate_character_id": child_recovery_pair[1],
+            "pending_ledger_sha256": sha256(child_ledger_path),
+            "raw_source_driver_sha256": rebound_driver["source_sha256"],
+            "prepared_driver_state_sha256": prepared_driver_sha,
+            "checkpoint_sha256": prepared_save_sha,
+            "ordinary_rebind_receipt_sha256": sha256(state_dir / "ordinary-seed-rebind-v1.json"),
+            "formal_proof_sha256": [sha256(path.resolve()) for path in proof_paths],
+        }
+    output.mkdir(parents=True)
     exact_stop_path = args.exact_war_move_stop_contract
     exact_stop_sha = args.exact_war_move_stop_sha256
     if bool(exact_stop_path) != bool(exact_stop_sha):
@@ -1939,6 +2036,7 @@ def command_run(args: argparse.Namespace) -> int:
         ),
         "private_active_scheme_sway_target": args.private_active_scheme_sway_target,
         "private_child_matrilineal_pending_read": child_pair,
+        "private_child_matrilineal_pending_recovery": child_recovery_proof,
         "private_active_scheme_sway_formal_trial": (
             args.private_active_scheme_sway_formal_trial
         ),
@@ -1960,7 +2058,8 @@ def command_run(args: argparse.Namespace) -> int:
             encoding="utf-8",
         )
         return preflight_exit
-    turns = args.turns if args.turns is not None else int(manifest.get("formal_turns", 20))
+    turns = (1 if child_recovery_pair is not None else args.turns
+             if args.turns is not None else int(manifest.get("formal_turns", 20)))
     timeout = args.timeout if args.timeout is not None else int(manifest.get("timeout_seconds", 390))
     readiness_timeout = args.readiness_timeout if args.readiness_timeout is not None else int(
         manifest.get("readiness_timeout_seconds", 300)
@@ -2014,6 +2113,9 @@ def command_run(args: argparse.Namespace) -> int:
                 private_child_matrilineal_pending_read=(
                     tuple(args.private_child_matrilineal_pending_read)
                     if args.private_child_matrilineal_pending_read is not None else None
+                ),
+                private_child_matrilineal_pending_recovery=(
+                    tuple(child_recovery_pair) if child_recovery_pair is not None else None
                 ),
                 private_active_scheme_sway_formal_trial=(
                     args.private_active_scheme_sway_formal_trial
@@ -2831,6 +2933,16 @@ def parser() -> argparse.ArgumentParser:
         metavar=("HEIR_ID", "CANDIDATE_ID"),
         help="cold-read one paired child proposal on a paused frame",
     )
+    run.add_argument(
+        "--private-child-matrilineal-pending-recovery", type=int, nargs=2,
+        metavar=("HEIR_ID", "CANDIDATE_ID"),
+        help="consume one paired pending child result through the formal LIFE route",
+    )
+    run.add_argument("--child-matrilineal-recovery-proof-report", type=Path,
+                     action="append")
+    run.add_argument("--child-matrilineal-recovery-continuation-report", type=Path)
+    run.add_argument("--child-matrilineal-recovery-sway-sidecar", type=Path)
+    run.add_argument("--child-matrilineal-recovery-sway-applied-report", type=Path)
     run.add_argument(
         "--private-active-scheme-sway-formal-trial", action="store_true",
         help="run the bounded, unadvertised Sway submit/receipt/recovery consumer",

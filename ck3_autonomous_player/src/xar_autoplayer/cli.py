@@ -441,6 +441,11 @@ def parser() -> argparse.ArgumentParser:
         help="cold-read one paired child proposal on a paused frame without submitting",
     )
     native_auto_run_parser.add_argument(
+        "--private-child-matrilineal-pending-recovery", type=int, nargs=2,
+        metavar=("HEIR_ID", "CANDIDATE_ID"),
+        help="consume one paired child result through a bounded formal LIFE turn",
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-active-scheme-sway-formal-trial",
         action="store_true",
         help=("submit one native-legal Sway action for the explicit target "
@@ -999,6 +1004,12 @@ def main(argv: list[str] | None = None) -> int:
                         args.private_child_matrilineal_pending_read)}
                     if args.private_child_matrilineal_pending_read is not None else {}
                 )
+                if args.private_child_matrilineal_pending_recovery is not None:
+                    private_child_pending_options.update({
+                        "private_child_matrilineal_target": tuple(
+                            args.private_child_matrilineal_pending_recovery),
+                        "private_child_matrilineal_pending_recovery_only": True,
+                    })
                 if args.allow_private_prisoner_ransom_formal_trial:
                     private_prisoner_options[
                         "allow_private_prisoner_ransom_formal_trial"
