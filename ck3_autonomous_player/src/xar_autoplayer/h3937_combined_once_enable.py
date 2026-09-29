@@ -23,18 +23,18 @@ from .environment import EnvironmentSpec
 from .runtime import NativeBridgeLaunchConfig
 
 
-ROUND = "R3940"
+ROUND = "R3941"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
-SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a02"
+SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a03"
 LEASE_MAX_AGE_SECONDS = 600
 GO_MAX_AGE_SECONDS = 300
 CLOCK_SKEW_SECONDS = 10
-NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-02")
+NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-03")
 STATE = NO_LAUNCH / "state"
-OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-02")
-GO = OUTPUT.parent / "go-attempt-02.json"
-SCREEN = OUTPUT.parent / "screen-attempt-02"
+OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-03")
+GO = OUTPUT.parent / "go-attempt-03.json"
+SCREEN = OUTPUT.parent / "screen-attempt-03"
 GAME = Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III")
 DLL = NO_LAUNCH / "source-verified" / "xar_ck3_bridge.dll"
 INJECTOR = NO_LAUNCH / "source-verified" / "xar_ck3_bridge_injector.exe"
