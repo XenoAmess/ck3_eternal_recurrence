@@ -155,6 +155,34 @@ class H3937CombinedReadOnlyQueriesTests(unittest.TestCase):
         self.assertEqual(service.execute_step.call_args_list[1].kwargs,
                          {"expected_revision": 5})
 
+    def test_contact_current_or_route_must_match_same_frame_war_rows(self) -> None:
+        for mutation in ("current_province", "route_province"):
+            with self.subTest(mutation=mutation):
+                first = _frame()
+                province = _province_result()
+                middle = _after(first, province["step"], province)
+                contact_step = combined.query_route_contact_horizon_step(
+                    combined.ARMY_ID, 2610, [40001, 40002])
+                contact = _contact_result(contact_step)
+                hostile_route = contact["route_contact_horizon"]["hostile_routes"][1]
+                if mutation == "current_province":
+                    hostile_route["current_province_id"] = 2632
+                    hostile_route["effective_origin_province_id"] = 2632
+                else:
+                    hostile_route["route_province_ids"] = [2632, 2610]
+                last = _after(middle, contact_step, contact)
+                service = SimpleNamespace(
+                    snapshot=Mock(side_effect=[first, middle, last]),
+                    execute_step=Mock(side_effect=[province, contact]),
+                )
+                with patch.object(combined, "H3937_COMBINED_LIVE_AUTHORIZED", True):
+                    result = combined.collect_h3937_combined_reads_in_session(service)
+                self.assertFalse(result["observed"])
+                self.assertEqual(result["query_attempts"], 2)
+                self.assertFalse(result["checks"]["dynamic_contact_bound"])
+                self.assertFalse(result["action_authorized"])
+                self.assertFalse(result["date_advance_authorized"])
+
     def test_unresolved_route_stops_before_any_query(self) -> None:
         first = _frame()
         first["active_wars"][0]["enemy_armies"][1]["route_read_status"] = (

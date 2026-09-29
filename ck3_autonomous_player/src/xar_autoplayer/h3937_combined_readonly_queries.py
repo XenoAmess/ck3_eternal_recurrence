@@ -12,6 +12,8 @@ from typing import Protocol
 from .bridge.native_driver import (
     _army_in_combat_or_retreat,
     _army_is_known_stationary,
+    _canonical_remaining_route,
+    _canonical_timed_route,
     _route_contact_hostile_ids,
 )
 from .bridge.war_contract import (
@@ -134,7 +136,7 @@ def _bound_dynamic_contact_result(
     ):
         return False
     try:
-        normalize_route_contact_horizon(
+        normalized = normalize_route_contact_horizon(
             result.get("route_contact_horizon"),
             expected_subject_army_id=ARMY_ID,
             expected_target_province_id=TARGET_PROVINCE_ID,
@@ -144,6 +146,33 @@ def _bound_dynamic_contact_result(
         )
     except (TypeError, ValueError):
         return False
+    war = frame.get("active_wars")
+    players = frame.get("player_armies")
+    if not (isinstance(war, list) and len(war) == 1
+            and isinstance(war[0], dict) and isinstance(players, list)):
+        return False
+    enemies = war[0].get("enemy_armies")
+    if not isinstance(enemies, list):
+        return False
+    subject_rows = [row for row in players
+                    if isinstance(row, dict) and row.get("army_id") == ARMY_ID]
+    if len(subject_rows) != 1:
+        return False
+    hostile_rows = {row.get("army_id"): row for row in enemies
+                    if isinstance(row, dict) and row.get("army_id") in hostiles}
+    if len(hostile_rows) != len(hostiles):
+        return False
+    pairs = [(subject_rows[0], normalized["subject_route"])]
+    pairs.extend((hostile_rows[army_id], timed)
+                 for army_id, timed in zip(hostiles, normalized["hostile_routes"]))
+    for published, timed in pairs:
+        published_route = _canonical_remaining_route(published)
+        timed_route = _canonical_timed_route(timed)
+        if (timed["current_province_id"] != published.get("current_province_id")
+                or published_route is None or timed_route != published_route
+                or published.get("move_target_province_id")
+                != (published_route[-1] if published_route else None)):
+            return False
     return True
 
 

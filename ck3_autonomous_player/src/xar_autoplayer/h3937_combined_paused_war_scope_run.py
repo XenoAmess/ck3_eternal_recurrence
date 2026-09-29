@@ -6,13 +6,13 @@ separate decision, never date, movement, attack, or spending authorization.
 
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
 import re
+import subprocess
 import threading
 import time
 
-from . import h3937_combined_readonly_queries as inner_module
-from . import h3937_paused_war_scope_run as phase0_module
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
 from .environment import EnvironmentSpec, ensure_state_path_safe
@@ -50,6 +50,57 @@ from .runtime import (
 H3937_COMBINED_OUTER_LIVE_AUTHORIZED = False
 COMBINED_DLL_SHA256 = "310E58F50A9B66360B9FDC761B05AC52F3BD99096E19723A2DAB69F015D5A7A0"
 COMBINED_INJECTOR_SHA256 = "ED3FBCA683D570BE5B7835894B35CDF4217EC15051FFB2A04F0C53131FE6B99A"
+_SOURCE_MODULES = (
+    ".h3937_combined_readonly_queries",
+    ".h3937_paused_war_scope_run",
+    ".h3937_stationary_route_contact_query_run",
+    ".bridge.native_driver",
+    ".bridge.service",
+    ".bridge.war_contract",
+    ".bridge.succession_transition_contract",
+    ".environment",
+    ".native_auto_run",
+    ".native_session",
+    ".runtime",
+)
+
+
+def _clean_checkout_and_blob_identity(
+    paths: dict[str, Path],
+) -> tuple[str, dict[str, str]]:
+    """Bind all directly used source bytes to one entirely clean Git tree."""
+    root = Path(__file__).resolve().parents[3]
+    commit = _checkout_commit()
+
+    def git(*args: str) -> str:
+        try:
+            completed = subprocess.run(
+                ["git", *args], cwd=root, capture_output=True,
+                text=True, check=True, timeout=30,
+            )
+        except (OSError, subprocess.SubprocessError) as error:
+            raise AgentError(f"H3937 combined Git source check failed: {error}") from error
+        return completed.stdout.strip()
+
+    if git("status", "--porcelain=v1", "--untracked-files=all"):
+        raise AgentError("H3937 combined source checkout is dirty")
+    blobs: dict[str, str] = {}
+    for key, path in paths.items():
+        if key != "producer_module" and not key.startswith("source_module_"):
+            continue
+        try:
+            relative = path.resolve().relative_to(root.resolve()).as_posix()
+        except ValueError as error:
+            raise AgentError(f"H3937 combined source outside checkout: {key}") from error
+        expected = git("rev-parse", "--verify", f"{commit}:{relative}")
+        actual = git("hash-object", "--", str(path))
+        if not (re.fullmatch(r"(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})", expected)
+                and actual.casefold() == expected.casefold()):
+            raise AgentError(f"H3937 combined module differs from HEAD: {key}")
+        blobs[key] = actual.lower()
+    if _checkout_commit() != commit:
+        raise AgentError("H3937 combined checkout changed during source check")
+    return commit, blobs
 
 
 def collect_h3937_combined_paused_war_scope_once(
@@ -96,11 +147,14 @@ def collect_h3937_combined_paused_war_scope_once(
     paths = {"checkpoint": save_path, "driver_state": driver_path,
              "child_pending_sidecar": sidecar_path, "bridge_dll": config.dll_path,
              "bridge_injector": config.injector_path,
-             "rebind_receipt": receipt_path, "producer_module": Path(__file__),
-             "inner_collector_module": Path(inner_module.__file__),
-             "phase0_module": Path(phase0_module.__file__)}
+             "rebind_receipt": receipt_path, "producer_module": Path(__file__)}
+    for name in _SOURCE_MODULES:
+        module = importlib.import_module(name, package=__package__)
+        if not isinstance(module.__file__, str):
+            raise AgentError(f"H3937 combined source module has no file: {name}")
+        paths[f"source_module_{name.lstrip('.').replace('.', '_')}"] = Path(module.__file__)
     before_hashes = {key: _sha256(path) for key, path in paths.items()}
-    checkout_before = _checkout_commit()
+    checkout_before, source_blobs_before = _clean_checkout_and_blob_identity(paths)
     if not (
         before_hashes["checkpoint"].casefold() == CHECKPOINT_SHA256.casefold()
         and before_hashes["child_pending_sidecar"].casefold()
@@ -201,11 +255,12 @@ def collect_h3937_combined_paused_war_scope_once(
     try:
         after_hashes = {key: _sha256(path) for key, path in paths.items()}
         driver_after = _read_driver_state(driver_path)
-        checkout_after = _checkout_commit()
+        checkout_after, source_blobs_after = _clean_checkout_and_blob_identity(paths)
     except (OSError, AgentError) as error:
         after_hashes = {}
         driver_after = None
         checkout_after = None
+        source_blobs_after = None
         primary_error = primary_error or f"{type(error).__name__}: {error}"
     frames = inner.get("frames") if isinstance(inner, dict) else None
     steps = inner.get("steps") if isinstance(inner, dict) else None
@@ -245,11 +300,11 @@ def collect_h3937_combined_paused_war_scope_once(
             last is not None and driver_after is not None
             and _command_history(driver_after) == last_history),
         "assets_unchanged": bool(after_hashes and all(
-            before_hashes[key] == after_hashes[key] for key in
-            ("checkpoint", "child_pending_sidecar", "bridge_dll",
-             "bridge_injector", "rebind_receipt", "producer_module",
-             "inner_collector_module", "phase0_module"))),
-        "producer_checkout_unchanged": checkout_after == checkout_before,
+            before_hashes[key] == after_hashes[key] for key in paths
+            if key != "driver_state")),
+        "producer_checkout_unchanged": (
+            checkout_after == checkout_before
+            and source_blobs_after == source_blobs_before),
         "cleanup_proven": cleanup.get("ok") is True,
     }
     ok = primary_error is None and all(checks.values())
@@ -267,8 +322,10 @@ def collect_h3937_combined_paused_war_scope_once(
                    "prepared_driver_sha256": before_hashes["driver_state"],
                    "rebind_receipt_sha256": receipt_sha256,
                    "producer_module_sha256": before_hashes["producer_module"],
-                   "inner_collector_module_sha256": before_hashes["inner_collector_module"],
-                   "phase0_module_sha256": before_hashes["phase0_module"],
+                   "source_module_sha256": {key: digest for key, digest
+                                            in before_hashes.items()
+                                            if key.startswith("source_module_")},
+                   "source_git_blobs": source_blobs_before,
                    "bridge_dll_sha256": before_hashes["bridge_dll"],
                    "bridge_injector_sha256": before_hashes["bridge_injector"],
                    "producer_checkout_commit": checkout_before},

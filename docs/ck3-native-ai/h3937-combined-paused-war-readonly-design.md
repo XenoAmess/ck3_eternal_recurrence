@@ -131,3 +131,14 @@ for these binary pins. The historical `A8EA` pair and every old live attempt
 remain distinct. Any future live attempt additionally requires separate
 review, fresh Steam offline and screen ownership evidence, and its own
 append-only external output directory.
+
+Static review then identified two evidence gaps in the first integrated
+candidate `f92852543`: Q2's native timed route could disagree with the S1 war
+row while retaining the same ArmyID/frame metadata, and a dirty checkout
+could claim a pinned HEAD. The follow-up collector compares each subject and
+queried enemy's current province, canonical remaining route and move target
+against the S1 native-published row. The outer candidate requires the entire
+worktree clean before process creation and again after cleanup, and verifies
+every directly imported helper/source module's file bytes against that HEAD's
+Git blob. The raw result still remains read-only evidence; these checks do
+not prove physical army inventory completeness or authorize a date step.

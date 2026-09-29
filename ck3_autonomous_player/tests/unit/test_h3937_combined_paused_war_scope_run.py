@@ -7,6 +7,7 @@ from contextlib import ExitStack
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 from types import SimpleNamespace
@@ -25,6 +26,23 @@ from xar_autoplayer.bridge.succession_transition_contract import (
 
 
 class H3937CombinedOuterTests(unittest.TestCase):
+    def test_dirty_checkout_or_module_blob_drift_refuses_before_launch(self) -> None:
+        source = Path(producer.__file__)
+        with patch.object(producer, "_checkout_commit", return_value="a" * 40), patch.object(
+            producer.subprocess, "run", return_value=subprocess.CompletedProcess(
+                args=[], returncode=0, stdout=" M source.py\n")):
+            with self.assertRaisesRegex(producer.AgentError, "checkout is dirty"):
+                producer._clean_checkout_and_blob_identity({"producer_module": source})
+        responses = [
+            subprocess.CompletedProcess(args=[], returncode=0, stdout=""),
+            subprocess.CompletedProcess(args=[], returncode=0, stdout="a" * 40),
+            subprocess.CompletedProcess(args=[], returncode=0, stdout="b" * 40),
+        ]
+        with patch.object(producer, "_checkout_commit", return_value="a" * 40), patch.object(
+            producer.subprocess, "run", side_effect=responses):
+            with self.assertRaisesRegex(producer.AgentError, "differs from HEAD"):
+                producer._clean_checkout_and_blob_identity({"producer_module": source})
+
     def test_hard_gate_refuses_before_environment_or_session(self) -> None:
         spec = SimpleNamespace(state_dir=Path("missing"), profile_dir=Path("missing"))
         with patch.object(producer, "native_bridge_launch_config_from_environment") as env, patch.object(
@@ -141,7 +159,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         receipt_reads += 1
                         if outcome == "asset_red" and receipt_reads > 1:
                             return "e" * 64
-                    return {
+                    known = {
                         "xar_checkpoint.ck3": producer.CHECKPOINT_SHA256,
                         "driver-state.json": "B" * 64,
                         "player-child-matrilineal-formal-v1.json":
@@ -152,7 +170,9 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         "h3937_combined_paused_war_scope_run.py": "D" * 64,
                         "h3937_combined_readonly_queries.py": "E" * 64,
                         "h3937_paused_war_scope_run.py": "F" * 64,
-                    }[path.name]
+                    }
+                    return known.get(path.name, hashlib.sha256(
+                        path.name.encode("utf-8")).hexdigest())
 
                 def fake_checkout() -> str:
                     nonlocal checkout_reads
@@ -177,7 +197,11 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     producer, "_exact_prepared_rebind", return_value=True))
                 stack.enter_context(patch.object(producer, "_sha256", side_effect=fake_hash))
                 stack.enter_context(patch.object(
-                    producer, "_checkout_commit", side_effect=fake_checkout))
+                    producer, "_clean_checkout_and_blob_identity",
+                    side_effect=lambda paths: (fake_checkout(), {
+                        key: "a" * 40 for key in paths
+                        if key == "producer_module" or key.startswith("source_module_")
+                    })))
                 stack.enter_context(patch.object(
                     producer, "_wait_for_readiness", return_value=readiness))
                 stack.enter_context(patch.object(
