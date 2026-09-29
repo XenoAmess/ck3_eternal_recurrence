@@ -587,6 +587,28 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertIn("--private-activity-feast-stage5-full-cost-read", command)
         self.assertNotIn("--private-activity-feast-planner-open", command)
 
+    def test_feast_stage5_start_read_routes_after_full_cost_only(self) -> None:
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "Z:/candidate/manifest.json",
+            "--output", "Z:/candidate/run",
+            "--private-activity-feast-stage1-confirm",
+            "--private-activity-feast-stage2-location-province", "2619",
+            "--private-activity-feast-stage2-destination-province", "2619",
+            "--private-activity-feast-stage5-full-cost-read",
+            "--private-activity-feast-stage5-start-read",
+        ])
+        self.assertTrue(parsed.private_activity_feast_stage5_start_read)
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=1, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None,
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_provinces=(2619,),
+            private_activity_feast_stage2_destination_province=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_stage5_start_read=True,
+        )
+        self.assertIn("--private-activity-feast-stage5-start-read", command)
+
     def test_child_pending_recovery_routes_one_formal_life_turn(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",
