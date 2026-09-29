@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.war_cash_pending_ledger_v1 import (
     _append,
+    inspect_owned_pending_source_bytes_v1,
     ledger_path,
     observe_recorded_war_cash_pending_v1,
     open_war_cash_scope_v1,
@@ -77,6 +78,96 @@ class WarCashPendingLedgerTests(unittest.TestCase):
             request_id="request-1", quote=quote(),
             source_checkpoint_sha256=SHA, current_frame=FRAME,
         )
+
+    def frozen_source(self, *, reserve: bool) -> tuple[Path, Path, str, dict[str, object]]:
+        checkpoint = self.state_dir / "checkpoint.ck3"
+        checkpoint.write_bytes(b"fixed synthetic source checkpoint\n")
+        checkpoint_sha = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
+        evidence = self.state_dir / "native-quote-evidence.json"
+        evidence.write_bytes(b'{"synthetic_quote_raw":125000,"scale":100000}\n')
+        evidence_sha = hashlib.sha256(evidence.read_bytes()).hexdigest().upper()
+        if reserve:
+            open_war_cash_scope_v1(
+                self.state_dir, episode_run_id=EPISODE, war_id=WAR_ID,
+                owner_id="Robert-driver", source_checkpoint_sha256=checkpoint_sha,
+            )
+            reserve_war_cash_action_v1(
+                self.state_dir, episode_run_id=EPISODE, war_id=WAR_ID,
+                request_id="request-1",
+                quote={**quote(), "price_evidence_sha256": evidence_sha},
+                source_checkpoint_sha256=checkpoint_sha, current_frame=FRAME,
+            )
+        snapshot = {**FRAME, "paused": True, "map_ready": True,
+                    "played_character": {"character_id": FRAME["played_character_id"]},
+                    "active_wars": [{"war_id": WAR_ID}]}
+        return checkpoint, evidence, checkpoint_sha, snapshot
+
+    def inspect_frozen_source(
+        self, checkpoint: Path, evidence: Path, checkpoint_sha: str,
+        snapshot: dict[str, object], *, evidence_paths: dict[str, Path] | None = None,
+        ledger_sha: str | None = None,
+    ) -> dict[str, object]:
+        path = ledger_path(self.state_dir, episode_run_id=EPISODE, war_id=WAR_ID)
+        if ledger_sha is None and path.exists():
+            ledger_sha = hashlib.sha256(path.read_bytes()).hexdigest().upper()
+        return inspect_owned_pending_source_bytes_v1(
+            self.state_dir, episode_run_id=EPISODE, war_id=WAR_ID,
+            snapshot=snapshot, expected_ledger_file_sha256=ledger_sha,
+            checkpoint_path=checkpoint, expected_checkpoint_sha256=checkpoint_sha,
+            quote_evidence_paths={"request-1": evidence} if evidence_paths is None else evidence_paths,
+        )
+
+    def test_frozen_owned_quote_is_diagnostic_subset_only(self) -> None:
+        checkpoint, evidence, checkpoint_sha, snapshot = self.frozen_source(reserve=True)
+        seen = self.inspect_frozen_source(checkpoint, evidence, checkpoint_sha, snapshot)
+        self.assertEqual(seen["recorded_unresolved_quote_sum_raw_candidate"], 125_000)
+        self.assertEqual(seen["claims"][0]["request_id"], "request-1")
+        self.assertTrue(seen["checkpoint_bytes_verified_by_this_tool"])
+        self.assertIsNone(seen["pending_war_cash_raw"])
+        self.assertFalse(seen["formal_cash_eligible"])
+        self.assertFalse(seen["complete_writer_coverage_proven"])
+        self.assertFalse(seen["native_quote_semantics_proven"])
+
+    def test_owned_source_rejects_changed_bytes_and_stale_frame(self) -> None:
+        checkpoint, evidence, checkpoint_sha, snapshot = self.frozen_source(reserve=True)
+        evidence.write_bytes(evidence.read_bytes() + b"changed")
+        with self.assertRaisesRegex(ValueError, "evidence SHA differs"):
+            self.inspect_frozen_source(checkpoint, evidence, checkpoint_sha, snapshot)
+        evidence.write_bytes(b'{"synthetic_quote_raw":125000,"scale":100000}\n')
+        checkpoint.write_bytes(checkpoint.read_bytes() + b"changed")
+        with self.assertRaisesRegex(ValueError, "checkpoint bytes differ"):
+            self.inspect_frozen_source(checkpoint, evidence, checkpoint_sha, snapshot)
+        checkpoint.write_bytes(b"fixed synthetic source checkpoint\n")
+        with self.assertRaisesRegex(ValueError, "exact paused frame"):
+            self.inspect_frozen_source(
+                checkpoint, evidence, checkpoint_sha,
+                {**snapshot, "native_revision": FRAME["native_revision"] + 1},
+            )
+        with self.assertRaisesRegex(ValueError, "ledger bytes differ"):
+            self.inspect_frozen_source(
+                checkpoint, evidence, checkpoint_sha, snapshot, ledger_sha="F" * 64,
+            )
+        evidence.write_bytes(b"x" * (4 * 1024 * 1024 + 1))
+        with self.assertRaisesRegex(ValueError, "bounded read"):
+            self.inspect_frozen_source(checkpoint, evidence, checkpoint_sha, snapshot)
+
+    def test_absent_or_empty_owned_source_never_means_zero(self) -> None:
+        checkpoint, evidence, checkpoint_sha, snapshot = self.frozen_source(reserve=False)
+        absent = self.inspect_frozen_source(
+            checkpoint, evidence, checkpoint_sha, snapshot, evidence_paths={},
+        )
+        self.assertIsNone(absent["recorded_unresolved_quote_sum_raw_candidate"])
+        self.assertIsNone(absent["pending_war_cash_raw"])
+        open_war_cash_scope_v1(
+            self.state_dir, episode_run_id=EPISODE, war_id=WAR_ID,
+            owner_id="Robert-driver", source_checkpoint_sha256=checkpoint_sha,
+        )
+        empty = self.inspect_frozen_source(
+            checkpoint, evidence, checkpoint_sha, snapshot, evidence_paths={},
+        )
+        self.assertIsNone(empty["recorded_unresolved_quote_sum_raw_candidate"])
+        self.assertIsNone(empty["pending_war_cash_raw"])
+        self.assertFalse(empty["formal_cash_eligible"])
 
     def test_absent_scope_is_unknown_and_never_formal_zero(self) -> None:
         seen = self.observe()
@@ -161,6 +252,21 @@ class WarCashPendingLedgerTests(unittest.TestCase):
                 request_id="request-1", quote={**quote(), "war_id": WAR_ID + 1},
                 source_checkpoint_sha256=SHA, current_frame=FRAME,
             )
+
+    def test_boolean_war_id_cannot_alias_integer_one(self) -> None:
+        open_war_cash_scope_v1(
+            self.state_dir, episode_run_id=EPISODE, war_id=1,
+            owner_id="Robert-driver", source_checkpoint_sha256=SHA,
+        )
+        path = ledger_path(self.state_dir, episode_run_id=EPISODE, war_id=1)
+        before = path.read_bytes()
+        with self.assertRaisesRegex(ValueError, "typed price evidence"):
+            reserve_war_cash_action_v1(
+                self.state_dir, episode_run_id=EPISODE, war_id=1,
+                request_id="request-1", quote={**quote(), "war_id": True},
+                source_checkpoint_sha256=SHA, current_frame=FRAME,
+            )
+        self.assertEqual(path.read_bytes(), before)
 
     def test_stale_price_frame_is_rejected_before_reservation(self) -> None:
         open_war_cash_scope_v1(
