@@ -216,10 +216,10 @@ ActivityFeastGuestRuleStatusV1 Bind(
   if (diag.status != ActivityPlannerDiagStatusV1::observed ||
       !diag.value.planner_present || diag.value.stage != 5 ||
       !diag.value.widget_attached ||
-      !diag.value.host_view_activity_key_known ||
-      std::string_view(diag.value.host_view_activity_key.data(),
-                       diag.value.host_view_activity_key_size) !=
-          "activity_feast")
+      (diag.value.host_view_activity_key_known &&
+       std::string_view(diag.value.host_view_activity_key.data(),
+                        diag.value.host_view_activity_key_size) !=
+           "activity_feast"))
     return ActivityFeastGuestRuleStatusV1::planner_unavailable;
   if (!Capture(env, expected, binding.capture) ||
       binding.capture.frame.date_raw != expected.date_raw ||

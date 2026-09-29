@@ -24,6 +24,8 @@ struct Fixture {
   std::unordered_map<std::uintptr_t, std::uint8_t> bytes{};
   ActivityPlannerDiagFrameV1 frame{7, 12345, 100, true, true, true, true};
   bool active = false;
+  bool host_view_key_known = true;
+  bool host_view_key_matches = true;
   bool toggle_changes_vector = true;
   int toggles = 0;
   ActivityFeastGuestRuleEnvironmentV1 environment{};
@@ -65,11 +67,15 @@ struct Fixture {
     result.value.widget_attached = true;
     result.value.widget_visible = true;
     result.value.stage = 5;
-    result.value.host_view_activity_key_known = true;
+    result.value.host_view_activity_key_known = self.host_view_key_known;
     constexpr char key[] = "activity_feast";
-    std::memcpy(result.value.host_view_activity_key.data(), key,
-                sizeof(key) - 1);
-    result.value.host_view_activity_key_size = sizeof(key) - 1;
+    constexpr char other[] = "activity_hunt";
+    const auto *observed_key = self.host_view_key_matches ? key : other;
+    const auto size = self.host_view_key_matches ? sizeof(key) - 1
+                                                 : sizeof(other) - 1;
+    std::memcpy(result.value.host_view_activity_key.data(), observed_key, size);
+    result.value.host_view_activity_key_size =
+        static_cast<std::uint16_t>(size);
     return result;
   }
   static bool Capture(void *opaque, const ActivityPlannerDiagFrameV1 &expected,
@@ -162,6 +168,16 @@ struct Fixture {
 
 int main() {
   constexpr std::string_view key = "activity_invite_rule_close_family";
+  {
+    Fixture f;
+    f.host_view_key_known = false;
+    assert(ReadActivityFeastGuestRuleV1(f.environment, f.frame, key).status ==
+           ActivityFeastGuestRuleStatusV1::observed_inactive);
+    f.host_view_key_known = true;
+    f.host_view_key_matches = false;
+    assert(ReadActivityFeastGuestRuleV1(f.environment, f.frame, key).status ==
+           ActivityFeastGuestRuleStatusV1::planner_unavailable);
+  }
   {
     Fixture f;
     const auto read = ReadActivityFeastGuestRuleV1(f.environment, f.frame, key);
