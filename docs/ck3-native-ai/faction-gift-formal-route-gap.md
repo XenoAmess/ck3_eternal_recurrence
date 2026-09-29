@@ -195,3 +195,44 @@ actual members and join them to the current direct vassal list. Only a member
 with a native final legal, positive and budgeted gift preview can proceed to
 the existing formal consumer and its postcondition/next-turn/cold-restore
 gates. This source change alone is static-ready and proves no new gift action.
+
+## R0348 H3928 private member-row read (2026-09-29)
+
+R0348 exercised the integrated private row projection on the officially paired
+Robert h3928/raw 53219928 save and driver. Its source was exact master
+`47cbf3b25cf203768d864ae90c12642ebdc4af3c` (official CI
+`36514178091` SUCCESS), with gift query ON in DLL SHA-256
+`67F744A824BAAFDB31FBE17FAE0BEAD0186DD7B14C84E17D96D6C25E0949D262`.
+The fresh paused root and native query share revision 4, date 53219928 and
+actor 29829. The public root reports one targeting faction and ten direct
+landed vassals: 32440, 32716, 33435, 34333, 34867, 43696, 43699, 43700,
+43706 and 43712. After a verified application-main pump (epoch 7263 to 7291),
+the private query returned `no_eligible_direct_vassal`, `failure_flags=2`,
+without frame or direct-source failure. Its newly published, terminal `ready`
+row is faction 188 targeting Robert 29829, `leader_character_id=null`,
+`character_member_ids=[]`. The member/direct-vassal intersection is empty.
+
+This is a complete current-frame negative for the existing policy: faction
+188 presently has no character leader or member to receive a mitigation gift.
+The zeroed legacy `observation` still contains no gift final CanSend, cost,
+recipient opinion or faction benefit, because there is no recipient to preview;
+it must not be counted as a legal or rejected interaction. The semantic
+snapshot shows player gold 120644281 raw and defensive war 16777231, while
+future war cash commitments remain unknown. Those resources do not explain
+the lack of a recipient on this frame. The formal action opt-in and public
+capability remain OFF. Changed faction membership requires a fresh same-frame
+query before any formal gift decision; if a real member appears, use its native
+final CanSend/cost/opinion preview and the existing pending/receipt/recovery
+consumer rather than inferring legality from faction count.
+
+R0348 was read-only: zero typed gameplay actions, zero game-date advance,
+and clean CK3/operator process-tree recovery. Its immutable artifacts are
+`Z:/ck3_mod_rewrite_process_assets/nw-faction-h3928-rows-20260929/evidence/R0348/`:
+`faction-readback.json` SHA-256
+`76E4B0322BDE63C2E0ACC26470829CA35A8FAE5C155F35A2B18A47A604FF956B`,
+`formal-auto-run.json` SHA-256
+`067128511EA009EC04B9FB0FE407701564B66E71318767EEEF125E3476E8058D`,
+and `verdict.json` SHA-256
+`6504EB6FA1EF5C6CBA86CA97FE56370219B5CDB4E381C53DF3EA6DF0F7C5B040`.
+No gift submission, material opinion/gold/faction effect, next turn or cold
+restore was exercised, so the formal gift loop remains unqualified.
