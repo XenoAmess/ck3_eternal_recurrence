@@ -1099,6 +1099,7 @@ enum class MarriageCandidateAlliancePrivateFailureV1 : std::uint8_t {
   lineage_unavailable,
   sex_selector_unavailable,
   selected_option_unavailable,
+  generic_cost_unavailable,
 };
 
 struct MarriageCharacterLineageV1 {
@@ -1219,6 +1220,8 @@ struct MarriageCandidateAlliancePrivateReadV1 {
   bool effective_matrilineal_if_accepted = false;
   bool requested_matrilineal_option = false;
   bool selected_option_readback = false;
+  std::array<std::int64_t,
+             bridge::kMarriageGenericCostResourceCountV1> generic_cost_raw{};
   bool final_legality_sampled = false;
   bool complete_can_send = false;
   bool recipient_acceptance_ready = false;

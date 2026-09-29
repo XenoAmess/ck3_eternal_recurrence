@@ -58,6 +58,15 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
             "heir_adult_threshold_raw": None if unavailable else 16,
             "candidate_adult_threshold_raw": None if unavailable else 16,
             "grand_wedding_option_selected": None if unavailable else False,
+            "generic_costs": None if unavailable else {
+                "raw_scale": 100_000, "payer_role": "actor",
+                "application_timing": "on_send", "gold_raw": 0,
+                "prestige_raw": 250_000 if index == 0 else 0,
+                "piety_raw": 0, "renown_raw": 0,
+                "influence_raw": 0, "herd_raw": 0,
+                "treasury_raw": 0, "treasury_or_gold_raw": 0,
+                "merit_raw": 0, "barter_goods_raw": 0,
+            },
             "heir_betrothed_character_id": None,
             "heir_primary_spouse_character_id": None,
             "heir_spouse_character_ids": None if unavailable else [],
@@ -139,6 +148,9 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertEqual(result["rows"][0]["heir_sex_selector_raw"], 0)
         self.assertIs(result["rows"][0]["effective_matrilineal_if_accepted"],
                       False)
+        self.assertEqual(result["rows"][0]["generic_costs"]["prestige_raw"],
+                         250_000)
+        self.assertEqual(result["rows"][4]["generic_costs"]["prestige_raw"], 0)
 
     def test_one_unavailable_pair_does_not_become_false_or_success(self) -> None:
         result = query_first_heir_candidate_alliance_projection_private_v1(
@@ -153,6 +165,7 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         self.assertIsNone(result["rows"][2]["candidate_dynasty_id"])
         self.assertIsNone(result["rows"][2]["candidate_sex_selector_raw"])
         self.assertIsNone(result["rows"][2]["effective_matrilineal_if_accepted"])
+        self.assertIsNone(result["rows"][2]["generic_costs"])
         self.assertEqual(result["rows"][2]["possible_alliance_pairs"], [])
 
     def test_same_heir_relationship_is_read_across_five_candidates(self) -> None:
@@ -336,6 +349,18 @@ class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
         reply = _reply()
         reply["result"]["rows"][0]["predicted_outcome_if_accepted"] = None
         with self.assertRaisesRegex(BridgeUnavailableError, "lost native option"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply = _reply()
+        reply["result"]["rows"][1]["generic_costs"]["prestige_raw"] = None
+        with self.assertRaisesRegex(BridgeUnavailableError, "cost vector malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(reply, [_frame()]), legality=_legality(),
+                candidate_character_ids=IDS)
+        reply = _reply()
+        reply["result"]["rows"][0]["generic_costs"]["application_timing"] = "on_accept"
+        with self.assertRaisesRegex(BridgeUnavailableError, "cost vector malformed"):
             query_first_heir_candidate_alliance_projection_private_v1(
                 _Driver(reply, [_frame()]), legality=_legality(),
                 candidate_character_ids=IDS)

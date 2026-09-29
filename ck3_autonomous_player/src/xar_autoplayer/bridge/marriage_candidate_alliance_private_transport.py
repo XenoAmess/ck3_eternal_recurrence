@@ -15,6 +15,11 @@ from .driver import BridgeUnavailableError
 
 STEP = "query-first-heir-candidate-alliance-projection-v1-private"
 SCHEMA = "xar.ck3.first-heir-candidate-alliance-projection.v1"
+_GENERIC_COST_FIELDS = (
+    "gold_raw", "prestige_raw", "piety_raw", "renown_raw",
+    "influence_raw", "herd_raw", "treasury_raw",
+    "treasury_or_gold_raw", "merit_raw", "barter_goods_raw",
+)
 
 
 def query_first_heir_candidate_alliance_projection_private_v1(
@@ -149,6 +154,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             observed_unavailable = True
             if (row["failure"] == "none" or
                 row.get("matrilineal_option_selected") is not None or pairs or
+                row.get("generic_costs") is not None or
                 row.get("predicted_outcome_if_accepted") is not None or
                 row.get("heir_betrothed_character_id") is not None or
                 row.get("heir_primary_spouse_character_id") is not None or
@@ -172,6 +178,16 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 {"marriage", "betrothal"} or
             type(row.get("matrilineal_option_selected")) is not bool):
             raise BridgeUnavailableError("available projection lost native option")
+        costs = row.get("generic_costs")
+        if (not isinstance(costs, dict)
+            or set(costs) != {*_GENERIC_COST_FIELDS, "raw_scale",
+                                  "payer_role", "application_timing"}
+            or costs["raw_scale"] != 100_000
+            or costs["payer_role"] != "actor"
+            or costs["application_timing"] != "on_send"
+            or any(type(costs[key]) is not int
+                   for key in _GENERIC_COST_FIELDS)):
+            raise BridgeUnavailableError("marriage generic cost vector malformed")
         heir_is_adult = row["heir_is_adult"]
         candidate_is_adult = row["candidate_is_adult"]
         grand_wedding = row["grand_wedding_option_selected"]

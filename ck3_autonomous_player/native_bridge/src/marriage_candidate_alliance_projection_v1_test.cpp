@@ -20,6 +20,22 @@ bool emit_pair = true;
 std::uint32_t option_seen = 0;
 bool option_selected = true;
 bool option_selectable = true;
+const void *expected_cost_block = nullptr;
+const void *expected_cost_scope = nullptr;
+int cost_calls = 0;
+bool cost_inputs_match = true;
+bool cost_drift = false;
+
+void EvaluateGenericCost(const void *block, const void *scope,
+                         std::int64_t *output) {
+  cost_inputs_match = cost_inputs_match && block == expected_cost_block &&
+                      scope == expected_cost_scope;
+  ++cost_calls;
+  output[0] = 0;
+  output[1] = 250'000;
+  output[2] = -50'000;
+  output[4] = cost_drift && cost_calls % 2 == 0 ? 75'001 : 75'000;
+}
 
 template <typename Value>
 void WriteAt(void *base, std::size_t offset, Value value) {
@@ -150,6 +166,31 @@ int main() {
   if (!Check(!SelectMarriageCandidateMatrilinealOptionV1(
                   env, context.data()) && !option_selected,
              "rejected native option was incorrectly reported selected"))
+    return 1;
+  alignas(8) std::array<std::byte, 0x80> cost_definition{};
+  alignas(8) std::array<std::byte, 0x40> cost_context{};
+  WriteAt(cost_context.data(), 0, cost_definition.data());
+  expected_cost_block = cost_definition.data() + 0x38;
+  expected_cost_scope = cost_context.data() + 0x08;
+  std::array<std::int64_t, kMarriageGenericCostResourceCountV1> costs{};
+  if (!Check(ReadMarriageCandidateGenericCostV1(
+                 cost_context.data(), cost_definition.data(),
+                 &EvaluateGenericCost, costs) &&
+                 cost_calls == 2 && cost_inputs_match &&
+                 costs[0] == 0 && costs[1] == 250'000 &&
+                 costs[2] == -50'000 && costs[4] == 75'000,
+             "five-role generic on-send cost vector was not read exactly"))
+    return 1;
+  if (!Check(!ReadMarriageCandidateGenericCostV1(
+                 cost_context.data(), context.data(),
+                 &EvaluateGenericCost, costs) && cost_calls == 2,
+             "wrong interaction definition was evaluated"))
+    return 1;
+  cost_drift = true;
+  if (!Check(!ReadMarriageCandidateGenericCostV1(
+                 cost_context.data(), cost_definition.data(),
+                 &EvaluateGenericCost, costs) && costs == decltype(costs){},
+             "unstable on-send cost was published"))
     return 1;
   std::cout << "marriage candidate alliance projection v1 GREEN\n";
   return 0;

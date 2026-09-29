@@ -8493,6 +8493,8 @@ std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
   case Failure::sex_selector_unavailable: return "sex_selector_unavailable";
   case Failure::selected_option_unavailable:
     return "selected_option_unavailable";
+  case Failure::generic_cost_unavailable:
+    return "generic_cost_unavailable";
   }
   return "unknown";
 }
@@ -8592,6 +8594,24 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
     result += ",\"recipient_answer_status_raw\":";
     result += read.final_legality_sampled && read.recipient_acceptance_ready
                   ? Number(read.recipient_answer_status_raw) : "null";
+    result += ",\"generic_costs\":";
+    if (!available) {
+      result += "null";
+    } else {
+      constexpr std::array<std::string_view, 10> keys{
+          "gold_raw", "prestige_raw", "piety_raw", "renown_raw",
+          "influence_raw", "herd_raw", "treasury_raw",
+          "treasury_or_gold_raw", "merit_raw", "barter_goods_raw"};
+      result += "{\"raw_scale\":100000,\"payer_role\":\"actor\","
+                "\"application_timing\":\"on_send\"";
+      for (std::size_t slot = 0; slot < keys.size(); ++slot) {
+        result += ",\"";
+        result += keys[slot];
+        result += "\":";
+        result += SignedNumber(read.generic_cost_raw[slot]);
+      }
+      result += '}';
+    }
     result += ",\"failure\":";
     AppendJsonString(result,
                      MarriageCandidateAlliancePrivateFailureKeyV1(read.failure));

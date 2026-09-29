@@ -8,6 +8,9 @@
 namespace xar::bridge {
 namespace {
 
+constexpr std::size_t kInteractionCostBlockOffsetV1 = 0x38;
+constexpr std::size_t kInteractionContextScopeOffsetV1 = 0x08;
+
 struct NativePairVectorV1 {
   void *data = nullptr;
   std::int32_t capacity = 0;
@@ -134,6 +137,34 @@ bool IsExpectedRole(std::uint32_t id, std::uint32_t actor,
 }
 
 } // namespace
+
+bool ReadMarriageCandidateGenericCostV1(
+    const void *finalized_context, const void *expected_definition,
+    EvaluateMarriageGenericCostV1 evaluate_cost,
+    std::array<std::int64_t, kMarriageGenericCostResourceCountV1> &output)
+    noexcept {
+  output = {};
+  if (finalized_context == nullptr || expected_definition == nullptr ||
+      evaluate_cost == nullptr)
+    return false;
+  const void *observed_definition = nullptr;
+  std::memcpy(&observed_definition, finalized_context,
+              sizeof(observed_definition));
+  if (observed_definition != expected_definition) return false;
+  const auto *const definition =
+      static_cast<const std::byte *>(expected_definition);
+  const auto *const context =
+      static_cast<const std::byte *>(finalized_context);
+  std::array<std::int64_t, kMarriageGenericCostResourceCountV1> first{};
+  std::array<std::int64_t, kMarriageGenericCostResourceCountV1> second{};
+  evaluate_cost(definition + kInteractionCostBlockOffsetV1,
+                context + kInteractionContextScopeOffsetV1, first.data());
+  evaluate_cost(definition + kInteractionCostBlockOffsetV1,
+                context + kInteractionContextScopeOffsetV1, second.data());
+  if (first != second) return false;
+  output = first;
+  return true;
+}
 
 MarriageCandidateAllianceProjectionEnvironmentV1
 BindMarriageCandidateAllianceProjectionEnvironmentV1(

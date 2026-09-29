@@ -17756,6 +17756,20 @@ ReadMarriageCandidateAlliancePrivateV1(
     result.failure = Failure::final_legality_changed;
     return result;
   }
+  // Evaluate the stock interaction's authored on-send cost on this exact
+  // finalized context. The ten ordinals and signed Q100000 scale are pinned
+  // by pending_character_interaction_context_v1_abi.json. This is an
+  // immediate resource quote, not a future betrothal or alliance liability.
+  void *const definition = ResolveCharacterInteraction(
+      bindings, bindings.arrange_marriage_interaction_offset);
+  if (!bridge::ReadMarriageCandidateGenericCostV1(
+          context, definition,
+          bindings.evaluate_character_interaction_cost,
+          result.generic_cost_raw)) {
+    bindings.destroy_character_interaction_context(context);
+    result.failure = Failure::generic_cost_unavailable;
+    return result;
+  }
   result.projection_failure =
       bridge::ReadMarriageCandidateAllianceProjectionV1(
           projection_environment, context,
