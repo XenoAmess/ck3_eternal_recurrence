@@ -123,7 +123,7 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
                      "run_id": once.LIVE_RUN_ID,
                      "execution_id": once.LIVE_EXECUTION_ID,
                      "machine_id": "desktop-3fevhd2-1c74096080",
-                     "mod_key": "vanilla", "sequence": 114}
+                     "mod_key": "vanilla", "sequence": 116}
     live_identity_path.write_text(json.dumps(live_identity), encoding="utf-8")
     head = "a" * 40
     admission = {
@@ -215,6 +215,12 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     bound = once._require_exact_admission()
     check(bound["live_run_identity_sha256"] == sha(live_identity_path))
     once._require_no_launch_unchanged(bound)
+    live_identity["sequence"] = 114
+    live_identity_path.write_text(json.dumps(live_identity), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    live_identity["sequence"] = 116
+    live_identity_path.write_text(json.dumps(live_identity), encoding="utf-8")
     for key, old_hash in (
         ("dll_sha256", "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61233793F"),
         ("injector_sha256", "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E"),

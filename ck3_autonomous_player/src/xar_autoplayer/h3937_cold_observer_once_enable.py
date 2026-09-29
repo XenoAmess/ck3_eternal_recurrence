@@ -264,7 +264,7 @@ def _require_exact_admission() -> dict[str, object]:
         and live_identity.get("execution_id") == LIVE_EXECUTION_ID
         and live_identity.get("machine_id") == "desktop-3fevhd2-1c74096080"
         and live_identity.get("mod_key") == "vanilla"
-        and live_identity.get("sequence") == 114
+        and live_identity.get("sequence") == 116
         and admission.get("schema")
             == "xar.war.h3937-cold-observer-disabled-no-launch-admission.v1"
         and admission.get("candidate_head") == manifest.get("candidate_head") == head
