@@ -634,9 +634,9 @@ def sway_formal_resolved_sidecar_pair(
 
 def post_sway_child_pending_result_pair(
     report: dict[str, Any], sidecar: dict[str, Any],
-    previous: dict[str, Any], driver: dict[str, Any], save_sha256: str,
+    previous: dict[str, Any], driver: dict[str, Any], save_sha256: str | None,
 ) -> None:
-    """Admit one saved pending read after resolved Sway, including R0352's bound RED."""
+    """Admit one linked pending result read after Sway or an earlier read."""
     fixed = report.get("fixed_seed")
     readiness = report.get("readiness")
     session = report.get("session")
@@ -702,18 +702,21 @@ def post_sway_child_pending_result_pair(
             or type(saved.get("history_index")) is not int
             or saved["history_index"] <= previous.get("history_index", 0)
             or saved.get("date_raw") != previous.get("date_raw")
-            or saved.get("sha256") != save_sha256
+            or (save_sha256 is not None and saved.get("sha256") != save_sha256)
             or (bound_red and report["first_blocker"].get(
                 "last_durable_checkpoint") != saved)
             or saved.get("episode_character_id") != actor
             or saved.get("episode_run_id") != episode
-            or any(checkpoint.get(key) != saved.get(key) for key in (
-                "history_index", "date_raw", "sha256", "episode_character_id", "episode_run_id"))
+            or (save_sha256 is not None and any(
+                checkpoint.get(key) != saved.get(key)
+                for key in ("history_index", "date_raw", "sha256",
+                            "episode_character_id", "episode_run_id")))
             or pending.get("played_character_id") != actor
             or pending.get("episode_run_id") != episode
-            or pending.get("last_checked_bridge_pid") != session["pid"]
-            or pending.get("last_checked_native_revision") != result.get("post_native_revision")
-            or pending.get("last_outbound_pending_state") != result.get("outbound_pending_state")):
+            or (save_sha256 is not None and (
+                pending.get("last_checked_bridge_pid") != session["pid"]
+                or pending.get("last_checked_native_revision") != result.get("post_native_revision")
+                or pending.get("last_outbound_pending_state") != result.get("outbound_pending_state")))):
         raise ValueError("post-Sway child pending read lacks its paired checkpoint")
 
 
@@ -977,6 +980,7 @@ def child_matrilineal_pending_sidecar_pair(
     sway_sidecar: dict[str, Any] | None = None,
     sway_applied_continuation: dict[str, Any] | None = None,
     post_sway_result: dict[str, Any] | None = None,
+    post_sway_followups: list[dict[str, Any]] | None = None,
 ) -> int:
     """Pair a child proposal through consecutive saved formal pending reads."""
     reports = attempt if isinstance(attempt, list) else [attempt]
@@ -1239,9 +1243,15 @@ def child_matrilineal_pending_sidecar_pair(
     if post_sway_result is not None:
         if sway_applied_continuation is None:
             raise ValueError("post-Sway child result needs resolved Sway proof")
-        post_sway_child_pending_result_pair(
-            post_sway_result, sidecar, previous, driver, save_sha256)
-        previous = post_sway_result["checkpoints"][0]
+        for result_index, result_report in enumerate(
+                [post_sway_result, *(post_sway_followups or [])]):
+            final = result_index == len(post_sway_followups or [])
+            post_sway_child_pending_result_pair(
+                result_report, sidecar, previous, driver,
+                save_sha256 if final else None)
+            previous = result_report["checkpoints"][0]
+    elif post_sway_followups:
+        raise ValueError("child result followups need the first post-Sway result")
     if (previous["history_index"] != index
             or previous["date_raw"] != checkpoint["date_raw"]
             or previous["sha256"] != save_sha256
@@ -1568,6 +1578,10 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     if post_sway_arg is not None and (child_source is None or sway_applied_source is None):
         raise ValueError("post-Sway child result needs child and resolved Sway proofs")
     post_sway_source = post_sway_arg.resolve() if post_sway_arg else None
+    followup_sources = [path.resolve() for path in (
+        getattr(args, "child_matrilineal_followup_result_report", None) or [])]
+    if followup_sources and post_sway_source is None:
+        raise ValueError("child result followups need the first post-Sway result")
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
@@ -1652,6 +1666,10 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             raise FileNotFoundError(post_sway_source)
         post_sway_result = read_json(post_sway_source)
         post_sway_sha256 = sha256(post_sway_source)
+    if any(not path.is_file() for path in followup_sources):
+        raise FileNotFoundError("child result followup proof report missing")
+    followup_results = [read_json(path) for path in followup_sources]
+    followup_sha256 = [sha256(path) for path in followup_sources]
     sway_action_id = None
     sway_ledger_status = None
     sway_source_sha256 = None
@@ -1707,7 +1725,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             sha256(save_source), child_proof,
             sway_continuation=child_continuation, sway_sidecar=sway_record,
             sway_applied_continuation=sway_applied,
-            post_sway_result=post_sway_result)
+            post_sway_result=post_sway_result,
+            post_sway_followups=followup_results)
         child_source_sha256 = sha256(child_source)
         child_proof_sha256 = [sha256(path) for path in child_proof_sources]
     faction_request_id = None
@@ -1906,6 +1925,7 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             sway_continuation=child_continuation, sway_sidecar=sway_record,
             sway_applied_continuation=sway_applied,
             post_sway_result=post_sway_result,
+            post_sway_followups=followup_results,
         ) != child_candidate:
             raise RuntimeError("prepared driver no longer matches child proposal")
         shutil.copy2(child_source, child_target)
@@ -1931,6 +1951,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "post_sway_child_result_report": (
                 str(post_sway_source) if post_sway_source else None),
             "post_sway_child_result_report_sha256": post_sway_sha256,
+            "child_result_followup_reports": [str(path) for path in followup_sources],
+            "child_result_followup_reports_sha256": followup_sha256,
             "candidate_character_id": child_candidate,
         }
     if faction_request_id is not None:
@@ -3034,6 +3056,8 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--child-matrilineal-proof-report", type=Path, action="append")
     prepare.add_argument("--child-matrilineal-continuation-report", type=Path)
     prepare.add_argument("--child-matrilineal-post-sway-result-report", type=Path)
+    prepare.add_argument("--child-matrilineal-followup-result-report", type=Path,
+                         action="append")
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.add_argument("--sway-formal-sidecar", type=Path)
     prepare.add_argument("--sway-formal-applied-report", type=Path)

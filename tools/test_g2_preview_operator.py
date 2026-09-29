@@ -470,6 +470,50 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertEqual(parsed.child_matrilineal_post_sway_result_report,
                          Path("Z:/proof/R0352.json"))
+        # R0357 read the same still-pending proposal on a new PID and saved
+        # H3937. Both result reports must link from R0342, in order; only the
+        # last one has to equal the source driver's current checkpoint/ledger.
+        final_sidecar = copy.deepcopy(post_sidecar)
+        final_sidecar["pending"]["last_checked_bridge_pid"] = 101676
+        final_hash = "e" * 64
+        final_checkpoint = {**post_checkpoint, "history_index": 3937,
+                            "sha256": final_hash}
+        final_driver = {**driver, "last_checkpoint": final_checkpoint}
+        followup = copy.deepcopy(post_report)
+        followup.update({
+            "ok": True, "outcome": "qualified", "first_blocker": None,
+            "session": {"pid": 101676},
+            "fixed_seed": {"sha256": post_hash, "history_index": 3933,
+                           "saved_date_raw": 53219928},
+            "readiness": {"bridge_pid": 101676,
+                          "episode_character_id": 29829,
+                          "episode_run_id": episode, "date_raw": 53219928},
+            "checkpoints": [final_checkpoint],
+        })
+        self.assertEqual(paired(
+            final_sidecar, final_driver, {}, final_hash,
+            [proof, continuation], sway_continuation=sway_report,
+            sway_sidecar=resolved_ledger,
+            sway_applied_continuation=applied_report,
+            post_sway_result=post_report,
+            post_sway_followups=[followup]), 37267)
+        broken = copy.deepcopy(followup)
+        broken["fixed_seed"]["sha256"] = applied_hash
+        with self.assertRaisesRegex(ValueError, "post-Sway child pending read"):
+            paired(final_sidecar, final_driver, {}, final_hash,
+                   [proof, continuation], sway_continuation=sway_report,
+                   sway_sidecar=resolved_ledger,
+                   sway_applied_continuation=applied_report,
+                   post_sway_result=post_report,
+                   post_sway_followups=[broken])
+        parsed = g2_preview_operator.parser().parse_args([
+            "prepare-state", "--manifest", "Z:/candidate/operator-manifest.json",
+            "--sample-dir", "Z:/sample",
+            "--child-matrilineal-post-sway-result-report", "Z:/proof/R0352.json",
+            "--child-matrilineal-followup-result-report", "Z:/proof/R0357.json",
+        ])
+        self.assertEqual(parsed.child_matrilineal_followup_result_report,
+                         [Path("Z:/proof/R0357.json")])
 
     def test_exact_war_move_contract_is_bound_in_formal_argv(self) -> None:
         path = Path("D:/frozen/exact-move.json")

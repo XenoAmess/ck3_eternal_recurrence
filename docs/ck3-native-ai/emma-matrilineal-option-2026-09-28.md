@@ -166,3 +166,27 @@ Sway and child proof checks already passed. The prepared Sway recheck now
 uses R0342's saved checkpoint/SHA/size for that earlier effect; the child
 proof still checks the actual H3933 prepared driver and save. The failed
 candidate is retained as a failed preparation, with no CK3 launch.
+
+R0357 resumed H3933 under a new PID and performed one typed result read.
+The native outbound proposal remained active at age 0, before the seven-day
+reply cutoff; the ledger remained `receipt_pending`, with no new submit and no
+marriage or alliance. It saved the same-date H3937 checkpoint (raw 53219928,
+SHA-256 `92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6`)
+and qualified the result-only bounded run. Its [formal report](Z:/nw-family-h3933-pending-recovery-v2-20260929/operator-runs/pending-recovery-1/formal-report.txt)
+has SHA-256 `774191FA1A8C37F327E60E56FB11E8572352708BD5A892B64FD4E8200E9D26D9`.
+
+H3937 preparation must retain both result checkpoints in order:
+R0342 H3928 → R0352 H3933 → R0357 H3937. The preparer now accepts an
+additional `--child-matrilineal-followup-result-report` after the existing
+post-Sway result report. Each read must show the same pending pair and link
+its fixed seed to the prior saved checkpoint; the final read must match the
+actual H3937 save, driver and latest pending ledger. This is a cold-restore
+pairing change, not evidence of an accepted proposal.
+
+The same raw date has a separate normal eight-turn war attempt ending RED
+before date advance: its sixth step lacked a qualified same-frame battle
+probability and expected-utility decision. The current war strategy source
+blob has not changed since that attempt. A normal H3937 continuation may
+reach the same blocker before the recipient's seven-day reply window; the
+bounded candidate should be prepared, but its ability to advance seven days
+must be established by a war-side change or real run evidence.
