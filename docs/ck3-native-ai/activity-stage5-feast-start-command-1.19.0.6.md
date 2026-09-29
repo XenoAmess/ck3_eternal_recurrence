@@ -136,3 +136,58 @@ hashed executable at RVAs `0x10B1910` (size `0x2C0`), `0x10B13F0`
 (`0xF0`), `0x10B14E0` (`0x430`), `0x10B18C0` (`0x50`), `0x26C8050`
 (`0x30`), `0x2700340` (`0x600`), `0x2704A60` (`0x180`), and
 `0x28D0820` (`0x180`).
+
+## R0365 Stage-5 full-cost read RED
+
+The four-resource native getter and final CanStart contract above remains the
+authority for this private read. The frozen R0365 H3928 candidate used source
+`305c0f9c579a872f2ba7cad439be341c67e5af9b` (official push CI
+#36546655245 SUCCESS), Release DLL SHA-256
+`E37E28298E8912EF28529177F051B4ABD03513588926DD1B5D7D937C72361FD1`,
+and [candidate index](Z:/m6-activity-h3928-stage5-fourcost-candidate-20260929/CANDIDATE-INDEX.json)
+SHA-256 `94B765F73379712EA5FC1B8F9A5681A3500A84BC9E5E2B0D76E7AA98DA71D6EA`.
+The official rebind/no-launch result was `ready`. Latest master at freeze
+`b4a167f76b54ed78538edd7287dc1e83a30e0f2b` added separate feast
+value-policy files and was not loaded into this frozen DLL. New CK3 PID 57596
+was minimized after its window became verifiable; the first owned-window
+attempt during loading had no verified result. The
+[owner receipt](Z:/m6-activity-h3928-stage5-fourcost-candidate-20260929/OWNER-WINDOW-RECEIPT.json)
+SHA-256 is `4219606EB64C11CFC9C0A9B2D7245D7348BAD029F3E44A76DEDAA5C927BEFD6C`.
+
+On the same paused `native:3` frame, actor 29829/date raw53219928,
+Stage 1 generic Confirm and the typed Stage 2 ProvinceID 2619 selection
+again reached a verified Stage 5 planner. The destination receipt kept the
+option and recorded row IDs `[0,0]` to `[2619,2619]`, unchanged Gold raw
+`120644281`, and no date change. The following private
+`query-activity-stage5-feast-full-cost-v1-private` returned **RED**:
+`native_activity_stage5_full_cost_red:gold_gate_red:exact_build_rejected`.
+Its observation is null. The outer selected-step receipt records
+`status=red, submitted=true, pending=true` to preserve the already
+submitted destination and failed read; it is **not** a Start submission or
+a configured price. No Gold/treasury/piety/barter-goods cost or final
+CanStart result was obtained. A missing value must not become zero.
+
+The [formal report](Z:/m6-activity-h3928-stage5-fourcost-candidate-20260929/operator-runs/feast-stage5-fourcost-read-1/formal-report.txt)
+SHA-256 `E2466AFEF3573AB843C4C71243D146EA914CA8CB5B009337ED969C5D468CCC5A`
+has `outcome=failed/ok=false`, one attempted and zero successful or visible
+ordinary gameplay turns. The [operator receipt](Z:/m6-activity-h3928-stage5-fourcost-candidate-20260929/operator-runs/feast-stage5-fourcost-read-1/operator-receipt.json)
+SHA-256 `BC456F8D9D6E4CADAED4F6D94457CEC4DBDF0DC16AA081FB426168FB7AB4096F`
+has `formal_run_failed/exit1`. The H3928 original save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+and date were unchanged; cleanup proved the process tree gone. This
+run is recoverable from the original checkpoint, but post-selection cold
+restore and next-turn consumption were not tested.
+
+The failure is localized to the private transport's Gold subenvironment,
+not to an observed game ABI change. In
+`activity_stage5_feast_full_cost_private_transport_v1.cpp:164-167`, the
+transport sets `cost_environment.enabled=true` and supplies
+`cost_environment.gold.diagnostic` plus `.passive_cost`, but omits
+`cost_environment.gold.enabled=true`. The called Gold core in
+`activity_stage5_gold_cost_v1.cpp:152-158` returns its initial
+`exact_build_rejected` status when `environment.enabled` is false.
+The full-cost core maps that result to `gold_gate_red` before querying
+the other resources or final CanStart. The Gold transport owner is
+repairing this narrow wiring defect; a new exact candidate and paired
+paused run must read the four actual values and CanStart. R0365 does not
+authorize Start, payment, or a feast benefit claim.
