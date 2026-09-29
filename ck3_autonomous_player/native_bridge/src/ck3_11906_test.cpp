@@ -4979,6 +4979,18 @@ int main() {
       g_inventory_state_reads < 5) {
     return Fail("physical inventory joined two Character slot generations");
   }
+  Store(g_enemy_army, 0x174, std::int32_t{-1});
+  Store(g_enemy_army, 0x44, std::int32_t{-1});
+  physical_inventory = {};
+  const auto doubly_unresolved_result =
+      xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory);
+  Store(g_enemy_army, 0x174, enemy_character_id);
+  Store(g_enemy_army, 0x44, std::int32_t{0});
+  if (doubly_unresolved_result != InventoryStatus::partial ||
+      physical_inventory.unresolved_slots != 1) {
+    return Fail("physical inventory double-counted one unresolved slot");
+  }
   Store(g_enemy_army, 0x10, std::int32_t{0x01000003});
   physical_inventory = {};
   if (xar::ck3_11906::ReadPhysicalArmyInventoryV1(

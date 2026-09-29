@@ -10856,13 +10856,11 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
       const bool hostile = army.owner_character_id > 0 &&
           bindings.contains_war_participant(enemies,
                                             army.owner_character_id);
-      if (army.owner_character_id <= 0 ||
+      bool unresolved = army.owner_character_id <= 0 ||
           ResolveCharacter(bindings, army.owner_character_id) == nullptr ||
           (allied && hostile) ||
           army.army_state_code < 1 || army.army_state_code > 9 ||
-          !army.has_current_province) {
-        ++result.unresolved_slots;
-      }
+          !army.has_current_province;
       PhysicalArmyWarSideV1 side = PhysicalArmyWarSideV1::neutral;
       if (allied && !hostile) {
         side = PhysicalArmyWarSideV1::allied;
@@ -10880,12 +10878,15 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
            unit_id == subject_army_id) &&
           army.route_read_status != game::ArmyRouteReadStatus::complete_empty &&
           army.route_read_status != game::ArmyRouteReadStatus::complete_nonempty) {
-        ++result.unresolved_slots;
+        unresolved = true;
       }
       if ((side != PhysicalArmyWarSideV1::neutral ||
            unit_id == subject_army_id) &&
           (army.in_combat ||
            (army.army_state_code == 6 && !army.retreating))) {
+        unresolved = true;
+      }
+      if (unresolved) {
         ++result.unresolved_slots;
       }
       result.units.push_back({std::move(army), side});
