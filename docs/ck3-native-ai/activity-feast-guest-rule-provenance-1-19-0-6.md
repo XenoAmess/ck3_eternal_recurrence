@@ -76,3 +76,59 @@ R0378 separately found Stage-5 `final_can_start=false`: actor 29829 failed
 needs a fresh legal paused frame with `final_can_start=true`, a matching
 candidate/rule membership read, native invitation legality, and the action's
 independent postcondition before any Start or invitation claim.
+
+## Ordinary invitation decision seam (2026-09-29 source trace)
+
+The frozen executable still hashes to the EXE SHA above. The original
+`window_activity_guest_list.gui` hashes to
+`FD293E8FA1D73AFB15D5B1DF2EE1075E7184185E871E8B359F5C1BEC9FADFA97`;
+`feast.txt` hashes to
+`CE9B72F84B534CE5B8E0764FBFE0552CDBE889ABDEC370747643014B2668FB7C`.
+The ordinary GUI offers `ToggleInviteFromRules` for each category
+(`window_activity_guest_list.gui:100-115`). Its per-character Select button
+is visible only for a special guest (`:547-552`). The normal feast definition
+uses category rules and `can_be_activity_guest` (`feast.txt:798-839`).
+
+The exact executable's `0x10B0780` consumes active rules at planner `+0x1A18`
+and refreshes filtered groups at `+0x1590`. For each group CharacterID,
+`0x28D07A1` calls `0x28CEC60`; that routine checks `0x28AF3B0` and evaluates
+the activity type's guest predicate at `+0xD58` before retaining the ID.
+Thus the existing candidate reader samples a **post-filter** group and then
+checks original join chance and arrival. The provenance read identifies which
+named active rule supplied an ID before groups lose that origin. Neither read
+is a command validator or evidence that an invitation was sent.
+
+Stage-5 `0x10B0DA0:0x10B1018-0x10B1092` copies the planner payload into a
+temporary `CStartActivityCommand` and invokes its validator. After approval,
+`0x10B13F0:0x10B1400-0x10B14A9` refreshes the planner, copies the payload and
+queues the command. This is an **activity-level** final gate. The source trace
+does not establish a separate ordinary per-character invitation action or an
+independent pre-Start `final_invite_legal` boolean, nor when the game records
+each guest's invitation. No new aggregate read or typed guest action is
+justified by the current frame.
+
+```mermaid
+flowchart TD
+  A[Paused Stage-5 feast] --> B[Active named rule and natural refresh]
+  B --> C[Per-rule CharacterIDs]
+  C --> D[0x28CEC60 guest predicate and filtered group]
+  D --> E[Same-frame candidate join and arrival]
+  E --> F[Same-frame named-rule provenance and target value]
+  F --> G{0x10B0DA0 final activity CanStart?}
+  G -- false --> H[Hold and preserve exact native reason]
+  G -- true --> I[Policy approves one typed Start]
+  I --> J[0x10B13F0 command queue]
+  J -. requires independent readback .-> K[Created activity, cost and guest state]
+```
+
+R0373's candidate 38293 and R0377's opinion +62 came from separate paused
+runs. R0378's `activity_invite_rule_vassals` was active with 22 filtered
+characters, but that aggregate count does not establish 38293's membership;
+the #675 provenance bridge has source/fixture coverage only. R0378 also had
+`final_can_start=false` from the host's `is_available_adult` army condition.
+The next useful trial therefore needs a **new legally Startable paused frame**
+with candidate, named-rule membership, join/arrival, target value, current
+cost and final CanStart read on that frame. Only then can a formal Start
+consumer submit once and verify created activity, debit, guest state, next
+turn and required restore. Until then `final_invite_legal` remains unknown;
+candidate filtering and a positive join estimate do not turn it true.
