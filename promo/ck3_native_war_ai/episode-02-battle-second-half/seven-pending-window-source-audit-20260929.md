@@ -16,7 +16,7 @@
 | `K04-a07-d05-before`，K04-a07 `0.000–411.167` | d05 `native:3` / 4，日期 `53146344`，真 control SHA `3BC180231A4EB38DF2F7CB0111D816BB0E28689BEA7A62F7A1F3A1C93D8408E0`。 | raw SHA `950D94FE20A937806A1A8976160D66D8BF04D5DE3C7CD85A67D7DF5ACE45D3C9`；`411.167→413.300` 缺帧 `2.133 s`。 | **#451 原 HEAD 的封装器源码硬拒绝整条 raw 的 prepare**：同 recorder 的 `d06-after` mark 截图指向同 run 屏幕租约 sibling `episode02-e2-04-d05-screen-lease-20260929-a07/d06-player-knights-hover-a01.png`，`checked_marks()` 对全部 mark 引用要求 `within=attempt`，`package()` 也不能按 attempt 相对路径复制。原 mark 未修改；本独立分支的严格 sibling 修复已取得下述真实 pending 清单。下一步缩掉开头加载画面，末帧不得跨 2.133 s 缺口；该 run d06 control 实为 trace-finish，不能证明后态。 |
 | `K04-a08-d06-panel`，K04-a08-panel `8.133–239.967` | 独立 d06 冷载 `native:3` / 4，日期 `53146368`，真 control SHA `5469D9F7F066B805581038E8D9735CF51C3616823E5CAAFEF390059E73983C19`。 | raw SHA `44EC9EE794658C13B6CBAE5B13D9A0105CC0C4DB04F7918D51FEDB4DA43C15D9`；`0→8.133` 缺帧 `8.133 s`，整 raw PTS 审计仍 `RED_PRESERVED`。 | 可仅对断档后的实际连续子段推进 pending 清单与精确帧审阅；完整 raw 仍应 1× 观看。d05→d06 是两次会话，需明示冷载切口。V3 当前 CharacterID/团数值查询 RED，画面不能替该数值来源。 |
 
-这里的“可进 pending 清单”对前六窗只评估现有来源路径及外层结构，**没有对它们运行 `prepare` 或证实逐字节复核通过**。在 #451 原 HEAD 上，7 窗中 6 窗具备下一步机器清单的静态候选条件；K04-a07 在本独立分支完成修复后实际取得下述 pending 清单。七窗全部仍缺原速全 raw 与精确首末帧审阅、无覆盖/来源标签证据、每段 PTS gap 的正式复算、人工回执及独立 CK3 adapter `report`/timeline/evidence index。没有正式 `package` 或可入片秒数。
+这里的“可进 pending 清单”在首次静审时只评估了现有来源路径及外层结构；随后本分支对七窗全部运行新目录 `prepare`，取得下述七份真实 pending 清单。K04-a07 需要本独立分支的 sibling 截图修复。七窗全部仍缺原速全 raw 与精确首末帧审阅、无覆盖/来源标签证据、每段 PTS gap 的正式复算、人工回执及独立 CK3 adapter `report`/timeline/evidence index。没有正式 `package` 或可入片秒数；后续审阅顺序见 [`seven-window-human-review-plan-20260930.md`](seven-window-human-review-plan-20260930.md)。
 
 ## 独立修复候选的精确边界
 
