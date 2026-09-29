@@ -1,7 +1,7 @@
 # Feast ordinary guest: host relationship value input (CK3 1.19.0.6)
 
-Status: **source-only core and transport, not routed into the bridge build or
-command dispatcher; no paused result or invited guest yet**.
+Status: **source-only private command routed behind a default-OFF native build
+option; no paused result or invited guest yet**.
 This narrow input supports value comparison for a native-filtered ordinary
 guest. It does not infer which authored invite rule contains that guest, nor
 prove that the rule is active, an invitation is legal, accepted, or attended.
@@ -33,16 +33,24 @@ revision, date, and the signed integer opinion. Failure stays typed
 observed value. The transport accepts requested IDs from the caller and contains
 no Robert/H3928 constant.
 
-The native core fixture and transport object compile with MSVC `/W4 /WX`
-Release; the focused Python parser tests pass 3/3 in normal and optimized
-mode. These checks do not show that the command can be called from a running
-bridge. The remaining source step is to register the default-OFF build option,
-compile the existing gift opinion receiver when otherwise absent, grant a new
-main-thread mailbox executor slot, and add the bridge command dispatch and
-typed private response. That shared-file work is deferred until the separate
-per-rule provenance writer releases `bridge.cpp`, `CMakeLists.txt`, and the
-mailbox files. Then rerun the affected MSVC fixture/build and no-launch checks
-against the new exact source before any paused live query.
+The private build option
+`XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1` is OFF by default.
+When enabled, CMake includes the existing gift-opinion receiver if another
+private consumer has not already included it, and builds the opinion core and
+transport. The bridge validates the requested full CharacterID against the
+same paused snapshot, submits a mailbox query through dedicated executor slot
+67, checks the post-query snapshot, and returns a typed private read-only
+response. The Python consumer still requires its own explicit opt-in. A
+successful build or command ACK cannot establish the opinion value: a fresh
+paused native read and its independent frame check are still required before
+using it for guest selection.
+
+The routed source compiles and links as a full MSVC 19.51 x64 Debug and
+Release bridge DLL with this option ON. The core fixture passes in both
+configurations (1/1 each); the main-thread mailbox fixture passes in Debug
+(1/1) with the frozen executable supplied as a read-only source input. The
+focused Python parser passes in normal and optimized mode (3/3 each). These
+are source and fixture checks, with no CK3 launch or paused native read.
 
 `query-campaign-root-context-v1` independently publishes the live player's
 `direct_landed_vassal_character_ids` and related context/title tier. Its
