@@ -35,6 +35,9 @@
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1)
 #include "activity_feast_guest_rule_toggle_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+#include "xar_bridge/activity_feast_guest_rule_provenance_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
 #include "activity_feast_stage5_start_private_transport_v1.hpp"
 #endif
@@ -326,6 +329,10 @@ static xar::ck3_11906::MainThreadQueryMailboxV1
 static xar::bridge::ActivityCostSlot12ObserverV1
     g_activity_cost_slot12_observer_v1{};
 static xar::ck3_11906::Bindings g_activity_cost_slot12_bindings_v1{};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+static xar::bridge::ActivityGuestRuleProvenanceObserverV1
+    g_activity_guest_rule_provenance_observer_v1{};
+#endif
 
 bool ReadActivityCostSlot12MemoryV1(void *, std::uintptr_t address,
                                     void *output, std::size_t bytes) noexcept {
@@ -10518,6 +10525,9 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::kActivityFeastGuestRuleReadPrivateStepV1
                    && step != xar::ck3_11906::kActivityFeastGuestRuleActivatePrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+                   && step != xar::ck3_11906::kActivityFeastGuestRuleProvenancePrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityFeastStage5InputsPrivateStepV1
                    && step != xar::ck3_11906::kActivityFeastStage5StartPrivateStepV1
@@ -11596,9 +11606,18 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1)
           if (step == xar::ck3_11906::kActivityFeastGuestRuleReadPrivateStepV1 ||
-              step == xar::ck3_11906::kActivityFeastGuestRuleActivatePrivateStepV1) {
+              step == xar::ck3_11906::kActivityFeastGuestRuleActivatePrivateStepV1
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+              || step == xar::ck3_11906::kActivityFeastGuestRuleProvenancePrivateStepV1
+#endif
+              ) {
             const bool activate =
                 step == xar::ck3_11906::kActivityFeastGuestRuleActivatePrivateStepV1;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+            const bool provenance =
+                step == xar::ck3_11906::kActivityFeastGuestRuleProvenancePrivateStepV1;
+            std::uint64_t candidate_id = 0;
+#endif
             std::uint64_t expected_revision = 0, expected_date_raw = 0;
             std::uint64_t expected_actor_id = 0, expected_stage = 0;
             std::string expected_activity_key, authored_rule_key;
@@ -11624,6 +11643,12 @@ void RunConnectedSession(
                 authored_rule_key.find_first_not_of(
                     "abcdefghijklmnopqrstuvwxyz0123456789_") !=
                     std::string::npos ||
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+                (provenance &&
+                 (!xar::bridge::JsonUnsignedField(
+                      incoming.payload, "candidate_character_id", candidate_id) ||
+                  candidate_id == 0 || candidate_id > UINT32_MAX)) ||
+#endif
                 (activate &&
                  (!xar::bridge::JsonBooleanField(
                       incoming.payload, "policy_approved", policy_approved) ||
@@ -11654,6 +11679,15 @@ void RunConnectedSession(
               query.authored_rule_key = authored_rule_key;
               query.activate = activate;
               query.policy_approved = policy_approved;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+              query.query_provenance = provenance;
+              if (provenance) {
+                query.provenance_observer =
+                    &g_activity_guest_rule_provenance_observer_v1;
+                query.candidate_character_id =
+                    static_cast<std::uint32_t>(candidate_id);
+              }
+#endif
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActivityFeastGuestRulePrivateV1,
@@ -11678,10 +11712,19 @@ void RunConnectedSession(
                                 completed &&
                     query.completed && !query.frame_changed &&
                     xar::game::ReadSnapshot(game, after) && after == current;
-                const auto native =
-                    stable ? xar::ck3_11906::
-                                 SerializeActivityFeastGuestRulePrivateV1(query)
-                           : std::string{};
+                std::string native;
+                if (stable) {
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+                  native = provenance
+                      ? xar::ck3_11906::
+                            SerializeActivityFeastGuestRuleProvenancePrivateV1(query)
+                      : xar::ck3_11906::
+                            SerializeActivityFeastGuestRulePrivateV1(query);
+#else
+                  native = xar::ck3_11906::
+                      SerializeActivityFeastGuestRulePrivateV1(query);
+#endif
+                }
                 std::string response;
                 if (!native.empty()) {
                   const auto status = query.rule.status;
@@ -11692,6 +11735,13 @@ void RunConnectedSession(
                     outcome = "already_active";
                   else if (status == xar::bridge::ActivityFeastGuestRuleStatusV1::observed_inactive)
                     outcome = "available";
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+                  if (provenance) {
+                    outcome = query.provenance.status ==
+                                  xar::bridge::ActivityGuestRuleProvenanceStatusV1::observed
+                                  ? "available" : "unavailable";
+                  }
+#endif
                   response =
                       "{\"type\":\"command_result\",\"protocol_version\":1,"
                       "\"request_id\":";
@@ -11702,8 +11752,16 @@ void RunConnectedSession(
                       std::string(outcome) +
                       "\",\"private_build\":true,\"read_only\":" +
                       std::string(activate ? "false" : "true") +
-                      ",\"advertised\":false,\"activity_feast_guest_rule\":" +
-                      native + ",\"backend_id\":\"native-headless\"}}";
+                      ",\"advertised\":false,\"" +
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+                      std::string(provenance
+                          ? "activity_feast_guest_rule_provenance"
+                          : "activity_feast_guest_rule") +
+#else
+                      std::string("activity_feast_guest_rule") +
+#endif
+                      "\":" + native +
+                      ",\"backend_id\":\"native-headless\"}}";
                 } else {
                   response = CommandResultFrame(
                       request_id, step, false,
@@ -21332,6 +21390,12 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (!xar::bridge::InstallActivityCostSlot12PassiveV1(
           g_activity_cost_slot12_observer_v1, cost_environment))
     return FALSE;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+  if (!xar::bridge::InstallActivityGuestRuleProvenanceV1(
+          g_activity_guest_rule_provenance_observer_v1,
+          cost_environment))
+    return FALSE;
+#endif
 #endif
   xar::ck3_11906::TacticalDailySentinelInstallEnvironmentV1
       tactical_sentinel_environment{};
