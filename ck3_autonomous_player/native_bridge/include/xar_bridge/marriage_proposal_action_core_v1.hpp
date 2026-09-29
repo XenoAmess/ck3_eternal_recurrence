@@ -109,6 +109,9 @@ struct MarriageProposalSubmissionV1 {
   // Private player-child path only: preserve the exact selected lineality
   // option when the native send command copies this interaction context.
   bool request_matrilineal_option = false;
+  // Specified-child default route requires the native default to remain off
+  // in both the finalized context and the copied send command.
+  bool require_matrilineal_option_off = false;
 
   friend bool operator==(const MarriageProposalSubmissionV1 &,
                          const MarriageProposalSubmissionV1 &) = default;

@@ -188,6 +188,8 @@ bool ValidDirectSubmission(const MarriageProposalSubmissionV1 &submission) {
       submission.recipient_answer_status_raw <= 1;
   return submission.subject_character_id != 0 &&
       submission.candidate_character_id != 0 &&
+      !(submission.request_matrilineal_option &&
+        submission.require_matrilineal_option_off) &&
       (!submission.request_matrilineal_option ||
        (submission.rankless_observed_heir &&
         submission.recipient_ai_accept_raw > 0)) &&
@@ -640,7 +642,8 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
     return fail(MarriageProposalNativeBinderFailureV1::context_roles_mismatch);
   }
   std::uint32_t selected_option_id = 0;
-  if (submission.request_matrilineal_option) {
+  if (submission.request_matrilineal_option ||
+      submission.require_matrilineal_option_off) {
     bool binding_ready = env.matrilineal_option_id_slot != 0 &&
         env.read_boolean_option != nullptr &&
         env.set_boolean_option != nullptr;
@@ -674,9 +677,11 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
       return fail(MarriageProposalNativeBinderFailureV1::
                       selected_option_unavailable);
     }
-    if (!env.read_boolean_option(native_context, selected_option_id))
+    if (submission.request_matrilineal_option &&
+        !env.read_boolean_option(native_context, selected_option_id))
       env.set_boolean_option(native_context, selected_option_id, true);
-    if (!env.read_boolean_option(native_context, selected_option_id)) {
+    if (env.read_boolean_option(native_context, selected_option_id) !=
+        submission.request_matrilineal_option) {
       destroy_context();
       SetFailure(binder,
                  MarriageProposalNativeBinderFailureV1::
@@ -738,11 +743,12 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
       command_context_constructed = false;
     }
   };
-  if (submission.request_matrilineal_option &&
-      !env.read_boolean_option(
+  if ((submission.request_matrilineal_option ||
+       submission.require_matrilineal_option_off) &&
+      env.read_boolean_option(
           command_storage.bytes.data() +
               kMarriageSendInteractionContextOffsetV1,
-          selected_option_id)) {
+          selected_option_id) != submission.request_matrilineal_option) {
     destroy_command_context();
     destroy_context();
     SetFailure(binder,

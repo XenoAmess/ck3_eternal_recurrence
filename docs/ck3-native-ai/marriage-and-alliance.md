@@ -1151,3 +1151,42 @@ flowchart TD
   classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
   class F unknown;
 ```
+# R0383 specified-child default option, source action boundary (2026-09-30)
+
+The pinned CK3 executable remains 1.19.0.6, SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The stock five-role `arrange_marriage_interaction` and exact-build context
+constructor/validator are the same native path described above. The default
+option is a context state: it is not implied by the player's own marriage
+permission or the primary heir action. A specified child needs the native
+`is_child_of` result, its own complete Can Send/final recipient answer, and
+the selected context's lineality readback.
+
+R0383 used the official paired Robert H3911 paused frame, actor `29829`, child
+Guy `38988`, and the county `2173` partition read. The [immutable report](Z:/ck3_mod_rewrite_process_assets/nw-family-guy-h3911-20260930-c2/live-R0383/report.json)
+has SHA-256 `312DAD47C94A6641D352FCB05026BAC10D37C97F25A8C37F6A01F64E45379D76`.
+The child predicate was true; Guy had no spouse or betrothal, and the native
+query returned 146 final-legal rows. One selected row paired Guy, age measure
+13, with candidate `39380`, age measure 10, recipient `30549`: complete Can
+Send true, acceptance raw `900000`, final answer `0`, default option false,
+effective matrilineal false, predicted betrothal, ten immediate cost terms
+zero. Its possible alliance pair did not qualify for a creation attempt. This
+was read-only; no proposal, new date, or material marriage was observed.
+
+The existing native binder already sends a default context when
+`request_matrilineal_option=false`. The prior specified-child proof cache and
+typed submit only admitted selected true. The new private default step retains
+the exact child and final-legal row, independently rebuilds and validates the
+default context on application main, and requires the option to remain false
+in both the finalized context and copied send command. ACK is a pending
+receipt. A later paused revision or cold new-PID query must read bilateral
+relationship and outbound pending status; relation absence cannot authorize a
+second proposal. It remains private and unadvertised pending source and game
+verification.
+
+The R0383 row is **policy hold**. Guy's age difference is 3, beyond the
+existing conservative betrothal difference 2; candidate `39380` is six age
+units from adulthood. The county partition already assigns `2173` to Guy, so
+this betrothal does not prevent that split. Long marriage obligation and
+relative value versus other legal rows remain unpriced. Native legality and
+acceptance do not constitute positive formal strategy value.

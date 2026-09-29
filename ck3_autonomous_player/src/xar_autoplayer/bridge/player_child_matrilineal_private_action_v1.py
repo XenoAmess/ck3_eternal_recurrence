@@ -12,6 +12,10 @@ SUBMIT_STEP = "submit-player-child-matrilineal-marriage-v1-private"
 RESULT_STEP = "query-player-child-matrilineal-marriage-result-v1-private"
 ALLIANCE_RESULT_STEP = "query-player-child-matrilineal-alliance-result-v1-private"
 SCHEMA = "xar.ck3.player-child-matrilineal-private-action.v1"
+DEFAULT_SUBMIT_STEP = "submit-player-child-default-marriage-v1-private"
+DEFAULT_RESULT_STEP = "query-player-child-default-marriage-result-v1-private"
+DEFAULT_ALLIANCE_RESULT_STEP = "query-player-child-default-alliance-result-v1-private"
+DEFAULT_SCHEMA = "xar.ck3.player-child-default-private-action.v1"
 
 
 def _positive(value: object) -> bool:
@@ -54,10 +58,16 @@ def _command(driver: object, step: str, payload: dict[str, object],
 def submit_player_child_matrilineal_private_v1(
     driver: object, *, legality: dict[str, object], value: dict[str, object],
     timeout_seconds: float = 360.0,
+    default_route: bool = False,
 ) -> dict[str, object]:
     """Queue one same-frame native five-role proposal; ACK is only pending."""
-    if getattr(driver, "allow_private_player_child_matrilineal_action", False) is not True:
+    if type(default_route) is not bool:
+        raise ValueError("default_route must be bool")
+    permission = ("allow_private_player_child_default_action" if default_route else
+                  "allow_private_player_child_matrilineal_action")
+    if getattr(driver, permission, False) is not True:
         raise UnsupportedStepError("private player-child proposal disabled")
+    selected_option = not default_route
     before = _paused(driver)
     revision = before["native_revision"]
     played_id = before["played_character"]["character_id"]
@@ -84,17 +94,17 @@ def submit_player_child_matrilineal_private_v1(
             or value.get("legality_query_sequence") != legality["query_sequence"]
             or value.get("played_character_id") != played_id
             or value.get("subject_character_id") != subject_id
-            or value.get("request_matrilineal_option") is not True
+            or value.get("request_matrilineal_option") is not selected_option
             or not isinstance(row, dict)
             or row.get("actor_character_id") != played_id
             or row.get("heir_character_id") != subject_id
             or row.get("candidate_character_id") != candidate_id
             or row.get("recipient_character_id") !=
                 matches[0].get("recipient_matchmaker_character_id")
-            or row.get("requested_matrilineal_option") is not True
-            or row.get("selected_option_readback") is not True
-            or row.get("matrilineal_option_selected") is not True
-            or row.get("effective_matrilineal_if_accepted") is not True
+            or row.get("requested_matrilineal_option") is not selected_option
+            or (selected_option and row.get("selected_option_readback") is not True)
+            or row.get("matrilineal_option_selected") is not selected_option
+            or row.get("effective_matrilineal_if_accepted") is not selected_option
             or row.get("final_legality_sampled") is not True
             or row.get("complete_can_send") is not True
             or row.get("recipient_answer_status_raw") not in {0, 1}
@@ -102,7 +112,7 @@ def submit_player_child_matrilineal_private_v1(
             or row["recipient_ai_accept_raw"] <= 0):
         raise BridgeUnavailableError("child proposal lacks selected native final proof")
     _require_same_paused_frame(_paused(driver), before, revision, played_id)
-    result = _command(driver, SUBMIT_STEP, {
+    result = _command(driver, DEFAULT_SUBMIT_STEP if default_route else SUBMIT_STEP, {
         "expected_revision": revision,
         "legality_query_sequence": legality["query_sequence"],
         "subject_character_id": subject_id,
@@ -116,30 +126,37 @@ def submit_player_child_matrilineal_private_v1(
             or result.get("candidate_character_id") != candidate_id
             or result.get("recipient_character_id") !=
                 matches[0]["recipient_matchmaker_character_id"]
-            or result.get("matrilineal_option_selected") is not True):
+            or result.get("matrilineal_option_selected") is not selected_option):
         raise BridgeUnavailableError("child proposal ACK identity changed; state unknown")
-    return {"schema": SCHEMA, "schema_version": 1,
+    return {"schema": DEFAULT_SCHEMA if default_route else SCHEMA, "schema_version": 1,
             "exact_ck3_build": "1.19.0.6", "advertised": False, **result}
 
 
 def query_player_child_matrilineal_result_private_v1(
     driver: object, *, pending: dict[str, object], cold: bool = False,
     timeout_seconds: float = 360.0,
+    default_route: bool = False,
 ) -> dict[str, object]:
     """Read actual bilateral state on a later frame or after a new PID."""
-    if getattr(driver, "allow_private_player_child_matrilineal_action", False) is not True:
+    if type(default_route) is not bool:
+        raise ValueError("default_route must be bool")
+    permission = ("allow_private_player_child_default_action" if default_route else
+                  "allow_private_player_child_matrilineal_action")
+    if getattr(driver, permission, False) is not True:
         raise UnsupportedStepError("private player-child proposal disabled")
     before = _paused(driver)
+    selected_option = not default_route
+    schema = DEFAULT_SCHEMA if default_route else SCHEMA
     revision = before["native_revision"]
     played_id = before["played_character"]["character_id"]
     subject_id = pending.get("heir_character_id")
     candidate_id = pending.get("candidate_character_id")
     recipient_id = pending.get("recipient_character_id")
     pre = pending.get("pre_native_revision")
-    if (pending.get("schema") != SCHEMA
+    if (pending.get("schema") != schema
             or pending.get("status") != "receipt_pending"
             or pending.get("played_character_id") != played_id
-            or pending.get("matrilineal_option_selected") is not True
+            or pending.get("matrilineal_option_selected") is not selected_option
             or not all(_positive(v) for v in (subject_id, candidate_id, recipient_id))
             or not _positive(pre)
             or (not cold and revision <= pre)
@@ -157,8 +174,9 @@ def query_player_child_matrilineal_result_private_v1(
                         "candidate_character_id": candidate_id,
                         "recipient_character_id": recipient_id,
                         "source_date_raw": pending["source_date_raw"],
-                        "matrilineal_option_selected": True})
-    result = _command(driver, RESULT_STEP, payload, timeout_seconds)
+                        "matrilineal_option_selected": selected_option})
+    result = _command(driver, DEFAULT_RESULT_STEP if default_route else RESULT_STEP,
+                      payload, timeout_seconds)
     outbound = result.get("outbound_pending_state")
     if cold and (outbound not in {"active", "absent", "ambiguous", "unavailable"}
                  if result.get("status") == "pending"
@@ -180,9 +198,9 @@ def query_player_child_matrilineal_result_private_v1(
             or result.get("heir_character_id") != subject_id
             or result.get("candidate_character_id") != candidate_id
             or result.get("recipient_character_id") != recipient_id
-            or result.get("matrilineal_option_selected") is not True):
+            or result.get("matrilineal_option_selected") is not selected_option):
         raise BridgeUnavailableError("child proposal result identity changed")
-    return {"schema": SCHEMA, "schema_version": 1,
+    return {"schema": schema, "schema_version": 1,
             "exact_ck3_build": "1.19.0.6", "advertised": False,
             "cold_absent_relation_unresolved": cold and result["status"] == "pending",
             **result}
@@ -191,9 +209,16 @@ def query_player_child_matrilineal_result_private_v1(
 def query_player_child_matrilineal_alliance_private_v1(
     driver: object, *, resolved: dict[str, object],
     timeout_seconds: float = 360.0,
+    default_route: bool = False,
 ) -> dict[str, object]:
     """Read actual bilateral player/recipient alliance after a material pair."""
+    if type(default_route) is not bool:
+        raise ValueError("default_route must be bool")
+    if default_route and getattr(driver, "allow_private_player_child_default_action", False) is not True:
+        raise UnsupportedStepError("private player-child default alliance read disabled")
     before = _paused(driver)
+    selected_option = not default_route
+    schema = DEFAULT_SCHEMA if default_route else SCHEMA
     pending = resolved.get("source_pending")
     if not isinstance(pending, dict):
         raise BridgeUnavailableError("child alliance lacks a durable proposal pair")
@@ -203,14 +228,15 @@ def query_player_child_matrilineal_alliance_private_v1(
     candidate = pending.get("candidate_character_id")
     if (resolved.get("status") not in {"marriage", "betrothal"}
             or resolved.get("material_result") is not True
-            or pending.get("schema") != SCHEMA
-            or pending.get("matrilineal_option_selected") is not True
+            or pending.get("schema") != schema
+            or pending.get("matrilineal_option_selected") is not selected_option
             or actor != before["played_character"]["character_id"]
             or not all(_positive(v) for v in (actor, recipient, subject, candidate))
             or resolved.get("heir_character_id") != subject
             or resolved.get("candidate_character_id") != candidate):
         raise BridgeUnavailableError("child alliance pair does not match material result")
-    result = _command(driver, ALLIANCE_RESULT_STEP, {
+    result = _command(driver, DEFAULT_ALLIANCE_RESULT_STEP
+                      if default_route else ALLIANCE_RESULT_STEP, {
         "expected_revision": before["native_revision"],
         "played_character_id": actor,
         "recipient_character_id": recipient,
@@ -235,5 +261,7 @@ def query_player_child_matrilineal_alliance_private_v1(
         raise BridgeUnavailableError("child alliance bilateral result malformed")
     _require_same_paused_frame(_paused(driver), before,
                                before["native_revision"], actor)
-    return {"schema": "xar.ck3.player-child-matrilineal-alliance-result.v1",
+    return {"schema": ("xar.ck3.player-child-default-alliance-result.v1"
+                       if default_route else
+                       "xar.ck3.player-child-matrilineal-alliance-result.v1"),
             "schema_version": 1, "exact_ck3_build": "1.19.0.6", **result}

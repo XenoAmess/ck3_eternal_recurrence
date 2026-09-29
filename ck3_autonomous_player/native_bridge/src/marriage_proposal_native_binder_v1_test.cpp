@@ -65,6 +65,8 @@ struct Harness {
   std::uint32_t matrilineal_option_id = 42;
   bool matrilineal_selectable = true;
   bool strip_matrilineal_on_command_copy = false;
+  bool default_matrilineal_on = false;
+  bool enable_matrilineal_on_command_copy = false;
   int matrilineal_set_calls = 0;
 
   Harness() {
@@ -182,6 +184,9 @@ void *ConstructContext(void *context, void *, std::int32_t actor,
                secondary_recipient);
   WriteAddress(context, bridge::kMarriageContextIntermediaryIdOffsetV1,
                intermediary);
+  *(static_cast<std::uint8_t *>(context) +
+    bridge::kMarriageInteractionContextSizeV1 - 1) =
+      g_harness->default_matrilineal_on ? 1 : 0;
   return context;
 }
 
@@ -228,6 +233,10 @@ void *ConstructCommand(void *command, const void *context) {
     *(static_cast<std::uint8_t *>(command) +
       bridge::kMarriageSendInteractionContextOffsetV1 +
       bridge::kMarriageInteractionContextSizeV1 - 1) = 0;
+  if (g_harness->enable_matrilineal_on_command_copy)
+    *(static_cast<std::uint8_t *>(command) +
+      bridge::kMarriageSendInteractionContextOffsetV1 +
+      bridge::kMarriageInteractionContextSizeV1 - 1) = 1;
   return command;
 }
 
@@ -485,6 +494,46 @@ void TestSelectedChildLinealityRecheckedInCommand() {
   assert(stripped.submit_calls == 0);
 }
 
+void TestDefaultChildLinealityRecheckedInCommand() {
+  auto make_submission = [] {
+    auto submission = Submission();
+    submission.rankless_observed_heir = true;
+    submission.native_rank = 0;
+    submission.predicted_outcome =
+        bridge::MarriagePredictedOutcomeV1::unavailable;
+    submission.roles.actor_character_id = kPlayedId;
+    submission.recipient_ai_accept_raw = 100000;
+    submission.recipient_answer_status_raw = 1;
+    submission.require_matrilineal_option_off = true;
+    return submission;
+  };
+  Harness ordinary{};
+  bridge::MarriageProposalNativeBinderStateV1 ordinary_state{};
+  InitializeState(ordinary, ordinary_state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(
+             &ordinary_state, make_submission()) ==
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(ordinary.matrilineal_set_calls == 0 && ordinary.submit_calls == 1);
+
+  Harness changed_default{};
+  changed_default.default_matrilineal_on = true;
+  bridge::MarriageProposalNativeBinderStateV1 changed_state{};
+  InitializeState(changed_default, changed_state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(
+             &changed_state, make_submission()) ==
+         bridge::MarriageProposalNativeSubmitResultV1::rejected);
+  assert(changed_default.submit_calls == 0);
+
+  Harness changed_copy{};
+  changed_copy.enable_matrilineal_on_command_copy = true;
+  bridge::MarriageProposalNativeBinderStateV1 copy_state{};
+  InitializeState(changed_copy, copy_state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(
+             &copy_state, make_submission()) ==
+         bridge::MarriageProposalNativeSubmitResultV1::rejected);
+  assert(changed_copy.submit_calls == 0);
+}
+
 void TestBilateralReadbackAndExplicitBlockers() {
   Harness harness{};
   bridge::MarriageProposalNativeBinderStateV1 state{};
@@ -590,6 +639,7 @@ int main() {
   TestSingleSubmitAndNativeFinalValidation();
   TestRanklessObservedHeirNativeAnswer();
   TestSelectedChildLinealityRecheckedInCommand();
+  TestDefaultChildLinealityRecheckedInCommand();
   TestBilateralReadbackAndExplicitBlockers();
   TestVersionAndCommandIdentityFailClosed();
   TestProductionSignatureDriftFailClosed();
