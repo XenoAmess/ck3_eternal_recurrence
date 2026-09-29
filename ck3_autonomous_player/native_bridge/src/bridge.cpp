@@ -29,6 +29,9 @@
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
 #include "activity_stage5_feast_full_cost_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+#include "activity_feast_stage5_start_private_transport_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
 #include "xar_bridge/activity_cost_slot12_passive_v1.hpp"
 #endif
@@ -9438,6 +9441,10 @@ public:
     environment.permitted_executor_trisexagintary =
         &xar::ck3_11906::ExecuteActivityStage2DestinationSelectPrivateV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+    environment.permitted_executor_quattuorsexagintary =
+        &xar::ck3_11906::ExecuteActivityFeastStage5PrivateV1;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
     environment.permitted_executor_octoquinquagintary =
         &xar::ck3_11906::ExecuteActiveSchemeSwayFormalPrivateCommandV1;
@@ -10489,6 +10496,11 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kActivityStage5FeastFullCostPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+                   && step != xar::ck3_11906::kActivityFeastStage5InputsPrivateStepV1
+                   && step != xar::ck3_11906::kActivityFeastStage5StartPrivateStepV1
+                   && step != xar::ck3_11906::kActivityFeastHostedPostPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
                    && step != "query-activity-cost-slot12-raw-v1-private"
 #endif
@@ -11443,6 +11455,184 @@ void RunConnectedSession(
                                      MainThreadQueryReclaimResultV1::reclaimed) {
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity stage-5 feast cost reclaim red");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+          if (step == xar::ck3_11906::kActivityFeastStage5InputsPrivateStepV1 ||
+              step == xar::ck3_11906::kActivityFeastStage5StartPrivateStepV1 ||
+              step == xar::ck3_11906::kActivityFeastHostedPostPrivateStepV1) {
+            const bool start =
+                step == xar::ck3_11906::kActivityFeastStage5StartPrivateStepV1;
+            const bool post =
+                step == xar::ck3_11906::kActivityFeastHostedPostPrivateStepV1;
+            std::uint64_t expected_revision = 0, expected_date = 0;
+            std::uint64_t expected_actor = 0, expected_stage = 0;
+            std::string activity_key, option_key;
+            bool policy_positive = false, previous_pending = false;
+            std::array<std::uint64_t, 4> reserve{};
+            xar::game::Snapshot current{};
+            bool valid =
+                xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
+                    incoming.payload, expected_revision) &&
+                xar::bridge::JsonUnsignedField(incoming.payload,
+                                               "expected_date_raw", expected_date) &&
+                xar::bridge::JsonUnsignedField(incoming.payload,
+                                               "expected_actor_character_id", expected_actor) &&
+                expected_revision != 0 && expected_revision == state_revision &&
+                previous_snapshot.has_value() &&
+                xar::game::ReadSnapshot(game, current) &&
+                current == *previous_snapshot && current.paused &&
+                current.map_ready && current.has_played_character &&
+                current.played_character_alive && current.played_character_id > 0 &&
+                expected_actor == static_cast<std::uint64_t>(
+                    current.played_character_id) &&
+                expected_date == static_cast<std::uint64_t>(current.date_raw);
+            if (!post)
+              valid = valid &&
+                  xar::bridge::JsonUnsignedField(
+                      incoming.payload, "expected_planning_stage", expected_stage) &&
+                  xar::bridge::JsonStringField(
+                      incoming.payload, "expected_activity_key", activity_key, 96) &&
+                  xar::bridge::JsonStringField(
+                      incoming.payload, "expected_option_key", option_key, 96) &&
+                  expected_stage == 5 && activity_key == "activity_feast" &&
+                  option_key == "feast_type_generic";
+            if (start) {
+              constexpr std::array<std::string_view, 4> keys{
+                  "reserve_gold_raw", "reserve_treasury_raw",
+                  "reserve_piety_raw", "reserve_barter_goods_raw"};
+              valid = valid &&
+                  xar::bridge::JsonBooleanField(incoming.payload,
+                                                "policy_positive", policy_positive) &&
+                  xar::bridge::JsonBooleanField(incoming.payload,
+                                                "previous_submit_pending", previous_pending);
+              for (std::size_t index = 0; index < keys.size(); ++index)
+                valid = valid && xar::bridge::JsonUnsignedField(
+                    incoming.payload, keys[index], reserve[index]) &&
+                    reserve[index] <= static_cast<std::uint64_t>(
+                        (std::numeric_limits<std::int64_t>::max)());
+            }
+            if (!valid) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "activity feast Stage-5 frame or request invalid"));
+            } else {
+              xar::ck3_11906::ActivityFeastStage5PrivateQueryV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.expected_snapshot = current;
+              query.expected_revision = expected_revision;
+              query.passive_cost = &g_activity_cost_slot12_observer_v1;
+              query.mode = post
+                  ? xar::ck3_11906::ActivityFeastStage5PrivateModeV1::hosted_post
+                  : start
+                      ? xar::ck3_11906::ActivityFeastStage5PrivateModeV1::start_attempt
+                      : xar::ck3_11906::ActivityFeastStage5PrivateModeV1::start_inputs;
+              query.policy_positive = policy_positive;
+              query.previous_submit_pending = previous_pending;
+              for (std::size_t index = 0; index < reserve.size(); ++index)
+                query.reserve_raw[index] = static_cast<std::int64_t>(reserve[index]);
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteActivityFeastStage5PrivateV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                        "activity feast Stage-5 executor unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                while (wait == xar::ck3_11906::
+                    MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                xar::game::Snapshot after{};
+                const bool stable =
+                    wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+                    query.completed && !query.frame_changed &&
+                    (query.start.invoked ||
+                     (xar::game::ReadSnapshot(game, after) && after == current));
+                const auto native = stable
+                    ? xar::ck3_11906::SerializeActivityFeastStage5PrivateV1(query)
+                    : std::string{};
+                std::string response;
+                if (!native.empty() && (query.failure.empty() || start)) {
+                  response =
+                      "{\"type\":\"command_result\",\"protocol_version\":1,"
+                      "\"request_id\":";
+                  AppendJsonString(response, request_id);
+                  const bool pending = start &&
+                      query.start.status == xar::bridge::
+                          ActivityFeastStage5StartStatusV1::submitted_pending;
+                  response += ",\"ok\":";
+                  response += start ? (pending ? "true" : "false") : "true";
+                  response += ",\"result\":{\"step\":";
+                  AppendJsonString(response, step);
+                  response += ",\"accepted\":";
+                  response += start ? (query.start.invoked ? "true" : "false")
+                                    : "true";
+                  response += ",\"status\":\"";
+                  response += start ? (pending ? "pending" : "red") : "available";
+                  response += "\",\"private_build\":true,\"read_only\":";
+                  response += start ? "false" : "true";
+                  response += ",\"advertised\":false,\"";
+                  response += post ? "activity_feast_hosted_post"
+                                   : start ? "activity_feast_stage5_start"
+                                           : "activity_feast_stage5_start_inputs";
+                  response += "\":";
+                  if (start) {
+                    response += "{\"schema\":\"activity-feast-stage5-start-private-action-v1\","
+                                "\"submitted\":";
+                    response += query.start.invoked ? "true" : "false";
+                    response += ",\"native_status\":\"";
+                    response += pending
+                        ? "submitted_pending"
+                        : query.start.invoked ? "submission_outcome_unknown"
+                                              : "rejected";
+                    response += "\",\"failure\":";
+                    AppendJsonString(response, query.failure);
+                    response += ",\"precondition\":" + native + "}";
+                  } else {
+                    response += native;
+                  }
+                  response += ",\"backend_id\":\"native-headless\"}}";
+                } else {
+                  response = CommandResultFrame(request_id, step, false,
+                      query.failure.empty()
+                          ? "activity feast Stage-5 paused read unavailable"
+                          : query.failure);
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                    MainThreadQueryReclaimResultV1::reclaimed) {
+                  if (start && query.start.invoked && !native.empty()) {
+                    response =
+                        "{\"type\":\"command_result\",\"protocol_version\":1,"
+                        "\"request_id\":";
+                    AppendJsonString(response, request_id);
+                    response += ",\"ok\":false,\"result\":{\"step\":";
+                    AppendJsonString(response, step);
+                    response +=
+                        ",\"accepted\":true,\"status\":\"red\","
+                        "\"private_build\":true,\"read_only\":false,"
+                        "\"advertised\":false,\"transport_failure\":\"reclaim_red\","
+                        "\"activity_feast_stage5_start\":{"
+                        "\"schema\":\"activity-feast-stage5-start-private-action-v1\","
+                        "\"submitted\":true,"
+                        "\"native_status\":\"submission_outcome_unknown\","
+                        "\"precondition\":" + native +
+                        "},\"backend_id\":\"native-headless\"}}";
+                  } else {
+                    response = CommandResultFrame(request_id, step, false,
+                        "activity feast Stage-5 mailbox reclaim red");
+                  }
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
