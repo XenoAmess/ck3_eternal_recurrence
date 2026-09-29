@@ -590,3 +590,12 @@ not establish that the registry contains a legal feast for this actor, that
 event delivery opens the widget, or that the cost and final validator are
 fresh. The private probe needs its own paired live postcondition before any
 activity capability is promoted.
+
+## R0350 stage-1 correction
+
+The R0350 feast event opened a visible stage-1 planner while the private opener
+still required stage 2. The exact original stage path, the missing selected-type
+readback, and the next category gate are recorded in
+[activity-planning-stage1-feast-r0350-1.19.0.6.md](activity-planning-stage1-feast-r0350-1.19.0.6.md).
+Stage 1 is an original category-selection screen; configured cost and final
+`can_start` remain unknown.
