@@ -2,7 +2,9 @@
 
 #include <windows.h>
 
+#include <charconv>
 #include <cstring>
+#include <limits>
 
 namespace xar::ck3_11906 {
 namespace {
@@ -11,6 +13,7 @@ struct CaptureContext {
   ActivityStage1OptionReadPrivateQueryV1 *query = nullptr;
   std::uintptr_t module_base = 0;
   DWORD owner_thread_id = 0;
+  std::uintptr_t game_state = 0;
 };
 
 bool ReadMemory(void *, std::uintptr_t address, void *output,
@@ -171,6 +174,50 @@ bool CanProgress(void *opaque, std::uintptr_t planner, bool &output) noexcept {
   }
 }
 
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1)
+bool ResolveActivityProvince(void *opaque, std::int32_t id,
+                             std::uintptr_t &output) noexcept {
+  auto &context = *static_cast<CaptureContext *>(opaque);
+  output = 0;
+  if (GetCurrentThreadId() != context.owner_thread_id ||
+      context.game_state == 0 || id < 1)
+    return false;
+  std::uintptr_t game_data = 0, provinces = 0, province = 0;
+  std::int32_t count = 0, reverse_id = 0;
+  if (!ReadMemory(nullptr, context.game_state + 0xA0, &game_data,
+                  sizeof(game_data)) || game_data == 0 ||
+      !ReadMemory(nullptr, game_data + 0x140, &provinces,
+                  sizeof(provinces)) || provinces == 0 ||
+      !ReadMemory(nullptr, game_data + 0x14C, &count, sizeof(count)) ||
+      id >= count ||
+      !ReadMemory(nullptr, provinces + static_cast<std::size_t>(id) * 8,
+                  &province, sizeof(province)) || province == 0 ||
+      !ReadMemory(nullptr, province + 0x10, &reverse_id,
+                  sizeof(reverse_id)) || reverse_id != id)
+    return false;
+  output = province;
+  return true;
+}
+
+bool CanSelectDestination(void *opaque, std::uintptr_t planner,
+                          std::uintptr_t province, bool &output) noexcept {
+  auto &context = *static_cast<CaptureContext *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id || planner == 0 ||
+      province == 0 || context.module_base == 0)
+    return false;
+  using Predicate = bool (*)(void *, void *, void *);
+  const auto predicate = reinterpret_cast<Predicate>(context.module_base +
+                                                      0x10AF6A0);
+  __try {
+    output = predicate(reinterpret_cast<void *>(planner),
+                       reinterpret_cast<void *>(province), nullptr);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+}
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
 bool SetStageTwo(void *opaque, std::uintptr_t planner) noexcept {
   auto &context = *static_cast<CaptureContext *>(opaque);
@@ -268,7 +315,7 @@ bool ExecuteActivityStage1OptionReadPrivateV1(
       query->completed = true;
       return true;
     }
-    CaptureContext context{query, base, stamp.thread_id};
+    CaptureContext context{query, base, stamp.thread_id, stamp.game_state};
     bridge::ActivityStage1OptionEnvironmentV1 environment{};
     environment.diagnostic = {true,
                               bridge::kActivityPlannerDiagExeSha256V1,
@@ -292,6 +339,23 @@ bool ExecuteActivityStage1OptionReadPrivateV1(
     const bridge::ActivityPlannerDiagFrameV1 expected{
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true, true};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1)
+    if (query->stage_two_location_read) {
+      bridge::ActivityStage2LocationEnvironmentV1 location_environment{};
+      location_environment.option = environment;
+      location_environment.resolve_province = &ResolveActivityProvince;
+      location_environment.can_select_destination = &CanSelectDestination;
+      query->stage_two_location_result = bridge::ReadActivityStage2LocationV1(
+          location_environment, expected,
+          std::span<const std::int32_t>(query->candidate_province_ids.data(),
+                                        query->candidate_province_count));
+      if (query->stage_two_location_result.status !=
+          bridge::ActivityStage2LocationReadStatusV1::observed)
+        query->failure = "native_activity_stage2_location_red:" +
+            std::string(bridge::ActivityStage2LocationReadStatusKeyV1(
+                query->stage_two_location_result.status));
+    } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1)
     if (query->stage_two_gate_read) {
       query->stage_two_gate_result = bridge::ReadActivityStage2GateV1(
@@ -505,6 +569,102 @@ std::string SerializeActivityStage2GateReadPrivateV1(
   out += ",\"generic_feast_stage2_advance_ready\":";
   out += r.generic_feast_stage2_advance_ready ? "true" : "false";
   out += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false,"
+         "\"advertised\":false}";
+  return out;
+}
+
+bool ParseActivityStage2CandidateIdsV1(
+    std::string_view json,
+    std::array<std::int32_t, bridge::kActivityStage2MaximumCandidatesV1>
+        &output,
+    std::uint16_t &count) noexcept {
+  output = {};
+  count = 0;
+  constexpr std::string_view key = "\"candidate_province_ids\"";
+  auto position = json.find(key);
+  if (position == std::string_view::npos) return false;
+  position += key.size();
+  auto skip_space = [&]() noexcept {
+    while (position < json.size() &&
+           (json[position] == ' ' || json[position] == '\t' ||
+            json[position] == '\r' || json[position] == '\n'))
+      ++position;
+  };
+  skip_space();
+  if (position == json.size() || json[position++] != ':') return false;
+  skip_space();
+  if (position == json.size() || json[position++] != '[') return false;
+  skip_space();
+  if (position == json.size() || json[position] == ']') return false;
+  for (;;) {
+    if (count == output.size() || position == json.size() ||
+        json[position] < '0' || json[position] > '9')
+      return false;
+    const auto start = position;
+    while (position < json.size() && json[position] >= '0' &&
+           json[position] <= '9') ++position;
+    std::int32_t id = 0;
+    const auto parsed = std::from_chars(json.data() + start,
+                                        json.data() + position, id);
+    if (parsed.ec != std::errc{} || id < 1) return false;
+    for (std::uint16_t i = 0; i < count; ++i)
+      if (output[i] == id) return false;
+    output[count++] = id;
+    skip_space();
+    if (position == json.size()) return false;
+    if (json[position] == ']') return true;
+    if (json[position++] != ',') return false;
+    skip_space();
+  }
+}
+
+std::string SerializeActivityStage2LocationReadPrivateV1(
+    const ActivityStage1OptionReadPrivateQueryV1 &query) {
+  const auto &r = query.stage_two_location_result;
+  if (!query.completed || !query.stage_two_location_read ||
+      !query.failure.empty() ||
+      r.status != bridge::ActivityStage2LocationReadStatusV1::observed ||
+      !r.gate.selected_option.generic_feast_selected)
+    return {};
+  std::string out =
+      "{\"schema\":\"activity-stage2-location-private-read-v1\","
+      "\"snapshot_revision\":" +
+      std::to_string(r.gate.selected_option.frame.revision) +
+      ",\"date_raw\":" +
+      std::to_string(r.gate.selected_option.frame.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(r.gate.selected_option.frame.actor_character_id) +
+      ",\"activity_key\":\"activity_feast\",\"planning_stage\":2,"
+      "\"selected_option_key\":\"";
+  out.append(r.gate.selected_option.option_key.data(),
+             r.gate.selected_option.option_key_size);
+  out += "\",\"configuration_rows\":[";
+  for (std::uint16_t i = 0; i < r.row_count; ++i) {
+    if (i != 0) out += ',';
+    const auto &row = r.rows[i];
+    out += "{\"index\":" + std::to_string(row.index) +
+           ",\"phase_kind\":" +
+           (row.phase_present ? std::to_string(row.phase_kind) : "null") +
+           ",\"province_id\":" + std::to_string(row.province_id) +
+           ",\"is_active\":" + (row.is_active ? "true" : "false") + "}";
+  }
+  out += "],\"active_row_index\":" +
+         std::to_string(r.active_row_index) +
+         ",\"activity_single_location_flag\":" +
+         (r.activity_single_location_flag ? "true" : "false") +
+         ",\"previous_planning_stage\":" +
+         std::to_string(r.previous_planning_stage) +
+         ",\"candidates\":[";
+  for (std::uint16_t i = 0; i < r.candidate_count; ++i) {
+    if (i != 0) out += ',';
+    out += "{\"province_id\":" +
+           std::to_string(r.candidates[i].province_id) +
+           ",\"can_select\":" +
+           (r.candidates[i].can_select ? "true" : "false") + "}";
+  }
+  out += "],\"can_progress_stage2\":" +
+         std::string(r.gate.can_progress_stage2 ? "true" : "false") +
+         ",\"read_only\":true,\"raw_pointer_fields_persisted\":false,"
          "\"advertised\":false}";
   return out;
 }
