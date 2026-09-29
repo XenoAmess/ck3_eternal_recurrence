@@ -96,6 +96,9 @@ class Fixture:
         after_save = self._response(f"{post.TRACK}-after-save-snapshot",
                                     {"result": "CALL_COMPLETED",
                                      "body": snapshot(spec["date"], 5)})
+        after_control = self._response(f"{post.TRACK}-after-save-control",
+                                       {"result": "CALL_COMPLETED",
+                                        "body": control(snapshot(spec["date"], 5))})
         begin = self._response(f"{post.TRACK}-trace-begin",
                                {"result": "CALL_COMPLETED",
                                 "body": {"accepted": True, "combat_id": post.COMBAT,
@@ -130,6 +133,7 @@ class Fixture:
             "result": "ONE_DAY_ADVANCED_UNREVIEWED",
             "source_binding": self.binding, "intent": identity(self.intent_path),
             "pre_save": pre, "after_save_snapshot": after_save,
+            "after_save_control": after_control,
             "trace_begin": begin, "one_day": day, "trace_finish": trace,
             "post_snapshot": snap,
             "post_values": snapshot_case(self.post, post.POST_DATE,
@@ -140,13 +144,15 @@ class Fixture:
         self.pending_timeout = False
         self.current_control_combat = post.COMBAT
         self.after_control_combat = post.COMBAT
+        self.after_revision = 9
+        self.save_request_payload = None
 
     def _response(self, name: str, payload: dict,
                   request_payload: dict | None = None) -> dict:
         request = self.requests / f"{name}.json"
         response = self.responses / f"{name}.json"
         write_new(request, request_payload or {"tool": name})
-        write_new(response, payload)
+        write_new(response, {"request": identity(request), **payload})
         return {"request": identity(request), "response": identity(response),
                 "result": "CALL_COMPLETED"}
 
@@ -156,11 +162,11 @@ class Fixture:
             raise AssertionError("call escaped the fixture's managed output")
         self.calls.append((name, tool, arguments))
         if tool == "ck3_take_snapshot":
-            body = snapshot(post.POST_DATE, 9) if name.endswith("after-save-snapshot") else self.post
+            body = snapshot(post.POST_DATE, self.after_revision) if name.endswith("after-save-snapshot") else self.post
             row = self._response(name, {"result": "CALL_COMPLETED", "body": body})
             return body, row
         if tool == "ck3_query_battle_control_snapshot_v1":
-            snap = snapshot(post.POST_DATE, 9) if name.endswith("after-save-control") else self.post
+            snap = snapshot(post.POST_DATE, self.after_revision) if name.endswith("after-save-control") else self.post
             body = control(snap)
             if name.endswith("after-save-control"):
                 body["battle_control_snapshot"]["combat_id"] = self.after_control_combat
@@ -177,7 +183,10 @@ class Fixture:
         if self.save_materializes:
             self.save_path.write_bytes(self.saved_bytes)
         payload = save_response(self.save_path, self.save_date, self.saved_bytes)
-        row = self._response(name, payload)
+        row = self._response(name, payload,
+                             self.save_request_payload or {
+                                 "action": "mcp", "tool": tool,
+                                 "arguments": arguments})
         return payload["body"], row
 
 
@@ -232,6 +241,31 @@ class PostframeSaveTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "sequence token"):
             self.execute()
         self.assertEqual(fixture.calls, [])
+
+    def test_sidecar_request_mismatch_and_old_control_refuse_new_call(self) -> None:
+        for name, mutation, expected in (
+            (post.PRE_SAVE_NAME,
+             lambda row: row.update(request={"sha256": "wrong"}),
+             "not completed"),
+            (f"{post.TRACK}-after-save-control",
+             lambda row: row["body"]["battle_control_snapshot"].update(combat_id=2),
+             "pre-advance saved combat control"),
+        ):
+            with self.subTest(name=name):
+                with tempfile.TemporaryDirectory() as root:
+                    fixture = Fixture(Path(root))
+                    response_path = fixture.responses / f"{name}.json"
+                    row = json.loads(response_path.read_text(encoding="utf-8"))
+                    mutation(row)
+                    response_path.write_text(json.dumps(row), encoding="utf-8")
+                    advance = json.loads(fixture.advance_path.read_text(encoding="utf-8"))
+                    field = "pre_save" if name == post.PRE_SAVE_NAME else "after_save_control"
+                    advance[field]["response"] = identity(response_path)
+                    fixture.advance_path.write_text(json.dumps(advance), encoding="utf-8")
+                    with patch.object(post, "call", side_effect=fixture.call):
+                        with self.assertRaisesRegex(ValueError, expected):
+                            post.run(fixture.output, 10)
+                    self.assertEqual(fixture.calls, [])
 
     def test_stale_current_frame_stops_before_copy_or_save(self) -> None:
         fixture = self.fixture
@@ -295,6 +329,28 @@ class PostframeSaveTest(unittest.TestCase):
             self.execute()
         self.assertEqual(sum(tool == "ck3_save_checkpoint"
                              for _, tool, _ in fixture.calls), 1)
+
+    def test_wrong_d06_save_envelope_preserves_red_and_one_request(self) -> None:
+        fixture = self.fixture
+        fixture.save_request_payload = {
+            "action": "mcp", "tool": "ck3_save_checkpoint",
+            "arguments": {"expected_revision": 7}}
+        with self.assertRaisesRegex(ValueError, "request envelope"):
+            self.execute()
+        self.assertEqual(sum(tool == "ck3_save_checkpoint"
+                             for _, tool, _ in fixture.calls), 1)
+        self.assertFalse((fixture.root / post.PRESERVATION_NAME /
+                          "postframe-save-result.json").exists())
+
+    def test_post_save_revision_must_increase(self) -> None:
+        fixture = self.fixture
+        fixture.after_revision = 8
+        with self.assertRaisesRegex(ValueError, "revision did not advance"):
+            self.execute()
+        self.assertTrue((fixture.root / post.PRESERVATION_NAME /
+                         "d06-immutable.ck3").exists())
+        self.assertFalse((fixture.root / post.PRESERVATION_NAME /
+                          "postframe-save-result.json").exists())
         with self.assertRaisesRegex(ValueError, "already used"):
             self.execute()
         self.assertEqual(sum(tool == "ck3_save_checkpoint"

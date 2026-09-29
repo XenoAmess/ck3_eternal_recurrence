@@ -43,7 +43,8 @@ def response_body(output: Path, name: str, recorded: dict[str, Any]) -> dict[str
     matching_original(response, recorded["response"])
     matching_original(request, recorded["request"])
     row = json.loads(response.read_text(encoding="utf-8"))
-    require(row.get("result") == recorded.get("result") == "CALL_COMPLETED" and
+    require(row.get("request") == recorded["request"] and
+            row.get("result") == recorded.get("result") == "CALL_COMPLETED" and
             isinstance(row.get("body"), dict), f"original response is not completed: {name}")
     return row
 
@@ -132,6 +133,12 @@ def frozen_advance(output: Path, binding: dict[str, Any]) -> dict[str, Any]:
     before_ok, before_values = snapshot_case(
         after_save["body"], TRACKS[TRACK]["date"], require_combat=True)
     require(before_ok, "pre-advance saved frame no longer identifies d05 combat")
+    before_control = response_body(output, f"{TRACK}-after-save-control",
+                                   advance["after_save_control"])
+    before_control_ok, before_control_values = battle_control_case(
+        before_control["body"], before_values, TRACKS[TRACK]["date"])
+    require(before_control_ok and before_control_values["combat_id"] == COMBAT,
+            "pre-advance saved combat control does not match d05 frame")
     begin = response_body(output, f"{TRACK}-trace-begin", advance["trace_begin"])
     one_day = response_body(output, f"{TRACK}-one-day", advance["one_day"])
     trace = response_body(output, f"{TRACK}-trace-finish", advance["trace_finish"])
@@ -233,6 +240,12 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
         "one_save_request_only": True})
     saved_body, saved_receipt = call(output, SAVE_NAME, "ck3_save_checkpoint",
                                      {"expected_revision": current_values["revision"]}, timeout)
+    save_request = output / "interactive-requests" / f"{SAVE_NAME}.json"
+    matching_original(save_request, saved_receipt["request"])
+    require(json.loads(save_request.read_text(encoding="utf-8")) == {
+        "action": "mcp", "tool": "ck3_save_checkpoint",
+        "arguments": {"expected_revision": current_values["revision"]}},
+        "d06 native save request envelope differs from sole intended action")
     response_row = response_body(output, SAVE_NAME, saved_receipt)
     require(saved_body == response_row["body"], "save response changed after managed call")
     saved = checkpoint_case(response_row, POST_DATE, save_path)
@@ -253,9 +266,10 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
     after, after_receipt = call(output, f"{TRACK}-postframe-after-save-snapshot",
                                "ck3_take_snapshot", {}, timeout)
     after_ok, after_values = snapshot_case(after, POST_DATE, require_combat=True)
-    require(after_ok and type(after_values.get("native_revision")) is int and
+    require(after_ok and after_values["revision"] > current_values["revision"] and
+            type(after_values.get("native_revision")) is int and
             isinstance(after_values.get("snapshot_id"), str),
-            "post-save paused d06 identity is unavailable")
+            "post-save paused d06 revision did not advance or identity is unavailable")
     after_control, after_control_receipt = call(
         output, f"{TRACK}-postframe-after-save-control",
         "ck3_query_battle_control_snapshot_v1",
