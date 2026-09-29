@@ -77,18 +77,19 @@ def _split_successor(driver: object, snapshot: Mapping[str, object]
         return None
     primary = [row for row in rows if isinstance(row, dict)
                and row.get("primary") is True]
+    if len(primary) != 1 or not _positive(primary[0].get("first_heir_character_id")):
+        return None
+    primary_heir_id = primary[0]["first_heir_character_id"]
     secondary = [row for row in rows if isinstance(row, dict)
                  and row.get("primary") is False
                  and _positive(row.get("first_heir_character_id"))
+                 and row["first_heir_character_id"] != primary_heir_id
                  and isinstance(row.get("title"), dict)
                  and _positive(row["title"].get("title_id"))]
-    if len(primary) != 1 or not _positive(primary[0].get("first_heir_character_id")):
-        return None
     # This first narrow policy handles one split-successor child. More than one
     # distinct successor requires a value comparison that is not present here.
     subject_ids = {row["first_heir_character_id"] for row in secondary}
-    if (len(subject_ids) != 1
-            or primary[0]["first_heir_character_id"] in subject_ids):
+    if len(subject_ids) != 1:
         return None
     subject_id = next(iter(subject_ids))
     return {
@@ -96,7 +97,7 @@ def _split_successor(driver: object, snapshot: Mapping[str, object]
         "split_title_ids": sorted(
             row["title"]["title_id"] for row in secondary
             if row["first_heir_character_id"] == subject_id),
-        "primary_heir_character_id": primary[0]["first_heir_character_id"],
+        "primary_heir_character_id": primary_heir_id,
         "source_revision": snapshot["revision"],
         "source_native_revision": snapshot["native_revision"],
         "source_date_raw": snapshot["date_raw"],

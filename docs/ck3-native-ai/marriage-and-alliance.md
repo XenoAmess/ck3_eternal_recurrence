@@ -1389,3 +1389,35 @@ the split title from its **current** held-title partition, independently
 re-read Guy and the selected pair on that frame, and use the existing typed
 default-child action. A send ACK is only pending; bilateral betrothal,
 following-turn consumption and fresh-PID recovery are separate gates.
+
+### R0395: same-heir secondary titles are not additional split successors (2026-09-30)
+
+The bounded Guy formal run at `D:/ck3-nw-family-guy-action-r0394-retry-20260930/operator-runs/guy-h3911-formal-2/formal-report.txt`
+(SHA-256 `616D946E31B92080ECF6E19BC8932D834EEFD39214657C70D95A72CD8ECA9625`)
+loaded the paused H3911 frame on CK3 `1.19.0.6` / EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+Its native campaign-root read had primary title `2141` going to `38822`;
+non-primary titles `2102`, `2111`, `2115`, and `2142` also went to
+`38822`, while only title `2173` went to Guy `38988`. The war plan stopped
+on an unrelated contact-forecast RED, leaving a legal non-war opportunity
+to evaluate. No Guy marriage query or action, checkpoint, or date advance
+was recorded.
+
+The private consumer had counted **all** non-primary title heirs as split
+successors, producing `{38822, 38988}` and rejecting the frame as if two
+different split heirs existed. That contradicts the existing native
+partition rule: only a title whose heir differs from the primary title's
+heir is a split. The source correction filters out same-heir secondary
+titles, then still requires exactly one distinct split heir. This is a
+focused source diagnosis; a new paired formal action and its later result
+remain unverified.
+
+```mermaid
+flowchart TD
+    A[Native held-title partition on one paused frame] --> B[Identify the primary title heir]
+    B --> C[Ignore other titles going to that same heir]
+    C --> D{Number of distinct different heirs}
+    D -- 0 or more than 1 --> E[Hold this narrow Guy policy]
+    D -- exactly 1 --> F[Verify child and current marriage legality]
+    F -. R0395 action not reached .-> G[Typed proposal and material readback]
+```

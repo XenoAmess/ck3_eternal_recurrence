@@ -74,6 +74,20 @@ class Driver:
         self.queried_values: list[int] = []
         self.submissions = 0
         self.result_status = "pending"
+        # R0395 has four non-primary titles inherited by the primary heir;
+        # only title 2173 actually splits to Guy.
+        self.partition = [
+            {"primary": False, "first_heir_character_id": 38822,
+             "title": {"title_id": title_id}}
+            for title_id in (2102, 2111, 2115)
+        ] + [
+            {"primary": True, "first_heir_character_id": 38822,
+             "title": {"title_id": 2141}},
+            {"primary": False, "first_heir_character_id": 38822,
+             "title": {"title_id": 2142}},
+            {"primary": False, "first_heir_character_id": 38988,
+             "title": {"title_id": 2173}},
+        ]
 
     def _execute_campaign_root_context_v1_query(
         self, *, expected_revision: int,
@@ -87,12 +101,7 @@ class Driver:
             "queried_snapshot_id": frame["snapshot_id"],
             "campaign_root_context": {
                 "player_character_id": 29829,
-                "held_title_partition": [
-                    {"primary": True, "first_heir_character_id": 38822,
-                     "title": {"title_id": 2141}},
-                    {"primary": False, "first_heir_character_id": 38988,
-                     "title": {"title_id": 2173}},
-                ],
+                "held_title_partition": self.partition,
             },
         }
 
@@ -170,6 +179,21 @@ def _policy(_legality: object, values: object, *,
 
 
 class ChildDefaultFormalTest(unittest.TestCase):
+    def test_zero_or_two_distinct_split_successors_remain_ineligible(self) -> None:
+        driver = Driver(Path("."))
+        original = driver.partition[:]
+        driver.partition = [
+            row for row in original
+            if row["first_heir_character_id"] == 38822
+        ]
+        self.assertIsNone(consumer._split_successor(driver, driver.frame))
+        driver.partition = original
+        driver.partition.append({
+            "primary": False, "first_heir_character_id": 39000,
+            "title": {"title_id": 2174},
+        })
+        self.assertIsNone(consumer._split_successor(driver, driver.frame))
+
     def test_war_red_reads_complete_split_child_pair_and_fences_receipt(self) -> None:
         with tempfile.TemporaryDirectory(
             dir=os.environ.get("XAR_TEST_TEMP_ROOT")
