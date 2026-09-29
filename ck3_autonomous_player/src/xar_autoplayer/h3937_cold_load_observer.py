@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import threading
 import time
 from typing import Callable
 
@@ -176,6 +177,7 @@ class ColdLoadObserver:
         process_probe: Callable[[int, Path], dict[str, object]] = _windows_process_counters,
         window_probe: Callable[[int], dict[str, object]] = _windows_window_probe,
         popen: Callable[..., subprocess.Popen[bytes]] = subprocess.Popen,
+        timer_factory: Callable[..., threading.Timer] = threading.Timer,
     ) -> None:
         if not callable(screen_lease_check):
             raise ValueError("cold-load capture requires a screen lease check")
@@ -187,13 +189,16 @@ class ColdLoadObserver:
         self.process_probe = process_probe
         self.window_probe = window_probe
         self.popen = popen
+        self.timer_factory = timer_factory
         self.started = clock()
         self.last_sample = float("-inf")
         self.next_capture = self.started
         self.pid: int | None = None
         self.creation_time: int | None = None
         self.last_process: dict[str, object] | None = None
-        self.capture: tuple[int, float, subprocess.Popen[bytes]] | None = None
+        self.capture: tuple[
+            int, float, subprocess.Popen[bytes], threading.Timer, threading.Event,
+        ] | None = None
         self.sample_receipts: list[dict[str, object]] = []
         self.frame_receipts: list[dict[str, object]] = []
         self.process_samples = 0
@@ -224,7 +229,20 @@ class ColdLoadObserver:
     def _finish_capture(self, *, forced_reason: str | None = None) -> None:
         if self.capture is None:
             return
-        number, began, process = self.capture
+        number, began, process, timer, timeout_fired = self.capture
+        # Cancel and join the independent timer before qualifying a frame.
+        # cancel() alone cannot stop a callback already killing/reaping.
+        timer.cancel()
+        timer.join(timeout=4)
+        watchdog_alive = timer.is_alive()
+        if watchdog_alive:
+            self.fatal_reason = "capture watchdog thread remained after bounded join"
+        # A helper completed after its deadline remains RED even if the next
+        # readiness poll or close() first notices a successful exit.
+        if forced_reason is None and (
+                watchdog_alive or timeout_fired.is_set()
+                or self.clock() - began >= CAPTURE_TIMEOUT_SECONDS):
+            forced_reason = "capture helper exceeded 12s deadline"
         pending = self.output_dir / f"frame-{number:04d}.pending.png"
         final = self.output_dir / f"frame-{number:04d}.png"
         status = "RED_CAPTURE_FAILED"
@@ -253,18 +271,35 @@ class ColdLoadObserver:
                 error = f"{type(failure).__name__}: {failure}"[:256]
             else:
                 try:
-                    from PIL import Image
-                    with Image.open(pending) as image:
-                        if image.format != "PNG":
-                            raise ValueError("capture is not PNG")
-                        dimensions = list(image.size)
-                        image.verify()
-                    if final.exists():
-                        raise FileExistsError(final)
-                    pending.rename(final)
-                    status = "CAPTURED_UNREVIEWED"
+                    # Pin the same game process again immediately before a
+                    # screenshot is qualified.  The process may have exited
+                    # or its PID may have been reused during ImageGrab.
+                    if self.pid is None or self.creation_time is None:
+                        raise ValueError("CK3 process identity absent at frame finish")
+                    identity = self.process_probe(self.pid, self.expected_executable)
+                    if (identity.get("pid") != self.pid
+                            or identity.get("creation_time_100ns") != self.creation_time
+                            or not _same_executable(
+                                str(identity.get("executable", "")),
+                                self.expected_executable)):
+                        raise ValueError("CK3 PID, creation time or EXE changed during capture")
                 except (OSError, ValueError) as failure:
                     error = f"{type(failure).__name__}: {failure}"[:256]
+                    self.fatal_reason = "CK3 process identity unavailable during capture"
+                else:
+                    try:
+                        from PIL import Image
+                        with Image.open(pending) as image:
+                            if image.format != "PNG":
+                                raise ValueError("capture is not PNG")
+                            dimensions = list(image.size)
+                            image.verify()
+                        if final.exists():
+                            raise FileExistsError(final)
+                        pending.rename(final)
+                        status = "CAPTURED_UNREVIEWED"
+                    except (OSError, ValueError) as failure:
+                        error = f"{type(failure).__name__}: {failure}"[:256]
         elif error is None:
             error = ("capture helper return code or frame size invalid: "
                      f"returncode={returncode}, bytes={size}")
@@ -285,6 +320,7 @@ class ColdLoadObserver:
             "pending_sha256_before_finalize": partial_sha,
             "dimensions": dimensions, "returncode": returncode,
             "capture_helper_alive": helper_alive,
+            "capture_watchdog_alive": watchdog_alive,
             "error": error, "image_visual_reviewed": False,
             "desktop_interaction": False,
         })
@@ -293,6 +329,23 @@ class ColdLoadObserver:
     def _start_capture(self, now: float) -> None:
         number = len(self.frame_receipts)
         if number >= MAX_FRAMES or self.total_frame_bytes >= MAX_TOTAL_FRAME_BYTES:
+            return
+        # The 20s sample and the screenshot start are separate moments.
+        # Check the exact game handle identity again immediately before spawn.
+        try:
+            if self.pid is None or self.creation_time is None:
+                raise ValueError("CK3 identity absent before capture")
+            identity = self.process_probe(self.pid, self.expected_executable)
+            if (identity.get("pid") != self.pid
+                    or identity.get("creation_time_100ns") != self.creation_time
+                    or not _same_executable(
+                        str(identity.get("executable", "")),
+                        self.expected_executable)):
+                raise ValueError("CK3 PID, creation time or EXE changed before capture")
+        except (OSError, ValueError) as failure:
+            self.fatal_reason = (
+                f"CK3 process identity unavailable before capture: "
+                f"{type(failure).__name__}")
             return
         try:
             self.screen_lease_check()
@@ -325,7 +378,43 @@ class ColdLoadObserver:
             })
             self.next_capture = now + CAPTURE_SECONDS
             return
-        self.capture = (number, now, process)
+        timeout_fired = threading.Event()
+
+        def enforce_deadline() -> None:
+            if process.poll() is None:
+                timeout_fired.set()
+                try:
+                    process.kill()  # Bound by the exact owned process handle.
+                    process.wait(timeout=3)
+                except (OSError, subprocess.TimeoutExpired):
+                    pass
+
+        try:
+            remaining = max(0.0, CAPTURE_TIMEOUT_SECONDS - (self.clock() - now))
+            timer = self.timer_factory(remaining, enforce_deadline)
+            timer.daemon = True
+            timer.start()
+        except Exception as failure:
+            try:
+                process.kill()
+                process.wait(timeout=3)
+            except (OSError, subprocess.TimeoutExpired):
+                self.fatal_reason = "capture helper remained after watchdog start failure"
+            self._receipt("frame", number, {
+                "schema": "xar.h3937.cold-load-frame.v1",
+                "finished_at_utc": _utc_now(), "elapsed_seconds": round(now - self.started, 3),
+                "pid": self.pid, "creation_time_100ns": self.creation_time,
+                "status": "RED_WATCHDOG_START", "path": str(pending),
+                "bytes": pending.stat().st_size if pending.exists() else 0,
+                "sha256": _sha256(pending) if pending.exists() else None,
+                "error": f"{type(failure).__name__}: {failure}"[:256],
+                "capture_helper_alive": process.poll() is None,
+                "image_visual_reviewed": False, "desktop_interaction": False,
+            })
+            self.capture_reds += 1
+            self.next_capture = now + CAPTURE_SECONDS
+            return
+        self.capture = (number, now, process, timer, timeout_fired)
         self.next_capture = now + CAPTURE_SECONDS
 
     def tick(self, capabilities: dict[str, object]) -> str | None:
@@ -333,10 +422,10 @@ class ColdLoadObserver:
             return "observer already closed"
         now = self.clock()
         if self.capture is not None:
-            _, began, process = self.capture
+            _, began, process, _, timeout_fired = self.capture
             if process.poll() is not None:
                 self._finish_capture()
-            elif now - began >= CAPTURE_TIMEOUT_SECONDS:
+            elif timeout_fired.is_set() or now - began >= CAPTURE_TIMEOUT_SECONDS:
                 self._finish_capture(forced_reason="capture helper timed out")
         if self.fatal_reason is not None:
             return self.fatal_reason
@@ -357,6 +446,11 @@ class ColdLoadObserver:
                 creation = process.get("creation_time_100ns")
                 if type(creation) is not int or creation <= 0:
                     raise ValueError("process creation time unavailable")
+                if (process.get("pid") != pid
+                        or not _same_executable(
+                            str(process.get("executable", "")),
+                            self.expected_executable)):
+                    raise ValueError("CK3 PID executable identity mismatch")
                 if self.pid is None:
                     self.pid, self.creation_time = pid, creation
                 elif pid != self.pid or creation != self.creation_time:
@@ -393,11 +487,15 @@ class ColdLoadObserver:
         if self.closed:
             return
         if self.capture is not None:
-            _, _, process = self.capture
+            _, _, process, _, _ = self.capture
             self._finish_capture(forced_reason=(
                 "observer closed before capture completed"
                 if process.poll() is None else None))
-        if self.fatal_reason == "capture helper remained after bounded kill":
+        if self.fatal_reason in {
+            "capture helper remained after bounded kill",
+            "capture helper remained after watchdog start failure",
+            "capture watchdog thread remained after bounded join",
+        }:
             raise RuntimeError(self.fatal_reason)
         self.closed = True
 

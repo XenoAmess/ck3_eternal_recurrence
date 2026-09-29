@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import inspect
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
+import threading
+import time
 import unittest
 from unittest.mock import patch
 
@@ -14,6 +17,7 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
 from xar_autoplayer.h3937_cold_load_observer import ColdLoadObserver  # noqa: E402
+from xar_autoplayer import h3937_cold_load_observer as observer_module  # noqa: E402
 from xar_autoplayer.h3937_combined_paused_war_scope_run import (  # noqa: E402
     _ColdLoadProgressWatchdog,
     collect_h3937_combined_paused_war_scope_once,
@@ -46,6 +50,31 @@ class FakeCapture:
         return self.poll() or 0
 
 
+class FakeTimer:
+    def __init__(self, seconds, callback) -> None:
+        self.seconds = seconds
+        self.callback = callback
+        self.daemon = False
+        self.cancelled = False
+        self.started = False
+
+    def start(self) -> None:
+        self.started = True
+
+    def cancel(self) -> None:
+        self.cancelled = True
+
+    def join(self, *, timeout) -> None:
+        del timeout
+
+    def is_alive(self) -> bool:
+        return False
+
+    def fire(self) -> None:
+        if not self.cancelled:
+            self.callback()
+
+
 def capabilities(pid: int = 77) -> dict[str, object]:
     return {"diagnostics": {"bridge_pid": pid}}
 
@@ -62,13 +91,16 @@ def counters(pid: int, executable: Path) -> dict[str, object]:
 
 class ColdLoadObserverTests(unittest.TestCase):
     def make_observer(self, root: Path, *, clock: FakeClock,
-                      lease=None, probe=counters, popen=None) -> ColdLoadObserver:
+                      lease=None, probe=counters, popen=None,
+                      timer_factory=None) -> ColdLoadObserver:
+        options = {"timer_factory": timer_factory} if timer_factory else {}
         return ColdLoadObserver(
             root / "cold-load-observation", Path("C:/game/ck3.exe"),
             lease or (lambda: None), clock=clock, process_probe=probe,
             window_probe=lambda pid: {"visible_window_count": 1,
                                       "windows": [{"pid": pid, "wm_null_responded": True}]},
             popen=popen or (lambda *args, **kwargs: FakeCapture()),
+            **options,
         )
 
     def test_default_off_and_successful_bounded_png(self) -> None:
@@ -146,7 +178,7 @@ class ColdLoadObserverTests(unittest.TestCase):
                 nonlocal calls
                 calls += 1
                 row = counters(pid, executable)
-                if calls > 1:
+                if calls > 2:
                     row["creation_time_100ns"] = 54321
                 return row
 
@@ -275,6 +307,223 @@ class ColdLoadObserverTests(unittest.TestCase):
             self.assertIn("RED_CAPTURE_START", (
                 observer.output_dir / "frame-0000.json").read_text(encoding="utf-8"))
             observer.close()
+
+    def test_late_completed_helper_is_red_on_tick_and_close(self) -> None:
+        for finish_with_close in (False, True):
+            with self.subTest(finish_with_close=finish_with_close):
+                with tempfile.TemporaryDirectory() as temp:
+                    clock = FakeClock()
+
+                    def spawn(argv, **kwargs):
+                        del kwargs
+                        Image.new("RGB", (2, 2), "orange").save(
+                            argv[-2], format="PNG")
+                        return FakeCapture()
+
+                    observer = self.make_observer(Path(temp), clock=clock,
+                                                  popen=spawn,
+                                                  timer_factory=FakeTimer)
+                    observer.tick(capabilities())
+                    clock.now = 13
+                    if finish_with_close:
+                        observer.close()
+                    else:
+                        observer.tick(capabilities())
+                        observer.close()
+                    self.assertFalse((observer.output_dir / "frame-0000.png").exists())
+                    self.assertTrue((observer.output_dir / "frame-0000.pending.png").exists())
+                    receipt = (observer.output_dir / "frame-0000.json").read_text(
+                        encoding="utf-8")
+                    self.assertIn("RED_CAPTURE_FAILED", receipt)
+                    self.assertIn("exceeded 12s deadline", receipt)
+
+    def test_independent_timer_kills_and_reaps_without_readiness_tick(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            clock = FakeClock()
+            helper = FakeCapture(running=True)
+            timers = []
+
+            def factory(seconds, callback):
+                timer = FakeTimer(seconds, callback)
+                timers.append(timer)
+                return timer
+
+            def spawn(argv, **kwargs):
+                del kwargs
+                Path(argv[-2]).touch(exist_ok=False)
+                return helper
+
+            observer = self.make_observer(Path(temp), clock=clock,
+                                          popen=spawn, timer_factory=factory)
+            observer.tick(capabilities())
+            self.assertEqual(len(timers), 1)
+            self.assertEqual(timers[0].seconds, 12)
+            # Simulate a blocked capabilities/readiness call: no observer tick.
+            timers[0].fire()
+            self.assertTrue(helper.killed)
+            self.assertEqual(helper.poll(), -9)
+            observer.close()
+            self.assertTrue(observer.report()["closed"])
+            self.assertEqual(observer.report()["diagnostic_status"],
+                             "RED_CAPTURE_UNAVAILABLE")
+            self.assertFalse((observer.output_dir / "frame-0000.png").exists())
+
+    def test_real_wall_clock_timer_reaps_sleeping_helper_without_poll(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            clock = FakeClock()
+            helpers = []
+
+            def spawn(argv, **kwargs):
+                del kwargs
+                Path(argv[-2]).touch(exist_ok=False)
+                process = subprocess.Popen(
+                    [sys.executable, "-c", "import time;time.sleep(10)"],
+                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                )
+                helpers.append(process)
+                return process
+
+            with patch.object(observer_module, "CAPTURE_TIMEOUT_SECONDS", 0.15):
+                observer = self.make_observer(Path(temp), clock=clock, popen=spawn)
+                try:
+                    observer.tick(capabilities())
+                    time.sleep(0.4)  # No readiness tick while the real timer runs.
+                    self.assertEqual(len(helpers), 1)
+                    self.assertIsNotNone(helpers[0].poll())
+                    observer.close()
+                    self.assertEqual(observer.report()["diagnostic_status"],
+                                     "RED_CAPTURE_UNAVAILABLE")
+                finally:
+                    if helpers and helpers[0].poll() is None:
+                        helpers[0].kill()
+                        helpers[0].wait(timeout=3)
+
+    def test_stubborn_helper_keeps_cleanup_red(self) -> None:
+        class StubbornCapture:
+            def poll(self):
+                return None
+
+            def kill(self):
+                raise OSError("synthetic kill refused")
+
+            def wait(self, *, timeout):
+                raise subprocess.TimeoutExpired("synthetic helper", timeout)
+
+        with tempfile.TemporaryDirectory() as temp:
+            clock = FakeClock()
+            timers = []
+
+            def factory(seconds, callback):
+                timer = FakeTimer(seconds, callback)
+                timers.append(timer)
+                return timer
+
+            def spawn(argv, **kwargs):
+                del kwargs
+                Path(argv[-2]).touch(exist_ok=False)
+                return StubbornCapture()
+
+            observer = self.make_observer(Path(temp), clock=clock,
+                                          popen=spawn, timer_factory=factory)
+            observer.tick(capabilities())
+            timers[0].fire()
+            with self.assertRaisesRegex(RuntimeError, "remained after bounded kill"):
+                observer.close()
+            receipt = (observer.output_dir / "frame-0000.json").read_text(
+                encoding="utf-8")
+            self.assertIn('"capture_helper_alive": true', receipt)
+            self.assertIn("RED_CAPTURE_FAILED", receipt)
+            self.assertEqual(observer.report()["diagnostic_status"], "RED_FATAL")
+
+    def test_close_joins_inflight_timeout_callback_before_receipt(self) -> None:
+        class BlockingCapture(FakeCapture):
+            def __init__(self) -> None:
+                super().__init__(running=True)
+                self.kill_entered = threading.Event()
+                self.release_kill = threading.Event()
+
+            def kill(self) -> None:
+                self.kill_entered.set()
+                if not self.release_kill.wait(timeout=1):
+                    raise OSError("synthetic kill remained blocked")
+                super().kill()
+
+        with tempfile.TemporaryDirectory() as temp:
+            clock = FakeClock()
+            helper = BlockingCapture()
+
+            def spawn(argv, **kwargs):
+                del kwargs
+                Path(argv[-2]).touch(exist_ok=False)
+                return helper
+
+            observer = self.make_observer(
+                Path(temp), clock=clock, popen=spawn,
+                timer_factory=lambda seconds, callback: threading.Timer(
+                    0.01, callback))
+            observer.tick(capabilities())
+            self.assertTrue(helper.kill_entered.wait(timeout=1))
+            release = threading.Timer(0.1, helper.release_kill.set)
+            release.daemon = True
+            release.start()
+            observer.close()
+            release.join(timeout=1)
+            receipt = (observer.output_dir / "frame-0000.json").read_text(
+                encoding="utf-8")
+            self.assertIn('"capture_helper_alive": false', receipt)
+            self.assertIn('"capture_watchdog_alive": false', receipt)
+            self.assertIn("RED_CAPTURE_FAILED", receipt)
+
+    def test_start_and_finish_recheck_exact_process_identity(self) -> None:
+        for stage in ("before_capture", "after_capture"):
+            for drift in ("creation", "executable"):
+                with self.subTest(stage=stage, drift=drift):
+                    with tempfile.TemporaryDirectory() as temp:
+                        clock = FakeClock()
+                        calls = 0
+                        spawned = []
+
+                        def probe(pid, executable):
+                            nonlocal calls
+                            calls += 1
+                            row = counters(pid, executable)
+                            target_call = 2 if stage == "before_capture" else 3
+                            if calls >= target_call:
+                                if drift == "creation":
+                                    row["creation_time_100ns"] = 54321
+                                else:
+                                    row["executable"] = "C:/wrong.exe"
+                            return row
+
+                        def spawn(argv, **kwargs):
+                            del kwargs
+                            spawned.append(argv)
+                            Image.new("RGB", (2, 2), "yellow").save(
+                                argv[-2], format="PNG")
+                            return FakeCapture()
+
+                        observer = self.make_observer(Path(temp), clock=clock,
+                                                      probe=probe, popen=spawn,
+                                                      timer_factory=FakeTimer)
+                        first = observer.tick(capabilities())
+                        if stage == "before_capture":
+                            self.assertIn("before capture", first)
+                            self.assertEqual(spawned, [])
+                        else:
+                            self.assertIsNone(first)
+                            clock.now = 1
+                            self.assertIn("identity unavailable", observer.tick(
+                                capabilities()))
+                            self.assertEqual(len(spawned), 1)
+                            self.assertTrue((observer.output_dir /
+                                             "frame-0000.pending.png").exists())
+                            self.assertFalse((observer.output_dir /
+                                              "frame-0000.png").exists())
+                        self.assertEqual(observer.report()["diagnostic_status"],
+                                         "RED_FATAL")
+                        observer.close()
 
 
 if __name__ == "__main__":
