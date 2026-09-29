@@ -242,6 +242,12 @@ They are **static disassembly**, not a paused action or accepted invitation:
    `planner+0x1A18` through `0x100F940` (`0x151C246..0x151C257`), calls
    planner configuration refresh `0x10B0780` (`0x151C25F`), and refreshes
    the guest-list view through `0x151B3D0` (`0x151C283`).
+   The planner refresh begins at `0x10B0796..0x10B07AA`: it passes the
+   active rule vector at `planner+0x1A18` as input to `0x28CF2B0` and the
+   separate 24-byte-row collection at `planner+0x1590` as output. It then
+   traverses the already selected guest rows at `+0x1678/+0x1684`.
+   Therefore `+0x1590` is a refreshed collection, not itself the toggle's
+   active-rule vector or proof that a candidate will join.
    `0x151C2B0` checks membership in the same sorted rule rows; it is the
    independent active-state read for an inactive-to-active typed action.
 
