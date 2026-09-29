@@ -2947,6 +2947,21 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertTrue(parsed.private_activity_feast_planner_open)
 
+    def test_private_feast_stage1_option_read_is_explicit_and_forwarded(self) -> None:
+        base = dict(
+            common=["python", "agent.py"], turns=1, timeout=60,
+            readiness_timeout=30, private_faction_round_id_value=None,
+        )
+        flag = "--private-activity-feast-stage1-option-read"
+        self.assertNotIn(flag, g2_preview_operator.native_auto_run_command(**base))
+        self.assertIn(flag, g2_preview_operator.native_auto_run_command(
+            **base, private_activity_feast_stage1_option_read=True,
+        ))
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "output", flag,
+        ])
+        self.assertTrue(parsed.private_activity_feast_stage1_option_read)
+
     def test_owned_window_minimizes_only_matching_live_pid(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
