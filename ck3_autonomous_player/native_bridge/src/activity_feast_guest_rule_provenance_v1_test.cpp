@@ -175,4 +175,37 @@ int main() {
       *observer, fixture.frame, planner, hash, 38293);
   assert(changed_rule.status ==
          ActivityGuestRuleProvenanceStatusV1::frame_changed);
+
+  // The normal refresh in R0388 ran at stage 2, before the original setter
+  // exposed stage 5. Its per-rule output remains usable only while the
+  // final planner retains the exact active rules and filtered groups.
+  Put(fixture, active_rows + 8, std::int32_t{1});
+  auto stage_two = std::make_unique<ActivityGuestRuleProvenanceObserverV1>();
+  stage_two->environment = env;
+  Put(fixture, planner + 0x1AB0, std::int32_t{2});
+  assert(BeginActivityGuestRuleRefreshV1(
+      *stage_two, base + kActivityGuestRuleRefreshReturnRvaV1, planner,
+      planner + 0x1A18, planner + 0x1590));
+  RecordActivityGuestRuleEffectReturnV1(
+      *stage_two, base + kActivityGuestRuleEffectReturnRvaV1,
+      definition + 0x38, temporary);
+  FinishActivityGuestRuleRefreshV1(*stage_two);
+  const auto premature = ReadActivityGuestRuleProvenanceV1(
+      *stage_two, fixture.frame, planner, hash, 38293);
+  assert(premature.status == ActivityGuestRuleProvenanceStatusV1::frame_changed);
+  Put(fixture, planner + 0x1AB0, std::int32_t{5});
+  const auto retained = ReadActivityGuestRuleProvenanceV1(
+      *stage_two, fixture.frame, planner, hash, 38293);
+  assert(retained.status == ActivityGuestRuleProvenanceStatusV1::observed);
+  assert(retained.normal_refresh_sequence == 1 &&
+         retained.candidate_membership);
+  Put(fixture, group_ids, std::uint32_t{444});
+  const auto stale_groups = ReadActivityGuestRuleProvenanceV1(
+      *stage_two, fixture.frame, planner, hash, 38293);
+  assert(stale_groups.status == ActivityGuestRuleProvenanceStatusV1::frame_changed);
+  Put(fixture, group_ids, std::uint32_t{38293});
+  Put(fixture, active_rows + 8, std::int32_t{2});
+  const auto stale_rules = ReadActivityGuestRuleProvenanceV1(
+      *stage_two, fixture.frame, planner, hash, 38293);
+  assert(stale_rules.status == ActivityGuestRuleProvenanceStatusV1::frame_changed);
 }

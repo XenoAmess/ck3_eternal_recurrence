@@ -302,7 +302,10 @@ bool BeginActivityGuestRuleRefreshV1(
     return false;
   }
   observer.last_seen_stage.store(stage, std::memory_order_relaxed);
-  if (stage != 5) {
+  // The native guest-rule refresh can run while the planner is still at
+  // stage 2. The reader accepts that capture only if its filtered groups and
+  // active rules are still unchanged in the final stage-5 planner.
+  if (stage != 2 && stage != 5) {
     CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::stage_not_five);
     return false;
   }
@@ -430,7 +433,8 @@ void FinishActivityGuestRuleRefreshV1(
       after.thread_id != capture.frame.thread_id ||
       !Read(env, capture.planner, 0x1530, type) ||
       type != capture.activity_type ||
-      !Read(env, capture.planner, 0x1AB0, stage) || stage != 5) {
+      !Read(env, capture.planner, 0x1AB0, stage) ||
+      stage != capture.planning_stage) {
     capture.native_read_failed = true;
   }
   std::uintptr_t group_rows = 0;
@@ -533,7 +537,8 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
     result.status = ActivityGuestRuleProvenanceStatusV1::frame_changed;
     return result;
   }
-  if (capture.planner != planner || capture.planning_stage != 5 ||
+  if (capture.planner != planner ||
+      (capture.planning_stage != 2 && capture.planning_stage != 5) ||
       capture.filtered_groups != planner + 0x1590 ||
       capture.active_rules != planner + 0x1A18) {
     result.status = ActivityGuestRuleProvenanceStatusV1::planner_unavailable;
@@ -550,11 +555,16 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
   std::uint64_t current_fingerprint = 0;
   std::uint64_t current_rules = 0;
   ActivityCostSlot12FrameV1 after{};
+  std::uintptr_t current_type = 0;
+  std::int32_t current_stage = -1;
   if (!GroupFingerprint(env, capture.filtered_groups,
                         current_fingerprint) ||
       current_fingerprint != capture.group_fingerprint ||
       !ActiveRuleFingerprint(env, capture.active_rules, current_rules) ||
       current_rules != capture.active_rule_fingerprint ||
+      !Read(env, planner, 0x1530, current_type) ||
+      current_type != capture.activity_type ||
+      !Read(env, planner, 0x1AB0, current_stage) || current_stage != 5 ||
       env.read_frame == nullptr ||
       !env.read_frame(env.context, after) ||
       after.date_raw != expected.date_raw ||
