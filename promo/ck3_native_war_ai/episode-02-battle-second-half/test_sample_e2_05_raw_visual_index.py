@@ -68,6 +68,7 @@ class SparseSamplerSafetyTests(unittest.TestCase):
         self.assertEqual(sampler.seek_text(Decimal("210.033000")), "210.033")
         self.assertEqual(sampler.seek_label(Decimal("210.033000")), "210p033")
         self.assertEqual(sampler.seek_label(Decimal("0")), "000")
+        self.assertEqual(sampler.seek_label(Decimal("-0")), "000")
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             _, output, argv = make_tiny_fixture(root)
@@ -88,11 +89,24 @@ class SparseSamplerSafetyTests(unittest.TestCase):
             self.assertEqual(receipt["requested_seek_seconds"], "210.033")
             self.assertEqual(receipt["png_or_partial"]["bytes"], 7)
 
-    def test_nonfinite_fractional_seek_rejected_before_attempt(self) -> None:
+    def test_unbounded_or_colliding_seek_rejected_before_attempt(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             _, output, argv = make_tiny_fixture(root)
-            argv[-1] = "NaN"
+            for invalid in ("NaN", "Infinity", "1e-300", "210.1234567"):
+                argv[-1] = invalid
+                with self.subTest(invalid=invalid), \
+                        patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
+                        patch.object(sys, "argv", argv), self.assertRaises(SystemExit):
+                    sampler.main()
+                self.assertFalse(output.exists())
+            argv[-1] = "210.123456789012345678901234567890"
+            argv.extend(["--seek", "210.123456789012345678901234567891"])
+            with patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
+                    patch.object(sys, "argv", argv), self.assertRaises(SystemExit):
+                sampler.main()
+            self.assertFalse(output.exists())
+            argv[-3:] = ["0", "--seek", "-0"]
             with patch.object(sampler.shutil, "which", return_value="ffmpeg-fake"), \
                     patch.object(sys, "argv", argv), self.assertRaises(SystemExit):
                 sampler.main()

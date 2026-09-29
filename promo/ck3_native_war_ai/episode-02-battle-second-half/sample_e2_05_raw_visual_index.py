@@ -120,8 +120,20 @@ def match_probe_pts(value: Decimal, values: list[Decimal], strings: list[str]) -
 
 
 def seek_text(value: Decimal) -> str:
-    """Keep subsecond seeks exact in FFmpeg argv and JSON receipts."""
-    return format(value.normalize(), "f")
+    """Canonicalize the frozen probe's six-decimal PTS without context rounding."""
+    if not value.is_finite() or value < 0 or value >= 600:
+        raise ValueError("seek must be a finite source second in [0, 600)")
+    number = value.as_tuple()
+    if number.exponent < -6 or number.exponent > 2 or len(number.digits) > 9:
+        raise ValueError("seek exceeds six fractional digits or source PTS width")
+    if value.is_zero():
+        return "0"
+    result = format(value, "f")
+    if "." in result:
+        result = result.rstrip("0").rstrip(".")
+    if len(result) > 10:
+        raise ValueError("seek text exceeds frozen PTS width")
+    return result
 
 
 def seek_label(value: Decimal) -> str:
@@ -142,9 +154,12 @@ def main() -> None:
     ffmpeg = shutil.which("ffmpeg")
     if ffmpeg is None:
         parser.error("ffmpeg not found")
-    if len(set(args.seek)) != len(args.seek) or any(
-            not value.is_finite() or value < 0 or value >= 600 for value in args.seek):
-        parser.error("seek values must be distinct finite decimals in [0, 600)")
+    try:
+        seek_texts = [seek_text(value) for value in args.seek]
+    except ValueError as exc:
+        parser.error(str(exc))
+    if len(set(seek_texts)) != len(seek_texts):
+        parser.error("seek values must have distinct canonical PTS and filenames")
 
     links_path = args.postrun_links.resolve(strict=True)
     if args.postrun_links_sha256.upper() != EXPECTED_LINK_SHA256 or \
