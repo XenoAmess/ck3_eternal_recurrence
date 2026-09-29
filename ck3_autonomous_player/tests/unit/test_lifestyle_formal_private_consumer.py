@@ -414,6 +414,70 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
         }, {"query-army-strengths-v1", RECEIPT_STEP})
         self.assertEqual(planned["plan"]["selected_step"], RECEIPT_STEP)
 
+    def test_wartime_query_failure_retries_life_before_same_date_war_read(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        driver.state.fail_query = True
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP,
+                             "query-army-strengths-v1"],
+            "bridge_capabilities": [],
+        }
+        service = GameplayBridgeService(driver)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "query-army-strengths-v1",
+                          "phase": "native_war_army_strength_query"},
+        ):
+            failed = service.plan_turn()["plan"]
+            self.assertEqual(failed["selected_step"], "query-army-strengths-v1")
+            self.assertEqual(failed["lifestyle_war_observation"]["query_status"],
+                             "native_query_unavailable")
+            driver.state.fail_query = False
+            retried = service.plan_turn()["plan"]
+        self.assertEqual(retried["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(retried["lifestyle_action"]["target_key"],
+                         "cutting_corners_perk")
+        self.assertEqual(driver.frame["date_raw"], 53178312)
+
+    def test_wartime_changed_query_frame_retries_after_same_date_pause(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP,
+                             "query-army-strengths-v1"],
+            "bridge_capabilities": [],
+        }
+        service = GameplayBridgeService(driver)
+        original_wait = driver.state.wait_for_command_result
+        changed = False
+
+        def change_frame_once(request_id: str, timeout: float):
+            nonlocal changed
+            result = original_wait(request_id, timeout)
+            if not changed:
+                driver.frame["paused"] = False
+                changed = True
+            return result
+
+        with (
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                       return_value={"selected_step": "query-army-strengths-v1",
+                                     "phase": "native_war_army_strength_query"}),
+            mock.patch.object(driver.state, "wait_for_command_result",
+                              side_effect=change_frame_once),
+        ):
+            failed = service.plan_turn()["plan"]
+            self.assertEqual(failed["selected_step"], "query-army-strengths-v1")
+            self.assertEqual(failed["lifestyle_war_observation"]["query_status"],
+                             "paused_frame_changed_during_private_query")
+            driver.frame["paused"] = True
+            retried = service.plan_turn()["plan"]
+        self.assertEqual(retried["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(driver.frame["date_raw"], 53178312)
+
     def test_war_read_unavailable_does_not_try_peaceful_focus_fallback(self) -> None:
         driver = _Driver()
         driver.state.fail_query = True
@@ -885,6 +949,36 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
                 "selected_step": ROOT_QUERY_STEP,
                 "phase": "peacetime_read_only",
             },
+        ):
+            following = service.plan_turn()["plan"]
+        self.assertEqual(following["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(following["lifestyle_action"]["target_key"],
+                         "cutting_corners_perk")
+
+    def test_opening_wartime_perk_preview_does_not_consume_action_check(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        driver.state.stock_focus_present = True
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", ROOT_QUERY_STEP,
+                             "query-army-strengths-v1"],
+            "bridge_capabilities": [],
+        }
+        service = GameplayBridgeService(driver)
+        opening = service.plan_turn()["plan"]
+        self.assertEqual(opening["selected_step"], ROOT_QUERY_STEP)
+        self.assertEqual(
+            opening["initial_lifestyle_focus_existing"]["perk_opportunity"]["status"],
+            "observed",
+        )
+        driver.require_initial_lifestyle_focus_before_date_advance = False
+        driver.history.extend(_scope_root())
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "query-army-strengths-v1",
+                          "phase": "native_war_army_strength_query"},
         ):
             following = service.plan_turn()["plan"]
         self.assertEqual(following["selected_step"], PERK_SUBMIT_STEP)

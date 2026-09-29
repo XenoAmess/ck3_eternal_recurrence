@@ -1658,3 +1658,39 @@ status and up to 32 observed keys. This is report visibility only: policy,
 typed actions, public MCP and the native ABI are unchanged. A subsequent
 matched paused run must show `status=available` and the actual keys before
 the education/personality readback can be credited.
+
+### R0372 wartime opportunity retry (2026-09-29)
+
+The exact source baseline is master `4df75c3f5a99247c85f0c6bf1d64d4d6d24c7aa0`
+against frozen CK3 1.19.0.6 (EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`).
+R0372's [`formal-report.txt`](Z:/ck3_mod_rewrite_process_assets/nw-econ-r0370-coldwatch-715279f-20260929/run-coldwatch-32/formal-report.txt)
+has SHA-256 `6B1CBAB1CD7108CB72794ED7F828A7C635F1521CA44D7139B81FFA2096AC51D4`.
+Its 32 bounded turns included repeated active-war queries and route advances,
+but the candidate's private LIFE flag was OFF and `initial_lifestyle_focus_gate`
+was null. It contains no LIFE point readback or missed-spend evidence.
+
+With the bounded LIFE opt-in enabled, the formal service tests one paused war
+`query-*` step per episode, actor and game date. It first requires a same-frame
+feudal root result, then reads the private LIFE2/final-legal snapshot. A ready
+focused perk can replace that war query with the existing typed action; a
+pending action instead needs its later-frame receipt. A focusless successor
+uses the separate explicit opening-focus gate. Normal runs without the opt-in
+do not invoke this private consumer.
+
+The source and a focused production-path test found a narrower retry defect:
+the service marked the war date observed before checking whether the LIFE
+query succeeded or still matched the paused frame. After an unavailable read,
+the next war query on the same date skipped LIFE even if the source recovered.
+The existing-focus opening gate also marked the date after its perk preview,
+before the formal perk consumer had a chance to act on the verified focus.
+The retry now marks the date only after a bound query yields either an action
+ready for typed submission or a complete policy decision with no action.
+The opening preview no longer consumes that action check. Unavailable and
+incomplete assessments retain the same-date opportunity.
+The tests drive the formal `plan_turn` path through the private transport with
+an unavailable native reply and a paused-frame change, then recover within
+the same game date. A separate test starts with an already focused actor under
+the explicit opening gate, completes its read-only proof, and selects a ready
+wartime perk before the war query. This is source/test evidence; no R0372 LIFE
+action, new paused LIFE point, or live recovery is claimed.
