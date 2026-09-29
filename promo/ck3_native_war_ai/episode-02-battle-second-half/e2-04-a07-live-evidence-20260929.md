@@ -47,10 +47,10 @@
 
 来源身份勘误：039 live 的 command/checkpoint-copy/source-receipt 与 a07 均绑定 attempt-010 的 d05 存档 SHA-256 `695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885` 和 sidecar `6650C0DB79D063E066AB72402735C22FAE9FCB5D458A56CE1C10B9545CD1F3C7`。它们是**同源字节的独立运行**；039→040 的后态仍不能当作 a07 的实机次帧，DLL 与 RNG 路径也须各自核验。历史 `D978…` 只见于后续 projection recheck，不是 039 的 live 冷载源。
 
-本次**没有可冷载的 d06 受管存档及真实保存回执**。`e2-04-d05-before-save.json` 的保存发生在 23:59:06Z 左右、date_raw=53146344；隔离 profile 的 `autosave.ck3`、`last_save.ck3`、`xar_checkpoint.ck3`、`xar_episode_seed.ck3` 的 mtime 均在 23:58:57–23:59:10Z，先于 23:59:23Z 的一次日期动作。`war_film_checkpoint.ck3` 是启动前 d05 源档副本。不能将这些文件的存在或 d06 post snapshot 当作 d06 checkpoint，更不能下次按 d06 冷载。若需续拍角色特质，应从有新真实 save receipt 的新 attempt 再做。
+本次**没有可冷载的 d06 受管存档及真实保存回执**。`e2-04-d05-before-save.json` 的保存发生在 23:59:06Z 左右、date_raw=53146344；隔离 `profile/save games` 的 `autosave.ck3`、`xar_checkpoint.ck3`、`xar_episode_seed.ck3` 的 mtime 均在 23:58:57–23:59:10Z，先于 23:59:23Z 的一次日期动作。`war_film_checkpoint.ck3` 是启动前 d05 源档副本。不能将这些文件的存在或 d06 post snapshot 当作 d06 checkpoint，更不能下次按 d06 冷载。若需续拍角色特质，应从有新真实 save receipt 的新 attempt 再做。
 
 ## 收尾
 
-`remaining_live_step.py finish` 只在录制自然结束后发唯一 finish 请求。`ck3-output/session-result.json` 于 00:09:06Z 显示受管 `environment_session_complete=true`、进程库存空；外部录制独立于 capture session，后者的 `ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO` 不否认上表单独封存的原始 MKV。`display-restore-a01.json` 于 00:11:27Z 确认 CK3/FFmpeg/OBS 无残留，把 2560×1440 恢复原 1920×1080，Win32 与 `pyautogui.size()` 一致。watchdog 停止；任务总线 00:12:30Z seq2236 `done/resources=[]`，`ck3-screen` 正式释放。
+`remaining_live_step.py finish` 只在录制自然结束后发唯一 finish 请求。`ck3-output/session-result.json` 于 00:09:06Z 记录 `ok=true`、`shutdown.cleanup_proven=true` 与空 `final_ck3_inventory`；`ck3-output/capture-report.json` 另记 `environment_session_complete=true` 和空 `cleanup_process_inventory`。外部录制独立于 capture session，后者的 `ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO` 不否认上表单独封存的原始 MKV。`display-restore-a01.json` 于 00:11:27Z 确认 CK3/FFmpeg/OBS 无残留，把 2560×1440 恢复原 1920×1080，Win32 与 `pyautogui.size()` 一致。watchdog 停止；任务总线 00:12:30Z seq2236 `done/resources=[]`，`ck3-screen` 正式释放。
 
 后续只读工作：新 append-only 全量 PTS 审计、稀疏视觉核对、可能的 clean span 候选、人工 1× 审片与同 run 口播/卡片事实修订。任何机器 GREEN 都不自动生成 clean span、人工签核或成片。
