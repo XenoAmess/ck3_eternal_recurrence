@@ -32,3 +32,29 @@
 4. 期限建议先限定到下一游戏日首个暂停帧并强制重审，但**一天 horizon 本身不是上界证明**。未找到维护费真实结算时点、舰队/补员/自动事件的完整上界前，`future_war_cost_upper_raw` 和 `future_risk_budget_raw` 继续 null；月费率即使刷新完成也不能乘以天数或除以 30。若任何新动作、人数、路线、日期、玩家、战局、政策或来源收据改变，先撤销旧预算再观察。
 
 本合同只给下一轮受管取证的通过条件。静态 `ResetLastUpdateFrame` 路径证明自然 GUI 重算**可被触发**，没有提供 Robert 当下支出、真实扣款节奏或任何正式金额。
+
+## 下一轮最小只读查询的字段与付款分区
+
+这里的“查询”是待实现的受管观察合同，不是当前 DLL 已实现的命令。每个结果都需要前后正式暂停帧、PID+creation、EXE/DLL/source pair、玩家完整 ID、WarID、episode、date、snapshot/public/native revision，以及原始 Q100000 数值的来源 bytes/hash。若任何字段缺失或前后变化，只输出 `null` 和机器可读 `missing`；不得借旧帧补值。`date_raw` 在现有政策门按每游戏日 24 单位换算，政策 `valid_until_date_raw` 必须覆盖 `frame.date_raw + horizon_days * 24`；未来扣费本身仍需独立证明。
+
+| 欲生产的金额 | 最小新增只读结果 | 分类和时间门 |
+| --- | --- | --- |
+| `pending_war_cash_raw` | 完整 owner 写入者登记和跨重连 journal：每个 `request_id` 的 typed action、WarID、source frame、原生报价、是否已提交、原生应用状态、独立结算/未应用回执；另证明游戏侧延期扣款及其他 writer 是否在覆盖范围内。现有 `war_cash_pending_ledger_v1.py` 只有“已记录未结报价之和”的下界，不能报告全集。 | 仅未结且**已经提交或被正式保留**的 claim 入 pending；同一 claim 不再计入当次 action 或未来 due event。无记录、空 history、ACK、驱动重连均不能证明零。无法枚举所有 writer 时保留 null。 |
+| `immediate_war_action_cost_raw` | 冻结正式 `selected_step`、完整 typed 参数和原生预览的 army/origin/target/整条 ProvinceID 路线；若涉及上船，另读取唯一 GUI owner 图标对应的 CUnitID 集、缓存完成证据、原生费用行 `+0x78` Q100000 和实际首次扣款边界。`move-army` 预览目前没有价格或海路标记；上船图标金额只有预测身份。 | 仅**提交选中动作到下一强制重审前必发生**的首次扣款可入 immediate。若路程后段才上船，把已证报价放入未来 due event；时点不明则即时与未来均不能填零。`selected_step:null` 只有精确同帧正式计划可给本项 0；纯读 selected query 的零证明不能迁移到 move/hire/surrender。 |
+| `future_war_cost_upper_raw` | 每类未来现金流的原生 due event `{cash_claim_id, kind, first_due_date_raw, latest_due_date_raw, maximum_single_debit_raw, maximum_count_through_horizon, source_frame, evidence_sha256}`，至少覆盖征召兵、MAA 补员、舰队/上船后维护、已雇佣合同到期/续约、已排定的战争动作及自动现金事件；同时有相同暂停帧的兵团/舰队/补员/佣兵 roster 和状态。实际军费结算函数或一次精确扣款窗口的前后收据须证明次数与 Q100000 金额上界。 | 只汇总 deadline 内**不属于 pending/immediate** 的独立 claim。`MilitaryView.GetGoldMilitaryExpenses` 与 `GetAllRaisedGoldMilitaryExpenses` 是月费率/预测，原版 GUI 明说舰队可高于后者；`on_army_monthly` 是军队事件 hook，非金币扣款日。未证明扣款 cadence、次数上限或任何自动费用类时，future upper 保持 null；禁止月费/30。 |
+| `future_risk_budget_raw` | 由另行审阅并固定 hash 的玩家战争政策给出风险覆盖集合、每类有界金额、claim ID、有效截止日和强制重审点；它补偿已经明确列出的未能精确报价风险，不可由费用缓存自证。 | 与未来 due event 和最低储备的 claim ID 两两不交。开放式或无法给上界的风险类不能靠任意有限金额掩盖，应使期限内消费决策失败关闭。 |
+| `policy_minimum_gold_reserve_raw` | 独立发布/pin 的玩家战争政策 bytes，`war_cash_floor_policy_provenance_v1.py` 已提供候选形状门：政策版本、玩家、episode、WarID、Q100000 floor、`terminal_liquidity_after_horizon` 用途、有效起止及不交叠 claim ID。 | 这是**付款后仍须留在国库**的政策底线，不能用原版 AI 的 `MIN_WAR_CHEST`/18 个月目标或建造域 200 金静默代入；候选 helper 固定 `formal_cash_receipt_eligible=false`，直到审阅来源和其余费用真实来源闭合。 |
+
+`next_review_date_raw` 应由受管推进器给出一个实际可执行的首个暂停重审点；`horizon_end_date_raw` 不得晚于它，且政策有效期须覆盖终点。在下一次花费授权前强制重新读完整输入。只声明 `horizon_days=1`、读取到当天月费或读到稳定 GUI tick，均不证明这一天的扣款次数或未来上界。若当前步只做纯读查询，查询零费只处理当次动作，未来战费和旧待付账仍在原分区。
+
+## 需要先跑成 RED 的负例
+
+1. **同 WarID、异路线上船。**保持 ArmyID/目标/国库不变，只改预览中间 ProvinceID 或 CUnit 集；旧图标金额应失效。另造“首段陆路、后段上船”与“首段上船”两条路，不能将两者都当首跳即时费。
+2. **图标构造零值。**费用行初始化为 0，但尚无图标自然刷新完成、唯一 owner 和 CUnit 对应；不得输出免费。`GetEmbarkCost` callback 只复制缓存，不重新计价。
+3. **空账本与迟到 ACK。**当前 driver journal 空、历史命令空，但存在重连前请求或未知结果；`pending_war_cash_raw` 必须 null。提交 ACK 后尚未有独立已扣/未应用回执，仍不得核销。
+4. **跨结算日的一日窗口。**当前与预测月费率相同，窗口内出现一次真实月费扣款或舰队倍率变化；按 rate/30 的候选必须拒绝。没有原生“最多一次”证据时，保留整月 rate 也不能升级为正式 upper。
+5. **佣兵与自动事件。**合同将在 horizon 内到期，或脚本可能触发战争现金事件，但 roster/due event 查询遗漏该类；即使没有主动续约命令，future upper 仍 null。
+6. **自证政策。**把刚读到的 policy bytes 自己哈希作 pin、把 AI war chest 当玩家 floor、政策今晚到期却宣称覆盖明日、或 future/risk/floor 共用一个 claim ID；政策门必须拒绝，不能用 `source` 非空字符串绕过。
+7. **同一费用跨分区。**一笔上船报价既在 owner pending、又进当次 immediate 或 future；合计会双计，claim ID 去重门必须拒绝而非静默相加。
+
+上述负例建议用离线合成帧与已钉住的原生静态来源测试，不能把合成正例写成 Robert 实机 GREEN。当前 #449 的五项现金实值和期限保持 `null`；待新受管 attempt 完整回执冻结后，再决定哪些只读观察可提升为正式生产者。
