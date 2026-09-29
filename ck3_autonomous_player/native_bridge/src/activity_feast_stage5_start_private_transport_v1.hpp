@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/activity_feast_stage5_start_v1.hpp"
+#include "xar_bridge/activity_stage5_feast_guest_join_v1.hpp"
 #include "xar_bridge/activity_stage5_canstart_read_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
@@ -47,6 +48,12 @@ struct ActivityFeastStage5PrivateQueryV1 {
       bridge::ActivityFeastBalanceStatusV1::exact_build_rejected;
   bridge::ActivityHostedIdentityStatusV1 hosted_status =
       bridge::ActivityHostedIdentityStatusV1::exact_build_rejected;
+  bridge::ActivityFeastGuestJoinStatusV1 guest_status =
+      bridge::ActivityFeastGuestJoinStatusV1::exact_build_rejected;
+  std::uint32_t selected_nonhost_count = 0;
+  std::uint32_t positive_join_count = 0;
+  std::uint32_t timely_positive_join_count = 0;
+  bool arrival_time_observed = false;
   // Stage-5 invited-guest arrival/benefit source is not yet live qualified.
   bool guest_route_qualified = false;
   bool completed = false;
