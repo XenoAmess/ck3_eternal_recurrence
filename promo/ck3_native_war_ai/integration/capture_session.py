@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
 import runpy
+import xml.etree.ElementTree as ET
 import json
 import os
 from pathlib import Path
@@ -153,29 +154,202 @@ def validate_d11_battle_control_pair(
             pair["build_status"] == "READY" and
             pair["battle_control_ctest_passed"] is True,
             "D11 battle-control pair manifest is incomplete or untested")
-    report = pair["build_report"]
-    require(isinstance(report, dict) and set(report) == {"path", "sha256"} and
-            isinstance(report["path"], str) and isinstance(report["sha256"], str),
+    report_ref = pair["build_report"]
+    require(isinstance(report_ref, dict) and set(report_ref) == {"path", "sha256"} and
+            isinstance(report_ref["path"], str) and isinstance(report_ref["sha256"], str),
             "D11 battle-control build report reference is malformed")
-    report_path = Path(report["path"])
+    report_path = Path(report_ref["path"])
     require(report_path.is_absolute() and report_path.is_file() and
-            identity(report_path)["sha256"] == report["sha256"],
+            identity(report_path)["sha256"] == report_ref["sha256"],
             "D11 battle-control build report bytes changed")
-    native_root = Path(__file__).resolve().parents[3] / "ck3_autonomous_player" / "native_bridge"
+    checkout = Path(__file__).resolve().parents[3]
+    native_root = checkout / "ck3_autonomous_player" / "native_bridge"
     serializer = native_root / "src" / "battle_control_snapshot_v1_mailbox.cpp"
-    fingerprint = runpy.run_path(str(native_root / "tools" / "build_fresh.py"))[
+    helper = native_root / "tools" / "build_fresh.py"
+    fingerprint = runpy.run_path(str(helper))[
         "native_bridge_source_fingerprint"
     ](native_root)
     from xar_autoplayer.bridge import battle_control_contract
+    contract = Path(battle_control_contract.__file__).resolve()
+    expected_contract = (checkout / "ck3_autonomous_player" / "src" /
+                         "xar_autoplayer" / "bridge" / "battle_control_contract.py").resolve()
+    require(contract == expected_contract,
+            "D11 battle-control Python contract loaded from another checkout")
     expected = {
         "source_fingerprint_sha256": fingerprint,
         "native_serializer_sha256": identity(serializer)["sha256"],
-        "python_contract_sha256": identity(Path(battle_control_contract.__file__))["sha256"],
+        "python_contract_sha256": identity(contract)["sha256"],
         "dll_sha256": identity(dll_path)["sha256"],
         "injector_sha256": identity(injector_path)["sha256"],
     }
     require(all(pair[key] == value for key, value in expected.items()),
             "D11 battle-control native/Python source pair differs from the exact build")
+    build = json.loads(report_path.read_text(encoding="utf-8"))
+    required_build_keys = {
+        "status", "build_status", "head", "build_dir", "configuration",
+        "source_fingerprint_sha256", "native_serializer_sha256",
+        "python_contracts_sha256", "dll", "injector", "dll_sha256",
+        "injector_sha256", "tests_ran", "test_scope", "dependency_gate",
+        "dependency_receipt_path", "dependency_receipt_sha",
+        "source_before_path", "source_before_sha", "source_after_path",
+        "source_after_sha", "configure_argv_path", "configure_argv_sha",
+        "configure_result_path", "configure_result_sha", "build_argv_path",
+        "build_argv_sha", "build_result_path", "build_result_sha",
+        "ctest_name", "ctest_argv_path", "ctest_argv_sha",
+        "ctest_result_path", "ctest_result_sha", "ctest_stdout_path",
+        "ctest_stdout_sha", "ctest_junit_path", "ctest_junit_sha", "tests",
+    }
+    require(isinstance(build, dict) and required_build_keys <= set(build),
+            "D11 focused build report lacks required provenance")
+    build_dir = Path(build["build_dir"])
+    require(build["status"] == "STATIC_RELEASE_CANDIDATE_NO_CK3_LAUNCH" and
+            build["build_status"] == "READY" and
+            build["configuration"] == "Release" and
+            build["tests_ran"] is True and
+            build["test_scope"] == "current-battle-knight-mailbox-and-python-port" and
+            build["dependency_gate"] == "ck3_11906.hpp-recorded" and
+            build_dir.is_absolute() and build_dir.resolve() == dll_path.resolve().parent and
+            build_dir.resolve() == injector_path.resolve().parent,
+            "D11 focused build status or directory is not admissible")
+    require(build["source_fingerprint_sha256"] == fingerprint and
+            build["native_serializer_sha256"] == expected["native_serializer_sha256"] and
+            isinstance(build["python_contracts_sha256"], dict) and
+            build["python_contracts_sha256"].get("battle_control_contract.py") ==
+            expected["python_contract_sha256"],
+            "D11 focused build source fingerprint differs")
+    for name, path, digest in (
+        ("dll", dll_path, expected["dll_sha256"]),
+        ("injector", injector_path, expected["injector_sha256"]),
+    ):
+        artifact = build[name]
+        require(isinstance(artifact, dict) and
+                artifact.get("path") == str(path.resolve()) and
+                artifact.get("bytes") == path.stat().st_size and
+                artifact.get("sha256") == digest and
+                build[f"{name}_sha256"] == digest,
+                f"D11 focused build {name} artifact differs from loaded bytes")
+
+    def bound(name: str) -> Path:
+        path = Path(build[f"{name}_path"])
+        require(path.is_absolute() and path.is_file() and
+                identity(path)["sha256"] == build[f"{name}_sha"],
+                f"D11 focused build {name} receipt bytes changed")
+        return path
+
+    dependency = json.loads(bound("dependency_receipt").read_text(encoding="utf-8"))
+    dependency_objects = runpy.run_path(str(helper))["DEPENDENCY_OBJECTS"]
+    rows = dependency.get("objects")
+    require(dependency.get("schema") == "xar.promo.e204-native-dependency/v1" and
+            dependency.get("source_fingerprint_sha256") == fingerprint and
+            isinstance(rows, list) and len(rows) == len(dependency_objects) and
+            {row.get("object") for row in rows if isinstance(row, dict)} ==
+            set(dependency_objects),
+            "D11 focused native dependency receipt differs from source")
+    for row in rows:
+        def dependency_bound(kind: str) -> Path:
+            path = Path(row[f"{kind}_path"])
+            require(path.is_absolute() and path.is_file() and
+                    identity(path)["sha256"] == row[f"{kind}_sha"],
+                    f"D11 focused dependency {kind} bytes changed")
+            return path
+
+        argv = json.loads(dependency_bound("argv").read_text(encoding="utf-8"))["argv"]
+        result = json.loads(dependency_bound("result").read_text(encoding="utf-8"))
+        stdout = dependency_bound("stdout").read_text(encoding="utf-8", errors="replace")
+        dependency_bound("stderr")
+        require(isinstance(argv, list) and len(argv) == 6 and
+                Path(argv[argv.index("-C") + 1]).resolve() == build_dir.resolve() and
+                argv[argv.index("-t") + 1] == "deps" and
+                argv[-1] == row["object"] and
+                result.get("exit_code") == 0 and
+                re.search(r"#deps\s+[1-9][0-9]*", stdout) is not None and
+                "ck3_11906.hpp" in stdout and
+                row.get("ck3_11906_header_recorded") is True and
+                row.get("positive_dependency_count") is True,
+                "D11 focused Ninja dependency evidence is not valid")
+
+    source_evidence = {}
+    for name in ("source_before", "source_after"):
+        source = json.loads(bound(name).read_text(encoding="utf-8"))
+        require(source.get("source_fingerprint_sha256") == fingerprint and
+                source.get("native_bridge_fingerprint_sha256") == fingerprint and
+                (source.get("build_fresh_helper") or {}).get("sha256") ==
+                identity(helper)["sha256"] and source.get("head") == build["head"] and
+                source.get("configuration") == "Release",
+                f"D11 focused build {name} source changed")
+        source_evidence[name] = source
+    configure_argv = json.loads(bound("configure_argv").read_text(encoding="utf-8"))["argv"]
+    configure_result = json.loads(bound("configure_result").read_text(encoding="utf-8"))
+    build_argv = json.loads(bound("build_argv").read_text(encoding="utf-8"))["argv"]
+    build_result = json.loads(bound("build_result").read_text(encoding="utf-8"))
+    require(isinstance(configure_argv, list) and
+            "-S" in configure_argv and "-B" in configure_argv and
+            Path(configure_argv[configure_argv.index("-S") + 1]).name == "native_bridge" and
+            Path(configure_argv[configure_argv.index("-B") + 1]).resolve() ==
+            build_dir.resolve() and
+            "-DCMAKE_BUILD_TYPE=Release" in configure_argv and
+            configure_result.get("exit_code") == 0,
+            "D11 focused configure did not use the current Release source")
+    builder_root = Path(configure_argv[configure_argv.index("-S") + 1]).resolve()
+    require(builder_root.is_dir() and
+            runpy.run_path(str(helper))["native_bridge_source_fingerprint"](builder_root) ==
+            fingerprint and
+            all(Path(source_evidence[name]["build_fresh_helper"]["path"]).resolve() ==
+                builder_root / "tools" / "build_fresh.py"
+                for name in ("source_before", "source_after")),
+            "D11 focused builder source changed after compilation")
+    require(isinstance(build_argv, list) and
+            str(build_dir.resolve()) in build_argv and
+            all(target in build_argv for target in (
+                "xar_ck3_bridge", "xar_ck3_bridge_injector",
+                "xar_ck3_battle_control_snapshot_v1_mailbox_test")) and
+            build_result.get("exit_code") == 0,
+            "D11 focused build did not complete the required targets")
+
+    ctest_name = "xar_ck3_native_bridge_battle_control_snapshot_v1_mailbox"
+    ctest_argv = json.loads(bound("ctest_argv").read_text(encoding="utf-8"))["argv"]
+    ctest_result_path = bound("ctest_result")
+    ctest_result = json.loads(ctest_result_path.read_text(encoding="utf-8"))
+    ctest_stdout = bound("ctest_stdout").read_text(encoding="utf-8", errors="replace")
+    ctest_junit_path = bound("ctest_junit")
+    require(build["ctest_name"] == ctest_name and
+            isinstance(ctest_argv, list) and "--output-on-failure" in ctest_argv and
+            "--test-dir" in ctest_argv and
+            Path(ctest_argv[ctest_argv.index("--test-dir") + 1]).resolve() ==
+            build_dir.resolve() and
+            "-R" in ctest_argv and
+            ctest_argv[ctest_argv.index("-R") + 1] == f"^{ctest_name}$" and
+            "--output-junit" in ctest_argv and
+            Path(ctest_argv[ctest_argv.index("--output-junit") + 1]).resolve() ==
+            ctest_junit_path.resolve() and
+            ctest_result.get("exit_code") == 0 and
+            ctest_result.get("returncode") == 0 and
+            ctest_name in ctest_stdout and "100% tests passed" in ctest_stdout,
+            "D11 focused battle-control CTest command or result is not GREEN")
+    junit = ET.parse(ctest_junit_path).getroot()
+    cases = junit.findall(".//testcase")
+    if junit.tag == "testsuite":
+        cases = junit.findall("testcase")
+    require(len(cases) == 1 and cases[0].get("name") == ctest_name and
+            all(not cases[0].findall(tag) for tag in ("failure", "error", "skipped")) and
+            junit.get("tests") == "1" and junit.get("failures") == "0" and
+            junit.get("errors", "0") == "0" and junit.get("skipped", "0") == "0",
+            "D11 focused battle-control JUnit testcase is not passing")
+    tests = build["tests"]
+    require(isinstance(tests, dict) and
+            {"ctest", "python-normal", "python-optimized"} <= set(tests) and
+            tests["ctest"] == {"result_path": str(ctest_result_path),
+                               "result_sha256": identity(ctest_result_path)["sha256"]},
+            "D11 focused test receipt map differs")
+    for name in ("python-normal", "python-optimized"):
+        row = tests[name]
+        require(isinstance(row, dict) and set(row) == {"result_path", "result_sha256"},
+                f"D11 focused {name} receipt reference is malformed")
+        result_path = Path(row["result_path"])
+        require(result_path.is_absolute() and result_path.is_file() and
+                identity(result_path)["sha256"] == row["result_sha256"] and
+                json.loads(result_path.read_text(encoding="utf-8")).get("exit_code") == 0,
+                f"D11 focused {name} tests are not GREEN")
     dll = dll_path.read_bytes()
     require(all(marker in dll for marker in BATTLE_CONTROL_WIRE_MARKERS),
             "D11 DLL lacks current battle-control resume wire fields")
