@@ -441,6 +441,10 @@ def parser() -> argparse.ArgumentParser:
         help="cold-read one paired child proposal on a paused frame without submitting",
     )
     native_auto_run_parser.add_argument(
+        "--private-child-matrilineal-first-heir-companion", action="store_true",
+        help="also read current first-heir relationship on that same paused frame",
+    )
+    native_auto_run_parser.add_argument(
         "--private-child-matrilineal-pending-recovery", type=int, nargs=2,
         metavar=("HEIR_ID", "CANDIDATE_ID"),
         help="consume one paired child result through a bounded formal LIFE turn",
@@ -1041,6 +1045,10 @@ def main(argv: list[str] | None = None) -> int:
                         args.private_child_matrilineal_pending_read)}
                     if args.private_child_matrilineal_pending_read is not None else {}
                 )
+                if args.private_child_matrilineal_first_heir_companion:
+                    private_child_pending_options[
+                        "private_child_matrilineal_first_heir_companion"
+                    ] = True
                 if args.private_child_matrilineal_pending_recovery is not None:
                     private_child_pending_options.update({
                         "private_child_matrilineal_target": tuple(
