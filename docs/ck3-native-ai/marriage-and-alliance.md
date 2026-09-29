@@ -1136,7 +1136,7 @@ flowchart TD
 
 冻结游戏仍为 CK3 `1.19.0.6`，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `hud.gui` 分别通过 `GetPlayer.GetPrestige`、`GetPlayer.GetPiety` 和 `GetPlayer.GetInfluence` 展示这三项余额；`00_marriage_interactions.txt:272–326` 的普通婚配 `cost` 可按条件索取三者。当前公开 paused snapshot 已读玩家威望，但没有玩家虔诚或影响力。婚配五行的 native `Can Send` 可证明单次发送合法，不能代替同帧跨提案资源占用或比较。
 
-已绑定的 exact-build `CCharacter+0x1A8` extension、`+0x130` 威望和 `+0x110` 虔诚由现有 `ReadCharacterExitResources` 同时读取，且当前玩家 snapshot 已使用同一 extension 读金币和威望。故可把 `+0x110` 的 signed Q100000 虔诚只读值接入同一 paused snapshot；未加载地图或未解析玩家仍为 `null`。当前源码和 ABI 账本没有可验证的影响力余额 offset/getter，不能从成本 ordinal `4` 猜出余额地址，也不能把普通封建候选的可能零费用外推到其他政府或选项。影响力先保持未观测，待 exact-build getter 或字段链及 paused 实机对照成立后再接入。三项费用本身的当前候选仍待匹配 paused 实机读回；本段不改变联合排序或动作门。
+已绑定的 exact-build `CCharacter+0x1A8` extension、`+0x130` 威望和 `+0x110` 虔诚由现有 `ReadCharacterExitResources` 同时读取，且当前玩家 snapshot 已使用同一 extension 读金币和威望。故可把 `+0x110` 的 signed Q100000 虔诚只读值接入同一 paused snapshot；未加载地图或未解析玩家仍为 `null`。当前源码和 ABI 账本没有可验证的影响力余额 offset/getter，不能从成本 ordinal `4` 猜出余额地址，也不能把普通封建候选的可能零费用外推到其他政府或选项。影响力先保持未观测，待 exact-build getter 或字段链及 paused 实机对照成立后再接入。R0380 已在 H90 同一 paused 帧读回五个婚配候选的十类即时费用，均为零；该窄场景不能外推到其他角色或政府。本段不改变联合排序或动作门，新增虔诚余额口仍待匹配 DLL 的实机暂停帧读回。
 
 ```mermaid
 flowchart TD
