@@ -46,6 +46,22 @@ If the slot remains active, the consumer records its new progress and restarts
 the 30-day watch. A built slot, building effect and realized income increase
 remain unobserved.
 
+R0355 cold-restored that due checkpoint on new PID `112500`. Its
+[four-turn formal report](Z:/ck3_mod_rewrite_process_assets/nw-econ-r0354-due-watch-20260929/run-watch-4/formal-report.txt)
+has SHA-256 `AF08A9D61311F7053E928F63899D48E5A85D54DE3412AB594017AD7326BCCA44`
+and `turn_limit/qualified`, 4/4 successful turns. Turn 1 independently read
+the original construction request at raw `53154720`: the same slot remained
+`applied/in_progress`, with remaining work raw `105055560`, down from the
+R0354 cold read's `108500001` at raw `53153976`. Turn 2 consumed this updated
+receipt; turns 2–4 read marriage and war state. All four turns stayed at raw
+`53154720`, and no second construction was submitted. The
+[R0355 construction ledger](Z:/ck3_mod_rewrite_process_assets/nw-econ-r0354-due-watch-20260929/state/construction-formal-pending-v1.json)
+has SHA-256 `A737A230423DE0B1D37F75A2F98CBB31E2A842A9DA59F377B5DEB14BF058D823`;
+its last material check is now raw `53154720`, and both province and player
+monthly income deltas remain `null`. The 30-day warm watch is therefore due
+at raw `53155440`; normal play can carry this unfinished build until
+then. The observed progress does not prove a completion date or realized gain.
+
 ## 2026-09-29 NW-ECON: keep an applied-building readout under blocked war
 
 The H90-derived `hill_farms_01` at barony 2174/province 2629/slot 1 has an
