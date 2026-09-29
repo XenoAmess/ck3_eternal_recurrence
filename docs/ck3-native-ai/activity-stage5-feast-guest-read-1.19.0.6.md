@@ -204,3 +204,72 @@ arrival, activity creation, reward, next-turn consumption or post-selection
 cold restore was tested. A future positive-guest valuation needs a
 native-legal selected non-host and an expectation/arrival read; final
 CanStart must be re-read separately on the decision frame.
+
+## Normal guest-rule toggle ABI: source only (R0368 follow-up)
+
+The original `game/gui/window_activity_guest_list.gui:100-115` binds each
+`OrderedActivityInviteRule` row to
+`ActivityGuestListWindow.ToggleInviteFromRules(OrderedActivityInviteRule.Self)`
+and its down state to `IsInviteRuleActive`. The ordinary guest list at line
+332 is `CharacterSelectionList.GetList`. The `select_special_guest` button at
+lines 547-552 is visible only while selecting a **special** guest; it is not
+the ordinary invite operation. The original `feast.txt:798-835` supplies
+default invite categories, including close family, vassals, courtiers and
+spouses, while `can_be_activity_guest` at lines 834-839 checks adult,
+healthy and diplomatic range. These script entries do not establish which
+H3928 character is finally legal or likely to arrive.
+
+The following offsets are from the frozen 1.19.0.6 executable with SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+They are **static disassembly**, not a paused action or accepted invitation:
+
+1. GUI registration at RVA `0x25B0B3` copies the exact
+   `ToggleInviteFromRules` string from `.rdata` RVA `0x41670D0`.
+   `0x25B135` passes callback RVA `0x151C3E0` to registration helper
+   `0x151E220`. The sibling registration at `0x25B243` copies
+   `IsInviteRuleActive` from `0x4167110`; `0x25B2C8` binds callback
+   `0x151C480` through `0x151E6F0`.
+2. Toggle callback `0x151C3E0` receives the ordered-rule list item in `R8`,
+   resolves its rule through the item's virtual `+0x28` call, and at
+   `0x151C44C` calls `0x151C110(window, rule)`; a failed item resolution
+   returns false. The active-state callback `0x151C480` uses the same item
+   resolution and calls `0x151C2B0` at `0x151C4F4`.
+3. `0x151C110` requires `window+0xF8 == -1` (planning mode). Otherwise it
+   exits without changing a rule. In planning mode it searches the sorted
+   16-byte rows at `window+0x110` for the supplied native rule identity:
+   an existing row is erased at `0x151C23D`, and an absent one is inserted
+   at `0x151C219`. It then copies the updated rules to
+   `planner+0x1A18` through `0x100F940` (`0x151C246..0x151C257`), calls
+   planner configuration refresh `0x10B0780` (`0x151C25F`), and refreshes
+   the guest-list view through `0x151B3D0` (`0x151C283`).
+   `0x151C2B0` checks membership in the same sorted rule rows; it is the
+   independent active-state read for an inactive-to-active typed action.
+
+```mermaid
+flowchart LR
+  A[GUI ordered invite rule] --> B[0x151C3E0 resolves rule]
+  B --> C{0x151C110 planning mode?}
+  C -- no --> X[No mutation]
+  C -- yes --> D[Toggle window +0x110 active rows]
+  D --> E[Copy to planner +0x1A18]
+  E --> F[0x10B0780 planner refresh]
+  F --> G[0x151B3D0 guest-list refresh]
+  D --> H[0x151C2B0 active-state getter]
+```
+
+This closes the **GUI-to-native toggle route**, not a final-legal candidate
+reader. The R0368 paused Stage 5 guest result was `observed` with
+`selected_nonhost_count=0`, `positive_join_count=0` and
+`timely_positive_join_count=0`. That reader traverses only the planner's
+already selected rows at `+0x1678/+0x1684`, so the zeros do not rule out
+unselected legal candidates. No current private bridge command or MCP method
+invokes the toggle. A bounded typed action must bind a fresh ordered-rule
+identity to the same actor/planner, read `IsInviteRuleActive=false`, toggle
+once, then independently read active=true and the refreshed selected guest
+rows. If no eligible row appears, record that outcome instead of inventing a
+guest. The current R0368 final `CanStart=false` military-role display is a
+separate gate; rule selection alone does not permit Start.
+
+To reproduce the address trace on the exact executable, disassemble RVAs
+`0x25B040` (size `0x300`), `0x151C110` (`0x1A0`), `0x151C2B0`
+(`0x90`), `0x151C3E0` (`0xA0`) and `0x151C480` (`0xB0`).
