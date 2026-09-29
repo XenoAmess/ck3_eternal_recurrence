@@ -8439,6 +8439,7 @@ struct MarriageCandidateAllianceMailboxQueryV1 {
       reads{};
   std::size_t row_count = kMarriageCandidateAllianceProjectionRowsV1;
   bool request_matrilineal_option = false;
+  bool read_fertility = false;
   bool frame_observed = false;
 };
 
@@ -8457,7 +8458,8 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
     query.reads[index] =
         xar::ck3_11906::ReadMarriageCandidateAlliancePrivateV1(
              query.bindings, query.observed[index], query.environment,
-             query.outcome_environment, query.request_matrilineal_option);
+             query.outcome_environment, query.request_matrilineal_option,
+             query.read_fertility);
   }
   xar::game::Snapshot after{};
   if (!xar::ck3_11906::ReadSnapshot(query.bindings, after) ||
@@ -8657,6 +8659,32 @@ std::string MarriageCandidateAllianceProjectionFrameV1(
     result += available ? SignedNumber(read.heir_adult_threshold_raw) : "null";
     result += ",\"candidate_adult_threshold_raw\":";
     result += available ? SignedNumber(read.candidate_adult_threshold_raw) : "null";
+    if (step == kPlayerChildMarriageValueStepV1) {
+      const auto append_fertility = [&](std::string_view key,
+                                        const auto &fertility) {
+        result += ",\"";
+        result += key;
+        result += "\":";
+        if (!available || !fertility.available) {
+          result += "null";
+        } else {
+          result += "{\"source\":\"native_marriage_fertility_input\","
+                    "\"extension_present\":";
+          result += fertility.extension_present ? "true" : "false";
+          result += ",\"native_gate_evaluated\":";
+          result += fertility.native_gate_evaluated ? "true" : "false";
+          result += ",\"native_gate_allows\":";
+          result += fertility.native_gate_evaluated
+                        ? (fertility.native_gate_allows ? "true" : "false")
+                        : "null";
+          result += ",\"effective_raw\":";
+          result += SignedNumber(fertility.effective_raw);
+          result += '}';
+        }
+      };
+      append_fertility("heir_native_fertility", read.heir_fertility);
+      append_fertility("candidate_native_fertility", read.candidate_fertility);
+    }
     result += ",\"grand_wedding_option_selected\":";
     result += available ? (read.grand_wedding_option_selected ? "true" : "false")
                         : "null";
@@ -13642,6 +13670,7 @@ void RunConnectedSession(
               before.has_played_character && before.played_character_alive;
           MarriageCandidateAllianceMailboxQueryV1 query{};
           query.row_count = 1;
+          query.read_fertility = true;
           (void)xar::bridge::JsonBooleanField(
               incoming.payload, "request_matrilineal_option",
               query.request_matrilineal_option);

@@ -52,6 +52,18 @@ def _reply() -> dict[str, object]:
                   "heir_house_id": 174, "heir_dynasty_id": 174,
                   "candidate_house_id": 2052,
                   "candidate_dynasty_id": 2052,
+                  "heir_native_fertility": {
+                      "source": "native_marriage_fertility_input",
+                      "extension_present": True,
+                      "native_gate_evaluated": True,
+                      "native_gate_allows": True,
+                      "effective_raw": 75000},
+                  "candidate_native_fertility": {
+                      "source": "native_marriage_fertility_input",
+                      "extension_present": True,
+                      "native_gate_evaluated": True,
+                      "native_gate_allows": True,
+                      "effective_raw": 65000},
                   "candidate_betrothed_character_id": None,
                   "candidate_primary_spouse_character_id": None,
                   "candidate_spouse_character_ids": [],
@@ -138,6 +150,19 @@ class PlayerChildMarriageValueTests(unittest.TestCase):
             query_player_child_marriage_value_private_v1(
                 _Driver(_reply(), [_frame(), later]),
                 legality=_legality(), candidate_character_id=37267)
+
+    def test_missing_or_inconsistent_native_fertility_is_rejected(self) -> None:
+        for replacement in (None, {"source": "native_marriage_fertility_input",
+                                   "extension_present": False,
+                                   "native_gate_evaluated": False,
+                                   "native_gate_allows": None,
+                                   "effective_raw": 1}):
+            reply = _reply()
+            reply["result"]["rows"][0]["candidate_native_fertility"] = replacement
+            with self.assertRaises(BridgeUnavailableError):
+                query_player_child_marriage_value_private_v1(
+                    _Driver(reply, [_frame(), _frame()]),
+                    legality=_legality(), candidate_character_id=37267)
 
 
 if __name__ == "__main__":

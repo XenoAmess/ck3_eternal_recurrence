@@ -1222,3 +1222,38 @@ future partnership timing, then decide whether the age limit should change.
 The existing private specified-child default submit and bilateral result
 transport can be reused after that decision; the current formal consumer only
 selects the separate adult matrilineal child case.
+
+### Exact-build native fertility input for Guy's two alternatives (2026-09-30)
+
+The frozen CK3 `1.19.0.6` EXE SHA-256 is
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The UI `fertility` filter at RVA `0x127065C` and AI marriage candidate scorer
+at `0x1890FA9` both call the same character eligibility function at
+`0x260FAF0`. When it returns true and `Character+0x1A8` has an extension,
+both read the signed qword at extension `+0x2E0`; otherwise they use zero.
+The UI filter string and independent AI scorer call establish that this is a
+native marriage fertility input. The exact source spans, hashes and
+reproducible extractor are in
+`native_bridge/research/player_child_marriage_fertility_1_19_0_6_abi.json`.
+The raw scale is not yet established, so it must remain an integer.
+
+```mermaid
+flowchart TD
+    A[Native marriage candidate] --> B{Character fertility eligibility gate}
+    B -- false --> Z[Effective fertility raw = 0]
+    B -- true --> C{Character extension present}
+    C -- false --> Z
+    C -- true --> D[Read extension + 0x2E0 signed raw]
+    D --> E[UI fertility filter and AI candidate score]
+    Z --> E
+    E -. unknown .-> F[Pair-specific childbearing at future marriage date]
+    F -. unknown .-> G[Positive Guy dynasty value]
+```
+
+The private specified-child same-frame read-only query now carries this
+native input for Guy and a selected final-legal candidate; it still needs a
+paused live read for actual alternatives `37909` and `39380`. The read alone
+does not decide that either betrothal is worth making:
+their future partnership timing, pair-specific childbearing, and long
+obligation remain unproved. A paused native read and comparison are the next
+evidence gate; no proposal or game-date advance follows from this static tree.
