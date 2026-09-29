@@ -1,0 +1,516 @@
+"""One exact, isolated H3937 combined read-only observation entry.
+
+Only an external, reviewed GO receipt can admit this one managed session. The
+two underlying module gates are enabled in memory for the call and restored in
+all outcomes. This module never authorizes a game date or gameplay action.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import secrets
+import subprocess
+import sys
+import traceback
+from datetime import datetime, timezone
+
+from . import h3937_combined_paused_war_scope_run as outer
+from . import h3937_combined_readonly_queries as inner
+from .environment import EnvironmentSpec
+from .runtime import NativeBridgeLaunchConfig
+
+
+ROUND = "R3940"
+PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
+NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-02")
+STATE = NO_LAUNCH / "state"
+OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-02")
+GO = OUTPUT.parent / "go-attempt-02.json"
+SCREEN = OUTPUT.parent / "screen-attempt-02"
+GAME = Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III")
+DLL = NO_LAUNCH / "source-verified" / "xar_ck3_bridge.dll"
+INJECTOR = NO_LAUNCH / "source-verified" / "xar_ck3_bridge_injector.exe"
+SUPERVISOR_TIMEOUT_SECONDS = 540
+
+
+def _sha(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for block in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest().upper()
+
+
+def _read_json(path: Path) -> dict[str, object]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"expected JSON object: {path}")
+    return value
+
+
+def _write_json(path: Path, value: dict[str, object]) -> None:
+    with path.open("x", encoding="utf-8", newline="\n") as target:
+        target.write(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _git(*args: str) -> str:
+    checkout = Path(__file__).resolve().parents[3]
+    result = subprocess.run(["git", *args], cwd=checkout, capture_output=True,
+                            text=True, check=True, timeout=30)
+    return result.stdout.strip()
+
+
+def _image_inventory(image: str) -> dict[str, object]:
+    result = subprocess.run(["tasklist", "/FI", f"IMAGENAME eq {image}",
+                             "/FO", "CSV"], capture_output=True, timeout=30)
+    raw = result.stdout.decode("utf-8", errors="replace")
+    return {"image": image, "returncode": result.returncode,
+            "found": image.casefold() in raw.casefold(), "raw": raw}
+
+
+def _require_entry_blob(entry_path: Path) -> dict[str, str]:
+    checkout = Path(__file__).resolve().parents[3]
+    entry = entry_path.resolve()
+    if _git("status", "--porcelain=v1", "--untracked-files=all"):
+        raise ValueError("one-shot checkout is dirty")
+    try:
+        relative = entry.relative_to(checkout.resolve()).as_posix()
+    except ValueError as error:
+        raise ValueError("one-shot entry outside exact checkout") from error
+    head = _git("rev-parse", "HEAD")
+    blob = _git("hash-object", "--", str(entry))
+    if blob != _git("rev-parse", "--verify", f"{head}:{relative}"):
+        raise ValueError("one-shot direct entry differs from HEAD")
+    return {"head": head, "entry_blob": blob, "entry_sha256": _sha(entry)}
+
+
+def _require_exact_admission() -> dict[str, object]:
+    if _git("status", "--porcelain=v1", "--untracked-files=all"):
+        raise ValueError("one-shot checkout is dirty")
+    head = _git("rev-parse", "HEAD")
+    self_rel = Path(__file__).resolve().relative_to(Path(__file__).resolve().parents[3]).as_posix()
+    if _git("hash-object", "--", str(Path(__file__).resolve())) != _git(
+        "rev-parse", "--verify", f"{head}:{self_rel}"
+    ):
+        raise ValueError("one-shot entry bytes differ from HEAD")
+    admission_path = NO_LAUNCH / "admission.json"
+    manifest_path = NO_LAUNCH / "operator-manifest.json"
+    admission = _read_json(admission_path)
+    manifest = _read_json(manifest_path)
+    if not (
+        admission.get("candidate_head") == manifest.get("candidate_head") == head
+        and admission.get("candidate_checkout_clean") is True
+        and manifest.get("candidate_clean") is True
+        and Path(str(admission.get("prepared_state"))).resolve() == STATE.resolve()
+        and Path(str(manifest.get("state_dir"))).resolve() == STATE.resolve()
+        and manifest.get("bridge_pipe") == PIPE
+        and Path(str(manifest.get("bridge_dll"))).resolve() == DLL.resolve()
+        and Path(str(manifest.get("bridge_injector"))).resolve() == INJECTOR.resolve()
+        and Path(str(manifest.get("game_dir"))).resolve() == GAME.resolve()
+        and admission.get("episode_run_id") == "native-29829-2bc2d599f7f9"
+        and admission.get("actor") == 29829
+        and admission.get("date_raw") == 53219928
+        and admission.get("history_index") == 3937
+        and admission.get("raw_driver_sha256")
+            == "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722"
+        and manifest.get("source_raw_driver_sha256")
+            == admission.get("raw_driver_sha256")
+        and manifest.get("source_checkpoint_sha256")
+            == "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6"
+        and manifest.get("source_child_sidecar_sha256")
+            == "798F16F572FB83399CC9AB7ABD16561E87C47CEF7109CF23D255DAE660A8D8A7"
+        and manifest.get("prepared_driver_sha256")
+            == admission.get("prepared_driver_sha256")
+        and manifest.get("rebind_receipt_sha256")
+            == admission.get("official_rebind_receipt_sha256")
+        and manifest.get("preflight_report_sha256")
+            == admission.get("official_preflight_report_sha256")
+        and manifest.get("environment_sha256")
+            == admission.get("environment_sha256")
+        and admission.get("dll_sha256") == outer.COMBINED_DLL_SHA256
+        and admission.get("injector_sha256") == outer.COMBINED_INJECTOR_SHA256
+        and admission.get("combined_outer_hard_gate") is False
+        and admission.get("combined_inner_hard_gate") is False
+        and admission.get("ck3_launch_attempted") is False
+        and admission.get("live_authorized") is False
+        and manifest.get("outer_hard_gate") is False
+        and manifest.get("inner_hard_gate") is False
+        and manifest.get("ck3_launch_attempted") is False
+        and manifest.get("live_output_created") is False
+        and isinstance(manifest.get("source_git_blobs"), dict)
+        and len(manifest["source_git_blobs"]) == 12
+    ):
+        raise ValueError("one-shot no-launch identity mismatch")
+    expected = {
+        DLL: outer.COMBINED_DLL_SHA256,
+        INJECTOR: outer.COMBINED_INJECTOR_SHA256,
+        NO_LAUNCH / "source-verified" / "driver-state.json":
+            "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722",
+        NO_LAUNCH / "source-verified" / "xar_checkpoint.ck3":
+            "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6",
+        NO_LAUNCH / "source-verified" / "player-child-matrilineal-formal-v1.json":
+            "798F16F572FB83399CC9AB7ABD16561E87C47CEF7109CF23D255DAE660A8D8A7",
+        STATE / "profile" / "save games" / "xar_checkpoint.ck3":
+            "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6",
+        STATE / "player-child-matrilineal-formal-v1.json":
+            "798F16F572FB83399CC9AB7ABD16561E87C47CEF7109CF23D255DAE660A8D8A7",
+        STATE / "native-session" / "driver-state.json":
+            str(admission.get("prepared_driver_sha256", "")),
+        STATE / "ordinary-seed-rebind-v1.json":
+            str(admission.get("official_rebind_receipt_sha256", "")),
+        Path(str(admission.get("official_preflight_report"))):
+            str(admission.get("official_preflight_report_sha256", "")),
+    }
+    if not all(_sha(path) == digest.upper() for path, digest in expected.items()):
+        raise ValueError("one-shot prepared source asset hash mismatch")
+    preflight_path = Path(str(admission["official_preflight_report"]))
+    if not preflight_path.resolve().is_relative_to((STATE / "preflights").resolve()):
+        raise ValueError("one-shot official preflight outside exact state")
+    rebind = _read_json(STATE / "ordinary-seed-rebind-v1.json")
+    if not (
+        rebind.get("ok") is True and rebind.get("status") == "rebound"
+        and rebind.get("ck3_launch_attempted") is False
+        and rebind.get("desktop_interaction") is False
+        and rebind.get("pipe_name") == PIPE
+        and Path(str(rebind.get("state_dir"))).resolve() == STATE.resolve()
+        and rebind.get("environment", {}).get("target_sha256")
+            == admission.get("environment_sha256")
+        and str(rebind.get("driver_state", {}).get("target_sha256", "")).upper()
+            == str(admission.get("prepared_driver_sha256", "")).upper()
+    ):
+        raise ValueError("one-shot official rebind contract mismatch")
+    preflight = _read_json(preflight_path)
+    anchor = preflight.get("resume_anchor")
+    if not (
+        preflight.get("status") == "ready" and preflight.get("ok") is True
+        and preflight.get("ck3_launch_attempted") is False
+        and preflight.get("desktop_interaction") is False
+        and preflight.get("process_inventory", {}).get("processes") == []
+        and isinstance(anchor, dict)
+        and anchor.get("checkpoint", {}).get("saved_date_raw") == 53219928
+        and anchor.get("checkpoint", {}).get("history_index") == 3937
+        and anchor.get("driver_state", {}).get("episode_character_id") == 29829
+        and anchor.get("driver_state", {}).get("episode_run_id")
+            == "native-29829-2bc2d599f7f9"
+        and anchor.get("checkpoint", {}).get("succession_lifecycle")
+            == anchor.get("driver_state", {}).get("succession_lifecycle")
+        and anchor.get("checkpoint", {}).get("succession_lifecycle", {}).get("lifecycle")
+            == "ordinary_campaign_succession"
+        and anchor.get("checkpoint", {}).get("succession_lifecycle", {}).get("xar_enabled")
+            == "xar_off"
+        and anchor.get("checkpoint", {}).get("succession_lifecycle", {}).get("pact_contract")
+            == "absent_by_fresh_campaign_xar_off_contract"
+        and anchor.get("checkpoint", {}).get("succession_lifecycle", {}).get("environment_sha256")
+            == admission.get("environment_sha256")
+        and preflight.get("profile", {}).get("environment_sha256")
+            == admission.get("environment_sha256")
+        and str(preflight.get("profile", {}).get("ck3_executable_sha256", "")).upper()
+            == _sha(GAME / "binaries" / "ck3.exe")
+    ):
+        raise ValueError("one-shot official preflight contract mismatch")
+    if outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not False or inner.H3937_COMBINED_LIVE_AUTHORIZED is not False:
+        raise ValueError("combined candidate gates already enabled")
+    if not (
+        _sha(DLL) == str(manifest.get("bridge_dll_sha256", "")).upper()
+        and _sha(INJECTOR) == str(manifest.get("bridge_injector_sha256", "")).upper()
+    ):
+        raise ValueError("one-shot manifest binary SHA mismatch")
+    return {"head": head, "admission_sha256": _sha(admission_path),
+            "manifest_sha256": _sha(manifest_path),
+            "preflight_sha256": _sha(Path(str(admission["official_preflight_report"]))),
+            "rebind_sha256": _sha(STATE / "ordinary-seed-rebind-v1.json")}
+
+
+def _require_go(identity: dict[str, object]) -> dict[str, object]:
+    go = _read_json(GO)
+    if not (
+        go.get("schema") == "xar.war.h3937-combined-once-go.v1"
+        and go.get("decision") == "GO_READ_ONLY_H3937_COMBINED"
+        and go.get("candidate_head") == identity["head"]
+        and go.get("round") == ROUND
+        and Path(str(go.get("state_dir"))).resolve() == STATE.resolve()
+        and Path(str(go.get("output_dir"))).resolve() == OUTPUT.resolve()
+        and go.get("pipe") == PIPE
+        and go.get("admission_sha256") == identity["admission_sha256"]
+        and go.get("operator_manifest_sha256") == identity["manifest_sha256"]
+        and go.get("preflight_sha256") == identity["preflight_sha256"]
+        and go.get("rebind_sha256") == identity["rebind_sha256"]
+        and go.get("screen_lease_exclusive") is True
+        and go.get("steam_offline_direct_visual_reviewed") is True
+        and go.get("account_single_instance_clear") is True
+        and go.get("ck3_zero_process_before") is True
+        and go.get("recorder_zero_before") is True
+        and go.get("authorized_scope") == "two_paused_readonly_queries"
+    ):
+        raise ValueError("one-shot external GO receipt missing or mismatched")
+    for name in ("steam_original", "screen_lease_receipt"):
+        path = Path(str(go.get(f"{name}_path")))
+        if not path.resolve().is_relative_to(SCREEN.resolve()):
+            raise ValueError(f"one-shot {name} outside exact screen attempt")
+        if _sha(path) != str(go.get(f"{name}_sha256", "")).upper():
+            raise ValueError(f"one-shot {name} bytes changed")
+    return go
+
+
+def run_exact_once(claim_nonce: str) -> dict[str, object]:
+    """Consume one exact output path; every failure remains as a RED attempt."""
+    if not OUTPUT.is_dir():
+        raise FileNotFoundError("one-shot supervisor claim directory missing")
+    _write_json(OUTPUT / "worker-started.json", {
+        "schema": "xar.war.h3937-combined-worker-started.v1",
+        "at_utc": _now(), "claim_nonce": claim_nonce,
+    })
+    started = _now()
+    primary_error: str | None = None
+    outer_report: dict[str, object] | None = None
+    identity: dict[str, object] | None = None
+    go_sha: str | None = None
+    go_attestation: dict[str, object] | None = None
+    before: dict[str, object] | None = None
+    after: dict[str, object] | None = None
+    original_outer = outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED
+    original_inner = inner.H3937_COMBINED_LIVE_AUTHORIZED
+    try:
+        claim = _read_json(OUTPUT / "supervisor-claim.json")
+        if not (
+            claim.get("schema") == "xar.war.h3937-combined-supervisor-claim.v1"
+            and claim.get("claim_nonce") == claim_nonce
+            and claim.get("round") == ROUND
+            and Path(str(claim.get("output_dir"))).resolve() == OUTPUT.resolve()
+            and claim.get("head") == _git("rev-parse", "HEAD")
+        ):
+            raise ValueError("one-shot supervisor claim mismatch")
+        identity = _require_exact_admission()
+        go_attestation = _require_go(identity)
+        go_sha = _sha(GO)
+        before = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
+        if any(item["returncode"] != 0 or item["found"] is True for item in before.values()):
+            raise ValueError("one-shot live process inventory not empty")
+        _write_json(OUTPUT / "invocation.json", {
+            "schema": "xar.war.h3937-combined-once-invocation.v1",
+            "at_utc": _now(), "round": ROUND, "candidate": identity,
+            "no_launch_path": str(NO_LAUNCH), "go_receipt_path": str(GO),
+            "go_receipt_sha256": go_sha, "state_dir": str(STATE),
+            "output_dir": str(OUTPUT), "pipe": PIPE, "dll": str(DLL),
+            "injector": str(INJECTOR), "game_dir": str(GAME),
+            "process_inventory_before": before,
+            "date_move_attack_authorized": False,
+        })
+        outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = True
+        inner.H3937_COMBINED_LIVE_AUTHORIZED = True
+        try:
+            outer_report = outer.collect_h3937_combined_paused_war_scope_once(
+                EnvironmentSpec(state_dir=STATE, game_dir=GAME),
+                ownership_round_id=ROUND, cold_start_checkpoint=True,
+                native_bridge=NativeBridgeLaunchConfig(
+                    mode="native-headless", pipe_name=PIPE,
+                    dll_path=DLL, injector_path=INJECTOR,
+                ),
+            )
+        finally:
+            outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = original_outer
+            inner.H3937_COMBINED_LIVE_AUTHORIZED = original_inner
+        _write_json(OUTPUT / "outer-report.json", outer_report)
+    except BaseException as error:
+        primary_error = f"{type(error).__name__}: {error}"
+        with (OUTPUT / "error-traceback.txt").open("x", encoding="utf-8") as target:
+            target.write(traceback.format_exc())
+    finally:
+        outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = original_outer
+        inner.H3937_COMBINED_LIVE_AUTHORIZED = original_inner
+        try:
+            after = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
+        except BaseException as error:
+            primary_error = primary_error or f"post inventory: {type(error).__name__}: {error}"
+        try:
+            if go_sha is not None and _sha(GO) != go_sha:
+                primary_error = primary_error or "GO receipt bytes changed"
+            if go_attestation is not None:
+                for name in ("steam_original", "screen_lease_receipt"):
+                    path = Path(str(go_attestation[f"{name}_path"]))
+                    if _sha(path) != str(go_attestation[f"{name}_sha256"]).upper():
+                        primary_error = primary_error or f"{name} bytes changed"
+        except BaseException as error:
+            primary_error = primary_error or f"GO/screen readback: {type(error).__name__}: {error}"
+    cleanup = outer_report.get("cleanup") if isinstance(outer_report, dict) else None
+    gates_restored = (
+        outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is original_outer is False
+        and inner.H3937_COMBINED_LIVE_AUTHORIZED is original_inner is False
+    )
+    processes_gone = bool(after and all(
+        item["returncode"] == 0 and item["found"] is False for item in after.values()
+    ))
+    green = bool(
+        primary_error is None and isinstance(outer_report, dict)
+        and outer_report.get("ok") is True
+        and outer_report.get("status") == "GREEN_READ_ONLY_COMBINED"
+        and outer_report.get("action_authorized") is False
+        and outer_report.get("date_advance_authorized") is False
+        and outer_report.get("gameplay_actions") == 0
+        and outer_report.get("query_actions") == 2
+        and isinstance(cleanup, dict) and cleanup.get("ok") is True
+        and gates_restored and processes_gone
+    )
+    completion = {
+        "schema": "xar.war.h3937-combined-once-completion.v1",
+        "started_at_utc": started, "finished_at_utc": _now(),
+        "status": "GREEN_READ_ONLY" if green else "RED",
+        "outer_report_path": str(OUTPUT / "outer-report.json")
+            if (OUTPUT / "outer-report.json").is_file() else None,
+        "outer_report_sha256": _sha(OUTPUT / "outer-report.json")
+            if (OUTPUT / "outer-report.json").is_file() else None,
+        "error": primary_error,
+        "gates_restored": gates_restored,
+        "process_inventory_after": after,
+        "processes_gone": processes_gone,
+        "outer_cleanup_proven": isinstance(cleanup, dict) and cleanup.get("ok") is True,
+        "action_authorized": False, "date_advance_authorized": False,
+        "one_shot_output_consumed": True,
+    }
+    _write_json(OUTPUT / "completion.json", completion)
+    return completion
+
+
+def main(claim_nonce: str) -> int:
+    completion = run_exact_once(claim_nonce)
+    print(json.dumps(completion, ensure_ascii=False))
+    return 0 if completion["status"] == "GREEN_READ_ONLY" else 1
+
+
+def supervise_exact_once(entry_path: Path) -> int:
+    """Bound the worker, retain stdio, and prove its process tree is gone."""
+    OUTPUT.mkdir(parents=True, exist_ok=False)
+    try:
+        entry = _require_entry_blob(entry_path)
+    except BaseException as error:
+        _write_json(OUTPUT / "supervisor-completion.json", {
+            "schema": "xar.war.h3937-combined-once-supervisor.v1",
+            "finished_at_utc": _now(), "status": "RED",
+            "prelaunch_source_refusal": f"{type(error).__name__}: {error}",
+            "worker_started": False, "ck3_launch_attempted": False,
+            "action_authorized": False, "date_advance_authorized": False,
+            "one_shot_output_consumed": True,
+        })
+        return 1
+    claim_nonce = secrets.token_hex(16)
+    _write_json(OUTPUT / "supervisor-claim.json", {
+        "schema": "xar.war.h3937-combined-supervisor-claim.v1",
+        "at_utc": _now(), "claim_nonce": claim_nonce,
+        "parent_pid": os.getpid(), "round": ROUND,
+        "head": entry["head"], "entry_blob": entry["entry_blob"],
+        "entry_sha256": entry["entry_sha256"],
+        "output_dir": str(OUTPUT),
+    })
+    started = _now()
+    worker = None
+    stdout = b""
+    stderr = b""
+    timeout = False
+    supervisor_error: str | None = None
+    kill_result: dict[str, object] | None = None
+
+    def kill_tree(process: object) -> dict[str, object]:
+        try:
+            killed = subprocess.run(
+                ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                capture_output=True, check=False, timeout=30,
+            )
+            receipt = {
+                "worker_pid": process.pid, "returncode": killed.returncode,
+                "stdout": killed.stdout.decode("utf-8", errors="replace"),
+                "stderr": killed.stderr.decode("utf-8", errors="replace"),
+            }
+            if killed.returncode != 0:
+                try:
+                    process.kill()
+                    receipt["worker_fallback_kill_attempted"] = True
+                except BaseException as error:
+                    receipt["worker_fallback_kill_error"] = f"{type(error).__name__}: {error}"
+            return receipt
+        except BaseException as error:
+            receipt = {"worker_pid": process.pid,
+                       "error": f"{type(error).__name__}: {error}"}
+            try:
+                process.kill()
+                receipt["worker_fallback_kill_attempted"] = True
+            except BaseException as fallback_error:
+                receipt["worker_fallback_kill_error"] = (
+                    f"{type(fallback_error).__name__}: {fallback_error}")
+            return receipt
+
+    try:
+        worker = subprocess.Popen(
+            [sys.executable, str(entry_path), "--worker", claim_nonce],
+            cwd=entry_path.resolve().parent,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        try:
+            stdout, stderr = worker.communicate(timeout=SUPERVISOR_TIMEOUT_SECONDS)
+        except subprocess.TimeoutExpired as error:
+            timeout = True
+            stdout = error.stdout or b""
+            stderr = error.stderr or b""
+            kill_result = kill_tree(worker)
+            try:
+                later_stdout, later_stderr = worker.communicate(timeout=30)
+                stdout = later_stdout if later_stdout is not None else stdout
+                stderr = later_stderr if later_stderr is not None else stderr
+            except subprocess.TimeoutExpired:
+                supervisor_error = "worker remained after bounded taskkill"
+    except BaseException as error:
+        supervisor_error = f"{type(error).__name__}: {error}"
+        if worker is not None and worker.returncode is None and kill_result is None:
+            kill_result = kill_tree(worker)
+    with (OUTPUT / "supervisor.stdout.txt").open("x", encoding="utf-8") as target:
+        target.write(stdout.decode("utf-8", errors="replace"))
+    with (OUTPUT / "supervisor.stderr.txt").open("x", encoding="utf-8") as target:
+        target.write(stderr.decode("utf-8", errors="replace"))
+    after = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
+    processes_gone = all(
+        item["returncode"] == 0 and item["found"] is False for item in after.values()
+    )
+    child_completion_path = OUTPUT / "completion.json"
+    child_completion = _read_json(child_completion_path) if child_completion_path.is_file() else None
+    child_report_path = OUTPUT / "outer-report.json"
+    ok = bool(
+        not timeout and supervisor_error is None and worker is not None
+        and worker.returncode == 0 and processes_gone
+        and isinstance(child_completion, dict)
+        and child_completion.get("status") == "GREEN_READ_ONLY"
+        and child_completion.get("action_authorized") is False
+        and child_completion.get("date_advance_authorized") is False
+        and child_completion.get("outer_cleanup_proven") is True
+        and child_completion.get("gates_restored") is True
+        and child_completion.get("processes_gone") is True
+        and child_report_path.is_file()
+        and child_completion.get("outer_report_sha256") == _sha(child_report_path)
+    )
+    _write_json(OUTPUT / "supervisor-completion.json", {
+        "schema": "xar.war.h3937-combined-once-supervisor.v1",
+        "started_at_utc": started, "finished_at_utc": _now(),
+        "status": "GREEN_READ_ONLY" if ok else "RED",
+        "worker_pid": worker.pid if worker is not None else None,
+        "worker_returncode": worker.returncode if worker is not None else None,
+        "timeout": timeout, "timeout_seconds": SUPERVISOR_TIMEOUT_SECONDS,
+        "taskkill": kill_result, "error": supervisor_error,
+        "stdout_sha256": _sha(OUTPUT / "supervisor.stdout.txt"),
+        "stderr_sha256": _sha(OUTPUT / "supervisor.stderr.txt"),
+        "child_completion_sha256": _sha(child_completion_path)
+            if child_completion_path.is_file() else None,
+        "process_inventory_after": after, "processes_gone": processes_gone,
+        "action_authorized": False, "date_advance_authorized": False,
+    })
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
