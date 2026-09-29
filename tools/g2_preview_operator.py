@@ -2702,7 +2702,6 @@ def command_query_r0345_stationary_route_contact_v1(
         "single_cold_restore_bookkeeping",
         "paused_frame_unchanged",
         "stationary_scope_unchanged",
-        "guarded_subject_unchanged",
         "exact_one_appended_query",
         "driver_history_matches_query_after",
         "date_unchanged",
@@ -2747,6 +2746,30 @@ def command_query_r0345_stationary_route_contact_v1(
 # Source assets are verified, but the H3937 paused hostile scope and a fresh
 # official prepared pair for this checkout are still missing.
 H3937_RECEIVER_ASSETS_AND_SCOPE_VERIFIED = False
+H3937_REQUIRED_CHECKS = frozenset({
+    "exact_one_read_only_query",
+    "query_source_bound_to_before_frame",
+    "readiness_bound_to_query_before",
+    "single_cold_restore_bookkeeping",
+    "paused_frame_unchanged",
+    "stationary_scope_unchanged",
+    "guarded_subject_unchanged",
+    "exact_one_appended_query",
+    "driver_history_matches_query_after",
+    "date_unchanged",
+    "checkpoint_unchanged",
+    "child_pending_sidecar_unchanged",
+    "abi_unchanged",
+    "cleanup_proven",
+})
+
+
+def h3937_required_checks_green(checks: object) -> bool:
+    return bool(
+        isinstance(checks, dict)
+        and set(checks) == H3937_REQUIRED_CHECKS
+        and all(value is True for value in checks.values())
+    )
 
 
 def command_query_h3937_stationary_route_contact_v1(
@@ -2903,21 +2926,6 @@ def command_query_h3937_stationary_route_contact_v1(
     except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
         report = None
     checks = report.get("checks") if isinstance(report, dict) else None
-    required_checks = {
-        "exact_one_read_only_query",
-        "query_source_bound_to_before_frame",
-        "readiness_bound_to_query_before",
-        "single_cold_restore_bookkeeping",
-        "paused_frame_unchanged",
-        "stationary_scope_unchanged",
-        "exact_one_appended_query",
-        "driver_history_matches_query_after",
-        "date_unchanged",
-        "checkpoint_unchanged",
-        "child_pending_sidecar_unchanged",
-        "abi_unchanged",
-        "cleanup_proven",
-    }
     checkpoint_after = sha256(save) if save.is_file() else None
     driver_after = sha256(driver_path) if driver_path.is_file() else None
     child_sidecar_after = sha256(child_sidecar_path) if child_sidecar_path.is_file() else None
@@ -2930,9 +2938,7 @@ def command_query_h3937_stationary_route_contact_v1(
         and report.get("status") == "GREEN_READ_ONLY"
         and report.get("action_authorized") is False
         and report.get("round") == args.ownership_round_id
-        and isinstance(checks, dict)
-        and set(checks) == required_checks
-        and all(checks.values())
+        and h3937_required_checks_green(checks)
         and isinstance(report.get("cleanup"), dict)
         and report["cleanup"].get("ok") is True
         and checkpoint_after == checkpoint_before
