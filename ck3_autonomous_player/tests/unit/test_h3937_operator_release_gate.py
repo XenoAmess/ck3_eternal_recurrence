@@ -28,7 +28,14 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             "outer_report_sha256": "A" * 64,
             "pre_native_launch_proven": False,
             "unsafe_marker_absent": True,
-            "nonce_bound_watchdog_scans": [[], []],
+            "expected_watchdog_nonce": "exact-nonce",
+            "expected_watchdog_parent_pid": 456,
+            "nonce_bound_watchdog_scans": [
+                {"schema": "xar.watchdog-nonce-scan.v1", "nonce": "exact-nonce",
+                 "parent_pid": 456, "wmi_toolhelp_cross_checked": True,
+                 "captured_monotonic_ns": tick, "identities": []}
+                for tick in (1, 2)
+            ],
             "watchdog_scan_error": None,
             "unique_owned_screen_lease": True,
         }
@@ -43,13 +50,15 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             ("watchdog_scan_error", "WMI unavailable"),
             ("nonce_bound_watchdog_scans", None),
             ("nonce_bound_watchdog_scans", [[]]),
-            ("nonce_bound_watchdog_scans", [[], [{"pid": 8056}]]),
         ]
         for key, value in cases:
             with self.subTest(key=key, value=value):
                 facts = self.facts()
                 facts[key] = value
                 self.assertFalse(assess_screen_release(**facts)["may_release"])
+        facts = self.facts()
+        facts["nonce_bound_watchdog_scans"][1]["identities"].append({"pid": 8056})
+        self.assertFalse(assess_screen_release(**facts)["may_release"])
 
     def test_a13_shape_never_releases_lease(self) -> None:
         facts = self.facts()
@@ -109,6 +118,8 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             ("nonce_bound_watchdog_scans", ["", ""]),
             ("nonce_bound_watchdog_scans", [[], [], []]),
             ("nonce_bound_watchdog_scans", ""),
+            ("expected_watchdog_nonce", ""),
+            ("expected_watchdog_parent_pid", "456"),
             ("child_completion", "not a report"),
             ("outer_report", "not a report"),
         ]
@@ -116,6 +127,18 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             with self.subTest(key=key, value=value):
                 facts = self.facts()
                 facts[key] = value
+                self.assertFalse(assess_screen_release(**facts)["may_release"])
+        for mutation in (
+            {"nonce": "wrong-nonce"},
+            {"parent_pid": 1456},
+            {"wmi_toolhelp_cross_checked": "true"},
+            {"captured_monotonic_ns": 1},
+            {"identities": None},
+            {"schema": "other-schema"},
+        ):
+            with self.subTest(scan_mutation=mutation):
+                facts = self.facts()
+                facts["nonce_bound_watchdog_scans"][1].update(mutation)
                 self.assertFalse(assess_screen_release(**facts)["may_release"])
 
 
