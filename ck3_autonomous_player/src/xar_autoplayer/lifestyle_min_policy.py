@@ -13,6 +13,7 @@ from typing import Mapping
 POLICY_ID = "g2-m4-lifestyle-min-v1"
 WAR_PERK_POLICY_ID = "g2-lifestyle-wartime-stewardship-perk-v1"
 WAR_MARTIAL_PERK_POLICY_ID = "g2-lifestyle-wartime-martial-perk-v1"
+WAR_DIPLOMACY_PERK_POLICY_ID = "g2-lifestyle-wartime-diplomacy-perk-v1"
 _STEWARDSHIP = "stewardship_lifestyle"
 _BUILD_COST_PERK = "cutting_corners_perk"
 _BUILD_SPEED_PERK = "professional_workforce_perk"
@@ -22,6 +23,8 @@ _WEALTH_FOCUS = "stewardship_wealth_focus"
 _MARTIAL_FOCUS = "martial_authority_focus"
 _MARTIAL = "martial_lifestyle"
 _MARTIAL_CONTROL_PERK = "serve_the_crown_perk"
+_DIPLOMACY = "diplomacy_lifestyle"
+_DIPLOMACY_GIFT_PERK = "thoughtful_perk"
 _REQUIRED_READINESS = (
     "current_focus_ready",
     "lifestyle_progress_ready",
@@ -268,6 +271,25 @@ def choose_min_feudal_lifestyle_action(
                         "target_lifestyle_key": _MARTIAL,
                         "expected": binding,
                         "reason": "feudal_county_control_growth_add_0_3",
+                    },
+                }
+        if current_lifestyle == _DIPLOMACY:
+            if at_peace is False:
+                result["policy_id"] = WAR_DIPLOMACY_PERK_POLICY_ID
+            points = progress.get("unspent_perk_points")
+            if not isinstance(points, int) or isinstance(points, bool) or points < 0:
+                return {**result, "status": "observation_unavailable"}
+            if (points > 0 and _DIPLOMACY_GIFT_PERK in perk_keys
+                    and _DIPLOMACY_GIFT_PERK not in owned):
+                return {
+                    **result,
+                    "status": "recommend_action",
+                    "selected_action": {
+                        "kind": "perk",
+                        "target_key": _DIPLOMACY_GIFT_PERK,
+                        "target_lifestyle_key": _DIPLOMACY,
+                        "expected": binding,
+                        "reason": "send_gift_opinion_gain_doubled",
                     },
                 }
         if current_lifestyle == _STEWARDSHIP:
