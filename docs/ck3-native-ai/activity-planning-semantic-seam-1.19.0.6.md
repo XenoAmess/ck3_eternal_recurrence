@@ -435,3 +435,61 @@ also need a paired paused observation that event `0x65` makes the planner
 widget visible and its slot-12 cost update runs before `+0x1AD8` is read.
 Those conditions remain dashed `unknown`; no CK3 process or save was used in
 this continuation.
+
+## 2026-09-29 registry and queue-delivery continuation
+
+This continuation supersedes the **lookup and delivery** unknowns immediately
+above. It uses the same exact 1.19.0.6 EXE/SHA-256 and original
+`game/gui/window_activity_list.gui` lines 162 and 807-860. It is static
+evidence only: no CK3 process, paused save, or planner action was used.
+
+- `CActivityListWindow.GetActivityGroupItems` is registered at `0x258AE0`;
+  wrapper `0x1506380` calls `0xB75420`, which returns the window's `+0xF8`
+  collection. `ActivityGroupItem.GetActivities` is registered at `0x258600`;
+  wrapper `0x15062E0` returns the group item's `+0x08` collection.
+  `ActivityItem.GetType` is registered in the same GUI binding cluster at
+  `0x258187`; callback `0x7F7EB0` returns `[item+0x08]`, and wrapper
+  `0x1506240` uses the `0xCAF920` type descriptor. The list's slot 12
+  (`0x1504410`) rebuilds its row collection, so row addresses are transient.
+- The same slot 12 obtains the **underlying activity-type registry** at
+  `0x15046C3 -> 0x88E140`. The latter reads manager global RVA
+  `0x570BE98`; `0x15046C8/CC` read its 8-byte `CActivityType*` array at
+  `manager+0x68` and count at `manager+0x74`. The loop at `0x15046F0`
+  reads each type before applying original visibility/eligibility inputs.
+  An operation can enumerate the registry without retaining a GUI row:
+  require a present manager, bounded/readable array, exact type vtable
+  `0x440E308`, copied stable key at `type+0x18`, and **exactly one**
+  `activity_feast` match. Reacquire and validate the pointer in each paused
+  operation; the static trace does not prove its lifetime across reloads or
+  frames.
+- The handler queue consumer at `0xA794D0` takes the accepted event through
+  `0xA795A8 -> 0xA79200`, invokes the recipient's slot 18 at `0xA795D2`,
+  then tests its slot 7 visibility and invokes slot 3 at `0xA795E5..EB`
+  when hidden. For event `0x65`, the recipient is the planner at
+  `handler+0x3C0`: slot 18 `0x10AE120` selects the type and initializes
+  stage 2; slot 3 `0x10ACCB0` runs its native open path. This proves that
+  original event delivery **requests** the planner to open without a
+  coordinate click. It does not prove that a particular paused frame has an
+  attached, visible widget after delivery.
+
+```mermaid
+flowchart LR
+    K[registry manager +0x68 / +0x74] --> T[unique activity_feast CActivityType pointer]
+    T --> H[HostView type payload and Confirm event 0x65]
+    H --> Q[handler queue consumer 0xA794D0]
+    Q --> S[planner slot 18 selects type and stage 2]
+    S --> O[slot 3 native open request if hidden]
+    O -. paused widget visibility and slot 12 order unknown .-> C[fresh configured cost +0x1AD8]
+    S -. stage 2 gate and default configuration unknown .-> V[stage 5 final validator]
+```
+
+The remaining executable proof is a correctly paired paused frame: verify
+the event makes the planner widget visible, the normal handler update runs
+slot 12 **after** selecting/configuring this type and **before** reading
+`+0x1AD8`, then establish that the stage-2 gate permits one transition to
+stage 5 and read the final `0x10B0DA0` validator there. No generation or
+validity marker for the cost container has been found. Calling effectful
+slot 12 directly is not a substitute for proving the normal update order;
+calling `ProgressPlanningStage` at stage 5 starts an activity. Until those
+observations, configured cost and final `can_start` remain typed `unknown`,
+and this registry/dispatch trace is a prerequisite, not an activity action.
