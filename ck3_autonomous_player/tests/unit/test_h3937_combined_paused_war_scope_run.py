@@ -259,7 +259,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                 if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
                                "readiness_timeout_lease_red"}:
                     readiness_failure = producer.NativeReadinessTimeoutError(
-                        "synthetic no semantic state",
+                        "forbidden-exception-" + "X" * 100000,
                         readiness_diagnostics={
                             "mode": "native-headless", "backend_id": "native-headless",
                             "transport_ready": True, "snapshot": False,
@@ -279,7 +279,9 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         },
                         last_observation={"snapshot_id": "native:4",
                                           "date_raw": producer.EXPECTED_DATE_RAW,
-                                          "full_snapshot": "forbidden-snapshot"},
+                                          "full_snapshot": "forbidden-snapshot",
+                                          "_semantic": {"active_wars": "forbidden-semantic-war",
+                                                        "player_armies": "Y" * 100000}},
                     )
                 elif outcome == "readiness_error":
                     readiness_failure = RuntimeError("synthetic ordinary failure")
@@ -349,9 +351,14 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         self.assertEqual(result["readiness_timeout_last_observation"]["date_raw"],
                                          producer.EXPECTED_DATE_RAW)
                         encoded = json.dumps(result)
+                        self.assertEqual(
+                            result["error"],
+                            "NativeReadinessTimeoutError: semantic game state unavailable")
+                        self.assertLess(len(encoded), 50000)
                         for forbidden in ("forbidden-hello", "forbidden-frame",
                                           "forbidden-capabilities", "forbidden-history",
-                                          "forbidden-snapshot"):
+                                          "forbidden-snapshot", "forbidden-exception-",
+                                          "forbidden-semantic-war"):
                             self.assertNotIn(forbidden, encoded)
                     else:
                         lease_check.assert_not_called()

@@ -397,7 +397,14 @@ def collect_h3937_combined_paused_war_scope_once(
                         "desktop_interaction": False,
                         "image_visual_reviewed": False,
                     }
-        primary_error = f"{type(error).__name__}: {error}"
+        # NativeReadinessTimeoutError.__str__ includes repr(last_observation),
+        # which may contain an entire semantic frame. Only the bounded fields
+        # above may enter the report for this error class.
+        primary_error = (
+            "NativeReadinessTimeoutError: semantic game state unavailable"
+            if isinstance(error, NativeReadinessTimeoutError)
+            else f"{type(error).__name__}: {error}"
+        )
     finally:
         stop_started = time.monotonic()
         stop_event.set()
