@@ -369,3 +369,23 @@ bounded request is not a normal gameplay turn. This is a new paused native
 failure display and guest observation, not Start, payment, a hosted feast,
 benefit, next turn or post-selection cold restore. Final CanStart remains
 false and formal Start remains OFF.
+
+## R0378 repeated native Start gate and exact trigger chain
+
+The R0378 paired H3928 [formal report](Z:/m6-gr376-rule-vector-candidate-20260929/operator-runs/feast-guest-rule-vassals-vector-read-1/formal-report.txt)
+SHA-256 `B5316E9DD7F85741C42797CD79D9E5D582616A172A352A224FC0F54B64297ABC`
+again read `final_can_start=false` on paused `native:3`, actor29829,
+raw53219928. Gold was 120,644,281 raw against feast cost 10,000,000 raw.
+The native failure display was `known` and repeated the army commander/knight
+message. In the frozen 1.19.0.6 original game,
+`game/common/activities/activity_types/feast.txt:52-61` requires
+`is_available_adult=yes` in `can_start_showing_failures_only`; the original
+`game/common/scripted_triggers/00_available_for_events_triggers.txt:407-415`
+expands that trigger through `is_available_quick` with `in_army=no`.
+The localized failure and exact trigger chain identify the current Start
+legality blocker as the actor's army-role state, rather than the guest-rule
+read or insufficient Gold. The payload does not independently distinguish
+commander from knight or name the army. No Start or war-role action was
+submitted. The next gate is a legitimate current-state change by the army
+owner, followed by a fresh paused Stage-5 native CanStart and failure-display
+read on the new frame; the existing false result cannot be reused as legal.
