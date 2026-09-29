@@ -29,7 +29,8 @@ def _positive(value: object, maximum: int = 2**64 - 1) -> bool:
 def _key(value: object) -> bool:
     return (isinstance(value, str) and 0 < len(value) <= 96
             and value.startswith("activity_invite_rule_")
-            and all(ch.isascii() and (ch.isalnum() or ch == "_") for ch in value))
+            and len(value) > len("activity_invite_rule_")
+            and all(ch in "abcdefghijklmnopqrstuvwxyz0123456789_" for ch in value))
 
 
 def _parse(payload: object, *, step: str, envelope_status: str,
@@ -55,7 +56,7 @@ def _parse(payload: object, *, step: str, envelope_status: str,
     status = payload["status"]
     expected = {
         (QUERY_STEP, "observed_inactive"): "available",
-        (QUERY_STEP, "observed_active"): "available",
+        (QUERY_STEP, "observed_active"): "already_active",
         (ACTIVATE_STEP, "observed_active"): "already_active",
         (ACTIVATE_STEP, "activated"): "activated",
     }.get((step, status))
