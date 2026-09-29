@@ -5,6 +5,7 @@
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/marriage_candidate_alliance_projection_v1.hpp"
 #include "xar_bridge/marriage_native_outcome_classifier_v1.hpp"
+#include "xar_bridge/marriage_character_fertility_v1.hpp"
 #endif
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
@@ -1217,6 +1218,8 @@ struct MarriageCandidateAlliancePrivateReadV1 {
   MarriageCharacterLineageV1 candidate_lineage{};
   std::uint8_t heir_sex_selector_raw = 0xFF;
   std::uint8_t candidate_sex_selector_raw = 0xFF;
+  bridge::MarriageCharacterFertilityReadV1 heir_fertility{};
+  bridge::MarriageCharacterFertilityReadV1 candidate_fertility{};
   bool effective_matrilineal_if_accepted = false;
   bool requested_matrilineal_option = false;
   bool selected_option_readback = false;
@@ -1240,7 +1243,8 @@ ReadMarriageCandidateAlliancePrivateV1(
         &projection_environment,
     const bridge::MarriageNativeOutcomeClassifierEnvironmentV1
         &outcome_environment,
-    bool request_matrilineal_option = false) noexcept;
+    bool request_matrilineal_option = false,
+    bool read_fertility = false) noexcept;
 #endif
 
 using game::ArrangeMarriageResult;

@@ -12,6 +12,24 @@ STEP = "query-player-child-marriage-value-v1-private"
 SCHEMA = "xar.ck3.player-child-marriage-value.v1"
 
 
+def _native_fertility_input_valid(value: object) -> bool:
+    if not isinstance(value, dict):
+        return False
+    extension = value.get("extension_present")
+    evaluated = value.get("native_gate_evaluated")
+    allows = value.get("native_gate_allows")
+    raw = value.get("effective_raw")
+    return (
+        value.get("source") == "native_marriage_fertility_input"
+        and type(extension) is bool
+        and type(evaluated) is bool
+        and type(raw) is int
+        and evaluated is extension
+        and (type(allows) is bool if evaluated else allows is None)
+        and (raw == 0 if allows is not True else True)
+    )
+
+
 def query_player_child_marriage_value_private_v1(
     driver: object, *, legality: dict[str, object], candidate_character_id: int,
     request_matrilineal_option: bool = False,
@@ -121,6 +139,10 @@ def query_player_child_marriage_value_private_v1(
             or row.get("heir_dynasty_id") != legality.get("dynasty_id")
             or row.get("heir_house_id") != legality.get("house_id")
             or type(row.get("candidate_dynasty_id")) is not int
+            or not _native_fertility_input_valid(
+                row.get("heir_native_fertility"))
+            or not _native_fertility_input_valid(
+                row.get("candidate_native_fertility"))
             or any(value is not None and
                    (type(value) is not int or value <= 0)
                    for value in (candidate_betrothed, candidate_primary))

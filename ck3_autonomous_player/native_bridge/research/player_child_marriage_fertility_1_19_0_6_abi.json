@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "private_key": "player_child_marriage_fertility_1_19_0_6",
+  "status": "static-reversed-awaiting-paused-live",
+  "advertised": false,
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_sources": {
+    "ui_fertility_filter": {"rva": "0x127065C", "length": 75, "sha256": "33AD8526EE098C53404D1078A9BF735700B8645427B740017D1A15EEFF02FC1F"},
+    "ai_marriage_candidate_score": {"rva": "0x1890FA9", "length": 47, "sha256": "F699E7EEABF1E26637D2C79A9EFDFCCE41C2ABD4EC437F43E4E67E3AEAF1C9BF"},
+    "fertility_eligibility_gate": {"rva": "0x260FAF0", "length": 324, "sha256": "C67BE4F206BE13D6536ADCD23FDF0CB170EE1A44C91BB53DC91CB78CE02BB31B", "signature": "bool(Character*)", "first_16_bytes": "40534883EC2080B99901000000488BD9"}
+  },
+  "character_layout": {
+    "extension_pointer_offset": "0x1A8",
+    "extension_fertility_raw_offset": "0x2E0",
+    "raw_type": "signed int64",
+    "missing_extension_native_fallback": 0,
+    "gate_false_native_fallback": 0,
+    "raw_scale": "unverified; preserve native integer"
+  },
+  "semantics": {
+    "proven": "The exact UI fertility filter and AI marriage candidate scorer call the same eligibility function, then read the same Character extension qword when eligible, otherwise use zero.",
+    "not_proven": ["pair-specific ability to have children", "future fertility at marriage date", "child count or dynasty probability", "individual health and trait modifiers beyond the native eligibility gate"],
+    "source_verifier": "analyze_player_child_fertility_abi.py --contract"
+  },
+  "first_live_targets": [
+    {"player_child_character_id": 38988, "candidate_character_id": 37909},
+    {"player_child_character_id": 38988, "candidate_character_id": 39380}
+  ]
+}

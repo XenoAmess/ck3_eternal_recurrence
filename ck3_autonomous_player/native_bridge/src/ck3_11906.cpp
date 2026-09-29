@@ -17633,7 +17633,8 @@ ReadMarriageCandidateAlliancePrivateV1(
         &projection_environment,
     const bridge::MarriageNativeOutcomeClassifierEnvironmentV1
         &outcome_environment,
-    bool request_matrilineal_option) noexcept {
+    bool request_matrilineal_option,
+    bool read_fertility) noexcept {
   MarriageCandidateAlliancePrivateReadV1 result{};
   result.requested_matrilineal_option = request_matrilineal_option;
   using Failure = MarriageCandidateAlliancePrivateFailureV1;
@@ -17706,6 +17707,19 @@ ReadMarriageCandidateAlliancePrivateV1(
       result.candidate_sex_selector_raw > 1) {
     result.failure = Failure::sex_selector_unavailable;
     return result;
+  }
+  const auto fertility_module_base = read_fertility
+      ? reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)) : 0;
+  if (read_fertility) {
+    result.heir_fertility = bridge::ReadMarriageCharacterFertilityV1(
+        heir, fertility_module_base, bindings.enabled);
+    result.candidate_fertility = bridge::ReadMarriageCharacterFertilityV1(
+        candidate, fertility_module_base, bindings.enabled);
+    if (!result.heir_fertility.available ||
+        !result.candidate_fertility.available) {
+      result.failure = Failure::binding_unavailable;
+      return result;
+    }
   }
   CharacterInteractionContextStorage storage{};
   ArrangeMarriageValidationSample roles{};
@@ -17872,7 +17886,14 @@ ReadMarriageCandidateAlliancePrivateV1(
           result.heir_sex_selector_raw ||
       LoadAt<std::uint8_t>(
           candidate, bridge::kMarriageCharacterAdultSelectorOffsetV1) !=
-          result.candidate_sex_selector_raw) {
+          result.candidate_sex_selector_raw ||
+      (read_fertility &&
+       (bridge::ReadMarriageCharacterFertilityV1(
+            heir, fertility_module_base,
+            bindings.enabled) != result.heir_fertility ||
+        bridge::ReadMarriageCharacterFertilityV1(
+            candidate, fertility_module_base,
+            bindings.enabled) != result.candidate_fertility))) {
     result.failure = Failure::frame_changed;
     result.projection = {};
     result.heir_relationship = {};

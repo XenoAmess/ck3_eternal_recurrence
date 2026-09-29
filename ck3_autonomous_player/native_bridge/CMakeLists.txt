@@ -2126,6 +2126,17 @@ if(BUILD_TESTING)
     )
   endforeach()
 
+  add_executable(xar_ck3_marriage_character_fertility_v1_test
+    src/marriage_character_fertility_v1_test.cpp)
+  target_include_directories(xar_ck3_marriage_character_fertility_v1_test
+    PRIVATE include)
+  if(MSVC)
+    target_compile_options(xar_ck3_marriage_character_fertility_v1_test
+      PRIVATE /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_marriage_character_fertility_v1
+    COMMAND xar_ck3_marriage_character_fertility_v1_test)
+
   add_executable(xar_ck3_marriage_shared_glue_v1_test
     src/marriage_alliance_projection_adapter_v1.cpp
     src/marriage_alliance_readback_adapter_v1.cpp
