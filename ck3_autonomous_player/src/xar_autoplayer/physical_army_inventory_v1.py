@@ -29,6 +29,8 @@ _MAILBOX_UNIT_KEYS = frozenset({
 })
 _H3937_EPISODE_RUN_ID = "native-29829-2bc2d599f7f9"
 _H3937_ACTOR_CHARACTER_ID = 29_829
+_H3937_WAR_ID = 16_777_231
+_H3937_SUBJECT_ARMY_ID = 83_886_367
 
 
 @dataclass(frozen=True)
@@ -303,6 +305,9 @@ def validate_native_physical_inventory_mailbox_v1(
         type(native_revision) is int and native_revision > 0
     ):
         return red("public_frame_token_missing")
+    if (episode_run_id != _H3937_EPISODE_RUN_ID or
+            subject_army_id != _H3937_SUBJECT_ARMY_ID):
+        return red("h3937_episode_or_subject_mismatch")
     wars = starting.get("active_wars")
     if not isinstance(wars, list) or len(wars) != 1 or not isinstance(wars[0], Mapping):
         return red("war_scope_ambiguous")
@@ -310,6 +315,8 @@ def validate_native_physical_inventory_mailbox_v1(
     war_id = war.get("war_id")
     if type(war_id) is not int or war_id <= 0:
         return red("war_id_missing")
+    if war_id != _H3937_WAR_ID:
+        return red("h3937_war_mismatch")
 
     def ids_from_rows(value: Any) -> list[int] | None:
         if not isinstance(value, list):

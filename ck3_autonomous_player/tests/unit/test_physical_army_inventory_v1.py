@@ -162,6 +162,14 @@ class PhysicalInventoryShapeTests(unittest.TestCase):
         wrong_actor["player_armies"][0]["owner_character_id"] = 29_830
         self.assertEqual(check_mailbox(native, wrong_actor, horizon).reason,
                          "h3937_actor_binding_mismatch")
+        wrong_episode = copy.deepcopy(snapshot)
+        wrong_episode["episode_run_id"] = "native-other"
+        self.assertEqual(check_mailbox(native, wrong_episode, horizon).reason,
+                         "h3937_episode_or_subject_mismatch")
+        wrong_war = copy.deepcopy(snapshot)
+        wrong_war["active_wars"][0]["war_id"] = WAR + 1
+        self.assertEqual(check_mailbox(native, wrong_war, horizon).reason,
+                         "h3937_war_mismatch")
 
     def test_mailbox_rejects_retreat_and_ambiguous_war(self) -> None:
         native, snapshot, horizon = mailbox_fixture()
