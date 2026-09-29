@@ -1606,6 +1606,11 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME xar_ck3_native_bridge_activity_stage5_feast_full_cost_v1
       COMMAND xar_ck3_activity_stage5_feast_full_cost_v1_test)
+    find_package(Python3 COMPONENTS Interpreter REQUIRED)
+    add_test(NAME xar_ck3_native_bridge_activity_stage5_feast_full_cost_route_v1
+      COMMAND ${Python3_EXECUTABLE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/research/verify_activity_stage5_feast_full_cost_route.py
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp)
   endif()
   if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
     add_executable(xar_ck3_activity_stage1_option_read_v1_test

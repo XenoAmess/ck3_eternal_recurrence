@@ -10475,6 +10475,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityStage5GoldCostPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kActivityStage5FeastFullCostPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
                    && step != "query-activity-cost-slot12-raw-v1-private"
 #endif
