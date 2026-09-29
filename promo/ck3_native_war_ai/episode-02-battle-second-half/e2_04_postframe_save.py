@@ -216,7 +216,7 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
     write_new(preservation / "d05-preservation.json", {
         "schema": "xar.war-promo.pre-post-save-preservation/v1", "created_at": utc(),
         "source_binding": binding, "original": pre_identity, "copy": pre_copy,
-        "native_response": prior["pre_save"].get("request"),
+        "native_request": prior["pre_save"].get("request"),
         "native_response_original": identity(
             output / "interactive-requests-responses" / f"{PRE_SAVE_NAME}.json"),
         "save_inventory": pre_inventory})
@@ -265,6 +265,10 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
     require(after_control_ok and after_control_values["combat_id"] == COMBAT and
             after_control_values["combat_province_id"] == PROVINCE,
             "post-save battle identity changed; preserved pair remains unadmitted")
+    matching_original(output / "interactive-requests-responses" /
+                      f"{SAVE_NAME}.json", saved_receipt["response"])
+    require(identity(preservation / "d06-immutable.ck3") == d06_copy,
+            "immutable d06 copy changed before operator admission")
     result = {"schema": "xar.war-promo.postframe-save-operator/v1", "created_at": utc(),
               "result": "D06_PAIR_READY_FOR_SEPARATE_COLDLOAD_UNREVIEWED",
               "source_binding": binding, "sequence_token": prior["token"],
