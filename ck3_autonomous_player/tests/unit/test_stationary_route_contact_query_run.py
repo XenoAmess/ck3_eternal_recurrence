@@ -42,8 +42,10 @@ def _snapshot() -> dict[str, object]:
             "war_id": 16777231,
             "enemy_armies": [
                 {"army_id": 50331920, "current_province_id": 2629,
+                 "move_target_province_id": None, "route_province_ids": [],
                  "retreating": False, "in_combat": False, "army_state": "sieging"},
                 {"army_id": 83886484, "current_province_id": 2629,
+                 "move_target_province_id": None, "route_province_ids": [],
                  "retreating": False, "in_combat": False, "army_state": "sieging"},
             ],
         }],
@@ -93,6 +95,9 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
         wrong_province = _snapshot()
         wrong_province["active_wars"][0]["enemy_armies"][0]["current_province_id"] = 2610
         self.assertFalse(_exact_h3928_paused_subject(wrong_province))
+        hostile_route = _snapshot()
+        hostile_route["active_wars"][0]["enemy_armies"][0]["route_province_ids"] = [2610]
+        self.assertFalse(_exact_h3928_paused_subject(hostile_route))
         second_war = _snapshot()
         second_war["active_wars"].append({"war_id": 42, "enemy_armies": []})
         self.assertFalse(_exact_h3928_paused_subject(second_war))
