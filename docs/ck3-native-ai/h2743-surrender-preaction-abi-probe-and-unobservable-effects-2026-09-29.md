@@ -46,3 +46,9 @@
 未来若要受管实机读**前态**，先由高优先级屏幕任务释放并取得任务总线独占，核当次新鲜 Steam 离线原图；以 SHA 固定的 H2743 save/driver/sidecar、EXE、injector 和**新** candidate DLL 执行 no-launch/CLI 静态准入，另开 append-only attempt。只允许同一暂停会话的 snapshot 前后、baseline 双读与新 getter 双读；零日期推进、零投降、零 effect 求值。任何门 RED 保留回执并结束该 attempt；释放屏幕和进程后才能汇总。旧 attempt-12 和正式 Robert 帧不得改写。
 
 完整 title/封臣 old→new、F、FP2 实际净支付、所有条件/第三方/延迟 effect、投降后实际有向 truce expiry，**没有一个**可由当前已验的暂停前态 getter 精确观察。另立授权的隔离 clone 自然动作实验可以得到反事实样本，但须精确资产/DLC/mod/起始帧绑定、至少两次独立 replay、完整前后与冷加载读回；它仍不是正式帧的只读预测，且不能单靠两次余额差证明条件树完整。本页不实施该实验。正式比较继续 `comparison=unavailable`，所有未证 material 字段为 `null`，也不构造终战动作。
+
+## 本轮落地的精确磁盘探针
+
+[H2743 专用探针](../../ck3_autonomous_player/native_bridge/research/probe_h2743_preaction_truce_abi.py)调用既有精确 EXE 提取器，逐字节检查 EXE/PE、八个原生 RVA 区间、`HasTruce`/`GetTruceEndDate`→只读 relation lookup 和 `CAddTruce`→get-or-create/evaluator 的调用边，再强制核对旧 reader 的 current-player owner 限制与 H2743 `30097→29829` 方向。输出的[静态产物](../../ck3_autonomous_player/native_bridge/research/h2743_preaction_truce_abi_probe_v1.json) SHA-256 为 `3A2F729044CA3DC054437AA8F935DDF9527FC69C8D609815D96146776D1DB564`，状态仅为 `static_abi_candidate_only`。它只认证 EXE/调用边；checkpoint bytes、同帧 live 槽和未来写后 expiry 全部未观察，两个 expiry 字段、script days、完整效果、推荐和动作固定为 null/false。探针只读磁盘，产物存在时拒绝覆盖；不注册新 DLL 命令。
+
+[聚焦负例](../../ck3_autonomous_player/tests/unit/test_probe_h2743_preaction_truce_abi.py)普通及 `-O` 各 5/5 通过，覆盖方向反转、伪造旧槽/未来 expiry、错 EXE/原生区间/只读 lookup、把 current-player reader 冒充任意 owner、时间语义/默认关闭状态漂移。精确 EXE 的 `--check` 通过；以静态 JSON 冒充 EXE 的 CLI 负例 exit 2。该结果给下一版**当前旧槽**任意 owner 读口提供可审 ABI 起点，不产生受降后代价。FP2 角色变量、完整 loaded-effect tree 和实际休战写后值依旧是独立缺口。

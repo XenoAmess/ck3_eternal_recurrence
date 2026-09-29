@@ -1,0 +1,39 @@
+{
+  "schema": "xar.ck3.h2743_preaction_truce_abi_probe.v1",
+  "status": "static_abi_candidate_only",
+  "checkpoint_sha256_claim": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
+  "checkpoint_bytes_authenticated_here": false,
+  "target_frame_claim": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53217264,
+    "connection_generation": 1
+  },
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "exe_bytes_authenticated_here": true,
+  "native_call_edges_authenticated_here": true,
+  "war_id": 16777231,
+  "owner_character_id": 30097,
+  "toward_character_id": 29829,
+  "read_only_native_call_rvas": {
+    "has_truce": "0x26631E0",
+    "get_truce_end_date": "0x2663250",
+    "relation_lookup": "0x2610840"
+  },
+  "forbidden_query_call_rvas": {
+    "relation_get_or_create": "0x26108F0",
+    "caddtruce_duration_evaluator": "0x3373000"
+  },
+  "existing_reader_owner_binding": "current_played_character_only",
+  "new_arbitrary_owner_provider_required": true,
+  "same_frame_live_observed": false,
+  "preaction_existing_truce_expiry_date_raw": null,
+  "post_surrender_actual_expiry_date_raw": null,
+  "script_candidate_days": null,
+  "effect_projection_complete": false,
+  "material_complete": false,
+  "recommended_outcome": null,
+  "action_literal": null,
+  "unavailable_reason": "no_authenticated_arbitrary_owner_live_read_or_post_action_state"
+}
