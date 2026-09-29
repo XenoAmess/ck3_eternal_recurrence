@@ -26,7 +26,9 @@ session; output from distinct DLL sessions cannot be called same-frame.
    paused complete routes use `complete_empty` with count 0 or
    `complete_nonempty` with count equal to the route length. Reject
    `invalid_header`, `unresolved_entry`, `target_only`, `not_attempted`,
-   missing fields, contradictory counts, or changing rows. Native roster
+   missing fields, contradictory counts, or changing rows. Require own Army
+   83886367 to be currently stationary at 2610 with a complete empty route,
+   no combat and no retreat. Native roster
    enumeration still lacks a physical-inventory completeness bit; record
    `complete_physical_army_inventory_proven=false` explicitly.
 3. If the published roster and route proof pass, issue exactly one
