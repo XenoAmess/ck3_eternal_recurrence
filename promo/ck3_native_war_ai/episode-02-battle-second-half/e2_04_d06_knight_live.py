@@ -11,6 +11,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import subprocess
 from typing import Any
 
 from pursuit_live_step import call, identity, utc, write_new
@@ -24,13 +25,10 @@ EXE = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 GUI_SOURCE = "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D"
 GUI_BLOCK = "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593"
 GUI_RECEIPT = "69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779"
-PREFLIGHT_ROOT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a02")
-PREFLIGHT_SHA = "EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488"
-PREFLIGHT_ARGV_SHA = "B65081EC4B7B25EF9172EECE66596542C47002B10C1937EF30DADDC06ED7ABB6"
-PREFLIGHT_RESULT_SHA = "70E7E992EB8C8358D612723B0FF80F7617015B872162770BBA47A9BD9C29BCEB"
-PREFLIGHT_COMMAND_SHA = "86D2C8F7832536A87DE943B26B352B5B1E7393C3918FB00D2229A2ED8E5FCDCF"
-CAPTURE_SCRIPT_SHA = "752F8E2096CA363857B806DE605B7DC90E679C55F79FD9747827D405E4B7110A"
-CAPTURE_CHECKOUT_HEAD = "5629D147FA94AB68AD5CCDA484FE1EB32D4CB59E"
+LEGACY_A02_ROOT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a02")
+CHECKOUT = Path(__file__).resolve().parents[3]
+CAPTURE_SCRIPT = Path(__file__).resolve().parents[1] / "integration" / "capture_session.py"
+ADMISSION_SCHEMA = "xar.war-promo.d06-knight-no-launch-admission/v1"
 SAVE_PATH = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-live-20260929-a08/e2-04-d06-postframe-preservation-a01/d06-immutable.ck3")
 SIDECAR_PATH = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-live-20260929-a08/ck3-output/interactive-requests-responses/e2-04-d05-postframe-save.json")
 ACTOR, WAR, ARMY, COMBAT, PROVINCE, DATE = 29829, 4, 18, 16777218, 2633, 53146368
@@ -55,39 +53,110 @@ def read(path: Path) -> dict[str, Any]:
 def bound_source(row: Any, label: str) -> None:
     require(isinstance(row, dict) and sha(row.get("save")) == SAVE and
             sha(row.get("receipt")) == SIDECAR and row.get("actor") == ACTOR and
-            row.get("date_raw") == DATE, f"{label}: frozen d06 pair or actor/date differs")
+            row.get("date_raw") == DATE and
+            row.get("source_episode_run_id") == "native-29829-0a9929135691",
+            f"{label}: frozen d06 pair or actor/date/run differs")
     require(row["save"] == identity(SAVE_PATH) and
             row["receipt"] == identity(SIDECAR_PATH),
             f"{label}: source path/bytes differ from frozen a08 originals")
 
 
-def verify_no_launch(root: Path) -> dict[str, Any]:
-    require(root.resolve() == PREFLIGHT_ROOT.resolve(),
-            "only the frozen a02 READY no-launch root is admission")
-    result_path, argv_path = root / "run-result.json", root / "run-argv.json"
-    output = root / "ck3-output"
-    require((sha(identity(result_path)), sha(identity(argv_path)),
-             sha(identity(output / "preflight.json")),
-             sha(identity(output / "command.json"))) ==
-            (PREFLIGHT_RESULT_SHA, PREFLIGHT_ARGV_SHA,
-             PREFLIGHT_SHA, PREFLIGHT_COMMAND_SHA),
-            "a02 no-launch frozen evidence bytes changed")
-    result, argv, preflight = read(result_path), read(argv_path), read(output / "preflight.json")
+def no_launch_binding(root: Path) -> dict[str, Any]:
+    require(root.name.startswith("episode02-e2-04-d06-knight-preflight-20260929-") and
+            root.resolve() != LEGACY_A02_ROOT.resolve(),
+            "fresh exact d06 no-launch attempt required; historical a02 is excluded")
+    paths = {"result": root / "run-result.json", "argv": root / "run-argv.json",
+             "preflight": root / "ck3-output" / "preflight.json",
+             "command": root / "ck3-output" / "command.json",
+             "stdout": root / "run-stdout.txt", "stderr": root / "run-stderr.txt"}
+    records = {name: identity(path) for name, path in paths.items()}
+    result, argv, preflight, command = (read(paths[name]) for name in
+                                        ("result", "argv", "preflight", "command"))
+    head = subprocess.check_output(["git", "-C", str(CHECKOUT), "rev-parse", "HEAD"],
+                                   text=True).strip()
+    dirty = subprocess.check_output(["git", "-C", str(CHECKOUT), "status", "--short",
+                                     "--untracked-files=no"], text=True).strip()
+    command_line = argv.get("argv")
+    require(isinstance(command_line, list) and len(command_line) >= 3 and
+            command_line[1] == str(CAPTURE_SCRIPT) and
+            command.get("argv") == command_line[1:] and
+            command.get("python") == command_line[0] == preflight.get("python", {}).get("path") and
+            argv.get("checkout_head") == head and not dirty and
+            argv.get("capture_script_sha256") == identity(CAPTURE_SCRIPT)["sha256"],
+            "no-launch checkout commit, script bytes, interpreter or argv differ")
     require(result.get("exit_code") == 0 and result.get("ck3_started_by_command") is False and
-            argv.get("capture") is False and "--capture" not in argv.get("argv", []) and
-            "--enable-private-phase-trace" not in argv.get("argv", []),
-            "no-launch run did not complete as a non-capture admission")
-    require(preflight.get("result") == "READY_FOR_BOUNDED_LIVE_ATTEMPT" and
-            preflight.get("ck3_started") is False, "no-launch preflight is not READY")
+            result.get("stdout_sha256") == records["stdout"]["sha256"] and
+            result.get("stderr_sha256") == records["stderr"]["sha256"] and
+            argv.get("capture") is False and
+            preflight.get("result") == "READY_FOR_BOUNDED_LIVE_ATTEMPT" and
+            preflight.get("ck3_started") is False,
+            "no-launch result is not a completed READY admission")
+    flags = command_line[2:]
+    require("--capture" not in flags and "--enable-private-phase-trace" not in flags and
+            "--battle-control-pair-manifest" not in flags,
+            "d06 no-launch argv includes a launch, trace or d11-only flag")
+    required = {"--game-dir", "--bridge-dll", "--bridge-injector", "--state-dir",
+                "--output-dir", "--pipe-name", "--checkpoint-save", "--checkpoint-receipt",
+                "--frontend-timeout", "--gui-scale", "--import-a04-ui-gui-100",
+                "--a04-ui-settings-snapshot", "--a04-ui-preservation-receipt",
+                "--recovery-seconds", "--interactive-seconds", "--hold-seconds"}
+    arguments: dict[str, str | bool] = {}
+    index = 0
+    while index < len(flags):
+        flag = flags[index]
+        require(flag in required and flag not in arguments, "no-launch argv has extra or duplicate flags")
+        if flag == "--import-a04-ui-gui-100":
+            arguments[flag] = True
+            index += 1
+        else:
+            require(index + 1 < len(flags), f"no-launch {flag} has no value")
+            arguments[flag] = flags[index + 1]
+            index += 2
+    require(set(arguments) == required and
+            Path(str(arguments["--state-dir"])).resolve() == (root / "ck3-state").resolve() and
+            Path(str(arguments["--output-dir"])).resolve() == (root / "ck3-output").resolve() and
+            Path(str(arguments["--checkpoint-save"])).resolve() == SAVE_PATH.resolve() and
+            Path(str(arguments["--checkpoint-receipt"])).resolve() == SIDECAR_PATH.resolve() and
+            str(arguments["--frontend-timeout"]) == "900" and
+            str(arguments["--gui-scale"]) == "1.0" and
+            str(arguments["--recovery-seconds"]) == "1800" and
+            str(arguments["--interactive-seconds"]) == "3600" and
+            str(arguments["--hold-seconds"]) == "60" and
+            str(arguments["--pipe-name"]).startswith(r"\\.\pipe\xar_ck3_e204_d06_knight_preflight_"),
+            "no-launch inputs are not the exact d06 pair and bounded settings")
     verify_preflight(preflight)
-    require(argv.get("capture_script_sha256") == CAPTURE_SCRIPT_SHA and
-            str(argv.get("checkout_head", "")).upper() == CAPTURE_CHECKOUT_HEAD and
-            sha(identity(Path(argv["argv"][1]))) == CAPTURE_SCRIPT_SHA,
-            "a02 capture script bytes/HEAD differ from frozen admission")
-    return {"result": identity(result_path), "argv": identity(argv_path),
-            "preflight": identity(output / "preflight.json"),
-            "checkout_head": argv.get("checkout_head"),
-            "capture_script_sha256": CAPTURE_SCRIPT_SHA}
+    require(Path(str(arguments["--bridge-dll"])).resolve() ==
+            Path(preflight["bridge_dll"]["path"]).resolve() and
+            Path(str(arguments["--bridge-injector"])).resolve() ==
+            Path(preflight["bridge_injector"]["path"]).resolve() and
+            Path(str(arguments["--a04-ui-settings-snapshot"])).resolve() ==
+            Path(preflight["a04_ui_gui_source_binding"]["source_snapshot"]["path"]).resolve() and
+            Path(str(arguments["--a04-ui-preservation-receipt"])).resolve() ==
+            Path(preflight["a04_ui_gui_source_binding"]["preservation_receipt"]["path"]).resolve(),
+            "no-launch argv and preflight asset paths differ")
+    return {"schema": ADMISSION_SCHEMA, "root": str(root.resolve()),
+            "checkout_head": head, "capture_script": identity(CAPTURE_SCRIPT),
+            "bridge_dll": preflight["bridge_dll"],
+            "bridge_injector": preflight["bridge_injector"],
+            "save": identity(SAVE_PATH), "sidecar": identity(SIDECAR_PATH),
+            "argv": command_line, "records": records, "ck3_started": False}
+
+
+def seal_no_launch(root: Path) -> dict[str, Any]:
+    binding = no_launch_binding(root)
+    write_new(root / "admission-lock.json", binding)
+    return binding
+
+
+def verify_no_launch(root: Path) -> dict[str, Any]:
+    binding = no_launch_binding(root)
+    require(read(root / "admission-lock.json") == binding,
+            "no-launch admission lock differs from current exact bytes")
+    records = binding["records"]
+    return {"result": records["result"], "argv": records["argv"],
+            "preflight": records["preflight"], "admission_lock": identity(root / "admission-lock.json"),
+            "checkout_head": binding["checkout_head"],
+            "capture_script_sha256": binding["capture_script"]["sha256"]}
 
 
 def verify_preflight(preflight: dict[str, Any]) -> None:
@@ -318,13 +387,20 @@ def finish(output: Path, binding: dict[str, Any]) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("observe", "finish"))
-    parser.add_argument("--session-output", type=Path, required=True)
+    parser.add_argument("mode", choices=("seal", "observe", "finish"))
+    parser.add_argument("--session-output", type=Path)
     parser.add_argument("--no-launch-attempt", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=180)
     args = parser.parse_args()
     if not 10 <= args.timeout <= 900:
         parser.error("timeout must be 10..900 seconds")
+    if args.mode == "seal":
+        if args.session_output is not None:
+            parser.error("seal does not accept --session-output")
+        print(json.dumps(seal_no_launch(args.no_launch_attempt), ensure_ascii=False))
+        return 0
+    if args.session_output is None:
+        parser.error("observe and finish require --session-output")
     binding = verify_session(args.session_output, args.no_launch_attempt,
                              require_gui=args.mode == "observe")
     (args.session_output / "operator-steps").mkdir(exist_ok=True)

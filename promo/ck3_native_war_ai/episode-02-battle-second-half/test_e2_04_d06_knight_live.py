@@ -16,6 +16,7 @@ from e2_04_d06_knight_live import (
 
 
 PREFLIGHT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a02")
+NEW_PREFLIGHT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a03-takeover")
 OLD_CONTROL = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-v3-live-20260929-a08-a02/ck3-output/interactive-requests-responses/a08-d06-cold-control.json")
 OLD_GUI = OLD_CONTROL.parents[1]
 
@@ -65,16 +66,22 @@ def knight() -> dict:
 
 
 class D06KnightOperatorTest(unittest.TestCase):
-    def test_real_ready_no_launch_and_red_a01(self) -> None:
+    def test_historical_a02_cannot_authorize_new_head(self) -> None:
         if not PREFLIGHT.is_dir():
             self.skipTest("external a02 no-launch not mounted")
-        bound = verify_no_launch(PREFLIGHT)
-        self.assertEqual(bound["preflight"]["sha256"],
-                         "EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488")
-        with self.assertRaisesRegex(ValueError, "only the frozen a02 READY"):
+        with self.assertRaisesRegex(ValueError, "fresh exact d06 no-launch"):
+            verify_no_launch(PREFLIGHT)
+        with self.assertRaises(FileNotFoundError):
             verify_no_launch(PREFLIGHT.with_name("episode02-e2-04-d06-knight-preflight-20260929-a01"))
-        with self.assertRaisesRegex(ValueError, "only the frozen a02 READY"):
+        with self.assertRaises(FileNotFoundError):
             verify_no_launch(PREFLIGHT.with_name("episode02-e2-04-d06-knight-preflight-20260929-self-reported-ready"))
+
+    def test_new_no_launch_is_bound_to_current_head_when_sealed(self) -> None:
+        if not (NEW_PREFLIGHT / "admission-lock.json").is_file():
+            self.skipTest("new exact no-launch admission not sealed")
+        bound = verify_no_launch(NEW_PREFLIGHT)
+        self.assertEqual(bound["admission_lock"]["path"],
+                         str(NEW_PREFLIGHT / "admission-lock.json"))
 
     def test_snapshot_requires_one_paused_d06_army_and_frame(self) -> None:
         self.assertEqual(snapshot_case(frame())["native_revision"], 3)
