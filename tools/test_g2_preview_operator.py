@@ -632,6 +632,31 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertIn("--private-activity-feast-guest-candidate-read", command)
         self.assertNotIn("--private-activity-feast-stage5-start-read", command)
 
+    def test_feast_guest_rule_read_routes_query_only(self) -> None:
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "Z:/candidate/manifest.json",
+            "--output", "Z:/candidate/run",
+            "--private-activity-feast-stage1-confirm",
+            "--private-activity-feast-stage2-location-province", "2619",
+            "--private-activity-feast-stage2-destination-province", "2619",
+            "--private-activity-feast-stage5-full-cost-read",
+            "--private-activity-feast-guest-rule-key", "activity_invite_rule_vassals",
+        ])
+        self.assertEqual(parsed.private_activity_feast_guest_rule_key,
+                         "activity_invite_rule_vassals")
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=1, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None,
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_provinces=(2619,),
+            private_activity_feast_stage2_destination_province=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_rule_key="activity_invite_rule_vassals",
+        )
+        self.assertEqual(command[-2:], ["--private-activity-feast-guest-rule-key",
+                                        "activity_invite_rule_vassals"])
+        self.assertNotIn("--activate-activity-feast-guest-rule", command)
+
     def test_child_pending_recovery_routes_one_formal_life_turn(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",

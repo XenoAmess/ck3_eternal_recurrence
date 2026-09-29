@@ -496,6 +496,11 @@ def parser() -> argparse.ArgumentParser:
         help="after four-cost read, read one native filtered pre-invitation guest candidate without inviting",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-guest-rule-key", type=str,
+        help=("after four-cost read, inspect one authored guest category on the paused planner; "
+              "category activation remains disabled without member and value evidence"),
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
         help=("read one passive normal slot-12 raw cost capture; combine with "
               "--private-activity-feast-planner-open to open first"),
@@ -1115,6 +1120,9 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_stage5_start_read else {}),
                     **({"private_activity_feast_guest_candidate_read": True}
                       if args.private_activity_feast_guest_candidate_read else {}),
+                    **({"private_activity_feast_guest_rule_key":
+                        args.private_activity_feast_guest_rule_key}
+                      if args.private_activity_feast_guest_rule_key is not None else {}),
                     **({"private_activity_cost_slot12_raw_read": True}
                       if args.private_activity_cost_slot12_raw_read else {}),
                     **succession_options,
