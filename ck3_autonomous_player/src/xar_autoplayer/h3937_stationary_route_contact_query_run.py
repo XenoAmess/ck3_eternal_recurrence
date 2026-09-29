@@ -416,6 +416,23 @@ def _query_history_unchanged(before: object, after: object) -> bool:
     )
 
 
+def _guarded_subject_unchanged(before: object, after: object) -> bool:
+    if not isinstance(before, dict) or not isinstance(after, dict):
+        return False
+    return all(
+        key in before and key in after and before[key] == after[key]
+        for key in (
+            "played_character",
+            "episode_character_id",
+            "active_wars",
+            "player_armies",
+            "active_event",
+            "pending_character_interaction",
+            "route_contact_horizon_supported",
+        )
+    )
+
+
 def _positive_seconds(value: object, name: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)) or value <= 0:
         raise AgentError(f"{name} must be positive")
@@ -684,6 +701,9 @@ def query_h3937_stationary_route_contact_once(
         ),
         "paused_frame_unchanged": _same_frame(query_before, query_after),
         "stationary_scope_unchanged": _exact_h3937_paused_subject(query_after),
+        "guarded_subject_unchanged": _guarded_subject_unchanged(
+            query_before, query_after
+        ),
         "exact_one_appended_query": _exact_one_appended_query(
             query_before, query_after, query_envelope
         ),
