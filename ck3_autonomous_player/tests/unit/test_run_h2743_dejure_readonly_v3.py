@@ -6,6 +6,7 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -36,6 +37,25 @@ def clean_receipt() -> dict[str, object]:
 
 
 class H2743RunnerGateTests(unittest.TestCase):
+    def test_cli_modes_reject_live_conflict_before_any_side_effect(self) -> None:
+        for conflicting_mode in ("--check-static", "--prepare-no-launch"):
+            with self.subTest(conflicting_mode=conflicting_mode):
+                argv = ["runner", "--candidate", runner.EXISTING_TRUCE_CANDIDATE,
+                        conflicting_mode, "--run", "--prepared-attempt", "D:/synthetic-attempt",
+                        "--steam-gate", "D:/synthetic-steam-gate", "--task-id", "synthetic"]
+                with (patch.object(sys, "argv", argv),
+                      patch.object(runner, "select_candidate") as select,
+                      patch.object(runner, "check_static") as static,
+                      patch.object(runner, "prepare_no_launch") as prepare,
+                      patch.object(runner, "live_gate") as steam,
+                      patch.object(runner, "run") as live,
+                      patch.object(runner.subprocess, "Popen") as launch):
+                    with self.assertRaises(SystemExit) as error:
+                        runner.main()
+                self.assertEqual(error.exception.code, 2)
+                for guard in (select, static, prepare, steam, live, launch):
+                    guard.assert_not_called()
+
     def test_existing_truce_candidate_uses_new_pair_and_only_readonly_step(self) -> None:
         try:
             runner.select_candidate(runner.EXISTING_TRUCE_CANDIDATE)

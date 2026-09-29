@@ -975,10 +975,11 @@ def main() -> None:
                                                 STORAGE_CANDIDATE, EXISTING_TRUCE_CANDIDATE),
                         default=DEFAULT_CANDIDATE,
                         help="exact pinned read-only DLL; default preserves the v3 reader")
-    parser.add_argument("--check-static", action="store_true", help="hash exact inputs; no profile or CK3 launch")
-    parser.add_argument("--prepare-no-launch", action="store_true", help="new exact attempt; profile/preflight only")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--check-static", action="store_true", help="hash exact inputs; no profile or CK3 launch")
+    mode.add_argument("--prepare-no-launch", action="store_true", help="new exact attempt; profile/preflight only")
     parser.add_argument("--attempt-name", help="fresh attempt-N-dejure-baseline-no-launch")
-    parser.add_argument("--run", action="store_true", help="consume a separately prepared exact attempt")
+    mode.add_argument("--run", action="store_true", help="consume a separately prepared exact attempt")
     parser.add_argument("--prepared-attempt", type=Path)
     parser.add_argument("--steam-gate", type=Path)
     parser.add_argument("--task-id")
