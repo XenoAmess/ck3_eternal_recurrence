@@ -249,6 +249,85 @@ ActivityStage1OptionReadResultV1 ReadActivityStage1OptionV1(
   return result;
 }
 
+ActivityStage2OptionReadResultV1 ReadActivityStage2OptionV1(
+    const ActivityStage1OptionEnvironmentV1 &env,
+    const ActivityPlannerDiagFrameV1 &expected) noexcept {
+  ActivityStage2OptionReadResultV1 result{};
+  result.frame = expected;
+  if (!VerifyAbi(env)) return result;
+  if (env.resolve_key == nullptr || env.selected_option == nullptr) {
+    result.status = ActivityStage2OptionReadStatusV1::callback_missing;
+    return result;
+  }
+  const auto diagnostic = ReadActivityPlannerDiagV1(env.diagnostic, expected);
+  if (diagnostic.status != ActivityPlannerDiagStatusV1::observed ||
+      !diagnostic.value.widget_attached ||
+      !diagnostic.value.widget_visible) {
+    result.status = ActivityStage2OptionReadStatusV1::planner_unavailable;
+    return result;
+  }
+  if (diagnostic.value.stage != 2) {
+    result.status = ActivityStage2OptionReadStatusV1::not_feast_stage_two;
+    return result;
+  }
+  NativeIdentity first{};
+  if (!ResolveNative(env, expected, first, 2)) {
+    result.status = ActivityStage2OptionReadStatusV1::option_identity_mismatch;
+    return result;
+  }
+  if (!env.resolve_key(env.diagnostic.context, first.option_id,
+                       result.option_key, result.option_key_size) ||
+      result.option_key_size == 0 ||
+      result.option_key_size >= result.option_key.size() ||
+      !std::all_of(result.option_key.begin(),
+                   result.option_key.begin() + result.option_key_size,
+                   [](char c) {
+                     return (c >= 'a' && c <= 'z') ||
+                            (c >= '0' && c <= '9') || c == '_';
+                   })) {
+    result.status = ActivityStage2OptionReadStatusV1::option_key_unavailable;
+    return result;
+  }
+  NativeIdentity second{};
+  ActivityPlannerDiagFrameV1 final_frame{};
+  if (!ResolveNative(env, expected, second, 2) ||
+      first.actor != second.actor || first.planner != second.planner ||
+      first.option != second.option || first.option_id != second.option_id ||
+      !env.diagnostic.read_frame(env.diagnostic.context, final_frame) ||
+      final_frame != expected) {
+    result.status = ActivityStage2OptionReadStatusV1::frame_changed;
+    return result;
+  }
+  result.generic_feast_selected =
+      std::string_view(result.option_key.data(), result.option_key_size) ==
+      kActivityStage1OptionKeyV1;
+  result.status = ActivityStage2OptionReadStatusV1::observed;
+  return result;
+}
+
+std::string_view ActivityStage2OptionReadStatusKeyV1(
+    ActivityStage2OptionReadStatusV1 status) noexcept {
+  switch (status) {
+  case ActivityStage2OptionReadStatusV1::observed:
+    return "observed";
+  case ActivityStage2OptionReadStatusV1::exact_build_rejected:
+    return "exact_build_rejected";
+  case ActivityStage2OptionReadStatusV1::callback_missing:
+    return "callback_missing";
+  case ActivityStage2OptionReadStatusV1::planner_unavailable:
+    return "planner_unavailable";
+  case ActivityStage2OptionReadStatusV1::not_feast_stage_two:
+    return "not_feast_stage_two";
+  case ActivityStage2OptionReadStatusV1::option_identity_mismatch:
+    return "option_identity_mismatch";
+  case ActivityStage2OptionReadStatusV1::option_key_unavailable:
+    return "option_key_unavailable";
+  case ActivityStage2OptionReadStatusV1::frame_changed:
+    return "frame_changed";
+  }
+  return "unknown";
+}
+
 ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     const ActivityStage1OptionEnvironmentV1 &env,
     const ActivityPlannerDiagFrameV1 &expected) noexcept {

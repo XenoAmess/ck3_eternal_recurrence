@@ -253,7 +253,17 @@ bool ExecuteActivityStage1OptionReadPrivateV1(
     const bridge::ActivityPlannerDiagFrameV1 expected{
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true, true};
-    if (query->confirm_stage_one) {
+    if (query->stage_two_read) {
+      query->stage_two_result = bridge::ReadActivityStage2OptionV1(
+          environment, expected);
+      if (query->stage_two_result.status !=
+          bridge::ActivityStage2OptionReadStatusV1::observed)
+        query->failure = "native_activity_stage2_option_red:" +
+            std::string(bridge::ActivityStage2OptionReadStatusKeyV1(
+                query->stage_two_result.status));
+      else if (!query->stage_two_result.generic_feast_selected)
+        query->failure = "native_activity_stage2_option_key_mismatch";
+    } else if (query->confirm_stage_one) {
       query->confirm_result = bridge::ConfirmActivityStage1V1(
           environment, expected);
       query->post_snapshot_read = ReadSnapshot(query->bindings,
@@ -379,6 +389,27 @@ std::string SerializeActivityStage1ConfirmPrivateV1(
   out += "\",\"next_turn_verified\":false,"
          "\"raw_pointer_fields_persisted\":false,"
          "\"advertised\":false}";
+  return out;
+}
+
+std::string SerializeActivityStage2OptionReadPrivateV1(
+    const ActivityStage1OptionReadPrivateQueryV1 &query) {
+  const auto &r = query.stage_two_result;
+  if (!query.completed || !query.stage_two_read || !query.failure.empty() ||
+      r.status != bridge::ActivityStage2OptionReadStatusV1::observed ||
+      !r.generic_feast_selected)
+    return {};
+  std::string out =
+      "{\"schema\":\"activity-stage2-option-private-read-v1\","
+      "\"snapshot_revision\":" + std::to_string(r.frame.revision) +
+      ",\"date_raw\":" + std::to_string(r.frame.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(r.frame.actor_character_id) +
+      ",\"activity_key\":\"activity_feast\","
+      "\"planning_stage\":2,\"selected_option_key\":\"";
+  out.append(r.option_key.data(), r.option_key_size);
+  out += "\",\"generic_feast_selected\":true,\"read_only\":true,"
+         "\"raw_pointer_fields_persisted\":false,\"advertised\":false}";
   return out;
 }
 

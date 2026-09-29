@@ -448,9 +448,18 @@ option(
   "Enable default-off paused native feast stage-1-only confirm action"
   OFF
 )
+option(
+  XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1
+  "Enable default-off paused native feast stage-2 selected option read"
+  OFF
+)
 if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1 AND
    NOT XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
   message(FATAL_ERROR "Activity stage-1 confirm requires option read")
+endif()
+if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
+  message(FATAL_ERROR "Activity stage-2 option read requires stage-1 reader")
 endif()
 option(
   XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1
@@ -1328,6 +1337,10 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
   if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
     target_compile_definitions(xar_ck3_bridge PRIVATE
       XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1=1)
+  endif()
+  if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1)
+    target_compile_definitions(xar_ck3_bridge PRIVATE
+      XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1=1)
   endif()
 endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)

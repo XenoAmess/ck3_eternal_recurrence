@@ -61,6 +61,32 @@ ActivityStage1OptionReadResultV1 ReadActivityStage1OptionV1(
     const ActivityStage1OptionEnvironmentV1 &environment,
     const ActivityPlannerDiagFrameV1 &expected) noexcept;
 
+enum class ActivityStage2OptionReadStatusV1 {
+  observed,
+  exact_build_rejected,
+  callback_missing,
+  planner_unavailable,
+  not_feast_stage_two,
+  option_identity_mismatch,
+  option_key_unavailable,
+  frame_changed,
+};
+
+struct ActivityStage2OptionReadResultV1 {
+  ActivityStage2OptionReadStatusV1 status =
+      ActivityStage2OptionReadStatusV1::exact_build_rejected;
+  ActivityPlannerDiagFrameV1 frame{};
+  std::array<char, 96> option_key{};
+  std::uint16_t option_key_size = 0;
+  bool generic_feast_selected = false;
+};
+
+ActivityStage2OptionReadResultV1 ReadActivityStage2OptionV1(
+    const ActivityStage1OptionEnvironmentV1 &environment,
+    const ActivityPlannerDiagFrameV1 &expected) noexcept;
+std::string_view ActivityStage2OptionReadStatusKeyV1(
+    ActivityStage2OptionReadStatusV1 status) noexcept;
+
 enum class ActivityStage1ConfirmStatusV1 {
   stage_two_verified,
   precondition_rejected,

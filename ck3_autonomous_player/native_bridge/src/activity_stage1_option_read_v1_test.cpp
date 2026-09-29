@@ -265,6 +265,14 @@ int main() {
              xar::bridge::ActivityStage1ConfirmStatusV1::stage_two_verified &&
          confirm.submitted && confirm.stage_two_visible &&
          confirm.selected_option_retained && fake.stage_two_calls == 1);
+  const auto stage_two =
+      xar::bridge::ReadActivityStage2OptionV1(Env(fake), expected);
+  Expect(stage_two.status ==
+             xar::bridge::ActivityStage2OptionReadStatusV1::observed &&
+         stage_two.generic_feast_selected &&
+         std::string_view(stage_two.option_key.data(),
+                          stage_two.option_key_size) ==
+             "feast_type_generic");
   Fake lost{};
   Populate(lost);
   lost.lose_option_on_transition = true;
@@ -273,5 +281,7 @@ int main() {
              xar::bridge::ActivityStage1ConfirmStatusV1::postcondition_failed &&
          confirm.submitted && confirm.stage_two_visible &&
          !confirm.selected_option_retained && lost.stage_two_calls == 1);
+  Expect(xar::bridge::ReadActivityStage2OptionV1(Env(lost), lost.frame).status ==
+         xar::bridge::ActivityStage2OptionReadStatusV1::option_identity_mismatch);
   std::cout << "GREEN: exact-build private activity stage-1 option read\n";
 }

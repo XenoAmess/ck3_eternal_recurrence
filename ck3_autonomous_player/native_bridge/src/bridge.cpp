@@ -10438,6 +10438,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityStage1ConfirmPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1)
+                   && step != xar::ck3_11906::kActivityStage2OptionReadPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
                    && step != "query-activity-cost-slot12-raw-v1-private"
 #endif
@@ -10761,6 +10764,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
               || step == xar::ck3_11906::kActivityStage1ConfirmPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1)
+              || step == xar::ck3_11906::kActivityStage2OptionReadPrivateStepV1
+#endif
               ) {
             const bool confirm =
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1)
@@ -10768,6 +10774,13 @@ void RunConnectedSession(
 #else
                 false;
 #endif
+            const bool stage_two_read =
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1)
+                step == xar::ck3_11906::kActivityStage2OptionReadPrivateStepV1;
+#else
+                false;
+#endif
+            const bool typed_option = confirm || stage_two_read;
             std::uint64_t expected_revision = 0;
             std::uint64_t expected_date_raw = 0;
             std::uint64_t expected_actor_id = 0;
@@ -10776,7 +10789,7 @@ void RunConnectedSession(
             xar::game::Snapshot current{};
             if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
                     incoming.payload, expected_revision) ||
-                (confirm &&
+                (typed_option &&
                  (!xar::bridge::JsonUnsignedField(
                       incoming.payload, "expected_date_raw", expected_date_raw) ||
                   !xar::bridge::JsonUnsignedField(
@@ -10797,7 +10810,7 @@ void RunConnectedSession(
                 !current.map_ready || !current.has_played_character ||
                 !current.played_character_alive ||
                 current.played_character_id <= 0 ||
-                (confirm &&
+                (typed_option &&
                  (expected_actor_id != static_cast<std::uint64_t>(
                       current.played_character_id) ||
                   expected_date_raw != static_cast<std::uint64_t>(
@@ -10812,6 +10825,7 @@ void RunConnectedSession(
               query.expected_snapshot = current;
               query.expected_revision = expected_revision;
               query.confirm_stage_one = confirm;
+              query.stage_two_read = stage_two_read;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActivityStage1OptionReadPrivateV1,
@@ -10843,8 +10857,11 @@ void RunConnectedSession(
                         ? (confirm
                                ? xar::ck3_11906::
                                      SerializeActivityStage1ConfirmPrivateV1(query)
-                               : xar::ck3_11906::
-                                     SerializeActivityStage1OptionReadPrivateV1(query))
+                               : (stage_two_read
+                                      ? xar::ck3_11906::
+                                            SerializeActivityStage2OptionReadPrivateV1(query)
+                                      : xar::ck3_11906::
+                                            SerializeActivityStage1OptionReadPrivateV1(query)))
                         : std::string{};
                 std::string response;
                 if (!native.empty()) {
@@ -10876,7 +10893,9 @@ void RunConnectedSession(
                       std::string(confirm ? "false" : "true") +
                       ",\"advertised\":false,\"" +
                       std::string(confirm ? "activity_stage1_confirm"
-                                          : "activity_stage1_option") +
+                                          : (stage_two_read
+                                                 ? "activity_stage2_option"
+                                                 : "activity_stage1_option")) +
                       "\":" + native +
                       ",\"backend_id\":\"native-headless\"}}";
                 } else {
