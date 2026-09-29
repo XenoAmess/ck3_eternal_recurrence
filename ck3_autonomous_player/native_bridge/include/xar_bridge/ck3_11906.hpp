@@ -933,6 +933,8 @@ using game::ActualContactScopeStatus;
 using game::BattleControlRequest;
 using game::BattleControlSnapshot;
 using game::BattleControlSnapshotStatus;
+using game::CurrentBattleKnightRequestV1;
+using game::CurrentBattleKnightSnapshotV1;
 using game::BattleTransitionRequest;
 using game::BattleTransitionSnapshot;
 using game::BattleTransitionSnapshotStatus;
@@ -972,6 +974,15 @@ ActualContactScopeStatus ReadActualContactScope(
 BattleControlSnapshotStatus ReadBattleControlSnapshot(
     const Bindings &bindings, const BattleControlRequest &request,
     BattleControlSnapshot &output) noexcept;
+
+// Main-thread-only, paused, double-sampled read of the exact knight/regiment
+// pair selected from a same-frame battle-control projection.  Returns typed
+// unavailable on any identity, generation, helper, or sample drift.
+bool ReadCurrentBattleKnightV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleControlSnapshot &same_frame_battle,
+    const CurrentBattleKnightRequestV1 &request,
+    CurrentBattleKnightSnapshotV1 &output) noexcept;
 
 // Main-thread-only, paused lifecycle query addressed directly by one positive
 // full-generation CombatID. It samples the retained CCombat projection twice,

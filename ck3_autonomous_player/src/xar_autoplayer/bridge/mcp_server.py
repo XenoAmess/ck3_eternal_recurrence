@@ -385,6 +385,38 @@ def _ck3_query_actual_contact_scope(
     )
 
 
+def _ck3_query_current_battle_knight_v1(
+    service: GameplayBridgeService,
+    subject_public_cunit_id: int,
+    character_id: int,
+    regiment_id: int,
+    expected_played_character_id: int,
+    expected_war_id: int,
+    expected_native_carmy_id: int,
+    expected_combat_id: int,
+    expected_province_id: int,
+    expected_date_raw: int,
+    expected_revision: int,
+    expected_native_revision: int,
+    expected_snapshot_id: str,
+) -> dict[str, object]:
+    """Private current read; every identity comes from this session's frame."""
+    return service.query_current_battle_knight_v1(
+        subject_public_cunit_id=subject_public_cunit_id,
+        character_id=character_id,
+        regiment_id=regiment_id,
+        expected_played_character_id=expected_played_character_id,
+        expected_war_id=expected_war_id,
+        expected_native_carmy_id=expected_native_carmy_id,
+        expected_combat_id=expected_combat_id,
+        expected_province_id=expected_province_id,
+        expected_date_raw=expected_date_raw,
+        expected_revision=expected_revision,
+        expected_native_revision=expected_native_revision,
+        expected_snapshot_id=expected_snapshot_id,
+    )
+
+
 def _ck3_query_battle_control_snapshot_v1(
     service: GameplayBridgeService,
     subject_army_id: int,
@@ -1629,6 +1661,38 @@ def create_server(
             subject_army_id,
             target_province_id,
             expected_revision=expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_current_battle_knight_v1(
+        subject_public_cunit_id: int,
+        character_id: int,
+        regiment_id: int,
+        expected_played_character_id: int,
+        expected_war_id: int,
+        expected_native_carmy_id: int,
+        expected_combat_id: int,
+        expected_province_id: int,
+        expected_date_raw: int,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_snapshot_id: str,
+    ) -> dict[str, object]:
+        """Read one paired knight/regiment's current battle stats while paused."""
+        return _ck3_query_current_battle_knight_v1(
+            service,
+            subject_public_cunit_id,
+            character_id,
+            regiment_id,
+            expected_played_character_id,
+            expected_war_id,
+            expected_native_carmy_id,
+            expected_combat_id,
+            expected_province_id,
+            expected_date_raw,
+            expected_revision,
+            expected_native_revision,
+            expected_snapshot_id,
         )
 
     @server.tool()

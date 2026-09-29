@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/current_battle_knight_v1.hpp"
 #include "xar_bridge/campaign_root_context_v1.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
@@ -16360,6 +16361,227 @@ BattleControlSnapshotStatus ReadBattleControlSnapshot(
   output.status = BattleControlSnapshotStatus::available;
   output.battle_control_ready = true;
   return output.status;
+}
+
+bool ReadCurrentBattleKnightV1(
+    const Bindings &bindings, const Snapshot &same_frame_world,
+    const BattleControlSnapshot &same_frame_battle,
+    const CurrentBattleKnightRequestV1 &request,
+    CurrentBattleKnightSnapshotV1 &output) noexcept {
+  output = {};
+  const auto fail = [&output](std::string_view reason) noexcept {
+    output = {};
+    output.unavailable_reason = std::string(reason);
+    return false;
+  };
+  std::string_view scope_failure;
+  const auto *const stored_entry = SelectCurrentBattleKnightEntryV1(
+      same_frame_battle, request, scope_failure);
+  if (stored_entry == nullptr) {
+    return fail(scope_failure);
+  }
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.combat_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.evaluate_regiment_stats_at_province == nullptr ||
+      bindings.get_knight_effectiveness_context == nullptr ||
+      bindings.read_knight_effectiveness == nullptr ||
+      bindings.knight_damage_per_prowess == nullptr ||
+      bindings.knight_toughness_per_prowess == nullptr ||
+      !same_frame_world.paused ||
+      !same_frame_world.has_played_character ||
+      same_frame_world.played_character_id !=
+          request.expected_played_character_id ||
+      same_frame_world.date_raw != request.expected_date_raw) {
+    return fail("current_knight_source_unavailable");
+  }
+  if (std::count_if(
+          same_frame_world.active_wars.begin(),
+          same_frame_world.active_wars.end(),
+          [&request](const ActiveWarSnapshot &war) {
+            return war.war_id == request.expected_war_id;
+          }) != 1) {
+    return fail("expected_war_not_active");
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || before != same_frame_world) {
+    return fail("world_snapshot_changed_before_knight_read");
+  }
+  const auto sample = [&]() noexcept {
+    CurrentBattleKnightSnapshotV1 row{};
+    row.unavailable_reason = "current_knight_identity_unavailable";
+    void *const game_state = *bindings.game_state_slot;
+    void *const unit = ResolveStoredComponent(
+        bindings.army_storage_slot, request.subject_public_cunit_id,
+        kArmyIdOffset);
+    void *const army = ResolveStoredComponent(
+        bindings.army_internal_storage_slot,
+        request.expected_native_carmy_id, kInternalArmyIdOffset);
+    void *const combat = ResolveStoredComponent(
+        bindings.combat_storage_slot, request.expected_combat_id,
+        kCombatIdOffset);
+    void *const province =
+        ResolveProvince(game_state, request.expected_province_id);
+    void *const regiment = ResolveStoredComponent(
+        bindings.regiment_storage_slot, request.regiment_id,
+        kRegimentIdOffset);
+    void *const character = ResolveStoredComponent(
+        bindings.character_storage_slot, request.character_id,
+        kCharacterIdOffset);
+    if (game_state == nullptr || unit == nullptr || army == nullptr ||
+        combat == nullptr || province == nullptr || regiment == nullptr ||
+        character == nullptr ||
+        LoadAt<std::int32_t>(game_state, kGameStateDateOffset) !=
+            request.expected_date_raw ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset) !=
+            request.subject_public_cunit_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
+            request.expected_combat_id ||
+        LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != province ||
+        LoadAt<void *>(combat, kCombatProvinceOffset) != province ||
+        LoadAt<std::uint8_t>(combat,
+                             kCombatDailyDispatchInProgressOffset) != 0 ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(regiment,
+                             kRegimentKnightCharacterIdOffset) !=
+            request.character_id) {
+      return row;
+    }
+    std::vector<std::int32_t> regiment_ids;
+    if (!ReadContactIdArray(army, kInternalArmyRegimentIdsOffset,
+                            kInternalArmyRegimentCountOffset,
+                            kMaximumActualContactRegiments, regiment_ids,
+                            false) ||
+        std::count(regiment_ids.begin(), regiment_ids.end(),
+                   request.regiment_id) != 1) {
+      row.unavailable_reason = "regiment_outside_current_army";
+      return row;
+    }
+    bool character_valid = false;
+    void *const knight_link =
+        LoadAt<void *>(character, kCharacterKnightLinkOffset);
+    if (!ReadSubobjectPredicate(character,
+                                kCharacterValiditySubobjectOffset,
+                                character_valid) ||
+        !character_valid || knight_link == nullptr ||
+        LoadAt<std::int32_t>(
+            knight_link, kCharacterKnightLinkRegimentIdOffset) !=
+            request.regiment_id) {
+      row.unavailable_reason = "knight_character_regiment_backlink_invalid";
+      return row;
+    }
+    CombatEffectiveStatsSnapshot stats{};
+    if (!ReadEncounterEffectiveStats(bindings, regiment, province,
+                                     request.regiment_id,
+                                     request.expected_province_id, stats)) {
+      row.unavailable_reason = stats.unavailable_reason;
+      return row;
+    }
+    const auto prowess = LoadAt<std::int32_t>(
+        character, kCharacterEffectiveProwessOffset);
+    void *const context =
+        bindings.get_knight_effectiveness_context(character);
+    std::int64_t effectiveness = 0;
+    if (context == nullptr ||
+        bindings.read_knight_effectiveness(&effectiveness, context, 0) !=
+            &effectiveness ||
+        effectiveness < 0) {
+      row.unavailable_reason = "knight_effectiveness_unavailable";
+      return row;
+    }
+    const auto formula = CheckCurrentBattleKnightFormulaV1(
+        effectiveness, prowess, *bindings.knight_damage_per_prowess,
+        *bindings.knight_toughness_per_prowess, stats.damage_raw,
+        stats.toughness_raw);
+    if (!formula.empty()) {
+      row.unavailable_reason = formula;
+      return row;
+    }
+    std::vector<std::int32_t> regiment_ids_after;
+    if (!ReadContactIdArray(army, kInternalArmyRegimentIdsOffset,
+                            kInternalArmyRegimentCountOffset,
+                            kMaximumActualContactRegiments,
+                            regiment_ids_after, false) ||
+        regiment_ids_after != regiment_ids) {
+      row.unavailable_reason = "current_army_regiment_roster_changed";
+      return row;
+    }
+    if (ResolveStoredComponent(bindings.army_storage_slot,
+                               request.subject_public_cunit_id,
+                               kArmyIdOffset) != unit ||
+        ResolveStoredComponent(bindings.army_internal_storage_slot,
+                               request.expected_native_carmy_id,
+                               kInternalArmyIdOffset) != army ||
+        ResolveStoredComponent(bindings.combat_storage_slot,
+                               request.expected_combat_id,
+                               kCombatIdOffset) != combat ||
+        ResolveProvince(game_state, request.expected_province_id) !=
+            province ||
+        ResolveStoredComponent(bindings.regiment_storage_slot,
+                               request.regiment_id, kRegimentIdOffset) !=
+            regiment ||
+        ResolveStoredComponent(bindings.character_storage_slot,
+                               request.character_id, kCharacterIdOffset) !=
+            character ||
+        LoadAt<std::int32_t>(game_state, kGameStateDateOffset) !=
+            request.expected_date_raw ||
+        LoadAt<std::int32_t>(unit, kUnitArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyUnitIdOffset) !=
+            request.subject_public_cunit_id ||
+        LoadAt<std::int32_t>(army, kInternalArmyCombatIdOffset) !=
+            request.expected_combat_id ||
+        LoadAt<void *>(unit, kArmyCurrentProvinceOffset) != province ||
+        LoadAt<void *>(combat, kCombatProvinceOffset) != province ||
+        LoadAt<std::int32_t>(regiment, kRegimentArmyIdOffset) !=
+            request.expected_native_carmy_id ||
+        LoadAt<std::int32_t>(regiment,
+                             kRegimentKnightCharacterIdOffset) !=
+            request.character_id ||
+        LoadAt<void *>(character, kCharacterKnightLinkOffset) != knight_link ||
+        LoadAt<std::int32_t>(
+            knight_link, kCharacterKnightLinkRegimentIdOffset) !=
+            request.regiment_id) {
+      row.unavailable_reason = "current_knight_generation_changed";
+      return row;
+    }
+    row.available = true;
+    row.unavailable_reason.clear();
+    row.observed_date_raw = request.expected_date_raw;
+    row.combat_id = request.expected_combat_id;
+    row.province_id = request.expected_province_id;
+    row.subject_public_cunit_id = request.subject_public_cunit_id;
+    row.native_carmy_id = request.expected_native_carmy_id;
+    row.character_id = request.character_id;
+    row.regiment_id = request.regiment_id;
+    row.effective_prowess = prowess;
+    row.knight_effectiveness_raw = effectiveness;
+    row.fresh_damage_raw = stats.damage_raw;
+    row.fresh_toughness_raw = stats.toughness_raw;
+    row.stored_entry_damage_raw =
+        stored_entry->effective_damage_raw;
+    row.stored_entry_toughness_raw =
+        stored_entry->effective_toughness_raw;
+    return row;
+  };
+  const auto first = sample();
+  const auto second = sample();
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before) {
+    return fail("world_snapshot_changed_after_knight_read");
+  }
+  const auto pair_status = CheckCurrentBattleKnightPairV1(first, second);
+  if (!pair_status.empty()) {
+    return fail(pair_status);
+  }
+  output = second;
+  return true;
 }
 
 BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(

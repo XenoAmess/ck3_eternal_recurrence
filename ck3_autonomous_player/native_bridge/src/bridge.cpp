@@ -6236,6 +6236,28 @@ std::string BattleControlSnapshotResultFrame(
   return result;
 }
 
+std::string CurrentBattleKnightResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence, std::uint64_t native_revision,
+    const xar::game::CurrentBattleKnightSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeCurrentBattleKnightV1(snapshot);
+  if (payload.empty()) {
+    return {};
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"available\",";
+  result += "\"query_sequence\":" + Number(query_sequence);
+  result += ",\"snapshot_revision\":" + Number(native_revision);
+  result += ",\"current_battle_knight\":" + payload + "}}";
+  return result;
+}
+
 std::string BattleTransitionResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -9413,6 +9435,7 @@ struct WorkerState {
   std::uint64_t route_contact_horizon_query_sequence = 0;
   std::uint64_t actual_contact_scope_query_sequence = 0;
   std::uint64_t battle_control_snapshot_query_sequence = 0;
+  std::uint64_t current_battle_knight_query_sequence = 0;
   std::uint64_t battle_transition_query_sequence = 0;
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
   std::uint64_t battle_terminal_transition_query_sequence = 0;
@@ -9814,6 +9837,8 @@ void RunConnectedSession(
       state.actual_contact_scope_query_sequence;
   auto &battle_control_snapshot_query_sequence =
       state.battle_control_snapshot_query_sequence;
+  auto &current_battle_knight_query_sequence =
+      state.current_battle_knight_query_sequence;
   auto &battle_transition_query_sequence =
       state.battle_transition_query_sequence;
   auto &battle_reinforcement_assignment_query_sequence =
@@ -17739,17 +17764,35 @@ void RunConnectedSession(
           }
         } else if (step.starts_with(
                        xar::ck3_11906::
-                           kBattleControlSnapshotV1StepPrefix)) {
+                           kBattleControlSnapshotV1StepPrefix) ||
+                   step.starts_with(
+                       xar::ck3_11906::kCurrentBattleKnightV1StepPrefix)) {
+          const bool current_knight_step = step.starts_with(
+              xar::ck3_11906::kCurrentBattleKnightV1StepPrefix);
           xar::game::BattleControlRequest battle_request{};
+          xar::game::CurrentBattleKnightRequestV1 knight_request{};
           std::uint64_t expected_revision = 0;
-          if (!xar::ck3_11906::ParseBattleControlSnapshotV1Step(
-                  step, battle_request) ||
-              !xar::ck3_11906::ParseBattleControlExpectedRevisionV1(
-                  incoming.payload, expected_revision)) {
+          bool parsed = xar::ck3_11906::
+              ParseBattleControlExpectedRevisionV1(
+                  incoming.payload, expected_revision);
+          if (current_knight_step) {
+            parsed = parsed &&
+                xar::ck3_11906::ParseCurrentBattleKnightV1Step(
+                    step, knight_request) &&
+                xar::ck3_11906::ParseCurrentBattleKnightExpectedV1(
+                    incoming.payload, expected_revision, knight_request);
+            battle_request.subject_public_cunit_id =
+                knight_request.subject_public_cunit_id;
+          } else {
+            parsed = parsed &&
+                xar::ck3_11906::ParseBattleControlSnapshotV1Step(
+                    step, battle_request);
+          }
+          if (!parsed) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
-                          "battle-control-snapshot request is malformed"));
+                          "battle-control/current-knight request is malformed"));
           } else if (expected_revision != state_revision) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
@@ -17786,6 +17829,9 @@ void RunConnectedSession(
                 query.mailbox = &g_main_thread_query_mailbox_v1;
                 query.bindings = xar::ck3_11906::BindCurrentProcess(true);
                 query.request = battle_request;
+                if (current_knight_step) {
+                  query.knight_request = knight_request;
+                }
                 query.expected_snapshot_revision = expected_revision;
                 query.expected_snapshot = current_snapshot;
                 xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1
@@ -17843,12 +17889,21 @@ void RunConnectedSession(
                         completion_snapshot == current_snapshot &&
                         completion_snapshot == previous_snapshot.value()) {
                       completion_snapshot_stable = true;
-                      response = BattleControlSnapshotResultFrame(
-                          request_id, step,
-                          battle_control_snapshot_query_sequence + 1,
-                          query.result);
+                      response = current_knight_step
+                          ? CurrentBattleKnightResultFrame(
+                                request_id, step,
+                                current_battle_knight_query_sequence + 1,
+                                expected_revision, query.knight_result)
+                          : BattleControlSnapshotResultFrame(
+                                request_id, step,
+                                battle_control_snapshot_query_sequence + 1,
+                                query.result);
                       if (!response.empty()) {
-                        ++battle_control_snapshot_query_sequence;
+                        if (current_knight_step) {
+                          ++current_battle_knight_query_sequence;
+                        } else {
+                          ++battle_control_snapshot_query_sequence;
+                        }
                       }
                     }
                   }
@@ -17876,9 +17931,9 @@ void RunConnectedSession(
                                std::to_string(queued_wake_trace.last_wake_error) +
                                ")";
                     }
-                    if (query.result.status == xar::game::
-                                                   BattleControlSnapshotStatus::
-                                                       state_changed &&
+                    if ((current_knight_step ||
+                         query.result.status == xar::game::
+                             BattleControlSnapshotStatus::state_changed) &&
                         !query.result.diagnostic_reason.empty()) {
                       error += " (";
                       error += query.result.diagnostic_reason;

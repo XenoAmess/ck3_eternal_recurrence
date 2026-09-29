@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <optional>
 #include <type_traits>
 
 namespace xar::ck3_11906 {
@@ -15,6 +16,10 @@ inline constexpr std::string_view kBattleControlSnapshotV1StepPrefix =
     "query-battle-control-snapshot-v1-";
 inline constexpr std::string_view kBattleControlSnapshotV1Capability =
     "game.command.query-battle-control-snapshot-v1-N";
+inline constexpr std::string_view kCurrentBattleKnightV1StepPrefix =
+    "query-current-battle-knight-v1-";
+inline constexpr std::string_view kCurrentBattleKnightV1Capability =
+    "game.command.query-current-battle-knight-v1-N-N-N";
 inline constexpr std::uint32_t
     kBattleControlSnapshotV1QueuedWaitBudgetMilliseconds = 8'000;
 inline constexpr std::uint32_t
@@ -30,6 +35,12 @@ bool ParseBattleControlSnapshotV1Step(
     game::BattleControlRequest &output) noexcept;
 bool ParseBattleControlExpectedRevisionV1(
     std::string_view json, std::uint64_t &output) noexcept;
+bool ParseCurrentBattleKnightV1Step(
+    std::string_view step,
+    game::CurrentBattleKnightRequestV1 &output) noexcept;
+bool ParseCurrentBattleKnightExpectedV1(
+    std::string_view json, std::uint64_t native_revision,
+    game::CurrentBattleKnightRequestV1 &request) noexcept;
 
 enum class BattleControlSnapshotMailboxCompletionV1 : std::uint32_t {
   not_executed = 0,
@@ -46,12 +57,14 @@ struct BattleControlSnapshotMailboxContextV1 {
   MainThreadQueryTicketV1 ticket{};
   Bindings bindings{};
   game::BattleControlRequest request{};
+  std::optional<game::CurrentBattleKnightRequestV1> knight_request;
   std::uint64_t expected_snapshot_revision = 0;
   game::Snapshot expected_snapshot{};
 
   BattleControlSnapshotMailboxCompletionV1 completion =
       BattleControlSnapshotMailboxCompletionV1::not_executed;
   game::BattleControlSnapshot result{};
+  game::CurrentBattleKnightSnapshotV1 knight_result{};
   MainThreadExecutionStampV1 execution_stamp{};
   std::uint32_t executor_invocations = 0;
 
@@ -80,6 +93,8 @@ std::string_view BattleControlSnapshotFailureMessageV1(
 // includes every field frozen by battle_control_snapshot_v1_abi.json.
 std::string SerializeBattleControlSnapshotV1(
     const game::BattleControlSnapshot &snapshot);
+std::string SerializeCurrentBattleKnightV1(
+    const game::CurrentBattleKnightSnapshotV1 &snapshot);
 
 // A same-application-main observation receipt for the future active-combat
 // resume producer. It is intentionally unavailable for forecasting until the

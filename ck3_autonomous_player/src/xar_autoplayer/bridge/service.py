@@ -10616,6 +10616,43 @@ class GameplayBridgeService:
             expected_event_instance_id=expected_event_instance_id,
         )
 
+    def query_current_battle_knight_v1(
+        self,
+        *,
+        subject_public_cunit_id: int,
+        character_id: int,
+        regiment_id: int,
+        expected_played_character_id: int,
+        expected_war_id: int,
+        expected_native_carmy_id: int,
+        expected_combat_id: int,
+        expected_province_id: int,
+        expected_date_raw: int,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_snapshot_id: str,
+    ) -> dict[str, object]:
+        """Read one paired current knight/regiment on a pinned paused frame."""
+        reader = getattr(self.driver, "query_current_battle_knight_v1", None)
+        if not callable(reader):
+            raise UnsupportedStepError(
+                "selected backend has no current-battle-knight native reader"
+            )
+        return reader(
+            subject_public_cunit_id=subject_public_cunit_id,
+            character_id=character_id,
+            regiment_id=regiment_id,
+            expected_played_character_id=expected_played_character_id,
+            expected_war_id=expected_war_id,
+            expected_native_carmy_id=expected_native_carmy_id,
+            expected_combat_id=expected_combat_id,
+            expected_province_id=expected_province_id,
+            expected_date_raw=expected_date_raw,
+            expected_revision=expected_revision,
+            expected_native_revision=expected_native_revision,
+            expected_snapshot_id=expected_snapshot_id,
+        )
+
     def query_battle_control_snapshot_v1(
         self,
         subject_public_cunit_id: int,

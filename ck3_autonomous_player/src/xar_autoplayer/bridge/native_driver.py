@@ -10891,6 +10891,164 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": starting.get("native_revision"),
         }
 
+    def query_current_battle_knight_v1(
+        self,
+        *,
+        subject_public_cunit_id: int,
+        character_id: int,
+        regiment_id: int,
+        expected_played_character_id: int,
+        expected_war_id: int,
+        expected_native_carmy_id: int,
+        expected_combat_id: int,
+        expected_province_id: int,
+        expected_date_raw: int,
+        expected_revision: int,
+        expected_native_revision: int,
+        expected_snapshot_id: str,
+    ) -> dict[str, object]:
+        """One private exact-frame native read. Never retries an executed query."""
+        ids = (
+            subject_public_cunit_id,
+            character_id,
+            regiment_id,
+            expected_played_character_id,
+            expected_native_carmy_id,
+            expected_combat_id,
+            expected_province_id,
+        )
+        if any(type(value) is not int or not 1 <= value <= 2**31 - 1
+               for value in ids):
+            raise ValueError("current-knight IDs must be positive int32")
+        if type(expected_war_id) is not int or not 0 <= expected_war_id <= 2**31 - 1:
+            raise ValueError("expected_war_id must be a nonnegative int32")
+        if type(expected_date_raw) is not int or expected_date_raw < 0:
+            raise ValueError("expected_date_raw must be nonnegative")
+        if type(expected_revision) is not int or expected_revision < 1:
+            raise ValueError("expected_revision must be positive")
+        if type(expected_native_revision) is not int or expected_native_revision < 1:
+            raise ValueError("expected_native_revision must be positive")
+        if expected_snapshot_id != f"native:{expected_native_revision}":
+            raise ValueError("expected_snapshot_id/native revision mismatch")
+        start = self.take_snapshot()
+        player = start.get("played_character")
+        subject = _army_by_id(start, subject_public_cunit_id)
+        wars = start.get("active_wars")
+        if not (
+            start.get("paused") is True
+            and start.get("revision") == expected_revision
+            and start.get("native_revision") == expected_native_revision
+            and start.get("snapshot_id") == expected_snapshot_id
+            and start.get("date_raw") == expected_date_raw
+            and isinstance(player, dict)
+            and player.get("character_id") == expected_played_character_id
+            and isinstance(subject, dict)
+            and subject.get("controllable") is True
+            and _army_in_active_combat(subject)
+            and subject.get("current_province_id") == expected_province_id
+            and isinstance(wars, list)
+            and sum(
+                isinstance(war, dict)
+                and war.get("war_id") == expected_war_id
+                for war in wars
+            ) == 1
+        ):
+            raise BridgeUnavailableError(
+                "current-knight source snapshot or identity is stale"
+            )
+        step = (
+            "query-current-battle-knight-v1-"
+            f"{subject_public_cunit_id}-{character_id}-{regiment_id}"
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=expected_revision,
+            required_capability=(
+                "game.command.query-current-battle-knight-v1-N-N-N"
+            ),
+            request_fields={
+                "expected_native_revision": expected_native_revision,
+                "expected_snapshot_id": expected_snapshot_id,
+                "expected_played_character_id": expected_played_character_id,
+                "expected_war_id": expected_war_id,
+                "expected_native_carmy_id": expected_native_carmy_id,
+                "expected_combat_id": expected_combat_id,
+                "expected_province_id": expected_province_id,
+                "expected_date_raw": expected_date_raw,
+            },
+        )
+        end = self.take_snapshot()
+        if not _same_paused_native_frame(start, end) or any(
+            end.get(key) != start.get(key)
+            for key in ("revision", "native_revision", "snapshot_id", "date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "current-knight source frame changed during query"
+            )
+        row = result.get("current_battle_knight")
+        expected_row = {
+            "observed_date_raw": expected_date_raw,
+            "combat_id": expected_combat_id,
+            "province_id": expected_province_id,
+            "subject_public_cunit_id": subject_public_cunit_id,
+            "native_carmy_id": expected_native_carmy_id,
+            "character_id": character_id,
+            "regiment_id": regiment_id,
+        }
+        expected_keys = set(expected_row) | {
+            "schema",
+            "current_effective_prowess",
+            "knight_effectiveness_raw",
+            "province_evaluated_damage_raw",
+            "province_evaluated_toughness_raw",
+            "stored_combat_entry_damage_raw",
+            "stored_combat_entry_toughness_raw",
+            "scale",
+            "paired_generation_ids_verified",
+            "double_sample_stable",
+            "province_evaluation_fresh",
+        }
+        if not (
+            result.get("status") == "available"
+            and result.get("step") == step
+            and result.get("accepted") is True
+            and type(result.get("query_sequence")) is int
+            and result["query_sequence"] > 0
+            and type(result.get("snapshot_revision")) is int
+            and result["snapshot_revision"] == expected_native_revision
+            and isinstance(row, dict)
+            and set(row) == expected_keys
+            and row.get("schema") == "current-battle-knight-v1"
+            and all(
+                type(row.get(key)) is int and row[key] == value
+                for key, value in expected_row.items()
+            )
+            and row.get("paired_generation_ids_verified") is True
+            and row.get("double_sample_stable") is True
+            and row.get("province_evaluation_fresh") is True
+            and row.get("scale") == 100000
+            and all(
+                type(row.get(key)) is int
+                for key in (
+                    "current_effective_prowess",
+                    "knight_effectiveness_raw",
+                    "province_evaluated_damage_raw",
+                    "province_evaluated_toughness_raw",
+                    "stored_combat_entry_damage_raw",
+                    "stored_combat_entry_toughness_raw",
+                )
+            )
+        ):
+            raise BridgeUnavailableError(
+                "current-knight native response failed exact-frame validation"
+            )
+        return {
+            **result,
+            "queried_snapshot_id": expected_snapshot_id,
+            "queried_revision": expected_revision,
+            "queried_native_revision": expected_native_revision,
+        }
+
     def _execute_battle_control_snapshot_v1_query(
         self,
         step: str,
@@ -19370,6 +19528,51 @@ class ConfiguredHybridFallbackDriver:
         return {
             **self._delegate.take_snapshot(),
             "backend_id": "hybrid-fallback",
+        }
+
+    def query_current_battle_knight_v1(self, **request: object) -> dict[str, object]:
+        """Preserve wrapper/native revision domains for the private native read."""
+        wrapper_revision = request.get("expected_revision")
+        native_revision = request.get("expected_native_revision")
+        snapshot_id = request.get("expected_snapshot_id")
+        starting = self.take_snapshot()
+        if not (
+            type(wrapper_revision) is int
+            and type(native_revision) is int
+            and starting.get("revision") == wrapper_revision
+            and starting.get("native_revision") == native_revision
+            and starting.get("snapshot_id") == snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "hybrid current-knight wrapper/native frame is stale"
+            )
+        raw = self.native.query_current_battle_knight_v1(
+            **{**request, "expected_revision": native_revision}
+        )
+        ending = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, ending)
+            and all(
+                ending.get(key) == starting.get(key)
+                for key in (
+                    "revision", "native_revision", "snapshot_id", "date_raw"
+                )
+            )
+        ):
+            raise BridgeUnavailableError(
+                "hybrid current-knight frame changed during native read"
+            )
+        return {
+            **raw,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": wrapper_revision,
+            "queried_native_revision": native_revision,
+            "source": {
+                "backend_id": "native-headless",
+                "revision": wrapper_revision,
+                "native_revision": native_revision,
+                "snapshot_id": snapshot_id,
+            },
         }
 
     def center_map_on_landed_title_v1(

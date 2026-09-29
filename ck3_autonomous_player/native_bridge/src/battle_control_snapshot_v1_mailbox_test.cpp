@@ -1,9 +1,11 @@
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/current_battle_knight_v1.hpp"
 
 #include <windows.h>
 
 #include <cstdint>
 #include <iostream>
+#include <limits>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -194,6 +196,16 @@ game::BattleControlSnapshotStatus ReadBattleControlSnapshot(
   return g_native_status;
 }
 
+bool ReadCurrentBattleKnightV1(
+    const Bindings &, const game::Snapshot &,
+    const game::BattleControlSnapshot &,
+    const game::CurrentBattleKnightRequestV1 &,
+    game::CurrentBattleKnightSnapshotV1 &output) noexcept {
+  output = {};
+  output.unavailable_reason = "offline_fixture_not_live";
+  return false;
+}
+
 } // namespace xar::ck3_11906
 
 int main() {
@@ -220,6 +232,126 @@ int main() {
           "{\"expected_revision\":9,\"expected_revision\":10}",
           revision)) {
     return Fail("battle-control expected revision parser failed");
+  }
+
+  game::CurrentBattleKnightRequestV1 knight_request{};
+  if (!ParseCurrentBattleKnightV1Step(
+          "query-current-battle-knight-v1-18-34333-61",
+          knight_request) ||
+      knight_request.subject_public_cunit_id != 18 ||
+      knight_request.character_id != 34333 ||
+      knight_request.regiment_id != 61 ||
+      ParseCurrentBattleKnightV1Step(
+          "query-current-battle-knight-v1-18-034333-61",
+          knight_request) ||
+      !ParseCurrentBattleKnightV1Step(
+          "query-current-battle-knight-v1-18-34333-61",
+          knight_request)) {
+    return Fail("current-knight canonical step parser failed");
+  }
+  const std::string expected = R"({"expected_native_revision": 3, "expected_snapshot_id": "native:3", "expected_played_character_id": 29829, "expected_war_id": 4, "expected_native_carmy_id": 18, "expected_combat_id": 16777218, "expected_province_id": 2633, "expected_date_raw": 53146368})";
+  if (!ParseCurrentBattleKnightExpectedV1(expected, 3,
+                                           knight_request) ||
+      knight_request.expected_native_carmy_id != 18 ||
+      knight_request.expected_combat_id != 16777218 ||
+      ParseCurrentBattleKnightExpectedV1(expected, 4,
+                                          knight_request) ||
+      ParseCurrentBattleKnightExpectedV1(
+          R"({"expected_native_revision": 3, "expected_snapshot_id": "native:4", "expected_played_character_id": 29829, "expected_war_id": 4, "expected_native_carmy_id": 18, "expected_combat_id": 16777218, "expected_province_id": 2633, "expected_date_raw": 53146368})",
+          3, knight_request)) {
+    return Fail("current-knight exact-frame parser failed");
+  }
+  game::BattleControlSnapshot scoped{};
+  scoped.status = game::BattleControlSnapshotStatus::available;
+  scoped.battle_control_ready = true;
+  scoped.subject_public_cunit_id = 18;
+  scoped.subject_native_carmy_id = 18;
+  scoped.selected_owner_character_id = 29829;
+  scoped.combat_id = 16777218;
+  scoped.province_id = 2633;
+  scoped.combat_province_id = 2633;
+  scoped.observed_date_raw = 53146368;
+  game::BattleControlRegimentEntrySnapshot target{};
+  target.bucket = "men_at_arms";
+  target.regiment_id = 61;
+  target.native_carmy_id = 18;
+  target.public_cunit_id = 18;
+  target.owner_character_id = 29829;
+  target.knight_character_id_raw = 34333;
+  scoped.defender.men_at_arms_entries.push_back(target);
+  std::string_view scope_failure;
+  if (SelectCurrentBattleKnightEntryV1(scoped, knight_request,
+                                       scope_failure) == nullptr ||
+      !scope_failure.empty()) {
+    return Fail("current-knight pair scope positive fixture failed");
+  }
+  scoped.attacker.men_at_arms_entries.push_back(target);
+  if (SelectCurrentBattleKnightEntryV1(scoped, knight_request,
+                                       scope_failure) != nullptr ||
+      scope_failure != "regiment_duplicate_in_battle") {
+    return Fail("current-knight duplicate regiment gate failed");
+  }
+  scoped.attacker.men_at_arms_entries.clear();
+  scoped.defender.men_at_arms_entries[0].knight_character_id_raw = 34332;
+  if (SelectCurrentBattleKnightEntryV1(scoped, knight_request,
+                                       scope_failure) != nullptr ||
+      scope_failure != "knight_regiment_pair_mismatch") {
+    return Fail("current-knight exact CharacterID gate failed");
+  }
+  scoped.defender.men_at_arms_entries[0].knight_character_id_raw = 34333;
+  knight_request.expected_province_id = 2634;
+  if (SelectCurrentBattleKnightEntryV1(scoped, knight_request,
+                                       scope_failure) != nullptr ||
+      scope_failure != "battle_scope_invalid") {
+    return Fail("current-knight exact province gate failed");
+  }
+
+  game::CurrentBattleKnightSnapshotV1 value{};
+  value.available = true;
+  value.unavailable_reason.clear();
+  value.observed_date_raw = 53146368;
+  value.combat_id = 16777218;
+  value.province_id = 2633;
+  value.subject_public_cunit_id = 18;
+  value.native_carmy_id = 18;
+  value.character_id = 34333;
+  value.regiment_id = 61;
+  value.effective_prowess = 11;
+  value.fresh_damage_raw = 11000000;
+  value.fresh_toughness_raw = 2200000;
+  value.stored_entry_damage_raw = 15000000;
+  value.stored_entry_toughness_raw = 3000000;
+  const auto knight_wire = SerializeCurrentBattleKnightV1(value);
+  if (!Contains(knight_wire, "\"current_effective_prowess\":11") ||
+      !Contains(knight_wire, "\"province_evaluated_damage_raw\":11000000") ||
+      !Contains(knight_wire, "\"stored_combat_entry_damage_raw\":15000000")) {
+    return Fail("current-knight fresh/stored wire separation failed");
+  }
+  if (!CheckCurrentBattleKnightFormulaV1(
+           100000, 11, 10, 2, 11000000, 2200000).empty() ||
+      CheckCurrentBattleKnightFormulaV1(
+          100000, 11, 10, 2, 15000000, 3000000) !=
+          "fresh_stats_knight_crosscheck_failed" ||
+      CheckCurrentBattleKnightFormulaV1(
+          std::numeric_limits<std::int64_t>::max(), 11, 10, 2,
+          0, 0) != "knight_effectiveness_overflow") {
+    return Fail("current-knight fresh formula and overflow gates failed");
+  }
+  auto drifted = value;
+  if (!CheckCurrentBattleKnightPairV1(value, value).empty()) {
+    return Fail("current-knight identical double sample rejected");
+  }
+  drifted.effective_prowess = 12;
+  if (CheckCurrentBattleKnightPairV1(value, drifted) !=
+      "current_knight_double_sample_mismatch") {
+    return Fail("current-knight double-sample drift gate failed");
+  }
+  drifted = value;
+  drifted.available = false;
+  drifted.unavailable_reason = "effective_stats_helper_failed";
+  if (CheckCurrentBattleKnightPairV1(value, drifted) !=
+      "effective_stats_helper_failed") {
+    return Fail("current-knight helper failure typed unavailable failed");
   }
 
   auto complete = CompleteBattle();

@@ -42,7 +42,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 102;
+constexpr std::size_t kBaseCapabilityCount = 103;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -111,6 +111,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-route-contact-horizon-v1-N",
     "game.command.query-actual-contact-scope-v1-N",
     "game.command.query-battle-control-snapshot-v1-N",
+    "game.command.query-current-battle-knight-v1-N-N-N",
     "game.command.query-battle-transition-v1-N",
     "game.command.query-battle-terminal-transition-v1",
     "game.command.query-battle-reinforcement-assignment-v1-N",
