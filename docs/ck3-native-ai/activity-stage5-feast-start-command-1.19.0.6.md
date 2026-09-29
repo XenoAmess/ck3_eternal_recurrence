@@ -204,3 +204,100 @@ the other resources or final CanStart. The Gold transport owner is
 repairing this narrow wiring defect; a new exact candidate and paired
 paused run must read the four actual values and CanStart. R0365 does not
 authorize Start, payment, or a feast benefit claim.
+
+## R0366-B four named costs and final CanStart: paused live read
+
+The narrow transport fix following R0365 was frozen at source master
+`b5dc6da32beca9e0ce4f7747e9f1583807a8925d`, official CI
+#36549860545 SUCCESS. The
+[R0366-B candidate index](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/CANDIDATE-B-INDEX.json)
+SHA-256 is `DB52EBE6A1511B3378BC538EA84ED97B00A26DCEE47549151CBEC5FBEA0DD9B7`;
+Release DLL SHA-256 is
+`771A2A20176B5B6647E9BE005317854BEFC2DD663D8CACBC085BC2CAE91849E6`.
+The official pair/rebind/no-launch status was `ready`. Both runtime
+Start query and Start action opt-ins stayed OFF. On new CK3 PID 186916,
+the instance owner verified and minimized its window; the
+[window receipt](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/OWNER-WINDOW-RECEIPT-B.json)
+SHA-256 is `F4C25CB6DCA0337E552C6F853106304ACD71055FAB109A2AB18AE7C08279C173`.
+
+On the same paused `native:3` frame, actor 29829/date raw53219928,
+the private runner repeated Stage 1 generic Confirm and one typed Stage 2
+ProvinceID 2619 destination selection; the destination receipt verified
+Stage 5 and row IDs `[0,0]` to `[2619,2619]`. The **read-only** Stage 5
+full-cost result then returned `stage_five_full_cost_observed`,
+`same_frame=true`, `normal_refresh_sequence=757`, scale 100000,
+actor Gold raw `120644281`, and these original named costs:
+
+| Resource | Exact index | Configured cost raw | At scale 100000 |
+| --- | ---: | ---: | ---: |
+| Gold | 0 | 10000000 | 100 |
+| treasury | 6 | 0 | 0 |
+| piety | 2 | 0 | 0 |
+| barter_goods | 9 | 0 | 0 |
+
+All four indices are inside the ten named slots. The same result reads
+`final_can_start=false`. This is the original final native verdict
+for this configured feast, not a policy approval; its false reason was
+not established here. Gold is numerically above the configured Gold
+charge, but this alone does not establish a viable guest, war cash
+reservation, or permission to spend. The source tree's Start route
+was not invoked. No guest/arrival read was part of R0366-B.
+
+The [formal report](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/operator-runs/feast-stage5-fixed-cost-only-1/formal-report.txt)
+SHA-256 `7E9885E0F0F17ED0695F5AAC4FC159B602B1B0CD2C42A87B2BDE109A0D48579E`
+has `private_activity_feast_stage5_full_cost_observed/planning_stage_advanced/ok=true`;
+the [operator receipt](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/operator-runs/feast-stage5-fixed-cost-only-1/operator-receipt.json)
+SHA-256 `572049A81515FF3B2ABB6B7E2CAECF24C953957FAD65C01C09B1E4BFA92E8223`
+has completed/exit 0. Normal `auto_run` attempted/successful/visible
+gameplay turns are zero. Gold raw, date raw53219928 and original H3928
+save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+are unchanged; cleanup proved the CK3 tree gone. This is a real paused
+four-cost and final-gate read, not a Start, payment, benefit, next-turn
+consumption, or post-selection cold restore. The next action is to
+diagnose the false final gate and evaluate guest/resource commitments
+without overriding it.
+
+## R0367 same-frame Start inputs: hold on native false
+
+A separate cold H3928 run used Python source master
+`e6b61b825dd5ca6ae09fdeabf51a37dad27dc7c3` (official CI
+#36550764624 SUCCESS) and the same native tree/DLL as R0366-B,
+source `b5dc6da32beca9e0ce4f7747e9f1583807a8925d`.
+The [A candidate index](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/CANDIDATE-INDEX.json)
+SHA-256 is `BFE32888F306DF5B402EF334E384A341644283D71C82C0EF7FC5BBE6EA5E19CB`.
+The Stage 5 input query opt-in was ON, while the Start action opt-in
+remained OFF. The actual run identity was **R0367** with CK3 PID 181244;
+the [owner window receipt](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/OWNER-WINDOW-RECEIPT-A.json)
+SHA-256 `D7DAADD32B76FC37ED8AC2A5A22EFA66F3E0B6792AC3DF1869DBFC12B60C9C5C`
+records a verified minimize after the loading window became available.
+
+Stage 1 Confirm and the typed ProvinceID 2619 destination selection
+again reached the paused Stage 5 planner. The same-frame read repeated
+the four named costs (Gold 100 at scale 100000, treasury/piety/barter
+goods zero) and `final_can_start=false`. A separate Start-input
+read recorded `hosted_activities=[]` and
+`guest_join_status=planner_unavailable`; its
+`selected_nonhost_count`, `positive_join_count`, and
+`timely_positive_join_count` are **null**, with
+`arrival_time_observed=false` and
+`native_guest_route_qualified=false`. The empty hosted list supports
+no already hosted feast in this read. It does **not** turn the three
+unread guest counts into zero or identify why final CanStart is false.
+The formal decision was `hold/not_actionable` with reason
+`native_final_start_unavailable`. No Start action was submitted.
+
+The [formal report](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/operator-runs/feast-stage5-fixed-cost-input-read-1/formal-report.txt)
+SHA-256 `35C04DD2B42619442D98D3A6EA5AD48DAD5868CE7DA71E9D55A68F79903CE486`
+has `private_activity_feast_stage5_start_assessed/planning_stage_advanced/ok=true`;
+the [operator receipt](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/operator-runs/feast-stage5-fixed-cost-input-read-1/operator-receipt.json)
+SHA-256 `0EE3BF274E3103EFD2226C562AC49EF988057DAD86B7C08D62F8236A3A29A223`
+has completed/exit 0. Normal `auto_run` gameplay turns are zero,
+date raw53219928 and the original save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+are unchanged, and cleanup proved the process tree gone. This is a
+read-only hold decision, not Start, a fee debit, activity creation,
+attendance, next-turn consumption, or post-selection cold restore.
+The next native investigation is the actual final-gate failure branch
+and the unavailable planner guest route; neither may be guessed from
+an empty hosted list.
