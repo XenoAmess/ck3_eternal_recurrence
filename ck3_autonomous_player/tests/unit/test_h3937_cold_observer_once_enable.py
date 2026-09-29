@@ -173,6 +173,9 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
         return original_sha(path)
 
     monkeypatch.setattr(once, "_sha", synthetic_source_sha)
+    expected_blobs = blobs.copy()
+    monkeypatch.setattr(once, "_source_blob_identity",
+                        lambda: (head, expected_blobs))
     bound = once._require_exact_admission()
     check(bound["live_run_identity_sha256"] == sha(live_identity_path))
     once._require_no_launch_unchanged(bound)
@@ -188,8 +191,28 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ValueError, match="identity mismatch"):
         once._require_exact_admission()
-    manifest["source_git_blobs"] = blobs | {
-        "source_module_.h3937_cold_load_observer": "b" * 40}
+    manifest["source_git_blobs"] = expected_blobs.copy()
+    manifest["source_git_blobs"]["source_0"] = "c" * 40
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="source Git blobs differ"):
+        once._require_exact_admission()
+    manifest["source_git_blobs"] = expected_blobs.copy()
+    manifest["source_git_blobs"].pop("source_0")
+    manifest["source_git_blobs"]["source_fake"] = "b" * 40
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="source Git blobs differ"):
+        once._require_exact_admission()
+    manifest["source_git_blobs"] = expected_blobs.copy()
+    manifest["source_git_blobs"].pop("source_0")
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    manifest["source_git_blobs"] = expected_blobs.copy()
+    manifest["source_git_blobs"]["source_fake"] = "b" * 40
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    manifest["source_git_blobs"] = expected_blobs.copy()
     manifest["cold_load_observer_default_off"] = False
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ValueError, match="identity mismatch"):
@@ -416,5 +439,79 @@ def test_preworker_pipe_collision_rejects_before_worker(monkeypatch, tmp_path) -
     check(once.supervise_exact_once(entry) == 1)
     receipt = json.loads((output / "supervisor-completion.json").read_text())
     check(receipt["status"] == "RED")
+    check(receipt["worker_started"] is False)
     check(receipt["processes_gone"] is False)
     check("pipe busy" in str(receipt["error"]))
+
+
+def test_preworker_process_collision_rejects_without_worker(
+    monkeypatch, tmp_path,
+) -> None:
+    output = tmp_path / "attempt-12"
+    monkeypatch.setattr(once, "OUTPUT", output)
+    monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
+        "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
+    monkeypatch.setattr(once, "_require_exact_admission", lambda: {"head": "pinned"})
+    monkeypatch.setattr(once, "_require_go", lambda identity: ({}, "B" * 64))
+    monkeypatch.setattr(once, "_require_pipe_server_absent",
+                        lambda: check(False))
+    monkeypatch.setattr(once, "_image_inventory", lambda image: {
+        "returncode": 0, "found": image == "ck3.exe"})
+    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: check(False))
+    check(once.supervise_exact_once(tmp_path / "entry.py") == 1)
+    receipt = json.loads((output / "supervisor-completion.json").read_text())
+    check(receipt["status"] == "RED")
+    check(receipt["worker_started"] is False)
+    check(receipt["worker_pid"] is None)
+    check("process inventory" in str(receipt["error"]))
+    check(not (output / "worker-started.json").exists())
+
+
+def test_heartbeat_failure_kills_and_reaps_worker_with_tail_stdio(
+    monkeypatch, tmp_path,
+) -> None:
+    output = tmp_path / "attempt-12"
+    monkeypatch.setattr(once, "OUTPUT", output)
+    monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
+        "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
+    monkeypatch.setattr(once, "_require_preworker_screen_gate", lambda entry: None)
+    monkeypatch.setattr(once, "_managed_screen_heartbeat",
+                        lambda: (_ for _ in ()).throw(RuntimeError("lease heartbeat lost")))
+    monkeypatch.setattr(once, "_image_inventory", lambda image: {
+        "returncode": 0, "found": False})
+
+    class Worker:
+        pid = 424242
+        args = ["worker"]
+        returncode = None
+        calls = 0
+
+        def communicate(self, timeout):
+            self.calls += 1
+            if self.calls == 1:
+                raise once.subprocess.TimeoutExpired(self.args, timeout,
+                                                     output=b"partial")
+            check(self.returncode == 1)
+            check(timeout == 30)
+            return b"partial and tail out", b"tail err"
+
+    worker = Worker()
+    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: worker)
+
+    def kill_run(*args, **kwargs):
+        check(args[0][:3] == ["taskkill", "/PID", str(worker.pid)])
+        worker.returncode = 1
+        return type("Result", (), {"returncode": 0, "stdout": b"killed",
+                                    "stderr": b""})()
+
+    monkeypatch.setattr(once.subprocess, "run", kill_run)
+    check(once.supervise_exact_once(tmp_path / "entry.py") == 1)
+    receipt = json.loads((output / "supervisor-completion.json").read_text())
+    check(receipt["status"] == "RED")
+    check(receipt["worker_started"] is True)
+    check(receipt["worker_returncode"] == 1)
+    check(receipt["taskkill"]["returncode"] == 0)
+    check("lease heartbeat lost" in str(receipt["error"]))
+    check(worker.calls == 2)
+    check((output / "supervisor.stdout.txt").read_text() == "partial and tail out")
+    check((output / "supervisor.stderr.txt").read_text() == "tail err")

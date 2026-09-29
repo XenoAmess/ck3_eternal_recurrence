@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import ctypes
+import importlib
 from pathlib import Path
 import re
 import secrets
@@ -114,6 +115,14 @@ def _image_inventory(image: str) -> dict[str, object]:
             "found": image.casefold() in raw.casefold(), "raw": raw}
 
 
+def _require_zero_live_inventory() -> dict[str, dict[str, object]]:
+    inventory = {image: _image_inventory(image) for image in INVENTORY_IMAGES}
+    if any(item["returncode"] != 0 or item["found"] is not False
+           for item in inventory.values()):
+        raise ValueError("one-shot live process inventory not empty or unavailable")
+    return inventory
+
+
 def _require_pipe_server_absent() -> None:
     """Refuse a leftover server on the exact source-pair pipe name."""
     if os.name != "nt":
@@ -209,6 +218,17 @@ def _require_entry_blob(entry_path: Path) -> dict[str, str]:
     return {"head": head, "entry_blob": blob, "entry_sha256": _sha(entry)}
 
 
+def _source_blob_identity() -> tuple[str, dict[str, str]]:
+    """Recompute the exact producer and every current source module blob."""
+    paths = {"producer_module": Path(outer.__file__)}
+    for name in outer._SOURCE_MODULES:
+        module = importlib.import_module(name, package=outer.__package__)
+        if not isinstance(module.__file__, str):
+            raise ValueError(f"source module has no file: {name}")
+        paths[f"source_module_{name}"] = Path(module.__file__)
+    return outer._clean_checkout_and_blob_identity(paths)
+
+
 def _require_exact_admission() -> dict[str, object]:
     if not all(
         isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value)
@@ -294,6 +314,9 @@ def _require_exact_admission() -> dict[str, object]:
             in manifest["source_git_blobs"]
     ):
         raise ValueError("one-shot no-launch identity mismatch")
+    blob_head, actual_blobs = _source_blob_identity()
+    if blob_head != head or manifest["source_git_blobs"] != actual_blobs:
+        raise ValueError("one-shot source Git blobs differ from candidate HEAD")
     expected = {
         DLL: outer.COMBINED_DLL_SHA256,
         INJECTOR: outer.COMBINED_INJECTOR_SHA256,
@@ -491,6 +514,7 @@ def _require_preworker_screen_gate(entry: dict[str, str]) -> None:
     if identity["head"] != entry["head"]:
         raise ValueError("preworker source HEAD changed")
     _require_go(identity)
+    _require_zero_live_inventory()
     _require_pipe_server_absent()
 
 
@@ -544,9 +568,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
             raise ValueError("one-shot supervisor claim mismatch")
         identity = _require_exact_admission()
         go_attestation, go_sha = _require_go(identity)
-        before = {image: _image_inventory(image) for image in INVENTORY_IMAGES}
-        if any(item["returncode"] != 0 or item["found"] is True for item in before.values()):
-            raise ValueError("one-shot live process inventory not empty")
+        before = _require_zero_live_inventory()
         _require_pipe_server_absent()
         _require_live_screen_lease(go_attestation["screen_task_last_sequence"])
         if _sha(GO) != go_sha:
@@ -726,6 +748,32 @@ def supervise_exact_once(entry_path: Path) -> int:
                     f"{type(fallback_error).__name__}: {fallback_error}")
             return receipt
 
+    def reap_after_kill(process: object) -> None:
+        """Collect worker tail bytes and prove exit after either kill path."""
+        nonlocal stdout, stderr, supervisor_error
+        try:
+            later_stdout, later_stderr = process.communicate(timeout=30)
+            stdout = later_stdout if later_stdout is not None else stdout
+            stderr = later_stderr if later_stderr is not None else stderr
+        except subprocess.TimeoutExpired as error:
+            stdout = error.stdout or stdout
+            stderr = error.stderr or stderr
+            supervisor_error = (
+                f"{supervisor_error or ''}; worker remained after bounded taskkill"
+            ).lstrip("; ")
+            try:
+                process.kill()
+                later_stdout, later_stderr = process.communicate(timeout=5)
+                stdout = later_stdout if later_stdout is not None else stdout
+                stderr = later_stderr if later_stderr is not None else stderr
+            except BaseException as final_error:
+                supervisor_error += (
+                    f"; final worker reap: {type(final_error).__name__}: {final_error}")
+        except BaseException as error:
+            supervisor_error = (
+                f"{supervisor_error or ''}; worker reap: {type(error).__name__}: {error}"
+            ).lstrip("; ")
+
     try:
         _require_preworker_screen_gate(entry)
         worker = subprocess.Popen(
@@ -754,16 +802,13 @@ def supervise_exact_once(entry_path: Path) -> int:
             stdout = error.stdout or b""
             stderr = error.stderr or b""
             kill_result = kill_tree(worker)
-            try:
-                later_stdout, later_stderr = worker.communicate(timeout=30)
-                stdout = later_stdout if later_stdout is not None else stdout
-                stderr = later_stderr if later_stderr is not None else stderr
-            except subprocess.TimeoutExpired:
-                supervisor_error = "worker remained after bounded taskkill"
+            reap_after_kill(worker)
     except BaseException as error:
         supervisor_error = f"{type(error).__name__}: {error}"
-        if worker is not None and worker.returncode is None and kill_result is None:
-            kill_result = kill_tree(worker)
+        if worker is not None:
+            if worker.returncode is None and kill_result is None:
+                kill_result = kill_tree(worker)
+            reap_after_kill(worker)
     for name, data in (("stdout", stdout), ("stderr", stderr)):
         try:
             with (OUTPUT / f"supervisor.{name}.txt").open("x", encoding="utf-8") as target:
@@ -832,6 +877,7 @@ def supervise_exact_once(entry_path: Path) -> int:
         "round": ROUND, "live_run_id": LIVE_RUN_ID,
         "status": "GREEN_READ_ONLY" if ok else "RED",
         "worker_pid": worker.pid if worker is not None else None,
+        "worker_started": worker is not None,
         "worker_returncode": worker.returncode if worker is not None else None,
         "timeout": timeout, "timeout_seconds": SUPERVISOR_TIMEOUT_SECONDS,
         "taskkill": kill_result, "error": supervisor_error,
