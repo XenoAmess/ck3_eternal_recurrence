@@ -65,6 +65,39 @@ def _choose(snapshot: dict[str, object], **kwargs: object) -> dict[str, object]:
 
 
 class LifestyleMinPolicyTests(unittest.TestCase):
+    def test_diplomacy_thoughtful_requires_point_native_legality_and_unowned(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["current_focus"] = {
+            "presence": "present", "key": "diplomacy_foreign_affairs_focus",
+            "lifestyle_key": "diplomacy_lifestyle",
+        }
+        snapshot["current_lifestyle_progress"]["lifestyle_key"] = "diplomacy_lifestyle"
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "thoughtful_perk", "lifestyle_key": "diplomacy_lifestyle",
+        }]
+        selected = _choose(snapshot)
+        self.assertEqual(selected["selected_action"]["target_key"], "thoughtful_perk")
+        self.assertEqual(selected["selected_action"]["reason"],
+                         "send_gift_opinion_gain_doubled")
+        wartime = choose_min_feudal_lifestyle_action(
+            snapshot, feudal_scope_admitted=True, at_peace=False,
+            allow_wartime_perk=True,
+        )
+        self.assertEqual(wartime["policy_id"],
+                         "g2-lifestyle-wartime-diplomacy-perk-v1")
+        self.assertEqual(wartime["selected_action"]["target_key"],
+                         "thoughtful_perk")
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 1
+        snapshot["legal_perk_candidates"]["items"] = []
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "thoughtful_perk", "lifestyle_key": "diplomacy_lifestyle",
+        }]
+        snapshot["owned_perk_keys"].append("thoughtful_perk")
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+
     def test_martial_authority_first_perk_needs_point_and_final_legality(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["current_focus"] = {

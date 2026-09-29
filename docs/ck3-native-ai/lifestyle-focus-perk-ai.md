@@ -1,5 +1,55 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## NW-LIFE diplomacy Thoughtful successor candidate (2026-09-30; source contract)
+
+The existing first operable frame gate checks a natural successor's focus and
+current lifestyle points. It already handles an effective focus without a
+duplicate submit. R0186 submitted `professional_workforce_perk` and R0187
+read it from a new PID; R0352's later Robert frame had zero unspent
+stewardship points. None of these frames proves a missed diplomacy spend.
+
+The exact 1.19.0.6 original
+`game/common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt`
+(SHA-256 `11CD0804DCB859748569D083245F2EC614E5DCCB7AB5915415FA7775A147B510`)
+defines `thoughtful_perk` as the opening Foreign Affairs perk and gives it
+high automatic weight for diplomacy education. Its effect localization says
+that Send Gift opinion gain is doubled; `00_basic_values.txt` applies the
+factor of two when the actor owns the perk. The existing exact native reader
+can resolve and final-validate this named target, but the formal windowless
+policy target and typed submit allowlists admitted only stewardship and
+martial targets. A diplomacy-focused successor with an unspent point would
+therefore receive `no_legal_minimum` from our policy even when the native
+target is final-legal. This is a source coverage gap, not an observed
+positive Robert opportunity.
+
+This candidate adds only `thoughtful_perk` to the existing private policy
+target and typed submit path. It requires the current focus to belong to
+`diplomacy_lifestyle`, a positive observed point, an unowned perk and the
+same-frame native final-legal candidate. A pending action still takes the
+independent receipt path. The policy reason records the gift-opinion value;
+it does not infer a current gift target or a realized opinion gain. The
+existing opening focus comparison stays limited to wealth and martial, and
+no public ability is advertised. A matching diplomacy-focused paused frame,
+typed action, independent postcondition, following turn and paired cold
+restore remain required before a live capability claim.
+
+The source candidate passed the focused private policy/consumer tests 58/58
+under normal and `-O`. Against the frozen EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+the native stock perk, formal precondition and submit adapter fixtures passed
+13/13, 18/18 and 9/9 in both MSVC Debug `/Od` and Release `/O2`;
+the five affected bridge objects compiled in both modes. These are source and
+exact-build static results, with zero new CK3 actions or game dates.
+
+```mermaid
+flowchart LR
+  A[New actor has diplomacy focus] --> B[Read current points and owned perks]
+  B --> C[Native final verdict for Thoughtful]
+  C -->|legal, point available, unowned| D[Private typed perk]
+  C -. missing or illegal .-> U[Keep current plan and evidence]
+  D -. receipt, next turn, cold restore .-> R[Future live closure]
+```
+
 ## NW-LIFE first-focus martial role candidate (2026-09-28; source contract)
 
 On exact CK3 1.19.0.6, original `game/common/focuses/00_lifestyle_focuses.txt`

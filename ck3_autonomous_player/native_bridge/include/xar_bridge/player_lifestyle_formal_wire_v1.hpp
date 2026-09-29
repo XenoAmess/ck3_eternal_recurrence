@@ -54,6 +54,7 @@ inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
          target == kStockPerkLegalityFollowupTargetV1 ||
          target == kStockPerkLegalityNextTargetV1 ||
          target == kStockPerkLegalityCollectTaxesTargetV1 ||
+         target == kDiplomacyThoughtfulPerkV1 ||
          target == kMartialServeTheCrownPerkV1;
 }
 
@@ -75,6 +76,13 @@ inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
           snapshot.state.current_lifestyle_key) ==
           kMartialPerkLifestyleV1) {
     return kMartialServeTheCrownPerkV1;
+  }
+  if (snapshot.state.current_focus_presence ==
+          game::PlayerLifestyleFocusPresenceV1::present &&
+      PlayerLifestyleStableKeyViewV1(
+          snapshot.state.current_lifestyle_key) ==
+          kDiplomacyThoughtfulLifestyleV1) {
+    return kDiplomacyThoughtfulPerkV1;
   }
   bool cutting_corners_owned = false;
   bool professional_workforce_owned = false;

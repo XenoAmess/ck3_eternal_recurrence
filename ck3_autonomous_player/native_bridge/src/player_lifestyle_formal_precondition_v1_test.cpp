@@ -90,6 +90,8 @@ int main() {
     Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 ck3::kMartialServeTheCrownPerkV1));
     Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+                ck3::kDiplomacyThoughtfulPerkV1));
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 ck3::kStockPerkLegalityFollowupTargetV1) &&
             ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 ck3::kStockPerkLegalityNextTargetV1) &&
@@ -209,6 +211,13 @@ int main() {
         state->state.current_lifestyle_key));
     Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
             ck3::kMartialServeTheCrownPerkV1);
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        "diplomacy_foreign_affairs_focus", state->state.current_focus_key));
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        ck3::kDiplomacyThoughtfulLifestyleV1,
+        state->state.current_lifestyle_key));
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
+            ck3::kDiplomacyThoughtfulPerkV1);
     Require(ck3::AssignPlayerLifestyleStableKeyV1(
         "stewardship_wealth_focus", state->state.current_focus_key));
     Require(ck3::AssignPlayerLifestyleStableKeyV1(
