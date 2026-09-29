@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from war_ai_promo import episode_two_reel_edit as edit  # noqa: E402
@@ -33,7 +34,7 @@ def planned() -> dict:
                    "attempt_id": attempt, "span_id": f"{chapter}-span",
                    "bundle_root": str(Path.cwd() / attempt), "raw_width": 1920,
                    "raw_height": 1080, "begin_pts_seconds": "0",
-                   "end_pts_seconds": str(frames / 30),
+                   "end_pts_seconds": str((frames - 1) / 30),
                    "source_label": f"{attempt} 原生录像",
                    "raw": {**fake, "sha256": f"{list(edit.TARGET_FRAMES).index(chapter)+1:064X}"},
                    "clean_span_audit": fake, "human_review": fake,
@@ -72,6 +73,9 @@ class ReelEditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "full source PTS interval"):
             edit._capture_frame_budget(edit.Decimal("0"), edit.Decimal("1"), 60, "clip")
         edit._capture_frame_budget(edit.Decimal("0"), edit.Decimal("1.966667"), 60, "clip")
+        with self.assertRaisesRegex(ValueError, "full source PTS interval"):
+            edit._capture_frame_budget(edit.Decimal("10"), edit.Decimal("12"), 60, "clip")
+        edit._capture_frame_budget(edit.Decimal("10"), edit.Decimal("12"), 61, "clip")
         plan = planned()
         plan["chapters"][0]["segments"][0]["end_pts_seconds"] = "1000"
         with self.assertRaisesRegex(ValueError, "full source PTS interval"):
@@ -82,7 +86,7 @@ class ReelEditTests(unittest.TestCase):
         opening = plan["chapters"][0]["segments"][0]
         closing = plan["chapters"][-1]["segments"][0]
         closing["raw"] = opening["raw"]
-        closing["end_pts_seconds"] = "60"
+        closing["end_pts_seconds"] = "59.966667"
         closing["frames"] = 1800
         plan["chapters"][-1]["segments"].append({"id": "closing-still", "kind": "still",
             "frames": 1050, "source_label": "E2 来源说明", "image": closing["raw"],
@@ -99,7 +103,8 @@ class ReelEditTests(unittest.TestCase):
         closing = plan["chapters"][-1]["segments"][0]
         closing["raw"] = opening["raw"]
         closing["begin_pts_seconds"] = opening["end_pts_seconds"]
-        closing["end_pts_seconds"] = "185"
+        closing["end_pts_seconds"] = str(
+            edit.Decimal(closing["begin_pts_seconds"]) + edit.Decimal(closing["frames"] - 1) / 30)
         with self.assertRaisesRegex(ValueError, "silently repeats"):
             edit.check_shape(plan)
 
@@ -131,11 +136,75 @@ class ReelEditTests(unittest.TestCase):
                 edit._exact_pts(probe, edit.Decimal("10.001"), edit.Decimal("10.033"), 1920, 1080)
 
     def test_capture_command_uses_trim_and_new_output(self) -> None:
-        row = {"kind": "capture", "begin_pts_seconds": "10.000", "end_pts_seconds": "12.000", "frames": 60}
+        row = {"kind": "capture", "begin_pts_seconds": "10.000", "end_pts_seconds": "12.000", "frames": 61}
         argv = edit.segment_argv(row, Path("raw.mkv"), Path("new.mp4"), "ffmpeg")
         self.assertIn("trim=start=10.000:end=12.001", argv[argv.index("-vf") + 1])
         self.assertIn("-n", argv)
+        self.assertNotIn("-frames:v", argv)
         self.assertNotIn("-stream_loop", argv)
+        still = edit.segment_argv({"kind": "still", "frames": 30}, Path("card.png"),
+                                  Path("still.mp4"), "ffmpeg")
+        self.assertEqual(still[still.index("-frames:v") + 1], "30")
+
+    def test_output_duration_cannot_hide_one_missing_inclusive_frame(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            attempt = Path(directory)
+            (attempt / "commands").mkdir()
+            (attempt / "probes").mkdir()
+            def fake_run(root: Path, name: str, argv: list[str], *, cwd: Path) -> None:
+                log = root / "commands" / name
+                log.mkdir()
+                (log / "stdout.bin").write_text(json.dumps({"streams": [{
+                    "codec_type": "video", "width": edit.TARGET_WIDTH,
+                    "height": edit.TARGET_HEIGHT, "avg_frame_rate": "30/1", "nb_frames": "61"}],
+                    "format": {"duration": "2.000"}}), encoding="utf-8")
+            with mock.patch.object(edit, "_run", side_effect=fake_run):
+                with self.assertRaisesRegex(ValueError, "duration differs"):
+                    edit._probe(attempt, "short", attempt / "short.mp4", "ffprobe", 61)
+
+    def test_streaming_command_receipts_cover_nonzero_launch_and_interrupt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            attempt = Path(directory)
+            (attempt / "commands").mkdir()
+            with self.assertRaisesRegex(RuntimeError, "exit 7"):
+                edit._run(attempt, "nonzero", [sys.executable, "-c",
+                          "import sys; print('out'); print('err', file=sys.stderr); sys.exit(7)"],
+                          cwd=attempt)
+            log = attempt / "commands" / "nonzero"
+            self.assertEqual((log / "exit-code.txt").read_text(encoding="ascii"), "7\n")
+            self.assertIn(b"out", (log / "stdout.bin").read_bytes())
+            self.assertIn(b"err", (log / "stderr.bin").read_bytes())
+            with self.assertRaises(FileNotFoundError):
+                edit._run(attempt, "not-started", [str(attempt / "missing-tool.exe")], cwd=attempt)
+            log = attempt / "commands" / "not-started"
+            self.assertEqual((log / "exit-code.txt").read_text(encoding="ascii"), "NOT_STARTED\n")
+            self.assertEqual(json.loads((log / "execution-error.json").read_text(encoding="utf-8"))[
+                "status"], "INTERRUPTED_OR_NOT_STARTED_PRESERVED")
+
+            class InterruptedProcess:
+                pid = 12345
+                stopped = False
+                waits = 0
+                def wait(self, timeout: int | None = None) -> int:
+                    self.waits += 1
+                    if self.waits == 1:
+                        raise KeyboardInterrupt
+                    return 130
+                def poll(self) -> int | None:
+                    return 130 if self.stopped else None
+                def terminate(self) -> None:
+                    self.stopped = True
+                def kill(self) -> None:
+                    self.stopped = True
+            child = InterruptedProcess()
+            with mock.patch.object(edit.subprocess, "Popen", return_value=child):
+                with self.assertRaises(KeyboardInterrupt):
+                    edit._run(attempt, "interrupted", ["ffmpeg"], cwd=attempt)
+            log = attempt / "commands" / "interrupted"
+            self.assertTrue(child.stopped)
+            self.assertEqual((log / "exit-code.txt").read_text(encoding="ascii"), "130\n")
+            self.assertEqual(json.loads((log / "execution-error.json").read_text(encoding="utf-8"))[
+                "exception_type"], "KeyboardInterrupt")
 
     def test_post_render_original_change_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -156,6 +225,55 @@ class ReelEditTests(unittest.TestCase):
             source.write_bytes(b"other")
             with self.assertRaisesRegex(ValueError, "SHA-256 differs"):
                 edit._recheck_nonraw_inputs(plan)
+
+    def test_bundle_manifest_or_intent_change_after_initial_read_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            original = root / "original.bin"
+            original.write_bytes(b"source")
+            identity = {"source": str(original), **edit._identity(original)}
+            plan = planned()
+            for key in ("project_config", "narration_script", "subtitle_fragments", "card_index"):
+                plan[key] = identity
+            for chapter in plan["chapters"]:
+                for segment in chapter["segments"]:
+                    keys = ("clean_span_audit", "human_review", "pts_probe", "recorder_final",
+                            "cold_load_save", "cold_load_receipt", "control") if segment["kind"] == "capture" else (
+                            "image", "origin", "render_receipt")
+                    for key in keys:
+                        segment[key] = identity
+            source_manifest = root / "source-manifest.json"
+            intent = root / "recorder-intent.json"
+            source_manifest.write_text('{"a":1}', encoding="utf-8")
+            intent.write_text('{"b":1}', encoding="utf-8")
+            _, manifest_binding = edit._read_bound_json(source_manifest)
+            _, intent_binding = edit._read_bound_json(intent)
+            provenance = {"bundle": {"source_manifest": manifest_binding,
+                                      "recorder_intent": intent_binding}}
+            edit._recheck_nonraw_inputs(plan, provenance)
+            source_manifest.write_text('{"a":2}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "SHA-256 differs"):
+                edit._recheck_nonraw_inputs(plan, provenance)
+            source_manifest.write_text('{"a":1}', encoding="utf-8")
+            intent.write_text('{"b":2}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "SHA-256 differs"):
+                edit._recheck_nonraw_inputs(plan, provenance)
+
+    def test_build_interrupt_retains_failure_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = root / "plan.json"
+            spec.write_text(json.dumps(planned()), encoding="utf-8")
+            attempt = root / "attempt"
+            with mock.patch.object(edit.importlib.metadata, "version", return_value="0.2.1"), \
+                    mock.patch.object(edit, "_installed_wheel_digest", return_value="A" * 64), \
+                    mock.patch.object(edit, "verify_sources", side_effect=KeyboardInterrupt):
+                with self.assertRaises(KeyboardInterrupt):
+                    edit.build(spec, attempt, selected_version="0.2.1",
+                               selected_wheel_sha256="A" * 64)
+            failure = json.loads((attempt / "failure.json").read_text(encoding="utf-8"))
+            self.assertEqual(failure["status"], "FAILED_PRESERVED")
+            self.assertIn("KeyboardInterrupt", failure["error"])
 
     def test_current_card_cannot_borrow_another_attempt(self) -> None:
         chapter = planned()["chapters"][1]

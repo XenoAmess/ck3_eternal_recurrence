@@ -60,6 +60,17 @@ def _identity(path: Path) -> dict:
     return {"bytes": path.stat().st_size, "sha256": _sha(path)}
 
 
+def _read_bound_json(path: Path) -> tuple[dict, dict]:
+    """Parse and hash the same bytes used for an undeclared bundle source."""
+    path = path.resolve(strict=True)
+    payload = path.read_bytes()
+    data = json.loads(payload)
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected JSON object: {path}")
+    return data, {"source": str(path), "bytes": len(payload),
+                  "sha256": hashlib.sha256(payload).hexdigest().upper()}
+
+
 def _binding(row: object, label: str, *, verify_bytes: bool = True) -> Path:
     if (not isinstance(row, dict) or not isinstance(row.get("source"), str)
             or not isinstance(row.get("sha256"), str) or HEX.fullmatch(row["sha256"]) is None
@@ -94,12 +105,11 @@ def _label(value: object, required: str, label: str) -> str:
 
 
 def _capture_frame_budget(begin: Decimal, end: Decimal, frames: int, sid: str) -> None:
-    """A 30 fps edit must cover its full inclusive-PTS interval, within one frame."""
+    """The final 30 fps frame must land on the inclusive reviewed end PTS."""
     source_span = end - begin
-    output_span = Decimal(frames) / FPS
-    frame = Decimal(1) / FPS
-    if (source_span <= 0 or output_span < source_span
-            or output_span > source_span + frame + Decimal("0.001")):
+    last_output_pts = Decimal(frames - 1) / FPS
+    if (source_span <= 0 or frames < 2
+            or abs(last_output_pts - source_span) > Decimal("0.001")):
         raise ValueError(f"{sid} frame budget differs from its full source PTS interval")
 
 
@@ -207,7 +217,7 @@ def _exact_pts(probe: Path, begin: Decimal, end: Decimal,
         raise ValueError("Clip in/out must be exact source frame PTS, not wall-clock marks")
 
 
-def _verify_capture(row: dict) -> tuple[Path, object]:
+def _verify_capture(row: dict) -> tuple[Path, object, dict]:
     sid = row["id"]
     root = Path(row["bundle_root"]).resolve(strict=True)
     clean_path = _binding(row["clean_span_audit"], f"{sid} clean audit")
@@ -243,7 +253,7 @@ def _verify_capture(row: dict) -> tuple[Path, object]:
     if (raw != bundle.raw_capture.path or row["raw"]["sha256"].upper() != bundle.raw_capture.sha256
             or row["raw"]["bytes"] != bundle.raw_capture.bytes):
         raise ValueError(f"{sid} raw must be the adapter-verified copy")
-    source_manifest = _read(root / "source/source-manifest.json")
+    source_manifest, source_manifest_binding = _read_bound_json(root / "source/source-manifest.json")
     if (Path(source_manifest.get("attempt_root", "")).name != row["attempt_id"]
             or source_manifest.get("status") != "PENDING_CLEAN_REVIEW"):
         raise ValueError(f"{sid} clean bundle belongs to another capture attempt")
@@ -263,7 +273,8 @@ def _verify_capture(row: dict) -> tuple[Path, object]:
     control = _binding(row["control"], f"{sid} native control")
     original_attempt = Path(source_manifest["attempt_root"]).resolve(strict=True)
     original_recorder = Path(source_manifest["recorder_root"]).resolve(strict=True)
-    intent = _read(root / "source" / original_recorder.name / "recorder-intent.json")
+    intent, intent_binding = _read_bound_json(
+        root / "source" / original_recorder.name / "recorder-intent.json")
     for key, path, declared in (("source_save", save, row["cold_load_save"]),
                                 ("source_receipt", save_receipt, row["cold_load_receipt"])):
         original = intent.get(key, {})
@@ -277,7 +288,8 @@ def _verify_capture(row: dict) -> tuple[Path, object]:
                        and item["sha256"].upper() == row["control"]["sha256"].upper()
                        for item in source_manifest["files"])):
         raise ValueError(f"{sid} native control is not in its capture source inventory")
-    return raw, bundle
+    return raw, bundle, {"source_manifest": source_manifest_binding,
+                         "recorder_intent": intent_binding}
 
 
 def _verify_still(row: dict, card_rows: dict, index_path: Path) -> Path:
@@ -333,7 +345,7 @@ def _same_run_card_gate(chapter: dict, index: dict) -> None:
             raise ValueError(f"{card_id} lacks exclusively same-run {replay} raw and cold-load save")
 
 
-def verify_sources(spec: dict) -> tuple[dict[str, Path], dict[Path, object]]:
+def verify_sources(spec: dict) -> tuple[dict[str, Path], dict[Path, object], dict[str, dict]]:
     """Heavy read-only source audit for a future build, never run on live raw."""
     check_shape(spec)
     config = _binding(spec["project_config"], "ProjectConfig")
@@ -356,19 +368,24 @@ def verify_sources(spec: dict) -> tuple[dict[str, Path], dict[Path, object]]:
         raise ValueError("Six bound TTS speech durations are required")
     bound: dict[str, Path] = {}
     bundles: dict[Path, object] = {}
+    source_provenance: dict[str, dict] = {}
     for chapter in spec["chapters"]:
         if TARGET_FRAMES[chapter["id"]] / FPS < speech[chapter["id"]]:
             raise ValueError(f"{chapter['id']} edit is shorter than source narration")
         _same_run_card_gate(chapter, index)
         for row in chapter["segments"]:
             if row["kind"] == "capture":
-                raw, bundle = _verify_capture(row)
+                raw, bundle, provenance = _verify_capture(row)
                 bound[row["id"]] = raw
                 bundles[bundle.artifact_root] = bundle
+                key = str(bundle.artifact_root)
+                if key in source_provenance and source_provenance[key] != provenance:
+                    raise ValueError("Capture bundle source provenance changed during initial audit")
+                source_provenance[key] = provenance
             else:
                 bound[row["id"]] = _verify_still(row, card_rows, index_path)
     # The caller revalidates these bundles again after a future media build.
-    return bound, bundles
+    return bound, bundles, source_provenance
 
 
 def _ass_label(text: str, frames: int) -> str:
@@ -392,10 +409,12 @@ def segment_argv(row: dict, source: Path, output: Path, ffmpeg: str) -> list[str
               "setpts=PTS-STARTPTS,fps=30,scale=2560:1440:flags=lanczos,"
               "setsar=1,ass=label.ass")
         source_args = ["-i", str(source)]
+        frame_limit = []  # Full trimmed interval must encode; _probe checks the actual count.
     else:
         vf = "setsar=1,ass=label.ass"
         source_args = ["-loop", "1", "-framerate", "30", "-i", str(source)]
-    return common + source_args + ["-vf", vf, "-frames:v", str(row["frames"]), "-an",
+        frame_limit = ["-frames:v", str(row["frames"])]
+    return common + source_args + ["-vf", vf] + frame_limit + ["-an",
                                    "-c:v", "libx264", "-preset", "medium", "-crf", "18",
                                    "-pix_fmt", "yuv420p", "-r", "30", "-threads", "2",
                                    "-movflags", "+faststart", str(output)]
@@ -405,12 +424,40 @@ def _run(attempt: Path, name: str, argv: list[str], *, cwd: Path) -> None:
     log = attempt / "commands" / name
     log.mkdir(parents=True, exist_ok=False)
     (log / "argv.json").write_text(json.dumps(argv, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    result = subprocess.run(argv, cwd=cwd, capture_output=True, check=False)
-    (log / "stdout.bin").write_bytes(result.stdout)
-    (log / "stderr.bin").write_bytes(result.stderr)
-    (log / "exit-code.txt").write_text(f"{result.returncode}\n", encoding="ascii")
-    if result.returncode != 0:
-        raise RuntimeError(f"{name} failed with exit {result.returncode}; attempt retained")
+    process: subprocess.Popen | None = None
+    returncode: int | None = None
+    with (log / "stdout.bin").open("xb") as stdout, (log / "stderr.bin").open("xb") as stderr:
+        try:
+            process = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL,
+                                       stdout=stdout, stderr=stderr)
+            returncode = process.wait()
+        except BaseException as exc:
+            cleanup_error = None
+            if process is not None:
+                try:
+                    if process.poll() is None:
+                        process.terminate()
+                    try:
+                        returncode = process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                        returncode = process.wait(timeout=5)
+                except Exception as cleanup_exc:
+                    cleanup_error = repr(cleanup_exc)
+                    returncode = process.poll()
+            (log / "execution-error.json").write_text(json.dumps({
+                "status": "INTERRUPTED_OR_NOT_STARTED_PRESERVED",
+                "exception_type": type(exc).__name__, "error": repr(exc),
+                "pid": process.pid if process is not None else None,
+                "returncode": returncode, "cleanup_error": cleanup_error,
+                "stdout_stderr_streamed_to_files": True,
+            }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            raise
+        finally:
+            (log / "exit-code.txt").write_text(
+                f"{returncode if returncode is not None else 'NOT_STARTED'}\n", encoding="ascii")
+    if returncode != 0:
+        raise RuntimeError(f"{name} failed with exit {returncode}; attempt retained")
 
 
 def _probe(attempt: Path, name: str, path: Path, ffprobe: str, frames: int) -> dict:
@@ -425,12 +472,12 @@ def _probe(attempt: Path, name: str, path: Path, ffprobe: str, frames: int) -> d
             or video[0].get("avg_frame_rate") != "30/1"
             or int(video[0].get("nb_frames", -1)) != frames):
         raise ValueError(f"{name} output lacks exact 2560x1440/30fps/frame count")
-    if abs(float(data["format"]["duration"]) - frames / FPS) > 0.08:
+    if abs(float(data["format"]["duration"]) - frames / FPS) > (0.5 / FPS + 0.001):
         raise ValueError(f"{name} output duration differs from edit frames")
     return data
 
 
-def _recheck_nonraw_inputs(spec: dict) -> None:
+def _recheck_nonraw_inputs(spec: dict, source_provenance: dict[str, dict] | None = None) -> None:
     """Catch edits to declared originals during a long render without rehashing GB raw."""
     rows = [spec[key] for key in ("project_config", "narration_script",
                                   "subtitle_fragments", "card_index")]
@@ -440,6 +487,8 @@ def _recheck_nonraw_inputs(spec: dict) -> None:
                     "cold_load_save", "cold_load_receipt", "control") if segment["kind"] == "capture" else (
                     "image", "origin", "render_receipt")
             rows.extend(segment[key] for key in keys)
+    for bundle in (source_provenance or {}).values():
+        rows.extend((bundle["source_manifest"], bundle["recorder_intent"]))
     seen: set[tuple[str, int, str]] = set()
     for row in rows:
         marker = (row["source"], row["bytes"], row["sha256"].upper())
@@ -477,7 +526,7 @@ def build(spec_path: Path, attempt: Path, *, selected_version: str,
         (attempt / directory).mkdir()
     (attempt / "input-plan.json").write_bytes(plan_bytes)
     try:
-        sources, bundles = verify_sources(spec)
+        sources, bundles, source_provenance = verify_sources(spec)
         ffmpeg, ffmpeg_identity = _resolve_media_tool(ffmpeg)
         ffprobe, ffprobe_identity = _resolve_media_tool(ffprobe)
         _run(attempt, "ffmpeg-version", [ffmpeg, "-version"], cwd=attempt)
@@ -488,6 +537,7 @@ def build(spec_path: Path, attempt: Path, *, selected_version: str,
             "input_plan": {"source": str(spec_path), **_identity(spec_path)},
             "source_bindings": {row["id"]: row["raw"] if row["kind"] == "capture" else row["image"]
                                 for chapter in spec["chapters"] for row in chapter["segments"]},
+            "source_provenance": source_provenance,
             "toolchain_version": selected_version,
             "toolchain_wheel_sha256": selected_wheel_sha256.upper(),
             "ffmpeg": ffmpeg_identity, "ffprobe": ffprobe_identity,
@@ -521,7 +571,7 @@ def build(spec_path: Path, attempt: Path, *, selected_version: str,
         # Rehash the exact CK3 bundle sources after all media reads, including raw copies.
         for bundle in bundles.values():
             bundle.verify_unchanged()
-        _recheck_nonraw_inputs(spec)
+        _recheck_nonraw_inputs(spec, source_provenance)
         _binding(ffmpeg_identity, "post-render FFmpeg binary")
         _binding(ffprobe_identity, "post-render FFprobe binary")
         if spec_path.read_bytes() != plan_bytes:
@@ -531,12 +581,13 @@ def build(spec_path: Path, attempt: Path, *, selected_version: str,
                   "production_chapter_reel_receipts_created": False, "film_created": False,
                   "human_film_signoff": False, "publication": "not-performed",
                   "input_plan": {"source": str(spec_path), **_identity(spec_path)},
+                  "source_provenance": source_provenance,
                   "reels": reels, "total_target_frames": sum(TARGET_FRAMES.values()),
                   "total_target_seconds": sum(TARGET_FRAMES.values()) / FPS}
         (attempt / "candidate-reels.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n",
                                                       encoding="utf-8", newline="\n")
         return result
-    except Exception as exc:
+    except BaseException as exc:
         (attempt / "failure.json").write_text(json.dumps({"status": "FAILED_PRESERVED",
             "error": repr(exc), "production_reel_receipts_created": False}, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8", newline="\n")
