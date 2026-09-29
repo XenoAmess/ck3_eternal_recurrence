@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 from contextlib import ExitStack
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -20,6 +21,7 @@ from xar_autoplayer.stationary_route_contact_query_run import (
     _bound_route_result,
     _exact_h3928_paused_subject,
     _exact_one_appended_query,
+    _exact_validated_checkpoint_episode,
     _same_frame,
 )
 import xar_autoplayer.stationary_route_contact_query_run as runner
@@ -121,7 +123,104 @@ def _result() -> dict[str, object]:
     }
 
 
+def _real_validator_pair(root: str) -> tuple[object, object, dict[str, object], str, str]:
+    """Write a synthetic v2 pair accepted by the actual cold-start validator."""
+    spec = SimpleNamespace(
+        state_dir=Path(root) / "state",
+        profile_dir=Path(root) / "profile",
+    )
+    config = SimpleNamespace(mode="native-headless", pipe_name="test")
+    save = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
+    save.parent.mkdir(parents=True)
+    save.write_bytes(b"synthetic H3928-shaped checkpoint")
+    save_sha = hashlib.sha256(save.read_bytes()).hexdigest()
+    lifecycle = {
+        "xar_enabled": "xar_off",
+        "lifecycle": "ordinary_campaign_succession",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+    }
+    driver = {
+        "format_version": 2,
+        "pipe_name": "test",
+        "episode_character_id": 29829,
+        "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
+        "succession_lifecycle": lifecycle,
+        "last_checkpoint": {
+            "name": "xar_checkpoint.ck3",
+            "size": save.stat().st_size,
+            "sha256": save_sha,
+            "date_raw": runner.EXPECTED_DATE_RAW,
+            "history_index": 1,
+            "episode_character_id": 29829,
+            "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
+            "succession_lifecycle": lifecycle,
+        },
+        "command_history": [{
+            "index": 1, "command": "save-checkpoint", "ok": True,
+            "result": {"checkpoint": {
+                "size": save.stat().st_size,
+                "sha256": save_sha,
+                "date_raw": runner.EXPECTED_DATE_RAW,
+                "succession_lifecycle": lifecycle,
+            }},
+        }],
+    }
+    state = spec.state_dir / "native-session" / "driver-state.json"
+    state.parent.mkdir(parents=True)
+    state.write_text(json.dumps(driver), encoding="utf-8")
+    driver_sha = hashlib.sha256(state.read_bytes()).hexdigest()
+    receipt = spec.state_dir / "ordinary-seed-rebind-v1.json"
+    rebind = _rebind_receipt(driver_sha)
+    rebind["save"]["source"]["sha256"] = save_sha
+    rebind["save"]["target"]["sha256"] = save_sha
+    rebind["no_launch_preflight_expectations"]["expected_checkpoint_sha256"] = save_sha
+    receipt.write_text(json.dumps(rebind), encoding="utf-8")
+    return spec, config, driver, save_sha, driver_sha
+
+
 class StationaryRouteContactReadOnlyTests(unittest.TestCase):
+    def test_actual_validator_return_binds_only_persisted_episode_and_save_row(self) -> None:
+        with TemporaryDirectory() as root:
+            spec, config, driver, _, _ = _real_validator_pair(root)
+            validated = runner.validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
+            self.assertNotIn("episode_run_id", validated)
+            self.assertNotIn("episode_character_id", validated)
+            self.assertTrue(_exact_validated_checkpoint_episode(validated, driver))
+            for path, value in (
+                (("episode_run_id",), "different"),
+                (("episode_character_id",), 29830),
+                (("last_checkpoint", "episode_run_id"), "different"),
+                (("last_checkpoint", "episode_character_id"), 29830),
+                (("last_checkpoint", "sha256"), "0" * 64),
+                (("command_history", 0, "command"), "advance-date"),
+                (("command_history", 0, "result", "checkpoint", "sha256"), "0" * 64),
+            ):
+                with self.subTest(path=path):
+                    changed = copy.deepcopy(driver)
+                    target = changed
+                    for key in path[:-1]:
+                        target = target[key]
+                    target[path[-1]] = value
+                    self.assertFalse(_exact_validated_checkpoint_episode(validated, changed))
+
+    def test_real_validator_rejects_broken_episode_anchor_before_session(self) -> None:
+        with TemporaryDirectory() as root, ExitStack() as stack:
+            spec, config, driver, save_sha, _ = _real_validator_pair(root)
+            driver["last_checkpoint"]["episode_run_id"] = "different"
+            state = spec.state_dir / "native-session" / "driver-state.json"
+            state.write_text(json.dumps(driver), encoding="utf-8")
+            stack.enter_context(patch.object(runner, "validate_native_bridge_launch_config", return_value=config))
+            stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
+            stack.enter_context(patch.object(runner, "CHECKPOINT_SHA256", save_sha))
+            session = stack.enter_context(patch.object(runner, "native_session"))
+            with self.assertRaisesRegex(runner.AgentError, "incomplete checkpoint anchor"):
+                runner.query_r0345_stationary_route_contact_once(
+                    spec, timeout_seconds=390, readiness_timeout_seconds=300,
+                    ownership_round_id="R999", cold_start_checkpoint=True,
+                    native_bridge=config,
+                )
+            session.assert_not_called()
+
     def test_raw_source_and_official_prepared_driver_have_separate_pins(self) -> None:
         receipt = _rebind_receipt()
         self.assertNotEqual(runner.RAW_SOURCE_DRIVER_SHA256, PREPARED_SHA256)
@@ -142,7 +241,6 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
     def test_bad_source_pair_refuses_before_native_session(self) -> None:
         checkpoint = {
             "saved_date_raw": 53219928,
-            "episode_run_id": "native-29829-2bc2d599f7f9",
             "succession_lifecycle": {
                 "xar_enabled": "xar_off",
                 "lifecycle": "ordinary_campaign_succession",
@@ -158,7 +256,7 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
             stack.enter_context(patch.object(runner, "validate_native_bridge_launch_config", return_value=config))
             stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
             stack.enter_context(patch.object(runner, "validate_cold_start_checkpoint_for_pipe", return_value=checkpoint))
-            stack.enter_context(patch.object(runner, "_read_driver_state", return_value={"episode_run_id": checkpoint["episode_run_id"]}))
+            stack.enter_context(patch.object(runner, "_read_driver_state", return_value={"episode_run_id": runner.EXPECTED_EPISODE_RUN_ID}))
             stack.enter_context(patch.object(runner, "_read_rebind_receipt", return_value=_rebind_receipt()))
             stack.enter_context(patch.object(runner, "_sha256", return_value="0" * 64))
             session = stack.enter_context(patch.object(runner, "native_session"))
@@ -180,23 +278,6 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
         after["native_command_history"].append({
             "command": QUERY_STEP, "ok": True, "result": result,
         })
-        before_driver = {
-            "episode_run_id": "native-29829-2bc2d599f7f9",
-            "command_history": [],
-        }
-        after_driver = {
-            **before_driver,
-            "command_history": copy.deepcopy(after["native_command_history"]),
-        }
-        checkpoint = {
-            "saved_date_raw": 53219928,
-            "episode_run_id": "native-29829-2bc2d599f7f9",
-            "succession_lifecycle": {
-                "xar_enabled": "xar_off",
-                "lifecycle": "ordinary_campaign_succession",
-                "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
-            },
-        }
         readiness = {
             key: before[key] for key in (
                 "snapshot_id", "revision", "native_revision", "date_raw",
@@ -205,19 +286,18 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
         }
         readiness["connection_generation"] = 1
         with TemporaryDirectory() as root, ExitStack() as stack:
-            spec = SimpleNamespace(
-                state_dir=Path(root) / "state",
-                profile_dir=Path(root) / "profile",
-            )
-            config = SimpleNamespace(mode="native-headless", pipe_name="test")
+            spec, config, before_driver, save_sha, _ = _real_validator_pair(root)
+            validated = runner.validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
+            self.assertNotIn("episode_run_id", validated)
+            self.assertNotIn("episode_character_id", validated)
+            after_driver = {
+                **before_driver,
+                "command_history": copy.deepcopy(after["native_command_history"]),
+            }
             stack.enter_context(patch.object(runner, "validate_native_bridge_launch_config", return_value=config))
             stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
-            stack.enter_context(patch.object(runner, "validate_cold_start_checkpoint_for_pipe", return_value=checkpoint))
             stack.enter_context(patch.object(runner, "_read_driver_state", side_effect=[before_driver, after_driver]))
-            stack.enter_context(patch.object(runner, "_read_rebind_receipt", return_value=_rebind_receipt()))
-            stack.enter_context(patch.object(runner, "_sha256", side_effect=lambda path: (
-                runner.CHECKPOINT_SHA256 if path.suffix == ".ck3" else PREPARED_SHA256
-            )))
+            stack.enter_context(patch.object(runner, "CHECKPOINT_SHA256", save_sha))
             stack.enter_context(patch.object(runner, "_wait_for_readiness", return_value=readiness))
             stack.enter_context(patch.object(runner, "_cold_restore_bookkeeping", return_value={"exact": True}))
             stack.enter_context(patch.object(runner, "_cleanup_report", return_value={"ok": False, "reason": "cleanup failed"}))

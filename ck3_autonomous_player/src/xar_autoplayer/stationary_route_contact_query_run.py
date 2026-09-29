@@ -53,6 +53,7 @@ QUERY_STEP = query_route_contact_horizon_step(
 CHECKPOINT_SHA256 = "A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C"
 RAW_SOURCE_DRIVER_SHA256 = "9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0"
 EXPECTED_EPISODE_RUN_ID = "native-29829-2bc2d599f7f9"
+EXPECTED_CHARACTER_ID = 29829
 EXPECTED_DATE_RAW = 53219928
 ROUND_PATTERN = re.compile(r"R[1-9][0-9]*")
 
@@ -65,6 +66,50 @@ def _read_rebind_receipt(path: Path) -> dict[str, object]:
     if not isinstance(value, dict):
         raise AgentError("ordinary rebind receipt is not an object")
     return value
+
+
+def _exact_validated_checkpoint_episode(
+    checkpoint: object, driver_state: object,
+) -> bool:
+    """Bind the validator's actual return shape to the pinned driver episode.
+
+    The cold-start validator intentionally does not return actor or episode.
+    It validates those fields in the persisted v2 state and last checkpoint;
+    this check binds that same state to the fixed H3928 identity and save row.
+    """
+    if not isinstance(checkpoint, dict) or not isinstance(driver_state, dict):
+        return False
+    anchor = driver_state.get("last_checkpoint")
+    history = driver_state.get("command_history")
+    index = checkpoint.get("history_index")
+    if (
+        not isinstance(anchor, dict)
+        or not isinstance(history, list)
+        or type(index) is not int
+        or index < 1
+        or index > len(history)
+    ):
+        return False
+    row = history[index - 1]
+    result = row.get("result") if isinstance(row, dict) else None
+    saved = result.get("checkpoint") if isinstance(result, dict) else None
+    return bool(
+        driver_state.get("episode_run_id") == EXPECTED_EPISODE_RUN_ID
+        and driver_state.get("episode_character_id") == EXPECTED_CHARACTER_ID
+        and anchor.get("episode_run_id") == EXPECTED_EPISODE_RUN_ID
+        and anchor.get("episode_character_id") == EXPECTED_CHARACTER_ID
+        and anchor.get("history_index") == index
+        and anchor.get("sha256") == checkpoint.get("sha256")
+        and anchor.get("size") == checkpoint.get("size")
+        and anchor.get("date_raw") == checkpoint.get("saved_date_raw")
+        and row.get("index") == index
+        and row.get("command") == "save-checkpoint"
+        and row.get("ok") is True
+        and isinstance(saved, dict)
+        and saved.get("sha256") == checkpoint.get("sha256")
+        and saved.get("size") == checkpoint.get("size")
+        and saved.get("date_raw") == checkpoint.get("saved_date_raw")
+    )
 
 
 def _exact_prepared_rebind(
@@ -477,8 +522,7 @@ def query_r0345_stationary_route_contact_once(
             pipe_name=config.pipe_name,
         )
         or checkpoint.get("saved_date_raw") != EXPECTED_DATE_RAW
-        or checkpoint.get("episode_run_id") != EXPECTED_EPISODE_RUN_ID
-        or before_driver_state.get("episode_run_id") != EXPECTED_EPISODE_RUN_ID
+        or not _exact_validated_checkpoint_episode(checkpoint, before_driver_state)
         or not isinstance(lifecycle, dict)
         or lifecycle.get("xar_enabled") != "xar_off"
         or lifecycle.get("lifecycle") != "ordinary_campaign_succession"
