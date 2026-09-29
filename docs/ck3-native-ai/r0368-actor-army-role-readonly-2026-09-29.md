@@ -104,7 +104,8 @@ and the Python side did not bind episode, WarID or connection generation.
 The corrected source requires one exact allied ArmyID in the requested war,
 an exact native expected revision, two identical complete native role samples,
 unchanged four storage headers and regiment-array header, unique regiment IDs,
-valid character predicates and a known current province. Any drift returns a
+valid character predicates and a known current province whose pointer matches
+the game state's canonical province array. Any drift returns a
 typed unavailable or partial result without a false role assignment. The
 native source gate fixture mutates each header and sampled field, and the
 Python tests exercise episode, war, army membership, connection, event and

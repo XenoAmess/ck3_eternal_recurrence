@@ -26,7 +26,9 @@ def _snapshot() -> dict[str, object]:
         "played_character": {"character_id": 29829, "alive": True},
         "player_armies": [{"army_id": 83886367,
                             "owner_character_id": 29829,
-                            "current_province_id": 2610}],
+                            "current_province_id": 2610,
+                            "army_state": "regular", "in_combat": False,
+                            "retreating": False}],
         "active_wars": [{"war_id": 16777231, "allied_armies": [
             {"army_id": 83886367, "owner_character_id": 29829}]}],
     }
@@ -41,7 +43,7 @@ def _payload(status: str = "available") -> dict[str, object]:
         "actor_character_id": 29829, "war_id": 16777231,
         "public_army_id": 83886367,
         "native_carmy_id": 50331794, "owner_character_id": 29829,
-        "current_province_id": 2610, "army_state": "stationary",
+        "current_province_id": 2610, "army_state": "regular",
         "in_combat": False, "retreating": False,
         "commander_status": "available", "commander_character_id": 29829,
         "is_commander_of_requested_army": True,
@@ -192,6 +194,13 @@ def test_postquery_connection_generation_drift_invalidates_result() -> None:
         _query(driver)
 
 
+def test_postquery_disconnect_invalidates_cached_generation_result() -> None:
+    driver = _Driver(_payload())
+    driver.snapshots[1]["diagnostics"]["connected"] = False
+    with pytest.raises(BridgeUnavailableError):
+        _query(driver)
+
+
 def test_available_without_province_is_rejected() -> None:
     payload = _payload()
     payload["current_province_id"] = None
@@ -202,6 +211,21 @@ def test_available_without_province_is_rejected() -> None:
 def test_payload_other_war_is_rejected() -> None:
     payload = _payload()
     payload["war_id"] = 16777232
+    with pytest.raises(BridgeUnavailableError):
+        _query(_Driver(payload))
+
+
+@pytest.mark.parametrize("field,value", [
+    ("current_province_id", 2611),
+    ("army_state", "retreating"),
+    ("in_combat", True),
+    ("retreating", True),
+])
+def test_payload_public_army_state_mismatch_rejected(
+    field: str, value: object,
+) -> None:
+    payload = _payload()
+    payload[field] = value
     with pytest.raises(BridgeUnavailableError):
         _query(_Driver(payload))
 

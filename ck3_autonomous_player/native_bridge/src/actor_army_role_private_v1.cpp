@@ -115,6 +115,32 @@ bool ValidCharacter(void *character) noexcept {
                    kCharacterValiditySubobjectOffset);
 }
 
+bool CanonicalProvince(const ActorArmyRolePrivateQueryV1 &query,
+                       std::int32_t province_id, void *observed,
+                       NativeFingerprint &fingerprint) noexcept {
+  if (query.execution_stamp.game_state == 0 || province_id <= 0 ||
+      observed == nullptr) return false;
+  void *const game_state = reinterpret_cast<void *>(
+      query.execution_stamp.game_state);
+  void *game_data = nullptr;
+  void *provinces = nullptr;
+  std::int32_t province_count = 0;
+  void *canonical = nullptr;
+  if (!ReadAt(game_state, 0xA0, game_data) || game_data == nullptr ||
+      !ReadAt(game_data, 0x140, provinces) ||
+      !ReadAt(game_data, 0x14C, province_count) ||
+      provinces == nullptr || province_count <= 1 ||
+      province_count > 1000000 || province_id >= province_count ||
+      !ReadAt(provinces,
+              static_cast<std::size_t>(province_id) * sizeof(void *),
+              canonical) || canonical != observed) return false;
+  Track(fingerprint, game_data);
+  Track(fingerprint, provinces);
+  Track(fingerprint, province_count);
+  Track(fingerprint, canonical);
+  return true;
+}
+
 bool ReadAllStorageHeaders(std::uintptr_t base,
                            std::array<StorageHeader, 4> &headers) noexcept {
   constexpr std::array<std::uintptr_t, 4> offsets = {
@@ -280,7 +306,8 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
     std::int32_t province_id = -1;
     if (!ReadAt(unit, 0x20, province) || province == nullptr ||
         !ReadAt(province, 0x10, province_id) ||
-        province_id != public_army->current_province_id) {
+        province_id != public_army->current_province_id ||
+        !CanonicalProvince(query, province_id, province, fingerprint)) {
       result.unavailable_stage = "current_province_public_native_drift";
       return;
     }

@@ -31,6 +31,7 @@ def _binding(snapshot: Mapping[str, object]) -> tuple[object, ...]:
     diagnostics = snapshot.get("diagnostics")
     return (
         snapshot.get("episode_run_id"), snapshot.get("episode_character_id"),
+        diagnostics.get("connected") if isinstance(diagnostics, Mapping) else None,
         copy.deepcopy(diagnostics.get("connection_generation") if isinstance(diagnostics, Mapping) else None),
         copy.deepcopy(diagnostics.get("bridge_pid") if isinstance(diagnostics, Mapping) else None),
         copy.deepcopy(diagnostics.get("hello") if isinstance(diagnostics, Mapping) else None),
@@ -143,6 +144,27 @@ def _normalize(row: object, *, before: Mapping[str, object], actor: int,
         or row["in_combat"] is None or row["retreating"] is None
     ):
         raise ValueError("bound army identity or state incomplete")
+    if row["status"] != "unavailable":
+        armies = before.get("player_armies")
+        matches = [item for item in armies
+                   if isinstance(item, Mapping) and item.get("army_id") == army_id] \
+            if isinstance(armies, list) else []
+        if len(matches) != 1:
+            raise ValueError("exact public army row missing")
+        public = matches[0]
+        if (public.get("owner_character_id") != actor
+                or isinstance(public.get("current_province_id"), bool)
+                or not isinstance(public.get("current_province_id"), int)
+                or public.get("current_province_id") <= 0
+                or not isinstance(public.get("army_state"), str)
+                or not public.get("army_state")
+                or not isinstance(public.get("in_combat"), bool)
+                or not isinstance(public.get("retreating"), bool)
+                or row["current_province_id"] != public["current_province_id"]
+                or row["army_state"] != public["army_state"]
+                or row["in_combat"] is not public["in_combat"]
+                or row["retreating"] is not public["retreating"]):
+            raise ValueError("role army state differs from exact public row")
     if row["status"] == "unavailable" and any(
         row[field] is not None for field in
         ("native_carmy_id", "is_commander_of_requested_army",
@@ -239,7 +261,10 @@ def query_actor_army_role_private_v1(
     if result["status"] != role["status"]:
         raise BridgeUnavailableError("actor army role status mismatch")
     after = driver.take_snapshot()
-    if _binding(after) != _binding(before):
+    after_diagnostics = after.get("diagnostics")
+    if (not isinstance(after_diagnostics, Mapping)
+            or after_diagnostics.get("connected") is not True
+            or _binding(after) != _binding(before)):
         raise BridgeUnavailableError("actor army role crossed its paused frame")
     return {
         "status": role["status"], "private_build": True, "read_only": True,
