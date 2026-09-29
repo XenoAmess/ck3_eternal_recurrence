@@ -177,3 +177,15 @@ then an independent stage-2 readback. Before any activity start or resource
 commit, observe the configured cost, affordability, and final CanStart
 result on that later planning state. No expense, start, event effect, or
 date advancement is claimed by R0356.
+
+## Stage 5 private read source boundary
+
+`XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1` is default OFF.
+The `query-activity-stage5-canstart-v1-private` step requires the caller's
+revision, raw date, actor, `activity_feast` key and stage 5; a separate
+paused main-thread mailbox slot reads the fresh planner/type and calls
+`0x10B0DA0(planner, nullptr)` only after stage 5 is confirmed. Its typed
+receipt carries the returned final native legality boolean while configured
+cost and resource value remain `null`. Source Release compilation and focused
+tests do not establish a stage-5 Robert observation, an activity action, or
+an advertised public capability. The paired paused run is still pending.
