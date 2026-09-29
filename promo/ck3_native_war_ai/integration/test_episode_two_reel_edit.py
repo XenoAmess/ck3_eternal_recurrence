@@ -276,21 +276,34 @@ class ReelEditTests(unittest.TestCase):
             self.assertIn("KeyboardInterrupt", failure["error"])
 
     def test_current_card_cannot_borrow_another_attempt(self) -> None:
-        chapter = planned()["chapters"][1]
-        index = {"cards": [{"id": "E2-02", "replay": "A05"},
-                           {"id": "E2-03", "replay": "A05"}],
-                 "replays": {"A05": {"source_preflight":
-                     str(Path.cwd() / "paired-a05" / "ck3-output" / "preflight.json"),
-                     "source_save_sha256": "B" * 64}}}
-        with self.assertRaisesRegex(ValueError, "same-run A05"):
-            edit._same_run_card_gate(chapter, index)
-        chapter["segments"][0]["attempt_id"] = "paired-a05"
-        chapter["segments"][0]["cold_load_save"]["sha256"] = "B" * 64
-        edit._same_run_card_gate(chapter, index)
-        another = dict(chapter["segments"][0], attempt_id="borrowed-004")
-        chapter["segments"].append(another)
-        with self.assertRaisesRegex(ValueError, "same-run A05"):
-            edit._same_run_card_gate(chapter, index)
+        with tempfile.TemporaryDirectory() as directory:
+            pinned_root = Path(directory) / "pinned" / "paired-a05"
+            borrowed_root = Path(directory) / "borrowed" / "paired-a05"
+            (pinned_root / "ck3-output").mkdir(parents=True)
+            borrowed_root.mkdir(parents=True)
+            preflight = pinned_root / "ck3-output" / "preflight.json"
+            preflight.write_text("{}", encoding="utf-8")
+            chapter = planned()["chapters"][1]
+            index = {"cards": [{"id": "E2-02", "replay": "A05"},
+                               {"id": "E2-03", "replay": "A05"}],
+                     "replays": {"A05": {"source_preflight": str(preflight),
+                                         "source_save_sha256": "B" * 64}}}
+            with self.assertRaisesRegex(ValueError, "same-run A05"):
+                edit._same_run_card_gate(chapter, index)
+            chapter["segments"][0]["attempt_id"] = "paired-a05"
+            chapter["segments"][0]["cold_load_save"]["sha256"] = "B" * 64
+            expected = edit._same_run_card_gate(chapter, index)["A05"]
+            self.assertEqual(expected, pinned_root.resolve(strict=True))
+            # Matching basename and save hash must not admit another run root.
+            with self.assertRaisesRegex(ValueError, "attempt root differs"):
+                edit._capture_attempt_root(chapter["segments"][0],
+                                           {"attempt_root": str(borrowed_root)}, expected)
+            self.assertEqual(edit._capture_attempt_root(chapter["segments"][0],
+                             {"attempt_root": str(pinned_root)}, expected), expected)
+            another = dict(chapter["segments"][0], attempt_id="borrowed-004")
+            chapter["segments"].append(another)
+            with self.assertRaisesRegex(ValueError, "same-run A05"):
+                edit._same_run_card_gate(chapter, index)
 
 
 if __name__ == "__main__":

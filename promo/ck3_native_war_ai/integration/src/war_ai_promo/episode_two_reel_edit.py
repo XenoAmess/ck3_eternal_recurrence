@@ -217,7 +217,20 @@ def _exact_pts(probe: Path, begin: Decimal, end: Decimal,
         raise ValueError("Clip in/out must be exact source frame PTS, not wall-clock marks")
 
 
-def _verify_capture(row: dict) -> tuple[Path, object, dict]:
+def _capture_attempt_root(row: dict, source_manifest: dict,
+                          expected_root: Path | None = None) -> Path:
+    sid = row["id"]
+    declared = Path(source_manifest.get("attempt_root", ""))
+    if not declared.is_absolute():
+        raise ValueError(f"{sid} capture attempt root must be absolute")
+    original_attempt = declared.resolve(strict=True)
+    if (original_attempt.name != row["attempt_id"]
+            or (expected_root is not None and original_attempt != expected_root)):
+        raise ValueError(f"{sid} capture attempt root differs from its pinned same-run card")
+    return original_attempt
+
+
+def _verify_capture(row: dict, expected_attempt_root: Path | None = None) -> tuple[Path, object, dict]:
     sid = row["id"]
     root = Path(row["bundle_root"]).resolve(strict=True)
     clean_path = _binding(row["clean_span_audit"], f"{sid} clean audit")
@@ -254,8 +267,8 @@ def _verify_capture(row: dict) -> tuple[Path, object, dict]:
             or row["raw"]["bytes"] != bundle.raw_capture.bytes):
         raise ValueError(f"{sid} raw must be the adapter-verified copy")
     source_manifest, source_manifest_binding = _read_bound_json(root / "source/source-manifest.json")
-    if (Path(source_manifest.get("attempt_root", "")).name != row["attempt_id"]
-            or source_manifest.get("status") != "PENDING_CLEAN_REVIEW"):
+    original_attempt = _capture_attempt_root(row, source_manifest, expected_attempt_root)
+    if source_manifest.get("status") != "PENDING_CLEAN_REVIEW":
         raise ValueError(f"{sid} clean bundle belongs to another capture attempt")
     begin, end = _seconds(row["begin_pts_seconds"], "clip begin"), _seconds(row["end_pts_seconds"], "clip end")
     if (begin < Decimal(str(span.begin_seconds)) or end > Decimal(str(span.end_seconds))
@@ -271,7 +284,6 @@ def _verify_capture(row: dict) -> tuple[Path, object, dict]:
     save = _binding(row["cold_load_save"], f"{sid} cold-load save")
     save_receipt = _binding(row["cold_load_receipt"], f"{sid} cold-load receipt")
     control = _binding(row["control"], f"{sid} native control")
-    original_attempt = Path(source_manifest["attempt_root"]).resolve(strict=True)
     original_recorder = Path(source_manifest["recorder_root"]).resolve(strict=True)
     intent, intent_binding = _read_bound_json(
         root / "source" / original_recorder.name / "recorder-intent.json")
@@ -288,7 +300,8 @@ def _verify_capture(row: dict) -> tuple[Path, object, dict]:
                        and item["sha256"].upper() == row["control"]["sha256"].upper()
                        for item in source_manifest["files"])):
         raise ValueError(f"{sid} native control is not in its capture source inventory")
-    return raw, bundle, {"source_manifest": source_manifest_binding,
+    return raw, bundle, {"attempt_root": str(original_attempt),
+                         "source_manifest": source_manifest_binding,
                          "recorder_intent": intent_binding}
 
 
@@ -328,21 +341,26 @@ def _verify_still(row: dict, card_rows: dict, index_path: Path) -> Path:
     return image
 
 
-def _same_run_card_gate(chapter: dict, index: dict) -> None:
+def _same_run_card_gate(chapter: dict, index: dict) -> dict[str, Path]:
     captures = [row for row in chapter["segments"] if row["kind"] == "capture"]
+    expected_roots: dict[str, Path] = {}
     for card_id in CHAPTER_CARDS.get(chapter["id"], ()):
         card = next(row for row in index["cards"] if row["id"] == card_id)
         replay = card["replay"]
         if replay not in ("A05", "A01"):
             continue
         source = index["replays"][replay]
-        preflight = Path(source["source_preflight"])
-        expected_attempt = preflight.parent.parent.name
+        expected_root = Path(source["source_preflight"]).parent.parent.resolve(strict=True)
+        expected_roots[replay] = expected_root
+        expected_attempt = expected_root.name
         expected_save = source["source_save_sha256"].upper()
         if not captures or not all(row["attempt_id"] == expected_attempt
                                    and row["cold_load_save"]["sha256"].upper() == expected_save
                                    for row in captures):
             raise ValueError(f"{card_id} lacks exclusively same-run {replay} raw and cold-load save")
+    if len(set(expected_roots.values())) > 1:
+        raise ValueError("A chapter's current cards name different source attempt roots")
+    return expected_roots
 
 
 def verify_sources(spec: dict) -> tuple[dict[str, Path], dict[Path, object], dict[str, dict]]:
@@ -372,10 +390,11 @@ def verify_sources(spec: dict) -> tuple[dict[str, Path], dict[Path, object], dic
     for chapter in spec["chapters"]:
         if TARGET_FRAMES[chapter["id"]] / FPS < speech[chapter["id"]]:
             raise ValueError(f"{chapter['id']} edit is shorter than source narration")
-        _same_run_card_gate(chapter, index)
+        same_run_roots = _same_run_card_gate(chapter, index)
+        expected_root = next(iter(same_run_roots.values()), None)
         for row in chapter["segments"]:
             if row["kind"] == "capture":
-                raw, bundle, provenance = _verify_capture(row)
+                raw, bundle, provenance = _verify_capture(row, expected_root)
                 bound[row["id"]] = raw
                 bundles[bundle.artifact_root] = bundle
                 key = str(bundle.artifact_root)
