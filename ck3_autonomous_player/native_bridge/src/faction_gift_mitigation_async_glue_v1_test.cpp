@@ -652,5 +652,44 @@ int main() {
              "serializer mismatch")) {
     return 1;
   }
+
+  // A complete targeting row still has useful member identities when the
+  // direct-landed join found no recipient and no gift preview was attempted.
+  xar::ck3_11906::FactionGiftMitigationAsyncContextV1 no_direct{};
+  no_direct.use_direct_source_rows = true;
+  no_direct.failure_flags = xar::ck3_11906::
+      faction_gift_async_failure_recipient;
+  auto &rows = no_direct.targeting_rows;
+  rows.terminal = xar::bridge::FactionTargetingRowProbeTerminalV1::ready;
+  rows.observed_binding = {true, 21, 13, 53219928, 101};
+  rows.faction_count = 1;
+  rows.factions[0].faction_id = 303;
+  rows.factions[0].target_character_id = 101;
+  rows.factions[0].character_member_count = 2;
+  rows.factions[0].character_member_ids[0] = 202;
+  rows.factions[0].character_member_ids[1] = 203;
+  const auto no_direct_json = xar::ck3_11906::
+      SerializeFactionGiftMitigationAsyncContextV1(no_direct);
+  if (!Check(no_direct_json.find(
+                 "\"direct_targeting_rows\":{\"terminal\":\"ready\"") !=
+                 std::string::npos &&
+             no_direct_json.find("\"faction_id\":303") !=
+                 std::string::npos &&
+             no_direct_json.find("\"character_member_ids\":[202,203]") !=
+                 std::string::npos &&
+             no_direct_json.find("\"observation\":{\"available\":false") !=
+                 std::string::npos,
+             "complete no-recipient rows were not serialized")) {
+    return 1;
+  }
+  no_direct.direct_source_failure = xar::ck3_11906::
+      FactionGiftDirectSourceFailureV1::member_ownership;
+  const auto failed_rows_json = xar::ck3_11906::
+      SerializeFactionGiftMitigationAsyncContextV1(no_direct);
+  if (!Check(failed_rows_json.find("\"direct_targeting_rows\":null") !=
+                 std::string::npos,
+             "failed source rows must remain unavailable")) {
+    return 1;
+  }
   return 0;
 }
