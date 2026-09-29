@@ -34,13 +34,16 @@ activity.
 The private `query-activity-cost-slot12-raw-v1-private` command reports a
 sample only if the current paused native snapshot and its bridge revision
 agree, actor/date/thread match the captured frame, and the planner's owner,
-activity type, stage and bytes `+0x1530..+0x1AD7` still match the sample's
-configuration fingerprint. The result identifies the normal slot-12 return
+activity type, stage, bytes `+0x1530..+0x1AD7`, and its bounded category and
+cost-driving option rows still match the sample's configuration fingerprint.
+The result identifies the normal slot-12 return
 source and returns `raw_aggregate_i64[10]`. It deliberately emits
 `resource_mapping=null` and `configured_cost=null`. A copied raw zero is
 only a raw slot value; no index has a proven `gold` or other resource name.
-The fingerprint covers the planner's observed configuration region; it is
-not a claim that every game-side configuration field has been mapped.
+The fingerprint covers the observed planner configuration region and the
+`+0x1560/+0x156C` and `+0x1578/+0x1584` row vectors used by the native cost
+path; it is not a claim that every game-side configuration field has been
+mapped.
 
 ```mermaid
 flowchart LR
@@ -75,6 +78,6 @@ a formal cost or start capability.
 
 The source package's exact ABI fixture checks the 14-byte refresh prologue
 and the five-byte slot-12 call. Release/Debug focused tests exercise no
-capture, wrong caller, valid raw capture, configuration mutation and date
+capture, wrong caller, valid raw capture, planner/row configuration mutation and date
 change. They are source-level evidence only; this package did not launch CK3
 or obtain a new live cost readback.
