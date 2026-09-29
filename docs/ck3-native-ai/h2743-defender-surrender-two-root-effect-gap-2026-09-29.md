@@ -10,12 +10,14 @@
 | --- | --- |
 | `common/casus_belli_types/00_dejure_war.txt` | `D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE` |
 | `common/on_action/war_on_actions.txt` | `49AB57BF4A7C4EC3E6E3B430AB437C005C5084C43B838A57C8F55267E8F11B0F` |
+| `common/scripted_effects/00_war_effects.txt` | `A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D` |
+| `common/script_values/00_war_values.txt` | `ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B` |
 | `common/scripted_effects/03_dlc_fp2_scripted_effects.txt` | `366469115EA2DED577B5DEB57DFD456340A1E2FA2D494DC2B20C36CB3FC5A710` |
 | `common/scripted_effects/07_dlc_ep3_scripted_effects.txt` | `D2F5FE80E7BC000A749642CD26BDE1626DBEA7409C39314B8583547AE43DB43D` |
 
 `00_dejure_war.txt:435-497` 是 **CB `on_victory`**；`war_on_actions.txt:1146-1853` 是另一个 **`on_war_won_attacker.effect`**。后者的源码注释（1143-1148）说明它对所有 CB 运行，效果不显示在战争结算 tooltip；`effect` 当 tick，`events` 下一 tick，两个 tick 之间战争对象销毁。这是源码声明的执行边界，具体 native dispatch 顺序仍需原生观测/验证。仅覆盖 CB 根会漏掉战后 on_action，不能满足完整条款合同。
 
-静态根检验器 [`verify_h2743_surrender_root_coverage.py`](../../ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py) 只读上述四份原版文件，核字节哈希、两个**最低必要根**、关键脚本边和 FP2 真实支付与 tooltip 镜像的顺序；缺根或换版即 RED。GREEN 状态名为 `known_script_roots_bound_only`，**输出仍固定 `all_enabled_roots_known=false`、`full_write_set_known=false`、`effect_projection_complete=false`、空推荐与空动作**。它不是 effect evaluator，也不能将任何条件分支提升为 H2743 实际效果。复现命令为 `py ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py`；负例 `py -O ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py --claimed-root cb_on_victory` 必须以退出码 2 拒绝缺失的 `on_war_won_attacker`。
+静态根检验器 [`verify_h2743_surrender_root_coverage.py`](../../ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py) 只读上述六份原版文件，核字节哈希、两个**最低必要根**、关键脚本边、FP2 真实支付与 tooltip 镜像的顺序，以及 `add_truce_one_way` 到 `standard_truce_duration_days` 的源码连接；缺根或换版即 RED。GREEN 状态名为 `known_script_roots_bound_only`，**输出仍固定 `all_enabled_roots_known=false`、`full_write_set_known=false`、`effect_projection_complete=false`、空推荐与空动作**。它不是 effect evaluator，也不能将任何条件分支提升为 H2743 实际效果。复现命令为 `py ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py`；负例 `py -O ck3_autonomous_player/native_bridge/research/verify_h2743_surrender_root_coverage.py --claimed-root cb_on_victory` 必须以退出码 2 拒绝缺失的 `on_war_won_attacker`。实际 H2743 输入缺口另见[只读采集合同](h2743-surrender-effect-input-contract-2026-09-29.md)。
 
 ## CB `on_victory` 已识别的候选写集合
 

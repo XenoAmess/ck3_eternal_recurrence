@@ -16,6 +16,8 @@ from pathlib import Path
 GAME_FILES = {
     "cb": ("common/casus_belli_types/00_dejure_war.txt", "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE"),
     "war_on_actions": ("common/on_action/war_on_actions.txt", "49AB57BF4A7C4EC3E6E3B430AB437C005C5084C43B838A57C8F55267E8F11B0F"),
+    "truce_effects": ("common/scripted_effects/00_war_effects.txt", "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D"),
+    "truce_values": ("common/script_values/00_war_values.txt", "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B"),
     "fp2_effects": ("common/scripted_effects/03_dlc_fp2_scripted_effects.txt", "366469115EA2DED577B5DEB57DFD456340A1E2FA2D494DC2B20C36CB3FC5A710"),
     "ep3_effects": ("common/scripted_effects/07_dlc_ep3_scripted_effects.txt", "D2F5FE80E7BC000A749642CD26BDE1626DBEA7409C39314B8583547AE43DB43D"),
 }
@@ -109,6 +111,9 @@ def verify(game_root: Path, claimed_roots: set[str] | frozenset[str]) -> dict:
     same_tick_effect = extract_block(war_won, "effect")
     fp2 = extract_block(sources["fp2_effects"], "fp2_contract_assistance_war_pay_effect")
     ep3 = extract_block(sources["ep3_effects"], "laamp_as_mercenary_payout_effect")
+    truce_effect = extract_block(sources["truce_effects"], "add_truce_attacker_victory_effect")
+    truce_call = extract_block(truce_effect, "add_truce_one_way")
+    truce_days = extract_block(sources["truce_values"], "standard_truce_duration_days")
     require_edges(cb_victory, CB_EDGES, "CB on_victory")
     require_edges(same_tick_effect, WAR_EDGES, "on_war_won_attacker effect")
     require_edges(fp2, ("pay_short_term_gold",), "FP2 contract assistance")
@@ -117,6 +122,21 @@ def verify(game_root: Path, claimed_roots: set[str] | frozenset[str]) -> dict:
     if len(payment_positions) != 2 or not (payment_positions[0] < tooltip_position < payment_positions[1]):
         raise CoverageError("FP2 real payment / tooltip-only mirror placement changed")
     require_edges(ep3, ("trigger_event",), "EP3 mercenary payout")
+    for statement in (
+        "character = scope:defender", "days = standard_truce_duration_days",
+        "war = root.war", "result = victory",
+    ):
+        if statement not in truce_call:
+            raise CoverageError(f"attacker-victory truce call changed: {statement}")
+    for statement in (
+        "has_perk = flexible_truces_perk",
+        "PARAMETER = truces_by_involved_or_interlopers_within_region_shorter",
+        "PARAMETER = truces_by_involved_or_interlopers_within_region_longer",
+        "government_has_flag = government_is_nomadic",
+        "min = 730", "using_cb = fp2_border_raid", "multiply = 2",
+    ):
+        if statement not in truce_days:
+            raise CoverageError(f"standard truce formula changed: {statement}")
     timing = sources["war_on_actions"]
     for statement in ("`effect` fires on THIS tick", "`events` fires on the NEXT tick", "war gets destroyed between this tick and the next"):
         if statement not in timing:
@@ -144,6 +164,7 @@ def verify(game_root: Path, claimed_roots: set[str] | frozenset[str]) -> dict:
             "same-frame CB context, target scope, factor F, participants, and branch predicates",
             "native war-end dispatch order and all enabled DLC/mod on_action roots",
             "FP2 contract-assistance variables, contribution threshold and real gold transfer",
+            "standard-truce short/long/border-raid predicates and native expiry persistence",
             "RNG, pending next-tick/delayed events, and post-destruction war context",
             "complete recipient write set and signed per-character/title/house delta",
         ],
