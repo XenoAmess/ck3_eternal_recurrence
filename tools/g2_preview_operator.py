@@ -2824,6 +2824,8 @@ def command_query_h3937_stationary_route_contact_v1(
         if isinstance(rebind_post, dict) else None
     )
     rebind_environment = rebind.get("environment")
+    rebind_safety = rebind.get("safety_contract")
+    rebind_inventory = rebind.get("process_inventory")
     prepared_driver = (
         rebind_driver.get("target_sha256")
         if isinstance(rebind_driver, dict) else None
@@ -2847,6 +2849,13 @@ def command_query_h3937_stationary_route_contact_v1(
         or rebind.get("ok") is not True
         or rebind.get("status") != "rebound"
         or rebind.get("ck3_launch_attempted") is not False
+        or rebind.get("desktop_interaction") is not False
+        or not isinstance(rebind_inventory, dict)
+        or rebind_inventory.get("processes") != []
+        or not isinstance(rebind_safety, dict)
+        or rebind_safety.get("zero_running_ck3_processes") is not True
+        or rebind_safety.get("target_profile_verified") is not True
+        or rebind_safety.get("canonical_paths_only") is not True
         or rebind.get("pipe_name") != manifest["pipe"]
         or not h3937_same_absolute_path(rebind.get("state_dir"), state_dir)
         or h3937_same_absolute_path(

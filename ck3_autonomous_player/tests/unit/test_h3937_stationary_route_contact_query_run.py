@@ -33,6 +33,13 @@ def _rebind_receipt(
     return {
         "schema": "xar.ck3.ordinary-seed-rebind/v1",
         "ok": True, "status": "rebound", "ck3_launch_attempted": False,
+        "desktop_interaction": False,
+        "process_inventory": {"processes": []},
+        "safety_contract": {
+            "zero_running_ck3_processes": True,
+            "target_profile_verified": True,
+            "canonical_paths_only": True,
+        },
         "state_dir": str(state_dir.resolve()),
         "profile_dir": str(profile_dir.resolve()),
         "pipe_name": "test",
@@ -367,6 +374,7 @@ class H3937OperatorGateTests(unittest.TestCase):
         for mismatch in (
             "save", "raw", "prepared", "dll", "injector", "child",
             "old_state_path", "old_driver_path", "old_environment",
+            "desktop_interaction", "ck3_process",
         ):
             with self.subTest(mismatch=mismatch), TemporaryDirectory() as root, ExitStack() as stack:
                 root_path = Path(root)
@@ -398,6 +406,10 @@ class H3937OperatorGateTests(unittest.TestCase):
                     receipt["driver_state"]["path"] = str(root_path / "old-driver.json")
                 elif mismatch == "old_environment":
                     receipt["environment"]["target_sha256"] = "0" * 64
+                elif mismatch == "desktop_interaction":
+                    receipt["desktop_interaction"] = True
+                elif mismatch == "ck3_process":
+                    receipt["process_inventory"]["processes"] = [{"pid": 999}]
                 elif mismatch in {"dll", "injector"}:
                     manifest[f"{mismatch}_sha256"] = "0" * 64
                 stack.enter_context(patch.object(operator, "H3937_RECEIVER_ASSETS_AND_SCOPE_VERIFIED", True))
