@@ -28,6 +28,12 @@ constexpr std::uintptr_t kFeastTypeVtableRva = 0x440E308;
 std::atomic<ActivityGuestRuleProvenanceObserverV1 *> g_observer{nullptr};
 thread_local ActivityGuestRuleProvenanceObserverV1 *g_current_refresh = nullptr;
 
+void CountRefresh(ActivityGuestRuleProvenanceObserverV1 &observer,
+                  ActivityGuestRuleRefreshDiagnosticV1 reason) noexcept {
+  observer.refresh_diagnostics[static_cast<std::size_t>(reason)].fetch_add(
+      1, std::memory_order_relaxed);
+}
+
 bool Address(std::uintptr_t base, std::size_t offset,
              std::uintptr_t &address) noexcept {
   if (base == 0 || offset >
@@ -218,12 +224,18 @@ std::uintptr_t __fastcall RefreshHook(void *activity_type, void *context,
                                       void *filtered_groups) noexcept {
   auto *observer = g_observer.load(std::memory_order_acquire);
   if (observer == nullptr || observer->refresh_trampoline == nullptr) return 0;
+  CountRefresh(*observer, ActivityGuestRuleRefreshDiagnosticV1::hook_entered);
   const auto return_address =
       reinterpret_cast<std::uintptr_t>(_ReturnAddress());
   const auto groups = reinterpret_cast<std::uintptr_t>(filtered_groups);
   auto *previous = g_current_refresh;
   bool capture = false;
-  if (previous == nullptr && groups >= 0x1590) {
+  if (previous != nullptr)
+    CountRefresh(*observer, ActivityGuestRuleRefreshDiagnosticV1::nested_refresh);
+  else if (groups < 0x1590)
+    CountRefresh(*observer,
+                 ActivityGuestRuleRefreshDiagnosticV1::invalid_group_argument);
+  else {
     capture = BeginActivityGuestRuleRefreshV1(
         *observer, return_address, groups - 0x1590,
         reinterpret_cast<std::uintptr_t>(active_rules), groups);
@@ -249,22 +261,52 @@ bool BeginActivityGuestRuleRefreshV1(
     std::uintptr_t active_rules, std::uintptr_t filtered_groups) noexcept {
   const auto &env = observer.environment;
   if (caller_return !=
-          env.module_base + kActivityGuestRuleRefreshReturnRvaV1 ||
-      planner == 0 || active_rules != planner + 0x1A18 ||
-      filtered_groups != planner + 0x1590 ||
-      env.read_frame == nullptr)
+      env.module_base + kActivityGuestRuleRefreshReturnRvaV1) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::wrong_caller);
     return false;
+  }
+  if (planner == 0 || active_rules != planner + 0x1A18 ||
+      filtered_groups != planner + 0x1590 || env.read_frame == nullptr) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::invalid_arguments);
+    return false;
+  }
   ActivityCostSlot12FrameV1 frame{};
   std::uintptr_t vtable = 0, type = 0;
   std::int32_t stage = -1;
-  if (!env.read_frame(env.context, frame) || !frame.paused ||
-      frame.actor_character_id <= 0 ||
-      frame.thread_id != GetCurrentThreadId() ||
-      !Read(env, planner, 0, vtable) ||
-      vtable != env.module_base + 0x41205F0 ||
-      !Read(env, planner, 0x1530, type) || !FeastType(env, type) ||
-      !Read(env, planner, 0x1AB0, stage) || stage != 5)
+  if (!env.read_frame(env.context, frame)) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::frame_unavailable);
     return false;
+  }
+  if (!frame.paused) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::frame_unpaused);
+    return false;
+  }
+  if (frame.actor_character_id <= 0 ||
+      frame.thread_id != GetCurrentThreadId()) {
+    CountRefresh(observer,
+                 ActivityGuestRuleRefreshDiagnosticV1::actor_or_thread_unavailable);
+    return false;
+  }
+  if (!Read(env, planner, 0, vtable) ||
+      vtable != env.module_base + 0x41205F0) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::planner_unavailable);
+    return false;
+  }
+  if (!Read(env, planner, 0x1530, type) || !FeastType(env, type)) {
+    CountRefresh(observer,
+                 ActivityGuestRuleRefreshDiagnosticV1::feast_type_unavailable);
+    return false;
+  }
+  if (!Read(env, planner, 0x1AB0, stage)) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::stage_unavailable);
+    return false;
+  }
+  observer.last_seen_stage.store(stage, std::memory_order_relaxed);
+  if (stage != 5) {
+    CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::stage_not_five);
+    return false;
+  }
+  CountRefresh(observer, ActivityGuestRuleRefreshDiagnosticV1::accepted);
   auto &capture = observer.working;
   capture = {};
   capture.frame = frame;
@@ -640,6 +682,28 @@ std::string_view ActivityGuestRuleProvenanceStatusKeyV1(
     return "native_read_failed";
   }
   return "native_read_failed";
+}
+
+std::string DescribeActivityGuestRuleRefreshDiagnosticsV1(
+    const ActivityGuestRuleProvenanceObserverV1 &observer) {
+  constexpr std::array<std::string_view,
+      static_cast<std::size_t>(ActivityGuestRuleRefreshDiagnosticV1::count)>
+      labels{"hook", "nested", "invalid_group", "wrong_caller",
+             "invalid_args", "frame_unavailable", "unpaused",
+             "actor_thread", "planner", "feast_type", "stage_read",
+             "stage_not_five", "accepted"};
+  std::string result = "no_normal_refresh";
+  for (std::size_t i = 0; i < labels.size(); ++i) {
+    result += " ";
+    result += labels[i];
+    result += "=";
+    result += std::to_string(observer.refresh_diagnostics[i].load(
+        std::memory_order_relaxed));
+  }
+  result += " last_stage=";
+  result += std::to_string(observer.last_seen_stage.load(
+      std::memory_order_relaxed));
+  return result;
 }
 
 } // namespace xar::bridge

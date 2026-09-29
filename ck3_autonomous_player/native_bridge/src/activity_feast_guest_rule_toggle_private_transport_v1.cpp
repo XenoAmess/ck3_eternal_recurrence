@@ -11,6 +11,24 @@ struct Context {
   DWORD owner_thread_id = 0;
 };
 
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+std::string_view PassiveCostStatusKey(
+    bridge::ActivityCostSlot12ReadStatusV1 status) noexcept {
+  switch (status) {
+  case bridge::ActivityCostSlot12ReadStatusV1::observed: return "observed";
+  case bridge::ActivityCostSlot12ReadStatusV1::exact_build_rejected:
+    return "exact_build_rejected";
+  case bridge::ActivityCostSlot12ReadStatusV1::no_normal_refresh:
+    return "no_normal_refresh";
+  case bridge::ActivityCostSlot12ReadStatusV1::frame_changed:
+    return "frame_changed";
+  case bridge::ActivityCostSlot12ReadStatusV1::configuration_changed:
+    return "configuration_changed";
+  }
+  return "unknown";
+}
+#endif
+
 bool ReadMemory(void *, std::uintptr_t address, void *output,
                 std::size_t size) noexcept {
   SIZE_T read = 0;
@@ -221,15 +239,22 @@ bool ExecuteActivityFeastGuestRulePrivateV1(
       const bridge::ActivityCostSlot12FrameV1 frame{
           static_cast<std::int32_t>(current.date_raw),
           current.played_character_id, stamp.thread_id, true};
-      if (bridge::ReadActivityCostSlot12PassiveV1(
-              *query->passive_cost, frame, cost) ==
-          bridge::ActivityCostSlot12ReadStatusV1::observed) {
+      const auto cost_status = bridge::ReadActivityCostSlot12PassiveV1(
+          *query->passive_cost, frame, cost);
+      if (cost_status == bridge::ActivityCostSlot12ReadStatusV1::observed) {
         query->provenance = bridge::ReadActivityGuestRuleProvenanceV1(
             *query->provenance_observer, frame, cost.planner,
             query->rule.native_key_hash, query->candidate_character_id);
+        if (query->provenance.status ==
+            bridge::ActivityGuestRuleProvenanceStatusV1::no_normal_refresh)
+          query->failure = "activity feast guest provenance: " +
+              bridge::DescribeActivityGuestRuleRefreshDiagnosticsV1(
+                  *query->provenance_observer);
       } else {
         query->provenance.status =
             bridge::ActivityGuestRuleProvenanceStatusV1::no_normal_refresh;
+        query->failure = "activity feast guest provenance passive slot12: " +
+            std::string(PassiveCostStatusKey(cost_status));
       }
     }
 #endif

@@ -134,6 +134,15 @@ int main() {
   const auto absent = ReadActivityGuestRuleProvenanceV1(
       *observer, fixture.frame, planner, hash, 38293);
   assert(absent.status == ActivityGuestRuleProvenanceStatusV1::no_normal_refresh);
+  Put(fixture, planner + 0x1AB0, std::int32_t{4});
+  assert(!BeginActivityGuestRuleRefreshV1(
+      *observer, base + kActivityGuestRuleRefreshReturnRvaV1, planner,
+      planner + 0x1A18, planner + 0x1590));
+  const auto diagnostic = DescribeActivityGuestRuleRefreshDiagnosticsV1(
+      *observer);
+  assert(diagnostic.find("stage_not_five=1") != std::string::npos);
+  assert(diagnostic.find("last_stage=4") != std::string::npos);
+  Put(fixture, planner + 0x1AB0, std::int32_t{5});
   assert(BeginActivityGuestRuleRefreshV1(
       *observer, base + kActivityGuestRuleRefreshReturnRvaV1, planner,
       planner + 0x1A18, planner + 0x1590));
