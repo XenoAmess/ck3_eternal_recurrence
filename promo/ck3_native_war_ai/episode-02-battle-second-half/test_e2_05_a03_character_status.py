@@ -45,6 +45,19 @@ class CharacterStatusTest(unittest.TestCase):
         self.assert_unknown(save(character('reason="death_battle"\n'
                                            'alive_data={ focus={ date=1066.9.15 } }')))
 
+    def test_alive_other_death_field_shadows_remain_unknown(self) -> None:
+        for body in (
+            'alive_data={ reason="death_battle" }',
+            'alive_data={ killer=34120 }',
+            'alive_data={ focus={ reason="death_battle" } }',
+            'alive_data={ focus={ killer=34120 } }',
+            'alive_data={ focus={ date=nope } }',
+            'alive_data={ focus={ date={} } }',
+            'alive_data={ other={ date=1066.9.15 } }',
+        ):
+            with self.subTest(body=body):
+                self.assert_unknown(save(character(body)))
+
     def test_dead_exact_direct_fields(self) -> None:
         data = save(character('\t\tdead_data={\n\t\t\tdate=1066.12.29\n'
                               '\t\t\treason="death_battle"\n\t\t\tkiller=34120\n\t\t}'))
