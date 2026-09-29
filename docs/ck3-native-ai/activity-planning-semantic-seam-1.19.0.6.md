@@ -353,7 +353,7 @@ Confirm button calls `ActivityListDetailHostView.Confirm`.
   and proceeds with more initialization. Slot 18 then calls `0x10CCF90`.
   Slot 19 at `0x10AE150` resolves the same payload type and compares it with
   `planner+0x1530`, consistent with the event's selected-type identity.
-- The handler's queue consumer at `0xA794D0` pops a 0x30-byte event from
+- The handler's history consumer at `0xA794D0` pops a 0x30-byte event from
   `handler+0x5D0`/`+0x5DC`, resolves its event ID to the corresponding handler
   table object via `0xA942C0`, calls that object's virtual slot 21
   (`+0xA8`) to test the payload, and on success calls virtual slot 18
@@ -361,8 +361,9 @@ Confirm button calls `ActivityListDetailHostView.Confirm`.
   `0x7E9220`, and slot 18 is `0x10AE120` for event `0x65`; slot 19 is a
   separate selected-type comparison, not this queue gate. The queue consumer is
   reached from `0xA23B32`, and `0xA79200` handles the relevant widget state.
-  This closes the event delivery shape; live timing and resulting planner
-  visibility remain unobserved.
+  This is a stored-event replay route. Forward `0xA79700` instead delivers
+  immediately through `0xA79690` before recording the event. Resulting
+  planner visibility remains unobserved.
 - The separate HostView at `handler+0x3D8` is handler table index `0x68`.
   Its primary slot 18 is `0x15050E0`: it calls `0x1506E70` on an incoming
   payload and writes the resulting type pointer to `HostView+0x268` at
@@ -398,8 +399,8 @@ flowchart LR
     H --> B
     B --> P[typed 8-byte type payload: 0xCAF920 / 0x80DCB0]
     P --> C[handler event 0x65: 0xA79700]
-    C --> Q[queue consumer: 0xA794D0]
-    Q --> D[planner slot 21 then 18: 0x7E9220 / 0x10AE120]
+    C --> Q[immediate delivery: 0xA79690]
+    Q --> D[planner slot 18: 0x10AE120]
     D --> E[SetActivityType: 0x10AD7C0, stage 2]
     E -. stage 2 gate and one transition require paused proof .-> F[stage 5 command validator]
     E -. visible refresh unproved .-> G[configured cost at +0x1AD8]
@@ -462,7 +463,7 @@ evidence only: no CK3 process, paused save, or planner action was used.
   `activity_feast` match. Reacquire and validate the pointer in each paused
   operation; the static trace does not prove its lifetime across reloads or
   frames.
-- The handler queue consumer at `0xA794D0` takes the accepted event through
+- The handler queue consumer at `0xA794D0` takes a stored event through
   `0xA795A8 -> 0xA79200`, invokes the recipient's slot 18 at `0xA795D2`,
   then tests its slot 7 visibility and invokes slot 3 at `0xA795E5..EB`
   when hidden. For event `0x65`, the recipient is the planner at
@@ -470,13 +471,17 @@ evidence only: no CK3 process, paused save, or planner action was used.
   stage 2; slot 3 `0x10ACCB0` runs its native open path. This proves that
   original event delivery **requests** the planner to open without a
   coordinate click. It does not prove that a particular paused frame has an
-  attached, visible widget after delivery.
+  attached, visible widget after delivery. The forward Confirm path instead
+  calls `0xA79700`, whose first call is `0xA79690`: that function invokes
+  `0xA79200` and recipient slot 18/slot 3 **immediately**, before
+  `0xA79700` records the event in its history queue. `0xA794D0` is the
+  history consumer and must not be called as a second step of a simple open.
 
 ```mermaid
 flowchart LR
     K[registry manager +0x68 / +0x74] --> T[unique activity_feast CActivityType pointer]
     T --> H[HostView type payload and Confirm event 0x65]
-    H --> Q[handler queue consumer 0xA794D0]
+    H --> Q[0xA79700 immediate delivery via 0xA79690]
     Q --> S[planner slot 18 selects type and stage 2]
     S --> O[slot 3 native open request if hidden]
     O -. paused widget visibility and slot 12 order unknown .-> C[fresh configured cost +0x1AD8]
@@ -535,3 +540,53 @@ paired paused read of widget visibility and normal slot-12 cost update order.
 Only a verified stage-2 gate and one transition to stage 5 may reach the
 final validator; no stage-5 progress call is permitted as a read. Cost,
 location, full configuration and `can_start` remain unknown until then.
+
+## 2026-09-29 private feast-open construction boundary
+
+The original Confirm path at `0x1505230` constructs a 0x28-byte native
+type-bearing variant: the first eight bytes hold descriptor
+`0xCAF920 -> 0x4FE3DB0`, followed by 32 bytes of value storage whose first
+eight bytes are the selected `CActivityType*`. The descriptor's copy slots
+`+0x58/+0x60 -> 0x80DCB0` copy that pointer. Confirm calls
+`0xA79700(handler, 0x65, &variant)`. At `0xA79717` it first calls
+`0xA79690`, which calls `0xA79200` and the planner's slot 18, then slot 3
+when hidden. Only afterward does `0xA79700` copy the payload into its
+history queue at `handler+0x5D0` with count at `+0x5DC`. The original
+application callback `0xA23AF0` reaches history consumer `0xA794D0` at
+`0xA23B32`; this is a separate navigation path, not a required follow-up
+to Confirm. These are exact-build call facts, not a live feast opening.
+
+The planner constructor calls `0x219A7D0` at `0x10AC29D`; its
+`0x219A7DA..0x219A7E3` instructions copy the pointer stored at global RVA
+`0x57BFF28` into `planner+0x1530`. Thus an unopened planner's initial
+selection must be compared with this exact constructor default, **not**
+assumed to be a literal zero because the HostView key is null.
+
+The default-off private probe uses this original immediate dispatch on a
+paused owner-thread frame only when the planner is attached, hidden, stage 2,
+and `planner+0x1530` equals the constructor default. It resolves one freshly keyed `activity_feast`
+pointer from the registry, dispatches event `0x65` once, then rereads the
+same actor/date frame, planner-selected type, stage and widget visibility.
+A postcondition failure remains RED even if the native call returned. An
+already visible feast planner is read as already open without another event.
+This probe never calls `ProgressPlanningStage`, starts an activity, or
+advances the game date.
+
+```mermaid
+flowchart LR
+    F[paused stage 2, hidden planner and unique feast type] --> D[original event 0x65 immediate dispatch]
+    D --> R{same actor/date and selected feast, stage 2, widget visible?}
+    R -- yes --> O[private opened receipt]
+    R -- no --> X[RED with dispatch flag]
+    O -. visible slot 12 refresh still unproved .-> C[authoritative configured cost]
+    O -. stage 2 to stage 5 still unproved .-> V[final start validator]
+```
+
+The R0346 paused diagnostic is a matching **precondition only**:
+`H3928`, actor `29829`, `raw53219928`, planner attached, hidden, stage 2,
+and no HostView type. The source save was unchanged. It has not yet read
+`planner+0x1530` against the constructor default. This diagnostic does
+not establish that the registry contains a legal feast for this actor, that
+event delivery opens the widget, or that the cost and final validator are
+fresh. The private probe needs its own paired live postcondition before any
+activity capability is promoted.

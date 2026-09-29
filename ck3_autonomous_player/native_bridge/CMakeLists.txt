@@ -433,6 +433,15 @@ option(
   "Enable default-off paused activity planner metadata diagnostic"
   OFF
 )
+option(
+  XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1
+  "Enable default-off paused native feast planner open probe"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1 AND
+   XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+  message(FATAL_ERROR "Activity feast open and planner diagnostic use the same private mailbox executor slot")
+endif()
 
 option(
   XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1
@@ -1280,6 +1289,14 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1=1)
 endif()
+if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/activity_planner_diag_v1.cpp
+    src/activity_feast_planner_open_v1.cpp
+    src/activity_feast_planner_open_private_transport_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=1)
+endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR
    XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -1395,6 +1412,24 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
+    add_executable(xar_ck3_activity_feast_planner_open_v1_test
+      src/activity_planner_diag_v1.cpp
+      src/activity_feast_planner_open_v1.cpp
+      src/activity_feast_planner_open_v1_test.cpp)
+    target_include_directories(
+      xar_ck3_activity_feast_planner_open_v1_test PRIVATE include)
+    target_compile_definitions(
+      xar_ck3_activity_feast_planner_open_v1_test PRIVATE
+      NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(
+        xar_ck3_activity_feast_planner_open_v1_test PRIVATE
+        /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_native_bridge_activity_feast_planner_open_v1
+      COMMAND xar_ck3_activity_feast_planner_open_v1_test)
+  endif()
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
   add_executable(xar_ck3_ai_terminal_reentry_dispatch_observer_v1_test
     src/ai_terminal_reentry_dispatch_observer_v1.cpp
