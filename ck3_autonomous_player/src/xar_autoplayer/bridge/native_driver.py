@@ -471,6 +471,11 @@ from .active_combat_retreat_contract import (
 from .physical_army_inventory_authorization import (
     authenticated_physical_inventory_for_route_contact,
 )
+from .h3937_date_hold import (
+    H3937_EPISODE_RUN_ID,
+    h3937_date_hold_active,
+    is_date_control_step,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
@@ -2097,6 +2102,15 @@ class NativeHeadlessGameplayDriver:
         ):
             action_steps.add(_START_NEXT_EPISODE_STEP)
             composite_action_steps.append(_START_NEXT_EPISODE_STEP)
+        if h3937_date_hold_active(current_snapshot):
+            action_steps = {
+                step for step in action_steps if not is_date_control_step(step)
+            }
+            composite_action_steps = [
+                step
+                for step in composite_action_steps
+                if not is_date_control_step(step)
+            ]
         return {
             **result,
             "action_steps": sorted(action_steps),
@@ -6039,6 +6053,16 @@ class NativeHeadlessGameplayDriver:
     def _execute_step_unrecorded(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        # The immutable in-process episode binding allows an early deny without
+        # taking an extra native frame or altering ordinary revision races.
+        if is_date_control_step(step):
+            with self._episode_identity_lock:
+                held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
+            if held_episode:
+                raise BridgeUnavailableError(
+                    "H3937 date hold: physical hostile inventory and formal "
+                    "war/cash policy remain uncertified"
+                )
         if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
             raise UnsupportedStepError(
                 "title-map navigation requires its typed driver method"
@@ -8185,6 +8209,13 @@ class NativeHeadlessGameplayDriver:
                 self.take_internal_semantic_snapshot()
                 if internal_semantic_snapshot
                 else self.take_snapshot()
+            )
+        # Use the same submission snapshot as the primitive.  A second read
+        # here would change revision-race behavior for unrelated episodes.
+        if is_date_control_step(step) and h3937_date_hold_active(snapshot):
+            raise BridgeUnavailableError(
+                "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
             )
         revision = int(snapshot["revision"])
         if expected_revision is not None:
@@ -18127,6 +18158,11 @@ class NativeHeadlessGameplayDriver:
             if starting_snapshot is not None
             else self.take_internal_semantic_snapshot()
         )
+        if h3937_date_hold_active(starting):
+            raise BridgeUnavailableError(
+                "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         starting_revision = int(starting["revision"])
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
@@ -18674,6 +18710,11 @@ class NativeHeadlessGameplayDriver:
             if starting_snapshot is not None
             else self.take_internal_semantic_snapshot()
         )
+        if h3937_date_hold_active(starting):
+            raise BridgeUnavailableError(
+                "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         if starting.get("map_ready") is not True:
             starting = self._wait_for_life_advance_snapshot(
                 starting,

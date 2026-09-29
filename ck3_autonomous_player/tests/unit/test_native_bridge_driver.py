@@ -19,6 +19,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 import xar_autoplayer.bridge.native_driver as native_driver_module
+from xar_autoplayer.bridge.h3937_date_hold import (
+    H3937_EPISODE_RUN_ID,
+    H3937_SOURCE_DATE_RAW,
+)
 from xar_autoplayer.bridge.physical_army_inventory_authorization import (
     authenticated_physical_inventory_for_route_contact,
 )
@@ -768,6 +772,120 @@ def _army_strength(
 
 
 class NativeHeadlessGameplayDriverTests(unittest.TestCase):
+    def test_h3937_episode_holds_all_date_entries_and_keeps_query(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name, endpoint=endpoint
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
+                "game.command.resume-map",
+                "game.command.pause-map",
+            )
+        )
+        player = _army(
+            83_886_367,
+            province_id=2610,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            31,
+            province_id=2604,
+            controllable=False,
+            move_target_province_id=2610,
+            army_state="moving",
+            route_province_ids=[2605, 2610],
+        )
+        war = _war(
+            16_777_231,
+            allied_armies=[player],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[2610],
+        )
+
+        def publish(revision: int, date_raw: int) -> None:
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    date_raw=date_raw,
+                    played_character={"character_id": 29_829, "alive": True},
+                    active_wars=[war],
+                    player_armies=[player],
+                )
+            )
+
+        publish(40, H3937_SOURCE_DATE_RAW)
+        original_projection = driver._with_one_life_episode
+        driver._with_one_life_episode = lambda snapshot: {
+            **snapshot,
+            "episode_run_id": H3937_EPISODE_RUN_ID,
+        }
+        with driver._episode_identity_lock:
+            driver._episode_run_id = H3937_EPISODE_RUN_ID
+            driver._episode_character_id = 29_829
+        query_step = query_route_contact_horizon_step(
+            83_886_367, 2610, (31,)
+        )
+        date_steps = (
+            "life-advance",
+            "resume-map",
+            "set-speed-3",
+            battle_decision_epoch_advance_step(H3937_SOURCE_DATE_RAW + 24),
+            committed_route_sentinel_advance_step(
+                83_886_367, 2610, H3937_SOURCE_DATE_RAW + 24
+            ),
+            war_objective_hold_sentinel_advance_step(
+                16_777_231, 83_886_367, 2610, H3937_SOURCE_DATE_RAW + 24
+            ),
+            advance_route_contact_horizon_step(83_886_367, 2610, (31,)),
+        )
+        for date_raw in (H3937_SOURCE_DATE_RAW, H3937_SOURCE_DATE_RAW + 24):
+            if date_raw != H3937_SOURCE_DATE_RAW:
+                publish(41, date_raw)
+            actions = driver.capabilities()["action_steps"]
+            self.assertIn(query_step, actions)
+            for step in date_steps:
+                with self.subTest(date_raw=date_raw, step=step):
+                    self.assertNotIn(step, actions)
+                    with self.assertRaisesRegex(
+                        BridgeUnavailableError, "H3937 date hold"
+                    ):
+                        driver.execute_step(step)
+        with self.assertRaisesRegex(BridgeUnavailableError, "H3937 date hold"):
+            driver._execute_primitive_step(
+                "resume-map", internal_semantic_snapshot=True
+            )
+        with self.assertRaisesRegex(BridgeUnavailableError, "H3937 date hold"):
+            driver._execute_life_advance(expected_revision=None)
+        with self.assertRaisesRegex(BridgeUnavailableError, "H3937 date hold"):
+            driver._execute_battle_sentinel_advance(
+                BATTLE_TERMINAL_CRUISE_STEP, expected_revision=None
+            )
+        self.assertFalse(
+            any(frame.get("type") == "execute_step" for frame in endpoint.frames)
+        )
+
+        # The same native frame under a different episode keeps its existing
+        # generic timeline and read-only capability projection.
+        driver._with_one_life_episode = lambda snapshot: {
+            **snapshot,
+            "episode_run_id": "native-29829-prior",
+        }
+        with driver._episode_identity_lock:
+            driver._episode_run_id = "native-29829-prior"
+        old_actions = driver.capabilities()["action_steps"]
+        self.assertIn("resume-map", old_actions)
+        self.assertIn("set-speed-3", old_actions)
+        self.assertIn(query_step, old_actions)
+        driver._with_one_life_episode = original_projection
+
     def _run_life_advance_speed_fixture(
         self,
         *,
