@@ -49,9 +49,12 @@ def response_body(output: Path, name: str, recorded: dict[str, Any]) -> dict[str
     return row
 
 
-def checkpoint_case(row: dict[str, Any], date: int, save_path: Path) -> dict[str, Any]:
+def checkpoint_case(row: dict[str, Any], date: int,
+                    save_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     body = row.get("body") or {}
     saved = body.get("checkpoint") or {}
+    submission = body.get("submission") or {}
+    seed = body.get("episode_seed") or {}
     lifecycle = saved.get("succession_lifecycle") or {}
     hello = (row.get("driver_state") or {}).get("hello") or {}
     require(body.get("step") == "save-checkpoint" and body.get("accepted") is True and
@@ -62,6 +65,14 @@ def checkpoint_case(row: dict[str, Any], date: int, save_path: Path) -> dict[str
             type(saved.get("size")) is int and saved["size"] > 0 and
             isinstance(saved.get("sha256"), str) and len(saved["sha256"]) == 64,
             "native checkpoint actor/date/path/size does not match")
+    require(submission.get("requested_save_name") == "xar_checkpoint" and
+            submission.get("date_raw") == date and
+            type(submission.get("sequence")) is int and submission["sequence"] > 0 and
+            isinstance(saved.get("episode_run_id"), str) and saved["episode_run_id"] and
+            seed.get("source_run_id") == saved["episode_run_id"] and
+            seed.get("source_checkpoint_name") == "xar_checkpoint.ck3" and
+            seed.get("character_id") == ACTOR and seed.get("immutable") is True,
+            "native save sequence/run/episode seed does not match")
     require(lifecycle.get("lifecycle") == "ordinary_campaign_succession" and
             lifecycle.get("xar_enabled") == "xar_off" and
             lifecycle.get("pact_contract") == "absent_by_fresh_campaign_xar_off_contract" and
@@ -69,7 +80,7 @@ def checkpoint_case(row: dict[str, Any], date: int, save_path: Path) -> dict[str
             hello.get("ck3_build_match") is True and
             str(hello.get("expected_ck3_sha256", "")).upper() == EXE_SHA,
             "native checkpoint lacks exact vanilla lifecycle/build hello")
-    return saved
+    return saved, submission
 
 
 def checkpoint_identity(path: Path, saved: dict[str, Any]) -> dict[str, Any]:
@@ -106,9 +117,10 @@ def save_inventory(save_dir: Path) -> list[dict[str, Any]]:
     rows = []
     for path in sorted(save_dir.iterdir()):
         if path.is_file():
+            require(not path.is_symlink(), f"profile save is symlinked: {path}")
             info = path.stat()
-            rows.append({"name": path.name, "bytes": info.st_size,
-                         "mtime_ns": info.st_mtime_ns, "symlink": path.is_symlink()})
+            rows.append({"name": path.name, "identity": identity(path),
+                         "mtime_ns": info.st_mtime_ns})
     return rows
 
 
@@ -214,7 +226,8 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
     save_path = save_dir / "xar_checkpoint.ck3"
     require(save_dir.is_dir() and not save_dir.is_symlink(),
             "isolated managed save directory missing")
-    pre_saved = checkpoint_case(prior["pre_save"], TRACKS[TRACK]["date"], save_path)
+    pre_saved, pre_submission = checkpoint_case(
+        prior["pre_save"], TRACKS[TRACK]["date"], save_path)
     pre_identity = checkpoint_identity(save_path, pre_saved)
     preservation.mkdir(exist_ok=False)
     pre_inventory = save_inventory(save_dir)
@@ -248,7 +261,10 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
         "d06 native save request envelope differs from sole intended action")
     response_row = response_body(output, SAVE_NAME, saved_receipt)
     require(saved_body == response_row["body"], "save response changed after managed call")
-    saved = checkpoint_case(response_row, POST_DATE, save_path)
+    saved, post_submission = checkpoint_case(response_row, POST_DATE, save_path)
+    require(saved["episode_run_id"] == pre_saved["episode_run_id"] and
+            post_submission["sequence"] > pre_submission["sequence"],
+            "d06 native save is not later in the same episode run")
     d06_identity = checkpoint_identity(save_path, saved)
     d06_copy = copy_exclusive(save_path, preservation / "d06-immutable.ck3", d06_identity)
     after_inventory = save_inventory(save_dir)
@@ -261,6 +277,8 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
         "save_inventory_after": after_inventory,
         "coldload_checkpoint_receipt": saved_receipt["response"],
         "trait_and_v3_result_known": False,
+        "target_event_verified": False,
+        "research_only_until_trace_audit": True,
     }
     write_new(preservation / "d06-preservation.json", preservation_row)
     after, after_receipt = call(output, f"{TRACK}-postframe-after-save-snapshot",
@@ -284,14 +302,16 @@ def run(output: Path, timeout: float) -> dict[str, Any]:
     require(identity(preservation / "d06-immutable.ck3") == d06_copy,
             "immutable d06 copy changed before operator admission")
     result = {"schema": "xar.war-promo.postframe-save-operator/v1", "created_at": utc(),
-              "result": "D06_PAIR_READY_FOR_SEPARATE_COLDLOAD_UNREVIEWED",
+              "result": "D06_RESEARCH_PAIR_READY_FOR_SEPARATE_COLDLOAD_UNREVIEWED",
               "source_binding": binding, "sequence_token": prior["token"],
               "preservation": identity(preservation / "d06-preservation.json"),
               "d06_save": d06_copy, "d06_receipt": saved_receipt["response"],
               "after_save_snapshot": after_receipt,
               "after_save_control": after_control_receipt,
               "after_save_values": after_values,
-              "trait_and_v3_result_known": False}
+              "trait_and_v3_result_known": False,
+              "target_event_verified": False,
+              "research_only_until_trace_audit": True}
     write_new(preservation / "postframe-save-result.json", result)
     return result
 

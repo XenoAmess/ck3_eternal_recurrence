@@ -45,17 +45,24 @@ def control(snap: dict) -> dict:
 
 
 def save_response(path: Path, date: int, content: bytes) -> dict:
+    episode_run_id = "synthetic-native-episode"
     return {"result": "CALL_COMPLETED", "body": {
         "step": "save-checkpoint", "accepted": True,
+        "submission": {"sequence": 1 if date == post.TRACKS[post.TRACK]["date"] else 2,
+                       "requested_save_name": "xar_checkpoint", "date_raw": date},
         "checkpoint": {"status": "saved", "path": str(path),
                        "name": "xar_checkpoint.ck3", "size": len(content),
                        "sha256": hashlib.sha256(content).hexdigest(),
                        "date_raw": date, "episode_character_id": post.ACTOR,
+                       "episode_run_id": episode_run_id,
                        "succession_lifecycle": {
                            "lifecycle": "ordinary_campaign_succession",
                            "xar_enabled": "xar_off",
                            "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
-                           "source": "pure-vanilla-enabled-mods-empty"}}},
+                           "source": "pure-vanilla-enabled-mods-empty"}},
+        "episode_seed": {"source_run_id": episode_run_id,
+                         "source_checkpoint_name": "xar_checkpoint.ck3",
+                         "character_id": post.ACTOR, "immutable": True}},
             "driver_state": {"hello": {"ck3_build_match": True,
                                        "expected_ck3_sha256": post.EXE_SHA}}}
 
@@ -146,6 +153,10 @@ class Fixture:
         self.after_control_combat = post.COMBAT
         self.after_revision = 9
         self.save_request_payload = None
+        self.post_sequence = 2
+        self.post_run_id = "synthetic-native-episode"
+        self.post_seed_run_id = "synthetic-native-episode"
+        self.post_submission_date = post.POST_DATE
 
     def _response(self, name: str, payload: dict,
                   request_payload: dict | None = None) -> dict:
@@ -183,6 +194,10 @@ class Fixture:
         if self.save_materializes:
             self.save_path.write_bytes(self.saved_bytes)
         payload = save_response(self.save_path, self.save_date, self.saved_bytes)
+        payload["body"]["submission"]["sequence"] = self.post_sequence
+        payload["body"]["submission"]["date_raw"] = self.post_submission_date
+        payload["body"]["checkpoint"]["episode_run_id"] = self.post_run_id
+        payload["body"]["episode_seed"]["source_run_id"] = self.post_seed_run_id
         row = self._response(name, payload,
                              self.save_request_payload or {
                                  "action": "mcp", "tool": tool,
@@ -208,7 +223,8 @@ class PostframeSaveTest(unittest.TestCase):
         fixture = self.fixture
         prior = fixture.save_path.read_bytes()
         result = self.execute()
-        self.assertEqual(result["result"], "D06_PAIR_READY_FOR_SEPARATE_COLDLOAD_UNREVIEWED")
+        self.assertEqual(result["result"],
+                         "D06_RESEARCH_PAIR_READY_FOR_SEPARATE_COLDLOAD_UNREVIEWED")
         self.assertEqual(sum(tool == "ck3_save_checkpoint"
                              for _, tool, _ in fixture.calls), 1)
         base = fixture.root / post.PRESERVATION_NAME
@@ -217,6 +233,12 @@ class PostframeSaveTest(unittest.TestCase):
         self.assertEqual(result["d06_receipt"]["sha256"],
                          identity(fixture.responses / f"{post.SAVE_NAME}.json")["sha256"])
         self.assertFalse(result["trait_and_v3_result_known"])
+        self.assertFalse(result["target_event_verified"])
+        self.assertTrue(result["research_only_until_trace_audit"])
+        preservation = json.loads((base / "d06-preservation.json").read_text(encoding="utf-8"))
+        self.assertEqual(preservation["save_inventory_before"][0]["identity"]["sha256"],
+                         hashlib.sha256(prior).hexdigest().upper())
+        self.assertIsInstance(preservation["save_inventory_before"][0]["mtime_ns"], int)
         with self.assertRaisesRegex(ValueError, "already used"):
             self.execute()
 
@@ -322,10 +344,34 @@ class PostframeSaveTest(unittest.TestCase):
                     self.assertFalse((fixture.root / post.PRESERVATION_NAME /
                                       "postframe-save-result.json").exists())
 
+    def test_native_sequence_episode_and_submission_mismatch_withhold_pair(self) -> None:
+        for field, value, expected in (
+            ("post_sequence", 1, "not later"),
+            ("post_run_id", "another-episode", "save sequence/run/episode seed"),
+            ("post_seed_run_id", "another-episode", "save sequence/run/episode seed"),
+            ("post_submission_date", post.POST_DATE + 24,
+             "save sequence/run/episode seed"),
+        ):
+            with self.subTest(field=field):
+                with tempfile.TemporaryDirectory() as root:
+                    fixture = Fixture(Path(root))
+                    setattr(fixture, field, value)
+                    with patch.object(post, "call", side_effect=fixture.call):
+                        with self.assertRaisesRegex(ValueError, expected):
+                            post.run(fixture.output, 10)
+                    self.assertEqual(sum(tool == "ck3_save_checkpoint"
+                                         for _, tool, _ in fixture.calls), 1)
+                    self.assertFalse((fixture.root / post.PRESERVATION_NAME /
+                                      "postframe-save-result.json").exists())
+
     def test_pending_timeout_is_not_retryable(self) -> None:
         fixture = self.fixture
         fixture.pending_timeout = True
         with self.assertRaisesRegex(TimeoutError, "pending request"):
+            self.execute()
+        self.assertEqual(sum(tool == "ck3_save_checkpoint"
+                             for _, tool, _ in fixture.calls), 1)
+        with self.assertRaisesRegex(ValueError, "already used"):
             self.execute()
         self.assertEqual(sum(tool == "ck3_save_checkpoint"
                              for _, tool, _ in fixture.calls), 1)
@@ -351,10 +397,6 @@ class PostframeSaveTest(unittest.TestCase):
                          "d06-immutable.ck3").exists())
         self.assertFalse((fixture.root / post.PRESERVATION_NAME /
                           "postframe-save-result.json").exists())
-        with self.assertRaisesRegex(ValueError, "already used"):
-            self.execute()
-        self.assertEqual(sum(tool == "ck3_save_checkpoint"
-                             for _, tool, _ in fixture.calls), 1)
 
     def test_post_save_combat_divergence_preserves_pair_but_withholds_ready(self) -> None:
         fixture = self.fixture
