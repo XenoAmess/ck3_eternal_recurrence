@@ -24,6 +24,7 @@ constexpr std::uintptr_t kType = 0x10006000;
 constexpr std::uintptr_t kCategory = 0x10007000;
 constexpr std::uintptr_t kRows = 0x10008000;
 constexpr std::uintptr_t kOption = 0x10009000;
+constexpr std::uintptr_t kAutoRows = 0x10009500;
 constexpr std::uintptr_t kStorage = 0x1000A000;
 constexpr std::uintptr_t kSlots = 0x1000B000;
 constexpr std::uintptr_t kActor = 0x1000C000;
@@ -39,8 +40,11 @@ struct Fake {
   bool progress = true;
   bool drift_on_valid = false;
   bool lose_option_on_transition = false;
+  bool auto_row_present = true;
+  bool auto_row_out_of_range = false;
   std::string_view key = "feast_type_generic";
   int stage_two_calls = 0;
+  int original_progress_calls = 0;
 
   template <typename T> void Put(std::uintptr_t at, const T &value) {
     const auto *data = reinterpret_cast<const std::uint8_t *>(&value);
@@ -141,6 +145,30 @@ bool SetStageTwo(void *opaque, std::uintptr_t planner) noexcept {
   return true;
 }
 
+bool FindAutoRow(void *opaque, std::uintptr_t planner,
+                 std::uintptr_t &output) noexcept {
+  if (planner != kPlanner) return false;
+  const auto &fake = *static_cast<Fake *>(opaque);
+  output = !fake.auto_row_present
+      ? 0 : fake.auto_row_out_of_range ? kAutoRows + 0x38 : kAutoRows;
+  return true;
+}
+
+bool ProgressNonzero(void *opaque, std::uintptr_t planner) noexcept {
+  auto &fake = *static_cast<Fake *>(opaque);
+  if (planner != kPlanner) return false;
+  ++fake.original_progress_calls;
+  fake.Put(kPlanner + 0x1AC0, kAutoRows);
+  fake.Put(kPlanner + 0x1ABC, std::int32_t{1});
+  fake.Put(kAutoRows + 8, std::int32_t{0});
+  fake.Put(kPlanner + 0x1AD0, std::uint8_t{0});
+  fake.Put(kPlanner + 0x1AB0, std::int32_t{2});
+  fake.Put(kPlanner + 0x1AC8, std::uintptr_t{0});
+  if (fake.lose_option_on_transition)
+    fake.Put(kRows + 8, std::uintptr_t{0});
+  return true;
+}
+
 void Populate(Fake &fake) {
   fake.Put(kBase + 0x10AC0F3,
            std::array<std::uint8_t, 7>{0x49, 0x89, 0xB6, 0xD0, 0, 0, 0});
@@ -162,6 +190,12 @@ void Populate(Fake &fake) {
   fake.Put(kBase + 0x10B1BD0,
            std::array<std::uint8_t, 10>{0x40, 0x53, 0x48, 0x83, 0xEC,
                                          0x20, 0x8B, 0x81, 0xB0, 0x1A});
+  fake.Put(kBase + 0x10ADFA0,
+           std::array<std::uint8_t, 13>{0x48, 0x8B, 0x81, 0x78, 0x15, 0,
+                                         0, 0x48, 0x63, 0x89, 0x84, 0x15, 0});
+  fake.Put(kBase + 0x10B1330,
+           std::array<std::uint8_t, 10>{0x40, 0x53, 0x48, 0x83, 0xEC,
+                                         0x20, 0x48, 0x63, 0x81, 0xB0});
   fake.Put(kBase + 0x41205F0, kBase + 0x10AC480);
   fake.Put(kBase + 0x41205F0 + 7 * 8, kBase + 0x1F30970);
   fake.Put(kBase + 0x41205F0 + 11 * 8, kBase + 0xAA33F0);
@@ -195,6 +229,10 @@ void Populate(Fake &fake) {
   fake.Put(kPlanner + 0x78, kWidget);
   fake.Put(kPlanner + 0x1AB0, std::int32_t{1});
   fake.Put(kPlanner + 0x1AD0, std::uint8_t{0});
+  fake.Put(kPlanner + 0x1578, kAutoRows);
+  fake.Put(kPlanner + 0x1584, std::int32_t{1});
+  fake.Put(kAutoRows, kType);
+  fake.Put(kAutoRows + 8, std::int32_t{1});
   fake.Put(kPlanner + 0x1530, kType);
   fake.Put(kType, kBase + 0x440E308);
   fake.PutBytes(kType + 0x18, "activity_feast");
@@ -213,7 +251,8 @@ void Populate(Fake &fake) {
 ActivityStage1OptionEnvironmentV1 Env(Fake &fake) {
   return {{true, xar::bridge::kActivityPlannerDiagExeSha256V1, kBase,
            &fake, &Read, &Frame, &Cast, &Visible},
-          &Key, &Selected, &Predicate, &Progress, &SetStageTwo};
+          &Key, &Selected, &Predicate, &Progress, &SetStageTwo,
+          &FindAutoRow, &ProgressNonzero};
 }
 } // namespace
 
@@ -257,14 +296,41 @@ int main() {
          fake.stage_two_calls == 0);
   fake.shown = true;
   fake.Put(kPlanner + 0x1AD0, std::uint8_t{1});
+  fake.auto_row_present = false;
+  confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
+  Expect(confirm.status ==
+             xar::bridge::ActivityStage1ConfirmStatusV1::precondition_rejected &&
+         confirm.reject_reason ==
+             xar::bridge::ActivityStage1ConfirmRejectReasonV1::stage_auto_row_absent &&
+         confirm.planner_stage_auto_observed &&
+         confirm.planner_stage_auto_raw == 1 &&
+         fake.stage_two_calls == 0 && fake.original_progress_calls == 0);
+  fake.auto_row_present = true;
+  confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
+  Expect(confirm.status ==
+             xar::bridge::ActivityStage1ConfirmStatusV1::stage_two_verified &&
+         confirm.submitted && confirm.stage_two_visible &&
+         confirm.selected_option_retained && fake.stage_two_calls == 0 &&
+         fake.original_progress_calls == 1);
+  Expect(xar::bridge::ReadActivityStage2OptionV1(Env(fake), expected).status ==
+         xar::bridge::ActivityStage2OptionReadStatusV1::observed);
+  Populate(fake);
+  fake.auto_row_out_of_range = true;
+  fake.Put(kPlanner + 0x1AD0, std::uint8_t{1});
+  confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
+  Expect(confirm.status ==
+             xar::bridge::ActivityStage1ConfirmStatusV1::precondition_rejected &&
+         confirm.reject_reason ==
+             xar::bridge::ActivityStage1ConfirmRejectReasonV1::stage_auto_row_unverified &&
+         !confirm.submitted && fake.original_progress_calls == 1);
+  fake.auto_row_out_of_range = false;
+  fake.Put(kPlanner + 0x1AD0, std::uint8_t{2});
   confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
   Expect(confirm.status ==
              xar::bridge::ActivityStage1ConfirmStatusV1::precondition_rejected &&
          confirm.reject_reason ==
              xar::bridge::ActivityStage1ConfirmRejectReasonV1::stage_auto_nonzero &&
-         confirm.planner_stage_auto_observed &&
-         confirm.planner_stage_auto_raw == 1 &&
-         fake.stage_two_calls == 0);
+         fake.original_progress_calls == 1);
   fake.bytes.erase(kPlanner + 0x1AD0);
   confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
   Expect(confirm.status ==
@@ -301,5 +367,16 @@ int main() {
          !confirm.selected_option_retained && lost.stage_two_calls == 1);
   Expect(xar::bridge::ReadActivityStage2OptionV1(Env(lost), lost.frame).status ==
          xar::bridge::ActivityStage2OptionReadStatusV1::option_identity_mismatch);
+  Fake lost_nonzero{};
+  Populate(lost_nonzero);
+  lost_nonzero.Put(kPlanner + 0x1AD0, std::uint8_t{1});
+  lost_nonzero.lose_option_on_transition = true;
+  confirm = xar::bridge::ConfirmActivityStage1V1(Env(lost_nonzero),
+                                                 lost_nonzero.frame);
+  Expect(confirm.status ==
+             xar::bridge::ActivityStage1ConfirmStatusV1::postcondition_failed &&
+         confirm.submitted && confirm.stage_two_visible &&
+         !confirm.selected_option_retained &&
+         lost_nonzero.original_progress_calls == 1);
   std::cout << "GREEN: exact-build private activity stage-1 option read\n";
 }

@@ -35,6 +35,10 @@ using ActivityStage1PredicateV1 = bool (*)(void *, std::uintptr_t,
 using ActivityStage1CanProgressV1 = bool (*)(void *, std::uintptr_t,
                                               bool &) noexcept;
 using ActivityStage1SetStageTwoV1 = bool (*)(void *, std::uintptr_t) noexcept;
+using ActivityStage1FindAutoRowV1 = bool (*)(void *, std::uintptr_t,
+                                            std::uintptr_t &) noexcept;
+using ActivityStage1ProgressNonzeroV1 = bool (*)(void *,
+                                                 std::uintptr_t) noexcept;
 
 struct ActivityStage1OptionEnvironmentV1 {
   ActivityPlannerDiagEnvironmentV1 diagnostic{};
@@ -43,6 +47,8 @@ struct ActivityStage1OptionEnvironmentV1 {
   ActivityStage1PredicateV1 option_predicate = nullptr;
   ActivityStage1CanProgressV1 can_progress = nullptr;
   ActivityStage1SetStageTwoV1 set_stage_two = nullptr;
+  ActivityStage1FindAutoRowV1 find_auto_row = nullptr;
+  ActivityStage1ProgressNonzeroV1 progress_nonzero = nullptr;
 };
 
 struct ActivityStage1OptionReadResultV1 {
@@ -103,6 +109,9 @@ enum class ActivityStage1ConfirmRejectReasonV1 {
   planner_identity_changed,
   stage_auto_read_failed,
   stage_auto_nonzero,
+  stage_auto_row_unverified,
+  stage_auto_row_absent,
+  stage_progress_abi_mismatch,
   frame_changed,
 };
 
@@ -119,9 +128,10 @@ struct ActivityStage1ConfirmResultV1 {
   bool selected_option_retained = false;
 };
 
-// Calls only the original stage setter at 0x10B1BD0 with argument 2. The
-// public ProgressPlanningStage routine auto-advances later stages, including
-// the activity-start branch, and must not be used for this bounded action.
+// On stage-auto byte 0, calls only the original stage setter at 0x10B1BD0.
+// On byte 1 with a verified original auto row, calls 0x10B1330 once: that
+// exact-build branch performs row bookkeeping and reaches stage 2 without the
+// auto-advance tail. Never call 0x10B1330 on byte 0: it can reach Start.
 ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     const ActivityStage1OptionEnvironmentV1 &environment,
     const ActivityPlannerDiagFrameV1 &expected) noexcept;

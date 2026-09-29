@@ -23,6 +23,8 @@ constexpr std::uintptr_t kIsShownRva = 0x971270;
 constexpr std::uintptr_t kIsValidRva = 0x971370;
 constexpr std::uintptr_t kCanProgressRva = 0x10B0DA0;
 constexpr std::uintptr_t kSetStageRva = 0x10B1BD0;
+constexpr std::uintptr_t kFindAutoRowRva = 0x10ADFA0;
+constexpr std::uintptr_t kProgressPlanningStageRva = 0x10B1330;
 
 struct NativeIdentity {
   std::uintptr_t actor = 0;
@@ -372,10 +374,67 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     return result;
   }
   result.planner_stage_auto_observed = true;
-  if (result.planner_stage_auto_raw != 0) {
+  const bool use_original_progress = result.planner_stage_auto_raw == 1;
+  if (result.planner_stage_auto_raw != 0 && !use_original_progress) {
     result.reject_reason =
         ActivityStage1ConfirmRejectReasonV1::stage_auto_nonzero;
     return result;
+  }
+  if (use_original_progress) {
+    constexpr std::array<std::uint8_t, 13> kFindAutoRowSignature{
+        0x48, 0x8B, 0x81, 0x78, 0x15, 0x00, 0x00,
+        0x48, 0x63, 0x89, 0x84, 0x15, 0x00};
+    constexpr std::array<std::uint8_t, 10> kProgressSignature{
+        0x40, 0x53, 0x48, 0x83, 0xEC, 0x20,
+        0x48, 0x63, 0x81, 0xB0};
+    if (!MatchCode(env.diagnostic, kFindAutoRowRva,
+                   kFindAutoRowSignature) ||
+        !MatchCode(env.diagnostic, kProgressPlanningStageRva,
+                   kProgressSignature)) {
+      result.reject_reason =
+          ActivityStage1ConfirmRejectReasonV1::stage_progress_abi_mismatch;
+      return result;
+    }
+    if (env.find_auto_row == nullptr || env.progress_nonzero == nullptr) {
+      result.reject_reason =
+          ActivityStage1ConfirmRejectReasonV1::stage_auto_row_unverified;
+      return result;
+    }
+    std::uintptr_t rows = 0, row = 0;
+    std::int32_t row_count = 0;
+    if (!ReadAt(env.diagnostic, first.planner, 0x1578, rows) || rows == 0 ||
+        !ReadAt(env.diagnostic, first.planner, 0x1584, row_count) ||
+        row_count <= 0 ||
+        !env.find_auto_row(env.diagnostic.context, first.planner, row)) {
+      result.reject_reason =
+          ActivityStage1ConfirmRejectReasonV1::stage_auto_row_unverified;
+      return result;
+    }
+    if (row == 0) {
+      result.reject_reason =
+          ActivityStage1ConfirmRejectReasonV1::stage_auto_row_absent;
+      return result;
+    }
+    std::uintptr_t end = 0;
+    if (!Add(rows, static_cast<std::size_t>(row_count) * 0x38, end) ||
+        row < rows || row >= end || (row - rows) % 0x38 != 0) {
+      result.reject_reason =
+          ActivityStage1ConfirmRejectReasonV1::stage_auto_row_unverified;
+      return result;
+    }
+    NativeIdentity still_selected{};
+    std::uint8_t still_auto = 0;
+    if (!ResolveNative(env, expected, still_selected) ||
+        first.actor != still_selected.actor ||
+        first.planner != still_selected.planner ||
+        first.option != still_selected.option ||
+        first.option_id != still_selected.option_id ||
+        !ReadAt(env.diagnostic, first.planner, 0x1AD0, still_auto) ||
+        still_auto != 1) {
+      result.reject_reason =
+          ActivityStage1ConfirmRejectReasonV1::planner_identity_changed;
+      return result;
+    }
   }
   ActivityPlannerDiagFrameV1 immediate{};
   if (!env.diagnostic.read_frame(env.diagnostic.context, immediate) ||
@@ -384,7 +443,10 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     return result;
   }
   result.submitted = true;
-  if (!env.set_stage_two(env.diagnostic.context, first.planner)) {
+  const bool transitioned = use_original_progress
+      ? env.progress_nonzero(env.diagnostic.context, first.planner)
+      : env.set_stage_two(env.diagnostic.context, first.planner);
+  if (!transitioned) {
     result.status = ActivityStage1ConfirmStatusV1::native_transition_failed;
     return result;
   }
@@ -443,6 +505,12 @@ std::string_view ActivityStage1ConfirmRejectReasonKeyV1(
     return "stage_auto_read_failed";
   case ActivityStage1ConfirmRejectReasonV1::stage_auto_nonzero:
     return "stage_auto_nonzero";
+  case ActivityStage1ConfirmRejectReasonV1::stage_auto_row_unverified:
+    return "stage_auto_row_unverified";
+  case ActivityStage1ConfirmRejectReasonV1::stage_auto_row_absent:
+    return "stage_auto_row_absent";
+  case ActivityStage1ConfirmRejectReasonV1::stage_progress_abi_mismatch:
+    return "stage_progress_abi_mismatch";
   case ActivityStage1ConfirmRejectReasonV1::frame_changed:
     return "frame_changed";
   }

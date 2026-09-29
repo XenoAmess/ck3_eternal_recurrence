@@ -2,8 +2,8 @@
 
 Exact executable SHA-256:
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
-This is an exact-build source and disassembly result. No CK3 instance was
-launched for this implementation, so the new action has no live qualification.
+The disassembly below is bound to that executable. R0360 and R0361 tested the
+private Confirm on the H3928 paused frame; both stopped before submission.
 The R0356 selected `activity_feast` / `feast_type_generic` paused read is in
 `activity-planning-stage1-option-identity-1.19.0.6.md`.
 
@@ -12,12 +12,24 @@ The R0356 selected `activity_feast` / `feast_type_generic` paused read is in
 The category Confirm button in
 `game/gui/window_activity_planner.gui:922` calls
 `ActivityPlanner.ProgressPlanningStage`. Its native `0x10B1330` stage-1
-normal branch calls `0x10B1BD0(planner, 2)` at `0x10B13A1`, **then** tail
-jumps to `0x10B1C90` at `0x10B13AE`. That second routine can recursively
-advance stage 2 to 5 when its configuration rows pass, then validate the
-temporary start command at stage 5 and invoke `0x10B1330` again. The latter
-dispatches stage 5 to `0x10B1910`, which starts an activity. Therefore one
-direct call to the full GUI operation is not bounded to stage 1.
+dispatch first tests the byte at `planner+0x1AD0`. With byte `0`, it calls
+`0x10B1BD0(planner, 2)` at `0x10B13A1`, **then** tail jumps to `0x10B1C90`.
+That routine can recursively advance stage 2 to 5 and invoke the stage-5
+Start branch `0x10B1910`. A full GUI operation on byte `0` is therefore not
+bounded to stage 1.
+
+With a nonzero byte, the same stage-1 dispatch calls the read-only row finder
+`0x10ADFA0`. When it finds a row, `0x10B1372..0x10B1397` stores that row at
+`planner+0x1AC0`, writes `1` at `+0x1ABC`, clears the row's `+8` field, and
+tail calls `0x10B1BD0(planner, 2)`. This path does not jump to `0x10B1C90`.
+When the finder returns null, it instead sets stage 5 through
+`0x10B13B3..0x10B13C0`; that single call does not directly enter Start, but
+it does not satisfy a stage-2 Confirm contract. The constructor writes byte
+`1` at `0x10AC34A`; the original activity type-selection handler writes
+byte `1` at `0x10ADE22` after its stage/category updates. Other identified
+writers in this planner path clear it to `0`, including the stage setter.
+This evidence identifies the branch selector's behavior, not an independent
+gameplay meaning for the byte.
 
 The stage setter `0x10B1BD0(planner, 2)` itself writes `+0x1AD0=0`,
 `+0x1AB0=2`, and `+0x1AB4=1`, calls the planner's primary vtable slot 25
@@ -33,11 +45,18 @@ category and the option rows; it does not depend on cleared `+0x1AC8`.
 flowchart LR
   A[Selected feast option, stage 1] --> B{Shown, Valid, CanProgress and same frame?}
   B -- no --> R[Reject without submit]
-  B -- yes --> C[0x10B1BD0 planner, 2]
-  C --> D[Stage 2 and selected option readback]
-  D --> Q[Separate stage-2 selected-option query]
-  D -. later separate contract .-> E[Cost and final CanStart]
-  A -. full 0x10B1330 can auto advance .-> X[Stage 5 Start path]
+  B -- yes --> C{Raw +0x1AD0 byte?}
+  C -- 0 --> D[Call only stage setter to 2]
+  C -- 1 --> E{Original 0x10ADFA0 finds row?}
+  E -- yes --> F[One original 0x10B1330 call: row bookkeeping, stage 2]
+  E -- no --> R
+  C -- unreadable or other --> R
+  D --> G[Independent stage 2 and selected option readback]
+  F --> G
+  G -. later separate contract .-> H[Cost and final CanStart]
+  C -. full 0x10B1330 on byte 0 .-> X[Auto advance can reach Start]
+  D -. slot 25 event effects unknown .-> U[Unknown later effects]
+  F -. slot 25 event effects unknown .-> U
 ```
 
 ## Private implementation
@@ -48,8 +67,13 @@ requires the existing private stage-1 option reader. The typed request step
 date, actor, `activity_feast`, and `feast_type_generic`. The existing paused
 application-main mailbox slot 59 executes it once. It reuses the original
 `IsShown`, `IsValid`, and `CanProgressPlanningStage` evaluations on that frame,
-requires the selected option, planner owner, widget, stage 1, and normal
-`+0x1AD0=0` route, then calls only the stage setter. A separate native
+requires the selected option, planner owner, widget, and stage 1. For
+`+0x1AD0=0`, it calls only the stage setter. For the R0361 observed byte
+`1`, it requires the original `0x10ADFA0` finder to return a row within the
+planner's `+0x1578/+0x1584` row array; it rechecks the same actor, planner,
+option, byte, and paused frame, then calls `0x10B1330` once on that guarded
+branch. Other byte values and absent or unverified rows reject before
+submission. A separate native
 diagnostic checks stage 2, widget visibility, same actor, feast identity,
 effective selected option pointer and ID, and same paused frame. The game
 snapshot before and after must match, including gold and date. The receipt
@@ -68,17 +92,16 @@ the option's script identifier, and reports only
 The already-open feast opener can additionally reread stage-2 visibility
 without dispatching another open operation.
 
-This bounded helper is a stage transition, not activity Start. The new
-source-level unit test verifies a positive stage transition, a separate
-stage-2 option query, a failed retained-option postcondition, and rejection
-of an invalid option or nonnormal stage route. Release bridge compilation and
-focused test are static gates only. A frozen candidate still needs the R0356
+This bounded helper is a stage transition, not activity Start. Focused tests
+cover both byte routes, row absence, invalid options, and a retained-option
+failure after submission. Release and Debug bridge compilation and focused
+tests are static gates only. A frozen candidate still needs the R0356
 paused scenario, independent stage-2 and resource readback, subsequent turn,
 and required checkpoint/cold restore before any live ability claim. Stage-5
 cost and final CanStart remain separate unknowns; the opaque slot-25 event
 also remains a live observation item.
 
-## R0360 first live Confirm: submitted false, reason pending
+## R0360/R0361 live Confirm: byte 1, no submission
 
 R0360 used the official H3928/raw53219928 pair with source master
 `3e249604a7805acc72f5e583cae416997bbf0a2b`. The immutable
@@ -99,11 +122,25 @@ The precondition result does not identify which later guard rejected it.
 Offline bytes in the same frozen EXE confirm the setter signature at RVA
 `0x10B1BD0` and planner vtable slot at RVA `0x41206B8` pointing to
 `0x10AEC20`; those checks should not be presumed to be the live failure.
-After the observed option, the remaining checks are a fresh planner
-identity read, `planner+0x1AD0` read and zero comparison, and a fresh
-same-frame read. A focused source change records a stable rejection reason
-and the raw `+0x1AD0` byte when observed. It does not relax admission or
-retry Confirm. These two fields appear only in a `precondition_rejected`
-private receipt; a successful receipt keeps its previous schema shape.
-Only a new, correctly paired candidate can establish the
-actual failing guard and support a targeted action fix.
+The follow-up R0361 used source commit
+`c547d1732f5e1177ca152569ddc2ee369859e109` and the same H3928/raw53219928
+pair. Its immutable
+[`formal-report.txt`](Z:/m6-activity-h3928-confirm-reason-candidate-20260929/operator-runs/feast-stage1-confirm-reason-1/formal-report.txt)
+has SHA-256
+`DAA8B93387EA2C62DB0ACCC387D82D01AE3AA69A75956B14269583AE858159E5`.
+The focused rejection receipt says `precondition_reject_reason=stage_auto_nonzero`
+and `planner_stage_auto_raw=1`, after the same selected option, shown/valid,
+and stage-1 progress checks succeeded. `submitted=false`; gold remained
+120644281 raw, date raw53219928, and no stage-2 query, activity Start, or
+normal gameplay turn was performed. This closes R0360's immediate rejection
+cause to the byte-zero guard. It does not yet prove that the row finder will
+return a row on this frame or qualify an alternative Confirm action.
+
+The implemented byte-1 candidate requires the row lookup and same-frame
+identity checks before it invokes original `0x10B1330` once. It retains the
+original byte-0 direct setter. Its independent postcondition requires stage
+2, selected option retained, unchanged gold/date snapshot, and no immediate
+activity Start; a failed postcondition preserves `submitted=true` for
+recovery. A null or unverified row remains a pre-submit rejection. Neither
+R0360 nor R0361 is stage-transition evidence; a new frozen live candidate
+is still required.
