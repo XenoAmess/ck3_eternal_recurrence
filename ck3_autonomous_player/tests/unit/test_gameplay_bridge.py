@@ -23,6 +23,9 @@ from xar_autoplayer.bridge.driver import (
     StepPostconditionError,
     UnsupportedStepError,
 )
+from xar_autoplayer.bridge.physical_army_inventory_authorization import (
+    authenticated_physical_inventory_for_route_contact,
+)
 from xar_autoplayer.bridge.service import (
     GameplayBridgeService,
     _route_plan_to_available_step,
@@ -1562,6 +1565,7 @@ def _native_war_plan(
     war_duration_days: int = 203,
     army_strengths: list[dict[str, object]] | None = None,
     army_strengths_status: str | None = None,
+    physical_inventory_claim: object = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -1650,6 +1654,14 @@ def _native_war_plan(
             "war_termination_options": termination_options or [],
             "army_strengths": army_strengths or [],
             "army_strengths_status": army_strengths_status,
+            **(
+                {
+                    "complete_physical_army_inventory_proven": True,
+                    "physical_army_inventory_v1": physical_inventory_claim,
+                }
+                if physical_inventory_claim is not None
+                else {}
+            ),
         },
         execute=lambda _step, _revision: {},
         action_steps=steps,
@@ -3201,6 +3213,8 @@ class GameplayBridgeTests(unittest.TestCase):
             still_blocked,
         )
 
+    # Historical horizon tests below inject a future authenticated receipt
+    # solely to exercise downstream route decisions; production stays closed.
     def test_r0118_overmatched_enemy_at_exact_objective_rejects_one_day_free(
         self,
     ) -> None:
@@ -4676,6 +4690,10 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertNotEqual(unavailable.get("selected_step"), query_step)
         self.assertIn("contact_timeline_unavailable", str(unavailable))
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_intersecting_active_route_advances_only_with_fresh_horizon(
         self,
     ) -> None:
@@ -4759,6 +4777,10 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(unavailable.get("selected_step"))
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_committed_route_requires_fresh_daily_horizon_even_when_sentinel_live(
         self,
     ) -> None:
@@ -4871,6 +4893,10 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(next_frame["selected_step"], query_step)
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_geometrically_safe_committed_route_still_requires_fresh_horizon(
         self,
     ) -> None:
@@ -5046,6 +5072,10 @@ class GameplayBridgeTests(unittest.TestCase):
             "operational_routing_risk_not_battle_win_odds",
         )
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_embarked_committed_route_uses_same_daily_proof_gate(
         self,
     ) -> None:
@@ -5535,6 +5565,10 @@ class GameplayBridgeTests(unittest.TestCase):
             "complete-same-frame-siege-position-and-war-strength",
         )
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_r0161_active_and_r0162_arrived_relief_use_existing_progress(
         self,
     ) -> None:
@@ -6820,6 +6854,10 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertNotEqual(plan["selected_step"], advance_step)
         self.assertNotEqual(plan["selected_step"], "life-advance")
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_moving_sibling_requires_own_fresh_contact_horizon(
         self,
     ) -> None:
@@ -7055,6 +7093,10 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(conjunction["conflicting"], [])
         self.assertEqual(conjunction["missing"], [])
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_moving_proof_hostile_timelines_cover_stationary_army(
         self,
     ) -> None:
@@ -7140,6 +7182,10 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(blocked["selected_step"])
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_stationary_objective_uses_own_one_day_contact_horizon(
         self,
     ) -> None:
@@ -7232,6 +7278,47 @@ class GameplayBridgeTests(unittest.TestCase):
             progress["route_audit"]["status"],
             "safe_one_day_stationary_contact_horizon",
         )
+
+        # Exercise the real formal planner with a same-frame contact-free
+        # horizon and an advertised advance.  Published scope plus an
+        # untrusted boolean or forged JSON certificate cannot grant date credit.
+        with mock.patch(
+            "xar_autoplayer.strategy."
+            "authenticated_physical_inventory_for_route_contact",
+            new=authenticated_physical_inventory_for_route_contact,
+        ):
+            for claim in (
+                None,
+                True,
+                {
+                    "status": "complete",
+                    "snapshot_id": "native:90",
+                    "revision": 90,
+                    "native_revision": 90,
+                    "date_raw": 24_000,
+                    "hostile_army_ids": [21],
+                },
+            ):
+                blocked = _native_war_plan(
+                    player=player,
+                    enemies=[enemy],
+                    score=0,
+                    date_raw=24_000,
+                    history=[proof],
+                    objective=2619,
+                    steps=(advance_step, "life-advance"),
+                    route_contact_horizon_supported=True,
+                    physical_inventory_claim=claim,
+                )
+                self.assertEqual(
+                    blocked["phase"],
+                    "native_war_route_contact_physical_inventory_unproven",
+                )
+                self.assertIsNone(blocked["selected_step"])
+                self.assertEqual(
+                    blocked["required_observation"],
+                    "authenticated-same-frame-physical-hostile-army-inventory",
+                )
 
         conflict_proof = _route_contact_row(
             2,
@@ -15057,6 +15144,10 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(route_away["selected_step"])
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_primary_defender_capital_contact_requires_fresh_exact_proof(
         self,
     ) -> None:
@@ -15500,6 +15591,10 @@ class GameplayBridgeTests(unittest.TestCase):
             [5],
         )
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_threatened_native_rally_uses_observed_county_route_or_exact_hold(
         self,
     ) -> None:
@@ -16171,6 +16266,10 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(no_safe_route["selected_step"])
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_r0018_restore_requires_fresh_four_hostile_rally_horizon(
         self,
     ) -> None:
@@ -17762,6 +17861,10 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
         self.assertIsNone(plan["selected_step"])
 
+    @mock.patch(
+        "xar_autoplayer.strategy.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_r0088_nonprimary_ally_requires_stationary_one_day_contact_proof(
         self,
     ) -> None:

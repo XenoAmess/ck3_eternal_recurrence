@@ -98,6 +98,7 @@ from .bridge.war_contract import (
     observe_merge_armies_postcondition_v1,
     move_army_step,
     offer_white_peace_step,
+    parse_advance_route_contact_horizon_step,
     surrender_war_step,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
@@ -123,6 +124,9 @@ from .bridge.war_contract import (
     war_objective_province_ids,
     war_termination_active_war_signature,
     war_termination_negative_query_signature,
+)
+from .bridge.physical_army_inventory_authorization import (
+    authenticated_physical_inventory_for_route_contact,
 )
 from .environment import write_json_atomic
 from .errors import AgentError
@@ -7174,6 +7178,23 @@ def choose_one_life_turn(
         bridge_capabilities=set(capabilities),
     )
     plan = _annotate_active_combat_resume_input(plan, snapshot)
+    if (
+        parse_advance_route_contact_horizon_step(plan.get("selected_step"))
+        is not None
+        and not authenticated_physical_inventory_for_route_contact(snapshot)
+    ):
+        plan = {
+            **plan,
+            "phase": "native_war_route_contact_physical_inventory_unproven",
+            "selected_step": None,
+            "required_observation": (
+                "authenticated-same-frame-physical-hostile-army-inventory"
+            ),
+            "reason": (
+                "the contact horizon covers a published war roster, but the "
+                "full physical hostile army inventory is not authenticated"
+            ),
+        }
     defender_exit_observation = observe_primary_defender_de_jure_exit(snapshot)
     if defender_exit_observation is not None:
         plan = {**plan, "formal_defender_exit_observation": defender_exit_observation}

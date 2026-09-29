@@ -19,6 +19,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 import xar_autoplayer.bridge.native_driver as native_driver_module
+from xar_autoplayer.bridge.physical_army_inventory_authorization import (
+    authenticated_physical_inventory_for_route_contact,
+)
 
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
@@ -8444,6 +8447,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             getattr(raised.exception, "native_error", None), native_error
         )
 
+    # Historical horizon tests simulate a future authenticated native receipt
+    # to keep their downstream timing checks independent of the closed gate.
+    @mock.patch(
+        "xar_autoplayer.bridge.native_driver.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_fresh_contact_proof_advertises_and_consumes_exact_day_once(
         self,
     ) -> None:
@@ -8592,6 +8601,24 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         driver.execute_step(query_step)
         self.assertIn(advance_step, driver.capabilities()["action_steps"])
         revision = int(driver.take_snapshot()["revision"])
+        with mock.patch(
+            "xar_autoplayer.bridge.native_driver."
+            "authenticated_physical_inventory_for_route_contact",
+            new=authenticated_physical_inventory_for_route_contact,
+        ):
+            self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+            with self.assertRaisesRegex(
+                BridgeUnavailableError, "proof is stale or incomplete"
+            ):
+                driver._execute_route_contact_horizon_advance(
+                    advance_step, expected_revision=revision
+                )
+            self.assertFalse(
+                any(
+                    frame.get("step") in {"resume-map", "set-speed-3"}
+                    for frame in endpoint.frames
+                )
+            )
 
         with mock.patch.object(
             driver,
@@ -8913,6 +8940,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
                 driver.close()
 
+    @mock.patch(
+        "xar_autoplayer.bridge.native_driver.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_unavoidable_contact_proof_observes_combat_after_exact_day(
         self,
     ) -> None:
@@ -9593,6 +9624,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             )
 
+    @mock.patch(
+        "xar_autoplayer.bridge.native_driver.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_endpoint_marker_binds_strict_followup_across_restore_history(
         self,
     ) -> None:
@@ -9736,6 +9771,22 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             {"index": 3, "command": "restore-checkpoint", "ok": True},
             query_row,
         ]
+        # The query itself is fully frame-bound, yet its hostile IDs came from
+        # the published war roster.  JSON completeness claims cannot promote
+        # this history to an exact-day action without a native inventory receipt.
+        with mock.patch(
+            "xar_autoplayer.bridge.native_driver."
+            "authenticated_physical_inventory_for_route_contact",
+            new=authenticated_physical_inventory_for_route_contact,
+        ):
+            for claim in (None, True, {"status": "complete"}):
+                untrusted = copy.deepcopy(snapshot)
+                untrusted["complete_physical_army_inventory_proven"] = True
+                untrusted["physical_army_inventory_v1"] = claim
+                self.assertEqual(
+                    _fresh_route_contact_advance_proofs(untrusted, history),
+                    {},
+                )
         proofs = _fresh_route_contact_advance_proofs(snapshot, history)
         self.assertTrue(proofs[advance_step]["strict_endpoint_followup"])
         self.assertEqual(
@@ -10000,6 +10051,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertNotIn(query_step, driver.capabilities()["action_steps"])
 
+    @mock.patch(
+        "xar_autoplayer.bridge.native_driver.authenticated_physical_inventory_for_route_contact",
+        new=lambda _snapshot: True,
+    )
     def test_moving_contact_proof_covers_other_safe_armies_exact_day(
         self,
     ) -> None:

@@ -468,6 +468,9 @@ from .active_combat_retreat_contract import (
     parse_preview_active_combat_retreat_v1_step,
     preview_active_combat_retreat_v1_step,
 )
+from .physical_army_inventory_authorization import (
+    authenticated_physical_inventory_for_route_contact,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
@@ -25829,6 +25832,11 @@ def _fresh_route_contact_advance_proofs(
 ) -> dict[str, dict[str, object]]:
     """Bind each exact-day step to its contact-free or unavoidable proof."""
     if snapshot.get("paused") is not True:
+        return {}
+    # A horizon over the published war roster cannot authorize time while the
+    # full physical hostile army inventory is unproven.  Keep both capability
+    # projection and execute-time revalidation behind the same boundary.
+    if not authenticated_physical_inventory_for_route_contact(snapshot):
         return {}
     hostiles = _route_contact_hostile_ids(snapshot)
     if not 0 < len(hostiles) <= 64:
