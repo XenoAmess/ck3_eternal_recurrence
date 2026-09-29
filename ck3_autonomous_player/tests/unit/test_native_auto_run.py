@@ -131,6 +131,7 @@ class _NativeAutoRunHarness:
         self.activity_guest_rule_status = "observed_inactive"
         self.activity_guest_rule_provenance_query_count = 0
         self.activity_guest_rule_provenance_status = "observed"
+        self.activity_guest_rule_provenance_native_error = None
         self.activity_guest_rule_candidate_member = True
         self.activity_cost_slot12_raw_read_count = 0
         self.activity_feast_open_status = "opened"
@@ -1992,6 +1993,12 @@ class _FakeActivityFeastState:
         if request["step"] == "query-activity-feast-guest-rule-provenance-v1":
             assert self.harness.activity_feast_open_stage == 5
             assert request["candidate_character_id"] == 32716
+            if self.harness.activity_guest_rule_provenance_native_error is not None:
+                return {
+                    "type": "command_result", "protocol_version": 1,
+                    "request_id": request_id, "ok": False,
+                    "error": self.harness.activity_guest_rule_provenance_native_error,
+                }
             status = self.harness.activity_guest_rule_provenance_status
             observed = status == "observed"
             ids = ([32716, 33000] if self.harness.activity_guest_rule_candidate_member
@@ -2626,6 +2633,7 @@ class NativeAutoRunTests(unittest.TestCase):
         activity_guest_rule_status: str = "observed_inactive",
         private_activity_feast_guest_rule_candidate_id: int | None = None,
         activity_guest_rule_provenance_status: str = "observed",
+        activity_guest_rule_provenance_native_error: str | None = None,
         activity_guest_rule_candidate_member: bool = True,
         private_activity_cost_slot12_raw_read: bool = False,
         activity_feast_open_status: str = "opened",
@@ -2754,6 +2762,7 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_guest_opinion_status = activity_guest_opinion_status
         harness.activity_guest_rule_status = activity_guest_rule_status
         harness.activity_guest_rule_provenance_status = activity_guest_rule_provenance_status
+        harness.activity_guest_rule_provenance_native_error = activity_guest_rule_provenance_native_error
         harness.activity_guest_rule_candidate_member = activity_guest_rule_candidate_member
         harness.activity_cost_slot12_raw_error = activity_cost_slot12_raw_error
         harness.opening_focus_gate_trial = (
@@ -3814,6 +3823,14 @@ class NativeAutoRunTests(unittest.TestCase):
                             "no_normal_refresh"})
         self.assertFalse(red["ok"])
         self.assertIn("no_normal_refresh", red["first_blocker"]["message"])
+        self.assertEqual(harness.auto_turn_count, 0)
+        diagnosed, harness = self._run(
+            ["advance"], **{**opts,
+                "activity_guest_rule_provenance_native_error":
+                    "activity feast guest provenance: no_normal_refresh hook=1 stage_not_five=1 last_stage=4"})
+        self.assertFalse(diagnosed["ok"])
+        self.assertIn("stage_not_five=1",
+                      diagnosed["first_blocker"]["result"]["native_error"])
         self.assertEqual(harness.auto_turn_count, 0)
         with self.assertRaisesRegex(AgentError, "same-run candidate read"):
             self._run(["advance"], **{**opts,
