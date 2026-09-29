@@ -169,6 +169,37 @@ public ArmyID `83886367` remain candidate inputs, not same-frame facts.
 Any live query needs a new paused semantic snapshot and separate fresh
 screen/offline admission.
 
+## Dormant role-only operator template
+
+`ck3_autonomous_player/src/xar_autoplayer/r0368_actor_army_role_operator.py`
+adds a `--no-launch` command. It pins the attempt-005 Release manifest and
+attempt-01 candidate manifest by SHA-256, rehashes the checkpoint, driver,
+sidecar, DLL, injector and exact CK3 executable, requires a clean checkout,
+and rejects any native bridge or role transport change since the Release
+source commit. The command creates an exclusive attempt directory and records
+RED there if a check fails. It does not create a game profile, start CK3,
+acquire the screen, or send a native query. The candidate WarID and ArmyID
+remain historical hints only.
+
+The same module contains a **default-closed inner collector** for a future
+owned managed session. Its caller must provide IDs reviewed from a new paused
+semantic frame. Before sending its sole private query, it requires the exact
+episode/actor, WarID, unique owned `player_armies` row and unique matching
+`allied_armies` row, positive public/native revisions, and a live connection
+generation/PID/hello. The existing private transport then validates the native
+payload and its own before/after snapshots. The collector takes another pair
+of snapshots around that call and compares episode, revisions, date, paused
+state, connection and army/war rows. Any missing or drifted binding stops with
+an error. Its result is always `READ_ONLY_INNER_*` with outer cleanup unproven,
+zero gameplay/date actions and no release authorization. A separate future
+outer runner must prove source preparation, fresh Steam offline/screen
+admission, managed process cleanup and append-only evidence before a live
+result can be accepted. The live gate remains false; no live GO is granted.
+
+The no-launch hash/identity stage has no `open_kaishek` parser, IR, finite
+runtime or replay semantic subset; this stage records `not-applicable`.
+Future paused/live steps must reassess applicability on their own inputs.
+
 The release decision is a later war-policy step. It needs the exact current
 assignment, a complete army and contact/siege state, a valid replacement plan,
 and a qualified nonwar benefit. R0271 remains RED, so this interface gives no
