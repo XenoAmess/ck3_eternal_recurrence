@@ -28,6 +28,36 @@ from xar_autoplayer.bridge.succession_transition_contract import (
 
 
 class H3937CombinedOuterTests(unittest.TestCase):
+    def test_revision_zero_route_probe_is_optional_and_does_not_claim_gameplay(self) -> None:
+        driver = Mock()
+        ready_transport = {"transport_ready": True, "diagnostics": {"connected": True}}
+        driver.query_frontend_gui_route_v1.return_value = {"route": "main_menu"}
+        result = producer._probe_frontend_route_at_readiness_timeout(
+            driver, ready_transport)
+        self.assertEqual(result, {"status": "available", "attempted": True,
+                                  "route": "main_menu", "error_type": None})
+        driver.query_frontend_gui_route_v1.assert_called_once_with()
+
+        driver.query_frontend_gui_route_v1.return_value = {"route": "unavailable"}
+        unavailable_route = producer._probe_frontend_route_at_readiness_timeout(
+            driver, ready_transport)
+        self.assertEqual(unavailable_route, {"status": "unavailable", "attempted": True,
+                                             "route": None, "error_type": None})
+
+        driver.reset_mock()
+        missing = producer._probe_frontend_route_at_readiness_timeout(
+            driver, {"transport_ready": False, "diagnostics": {"connected": False}})
+        self.assertEqual(missing["status"], "transport_unavailable")
+        self.assertFalse(missing["attempted"])
+        driver.query_frontend_gui_route_v1.assert_not_called()
+
+        driver.query_frontend_gui_route_v1.side_effect = TimeoutError("private frame")
+        unavailable = producer._probe_frontend_route_at_readiness_timeout(
+            driver, ready_transport)
+        self.assertEqual(unavailable, {"status": "unavailable", "attempted": True,
+                                       "route": None, "error_type": "TimeoutError"})
+        self.assertNotIn("private frame", json.dumps(unavailable))
+
     def test_timeout_screenshot_requires_live_lease_check_before_session(self) -> None:
         spec = SimpleNamespace(state_dir=Path("missing"), profile_dir=Path("missing"))
         with patch.object(producer, "H3937_COMBINED_OUTER_LIVE_AUTHORIZED", True), patch.object(
@@ -116,7 +146,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         "target_proof_red", "history_red", "cleanup_red",
                         "asset_red", "checkout_red", "binary_red",
                         "readiness_timeout", "readiness_timeout_capture_exception",
-                        "readiness_timeout_lease_red",
+                        "readiness_timeout_lease_red", "readiness_timeout_diagnostic",
                         "readiness_error"):
             with (self.subTest(outcome=outcome),
                   tempfile.TemporaryDirectory() as temp_dir,
@@ -173,7 +203,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                 after_driver = copy.deepcopy(before_driver)
                 after_driver["command_history"] = (
                     history if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
-                                           "readiness_timeout_lease_red",
+                                           "readiness_timeout_lease_red", "readiness_timeout_diagnostic",
                                            "readiness_error"}
                     else history + appended)
                 if outcome == "history_red":
@@ -283,7 +313,7 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     })))
                 readiness_failure = None
                 if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
-                               "readiness_timeout_lease_red"}:
+                               "readiness_timeout_lease_red", "readiness_timeout_diagnostic"}:
                     readiness_failure = producer.NativeReadinessTimeoutError(
                         "forbidden-exception-" + "X" * 100000,
                         readiness_diagnostics={
@@ -332,9 +362,19 @@ class H3937CombinedOuterTests(unittest.TestCase):
                 stack.enter_context(patch.object(
                     producer, "_bind_exact_h3937_ordinary_lifecycle", return_value=lifecycle))
                 session = stack.enter_context(patch.object(
-                    producer, "native_session", return_value={"ok": True}))
+                    producer, "native_session", return_value={
+                        "ok": True,
+                        "readiness_timeout_process_diagnostic": {
+                            "pid": 55, "launch_command": ["ck3.exe", "-loadsave=xar_checkpoint"],
+                            "process_alive": True, "visible_window_count": 1,
+                            "window_minimized": False, "foreground_is_ck3": False,
+                            "error_type": None,
+                        },
+                    }))
                 native_driver = stack.enter_context(patch.object(
                     producer, "NativeHeadlessGameplayDriver"))
+                native_driver.return_value.query_frontend_gui_route_v1.return_value = {
+                    "route": "main_menu"}
                 stack.enter_context(patch.object(producer, "GameplayBridgeService"))
                 collector = stack.enter_context(patch.object(
                     producer, "collect_h3937_target_reads_in_session", return_value=inner))
@@ -350,17 +390,19 @@ class H3937CombinedOuterTests(unittest.TestCase):
                     spec, ownership_round_id="R999", cold_start_checkpoint=True,
                     native_bridge=config,
                     readiness_timeout_screenshot_path=Path(temp_dir) / "timeout.png",
-                    readiness_timeout_screen_lease_check=lease_check)
+                    readiness_timeout_screen_lease_check=lease_check,
+                    readiness_timeout_diagnostic_probe=(
+                        outcome == "readiness_timeout_diagnostic"))
                 session.assert_called_once()
                 if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
-                               "readiness_timeout_lease_red",
+                               "readiness_timeout_lease_red", "readiness_timeout_diagnostic",
                                "readiness_error"}:
                     collector.assert_not_called()
                     self.assertEqual(result["query_actions"], 0)
                     self.assertFalse(result["checks"]["date_unchanged"])
                     self.assertTrue(result["cleanup"]["ok"])
                     if outcome in {"readiness_timeout", "readiness_timeout_capture_exception",
-                                   "readiness_timeout_lease_red"}:
+                                    "readiness_timeout_lease_red", "readiness_timeout_diagnostic"}:
                         lease_check.assert_called_once_with()
                         if outcome == "readiness_timeout_lease_red":
                             screenshot.assert_not_called()
@@ -368,7 +410,8 @@ class H3937CombinedOuterTests(unittest.TestCase):
                             screenshot.assert_called_once_with(Path(temp_dir) / "timeout.png")
                         self.assertEqual(
                             result["readiness_timeout_screenshot"]["status"],
-                            "RED_CAPTURE_OR_SCREEN_LEASE" if outcome != "readiness_timeout"
+                            "RED_CAPTURE_OR_SCREEN_LEASE" if outcome not in {
+                                "readiness_timeout", "readiness_timeout_diagnostic"}
                             else "CAPTURED_UNREVIEWED")
                         diagnostics = result["readiness_timeout_diagnostics"]
                         self.assertTrue(diagnostics["diagnostics"]["connected"])
@@ -376,6 +419,20 @@ class H3937CombinedOuterTests(unittest.TestCase):
                         self.assertEqual(diagnostics["diagnostics"]["last_heartbeat"]["sequence"], 7)
                         self.assertEqual(result["readiness_timeout_last_observation"]["date_raw"],
                                          producer.EXPECTED_DATE_RAW)
+                        if outcome == "readiness_timeout_diagnostic":
+                            self.assertEqual(result["readiness_timeout_frontend_route"]["route"],
+                                             "main_menu")
+                            self.assertEqual(result["readiness_timeout_process_diagnostic"][
+                                "launch_command"], ["ck3.exe", "-loadsave=xar_checkpoint"])
+                            self.assertFalse(result["readiness_timeout_process_diagnostic"][
+                                "foreground_is_ck3"])
+                            native_driver.return_value.query_frontend_gui_route_v1.assert_called_once_with()
+                            self.assertTrue(session.call_args.kwargs[
+                                "readiness_timeout_diagnostic_event"].is_set())
+                        else:
+                            self.assertIsNone(result["readiness_timeout_frontend_route"])
+                            self.assertIsNone(result["readiness_timeout_process_diagnostic"])
+                            native_driver.return_value.query_frontend_gui_route_v1.assert_not_called()
                         encoded = json.dumps(result)
                         self.assertEqual(
                             result["error"],
@@ -407,8 +464,9 @@ class H3937CombinedOuterTests(unittest.TestCase):
                 self.assertEqual(result["gameplay_actions"], 0)
                 self.assertEqual(result["query_actions"],
                                  0 if outcome in {"readiness_timeout",
-                                                 "readiness_timeout_capture_exception",
-                                                  "readiness_timeout_lease_red",
+                                                  "readiness_timeout_capture_exception",
+                                                   "readiness_timeout_lease_red",
+                                                   "readiness_timeout_diagnostic",
                                                  "readiness_error"} else 6)
                 self.assertEqual(result["source"]["rebind_receipt_sha256"], "c" * 64)
 

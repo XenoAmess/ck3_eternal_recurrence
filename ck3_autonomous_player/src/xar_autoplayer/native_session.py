@@ -728,6 +728,7 @@ def native_session(
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
     startup_slot0_probe_output: Path | None = None,
+    readiness_timeout_diagnostic_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
     if (
@@ -796,6 +797,10 @@ def native_session(
             )
 
     ensure_state_path_safe(spec.state_dir)
+    diagnostic_options = (
+        {"readiness_timeout_diagnostic_event": readiness_timeout_diagnostic_event}
+        if readiness_timeout_diagnostic_event is not None else {}
+    )
     with exclusive_launch_lock(spec.game_exe):
         with exclusive_state_lock(spec.state_dir, "native-session"):
             return _native_session_locked(
@@ -815,6 +820,7 @@ def native_session(
                 ),
                 frontend_first_warmup_bridge=warmup_bridge,
                 startup_slot0_probe_plan=startup_slot0_probe_plan,
+                **diagnostic_options,
             )
 
 
@@ -836,6 +842,7 @@ def _native_session_locked(
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
     startup_slot0_probe_plan: StartupSlot0ProbePlan | None = None,
+    readiness_timeout_diagnostic_event: threading.Event | None = None,
 ) -> dict[str, object]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -903,6 +910,7 @@ def _native_session_locked(
             "frontend-first warm-up timeout must be finite and positive"
         )
     frontend_first_warmup: dict[str, object] | None = None
+    readiness_timeout_process_diagnostic: dict[str, object] | None = None
     if frontend_first_target is not None:
         warmup_pipe = (
             frontend_first_warmup_bridge.pipe_name
@@ -1398,6 +1406,44 @@ def _native_session_locked(
                 )
     finally:
         if handle is not None:
+            if (
+                readiness_timeout_diagnostic_event is not None
+                and readiness_timeout_diagnostic_event.is_set()
+            ):
+                # Capture this before tracked shutdown. A desktop screenshot
+                # cannot establish whether this exact CK3 PID owns a window.
+                readiness_timeout_process_diagnostic = {
+                    "pid": int(handle.process.pid),
+                    "launch_command": list(handle.command),
+                    "process_alive": handle.process.poll() is None,
+                    "visible_window_count": None,
+                    "window_minimized": None,
+                    "foreground_is_ck3": None,
+                    "error_type": None,
+                }
+                try:
+                    import win32gui
+                    import win32process
+
+                    pid = int(handle.process.pid)
+                    readiness_timeout_process_diagnostic["visible_window_count"] = (
+                        len(_visible_process_windows(pid))
+                    )
+                    readiness_timeout_process_diagnostic["window_minimized"] = (
+                        _process_windows_minimized(pid)
+                    )
+                    foreground = win32gui.GetForegroundWindow()
+                    foreground_pid = (
+                        win32process.GetWindowThreadProcessId(foreground)[1]
+                        if foreground else None
+                    )
+                    readiness_timeout_process_diagnostic["foreground_is_ck3"] = (
+                        foreground_pid == pid if foreground_pid is not None else None
+                    )
+                except Exception as error:
+                    readiness_timeout_process_diagnostic["error_type"] = (
+                        type(error).__name__
+                    )
             try:
                 shutdown = stop_tracked(handle, require_running=False)
                 if shutdown.get("ok") is not True and primary_error is None:
@@ -1492,6 +1538,13 @@ def _native_session_locked(
             )
         ),
     }
+    if (
+        readiness_timeout_diagnostic_event is not None
+        and readiness_timeout_diagnostic_event.is_set()
+    ):
+        report["readiness_timeout_process_diagnostic"] = (
+            readiness_timeout_process_diagnostic
+        )
     if primary_error is not None and not pre_binding_warmup_exit:
         raise AgentError(
             "native-session failed after "

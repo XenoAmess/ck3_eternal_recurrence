@@ -805,6 +805,50 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         stop_mock.assert_called_once_with(handle, require_running=False)
         self.assertEqual(report["exit_reason"], "stop")
         self.assertTrue(report["ok"])
+        self.assertNotIn("readiness_timeout_process_diagnostic", report)
+
+    def test_opt_in_timeout_report_captures_tracked_launch_and_window(self) -> None:
+        process = mock.Mock()
+        process.pid = 4243
+        process.poll.return_value = None
+        handle = SimpleNamespace(
+            process=process,
+            command=["ck3.exe", "-userdir=D:/isolated", "-loadsave=xar_checkpoint"],
+        )
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\native-session-timeout-diagnostic-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        stop_event = threading.Event()
+        stop_event.set()
+        diagnostic_event = threading.Event()
+        diagnostic_event.set()
+        windows = SimpleNamespace(GetForegroundWindow=lambda: 31)
+        threads = SimpleNamespace(GetWindowThreadProcessId=lambda hwnd: (11, 4243))
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle
+        ), mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            return_value={"ok": True, "contract_errors": []},
+        ), mock.patch(
+            "xar_autoplayer.native_session._visible_process_windows", return_value=[31]
+        ), mock.patch(
+            "xar_autoplayer.native_session._process_windows_minimized", return_value=False
+        ), mock.patch.dict(sys.modules, {"win32gui": windows, "win32process": threads}):
+            report = _native_session_locked(
+                self.spec, config, 1.0, input_stream=None, output_stream=None,
+                poll_interval_seconds=0.001, stop_event=stop_event,
+                readiness_timeout_diagnostic_event=diagnostic_event,
+            )
+        detail = report["readiness_timeout_process_diagnostic"]
+        self.assertEqual(detail["launch_command"], handle.command)
+        self.assertTrue(detail["process_alive"])
+        self.assertEqual(detail["visible_window_count"], 1)
+        self.assertFalse(detail["window_minimized"])
+        self.assertTrue(detail["foreground_is_ck3"])
+        self.assertIsNone(detail["error_type"])
 
     def test_profile_verification_opt_out_only_changes_initial_launch(self) -> None:
         process = mock.Mock()

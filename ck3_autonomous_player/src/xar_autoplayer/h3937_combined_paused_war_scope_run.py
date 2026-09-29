@@ -158,6 +158,59 @@ def _bounded_readiness_last_observation(
     }
 
 
+def _probe_frontend_route_at_readiness_timeout(
+    driver: NativeHeadlessGameplayDriver,
+    diagnostics: dict[str, object] | None,
+) -> dict[str, object]:
+    """One revision-zero, read-only page query after gameplay readiness fails."""
+    transport = (diagnostics.get("diagnostics")
+                 if isinstance(diagnostics, dict) else None)
+    if (not isinstance(diagnostics, dict)
+            or diagnostics.get("transport_ready") is not True
+            or not isinstance(transport, dict)
+            or transport.get("connected") is not True):
+        return {"status": "transport_unavailable", "attempted": False,
+                "route": None, "error_type": None}
+    try:
+        result = driver.query_frontend_gui_route_v1()
+    except Exception as error:
+        return {"status": "unavailable", "attempted": True,
+                "route": None, "error_type": type(error).__name__}
+    route = result.get("route") if isinstance(result, dict) else None
+    if route not in {
+        "main_menu", "bookmarks", "lobby", "ruler_designer",
+        "coat_of_arms_designer", "unavailable",
+    }:
+        return {"status": "unavailable", "attempted": True,
+                "route": None, "error_type": "MalformedFrontendRoute"}
+    if route == "unavailable":
+        return {"status": "unavailable", "attempted": True,
+                "route": None, "error_type": None}
+    return {"status": "available", "attempted": True,
+            "route": route, "error_type": None}
+
+
+def _bounded_timeout_process_diagnostic(value: object) -> dict[str, object] | None:
+    if not isinstance(value, dict):
+        return None
+    command = value.get("launch_command")
+    command = (command if isinstance(command, list) and len(command) <= 8
+               and all(isinstance(item, str) and len(item) <= 1024
+                       for item in command) else None)
+    return {
+        "pid": _bounded_readiness_value(value.get("pid")),
+        "launch_command": command,
+        "process_alive": _bounded_readiness_value(value.get("process_alive")),
+        "visible_window_count": _bounded_readiness_value(
+            value.get("visible_window_count")),
+        "window_minimized": _bounded_readiness_value(
+            value.get("window_minimized")),
+        "foreground_is_ck3": _bounded_readiness_value(
+            value.get("foreground_is_ck3")),
+        "error_type": _bounded_readiness_value(value.get("error_type")),
+    }
+
+
 def _capture_timeout_desktop(path: Path) -> dict[str, object]:
     """Take one diagnostic original frame before stopping CK3, never input."""
     if path.suffix.lower() != ".png" or not path.parent.is_dir() or path.exists():
@@ -251,6 +304,7 @@ def collect_h3937_combined_paused_war_scope_once(
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_timeout_screenshot_path: Path | None = None,
     readiness_timeout_screen_lease_check: Callable[[], object] | None = None,
+    readiness_timeout_diagnostic_probe: bool = False,
 ) -> dict[str, object]:
     """One managed session, at most six read-only queries, never gameplay."""
     if H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not True:
@@ -258,6 +312,8 @@ def collect_h3937_combined_paused_war_scope_once(
     if (readiness_timeout_screenshot_path is not None
             and readiness_timeout_screen_lease_check is None):
         raise AgentError("H3937 timeout screenshot requires current screen lease check")
+    if not isinstance(readiness_timeout_diagnostic_probe, bool):
+        raise AgentError("H3937 readiness timeout diagnostic probe must be boolean")
     timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
     readiness_timeout = _positive_seconds(
         readiness_timeout_seconds, "readiness_timeout_seconds")
@@ -335,6 +391,8 @@ def collect_h3937_combined_paused_war_scope_once(
     started = time.monotonic()
     deadline = started + timeout
     stop_event = threading.Event()
+    diagnostic_event = (threading.Event()
+                        if readiness_timeout_diagnostic_probe else None)
     session_done = threading.Event()
     session_state: dict[str, object] = {"report": None, "error": None}
     driver: NativeHeadlessGameplayDriver | None = None
@@ -346,14 +404,19 @@ def collect_h3937_combined_paused_war_scope_once(
     readiness_timeout_diagnostics: dict[str, object] | None = None
     readiness_timeout_last_observation: dict[str, object] | None = None
     readiness_timeout_screenshot: dict[str, object] | None = None
+    readiness_timeout_frontend_route: dict[str, object] | None = None
 
     def supervise() -> None:
         try:
+            options = {"readiness_timeout_diagnostic_event": diagnostic_event}
+            if diagnostic_event is None:
+                options = {}
             session_state["report"] = native_session(
                 spec, timeout_seconds=timeout + SESSION_TIMEOUT_GRACE_SECONDS,
                 native_bridge=config, input_stream=None, output_stream=None,
                 poll_interval_seconds=poll_seconds, cold_start_checkpoint=True,
-                stop_event=stop_event, prepared_xar_enabled="xar_off")
+                stop_event=stop_event, prepared_xar_enabled="xar_off",
+                **options)
         except BaseException as error:
             session_state["error"] = f"{type(error).__name__}: {error}"
         finally:
@@ -380,10 +443,16 @@ def collect_h3937_combined_paused_war_scope_once(
         inner = collect_h3937_target_reads_in_session(service)
     except BaseException as error:
         if isinstance(error, NativeReadinessTimeoutError):
+            if diagnostic_event is not None:
+                diagnostic_event.set()
             readiness_timeout_diagnostics = _bounded_readiness_timeout_diagnostics(
                 error.readiness_diagnostics)
             readiness_timeout_last_observation = _bounded_readiness_last_observation(
                 error.last_observation)
+            if diagnostic_event is not None and driver is not None:
+                readiness_timeout_frontend_route = (
+                    _probe_frontend_route_at_readiness_timeout(
+                        driver, readiness_timeout_diagnostics))
             if readiness_timeout_screenshot_path is not None:
                 try:
                     if readiness_timeout_screen_lease_check is None:
@@ -423,7 +492,14 @@ def collect_h3937_combined_paused_war_scope_once(
 
     cleanup = _cleanup_report(session_state.get("report"),
                               session_error=session_state.get("error"),
-                              driver_closed=driver_closed, elapsed_seconds=stop_elapsed)
+                               driver_closed=driver_closed, elapsed_seconds=stop_elapsed)
+    session_report = session_state.get("report")
+    readiness_timeout_process_diagnostic = (
+        _bounded_timeout_process_diagnostic(
+            session_report.get("readiness_timeout_process_diagnostic"))
+        if diagnostic_event is not None and diagnostic_event.is_set()
+        and isinstance(session_report, dict) else None
+    )
     if cleanup.get("ok") is not True and primary_error is None:
         primary_error = str(session_state.get("error") or cleanup.get("reason")
                             or "managed cleanup unproven")
@@ -537,6 +613,9 @@ def collect_h3937_combined_paused_war_scope_once(
         "readiness_timeout_diagnostics": readiness_timeout_diagnostics,
         "readiness_timeout_last_observation": readiness_timeout_last_observation,
         "readiness_timeout_screenshot": readiness_timeout_screenshot,
+        "readiness_timeout_frontend_route": readiness_timeout_frontend_route,
+        "readiness_timeout_process_diagnostic": (
+            readiness_timeout_process_diagnostic),
         "frame": {**{key: first.get(key) for key in (
             "snapshot_id", "revision", "native_revision", "date_raw",
             "episode_run_id", "episode_character_id", "paused", "map_ready")},
