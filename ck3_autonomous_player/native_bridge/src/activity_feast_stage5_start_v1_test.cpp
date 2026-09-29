@@ -148,6 +148,12 @@ int main() {
   Check(outcome.status == ActivityFeastStage5PostStatusV1::created_and_debited &&
         outcome.new_activity_id == 0x01000012 &&
         outcome.same_date_exact_debit);
+  // Queue apply can become visible through a separate owner read without an
+  // ordinary turn or native revision increment on the paused date.
+  post.frame.revision = fake.frame.revision;
+  post.balances.frame = post.frame;
+  outcome = ReconcileActivityFeastStage5StartV1(result, post);
+  Check(outcome.status == ActivityFeastStage5PostStatusV1::created_and_debited);
   post.balances.raw[0]++;
   outcome = ReconcileActivityFeastStage5StartV1(result, post);
   Check(outcome.status ==

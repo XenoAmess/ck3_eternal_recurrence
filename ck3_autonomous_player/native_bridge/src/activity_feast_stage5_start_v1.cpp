@@ -150,7 +150,7 @@ ActivityFeastStage5PostResultV1 ReconcileActivityFeastStage5StartV1(
   ActivityFeastStage5PostResultV1 result{};
   const auto &before = submission.before;
   if (!submission.invoked || before.frame.revision == 0 ||
-      post.frame.revision <= before.frame.revision ||
+      post.frame.revision < before.frame.revision ||
       post.frame.actor_character_id != before.frame.actor_character_id ||
       post.frame.date_raw < before.frame.date_raw ||
       !post.frame.application_main_thread || !post.frame.paused ||

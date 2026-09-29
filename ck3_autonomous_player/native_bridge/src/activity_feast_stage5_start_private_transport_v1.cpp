@@ -232,6 +232,7 @@ bool Capture(void *opaque,
       expected.actor_alive};
   bridge::ActivityStage5FeastFullCostEnvironmentV1 cost_environment{};
   cost_environment.enabled = true;
+  cost_environment.gold.enabled = true;
   cost_environment.gold.diagnostic = diagnostic;
   cost_environment.gold.passive_cost = query.passive_cost;
   cost_environment.invoke_named_cost = &NamedCost;
