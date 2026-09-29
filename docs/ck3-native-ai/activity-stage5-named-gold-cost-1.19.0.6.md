@@ -74,8 +74,29 @@ rechecks frame, configuration and actor Gold after the call. It does not
 submit `ProgressPlanningStage` or an activity command. Its focused MSVC
 Release fixture distinguishes the named amount from a raw aggregate and
 checks no-refresh, wrong stage, changed configuration/revision, native read
-failure and exact-build rejection. The core is not yet registered through
-CMake/bridge/mailbox, and no paired stage-5 CK3 readback exists.
+failure and exact-build rejection. No paired stage-5 CK3 readback exists.
+
+## Default-off private native transport
+
+The follow-up bridge wiring, based on master `85a7755`, adds the private
+`query-activity-stage5-gold-cost-v1-private` step. Its dedicated mailbox
+executor slot is 61, separate from the stage-1 option reader's slot 59 and
+the final CanStart reader's slot 60. The CMake flag
+`XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1` defaults to OFF and
+requires the existing passive slot-12 capture flag. It is not a public MCP
+capability or an operator auto-play decision.
+
+The request binds the current snapshot revision, date, played actor,
+`expected_activity_key=activity_feast`, and `expected_planning_stage=5`.
+The application-main callback then requires the normal slot-12 return for
+that planner configuration and copies two independent Q100000 values:
+`configured_cost={resource:gold,raw,scale}` from native named `GetCost`, and
+`resource_value={resource:gold,raw,scale}` from the played actor's stock Gold
+field. The result records `normal_refresh_sequence`; `final_can_start` and
+`raw_slot12_resource_mapping` remain null. No refresh, named getter failure,
+changed frame or configuration produces a RED rather than a zero price.
+The callback has no activity-start or date-advance path. Bridge compilation
+and fixture tests do not qualify a configured live cost.
 
 Next live step: after a separately validated stage-1 Confirm and stage-2
 transition, observe a normal slot-12 refresh in an actual paused stage-5
