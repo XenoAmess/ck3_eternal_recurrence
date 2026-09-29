@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import ExitStack
 import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -83,6 +84,78 @@ def _hash_for_path(path: Path) -> str:
         "xar_ck3_bridge.dll": runner.DLL_SHA256,
         "xar_ck3_bridge_injector.exe": runner.INJECTOR_SHA256,
     }.get(path.name, "0" * 64)
+
+
+def _real_validator_pair(root: str) -> tuple[object, object, dict[str, object], str, str]:
+    """Write an ordinary H3937-shaped v2 pair for the actual validator."""
+    state_dir = Path(root) / "state"
+    profile_dir = state_dir / "profile"
+    spec = SimpleNamespace(
+        state_dir=state_dir,
+        profile_dir=profile_dir,
+        manifest_path=profile_dir / "xar-autoplayer-environment.json",
+    )
+    config = SimpleNamespace(
+        mode="native-headless", pipe_name="test",
+        dll_path=Path(root) / "xar_ck3_bridge.dll",
+        injector_path=Path(root) / "xar_ck3_bridge_injector.exe",
+    )
+    save = profile_dir / "save games" / "xar_checkpoint.ck3"
+    save.parent.mkdir(parents=True)
+    save.write_bytes(b"synthetic H3937 ordinary checkpoint")
+    save_sha = hashlib.sha256(save.read_bytes()).hexdigest()
+    manifest = {
+        "rules": {"profile": [{"rule": "xar_enabled", "setting": "xar_off"}]},
+        "environment_sha256": "e" * 64,
+    }
+    spec.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    lifecycle = runner.bind_succession_lifecycle_from_environment_v1(
+        manifest, lifecycle=runner.ORDINARY_CAMPAIGN_SUCCESSION,
+        ordinary_campaign_no_pact=True,
+    )
+    checkpoint = {
+        "name": "xar_checkpoint.ck3", "size": save.stat().st_size,
+        "sha256": save_sha, "date_raw": runner.EXPECTED_DATE_RAW,
+        "history_index": runner.EXPECTED_HISTORY_INDEX,
+        "episode_character_id": 29829,
+        "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
+        "succession_lifecycle": lifecycle,
+    }
+    history = [
+        {"index": index, "command": "prior-observation"}
+        for index in range(1, runner.EXPECTED_HISTORY_INDEX)
+    ]
+    history.append({
+        "index": runner.EXPECTED_HISTORY_INDEX,
+        "command": "save-checkpoint", "ok": True,
+        "result": {"checkpoint": {
+            "size": save.stat().st_size, "sha256": save_sha,
+            "date_raw": runner.EXPECTED_DATE_RAW,
+            "succession_lifecycle": lifecycle,
+        }},
+    })
+    driver = {
+        "format_version": 2, "pipe_name": "test",
+        "episode_character_id": 29829,
+        "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
+        "succession_lifecycle": lifecycle,
+        "last_checkpoint": checkpoint,
+        "command_history": history,
+    }
+    driver_path = state_dir / "native-session" / "driver-state.json"
+    driver_path.parent.mkdir(parents=True)
+    driver_path.write_text(json.dumps(driver), encoding="utf-8")
+    driver_sha = hashlib.sha256(driver_path.read_bytes()).hexdigest()
+    receipt = _rebind_receipt(driver_sha, state_dir=state_dir)
+    receipt["environment"]["target_sha256"] = manifest["environment_sha256"]
+    for side in ("source", "target"):
+        receipt["save"][side]["sha256"] = save_sha
+    receipt["no_launch_preflight_expectations"]["expected_checkpoint_sha256"] = save_sha
+    receipt["post_rebind_validation"]["checkpoint"]["sha256"] = save_sha
+    (state_dir / "ordinary-seed-rebind-v1.json").write_text(
+        json.dumps(receipt), encoding="utf-8"
+    )
+    return spec, config, driver, save_sha, driver_sha
 
 
 class H3937StationaryGateTests(unittest.TestCase):
@@ -178,68 +251,107 @@ class H3937StationaryGateTests(unittest.TestCase):
                 session.assert_not_called()
                 driver.assert_not_called()
 
-    def test_real_validator_checkpoint_shape_passes_identity_gate_in_mock_session(self) -> None:
+    def test_actual_validator_pair_passes_exact_lifecycle_to_driver(self) -> None:
         with TemporaryDirectory() as root, ExitStack() as stack:
-            root_path = Path(root)
-            spec = SimpleNamespace(
-                state_dir=root_path / "state",
-                profile_dir=root_path / "state" / "profile",
+            spec, config, driver_state, save_sha, driver_sha = _real_validator_pair(root)
+            checkpoint = runner.validate_cold_start_checkpoint_for_pipe(
+                spec, config.pipe_name
             )
-            config = SimpleNamespace(
-                mode="native-headless", pipe_name="test",
-                dll_path=root_path / "xar_ck3_bridge.dll",
-                injector_path=root_path / "xar_ck3_bridge_injector.exe",
+            self.assertNotIn("episode_run_id", checkpoint)
+            self.assertEqual(
+                runner._bind_exact_h3937_ordinary_lifecycle(
+                    spec, checkpoint, driver_state,
+                ), driver_state["succession_lifecycle"],
             )
-            checkpoint = {
-                "saved_date_raw": runner.EXPECTED_DATE_RAW,
-                "history_index": runner.EXPECTED_HISTORY_INDEX,
-                "succession_lifecycle": {
-                    "environment_sha256": ENVIRONMENT_SHA256,
-                    "xar_enabled": "xar_off",
-                    "lifecycle": "ordinary_campaign_succession",
-                    "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
-                },
-            }
-            prepared_driver = {
-                "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
-                "episode_character_id": 29829,
-                "last_checkpoint": {
-                    "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
-                    "episode_character_id": 29829,
-                    "history_index": runner.EXPECTED_HISTORY_INDEX,
-                    "sha256": runner.CHECKPOINT_SHA256,
-                },
-            }
             stack.enter_context(patch.object(runner, "RECEIVER_ASSETS_AND_SCOPE_VERIFIED", True))
             stack.enter_context(patch.object(runner, "validate_native_bridge_launch_config", return_value=config))
             stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
-            stack.enter_context(patch.object(runner, "validate_cold_start_checkpoint_for_pipe", return_value=checkpoint))
-            stack.enter_context(patch.object(runner, "_read_driver_state", return_value=prepared_driver))
-            stack.enter_context(patch.object(runner, "_read_rebind_receipt", return_value=_rebind_receipt(state_dir=spec.state_dir)))
-            stack.enter_context(patch.object(runner, "_sha256", side_effect=_hash_for_path))
-            stack.enter_context(patch.object(runner, "_wait_for_readiness", return_value={
-                "snapshot_id": "native:3", "revision": 4, "native_revision": 3,
-                "date_raw": runner.EXPECTED_DATE_RAW,
-                "episode_run_id": runner.EXPECTED_EPISODE_RUN_ID,
-                "paused": True, "map_ready": True, "connection_generation": 1,
-            }))
+            stack.enter_context(patch.object(runner, "CHECKPOINT_SHA256", save_sha))
+
+            def source_hash(path: Path) -> str:
+                return {
+                    "xar_checkpoint.ck3": save_sha,
+                    "driver-state.json": driver_sha,
+                }.get(path.name, _hash_for_path(path))
+
+            stack.enter_context(patch.object(runner, "_sha256", side_effect=source_hash))
+            stack.enter_context(patch.object(
+                runner, "_wait_for_readiness",
+                side_effect=runner.AgentError("bounded stop"),
+            ))
             stack.enter_context(patch.object(runner, "_cleanup_report", return_value={"ok": True}))
-            stack.enter_context(patch.object(runner, "_cold_restore_bookkeeping", return_value={"exact": True}))
             session = stack.enter_context(patch.object(runner, "native_session", return_value={"ok": True}))
-            stack.enter_context(patch.object(runner, "NativeHeadlessGameplayDriver"))
-            service = stack.enter_context(patch.object(runner, "GameplayBridgeService"))
-            service.return_value.snapshot.return_value = {
-                "revision": 4, "paused": True, "map_ready": True,
-            }
+            native_driver = stack.enter_context(patch.object(runner, "NativeHeadlessGameplayDriver"))
             report = runner.query_h3937_stationary_route_contact_once(
                 spec, timeout_seconds=390, readiness_timeout_seconds=300,
                 ownership_round_id="R999", cold_start_checkpoint=True,
                 native_bridge=config,
             )
             session.assert_called_once()
-            service.return_value.execute_step.assert_not_called()
-            self.assertFalse(report["ok"])
-            self.assertFalse(report["action_authorized"])
+            self.assertEqual(report["status"], "RED")
+            self.assertIn("bounded stop", report["error"])
+            native_driver.assert_called_once_with(
+                config.pipe_name,
+                state_dir=spec.state_dir,
+                save_dir=spec.profile_dir / "save games",
+                succession_lifecycle_binding=driver_state["succession_lifecycle"],
+            )
+
+    def test_lifecycle_mismatch_refuses_before_driver_or_session(self) -> None:
+        for mismatch in ("manifest_missing", "manifest_xar_on", "checkpoint", "driver"):
+            with (
+                self.subTest(mismatch=mismatch),
+                TemporaryDirectory() as root,
+                ExitStack() as stack,
+            ):
+                spec, config, driver, save_sha, driver_sha = _real_validator_pair(root)
+                if mismatch == "manifest_missing":
+                    spec.manifest_path.unlink()
+                elif mismatch == "manifest_xar_on":
+                    manifest = json.loads(spec.manifest_path.read_text(encoding="utf-8"))
+                    manifest["rules"]["profile"][0]["setting"] = "xar_on"
+                    spec.manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+                elif mismatch == "checkpoint":
+                    driver["last_checkpoint"]["succession_lifecycle"] = {
+                        **driver["succession_lifecycle"],
+                        "environment_sha256": "f" * 64,
+                    }
+                else:
+                    driver["succession_lifecycle"] = {
+                        **driver["succession_lifecycle"],
+                        "environment_sha256": "f" * 64,
+                    }
+                if mismatch in {"checkpoint", "driver"}:
+                    (spec.state_dir / "native-session" / "driver-state.json").write_text(
+                        json.dumps(driver), encoding="utf-8"
+                    )
+                stack.enter_context(patch.object(runner, "RECEIVER_ASSETS_AND_SCOPE_VERIFIED", True))
+                stack.enter_context(patch.object(runner, "validate_native_bridge_launch_config", return_value=config))
+                stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
+                stack.enter_context(patch.object(runner, "CHECKPOINT_SHA256", save_sha))
+
+                def source_hash(path: Path) -> str:
+                    return {
+                        "xar_checkpoint.ck3": save_sha,
+                        "driver-state.json": driver_sha,
+                    }.get(path.name, _hash_for_path(path))
+
+                stack.enter_context(patch.object(runner, "_sha256", side_effect=source_hash))
+                session = stack.enter_context(patch.object(runner, "native_session"))
+                native_driver = stack.enter_context(patch.object(runner, "NativeHeadlessGameplayDriver"))
+                expected_error = (
+                    "H3937 stationary lifecycle profile is not runnable"
+                    if mismatch in {"manifest_missing", "manifest_xar_on"}
+                    else "cold checkpoint succession lifecycle anchor is incomplete"
+                )
+                with self.assertRaisesRegex(runner.AgentError, expected_error):
+                    runner.query_h3937_stationary_route_contact_once(
+                        spec, timeout_seconds=390, readiness_timeout_seconds=300,
+                        ownership_round_id="R999", cold_start_checkpoint=True,
+                        native_bridge=config,
+                    )
+                session.assert_not_called()
+                native_driver.assert_not_called()
 
     def test_inherited_h3928_scope_cannot_be_assumed_from_h3937_report(self) -> None:
         report_only = {
