@@ -6813,6 +6813,25 @@ int main() {
 
   const auto &active_siege_state =
       snapshot.active_wars[0].objective_province_states[0];
+  xar::game::WarObjectiveProvinceState direct_province_state{};
+  if (xar::ck3_11906::ReadProvinceLocalSiege(
+          bindings, war_objective_province_id, direct_province_state) !=
+          xar::game::ReadProvinceLocalSiegeResult::available ||
+      direct_province_state != active_siege_state) {
+    return Fail("direct paused Province siege read drifted from native row");
+  }
+  if (xar::ck3_11906::ReadProvinceLocalSiege(
+          bindings, 0, direct_province_state) !=
+      xar::game::ReadProvinceLocalSiegeResult::province_not_found) {
+    return Fail("direct Province siege read accepted an invalid ProvinceID");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadProvinceLocalSiege(
+          bindings, war_objective_province_id, direct_province_state) !=
+      xar::game::ReadProvinceLocalSiegeResult::requires_paused) {
+    return Fail("direct Province siege read crossed the paused-only gate");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
   const auto &occupied_state =
       snapshot.active_wars[0].objective_province_states[1];
   const auto &idle_state =

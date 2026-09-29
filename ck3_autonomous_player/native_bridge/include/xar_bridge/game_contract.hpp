@@ -2003,6 +2003,17 @@ enum class ReadArmyStrengthsResult {
   no_played_character,
   unavailable,
 };
+// One arbitrary Province is read independently of the war-objective row
+// budget. A partial result preserves every field's observable/null semantics.
+enum class ReadProvinceLocalSiegeResult {
+  available,
+  partial,
+  requires_paused,
+  no_played_character,
+  province_not_found,
+  state_changed,
+  unavailable,
+};
 enum class ReadCombatSimulationInputsResult {
   available,
   partial,

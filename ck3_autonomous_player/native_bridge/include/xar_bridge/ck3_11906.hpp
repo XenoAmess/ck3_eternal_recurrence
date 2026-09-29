@@ -837,6 +837,13 @@ ReadArmyStrengthsResult ReadArmyStrengths(
     const Bindings &bindings,
     std::vector<ArmyStrengthSnapshot> &output) noexcept;
 
+// A paused, double-read local Province observation. It uses the existing
+// objective-Province ABI but does not require objective membership and does
+// not alter the shared objective snapshot budget or issue a game command.
+game::ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
+    const Bindings &bindings, std::int32_t province_id,
+    game::WarObjectiveProvinceState &output) noexcept;
+
 using game::ReadCombatSimulationInputsResult;
 
 // Paused object-graph projection for one explicit hypothetical contact. The

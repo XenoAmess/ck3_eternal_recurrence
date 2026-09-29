@@ -42,7 +42,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 102;
+constexpr std::size_t kBaseCapabilityCount = 103;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
@@ -125,6 +125,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.declare-war-N",
     "game.command.enforce-demands-N",
     "game.command.query-army-strengths-v1",
+    "game.command.query-province-local-siege-v1-N",
     "game.command.query-campaign-root-context-v1",
     ck3_11906::kPlayerFactionAlertsV1Capability,
     ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
@@ -343,6 +344,11 @@ public:
   ReadArmyStrengthsResult read_army_strengths(
       std::vector<ArmyStrengthSnapshot> &output) const noexcept override {
     return ck3_11906::ReadArmyStrengths(bindings_, output);
+  }
+  ReadProvinceLocalSiegeResult read_province_local_siege(
+      std::int32_t province_id,
+      WarObjectiveProvinceState &output) const noexcept override {
+    return ck3_11906::ReadProvinceLocalSiege(bindings_, province_id, output);
   }
   ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const CombatSimulationInputsRequest &request,
