@@ -45,7 +45,7 @@ def arguments(track: str, *, root: Path | None = None) -> argparse.Namespace:
 
 
 class A04UiTargetTest(unittest.TestCase):
-    def test_three_frozen_tracks_bind_distinct_actual_userdirs(self) -> None:
+    def test_four_frozen_tracks_bind_distinct_actual_userdirs(self) -> None:
         for track in A04_UI_TARGETS:
             with self.subTest(track=track):
                 args = arguments(track)
@@ -71,6 +71,48 @@ class A04UiTargetTest(unittest.TestCase):
                 (changed[parent] if parent else changed)[field] = value
                 with self.assertRaisesRegex(RuntimeError, "exact allowed track/source pair"):
                     bind_a04_ui_target(arguments("e2-06-d11"), changed)
+
+    def test_d06_wrong_source_pair_actor_date_or_run_refuses(self) -> None:
+        valid = source_for("e2-04-d06")
+        mutations = (
+            ("save", "path", str(A04_UI_SOURCE_ROOT / "other" / "d06-immutable.ck3")),
+            ("save", "sha256", A04_UI_TARGETS["e2-04-d05"]["save"][2]),
+            ("save", "bytes", valid["save"]["bytes"] + 1),
+            ("receipt", "path", str(A04_UI_SOURCE_ROOT / "other" / "e2-04-d05-postframe-save.json")),
+            ("receipt", "sha256", "0" * 64),
+            ("receipt", "bytes", valid["receipt"]["bytes"] + 1),
+            (None, "actor", 30097),
+            (None, "date_raw", 53146344),
+            (None, "source_episode_run_id", "native-29829-78c0d8f4b8a2"),
+        )
+        for parent, field, value in mutations:
+            with self.subTest(parent=parent, field=field):
+                changed = deepcopy(valid)
+                (changed[parent] if parent else changed)[field] = value
+                with self.assertRaisesRegex(RuntimeError, "exact allowed track/source pair"):
+                    bind_a04_ui_target(arguments("e2-04-d06"), changed)
+
+    def test_d06_source_cannot_enter_other_track_or_mixed_attempt(self) -> None:
+        source = source_for("e2-04-d06")
+        for other in ("e2-04-d05", "e2-05-d26", "e2-06-d11"):
+            with self.subTest(other=other):
+                with self.assertRaisesRegex(RuntimeError, "userdir/state/output"):
+                    bind_a04_ui_target(arguments(other), source)
+        args = arguments("e2-04-d06")
+        args.output_dir = (A04_UI_SOURCE_ROOT /
+                           "episode02-e2-04-d06-another-attempt" / "ck3-output")
+        with self.assertRaisesRegex(RuntimeError, "userdir/state/output"):
+            bind_a04_ui_target(args, source)
+
+    @unittest.skipUnless((A04_UI_SOURCE_ROOT / A04_UI_TARGETS["e2-04-d06"]["save"][0]).is_file() and
+                         (A04_UI_SOURCE_ROOT / A04_UI_TARGETS["e2-04-d06"]["receipt"][0]).is_file(),
+                         "Frozen external d06 save and sidecar are unavailable")
+    def test_real_d06_save_and_sidecar_bind_exactly(self) -> None:
+        args = arguments("e2-04-d06")
+        checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)
+        self.assertEqual(checkpoint["source_episode_run_id"], "native-29829-0a9929135691")
+        self.assertEqual(checkpoint["date_raw"], 53146368)
+        self.assertEqual(bind_a04_ui_target(args, checkpoint)["track"], "e2-04-d06")
 
     def test_d11_source_cannot_enter_d05_or_d26_userdir(self) -> None:
         source = source_for("e2-06-d11")

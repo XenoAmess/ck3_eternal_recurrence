@@ -80,6 +80,15 @@ A04_UI_TARGETS = {
         "source_episode_run_id": "native-29829-78c0d8f4b8a2",
         "attempt_prefix": "episode02-e2-04-d05-",
     },
+    "e2-04-d06": {
+        "save": ("episode02-e2-04-d05-live-20260929-a08/e2-04-d06-postframe-preservation-a01/d06-immutable.ck3",
+                 52185337, "F05A48A0839E76DD05D053FACBA524405FD547DD0A6CA07396ADB8ABE42A0B5A"),
+        "receipt": ("episode02-e2-04-d05-live-20260929-a08/ck3-output/interactive-requests-responses/e2-04-d05-postframe-save.json",
+                    13437, "85C226E247AF4D32E246DCCF9F4C7323106D3A6BD0F12FCB883ABE843D3B785B"),
+        "actor": 29829, "date_raw": 53146368,
+        "source_episode_run_id": "native-29829-0a9929135691",
+        "attempt_prefix": "episode02-e2-04-d06-",
+    },
     "e2-05-d26": {
         "save": ("episode01-paired-counter-trace-attempt-010/d26-immutable.ck3", 52880496,
                  "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"),
