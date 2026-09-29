@@ -30,6 +30,8 @@ SOURCE_FILES = (
     "src/bridge.cpp",
     "src/ck3_11906.cpp",
     "src/ck3_11906_adapter.cpp",
+    "src/game_adapter.cpp",
+    "src/game_adapter_test.cpp",
     "src/h2743_preaction_existing_truce_v1.cpp",
     "src/h2743_preaction_existing_truce_v1_test.cpp",
     "src/protocol.cpp",
@@ -71,6 +73,19 @@ def validate_source_contract(texts: dict[str, str]) -> None:
             "    + 1\n#endif",
             "#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)\n"
             "    ck3_11906::kH2743ExistingTruceV1Capability,\n#endif",
+        ),
+        "src/game_adapter.cpp": (
+            "#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)\n"
+            "  } else if (capability.empty() &&\n"
+            "             step == ck3_11906::kH2743ExistingTruceV1Step) {\n"
+            "    capability = ck3_11906::kH2743ExistingTruceV1Capability;\n"
+            "#endif",
+        ),
+        "src/game_adapter_test.cpp": (
+            "!exact_adapter->supports_step(\n"
+            "          xar::ck3_11906::kH2743ExistingTruceV1Step)",
+            "default-off H2743 read-only step was advertised",
+            "partial.supports_step(xar::ck3_11906::kH2743ExistingTruceV1Step)",
         ),
         "src/bridge.cpp": (
             "expected_checkpoint_sha256",

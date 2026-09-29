@@ -566,6 +566,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, "query-defender-de-jure-exit-terms-v1-")) {
     capability = "game.command.query-defender-de-jure-exit-terms-v1-N";
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  } else if (capability.empty() &&
+             step == ck3_11906::kH2743ExistingTruceV1Step) {
+    capability = ck3_11906::kH2743ExistingTruceV1Capability;
+#endif
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix)) {
     capability = ck3_11906::kRaiktorActualTruceExpiryV1Capability;

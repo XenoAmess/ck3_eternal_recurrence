@@ -752,6 +752,23 @@ int main() {
     return Fail("unverified selected-bookmark StartGame was advertised");
   }
 #endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  if (!exact_adapter->supports(
+          xar::ck3_11906::kH2743ExistingTruceV1Capability) ||
+      !exact_adapter->supports_step(
+          xar::ck3_11906::kH2743ExistingTruceV1Step) ||
+      exact_adapter->supports_step(
+          "query-h2743-preaction-existing-truce-v1-16777231")) {
+    return Fail("H2743 exact read-only step was not bound to its capability");
+  }
+#else
+  if (exact_adapter->supports(
+          "game.command.query-h2743-preaction-existing-truce-v1") ||
+      exact_adapter->supports_step(
+          "query-h2743-preaction-existing-truce-v1")) {
+    return Fail("default-off H2743 read-only step was advertised");
+  }
+#endif
   for (const auto invalid : invalid_combat_steps) {
     if (exact_adapter->supports_step(invalid)) {
       return Fail("exact adapter advertised a malformed combat query step");
@@ -759,6 +776,11 @@ int main() {
   }
 
   StubAdapter partial(kFutureDescriptor, true);
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  if (partial.supports_step(xar::ck3_11906::kH2743ExistingTruceV1Step)) {
+    return Fail("H2743 read-only step leaked to an adapter without capability");
+  }
+#endif
   std::vector<xar::game::DeclarableWarSnapshot> target_declarations;
   if (xar::game::ReadDeclarableWarsForTarget(
           partial, 29097, target_declarations) !=
