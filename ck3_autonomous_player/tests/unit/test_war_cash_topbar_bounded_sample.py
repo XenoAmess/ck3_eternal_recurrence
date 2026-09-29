@@ -167,6 +167,12 @@ class BoundedTopbarSampleTests(unittest.TestCase):
             "row_array_pointer_class": "zero",
             "row_capacity_candidate": 0,
             "row_count_candidate": 0,
+            "expense_object_address_candidate": "0x400ad8",
+            "value_breakdown_back_pointer_candidate": "0x400ad8",
+            "back_pointer_matches_expense_object_candidate": True,
+            "expense_total_signed_raw_candidate": -2_500_000,
+            "expense_total_scale_candidate": 100_000,
+            "total_scale_matches_q100000_candidate": True,
             "formal_cash_eligible": False,
         })
         self.assertIsNone(first["render_epoch"])
@@ -191,6 +197,37 @@ class BoundedTopbarSampleTests(unittest.TestCase):
                          ["row_array_pointer_class"], "unaligned")
         self.assertIsNone(sample["expense_layout"])
         self.assertEqual(process.row_reads, 0)
+        self.assertFalse(sample["formal_cash_eligible"])
+
+    def test_wrong_object_back_pointer_stays_diagnostic_and_red(self) -> None:
+        process = FakeReadOnlyProcess()
+        topbar = bytearray(process.blocks[0x400000])
+        struct.pack_into("<Q", topbar, 0xB68, 0x500AD8)
+        process.blocks[0x400000] = bytes(topbar)
+        sample = sample_bounded_topbar_twice(process)
+        header = sample["first"]["expense_header_diagnostic"]
+        self.assertEqual(header["row_array_pointer_class"],
+                         "aligned_user_address_candidate")
+        self.assertEqual(header["value_breakdown_back_pointer_candidate"],
+                         "0x500ad8")
+        self.assertFalse(header["back_pointer_matches_expense_object_candidate"])
+        self.assertEqual(process.row_reads, 2)
+        self.assertIsNone(sample["first"]["expense_layout"])
+        self.assertEqual(sample["status"],
+                         "RED_owner_or_expense_bytes_changed_or_unavailable")
+        self.assertFalse(sample["formal_cash_eligible"])
+
+    def test_wrong_total_scale_cannot_become_expense_evidence(self) -> None:
+        process = FakeReadOnlyProcess()
+        topbar = bytearray(process.blocks[0x400000])
+        struct.pack_into("<Q", topbar, 0xB58, 1)
+        process.blocks[0x400000] = bytes(topbar)
+        sample = sample_bounded_topbar_twice(process)
+        header = sample["first"]["expense_header_diagnostic"]
+        self.assertEqual(header["expense_total_scale_candidate"], 1)
+        self.assertFalse(header["total_scale_matches_q100000_candidate"])
+        self.assertIsNone(sample["first"]["expense_layout"])
+        self.assertFalse(sample["same_expense_rows"])
         self.assertFalse(sample["formal_cash_eligible"])
 
     def test_player_switch_during_or_between_passes_fails_closed(self) -> None:

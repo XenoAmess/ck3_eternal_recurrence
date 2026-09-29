@@ -108,6 +108,13 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
     row_array_candidate = struct.unpack_from("<Q", topbar_bytes, 0xAD8)[0]
     row_capacity_candidate, row_count_candidate = struct.unpack_from(
         "<II", topbar_bytes, 0xAE0)
+    expense_object_address = topbar + 0xAD8
+    expense_back_pointer_candidate = struct.unpack_from(
+        "<Q", topbar_bytes, 0xB68)[0]
+    expense_total_signed_raw_candidate = struct.unpack_from(
+        "<q", topbar_bytes, 0xB50)[0]
+    expense_total_scale_candidate = struct.unpack_from(
+        "<Q", topbar_bytes, 0xB58)[0]
     result["expense_header_diagnostic"] = {
         "row_array_address_candidate": hex(row_array_candidate),
         "row_array_pointer_class": (
@@ -119,6 +126,15 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         ),
         "row_capacity_candidate": row_capacity_candidate,
         "row_count_candidate": row_count_candidate,
+        "expense_object_address_candidate": hex(expense_object_address),
+        "value_breakdown_back_pointer_candidate": hex(
+            expense_back_pointer_candidate),
+        "back_pointer_matches_expense_object_candidate": (
+            expense_back_pointer_candidate == expense_object_address),
+        "expense_total_signed_raw_candidate": expense_total_signed_raw_candidate,
+        "expense_total_scale_candidate": expense_total_scale_candidate,
+        "total_scale_matches_q100000_candidate": (
+            expense_total_scale_candidate == 100_000),
         "formal_cash_eligible": False,
     }
     try:
