@@ -348,6 +348,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1
+  "Admit unadvertised paused actor role read for one exact public ArmyID"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1
   "Admit exact-build paused faith co-defender preview for one final-legal minor religious war"
   OFF
@@ -1277,6 +1283,12 @@ if(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/actor_army_role_private_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE

@@ -73,6 +73,34 @@ an independent query; it does not change H3937 phase-0 or the R0271 date gate.
    advance or changed war policy. Return typed `unavailable_stage` for failed
    identities, unsupported game versions, stale frames and missing bindings.
 
+## Implemented private candidate
+
+The implementation lives behind the CMake option
+`XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1=ON`; the default is `OFF`.
+It adds no public capability and uses the paused application-main query
+mailbox. Its native step is
+`query-war-actor-army-role-v1-29829-83886367`. The Python entry point is
+`NativeCK3Driver.query_actor_army_role_private_v1` with explicit
+`allow_private_actor_army_role_query=True`, actor ID, public ArmyID and
+expected revision. The default Python flag is false and rejects before
+sending a command.
+
+The result contains `actor_army_role.status` (`available`, `partial` or
+`unavailable`), exact source revision/date and actor/public/native army IDs,
+public army state, typed commander and knight assignment for the requested
+army, and a reason for any missing domain. The global role field remains
+`unknown`, safe release is null, and date credit is false. A missing member in
+an incomplete regiment array is never reported as false. The Python transport
+requires the before/after paused snapshot binding and refuses extra or
+changed result fields. The C++ reader checks public/native ArmyID backlinks,
+owner/province, every regiment's army and knight reverse links, and a native
+commander-helper agreement. Its application-main collector reads only; it
+does not submit a role, army, war, activity or date action.
+
+The implementation is source-only until a separately scheduled native build
+and a future new paused game attempt produce exact DLL hashes and a typed live
+row. The completed R0368 report cannot be upgraded by this source change.
+
 The release decision is a later war-policy step. It needs the exact current
 assignment, a complete army and contact/siege state, a valid replacement plan,
 and a qualified nonwar benefit. R0271 remains RED, so this interface gives no
