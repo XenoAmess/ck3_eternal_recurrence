@@ -65,6 +65,8 @@ def _value(legal_row: dict[str, object]) -> dict[str, object]:
                     "requested_matrilineal_option": False,
                     "matrilineal_option_selected": False,
                     "effective_matrilineal_if_accepted": False,
+                    "heir_sex_selector_raw": 0,
+                    "candidate_sex_selector_raw": 1,
                     "predicted_outcome_if_accepted": "betrothal",
                     "grand_wedding_option_selected": False,
                     "heir_is_adult": False, "candidate_is_adult": age >= 16,
@@ -106,15 +108,32 @@ class GuyDefaultMarriagePolicyTests(unittest.TestCase):
 
     def test_missing_split_proof_or_native_fertility_cannot_authorize(self) -> None:
         legality = _legality()
-        value = _value(legality["native_legal_candidates"][0])
+        values = [_value(row) for row in legality["native_legal_candidates"]]
         self.assertEqual(choose_specified_child_default_value(
-            legality, [value], split_successor_verified=False)["status"],
+            legality, values, split_successor_verified=False)["status"],
             "no_positive_value")
-        lost = copy.deepcopy(value)
+        lost = copy.deepcopy(values[0])
         lost["row"]["candidate_native_fertility"]["native_gate_allows"] = False
+        values[0] = lost
         self.assertEqual(choose_specified_child_default_value(
-            legality, [lost], split_successor_verified=True)["status"],
+            legality, values, split_successor_verified=True)["selected_candidate_character_id"],
+            37571)
+
+    def test_both_top_values_and_selector_alignment_are_required(self) -> None:
+        legality = _legality()
+        first = _value(legality["native_legal_candidates"][0])
+        second = _value(legality["native_legal_candidates"][2])
+        self.assertEqual(choose_specified_child_default_value(
+            legality, [second], split_successor_verified=True)["reason"],
+            "incomplete_top_two_full_value_comparison")
+        self.assertEqual(choose_specified_child_default_value(
+            legality, [first], split_successor_verified=True)["status"],
             "no_positive_value")
+        wrong = copy.deepcopy(first)
+        wrong["row"]["heir_sex_selector_raw"] = 1
+        self.assertEqual(choose_specified_child_default_value(
+            legality, [wrong, second], split_successor_verified=True)[
+                "reason"], "incomplete_same_frame_full_value")
 
 
 if __name__ == "__main__":
