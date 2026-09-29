@@ -633,6 +633,17 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         if type(observed_income) is int:
             income_observed_date = pending.get(
                 "income_observed_date_raw", pending.get("post_date_raw"))
+    completion_last_check = starting["date_raw"]
+    previous_check = pending.get(
+        "completion_last_check_date_raw", pending.get("post_date_raw"))
+    if (cold_recheck and not completed
+            and pending.get("completion_status") != "completed"
+            and type(previous_check) is int
+            and previous_check <= starting["date_raw"]
+            < previous_check + COMPLETION_WATCH_INTERVAL_RAW):
+        # A new PID must verify the material slot immediately, but that
+        # recovery read must not restart the scheduled completion watch.
+        completion_last_check = previous_check
     receipt = {"status": "applied", "postcondition_verified": True,
                "completion_status": "completed" if completed else "in_progress",
                "construction_progress_observation": progress_observation,
@@ -642,7 +653,7 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                    post_province_raw - pre_province_raw if completed
                    and type(post_province_raw) is int
                    and type(pre_province_raw) is int else None),
-               "completion_last_check_date_raw": starting["date_raw"],
+               "completion_last_check_date_raw": completion_last_check,
                "completion_observed_date_raw": (
                    starting["date_raw"] if completed else None),
                "pre_player_monthly_gold_income_raw": pre_income,

@@ -2,6 +2,36 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-29 NW-ECON: preserve the completion-watch deadline across cold restores
+
+R0369 followed the H90-derived `hill_farms_01` start for 48 formal turns, from
+raw `53155704` to `53155968`. Its [formal report](Z:/ck3_mod_rewrite_process_assets/nw-econ-r0358-continuation-a2ff7f1-20260929/run-watch-48/formal-report.txt)
+has SHA-256 `1EB63CBC83406780462726E0E9CE31D56D7F58DA808592519DAEE930CD15B77C`.
+The building remained active; its native remaining work fell from `101611119`
+to `100500009`. Neither a completed slot nor realized building income was
+observed. These are 11 derived game days, not durable Robert mainline days.
+
+R0370 cold-restored the matched R0369 pair on a new PID. The mandatory first
+material recheck at raw `53155968` confirmed the same active slot. The live
+construction ledger then had `completion_last_check_date_raw=53155968`,
+although the prior material check was at raw `53155704`. That moved the next
+scheduled 30-day watch from `53156424` to `53156688`. Every bounded run shorter
+than 30 game days could repeat this shift, leaving a real completion unobserved
+indefinitely. This is a recovery cadence defect, not evidence that the war
+planner blocked a due read: the R0370 warm route had not yet reached its newly
+shifted deadline when the defect was identified.
+
+The formal receipt now keeps the prior watch timestamp when a new-PID cold
+material recheck still finds construction active *before* the 30-day deadline.
+It still records the new material snapshot and process identity. An actually
+due cold read, the first start receipt, and the same-PID monthly watch set the
+timestamp to their observed frame. A rollback to an older paused date also
+uses that restored frame rather than preserving a future timestamp. Focused
+fixture tests cover two successive early cold rechecks and the true due read;
+this source repair requires a matched new-PID live run before claiming the
+recovered deadline was honored in game. Completion, effect, and realized income
+remain open.
+
 ## 2026-09-29 R0351: formal M5 construction start and the remaining effect gap
 
 R0351 is an H90-derived Robert run, not durable Robert mainline time. Its
