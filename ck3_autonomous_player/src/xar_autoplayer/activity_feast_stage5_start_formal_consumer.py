@@ -238,8 +238,8 @@ def consume_feast_start_following_turn(state_dir: Path,
     if (not isinstance(actor, Mapping)
             or actor.get("character_id") != resolved.get("actor_character_id")
             or snapshot.get("paused") is not True
-            or (snapshot.get("native_revision", 0) <= resolved["post_native_revision"]
-                and snapshot.get("date_raw", 0) <= resolved["date_raw"])):
+            or type(snapshot.get("date_raw")) is not int
+            or snapshot["date_raw"] <= resolved["date_raw"]):
         return None
     resolved = {**resolved, "next_turn_consumed": True,
                 "following_native_revision": snapshot["native_revision"],

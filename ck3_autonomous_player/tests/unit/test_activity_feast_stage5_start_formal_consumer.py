@@ -159,6 +159,8 @@ class FeastStartConsumerTest(unittest.TestCase):
             self.assertIsNone(read_feast_start_ledger(driver.state_dir)["pending"])
             following = driver.take_snapshot()
             following["native_revision"] = 5
+            self.assertIsNone(consume_feast_start_following_turn(
+                driver.state_dir, following))
             following["date_raw"] += 1
             self.assertTrue(consume_feast_start_following_turn(
                 driver.state_dir, following)["next_turn_consumed"])

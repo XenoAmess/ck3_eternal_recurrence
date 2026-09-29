@@ -57,9 +57,10 @@ from .bridge.activity_feast_guest_rule_provenance_private_transport import (
 )
 from .activity_feast_stage5_start_formal_consumer import (
     LEDGER_FILE as PRIVATE_FEAST_START_LEDGER_FILE,
+    assess_feast_start_private_v1,
     consume_feast_start_following_turn,
-    consume_feast_start_private_v1,
 )
+from .activity_feast_stage5_budget_v1 import observe_feast_start_budget_v1
 from .bridge.pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
 )
@@ -7359,7 +7360,7 @@ def _read_private_activity_feast_stage5_start_once(
     *, service: GameplayBridgeService, before: dict[str, object],
     cost_observation: dict[str, object], turn_index: int,
 ) -> dict[str, object]:
-    """Consume same-frame native Start inputs and evaluate without guessed guests."""
+    """Assess native Start inputs with a same-frame peaceful budget."""
     step = _PRIVATE_ACTIVITY_STAGE5_START_INPUT_STEP
     pre = service.snapshot()
     if (cost_observation.get("same_frame") is not True
@@ -7396,17 +7397,26 @@ def _read_private_activity_feast_stage5_start_once(
             step_result={"step": step, "status": "red", "accepted": False,
                          "postcondition_verified": False, "inputs": inputs},
             selected_step=step)
-    # Guest arrival and budget commitment producers are still independent
-    # dependencies.  Their absence is a recorded hold, never an assumed zero.
-    decision = consume_feast_start_private_v1(driver, inputs=inputs)
+    budget_observation = observe_feast_start_budget_v1(
+        post, inputs, state_dir=driver.state_dir)
+    policy = assess_feast_start_private_v1(
+        inputs, guest=None,
+        budget=(budget_observation.get("budget")
+                if budget_observation["status"] == "observed" else None),
+    )
     return {
         "status": "stage_five_start_assessed", "turn_index": turn_index,
         "same_frame": True, "read_only": True,
         "source_frame": _public_binding(pre),
         "post_frame": _public_binding(post),
-        "inputs": inputs, "decision": decision.get("decision"),
-        "decision_status": decision.get("status"),
-        "decision_reason": decision.get("reason"),
+        "inputs": inputs,
+        "budget_observation": budget_observation,
+        "policy_assessment": policy,
+        "decision": "hold", "formal_action_ready": False,
+        "decision_status": policy.get("status"),
+        "decision_reason": ("formal_start_action_disabled_pending_pairing"
+                            if policy.get("decision") == "start"
+                            else policy.get("reason")),
         "postcondition_verified": False,
     }
 
