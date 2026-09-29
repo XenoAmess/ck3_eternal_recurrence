@@ -3096,6 +3096,35 @@ class G2PreviewOperatorTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "positive int32 province IDs"):
             g2_preview_operator.command_run(invalid)
 
+    def test_private_feast_stage2_destination_requires_same_frame_candidate(self) -> None:
+        base = dict(
+            common=["python", "agent.py"], turns=1, timeout=60,
+            readiness_timeout=30, private_faction_round_id_value=None,
+        )
+        flag = "--private-activity-feast-stage2-destination-province"
+        self.assertNotIn(flag, g2_preview_operator.native_auto_run_command(**base))
+        command = g2_preview_operator.native_auto_run_command(
+            **base, private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_provinces=(2619, 2629),
+            private_activity_feast_stage2_destination_province=2619,
+        )
+        self.assertEqual(command.count(flag), 1)
+        self.assertIn("2619", command)
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "output",
+            "--private-activity-feast-stage1-confirm",
+            "--private-activity-feast-stage2-location-province", "2619",
+            flag, "2619",
+        ])
+        self.assertEqual(parsed.private_activity_feast_stage2_destination_province,
+                         2619)
+        invalid = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "missing-manifest.json", "--output", "output",
+            "--private-activity-feast-stage1-confirm", flag, "2619",
+        ])
+        with self.assertRaisesRegex(ValueError, "queried positive int32 province ID"):
+            g2_preview_operator.command_run(invalid)
+
     def test_private_activity_cost_slot12_raw_read_is_explicit_and_forwarded(self) -> None:
         base = dict(
             common=["python", "agent.py"], turns=1, timeout=60,
