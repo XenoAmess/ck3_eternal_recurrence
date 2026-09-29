@@ -73,6 +73,53 @@ evaluate `IsShown` or `IsValid`. A private read must report all three values
 on the same paused frame before a stage-1 Confirm can be considered legal.
 The R0350 report contains none of those per-option results.
 
+## Stage 5 final legality getter (static ABI)
+
+The planner GUI's `CanProgressPlanningStage` wrapper at `0x10B4D20`
+calls `0x10B0DA0(planner, optional_failure_text)` at `0x10B4D34`.
+The evaluator's return `AL` is the boolean; the wrapper's own `AL=1`
+reports that it wrote a GUI result and must not be read as CanStart.
+The evaluator dispatches on `planner+0x1AB0`. Its stage-1 and stage-2
+branches test permission to advance planning, **not** permission to start.
+Only stage 5 reaches `0x10B1018`: `0x10B10E0` copies the planner's current
+configuration from `planner+0x1530`, `0x18E1160` clones it into a temporary
+`CStartActivityCommand`, and the call at `0x10B108F` invokes its virtual
+slot `+0x30` (`0x26C8070` → `0x219A8B0`). The returned validator boolean
+is copied to `AL` at `0x10B10A1`; the temporary objects are destroyed.
+This branch does not enqueue the command or advance the planning stage.
+The actual stage-5 `ProgressPlanningStage` path starts the activity and is
+not a read-only getter.
+
+The full command validator first uses `0x28CFB70` for character/type
+prerequisites, then checks further payload identity via `0x2CE2C80`
+against command `+0x10` and traverses the command list at `+0x4C8`.
+Those payload fields are not sufficiently identified to reconstruct a
+command from the stable `activity_feast` key. A future private getter should
+reuse the original planner's current configuration and the existing paused
+main-thread, fresh-planner owner, selected-feast, actor/date/revision checks.
+It may call `0x10B0DA0(planner, nullptr)` once **only when the same frame
+confirms stage 5**, then copy the returned boolean as final native legality.
+At any other stage or on a failed invocation, final CanStart remains typed
+`unknown`; an optional failure string is not decoded by this minimal path.
+
+```mermaid
+flowchart LR
+  A[Fresh selected feast planner] --> B{stage at +0x1AB0}
+  B -- 1 or 2 --> C[Planning-stage CanProgress only]
+  B -- 5 --> D[0x10B0DA0 copies current config]
+  D --> E[Temporary CStartActivityCommand]
+  E --> F[0x219A8B0 full validator boolean]
+  B -. other or unreadable .-> U[final CanStart unknown]
+  F -. configured cost and value still unknown .-> V[Activity start policy]
+```
+
+This is an exact-build call-chain result, not a live stage-5 observation.
+R0356 reached stage 1 only. A legal stage-1 Confirm and subsequent stage-2
+configuration/gate are still needed before a paired paused stage-5 getter
+can be tested. Final legality alone would not establish fresh configured
+cost, affordability, opportunity value, or resource commitments; those
+remain separate requirements before formally starting a feast.
+
 ## Private collector boundary
 
 `XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1` is default OFF.
