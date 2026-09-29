@@ -112,9 +112,14 @@ class _NativeAutoRunHarness:
         self.realm_law_paused_query_count = 0
         self.activity_planner_diag_query_count = 0
         self.activity_feast_open_count = 0
+        self.activity_stage1_option_read_count = 0
         self.activity_feast_open_status = "opened"
         self.activity_feast_open_stage = 2
         self.activity_feast_selected_verified = True
+        self.activity_stage1_option_shown = True
+        self.activity_stage1_option_valid = True
+        self.activity_stage1_option_can_progress = True
+        self.activity_stage1_option_error = False
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -1458,10 +1463,16 @@ class _FakeActivityFeastEndpoint:
         assert self.request is None
         assert request["type"] == "execute_step"
         assert request["protocol_version"] == 1
-        assert request["step"] == "open-activity-feast-planner-v1-private"
+        assert request["step"] in {
+            "open-activity-feast-planner-v1-private",
+            "query-activity-stage1-option-v1-private",
+        }
         assert request["expected_revision"] == self.harness.native_revision
         self.request = copy.deepcopy(request)
-        self.harness.activity_feast_open_count += 1
+        if request["step"] == "open-activity-feast-planner-v1-private":
+            self.harness.activity_feast_open_count += 1
+        else:
+            self.harness.activity_stage1_option_read_count += 1
 
 
 class _FakeActivityFeastState:
@@ -1475,6 +1486,42 @@ class _FakeActivityFeastState:
         assert self.harness.driver is not None
         request = self.harness.driver.endpoint.request
         assert request is not None and request["request_id"] == request_id
+        self.harness.driver.endpoint.request = None
+        if request["step"] == "query-activity-stage1-option-v1-private":
+            if self.harness.activity_stage1_option_error:
+                return {
+                    "type": "command_result", "protocol_version": 1,
+                    "request_id": request_id, "ok": False,
+                    "error": "native_activity_stage1_option_red:option_unavailable",
+                }
+            shown = self.harness.activity_stage1_option_shown
+            valid = self.harness.activity_stage1_option_valid
+            progress = self.harness.activity_stage1_option_can_progress
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {
+                    "step": request["step"], "accepted": True,
+                    "status": "available", "private_build": True,
+                    "read_only": True, "advertised": False,
+                    "activity_stage1_option": {
+                        "schema": "activity-stage1-option-private-read-v1",
+                        "snapshot_revision": self.harness.native_revision,
+                        "date_raw": self.harness.date_raw,
+                        "actor_character_id": self.harness.played_character_id,
+                        "activity_key": "activity_feast",
+                        "planning_stage": 1,
+                        "selected_option_key": "feast_type_generic",
+                        "selected_option_shown": shown,
+                        "selected_option_valid": valid,
+                        "can_progress_stage1": progress,
+                        "generic_feast_confirm_ready": shown and valid and progress,
+                        "read_only": True,
+                        "raw_pointer_fields_persisted": False,
+                    },
+                    "backend_id": "native-headless",
+                },
+            }
         status = self.harness.activity_feast_open_status
         opened = status in {"opened", "already_open"}
         native = {
@@ -1955,9 +2002,14 @@ class NativeAutoRunTests(unittest.TestCase):
         private_realm_law_paused_query: bool = False,
         private_activity_planner_diag_query: bool = False,
         private_activity_feast_planner_open: bool = False,
+        private_activity_feast_stage1_option_read: bool = False,
         activity_feast_open_status: str = "opened",
         activity_feast_open_stage: int = 2,
         activity_feast_selected_verified: bool = True,
+        activity_stage1_option_shown: bool = True,
+        activity_stage1_option_valid: bool = True,
+        activity_stage1_option_can_progress: bool = True,
+        activity_stage1_option_error: bool = False,
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
@@ -2051,6 +2103,10 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_feast_open_status = activity_feast_open_status
         harness.activity_feast_open_stage = activity_feast_open_stage
         harness.activity_feast_selected_verified = activity_feast_selected_verified
+        harness.activity_stage1_option_shown = activity_stage1_option_shown
+        harness.activity_stage1_option_valid = activity_stage1_option_valid
+        harness.activity_stage1_option_can_progress = activity_stage1_option_can_progress
+        harness.activity_stage1_option_error = activity_stage1_option_error
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
         )
@@ -2177,6 +2233,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_activity_feast_planner_open=(
                     private_activity_feast_planner_open
+                ),
+                private_activity_feast_stage1_option_read=(
+                    private_activity_feast_stage1_option_read
                 ),
             )
         return report, harness
@@ -2485,6 +2544,68 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertEqual(harness.activity_feast_open_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_stage1_option_reads_after_open_without_gameplay(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "1"]
+        flag = "--private-activity-feast-stage1-option-read"
+        self.assertFalse(cli.parser().parse_args(common).private_activity_feast_stage1_option_read)
+        self.assertTrue(cli.parser().parse_args([*common, flag]).private_activity_feast_stage1_option_read)
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_option_read=True,
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "private_activity_feast_stage1_option_observed")
+        self.assertEqual(report["outcome"], "read_only_observed")
+        self.assertTrue(report["private_activity_feast_planner_open_observation"]["gui_open"])
+        observed = report["private_activity_feast_stage1_option_observation"]
+        self.assertTrue(observed["same_frame"])
+        self.assertTrue(observed["read_only"])
+        self.assertEqual(observed["selected_option"]["selected_option_key"],
+                         "feast_type_generic")
+        self.assertIs(observed["selected_option"]["generic_feast_confirm_ready"], True)
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.activity_stage1_option_read_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+        self.assertEqual(observed["source_frame"]["date_raw"],
+                         observed["post_frame"]["date_raw"])
+
+    def test_private_feast_stage1_negative_predicate_is_observed(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_option_read=True,
+            activity_feast_open_stage=1,
+            activity_stage1_option_valid=False,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        native = report["private_activity_feast_stage1_option_observation"]["selected_option"]
+        self.assertIs(native["selected_option_valid"], False)
+        self.assertIs(native["generic_feast_confirm_ready"], False)
+        self.assertEqual(harness.activity_stage1_option_read_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_stage1_read_red_preserves_native_error(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_option_read=True,
+            activity_feast_open_stage=1, activity_stage1_option_error=True,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIn("option_unavailable", report["error"])
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.activity_stage1_option_read_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_stage1_read_requires_stage_one_open(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_option_read=True,
+            activity_feast_open_stage=2,
+        )
+        self.assertFalse(report["ok"])
+        self.assertIn("requires the opened paused frame", report["error"])
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.activity_stage1_option_read_count, 0)
 
     def test_private_child_pending_read_stops_before_planner_without_submit(self) -> None:
         common = ["--bridge-mode", "native-headless", "native-auto-run",
