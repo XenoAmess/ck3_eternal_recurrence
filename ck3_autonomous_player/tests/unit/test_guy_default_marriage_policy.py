@@ -136,5 +136,20 @@ class GuyDefaultMarriagePolicyTests(unittest.TestCase):
                 "reason"], "incomplete_same_frame_full_value")
 
 
+    def test_refused_top_candidate_uses_other_fully_valued_candidate(self) -> None:
+        legality = _legality()
+        values = [_value(legality["native_legal_candidates"][index])
+                  for index in (0, 2)]
+        decision = choose_specified_child_default_value(
+            legality, values, split_successor_verified=True,
+            rejected_candidate_ids=frozenset({37909}))
+        self.assertEqual(decision["selected_candidate_character_id"], 37571)
+        exhausted = choose_specified_child_default_value(
+            legality, values, split_successor_verified=True,
+            rejected_candidate_ids=frozenset({37909, 37571}))
+        self.assertEqual(exhausted["status"], "no_positive_value")
+        self.assertIsNone(exhausted["selected_candidate_character_id"])
+
+
 if __name__ == "__main__":
     unittest.main()

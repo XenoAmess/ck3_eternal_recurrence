@@ -108,9 +108,9 @@ class Driver:
     def query_player_child_marriage_subject_private_v1(
         self, *, expected_native_revision: int, subject_character_id: int,
     ) -> dict[str, object]:
-        assert expected_native_revision == 3
+        assert expected_native_revision == self.frame["native_revision"]
         assert subject_character_id == 38988
-        return _legality()
+        return {**_legality(), "native_revision": expected_native_revision}
 
     def query_player_child_marriage_value_private_v1(
         self, *, legality: dict[str, object],
@@ -119,7 +119,8 @@ class Driver:
         assert legality["subject_character_id"] == 38988
         assert request_matrilineal_option is False
         self.queried_values.append(candidate_character_id)
-        return _value(candidate_character_id)
+        return {**_value(candidate_character_id),
+                "native_revision": self.frame["native_revision"]}
 
     def submit_player_child_default_private_v1(
         self, *, legality: dict[str, object], value: dict[str, object],
@@ -129,7 +130,7 @@ class Driver:
         return {
             "schema": consumer.ACTION_SCHEMA,
             "status": "receipt_pending", "material_result": False,
-            "pre_native_revision": 3,
+            "pre_native_revision": self.frame["native_revision"],
             "played_character_id": 29829, "heir_character_id": 38988,
             "candidate_character_id": value["candidate_character_id"],
             "recipient_character_id": row["recipient_character_id"],
@@ -165,9 +166,12 @@ class Driver:
 
 
 def _policy(_legality: object, values: object, *,
-            split_successor_verified: bool) -> dict[str, object]:
+            split_successor_verified: bool,
+            rejected_candidate_ids: frozenset[int] = frozenset()
+            ) -> dict[str, object]:
     ids = [row["candidate_character_id"] for row in values]
-    if split_successor_verified and ids == [37909, 37571]:
+    if (split_successor_verified and ids == [37909, 37571]
+            and not rejected_candidate_ids):
         return {"status": "selected",
                 "selected_candidate_character_id": 37909,
                 "evaluated": [{"candidate_character_id": value}
@@ -443,6 +447,146 @@ class ChildDefaultFormalTest(unittest.TestCase):
                 self.assertEqual(finished["plan"]["selected_step"],
                                  "life-advance")
                 self.assertEqual(driver.submissions, 0)
+
+
+    def test_warm_refusal_reconsiders_only_remaining_compared_candidate(self) -> None:
+        with tempfile.TemporaryDirectory(
+            dir=os.environ.get("XAR_TEST_TEMP_ROOT")
+        ) as folder:
+            driver = Driver(Path(folder))
+            driver.frame = _frame(native_revision=4)
+            rejected = {
+                "status": "refused", "material_result": False,
+                "episode_run_id": driver.frame["episode_run_id"],
+                "heir_character_id": 38988,
+                "candidate_character_id": 37909,
+                "recipient_character_id": 34332,
+                "post_bridge_pid": 100,
+                "post_bridge_creation_date": "same-pid",
+                "source_pending": {
+                    "played_character_id": 29829,
+                    "heir_character_id": 38988,
+                    "candidate_character_id": 37909,
+                    "recipient_character_id": 34332,
+                    "episode_run_id": driver.frame["episode_run_id"],
+                },
+            }
+            consumer._write(driver.state_dir, {
+                "schema": consumer.LEDGER_SCHEMA,
+                "pending": None, "resolved": rejected,
+            })
+            planned = {"plan": {"selected_step": "life-advance"}}
+
+            def choose_remaining(_legality: object, values: object, *,
+                                 split_successor_verified: bool,
+                                 rejected_candidate_ids: frozenset[int] = frozenset()
+                                 ) -> dict[str, object]:
+                ids = [row["candidate_character_id"] for row in values]
+                if (split_successor_verified
+                        and ids == [37909, 37571]
+                        and rejected_candidate_ids == frozenset({37909})):
+                    return {"status": "selected",
+                            "selected_candidate_character_id": 37571,
+                            "evaluated": [{"candidate_character_id": 37571}],
+                            "reason": "bounded_positive"}
+                return {"status": "no_positive_value",
+                        "selected_candidate_character_id": None,
+                        "evaluated": [], "reason": "not_remaining"}
+
+            with (
+                patch.object(consumer, "bridge_process_identity",
+                             return_value=(100, "same-pid")),
+                patch.object(consumer,
+                             "shortlist_specified_child_default_candidates",
+                             return_value=[37909, 37571]),
+                patch.object(consumer, "choose_specified_child_default_value",
+                             side_effect=choose_remaining),
+            ):
+                choice = consumer.plan_child_default_private(
+                    driver, planned, driver.frame)["plan"]
+                self.assertEqual(choice["selected_step"], consumer.SUBMIT_STEP)
+                self.assertEqual(choice["child_default_value"]["candidate_character_id"],
+                                 37571)
+                self.assertEqual(driver.queried_values, [37909, 37571])
+                pending = consumer.submit_child_default_private(
+                    driver, plan=choice, snapshot=driver.frame)
+                self.assertEqual(pending["candidate_character_id"], 37571)
+                self.assertEqual(pending["prior_rejected_candidate_ids"],
+                                 [37909])
+                self.assertEqual(driver.queried_values,
+                                 [37909, 37571, 37909, 37571, 37571])
+                waiting = consumer.plan_child_default_private(
+                    driver, planned, driver.frame)["plan"]
+                self.assertEqual(waiting["selected_step"], "life-advance")
+                driver.frame = _frame(native_revision=5)
+                driver.result_status = "refused"
+                read_plan = consumer.plan_child_default_private(
+                    driver, planned, driver.frame)["plan"]
+                self.assertEqual(read_plan["selected_step"], consumer.RESULT_STEP)
+                consumer.query_child_default_result_private(
+                    driver, pending=read_plan["child_default_pending"], cold=False)
+            resolved = consumer.read_child_default_ledger(driver.state_dir)["resolved"]
+            self.assertEqual(resolved["rejected_candidate_ids"], [37571, 37909])
+            self.assertEqual(driver.submissions, 1)
+
+    def test_cold_restored_refusal_reconsiders_without_rejected_resend(self) -> None:
+        with tempfile.TemporaryDirectory(
+            dir=os.environ.get("XAR_TEST_TEMP_ROOT")
+        ) as folder:
+            driver = Driver(Path(folder))
+            driver.frame = _frame(native_revision=4)
+            rejected = {
+                "status": "refused", "material_result": False,
+                "episode_run_id": driver.frame["episode_run_id"],
+                "heir_character_id": 38988,
+                "candidate_character_id": 37909,
+                "recipient_character_id": 34332,
+                "post_bridge_pid": 100,
+                "post_bridge_creation_date": "old-pid",
+                "source_pending": {
+                    "played_character_id": 29829,
+                    "heir_character_id": 38988,
+                    "candidate_character_id": 37909,
+                    "recipient_character_id": 34332,
+                    "episode_run_id": driver.frame["episode_run_id"],
+                },
+            }
+            consumer._write(driver.state_dir, {
+                "schema": consumer.LEDGER_SCHEMA,
+                "pending": None, "resolved": rejected,
+            })
+            def choose_remaining(_legality: object, values: object, *,
+                                 split_successor_verified: bool,
+                                 rejected_candidate_ids: frozenset[int] = frozenset()
+                                 ) -> dict[str, object]:
+                ids = [row["candidate_character_id"] for row in values]
+                if (split_successor_verified and ids == [37909, 37571]
+                        and rejected_candidate_ids == frozenset({37909})):
+                    return {"status": "selected",
+                            "selected_candidate_character_id": 37571,
+                            "evaluated": [{"candidate_character_id": value}
+                                          for value in ids],
+                            "reason": "bounded_positive"}
+                return {"status": "no_positive_value",
+                        "selected_candidate_character_id": None,
+                        "evaluated": [], "reason": "not_remaining"}
+            with (
+                patch.object(consumer, "bridge_process_identity",
+                             return_value=(200, "restored-pid")),
+                patch.object(consumer,
+                             "shortlist_specified_child_default_candidates",
+                             return_value=[37909, 37571]),
+                patch.object(consumer, "choose_specified_child_default_value",
+                             side_effect=choose_remaining),
+            ):
+                choice = consumer.plan_child_default_private(
+                    driver, {"plan": {"selected_step": "life-advance"}},
+                    driver.frame)["plan"]
+            self.assertEqual(choice["selected_step"], consumer.SUBMIT_STEP)
+            self.assertEqual(choice["child_default_value"]["candidate_character_id"],
+                             37571)
+            self.assertEqual(driver.queried_values, [37909, 37571])
+            self.assertEqual(driver.submissions, 0)
 
 
 if __name__ == "__main__":

@@ -192,6 +192,7 @@ def _reason(legality: Mapping[str, object], value: Mapping[str, object],
 def choose_specified_child_default_value(
     legality: Mapping[str, object], values: Sequence[Mapping[str, object]], *,
     split_successor_verified: bool,
+    rejected_candidate_ids: frozenset[int] = frozenset(),
 ) -> dict[str, object]:
     """Choose a same-frame native value; caller retains and submits its object.
 
@@ -260,6 +261,8 @@ def choose_specified_child_default_value(
         return {"status": "no_positive_value", "selected_candidate_character_id": None,
                 "evaluated": evaluated, "reason": "incomplete_same_frame_full_value"}
     for candidate_id in shortlist:
+        if candidate_id in rejected_candidate_ids:
+            continue
         if reasons[candidate_id] == "positive_early_split_successor_betrothal":
             return {"status": "selected",
                     "selected_candidate_character_id": candidate_id,
