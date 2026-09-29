@@ -96,6 +96,8 @@ def _exact_prepared_rebind(
     expectations = receipt.get("no_launch_preflight_expectations")
     post = receipt.get("post_rebind_validation")
     environment = receipt.get("environment")
+    safety = receipt.get("safety_contract")
+    inventory = receipt.get("process_inventory")
     source_save = save.get("source") if isinstance(save, dict) else None
     target_save = save.get("target") if isinstance(save, dict) else None
     post_checkpoint = post.get("checkpoint") if isinstance(post, dict) else None
@@ -106,6 +108,13 @@ def _exact_prepared_rebind(
         and receipt.get("ok") is True
         and receipt.get("status") == "rebound"
         and receipt.get("ck3_launch_attempted") is False
+        and receipt.get("desktop_interaction") is False
+        and isinstance(inventory, dict)
+        and inventory.get("processes") == []
+        and isinstance(safety, dict)
+        and safety.get("zero_running_ck3_processes") is True
+        and safety.get("target_profile_verified") is True
+        and safety.get("canonical_paths_only") is True
         and receipt.get("pipe_name") == pipe_name
         and _same_absolute_path(receipt.get("state_dir"), state_dir)
         and not _same_absolute_path(
