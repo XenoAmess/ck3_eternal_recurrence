@@ -13,7 +13,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.activity_feast_stage5_start_formal_consumer import (
     assess_feast_start_private_v1, consume_feast_start_private_v1,
-    read_feast_start_ledger, reconcile_feast_start_private_v1,
+    consume_feast_start_following_turn, read_feast_start_ledger,
+    reconcile_feast_start_private_v1,
 )
 from xar_autoplayer.bridge.activity_feast_stage5_start_private_transport import (
     INPUT_SCHEMA, POST_SCHEMA, START_STEP,
@@ -156,6 +157,13 @@ class FeastStartConsumerTest(unittest.TestCase):
                              [START_STEP, "query-activity-feast-hosted-post-v1-private"])
             self.assertEqual(driver.sent[0]["reserve_gold_raw"], 20_000_000)
             self.assertIsNone(read_feast_start_ledger(driver.state_dir)["pending"])
+            following = driver.take_snapshot()
+            following["native_revision"] = 5
+            following["date_raw"] += 1
+            self.assertTrue(consume_feast_start_following_turn(
+                driver.state_dir, following)["next_turn_consumed"])
+            self.assertIsNone(consume_feast_start_following_turn(
+                driver.state_dir, following))
 
     def test_timeout_or_ambiguous_post_never_retries_start(self) -> None:
         with TemporaryDirectory() as temp:

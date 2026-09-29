@@ -39,7 +39,11 @@ from .bridge.activity_feast_stage5_start_private_transport import (
     INPUT_STEP as _PRIVATE_ACTIVITY_STAGE5_START_INPUT_STEP,
     query_activity_feast_stage5_start_inputs_private_v1,
 )
-from .activity_feast_stage5_start_formal_consumer import consume_feast_start_private_v1
+from .activity_feast_stage5_start_formal_consumer import (
+    LEDGER_FILE as PRIVATE_FEAST_START_LEDGER_FILE,
+    consume_feast_start_following_turn,
+    consume_feast_start_private_v1,
+)
 from .bridge.pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
 )
@@ -762,6 +766,7 @@ def native_auto_run(
     private_activity_feast_stage2_destination_observation: dict[str, object] | None = None
     private_activity_feast_stage5_full_cost_observation: dict[str, object] | None = None
     private_activity_feast_stage5_start_observation: dict[str, object] | None = None
+    private_activity_feast_stage5_start_following_turn: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -2799,6 +2804,11 @@ def native_auto_run(
                 private_active_scheme_sway_following_turn = (
                     consume_sway_following_turn(spec.state_dir, after)
                 )
+            if (turn_class == "gameplay" and evidence
+                    and (spec.state_dir / PRIVATE_FEAST_START_LEDGER_FILE).exists()):
+                private_activity_feast_stage5_start_following_turn = (
+                    consume_feast_start_following_turn(spec.state_dir, after)
+                )
             if exact_move_poststate is not None:
                 status = "exact_war_move_poststate_verified"
                 break
@@ -3817,6 +3827,11 @@ def native_auto_run(
             {"private_activity_feast_stage5_start_observation": copy.deepcopy(
                 private_activity_feast_stage5_start_observation)}
             if private_activity_feast_stage5_start_read is True else {}
+        ),
+        **(
+            {"private_activity_feast_stage5_start_following_turn": copy.deepcopy(
+                private_activity_feast_stage5_start_following_turn)}
+            if private_activity_feast_stage5_start_following_turn is not None else {}
         ),
         **(
             {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
