@@ -98,6 +98,12 @@ from .player_child_matrilineal_formal_consumer import (
     SUBMIT_STEP as PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
     read_child_matrilineal_ledger,
 )
+from .player_child_default_formal_consumer import (
+    ALLIANCE_RESULT_STEP as PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP,
+    RESULT_STEP as PRIVATE_CHILD_DEFAULT_RESULT_STEP,
+    SUBMIT_STEP as PRIVATE_CHILD_DEFAULT_SUBMIT_STEP,
+    read_child_default_ledger,
+)
 from .prisoner_ransom_formal_consumer import (
     SUBMIT_STEP as PRIVATE_PRISONER_RANSOM_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
@@ -420,6 +426,7 @@ def native_auto_run(
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     allow_private_construction_formal_trial: bool = False,
     allow_private_family_marriage_formal_trial: bool = False,
+    allow_private_guy_default_formal_trial: bool = False,
     private_child_matrilineal_target: tuple[int, int] | None = None,
     private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
     private_child_matrilineal_first_heir_companion: bool = False,
@@ -527,6 +534,8 @@ def native_auto_run(
         raise AgentError("private construction trial only admits a bounded contract")
     if allow_private_family_marriage_formal_trial is True and completion_contract != "bounded":
         raise AgentError("private first-heir marriage trial only admits a bounded contract")
+    if allow_private_guy_default_formal_trial is True and completion_contract != "bounded":
+        raise AgentError("private child default trial only admits a bounded contract")
     if private_child_matrilineal_target is not None:
         if (completion_contract != "bounded"
                 or not isinstance(private_child_matrilineal_target, tuple)
@@ -1028,7 +1037,8 @@ def native_auto_run(
         private_child_driver_options = (
             {"allow_private_player_child_marriage_subject_query": True}
             if (private_child_matrilineal_target is not None
-                or private_child_matrilineal_pending_read_target is not None) else {}
+                or private_child_matrilineal_pending_read_target is not None
+                or allow_private_guy_default_formal_trial is True) else {}
         )
         private_epidemic_driver_options = (
             {"allow_private_epidemic_recovery_query": True}
@@ -1126,6 +1136,12 @@ def native_auto_run(
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
             or private_child_matrilineal_pending_read_target is not None
+        )
+        driver.allow_private_guy_default_formal_trial = (
+            allow_private_guy_default_formal_trial is True
+        )
+        driver.allow_private_player_child_default_action = (
+            allow_private_guy_default_formal_trial is True
         )
         driver.child_matrilineal_target_v1 = private_child_matrilineal_target
         # Reuse the same bounded family opt-in for the exact current-heir read.
@@ -2586,7 +2602,8 @@ def native_auto_run(
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
             if step in {PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
-                        PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP}:
+                        PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
+                        PRIVATE_CHILD_DEFAULT_SUBMIT_STEP}:
                 if terminal_pending or modal_decision_pending:
                     raise AgentError("pending first-heir marriage cannot be checkpointed on a decision frame")
                 checkpoint, checkpoint_snapshot = _materialize_checkpoint(
@@ -2597,22 +2614,30 @@ def native_auto_run(
                     poll_interval_seconds=poll_seconds,
                     on_checkpoint_submit=mark_checkpoint_submit_started,
                 )
-                child_proposal = step == PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
+                child_proposal = step in {
+                    PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
+                    PRIVATE_CHILD_DEFAULT_SUBMIT_STEP}
                 pending_fence = _verify_pending_family_marriage_checkpoint(
                     checkpoint, snapshot=checkpoint_snapshot,
                     submitted_result=outcome.get("result"),
-                    ledger=(read_child_matrilineal_ledger(driver.state_dir)
+                    ledger=(read_child_default_ledger(driver.state_dir)
+                            if step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP else
+                            read_child_matrilineal_ledger(driver.state_dir)
                             if child_proposal else
                             read_family_marriage_ledger(driver.state_dir)),
                     expected_step=step,
                 )
                 counts["checkpoint"] += 1
                 checkpoints.append({"turn_index": turn_index,
-                                    "phase": ("player_child_matrilineal_submitted_pending"
+                                    "phase": ("player_child_default_submitted_pending"
+                                              if step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP else
+                                              "player_child_matrilineal_submitted_pending"
                                               if child_proposal else
                                               "first_heir_marriage_submitted_pending"),
                                     "pending_action": pending_fence, **checkpoint})
-                evidence.append("child_matrilineal_pending_checkpoint_saved"
+                evidence.append("child_default_pending_checkpoint_saved"
+                                if step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP else
+                                "child_matrilineal_pending_checkpoint_saved"
                                 if child_proposal else
                                 "first_heir_marriage_pending_checkpoint_saved")
                 after_snapshot = checkpoint_snapshot
@@ -2947,6 +2972,7 @@ def native_auto_run(
                 and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
                 and step != PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP
                 and step != PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
+                and step != PRIVATE_CHILD_DEFAULT_SUBMIT_STEP
                 and step != PRIVATE_PRISONER_RANSOM_SUBMIT_STEP
                 and step != PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
             ):
@@ -3065,6 +3091,65 @@ def native_auto_run(
                 raise AgentError(
                     "read-only native query changed its paused semantic frame"
                 )
+            if step in {
+                PRIVATE_CHILD_DEFAULT_RESULT_STEP,
+                PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP,
+            }:
+                # These readbacks update the durable child ledger. Pair each
+                # ledger state with the unchanged game save before a cold PID.
+                child_ledger = read_child_default_ledger(driver.state_dir)
+                result = outcome.get("result")
+                source = (
+                    plan.get("child_default_pending")
+                    if step == PRIVATE_CHILD_DEFAULT_RESULT_STEP else
+                    plan.get("child_default_resolved")
+                ) if isinstance(plan, dict) else None
+                if (not isinstance(result, dict)
+                        or not isinstance(source, dict)
+                        or (step == PRIVATE_CHILD_DEFAULT_RESULT_STEP
+                            and not (
+                                isinstance(child_ledger.get("pending"), dict)
+                                and child_ledger["pending"].get("heir_character_id")
+                                    == source.get("heir_character_id")
+                                and child_ledger["pending"].get("candidate_character_id")
+                                    == source.get("candidate_character_id")
+                                or isinstance(child_ledger.get("resolved"), dict)
+                                and child_ledger["resolved"].get("source_pending")
+                                    == source))
+                        or (step == PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP
+                            and (not isinstance(child_ledger.get("resolved"), dict)
+                                 or child_ledger["resolved"].get(
+                                     "actual_alliance_result") != result))):
+                    raise AgentError("child default readback lacks paired durable identity")
+                if terminal_pending or modal_decision_pending:
+                    raise AgentError("child default readback cannot checkpoint on a decision frame")
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service, driver, spec.profile_dir / "save games",
+                    session_done=session_done, session_state=session_state,
+                    timeout_seconds=min(readiness_timeout,
+                                        max(0.001, run_deadline - time.monotonic())),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                if (checkpoint.get("date_raw") != before.get("date_raw")
+                        or checkpoint.get("episode_run_id") != before.get("episode_run_id")
+                        or read_child_default_ledger(driver.state_dir) != child_ledger):
+                    raise AgentError("child default readback checkpoint changed pair or date")
+                counts["checkpoint"] += 1
+                checkpoints.append({
+                    "turn_index": turn_index,
+                    "phase": ("player_child_default_result_" +
+                              str(result.get("status"))
+                              if step == PRIVATE_CHILD_DEFAULT_RESULT_STEP else
+                              "player_child_default_actual_alliance"),
+                    **checkpoint,
+                })
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
+                current_attempt["after"] = _public_binding(after)
+                turns[-1]["after"] = _public_binding(after)
+                turns[-1]["evidence"].append(
+                    "child_default_readback_checkpoint_saved")
             if (private_child_matrilineal_pending_recovery_only is True
                     and step == PRIVATE_CHILD_MATRILINEAL_RESULT_STEP):
                 # The result reader changes the durable sidecar even when the
@@ -3693,6 +3778,40 @@ def native_auto_run(
                 and "child_matrilineal_result_checkpoint_saved" in turn.get("evidence", [])
                 and visible_gameplay_turns == 0 and not date_advanced
                 and cleanup.get("ok") is True
+            )
+        if allow_private_guy_default_formal_trial is True:
+            # A paired action needs a following formal read. A recovery-only
+            # run may qualify as a bounded read, without claiming marriage.
+            default_turns = [
+                turn for turn in turns
+                if turn.get("selected_step") in {
+                    PRIVATE_CHILD_DEFAULT_SUBMIT_STEP,
+                    PRIVATE_CHILD_DEFAULT_RESULT_STEP,
+                    PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP}]
+            submit_turns = [
+                turn for turn in default_turns
+                if turn.get("selected_step") == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP]
+            following_reads = [
+                turn for turn in default_turns
+                if turn.get("selected_step") in {
+                    PRIVATE_CHILD_DEFAULT_RESULT_STEP,
+                    PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP}]
+            paired = all(
+                any(checkpoint.get("turn_index") == turn.get("index")
+                    and checkpoint.get("status") == "saved"
+                    for checkpoint in checkpoints)
+                for turn in default_turns
+            )
+            qualified = bool(
+                primary_error is None and status == "turn_limit"
+                and default_turns and len(submit_turns) <= 1
+                and (not submit_turns or
+                     any(turn.get("index") > submit_turns[0].get("index")
+                         for turn in following_reads))
+                and all(turn.get("ok") is True
+                        and turn.get("status") == "executed"
+                        for turn in default_turns)
+                and paired and cleanup.get("ok") is True
             )
         if private_realm_law_paused_query is True:
             qualified = bool(
@@ -7950,6 +8069,12 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "child_matrilineal_cold_recovery",
         "child_matrilineal_observation",
         "child_matrilineal_deferred_war_red",
+        "child_default_observation",
+        "child_default_displaced_plan",
+        "child_default_pending",
+        "child_default_resolved",
+        "child_default_cold_recovery",
+        "child_default_material_recheck",
         "lifestyle_query_status",
         "lifestyle_native_error",
         "exact_active_war_set_watch",
@@ -8901,6 +9026,8 @@ def _verify_pending_family_marriage_checkpoint(
             == snapshot.get("date_raw")
             and (expected_step != PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
                  or pending.get("matrilineal_option_selected") is True)
+            and (expected_step != PRIVATE_CHILD_DEFAULT_SUBMIT_STEP
+                 or pending.get("matrilineal_option_selected") is False)
             and isinstance(played, dict)
             and pending.get("played_character_id") == played.get("character_id")):
         raise AgentError("first-heir marriage ACK lacks a paired pending checkpoint")
@@ -8915,7 +9042,10 @@ def _verify_pending_family_marriage_checkpoint(
             "episode_run_id": checkpoint["episode_run_id"],
             **({"matrilineal_option_selected": True}
                if expected_step == PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
-               and pending.get("matrilineal_option_selected") is True else {})}
+               and pending.get("matrilineal_option_selected") is True else {}),
+            **({"matrilineal_option_selected": False}
+               if expected_step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP
+               and pending.get("matrilineal_option_selected") is False else {})}
 
 
 def _cleanup_report(

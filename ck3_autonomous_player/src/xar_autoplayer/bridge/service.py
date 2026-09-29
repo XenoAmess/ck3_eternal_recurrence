@@ -418,6 +418,15 @@ from ..player_child_matrilineal_formal_consumer import (
     query_child_matrilineal_alliance_private,
     submit_child_matrilineal_private,
 )
+from ..player_child_default_formal_consumer import (
+    ALLIANCE_RESULT_STEP as PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP,
+    RESULT_STEP as PRIVATE_CHILD_DEFAULT_RESULT_STEP,
+    SUBMIT_STEP as PRIVATE_CHILD_DEFAULT_SUBMIT_STEP,
+    plan_child_default_private,
+    query_child_default_result_private,
+    query_child_default_alliance_private,
+    submit_child_default_private,
+)
 from ..prisoner_ransom_formal_consumer import (
     SUBMIT_STEP as PRIVATE_PRISONER_RANSOM_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
@@ -967,7 +976,13 @@ class GameplayBridgeService:
                 ) is True
                 and isinstance(family_snapshot, dict)
             ):
-                return joint
+                return (
+                    plan_child_default_private(
+                        self.driver, joint, snapshot)
+                    if getattr(self.driver,
+                               "allow_private_guy_default_formal_trial",
+                               False) is True else joint
+                )
             # M5 has no typed building action. Give the independent family
             # consumer its ordinary baseline, then retain any M5 RED when
             # no family step is available.
@@ -996,7 +1011,13 @@ class GameplayBridgeService:
                     "phase": joint_plan.get("phase", family_plan.get("phase")),
                     "reason": joint_plan.get("reason", family_plan.get("reason")),
                 }
-            return {**family, "plan": family_plan}
+            family = {**family, "plan": family_plan}
+            return (
+                plan_child_default_private(self.driver, family, snapshot)
+                if getattr(self.driver,
+                           "allow_private_guy_default_formal_trial",
+                           False) is True else family
+            )
         lifestyle_trial = getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
         ) is True
@@ -1131,6 +1152,8 @@ class GameplayBridgeService:
                             },
                         }}
                     planned = pending_read
+            if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
+                planned = plan_child_default_private(self.driver, planned, snapshot)
             planned.pop("_private_faction_snapshot_v1", None)
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
@@ -1198,6 +1221,8 @@ class GameplayBridgeService:
                 self.driver, planned, snapshot,
                 subject_character_id=target[0], candidate_character_id=target[1],
             )
+        if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
+            planned = plan_child_default_private(self.driver, planned, snapshot)
         if (construction_red_plan is not None
                 and isinstance(planned.get("plan"), dict)
                 and planned["plan"].get("selected_step") == plan["selected_step"]):
@@ -2299,6 +2324,30 @@ class GameplayBridgeService:
                     raise UnsupportedStepError(
                         "controlled child alliance lacks resolved pair")
                 result = query_child_matrilineal_alliance_private(
+                    self.driver, resolved=resolved)
+            elif selected_step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP:
+                if not (isinstance(plan.get("child_default_legality"), dict)
+                        and isinstance(plan.get("child_default_value"), dict)):
+                    raise UnsupportedStepError(
+                        "controlled child default proposal lacks valued pair")
+                result = submit_child_default_private(
+                    self.driver, plan=plan, snapshot=self.snapshot())
+            elif selected_step == PRIVATE_CHILD_DEFAULT_RESULT_STEP:
+                pending = plan.get("child_default_pending")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError(
+                        "controlled child default result lacks pending pair")
+                result = query_child_default_result_private(
+                    self.driver, pending=pending,
+                    cold=plan.get("child_default_cold_recovery") is True,
+                    material_recheck=plan.get(
+                        "child_default_material_recheck") is True)
+            elif selected_step == PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP:
+                resolved = plan.get("child_default_resolved")
+                if not isinstance(resolved, dict):
+                    raise UnsupportedStepError(
+                        "controlled child default alliance lacks material pair")
+                result = query_child_default_alliance_private(
                     self.driver, resolved=resolved)
             elif selected_step == PRIVATE_PRISONER_RANSOM_SUBMIT_STEP:
                 result = submit_ransom_private(self.driver, plan=plan)
