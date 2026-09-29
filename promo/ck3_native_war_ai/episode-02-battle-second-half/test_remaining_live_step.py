@@ -21,6 +21,7 @@ class RemainingLiveStepTest(unittest.TestCase):
     @staticmethod
     def d11_snapshot(date: int, revision: int) -> dict:
         return {"date_raw": date, "paused": True, "revision": revision,
+                "native_revision": revision - 1, "snapshot_id": f"native:{revision - 1}",
                 "played_character": {"character_id": live.ACTOR},
                 "active_wars": [{"war_id": live.WAR,
                                  "allied_armies": [{"army_id": live.PLAYER_ARMY,
@@ -28,10 +29,20 @@ class RemainingLiveStepTest(unittest.TestCase):
 
     @staticmethod
     def d11_control(date: int, revision: int, combat: int = live.COMBAT) -> dict:
-        return {"accepted": True, "status": "available", "snapshot_revision": revision,
+        native_revision = revision - 1
+        snapshot_id = f"native:{native_revision}"
+        return {"accepted": True, "status": "available",
+                "snapshot_revision": native_revision,
                 "battle_control_snapshot": {
                     "status": "available", "battle_control_ready": True,
-                    "snapshot_revision": revision, "observed_date_raw": date,
+                    "snapshot_revision": native_revision, "observed_date_raw": date,
+                    "queried_revision": revision,
+                    "queried_native_revision": native_revision,
+                    "queried_snapshot_id": snapshot_id,
+                    "source": {"revision": revision,
+                               "native_revision": native_revision,
+                               "snapshot_id": snapshot_id,
+                               "date_raw": date, "paused": True},
                     "subject_public_cunit_id": live.PLAYER_ARMY,
                     "subject_native_carmy_id": live.PLAYER_ARMY,
                     "selected_owner_character_id": live.ACTOR,
@@ -161,7 +172,13 @@ class RemainingLiveStepTest(unittest.TestCase):
                     "monotonic_ns": 15, "control": control,
                     "report": report, "screenshot": screenshot}
             marks = recorder / "marks.jsonl"
-            marks.write_text(json.dumps(mark) + "\n", encoding="utf-8")
+            before = {**mark, "kind": "d11-before", "date_raw": 53146488,
+                      "monotonic_ns": 12}
+            marks.write_text(json.dumps(before) + "\n", encoding="utf-8")
+            prior_marks = live.identity(marks)
+            with marks.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps(mark) + "\n")
+            write(recorder / "recorder-intent.json", {"session": "fixture"})
             write(recorder / "recorder-start.json", {"monotonic_ns": 10})
             write(recorder / "recorder-end.json", {"monotonic_ns": 20})
             write(recorder / "recorder-final.json",
@@ -169,16 +186,91 @@ class RemainingLiveStepTest(unittest.TestCase):
             advance = {"result": "ONE_DAY_ADVANCED_UNREVIEWED",
                        "post_control": {"response": control},
                        "post_snapshot": {"response": report}}
-            self.assertEqual(live.post_mark_case(recorder, advance)["post_control"], control)
+            advance_intent = {"mark": {
+                "recorder_intent": live.identity(recorder / "recorder-intent.json"),
+                "recorder_start": live.identity(recorder / "recorder-start.json"),
+                "marks": prior_marks, "marked_reference": control,
+                "marked_report": report, "marked_screenshot": screenshot}}
+            self.assertEqual(live.post_mark_case(recorder, advance, advance_intent)
+                             ["post_control"], control)
             with self.assertRaisesRegex(ValueError, "does not bind"):
                 live.post_mark_case(recorder, {**advance, "post_control":
-                                               {"response": {**control, "sha256": "0" * 64}}})
+                                               {"response": {**control, "sha256": "0" * 64}}},
+                                    advance_intent)
             with self.assertRaisesRegex(ValueError, "eligible"):
-                live.post_mark_case(recorder, {**advance, "result": "RED_PRESERVED"})
+                live.post_mark_case(recorder, {**advance, "result": "RED_PRESERVED"},
+                                    advance_intent)
             marks.write_text(json.dumps(mark) + "\n" + json.dumps(mark) + "\n",
                              encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "sealed marks bytes changed"):
-                live.post_mark_case(recorder, advance)
+                live.post_mark_case(recorder, advance, advance_intent)
+            marks.write_text(json.dumps({**before, "note": "rewritten"}) + "\n" +
+                             json.dumps(mark) + "\n", encoding="utf-8")
+            with (recorder / "recorder-final.json").open("w", encoding="utf-8") as stream:
+                json.dump({"result": "ENCODED_UNREVIEWED", "marks": live.identity(marks)},
+                          stream)
+            with self.assertRaisesRegex(ValueError, "exact d11-before journal prefix"):
+                live.post_mark_case(recorder, advance, advance_intent)
+
+    def test_d12_mark_rejects_another_recorder_even_with_matching_responses(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            attempt = Path(directory)
+            first = attempt / "recording-a"
+            second = attempt / "recording-b"
+            first.mkdir()
+            second.mkdir()
+            for recorder in (first, second):
+                write(recorder / "recorder-intent.json", {"session": "same"})
+                write(recorder / "recorder-start.json", {"monotonic_ns": 10})
+                write(recorder / "recorder-end.json", {"monotonic_ns": 20})
+                (recorder / "control.json").write_bytes(b"control")
+                (recorder / "snapshot.json").write_bytes(b"snapshot")
+                (recorder / "frame.png").write_bytes(b"frame")
+                mark = {"kind": "d11-before", "date_raw": 53146488,
+                        "war_id": live.WAR, "combat_id": live.COMBAT,
+                        "monotonic_ns": 12,
+                        "control": live.identity(recorder / "control.json"),
+                        "report": live.identity(recorder / "snapshot.json"),
+                        "screenshot": live.identity(recorder / "frame.png")}
+                marks = recorder / "marks.jsonl"
+                marks.write_text(json.dumps(mark) + "\n", encoding="utf-8")
+                if recorder == first:
+                    first_prefix = live.identity(marks)
+                    first_mark = mark
+                mark = {**mark, "kind": "d12-after", "date_raw": 53146512,
+                        "monotonic_ns": 15}
+                with marks.open("a", encoding="utf-8") as stream:
+                    stream.write(json.dumps(mark) + "\n")
+                write(recorder / "recorder-final.json",
+                      {"result": "ENCODED_UNREVIEWED", "marks": live.identity(marks)})
+            advance = {"result": "ONE_DAY_ADVANCED_UNREVIEWED",
+                       "post_control": {"response": live.identity(second / "control.json")},
+                       "post_snapshot": {"response": live.identity(second / "snapshot.json")}}
+            prior = {"mark": {"recorder_intent": live.identity(first / "recorder-intent.json"),
+                              "recorder_start": live.identity(first / "recorder-start.json"),
+                              "marks": first_prefix,
+                              "marked_reference": first_mark["control"],
+                              "marked_report": first_mark["report"],
+                              "marked_screenshot": first_mark["screenshot"]}}
+            with self.assertRaisesRegex(ValueError, "different recorder"):
+                live.post_mark_case(second, advance, prior)
+            output = attempt / "ck3-output"
+            output.mkdir()
+            (output / "interactive-requests").mkdir()
+            steps = output / "operator-steps"
+            steps.mkdir()
+            binding = {"case": "one-attempt"}
+            prior.update(track="e2-06-d11", source_binding=binding)
+            intent_path = steps / "e2-06-d11-advance-intent.json"
+            write(intent_path, prior)
+            write(steps / "e2-06-d11-advance.json",
+                  {**advance, "track": "e2-06-d11", "source_binding": binding,
+                   "intent": live.identity(intent_path)})
+            self.assertEqual(live.finish(output, "e2-06-d11", binding, second), 2)
+            finish = json.loads((steps / "e2-06-d11-finish.json").read_text(encoding="utf-8"))
+            self.assertIn("different recorder", finish["post_mark_error"])
+            self.assertTrue((output / "interactive-requests" /
+                             "999-e2-06-d11-finish.json").is_file())
 
     def test_d11_finish_preserves_missing_post_mark_red_and_requests_cleanup(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

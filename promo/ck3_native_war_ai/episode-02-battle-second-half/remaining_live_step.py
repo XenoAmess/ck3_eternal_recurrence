@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -260,7 +261,8 @@ def marked_running_recorder(output: Path, track: str, recorder: Path,
     return {"recorder_intent": identity(recorder / "recorder-intent.json"),
             "recorder_start": identity(recorder / "recorder-start.json"),
             "marks": identity(marks_path), "marked_reference": mark[field],
-            "marked_screenshot": mark["screenshot"]}
+            "marked_screenshot": mark["screenshot"],
+            "marked_report": mark.get("report") if track == "e2-06-d11" else None}
 
 
 def advance(output: Path, track: str, binding: dict[str, Any],
@@ -344,7 +346,9 @@ def advance(output: Path, track: str, binding: dict[str, Any],
                 {"subject_army_id": PLAYER_ARMY,
                  "expected_revision": post_values["revision"]}, timeout)
             post_ok, post_control_values = battle_control_case(
-                post_control, post_values["revision"], spec["date"] + 24)
+                post_control, post_values["revision"],
+                post_values["native_revision"], post_values["snapshot_id"],
+                spec["date"] + 24)
         except (OSError, RuntimeError, TimeoutError, ValueError) as exc:
             # The day has already advanced. Preserve the failed native request
             # and a RED receipt; no d12 formal mark or retry on this attempt.
@@ -372,7 +376,8 @@ def advance(output: Path, track: str, binding: dict[str, Any],
     return 0 if okay else 2
 
 
-def post_mark_case(recorder: Path, advance_row: dict[str, Any]) -> dict[str, Any]:
+def post_mark_case(recorder: Path, advance_row: dict[str, Any],
+                   advance_intent: dict[str, Any]) -> dict[str, Any]:
     """Bind the d12 mark to this run's exact native responses after sealing."""
     require(advance_row.get("result") == "ONE_DAY_ADVANCED_UNREVIEWED",
             "d11 advance/control result is not eligible for formal d12 marking")
@@ -381,7 +386,32 @@ def post_mark_case(recorder: Path, advance_row: dict[str, Any]) -> dict[str, Any
     marks_path = recorder / "marks.jsonl"
     marks_identity = identity(marks_path)
     require(final.get("marks") == marks_identity, "sealed marks bytes changed")
+    before_mark = advance_intent.get("mark") or {}
+    for name, filename in (("recorder_intent", "recorder-intent.json"),
+                           ("recorder_start", "recorder-start.json")):
+        require(before_mark.get(name) == identity(recorder / filename),
+                f"d11 advance used a different {name} recorder")
+    prior_marks = before_mark.get("marks") or {}
+    require(prior_marks.get("path") == str(marks_path.resolve()) and
+            type(prior_marks.get("bytes")) is int and
+            0 <= prior_marks["bytes"] <= marks_identity["bytes"],
+            "d11-before journal is not this recorder's prefix")
+    with marks_path.open("rb") as stream:
+        prefix = stream.read(prior_marks["bytes"])
+    require(hashlib.sha256(prefix).hexdigest().upper() == prior_marks.get("sha256"),
+            "sealed marks no longer preserve the exact d11-before journal prefix")
+    for name in ("marked_reference", "marked_report", "marked_screenshot"):
+        recorded = before_mark.get(name)
+        require(isinstance(recorded, dict) and
+                identity(Path(recorded["path"])) == recorded,
+                f"d11-before {name} bytes changed")
     rows = [json.loads(line) for line in marks_path.read_text(encoding="utf-8").splitlines()]
+    before_rows = [row for row in rows if row.get("kind") == "d11-before"]
+    require(len(before_rows) == 1 and
+            before_rows[0].get("control") == before_mark["marked_reference"] and
+            before_rows[0].get("report") == before_mark["marked_report"] and
+            before_rows[0].get("screenshot") == before_mark["marked_screenshot"],
+            "sealed d11-before mark changed or was duplicated")
     candidates = [row for row in rows if row.get("kind") == "d12-after"]
     require(len(candidates) == 1, "exactly one formal d12-after mark is required")
     mark = candidates[0]
@@ -423,7 +453,14 @@ def finish(output: Path, track: str, binding: dict[str, Any], recorder: Path | N
             require(advance_row.get("track") == track and
                     advance_row.get("source_binding") == binding,
                     "advance row belongs to a different source or track")
-            post_mark = post_mark_case(recorder, advance_row)
+            intent_path = output / "operator-steps" / f"{track}-advance-intent.json"
+            require(advance_row.get("intent") == identity(intent_path),
+                    "advance intent identity changed")
+            advance_intent = json.loads(intent_path.read_text(encoding="utf-8"))
+            require(advance_intent.get("source_binding") == binding and
+                    advance_intent.get("track") == track,
+                    "advance intent belongs to a different source or track")
+            post_mark = post_mark_case(recorder, advance_row, advance_intent)
         except (OSError, KeyError, TypeError, ValueError) as exc:
             # A missing or RED mark must not prevent managed CK3 cleanup.
             post_mark_error = f"{type(exc).__name__}: {exc}"

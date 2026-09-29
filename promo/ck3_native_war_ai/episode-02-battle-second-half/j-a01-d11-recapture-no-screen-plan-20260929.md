@@ -54,14 +54,17 @@ GUI 100% 的战斗窗上半和骑士行可见，不能外推到新 d11 画面的
 **启动前工具门。** 原 J-A01 所用 `remaining_live_step.py` 的 `e2-06-d11`
 `spec.control=false`，`advance` 不查询 d12 的 post control；原样复跑必然再次留下
 `control=null`。本计划须使用已改且经独立静态复核的 helper：d11 `observe` 查询
-battle-control 并验证同帧 revision/日期/ArmyID/CombatID；`advance` 在任何游戏动作前
+battle-control 并分别验证 wrapper/native revision、`snapshot_id`、日期、ArmyID/
+CombatID（真实 086 源帧 wrapper `5`、native `4`，两域不可互换）；`advance` 在任何游戏动作前
 核其原始 response SHA 已进入 `d11-before` mark，再于存档后重查原生 control，
 只在同帧验证通过时启动 trace 和单日动作；d12 暂停后再次查 control 并把 response
 SHA 交给 `d12-after` mark。`record_bounded_gameplay.py mark --control` 已支持此绑定，
 但该参数本身不会发起原生查询。缺回执、错 revision、异 CombatID/ArmyID、缺 mark
 或重复推进均必须在静态负例中拒绝；`finish` 还须只读核 d12 mark 的
 `control`/`report` 与 advance 响应 SHA 完全相同、截图仍同字节、marks 与 recorder
-封口哈希一致。这个后验失败要保留 RED，同时仍请求 CK3 清场；同屏新 attempt 前须有
+封口哈希一致；并核 advance intent 中冻结的 recorder intent/start 身份仍是同一
+recorder，封口 marks 逐字节保留 d11-before 追加前缀和唯一原 mark。这个后验失败要保留
+RED，同时仍请求 CK3 清场；同屏新 attempt 前须有
 独立审阅 GREEN。
 若**已经执行**单日动作而 d12 查询失败，保存该动作和失败请求为 RED，不能声称
 动作被撤销，也不能落正式 `d12-after` mark、继续推进或借其他 run 的 control 补证。
@@ -76,10 +79,11 @@ SHA 交给 `d12-after` mark。`record_bounded_gameplay.py mark --control` 已支
    mark；把上述 battle-control 原件填入 mark 的 **`control`** `{path,bytes,sha256}`，
    同时保存当次 snapshot `report` 和原始 `screenshot`。mark 的单调时钟/UTC 只作墙钟
    导航，不转成媒体 PTS。
-3. 开 private join/width trace，提交**恰好一次**受管 d11→d12 日期动作；在暂停的
-   d12 帧先保存新 snapshot 与新原生 battle-control（同样核 actor/WarID/CombatID/
-   ArmyID、date `53146512`、revision/成员集合），再落 `d12-after` mark 的 control、
-   report 与 screenshot。完成 trace finish，核同 run ArmyID 22、13 个团、2570/2560、
+3. 开 private join/width trace，提交**恰好一次**受管 d11→d12 日期动作；helper 内部
+   先完成 private trace finish，随后在暂停的 d12 帧保存新 snapshot 与新原生
+   battle-control（同样核 actor/WarID/CombatID/ArmyID、date `53146512`、
+   wrapper/native revision 与成员集合），再由操作者落 `d12-after` mark 的 control、
+   report 与 screenshot；不得额外调用第二次 trace finish。核同 run ArmyID 22、13 个团、2570/2560、
    缓存重算、战宽 `1480→2220` 与第一次伤害实际参数；若与旧 A01 不同，卡与口播
    必须使用新 run 数据重算。
 4. 录制自然封口并清场、显示恢复、释放 screen lease 后，独立做完整原片 PTS 审计。
