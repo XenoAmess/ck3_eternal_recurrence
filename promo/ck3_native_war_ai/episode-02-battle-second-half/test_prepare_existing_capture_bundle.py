@@ -144,6 +144,21 @@ class ExistingCaptureBundleTest(unittest.TestCase):
                                   "no_foreign_overlay": True, **frames}]})
         return review
 
+    def rewrite_endpoint_commands(self, review_path: Path, change) -> None:
+        review = bundle.read_json(review_path)
+        for phase in ("begin", "end"):
+            frame = review["spans"][0][f"{phase}_frame"]
+            receipt_path = Path(frame["extraction_receipt"]["path"])
+            receipt = bundle.read_json(receipt_path)
+            command_path = Path(receipt["command"]["path"])
+            command = bundle.read_json(command_path)
+            change(command, receipt, frame)
+            write(command_path, command)
+            receipt["command"] = bundle.record(command_path)
+            write(receipt_path, receipt)
+            frame["extraction_receipt"] = bundle.record(receipt_path)
+        write(review_path, review)
+
     def test_pending_inventory_does_not_create_adapter_green(self) -> None:
         source = self.prepare()
         self.assertEqual(source["status"], "PENDING_CLEAN_REVIEW")
@@ -236,6 +251,43 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         self.assertEqual(result["span_ids"], ["terminal_window"])
         self.assertEqual(bundle.read_json(self.attempt / "ck3-output/capture-report.json")["result"],
                          "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO")
+
+    def test_package_accepts_exact_legacy_successful_extraction_receipts(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        def legacy(command, receipt, frame):
+            command["argv"] = [command["argv"][0], *bundle.legacy_extract_argv_tail(
+                source["raw"]["path"], receipt["decoded_index"], frame["image"]["path"])]
+        self.rewrite_endpoint_commands(review, legacy)
+        result = bundle.package(self.output / "source-manifest.json", review,
+                                self.root / "legacy-bundle")
+        self.assertEqual(result["status"], "ADAPTER_VALIDATED_SELECTED_SPANS_ONLY")
+        self.assertFalse(result["film_signoff_granted"])
+
+    def test_package_rejects_legacy_extraction_without_png(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        def legacy(command, receipt, frame):
+            command["argv"] = [command["argv"][0], *bundle.legacy_extract_argv_tail(
+                source["raw"]["path"], receipt["decoded_index"], frame["image"]["path"])]
+        self.rewrite_endpoint_commands(review, legacy)
+        (self.root / "begin.png").unlink()
+        target = self.root / "missing-legacy-png-bundle"
+        with self.assertRaises((FileNotFoundError, ValueError)):
+            bundle.package(self.output / "source-manifest.json", review, target)
+        self.assertFalse(target.exists())
+
+    def test_package_rejects_other_sync_flag_even_with_matching_hashes(self) -> None:
+        source = self.prepare()
+        review = self.review(source)
+        def wrong_flag(command, receipt, frame):
+            argv = command["argv"]
+            argv[argv.index("-fps_mode")] = "-arbitrary-sync"
+        self.rewrite_endpoint_commands(review, wrong_flag)
+        target = self.root / "arbitrary-flag-bundle"
+        with self.assertRaisesRegex(ValueError, "command does not bind selected frame"):
+            bundle.package(self.output / "source-manifest.json", review, target)
+        self.assertFalse(target.exists())
 
     def test_package_refuses_missing_human_attestation_without_writing(self) -> None:
         source = self.prepare()

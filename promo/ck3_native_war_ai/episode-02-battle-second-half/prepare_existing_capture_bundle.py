@@ -354,6 +354,14 @@ def extract_argv_tail(raw_path: str, index: int, image_path: str) -> list[str]:
             "-frames:v", "1", image_path]
 
 
+def legacy_extract_argv_tail(raw_path: str, index: int, image_path: str) -> list[str]:
+    """Exact pre-FFmpeg-9 command, accepted only for preserved older receipts."""
+    return ["-hide_banner", "-loglevel", "info", "-nostdin", "-n",
+            "-threads", "1", "-i", raw_path, "-map", "0:v:0",
+            "-vf", f"select=eq(n\\,{index}),showinfo", "-vsync", "0",
+            "-frames:v", "1", image_path]
+
+
 def extract_frame(source_manifest: Path, exact_pts: str, output: Path,
                   ffmpeg_name: str = "ffmpeg") -> dict[str, Any]:
     """Extract one raw-derived PNG at an existing FFprobe PTS for later review.
@@ -507,8 +515,11 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
                     decimal_pts(command_payload.get("requested_pts_seconds"), "command PTS") == expected and
                     isinstance(argv, list) and len(argv) > 1 and
                     isinstance(argv[0], str) and bool(argv[0]) and
-                    argv[1:] == extract_argv_tail(source["raw"]["path"],
-                                                  pts.index(expected), image["path"]),
+                    argv[1:] in (
+                        extract_argv_tail(source["raw"]["path"],
+                                          pts.index(expected), image["path"]),
+                        legacy_extract_argv_tail(source["raw"]["path"],
+                                                 pts.index(expected), image["path"])),
                     f"{phase} extraction command does not bind selected frame")
             showinfo = Path(stderr["path"]).read_text(encoding="utf-8", errors="replace")
             shown = [decimal_pts(value, "stored FFmpeg showinfo PTS")
