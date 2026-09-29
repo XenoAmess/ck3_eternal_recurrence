@@ -28,22 +28,22 @@ from .environment import EnvironmentSpec
 from .runtime import NativeBridgeLaunchConfig
 
 
-ROUND = "R3947"
-LIVE_RUN_ID = "desktop-3fevhd2-1c74096080--vanilla--R0116"
-LIVE_EXECUTION_ID = "733c2a05-d3ab-464a-b605-bc96070c4c0a"
+ROUND = "R3948"
+LIVE_RUN_ID = "desktop-3fevhd2-1c74096080--vanilla--R0117"
+LIVE_EXECUTION_ID = "2be36b8a-029f-4dc5-a017-ce7d0b3809d7"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
-SCREEN_TASK_ID = "war-h3937-cold-observer-readonly-live-20260930-a13"
+SCREEN_TASK_ID = "war-h3937-cold-observer-readonly-live-20260930-a14"
 LEASE_MAX_AGE_SECONDS = 600
 GO_MAX_AGE_SECONDS = 300
 CLOCK_SKEW_SECONDS = 10
-NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260930\attempt-13")
+NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260930\attempt-14")
 FROZEN_PYTHON = Path(r"D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe")
 FROZEN_PYTHON_VERSION = "Python 3.14.7"
 STATE = NO_LAUNCH / "state"
-OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260930\attempt-13")
-GO = OUTPUT.parent / "go-attempt-13.json"
-SCREEN = OUTPUT.parent / "screen-attempt-13"
+OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260930\attempt-14")
+GO = OUTPUT.parent / "go-attempt-14.json"
+SCREEN = OUTPUT.parent / "screen-attempt-14"
 LIVE_IDENTITY = NO_LAUNCH / "live-run-identity.json"
 GAME = Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III")
 DLL = NO_LAUNCH / "source-verified" / "xar_ck3_bridge.dll"
@@ -264,7 +264,7 @@ def _require_exact_admission() -> dict[str, object]:
         and live_identity.get("execution_id") == LIVE_EXECUTION_ID
         and live_identity.get("machine_id") == "desktop-3fevhd2-1c74096080"
         and live_identity.get("mod_key") == "vanilla"
-        and live_identity.get("sequence") == 116
+        and live_identity.get("sequence") == 117
         and admission.get("schema")
             == "xar.war.h3937-cold-observer-disabled-no-launch-admission.v1"
         and admission.get("candidate_head") == manifest.get("candidate_head") == head
@@ -521,7 +521,7 @@ def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
         raise ValueError("direct Steam review bytes or path changed")
     review = _read_json(review_path)
     if not (
-        review.get("schema") == "xar.war.h3937-a13-steam-offline-direct-review.v1"
+        review.get("schema") == "xar.war.h3937-a14-steam-offline-direct-review.v1"
         and review.get("candidate_head") == identity["head"]
         and review.get("round") == ROUND
         and review.get("live_run_id") == LIVE_RUN_ID
