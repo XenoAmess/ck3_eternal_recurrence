@@ -364,6 +364,10 @@ std::int64_t g_route_naval_speed_raw = 100'000;
 std::int64_t g_route_current_edge_speed_raw = 100'000;
 std::int32_t g_player_army_state_code = 2;
 std::int32_t g_enemy_army_state_code = 6;
+std::int32_t g_inventory_state_reads = 0;
+std::int32_t g_inventory_replace_at_state_read = -1;
+void **g_inventory_game_state_slot = nullptr;
+void *g_inventory_replacement_game_state = nullptr;
 std::int32_t g_army_current_soldiers_calls = 0;
 std::int32_t g_army_maximum_soldiers_calls = 0;
 std::int32_t g_effective_stats_calls = 0;
@@ -1022,6 +1026,12 @@ void *FixtureDestroyRaiseTroopsCommand(void *command,
 }
 
 std::int32_t FixtureGetUnitState(void *unit) {
+  ++g_inventory_state_reads;
+  if (g_inventory_state_reads == g_inventory_replace_at_state_read &&
+      g_inventory_game_state_slot != nullptr) {
+    *g_inventory_game_state_slot = g_inventory_replacement_game_state;
+    g_inventory_replace_at_state_read = -1;
+  }
   if (unit == g_player_army.data()) {
     return g_player_army_state_code;
   }
@@ -4877,6 +4887,83 @@ int main() {
       snapshot.active_wars[0].objective_province_states.size() != 3) {
     return Fail("paused objective Province state was unavailable");
   }
+  using InventoryStatus = xar::ck3_11906::PhysicalArmyInventoryStatusV1;
+  xar::ck3_11906::PhysicalArmyInventoryV1 physical_inventory{};
+  if (xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory) !=
+          InventoryStatus::partial ||
+      physical_inventory.storage_capacity != 4 ||
+      physical_inventory.slots_scanned != 4 ||
+      physical_inventory.empty_slots != 2 ||
+      physical_inventory.canonical_units != 2 ||
+      physical_inventory.hostile_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      physical_inventory.retreating_hostile_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      !physical_inventory.contact_hostile_army_ids.empty()) {
+    return Fail("physical inventory did not expose excluded retreat risk");
+  }
+  Store(g_enemy_army, 0x170, std::int32_t{0});
+  g_enemy_army_state_code = 1;
+  g_player_army_state_code = 1;
+  physical_inventory = {};
+  if (xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory) !=
+          InventoryStatus::complete ||
+      physical_inventory.unresolved_slots != 0 ||
+      physical_inventory.contact_hostile_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id}) {
+    return Fail("physical inventory rejected a complete canonical fixture");
+  }
+  auto replacement_game_state = game_state;
+  g_inventory_state_reads = 0;
+  g_inventory_replace_at_state_read = 5;
+  g_inventory_game_state_slot = &game_state_pointer;
+  g_inventory_replacement_game_state = replacement_game_state.data();
+  physical_inventory = {};
+  const auto replacement_result =
+      xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory);
+  game_state_pointer = game_state.data();
+  g_inventory_game_state_slot = nullptr;
+  g_inventory_replacement_game_state = nullptr;
+  g_inventory_replace_at_state_read = -1;
+  if (replacement_result != InventoryStatus::partial ||
+      physical_inventory.status != InventoryStatus::partial ||
+      g_inventory_state_reads < 5) {
+    return Fail("physical inventory joined two equal-valued game states");
+  }
+  Store(g_enemy_army, 0x10, std::int32_t{0x01000003});
+  physical_inventory = {};
+  if (xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory) !=
+          InventoryStatus::partial ||
+      physical_inventory.invalid_id_slots != 1 ||
+      physical_inventory.unresolved_slots == 0) {
+    return Fail("physical inventory silently skipped a bad generation slot");
+  }
+  Store(g_enemy_army, 0x10, enemy_army_id);
+  Store(g_enemy_army, 0x18, std::int32_t{1});
+  physical_inventory = {};
+  if (xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory) !=
+          InventoryStatus::partial ||
+      physical_inventory.noncanonical_slots != 1 ||
+      physical_inventory.unresolved_slots == 0) {
+    return Fail("physical inventory silently skipped a CFleet carrier");
+  }
+  Store(g_enemy_army, 0x18, std::int32_t{0});
+  Store(g_army_storage, 0x2C, std::int32_t{0});
+  physical_inventory = {};
+  if (xar::ck3_11906::ReadPhysicalArmyInventoryV1(
+          bindings, active_war_id, player_army_id, physical_inventory) !=
+          InventoryStatus::unavailable) {
+    return Fail("physical inventory treated a bad header as empty");
+  }
+  Store(g_army_storage, 0x2C, std::int32_t{4});
+  Store(g_enemy_army, 0x170, std::int32_t{1});
+  g_enemy_army_state_code = 6;
+  g_player_army_state_code = 2;
   g_army_current_soldiers_calls = 0;
   g_army_maximum_soldiers_calls = 0;
   if (xar::ck3_11906::ReadArmyStrengths(bindings, army_strengths) !=

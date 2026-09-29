@@ -10630,6 +10630,307 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   return true;
 }
 
+PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
+    const Bindings &bindings, std::int32_t war_id,
+    std::int32_t subject_army_id,
+    PhysicalArmyInventoryV1 &output) noexcept {
+  using Status = PhysicalArmyInventoryStatusV1;
+  output = {};
+  output.war_id = war_id;
+  output.subject_army_id = subject_army_id;
+  if (war_id <= 0 || subject_army_id <= 0 || !bindings.enabled ||
+      bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.army_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      bindings.contains_war_participant == nullptr ||
+      bindings.get_unit_state == nullptr) {
+    return output.status;
+  }
+
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || !before.map_ready ||
+      !before.has_played_character || !before.played_character_alive) {
+    return output.status;
+  }
+  output.date_raw = before.date_raw;
+  if (!before.paused) {
+    output.status = Status::requires_paused;
+    return output.status;
+  }
+  const auto published_war = std::find_if(
+      before.active_wars.begin(), before.active_wars.end(),
+      [war_id](const ActiveWarSnapshot &war) { return war.war_id == war_id; });
+  const auto published_subject = std::find_if(
+      before.player_armies.begin(), before.player_armies.end(),
+      [subject_army_id](const ArmySnapshot &army) {
+        return army.army_id == subject_army_id && army.controllable;
+      });
+  void *const game_state = *bindings.game_state_slot;
+  void *const native_war = ResolveWar(bindings, game_state, war_id);
+  if (published_war == before.active_wars.end() ||
+      published_subject == before.player_armies.end() ||
+      native_war == nullptr ||
+      LoadAt<void *>(native_war, kWarEndedDataOffset) != nullptr) {
+    return output.status;
+  }
+  void *const attackers =
+      static_cast<std::byte *>(native_war) + kWarAttackersOffset;
+  void *const defenders =
+      static_cast<std::byte *>(native_war) + kWarDefendersOffset;
+  const bool player_attacks = bindings.contains_war_participant(
+      attackers, before.played_character_id);
+  const bool player_defends = bindings.contains_war_participant(
+      defenders, before.played_character_id);
+  if (player_attacks == player_defends ||
+      published_war->player_side !=
+          (player_attacks ? PlayerWarSide::attacker
+                          : PlayerWarSide::defender)) {
+    return output.status;
+  }
+  void *const allies = player_attacks ? attackers : defenders;
+  void *const enemies = player_attacks ? defenders : attackers;
+  void *const jomini_state = *bindings.jomini_state_slot;
+  void *const army_storage = *bindings.army_storage_slot;
+  void *const internal_army_storage = *bindings.army_internal_storage_slot;
+  void *const game_data = LoadAt<void *>(
+      game_state, kGameStateGameDataOffset);
+  void *const army_slots = army_storage != nullptr
+      ? LoadAt<void *>(army_storage, kComponentStorageSlotsOffset) : nullptr;
+  const auto army_capacity = army_storage != nullptr
+      ? LoadAt<std::int32_t>(army_storage, kComponentStorageCapacityOffset)
+      : -1;
+  void *const war_manager = game_data != nullptr
+      ? static_cast<std::byte *>(game_data) + bindings.war_manager_offset
+      : nullptr;
+  void *const war_storage = war_manager != nullptr
+      ? LoadAt<void *>(war_manager, kWarStorageOffset) : nullptr;
+  void *const war_slots = war_storage != nullptr
+      ? LoadAt<void *>(war_storage, kComponentStorageSlotsOffset) : nullptr;
+  const auto war_capacity = war_storage != nullptr
+      ? LoadAt<std::int32_t>(war_storage, kComponentStorageCapacityOffset)
+      : -1;
+  const auto source_stable = [&]() {
+    return *bindings.game_state_slot == game_state &&
+           *bindings.jomini_state_slot == jomini_state &&
+           *bindings.army_storage_slot == army_storage &&
+           *bindings.army_internal_storage_slot == internal_army_storage &&
+           game_data != nullptr &&
+           LoadAt<void *>(game_state, kGameStateGameDataOffset) == game_data &&
+           army_storage != nullptr &&
+           LoadAt<void *>(army_storage, kComponentStorageSlotsOffset) ==
+               army_slots &&
+           LoadAt<std::int32_t>(army_storage,
+                                kComponentStorageCapacityOffset) ==
+               army_capacity &&
+           war_manager != nullptr && war_storage != nullptr &&
+           LoadAt<void *>(war_manager, kWarStorageOffset) == war_storage &&
+           LoadAt<void *>(war_storage, kComponentStorageSlotsOffset) ==
+               war_slots &&
+           LoadAt<std::int32_t>(war_storage,
+                                kComponentStorageCapacityOffset) ==
+               war_capacity &&
+           ResolveWar(bindings, game_state, war_id) == native_war;
+  };
+  if (!source_stable()) {
+    output.status = Status::partial;
+    return output.status;
+  }
+  // Establish a full snapshot after freezing the physical source pointers.
+  // A save/load that occurs between the admission snapshot and this fence
+  // cannot lend the old frame's semantic values to a new physical storage.
+  Snapshot bound_before{};
+  if (!ReadSnapshot(bindings, bound_before) || bound_before != before ||
+      !source_stable()) {
+    output.status = Status::partial;
+    return output.status;
+  }
+
+  const auto scan = [&]() {
+    PhysicalArmyInventoryV1 result{};
+    result.date_raw = before.date_raw;
+    result.war_id = war_id;
+    result.subject_army_id = subject_army_id;
+    void *const storage = *bindings.army_storage_slot;
+    if (storage == nullptr) {
+      return result;
+    }
+    void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+    const auto capacity = LoadAt<std::int32_t>(
+        storage, kComponentStorageCapacityOffset);
+    result.storage_capacity = capacity;
+    if (slots == nullptr || capacity <= 0 ||
+        capacity > kMaximumComponentCapacity) {
+      return result;
+    }
+    result.status = Status::partial;
+    for (std::int32_t index = 0; index < capacity; ++index) {
+      ++result.slots_scanned;
+      void *const unit = LoadAt<void *>(
+          slots, static_cast<std::size_t>(index) *
+                     kComponentStorageSlotSize +
+                     kComponentStorageSlotObjectOffset);
+      if (unit == nullptr) {
+        ++result.empty_slots;
+        continue;
+      }
+      const auto unit_id = LoadAt<std::int32_t>(unit, kArmyIdOffset);
+      if (unit_id <= 0 ||
+          (static_cast<std::uint32_t>(unit_id) & 0x00FFFFFFU) !=
+              static_cast<std::uint32_t>(index)) {
+        ++result.invalid_id_slots;
+        ++result.unresolved_slots;
+        continue;
+      }
+      if (!IsCanonicalOrderableArmyUnit(bindings, unit, unit_id)) {
+        ++result.noncanonical_slots;
+        ++result.unresolved_slots;
+        continue;
+      }
+      ++result.canonical_units;
+      ArmySnapshot army{};
+      army.army_id = unit_id;
+      army.owner_character_id = LoadAt<std::int32_t>(
+          unit, kArmyOwnerCharacterIdOffset);
+      army.controllable =
+          army.owner_character_id == before.played_character_id;
+      if (army.controllable) {
+        result.player_army_ids.push_back(unit_id);
+      }
+      void *const province = LoadAt<void *>(unit, kArmyCurrentProvinceOffset);
+      if (province != nullptr) {
+        const auto province_id = LoadAt<std::int32_t>(
+            province, kProvinceIdOffset);
+        if (province_id > 0 &&
+            ResolveProvince(game_state, province_id) == province) {
+          army.has_current_province = true;
+          army.current_province_id = province_id;
+        }
+      }
+      army.army_state_code = bindings.get_unit_state(unit);
+      army.army_state = UnitStateName(army.army_state_code);
+      army.in_combat = army.army_state_code == 2;
+      army.retreating = LoadAt<std::int32_t>(
+          unit, kUnitRetreatStateOffset) > 0;
+      ReadUnitRoute(game_state, unit, true, army);
+
+      const bool allied = army.owner_character_id > 0 &&
+          bindings.contains_war_participant(allies,
+                                            army.owner_character_id);
+      const bool hostile = army.owner_character_id > 0 &&
+          bindings.contains_war_participant(enemies,
+                                            army.owner_character_id);
+      if (army.owner_character_id <= 0 ||
+          ResolveCharacter(bindings, army.owner_character_id) == nullptr ||
+          (allied && hostile) ||
+          army.army_state_code < 1 || army.army_state_code > 9 ||
+          !army.has_current_province) {
+        ++result.unresolved_slots;
+      }
+      PhysicalArmyWarSideV1 side = PhysicalArmyWarSideV1::neutral;
+      if (allied && !hostile) {
+        side = PhysicalArmyWarSideV1::allied;
+        result.allied_army_ids.push_back(unit_id);
+      } else if (hostile && !allied) {
+        side = PhysicalArmyWarSideV1::hostile;
+        result.hostile_army_ids.push_back(unit_id);
+        if (!army.retreating) {
+          result.contact_hostile_army_ids.push_back(unit_id);
+        } else {
+          result.retreating_hostile_army_ids.push_back(unit_id);
+        }
+      }
+      if ((side != PhysicalArmyWarSideV1::neutral ||
+           unit_id == subject_army_id) &&
+          army.route_read_status != game::ArmyRouteReadStatus::complete_empty &&
+          army.route_read_status != game::ArmyRouteReadStatus::complete_nonempty) {
+        ++result.unresolved_slots;
+      }
+      if ((side != PhysicalArmyWarSideV1::neutral ||
+           unit_id == subject_army_id) &&
+          (army.in_combat ||
+           (army.army_state_code == 6 && !army.retreating))) {
+        ++result.unresolved_slots;
+      }
+      result.units.push_back({std::move(army), side});
+    }
+    std::sort(result.hostile_army_ids.begin(),
+              result.hostile_army_ids.end());
+    std::sort(result.player_army_ids.begin(), result.player_army_ids.end());
+    std::sort(result.allied_army_ids.begin(), result.allied_army_ids.end());
+    std::sort(result.contact_hostile_army_ids.begin(),
+              result.contact_hostile_army_ids.end());
+    std::sort(result.retreating_hostile_army_ids.begin(),
+              result.retreating_hostile_army_ids.end());
+    return result;
+  };
+
+  const auto first = scan();
+  if (!source_stable()) {
+    output = first;
+    output.status = Status::partial;
+    return output.status;
+  }
+  const auto second = scan();
+  if (!source_stable()) {
+    output = second;
+    output.status = Status::partial;
+    return output.status;
+  }
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before ||
+      first != second || !source_stable()) {
+    output = second;
+    output.status = Status::partial;
+    return output.status;
+  }
+  output = second;
+  if (output.status == Status::unavailable) {
+    return output.status;
+  }
+  std::vector<std::int32_t> published_hostiles;
+  std::vector<std::int32_t> published_allies;
+  std::vector<std::int32_t> published_players;
+  for (const auto &army : before.player_armies) {
+    published_players.push_back(army.army_id);
+  }
+  for (const auto &army : published_war->allied_armies) {
+    published_allies.push_back(army.army_id);
+  }
+  for (const auto &army : published_war->enemy_armies) {
+    published_hostiles.push_back(army.army_id);
+  }
+  std::sort(published_players.begin(), published_players.end());
+  std::sort(published_allies.begin(), published_allies.end());
+  std::sort(published_hostiles.begin(), published_hostiles.end());
+  const auto physical_subject = std::find_if(
+      output.units.begin(), output.units.end(),
+      [subject_army_id](const PhysicalArmyInventoryRowV1 &row) {
+        return row.army.army_id == subject_army_id &&
+               row.war_side == PhysicalArmyWarSideV1::allied;
+      });
+  if (output.slots_scanned != output.storage_capacity ||
+      output.unresolved_slots != 0 ||
+      !output.retreating_hostile_army_ids.empty() ||
+      physical_subject == output.units.end() ||
+      output.player_army_ids != published_players ||
+      output.allied_army_ids != published_allies ||
+      output.hostile_army_ids.empty() ||
+      output.hostile_army_ids != published_hostiles ||
+      physical_subject->army.owner_character_id !=
+          published_subject->owner_character_id ||
+      physical_subject->army.current_province_id !=
+          published_subject->current_province_id ||
+      physical_subject->army.route_read_status !=
+          published_subject->route_read_status ||
+      physical_subject->army.route_province_ids !=
+          published_subject->route_province_ids) {
+    return output.status;
+  }
+  output.status = Status::complete;
+  return output.status;
+}
+
 game::ReadProvinceLocalSiegeResult ReadProvinceLocalSiege(
     const Bindings &bindings, std::int32_t province_id,
     game::WarObjectiveProvinceState &output) noexcept {

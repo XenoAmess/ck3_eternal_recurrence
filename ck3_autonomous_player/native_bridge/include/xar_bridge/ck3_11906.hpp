@@ -937,6 +937,58 @@ using game::PreviewMoveArmyStatus;
 using game::RouteContactHorizonRequest;
 using game::RouteContactHorizonSnapshot;
 using game::RouteContactHorizonStatus;
+
+// Candidate only: this reader has no bridge command or policy consumer.  Its
+// result must never grant a date or movement step by itself.
+enum class PhysicalArmyInventoryStatusV1 {
+  unavailable,
+  requires_paused,
+  partial,
+  complete,
+};
+
+enum class PhysicalArmyWarSideV1 { allied, hostile, neutral };
+
+struct PhysicalArmyInventoryRowV1 {
+  ArmySnapshot army{};
+  PhysicalArmyWarSideV1 war_side = PhysicalArmyWarSideV1::neutral;
+  friend bool operator==(const PhysicalArmyInventoryRowV1 &,
+                         const PhysicalArmyInventoryRowV1 &) = default;
+};
+
+struct PhysicalArmyInventoryV1 {
+  PhysicalArmyInventoryStatusV1 status =
+      PhysicalArmyInventoryStatusV1::unavailable;
+  std::int32_t date_raw = -1;
+  std::int32_t war_id = -1;
+  std::int32_t subject_army_id = -1;
+  std::int32_t storage_capacity = -1;
+  std::int32_t slots_scanned = 0;
+  std::int32_t empty_slots = 0;
+  std::int32_t canonical_units = 0;
+  std::int32_t invalid_id_slots = 0;
+  std::int32_t noncanonical_slots = 0;
+  std::int32_t unresolved_slots = 0;
+  std::vector<std::int32_t> player_army_ids;
+  std::vector<std::int32_t> allied_army_ids;
+  std::vector<std::int32_t> hostile_army_ids;
+  std::vector<std::int32_t> contact_hostile_army_ids;
+  std::vector<std::int32_t> retreating_hostile_army_ids;
+  std::vector<PhysicalArmyInventoryRowV1> units;
+  friend bool operator==(const PhysicalArmyInventoryV1 &,
+                         const PhysicalArmyInventoryV1 &) = default;
+};
+
+// Application-main-only, exact-build paused CUnit-storage scan.  Scans every
+// slot, counts skipped candidates, classifies canonical units using the live
+// CWar participant relation, and compares the physical hostile set with the
+// published war row.  A malformed/ambiguous slot is always partial.  Two
+// physical scans, three full snapshots and frozen source pointers must agree
+// before `complete`.
+PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
+    const Bindings &bindings, std::int32_t war_id,
+    std::int32_t subject_army_id,
+    PhysicalArmyInventoryV1 &output) noexcept;
 using game::ActualContactScopeRequest;
 using game::ActualContactScopeSnapshot;
 using game::ActualContactScopeStatus;
