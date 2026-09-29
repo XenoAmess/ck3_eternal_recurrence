@@ -1,7 +1,8 @@
 # R0266 H3937: owned pending source bytes, diagnostic only
 
 Status: **RED for a real war-cash producer**. The H3937 paused episode is
-`native-29829-2bc2d599f7f9`, native revision 3, public revision 4,
+`native-29829-2bc2d599f7f9`, snapshot `native:4`, native revision 4,
+public revision 5,
 `date_raw=53219928`, WarID `16777231`. Its fixed WAR selected-step receipt
 explicitly says `null`. There is no matching selected movement or hire to
 price. Neither that null nor an empty owned ledger proves a zero fee. All five
