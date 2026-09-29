@@ -96,8 +96,10 @@ def assess_war_cash_floor_policy_candidate_v1(
         policy["schema"] != SCHEMA
         or not isinstance(policy["policy_id"], str) or not policy["policy_id"]
         or not isinstance(policy["policy_version"], str) or not policy["policy_version"]
+        or not _positive(policy["played_character_id"])
         or policy["played_character_id"] != frame["played_character_id"]
         or policy["episode_run_id"] != frame["episode_run_id"]
+        or not _positive(policy["war_id"])
         or policy["war_id"] != war_id
         or not _nonnegative(policy["valid_from_date_raw"])
         or not _nonnegative(policy["valid_until_date_raw"])
@@ -109,6 +111,7 @@ def assess_war_cash_floor_policy_candidate_v1(
             frame["date_raw"] + horizon_days * _DATE_RAW_PER_GAME_DAY
         )
         or not _nonnegative(policy["floor_raw"])
+        or type(policy["gold_scale"]) is not int
         or policy["gold_scale"] != 100_000
         or policy["floor_purpose"] != "terminal_liquidity_after_horizon"
         or not isinstance(policy["amount_basis"], str) or not policy["amount_basis"]

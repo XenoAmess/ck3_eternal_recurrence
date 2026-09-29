@@ -77,7 +77,13 @@ class WarCashFloorPolicyProvenanceTests(unittest.TestCase):
             assess(policy(), pinned_policy_sha256="B" * 64)
         for change in (
             {"played_character_id": 100},
+            {"played_character_id": 29829.0},
+            {"played_character_id": True},
             {"war_id": WAR_ID + 1},
+            {"war_id": float(WAR_ID)},
+            {"war_id": True},
+            {"gold_scale": 100000.0},
+            {"gold_scale": True},
             {"episode_run_id": "other-run"},
             {"valid_until_date_raw": FRAME["date_raw"] - 1},
             {"valid_until_date_raw": FRAME["date_raw"] + 1},
