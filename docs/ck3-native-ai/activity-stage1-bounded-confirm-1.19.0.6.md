@@ -103,5 +103,7 @@ After the observed option, the remaining checks are a fresh planner
 identity read, `planner+0x1AD0` read and zero comparison, and a fresh
 same-frame read. A focused source change records a stable rejection reason
 and the raw `+0x1AD0` byte when observed. It does not relax admission or
-retry Confirm. Only a new, correctly paired candidate can establish the
+retry Confirm. These two fields appear only in a `precondition_rejected`
+private receipt; a successful receipt keeps its previous schema shape.
+Only a new, correctly paired candidate can establish the
 actual failing guard and support a targeted action fix.

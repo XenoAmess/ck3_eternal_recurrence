@@ -398,8 +398,16 @@ std::string SerializeActivityStage1ConfirmPrivateV1(
                  query.post_snapshot == query.expected_snapshot
              ? "not_started_immediate" : "unknown";
   out += "\",\"next_turn_verified\":false,"
-         "\"raw_pointer_fields_persisted\":false,"
-         "\"advertised\":false}";
+         "\"raw_pointer_fields_persisted\":false";
+  if (r.status == bridge::ActivityStage1ConfirmStatusV1::precondition_rejected) {
+    out += ",\"precondition_reject_reason\":\"" +
+        std::string(bridge::ActivityStage1ConfirmRejectReasonKeyV1(
+            r.reject_reason)) + "\",\"planner_stage_auto_raw\":";
+    out += r.planner_stage_auto_observed
+               ? std::to_string(r.planner_stage_auto_raw)
+               : "null";
+  }
+  out += ",\"advertised\":false}";
   return out;
 }
 
