@@ -13,6 +13,10 @@ from pathlib import Path
 
 def main() -> int:
     bridge = Path(sys.argv[1]).read_text(encoding="utf-8")
+    transport = (
+        Path(__file__).resolve().parent.parent
+        / "src/activity_stage5_feast_full_cost_private_transport_v1.cpp"
+    ).read_text(encoding="utf-8")
     rejection = bridge.index('"unsupported native gameplay step"')
     feature = "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1"
     step = "kActivityStage5FeastFullCostPrivateStepV1"
@@ -28,6 +32,20 @@ def main() -> int:
         raise AssertionError("feast full-cost step is not admitted before reject")
     if len(handler.findall(bridge[rejection:])) != 1:
         raise AssertionError("feast full-cost step has no reachable handler branch")
+    construction = re.search(
+        r"ActivityStage5FeastFullCostEnvironmentV1 cost_environment\{\};"
+        r"(?P<body>.*?)"
+        r"query->cost = bridge::ReadActivityStage5FeastFullCostV1\(",
+        transport,
+        re.DOTALL,
+    )
+    if construction is None or not re.search(
+        r"\bcost_environment\.enabled\s*=\s*true\s*;"
+        r".*\bcost_environment\.gold\.enabled\s*=\s*true\s*;",
+        construction.group("body"),
+        re.DOTALL,
+    ):
+        raise AssertionError("feast full-cost transport leaves Gold subquery disabled")
     return 0
 
 
