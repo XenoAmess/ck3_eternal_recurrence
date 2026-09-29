@@ -13,10 +13,17 @@ The private inputs step is
 revision/date/actor, Stage 5, `activity_feast`, and `feast_type_generic` to
 one paused frame. The same owner callback reads the normal slot-12 refreshed
 four-name Q100000 costs, final native CanStart, Gold/Piety balances, selected
-option, and the hosted activity ID/type/host set. Its result schema is
+option, the hosted activity ID/type/host set, and the original planner's
+selected guest join/arrival estimates. Its result schema is
 `activity-feast-stage5-start-inputs-private-v1`. Treasury and barter-goods
 balances are explicitly unavailable. Their native zero costs need no balance;
 their positive costs block Start.
+
+The guest capture reuses the normal slot-12 refresh sequence and reports
+`guest_join_status`, `selected_nonhost_count`, `positive_join_count`,
+`timely_positive_join_count`, and `arrival_time_observed`. Counts are `null`
+when the native read does not observe the same frame. A source-level positive
+arrival estimate is not yet a qualified live guest route.
 
 The independent `query-activity-feast-hosted-post-v1-private` step does not
 depend on the planner staying open. It returns a new paused-frame set of

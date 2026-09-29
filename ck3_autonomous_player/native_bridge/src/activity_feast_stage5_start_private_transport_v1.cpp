@@ -127,6 +127,54 @@ bool EvaluateCanStart(void *opaque, std::uintptr_t planner,
   }
 }
 
+bool EvaluateGuestJoin(void *opaque, std::uintptr_t base,
+                       std::uintptr_t planner, std::uintptr_t character,
+                       std::int64_t &value) noexcept {
+  auto &context = *static_cast<Context *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id ||
+      base != context.base) return false;
+  bool success = false;
+  __try {
+    success = bridge::InvokeActivityFeastNativePlannerGuestJoinV1(
+        nullptr, base, planner, character, value);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    success = false;
+  }
+  return success;
+}
+
+std::uintptr_t EvaluateGuestActivity(void *opaque, std::uintptr_t base,
+                                     std::uintptr_t planner) noexcept {
+  auto &context = *static_cast<Context *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id ||
+      base != context.base) return 0;
+  std::uintptr_t activity = 0;
+  __try {
+    activity = bridge::InvokeActivityFeastNativePlannerActivityV1(
+        nullptr, base, planner);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    activity = 0;
+  }
+  return activity;
+}
+
+bool EvaluateGuestTravelDays(void *opaque, std::uintptr_t base,
+                             std::uintptr_t character,
+                             std::uintptr_t destination,
+                             std::int32_t &days) noexcept {
+  auto &context = *static_cast<Context *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id ||
+      base != context.base) return false;
+  bool success = false;
+  __try {
+    success = bridge::InvokeActivityFeastNativeTravelDaysV1(
+        nullptr, base, character, destination, days);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    success = false;
+  }
+  return success;
+}
+
 bool IsFeastType(std::uintptr_t base, std::uintptr_t type) noexcept {
   constexpr char key[] = "activity_feast";
   std::uintptr_t vtable = 0, data = type + 0x18;
@@ -251,6 +299,30 @@ bool Capture(void *opaque,
   if (can_start.status != bridge::ActivityStage5CanStartStatusV1::observed ||
       can_start.frame != cost.frame)
     return false;
+  bridge::ActivityFeastGuestJoinEnvironmentV1 guest_environment{};
+  guest_environment.enabled = true;
+  guest_environment.diagnostic = diagnostic;
+  guest_environment.passive_cost = query.passive_cost;
+  guest_environment.invoke_join = &EvaluateGuestJoin;
+  guest_environment.join_context = &context;
+  guest_environment.invoke_activity = &EvaluateGuestActivity;
+  guest_environment.invoke_travel_days = &EvaluateGuestTravelDays;
+  guest_environment.arrival_context = &context;
+  const auto guests = bridge::ReadActivityFeastGuestJoinV1(
+      guest_environment, planner_expected);
+  query.guest_status = guests.status;
+  if (guests.status == bridge::ActivityFeastGuestJoinStatusV1::observed &&
+      guests.frame == cost.frame &&
+      guests.normal_refresh_sequence == cost.normal_refresh_sequence) {
+    query.selected_nonhost_count = guests.selected_nonhost_count;
+    query.positive_join_count = guests.positive_join_count;
+    query.timely_positive_join_count = guests.timely_positive_join_count;
+    query.arrival_time_observed = guests.arrival_time_observed;
+  } else if (guests.status ==
+             bridge::ActivityFeastGuestJoinStatusV1::observed) {
+    query.guest_status =
+        bridge::ActivityFeastGuestJoinStatusV1::configuration_changed;
+  }
   const auto hosted_environment = HostedEnvironment(context);
   const auto balances = bridge::ReadActivityFeastResourceBalancesV1(
       hosted_environment, expected);
@@ -501,6 +573,20 @@ std::string SerializeActivityFeastStage5PrivateV1(
   AppendBalances(payload, input.balances);
   payload += ",\"hosted_activities\":";
   AppendIdentities(payload, input.hosted, input.hosted_count);
+  payload += ",\"guest_join_status\":\"";
+  payload += bridge::ActivityFeastGuestJoinStatusKeyV1(query.guest_status);
+  payload += "\",\"selected_nonhost_count\":";
+  payload += query.guest_status == bridge::ActivityFeastGuestJoinStatusV1::observed
+                 ? std::to_string(query.selected_nonhost_count) : "null";
+  payload += ",\"positive_join_count\":";
+  payload += query.guest_status == bridge::ActivityFeastGuestJoinStatusV1::observed
+                 ? std::to_string(query.positive_join_count) : "null";
+  payload += ",\"timely_positive_join_count\":";
+  payload += query.guest_status == bridge::ActivityFeastGuestJoinStatusV1::observed
+                 ? std::to_string(query.timely_positive_join_count) : "null";
+  payload += ",\"arrival_time_observed\":";
+  payload += query.guest_status == bridge::ActivityFeastGuestJoinStatusV1::observed &&
+                     query.arrival_time_observed ? "true" : "false";
   payload += ",\"native_guest_route_qualified\":";
   payload += query.guest_route_qualified ? "true" : "false";
   payload += ",\"read_only\":";

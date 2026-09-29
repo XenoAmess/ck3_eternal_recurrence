@@ -1465,6 +1465,7 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/activity_feast_resource_balance_v1.cpp
     src/activity_hosted_identity_v1.cpp
+    src/activity_stage5_feast_guest_join_v1.cpp
     src/activity_feast_stage5_start_v1.cpp
     src/activity_feast_stage5_start_private_transport_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -1647,6 +1648,22 @@ if(BUILD_TESTING)
         ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp)
   endif()
   if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+    add_executable(xar_ck3_activity_stage5_feast_guest_join_v1_test
+      src/activity_planner_diag_v1.cpp
+      src/activity_cost_slot12_passive_v1.cpp
+      src/activity_stage5_gold_cost_v1.cpp
+      src/activity_stage5_feast_guest_join_v1.cpp
+      src/activity_stage5_feast_guest_join_v1_test.cpp)
+    target_include_directories(xar_ck3_activity_stage5_feast_guest_join_v1_test
+      PRIVATE include)
+    target_compile_definitions(xar_ck3_activity_stage5_feast_guest_join_v1_test
+      PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(xar_ck3_activity_stage5_feast_guest_join_v1_test
+        PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_native_bridge_activity_stage5_feast_guest_join_v1
+      COMMAND xar_ck3_activity_stage5_feast_guest_join_v1_test)
     add_executable(xar_ck3_activity_feast_stage5_start_v1_test
       src/activity_feast_resource_balance_v1.cpp
       src/activity_feast_stage5_start_v1.cpp
