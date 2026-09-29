@@ -225,6 +225,7 @@ def _snapshot(
     played_character: dict[str, object] | None = None,
     played_character_gold: dict[str, object] | None = None,
     played_character_prestige: dict[str, object] | None = None,
+    played_character_piety: dict[str, object] | None = None,
     one_life_settlement: dict[str, object] | None = None,
     active_wars: list[dict[str, object]] | None = None,
     player_armies: list[dict[str, object]] | None = None,
@@ -247,6 +248,7 @@ def _snapshot(
             "played_character": played_character,
             "played_character_gold": played_character_gold,
             "played_character_prestige": played_character_prestige,
+            "played_character_piety": played_character_piety,
             "one_life_settlement": one_life_settlement,
             "active_wars": active_wars,
             "player_armies": player_armies,
@@ -6412,6 +6414,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "raw": 12_000_000,
                     "scale": 100_000,
                 },
+                played_character_piety={
+                    "raw": 5_000_000,
+                    "scale": 100_000,
+                },
             )
         )
 
@@ -6425,6 +6431,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(
             snapshot["played_character_prestige"],
             {"raw": 12_000_000, "scale": 100_000},
+        )
+        self.assertEqual(
+            snapshot["played_character_piety"],
+            {"raw": 5_000_000, "scale": 100_000},
         )
         self.assertIsNone(played["betrothed_id"])
         self.assertEqual(played["primary_spouse_id"], 808)
@@ -6461,6 +6471,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 ValueError, "played_character_prestige is malformed"
             ):
                 native_driver_module._played_character_prestige(value)
+
+    def test_played_character_piety_rejects_invalid_fixed_point(self) -> None:
+        for value in (
+            {"raw": True, "scale": 100_000},
+            {"raw": 1, "scale": 1},
+            {"raw": 1, "scale": 100_000, "whole": 0},
+        ):
+            with self.subTest(value=value), self.assertRaisesRegex(
+                ValueError, "played_character_piety is malformed"
+            ):
+                native_driver_module._played_character_piety(value)
 
     def test_map_ready_without_played_character_does_not_invent_terminal(
         self,

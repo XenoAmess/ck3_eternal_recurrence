@@ -4737,6 +4737,8 @@ int main() {
       snapshot.played_character_gold.scale != 100'000 ||
       snapshot.played_character_prestige.raw != 0 ||
       snapshot.played_character_prestige.scale != 100'000 ||
+      snapshot.played_character_piety.raw != 0 ||
+      snapshot.played_character_piety.scale != 100'000 ||
       snapshot.played_character_betrothed_id != -1 ||
       snapshot.played_character_primary_spouse_id != -1 ||
       !snapshot.played_character_spouse_ids.empty() ||
@@ -4763,6 +4765,8 @@ int main() {
       snapshot.played_character_gold.scale != 100'000 ||
       snapshot.played_character_prestige.raw != 12'000'000 ||
       snapshot.played_character_prestige.scale != 100'000 ||
+      snapshot.played_character_piety.raw != 5'000'000 ||
+      snapshot.played_character_piety.scale != 100'000 ||
       snapshot.played_character_betrothed_id != enemy_character_id ||
       snapshot.played_character_primary_spouse_id != enemy_character_id ||
       snapshot.played_character_spouse_ids !=

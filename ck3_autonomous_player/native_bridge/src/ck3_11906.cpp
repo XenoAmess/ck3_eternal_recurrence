@@ -10550,6 +10550,7 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
     output.played_character_stress_points = -1;
     output.played_character_gold = {};
     output.played_character_prestige = {};
+    output.played_character_piety = {};
     output.played_character_betrothed_id = -1;
     output.played_character_primary_spouse_id = -1;
     output.played_character_spouse_ids.clear();
@@ -10588,6 +10589,11 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
         extension == nullptr
             ? std::int64_t{0}
             : LoadAt<std::int64_t>(extension, kCharacterPrestigeOffset),
+        kFixedPointScale};
+    output.played_character_piety = {
+        extension == nullptr
+            ? std::int64_t{0}
+            : LoadAt<std::int64_t>(extension, kCharacterPietyOffset),
         kFixedPointScale};
   }
   if (output.has_played_character &&
