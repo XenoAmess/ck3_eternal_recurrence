@@ -26,6 +26,39 @@ import xar_autoplayer.stationary_route_contact_query_run as runner
 import g2_preview_operator as operator
 
 
+PREPARED_SHA256 = "2B9F7F16D6E67F3D58DCF81D9E66E82AC66B7F9E116FAA6BC52FE4C3953B922C"
+
+
+def _rebind_receipt(prepared_sha256: str = PREPARED_SHA256) -> dict[str, object]:
+    return {
+        "schema": "xar.ck3.ordinary-seed-rebind/v1",
+        "ok": True, "status": "rebound", "ck3_launch_attempted": False,
+        "pipe_name": "test",
+        "driver_state": {
+            "source_sha256": runner.RAW_SOURCE_DRIVER_SHA256,
+            "target_sha256": prepared_sha256,
+        },
+        "save": {
+            "bytes_unchanged": True,
+            "source": {"sha256": runner.CHECKPOINT_SHA256},
+            "target": {"sha256": runner.CHECKPOINT_SHA256},
+        },
+        "no_launch_preflight_expectations": {
+            "pipe_name": "test", "expected_character_id": 29829,
+            "expected_episode_run_id": "native-29829-2bc2d599f7f9",
+            "expected_checkpoint_sha256": runner.CHECKPOINT_SHA256,
+            "expected_driver_state_sha256": prepared_sha256,
+            "xar_enabled": "xar_off",
+            "succession_lifecycle": "ordinary_campaign_succession",
+            "ordinary_campaign_no_pact": True,
+        },
+        "post_rebind_validation": {
+            "native_driver_consumer": "passed",
+            "cold_checkpoint_validator": "passed",
+        },
+    }
+
+
 def _snapshot() -> dict[str, object]:
     return {
         "paused": True,
@@ -89,6 +122,23 @@ def _result() -> dict[str, object]:
 
 
 class StationaryRouteContactReadOnlyTests(unittest.TestCase):
+    def test_raw_source_and_official_prepared_driver_have_separate_pins(self) -> None:
+        receipt = _rebind_receipt()
+        self.assertNotEqual(runner.RAW_SOURCE_DRIVER_SHA256, PREPARED_SHA256)
+        self.assertTrue(runner._exact_prepared_rebind(
+            receipt, prepared_driver_sha256=PREPARED_SHA256, pipe_name="test",
+        ))
+        self.assertFalse(runner._exact_prepared_rebind(
+            receipt, prepared_driver_sha256=runner.RAW_SOURCE_DRIVER_SHA256,
+            pipe_name="test",
+        ))
+        wrong_raw = copy.deepcopy(receipt)
+        wrong_raw["driver_state"]["source_sha256"] = "0" * 64
+        self.assertFalse(runner._exact_prepared_rebind(
+            wrong_raw, prepared_driver_sha256=PREPARED_SHA256,
+            pipe_name="test",
+        ))
+
     def test_bad_source_pair_refuses_before_native_session(self) -> None:
         checkpoint = {
             "saved_date_raw": 53219928,
@@ -109,6 +159,7 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
             stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
             stack.enter_context(patch.object(runner, "validate_cold_start_checkpoint_for_pipe", return_value=checkpoint))
             stack.enter_context(patch.object(runner, "_read_driver_state", return_value={"episode_run_id": checkpoint["episode_run_id"]}))
+            stack.enter_context(patch.object(runner, "_read_rebind_receipt", return_value=_rebind_receipt()))
             stack.enter_context(patch.object(runner, "_sha256", return_value="0" * 64))
             session = stack.enter_context(patch.object(runner, "native_session"))
             driver = stack.enter_context(patch.object(runner, "NativeHeadlessGameplayDriver"))
@@ -163,8 +214,9 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
             stack.enter_context(patch.object(runner, "ensure_state_path_safe"))
             stack.enter_context(patch.object(runner, "validate_cold_start_checkpoint_for_pipe", return_value=checkpoint))
             stack.enter_context(patch.object(runner, "_read_driver_state", side_effect=[before_driver, after_driver]))
+            stack.enter_context(patch.object(runner, "_read_rebind_receipt", return_value=_rebind_receipt()))
             stack.enter_context(patch.object(runner, "_sha256", side_effect=lambda path: (
-                runner.CHECKPOINT_SHA256 if path.suffix == ".ck3" else runner.DRIVER_SHA256
+                runner.CHECKPOINT_SHA256 if path.suffix == ".ck3" else PREPARED_SHA256
             )))
             stack.enter_context(patch.object(runner, "_wait_for_readiness", return_value=readiness))
             stack.enter_context(patch.object(runner, "_cold_restore_bookkeeping", return_value={"exact": True}))
@@ -199,8 +251,12 @@ class StationaryOperatorNegativeTests(unittest.TestCase):
                 ownership_round_id="R999", timeout=390,
                 readiness_timeout=300,
             )
-            stack.enter_context(patch.object(operator, "load_manifest", return_value={}))
+            stack.enter_context(patch.object(operator, "load_manifest", return_value={
+                "state_dir": root, "pipe": "test",
+                "driver_state_sha256": PREPARED_SHA256,
+            }))
             stack.enter_context(patch.object(operator, "frozen_source_identity", return_value={}))
+            stack.enter_context(patch.object(operator, "read_json", return_value=_rebind_receipt()))
             stack.enter_context(patch.object(
                 operator, "current_checkpoint_identity", return_value=(
                     Path(root) / "save.ck3", Path(root) / "driver.json",
@@ -227,7 +283,10 @@ class StationaryOperatorNegativeTests(unittest.TestCase):
                 ownership_round_id="R999", timeout=390,
                 readiness_timeout=300,
             )
-            stack.enter_context(patch.object(operator, "load_manifest", return_value={}))
+            stack.enter_context(patch.object(operator, "load_manifest", return_value={
+                "state_dir": root, "pipe": "test",
+                "driver_state_sha256": PREPARED_SHA256,
+            }))
             stack.enter_context(patch.object(operator, "frozen_source_identity", return_value={}))
             stack.enter_context(patch.object(
                 operator, "current_checkpoint_identity", return_value=(
@@ -239,7 +298,7 @@ class StationaryOperatorNegativeTests(unittest.TestCase):
             stack.enter_context(patch.object(
                 operator, "sha256", side_effect=lambda path: (
                     runner.CHECKPOINT_SHA256 if path.suffix == ".ck3"
-                    else runner.DRIVER_SHA256
+                    else PREPARED_SHA256
                 ),
             ))
             stack.enter_context(patch.object(operator, "agent_command", return_value=["agent"] ))
@@ -248,11 +307,11 @@ class StationaryOperatorNegativeTests(unittest.TestCase):
             run_logged = stack.enter_context(patch.object(operator, "run_logged", return_value=0))
             stack.enter_context(patch("builtins.print"))
             stack.enter_context(patch.object(
-                operator, "read_json", return_value={
+                operator, "read_json", side_effect=[_rebind_receipt(), {
                     "ok": True, "status": "GREEN_READ_ONLY",
                     "round": "R999", "action_authorized": False,
                     "checks": {}, "cleanup": {"ok": True},
-                },
+                }],
             ))
             self.assertEqual(operator.command_query_r0345_stationary_route_contact_v1(args), 1)
             self.assertEqual(run_logged.call_count, 2)

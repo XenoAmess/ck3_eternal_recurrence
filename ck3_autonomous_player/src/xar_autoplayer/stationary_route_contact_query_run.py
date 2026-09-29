@@ -51,10 +51,68 @@ QUERY_STEP = query_route_contact_horizon_step(
     ARMY_ID, TARGET_PROVINCE_ID, list(HOSTILE_ARMY_IDS)
 )
 CHECKPOINT_SHA256 = "A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C"
-DRIVER_SHA256 = "9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0"
+RAW_SOURCE_DRIVER_SHA256 = "9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0"
 EXPECTED_EPISODE_RUN_ID = "native-29829-2bc2d599f7f9"
 EXPECTED_DATE_RAW = 53219928
 ROUND_PATTERN = re.compile(r"R[1-9][0-9]*")
+
+
+def _read_rebind_receipt(path: Path) -> dict[str, object]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"cannot read ordinary rebind receipt: {error}") from error
+    if not isinstance(value, dict):
+        raise AgentError("ordinary rebind receipt is not an object")
+    return value
+
+
+def _exact_prepared_rebind(
+    receipt: object, *, prepared_driver_sha256: str, pipe_name: str,
+) -> bool:
+    if not isinstance(receipt, dict):
+        return False
+    driver = receipt.get("driver_state")
+    save = receipt.get("save")
+    expectations = receipt.get("no_launch_preflight_expectations")
+    post = receipt.get("post_rebind_validation")
+    source_save = save.get("source") if isinstance(save, dict) else None
+    target_save = save.get("target") if isinstance(save, dict) else None
+    return bool(
+        receipt.get("schema") == "xar.ck3.ordinary-seed-rebind/v1"
+        and receipt.get("ok") is True
+        and receipt.get("status") == "rebound"
+        and receipt.get("ck3_launch_attempted") is False
+        and receipt.get("pipe_name") == pipe_name
+        and isinstance(driver, dict)
+        and str(driver.get("source_sha256", "")).casefold()
+        == RAW_SOURCE_DRIVER_SHA256.casefold()
+        and str(driver.get("target_sha256", "")).casefold()
+        == prepared_driver_sha256.casefold()
+        and isinstance(save, dict)
+        and save.get("bytes_unchanged") is True
+        and isinstance(source_save, dict)
+        and isinstance(target_save, dict)
+        and str(source_save.get("sha256", "")).casefold()
+        == CHECKPOINT_SHA256.casefold()
+        and str(target_save.get("sha256", "")).casefold()
+        == CHECKPOINT_SHA256.casefold()
+        and isinstance(expectations, dict)
+        and expectations.get("pipe_name") == pipe_name
+        and expectations.get("expected_character_id") == 29829
+        and expectations.get("expected_episode_run_id") == EXPECTED_EPISODE_RUN_ID
+        and str(expectations.get("expected_checkpoint_sha256", "")).casefold()
+        == CHECKPOINT_SHA256.casefold()
+        and str(expectations.get("expected_driver_state_sha256", "")).casefold()
+        == prepared_driver_sha256.casefold()
+        and expectations.get("xar_enabled") == "xar_off"
+        and expectations.get("succession_lifecycle")
+        == "ordinary_campaign_succession"
+        and expectations.get("ordinary_campaign_no_pact") is True
+        and isinstance(post, dict)
+        and post.get("native_driver_consumer") == "passed"
+        and post.get("cold_checkpoint_validator") == "passed"
+    )
 
 
 def _exact_h3928_paused_subject(snapshot: object) -> bool:
@@ -400,6 +458,8 @@ def query_r0345_stationary_route_contact_once(
     save_path = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
     driver_state_path = spec.state_dir / "native-session" / "driver-state.json"
     before_driver_state = _read_driver_state(driver_state_path)
+    rebind_receipt_path = spec.state_dir / "ordinary-seed-rebind-v1.json"
+    rebind_receipt = _read_rebind_receipt(rebind_receipt_path)
     lifecycle = checkpoint.get("succession_lifecycle")
     before_files = {
         "checkpoint": {"path": str(save_path.resolve()), "sha256": _sha256(save_path)},
@@ -411,8 +471,11 @@ def query_r0345_stationary_route_contact_once(
     if (
         before_files["checkpoint"]["sha256"].casefold()
         != CHECKPOINT_SHA256.casefold()
-        or before_files["driver_state"]["sha256"].casefold()
-        != DRIVER_SHA256.casefold()
+        or not _exact_prepared_rebind(
+            rebind_receipt,
+            prepared_driver_sha256=before_files["driver_state"]["sha256"],
+            pipe_name=config.pipe_name,
+        )
         or checkpoint.get("saved_date_raw") != EXPECTED_DATE_RAW
         or checkpoint.get("episode_run_id") != EXPECTED_EPISODE_RUN_ID
         or before_driver_state.get("episode_run_id") != EXPECTED_EPISODE_RUN_ID
@@ -610,6 +673,10 @@ def query_r0345_stationary_route_contact_once(
             "entry": "agent.py native-query-r0345-stationary-route-contact-v1",
             "capability": "game.command.query-route-contact-horizon-v1",
             "checkpoint_anchor": copy.deepcopy(checkpoint),
+            "ordinary_rebind_receipt": str(rebind_receipt_path.resolve()),
+            "ordinary_rebind_receipt_sha256": _sha256(rebind_receipt_path),
+            "raw_source_driver_sha256": RAW_SOURCE_DRIVER_SHA256,
+            "prepared_driver_sha256": before_files["driver_state"]["sha256"],
         },
         "bounds": {
             "timeout_seconds": timeout,
