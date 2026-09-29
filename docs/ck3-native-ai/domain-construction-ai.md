@@ -38,9 +38,13 @@ consumed this receipt, and no new construction was submitted. Turn 4 advanced
 to raw `53154720`, 31 derived game days later. This closes the matched cold
 recheck gate for this start receipt, but is not durable Robert mainline time.
 The ledger's last material check was raw `53153976`; the ordinary 30-day watch
-threshold is `53154696`, so a subsequent formal paused turn is due to attempt
-the existing income-root and material completion readback. A built slot,
-building effect and realized income increase remain unobserved.
+threshold is `53154696`. A new-PID formal turn therefore immediately rechecks
+the same material tuple; that cold read has priority over a warm same-PID watch.
+If it finds a completed slot without same-frame income, the following formal
+turn requests the existing public income root before another typed receipt.
+If the slot remains active, the consumer records its new progress and restarts
+the 30-day watch. A built slot, building effect and realized income increase
+remain unobserved.
 
 ## 2026-09-29 NW-ECON: keep an applied-building readout under blocked war
 
