@@ -42,6 +42,25 @@ def _child_aligned_default_lineality(row: object) -> bool:
                 bool(row["heir_sex_selector_raw"]))
 
 
+def _rejected_candidates(resolved: Mapping[str, object]) -> frozenset[int]:
+    source = resolved.get("source_pending")
+    candidate = resolved.get("candidate_character_id")
+    if (resolved.get("status") not in {"refused", "invalidated"}
+            or not isinstance(source, dict)
+            or source.get("candidate_character_id") != candidate
+            or source.get("heir_character_id") !=
+                resolved.get("heir_character_id")
+            or not _positive(candidate)):
+        raise ValueError("child default refusal lacks its source proposal")
+    prior = source.get("prior_rejected_candidate_ids", [])
+    if (not isinstance(prior, list)
+            or any(not _positive(value) for value in prior)
+            or len(set(prior)) != len(prior)
+            or candidate in prior):
+        raise ValueError("child default rejected candidate history changed")
+    return frozenset([*prior, candidate])
+
+
 def read_child_default_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.is_file():
@@ -162,6 +181,8 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
             "child_default_pending": dict(pending),
             "child_default_status": "await_later_paused_frame"}}
     resolved = ledger["resolved"]
+    retry_source: dict[str, object] | None = None
+    rejected_candidate_ids: frozenset[int] = frozenset()
     if isinstance(resolved, dict):
         pid, creation = bridge_process_identity(driver)
         if resolved.get("episode_run_id") != snapshot.get("episode_run_id"):
@@ -188,7 +209,17 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
                     "phase": "child_default_actual_alliance_read",
                     "child_default_resolved": dict(resolved),
                     "reason": "read actual player-recipient alliance"}}
-        return planned
+            return planned
+        if resolved.get("status") not in {"refused", "invalidated"}:
+            return planned
+        source = resolved.get("source_pending")
+        if (not isinstance(source, dict)
+                or source.get("episode_run_id") != snapshot.get("episode_run_id")
+                or source.get("played_character_id") !=
+                    snapshot["played_character"]["character_id"]):
+            return planned
+        rejected_candidate_ids = _rejected_candidates(resolved)
+        retry_source = resolved
     if not _eligible_base_step(plan, snapshot):
         return planned
     if (read_family_marriage_ledger(state_dir)["pending"] is not None
@@ -196,6 +227,10 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
         return planned
     split = _split_successor(driver, snapshot)
     if split is None:
+        return planned
+    if (retry_source is not None
+            and retry_source.get("heir_character_id") !=
+                split["subject_character_id"]):
         return planned
     subject = driver.query_player_child_marriage_subject_private_v1(
         expected_native_revision=snapshot["native_revision"],
@@ -224,7 +259,8 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
             or len(set(shortlist)) != len(shortlist)):
         raise ValueError("child default comparator set is incomplete")
     decision = choose_specified_child_default_value(
-        subject, values, split_successor_verified=True)
+        subject, values, split_successor_verified=True,
+        rejected_candidate_ids=rejected_candidate_ids)
     observation = {
         "split_successor": split,
         "shortlist_candidate_ids": shortlist,
@@ -232,6 +268,7 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
             row.get("candidate_character_id") for row in values],
         "stop_reason": "complete_shortlist_compared",
         "policy_decision": decision,
+        "rejected_candidate_ids": sorted(rejected_candidate_ids),
     }
     candidate_id = decision.get("selected_candidate_character_id")
     matches = [value for value in values
@@ -247,6 +284,8 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
         "child_default_value": matches[0],
         "child_default_full_values": values,
         "child_default_observation": observation,
+        "child_default_retry_source": (dict(retry_source)
+                                       if retry_source is not None else None),
         "child_default_displaced_plan": {
             "selected_step": plan.get("selected_step"),
             "phase": plan.get("phase"), "reason": plan.get("reason")},
@@ -269,7 +308,27 @@ def submit_child_default_private(driver: object, *,
             or value.get("legality_query_sequence") != legality.get("query_sequence")
             or value.get("request_matrilineal_option") is not False):
         raise ValueError("child default selected value crossed its source frame")
+    rejected_list = observation.get("rejected_candidate_ids")
+    retry_source = plan.get("child_default_retry_source")
+    if (not isinstance(rejected_list, list)
+            or any(not _positive(item) for item in rejected_list)
+            or rejected_list != sorted(set(rejected_list))
+            or (retry_source is None and rejected_list)
+            or (retry_source is not None and not isinstance(retry_source, dict))):
+        raise ValueError("child default rejected candidate proof changed")
+    rejected_candidate_ids = frozenset(rejected_list)
+    if (isinstance(retry_source, dict)
+            and _rejected_candidates(retry_source) != rejected_candidate_ids):
+        raise ValueError("child default prior refusal changed")
     split = _split_successor(driver, snapshot)
+    if isinstance(retry_source, dict):
+        source = retry_source["source_pending"]
+        if (source.get("episode_run_id") != snapshot.get("episode_run_id")
+                or source.get("played_character_id") !=
+                    snapshot["played_character"]["character_id"]
+                or source.get("heir_character_id") !=
+                    split["subject_character_id"]):
+            raise ValueError("child default prior refusal changed actor or child")
     chosen = observation.get("policy_decision")
     shortlist = observation.get("shortlist_candidate_ids")
     if (split != observation.get("split_successor")
@@ -284,6 +343,7 @@ def submit_child_default_private(driver: object, *,
             or chosen.get("status") != "selected"
             or chosen.get("selected_candidate_character_id") !=
                 value.get("candidate_character_id")
+            or value.get("candidate_character_id") in rejected_candidate_ids
             ):
         raise ValueError("child default split or value changed before submission")
     fresh_values = [
@@ -294,7 +354,8 @@ def submit_child_default_private(driver: object, *,
     ]
     if (fresh_values != full_values
             or choose_specified_child_default_value(
-                legality, fresh_values, split_successor_verified=True
+                legality, fresh_values, split_successor_verified=True,
+                rejected_candidate_ids=rejected_candidate_ids,
             ).get("selected_candidate_character_id") !=
                 value.get("candidate_character_id")):
         raise ValueError("child default full comparator changed before submission")
@@ -316,7 +377,8 @@ def submit_child_default_private(driver: object, *,
         raise ValueError("child default selected pair identity changed")
     state_dir = driver.state_dir
     ledger = read_child_default_ledger(state_dir)
-    if (ledger["pending"] is not None or ledger["resolved"] is not None
+    if (ledger["pending"] is not None
+            or ledger["resolved"] != retry_source
             or read_family_marriage_ledger(state_dir)["pending"] is not None
             or read_child_matrilineal_ledger(state_dir)["pending"] is not None):
         raise ValueError("child default proposal already committed or resource busy")
@@ -340,6 +402,7 @@ def submit_child_default_private(driver: object, *,
             value["candidate_character_id"],
             row["recipient_character_id"]],
         "selected_value_projection": dict(row),
+        "prior_rejected_candidate_ids": rejected_list,
         "deferred_prior_plan": dict(
             plan.get("child_default_displaced_plan", {})),
         "source_bridge_pid": pid,
@@ -404,6 +467,9 @@ def query_child_default_result_private(
             "episode_run_id": pending["episode_run_id"],
             "post_bridge_pid": pid,
             "post_bridge_creation_date": creation}
+        if status in {"refused", "invalidated"}:
+            resolved["rejected_candidate_ids"] = sorted(
+                _rejected_candidates(resolved))
         _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
     elif status in {"pending", "accepted_pending"}:
         _write(state_dir, {**ledger, "pending": {

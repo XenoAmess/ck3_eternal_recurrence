@@ -1421,3 +1421,33 @@ flowchart TD
     D -- exactly 1 --> F[Verify child and current marriage legality]
     F -. R0395 action not reached .-> G[Typed proposal and material readback]
 ```
+
+### Guy proposal refusal and the remaining candidate (source boundary, 2026-09-30)
+
+The existing exact-build result reader distinguishes an outbound proposal's
+`pending` or `accepted_pending` state from `refused`, `invalidated`, and an
+actual `marriage` or `betrothal`. The latter two require a bilateral material
+read; a send receipt alone is never acceptance. The default-child formal
+ledger records the resolved proposal and its source pending identity beside
+the paired game checkpoint. A focused production-path test showed that the
+consumer previously returned immediately for a same-episode `refused` result,
+so it never considered the other fully valued, still final-legal candidate.
+This finding is source-level; there is no live Guy refusal artifact.
+
+```mermaid
+flowchart TD
+    A[Typed default-child proposal and paired pending checkpoint] --> B{Later native result}
+    B -- pending or accepted_pending --> C[Keep pending identity; read on a later frame or cold restore]
+    B -- marriage or betrothal --> D[Read actual child pair and alliance; recheck material pair after cold restore]
+    B -- refused or invalidated --> E[Keep resolved identity and failed candidate ID]
+    E --> F{Same episode, same split child, and current final-legal values?}
+    F -- no --> G[Hold]
+    F -- yes --> H[Compare both bounded values and skip previously failed IDs]
+    H -. new formal retry untested live .-> I[Submit at most one remaining candidate]
+```
+
+Skipping a failed candidate is a project retry policy, not a new CK3
+acceptance rule. The current native final legality and full value must still
+authorize any replacement. The paired resolved ledger is carried through
+the official checkpoint and cold restore; a still-pending proposal is not
+resent. Whether Guy's first proposal will be refused remains unknown.
