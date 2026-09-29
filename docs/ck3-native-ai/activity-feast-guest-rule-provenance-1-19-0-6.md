@@ -1,7 +1,8 @@
 # Ordinary feast guest rule provenance: passive exact-build read
 
-Status: **source and focused fixture only**. This private default-OFF path has
-not produced a paused CK3 result. It applies to CK3 1.19.0.6, EXE SHA-256
+Status: **source and focused fixture; paused membership remains RED**. This
+private default-OFF path has not produced an observed membership result. It
+applies to CK3 1.19.0.6, EXE SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 It extends the [ordinary rule binding](activity-feast-guest-rule-toggle-1-19-0-6.md)
 and [Stage-5 guest read](activity-stage5-feast-guest-candidate-1.19.0.6.md).
@@ -63,14 +64,15 @@ This read supplies a decision input only. It does not send an invitation,
 prove acceptance or attendance, start the feast, advance a turn, or close a
 cold-recovery contract. Its focused MSVC fixture checks exact instruction
 anchors, rule-specific ID capture, post-filter intersection, negative
-candidate membership and stale-group rejection. A separate frozen DLL,
-official pair/no-launch check and paused live read are still required.
+candidate membership and stale-group rejection. R0386 supplied a separately
+frozen DLL, official pair/no-launch check and paused live read, but the
+membership result was unavailable as described below.
 
 The bounded Python runner and operator now expose this read only when a named
 rule and the same run's filtered candidate read are requested. The transport
 checks the exact envelope, candidate identity and unchanged paused frame;
 observed membership still yields `hold` with invitation and Start disabled.
-This is source and fixture coverage, not a live membership result. In H3928,
+No live membership result exists yet. In H3928,
 R0378 separately found Stage-5 `final_can_start=false`: actor 29829 failed
 `is_available_adult` because `in_army=no`. A future action trial therefore
 needs a fresh legal paused frame with `final_can_start=true`, a matching
@@ -132,3 +134,33 @@ cost and final CanStart read on that frame. Only then can a formal Start
 consumer submit once and verify created activity, debit, guest state, next
 turn and required restore. Until then `final_invite_legal` remains unknown;
 candidate filtering and a positive join estimate do not turn it true.
+
+## R0386 paused read RED and diagnostic boundary
+
+R0386 used source `d7cbfb4`, Release DLL SHA-256
+`5EE67F398863B1EE63A0E8F4BD2E95B5F5F486C2B614CECF071A34BFC27C02CF`,
+and the officially paired H3928 paused Robert frame (actor 29829,
+raw date 53219928). The Stage-5 candidate and combined route proof both read
+the same native refresh sequence and fingerprint, but the named
+`activity_invite_rule_vassals` provenance query for CharacterID 38293 returned
+`no_normal_refresh`. The runner correctly retained RED; it did not infer a
+membership boolean, toggle a category, invite, Start, or advance the game date.
+
+The rule query first returned an observed rule state; its native transport
+assigns the same `no_normal_refresh` status when either the second passive
+slot-12 read fails or the provenance observer's `latest.sequence` is zero.
+The R0386 result does not distinguish those two branches. The earlier
+candidate and route proof had observed the passive capture, but that does not
+prove its status at the later named-rule query. The exact executable's call at
+`0x10B0A5C` supplies `planner+0x1A18` as the fourth argument and
+`planner+0x1590` as the sixth, matching the hook's binding. The artifact does
+not distinguish an absent matching callback from a callback rejected by its
+paused frame, thread, planner, feast-type, or Stage-5 gate.
+
+The next default-OFF diagnostic build reports the second passive read's exact
+status or counts each rejection at the natural provenance refresh hook,
+whichever branch fails. It includes those details only in the existing
+`no_normal_refresh` RED message. It never synthesizes a rule membership,
+invokes a refresh or scripted effect, or enables invitation/Start. One newly
+paired bounded read can identify the actual failed gate before changing the
+capture rules. This diagnostic is source and fixture coverage until that read.

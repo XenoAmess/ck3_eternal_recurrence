@@ -3,8 +3,10 @@
 #include "xar_bridge/activity_cost_slot12_passive_v1.hpp"
 
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <mutex>
+#include <string>
 #include <string_view>
 
 namespace xar::bridge {
@@ -19,6 +21,25 @@ inline constexpr std::size_t kActivityGuestRuleRefreshPatchBytesV1 = 15;
 inline constexpr std::size_t kActivityGuestRuleEffectPatchBytesV1 = 18;
 inline constexpr std::size_t kActivityGuestRuleMaxRulesV1 = 64;
 inline constexpr std::size_t kActivityGuestRuleMaxIdsV1 = 4096;
+
+// Counts the natural refresh hook and each reason a matching call could not
+// become a same-frame capture. Read only when no normal refresh was captured.
+enum class ActivityGuestRuleRefreshDiagnosticV1 : std::size_t {
+  hook_entered,
+  nested_refresh,
+  invalid_group_argument,
+  wrong_caller,
+  invalid_arguments,
+  frame_unavailable,
+  frame_unpaused,
+  actor_or_thread_unavailable,
+  planner_unavailable,
+  feast_type_unavailable,
+  stage_unavailable,
+  stage_not_five,
+  accepted,
+  count,
+};
 
 struct ActivityGuestRuleProvenanceRuleV1 {
   std::uintptr_t definition = 0;
@@ -83,6 +104,10 @@ struct ActivityGuestRuleProvenanceObserverV1 {
   void *refresh_trampoline = nullptr;
   void *effect_trampoline = nullptr;
   bool installed = false;
+  std::array<std::atomic<std::uint64_t>,
+             static_cast<std::size_t>(ActivityGuestRuleRefreshDiagnosticV1::count)>
+      refresh_diagnostics{};
+  std::atomic<std::int32_t> last_seen_stage{-1};
   ActivityGuestRuleProvenanceCaptureV1 working{};
   std::mutex capture_mutex{};
   ActivityGuestRuleProvenanceCaptureV1 latest{};
@@ -113,5 +138,7 @@ bool InstallActivityGuestRuleProvenanceV1(
     const ActivityCostSlot12EnvironmentV1 &environment) noexcept;
 std::string_view ActivityGuestRuleProvenanceStatusKeyV1(
     ActivityGuestRuleProvenanceStatusV1 status) noexcept;
+std::string DescribeActivityGuestRuleRefreshDiagnosticsV1(
+    const ActivityGuestRuleProvenanceObserverV1 &observer);
 
 } // namespace xar::bridge
