@@ -113,6 +113,8 @@ class _NativeAutoRunHarness:
         self.activity_planner_diag_query_count = 0
         self.activity_feast_open_count = 0
         self.activity_feast_open_status = "opened"
+        self.activity_feast_open_stage = 2
+        self.activity_feast_selected_verified = True
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -1482,9 +1484,10 @@ class _FakeActivityFeastState:
             "actor_character_id": self.harness.played_character_id,
             "open_status": status,
             "native_dispatch_invoked": status != "already_open",
+            "selected_feast_verified": self.harness.activity_feast_selected_verified,
             "widget_attached": True,
             "widget_visible": opened,
-            "planning_stage": 2,
+            "planning_stage": self.harness.activity_feast_open_stage,
             "configured_cost_state": "unknown",
             "final_can_start_state": "unknown",
             "raw_pointer_fields_persisted": False,
@@ -1953,6 +1956,8 @@ class NativeAutoRunTests(unittest.TestCase):
         private_activity_planner_diag_query: bool = False,
         private_activity_feast_planner_open: bool = False,
         activity_feast_open_status: str = "opened",
+        activity_feast_open_stage: int = 2,
+        activity_feast_selected_verified: bool = True,
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
@@ -2044,6 +2049,8 @@ class NativeAutoRunTests(unittest.TestCase):
             }]
         harness.advance_pump_epochs = advance_pump_epochs
         harness.activity_feast_open_status = activity_feast_open_status
+        harness.activity_feast_open_stage = activity_feast_open_stage
+        harness.activity_feast_selected_verified = activity_feast_selected_verified
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
         )
@@ -2446,6 +2453,38 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.activity_feast_open_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_feast_special_option_stage_one_is_valid_open(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_planner_open=True,
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["outcome"], "gui_open_observed")
+        observed = report["private_activity_feast_planner_open_observation"]
+        native = observed["native_receipt"]["result"]["activity_feast_planner_open"]
+        self.assertEqual(native["planning_stage"], 1)
+        self.assertIs(native["selected_feast_verified"], True)
+        self.assertEqual(native["configured_cost_state"], "unknown")
+        self.assertEqual(native["final_can_start_state"], "unknown")
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_feast_stage_one_requires_selected_feast_proof(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_planner_open=True,
+            activity_feast_open_stage=1,
+            activity_feast_selected_verified=False,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["outcome"], "failed")
+        self.assertEqual(
+            report["first_blocker"]["result"]["activity_feast_planner_open"][
+                "selected_feast_verified"], False,
+        )
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
 
     def test_private_child_pending_read_stops_before_planner_without_submit(self) -> None:
         common = ["--bridge-mode", "native-headless", "native-auto-run",

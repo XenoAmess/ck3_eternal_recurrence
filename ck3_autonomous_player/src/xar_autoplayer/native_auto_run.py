@@ -5406,7 +5406,8 @@ def _open_private_activity_feast_planner_once(
         isinstance(native, dict)
         and set(native) == {
             "schema", "snapshot_revision", "date_raw", "actor_character_id",
-            "open_status", "native_dispatch_invoked", "widget_attached",
+            "open_status", "native_dispatch_invoked",
+            "selected_feast_verified", "widget_attached",
             "widget_visible", "planning_stage", "configured_cost_state",
             "final_can_start_state", "raw_pointer_fields_persisted",
         }
@@ -5416,9 +5417,11 @@ def _open_private_activity_feast_planner_once(
         and native.get("actor_character_id") == actor_id
         and native.get("open_status") in {"opened", "already_open"}
         and type(native.get("native_dispatch_invoked")) is bool
+        and native.get("selected_feast_verified") is True
         and native.get("widget_attached") is True
         and native.get("widget_visible") is True
-        and native.get("planning_stage") == 2
+        and type(native.get("planning_stage")) is int
+        and native["planning_stage"] in {1, 2}
         and native.get("configured_cost_state") == "unknown"
         and native.get("final_can_start_state") == "unknown"
         and native.get("raw_pointer_fields_persisted") is False
