@@ -10,6 +10,7 @@ import unittest
 from unittest import mock
 
 from capture_session import (
+    A04_UI_SOURCE_ROOT,
     A04_UI_GUI_BLOCK_SHA256,
     A04_UI_SETTINGS_SHA256,
     gui_scale_disk_readback,
@@ -24,13 +25,20 @@ EVIDENCE = Path(
 )
 SOURCE = EVIDENCE / "native-ui-saved-settings-a01.pdx.txt"
 RECEIPT = EVIDENCE / "native-ui-saved-settings-a01.json"
+CHECKPOINT_ROOT = A04_UI_SOURCE_ROOT / "episode01-paired-counter-trace-attempt-010"
+CHECKPOINT_SAVE = CHECKPOINT_ROOT / "d05-immutable.ck3"
+CHECKPOINT_RECEIPT = (CHECKPOINT_ROOT / "ck3-output" / "interactive-requests-responses" /
+                      "d05-save.json")
+DEFAULT_RUN = A04_UI_SOURCE_ROOT / "episode02-e2-04-d05-static-a05-cli"
 
 
 def args(**changes):
     values = dict(import_a04_ui_gui_100=True, a04_ui_settings_snapshot=SOURCE,
                   a04_ui_preservation_receipt=RECEIPT, gui_scale="1.0",
-                  checkpoint_save=Path("source.ck3"),
-                  checkpoint_receipt=Path("source-receipt.json"),
+                  checkpoint_save=CHECKPOINT_SAVE,
+                  checkpoint_receipt=CHECKPOINT_RECEIPT,
+                  state_dir=DEFAULT_RUN / "ck3-state",
+                  output_dir=DEFAULT_RUN / "ck3-output",
                   record_debug_desktop=False)
     values.update(changes)
     return argparse.Namespace(**values)
@@ -54,7 +62,8 @@ class A05CliUiSourceTest(unittest.TestCase):
             import_a04_ui_gui_100=False, a04_ui_settings_snapshot=None,
             a04_ui_preservation_receipt=None)))
 
-    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file(),
+    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file() and
+                         CHECKPOINT_SAVE.is_file() and CHECKPOINT_RECEIPT.is_file(),
                          "Frozen external a04 UI evidence is unavailable")
     def test_exact_frozen_source_imports_only_gui_into_fresh_profile(self):
         binding = validate_a04_ui_gui_source_binding(args())
@@ -66,20 +75,23 @@ class A05CliUiSourceTest(unittest.TestCase):
         self.assertEqual(binding["a04_capture_status"], "RED")
         self.assertFalse(binding["recording_authorized_by_this_binding"])
         template = '"Graphics"={}\n"Audio"={}\n\n'
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=A04_UI_SOURCE_ROOT,
+                                         prefix="episode02-e2-04-d05-test-") as directory:
             root = Path(directory)
-            output = root / "a05-new-output"
-            profile = root / "a05-new-state" / "profile"
+            output = root / "ck3-output"
+            profile = root / "ck3-state" / "profile"
             output.mkdir()
             profile.mkdir(parents=True)
             settings = profile / "pdx_settings.txt"
-            prelaunch = prepare_a05_ui_settings(settings, template, output, binding)
+            local_binding = validate_a04_ui_gui_source_binding(args(
+                state_dir=root / "ck3-state", output_dir=output))
+            prelaunch = prepare_a05_ui_settings(settings, template, output, local_binding)
             expected = template.encode() + SOURCE.read_bytes()[6642:6696]
             self.assertEqual(settings.read_bytes(), expected)
             self.assertEqual(prelaunch["settings"]["sha256"],
                              hashlib.sha256(expected).hexdigest().upper())
             self.assertEqual(prelaunch["ui_source_preservation_receipt"],
-                             binding["preservation_receipt"])
+                             local_binding["preservation_receipt"])
             self.assertFalse(prelaunch["runtime_scale_proven"])
             self.assertFalse(prelaunch["visual_geometry_reviewed"])
             self.assertFalse(prelaunch["recording_authorized_by_prelaunch"])
@@ -91,7 +103,8 @@ class A05CliUiSourceTest(unittest.TestCase):
                 settings, "1.0", "a05-explicit", allow_native_ui_one=True)
                 ["disk_gate_passed"])
 
-    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file(),
+    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file() and
+                         CHECKPOINT_SAVE.is_file() and CHECKPOINT_RECEIPT.is_file(),
                          "Frozen external a04 UI evidence is unavailable")
     def test_fake_source_self_reported_sha_cannot_override_project_pin(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -105,7 +118,8 @@ class A05CliUiSourceTest(unittest.TestCase):
                 validate_a04_ui_gui_source_binding(case)
             self.assertEqual(fake.read_bytes(), unchanged)
 
-    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file(),
+    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file() and
+                         CHECKPOINT_SAVE.is_file() and CHECKPOINT_RECEIPT.is_file(),
                          "Frozen external a04 UI evidence is unavailable")
     def test_receipt_and_original_image_must_match_reviewed_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -127,7 +141,8 @@ class A05CliUiSourceTest(unittest.TestCase):
             with self.assertRaisesRegex(Exception, "original screenshot bytes differ"):
                 validate_a04_ui_gui_source_binding(args())
 
-    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file(),
+    @unittest.skipUnless(SOURCE.is_file() and RECEIPT.is_file() and
+                         CHECKPOINT_SAVE.is_file() and CHECKPOINT_RECEIPT.is_file(),
                          "Frozen external a04 UI evidence is unavailable")
     def test_caller_supplied_binding_cannot_swap_pinned_evidence(self):
         binding = validate_a04_ui_gui_source_binding(args())

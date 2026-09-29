@@ -33,9 +33,13 @@ GUI 100% 的战斗窗上半和骑士行可见，不能外推到新 d11 画面的
 
 1. 先做无启动 preflight：唯一新根、新 profile/pipe、原 d11 save/sidecar、所选
    EXE/DLL/injector 的实际 SHA、无现存 CK3 冲突和严格 `--gui-scale 1.0` 意图。必要的
-   `capture_session.py` `--import-a04-ui-gui-100` 目前**只准既定 day-26 配对**，
-   不能拿它为 d11 绕过源门。若复用原生 UI 保存的 54 B `value="1"` GUI block，
-   先另立 d11 精确配对且固定来源 SHA 的显式 opt-in、静态负例和 no-launch 回执；
+   `capture_session.py` `--import-a04-ui-gui-100` 的本分支候选把复用原生 UI 保存的
+   54 B `value="1"` GUI block 限于三条精确来源：原 d05、d26 与本次 d11。
+   d11 门固定源 save `3F4B…6953` / 原生 sidecar `DD98…E4A5` 的完整路径、
+   bytes/SHA、actor `29829`、日期 `53146488`、原生 episode run ID
+   `native-29829-7ea6523df43e`，以及该次实际 `ck3-state/profile` userdir 与
+   同父 `ck3-output`。错轨道、错 source、错 userdir 必须在无启动测试中拒绝；
+   合入后仍须另开 d11 新根取得自身 no-launch READY 回执，不能沿用旧回执。
    否则由新运行的原生设置页 SaveAndClose 后，以新保存原件、解析器和画面门证明。
    单纯预置 `1.0` 曾被 warmup 改回 `1.3`，不能作为放行事实。
 2. 未来屏幕持有者完成 fresh Steam 离线、独占 lease 后冷载，检查 warmup 后、final

@@ -65,6 +65,40 @@ A04_UI_IMAGE_IDENTITIES = {
     "ui-after-save-a01.png": (4050867, "CE2620160563D24B0569FEDA0C0CA3E39DC7C85AB89D11474061FDE217CD596B"),
 }
 
+# Project-specific admission for importing the reviewed a04 SaveAndClose GUI
+# block.  An identical checkpoint copied to a different attempt is not an
+# authority to turn on the native literal-"1" parser gate for another track.
+A04_UI_TARGETS = {
+    "e2-04-d05": {
+        "save": ("episode01-paired-counter-trace-attempt-010/d05-immutable.ck3", 52172645,
+                 "695F1FDE17457004EB8D060C1F21146C3605374806DABACF6FB5FAB386882885"),
+        "receipt": ("episode01-paired-counter-trace-attempt-010/ck3-output/interactive-requests-responses/d05-save.json",
+                    13437, "6650C0DB79D063E066AB72402735C22FAE9FCB5D458A56CE1C10B9545CD1F3C7"),
+        "actor": 29829, "date_raw": 53146344,
+        "source_episode_run_id": "native-29829-78c0d8f4b8a2",
+        "attempt_prefix": "episode02-e2-04-d05-",
+    },
+    "e2-05-d26": {
+        "save": ("episode01-paired-counter-trace-attempt-010/d26-immutable.ck3", 52880496,
+                 "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"),
+        "receipt": ("episode01-paired-counter-trace-attempt-010/ck3-output/interactive-requests-responses/d26-save.json",
+                    13452, "78931511D31E8400334D28DAD276F4CCDFBB342A901FC00B0BAFDCDEDA29584C"),
+        "actor": 29829, "date_raw": 53146848,
+        "source_episode_run_id": "native-29829-78c0d8f4b8a2",
+        "attempt_prefix": "episode02-e2-05-d26-",
+    },
+    "e2-06-d11": {
+        "save": ("episode01-full-edge-attempt-004/trace-d11-immutable.ck3", 52408560,
+                 "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953"),
+        "receipt": ("episode01-full-edge-attempt-004/ck3-output/interactive-requests-responses/trace-d11-save.json",
+                    13397, "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5"),
+        "actor": 29829, "date_raw": 53146488,
+        "source_episode_run_id": "native-29829-7ea6523df43e",
+        "attempt_prefix": "episode02-e2-06-d11-",
+    },
+}
+A04_UI_SOURCE_ROOT = Path("D:/workspace/ck3_native_war_ai_promo_work")
+
 
 def write_new(path: Path, value: object) -> None:
     with path.open("x", encoding="utf-8", newline="\n") as target:
@@ -377,11 +411,51 @@ async def service_requests(directory: Path, *, call, stopped: threading.Event,
     })
 
 
-def validate_a04_ui_gui_source_binding(args: argparse.Namespace) -> dict | None:
-    """Bind this project's reviewed a04 UI SaveAndClose evidence without a game launch.
+def bind_a04_ui_target(args: argparse.Namespace, checkpoint: dict) -> dict:
+    """Bind one exact checkpoint pair to this attempt's actual isolated userdir."""
+    require(isinstance(checkpoint, dict), "A04 UI import needs a verified checkpoint source")
+    save = checkpoint.get("save") or {}
+    receipt = checkpoint.get("receipt") or {}
+    matched = []
+    for track, spec in A04_UI_TARGETS.items():
+        expected_save = A04_UI_SOURCE_ROOT / spec["save"][0]
+        expected_receipt = A04_UI_SOURCE_ROOT / spec["receipt"][0]
+        if (str(Path(save.get("path", "")).resolve()).casefold() ==
+                str(expected_save.resolve()).casefold() and
+                (save.get("bytes"), save.get("sha256")) == spec["save"][1:] and
+                str(Path(receipt.get("path", "")).resolve()).casefold() ==
+                str(expected_receipt.resolve()).casefold() and
+                (receipt.get("bytes"), receipt.get("sha256")) == spec["receipt"][1:] and
+                checkpoint.get("actor") == spec["actor"] and
+                checkpoint.get("date_raw") == spec["date_raw"] and
+                checkpoint.get("source_episode_run_id") == spec["source_episode_run_id"]):
+            matched.append(track)
+    require(len(matched) == 1,
+            "A04 UI import checkpoint is not an exact allowed track/source pair")
+    track = matched[0]
+    state_arg = getattr(args, "state_dir", None)
+    output_arg = getattr(args, "output_dir", None)
+    require(isinstance(state_arg, Path) and isinstance(output_arg, Path),
+            "A04 UI import needs actual state/output directories")
+    state = state_arg.resolve()
+    output = output_arg.resolve()
+    root = state.parent
+    require(state.name == "ck3-state" and output.name == "ck3-output" and
+            output.parent == root and root.parent == A04_UI_SOURCE_ROOT.resolve() and
+            root.name.startswith(A04_UI_TARGETS[track]["attempt_prefix"]) and
+            all(not path.is_symlink() for path in (root, *root.parents, state, output)),
+            "A04 UI import userdir/state/output does not match the source track")
+    return {"track": track, "source_checkpoint": checkpoint,
+            "state_dir": str(state), "output_dir": str(output),
+            "userdir": str(state / "profile")}
 
-    Callers cannot submit expected hashes on the command line.  This is only a
-    byte/source admission for a fresh a05 profile, never a visual or recorder gate.
+
+def validate_a04_ui_gui_source_binding(args: argparse.Namespace,
+                                       checkpoint: dict | None = None) -> dict | None:
+    """Bind reviewed a04 UI bytes to one exact track and new session userdir.
+
+    This only admits project-frozen disk bytes; runtime geometry still needs a
+    fresh game readback and original image review.
     """
     enabled = getattr(args, "import_a04_ui_gui_100", False)
     snapshot_path = getattr(args, "a04_ui_settings_snapshot", None)
@@ -400,6 +474,9 @@ def validate_a04_ui_gui_source_binding(args: argparse.Namespace) -> dict | None:
             "A04 UI import cannot start a debug recorder before visual review")
     require(isinstance(snapshot_path, Path) and isinstance(preservation_path, Path),
             "A04 UI import needs both frozen source and preservation receipt paths")
+    target = bind_a04_ui_target(
+        args, checkpoint if checkpoint is not None else
+        checkpoint_source(args.checkpoint_save, args.checkpoint_receipt))
     for path in (snapshot_path, preservation_path):
         require(all(not part.is_symlink() for part in (path, *path.parents)),
                 "A04 UI evidence paths must not contain symlinks")
@@ -475,6 +552,7 @@ def validate_a04_ui_gui_source_binding(args: argparse.Namespace) -> dict | None:
             "A04 UI screenshot set is incomplete")
     return {"schema": "war-film-a05-a04-ui-source-binding/v1",
             "opt_in": True, "source_snapshot": source,
+            "target": target,
             "expected_source_sha256": A04_UI_SETTINGS_SHA256,
             "expected_gui_block_sha256": A04_UI_GUI_BLOCK_SHA256,
             "preservation_receipt": preservation, "hot_readback": hot_identity,
@@ -497,7 +575,7 @@ def preflight(args: argparse.Namespace) -> dict:
     require(versions["mcp"] == "2.0.0", "MCP SDK must be 2.0.0")
     spec = make_spec(state_dir=args.state_dir, game_dir=args.game_dir)
     checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)
-    a04_ui_binding = validate_a04_ui_gui_source_binding(args)
+    a04_ui_binding = validate_a04_ui_gui_source_binding(args, checkpoint)
     executable = identity(spec.game_exe)
     require(executable["sha256"] == EXACT_SHA, "Exact CK3 build mismatch")
     validate_native_bridge_launch_config(NativeBridgeLaunchConfig(
@@ -1027,14 +1105,21 @@ def reseed_gui_scale_after_warmup(settings_path: Path, requested_scale: str,
 
 def prepare_a05_ui_settings(settings_path: Path, vanilla_settings: str,
                             output_dir: Path, binding: dict) -> dict:
-    """Publish one a05 profile's settings using the project-frozen a04 GUI block."""
+    """Publish one bound profile's settings using the frozen a04 GUI block."""
+    target = binding.get("target") or {}
     require(binding.get("schema") == "war-film-a05-a04-ui-source-binding/v1" and
             binding.get("expected_source_sha256") == A04_UI_SETTINGS_SHA256 and
             binding.get("expected_gui_block_sha256") == A04_UI_GUI_BLOCK_SHA256 and
             binding.get("source_snapshot", {}).get("sha256") == A04_UI_SETTINGS_SHA256 and
             binding.get("preservation_receipt", {}).get("sha256") == A04_UI_PRESERVATION_SHA256 and
             binding.get("hot_readback", {}).get("sha256") == A04_UI_HOT_READBACK_SHA256,
-            "A05 profile lacks the reviewed a04 UI source and evidence binding")
+            "Profile lacks the reviewed a04 UI source and evidence binding")
+    require(target.get("track") in A04_UI_TARGETS and
+            target.get("userdir") == str(settings_path.parent.resolve()) and
+            target.get("state_dir") == str(settings_path.parent.parent.resolve()) and
+            target.get("output_dir") == str(output_dir.resolve()) and
+            isinstance(target.get("source_checkpoint"), dict),
+            "A04 UI target userdir/output differs from its exact checkpoint binding")
     source_path = Path(binding["source_snapshot"]["path"])
     imported = import_ui_saved_gui_block(
         settings_path, vanilla_settings, source_path,
@@ -1053,12 +1138,13 @@ def prepare_a05_ui_settings(settings_path: Path, vanilla_settings: str,
         "text_readback_matches": settings_path.read_bytes().decode("utf-8") ==
                                  prepared.decode("utf-8"),
         "profile_settings_origin": "reviewed_a04_ui_gui_block_only",
+        "target": target,
         "ui_import_receipt": identity(output_dir / "gui-settings-ui-block-import.json"),
         "ui_source_preservation_receipt": binding["preservation_receipt"],
         "runtime_scale_proven": False, "visual_geometry_reviewed": False,
         "recording_authorized_by_prelaunch": False,
     }
-    require(result["text_readback_matches"], "A05 imported settings text readback differs")
+    require(result["text_readback_matches"], "Imported settings text readback differs")
     return result
 
 
@@ -1081,7 +1167,9 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None,
     if a04_ui_binding is None:
         settings_prelaunch = write_profile_settings(settings_path, render_settings(), args.gui_scale)
     else:
-        require(args.gui_scale == "1.0", "A05 profile needs explicit 1.0 capture request")
+        require(args.gui_scale == "1.0" and
+                a04_ui_binding["target"]["source_checkpoint"] == checkpoint,
+                "A04 UI profile needs the same exact checkpoint and 1.0 request")
         settings_prelaunch = prepare_a05_ui_settings(
             settings_path, render_settings(), args.output_dir, a04_ui_binding)
     write_new(args.output_dir / "gui-settings-prelaunch.json", settings_prelaunch)
@@ -1144,7 +1232,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     observed = datetime.fromisoformat(receipt["observed_at"])
     require(0 <= (datetime.now(timezone.utc) - observed).total_seconds() <= 900, "Steam offline receipt stale")
     a04_ui_binding = checked.get("a04_ui_gui_source_binding")
-    require(validate_a04_ui_gui_source_binding(args) == a04_ui_binding,
+    require(validate_a04_ui_gui_source_binding(
+        args, checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)) == a04_ui_binding,
             "A04 UI source or evidence changed after no-launch preflight")
     allow_native_ui_one = a04_ui_binding is not None
     run = allocate_live_run_id("vanilla")
@@ -1426,7 +1515,7 @@ def main() -> int:
     parser.add_argument("--gui-scale", choices=("1.0",),
                         help="Set only this new isolated capture profile's CK3 GUI scale before launch")
     parser.add_argument("--import-a04-ui-gui-100", action="store_true",
-                        help="Explicit a05 opt-in: import only the reviewed a04 UI-saved GUI block into a new profile")
+                        help="Explicit source-bound opt-in: import only the reviewed a04 UI-saved GUI block into a new profile")
     parser.add_argument("--a04-ui-settings-snapshot", type=Path,
                         help="Frozen full a04 UI SaveAndClose settings copy; project SHA is fixed in this adapter")
     parser.add_argument("--a04-ui-preservation-receipt", type=Path,
