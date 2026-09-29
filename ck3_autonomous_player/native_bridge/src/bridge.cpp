@@ -9360,7 +9360,7 @@ public:
         &xar::ck3_11906::ExecuteActivityFeastPlannerOpenPrivateV1;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
-    environment.permitted_executor_septenquinquagintary =
+    environment.permitted_executor_novemquinquagintary =
         &xar::ck3_11906::ExecuteActivityStage1OptionReadPrivateV1;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)

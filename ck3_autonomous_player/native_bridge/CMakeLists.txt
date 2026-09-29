@@ -447,12 +447,6 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1 AND
    XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
   message(FATAL_ERROR "Activity feast open and planner diagnostic use the same private mailbox executor slot")
 endif()
-if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1 AND
-   (XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1 OR
-    XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1))
-  message(FATAL_ERROR "Activity stage-1 option read shares the planner private mailbox executor slot")
-endif()
-
 option(
   XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1
   "Arm the private fixed-candidate found-kingdom submit/receipt route"
@@ -1308,8 +1302,11 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
     XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
+  if(NOT XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1 AND
+     NOT XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+    target_sources(xar_ck3_bridge PRIVATE src/activity_planner_diag_v1.cpp)
+  endif()
   target_sources(xar_ck3_bridge PRIVATE
-    src/activity_planner_diag_v1.cpp
     src/activity_stage1_option_read_v1.cpp
     src/activity_stage1_option_read_private_transport_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
