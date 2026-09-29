@@ -399,6 +399,7 @@ def native_auto_run(
     private_activity_cost_slot12_raw_read: bool = False,
     private_activity_feast_stage1_confirm: bool = False,
     private_activity_feast_stage2_gate_read: bool = False,
+    private_activity_feast_stage2_location_candidate_province_ids: tuple[int, ...] | None = None,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -579,6 +580,15 @@ def native_auto_run(
     if (private_activity_feast_stage2_gate_read is True
             and private_activity_feast_stage1_confirm is not True):
         raise AgentError("private stage-2 gate read requires stage-1 Confirm")
+    if private_activity_feast_stage2_location_candidate_province_ids is not None:
+        candidates = private_activity_feast_stage2_location_candidate_province_ids
+        if private_activity_feast_stage1_confirm is not True:
+            raise AgentError("private stage-2 location read requires stage-1 Confirm")
+        if (not isinstance(candidates, tuple) or not 1 <= len(candidates) <= 8
+                or len(set(candidates)) != len(candidates)
+                or any(type(value) is not int or not 0 < value <= 0xFFFFFFFF
+                       for value in candidates)):
+            raise AgentError("private stage-2 location candidates must be 1-8 distinct province IDs")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -722,6 +732,7 @@ def native_auto_run(
     private_activity_feast_stage1_confirm_observation: dict[str, object] | None = None
     private_activity_feast_stage2_option_observation: dict[str, object] | None = None
     private_activity_feast_stage2_gate_observation: dict[str, object] | None = None
+    private_activity_feast_stage2_location_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -1314,6 +1325,24 @@ def native_auto_run(
                             status = "private_activity_feast_stage2_gate_observed"
                         else:
                             status = "private_activity_feast_stage1_confirm_verified"
+                        if private_activity_feast_stage2_location_candidate_province_ids is not None:
+                            current_attempt["stage"] = "private_activity_feast_stage2_location_read"
+                            private_activity_feast_stage2_location_observation = (
+                                _read_private_activity_feast_stage2_location_once(
+                                    driver, service=service, before=before,
+                                    confirm_observation=(
+                                        private_activity_feast_stage1_confirm_observation
+                                    ),
+                                    option_observation=(
+                                        private_activity_feast_stage2_option_observation
+                                    ),
+                                    candidate_province_ids=(
+                                        private_activity_feast_stage2_location_candidate_province_ids
+                                    ),
+                                    turn_index=turn_index,
+                                )
+                            )
+                            status = "private_activity_feast_stage2_location_observed"
                     else:
                         status = "private_activity_feast_stage1_option_observed"
                 elif private_activity_cost_slot12_raw_read is True:
@@ -3458,9 +3487,11 @@ def native_auto_run(
             qualified = bool(
                 primary_error is None
                 and status == (
-                    "private_activity_feast_stage2_gate_observed"
-                    if private_activity_feast_stage2_gate_read is True
-                    else "private_activity_feast_stage1_confirm_verified"
+                    "private_activity_feast_stage2_location_observed"
+                    if private_activity_feast_stage2_location_candidate_province_ids is not None
+                    else ("private_activity_feast_stage2_gate_observed"
+                          if private_activity_feast_stage2_gate_read is True
+                          else "private_activity_feast_stage1_confirm_verified")
                 )
                 and isinstance(private_activity_feast_stage1_confirm_observation, dict)
                 and private_activity_feast_stage1_confirm_observation.get("submitted") is True
@@ -3472,6 +3503,10 @@ def native_auto_run(
                      or (isinstance(private_activity_feast_stage2_gate_observation, dict)
                          and private_activity_feast_stage2_gate_observation.get("same_frame") is True
                          and private_activity_feast_stage2_gate_observation.get("gate_observed") is True))
+                and (private_activity_feast_stage2_location_candidate_province_ids is None
+                     or (isinstance(private_activity_feast_stage2_location_observation, dict)
+                         and private_activity_feast_stage2_location_observation.get("same_frame") is True
+                         and private_activity_feast_stage2_location_observation.get("location_observed") is True))
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -3669,6 +3704,11 @@ def native_auto_run(
             {"private_activity_feast_stage2_gate_observation": copy.deepcopy(
                 private_activity_feast_stage2_gate_observation)}
             if private_activity_feast_stage2_gate_read is True else {}
+        ),
+        **(
+            {"private_activity_feast_stage2_location_observation": copy.deepcopy(
+                private_activity_feast_stage2_location_observation)}
+            if private_activity_feast_stage2_location_candidate_province_ids is not None else {}
         ),
         **(
             {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
@@ -5584,6 +5624,7 @@ _PRIVATE_ACTIVITY_STAGE1_OPTION_READ_STEP = "query-activity-stage1-option-v1-pri
 _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP = "confirm-activity-feast-stage1-v1-private"
 _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP = "query-activity-feast-stage2-option-v1-private"
 _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP = "query-activity-feast-stage2-gate-v1-private"
+_PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP = "query-activity-feast-stage2-location-v1-private"
 _PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP = "query-activity-cost-slot12-raw-v1-private"
 
 
@@ -6316,6 +6357,187 @@ def _read_private_activity_feast_stage2_gate_once(
                 "stage2_option_native_receipt": option_receipt,
             },
             selected_step=_PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+        )
+    return observation
+
+
+def _read_private_activity_feast_stage2_location_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    confirm_observation: dict[str, object],
+    option_observation: dict[str, object],
+    candidate_province_ids: tuple[int, ...],
+    turn_index: int,
+) -> dict[str, object]:
+    """Read original stage-2 destination eligibility on the Confirm frame."""
+    revision = before["native_revision"]
+    date_raw = before["date_raw"]
+    actor_id = before["played_character_id"]
+    confirm_receipt = copy.deepcopy(confirm_observation.get("native_receipt"))
+    option_receipt = copy.deepcopy(option_observation.get("native_receipt"))
+    if (confirm_observation.get("submitted") is not True
+            or confirm_observation.get("same_frame") is not True
+            or option_observation.get("stage_two_verified") is not True
+            or option_observation.get("same_frame") is not True):
+        raise StepPostconditionError(
+            "private feast stage-2 location lacks verified Confirm and option read",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": confirm_observation.get("submitted"),
+                "pending": True, "postcondition_verified": False,
+                "confirm_native_receipt": confirm_receipt,
+                "stage2_option_native_receipt": option_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
+        )
+    request_id = "activity-stage2-location-" + uuid.uuid4().hex
+    try:
+        driver.endpoint.send({
+            "type": "execute_step", "protocol_version": 1,
+            "request_id": request_id,
+            "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
+            "expected_revision": revision,
+            "expected_date_raw": date_raw,
+            "expected_actor_character_id": actor_id,
+            "expected_activity_key": "activity_feast",
+            "expected_option_key": "feast_type_generic",
+            "candidate_province_ids": list(candidate_province_ids),
+        })
+        frame = driver.state.wait_for_command_result(
+            request_id, float(driver.command_timeout_seconds),
+        )
+        after = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast stage-2 location read unresolved after Confirm",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "postcondition_verified": False,
+                "candidate_province_ids": list(candidate_province_ids),
+                "confirm_native_receipt": confirm_receipt,
+                "stage2_option_native_receipt": option_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
+        ) from exc
+    same_frame = _private_activity_same_paused_frame(before, after)
+    envelope = frame.get("result") if isinstance(frame, dict) else None
+    native = (envelope.get("activity_stage2_location")
+              if isinstance(envelope, dict) else None)
+    rows = native.get("configuration_rows") if isinstance(native, dict) else None
+    candidates = native.get("candidates") if isinstance(native, dict) else None
+    active_index = native.get("active_row_index") if isinstance(native, dict) else None
+    rows_valid = bool(
+        isinstance(rows, list) and len(rows) <= 128
+        and all(
+            isinstance(row, dict)
+            and set(row) == {"index", "phase_kind", "province_id", "is_active"}
+            and type(row.get("index")) is int and row["index"] == index
+            and (row.get("phase_kind") is None
+                 or (type(row.get("phase_kind")) is int
+                     and 0 <= row["phase_kind"] <= 0x7FFFFFFF))
+            and type(row.get("province_id")) is int
+            and 0 <= row["province_id"] <= 0xFFFFFFFF
+            and type(row.get("is_active")) is bool
+            for index, row in enumerate(rows)
+        )
+        and (active_index is None
+             or (type(active_index) is int and 0 <= active_index < len(rows)))
+        and [row["index"] for row in rows if row["is_active"] is True]
+        == ([] if active_index is None else [active_index])
+    )
+    candidates_valid = bool(
+        isinstance(candidates, list)
+        and len(candidates) == len(candidate_province_ids)
+        and all(
+            isinstance(candidate, dict)
+            and set(candidate) == {"province_id", "can_select"}
+            and type(candidate.get("province_id")) is int
+            and candidate["province_id"] == province_id
+            and type(candidate.get("can_select")) is bool
+            for candidate, province_id in zip(candidates, candidate_province_ids)
+        )
+    )
+    native_shape = bool(
+        isinstance(native, dict)
+        and set(native) == {
+            "schema", "snapshot_revision", "date_raw", "actor_character_id",
+            "activity_key", "planning_stage", "selected_option_key",
+            "configuration_rows", "active_row_index",
+            "activity_single_location_flag", "previous_planning_stage",
+            "candidates", "can_progress_stage2", "read_only",
+            "raw_pointer_fields_persisted", "advertised",
+        }
+        and native.get("schema") == "activity-stage2-location-private-read-v1"
+        and native.get("snapshot_revision") == revision
+        and native.get("date_raw") == date_raw
+        and native.get("actor_character_id") == actor_id
+        and native.get("activity_key") == "activity_feast"
+        and type(native.get("planning_stage")) is int
+        and native["planning_stage"] == 2
+        and native.get("selected_option_key") == "feast_type_generic"
+        and rows_valid and candidates_valid
+        and type(native.get("activity_single_location_flag")) is bool
+        and type(native.get("previous_planning_stage")) is int
+        and 0 <= native["previous_planning_stage"] <= 5
+        and type(native.get("can_progress_stage2")) is bool
+        and native.get("read_only") is True
+        and native.get("raw_pointer_fields_persisted") is False
+        and native.get("advertised") is False
+    )
+    accepted = bool(
+        isinstance(frame, dict)
+        and frame.get("type") == "command_result"
+        and frame.get("protocol_version") == 1
+        and frame.get("request_id") == request_id
+        and frame.get("ok") is True
+        and isinstance(envelope, dict)
+        and set(envelope) == {
+            "step", "accepted", "status", "private_build", "read_only",
+            "advertised", "activity_stage2_location", "backend_id",
+        }
+        and envelope.get("step") == _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP
+        and envelope.get("accepted") is True
+        and envelope.get("status") == "available"
+        and envelope.get("private_build") is True
+        and envelope.get("read_only") is True
+        and envelope.get("advertised") is False
+        and envelope.get("backend_id") == "native-headless"
+        and native_shape and same_frame
+    )
+    observation = {
+        "status": "stage_two_location_observed" if accepted else "red",
+        "turn_index": turn_index,
+        "same_frame": same_frame,
+        "location_observed": accepted,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "location": copy.deepcopy(native),
+        "native_receipt": copy.deepcopy(frame),
+        "confirm_native_receipt": confirm_receipt,
+        "stage2_option_native_receipt": option_receipt,
+    }
+    if not accepted:
+        raise StepPostconditionError(
+            "private feast stage-2 location read RED: "
+            + str(frame.get("error", "invalid_native_readback")
+                  if isinstance(frame, dict) else "missing_command_result"),
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "postcondition_verified": False,
+                "same_frame": same_frame,
+                "activity_stage2_location": copy.deepcopy(native),
+                "native_receipt": copy.deepcopy(frame),
+                "confirm_native_receipt": confirm_receipt,
+                "stage2_option_native_receipt": option_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
         )
     return observation
 
@@ -7289,10 +7511,12 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
         _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
         _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
         _PRIVATE_ACTIVITY_STAGE2_GATE_READ_STEP,
+        _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
     }:
         for key in (
             "submitted", "pending", "same_frame", "activity_stage1_confirm",
-            "activity_stage2_option", "activity_stage2_gate", "native_receipt",
+            "activity_stage2_option", "activity_stage2_gate",
+            "activity_stage2_location", "candidate_province_ids", "native_receipt",
             "confirm_native_receipt", "stage2_option_native_receipt",
         ):
             if key in result:

@@ -3068,6 +3068,28 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertTrue(parsed.private_activity_feast_stage1_confirm)
         self.assertTrue(parsed.private_activity_feast_stage2_gate_read)
 
+    def test_private_feast_stage2_location_is_explicit_and_forwards_candidates(self) -> None:
+        base = dict(
+            common=["python", "agent.py"], turns=1, timeout=60,
+            readiness_timeout=30, private_faction_round_id_value=None,
+        )
+        flag = "--private-activity-feast-stage2-location-province"
+        self.assertNotIn(flag, g2_preview_operator.native_auto_run_command(**base))
+        command = g2_preview_operator.native_auto_run_command(
+            **base, private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_provinces=(2619, 2629),
+        )
+        self.assertEqual(command.count(flag), 2)
+        self.assertIn("2619", command)
+        self.assertIn("2629", command)
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "output",
+            "--private-activity-feast-stage1-confirm",
+            flag, "2619", flag, "2629",
+        ])
+        self.assertEqual(parsed.private_activity_feast_stage2_location_province,
+                         [2619, 2629])
+
     def test_private_activity_cost_slot12_raw_read_is_explicit_and_forwarded(self) -> None:
         base = dict(
             common=["python", "agent.py"], turns=1, timeout=60,

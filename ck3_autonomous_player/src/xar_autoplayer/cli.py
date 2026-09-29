@@ -476,6 +476,10 @@ def parser() -> argparse.ArgumentParser:
         help="after private stage-1 Confirm, read the stage-2 native gate without advancing",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-stage2-location-province", type=int, action="append",
+        help="after private stage-1 Confirm, query one candidate province's native stage-2 destination legality (repeat up to eight times)",
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
         help=("read one passive normal slot-12 raw cost capture; combine with "
               "--private-activity-feast-planner-open to open first"),
@@ -1083,6 +1087,9 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_stage1_confirm else {}),
                     **({"private_activity_feast_stage2_gate_read": True}
                       if args.private_activity_feast_stage2_gate_read else {}),
+                    **({"private_activity_feast_stage2_location_candidate_province_ids": tuple(
+                        args.private_activity_feast_stage2_location_province)}
+                      if args.private_activity_feast_stage2_location_province else {}),
                     **({"private_activity_cost_slot12_raw_read": True}
                       if args.private_activity_cost_slot12_raw_read else {}),
                     **succession_options,

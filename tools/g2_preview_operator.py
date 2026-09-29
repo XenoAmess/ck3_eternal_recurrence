@@ -1396,6 +1396,7 @@ def native_auto_run_command(
     private_activity_cost_slot12_raw_read: bool = False,
     private_activity_feast_stage1_confirm: bool = False,
     private_activity_feast_stage2_gate_read: bool = False,
+    private_activity_feast_stage2_location_provinces: tuple[int, ...] | None = None,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1463,6 +1464,12 @@ def native_auto_run_command(
         command.append("--private-activity-feast-stage1-confirm")
     if private_activity_feast_stage2_gate_read:
         command.append("--private-activity-feast-stage2-gate-read")
+    if private_activity_feast_stage2_location_provinces is not None:
+        for province_id in private_activity_feast_stage2_location_provinces:
+            command.extend([
+                "--private-activity-feast-stage2-location-province",
+                str(province_id),
+            ])
     if private_activity_cost_slot12_raw_read:
         command.append("--private-activity-cost-slot12-raw-read")
     if require_initial_lifestyle_focus_before_date_advance:
@@ -2068,6 +2075,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_cost_slot12_raw_read
                 or args.private_activity_feast_stage1_confirm
                 or args.private_activity_feast_stage2_gate_read
+                or args.private_activity_feast_stage2_location_province
                 or args.private_activity_planner_diag_query
                 or args.private_construction_formal_trial
                 or args.private_family_marriage_formal_trial
@@ -2093,6 +2101,15 @@ def command_run(args: argparse.Namespace) -> int:
     if (args.private_activity_feast_stage2_gate_read
             and not args.private_activity_feast_stage1_confirm):
         raise ValueError("private stage-2 gate read requires stage-1 Confirm")
+    if args.private_activity_feast_stage2_location_province:
+        province_ids = args.private_activity_feast_stage2_location_province
+        if not args.private_activity_feast_stage1_confirm:
+            raise ValueError("private stage-2 location read requires stage-1 Confirm")
+        if (not 1 <= len(province_ids) <= 8
+                or len(set(province_ids)) != len(province_ids)
+                or any(type(value) is not int or not 0 < value <= 0xFFFFFFFF
+                       for value in province_ids)):
+            raise ValueError("private stage-2 location read needs 1-8 distinct province IDs")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")
@@ -2269,6 +2286,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_stage2_gate_read": (
             args.private_activity_feast_stage2_gate_read
         ),
+        "private_activity_feast_stage2_location_provinces": (
+            args.private_activity_feast_stage2_location_province
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -2360,6 +2380,10 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_stage2_gate_read=(
                     args.private_activity_feast_stage2_gate_read
+                ),
+                private_activity_feast_stage2_location_provinces=(
+                    tuple(args.private_activity_feast_stage2_location_province)
+                    if args.private_activity_feast_stage2_location_province else None
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -3208,6 +3232,11 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-stage2-gate-read", action="store_true",
         help="after private stage-1 Confirm, read the native stage-2 gate",
+    )
+    run.add_argument(
+        "--private-activity-feast-stage2-location-province", type=int,
+        action="append",
+        help="after private stage-1 Confirm, query native destination legality for one province (repeat up to eight times)",
     )
     run.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
