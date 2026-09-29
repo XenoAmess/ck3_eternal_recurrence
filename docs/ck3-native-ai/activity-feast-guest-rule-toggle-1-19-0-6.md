@@ -75,3 +75,28 @@ cannot choose a category. This source-only addition supplies no live action,
 guest invitation, following turn or recovery evidence. A later formal
 consumer must join same-frame rule membership and target value, then persist
 an intent before action and reconcile native active state on cold restore.
+
+## R0374 read RED and bounded source correction
+
+R0374 used the frozen H3928 guest-rule candidate and reached the same paused
+`native:3`, actor 29829, raw date 53219928 after verified Stage-1 Confirm and
+Stage-2 Province 2619 selection. Stage-5 full cost read Gold 10,000,000 raw
+against actor Gold 120,644,281 raw, with normal refresh sequence 890. The
+private `activity_invite_rule_vassals` query returned `planner_unavailable`
+before hash, rule or window binding. Its [formal report](Z:/m6-activity-h3928-guest-rule-state-candidate-20260929/operator-runs/feast-guest-rule-vassals-read-1/formal-report.txt)
+has SHA-256 `E3DE54D75BABA3B8D36E2CF74CFC43E7605FD93EB9889372671AF0FF3870B59E`.
+There was no date advance, Gold debit or save change, and the CK3 tree was
+reclaimed. This is a live RED for the private reader, not a failed toggle.
+
+The guest-rule binder required `host_view_activity_key_known=true`, while the
+Stage-5 cost and guest-candidate readers allow an unknown HostView key and
+independently validate the normal slot-12 planner's exact feast type. The
+HostView can still carry an earlier or empty activity after the planner selects
+a feast. That mismatch is a plausible cause of the R0374 status; the formal
+result did not publish the diagnostic key, so it does not prove which
+`planner_unavailable` guard fired. The bounded correction accepts an unknown
+HostView key only when the same paused capture validates `activity_feast` and
+all existing owner, actor, stage and window checks still pass. A known
+non-feast key remains rejected. The focused native fixture now covers both
+states. It is source and no-launch evidence only until another paired live
+read shows the rule state.
