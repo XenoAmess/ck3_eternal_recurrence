@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -38,6 +39,18 @@ def test_new_entry_is_isolated_and_outer_observer_stays_default_off() -> None:
     check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is False)
     check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is False)
     check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is False)
+
+
+def test_wrong_interpreter_refuses_before_admission_or_go(
+    monkeypatch, tmp_path,
+) -> None:
+    monkeypatch.setattr(once, "FROZEN_PYTHON", tmp_path / "wrong-python.exe")
+    monkeypatch.setattr(once, "NO_LAUNCH", tmp_path / "missing-no-launch")
+    monkeypatch.setattr(once, "GO", tmp_path / "go.json")
+    with pytest.raises(ValueError, match="interpreter"):
+        once._require_exact_admission()
+    check(not once.NO_LAUNCH.exists())
+    check(not once.GO.exists())
 
 
 def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
@@ -122,6 +135,11 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     blobs["source_module_.h3937_cold_load_observer"] = "b" * 40
     manifest = {
         "candidate_head": head, "candidate_clean": True,
+        "python": sys.executable,
+        "python_version": (
+            f"Python {sys.version_info.major}.{sys.version_info.minor}."
+            f"{sys.version_info.micro}"
+        ),
         "live_run_id": once.LIVE_RUN_ID,
         "live_run_identity_sha256": sha(live_identity_path),
         "cold_load_observer_default_off": True,
@@ -148,7 +166,9 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     for key, value in {"NO_LAUNCH": root, "STATE": state, "DLL": dll,
                        "INJECTOR": injector, "GAME": game,
-                       "LIVE_IDENTITY": live_identity_path}.items():
+                       "LIVE_IDENTITY": live_identity_path,
+                       "FROZEN_PYTHON": Path(sys.executable),
+                       "FROZEN_PYTHON_VERSION": manifest["python_version"]}.items():
         monkeypatch.setattr(once, key, value)
     monkeypatch.setattr(once.outer, "COMBINED_DLL_SHA256", sha(dll))
     monkeypatch.setattr(once.outer, "COMBINED_INJECTOR_SHA256", sha(injector))
@@ -213,6 +233,19 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     with pytest.raises(ValueError, match="identity mismatch"):
         once._require_exact_admission()
     manifest["source_git_blobs"] = expected_blobs.copy()
+    manifest["python"] = str(tmp_path / "wrong-python.exe")
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    manifest["python"] = sys.executable
+    manifest["python_version"] = "Python 0.0.0"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    manifest["python_version"] = (
+        f"Python {sys.version_info.major}.{sys.version_info.minor}."
+        f"{sys.version_info.micro}"
+    )
     manifest["cold_load_observer_default_off"] = False
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ValueError, match="identity mismatch"):
@@ -297,9 +330,27 @@ def _fresh_go(monkeypatch, tmp_path):
     frame_path = screen / "steam-frame-freshness.json"
     frame_path.write_text(json.dumps(frame), encoding="utf-8")
     identity = {"head": "a" * 40, "admission_sha256": "A" * 64,
-                "manifest_sha256": "B" * 64, "preflight_sha256": "C" * 64,
-                "rebind_sha256": "D" * 64,
-                "live_run_identity_sha256": "E" * 64}
+                 "manifest_sha256": "B" * 64, "preflight_sha256": "C" * 64,
+                 "rebind_sha256": "D" * 64,
+                 "live_run_identity_sha256": "E" * 64}
+    review_path = screen / "steam-offline-direct-review.json"
+    review = {
+        "schema": "xar.war.h3937-a12-steam-offline-direct-review.v1",
+        "candidate_head": identity["head"], "round": once.ROUND,
+        "live_run_id": once.LIVE_RUN_ID,
+        "screen_task_id": once.SCREEN_TASK_ID,
+        "screen_challenge_nonce": challenge["challenge_nonce"],
+        "reviewer": "operator",
+        "steam_offline_direct_reviewed": True,
+        "offline_indicator_text": "离线模式",
+        "reviewed_at_utc": stamp(-25),
+        "original_image": str(steam), "original_sha256": sha(steam),
+        "freshness_receipt": str(frame_path),
+        "freshness_receipt_sha256": sha(frame_path),
+        "screen_challenge_sha256": sha(challenge_path),
+        "screen_lease_snapshot_sha256": sha(lease),
+    }
+    review_path.write_text(json.dumps(review), encoding="utf-8")
     go = {"schema": "xar.war.h3937-cold-observer-once-go.v1",
           "decision": "GO_READ_ONLY_H3937_COMBINED",
           "candidate_head": identity["head"], "round": once.ROUND,
@@ -329,8 +380,13 @@ def _fresh_go(monkeypatch, tmp_path):
           "steam_frame_receipt_sha256": sha(frame_path),
           "screen_challenge_path": str(challenge_path),
           "screen_challenge_sha256": sha(challenge_path),
-          "screen_lease_receipt_path": str(lease),
-          "screen_lease_receipt_sha256": sha(lease)}
+           "screen_lease_receipt_path": str(lease),
+           "screen_lease_receipt_sha256": sha(lease),
+           "operator_direct_review_evidence": {
+               "review_receipt_path": str(review_path),
+               "review_receipt_sha256": sha(review_path),
+               "latest_original_sha256": sha(steam),
+           }}
     go_path.write_text(json.dumps(go), encoding="utf-8")
     return identity, go, challenge, challenge_path
 
@@ -365,8 +421,43 @@ def test_go_rejects_old_challenge_run_id(monkeypatch, tmp_path) -> None:
         once._require_go(identity)
 
 
+@pytest.mark.parametrize("mutation", [
+    "missing_binding", "wrong_receipt_sha", "wrong_receipt_path",
+    "wrong_offline_text", "wrong_reviewer", "wrong_review_time",
+    "wrong_image_hash",
+])
+def test_go_requires_exact_direct_visual_review_receipt(
+    monkeypatch, tmp_path, mutation,
+) -> None:
+    identity, go, _, _ = _fresh_go(monkeypatch, tmp_path)
+    review_path = once.SCREEN / "steam-offline-direct-review.json"
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    if mutation == "missing_binding":
+        go.pop("operator_direct_review_evidence")
+    elif mutation == "wrong_receipt_sha":
+        go["operator_direct_review_evidence"]["review_receipt_sha256"] = "F" * 64
+    elif mutation == "wrong_receipt_path":
+        go["operator_direct_review_evidence"]["review_receipt_path"] = str(
+            tmp_path / "outside-review.json")
+    else:
+        field, value = {
+            "wrong_offline_text": ("offline_indicator_text", "在线模式"),
+            "wrong_reviewer": ("reviewer", " "),
+            "wrong_review_time": ("reviewed_at_utc", "2020-01-01T00:00:00+00:00"),
+            "wrong_image_hash": ("original_sha256", "0" * 64),
+        }[mutation]
+        review[field] = value
+        review_path.write_text(json.dumps(review), encoding="utf-8")
+        go["operator_direct_review_evidence"]["review_receipt_sha256"] = sha(
+            review_path)
+    once.GO.write_text(json.dumps(go), encoding="utf-8")
+    with pytest.raises(ValueError, match="direct Steam review"):
+        once._require_go(identity)
+
+
+@pytest.mark.parametrize("mutate_review", [False, True])
 def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
-    monkeypatch, tmp_path,
+    monkeypatch, tmp_path, mutate_review,
 ) -> None:
     output = tmp_path / "attempt-12"
     output.mkdir()
@@ -378,6 +469,8 @@ def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
     }), encoding="utf-8")
     go = tmp_path / "go.json"
     go.write_text("{}", encoding="utf-8")
+    review = tmp_path / "review.json"
+    review.write_text("original review", encoding="utf-8")
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "GO", go)
     monkeypatch.setattr(once, "_git", lambda *args: "pinned")
@@ -391,6 +484,10 @@ def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
         **{f"{name}_sha256": sha(go) for name in (
             "steam_original", "steam_frame_receipt", "screen_challenge",
             "screen_lease_receipt")},
+        "operator_direct_review_evidence": {
+            "review_receipt_path": str(review),
+            "review_receipt_sha256": sha(review),
+        },
     }, sha(go)))
     monkeypatch.setattr(once, "_require_live_screen_lease", lambda sequence=None: {})
     monkeypatch.setattr(once, "_image_inventory", lambda image: {
@@ -407,6 +504,8 @@ def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
         check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is True)
         check(once.target_reads.H3937_TARGET_LIVE_AUTHORIZED is True)
         calls.append(1)
+        if mutate_review:
+            review.write_text("changed review", encoding="utf-8")
         return {"ok": True, "status": "GREEN_READ_ONLY_TARGET",
                 "action_authorized": False, "date_advance_authorized": False,
                 "gameplay_actions": 0, "query_actions": 6,
@@ -415,7 +514,9 @@ def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
     monkeypatch.setattr(once.outer, "collect_h3937_combined_paused_war_scope_once",
                         collect)
     result = once.run_exact_once("nonce")
-    check(result["status"] == "GREEN_READ_ONLY")
+    check(result["status"] == ("RED" if mutate_review else "GREEN_READ_ONLY"))
+    if mutate_review:
+        check(result["error"] == "direct Steam review bytes changed")
     check(calls == [1])
     check(once.outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED is False)
     check(once.inner.H3937_COMBINED_LIVE_AUTHORIZED is False)
@@ -442,6 +543,26 @@ def test_preworker_pipe_collision_rejects_before_worker(monkeypatch, tmp_path) -
     check(receipt["worker_started"] is False)
     check(receipt["processes_gone"] is False)
     check("pipe busy" in str(receipt["error"]))
+
+
+def test_preworker_wrong_interpreter_rejects_without_worker(
+    monkeypatch, tmp_path,
+) -> None:
+    entry = tmp_path / "entry.py"
+    output = tmp_path / "attempt-12"
+    monkeypatch.setattr(once, "OUTPUT", output)
+    monkeypatch.setattr(once, "FROZEN_PYTHON", tmp_path / "wrong-python.exe")
+    monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
+        "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
+    monkeypatch.setattr(once.subprocess, "Popen",
+                        lambda *a, **k: check(False))
+    monkeypatch.setattr(once, "_image_inventory", lambda image: {
+        "returncode": 0, "found": False})
+    check(once.supervise_exact_once(entry) == 1)
+    receipt = json.loads((output / "supervisor-completion.json").read_text())
+    check(receipt["status"] == "RED")
+    check(receipt["worker_started"] is False)
+    check("interpreter" in str(receipt["error"]))
 
 
 def test_preworker_process_collision_rejects_without_worker(

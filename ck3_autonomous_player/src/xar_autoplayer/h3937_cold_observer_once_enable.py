@@ -37,7 +37,9 @@ SCREEN_TASK_ID = "war-h3937-cold-observer-readonly-live-20260930-a12"
 LEASE_MAX_AGE_SECONDS = 600
 GO_MAX_AGE_SECONDS = 300
 CLOCK_SKEW_SECONDS = 10
-NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260930\attempt-11")
+NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260930\attempt-12")
+FROZEN_PYTHON = Path(r"D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe")
+FROZEN_PYTHON_VERSION = "Python 3.14.7"
 STATE = NO_LAUNCH / "state"
 OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260930\attempt-12")
 GO = OUTPUT.parent / "go-attempt-12.json"
@@ -230,6 +232,13 @@ def _source_blob_identity() -> tuple[str, dict[str, str]]:
 
 
 def _require_exact_admission() -> dict[str, object]:
+    actual_version = (
+        f"Python {sys.version_info.major}.{sys.version_info.minor}."
+        f"{sys.version_info.micro}"
+    )
+    if (Path(sys.executable).resolve() != FROZEN_PYTHON.resolve()
+            or actual_version != FROZEN_PYTHON_VERSION):
+        raise ValueError("one-shot interpreter differs from frozen main venv")
     if not all(
         isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value)
         for value in (outer.COMBINED_DLL_SHA256, outer.COMBINED_INJECTOR_SHA256)
@@ -261,6 +270,8 @@ def _require_exact_admission() -> dict[str, object]:
         and admission.get("candidate_head") == manifest.get("candidate_head") == head
         and admission.get("candidate_checkout_clean") is True
         and manifest.get("candidate_clean") is True
+        and Path(str(manifest.get("python"))).resolve() == FROZEN_PYTHON.resolve()
+        and manifest.get("python_version") == FROZEN_PYTHON_VERSION
         and admission.get("live_run_id") == manifest.get("live_run_id")
             == LIVE_RUN_ID
         and admission.get("live_run_identity_sha256")
@@ -497,8 +508,46 @@ def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
                            LEASE_MAX_AGE_SECONDS, now)
     capture_at = _recent(frame.get("captured_at_utc"), "Steam frame",
                          GO_MAX_AGE_SECONDS, now)
+    review_binding = go.get("operator_direct_review_evidence")
+    if not isinstance(review_binding, dict):
+        raise ValueError("direct Steam review binding absent")
+    review_path = Path(str(review_binding.get("review_receipt_path")))
+    if (review_path.resolve() !=
+            (SCREEN / "steam-offline-direct-review.json").resolve()
+            or _sha(review_path) !=
+                str(review_binding.get("review_receipt_sha256", "")).upper()
+            or review_binding.get("latest_original_sha256")
+                != go["steam_original_sha256"]):
+        raise ValueError("direct Steam review bytes or path changed")
+    review = _read_json(review_path)
+    if not (
+        review.get("schema") == "xar.war.h3937-a12-steam-offline-direct-review.v1"
+        and review.get("candidate_head") == identity["head"]
+        and review.get("round") == ROUND
+        and review.get("live_run_id") == LIVE_RUN_ID
+        and review.get("screen_task_id") == SCREEN_TASK_ID
+        and review.get("screen_challenge_nonce") == challenge["challenge_nonce"]
+        and isinstance(review.get("reviewer"), str)
+        and bool(review["reviewer"].strip())
+        and review.get("steam_offline_direct_reviewed") is True
+        and review.get("offline_indicator_text") == "离线模式"
+        and Path(str(review.get("original_image"))).resolve()
+            == Path(str(go["steam_original_path"])).resolve()
+        and review.get("original_sha256") == go["steam_original_sha256"]
+        and Path(str(review.get("freshness_receipt"))).resolve()
+            == Path(str(go["steam_frame_receipt_path"])).resolve()
+        and review.get("freshness_receipt_sha256")
+            == go["steam_frame_receipt_sha256"]
+        and review.get("screen_challenge_sha256")
+            == go["screen_challenge_sha256"]
+        and review.get("screen_lease_snapshot_sha256")
+            == go["screen_lease_receipt_sha256"]
+        and review.get("reviewed_at_utc")
+            == go.get("steam_direct_reviewed_at_utc")
+    ):
+        raise ValueError("direct Steam review contents mismatched")
     review_at = _recent(go.get("steam_direct_reviewed_at_utc"), "direct Steam review",
-                        GO_MAX_AGE_SECONDS, now)
+                         GO_MAX_AGE_SECONDS, now)
     go_at = _recent(go.get("issued_at_utc"), "external GO",
                     GO_MAX_AGE_SECONDS, now)
     if not (challenge_at <= capture_at <= review_at <= go_at):
@@ -634,6 +683,12 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
                     path = Path(str(go_attestation[f"{name}_path"]))
                     if _sha(path) != str(go_attestation[f"{name}_sha256"]).upper():
                         primary_error = primary_error or f"{name} bytes changed"
+                review_binding = go_attestation["operator_direct_review_evidence"]
+                review_path = Path(str(review_binding["review_receipt_path"]))
+                if _sha(review_path) != str(
+                    review_binding["review_receipt_sha256"]
+                ).upper():
+                    primary_error = primary_error or "direct Steam review bytes changed"
                 screen_lease_after = _require_live_screen_lease()
         except BaseException as error:
             primary_error = primary_error or f"GO/screen readback: {type(error).__name__}: {error}"
