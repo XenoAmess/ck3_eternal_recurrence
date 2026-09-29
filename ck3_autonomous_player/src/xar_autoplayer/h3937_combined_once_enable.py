@@ -298,8 +298,12 @@ def _require_exact_admission() -> dict[str, object]:
             "rebind_sha256": _sha(STATE / "ordinary-seed-rebind-v1.json")}
 
 
-def _require_go(identity: dict[str, object]) -> dict[str, object]:
-    go = _read_json(GO)
+def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
+    raw_go = GO.read_bytes()
+    go_sha = hashlib.sha256(raw_go).hexdigest().upper()
+    go = json.loads(raw_go.decode("utf-8"))
+    if not isinstance(go, dict):
+        raise ValueError("one-shot GO receipt is not a JSON object")
     if not (
         go.get("schema") == "xar.war.h3937-combined-once-go.v1"
         and go.get("decision") == "GO_READ_ONLY_H3937_COMBINED"
@@ -388,7 +392,9 @@ def _require_go(identity: dict[str, object]) -> dict[str, object]:
                     GO_MAX_AGE_SECONDS, now)
     if not (challenge_at <= capture_at <= review_at <= go_at):
         raise ValueError("screen challenge, fresh frame, review, and GO out of order")
-    return go
+    if _sha(GO) != go_sha:
+        raise ValueError("GO receipt bytes changed during validation")
+    return go, go_sha
 
 
 def _require_preworker_screen_gate(entry: dict[str, str]) -> None:
@@ -429,8 +435,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         ):
             raise ValueError("one-shot supervisor claim mismatch")
         identity = _require_exact_admission()
-        go_attestation = _require_go(identity)
-        go_sha = _sha(GO)
+        go_attestation, go_sha = _require_go(identity)
         before = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
         if any(item["returncode"] != 0 or item["found"] is True for item in before.values()):
             raise ValueError("one-shot live process inventory not empty")

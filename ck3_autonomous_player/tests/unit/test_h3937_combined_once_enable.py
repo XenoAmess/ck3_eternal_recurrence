@@ -49,7 +49,7 @@ def bounded(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     monkeypatch.setattr(once, "GO", go)
     monkeypatch.setattr(once, "_require_exact_admission", lambda: {"head": "pinned"})
     monkeypatch.setattr(once, "_git", lambda *args: "pinned")
-    monkeypatch.setattr(once, "_require_go", lambda identity: {
+    monkeypatch.setattr(once, "_require_go", lambda identity: ({
         "screen_task_last_sequence": 101,
         "steam_original_path": str(go), "steam_original_sha256": digest(go),
         "steam_frame_receipt_path": str(go),
@@ -58,7 +58,7 @@ def bounded(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
         "screen_challenge_sha256": digest(go),
         "screen_lease_receipt_path": str(go),
         "screen_lease_receipt_sha256": digest(go),
-    })
+    }, digest(go)))
     monkeypatch.setattr(once, "_require_live_screen_lease",
                         lambda sequence=None: {"last_sequence": sequence or 101})
     monkeypatch.setattr(once, "_image_inventory", zero_image)
@@ -246,7 +246,7 @@ def fresh_go_fixture(monkeypatch, tmp_path):
 
 def test_go_receipt_rejects_wrong_round_output_and_modified_screen(monkeypatch, tmp_path):
     identity, value, _, _, steam, _, _ = fresh_go_fixture(monkeypatch, tmp_path)
-    check(once._require_go(identity) == value)
+    check(once._require_go(identity)[0] == value)
     value["round"] = "R9999"
     once.GO.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ValueError, match="GO receipt"):
@@ -261,6 +261,37 @@ def test_go_receipt_rejects_wrong_round_output_and_modified_screen(monkeypatch, 
     steam.write_bytes(b"modified")
     with pytest.raises(ValueError, match="steam_original"):
         once._require_go(identity)
+
+
+def test_go_replacement_during_validation_is_red(monkeypatch, tmp_path):
+    identity, _, _, _, _, _, _ = fresh_go_fixture(monkeypatch, tmp_path)
+    original = once._require_live_screen_lease
+
+    def revoke(sequence=None):
+        owner = original(sequence)
+        once.GO.write_text("{}", encoding="utf-8")
+        return owner
+
+    monkeypatch.setattr(once, "_require_live_screen_lease", revoke)
+    with pytest.raises(ValueError, match="GO receipt bytes changed"):
+        once._require_go(identity)
+
+
+def test_worker_refuses_go_replacement_after_validation(bounded, monkeypatch):
+    original_go = once._require_go
+
+    def revoke(identity):
+        verified = original_go(identity)
+        once.GO.write_text("{} ", encoding="utf-8")
+        return verified
+
+    monkeypatch.setattr(once, "_require_go", revoke)
+    monkeypatch.setattr(once.outer, "collect_h3937_combined_paused_war_scope_once",
+                        lambda *a, **k: (_ for _ in ()).throw(
+                            AssertionError("native session must not start")))
+    result = once.run_exact_once("nonce")
+    check(result["status"] == "RED")
+    check("GO receipt changed immediately" in str(result["error"]))
 
 
 @pytest.mark.parametrize("failure", ["other_owner", "changed_sequence", "stale_owner",
