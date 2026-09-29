@@ -279,3 +279,42 @@ separate gate; rule selection alone does not permit Start.
 To reproduce the address trace on the exact executable, disassemble RVAs
 `0x25B040` (size `0x300`), `0x151C110` (`0x1A0`), `0x151C2B0`
 (`0x90`), `0x151C3E0` (`0xA0`) and `0x151C480` (`0xB0`).
+
+## Guest window binding before a typed rule action: source only
+
+The exact GUI opens the ordinary list with
+`OpenGameViewData('activity_guest_list', ActivityPlanner.AccessSelf)` in
+`game/gui/window_activity_planner.gui:1575,1753`. The handler constructor at
+RVA `0xA90C49` installs the guest-window vtable `0x41676E8`, and at
+`0xA90CBD` stores that object at handler `+0x3F0`. Construction explicitly
+sets `window+0x100=0` (`0xA90C68`). The native view binder `0x151BB70`
+accepts a tagged GUI payload, resolves the planner at `0x151BBAE..0x151BBC7`,
+then writes `window+0x100=planner` and `window+0xF8=-1`. Its list refresh at
+`0x151BE1B..0x151BE22` is conditional on the window visibility check. Thus
+`handler+0x3F0` identifies an allocated window, but does not establish that
+the R0368 Stage 5 frame has a bound or current guest list.
+
+The existing bridge resolves handler `+0x3C0` to the planner but has no
+`OpenGameViewData` payload route for this guest window and no stable
+`OrderedActivityInviteRule` key-to-native-row resolver. The GUI callback
+`0x151C3E0` requires a live ordered-rule item, from which it obtains the
+16-byte native rule identity; passing a script key or a guessed pointer to
+`0x151C110` would not be an equivalent typed action. On a future paused
+frame, a read-only binding probe must first show the exact window vtable,
+`window+0x100 == handler+0x3C0`, planning mode, and a rule row with a stable
+key. Only then can `0x151C2B0` confirm inactive before a single toggle and
+active afterward. A window-open route is separately needed if the list was
+never opened. Neither binding nor rule identity was read in R0368; no action
+or positive guest is claimed here.
+
+```mermaid
+flowchart LR
+  A[Stage 5 planner] --> B[Handler +0x3F0 guest window]
+  B --> C{Window +0x100 equals planner?}
+  C -- yes --> D[Ordered invite rule row]
+  C -. unknown at R0368 .-> X[OpenGameViewData binding required]
+  D -. key identity untraced .-> Y[Stable rule resolver required]
+  D --> E[Read inactive via 0x151C2B0]
+  E --> F[Toggle via 0x151C110]
+  F --> G[Read active and selected guests]
+```
