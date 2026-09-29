@@ -2156,6 +2156,11 @@ def command_run(args: argparse.Namespace) -> int:
     if (args.private_activity_feast_guest_rule_key is not None
             and not args.private_activity_feast_stage5_full_cost_read):
         raise ValueError("private feast guest rule read requires the full-cost route")
+    if (args.private_activity_feast_guest_rule_key is not None
+            and (len(args.private_activity_feast_guest_rule_key) > 96
+                 or re.fullmatch(r"activity_invite_rule_[a-z0-9_]+",
+                                 args.private_activity_feast_guest_rule_key) is None)):
+        raise ValueError("private feast guest rule key is malformed")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")

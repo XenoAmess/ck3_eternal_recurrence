@@ -1895,7 +1895,8 @@ class _FakeActivityFeastState:
                 "request_id": request_id, "ok": True,
                 "result": {
                     "step": request["step"], "accepted": True,
-                    "status": "available" if observed else "unavailable",
+                    "status": ("available" if status == "observed_inactive"
+                               else "already_active" if observed else "unavailable"),
                     "private_build": True, "read_only": True,
                     "advertised": False, "backend_id": "native-headless",
                     "activity_feast_guest_rule": {

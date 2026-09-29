@@ -635,6 +635,15 @@ def native_auto_run(
     if (private_activity_feast_guest_rule_key is not None
             and private_activity_feast_stage5_full_cost_read is not True):
         raise AgentError("private feast guest rule read requires the full-cost Stage-5 route")
+    if private_activity_feast_guest_rule_key is not None and (
+        not isinstance(private_activity_feast_guest_rule_key, str)
+        or not 0 < len(private_activity_feast_guest_rule_key) <= 96
+        or not private_activity_feast_guest_rule_key.startswith("activity_invite_rule_")
+        or len(private_activity_feast_guest_rule_key) <= len("activity_invite_rule_")
+        or any(ch not in "abcdefghijklmnopqrstuvwxyz0123456789_"
+               for ch in private_activity_feast_guest_rule_key)
+    ):
+        raise AgentError("private feast guest rule key is malformed")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")

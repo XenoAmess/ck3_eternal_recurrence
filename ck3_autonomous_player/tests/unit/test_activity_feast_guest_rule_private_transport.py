@@ -60,7 +60,7 @@ class Driver:
         status = self.response["status"]
         outer = ("unavailable" if status not in {
             "observed_inactive", "observed_active", "activated"}
-            else "available" if step == QUERY_STEP
+            else "available" if status == "observed_inactive"
             else "activated" if status == "activated" else "already_active")
         return {"type": "command_result", "protocol_version": 1,
                 "request_id": request_id, "ok": True,

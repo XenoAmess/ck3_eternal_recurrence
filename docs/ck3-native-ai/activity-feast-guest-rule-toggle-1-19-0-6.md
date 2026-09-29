@@ -56,3 +56,22 @@ and live evidence. Unavailable wire results carry `null` for active, native
 hash and counts; `invoked` remains a known boolean so a failed postcondition
 does not invite an automatic second toggle. The build option is default OFF
 and adds no public ad.
+
+## Python consumption boundary
+
+The default-off Python route uses `--private-activity-feast-guest-rule-key`
+only after the existing same-frame Stage-5 destination and full-cost route.
+The typed transport checks the paused actor, native revision and date before
+and after the native read. An inactive rule becomes a `hold` decision with
+`formal_action_ready=false` and reason
+`category_membership_and_value_unobserved`; an active rule becomes a hold
+with reason `category_already_active`. `window_unbound` remains a typed RED,
+since a planner and the guest list window are distinct native objects.
+
+The native action transport is present but its driver action flag is OFF in
+this runner. The R0373 positive pre-invitation candidate lacks a rule
+membership mapping and target-specific value fields, so the current source
+cannot choose a category. This source-only addition supplies no live action,
+guest invitation, following turn or recovery evidence. A later formal
+consumer must join same-frame rule membership and target value, then persist
+an intent before action and reconcile native active state on cold restore.
