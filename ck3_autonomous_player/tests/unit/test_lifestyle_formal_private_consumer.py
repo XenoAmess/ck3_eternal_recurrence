@@ -328,6 +328,210 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_blocked_war_keeps_red_but_spends_native_legal_diplomacy_point(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        driver.allow_private_m5_joint_collector = True
+        service = GameplayBridgeService(driver)
+        blocked = {
+            "policy": "one-life-turn-v1", "phase": "native_war_route_red",
+            "selected_step": None, "reason": "route input unavailable",
+            "war_resource_commitment": {"status": "unavailable"},
+        }
+
+        def read(*, expected_revision: int) -> dict[str, object]:
+            query = query_player_lifestyle_private_v1(
+                driver, expected_revision=expected_revision,
+            )
+            life = query["snapshot"]
+            life["current_focus"] = {
+                "presence": "present", "key": "diplomacy_foreign_affairs_focus",
+                "lifestyle_key": "diplomacy_lifestyle",
+            }
+            life["current_lifestyle_progress"]["lifestyle_key"] = "diplomacy_lifestyle"
+            life["legal_perk_candidates"]["items"] = [{
+                "key": "thoughtful_perk", "lifestyle_key": "diplomacy_lifestyle",
+            }]
+            return query
+
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=blocked),
+              mock.patch.object(driver, "query_player_lifestyle_formal_private_v1",
+                                side_effect=read)):
+            plan = service.plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(plan["lifestyle_action"]["target_key"], "thoughtful_perk")
+        self.assertEqual(plan["lifestyle_deferred_war_red"], {
+            key: blocked[key] for key in (
+                "policy", "phase", "selected_step", "reason",
+            )
+        })
+        self.assertEqual(plan["war_resource_commitment"],
+                         blocked["war_resource_commitment"])
+        self.assertEqual(plan["lifestyle_war_observation"]["unspent_perk_points"], 1)
+        self.assertEqual(plan["m5_joint_wartime_observation"]["status"],
+                         "construction_observation_unavailable")
+        self.assertEqual(driver.frame["date_raw"], 53178312)
+
+    def test_blocked_war_without_perk_keeps_red_and_no_new_spend(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        driver.state.zero_points = True
+        blocked = {
+            "policy": "one-life-turn-v1", "phase": "native_war_route_red",
+            "selected_step": None, "reason": "route input unavailable",
+        }
+        with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                        return_value=blocked):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["phase"], blocked["phase"])
+        self.assertEqual(plan["reason"], blocked["reason"])
+        self.assertEqual(plan["lifestyle_opportunity_status"], "no_legal_minimum")
+        self.assertEqual(plan["lifestyle_war_observation"]["unspent_perk_points"], 0)
+
+    def test_blocked_war_life_query_failure_keeps_war_red(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        driver.state.fail_query = True
+        blocked = {
+            "policy": "one-life-turn-v1", "phase": "native_war_route_red",
+            "selected_step": None, "reason": "route input unavailable",
+        }
+        with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                        return_value=blocked):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["phase"], blocked["phase"])
+        self.assertEqual(plan["reason"], blocked["reason"])
+        self.assertEqual(plan["lifestyle_war_observation"]["query_status"],
+                         "native_query_unavailable")
+
+    def test_blocked_war_pending_perk_reads_later_receipt_before_new_spend(self) -> None:
+        driver = _Driver()
+        service = GameplayBridgeService(driver)
+        pending = {
+            "status": "submitted_verification_pending", "pre_public_revision": 3,
+            "target_key": "thoughtful_perk", "action_request_id": "life-perk-held",
+        }
+        planned = service._plan_private_lifestyle_trial_v1({
+            "snapshot_id": "native:4", "revision": 4,
+            "plan": {"policy": "one-life-turn-v1", "selected_step": None,
+                     "phase": "native_war_route_red",
+                     "reason": "route input unavailable"},
+            "_private_lifestyle_scope_v1": {"status": "admitted", "at_peace": False},
+            "_private_lifestyle_war_frame_v1": (
+                "native-29829-ee172aa720db", 29829, 53178312, 3,
+            ),
+            "_private_lifestyle_pending_v1": pending,
+        }, {RECEIPT_STEP})
+        self.assertEqual(planned["plan"]["selected_step"], RECEIPT_STEP)
+        self.assertEqual(planned["plan"]["lifestyle_pending_action"], pending)
+        self.assertEqual(planned["plan"]["lifestyle_deferred_war_red"]["phase"],
+                         "native_war_route_red")
+
+    def test_blocked_war_same_date_revision_and_receipt_recheck_points(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        service = GameplayBridgeService(driver)
+        blocked = {
+            "policy": "one-life-turn-v1", "phase": "native_war_route_red",
+            "selected_step": None, "reason": "route input unavailable",
+        }
+        stage = "no_point"
+        reads: list[int] = []
+
+        def read(*, expected_revision: int) -> dict[str, object]:
+            frame = driver.frame
+            life = _life_snapshot()
+            life.update({
+                "snapshot_id": frame["snapshot_id"],
+                "public_revision": frame["native_revision"],
+                "native_revision": frame["native_revision"],
+                "proof_epoch": frame["native_revision"],
+                "date_raw": frame["date_raw"],
+                "episode_run_id": frame["episode_run_id"],
+            })
+            reads.append(expected_revision)
+            progress = life["current_lifestyle_progress"]
+            if stage == "no_point":
+                progress["unspent_perk_points"] = 0
+                life["legal_perk_candidates"]["items"] = []
+            elif stage == "first_point":
+                progress["unspent_perk_points"] = 2
+            else:
+                progress["unspent_perk_points"] = 1
+                progress["used_perk_points"] = 1
+                life["owned_perk_keys"] = ["cutting_corners_perk"]
+                life["legal_perk_candidates"]["items"] = [{
+                    "key": "professional_workforce_perk",
+                    "lifestyle_key": "stewardship_lifestyle",
+                }]
+            return {
+                "status": "available", "snapshot": life,
+                "episode_run_id": frame["episode_run_id"],
+                "formal_precondition_status": "ready",
+                "source_frame": {
+                    "snapshot_id": frame["snapshot_id"],
+                    "revision": frame["revision"],
+                    "native_revision": frame["native_revision"],
+                    "date_raw": frame["date_raw"],
+                    "player_character_id": 29829,
+                },
+            }
+
+        def advance_native_revision(revision: int) -> None:
+            driver.frame.update({"revision": revision, "native_revision": revision,
+                                 "snapshot_id": f"native:{revision}"})
+            root = _scope_root()[0]
+            root["result"]["campaign_root_context"]["snapshot_revision"] = revision
+            driver.history.append(root)
+
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=blocked),
+              mock.patch.object(driver, "query_player_lifestyle_formal_private_v1",
+                                side_effect=read)):
+            empty = service.plan_turn()["plan"]
+            self.assertIsNone(empty["selected_step"])
+            self.assertEqual(empty["lifestyle_opportunity_status"], "no_legal_minimum")
+            self.assertEqual(reads, [3])
+            self.assertEqual(service.plan_turn()["plan"]["selected_step"], None)
+            self.assertEqual(reads, [3])
+
+            advance_native_revision(4)
+            stage = "first_point"
+            first = service.plan_turn()["plan"]
+            self.assertEqual(first["selected_step"], PERK_SUBMIT_STEP)
+            self.assertEqual(first["lifestyle_action"]["target_key"],
+                             "cutting_corners_perk")
+            self.assertEqual(reads, [3, 4])
+            driver.history.append({"command": PERK_SUBMIT_STEP, "ok": True,
+                "result": {"status": "rejected_before_submit",
+                           "episode_run_id": driver.frame["episode_run_id"]}})
+            retried = service.plan_turn()["plan"]
+            self.assertEqual(retried["selected_step"], PERK_SUBMIT_STEP)
+            self.assertEqual(reads, [3, 4, 4])
+
+            driver.history.append({"command": RECEIPT_STEP, "ok": True,
+                "result": {"status": "applied", "kind": "perk",
+                           "target_key": "cutting_corners_perk",
+                           "action_request_id": "life-perk-first",
+                           "post_target_perk_owned": True,
+                           "postcondition_verified": True,
+                           "episode_run_id": driver.frame["episode_run_id"]}})
+            advance_native_revision(5)
+            stage = "after_receipt"
+            next_perk = service.plan_turn()["plan"]
+        self.assertEqual(next_perk["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(next_perk["lifestyle_action"]["target_key"],
+                         "professional_workforce_perk")
+        self.assertEqual(reads, [3, 4, 4, 5])
+        self.assertEqual(driver.frame["date_raw"], 53178312)
+
     def test_war_read_rechecks_life_after_date_change_only(self) -> None:
         driver = _Driver()
         driver.frame["active_wars"] = [{"war_id": 16777250}]
@@ -401,7 +605,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
     def test_pending_life_receipt_preempts_same_date_war_read(self) -> None:
         driver = _Driver()
         service = GameplayBridgeService(driver)
-        frame = ("native-29829-ee172aa720db", 29829, 53178312)
+        frame = ("native-29829-ee172aa720db", 29829, 53178312, 3)
         service._last_war_lifestyle_observation = frame
         planned = service._plan_private_lifestyle_trial_v1({
             "snapshot_id": "native:3", "revision": 4,
@@ -492,7 +696,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
                     "status": "admitted", "at_peace": False,
                 },
                 "_private_lifestyle_war_frame_v1": (
-                    "native-29829-ee172aa720db", 29829, 53178312,
+                    "native-29829-ee172aa720db", 29829, 53178312, 3,
                 ),
             }, {"query-army-strengths-v1"})
         self.assertEqual(planned["plan"]["selected_step"],

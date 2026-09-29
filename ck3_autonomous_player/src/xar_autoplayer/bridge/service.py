@@ -453,9 +453,9 @@ class GameplayBridgeService:
         self._coat_of_arms_framebuffer_calibrations_v3 = (
             CoatOfArmsFramebufferCalibrationStoreV3()
         )
-        # A paused wartime query may recur many times on one game date.  LIFE
-        # only needs another final-legal read after time or the player changes.
-        self._last_war_lifestyle_observation: tuple[object, object, object] | None = None
+        # Repeated wartime queries on one native frame need no duplicate LIFE
+        # read. A new actor, date or native revision may expose a new point.
+        self._last_war_lifestyle_observation: tuple[object, object, object, object] | None = None
         self._last_war_family_observation: tuple[object, object, object] | None = None
         self._opening_martial_episode_v1: str | None = None
         self._opening_martial_observation_v1: dict[str, object] | None = None
@@ -774,6 +774,7 @@ class GameplayBridgeService:
                         played_character.get("character_id")
                         if isinstance(played_character, dict) else None,
                         planning_snapshot.get("date_raw"),
+                        planning_snapshot.get("native_revision"),
                     )
                     if getattr(
                         self.driver, "allow_private_lifestyle_formal_trial", False
@@ -1790,6 +1791,20 @@ class GameplayBridgeService:
             parse_query_combat_simulation_inputs_v3_step(selected) is not None
         )
         root_read = selected == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
+        # A blocked war plan has no action to displace. Keep its RED visible
+        # while the independent, native-gated LIFE consumer uses this frame.
+        blocked_war_step = (
+            selected is None
+            and isinstance(plan, dict)
+            and isinstance(plan.get("phase"), str)
+            and plan["phase"].startswith("native_war")
+        )
+        deferred_war_red = (
+            {key: plan.get(key) for key in (
+                "policy", "phase", "selected_step", "reason",
+            )}
+            if blocked_war_step else None
+        )
         peaceful_root_read = (
             root_read
             and isinstance(scope, dict)
@@ -1797,17 +1812,20 @@ class GameplayBridgeService:
             and scope.get("at_peace") is True
         )
         war_read_step = (
-            isinstance(selected, str)
-            and selected.startswith("query-")
+            (blocked_war_step or
+             isinstance(selected, str) and selected.startswith("query-"))
             and isinstance(scope, dict)
             and scope.get("at_peace") is False
             and isinstance(war_frame, tuple)
-            and len(war_frame) == 3
+            and len(war_frame) == 4
             and isinstance(war_frame[0], str)
             and isinstance(war_frame[1], int)
             and not isinstance(war_frame[1], bool)
             and isinstance(war_frame[2], int)
             and not isinstance(war_frame[2], bool)
+            and isinstance(war_frame[3], int)
+            and not isinstance(war_frame[3], bool)
+            and war_frame[3] > 0
         )
         war_read_due = (
             war_read_step
@@ -1835,6 +1853,8 @@ class GameplayBridgeService:
                     "selected_step": PRIVATE_LIFESTYLE_RECEIPT_STEP,
                     "lifestyle_pending_action": pending,
                     "reason": "confirm the material focus or perk on a later paused frame",
+                    **({"lifestyle_deferred_war_red": deferred_war_red}
+                       if deferred_war_red is not None else {}),
                 }
                 return {
                     **planned,
@@ -1903,16 +1923,14 @@ class GameplayBridgeService:
         if war_read_due and isinstance(query, dict) and query.get("status") == "available":
             decision = consumed.get("lifestyle_decision")
             if (
-                consumed.get("selected_step") == PRIVATE_LIFESTYLE_PERK_STEP
-                or (
-                    isinstance(decision, dict)
-                    and decision.get("status") in {
-                        "no_legal_minimum", "outside_admitted_scene",
-                    }
-                )
+                isinstance(decision, dict)
+                and decision.get("status") in {
+                    "no_legal_minimum", "outside_admitted_scene",
+                }
             ):
-                # A failed native read or incomplete policy assessment cannot
-                # consume this war date's only LIFE opportunity check.
+                # Cache only a completed no-action assessment for this exact
+                # native revision. A selected action still needs a material
+                # receipt and may be rejected before any native submit.
                 self._last_war_lifestyle_observation = war_frame
         if war_read_due and isinstance(query, dict):
             life = query.get("snapshot")
@@ -1925,6 +1943,7 @@ class GameplayBridgeService:
                 "lifestyle_war_observation": {
                     "query_status": query.get("status"),
                     "date_raw": war_frame[2],
+                    "native_revision": war_frame[3],
                     "source_frame": query.get("source_frame"),
                     "unspent_perk_points": (
                         progress.get("unspent_perk_points")
@@ -1983,6 +2002,11 @@ class GameplayBridgeService:
                 "selected_step": None,
                 "required_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
                 "reason": "bounded LIFE trial cannot observe feudal scope via the public root query",
+            }
+        if (deferred_war_red is not None
+                and consumed.get("selected_step") is not None):
+            consumed = {
+                **consumed, "lifestyle_deferred_war_red": deferred_war_red,
             }
         routable = set(available_steps)
         if callable(

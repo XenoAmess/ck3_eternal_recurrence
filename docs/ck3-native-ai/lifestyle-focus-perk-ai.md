@@ -50,6 +50,48 @@ flowchart LR
   D -. receipt, next turn, cold restore .-> R[Future live closure]
 ```
 
+### Blocked-war same-frame opportunity (2026-09-30; production-path replay)
+
+The private LIFE service normally evaluates before `life-advance`, a
+deferrable read-only war query, or the opening focus gate. An active war
+planner can return `selected_step=null` and `phase=native_war...` when its own
+inputs are RED. Before this change, the LIFE trial returned immediately on
+that plan, even if a same-frame feudal root and final-legal, unowned perk with
+an unspent point were available. The production-path fixture uses a paused
+active-war actor with diplomacy focus, one point and native-final-legal
+`thoughtful_perk`. It failed with `selected_step=null` before the repair; after
+the repair it selects the existing private typed perk and preserves the war
+RED policy/phase/reason and its resource observation. The wartime M5 reader
+still reports its missing construction/war-cash inputs; it does not claim an
+M5-selected lifestyle proposal or complete joint valuation. The compact
+formal turn report retains `lifestyle_deferred_war_red`, so a perk action does
+not erase the blocked war plan from the action evidence.
+
+Only a blocked `native_war` plan with an observed active-war frame becomes
+deferrable for this independent LIFE check. A zero-point fixture keeps the
+original war RED and records `no_legal_minimum`. An already submitted perk
+uses the later-frame receipt before any further selection. A native query
+failure or stale frame cannot authorize a spend, and a war gameplay step still
+retains its priority. The no-action observation cache includes native
+revision and never marks a selected perk as consumed. A same-date replay
+proves that a new native revision can expose a point after an earlier zero,
+`rejected_before_submit` gets re-evaluated, and a material receipt with one
+point remaining allows the next final-legal perk. A truly pending request
+still takes the receipt route. This changes no war model, public capability,
+resource commitment or date-advance contract. The focused LIFE/policy,
+M5 wartime observation and formal-report projection tests passed 65/65
+under normal and `-O`; these are
+no-launch source results. A matched CK3 action, independent postcondition,
+following turn and cold restore are still required for a live loop claim.
+
+```mermaid
+flowchart LR
+  W[Blocked native war plan] --> L[Read same-frame LIFE opportunity]
+  L -->|legal point| P[Private typed perk; retain war RED]
+  L -->|none or unavailable| R[Keep war RED and record LIFE status]
+  P -. later receipt and replan .-> W
+```
+
 ## NW-LIFE first-focus martial role candidate (2026-09-28; source contract)
 
 On exact CK3 1.19.0.6, original `game/common/focuses/00_lifestyle_focuses.txt`
