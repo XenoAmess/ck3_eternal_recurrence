@@ -536,6 +536,31 @@ class _NativeAutoRunHarness:
                     "fresh_snapshot": fresh,
                 },
             }
+        if action == "child_pending_result":
+            step = native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_RESULT_STEP
+            path = self.spec.state_dir / "player-child-matrilineal-formal-v1.json"
+            ledger = json.loads(path.read_text(encoding="utf-8"))
+            pending = ledger["pending"]
+            pending.update({
+                "last_checked_native_revision": self.native_revision,
+                "last_checked_bridge_pid": self.bridge_pid,
+                "last_outbound_pending_state": "active",
+            })
+            path.write_text(json.dumps(ledger), encoding="utf-8")
+            result = {
+                "step": step, "status": "pending", "accepted": True,
+                "material_result": False,
+                "heir_character_id": pending["heir_character_id"],
+                "candidate_character_id": pending["candidate_character_id"],
+                "recipient_character_id": pending["recipient_character_id"],
+                "post_native_revision": self.native_revision,
+            }
+            self._append_history(step, result)
+            return {"status": "executed", "selected_step": step,
+                    "plan": {"phase": "child_marriage_result_read",
+                             "selected_step": step,
+                             "child_matrilineal_cold_recovery": True},
+                    "result": result}
         if action == "opaque_postcondition_failure":
             step = "advance-route-contact-horizon-v1-101-to-3610-h-1-31"
             starting_date_raw = self.date_raw
@@ -1622,6 +1647,16 @@ class _FakeGameplayService:
         *,
         before_submit: object = None,
     ) -> dict[str, object]:
+        if before_submit is not None and self.harness.actions == ["child_pending_result"]:
+            ledger = json.loads((self.driver.state_dir /
+                                 "player-child-matrilineal-formal-v1.json").read_text(
+                                     encoding="utf-8"))
+            pending = ledger["pending"]
+            step = native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_RESULT_STEP
+            before_submit({"plan": {"selected_step": step,
+                                    "child_matrilineal_pending": pending,
+                                    "child_matrilineal_cold_recovery": True},
+                           "selected_step": step})  # type: ignore[operator]
         if before_submit is not None and self.harness.exact_war_stop_trial and self.harness.actions:
             action = self.harness.actions[0]
             step = (
@@ -1912,6 +1947,7 @@ class NativeAutoRunTests(unittest.TestCase):
         allow_private_prisoner_collection_observation: bool = False,
         private_active_scheme_sway_target: int | None = None,
         private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
+        private_child_matrilineal_pending_recovery_target: tuple[int, int] | None = None,
         allow_private_active_scheme_sway_formal_trial: bool = False,
         private_realm_law_paused_query: bool = False,
         private_activity_planner_diag_query: bool = False,
@@ -1962,17 +1998,23 @@ class NativeAutoRunTests(unittest.TestCase):
                 operator_stop_after_action_count
             ),
         )
-        if private_child_matrilineal_pending_read_target is not None:
+        if (private_child_matrilineal_pending_read_target is not None
+                or private_child_matrilineal_pending_recovery_target is not None):
+            pair = (private_child_matrilineal_pending_recovery_target
+                    or private_child_matrilineal_pending_read_target)
             self.spec.state_dir.mkdir(parents=True, exist_ok=True)
             (self.spec.state_dir / "player-child-matrilineal-formal-v1.json").write_text(
                 json.dumps({
                     "schema": "xar.ck3.player-child-matrilineal-private-action.v1",
                     "pending": {
+                        "schema": "xar.ck3.player-child-matrilineal-private-action.v1",
+                        "status": "receipt_pending", "material_result": False,
                         "played_character_id": harness.played_character_id,
                         "episode_run_id": harness.episode_run_id,
-                        "heir_character_id": private_child_matrilineal_pending_read_target[0],
-                        "candidate_character_id": private_child_matrilineal_pending_read_target[1],
+                        "heir_character_id": pair[0],
+                        "candidate_character_id": pair[1],
                         "recipient_character_id": 42424,
+                        "source_bridge_pid": 1234,
                     },
                     "resolved": None,
                 }), encoding="utf-8",
@@ -2099,6 +2141,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 after_intercept=after_intercept,  # type: ignore[arg-type]
                 allow_private_lifestyle_formal_trial=(
                     require_initial_lifestyle_focus_before_date_advance
+                    or private_child_matrilineal_pending_recovery_target is not None
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     require_initial_lifestyle_focus_before_date_advance
@@ -2111,6 +2154,12 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_child_matrilineal_pending_read_target=(
                     private_child_matrilineal_pending_read_target
+                ),
+                private_child_matrilineal_target=(
+                    private_child_matrilineal_pending_recovery_target
+                ),
+                private_child_matrilineal_pending_recovery_only=(
+                    private_child_matrilineal_pending_recovery_target is not None
                 ),
                 allow_private_active_scheme_sway_formal_trial=(
                     allow_private_active_scheme_sway_formal_trial
@@ -2473,6 +2522,26 @@ class NativeAutoRunTests(unittest.TestCase):
                 {**result, "plan": {**result["plan"],
                                     "child_matrilineal_pending": {
                                         **pending, "candidate_character_id": 42}}}, pending)
+
+    def test_private_child_pending_result_saves_same_date_ledger_pair(self) -> None:
+        report, harness = self._run(
+            ["child_pending_result"],
+            private_child_matrilineal_pending_recovery_target=(37265, 37267),
+        )
+        self.assertEqual(harness.auto_turn_count, 1)
+        self.assertEqual(harness.date_raw, 53_171_400)
+        self.assertEqual(report["auto_run"]["turns"][0]["selected_step"],
+                         native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_RESULT_STEP)
+        self.assertEqual(report["auto_run"]["turns"][0]["class"], "query")
+        self.assertEqual(report["checkpoints"][0]["phase"],
+                         "player_child_matrilineal_result_pending")
+        self.assertEqual(report["checkpoints"][0]["date_raw"], harness.date_raw)
+        ledger = json.loads((self.spec.state_dir /
+                             "player-child-matrilineal-formal-v1.json").read_text(
+                                 encoding="utf-8"))
+        self.assertEqual(ledger["pending"]["last_checked_bridge_pid"],
+                         harness.bridge_pid)
+        self.assertIsNone(ledger["resolved"])
 
     def test_private_sway_target_rejects_nonbounded_and_invalid_id(self) -> None:
         for target in (0, -1, 0x100000000, True):

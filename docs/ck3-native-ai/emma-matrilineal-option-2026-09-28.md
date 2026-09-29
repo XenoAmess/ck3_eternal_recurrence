@@ -112,7 +112,9 @@ new operator prelaunch check compares raw source and prepared target to their
 **separate** `ordinary-seed-rebind-v1` fields, then checks the actual prepared
 driver and save against the manifest. A proof or pending-ledger mismatch
 stops before live-run allocation or game launch. The native turn guard admits
-only a cold `RESULT_STEP` for the same pending record. No result, next turn,
+only a cold `RESULT_STEP` for the same pending record. After that read, the
+bounded runner saves a same-date, same-actor checkpoint beside the updated
+pending or resolved ledger. No result, next turn,
 marriage or alliance is claimed from this source verification.
 
 ```mermaid
@@ -122,7 +124,7 @@ flowchart TD
     B -->|Yes| C["New PID paused LIFE and war planning"]
     C --> D{"Matching pending cold result selected?"}
     D -->|No| Y["No gameplay action or date advance"]
-    D -->|Yes| E["One typed read updates the pending or resolved ledger"]
+    D -->|Yes| E["One typed read updates the ledger and saves a paired checkpoint"]
     E -. "live validation pending" .-> F["Next formal turn reconsiders war RED and material family result"]
     classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
     class F unknown;
