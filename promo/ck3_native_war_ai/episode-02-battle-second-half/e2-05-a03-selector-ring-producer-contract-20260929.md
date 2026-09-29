@@ -42,3 +42,5 @@
 - 仅单线程构建并运行 `xar_ck3_native_bridge_combat_phase_event_trace_ring_v1` 与 `xar_ck3_native_bridge_combat_phase_event_trace_detour_v1`：MSVC 19.51.36256.0、CMake Debug/Ninja，`ctest -I 35,36 --output-on-failure -j 1` 为 **2/2 passed**。首次定向运行前的宽泛 `-R` 还选中了三个未构建 target，并暴露 Debug 函数栈上多个大型 fixture 造成的栈溢出；改为逐例堆分配后，上述两个目标重建并通过。未运行完整 CTest，也未构建 DLL/injector。
 
 源码 ABI 仍不给出 selector 的原始 draw、完整候选 CharacterID 列表、所选 opaque token→人物 ID 映射，或同侧同 event 多次 selector 的逐调用关联 ID。这些语义不能靠现有离线夹具补出；必须在独立 ABI 研究与新 a03 同源回执中证明，缺任一项时相关叙述保持 unknown。新 DLL 字节、SHA、配置门、全部正式 target 测试和 paused-live begin/finish 仍是 producer **RED** 的剩余准入项。
+
+后续静态 Release 构建与精确字节门的续证见 [私有候选记录](e2-05-a03-selector-binary-candidate-20260929.md)。本段保留先前阶段事实，不追认 a03 实机结果。
