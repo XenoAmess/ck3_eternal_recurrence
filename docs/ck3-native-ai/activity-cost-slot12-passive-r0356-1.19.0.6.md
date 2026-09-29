@@ -95,3 +95,38 @@ unchanged actor/date/revision and no date-changing turn. A native
 `no_normal_refresh` result remains RED, not a zero-price success. This is
 operator wiring and focused fake-driver validation; it adds no live fee or
 final-start evidence.
+
+## R0359 paused live readback (2026-09-29)
+
+The first exact-build live use of the private operator route used H3928,
+`date_raw=53219928`, actor `29829`, and the paired R0343 driver. The source
+was exact master `8e70959a3f83b4379cb143313e379e72776c4f74` (official
+push CI `36527418273` success) with the Release DLL SHA-256
+`3CA2E81EA4DF5270C16FAE406AD2BB0FDAA0D12EE2C9AF20F35EF2DF7159F295`.
+The official paired no-launch preflight passed before R0359 started.
+
+R0359 opened the feast planner and read the normal slot-12 return on the same
+paused frame. The private response was `available`, with
+`source=normal_slot12_return_0x10AE1AF`, `capture_sequence=128`,
+`activity_key=activity_feast`, `planning_stage=1`, actor `29829`,
+`date_raw=53219928`, and `snapshot_revision=3`. The source frame recorded
+`revision=4/native_revision=3`; the operator reported `same_frame=true`.
+There are exactly ten signed raw aggregates: index 0 is `10000000` and
+indices 1–9 are `0`. `resource_mapping` and `configured_cost` are both
+`null`. This proves a normal refresh and a live nonzero raw aggregate in the
+stage-1 planner; it does not identify index 0 as gold or establish a payable
+feast cost.
+
+The bounded run returned `private_activity_cost_slot12_raw_observed`,
+`read_only_observed`, `ok=true`. It recorded zero attempted turns and zero
+gameplay actions, no date advance, unchanged save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`,
+and controlled process-tree cleanup. The [immutable formal report](Z:/m6actcostrawh3928v2_20260929/operator-runs/slot12-raw-read-1/formal-report.txt)
+has SHA-256 `30EC3B42D88B51C1007EA9C32E9E4AD200EE267A28D9ECFD918EBA8D9C928E44`;
+the [operator receipt](Z:/m6actcostrawh3928v2_20260929/operator-runs/slot12-raw-read-1/operator-receipt.json)
+has SHA-256 `32DE37A5A0BF004D7DC7F9804185215492758D2CF19752424228126D8FDFC2AF`.
+
+The next readback needs a configured later-stage planner and an independent
+same-configuration comparison with the GUI `GetCost('gold')` value. Stage-5
+final `CanProgressPlanningStage` remains separate. No typed Confirm, Start,
+cost payment, or activity effect occurred in R0359.
