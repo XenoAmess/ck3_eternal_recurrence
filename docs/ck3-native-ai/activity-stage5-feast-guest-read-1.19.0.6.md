@@ -100,12 +100,54 @@ fields: Start itself consumes the planner `0x10B0A80` sign. Both routes call
 the original `0x337B210` evaluator, but their scope construction differs, so
 the two numeric join values are not asserted identical.
 
-`activity_stage5_feast_guest_join_v1` is an unregistered native core: no
-bridge command, MCP query, Python consumer, or live result is claimed. Its
+At initial source publication, `activity_stage5_feast_guest_join_v1` was
+an unregistered native core. The later aggregate Stage 5 Start-input route
+calls it, but the R0367 live result below could not read a guest value. Its
 focused fixture covers a positive timely non-host row, a negative row, an
 existing activity row with zero-day and later recorded-date branches, an
 empty row, cache disagreement, missing refresh, native evaluation failure,
-changed frame, and exact-build rejection. The native direct evaluators still
-need a paired, default-off paused-frame query and real readback before policy
-may use `timely_positive_join_count`. It is a prediction, not proof of
-accepted guests or completion rewards.
+changed frame, and exact-build rejection. A paired, default-off paused-frame query must read a qualified positive
+guest route before policy may use `timely_positive_join_count`. That value
+would be a prediction, not proof of accepted guests or completion rewards.
+
+## R0367 paired paused read: guest route unavailable
+
+The first paired private Start-input query used the H3928 original save
+and new CK3 PID 181244 on actual live run **R0367**. The frozen
+[A candidate](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/CANDIDATE-INDEX.json)
+SHA-256 `BFE32888F306DF5B402EF334E384A341644283D71C82C0EF7FC5BBE6EA5E19CB`
+used Python source `e6b61b825dd5ca6ae09fdeabf51a37dad27dc7c3` and
+the exact native DLL SHA-256
+`771A2A20176B5B6647E9BE005317854BEFC2DD663D8CACBC085BC2CAE91849E6`.
+Stage 1 and the typed Stage 2 location selection reached Stage 5,
+and the same-frame four-cost read succeeded, but the guest collector
+reported `guest_join_status=planner_unavailable`. The selected
+non-host, positive-join and timely-positive counts are all **null**;
+`arrival_time_observed=false` and
+`native_guest_route_qualified=false`. This result is a real paused
+failure to observe the selected-guest route, **not** a zero-guest
+observation. The separately read native final CanStart was false and
+the policy held; this run does not prove that missing guests caused
+that false result.
+
+The [formal report](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/operator-runs/feast-stage5-fixed-cost-input-read-1/formal-report.txt)
+SHA-256 `35C04DD2B42619442D98D3A6EA5AD48DAD5868CE7DA71E9D55A68F79903CE486`
+and [operator receipt](Z:/m6-activity-h3928-stage5-fixed-r0366-candidate-20260929/operator-runs/feast-stage5-fixed-cost-input-read-1/operator-receipt.json)
+SHA-256 `0EE3BF274E3103EFD2226C562AC49EF988057DAD86B7C08D62F8236A3A29A223`
+show a completed bounded query, zero normal gameplay/date turns,
+unchanged H3928 save and proven process cleanup. No Start, invitation
+acceptance, arrival, activity creation or reward was observed. The
+next source/live step is to locate the collector's
+`planner_unavailable` precondition on the actual Stage 5 frame and
+then read one selected non-host's expectation and arrival when legal;
+do not substitute the GUI cache or a zero count.
+
+At the R0367 source, `ReadActivityFeastGuestJoinV1` emits the same
+`planner_unavailable` at lines 337-346 for any of these prerequisites:
+planner diagnostic observed, planner present, stage 5, widget attached,
+widget visible, HostView activity key known, and HostView key equal to
+`activity_feast`. It returns before the slot-12 capture in this branch.
+The R0367 report does not expose each prerequisite independently, so it
+cannot establish which one failed. In particular, an unknown HostView key
+is a source-level possibility, not a proven R0367 value. A focused status
+split and paired readback are needed to localize the live gate.
