@@ -652,6 +652,25 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertIn("--private-activity-feast-guest-candidate-read", command)
         self.assertNotIn("--private-activity-feast-stage5-start-read", command)
 
+    def test_feast_guest_opinion_read_routes_without_activity_action(self) -> None:
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "Z:/candidate/manifest.json",
+            "--output", "Z:/candidate/run",
+            "--private-activity-feast-guest-opinion-character-id", "38293",
+        ])
+        self.assertEqual(parsed.private_activity_feast_guest_opinion_character_id,
+                         38293)
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=1, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None,
+            private_activity_feast_guest_opinion_character_id=38293,
+        )
+        self.assertEqual(command[-2:], [
+            "--private-activity-feast-guest-opinion-character-id", "38293",
+        ])
+        self.assertNotIn("--private-activity-feast-stage1-confirm", command)
+        self.assertNotIn("--private-activity-feast-stage5-start-read", command)
+
     def test_feast_guest_rule_read_routes_query_only(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",

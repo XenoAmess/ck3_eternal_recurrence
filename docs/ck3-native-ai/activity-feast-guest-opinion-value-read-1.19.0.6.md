@@ -45,6 +45,15 @@ successful build or command ACK cannot establish the opinion value: a fresh
 paused native read and its independent frame check are still required before
 using it for guest selection.
 
+The bounded operator exposes
+`--private-activity-feast-guest-opinion-character-id <full CharacterID>` as a
+standalone, default-OFF paused read. It does not open the feast planner or
+submit Stage-1/Stage-2, invitation, rule activation, Start, or a gameplay date
+turn. The runner records the same-frame signed opinion and holds the decision;
+`opinion_unavailable` remains RED. This route can sample the known H3928 guest
+without relying on a Stage-5 rule window, but a fresh exact-build paired
+no-launch check is required before any live run.
+
 The routed source compiles and links as a full MSVC 19.51 x64 Debug and
 Release bridge DLL with this option ON. The core fixture passes in both
 configurations (1/1 each); the main-thread mailbox fixture passes in Debug
