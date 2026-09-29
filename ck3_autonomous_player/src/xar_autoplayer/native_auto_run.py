@@ -367,6 +367,7 @@ def native_auto_run(
     allow_private_construction_formal_trial: bool = False,
     allow_private_family_marriage_formal_trial: bool = False,
     private_child_matrilineal_target: tuple[int, int] | None = None,
+    private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
@@ -464,6 +465,14 @@ def native_auto_run(
                        for value in private_child_matrilineal_target)
                 or private_child_matrilineal_target[0] == private_child_matrilineal_target[1]):
             raise AgentError("private child proposal needs bounded positive subject/candidate IDs")
+    if private_child_matrilineal_pending_read_target is not None:
+        pair = private_child_matrilineal_pending_read_target
+        if (completion_contract != "bounded"
+                or private_child_matrilineal_target is not None
+                or not isinstance(pair, tuple) or len(pair) != 2
+                or any(type(value) is not int or not 0 < value < 2**31
+                       for value in pair) or pair[0] == pair[1]):
+            raise AgentError("private child pending read needs one bounded distinct pair")
     if (
         allow_private_faction_gift_formal_trial is True
         and completion_contract != "bounded"
@@ -641,6 +650,7 @@ def native_auto_run(
     private_active_scheme_sway_observation: dict[str, object] | None = None
     private_active_scheme_sway_formal: dict[str, object] | None = None
     private_active_scheme_sway_following_turn: dict[str, object] | None = None
+    private_child_matrilineal_pending_observation: dict[str, object] | None = None
     private_realm_law_paused_observation: dict[str, object] | None = None
     private_activity_planner_diag_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
@@ -820,7 +830,8 @@ def native_auto_run(
         )
         private_child_driver_options = (
             {"allow_private_player_child_marriage_subject_query": True}
-            if private_child_matrilineal_target is not None else {}
+            if (private_child_matrilineal_target is not None
+                or private_child_matrilineal_pending_read_target is not None) else {}
         )
         private_epidemic_driver_options = (
             {"allow_private_epidemic_recovery_query": True}
@@ -890,6 +901,7 @@ def native_auto_run(
         )
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
+            or private_child_matrilineal_pending_read_target is not None
         )
         driver.child_matrilineal_target_v1 = private_child_matrilineal_target
         # Reuse the same bounded family opt-in for the exact current-heir read.
@@ -1152,6 +1164,17 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if private_child_matrilineal_pending_read_target is not None:
+                current_attempt["stage"] = "private_child_matrilineal_pending_read"
+                private_child_matrilineal_pending_observation = (
+                    _observe_private_child_matrilineal_pending_once(
+                        driver, service=service, before=before,
+                        pair=private_child_matrilineal_pending_read_target,
+                        turn_index=turn_index,
+                    )
+                )
+                status = "private_child_matrilineal_pending_observed"
+                break
             if private_activity_planner_diag_query is True:
                 current_attempt["stage"] = "private_activity_planner_diag_read"
                 private_activity_planner_diag_observation = (
@@ -3131,6 +3154,14 @@ def native_auto_run(
             else:
                 qualified = bool(common_sway_proof
                                  and status == "private_active_scheme_sway_observed")
+        if private_child_matrilineal_pending_read_target is not None:
+            qualified = bool(
+                primary_error is None
+                and status == "private_child_matrilineal_pending_observed"
+                and isinstance(private_child_matrilineal_pending_observation, dict)
+                and private_child_matrilineal_pending_observation.get("same_frame") is True
+                and cleanup.get("ok") is True and not turns and not date_advanced
+            )
         if private_realm_law_paused_query is True:
             qualified = bool(
                 primary_error is None
@@ -3246,6 +3277,7 @@ def native_auto_run(
             if (private_active_scheme_sway_target is not None
                 and allow_private_active_scheme_sway_formal_trial is not True
                 and qualified)
+            or private_child_matrilineal_pending_read_target is not None and qualified
             or private_realm_law_paused_query is True and qualified
             or private_activity_planner_diag_query is True and qualified
             else outcome
@@ -3277,6 +3309,11 @@ def native_auto_run(
             {"private_active_scheme_sway_following_turn": copy.deepcopy(
                 private_active_scheme_sway_following_turn)}
             if private_active_scheme_sway_following_turn is not None else {}
+        ),
+        **(
+            {"private_child_matrilineal_pending_observation": copy.deepcopy(
+                private_child_matrilineal_pending_observation)}
+            if private_child_matrilineal_pending_read_target is not None else {}
         ),
         **(
             {"private_realm_law_paused_observation": copy.deepcopy(
@@ -5231,6 +5268,54 @@ def _observe_private_realm_law_paused_once(
     }
 
 
+def _observe_private_child_matrilineal_pending_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    pair: tuple[int, int],
+    turn_index: int,
+) -> dict[str, object]:
+    """Cold-read one saved proposal without entering the action planner."""
+    ledger = read_child_matrilineal_ledger(driver.state_dir)
+    pending = ledger.get("pending")
+    if (not isinstance(pending, dict) or ledger.get("resolved") is not None
+            or pending.get("played_character_id") != before.get("played_character_id")
+            or pending.get("episode_run_id") != before.get("episode_run_id")
+            or (pending.get("heir_character_id"),
+                pending.get("candidate_character_id")) != pair
+            or before.get("paused") is not True
+            or before.get("map_ready") is not True):
+        raise AgentError("private child pending read lacks its paired paused proposal")
+    result = driver.query_player_child_matrilineal_result_private_v1(
+        pending=dict(pending), cold=True,
+    )
+    after = service.snapshot()
+    after_actor = after.get("played_character")
+    same_frame = bool(
+        all(before.get(key) == after.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and after.get("paused") is True and after.get("map_ready") is True
+        and isinstance(after_actor, dict)
+        and after_actor.get("character_id") == before.get("played_character_id")
+        and after_actor.get("alive") == before.get("played_character_alive")
+        and result.get("post_native_revision") == before.get("native_revision")
+        and result.get("heir_character_id") == pair[0]
+        and result.get("candidate_character_id") == pair[1]
+    )
+    if not same_frame:
+        raise AgentError("private child pending read crossed its paused source frame")
+    return {
+        "status": "observed", "turn_index": turn_index, "same_frame": True,
+        "heir_character_id": pair[0], "candidate_character_id": pair[1],
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "readback": copy.deepcopy(result),
+    }
+
+
 def _observe_private_active_scheme_sway_once(
     driver: NativeHeadlessGameplayDriver,
     *,
@@ -5460,6 +5545,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "child_matrilineal_resolved",
         "child_matrilineal_cold_recovery",
         "child_matrilineal_observation",
+        "child_matrilineal_deferred_war_red",
         "lifestyle_query_status",
         "lifestyle_native_error",
         "exact_active_war_set_watch",

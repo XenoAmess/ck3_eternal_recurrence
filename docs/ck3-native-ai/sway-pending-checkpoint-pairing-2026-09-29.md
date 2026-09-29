@@ -89,3 +89,16 @@ save/driver, and the child ledger still to equal its R0329 version. It copies
 both ledgers unchanged. R0342 verified Sway application; it did not consume
 the next turn or resolve the child proposal. This source change itself adds no
 new live evidence.
+
+## Bounded child pending read entry
+
+The private `--private-child-matrilineal-pending-read HEIR_ID CANDIDATE_ID`
+operator option passes a paired target to `native-auto-run`. The run checks the
+existing child ledger against the paused player, episode and exact child pair,
+then makes one native cold result query and stops before the normal planner.
+The report records the native result and a same-frame check. This path does
+not send a proposal, advance the game date, or rewrite the child ledger. It
+can distinguish a still-active outbound request from a material marriage or
+refusal in a later exact candidate. It cannot consume the resolved Sway's next
+gameplay turn. The option is default-off and remains a private read-only
+acceptance entry until a paired live run proves the result.

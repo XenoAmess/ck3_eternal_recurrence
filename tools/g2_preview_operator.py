@@ -1257,6 +1257,7 @@ def native_auto_run_command(
     private_m5_joint_collector: bool = False,
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
+    private_child_matrilineal_pending_read: tuple[int, int] | None = None,
     private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
     private_activity_planner_diag_query: bool = False,
@@ -1302,6 +1303,11 @@ def native_auto_run_command(
         command.extend([
             "--private-active-scheme-sway-target",
             str(private_active_scheme_sway_target),
+        ])
+    if private_child_matrilineal_pending_read is not None:
+        command.extend([
+            "--private-child-matrilineal-pending-read",
+            *(str(value) for value in private_child_matrilineal_pending_read),
         ])
     if private_active_scheme_sway_formal_trial:
         command.append("--allow-private-active-scheme-sway-formal-trial")
@@ -1840,6 +1846,13 @@ def command_prepare_state(args: argparse.Namespace) -> int:
 
 
 def command_run(args: argparse.Namespace) -> int:
+    child_pair = args.private_child_matrilineal_pending_read
+    if child_pair is not None and (
+        len(child_pair) != 2 or any(type(value) is not int or not 0 < value < 2**31
+                                    for value in child_pair)
+        or child_pair[0] == child_pair[1]
+    ):
+        raise ValueError("private child pending read needs two distinct positive IDs")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")
@@ -1918,6 +1931,7 @@ def command_run(args: argparse.Namespace) -> int:
             args.private_prisoner_collection_observation
         ),
         "private_active_scheme_sway_target": args.private_active_scheme_sway_target,
+        "private_child_matrilineal_pending_read": child_pair,
         "private_active_scheme_sway_formal_trial": (
             args.private_active_scheme_sway_formal_trial
         ),
@@ -1986,6 +2000,10 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_active_scheme_sway_target=(
                     args.private_active_scheme_sway_target
+                ),
+                private_child_matrilineal_pending_read=(
+                    tuple(args.private_child_matrilineal_pending_read)
+                    if args.private_child_matrilineal_pending_read is not None else None
                 ),
                 private_active_scheme_sway_formal_trial=(
                     args.private_active_scheme_sway_formal_trial
@@ -2794,6 +2812,11 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-active-scheme-sway-target", type=int,
         help="read one explicit sway target on a paused frame and stop before action",
+    )
+    run.add_argument(
+        "--private-child-matrilineal-pending-read", type=int, nargs=2,
+        metavar=("HEIR_ID", "CANDIDATE_ID"),
+        help="cold-read one paired child proposal on a paused frame",
     )
     run.add_argument(
         "--private-active-scheme-sway-formal-trial", action="store_true",
