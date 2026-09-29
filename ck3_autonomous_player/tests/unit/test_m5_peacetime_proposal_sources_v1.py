@@ -605,8 +605,10 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                             for row in marriage_rows))
         self.assertEqual(collection["dispatch"]["selected_candidate_id"],
                          "building:501:701:1")
-        self.assertEqual(collection["dispatch"]["analysis"]["selection_basis"][3],
-                         "ally_claim_count")
+        self.assertEqual(collection["dispatch"]["analysis"]["selection_basis"][0],
+                         "family_policy_rank_within_marriage")
+        self.assertIn("ally_claim_count",
+                      collection["dispatch"]["analysis"]["selection_basis"])
 
     def test_family_only_reservation_reuses_existing_typed_consumer(self) -> None:
         driver = _Driver(
@@ -634,7 +636,7 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
                          ["marriage"])
         self.assertTrue(plan["m5_joint_formal_action_ready"])
 
-    def test_distinct_no_alliance_heir_offer_can_win_one_formal_slot(self) -> None:
+    def test_distinct_no_alliance_offer_does_not_reverse_family_rank(self) -> None:
         driver = _Driver(
             self.state_dir, snapshot=_snapshot(faction_count=0),
             family_enabled=True,
@@ -655,9 +657,9 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             planned = GameplayBridgeService(driver).plan_turn()
         plan = planned["plan"]
         self.assertEqual(plan["family_marriage_choice"]["candidate_character_id"],
-                         38711)
+                         38710)
         self.assertEqual(plan["family_marriage_private_diagnostic"]
-                         ["selected_candidate_character_id"], 38711)
+                         ["selected_candidate_character_id"], 38710)
         self.assertEqual(plan["selected_step"],
                          "submit-observed-first-heir-marriage-v1-private")
         collection = plan["m5_joint_query_only"]
@@ -665,12 +667,13 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
         self.assertEqual(len(set(collection["collected_candidate_ids"])), 5)
         selected = collection["dispatch"]["reservation"]
         self.assertEqual(selected["candidate_id"],
-                         "marriage:first-heir:38822:38711:32267")
-        self.assertEqual(selected["commitments_after"]["ally_character_ids"], [])
+                         "marriage:first-heir:38822:38710:32266")
+        self.assertEqual(selected["commitments_after"]["ally_character_ids"],
+                         [32266])
         self.assertEqual(selected["commitments_after"]["commitment_keys"],
                          ["first-heir-marriage:38822"])
         self.assertEqual(plan["family_marriage_choice"]["value"],
-                         "bounded_first_heir_external_dynasty_betrothal_opportunity")
+                         "bounded_first_heir_betrothal_and_realm_alliance_attempt")
 
     def test_repeated_family_plan_cannot_fake_five_candidates(self) -> None:
         driver = _Driver(self.state_dir, family_enabled=True)

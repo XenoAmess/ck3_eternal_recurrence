@@ -639,6 +639,14 @@ def select_observed_m5_opportunity(
             reason = "projected_supply_deficit"
         evaluated.append({**proposal, "reason": reason})
     eligible = [row for row in evaluated if row["reason"] == "eligible"]
+    # The family consumer already ranks its five value-approved alternatives
+    # by outcome, age gap and native acceptance. Shared ally claims are still
+    # charged when comparing domains, but must not reverse that family rank.
+    family = [row for row in eligible if row["domain"] == "marriage"]
+    if family:
+        family_best = min(family, key=_family_policy_key)
+        eligible = [row for row in eligible if row["domain"] != "marriage"]
+        eligible.append(family_best)
     prefer_income = (
         not wars and not armies
         and all(row["domain"] in {"building", "diplomacy"} for row in evaluated)
@@ -655,11 +663,12 @@ def select_observed_m5_opportunity(
         ),
         "income_preference_applied": prefer_income,
         "selection_basis": [
+            "family_policy_rank_within_marriage",
             "positive_authored_building_income_in_peace", "war_slot_claim",
             "army_claim_count", "ally_claim_count",
             "gold_cost_raw", "commitment_key_count", "character_claim_count",
             "projected_supply_margin_raw_desc", "domain",
-            "family_outcome_age_and_native_acceptance", "candidate_id",
+            "candidate_id",
         ],
         "selected_step": None,
         "formal_action_ready": False,
@@ -770,25 +779,31 @@ def _opportunity_key(
     evidence = row["evidence"]
     income = (evidence.get("authored_monthly_income_hundredths")
               if row["domain"] == "building" else None)
-    family_order = (0, 0, 0)
-    if row["domain"] == "marriage":
-        heir_age = evidence.get("heir_adult_measure_raw")
-        candidate_age = evidence.get("candidate_adult_measure_raw")
-        acceptance = evidence.get("recipient_ai_accept_raw")
-        if (type(heir_age) is int and type(candidate_age) is int
-                and type(acceptance) is int):
-            family_order = (
-                0 if evidence.get("predicted_outcome_if_accepted") == "marriage" else 1,
-                abs(heir_age - candidate_age), -acceptance,
-            )
     return (
         0 if prefer_income and type(income) is int and income > 0 else 1,
         row["war_slot_claim"], len(row["army_ids"]),
         len(row["ally_character_ids"]), row["gold_cost_raw"],
         len(row["commitment_keys"]), len(row["character_ids"]),
         -(supply if type(supply) is int else 0), row["domain"],
-        family_order, row["candidate_id"],
+        row["candidate_id"],
     )
+
+
+def _family_policy_key(row: Mapping[str, object]) -> tuple[object, ...]:
+    """Mirror the owning family's bounded outcome/age/acceptance order."""
+    evidence = row["evidence"]
+    heir_age = evidence.get("heir_adult_measure_raw")
+    candidate_age = evidence.get("candidate_adult_measure_raw")
+    acceptance = evidence.get("recipient_ai_accept_raw")
+    candidate_id = evidence.get("candidate_character_id")
+    candidate_order = (candidate_id if type(candidate_id) is int
+                       and candidate_id > 0 else 2**63)
+    if (type(heir_age) is int and type(candidate_age) is int
+            and type(acceptance) is int):
+        return (0 if evidence.get("predicted_outcome_if_accepted") == "marriage"
+                else 1, abs(heir_age - candidate_age), -acceptance,
+                candidate_order, row["candidate_id"])
+    return (2, 0, 0, candidate_order, row["candidate_id"])
 
 
 def _nonnegative(value: object, name: str) -> int:
