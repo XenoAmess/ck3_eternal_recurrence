@@ -44,6 +44,11 @@ readback SHA `B6C619930060FC521E0F84B9966BE771D8BF78FE177422344DB52A2F13FD5DF0`�
 preflight 记录 exact CK3 1.19.0.6、DLL SHA
 `1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F` 与 injector SHA
 `34A1AB183F5173844A74E52A7F68195AAD859C380DFCA6B7E76F40611A51FB2D`。
+2026-09-29 本轮又对原 d11 save（52,408,560 B）与原 sidecar（13,397 B）各做**一次**
+当前磁盘 SHA-256，均匹配上述冻结值；没有读取任何 raw/ffprobe。旧 J-A01 隔离 profile 的
+`war_film_checkpoint.ck3` 经只列路径确认仍存在；本轮**没有**重新哈希该旧副本。
+新 attempt 必须重新从原 save/sidecar 建立自己的隔离副本并在新回执中核同字节，
+不能复用旧 attempt 的 profile 路径或复制回执。
 
 当次原生步骤可填引用：前态 snapshot
 `ck3-output/interactive-requests-responses/e2-06-d11-snapshot.json` SHA
@@ -78,7 +83,7 @@ trace finish SHA `A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907C
 | `prepare` 的 `source-manifest.json` | 上表 capture/session/recorder/marks 和标记截图给出了来源候选；正式脚本仍需重新逐字节核原 raw、完整 ffprobe 与原件。当前没有 J-A01 的 `PENDING_CLEAN_REVIEW` 清单。 |
 | `extract-frame` / `human-review.json` | 先由人按 1× 完整看 600 秒，选每段真正无遮挡、同源且有用的内容；每个最终起止 PTS 各生成脚本所需 raw-derived PNG、exact decoded frame index、showinfo、argv/stdout/stderr 和 `EXTRACTED_UNREVIEWED` 回执，然后由同一真实审阅者核端点和连续画面并填写真实时间。两段如全用至少四个端点，但窗口边界不预定最终端点。 |
 | `package` 的 `report.json` / `cell/promo/capture-timeline.json` / `evidence-index.json` | 目前全无。正式输出需 raw 复制件 bytes/SHA、`schema=2` timeline 的 clean begin/end marks、每段两枚 frame gate（PNG、抽帧回执、命令、stdio、人工 review、真实 PTS/无加载/来源可见声明）、所有文件的 evidence index，再实调 `load_capture_bundle(...).verify_unchanged()`。这些 GREEN 字段只能在完成上述步骤后由封装器生成。 |
-| reel `clean_span_audit` 与 `control` | bundle GREEN 之后仍需单独 GREEN clean-span 审计和 1× reel/来源标签复核。更关键的是，**当次原生 battle-control 原件缺失**：`operator-steps/e2-06-d11-observe.json`、`advance.json` 都写 `control=null`、`subject_combat_membership_verified=false`，marks 两行也 `control=null`；前后 snapshot 的 `battle_control_snapshot_v1=null`。private trace 有 CombatID 16777218，但不能证明 ArmyID 18 的正式同帧 combat membership。#451 reel-edit 对每条 capture 的 `control` 要求是同 attempt 且在 source manifest 的 `files` 中；现有 `prepare` 只收固定原件与 marks 的 report/screenshot/control 引用，空 control 无法补。 |
+| reel `clean_span_audit` 与 `control` | bundle GREEN 之后仍需单独 GREEN clean-span 审计和 1× reel/来源标签复核。更关键的是，**当次原生 battle-control 原件缺失**：`operator-steps/e2-06-d11-observe.json` 顶层 `control=null`、`subject_combat_membership_verified=false`；`advance.json` 顶层为 `after_save_control=null`、`subject_combat_membership_verified=false`，其 `source_binding.spec.control=false`；marks 两行也 `control=null`。前后 snapshot 的 `battle_control_snapshot_v1=null`。private trace 有 CombatID 16777218，但不能证明 ArmyID 18 的正式同帧 combat membership。#451 reel-edit 对每条 capture 的 `control` 要求是同 attempt 且在 source manifest 的 `files` 中；现有 `prepare` 只收固定原件与 marks 的 report/screenshot/control 引用，空 control 无法补。 |
 
 为排除“原 run 其实另有 control 回执”，本轮列过该 attempt 的全部
 `ck3-output/interactive-requests/` 与 `interactive-requests-responses/` 文件名：没有
