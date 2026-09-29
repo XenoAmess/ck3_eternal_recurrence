@@ -1400,6 +1400,7 @@ def native_auto_run_command(
     private_activity_feast_stage2_destination_province: int | None = None,
     private_activity_feast_stage5_full_cost_read: bool = False,
     private_activity_feast_stage5_start_read: bool = False,
+    private_activity_feast_guest_candidate_read: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1482,6 +1483,8 @@ def native_auto_run_command(
         command.append("--private-activity-feast-stage5-full-cost-read")
     if private_activity_feast_stage5_start_read:
         command.append("--private-activity-feast-stage5-start-read")
+    if private_activity_feast_guest_candidate_read:
+        command.append("--private-activity-feast-guest-candidate-read")
     if private_activity_cost_slot12_raw_read:
         command.append("--private-activity-cost-slot12-raw-read")
     if require_initial_lifestyle_focus_before_date_advance:
@@ -2091,6 +2094,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_feast_stage2_destination_province is not None
                 or args.private_activity_feast_stage5_full_cost_read
                 or args.private_activity_feast_stage5_start_read
+                or args.private_activity_feast_guest_candidate_read
                 or args.private_activity_planner_diag_query
                 or args.private_construction_formal_trial
                 or args.private_family_marriage_formal_trial
@@ -2139,6 +2143,9 @@ def command_run(args: argparse.Namespace) -> int:
     if (args.private_activity_feast_stage5_start_read
             and not args.private_activity_feast_stage5_full_cost_read):
         raise ValueError("private stage-5 Start read requires the full-cost route")
+    if (args.private_activity_feast_guest_candidate_read
+            and not args.private_activity_feast_stage5_full_cost_read):
+        raise ValueError("private feast guest candidate read requires the full-cost route")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")
@@ -2327,6 +2334,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_stage5_start_read": (
             args.private_activity_feast_stage5_start_read
         ),
+        "private_activity_feast_guest_candidate_read": (
+            args.private_activity_feast_guest_candidate_read
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -2431,6 +2441,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_stage5_start_read=(
                     args.private_activity_feast_stage5_start_read
+                ),
+                private_activity_feast_guest_candidate_read=(
+                    args.private_activity_feast_guest_candidate_read
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -3296,6 +3309,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-stage5-start-read", action="store_true",
         help="after Stage-5 cost read, assess private Start inputs without assuming guests",
+    )
+    run.add_argument(
+        "--private-activity-feast-guest-candidate-read", action="store_true",
+        help="after Stage-5 cost read, query one filtered guest before invitation",
     )
     run.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
