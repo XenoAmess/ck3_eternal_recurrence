@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 from collections.abc import Callable
+from pathlib import Path
 import uuid
 
 from .driver import (
@@ -412,6 +413,7 @@ from ..player_child_matrilineal_formal_consumer import (
     RESULT_STEP as PRIVATE_CHILD_MATRILINEAL_RESULT_STEP,
     SUBMIT_STEP as PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
     plan_child_matrilineal_private,
+    read_child_matrilineal_ledger,
     query_child_matrilineal_result_private,
     query_child_matrilineal_alliance_private,
     submit_child_matrilineal_private,
@@ -1088,6 +1090,46 @@ class GameplayBridgeService:
             planned = self._plan_private_family_wartime_v1(
                 planned, family_snapshot,
             )
+            # LIFE's wartime priority return also needs to consume an already
+            # submitted child proposal on a new PID. Only its read-only result
+            # step may displace the unchanged war plan here; a fresh proposal
+            # remains on the ordinary domain route.
+            target = getattr(self.driver, "child_matrilineal_target_v1", None)
+            child_state_dir = getattr(self.driver, "state_dir", None)
+            current_plan = planned.get("plan")
+            if (getattr(self.driver,
+                        "allow_private_player_child_matrilineal_action",
+                        False) is True
+                    and isinstance(target, tuple) and len(target) == 2
+                    and isinstance(child_state_dir, Path)
+                    and isinstance(current_plan, dict)
+                    and current_plan.get("selected_step") == before_lifestyle_step
+                    and isinstance(read_child_matrilineal_ledger(
+                        child_state_dir).get("pending"), dict)):
+                pending_read = plan_child_matrilineal_private(
+                    self.driver, planned, snapshot,
+                    subject_character_id=target[0],
+                    candidate_character_id=target[1],
+                )
+                pending_plan = pending_read.get("plan")
+                if (isinstance(pending_plan, dict)
+                        and pending_plan.get("selected_step")
+                        == PRIVATE_CHILD_MATRILINEAL_RESULT_STEP):
+                    if (before_lifestyle_step is None
+                            and isinstance(snapshot.get("active_wars"), list)
+                            and snapshot["active_wars"]
+                            and isinstance(current_plan.get("phase"), str)
+                            and current_plan["phase"].startswith("native_war")):
+                        pending_read = {**pending_read, "plan": {
+                            **pending_plan,
+                            "child_matrilineal_deferred_war_red": {
+                                "status": "blocked_deferred_for_read_only_result",
+                                "phase": current_plan.get("phase"),
+                                "reason": current_plan.get("reason"),
+                                "selected_step": None,
+                            },
+                        }}
+                    planned = pending_read
             planned.pop("_private_faction_snapshot_v1", None)
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)

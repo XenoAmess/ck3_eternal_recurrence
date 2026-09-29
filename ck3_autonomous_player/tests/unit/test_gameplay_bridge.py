@@ -1797,6 +1797,90 @@ class GameplayBridgeTests(unittest.TestCase):
                          "private-query-player-construction-receipt-v1")
         construction.assert_called_once()
 
+    def test_lifestyle_war_red_reads_existing_child_proposal_after_cold_restore(self) -> None:
+        state = {**_snapshot(4), "paused": True, "map_ready": True,
+                 "native_revision": 3, "active_event": None,
+                 "pending_character_interaction": None,
+                 "active_wars": [{"war_id": 16777231}],
+                 "episode_run_id": "native-29829-2bc2d599f7f9",
+                 "date_raw": 53219928,
+                 "played_character": {"character_id": 29829}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance",
+                          "query-player-child-matrilineal-marriage-result-v1-private"),
+        )
+        driver.state_dir = ROOT / "unused-child-pending-route"
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_player_child_matrilineal_action = True
+        driver.child_matrilineal_target_v1 = (37265, 37267)
+        pending = {
+            "status": "receipt_pending", "episode_run_id": state["episode_run_id"],
+            "heir_character_id": 37265, "candidate_character_id": 37267,
+            "source_bridge_pid": 181880,
+            "source_bridge_creation_date": "submit",
+            "last_checked_native_revision": 3,
+            "last_checked_bridge_pid": 75760,
+            "last_checked_bridge_creation_date": "first-cold-read",
+        }
+        ledger = {"pending": pending, "resolved": None}
+        blocked = {"policy": "one-life-turn-v1", "selected_step": None,
+                   "phase": "native_war_siege_forecast_inputs_observed",
+                   "reason": "forecast producer unavailable"}
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value=blocked),
+              mock.patch.object(GameplayBridgeService,
+                                "_plan_private_lifestyle_trial_v1",
+                                side_effect=lambda planned, _steps: planned),
+              mock.patch("xar_autoplayer.bridge.service.read_child_matrilineal_ledger",
+                         return_value=ledger),
+              mock.patch("xar_autoplayer.player_child_matrilineal_formal_consumer"
+                         ".read_child_matrilineal_ledger", return_value=ledger),
+              mock.patch("xar_autoplayer.player_child_matrilineal_formal_consumer"
+                         ".bridge_process_identity",
+                         return_value=(132228, "new-cold-pid"))):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"],
+                         "query-player-child-matrilineal-marriage-result-v1-private")
+        self.assertTrue(plan["child_matrilineal_cold_recovery"])
+        self.assertEqual(plan["child_matrilineal_pending"], pending)
+        self.assertEqual(plan["child_matrilineal_deferred_war_red"], {
+            "status": "blocked_deferred_for_read_only_result",
+            "phase": blocked["phase"], "reason": blocked["reason"],
+            "selected_step": None,
+        })
+
+    def test_lifestyle_war_step_keeps_priority_over_child_pending_read(self) -> None:
+        state = {**_snapshot(4), "paused": True, "map_ready": True,
+                 "active_wars": [{"war_id": 16777231}],
+                 "episode_run_id": "native-29829-2bc2d599f7f9",
+                 "date_raw": 53219928,
+                 "played_character": {"character_id": 29829}}
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless", snapshot=lambda: state,
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance", "query-army-strengths-v1",
+                          "query-player-child-matrilineal-marriage-result-v1-private"),
+        )
+        driver.state_dir = ROOT / "unused-child-pending-route"
+        driver.allow_private_lifestyle_formal_trial = True
+        driver.allow_private_player_child_matrilineal_action = True
+        driver.child_matrilineal_target_v1 = (37265, 37267)
+        with (mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                         return_value={"selected_step": "query-army-strengths-v1"}),
+              mock.patch.object(GameplayBridgeService,
+                                "_plan_private_lifestyle_trial_v1",
+                                side_effect=lambda planned, _steps:
+                                {**planned, "plan": {**planned["plan"],
+                                    "selected_step": "private-query-player-lifestyle-v1"}}),
+              mock.patch("xar_autoplayer.bridge.service.read_child_matrilineal_ledger")
+              as child_ledger):
+            plan = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"],
+                         "private-query-player-lifestyle-v1")
+        child_ledger.assert_not_called()
+
     def test_wartime_m5_observes_existing_construction_without_replacing_war_step(self) -> None:
         state = {**_snapshot(7), "paused": True, "map_ready": True,
                  "active_event": None, "pending_character_interaction": None,
