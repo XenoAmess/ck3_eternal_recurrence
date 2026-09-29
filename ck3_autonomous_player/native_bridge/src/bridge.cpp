@@ -29,6 +29,9 @@
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
 #include "activity_stage5_feast_full_cost_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
+#include "activity_feast_guest_candidate_private_transport_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
 #include "activity_feast_stage5_start_private_transport_v1.hpp"
 #endif
@@ -9445,6 +9448,10 @@ public:
     environment.permitted_executor_quattuorsexagintary =
         &xar::ck3_11906::ExecuteActivityFeastStage5PrivateV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
+    environment.permitted_executor_quinsexagintary =
+        &xar::ck3_11906::ExecuteActivityFeastGuestCandidatePrivateV1;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
     environment.permitted_executor_octoquinquagintary =
         &xar::ck3_11906::ExecuteActiveSchemeSwayFormalPrivateCommandV1;
@@ -10496,6 +10503,10 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kActivityStage5FeastFullCostPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kActivityFeastGuestCandidatePrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityFeastStage5InputsPrivateStepV1
                    && step != xar::ck3_11906::kActivityFeastStage5StartPrivateStepV1
@@ -11455,6 +11466,117 @@ void RunConnectedSession(
                                      MainThreadQueryReclaimResultV1::reclaimed) {
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity stage-5 feast cost reclaim red");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
+          if (step == xar::ck3_11906::
+                          kActivityFeastGuestCandidatePrivateStepV1) {
+            std::uint64_t expected_revision = 0, expected_date_raw = 0;
+            std::uint64_t expected_actor_id = 0, expected_stage = 0;
+            std::string expected_activity_key;
+            xar::game::Snapshot current{};
+            if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
+                    incoming.payload, expected_revision) ||
+                !xar::bridge::JsonUnsignedField(
+                    incoming.payload, "expected_date_raw", expected_date_raw) ||
+                !xar::bridge::JsonUnsignedField(
+                    incoming.payload, "expected_actor_character_id",
+                    expected_actor_id) ||
+                !xar::bridge::JsonUnsignedField(
+                    incoming.payload, "expected_planning_stage",
+                    expected_stage) ||
+                !xar::bridge::JsonStringField(
+                    incoming.payload, "expected_activity_key",
+                    expected_activity_key, 96) ||
+                expected_activity_key != "activity_feast" ||
+                expected_stage != 5 || expected_revision == 0 ||
+                expected_revision != state_revision ||
+                !previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current) ||
+                current != *previous_snapshot || !current.paused ||
+                !current.map_ready || !current.has_played_character ||
+                !current.played_character_alive ||
+                current.played_character_id <= 0 ||
+                expected_actor_id != static_cast<std::uint64_t>(
+                    current.played_character_id) ||
+                expected_date_raw != static_cast<std::uint64_t>(
+                    current.date_raw)) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "activity feast guest candidate frame or request invalid"));
+            } else {
+              xar::ck3_11906::ActivityFeastGuestCandidatePrivateQueryV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.passive_cost = &g_activity_cost_slot12_observer_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.expected_snapshot = current;
+              query.expected_revision = expected_revision;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteActivityFeastGuestCandidatePrivateV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                        "activity feast guest candidate executor unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                }
+                xar::game::Snapshot after{};
+                const bool stable =
+                    wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                completed &&
+                    query.completed && !query.frame_changed &&
+                    xar::game::ReadSnapshot(game, after) && after == current;
+                const auto native =
+                    stable ? xar::ck3_11906::
+                                 SerializeActivityFeastGuestCandidatePrivateV1(query)
+                           : std::string{};
+                std::string response;
+                if (!native.empty()) {
+                  const auto status = query.candidate.status;
+                  const bool available =
+                      status == xar::bridge::ActivityFeastGuestCandidateStatusV1::
+                                    observed ||
+                      status == xar::bridge::ActivityFeastGuestCandidateStatusV1::
+                                    no_qualified_candidate;
+                  response =
+                      "{\"type\":\"command_result\",\"protocol_version\":1,"
+                      "\"request_id\":";
+                  AppendJsonString(response, request_id);
+                  response += ",\"ok\":true,\"result\":{\"step\":";
+                  AppendJsonString(response, step);
+                  response +=
+                      ",\"accepted\":true,\"status\":\"" +
+                      std::string(available ? "available" : "unavailable") +
+                      "\",\"private_build\":true,\"read_only\":true,"
+                      "\"advertised\":false,"
+                      "\"activity_feast_guest_candidate\":" +
+                      native + ",\"backend_id\":\"native-headless\"}}";
+                } else {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      query.failure.empty()
+                          ? "activity feast guest candidate paused read unavailable"
+                          : query.failure);
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(request_id, step, false,
+                      "activity feast guest candidate reclaim red");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
