@@ -402,6 +402,17 @@ class G2PreviewOperatorTest(unittest.TestCase):
                            "phase": "player_child_matrilineal_result_pending",
                            "ledger_status": "pending", "status": "saved"}
         post_driver = {**driver, "last_checkpoint": post_checkpoint}
+        # H3933's real checkpoint cannot validate the earlier R0342 Sway
+        # effect. The prepared copy must recheck Sway against H3928, while
+        # child pairing below still checks the genuine H3933 driver/save.
+        with self.assertRaisesRegex(ValueError, "resolved Sway readback/checkpoint"):
+            resolved_pair(resolved_ledger, post_driver, post_hash, 78515535,
+                          sway_report, applied_report)
+        self.assertEqual(resolved_pair(
+            resolved_ledger,
+            {**post_driver, "last_checkpoint": applied_checkpoint},
+            applied_hash, 78515535, sway_report, applied_report),
+            (sway_action_id, applied_checkpoint))
         binding = {"paused": True, "date_raw": 53219928,
                    "episode_character_id": 29829, "episode_run_id": episode}
         post_report = {

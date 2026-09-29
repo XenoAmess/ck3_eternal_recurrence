@@ -1958,8 +1958,13 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 sha256(save_target), save_target.stat().st_size)
             if sway_ledger_status == "pending" else
             sway_formal_resolved_sidecar_pair(
-                sway_record, prepared_driver,
-                sha256(save_target), save_target.stat().st_size,
+                sway_record,
+                {**prepared_driver, "last_checkpoint": applied_saved}
+                if post_sway_result is not None else prepared_driver,
+                applied_saved["sha256"] if post_sway_result is not None
+                else sha256(save_target),
+                applied_saved["size"] if post_sway_result is not None
+                else save_target.stat().st_size,
                 child_continuation, sway_applied)[0])
         if prepared_sway_action_id != sway_action_id:
             raise RuntimeError("prepared driver no longer matches Sway pending ACK")
