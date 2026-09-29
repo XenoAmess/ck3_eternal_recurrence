@@ -488,6 +488,10 @@ def parser() -> argparse.ArgumentParser:
         help="after verified destination selection, read four native costs and final CanStart without Start",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-stage5-start-read", action="store_true",
+        help="after four-cost read, assess native Start inputs; unknown guest and budget remain hold",
+    )
+    native_auto_run_parser.add_argument(
         "--private-activity-cost-slot12-raw-read", action="store_true",
         help=("read one passive normal slot-12 raw cost capture; combine with "
               "--private-activity-feast-planner-open to open first"),
@@ -1103,6 +1107,8 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_stage2_destination_province is not None else {}),
                     **({"private_activity_feast_stage5_full_cost_read": True}
                       if args.private_activity_feast_stage5_full_cost_read else {}),
+                    **({"private_activity_feast_stage5_start_read": True}
+                      if args.private_activity_feast_stage5_start_read else {}),
                     **({"private_activity_cost_slot12_raw_read": True}
                       if args.private_activity_cost_slot12_raw_read else {}),
                     **succession_options,

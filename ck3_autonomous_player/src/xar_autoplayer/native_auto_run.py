@@ -35,6 +35,11 @@ from .bridge.activity_stage5_feast_full_cost_private_transport import (
     STEP as _PRIVATE_ACTIVITY_STAGE5_FULL_COST_READ_STEP,
     query_activity_stage5_feast_full_cost_private_v1,
 )
+from .bridge.activity_feast_stage5_start_private_transport import (
+    INPUT_STEP as _PRIVATE_ACTIVITY_STAGE5_START_INPUT_STEP,
+    query_activity_feast_stage5_start_inputs_private_v1,
+)
+from .activity_feast_stage5_start_formal_consumer import consume_feast_start_private_v1
 from .bridge.pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
 )
@@ -406,6 +411,7 @@ def native_auto_run(
     private_activity_feast_stage2_location_candidate_province_ids: tuple[int, ...] | None = None,
     private_activity_feast_stage2_destination_province_id: int | None = None,
     private_activity_feast_stage5_full_cost_read: bool = False,
+    private_activity_feast_stage5_start_read: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -606,6 +612,9 @@ def native_auto_run(
     if (private_activity_feast_stage5_full_cost_read is True
             and private_activity_feast_stage2_destination_province_id is None):
         raise AgentError("private stage-5 full-cost read requires verified stage-2 destination selection")
+    if (private_activity_feast_stage5_start_read is True
+            and private_activity_feast_stage5_full_cost_read is not True):
+        raise AgentError("private stage-5 Start read requires the full-cost Stage-5 route")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -752,6 +761,7 @@ def native_auto_run(
     private_activity_feast_stage2_location_observation: dict[str, object] | None = None
     private_activity_feast_stage2_destination_observation: dict[str, object] | None = None
     private_activity_feast_stage5_full_cost_observation: dict[str, object] | None = None
+    private_activity_feast_stage5_start_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -1000,6 +1010,12 @@ def native_auto_run(
         )
         driver.allow_private_activity_stage5_feast_full_cost_query = (
             private_activity_feast_stage5_full_cost_read is True
+        )
+        driver.allow_private_activity_feast_stage5_start_query = (
+            private_activity_feast_stage5_start_read is True
+        )
+        driver.allow_private_activity_feast_stage5_start_action = (
+            private_activity_feast_stage5_start_read is True
         )
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
@@ -1390,6 +1406,17 @@ def native_auto_run(
                                         )
                                     )
                                     status = "private_activity_feast_stage5_full_cost_observed"
+                                    if private_activity_feast_stage5_start_read is True:
+                                        current_attempt["stage"] = "private_activity_feast_stage5_start_read"
+                                        private_activity_feast_stage5_start_observation = (
+                                            _read_private_activity_feast_stage5_start_once(
+                                                driver, service=service, before=before,
+                                                cost_observation=(
+                                                    private_activity_feast_stage5_full_cost_observation
+                                                ), turn_index=turn_index,
+                                            )
+                                        )
+                                        status = "private_activity_feast_stage5_start_assessed"
                     else:
                         status = "private_activity_feast_stage1_option_observed"
                 elif private_activity_cost_slot12_raw_read is True:
@@ -3534,7 +3561,9 @@ def native_auto_run(
             qualified = bool(
                 primary_error is None
                 and status == (
-                    "private_activity_feast_stage5_full_cost_observed"
+                    "private_activity_feast_stage5_start_assessed"
+                    if private_activity_feast_stage5_start_read is True
+                    else "private_activity_feast_stage5_full_cost_observed"
                     if private_activity_feast_stage5_full_cost_read is True
                     else "private_activity_feast_stage2_destination_selected"
                     if private_activity_feast_stage2_destination_province_id is not None
@@ -3567,6 +3596,10 @@ def native_auto_run(
                      or (isinstance(private_activity_feast_stage5_full_cost_observation, dict)
                          and private_activity_feast_stage5_full_cost_observation.get("same_frame") is True
                          and private_activity_feast_stage5_full_cost_observation.get("read_only") is True))
+                and (private_activity_feast_stage5_start_read is not True
+                     or (isinstance(private_activity_feast_stage5_start_observation, dict)
+                         and private_activity_feast_stage5_start_observation.get("same_frame") is True
+                         and private_activity_feast_stage5_start_observation.get("decision") == "hold"))
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -3779,6 +3812,11 @@ def native_auto_run(
             {"private_activity_feast_stage5_full_cost_observation": copy.deepcopy(
                 private_activity_feast_stage5_full_cost_observation)}
             if private_activity_feast_stage5_full_cost_read is True else {}
+        ),
+        **(
+            {"private_activity_feast_stage5_start_observation": copy.deepcopy(
+                private_activity_feast_stage5_start_observation)}
+            if private_activity_feast_stage5_start_read is True else {}
         ),
         **(
             {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
@@ -6887,6 +6925,63 @@ def _read_private_activity_feast_stage5_full_cost_once(
             selected_step=step,
         )
     return observation
+
+
+def _read_private_activity_feast_stage5_start_once(
+    driver: NativeHeadlessGameplayDriver,
+    *, service: GameplayBridgeService, before: dict[str, object],
+    cost_observation: dict[str, object], turn_index: int,
+) -> dict[str, object]:
+    """Consume same-frame native Start inputs and evaluate without guessed guests."""
+    step = _PRIVATE_ACTIVITY_STAGE5_START_INPUT_STEP
+    pre = service.snapshot()
+    if (cost_observation.get("same_frame") is not True
+            or not _private_activity_same_paused_frame(before, pre)):
+        raise StepPostconditionError(
+            "private Stage-5 Start read lacks a same-frame cost source",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False}, selected_step=step)
+    try:
+        inputs = query_activity_feast_stage5_start_inputs_private_v1(
+            driver, expected_revision=pre["revision"],
+            timeout_seconds=float(driver.command_timeout_seconds),
+        )
+        post = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private Stage-5 Start inputs unresolved",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False,
+                         "native_error": type(exc).__name__ + ": " + str(exc)},
+            selected_step=step) from exc
+    same_frame = bool(
+        _private_activity_same_paused_frame(before, post)
+        and all(pre.get(key) == post.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and inputs["queried_snapshot_id"] == pre["snapshot_id"]
+        and inputs["post_snapshot_id"] == post["snapshot_id"]
+    )
+    if not same_frame:
+        raise StepPostconditionError(
+            "private Stage-5 Start inputs crossed paused frame",
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False, "inputs": inputs},
+            selected_step=step)
+    # Guest arrival and budget commitment producers are still independent
+    # dependencies.  Their absence is a recorded hold, never an assumed zero.
+    decision = consume_feast_start_private_v1(driver, inputs=inputs)
+    return {
+        "status": "stage_five_start_assessed", "turn_index": turn_index,
+        "same_frame": True, "read_only": True,
+        "source_frame": _public_binding(pre),
+        "post_frame": _public_binding(post),
+        "inputs": inputs, "decision": decision.get("decision"),
+        "decision_status": decision.get("status"),
+        "decision_reason": decision.get("reason"),
+        "postcondition_verified": False,
+    }
 
 
 def _read_private_activity_cost_slot12_raw_once(

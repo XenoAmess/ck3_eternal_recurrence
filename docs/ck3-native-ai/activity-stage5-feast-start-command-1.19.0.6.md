@@ -124,6 +124,18 @@ the branch chosen (direct or confirmation), the command receipt if any,
 and the activity ID once independently observed. Cold restore must inspect
 the activity ID/type/host and balances before offering another Start.
 
+The private Python consumer now reads the four-cost Stage 5 Start inputs on
+the same paused frame after destination selection and records a value-policy
+hold when guest arrival or resource commitments are unavailable. Its durable
+intent is written before any Start call; a timed-out or pending submission is
+reconciled through a separate hosted-identity/resource read, never resent.
+That reconciliation requires exactly one new hosted feast ID with the actor
+as host and the same-date configured resource debit. This is no-launch
+consumer wiring, not a live Start result. The native guest route remains
+unqualified until the exact-build arrival/join read is connected and proven
+in a paused fixture; the current bounded route therefore only observes and
+holds. A Start ACK would remain pending until material poststate is read.
+
 The next native read-only implementation point is the activity manager
 reached by `0x26C8050`, with the `0x2700340` allocation path as its exact
 layout fixture. The new collector should publish copied IDs and stable keys,
