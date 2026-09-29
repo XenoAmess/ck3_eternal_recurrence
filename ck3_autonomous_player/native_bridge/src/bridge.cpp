@@ -10562,6 +10562,8 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kActivityFeastGuestCandidatePrivateStepV1
+                   && step != xar::ck3_11906::
+                                  kActivityFeastGuestRouteProofPrivateStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1)
                    && step != xar::ck3_11906::
@@ -11541,7 +11543,9 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
           if (step == xar::ck3_11906::
-                          kActivityFeastGuestCandidatePrivateStepV1) {
+                          kActivityFeastGuestCandidatePrivateStepV1 ||
+              step == xar::ck3_11906::
+                          kActivityFeastGuestRouteProofPrivateStepV1) {
             std::uint64_t expected_revision = 0, expected_date_raw = 0;
             std::uint64_t expected_actor_id = 0, expected_stage = 0;
             std::string expected_activity_key;
@@ -11582,6 +11586,9 @@ void RunConnectedSession(
               query.bindings = xar::ck3_11906::BindCurrentProcess(true);
               query.expected_snapshot = current;
               query.expected_revision = expected_revision;
+              query.route_proof =
+                  step == xar::ck3_11906::
+                              kActivityFeastGuestRouteProofPrivateStepV1;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteActivityFeastGuestCandidatePrivateV1,
@@ -11606,18 +11613,24 @@ void RunConnectedSession(
                                 completed &&
                     query.completed && !query.frame_changed &&
                     xar::game::ReadSnapshot(game, after) && after == current;
-                const auto native =
-                    stable ? xar::ck3_11906::
-                                 SerializeActivityFeastGuestCandidatePrivateV1(query)
-                           : std::string{};
+                const auto native = stable
+                    ? (query.route_proof
+                           ? xar::ck3_11906::
+                                 SerializeActivityFeastGuestRouteProofPrivateV1(query)
+                           : xar::ck3_11906::
+                                 SerializeActivityFeastGuestCandidatePrivateV1(query))
+                    : std::string{};
                 std::string response;
                 if (!native.empty()) {
                   const auto status = query.candidate.status;
-                  const bool available =
-                      status == xar::bridge::ActivityFeastGuestCandidateStatusV1::
-                                    observed ||
-                      status == xar::bridge::ActivityFeastGuestCandidateStatusV1::
-                                    no_qualified_candidate;
+                  const bool available = query.route_proof
+                      ? query.route_proof_consistent
+                      : (status ==
+                             xar::bridge::ActivityFeastGuestCandidateStatusV1::
+                                 observed ||
+                         status ==
+                             xar::bridge::ActivityFeastGuestCandidateStatusV1::
+                                 no_qualified_candidate);
                   response =
                       "{\"type\":\"command_result\",\"protocol_version\":1,"
                       "\"request_id\":";
@@ -11628,9 +11641,12 @@ void RunConnectedSession(
                       ",\"accepted\":true,\"status\":\"" +
                       std::string(available ? "available" : "unavailable") +
                       "\",\"private_build\":true,\"read_only\":true,"
-                      "\"advertised\":false,"
-                      "\"activity_feast_guest_candidate\":" +
-                      native + ",\"backend_id\":\"native-headless\"}}";
+                      "\"advertised\":false,\"" +
+                      std::string(query.route_proof
+                                      ? "activity_feast_guest_route_proof"
+                                      : "activity_feast_guest_candidate") +
+                      "\":" + native +
+                      ",\"backend_id\":\"native-headless\"}}";
                 } else {
                   response = CommandResultFrame(
                       request_id, step, false,

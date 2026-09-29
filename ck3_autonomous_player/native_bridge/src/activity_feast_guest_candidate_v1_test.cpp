@@ -139,12 +139,16 @@ int main() {
   Expect(result.arrival_raw == expected.date_raw + 5 * 24);
   Expect(result.arrival_raw <= result.planned_start_raw);
   Expect(result.source_fingerprint != 0 && result.normal_refresh_sequence == 1);
+  Expect(result.active_rule_count == 1 && result.filtered_group_count == 1 &&
+         result.selected_row_count == 0);
 
   candidate.join_raw = -1;
   result = ReadActivityFeastGuestCandidateV1(env, expected);
   Expect(result.status ==
          ActivityFeastGuestCandidateStatusV1::no_qualified_candidate);
   Expect(result.character_id == -1 && !result.native_filtered);
+  Expect(result.active_rule_count == 1 && result.filtered_group_count == 1 &&
+         result.selected_row_count == 0);
   candidate.join_raw = 500000;
   candidate.travel_days = 20;
   result = ReadActivityFeastGuestCandidateV1(env, expected);

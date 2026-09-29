@@ -295,6 +295,9 @@ ActivityFeastGuestCandidateStatusV1 ReadOne(
     }
   }
   result.source_fingerprint = fingerprint;
+  result.active_rule_count = rule_count;
+  result.filtered_group_count = group_count;
+  result.selected_row_count = selected_count;
   for (std::size_t i = 0; i < examined; ++i) {
     const auto id = candidates[i];
     if (id <= 0)

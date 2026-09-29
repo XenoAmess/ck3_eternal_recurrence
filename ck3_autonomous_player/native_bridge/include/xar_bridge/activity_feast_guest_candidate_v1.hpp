@@ -28,6 +28,9 @@ struct ActivityFeastGuestCandidateResultV1 {
   ActivityPlannerDiagFrameV1 frame{};
   std::uint64_t normal_refresh_sequence = 0;
   std::uint64_t source_fingerprint = 0;
+  std::int32_t active_rule_count = 0;
+  std::int32_t filtered_group_count = 0;
+  std::int32_t selected_row_count = 0;
   bool native_filtered = false;
   std::int32_t character_id = -1;
   std::int64_t planner_join_raw = 0;
