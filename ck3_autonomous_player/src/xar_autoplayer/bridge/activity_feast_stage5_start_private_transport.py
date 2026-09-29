@@ -161,7 +161,10 @@ def _parse_payload(
             or not isinstance(value["guest_join_status"], str)
             or value["guest_join_status"] not in {
                 "observed", "exact_build_rejected", "frame_changed",
-                "planner_unavailable", "no_normal_refresh",
+                "planner_unavailable", "planner_diagnostic_unavailable",
+                "planner_absent", "not_stage_five", "widget_detached",
+                "widget_hidden", "host_view_type_mismatch",
+                "no_normal_refresh",
                 "configuration_changed", "guest_source_unavailable",
                 "native_evaluation_failed", "cache_disagreed",
                 "arrival_source_unavailable", "arrival_evaluation_failed",

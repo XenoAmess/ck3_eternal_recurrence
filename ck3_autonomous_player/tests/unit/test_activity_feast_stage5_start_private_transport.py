@@ -102,6 +102,35 @@ class Driver:
 
 
 class ActivityFeastStage5StartReadTest(unittest.TestCase):
+    def test_split_planner_failures_preserve_unknown_guest_values(self) -> None:
+        for status in (
+            "planner_diagnostic_unavailable", "planner_absent",
+            "not_stage_five", "widget_detached", "widget_hidden",
+            "host_view_type_mismatch",
+        ):
+            with self.subTest(status=status):
+                payload = inputs_payload()
+                payload["guest_join_status"] = status
+                read = query_activity_feast_stage5_start_inputs_private_v1(
+                    Driver(payload), expected_revision=5)
+                self.assertEqual(read["guest_join_status"], status)
+                self.assertIsNone(read["selected_nonhost_count"])
+                self.assertIsNone(read["positive_join_count"])
+                self.assertIsNone(read["timely_positive_join_count"])
+                self.assertIs(read["arrival_time_observed"], False)
+                self.assertIs(read["native_guest_route_qualified"], False)
+        invalid = inputs_payload()
+        invalid["guest_join_status"] = "unregistered_planner_failure"
+        with self.assertRaisesRegex(BridgeUnavailableError, "inputs malformed"):
+            query_activity_feast_stage5_start_inputs_private_v1(
+                Driver(invalid), expected_revision=5)
+        invalid = inputs_payload()
+        invalid["guest_join_status"] = "planner_absent"
+        invalid["positive_join_count"] = 0
+        with self.assertRaisesRegex(BridgeUnavailableError, "must remain unknown"):
+            query_activity_feast_stage5_start_inputs_private_v1(
+                Driver(invalid), expected_revision=5)
+
     def test_inputs_are_bound_and_unknown_guest_remains_false(self) -> None:
         driver = Driver(inputs_payload())
         result = query_activity_feast_stage5_start_inputs_private_v1(
