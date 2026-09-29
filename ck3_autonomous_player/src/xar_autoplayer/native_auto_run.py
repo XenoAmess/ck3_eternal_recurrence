@@ -397,6 +397,7 @@ def native_auto_run(
     private_activity_feast_planner_open: bool = False,
     private_activity_feast_stage1_option_read: bool = False,
     private_activity_cost_slot12_raw_read: bool = False,
+    private_activity_feast_stage1_confirm: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -555,7 +556,8 @@ def native_auto_run(
         raise AgentError("private activity planner read needs a bounded contract")
     if (private_activity_feast_planner_open is True
             or private_activity_feast_stage1_option_read is True
-            or private_activity_cost_slot12_raw_read is True):
+            or private_activity_cost_slot12_raw_read is True
+            or private_activity_feast_stage1_confirm is True):
         if completion_contract != "bounded":
             raise AgentError("private feast planner open needs a bounded contract")
         if (private_child_matrilineal_pending_read_target is not None
@@ -567,6 +569,12 @@ def native_auto_run(
         if (private_activity_cost_slot12_raw_read is True
                 and private_activity_feast_stage1_option_read is True):
             raise AgentError("select one private feast read on this paused frame")
+        if private_activity_feast_stage1_confirm is True and (
+            private_activity_feast_planner_open is True
+            or private_activity_feast_stage1_option_read is True
+            or private_activity_cost_slot12_raw_read is True
+        ):
+            raise AgentError("stage-1 Confirm needs its own private paused frame run")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -707,6 +715,8 @@ def native_auto_run(
     private_activity_feast_planner_open_observation: dict[str, object] | None = None
     private_activity_feast_stage1_option_observation: dict[str, object] | None = None
     private_activity_cost_slot12_raw_observation: dict[str, object] | None = None
+    private_activity_feast_stage1_confirm_observation: dict[str, object] | None = None
+    private_activity_feast_stage2_option_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -1242,7 +1252,8 @@ def native_auto_run(
                 status = "private_activity_planner_diag_observed"
                 break
             if (private_activity_feast_planner_open is True
-                    or private_activity_feast_stage1_option_read is True):
+                    or private_activity_feast_stage1_option_read is True
+                    or private_activity_feast_stage1_confirm is True):
                 current_attempt["stage"] = "private_activity_feast_planner_open"
                 private_activity_feast_planner_open_observation = (
                     _open_private_activity_feast_planner_once(
@@ -1250,7 +1261,8 @@ def native_auto_run(
                         turn_index=turn_index,
                     )
                 )
-                if private_activity_feast_stage1_option_read is True:
+                if (private_activity_feast_stage1_option_read is True
+                        or private_activity_feast_stage1_confirm is True):
                     current_attempt["stage"] = "private_activity_feast_stage1_option_read"
                     private_activity_feast_stage1_option_observation = (
                         _read_private_activity_feast_stage1_option_once(
@@ -1259,7 +1271,30 @@ def native_auto_run(
                             turn_index=turn_index,
                         )
                     )
-                    status = "private_activity_feast_stage1_option_observed"
+                    if private_activity_feast_stage1_confirm is True:
+                        current_attempt["stage"] = "private_activity_feast_stage1_confirm"
+                        private_activity_feast_stage1_confirm_observation = (
+                            _confirm_private_activity_feast_stage1_once(
+                                driver, service=service, before=before,
+                                option_observation=(
+                                    private_activity_feast_stage1_option_observation
+                                ),
+                                turn_index=turn_index,
+                            )
+                        )
+                        current_attempt["stage"] = "private_activity_feast_stage2_option_read"
+                        private_activity_feast_stage2_option_observation = (
+                            _read_private_activity_feast_stage2_option_once(
+                                driver, service=service, before=before,
+                                confirm_observation=(
+                                    private_activity_feast_stage1_confirm_observation
+                                ),
+                                turn_index=turn_index,
+                            )
+                        )
+                        status = "private_activity_feast_stage1_confirm_verified"
+                    else:
+                        status = "private_activity_feast_stage1_option_observed"
                 elif private_activity_cost_slot12_raw_read is True:
                     current_attempt["stage"] = "private_activity_cost_slot12_raw_read"
                     private_activity_cost_slot12_raw_observation = (
@@ -3385,7 +3420,8 @@ def native_auto_run(
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
-        if private_activity_feast_stage1_option_read is True:
+        if (private_activity_feast_stage1_option_read is True
+                and private_activity_feast_stage1_confirm is not True):
             qualified = bool(
                 primary_error is None
                 and status == "private_activity_feast_stage1_option_observed"
@@ -3394,6 +3430,19 @@ def native_auto_run(
                 and isinstance(private_activity_feast_stage1_option_observation, dict)
                 and private_activity_feast_stage1_option_observation.get("same_frame") is True
                 and private_activity_feast_stage1_option_observation.get("read_only") is True
+                and cleanup.get("ok") is True
+                and not turns and not date_advanced
+            )
+        if private_activity_feast_stage1_confirm is True:
+            qualified = bool(
+                primary_error is None
+                and status == "private_activity_feast_stage1_confirm_verified"
+                and isinstance(private_activity_feast_stage1_confirm_observation, dict)
+                and private_activity_feast_stage1_confirm_observation.get("submitted") is True
+                and private_activity_feast_stage1_confirm_observation.get("same_frame") is True
+                and isinstance(private_activity_feast_stage2_option_observation, dict)
+                and private_activity_feast_stage2_option_observation.get("same_frame") is True
+                and private_activity_feast_stage2_option_observation.get("stage_two_verified") is True
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -3504,7 +3553,10 @@ def native_auto_run(
             else "gui_open_observed"
             if (private_activity_feast_planner_open is True
                 and private_activity_cost_slot12_raw_read is not True
+                and private_activity_feast_stage1_confirm is not True
                 and qualified)
+            else "planning_stage_advanced"
+            if private_activity_feast_stage1_confirm is True and qualified
             else "read_only_observed"
             if private_activity_feast_stage1_option_read is True and qualified
             else "read_only_observed"
@@ -3565,12 +3617,24 @@ def native_auto_run(
             {"private_activity_feast_planner_open_observation": copy.deepcopy(
                 private_activity_feast_planner_open_observation)}
             if (private_activity_feast_planner_open is True
-                or private_activity_feast_stage1_option_read is True) else {}
+                or private_activity_feast_stage1_option_read is True
+                or private_activity_feast_stage1_confirm is True) else {}
         ),
         **(
             {"private_activity_feast_stage1_option_observation": copy.deepcopy(
                 private_activity_feast_stage1_option_observation)}
-            if private_activity_feast_stage1_option_read is True else {}
+            if (private_activity_feast_stage1_option_read is True
+                or private_activity_feast_stage1_confirm is True) else {}
+        ),
+        **(
+            {"private_activity_feast_stage1_confirm_observation": copy.deepcopy(
+                private_activity_feast_stage1_confirm_observation)}
+            if private_activity_feast_stage1_confirm is True else {}
+        ),
+        **(
+            {"private_activity_feast_stage2_option_observation": copy.deepcopy(
+                private_activity_feast_stage2_option_observation)}
+            if private_activity_feast_stage1_confirm is True else {}
         ),
         **(
             {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
@@ -5483,6 +5547,8 @@ def _observe_private_activity_planner_diag_once(
 
 _PRIVATE_ACTIVITY_FEAST_OPEN_STEP = "open-activity-feast-planner-v1-private"
 _PRIVATE_ACTIVITY_STAGE1_OPTION_READ_STEP = "query-activity-stage1-option-v1-private"
+_PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP = "confirm-activity-feast-stage1-v1-private"
+_PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP = "query-activity-feast-stage2-option-v1-private"
 _PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP = "query-activity-cost-slot12-raw-v1-private"
 
 
@@ -5738,6 +5804,324 @@ def _read_private_activity_feast_stage1_option_once(
                 "native_receipt": copy.deepcopy(frame),
             },
             selected_step=_PRIVATE_ACTIVITY_STAGE1_OPTION_READ_STEP,
+        )
+    return observation
+
+
+def _private_activity_same_paused_frame(
+    before: dict[str, object], after: dict[str, object],
+) -> bool:
+    actor = after.get("played_character")
+    return bool(
+        all(before.get(key) == after.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and after.get("paused") is True
+        and after.get("map_ready") is True
+        and isinstance(actor, dict)
+        and actor.get("character_id") == before.get("played_character_id")
+        and actor.get("alive") is True
+    )
+
+
+def _confirm_private_activity_feast_stage1_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    option_observation: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Confirm only the observed feast stage-1 option; retain ambiguous receipts."""
+    selected = option_observation.get("selected_option")
+    pre_submit = service.snapshot()
+    if (not isinstance(selected, dict)
+            or option_observation.get("same_frame") is not True
+            or selected.get("generic_feast_confirm_ready") is not True
+            or selected.get("selected_option_key") != "feast_type_generic"
+            or not _private_activity_same_paused_frame(before, pre_submit)):
+        raise StepPostconditionError(
+            "private feast stage-1 Confirm lacks a current legal option",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+                "status": "red", "accepted": False,
+                "submitted": False, "pending": False,
+                "postcondition_verified": False,
+                "stage1_option": copy.deepcopy(selected),
+                "pre_submit_frame": _public_binding(pre_submit),
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+        )
+    revision = before["native_revision"]
+    date_raw = before["date_raw"]
+    actor_id = before["played_character_id"]
+    request_id = "activity-stage1-confirm-" + uuid.uuid4().hex
+    request = {
+        "type": "execute_step", "protocol_version": 1,
+        "request_id": request_id,
+        "step": _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+        "expected_revision": revision,
+        "expected_date_raw": date_raw,
+        "expected_actor_character_id": actor_id,
+        "expected_activity_key": "activity_feast",
+        "expected_option_key": "feast_type_generic",
+    }
+    try:
+        driver.endpoint.send(request)
+        frame = driver.state.wait_for_command_result(
+            request_id, float(driver.command_timeout_seconds),
+        )
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast stage-1 Confirm result unresolved",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+                "status": "red", "accepted": False,
+                "submitted": None, "pending": True,
+                "postcondition_verified": False,
+                "request_id": request_id,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+        ) from exc
+    envelope = frame.get("result") if isinstance(frame, dict) else None
+    native = (envelope.get("activity_stage1_confirm")
+              if isinstance(envelope, dict) else None)
+    try:
+        after = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast stage-1 Confirm post-frame unresolved",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+                "status": "red", "accepted": False,
+                "submitted": (native.get("submitted")
+                              if isinstance(native, dict) else None),
+                "pending": True, "postcondition_verified": False,
+                "native_receipt": copy.deepcopy(frame),
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+        ) from exc
+    same_frame = _private_activity_same_paused_frame(before, after)
+    native_shape = bool(
+        isinstance(native, dict)
+        and set(native) == {
+            "schema", "snapshot_revision", "date_raw", "actor_character_id",
+            "activity_key", "expected_option_key", "selected_option_key",
+            "precondition_status", "selected_option_shown",
+            "selected_option_valid", "can_progress_stage1",
+            "generic_feast_confirm_ready", "status", "submitted",
+            "stage_two_visible", "selected_option_retained",
+            "planning_stage_after", "gold_before_raw", "gold_after_raw",
+            "snapshot_unchanged", "activity_start_state",
+            "next_turn_verified", "raw_pointer_fields_persisted", "advertised",
+        }
+        and native.get("schema") == "activity-stage1-confirm-private-v1"
+        and native.get("snapshot_revision") == revision
+        and native.get("date_raw") == date_raw
+        and native.get("actor_character_id") == actor_id
+        and native.get("activity_key") == "activity_feast"
+        and native.get("expected_option_key") == "feast_type_generic"
+        and native.get("selected_option_key") == "feast_type_generic"
+        and native.get("precondition_status") == "observed"
+        and native.get("selected_option_shown") is True
+        and native.get("selected_option_valid") is True
+        and native.get("can_progress_stage1") is True
+        and native.get("generic_feast_confirm_ready") is True
+        and native.get("status") == "stage_two_verified"
+        and native.get("submitted") is True
+        and native.get("stage_two_visible") is True
+        and native.get("selected_option_retained") is True
+        and type(native.get("planning_stage_after")) is int
+        and native["planning_stage_after"] == 2
+        and type(native.get("gold_before_raw")) is int
+        and type(native.get("gold_after_raw")) is int
+        and native["gold_before_raw"] == native["gold_after_raw"]
+        and native.get("snapshot_unchanged") is True
+        and native.get("activity_start_state") == "not_started_immediate"
+        and native.get("next_turn_verified") is False
+        and native.get("raw_pointer_fields_persisted") is False
+        and native.get("advertised") is False
+    )
+    accepted = bool(
+        isinstance(frame, dict)
+        and frame.get("type") == "command_result"
+        and frame.get("protocol_version") == 1
+        and frame.get("request_id") == request_id
+        and frame.get("ok") is True
+        and isinstance(envelope, dict)
+        and set(envelope) == {
+            "step", "accepted", "status", "private_build", "read_only",
+            "advertised", "activity_stage1_confirm", "backend_id",
+        }
+        and envelope.get("step") == _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP
+        and envelope.get("accepted") is True
+        and envelope.get("status") == "available"
+        and envelope.get("private_build") is True
+        and envelope.get("read_only") is False
+        and envelope.get("advertised") is False
+        and envelope.get("backend_id") == "native-headless"
+        and native_shape and same_frame
+    )
+    observation = {
+        "status": "stage_two_verified" if accepted else "red",
+        "turn_index": turn_index,
+        "same_frame": same_frame,
+        "submitted": (native.get("submitted")
+                      if isinstance(native, dict) else None),
+        "pending": not accepted,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "native_receipt": copy.deepcopy(frame),
+    }
+    if not accepted:
+        raise StepPostconditionError(
+            "private feast stage-1 Confirm RED: "
+            + str(native.get("status", frame.get("error", "invalid_receipt"))
+                  if isinstance(native, dict) and isinstance(frame, dict)
+                  else frame.get("error", "missing_result")
+                  if isinstance(frame, dict) else "missing_command_result"),
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+                "status": "red", "accepted": False,
+                "submitted": observation["submitted"],
+                "pending": (observation["submitted"] is not False),
+                "postcondition_verified": False,
+                "same_frame": same_frame,
+                "activity_stage1_confirm": copy.deepcopy(native),
+                "native_receipt": copy.deepcopy(frame),
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+        )
+    return observation
+
+
+def _read_private_activity_feast_stage2_option_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    confirm_observation: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Independently re-read the selected option after bounded stage-1 Confirm."""
+    revision = before["native_revision"]
+    date_raw = before["date_raw"]
+    actor_id = before["played_character_id"]
+    request_id = "activity-stage2-option-" + uuid.uuid4().hex
+    confirm_receipt = copy.deepcopy(confirm_observation.get("native_receipt"))
+    if (confirm_observation.get("submitted") is not True
+            or confirm_observation.get("same_frame") is not True):
+        raise StepPostconditionError(
+            "private feast stage-2 read lacks verified Confirm",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": confirm_observation.get("submitted"),
+                "pending": True, "postcondition_verified": False,
+                "confirm_native_receipt": confirm_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+        )
+    try:
+        driver.endpoint.send({
+            "type": "execute_step", "protocol_version": 1,
+            "request_id": request_id,
+            "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+            "expected_revision": revision,
+            "expected_date_raw": date_raw,
+            "expected_actor_character_id": actor_id,
+            "expected_activity_key": "activity_feast",
+            "expected_option_key": "feast_type_generic",
+        })
+        frame = driver.state.wait_for_command_result(
+            request_id, float(driver.command_timeout_seconds),
+        )
+        after = service.snapshot()
+    except Exception as exc:
+        raise StepPostconditionError(
+            "private feast stage-2 option read unresolved after Confirm",
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "postcondition_verified": False,
+                "confirm_native_receipt": confirm_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+        ) from exc
+    same_frame = _private_activity_same_paused_frame(before, after)
+    envelope = frame.get("result") if isinstance(frame, dict) else None
+    native = (envelope.get("activity_stage2_option")
+              if isinstance(envelope, dict) else None)
+    native_shape = bool(
+        isinstance(native, dict)
+        and set(native) == {
+            "schema", "snapshot_revision", "date_raw", "actor_character_id",
+            "activity_key", "planning_stage", "selected_option_key",
+            "generic_feast_selected", "read_only",
+            "raw_pointer_fields_persisted", "advertised",
+        }
+        and native.get("schema") == "activity-stage2-option-private-read-v1"
+        and native.get("snapshot_revision") == revision
+        and native.get("date_raw") == date_raw
+        and native.get("actor_character_id") == actor_id
+        and native.get("activity_key") == "activity_feast"
+        and type(native.get("planning_stage")) is int
+        and native["planning_stage"] == 2
+        and native.get("selected_option_key") == "feast_type_generic"
+        and native.get("generic_feast_selected") is True
+        and native.get("read_only") is True
+        and native.get("raw_pointer_fields_persisted") is False
+        and native.get("advertised") is False
+    )
+    accepted = bool(
+        isinstance(frame, dict)
+        and frame.get("type") == "command_result"
+        and frame.get("protocol_version") == 1
+        and frame.get("request_id") == request_id
+        and frame.get("ok") is True
+        and isinstance(envelope, dict)
+        and set(envelope) == {
+            "step", "accepted", "status", "private_build", "read_only",
+            "advertised", "activity_stage2_option", "backend_id",
+        }
+        and envelope.get("step") == _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP
+        and envelope.get("accepted") is True
+        and envelope.get("status") == "available"
+        and envelope.get("private_build") is True
+        and envelope.get("read_only") is True
+        and envelope.get("advertised") is False
+        and envelope.get("backend_id") == "native-headless"
+        and native_shape and same_frame
+    )
+    observation = {
+        "status": "stage_two_observed" if accepted else "red",
+        "turn_index": turn_index,
+        "same_frame": same_frame,
+        "stage_two_verified": accepted,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "selected_option": copy.deepcopy(native),
+        "native_receipt": copy.deepcopy(frame),
+        "confirm_native_receipt": confirm_receipt,
+    }
+    if not accepted:
+        raise StepPostconditionError(
+            "private feast stage-2 option read RED: "
+            + str(frame.get("error", "invalid_native_readback")
+                  if isinstance(frame, dict) else "missing_command_result"),
+            step_result={
+                "step": _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+                "status": "red", "accepted": False,
+                "submitted": True, "pending": True,
+                "postcondition_verified": False,
+                "same_frame": same_frame,
+                "activity_stage2_option": copy.deepcopy(native),
+                "native_receipt": copy.deepcopy(frame),
+                "confirm_native_receipt": confirm_receipt,
+            },
+            selected_step=_PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
         )
     return observation
 
@@ -6707,6 +7091,16 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
     for key, value in result.items():
         if isinstance(key, str) and key.startswith("contact_"):
             compact[key] = copy.deepcopy(value)
+    if result.get("step") in {
+        _PRIVATE_ACTIVITY_STAGE1_CONFIRM_STEP,
+        _PRIVATE_ACTIVITY_STAGE2_OPTION_READ_STEP,
+    }:
+        for key in (
+            "submitted", "pending", "same_frame", "activity_stage1_confirm",
+            "activity_stage2_option", "native_receipt", "confirm_native_receipt",
+        ):
+            if key in result:
+                compact[key] = copy.deepcopy(result[key])
     return compact
 
 
