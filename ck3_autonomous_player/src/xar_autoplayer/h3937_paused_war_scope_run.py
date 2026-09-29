@@ -22,7 +22,8 @@ from .h3937_stationary_route_contact_query_run import (
     ARMY_ID, CHECKPOINT_SHA256, CHILD_PENDING_SIDECAR_SHA256,
     DLL_SHA256, EXPECTED_DATE_RAW, EXPECTED_EPISODE_RUN_ID,
     EXPECTED_HISTORY_INDEX, INJECTOR_SHA256, ROUND_PATTERN,
-    _cold_restore_bookkeeping, _command_history, _exact_prepared_rebind,
+    _bind_exact_h3937_ordinary_lifecycle, _cold_restore_bookkeeping,
+    _command_history, _exact_prepared_rebind,
     _positive_seconds, _query_history_unchanged, _read_driver_state,
     _same_frame, _sha256, _snapshot_history,
 )
@@ -302,6 +303,9 @@ def collect_h3937_paused_war_scope_once(
         == "absent_by_fresh_campaign_xar_off_contract"
     ):
         raise AgentError("H3937 phase-0 source/prepared identity differs; launch refused")
+    lifecycle = _bind_exact_h3937_ordinary_lifecycle(
+        spec, checkpoint, driver_before
+    )
 
     started_at = utc_now()
     started = time.monotonic()
@@ -330,7 +334,8 @@ def collect_h3937_paused_war_scope_once(
     try:
         driver = NativeHeadlessGameplayDriver(
             config.pipe_name, state_dir=spec.state_dir,
-            save_dir=spec.profile_dir / "save games")
+            save_dir=spec.profile_dir / "save games",
+            succession_lifecycle_binding=lifecycle)
         service = GameplayBridgeService(driver)
         thread = threading.Thread(target=supervise,
                                   name="xar-h3937-phase0-roster-session", daemon=False)
