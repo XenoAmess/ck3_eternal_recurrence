@@ -89,6 +89,7 @@ def test_one_call_enables_only_during_read_and_restores_gates(bounded, monkeypat
         check(kwargs["cold_start_checkpoint"] is True)
         check(kwargs["native_bridge"].mode == "native-headless")
         check(kwargs["native_bridge"].pipe_name == once.PIPE)
+        check(kwargs["readiness_timeout_diagnostic_probe"] is True)
         calls.append(1)
         return green_outer()
 
