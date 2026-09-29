@@ -78,6 +78,39 @@ reason to switch an already effective focus; the martial perk coverage gap for
 a future focused successor remains as described below. No new LIFE typed action
 or M4 qualification comes from this audit.
 
+### R0351/R0352 opportunity check (2026-09-29)
+
+The later [R0352 H3928 formal report](Z:/nw-family-h3928-pending-recovery-20260929/operator-runs/pending-recovery-1/formal-report.txt)
+(SHA-256 `F4AB308E7FDB90DC97F3207F92212D7487BFE74AAB74A44EB6B795C768B35296`)
+shows the private LIFE consumer actually ran on actor 29829's paused
+`native:3`, raw date `53219928`, before retaining a child-proposal result
+query. Its same-frame `lifestyle_war_observation` reports an available native
+query, **zero** unspent stewardship points, and policy
+`no_legal_minimum`. Thus this frame contains no proven perk spend to recover.
+The report's overall `turn_limit/not_qualified` is the separate result-only
+operator qualification mismatch; it does not turn the observed zero into a
+successful LIFE action or a qualified run.
+
+The [R0351 h90 formal report](Z:/ck3_mod_rewrite_process_assets/m5-family-h90-sort571-candidate-20260929/run-formal-12/formal-report.txt)
+(SHA-256 `C9BAD73D1756E0180F93C4A2A0AC1616363BEBB502666A22740FD058F03FFE23`)
+has no LIFE decision field because its frozen command enabled the private
+construction, family and M5 trials **without**
+`--private-lifestyle-formal-trial`. Its construction and marriage actions do
+not establish the h90 stewardship point count or a missed legal perk. This
+configuration is not evidence that the LIFE consumer failed when enabled.
+
+For the next matched ordinary candidate, use the existing LIFE opt-in only
+when that candidate already has a useful gameplay objective. On a new
+focusless actor, the opening gate must read both focus targets and the
+selected target's XP, points and final native legality before any date
+advance. With an effective focus, the next paused feudal opportunity before
+date advance or an admitted deferrable query must show an actual unspent point,
+an unowned policy target and its native final-legal verdict before a typed
+perk. A submitted request then needs an independent receipt, following turn
+and paired cold restore. R0351/R0352 supply no positive missed-consumption
+example, so they do not justify another empty dedicated CK3 run, a policy
+change, or an M4 promotion.
+
 ## NW-LIFE martial authority target observation candidate (2026-09-28; exact CK3 1.19.0.6)
 
 R0264's first paused Robert frame (`native:3`, raw date `53217264`, actor
