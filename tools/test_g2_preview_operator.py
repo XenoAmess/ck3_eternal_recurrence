@@ -218,8 +218,25 @@ class G2PreviewOperatorTest(unittest.TestCase):
                            "sha256": sway_hash, "size": 78515535,
                            "phase": "private_active_scheme_sway_receipt_pending"}
         sway_driver = {**driver, "last_checkpoint": sway_checkpoint}
-        sway_pending = {"stage": "receipt_pending", "action_id":
-                        "sway-9e297c964fd243839fedb26bf6c7ed1a"}
+        sway_action_id = "sway-9e297c964fd243839fedb26bf6c7ed1a"
+        sway_pending = {
+            "stage": "receipt_pending", "action_id": sway_action_id,
+            "actor_character_id": 29829, "target_character_id": 32716,
+            "pre_capture_epoch": 7502,
+            "pre_container_generation": 13183742510539082018,
+            "pre_date_raw": 53219928, "pre_native_revision": 3,
+            "pre_target_opinion_of_actor": -5,
+            "ack": {
+                "schema": "active-scheme-sway-formal-private-v1",
+                "stage": "submitted_verification_pending",
+                "action_id": sway_action_id,
+                "actor_character_id": 29829, "target_character_id": 32716,
+                "pre_capture_epoch": 7852,
+                "pre_container_generation": 13183742510539082018,
+                "pre_date_raw": 53219928,
+                "submit_call_count": 1, "receipt_pending": True,
+            },
+        }
         sway_ledger = {"schema": g2_preview_operator.SWAY_FORMAL_PENDING_V1_SCHEMA,
                        "pending": sway_pending, "resolved": None}
         sway_report = {
@@ -236,6 +253,13 @@ class G2PreviewOperatorTest(unittest.TestCase):
             "private_active_scheme_sway_formal": {
                 "status": "receipt_pending", "pending": sway_pending,
                 "checkpoint_saved": True, "postcondition_verified": False},
+            "private_active_scheme_sway_observation": {
+                "same_frame": True, "readback": {
+                    "actor_character_id": 29829,
+                    "target_character_id": 32716,
+                    "active_scheme_count": 0,
+                    "matching_sway_active": False,
+                }},
             "checkpoints": [sway_checkpoint],
             "first_blocker": {"last_durable_checkpoint": sway_checkpoint},
             "cleanup": {"ok": True},
@@ -274,6 +298,89 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertEqual(parsed.child_matrilineal_continuation_report,
                          Path("Z:/proof/R0339.json"))
+        applied_hash = "e" * 64
+        applied_checkpoint = {**sway_checkpoint, "history_index": 3928,
+                              "sha256": applied_hash,
+                              "phase": "private_active_scheme_sway_applied"}
+        applied_driver = {**driver, "last_checkpoint": applied_checkpoint}
+        resolved = {
+            "status": "applied", "postcondition_verified": True,
+            "actor_character_id": 29829, "target_character_id": 32716,
+            "action_id": sway_action_id, "pre_capture_epoch": 7502,
+            "post_capture_epoch": 5817, "post_native_revision": 3,
+            "post_date_raw": 53219928, "native_receipt": None,
+            "next_turn_consumed": False,
+        }
+        resolved_ledger = {
+            "schema": g2_preview_operator.SWAY_FORMAL_PENDING_V1_SCHEMA,
+            "pending": None, "resolved": resolved,
+        }
+        applied_report = {
+            "status": "private_active_scheme_sway_applied", "ok": True,
+            "fixed_seed": {"sha256": sway_hash, "size": 78515535,
+                           "history_index": 3924,
+                           "saved_date_raw": 53219928},
+            "session": {"pid": 172808},
+            "readiness": {"bridge_pid": 172808,
+                          "episode_character_id": 29829,
+                          "episode_run_id": episode, "date_raw": 53219928},
+            "auto_run": {"attempted_turns": 0, "turns": []},
+            "private_active_scheme_sway_observation": {
+                "status": "observed", "same_frame": True,
+                "target_character_id": 32716,
+                "readback": {
+                    "actor_character_id": 29829,
+                    "target_character_id": 32716,
+                    "date_raw": 53219928,
+                    "active_scheme_count": 1,
+                    "matching_sway_active": True,
+                    "capture_epoch": 5817,
+                    "queried_native_revision": 3,
+                }},
+            "private_active_scheme_sway_formal": {
+                **resolved, "checkpoint_saved": True},
+            "checkpoints": [applied_checkpoint],
+            "cleanup": {"ok": True},
+        }
+        resolved_pair = g2_preview_operator.sway_formal_resolved_sidecar_pair
+        self.assertEqual(resolved_pair(
+            resolved_ledger, applied_driver, applied_hash, 78515535,
+            sway_report, applied_report), (sway_action_id, applied_checkpoint))
+        self.assertEqual(paired(
+            later_sidecar, applied_driver, {}, applied_hash,
+            [proof, continuation], sway_continuation=sway_report,
+            sway_sidecar=resolved_ledger,
+            sway_applied_continuation=applied_report), 37267)
+        for mutate in (
+            lambda report: report["private_active_scheme_sway_observation"]
+                ["readback"].update(matching_sway_active=False),
+            lambda report: report["auto_run"].update(
+                attempted_turns=1, turns=[{"selected_step":
+                    "submit-active-scheme-sway-v1-private-32716"}]),
+            lambda report: report["fixed_seed"].update(sha256="f" * 64),
+        ):
+            changed = copy.deepcopy(applied_report)
+            mutate(changed)
+            with self.assertRaises(ValueError):
+                resolved_pair(resolved_ledger, applied_driver, applied_hash,
+                              78515535, sway_report, changed)
+        changed_ledger = copy.deepcopy(resolved_ledger)
+        changed_ledger["resolved"]["action_id"] = "sway-" + "f" * 32
+        with self.assertRaises(ValueError):
+            resolved_pair(changed_ledger, applied_driver, applied_hash,
+                          78515535, sway_report, applied_report)
+        changed_ledger = copy.deepcopy(resolved_ledger)
+        changed_ledger["resolved"]["pre_capture_epoch"] = 7503
+        with self.assertRaises(ValueError):
+            resolved_pair(changed_ledger, applied_driver, applied_hash,
+                          78515535, sway_report, applied_report)
+        parsed = g2_preview_operator.parser().parse_args([
+            "prepare-state", "--manifest", "Z:/candidate/operator-manifest.json",
+            "--sample-dir", "Z:/sample", "--sway-formal-applied-report",
+            "Z:/proof/R0342.json",
+        ])
+        self.assertEqual(parsed.sway_formal_applied_report,
+                         Path("Z:/proof/R0342.json"))
         changed = copy.deepcopy(continuation)
         changed["formal_auto_run"]["auto_run"]["turns"].append({
             "selected_step": g2_preview_operator.CHILD_MATRILINEAL_SUBMIT_STEP})

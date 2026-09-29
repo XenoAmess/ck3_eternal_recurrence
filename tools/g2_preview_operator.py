@@ -502,6 +502,136 @@ def sway_formal_pending_sidecar_request(
     return action_id
 
 
+def sway_formal_resolved_sidecar_pair(
+    sidecar: dict[str, Any], driver: dict[str, Any],
+    save_sha256: str, save_size: int,
+    pending_report: dict[str, Any], applied_report: dict[str, Any],
+) -> tuple[str, dict[str, Any]]:
+    """Bind a cold native Sway postcondition to its earlier pending checkpoint."""
+    pending_action = pending_report.get("private_active_scheme_sway_formal")
+    pending_rows = pending_report.get("checkpoints")
+    pending_observation = pending_report.get("private_active_scheme_sway_observation")
+    if (sidecar.get("schema") != SWAY_FORMAL_PENDING_V1_SCHEMA
+            or sidecar.get("pending") is not None
+            or not isinstance(sidecar.get("resolved"), dict)
+            or pending_report.get("status") != "private_active_scheme_sway_receipt_pending"
+            or pending_report.get("ok") is not False
+            or not isinstance(pending_action, dict)
+            or pending_action.get("status") != "receipt_pending"
+            or pending_action.get("checkpoint_saved") is not True
+            or pending_action.get("postcondition_verified") is not False
+            or not isinstance(pending_action.get("pending"), dict)
+            or not isinstance(pending_rows, list) or len(pending_rows) != 1
+            or not isinstance(pending_rows[0], dict)
+            or not isinstance(pending_observation, dict)
+            or pending_observation.get("same_frame") is not True
+            or not isinstance(pending_observation.get("readback"), dict)):
+        raise ValueError("resolved Sway lacks a paired prior pending report")
+    previous = pending_rows[0]
+    prior_ledger = {"schema": SWAY_FORMAL_PENDING_V1_SCHEMA,
+                    "pending": pending_action["pending"], "resolved": None}
+    prior_driver = {
+        "episode_character_id": previous.get("episode_character_id"),
+        "episode_run_id": previous.get("episode_run_id"),
+        "last_checkpoint": previous,
+    }
+    action_id = sway_formal_pending_sidecar_request(
+        prior_ledger, prior_driver, previous.get("sha256"), previous.get("size"))
+    actor = pending_action["pending"]["actor_character_id"]
+    target = pending_action["pending"]["target_character_id"]
+    episode = previous.get("episode_run_id")
+    prior_readback = pending_observation["readback"]
+    fixed = applied_report.get("fixed_seed")
+    readiness = applied_report.get("readiness")
+    session = applied_report.get("session")
+    auto_run = applied_report.get("auto_run")
+    observation = applied_report.get("private_active_scheme_sway_observation")
+    formal = applied_report.get("private_active_scheme_sway_formal")
+    rows = applied_report.get("checkpoints")
+    checkpoint = driver.get("last_checkpoint")
+    prior_session = pending_report.get("session")
+    if (previous.get("phase") != "private_active_scheme_sway_receipt_pending"
+            or previous.get("status") != "saved"
+            or type(previous.get("size")) is not int or previous["size"] <= 0
+            or type(previous.get("history_index")) is not int
+            or type(previous.get("date_raw")) is not int
+            or not isinstance(prior_session, dict)
+            or not isinstance(pending_report.get("auto_run"), dict)
+            or pending_report["auto_run"].get("attempted_turns") != 0
+            or pending_report["auto_run"].get("turns") != []
+            or prior_readback.get("actor_character_id") != actor
+            or prior_readback.get("target_character_id") != target
+            or prior_readback.get("matching_sway_active") is not False
+            or prior_readback.get("active_scheme_count") != 0
+            or applied_report.get("status") != "private_active_scheme_sway_applied"
+            or applied_report.get("ok") is not True
+            or not isinstance(fixed, dict)
+            or fixed.get("sha256") != previous["sha256"]
+            or fixed.get("size") != previous["size"]
+            or fixed.get("history_index") != previous["history_index"]
+            or fixed.get("saved_date_raw") != previous["date_raw"]
+            or not isinstance(session, dict)
+            or type(session.get("pid")) is not int
+            or session["pid"] == prior_session.get("pid")
+            or not isinstance(readiness, dict)
+            or readiness.get("bridge_pid") != session["pid"]
+            or readiness.get("episode_character_id") != actor
+            or readiness.get("episode_run_id") != episode
+            or readiness.get("date_raw") != previous["date_raw"]
+            or not isinstance(auto_run, dict)
+            or auto_run.get("attempted_turns") != 0
+            or auto_run.get("turns") != []
+            or not isinstance(observation, dict)
+            or observation.get("same_frame") is not True
+            or not isinstance(observation.get("readback"), dict)
+            or not isinstance(formal, dict)
+            or not isinstance(rows, list) or len(rows) != 1
+            or not isinstance(rows[0], dict)
+            or not isinstance(checkpoint, dict)
+            or not isinstance(applied_report.get("cleanup"), dict)
+            or applied_report["cleanup"].get("ok") is not True):
+        raise ValueError("resolved Sway reports do not form a cold continuation")
+    readback = observation["readback"]
+    saved = rows[0]
+    resolved = sidecar["resolved"]
+    if (formal.get("checkpoint_saved") is not True
+            or {key: value for key, value in formal.items()
+                if key != "checkpoint_saved"} != resolved
+            or resolved.get("status") != "applied"
+            or resolved.get("postcondition_verified") is not True
+            or resolved.get("actor_character_id") != actor
+            or resolved.get("target_character_id") != target
+            or resolved.get("action_id") != action_id
+            or resolved.get("pre_capture_epoch") != pending_action["pending"]["pre_capture_epoch"]
+            or resolved.get("post_date_raw") != previous["date_raw"]
+            or resolved.get("post_capture_epoch") != readback.get("capture_epoch")
+            or resolved.get("post_native_revision") != readback.get("queried_native_revision")
+            or observation.get("status") != "observed"
+            or observation.get("target_character_id") != target
+            or readback.get("actor_character_id") != actor
+            or readback.get("target_character_id") != target
+            or readback.get("date_raw") != previous["date_raw"]
+            or readback.get("matching_sway_active") is not True
+            or type(readback.get("active_scheme_count")) is not int
+            or readback["active_scheme_count"] < 1
+            or saved.get("phase") != "private_active_scheme_sway_applied"
+            or saved.get("status") != "saved"
+            or type(saved.get("history_index")) is not int
+            or saved["history_index"] <= previous["history_index"]
+            or saved.get("date_raw") != previous["date_raw"]
+            or saved.get("sha256") != save_sha256
+            or saved.get("size") != save_size
+            or saved.get("episode_character_id") != actor
+            or saved.get("episode_run_id") != episode
+            or any(checkpoint.get(key) != saved.get(key) for key in (
+                "sha256", "size", "history_index", "date_raw",
+                "episode_character_id", "episode_run_id"))
+            or driver.get("episode_character_id") != actor
+            or driver.get("episode_run_id") != episode):
+        raise ValueError("resolved Sway readback/checkpoint disagrees with paired state")
+    return action_id, saved
+
+
 def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bool:
     """A saved material receipt needs its ledger until completion and income settle."""
 
@@ -760,6 +890,7 @@ def child_matrilineal_pending_sidecar_pair(
     attempt: dict[str, Any] | list[dict[str, Any]],
     *, sway_continuation: dict[str, Any] | None = None,
     sway_sidecar: dict[str, Any] | None = None,
+    sway_applied_continuation: dict[str, Any] | None = None,
 ) -> int:
     """Pair a child proposal through consecutive saved formal pending reads."""
     reports = attempt if isinstance(attempt, list) else [attempt]
@@ -930,6 +1061,8 @@ def child_matrilineal_pending_sidecar_pair(
             raise ValueError("child proof chain disagrees with pending ledger")
         previous = paired
         previous_pid = later_session["pid"]
+    if sway_applied_continuation is not None and sway_continuation is None:
+        raise ValueError("applied Sway continuation needs prior pending report")
     if sway_continuation is not None:
         sway_run = sway_continuation
         sway_action = sway_run.get("private_active_scheme_sway_formal")
@@ -940,10 +1073,24 @@ def child_matrilineal_pending_sidecar_pair(
         sway_checkpoints = sway_run.get("checkpoints")
         sway_cleanup = sway_run.get("cleanup")
         sway_blocker = sway_run.get("first_blocker")
+        expected_pending = (sway_sidecar.get("pending")
+                            if isinstance(sway_sidecar, dict)
+                            and sway_applied_continuation is None
+                            else sway_action.get("pending")
+                            if isinstance(sway_action, dict) else None)
+        expected_interim_hash = (
+            sway_applied_continuation.get("fixed_seed", {}).get("sha256")
+            if isinstance(sway_applied_continuation, dict) else save_sha256)
+        expected_interim_size = (
+            sway_applied_continuation.get("fixed_seed", {}).get("size")
+            if isinstance(sway_applied_continuation, dict)
+            else checkpoint.get("size"))
         if (not isinstance(sway_sidecar, dict)
                 or sway_sidecar.get("schema") != SWAY_FORMAL_PENDING_V1_SCHEMA
-                or sway_sidecar.get("resolved") is not None
-                or not isinstance(sway_sidecar.get("pending"), dict)
+                or (sway_applied_continuation is None and (
+                    sway_sidecar.get("resolved") is not None
+                    or not isinstance(sway_sidecar.get("pending"), dict)))
+                or not isinstance(expected_pending, dict)
                 or sway_run.get("kind") != "ck3_native_auto_run"
                 or sway_run.get("mode") != "native-headless"
                 or sway_run.get("status") != "private_active_scheme_sway_receipt_pending"
@@ -965,7 +1112,7 @@ def child_matrilineal_pending_sidecar_pair(
                 or sway_auto.get("turns") != []
                 or not isinstance(sway_action, dict)
                 or sway_action.get("status") != "receipt_pending"
-                or sway_action.get("pending") != sway_sidecar["pending"]
+                or sway_action.get("pending") != expected_pending
                 or sway_action.get("checkpoint_saved") is not True
                 or sway_action.get("postcondition_verified") is not False
                 or not isinstance(sway_checkpoints, list)
@@ -983,12 +1130,16 @@ def child_matrilineal_pending_sidecar_pair(
                 or type(saved.get("history_index")) is not int
                 or saved["history_index"] <= previous["history_index"]
                 or saved.get("date_raw") != previous["date_raw"]
-                or saved.get("sha256") != save_sha256
+                or saved.get("sha256") != expected_interim_hash
                 or saved.get("episode_character_id") != actor
                 or saved.get("episode_run_id") != episode
-                or saved.get("size") != checkpoint.get("size")):
+                or saved.get("size") != expected_interim_size):
             raise ValueError("Sway continuation does not reach paired checkpoint")
         previous = saved
+    if sway_applied_continuation is not None:
+        _, previous = sway_formal_resolved_sidecar_pair(
+            sway_sidecar, driver, save_sha256, checkpoint.get("size"),
+            sway_continuation, sway_applied_continuation)
     if (previous["history_index"] != index
             or previous["date_raw"] != checkpoint["date_raw"]
             or previous["sha256"] != save_sha256
@@ -1287,6 +1438,11 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     sway_sidecar_arg = getattr(args, "sway_formal_sidecar", None)
     sway_source = (sway_sidecar_arg.resolve() if sway_sidecar_arg is not None
                    else sample_dir / SWAY_FORMAL_PENDING_FILENAME)
+    sway_applied_arg = getattr(args, "sway_formal_applied_report", None)
+    if sway_applied_arg is not None and child_continuation_source is None:
+        raise ValueError("resolved Sway needs its prior pending continuation report")
+    sway_applied_source = (sway_applied_arg.resolve()
+                           if sway_applied_arg is not None else None)
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
@@ -1350,7 +1506,22 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 sha256(save_source))
             family_kind = "resolved"
         family_source_sha256 = sha256(family_source)
+    child_continuation = None
+    child_continuation_sha256 = None
+    if child_continuation_source is not None:
+        if not child_continuation_source.is_file():
+            raise FileNotFoundError(child_continuation_source)
+        child_continuation = read_json(child_continuation_source)
+        child_continuation_sha256 = sha256(child_continuation_source)
+    sway_applied = None
+    sway_applied_sha256 = None
+    if sway_applied_source is not None:
+        if not sway_applied_source.is_file():
+            raise FileNotFoundError(sway_applied_source)
+        sway_applied = read_json(sway_applied_source)
+        sway_applied_sha256 = sha256(sway_applied_source)
     sway_action_id = None
+    sway_ledger_status = None
     sway_source_sha256 = None
     sway_record = None
     if sway_sidecar_arg is not None and not sway_source.is_file():
@@ -1361,17 +1532,27 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         if sway_target.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {sway_target}")
         sway_record = read_json(sway_source)
-        sway_action_id = sway_formal_pending_sidecar_request(
-            sway_record, driver_source_record,
-            sha256(save_source), save_source.stat().st_size)
+        if sway_record.get("pending") is not None:
+            if sway_applied is not None:
+                raise ValueError("pending Sway ledger cannot use applied report")
+            sway_action_id = sway_formal_pending_sidecar_request(
+                sway_record, driver_source_record,
+                sha256(save_source), save_source.stat().st_size)
+            sway_ledger_status = "pending"
+        else:
+            if child_continuation is None or sway_applied is None:
+                raise ValueError("resolved Sway needs pending and applied reports")
+            sway_action_id, _ = sway_formal_resolved_sidecar_pair(
+                sway_record, driver_source_record,
+                sha256(save_source), save_source.stat().st_size,
+                child_continuation, sway_applied)
+            sway_ledger_status = "applied"
         sway_source_sha256 = sha256(sway_source)
     child_candidate = None
     child_source_sha256 = None
     child_proof_sha256 = None
     child_record = None
     child_proof = None
-    child_continuation = None
-    child_continuation_sha256 = None
     if child_source is not None and child_proof_sources:
         if not child_source.is_file() or any(
                 not path.is_file() for path in child_proof_sources):
@@ -1380,15 +1561,11 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             raise FileExistsError(f"refusing to overwrite prepared state: {child_target}")
         child_record = read_json(child_source)
         child_proof = [read_json(path) for path in child_proof_sources]
-        if child_continuation_source is not None:
-            if not child_continuation_source.is_file():
-                raise FileNotFoundError(child_continuation_source)
-            child_continuation = read_json(child_continuation_source)
-            child_continuation_sha256 = sha256(child_continuation_source)
         child_candidate = child_matrilineal_pending_sidecar_pair(
             child_record, driver_source_record, manifest,
             sha256(save_source), child_proof,
-            sway_continuation=child_continuation, sway_sidecar=sway_record)
+            sway_continuation=child_continuation, sway_sidecar=sway_record,
+            sway_applied_continuation=sway_applied)
         child_source_sha256 = sha256(child_source)
         child_proof_sha256 = [sha256(path) for path in child_proof_sources]
     faction_request_id = None
@@ -1585,6 +1762,7 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             child_record, read_json(driver_target), manifest,
             sha256(save_target), child_proof,
             sway_continuation=child_continuation, sway_sidecar=sway_record,
+            sway_applied_continuation=sway_applied,
         ) != child_candidate:
             raise RuntimeError("prepared driver no longer matches child proposal")
         shutil.copy2(child_source, child_target)
@@ -1604,6 +1782,9 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "cross_domain_continuation_report": (
                 str(child_continuation_source) if child_continuation_source else None),
             "cross_domain_continuation_report_sha256": child_continuation_sha256,
+            "sway_applied_continuation_report": (
+                str(sway_applied_source) if sway_applied_source else None),
+            "sway_applied_continuation_report_sha256": sway_applied_sha256,
             "candidate_character_id": child_candidate,
         }
     if faction_request_id is not None:
@@ -1624,23 +1805,35 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             "pre_submit_checkpoint_sha256": sha256(save_target),
         }
     if sway_action_id is not None:
-        if sway_formal_pending_sidecar_request(
-            sway_record, read_json(driver_target),
-            sha256(save_target), save_target.stat().st_size,
-        ) != sway_action_id:
+        prepared_driver = read_json(driver_target)
+        prepared_sway_action_id = (
+            sway_formal_pending_sidecar_request(
+                sway_record, prepared_driver,
+                sha256(save_target), save_target.stat().st_size)
+            if sway_ledger_status == "pending" else
+            sway_formal_resolved_sidecar_pair(
+                sway_record, prepared_driver,
+                sha256(save_target), save_target.stat().st_size,
+                child_continuation, sway_applied)[0])
+        if prepared_sway_action_id != sway_action_id:
             raise RuntimeError("prepared driver no longer matches Sway pending ACK")
         shutil.copy2(sway_source, sway_target)
         make_derived_state_owner_writable(sway_target)
         if sha256(sway_target) != sway_source_sha256:
             raise RuntimeError("prepared Sway pending sidecar hash mismatch")
-        preparation["sway_formal_pending_sidecar"] = {
+        preparation["sway_formal_pending_sidecar"
+                    if sway_ledger_status == "pending" else "sway_formal_resolved_sidecar"] = {
             "status": "paired_no_launch",
-            "ledger_status": "pending",
+            "ledger_status": sway_ledger_status,
             "source": str(sway_source), "path": str(sway_target),
             "sha256": sway_source_sha256,
             "action_id": sway_action_id,
             "checkpoint_sha256": sha256(save_target),
             "driver_state_sha256": sha256(driver_target),
+            "pending_report_sha256": (child_continuation_sha256
+                                      if sway_ledger_status == "applied" else None),
+            "applied_report_sha256": (sway_applied_sha256
+                                      if sway_ledger_status == "applied" else None),
         }
     print(json.dumps(preparation))
     return 0
@@ -2554,6 +2747,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--child-matrilineal-continuation-report", type=Path)
     prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.add_argument("--sway-formal-sidecar", type=Path)
+    prepare.add_argument("--sway-formal-applied-report", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
     verify_life_dll = commands.add_parser("verify-private-lifestyle-dll")
