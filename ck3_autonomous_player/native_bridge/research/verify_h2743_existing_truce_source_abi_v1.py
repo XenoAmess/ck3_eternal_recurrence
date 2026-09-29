@@ -86,7 +86,7 @@ def validate_source_contract(texts: dict[str, str]) -> None:
         ),
         "src/h2743_preaction_existing_truce_v1.cpp": (
             "claim.snapshot_id != \"native:\" + std::to_string(state_revision)",
-            "claim.public_revision != state_revision + 1",
+            "claim.public_revision == 0",
             "IsExactPausedFrame(actual)",
             "GuardedHasTruce",
             "GuardedEndDate",

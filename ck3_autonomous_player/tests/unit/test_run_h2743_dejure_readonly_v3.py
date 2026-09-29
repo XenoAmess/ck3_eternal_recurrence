@@ -298,6 +298,13 @@ class H2743RunnerGateTests(unittest.TestCase):
         self.assertEqual(arguments["step"], runner.QUERY)
         self.assertEqual(arguments["expected_revision"], 5)
         self.assertEqual(arguments["expected_h2743_frame"]["snapshot_id"], "native:4")
+        independent_public = dict(before, revision=7)
+        independent_frame = runner.frame_signature(independent_public)
+        independent_arguments = runner.existing_truce_query_arguments(
+            independent_public, independent_frame,
+        )
+        self.assertEqual(independent_arguments["expected_revision"], 7)
+        self.assertEqual(independent_arguments["expected_h2743_frame"]["native_revision"], 4)
         for key, value in (("snapshot_id", "native:3"), ("revision", 6),
                            ("native_revision", 5), ("connection_generation", 2)):
             with self.subTest(key=key), self.assertRaises(RuntimeError):

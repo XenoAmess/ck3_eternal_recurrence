@@ -100,7 +100,7 @@ bool AdmitH2743PreactionFrameClaimV1(
   if (state_revision == 0 ||
       state_revision == std::numeric_limits<std::uint64_t>::max() ||
       claim.native_revision != state_revision ||
-      claim.public_revision != state_revision + 1 ||
+      claim.public_revision == 0 ||
       claim.snapshot_id != "native:" + std::to_string(state_revision) ||
       claim.date_raw != static_cast<std::uint64_t>(kH2743TruceDateRawV1) ||
       claim.actor_character_id !=

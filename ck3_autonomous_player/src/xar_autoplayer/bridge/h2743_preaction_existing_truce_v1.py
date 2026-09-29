@@ -40,7 +40,7 @@ def frame_claim_from_snapshot(snapshot: dict[str, object]) -> dict[str, object]:
     diagnostics = snapshot.get("diagnostics")
     wars = snapshot.get("active_wars")
     if (type(native) is not int or native < 1 or type(public) is not int
-            or public != native + 1 or snapshot.get("snapshot_id") != f"native:{native}"
+            or public < 1 or snapshot.get("snapshot_id") != f"native:{native}"
             or snapshot.get("date_raw") != DATE_RAW or snapshot.get("paused") is not True
             or snapshot.get("map_ready") is not True
             or snapshot.get("episode_run_id") != EPISODE

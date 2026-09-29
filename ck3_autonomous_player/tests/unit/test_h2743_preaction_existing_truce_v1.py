@@ -43,9 +43,11 @@ def result(native_revision: int = 3) -> dict[str, object]:
     }
 
 
-def starting_frame(native_revision: int = 4) -> dict[str, object]:
+def starting_frame(native_revision: int = 4,
+                   public_revision: int | None = None) -> dict[str, object]:
     return {
-        "revision": native_revision + 1, "native_revision": native_revision,
+        "revision": (native_revision + 1 if public_revision is None else public_revision),
+        "native_revision": native_revision,
         "snapshot_id": f"native:{native_revision}", "date_raw": DATE_RAW,
         "episode_run_id": EPISODE, "paused": True, "map_ready": True,
         "played_character": {"character_id": 29829, "alive": True},
@@ -135,12 +137,34 @@ class ExistingTruceWireTest(unittest.TestCase):
         self.assertEqual(fields["expected_exe_sha256"],
                          "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86")
 
+    def test_independent_public_counter_binds_current_frame(self) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        before = starting_frame(4, public_revision=7)
+        claim = frame_claim_from_snapshot(before)
+        self.assertEqual(claim["snapshot_id"], "native:4")
+        self.assertEqual(claim["revision"], 7)
+        with (patch.object(driver, "take_internal_semantic_snapshot", return_value=before),
+              patch.object(driver, "_execute_primitive_step", return_value=result(4)) as primitive):
+            driver._execute_native_war_step(
+                QUERY_STEP, expected_revision=7, expected_h2743_frame=claim,
+            )
+        self.assertEqual(primitive.call_args.kwargs["expected_revision"], 7)
+        self.assertEqual(primitive.call_args.kwargs["request_fields"]["expected_public_revision"], 7)
+        with (patch.object(driver, "take_internal_semantic_snapshot",
+                           return_value=starting_frame(4, public_revision=8)),
+              patch.object(driver, "_execute_primitive_step") as denied):
+            with self.assertRaisesRegex(Exception, "source/frame claim"):
+                driver._execute_native_war_step(
+                    QUERY_STEP, expected_revision=7, expected_h2743_frame=claim,
+                )
+        denied.assert_not_called()
+
     def test_driver_rejects_missing_or_drifted_before_frame(self) -> None:
         driver = object.__new__(NativeHeadlessGameplayDriver)
         before = starting_frame(4)
         claim = frame_claim_from_snapshot(before)
         mutations = [
-            {"snapshot_id": "native:3"}, {"revision": 6},
+            {"snapshot_id": "native:3"}, {"revision": 6}, {"revision": 0},
             {"native_revision": 5}, {"date_raw": DATE_RAW + 1},
             {"episode_run_id": "wrong"}, {"paused": False},
             {"map_ready": False},

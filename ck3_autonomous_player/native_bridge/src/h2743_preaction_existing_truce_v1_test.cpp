@@ -109,8 +109,8 @@ Fixture ReadyFixture() {
 }
 
 xar::ck3_11906::H2743PreactionFrameClaimV1 FrameClaim(
-    std::uint64_t native_revision) {
-  return {native_revision + 1, native_revision, 53217264, 29829, 16777231,
+    std::uint64_t native_revision, std::uint64_t public_revision) {
+  return {public_revision, native_revision, 53217264, 29829, 16777231,
           "native:" + std::to_string(native_revision),
           std::string(xar::ck3_11906::kH2743EpisodeIdV1),
           std::string(xar::ck3_11906::kH2743CheckpointSha256V1),
@@ -126,7 +126,7 @@ int main() {
   {
     const auto ready = ReadyFixture();
     for (const auto native_revision : {std::uint64_t{3}, std::uint64_t{4}}) {
-      const auto claim = FrameClaim(native_revision);
+      const auto claim = FrameClaim(native_revision, native_revision + 1);
       Require(AdmitH2743PreactionFrameClaimV1(
           claim, native_revision, ready.snapshot));
       auto wrong = claim;
@@ -136,7 +136,7 @@ int main() {
             wrong, native_revision, ready.snapshot));
       }
       wrong = claim;
-      ++wrong.public_revision;
+      wrong.public_revision = 0;
       Require(!AdmitH2743PreactionFrameClaimV1(
           wrong, native_revision, ready.snapshot));
       wrong = claim;
@@ -176,6 +176,9 @@ int main() {
       Require(!AdmitH2743PreactionFrameClaimV1(
           claim, native_revision, changed));
     }
+    // The Python public counter can advance independently of native revision.
+    Require(AdmitH2743PreactionFrameClaimV1(
+        FrameClaim(4, 7), 4, ready.snapshot));
   }
   {
     auto fixture = ReadyFixture();
