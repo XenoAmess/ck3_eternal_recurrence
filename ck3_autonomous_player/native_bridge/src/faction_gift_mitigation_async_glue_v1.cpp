@@ -1097,7 +1097,61 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
     output += std::to_string(
         observation.source_faction_member_character_ids[index]);
   }
-  output += "]},\"receipt_pending\":";
+  // The direct source is complete even when no direct landed recipient joins
+  // its member vector. Keep those identities on the private read path so a
+  // count-positive/recipient-empty frame can be diagnosed without guessing
+  // that the faction itself has no character members.
+  output += "]},\"direct_targeting_rows\":";
+  const auto &rows = context.targeting_rows;
+  bool rows_complete =
+      context.use_direct_source_rows &&
+      context.direct_source_failure == FactionGiftDirectSourceFailureV1::none &&
+      (rows.terminal == bridge::FactionTargetingRowProbeTerminalV1::ready ||
+       rows.terminal == bridge::FactionTargetingRowProbeTerminalV1::known_empty) &&
+      rows.faction_count <= rows.factions.size();
+  if (rows_complete) {
+    for (std::size_t index = 0; index < rows.faction_count; ++index) {
+      if (rows.factions[index].character_member_count >
+          rows.factions[index].character_member_ids.size()) {
+        rows_complete = false;
+        break;
+      }
+    }
+  }
+  if (!rows_complete) {
+    output += "null";
+  } else {
+    output += "{\"terminal\":";
+    output += rows.terminal == bridge::FactionTargetingRowProbeTerminalV1::ready
+                  ? "\"ready\"" : "\"known_empty\"";
+    output += ",\"snapshot_revision\":" +
+              std::to_string(rows.observed_binding.snapshot_revision);
+    output += ",\"date_raw\":" +
+              std::to_string(rows.observed_binding.date_raw);
+    output += ",\"player_character_id\":" +
+              std::to_string(rows.observed_binding.player_character_id);
+    output += ",\"faction_count\":" +
+              std::to_string(rows.faction_count) + ",\"factions\":[";
+    for (std::size_t index = 0; index < rows.faction_count; ++index) {
+      if (index != 0) output += ',';
+      const auto &row = rows.factions[index];
+      output += "{\"faction_id\":" + std::to_string(row.faction_id);
+      output += ",\"target_character_id\":" +
+                std::to_string(row.target_character_id);
+      output += ",\"leader_character_id\":";
+      output += row.leader_present
+                    ? std::to_string(row.leader_character_id) : "null";
+      output += ",\"character_member_ids\":[";
+      for (std::size_t member = 0;
+           member < row.character_member_count; ++member) {
+        if (member != 0) output += ',';
+        output += std::to_string(row.character_member_ids[member]);
+      }
+      output += "]}";
+    }
+    output += "]}";
+  }
+  output += ",\"receipt_pending\":";
   output += context.receipt_pending ? "true" : "false";
   if (context.execute_request) {
     output += ",\"ack\":" + SerializeFactionGiftMitigationAckV1(context.ack);

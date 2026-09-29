@@ -657,3 +657,7 @@ flowchart TD
 旧 FACTION8 窗口 callback 的 heartbeat 在受控验收后只封存一次，不能当作后续 paused frame 的独立重查。当前默认关闭的私有 `query / submit / receipt` 步骤改为每次查询通过既有 application-main campaign-root mailbox 读取当帧直属封臣，再直接读取玩家 land-state targeting-faction ID vector。typed submit 在新 application-main pulse 重查同一派系、recipient、stock gift 合法性与金币 reserve，只提交一次；receipt 在下一独立 paused revision 读取 faction storage 中的 full-generation entity、金币与 `gift_opinion`。targeting vector 缺席而 entity 仍存在时，不得报告 dissolved。未确认提交保持 pending，不盲重试；明确在执行前取消或在 idempotency claim 前拒绝时，下一次动作必须先重新查询。
 
 此包仅是 `static-ready-private-no-paused-live`：/Od 与 /O2 聚焦 fixture 覆盖已知空列表、合法 targeting member、外国 owner 拒绝、entity 仍存在、已知空 slot 和 metric drift RED；同两模式 `bridge.cpp` 私有选项只编译验证。paused snapshot、真实赠礼、独立后置条件、正式下一 turn 消费、冷恢复与公共 query/action 广告仍待实机闭合。接口变化只涉及默认关闭的私有 typed steps；公共 MCP、正式策略及 `open_kaishek` 当前消费接口不变。
+
+### R0327/H3928 成员身份的实机边界（2026-09-29）
+
+以上静态状态是历史阶段边界。R0327 的真实暂停帧已证明原生私有扫描可完整读出一支指向 Robert 的派系，但直属有地封臣与 leader/character-member 集合没有交集；其 `no_eligible_direct_vassal` 只否定该窄策略的候选。H3928 同日来源仍有一支目标派系，未有新一轮私有成员查询。为了把成员身份与“没有直属可送礼对象”区分开，私有回包在已完成双采样的来源上新增 `direct_targeting_rows`，保留 faction ID、目标、nullable leader 和 character-member IDs；来源失败则为 `null`。赠礼 `CanSend`、成本和收益仍须对实际候选作原生最终 preview；没有 preview 不推断合法或正收益。新回包尚待配对 paused 实机读回，正式赠礼、后置和恢复门保持未闭合。详细证据见 [派系赠礼正式路线缺口](faction-gift-formal-route-gap.md)。

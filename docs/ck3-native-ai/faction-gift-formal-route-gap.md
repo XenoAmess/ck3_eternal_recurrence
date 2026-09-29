@@ -159,3 +159,39 @@ so it does not prove the faction has no members or that no other character
 could receive a gift. Final interaction legality, cost, material postcondition,
 next turn and cold recovery were not exercised. R0317 took zero gameplay
 actions and advanced zero game days; no formal gift loop is claimed.
+
+## R0327 to H3928: expose the accepted private member rows (2026-09-29)
+
+R0327 repeated the bounded private read at Robert h3911/raw 53219928. The
+fresh root again had one targeting faction and ten direct landed vassals; the
+native result was `no_eligible_direct_vassal`, `failure_flags=2`, with no
+direct-source or frame failure. It took zero gameplay actions and advanced no
+date. Its readback at
+`Z:/ck3_mod_rewrite_process_assets/nw-faction-robert-h3911-opportunity-2eb9-20260928/evidence/R0327/faction-readback.json`
+SHA-256 is `DA2054FE2CCB9344090DCFEECC8745FBE8C8860CB3A2C620ABB7926E017648F5`;
+the verdict SHA-256 is
+`7AAE4E4777C7A82E379431C9DEB8012E2E3B2E66ABBBA445192BE4B055252464`.
+The no-recipient response still hid the faction's actual character member
+IDs and supplied no `gift_interaction` CanSend preview. Its zeroed observation
+must not be read as zero members, zero gold, or an illegal gift to every other
+character. The same-frame semantic gold was 120644281 raw, with an active war;
+future war cash commitments remained unobserved.
+
+The later H3928 source pair (`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+save, `9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0`
+driver) is the same game date. Its last public root at h3918 still reports
+one targeting faction and the same ten direct landed vassals, but its driver
+contains no later private faction gift query. R0327's negative cannot be
+silently carried to this later paused frame.
+
+The private gift serializer now projects `direct_targeting_rows` from the
+already accepted exact-build, twice sampled source. `ready` includes the
+bound snapshot revision/date/player, each faction ID and target, nullable
+leader, and full character member IDs, even when the direct landed selector
+found no recipient. An incomplete or failed source emits `null`, not an empty
+list. This changes no selection, native CanSend evaluation, submit route or
+public capability. A new paired, read-only H3928 run must first identify the
+actual members and join them to the current direct vassal list. Only a member
+with a native final legal, positive and budgeted gift preview can proceed to
+the existing formal consumer and its postcondition/next-turn/cold-restore
+gates. This source change alone is static-ready and proves no new gift action.
