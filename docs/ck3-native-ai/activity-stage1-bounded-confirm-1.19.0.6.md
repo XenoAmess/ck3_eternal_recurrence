@@ -144,3 +144,54 @@ activity Start; a failed postcondition preserves `submitted=true` for
 recovery. A null or unverified row remains a pre-submit rejection. Neither
 R0360 nor R0361 is stage-transition evidence; a new frozen live candidate
 is still required.
+
+
+## R0362 live stage-one Confirm and independent stage-two reads
+
+The independent H3928/raw53219928 candidate was built from exact master
+`287f9b33446c9b33231d5af9057764a5e0995418` after official push CI
+`36534861195` succeeded. Its [frozen index](Z:/m6-activity-h3928-stage1-byte1-candidate-20260929/CANDIDATE-INDEX.json)
+has SHA-256 `8DC53DC58B56061B5A079F7781981A73D3D556D8540FD4E55DBB9A2AE8B119A4`;
+the Release DLL has SHA-256
+`1FA231AA064C1AC6D284CC61B93F8417A15E47A9C5466374F038F9DDAFDD0CF3`.
+Official original-pair rebind and no-launch were ready. The single live CK3
+process was PID 95316 with a verified minimized window. This candidate enabled
+only feast open, stage-one option read and Confirm, stage-two option and gate
+reads, plus the existing H3928 sidecar flags. It did not enable stage-two
+advance, Start, cost action, or the old diagnostic executor.
+
+On one paused `native:3` frame, actor 29829 and date raw53219928, the separate
+stage-one read again found selected `feast_type_generic` shown, valid, able to
+progress, and ready for generic Confirm. The typed
+`confirm-activity-feast-stage1-v1-private` receipt was `ok=true`,
+`accepted=true`, `submitted=true`, `pending=false`, and
+`status=stage_two_verified`. Its immediate postcondition observed a visible
+stage-two planner with the same selected option, unchanged snapshot and gold
+raw120644281, and `activity_start_state=not_started_immediate`. A separate
+mailbox request for `query-activity-feast-stage2-option-v1-private` then read
+stage 2 and `feast_type_generic` again. This proves one exact-build private
+stage-one transition with an independent selected-option readback; it is more
+than an ACK. The green receipt does not expose the raw `+0x1AD0` byte, so the
+specific internal byte branch in this run is inferred from R0361's same
+original pair and the bounded candidate, rather than independently read again.
+
+A further independent same-frame
+`query-activity-feast-stage2-gate-v1-private` returned two configuration
+rows. Both had `raw_dword=0` at indices 0 and 1; native
+`can_progress_stage2=false` and `generic_feast_stage2_advance_ready=false`.
+These raw values do not identify a currency cost or a chosen configuration.
+The [immutable formal report](Z:/m6-activity-h3928-stage1-byte1-candidate-20260929/operator-runs/feast-stage1-byte1-confirm-1/formal-report.txt)
+has SHA-256 `F19F6BE7248EE9C5B84F32D5B4CBDD73478D1D3F01121E4B727D508481F2A09B`;
+the [operator receipt](Z:/m6-activity-h3928-stage1-byte1-candidate-20260929/operator-runs/feast-stage1-byte1-confirm-1/operator-receipt.json)
+has SHA-256 `34BDF0083B550572FE2D73ED52F485DEEFC835191629B1230C032BE8D00A25AC`.
+The specialized route completed with `planning_stage_advanced`, no first
+blocker, zero ordinary auto-run turns or date advance, unchanged checkpoint
+save SHA-256 `A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`,
+and proven process-tree cleanup.
+
+R0360 and R0361 remain failed attempts; R0362 does not turn them into successes.
+The next decision needs native identities, legal options, and resource effects
+for both stage-two configuration rows before a bounded configuration action.
+Stage-two advance, stage-five cost/final CanStart, activity Start, next-turn
+consumption, and checkpoint cold restore remain unverified. The public action
+and advertisement gates remain closed.
