@@ -396,7 +396,8 @@ flowchart LR
     A[Activity list type] --> B[HostView Confirm: 0x1505230]
     A -. detail view event 0x68 requires native type payload .-> H[HostView slot 18: 0x15050E0]
     H --> B
-    B --> C[handler event 0x65: 0xA79700]
+    B --> P[typed 8-byte type payload: 0xCAF920 / 0x80DCB0]
+    P --> C[handler event 0x65: 0xA79700]
     C --> Q[queue consumer: 0xA794D0]
     Q --> D[planner slot 21 then 18: 0x7E9220 / 0x10AE120]
     D --> E[SetActivityType: 0x10AD7C0, stage 2]
@@ -409,3 +410,28 @@ native payload construction for the detail view, and actual planner widget
 visibility after event `0x65`. A private action
 cannot claim an opened/configured feast or use stage-2 `true` as `can_start`
 until those branches and a paired paused readback are established.
+
+## 2026-09-29 type-payload continuation
+
+On the same exact EXE, `0x1505230` obtains the native descriptor from
+`0xCAF920`. That descriptor is the static object at `0x4FE3DB0` with vtable
+`0x40DB298`. Its slots `+0x58` and `+0x60` both point to `0x80DCB0`, which
+copies one 8-byte value from `HostView+0x268` into the stack variant's data
+field. `0xA79700` then copies the descriptor and data into its queued event;
+the receiver at `0x10AE040` resolves the type through the descriptor's
+runtime type check. This closes the **type-bearing event payload shape** for
+the original HostView Confirm path. It does not supply an independent
+`activity_feast` type lookup or authorize a synthetic queue submission.
+
+The four `GetActivityType` registration references at `0xD9802`, `0x154C42`,
+`0x25B722`, and `0x25D0F2` bind object getters; their callbacks read fields
+from an existing object. None proves a stable-key registry lookup. The next
+bounded source is the normal `ActivityListWindow.GetActivityGroupItems` ->
+`ActivityGroupItem.GetActivities` -> `ActivityItem.GetType` collection, whose
+GUI binding is in `game/gui/window_activity_list.gui` lines 162 and 807-860.
+An operation would have to enumerate fresh type pointers, verify the exact
+vtable and copied `+0x18` key, and retain no pointer across a frame. It would
+also need a paired paused observation that event `0x65` makes the planner
+widget visible and its slot-12 cost update runs before `+0x1AD8` is read.
+Those conditions remain dashed `unknown`; no CK3 process or save was used in
+this continuation.
