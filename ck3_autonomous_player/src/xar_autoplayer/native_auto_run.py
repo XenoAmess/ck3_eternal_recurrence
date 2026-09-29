@@ -2684,6 +2684,61 @@ def native_auto_run(
                 raise AgentError(
                     "read-only native query changed its paused semantic frame"
                 )
+            if (private_child_matrilineal_pending_recovery_only is True
+                    and step == PRIVATE_CHILD_MATRILINEAL_RESULT_STEP):
+                # The result reader changes the durable sidecar even when the
+                # proposal remains pending. Save the same game frame beside
+                # that ledger before this one-turn recovery can finish.
+                result = outcome.get("result")
+                child_ledger = read_child_matrilineal_ledger(driver.state_dir)
+                pending_now = child_ledger.get("pending")
+                resolved_now = child_ledger.get("resolved")
+                result_status = result.get("status") if isinstance(result, dict) else None
+                if not (
+                    (result_status == "pending" and isinstance(pending_now, dict)
+                     and child_ledger.get("resolved") is None
+                     and all(pending_now.get(key) == child_recovery_pending.get(key)
+                             for key in ("played_character_id", "episode_run_id",
+                                         "heir_character_id", "candidate_character_id",
+                                         "recipient_character_id", "source_bridge_pid")))
+                    or (result_status in {"marriage", "betrothal", "refused", "invalidated"}
+                        and pending_now is None and isinstance(resolved_now, dict)
+                        and resolved_now.get("status") == result_status
+                        and resolved_now.get("source_pending") == child_recovery_pending)
+                ):
+                    raise AgentError("child result did not update its paired pending ledger")
+                if terminal_pending or modal_decision_pending:
+                    raise AgentError("child result cannot checkpoint on a decision frame")
+                current_attempt["stage"] = "child_matrilineal_result_checkpoint"
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service, driver, spec.profile_dir / "save games",
+                    session_done=session_done, session_state=session_state,
+                    timeout_seconds=min(readiness_timeout,
+                                        max(0.001, run_deadline - time.monotonic())),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                if (checkpoint.get("date_raw") != before.get("date_raw")
+                        or checkpoint.get("episode_character_id")
+                        != before.get("episode_character_id")
+                        or checkpoint.get("episode_run_id")
+                        != before.get("episode_run_id")
+                        or read_child_matrilineal_ledger(driver.state_dir)
+                        != child_ledger):
+                    raise AgentError("child result checkpoint changed its pair or date")
+                counts["checkpoint"] += 1
+                checkpoints.append({
+                    "turn_index": turn_index,
+                    "phase": "player_child_matrilineal_result_" + str(result_status),
+                    "ledger_status": result_status,
+                    **checkpoint,
+                })
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
+                current_attempt["after"] = _public_binding(after)
+                turns[-1]["after"] = _public_binding(after)
+                turns[-1]["evidence"].append("child_matrilineal_result_checkpoint_saved")
+                current_attempt["stage"] = "child_matrilineal_result_checkpoint_complete"
             if time.monotonic() >= run_deadline:
                 status = "timeout"
                 capture_first_failure(
