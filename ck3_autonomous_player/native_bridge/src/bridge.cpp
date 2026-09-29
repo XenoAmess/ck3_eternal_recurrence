@@ -4544,6 +4544,12 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
   } else {
     AppendFixedPoint(result, snapshot.played_character_prestige);
   }
+  result += ",\"played_character_piety\":";
+  if (!snapshot.has_played_character) {
+    result += "null";
+  } else {
+    AppendFixedPoint(result, snapshot.played_character_piety);
+  }
   result += ",\"one_life_settlement\":";
   if (!snapshot.has_one_life_settlement) {
     result += "null";
