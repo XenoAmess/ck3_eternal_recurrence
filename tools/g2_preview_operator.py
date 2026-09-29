@@ -1261,6 +1261,7 @@ def native_auto_run_command(
     private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
     private_activity_planner_diag_query: bool = False,
+    private_activity_feast_planner_open: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1315,6 +1316,8 @@ def native_auto_run_command(
         command.append("--private-realm-law-paused-query")
     if private_activity_planner_diag_query:
         command.append("--private-activity-planner-diag-query")
+    if private_activity_feast_planner_open:
+        command.append("--private-activity-feast-planner-open")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -1853,6 +1856,10 @@ def command_run(args: argparse.Namespace) -> int:
         or child_pair[0] == child_pair[1]
     ):
         raise ValueError("private child pending read needs two distinct positive IDs")
+    if args.private_activity_feast_planner_open and (
+        child_pair is not None or args.private_activity_planner_diag_query
+    ):
+        raise ValueError("private feast planner open needs its own paused frame run")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")
@@ -1939,6 +1946,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_planner_diag_query": (
             args.private_activity_planner_diag_query
         ),
+        "private_activity_feast_planner_open": (
+            args.private_activity_feast_planner_open
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -2011,6 +2021,9 @@ def command_run(args: argparse.Namespace) -> int:
                 private_realm_law_paused_query=args.private_realm_law_paused_query,
                 private_activity_planner_diag_query=(
                     args.private_activity_planner_diag_query
+                ),
+                private_activity_feast_planner_open=(
+                    args.private_activity_feast_planner_open
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -2829,6 +2842,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-planner-diag-query", action="store_true",
         help="read current-player planner metadata on a paused frame",
+    )
+    run.add_argument(
+        "--private-activity-feast-planner-open", action="store_true",
+        help="open the private feast planner on one paused frame without starting it",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",

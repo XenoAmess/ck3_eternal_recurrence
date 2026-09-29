@@ -111,6 +111,8 @@ class _NativeAutoRunHarness:
         self.child_pending_query_count = 0
         self.realm_law_paused_query_count = 0
         self.activity_planner_diag_query_count = 0
+        self.activity_feast_open_count = 0
+        self.activity_feast_open_status = "opened"
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -1420,6 +1422,63 @@ class _NativeAutoRunHarness:
         }
 
 
+class _FakeActivityFeastEndpoint:
+    def __init__(self, harness: _NativeAutoRunHarness) -> None:
+        self.harness = harness
+        self.request: dict[str, object] | None = None
+
+    def send(self, request: dict[str, object]) -> None:
+        assert self.request is None
+        assert request["type"] == "execute_step"
+        assert request["protocol_version"] == 1
+        assert request["step"] == "open-activity-feast-planner-v1-private"
+        assert request["expected_revision"] == self.harness.native_revision
+        self.request = copy.deepcopy(request)
+        self.harness.activity_feast_open_count += 1
+
+
+class _FakeActivityFeastState:
+    def __init__(self, harness: _NativeAutoRunHarness) -> None:
+        self.harness = harness
+
+    def wait_for_command_result(
+        self, request_id: str, timeout_seconds: float,
+    ) -> dict[str, object]:
+        assert timeout_seconds > 0
+        assert self.harness.driver is not None
+        request = self.harness.driver.endpoint.request
+        assert request is not None and request["request_id"] == request_id
+        status = self.harness.activity_feast_open_status
+        opened = status in {"opened", "already_open"}
+        native = {
+            "schema": "activity-feast-planner-open-private-v1",
+            "snapshot_revision": self.harness.native_revision,
+            "date_raw": self.harness.date_raw,
+            "actor_character_id": self.harness.played_character_id,
+            "open_status": status,
+            "native_dispatch_invoked": status != "already_open",
+            "widget_attached": True,
+            "widget_visible": opened,
+            "planning_stage": 2,
+            "configured_cost_state": "unknown",
+            "final_can_start_state": "unknown",
+            "raw_pointer_fields_persisted": False,
+        }
+        return {
+            "type": "command_result", "protocol_version": 1,
+            "request_id": request_id, "ok": opened,
+            **({"error": "activity_feast_open_red"} if not opened else {}),
+            "result": {
+                "step": request["step"], "accepted": opened,
+                "status": "available" if opened else "red",
+                "private_build": True, "read_only": False,
+                "advertised": False, "same_frame": True,
+                "activity_feast_planner_open": native,
+                "backend_id": "native-headless",
+            },
+        }
+
+
 class _FakeNativeDriver:
     def __init__(
         self,
@@ -1433,6 +1492,9 @@ class _FakeNativeDriver:
         self.pipe_name = pipe_name
         self.state_dir = state_dir
         self.save_dir = save_dir
+        self.command_timeout_seconds = 0.1
+        self.endpoint = _FakeActivityFeastEndpoint(harness)
+        self.state = _FakeActivityFeastState(harness)
 
     def capabilities(self) -> dict[str, object]:
         return self.harness.capabilities()
@@ -1853,6 +1915,8 @@ class NativeAutoRunTests(unittest.TestCase):
         allow_private_active_scheme_sway_formal_trial: bool = False,
         private_realm_law_paused_query: bool = False,
         private_activity_planner_diag_query: bool = False,
+        private_activity_feast_planner_open: bool = False,
+        activity_feast_open_status: str = "opened",
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
@@ -1937,6 +2001,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 }],
             }]
         harness.advance_pump_epochs = advance_pump_epochs
+        harness.activity_feast_open_status = activity_feast_open_status
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
         )
@@ -2053,6 +2118,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 private_realm_law_paused_query=private_realm_law_paused_query,
                 private_activity_planner_diag_query=(
                     private_activity_planner_diag_query
+                ),
+                private_activity_feast_planner_open=(
+                    private_activity_feast_planner_open
                 ),
             )
         return report, harness
@@ -2284,6 +2352,49 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(observed["readback"]["configured_cost_state"], "unknown")
         self.assertEqual(observed["readback"]["final_can_start_state"], "unknown")
         self.assertEqual(harness.activity_planner_diag_query_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_feast_planner_open_checks_gui_poststate_without_gameplay(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "2", "--timeout", "900"]
+        self.assertFalse(cli.parser().parse_args(common).private_activity_feast_planner_open)
+        self.assertTrue(cli.parser().parse_args([
+            *common, "--private-activity-feast-planner-open",
+        ]).private_activity_feast_planner_open)
+        report, harness = self._run(
+            ["advance", "advance"], private_activity_feast_planner_open=True,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"],
+                         "private_activity_feast_planner_open_observed")
+        self.assertEqual(report["outcome"], "gui_open_observed")
+        observed = report["private_activity_feast_planner_open_observation"]
+        self.assertTrue(observed["same_frame"])
+        self.assertTrue(observed["gui_open"])
+        receipt = observed["native_receipt"]["result"]
+        self.assertEqual(receipt["activity_feast_planner_open"]["open_status"],
+                         "opened")
+        self.assertTrue(receipt["activity_feast_planner_open"]["widget_visible"])
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+        self.assertEqual(observed["source_frame"]["date_raw"],
+                         observed["post_frame"]["date_raw"])
+
+    def test_private_feast_planner_open_failed_postcondition_is_red(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_planner_open=True,
+            activity_feast_open_status="postcondition_failed",
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIn("postcondition_failed", report["error"])
+        self.assertEqual(
+            report["first_blocker"]["result"]["activity_feast_planner_open"][
+                "open_status"], "postcondition_failed",
+        )
+        self.assertEqual(harness.activity_feast_open_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["turns"], [])
 

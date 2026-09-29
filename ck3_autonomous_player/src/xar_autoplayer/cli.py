@@ -455,6 +455,10 @@ def parser() -> argparse.ArgumentParser:
         help="read private activity planner metadata on one paused frame",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-feast-planner-open", action="store_true",
+        help="open the private feast planner on one paused frame without starting it",
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-prisoner-ransom-formal-trial",
         action="store_true",
         help="evaluate and submit one private native ransom in a bounded run",
@@ -1043,6 +1047,8 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_realm_law_paused_query else {}),
                     **({"private_activity_planner_diag_query": True}
                       if args.private_activity_planner_diag_query else {}),
+                    **({"private_activity_feast_planner_open": True}
+                      if args.private_activity_feast_planner_open else {}),
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )
