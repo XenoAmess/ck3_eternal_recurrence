@@ -59,6 +59,11 @@ def inputs_payload() -> dict[str, object]:
             "barter_goods": {"resource_index": 3, "configured_cost_raw": 0},
         },
         "native_guest_route_qualified": False,
+        "guest_join_status": "guest_source_unavailable",
+        "selected_nonhost_count": None,
+        "positive_join_count": None,
+        "timely_positive_join_count": None,
+        "arrival_time_observed": False,
     }
 
 
@@ -114,6 +119,14 @@ class ActivityFeastStage5StartReadTest(unittest.TestCase):
         self.assertIs(result["native_guest_route_qualified"], False)
         self.assertEqual(result["resources"]["gold"]["configured_cost_raw"],
                          1_000_000)
+        observed = inputs_payload()
+        observed.update({
+            "guest_join_status": "observed", "selected_nonhost_count": 2,
+            "positive_join_count": 1, "timely_positive_join_count": 1,
+            "arrival_time_observed": True,
+        })
+        self.assertEqual(query_activity_feast_stage5_start_inputs_private_v1(
+            Driver(observed), expected_revision=5)["timely_positive_join_count"], 1)
         driver.payload["resources"]["gold"]["configured_cost_raw"] = 0
         self.assertEqual(result["resources"]["gold"]["configured_cost_raw"],
                          1_000_000)
@@ -140,6 +153,15 @@ class ActivityFeastStage5StartReadTest(unittest.TestCase):
         bad = inputs_payload()
         bad["resources"]["piety"]["configured_cost_raw"] = None
         with self.assertRaisesRegex(BridgeUnavailableError, "cost row"):
+            query_activity_feast_stage5_start_inputs_private_v1(
+                Driver(bad), expected_revision=5)
+        bad = inputs_payload()
+        bad["guest_join_status"] = "observed"
+        bad["selected_nonhost_count"] = 1
+        bad["positive_join_count"] = 0
+        bad["timely_positive_join_count"] = 1
+        bad["arrival_time_observed"] = True
+        with self.assertRaisesRegex(BridgeUnavailableError, "guest counts"):
             query_activity_feast_stage5_start_inputs_private_v1(
                 Driver(bad), expected_revision=5)
         driver = Driver(inputs_payload())

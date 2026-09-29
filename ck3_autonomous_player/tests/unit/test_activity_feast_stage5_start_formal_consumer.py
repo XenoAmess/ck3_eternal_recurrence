@@ -29,6 +29,11 @@ def inputs() -> dict[str, object]:
         "activity_key": "activity_feast", "selected_option_key": "feast_type_generic",
         "planning_stage": 5, "final_can_start": True,
         "native_guest_route_qualified": False,
+        "guest_join_status": "guest_source_unavailable",
+        "selected_nonhost_count": None,
+        "positive_join_count": None,
+        "timely_positive_join_count": None,
+        "arrival_time_observed": False,
         "resources": {
             key: {"resource_index": i, "configured_cost_raw": 1_000_000 if i == 0 else 0}
             for i, key in enumerate(("gold", "treasury", "piety", "barter_goods"))

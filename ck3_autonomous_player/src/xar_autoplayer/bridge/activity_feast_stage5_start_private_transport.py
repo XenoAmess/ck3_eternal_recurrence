@@ -113,7 +113,9 @@ def _parse_payload(
     input_fields = {
         "activity_key", "selected_option_key", "planning_stage", "scale",
         "normal_refresh_sequence", "final_can_start", "resources",
-        "native_guest_route_qualified",
+        "native_guest_route_qualified", "guest_join_status",
+        "selected_nonhost_count", "positive_join_count",
+        "timely_positive_join_count", "arrival_time_observed",
     }
     if (not isinstance(value, dict)
             or set(value) != common | (input_fields if step == INPUT_STEP else set())
@@ -156,8 +158,30 @@ def _parse_payload(
             or not _positive(value["normal_refresh_sequence"])
             or type(value["final_can_start"]) is not bool
             or type(value["native_guest_route_qualified"]) is not bool
+            or not isinstance(value["guest_join_status"], str)
+            or value["guest_join_status"] not in {
+                "observed", "exact_build_rejected", "frame_changed",
+                "planner_unavailable", "no_normal_refresh",
+                "configuration_changed", "guest_source_unavailable",
+                "native_evaluation_failed", "cache_disagreed",
+                "arrival_source_unavailable", "arrival_evaluation_failed",
+            }
+            or type(value["arrival_time_observed"]) is not bool
         ):
             raise BridgeUnavailableError("private feast Start inputs malformed")
+        counts = [value[key] for key in (
+            "selected_nonhost_count", "positive_join_count",
+            "timely_positive_join_count",
+        )]
+        if value["guest_join_status"] == "observed":
+            if (any(type(count) is not int or not 0 <= count <= 128
+                    for count in counts)
+                    or not counts[2] <= counts[1] <= counts[0]
+                    or value["arrival_time_observed"] is not True):
+                raise BridgeUnavailableError("private feast guest counts malformed")
+        elif (any(count is not None for count in counts)
+              or value["arrival_time_observed"] is not False):
+            raise BridgeUnavailableError("private feast unavailable guest must remain unknown")
         result["resources"] = copied_resources
     return result
 
