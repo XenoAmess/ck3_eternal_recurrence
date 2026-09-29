@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <limits>
 #include <vector>
 
 int main() {
@@ -17,7 +18,8 @@ int main() {
   // regiment header, each regiment ID, knight ID, and reverse backlink.
   const std::vector<std::uint64_t> sample = {
       83886367, 50331794, 29829, 0x4000, 2, 2,
-      101, 50331794, 29829, 101, 102, 50331794, -1ULL};
+      101, 50331794, 29829, 101, 102, 50331794,
+      std::numeric_limits<std::uint64_t>::max()};
   if (!StableActorArmyRoleSourceV1(headers, headers, sample, sample)) return 1;
   for (std::size_t slot = 0; slot < headers.size(); ++slot) {
     auto changed = headers;
