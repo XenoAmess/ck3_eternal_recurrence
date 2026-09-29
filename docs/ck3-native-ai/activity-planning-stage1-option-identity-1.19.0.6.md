@@ -2,7 +2,8 @@
 
 Exact `ck3.exe` SHA-256:
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
-This is deterministic, read-only native research; no CK3 process was started.
+The ABI trace below is deterministic, read-only native research. R0356 later
+tested its private collector in CK3 without submitting a stage transition.
 The R0350 planner-open report and stage transition boundary are recorded in
 `activity-planning-stage1-feast-r0350-1.19.0.6.md`.
 
@@ -90,6 +91,42 @@ within the same DLL and process. No DLL swap or restart is required between
 those two steps.
 
 The Release bridge compilation and Release/Debug focused unit test are
-source-level validation. An actual paused snapshot of the selected option
-and predicates remains required before the separate Confirm action candidate
-can be frozen. No new CK3 result or date is claimed here.
+source-level validation. They are separate from the paused game observation
+below.
+
+## R0356 paused game observation
+
+The formal private report at
+`Z:\m6-activity-h3928-stage1-read-candidate-v2-20260929\operator-runs\feast-stage1-option-read-1\formal-report.txt`
+has SHA-256
+`562B9B2E9A01020CA593746872FFE733B030DBD6D08784E9B3F824305848BCD2`.
+Its bounded run reports `ok=true`, status
+`private_activity_feast_stage1_option_observed`, and outcome
+`read_only_observed`. H3928/raw53219928 used actor 29829, new CK3 PID
+76388, and bridge DLL SHA-256
+`D36B010391B673ED5D67914C3AA1B3542C31011AC42ED3C4EB5C0FA60F04C3B0`.
+The bridge hello declared CK3 1.19.0.6 and `ck3_build_match=true`; the
+report's separate `identity.ck3_executable_sha256` is null, so that field
+does not independently rehash the executable.
+
+The opener receipt on paused native revision 3 reports selected feast
+verified, widget attached and visible, planning stage 1, and no change in
+date_raw 53219928. The option observation reports `same_frame=true`; its
+immediately paired private receipt has
+`snapshot_revision=3`, actor 29829, `activity_key=activity_feast`,
+`selected_option_key=feast_type_generic`, and all of
+`selected_option_shown`, `selected_option_valid`, `can_progress_stage1`, and
+`generic_feast_confirm_ready` true. The receipt is `read_only=true` and
+persists no raw pointer fields. Its source and post frames retain
+`native:3` and date_raw 53219928. The run then stopped with
+`cleanup_proven=true`. This establishes one selected, currently legal
+stage-1 special option on this paused frame; it does not establish a Confirm
+submission or an activity start.
+
+The opener still reports `configured_cost_state=unknown` and
+`final_can_start_state=unknown`. The next candidate needs the native
+stage-1 Confirm operation with same-frame selection and legality checks,
+then an independent stage-2 readback. Before any activity start or resource
+commit, observe the configured cost, affordability, and final CanStart
+result on that later planning state. No expense, start, event effect, or
+date advancement is claimed by R0356.
