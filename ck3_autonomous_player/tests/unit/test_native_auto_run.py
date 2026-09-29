@@ -3030,6 +3030,16 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.activity_stage2_location_read_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
 
+    def test_private_feast_stage2_location_rejects_non_native_int32_before_run(self) -> None:
+        with self.assertRaisesRegex(AgentError, "positive int32 province IDs"):
+            self._run(
+                ["advance"], private_activity_feast_stage1_confirm=True,
+                private_activity_feast_stage2_location_candidate_province_ids=(
+                    0x80000000,
+                ),
+                activity_feast_open_stage=1,
+            )
+
     def test_private_feast_open_then_slot12_raw_read_stays_same_frame(self) -> None:
         common = ["--bridge-mode", "native-headless", "native-auto-run",
                   "--turns", "1"]

@@ -2107,9 +2107,9 @@ def command_run(args: argparse.Namespace) -> int:
             raise ValueError("private stage-2 location read requires stage-1 Confirm")
         if (not 1 <= len(province_ids) <= 8
                 or len(set(province_ids)) != len(province_ids)
-                or any(type(value) is not int or not 0 < value <= 0xFFFFFFFF
+                or any(type(value) is not int or not 0 < value <= 0x7FFFFFFF
                        for value in province_ids)):
-            raise ValueError("private stage-2 location read needs 1-8 distinct province IDs")
+            raise ValueError("private stage-2 location read needs 1-8 distinct positive int32 province IDs")
     if (args.private_active_scheme_sway_formal_trial
             and args.private_active_scheme_sway_target is None):
         raise ValueError("private Sway formal trial requires an explicit target")

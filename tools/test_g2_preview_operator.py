@@ -3089,6 +3089,12 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertEqual(parsed.private_activity_feast_stage2_location_province,
                          [2619, 2629])
+        invalid = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "missing-manifest.json", "--output", "output",
+            "--private-activity-feast-stage1-confirm", flag, "2147483648",
+        ])
+        with self.assertRaisesRegex(ValueError, "positive int32 province IDs"):
+            g2_preview_operator.command_run(invalid)
 
     def test_private_activity_cost_slot12_raw_read_is_explicit_and_forwarded(self) -> None:
         base = dict(

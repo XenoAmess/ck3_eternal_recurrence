@@ -586,9 +586,9 @@ def native_auto_run(
             raise AgentError("private stage-2 location read requires stage-1 Confirm")
         if (not isinstance(candidates, tuple) or not 1 <= len(candidates) <= 8
                 or len(set(candidates)) != len(candidates)
-                or any(type(value) is not int or not 0 < value <= 0xFFFFFFFF
+                or any(type(value) is not int or not 0 < value <= 0x7FFFFFFF
                        for value in candidates)):
-            raise AgentError("private stage-2 location candidates must be 1-8 distinct province IDs")
+            raise AgentError("private stage-2 location candidates must be 1-8 distinct positive int32 province IDs")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
