@@ -252,17 +252,35 @@ int main() {
   auto confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
   Expect(confirm.status ==
              xar::bridge::ActivityStage1ConfirmStatusV1::precondition_rejected &&
+         confirm.reject_reason ==
+             xar::bridge::ActivityStage1ConfirmRejectReasonV1::option_not_ready &&
          fake.stage_two_calls == 0);
   fake.shown = true;
   fake.Put(kPlanner + 0x1AD0, std::uint8_t{1});
   confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
   Expect(confirm.status ==
              xar::bridge::ActivityStage1ConfirmStatusV1::precondition_rejected &&
+         confirm.reject_reason ==
+             xar::bridge::ActivityStage1ConfirmRejectReasonV1::stage_auto_nonzero &&
+         confirm.planner_stage_auto_observed &&
+         confirm.planner_stage_auto_raw == 1 &&
+         fake.stage_two_calls == 0);
+  fake.bytes.erase(kPlanner + 0x1AD0);
+  confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
+  Expect(confirm.status ==
+             xar::bridge::ActivityStage1ConfirmStatusV1::precondition_rejected &&
+         confirm.reject_reason ==
+             xar::bridge::ActivityStage1ConfirmRejectReasonV1::stage_auto_read_failed &&
+         !confirm.planner_stage_auto_observed &&
          fake.stage_two_calls == 0);
   fake.Put(kPlanner + 0x1AD0, std::uint8_t{0});
   confirm = xar::bridge::ConfirmActivityStage1V1(Env(fake), expected);
   Expect(confirm.status ==
              xar::bridge::ActivityStage1ConfirmStatusV1::stage_two_verified &&
+         confirm.reject_reason ==
+             xar::bridge::ActivityStage1ConfirmRejectReasonV1::none &&
+         confirm.planner_stage_auto_observed &&
+         confirm.planner_stage_auto_raw == 0 &&
          confirm.submitted && confirm.stage_two_visible &&
          confirm.selected_option_retained && fake.stage_two_calls == 1);
   const auto stage_two =
