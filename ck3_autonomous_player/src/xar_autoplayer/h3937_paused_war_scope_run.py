@@ -7,7 +7,10 @@ separate decision, never date, movement, attack, or spending authorization.
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 from pathlib import Path
+import subprocess
 import threading
 import time
 
@@ -21,7 +24,7 @@ from .h3937_stationary_route_contact_query_run import (
     EXPECTED_HISTORY_INDEX, INJECTOR_SHA256, ROUND_PATTERN,
     _cold_restore_bookkeeping, _command_history, _exact_prepared_rebind,
     _positive_seconds, _query_history_unchanged, _read_driver_state,
-    _read_rebind_receipt, _same_frame, _sha256, _snapshot_history,
+    _same_frame, _sha256, _snapshot_history,
 )
 from .native_auto_run import (
     READINESS_POLL_SECONDS, READINESS_STABLE_SECONDS,
@@ -49,6 +52,31 @@ _STATE_CODES = {
 
 def _positive_id(value: object) -> bool:
     return type(value) is int and 0 < value <= 2**31 - 1
+
+
+def _read_rebind_receipt_and_sha(path: Path) -> tuple[dict[str, object], str]:
+    try:
+        raw = path.read_bytes()
+        parsed = json.loads(raw.decode("utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(f"cannot read exact H3937 rebind receipt: {error}") from error
+    if not isinstance(parsed, dict):
+        raise AgentError("H3937 rebind receipt is not an object")
+    return parsed, hashlib.sha256(raw).hexdigest().upper()
+
+
+def _checkout_commit() -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "--verify", "HEAD"],
+            cwd=Path(__file__).resolve().parents[3],
+            capture_output=True, text=True, check=True, timeout=10)
+    except (OSError, subprocess.SubprocessError) as error:
+        raise AgentError(f"H3937 phase-0 producer checkout identity unavailable: {error}") from error
+    commit = completed.stdout.strip()
+    if len(commit) not in (40, 64) or any(char not in "0123456789abcdefABCDEF" for char in commit):
+        raise AgentError("H3937 phase-0 producer checkout identity malformed")
+    return commit.lower()
 
 
 def _exact_phase0_subject(frame: object) -> bool:
@@ -100,7 +128,8 @@ def _army_scope_row(row: object) -> dict[str, object] | None:
              or _positive_id(row["move_target_province_id"]))
         and isinstance(row.get("move_target_observable"), bool)
         and (
-            (not route and row["move_target_province_id"] is None)
+            (not route and row["move_target_province_id"] is None
+             and row["move_target_observable"] is False)
             or (bool(route) and row["move_target_observable"] is True
                 and row["move_target_province_id"] == route[-1])
         )
@@ -142,7 +171,25 @@ def _phase0_scope(frame: object) -> dict[str, object] | None:
            for row in (*enemies, *allies, *players)) > 4096:
         return None
     enemy_ids = [row["army_id"] for row in enemies]
-    if len(set(enemy_ids)) != len(enemy_ids):
+    ally_ids = [row["army_id"] for row in allies]
+    player_ids = [row["army_id"] for row in players]
+    if (len(set(enemy_ids)) != len(enemy_ids)
+            or len(set(ally_ids)) != len(ally_ids)
+            or len(set(player_ids)) != len(player_ids)
+            or set(enemy_ids) & (set(ally_ids) | set(player_ids))):
+        return None
+    # The native war row intentionally repeats the player's own CUnit in
+    # allied_armies.  A duplicate across those two groups is admissible only
+    # when every observed field agrees; all other duplicate IDs fail closed.
+    player_by_id = {row["army_id"]: row for row in players}
+    if any(row["army_id"] in player_by_id
+           and row != player_by_id[row["army_id"]] for row in allies):
+        return None
+    controllable_ids = {
+        row["army_id"] for row in (*allies, *players)
+        if row["controllable"] is True
+    }
+    if controllable_ids != {ARMY_ID}:
         return None
     if any(row["controllable"] is not False for row in enemies):
         return None
@@ -216,21 +263,24 @@ def collect_h3937_paused_war_scope_once(
     sidecar_path = spec.state_dir / "player-child-matrilineal-formal-v1.json"
     receipt_path = spec.state_dir / "ordinary-seed-rebind-v1.json"
     driver_before = _read_driver_state(driver_path)
-    receipt = _read_rebind_receipt(receipt_path)
+    receipt, receipt_sha256 = _read_rebind_receipt_and_sha(receipt_path)
     lifecycle = checkpoint.get("succession_lifecycle")
     driver_checkpoint = driver_before.get("last_checkpoint")
     environment_sha256 = (lifecycle.get("environment_sha256")
                           if isinstance(lifecycle, dict) else None)
     paths = {"checkpoint": save_path, "driver_state": driver_path,
              "child_pending_sidecar": sidecar_path, "bridge_dll": config.dll_path,
-             "bridge_injector": config.injector_path}
+             "bridge_injector": config.injector_path,
+             "rebind_receipt": receipt_path, "producer_module": Path(__file__)}
     before_hashes = {key: _sha256(path) for key, path in paths.items()}
+    checkout_before = _checkout_commit()
     if not (
         before_hashes["checkpoint"].casefold() == CHECKPOINT_SHA256.casefold()
         and before_hashes["child_pending_sidecar"].casefold()
         == CHILD_PENDING_SIDECAR_SHA256.casefold()
         and before_hashes["bridge_dll"].casefold() == DLL_SHA256.casefold()
         and before_hashes["bridge_injector"].casefold() == INJECTOR_SHA256.casefold()
+        and before_hashes["rebind_receipt"] == receipt_sha256
         and _exact_prepared_rebind(
             receipt, prepared_driver_sha256=before_hashes["driver_state"],
             pipe_name=config.pipe_name, state_dir=spec.state_dir,
@@ -322,9 +372,11 @@ def collect_h3937_paused_war_scope_once(
     try:
         after_hashes = {key: _sha256(path) for key, path in paths.items()}
         driver_after = _read_driver_state(driver_path)
+        checkout_after = _checkout_commit()
     except (OSError, AgentError) as error:
         after_hashes = {}
         driver_after = None
+        checkout_after = None
         primary_error = primary_error or f"{type(error).__name__}: {error}"
     before_scope = _phase0_scope(before)
     after_scope = _phase0_scope(after)
@@ -344,7 +396,9 @@ def collect_h3937_paused_war_scope_once(
             and _command_history(driver_after) == _snapshot_history(after)),
         "assets_unchanged": bool(after_hashes and all(
             before_hashes[key] == after_hashes[key] for key in
-            ("checkpoint", "child_pending_sidecar", "bridge_dll", "bridge_injector"))),
+            ("checkpoint", "child_pending_sidecar", "bridge_dll",
+             "bridge_injector", "rebind_receipt", "producer_module"))),
+        "producer_checkout_unchanged": checkout_after == checkout_before,
         "cleanup_proven": cleanup.get("ok") is True,
     }
     ok = primary_error is None and all(checks.values())
@@ -357,7 +411,11 @@ def collect_h3937_paused_war_scope_once(
         "finished_at": utc_now(),
         "source": {"save_sha256": before_hashes["checkpoint"],
                    "prepared_driver_sha256": before_hashes["driver_state"],
-                   "rebind_receipt_sha256": _sha256(receipt_path)},
+                   "rebind_receipt_sha256": receipt_sha256,
+                   "producer_module_sha256": before_hashes["producer_module"],
+                   "producer_checkout_commit": checkout_before},
+        "asset_sha256_before": before_hashes,
+        "asset_sha256_after": after_hashes,
         "readiness": _public_binding(readiness) if isinstance(readiness, dict) else None,
         "frame": {**{key: before.get(key) for key in (
             "snapshot_id", "revision", "native_revision", "date_raw",

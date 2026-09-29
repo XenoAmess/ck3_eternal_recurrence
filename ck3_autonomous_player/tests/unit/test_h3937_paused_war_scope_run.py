@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 import xar_autoplayer.h3937_paused_war_scope_run as producer
+import xar_autoplayer.cli as cli
 
 
 def _army(army_id: int, owner: int, province: int, *, controllable: bool,
@@ -31,7 +32,7 @@ def _army(army_id: int, owner: int, province: int, *, controllable: bool,
 
 
 def _frame() -> dict[str, object]:
-    return {
+    frame = {
         "snapshot_id": "native:4", "revision": 5, "native_revision": 4,
         "date_raw": producer.EXPECTED_DATE_RAW,
         "episode_run_id": producer.EXPECTED_EPISODE_RUN_ID,
@@ -50,9 +51,23 @@ def _frame() -> dict[str, object]:
             ],
         }],
     }
+    frame["active_wars"][0]["allied_armies"] = [
+        copy.deepcopy(frame["player_armies"][0])]
+    return frame
 
 
 class H3937Phase0Tests(unittest.TestCase):
+    def test_cli_refuses_before_make_spec_or_bridge_environment(self) -> None:
+        with patch.object(cli, "make_spec") as spec, patch.object(
+            cli, "configure_native_bridge_launch_environment"
+        ) as configure, patch("builtins.print"):
+            self.assertEqual(cli.main([
+                "native-observe-h3937-paused-war-scope-v1",
+                "--ownership-round-id", "R999",
+            ]), 1)
+        spec.assert_not_called()
+        configure.assert_not_called()
+
     def test_hard_gate_refuses_before_environment_or_session(self) -> None:
         spec = SimpleNamespace(state_dir=Path("missing"), profile_dir=Path("missing"))
         with patch.object(producer, "native_bridge_launch_config_from_environment") as env, patch.object(
@@ -100,7 +115,8 @@ class H3937Phase0Tests(unittest.TestCase):
     def test_ambiguous_or_unobservable_enemy_fields_fail_closed(self) -> None:
         for mutation in ("duplicate", "missing_province", "missing_route",
                          "invalid_route", "missing_state", "controllable_enemy",
-                         "unknown_target", "inconsistent_target"):
+                         "unknown_target", "inconsistent_target",
+                         "empty_route_observable"):
             with self.subTest(mutation=mutation):
                 frame = _frame()
                 enemy = frame["active_wars"][0]["enemy_armies"][1]
@@ -118,12 +134,39 @@ class H3937Phase0Tests(unittest.TestCase):
                     enemy["controllable"] = True
                 elif mutation == "inconsistent_target":
                     enemy["move_target_province_id"] = 2614
+                elif mutation == "empty_route_observable":
+                    enemy["route_province_ids"] = []
+                    enemy["move_target_province_id"] = None
+                    enemy["move_target_observable"] = True
+                    enemy["army_state"] = "regular"
+                    enemy["army_state_code"] = 1
                 else:
                     del enemy["move_target_province_id"]
                 self.assertIsNone(producer._phase0_scope(frame))
 
+    def test_player_ally_duplicate_must_match_and_hostiles_disjoint(self) -> None:
+        self.assertIsNotNone(producer._phase0_scope(_frame()))
+        for mutation in ("allied_second_controllable", "allied_player_changed",
+                         "enemy_cross_group", "duplicate_player", "duplicate_ally"):
+            with self.subTest(mutation=mutation):
+                frame = _frame()
+                war = frame["active_wars"][0]
+                if mutation == "allied_second_controllable":
+                    war["allied_armies"].append(
+                        _army(909090, 29829, 2610, controllable=True))
+                elif mutation == "allied_player_changed":
+                    war["allied_armies"][0]["current_province_id"] = 2614
+                elif mutation == "enemy_cross_group":
+                    war["enemy_armies"][0]["army_id"] = producer.ARMY_ID
+                elif mutation == "duplicate_player":
+                    frame["player_armies"].append(copy.deepcopy(frame["player_armies"][0]))
+                else:
+                    war["allied_armies"].append(copy.deepcopy(war["allied_armies"][0]))
+                self.assertIsNone(producer._phase0_scope(frame))
+
     def test_mock_managed_session_makes_zero_steps_and_checks_cleanup(self) -> None:
-        for outcome in ("green", "changed", "cleanup_red"):
+        for outcome in ("green", "changed", "cleanup_red", "receipt_changed",
+                        "checkout_changed"):
             with self.subTest(outcome=outcome), ExitStack() as stack:
                 spec = SimpleNamespace(
                     state_dir=Path("D:/synthetic-h3937-phase0/state"),
@@ -167,7 +210,15 @@ class H3937Phase0Tests(unittest.TestCase):
                         "episode_run_id", "paused", "map_ready", "connection_generation")
                 }
 
+                receipt_reads = 0
+                checkout_reads = 0
+
                 def fake_hash(path: Path) -> str:
+                    nonlocal receipt_reads
+                    if path.name == "ordinary-seed-rebind-v1.json":
+                        receipt_reads += 1
+                        if outcome == "receipt_changed" and receipt_reads > 1:
+                            return "E" * 64
                     return {
                         "xar_checkpoint.ck3": producer.CHECKPOINT_SHA256,
                         "driver-state.json": "B" * 64,
@@ -176,7 +227,14 @@ class H3937Phase0Tests(unittest.TestCase):
                         "xar_ck3_bridge.dll": producer.DLL_SHA256,
                         "xar_ck3_bridge_injector.exe": producer.INJECTOR_SHA256,
                         "ordinary-seed-rebind-v1.json": "C" * 64,
+                        "h3937_paused_war_scope_run.py": "D" * 64,
                     }[path.name]
+
+                def fake_checkout() -> str:
+                    nonlocal checkout_reads
+                    checkout_reads += 1
+                    return ("F" if outcome == "checkout_changed" and checkout_reads > 1
+                            else "A") * 40
 
                 stack.enter_context(patch.object(producer, "H3937_PHASE0_LIVE_AUTHORIZED", True))
                 stack.enter_context(patch.object(
@@ -187,10 +245,13 @@ class H3937Phase0Tests(unittest.TestCase):
                 stack.enter_context(patch.object(
                     producer, "_read_driver_state", return_value=prepared_driver))
                 stack.enter_context(patch.object(
-                    producer, "_read_rebind_receipt", return_value={}))
+                    producer, "_read_rebind_receipt_and_sha",
+                    return_value=({}, "C" * 64)))
                 stack.enter_context(patch.object(
                     producer, "_exact_prepared_rebind", return_value=True))
                 stack.enter_context(patch.object(producer, "_sha256", side_effect=fake_hash))
+                stack.enter_context(patch.object(
+                    producer, "_checkout_commit", side_effect=fake_checkout))
                 stack.enter_context(patch.object(
                     producer, "_wait_for_readiness", return_value=readiness))
                 stack.enter_context(patch.object(
@@ -212,6 +273,13 @@ class H3937Phase0Tests(unittest.TestCase):
                 self.assertFalse(result["date_advance_authorized"])
                 self.assertEqual(result["query_actions"], 0)
                 self.assertEqual(result["ok"], outcome == "green")
+                self.assertEqual(result["source"]["rebind_receipt_sha256"], "C" * 64)
+                self.assertEqual(result["source"]["producer_checkout_commit"], "A" * 40)
+                self.assertEqual(result["asset_sha256_before"]["producer_module"], "D" * 64)
+                self.assertEqual(result["checks"]["assets_unchanged"],
+                                 outcome != "receipt_changed")
+                self.assertEqual(result["checks"]["producer_checkout_unchanged"],
+                                 outcome != "checkout_changed")
                 self.assertEqual(
                     result["checks"]["war_roster_unchanged"], outcome != "changed")
                 self.assertEqual(
