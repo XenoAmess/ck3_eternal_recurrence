@@ -468,6 +468,11 @@ def parser() -> argparse.ArgumentParser:
         help="open feast then read its selected stage-1 option on one paused frame",
     )
     native_auto_run_parser.add_argument(
+        "--private-activity-cost-slot12-raw-read", action="store_true",
+        help=("read one passive normal slot-12 raw cost capture; combine with "
+              "--private-activity-feast-planner-open to open first"),
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-prisoner-ransom-formal-trial",
         action="store_true",
         help="evaluate and submit one private native ransom in a bounded run",
@@ -1066,6 +1071,8 @@ def main(argv: list[str] | None = None) -> int:
                       if args.private_activity_feast_planner_open else {}),
                     **({"private_activity_feast_stage1_option_read": True}
                       if args.private_activity_feast_stage1_option_read else {}),
+                    **({"private_activity_cost_slot12_raw_read": True}
+                      if args.private_activity_cost_slot12_raw_read else {}),
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )

@@ -396,6 +396,7 @@ def native_auto_run(
     private_activity_planner_diag_query: bool = False,
     private_activity_feast_planner_open: bool = False,
     private_activity_feast_stage1_option_read: bool = False,
+    private_activity_cost_slot12_raw_read: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -553,7 +554,8 @@ def native_auto_run(
     if private_activity_planner_diag_query is True and completion_contract != "bounded":
         raise AgentError("private activity planner read needs a bounded contract")
     if (private_activity_feast_planner_open is True
-            or private_activity_feast_stage1_option_read is True):
+            or private_activity_feast_stage1_option_read is True
+            or private_activity_cost_slot12_raw_read is True):
         if completion_contract != "bounded":
             raise AgentError("private feast planner open needs a bounded contract")
         if (private_child_matrilineal_pending_read_target is not None
@@ -562,6 +564,9 @@ def native_auto_run(
         if (private_activity_feast_planner_open is True
                 and private_activity_feast_stage1_option_read is True):
             raise AgentError("select one private feast paused frame route")
+        if (private_activity_cost_slot12_raw_read is True
+                and private_activity_feast_stage1_option_read is True):
+            raise AgentError("select one private feast read on this paused frame")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -701,6 +706,7 @@ def native_auto_run(
     private_activity_planner_diag_observation: dict[str, object] | None = None
     private_activity_feast_planner_open_observation: dict[str, object] | None = None
     private_activity_feast_stage1_option_observation: dict[str, object] | None = None
+    private_activity_cost_slot12_raw_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -1254,8 +1260,28 @@ def native_auto_run(
                         )
                     )
                     status = "private_activity_feast_stage1_option_observed"
+                elif private_activity_cost_slot12_raw_read is True:
+                    current_attempt["stage"] = "private_activity_cost_slot12_raw_read"
+                    private_activity_cost_slot12_raw_observation = (
+                        _read_private_activity_cost_slot12_raw_once(
+                            driver, service=service, before=before,
+                            open_observation=private_activity_feast_planner_open_observation,
+                            turn_index=turn_index,
+                        )
+                    )
+                    status = "private_activity_cost_slot12_raw_observed"
                 else:
                     status = "private_activity_feast_planner_open_observed"
+                break
+            if private_activity_cost_slot12_raw_read is True:
+                current_attempt["stage"] = "private_activity_cost_slot12_raw_read"
+                private_activity_cost_slot12_raw_observation = (
+                    _read_private_activity_cost_slot12_raw_once(
+                        driver, service=service, before=before,
+                        open_observation=None, turn_index=turn_index,
+                    )
+                )
+                status = "private_activity_cost_slot12_raw_observed"
                 break
             if private_realm_law_paused_query is True:
                 current_attempt["stage"] = "private_realm_law_paused_read"
@@ -3348,7 +3374,8 @@ def native_auto_run(
                 and not turns
                 and not date_advanced
             )
-        if private_activity_feast_planner_open is True:
+        if (private_activity_feast_planner_open is True
+                and private_activity_cost_slot12_raw_read is not True):
             qualified = bool(
                 primary_error is None
                 and status == "private_activity_feast_planner_open_observed"
@@ -3367,6 +3394,19 @@ def native_auto_run(
                 and isinstance(private_activity_feast_stage1_option_observation, dict)
                 and private_activity_feast_stage1_option_observation.get("same_frame") is True
                 and private_activity_feast_stage1_option_observation.get("read_only") is True
+                and cleanup.get("ok") is True
+                and not turns and not date_advanced
+            )
+        if private_activity_cost_slot12_raw_read is True:
+            qualified = bool(
+                primary_error is None
+                and status == "private_activity_cost_slot12_raw_observed"
+                and isinstance(private_activity_cost_slot12_raw_observation, dict)
+                and private_activity_cost_slot12_raw_observation.get("same_frame") is True
+                and private_activity_cost_slot12_raw_observation.get("read_only") is True
+                and (private_activity_feast_planner_open is not True
+                     or (isinstance(private_activity_feast_planner_open_observation, dict)
+                         and private_activity_feast_planner_open_observation.get("gui_open") is True))
                 and cleanup.get("ok") is True
                 and not turns and not date_advanced
             )
@@ -3462,9 +3502,13 @@ def native_auto_run(
                 and allow_private_active_scheme_sway_formal_trial is True
                 and qualified)
             else "gui_open_observed"
-            if private_activity_feast_planner_open is True and qualified
+            if (private_activity_feast_planner_open is True
+                and private_activity_cost_slot12_raw_read is not True
+                and qualified)
             else "read_only_observed"
             if private_activity_feast_stage1_option_read is True and qualified
+            else "read_only_observed"
+            if private_activity_cost_slot12_raw_read is True and qualified
             else "read_only_observed"
             if (private_active_scheme_sway_target is not None
                 and allow_private_active_scheme_sway_formal_trial is not True
@@ -3527,6 +3571,11 @@ def native_auto_run(
             {"private_activity_feast_stage1_option_observation": copy.deepcopy(
                 private_activity_feast_stage1_option_observation)}
             if private_activity_feast_stage1_option_read is True else {}
+        ),
+        **(
+            {"private_activity_cost_slot12_raw_observation": copy.deepcopy(
+                private_activity_cost_slot12_raw_observation)}
+            if private_activity_cost_slot12_raw_read is True else {}
         ),
         **(
             {
@@ -5434,6 +5483,7 @@ def _observe_private_activity_planner_diag_once(
 
 _PRIVATE_ACTIVITY_FEAST_OPEN_STEP = "open-activity-feast-planner-v1-private"
 _PRIVATE_ACTIVITY_STAGE1_OPTION_READ_STEP = "query-activity-stage1-option-v1-private"
+_PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP = "query-activity-cost-slot12-raw-v1-private"
 
 
 def _open_private_activity_feast_planner_once(
@@ -5688,6 +5738,126 @@ def _read_private_activity_feast_stage1_option_once(
                 "native_receipt": copy.deepcopy(frame),
             },
             selected_step=_PRIVATE_ACTIVITY_STAGE1_OPTION_READ_STEP,
+        )
+    return observation
+
+
+def _read_private_activity_cost_slot12_raw_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    open_observation: dict[str, object] | None,
+    turn_index: int,
+) -> dict[str, object]:
+    """Read only normal slot-12 raw aggregates; no resource semantics."""
+    revision = before.get("native_revision")
+    actor_id = before.get("played_character_id")
+
+    def same_paused_frame(snapshot: dict[str, object]) -> bool:
+        actor = snapshot.get("played_character")
+        return bool(
+            all(before.get(key) == snapshot.get(key) for key in (
+                "snapshot_id", "revision", "native_revision", "date_raw",
+                "episode_run_id", "episode_character_id",
+            ))
+            and snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and isinstance(actor, dict)
+            and actor.get("character_id") == actor_id
+            and actor.get("alive") is True
+        )
+
+    if (type(revision) is not int or revision <= 0
+            or type(actor_id) is not int or actor_id <= 0
+            or before.get("paused") is not True
+            or before.get("map_ready") is not True
+            or before.get("played_character_alive") is not True
+            or not same_paused_frame(service.snapshot())
+            or (open_observation is not None
+                and (open_observation.get("gui_open") is not True
+                     or open_observation.get("same_frame") is not True))):
+        raise AgentError("private activity raw cost read requires one paused feast frame")
+    request_id = "activity-cost-slot12-" + uuid.uuid4().hex
+    driver.endpoint.send({
+        "type": "execute_step", "protocol_version": 1,
+        "request_id": request_id, "step": _PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP,
+        "expected_revision": revision,
+    })
+    frame = driver.state.wait_for_command_result(
+        request_id, float(driver.command_timeout_seconds),
+    )
+    after = service.snapshot()
+    same_frame = same_paused_frame(after)
+    envelope = frame.get("result") if isinstance(frame, dict) else None
+    native = (envelope.get("activity_cost_slot12_raw")
+              if isinstance(envelope, dict) else None)
+    raw = native.get("raw_aggregate_i64") if isinstance(native, dict) else None
+    native_shape = bool(
+        isinstance(native, dict)
+        and set(native) == {
+            "schema", "snapshot_revision", "date_raw", "actor_character_id",
+            "activity_key", "planning_stage", "capture_sequence", "source",
+            "resource_mapping", "configured_cost", "raw_aggregate_i64",
+        }
+        and native.get("schema") == "activity-cost-slot12-raw-private-v1"
+        and native.get("snapshot_revision") == revision
+        and native.get("date_raw") == before.get("date_raw")
+        and native.get("actor_character_id") == actor_id
+        and native.get("activity_key") == "activity_feast"
+        and type(native.get("planning_stage")) is int
+        and 0 <= native["planning_stage"] <= 5
+        and type(native.get("capture_sequence")) is int
+        and native["capture_sequence"] > 0
+        and native.get("source") == "normal_slot12_return_0x10AE1AF"
+        and native.get("resource_mapping") is None
+        and native.get("configured_cost") is None
+        and isinstance(raw, list) and len(raw) == 10
+        and all(type(value) is int and -(1 << 63) <= value < (1 << 63)
+                for value in raw)
+    )
+    accepted = bool(
+        isinstance(frame, dict)
+        and frame.get("type") == "command_result"
+        and frame.get("protocol_version") == 1
+        and frame.get("request_id") == request_id
+        and frame.get("ok") is True
+        and isinstance(envelope, dict)
+        and set(envelope) == {
+            "step", "accepted", "status", "private_build", "read_only",
+            "advertised", "activity_cost_slot12_raw", "backend_id",
+        }
+        and envelope.get("step") == _PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP
+        and envelope.get("accepted") is True
+        and envelope.get("status") == "available"
+        and envelope.get("private_build") is True
+        and envelope.get("read_only") is True
+        and envelope.get("advertised") is False
+        and envelope.get("backend_id") == "native-headless"
+        and native_shape and same_frame
+    )
+    observation = {
+        "status": "observed" if accepted else "red",
+        "turn_index": turn_index, "same_frame": same_frame,
+        "read_only": accepted,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "raw_capture": copy.deepcopy(native),
+        "native_receipt": copy.deepcopy(frame),
+    }
+    if not accepted:
+        raise StepPostconditionError(
+            "private activity raw cost read RED: "
+            + str(frame.get("error", "invalid_native_readback")
+                  if isinstance(frame, dict) else "missing_command_result"),
+            step_result={
+                "step": _PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP,
+                "status": "red", "accepted": False,
+                "postcondition_verified": False, "same_frame": same_frame,
+                "activity_cost_slot12_raw": copy.deepcopy(native),
+                "native_receipt": copy.deepcopy(frame),
+            },
+            selected_step=_PRIVATE_ACTIVITY_COST_SLOT12_RAW_STEP,
         )
     return observation
 

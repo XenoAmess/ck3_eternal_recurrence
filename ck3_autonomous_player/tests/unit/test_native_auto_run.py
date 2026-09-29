@@ -113,6 +113,7 @@ class _NativeAutoRunHarness:
         self.activity_planner_diag_query_count = 0
         self.activity_feast_open_count = 0
         self.activity_stage1_option_read_count = 0
+        self.activity_cost_slot12_raw_read_count = 0
         self.activity_feast_open_status = "opened"
         self.activity_feast_open_stage = 2
         self.activity_feast_selected_verified = True
@@ -120,6 +121,7 @@ class _NativeAutoRunHarness:
         self.activity_stage1_option_valid = True
         self.activity_stage1_option_can_progress = True
         self.activity_stage1_option_error = False
+        self.activity_cost_slot12_raw_error = False
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -1466,11 +1468,14 @@ class _FakeActivityFeastEndpoint:
         assert request["step"] in {
             "open-activity-feast-planner-v1-private",
             "query-activity-stage1-option-v1-private",
+            "query-activity-cost-slot12-raw-v1-private",
         }
         assert request["expected_revision"] == self.harness.native_revision
         self.request = copy.deepcopy(request)
         if request["step"] == "open-activity-feast-planner-v1-private":
             self.harness.activity_feast_open_count += 1
+        elif request["step"] == "query-activity-cost-slot12-raw-v1-private":
+            self.harness.activity_cost_slot12_raw_read_count += 1
         else:
             self.harness.activity_stage1_option_read_count += 1
 
@@ -1487,6 +1492,36 @@ class _FakeActivityFeastState:
         request = self.harness.driver.endpoint.request
         assert request is not None and request["request_id"] == request_id
         self.harness.driver.endpoint.request = None
+        if request["step"] == "query-activity-cost-slot12-raw-v1-private":
+            if self.harness.activity_cost_slot12_raw_error:
+                return {
+                    "type": "command_result", "protocol_version": 1,
+                    "request_id": request_id, "ok": False,
+                    "error": "activity cost normal slot12 refresh not observed",
+                }
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {
+                    "step": request["step"], "accepted": True,
+                    "status": "available", "private_build": True,
+                    "read_only": True, "advertised": False,
+                    "activity_cost_slot12_raw": {
+                        "schema": "activity-cost-slot12-raw-private-v1",
+                        "snapshot_revision": self.harness.native_revision,
+                        "date_raw": self.harness.date_raw,
+                        "actor_character_id": self.harness.played_character_id,
+                        "activity_key": "activity_feast",
+                        "planning_stage": self.harness.activity_feast_open_stage,
+                        "capture_sequence": 1,
+                        "source": "normal_slot12_return_0x10AE1AF",
+                        "resource_mapping": None,
+                        "configured_cost": None,
+                        "raw_aggregate_i64": [0, 0, 0, 12500000, 0, 0, 0, 0, 0, 0],
+                    },
+                    "backend_id": "native-headless",
+                },
+            }
         if request["step"] == "query-activity-stage1-option-v1-private":
             if self.harness.activity_stage1_option_error:
                 return {
@@ -2003,6 +2038,7 @@ class NativeAutoRunTests(unittest.TestCase):
         private_activity_planner_diag_query: bool = False,
         private_activity_feast_planner_open: bool = False,
         private_activity_feast_stage1_option_read: bool = False,
+        private_activity_cost_slot12_raw_read: bool = False,
         activity_feast_open_status: str = "opened",
         activity_feast_open_stage: int = 2,
         activity_feast_selected_verified: bool = True,
@@ -2010,6 +2046,7 @@ class NativeAutoRunTests(unittest.TestCase):
         activity_stage1_option_valid: bool = True,
         activity_stage1_option_can_progress: bool = True,
         activity_stage1_option_error: bool = False,
+        activity_cost_slot12_raw_error: bool = False,
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
@@ -2107,6 +2144,7 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_stage1_option_valid = activity_stage1_option_valid
         harness.activity_stage1_option_can_progress = activity_stage1_option_can_progress
         harness.activity_stage1_option_error = activity_stage1_option_error
+        harness.activity_cost_slot12_raw_error = activity_cost_slot12_raw_error
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
         )
@@ -2236,6 +2274,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_activity_feast_stage1_option_read=(
                     private_activity_feast_stage1_option_read
+                ),
+                private_activity_cost_slot12_raw_read=(
+                    private_activity_cost_slot12_raw_read
                 ),
             )
         return report, harness
@@ -2584,6 +2625,52 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIs(native["generic_feast_confirm_ready"], False)
         self.assertEqual(harness.activity_stage1_option_read_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_open_then_slot12_raw_read_stays_same_frame(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "1"]
+        flag = "--private-activity-cost-slot12-raw-read"
+        self.assertFalse(cli.parser().parse_args(common).private_activity_cost_slot12_raw_read)
+        self.assertTrue(cli.parser().parse_args([*common, flag]).private_activity_cost_slot12_raw_read)
+        report, harness = self._run(
+            ["advance"], private_activity_feast_planner_open=True,
+            private_activity_cost_slot12_raw_read=True,
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "private_activity_cost_slot12_raw_observed")
+        self.assertEqual(report["outcome"], "read_only_observed")
+        observed = report["private_activity_cost_slot12_raw_observation"]
+        self.assertTrue(observed["same_frame"])
+        self.assertTrue(observed["read_only"])
+        raw = observed["raw_capture"]
+        self.assertEqual(raw["source"], "normal_slot12_return_0x10AE1AF")
+        self.assertIsNone(raw["resource_mapping"])
+        self.assertIsNone(raw["configured_cost"])
+        self.assertEqual(len(raw["raw_aggregate_i64"]), 10)
+        self.assertEqual(harness.activity_feast_open_count, 1)
+        self.assertEqual(harness.activity_cost_slot12_raw_read_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_slot12_raw_read_can_query_existing_planner_and_preserves_red(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_cost_slot12_raw_read=True,
+            activity_feast_open_stage=5,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["private_activity_cost_slot12_raw_observation"]
+                         ["raw_capture"]["planning_stage"], 5)
+        self.assertEqual(harness.activity_feast_open_count, 0)
+        self.assertEqual(harness.activity_cost_slot12_raw_read_count, 1)
+        failed, failed_harness = self._run(
+            ["advance"], private_activity_cost_slot12_raw_read=True,
+            activity_cost_slot12_raw_error=True,
+        )
+        self.assertFalse(failed["ok"])
+        self.assertEqual(failed["outcome"], "failed")
+        self.assertIn("normal slot12 refresh not observed", failed["error"])
+        self.assertEqual(failed_harness.auto_turn_count, 0)
 
     def test_private_feast_stage1_read_red_preserves_native_error(self) -> None:
         report, harness = self._run(
