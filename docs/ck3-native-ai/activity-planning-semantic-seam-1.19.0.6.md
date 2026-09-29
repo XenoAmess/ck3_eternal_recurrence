@@ -493,3 +493,45 @@ slot 12 directly is not a substitute for proving the normal update order;
 calling `ProgressPlanningStage` at stage 5 starts an activity. Until those
 observations, configured cost and final `can_start` remain typed `unknown`,
 and this registry/dispatch trace is a prerequisite, not an activity action.
+
+## R0346 H3928 paused planner diagnostic
+
+This is a private **production-live read-only primitive**, not an activity
+planner or action loop. The candidate at
+`Z:\m6-activity-h3928-diag-20260929/CANDIDATE-INDEX.json` froze source
+`1674d81acb3ca32138d818c8ea37e43599990746` (exact official CI
+`36510008329` SUCCESS), Release DLL SHA-256
+`9D8A3948851BE7F5EC679B1FED8331F4EAF5DDF0B5EE7F4A58F171B9BB061B32`,
+and H3928 save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`.
+The official paired no-launch report SHA-256 is
+`B22B484B420E790F356E828475B7401F471891BE53E72FFAE45D42815EE46D46`.
+Subsequent master `082aaf9` changed only documentation in the relevant source
+paths; the live DLL and source commit remained frozen.
+
+R0346 loaded Robert actor 29829 on new PID 132228. The owner tool confirmed
+the window minimized after loading. On `native:3`, revision 4/native revision
+3, raw date 53219928, the application-main private diagnostic returned
+`planner_present=true`, `widget_attached=true`, `widget_visible=false`,
+`planning_stage=2`, and `host_view_activity_key=null`; its pre/post frame
+identity matched. `configured_cost_state=unknown` and
+`final_can_start_state=unknown` are deliberate. The HostView key is not the
+planner's selected type.
+
+The [formal report](Z:/m6-activity-h3928-diag-20260929/operator-runs/h3928-diag-2/formal-report.txt)
+SHA-256 is `3D440F9D2E9F79891D96C80A94096BA75A66BD53C8D80E82FDB53D5B382C3E73`;
+the operator receipt SHA-256 is
+`108989A4866EB849D98B41A86F69A1F2763E86D19E25B371305D82EE5302B055`.
+The report says `read_only_observed/ok=true`, 0 attempted turns, 0 gameplay
+actions, no date advance and source save unchanged. Managed shutdown proved
+`tree_gone=true`; allocator status is `completed-green`. The resolved Sway
+ledger SHA remained `1D5056F76DC876FDAEDC65F3A7D36C85AC1CFE866DC3B6D20E5225FDF333BFC3`;
+no Sway next-turn consumption was obtained.
+
+This live result proves the current planner object exists but is hidden at
+stage 2. The next narrow implementation is a private original-path open
+request for the unique registry `activity_feast` type, followed by a new
+paired paused read of widget visibility and normal slot-12 cost update order.
+Only a verified stage-2 gate and one transition to stage 5 may reach the
+final validator; no stage-5 progress call is permitted as a read. Cost,
+location, full configuration and `can_start` remain unknown until then.
