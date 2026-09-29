@@ -132,6 +132,56 @@ def _exact_one_appended_query(before: object, after: object, result: object) -> 
     )
 
 
+def _bound_route_result(before: object, result: object) -> bool:
+    if not isinstance(before, dict) or not isinstance(result, dict):
+        return False
+    diagnostics = before.get("diagnostics")
+    generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict) else None
+    )
+    horizon = result.get("route_contact_horizon")
+    subject_route = (
+        horizon.get("subject_route") if isinstance(horizon, dict) else None
+    )
+    return bool(
+        isinstance(before.get("snapshot_id"), str)
+        and bool(before.get("snapshot_id"))
+        and type(before.get("revision")) is int
+        and before.get("revision") >= 0
+        and type(before.get("native_revision")) is int
+        and before.get("native_revision") > 0
+        and type(generation) is int
+        and generation > 0
+        and result.get("step") == QUERY_STEP
+        and result.get("accepted") is True
+        and result.get("status") == "available"
+        and type(result.get("query_sequence")) is int
+        and result.get("query_sequence") > 0
+        and result.get("snapshot_revision") == before.get("native_revision")
+        and result.get("queried_snapshot_id") == before.get("snapshot_id")
+        and result.get("queried_revision") == before.get("revision")
+        and result.get("queried_native_revision")
+        == before.get("native_revision")
+        and result.get("queried_connection_generation") == generation
+        and result.get("queried_episode_run_id") == EXPECTED_EPISODE_RUN_ID
+        and isinstance(horizon, dict)
+        and horizon.get("status") == "available"
+        and horizon.get("date_raw") == EXPECTED_DATE_RAW
+        and horizon.get("horizon_start_date_raw") == EXPECTED_DATE_RAW
+        and horizon.get("horizon_end_date_raw") == EXPECTED_DATE_RAW + 24
+        and type(horizon.get("one_day_contact_free")) is bool
+        and horizon.get("snapshot_revision") == before.get("native_revision")
+        and horizon.get("subject_army_id") == ARMY_ID
+        and horizon.get("target_province_id") == TARGET_PROVINCE_ID
+        and horizon.get("hostile_army_ids") == list(HOSTILE_ARMY_IDS)
+        and isinstance(subject_route, dict)
+        and subject_route.get("army_id") == ARMY_ID
+        and subject_route.get("current_province_id") == TARGET_PROVINCE_ID
+        and subject_route.get("route_province_ids") == []
+    )
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -500,14 +550,6 @@ def query_r0345_stationary_route_contact_once(
         if primary_error is None:
             primary_error = f"{type(error).__name__}: {error}"
 
-    before_diagnostics = (
-        query_before.get("diagnostics")
-        if isinstance(query_before, dict) else None
-    )
-    before_generation = (
-        before_diagnostics.get("connection_generation")
-        if isinstance(before_diagnostics, dict) else None
-    )
     horizon = (
         query_envelope.get("route_contact_horizon")
         if isinstance(query_envelope, dict)
@@ -529,31 +571,8 @@ def query_r0345_stationary_route_contact_once(
             and query_envelope.get("accepted") is True
             and query_envelope.get("status") == "available"
         ),
-        "query_source_bound_to_before_frame": bool(
-            isinstance(query_envelope, dict)
-            and isinstance(query_before, dict)
-            and query_envelope.get("queried_snapshot_id")
-            == query_before.get("snapshot_id")
-            and query_envelope.get("queried_revision")
-            == query_before.get("revision")
-            and query_envelope.get("queried_native_revision")
-            == query_before.get("native_revision")
-            and query_envelope.get("queried_connection_generation")
-            == before_generation
-            and isinstance(before_generation, int)
-            and not isinstance(before_generation, bool)
-            and before_generation > 0
-            and query_envelope.get("queried_episode_run_id")
-            == EXPECTED_EPISODE_RUN_ID
-            and isinstance(horizon, dict)
-            and horizon.get("date_raw") == before_date
-            and horizon.get("snapshot_revision")
-            == query_before.get("native_revision")
-            and horizon.get("subject_army_id") == ARMY_ID
-            and horizon.get("target_province_id") == TARGET_PROVINCE_ID
-            and horizon.get("hostile_army_ids") == list(HOSTILE_ARMY_IDS)
-            and isinstance(horizon.get("subject_route"), dict)
-            and horizon["subject_route"].get("route_province_ids") == []
+        "query_source_bound_to_before_frame": _bound_route_result(
+            query_before, query_envelope
         ),
         "readiness_bound_to_query_before": _same_frame(readiness, query_before),
         "single_cold_restore_bookkeeping": (
