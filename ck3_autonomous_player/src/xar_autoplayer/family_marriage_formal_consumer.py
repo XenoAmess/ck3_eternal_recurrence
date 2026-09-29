@@ -290,6 +290,7 @@ def _private_five_candidate_diagnostic(
               "heir_adult_measure_raw", "candidate_adult_measure_raw",
               "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
               "grand_wedding_option_selected",
+              "generic_costs",
               "heir_betrothed_character_id", "heir_primary_spouse_character_id",
               "played_house_id", "played_dynasty_id", "heir_house_id",
               "heir_dynasty_id", "candidate_house_id", "candidate_dynasty_id",
@@ -455,6 +456,7 @@ def rank_first_heir_marriage_candidates(
             "predicted_outcome_if_accepted": outcome,
             "realm_alliance_attempt_if_accepted": alliance_attempt,
             "recipient_ai_accept_raw": acceptance_raw,
+            "immediate_generic_costs": selected.get("generic_costs"),
             "unpriced": ["child_dynasty_result", "alliance_result",
                          "alliance_war_obligation", "betrothal_break_cost"],
         })

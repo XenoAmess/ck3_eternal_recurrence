@@ -72,6 +72,16 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
                           "heir_adult_threshold_raw": 16,
                           "candidate_adult_threshold_raw": 16,
                           "grand_wedding_option_selected": False,
+                          "generic_costs": {
+                              "raw_scale": 100_000, "payer_role": "actor",
+                              "application_timing": "on_send", "gold_raw": 0,
+                              "prestige_raw": 100_000 if index == 0 else 0,
+                              "piety_raw": 0, "renown_raw": 0,
+                              "influence_raw": 0, "herd_raw": 0,
+                              "treasury_raw": 0,
+                              "treasury_or_gold_raw": 0,
+                              "merit_raw": 0, "barter_goods_raw": 0,
+                          },
                           "heir_betrothed_character_id": None,
                           "heir_primary_spouse_character_id": None,
                           "heir_spouse_character_ids": [],
@@ -234,6 +244,20 @@ class FamilyConsumerTest(unittest.TestCase):
             self.assertEqual(joint["character_ids"], [32897, 38718, 38822])
             self.assertIs(joint["evidence"]["realm_alliance_attempt_if_accepted"],
                           False)
+            self.assertEqual(joint["evidence"]["immediate_generic_costs"]
+                             ["prestige_raw"], 100_000)
+            mismatched = {
+                **plan,
+                "family_marriage_choice": {
+                    **choice,
+                    "immediate_generic_costs": {
+                        **choice["immediate_generic_costs"],
+                        "prestige_raw": 0,
+                    },
+                },
+            }
+            with self.assertRaisesRegex(ValueError, "immediate cost disagrees"):
+                first_heir_marriage_proposal(frame=frame, plan=mismatched)
             driver.submit_observed_first_heir_marriage_private_v1 = (
                 lambda *, legality, candidate_character_id: {
                     "schema": SCHEMA, "status": "receipt_pending",

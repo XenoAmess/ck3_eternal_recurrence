@@ -1113,3 +1113,21 @@ C118 源码与生产路径 fixture 增量：有界 family opt-in 同时开启当
 现在仅在 **同一 PID/创建时间**、原生结果已确认为 `refused` 或 `invalidated`、当前首继承人身份相同且双边关系仍为空时，继续既有全量 final-legal → 固定五行投影 → 价值及同帧资格判断。已失败候选 ID 从前五优先位移除，并写入后续 pending；若第二次仍被拒绝，正式 resolved 继承全部已失败 ID，避免循环重发。投影不足五个新候选时可用已失败行补足诊断，但这些行绝不会被选中。首继承人换人时旧失败名单不继承，原生最终判定和发送前复验照旧。
 
 新 PID 中先前的拒绝 journal 无法独立重读，现有 `first_heir_marriage_cold_resolution_unknown` 继续阻断替代发送；关系空值不能反推拒绝。成人婚姻/订婚的实际收益、联盟义务和冷恢复这一缺口仍未由此代码证明。C131 只增加源码消费能力，下一真实拒绝场景仍须独立结果、下一 turn 和配对恢复后才可记 production-live。
+
+### NW-JOINT-MARRIAGE-VALUE：五候选当前非金币费用读口（2026-09-30，候选源码）
+
+R0351 [正式报告](Z:/ck3_mod_rewrite_process_assets/m5-family-h90-sort571-candidate-20260929/run-formal-12/formal-report.txt) SHA-256 `C9BAD73D1756E0180F93C4A2A0AC1616363BEBB502666A22740FD058F03FFE23` 在 `native:3` 同帧记录一项建设及五项合法婚配；建设后 `native:4` 的五项都预计为普通 `betrothal`，双方成年比较数均为 `6/16`，且继承人的有效 lineality 相同。候选 `38710/38805/61362` 的玩家至接收方联盟 pair 会尝试建立联盟，`38718/38709` 则不会。原家庭策略选出 `38710`，之后独立读回订婚及双向联盟；这五行并无盟友军力、未来参战义务、退婚时条件费用或实际子代归属的同帧估值，不能把潜在联盟或接受分数换算为统一 M5 收益。
+
+对**当前发送**费用，exact CK3 `1.19.0.6` EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的 `pending_character_interaction_context_v1_abi.json` 已冻结原生 `EvaluateCharacterInteractionCost` RVA `0x2CDB7B0`：definition `+0x38` 的 compiled cost block、finalized context `+0x08` 的 scope、调用者清零的 10 个 signed Q100000 资源槽。原生 ordinal `1/2/4` 分别是 prestige/piety/influence，`0` 是 gold，`7` 是 treasury-or-gold。原版 `00_marriage_interactions.txt:272–326` 对普通婚配声明 prestige/piety/influence 条件费用；这三项虽可能为零，不能在未读当前五角色 context 时视作零。现有五行 private reader `ReadMarriageCandidateAlliancePrivateV1` 已构造并 finalize 每个候选的五角色 context，逐一重验 Can Send/答复后，可在销毁 context 前用既有绑定读两次 10 槽费用并要求一致。候选源码把该原始向量传至五行诊断和 M5 提案证据；当前选择顺序与公共广告不变。尚无本候选 DLL 的匹配 paused 实机读数，不能称此费用输入已经 production-live，也不能把即时费用当作长期义务或物质扣款。
+
+```mermaid
+flowchart TD
+  A["同帧原生 final-legal 五候选"] --> B["逐候选 finalized 五角色 context"]
+  B --> C{"Can Send 与最终答复仍合法？"}
+  C -->|是| D["同 context 双读 signed Q100000 即时费用"]
+  C -->|否| X["本候选 unavailable"]
+  D --> E["prestige / piety / influence 原始当前成本；M5 仅保留证据"]
+  E -. "需匹配 paused 实机和后置" .-> U["未知：实际扣款、联盟强度/参战义务、退婚价、子代归属"]
+  classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+  class U unknown;
+```

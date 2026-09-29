@@ -272,6 +272,18 @@ def first_heir_marriage_proposal(
                     "alliance_war_obligation", "betrothal_break_cost"}
             <= set(unpriced)):
         raise ValueError("first-heir marriage long-term obligations are absent")
+    immediate_costs = choice.get("immediate_generic_costs")
+    if immediate_costs is not None and (
+            not isinstance(immediate_costs, Mapping)
+            or row.get("generic_costs") != immediate_costs
+            or immediate_costs.get("raw_scale") != 100_000
+            or immediate_costs.get("payer_role") != "actor"
+            or immediate_costs.get("application_timing") != "on_send"
+            or immediate_costs.get("gold_raw") != 0
+            or immediate_costs.get("treasury_or_gold_raw") != 0
+            or any(type(immediate_costs.get(key)) is not int for key in (
+                "prestige_raw", "piety_raw", "influence_raw"))):
+        raise ValueError("first-heir immediate cost disagrees with native row")
     return _proposal(
         frame=frame,
         candidate_id=f"marriage:first-heir:{heir}:{candidate}:{recipient}",
@@ -295,7 +307,13 @@ def first_heir_marriage_proposal(
             "alliance_established": None,
             "unpriced": list(unpriced),
             "ordinary_marriage_immediate_gold_claim_raw": 0,
-            "stock_prestige_piety_influence_cost": "not_priced_in_joint_selector",
+            "immediate_generic_costs": (
+                dict(immediate_costs) if immediate_costs is not None else None
+            ),
+            "stock_prestige_piety_influence_cost": (
+                "observed_same_frame_unpriced_by_joint_selector"
+                if immediate_costs is not None else "not_observed"
+            ),
         },
     )
 

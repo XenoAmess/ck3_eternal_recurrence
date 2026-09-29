@@ -8,6 +8,22 @@
 
 namespace xar::bridge {
 
+// Generic authored interaction cost from the already finalized five-role
+// arrange-marriage context. Exact 1.19.0.6 resource order is frozen by the
+// pending interaction ABI: gold, prestige, piety, renown, influence, herd,
+// treasury, treasury_or_gold, merit, barter_goods. Values remain signed
+// Q100000; this excludes effects and future alliance/betrothal obligations.
+inline constexpr std::size_t kMarriageGenericCostResourceCountV1 = 10;
+using EvaluateMarriageGenericCostV1 = void (*)(
+    const void *compiled_cost_block, const void *event_target_scope,
+    std::int64_t *output_by_resource);
+
+bool ReadMarriageCandidateGenericCostV1(
+    const void *finalized_context, const void *expected_definition,
+    EvaluateMarriageGenericCostV1 evaluate_cost,
+    std::array<std::int64_t, kMarriageGenericCostResourceCountV1> &output)
+    noexcept;
+
 // Private, read-only exact-build primitive. It consumes an already finalized
 // arrange-marriage context on the paused application-main thread; it does not
 // construct a context, submit an interaction, or advertise a capability.
