@@ -5,7 +5,7 @@
   "status_scope": "The original interface shell was delivered at master 922cb379b; actual same-frame war cash inputs remain incomplete and no joint cash decision is ready.",
   "cash_inputs_status": "incomplete_live_diagnostic_red_no_cash_values",
   "maintainer": "Codex war maintainer",
-  "updated_at_utc": "2026-09-28T20:31:08Z",
+  "updated_at_utc": "2026-09-29T01:54:00Z",
   "source_pr": "https://github.com/XenoAmess/ck3_eternal_recurrence/pull/449",
   "master_commit": "922cb379b",
   "delivery_route": "direct rebase-only master push",
@@ -78,7 +78,8 @@
     "2026-09-28 H3911 formal cash attempt-01: fresh receiver six-file rebind/no-launch and guarded one-turn reached paused native:3/public revision 4/native revision 3/date_raw 53219928. The formal selector chose exact typed query-war-termination-options-16777231; native query result was accepted/available, sequence 1, with zero gameplay actions and zero date advance. The formal receipt SHA 63CA8398 blocked on same_paused_treasury_unproven before passive topbar sampling; independent audit SHA EB26B6F7 confirms the frozen driver history row 3914 and absent before/after gold and parsed wire in the blocked receipt. Managed cleanup and screen release sequence 2112 passed; all five cash inputs, horizon and zero-fee approval remain null/closed.",
     "2026-09-28 H3911 policy-owner response SHA ACED0B0D4BCA99FA06D2CE175BCB9B2C7C4DA5C72392D303C77B789C8D7C41E3 explicitly deferred a Robert war liquidity floor, horizon, risk upper and future-cost-bound method. Defer/null is not a zero reserve; M5 spend remains false.",
     "2026-09-28 H3911 receiver attempt-03 again executed the exact formal typed query and blocked at same_paused_treasury_unproven. Its append-only diagnostic SHA F0FECE0D shows receiver cached semantic BEFORE lacked gold and top-level active_wars, while AFTER and parsed inner wire before/after show Q100000 gold raw 120644281 on the same six-field frame. The compact readiness projection was mistakenly used as cash BEFORE; no actual gold change or query fee zero follows from this cache mismatch. Independent audit SHA DC78A5D9 confirms the cause, cleanup and screen release sequence 2211. A formal-only full cached semantic BEFORE gate has been added for a future attempt; all five cash values, horizon and zero approval remain null/closed.",
-    "2026-09-29 H3911 receiver attempt-04 used a separate exact six-file pair, new Steam offline images and screen lease, then reached paused native:3/public revision 4/native revision 3/date_raw 53219928. The exact typed termination-options query executed and returned accepted/available sequence 1, with no gameplay/date advance; full receiver cached BEFORE/AFTER and inner query projections agreed at Q100000 gold raw 120644281. Formal receipt SHA FBEF1756 remained RED at actual_auto_turn_selected_typed_query_unproven, before passive topbar. service.auto_turn executed outcomes omit top-level snapshot_id/revision, while the gate incorrectly required them; actual result carries queried_snapshot_id/revision/native_revision. Cleanup and screen release sequence 2249 passed. A follow-up static fix compares these three result fields against the paused frame; no old attempt is retroactively promoted and all five cash amounts, horizon and zero approval remain null/closed."
+    "2026-09-29 H3911 receiver attempt-04 used a separate exact six-file pair, new Steam offline images and screen lease, then reached paused native:3/public revision 4/native revision 3/date_raw 53219928. The exact typed termination-options query executed and returned accepted/available sequence 1, with no gameplay/date advance; full receiver cached BEFORE/AFTER and inner query projections agreed at Q100000 gold raw 120644281. Formal receipt SHA FBEF1756 remained RED at actual_auto_turn_selected_typed_query_unproven, before passive topbar. service.auto_turn executed outcomes omit top-level snapshot_id/revision, while the gate incorrectly required them; actual result carries queried_snapshot_id/revision/native_revision. Cleanup and screen release sequence 2249 passed. A follow-up static fix compares these three result fields against the paused frame; no old attempt is retroactively promoted and all five cash amounts, horizon and zero approval remain null/closed.",
+    "2026-09-29 H3911 receiver attempt-05, pinned to dcba09d45, passed a new exact six-source receiver rebind/no-launch gate and new Steam offline/screen evidence. The formally selected typed termination-options query returned native accepted/available sequence 1. Its six-field frame remained native:3/public revision 4/native revision 3/date_raw 53219928, receiver cached treasury before/after both Q100000 raw 120644281, gameplay submit count zero. Formal receipt SHA 10F4A8B6 says same_paused_query_postcheck_passed but formal_cash_receipt_eligible=false and immediate fee null. Separate bounded passive CHudTopBar diagnostic SHA EA46AEEE matched the static owner chain and player 29829, then rejected unaligned expense-array address and invalid render tick/interval; no military expense rate was read. Managed cleanup passed, CK3/recorders were absent and screen RELEASE was sequence 2289. Independent audit SHA DB6D5075 verified the frozen manifest's 14 files and limited query/passive conclusions. Five war cash amounts, horizon and zero approval remain null/closed; H3911 is historical."
   ],
   "followup_research": {
     "status": "static_sources_plus_h2825_live_diagnostic_red",
@@ -108,7 +109,7 @@
     "r0303_hud_owner_chain_static_audit": "docs/ck3-native-ai/r0303-war-cash-hud-owner-chain-2026-09-28.md",
     "r0303_hud_owner_chain_supplied_bytes_validator": "ck3_autonomous_player/native_bridge/research/war_cash_topbar_owner_path.py",
     "r0303_hud_owner_chain_bounded_sampler": "ck3_autonomous_player/native_bridge/research/war_cash_topbar_bounded_sample.py",
-    "r0303_hud_owner_chain_bounded_sampler_status": "static_prepared_fake_process_tests_green_never_attached",
+    "r0303_hud_owner_chain_bounded_sampler_status": "static_tests_green_h3911_attempt05_live_read_bounded_but_expense_and_render_epoch_RED_no_cash_rate",
     "termination_read_only_query_zero_fee_candidate": "ck3_autonomous_player/src/xar_autoplayer/war_cash_termination_query_zero_fee_v1.py",
     "termination_read_only_query_zero_fee_gate_document": "docs/ck3-native-ai/r0313-war-termination-query-zero-fee-gate-2026-09-28.md",
     "termination_read_only_query_zero_fee_status": "unpromoted_approval_registries_empty_not_connected_to_formal_collector_no_live_zero",
@@ -128,6 +129,14 @@
     "h3911_formal_query_attempt04_independent_audit_sha256": "24DD15DFE7E8EF5757A3882D6B34CBDDD7EFACE69445BA734D825841B51050E4",
     "h3911_formal_query_attempt04_screen_release_sha256": "6A8E63CD85AA6173701C26D346F779571A646FC12BCF5D1E35AD414B11B0D168",
     "h3911_formal_query_attempt04_status": "query_executed_outcome_schema_gate_RED_no_zero_approval",
+    "h3911_formal_query_attempt05_document": "docs/ck3-native-ai/r0266-h3911-formal-query-attempt05-passive-red-2026-09-29.md",
+    "h3911_formal_query_attempt05_frozen_evidence_sha256": "85652EEBD2DAAC425CCE39BD2A01B30E56E4C6EA0E6E29CF4A701A247C4A82FD",
+    "h3911_formal_query_attempt05_formal_receipt_sha256": "10F4A8B67D0635743EF2E41F82A17B063F66B32BD5B4CBED2A6B0F1F6FA73460",
+    "h3911_formal_query_attempt05_passive_diagnostic_sha256": "EA46AEEEC87E303B0E691C8211F3DDEE3EC9C478D05A212E03A70420DB7F48CA",
+    "h3911_formal_query_attempt05_independent_audit_sha256": "DB6D50752C826912D5743C5D85C98D4EAE79CE4FBCC505868F6236D63608C577",
+    "h3911_formal_query_attempt05_war_response_v4_sha256": "2241FD936F7220CBC7A9A64F7890724BA62F81FA1ADAA57F65DB7508D2E82AA6",
+    "h3911_formal_query_attempt05_war_protocol_scope_erratum_v5_sha256": "505E39C85CFD2A95A9CD94A61C7A4121C61C4237937B009AA044698CF3C8C365",
+    "h3911_formal_query_attempt05_status": "same_paused_query_postcheck_passed_passive_expense_RED_formal_cash_ineligible_no_zero_approval",
     "h3911_formal_query_attempt01_passive_topbar": "RED_not_reached",
     "h3911_formal_query_attempt01_zero_fee_approved": false,
     "h3911_robert_liquidity_policy_response_sha256": "ACED0B0D4BCA99FA06D2CE175BCB9B2C7C4DA5C72392D303C77B789C8D7C41E3",
@@ -489,6 +498,25 @@
       "query_fee_zero_approval": false,
       "scope": "historical_H3911_diagnostic_only_not_current_M5_cash"
     },
+    "h3911_receiver_formal_query_state_v8": {
+      "receiver_source_commit": "dcba09d4584e326d72df01db5fbe13786d27a4a8",
+      "receiver_rebind_no_launch": "ready_exact_six_sources_and_derived_driver",
+      "receiver_derived_driver_sha256": "6B6EE3967C9E548F109493ADE852B6ACD322A0DD965BBE2C470B35EF45F392A5",
+      "receiver_live_formal_query": "exact_selected_typed_query_native_accepted_available_sequence_1",
+      "receiver_formal_query_status": "same_paused_query_postcheck_passed_formal_cash_receipt_ineligible",
+      "receiver_formal_query_receipt_sha256": "10F4A8B67D0635743EF2E41F82A17B063F66B32BD5B4CBED2A6B0F1F6FA73460",
+      "receiver_passive_topbar_status": "RED_owner_or_expense_bytes_changed_or_unavailable",
+      "receiver_passive_topbar_sha256": "EA46AEEEC87E303B0E691C8211F3DDEE3EC9C478D05A212E03A70420DB7F48CA",
+      "receiver_frozen_evidence_sha256": "85652EEBD2DAAC425CCE39BD2A01B30E56E4C6EA0E6E29CF4A701A247C4A82FD",
+      "receiver_independent_audit_sha256": "DB6D50752C826912D5743C5D85C98D4EAE79CE4FBCC505868F6236D63608C577",
+      "gameplay_actions": 0,
+      "date_advance": false,
+      "managed_cleanup_proven": true,
+      "screen_release_sequence": 2289,
+      "same_frame_cash_receipt": null,
+      "query_fee_zero_approval": false,
+      "scope": "historical_H3911_query_diagnostic_only_not_current_M5_cash"
+    },
     "nw_econ_h3911_dependency_notice_v1": {
       "source_file": "WAR/M5-WAR-CASH-20260928/SOURCE-NW-ECON-R0326-H3911-WAR-CASH-DEPENDENCY-v1.json",
       "source_sha256": "226FA2E747AD64E1D0B408C4612D3F39B216AC01ACF15713E04DB60916A3BED3",
@@ -559,6 +587,24 @@
       "query_fee_zero_approved": false,
       "cash_values_and_horizon": null
     },
+    "h3911_formal_selected_query_attempt05": {
+      "source_frame": "native:3/public_revision:4/native_revision:3/date_raw:53219928/episode:native-29829-2bc2d599f7f9/WarID:16777231",
+      "selected_step": "query-war-termination-options-16777231",
+      "typed_command": "read_only_query/war_termination_options/WarID:16777231",
+      "native_query_result": "accepted_available_sequence_1",
+      "formal_query_status": "same_paused_query_postcheck_passed",
+      "formal_cash_receipt_eligible": false,
+      "formal_query_receipt_sha256": "10F4A8B67D0635743EF2E41F82A17B063F66B32BD5B4CBED2A6B0F1F6FA73460",
+      "receiver_cached_treasury_before_after_raw": 120644281,
+      "gameplay_actions_submitted": 0,
+      "date_advanced": false,
+      "passive_topbar": "RED_unaligned_expense_array_and_invalid_render_tick_or_interval",
+      "passive_topbar_sha256": "EA46AEEEC87E303B0E691C8211F3DDEE3EC9C478D05A212E03A70420DB7F48CA",
+      "managed_cleanup_proven": true,
+      "screen_release_sequence": 2289,
+      "query_fee_zero_approved": false,
+      "cash_values_and_horizon": null
+    },
     "cash_receipt": null
   },
   "limitations": [
@@ -573,12 +619,13 @@
     "Both M5 selector paths now add the non-war proposal floor to the global war reserve during an active war, preserving an independent building floor after future war payments. War proposals retain max for overlapping war policy reserve. The exact future war reserve amount, whether any policy portions overlap, and real producer provenance remain unproved; selectors are not authorized to approve construction with the five cash inputs null.",
     "Exact-build GetEmbarkCost static audit now binds GUI callback, the icon's vtable update method, Q100000 rounded line-item aggregation and a player-gold comparison. The update fills a potentially multi-row forecast set before summing its quotes; a cached total is not automatically the single selected MoveArmy fee. The underlying quote function's pure-read safety, complete set-to-selected-action/route identity, cache freshness and any same-frame amount remain unproved. It cannot fill the immediate war fee or prove zero.",
     "The H3446 original driver 9FD5 has post-checkpoint history and cannot be paired as-is; a distinct official rebound driver 048D and its six assets passed transfer hash verification, but receiver-side official no-launch pairing awaits video CK3 cleanup. H3492 origin-side official rebound six files and separate historical M6 DLL/injector are all independently hash-verified transfer-only; receiver no-launch and live WarID verification remain pending. H3568/H3603/H3670 are historical; H3603 seven assets are hash-verified transfer only, H3670 seven accepted assets were not transferred. Source R0303 reports a later H3686 final read-only raw save/driver identity but no receiver rebind or transfer request. Its construction price and treasury are not war cash. Historical amounts cannot be substituted into current M5 cash. The resolved 44484 prisoner ransom 30-gold income is not war cash.",
-    "Topbar GetGoldExpensesBreakdown is an exact-build static GUI candidate; calling its getter may refresh/write cache. An exact HUD owner path and bounded passive double-read sampler are prepared but never attached to CK3, and they explicitly do not prove paused-frame revision, cache freshness, account debit timing, or a formal cash amount.",
+    "Topbar GetGoldExpensesBreakdown is an exact-build GUI candidate; calling its getter may refresh/write cache. The bounded passive double-read sampler was prepared but not attached at the earlier v7 cutoff. Attempt-05 later read 11,432 CK3 process bytes without a getter or write, matched the static HUD owner chain and actor 29829, but rejected an unaligned expense row-array address and invalid render tick/interval. It did not produce a military expense rate or prove cache freshness, debit timing or a formal cash amount.",
     "R0313 H3770 was the latest source-selected official durable raw pair at its metadata response time, but R0314 H3774, R0317 H3778, R0319 H3860, and R0321 H3911 superseded it. The first R0321 WAR notice marked h3911/raw53219928 recovery_qualified_for_receiver=false. Later master 32c0dd370 records a frozen H3911 source pair with official rebind and no-launch PASS on source 2eb9, superseding that earlier qualification status. At the v5 cutoff the receiver had not transferred or independently qualified the H3911 assets. At the v6 cutoff the transfer receipt verified all six source bytes, while receiver rebind/no-launch and live query had not yet occurred. The later separate receiver attempt passed rebind/no-launch and executed a query, but cash validation remained RED. R0321 forecast remains RED at producer_unavailable/same_frame_encounter_scope_mismatch; selected_step at its failed turn was null. Earlier notices remain historical. The receiver's initial H3770 ACK copied a truncated response SHA; an append-only same-folder erratum binds the correct SHA and keeps the no-transfer decision. The source read back and accepted that erratum.",
-    "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove the DLL/driver actually used in a Robert output pair. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan emits typed priced_command identity only for the selected termination-options query. The opt-in one-turn runner did run on three separate H3911 receiver attempts and formally selected and executed that query. Attempt-01 blocked before preserving gold/protocol details; attempt-03 exposed a compact receiver BEFORE without gold or top-level wars; attempt-04 preserved equal full cached balances but found an executed-outcome schema mismatch in the cash gate. The corrected full cached BEFORE and result-frame gates remain static candidates, not new native getters or fee quotes. The runtime contract is documented at docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md. Direct H2743 query evidence cannot substitute for formal selection, and no historical immediate fee is filled.",
+    "The termination-options native bridge source has an exact read-only query branch with no gameplay submit. That static source path does not prove all evaluator callees pure or any fee zero. The conditional zero-fee module requires actual artifact bytes and two pinned approvals, both absent. The formal plan emits typed priced_command identity only for the selected termination-options query. The opt-in one-turn runner formally selected and executed that query on separate H3911 attempts 01, 03, 04 and 05. Attempt-01 lacked gold/protocol detail; attempt-03 exposed a compact receiver BEFORE without gold or top-level wars; attempt-04 found an executed-outcome schema mismatch; attempt-05 passed same-paused query postcheck with equal cached balances and Python-parsed request/envelope but remained cash-ineligible. Pipe wire bytes were not independently preserved. Its passive topbar expense/rate diagnostic was RED. The runtime contract is documented at docs/ck3-native-ai/r0266-formal-selected-query-runtime-receipt-2026-09-28.md. Direct H2743 query evidence cannot substitute for formal selection, and no historical immediate fee is filled.",
     "R0326 NW-ECON reported a source-side H3911 selected termination-options query, construction cost 18,000,000 raw and treasury 120,644,281 raw with zero action/date advance. That source query was not dispatched and has no protocol or price. Separate #449 receiver attempts later formally selected and executed the exact typed query; attempt-04 preserved parsed wire and equal cached balance but its cash receipt blocked on an executed-outcome schema mismatch. These sources cannot be spliced into a zero-fee or current M5 construction decision.",
     "H3911 receiver attempt-01 reached the exact native termination-options query, but same_paused_treasury_unproven covered both absent/malformed and changed gold raw. Its frozen blocked receipt cannot distinguish them. Attempt-03's separately frozen diagnostic shows the actual receiver BEFORE lacked gold due to the compact readiness projection; its AFTER and parsed inner wire showed equal cached Q100000 gold raw 120644281. Attempt-04's full cached BEFORE and AFTER agreed but the cash gate required top-level frame keys omitted by the real executed outcome schema. These are receiver/contract mismatches, not an independently proven native zero fee or exclusion of transient/deferred charges. Passive topbar was not reached in these attempts. All three remain immutable historical RED evidence.",
-    "The H3911 Robert policy owner explicitly deferred publication of the war liquidity floor, horizon, future-cost upper-bound method and risk assumptions. Null must remain null; no AI war chest, building floor or same-frame treasury balance is an adopted player war policy."
+    "The H3911 Robert policy owner explicitly deferred publication of the war liquidity floor, horizon, future-cost upper-bound method and risk assumptions. Null must remain null; no AI war chest, building floor or same-frame treasury balance is an adopted player war policy.",
+    "H3911 attempt-05 formal query postcheck success proves only the selected query identity, Python-parsed request/envelope, six-field and cached balance equality, zero runner gameplay submissions and managed cleanup. The two passive RPM passes rejected the expense row layout and render epoch; the owner-path match and 29829 global CharacterID are insufficient to identify a refreshed military expense value. No claim excludes transient/deferred fees or supplies any of the five war cash amounts, horizon and adopted policy. The historical frame cannot be joined with current Robert construction."
   ],
-  "next_step": "Attempt-04's exact typed query and equal receiver cached gold are frozen historical RED; screen was released sequence 2249. Independently review the executed-outcome schema correction and focused negative tests before a new attempt. Any new live attempt needs a separate external root, pinned source, fresh exact pair/rebind/no-launch and Steam/screen evidence; retain parsed query wire and postcheck, then evaluate passive topbar as a separate diagnostic. Cached equality does not prove an immediate zero or exclude transient/deferred charges; both zero approval registries stay empty. Connect a priced all-owner pending ledger, typed selected action quote, sourced future debit cadence and upper/risk bounds, and a newly adopted player war policy floor/horizon. The policy owner deferred H3911 publication. Keep all five typed cash values and horizon null and M5 spend closed."
+  "next_step": "Attempt-05's exact formally selected query and postcheck are independently audited historical diagnostics; passive topbar expense and render-epoch reads were RED, screen released sequence 2289. Diagnose the unaligned expense array and invalid tick/interval with bounded raw scalar observations before calling any cache-writing GUI getter. A later live attempt needs a separate root, current source pair, official no-launch, Steam offline proof and exclusive screen lease. Receiver cached balance equality does not prove an immediate zero or exclude transient/deferred charges; both zero approval registries stay empty. Connect a priced all-owner pending ledger, typed selected action quote, sourced future debit cadence and upper/risk bounds, and an adopted Robert war policy floor/horizon. Keep all five typed cash values, horizon and assumptions null and M5 spend closed."
 }
