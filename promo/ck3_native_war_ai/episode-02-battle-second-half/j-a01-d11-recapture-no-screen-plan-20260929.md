@@ -21,7 +21,9 @@ attempt，不触屏、不启动游戏、不读 J-A01 原 raw/完整 ffprobe。�
 - 源帧期望 actor 29829、date_raw `53146488`、WarID 4、ArmyID 18；后一日应是
   `53146512`。这些只是新冷载的拒绝门，不凭旧回执自动宣布新运行匹配。新 EXE、DLL、
   injector、pipe、profile、输出根、screen lease 和 fresh Steam 离线像素均在未来独立
-  attempt 重新绑定。旧 2026-09-27 DLL SHA 不自动代表新二进制可用。
+  attempt 重新绑定。旧 2026-09-27 DLL SHA 不自动代表新二进制可用；当前 helper
+  `bind_session` 仍固定 `JOIN_DLL`/`JOIN_INJECTOR` SHA，新二进制若不同须先显式改
+  d11 track 合同、静态测试并独审，不能跳过这个绑定。
 
 ## GUI 100% 与完整下半面板门
 
@@ -48,6 +50,21 @@ GUI 100% 的战斗窗上半和骑士行可见，不能外推到新 d11 画面的
    不伪称 UI 可见。任何 RED 只保存该 attempt，不开 600 秒正式 raw。
 
 ## 同帧 control、trace 与 marks 顺序
+
+**启动前工具门。** 原 J-A01 所用 `remaining_live_step.py` 的 `e2-06-d11`
+`spec.control=false`，`advance` 不查询 d12 的 post control；原样复跑必然再次留下
+`control=null`。本计划须使用已改且经独立静态复核的 helper：d11 `observe` 查询
+battle-control 并验证同帧 revision/日期/ArmyID/CombatID；`advance` 在任何游戏动作前
+核其原始 response SHA 已进入 `d11-before` mark，再于存档后重查原生 control，
+只在同帧验证通过时启动 trace 和单日动作；d12 暂停后再次查 control 并把 response
+SHA 交给 `d12-after` mark。`record_bounded_gameplay.py mark --control` 已支持此绑定，
+但该参数本身不会发起原生查询。缺回执、错 revision、异 CombatID/ArmyID、缺 mark
+或重复推进均必须在静态负例中拒绝；`finish` 还须只读核 d12 mark 的
+`control`/`report` 与 advance 响应 SHA 完全相同、截图仍同字节、marks 与 recorder
+封口哈希一致。这个后验失败要保留 RED，同时仍请求 CK3 清场；同屏新 attempt 前须有
+独立审阅 GREEN。
+若**已经执行**单日动作而 d12 查询失败，保存该动作和失败请求为 RED，不能声称
+动作被撤销，也不能落正式 `d12-after` mark、继续推进或借其他 run 的 control 补证。
 
 1. 第 11 日暂停源 snapshot 后，在无日期/游戏状态变更间隙调用原生
    battle-control 查询，针对 **ArmyID 18** 保存原始 request/response，读回

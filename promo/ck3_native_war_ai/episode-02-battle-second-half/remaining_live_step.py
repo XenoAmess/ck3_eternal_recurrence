@@ -48,7 +48,7 @@ TRACKS = {
         "save": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
         "receipt": "DD986180C7E9C4B42D43FC634884F5294387D18CF8F798012FAD621B37E9E4A5",
         "dll": JOIN_DLL, "injector": JOIN_INJECTOR,
-        "date": 53146488, "control": False,
+        "date": 53146488, "control": True,
     },
 }
 
@@ -210,7 +210,7 @@ def observe(output: Path, track: str, binding: dict[str, Any], timeout: float) -
            "combat_id_bound": bool(control_values and okay),
            "subject_combat_membership_verified": bool(spec["control"] and okay),
            "combat_membership_limit": None if spec["control"] else
-           "historical 085 control RED; private begin resolves CombatID but does not prove ArmyID 18 membership",
+           "this track has no same-frame battle-control query",
            "next_action": "review raw HUD and mark before advance" if okay else
                           "stop; preserve this branch"}
     write_new(target, row)
@@ -242,12 +242,21 @@ def marked_running_recorder(output: Path, track: str, recorder: Path,
     candidates = [row for row in marks if row.get("date_raw") == TRACKS[track]["date"]
                   and row.get("combat_id") == COMBAT and row.get("war_id") == WAR
                   and (row.get(field) or {}).get("sha256") == reference
-                  and row.get("screenshot")]
-    require(bool(candidates), "same-frame native response and screenshot mark missing")
+                  and row.get("screenshot") and
+                  (track != "e2-06-d11" or row.get("kind") == "d11-before")]
+    require(len(candidates) == 1 if track == "e2-06-d11" else bool(candidates),
+            "exact same-frame native response and screenshot mark missing or duplicated")
     mark = candidates[-1]
+    if track == "e2-06-d11":
+        require(mark.get("control") == observation["control"]["response"] and
+                mark.get("report") == observation["snapshot"]["response"],
+                "d11 mark must bind exact snapshot and battle-control responses")
     for name in (field, "screenshot"):
         require(identity(Path(mark[name]["path"])) == mark[name],
                 f"marked {name} changed")
+    if track == "e2-06-d11":
+        require(identity(Path(mark["report"]["path"])) == mark["report"],
+                "marked d11 report changed")
     return {"recorder_intent": identity(recorder / "recorder-intent.json"),
             "recorder_start": identity(recorder / "recorder-start.json"),
             "marks": identity(marks_path), "marked_reference": mark[field],
@@ -262,10 +271,15 @@ def advance(output: Path, track: str, binding: dict[str, Any],
     observation = json.loads(observation_path.read_text(encoding="utf-8"))
     require(observation.get("same_source_war_army_frame") is True and
             observation.get("source_binding") == binding, "matching observation required")
+    require(not spec["control"] or
+            observation.get("subject_combat_membership_verified") is True,
+            "same-frame battle-control membership is required before advance")
     require(1 <= token <= 2**31 - 1, "sequence token outside 1..2^31-1")
-    marker = marked_running_recorder(output, track, recorder, observation)
     intent_path = steps / f"{track}-advance-intent.json"
-    require(not intent_path.exists(), "advance already attempted; inspect pending native requests")
+    require(not intent_path.exists() and
+            not (steps / f"{track}-advance.json").exists(),
+            "advance already attempted; inspect pending native requests")
+    marker = marked_running_recorder(output, track, recorder, observation)
     before, before_receipt = call(output, track + "-pre-advance-snapshot",
                                   "ck3_take_snapshot", {}, timeout)
     okay, values = snapshot_case(before, spec["date"], require_combat=True)
@@ -320,6 +334,22 @@ def advance(output: Path, track: str, binding: dict[str, Any],
          "managed_daily_sequence_token": token}, timeout)
     post, post_receipt = call(output, track + "-post-snapshot", "ck3_take_snapshot", {}, timeout)
     post_ok, post_values = snapshot_case(post, spec["date"] + 24, require_combat=False)
+    post_control_receipt = None
+    post_control_values = None
+    post_control_error = None
+    if track == "e2-06-d11" and post_ok:
+        try:
+            post_control, post_control_receipt = call(
+                output, track + "-post-control", "ck3_query_battle_control_snapshot_v1",
+                {"subject_army_id": PLAYER_ARMY,
+                 "expected_revision": post_values["revision"]}, timeout)
+            post_ok, post_control_values = battle_control_case(
+                post_control, post_values["revision"], spec["date"] + 24)
+        except (OSError, RuntimeError, TimeoutError, ValueError) as exc:
+            # The day has already advanced. Preserve the failed native request
+            # and a RED receipt; no d12 formal mark or retry on this attempt.
+            post_ok = False
+            post_control_error = f"{type(exc).__name__}: {exc}"
     okay = (advanced.get("ending_date_raw") == spec["date"] + 24 and
             ended.get("accepted") is True and ended.get("combat_id") == COMBAT and
             ended.get("managed_daily_sequence_token") == token and post_ok)
@@ -330,12 +360,49 @@ def advance(output: Path, track: str, binding: dict[str, Any],
            "after_save_control": control_receipt, "trace_begin": begin_receipt,
            "one_day": advance_receipt, "trace_finish": end_receipt,
            "post_snapshot": post_receipt, "post_values": post_values,
+           "post_control": post_control_receipt,
+           "post_control_values": post_control_values,
+           "post_control_error": post_control_error,
            "subject_combat_membership_verified": bool(spec["control"] and okay),
            "event_outcome_and_clean_span_verified": False,
-           "next_action": "review this run's event, HUD, raw PTS and native trace; no old-number substitution"}
+           "next_action": "review this run's event, HUD, raw PTS and native trace; no old-number substitution"
+                          if okay else "stop formal marking; preserve this advanced RED attempt"}
     write_new(steps / f"{track}-advance.json", row)
     print(json.dumps(row, ensure_ascii=False))
     return 0 if okay else 2
+
+
+def post_mark_case(recorder: Path, advance_row: dict[str, Any]) -> dict[str, Any]:
+    """Bind the d12 mark to this run's exact native responses after sealing."""
+    require(advance_row.get("result") == "ONE_DAY_ADVANCED_UNREVIEWED",
+            "d11 advance/control result is not eligible for formal d12 marking")
+    final = json.loads((recorder / "recorder-final.json").read_text(encoding="utf-8"))
+    require(final.get("result") == "ENCODED_UNREVIEWED", "recorder final is RED")
+    marks_path = recorder / "marks.jsonl"
+    marks_identity = identity(marks_path)
+    require(final.get("marks") == marks_identity, "sealed marks bytes changed")
+    rows = [json.loads(line) for line in marks_path.read_text(encoding="utf-8").splitlines()]
+    candidates = [row for row in rows if row.get("kind") == "d12-after"]
+    require(len(candidates) == 1, "exactly one formal d12-after mark is required")
+    mark = candidates[0]
+    control = (advance_row.get("post_control") or {}).get("response")
+    report = (advance_row.get("post_snapshot") or {}).get("response")
+    require(control and report and mark.get("control") == control and
+            mark.get("report") == report and mark.get("screenshot"),
+            "d12 mark does not bind this run's post snapshot/control/screenshot")
+    require(mark.get("date_raw") == TRACKS["e2-06-d11"]["date"] + 24 and
+            mark.get("combat_id") == COMBAT and mark.get("war_id") == WAR,
+            "d12 mark has wrong native identity")
+    start = json.loads((recorder / "recorder-start.json").read_text(encoding="utf-8"))
+    end = json.loads((recorder / "recorder-end.json").read_text(encoding="utf-8"))
+    require(type(mark.get("monotonic_ns")) is int and
+            start["monotonic_ns"] <= mark["monotonic_ns"] <= end["monotonic_ns"],
+            "d12 mark is outside recorder bounds")
+    for name in ("control", "report", "screenshot"):
+        require(identity(Path(mark[name]["path"])) == mark[name],
+                f"d12 marked {name} bytes changed")
+    return {"marks": marks_identity, "mark": mark,
+            "post_control": control, "post_snapshot": report}
 
 
 def finish(output: Path, track: str, binding: dict[str, Any], recorder: Path | None) -> int:
@@ -346,6 +413,20 @@ def finish(output: Path, track: str, binding: dict[str, Any], recorder: Path | N
     if recorder is not None:
         require((recorder / "recorder-final.json").is_file(),
                 "wait for recorder probe/final receipt before ending the managed session")
+    post_mark = None
+    post_mark_error = None
+    if track == "e2-06-d11":
+        try:
+            require(recorder is not None, "d11 recorder path required for post mark audit")
+            advance_row = json.loads((output / "operator-steps" /
+                                      f"{track}-advance.json").read_text(encoding="utf-8"))
+            require(advance_row.get("track") == track and
+                    advance_row.get("source_binding") == binding,
+                    "advance row belongs to a different source or track")
+            post_mark = post_mark_case(recorder, advance_row)
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            # A missing or RED mark must not prevent managed CK3 cleanup.
+            post_mark_error = f"{type(exc).__name__}: {exc}"
     target = output / "interactive-requests" / f"999-{track}-finish.json"
     temp = target.with_suffix(".json.pending")
     require(not target.exists() and not temp.exists(), "finish already submitted")
@@ -354,10 +435,12 @@ def finish(output: Path, track: str, binding: dict[str, Any], recorder: Path | N
     row = {"schema": "xar.war-promo.remaining-live-step/v1", "created_at": utc(),
            "mode": "finish", "track": track, "source_binding": binding,
            "finish_request": identity(target), "recorder":
-           identity(recorder / "recorder-end.json") if recorder else None}
+           identity(recorder / "recorder-end.json") if recorder else None,
+           "post_mark": post_mark, "post_mark_error": post_mark_error,
+           "result": "RED_PRESERVED" if post_mark_error else "CLEANUP_REQUESTED_UNREVIEWED"}
     write_new(output / "operator-steps" / f"{track}-finish.json", row)
     print(json.dumps(row, ensure_ascii=False))
-    return 0
+    return 2 if post_mark_error else 0
 
 
 def main() -> int:
