@@ -93,3 +93,41 @@ authorization. Its result deliberately keeps
 `outer_session_cleanup_verified=false`; the future owner must wrap it with
 the corrected lifecycle binding, exact source/rebind checks, persisted driver
 history, asset rehash and managed process cleanup before any official result.
+
+## 2026-09-29 master58 integrated candidate
+
+The newer `research/h3937-combined-master58` branch starts at reviewed
+`ea5c0000e78028e856be93a8fb2cef866b48049a` (#565/#595/#612 rebased on
+master `58d6bf8ec8d8ca8055aed06657fea6275ca8988e`) and carries the two
+native read ports plus the disabled inner collector. The lifecycle mismatch
+described above is fixed in this newer static stack; the historical live RED
+attempt stays RED. Neither older #595 nor #612 CLI is a combined entry.
+
+`h3937_combined_paused_war_scope_run.py` is a disabled **outer** managed-session
+candidate. It requires the corrected ordinary `succession_lifecycle_binding`,
+fresh byte-bound prepared rebind receipt, exact H3937 checkpoint/sidecar,
+the combined Release DLL/injector pins, source checkout and source-module
+hashes before session creation. It calls the inner collector once, retains
+S0/S1/S2 and both raw query envelopes, then verifies two exact persisted
+query-only history rows, one cold restore, same paused frame, unchanged assets
+and checkout, and managed cleanup. Its report says
+`GREEN_READ_ONLY_COMBINED` only when all those checks pass. This is a
+read-only observation label: action and date authorization are always false,
+and physical army inventory completeness remains unproven. The outer and
+inner hard gates are false, and there is no enabled combined CLI command.
+
+Release build attempt `D:/ck3-research-artifacts/h3937-master58-native-build-attempt07/`
+used the exact combined native tree at source commit
+`080add7fd06727c318feca9cbfc81734ca5992ca`. DLL SHA-256 is
+`310E58F50A9B66360B9FDC761B05AC52F3BD99096E19723A2DAB69F015D5A7A0`
+(3,131,392 bytes); injector SHA-256 is
+`ED3FBCA683D570BE5B7835894B35CDF4217EC15051FFB2A04F0C53131FE6B99A`
+(39,936 bytes). Fixture, synthetic suspended injection and synthetic running
+attach CTest cases passed; none launches CK3. The later outer Python-only
+commit must preserve the exact native tree, and a reviewer must independently
+verify the binary/source binding before any official rebind. A **new**
+isolated official raw-to-prepared pair and no-launch preflight are required
+for these binary pins. The historical `A8EA` pair and every old live attempt
+remain distinct. Any future live attempt additionally requires separate
+review, fresh Steam offline and screen ownership evidence, and its own
+append-only external output directory.
