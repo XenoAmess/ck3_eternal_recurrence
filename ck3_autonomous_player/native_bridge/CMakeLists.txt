@@ -158,6 +158,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1
+  "Enable the exact H2743 read-only attacker-to-defender existing-slot query"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1
   "Install the private exact-build G2 truce evaluator callsite observer"
   OFF
@@ -914,6 +920,12 @@ if(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/h2743_preaction_existing_truce_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -1845,6 +1857,12 @@ if(BUILD_TESTING)
     target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
       XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=1)
   endif()
+  if(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+    target_sources(xar_ck3_adapter_registry_test PRIVATE
+      src/h2743_preaction_existing_truce_v1.cpp)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1=1)
+  endif()
   if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
     target_sources(xar_ck3_adapter_registry_test PRIVATE
       src/raiktor_war_bound_loss_candidate_v1.cpp)
@@ -1881,6 +1899,25 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_raiktor_actual_truce_expiry_v1
     COMMAND xar_ck3_raiktor_actual_truce_expiry_v1_test
+  )
+
+  add_executable(xar_ck3_h2743_preaction_existing_truce_v1_test
+    src/h2743_preaction_existing_truce_v1.cpp
+    src/h2743_preaction_existing_truce_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_h2743_preaction_existing_truce_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_h2743_preaction_existing_truce_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_h2743_preaction_existing_truce_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_h2743_preaction_existing_truce_v1
+    COMMAND xar_ck3_h2743_preaction_existing_truce_v1_test
   )
 
   add_executable(xar_ck3_tactical_daily_sentinel_v1_test

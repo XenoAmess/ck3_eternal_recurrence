@@ -2,6 +2,9 @@
 
 #include "xar_bridge/combat_v3.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+#include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 #include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
 #endif
@@ -162,6 +165,13 @@ public:
     output = {};
     return ReadRaiktorActualTruceExpiryResultV1::unavailable;
   }
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  virtual H2743ExistingTruceStatusV1 read_h2743_preaction_existing_truce_v1(
+      H2743ExistingTruceSnapshotV1 &output) const noexcept {
+    output = {};
+    return H2743ExistingTruceStatusV1::unavailable;
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   virtual bool read_raiktor_war_bound_loss_cleanup(
       const ck3_11906::RaiktorWarBoundLossBaselineV1 &baseline,
@@ -373,6 +383,13 @@ inline ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
     RaiktorActualTruceExpirySnapshotV1 &output) noexcept {
   return game.read_raiktor_actual_truce_expiry(toward_character_id, output);
 }
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+inline H2743ExistingTruceStatusV1 ReadH2743PreactionExistingTruceV1(
+    const GameAdapter &game,
+    H2743ExistingTruceSnapshotV1 &output) noexcept {
+  return game.read_h2743_preaction_existing_truce_v1(output);
+}
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 inline bool ReadRaiktorWarBoundLossCleanup(
     const GameAdapter &game,

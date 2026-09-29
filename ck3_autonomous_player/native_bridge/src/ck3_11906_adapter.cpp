@@ -199,6 +199,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
     ck3_11906::kRaiktorActualTruceExpiryV1Capability,
 #endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+    ck3_11906::kH2743ExistingTruceV1Capability,
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
     ck3_11906::kRaiktorWarBoundLossCleanupV1Capability,
 #endif
@@ -385,6 +388,12 @@ public:
     return ck3_11906::ReadRaiktorActualTruceExpiry(
         bindings_, toward_character_id, output);
   }
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  H2743ExistingTruceStatusV1 read_h2743_preaction_existing_truce_v1(
+      H2743ExistingTruceSnapshotV1 &output) const noexcept override {
+    return ck3_11906::ReadH2743PreactionExistingTruceV1(bindings_, output);
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   bool read_raiktor_war_bound_loss_cleanup(
       const ck3_11906::RaiktorWarBoundLossBaselineV1 &baseline,

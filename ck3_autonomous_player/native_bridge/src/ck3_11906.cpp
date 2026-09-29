@@ -18704,6 +18704,70 @@ ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
   return ReadRaiktorActualTruceExpiryV1(access, toward_character_id, output);
 }
 
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+game::H2743ExistingTruceStatusV1 ReadH2743PreactionExistingTruceV1(
+    const Bindings &bindings,
+    game::H2743ExistingTruceSnapshotV1 &output) noexcept {
+  H2743ExistingTruceAccessV1 access{};
+  access.exact_build_admitted = bindings.enabled &&
+                                bindings.game_state_slot != nullptr;
+  access.context = const_cast<Bindings *>(&bindings);
+  access.read_snapshot = [](void *context, Snapshot &snapshot) noexcept {
+    return ReadSnapshot(*static_cast<const Bindings *>(context), snapshot);
+  };
+  access.read_war_identity = [](
+      void *context, H2743TruceWarIdentityV1 &identity) noexcept {
+    identity = {};
+    const auto &bindings = *static_cast<const Bindings *>(context);
+    if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+        *bindings.game_state_slot == nullptr) return false;
+    void *const war = ResolveWar(bindings, *bindings.game_state_slot,
+                                 kH2743TruceWarIdV1);
+    if (war == nullptr) return false;
+    void *const cb = LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+    if (cb == nullptr) return false;
+    const auto cb_index = LoadAt<std::int32_t>(
+        cb, kCasusBelliTypeDatabaseIndexOffset);
+    if (cb_index != 17) return false;
+    try {
+      std::string key;
+      if (!ReadCasusBelliTypeKey(cb, key) ||
+          key != "individual_county_de_jure_cb" ||
+          !ReadNativeIntArray(
+              static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+              identity.target_title_ids, kMaximumWarObjectiveTitleIds)) {
+        return false;
+      }
+    } catch (...) {
+      return false;
+    }
+    identity.war_object = war;
+    identity.casus_belli_object = cb;
+    identity.war_id = LoadAt<std::int32_t>(war, kWarIdOffset);
+    identity.primary_attacker_id = LoadAt<std::int32_t>(
+        war, kWarPrimaryAttackerCharacterIdOffset);
+    identity.primary_defender_id = LoadAt<std::int32_t>(
+        war, kWarPrimaryDefenderCharacterIdOffset);
+    identity.casus_belli_database_index = cb_index;
+    identity.exact_casus_belli_key = true;
+    return true;
+  };
+  access.resolve_living_character = [](void *context,
+                                       std::int32_t id) noexcept -> void * {
+    const auto &bindings = *static_cast<const Bindings *>(context);
+    void *const character = ResolveCharacter(bindings, id);
+    return character != nullptr &&
+                   LoadAt<void *>(character, kCharacterDeathDataOffset) ==
+                       nullptr
+               ? character
+               : nullptr;
+  };
+  access.has_truce = bindings.has_character_truce;
+  access.get_truce_end_date = bindings.get_character_truce_end_date;
+  return ck3_11906::ReadH2743PreactionExistingTruceV1(access, output);
+}
+#endif
+
 // These helpers inspect pre-existing containers only. They do not call
 // GetOwnedPerks, HasPerk, script effects, or the truce evaluator.
 std::optional<std::vector<std::string>> ReadH2743OwnedPerkKeys(

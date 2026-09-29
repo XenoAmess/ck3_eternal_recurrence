@@ -1,0 +1,119 @@
+{
+  "schema": "xar.ck3.h2743_existing_truce_source_abi.v1",
+  "status": "static_source_abi_verified_build_pending",
+  "candidate_compile_option": "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1=ON",
+  "default_enabled": false,
+  "live_observed": false,
+  "loaded_dll_sha256": null,
+  "checkpoint_bytes_authenticated_here": false,
+  "episode_authenticated_here": false,
+  "post_surrender_actual_expiry_date_raw": null,
+  "effect_projection_complete": false,
+  "material_complete": false,
+  "action_literal": null,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "image_base": "0x140000000",
+    "size_of_image": "0x5C2D000",
+    "pe_timestamp": "0x6A1EEE6D",
+    "architecture": "x86_64-msvc"
+  },
+  "native_ranges": {
+    "relation_lookup_read_only": {
+      "begin_rva": "0x2610840",
+      "end_rva_exclusive": "0x26108F0",
+      "size": 176,
+      "sha256": "F8775B263CF77288E58D1B97AFA4FB900327EC072D0AA4CFB0CB4EA94256A8B9"
+    },
+    "relation_get_or_create": {
+      "begin_rva": "0x26108F0",
+      "end_rva_exclusive": "0x2610A4C",
+      "size": 348,
+      "sha256": "F5344D8A6D2A5864B6A5A5B02C31AE52EFA918A5EB8A6ED634AC3340B109A3AB"
+    },
+    "has_truce": {
+      "begin_rva": "0x26631E0",
+      "end_rva_exclusive": "0x2663244",
+      "size": 100,
+      "sha256": "017CC5018D7F0E5DC1DF6ADCC912A90D235F39ADE1E2D6FD8B284C34DE0BDCD9"
+    },
+    "get_truce_end_date": {
+      "begin_rva": "0x2663250",
+      "end_rva_exclusive": "0x26632E6",
+      "size": 150,
+      "sha256": "4914D12A0E256891B3A73550F30DB05CB006E9969F417E464948BC5B7E46F103"
+    },
+    "script_has_truce_evaluator": {
+      "begin_rva": "0x28852E0",
+      "end_rva_exclusive": "0x2885426",
+      "size": 326,
+      "sha256": "64B70965E505B34B6EF18509E9FB589721B9CF29141BC20A1576170CF341A149"
+    },
+    "script_has_truce_registration": {
+      "begin_rva": "0x550520",
+      "end_rva_exclusive": "0x5505B8",
+      "size": 152,
+      "sha256": "D01CF38467B57C7D579765C202CF9FC95895F741A0D09FFCE0C398B742552F47"
+    },
+    "caddtruce_normal": {
+      "begin_rva": "0x2EDAD20",
+      "end_rva_exclusive": "0x2EDB27C",
+      "size": 1372,
+      "sha256": "0CC65B9CFAE1F080C333E4B219388B19AA231E11FDF69AA9470D6E6E5B9EF199"
+    },
+    "caddtruce_forced": {
+      "begin_rva": "0x2EDB3A0",
+      "end_rva_exclusive": "0x2EDB9A5",
+      "size": 1541,
+      "sha256": "DED15DD333E2B6D037B31BBA5DF1DD521885C8F3715C3CB5C040087B657F92E0"
+    }
+  },
+  "native_bindings": {
+    "read_only_relation_lookup_rva": "0x2610840",
+    "get_or_create_relation_rva": "0x26108F0",
+    "has_truce_rva": "0x26631E0",
+    "get_truce_end_date_rva": "0x2663250",
+    "script_has_truce_evaluator_rva": "0x28852E0",
+    "has_truce_key_rva": "0x43AC098",
+    "caddtruce_duration_evaluator_rva": "0x3373000",
+    "expired_slot_cleanup_rva": "0x2367C00",
+    "directional_slot_offsets": [
+      "0x28",
+      "0x58"
+    ]
+  },
+  "stock_script_sha256": {
+    "common/casus_belli_types/00_dejure_war.txt": "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE",
+    "common/on_action/war_on_actions.txt": "49AB57BF4A7C4EC3E6E3B430AB437C005C5084C43B838A57C8F55267E8F11B0F",
+    "common/scripted_effects/00_war_effects.txt": "A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D",
+    "common/script_values/00_war_values.txt": "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B",
+    "common/scripted_effects/03_dlc_fp2_scripted_effects.txt": "366469115EA2DED577B5DEB57DFD456340A1E2FA2D494DC2B20C36CB3FC5A710",
+    "common/scripted_effects/07_dlc_ep3_scripted_effects.txt": "D2F5FE80E7BC000A749642CD26BDE1626DBEA7409C39314B8583547AE43DB43D"
+  },
+  "stock_required_root_sha256": {
+    "cb_on_victory": "C2AE434F02E12053DFC08B0352742C1FA8AAFAD71FCFDA1E5E1D32D9F51D8332",
+    "on_war_won_attacker": "849C3A89796688E86703ADBE1F68D685FA8CA3CA5602A79D5529575B93146647"
+  },
+  "source_sha256": {
+    "CMakeLists.txt": "DF201C0A971A661ACBD96A68E06B9EFFC0026FE3023F85F46B7E804CE7CA9241",
+    "include/xar_bridge/ck3_11906.hpp": "22ECA83B2F65EF0444806DFAF93AE7BE0D81068816E2FEE75A4709CBBC08BCA3",
+    "include/xar_bridge/game_adapter.hpp": "735487985C209F5BF67207C687CDFAAD41E6E9AFC046CC5542128676008FCAEF",
+    "include/xar_bridge/game_contract.hpp": "27D22A024454828886C9BD2C59166824B9A54E1047F18AABF1DFBFAAF6D22740",
+    "include/xar_bridge/h2743_preaction_existing_truce_v1.hpp": "B21F9A125434DBF0017372F9F8749880A15E0C725E4F4222C9A7E4843409140B",
+    "include/xar_bridge/protocol.hpp": "93FBF5DA4D98A1B870B7C64C1B9D4E94F6888A2588326073B6489A54C5B77345",
+    "include/xar_bridge/raiktor_actual_truce_expiry_v1.hpp": "43B90EE1F4EBAAE83785C786E9C38D9A7396BAB07858F0CCD702165181572747",
+    "src/attach_host.cpp": "547249CB46D1F9892F897C1008F8FE78910E810490DDF5BB2AF78266CFA833A9",
+    "src/bridge.cpp": "2835F1CD2734340740D525C13A11A5F903F6D8F099A6A9B5EAAF902DDFF7C242",
+    "src/ck3_11906.cpp": "EA18C54E75E10149E0A45684DE73C2EA34C96E022F0F7861FCC1C06305793E0F",
+    "src/ck3_11906_adapter.cpp": "68D1E228D7D73B01095A912D79B88220D0C3E83ADB318177C0AD4DF86EF032CF",
+    "src/h2743_preaction_existing_truce_v1.cpp": "B9435BAD5918FB956BD4D90738607204DFEA6300D07A2BCB2A5EEF1C519829F6",
+    "src/h2743_preaction_existing_truce_v1_test.cpp": "28ED8504D26EABC0EA500DA6708FBB50943C9B0FE0432725876E947CAC4B46CA",
+    "src/protocol.cpp": "59B6A901D937C18DFA2C9749D89173030D0F33EE27DF25A8CE94C41978686708",
+    "src/raiktor_actual_truce_expiry_v1.cpp": "9074C83277697F1F652FB7216BDA4647694AC1EF545BCD5F483055AFEC4C747C",
+    "research/extract_g2_actual_truce_expiry_abi.py": "6338236DE201380A7FA3ADF489C5E4A0918E2CECCEA90E20ECAEDF37CBA19E0F",
+    "research/probe_h2743_preaction_truce_abi.py": "AB93A6E9C0A3DCCD0BE7A9BC7257C414C9E80C80A0255D95A16291A8F0E851D8",
+    "research/verify_h2743_existing_truce_source_abi_v1.py": "CFC6674CB72F3DAFE528BE0FEFB433F382422D3735809B98C9CD85FB69DEDA39"
+  }
+}

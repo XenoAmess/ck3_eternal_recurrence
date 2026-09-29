@@ -98,6 +98,9 @@
 #include "xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+#include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
+#endif
 #include "xar_bridge/set_played_character_v1_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 #include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
@@ -6999,6 +7002,29 @@ std::string RaiktorActualTruceExpiryResultFrame(
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+std::string H2743PreactionExistingTruceResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::H2743ExistingTruceSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeH2743PreactionExistingTruceV1(snapshot);
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, xar::ck3_11906::kH2743ExistingTruceV1Step);
+  result += ",\"accepted\":true,\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"h2743_preaction_existing_truce\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 std::string RaiktorWarBoundLossCleanupResultFrame(
     std::string_view request_id, std::string_view step,
@@ -9648,6 +9674,9 @@ struct WorkerState {
   std::uint64_t war_termination_terms_query_sequence = 0;
   std::uint64_t defender_de_jure_exit_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  std::uint64_t h2743_existing_truce_query_sequence = 0;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   std::uint64_t raiktor_war_bound_loss_cleanup_query_sequence = 0;
   std::optional<xar::ck3_11906::RaiktorWarBoundLossBaselineV1>
@@ -10071,6 +10100,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
   auto &raiktor_actual_truce_expiry_query_sequence =
       state.raiktor_actual_truce_expiry_query_sequence;
+#endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+  auto &h2743_existing_truce_query_sequence =
+      state.h2743_existing_truce_query_sequence;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   auto &raiktor_war_bound_loss_cleanup_query_sequence =
@@ -17076,6 +17109,88 @@ void RunConnectedSession(
                 connected = xar::bridge::WriteFrame(
                     pipe,
                     CommandResultFrame(request_id, step, false, error));
+              }
+            }
+          }
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
+        else if (step == xar::ck3_11906::kH2743ExistingTruceV1Step) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t expected_date_raw = 0;
+          std::string expected_snapshot_id;
+          std::string expected_episode_id;
+          std::string expected_checkpoint_sha256;
+          std::string expected_exe_sha256;
+          const bool request_bound =
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_date_raw", expected_date_raw) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_snapshot_id",
+                  expected_snapshot_id, 48) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_episode_id",
+                  expected_episode_id, 64) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_checkpoint_sha256",
+                  expected_checkpoint_sha256, 64) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "expected_exe_sha256",
+                  expected_exe_sha256, 64) &&
+              expected_revision == state_revision && state_revision != 0 &&
+              expected_date_raw == static_cast<std::uint64_t>(
+                  xar::ck3_11906::kH2743TruceDateRawV1) &&
+              expected_snapshot_id == "native:3" &&
+              expected_episode_id == xar::ck3_11906::kH2743EpisodeIdV1 &&
+              expected_checkpoint_sha256 ==
+                  xar::ck3_11906::kH2743CheckpointSha256V1 &&
+              expected_exe_sha256 ==
+                  "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+          if (!request_bound || !previous_snapshot.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "H2743 preaction existing-truce source/frame claim invalid"));
+          } else {
+            xar::game::Snapshot admission{};
+            if (!xar::game::ReadSnapshot(game, admission) ||
+                admission != previous_snapshot.value()) {
+              connected = PublishSnapshot(
+                  pipe, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
+              if (connected) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "H2743 preaction existing-truce admission frame changed"));
+              }
+            } else {
+              xar::game::H2743ExistingTruceSnapshotV1 existing{};
+              xar::game::ReadH2743PreactionExistingTruceV1(game, existing);
+              xar::game::Snapshot completion{};
+              if (!xar::game::ReadSnapshot(game, completion) ||
+                  completion != admission) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "H2743 preaction existing-truce completion frame changed"));
+                }
+              } else {
+                existing.snapshot_revision = state_revision;
+                const auto next_sequence =
+                    h2743_existing_truce_query_sequence + 1;
+                connected = xar::bridge::WriteFrame(
+                    pipe, H2743PreactionExistingTruceResultFrame(
+                              request_id, next_sequence, existing));
+                if (connected) {
+                  h2743_existing_truce_query_sequence = next_sequence;
+                }
               }
             }
           }
