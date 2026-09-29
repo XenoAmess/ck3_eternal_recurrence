@@ -13,6 +13,7 @@ from xar_autoplayer.stationary_route_contact_query_run import (
     QUERY_STEP,
     _exact_h3928_paused_subject,
     _exact_one_appended_query,
+    _same_frame,
 )
 
 
@@ -22,7 +23,8 @@ def _snapshot() -> dict[str, object]:
         "map_ready": True,
         "date_raw": 53219928,
         "episode_run_id": "native-29829-2bc2d599f7f9",
-        "played_character_id": 29829,
+        "played_character": {"character_id": 29829, "alive": True},
+        "episode_character_id": 29829,
         "route_contact_horizon_supported": True,
         "player_armies": [{
             "army_id": 83886367,
@@ -45,6 +47,18 @@ def _snapshot() -> dict[str, object]:
 
 
 class StationaryRouteContactReadOnlyTests(unittest.TestCase):
+    def test_readiness_and_snapshot_connection_generation_match(self) -> None:
+        frame = {
+            "snapshot_id": "native:3", "revision": 4, "native_revision": 3,
+            "date_raw": 53219928, "paused": True, "map_ready": True,
+            "episode_run_id": "native-29829-2bc2d599f7f9",
+        }
+        readiness = {**frame, "connection_generation": 1}
+        snapshot = {**frame, "diagnostics": {"connection_generation": 1}}
+        self.assertTrue(_same_frame(readiness, snapshot))
+        snapshot["diagnostics"]["connection_generation"] = 2
+        self.assertFalse(_same_frame(readiness, snapshot))
+
     def test_fixed_query_and_exact_stationary_scope(self) -> None:
         self.assertEqual(
             QUERY_STEP,
