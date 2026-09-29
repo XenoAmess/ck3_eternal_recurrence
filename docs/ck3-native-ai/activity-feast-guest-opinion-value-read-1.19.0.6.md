@@ -95,3 +95,25 @@ any resulting resource difference, and the independent invitation/Start
 legality checks. An opinion value is not a promised opinion increase or an
 alliance. The fixed H3928 feast Gold charge and current war cash reservation
 remain separate Start-value terms.
+
+## R0377 exact-master paired paused read
+
+The default-OFF private operator query from merged master `dc9dc10` passed
+official exact-master CI `36579095491`, H3928 pair/rebind, and no-launch.
+Its Release DLL SHA-256 was
+`3A2D90610BCC6B55E48175B96E4FC477B1F11B2F9E68B63FDE2F8DF269E64207`.
+One CK3 PID121408 was minimized after loading and returned `observed` on
+paused `native:3`, revision4, raw53219928: guest CharacterID 38293 had
+opinion **+62** of host CharacterID 29829. The queried and post snapshot IDs
+were both `native:3`. The formal policy held with
+`formal_action_ready=false`: rule membership, final invite legality and
+feast Start readiness remained unknown. The source save hash stayed
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`;
+there was no gameplay turn, date change, rule action, invitation or Start,
+and the process tree was reclaimed. The [formal report](Z:/m6-activity-h3928-guest-opinion-candidate-20260929/operator-runs/feast-guest-opinion-38293-read-master-1/formal-report.txt)
+has SHA-256 `664D710C18713EDDE7D2E13D582B2AFE8ED8FAEBE54532A4D64F1D82ACF1D2E1`,
+and the [operator receipt](Z:/m6-activity-h3928-guest-opinion-candidate-20260929/operator-runs/feast-guest-opinion-38293-read-master-1/operator-receipt.json)
+has SHA-256 `034B1DD3914327D79727B268A9FED3441210F0CD181F70BE1567A2B77551CC2C`.
+The read is a production-live primitive for one exact actor/guest paused
+frame; it does not establish invitation action, activity completion, or a
+general public capability gate.
