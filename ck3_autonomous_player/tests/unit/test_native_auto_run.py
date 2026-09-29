@@ -116,6 +116,7 @@ class _NativeAutoRunHarness:
         self.activity_stage1_confirm_count = 0
         self.activity_stage2_option_read_count = 0
         self.activity_stage2_gate_read_count = 0
+        self.activity_stage2_location_read_count = 0
         self.activity_cost_slot12_raw_read_count = 0
         self.activity_feast_open_status = "opened"
         self.activity_feast_open_stage = 2
@@ -129,6 +130,7 @@ class _NativeAutoRunHarness:
         self.activity_stage2_option_error = False
         self.activity_stage2_gate_error = False
         self.activity_stage2_gate_ready = True
+        self.activity_stage2_location_error = False
         self.activity_cost_slot12_raw_error = False
         self.events: list[str] = []
         self.date_raw = 53_171_400
@@ -1480,12 +1482,14 @@ class _FakeActivityFeastEndpoint:
             "query-activity-feast-stage2-option-v1-private",
             "query-activity-cost-slot12-raw-v1-private",
             "query-activity-feast-stage2-gate-v1-private",
+            "query-activity-feast-stage2-location-v1-private",
         }
         assert request["expected_revision"] == self.harness.native_revision
         if request["step"] in {
             "confirm-activity-feast-stage1-v1-private",
             "query-activity-feast-stage2-option-v1-private",
             "query-activity-feast-stage2-gate-v1-private",
+            "query-activity-feast-stage2-location-v1-private",
         }:
             assert request["expected_date_raw"] == self.harness.date_raw
             assert request["expected_actor_character_id"] == self.harness.played_character_id
@@ -1502,6 +1506,10 @@ class _FakeActivityFeastEndpoint:
             self.harness.activity_stage2_option_read_count += 1
         elif request["step"] == "query-activity-feast-stage2-gate-v1-private":
             self.harness.activity_stage2_gate_read_count += 1
+        elif request["step"] == "query-activity-feast-stage2-location-v1-private":
+            if request["candidate_province_ids"] != [2619, 2629]:
+                raise AssertionError("stage-2 location candidate request changed")
+            self.harness.activity_stage2_location_read_count += 1
         else:
             self.harness.activity_stage1_option_read_count += 1
 
@@ -1622,6 +1630,48 @@ class _FakeActivityFeastState:
                         "failing_rows": [] if ready else [{"index": 1, "raw_dword": 0}],
                         "can_progress_stage2": ready,
                         "generic_feast_stage2_advance_ready": ready,
+                        "read_only": True,
+                        "raw_pointer_fields_persisted": False,
+                        "advertised": False,
+                    },
+                    "backend_id": "native-headless",
+                },
+            }
+        if request["step"] == "query-activity-feast-stage2-location-v1-private":
+            if self.harness.activity_stage2_location_error:
+                return {
+                    "type": "command_result", "protocol_version": 1,
+                    "request_id": request_id, "ok": False,
+                    "error": "native_activity_stage2_location_red:province_unresolved",
+                }
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {
+                    "step": request["step"], "accepted": True,
+                    "status": "available", "private_build": True,
+                    "read_only": True, "advertised": False,
+                    "activity_stage2_location": {
+                        "schema": "activity-stage2-location-private-read-v1",
+                        "snapshot_revision": self.harness.native_revision,
+                        "date_raw": self.harness.date_raw,
+                        "actor_character_id": self.harness.played_character_id,
+                        "activity_key": "activity_feast", "planning_stage": 2,
+                        "selected_option_key": "feast_type_generic",
+                        "configuration_rows": [
+                            {"index": 0, "phase_kind": 0, "province_id": 0,
+                             "is_active": True},
+                            {"index": 1, "phase_kind": 1, "province_id": 0,
+                             "is_active": False},
+                        ],
+                        "active_row_index": 0,
+                        "activity_single_location_flag": True,
+                        "previous_planning_stage": 1,
+                        "candidates": [
+                            {"province_id": 2619, "can_select": True},
+                            {"province_id": 2629, "can_select": False},
+                        ],
+                        "can_progress_stage2": False,
                         "read_only": True,
                         "raw_pointer_fields_persisted": False,
                         "advertised": False,
@@ -2177,6 +2227,7 @@ class NativeAutoRunTests(unittest.TestCase):
         private_activity_feast_stage1_option_read: bool = False,
         private_activity_feast_stage1_confirm: bool = False,
         private_activity_feast_stage2_gate_read: bool = False,
+        private_activity_feast_stage2_location_candidate_province_ids: tuple[int, ...] | None = None,
         private_activity_cost_slot12_raw_read: bool = False,
         activity_feast_open_status: str = "opened",
         activity_feast_open_stage: int = 2,
@@ -2190,6 +2241,7 @@ class NativeAutoRunTests(unittest.TestCase):
         activity_stage2_option_error: bool = False,
         activity_stage2_gate_error: bool = False,
         activity_stage2_gate_ready: bool = True,
+        activity_stage2_location_error: bool = False,
         activity_cost_slot12_raw_error: bool = False,
         exact_war_move_stop: bool = False,
         exact_war_checkpoint_drop_route: bool = False,
@@ -2293,6 +2345,7 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_stage2_option_error = activity_stage2_option_error
         harness.activity_stage2_gate_error = activity_stage2_gate_error
         harness.activity_stage2_gate_ready = activity_stage2_gate_ready
+        harness.activity_stage2_location_error = activity_stage2_location_error
         harness.activity_cost_slot12_raw_error = activity_cost_slot12_raw_error
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
@@ -2429,6 +2482,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_activity_feast_stage2_gate_read=(
                     private_activity_feast_stage2_gate_read
+                ),
+                private_activity_feast_stage2_location_candidate_province_ids=(
+                    private_activity_feast_stage2_location_candidate_province_ids
                 ),
                 private_activity_cost_slot12_raw_read=(
                     private_activity_cost_slot12_raw_read
@@ -2828,7 +2884,7 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(report["ok"])
         self.assertEqual(report["outcome"], "failed")
         result = report["first_blocker"]["result"]
-        self.assertTrue(result["submitted"])
+        self.assertTrue(result.get("submitted"), result)
         self.assertTrue(result["pending"])
         self.assertEqual(result["activity_stage1_confirm"]["status"],
                          "postcondition_failed")
@@ -2922,6 +2978,56 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(result["confirm_native_receipt"]["ok"])
         self.assertTrue(result["stage2_option_native_receipt"]["ok"])
         self.assertEqual(harness.activity_stage2_gate_read_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_stage2_location_reads_native_candidate_without_start(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run",
+                  "--turns", "1"]
+        flag = "--private-activity-feast-stage2-location-province"
+        self.assertIsNone(
+            cli.parser().parse_args(common).private_activity_feast_stage2_location_province
+        )
+        self.assertEqual(
+            cli.parser().parse_args([*common, flag, "2619", flag, "2629"])
+            .private_activity_feast_stage2_location_province,
+            [2619, 2629],
+        )
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "private_activity_feast_stage2_location_observed")
+        observed = report["private_activity_feast_stage2_location_observation"]
+        self.assertTrue(observed["same_frame"])
+        self.assertTrue(observed["location_observed"])
+        self.assertFalse(observed["location"]["can_progress_stage2"])
+        self.assertEqual(observed["location"]["active_row_index"], 0)
+        self.assertEqual(observed["location"]["candidates"], [
+            {"province_id": 2619, "can_select": True},
+            {"province_id": 2629, "can_select": False},
+        ])
+        self.assertEqual(harness.activity_stage1_confirm_count, 1)
+        self.assertEqual(harness.activity_stage2_location_read_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_private_feast_stage2_location_red_keeps_confirm_receipt(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            activity_feast_open_stage=1, activity_stage2_location_error=True,
+        )
+        self.assertFalse(report["ok"])
+        result = report["first_blocker"]["result"]
+        self.assertTrue(result.get("submitted"), result)
+        self.assertTrue(result["pending"])
+        self.assertEqual(result["step"],
+                         "query-activity-feast-stage2-location-v1-private")
+        self.assertTrue(result["confirm_native_receipt"]["ok"])
+        self.assertTrue(result["stage2_option_native_receipt"]["ok"])
+        self.assertEqual(harness.activity_stage2_location_read_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
 
     def test_private_feast_open_then_slot12_raw_read_stays_same_frame(self) -> None:
