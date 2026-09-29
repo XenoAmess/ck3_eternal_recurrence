@@ -1774,7 +1774,12 @@ class _FakeActivityFeastState:
                             "piety": {"resource_index": 2, "configured_cost_raw": 0},
                             "barter_goods": {"resource_index": 3, "configured_cost_raw": 0},
                         },
-                        "final_can_start": True, "read_only": True,
+                        "final_can_start": True,
+                        "final_can_start_failure_display": {
+                            "state": "not_applicable", "value": None,
+                            "unknown_reason": None,
+                        },
+                        "read_only": True,
                         "raw_pointer_fields_persisted": False,
                     },
                     "backend_id": "native-headless",

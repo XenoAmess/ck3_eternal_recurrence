@@ -39,6 +39,10 @@ def payload() -> dict[str, object]:
             for index, key in enumerate(RESOURCE_KEYS)
         },
         "final_can_start": False,
+        "final_can_start_failure_display": {
+            "state": "unknown", "value": None,
+            "unknown_reason": "native_failure_display_empty",
+        },
         "read_only": True, "raw_pointer_fields_persisted": False,
     }
 
@@ -97,6 +101,7 @@ class ActivityStage5FeastFullCostPrivateTransportTest(unittest.TestCase):
         self.assertEqual(result["resources"]["barter_goods"]["resource_index"], 3)
         self.assertEqual(result["actor_gold_raw"], 120_644_281)
         self.assertIs(result["final_can_start"], False)
+        self.assertEqual(result["final_can_start_failure_display"]["state"], "unknown")
         self.assertEqual(result["queried_snapshot_id"], "native:4")
         driver.reply["resources"]["gold"]["configured_cost_raw"] = 0
         self.assertEqual(result["resources"]["gold"]["configured_cost_raw"], 10_000_000)
@@ -104,11 +109,25 @@ class ActivityStage5FeastFullCostPrivateTransportTest(unittest.TestCase):
     def test_false_and_true_final_can_start_are_native_results(self) -> None:
         observed = payload()
         observed["final_can_start"] = True
+        observed["final_can_start_failure_display"] = {
+            "state": "not_applicable", "value": None, "unknown_reason": None,
+        }
         self.assertIs(parse_activity_stage5_feast_full_cost_payload_v1(
             observed, expected_native_revision=4,
             expected_date_raw=53219928,
             expected_actor_character_id=29829,
         )["final_can_start"], True)
+        observed = payload()
+        observed["final_can_start_failure_display"] = {
+            "state": "known", "value": "An eligible guest is required.",
+            "unknown_reason": None,
+        }
+        self.assertEqual(parse_activity_stage5_feast_full_cost_payload_v1(
+            observed, expected_native_revision=4,
+            expected_date_raw=53219928,
+            expected_actor_character_id=29829,
+        )["final_can_start_failure_display"]["value"],
+            "An eligible guest is required.")
 
     def test_rejects_incomplete_or_unmapped_costs_and_invented_final(self) -> None:
         variants = []
@@ -124,6 +143,14 @@ class ActivityStage5FeastFullCostPrivateTransportTest(unittest.TestCase):
         invented_final = payload()
         invented_final["final_can_start"] = None
         variants.append(invented_final)
+        invented_reason = payload()
+        invented_reason["final_can_start_failure_display"] = {
+            "state": "known", "value": "", "unknown_reason": None,
+        }
+        variants.append(invented_reason)
+        mismatched_reason = payload()
+        mismatched_reason["final_can_start"] = True
+        variants.append(mismatched_reason)
         wrong_stage = payload()
         wrong_stage["planning_stage"] = 2
         variants.append(wrong_stage)

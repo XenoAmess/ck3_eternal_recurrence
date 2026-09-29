@@ -4,6 +4,7 @@
 #include "xar_bridge/activity_stage5_feast_full_cost_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "activity_stage5_canstart_failure_display_v1.hpp"
 
 #include <cstdint>
 #include <string>
@@ -23,6 +24,7 @@ struct ActivityStage5FeastFullCostPrivateQueryV1 {
   bridge::ActivityCostSlot12ObserverV1 *passive_cost = nullptr;
   bridge::ActivityStage5FeastFullCostResultV1 cost{};
   bridge::ActivityStage5CanStartResultV1 can_start{};
+  ActivityStage5FailureDisplayV1 can_start_failure_display{};
   bool completed = false;
   bool frame_changed = false;
   std::uint32_t invocations = 0;

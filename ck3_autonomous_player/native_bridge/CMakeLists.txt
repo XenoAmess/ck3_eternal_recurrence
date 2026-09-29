@@ -1457,6 +1457,7 @@ endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/activity_stage5_feast_full_cost_v1.cpp
+    src/activity_stage5_canstart_failure_display_v1.cpp
     src/activity_stage5_feast_full_cost_private_transport_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1=1)
@@ -1623,6 +1624,21 @@ if(BUILD_TESTING)
       COMMAND xar_ck3_activity_stage5_gold_cost_v1_test)
   endif()
   if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
+    add_executable(xar_ck3_activity_stage5_canstart_failure_display_v1_test
+      src/activity_stage5_canstart_failure_display_v1.cpp
+      src/activity_stage5_canstart_failure_display_v1_test.cpp)
+    target_include_directories(
+      xar_ck3_activity_stage5_canstart_failure_display_v1_test PRIVATE include)
+    target_compile_definitions(
+      xar_ck3_activity_stage5_canstart_failure_display_v1_test PRIVATE
+      NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(
+        xar_ck3_activity_stage5_canstart_failure_display_v1_test PRIVATE
+        /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_native_bridge_activity_stage5_canstart_failure_display_v1
+      COMMAND xar_ck3_activity_stage5_canstart_failure_display_v1_test)
     add_executable(xar_ck3_activity_stage5_feast_full_cost_v1_test
       src/activity_planner_diag_v1.cpp
       src/activity_cost_slot12_passive_v1.cpp

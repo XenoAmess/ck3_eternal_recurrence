@@ -34,6 +34,12 @@ class FeastCostsV1(TypedDict):
     barter_goods: NamedCostV1
 
 
+class CanStartFailureDisplayV1(TypedDict):
+    state: str
+    value: str | None
+    unknown_reason: str | None
+
+
 class ActivityStage5FeastFullCostPayloadV1(TypedDict):
     schema: str
     snapshot_revision: int
@@ -46,6 +52,7 @@ class ActivityStage5FeastFullCostPayloadV1(TypedDict):
     actor_gold_raw: int
     resources: FeastCostsV1
     final_can_start: bool
+    final_can_start_failure_display: CanStartFailureDisplayV1
     read_only: bool
     raw_pointer_fields_persisted: bool
 
@@ -98,6 +105,7 @@ def parse_activity_stage5_feast_full_cost_payload_v1(
         "schema", "snapshot_revision", "date_raw", "actor_character_id",
         "activity_key", "planning_stage", "normal_refresh_sequence",
         "scale", "actor_gold_raw", "resources", "final_can_start",
+        "final_can_start_failure_display",
         "read_only", "raw_pointer_fields_persisted",
     }
     if not isinstance(value, dict) or set(value) != fields:
@@ -105,6 +113,11 @@ def parse_activity_stage5_feast_full_cost_payload_v1(
     resources = value["resources"]
     if not isinstance(resources, dict) or set(resources) != set(RESOURCE_KEYS):
         raise BridgeUnavailableError("private feast full-cost resources malformed")
+    display = value["final_can_start_failure_display"]
+    if not isinstance(display, dict) or set(display) != {
+        "state", "value", "unknown_reason",
+    }:
+        raise BridgeUnavailableError("private feast CanStart failure display malformed")
     copied_resources: dict[str, NamedCostV1] = {}
     for key in RESOURCE_KEYS:
         item = resources[key]
@@ -137,8 +150,27 @@ def parse_activity_stage5_feast_full_cost_payload_v1(
         or value["raw_pointer_fields_persisted"] is not False
     ):
         raise BridgeUnavailableError("private feast full-cost payload malformed")
+    if value["final_can_start"]:
+        valid_display = display == {
+            "state": "not_applicable", "value": None, "unknown_reason": None,
+        }
+    elif display["state"] == "known":
+        valid_display = (
+            isinstance(display["value"], str)
+            and bool(display["value"])
+            and len(display["value"].encode("utf-8")) < 512
+            and display["unknown_reason"] is None
+        )
+    else:
+        valid_display = display == {
+            "state": "unknown", "value": None,
+            "unknown_reason": "native_failure_display_empty",
+        }
+    if not valid_display:
+        raise BridgeUnavailableError("private feast CanStart failure display malformed")
     return cast(ActivityStage5FeastFullCostPayloadV1, {
         **value, "resources": copied_resources,
+        "final_can_start_failure_display": dict(display),
     })
 
 
