@@ -1538,7 +1538,9 @@ class _FakeActivityFeastState:
                         "selected_option_valid": True,
                         "can_progress_stage1": True,
                         "generic_feast_confirm_ready": True,
-                        "status": "stage_two_verified" if green else "postcondition_failed",
+                        "status": ("stage_two_verified" if green else
+                                   "postcondition_failed" if submitted else
+                                   "precondition_rejected"),
                         "submitted": submitted,
                         "stage_two_visible": green,
                         "selected_option_retained": green,
@@ -1549,6 +1551,10 @@ class _FakeActivityFeastState:
                         "activity_start_state": "not_started_immediate" if green else "unknown",
                         "next_turn_verified": False,
                         "raw_pointer_fields_persisted": False,
+                        **({
+                            "precondition_reject_reason": "stage_auto_nonzero",
+                            "planner_stage_auto_raw": 1,
+                        } if not green and not submitted else {}),
                         "advertised": False,
                     },
                     "backend_id": "native-headless",
@@ -2778,6 +2784,24 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(result["pending"])
         self.assertEqual(result["activity_stage1_confirm"]["status"],
                          "postcondition_failed")
+        self.assertEqual(harness.activity_stage1_confirm_count, 1)
+        self.assertEqual(harness.activity_stage2_option_read_count, 0)
+        self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_pre_submit_red_keeps_native_reason(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_confirm=True,
+            activity_feast_open_stage=1, activity_stage1_confirm_error=True,
+            activity_stage1_confirm_submitted=False,
+        )
+        self.assertFalse(report["ok"])
+        result = report["first_blocker"]["result"]
+        self.assertIs(result["submitted"], False)
+        self.assertIs(result["pending"], False)
+        native = result["activity_stage1_confirm"]
+        self.assertEqual(native["status"], "precondition_rejected")
+        self.assertEqual(native["precondition_reject_reason"], "stage_auto_nonzero")
+        self.assertEqual(native["planner_stage_auto_raw"], 1)
         self.assertEqual(harness.activity_stage1_confirm_count, 1)
         self.assertEqual(harness.activity_stage2_option_read_count, 0)
         self.assertEqual(harness.auto_turn_count, 0)
