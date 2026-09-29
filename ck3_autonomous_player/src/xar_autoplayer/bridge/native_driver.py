@@ -2474,6 +2474,7 @@ class NativeHeadlessGameplayDriver:
 
     def query_actor_army_role_private_v1(
         self, *, actor_character_id: int, public_army_id: int,
+        expected_war_id: int, expected_episode_run_id: str,
         expected_revision: int,
     ) -> dict[str, object]:
         """Read actor assignment to one exact current army without action."""
@@ -2485,6 +2486,8 @@ class NativeHeadlessGameplayDriver:
             self,
             actor_character_id=actor_character_id,
             public_army_id=public_army_id,
+            expected_war_id=expected_war_id,
+            expected_episode_run_id=expected_episode_run_id,
             expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
         )

@@ -16,12 +16,19 @@ from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStep
 def _snapshot() -> dict[str, object]:
     return {
         "snapshot_id": "native:1", "revision": 4, "native_revision": 3,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "episode_character_id": 29829,
+        "diagnostics": {"connected": True, "connection_generation": 1,
+                        "bridge_pid": 901, "hello": {"capabilities": []}},
+        "active_event": None, "pending_character_interaction": None,
+        "hello_capabilities": [],
         "date_raw": 53219928, "paused": True, "map_ready": True,
         "played_character": {"character_id": 29829, "alive": True},
         "player_armies": [{"army_id": 83886367,
                             "owner_character_id": 29829,
                             "current_province_id": 2610}],
-        "active_wars": [{"war_id": 16777231}],
+        "active_wars": [{"war_id": 16777231, "allied_armies": [
+            {"army_id": 83886367, "owner_character_id": 29829}]}],
     }
 
 
@@ -31,7 +38,8 @@ def _payload(status: str = "available") -> dict[str, object]:
         "private_build": True, "read_only": True, "status": status,
         "unavailable_stage": None if status == "available" else "regiment_array_shape",
         "native_revision": 3, "date_raw": 53219928,
-        "actor_character_id": 29829, "public_army_id": 83886367,
+        "actor_character_id": 29829, "war_id": 16777231,
+        "public_army_id": 83886367,
         "native_carmy_id": 50331794, "owner_character_id": 29829,
         "current_province_id": 2610, "army_state": "stationary",
         "in_combat": False, "retreating": False,
@@ -59,8 +67,8 @@ class _State:
 
     def wait_for_command_result(self, request_id: str, _timeout: float) -> dict[str, object]:
         request = self.endpoint.request
-        assert request is not None
-        assert request["request_id"] == request_id
+        _check(request is not None)
+        _check(request["request_id"] == request_id)
         return {
             "type": "command_result", "protocol_version": 1,
             "request_id": request_id, "ok": True,
@@ -87,34 +95,43 @@ class _Driver:
 def _query(driver: Any) -> dict[str, object]:
     return query_actor_army_role_private_v1(
         driver, actor_character_id=29829, public_army_id=83886367,
+        expected_war_id=16777231,
+        expected_episode_run_id="native-29829-2bc2d599f7f9",
         expected_revision=4,
     )
+
+
+def _check(condition: bool) -> None:
+    if not condition:
+        raise AssertionError("role transport condition failed")
 
 
 def test_default_off_never_submits() -> None:
     driver = _Driver(_payload(), enabled=False)
     with pytest.raises(UnsupportedStepError):
         _query(driver)
-    assert driver.endpoint.request is None
+    _check(driver.endpoint.request is None)
 
 
 def test_complete_own_army_role_is_still_not_global_release_credit() -> None:
     driver = _Driver(_payload())
     result = _query(driver)
-    assert driver.endpoint.request["step"] == (
-        "query-war-actor-army-role-v1-29829-83886367"
-    )
-    assert result["actor_army_role"]["is_commander_of_requested_army"] is True
-    assert result["actor_army_role"]["is_knight_in_requested_army"] is False
-    assert result["global_role_ready"] is False
-    assert result["safe_role_release_ready"] is False
-    assert result["date_advance_ready"] is False
+    _check(driver.endpoint.request["step"] == (
+        "query-war-actor-army-role-v1-29829-16777231-83886367"
+    ))
+    _check(result["actor_army_role"]["is_commander_of_requested_army"] is True)
+    _check(result["actor_army_role"]["is_knight_in_requested_army"] is False)
+    _check(result["queried_war_id"] == 16777231)
+    _check(result["queried_connection_generation"] == 1)
+    _check(result["global_role_ready"] is False)
+    _check(result["safe_role_release_ready"] is False)
+    _check(result["date_advance_ready"] is False)
 
 
 def test_partial_knight_stays_unknown() -> None:
     result = _query(_Driver(_payload("partial")))
-    assert result["status"] == "partial"
-    assert result["actor_army_role"]["is_knight_in_requested_army"] is None
+    _check(result["status"] == "partial")
+    _check(result["actor_army_role"]["is_knight_in_requested_army"] is None)
 
 
 def test_wrong_actor_is_rejected_before_send() -> None:
@@ -124,7 +141,7 @@ def test_wrong_actor_is_rejected_before_send() -> None:
     }
     with pytest.raises(BridgeUnavailableError):
         _query(driver)
-    assert driver.endpoint.request is None
+    _check(driver.endpoint.request is None)
 
 
 def test_postquery_army_drift_invalidates_result() -> None:
@@ -139,3 +156,60 @@ def test_payload_cannot_claim_global_role_or_release() -> None:
     payload["safe_role_release"] = True
     with pytest.raises(BridgeUnavailableError):
         _query(_Driver(payload))
+
+
+@pytest.mark.parametrize("field,value", [
+    ("episode_run_id", "another-episode"),
+    ("episode_character_id", 42),
+    ("active_wars", [{"war_id": 16777232, "allied_armies": []}]),
+    ("active_wars", [{"war_id": 16777231, "allied_armies": []}]),
+])
+def test_wrong_source_binding_rejected_before_send(field: str, value: object) -> None:
+    driver = _Driver(_payload())
+    driver.snapshots[0][field] = value
+    with pytest.raises(BridgeUnavailableError):
+        _query(driver)
+    _check(driver.endpoint.request is None)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("episode_run_id", "another-episode"),
+    ("active_event", {"id": 1}),
+    ("pending_character_interaction", {"id": 1}),
+    ("hello_capabilities", ["new"]),
+])
+def test_postquery_source_drift_invalidates_result(field: str, value: object) -> None:
+    driver = _Driver(_payload())
+    driver.snapshots[1][field] = value
+    with pytest.raises(BridgeUnavailableError):
+        _query(driver)
+
+
+def test_postquery_connection_generation_drift_invalidates_result() -> None:
+    driver = _Driver(_payload())
+    driver.snapshots[1]["diagnostics"]["connection_generation"] = 2
+    with pytest.raises(BridgeUnavailableError):
+        _query(driver)
+
+
+def test_available_without_province_is_rejected() -> None:
+    payload = _payload()
+    payload["current_province_id"] = None
+    with pytest.raises(BridgeUnavailableError):
+        _query(_Driver(payload))
+
+
+def test_payload_other_war_is_rejected() -> None:
+    payload = _payload()
+    payload["war_id"] = 16777232
+    with pytest.raises(BridgeUnavailableError):
+        _query(_Driver(payload))
+
+
+def test_duplicate_allied_army_is_rejected_before_send() -> None:
+    driver = _Driver(_payload())
+    allied = driver.snapshots[0]["active_wars"][0]["allied_armies"]
+    allied.append({"army_id": 83886367, "owner_character_id": 29829})
+    with pytest.raises(BridgeUnavailableError):
+        _query(driver)
+    _check(driver.endpoint.request is None)

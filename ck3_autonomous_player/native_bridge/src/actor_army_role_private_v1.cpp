@@ -1,16 +1,20 @@
 #include "xar_bridge/actor_army_role_private_v1.hpp"
+#include "xar_bridge/actor_army_role_source_gate_v1.hpp"
 
 #include "xar_bridge/prewar_scope_v1.hpp"
 
 #include <windows.h>
 
 #include <algorithm>
+#include <array>
 #include <atomic>
 #include <charconv>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
 #include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace xar::ck3_11906 {
@@ -20,6 +24,20 @@ constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
 constexpr std::uintptr_t kRegimentStorageSlotRva = 0x57BF4C8;
 constexpr std::uintptr_t kGetArmyCommanderRva = 0x2278F70;
 constexpr std::size_t kMaximumRegiments = 4096;
+constexpr std::size_t kCharacterValiditySubobjectOffset = 0x10;
+
+using NativeFingerprint = std::vector<std::uint64_t>;
+
+template <typename T>
+void Track(NativeFingerprint &fingerprint, T value) {
+  if constexpr (std::is_pointer_v<T>) {
+    fingerprint.push_back(reinterpret_cast<std::uintptr_t>(value));
+  } else {
+    fingerprint.push_back(static_cast<std::uint64_t>(value));
+  }
+}
+
+using StorageHeader = ActorArmyRoleStorageHeaderV1;
 
 template <typename T>
 bool ReadAt(const void *base, std::size_t offset, T &out) noexcept {
@@ -37,7 +55,8 @@ bool ReadAt(const void *base, std::size_t offset, T &out) noexcept {
 }
 
 bool ReadStored(void *const *storage_slot, std::int32_t id,
-                std::size_t id_offset, void *&out) noexcept {
+                std::size_t id_offset, void *&out,
+                NativeFingerprint &fingerprint) noexcept {
   out = nullptr;
   if (storage_slot == nullptr || id <= 0) return false;
   void *storage = nullptr;
@@ -50,6 +69,9 @@ bool ReadStored(void *const *storage_slot, std::int32_t id,
                      kPrewarScopeV1MaximumComponentCapacity)) {
     return false;
   }
+  Track(fingerprint, storage);
+  Track(fingerprint, slots);
+  Track(fingerprint, capacity);
   const auto index = static_cast<std::uint32_t>(id) & 0x00FFFFFFU;
   if (index >= static_cast<std::uint32_t>(capacity)) return false;
   void *component = nullptr;
@@ -62,7 +84,48 @@ bool ReadStored(void *const *storage_slot, std::int32_t id,
   if (!ReadAt(component, id_offset, observed_id) || observed_id != id) {
     return false;
   }
+  Track(fingerprint, component);
+  Track(fingerprint, observed_id);
   out = component;
+  return true;
+}
+
+bool ReadStorageHeader(void *const *slot, StorageHeader &header) noexcept {
+  header = {};
+  return slot != nullptr && ReadAt(slot, 0, header.storage) &&
+         header.storage != nullptr &&
+         ReadAt(header.storage, 0x20, header.slots) &&
+         ReadAt(header.storage, 0x2C, header.capacity) &&
+         header.slots != nullptr && header.capacity > 0 &&
+         header.capacity <= static_cast<std::int32_t>(
+             kPrewarScopeV1MaximumComponentCapacity);
+}
+
+bool ValidCharacter(void *character) noexcept {
+  void *vtable = nullptr;
+  std::uintptr_t predicate_address = 0;
+  if (character == nullptr ||
+      !ReadAt(character, kCharacterValiditySubobjectOffset, vtable) ||
+      vtable == nullptr ||
+      !ReadAt(vtable, sizeof(void *), predicate_address) ||
+      predicate_address == 0) return false;
+  using Predicate = bool (*)(void *);
+  const auto predicate = reinterpret_cast<Predicate>(predicate_address);
+  return predicate(static_cast<std::byte *>(character) +
+                   kCharacterValiditySubobjectOffset);
+}
+
+bool ReadAllStorageHeaders(std::uintptr_t base,
+                           std::array<StorageHeader, 4> &headers) noexcept {
+  constexpr std::array<std::uintptr_t, 4> offsets = {
+      kPrewarScopeV1UnitStorageSlotRva, kPrewarScopeV1ArmyStorageSlotRva,
+      kCharacterStorageSlotRva, kRegimentStorageSlotRva};
+  for (std::size_t index = 0; index < offsets.size(); ++index) {
+    if (!ReadStorageHeader(reinterpret_cast<void *const *>(
+                               base + offsets[index]), headers[index])) {
+      return false;
+    }
+  }
   return true;
 }
 
@@ -130,17 +193,45 @@ const game::ArmySnapshot *FindOnePublicArmy(
   return found;
 }
 
+bool InExactWar(const game::Snapshot &snapshot, std::int32_t war_id,
+                std::int32_t army_id, std::int32_t actor_id) noexcept {
+  const game::ActiveWarSnapshot *war = nullptr;
+  for (const auto &row : snapshot.active_wars) {
+    if (row.war_id == war_id) {
+      if (war != nullptr) return false;
+      war = &row;
+    }
+  }
+  if (war == nullptr) return false;
+  std::size_t matches = 0;
+  for (const auto &row : war->allied_armies) {
+    if (row.army_id == army_id) {
+      if (row.owner_character_id != actor_id) return false;
+      ++matches;
+    }
+  }
+  return matches == 1;
+}
+
 void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
-              ActorArmyRoleResultV1 &result) {
+              ActorArmyRoleResultV1 &result,
+              NativeFingerprint &fingerprint) {
   result.native_revision = query.expected_revision;
   result.date_raw = query.expected_snapshot.date_raw;
   result.actor_character_id = query.actor_character_id;
+  result.war_id = query.war_id;
   result.public_army_id = query.public_army_id;
   const auto *const public_army =
       FindOnePublicArmy(query.expected_snapshot, query.public_army_id);
   if (public_army == nullptr ||
-      public_army->owner_character_id != query.actor_character_id) {
-    result.unavailable_stage = "public_actor_army_missing_or_ambiguous";
+      public_army->owner_character_id != query.actor_character_id ||
+      !InExactWar(query.expected_snapshot, query.war_id,
+                  query.public_army_id, query.actor_character_id)) {
+    result.unavailable_stage = "public_actor_war_army_missing_or_ambiguous";
+    return;
+  }
+  if (!public_army->has_current_province) {
+    result.unavailable_stage = "current_province_unavailable";
     return;
   }
   if (query.module_base == 0) {
@@ -157,8 +248,11 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
       query.module_base + kRegimentStorageSlotRva);
   void *actor = nullptr;
   void *unit = nullptr;
-  if (!ReadStored(character_slot, query.actor_character_id, 0x18, actor) ||
-      !ReadStored(unit_slot, query.public_army_id, 0x10, unit)) {
+  if (!ReadStored(character_slot, query.actor_character_id, 0x18, actor,
+                  fingerprint) ||
+      !ValidCharacter(actor) ||
+      !ReadStored(unit_slot, query.public_army_id, 0x10, unit,
+                  fingerprint)) {
     result.unavailable_stage = "actor_or_public_unit_identity";
     return;
   }
@@ -170,14 +264,17 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
     result.unavailable_stage = "unit_owner_or_carmy_identity";
     return;
   }
+  Track(fingerprint, owner_id);
+  Track(fingerprint, native_carmy_id);
   void *army = nullptr;
   std::int32_t reverse_unit_id = -1;
-  if (!ReadStored(army_slot, native_carmy_id, 0x10, army) ||
+  if (!ReadStored(army_slot, native_carmy_id, 0x10, army, fingerprint) ||
       !ReadAt(army, 0x124, reverse_unit_id) ||
       reverse_unit_id != query.public_army_id) {
     result.unavailable_stage = "carmy_identity_or_unit_backlink";
     return;
   }
+  Track(fingerprint, reverse_unit_id);
   if (public_army->has_current_province) {
     void *province = nullptr;
     std::int32_t province_id = -1;
@@ -188,6 +285,8 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
       return;
     }
     result.current_province_id = province_id;
+    Track(fingerprint, province);
+    Track(fingerprint, province_id);
   }
   result.native_carmy_id = native_carmy_id;
   result.owner_character_id = owner_id;
@@ -197,6 +296,7 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
 
   std::int32_t commander_id = -1;
   if (ReadAt(army, 0x120, commander_id)) {
+    Track(fingerprint, commander_id);
     if (commander_id == -1) {
       result.commander_status = "absent";
       result.is_commander_of_requested_army = false;
@@ -205,7 +305,9 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
       using GetArmyCommander = void *(*)(void *);
       auto *const get_commander = reinterpret_cast<GetArmyCommander>(
           query.module_base + kGetArmyCommanderRva);
-      if (ReadStored(character_slot, commander_id, 0x18, commander) &&
+      if (ReadStored(character_slot, commander_id, 0x18, commander,
+                     fingerprint) &&
+          ValidCharacter(commander) &&
           get_commander(army) == commander) {
         result.commander_status = "available";
         result.commander_character_id = commander_id;
@@ -228,21 +330,30 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
     result.knight_regiment_id.reset();
     return;
   }
+  Track(fingerprint, regiment_ids);
+  Track(fingerprint, count);
+  Track(fingerprint, capacity);
   bool actor_is_knight = false;
+  std::vector<std::int32_t> seen_regiment_ids;
+  seen_regiment_ids.reserve(count);
+  std::vector<std::int32_t> seen_knight_ids;
   for (std::int32_t index = 0; index < count; ++index) {
     std::int32_t regiment_id = -1;
     if (!ReadAt(regiment_ids, static_cast<std::size_t>(index) * 4,
                 regiment_id) ||
-        regiment_id <= 0) {
+        !UniqueActorArmyRoleRegimentIdV1(seen_regiment_ids, regiment_id)) {
       result.unavailable_stage = "regiment_id_unavailable";
       result.status = "partial";
       result.knight_regiment_id.reset();
       return;
     }
+    seen_regiment_ids.push_back(regiment_id);
+    Track(fingerprint, regiment_id);
     void *regiment = nullptr;
     std::int32_t regiment_army_id = -1;
     std::int32_t knight_id = -1;
-    if (!ReadStored(regiment_slot, regiment_id, 0x10, regiment) ||
+    if (!ReadStored(regiment_slot, regiment_id, 0x10, regiment,
+                    fingerprint) ||
         !ReadAt(regiment, 0x140, regiment_army_id) ||
         !ReadAt(regiment, 0x148, knight_id) ||
         regiment_army_id != native_carmy_id || knight_id < -1) {
@@ -251,11 +362,22 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
       result.knight_regiment_id.reset();
       return;
     }
+    Track(fingerprint, regiment_army_id);
+    Track(fingerprint, knight_id);
     if (knight_id == -1) continue;
+    if (std::find(seen_knight_ids.begin(), seen_knight_ids.end(),
+                  knight_id) != seen_knight_ids.end()) {
+      result.unavailable_stage = "duplicate_knight_identity";
+      result.status = "partial";
+      return;
+    }
+    seen_knight_ids.push_back(knight_id);
     void *knight = nullptr;
     void *knight_link = nullptr;
     std::int32_t reverse_regiment_id = -1;
-    if (!ReadStored(character_slot, knight_id, 0x18, knight) ||
+    if (!ReadStored(character_slot, knight_id, 0x18, knight,
+                    fingerprint) ||
+        !ValidCharacter(knight) ||
         !ReadAt(knight, 0x1B0, knight_link) || knight_link == nullptr ||
         !ReadAt(knight_link, 0xF8, reverse_regiment_id) ||
         reverse_regiment_id != regiment_id) {
@@ -264,6 +386,8 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
       result.knight_regiment_id.reset();
       return;
     }
+    Track(fingerprint, knight_link);
+    Track(fingerprint, reverse_regiment_id);
     if (knight_id == query.actor_character_id) {
       if (actor_is_knight) {
         result.unavailable_stage = "actor_duplicate_knight_regiments";
@@ -274,6 +398,19 @@ void ReadRole(const ActorArmyRolePrivateQueryV1 &query,
       actor_is_knight = true;
       result.knight_regiment_id = regiment_id;
     }
+  }
+  void *end_regiment_ids = nullptr;
+  std::int32_t end_count = -1;
+  std::int32_t end_capacity = -1;
+  if (!ReadAt(army, 0x38, end_regiment_ids) ||
+      !ReadAt(army, 0x40, end_capacity) ||
+      !ReadAt(army, 0x44, end_count) ||
+      end_regiment_ids != regiment_ids || end_count != count ||
+      end_capacity != capacity) {
+    result.unavailable_stage = "regiment_array_header_drift";
+    result.status = "partial";
+    result.knight_regiment_id.reset();
+    return;
   }
   result.knight_status = actor_is_knight ? "available" : "absent";
   result.is_knight_in_requested_army = actor_is_knight;
@@ -315,16 +452,23 @@ void AppendOptionalBool(std::string &out, const std::optional<bool> &value) {
 
 bool ParseActorArmyRolePrivateStepV1(std::string_view step,
                                     std::int32_t &actor_character_id,
+                                    std::int32_t &war_id,
                                     std::int32_t &public_army_id) noexcept {
   actor_character_id = -1;
+  war_id = -1;
   public_army_id = -1;
   if (!step.starts_with(kActorArmyRolePrivateStepPrefixV1)) return false;
   const auto suffix = step.substr(kActorArmyRolePrivateStepPrefixV1.size());
   const auto separator = suffix.find('-');
+  if (separator == std::string_view::npos) return false;
+  const auto second_separator = suffix.find('-', separator + 1);
   return separator != std::string_view::npos &&
-         suffix.find('-', separator + 1) == std::string_view::npos &&
+         second_separator != std::string_view::npos &&
+         suffix.find('-', second_separator + 1) == std::string_view::npos &&
          CanonicalPositive(suffix.substr(0, separator), actor_character_id) &&
-         CanonicalPositive(suffix.substr(separator + 1), public_army_id);
+         CanonicalPositive(suffix.substr(separator + 1,
+                                         second_separator - separator - 1), war_id) &&
+         CanonicalPositive(suffix.substr(second_separator + 1), public_army_id);
 }
 
 bool ExecuteActorArmyRolePrivateQueryV1(
@@ -333,7 +477,8 @@ bool ExecuteActorArmyRolePrivateQueryV1(
   if (query == nullptr) return false;
   if (!OwnsPausedSlot(*query, stamp) || query->executor_invocations != 0 ||
       query->expected_revision == 0 || query->actor_character_id <= 0 ||
-      query->public_army_id <= 0 || query->module_base == 0) {
+      query->war_id <= 0 || query->public_army_id <= 0 ||
+      query->module_base == 0) {
     query->failure_stage = "application_main_admission";
     return false;
   }
@@ -344,7 +489,32 @@ bool ExecuteActorArmyRolePrivateQueryV1(
       query->failure_stage = "public_frame_drift";
       return true;
     }
-    ReadRole(*query, query->result);
+    std::array<StorageHeader, 4> headers_before{};
+    std::array<StorageHeader, 4> headers_after{};
+    NativeFingerprint first_fingerprint;
+    NativeFingerprint second_fingerprint;
+    ActorArmyRoleResultV1 first_result{};
+    ActorArmyRoleResultV1 second_result{};
+    if (!ReadAllStorageHeaders(query->module_base, headers_before)) {
+      query->failure_stage = "native_storage_header_unavailable";
+      return true;
+    }
+    ReadRole(*query, first_result, first_fingerprint);
+    ReadRole(*query, second_result, second_fingerprint);
+    if (!ReadAllStorageHeaders(query->module_base, headers_after) ||
+        !StableActorArmyRoleSourceV1(headers_before, headers_after,
+                                     first_fingerprint, second_fingerprint) ||
+        first_result != second_result) {
+      query->result = {};
+      query->result.native_revision = query->expected_revision;
+      query->result.date_raw = query->expected_snapshot.date_raw;
+      query->result.actor_character_id = query->actor_character_id;
+      query->result.war_id = query->war_id;
+      query->result.public_army_id = query->public_army_id;
+      query->result.unavailable_stage = "native_role_or_storage_drift";
+    } else {
+      query->result = std::move(second_result);
+    }
     if (!SameFrame(*query, stamp)) {
       query->result = {};
       query->failure_stage = "postread_public_frame_drift";
@@ -374,6 +544,7 @@ std::string SerializeActorArmyRolePrivateResultV1(
   out += ",\"date_raw\":" + std::to_string(row.date_raw);
   out += ",\"actor_character_id\":" +
          std::to_string(row.actor_character_id);
+  out += ",\"war_id\":" + std::to_string(row.war_id);
   out += ",\"public_army_id\":" + std::to_string(row.public_army_id);
   out += ",\"native_carmy_id\":";
   AppendOptionalNumber(out, row.native_carmy_id);

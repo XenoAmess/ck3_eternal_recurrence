@@ -18217,15 +18217,20 @@ void RunConnectedSession(
         else if (step.starts_with(
                      xar::ck3_11906::kActorArmyRolePrivateStepPrefixV1)) {
           std::int32_t actor_character_id = -1;
+          std::int32_t war_id = -1;
           std::int32_t public_army_id = -1;
+          std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseActorArmyRolePrivateStepV1(
-                  step, actor_character_id, public_army_id)) {
+                  step, actor_character_id, war_id, public_army_id) ||
+              !xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
+                  incoming.payload, expected_revision)) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "actor army role IDs are malformed"));
           } else {
             xar::game::Snapshot before{};
             if (!previous_snapshot.has_value() || state_revision == 0 ||
+                expected_revision != state_revision ||
                 !xar::game::ReadSnapshot(game, before) ||
                 before != *previous_snapshot || !before.paused ||
                 !before.map_ready || !before.has_played_character ||
@@ -18241,9 +18246,10 @@ void RunConnectedSession(
               query.game = &game;
               query.module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
-              query.expected_revision = state_revision;
+              query.expected_revision = expected_revision;
               query.expected_snapshot = before;
               query.actor_character_id = actor_character_id;
+              query.war_id = war_id;
               query.public_army_id = public_army_id;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,

@@ -12,7 +12,7 @@ STEP_PREFIX = "query-war-actor-army-role-v1-"
 _SCHEMA = "xar.war.actor-army-role-private.v1"
 _PAYLOAD_KEYS = {
     "schema", "private_build", "read_only", "status", "unavailable_stage",
-    "native_revision", "date_raw", "actor_character_id", "public_army_id",
+    "native_revision", "date_raw", "actor_character_id", "war_id", "public_army_id",
     "native_carmy_id", "owner_character_id", "current_province_id",
     "army_state", "in_combat", "retreating", "commander_status",
     "commander_character_id", "is_commander_of_requested_army",
@@ -28,11 +28,21 @@ def _positive(value: object, label: str) -> int:
 
 
 def _binding(snapshot: Mapping[str, object]) -> tuple[object, ...]:
+    diagnostics = snapshot.get("diagnostics")
     return (
+        snapshot.get("episode_run_id"), snapshot.get("episode_character_id"),
+        copy.deepcopy(diagnostics.get("connection_generation") if isinstance(diagnostics, Mapping) else None),
+        copy.deepcopy(diagnostics.get("bridge_pid") if isinstance(diagnostics, Mapping) else None),
+        copy.deepcopy(diagnostics.get("hello") if isinstance(diagnostics, Mapping) else None),
         snapshot.get("snapshot_id"), snapshot.get("revision"),
         snapshot.get("native_revision"), snapshot.get("date_raw"),
         snapshot.get("paused"), snapshot.get("map_ready"),
         copy.deepcopy(snapshot.get("played_character")),
+        copy.deepcopy(snapshot.get("active_event")),
+        copy.deepcopy(snapshot.get("pending_character_interaction")),
+        copy.deepcopy(snapshot.get("hello_capabilities")),
+        tuple(sorted((key, copy.deepcopy(value)) for key, value in snapshot.items()
+                     if key.endswith("_supported") or key.endswith("_query_supported"))),
         copy.deepcopy(snapshot.get("player_armies")),
         copy.deepcopy(snapshot.get("active_wars")),
     )
@@ -45,7 +55,7 @@ def _role_bool(value: object, label: str) -> bool | None:
 
 
 def _normalize(row: object, *, before: Mapping[str, object], actor: int,
-               army_id: int) -> dict[str, object]:
+               war_id: int, army_id: int) -> dict[str, object]:
     if not isinstance(row, Mapping) or set(row) != _PAYLOAD_KEYS:
         raise ValueError("role payload key set changed")
     if (row["schema"] != _SCHEMA or row["private_build"] is not True
@@ -59,6 +69,8 @@ def _normalize(row: object, *, before: Mapping[str, object], actor: int,
             or row["date_raw"] != before.get("date_raw")
             or isinstance(row["actor_character_id"], bool)
             or row["actor_character_id"] != actor
+            or isinstance(row["war_id"], bool)
+            or row["war_id"] != war_id
             or isinstance(row["public_army_id"], bool)
             or row["public_army_id"] != army_id
             or row["global_commander_or_knight_status"] != "unknown"
@@ -122,6 +134,8 @@ def _normalize(row: object, *, before: Mapping[str, object], actor: int,
         raise ValueError("commander actor mismatch")
     if row["status"] == "available" and (commander is None or knight is None):
         raise ValueError("available role has unknown field")
+    if row["status"] == "available" and row["current_province_id"] is None:
+        raise ValueError("available role lacks current province")
     if row["status"] == "partial" and commander is not None and knight is not None:
         raise ValueError("partial role has no unknown field")
     if row["status"] != "unavailable" and (
@@ -140,12 +154,16 @@ def _normalize(row: object, *, before: Mapping[str, object], actor: int,
 
 def query_actor_army_role_private_v1(
     driver: object, *, actor_character_id: int, public_army_id: int,
+    expected_war_id: int, expected_episode_run_id: str,
     expected_revision: int, timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_actor_army_role_query", False) is not True:
         raise UnsupportedStepError("private actor army role query is disabled")
     actor = _positive(actor_character_id, "actor_character_id")
     army_id = _positive(public_army_id, "public_army_id")
+    war_id = _positive(expected_war_id, "expected_war_id")
+    if not isinstance(expected_episode_run_id, str) or not expected_episode_run_id:
+        raise ValueError("expected_episode_run_id must be nonempty")
     if isinstance(expected_revision, bool) or not isinstance(expected_revision, int) or expected_revision < 0:
         raise ValueError("expected_revision must be a non-negative integer")
     if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float)) or timeout_seconds <= 0:
@@ -155,7 +173,20 @@ def query_actor_army_role_private_v1(
     native_revision = before.get("native_revision")
     date_raw = before.get("date_raw")
     armies = before.get("player_armies")
+    wars = before.get("active_wars")
+    diagnostics = before.get("diagnostics")
+    generation = diagnostics.get("connection_generation") if isinstance(diagnostics, Mapping) else None
+    bridge_pid = diagnostics.get("bridge_pid") if isinstance(diagnostics, Mapping) else None
+    hello = diagnostics.get("hello") if isinstance(diagnostics, Mapping) else None
+    matching_wars = [row for row in wars if isinstance(row, Mapping) and row.get("war_id") == war_id] if isinstance(wars, list) else []
+    allied = matching_wars[0].get("allied_armies") if len(matching_wars) == 1 else None
     if (before.get("revision") != expected_revision
+            or before.get("episode_run_id") != expected_episode_run_id
+            or before.get("episode_character_id") != actor
+            or isinstance(generation, bool) or not isinstance(generation, int) or generation <= 0
+            or isinstance(bridge_pid, bool) or not isinstance(bridge_pid, int) or bridge_pid <= 0
+            or diagnostics.get("connected") is not True
+            or not isinstance(hello, Mapping)
             or before.get("paused") is not True
             or before.get("map_ready") is not True
             or not isinstance(player, Mapping)
@@ -168,10 +199,17 @@ def query_actor_army_role_private_v1(
             or not isinstance(date_raw, int)
             or not isinstance(armies, list)
             or sum(isinstance(row, Mapping) and row.get("army_id") == army_id
-                   and row.get("owner_character_id") == actor for row in armies) != 1):
-        raise BridgeUnavailableError("actor army role requires one current paused owned army")
+                   for row in armies) != 1
+            or not any(isinstance(row, Mapping) and row.get("army_id") == army_id
+                       and row.get("owner_character_id") == actor for row in armies)
+            or not isinstance(allied, list)
+            or sum(isinstance(row, Mapping) and row.get("army_id") == army_id
+                   for row in allied) != 1
+            or not any(isinstance(row, Mapping) and row.get("army_id") == army_id
+                       and row.get("owner_character_id") == actor for row in allied)):
+        raise BridgeUnavailableError("actor army role requires exact episode, war and one current paused owned allied army")
     request_id = "war-actor-army-role-" + uuid.uuid4().hex
-    step = STEP_PREFIX + str(actor) + "-" + str(army_id)
+    step = STEP_PREFIX + str(actor) + "-" + str(war_id) + "-" + str(army_id)
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": step,
@@ -195,7 +233,7 @@ def query_actor_army_role_private_v1(
         raise BridgeUnavailableError("actor army role envelope changed")
     try:
         role = _normalize(result["actor_army_role"], before=before,
-                          actor=actor, army_id=army_id)
+                          actor=actor, war_id=war_id, army_id=army_id)
     except ValueError as error:
         raise BridgeUnavailableError(f"actor army role payload malformed: {error}") from error
     if result["status"] != role["status"]:
@@ -209,6 +247,10 @@ def query_actor_army_role_private_v1(
         "queried_snapshot_id": before.get("snapshot_id"),
         "queried_revision": expected_revision,
         "queried_native_revision": native_revision,
+        "queried_episode_run_id": expected_episode_run_id,
+        "queried_war_id": war_id,
+        "queried_connection_generation": generation,
+        "queried_bridge_pid": bridge_pid,
         "date_raw": date_raw, "actor_army_role": role,
         "global_role_ready": False, "safe_role_release_ready": False,
         "date_advance_ready": False,

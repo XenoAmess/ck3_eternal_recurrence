@@ -1870,6 +1870,18 @@ if(BUILD_TESTING)
   endif()
   add_test(NAME xar_ck3_native_bridge_minor_religious_war_defenders_v1
     COMMAND xar_ck3_minor_religious_war_defenders_v1_test)
+  if(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+    add_executable(xar_ck3_actor_army_role_source_gate_v1_test
+      src/actor_army_role_source_gate_v1_test.cpp)
+    target_include_directories(xar_ck3_actor_army_role_source_gate_v1_test
+      PRIVATE include)
+    if(MSVC)
+      target_compile_options(xar_ck3_actor_army_role_source_gate_v1_test
+        PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_actor_army_role_source_gate_v1
+      COMMAND xar_ck3_actor_army_role_source_gate_v1_test)
+  endif()
   if(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
     add_executable(xar_ck3_m5_prewar_scope_v1_test
       src/prewar_scope_v1.cpp src/prewar_scope_v1_test.cpp)

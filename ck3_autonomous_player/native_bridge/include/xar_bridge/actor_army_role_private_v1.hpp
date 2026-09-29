@@ -16,6 +16,7 @@ inline constexpr std::string_view kActorArmyRolePrivateStepPrefixV1 =
 
 bool ParseActorArmyRolePrivateStepV1(std::string_view step,
                                     std::int32_t &actor_character_id,
+                                    std::int32_t &war_id,
                                     std::int32_t &public_army_id) noexcept;
 
 struct ActorArmyRoleResultV1 {
@@ -24,6 +25,7 @@ struct ActorArmyRoleResultV1 {
   std::uint64_t native_revision = 0;
   std::int64_t date_raw = 0;
   std::int32_t actor_character_id = -1;
+  std::int32_t war_id = -1;
   std::int32_t public_army_id = -1;
   std::optional<std::int32_t> native_carmy_id;
   std::optional<std::int32_t> owner_character_id;
@@ -37,6 +39,9 @@ struct ActorArmyRoleResultV1 {
   std::string knight_status = "unknown";
   std::optional<std::int32_t> knight_regiment_id;
   std::optional<bool> is_knight_in_requested_army;
+
+  friend bool operator==(const ActorArmyRoleResultV1 &,
+                         const ActorArmyRoleResultV1 &) = default;
 };
 
 struct ActorArmyRolePrivateQueryV1 {
@@ -47,6 +52,7 @@ struct ActorArmyRolePrivateQueryV1 {
   std::uint64_t expected_revision = 0;
   game::Snapshot expected_snapshot{};
   std::int32_t actor_character_id = -1;
+  std::int32_t war_id = -1;
   std::int32_t public_army_id = -1;
   ActorArmyRoleResultV1 result{};
   MainThreadExecutionStampV1 execution_stamp{};

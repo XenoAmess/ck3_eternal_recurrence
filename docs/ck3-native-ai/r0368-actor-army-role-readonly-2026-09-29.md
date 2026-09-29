@@ -44,7 +44,7 @@ The verified CK3 `1.19.0.6` anchors already used by the combat adapter are:
 
 ## Minimal future private query
 
-Candidate step: `query-war-actor-army-role-v1-<actor-character-id>-<public-army-id>`.
+Candidate step: `query-war-actor-army-role-v1-<actor-character-id>-<war-id>-<public-army-id>`.
 Keep it disabled until its own static and exact paused live acceptance. It is
 an independent query; it does not change H3937 phase-0 or the R0271 date gate.
 
@@ -79,10 +79,10 @@ The implementation lives behind the CMake option
 `XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1=ON`; the default is `OFF`.
 It adds no public capability and uses the paused application-main query
 mailbox. Its native step is
-`query-war-actor-army-role-v1-29829-83886367`. The Python entry point is
+`query-war-actor-army-role-v1-29829-16777231-83886367`. The Python entry point is
 `NativeCK3Driver.query_actor_army_role_private_v1` with explicit
-`allow_private_actor_army_role_query=True`, actor ID, public ArmyID and
-expected revision. The default Python flag is false and rejects before
+`allow_private_actor_army_role_query=True`, actor ID, WarID, public ArmyID,
+episode run ID and expected revision. The default Python flag is false and rejects before
 sending a command.
 
 The result contains `actor_army_role.status` (`available`, `partial` or
@@ -96,6 +96,19 @@ changed result fields. The C++ reader checks public/native ArmyID backlinks,
 owner/province, every regiment's army and knight reverse links, and a native
 commander-helper agreement. Its application-main collector reads only; it
 does not submit a role, army, war, activity or date action.
+
+The initial source candidate `bb748c4fe0440aad4059d5e5b5495db68308d225`
+and fixed WAR response v4 are historical **RED** candidates: the collector
+did not double-read native roles or freeze all storage and regiment headers,
+and the Python side did not bind episode, WarID or connection generation.
+The corrected source requires one exact allied ArmyID in the requested war,
+an exact native expected revision, two identical complete native role samples,
+unchanged four storage headers and regiment-array header, unique regiment IDs,
+valid character predicates and a known current province. Any drift returns a
+typed unavailable or partial result without a false role assignment. The
+native source gate fixture mutates each header and sampled field, and the
+Python tests exercise episode, war, army membership, connection, event and
+capability drift under normal and optimized Python.
 
 The implementation is source-only until a separately scheduled native build
 and a future new paused game attempt produce exact DLL hashes and a typed live
