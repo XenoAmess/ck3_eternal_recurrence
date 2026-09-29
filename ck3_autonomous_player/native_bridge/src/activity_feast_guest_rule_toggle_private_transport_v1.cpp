@@ -211,6 +211,28 @@ bool ExecuteActivityFeastGuestRulePrivateV1(
                             query->policy_approved)
                       : bridge::ReadActivityFeastGuestRuleV1(
                             environment, expected, query->authored_rule_key);
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+    if (query->query_provenance && query->provenance_observer != nullptr &&
+        (query->rule.status ==
+             bridge::ActivityFeastGuestRuleStatusV1::observed_active ||
+         query->rule.status ==
+             bridge::ActivityFeastGuestRuleStatusV1::observed_inactive)) {
+      bridge::ActivityCostSlot12CaptureV1 cost{};
+      const bridge::ActivityCostSlot12FrameV1 frame{
+          static_cast<std::int32_t>(current.date_raw),
+          current.played_character_id, stamp.thread_id, true};
+      if (bridge::ReadActivityCostSlot12PassiveV1(
+              *query->passive_cost, frame, cost) ==
+          bridge::ActivityCostSlot12ReadStatusV1::observed) {
+        query->provenance = bridge::ReadActivityGuestRuleProvenanceV1(
+            *query->provenance_observer, frame, cost.planner,
+            query->rule.native_key_hash, query->candidate_character_id);
+      } else {
+        query->provenance.status =
+            bridge::ActivityGuestRuleProvenanceStatusV1::no_normal_refresh;
+      }
+    }
+#endif
     query->completed = true;
     return true;
   } catch (...) {
@@ -256,5 +278,71 @@ std::string SerializeActivityFeastGuestRulePrivateV1(
              "}";
   return payload;
 }
+
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+std::string SerializeActivityFeastGuestRuleProvenancePrivateV1(
+    const ActivityFeastGuestRulePrivateQueryV1 &query) {
+  if (!query.completed || !query.failure.empty() || query.frame_changed ||
+      !query.query_provenance || query.candidate_character_id == 0)
+    return {};
+  const auto &capture = query.provenance;
+  const bool observed =
+      capture.status == bridge::ActivityGuestRuleProvenanceStatusV1::observed;
+  std::string payload =
+      "{\"schema\":\"activity-feast-guest-rule-provenance-private-v1\","
+      "\"snapshot_revision\":" + std::to_string(query.expected_revision) +
+      ",\"date_raw\":" +
+      std::to_string(query.expected_snapshot.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(query.expected_snapshot.played_character_id) +
+      ",\"activity_key\":\"activity_feast\",\"planning_stage\":5,"
+      "\"authored_rule_key\":\"" + query.authored_rule_key + "\","
+      "\"rule_status\":\"" +
+      std::string(bridge::ActivityFeastGuestRuleStatusKeyV1(
+          query.rule.status)) + "\","
+      "\"status\":\"" +
+      std::string(bridge::ActivityGuestRuleProvenanceStatusKeyV1(
+          capture.status)) +
+      "\",\"candidate_character_id\":" +
+      std::to_string(query.candidate_character_id) +
+      ",\"rule_active\":";
+  if (query.rule.status ==
+          bridge::ActivityFeastGuestRuleStatusV1::observed_active)
+    payload += "true";
+  else if (query.rule.status ==
+               bridge::ActivityFeastGuestRuleStatusV1::observed_inactive)
+    payload += "false";
+  else
+    payload += "null";
+  payload += ",\"native_key_hash\":" +
+             (observed ? std::to_string(capture.native_key_hash) : "null") +
+             ",\"normal_refresh_sequence\":" +
+             (observed ? std::to_string(capture.normal_refresh_sequence)
+                       : "null") +
+             ",\"raw_rule_character_count\":" +
+             (observed ? std::to_string(capture.raw_rule_character_count)
+                       : "null") +
+             ",\"filtered_rule_character_count\":" +
+             (observed ? std::to_string(capture.filtered_rule_character_count)
+                       : "null") +
+             ",\"candidate_membership\":" +
+             (observed ? (capture.candidate_membership ? "true" : "false")
+                       : "null") +
+             ",\"filtered_rule_character_ids\":";
+  if (!observed) {
+    payload += "null";
+  } else {
+    payload += "[";
+    for (std::uint32_t i = 0;
+         i < capture.filtered_rule_character_count; ++i) {
+      if (i != 0) payload += ",";
+      payload += std::to_string(capture.filtered_ids[i]);
+    }
+    payload += "]";
+  }
+  payload += "}";
+  return payload;
+}
+#endif
 
 } // namespace xar::ck3_11906
