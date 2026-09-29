@@ -8,7 +8,11 @@ yet, so this module has no release path.
 
 from __future__ import annotations
 
-from .war_contract import is_life_advance_step
+from .war_contract import (
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
+    is_life_advance_step,
+)
 
 H3937_EPISODE_RUN_ID = "native-29829-2bc2d599f7f9"
 H3937_ACTOR_CHARACTER_ID = 29_829
@@ -33,6 +37,11 @@ def is_date_control_step(step: object) -> bool:
         is_life_advance_step(step)
         or step == "resume-map"
         or (isinstance(step, str) and step in {
+            # These capability templates are advertised without their bound
+            # army/war/date payload.  The generic parser only recognizes the
+            # concrete form, so classify the templates here as date controls.
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
             "set-speed-1",
             "set-speed-2",
             "set-speed-3",

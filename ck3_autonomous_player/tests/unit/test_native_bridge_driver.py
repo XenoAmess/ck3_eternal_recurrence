@@ -775,11 +775,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
     def test_h3937_episode_holds_all_date_entries_and_keeps_query(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
-            endpoint.pipe_name, endpoint=endpoint
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            allow_route_contact_high_speed_ab=True,
         )
         endpoint.publish(
             _hello(
                 "game.state.snapshot",
+                *native_driver_module._TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES,
                 "game.state.war-objectives",
                 "game.state.army-routes",
                 "game.command.query-route-contact-horizon-v1-N",
@@ -837,6 +840,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "life-advance",
             "resume-map",
             "set-speed-3",
+            BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
             battle_decision_epoch_advance_step(H3937_SOURCE_DATE_RAW + 24),
             committed_route_sentinel_advance_step(
                 83_886_367, 2610, H3937_SOURCE_DATE_RAW + 24
@@ -884,6 +890,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertIn("resume-map", old_actions)
         self.assertIn("set-speed-3", old_actions)
         self.assertIn(query_step, old_actions)
+        self.assertIn(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, old_actions)
+        self.assertIn(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, old_actions)
         for step in date_steps:
             with self.subTest(frontend_zero_step=step):
                 with self.assertRaisesRegex(

@@ -17,6 +17,9 @@ from xar_autoplayer.bridge.h3937_date_hold import (
     is_date_control_step,
 )
 from xar_autoplayer.bridge.war_contract import (
+    BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
     committed_route_sentinel_advance_step,
@@ -56,6 +59,9 @@ class H3937DateHoldTests(unittest.TestCase):
             "life-advance",
             "resume-map",
             "set-speed-3",
+            BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
             battle_decision_epoch_advance_step(H3937_SOURCE_DATE_RAW + 24),
             committed_route_sentinel_advance_step(
                 83_886_367, 2610, H3937_SOURCE_DATE_RAW + 24
@@ -78,6 +84,9 @@ class H3937DateHoldTests(unittest.TestCase):
     def test_final_planner_denies_generic_sentinel_and_route_dates(self) -> None:
         date_steps = (
             "life-advance",
+            BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
             committed_route_sentinel_advance_step(
                 83_886_367, 2610, H3937_SOURCE_DATE_RAW + 24
             ),

@@ -14,6 +14,9 @@ driver omits date controls from capabilities and refuses public, composite,
 and primitive date submission before a native timeline command is sent. This
 covers `life-advance`, battle/committed-route/objective-hold sentinels,
 `advance-route-contact-horizon`, direct `resume-map`, and speed controls.
+The two advertised, parameterless committed-route and objective-hold sentinel
+templates are date controls too; their concrete army/war/date tokens are
+checked separately.
 Frontend revision-zero execution rejects all date controls for every episode;
 its synthetic frame cannot certify the H3937 episode identity.
 Same-frame read-only route queries and snapshots remain available.
@@ -34,6 +37,6 @@ Static verification: `test_h3937_date_hold.py` exercises source and drifted
 frames, final planner selection, generic/sentinel/route date tokens, and an
 older episode. `test_native_bridge_driver.py` checks capability projection,
 direct execution denial, no native command submission, and read-only query
-availability. The full two-file suite has one pre-existing R0118 assertion
+availability. The full three-file suite has one pre-existing R0118 assertion
 about the old combat query token; it reproduces on base `0f9566b43` and is
 outside this date hold.
