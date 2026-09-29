@@ -142,6 +142,18 @@ class Driver:
                 "active" if self.result_status == "pending" else "not_applicable"),
         }
 
+    def query_player_child_default_alliance_private_v1(
+        self, *, resolved: dict[str, object],
+    ) -> dict[str, object]:
+        return {
+            "schema": "xar.ck3.player-child-default-alliance-result.v1",
+            "alliance_status": "not_allied",
+            "played_has_recipient_alliance": False,
+            "recipient_has_played_alliance": False,
+            "heir_character_id": resolved["heir_character_id"],
+            "candidate_character_id": resolved["candidate_character_id"],
+        }
+
 
 def _policy(_legality: object, values: object, *,
             split_successor_verified: bool) -> dict[str, object]:
@@ -351,6 +363,53 @@ class ChildDefaultFormalTest(unittest.TestCase):
                     consumer.read_child_default_ledger(
                         driver.state_dir)["resolved"]["cold_recovery_verified"],
                     True)
+
+    def test_material_betrothal_reads_actual_alliance_without_resubmission(self) -> None:
+        with tempfile.TemporaryDirectory(
+            dir=os.environ.get("XAR_TEST_TEMP_ROOT")
+        ) as folder:
+            driver = Driver(Path(folder))
+            pending = {
+                "schema": consumer.ACTION_SCHEMA, "status": "receipt_pending",
+                "submission_state": "receipt_pending", "material_result": False,
+                "episode_run_id": "native-29829-test",
+                "played_character_id": 29829, "heir_character_id": 38988,
+                "candidate_character_id": 37909,
+                "recipient_character_id": 34332,
+                "matrilineal_option_selected": False,
+                "pre_native_revision": 3, "source_date_raw": 53219928,
+                "source_bridge_pid": 100,
+                "source_bridge_creation_date": "submit",
+            }
+            consumer._write(driver.state_dir, {
+                "schema": consumer.LEDGER_SCHEMA,
+                "pending": pending, "resolved": None})
+            driver.frame = _frame(native_revision=4)
+            driver.result_status = "betrothal"
+            baseline = {"plan": {"selected_step": "life-advance"}}
+            with patch.object(consumer, "bridge_process_identity",
+                              return_value=(100, "submit")):
+                planned = consumer.plan_child_default_private(
+                    driver, baseline, driver.frame)
+                self.assertEqual(planned["plan"]["selected_step"],
+                                 consumer.RESULT_STEP)
+                result = consumer.query_child_default_result_private(
+                    driver, pending=planned["plan"]["child_default_pending"],
+                    cold=False)
+                self.assertEqual(result["status"], "betrothal")
+                alliance_plan = consumer.plan_child_default_private(
+                    driver, baseline, driver.frame)
+                self.assertEqual(alliance_plan["plan"]["selected_step"],
+                                 consumer.ALLIANCE_RESULT_STEP)
+                actual = consumer.query_child_default_alliance_private(
+                    driver, resolved=alliance_plan["plan"][
+                        "child_default_resolved"])
+                self.assertEqual(actual["alliance_status"], "not_allied")
+                finished = consumer.plan_child_default_private(
+                    driver, baseline, driver.frame)
+                self.assertEqual(finished["plan"]["selected_step"],
+                                 "life-advance")
+                self.assertEqual(driver.submissions, 0)
 
 
 if __name__ == "__main__":
