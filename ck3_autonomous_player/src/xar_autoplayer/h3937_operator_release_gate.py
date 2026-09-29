@@ -14,11 +14,13 @@ def assess_screen_release(
     *,
     child_started: bool,
     child_exited: bool,
+    child_exit_observed_monotonic_ns: int,
     target_processes_gone: bool,
     child_completion: Mapping[str, Any] | None,
     outer_report: Mapping[str, Any] | None,
     outer_report_sha256: str | None,
     pre_native_launch_proven: bool,
+    native_phase_verified_monotonic_ns: int,
     unsafe_marker_absent: bool,
     expected_watchdog_nonce: str,
     expected_watchdog_parent_pid: int,
@@ -32,6 +34,11 @@ def assess_screen_release(
         failures.append("one-shot child-started proof malformed")
     if child_exited is not True:
         failures.append("one-shot child exit unproven")
+    if (
+        type(child_exit_observed_monotonic_ns) is not int
+        or child_exit_observed_monotonic_ns <= 0
+    ):
+        failures.append("child exit observation time unavailable")
     if target_processes_gone is not True:
         failures.append("CK3/recorder/injector inventory not empty or unavailable")
     if child_started is True:
@@ -50,6 +57,13 @@ def assess_screen_release(
                 failures.append("native cleanup evidence incomplete")
     elif child_started is False and pre_native_launch_proven is not True:
         failures.append("no-child pre-native phase not proven")
+    if (
+        type(native_phase_verified_monotonic_ns) is not int
+        or native_phase_verified_monotonic_ns <= 0
+        or type(child_exit_observed_monotonic_ns) is not int
+        or native_phase_verified_monotonic_ns < child_exit_observed_monotonic_ns
+    ):
+        failures.append("native phase postflight time unavailable")
     if unsafe_marker_absent is not True:
         failures.append("unsafe marker present or unreadable")
     if watchdog_scan_error is not None:
@@ -65,7 +79,10 @@ def assess_screen_release(
     ):
         failures.append("two nonce-bound watchdog scans unavailable")
     else:
-        previous_tick = -1
+        previous_tick = (
+            native_phase_verified_monotonic_ns
+            if type(native_phase_verified_monotonic_ns) is int else -1
+        )
         for scan in nonce_bound_watchdog_scans:
             tick = scan.get("captured_monotonic_ns")
             if (

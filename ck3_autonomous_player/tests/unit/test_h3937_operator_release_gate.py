@@ -16,6 +16,7 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
         return {
             "child_started": True,
             "child_exited": True,
+            "child_exit_observed_monotonic_ns": 10,
             "target_processes_gone": True,
             "child_completion": {
                 "outer_report_sha256": "A" * 64,
@@ -27,6 +28,7 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             },
             "outer_report_sha256": "A" * 64,
             "pre_native_launch_proven": False,
+            "native_phase_verified_monotonic_ns": 20,
             "unsafe_marker_absent": True,
             "expected_watchdog_nonce": "exact-nonce",
             "expected_watchdog_parent_pid": 456,
@@ -34,7 +36,7 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
                 {"schema": "xar.watchdog-nonce-scan.v1", "nonce": "exact-nonce",
                  "parent_pid": 456, "wmi_toolhelp_cross_checked": True,
                  "captured_monotonic_ns": tick, "identities": []}
-                for tick in (1, 2)
+                for tick in (30, 40)
             ],
             "watchdog_scan_error": None,
             "unique_owned_screen_lease": True,
@@ -109,6 +111,7 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
         cases = [
             ("child_started", "false"),
             ("child_exited", "true"),
+            ("child_exit_observed_monotonic_ns", "10"),
             ("target_processes_gone", "true"),
             ("unsafe_marker_absent", "false"),
             ("unique_owned_screen_lease", "true"),
@@ -120,6 +123,7 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             ("nonce_bound_watchdog_scans", ""),
             ("expected_watchdog_nonce", ""),
             ("expected_watchdog_parent_pid", "456"),
+            ("native_phase_verified_monotonic_ns", "20"),
             ("child_completion", "not a report"),
             ("outer_report", "not a report"),
         ]
@@ -132,13 +136,27 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
             {"nonce": "wrong-nonce"},
             {"parent_pid": 1456},
             {"wmi_toolhelp_cross_checked": "true"},
-            {"captured_monotonic_ns": 1},
+            {"captured_monotonic_ns": 30},
             {"identities": None},
             {"schema": "other-schema"},
         ):
             with self.subTest(scan_mutation=mutation):
                 facts = self.facts()
                 facts["nonce_bound_watchdog_scans"][1].update(mutation)
+                self.assertFalse(assess_screen_release(**facts)["may_release"])
+
+    def test_pre_exit_or_pre_cleanup_scans_cannot_release(self) -> None:
+        for exit_tick, native_tick, first_scan, second_scan in (
+            (50, 60, 30, 40),
+            (10, 50, 30, 40),
+            (20, 10, 30, 40),
+        ):
+            with self.subTest(ticks=(exit_tick, native_tick, first_scan, second_scan)):
+                facts = self.facts()
+                facts["child_exit_observed_monotonic_ns"] = exit_tick
+                facts["native_phase_verified_monotonic_ns"] = native_tick
+                facts["nonce_bound_watchdog_scans"][0]["captured_monotonic_ns"] = first_scan
+                facts["nonce_bound_watchdog_scans"][1]["captured_monotonic_ns"] = second_scan
                 self.assertFalse(assess_screen_release(**facts)["may_release"])
 
 
