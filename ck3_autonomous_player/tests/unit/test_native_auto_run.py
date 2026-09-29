@@ -3402,20 +3402,44 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.activity_guest_candidate_query_count, 1)
         self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
         self.assertEqual(harness.auto_turn_count, 0)
-        unavailable, harness = self._run(
+        empty, harness = self._run(
             ["advance"], private_activity_feast_stage1_confirm=True,
             private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
             private_activity_feast_stage2_destination_province_id=2619,
             private_activity_feast_stage5_full_cost_read=True,
             private_activity_feast_guest_candidate_read=True,
-            activity_guest_candidate_status="candidate_source_unavailable",
+            activity_guest_candidate_status="no_qualified_candidate",
             activity_feast_open_stage=1,
         )
-        self.assertTrue(unavailable["ok"], unavailable.get("first_blocker"))
-        self.assertEqual(unavailable["private_activity_feast_guest_candidate_observation"]
-                         ["candidate_status"], "candidate_source_unavailable")
-        self.assertIsNone(unavailable["private_activity_feast_guest_candidate_observation"]
+        self.assertTrue(empty["ok"], empty.get("first_blocker"))
+        self.assertEqual(empty["private_activity_feast_guest_candidate_observation"]
+                         ["candidate_status"], "no_qualified_candidate")
+        self.assertIsNone(empty["private_activity_feast_guest_candidate_observation"]
                           ["candidate_read"]["candidate"])
+        self.assertEqual(harness.auto_turn_count, 0)
+        for status in ("candidate_source_unavailable", "exact_build_rejected"):
+            with self.subTest(status=status):
+                unavailable, harness = self._run(
+                    ["advance"], private_activity_feast_stage1_confirm=True,
+                    private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+                    private_activity_feast_stage2_destination_province_id=2619,
+                    private_activity_feast_stage5_full_cost_read=True,
+                    private_activity_feast_guest_candidate_read=True,
+                    activity_guest_candidate_status=status,
+                    activity_feast_open_stage=1,
+                )
+                self.assertFalse(unavailable["ok"])
+                self.assertEqual(unavailable["status"],
+                                 "private_activity_feast_guest_candidate_unresolved")
+                self.assertIsNotNone(unavailable["first_blocker"])
+                result = unavailable["first_blocker"]["result"]
+                self.assertEqual(result["step"],
+                                 "query-activity-feast-guest-candidate-v1")
+                self.assertEqual(result["status"], "red")
+                self.assertEqual(result["candidate_status"], status)
+                self.assertEqual(result["candidate_read"]["status"], status)
+                self.assertIsNone(result["candidate_read"]["candidate"])
+                self.assertEqual(harness.auto_turn_count, 0)
 
     def test_private_feast_stage5_full_cost_requires_destination(self) -> None:
         with self.assertRaisesRegex(AgentError, "requires verified stage-2 destination"):

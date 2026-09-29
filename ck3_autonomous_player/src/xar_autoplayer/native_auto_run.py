@@ -1425,6 +1425,7 @@ def native_auto_run(
                                     status = "private_activity_feast_stage5_full_cost_observed"
                                     if private_activity_feast_guest_candidate_read is True:
                                         current_attempt["stage"] = "private_activity_feast_guest_candidate_read"
+                                        status = "private_activity_feast_guest_candidate_unresolved"
                                         private_activity_feast_guest_candidate_observation = (
                                             _read_private_activity_feast_guest_candidate_once(
                                                 driver, service=service, before=before,
@@ -7018,6 +7019,14 @@ def _read_private_activity_feast_guest_candidate_once(
             step_result={"step": step, "status": "red", "accepted": False,
                          "postcondition_verified": False, "candidate_read": read},
             selected_step=step)
+    if read["status"] not in {"observed", "no_qualified_candidate"}:
+        raise StepPostconditionError(
+            "private feast guest candidate source unavailable: " + read["status"],
+            step_result={"step": step, "status": "red", "accepted": False,
+                         "postcondition_verified": False,
+                         "candidate_status": read["status"],
+                         "candidate_read": read},
+            selected_step=step)
     return {
         "status": "guest_candidate_read", "turn_index": turn_index,
         "same_frame": True, "read_only": True,
@@ -8059,6 +8068,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
         _PRIVATE_ACTIVITY_STAGE2_LOCATION_READ_STEP,
         _PRIVATE_ACTIVITY_STAGE2_DESTINATION_SELECT_STEP,
         _PRIVATE_ACTIVITY_STAGE5_FULL_COST_READ_STEP,
+        _PRIVATE_ACTIVITY_GUEST_CANDIDATE_STEP,
     }:
         for key in (
             "submitted", "pending", "same_frame", "activity_stage1_confirm",
@@ -8068,7 +8078,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
             "stage2_location_native_receipt", "postcondition_verified",
             "confirm_native_receipt", "stage2_option_native_receipt",
             "destination_postcondition_verified", "destination_native_receipt",
-            "full_cost", "native_error",
+            "full_cost", "native_error", "candidate_status", "candidate_read",
         ):
             if key in result:
                 compact[key] = copy.deepcopy(result[key])
