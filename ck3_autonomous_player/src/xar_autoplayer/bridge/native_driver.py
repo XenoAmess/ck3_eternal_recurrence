@@ -457,6 +457,14 @@ from .raiktor_actual_truce_expiry_contract import (
     normalize_raiktor_actual_truce_expiry_v1,
     parse_query_raiktor_actual_truce_expiry_v1_step,
 )
+from .h2743_preaction_existing_truce_v1 import (
+    CAPABILITY as H2743_PREACTION_EXISTING_TRUCE_CAPABILITY,
+    CHECKPOINT_SHA256 as H2743_PREACTION_CHECKPOINT_SHA256,
+    DATE_RAW as H2743_PREACTION_DATE_RAW,
+    EPISODE as H2743_PREACTION_EPISODE,
+    QUERY_STEP as H2743_PREACTION_EXISTING_TRUCE_STEP,
+    normalize_result as normalize_h2743_preaction_existing_truce,
+)
 from .raiktor_war_bound_loss_cleanup_contract import (
     QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
     QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX,
@@ -6596,6 +6604,16 @@ class NativeHeadlessGameplayDriver:
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
             )
+        if step == H2743_PREACTION_EXISTING_TRUCE_STEP:
+            if H2743_PREACTION_EXISTING_TRUCE_CAPABILITY not in set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the exact H2743 existing truce slot"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
         prisoner_release_war_id = (
             parse_query_war_prisoner_release_pairs_v1_step(step)
         )
@@ -9385,6 +9403,7 @@ class NativeHeadlessGameplayDriver:
         actual_truce_expiry_toward = (
             parse_query_raiktor_actual_truce_expiry_v1_step(step)
         )
+        h2743_existing_truce_query = step == H2743_PREACTION_EXISTING_TRUCE_STEP
         war_bound_loss_cleanup_war_id = (
             parse_query_raiktor_war_bound_loss_cleanup_v1_step(step)
         )
@@ -9395,6 +9414,7 @@ class NativeHeadlessGameplayDriver:
             or termination_terms_query_war_id is not None
             or defender_dejure_exit_query_war_id is not None
             or actual_truce_expiry_toward is not None
+            or h2743_existing_truce_query
             or war_bound_loss_cleanup_war_id is not None
             or parse_preview_move_army_step(step) is not None
             or parse_query_route_contact_horizon_step(step) is not None
@@ -9410,6 +9430,38 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        if h2743_existing_truce_query:
+            native_revision = starting.get("native_revision")
+            if (type(native_revision) is not int or native_revision < 1
+                    or starting.get("snapshot_id") != "native:3"
+                    or starting.get("date_raw") != H2743_PREACTION_DATE_RAW
+                    or starting.get("episode_run_id") != H2743_PREACTION_EPISODE
+                    or starting.get("paused") is not True):
+                raise BridgeUnavailableError(
+                    "exact H2743 native source/frame claim unavailable"
+                )
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=H2743_PREACTION_EXISTING_TRUCE_CAPABILITY,
+                request_fields={
+                    "expected_date_raw": H2743_PREACTION_DATE_RAW,
+                    "expected_snapshot_id": "native:3",
+                    "expected_episode_id": H2743_PREACTION_EPISODE,
+                    "expected_checkpoint_sha256": H2743_PREACTION_CHECKPOINT_SHA256,
+                    "expected_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+                },
+                internal_semantic_snapshot=True,
+            )
+            try:
+                proof = normalize_h2743_preaction_existing_truce(
+                    raw, native_revision=native_revision
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native H2743 existing truce result is malformed: {error}"
+                ) from error
+            return {**raw, "h2743_preaction_existing_truce_proof": proof}
         if prisoner_release_war_id is not None:
             raw = self._execute_primitive_step(
                 step,

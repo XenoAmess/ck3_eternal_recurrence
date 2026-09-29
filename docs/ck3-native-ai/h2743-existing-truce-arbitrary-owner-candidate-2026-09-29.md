@@ -1,5 +1,7 @@
 # H2743：任意 owner 的投降前既有休战槽只读候选
 
+2026-09-29 续办补记：[Release 构建与无启动配对](h2743-existing-truce-release-build-and-no-launch-2026-09-29.md)已 GREEN；受管实机双读仍未执行。以下保留原静态候选形成时的记录。
+
 状态：**源码及原生 ABI 静态验收；候选默认关闭；尚未构建 DLL 或受管实机双读。** 本页只处理 H2743 守方投降**之前已经存在**的 Landolf `30097`→Robert `29829` 有向关系槽。新命令 `query-h2743-preaction-existing-truce-v1` 不求值休战天数、不创建关系、不执行投降、不推进日期，也不返回本次受降后尚未产生的 expiry。正式退出比较仍 `material_complete=false`、`recommended_outcome=null`、`action_literal=null`。
 
 ## 精确输入与身份门

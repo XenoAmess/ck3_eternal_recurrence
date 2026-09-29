@@ -22,22 +22,26 @@ import threading
 import time
 
 
-REPO = Path("D:/w/h2743exit")
-ROOT = Path("D:/ck3-research-artifacts/war31-h2743-20260928")
+REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / "ck3_autonomous_player" / "src"))
+BASE_ROOT = Path("D:/ck3-research-artifacts/war31-h2743-20260928")
+ROOT = BASE_ROOT
 SOURCE = ROOT / "source-verified-01"
 PYTHON = Path("D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe")
 GAME = Path("C:/SteamLibrary/steamapps/common/Crusader Kings III")
 EXE = GAME / "binaries/ck3.exe"
 DLL = ROOT / "build-title-prestate-001/xar_ck3_bridge.dll"
-INJECTOR = Path("D:/ck3-research-artifacts/war31-live-20260927/source-verified-01/R0221-original-bridge/native/xar_ck3_bridge_injector.exe")
+BASE_INJECTOR = Path("D:/ck3-research-artifacts/war31-live-20260927/source-verified-01/R0221-original-bridge/native/xar_ck3_bridge_injector.exe")
+INJECTOR = BASE_INJECTOR
 TASK_BUS = Path("D:/workspace/.codex-task-bus/bin/codex_task_bus.py")
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 EPISODE = "native-29829-2bc2d599f7f9"
 QUERY = "query-defender-de-jure-exit-terms-v1-16777231"
+BASE_QUERY = QUERY
 OPTIONS_QUERY = "query-war-termination-options-16777231"
-CLI_ENTRY = ("import sys; sys.path.insert(0, r'D:/w/h2743exit/ck3_autonomous_player/src'); "
+CLI_ENTRY = (f"import sys; sys.path.insert(0, r'{REPO / 'ck3_autonomous_player/src'}'); "
              "from xar_autoplayer.cli import main; raise SystemExit(main(sys.argv[1:]))")
-MCP_ENTRY = ("import sys; sys.path.insert(0, r'D:/w/h2743exit/ck3_autonomous_player/src'); "
+MCP_ENTRY = (f"import sys; sys.path.insert(0, r'{REPO / 'ck3_autonomous_player/src'}'); "
              "from xar_autoplayer.bridge.mcp_server import main; raise SystemExit(main())")
 SOURCE_HASHES = {
     "xar_checkpoint.ck3": "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9",
@@ -53,9 +57,17 @@ STORAGE_DLL_SHA = "19C53611AEA499A37CF222A48A5395EC7B5BBA306ABC6065AB73C097CC85F
 DEFAULT_CANDIDATE = "title-prestate-v3"
 TRUCE_CANDIDATE = "partial-truce-inputs-v4"
 STORAGE_CANDIDATE = "war-storage-candidate-v5"
+EXISTING_TRUCE_CANDIDATE = "preaction-existing-truce-v1"
+EXISTING_TRUCE_ROOT = Path("D:/ck3-research-artifacts/h2743-existing-truce-readonly-20260929")
+EXISTING_TRUCE_BUILD = Path("D:/ck3-research-artifacts/h2743-existing-truce-release-20260929-attempt03/build")
+EXISTING_TRUCE_DLL_SHA = "DAE3E3F5DBA5AD936EC85A22584E33D58379E2ACE107D6E044AD7F8CEF7C4C02"
+EXISTING_TRUCE_INJECTOR_SHA = "2261CCF9FD919E329014720A4AD797B988C53FB46DCA234B48A50A8C03FEF931"
+EXISTING_TRUCE_MANIFEST = EXISTING_TRUCE_BUILD.parent / "candidate-manifest.json"
+EXISTING_TRUCE_MANIFEST_SHA = "0E98B9E1FD13A6CCD550E582ADEEA82D161B063DD7AF97B6D75DC0FB9260D04C"
 CANDIDATE = DEFAULT_CANDIDATE
 LIVE_OUTPUT = "live-dejure-readonly-v3"
 INJECTOR_SHA = "C89F1A919514A7E664AEE8FAF165B78C693ABA4EA2105289BDA2DB4BAC6A84FF"
+BASE_INJECTOR_SHA = INJECTOR_SHA
 EXE_SHA = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 WAR_VALUES = GAME / "game/common/script_values/00_war_values.txt"
 WAR_VALUES_SHA = "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B"
@@ -69,24 +81,55 @@ TOOL_SECONDS = 120
 STATIC_HELP_SECONDS = 90
 
 
+def python_source_hashes() -> dict[str, str]:
+    return {
+        "runner": sha256(Path(__file__).resolve()),
+        "native_driver": sha256(REPO / "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"),
+        "existing_truce_contract": sha256(
+            REPO / "ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_preaction_existing_truce_v1.py"
+        ),
+    }
+
+
 def select_candidate(name: str) -> None:
     """Bind a single exact DLL for this process before any attempt is prepared."""
-    global CANDIDATE, DLL, DLL_SHA, LIVE_OUTPUT
+    global CANDIDATE, ROOT, DLL, DLL_SHA, INJECTOR, INJECTOR_SHA, LIVE_OUTPUT, QUERY
     if name == DEFAULT_CANDIDATE:
         CANDIDATE = DEFAULT_CANDIDATE
+        ROOT = BASE_ROOT
+        INJECTOR = BASE_INJECTOR
+        INJECTOR_SHA = BASE_INJECTOR_SHA
+        QUERY = BASE_QUERY
         DLL = ROOT / "build-title-prestate-001/xar_ck3_bridge.dll"
         DLL_SHA = "6689ED3B3EB40F33157B028BD7067FF859F1C6ACDCFC02EDEB92A7D0F271B17E"
         LIVE_OUTPUT = "live-dejure-readonly-v3"
     elif name == TRUCE_CANDIDATE:
         CANDIDATE = TRUCE_CANDIDATE
+        ROOT = BASE_ROOT
+        INJECTOR = BASE_INJECTOR
+        INJECTOR_SHA = BASE_INJECTOR_SHA
+        QUERY = BASE_QUERY
         DLL = TRUCE_DLL
         DLL_SHA = TRUCE_DLL_SHA
         LIVE_OUTPUT = "live-dejure-partial-truce-v4"
     elif name == STORAGE_CANDIDATE:
         CANDIDATE = STORAGE_CANDIDATE
+        ROOT = BASE_ROOT
+        INJECTOR = BASE_INJECTOR
+        INJECTOR_SHA = BASE_INJECTOR_SHA
+        QUERY = BASE_QUERY
         DLL = STORAGE_DLL
         DLL_SHA = STORAGE_DLL_SHA
         LIVE_OUTPUT = "live-dejure-war-storage-v5"
+    elif name == EXISTING_TRUCE_CANDIDATE:
+        CANDIDATE = EXISTING_TRUCE_CANDIDATE
+        ROOT = EXISTING_TRUCE_ROOT
+        DLL = EXISTING_TRUCE_BUILD / "xar_ck3_bridge.dll"
+        DLL_SHA = EXISTING_TRUCE_DLL_SHA
+        INJECTOR = EXISTING_TRUCE_BUILD / "xar_ck3_bridge_injector.exe"
+        INJECTOR_SHA = EXISTING_TRUCE_INJECTOR_SHA
+        QUERY = "query-h2743-preaction-existing-truce-v1"
+        LIVE_OUTPUT = "live-preaction-existing-truce-v1"
     else:
         raise ValueError("unknown exact H2743 candidate")
 
@@ -124,6 +167,19 @@ def check_static() -> dict[str, object]:
     for path, digest in expected.items():
         if not path.is_file() or sha256(path) != digest:
             raise RuntimeError(f"exact byte identity missing or changed: {path}")
+    if CANDIDATE == EXISTING_TRUCE_CANDIDATE:
+        if (not EXISTING_TRUCE_MANIFEST.is_file()
+                or sha256(EXISTING_TRUCE_MANIFEST) != EXISTING_TRUCE_MANIFEST_SHA):
+            raise RuntimeError("exact H2743 candidate build manifest missing or changed")
+        build = json.loads(EXISTING_TRUCE_MANIFEST.read_text(encoding="utf-8"))
+        if (build.get("head") != "3841f830a0511c65f99043571f779c953f32ecae"
+                or build.get("configuration") != "Release"
+                or build.get("candidate_option") !=
+                "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1=ON"
+                or build.get("dll", {}).get("sha256") != DLL_SHA
+                or build.get("injector", {}).get("sha256") != INJECTOR_SHA
+                or build.get("ck3_exe_sha256") != EXE_SHA):
+            raise RuntimeError("H2743 candidate build manifest content differs")
     for path in (PYTHON, TASK_BUS, REPO / "ck3_autonomous_player/src/xar_autoplayer/cli.py",
                  REPO / "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"):
         if not path.is_file():
@@ -149,6 +205,8 @@ def check_static() -> dict[str, object]:
             "readiness_seconds": READINESS_SECONDS,
             "session_timeout_seconds": SESSION_SECONDS, "paths_sha256": {str(path): digest for path, digest in expected.items()},
             "allowed_query_steps": [QUERY, OPTIONS_QUERY],
+            "python_source_sha256": python_source_hashes() if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
+            "candidate_build_manifest_sha256": EXISTING_TRUCE_MANIFEST_SHA if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
             "process_module_map_probe": "self_readable",
             "gameplay_action_submitted": False}
 
@@ -238,6 +296,11 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
             or pair.get("ck3_launch_attempted") is not False
             or pair.get("gameplay_action_submitted") is not False):
         raise RuntimeError("prepared H2743 source pair belongs to another candidate")
+    if CANDIDATE == EXISTING_TRUCE_CANDIDATE:
+        if (pair.get("python_source_sha256") != python_source_hashes()
+                or pair.get("candidate_build_manifest_sha256") != EXISTING_TRUCE_MANIFEST_SHA
+                or ready.get("python_source_sha256") != python_source_hashes()):
+            raise RuntimeError("prepared H2743 Python source or build manifest changed")
     placed = {"xar_checkpoint.ck3": state / "profile/save games/xar_checkpoint.ck3",
               "first-heir-marriage-formal-v1.json": state / "first-heir-marriage-formal-v1.json"}
     for name, path in placed.items():
@@ -248,12 +311,16 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
     return state, ready
 
 
-def prepare_no_launch(attempt_name: str, task_id: str) -> None:
+def prepare_no_launch(attempt_name: str, task_id: str | None) -> None:
     """Fresh exact source pairing and native preflight, with no CK3 launch."""
     if not valid_attempt_name(attempt_name):
         raise RuntimeError("use a fresh literal attempt-N-dejure-baseline-no-launch name")
     check_static()
-    screen_lease(task_id)
+    if task_id is None:
+        if CANDIDATE != EXISTING_TRUCE_CANDIDATE:
+            raise RuntimeError("offscreen no-launch preflight is limited to the new H2743 candidate")
+    else:
+        screen_lease(task_id)
     import psutil
     if any((item.info.get("name") or "").casefold() == "ck3.exe" for item in psutil.process_iter(["name"])):
         raise RuntimeError("CK3 is already running; defer no-launch profile work")
@@ -263,6 +330,8 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
     write_new(attempt / "source-pair.json", {"schema": "xar.ck3.h2743.dejure-exit-read-port-no-launch.v3",
         "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
         "candidate_dll": str(DLL), "candidate_dll_sha256": DLL_SHA,
+        "python_source_sha256": python_source_hashes() if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
+        "candidate_build_manifest_sha256": EXISTING_TRUCE_MANIFEST_SHA if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
         "injector_sha256": INJECTOR_SHA, "ck3_launch_attempted": False, "gameplay_action_submitted": False})
 
     def call(name: str, arguments: list[str]) -> dict[str, object]:
@@ -282,7 +351,8 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
                     code = completed.wait(timeout=min(60, remaining))
                     break
                 except subprocess.TimeoutExpired:
-                    renew_screen_lease(task_id)
+                    if task_id is not None:
+                        renew_screen_lease(task_id)
         if code != 0:
             raise RuntimeError(f"{name} failed: {code}; preserve this attempt")
         return {"exit_code": code, "stdout_sha256": sha256(attempt / f"{name}-stdout.txt"),
@@ -311,6 +381,7 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
     write_new(attempt / "ready-summary.json", {"status": "no_launch_preflight_ready",
         "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
         "candidate_dll_sha256": DLL_SHA,
+        "python_source_sha256": python_source_hashes() if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
         "injector_sha256": INJECTOR_SHA, "derived_driver_sha256": derived,
         "prepare": prepare, "rebind": rebind, "preflight": preflight,
         "ck3_launch_attempted": False, "gameplay_action_submitted": False})
@@ -637,6 +708,55 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                 ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
                 require_snapshot_bridge_pid(before, ready.get("pid"))
                 write_new(output / "binary-audit-live.json", audit_loaded_binaries(ready.get("pid"), state))
+                if CANDIDATE == EXISTING_TRUCE_CANDIDATE:
+                    from xar_autoplayer.bridge.h2743_preaction_existing_truce_v1 import (
+                        OUTER_KEYS, normalize_result,
+                    )
+                    truce_results = []
+                    for number in (1, 2):
+                        result = await call(session, "ck3_execute_step", {"step": QUERY},
+                                            f"existing-truce-query-{number}")
+                        if not OUTER_KEYS.issubset(result):
+                            raise RuntimeError("H2743 existing-truce result fields missing")
+                        wire = normalize_result(
+                            {key: result[key] for key in OUTER_KEYS},
+                            native_revision=before["native_revision"],
+                        )
+                        if (result.get("h2743_preaction_existing_truce_proof") != wire
+                                or wire["status"] == "unavailable"):
+                            raise RuntimeError("H2743 existing-truce slot is unavailable or proof differs")
+                        truce_results.append((result, wire))
+                        if number == 1:
+                            options_result = await call(session, "ck3_execute_step",
+                                                        {"step": OPTIONS_QUERY}, "war-options-query")
+                            require_options_query(options_result, frame, war, expected_wars)
+                    after = await call(session, "ck3_take_snapshot", {}, "after-snapshot")
+                    require_snapshot_bridge_pid(after, ready["pid"])
+                    require_same_ready_frame(after, war, frame, expected_wars)
+                    if (truce_results[0][1] != truce_results[1][1]
+                            or truce_results[1][0]["query_sequence"] !=
+                            truce_results[0][0]["query_sequence"] + 1):
+                        raise RuntimeError("H2743 existing-truce slot changed within paused frame")
+                    return {
+                        "status": "preaction_existing_truce_readonly",
+                        "candidate_kind": CANDIDATE, "war_id": 16777231,
+                        "frame": frame, "date_raw": before["date_raw"],
+                        "source_save_sha256": SOURCE_HASHES["xar_checkpoint.ck3"],
+                        "before_snapshot_sha256": sha256(output / "before-payload.json"),
+                        "query_1_sha256": sha256(output / "existing-truce-query-1-payload.json"),
+                        "query_2_sha256": sha256(output / "existing-truce-query-2-payload.json"),
+                        "war_options_payload_sha256": sha256(output / "war-options-query-payload.json"),
+                        "binary_audit_live_sha256": sha256(output / "binary-audit-live.json"),
+                        "after_snapshot_sha256": sha256(output / "after-snapshot-payload.json"),
+                        "preaction_status": truce_results[0][1]["status"],
+                        "preaction_existing_expiry_date_raw": truce_results[0][1]["preaction_existing_expiry_date_raw"],
+                        "post_surrender_actual_expiry_date_raw": None,
+                        "effect_projection_complete": False,
+                        "material_complete": False,
+                        "comparison_status": "unavailable",
+                        "action_literal": None,
+                        "gameplay_action_submitted": False,
+                    }
                 results = []
                 for number in (1, 2):
                     result = await call(session, "ck3_execute_step", {"step": QUERY}, f"baseline-query-{number}")
@@ -852,7 +972,7 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", choices=(DEFAULT_CANDIDATE, TRUCE_CANDIDATE,
-                                                STORAGE_CANDIDATE),
+                                                STORAGE_CANDIDATE, EXISTING_TRUCE_CANDIDATE),
                         default=DEFAULT_CANDIDATE,
                         help="exact pinned read-only DLL; default preserves the v3 reader")
     parser.add_argument("--check-static", action="store_true", help="hash exact inputs; no profile or CK3 launch")
@@ -871,8 +991,9 @@ def main() -> None:
             parser.error("--run cannot also prepare a profile")
         run(args.prepared_attempt, args.steam_gate, args.task_id)
     elif args.prepare_no_launch:
-        if not args.attempt_name or not args.task_id or args.prepared_attempt or args.steam_gate:
-            parser.error("--prepare-no-launch requires --attempt-name and --task-id")
+        if (not args.attempt_name or args.prepared_attempt or args.steam_gate
+                or (not args.task_id and args.candidate != EXISTING_TRUCE_CANDIDATE)):
+            parser.error("--prepare-no-launch requires --attempt-name; old candidates also require --task-id")
         prepare_no_launch(args.attempt_name, args.task_id)
     elif args.prepared_attempt or args.steam_gate or args.task_id or args.attempt_name:
         parser.error("attempt, gate and task ID are only used with --run")

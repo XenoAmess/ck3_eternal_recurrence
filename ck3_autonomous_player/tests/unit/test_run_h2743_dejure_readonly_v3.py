@@ -36,6 +36,20 @@ def clean_receipt() -> dict[str, object]:
 
 
 class H2743RunnerGateTests(unittest.TestCase):
+    def test_existing_truce_candidate_uses_new_pair_and_only_readonly_step(self) -> None:
+        try:
+            runner.select_candidate(runner.EXISTING_TRUCE_CANDIDATE)
+            self.assertEqual(runner.ROOT, runner.EXISTING_TRUCE_ROOT)
+            self.assertEqual(runner.DLL, runner.EXISTING_TRUCE_BUILD / "xar_ck3_bridge.dll")
+            self.assertEqual(runner.DLL_SHA, runner.EXISTING_TRUCE_DLL_SHA)
+            self.assertEqual(runner.INJECTOR_SHA, runner.EXISTING_TRUCE_INJECTOR_SHA)
+            self.assertEqual(runner.QUERY, "query-h2743-preaction-existing-truce-v1")
+            self.assertEqual(runner.LIVE_OUTPUT, "live-preaction-existing-truce-v1")
+        finally:
+            runner.select_candidate(runner.DEFAULT_CANDIDATE)
+        self.assertEqual(runner.ROOT, runner.BASE_ROOT)
+        self.assertEqual(runner.QUERY, runner.BASE_QUERY)
+
     def test_storage_candidate_requires_new_pin_and_keeps_stock_condition_unknown(self) -> None:
         try:
             runner.select_candidate(runner.STORAGE_CANDIDATE)
