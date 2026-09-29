@@ -153,6 +153,24 @@ class H2743RunnerGateTests(unittest.TestCase):
         # R0004 first command took 23m37s; the old 300s frame gate was RED.
         self.assertGreaterEqual(runner.FRAME_SECONDS, 1800)
         self.assertLessEqual(runner.FRAME_SECONDS, runner.SESSION_SECONDS)
+        # attempt-13 returned a successful transport frame while map loading.
+        # This must remain a readiness poll, never the before-payload or a query.
+        loading = {"date_raw": 53217264, "paused": True, "map_ready": False,
+                   "local_player_id": 0, "played_character": None, "active_wars": []}
+        self.assertTrue(runner.cold_map_snapshot_pending(loading))
+        with patch.object(runner, "require_snapshot") as identity:
+            self.assertIsNone(runner.admit_ready_snapshot(loading))
+            identity.assert_not_called()
+        with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
+            runner.require_snapshot(loading)
+        ready = dict(loading, map_ready=True)
+        self.assertFalse(runner.cold_map_snapshot_pending(ready))
+        with self.assertRaisesRegex(RuntimeError, "snapshot identity differs"):
+            runner.admit_ready_snapshot(ready)
+        for malformed in (None, 0, 1, "false"):
+            with self.subTest(malformed=malformed), self.assertRaisesRegex(
+                    RuntimeError, "map readiness field"):
+                runner.cold_map_snapshot_pending(dict(loading, map_ready=malformed))
         runner.require_lease_watchdog_healthy([])
         with self.assertRaisesRegex(RuntimeError, "screen lease watchdog failed"):
             runner.require_lease_watchdog_healthy(["lease owner changed"])

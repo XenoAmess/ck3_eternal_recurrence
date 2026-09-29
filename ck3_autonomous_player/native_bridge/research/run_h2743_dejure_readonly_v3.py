@@ -318,8 +318,9 @@ def prepare_no_launch(attempt_name: str, task_id: str) -> None:
 
 
 def require_snapshot(value: dict[str, object]) -> dict[str, object]:
+    played = value.get("played_character")
     if (value.get("episode_run_id") != EPISODE or value.get("date_raw") != 53217264
-            or value.get("played_character", {}).get("character_id") != 29829
+            or not isinstance(played, dict) or played.get("character_id") != 29829
             or value.get("paused") is not True):
         raise RuntimeError("H2743 paused snapshot identity differs")
     wars = [row for row in value.get("active_wars", []) if isinstance(row, dict) and row.get("war_id") == 16777231]
@@ -332,6 +333,14 @@ def require_snapshot(value: dict[str, object]) -> dict[str, object]:
             or war.get("targeted_title_ids") != [2128]):
         raise RuntimeError("H2743 primary defender war row differs")
     return war
+
+
+def cold_map_snapshot_pending(value: dict[str, object]) -> bool:
+    """A connected native bridge can publish a valid snapshot before the map loads."""
+    ready = value.get("map_ready")
+    if type(ready) is not bool:
+        raise RuntimeError("H2743 map readiness field is missing or malformed")
+    return not ready
 
 
 FRAME_FIELDS = ("snapshot_id", "revision", "native_revision", "date_raw",
@@ -349,6 +358,13 @@ def frame_signature(snapshot: dict[str, object]) -> dict[str, object]:
                    for field in ("revision", "native_revision", "date_raw", "connection_generation"))):
         raise RuntimeError("H2743 six-field paused frame is incomplete")
     return frame
+
+
+def admit_ready_snapshot(snapshot: dict[str, object]) -> tuple[dict[str, object], dict[str, object], list[dict[str, object]]] | None:
+    """Return identity evidence only after a fully loaded H2743 map frame."""
+    if cold_map_snapshot_pending(snapshot):
+        return None
+    return require_snapshot(snapshot), frame_signature(snapshot), full_war_signature(snapshot)
 
 
 def require_snapshot_bridge_pid(snapshot: dict[str, object], pid: int) -> None:
@@ -557,20 +573,27 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                 count = 0
                 while True:
                     require_lease_watchdog_healthy(lease_failures)
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise RuntimeError(f"H2743 paused MCP frame not ready within {FRAME_SECONDS} seconds")
                     count += 1
-                    response = await asyncio.wait_for(session.call_tool("ck3_take_snapshot", {}), timeout=TOOL_SECONDS)
+                    response = await asyncio.wait_for(session.call_tool("ck3_take_snapshot", {}),
+                                                      timeout=min(TOOL_SECONDS, remaining))
                     require_lease_watchdog_healthy(lease_failures)
                     write_new(output / f"readiness-{count:03d}.json", response.model_dump(mode="json", by_alias=True))
                     if not response.is_error and isinstance(response.structured_content, dict):
-                        before = response.structured_content
-                        write_new(output / "before-payload.json", before)
-                        war = require_snapshot(before)
-                        frame = frame_signature(before)
-                        expected_wars = full_war_signature(before)
-                        break
+                        candidate = response.structured_content
+                        admitted = admit_ready_snapshot(candidate)
+                        if admitted is not None:
+                            if time.monotonic() >= deadline:
+                                raise RuntimeError(f"H2743 paused MCP frame not ready within {FRAME_SECONDS} seconds")
+                            war, frame, expected_wars = admitted
+                            before = candidate
+                            write_new(output / "before-payload.json", before)
+                            break
                     if time.monotonic() >= deadline:
                         raise RuntimeError(f"H2743 paused MCP frame not ready within {FRAME_SECONDS} seconds")
-                    await asyncio.sleep(15)
+                    await asyncio.sleep(min(15, deadline - time.monotonic()))
                 ready = json.loads((output / "session-ready.json").read_text(encoding="utf-8"))
                 require_snapshot_bridge_pid(before, ready.get("pid"))
                 write_new(output / "binary-audit-live.json", audit_loaded_binaries(ready.get("pid"), state))

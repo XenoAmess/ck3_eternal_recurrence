@@ -1,0 +1,9 @@
+# H2743 v5 attempt-13：冷加载首帧门 RED（2026-09-29）
+
+本次只读尝试使用精确 H2743 source save `A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9`、v5 DLL `19C53611AEA499A37CF222A48A5395EC7B5BBA306ABC6065AB73C097CC85FB2B` 和新建的外置 `attempt-13-dejure-baseline-no-launch/`。受管 profile prepare、rebind、官方无启动 preflight 均 GREEN；`ready-summary.json` SHA-256 为 `D54FC7DDB3F53DBC54CB6BF4E0F82C24C6F0F21B81EAFEF1C1514F8CD6E5653A`。取得任务总线 `ck3-screen:acquired` seq2250，并审阅当次新鲜 Steam 离线原图 `steam-frame-v5-attempt13-001/steam-moved.png`（SHA-256 `0FC8CF8CF1A7BAF35A14A76524B286EEBC68A184A7A8B809319101601EEC2005`）后才启动。
+
+受管 CK3 于 `2026-09-29T00:55:55Z` 启动。`live-dejure-war-storage-v5/readiness-077.json`（SHA-256 `BA8099BB2FAA6853B6100D549F4777AC5716ABFFF306F87B63852EF057ADCB6E`）在约 21 分钟后返回**成功的 MCP 传输快照**，但其游戏地图仍在冷加载：`date_raw=53217264`、`paused=true`、`map_ready=false`、`local_player_id=0`、`played_character=null`、`active_wars=[]`。脚本错误地把任意成功传输快照当成可查询的暂停游戏帧，提前写出 `before-payload.json`（SHA-256 `FADE223ED2F88EB5E4E1507A511BE04F3E0DCB4406B2688A1AA17FECFA674AFE`）并由身份门拒绝。它没有等待既定的 1800 秒地图帧期限，也没有调用 v5 baseline 或 termination-options query。`failure.json` SHA-256 `D1410CFC3769154094474F59D3CBD601BF0701807583B9B152AEF0F608C73F3A`。
+
+受管 `stop` 之后 supervisor 返回 0、CK3 PID 列表为空、stdout reader 结束、源 save/driver/sidecar/DLL、候选 DLL、injector、EXE 和放置件哈希均未改变；`session-exit.json` SHA-256 `FCAA21F70513D75D638F09FD21D6A38280327F5E6A091995A5DE802ACAACFA16`。任务总线已于 `2026-09-29T01:19:24Z` RELEASE seq2276，资源列表为空。无日期推进、无投降、无任何 gameplay action。此 attempt 永久保留为 RED，不得追认为 v5 live 结果。
+
+后续 runner 修正只在 `map_ready=true` 且完整 H2743 身份门通过时写 `before-payload.json` 和启动只读查询；`map_ready=false` 仅保全 readiness envelope 并在原 1800 秒门内继续轮询，缺失或非布尔 readiness 一律拒绝。下一次需要**新**外置 attempt、新鲜 Steam 离线帧和独立屏幕租约。即使下一次 v5 读口成功，`border_raid_storage_candidate_v1` 仍只是结构候选，原版 `any_character_war` 等价性、实际休战期限、完整终战代价和退出决策仍不可用。
