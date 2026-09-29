@@ -1,0 +1,141 @@
+{
+  "schema": "xar.war.r0271-r3947-h3937-readonly-response.v1",
+  "request_id": "WAR-ROBERT-R0271-SIEGE-PARTITION-20260928",
+  "response_kind": "append_only_live_attempt_result",
+  "status": "RED_LAUNCH_ERROR_UNSAFE_MARKER_RETAINED",
+  "created_at_utc": "2026-09-29T22:00:42Z",
+  "round": "R3947",
+  "attempt": "war-h3937-combined-live-20260930/attempt-13",
+  "task_bus_id": "war-h3937-cold-observer-readonly-live-20260930-a13",
+  "live_registry_id": "desktop-3fevhd2-1c74096080--vanilla--R0116",
+  "candidate_head": "de5f953c7a4dee3e3eed9ed0dda10f92e9a240e7",
+  "source_checkpoint": {
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "war_id": 16777231,
+    "history_index": 3937,
+    "date_raw": 53219928,
+    "save_sha256": "92A06F540E98A767D3E1DB95A6F3870674E0A7F084C2A14BD2D04D354E53DAF6",
+    "raw_source_driver_sha256": "2F0673EC4D0AFA2A77DE59FE9405EC032CF00F79D9484BBD3DC4361EC1311722",
+    "prepared_driver_sha256": "87C47B57AC263FDED859F6709E22C7C6C8B2D10F5F19C2F95163BD5FF40FF85D",
+    "bridge_dll_sha256": "3438E8725AA06839CA1F2DFAF6D6CC98D41A4F33C02AC0702AC8D48AD241531B",
+    "bridge_injector_sha256": "ECBC1B3B24E8A9BF1F85E9CBE195E4A5B8D3E928DB0FC8124ABF4D6D95A4B0D3",
+    "identity_scope": "exact input source only; no live native frame was obtained"
+  },
+  "official_result": {
+    "outer_status": "RED",
+    "failure_phase": "native watchdog bootstrap before CK3 launch",
+    "error_type": "AgentError",
+    "error": "watchdog bootstrap failed; unsafe marker retained: process watchdog bootstrap PID 8044 did not become ready",
+    "ck3_launch_started": false,
+    "watchdog_bootstrap_pid": 8044,
+    "native_readiness": null,
+    "native_frame": null,
+    "live_date_raw": null,
+    "read_only_query_attempts": 0,
+    "completed_query_envelopes": 0,
+    "remaining_authorized_queries_not_attempted": 6,
+    "gameplay_actions": 0,
+    "action_authorized": false,
+    "date_advance_authorized": false,
+    "unchanged_date_poststate_proven": false,
+    "physical_army_inventory_completeness_proven": false
+  },
+  "war_evidence": {
+    "local_siege_query_result": null,
+    "full_hostile_route_contact_query": null,
+    "same_frame_native_participant_partition": null,
+    "complete_physical_army_inventory": null,
+    "future_target_2629_actual_participant_set": null,
+    "reason": "The native watchdog failed before CK3 launch. No live paused frame or war query exists for a13; source checkpoint fields cannot fill live siege or participant evidence."
+  },
+  "r0266_cash_gate": {
+    "source_request_id": "WAR-R0266-H3937-FIVE-CASH-20260929",
+    "pending_war_cash_raw": null,
+    "immediate_war_action_cost_raw": null,
+    "future_war_cost_upper_raw": null,
+    "future_risk_budget_raw": null,
+    "policy_minimum_gold_reserve_raw": null,
+    "horizon_days": null,
+    "future_bound_assumptions": null,
+    "formal_cash_eligible": false,
+    "m5_spend_ready": false
+  },
+  "risk_contract": {
+    "r0271_h3388_original_red_not_overwritten": true,
+    "r3945_a11_and_r3946_a12_red_not_overwritten": true,
+    "r3947_readonly_observation_qualified": false,
+    "same_frame_siege_participants_proven": false,
+    "date_advance_gate": "RED",
+    "direct_attack_allowed": false,
+    "robert_resume_allowed_by_this_response": false,
+    "next_attempt": "The retained native unsafe marker blocks reuse of this state. A later attempt requires a new isolated state and fresh admission; the marker remains preserved. This response grants no CK3 relaunch, game-date advance, combat action or cash spending."
+  },
+  "visual_scope": {
+    "prelaunch_fresh_steam_offline_frame_directly_reviewed": true,
+    "cold_load_observer_samples": 2,
+    "cold_load_observer_frames": 0,
+    "terminal_screen_conclusion": null
+  },
+  "evidence": {
+    "go_receipt": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/go-attempt-13.json",
+      "sha256": "D690013B0DE2DA9BAA0883C20EBA6576743FF9154829F15CAAB4EFC8679331BF"
+    },
+    "outer_report": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/attempt-13/outer-report.json",
+      "sha256": "D9949FEF7D8BAC34CE8FBBDF459B23F6D09E96E84C27221C7653A9C062AFD0FC"
+    },
+    "worker_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/attempt-13/completion.json",
+      "sha256": "B9C1E7C616F4E0014761255A64136126DE30FEC3208222A54776F4A4505B8EFF"
+    },
+    "supervisor_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/attempt-13/supervisor-completion.json",
+      "sha256": "527F5BF831568EFB288DCA1522396B135D00B73DF53C6452AF3B43478E1C2437"
+    },
+    "operator_completion": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/operator-attempt-13/completion.json",
+      "sha256": "17B7233A127325A96BEF1FACBDE53FD476353761DD67E5C998C64C085C36165C"
+    },
+    "final_postcheck": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/a13-final-red-postcheck-v1.json",
+      "sha256": "EBA639DD00F15B136B80C223FB659EC8312B7F1AC443E4D0A11BED901E0534CC"
+    },
+    "native_unsafe_marker": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-no-launch-20260930/attempt-13/state/control/unsafe-cleanup.json",
+      "sha256": "46AE3870991880C7E2D1D8F31D05C40C2D7C883A89306A743A26F03D2B0C3F23"
+    },
+    "task_bus_final": {
+      "path": "D:/workspace/.codex-task-bus/tasks/war-h3937-cold-observer-readonly-live-20260930-a13.json",
+      "sha256": "51302A7AD156A95C7680F6DE16C23A2FA9F6F00B2E7EC10FC180D062A561DB14"
+    },
+    "steam_offline_direct_review": {
+      "path": "D:/ck3-research-artifacts/war-h3937-combined-live-20260930/screen-attempt-13/steam-offline-direct-review.json",
+      "sha256": "28A93438AFB121385013575982AB6A4ABDABD49CB95645C177C7CFBA10576D34"
+    }
+  },
+  "native_cleanup": {
+    "ok": false,
+    "cleanup_proven": false,
+    "tree_gone_proven_by_native_session": false,
+    "unsafe_marker_retained": true,
+    "unsafe_marker_ck3_pid": null,
+    "unsafe_marker_reason": "watchdog bootstrap requested; CK3 launch not yet started"
+  },
+  "outer_final_postcheck": {
+    "target_process_inventory_empty": true,
+    "watchdog_bootstrap_pid_exists_after": false,
+    "original_source_and_verified_assets_unchanged": true,
+    "prepared_assets_unchanged": true,
+    "taskbus_state": "done",
+    "taskbus_resources": [],
+    "taskbus_release_sequence": 2528,
+    "native_cleanup_promoted_to_green": false
+  },
+  "ack_state": {
+    "a13_source_ack_observed_on_this_receiver": false,
+    "a13_receiver_consumption_ack_observed_on_this_receiver": false
+  },
+  "source_readback_status": "pending"
+}
