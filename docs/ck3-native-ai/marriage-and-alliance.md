@@ -1257,3 +1257,123 @@ does not decide that either betrothal is worth making:
 their future partnership timing, pair-specific childbearing, and long
 obligation remain unproved. A paused native read and comparison are the next
 evidence gate; no proposal or game-date advance follows from this static tree.
+
+### R0387: paired native fertility and bounded Guy comparison (2026-09-30)
+
+The official paired Robert H3911 read-only round R0387 sampled both Guy
+`38988` alternatives on the same paused `raw53219928` / `native:3` frame.
+The [immutable report](Z:/ck3_mod_rewrite_process_assets/nw-family-guy-fertility-h3911-20260930-c4/live-R0387/report.json)
+has SHA-256 `532F444EEA6809F4FD1E3FFF90969EEF58E1764F44860386AACD02B2323FC091`.
+Both candidates remained final-legal fatherline betrothals with positive
+recipient answers, no alliance creation attempt, and zero native on-send
+resource costs. Guy's native fertility gate allowed raw `40000`; candidates
+`37909` and `39380` each allowed raw `50000`. These signed integers are
+**not** a calibrated child probability or future result.
+
+The stock `common/script_values/00_interaction_values.txt:675-690` evaluates
+`marriage_fertile_age_reverse_value = 16 - secondary_actor.age +
+secondary_recipient.age`. In the stock acceptance modifier at
+`00_marriage_scripted_modifiers.txt:1496-1564`, an adult woman and underage boy
+receive the low-fertility penalty when that value is at least `43`. For the
+observed Guy age `13` and candidate `37909` age `18`, the value is `21`, so
+this particular native acceptance penalty does not apply. Candidate `39380`
+is age `10`; marriage must wait for her age `16`, approximately six years,
+whereas `37909` only waits for Guy's age `16`, approximately three years.
+Both carry a lasting marriage commitment, and neither yields an observed
+alliance. The earlier chance of fatherline dynasty offspring for Guy, the
+already observed county `2173` successor, is a possible bounded value; it
+does not establish a completed choice, guaranteed children, a fixed fertility
+scale, or an alliance payoff. The same native legality read also contains
+candidate `37571`, adult measure `20`, recipient `32897`, acceptance raw
+`2100000`, external dynasty `1807`, and a realm-backed recipient. Her
+fertility, default lineality, immediate cost, and alliance projection were
+**not** read in R0387. She is a relevant alternative to both sampled rows.
+
+```mermaid
+flowchart TD
+    A[Guy verified player child; county 2173 successor] --> B{Final legal fatherline and positive native answer}
+    B -- no --> H[Hold]
+    B -- yes --> C{Same-frame fertility gate and raw positive for both}
+    C -- no --> H
+    C -- yes --> D{No on-send cost or alliance attempt}
+    D -- no --> H
+    D -- yes --> E{Preferred adult woman's age at Guy adulthood < 43}
+    E -- no --> H
+    E -- yes --> F{All relevant final-legal alternatives valued on this frame}
+    F -- no --> H
+    F -- yes --> J{Earlier partnership value exceeds obligations and alternatives}
+    J -- yes --> G[Bounded private proposal candidate]
+    J -- no --> H
+    G -. unknown .-> I[Actual accepted betrothal and future children]
+```
+
+The exact actor and candidate IDs identify this trial's evidence, not a
+general policy constant. The next minimal read must value `37571` on the
+same paused child frame before any proposal policy chooses among these rows.
+A later formal consumer must re-read the chosen candidate and the same
+original child on its current paused frame, persist pending identity before
+typed default submission, then consume actual bilateral outcome on a later
+turn and on cold restore. No proposal or date was advanced by R0387.
+
+### R0389: third alternative and bounded split-successor choice (2026-09-30)
+
+The [R0389 immutable read-only report](Z:/ck3_mod_rewrite_process_assets/nw-family-guy37571-h3911-20260930-c5/live-R0389/report.json)
+has SHA-256 `2779C3EF76F25D23EDE2AAE265DFA3F62BCB9D7E90637C1F736D03AAE08D8EA2`.
+One paused `raw53219928` / `native:3` frame bound Guy `38988` as the
+verified player child and separate successor of county `2173`; the primary
+first heir remained `38822`. It projected three actual final-legal default
+fatherline values, `37909`, `39380`, and `37571`, without an action or date
+advance. The owned CK3 process was minimized after readiness and reclaimed.
+
+All three pairs had Guy's native fertility gate true/raw `40000`, candidate
+gate true/raw `50000`, positive recipient answer, zero in all ten observed
+on-send resource terms, and no projected alliance attempt. These raw
+fertility values do not quantify future birth probability. All three would
+first create a betrothal if accepted. Their relevant differences are:
+
+| Candidate | Adult measure now | Earliest two-party adult wait | Candidate measure then | Recipient accept raw |
+| --- | ---: | ---: | ---: | ---: |
+| `37909` | 18 | 3 | 21 | 1,000,000 |
+| `39380` | 10 | 6 | 16 | 900,000 |
+| `37571` | 20 | 3 | 23 | 2,100,000 |
+
+The original reverse-age acceptance penalty at future measure `43` does not
+apply to either adult candidate. It does not prove future children. Recipient
+accept raw is a positive native answer input, not a success probability; the
+higher raw for `37571` does not by itself price two fewer prospective adult
+years for `37909`. No future war promise is valued because all projected
+`would_attempt_if_accepted` values are false.
+
+The private counter-policy now values one narrow opportunity: give a currently
+unpaired, verified player child who will inherit a separate title a default
+fatherline partner within at most three adult-measure units, with no observed
+on-send cost or alliance attempt. The three-unit limit and preference for a
+younger candidate at the shared adult date are **project policy bounds**, not
+native rules or a fertility formula. With equal native fertility input and
+equal wait/cost/lineality, `37909` ranks ahead of `37571` by candidate age at
+Guy's adulthood; `39380` waits six units and misses the project bound.
+Locking the marriage slot, conditional dissolution prestige/opinion/unity,
+future spouse quality, actual children, and future diplomatic consequences
+remain unpriced. This choice does not claim those outcomes or global optimum.
+
+```mermaid
+flowchart TD
+    A[Same paused frame: child and split title successor] --> B{No existing spouse or betrothal}
+    B -- no --> H[Hold]
+    B -- yes --> C[Compact final-legal shortlist by adult timing and positive answer]
+    C --> D[Read full native value for candidate in rank order]
+    D --> E{Default fatherline; native fertility gates; cost zero; no alliance attempt}
+    E -- no --> D
+    E -- yes --> F{Child adult wait <= 3; candidate adult; future age < 43}
+    F -- no --> D
+    F -- yes --> G[Select earliest adult partnership, then younger candidate]
+    G -. formal action still untested .-> I[Typed proposal and later bilateral result]
+    I -. unknown .-> J[Actual children or lasting dynasty effect]
+```
+
+The compact shortlist only orders expensive full-value reads; it does not
+assign a positive value to any unread row. The formal consumer must prove
+the split title from its **current** held-title partition, independently
+re-read Guy and the selected pair on that frame, and use the existing typed
+default-child action. A send ACK is only pending; bilateral betrothal,
+following-turn consumption and fresh-PID recovery are separate gates.
