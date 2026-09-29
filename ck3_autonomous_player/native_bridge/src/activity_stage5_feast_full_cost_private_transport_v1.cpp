@@ -97,15 +97,53 @@ bool EvaluateCanStart(void *opaque, std::uintptr_t planner,
   if (GetCurrentThreadId() != context.owner_thread_id || planner == 0 ||
       context.module_base == 0)
     return false;
-  using Predicate = bool (*)(void *, void *);
   const auto predicate =
-      reinterpret_cast<Predicate>(context.module_base + 0x10B0DA0);
+      reinterpret_cast<ActivityStage5CanStartPredicateV1>(
+          context.module_base + 0x10B0DA0);
+  const auto destroy_string =
+      reinterpret_cast<ActivityStage5NativeStringDestroyV1>(
+          context.module_base + 0x7E97D0);
+  bool succeeded = false;
   __try {
-    output = predicate(reinterpret_cast<void *>(planner), nullptr);
-    return true;
+    succeeded = InvokeActivityStage5CanStartWithDisplayV1(
+        reinterpret_cast<void *>(planner), predicate, destroy_string,
+        context.query->can_start_failure_display);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     return false;
   }
+  if (succeeded) output = context.query->can_start_failure_display.allowed;
+  return succeeded;
+}
+
+void AppendCanStartFailureDisplay(
+    std::string &payload, const ActivityStage5FailureDisplayV1 &display,
+    bool can_start) {
+  if (can_start) {
+    payload += "{\"state\":\"not_applicable\",\"value\":null,"
+               "\"unknown_reason\":null}";
+    return;
+  }
+  if (display.size == 0) {
+    payload += "{\"state\":\"unknown\",\"value\":null,"
+               "\"unknown_reason\":\"native_failure_display_empty\"}";
+    return;
+  }
+  payload += "{\"state\":\"known\",\"value\":\"";
+  constexpr char hex[] = "0123456789abcdef";
+  for (std::size_t index = 0; index < display.size; ++index) {
+    const auto byte = static_cast<unsigned char>(display.bytes[index]);
+    if (byte == '"' || byte == '\\') {
+      payload += '\\';
+      payload += static_cast<char>(byte);
+    } else if (byte < 0x20) {
+      payload += "\\u00";
+      payload += hex[byte >> 4];
+      payload += hex[byte & 0x0F];
+    } else {
+      payload += static_cast<char>(byte);
+    }
+  }
+  payload += "\",\"unknown_reason\":null}";
 }
 
 } // namespace
@@ -237,6 +275,9 @@ std::string SerializeActivityStage5FeastFullCostPrivateV1(
   }
   payload += "},\"final_can_start\":";
   payload += query.can_start.final_can_start ? "true" : "false";
+  payload += ",\"final_can_start_failure_display\":";
+  AppendCanStartFailureDisplay(payload, query.can_start_failure_display,
+                               query.can_start.final_can_start);
   payload += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false}";
   return payload;
 }
