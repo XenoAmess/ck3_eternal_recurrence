@@ -37,7 +37,7 @@
 
 第二天继续，但我们没有把第 29 日的败方状态重新塞回模型，让它照着答案走。输入仍从第 28 日开始链式推进。第 29 日到第 30 日，软伤二十四项、可读硬伤二十三项再次零差，硬伤新增二十点九七四七三个人当量。第三天，第 30 日到第 31 日，分别还是二十四项和二十三项零差，新增二十一点二六一一九个人当量。三天共六十二点九四二六九个人当量；七十二项软伤变化、六十九项可读硬伤变化，全都对上。[^pursuit]
 
-为什么每天的损失没有完全相同？胜方的追击伤害原始值三天都是七千五百二十万三千，但败方软伤池已经逐日变小，相关的坚韧与预算每一天都要重新计算。把第一天的结果简单乘三，会错过这个变化。与此同时，三天可比兵团的当前战斗人数保持不变。这也提醒我们：追击这一阶段被改写的是伤亡账，不能只看战场上的大号人数，就断言没有新损失。[^pursuit]
+为什么每天的损失没有完全相同？胜方的追击伤害原始值三天都是七千五百二十万三千，但败方软伤池已经逐日变小，相关的坚韧与预算每一天都要重新计算。把第一天的结果简单乘三，会错过这个变化。与此同时，A05 原生逐团账里，败方二十四个兵团的“当前战斗人数”字段在三次跨日对照中逐项不变；战斗面板上败方显示的人数却从八百二十四降到七百六十一。四个画面整数逐日与软伤池取整结果相同，但原版界面的内部计算公式尚未证实，不能把两列当成同一个人数。[^pursuit][^a05_count]
 
 这个结果非常窄，也因此有用：**给定 A05 第 28 日的原版状态**，我们能把这三天的逐团软硬伤账连算到零差。它没有证明每一场仗的败方掩护都为零。若掩护不为零，预算会走到尚未取得同帧原版逐团样本的分支；这一期不会把静态测试向量当作已经拍到的原版战例。它也不是“从战前就准确算出整场胜率”。[^screen]
 
@@ -124,6 +124,7 @@
 [^identity]: [系列路线图：统一拍法及下一期](../series-roadmap.md)、[墨西拿案例：身份与独立回放](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md)。
 [^case]: [墨西拿原始 31 日同案观察](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md#原版观察)，接战 UI 玩家 1288、敌方 330，战斗 side0 是敌方。
 [^pursuit]: [A05 新原生追击与独立模型逐团对拍](cards/e2-02-03-a05-pursuit-facts-20260928.json)，原件在 `D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/`；旧 [004 三日原件](../../../docs/ck3-native-ai/battle-simulation-episode01-live-case.md#2026-09-26-追击三日同一独立回放的逐团与账本对拍)只作历史审计旁证。
+[^a05_count]: [A05 逐团字段与画面人数口径核对](a05-current-count-copy-candidate-20260930.md)，含四日逐团 24/24、软伤池整数及孤立原尺寸 PNG 的来源 SHA；数值吻合尚不证明原版 UI 内部公式。
 [^screen]: [非零败方掩护研究合同](../../../docs/ck3-native-ai/pursuit-screen-nonzero-branch-contract-2026-09-27.md)；[A05 同源追击事实回执](cards/e2-02-03-a05-pursuit-facts-20260928.json)记录本次败方有效掩护聚合为 0，旧 004 仅作历史对照。
 [^maim]: [第 5 日致残、随机列表与同源前后存档](../../../docs/ck3-native-ai/combat-phase-event-trace.md#2026-09-26-第-5-日致残分支与子作用域抽签)，原件 `episode01-day05-wound-growth-attempt-039/`。
 [^maim_next]: [039→040 的第 6 日 v3 对照](../../../docs/ck3-native-ai/combat-phase-event-trace.md#致残写回进入第-6-天智能体输入)、[机器报告](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_maim_next_input.json)。
