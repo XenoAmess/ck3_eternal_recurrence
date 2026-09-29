@@ -652,6 +652,24 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertIn("--private-activity-feast-guest-candidate-read", command)
         self.assertNotIn("--private-activity-feast-stage5-start-read", command)
 
+    def test_feast_guest_route_proof_requires_cost_and_stays_read_only(self) -> None:
+        base = ["run", "--manifest", "Z:/candidate/manifest.json",
+                "--output", "Z:/candidate/run"]
+        flag = "--private-activity-feast-guest-route-proof-read"
+        self.assertFalse(g2_preview_operator.parser().parse_args(base)
+                         .private_activity_feast_guest_route_proof_read)
+        parsed = g2_preview_operator.parser().parse_args([*base, flag])
+        self.assertTrue(parsed.private_activity_feast_guest_route_proof_read)
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=1, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_route_proof_read=True,
+        )
+        self.assertIn(flag, command)
+        self.assertNotIn("--private-activity-feast-stage5-start-read", command)
+        self.assertNotIn("--allow-private-activity-feast-stage5-start-action", command)
+
     def test_feast_guest_opinion_read_routes_without_activity_action(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",
