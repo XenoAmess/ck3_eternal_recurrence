@@ -190,6 +190,10 @@ def collect_h3937_combined_reads_in_session(
         if not all(checks.values()):
             raise AgentError("H3937 province 2610 read-only proof incomplete")
         assert isinstance(middle, dict)
+        checks["route_contact_capability_advertised"] = (
+            middle.get("route_contact_horizon_supported") is True)
+        if not checks["route_contact_capability_advertised"]:
+            raise AgentError("H3937 route-contact read-only capability unavailable")
         hostiles = _route_contact_hostile_ids(middle)
         checks["dynamic_hostiles_match_war_row"] = (
             list(hostiles) == scope["query_eligible_hostile_army_ids"])

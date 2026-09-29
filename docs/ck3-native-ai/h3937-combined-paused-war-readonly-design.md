@@ -40,7 +40,8 @@ session; output from distinct DLL sessions cannot be called same-frame.
    pointer or from an H3928 report. A `partial` response is a bounded RED
    observation, never a substitute for occupation proof.
 4. Only when the full **native-published** roster/route/2610 observation
-   succeeds, consider a route-contact query in the same session. Preserve all
+   succeeds and `route_contact_horizon_supported=true` is advertised on S1,
+   consider a route-contact query in the same session. Preserve all
    unique enemy IDs from `S1.active_wars[0].enemy_armies`; derive the sorted
    nonretreating `dynamic_hostile_ids` with the same predicate as
    `_route_contact_hostile_ids(S1)`, and require it to be nonempty. Build

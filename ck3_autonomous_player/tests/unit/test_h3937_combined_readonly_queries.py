@@ -39,6 +39,7 @@ def _frame() -> dict[str, object]:
     return {
         "snapshot_id": "native:4", "revision": 5, "native_revision": 4,
         "date_raw": DATE,
+        "route_contact_horizon_supported": True,
         "episode_run_id": combined.EXPECTED_EPISODE_RUN_ID,
         "episode_character_id": 29829, "paused": True, "map_ready": True,
         "diagnostics": {"connection_generation": 1},
@@ -190,6 +191,21 @@ class H3937CombinedReadOnlyQueriesTests(unittest.TestCase):
             result = combined.collect_h3937_combined_reads_in_session(service)
         self.assertFalse(result["observed"])
         self.assertEqual(result["query_attempts"], 1)
+        self.assertEqual(service.execute_step.call_count, 1)
+
+    def test_missing_route_contact_capability_stops_after_province(self) -> None:
+        first = _frame()
+        first["route_contact_horizon_supported"] = False
+        province = _province_result()
+        middle = _after(first, province["step"], province)
+        service = SimpleNamespace(
+            snapshot=Mock(side_effect=[first, middle]),
+            execute_step=Mock(return_value=province))
+        with patch.object(combined, "H3937_COMBINED_LIVE_AUTHORIZED", True):
+            result = combined.collect_h3937_combined_reads_in_session(service)
+        self.assertFalse(result["observed"])
+        self.assertEqual(result["query_attempts"], 1)
+        self.assertFalse(result["checks"]["route_contact_capability_advertised"])
         self.assertEqual(service.execute_step.call_count, 1)
 
     def test_changed_roster_after_province_stops_before_contact(self) -> None:
