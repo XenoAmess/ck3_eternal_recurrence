@@ -462,6 +462,38 @@ class RemainingLiveStepTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "bridge pair differs"):
                 live.bind_session(output, "e2-04-d05")
 
+    def test_d11_requires_current_trace_enabled_binary_pair(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "interactive-requests").mkdir()
+            (output / "interactive-requests-responses").mkdir()
+            spec = live.TRACKS["e2-06-d11"]
+            self.assertEqual(spec["dll"],
+                             "781F981F9B1EFA176D98E445BAF6A952EAB56E8B47B2532FCB91775EE8007980")
+            self.assertEqual(spec["injector"],
+                             "F61F1D0CC549DBC67B5BB90CAFAF39677510833A61507339AC2100FD8628479A")
+            source = {"save": {"sha256": spec["save"]},
+                      "receipt": {"sha256": spec["receipt"]},
+                      "actor": live.ACTOR, "date_raw": spec["date"]}
+            preflight = {"result": "READY_FOR_BOUNDED_LIVE_ATTEMPT",
+                         "checkpoint_source": source,
+                         "game": {"sha256": live.EXE_SHA},
+                         "bridge_dll": {"sha256": spec["dll"]},
+                         "bridge_injector": {"sha256": spec["injector"]}}
+            write(output / "preflight.json", preflight)
+            write(output / "native-start-readback.json",
+                  {"postcondition_verified": True, "source_checkpoint": source})
+            write(output / "command.json",
+                  {"argv": ["capture_session.py", "--capture",
+                            "--enable-private-phase-trace"]})
+            self.assertEqual(live.bind_session(output, "e2-06-d11")["track"],
+                             "e2-06-d11")
+            preflight["bridge_dll"]["sha256"] = (
+                "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F")
+            write(output / "preflight.json", preflight)
+            with self.assertRaisesRegex(ValueError, "bridge pair differs"):
+                live.bind_session(output, "e2-06-d11")
+
     def test_private_request_uses_owner_action_envelope(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)

@@ -1,6 +1,6 @@
 # E2-04 d06 second session: current Character 34333 / Regiment 61
 
-Status: **operator candidate only**. No screen lease, Steam picture, CK3 launch, current native number, or raw recording is claimed here. The d06 a01 no-launch attempt is RED. Historical a02 was READY on `5629d147f`, with preflight SHA-256 `EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488`; it is excluded from admission on the integrated #451 HEAD. A fresh a03 no-launch must be run from this exact checkout and sealed by the operator before any live attempt.
+Status: **operator candidate only**. No screen lease, Steam picture, CK3 launch, current native number, or raw recording is claimed here. The d06 a01 no-launch attempt is RED. Historical a02 was READY on `5629d147f`, with preflight SHA-256 `EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488`; it is excluded from admission on the integrated #451 HEAD. The a03 takeover preflight belongs to an intermediate checkout and is also excluded. A fresh a04 no-launch must be run from this exact checkout and sealed by the operator before any live attempt.
 
 ## Frozen inputs and run code
 
@@ -13,7 +13,7 @@ Status: **operator candidate only**. No screen lease, Steam picture, CK3 launch,
 | UI saved full settings / 54-byte GUI block / receipt | `E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D` / `F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593` / `69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779` |
 | historical a02 capture code (excluded) | `D:/w/e204_d06_admission/promo/ck3_native_war_ai/integration/capture_session.py`, SHA `752F8E2096CA363857B806DE605B7DC90E679C55F79FD9747827D405E4B7110A`, commit `5629d147fa94ab68ad5ccda484fe1eb32d4cb59e` |
 
-The a03 DLL lacks private phase-trace BEGIN/FINISH strings. This second session only reads current knight and battle control. **Do not pass `--enable-private-phase-trace`; do not use `remaining_live_step.py`**, which pins an older DLL and requires phase trace.
+The a03 DLL lacks private phase-trace BEGIN/FINISH strings. This second session only reads current knight and battle control. **Do not pass `--enable-private-phase-trace`; do not use `remaining_live_step.py`**, which is for a separate trace-enabled d11 capture.
 
 ## Screen GO before starting
 
@@ -21,10 +21,10 @@ The a03 DLL lacks private phase-trace BEGIN/FINISH strings. This second session 
 2. Re-query latest formal `xar-promo` GitHub Release before the live run; verify the exact wheel SHA, interpreter version, top-level/relevant help. The historical a02 baseline was `xar-promo 0.2.1`, wheel `F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621`; a changed formal release requires an updated requirements pin and new preflight.
 3. Rehash the exact DLL/injector, immutable save/sidecar, UI source/receipt, and `capture_session.py`. Confirm the **new** no-launch `run-result.json` exit 0, `ck3_started_by_command=false`, and `admission-lock.json` matches the current checkout HEAD, script bytes, full argv and original preflight/result files. Preserve a01 RED and a02 history. Choose a fresh live root, state dir, output dir and pipe. Never copy the a08 profile or old recorder workdir.
 
-The example below uses live attempt `a01`; change **all** four `a01` locations and the pipe together if that name exists. Execute from the integrated #451 checkout with the verified main venv; preserve command argv/stdout/stderr/exit in the fresh attempt. The offline receipt placeholder must be replaced by this screen lease's reviewed receipt.
+The example below uses live attempt `a01`; change **all** four `a01` locations and the pipe together if that name exists. Execute from the final integrated #451 checkout with the verified main venv; preserve command argv/stdout/stderr/exit in the fresh attempt. The offline receipt placeholder must be replaced by this screen lease's reviewed receipt.
 
 ```text
-D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_integration_20260929/promo/ck3_native_war_ai/integration/capture_session.py
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/integration/capture_session.py
   --game-dir C:/SteamLibrary/steamapps/common/CRUSAD~1
   --bridge-dll D:/ck3-research-artifacts/e2-04-d06-current-knight-release-20260929-a03/build/xar_ck3_bridge.dll
   --bridge-injector D:/ck3-research-artifacts/e2-04-d06-current-knight-release-20260929-a03/build/xar_ck3_bridge_injector.exe
@@ -40,16 +40,16 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2
   --steam-offline-receipt <fresh-d06-knight-offline-attempt>/steam-offline-reviewed.json --capture
 ```
 
-Those are **argv items**, not a multiline shell command. First run a new no-launch preflight with the same source pair and exact code HEAD, saving the original argv/stdout/stderr/result and `ck3-output/preflight.json`/`command.json` under `episode02-e2-04-d06-knight-preflight-20260929-a03-takeover`. Then execute the operator's `seal --no-launch-attempt <new-root>` once; it create-exclusively freezes the verified files into `admission-lock.json`. The live owner may use the same Python argument-array style as historical a02 `run_no_launch.py`, changing only the new live dirs/pipe plus fresh `--steam-offline-receipt` and `--capture`. Do not insert a trace flag.
+Those are **argv items**, not a multiline shell command. First run a new no-launch preflight with the same source pair and exact code HEAD, saving the original argv/stdout/stderr/result and `ck3-output/preflight.json`/`command.json` under `episode02-e2-04-d06-knight-preflight-20260929-a04-final`. Then execute the operator's `seal --no-launch-attempt <new-root>` once; it create-exclusively freezes the verified files into `admission-lock.json`. The live owner may use the same Python argument-array style as historical a02 `run_no_launch.py`, changing only the new live dirs/pipe plus fresh `--steam-offline-receipt` and `--capture`. Do not insert a trace flag.
 
 ## Paused same-frame observation and media
 
 Wait for new live `ck3-output/preflight.json` READY, `native-start-readback.json` `postcondition_verified=true`, and three GUI disk receipts (`before-native-session`, `postmap`, `posthold`) that retain serialized `"1"` and the frozen 54-byte block SHA. Directly review a new full-resolution desktop image: CK3 has actually loaded the map/HUD, no modal/launcher, UI fits the full recorded geometry, and the game is paused at d06. `map_ready` or a scale disk receipt alone does not prove a usable shot.
 
-Run the new read-only helper from the same integrated checkout, with the **new sealed a03** as `--no-launch-attempt`:
+Run the new read-only helper from the same integrated checkout, with the **new sealed a04** as `--no-launch-attempt`:
 
 ```text
-D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_integration_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py observe --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a03-takeover
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py observe --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a04-final
 ```
 
 The helper creates exclusive intent and result files, then reads a new paused snapshot, same-revision battle control, current CharacterID `34333`/RegimentID `61`, and a final unchanged snapshot. It requires actor `29829`, War `4`, CUnit/native CArmy `18`, Combat `16777218`, Province `2633`, date raw `53146368`, unique defender regiment `61`, paired generation checks and new frame revisions. `current_effective_prowess` and `province_evaluated_*_raw` are current native values at scale 100000; `stored_combat_entry_*_raw` are old battle-entry fields. **No 7/11 or 612.5/122.5 is assumed in advance.** On a timeout or unavailable result, preserve the request/response and RED receipt; do not retry that request in the same attempt.
@@ -61,7 +61,7 @@ While FFmpeg is still recording, append a `mark` for the independent d06 shot wi
 After the recorder has sealed, request managed cleanup exactly once:
 
 ```text
-D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_integration_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py finish --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a03-takeover
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py finish --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a04-final
 ```
 
 Wait for `capture_session.py` exit, then verify `session-result.json`, `capture-report.json`, CK3/FFmpeg process inventory and screen lease release. `finish` only requests cleanup; its receipt alone does not prove cleanup or footage quality. All new outputs remain in the new attempt; the a08 save/sidecar and every old attempt stay immutable.
