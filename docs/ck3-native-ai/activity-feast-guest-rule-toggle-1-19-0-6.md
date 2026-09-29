@@ -100,3 +100,27 @@ all existing owner, actor, stage and window checks still pass. A known
 non-feast key remains rejected. The focused native fixture now covers both
 states. It is source and no-launch evidence only until another paired live
 read shows the rule state.
+
+## R0376 exact-master live retry
+
+The bounded H3928 candidate used master `a6605fa`, official CI run
+`36576910658` (success), Release DLL SHA-256
+`8A444F05EE9FD28F003E7FFD45B694C7098B8D78B7187BB1C56F309889CDAFE7`,
+and an official paired no-launch `ready` report. CK3 PID175868 was minimized
+after its window appeared; the process stayed responsive in the background.
+Stage-1 Confirm, Stage-2 Province2619 typed selection and Stage-5 cost read
+passed. The same paused `native:3` frame at revision4, actor29829 and
+raw53219928 returned `window_unbound` for
+`activity_invite_rule_vassals`, with `active=null` and unknown membership.
+The attempted private read therefore remains RED. The transition from
+R0374's `planner_unavailable` narrows the failing path but does not prove why
+the guest-rule window failed to bind; there is no evidence that minimizing
+caused it. No toggle, invitation, Start, gameplay turn or date change occurred;
+the original save hash remained
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`,
+and the process tree was reclaimed. The [formal report](Z:/m6-gr374-redfix-20260929/operator-runs/feast-guest-rule-vassals-redfix-read-1/formal-report.txt)
+has SHA-256 `0A78C143E796DEB58C5D9D04AC79A3C7B2E46612AC0E08202E0AAC45AE179EF6`;
+the [operator receipt](Z:/m6-gr374-redfix-20260929/operator-runs/feast-guest-rule-vassals-redfix-read-1/operator-receipt.json)
+has SHA-256 `5D8D5D58E935E87452C57D41239CA700F705F04FD991CEFE2E8F26D2DCBFBA69`.
+This artifact supersedes a source-only inference, while retaining the exact
+unresolved live boundary for the native reader.
