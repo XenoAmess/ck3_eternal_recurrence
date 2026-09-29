@@ -7112,6 +7112,9 @@ int main() {
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.player_armies.size() != 1 ||
       !snapshot.player_armies[0].route_province_ids.empty() ||
+      snapshot.player_armies[0].route_read_status !=
+          xar::game::ArmyRouteReadStatus::target_only ||
+      snapshot.player_armies[0].route_source_count != 3 ||
       !snapshot.player_armies[0].move_target_observable ||
       snapshot.player_armies[0].move_target_province_id != 3) {
     return Fail("running snapshot traversed beyond the legacy route tail");
@@ -7121,6 +7124,9 @@ int main() {
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.player_armies.size() != 1 ||
       !snapshot.player_armies[0].route_province_ids.empty() ||
+      snapshot.player_armies[0].route_read_status !=
+          xar::game::ArmyRouteReadStatus::unresolved_entry ||
+      snapshot.player_armies[0].route_source_count != 3 ||
       snapshot.player_armies[0].move_target_observable ||
       snapshot.player_armies[0].move_target_province_id != -1) {
     return Fail("unit route published a partial invalid province path");
@@ -7130,6 +7136,9 @@ int main() {
       snapshot.player_armies.size() != 1 ||
       snapshot.player_armies[0].route_province_ids !=
           std::vector<std::int32_t>{4, 5, 3} ||
+      snapshot.player_armies[0].route_read_status !=
+          xar::game::ArmyRouteReadStatus::complete_nonempty ||
+      snapshot.player_armies[0].route_source_count != 3 ||
       !snapshot.player_armies[0].move_target_observable ||
       snapshot.player_armies[0].move_target_province_id != 3) {
     return Fail("paused snapshot omitted the complete native unit route");
@@ -7140,11 +7149,25 @@ int main() {
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.player_armies.size() != 1 ||
       !snapshot.player_armies[0].route_province_ids.empty() ||
+      snapshot.player_armies[0].route_read_status !=
+          xar::game::ArmyRouteReadStatus::invalid_header ||
+      snapshot.player_armies[0].route_source_count.has_value() ||
       snapshot.player_armies[0].move_target_observable ||
       snapshot.player_armies[0].move_target_province_id != -1) {
     return Fail("unit route traversal was not bounded");
   }
   Store(g_player_army, 0x40, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{0});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.player_armies.size() != 1 ||
+      snapshot.player_armies[0].route_read_status !=
+          xar::game::ArmyRouteReadStatus::complete_empty ||
+      snapshot.player_armies[0].route_source_count != 0 ||
+      !snapshot.player_armies[0].route_province_ids.empty() ||
+      snapshot.player_armies[0].move_target_observable) {
+    return Fail("valid empty unit route was confused with invalid route");
+  }
   Store(g_player_army, 0x44, std::int32_t{3});
   Store(jomini_state, 0x20, std::uint8_t{0});
 
