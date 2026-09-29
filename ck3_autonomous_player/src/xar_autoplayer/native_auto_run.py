@@ -15,6 +15,7 @@ import math
 from pathlib import Path
 import threading
 import time
+import uuid
 
 from .bridge.driver import (
     BridgeUnavailableError,
@@ -376,6 +377,7 @@ def native_auto_run(
     allow_private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
     private_activity_planner_diag_query: bool = False,
+    private_activity_feast_planner_open: bool = False,
     allow_private_prisoner_ransom_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -516,6 +518,12 @@ def native_auto_run(
         raise AgentError("private realm-law read needs a bounded contract")
     if private_activity_planner_diag_query is True and completion_contract != "bounded":
         raise AgentError("private activity planner read needs a bounded contract")
+    if private_activity_feast_planner_open is True:
+        if completion_contract != "bounded":
+            raise AgentError("private feast planner open needs a bounded contract")
+        if (private_child_matrilineal_pending_read_target is not None
+                or private_activity_planner_diag_query is True):
+            raise AgentError("private feast planner open needs its own paused frame run")
     if (allow_private_prisoner_ransom_formal_trial is True
             and completion_contract != "bounded"):
         raise AgentError("private prisoner ransom only admits a bounded contract")
@@ -653,6 +661,7 @@ def native_auto_run(
     private_child_matrilineal_pending_observation: dict[str, object] | None = None
     private_realm_law_paused_observation: dict[str, object] | None = None
     private_activity_planner_diag_observation: dict[str, object] | None = None
+    private_activity_feast_planner_open_observation: dict[str, object] | None = None
     opening_focus_gate: dict[str, object] | None = (
         {"stage": "await_submit", "action_request_id": None,
          "target_key": None, "checkpoint_saved": False}
@@ -1184,6 +1193,16 @@ def native_auto_run(
                     )
                 )
                 status = "private_activity_planner_diag_observed"
+                break
+            if private_activity_feast_planner_open is True:
+                current_attempt["stage"] = "private_activity_feast_planner_open"
+                private_activity_feast_planner_open_observation = (
+                    _open_private_activity_feast_planner_once(
+                        driver, service=service, before=before,
+                        turn_index=turn_index,
+                    )
+                )
+                status = "private_activity_feast_planner_open_observed"
                 break
             if private_realm_law_paused_query is True:
                 current_attempt["stage"] = "private_realm_law_paused_read"
@@ -3182,6 +3201,16 @@ def native_auto_run(
                 and not turns
                 and not date_advanced
             )
+        if private_activity_feast_planner_open is True:
+            qualified = bool(
+                primary_error is None
+                and status == "private_activity_feast_planner_open_observed"
+                and isinstance(private_activity_feast_planner_open_observation, dict)
+                and private_activity_feast_planner_open_observation.get("same_frame") is True
+                and private_activity_feast_planner_open_observation.get("gui_open") is True
+                and cleanup.get("ok") is True
+                and not turns and not date_advanced
+            )
     candidate_intercept_qualified = bool(
         before_submit is not None
         and opening_focus_gate is None
@@ -3273,6 +3302,8 @@ def native_auto_run(
             if (private_active_scheme_sway_target is not None
                 and allow_private_active_scheme_sway_formal_trial is True
                 and qualified)
+            else "gui_open_observed"
+            if private_activity_feast_planner_open is True and qualified
             else "read_only_observed"
             if (private_active_scheme_sway_target is not None
                 and allow_private_active_scheme_sway_formal_trial is not True
@@ -3324,6 +3355,11 @@ def native_auto_run(
             {"private_activity_planner_diag_observation": copy.deepcopy(
                 private_activity_planner_diag_observation)}
             if private_activity_planner_diag_query is True else {}
+        ),
+        **(
+            {"private_activity_feast_planner_open_observation": copy.deepcopy(
+                private_activity_feast_planner_open_observation)}
+            if private_activity_feast_planner_open is True else {}
         ),
         **(
             {
@@ -5229,6 +5265,126 @@ def _observe_private_activity_planner_diag_once(
     }
 
 
+_PRIVATE_ACTIVITY_FEAST_OPEN_STEP = "open-activity-feast-planner-v1-private"
+
+
+def _open_private_activity_feast_planner_once(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    service: GameplayBridgeService,
+    before: dict[str, object],
+    turn_index: int,
+) -> dict[str, object]:
+    """Open the feast planning GUI once; no activity is started or date advanced."""
+    revision = before.get("native_revision")
+    actor_id = before.get("played_character_id")
+    if (before.get("paused") is not True
+            or before.get("map_ready") is not True
+            or before.get("played_character_alive") is not True
+            or type(revision) is not int or revision <= 0
+            or type(actor_id) is not int or actor_id <= 0
+            or type(before.get("date_raw")) is not int):
+        raise AgentError("private feast planner open requires a living paused actor")
+    request_id = "activity-feast-open-" + uuid.uuid4().hex
+    driver.endpoint.send({
+        "type": "execute_step", "protocol_version": 1,
+        "request_id": request_id,
+        "step": _PRIVATE_ACTIVITY_FEAST_OPEN_STEP,
+        "expected_revision": revision,
+    })
+    frame = driver.state.wait_for_command_result(
+        request_id, float(driver.command_timeout_seconds),
+    )
+    after = service.snapshot()
+    after_actor = after.get("played_character")
+    same_frame = bool(
+        all(before.get(key) == after.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id", "episode_character_id",
+        ))
+        and after.get("paused") is True
+        and after.get("map_ready") is True
+        and isinstance(after_actor, dict)
+        and after_actor.get("character_id") == actor_id
+        and after_actor.get("alive") is True
+    )
+    envelope = frame.get("result") if isinstance(frame, dict) else None
+    native = (envelope.get("activity_feast_planner_open")
+              if isinstance(envelope, dict) else None)
+    native_shape = bool(
+        isinstance(native, dict)
+        and set(native) == {
+            "schema", "snapshot_revision", "date_raw", "actor_character_id",
+            "open_status", "native_dispatch_invoked", "widget_attached",
+            "widget_visible", "planning_stage", "configured_cost_state",
+            "final_can_start_state", "raw_pointer_fields_persisted",
+        }
+        and native.get("schema") == "activity-feast-planner-open-private-v1"
+        and native.get("snapshot_revision") == revision
+        and native.get("date_raw") == before["date_raw"]
+        and native.get("actor_character_id") == actor_id
+        and native.get("open_status") in {"opened", "already_open"}
+        and type(native.get("native_dispatch_invoked")) is bool
+        and native.get("widget_attached") is True
+        and native.get("widget_visible") is True
+        and native.get("planning_stage") == 2
+        and native.get("configured_cost_state") == "unknown"
+        and native.get("final_can_start_state") == "unknown"
+        and native.get("raw_pointer_fields_persisted") is False
+        and (native.get("native_dispatch_invoked") is
+             (native.get("open_status") == "opened"))
+    )
+    accepted = bool(
+        isinstance(frame, dict)
+        and frame.get("type") == "command_result"
+        and frame.get("protocol_version") == 1
+        and frame.get("request_id") == request_id
+        and frame.get("ok") is True
+        and isinstance(envelope, dict)
+        and set(envelope) == {
+            "step", "accepted", "status", "private_build", "read_only",
+            "advertised", "same_frame", "activity_feast_planner_open",
+            "backend_id",
+        }
+        and envelope.get("step") == _PRIVATE_ACTIVITY_FEAST_OPEN_STEP
+        and envelope.get("accepted") is True
+        and envelope.get("status") == "available"
+        and envelope.get("private_build") is True
+        and envelope.get("read_only") is False
+        and envelope.get("advertised") is False
+        and envelope.get("same_frame") is True
+        and envelope.get("backend_id") == "native-headless"
+        and native_shape and same_frame
+    )
+    observation = {
+        "status": "gui_open_observed" if accepted else "red",
+        "turn_index": turn_index,
+        "same_frame": same_frame,
+        "gui_open": accepted,
+        "source_frame": _public_binding(before),
+        "post_frame": _public_binding(after),
+        "native_receipt": copy.deepcopy(frame),
+    }
+    if not accepted:
+        raise StepPostconditionError(
+            "private feast planner open RED: "
+            + str(native.get("open_status", "missing_native_receipt")
+                  if isinstance(native, dict) else frame.get("error", "missing_result")
+                  if isinstance(frame, dict) else "missing_command_result"),
+            step_result={
+                "step": _PRIVATE_ACTIVITY_FEAST_OPEN_STEP,
+                "status": "red",
+                "accepted": False,
+                "postcondition_verified": False,
+                "activity_feast_planner_open": copy.deepcopy(native),
+                "same_frame": same_frame,
+                "native_receipt": copy.deepcopy(frame),
+            },
+            selected_step=_PRIVATE_ACTIVITY_FEAST_OPEN_STEP,
+        )
+    return observation
+
+
 def _observe_private_realm_law_paused_once(
     driver: NativeHeadlessGameplayDriver,
     *,
@@ -5950,6 +6106,9 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "construction_progress_observation",
         "query_sequence",
         "read_only",
+        "same_frame",
+        "activity_feast_planner_open",
+        "native_receipt",
         "heir_character_id",
         "candidate_character_id",
         "recipient_character_id",
