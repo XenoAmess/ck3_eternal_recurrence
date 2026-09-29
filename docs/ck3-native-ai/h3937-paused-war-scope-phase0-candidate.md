@@ -1,8 +1,10 @@
 # H3937 phase-0 paused war scope: disabled native observation candidate
 
 Status: **static candidate only; CK3 launch, date, movement, attack and spending RED**.
-The CLI `native-observe-h3937-paused-war-scope-v1` has a hard false gate before
-environment access, state preparation or process launch. It does not change the
+The CLI `native-observe-h3937-paused-war-scope-v1` has a hard false gate after
+argument parsing but before `make_spec`, bridge environment configuration,
+state preparation or process launch. Argument parser construction may read
+environment defaults. This candidate does not change the
 two hard false gates in the separate H3937 route-contact candidate.
 
 The fixed WAR source response `SOURCE-H3937-PAUSED-WAR-SCOPE-EXCERPT-v1.json`

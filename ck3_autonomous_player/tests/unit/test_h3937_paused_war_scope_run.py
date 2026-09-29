@@ -4,6 +4,7 @@ import copy
 from contextlib import ExitStack
 from pathlib import Path
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -57,6 +58,14 @@ def _frame() -> dict[str, object]:
 
 
 class H3937Phase0Tests(unittest.TestCase):
+    def test_real_receipt_bytes_match_real_file_sha(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            receipt = Path(temp_dir) / "ordinary-seed-rebind-v1.json"
+            receipt.write_bytes(b'{"source_sha256":"abcdef"}\n')
+            parsed, digest = producer._read_rebind_receipt_and_sha(receipt)
+            self.assertEqual(parsed, {"source_sha256": "abcdef"})
+            self.assertEqual(digest, producer._sha256(receipt))
+
     def test_cli_refuses_before_make_spec_or_bridge_environment(self) -> None:
         with patch.object(cli, "make_spec") as spec, patch.object(
             cli, "configure_native_bridge_launch_environment"
@@ -218,7 +227,7 @@ class H3937Phase0Tests(unittest.TestCase):
                     if path.name == "ordinary-seed-rebind-v1.json":
                         receipt_reads += 1
                         if outcome == "receipt_changed" and receipt_reads > 1:
-                            return "E" * 64
+                            return "e" * 64
                     return {
                         "xar_checkpoint.ck3": producer.CHECKPOINT_SHA256,
                         "driver-state.json": "B" * 64,
@@ -226,7 +235,7 @@ class H3937Phase0Tests(unittest.TestCase):
                             producer.CHILD_PENDING_SIDECAR_SHA256,
                         "xar_ck3_bridge.dll": producer.DLL_SHA256,
                         "xar_ck3_bridge_injector.exe": producer.INJECTOR_SHA256,
-                        "ordinary-seed-rebind-v1.json": "C" * 64,
+                        "ordinary-seed-rebind-v1.json": "c" * 64,
                         "h3937_paused_war_scope_run.py": "D" * 64,
                     }[path.name]
 
@@ -246,7 +255,7 @@ class H3937Phase0Tests(unittest.TestCase):
                     producer, "_read_driver_state", return_value=prepared_driver))
                 stack.enter_context(patch.object(
                     producer, "_read_rebind_receipt_and_sha",
-                    return_value=({}, "C" * 64)))
+                    return_value=({}, "c" * 64)))
                 stack.enter_context(patch.object(
                     producer, "_exact_prepared_rebind", return_value=True))
                 stack.enter_context(patch.object(producer, "_sha256", side_effect=fake_hash))
@@ -273,7 +282,7 @@ class H3937Phase0Tests(unittest.TestCase):
                 self.assertFalse(result["date_advance_authorized"])
                 self.assertEqual(result["query_actions"], 0)
                 self.assertEqual(result["ok"], outcome == "green")
-                self.assertEqual(result["source"]["rebind_receipt_sha256"], "C" * 64)
+                self.assertEqual(result["source"]["rebind_receipt_sha256"], "c" * 64)
                 self.assertEqual(result["source"]["producer_checkout_commit"], "A" * 40)
                 self.assertEqual(result["asset_sha256_before"]["producer_module"], "D" * 64)
                 self.assertEqual(result["checks"]["assets_unchanged"],
