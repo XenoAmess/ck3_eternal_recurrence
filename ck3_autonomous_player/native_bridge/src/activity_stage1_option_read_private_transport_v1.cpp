@@ -86,7 +86,10 @@ bool ResolveKey(void *opaque, std::int32_t identifier,
   struct NativeStringView {
     const char *data = nullptr;
     std::int32_t size = 0;
+    std::uint8_t owned = 0;
+    std::array<std::byte, 3> padding{};
   };
+  static_assert(sizeof(NativeStringView) == 16);
   output = {};
   output_size = 0;
   __try {
