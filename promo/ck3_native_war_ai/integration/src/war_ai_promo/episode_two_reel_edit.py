@@ -93,6 +93,16 @@ def _label(value: object, required: str, label: str) -> str:
     return value
 
 
+def _capture_frame_budget(begin: Decimal, end: Decimal, frames: int, sid: str) -> None:
+    """A 30 fps edit must cover its full inclusive-PTS interval, within one frame."""
+    source_span = end - begin
+    output_span = Decimal(frames) / FPS
+    frame = Decimal(1) / FPS
+    if (source_span <= 0 or output_span < source_span
+            or output_span > source_span + frame + Decimal("0.001")):
+        raise ValueError(f"{sid} frame budget differs from its full source PTS interval")
+
+
 def check_shape(spec: dict) -> dict:
     """Small, read-only structural check; never upgrades originals to GREEN."""
     if (spec.get("schema") != SCHEMA
@@ -138,8 +148,7 @@ def check_shape(spec: dict) -> dict:
                         or not Path(row["bundle_root"]).is_absolute()):
                     raise ValueError(f"{sid} needs a real adapter attempt and span")
                 begin, end = _seconds(row.get("begin_pts_seconds"), "clip begin"), _seconds(row.get("end_pts_seconds"), "clip end")
-                if end <= begin or Decimal(frames) / FPS > end - begin + Decimal(1) / FPS + Decimal("0.001"):
-                    raise ValueError(f"{sid} would stretch/freeze a source interval")
+                _capture_frame_budget(begin, end, frames, sid)
                 _label(row.get("source_label"), attempt, sid)
                 for key in ("raw", "clean_span_audit", "human_review", "pts_probe",
                             "recorder_final", "cold_load_save", "cold_load_receipt", "control"):

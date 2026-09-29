@@ -66,6 +66,17 @@ class ReelEditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "real, unsigned"):
             edit.check_shape(plan)
 
+    def test_short_output_cannot_claim_a_long_source_interval(self) -> None:
+        with self.assertRaisesRegex(ValueError, "full source PTS interval"):
+            edit._capture_frame_budget(edit.Decimal("0"), edit.Decimal("100"), 30, "clip")
+        with self.assertRaisesRegex(ValueError, "full source PTS interval"):
+            edit._capture_frame_budget(edit.Decimal("0"), edit.Decimal("1"), 60, "clip")
+        edit._capture_frame_budget(edit.Decimal("0"), edit.Decimal("1.966667"), 60, "clip")
+        plan = planned()
+        plan["chapters"][0]["segments"][0]["end_pts_seconds"] = "1000"
+        with self.assertRaisesRegex(ValueError, "full source PTS interval"):
+            edit.check_shape(plan)
+
     def test_cross_chapter_raw_reuse_requires_explicit_closing_recap(self) -> None:
         plan = planned()
         opening = plan["chapters"][0]["segments"][0]
