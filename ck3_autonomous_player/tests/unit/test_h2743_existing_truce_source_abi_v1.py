@@ -72,6 +72,15 @@ class H2743ExistingTruceSourceAbiTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "source contract missing"):
                     validate_source_contract(value)
 
+    def test_enabled_capability_requires_matching_count(self) -> None:
+        value = source_texts()
+        value["src/ck3_11906_adapter.cpp"] = value[
+            "src/ck3_11906_adapter.cpp"].replace(
+                "#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)\n"
+                "    + 1\n#endif", "", 1)
+        with self.assertRaisesRegex(ValueError, "source contract missing"):
+            validate_source_contract(value)
+
     def test_effect_evaluation_or_fake_future_expiry_is_rejected(self) -> None:
         value = source_texts()
         value["src/h2743_preaction_existing_truce_v1.cpp"] += (

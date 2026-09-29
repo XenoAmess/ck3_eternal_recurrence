@@ -16,7 +16,7 @@
 
 ## 静态证据与下次构建门
 
-[来源/ABI 验证器](../../ck3_autonomous_player/native_bridge/research/verify_h2743_existing_truce_source_abi_v1.py)逐字节固定本候选 C++/桥接/CMake/协议/旧 reader 的 18 份源码；调用已有精确 EXE 提取器核 PE、八个原生区间和只读/可变调用边，再核六份原版 CB/on_action/FP2/EP3/休战脚本及两条最低必要根。[冻结产物](../../ck3_autonomous_player/native_bridge/research/h2743_existing_truce_source_abi_v1.json) SHA-256 `A5BB22F40500DFC533D4031B7F521B48490E37435ECD145AAEBC84525A853FD8`，明确 `static_source_abi_verified_build_pending`、`loaded_dll_sha256=null`、`live_observed=false`；改变任何 source/ABI/script bytes 或把动作/未来值填实都会使 `--check` RED。它不证明新 C++ 已编译，也不认证运行进程的内存映像。
+[来源/ABI 验证器](../../ck3_autonomous_player/native_bridge/research/verify_h2743_existing_truce_source_abi_v1.py)逐字节固定本候选 C++/桥接/CMake/协议/旧 reader 的 18 份源码；另核开启候选时 capability 条目与 `kCapabilityCount` 同时增加；调用已有精确 EXE 提取器核 PE、八个原生区间和只读/可变调用边，再核六份原版 CB/on_action/FP2/EP3/休战脚本及两条最低必要根。[冻结产物](../../ck3_autonomous_player/native_bridge/research/h2743_existing_truce_source_abi_v1.json) SHA-256 `536D4A6E96A8D73537278DB452713C00339D3A8528B960E419D6A84C5B7933E9`，明确 `static_source_abi_verified_build_pending`、`loaded_dll_sha256=null`、`live_observed=false`；改变任何 source/ABI/script bytes 或把动作/未来值填实都会使 `--check` RED。它不证明新 C++ 已编译，也不认证运行进程的内存映像。
 
 已提交的[原生单测源码](../../ck3_autonomous_player/native_bridge/src/h2743_preaction_existing_truce_v1_test.cpp)覆盖正确方向、已有/无旧槽、两次 has/expiry/War/Snapshot 漂移、错日期/Title/重复 WarID 和 exact-build 门；需在另排的受管构建窗口编译执行，当前**未运行**。Python [静态负例](../../ck3_autonomous_player/tests/unit/test_h2743_existing_truce_source_abi_v1.py)普通及 `-O` 各 5/5 通过；精确 EXE `--check` GREEN，错 EXE exit 2。上述验证只发生于磁盘，不是 live 旧槽读数。
 

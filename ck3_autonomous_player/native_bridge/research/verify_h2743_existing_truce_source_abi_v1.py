@@ -66,6 +66,12 @@ def validate_source_contract(texts: dict[str, str]) -> None:
             "bindings.has_character_truce",
             "bindings.get_character_truce_end_date",
         ),
+        "src/ck3_11906_adapter.cpp": (
+            "#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)\n"
+            "    + 1\n#endif",
+            "#if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)\n"
+            "    ck3_11906::kH2743ExistingTruceV1Capability,\n#endif",
+        ),
         "src/bridge.cpp": (
             "expected_checkpoint_sha256",
             "expected_episode_id",
