@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from contextlib import ExitStack
+import copy
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
@@ -147,6 +148,23 @@ class H3937StationaryGateTests(unittest.TestCase):
             "active_wars": [{"war_id": 16777231}],
         }
         self.assertFalse(runner._exact_h3937_paused_subject(report_only))
+
+    def test_same_frame_metadata_does_not_hide_subject_change(self) -> None:
+        before = {
+            "played_character": {"character_id": 29829},
+            "episode_character_id": 29829,
+            "active_wars": [{"war_id": 16777231, "enemy_armies": [
+                {"army_id": 50331920, "current_province_id": 2629},
+            ]}],
+            "player_armies": [{"army_id": runner.ARMY_ID, "current_province_id": 2610}],
+            "active_event": None,
+            "pending_character_interaction": None,
+            "route_contact_horizon_supported": True,
+        }
+        after = copy.deepcopy(before)
+        self.assertTrue(runner._guarded_subject_unchanged(before, after))
+        after["active_wars"][0]["enemy_armies"][0]["current_province_id"] = 2610
+        self.assertFalse(runner._guarded_subject_unchanged(before, after))
 
 
 class H3937OperatorGateTests(unittest.TestCase):

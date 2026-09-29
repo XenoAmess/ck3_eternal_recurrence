@@ -2760,6 +2760,7 @@ def command_query_r0345_stationary_route_contact_v1(
         "single_cold_restore_bookkeeping",
         "paused_frame_unchanged",
         "stationary_scope_unchanged",
+        "guarded_subject_unchanged",
         "exact_one_appended_query",
         "driver_history_matches_query_after",
         "date_unchanged",
