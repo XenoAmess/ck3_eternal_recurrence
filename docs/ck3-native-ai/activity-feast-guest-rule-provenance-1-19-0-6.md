@@ -18,13 +18,13 @@ group does not establish which rule supplied it.
 
 ```mermaid
 flowchart TD
-  A[Native Stage-5 planner refresh 0x10B0780] --> B[0x28CF3A0 traverses active rule rows]
+  A[Natural feast planner refresh 0x10B0780] --> B[0x28CF3A0 traverses active rule rows]
   B --> C[Original scripted effect call 0x28CF515]
   C --> D[Temporary per-rule typed CharacterID list]
   D --> E[Merge into priority group]
   E --> F[Original group filter 0x28D06C0]
   F --> G[Intersect captured per-rule IDs with filtered group]
-  G --> H[Same-frame authored-key and candidate membership query]
+  G --> H[Same-frame Stage-5 planner and unchanged groups/rules query]
   B -. inactive rule .-> U[unknown: no original effect output]
 ```
 
@@ -48,6 +48,11 @@ temporary IDs with the final group of the same priority. It stores a bounded
 capture with the current feast planner, paused date/actor/thread, native
 definition hash, active-rule contents and final group contents. Any changed
 frame/vector, incomplete read or overflow returns a typed unavailable result.
+The exact H3928 Stage-2 destination route performs this natural refresh while
+the planner is still at stage 2; the later Stage-5 read accepts that capture
+only when the same planner, feast type, actor/date/thread, active rules and
+filtered groups remain bound. A query before Stage 5 or after a changed vector
+remains unavailable.
 
 The new private step is `query-activity-feast-guest-rule-provenance-v1`.
 It takes the existing exact paused Stage-5 context fields, authored rule key,
@@ -157,10 +162,32 @@ prove its status at the later named-rule query. The exact executable's call at
 not distinguish an absent matching callback from a callback rejected by its
 paused frame, thread, planner, feast-type, or Stage-5 gate.
 
-The next default-OFF diagnostic build reports the second passive read's exact
+The default-OFF diagnostic build reports the second passive read's exact
 status or counts each rejection at the natural provenance refresh hook,
 whichever branch fails. It includes those details only in the existing
 `no_normal_refresh` RED message. It never synthesizes a rule membership,
-invokes a refresh or scripted effect, or enables invitation/Start. One newly
-paired bounded read can identify the actual failed gate before changing the
-capture rules. This diagnostic is source and fixture coverage until that read.
+invokes a refresh or scripted effect, or enables invitation/Start. R0388 below
+used this diagnostic to identify the actual failed gate.
+
+## R0388 Stage-2 refresh phase and source repair
+
+R0388 used the officially paired H3928 candidate at source master
+`bb5b8b86ddafcfde1f1b2a4fa229e46fc35d4253`
+and the unchanged Robert paused date `53219928`. Its native diagnostic reported
+`no_normal_refresh hook=2 ... stage_not_five=2 accepted=0 last_stage=2`;
+all other rejection counters were zero. The second passive slot-12 read
+succeeded. Both actual natural refreshes were discarded solely because the
+observer demanded stage 5 at entry. The bounded trial did not invite, Start,
+advance a date, or change the source save. Its immutable formal report has
+SHA-256 `F4ACAFC31D54CB0C5258F9AA4AF2631561EC5AC7F20BF594B7EB66BAFB62B8E3`.
+
+The exact `0x10B1BD0` stage setter writes stage 5 before invoking the stage-2
+exit callback; it does not itself call the guest-rule refresh. The Stage-2
+destination path can therefore leave a group created during stage 2 for the
+Stage-5 planner. The observer now captures an otherwise valid natural stage-2
+refresh and intersects the original per-rule outputs with the filtered group.
+At read time it requires current stage 5, the same feast type and unchanged
+active-rule and filtered-group fingerprints. A changed group or rule remains
+`frame_changed`; no aggregate group is substituted for a rule-specific result.
+This is a source/fixture repair only until a new frozen DLL returns an actual
+paused membership boolean.
