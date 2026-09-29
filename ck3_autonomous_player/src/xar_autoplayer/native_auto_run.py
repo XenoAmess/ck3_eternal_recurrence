@@ -1019,9 +1019,9 @@ def native_auto_run(
         driver.allow_private_activity_feast_stage5_start_query = (
             private_activity_feast_stage5_start_read is True
         )
-        driver.allow_private_activity_feast_stage5_start_action = (
-            private_activity_feast_stage5_start_read is True
-        )
+        # This route only reads Start inputs.  No formal action mode supplies
+        # the guest/budget evidence yet, so it must not enable Start.
+        driver.allow_private_activity_feast_stage5_start_action = False
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
             or private_child_matrilineal_pending_read_target is not None

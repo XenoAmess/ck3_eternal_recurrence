@@ -3315,6 +3315,8 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(observed["decision_reason"], "native_guest_route_unqualified")
         self.assertTrue(observed["same_frame"])
         self.assertEqual(harness.activity_stage5_start_inputs_query_count, 1)
+        self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_query, True)
+        self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
         self.assertEqual(harness.auto_turn_count, 0)
 
     def test_private_feast_stage5_full_cost_requires_destination(self) -> None:
