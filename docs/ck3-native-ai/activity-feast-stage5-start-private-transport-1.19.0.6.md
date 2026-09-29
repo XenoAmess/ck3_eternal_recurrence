@@ -38,13 +38,14 @@ identity, positive policy decision, unresolved-submit indicator, and four
 resource reserves. The native guest route is currently **unqualified**:
 `guest_route_qualified` is false in the transport and cannot be set by the
 request. Thus the route returns `native_guest_route_unqualified` with
-`submitted=false`; it cannot invoke the original Start branch. The source
-reader in [guest arrival research PR #629](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/629)
-still needs a paused Stage-5 fixture before its planned timely positive join
-count can support a value decision. Its count is a prediction, not accepted
-guests or actual arrival. Only after that fixture, a matching same-frame
-native guest capture and a positive consumer value policy may remove this
-specific gate.
+`submitted=false`; it cannot invoke the original Start branch. R0368
+obtained a paused selected-row read with zero non-host selections, while a
+separate later H3928 read found a positive native-filtered pre-invitation
+candidate. Those different runs cannot form one Start decision. The new
+[read-only guest route proof](activity-feast-stage5-guest-route-proof-1.19.0.6.md)
+binds active rules, selected rows, candidate prediction and final CanStart
+on one paused frame. It deliberately leaves the action gate false: prediction
+does not prove acceptance or arrival, and H3928 final CanStart remains false.
 
 If a future qualified Start invokes the original branch, the command result
 stays `submitted_pending` until the independent post read. A callback or

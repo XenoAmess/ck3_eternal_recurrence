@@ -122,6 +122,23 @@ bool InvokeTravel(void *opaque, std::uintptr_t base,
   return succeeded;
 }
 
+bool EvaluateCanStart(void *opaque, std::uintptr_t planner,
+                      bool &value) noexcept {
+  auto &context = *static_cast<CaptureContext *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id || planner == 0 ||
+      context.module_base == 0)
+    return false;
+  using Predicate = bool (*)(void *, void *);
+  const auto predicate = reinterpret_cast<Predicate>(
+      context.module_base + 0x10B0DA0);
+  __try {
+    value = predicate(reinterpret_cast<void *>(planner), nullptr);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+}
+
 std::string FingerprintHex(std::uint64_t value) {
   constexpr char digits[] = "0123456789abcdef";
   std::string output = "0x0000000000000000";
@@ -194,6 +211,33 @@ bool ExecuteActivityFeastGuestCandidatePrivateV1(
         current.played_character_id, true, true, true, true};
     query->candidate = bridge::ReadActivityFeastGuestCandidateV1(
         environment, expected);
+    if (query->route_proof) {
+      query->selected_guests = bridge::ReadActivityFeastGuestJoinV1(
+          environment, expected);
+      bridge::ActivityStage5CanStartEnvironmentV1 start_environment{};
+      start_environment.diagnostic = diagnostic;
+      start_environment.evaluate = &EvaluateCanStart;
+      query->start_gate = bridge::ReadActivityStage5CanStartV1(
+          start_environment, expected);
+      const auto repeated = bridge::ReadActivityFeastGuestCandidateV1(
+          environment, expected);
+      const auto candidate_complete =
+          query->candidate.status ==
+              bridge::ActivityFeastGuestCandidateStatusV1::observed ||
+          query->candidate.status ==
+              bridge::ActivityFeastGuestCandidateStatusV1::
+                  no_qualified_candidate;
+      query->route_proof_consistent =
+          candidate_complete && repeated == query->candidate &&
+          query->selected_guests.status ==
+              bridge::ActivityFeastGuestJoinStatusV1::observed &&
+          query->start_gate.status ==
+              bridge::ActivityStage5CanStartStatusV1::observed &&
+          query->selected_guests.frame == query->candidate.frame &&
+          query->start_gate.frame == query->candidate.frame &&
+          query->selected_guests.normal_refresh_sequence ==
+              query->candidate.normal_refresh_sequence;
+    }
     query->completed = true;
     return true;
   } catch (...) {
@@ -244,6 +288,105 @@ std::string SerializeActivityFeastGuestCandidatePrivateV1(
     payload += "null";
   }
   payload += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false}";
+  return payload;
+}
+
+std::string SerializeActivityFeastGuestRouteProofPrivateV1(
+    const ActivityFeastGuestCandidatePrivateQueryV1 &query) {
+  if (!query.completed || !query.failure.empty() || query.frame_changed ||
+      !query.route_proof)
+    return {};
+  const auto &candidate = query.candidate;
+  const auto &selected = query.selected_guests;
+  std::string payload =
+      "{\"schema\":\"activity-feast-stage5-guest-route-proof-private-v1\","
+      "\"snapshot_revision\":" + std::to_string(query.expected_revision) +
+      ",\"date_raw\":" +
+      std::to_string(query.expected_snapshot.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(query.expected_snapshot.played_character_id) +
+      ",\"activity_key\":\"activity_feast\",\"planning_stage\":5,"
+      "\"status\":\"" +
+      std::string(query.route_proof_consistent ? "observed" : "unavailable") +
+      "\",\"candidate_status\":\"" +
+      std::string(bridge::ActivityFeastGuestCandidateStatusKeyV1(
+          candidate.status)) +
+      "\",\"selected_status\":\"" +
+      std::string(bridge::ActivityFeastGuestJoinStatusKeyV1(selected.status)) +
+      "\",\"start_gate_status\":\"" +
+      std::string(bridge::ActivityStage5CanStartStatusKeyV1(
+          query.start_gate.status)) + "\",\"normal_refresh_sequence\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(candidate.normal_refresh_sequence) : "null";
+  payload += ",\"source_fingerprint\":";
+  payload += query.route_proof_consistent
+                 ? "\"" + FingerprintHex(candidate.source_fingerprint) + "\""
+                 : "null";
+  payload += ",\"active_rule_count\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(candidate.active_rule_count) : "null";
+  payload += ",\"filtered_group_count\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(candidate.filtered_group_count) : "null";
+  payload += ",\"selected_row_count\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(candidate.selected_row_count) : "null";
+  payload += ",\"selected_nonhost_count\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(selected.selected_nonhost_count) : "null";
+  payload += ",\"selected_nonhost_rows\":";
+  if (query.route_proof_consistent) {
+    payload += "[";
+    for (std::uint32_t index = 0; index < selected.selected_nonhost_count;
+         ++index) {
+      if (index != 0) payload += ",";
+      const auto &row = selected.rows[index];
+      payload += "{\"character_id\":" + std::to_string(row.character_id) +
+                 ",\"planner_join_raw\":" +
+                 std::to_string(row.planner_join_raw) +
+                 ",\"positive_join\":" +
+                 (row.positive_join ? "true" : "false") +
+                 ",\"predicted_arrival_raw\":" +
+                 std::to_string(row.predicted_arrival_raw) +
+                 ",\"travel_days\":" +
+                 std::to_string(row.predicted_travel_days) +
+                 ",\"late\":" +
+                 (row.may_not_arrive_in_time ? "true" : "false") + "}";
+    }
+    payload += "]";
+  } else {
+    payload += "null";
+  }
+  payload += ",\"positive_join_count\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(selected.positive_join_count) : "null";
+  payload += ",\"timely_positive_join_count\":";
+  payload += query.route_proof_consistent
+                 ? std::to_string(selected.timely_positive_join_count) : "null";
+  payload += ",\"final_can_start\":";
+  payload += query.route_proof_consistent
+                 ? (query.start_gate.final_can_start ? "true" : "false") : "null";
+  payload += ",\"pre_invitation_candidate\":";
+  if (query.route_proof_consistent &&
+      candidate.status == bridge::ActivityFeastGuestCandidateStatusV1::observed) {
+    payload += "{\"character_id\":" + std::to_string(candidate.character_id) +
+               ",\"planner_join_raw\":" +
+               std::to_string(candidate.planner_join_raw) +
+               ",\"travel_days\":" + std::to_string(candidate.travel_days) +
+               ",\"arrival_raw\":" + std::to_string(candidate.arrival_raw) +
+               ",\"planned_start_raw\":" +
+               std::to_string(candidate.planned_start_raw) + "}";
+  } else {
+    payload += "null";
+  }
+  payload += ",\"candidate_selected_membership\":";
+  payload += query.route_proof_consistent &&
+                     candidate.status ==
+                         bridge::ActivityFeastGuestCandidateStatusV1::observed
+                 ? "false" : "null";
+  payload += ",\"authored_rule_membership\":null,"
+             "\"native_guest_route_qualified\":false,"
+             "\"read_only\":true,\"advertised\":false}";
   return payload;
 }
 
