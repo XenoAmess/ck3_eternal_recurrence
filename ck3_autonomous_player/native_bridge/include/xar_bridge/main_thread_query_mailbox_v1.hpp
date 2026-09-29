@@ -319,6 +319,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_duosexagintary = nullptr;
   // Default-off private feast stage-2 destination select (slot 63).
   MainThreadQueryExecutorV1 permitted_executor_trisexagintary = nullptr;
+  // Default-off private feast Stage-5 inputs, Start and hosted post (slot 64).
+  MainThreadQueryExecutorV1 permitted_executor_quattuorsexagintary = nullptr;
   // The frontend route executor is the only fixed callback admitted before a
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
@@ -476,6 +478,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_unsexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duosexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_trisexagintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quattuorsexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
