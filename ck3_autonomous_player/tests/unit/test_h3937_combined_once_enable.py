@@ -90,6 +90,9 @@ def test_one_call_enables_only_during_read_and_restores_gates(bounded, monkeypat
         check(kwargs["native_bridge"].mode == "native-headless")
         check(kwargs["native_bridge"].pipe_name == once.PIPE)
         check(kwargs["readiness_timeout_diagnostic_probe"] is True)
+        check(kwargs["readiness_stall_watchdog"] is True)
+        check(kwargs["readiness_timeout_seconds"] == 1800)
+        check(kwargs["timeout_seconds"] == 1890)
         calls.append(1)
         return green_outer()
 
@@ -398,6 +401,28 @@ def test_challenge_requires_current_unique_owner_and_is_exclusive(monkeypatch, t
         once.issue_screen_challenge(tmp_path / "entry.py")
 
 
+def test_managed_heartbeat_uses_exact_bus_and_rechecks_lease(monkeypatch, tmp_path):
+    _, _, owner, task_path, _, _, _ = fresh_go_fixture(monkeypatch, tmp_path)
+    commands = []
+
+    def heartbeat(argv, **kwargs):
+        commands.append(argv)
+        check(argv[argv.index("--bus-dir") + 1] == str(once.TASK_BUS))
+        check(argv[argv.index("--task") + 1] == once.SCREEN_TASK_ID)
+        owner["last_sequence"] = 102
+        task_path.write_text(json.dumps(owner), encoding="utf-8")
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(once.subprocess, "run", heartbeat)
+    once._managed_screen_heartbeat()
+    check(len(commands) == 1)
+    owner["state"] = "done"
+    task_path.write_text(json.dumps(owner), encoding="utf-8")
+    with pytest.raises(ValueError, match="uniquely owned"):
+        once._managed_screen_heartbeat()
+    check(len(commands) == 1)
+
+
 def test_exact_prepared_source_rejects_driver_byte_and_head_drift(
     monkeypatch, tmp_path,
 ):
@@ -559,6 +584,8 @@ def test_supervisor_hard_timeout_retains_red_and_kill_receipt(
             return b"finished", b"failure"
 
     monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: HungWorker())
+    moments = iter((0.0, 0.0, float(once.SUPERVISOR_TIMEOUT_SECONDS + 1)))
+    monkeypatch.setattr(once, "_monotonic", lambda: next(moments))
 
     def taskkill(argv, **kwargs):
         calls.append(("taskkill", argv))
@@ -615,7 +642,7 @@ def test_supervisor_accepts_only_green_child_and_zero_processes(monkeypatch, tmp
         returncode = 0
 
         def communicate(self, *, timeout):
-            check(timeout == once.SUPERVISOR_TIMEOUT_SECONDS)
+            check(timeout == once.SUPERVISOR_HEARTBEAT_SECONDS)
             report = output / "outer-report.json"
             report.write_text(json.dumps(green_outer()), encoding="utf-8")
             (output / "completion.json").write_text(

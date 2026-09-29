@@ -3835,6 +3835,7 @@ def _wait_for_readiness(
     allow_terminal: bool,
     require_post_ready_pump: bool = False,
     expected_character_id: int | None = None,
+    progress_stall_probe: Callable[[dict[str, object]], str | None] | None = None,
 ) -> dict[str, object]:
     """Wait for a stable native frame, optionally pinned to one character.
 
@@ -3876,6 +3877,14 @@ def _wait_for_readiness(
             last_readiness_diagnostics = _compact_readiness_diagnostics(
                 capabilities
             )
+            if progress_stall_probe is not None:
+                stall_reason = progress_stall_probe(capabilities)
+                if stall_reason is not None:
+                    raise NativeReadinessTimeoutError(
+                        f"native readiness stopped early: {stall_reason}",
+                        readiness_diagnostics=last_readiness_diagnostics,
+                        last_observation=last_observation,
+                    )
             diagnostics = capabilities.get("diagnostics")
             _raise_fatal_diagnostics(diagnostics)
             snapshot = _runner_semantic_snapshot(driver)

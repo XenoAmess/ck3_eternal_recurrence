@@ -37,7 +37,8 @@ from .h3937_stationary_route_contact_query_run import (
 )
 from .native_auto_run import (
     NativeReadinessTimeoutError, READINESS_POLL_SECONDS, READINESS_STABLE_SECONDS,
-    SESSION_TIMEOUT_GRACE_SECONDS, _cleanup_report, _public_binding,
+    SESSION_TIMEOUT_GRACE_SECONDS, _cleanup_report,
+    _main_thread_query_pump_epoch, _public_binding,
     _wait_for_readiness,
 )
 from .native_session import native_session, validate_cold_start_checkpoint_for_pipe
@@ -295,6 +296,57 @@ def _clean_checkout_and_blob_identity(
     return commit, blobs
 
 
+class _ColdLoadProgressWatchdog:
+    """Observe only shader file counts and native pump advancement."""
+
+    SAMPLE_SECONDS = 20.0
+    STALL_SECONDS = 300.0
+
+    def __init__(self, shader_dir: Path) -> None:
+        self.shader_dir = shader_dir
+        self.started = time.monotonic()
+        self.last_progress = self.started
+        self.last_sample = float("-inf")
+        self.last_file_count = 0
+        self.last_pump_epoch: int | None = None
+        self.samples: list[dict[str, object]] = []
+
+    def __call__(self, capabilities: dict[str, object]) -> str | None:
+        now = time.monotonic()
+        if now - self.last_sample < self.SAMPLE_SECONDS:
+            return None
+        self.last_sample = now
+        try:
+            file_count = sum(1 for path in self.shader_dir.rglob("*") if path.is_file())
+        except OSError as error:
+            return f"shader cache inventory unavailable: {type(error).__name__}"
+        pump_epoch = _main_thread_query_pump_epoch(capabilities)
+        if (file_count > self.last_file_count
+                or (pump_epoch is not None and
+                    (self.last_pump_epoch is None
+                     or pump_epoch > self.last_pump_epoch))):
+            self.last_progress = now
+        self.last_file_count = file_count
+        self.last_pump_epoch = pump_epoch
+        quiet_seconds = now - self.last_progress
+        self.samples.append({
+            "elapsed_seconds": round(now - self.started, 3),
+            "shader_file_count": file_count,
+            "pump_epoch": pump_epoch,
+            "quiet_seconds": round(quiet_seconds, 3),
+        })
+        if quiet_seconds >= self.STALL_SECONDS:
+            return ("shader file count and native pump epoch unchanged for "
+                    f"{quiet_seconds:.1f}s")
+        return None
+
+    def report(self) -> dict[str, object]:
+        return {"enabled": True, "shader_dir": str(self.shader_dir),
+                "sample_seconds": self.SAMPLE_SECONDS,
+                "stall_seconds": self.STALL_SECONDS,
+                "samples": self.samples}
+
+
 def collect_h3937_combined_paused_war_scope_once(
     spec: EnvironmentSpec, *, timeout_seconds: float = 690,
     readiness_timeout_seconds: float = 600,
@@ -305,6 +357,7 @@ def collect_h3937_combined_paused_war_scope_once(
     readiness_timeout_screenshot_path: Path | None = None,
     readiness_timeout_screen_lease_check: Callable[[], object] | None = None,
     readiness_timeout_diagnostic_probe: bool = False,
+    readiness_stall_watchdog: bool = False,
 ) -> dict[str, object]:
     """One managed session, at most six read-only queries, never gameplay."""
     if H3937_COMBINED_OUTER_LIVE_AUTHORIZED is not True:
@@ -314,6 +367,8 @@ def collect_h3937_combined_paused_war_scope_once(
         raise AgentError("H3937 timeout screenshot requires current screen lease check")
     if not isinstance(readiness_timeout_diagnostic_probe, bool):
         raise AgentError("H3937 readiness timeout diagnostic probe must be boolean")
+    if not isinstance(readiness_stall_watchdog, bool):
+        raise AgentError("H3937 readiness stall watchdog must be boolean")
     timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
     readiness_timeout = _positive_seconds(
         readiness_timeout_seconds, "readiness_timeout_seconds")
@@ -393,6 +448,9 @@ def collect_h3937_combined_paused_war_scope_once(
     stop_event = threading.Event()
     diagnostic_event = (threading.Event()
                         if readiness_timeout_diagnostic_probe else None)
+    progress_watchdog = (_ColdLoadProgressWatchdog(
+        spec.profile_dir / "shadercache" / "dx11")
+        if readiness_stall_watchdog else None)
     session_done = threading.Event()
     session_state: dict[str, object] = {"report": None, "error": None}
     driver: NativeHeadlessGameplayDriver | None = None
@@ -437,7 +495,9 @@ def collect_h3937_combined_paused_war_scope_once(
                                 max(0.001, deadline - time.monotonic())),
             stable_seconds=stable_seconds, poll_interval_seconds=poll_seconds,
             cold_start_checkpoint=True, allow_terminal=False,
-            require_post_ready_pump=True)
+            require_post_ready_pump=True,
+            **({"progress_stall_probe": progress_watchdog}
+               if progress_watchdog is not None else {}))
         if time.monotonic() >= deadline:
             raise AgentError("H3937 combined timeout before native snapshot")
         inner = collect_h3937_target_reads_in_session(service)
@@ -611,6 +671,8 @@ def collect_h3937_combined_paused_war_scope_once(
         "asset_sha256_after": after_hashes,
         "readiness": _public_binding(readiness) if isinstance(readiness, dict) else None,
         "readiness_timeout_diagnostics": readiness_timeout_diagnostics,
+        "readiness_progress_watchdog": (
+            progress_watchdog.report() if progress_watchdog is not None else None),
         "readiness_timeout_last_observation": readiness_timeout_last_observation,
         "readiness_timeout_screenshot": readiness_timeout_screenshot,
         "readiness_timeout_frontend_route": readiness_timeout_frontend_route,

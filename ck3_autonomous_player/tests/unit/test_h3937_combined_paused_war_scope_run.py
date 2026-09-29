@@ -11,6 +11,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -86,14 +87,55 @@ class H3937CombinedOuterTests(unittest.TestCase):
             capture.assert_not_called()
             self.assertEqual(image.read_bytes(), b"historical-original")
 
-    def test_a05_time_budgets_remain_bounded_and_ordered(self) -> None:
+    def test_a11_time_budgets_remain_bounded_and_ordered(self) -> None:
         parameters = inspect.signature(
             producer.collect_h3937_combined_paused_war_scope_once).parameters
         self.assertEqual(parameters["readiness_timeout_seconds"].default, 600)
         self.assertEqual(parameters["timeout_seconds"].default, 690)
-        self.assertEqual(once.SUPERVISOR_TIMEOUT_SECONDS, 840)
+        self.assertEqual(parameters["readiness_stall_watchdog"].default, False)
+        self.assertEqual(parameters["readiness_timeout_diagnostic_probe"].default, False)
+        self.assertEqual(once.SUPERVISOR_TIMEOUT_SECONDS, 2050)
+        self.assertEqual(once.SUPERVISOR_HEARTBEAT_SECONDS, 120)
         self.assertLess(600, 690)
-        self.assertLess(690, once.SUPERVISOR_TIMEOUT_SECONDS)
+        self.assertLess(1800, 1890)
+        self.assertLess(1890, once.SUPERVISOR_TIMEOUT_SECONDS)
+
+    def test_cold_load_watchdog_requires_both_file_and_pump_stall(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir, patch.object(
+            producer, "_main_thread_query_pump_epoch",
+            side_effect=lambda value: value.get("pump"),
+        ):
+            shader_dir = Path(temp_dir)
+            watchdog = producer._ColdLoadProgressWatchdog(shader_dir)
+            watchdog.SAMPLE_SECONDS = 0
+            watchdog.STALL_SECONDS = 0.01
+            self.assertIsNone(watchdog({"pump": 1}))
+            watchdog.last_progress -= 1
+            self.assertIn("unchanged", watchdog({"pump": 1}))
+            (shader_dir / "a.scache").write_bytes(b"cache")
+            self.assertIsNone(watchdog({"pump": 1}))
+            watchdog.last_progress -= 1
+            self.assertIsNone(watchdog({"pump": 2}))
+            self.assertEqual(watchdog.report()["samples"][-1]["shader_file_count"], 1)
+
+    def test_watchdog_stall_ends_readiness_with_bounded_timeout(self) -> None:
+        driver = Mock()
+        driver.capabilities.return_value = {
+            "mode": "native-headless", "backend_id": "native-headless",
+            "transport_ready": True, "snapshot": False,
+            "diagnostics": {"connected": True},
+        }
+        with self.assertRaisesRegex(
+            producer.NativeReadinessTimeoutError, "stopped early",
+        ) as captured:
+            producer._wait_for_readiness(
+                driver, session_done=threading.Event(), session_state={},
+                timeout_seconds=10, stable_seconds=0, poll_interval_seconds=0.01,
+                cold_start_checkpoint=True, allow_terminal=False,
+                progress_stall_probe=lambda capabilities: "no file or pump progress",
+            )
+        self.assertTrue(captured.exception.readiness_diagnostics["transport_ready"])
+        driver.capabilities.assert_called_once()
 
     def test_dirty_checkout_or_module_blob_drift_refuses_before_launch(self) -> None:
         source = Path(producer.__file__)

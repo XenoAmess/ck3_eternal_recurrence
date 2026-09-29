@@ -15,6 +15,7 @@ import re
 import secrets
 import subprocess
 import sys
+import time
 import traceback
 from datetime import datetime, timezone
 
@@ -25,22 +26,27 @@ from .environment import EnvironmentSpec
 from .runtime import NativeBridgeLaunchConfig
 
 
-ROUND = "R3944"
+ROUND = "R3945"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
-SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a10"
+SCREEN_TASK_ID = "war-h3937-combined-readonly-live-20260929-a11"
 LEASE_MAX_AGE_SECONDS = 600
 GO_MAX_AGE_SECONDS = 300
 CLOCK_SKEW_SECONDS = 10
-NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-09")
+NO_LAUNCH = Path(r"D:\ck3-research-artifacts\war-h3937-combined-no-launch-20260929\attempt-10")
 STATE = NO_LAUNCH / "state"
-OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-10")
-GO = OUTPUT.parent / "go-attempt-10.json"
-SCREEN = OUTPUT.parent / "screen-attempt-10"
+OUTPUT = Path(r"D:\ck3-research-artifacts\war-h3937-combined-live-20260929\attempt-11")
+GO = OUTPUT.parent / "go-attempt-11.json"
+SCREEN = OUTPUT.parent / "screen-attempt-11"
 GAME = Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III")
 DLL = NO_LAUNCH / "source-verified" / "xar_ck3_bridge.dll"
 INJECTOR = NO_LAUNCH / "source-verified" / "xar_ck3_bridge_injector.exe"
-SUPERVISOR_TIMEOUT_SECONDS = 840
+SUPERVISOR_TIMEOUT_SECONDS = 2050
+SUPERVISOR_HEARTBEAT_SECONDS = 120
+
+
+def _monotonic() -> float:
+    return time.monotonic()
 
 
 def _sha(path: Path) -> str:
@@ -128,6 +134,22 @@ def _require_live_screen_lease(expected_sequence: object | None = None) -> dict[
     return owner
 
 
+def _managed_screen_heartbeat() -> None:
+    """Renew the exact main-bus lease while a long cold load is supervised."""
+    _require_live_screen_lease()
+    try:
+        subprocess.run(
+            [sys.executable, str(Path(__file__).resolve().parents[3]
+                                 / "tools" / "codex_task_bus.py"),
+             "--bus-dir", str(TASK_BUS), "heartbeat",
+             "--task", SCREEN_TASK_ID,
+             "--repo", str(Path(__file__).resolve().parents[3])],
+            capture_output=True, text=True, check=True, timeout=30)
+    except subprocess.TimeoutExpired as error:
+        raise RuntimeError("managed screen heartbeat timed out") from error
+    _require_live_screen_lease()
+
+
 def issue_screen_challenge(entry_path: Path) -> dict[str, object]:
     """After screen acquisition, create a unique pre-capture challenge only."""
     entry = _require_entry_blob(entry_path)
@@ -168,7 +190,7 @@ def _require_exact_admission() -> dict[str, object]:
         isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value)
         for value in (outer.COMBINED_DLL_SHA256, outer.COMBINED_INJECTOR_SHA256)
     ):
-        raise ValueError("a05 exact Release binary pins are not frozen")
+        raise ValueError("exact Release binary pins are not frozen")
     if _git("status", "--porcelain=v1", "--untracked-files=all"):
         raise ValueError("one-shot checkout is dirty")
     head = _git("rev-parse", "HEAD")
@@ -477,6 +499,9 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
                     OUTPUT / "readiness-timeout-desktop.png"),
                 readiness_timeout_screen_lease_check=_require_live_screen_lease,
                 readiness_timeout_diagnostic_probe=True,
+                readiness_stall_watchdog=True,
+                timeout_seconds=1890,
+                readiness_timeout_seconds=1800,
                 native_bridge=NativeBridgeLaunchConfig(
                     mode="native-headless", pipe_name=PIPE,
                     dll_path=DLL, injector_path=INJECTOR,
@@ -629,7 +654,19 @@ def supervise_exact_once(entry_path: Path) -> int:
             stderr=subprocess.PIPE,
         )
         try:
-            stdout, stderr = worker.communicate(timeout=SUPERVISOR_TIMEOUT_SECONDS)
+            supervisor_deadline = _monotonic() + SUPERVISOR_TIMEOUT_SECONDS
+            while True:
+                remaining = supervisor_deadline - _monotonic()
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(worker.args, SUPERVISOR_TIMEOUT_SECONDS)
+                try:
+                    stdout, stderr = worker.communicate(
+                        timeout=min(SUPERVISOR_HEARTBEAT_SECONDS, remaining))
+                    break
+                except subprocess.TimeoutExpired:
+                    if _monotonic() >= supervisor_deadline:
+                        raise
+                    _managed_screen_heartbeat()
         except subprocess.TimeoutExpired as error:
             timeout = True
             stdout = error.stdout or b""
