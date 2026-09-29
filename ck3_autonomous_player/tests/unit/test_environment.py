@@ -949,7 +949,11 @@ class TrackedShutdownTests(unittest.TestCase):
             self.assertEqual(payload["watchdog_pid"], os.getpid())
             self.assertEqual(payload["error_type"], "ImportError")
             self.assertIn("simulated pre-main", payload["traceback"])
-            start = json.loads(record.with_suffix(".watchdog_start.json").read_text(encoding="utf-8"))
+            start = json.loads(
+                record.with_name("ck3.early-import-nonce.watchdog_start.json").read_text(
+                    encoding="utf-8"
+                )
+            )
             self.assertEqual(start["watchdog_pid"], os.getpid())
             self.assertFalse((root / "ready.json").exists())
 

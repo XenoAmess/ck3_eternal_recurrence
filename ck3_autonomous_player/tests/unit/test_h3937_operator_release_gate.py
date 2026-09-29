@@ -96,6 +96,28 @@ class ScreenReleaseDecisionTests(unittest.TestCase):
                 facts.update(mutation)
                 self.assertFalse(assess_screen_release(**facts)["may_release"])
 
+    def test_malformed_proofs_never_authorize_release(self) -> None:
+        cases = [
+            ("child_started", "false"),
+            ("child_exited", "true"),
+            ("target_processes_gone", "true"),
+            ("unsafe_marker_absent", "false"),
+            ("unique_owned_screen_lease", "true"),
+            ("watchdog_scan_error", ""),
+            ("nonce_bound_watchdog_scans", [{}, {}]),
+            ("nonce_bound_watchdog_scans", [None, None]),
+            ("nonce_bound_watchdog_scans", ["", ""]),
+            ("nonce_bound_watchdog_scans", [[], [], []]),
+            ("nonce_bound_watchdog_scans", ""),
+            ("child_completion", "not a report"),
+            ("outer_report", "not a report"),
+        ]
+        for key, value in cases:
+            with self.subTest(key=key, value=value):
+                facts = self.facts()
+                facts[key] = value
+                self.assertFalse(assess_screen_release(**facts)["may_release"])
+
 
 if __name__ == "__main__":
     unittest.main()

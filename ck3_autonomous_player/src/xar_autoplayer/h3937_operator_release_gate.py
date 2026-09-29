@@ -26,12 +26,14 @@ def assess_screen_release(
 ) -> dict[str, object]:
     """Return reasons before any `status --state done` command is attempted."""
     failures: list[str] = []
-    if not child_exited:
+    if type(child_started) is not bool:
+        failures.append("one-shot child-started proof malformed")
+    if child_exited is not True:
         failures.append("one-shot child exit unproven")
-    if not target_processes_gone:
+    if target_processes_gone is not True:
         failures.append("CK3/recorder/injector inventory not empty or unavailable")
-    if child_started:
-        if child_completion is None or outer_report is None:
+    if child_started is True:
+        if not isinstance(child_completion, Mapping) or not isinstance(outer_report, Mapping):
             failures.append("exact child completion or outer report unavailable")
         else:
             bound_sha = str(child_completion.get("outer_report_sha256", ""))
@@ -44,17 +46,21 @@ def assess_screen_release(
             cleanup = outer_report.get("cleanup")
             if not isinstance(cleanup, Mapping) or cleanup.get("cleanup_proven") is not True:
                 failures.append("native cleanup evidence incomplete")
-    elif not pre_native_launch_proven:
+    elif child_started is False and pre_native_launch_proven is not True:
         failures.append("no-child pre-native phase not proven")
-    if not unsafe_marker_absent:
+    if unsafe_marker_absent is not True:
         failures.append("unsafe marker present or unreadable")
-    if watchdog_scan_error:
+    if watchdog_scan_error is not None:
         failures.append("nonce-bound watchdog inventory unavailable")
-    if nonce_bound_watchdog_scans is None or len(nonce_bound_watchdog_scans) < 2:
+    if (
+        type(nonce_bound_watchdog_scans) is not list
+        or len(nonce_bound_watchdog_scans) != 2
+        or any(type(scan) is not list for scan in nonce_bound_watchdog_scans)
+    ):
         failures.append("two nonce-bound watchdog scans unavailable")
     elif any(scan for scan in nonce_bound_watchdog_scans):
         failures.append("nonce-bound watchdog child remains")
-    if not unique_owned_screen_lease:
+    if unique_owned_screen_lease is not True:
         failures.append("exact unique screen lease not proven")
     return {
         "schema": "xar.h3937-screen-release-decision.v1",

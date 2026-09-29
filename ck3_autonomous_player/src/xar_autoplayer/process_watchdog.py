@@ -18,7 +18,10 @@ sys.dont_write_bytecode = True
 def _early_receipt_path(suffix: str) -> Path | None:
     if len(sys.argv) not in {9, 10}:
         return None
-    return Path(sys.argv[6]).with_suffix(suffix)
+    record = Path(sys.argv[6])
+    if suffix == ".watchdog_start.json":
+        return record.with_name(f"{record.stem}.{sys.argv[4]}.watchdog_start.json")
+    return record.with_suffix(suffix)
 
 
 def _write_early_receipt(path: Path, payload: dict[str, object]) -> None:

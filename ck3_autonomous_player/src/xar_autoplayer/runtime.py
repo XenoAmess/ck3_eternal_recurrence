@@ -2226,7 +2226,9 @@ def _start_process_watchdog(
     except Exception as bootstrap_error:
         candidate = actual_pid if actual_pid is not None else bootstrap_pid
         diagnostic_path = record_file.with_suffix(".watchdog_bootstrap.json")
-        start_path = record_file.with_suffix(".watchdog_start.json")
+        start_path = record_file.with_name(
+            f"{record_file.stem}.{nonce}.watchdog_start.json"
+        )
         start_receipt: dict[str, object] | None = None
         start_error: str | None = None
         if start_path.is_file():
