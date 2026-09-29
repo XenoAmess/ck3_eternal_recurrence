@@ -858,6 +858,12 @@ def _summary(command: str, payload: dict[str, object]) -> dict[str, object]:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    if args.command == "native-observe-h3937-paused-war-scope-v1":
+        from .h3937_paused_war_scope_run import H3937_PHASE0_LIVE_AUTHORIZED
+
+        if H3937_PHASE0_LIVE_AUTHORIZED is not True:
+            print("ERROR: H3937 phase-0 launch authorization absent", file=sys.stderr)
+            return 1
     spec = make_spec(args.state_dir, args.game_dir)
     try:
         if (

@@ -30,15 +30,23 @@ native session would cold load that save, wait for paused readiness, and take
 two snapshots with **zero gameplay/query steps**. The entry gate binds the
 single active War 16777231 and controllable Army 83886367 at province 2610;
 it does not require any inherited hostile IDs, positions or routes. The
-projection demands unique, typed current positions and complete published
-route arrays for every listed enemy and player army. It records both the full
+projection demands unique, typed current positions and typed published route
+arrays for every listed enemy and player army. It records both the full
 published enemy list and the dynamically selected nonretreating query set.
+The native war row may repeat the player's army in `allied_armies`; that ID is
+accepted only when its projected fields exactly match the player row. Other
+cross-group overlaps, conflicting rows, and a second controllable army fail.
 It fails closed above 64 enemies, 64 combined allies/player rows, or 4,096
 combined route entries so the receipt stays bounded.
 Revision, snapshot ID, date, episode and connection generation must remain
 identical; no command may append to history. Changed army rows, assets, or
 unproven session cleanup make the report RED. Reports include a bounded scope
-projection and `action_authorized=false`, `date_advance_authorized=false`.
+projection, actual before/after SHA-256 for the save, child sidecar, DLL,
+injector, rebind receipt, and producer module, and
+`action_authorized=false`, `date_advance_authorized=false`. The receipt bytes
+are fixed at entry and rehashed after cleanup; a replacement makes the report
+RED even if its parsed content resembles the entry receipt. The report also
+records the actual producer checkout commit, checked again after cleanup.
 
 `GREEN_READ_ONLY_ROSTER` would mean the **native-published observable** roster
 was read consistently. The native bridge silently returns an empty army list
@@ -56,6 +64,13 @@ full route proof. Province 2610 occupation is
 the current war snapshot only carries objective province states. Neither
 roster observation nor a later route-contact result supplies one-day or
 seven-day date credit on its own.
+
+The phase-0 candidate pins the old H3937 Release DLL SHA `A8EAC0...786E9`
+only for its own roster observation. A native port that adds bounded province
+2610 state or route-read status changes the DLL bytes. Its result must use a
+new exact DLL pin, official prepared rebind, and one new managed same-session
+attempt from the H3937 save. Separate old-DLL roster and new-DLL province or
+route receipts cannot be joined into one same-frame observation.
 
 ## Offline diagnostic, with separate evidence status
 
