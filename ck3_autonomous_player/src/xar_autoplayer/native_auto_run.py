@@ -8488,6 +8488,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
         _PRIVATE_ACTIVITY_GUEST_CANDIDATE_STEP,
         _PRIVATE_ACTIVITY_GUEST_OPINION_STEP,
         _PRIVATE_ACTIVITY_GUEST_RULE_QUERY_STEP,
+        _PRIVATE_ACTIVITY_GUEST_RULE_PROVENANCE_STEP,
     }:
         for key in (
             "submitted", "pending", "same_frame", "activity_stage1_confirm",
