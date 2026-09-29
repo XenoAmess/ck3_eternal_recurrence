@@ -24,6 +24,13 @@ EXE = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 GUI_SOURCE = "E6AD4D44435F17B77C6A5BD6554AB812FBF396D9A27370DB7CF9B56D658FDF7D"
 GUI_BLOCK = "F5172E8A9DC92E8998957B5F443575608D04AC44342CE085DF23370CDA26F593"
 GUI_RECEIPT = "69F4535E4FDA428E910CBE6F3B44C70E352853535A2D546CB71AA09CEA941779"
+PREFLIGHT_ROOT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a02")
+PREFLIGHT_SHA = "EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488"
+PREFLIGHT_ARGV_SHA = "B65081EC4B7B25EF9172EECE66596542C47002B10C1937EF30DADDC06ED7ABB6"
+PREFLIGHT_RESULT_SHA = "70E7E992EB8C8358D612723B0FF80F7617015B872162770BBA47A9BD9C29BCEB"
+PREFLIGHT_COMMAND_SHA = "86D2C8F7832536A87DE943B26B352B5B1E7393C3918FB00D2229A2ED8E5FCDCF"
+CAPTURE_SCRIPT_SHA = "752F8E2096CA363857B806DE605B7DC90E679C55F79FD9747827D405E4B7110A"
+CAPTURE_CHECKOUT_HEAD = "5629D147FA94AB68AD5CCDA484FE1EB32D4CB59E"
 SAVE_PATH = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-live-20260929-a08/e2-04-d06-postframe-preservation-a01/d06-immutable.ck3")
 SIDECAR_PATH = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-live-20260929-a08/ck3-output/interactive-requests-responses/e2-04-d05-postframe-save.json")
 ACTOR, WAR, ARMY, COMBAT, PROVINCE, DATE = 29829, 4, 18, 16777218, 2633, 53146368
@@ -55,10 +62,16 @@ def bound_source(row: Any, label: str) -> None:
 
 
 def verify_no_launch(root: Path) -> dict[str, Any]:
-    require(root.name != "episode02-e2-04-d06-knight-preflight-20260929-a01",
-            "a01 no-launch was RED and is not admission")
+    require(root.resolve() == PREFLIGHT_ROOT.resolve(),
+            "only the frozen a02 READY no-launch root is admission")
     result_path, argv_path = root / "run-result.json", root / "run-argv.json"
     output = root / "ck3-output"
+    require((sha(identity(result_path)), sha(identity(argv_path)),
+             sha(identity(output / "preflight.json")),
+             sha(identity(output / "command.json"))) ==
+            (PREFLIGHT_RESULT_SHA, PREFLIGHT_ARGV_SHA,
+             PREFLIGHT_SHA, PREFLIGHT_COMMAND_SHA),
+            "a02 no-launch frozen evidence bytes changed")
     result, argv, preflight = read(result_path), read(argv_path), read(output / "preflight.json")
     require(result.get("exit_code") == 0 and result.get("ck3_started_by_command") is False and
             argv.get("capture") is False and "--capture" not in argv.get("argv", []) and
@@ -67,13 +80,14 @@ def verify_no_launch(root: Path) -> dict[str, Any]:
     require(preflight.get("result") == "READY_FOR_BOUNDED_LIVE_ATTEMPT" and
             preflight.get("ck3_started") is False, "no-launch preflight is not READY")
     verify_preflight(preflight)
-    require(argv.get("capture_script_sha256") ==
-            sha(identity(Path(argv["argv"][1]))),
-            "no-launch script bytes differ from its frozen run identity")
+    require(argv.get("capture_script_sha256") == CAPTURE_SCRIPT_SHA and
+            str(argv.get("checkout_head", "")).upper() == CAPTURE_CHECKOUT_HEAD and
+            sha(identity(Path(argv["argv"][1]))) == CAPTURE_SCRIPT_SHA,
+            "a02 capture script bytes/HEAD differ from frozen admission")
     return {"result": identity(result_path), "argv": identity(argv_path),
             "preflight": identity(output / "preflight.json"),
             "checkout_head": argv.get("checkout_head"),
-            "capture_script_sha256": argv.get("capture_script_sha256")}
+            "capture_script_sha256": CAPTURE_SCRIPT_SHA}
 
 
 def verify_preflight(preflight: dict[str, Any]) -> None:

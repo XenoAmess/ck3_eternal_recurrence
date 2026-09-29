@@ -71,8 +71,10 @@ class D06KnightOperatorTest(unittest.TestCase):
         bound = verify_no_launch(PREFLIGHT)
         self.assertEqual(bound["preflight"]["sha256"],
                          "EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488")
-        with self.assertRaisesRegex(ValueError, "a01 no-launch was RED"):
+        with self.assertRaisesRegex(ValueError, "only the frozen a02 READY"):
             verify_no_launch(PREFLIGHT.with_name("episode02-e2-04-d06-knight-preflight-20260929-a01"))
+        with self.assertRaisesRegex(ValueError, "only the frozen a02 READY"):
+            verify_no_launch(PREFLIGHT.with_name("episode02-e2-04-d06-knight-preflight-20260929-self-reported-ready"))
 
     def test_snapshot_requires_one_paused_d06_army_and_frame(self) -> None:
         self.assertEqual(snapshot_case(frame())["native_revision"], 3)
