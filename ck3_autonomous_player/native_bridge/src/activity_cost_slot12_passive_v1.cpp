@@ -76,6 +76,35 @@ bool FingerprintConfiguration(
     hash ^= byte;
     hash *= 1099511628211ULL;
   }
+  // The selected category and cost-driving option vectors are outside the
+  // planner object. Their pointer/count fields above alone would miss an
+  // in-place selection change in an existing row.
+  struct Rows {
+    std::size_t pointer_offset;
+    std::size_t count_offset;
+    std::size_t stride;
+  };
+  constexpr std::array<Rows, 2> row_sets{{
+      {0x1560, 0x156C, 0x10},
+      {0x1578, 0x1584, 0x38},
+  }};
+  std::array<std::uint8_t, 128 * 0x38> rows{};
+  for (const auto &set : row_sets) {
+    std::uintptr_t pointer = 0;
+    std::int32_t count = -1;
+    if (!ReadAt(environment, planner, set.pointer_offset, pointer) ||
+        !ReadAt(environment, planner, set.count_offset, count) ||
+        count < 0 || count > 128 || (count != 0 && pointer == 0))
+      return false;
+    const auto size = static_cast<std::size_t>(count) * set.stride;
+    if (size != 0 &&
+        !Read(environment, pointer, 0, rows.data(), size))
+      return false;
+    for (std::size_t i = 0; i < size; ++i) {
+      hash ^= rows[i];
+      hash *= 1099511628211ULL;
+    }
+  }
   output = hash;
   return true;
 }

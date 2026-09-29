@@ -11,10 +11,14 @@ namespace {
 constexpr std::uintptr_t kBase = 0x10000000;
 constexpr std::uintptr_t kPlanner = 0x20000000;
 constexpr std::uintptr_t kType = 0x30000000;
+constexpr std::uintptr_t kCategoryRows = 0x40000000;
+constexpr std::uintptr_t kCostOptionRows = 0x50000000;
 
 struct Fixture {
   std::array<std::uint8_t, 0x2500> planner{};
   std::array<std::uint8_t, 0x60> type{};
+  std::array<std::uint8_t, 0x10> category_rows{};
+  std::array<std::uint8_t, 0x38> cost_option_rows{};
   std::array<std::uint8_t, 14> prologue{
       0x48, 0x89, 0x5C, 0x24, 0x20, 0x55, 0x56, 0x57,
       0x41, 0x54, 0x41, 0x55, 0x41, 0x56};
@@ -48,7 +52,9 @@ bool Read(void *opaque, std::uintptr_t address, void *output,
     std::memcpy(output, source.data() + (address - base), bytes);
     return true;
   };
-  if (copy(kPlanner, fixture.planner) || copy(kType, fixture.type))
+  if (copy(kPlanner, fixture.planner) || copy(kType, fixture.type) ||
+      copy(kCategoryRows, fixture.category_rows) ||
+      copy(kCostOptionRows, fixture.cost_option_rows))
     return true;
   if (copy(kBase + xar::bridge::kActivityCostRefreshRvaV1,
            fixture.prologue) ||
@@ -72,6 +78,10 @@ int main() {
   Put(fixture.planner, 0, kBase + 0x41205F0);
   Put(fixture.planner, 0xD0, static_cast<std::uintptr_t>(0x22000000));
   Put(fixture.planner, 0x1530, kType);
+  Put(fixture.planner, 0x1560, kCategoryRows);
+  Put(fixture.planner, 0x156C, std::int32_t{1});
+  Put(fixture.planner, 0x1578, kCostOptionRows);
+  Put(fixture.planner, 0x1584, std::int32_t{1});
   Put(fixture.planner, 0x1AB0, std::int32_t{5});
   PutType(fixture.type, 0, kBase + 0x440E308);
   std::memcpy(fixture.type.data() + 0x18, "activity_feast", 14);
@@ -105,6 +115,14 @@ int main() {
   assert(ReadActivityCostSlot12PassiveV1(observer, fixture.frame, observed) ==
          ActivityCostSlot12ReadStatusV1::configuration_changed);
   fixture.planner[0x1600] ^= 1;
+  fixture.category_rows[3] ^= 1;
+  assert(ReadActivityCostSlot12PassiveV1(observer, fixture.frame, observed) ==
+         ActivityCostSlot12ReadStatusV1::configuration_changed);
+  fixture.category_rows[3] ^= 1;
+  fixture.cost_option_rows[7] ^= 1;
+  assert(ReadActivityCostSlot12PassiveV1(observer, fixture.frame, observed) ==
+         ActivityCostSlot12ReadStatusV1::configuration_changed);
+  fixture.cost_option_rows[7] ^= 1;
   auto next_frame = fixture.frame;
   ++next_frame.date_raw;
   assert(ReadActivityCostSlot12PassiveV1(observer, next_frame, observed) ==
