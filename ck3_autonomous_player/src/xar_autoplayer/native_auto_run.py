@@ -57,6 +57,7 @@ from .family_marriage_formal_consumer import (
     read_family_marriage_ledger,
 )
 from .player_child_matrilineal_formal_consumer import (
+    RESULT_STEP as PRIVATE_CHILD_MATRILINEAL_RESULT_STEP,
     SUBMIT_STEP as PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
     read_child_matrilineal_ledger,
 )
@@ -344,6 +345,21 @@ class NativeReadinessTimeoutError(AgentError):
         self.last_observation = copy.deepcopy(last_observation)
 
 
+def _require_private_child_pending_result(
+    candidate: Mapping[str, object], pending: Mapping[str, object],
+) -> None:
+    """Limit the paired cold recovery to its existing proposal result read."""
+    plan = candidate.get("plan")
+    selected_pending = (plan.get("child_matrilineal_pending")
+                        if isinstance(plan, dict) else None)
+    if (candidate.get("selected_step") != PRIVATE_CHILD_MATRILINEAL_RESULT_STEP
+            or selected_pending != dict(pending)
+            or plan.get("child_matrilineal_cold_recovery") is not True):
+        raise AgentError(
+            "private child pending recovery permits only the paired cold result step"
+        )
+
+
 def native_auto_run(
     spec: EnvironmentSpec,
     *,
@@ -369,6 +385,7 @@ def native_auto_run(
     allow_private_family_marriage_formal_trial: bool = False,
     private_child_matrilineal_target: tuple[int, int] | None = None,
     private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
+    private_child_matrilineal_pending_recovery_only: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
@@ -475,6 +492,22 @@ def native_auto_run(
                 or any(type(value) is not int or not 0 < value < 2**31
                        for value in pair) or pair[0] == pair[1]):
             raise AgentError("private child pending read needs one bounded distinct pair")
+    child_recovery_pending = None
+    if private_child_matrilineal_pending_recovery_only is True:
+        if (private_child_matrilineal_target is None
+                or private_child_matrilineal_pending_read_target is not None
+                or allow_private_lifestyle_formal_trial is not True
+                or turn_count != 1):
+            raise AgentError("private child pending recovery needs one bounded LIFE result turn")
+        child_recovery_pending = read_child_matrilineal_ledger(spec.state_dir)["pending"]
+        if (not isinstance(child_recovery_pending, dict)
+                or child_recovery_pending.get("status") != "receipt_pending"
+                or child_recovery_pending.get("material_result") is not False
+                or child_recovery_pending.get("heir_character_id")
+                != private_child_matrilineal_target[0]
+                or child_recovery_pending.get("candidate_character_id")
+                != private_child_matrilineal_target[1]):
+            raise AgentError("private child recovery lacks the specified unresolved proposal")
     if (
         allow_private_faction_gift_formal_trial is True
         and completion_contract != "bounded"
@@ -989,6 +1022,8 @@ def native_auto_run(
             candidate: dict[str, object],
         ) -> dict[str, object] | None:
             nonlocal epidemic_recovery_pre, exact_move_pre_submit_seen
+            if private_child_matrilineal_pending_recovery_only is True:
+                _require_private_child_pending_result(candidate, child_recovery_pending)
             if exact_move_contract is not None:
                 current_attempt["plan"] = copy.deepcopy(candidate.get("plan"))
                 current_attempt["selected_step"] = candidate.get("selected_step")
@@ -1372,6 +1407,7 @@ def native_auto_run(
                         service.auto_turn(before_submit=opening_guard_before_submit)
                         if (
                             opening_focus_gate is not None
+                            or private_child_matrilineal_pending_recovery_only is True
                             or before_submit is not None
                             or exact_move_contract is not None
                             or allow_private_epidemic_recovery_near_pair is True

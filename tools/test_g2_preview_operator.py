@@ -421,6 +421,29 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertNotIn("--allow-private-family-marriage-formal-trial", command)
 
+    def test_child_pending_recovery_routes_one_formal_life_turn(self) -> None:
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "Z:/candidate/manifest.json",
+            "--output", "Z:/candidate/recovery",
+            "--private-lifestyle-formal-trial",
+            "--private-child-matrilineal-pending-recovery", "37265", "37267",
+            "--child-matrilineal-recovery-proof-report", "Z:/proof/R0328.json",
+        ])
+        self.assertEqual(parsed.private_child_matrilineal_pending_recovery,
+                         [37265, 37267])
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"],
+            turns=1, timeout=600, readiness_timeout=300,
+            private_faction_round_id_value=None,
+            private_lifestyle_formal_trial=True,
+            private_child_matrilineal_pending_recovery=(37265, 37267),
+        )
+        self.assertIn("--allow-private-lifestyle-formal-trial", command)
+        self.assertEqual(command[-3:], [
+            "--private-child-matrilineal-pending-recovery", "37265", "37267",
+        ])
+        self.assertNotIn("--private-child-matrilineal-pending-read", command)
+
     def test_logged_child_start_callback_runs_only_after_spawn(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

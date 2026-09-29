@@ -2438,6 +2438,42 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(harness.child_pending_query_count, 0)
         self.assertEqual(harness.auto_turn_count, 0)
 
+    def test_private_child_pending_recovery_allows_only_matching_cold_result(self) -> None:
+        parsed = cli.parser().parse_args([
+            "--bridge-mode", "native-headless", "native-auto-run",
+            "--turns", "1", "--timeout", "900",
+            "--allow-private-lifestyle-formal-trial",
+            "--private-child-matrilineal-pending-recovery", "37265", "37267",
+        ])
+        self.assertEqual(parsed.private_child_matrilineal_pending_recovery,
+                         [37265, 37267])
+        pending = {"heir_character_id": 37265, "candidate_character_id": 37267,
+                   "status": "receipt_pending"}
+        result = {
+            "selected_step": native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_RESULT_STEP,
+            "plan": {
+                "child_matrilineal_pending": pending,
+                "child_matrilineal_cold_recovery": True,
+            },
+        }
+        native_auto_run_module._require_private_child_pending_result(result, pending)
+        for selected in (
+            native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
+            "life-advance", None,
+        ):
+            with self.assertRaises(AgentError):
+                native_auto_run_module._require_private_child_pending_result(
+                    {**result, "selected_step": selected}, pending)
+        with self.assertRaises(AgentError):
+            native_auto_run_module._require_private_child_pending_result(
+                {**result, "plan": {**result["plan"],
+                                    "child_matrilineal_cold_recovery": False}}, pending)
+        with self.assertRaises(AgentError):
+            native_auto_run_module._require_private_child_pending_result(
+                {**result, "plan": {**result["plan"],
+                                    "child_matrilineal_pending": {
+                                        **pending, "candidate_character_id": 42}}}, pending)
+
     def test_private_sway_target_rejects_nonbounded_and_invalid_id(self) -> None:
         for target in (0, -1, 0x100000000, True):
             with self.assertRaises(AgentError):

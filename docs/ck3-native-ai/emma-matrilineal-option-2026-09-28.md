@@ -86,3 +86,44 @@ R0328 on the official H3911 pair submitted the selected maternal-line Emma37265/
 R0329 performed that first cold read on PID75760. Emma's proposal was still `pending`; the native outbound interaction was `active`, age 0 days with a 7-day AI reply cutoff. The same-date WarID16777231 termination query resumed, and H3922 retained the pending ledger. [The immutable verdict](Z:/family-child-h3915-cold-v10/evidence/R0329-VERDICT.json) has SHA-256 `17F0BE76ADE9D09AFEC5BB70A11EF4294079FB08FD327943C8F2399A382E7C9F`. The subsequent `query-army-strengths-v1` was intercepted by the bounded observer, so no date advance or later marriage result was observed. The formal consumer must read the pending result on the first **new** bridge PID and whenever a later native revision appears. Once the current PID has completed its cold read, a later revision uses the ordinary result path; only that path admits an explicit refusal or invalidation. The result read is paused and read-only, so it can precede a selected war action for one turn; the war action is chosen again from the next frame. On the unchanged R0329 revision, the existing war choice remains untouched. This recovery wiring cannot itself advance the seven days or bypass the unresolved war forecast.
 
 H3922 exposed an official pairing gap: the child state preparer accepted only R0328's initial saved submit proof, while the R0329 cold read changed the pending ledger and saved a later checkpoint. The preparer now accepts the consecutive R0328 submit and R0329 cold proof reports, binding the latter's new PID, fixed seed, pending result, unchanged subject/candidate/option, lack of repeat submit, final save and final ledger. R0329's one-time wrapper still says `cold_result_not_qualified` because it classified the intercepted third read as a failure; its nested formal run says `candidate_terminal_intercepted`, `ok=true`, and records process cleanup. The source-stage H3922 `prepare-state`/ordinary no-launch probe at `Z:\family-child-h3922-proofchain-probe` passed with save SHA-256 `1BCB1FD30A097A2E8EBA9F96F013AB22A4B6490E0819CF8548B8F337473628A3` and child ledger SHA-256 `984F140CCAF733CA66A0377C271DFB0A8152EEE5D296E3DE245168A76FE331FC`. This is pairing readiness only; no new PID, date advance, relationship result or alliance was observed in that probe.
+
+## Bounded formal pending recovery after the H3928 read
+
+The existing `--private-child-matrilineal-pending-read` stops after one paused
+observation and leaves the formal child ledger untouched. #564 added a
+`GameplayBridgeService` route that can replace LIFE's wartime priority return
+with the **existing pending** `RESULT_STEP`, preserving a blocked native-war
+plan under `child_matrilineal_deferred_war_red`; it needs the specified pair in
+`driver.child_matrilineal_target_v1`. The operator previously did not pass
+that target. This source change adds a default-off operator route for one
+paired cold result turn. It does not authorize a new proposal or advance time.
+
+The operator reuses the official ordered R0328 submit and R0329 cold proof
+chain. H3928 additionally needs the R0339 pending Sway continuation, R0342
+applied report and resolved Sway sidecar to reach its save. The source-stage
+H3928 chain was checked without launching CK3: the validator returned
+candidate `37267`, pending Emma `37265`, actor `29829`, episode
+`native-29829-2bc2d599f7f9`, save SHA-256
+`A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`
+and raw source driver SHA-256
+`9D381400574278BC4F1C736A48BB4B90CE1E12D8440A004AFBD1F5399A4204C0`.
+The prepared driver has a different hash after official path rebinding; the
+new operator prelaunch check compares raw source and prepared target to their
+**separate** `ordinary-seed-rebind-v1` fields, then checks the actual prepared
+driver and save against the manifest. A proof or pending-ledger mismatch
+stops before live-run allocation or game launch. The native turn guard admits
+only a cold `RESULT_STEP` for the same pending record. No result, next turn,
+marriage or alliance is claimed from this source verification.
+
+```mermaid
+flowchart TD
+    A["Official H3928 save, driver and pending sidecar"] --> B{"Ordered submit, cold and Sway proofs reach same actor and episode?"}
+    B -->|No| X["No launch"]
+    B -->|Yes| C["New PID paused LIFE and war planning"]
+    C --> D{"Matching pending cold result selected?"}
+    D -->|No| Y["No gameplay action or date advance"]
+    D -->|Yes| E["One typed read updates the pending or resolved ledger"]
+    E -. "live validation pending" .-> F["Next formal turn reconsiders war RED and material family result"]
+    classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+    class F unknown;
+```
