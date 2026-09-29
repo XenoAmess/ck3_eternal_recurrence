@@ -215,11 +215,6 @@ def collect_h3937_combined_reads_in_session(
             middle, last, contact_step, contact_result)
         checks["dynamic_contact_bound"] = _bound_dynamic_contact_result(
             middle, contact_result, contact_step, hostiles)
-        checks["query_sequence_consecutive"] = bool(
-            type(province_result.get("query_sequence")) is int
-            and type(contact_result.get("query_sequence")) is int
-            and contact_result["query_sequence"]
-            == province_result["query_sequence"] + 1)
         if not all(checks.values()):
             raise AgentError("H3937 dynamic route-contact read-only proof incomplete")
     except Exception as caught:

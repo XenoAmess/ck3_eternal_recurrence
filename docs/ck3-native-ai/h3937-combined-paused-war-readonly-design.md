@@ -60,7 +60,10 @@ session; output from distinct DLL sessions cannot be called same-frame.
    complete observed hostile set and same snapshot; unchanged save, child
    sidecar, DLL, injector, rebind receipt and checkout; and proven managed
    cleanup. Match the dynamic result's hostile IDs to the `S1` query set and
-   its native source revision to the paused frame. Save full raw envelopes
+   its native source revision to the paused frame. Province and route-contact
+   `query_sequence` values are per-query-family counters; the ordered driver
+   history rows, not cross-family numeric succession, prove Q1 then Q2.
+   Save full raw envelopes
    and a bounded projection. Any failed
    check is RED, with no date or gameplay step. Even a successful read-only
    route-contact result gives no date credit until war risk, cash and formal
