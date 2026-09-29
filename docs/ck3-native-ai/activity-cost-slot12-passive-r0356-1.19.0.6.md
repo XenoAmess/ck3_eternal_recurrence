@@ -81,3 +81,17 @@ and the five-byte slot-12 call. Release/Debug focused tests exercise no
 capture, wrong caller, valid raw capture, planner/row configuration mutation and date
 change. They are source-level evidence only; this package did not launch CK3
 or obtain a new live cost readback.
+
+## Bounded operator entry
+
+The default-OFF `native-auto-run --private-activity-cost-slot12-raw-read`
+route sends `query-activity-cost-slot12-raw-v1-private` on one paused frame.
+Combined with `--private-activity-feast-planner-open`, the operator first
+uses the existing verified native opener and then requests the raw capture
+without advancing a turn. Used alone, it queries an already open planner,
+which allows a later configured stage-5 frame to be inspected without
+reopening it. The operator verifies the exact private response schema,
+unchanged actor/date/revision and no date-changing turn. A native
+`no_normal_refresh` result remains RED, not a zero-price success. This is
+operator wiring and focused fake-driver validation; it adds no live fee or
+final-start evidence.
