@@ -10728,6 +10728,21 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
   const auto war_capacity = war_storage != nullptr
       ? LoadAt<std::int32_t>(war_storage, kComponentStorageCapacityOffset)
       : -1;
+  const PhysicalArmyInventorySourceV1 source{
+      reinterpret_cast<std::uintptr_t>(game_state),
+      reinterpret_cast<std::uintptr_t>(jomini_state),
+      reinterpret_cast<std::uintptr_t>(game_data),
+      reinterpret_cast<std::uintptr_t>(army_storage),
+      reinterpret_cast<std::uintptr_t>(army_slots), army_capacity,
+      reinterpret_cast<std::uintptr_t>(internal_army_storage),
+      reinterpret_cast<std::uintptr_t>(internal_army_slots),
+      internal_army_capacity,
+      reinterpret_cast<std::uintptr_t>(character_storage),
+      reinterpret_cast<std::uintptr_t>(character_slots), character_capacity,
+      reinterpret_cast<std::uintptr_t>(province_array), province_count,
+      reinterpret_cast<std::uintptr_t>(war_storage),
+      reinterpret_cast<std::uintptr_t>(war_slots), war_capacity,
+      reinterpret_cast<std::uintptr_t>(native_war)};
   const auto source_stable = [&]() {
     return *bindings.game_state_slot == game_state &&
            *bindings.jomini_state_slot == jomini_state &&
@@ -10784,6 +10799,7 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
 
   const auto scan = [&]() {
     PhysicalArmyInventoryV1 result{};
+    result.source = source;
     result.date_raw = before.date_raw;
     result.war_id = war_id;
     result.subject_army_id = subject_army_id;

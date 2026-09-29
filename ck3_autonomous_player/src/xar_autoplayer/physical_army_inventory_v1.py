@@ -11,6 +11,24 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
+_MAILBOX_NATIVE_KEYS = frozenset({
+    "source_build", "status", "date_raw", "war_id", "subject_army_id",
+    "native_revision", "query_sequence", "mailbox_pump_epoch",
+    "mailbox_thread_id", "mailbox_date_raw", "mailbox_paused",
+    "same_source_across_route", "storage_capacity", "slots_scanned",
+    "empty_slots", "canonical_units", "invalid_id_slots",
+    "noncanonical_slots", "unresolved_slots", "player_army_ids",
+    "allied_army_ids", "hostile_army_ids", "contact_hostile_army_ids",
+    "retreating_hostile_army_ids", "units",
+})
+_MAILBOX_UNIT_KEYS = frozenset({
+    "army_id", "owner_character_id", "current_province_id",
+    "route_province_ids", "route_read_status", "route_source_count",
+    "army_state_code", "in_combat", "retreating", "controllable",
+    "war_side",
+})
+
+
 @dataclass(frozen=True)
 class InventoryShapeCheck:
     valid: bool
@@ -186,3 +204,121 @@ def validate_physical_army_inventory_shape_v1(
     # Shape-only validation cannot grant gameplay. Native provenance and the
     # formal risk/cash consumer are separate mandatory gates.
     return InventoryShapeCheck(True, "shape_valid_only", hostile, requested)
+
+
+def validate_native_physical_inventory_mailbox_v1(
+    native_receipt: Mapping[str, Any] | None,
+    *,
+    starting: Mapping[str, Any],
+    current: Mapping[str, Any],
+    horizon: Mapping[str, Any],
+    query_sequence: int,
+    subject_army_id: int,
+    requested_hostiles: tuple[int, ...],
+) -> InventoryShapeCheck:
+    """Check the typed native mailbox payload against the driver-held frame.
+
+    The caller must obtain native_receipt from its own accepted native pipe
+    response. This is a read-only candidate check, never date admission.
+    """
+    def red(reason: str) -> InventoryShapeCheck:
+        return InventoryShapeCheck(False, reason)
+
+    if not isinstance(native_receipt, Mapping) or set(native_receipt) != _MAILBOX_NATIVE_KEYS:
+        return red("mailbox_receipt_missing_or_extra_fields")
+    rows = native_receipt.get("units")
+    if not isinstance(rows, list) or any(
+        not isinstance(row, Mapping) or set(row) != _MAILBOX_UNIT_KEYS
+        for row in rows
+    ):
+        return red("mailbox_unit_rows_malformed")
+    if not (
+        starting.get("paused") is True
+        and current.get("paused") is True
+        and type(native_receipt.get("mailbox_pump_epoch")) is int
+        and native_receipt["mailbox_pump_epoch"] > 0
+        and type(native_receipt.get("mailbox_thread_id")) is int
+        and native_receipt["mailbox_thread_id"] > 0
+        and native_receipt.get("mailbox_paused") is True
+        and native_receipt.get("same_source_across_route") is True
+        and type(native_receipt.get("mailbox_date_raw")) is int
+        and native_receipt.get("mailbox_date_raw") == starting.get("date_raw")
+        and type(query_sequence) is int
+        and type(native_receipt.get("query_sequence")) is int
+        and native_receipt.get("query_sequence") == query_sequence
+        and type(native_receipt.get("native_revision")) is int
+        and native_receipt.get("native_revision") == starting.get("native_revision")
+    ):
+        return red("mailbox_source_or_frame_mismatch")
+    if any(starting.get(key) != current.get(key) for key in (
+        "snapshot_id", "revision", "native_revision", "date_raw",
+        "episode_run_id", "active_wars", "player_armies",
+    )):
+        return red("public_frame_changed")
+    start_diag = starting.get("diagnostics")
+    current_diag = current.get("diagnostics")
+    if not isinstance(start_diag, Mapping) or not isinstance(current_diag, Mapping):
+        return red("connection_generation_missing")
+    connection_generation = start_diag.get("connection_generation")
+    if (type(connection_generation) is not int or connection_generation <= 0 or
+            current_diag.get("connection_generation") != connection_generation):
+        return red("connection_generation_mismatch")
+    snapshot_id = starting.get("snapshot_id")
+    episode_run_id = starting.get("episode_run_id")
+    revision = starting.get("revision")
+    native_revision = starting.get("native_revision")
+    if not (
+        type(snapshot_id) is str and snapshot_id and
+        type(episode_run_id) is str and episode_run_id and
+        type(revision) is int and revision > 0 and
+        type(native_revision) is int and native_revision > 0
+    ):
+        return red("public_frame_token_missing")
+    wars = starting.get("active_wars")
+    if not isinstance(wars, list) or len(wars) != 1 or not isinstance(wars[0], Mapping):
+        return red("war_scope_ambiguous")
+    war = wars[0]
+    war_id = war.get("war_id")
+    if type(war_id) is not int or war_id <= 0:
+        return red("war_id_missing")
+
+    def ids_from_rows(value: Any) -> list[int] | None:
+        if not isinstance(value, list):
+            return None
+        ids = [row.get("army_id") for row in value if isinstance(row, Mapping)]
+        if len(ids) != len(value) or any(type(i) is not int or i <= 0 for i in ids):
+            return None
+        result = sorted(ids)
+        return result if len(result) == len(set(result)) else None
+
+    players = ids_from_rows(starting.get("player_armies"))
+    allies = ids_from_rows(war.get("allied_armies"))
+    enemies = ids_from_rows(war.get("enemy_armies"))
+    if players is None or allies is None or enemies is None:
+        return red("published_army_roster_malformed")
+    contact_result = horizon.get("hostile_army_ids")
+    if not isinstance(contact_result, list):
+        return red("route_contact_result_missing")
+    enriched = {
+        **native_receipt,
+        "snapshot_id": snapshot_id,
+        "revision": revision,
+        "episode_run_id": episode_run_id,
+        "connection_generation": connection_generation,
+    }
+    return validate_physical_army_inventory_shape_v1(
+        enriched,
+        expected_date_raw=starting.get("date_raw"),
+        expected_war_id=war_id,
+        expected_subject_army_id=subject_army_id,
+        expected_snapshot_id=snapshot_id,
+        expected_revision=revision,
+        expected_native_revision=native_revision,
+        expected_episode_run_id=episode_run_id,
+        expected_connection_generation=connection_generation,
+        published_player_ids=players,
+        published_allied_ids=allies,
+        published_enemy_ids=enemies,
+        contact_request_ids=list(requested_hostiles),
+        contact_result_ids=contact_result,
+    )

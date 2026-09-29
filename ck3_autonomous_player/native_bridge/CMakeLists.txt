@@ -146,6 +146,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1
+  "Attach the read-only H3937 physical army scan receipt to route-contact queries"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1
   "Write the private GEN-034 truce reader result before production reset"
   OFF
@@ -1074,6 +1080,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)

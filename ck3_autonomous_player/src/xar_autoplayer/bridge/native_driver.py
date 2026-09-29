@@ -583,6 +583,9 @@ from .raiktor_war_bound_regiment_contract import (
 from .raiktor_surrender_session_binding_contract import (
     bind_raiktor_surrender_aggregate_session,
 )
+from ..physical_army_inventory_v1 import (
+    validate_native_physical_inventory_mailbox_v1,
+)
 from .war31_one_shot_surrender import (
     STEP as WAR31_ONE_SHOT_SURRENDER_STEP,
     WAR_ID as WAR31_ONE_SHOT_WAR_ID,
@@ -10227,7 +10230,7 @@ class NativeHeadlessGameplayDriver:
             )
             if (
                 set(result)
-                != {
+                not in ({
                     "step",
                     "accepted",
                     "status",
@@ -10235,7 +10238,16 @@ class NativeHeadlessGameplayDriver:
                     "snapshot_revision",
                     "route_contact_horizon",
                     "backend_id",
-                }
+                }, {
+                    "step",
+                    "accepted",
+                    "status",
+                    "query_sequence",
+                    "snapshot_revision",
+                    "route_contact_horizon",
+                    "physical_army_inventory",
+                    "backend_id",
+                })
                 or result.get("step") != step
                 or result.get("accepted") is not True
                 or result.get("status") != "available"
@@ -10269,9 +10281,28 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native route-contact horizon crossed a snapshot revision"
                 )
+            native_inventory = result.get("physical_army_inventory")
+            inventory_check = (
+                validate_native_physical_inventory_mailbox_v1(
+                    native_inventory,
+                    starting=starting,
+                    current=current,
+                    horizon=horizon,
+                    query_sequence=query_sequence,
+                    subject_army_id=subject_army_id,
+                    requested_hostiles=hostile_army_ids,
+                )
+                if "physical_army_inventory" in result
+                else None
+            )
             return {
                 **result,
                 "route_contact_horizon": horizon,
+                **({"physical_army_inventory_check": {
+                    "valid": inventory_check.valid,
+                    "reason": inventory_check.reason,
+                    "date_or_action_authorized": False,
+                }} if inventory_check is not None else {}),
                 "queried_snapshot_id": starting.get("snapshot_id"),
                 "queried_revision": starting.get("revision"),
                 "queried_native_revision": native_revision,

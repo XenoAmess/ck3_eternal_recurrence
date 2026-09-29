@@ -6178,10 +6178,118 @@ void AppendRouteContactConflict(
   result += '}';
 }
 
+void AppendPhysicalArmyInventoryReceiptV1(
+    std::string &result,
+    const xar::ck3_11906::RouteContactHorizonMailboxContextV1 &query,
+    std::uint64_t query_sequence, std::uint64_t snapshot_revision) {
+  const auto &inventory = query.physical_inventory;
+  std::string_view status = "unavailable";
+  if (inventory.status ==
+      xar::ck3_11906::PhysicalArmyInventoryStatusV1::requires_paused) {
+    status = "requires_paused";
+  } else if (inventory.status ==
+             xar::ck3_11906::PhysicalArmyInventoryStatusV1::partial) {
+    status = "partial";
+  } else if (inventory.status ==
+             xar::ck3_11906::PhysicalArmyInventoryStatusV1::complete &&
+             query.physical_inventory_same_source) {
+    status = "complete";
+  }
+  result += ",\"physical_army_inventory\":{\"source_build\":\"CK3 1.19.0.6\",\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"date_raw\":";
+  result += SignedNumber(inventory.date_raw);
+  result += ",\"war_id\":";
+  result += SignedNumber(inventory.war_id);
+  result += ",\"subject_army_id\":";
+  result += SignedNumber(inventory.subject_army_id);
+  result += ",\"native_revision\":";
+  result += Number(snapshot_revision);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"mailbox_pump_epoch\":";
+  result += Number(query.execution_stamp.pump_epoch);
+  result += ",\"mailbox_thread_id\":";
+  result += Number(query.execution_stamp.thread_id);
+  result += ",\"mailbox_date_raw\":";
+  result += SignedNumber(query.execution_stamp.date_raw);
+  result += ",\"mailbox_paused\":";
+  result += query.execution_stamp.paused ? "true" : "false";
+  result += ",\"same_source_across_route\":";
+  result += query.physical_inventory_same_source ? "true" : "false";
+  result += ",\"storage_capacity\":";
+  result += SignedNumber(inventory.storage_capacity);
+  result += ",\"slots_scanned\":";
+  result += SignedNumber(inventory.slots_scanned);
+  result += ",\"empty_slots\":";
+  result += SignedNumber(inventory.empty_slots);
+  result += ",\"canonical_units\":";
+  result += SignedNumber(inventory.canonical_units);
+  result += ",\"invalid_id_slots\":";
+  result += SignedNumber(inventory.invalid_id_slots);
+  result += ",\"noncanonical_slots\":";
+  result += SignedNumber(inventory.noncanonical_slots);
+  result += ",\"unresolved_slots\":";
+  result += SignedNumber(inventory.unresolved_slots);
+  result += ",\"player_army_ids\":";
+  AppendInt32Array(result, inventory.player_army_ids);
+  result += ",\"allied_army_ids\":";
+  AppendInt32Array(result, inventory.allied_army_ids);
+  result += ",\"hostile_army_ids\":";
+  AppendInt32Array(result, inventory.hostile_army_ids);
+  result += ",\"contact_hostile_army_ids\":";
+  AppendInt32Array(result, inventory.contact_hostile_army_ids);
+  result += ",\"retreating_hostile_army_ids\":";
+  AppendInt32Array(result, inventory.retreating_hostile_army_ids);
+  result += ",\"units\":[";
+  for (std::size_t index = 0; index < inventory.units.size(); ++index) {
+    if (index != 0) {
+      result += ',';
+    }
+    const auto &row = inventory.units[index];
+    const auto &army = row.army;
+    result += "{\"army_id\":";
+    result += SignedNumber(army.army_id);
+    result += ",\"owner_character_id\":";
+    result += SignedNumber(army.owner_character_id);
+    result += ",\"current_province_id\":";
+    result += SignedNumber(army.current_province_id);
+    result += ",\"route_province_ids\":";
+    AppendInt32Array(result, army.route_province_ids);
+    result += ",\"route_read_status\":";
+    AppendJsonString(result, ArmyRouteReadStatusName(army.route_read_status));
+    result += ",\"route_source_count\":";
+    if (army.route_source_count.has_value()) {
+      result += SignedNumber(*army.route_source_count);
+    } else {
+      result += "null";
+    }
+    result += ",\"army_state_code\":";
+    result += SignedNumber(army.army_state_code);
+    result += ",\"in_combat\":";
+    result += army.in_combat ? "true" : "false";
+    result += ",\"retreating\":";
+    result += army.retreating ? "true" : "false";
+    result += ",\"controllable\":";
+    result += army.controllable ? "true" : "false";
+    result += ",\"war_side\":";
+    AppendJsonString(result,
+        row.war_side == xar::ck3_11906::PhysicalArmyWarSideV1::allied
+            ? "allied"
+            : row.war_side ==
+                      xar::ck3_11906::PhysicalArmyWarSideV1::hostile
+                  ? "hostile"
+                  : "neutral");
+    result += '}';
+  }
+  result += "]}";
+}
+
 std::string RouteContactHorizonResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
-    const xar::game::RouteContactHorizonSnapshot &horizon) {
+    const xar::game::RouteContactHorizonSnapshot &horizon,
+    const xar::ck3_11906::RouteContactHorizonMailboxContextV1 *query = nullptr) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":";
@@ -6226,7 +6334,12 @@ std::string RouteContactHorizonResultFrame(
     }
     AppendRouteContactConflict(result, horizon.conflicts[index]);
   }
-  result += "]}}}";
+  result += "]}";
+  if (query != nullptr && query->physical_inventory_requested) {
+    AppendPhysicalArmyInventoryReceiptV1(result, *query, query_sequence,
+                                         horizon.snapshot_revision);
+  }
+  result += "}}";
   return result;
 }
 
@@ -20322,6 +20435,15 @@ void RunConnectedSession(
               query.mailbox = &g_main_thread_query_mailbox_v1;
               query.bindings = xar::ck3_11906::BindCurrentProcess(true);
               query.request = route_request;
+#if defined(XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1)
+              query.physical_inventory_requested = true;
+              // V1 proves one physical war. Multiple active wars require an
+              // explicit union certificate and remain unavailable here.
+              if (current_snapshot.active_wars.size() == 1) {
+                query.physical_inventory_war_id =
+                    current_snapshot.active_wars.front().war_id;
+              }
+#endif
               const auto submit =
                   xar::ck3_11906::TrySubmitMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1,
@@ -20378,7 +20500,8 @@ void RunConnectedSession(
                     ++route_contact_horizon_query_sequence;
                     response = RouteContactHorizonResultFrame(
                         request_id, step,
-                        route_contact_horizon_query_sequence, query.result);
+                        route_contact_horizon_query_sequence, query.result,
+                        &query);
                   }
                 }
                 if (response.empty()) {

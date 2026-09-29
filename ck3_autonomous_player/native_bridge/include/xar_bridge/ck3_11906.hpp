@@ -956,6 +956,32 @@ struct PhysicalArmyInventoryRowV1 {
                          const PhysicalArmyInventoryRowV1 &) = default;
 };
 
+// Private application-main source fence. Never serialize process addresses.
+// Equality across the route reader prevents joining two equal-value scans
+// from different storage generations.
+struct PhysicalArmyInventorySourceV1 {
+  std::uintptr_t game_state = 0;
+  std::uintptr_t jomini_state = 0;
+  std::uintptr_t game_data = 0;
+  std::uintptr_t unit_storage = 0;
+  std::uintptr_t unit_slots = 0;
+  std::int32_t unit_capacity = -1;
+  std::uintptr_t carmy_storage = 0;
+  std::uintptr_t carmy_slots = 0;
+  std::int32_t carmy_capacity = -1;
+  std::uintptr_t character_storage = 0;
+  std::uintptr_t character_slots = 0;
+  std::int32_t character_capacity = -1;
+  std::uintptr_t province_array = 0;
+  std::int32_t province_count = -1;
+  std::uintptr_t war_storage = 0;
+  std::uintptr_t war_slots = 0;
+  std::int32_t war_capacity = -1;
+  std::uintptr_t native_war = 0;
+  friend bool operator==(const PhysicalArmyInventorySourceV1 &,
+                         const PhysicalArmyInventorySourceV1 &) = default;
+};
+
 struct PhysicalArmyInventoryV1 {
   PhysicalArmyInventoryStatusV1 status =
       PhysicalArmyInventoryStatusV1::unavailable;
@@ -975,6 +1001,7 @@ struct PhysicalArmyInventoryV1 {
   std::vector<std::int32_t> contact_hostile_army_ids;
   std::vector<std::int32_t> retreating_hostile_army_ids;
   std::vector<PhysicalArmyInventoryRowV1> units;
+  PhysicalArmyInventorySourceV1 source{};
   friend bool operator==(const PhysicalArmyInventoryV1 &,
                          const PhysicalArmyInventoryV1 &) = default;
 };
