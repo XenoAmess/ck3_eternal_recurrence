@@ -1503,6 +1503,44 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(cold["observed_player_monthly_income_delta_raw"], 50_000)
             self.assertEqual(cold["income_observed_date_raw"], completed_frame["date_raw"])
 
+    def test_cold_material_rechecks_keep_the_original_monthly_watch_due_date(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                selected = transport.query_construction_private(driver, expected_revision=3)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                driver.snapshot = frame(4)
+                start = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+            start_date = start["completion_last_check_date_raw"]
+
+            for revision, elapsed, identity in (
+                    (5, 10 * 24, (124, "t2")),
+                    (6, 20 * 24, (125, "t3"))):
+                later = frame(revision)
+                later["date_raw"] = start_date + elapsed
+                driver.snapshot = later
+                with mock.patch.object(transport, "_identity", return_value=identity):
+                    cold = transport.query_construction_receipt(
+                        driver, pending=start, expected_revision=revision)
+                self.assertEqual(cold["completion_status"], "in_progress")
+                self.assertEqual(cold["post_date_raw"], later["date_raw"])
+                self.assertEqual(cold["completion_last_check_date_raw"], start_date)
+                start = cold
+
+            due = frame(7)
+            due["date_raw"] = start_date + 30 * 24
+            driver.snapshot = due
+            with mock.patch.object(transport, "_identity", return_value=(126, "t4")):
+                plan = plan_construction_private(
+                    driver, {"plan": {"selected_step": "life-advance"},
+                             "revision": 7}, due, [], set())
+                self.assertEqual(plan["plan"]["selected_step"], RECEIPT_STEP)
+                watched = transport.query_construction_receipt(
+                    driver, pending=start, expected_revision=7)
+            self.assertEqual(watched["completion_last_check_date_raw"], due["date_raw"])
+
     def test_monthly_watch_keeps_active_start_proof_and_defers_next_read(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
