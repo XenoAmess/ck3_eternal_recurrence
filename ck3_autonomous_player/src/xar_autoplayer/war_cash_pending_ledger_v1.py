@@ -28,6 +28,38 @@ def _digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest().upper()
 
 
+def _bounded_file_sha256(path: Path, *, max_bytes: int) -> str:
+    if not isinstance(path, Path) or not path.is_file():
+        raise ValueError("pending source checkpoint file is missing")
+    size = path.stat().st_size
+    if not 0 < size <= max_bytes:
+        raise ValueError("pending source checkpoint exceeds bounded read")
+    digest = hashlib.sha256()
+    count = 0
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            count += len(chunk)
+            if count > max_bytes:
+                raise ValueError("pending source checkpoint grew during read")
+            digest.update(chunk)
+    if count != size:
+        raise ValueError("pending source checkpoint changed during read")
+    return digest.hexdigest().upper()
+
+
+def _bounded_read_bytes(path: Path, *, max_bytes: int) -> bytes:
+    if not isinstance(path, Path) or not path.is_file():
+        raise ValueError("pending source file is missing")
+    size = path.stat().st_size
+    if not 0 < size <= max_bytes:
+        raise ValueError("pending source file exceeds bounded read")
+    with path.open("rb") as source:
+        data = source.read(max_bytes + 1)
+    if len(data) != size:
+        raise ValueError("pending source file changed during bounded read")
+    return data
+
+
 def _canonical(value: object) -> bytes:
     return json.dumps(
         value, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
@@ -92,6 +124,7 @@ def _quote(value: object, *, episode_run_id: str, war_id: int) -> dict[str, obje
     action = _action(value["priced_action"])
     if (
         source_frame["episode_run_id"] != episode_run_id
+        or type(value["war_id"]) is not int
         or value["war_id"] != war_id
         or not _nonnegative(value["raw"])
         or value["scale"] != 100_000
@@ -122,10 +155,10 @@ def _no_duplicate_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return value
 
 
-def _records(path: Path) -> list[dict[str, object]]:
-    if not path.exists():
+def _records(path: Path, *, frozen_data: bytes | None = None) -> list[dict[str, object]]:
+    if frozen_data is None and not path.exists():
         return []
-    data = path.read_bytes()
+    data = path.read_bytes() if frozen_data is None else frozen_data
     if not data:
         return []
     if not data.endswith(b"\n"):
@@ -231,8 +264,11 @@ def open_war_cash_scope_v1(
     return path
 
 
-def _replay(path: Path, *, episode_run_id: str, war_id: int) -> dict[str, object] | None:
-    records = _records(path)
+def _replay(
+    path: Path, *, episode_run_id: str, war_id: int,
+    frozen_data: bytes | None = None,
+) -> dict[str, object] | None:
+    records = _records(path, frozen_data=frozen_data)
     if not records:
         return None
     first = records[0]["event"]
@@ -241,9 +277,10 @@ def _replay(path: Path, *, episode_run_id: str, war_id: int) -> dict[str, object
         "source_checkpoint_sha256",
     } or first.get("kind") != "scope_open" or first.get("schema") != SCHEMA or (
         first.get("episode_run_id"), first.get("war_id")
-    ) != (episode_run_id, war_id) or not isinstance(first.get("owner_id"), str) or not first["owner_id"] or not _sha(first.get("source_checkpoint_sha256")):
+    ) != (episode_run_id, war_id) or type(first.get("war_id")) is not int or not isinstance(first.get("owner_id"), str) or not first["owner_id"] or not _sha(first.get("source_checkpoint_sha256")):
         raise ValueError("war cash ledger scope identity changed")
     pending: dict[str, dict[str, object]] = {}
+    pending_checkpoint_sha256: dict[str, str] = {}
     resolved: set[str] = set()
     acknowledged: set[str] = set()
     for record in records[1:]:
@@ -258,6 +295,7 @@ def _replay(path: Path, *, episode_run_id: str, war_id: int) -> dict[str, object
             if set(event) != {"kind", "request_id", "quote", "source_checkpoint_sha256"} or request_id in pending or request_id in resolved or not _sha(event["source_checkpoint_sha256"]):
                 raise ValueError("war cash ledger reservation is duplicated or malformed")
             pending[request_id] = _quote(event["quote"], episode_run_id=episode_run_id, war_id=war_id)
+            pending_checkpoint_sha256[request_id] = event["source_checkpoint_sha256"]
         elif kind == "ack":
             if set(event) != {"kind", "request_id", "action_sha256", "ack_status"} or request_id not in pending or request_id in acknowledged or event["ack_status"] != "submitted_verification_pending" or event["action_sha256"] != _digest(_canonical(pending[request_id]["priced_action"])):
                 raise ValueError("war cash ledger ACK does not match a pending action")
@@ -277,6 +315,7 @@ def _replay(path: Path, *, episode_run_id: str, war_id: int) -> dict[str, object
                 or receipt["request_id"] != request_id
                 or receipt["action_sha256"] != action_sha
                 or receipt["episode_run_id"] != episode_run_id
+                or type(receipt["war_id"]) is not int
                 or receipt["war_id"] != war_id
                 or receipt["postcondition_verified"] is not True
                 or receipt["status"] not in {"charged", "not_applied"}
@@ -290,10 +329,13 @@ def _replay(path: Path, *, episode_run_id: str, war_id: int) -> dict[str, object
             ):
                 raise ValueError("war cash resolution disagrees with its quote")
             del pending[request_id]
+            del pending_checkpoint_sha256[request_id]
             resolved.add(request_id)
         else:
             raise ValueError("war cash ledger event kind is unknown")
-    return {"scope": first, "pending": pending, "resolved": resolved,
+    return {"scope": first, "pending": pending,
+            "pending_checkpoint_sha256": pending_checkpoint_sha256,
+            "resolved": resolved,
             "acknowledged": acknowledged, "event_count": len(records),
             "last_sha256": records[-1]["sha256"]}
 
@@ -346,7 +388,7 @@ def resolve_war_cash_action_v1(
     # Validate the entire candidate before appending; a bad receipt must not
     # poison the immutable journal.
     receipt = event["independent_receipt"]
-    if not isinstance(receipt, dict) or receipt.get("request_id") != request_id or receipt.get("action_sha256") != action_sha or receipt.get("episode_run_id") != episode_run_id or receipt.get("war_id") != war_id or receipt.get("postcondition_verified") is not True or receipt.get("status") not in {"charged", "not_applied"} or not _nonnegative(receipt.get("charged_raw")) or receipt.get("charged_raw") != (state["pending"][request_id]["raw"] if receipt.get("status") == "charged" else 0) or not _sha(receipt.get("source_sha256")) or _frame(receipt.get("post_frame"))["episode_run_id"] != episode_run_id or receipt["post_frame"]["played_character_id"] != state["pending"][request_id]["source_frame"]["played_character_id"]:
+    if not isinstance(receipt, dict) or receipt.get("request_id") != request_id or receipt.get("action_sha256") != action_sha or receipt.get("episode_run_id") != episode_run_id or type(receipt.get("war_id")) is not int or receipt.get("war_id") != war_id or receipt.get("postcondition_verified") is not True or receipt.get("status") not in {"charged", "not_applied"} or not _nonnegative(receipt.get("charged_raw")) or receipt.get("charged_raw") != (state["pending"][request_id]["raw"] if receipt.get("status") == "charged" else 0) or not _sha(receipt.get("source_sha256")) or _frame(receipt.get("post_frame"))["episode_run_id"] != episode_run_id or receipt["post_frame"]["played_character_id"] != state["pending"][request_id]["source_frame"]["played_character_id"]:
         raise ValueError("war cash independent receipt is not matching")
     if set(receipt) != {"request_id", "action_sha256", "episode_run_id", "war_id", "postcondition_verified", "status", "charged_raw", "source_sha256", "post_frame"}:
         raise ValueError("war cash independent receipt shape is incomplete")
@@ -381,3 +423,105 @@ def observe_recorded_war_cash_pending_v1(
             "pending_war_cash_raw": None, "formal_cash_receipt_eligible": False,
             "unresolved_request_ids": sorted(pending), "source_frame": frame,
             "war_id": war_id, "ledger_sha256": state["last_sha256"]}
+
+
+def inspect_owned_pending_source_bytes_v1(
+    state_dir: Path, *, episode_run_id: str, war_id: int,
+    snapshot: Mapping[str, object], expected_ledger_file_sha256: str | None,
+    checkpoint_path: Path | None, expected_checkpoint_sha256: str,
+    quote_evidence_paths: Mapping[str, Path],
+) -> dict[str, object]:
+    """Authenticate one frozen owned-writer subset, never all war commitments.
+
+    File hashes prove exact supplied bytes, not that a native quote is pure,
+    priced for this payer, or complete across CK3 and other writers. The
+    standard pending field therefore stays null even for a positive subset.
+    """
+    if not isinstance(snapshot, Mapping):
+        raise ValueError("pending source needs a paused snapshot")
+    frame = _frame({key: snapshot.get(key) for key in _FRAME_KEYS})
+    wars = snapshot.get("active_wars")
+    played = snapshot.get("played_character")
+    if (snapshot.get("paused") is not True
+            or snapshot.get("map_ready") is not True
+            or not isinstance(played, Mapping)
+            or type(played.get("character_id")) is not int
+            or played["character_id"] != frame["played_character_id"]
+            or type(war_id) is not int or war_id <= 0
+            or not isinstance(wars, list)
+            or sum(isinstance(row, Mapping) and type(row.get("war_id")) is int
+                   and row["war_id"] == war_id
+                   for row in wars) != 1
+            or frame["episode_run_id"] != episode_run_id):
+        raise ValueError("pending source crossed paused player, WarID or episode")
+    if (not _sha(expected_checkpoint_sha256)
+            or not isinstance(quote_evidence_paths, Mapping)):
+        raise ValueError("pending source lacks exact checkpoint/evidence identity")
+    path = ledger_path(state_dir, episode_run_id=episode_run_id, war_id=war_id)
+    base = {
+        "schema": "xar.ck3.war-cash-owned-pending-source-candidate.v1",
+        "source_frame": frame, "war_id": war_id,
+        "expected_checkpoint_sha256": expected_checkpoint_sha256,
+        "pending_war_cash_raw": None,
+        "formal_cash_eligible": False,
+        "complete_writer_coverage_proven": False,
+        "native_quote_semantics_proven": False,
+        "same_frame_native_postcheck_proven": False,
+        "checkpoint_bytes_verified_by_this_tool": False,
+    }
+    if expected_ledger_file_sha256 is None and not path.exists():
+        return {**base, "status": "owned_ledger_absent_unknown",
+                "ledger_file_sha256": None,
+                "recorded_unresolved_quote_sum_raw_candidate": None,
+                "claims": []}
+    if not _sha(expected_ledger_file_sha256) or not path.is_file():
+        raise ValueError("pending source ledger is absent or lacks exact SHA")
+    frozen = _bounded_read_bytes(path, max_bytes=4 * 1024 * 1024)
+    if _digest(frozen) != expected_ledger_file_sha256:
+        raise ValueError("pending source ledger bytes differ from manifest")
+    state = _replay(path, episode_run_id=episode_run_id, war_id=war_id,
+                    frozen_data=frozen)
+    if _bounded_read_bytes(path, max_bytes=4 * 1024 * 1024) != frozen:
+        raise ValueError("pending source ledger changed during read")
+    if state is None or state["scope"]["source_checkpoint_sha256"] != expected_checkpoint_sha256:
+        raise ValueError("pending source scope checkpoint differs from exact pair")
+    pending = state["pending"]
+    if set(quote_evidence_paths) != set(pending):
+        raise ValueError("pending source quote evidence set is incomplete")
+    if not pending:
+        return {**base, "status": "owned_ledger_empty_unknown",
+                "ledger_file_sha256": expected_ledger_file_sha256,
+                "recorded_unresolved_quote_sum_raw_candidate": None,
+                "claims": []}
+    if (_bounded_file_sha256(checkpoint_path, max_bytes=256 * 1024 * 1024)
+            != expected_checkpoint_sha256):
+        raise ValueError("pending source checkpoint bytes differ from manifest")
+    claims: list[dict[str, object]] = []
+    total = 0
+    for request_id in sorted(pending):
+        quote = pending[request_id]
+        if (quote["source_frame"] != frame
+                or state["pending_checkpoint_sha256"][request_id]
+                != expected_checkpoint_sha256):
+            raise ValueError("pending source quote crossed exact paused frame")
+        evidence_path = quote_evidence_paths[request_id]
+        if not isinstance(evidence_path, Path) or not evidence_path.is_file():
+            raise ValueError("pending source quote evidence file is missing")
+        evidence = _bounded_read_bytes(evidence_path, max_bytes=4 * 1024 * 1024)
+        if _digest(evidence) != quote["price_evidence_sha256"]:
+            raise ValueError("pending source quote evidence SHA differs")
+        total += quote["raw"]
+        if total > (1 << 63) - 1:
+            raise ValueError("pending source quote sum exceeds signed raw gold")
+        claims.append({
+            "request_id": request_id,
+            "selected_step": quote["priced_action"]["selected_step"],
+            "quoted_raw_candidate": quote["raw"],
+            "scale": 100_000,
+            "price_evidence_sha256": quote["price_evidence_sha256"],
+        })
+    return {**base, "status": "same_frame_owned_writer_subset_only",
+            "checkpoint_bytes_verified_by_this_tool": True,
+            "ledger_file_sha256": expected_ledger_file_sha256,
+            "recorded_unresolved_quote_sum_raw_candidate": total,
+            "claims": claims}
