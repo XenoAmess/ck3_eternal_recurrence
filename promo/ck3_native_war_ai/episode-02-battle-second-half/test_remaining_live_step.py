@@ -83,6 +83,35 @@ class RemainingLiveStepTest(unittest.TestCase):
             marker.assert_not_called()
             native_call.assert_not_called()
 
+    def test_d11_pre_advance_rejects_native_frame_drift_before_mutation(self) -> None:
+        date = live.TRACKS["e2-06-d11"]["date"]
+        for key, changed_value in (("native_revision", 8),
+                                   ("snapshot_id", "native:8")):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory)
+                steps = output / "operator-steps"
+                steps.mkdir()
+                binding = {"track": "e2-06-d11"}
+                write(steps / "e2-06-d11-observe.json",
+                      {"same_source_war_army_frame": True, "source_binding": binding,
+                       "subject_combat_membership_verified": True,
+                       "snapshot_values": {"revision": 4, "native_revision": 3,
+                                           "snapshot_id": "native:3"}})
+                before = {**self.d11_snapshot(date, 4), key: changed_value}
+                calls = []
+
+                def fake_call(_output, name, tool, _arguments, _timeout):
+                    calls.append((name, tool))
+                    return before, {"response": {"sha256": "fixture"}}
+
+                with patch.object(live, "marked_running_recorder", return_value={}), \
+                        patch.object(live, "call", side_effect=fake_call):
+                    with self.assertRaisesRegex(ValueError, "source frame/revision changed"):
+                        live.advance(output, "e2-06-d11", binding, output / "recorder", 7, 10)
+                self.assertEqual(calls, [("e2-06-d11-pre-advance-snapshot",
+                                          "ck3_take_snapshot")])
+                self.assertFalse((steps / "e2-06-d11-advance-intent.json").exists())
+
     def test_d11_observe_rejects_missing_native_control(self) -> None:
         date = live.TRACKS["e2-06-d11"]["date"]
         with tempfile.TemporaryDirectory() as directory:
@@ -118,7 +147,8 @@ class RemainingLiveStepTest(unittest.TestCase):
                 write(steps / "e2-06-d11-observe.json",
                       {"same_source_war_army_frame": True, "source_binding": binding,
                        "subject_combat_membership_verified": True,
-                       "snapshot_values": {"revision": 4}})
+                       "snapshot_values": {"revision": 4, "native_revision": 3,
+                                           "snapshot_id": "native:3"}})
                 replies = {
                     "e2-06-d11-pre-advance-snapshot": self.d11_snapshot(date, 4),
                     "e2-06-d11-before-save": {"accepted": True, "checkpoint":
@@ -154,6 +184,62 @@ class RemainingLiveStepTest(unittest.TestCase):
                 self.assertEqual(calls[-1][2]["expected_revision"], 6)
                 self.assertEqual(row["subject_combat_membership_verified"],
                                  post_combat == live.COMBAT)
+
+    def test_d11_post_control_error_preserves_advanced_red_and_allows_cleanup(self) -> None:
+        date = live.TRACKS["e2-06-d11"]["date"]
+        with tempfile.TemporaryDirectory() as directory:
+            attempt = Path(directory)
+            output = attempt / "ck3-output"
+            output.mkdir()
+            steps = output / "operator-steps"
+            steps.mkdir()
+            (output / "interactive-requests").mkdir()
+            binding = {"track": "e2-06-d11"}
+            write(steps / "e2-06-d11-observe.json",
+                  {"same_source_war_army_frame": True, "source_binding": binding,
+                   "subject_combat_membership_verified": True,
+                   "snapshot_values": {"revision": 4, "native_revision": 3,
+                                       "snapshot_id": "native:3"}})
+            recorder = attempt / "recording-d11"
+            recorder.mkdir()
+            replies = {
+                "e2-06-d11-pre-advance-snapshot": self.d11_snapshot(date, 4),
+                "e2-06-d11-before-save": {"accepted": True, "checkpoint":
+                                              {"status": "saved", "date_raw": date}},
+                "e2-06-d11-after-save-snapshot": self.d11_snapshot(date, 5),
+                "e2-06-d11-after-save-control": self.d11_control(date, 5),
+                "e2-06-d11-one-day": {"revision": 6, "ending_date_raw": date + 24},
+                "e2-06-d11-post-snapshot": self.d11_snapshot(date + 24, 6),
+            }
+            called = []
+
+            def fake_call(_output, name, tool, _arguments, _timeout):
+                called.append((name, tool))
+                if name == "e2-06-d11-post-control":
+                    raise RuntimeError("native control returned RED receipt")
+                return replies[name], {"response": {"sha256": name}}
+
+            def fake_private(_output, name, _arguments, _timeout):
+                return {"accepted": True, "combat_id": live.COMBAT,
+                        "managed_daily_sequence_token": 7}, {"response": {"sha256": name}}
+
+            with patch.object(live, "marked_running_recorder", return_value={}), \
+                    patch.object(live, "call", side_effect=fake_call), \
+                    patch.object(live, "private_call", side_effect=fake_private):
+                self.assertEqual(live.advance(output, "e2-06-d11", binding,
+                                              recorder, 7, 10), 2)
+            advanced = json.loads((steps / "e2-06-d11-advance.json").read_text(encoding="utf-8"))
+            self.assertEqual(advanced["result"], "RED_PRESERVED")
+            self.assertIn("native control returned RED receipt", advanced["post_control_error"])
+            self.assertEqual(sum(tool == "ck3_execute_step" for _, tool in called), 1)
+            write(recorder / "recorder-start.json", {"pid": 12})
+            write(recorder / "recorder-end.json", {"monotonic_ns": 20})
+            write(recorder / "recorder-final.json", {"result": "ENCODED_UNREVIEWED"})
+            self.assertEqual(live.finish(output, "e2-06-d11", binding, recorder), 2)
+            finish = json.loads((steps / "e2-06-d11-finish.json").read_text(encoding="utf-8"))
+            self.assertEqual(finish["result"], "RED_PRESERVED")
+            self.assertTrue((output / "interactive-requests" /
+                             "999-e2-06-d11-finish.json").is_file())
 
     def test_d12_mark_binds_post_control_snapshot_and_sealed_journal(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -56,7 +56,8 @@ GUI 100% 的战斗窗上半和骑士行可见，不能外推到新 d11 画面的
 `control=null`。本计划须使用已改且经独立静态复核的 helper：d11 `observe` 查询
 battle-control 并分别验证 wrapper/native revision、`snapshot_id`、日期、ArmyID/
 CombatID（真实 086 源帧 wrapper `5`、native `4`，两域不可互换）；`advance` 在任何游戏动作前
-核其原始 response SHA 已进入 `d11-before` mark，再于存档后重查原生 control，
+还须让新 pre-advance snapshot 的 wrapper/native revision、`snapshot_id` 三者全等于
+已审 observe 帧，核其原始 response SHA 已进入 `d11-before` mark，再于存档后重查原生 control，
 只在同帧验证通过时启动 trace 和单日动作；d12 暂停后再次查 control 并把 response
 SHA 交给 `d12-after` mark。`record_bounded_gameplay.py mark --control` 已支持此绑定，
 但该参数本身不会发起原生查询。缺回执、错 revision、异 CombatID/ArmyID、缺 mark

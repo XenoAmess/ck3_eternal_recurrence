@@ -285,7 +285,11 @@ def advance(output: Path, track: str, binding: dict[str, Any],
     before, before_receipt = call(output, track + "-pre-advance-snapshot",
                                   "ck3_take_snapshot", {}, timeout)
     okay, values = snapshot_case(before, spec["date"], require_combat=True)
-    require(okay and values["revision"] == observation["snapshot_values"]["revision"],
+    observed_values = observation.get("snapshot_values") or {}
+    require(okay and all(values[key] == observed_values.get(key)
+                         for key in ("revision", "native_revision", "snapshot_id")) and
+            type(values["native_revision"]) is int and
+            isinstance(values["snapshot_id"], str) and bool(values["snapshot_id"]),
             "same paused source frame/revision changed after observation")
     write_new(intent_path, {"schema": "xar.war-promo.remaining-advance-intent/v1",
                             "created_at": utc(), "track": track, "source_binding": binding,
