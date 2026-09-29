@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import runpy
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -45,21 +46,28 @@ def checkpoint() -> dict:
 class D11BattleControlPairTest(unittest.TestCase):
     def pair(self, root: Path, dll: Path, injector: Path,
              *, junit_failure: bool = False, ctest_exit: int = 0,
-             dependency_failure: bool = False) -> tuple[Path, Path]:
+             dependency_failure: bool = False, cache_release: bool = True,
+             tracked_status: str = "") -> tuple[Path, Path]:
         source_sha = fingerprint()
         build_script = root / "build_release_candidate.py"
         build_script.write_text("# focused build fixture\n", encoding="utf-8")
+        cmake_cache = root / "CMakeCache.txt"
+        cmake_cache.write_text(
+            "CMAKE_BUILD_TYPE:STRING=Release\n" if cache_release else
+            "CMAKE_BUILD_TYPE:STRING=Debug\n", encoding="utf-8")
         def receipt(stem: str, value: object) -> dict:
             path = write_json(root / f"{stem}.json", value)
             return {f"{stem}_path": str(path), f"{stem}_sha256": identity(path)["sha256"]}
 
         source = {
-            "head": "a58f4331f470ff27f0b07553e55cbf0868e96ed6",
+            "head": subprocess.run(["git", "-C", str(NATIVE), "rev-parse", "HEAD"],
+                                   capture_output=True, text=True, check=True).stdout.strip(),
             "source_fingerprint_sha256": source_sha,
             "native_bridge_fingerprint_sha256": source_sha,
             "build_fresh_helper": identity(HELPER),
             "build_script_sha256": identity(build_script)["sha256"],
             "configuration": "Release",
+            "tracked_status": tracked_status,
         }
         parts = {}
         for stem in ("source_before", "source_after"):
@@ -132,6 +140,8 @@ class D11BattleControlPairTest(unittest.TestCase):
             "status": "STATIC_RELEASE_CANDIDATE_NO_CK3_LAUNCH",
             "build_status": "READY", "head": source["head"],
             "build_dir": str(root), "configuration": "Release",
+            "cmake_cache_path": str(cmake_cache),
+            "cmake_cache_sha256": identity(cmake_cache)["sha256"],
             "source_fingerprint_sha256": source_sha,
             "native_serializer_sha256": identity(SERIALIZER)["sha256"],
             "python_contracts_sha256": {
@@ -210,6 +220,21 @@ class D11BattleControlPairTest(unittest.TestCase):
             pair, _ = self.pair(root, dll, injector, dependency_failure=True)
             with self.assertRaisesRegex(RuntimeError, "Ninja dependency evidence"):
                 validate_d11_battle_control_pair(checkpoint(), pair, dll, injector)
+
+    def test_debug_cache_and_dirty_source_rejected(self) -> None:
+        for options, error in (
+            ({"cache_release": False}, "status or directory"),
+            ({"tracked_status": " M native.cpp"}, "tracked source changes"),
+        ):
+            with self.subTest(options=options):
+                with tempfile.TemporaryDirectory() as folder:
+                    root = Path(folder)
+                    dll, injector = root / "current.dll", root / "injector.exe"
+                    dll.write_bytes(b"\0".join(BATTLE_CONTROL_WIRE_MARKERS))
+                    injector.write_bytes(b"fixture injector")
+                    pair, _ = self.pair(root, dll, injector, **options)
+                    with self.assertRaisesRegex(RuntimeError, error):
+                        validate_d11_battle_control_pair(checkpoint(), pair, dll, injector)
 
     def test_python_contract_from_another_checkout_rejected_even_with_same_bytes(self) -> None:
         with tempfile.TemporaryDirectory() as folder:

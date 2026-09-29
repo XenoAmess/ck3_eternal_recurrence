@@ -198,12 +198,13 @@ def validate_d11_battle_control_pair(
         "ctest_name", "ctest_argv_path", "ctest_argv_sha256",
         "ctest_result_path", "ctest_result_sha256", "ctest_stdout_path",
         "ctest_stdout_sha256", "ctest_junit_path", "ctest_junit_sha256",
-        "build_script_sha256", "tests",
+        "build_script_sha256", "cmake_cache_path", "cmake_cache_sha256", "tests",
     }
     require(isinstance(build, dict) and required_build_keys <= set(build),
             "D11 focused build report lacks required provenance")
     build_dir = Path(build["build_dir"])
     build_script = report_path.parent / "build_release_candidate.py"
+    cmake_cache = Path(build["cmake_cache_path"])
     require(build["status"] == "STATIC_RELEASE_CANDIDATE_NO_CK3_LAUNCH" and
             build["build_status"] == "READY" and
             build["configuration"] == "Release" and
@@ -213,7 +214,12 @@ def validate_d11_battle_control_pair(
             build_dir.is_absolute() and build_dir.resolve() == dll_path.resolve().parent and
             build_dir.resolve() == injector_path.resolve().parent and
             build_script.is_file() and
-            identity(build_script)["sha256"] == build["build_script_sha256"],
+            identity(build_script)["sha256"] == build["build_script_sha256"] and
+            cmake_cache.is_file() and cmake_cache.resolve() ==
+            (build_dir / "CMakeCache.txt").resolve() and
+            identity(cmake_cache)["sha256"] == build["cmake_cache_sha256"] and
+            "CMAKE_BUILD_TYPE:STRING=Release" in
+            cmake_cache.read_text(encoding="utf-8", errors="replace"),
             "D11 focused build status or directory is not admissible")
     require(build["source_fingerprint_sha256"] == fingerprint and
             build["native_serializer_sha256"] == expected["native_serializer_sha256"] and
@@ -283,6 +289,8 @@ def validate_d11_battle_control_pair(
                 source.get("configuration") == "Release",
                 f"D11 focused build {name} source changed")
         source_evidence[name] = source
+    require(source_evidence["source_after"].get("tracked_status") == "",
+            "D11 focused builder checkout has tracked source changes")
     configure_argv = json.loads(bound("configure_argv").read_text(encoding="utf-8"))["argv"]
     configure_result = json.loads(bound("configure_result").read_text(encoding="utf-8"))
     build_argv = json.loads(bound("build_argv").read_text(encoding="utf-8"))["argv"]
@@ -296,7 +304,12 @@ def validate_d11_battle_control_pair(
             configure_result.get("exit_code") == 0,
             "D11 focused configure did not use the current Release source")
     builder_root = Path(configure_argv[configure_argv.index("-S") + 1]).resolve()
+    builder_head = subprocess.run(
+        ["git", "-C", str(builder_root), "rev-parse", "HEAD"],
+        capture_output=True, text=True, check=True,
+    ).stdout.strip()
     require(builder_root.is_dir() and
+            builder_head == build["head"] and
             runpy.run_path(str(helper))["native_bridge_source_fingerprint"](builder_root) ==
             fingerprint and
             all(Path(source_evidence[name]["build_fresh_helper"]["path"]).resolve() ==
