@@ -35,6 +35,7 @@ flowchart LR
   B -- no --> R[Reject without submit]
   B -- yes --> C[0x10B1BD0 planner, 2]
   C --> D[Stage 2 and selected option readback]
+  D --> Q[Separate stage-2 selected-option query]
   D -. later separate contract .-> E[Cost and final CanStart]
   A -. full 0x10B1330 can auto advance .-> X[Stage 5 Start path]
 ```
@@ -56,9 +57,21 @@ retains `submitted=true` even when the postcondition fails; a failed
 postcondition is RED and does not authorize retry without fresh observation.
 No pointer is serialized, and the step remains private and unadvertised.
 
+The independent default-OFF
+`XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1` step
+`query-activity-feast-stage2-option-v1-private` accepts the same expected
+revision/date/actor/type/option keys. On a new mailbox request it checks the
+stage-2 widget and owner, rereads the selected `activity_feast` and current
+special-category row, invokes the original pure getter `0x10AEAE0`, resolves
+the option's script identifier, and reports only
+`feast_type_generic` as positive. This is separate from the action receipt.
+The already-open feast opener can additionally reread stage-2 visibility
+without dispatching another open operation.
+
 This bounded helper is a stage transition, not activity Start. The new
-source-level unit test verifies a positive stage transition and rejection of
-an invalid option or nonnormal stage route. Release bridge compilation and
+source-level unit test verifies a positive stage transition, a separate
+stage-2 option query, a failed retained-option postcondition, and rejection
+of an invalid option or nonnormal stage route. Release bridge compilation and
 focused test are static gates only. A frozen candidate still needs the R0356
 paused scenario, independent stage-2 and resource readback, subsequent turn,
 and required checkpoint/cold restore before any live ability claim. Stage-5
