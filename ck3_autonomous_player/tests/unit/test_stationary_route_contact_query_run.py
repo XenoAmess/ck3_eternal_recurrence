@@ -26,6 +26,8 @@ def _snapshot() -> dict[str, object]:
         "played_character": {"character_id": 29829, "alive": True},
         "episode_character_id": 29829,
         "route_contact_horizon_supported": True,
+        "active_event": None,
+        "pending_character_interaction": None,
         "player_armies": [{
             "army_id": 83886367,
             "controllable": True,
@@ -39,8 +41,10 @@ def _snapshot() -> dict[str, object]:
         "active_wars": [{
             "war_id": 16777231,
             "enemy_armies": [
-                {"army_id": 50331920, "retreating": False},
-                {"army_id": 83886484, "retreating": False},
+                {"army_id": 50331920, "current_province_id": 2629,
+                 "retreating": False, "in_combat": False, "army_state": "sieging"},
+                {"army_id": 83886484, "current_province_id": 2629,
+                 "retreating": False, "in_combat": False, "army_state": "sieging"},
             ],
         }],
     }
@@ -58,6 +62,13 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
         self.assertTrue(_same_frame(readiness, snapshot))
         snapshot["diagnostics"]["connection_generation"] = 2
         self.assertFalse(_same_frame(readiness, snapshot))
+        snapshot["diagnostics"]["connection_generation"] = 1
+        for field in ("snapshot_id", "native_revision", "episode_run_id"):
+            missing_left = copy.deepcopy(readiness)
+            missing_right = copy.deepcopy(snapshot)
+            missing_left.pop(field)
+            missing_right.pop(field)
+            self.assertFalse(_same_frame(missing_left, missing_right))
 
     def test_fixed_query_and_exact_stationary_scope(self) -> None:
         self.assertEqual(
@@ -79,6 +90,18 @@ class StationaryRouteContactReadOnlyTests(unittest.TestCase):
         incomplete = _snapshot()
         incomplete["active_wars"][0]["enemy_armies"].pop()
         self.assertFalse(_exact_h3928_paused_subject(incomplete))
+        wrong_province = _snapshot()
+        wrong_province["active_wars"][0]["enemy_armies"][0]["current_province_id"] = 2610
+        self.assertFalse(_exact_h3928_paused_subject(wrong_province))
+        second_war = _snapshot()
+        second_war["active_wars"].append({"war_id": 42, "enemy_armies": []})
+        self.assertFalse(_exact_h3928_paused_subject(second_war))
+        second_army = _snapshot()
+        second_army["player_armies"].append({"army_id": 999, "controllable": True})
+        self.assertFalse(_exact_h3928_paused_subject(second_army))
+        event = _snapshot()
+        event["active_event"] = {"instance_id": 1}
+        self.assertFalse(_exact_h3928_paused_subject(event))
 
     def test_exactly_one_matching_query_row_is_required(self) -> None:
         before = {"native_command_history": [{"command": "restore-checkpoint"}]}
