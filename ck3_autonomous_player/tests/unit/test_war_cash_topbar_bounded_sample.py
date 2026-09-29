@@ -150,6 +150,49 @@ class BoundedTopbarSampleTests(unittest.TestCase):
         self.assertFalse(sample["render_clock_monotonic_candidate"])
         self.assertFalse(sample["same_frame_cache_freshness_proven"])
 
+    def test_rejected_cache_headers_preserve_bounded_scalar_diagnostics(self) -> None:
+        process = FakeReadOnlyProcess(render_clock=True)
+        topbar = bytearray(process.blocks[0x400000])
+        struct.pack_into("<QII", topbar, 0xAD8, 0, 0, 0)
+        struct.pack_into("<Q", topbar, 0xF88, 0)
+        process.blocks[0x400000] = bytes(topbar)
+        process.blocks[process.base + 0x570D8D0] = struct.pack("<i", 0)
+        sample = sample_bounded_topbar_twice(process)
+        first = sample["first"]
+        self.assertEqual(sample["status"],
+                         "RED_owner_or_expense_bytes_changed_or_unavailable")
+        self.assertIsNone(first["expense_layout"])
+        self.assertEqual(first["expense_header_diagnostic"], {
+            "row_array_address_candidate": "0x0",
+            "row_array_pointer_class": "zero",
+            "row_capacity_candidate": 0,
+            "row_count_candidate": 0,
+            "formal_cash_eligible": False,
+        })
+        self.assertIsNone(first["render_epoch"])
+        self.assertEqual(first["render_header_diagnostic"], {
+            "topbar_last_update_tick_candidate": 0,
+            "render_context_address_candidate": "0x800000",
+            "current_render_tick_candidate": 45,
+            "stock_refresh_interval_render_ticks_candidate": 0,
+            "formal_cash_eligible": False,
+        })
+        self.assertEqual(process.row_reads, 0)
+        self.assertLess(sample["total_target_memory_bytes_read"], 128 * 1024)
+        self.assertFalse(sample["formal_cash_eligible"])
+
+    def test_unaligned_vector_pointer_is_retained_without_following_it(self) -> None:
+        process = FakeReadOnlyProcess()
+        topbar = bytearray(process.blocks[0x400000])
+        struct.pack_into("<Q", topbar, 0xAD8, ROW_ADDRESS + 1)
+        process.blocks[0x400000] = bytes(topbar)
+        sample = sample_bounded_topbar_once(process)
+        self.assertEqual(sample["expense_header_diagnostic"]
+                         ["row_array_pointer_class"], "unaligned")
+        self.assertIsNone(sample["expense_layout"])
+        self.assertEqual(process.row_reads, 0)
+        self.assertFalse(sample["formal_cash_eligible"])
+
     def test_player_switch_during_or_between_passes_fails_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "CharacterID changed"):
             sample_bounded_topbar_once(FakeReadOnlyProcess(

@@ -103,10 +103,27 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         "same_frame_cache_freshness_proven": False,
         "formal_cash_eligible": False,
     }
+    # Preserve only the already-read vector header. A rejected pointer or an
+    # empty vector cannot be recovered from the generic _address error later.
+    row_array_candidate = struct.unpack_from("<Q", topbar_bytes, 0xAD8)[0]
+    row_capacity_candidate, row_count_candidate = struct.unpack_from(
+        "<II", topbar_bytes, 0xAE0)
+    result["expense_header_diagnostic"] = {
+        "row_array_address_candidate": hex(row_array_candidate),
+        "row_array_pointer_class": (
+            "zero" if row_array_candidate == 0 else
+            "outside_user_range" if not 0x10000 <= row_array_candidate
+            < 0x0000800000000000 else
+            "unaligned" if row_array_candidate % 8 else
+            "aligned_user_address_candidate"
+        ),
+        "row_capacity_candidate": row_capacity_candidate,
+        "row_count_candidate": row_count_candidate,
+        "formal_cash_eligible": False,
+    }
     try:
-        row_array = _address(struct.unpack_from("<Q", topbar_bytes, 0xAD8)[0],
-                             "expense row array")
-        capacity, count = struct.unpack_from("<II", topbar_bytes, 0xAE0)
+        row_array = _address(row_array_candidate, "expense row array")
+        capacity, count = row_capacity_candidate, row_count_candidate
         if not 0 < count <= capacity <= MAX_DIAGNOSTIC_ROWS:
             raise ValueError("expense row vector count/capacity is invalid")
         rows = reader.read(row_array, count * ROW_STRIDE)
@@ -129,14 +146,27 @@ def sample_bounded_topbar_once(process: object) -> dict[str, object]:
         result["status"] = "supplied_owner_and_expense_bytes_structurally_matching"
     except (OSError, ValueError, struct.error) as error:
         result["expense_missing_reason"] = str(error)
+    result["render_header_diagnostic"] = {
+        "topbar_last_update_tick_candidate": struct.unpack_from(
+            "<Q", topbar_bytes, 0xF88)[0],
+        "formal_cash_eligible": False,
+    }
     try:
         render_slot = base + RENDER_CONTEXT_SLOT_RVA
         slot_bytes = reader.read(render_slot, 8)
-        render_context = _address(struct.unpack("<Q", slot_bytes)[0],
-                                  "render context")
+        render_context_candidate = struct.unpack("<Q", slot_bytes)[0]
+        result["render_header_diagnostic"][
+            "render_context_address_candidate"] = hex(render_context_candidate)
+        render_context = _address(render_context_candidate, "render context")
         context_bytes = reader.read(render_context, RENDER_CONTEXT_READ_SIZE)
+        result["render_header_diagnostic"][
+            "current_render_tick_candidate"] = struct.unpack_from(
+                "<Q", context_bytes, 0x180)[0]
         interval_address = base + EXPENSE_REFRESH_INTERVAL_RVA
         interval_bytes = reader.read(interval_address, 4)
+        result["render_header_diagnostic"][
+            "stock_refresh_interval_render_ticks_candidate"] = struct.unpack(
+                "<i", interval_bytes)[0]
         result["render_epoch"] = inspect_supplied_topbar_render_epoch(
             image_base=base, topbar_bytes=topbar_bytes,
             render_context_slot_address=render_slot,
