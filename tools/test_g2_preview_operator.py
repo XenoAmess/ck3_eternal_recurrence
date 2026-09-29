@@ -2351,6 +2351,31 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 + ["launch-started", "completed-red"],
             )
 
+            # This private trial must pass through the same official operator
+            # route; merely parsing the flag would leave the formal runner off.
+            outcomes["formal"] = 0
+            guy_args = g2_preview_operator.parser().parse_args([
+                "run", "--manifest", str(manifest_path),
+                "--output", str(root / "attempt-guy"),
+                "--private-guy-default-formal-trial",
+            ])
+            self.assertTrue(guy_args.private_guy_default_formal_trial)
+            with mock.patch.object(
+                g2_preview_operator, "run_logged", side_effect=fake_run
+            ), mock.patch.object(
+                g2_preview_operator, "live_run_state_root",
+                return_value=root / "allocator",
+            ):
+                self.assertEqual(g2_preview_operator.command_run(guy_args), 0)
+            flag = "--allow-private-guy-default-formal-trial"
+            self.assertNotIn(flag, calls[1])
+            self.assertIn(flag, calls[-1])
+            guy_receipt = json.loads(
+                (root / "attempt-guy" / "operator-receipt.json").read_text(
+                    encoding="utf-8")
+            )
+            self.assertTrue(guy_receipt["private_guy_default_formal_trial"])
+
     def test_live_run_state_root_requires_explicit_non_c_location(self) -> None:
         with mock.patch.dict(os.environ, {"XAR_CK3_LIVE_RUN_STATE_ROOT": ""}):
             with self.assertRaisesRegex(ValueError, "requires"):

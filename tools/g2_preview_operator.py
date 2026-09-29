@@ -1383,6 +1383,7 @@ def native_auto_run_command(
     private_lifestyle_formal_trial: bool = False,
     private_construction_formal_trial: bool = False,
     private_family_marriage_formal_trial: bool = False,
+    private_guy_default_formal_trial: bool = False,
     private_m5_joint_collector: bool = False,
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
@@ -1440,6 +1441,8 @@ def native_auto_run_command(
         command.append("--allow-private-construction-formal-trial")
     if private_family_marriage_formal_trial:
         command.append("--allow-private-family-marriage-formal-trial")
+    if private_guy_default_formal_trial:
+        command.append("--allow-private-guy-default-formal-trial")
     if private_m5_joint_collector:
         command.append("--allow-private-m5-joint-collector")
     if private_prisoner_collection_observation:
@@ -2130,6 +2133,7 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_activity_planner_diag_query
                 or args.private_construction_formal_trial
                 or args.private_family_marriage_formal_trial
+                or args.private_guy_default_formal_trial
                 or args.private_m5_joint_collector
                 or args.private_active_scheme_sway_target is not None
                 or args.private_active_scheme_sway_formal_trial
@@ -2358,6 +2362,7 @@ def command_run(args: argparse.Namespace) -> int:
         "private_lifestyle_formal_trial": args.private_lifestyle_formal_trial,
         "private_construction_formal_trial": args.private_construction_formal_trial,
         "private_family_marriage_formal_trial": args.private_family_marriage_formal_trial,
+        "private_guy_default_formal_trial": args.private_guy_default_formal_trial,
         "private_m5_joint_collector": args.private_m5_joint_collector,
         "private_prisoner_collection_observation": (
             args.private_prisoner_collection_observation
@@ -2475,6 +2480,7 @@ def command_run(args: argparse.Namespace) -> int:
                 private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
                 private_construction_formal_trial=args.private_construction_formal_trial,
                 private_family_marriage_formal_trial=args.private_family_marriage_formal_trial,
+                private_guy_default_formal_trial=args.private_guy_default_formal_trial,
                 private_m5_joint_collector=args.private_m5_joint_collector,
                 private_prisoner_collection_observation=(
                     args.private_prisoner_collection_observation
@@ -3331,6 +3337,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-family-marriage-formal-trial",
         action="store_true",
         help="enable the bounded unadvertised first-heir marriage formal route",
+    )
+    run.add_argument(
+        "--private-guy-default-formal-trial",
+        action="store_true",
+        help="enable the bounded unadvertised split-child default proposal route",
     )
     run.add_argument(
         "--private-m5-joint-collector",
