@@ -13,7 +13,8 @@ Neither DLL identity or receipt can be carried into the other pair.
 The fixed WAR H3937 `RECEIVER-H3937-STATIONARY-READONLY-CANDIDATE-STATUS-v4.json`
 sets `decision.selected_step=null`; its source paused-war excerpt does not
 contain the complete war/army routes. H3937 therefore has **no selected action
-to quote**. H3911 did select `query-war-termination-options-16777231`, but its
+to quote**, and the explicit `null` does not prove a zero-fee action. H3911 did
+select `query-war-termination-options-16777231`, but its
 query receipt is historical and the [bounded DLL audit](r0326-h3911-war-query-cash-static-audit-2026-09-29.md)
 does not close evaluator side effects or deferred charges. It cannot price a
 later movement, mercenary hire, or H3937 date decision. The fixed WAR
@@ -45,8 +46,9 @@ it is not a proved pure read of existing state.
    arguments, actor and payer CharacterIDs, WarID set, army/company IDs,
    route origin/target/full route hash, preview sequence, paused snapshot,
    episode, public/native revision, date, PID+creation, and EXE/DLL hashes.
-   Reject a missing selected step, as at H3937. Verify payer separately from
-   unit owner and from a GUI subject handle.
+   Reject an absent or explicitly `null` selected step; H3937 has the latter.
+   Neither case is a zero-fee quote. Verify payer separately from unit owner
+   and from a GUI subject handle.
 2. Extend a diagnostic read-only receipt using existing native snapshot gold
    and route output; any topbar or MilitaryView sampling remains passive
    `ReadProcessMemory`. Record quote object identity, source bytes and natural
