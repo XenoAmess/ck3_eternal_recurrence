@@ -1694,3 +1694,7 @@ the same game date. A separate test starts with an already focused actor under
 the explicit opening gate, completes its read-only proof, and selects a ready
 wartime perk before the war query. This is source/test evidence; no R0372 LIFE
 action, new paused LIFE point, or live recovery is claimed.
+
+### 2026-09-29 接班机会复核
+
+接班 exact master `74d58ef` 的正式 runner 仅在有界运行显式 `--allow-private-lifestyle-formal-trial` 时调用私有 LIFE 消费者；开局/继承无重心的日期前 gate 另需 `--require-initial-lifestyle-focus-before-date-advance`。#657 已修复同日原生查询失败或帧变化后的漏重试，以及已有重心预览提前占用 perk 检查。源码追踪未发现第二个可复现漏消费。R0197 已将 R0187 剩余的管理点数用于 `centralization_perk`；H3928 后续同帧读数为未用0。因此当前 Robert 原始帧没有可证明的 perk 提交机会。R0374 的 LIFE opt-in 为 OFF，只验证活动规则且读口 RED，不能主张 LIFE 新实机消费。下一次 LIFE 动作需新角色/新日期的同帧 XP、点数、原生最终合法性，并按 pending、独立后置、下一 turn 和冷恢复合同验收。
