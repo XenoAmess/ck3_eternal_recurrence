@@ -253,6 +253,17 @@ bool ExecuteActivityStage1OptionReadPrivateV1(
     const bridge::ActivityPlannerDiagFrameV1 expected{
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true, true};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1)
+    if (query->stage_two_gate_read) {
+      query->stage_two_gate_result = bridge::ReadActivityStage2GateV1(
+          environment, expected);
+      if (query->stage_two_gate_result.status !=
+          bridge::ActivityStage2GateReadStatusV1::observed)
+        query->failure = "native_activity_stage2_gate_red:" +
+            std::string(bridge::ActivityStage2GateReadStatusKeyV1(
+                query->stage_two_gate_result.status));
+    } else
+#endif
     if (query->stage_two_read) {
       query->stage_two_result = bridge::ReadActivityStage2OptionV1(
           environment, expected);
@@ -410,6 +421,44 @@ std::string SerializeActivityStage2OptionReadPrivateV1(
   out.append(r.option_key.data(), r.option_key_size);
   out += "\",\"generic_feast_selected\":true,\"read_only\":true,"
          "\"raw_pointer_fields_persisted\":false,\"advertised\":false}";
+  return out;
+}
+
+std::string SerializeActivityStage2GateReadPrivateV1(
+    const ActivityStage1OptionReadPrivateQueryV1 &query) {
+  const auto &r = query.stage_two_gate_result;
+  if (!query.completed || !query.stage_two_gate_read ||
+      !query.failure.empty() ||
+      r.status != bridge::ActivityStage2GateReadStatusV1::observed ||
+      !r.selected_option.generic_feast_selected)
+    return {};
+  std::string out =
+      "{\"schema\":\"activity-stage2-gate-private-read-v1\","
+      "\"snapshot_revision\":" +
+      std::to_string(r.selected_option.frame.revision) +
+      ",\"date_raw\":" +
+      std::to_string(r.selected_option.frame.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(r.selected_option.frame.actor_character_id) +
+      ",\"activity_key\":\"activity_feast\","
+      "\"planning_stage\":2,\"selected_option_key\":\"";
+  out.append(r.selected_option.option_key.data(),
+             r.selected_option.option_key_size);
+  out += "\",\"configuration_row_count\":" +
+         std::to_string(r.configuration_row_count) +
+         ",\"failing_rows\":[";
+  for (std::uint16_t index = 0; index < r.failed_row_count; ++index) {
+    if (index != 0) out += ',';
+    const auto &row = r.failed_rows[index];
+    out += "{\"index\":" + std::to_string(row.index) +
+           ",\"raw_dword\":" + std::to_string(row.raw_dword) + "}";
+  }
+  out += "],\"can_progress_stage2\":";
+  out += r.can_progress_stage2 ? "true" : "false";
+  out += ",\"generic_feast_stage2_advance_ready\":";
+  out += r.generic_feast_stage2_advance_ready ? "true" : "false";
+  out += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false,"
+         "\"advertised\":false}";
   return out;
 }
 
