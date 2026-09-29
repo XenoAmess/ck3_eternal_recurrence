@@ -17,6 +17,9 @@
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
 #include "activity_stage1_option_read_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+#include "xar_bridge/activity_cost_slot12_passive_v1.hpp"
+#endif
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -298,6 +301,49 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+static xar::bridge::ActivityCostSlot12ObserverV1
+    g_activity_cost_slot12_observer_v1{};
+static xar::ck3_11906::Bindings g_activity_cost_slot12_bindings_v1{};
+
+bool ReadActivityCostSlot12MemoryV1(void *, std::uintptr_t address,
+                                    void *output, std::size_t bytes) noexcept {
+  SIZE_T copied = 0;
+  return address != 0 && output != nullptr && bytes != 0 &&
+         ReadProcessMemory(GetCurrentProcess(),
+                           reinterpret_cast<const void *>(address), output,
+                           bytes, &copied) != FALSE && copied == bytes;
+}
+
+bool ReadActivityCostSlot12FrameV1(
+    void *, xar::bridge::ActivityCostSlot12FrameV1 &output) noexcept {
+  const auto &bindings = g_activity_cost_slot12_bindings_v1;
+  void *game_state = nullptr, *jomini_state = nullptr;
+  std::uint8_t paused = 0;
+  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr || base == 0 ||
+      !ReadActivityCostSlot12MemoryV1(nullptr,
+          reinterpret_cast<std::uintptr_t>(bindings.game_state_slot),
+          &game_state, sizeof(game_state)) || game_state == nullptr ||
+      !ReadActivityCostSlot12MemoryV1(nullptr,
+          reinterpret_cast<std::uintptr_t>(bindings.jomini_state_slot),
+          &jomini_state, sizeof(jomini_state)) || jomini_state == nullptr ||
+      !ReadActivityCostSlot12MemoryV1(nullptr,
+          reinterpret_cast<std::uintptr_t>(game_state) + 0x08,
+          &output.date_raw, sizeof(output.date_raw)) ||
+      !ReadActivityCostSlot12MemoryV1(nullptr,
+          reinterpret_cast<std::uintptr_t>(jomini_state) + 0x20,
+          &paused, sizeof(paused)) ||
+      !ReadActivityCostSlot12MemoryV1(nullptr, base + 0x4FE7EE0,
+          &output.actor_character_id, sizeof(output.actor_character_id)))
+    return false;
+  output.paused = paused == 1;
+  output.thread_id = g_main_thread_query_mailbox_v1.owner_thread_id.load(
+      std::memory_order_acquire);
+  return output.thread_id != 0;
+}
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
 static std::optional<xar::bridge::ActiveSchemeSemanticActionV1PrivateAck>
     g_active_scheme_sway_pending_ack_v1{};
@@ -10389,6 +10435,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
                    && step != xar::ck3_11906::kActivityStage1OptionReadPrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+                   && step != "query-activity-cost-slot12-raw-v1-private"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kPlayerPrisonerRansomSubmitPrivateStepV1
@@ -10624,6 +10673,81 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 "activity planner private reclaim red");
                 }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+          if (step == "query-activity-cost-slot12-raw-v1-private") {
+            std::uint64_t expected_revision = 0;
+            xar::game::Snapshot current{};
+            if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
+                    incoming.payload, expected_revision) ||
+                expected_revision == 0 || expected_revision != state_revision ||
+                !previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current) ||
+                current != *previous_snapshot || !current.paused ||
+                !current.map_ready || !current.has_played_character ||
+                !current.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "activity cost paused frame or request invalid"));
+            } else {
+              xar::bridge::ActivityCostSlot12CaptureV1 capture{};
+              const xar::bridge::ActivityCostSlot12FrameV1 expected{
+                  current.date_raw, current.played_character_id,
+                  g_main_thread_query_mailbox_v1.owner_thread_id.load(
+                      std::memory_order_acquire), true};
+              const auto status = xar::bridge::ReadActivityCostSlot12PassiveV1(
+                  g_activity_cost_slot12_observer_v1, expected, capture);
+              xar::game::Snapshot after{};
+              if (status != xar::bridge::ActivityCostSlot12ReadStatusV1::observed ||
+                  !xar::game::ReadSnapshot(game, after) || after != current) {
+                const char *reason = "activity cost frame changed";
+                if (status == xar::bridge::ActivityCostSlot12ReadStatusV1::
+                                  no_normal_refresh)
+                  reason = "activity cost normal slot12 refresh not observed";
+                else if (status == xar::bridge::ActivityCostSlot12ReadStatusV1::
+                                       configuration_changed)
+                  reason = "activity cost planner configuration changed";
+                else if (status == xar::bridge::ActivityCostSlot12ReadStatusV1::
+                                       exact_build_rejected)
+                  reason = "activity cost exact build unavailable";
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, reason));
+              } else {
+                std::string native =
+                    "{\"schema\":\"activity-cost-slot12-raw-private-v1\","
+                    "\"snapshot_revision\":" +
+                    std::to_string(expected_revision) +
+                    ",\"date_raw\":" + std::to_string(current.date_raw) +
+                    ",\"actor_character_id\":" +
+                    std::to_string(current.played_character_id) +
+                    ",\"activity_key\":\"activity_feast\","
+                    "\"planning_stage\":" +
+                    std::to_string(capture.planning_stage) +
+                    ",\"capture_sequence\":" +
+                    std::to_string(capture.sequence) +
+                    ",\"source\":\"normal_slot12_return_0x10AE1AF\","
+                    "\"resource_mapping\":null,\"configured_cost\":null,"
+                    "\"raw_aggregate_i64\":[";
+                for (std::size_t i = 0; i < capture.raw_aggregate.size(); ++i) {
+                  if (i != 0) native += ',';
+                  native += std::to_string(capture.raw_aggregate[i]);
+                }
+                native += "]}";
+                std::string response =
+                    "{\"type\":\"command_result\",\"protocol_version\":1,"
+                    "\"request_id\":";
+                AppendJsonString(response, request_id);
+                response += ",\"ok\":true,\"result\":{\"step\":";
+                AppendJsonString(response, step);
+                response +=
+                    ",\"accepted\":true,\"status\":\"available\","
+                    "\"private_build\":true,\"read_only\":true,"
+                    "\"advertised\":false,\"activity_cost_slot12_raw\":" +
+                    native + ",\"backend_id\":\"native-headless\"}}";
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
             }
@@ -20130,6 +20254,21 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     return TRUE;
   }
   const auto exact_bindings = xar::ck3_11906::BindCurrentProcess(true);
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+  g_activity_cost_slot12_bindings_v1 = exact_bindings;
+  xar::bridge::ActivityCostSlot12EnvironmentV1 cost_environment{};
+  cost_environment.enabled = exact_bindings.enabled;
+  cost_environment.primary_thread_suspended = true;
+  cost_environment.executable_sha256 =
+      xar::bridge::kActivityCostSlot12ExeSha256V1;
+  cost_environment.module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  cost_environment.read_memory = &ReadActivityCostSlot12MemoryV1;
+  cost_environment.read_frame = &ReadActivityCostSlot12FrameV1;
+  if (!xar::bridge::InstallActivityCostSlot12PassiveV1(
+          g_activity_cost_slot12_observer_v1, cost_environment))
+    return FALSE;
+#endif
   xar::ck3_11906::TacticalDailySentinelInstallEnvironmentV1
       tactical_sentinel_environment{};
   tactical_sentinel_environment.exact_build_admitted = true;
