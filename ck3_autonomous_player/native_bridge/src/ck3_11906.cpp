@@ -6963,6 +6963,8 @@ std::string_view UnitStateName(std::int32_t state_code) noexcept {
 void ReadUnitRoute(void *game_state, void *unit, bool include_full_route,
                    ArmySnapshot &snapshot) noexcept {
   snapshot.route_province_ids.clear();
+  snapshot.route_read_status = game::ArmyRouteReadStatus::invalid_header;
+  snapshot.route_source_count.reset();
   snapshot.move_target_observable = false;
   snapshot.move_target_province_id = -1;
   void *const province_infos =
@@ -6975,10 +6977,13 @@ void ReadUnitRoute(void *game_state, void *unit, bool include_full_route,
       count > kMaximumUnitRouteProvinceInfos) {
     return;
   }
+  snapshot.route_source_count = count;
   if (count == 0) {
+    snapshot.route_read_status = game::ArmyRouteReadStatus::complete_empty;
     return;
   }
   if (province_infos == nullptr) {
+    snapshot.route_read_status = game::ArmyRouteReadStatus::unresolved_entry;
     return;
   }
 
@@ -6987,13 +6992,16 @@ void ReadUnitRoute(void *game_state, void *unit, bool include_full_route,
         province_infos,
         static_cast<std::size_t>(count - 1) * sizeof(void *));
     if (last_province_info == nullptr) {
+      snapshot.route_read_status = game::ArmyRouteReadStatus::unresolved_entry;
       return;
     }
     const auto province_id = LoadAt<std::int32_t>(
         last_province_info, kUnitPathProvinceIdOffset);
     if (ResolveProvince(game_state, province_id) == nullptr) {
+      snapshot.route_read_status = game::ArmyRouteReadStatus::unresolved_entry;
       return;
     }
+    snapshot.route_read_status = game::ArmyRouteReadStatus::target_only;
     snapshot.move_target_observable = true;
     snapshot.move_target_province_id = province_id;
     return;
@@ -7005,17 +7013,20 @@ void ReadUnitRoute(void *game_state, void *unit, bool include_full_route,
     void *const province_info = LoadAt<void *>(
         province_infos, static_cast<std::size_t>(index) * sizeof(void *));
     if (province_info == nullptr) {
+      snapshot.route_read_status = game::ArmyRouteReadStatus::unresolved_entry;
       return;
     }
     const auto province_id =
         LoadAt<std::int32_t>(province_info, kUnitPathProvinceIdOffset);
     if (ResolveProvince(game_state, province_id) == nullptr) {
+      snapshot.route_read_status = game::ArmyRouteReadStatus::unresolved_entry;
       return;
     }
     route_province_ids.push_back(province_id);
   }
 
   snapshot.route_province_ids = std::move(route_province_ids);
+  snapshot.route_read_status = game::ArmyRouteReadStatus::complete_nonempty;
   snapshot.move_target_observable = true;
   snapshot.move_target_province_id = snapshot.route_province_ids.back();
 }

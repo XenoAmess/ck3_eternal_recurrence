@@ -43,6 +43,7 @@ QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY = (
     "game.command.query-province-local-siege-v1-N"
 )
 QUERY_PROVINCE_LOCAL_SIEGE_STEP_PREFIX = "query-province-local-siege-v1-"
+MAX_NATIVE_ROUTE_SOURCE_COUNT = 4096
 SURRENDER_WAR_CAPABILITY = "game.command.surrender-war-N"
 OFFER_WHITE_PEACE_CAPABILITY = "game.command.offer-white-peace-N"
 ARMY_ROUTES_CAPABILITY = "game.state.army-routes"
@@ -844,6 +845,58 @@ def normalize_armies(
                     else []
                 )
             ]
+        has_route_status = "route_read_status" in raw_army
+        has_route_count = "route_source_count" in raw_army
+        if has_route_status != has_route_count:
+            raise ValueError(
+                f"native {name}[{index}] route status/count must appear together"
+            )
+        if has_route_status:
+            status = raw_army["route_read_status"]
+            count = raw_army["route_source_count"]
+            if not isinstance(status, str) or status not in {
+                "not_attempted", "complete_empty", "complete_nonempty",
+                "target_only", "invalid_header", "unresolved_entry",
+            }:
+                raise ValueError(
+                    f"native {name}[{index}].route_read_status is malformed"
+                )
+            if count is not None and (
+                isinstance(count, bool)
+                or not isinstance(count, int)
+                or not 0 <= count <= MAX_NATIVE_ROUTE_SOURCE_COUNT
+            ):
+                raise ValueError(
+                    f"native {name}[{index}].route_source_count is malformed"
+                )
+            route = normalized.get("route_province_ids")
+            if not isinstance(route, list):
+                raise ValueError(
+                    f"native {name}[{index}] route status requires route array"
+                )
+            valid = (
+                (status == "complete_empty" and count == 0
+                 and not route and not move_target_observable
+                 and move_target is None)
+                or (status == "complete_nonempty" and isinstance(count, int)
+                    and count > 0 and len(route) == count
+                    and move_target_observable and move_target == route[-1])
+                or (status == "target_only" and isinstance(count, int)
+                    and count > 0 and not route
+                    and move_target_observable and move_target is not None)
+                or (status == "unresolved_entry" and isinstance(count, int)
+                    and count > 0 and not route and not move_target_observable
+                    and move_target is None)
+                or (status in {"not_attempted", "invalid_header"}
+                    and count is None and not route
+                    and not move_target_observable and move_target is None)
+            )
+            if not valid:
+                raise ValueError(
+                    f"native {name}[{index}] route status/count disagrees with fields"
+                )
+            normalized["route_read_status"] = status
+            normalized["route_source_count"] = count
         for optional_flag in ("in_combat", "retreating"):
             flag = raw_army.get(optional_flag)
             if flag is not None and not isinstance(flag, bool):

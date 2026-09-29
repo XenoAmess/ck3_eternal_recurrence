@@ -2794,6 +2794,25 @@ void AppendInt32Array(std::string &result,
   result += ']';
 }
 
+std::string_view ArmyRouteReadStatusName(
+    xar::game::ArmyRouteReadStatus status) noexcept {
+  switch (status) {
+  case xar::game::ArmyRouteReadStatus::not_attempted:
+    return "not_attempted";
+  case xar::game::ArmyRouteReadStatus::complete_empty:
+    return "complete_empty";
+  case xar::game::ArmyRouteReadStatus::complete_nonempty:
+    return "complete_nonempty";
+  case xar::game::ArmyRouteReadStatus::target_only:
+    return "target_only";
+  case xar::game::ArmyRouteReadStatus::invalid_header:
+    return "invalid_header";
+  case xar::game::ArmyRouteReadStatus::unresolved_entry:
+    return "unresolved_entry";
+  }
+  return "not_attempted";
+}
+
 void AppendArmySnapshot(std::string &result,
                         const xar::game::ArmySnapshot &army) {
   result += "{\"army_id\":";
@@ -2808,6 +2827,14 @@ void AppendArmySnapshot(std::string &result,
   }
   result += ",\"route_province_ids\":";
   AppendInt32Array(result, army.route_province_ids);
+  result += ",\"route_read_status\":";
+  AppendJsonString(result, ArmyRouteReadStatusName(army.route_read_status));
+  result += ",\"route_source_count\":";
+  if (army.route_source_count.has_value()) {
+    result += SignedNumber(*army.route_source_count);
+  } else {
+    result += "null";
+  }
   result += ",\"move_target_province_id\":";
   if (army.move_target_observable) {
     result += SignedNumber(army.move_target_province_id);
