@@ -1393,6 +1393,7 @@ def native_auto_run_command(
     private_activity_planner_diag_query: bool = False,
     private_activity_feast_planner_open: bool = False,
     private_activity_feast_stage1_option_read: bool = False,
+    private_activity_cost_slot12_raw_read: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -1456,6 +1457,8 @@ def native_auto_run_command(
         command.append("--private-activity-feast-planner-open")
     if private_activity_feast_stage1_option_read:
         command.append("--private-activity-feast-stage1-option-read")
+    if private_activity_cost_slot12_raw_read:
+        command.append("--private-activity-cost-slot12-raw-read")
     if require_initial_lifestyle_focus_before_date_advance:
         command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
@@ -2056,6 +2059,7 @@ def command_run(args: argparse.Namespace) -> int:
             raise ValueError("private child pending recovery needs one LIFE turn and a distinct pair")
         if (args.private_activity_feast_planner_open
                 or args.private_activity_feast_stage1_option_read
+                or args.private_activity_cost_slot12_raw_read
                 or args.private_activity_planner_diag_query
                 or args.private_construction_formal_trial
                 or args.private_family_marriage_formal_trial
@@ -2065,9 +2069,12 @@ def command_run(args: argparse.Namespace) -> int:
                 or args.private_faction_round_id is not None):
             raise ValueError("private child pending recovery must run alone")
     if (args.private_activity_feast_planner_open
-            or args.private_activity_feast_stage1_option_read):
+            or args.private_activity_feast_stage1_option_read
+            or args.private_activity_cost_slot12_raw_read):
         if (child_pair is not None or args.private_activity_planner_diag_query
                 or (args.private_activity_feast_planner_open
+                    and args.private_activity_feast_stage1_option_read)
+                or (args.private_activity_cost_slot12_raw_read
                     and args.private_activity_feast_stage1_option_read)):
             raise ValueError("select one private feast paused frame route")
     if (args.private_active_scheme_sway_formal_trial
@@ -2237,6 +2244,9 @@ def command_run(args: argparse.Namespace) -> int:
         "private_activity_feast_stage1_option_read": (
             args.private_activity_feast_stage1_option_read
         ),
+        "private_activity_cost_slot12_raw_read": (
+            args.private_activity_cost_slot12_raw_read
+        ),
         "require_initial_lifestyle_focus_before_date_advance": (
             args.require_initial_lifestyle_focus_before_date_advance
         ),
@@ -2319,6 +2329,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_activity_feast_stage1_option_read=(
                     args.private_activity_feast_stage1_option_read
+                ),
+                private_activity_cost_slot12_raw_read=(
+                    args.private_activity_cost_slot12_raw_read
                 ),
                 require_initial_lifestyle_focus_before_date_advance=(
                     args.require_initial_lifestyle_focus_before_date_advance
@@ -3159,6 +3172,10 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--private-activity-feast-stage1-option-read", action="store_true",
         help="open feast then read its selected stage-1 option on one paused frame",
+    )
+    run.add_argument(
+        "--private-activity-cost-slot12-raw-read", action="store_true",
+        help="read one passive raw slot-12 capture; may combine with feast planner open",
     )
     run.add_argument(
         "--require-initial-lifestyle-focus-before-date-advance",
