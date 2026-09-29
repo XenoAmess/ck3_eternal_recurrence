@@ -24,6 +24,9 @@ count before applying the command payload.
 The object `+0x08` stores a 32-bit ID: low 24 bits are the slot index and
 high 8 bits are the slot generation. `0x270043E` increments the generation
 when allocating a slot; `0x2703E70` compares the complete ID before release.
+This trace establishes a per-slot generation, not a separate manager-wide
+epoch. The paused frame revision and a fresh manager/table sample delimit the
+read; no pointer or manager address is treated as a durable identity.
 The object primary vtable is `module+0x42F2F28` from `0x218EE08`.
 `0x218EE1F..0x218EE2D` copies the type pointer to object `+0x3A0` and the
 host's full character ID to `+0x3A8`. The apply path at `0x2700541` resolves
@@ -71,3 +74,8 @@ Reproduce the trace with `native_bridge/research/disasm_ck3.py` at RVAs
 `0x26C8050` (`0x30`), `0x2700340` (`0x210`), `0x2703AF0` (`0x80`),
 `0x2703E3E` (`0xD0`), `0x2704A60` (`0x180`), `0x218EDB0` (`0x90`), and
 `0x2700541` (`0x50`) against the hashed executable.
+
+The standalone core's five focused fixtures passed with MSVC 14.51 Debug
+and Release and Cygwin g++ O0 and O2. A separate exact-EXE check matched
+all four entry signatures used by the core. These are source/ABI results,
+not a paused-game readback.
