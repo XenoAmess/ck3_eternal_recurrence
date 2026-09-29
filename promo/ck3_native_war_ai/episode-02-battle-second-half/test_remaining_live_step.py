@@ -33,16 +33,16 @@ class RemainingLiveStepTest(unittest.TestCase):
         snapshot_id = f"native:{native_revision}"
         return {"accepted": True, "status": "available",
                 "snapshot_revision": native_revision,
+                "queried_revision": revision,
+                "queried_native_revision": native_revision,
+                "queried_snapshot_id": snapshot_id,
+                "source": {"revision": revision,
+                           "native_revision": native_revision,
+                           "snapshot_id": snapshot_id,
+                           "date_raw": date, "paused": True},
                 "battle_control_snapshot": {
                     "status": "available", "battle_control_ready": True,
                     "snapshot_revision": native_revision, "observed_date_raw": date,
-                    "queried_revision": revision,
-                    "queried_native_revision": native_revision,
-                    "queried_snapshot_id": snapshot_id,
-                    "source": {"revision": revision,
-                               "native_revision": native_revision,
-                               "snapshot_id": snapshot_id,
-                               "date_raw": date, "paused": True},
                     "subject_public_cunit_id": live.PLAYER_ARMY,
                     "subject_native_carmy_id": live.PLAYER_ARMY,
                     "selected_owner_character_id": live.ACTOR,
@@ -325,6 +325,11 @@ class RemainingLiveStepTest(unittest.TestCase):
             changed = dict(body, source={**body["source"], key: value})
             self.assertFalse(live.battle_control_case(changed, snapshot, 53146344)[0])
         self.assertFalse(live.battle_control_case(body, {**snapshot, "revision": 5}, 53146344)[0])
+        misplaced = dict(body, source=None, queried_revision=None,
+                         battle_control_snapshot={**body["battle_control_snapshot"],
+                                                  "source": body["source"],
+                                                  "queried_revision": 5})
+        self.assertFalse(live.battle_control_case(misplaced, snapshot, 53146344)[0])
 
     def test_snapshot_requires_exact_paused_actor_war_and_army(self) -> None:
         body = {"date_raw": 53146344, "paused": True, "revision": 4,

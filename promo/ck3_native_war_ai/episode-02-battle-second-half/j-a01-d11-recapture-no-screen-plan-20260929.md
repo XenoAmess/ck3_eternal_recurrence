@@ -69,6 +69,15 @@ RED，同时仍请求 CK3 清场；同屏新 attempt 前须有
 若**已经执行**单日动作而 d12 查询失败，保存该动作和失败请求为 RED，不能声称
 动作被撤销，也不能落正式 `d12-after` mark、继续推进或借其他 run 的 control 补证。
 
+无屏 ABI 对照用历史 086 的小回执：
+`episode01-battle-control-composite-attempt-086/ck3-output/interactive-requests-responses/`
+下 `c086-before-snapshot.json` 与 `c086-battle-control.json` 的 `body`。
+前者为 wrapper `revision=5`、`native_revision=4`、`snapshot_id=native:4`；后者
+`body` 根为 `queried_revision=5`、`queried_native_revision=4`、`source.revision=5`，
+`body.snapshot_revision=4` 与内层 `battle_control_snapshot.snapshot_revision=4`。
+修订后的两个纯判定函数对这两份**真实历史回执**返回 true；这只校验 wire 布局，
+不构成新 attempt 的同 run control 证据。
+
 1. 第 11 日暂停源 snapshot 后，在无日期/游戏状态变更间隙调用原生
    battle-control 查询，针对 **ArmyID 18** 保存原始 request/response，读回
    actor 29829、date_raw `53146488`、WarID 4、CombatID 16777218、ArmyID 18
