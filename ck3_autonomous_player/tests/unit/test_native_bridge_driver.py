@@ -71,6 +71,8 @@ from xar_autoplayer.bridge.war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     BATTLE_TERMINAL_CRUISE_STEP,
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+    MOVE_ARMY_CAPABILITY,
+    PREVIEW_MOVE_ARMY_CAPABILITY,
     WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
@@ -79,6 +81,8 @@ from xar_autoplayer.bridge.war_contract import (
     is_life_advance_step,
     is_native_war_step,
     merge_armies_step,
+    move_army_step,
+    preview_move_army_step,
     normalize_active_wars,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
@@ -790,6 +794,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.command.set-speed-3",
                 "game.command.resume-map",
                 "game.command.pause-map",
+                MOVE_ARMY_CAPABILITY,
+                PREVIEW_MOVE_ARMY_CAPABILITY,
             )
         )
         player = _army(
@@ -836,6 +842,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         query_step = query_route_contact_horizon_step(
             83_886_367, 2610, (31,)
         )
+        move_step = move_army_step(83_886_367, 2604)
+        preview_step = preview_move_army_step(83_886_367, 2604)
+        move_templates = (
+            move_step,
+            "move-army",
+            "move-army-N-to-N",
+            "move-army-83886367-to-2604-extra",
+            "order-active-combat-retreat-v1-83886367-invalid",
+        )
         date_steps = (
             "life-advance",
             "resume-map",
@@ -857,6 +872,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 publish(41, date_raw)
             actions = driver.capabilities()["action_steps"]
             self.assertIn(query_step, actions)
+            self.assertIn(preview_step, actions)
+            self.assertNotIn(move_step, actions)
             for step in date_steps:
                 with self.subTest(date_raw=date_raw, step=step):
                     self.assertNotIn(step, actions)
@@ -864,6 +881,50 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         BridgeUnavailableError, "H3937 date hold"
                     ):
                         driver.execute_step(step)
+            for step in move_templates:
+                with self.subTest(move_date_raw=date_raw, step=step):
+                    with self.assertRaisesRegex(
+                        BridgeUnavailableError, "H3937 move hold"
+                    ):
+                        driver.execute_step(step, expected_revision=40)
+                    with self.assertRaisesRegex(
+                        BridgeUnavailableError, "H3937 move hold"
+                    ):
+                        driver._execute_primitive_step(
+                            step, required_capability=MOVE_ARMY_CAPABILITY
+                        )
+        with self.assertRaisesRegex(BridgeUnavailableError, "H3937 move hold"):
+            driver._execute_native_war_step(move_step, expected_revision=40)
+        with self.assertRaisesRegex(
+            UnsupportedStepError, "frontend revision zero cannot execute date or move"
+        ):
+            driver._execute_primitive_step(
+                move_step, expected_revision=0,
+                required_capability=MOVE_ARMY_CAPABILITY,
+                allow_frontend_revision_zero=True,
+            )
+        with driver._driver_state_lock:
+            driver._active_combat_retreat_v1_token = {"candidate_token": "fixture"}
+        with self.assertRaisesRegex(BridgeUnavailableError, "H3937 move hold"):
+            driver._execute_active_combat_retreat_v1_order(
+                "order-active-combat-retreat-v1-invalid", expected_revision=40
+            )
+        with driver._driver_state_lock:
+            self.assertEqual(
+                driver._active_combat_retreat_v1_token,
+                {"candidate_token": "fixture"},
+            )
+            driver._active_combat_retreat_v1_token = None
+        with driver._episode_identity_lock:
+            driver._episode_run_id = "native-29829-prior"
+        # The exact submission snapshot is still H3937: an identity mismatch
+        # cannot make the primitive submit a move under the same native frame.
+        with self.assertRaisesRegex(BridgeUnavailableError, "H3937 move hold"):
+            driver._execute_primitive_step(
+                move_step, required_capability=MOVE_ARMY_CAPABILITY
+            )
+        with driver._episode_identity_lock:
+            driver._episode_run_id = H3937_EPISODE_RUN_ID
         with self.assertRaisesRegex(BridgeUnavailableError, "H3937 date hold"):
             driver._execute_primitive_step(
                 "resume-map", internal_semantic_snapshot=True
@@ -878,6 +939,35 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             any(frame.get("type") == "execute_step" for frame in endpoint.frames)
         )
 
+        def answer_preview(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish({
+                "type": "command_result",
+                "protocol_version": 1,
+                "request_id": frame["request_id"],
+                "ok": True,
+                "result": {
+                    "step": frame["step"], "accepted": True,
+                    "status": "available",
+                    "route_preview": {
+                        "status": "available", "army_id": 83_886_367,
+                        "origin_province_id": 2610,
+                        "target_province_id": 2604,
+                        "route_province_ids": [2610, 2604],
+                    },
+                },
+            })
+
+        endpoint.send_hook = answer_preview
+        read_only = driver.execute_step(preview_step)
+        self.assertEqual(read_only["route_preview"]["route_province_ids"], [2610, 2604])
+        self.assertEqual(
+            [frame["step"] for frame in endpoint.frames
+             if frame.get("type") == "execute_step"],
+            [preview_step],
+        )
+
         # The same native frame under a different episode keeps its existing
         # generic timeline and read-only capability projection.
         driver._with_one_life_episode = lambda snapshot: {
@@ -890,8 +980,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertIn("resume-map", old_actions)
         self.assertIn("set-speed-3", old_actions)
         self.assertIn(query_step, old_actions)
+        self.assertIn(move_step, old_actions)
         self.assertIn(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, old_actions)
         self.assertIn(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, old_actions)
+        with self.assertRaises(PreSubmissionRevisionMismatchError):
+            driver._execute_primitive_step(
+                move_step, expected_revision=0,
+                required_capability=MOVE_ARMY_CAPABILITY,
+            )
         for step in date_steps:
             with self.subTest(frontend_zero_step=step):
                 with self.assertRaisesRegex(
@@ -904,8 +1000,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         required_capability="game.command." + step,
                         allow_frontend_revision_zero=True,
                     )
-        self.assertFalse(
-            any(frame.get("type") == "execute_step" for frame in endpoint.frames)
+        self.assertEqual(
+            [frame["step"] for frame in endpoint.frames
+             if frame.get("type") == "execute_step"],
+            [preview_step],
         )
         driver._with_one_life_episode = original_projection
 
@@ -19163,6 +19261,8 @@ class NativeFallbackModeTests(unittest.TestCase):
                     execute=lambda step, _revision: visual_calls.append(step) or {},
                     action_steps=(
                         "move-army-7-to-9",
+                        "move-army-N-to-N",
+                        "order-active-combat-retreat-v1-invalid",
                         "split-army-half-7",
                         "merge-armies-7-with-8",
                         "query-declarable-wars",
@@ -19180,6 +19280,14 @@ class NativeFallbackModeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
             driver.execute_step("move-army-7-to-9")
+        for malformed_move in (
+            "move-army-N-to-N",
+            "order-active-combat-retreat-v1-invalid",
+        ):
+            with self.subTest(malformed_move=malformed_move):
+                self.assertNotIn(malformed_move, driver.capabilities()["action_steps"])
+                with self.assertRaisesRegex(UnsupportedStepError, "pure native"):
+                    driver.execute_step(malformed_move)
         self.assertNotIn(
             "split-army-half-7", driver.capabilities()["action_steps"]
         )

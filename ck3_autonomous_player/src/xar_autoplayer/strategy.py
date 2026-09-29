@@ -131,6 +131,7 @@ from .bridge.physical_army_inventory_authorization import (
 from .bridge.h3937_date_hold import (
     h3937_date_hold_active,
     h3937_date_hold_audit,
+    is_army_move_control_step,
     is_date_control_step,
 )
 from .environment import write_json_atomic
@@ -7169,6 +7170,43 @@ def _h3937_hold_selected_date(
     }
 
 
+def _h3937_hold_selected_move(
+    plan: dict[str, object], snapshot: dict[str, object] | None
+) -> dict[str, object]:
+    """Keep the H3937 move order closed until a separate war-risk admission."""
+
+    step = plan.get("selected_step")
+    if not (
+        h3937_date_hold_active(snapshot)
+        and is_army_move_control_step(step)
+        and isinstance(snapshot, dict)
+    ):
+        return plan
+    return {
+        **plan,
+        "phase": "h3937_war_move_hold_pending_inventory_and_cash_policy",
+        "selected_step": None,
+        "blocked_move_step": step,
+        "blocked_move_phase": plan.get("phase"),
+        "required_observation": (
+            "authenticated-physical-hostile-inventory-and-formal-war-cash-policy"
+        ),
+        "reason": (
+            "the H3937 war episode has no authenticated complete physical "
+            "hostile inventory or accepted joint war/cash move risk policy"
+        ),
+        "h3937_move_hold": h3937_date_hold_audit(snapshot),
+    }
+
+
+def _h3937_hold_selected_control(
+    plan: dict[str, object], snapshot: dict[str, object] | None
+) -> dict[str, object]:
+    return _h3937_hold_selected_move(
+        _h3937_hold_selected_date(plan, snapshot), snapshot
+    )
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
@@ -7188,7 +7226,7 @@ def choose_one_life_turn(
         bridge_capabilities=capabilities,
     )
     if isinstance(formal, dict) and formal.get("status") != "continue_ready":
-        return _h3937_hold_selected_date(formal, snapshot)
+        return _h3937_hold_selected_control(formal, snapshot)
     plan = _choose_one_life_turn_core(
         commands,
         snapshot=snapshot,
@@ -7212,7 +7250,7 @@ def choose_one_life_turn(
         bridge_capabilities=set(capabilities),
     )
     plan = _annotate_active_combat_resume_input(plan, snapshot)
-    plan = _h3937_hold_selected_date(plan, snapshot)
+    plan = _h3937_hold_selected_control(plan, snapshot)
     if (
         parse_advance_route_contact_horizon_step(plan.get("selected_step"))
         is not None
@@ -7234,7 +7272,7 @@ def choose_one_life_turn(
     if defender_exit_observation is not None:
         plan = {**plan, "formal_defender_exit_observation": defender_exit_observation}
     if not isinstance(formal, dict):
-        return _h3937_hold_selected_date(plan, snapshot)
+        return _h3937_hold_selected_control(plan, snapshot)
     decision = formal["decision"]
     war_id = decision["war_id"]
     if plan.get("selected_step") in {
@@ -7247,19 +7285,19 @@ def choose_one_life_turn(
             == "de-jure-no-safe-route-emergency-exit-v1"
             and plan.get("selected_step") == surrender_war_step(war_id)
         ):
-            return _h3937_hold_selected_date({
+            return _h3937_hold_selected_control({
                 **plan,
                 "formal_three_way_decision": decision,
                 "formal_continue_overridden_by_proven_route_exhaustion": True,
             }, snapshot)
-        return _h3937_hold_selected_date({
+        return _h3937_hold_selected_control({
             "policy": "raiktor-formal-three-way-exit-v1",
             "phase": "native_war_raiktor_threeway_conflicting_terminal",
             "selected_step": None,
             "reason": "bounded tactical planner chose a different terminal from the current three-way continue recommendation",
             "war_exit_decision": decision,
         }, snapshot)
-    return _h3937_hold_selected_date({
+    return _h3937_hold_selected_control({
         **plan,
         "war_exit_decision": decision,
         "bounded_continue_adapter": "existing-native-tactical-turn-v1",

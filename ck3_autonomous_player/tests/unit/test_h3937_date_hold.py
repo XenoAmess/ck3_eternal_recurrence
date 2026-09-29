@@ -14,6 +14,7 @@ from xar_autoplayer.bridge.h3937_date_hold import (
     H3937_EPISODE_RUN_ID,
     H3937_SOURCE_DATE_RAW,
     h3937_date_hold_active,
+    is_army_move_control_step,
     is_date_control_step,
 )
 from xar_autoplayer.bridge.war_contract import (
@@ -23,6 +24,7 @@ from xar_autoplayer.bridge.war_contract import (
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
     committed_route_sentinel_advance_step,
+    move_army_step,
     query_route_contact_horizon_step,
     war_objective_hold_sentinel_advance_step,
 )
@@ -80,6 +82,61 @@ class H3937DateHoldTests(unittest.TestCase):
                 query_route_contact_horizon_step(83_886_367, 2610, (31,))
             )
         )
+
+    def test_move_classifier_catches_templates_and_retreat_order_not_queries(self) -> None:
+        for step in (
+            move_army_step(83_886_367, 2614),
+            "move-army",
+            "move-army-N-to-N",
+            "move-army-83886367-to-2614-extra",
+            "order-active-combat-retreat-v1",
+            "order-active-combat-retreat-v1-83886367-invalid",
+        ):
+            with self.subTest(step=step):
+                self.assertTrue(is_army_move_control_step(step))
+        self.assertFalse(is_army_move_control_step("preview-move-army-83886367-to-2614"))
+        self.assertFalse(is_army_move_control_step("query-route-contact-horizon-v1"))
+
+    def test_final_planner_denies_move_but_preserves_other_episode(self) -> None:
+        step = move_army_step(83_886_367, 2614)
+        with (
+            mock.patch.object(strategy, "plan_raiktor_formal_exit", return_value=None),
+            mock.patch.object(
+                strategy, "_choose_one_life_turn_core",
+                return_value={"phase": "native_war_siege_uncertain_first_hop_move",
+                              "selected_step": step},
+            ),
+            mock.patch.object(
+                strategy, "_primary_defender_siege_forecast_ingress",
+                side_effect=lambda plan, **_kwargs: plan,
+            ),
+            mock.patch.object(
+                strategy, "_general_battle_forecast_ingress",
+                side_effect=lambda plan, **_kwargs: plan,
+            ),
+            mock.patch.object(
+                strategy, "_annotate_active_combat_resume_input",
+                side_effect=lambda plan, _snapshot: plan,
+            ),
+            mock.patch.object(
+                strategy, "observe_primary_defender_de_jure_exit",
+                return_value=None,
+            ),
+        ):
+            held = strategy.choose_one_life_turn(
+                [], snapshot=_h3937_snapshot(), action_steps=(step,)
+            )
+            self.assertIsNone(held["selected_step"])
+            self.assertEqual(held["blocked_move_step"], step)
+            self.assertEqual(
+                held["phase"],
+                "h3937_war_move_hold_pending_inventory_and_cash_policy",
+            )
+            old = strategy.choose_one_life_turn(
+                [], snapshot=_h3937_snapshot(episode_run_id="native-29829-prior"),
+                action_steps=(step,),
+            )
+            self.assertEqual(old["selected_step"], step)
 
     def test_final_planner_denies_generic_sentinel_and_route_dates(self) -> None:
         date_steps = (

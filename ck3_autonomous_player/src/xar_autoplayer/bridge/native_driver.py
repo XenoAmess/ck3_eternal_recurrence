@@ -474,6 +474,7 @@ from .physical_army_inventory_authorization import (
 from .h3937_date_hold import (
     H3937_EPISODE_RUN_ID,
     h3937_date_hold_active,
+    is_army_move_control_step,
     is_date_control_step,
 )
 from .war_contract import (
@@ -2107,12 +2108,15 @@ class NativeHeadlessGameplayDriver:
             composite_action_steps.append(_START_NEXT_EPISODE_STEP)
         if h3937_date_hold_active(current_snapshot):
             action_steps = {
-                step for step in action_steps if not is_date_control_step(step)
+                step for step in action_steps
+                if not is_date_control_step(step)
+                and not is_army_move_control_step(step)
             }
             composite_action_steps = [
                 step
                 for step in composite_action_steps
                 if not is_date_control_step(step)
+                and not is_army_move_control_step(step)
             ]
         return {
             **result,
@@ -6058,12 +6062,13 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         # The immutable in-process episode binding allows an early deny without
         # taking an extra native frame or altering ordinary revision races.
-        if is_date_control_step(step):
+        if is_date_control_step(step) or is_army_move_control_step(step):
             with self._episode_identity_lock:
                 held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
             if held_episode:
+                control = "date" if is_date_control_step(step) else "move"
                 raise BridgeUnavailableError(
-                    "H3937 date hold: physical hostile inventory and formal "
+                    f"H3937 {control} hold: physical hostile inventory and formal "
                     "war/cash policy remain uncertified"
                 )
         if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
@@ -8175,18 +8180,19 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
-        if is_date_control_step(step):
+        if is_date_control_step(step) or is_army_move_control_step(step):
             # Frontend revision zero has no map/episode snapshot and cannot be
-            # used as a back door to submit a timeline primitive.
+            # used as a back door to submit a timeline or army move primitive.
             if allow_frontend_revision_zero:
                 raise UnsupportedStepError(
-                    "frontend revision zero cannot execute date controls"
+                    "frontend revision zero cannot execute date or move controls"
                 )
             with self._episode_identity_lock:
                 held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
             if held_episode:
+                control = "date" if is_date_control_step(step) else "move"
                 raise BridgeUnavailableError(
-                    "H3937 date hold: physical hostile inventory and formal "
+                    f"H3937 {control} hold: physical hostile inventory and formal "
                     "war/cash policy remain uncertified"
                 )
         capabilities = (
@@ -8232,6 +8238,11 @@ class NativeHeadlessGameplayDriver:
         if is_date_control_step(step) and h3937_date_hold_active(snapshot):
             raise BridgeUnavailableError(
                 "H3937 date hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
+        if is_army_move_control_step(step) and h3937_date_hold_active(snapshot):
+            raise BridgeUnavailableError(
+                "H3937 move hold: physical hostile inventory and formal "
                 "war/cash policy remain uncertified"
             )
         revision = int(snapshot["revision"])
@@ -9297,6 +9308,13 @@ class NativeHeadlessGameplayDriver:
         expected_revision: int | None,
     ) -> dict[str, object]:
         """Consume a preview token, re-prove it, and submit player movement."""
+        with self._episode_identity_lock:
+            held_episode = self._episode_run_id == H3937_EPISODE_RUN_ID
+        if held_episode:
+            raise BridgeUnavailableError(
+                "H3937 move hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         request = parse_order_active_combat_retreat_v1_step(step)
         if request is None:
             raise UnsupportedStepError(
@@ -9633,6 +9651,11 @@ class NativeHeadlessGameplayDriver:
             if internal_read_only_query
             else self.take_snapshot()
         )
+        if is_army_move_control_step(step) and h3937_date_hold_active(starting):
+            raise BridgeUnavailableError(
+                "H3937 move hold: physical hostile inventory and formal "
+                "war/cash policy remain uncertified"
+            )
         starting_revision = int(starting["revision"])
         selected_revision = (
             expected_revision
@@ -19517,6 +19540,7 @@ class ConfiguredHybridFallbackDriver:
             for step in action_steps
             if (
                 not is_native_war_step(step)
+                and not is_army_move_control_step(step)
                 and not is_native_declaration_step(step)
                 and not is_native_marriage_step(step)
             )
@@ -21336,6 +21360,7 @@ class ConfiguredHybridFallbackDriver:
         if (
             (
                 is_native_war_step(step)
+                or is_army_move_control_step(step)
                 or is_native_declaration_step(step)
                 or is_native_marriage_step(step)
             )

@@ -8,6 +8,7 @@ yet, so this module has no release path.
 
 from __future__ import annotations
 
+from .active_combat_retreat_contract import ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX
 from .war_contract import (
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
     WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
@@ -48,6 +49,20 @@ def is_date_control_step(step: object) -> bool:
             "set-speed-4",
             "set-speed-5",
         })
+    )
+
+
+def is_army_move_control_step(step: object) -> bool:
+    """Include malformed move literals and the composite that submits a move."""
+
+    return bool(
+        isinstance(step, str)
+        and (
+            step == "move-army"
+            or step.startswith("move-army-")
+            or step == "order-active-combat-retreat-v1"
+            or step.startswith(ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX)
+        )
     )
 
 
