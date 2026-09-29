@@ -151,6 +151,24 @@ The C++ source gate and offline CTest suite are the applicable prevalidation.
 This is static build acceptance only. No typed paused-frame role row exists,
 and the completed R0368 report cannot be retroactively upgraded.
 
+## Later no-launch source candidate
+
+The H3937 R3944 attempt-09 source checkpoint and driver share the actor,
+episode and date anchors needed for a *future* read, but its existing DLL
+does not contain the R0368 role command. A separate
+[R0368 candidate manifest](D:/ck3-research-artifacts/r0368-role-no-launch-20260929/attempt-01/candidate-manifest.json)
+(SHA-256 `1F0BB07ED5FABF89EA8E82CE8CC178388F22DC8BB35590AA045846E06FE89E25`)
+preserves byte-checked copies of that checkpoint, driver and sidecar together
+with the new paired role DLL and injector. Its read-only
+[no-launch preflight](D:/ck3-research-artifacts/r0368-role-no-launch-20260929/attempt-01/preflight.json)
+(SHA-256 `8887294905B0E775C4C8B60C6CD3692FF4F809213BFD3A0B8171093778E1DDAF`)
+checks the copied bytes, exact EXE and unchanged native source. It neither
+starts CK3 nor enables an operator. The driver file has no current paused
+public/allied army row or native revision; therefore WarID `16777231` and
+public ArmyID `83886367` remain candidate inputs, not same-frame facts.
+Any live query needs a new paused semantic snapshot and separate fresh
+screen/offline admission.
+
 The release decision is a later war-policy step. It needs the exact current
 assignment, a complete army and contact/siege state, a valid replacement plan,
 and a qualified nonwar benefit. R0271 remains RED, so this interface gives no
