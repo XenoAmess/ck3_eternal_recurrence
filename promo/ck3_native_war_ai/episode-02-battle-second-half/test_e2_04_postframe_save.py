@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -48,7 +49,7 @@ def save_response(path: Path, date: int, content: bytes) -> dict:
         "step": "save-checkpoint", "accepted": True,
         "checkpoint": {"status": "saved", "path": str(path),
                        "name": "xar_checkpoint.ck3", "size": len(content),
-                       "sha256": __import__("hashlib").sha256(content).hexdigest(),
+                       "sha256": hashlib.sha256(content).hexdigest(),
                        "date_raw": date, "episode_character_id": post.ACTOR,
                        "succession_lifecycle": {
                            "lifecycle": "ordinary_campaign_succession",
@@ -151,7 +152,8 @@ class Fixture:
 
     def call(self, output: Path, name: str, tool: str, arguments: dict,
              _timeout: float) -> tuple[dict, dict]:
-        assert output == self.output
+        if output != self.output:
+            raise AssertionError("call escaped the fixture's managed output")
         self.calls.append((name, tool, arguments))
         if tool == "ck3_take_snapshot":
             body = snapshot(post.POST_DATE, 9) if name.endswith("after-save-snapshot") else self.post
@@ -166,8 +168,8 @@ class Fixture:
                 body["battle_control_snapshot"]["combat_id"] = self.current_control_combat
             row = self._response(name, {"result": "CALL_COMPLETED", "body": body})
             return body, row
-        assert tool == "ck3_save_checkpoint"
-        assert arguments == {"expected_revision": 8}
+        if tool != "ck3_save_checkpoint" or arguments != {"expected_revision": 8}:
+            raise AssertionError("unexpected native mutation request")
         if self.pending_timeout:
             write_new(self.requests / f"{name}.json",
                       {"tool": tool, "arguments": arguments})
