@@ -1561,6 +1561,47 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // The option read must run after the feast opener in the same process.
+  auto activity_environment =
+      runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  activity_environment.permitted_executor_septenquinquagintary =
+      &ExecutePhaseBegin;
+  activity_environment.permitted_executor_novemquinquagintary =
+      &ExecutePhaseEvent;
+  ExecutorContext opener_context{};
+  ExecutorContext activity_context{};
+  MainThreadQueryTicketV1 opener_ticket{};
+  MainThreadQueryTicketV1 activity_ticket{};
+  g_failure_stage = "activity_stage1_option_dedicated_executor_slot";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, activity_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      TrySubmitMainThreadQueryV1(mailbox, &ExecutePhaseBegin,
+                                 &opener_context, opener_ticket) !=
+          MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      WaitForMainThreadQueryV1(mailbox, opener_ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, opener_ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      TrySubmitMainThreadQueryV1(mailbox, &ExecutePhaseEvent,
+                                 &activity_context, activity_ticket) !=
+          MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      WaitForMainThreadQueryV1(mailbox, activity_ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, activity_ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      opener_context.calls != 1 || activity_context.calls != 1 ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
   runtime.protection.fail_next_readonly_restore = true;
   g_failure_stage = "iat_protection_rollback";
   if (InstallMainThreadQueryMailboxV1(

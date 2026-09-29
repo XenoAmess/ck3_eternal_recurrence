@@ -84,6 +84,10 @@ same frame. It re-reads native identity and frame after evaluation. Only
 `feast_type_generic` with all three positive values yields
 `generic_feast_confirm_ready=true`. The collector emits no process pointer,
 changes no option or stage, and does not advertise a public action.
+The read uses the mailbox's separate slot 59, so a private candidate may
+include the existing feast planner opener (slot 57) and then read stage 1
+within the same DLL and process. No DLL swap or restart is required between
+those two steps.
 
 The Release bridge compilation and Release/Debug focused unit test are
 source-level validation. An actual paused snapshot of the selected option
