@@ -357,7 +357,7 @@ timely guest route; the formal policy held with
 `decision_reason=native_final_start_unavailable` and submitted no Start.
 
 The [formal report](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/operator-runs/feast-stage5-guest-failure-read-1/formal-report.txt)
-SHA-256 `883CC43B513CE7F01A18A61DB27ACCA923F2D781F5836306AC0B7FCEE39EB6`
+SHA-256 `883CC43B513CE7F01A18A61DB27ACCA923F2F3D781F5836306AC0B7FCEE39EB6`
 has `private_activity_feast_stage5_start_assessed/planning_stage_advanced/ok=true`;
 the [operator receipt](Z:/m6-activity-h3928-stage5-gap-candidate-20260929/operator-runs/feast-stage5-guest-failure-read-1/operator-receipt.json)
 SHA-256 `114FBD23FC3B66084074D5E9650DC88E6A13938AEC12454B475DB1AA28A04A7B`
