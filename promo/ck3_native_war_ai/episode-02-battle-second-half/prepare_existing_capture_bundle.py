@@ -350,7 +350,7 @@ def frame_pts(probe: Path) -> list[Decimal]:
 def extract_argv_tail(raw_path: str, index: int, image_path: str) -> list[str]:
     return ["-hide_banner", "-loglevel", "info", "-nostdin", "-n",
             "-threads", "1", "-i", raw_path, "-map", "0:v:0",
-            "-vf", f"select=eq(n\\,{index}),showinfo", "-vsync", "0",
+            "-vf", f"select=eq(n\\,{index}),showinfo", "-fps_mode", "passthrough",
             "-frames:v", "1", image_path]
 
 

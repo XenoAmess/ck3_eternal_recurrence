@@ -196,6 +196,8 @@ class ExistingCaptureBundleTest(unittest.TestCase):
     def test_exact_frame_extractor_binds_showinfo_pts_without_review(self) -> None:
         self.prepare()
         def fake_run(argv, **kwargs):
+            self.assertEqual(argv[argv.index("-fps_mode") + 1], "passthrough")
+            self.assertNotIn("-vsync", argv)
             Path(argv[-1]).write_bytes(b"raw-derived fixture frame")
             kwargs["stderr"].write(b"[Parsed_showinfo_1] n: 0 pts: 33 pts_time:0.033\n")
             return SimpleNamespace(returncode=0)
