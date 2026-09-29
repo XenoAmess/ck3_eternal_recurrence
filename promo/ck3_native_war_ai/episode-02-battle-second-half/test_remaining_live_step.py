@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
 import tempfile
 import threading
 import time
@@ -11,6 +12,9 @@ import unittest
 from unittest.mock import patch
 
 import remaining_live_step as live
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "integration"))
+import d11_admission  # noqa: E402
 
 
 def write(path: Path, value: object) -> None:
@@ -480,19 +484,41 @@ class RemainingLiveStepTest(unittest.TestCase):
                          "game": {"sha256": live.EXE_SHA},
                          "bridge_dll": {"sha256": spec["dll"]},
                          "bridge_injector": {"sha256": spec["injector"]}}
+            lock = output / "admission-lock.json"
+            write(lock, {"fixture": True})
+            files = {name: {"sha256": name} for name in
+                     ("capture_script", "dll", "injector", "save", "receipt", "pair")}
+            admission = {"lock": live.identity(lock),
+                         "binding": {"attempt": "fresh-no-launch", "checkout_head": "fresh-head",
+                                     "files": files}}
+            preflight["d11_admission"] = {
+                "lock": admission["lock"], "no_launch_attempt": "fresh-no-launch",
+                "checkout_head": "fresh-head", "capture_script": files["capture_script"],
+                "dll": files["dll"], "injector": files["injector"],
+                "save": files["save"], "sidecar": files["receipt"],
+                "pair": files["pair"]}
             write(output / "preflight.json", preflight)
             write(output / "native-start-readback.json",
                   {"postcondition_verified": True, "source_checkpoint": source})
             write(output / "command.json",
                   {"argv": ["capture_session.py", "--capture",
-                            "--enable-private-phase-trace"]})
-            self.assertEqual(live.bind_session(output, "e2-06-d11")["track"],
-                             "e2-06-d11")
-            preflight["bridge_dll"]["sha256"] = (
-                "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F")
-            write(output / "preflight.json", preflight)
-            with self.assertRaisesRegex(ValueError, "bridge pair differs"):
+                            "--enable-private-phase-trace",
+                            "--d11-admission-lock", str(lock)]})
+            with self.assertRaisesRegex(ValueError, "requires the exact no-launch"):
                 live.bind_session(output, "e2-06-d11")
+            with patch.object(d11_admission, "verify_lock", return_value=admission):
+                self.assertEqual(live.bind_session(output, "e2-06-d11", lock)["track"],
+                                 "e2-06-d11")
+                preflight["d11_admission"]["checkout_head"] = "different-head"
+                write(output / "preflight.json", preflight)
+                with self.assertRaisesRegex(ValueError, "not bound to the sealed"):
+                    live.bind_session(output, "e2-06-d11", lock)
+                preflight["d11_admission"]["checkout_head"] = "fresh-head"
+                preflight["bridge_dll"]["sha256"] = (
+                    "1CC2AE965CD0EE897F918D50AF038F3DA874354DA7F3A57D2710B7BCCF44366F")
+                write(output / "preflight.json", preflight)
+                with self.assertRaisesRegex(ValueError, "bridge pair differs"):
+                    live.bind_session(output, "e2-06-d11", lock)
 
     def test_private_request_uses_owner_action_envelope(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

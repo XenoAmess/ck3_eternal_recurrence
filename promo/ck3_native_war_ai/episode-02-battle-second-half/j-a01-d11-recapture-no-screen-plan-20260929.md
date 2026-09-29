@@ -1,5 +1,15 @@
 # E2-06/07 第 11 日增援：下一独立录制的无屏准入计划
 
+当前 #451 admission 修订：历史 a06 no-launch 只绑定旧 checkout，不能为新代码放行。
+必须先取得新 `episode02-e2-06-d11-recap-preflight-20260929-a07-admission`
+的 READY/no-launch 回执，再用 `integration/d11_admission.py seal` 在另一个外置目录
+create-exclusive 写 `admission-lock.json` 并执行 `verify` 回读。d11 live
+`capture_session.py --capture` 必须显式传 `--d11-admission-lock`；其 preflight
+在任何 CK3/OBS 启动前重验新 HEAD、脚本、原 no-launch argv/结果、配对 DLL/injector、
+save/sidecar 和 seal。`remaining_live_step.py` 的 d11 `observe/advance/finish`
+也必须传同一 lock 并匹配该 live preflight。静态门不授权屏幕、录制或日期动作；
+当前日期动作仍关闭。
+
 2026-09-29 CST。当前 d06 受管 CK3 独占屏幕；本文件只安排下一次**新**第 11 日
 attempt，不触屏、不启动游戏、不读 J-A01 原 raw/完整 ffprobe。旧 J-A01 仍为
 `ENCODED_UNREVIEWED`；它的原生 battle-control 缺失，按 #451 `e4957f17e`

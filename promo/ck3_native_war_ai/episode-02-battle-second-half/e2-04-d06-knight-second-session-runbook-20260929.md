@@ -1,6 +1,6 @@
 # E2-04 d06 second session: current Character 34333 / Regiment 61
 
-Status: **operator candidate only**. No screen lease, Steam picture, CK3 launch, current native number, or raw recording is claimed here. The d06 a01 no-launch attempt is RED. Historical a02 was READY on `5629d147f`, with preflight SHA-256 `EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488`; it is excluded from admission on the integrated #451 HEAD. The a03 takeover preflight belongs to an intermediate checkout and is also excluded. A fresh a04 no-launch must be run from this exact checkout and sealed by the operator before any live attempt.
+Status: **operator candidate only**. No screen lease, Steam picture, CK3 launch, current native number, or raw recording is claimed here. The d06 a01 no-launch attempt is RED. Historical a02 was READY on `5629d147f`, with preflight SHA-256 `EACE028F6AD8ACBEF29004FFF833722F82DF3E383C9814BFB6C1467C49C76488`; it is excluded from admission on the integrated #451 HEAD. The a03 takeover and a04 final preflights belong to earlier checkouts and are also excluded. A fresh a05 no-launch must be run from this exact checkout and sealed by the operator before any live attempt.
 
 ## Frozen inputs and run code
 
@@ -40,16 +40,16 @@ D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2
   --steam-offline-receipt <fresh-d06-knight-offline-attempt>/steam-offline-reviewed.json --capture
 ```
 
-Those are **argv items**, not a multiline shell command. First run a new no-launch preflight with the same source pair and exact code HEAD, saving the original argv/stdout/stderr/result and `ck3-output/preflight.json`/`command.json` under `episode02-e2-04-d06-knight-preflight-20260929-a04-final`. Then execute the operator's `seal --no-launch-attempt <new-root>` once; it create-exclusively freezes the verified files into `admission-lock.json`. The live owner may use the same Python argument-array style as historical a02 `run_no_launch.py`, changing only the new live dirs/pipe plus fresh `--steam-offline-receipt` and `--capture`. Do not insert a trace flag.
+Those are **argv items**, not a multiline shell command. First run a new no-launch preflight with the same source pair and exact code HEAD, saving the original argv/stdout/stderr/result and `ck3-output/preflight.json`/`command.json` under `episode02-e2-04-d06-knight-preflight-20260929-a05-admission`. Then execute the operator's `seal --no-launch-attempt <new-root>` once; it create-exclusively freezes the verified files into `admission-lock.json`. The live owner may use the same Python argument-array style as historical a02 `run_no_launch.py`, changing only the new live dirs/pipe plus fresh `--steam-offline-receipt` and `--capture`. Do not insert a trace flag.
 
 ## Paused same-frame observation and media
 
 Wait for new live `ck3-output/preflight.json` READY, `native-start-readback.json` `postcondition_verified=true`, and three GUI disk receipts (`before-native-session`, `postmap`, `posthold`) that retain serialized `"1"` and the frozen 54-byte block SHA. Directly review a new full-resolution desktop image: CK3 has actually loaded the map/HUD, no modal/launcher, UI fits the full recorded geometry, and the game is paused at d06. `map_ready` or a scale disk receipt alone does not prove a usable shot.
 
-Run the new read-only helper from the same integrated checkout, with the **new sealed a04** as `--no-launch-attempt`:
+Run the new read-only helper from the same integrated checkout, with the **new sealed a05** as `--no-launch-attempt`:
 
 ```text
-D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py observe --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a04-final
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py observe --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a05-admission
 ```
 
 The helper creates exclusive intent and result files, then reads a new paused snapshot, same-revision battle control, current CharacterID `34333`/RegimentID `61`, and a final unchanged snapshot. It requires actor `29829`, War `4`, CUnit/native CArmy `18`, Combat `16777218`, Province `2633`, date raw `53146368`, unique defender regiment `61`, paired generation checks and new frame revisions. `current_effective_prowess` and `province_evaluated_*_raw` are current native values at scale 100000; `stored_combat_entry_*_raw` are old battle-entry fields. **No 7/11 or 612.5/122.5 is assumed in advance.** On a timeout or unavailable result, preserve the request/response and RED receipt; do not retry that request in the same attempt.
@@ -61,7 +61,7 @@ While FFmpeg is still recording, append a `mark` for the independent d06 shot wi
 After the recorder has sealed, request managed cleanup exactly once:
 
 ```text
-D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py finish --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a04-final
+D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/e2_04_d06_knight_live.py finish --session-output <new-live-root>/ck3-output --no-launch-attempt D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a05-admission
 ```
 
 Wait for `capture_session.py` exit, then verify `session-result.json`, `capture-report.json`, CK3/FFmpeg process inventory and screen lease release. `finish` only requests cleanup; its receipt alone does not prove cleanup or footage quality. All new outputs remain in the new attempt; the a08 save/sidecar and every old attempt stay immutable.

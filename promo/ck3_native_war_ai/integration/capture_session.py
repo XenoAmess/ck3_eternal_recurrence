@@ -846,6 +846,19 @@ def validate_a04_ui_gui_source_binding(args: argparse.Namespace,
             "recording_authorized_by_this_binding": False}
 
 
+def d11_live_admission(args: argparse.Namespace, checkpoint: dict | None,
+                       argv: list[str]) -> dict | None:
+    from d11_admission import D11_SAVE_SHA, verify_live_admission
+
+    is_d11 = checkpoint is not None and checkpoint["save"]["sha256"] == D11_SAVE_SHA
+    admission_lock = getattr(args, "d11_admission_lock", None)
+    capture_requested = getattr(args, "capture", False)
+    require(admission_lock is None or (capture_requested and is_d11),
+            "d11 admission lock is only for the exact d11 live checkpoint")
+    return (verify_live_admission(admission_lock, argv)
+            if capture_requested and is_d11 else None)
+
+
 def preflight(args: argparse.Namespace) -> dict:
     from xar_autoplayer.environment import ck3_process_inventory, make_spec
     from xar_autoplayer.runtime import NativeBridgeLaunchConfig, validate_native_bridge_launch_config
@@ -859,6 +872,7 @@ def preflight(args: argparse.Namespace) -> dict:
     require(versions["mcp"] == "2.0.0", "MCP SDK must be 2.0.0")
     spec = make_spec(state_dir=args.state_dir, game_dir=args.game_dir)
     checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)
+    d11_admission = d11_live_admission(args, checkpoint, sys.argv[1:])
     a04_ui_binding = validate_a04_ui_gui_source_binding(args, checkpoint)
     executable = identity(spec.game_exe)
     require(executable["sha256"] == EXACT_SHA, "Exact CK3 build mismatch")
@@ -944,6 +958,7 @@ def preflight(args: argparse.Namespace) -> dict:
         "gui_scale_requested": args.gui_scale,
         "a04_ui_gui_source_binding": a04_ui_binding,
         "d11_battle_control_pair": battle_control_pair,
+        "d11_admission": d11_admission,
         "process_inventory": processes, "state_dir": str(args.state_dir),
         "pipe_name": args.pipe_name,
         "codex_global_registration_required": False,
@@ -1800,6 +1815,8 @@ def main() -> int:
     parser.add_argument("--bridge-injector", type=Path, required=True)
     parser.add_argument("--battle-control-pair-manifest", type=Path,
                         help="Required for exact d11 checkpoint: fresh native/Python source pair and CTest evidence")
+    parser.add_argument("--d11-admission-lock", type=Path,
+                        help="Exact external no-launch byte seal; required before a d11 --capture launch")
     parser.add_argument("--state-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--pipe-name", required=True)

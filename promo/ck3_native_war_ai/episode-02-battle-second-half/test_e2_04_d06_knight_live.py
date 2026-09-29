@@ -16,7 +16,7 @@ from e2_04_d06_knight_live import (
 
 
 PREFLIGHT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a02")
-NEW_PREFLIGHT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a04-final")
+NEW_PREFLIGHT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-knight-preflight-20260929-a05-admission")
 OLD_CONTROL = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d06-v3-live-20260929-a08-a02/ck3-output/interactive-requests-responses/a08-d06-cold-control.json")
 OLD_GUI = OLD_CONTROL.parents[1]
 

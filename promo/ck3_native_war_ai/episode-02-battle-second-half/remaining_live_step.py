@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import sys
 import time
 from typing import Any
 
@@ -91,8 +92,18 @@ def private_call(output: Path, name: str, request: dict[str, Any],
     raise TimeoutError(f"private request pending; inspect before retry: {target}")
 
 
-def bind_session(output: Path, track: str) -> dict[str, Any]:
+def bind_session(output: Path, track: str,
+                 admission_lock: Path | None = None) -> dict[str, Any]:
     spec = TRACKS[track]
+    admission = None
+    if track == "e2-06-d11":
+        require(admission_lock is not None,
+                "d11 operator requires the exact no-launch admission lock")
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "integration"))
+        from d11_admission import verify_lock
+        admission = verify_lock(admission_lock)
+    else:
+        require(admission_lock is None, "d11 admission lock cannot authorize another track")
     preflight_path = output / "preflight.json"
     readback_path = output / "native-start-readback.json"
     command_path = output / "command.json"
@@ -115,11 +126,29 @@ def bind_session(output: Path, track: str) -> dict[str, Any]:
     argv = command.get("argv") or []
     require("--capture" in argv and "--enable-private-phase-trace" in argv,
             "managed live attempt must opt into the private trace")
+    if admission is not None:
+        live_admission = preflight.get("d11_admission") or {}
+        require(live_admission.get("lock") == admission["lock"] and
+                live_admission.get("no_launch_attempt") == admission["binding"]["attempt"] and
+                live_admission.get("checkout_head") == admission["binding"]["checkout_head"] and
+                live_admission.get("capture_script") ==
+                admission["binding"]["files"]["capture_script"] and
+                live_admission.get("dll") == admission["binding"]["files"]["dll"] and
+                live_admission.get("injector") == admission["binding"]["files"]["injector"] and
+                live_admission.get("save") == admission["binding"]["files"]["save"] and
+                live_admission.get("sidecar") == admission["binding"]["files"]["receipt"] and
+                live_admission.get("pair") == admission["binding"]["files"]["pair"],
+                "d11 live preflight is not bound to the sealed no-launch bytes")
+        require(argv.count("--d11-admission-lock") == 1 and
+                Path(argv[argv.index("--d11-admission-lock") + 1]).resolve() ==
+                admission_lock.resolve(),
+                "d11 live command differs from sealed admission path")
     require((output / "interactive-requests").is_dir() and
             (output / "interactive-requests-responses").is_dir(),
             "managed interactive request directories are missing")
     return {"track": track, "spec": spec, "preflight": identity(preflight_path),
             "loaded": identity(readback_path), "command": identity(command_path),
+            "admission": admission["lock"] if admission else None,
             "helper": identity(Path(__file__)),
             "request_primitive": identity(Path(__file__).with_name("pursuit_live_step.py"))}
 
@@ -487,6 +516,8 @@ def main() -> int:
     parser.add_argument("mode", choices=("observe", "advance", "finish"))
     parser.add_argument("--track", choices=tuple(TRACKS), required=True)
     parser.add_argument("--session-output", type=Path, required=True)
+    parser.add_argument("--d11-admission-lock", type=Path,
+                        help="Required for d11 observe/advance/finish; must match live preflight")
     parser.add_argument("--recorder-workdir", type=Path)
     parser.add_argument("--sequence-token", type=int)
     parser.add_argument("--timeout", type=float, default=180)
@@ -495,7 +526,7 @@ def main() -> int:
         parser.error("timeout must be 10..900 seconds")
     if args.mode == "advance" and (args.recorder_workdir is None or args.sequence_token is None):
         parser.error("advance requires --recorder-workdir and --sequence-token")
-    binding = bind_session(args.session_output, args.track)
+    binding = bind_session(args.session_output, args.track, args.d11_admission_lock)
     steps = args.session_output / "operator-steps"
     steps.mkdir(exist_ok=True)
     if args.mode == "observe":
