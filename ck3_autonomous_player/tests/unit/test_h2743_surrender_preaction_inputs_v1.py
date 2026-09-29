@@ -119,6 +119,32 @@ class H2743PreactionInputsTests(unittest.TestCase):
                 value["option_result"], value["baseline_second"],
                 value["after_snapshot"], checkpoint_sha256="0" * 64)
 
+    def test_coherent_new_frame_cannot_be_labeled_with_old_checkpoint(self) -> None:
+        value = case()
+        for key in ("before_snapshot", "after_snapshot"):
+            value[key].update(snapshot_id="native:4", revision=5,
+                              native_revision=4, date_raw=53217288)
+            value[key]["diagnostics"]["connection_generation"] = 1
+        for key in ("baseline_first", "baseline_second"):
+            value[key].update(queried_snapshot_id="native:4",
+                              queried_revision=5, queried_native_revision=4)
+            value[key]["defender_de_jure_exit_terms_v1"].update(
+                native_revision=4, date_raw=53217288)
+        option = value["option_result"]
+        option.update(queried_snapshot_id="native:4", queried_revision=5,
+                      queried_native_revision=4, queried_connection_generation=1)
+        option["termination_query_context"].update(
+            queried_date_raw=53217288, queried_connection_generation=1)
+        with self.assertRaisesRegex(ValueError, "exact attempt-12 frame differs"):
+            project(value)
+
+    def test_coherent_synthetic_backend_cannot_be_called_native(self) -> None:
+        value = case()
+        for key in ("baseline_first", "option_result", "baseline_second"):
+            value[key]["backend_id"] = "synthetic-mock"
+        with self.assertRaisesRegex(ValueError, "native baseline.*paused frame"):
+            project(value)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -21,6 +21,11 @@ from .war_contract import normalize_war_termination_options
 SCHEMA = "xar.ck3.h2743-surrender-preaction-inputs.v1"
 EPISODE = "native-29829-2bc2d599f7f9"
 CHECKPOINT_SHA256 = "A5012030DA500A4352EF79D1EA10269D45DD5D19DAC508E22DD835663A5106E9"
+SNAPSHOT_ID = "native:3"
+REVISION = 4
+NATIVE_REVISION = 3
+DATE_RAW = 53217264
+CONNECTION_GENERATION = 1
 WAR_ID = 16777231
 ATTACKER_ID = 30097
 DEFENDER_ID = 29829
@@ -96,12 +101,19 @@ def _frame(snapshot: Any, checkpoint_sha256: str) -> dict[str, Any]:
             or any(not _positive_int(frame[key]) for key in (
                 "revision", "native_revision", "date_raw"))):
         raise ValueError("H2743 native frame incomplete")
+    if (frame["snapshot_id"] != SNAPSHOT_ID
+            or frame["revision"] != REVISION
+            or frame["native_revision"] != NATIVE_REVISION
+            or frame["date_raw"] != DATE_RAW
+            or frame["connection_generation"] != CONNECTION_GENERATION):
+        raise ValueError("H2743 exact attempt-12 frame differs")
     return frame
 
 
 def _baseline(result: Any, frame: dict[str, Any]) -> dict[str, Any]:
     if (not isinstance(result, dict)
             or result.get("step") != f"query-defender-de-jure-exit-terms-v1-{WAR_ID}"
+            or result.get("backend_id") != "native-headless"
             or result.get("accepted") is not True
             or result.get("status") != "baseline_only"
             or not _positive_int(result.get("query_sequence"))
@@ -136,6 +148,7 @@ def _baseline(result: Any, frame: dict[str, Any]) -> dict[str, Any]:
 def _option(result: Any, frame: dict[str, Any]) -> None:
     if (not isinstance(result, dict)
             or result.get("step") != f"query-war-termination-options-{WAR_ID}"
+            or result.get("backend_id") != "native-headless"
             or result.get("accepted") is not True
             or result.get("status") != "available"
             or not _positive_int(result.get("query_sequence"))
