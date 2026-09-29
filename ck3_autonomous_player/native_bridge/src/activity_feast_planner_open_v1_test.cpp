@@ -35,6 +35,8 @@ struct Fake {
                                    true};
   bool visible = false;
   bool bad_post = false;
+  std::int32_t stage_after_dispatch = 2;
+  bool wrong_selected_type = false;
   std::uint32_t dispatches = 0;
 
   template <typename T> void Put(std::uintptr_t at, const T &value) {
@@ -89,7 +91,8 @@ bool Dispatch(void *opaque, std::uintptr_t handler,
   auto &fake = *static_cast<Fake *>(opaque);
   if (handler != kHandler || type != kType) return false;
   ++fake.dispatches;
-  fake.Put(kPlanner + 0x1530, kType);
+  fake.Put(kPlanner + 0x1530, fake.wrong_selected_type ? kInitialType : kType);
+  fake.Put(kPlanner + 0x1AB0, fake.stage_after_dispatch);
   if (!fake.bad_post) fake.visible = true;
   return true;
 }
@@ -144,6 +147,7 @@ void Populate(Fake &fake) {
   fake.Put(kManager + 0x74, std::int32_t{1});
   fake.Put(kTypes, kType);
   fake.Put(kType, kBase + 0x440E308);
+  fake.Put(kType + 0xA88, std::uintptr_t{0});
   fake.PutBytes(kType + 0x18, "activity_feast");
   fake.Put(kType + 0x28, std::uint64_t{14});
   fake.Put(kType + 0x30, std::uint64_t{15});
@@ -166,8 +170,42 @@ int main() {
       Env(success), success.frame);
   Expect(result.status == ActivityFeastPlannerOpenStatusV1::opened);
   Expect(result.native_dispatch_invoked);
+  Expect(result.selected_feast_verified);
   Expect(result.after.value.widget_visible && result.after.value.stage == 2);
   Expect(success.dispatches == 1);
+
+  Fake category_stage{};
+  Populate(category_stage);
+  category_stage.Put(kType + 0xA88, std::uintptr_t{0x1000F000});
+  category_stage.stage_after_dispatch = 1;
+  result = xar::bridge::OpenActivityFeastPlannerV1(
+      Env(category_stage), category_stage.frame);
+  Expect(result.status == ActivityFeastPlannerOpenStatusV1::opened);
+  Expect(result.selected_feast_verified);
+  Expect(result.after.value.widget_visible && result.after.value.stage == 1);
+  Expect(category_stage.dispatches == 1);
+  result = xar::bridge::OpenActivityFeastPlannerV1(
+      Env(category_stage), category_stage.frame);
+  Expect(result.status == ActivityFeastPlannerOpenStatusV1::already_open);
+  Expect(result.selected_feast_verified && category_stage.dispatches == 1);
+
+  Fake unexpected_stage{};
+  Populate(unexpected_stage);
+  unexpected_stage.stage_after_dispatch = 1;
+  result = xar::bridge::OpenActivityFeastPlannerV1(
+      Env(unexpected_stage), unexpected_stage.frame);
+  Expect(result.status == ActivityFeastPlannerOpenStatusV1::postcondition_failed);
+  Expect(result.selected_feast_verified);
+
+  Fake wrong_type{};
+  Populate(wrong_type);
+  wrong_type.wrong_selected_type = true;
+  wrong_type.stage_after_dispatch = 1;
+  wrong_type.Put(kType + 0xA88, std::uintptr_t{0x1000F000});
+  result = xar::bridge::OpenActivityFeastPlannerV1(
+      Env(wrong_type), wrong_type.frame);
+  Expect(result.status == ActivityFeastPlannerOpenStatusV1::postcondition_failed);
+  Expect(!result.selected_feast_verified);
   result = xar::bridge::OpenActivityFeastPlannerV1(Env(success), success.frame);
   Expect(result.status == ActivityFeastPlannerOpenStatusV1::already_open);
   Expect(success.dispatches == 1);

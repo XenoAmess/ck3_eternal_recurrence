@@ -196,6 +196,8 @@ std::string SerializeActivityFeastPlannerOpenPrivateV1(
          bridge::ActivityFeastPlannerOpenStatusKeyV1(result.status) +
          "\",\"native_dispatch_invoked\":" +
          (result.native_dispatch_invoked ? "true" : "false") +
+         ",\"selected_feast_verified\":" +
+         (result.selected_feast_verified ? "true" : "false") +
          ",\"widget_attached\":" +
          (value.widget_attached ? "true" : "false") +
          ",\"widget_visible\":" +

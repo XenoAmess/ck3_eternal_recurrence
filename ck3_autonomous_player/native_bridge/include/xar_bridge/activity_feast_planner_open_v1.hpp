@@ -33,6 +33,7 @@ struct ActivityFeastPlannerOpenResultV1 {
   ActivityPlannerDiagResultV1 before{};
   ActivityPlannerDiagResultV1 after{};
   bool native_dispatch_invoked = false;
+  bool selected_feast_verified = false;
 };
 
 ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(

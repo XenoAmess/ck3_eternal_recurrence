@@ -15,6 +15,7 @@ constexpr std::uintptr_t kPlannerVtable = 0x41205F0;
 constexpr std::uintptr_t kTypeManager = 0x570BE98;
 constexpr std::uintptr_t kInitialTypePointer = 0x57BFF28;
 constexpr std::uintptr_t kTypeVtable = 0x440E308;
+constexpr std::size_t kSpecialOptionCategory = 0xA88;
 constexpr std::uintptr_t kTypeDescriptor = 0x4FE3DB0;
 constexpr std::uintptr_t kTypeDescriptorVtable = 0x40DB298;
 constexpr std::uintptr_t kTypeCopy = 0x80DCB0;
@@ -152,6 +153,11 @@ bool FrameMatches(const ActivityPlannerDiagEnvironmentV1 &env,
          env.read_frame(env.context, current) && current == expected;
 }
 
+bool NativeOpeningStage(std::int32_t stage,
+                        bool has_special_option_category) noexcept {
+  return stage == 2 || (stage == 1 && has_special_option_category);
+}
+
 } // namespace
 
 ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(
@@ -197,9 +203,19 @@ ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(
     return result;
   case TypeLookup::found: break;
   }
+  std::uintptr_t special_option_category = 0;
+  if (!Read(env, feast, kSpecialOptionCategory, special_option_category)) {
+    result.status = ActivityFeastPlannerOpenStatusV1::native_precondition_failed;
+    return result;
+  }
+  const bool has_special_option_category = special_option_category != 0;
   if (result.before.value.widget_visible && selected == feast) {
     result.after = result.before;
-    result.status = ActivityFeastPlannerOpenStatusV1::already_open;
+    result.selected_feast_verified = true;
+    result.status = NativeOpeningStage(result.before.value.stage,
+                                       has_special_option_category)
+                        ? ActivityFeastPlannerOpenStatusV1::already_open
+                        : ActivityFeastPlannerOpenStatusV1::postcondition_failed;
     return result;
   }
   if (result.before.value.widget_visible ||
@@ -219,16 +235,19 @@ ActivityFeastPlannerOpenResultV1 OpenActivityFeastPlannerV1(
   result.after = ReadActivityPlannerDiagV1(env, expected);
   std::uintptr_t after_planner = 0;
   std::uintptr_t after_selected = 0;
+  const bool selected_read =
+      Read(env, handler, 0x3C0, after_planner) && after_planner == planner &&
+      Read(env, planner, 0x1530, after_selected);
+  result.selected_feast_verified =
+      selected_read && after_selected == feast &&
+      result.after.status == ActivityPlannerDiagStatusV1::observed;
   if (!FrameMatches(env, expected)) {
     result.status = ActivityFeastPlannerOpenStatusV1::frame_changed;
-  } else if (!Read(env, handler, 0x3C0, after_planner) ||
-             after_planner != planner ||
-             !Read(env, planner, 0x1530, after_selected) ||
-             after_selected != feast ||
-             result.after.status != ActivityPlannerDiagStatusV1::observed ||
+  } else if (!result.selected_feast_verified ||
              !result.after.value.widget_attached ||
              !result.after.value.widget_visible ||
-             result.after.value.stage != 2) {
+             !NativeOpeningStage(result.after.value.stage,
+                                 has_special_option_category)) {
     result.status = ActivityFeastPlannerOpenStatusV1::postcondition_failed;
   } else {
     result.status = ActivityFeastPlannerOpenStatusV1::opened;
