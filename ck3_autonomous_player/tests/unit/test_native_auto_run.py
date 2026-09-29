@@ -120,6 +120,8 @@ class _NativeAutoRunHarness:
         self.activity_stage2_destination_select_count = 0
         self.activity_stage5_full_cost_query_count = 0
         self.activity_stage5_start_inputs_query_count = 0
+        self.activity_guest_candidate_query_count = 0
+        self.activity_guest_candidate_status = "observed"
         self.activity_cost_slot12_raw_read_count = 0
         self.activity_feast_open_status = "opened"
         self.activity_feast_open_stage = 2
@@ -1491,6 +1493,7 @@ class _FakeActivityFeastEndpoint:
             "select-activity-feast-stage2-destination-v1-private",
             "query-activity-stage5-feast-full-cost-v1-private",
             "query-activity-feast-stage5-start-inputs-v1-private",
+            "query-activity-feast-guest-candidate-v1",
         }
         assert request["expected_revision"] == self.harness.native_revision
         if request["step"] in {
@@ -1515,6 +1518,11 @@ class _FakeActivityFeastEndpoint:
             assert request["expected_activity_key"] == "activity_feast"
             assert request["expected_option_key"] == "feast_type_generic"
             assert request["expected_planning_stage"] == 5
+        if request["step"] == "query-activity-feast-guest-candidate-v1":
+            assert request["expected_date_raw"] == self.harness.date_raw
+            assert request["expected_actor_character_id"] == self.harness.played_character_id
+            assert request["expected_activity_key"] == "activity_feast"
+            assert request["expected_planning_stage"] == 5
         self.request = copy.deepcopy(request)
         if request["step"] == "open-activity-feast-planner-v1-private":
             self.harness.activity_feast_open_count += 1
@@ -1537,6 +1545,8 @@ class _FakeActivityFeastEndpoint:
             self.harness.activity_stage5_full_cost_query_count += 1
         elif request["step"] == "query-activity-feast-stage5-start-inputs-v1-private":
             self.harness.activity_stage5_start_inputs_query_count += 1
+        elif request["step"] == "query-activity-feast-guest-candidate-v1":
+            self.harness.activity_guest_candidate_query_count += 1
         else:
             self.harness.activity_stage1_option_read_count += 1
 
@@ -1824,6 +1834,42 @@ class _FakeActivityFeastState:
                         "timely_positive_join_count": None,
                         "arrival_time_observed": False,
                         "read_only": True, "advertised": False,
+                    },
+                    "backend_id": "native-headless",
+                },
+            }
+        if request["step"] == "query-activity-feast-guest-candidate-v1":
+            assert self.harness.activity_feast_open_stage == 5
+            status = self.harness.activity_guest_candidate_status
+            observed = status == "observed"
+            complete = observed or status == "no_qualified_candidate"
+            return {
+                "type": "command_result", "protocol_version": 1,
+                "request_id": request_id, "ok": True,
+                "result": {
+                    "step": request["step"], "accepted": True,
+                    "status": "available" if complete else "unavailable",
+                    "private_build": True, "read_only": True,
+                    "advertised": False,
+                    "activity_feast_guest_candidate": {
+                        "schema": "activity-feast-guest-candidate-private-read-v1",
+                        "snapshot_revision": self.harness.native_revision,
+                        "date_raw": self.harness.date_raw,
+                        "actor_character_id": self.harness.played_character_id,
+                        "activity_key": "activity_feast", "planning_stage": 5,
+                        "status": status,
+                        "normal_refresh_sequence": 1 if complete else None,
+                        "source_fingerprint": "0x0123456789abcdef" if complete else None,
+                        "native_filtered_pre_invitation": (
+                            True if observed else False if complete else None),
+                        "candidate": {
+                            "character_id": 32716, "planner_join_raw": 75000,
+                            "travel_days": 3,
+                            "arrival_raw": self.harness.date_raw + 48,
+                            "planned_start_raw": self.harness.date_raw + 72,
+                        } if observed else None,
+                        "read_only": True,
+                        "raw_pointer_fields_persisted": False,
                     },
                     "backend_id": "native-headless",
                 },
@@ -2380,6 +2426,8 @@ class NativeAutoRunTests(unittest.TestCase):
         private_activity_feast_stage2_destination_province_id: int | None = None,
         private_activity_feast_stage5_full_cost_read: bool = False,
         private_activity_feast_stage5_start_read: bool = False,
+        private_activity_feast_guest_candidate_read: bool = False,
+        activity_guest_candidate_status: str = "observed",
         private_activity_cost_slot12_raw_read: bool = False,
         activity_feast_open_status: str = "opened",
         activity_feast_open_stage: int = 2,
@@ -2502,6 +2550,7 @@ class NativeAutoRunTests(unittest.TestCase):
         harness.activity_stage2_location_error = activity_stage2_location_error
         harness.activity_stage2_destination_error = activity_stage2_destination_error
         harness.activity_stage5_full_cost_error = activity_stage5_full_cost_error
+        harness.activity_guest_candidate_status = activity_guest_candidate_status
         harness.activity_cost_slot12_raw_error = activity_cost_slot12_raw_error
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
@@ -2650,6 +2699,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_activity_feast_stage5_start_read=(
                     private_activity_feast_stage5_start_read
+                ),
+                private_activity_feast_guest_candidate_read=(
+                    private_activity_feast_guest_candidate_read
                 ),
                 private_activity_cost_slot12_raw_read=(
                     private_activity_cost_slot12_raw_read
@@ -3323,6 +3375,47 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_query, True)
         self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
         self.assertEqual(harness.auto_turn_count, 0)
+
+    def test_private_feast_guest_candidate_remains_pre_invitation(self) -> None:
+        common = ["--bridge-mode", "native-headless", "native-auto-run", "--turns", "1"]
+        flag = "--private-activity-feast-guest-candidate-read"
+        self.assertFalse(cli.parser().parse_args(common).private_activity_feast_guest_candidate_read)
+        self.assertTrue(cli.parser().parse_args([*common, flag])
+                        .private_activity_feast_guest_candidate_read)
+        report, harness = self._run(
+            ["advance"], private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_candidate_read=True,
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(report["ok"], report.get("first_blocker"))
+        self.assertEqual(report["status"], "private_activity_feast_guest_candidate_read")
+        read = report["private_activity_feast_guest_candidate_observation"]
+        self.assertTrue(read["same_frame"])
+        self.assertTrue(read["read_only"])
+        self.assertEqual(read["candidate_status"], "observed")
+        self.assertEqual(read["candidate_read"]["candidate"]["character_id"], 32716)
+        self.assertIsNone(read["final_invite_legal"])
+        self.assertIsNone(read["feast_start_ready"])
+        self.assertEqual(harness.activity_guest_candidate_query_count, 1)
+        self.assertIs(harness.driver.allow_private_activity_feast_stage5_start_action, False)
+        self.assertEqual(harness.auto_turn_count, 0)
+        unavailable, harness = self._run(
+            ["advance"], private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_candidate_province_ids=(2619, 2629),
+            private_activity_feast_stage2_destination_province_id=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_candidate_read=True,
+            activity_guest_candidate_status="candidate_source_unavailable",
+            activity_feast_open_stage=1,
+        )
+        self.assertTrue(unavailable["ok"], unavailable.get("first_blocker"))
+        self.assertEqual(unavailable["private_activity_feast_guest_candidate_observation"]
+                         ["candidate_status"], "candidate_source_unavailable")
+        self.assertIsNone(unavailable["private_activity_feast_guest_candidate_observation"]
+                          ["candidate_read"]["candidate"])
 
     def test_private_feast_stage5_full_cost_requires_destination(self) -> None:
         with self.assertRaisesRegex(AgentError, "requires verified stage-2 destination"):
