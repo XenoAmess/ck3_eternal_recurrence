@@ -77,6 +77,9 @@ from .family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
     read_family_marriage_ledger,
 )
+from .first_heir_companion_paused_observer import (
+    observe_first_heir_companion_after_child,
+)
 from .player_child_matrilineal_formal_consumer import (
     RESULT_STEP as PRIVATE_CHILD_MATRILINEAL_RESULT_STEP,
     SUBMIT_STEP as PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
@@ -406,6 +409,7 @@ def native_auto_run(
     allow_private_family_marriage_formal_trial: bool = False,
     private_child_matrilineal_target: tuple[int, int] | None = None,
     private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
+    private_child_matrilineal_first_heir_companion: bool = False,
     private_child_matrilineal_pending_recovery_only: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
@@ -523,6 +527,11 @@ def native_auto_run(
                 or any(type(value) is not int or not 0 < value < 2**31
                        for value in pair) or pair[0] == pair[1]):
             raise AgentError("private child pending read needs one bounded distinct pair")
+    if (private_child_matrilineal_first_heir_companion is True
+            and (private_child_matrilineal_pending_read_target is None
+                 or turn_count != 1
+                 or allow_private_family_marriage_formal_trial is True)):
+        raise AgentError("first-heir companion needs one child pending read turn")
     child_recovery_pending = None
     if private_child_matrilineal_pending_recovery_only is True:
         if (private_child_matrilineal_target is None
@@ -779,6 +788,7 @@ def native_auto_run(
     private_active_scheme_sway_formal: dict[str, object] | None = None
     private_active_scheme_sway_following_turn: dict[str, object] | None = None
     private_child_matrilineal_pending_observation: dict[str, object] | None = None
+    private_first_heir_companion_observation: dict[str, object] | None = None
     private_realm_law_paused_observation: dict[str, object] | None = None
     private_activity_planner_diag_observation: dict[str, object] | None = None
     private_activity_feast_planner_open_observation: dict[str, object] | None = None
@@ -1067,6 +1077,7 @@ def native_auto_run(
         # The query remains private and unadvertised by the driver.
         driver.allow_private_current_first_heir_relationship_query = (
             allow_private_family_marriage_formal_trial is True
+            or private_child_matrilineal_first_heir_companion is True
         )
         if opening_focus_gate is not None:
             driver.require_initial_lifestyle_focus_before_date_advance = True
@@ -1334,6 +1345,17 @@ def native_auto_run(
                         turn_index=turn_index,
                     )
                 )
+                if private_child_matrilineal_first_heir_companion is True:
+                    current_attempt["stage"] = "private_first_heir_companion_read"
+                    private_first_heir_companion_observation = (
+                        observe_first_heir_companion_after_child(
+                            driver, service, before=before,
+                            child_observation=private_child_matrilineal_pending_observation,
+                            first_heir_resolved=read_family_marriage_ledger(
+                                driver.state_dir)["resolved"],
+                            turn_index=turn_index,
+                        )
+                    )
                 status = "private_child_matrilineal_pending_observed"
                 break
             if private_activity_planner_diag_query is True:
@@ -3544,6 +3566,9 @@ def native_auto_run(
                 and status == "private_child_matrilineal_pending_observed"
                 and isinstance(private_child_matrilineal_pending_observation, dict)
                 and private_child_matrilineal_pending_observation.get("same_frame") is True
+                and (private_child_matrilineal_first_heir_companion is not True
+                     or (isinstance(private_first_heir_companion_observation, dict)
+                         and private_first_heir_companion_observation.get("same_frame") is True))
                 and cleanup.get("ok") is True and not turns and not date_advanced
             )
         if private_child_matrilineal_pending_recovery_only is True:
@@ -3843,6 +3868,11 @@ def native_auto_run(
             {"private_child_matrilineal_pending_observation": copy.deepcopy(
                 private_child_matrilineal_pending_observation)}
             if private_child_matrilineal_pending_read_target is not None else {}
+        ),
+        **(
+            {"private_first_heir_companion_observation": copy.deepcopy(
+                private_first_heir_companion_observation)}
+            if private_child_matrilineal_first_heir_companion is True else {}
         ),
         **(
             {"private_realm_law_paused_observation": copy.deepcopy(

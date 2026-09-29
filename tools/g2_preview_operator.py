@@ -1387,6 +1387,7 @@ def native_auto_run_command(
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
     private_child_matrilineal_pending_read: tuple[int, int] | None = None,
+    private_child_matrilineal_first_heir_companion: bool = False,
     private_child_matrilineal_pending_recovery: tuple[int, int] | None = None,
     private_active_scheme_sway_formal_trial: bool = False,
     private_realm_law_paused_query: bool = False,
@@ -1450,6 +1451,8 @@ def native_auto_run_command(
             "--private-child-matrilineal-pending-read",
             *(str(value) for value in private_child_matrilineal_pending_read),
         ])
+    if private_child_matrilineal_first_heir_companion:
+        command.append("--private-child-matrilineal-first-heir-companion")
     if private_child_matrilineal_pending_recovery is not None:
         command.extend([
             "--private-child-matrilineal-pending-recovery",
@@ -2083,6 +2086,11 @@ def command_run(args: argparse.Namespace) -> int:
         or child_pair[0] == child_pair[1]
     ):
         raise ValueError("private child pending read needs two distinct positive IDs")
+    if args.private_child_matrilineal_first_heir_companion and (
+        child_pair is None or args.private_family_marriage_formal_trial
+        or args.turns not in {None, 1}
+    ):
+        raise ValueError("first-heir companion needs one child pending read turn")
     if child_recovery_pair is not None:
         if (child_pair is not None or not args.private_lifestyle_formal_trial
                 or args.turns not in {None, 1}
@@ -2314,6 +2322,9 @@ def command_run(args: argparse.Namespace) -> int:
         ),
         "private_active_scheme_sway_target": args.private_active_scheme_sway_target,
         "private_child_matrilineal_pending_read": child_pair,
+        "private_child_matrilineal_first_heir_companion": (
+            args.private_child_matrilineal_first_heir_companion
+        ),
         "private_child_matrilineal_pending_recovery": child_recovery_proof,
         "private_active_scheme_sway_formal_trial": (
             args.private_active_scheme_sway_formal_trial
@@ -2421,6 +2432,9 @@ def command_run(args: argparse.Namespace) -> int:
                 private_child_matrilineal_pending_read=(
                     tuple(args.private_child_matrilineal_pending_read)
                     if args.private_child_matrilineal_pending_read is not None else None
+                ),
+                private_child_matrilineal_first_heir_companion=(
+                    args.private_child_matrilineal_first_heir_companion
                 ),
                 private_child_matrilineal_pending_recovery=(
                     tuple(child_recovery_pair) if child_recovery_pair is not None else None
@@ -3274,6 +3288,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-child-matrilineal-pending-read", type=int, nargs=2,
         metavar=("HEIR_ID", "CANDIDATE_ID"),
         help="cold-read one paired child proposal on a paused frame",
+    )
+    run.add_argument(
+        "--private-child-matrilineal-first-heir-companion",
+        action="store_true",
+        help="also read current first-heir relationship in that paused frame",
     )
     run.add_argument(
         "--private-child-matrilineal-pending-recovery", type=int, nargs=2,

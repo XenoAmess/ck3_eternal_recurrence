@@ -109,6 +109,7 @@ class _NativeAutoRunHarness:
         self.prisoner_collection_query_count = 0
         self.active_scheme_sway_query_count = 0
         self.child_pending_query_count = 0
+        self.first_heir_relationship_query_count = 0
         self.realm_law_paused_query_count = 0
         self.activity_planner_diag_query_count = 0
         self.activity_feast_open_count = 0
@@ -2104,6 +2105,21 @@ class _FakeNativeDriver:
             "outbound_pending_state": "active",
         }
 
+    def query_current_first_heir_relationship_private_v1(
+        self, *, expected_native_revision: int,
+    ) -> dict[str, object]:
+        assert self.allow_private_current_first_heir_relationship_query is True
+        assert expected_native_revision == self.harness.native_revision
+        self.harness.first_heir_relationship_query_count += 1
+        return {
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "status": "available", "native_revision": expected_native_revision,
+            "heir_character_id": 38822, "bilateral_verified": True,
+            "betrothed_character_id": 38718,
+            "primary_spouse_character_id": None, "spouse_character_ids": [],
+            "read_only": True, "advertised": False,
+        }
+
     def query_activity_planner_diag_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:
@@ -2455,6 +2471,7 @@ class NativeAutoRunTests(unittest.TestCase):
         allow_private_prisoner_collection_observation: bool = False,
         private_active_scheme_sway_target: int | None = None,
         private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
+        private_child_matrilineal_first_heir_companion: bool = False,
         private_child_matrilineal_pending_recovery_target: tuple[int, int] | None = None,
         allow_private_active_scheme_sway_formal_trial: bool = False,
         private_realm_law_paused_query: bool = False,
@@ -2706,6 +2723,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_child_matrilineal_pending_read_target=(
                     private_child_matrilineal_pending_read_target
+                ),
+                private_child_matrilineal_first_heir_companion=(
+                    private_child_matrilineal_first_heir_companion
                 ),
                 private_child_matrilineal_target=(
                     private_child_matrilineal_pending_recovery_target
@@ -3635,6 +3655,21 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(read["same_frame"])
         self.assertEqual(read["readback"]["outbound_pending_state"], "active")
         self.assertEqual(harness.child_pending_query_count, 1)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_child_pending_companion_reads_partnered_heir_without_submit(self) -> None:
+        report, harness = self._run(
+            ["advance"], private_child_matrilineal_pending_read_target=(37265, 37267),
+            private_child_matrilineal_first_heir_companion=True,
+        )
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertTrue(report["private_child_matrilineal_pending_observation"]["same_frame"])
+        companion = report["private_first_heir_companion_observation"]
+        self.assertTrue(companion["same_frame"])
+        self.assertIs(companion["new_proposal_eligible"], False)
+        self.assertEqual(harness.child_pending_query_count, 1)
+        self.assertEqual(harness.first_heir_relationship_query_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(report["auto_run"]["turns"], [])
 
