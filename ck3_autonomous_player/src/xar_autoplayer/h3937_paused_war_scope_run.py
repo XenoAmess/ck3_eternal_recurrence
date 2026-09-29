@@ -62,7 +62,7 @@ def _read_rebind_receipt_and_sha(path: Path) -> tuple[dict[str, object], str]:
         raise AgentError(f"cannot read exact H3937 rebind receipt: {error}") from error
     if not isinstance(parsed, dict):
         raise AgentError("H3937 rebind receipt is not an object")
-    return parsed, hashlib.sha256(raw).hexdigest().upper()
+    return parsed, hashlib.sha256(raw).hexdigest()
 
 
 def _checkout_commit() -> str:
