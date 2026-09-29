@@ -3232,6 +3232,7 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(result["submitted"])
         self.assertTrue(result["pending"])
         self.assertTrue(result["destination_postcondition_verified"])
+        self.assertIn("no_normal_refresh", result["native_error"])
         self.assertEqual(harness.activity_stage2_destination_select_count, 1)
         self.assertEqual(harness.activity_stage5_full_cost_query_count, 1)
         self.assertEqual(harness.auto_turn_count, 0)

@@ -6849,6 +6849,7 @@ def _read_private_activity_feast_stage5_full_cost_once(
                 "submitted": True, "pending": True,
                 "destination_postcondition_verified": True,
                 "postcondition_verified": False,
+                "native_error": type(exc).__name__ + ": " + str(exc),
                 "destination_native_receipt": destination_receipt,
             },
             selected_step=step,
@@ -7869,7 +7870,7 @@ def _compact_failure_step_result(result: object) -> dict[str, object] | None:
             "stage2_location_native_receipt", "postcondition_verified",
             "confirm_native_receipt", "stage2_option_native_receipt",
             "destination_postcondition_verified", "destination_native_receipt",
-            "full_cost",
+            "full_cost", "native_error",
         ):
             if key in result:
                 compact[key] = copy.deepcopy(result[key])
