@@ -663,6 +663,45 @@ def test_supervisor_accepts_only_green_child_and_zero_processes(monkeypatch, tmp
     check(result["timeout"] is False)
 
 
+def test_supervisor_renews_exact_screen_lease_during_long_worker(monkeypatch, tmp_path):
+    output = tmp_path / "long-worker"
+    entry = tmp_path / "entry.py"
+    entry.write_text("", encoding="utf-8")
+    monkeypatch.setattr(once, "OUTPUT", output)
+    monkeypatch.setattr(once, "_image_inventory", zero_image)
+    monkeypatch.setattr(once, "_require_preworker_screen_gate", lambda entry: None)
+    monkeypatch.setattr(once, "_require_entry_blob", lambda entry: {
+        "head": "pinned", "entry_blob": "b" * 40, "entry_sha256": "A" * 64})
+    heartbeats = []
+    monkeypatch.setattr(once, "_managed_screen_heartbeat", lambda: heartbeats.append(1))
+
+    class SlowWorker:
+        pid = 5152
+        returncode = 0
+        calls = 0
+
+        def communicate(self, *, timeout):
+            self.calls += 1
+            check(timeout <= once.SUPERVISOR_HEARTBEAT_SECONDS)
+            if self.calls == 1:
+                raise once.subprocess.TimeoutExpired("worker", timeout)
+            report = output / "outer-report.json"
+            report.write_text(json.dumps(green_outer()), encoding="utf-8")
+            (output / "completion.json").write_text(json.dumps({
+                "status": "GREEN_READ_ONLY", "action_authorized": False,
+                "date_advance_authorized": False, "outer_cleanup_proven": True,
+                "gates_restored": True, "processes_gone": True,
+                "outer_report_sha256": digest(report),
+            }), encoding="utf-8")
+            return b"worker ok", b""
+
+    monkeypatch.setattr(once.subprocess, "Popen", lambda *a, **k: SlowWorker())
+    check(once.supervise_exact_once(entry) == 0)
+    check(heartbeats == [1])
+    result = json.loads((output / "supervisor-completion.json").read_text(encoding="utf-8"))
+    check(result["timeout"] is False)
+
+
 def test_supervisor_refuses_lost_screen_lease_before_worker(monkeypatch, tmp_path):
     identity, _, owner, task_path, _, _, _ = fresh_go_fixture(monkeypatch, tmp_path)
     entry = tmp_path / "entry.py"
