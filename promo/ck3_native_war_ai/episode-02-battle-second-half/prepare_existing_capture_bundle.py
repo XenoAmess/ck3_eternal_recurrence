@@ -70,6 +70,38 @@ def verified(reference: Any, *, within: Path | None = None) -> dict[str, Any]:
     return actual
 
 
+def is_screen_lease_screenshot(path: Path, attempt: Path) -> bool:
+    """Accept only a direct PNG in this attempt's matching screen-lease sibling."""
+    if attempt.name.count("-live-") != 1 or path.suffix.lower() != ".png":
+        return False
+    lease = attempt.with_name(attempt.name.replace("-live-", "-screen-lease-"))
+    if not lease.is_dir():
+        return False
+    resolved_lease = lease.resolve(strict=True)
+    return resolved_lease.parent == attempt.parent and path.parent == resolved_lease
+
+
+def verified_source_reference(reference: Any, attempt: Path,
+                              *, mark_kind: str | None = None) -> dict[str, Any]:
+    require(isinstance(reference, dict) and isinstance(reference.get("path"), str),
+            "source reference path missing")
+    path = Path(reference["path"]).resolve(strict=True)
+    if path.is_relative_to(attempt):
+        return verified(reference, within=attempt)
+    require((mark_kind is None or mark_kind == "screenshot") and
+            is_screen_lease_screenshot(path, attempt),
+            f"evidence escapes source attempt and matching screen lease: {path}")
+    return verified(reference, within=path.parent)
+
+
+def source_copy_relative(path: Path, attempt: Path) -> Path:
+    if path.is_relative_to(attempt):
+        return path.relative_to(attempt)
+    require(is_screen_lease_screenshot(path, attempt),
+            f"source copy escapes attempt and matching screen lease: {path}")
+    return Path("external-screen-lease") / path.parent.name / path.name
+
+
 def write_new(path: Path, value: dict[str, Any]) -> None:
     with path.open("x", encoding="utf-8", newline="\n") as output:
         json.dump(value, output, ensure_ascii=False, indent=2)
@@ -123,7 +155,7 @@ def checked_marks(path: Path, recorder: Path, attempt: Path, elapsed: Decimal,
         bound: dict[str, dict[str, Any]] = {}
         for key in ("control", "report", "screenshot"):
             if row.get(key) is not None:
-                item = verified(row[key], within=attempt)
+                item = verified_source_reference(row[key], attempt, mark_kind=key)
                 bound[key] = item
                 refs[item["path"]] = item
         projected.append({"kind": row.get("kind"), "wall_clock_navigation_seconds": str(approx),
@@ -236,7 +268,7 @@ def validate_source_inventory(source: dict[str, Any]) -> tuple[Path, Path]:
     require(isinstance(rows, list), "source file inventory missing")
     inventory: dict[str, dict[str, Any]] = {}
     for row in rows:
-        item = verified(row, within=attempt)
+        item = verified_source_reference(row, attempt)
         require(item == row and item["path"] not in inventory, "source file inventory is forged or repeated")
         inventory[item["path"]] = item
     paths = {
@@ -497,7 +529,7 @@ def package(source_manifest: Path, review_path: Path, output: Path) -> dict[str,
         for item in source["files"]:
             path = Path(item["path"])
             attempt = Path(source["attempt_root"])
-            relative = path.relative_to(attempt)
+            relative = source_copy_relative(path, attempt)
             if path == Path(source["raw"]["path"]):
                 continue
             indexed.append(indexed_row(copy_bound(item, origin / relative)))

@@ -23,7 +23,7 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name).resolve()
-        self.attempt = self.root / "source-attempt"
+        self.attempt = self.root / "source-live-a01"
         self.recorder = self.attempt / "recording-a01"
         self.recorder.mkdir(parents=True)
         self.output = self.root / "pending-a01"
@@ -74,6 +74,22 @@ class ExistingCaptureBundleTest(unittest.TestCase):
             "frame_pts_by_stream": {"0": {"count": len(self.pts)}},
             "format_duration_seconds": "0.120"})
         self.raw = raw
+
+    def add_sibling_screenshot_mark(self, screenshot: Path, *, key: str = "screenshot") -> None:
+        screenshot.parent.mkdir(parents=True, exist_ok=True)
+        screenshot.write_bytes(b"preserved original screen lease screenshot")
+        marks = self.recorder / "marks.jsonl"
+        rows = [json.loads(line) for line in marks.read_text(encoding="utf-8").splitlines()]
+        rows.insert(-1, {"kind": "next-day-visible", "monotonic_ns": 250,
+                         "approx_seconds_from_recorder_start": 0.08,
+                         "approx_seconds_are_not_video_pts": True,
+                         "date_raw": 53147016, "combat_id": 16777218, "war_id": 4,
+                         key: bundle.record(screenshot)})
+        marks.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+        final_path = self.recorder / "recorder-final.json"
+        final = bundle.read_json(final_path)
+        final["marks"] = bundle.record(marks)
+        write(final_path, final)
 
     def prepare(self) -> dict:
         with patch.object(bundle, "toolchain_identity", return_value={
@@ -137,6 +153,38 @@ class ExistingCaptureBundleTest(unittest.TestCase):
         self.assertFalse((self.output / "report.json").exists())
         self.assertFalse((self.output / "evidence-index.json").exists())
         self.assertTrue(self.raw.exists())
+
+    def test_matching_screen_lease_screenshot_survives_prepare_and_package(self) -> None:
+        screenshot = self.root / "source-screen-lease-a01/d06-hover.png"
+        self.add_sibling_screenshot_mark(screenshot)
+        original = bundle.record(screenshot)
+        source = self.prepare()
+        bundle.validate_source_inventory(source)
+        self.assertIn(original, source["files"])
+        self.assertEqual(source["navigation_marks"][1]["evidence"]["screenshot"], original)
+        review = self.review(source)
+        result = bundle.package(self.output / "source-manifest.json", review,
+                                self.root / "bundle-screen-lease")
+        self.assertEqual(result["status"], "ADAPTER_VALIDATED_SELECTED_SPANS_ONLY")
+        copied = (self.root / "bundle-screen-lease/source/external-screen-lease"
+                  / "source-screen-lease-a01/d06-hover.png")
+        self.assertEqual(bundle.record(copied)["sha256"], original["sha256"])
+        self.assertEqual(bundle.record(screenshot), original)
+
+    def test_unrelated_sibling_screenshot_is_rejected_before_pending_inventory(self) -> None:
+        self.add_sibling_screenshot_mark(self.root / "other-screen-lease-a01/d06-hover.png")
+        with patch.object(bundle, "toolchain_identity", return_value={"version": "0.2.1"}):
+            with self.assertRaisesRegex(ValueError, "evidence escapes source attempt"):
+                bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused")
+        self.assertFalse(self.output.exists())
+
+    def test_matching_screen_lease_cannot_supply_control(self) -> None:
+        self.add_sibling_screenshot_mark(self.root / "source-screen-lease-a01/control.png",
+                                         key="control")
+        with patch.object(bundle, "toolchain_identity", return_value={"version": "0.2.1"}):
+            with self.assertRaisesRegex(ValueError, "evidence escapes source attempt"):
+                bundle.prepare(self.attempt, self.recorder, self.output, self.root / "unused")
+        self.assertFalse(self.output.exists())
 
     def test_exact_release_pin_matches_installed_toolchain(self) -> None:
         requirements = Path(__file__).resolve().parents[3] / "tools/requirements-promo-toolchain.txt"
