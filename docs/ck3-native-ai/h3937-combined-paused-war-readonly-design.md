@@ -77,3 +77,13 @@ physical-inventory proof, mismatched hostiles, cleanup failure and no-query
 fallback. This design does not flip either launch gate or alter an action
 selector. The native read ports themselves have offline C++ fixture and
 Python contract coverage; live H3937 result is still unobserved.
+
+The disabled `h3937_combined_readonly_queries.py` is an inner collector for
+the future managed session. It validates complete native-published routes,
+issues the province 2610 read, then constructs a dynamic route-contact step
+only after the province and roster stay in the same paused frame. It records
+exact read-only history rows and raw envelopes with zero gameplay/date
+authorization. Its result deliberately keeps
+`outer_session_cleanup_verified=false`; the future owner must wrap it with
+the corrected lifecycle binding, exact source/rebind checks, persisted driver
+history, asset rehash and managed process cleanup before any official result.
