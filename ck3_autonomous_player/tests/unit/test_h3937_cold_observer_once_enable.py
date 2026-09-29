@@ -32,8 +32,12 @@ def test_new_entry_is_isolated_and_outer_observer_stays_default_off() -> None:
     check(old_once.OUTPUT != once.OUTPUT)
     check(old_once.GO != once.GO)
     check(old_once.SCREEN_TASK_ID != once.SCREEN_TASK_ID)
-    check(once.ROUND == "R3946")
-    check(once.LIVE_RUN_ID.endswith("--vanilla--R0114"))
+    check(once.ROUND == "R3947")
+    check(once.LIVE_RUN_ID.endswith("--vanilla--R0116"))
+    check(once.outer.COMBINED_DLL_SHA256 ==
+          "3438E8725AA06839CA1F2DFAF6D6CC98D41A4F33C02AC0702AC8D48AD241531B")
+    check(once.outer.COMBINED_INJECTOR_SHA256 ==
+          "ECBC1B3B24E8A9BF1F85E9CBE195E4A5B8D3E928DB0FC8124ABF4D6D95A4B0D3")
     check(once.PIPE == old_once.PIPE)  # Exact raw driver-state contract.
     check(signature(once.outer.collect_h3937_combined_paused_war_scope_once)
           .parameters["cold_load_observation_dir"].default is None)
@@ -211,6 +215,17 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     bound = once._require_exact_admission()
     check(bound["live_run_identity_sha256"] == sha(live_identity_path))
     once._require_no_launch_unchanged(bound)
+    for key, old_hash in (
+        ("dll_sha256", "F5E708FC554C377420B3D31D9B38B4FB6DE2D3A3B19C7D298DAA3DB61233793F"),
+        ("injector_sha256", "8E2115CBE43358DD6F47C12CC94A2E96BF8049DE70204E425B37B5CE825AFE5E"),
+    ):
+        current_hash = admission[key]
+        admission[key] = old_hash
+        admission_path.write_text(json.dumps(admission), encoding="utf-8")
+        with pytest.raises(ValueError, match="identity mismatch"):
+            once._require_exact_admission()
+        admission[key] = current_hash
+        admission_path.write_text(json.dumps(admission), encoding="utf-8")
     live_identity["execution_id"] = "wrong"
     live_identity_path.write_text(json.dumps(live_identity), encoding="utf-8")
     with pytest.raises(ValueError, match="identity bytes changed"):
@@ -295,12 +310,12 @@ def test_exact_pipe_absence_gate(monkeypatch, available, error, allowed) -> None
 
 def _fresh_go(monkeypatch, tmp_path):
     state = tmp_path / "state"
-    output = tmp_path / "attempt-12"
-    screen = tmp_path / "screen-attempt-12"
+    output = tmp_path / "attempt-13"
+    screen = tmp_path / "screen-attempt-13"
     bus = tmp_path / "task-bus"
     for path in (state, screen, bus):
         path.mkdir()
-    go_path = tmp_path / "go-attempt-12.json"
+    go_path = tmp_path / "go-attempt-13.json"
     monkeypatch.setattr(once, "STATE", state)
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "SCREEN", screen)
@@ -347,7 +362,7 @@ def _fresh_go(monkeypatch, tmp_path):
                  "live_run_identity_sha256": "E" * 64}
     review_path = screen / "steam-offline-direct-review.json"
     review = {
-        "schema": "xar.war.h3937-a12-steam-offline-direct-review.v1",
+        "schema": "xar.war.h3937-a13-steam-offline-direct-review.v1",
         "candidate_head": identity["head"], "round": once.ROUND,
         "live_run_id": once.LIVE_RUN_ID,
         "screen_task_id": once.SCREEN_TASK_ID,
@@ -404,7 +419,7 @@ def _fresh_go(monkeypatch, tmp_path):
 
 
 @pytest.mark.parametrize("field,value", [
-    ("live_run_id", "desktop-wrong--vanilla--R0114"),
+    ("live_run_id", "desktop-wrong--vanilla--R0116"),
     ("live_run_identity_sha256", "F" * 64),
     ("cold_load_observer_enabled", False),
     ("cold_load_observer_dir", "D:/wrong-observer-output"),
@@ -425,7 +440,7 @@ def test_go_requires_new_run_observer_and_six_read_scope(
 
 def test_go_rejects_old_challenge_run_id(monkeypatch, tmp_path) -> None:
     identity, go, challenge, challenge_path = _fresh_go(monkeypatch, tmp_path)
-    challenge["live_run_id"] = "desktop-wrong--vanilla--R0114"
+    challenge["live_run_id"] = "desktop-wrong--vanilla--R0116"
     challenge_path.write_text(json.dumps(challenge), encoding="utf-8")
     go["screen_challenge_sha256"] = sha(challenge_path)
     once.GO.write_text(json.dumps(go), encoding="utf-8")
@@ -471,7 +486,7 @@ def test_go_requires_exact_direct_visual_review_receipt(
 def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
     monkeypatch, tmp_path, mutate_review,
 ) -> None:
-    output = tmp_path / "attempt-12"
+    output = tmp_path / "attempt-13"
     output.mkdir()
     (output / "supervisor-claim.json").write_text(json.dumps({
         "schema": "xar.war.h3937-cold-observer-supervisor-claim.v1",
@@ -537,7 +552,7 @@ def test_worker_passes_explicit_observer_and_keeps_gameplay_off(
 
 def test_preworker_pipe_collision_rejects_before_worker(monkeypatch, tmp_path) -> None:
     entry = tmp_path / "entry.py"
-    output = tmp_path / "attempt-12"
+    output = tmp_path / "attempt-13"
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
         "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
@@ -561,7 +576,7 @@ def test_preworker_wrong_interpreter_rejects_without_worker(
     monkeypatch, tmp_path,
 ) -> None:
     entry = tmp_path / "entry.py"
-    output = tmp_path / "attempt-12"
+    output = tmp_path / "attempt-13"
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "FROZEN_PYTHON", tmp_path / "wrong-python.exe")
     monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
@@ -580,7 +595,7 @@ def test_preworker_wrong_interpreter_rejects_without_worker(
 def test_preworker_process_collision_rejects_without_worker(
     monkeypatch, tmp_path,
 ) -> None:
-    output = tmp_path / "attempt-12"
+    output = tmp_path / "attempt-13"
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
         "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
@@ -603,7 +618,7 @@ def test_preworker_process_collision_rejects_without_worker(
 def test_heartbeat_failure_kills_and_reaps_worker_with_tail_stdio(
     monkeypatch, tmp_path,
 ) -> None:
-    output = tmp_path / "attempt-12"
+    output = tmp_path / "attempt-13"
     monkeypatch.setattr(once, "OUTPUT", output)
     monkeypatch.setattr(once, "_require_entry_blob", lambda path: {
         "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
