@@ -1,0 +1,53 @@
+{
+  "result": "READY_NOT_LAUNCHED",
+  "freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\variant-freeze.json",
+    "bytes": 8255,
+    "sha256": "3134A486A3ECF4360EFA5E76A99B77FD811FFD3692DE87E68F73EEC5391A998C"
+  },
+  "metadata_erratum": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\metadata-erratum-a01.json",
+    "bytes": 841,
+    "sha256": "4EC4B06C674E21EAAB7B9AF1469C66ADCB0831A2E0A3E88A3EAFF976D638781C"
+  },
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\paused_join_pair.py",
+    "bytes": 52480,
+    "sha256": "2F15D371E9B71A94B7D4A1C8A2E37419DF58572FD24AC1FB03DF52C6F3C82055"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\bootstrap_profile.py",
+    "bytes": 6517,
+    "sha256": "44FB8A24BB33AED58C0C55D00CB1131CED092F605A428386BB5CD665AB644A1F"
+  },
+  "offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\pointer-order-offline-verification.json",
+    "bytes": 8249,
+    "sha256": "E251091F1B434C23095F99437A3F7D3661C9F2B7A9AB1B219274B548048E92C9"
+  },
+  "required_actual_root_stage": "00-pre-center-pointer",
+  "required_actual_review_flag": "pointer_safe_for_native_center=true",
+  "actual_root_original_image_preview_rect_point_safe_region_required": true,
+  "stages": [
+    "focus",
+    "current-original-desktop",
+    "root-current-safe-region-review",
+    "formal-mapper-move-with-receipt",
+    "actual-pointer-focus-size-readback",
+    "fresh-paused-native-snapshot-control",
+    "pointer-still-safe-readback",
+    "typed-center-once"
+  ],
+  "required_root_review_stages_metadata_list_is_not_read_by_runtime": true,
+  "native_build_changed": false,
+  "native_guards_changed": false,
+  "actual_center_success": "NOT_RUN",
+  "actual_new_native_epoch": "NOT_STARTED",
+  "edge_pan_causation": "UNPROVED",
+  "old_frozen_inputs_modified": false,
+  "open_kaishek_preverification": {
+    "applicable": false,
+    "reason": "CK3 battle/map center consumer; no Kaifeng or workshop framing operation"
+  },
+  "game_screen_bus_operations_by_subagent": false
+}

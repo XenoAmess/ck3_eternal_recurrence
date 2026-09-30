@@ -96,3 +96,14 @@ a06 已完成：30:18.633、239659692 字节、SHA-256 `F716D9F4FA79F3471941FF7F
 
 
 实际字段原件见 [R0130诊断](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/native-center-R0130-diagnostic.json)，SHA `85522A300E6928E46CB04F54AD69628BA7E9E5A0E42C1BBC31830CE198EF7D9E`；全量过程资产索引见 [R0130封存](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/paused-join-R0130-diagnostic-failed.json)，SHA `4805787EE2483B9E8EC0CCDCAF45A23BC989AFFC01510DF7C4F2647941A09AD5`。
+
+
+### 07:48 增援 R0131：根回执格式在输入前被拒绝
+
+新consumer已将安全移指针排到center之前，正式mapper的尺寸/焦点/指针读回与fresh paused/control、唯一center请求均保留；七项离线流程检查通过。R0131实际载入冻结d11并取得新原图，根审阅了当前完整1024×768桌面、实际同尺寸与CK3焦点。根写入的 `root_visible_evidence` 为字符串，冻结helper实际要求非空dict，因此在mapper之前触发 `STOP_ROOT_VISIBLE_UI_EVIDENCE_MISSING`。这是根回执格式错误，不能归因于相机，也不能用本轮检验边缘平移假设。
+
+本轮mapper调用0、center调用0、date推进0、采样对0。旧错误回执和全部过程原件永久保留。受管树、watchdog、CK3 inventory已清空，operator job exit0 / SDK controller exit2，screen3235→3236已释放。根新writer在任何回执文件写出前严格拒绝字符串/空dict，且禁止手工decision覆写stage/source/frame/PID/HWND等绑定字段。实际冻结review校验器的离线输入确认字符串与空dict拒绝、非空dict接受；不作为真实新UI或人工影片签核。
+
+R0130的相机predicate比较目标前四个float，包含XYZ和zoom；现有回件无实际数组，不能确定哪个分量偏离。R0130/R0131焦点回读均记录鼠标在1024×768右边缘[1023,276]；边缘平移目前仍是假设。新attempt18只绑定新config/seal路径，consumer精确SHA2F15保持，190源与ED537 DLL保持。新config修正了actual review stage说明；此前已冻结attempt15列表文字通过独立metadata erratum解释，原字节不改。
+
+全量 [R0131封存](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/paused-join-R0131-review-rejected.json)，SHA `894B0DC63712C1C3FC27906A4DE33E2913E2F408749A2A736E8C1101C6857D62`；[冻结pointer-first入口](../../promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/reinforcement/pointer-first-consumer-a01/README.md)。

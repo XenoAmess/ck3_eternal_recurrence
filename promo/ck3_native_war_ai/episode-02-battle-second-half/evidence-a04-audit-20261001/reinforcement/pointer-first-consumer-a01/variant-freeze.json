@@ -1,0 +1,165 @@
+{
+  "source_head": "1901473429deb1297be7d5d4451169082629858b",
+  "source_checkout": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\source",
+  "config": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\ui-controller-config.frozen-pointer-neutral-a01.json",
+    "bytes": 10810,
+    "sha256": "2B704DC2356B42E3D907968B452342B88F2E0A1A2F11E2389ED7490990A4B400"
+  },
+  "consumer_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\hwnd_wgc_frame.py",
+      "bytes": 9830,
+      "sha256": "261A2845E462CE6C2FBCDDDEDE5B47093F28FA7A26F6E850FCBF7208DE2099FD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\native_locale_probe.py",
+      "bytes": 1428,
+      "sha256": "702887A53CDDC8133531FD1CC0949E38E5791794B47F298C84E4A219906A7146"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\paused_join_pair.py",
+      "bytes": 52480,
+      "sha256": "2F15D371E9B71A94B7D4A1C8A2E37419DF58572FD24AC1FB03DF52C6F3C82055"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\README.md",
+      "bytes": 9444,
+      "sha256": "E3BE2B997861E1EBF173FBB8FA863602FA71633A6BB33535235A36C57390DCA6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\run_paused_join_sdk.py",
+      "bytes": 7042,
+      "sha256": "E1E386774EE6D92FF6A1AFDC599AB79A9F3AAD2769A9501D0DB4D41135C7D7CD"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\verify_offline_entry.py",
+      "bytes": 19267,
+      "sha256": "D2BF081B59DFBFFF8F0CD0ACA16CF0AC9346A5218DD37E90B8BB61B4A2FC9C80"
+    }
+  ],
+  "helper_files": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+      "bytes": 29587,
+      "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\canonical_camera_guard.py",
+      "bytes": 13247,
+      "sha256": "63FFAE7E05B020B09AE7C95D0C3F936DAE3D42C443B5DDCB47C824654E481501"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\root_window_focus.py",
+      "bytes": 21461,
+      "sha256": "7C8FB3A0FB7907610AFAEA0411ED99369FD135568DD1F3B79CBCCE77BCEE002D"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\ui-controller-config.frozen-center-diag-a01.json",
+      "bytes": 10178,
+      "sha256": "04EBDB33D779442075B1F7018078F25648B38459C99B17AEAB48F786CF8757E4"
+    }
+  ],
+  "no_launch_runner": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\run_no_launch_candidate.py",
+    "bytes": 12713,
+    "sha256": "188ECCE4FEF1BB4C9F67A9B8B9AC98EC5F7FAAE06257A73E0756344C506DC774"
+  },
+  "bootstrap": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\bootstrap_profile.py",
+    "bytes": 6517,
+    "sha256": "44FB8A24BB33AED58C0C55D00CB1131CED092F605A428386BB5CD665AB644A1F"
+  },
+  "native_candidate_manifest": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\candidate-manifest.json",
+    "bytes": 7243,
+    "sha256": "D21ACB30EC5DBF5AFB3B22768F630BB3CBCA57CAFCA6501FC0203A7DB30A40EE"
+  },
+  "native_pair": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\sealed-native\\battle-control-pair.json",
+    "bytes": 851,
+    "sha256": "5B147E7EC3E2A361CAA90C7FF8A4BC6AAC6465D03B0FA963432A0D94DA39837D"
+  },
+  "offline_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\pointer-order-offline-verification.json",
+    "bytes": 8249,
+    "sha256": "E251091F1B434C23095F99437A3F7D3661C9F2B7A9AB1B219274B548048E92C9"
+  },
+  "historical_consumer_preservation": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\historical-consumer-preservation.json",
+    "bytes": 3642,
+    "sha256": "200CE85840756EDD9735FB825A7BAF64E146EBF221F7392546D875DE4CEA206A"
+  },
+  "process_helpers": [
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\create_variant.py",
+      "bytes": 10191,
+      "sha256": "7135C63AF59A6F7D36CAE4A6D5F2DAA76B9ED84ABBC4712933532674B7A1BF57"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\freeze_variant.py",
+      "bytes": 4217,
+      "sha256": "C35D94E133523776B971B8B824A348AE41E552C31DEE22108254762C47D78123"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\verify_pointer_variant_offline.py",
+      "bytes": 11895,
+      "sha256": "40BBD3E8C73E4E712EC97734EA0278F37526DB1B508362F1D83635BA20E5F92B"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\verify_pointer_variant_offline-failed-a01.py",
+      "bytes": 11858,
+      "sha256": "7BD66673D5EC501A3D8BDF0665EE601C4E55CE8D633CC04C6BB3E5502F63E65E"
+    }
+  ],
+  "entry_probes": [
+    {
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\entry-probes-a01\\bootstrap-help-stdout.bin",
+        "bytes": 751,
+        "sha256": "8A95325B409437315FD0649076498C21F534ADB15756A8F6B08CA80316DDAB53"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\entry-probes-a01\\bootstrap-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_launch_help_only": true
+    },
+    {
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\entry-probes-a01\\prepare-help-stdout.bin",
+        "bytes": 1059,
+        "sha256": "626D3917360ACC6BB362C93F4A0B45311FE7A073C6F49CC02217DC1233A6AE12"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\entry-probes-a01\\prepare-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_launch_help_only": true
+    },
+    {
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\entry-probes-a01\\sdk-help-stdout.bin",
+        "bytes": 615,
+        "sha256": "CAEA8DBB9ED0F7AAF4E01096AFB5277A3F93967CFDE37C9AB0B5F99331AE3C26"
+      },
+      "stderr": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\entry-probes-a01\\sdk-help-stderr.bin",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "no_launch_help_only": true
+    }
+  ],
+  "new_native_build": false,
+  "native_guards_changed": false,
+  "actual_new_epoch": "NOT_STARTED",
+  "actual_pointer_first_center_success": "NOT_RUN",
+  "edge_pan_causation": "UNPROVED",
+  "game_desktop_bus_mcp_operations_by_freezer": false
+}

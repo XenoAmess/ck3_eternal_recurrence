@@ -1,0 +1,14 @@
+{
+  "schema": "xar.jd11.pointer-before-center.frozen-metadata-erratum/v1",
+  "frozen_config": "ui-controller-config.frozen-pointer-neutral-a01.json",
+  "field": "required_root_review_stages",
+  "frozen_value": ["01-pointer-move", "02-battle-panel", "03-final-layout"],
+  "actual_consumer_required_stages": ["00-pre-center-pointer", "02-battle-panel", "03-final-layout"],
+  "additional_actual_review_flag": "pointer_safe_for_native_center=true",
+  "reason": "The new consumer moves the existing reviewed pointer stage before native center; the inherited descriptive stage list was not renamed before freezing.",
+  "runtime_reads_this_list": false,
+  "runtime_requests_are_current_original_frame_hash_pid_hwnd_bound": true,
+  "frozen_bytes_modified": false,
+  "actual_new_game_epoch": "NOT_STARTED",
+  "actual_new_center_success": "NOT_RUN"
+}

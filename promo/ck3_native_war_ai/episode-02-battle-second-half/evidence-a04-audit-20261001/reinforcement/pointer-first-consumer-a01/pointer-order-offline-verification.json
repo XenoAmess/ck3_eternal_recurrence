@@ -1,0 +1,204 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "case": "success-then-stop",
+      "passed": true,
+      "center_calls": 1,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "actual-pointer-readback",
+        "formal-mapper:move-only",
+        "actual-pointer-readback",
+        "frame:00-pre-center-pointer-safe",
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "fresh-paused-control-complete",
+        "select-after-fresh-pointer-refresh",
+        "actual-pointer-readback",
+        "ck3_center_map_on_landed_title_v1",
+        "typed-center-verification",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\success-then-stop\\controller\\controller-result.json",
+        "bytes": 3014,
+        "sha256": "D3DC96FF684E89E8BACE6CB77EE51F65BD6FA5AE2CFB939872196B53EBCF7CAC"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    },
+    {
+      "case": "review-refused",
+      "passed": true,
+      "center_calls": 0,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\review-refused\\controller\\controller-result.json",
+        "bytes": 1157,
+        "sha256": "0B33E1A6EC10B48BF5B0C0B1199559A42CBB6530B2D35A868B4D444D9CA72A6A"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    },
+    {
+      "case": "dimensions-change-during-move",
+      "passed": true,
+      "center_calls": 0,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "actual-pointer-readback",
+        "formal-mapper:move-only",
+        "actual-pointer-readback",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\dimensions-change-during-move\\controller\\controller-result.json",
+        "bytes": 1138,
+        "sha256": "4B471E44A8A88DC32407DA2C7A9411896C0AB5871352929DFD1545EDB806A98D"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    },
+    {
+      "case": "focus-change-during-move",
+      "passed": true,
+      "center_calls": 0,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "actual-pointer-readback",
+        "formal-mapper:move-only",
+        "actual-pointer-readback",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\focus-change-during-move\\controller\\controller-result.json",
+        "bytes": 1133,
+        "sha256": "7BEE6E9EFC0B512571EDE33E392AE7227726F9BE86634BDE9C5FE4340830B7F0"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    },
+    {
+      "case": "pointer-changed-before-refresh",
+      "passed": true,
+      "center_calls": 0,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "actual-pointer-readback",
+        "formal-mapper:move-only",
+        "actual-pointer-readback",
+        "frame:00-pre-center-pointer-safe",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\pointer-changed-before-refresh\\controller\\controller-result.json",
+        "bytes": 1164,
+        "sha256": "F65239D4ACF7DACBE354013C7954A01543BC4750B50C047A8DE8368C1D51E675"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    },
+    {
+      "case": "pointer-changed-after-refresh",
+      "passed": true,
+      "center_calls": 0,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "actual-pointer-readback",
+        "formal-mapper:move-only",
+        "actual-pointer-readback",
+        "frame:00-pre-center-pointer-safe",
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "fresh-paused-control-complete",
+        "select-after-fresh-pointer-refresh",
+        "actual-pointer-readback",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\pointer-changed-after-refresh\\controller\\controller-result.json",
+        "bytes": 3033,
+        "sha256": "4D6BD3DF011FFA8C0A72670906A3DA6572AAF964554FC262C2C061AB274A830F"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    },
+    {
+      "case": "center-failed",
+      "passed": true,
+      "center_calls": 1,
+      "events": [
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "frame:00-pre-focus",
+        "root-focus-readback",
+        "frame:00-pre-center-pointer",
+        "review:00-pre-center-pointer",
+        "actual-pointer-readback",
+        "formal-mapper:move-only",
+        "actual-pointer-readback",
+        "frame:00-pre-center-pointer-safe",
+        "ck3_take_snapshot",
+        "ck3_query_battle_control_snapshot_v1",
+        "fresh-paused-control-complete",
+        "select-after-fresh-pointer-refresh",
+        "actual-pointer-readback",
+        "ck3_center_map_on_landed_title_v1",
+        "same-owner-managed-cleanup"
+      ],
+      "controller_result": {
+        "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\offline-controller-fixtures-a02\\center-failed\\controller\\controller-result.json",
+        "bytes": 4834,
+        "sha256": "AAFAB84429C1CBB3587C693DD2DB877BE38EAE139ECE83137CB95BB1F2317897"
+      },
+      "all_desktop_native_process_results_are_injected_offline_fixtures": true
+    }
+  ],
+  "consumer": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-15-pointer-before-center\\consumer\\paused_join_pair.py",
+    "bytes": 52480,
+    "sha256": "2F15D371E9B71A94B7D4A1C8A2E37419DF58572FD24AC1FB03DF52C6F3C82055"
+  },
+  "helper": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-12-R0129-native-center-diagnostic\\helpers\\camera_layout_and_capture.py",
+    "bytes": 29587,
+    "sha256": "8A482F2F7B42F29BCDBB9941D71982232FEA2A77FE13FA93D2D129E55ED52CF0"
+  },
+  "formal_mapper": {
+    "path": "C:\\w\\desktop_pointer_20260930\\tools\\desktop_coordinate_map.py",
+    "bytes": 14469,
+    "sha256": "B66D25560475D9DAF26827FA4E129D6244E80B9DEA0597D905937ACDE4901043"
+  },
+  "actual_historical_run_response_replay_is_not_new_native_evidence": true,
+  "game_desktop_bus_mcp_operations_executed": false,
+  "actual_live_center_success": "NOT_RUN",
+  "edge_pan_causation": "UNPROVED"
+}
