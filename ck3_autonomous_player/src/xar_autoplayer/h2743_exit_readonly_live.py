@@ -140,6 +140,10 @@ def run_owned_read(*, spec, config, keeper, output: Path, timeout_seconds: float
     from .bridge.driver import BridgeUnavailableError
     from .native_session import native_session
     from .runtime import ck3_process_inventory
+    from .environment import verify_profile
+    from .bridge.succession_transition_contract import (
+        ORDINARY_CAMPAIGN_SUCCESSION, bind_succession_lifecycle_from_environment_v1,
+    )
 
     require(0 < timeout_seconds <= 1800, 'H2743 readiness deadline must be within 1..1800 seconds')
     require(not ck3_process_inventory()['processes'], 'H2743 read requires zero CK3 processes')
@@ -162,8 +166,12 @@ def run_owned_read(*, spec, config, keeper, output: Path, timeout_seconds: float
     keeper.start()
     try:
         keeper.refresh()
+        lifecycle = bind_succession_lifecycle_from_environment_v1(
+            verify_profile(spec, xar_enabled='xar_off'),
+            lifecycle=ORDINARY_CAMPAIGN_SUCCESSION, ordinary_campaign_no_pact=True)
         driver = NativeHeadlessGameplayDriver(config.pipe_name, state_dir=spec.state_dir,
-                                              save_dir=spec.profile_dir / 'save games')
+                                              save_dir=spec.profile_dir / 'save games',
+                                              succession_lifecycle_binding=lifecycle)
         driver.query_h2743_exit_baseline = MethodType(query_h2743_exit_baseline, driver)
         thread = threading.Thread(target=supervise, name='h2743-managed-session')
         thread.start()

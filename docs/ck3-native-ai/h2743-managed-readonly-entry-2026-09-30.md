@@ -38,6 +38,17 @@ and argv are preserved at
 `7BC8E89173503B07115BAD147F8B372AA6815DCAFC3A61900871B48D0495B72A`.
 These tests use synthetic sessions and do not constitute live evidence.
 
+### 2026-09-30 15:10 lifecycle correction
+
+Independent review reproduced the native driver's default rogue/xar_on binding
+rejecting the prepared ordinary/xar_off state. The entry now verifies the frozen
+environment and derives the existing ordinary-campaign no-pact lifecycle binding
+before constructing the driver. It passes that binding explicitly through the
+existing constructor. The managed-session test also checks the actual normalized
+lifecycle and environment digest. Updated normal and optimized runs each passed
+9/9 at `C:/Users/1/ck3-h2743-resume-20260930/attempt-03/`; the updated report SHA-256
+is `3E49F7CDA53111F68CFFDF0BBCB87EBACF768A2D27572E5A980F4BB8E9255535`.
+
 ## Actual command interface
 
 Use the current common source tree with its reviewed `screen_bus_lease.py` and

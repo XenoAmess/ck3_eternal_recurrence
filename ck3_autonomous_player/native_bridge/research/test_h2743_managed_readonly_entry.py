@@ -35,6 +35,7 @@ class FakeDriver:
     def __init__(self, *args, **kwargs):
         self.frame = paused_frame()
         self.calls = []
+        self.options = kwargs
         self.closed = False
         self.instances.append(self)
         self.envelope = {'step': transport.BASELINE_STEP, 'accepted': True,
@@ -133,7 +134,7 @@ class H2743ManagedQueryTests(unittest.TestCase):
 class H2743ManagedSessionTests(unittest.TestCase):
     def run_fake_session(self, *, fail_live=False, cleanup=True):
         from xar_autoplayer.bridge import native_driver
-        from xar_autoplayer import native_session, runtime
+        from xar_autoplayer import environment, native_session, runtime
         keeper, calls = FakeKeeper(fail_live), []
 
         def fake_session(spec, **kwargs):
@@ -146,6 +147,8 @@ class H2743ManagedSessionTests(unittest.TestCase):
 
         normalized = {'border_raid_storage_candidate_v1': {'status': 'structural_candidate_only'},
                       'material_complete': False, 'action_literal': None}
+        manifest = {'rules': {'profile': [{'rule': 'xar_enabled', 'setting': 'xar_off'}]},
+                    'environment_sha256': 'a' * 64}
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
             spec = SimpleNamespace(state_dir=output / 'state', profile_dir=output / 'profile')
@@ -153,6 +156,7 @@ class H2743ManagedSessionTests(unittest.TestCase):
             with patch.object(native_driver, 'NativeHeadlessGameplayDriver', FakeDriver), \
                  patch.object(native_session, 'native_session', fake_session), \
                  patch.object(runtime, 'ck3_process_inventory', return_value={'processes': []}), \
+                 patch.object(environment, 'verify_profile', return_value=manifest), \
                  patch.object(transport, 'normalize_defender_dejure_exit_terms_v1', return_value=normalized):
                 result = live.run_owned_read(spec=spec, config=config, keeper=keeper,
                                              output=output, timeout_seconds=1)
@@ -166,6 +170,10 @@ class H2743ManagedSessionTests(unittest.TestCase):
         self.assertEqual(len(calls), 1)
         self.assertIs(calls[0]['stop_event'], keeper.abort)
         self.assertEqual(calls[0]['before_process_create'], keeper.process_create_gate)
+        self.assertEqual(driver.options['succession_lifecycle_binding']['lifecycle'],
+                         'ordinary_campaign_succession')
+        self.assertEqual(driver.options['succession_lifecycle_binding']['xar_enabled'], 'xar_off')
+        self.assertEqual(driver.options['succession_lifecycle_binding']['environment_sha256'], 'a' * 64)
         self.assertTrue(driver.closed)
         self.assertEqual([step for step, _ in driver.calls],
                          [transport.BASELINE_STEP, transport.OPTIONS_STEP, transport.BASELINE_STEP])
