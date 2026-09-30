@@ -4,10 +4,13 @@ Only source pixels, rectangles and text are composed. No OCR or invented UI.
 The bottom 180 pixels are reserved for Chinese and English subtitles.
 """
 from __future__ import annotations
-import argparse, hashlib, json, shutil
+import argparse, hashlib, json, shutil, sys
 from functools import lru_cache
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'integration' / 'src'))
+from war_ai_promo.series_palette import BG, PANEL, INK, MUTED, GOLD, FAINT_RULE, HIGHLIGHT
 
 FONT='C:/Windows/Fonts/msyh.ttc'
 @lru_cache(maxsize=64)
@@ -38,29 +41,29 @@ def source_crop(path,rect):
     return src,src.crop(tuple(rect))
 def board(root,key,row):
     source=Path(row['source_image']);src,crop=source_crop(source,row['crop_xyxy'])
-    im=Image.new('RGB',(1920,1080),'#0D141C');d=ImageDraw.Draw(im)
-    fit_text(d,(40,28),row['title'],1830,45,'#F6F2E8')
-    fit_text(d,(44,100),row['case'],1820,26,'#82B8CB')
-    d.line((40,145,1880,145),fill='#425461',width=2)
-    fit_text(d,(40,164),row.get('ui_label','原界面定位'),930,27,'#BFCAD2')
+    im=Image.new('RGB',(1920,1080),BG);d=ImageDraw.Draw(im)
+    fit_text(d,(40,28),row['title'],1830,45,INK)
+    fit_text(d,(44,100),row['case'],1820,26,GOLD)
+    d.line((40,145,1880,145),fill=FAINT_RULE,width=2)
+    fit_text(d,(40,164),row.get('ui_label','原界面定位'),930,27,MUTED)
     paste_fit(im,src,(40,210,930,310))
     # Annotation identifies the genuine crop inside the genuine overview.
     scale=min(930/src.width,310/src.height);ow=round(src.width*scale);oh=round(src.height*scale)
     ox=40+(930-ow)//2;oy=210+(310-oh)//2;x1,y1,x2,y2=row['crop_xyxy']
-    d.rectangle((ox+round(x1*scale),oy+round(y1*scale),ox+round(x2*scale),oy+round(y2*scale)),outline='#E9C16B',width=3)
+    d.rectangle((ox+round(x1*scale),oy+round(y1*scale),ox+round(x2*scale),oy+round(y2*scale)),outline=GOLD,width=3)
     extras=row.get('extra_ui',[])
     if extras:
         cols=2 if len(extras)>2 else len(extras);height=135 if len(extras)>2 else 230
         for i,item in enumerate(extras):
             _,small=source_crop(item['image'],item['crop_xyxy'])
             bx=40+(i%cols)*(930//cols);by=535+(i//cols)*145
-            fit_text(d,(bx,by),item['label'],930//cols-12,24,'#E9C16B')
+            fit_text(d,(bx,by),item['label'],930//cols-12,24,GOLD)
             paste_fit(im,small,(bx,by+30,930//cols-12,height-30))
     else:
-        d.text((40,540),'原界面局部放大',font=font(26),fill='#E9C16B')
+        d.text((40,540),'原界面局部放大',font=font(26),fill=GOLD)
         paste_fit(im,crop,(40,580,930,230))
-    d.rounded_rectangle((1015,190,1880,815),radius=18,fill='#172431',outline='#425461',width=2)
-    fit_text(d,(1040,212),row['diagram_title'],812,32,'#E9C16B')
+    d.rounded_rectangle((1015,190,1880,815),radius=18,fill=PANEL,outline=FAINT_RULE,width=2)
+    fit_text(d,(1040,212),row['diagram_title'],812,32,GOLD)
     lines=row.get('diagram_lines',[])
     if len(lines)>5:raise ValueError(f'too many diagram lines: {key}')
     y=282
@@ -68,14 +71,15 @@ def board(root,key,row):
         chunks=wrap(d,line,770,32)
         if len(chunks)>2:raise ValueError(f'diagram text exceeds two lines: {key}/{number}')
         chosen=number==row.get('highlight_line',-1)
-        if chosen:d.rounded_rectangle((1035,y-8,1855,y+len(chunks)*43+6),radius=8,fill='#3C3B29')
-        for text in chunks:d.text((1050,y),text,font=font(32),fill='#F6F2E8' if chosen else '#D9E0E5');y+=43
+        if chosen:d.rounded_rectangle((1035,y-8,1855,y+len(chunks)*43+6),radius=8,fill=HIGHLIGHT)
+        for text in chunks:d.text((1050,y),text,font=font(32),fill=INK);y+=43
         y+=18
     if y>810:raise ValueError(f'diagram exceeds content area: {key}')
     footer=wrap(d,row.get('footer',''),1790,24)
     if len(footer)>2:raise ValueError(f'footer exceeds two lines: {key}')
-    for i,line in enumerate(footer):d.text((45,830+i*31),line,font=font(24),fill='#BEC6CC')
-    d.rectangle((0,900,1920,1080),fill='#0B1016')
+    for i,line in enumerate(footer):d.text((45,830+i*31),line,font=font(24),fill=MUTED)
+    d.rectangle((0,900,1920,1080),fill=BG)
+    d.line((0,900,1920,900),fill=GOLD,width=2)
     out=root/'visuals'/f'{key}.png';out.parent.mkdir(exist_ok=True)
     with out.open('xb') as f:im.save(f,format='PNG')
     return {'kind':'still','image':str(out),'source_kind':row['source_kind'],'case':row['case'],'source_binding':ref(source),'source_crop':row['crop_xyxy'],'rendered_image':ref(out),'spec':row}
