@@ -1,5 +1,86 @@
 # H3928 family companion: paired no-launch candidate (2026-09-29)
 
+## Existing-betrothal formal consumer source boundary (2026-09-30)
+
+This implementation follows the ready-pair original branches recorded below,
+with CK3 `1.19.0.6` and EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The additive fixed-pair actionability reader has now supplied the interface
+for actual adult measures/runtime thresholds, five native roles, final Can
+Send/answer, all ten on-send resource costs, effective lineality and predicted
+outcome. Missing fields in an older DLL remain unknown; their source delivery
+does not establish a live adult or legal pair.
+
+The production source break is concrete. `plan_family_marriage_private`
+returns `current_first_heir_already_partnered` for this relation. Its ordinary
+submission binder requires an enumerated final-legal candidate row. The native
+`PrepareObservedHeirMarriageSubmissionV1` also rejects either participant's
+existing betrothal. Finally, the ordinary material-status reader treats the
+unchanged bilateral betrothal as material success. Removing only the no-partner
+guard would therefore use the wrong source binding and result meaning.
+
+The native implementation owns a dedicated private submit step,
+`submit-current-first-heir-betrothal-fulfillment-v1-private`, backed by the
+same-frame current-primary-heir reader and a fresh native final evaluation of
+the actual pair. Python consumes that fixed observation without candidate
+enumeration. It retains `fulfill_existing_betrothal=true`, the original actual
+pair and the observed lineality/costs in the existing family receipt ledger.
+Result and cold-result calls reuse the existing typed result step with this
+mode. Only a bilateral **marriage** is new material for fulfillment; the prior
+betrothal remains pending while a reply is outstanding. A refusal or invalidated
+reply does not authorize replacement or automatic resend of this pair.
+
+The initial counter-policy values completing the already chosen adult pair.
+It requires native ready/Can Send, a positive recipient acceptance read with
+answer 0 or 1, predicted marriage and fully read lineality/costs. The independent
+bounded action consumes observed zero on-send costs; nonzero costs remain in the
+value observation for the joint resource consumer rather than assigning unknown
+war commitments zero. It claims no new alliance, fertility or descendant Dynasty
+result. Existing meaningful selected actions keep their turn; no date advance is
+forced. Pending reads consume the actual paired checkpoint revision using the
+established result/checkpoint fence, while a later date/frame or new PID rereads.
+
+```mermaid
+flowchart TD
+    A[Formal family opt-in and paused living-player frame] --> B[Read current primary heir and actual bilateral pair]
+    B --> C{Both adult and fixed native final/value complete?}
+    C -->|no or unknown| D[Retain existing pair and normal selected action]
+    C -->|yes, positive answer and observed zero costs| E[Dedicated typed fulfillment with durable mode and original pair]
+    E --> F[Result read with fulfillment mode]
+    F -->|same betrothal or accepted pending| G[Keep pending; paired checkpoint and later turn]
+    F -->|refused or invalidated| H[Record actual reply; do not resend]
+    F -->|bilateral marriage| I[Consume actual material marriage]
+    G --> F
+    I -. required new-PID read and live gates .-> J[unknown until matching bounded live evidence]
+```
+
+This section is the native-tree input recorded **before** the Python policy
+change. The new consumer is source/fixture work only. Current Robert facts still
+show the earlier bilateral betrothal, and no fulfillment proposal, acceptance,
+marriage, game date or recovery qualification is claimed by this source package.
+
+Focused normal and optimized production-path fixtures passed **20/20 each**
+in `D:\nw-family-betrothal-consumer-20260930\evidence\normal.log` and
+`optimized.log`. Seven new binder/consumer tests cover the actual-pair source
+break, durable mode, unchanged-betrothal pending, native refusal, paired
+checkpoint consumption, next-turn non-resubmission, new-PID pending and material
+reads, opt-in OFF, current selected action, runtime adult thresholds, unknown
+old-DLL fields and observed nonzero costs. The other tests reuse eleven existing
+typed transports and two ordinary-family pending/material recovery cases. The
+IDs follow R0405; adult/Can Send positive cases are deterministic fixtures,
+not claims that those values were observed in that game. Cold fulfillment
+passes the saved native-default `matrilineal_option_selected` as well as the
+mode; neither path calls a lineality setter. The resource-proposal builder is
+consumed in the selected choice and durable pending record without performing
+a second reservation. Source/fixture readiness does not extend the public gate.
+The entry owner's production-path review also found that a **due** pending
+read (new revision or cold PID) preceded the substantive-action gate in the
+draft. The minimal correction moves that existing action priority before ledger
+planning. One additional focused normal/optimized fixture preserves an already
+selected LIFE action in both warm-due and cold-due frames, then permits the cold
+result read on the next opportunity. This is a correction to the new production
+path, not an additional live gate or a rerun of the prior twenty results.
+
 ## R0402 result consumption and existing-betrothal actionability (2026-09-30)
 
 The current bounded facts are retained in
