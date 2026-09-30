@@ -56,6 +56,8 @@ struct TitleMapNavigationMailboxContextV1 {
   std::uint64_t last_pump_epoch = 0;
   std::uint32_t callback_count = 0;
   std::uint32_t poll_count = 0;
+  const char *snapshot_failure_predicate = "";
+  std::uint64_t snapshot_diff_mask = 0;
 
   TitleMapNavigationMailboxContextV1() = default;
   TitleMapNavigationMailboxContextV1(

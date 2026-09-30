@@ -201,6 +201,7 @@
 #include "xar_bridge/startup_particle2_stage_recorder_v1.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
+#include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_serializer.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1_mailbox.hpp"
@@ -4612,6 +4613,49 @@ void AppendMarriageQueryDiagnostics(
     result += '}';
   }
   result += "]}";
+}
+
+
+// Uses an existing diagnostic transport accepted by the frozen Python driver.
+// No state publication, snapshot binding, guard or camera behavior is changed.
+std::string TitleMapNavigationFailureDiagnosticFrameV1(
+    std::string_view request_id, std::uint64_t revision,
+    std::uint64_t expected_revision, std::string_view stage,
+    bool read, const xar::game::Snapshot &expected,
+    const xar::game::Snapshot &observed,
+    const xar::ck3_11906::TitleMapNavigationMailboxContextV1 *query = nullptr) {
+  std::string result = "{\"type\":\"snapshot_publish_diagnostic\",\"protocol_version\":1,\"request_id\":\"";
+  result += request_id;
+  result += "\",\"phase\":\"end\",\"status\":\"title-map-navigation-failure\",\"payload_bytes\":0,\"diagnostic_kind\":\"title-map-navigation-failure-v1\",\"revision\":";
+  result += Number(revision);
+  result += ",\"expected_native_revision\":" + Number(expected_revision);
+  result += ",\"failure_stage\":\"";
+  result += stage;
+  result += "\",\"observed_snapshot_read\":";
+  result += read ? "true" : "false";
+  result += ",\"different_snapshot_fields\":";
+  result += xar::ck3_11906::TitleMapNavigationSnapshotDiffNamesV1(
+      read ? xar::ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(expected, observed) : 0);
+  result += ",\"expected_date_raw\":" + SignedNumber(expected.date_raw);
+  result += ",\"observed_date_raw\":" + SignedNumber(observed.date_raw);
+  result += ",\"expected_actor_id\":" + SignedNumber(expected.played_character_id);
+  result += ",\"observed_actor_id\":" + SignedNumber(observed.played_character_id);
+  if (query != nullptr) {
+    result += ",\"camera_failure_predicate\":\"";
+    result += query->command.failure_predicate;
+    result += "\",\"mailbox_snapshot_failure_predicate\":\"";
+    result += query->snapshot_failure_predicate;
+    result += "\",\"mailbox_snapshot_different_fields\":";
+    result += xar::ck3_11906::TitleMapNavigationSnapshotDiffNamesV1(query->snapshot_diff_mask);
+    result += ",\"camera_status_raw\":" + Number(static_cast<std::uint64_t>(query->command.status));
+    result += ",\"callback_count\":" + Number(query->callback_count);
+    result += ",\"last_pump_epoch\":" + Number(query->last_pump_epoch);
+    result += ",\"initialized\":";
+    result += query->command.initialized ? "true" : "false";
+    result += ",\"dispatched\":";
+    result += query->command.dispatched ? "true" : "false";
+  }
+  return result + "}";
 }
 
 std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
@@ -14212,17 +14256,27 @@ void RunConnectedSession(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "internal_error"));
           } else if (request.expected_snapshot_revision != state_revision) {
-            connected = write_frame(
+            connected = write_frame(pipe,
+                TitleMapNavigationFailureDiagnosticFrameV1(request_id, state_revision,
+                    request.expected_snapshot_revision, "worker-native-revision-mismatch",
+                    false, {}, {}));
+            if (connected) connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "state_changed"));
           } else {
             xar::game::Snapshot current_snapshot{};
-            const bool snapshot_read =
-                previous_snapshot.has_value() &&
-                xar::game::ReadSnapshot(game, current_snapshot) &&
+            const bool current_read = previous_snapshot.has_value() &&
+                xar::game::ReadSnapshot(game, current_snapshot);
+            const bool snapshot_read = current_read &&
                 current_snapshot == previous_snapshot.value();
             if (!snapshot_read) {
-              connected = write_frame(
+              connected = write_frame(pipe,
+                  TitleMapNavigationFailureDiagnosticFrameV1(request_id, state_revision,
+                      request.expected_snapshot_revision,
+                      !previous_snapshot.has_value() ? "worker-previous-snapshot-missing" :
+                      !current_read ? "worker-read-snapshot-unavailable" : "worker-snapshot-fields-differ",
+                      current_read, previous_snapshot.value_or(xar::game::Snapshot{}), current_snapshot));
+              if (connected) connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "state_changed"));
             } else if (!current_snapshot.paused) {
@@ -14251,8 +14305,8 @@ void RunConnectedSession(
               const auto run =
                   xar::ck3_11906::RunTitleMapNavigationMailboxV1(query);
               xar::game::Snapshot completion_snapshot{};
-              const bool completion_snapshot_stable =
-                  xar::game::ReadSnapshot(game, completion_snapshot) &&
+              const bool completion_read = xar::game::ReadSnapshot(game, completion_snapshot);
+              const bool completion_snapshot_stable = completion_read &&
                   completion_snapshot == current_snapshot;
               std::string response;
               const bool success =
@@ -14287,7 +14341,14 @@ void RunConnectedSession(
                 response =
                     CommandResultFrame(request_id, step, false, error);
               }
-              connected = write_frame(pipe, response);
+              if (!success) {
+                connected = write_frame(pipe,
+                    TitleMapNavigationFailureDiagnosticFrameV1(request_id, state_revision,
+                        request.expected_snapshot_revision,
+                        !completion_snapshot_stable ? "worker-completion-snapshot-drift" : "mailbox-camera-command-rejected",
+                        completion_read, current_snapshot, completion_snapshot, &query));
+              }
+              if (connected) connected = write_frame(pipe, response);
             }
           }
           } else if (step == "pause-map") {
