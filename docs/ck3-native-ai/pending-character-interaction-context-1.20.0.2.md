@@ -1,6 +1,6 @@
 # CK3 1.20.0.2：待回复互动上下文迁移
 
-状态为 **static-ready**。本次只读取冻结的游戏 EXE 并运行自有内存夹具，没有启动、附加、注入、操作、关闭或重启玩家正在运行的游戏。实际暂停帧、主线程执行、回复效果与完整策略循环仍须实机验收。
+状态为 **fixture-live**。根执行者已在 attempt14 的一次性外部夹具中完成暂停状态下的 accept、reject、自动接受通知 ACK 和十项成本查询矩阵。此专题的备料与内容核对代理只读冻结 EXE、离线夹具和实机 artifact，没有操作游戏或 profile。原版生产互动、特殊战争条款、非空目标与发送选项及完整策略循环仍不在本次实机认证范围内。
 
 游戏版本为 `1.20.0.2 (Crozier)`，Steam build `25588574`；EXE SHA-256 为 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。磁盘冻结位于 `artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/binaries/ck3.exe`。
 
@@ -64,4 +64,52 @@ MSVC `19.51` x64、C++20 独立构建并运行读取器夹具通过，产物为 
 
 通用目标 payload 的 typed identity、结构化 outcome/exchange/effect preview、完整互动语义决策仍是旧版已有的未闭合分支。这些字段与 readiness 保持诚实，不把 ACK、静态成功或单个 schema 字段冒充实际策略循环。此次迁移没有展开暂缓的宗教专用域，也没有修改自动玩家策略。
 
-后续依赖为统一桥接调度集成、主线程 mailbox 与完整 snapshot 的新版本绑定，以及玩家允许后使用暂停实机帧验证真实互动和三类战争结束回复。查询没有实机 artifact 前不得提升为 `production-live primitive`。
+初次 `static-ready` 时的依赖为统一桥接调度集成、主线程 mailbox 与完整 snapshot 的新版本绑定。attempt14 已取得下文四类外部夹具的真实暂停帧查询、回复和结果证据；三类战争结束回复及生产原版互动不因该矩阵通过而获得 `production-live primitive` 认证。
+
+## 外部实机夹具矩阵
+
+外部夹具已物化在 `artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/fixtures/events/pending/`。它包含独立 descriptor、scripted effect、三种 interaction、四个隐藏事件及英中定位文件；六个脚本文件均有 BOM，括号与玩家事件闸门静态检查通过。根执行者的 attempt05 已加载第一版并报告五条定义诊断；revision 2 在 attempt09 已加载，随后在 RNG owner 作用域修复后的 attempt14 完成四场真实查询、回复和结果验证。静态检查与实际实机证据分别保留。
+
+根执行者可把该目录当作独立测试 mod，或把 `common/events/localization` 子树并入一次性外部 dev fixture，在下次正式加载时使用。每个种子事件都要求当前 ROOT 为玩家，创建一名专用 NPC 后由明确调用的 `run_interaction` 向玩家发送；无需固定 character ID、province ID 或切换玩家。三条互动均使用 `ai_frequency=0`、保留 `ai_potential={always=no}`，并把显式发送需要的 `ai_will_do` 改为 `base=1`。正常 reply/cost 删除只适用于自动接受通知的 `ignores_pending_interaction_block=yes`；ACK 保留该字段。
+
+此次最小修法有既有实机依据：[通知 ACK 实机夹具](interaction-notification-ack-live-fixture.md) 的 attempt5 已证明 actor-scope `run_interaction` 在其余 validity 通过后仍被 stock `ai_will_do base=0` 阻断，冻结 artifact SHA-256 为 `C8EE5E2C1F354DA38D137260FB28DF2C895D3A872E0F8ADDDF3EEBA46FA39E74`。新版 `_character_interactions.info` 仍把 `ai_will_do` 描述为发送兴趣。这里复用既有实际故障与新版脚本契约，没有声称已经追踪新版原生 gate，也没有把 attempt05 的定义诊断写成已观察到发送失败。
+
+| 触发事件 | 查询和动作 | 主要期望 |
+| --- | --- | --- |
+| `event xar_m120_pending.100` | 两次同 revision typed query → accept | 正常 recipient 路由；accept/reject 合法；日志 `XAR_M120_PENDING:ACCEPT`；旧 pending 完整 ID 消失或变化 |
+| `event xar_m120_pending.101` | 两次同 revision typed query → reject | 同上，日志为 `XAR_M120_PENDING:REJECT` |
+| `event xar_m120_pending.102` | 两次同 revision typed query → notification ACK | `auto_accept_notification=true`；只有 ACK 合法；旧 pending 完整 ID 消失或变化；不重复触发自动接受效果 |
+| `event xar_m120_pending.103` | 两次同 revision typed cost query | 十资源 raw 值为 `[100000,200000,300000,0,0,0,0,0,0,0]`，即 gold 1、prestige 2、piety 3；其余原生成本行合法为零 |
+
+所有动作均须核对暂停状态、日期与 played character 保持一致。正常请求的 block 被夹具明确禁用；通知通道的 accept/reject/block 均应不合法。成本夹具只验证三个通用货币的正值及十行形状与顺序，没有覆盖其余七类政府相关资源的非零支付。此处 piety 仅作为通用资源成本使用。
+
+完整 MCP 字段期望、作用域、日志标记、源文件哈希和静态结果保存在 revision 2 的 `fixture-plan.json`，SHA-256 `C05FBC45D3EF146D1EEC5C6B4690809E59896B0E075F34CA9E380B2BE4FB31A8`；interaction definition SHA-256 为 `30EDA7A7B291AD87C9F8D5015FB01F96DA20C96AC86734E0003481C4C914FF0A`。第一版定义和 plan 的原始 bytes、精确补丁与本次静态 PASS 保存于同级 `pending-revisions/attempt05-to-next-load/`。attempt05 已加载的 profile 未改写。桌面、游戏进程、一次性 userdir 和加载操作只由根执行者控制；夹具准备代理未进行这些操作。
+
+## Attempt09：原生随机作用域异常
+
+根执行者 attempt09 已加载 revision 2，旧的五条定义诊断消失。三条新的 `ai_frequency` 缺少 `ai_targets` 提示涉及自动调度，不足以证明显式 `run_interaction` 失败。相同原生 inbox 执行器已成功执行 selection 和 window；pending accept 在 `06:37:22` 打印了 `XAR_M120:TRIGGER|case=pending_accept` 后，没有 `SEED`、互动 `on_send` 或正常 `console_success`。冻结 `logs/error.log` 的最后一行直接报告 `Calling global random function without having called ALLOW_RANDOM_IN_SCOPE in this thread`。冻结 mailbox 记录的 failure `512` 是 executor exception；对外的 `fixture inbox executor unavailable` 在此处代表已进入脚本后抛出异常，不能按执行器入口缺失解释。
+
+证据位于 `artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-09/` 的 `pending_accept-trigger.json`、`mcp.json`、`logs/debug.log`、`logs/error.log` 和已有 `bridge-inbox-diagnosis.json`。日志没有 hidden-event-entry、before-create 或 before-run 标记，因此当前能严格定位的区间是 inbox marker 之后、pending 的完整发送后置标记之前；尚不能仅凭该帧区分事件派发、`create_character` 内部随机或 `run_interaction` 内部随机。`random_traits=no` 只关闭随机特质，不能据此假定整个角色创建链不会使用随机函数。
+
+最小诊断候选保存在 `fixtures/events/pending-revisions/attempt09-diagnosis/`：仅为现有 effect/event 增加 entry、before/after create、before/after run 标记，包含可审阅的 `diagnostic-markers.patch`、BOM candidate 文件和冻结证据哈希。候选的 BOM、括号、引号和四条 before/after run 标记检查通过；未应用到外部主副本，也未改 profile。原生随机 owner 作用域的修复由 command-runtime 工作包负责，诊断候选供根执行者按需要使用，不新增实机前置门禁。
+
+window 查询已真实读出 played CharacterID `29829` 和 `xar_m120_scheme_target` 的 CharacterID `30784`。根执行者可在同一一次性状态中刷新并复用该 NPC，绕过创建链；这些 ID 只属于 attempt09 冻结帧，不能跨存档当固定锚点。换成既有 NPC 仍不证明发送链不使用随机函数。pending typed reader 和 accept/reject/ACK/成本矩阵在本 attempt 未取得可验收 pending，保持原有 readiness，不把本次 harness RED 记成读取布局故障。
+
+## Attempt14：四类 pending 夹具实机通过
+
+冻结证据位于 `artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-14/`。`pending-live-assessment.json` 对 MCP 结果、八条原生查询回复、四条原生执行结果、删除后的真实 snapshot 和日志结果标记做了一次内容核对，结果为 **GREEN**，SHA-256 为 `33AF790F4878FFFE7C54ECBC72A51EB664988AF33FCEAFA142CBE2918E5E3234`。外层 attempt 的 RED 来自后续 arrange-marriage query unavailable，不能抹去或冒充这四场 pending 的实机结果。
+
+| 场景 | public / native 查询 revision | pending 完整 ID | actor ID | 实际回复和结果 |
+| --- | --- | --- | --- | --- |
+| accept | `4 / 3` | `318767107` | `65742` | 原生 submitted；日志 `ACCEPT`；删除后 public/native `5/4`，pending 为 null |
+| reject | `6 / 5` | `335544323` | `65743` | 原生 submitted；日志 `REJECT`；删除后 public/native `7/6`，pending 为 null |
+| ACK | `8 / 7` | `352321539` | `65744` | 原生 submitted；结果 acknowledged；删除后 public/native `9/8`，pending 为 null |
+| cost | `10 / 9` | `369098755` | `65745` | 十项成本真实查询后 reject 清理；日志 `COST_REJECT`；删除后 public/native `11/10`，pending 为 null |
+
+四场 recipient 和 played CharacterID 均为 `29829`，date raw 均为 `53168784`，查询与操作后 snapshot 均保持暂停。每场两次查询的完整 typed payload、完整 pending ID、public/native revision 与 binding 一致，原生 wire 的 typed payload 与 MCP 公共结果相等。公共 revision 与原生 revision 的差值真实保留，未把公共编号当作原生帧编号。
+
+正常 accept/reject/cost 场景的 accept/reject 合法，block/ACK 不合法，`auto_accept=false` 且通知标记为 false。通知场景仅 ACK 合法，`auto_accept=true` 且通知标记为 true；`ACK_NOTIFICATION_SENT`、`AUTO_ACCEPT`、`AUTO_ACCEPT_ON_ACCEPT` 各出现一次，ACK 删除通知时未重新触发这些效果。正常 accept 和 reject 均有独立实际结果日志，不能只根据命令 submitted 或 pending 删除推断结果。
+
+前三场十项成本全为零；cost 场的原始向量为 `[100000,200000,300000,0,0,0,0,0,0,0]`，scale `100000`，资源顺序为 gold、prestige、piety、renown、influence、herd、treasury、treasury_or_gold、merit、barter_goods。返回元数据为 actor/on_send/already_applied；本次核对验证该原生输出及三个正值，不把它写成独立余额会计验收。
+
+本次真实解锁四种外部夹具的 typed pending 观测和回复，readiness 为 **fixture-live**。target absent、发送选项为零、路由为普通 recipient；非空 target/options、中间人路由、block 动作、特殊战争条款及其余七类非零资源未在该矩阵覆盖。`structured_terms_ready` 和 `interaction_semantic_decision_ready` 仍为 false，exchange/effect preview 未闭合；生产原版互动和完整 OODA 未获得认证。attempt09 的失败证据继续保留，当前成功不是对历史失败的重写。

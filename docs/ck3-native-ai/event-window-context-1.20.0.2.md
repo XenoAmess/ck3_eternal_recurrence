@@ -1,6 +1,6 @@
 # CK3 1.20.0.2 当前事件窗：静态迁移与 typed wire
 
-2026-10-01 已完成独立 `ck3_12002` reader、serializer、真实 C++ 对象图夹具与 Python consumer 回放。状态为 **static-ready**，新版本的 paused live 验收尚未执行。此轮只读取冻结磁盘 EXE、原版 GUI 和本地合成对象；没有访问正在运行的 CK3、注入、输入、重启或执行游戏函数。
+2026-10-01 已完成独立 `ck3_12002` reader、serializer、真实 C++ 对象图夹具与 Python consumer 回放；协调者的 attempt09 使六类 indicator、root/saved scopes、相邻一致性和取消 primitive 达到 **fixture-live**。准备代理只读取冻结磁盘 EXE、原版 GUI、本地合成对象与协调者保存的 JSON；游戏、注入、输入和实际命令由获得用户授权的协调者独占操作。
 
 冻结版本为 `1.20.0.2 (Crozier)`、Steam build `25588574`，EXE SHA-256 为 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。[机器 ABI 合同](../../ck3_autonomous_player/native_bridge/research/ck3_1_20_0_2_event_window_context.json) 固定实际函数区域、指令操作数和源码常量；旧版 live 记录不能替代本次验收。
 
@@ -67,10 +67,11 @@ flowchart TD
     F --> G[Presentation and six materialized indicator kinds]
     G --> H[Repeat owned scopes, definition and observation prefix]
     H --> I[Owned DTO / versioned serializer / Python contract]
-    I -. paused production artifact pending .-> J[New-build live readiness]
+    I --> J[Attempt09 fixture-live observation and cancel]
+    J -. full effect preview and production loop remain open .-> K[Production strategy readiness]
 ```
 
-## 离线结果与下一次实机入口
+## 离线与实机结果
 
 实现为 [typed header](../../ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_event_window_context.hpp)、[reader](../../ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context.cpp)、[serializer](../../ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context_serializer.cpp) 与 [fixture](../../ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context_test.cpp)。MSVC 19.51、C++20、`/EHsc /W4` 编译及运行 PASS。夹具调用真实 reader/serializer，覆盖新版对象图、完整 Character scope、signed saved name round-trip、非 Character scope、trait/scheme identity、六个已知 kind、未知 kind、组合双向 flags、旧 cancel 字节诱饵、错误非 Gfx idler、重复窗口与陈旧 Character generation。
 
@@ -82,4 +83,10 @@ artifact 目录：`artifacts/migrations/2026-09-30/post-update-1.20.0.2/event-wi
 - `abi-verification-result.json` SHA-256：`2F2B6D69A75FB60DD6DC4E00A4CD169A4579AA640EC34B090C687EBD4B5C1C22`。
 - `producer-context.json` SHA-256：`5F2A3DC5E04DDA2E650EEC4C337E9C6062849572CF1E4D8D35FD1C9DB0ECD230`；相同 native wire 冻结为 [Python fixture](../../ck3_autonomous_player/tests/fixtures/ck3_12002_event_window_native.json)，16 项迁移/consumer 回放 PASS。
 
-本包剩余迁移验证需要用户允许触碰游戏后的真实 paused snapshot：匹配当前实例与物化窗口、root 和完整 saved scopes、窗口选项/新 indicator，以及选择后由状态观测确认的游戏结果。旧版已有的完整 structured effect preview、非 Character payload decoder 和完整事件选择策略缺口仍独立存在；静态迁移没有声称完成这些能力。总迁移和命令边界见[事件与互动迁移专题](ck3-1.20-event-interaction-migration.md)。
+协调者已在真实 paused attempt09 完成新版 fixture 验收：当前 event `15`、native revision `5`、root Character `29829`、saved target `30784`，两帧相同；11 个物化选项发布全部六类 indicator 和正反方向，public option `1` 提交 cancel native `0` 后旧事件消失。[完整 JSON 回放](../../artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-09/events-window-validation-native-rule.json)两帧 GREEN。状态为 `fixture-definition playset + production native bridge` 范围的 `fixture-live primitive`。
+
+实机同时闭合了 `show_as_unavailable` 的显示规则：`NGui.EVENT_OPTIONS_SHOWN_HIDE_UNAVAILABLE=4` 是禁用项补位上限，不是所有选项的数量上限。SetupOptions 第一遍统计全部 enabled，第二遍按 authored 顺序追加 enabled，并只在已统计数低于上限时追加 disabled。fixture 有 11 个 enabled，因此 native `1` 不显示；独立 selection 只有 2 个 enabled，因此该 disabled row 显示。原生注册 `0xB50880` 将 define 绑定到 `0x5C67B18`，caller `0x185150A` 读取、`0x1851722/0x1851732` 传入第四参数，`0x1852BD8/0x1852BDF` 判断并跳过超限 disabled。只有 `scheme_preparations_event` widget 使用另一个 stock 上限 `8`，本 fixture 不走特例。
+
+原始 12 行 expectation 与 RED 已归档；修正为 `[0,3..12]` 的 11 行后，对同一冻结响应完整回放通过。没有改 reader、DLL 或游戏夹具内容，没有额外实机重跑。确切 define 行、文件哈希及 producer 指令保存在[原生显示规则证据](../../artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/fixtures/events/window-revisions/attempt09-native-disabled-limit/native-materialization-proof.json)。
+
+旧版已有的完整 structured effect preview、非 Character payload decoder 和完整事件选择策略缺口仍独立存在；本次 fixture 通过没有声称完成这些能力或 production OODA。总迁移和命令边界见[事件与互动迁移专题](ck3-1.20-event-interaction-migration.md)。

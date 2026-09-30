@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 from argparse import Namespace
+import json
+import os
 from pathlib import Path
 import tempfile
 import threading
@@ -14,6 +16,43 @@ from run_ck3_12002_mcp_live import PlanClient, resolve, tool_payload
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_nested_hold_consumes_each_control_file_identity_once(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            controls = root / "controls"
+            controls.mkdir()
+            control = controls / "001.json"
+            control.write_text(json.dumps({"steps": [
+                {"id": "submit", "tool": "fixture-submit"},
+                {"id": "settle", "kind": "hold", "seconds": 0.002},
+            ]}), encoding="utf-8-sig")
+            args = Namespace(output=root / "report.json", command_timeout=1,
+                             control_plan_dir=controls, hold_seconds=0)
+            report = {"steps": []}
+            client = PlanClient(None, args, report, lambda: None)
+            calls = []
+
+            async def invoke(name, arguments, **kwargs):
+                calls.append(name)
+                return {"submitted": True}
+
+            async def fresh():
+                return {"revision": len(calls)}
+
+            client.invoke, client.fresh = invoke, fresh
+            asyncio.run(client.hold(0.01))
+            self.assertEqual(calls, ["fixture-submit"])
+            asyncio.run(client.hold(0.002))
+            self.assertEqual(calls, ["fixture-submit"])
+            old = control.stat()
+            os.utime(control, ns=(old.st_atime_ns, old.st_mtime_ns + 1_000_000))
+            asyncio.run(client.hold(0.01))
+            self.assertEqual(calls, ["fixture-submit", "fixture-submit"])
+            asyncio.run(client.hold(0.002))
+            self.assertEqual(calls, ["fixture-submit", "fixture-submit"])
+            self.assertEqual(len(client.consumed_control_plans), 2)
+            self.assertEqual(len(report["control_plans"]), 2)
+
     def test_native_fixture_invokes_only_fixed_step_and_restores_noop(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
