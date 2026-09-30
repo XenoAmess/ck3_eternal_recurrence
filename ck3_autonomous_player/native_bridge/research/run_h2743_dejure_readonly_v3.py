@@ -545,6 +545,75 @@ def require_live_bus_migration() -> None:
                            "expected-sequence lease operations before live preparation or run")
 
 
+def call_profile_cli(attempt: Path, state: Path, name: str, arguments: list[str],
+                     task_id: str | None) -> dict[str, object]:
+    """Run one profile CLI; retain an unsafe marker after any interrupted wait."""
+    require_live_bus_migration()
+    argv = [str(PYTHON), "-c", CLI_ENTRY, "--state-dir", str(state), "--game-dir", str(GAME), *arguments]
+    write_new(attempt / f"{name}-argv.json", {"argv": argv, "ck3_launch_attempted": False})
+    with (attempt / f"{name}-stdout.txt").open("x", encoding="utf-8") as stdout, \
+         (attempt / f"{name}-stderr.txt").open("x", encoding="utf-8") as stderr:
+        completed = subprocess.Popen(argv, cwd=REPO, stdout=stdout, stderr=stderr)
+        failure: BaseException | None = None
+        try:
+            deadline = time.monotonic() + 1200
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise RuntimeError(f"{name} timed out; partial logs preserved")
+                try:
+                    code = completed.wait(timeout=min(60, remaining))
+                    break
+                except subprocess.TimeoutExpired:
+                    if task_id is not None:
+                        renew_screen_lease(task_id)
+        except BaseException as error:
+            failure = error
+            raise
+        finally:
+            if failure is not None:
+                marker_error: BaseException | None = None
+                try:
+                    write_new(attempt / f"{name}-unsafe-cleanup.json", {
+                        "status": "RED_PROFILE_CLI_INTERRUPTED", "pid": completed.pid,
+                        "failure": f"{type(failure).__name__}: {failure}",
+                        "process_tree_cleanup_proven": False,
+                        "manual_recovery_required": True,
+                        "at_utc": utc_now().isoformat()})
+                except BaseException as error:
+                    marker_error = error
+                cleanup_errors: list[str] = []
+                direct_child_reaped = False
+                try:
+                    if completed.poll() is None:
+                        completed.terminate()
+                    completed.wait(timeout=30)
+                    direct_child_reaped = completed.poll() is not None
+                except BaseException as error:
+                    cleanup_errors.append(f"terminate/wait: {type(error).__name__}: {error}")
+                    try:
+                        if completed.poll() is None:
+                            completed.kill()
+                        completed.wait(timeout=30)
+                        direct_child_reaped = completed.poll() is not None
+                    except BaseException as fallback_error:
+                        cleanup_errors.append(f"kill/wait: {type(fallback_error).__name__}: {fallback_error}")
+                try:
+                    write_new(attempt / f"{name}-cleanup-result.json", {
+                        "pid": completed.pid, "direct_child_reaped": direct_child_reaped,
+                        "returncode": completed.returncode, "cleanup_errors": cleanup_errors,
+                        "process_tree_cleanup_proven": False,
+                        "unsafe_marker_written": marker_error is None})
+                except BaseException as error:
+                    raise RuntimeError(f"{name} cleanup receipt unavailable; manual recovery required") from error
+                if marker_error is not None or not direct_child_reaped:
+                    raise RuntimeError(f"{name} cleanup unproven; manual recovery required") from failure
+    if code != 0:
+        raise RuntimeError(f"{name} failed: {code}; preserve this attempt")
+    return {"exit_code": code, "stdout_sha256": sha256(attempt / f"{name}-stdout.txt"),
+            "stderr_sha256": sha256(attempt / f"{name}-stderr.txt")}
+
+
 def prepare_no_launch(attempt_name: str, task_id: str | None,
                       *, sealed_attempt: bool = False) -> None:
     """Screen-owned live profile preparation; legacy CLI remains available."""
@@ -573,32 +642,8 @@ def prepare_no_launch(attempt_name: str, task_id: str | None,
         "candidate_build_manifest_sha256": candidate_manifest_sha256(),
         "injector_sha256": INJECTOR_SHA, "ck3_launch_attempted": False, "gameplay_action_submitted": False})
 
-    def call(name: str, arguments: list[str]) -> dict[str, object]:
-        argv = [str(PYTHON), "-c", CLI_ENTRY, "--state-dir", str(state), "--game-dir", str(GAME), *arguments]
-        write_new(attempt / f"{name}-argv.json", {"argv": argv, "ck3_launch_attempted": False})
-        with (attempt / f"{name}-stdout.txt").open("x", encoding="utf-8") as stdout, \
-             (attempt / f"{name}-stderr.txt").open("x", encoding="utf-8") as stderr:
-            completed = subprocess.Popen(argv, cwd=REPO, stdout=stdout, stderr=stderr)
-            deadline = time.monotonic() + 1200
-            while True:
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
-                    completed.terminate()
-                    completed.wait(timeout=30)
-                    raise RuntimeError(f"{name} timed out; partial logs preserved")
-                try:
-                    code = completed.wait(timeout=min(60, remaining))
-                    break
-                except subprocess.TimeoutExpired:
-                    if task_id is not None:
-                        renew_screen_lease(task_id)
-        if code != 0:
-            raise RuntimeError(f"{name} failed: {code}; preserve this attempt")
-        return {"exit_code": code, "stdout_sha256": sha256(attempt / f"{name}-stdout.txt"),
-                "stderr_sha256": sha256(attempt / f"{name}-stderr.txt")}
-
-    prepare = call("prepare-profile", ["prepare-profile", "--xar-enabled", "xar_off",
-                                       "--display-mode", "windowed"])
+    prepare = call_profile_cli(attempt, state, "prepare-profile", ["prepare-profile", "--xar-enabled", "xar_off",
+                                        "--display-mode", "windowed"], task_id)
     destinations = {"xar_checkpoint.ck3": state / "profile/save games/xar_checkpoint.ck3",
                     "driver-state.json": state / "native-session/driver-state.json",
                     "first-heir-marriage-formal-v1.json": state / "first-heir-marriage-formal-v1.json"}
@@ -609,14 +654,14 @@ def prepare_no_launch(attempt_name: str, task_id: str | None,
         if sha256(destination) != SOURCE_HASHES[name]:
             raise RuntimeError(f"prepared source byte mismatch: {name}")
     write_new(attempt / "input-placement.json", {name: str(path) for name, path in destinations.items()})
-    rebind = call("rebind", ["rebind-ordinary-seed-v1", "--expected-pipe", PIPE,
-                             "--receipt", str(attempt / "ordinary-rebind-local.json")])
+    rebind = call_profile_cli(attempt, state, "rebind", ["rebind-ordinary-seed-v1", "--expected-pipe", PIPE,
+                             "--receipt", str(attempt / "ordinary-rebind-local.json")], task_id)
     derived = sha256(destinations["driver-state.json"])
-    preflight = call("preflight", ["--bridge-pipe", PIPE, "native-one-generation-preflight",
+    preflight = call_profile_cli(attempt, state, "preflight", ["--bridge-pipe", PIPE, "native-one-generation-preflight",
         "--expected-character-id", "29829", "--expected-episode-run-id", EPISODE,
         "--expected-checkpoint-sha256", SOURCE_HASHES["xar_checkpoint.ck3"],
         "--expected-driver-state-sha256", derived, "--xar-enabled", "xar_off",
-        "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact"])
+        "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact"], task_id)
     ready_summary = {"status": "no_launch_preflight_ready",
         "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
         "candidate_dll_sha256": DLL_SHA,
