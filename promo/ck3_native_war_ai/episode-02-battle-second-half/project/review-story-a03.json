@@ -1,0 +1,716 @@
+{
+  "schema": "ck3.episode02.ui-led-story.v1",
+  "status": "frozen-tts-input-pending-human-video-review",
+  "title": {
+    "zh": "1288 对 330：墨西拿的优势为什么不能只看人数？",
+    "en": "1,288 against 330: why headcount is not enough at Messina"
+  },
+  "primary_language": "zh-CN",
+  "subtitle_language": "en",
+  "voice_intent": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%"
+  },
+  "editing_intent": {
+    "hook_utterances": [
+      "o01"
+    ],
+    "setup_utterances": [
+      "o02",
+      "o03"
+    ],
+    "target_hook_seconds": [
+      5,
+      8
+    ],
+    "setup_by_seconds": 20,
+    "duration_policy": "Use actual speech duration. Every shot has synchronous narration; no independent silent reading holds or empty chapter-end cards. Chapter bridge at most 0.3s.",
+    "source_switch_policy": "The opening contact, present knight footage, A01 reinforcement and A05 pursuit/terminal are separate recorded replay sources. Preserve short visible source labels and spoken source switches; do not imply a single captured causal chain.",
+    "numeric_policy": "Highlight the actual UI field as the number is spoken. Internal records use a visibly distinct explanatory card, never a fabricated game tooltip.",
+    "chronology": "contact; day-6 knight observation; day-11/12 reinforcement; later knight roster change; day-28/31 pursuit; day-32 A05 terminal and war state",
+    "chapter_tail_seconds": 0.3,
+    "narration_coverage": "Continuous narration on real UI excerpts, source-labelled paused UI crops, and short narrated data insets. No dedicated silent reading holds.",
+    "source_continuity": "Explicit spoken replay switches; every before/after pair remains within its own raw source. Separate opening contact is frontstory, not A05 continuation.",
+    "ui_caption_precision": "Keep original UI units: the terminal war-score contribution is visibly-50%. Source labels and date context remain attached to every crop."
+  },
+  "facts_index": {
+    "contact": {
+      "layer": "original-case-observation",
+      "reference": "D:/w/video_e2_final_20260929/docs/ck3-native-ai/battle-simulation-episode01-live-case.md",
+      "claim": "Original contact UI shows player 1288/enemy330; the original case later loses. This opening is not a new continuation of A05.",
+      "ui_reference": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-002/battle-day-001-53146248.png",
+      "edit_map_reference": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/ui-opening-day0-edit-map.json"
+    },
+    "war_identity": {
+      "layer": "native-identity-and-source-name-mapping",
+      "reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+      "claim": "Player Robert is war attacker against primary opponent31549 Ali, associated title2111 Syracuse; encounter is Province2633 Messina. No unverified CB name or territorial promise."
+    },
+    "knight_current7": {
+      "layer": "current-recorded-ui-observation",
+      "reference": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/knights-ui-edit-map.json",
+      "claim": "A visible knight row shows prowess7. No assertion that the new footage proves the historical11-to7 change or its full cause."
+    },
+    "knight_mechanism": {
+      "layer": "vanilla-mechanism",
+      "reference": "D:/w/video_e2_final_20260929/docs/ck3-native-ai/combat-phase-event-trace.md",
+      "claim": "Knight prowess and effectiveness are combat inputs; injury and death must be distinguished from total army headcount. Historical maim arithmetic is omitted from this film.",
+      "verification_reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json"
+    },
+    "reinforcement_ui": {
+      "layer": "same-A01-recorded-ui-before-after",
+      "reference": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json",
+      "claim": "raw225 sea marker2570; raw350 left893/right1603; raw365 next date left827/right4106. These exact UI fields are not native regiment sums."
+    },
+    "reinforcement_current": {
+      "layer": "same-A01-native-record",
+      "reference": "D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+      "claim": "Army22 has13 regiment records; starting2570, incoming current2560 because one regiment starts10/current0. Never add UI1603+map2570 as a predicted UI4106.",
+      "verification_reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json"
+    },
+    "width": {
+      "layer": "same-A01-native-record-and-mechanism",
+      "reference": "D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+      "claim": "Cached entry final width1480; recalculated returned final width2220; same-run first side0 damage call receives2220. These values were not shown in inspected game UI.",
+      "verification_reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json"
+    },
+    "knight_roster_ui": {
+      "layer": "current-a02-recorded-ui-observation",
+      "reference": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/knights-ui-edit-map.json",
+      "claim": "Visible knight counter changes11-to10 and a knight death report is visible nearby. Do not identify the old historical selector or claim a unique causal identity without the recorded mapping."
+    },
+    "pursuit_ui": {
+      "layer": "A05-recorded-ui-observation",
+      "reference": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json",
+      "claim": "Left Robert is battle defender and retreating, routed count824-to761; right battle attacker is pursuing. The semantics routed soldiers comes from vanilla verification, not visible wording in the currently mapped crop. Do not imply treatable wounds.",
+      "verification_reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json"
+    },
+    "pursuit_ledger": {
+      "layer": "same-A05-native-record-and-conditional-calculation",
+      "reference": "D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-02-03-a05-pursuit-facts-20260928.json",
+      "claim": "Three-day soft-to-hard conversion62.94269 people-equivalent.72 soft and69 readable hard changes match, under day28 input and losing-side screen0. Current_fighting fields themselves stay unchanged; UI integers are not equated to those fields.",
+      "verification_reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json"
+    },
+    "terminal": {
+      "layer": "same-A05-native-terminal-and-paused-war-state",
+      "reference": "D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-09-a05-writer-facts-20260928-v3.json",
+      "claim": "Day32 normal_result, enemy combat side0 wins; player army18 is retreating and out of combat. Robert is war attacker; player-relative battle row and same-run total war score are-50. Battle end does not prove war end or an active AI withdrawal order.",
+      "verification_reference": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+      "ui_reference": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json",
+      "ui_limit": "Mapped actual terminal war contribution is displayed as-50%; narrator says负五十战分. Do not substitute another run’s contact or fabricate battle-result UI."
+    },
+    "limits": {
+      "layer": "explicit-evidence-boundary",
+      "reference": "C:/Users/1/AppData/Local/ck3-review-render/episode02-story-20260930-a03/fact-check.json",
+      "claim": "No entire calibrated battle probability, future reinforcement ETA or proof that these independent knight/reinforcement observations caused A05 defeat."
+    }
+  },
+  "chapters": [
+    {
+      "id": "opening",
+      "title": "先问：人数优势能保持吗？",
+      "utterances": [
+        {
+          "id": "o01",
+          "zh": "接战时，一千二百八十八对三百三十。近四倍的人数，真的够吗？",
+          "en": "At contact: 1,288 against 330. Is almost four times the headcount really enough?",
+          "visual": {
+            "kind": "actual-ui-hook",
+            "focus": "Start immediately on the real original PNG: left Robert 1288, right enemy330. Reveal the question during continuous narration.",
+            "source": "original-contact-frontstory",
+            "still": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-002/battle-day-001-53146248.png",
+            "source_label_zh": "原始接战／前情",
+            "source_label_en": "Original contact / recap",
+            "crop": [
+              394,
+              560,
+              630,
+              651
+            ],
+            "counter_bboxes": {
+              "player": [
+                418,
+                603,
+                456,
+                625
+              ],
+              "enemy": [
+                581,
+                603,
+                609,
+                625
+              ]
+            },
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/ui-opening-day0-edit-map.json"
+          },
+          "facts": [
+            "contact"
+          ]
+        },
+        {
+          "id": "o02",
+          "zh": "罗贝尔与塞尔古塞领主阿里，在墨西拿接战。我们要看人数优势为什么没有保住。",
+          "en": "Robert meets Ali, ruler of Syracuse, at Messina. We want to see why the numerical advantage did not last.",
+          "visual": {
+            "kind": "actual-ui-setup",
+            "focus": "Retain Messina map and original player/opponent identities. Minimal three labels: Robert, Ali, Messina."
+          },
+          "facts": [
+            "war_identity",
+            "contact"
+          ]
+        },
+        {
+          "id": "o03",
+          "zh": "先看骑士名单和战斗属性，再看有没有新军入场；最后跟着败退和损失，看这场仗留下了什么结果。",
+          "en": "First, read the knight list and combat attributes. Then watch for arriving armies. Finally, follow retreat and losses into the battle result.",
+          "visual": {
+            "kind": "narrated-roadmap",
+            "focus": "Brief three-image montage: knight list, arriving army, war score. Narration continues; no silent holds."
+          },
+          "facts": [
+            "knight_mechanism",
+            "reinforcement_ui",
+            "terminal"
+          ]
+        },
+        {
+          "id": "o04",
+          "zh": "这些是同一战例的几段独立复盘。切换时，屏幕会标明来源；每段前后变化，只在自己的回放里比较。",
+          "en": "These are separate replays of the same battle case. The screen labels each source, and each before-and-after comparison stays within its own replay.",
+          "visual": {
+            "kind": "source-bridge",
+            "focus": "Simple source labels on actual footage. Do not display runtime IDs or long audit language."
+          },
+          "facts": [
+            "contact",
+            "limits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "knights",
+      "title": "人数没讲出的骑士状态",
+      "utterances": [
+        {
+          "id": "k01",
+          "zh": "先把军队总人数放到一边，打开第六日的骑士名单。总数能告诉我们有多少人，却说不清每个人还能怎样作战。",
+          "en": "Set the army total aside and open the day-six knight list. A headcount tells us how many people are present, but not how each can fight.",
+          "visual": {
+            "kind": "actual-ui",
+            "source": "current-a08-day6",
+            "focus": "Actual knight list with date context; highlight selected visible knight row.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/knights-ui-edit-map.json"
+          },
+          "facts": [
+            "knight_current7",
+            "knight_mechanism"
+          ]
+        },
+        {
+          "id": "k02",
+          "zh": "这名骑士的勇武栏显示七。他仍在名单里，但七是人物的战斗属性，不是这支军队只有七个人。",
+          "en": "This knight's prowess column shows seven. He remains on the list, but seven is a combat attribute, not the army's headcount.",
+          "visual": {
+            "kind": "actual-ui-crop",
+            "source": "current-a08-day6",
+            "focus": "Magnify actual prowess column and row membership together; label Prowess7 without adding historical11.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/knights-ui-edit-map.json"
+          },
+          "facts": [
+            "knight_current7"
+          ]
+        },
+        {
+          "id": "k03",
+          "zh": "原版用骑士的勇武和骑士战斗力，形成伤害与坚韧属性。军队总人数，并不会直接告诉你这些差别。",
+          "en": "Vanilla CK 3 uses prowess and knight effectiveness to form damage and toughness attributes. The army headcount does not reveal these differences.",
+          "visual": {
+            "kind": "ui-led-explanation",
+            "focus": "Keep actual prowess7 row visible. Use UI term 骑士战斗力 / knight effectiveness. Explain attributes only, not daily kills."
+          },
+          "facts": [
+            "knight_mechanism"
+          ]
+        },
+        {
+          "id": "k04",
+          "zh": "这里要分开两个问题：他还在不在名单里，以及他的战斗属性怎样。名单上的人数和人物的能力，要一起看。",
+          "en": "Keep two questions separate: is he still on the list, and what are his combat attributes? Read the roster and individual ability together.",
+          "visual": {
+            "kind": "actual-ui-with-narration",
+            "focus": "Contrast actual row membership with prowess column; do not invent an injury before-and-after comparison."
+          },
+          "facts": [
+            "knight_current7",
+            "knight_mechanism"
+          ]
+        },
+        {
+          "id": "k05",
+          "zh": "所以，判断这支军队的实力，要同时看人数和当下属性。这一行的七，正是总人数里看不见的信息。",
+          "en": "Judge this army through both its size and its present attributes. The seven in this row is information hidden by the overall headcount.",
+          "visual": {
+            "kind": "narrated-ui-bridge",
+            "focus": "Pull back from knight row to army and map while narration continues."
+          },
+          "facts": [
+            "knight_mechanism"
+          ]
+        },
+        {
+          "id": "k06",
+          "zh": "不过，人物属性只是其中一层。接下来把镜头拉回地图：如果一支新的军队加入，整个接战局面都会变。",
+          "en": "Character attributes are one part of the picture. Now return to the map: a new army joining can change the entire encounter.",
+          "visual": {
+            "kind": "source-bridge",
+            "focus": "Switch clearly to the separate reinforcement replay before its first number appears."
+          },
+          "facts": [
+            "reinforcement_ui",
+            "limits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reinforcement",
+      "title": "地图上的新军，改变了局面",
+      "utterances": [
+        {
+          "id": "r01",
+          "zh": "现在看增援这条回放。十二月十四日的战斗面板，罗贝尔这一侧是八百九十三，对面是一千六百零三。",
+          "en": "Now watch the reinforcement replay. On December 14, the battle panel shows 893 on Robert's side and 1,603 on the other.",
+          "visual": {
+            "kind": "actual-ui-before",
+            "source": "A01",
+            "raw_time_seconds": 350,
+            "focus": "Actual bottom battle panel, left893/right1603, date context retained.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json"
+          },
+          "facts": [
+            "reinforcement_ui"
+          ]
+        },
+        {
+          "id": "r02",
+          "zh": "再看同一天海上的军队标记：二千五百七十。已经接战的敌军，并不是对方后续能投入的全部兵力。",
+          "en": "Look at the sea marker earlier that same day: 2,570. The enemies already in combat are not the full force that may later arrive.",
+          "visual": {
+            "kind": "actual-ui-arrival",
+            "source": "A01",
+            "raw_time_seconds": 225,
+            "focus": "Magnify actual sea army marker2570 with original map/date. Present as earlier same-day look, not a later-time continuation.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json"
+          },
+          "facts": [
+            "reinforcement_ui"
+          ]
+        },
+        {
+          "id": "r03",
+          "zh": "到了十二月十五日，同一回放里的面板变成了：罗贝尔八百二十七，敌方四千一百零六。",
+          "en": "On December 15, the panel in that same replay changes to 827 for Robert and 4,106 for the enemy.",
+          "visual": {
+            "kind": "actual-ui-after",
+            "source": "A01",
+            "raw_time_seconds": 365,
+            "focus": "Actual827/4106 panel; align and highlight the same fields as the prior frame.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json"
+          },
+          "facts": [
+            "reinforcement_ui"
+          ]
+        },
+        {
+          "id": "r04",
+          "zh": "把同一回放的前后面板放在一起，局势变化就清楚了。眼前要面对的兵力，已远多于最初接战时看到的数量。",
+          "en": "The panels from the same replay make the change clear. The force now faced is far larger than the number seen at initial contact.",
+          "visual": {
+            "kind": "actual-ui-comparison",
+            "focus": "Side-by-side A01 same-field comparison893/1603 to827/4106. Original contact330 only as explicitly labelled earlier context."
+          },
+          "facts": [
+            "contact",
+            "reinforcement_ui"
+          ]
+        },
+        {
+          "id": "r05",
+          "zh": "海上标记和战斗面板，是不同位置、不同时点的读数。前后人数变化，也不能直接当作新军的入场人数。",
+          "en": "The sea marker and battle panel are readings from different places and times. The change between panels is not itself the newcomer’s strength.",
+          "visual": {
+            "kind": "ui-led-explanation",
+            "focus": "Highlight the two real UI fields separately; never show a false arithmetic equality."
+          },
+          "facts": [
+            "reinforcement_ui",
+            "reinforcement_current"
+          ]
+        },
+        {
+          "id": "r06",
+          "zh": "同次原生跟踪，还记录了新军的十三条兵团：起始人数合计二千五百七十，当前加入人数是二千五百六十。",
+          "en": "The same native trace records thirteen incoming regiments: 2,570 starting troops, but 2,560 current troops joining.",
+          "visual": {
+            "kind": "labelled-native-record-card",
+            "source": "A01",
+            "focus": "Short narrated card labelled same-replay recorded regiment values: starting2570/current2560. Keep actual arrival map beside it."
+          },
+          "facts": [
+            "reinforcement_current"
+          ]
+        },
+        {
+          "id": "r07",
+          "zh": "另十人对应的那条兵团，当前人数为零。这说明起始数和当前数有区别；这里没有证明十人是怎样减少的。",
+          "en": "The regiment accounting for the other ten has zero current troops. Starting and current strength differ; this does not show how those ten were lost.",
+          "visual": {
+            "kind": "labelled-native-record-card",
+            "focus": "Reveal the one starting10/current0 row; no large raw fixed-point numbers."
+          },
+          "facts": [
+            "reinforcement_current"
+          ]
+        },
+        {
+          "id": "r08",
+          "zh": "这次新军加入后，原版也重算了战宽。战宽会限制全侧发挥出的伤害，人数增长与伤害增长，并不是简单等号。",
+          "en": "After this join, vanilla recalculates combat width. Width limits the side’s damage output, so more troops do not translate directly into proportionally more damage.",
+          "visual": {
+            "kind": "ui-led-mechanism-card",
+            "focus": "Actual battle view remains beside a clearly separate combat-width explanation. Do not fake a width UI field."
+          },
+          "facts": [
+            "width"
+          ]
+        },
+        {
+          "id": "r09",
+          "zh": "这次记录中，加入前的最终战宽是一千四百八十，重算后是二千二百二十；下一次出伤，也实际用了新值。",
+          "en": "Here, final combat width is 1,480 before the join and 2,220 after recalculation. The next damage calculation actually receives the new value.",
+          "visual": {
+            "kind": "labelled-native-record-card",
+            "focus": "A01 recorded width1480 to2220 and next damage input2220. Speak through the reveal; no silent reading hold."
+          },
+          "facts": [
+            "width"
+          ]
+        },
+        {
+          "id": "r10",
+          "zh": "所以要重新判断局面，不能只把地图上多出来的数字加一下；参战名单和后续计算，都已经跟着新军改变。",
+          "en": "Reassessing the position takes more than adding a number on the map. The participant list and subsequent calculation change with the new army.",
+          "visual": {
+            "kind": "narrated-summary",
+            "focus": "Return to the actual827/4106 panel, with a small arrival-to-new-panel connection."
+          },
+          "facts": [
+            "reinforcement_ui",
+            "reinforcement_current",
+            "width"
+          ]
+        },
+        {
+          "id": "r11",
+          "zh": "这段让我们看见已经发生的加入，却还没有提前算出所有未来增援的到达日。知道现在变了，与预知下一次何时变，是两件事。",
+          "en": "This shows a join that has happened. It does not predict every future reinforcement date. Seeing a change and forecasting the next one are different tasks.",
+          "visual": {
+            "kind": "narrated-map-bridge",
+            "focus": "Actual army and battle remain visible; no empty limitations card or technical audit text."
+          },
+          "facts": [
+            "reinforcement_current",
+            "limits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pursuit",
+      "title": "接战后半段：少了谁，又损失了什么？",
+      "utterances": [
+        {
+          "id": "p01",
+          "zh": "战斗到了后半段，再看两个问题：名单里少了谁，败退还会带走多少损失？先看另一条骑士回放。",
+          "en": "In the later battle, ask who has left the list and what further losses defeat brings. First, watch a separate knight replay.",
+          "visual": {
+            "kind": "source-bridge",
+            "source": "current-knight-a02",
+            "focus": "Explicitly switch to the later knight replay; display actual date and knight panel."
+          },
+          "facts": [
+            "knight_roster_ui"
+          ]
+        },
+        {
+          "id": "p02",
+          "zh": "这段连续画面里，我方骑士数从十一变成十；随后战报出现一条阵亡记录。先把这两处真实变化看清楚。",
+          "en": "In this continuous footage, our knight count changes from eleven to ten. A death report then appears. Read these two visible changes first.",
+          "visual": {
+            "kind": "actual-ui-comparison",
+            "source": "current-knight-a02",
+            "raw_times_seconds": [
+              232.533,
+              232.567,
+              233
+            ],
+            "focus": "Show exact same-source11/10 counter crops and subsequent actual death report; no historic selector or RNG attribution.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/knights-ui-edit-map.json"
+          },
+          "facts": [
+            "knight_roster_ui"
+          ]
+        },
+        {
+          "id": "p03",
+          "zh": "名单少了一位，意味着不能再用旧名单判断这一侧。我们跟着这段录像读战报，接下来再看败退中的整体损失。",
+          "en": "With one fewer knight, the old roster no longer describes this side. Follow this recording’s report, then turn to the wider losses during retreat.",
+          "visual": {
+            "kind": "actual-ui-with-narration",
+            "focus": "Keep the recorded list/report visible. Do not show old020/070/036 arithmetic as if it belongs to this footage."
+          },
+          "facts": [
+            "knight_roster_ui",
+            "limits"
+          ]
+        },
+        {
+          "id": "p04",
+          "zh": "接下来切到追击回放。第二十八日，左侧罗贝尔已经是撤退的一方，右侧敌军正在追击。",
+          "en": "Now switch to the pursuit replay. On day 28, Robert on the left is retreating, while the enemy on the right is pursuing.",
+          "visual": {
+            "kind": "actual-ui-pursuit",
+            "source": "A05",
+            "focus": "Actual left defender/retreating and right attacker/pursuing labels with date. No seamless join from the knight source.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ui"
+          ]
+        },
+        {
+          "id": "p05",
+          "zh": "这部分兵员，按原版语义属于溃散。左侧数字，从八百二十四变成七百六十一；追击还在继续。",
+          "en": "Under the verified vanilla meaning, these are routed soldiers. The left-side count goes from 824 to 761 while pursuit continues.",
+          "visual": {
+            "kind": "actual-ui-comparison",
+            "source": "A05",
+            "focus": "Highlight actual same-source824-to761 counters, retreating and pursuing labels. Routed soldiers is a verified explanation, not wording visible in this crop; do not invent a tooltip or label the term as visible original UI.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ui"
+          ]
+        },
+        {
+          "id": "p06",
+          "zh": "主阶段结束，损失也没有立刻停下。追击期间，原版还会继续结算败方已有的溃散和伤亡。",
+          "en": "Losses do not stop the moment the main phase ends. During pursuit, the game continues resolving the losing side's routed force and casualties.",
+          "visual": {
+            "kind": "actual-ui-with-narration",
+            "source": "A05",
+            "focus": "Retain pursuit phase labels and changed routed count; show no generic blank panel.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ui",
+            "pursuit_ledger"
+          ]
+        },
+        {
+          "id": "p07",
+          "zh": "核对同次回放这三次跨日的账本，约六十三人当量，从软损失转成永久损失。它解释的是追击中的损失变化。",
+          "en": "Across three daily ticks in the same replay, about 63 people-equivalent move from soft loss to permanent loss. This describes the losses during pursuit.",
+          "visual": {
+            "kind": "labelled-native-record-card",
+            "source": "A05",
+            "focus": "Keep pursuit UI visible beside a short narrated, explicitly labelled 原生记录 / native record inset: three ticks, total62.94269≈63 people-equivalent soft-to-permanent loss. No silent hold.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ledger"
+          ]
+        },
+        {
+          "id": "p08",
+          "zh": "面板是取整人数，账本还有自己的精度和定义。我们把它们并排看，保留各自口径；约六十三，也保留约字。",
+          "en": "The panel uses whole-number counts; the ledger has its own precision and definitions. Read them side by side, and keep about 63 explicitly approximate.",
+          "visual": {
+            "kind": "ui-and-record-comparison",
+            "focus": "Real UI824/761 left, labelled recorded loss≈63 right. Preserve the distinction visibly and briefly.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ui",
+            "pursuit_ledger"
+          ]
+        },
+        {
+          "id": "p09",
+          "zh": "这条回放里，给定第二十八日的状态，我们把三天逐团损失算到了与原版一致。它回答的是这段追击，不是战前整场胜率。",
+          "en": "Given this replay's day 28 state, our three-day regiment loss calculation agrees with vanilla. It answers this pursuit segment, not the pre-battle win probability.",
+          "visual": {
+            "kind": "narrated-calculation-result",
+            "source": "A05",
+            "focus": "Small three-day agreement mark; keep real battle view visible. No large test counts or audit jargon.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ledger",
+            "limits"
+          ]
+        },
+        {
+          "id": "p10",
+          "zh": "到这里，问题已经从能不能保持优势，变成败退还会带走多少损失。最后，我们要看原版怎样结束这场战斗。",
+          "en": "The question has moved from preserving an advantage to the cost of defeat. Finally, watch how the game ends this battle.",
+          "visual": {
+            "kind": "same-source-bridge",
+            "source": "A05",
+            "focus": "Continue within the A05 pursuit/terminal source; use actual result-related footage.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "pursuit_ui",
+            "terminal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terminal",
+      "title": "败退怎样进入战争结果？",
+      "utterances": [
+        {
+          "id": "t01",
+          "zh": "第三十二日，追击这条回放的结果已经确定：敌军获胜，罗贝尔的军队脱离战斗，处在败退状态。",
+          "en": "On day 32, the pursuit replay has a confirmed result: the enemy wins, and Robert's army leaves the battle in retreat.",
+          "visual": {
+            "kind": "actual-ui-result",
+            "source": "A05",
+            "focus": "Actual A05 result/retreat UI tied to same-run native result. Avoid a fabricated battle-result window.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "terminal"
+          ]
+        },
+        {
+          "id": "t02",
+          "zh": "这里有一处容易看反：罗贝尔在这场遭遇战里是防御方，在整场战争里却是进攻方。两张面板说的是两种身份。",
+          "en": "One distinction is easy to reverse: Robert defends in this encounter, but attacks in the war. The two panels describe different roles.",
+          "visual": {
+            "kind": "actual-ui-identity-comparison",
+            "focus": "Highlight actual battle defender Robert and war attacker Robert, with the same person's identity retained.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "war_identity",
+            "pursuit_ui",
+            "terminal"
+          ]
+        },
+        {
+          "id": "t03",
+          "zh": "所以要看罗贝尔这一侧的战争面板。它显示负五十战分；这场败仗，已经让他在战争账上吃了亏。",
+          "en": "Read the war panel from Robert's side. It shows minus 50 war score: this defeat has cost him in the war ledger.",
+          "visual": {
+            "kind": "actual-ui-war-score",
+            "source": "A05",
+            "focus": "Magnify the actual player-relative war-score-50 field with war/player context.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "terminal"
+          ]
+        },
+        {
+          "id": "t04",
+          "zh": "这条后段回放的败退，已经记下负五十；战争仍在继续。",
+          "en": "This later-stage replay records retreat and minus 50; the war continues.",
+          "visual": {
+            "kind": "actual-ui-war-context",
+            "source": "A05",
+            "focus": "Keep actual player-relative-50 panel and army context. Do not display numerator/denominator/CB arithmetic.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "terminal"
+          ]
+        },
+        {
+          "id": "t07",
+          "zh": "这场战斗结束，战争仍在继续。这里看到的是正常结算后的败退，没有证明罗贝尔在交战途中主动下令撤退。",
+          "en": "This battle has ended, but the war continues. The retreat follows the normal result; it does not show Robert voluntarily ordering a mid-battle withdrawal.",
+          "visual": {
+            "kind": "actual-ui-war-context",
+            "focus": "Keep active war panel and recorded retreat context; avoid an invented peace/declaration outcome.",
+            "edit_map": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/visual_map.json"
+          },
+          "facts": [
+            "terminal",
+            "limits"
+          ]
+        },
+        {
+          "id": "t08",
+          "zh": "回头看，最初的人数只回答了接战那一刻。骑士状态、已经到场的新军、追击中的损失，都需要在各自时点重新看清。",
+          "en": "The opening count answers only the moment of contact. Knight condition, armies that have arrived, and pursuit losses must be read at their own times.",
+          "visual": {
+            "kind": "narrated-recap",
+            "focus": "Brief real UI recap in chronological order; preserve each independent source label."
+          },
+          "facts": [
+            "contact",
+            "knight_current7",
+            "reinforcement_ui",
+            "pursuit_ui",
+            "limits"
+          ]
+        },
+        {
+          "id": "t09",
+          "zh": "这几段让我们知道该观察什么，也核对了局部计算；仍没有证明，骑士或增援中的某一步就是另一条回放败北的唯一原因。",
+          "en": "These segments show what to observe and check local calculations. They do not prove that one knight or reinforcement change alone caused another replay's defeat.",
+          "visual": {
+            "kind": "actual-ui-recap-with-narration",
+            "focus": "Show source-separated real before/after panels; no long unspoken limitations card."
+          },
+          "facts": [
+            "limits"
+          ]
+        },
+        {
+          "id": "t10",
+          "zh": "本期确定的结果，是这条后段回放败退、战分负五十。下一步要回答的，是换掉这些条件后，接战前的判断还能不能经得住整场战斗。",
+          "en": "The confirmed result is retreat and minus 50 in this later-stage replay. Next, we must test whether a pre-contact judgment survives a full battle under changed conditions.",
+          "visual": {
+            "kind": "narrated-ending",
+            "focus": "End on actual Robert war-score/army context, with one short next-question line. End within0.3s of narration."
+          },
+          "facts": [
+            "terminal",
+            "limits"
+          ]
+        }
+      ]
+    }
+  ],
+  "revision": "a03-story-final-v3",
+  "frozen_at_utc": "2026-09-30T07:44:37.619713+00:00",
+  "candidate_sha256": "AD9E257BF0E2F87CB543C150454F9FEBF8EAAD60037B051A8FDE3FF67B5D4293",
+  "review_scope": "Source text/facts/UI narrative review only. Not complete video review, clean-span certification, or human signoff.",
+  "opening_timing_target": {
+    "o01_complete_seconds": 8,
+    "o01_o02_complete_seconds": 20,
+    "gate": "Producer must measure real TTS durations; shorten pauses or re-record in a new attempt if unmet."
+  },
+  "supersedes": {
+    "path": "C:/Users/1/AppData/Local/ck3-review-render/episode02-story-20260930-a03/story-final-v2.json",
+    "sha256": "4D47368A9C7F2E4AA886DA6A31A079D97A9D294E828DFD223473B4DC467A44B9",
+    "reason": "Remove t04 at-contact advantage wording from A05 terminal; the1288:330 contact belongs to original frontstory."
+  }
+}

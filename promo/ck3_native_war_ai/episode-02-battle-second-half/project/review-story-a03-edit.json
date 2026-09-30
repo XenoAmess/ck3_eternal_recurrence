@@ -1,0 +1,240 @@
+{
+  "kind": "a03-source-labelled-ui-edit",
+  "human_signoff": "not-provided",
+  "certified_clean_spans": [],
+  "story": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a03-a03\\sources\\story.json",
+    "bytes": 38521,
+    "sha256": "DEA078995E48CF28174F0AF75AFB929728B12BB1C22FF1757563506A8A7822D5"
+  },
+  "timeline": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-review-20260930-a03-a03\\timeline.json",
+    "bytes": 72148,
+    "sha256": "20195E979F53FE599BB51511E7B28B22B3F53BE7AEDCBBB9DD2BED7AFEFC3832"
+  },
+  "maps": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-opening-day0\\ui-opening-day0-edit-map.json",
+      "bytes": 6349,
+      "sha256": "5B56F2E8086F6E332B71AB2FE0A8CCF24A2E4DC69F1B509E274DE3B1C5D5967D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\knights-ui-edit-map.json",
+      "bytes": 12819,
+      "sha256": "08BE9B5E4F64D8D4B617E16D3D3B9D65B2B6D27428B59672890AC2F85E93FFE3"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+      "bytes": 11671,
+      "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\visual_map.json",
+      "bytes": 15807,
+      "sha256": "C7DA57637302A02B7B47C5B1CB3CB2A2BB7D9655DCC130A8DC923477B2AB6288"
+    }
+  ],
+  "utterances": {
+    "opening-o01": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\contact-hook.png"
+    },
+    "opening-o02": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\contact-context.png"
+    },
+    "opening-o03": {
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\montage-a01\\roadmap.png"
+    },
+    "opening-o04": {
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\montage-a01\\roadmap.png"
+    },
+    "knights-k01": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-list.png"
+    },
+    "knights-k02": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-prowess7.png"
+    },
+    "knights-k03": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-list.png"
+    },
+    "knights-k04": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-prowess7.png"
+    },
+    "knights-k05": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-list.png"
+    },
+    "knights-k06": {
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\visuals\\reinforcement-sea.png"
+    },
+    "reinforcement-r01": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-before-after.png"
+    },
+    "reinforcement-r02": {
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\visuals\\reinforcement-sea.png"
+    },
+    "reinforcement-r03": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-before-after.png"
+    },
+    "reinforcement-r04": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-before-after.png"
+    },
+    "reinforcement-r05": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-regiments.png"
+    },
+    "reinforcement-r06": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-regiments.png"
+    },
+    "reinforcement-r07": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-regiments.png"
+    },
+    "reinforcement-r08": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-width.png"
+    },
+    "reinforcement-r09": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-width.png"
+    },
+    "reinforcement-r10": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-a02\\visuals\\reinforcement-before-after.png"
+    },
+    "pursuit-p02": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-count-before-after.png"
+    },
+    "pursuit-p03": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-knights-a01\\visuals\\knight-death-notice.png"
+    },
+    "pursuit-p05": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\pursuit-counts.png"
+    },
+    "pursuit-p06": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\pursuit-phase.png"
+    },
+    "pursuit-p07": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\pursuit-records.png"
+    },
+    "pursuit-p08": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\pursuit-counts.png"
+    },
+    "pursuit-p10": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\pursuit-counts.png"
+    },
+    "terminal-t01": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\terminal-war-score.png"
+    },
+    "terminal-t02": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\terminal-war-attacker.png"
+    },
+    "terminal-t03": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\terminal-war-score.png"
+    },
+    "terminal-t04": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\terminal-war-score.png"
+    },
+    "terminal-t08": {
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\montage-a01\\roadmap.png"
+    },
+    "terminal-t09": {
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\montage-a01\\roadmap.png"
+    },
+    "terminal-t10": {
+      "kind": "ui-pause-analysis",
+      "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\layout-contact-pursuit-a01\\visuals\\terminal-war-score.png"
+    },
+    "pursuit-p01": {
+      "kind": "raw-excerpt",
+      "image": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-05-d26-live-20260929-a02\\recording-e2-05-d26-a01\\raw\\e2-05-d26.mkv",
+      "start": 231.8,
+      "source_duration": 3.4,
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-05-d26-live-20260929-a02\\recording-e2-05-d26-a01\\raw\\e2-05-d26.mkv",
+        "bytes": 2451530594,
+        "sha256": "7FC3D614C50AD958DA57359248A196A230BD2B0B5B511EF242596837042C1C0F"
+      },
+      "case": "独立骑士阵亡回放 · 12月30日 · 原片节选与暂停分析",
+      "human_clean_span": "not-provided"
+    },
+    "reinforcement-r11": {
+      "kind": "raw-excerpt",
+      "image": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+      "start": 360,
+      "source_duration": 10,
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+        "bytes": 1325156480,
+        "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7"
+      },
+      "case": "独立增援回放 · 原片节选与暂停分析",
+      "human_clean_span": "not-provided"
+    },
+    "pursuit-p04": {
+      "kind": "raw-excerpt",
+      "image": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+      "start": 79,
+      "source_duration": 6,
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC"
+      },
+      "case": "独立后段回放 · 第28日 · 原片节选与暂停分析",
+      "human_clean_span": "not-provided"
+    },
+    "pursuit-p09": {
+      "kind": "raw-excerpt",
+      "image": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+      "start": 298,
+      "source_duration": 6,
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC"
+      },
+      "case": "独立后段回放 · 第31日 · 原片节选与暂停分析",
+      "human_clean_span": "not-provided"
+    },
+    "terminal-t07": {
+      "kind": "raw-excerpt",
+      "image": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+      "start": 479,
+      "source_duration": 7,
+      "source_binding": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-terminal-pair-20260928-a05-live\\recording-e2-09-terminal-a02\\raw\\e2-09-terminal-a02.mkv",
+        "bytes": 840210967,
+        "sha256": "25A13691259215848D77EAAB8AED9C0E281AF59A8AEB126E5D726EC6FE73A9BC"
+      },
+      "case": "同一后段回放 · 第32日 · 原片节选与暂停分析",
+      "human_clean_span": "not-provided"
+    }
+  },
+  "revision": "a03-subtitle-fixed-position-spacing-only",
+  "previous_edit": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a03-production\\edit-a03-a01.json",
+    "bytes": 11849,
+    "sha256": "CB073EF0129050FFC04370019510356CB839E2EF587D69C961BFE9895F9622ED"
+  }
+}

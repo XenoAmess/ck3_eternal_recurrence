@@ -1,0 +1,74 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-episode02-story-review-a03",
+    "title": "四倍兵力，还能只看人数吗？"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": null
+  },
+  "chapters": [
+    {
+      "id": "opening",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "先问：人数优势能保持吗？"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "knights",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "人数没讲出的骑士状态"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "reinforcement",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "地图上的新军，改变了局面"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "pursuit",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "接战后半段：少了谁，又损失了什么？"
+      },
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "terminal",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "败退怎样进入战争结果？"
+      },
+      "cues": [],
+      "artifact_ids": []
+    }
+  ]
+}

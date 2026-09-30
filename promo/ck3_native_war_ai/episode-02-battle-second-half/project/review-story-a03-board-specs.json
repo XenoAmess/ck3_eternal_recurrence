@@ -1,0 +1,315 @@
+{
+  "format_version": 1,
+  "kind": "a03-actual-ui-board-specifications",
+  "layouts": [
+    {
+      "id": "reinforcement-sea",
+      "title": "先发现海上援军，再重新评估",
+      "case": "独立增援回放 · 12月14日 · 原界面暂停分析",
+      "detail_title": "海上红色军牌：2570",
+      "caption": "2570 是这一帧军牌显示值；内部入场记录 2560 属于另一列，不能替换画面数字。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "claim_policy": "Only visible sea army card; no character or ArmyID inferred"
+    },
+    {
+      "id": "reinforcement-before-after",
+      "title": "敌方人数变化了，接战判断也要更新",
+      "case": "独立增援回放 · 墨西拿 · 原界面暂停对照",
+      "detail_title": "我方在左，敌方在右",
+      "caption": "前后界面人数变化，不等于援军实际入场人数。这里的左右是战斗攻守。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "comparison": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "before_label": "12月14日 · 我方 893 ｜ 敌方 1603",
+      "after_label": "12月15日 · 我方 827 ｜ 敌方 4106",
+      "claim_policy": "Only sampled visible UI aggregates, no explanation of aggregate difference inferred"
+    },
+    {
+      "id": "reinforcement-width",
+      "title": "人数更新后，出伤也要采用新参数",
+      "case": "独立增援回放 · UI画面与同次原生记录分开呈现",
+      "detail_title": "先看当下战斗面板",
+      "caption": "战宽按比例限制整体伤害；不是从名单里随机挑选 2220 人上场。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "records": [
+        "加入前最终战宽：1480",
+        "重算后最终战宽：2220",
+        "下一次出伤：采用 2220"
+      ],
+      "claim_policy": "Width values only from exact same A01 native record; no fabricated UI tooltip"
+    },
+    {
+      "id": "reinforcement-regiments",
+      "title": "起始兵力，和真正加入的当前兵力",
+      "case": "独立增援回放 · UI画面与同次原生记录分开呈现",
+      "detail_title": "原界面海上军牌：2570",
+      "caption": "军牌显示值不代替入场记录：本次 13 条兵团，其中一条起始 10、当前 0。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "records": [
+        "13条兵团起始兵力：2570",
+        "本次加入当前兵力：2560",
+        "差异兵团：起始 10 / 当前 0"
+      ],
+      "claim_policy": "Incoming current 2560 only from exact same A01 native record; actual UI reads2570"
+    },
+    {
+      "id": "knight-list",
+      "title": "看名单，也要看人物当下的属性",
+      "case": "独立骑士名单回放 · 12月9日 · 原界面暂停分析",
+      "detail_title": "原版骑士名单与勇武列",
+      "caption": "名单有两行同名伯爵；这里只读可见第五行，不拼入旧回放的伤势因果。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "rect": [
+        988,
+        1110,
+        1260,
+        1415
+      ],
+      "claim_policy": "Current list membership and visible prowess only; no historical character ID or damage timing"
+    },
+    {
+      "id": "knight-prowess7",
+      "title": "这名骑士仍在名单里，勇武是七",
+      "case": "独立骑士名单回放 · 第五行原始像素放大",
+      "detail_title": "这一行：人物名与勇武 7",
+      "caption": "勇武是人物属性。它不代表军队只有 7 人，也没有证明本回放从 11 降到 7。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "rect": [
+        1005,
+        1242,
+        1201,
+        1268
+      ],
+      "claim_policy": "Visible selected row only; same-name ambiguity retained"
+    },
+    {
+      "id": "knight-count-before-after",
+      "title": "同一录像的相邻两帧：11 名变成 10 名",
+      "case": "独立骑士阵亡回放 · 12月30日 · 原界面暂停对照",
+      "detail_title": "我方骑士计数，同一位置",
+      "caption": "名单计数和阵亡战报都是原版可见观察；不由两帧反推完整事件选择过程。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_11_before.png",
+      "comparison": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_10_after.png",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "rect": [
+        1080,
+        1407,
+        1190,
+        1440
+      ],
+      "before_label": "变动前：11 名骑士",
+      "after_label": "下一帧：10 名骑士",
+      "claim_policy": "Adjacent same-source frame indices4918/4919; no claim that particular death is sole cause"
+    },
+    {
+      "id": "knight-death-notice",
+      "title": "再打开战报，看具体发生了什么",
+      "case": "独立骑士阵亡回放 · 12月30日 · 同一录像的随后画面",
+      "detail_title": "原版阵亡通知",
+      "caption": "战报记录了我方骑士被敌方骑士击杀；不把它说成已还原整套事件抽签。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "rect": [
+        1070,
+        1008,
+        1492,
+        1119
+      ],
+      "claim_policy": "Readable recorded notification only; no saved character death ID inferred"
+    },
+    {
+      "id": "contact-hook",
+      "title": "1288 对 330，四倍人数就稳了吗？",
+      "case": "原始接战 / 前情 · 墨西拿 · 1066年12月4日暂停帧",
+      "detail_title": "我方 1288 ｜ 敌方 330",
+      "caption": "数字来自原界面：我方是战斗防御方，敌方是战斗进攻方。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/day0-original-ui.png",
+      "dimensions": [
+        1024,
+        768
+      ],
+      "rect": [
+        394,
+        560,
+        630,
+        651
+      ],
+      "claim_policy": "Original contact still; not A05 contact or guessed video PTS"
+    },
+    {
+      "id": "contact-context",
+      "title": "罗贝尔与阿里交战，遭遇地点是墨西拿",
+      "case": "原始接战 / 前情 · 战争领袖身份另由同案原生记录核实",
+      "detail_title": "墨西拿之战 · 接战面板",
+      "caption": "本片要回答：眼前人数优势能保持吗？战争领袖与战斗统帅不是同一概念。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/day0-original-ui.png",
+      "dimensions": [
+        1024,
+        768
+      ],
+      "rect": [
+        288,
+        555,
+        738,
+        768
+      ],
+      "claim_policy": "War leader Ali is not identified with the shown combat commander portrait"
+    },
+    {
+      "id": "pursuit-phase",
+      "title": "我方已经撤退，敌方正在追击",
+      "case": "独立后段回放 · 第28日 · 1066年12月31日",
+      "detail_title": "原界面：战败 / 撤退中 / 追击中",
+      "caption": "左侧我方罗贝尔，是这场遭遇战的防御方；右侧敌军在追击。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "claim_policy": "Original phase and player-side state only"
+    },
+    {
+      "id": "pursuit-counts",
+      "title": "追击还在继续，我方溃散兵员在减少",
+      "case": "独立后段回放 · 同一录像，第28日至第31日",
+      "detail_title": "同一个原版字段，两个端点",
+      "caption": "824 → 761 是面板取整值；精确软转硬损失来自另列同次原生记录。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "comparison": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "before_label": "第28日 · 我方 824",
+      "after_label": "第31日 · 我方 761",
+      "claim_policy": "Displayed integers not current_fighting field; scattered-soldier semantics verified separately"
+    },
+    {
+      "id": "pursuit-records",
+      "title": "同次记录：三次追击，继续结算损失",
+      "case": "独立后段回放 · 原版UI与同次逐团记录分开呈现",
+      "detail_title": "先看第31日真实面板",
+      "caption": "约 63 人当量是软损失转硬损失；不说成当前战斗人数直接减了 63。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "records": [
+        "三次逐团结算合计：62.94269",
+        "约 63 人当量，软损失 → 硬损失",
+        "面板显示：824 → 761（另一口径）"
+      ],
+      "claim_policy": "Same A05 native loss ledger, visibly separated from real UI"
+    },
+    {
+      "id": "terminal-war-score",
+      "title": "败退之后，本场战斗贡献负五十",
+      "case": "同一后段回放 · 第32日 · 1067年1月4日战争面板",
+      "detail_title": "我方战争账：-50%",
+      "caption": "原界面总分 -50%，剑图标战斗项 -50%；这不等于整场战争已经结束。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-480.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "claim_policy": "Only visible lower war panel; central story event remains in overview"
+    },
+    {
+      "id": "terminal-war-attacker",
+      "title": "战斗防御方，也可以是战争进攻方",
+      "case": "同一后段回放 · 罗贝尔的战争身份",
+      "detail_title": "战争面板左侧：进攻方",
+      "caption": "战斗攻守描述遭遇战站位；战争攻守描述谁发动这场战争。",
+      "source": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-480.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "rect": [
+        47,
+        884,
+        326,
+        1059
+      ],
+      "claim_policy": "Actual war attacker UI; not the opposite of combat role"
+    }
+  ]
+}
