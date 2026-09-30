@@ -1959,6 +1959,7 @@ class GameplayBridgeService:
                 self._last_war_lifestyle_observation = war_frame
         if war_read_due and isinstance(query, dict):
             life = query.get("snapshot")
+            focus = life.get("current_focus") if isinstance(life, dict) else None
             progress = (
                 life.get("current_lifestyle_progress")
                 if isinstance(life, dict) else None
@@ -1973,6 +1974,18 @@ class GameplayBridgeService:
                     "unspent_perk_points": (
                         progress.get("unspent_perk_points")
                         if isinstance(progress, dict) else None
+                    ),
+                    "current_focus": (
+                        {key: focus.get(key) for key in (
+                            "presence", "key", "lifestyle_key",
+                        )} if isinstance(focus, dict) else None
+                    ),
+                    "current_lifestyle_progress": (
+                        {key: progress.get(key) for key in (
+                            "presence", "lifestyle_key", "xp_total_raw",
+                            "xp_within_level_raw", "xp_per_level",
+                            "unspent_perk_points", "used_perk_points",
+                        )} if isinstance(progress, dict) else None
                     ),
                     "policy_decision_status": (
                         consumed.get("lifestyle_decision", {}).get("status")
