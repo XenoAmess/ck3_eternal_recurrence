@@ -1,4 +1,7 @@
 #include "xar_bridge/game_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+#include "xar_bridge/current_first_heir_relationship_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "active_scheme_sway_private_transport_v1.hpp"
 #endif
@@ -8420,8 +8423,44 @@ std::string CurrentFirstHeirRelationshipResultFrameV1(
     }
     result += ']';
   }
+  result += ",\"betrothal_actionability\":";
+  result += xar::ck3_11906::CurrentFirstHeirBetrothalActionabilityJsonV1(
+      read.betrothal_actionability);
   result += "}}";
   return result;
+}
+
+struct CurrentFirstHeirBetrothalMailboxQueryV1 {
+  xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
+  xar::ck3_11906::Bindings bindings{};
+  xar::game::Snapshot expected_snapshot{};
+  std::int32_t heir_character_id = -1;
+  xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
+  xar::bridge::MarriageCandidateAllianceProjectionEnvironmentV1 option_environment{};
+  xar::bridge::MarriageNativeOutcomeClassifierEnvironmentV1 outcome_environment{};
+  bool frame_observed = false;
+};
+
+bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &query = *static_cast<CurrentFirstHeirBetrothalMailboxQueryV1 *>(opaque);
+  xar::game::Snapshot before{};
+  if (!stamp.paused || stamp.date_raw != query.expected_snapshot.date_raw ||
+      !xar::ck3_11906::ReadSnapshot(query.bindings, before) ||
+      before != query.expected_snapshot)
+    return true;
+  query.read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+      query.bindings, query.heir_character_id);
+  query.read.betrothal_actionability =
+      xar::ck3_11906::ReadCurrentFirstHeirBetrothalActionabilityV1(
+          query.bindings, query.read, query.outcome_environment,
+          query.option_environment);
+  xar::game::Snapshot after{};
+  query.frame_observed = xar::ck3_11906::ReadSnapshot(query.bindings, after) &&
+      after == before && query.read.failure != xar::ck3_11906::
+          CurrentFirstHeirRelationshipFailureV1::frame_changed;
+  return true;
 }
 
 struct MarriageCandidateAllianceMailboxQueryV1 {
@@ -13548,8 +13587,55 @@ void RunConnectedSession(
                 unavailable_reason =
                     "public_campaign_root_primary_first_heir_absent";
               } else {
-                read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
-                    xar::ck3_11906::BindCurrentProcess(true), heir_id);
+                CurrentFirstHeirBetrothalMailboxQueryV1 query{};
+                query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+                query.expected_snapshot = before;
+                query.heir_character_id = heir_id;
+                const auto module_base = reinterpret_cast<std::uintptr_t>(
+                    GetModuleHandleW(nullptr));
+                query.option_environment = xar::bridge::
+                    BindMarriageCandidateAllianceProjectionEnvironmentV1(
+                        module_base, true, xar::ck3_11906::kExecutableSha256);
+                query.option_environment.read_memory = &ReadMarriageCurrentProcessMemory;
+                query.outcome_environment = xar::bridge::
+                    BindMarriageNativeOutcomeClassifierEnvironmentV1(
+                        module_base, true, xar::ck3_11906::kExecutableSha256);
+                query.outcome_environment.read_memory = &ReadMarriageCurrentProcessMemory;
+                const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1,
+                    &ExecuteCurrentFirstHeirBetrothalMailboxQueryV1, &query,
+                    query.ticket);
+                if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                  // Keep the independent relationship observation available when
+                  // application-main cannot evaluate the optional fixed pair.
+                  read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+                      query.bindings, heir_id);
+                  read.betrothal_actionability.unavailable_reason =
+                      "current_betrothal_application_main_unavailable";
+                } else {
+                  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                     timeout_executor_already_running) {
+                    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                  }
+                  const bool stable = wait == xar::ck3_11906::
+                      MainThreadQueryWaitResultV1::completed && query.frame_observed;
+                  if (stable) read = query.read;
+                  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket);
+                  if (reclaimed != xar::ck3_11906::
+                          MainThreadQueryReclaimResultV1::reclaimed) {
+                    read.failure = xar::ck3_11906::
+                        CurrentFirstHeirRelationshipFailureV1::frame_changed;
+                  } else if (!stable) {
+                    read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
+                        query.bindings, heir_id);
+                    read.betrothal_actionability.unavailable_reason =
+                        "current_betrothal_application_main_read_unavailable";
+                  }
+                }
               }
               xar::game::Snapshot after{};
               if (!xar::game::ReadSnapshot(game, after) || after != before ||

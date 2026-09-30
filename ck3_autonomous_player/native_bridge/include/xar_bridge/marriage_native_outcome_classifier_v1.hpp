@@ -67,6 +67,14 @@ struct MarriageNativeOutcomeDetailsV1 {
   std::int32_t candidate_adult_threshold_raw = 0;
 };
 
+// Independent adulthood read for an existing pair. It does not require or
+// classify a proposal context, so a rejected/unfinished proposal cannot hide
+// the actual runtime adulthood inputs.
+bool ReadMarriageAdultPairDetailsExactV1(
+    MarriageNativeOutcomeClassifierStateV1 &classifier,
+    std::uintptr_t subject_character, std::uintptr_t candidate_character,
+    MarriageNativeOutcomeDetailsV1 &output) noexcept;
+
 MarriageNativeOutcomeClassifierEnvironmentV1
 BindMarriageNativeOutcomeClassifierEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted,

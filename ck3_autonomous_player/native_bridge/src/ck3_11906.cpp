@@ -17276,6 +17276,152 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
   return result;
 }
 
+CurrentFirstHeirBetrothalActionabilityReadV1
+ReadCurrentFirstHeirBetrothalActionabilityV1(
+    const Bindings &bindings, const CurrentFirstHeirRelationshipReadV1 &relationship,
+    const bridge::MarriageNativeOutcomeClassifierEnvironmentV1 &outcome_environment,
+    const bridge::MarriageCandidateAllianceProjectionEnvironmentV1 &option_environment) noexcept {
+  CurrentFirstHeirBetrothalActionabilityReadV1 result{};
+  Snapshot before{};
+  if (relationship.failure != CurrentFirstHeirRelationshipFailureV1::none ||
+      !ReadSnapshot(bindings, before) || !before.paused || !before.map_ready ||
+      !before.has_played_character || !before.played_character_alive)
+    return result;
+  result.actor_character_id = before.played_character_id;
+  result.heir_character_id = relationship.heir_character_id;
+  result.partner_character_id = relationship.relationship.betrothed_character_id;
+  if (result.partner_character_id <= 0) {
+    result.unavailable_reason = "current_heir_has_no_betrothal";
+    return result;
+  }
+  result.has_betrothal = true;
+  void *const heir = ResolveCharacter(bindings, result.heir_character_id);
+  void *const partner = ResolveCharacter(bindings, result.partner_character_id);
+  if (heir == nullptr || partner == nullptr) {
+    result.unavailable_reason = "current_betrothal_identity_unavailable";
+    return result;
+  }
+  bridge::MarriageNativeOutcomeClassifierStateV1 classifier{};
+  classifier.environment = outcome_environment;
+  result.adult_readback_available = bridge::ReadMarriageAdultPairDetailsExactV1(
+      classifier, reinterpret_cast<std::uintptr_t>(heir),
+      reinterpret_cast<std::uintptr_t>(partner), result.adult);
+  if (!HasArrangeMarriageReadBindings(bindings)) {
+    result.unavailable_reason = "current_betrothal_final_binding_unavailable";
+    return result;
+  }
+  CharacterInteractionContextStorage storage{};
+  ArrangeMarriageValidationSample roles{};
+  if (!PrepareArrangeMarriageContext(bindings, before.played_character_id,
+                                    result.heir_character_id,
+                                    result.partner_character_id, storage, &roles)) {
+    result.unavailable_reason = "current_betrothal_context_unavailable";
+    return result;
+  }
+  void *const context = storage.bytes.data();
+  struct DestroyContext {
+    const Bindings &bindings;
+    void *context;
+    ~DestroyContext() { bindings.destroy_character_interaction_context(context); }
+  } destroy{bindings, context};
+  roles.actor_character_id = LoadAt<std::int32_t>(
+      context, bridge::kMarriageContextActorIdOffsetV1);
+  roles.recipient_character_id = LoadAt<std::int32_t>(
+      context, bridge::kMarriageContextRecipientIdOffsetV1);
+  roles.secondary_actor_character_id = LoadAt<std::int32_t>(
+      context, bridge::kMarriageContextSecondaryActorIdOffsetV1);
+  roles.secondary_recipient_character_id = LoadAt<std::int32_t>(
+      context, bridge::kMarriageContextSecondaryRecipientIdOffsetV1);
+  roles.intermediary_character_id = LoadAt<std::int32_t>(
+      context, bridge::kMarriageContextIntermediaryIdOffsetV1);
+  result.recipient_character_id = roles.recipient_character_id;
+  result.intermediary_character_id = roles.intermediary_character_id;
+  if (roles.actor_character_id != before.played_character_id ||
+      roles.secondary_actor_character_id != result.heir_character_id ||
+      roles.secondary_recipient_character_id != result.partner_character_id ||
+      ResolveCharacter(bindings, roles.recipient_character_id) == nullptr ||
+      (roles.intermediary_character_id != -1 &&
+       ResolveCharacter(bindings, roles.intermediary_character_id) == nullptr)) {
+    result.unavailable_reason = "current_betrothal_final_roles_changed";
+    return result;
+  }
+  result.complete_can_send =
+      bindings.validate_character_interaction_context(context, nullptr);
+  result.final_legality_sampled = true;
+  std::int64_t acceptance = 0;
+  const bool score_ready = bindings.read_character_interaction_answer_score != nullptr &&
+      bindings.read_character_interaction_answer_score(context, &acceptance) == &acceptance;
+  const auto answer = score_ready && bindings.evaluate_character_interaction_answer != nullptr
+      ? bindings.evaluate_character_interaction_answer(context, 1, 1, nullptr, nullptr)
+      : std::uint8_t{3};
+  result.recipient_acceptance_ready = score_ready && answer <= 2;
+  result.recipient_ai_accept_raw = acceptance;
+  result.recipient_answer_status_raw = answer;
+  void *const definition = ResolveCharacterInteraction(
+      bindings, bindings.arrange_marriage_interaction_offset);
+  result.generic_costs_available = bridge::ReadMarriageCandidateGenericCostV1(
+      context, definition, bindings.evaluate_character_interaction_cost,
+      result.generic_cost_raw);
+  bridge::MarriageNativeOutcomeDetailsV1 finalized{};
+  result.outcome_available = bridge::ClassifyMarriageNativeOutcomeDetailsExactV1(
+      &classifier, reinterpret_cast<std::uintptr_t>(heir),
+      reinterpret_cast<std::uintptr_t>(partner), context, finalized);
+  if (result.outcome_available && result.adult_readback_available &&
+      (finalized.subject_adult_measure_raw != result.adult.subject_adult_measure_raw ||
+       finalized.candidate_adult_measure_raw != result.adult.candidate_adult_measure_raw ||
+       finalized.subject_adult_threshold_raw != result.adult.subject_adult_threshold_raw ||
+       finalized.candidate_adult_threshold_raw != result.adult.candidate_adult_threshold_raw)) {
+    result = {};
+    result.unavailable_reason = "current_betrothal_adult_input_changed";
+    return result;
+  }
+  if (result.outcome_available) {
+    result.adult = finalized;
+    result.adult_readback_available = true;
+  }
+  const auto subject_selector = LoadAt<std::uint8_t>(
+      heir, bridge::kMarriageCharacterAdultSelectorOffsetV1);
+  const auto partner_selector = LoadAt<std::uint8_t>(
+      partner, bridge::kMarriageCharacterAdultSelectorOffsetV1);
+  std::uint32_t option_id = 0;
+  const bool option_bound = option_environment.exact_build_admitted &&
+      option_environment.admitted_executable_sha256 == kExecutableSha256 &&
+      option_environment.module_base != 0 &&
+      option_environment.matrilineal_option_id_slot == option_environment.module_base +
+          bridge::kMarriageCandidateMatrilinealOptionSlotRvaV1 &&
+      reinterpret_cast<std::uintptr_t>(option_environment.read_boolean_option) ==
+          option_environment.module_base + bridge::kMarriageCandidateReadOptionRvaV1 &&
+      option_environment.read_memory != nullptr;
+  if (result.adult_readback_available && subject_selector <= 1 && partner_selector <= 1 &&
+      option_bound && option_environment.read_memory(
+          option_environment.memory_context, option_environment.matrilineal_option_id_slot,
+          &option_id, sizeof(option_id))) {
+    const bool selected = option_environment.read_boolean_option(context, option_id);
+    result.lineality_available = true;
+    result.effective_matrilineal_if_accepted = subject_selector == partner_selector
+        ? subject_selector != 0 : selected;
+  }
+  const auto after_relationship =
+      ReadCurrentFirstHeirRelationshipV1(bindings, result.heir_character_id);
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before ||
+      after_relationship.failure != CurrentFirstHeirRelationshipFailureV1::none ||
+      after_relationship.relationship != relationship.relationship ||
+      ResolveCharacter(bindings, result.heir_character_id) != heir ||
+      ResolveCharacter(bindings, result.partner_character_id) != partner) {
+    result = {};
+    result.unavailable_reason = "current_betrothal_frame_changed";
+    return result;
+  }
+  result.unavailable_reason = !result.adult_readback_available
+      ? "current_betrothal_adulthood_unavailable" : !result.recipient_acceptance_ready
+      ? "current_betrothal_recipient_answer_unavailable" : !result.generic_costs_available
+      ? "current_betrothal_cost_unavailable" : !result.outcome_available
+      ? "current_betrothal_outcome_unavailable" : !result.lineality_available
+      ? "current_betrothal_lineality_unavailable" : std::string_view{};
+  return result;
+}
+
 bool ReadMarriageCharacterLineageV1(
     const void *character, MarriageCharacterLineageV1 &output) noexcept;
 
