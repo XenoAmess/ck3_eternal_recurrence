@@ -14,6 +14,7 @@ from pathlib import Path
 import re
 import threading
 import time
+from typing import Callable
 
 from .bridge.native_driver import (
     NativeHeadlessGameplayDriver,
@@ -169,7 +170,9 @@ def _exact_prepared_rebind(
     )
 
 
-def _exact_h3937_paused_subject(snapshot: object) -> bool:
+def _exact_h3937_paused_subject(
+    snapshot: object, *, require_historical_hostiles: bool = True,
+) -> bool:
     if not isinstance(snapshot, dict):
         return False
     wars = snapshot.get("active_wars")
@@ -196,12 +199,15 @@ def _exact_h3937_paused_subject(snapshot: object) -> bool:
             if isinstance(army, dict) and army.get("controllable") is True
         ) == [ARMY_ID]
         and isinstance(enemies, list)
-        and len(enemies) == 2
-        and sorted(
+        and 0 < len(enemies) <= 64
+        and all(isinstance(enemy, dict) and type(enemy.get("army_id")) is int
+                    and enemy["army_id"] > 0 for enemy in enemies)
+        and len({enemy["army_id"] for enemy in enemies}) == len(enemies)
+        and (not require_historical_hostiles or sorted(
             enemy.get("army_id")
             for enemy in enemies if isinstance(enemy, dict)
-        ) == list(HOSTILE_ARMY_IDS)
-        and all(
+        ) == list(HOSTILE_ARMY_IDS))
+        and (not require_historical_hostiles or all(
             isinstance(enemy, dict)
             and enemy.get("current_province_id") == 2629
             and "move_target_province_id" in enemy
@@ -211,12 +217,14 @@ def _exact_h3937_paused_subject(snapshot: object) -> bool:
             and enemy.get("in_combat") is False
             and enemy.get("army_state") in {"regular", "sieging"}
             for enemy in enemies
-        )
+        ))
         and "active_event" in snapshot
         and snapshot.get("active_event") is None
         and "pending_character_interaction" in snapshot
         and snapshot.get("pending_character_interaction") is None
-        and _route_contact_hostile_ids(snapshot) == HOSTILE_ARMY_IDS
+        and 0 < len(_route_contact_hostile_ids(snapshot)) <= 64
+        and (not require_historical_hostiles
+             or _route_contact_hostile_ids(snapshot) == HOSTILE_ARMY_IDS)
         and isinstance(subject, dict)
         and subject.get("controllable") is True
         and subject.get("current_province_id") == TARGET_PROVINCE_ID
@@ -228,7 +236,9 @@ def _exact_h3937_paused_subject(snapshot: object) -> bool:
     )
 
 
-def _exact_one_appended_query(before: object, after: object, result: object) -> bool:
+def _exact_one_appended_query(
+    before: object, after: object, result: object, *, query_step: str = QUERY_STEP,
+) -> bool:
     before_history = _snapshot_history(before)
     after_history = _snapshot_history(after)
     if not isinstance(before_history, list) or not isinstance(after_history, list):
@@ -238,13 +248,16 @@ def _exact_one_appended_query(before: object, after: object, result: object) -> 
         len(after_history) == len(before_history) + 1
         and after_history[:-1] == before_history
         and isinstance(row, dict)
-        and row.get("command") == QUERY_STEP
+        and row.get("command") == query_step
         and row.get("ok") is True
         and row.get("result") == result
     )
 
 
-def _bound_route_result(before: object, result: object) -> bool:
+def _bound_route_result(
+    before: object, result: object, *, query_step: str = QUERY_STEP,
+    hostile_army_ids: tuple[int, ...] = HOSTILE_ARMY_IDS,
+) -> bool:
     if not isinstance(before, dict) or not isinstance(result, dict):
         return False
     diagnostics = before.get("diagnostics")
@@ -265,7 +278,7 @@ def _bound_route_result(before: object, result: object) -> bool:
         and before.get("native_revision") > 0
         and type(generation) is int
         and generation > 0
-        and result.get("step") == QUERY_STEP
+        and result.get("step") == query_step
         and result.get("accepted") is True
         and result.get("status") == "available"
         and type(result.get("query_sequence")) is int
@@ -286,7 +299,7 @@ def _bound_route_result(before: object, result: object) -> bool:
         and horizon.get("snapshot_revision") == before.get("native_revision")
         and horizon.get("subject_army_id") == ARMY_ID
         and horizon.get("target_province_id") == TARGET_PROVINCE_ID
-        and horizon.get("hostile_army_ids") == list(HOSTILE_ARMY_IDS)
+        and horizon.get("hostile_army_ids") == list(hostile_army_ids)
         and isinstance(subject_route, dict)
         and subject_route.get("army_id") == ARMY_ID
         and subject_route.get("current_province_id") == TARGET_PROVINCE_ID
@@ -526,11 +539,28 @@ def query_h3937_stationary_route_contact_once(
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
     poll_interval_seconds: float = READINESS_POLL_SECONDS,
+    admitted_pair: dict[str, str] | None = None,
+    before_process_create=None,
+    managed_stop_event: threading.Event | None = None,
+    query_gate: Callable[[], None] | None = None,
+    raw_query_envelope_path: Path | None = None,
+    native_raw_result_path: Path | None = None,
 ) -> dict[str, object]:
     """Launch one managed session, issue one private query, and recycle CK3."""
 
-    if RECEIVER_ASSETS_AND_SCOPE_VERIFIED is not True:
+    if admitted_pair is not None and (
+        set(admitted_pair) != {"dll_sha256", "injector_sha256", "admission_sha256", "go_sha256"}
+        or any(not isinstance(value, str) or re.fullmatch(r"[0-9a-fA-F]{64}", value) is None
+               for value in admitted_pair.values())
+        or not callable(query_gate) or before_process_create is None
+        or not isinstance(raw_query_envelope_path, Path) or not raw_query_envelope_path.is_absolute()
+        or not isinstance(native_raw_result_path, Path) or not native_raw_result_path.is_absolute()
+    ):
+        raise AgentError("H3937 single query requires the verified pair, root GO and process/query gates")
+    if admitted_pair is None and RECEIVER_ASSETS_AND_SCOPE_VERIFIED is not True:
         raise AgentError("H3937 metadata-only candidate: matched bytes and paused hostile scope are not receiver-qualified; no launch")
+    dll_sha256 = admitted_pair["dll_sha256"] if admitted_pair else DLL_SHA256
+    injector_sha256 = admitted_pair["injector_sha256"] if admitted_pair else INJECTOR_SHA256
     timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
     readiness_timeout = _positive_seconds(
         readiness_timeout_seconds, "readiness_timeout_seconds"
@@ -595,9 +625,9 @@ def query_h3937_stationary_route_contact_once(
         or before_files["child_pending_sidecar"]["sha256"].casefold()
         != CHILD_PENDING_SIDECAR_SHA256.casefold()
         or before_files["bridge_dll"]["sha256"].casefold()
-        != DLL_SHA256.casefold()
+        != dll_sha256.casefold()
         or before_files["bridge_injector"]["sha256"].casefold()
-        != INJECTOR_SHA256.casefold()
+        != injector_sha256.casefold()
         or not _exact_prepared_rebind(
             rebind_receipt,
             prepared_driver_sha256=before_files["driver_state"]["sha256"],
@@ -629,7 +659,7 @@ def query_h3937_stationary_route_contact_once(
     started_at = utc_now()
     started = time.monotonic()
     deadline = started + timeout
-    stop_event = threading.Event()
+    stop_event = managed_stop_event if managed_stop_event is not None else threading.Event()
     session_done = threading.Event()
     session_state: dict[str, object] = {"report": None, "error": None}
     driver: NativeHeadlessGameplayDriver | None = None
@@ -640,6 +670,8 @@ def query_h3937_stationary_route_contact_once(
     query_after: dict[str, object] | None = None
     query_envelope: dict[str, object] | None = None
     primary_error: str | None = None
+    query_step = QUERY_STEP
+    query_hostiles = HOSTILE_ARMY_IDS
 
     def supervise() -> None:
         try:
@@ -653,6 +685,7 @@ def query_h3937_stationary_route_contact_once(
                 cold_start_checkpoint=True,
                 stop_event=stop_event,
                 prepared_xar_enabled="xar_off",
+                before_process_create=before_process_create,
             )
         except BaseException as error:  # returned to the owning thread
             session_state["error"] = f"{type(error).__name__}: {error}"
@@ -666,6 +699,12 @@ def query_h3937_stationary_route_contact_once(
             save_dir=spec.profile_dir / "save games",
             succession_lifecycle_binding=lifecycle,
         )
+        if admitted_pair is not None:
+            def preserve_native_result(result: object) -> None:
+                with native_raw_result_path.open("x", encoding="utf-8", newline="\n") as stream:
+                    json.dump({"query_result": result}, stream, ensure_ascii=False, indent=2)
+                    stream.write("\n")
+            driver.route_contact_raw_result_observer = preserve_native_result
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
             target=supervise,
@@ -685,6 +724,7 @@ def query_h3937_stationary_route_contact_once(
             cold_start_checkpoint=True,
             allow_terminal=False,
             require_post_ready_pump=True,
+            expected_character_id=29829,
         )
         if time.monotonic() >= deadline:
             raise AgentError("H3937 stationary route-contact query timeout expired before query")
@@ -696,12 +736,23 @@ def query_h3937_stationary_route_contact_once(
             or revision < 0
             or query_before.get("paused") is not True
             or query_before.get("map_ready") is not True
-            or not _exact_h3937_paused_subject(query_before)
+            or not _exact_h3937_paused_subject(
+                query_before, require_historical_hostiles=admitted_pair is None
+            )
         ):
             raise AgentError("H3937 target 2610 stationary same-frame gate failed")
-        query_envelope = service.execute_step(
-            QUERY_STEP, expected_revision=revision
-        )
+        if query_gate is not None:
+            query_gate()
+        if admitted_pair is not None:
+            query_hostiles = _route_contact_hostile_ids(query_before)
+            query_step = query_route_contact_horizon_step(
+                ARMY_ID, TARGET_PROVINCE_ID, query_hostiles
+            )
+        query_envelope = service.execute_step(query_step, expected_revision=revision)
+        if admitted_pair is not None:
+            with raw_query_envelope_path.open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump({"query_result": query_envelope}, stream, ensure_ascii=False, indent=2)
+                stream.write("\n")
         query_after = service.snapshot()
     except BaseException as error:
         primary_error = f"{type(error).__name__}: {error}"
@@ -783,24 +834,27 @@ def query_h3937_stationary_route_contact_once(
     checks = {
         "exact_one_read_only_query": bool(
             isinstance(query_envelope, dict)
-            and query_envelope.get("step") == QUERY_STEP
+            and query_envelope.get("step") == query_step
             and query_envelope.get("accepted") is True
             and query_envelope.get("status") == "available"
         ),
         "query_source_bound_to_before_frame": _bound_route_result(
-            query_before, query_envelope
+            query_before, query_envelope, query_step=query_step,
+            hostile_army_ids=query_hostiles,
         ),
         "readiness_bound_to_query_before": _same_frame(readiness, query_before),
         "single_cold_restore_bookkeeping": (
             restore_bookkeeping.get("exact") is True
         ),
         "paused_frame_unchanged": _same_frame(query_before, query_after),
-        "stationary_scope_unchanged": _exact_h3937_paused_subject(query_after),
+        "stationary_scope_unchanged": _exact_h3937_paused_subject(
+            query_after, require_historical_hostiles=admitted_pair is None
+        ),
         "guarded_subject_unchanged": _guarded_subject_unchanged(
             query_before, query_after
         ),
         "exact_one_appended_query": _exact_one_appended_query(
-            query_before, query_after, query_envelope
+            query_before, query_after, query_envelope, query_step=query_step
         ),
         "driver_history_matches_query_after": bool(
             query_after_history is not None
@@ -826,6 +880,14 @@ def query_h3937_stationary_route_contact_once(
         ),
         "cleanup_proven": cleanup.get("ok") is True,
     }
+    if admitted_pair is not None:
+        inventory_check = (
+            query_envelope.get("physical_army_inventory_check")
+            if isinstance(query_envelope, dict) else None
+        )
+        checks["physical_army_inventory_valid"] = bool(
+            isinstance(inventory_check, dict) and inventory_check.get("valid") is True
+        )
     ok = primary_error is None and all(checks.values())
     return {
         "schema": "xar.ck3.h3937-stationary-route-contact-query-run-v1",
@@ -833,6 +895,8 @@ def query_h3937_stationary_route_contact_once(
         "status": "GREEN_READ_ONLY" if ok else "RED",
         "read_only_query_only": True,
         "action_authorized": False,
+        "date_advance_authorized": False,
+        "six_read_contracts_completed": 0,
         "round": ownership_round_id,
         "started_at": started_at,
         "finished_at": utc_now(),
@@ -867,6 +931,9 @@ def query_h3937_stationary_route_contact_once(
             "date_raw": before_date,
         },
         "query_envelope": copy.deepcopy(query_envelope),
+        "query_step": query_step,
+        "requested_hostiles_from_before_frame": list(query_hostiles),
+        "pair_admission": copy.deepcopy(admitted_pair),
         "observed_horizon": (
             {
                 "one_day_contact_free": horizon.get("one_day_contact_free"),

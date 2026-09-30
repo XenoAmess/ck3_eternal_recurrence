@@ -146,6 +146,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1
+  "Attach the read-only H3937 physical army scan receipt to route-contact queries"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1
   "Write the private GEN-034 truce reader result before production reset"
   OFF
@@ -1131,6 +1137,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
@@ -2426,6 +2437,33 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_game_access_fixture
     COMMAND xar_ck3_game_access_test
   )
+
+  # One focused diagnostics fixture, with the production TU included by the
+  # test so its private canonical classifier is exercised without old tests.
+  get_target_property(H3937_DIAGNOSTIC_FIXTURE_SOURCES
+    xar_ck3_game_access_test SOURCES)
+  list(REMOVE_ITEM H3937_DIAGNOSTIC_FIXTURE_SOURCES
+    src/ck3_11906.cpp src/ck3_11906_test.cpp)
+  add_executable(xar_ck3_physical_inventory_diagnostics_v1_test EXCLUDE_FROM_ALL
+    ${H3937_DIAGNOSTIC_FIXTURE_SOURCES}
+    src/physical_army_inventory_diagnostics_v1_test.cpp)
+  target_include_directories(
+    xar_ck3_physical_inventory_diagnostics_v1_test PRIVATE include)
+  target_link_libraries(
+    xar_ck3_physical_inventory_diagnostics_v1_test PRIVATE bcrypt)
+  get_target_property(H3937_DIAGNOSTIC_FIXTURE_DEFINITIONS
+    xar_ck3_game_access_test COMPILE_DEFINITIONS)
+  target_compile_definitions(
+    xar_ck3_physical_inventory_diagnostics_v1_test PRIVATE
+    ${H3937_DIAGNOSTIC_FIXTURE_DEFINITIONS})
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_physical_inventory_diagnostics_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_physical_inventory_diagnostics_v1
+    COMMAND xar_ck3_physical_inventory_diagnostics_v1_test)
 
   add_executable(xar_ck3_adapter_registry_test
     src/actual_contact_scope_v1_mailbox.cpp
