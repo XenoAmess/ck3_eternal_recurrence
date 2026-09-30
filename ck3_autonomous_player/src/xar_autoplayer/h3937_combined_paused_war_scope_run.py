@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 from typing import Callable
+from contextlib import AbstractContextManager
 
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
@@ -364,6 +365,8 @@ def collect_h3937_combined_paused_war_scope_once(
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_timeout_screenshot_path: Path | None = None,
     readiness_timeout_screen_lease_check: Callable[[], object] | None = None,
+    before_process_create: Callable[[], AbstractContextManager[object]] | None = None,
+    managed_stop_event: threading.Event | None = None,
     readiness_timeout_diagnostic_probe: bool = False,
     readiness_stall_watchdog: bool = False,
     cold_load_observation_dir: Path | None = None,
@@ -462,7 +465,7 @@ def collect_h3937_combined_paused_war_scope_once(
     started_at = utc_now()
     started = time.monotonic()
     deadline = started + timeout
-    stop_event = threading.Event()
+    stop_event = managed_stop_event if managed_stop_event is not None else threading.Event()
     observer = (ColdLoadObserver(
         cold_load_observation_dir, spec.game_dir / "binaries" / "ck3.exe",
         readiness_timeout_screen_lease_check)
@@ -497,6 +500,7 @@ def collect_h3937_combined_paused_war_scope_once(
                 native_bridge=config, input_stream=None, output_stream=None,
                 poll_interval_seconds=poll_seconds, cold_start_checkpoint=True,
                 stop_event=stop_event, prepared_xar_enabled="xar_off",
+                before_process_create=before_process_create,
                 **options)
         except BaseException as error:
             session_state["error"] = f"{type(error).__name__}: {error}"

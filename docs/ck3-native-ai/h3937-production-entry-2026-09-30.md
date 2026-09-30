@@ -50,6 +50,17 @@ config bytes, includes its SHA in the claim, and passes the same config path to
 the worker. A worker claim with another config SHA is rejected. Existing
 10-second watchdog readiness, nonce checks, cleanup and unsafe policy remain.
 
+The live worker constructs one existing `ScreenLeaseKeeper` for the supplied
+screen task and GO sequence. Its abort event is the managed session stop event;
+its `process_create_gate` is passed through the H3937 outer collector to
+`native_session`, covering the common watchdog/CK3/injector/resume gates.
+The parent supervisor no longer runs a separate lease heartbeat. The keeper
+stops after the managed collector returns, leaves the claim for its operator,
+and preserves its journal/report. A production worker-to-session closure spy
+passed normal 1/1 and `-O` 1/1 without CK3 or semantic reads in
+`C:/h3937-entry-20260930/attempt-14/`; the initial spy fixture failure remains
+in attempt 13. Generic hybrid movement classification is preserved as master.
+
 For this machine the explicitly verified interpreter is
 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`, Python
 `3.14.7`, pywin32 `312`. The final checkout must contain its runtime imports

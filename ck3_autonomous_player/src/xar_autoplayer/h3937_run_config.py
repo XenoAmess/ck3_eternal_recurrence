@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 import re
 from types import ModuleType
+import sys
+import threading
 
 
 _FIELDS = {
@@ -82,3 +84,16 @@ def main_for_runner(runner: ModuleType, entry: Path, argv: list[str]) -> int:
     if options.worker is not None:
         return runner.main(options.worker)
     return runner.supervise_exact_once(entry)
+
+
+def screen_keeper_for_runner(runner: ModuleType, sequence: int):
+    """Use the existing keeper for this worker's one exact screen task."""
+    checkout = Path(__file__).resolve().parents[3]
+    sys.path.insert(0, str(checkout / "promo/ck3_native_war_ai/integration"))
+    from screen_bus_lease import ScreenLeaseKeeper
+    return ScreenLeaseKeeper(
+        source=runner._require_bus_cli_pair(), bus_dir=runner.TASK_BUS,
+        expected_sha=runner.BUS_CLI_SHA256, task_id=runner.SCREEN_TASK_ID,
+        sequence=sequence, repo=checkout, journal=runner.OUTPUT / "screen-lease.jsonl",
+        abort=threading.Event(), audit_dir=runner.OUTPUT / "screen-lease-audit",
+    )

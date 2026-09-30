@@ -26,6 +26,8 @@ def freeze_profile(config: Path, output: Path, operator_state: Path) -> dict[str
         runner.FROZEN_PYTHON, entry, runner.RUN_CONFIG_PATH, runner.DLL, runner.INJECTOR,
         ROOT / "agent.py", ROOT.parent / "tools/process_watchdog.py",
         ROOT.parent / "tools/build_release.py",
+        ROOT.parent / "tools/codex_task_bus.py",
+        ROOT.parent / "promo/ck3_native_war_ai/integration/screen_bus_lease.py",
         *ROOT.joinpath("src/xar_autoplayer").rglob("*.py"),
     }
     pins = []

@@ -19568,7 +19568,6 @@ class ConfiguredHybridFallbackDriver:
             for step in action_steps
             if (
                 not is_native_war_step(step)
-                and not is_army_move_control_step(step)
                 and not is_native_declaration_step(step)
                 and not is_native_marriage_step(step)
             )
@@ -21388,7 +21387,6 @@ class ConfiguredHybridFallbackDriver:
         if (
             (
                 is_native_war_step(step)
-                or is_army_move_control_step(step)
                 or is_native_declaration_step(step)
                 or is_native_marriage_step(step)
             )

@@ -24,6 +24,7 @@ from . import h3937_combined_readonly_queries as inner
 from . import h3937_target_readonly_queries as target_reads
 from .environment import EnvironmentSpec
 from .runtime import NativeBridgeLaunchConfig
+from .h3937_run_config import screen_keeper_for_runner
 
 
 ROUND = "R3945"
@@ -462,6 +463,7 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
     before: dict[str, object] | None = None
     after: dict[str, object] | None = None
     screen_lease_after: dict[str, object] | None = None
+    keeper = None
     original_outer = outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED
     original_inner = inner.H3937_COMBINED_LIVE_AUTHORIZED
     original_target = target_reads.H3937_TARGET_LIVE_AUTHORIZED
@@ -484,6 +486,8 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         _require_live_screen_lease(go_attestation["screen_task_last_sequence"])
         if _sha(GO) != go_sha:
             raise ValueError("GO receipt changed immediately before native session")
+        keeper = screen_keeper_for_runner(sys.modules[__name__], go_attestation["screen_task_last_sequence"])
+        keeper.start()
         _write_json(OUTPUT / "invocation.json", {
             "schema": "xar.war.h3937-combined-once-invocation.v1",
             "at_utc": _now(), "round": ROUND, "candidate": identity,
@@ -501,6 +505,8 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
             outer_report = outer.collect_h3937_combined_paused_war_scope_once(
                 EnvironmentSpec(state_dir=STATE, game_dir=GAME),
                 ownership_round_id=ROUND, cold_start_checkpoint=True,
+                before_process_create=keeper.process_create_gate,
+                managed_stop_event=keeper.abort,
                 readiness_timeout_screenshot_path=(
                     OUTPUT / "readiness-timeout-desktop.png"),
                 readiness_timeout_screen_lease_check=_require_live_screen_lease,
@@ -526,6 +532,15 @@ def run_exact_once(claim_nonce: str) -> dict[str, object]:
         outer.H3937_COMBINED_OUTER_LIVE_AUTHORIZED = original_outer
         inner.H3937_COMBINED_LIVE_AUTHORIZED = original_inner
         target_reads.H3937_TARGET_LIVE_AUTHORIZED = original_target
+        if keeper is not None:
+            try:
+                keeper.stop()
+                lease_report = keeper.report()
+                _write_json(OUTPUT / "screen-lease-keeper.json", lease_report)
+                if lease_report.get("failure") is not None or lease_report.get("thread_exited") is not True:
+                    primary_error = primary_error or "managed screen lease keeper did not finish cleanly"
+            except BaseException as error:
+                primary_error = primary_error or f"screen lease finalization: {type(error).__name__}: {error}"
         try:
             after = {image: _image_inventory(image) for image in ("ck3.exe", "obs64.exe")}
         except BaseException as error:
@@ -679,7 +694,8 @@ def supervise_exact_once(entry_path: Path) -> int:
                 except subprocess.TimeoutExpired:
                     if _monotonic() >= supervisor_deadline:
                         raise
-                    _managed_screen_heartbeat()
+                    # The worker's single keeper owns all lease renewals.
+                    pass
         except subprocess.TimeoutExpired as error:
             timeout = True
             stdout = error.stdout or b""
