@@ -397,6 +397,17 @@ bool ExecuteOctoquadragintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteCurrentBetrothalReadback(
+    void *opaque, const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  g_failure_stage = "current_betrothal_readback_executor";
+  return Execute(opaque, stamp);
+}
+bool ExecuteCurrentBetrothalFulfillment(
+    void *opaque, const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  g_failure_stage = "current_betrothal_fulfillment_executor";
+  return Execute(opaque, stamp);
+}
+
 bool ExecutePhaseEvent(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1426,6 +1437,43 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // R0406's generic readback fallback omitted its executor from the actual
+  // typed installation. Reproduce the production TrySubmit rejection before
+  // registering both the readback and the separate future fulfillment route.
+  auto current_pair_environment = runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  current_pair_environment.permitted_executor = &Execute;
+  g_failure_stage = "current_pair_unregistered";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, current_pair_environment)) return false;
+  ExecutorContext current_pair_context{};
+  MainThreadQueryTicketV1 current_pair_ticket{};
+  for (const auto executor : {&ExecuteCurrentBetrothalReadback, &ExecuteCurrentBetrothalFulfillment}) {
+    if (TrySubmitMainThreadQueryV1(mailbox, executor, &current_pair_context, current_pair_ticket) !=
+        MainThreadQuerySubmitResultV1::invalid_request) return false;
+  }
+  if (current_pair_context.calls != 0 || UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+      MainThreadQueryUninstallResultV1::uninstalled) return false;
+  current_pair_environment.permitted_executor_octosexagintary = &ExecuteCurrentBetrothalReadback;
+  current_pair_environment.permitted_executor_novemsexagintary = &ExecuteCurrentBetrothalFulfillment;
+  if (!InstallMainThreadQueryMailboxV1(mailbox, current_pair_environment)) return false;
+  if (mailbox.permitted_executor_octosexagintary != &ExecuteCurrentBetrothalReadback ||
+      mailbox.permitted_executor_novemsexagintary != &ExecuteCurrentBetrothalFulfillment) return false;
+  for (const auto executor : {&ExecuteCurrentBetrothalReadback, &ExecuteCurrentBetrothalFulfillment}) {
+    if (TrySubmitMainThreadQueryV1(mailbox, executor, &current_pair_context, current_pair_ticket) !=
+        MainThreadQuerySubmitResultV1::paused_main_thread_not_observed) return false;
+  }
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread);
+  for (const auto executor : {&ExecuteCurrentBetrothalReadback, &ExecuteCurrentBetrothalFulfillment}) {
+    if (TrySubmitMainThreadQueryV1(mailbox, executor, &current_pair_context, current_pair_ticket) !=
+            MainThreadQuerySubmitResultV1::submitted ||
+        !ObserveMainThreadPumpAndDrainV1(mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+        WaitForMainThreadQueryV1(mailbox, current_pair_ticket, 0) != MainThreadQueryWaitResultV1::completed ||
+        ReclaimMainThreadQueryV1(mailbox, current_pair_ticket) != MainThreadQueryReclaimResultV1::reclaimed)
+      return false;
+  }
+  if (current_pair_context.calls != 2 || UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+      MainThreadQueryUninstallResultV1::uninstalled) return false;
+
   // R0190's paused owner and mailbox were ready. This fixture resolves the
   // omitted callback to invalid_request, which the live bridge did not expose.
   auto phase_environment =
@@ -1832,6 +1880,21 @@ bool TestSourceContract(int argc, char **argv) {
                  "docs=%zu exe=%zu bridge=%zu\n",
                  source.size(), abi.size(), fixture.size(), documentation.size(),
                  executable.size(), bridge.size());
+    return false;
+  }
+  // Bind the regression to the real private production callbacks and guards.
+  const auto pair_guard = bridge.find("#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)",
+                                     bridge.find("class WarEntryApplicationMainMailboxWorkerLifetime"));
+  const auto pair_slot = bridge.find("environment.permitted_executor_octosexagintary =", pair_guard);
+  const auto pair_binding = bridge.find("&ExecuteCurrentFirstHeirBetrothalMailboxQueryV1;", pair_slot);
+  const auto fulfill_guard = bridge.find("#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)", pair_binding);
+  const auto fulfill_slot = bridge.find("environment.permitted_executor_novemsexagintary =", fulfill_guard);
+  const auto fulfill_binding = bridge.find("&ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1;", fulfill_slot);
+  if (pair_guard == std::string::npos || pair_slot == std::string::npos ||
+      pair_binding == std::string::npos || pair_binding - pair_slot > 160 ||
+      fulfill_guard == std::string::npos || fulfill_slot == std::string::npos ||
+      fulfill_binding == std::string::npos || fulfill_binding - fulfill_slot > 160) {
+    std::fprintf(stderr, "R0406 current pair private callbacks are not registered\n");
     return false;
   }
   const auto phase_slot =

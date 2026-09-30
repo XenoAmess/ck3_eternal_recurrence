@@ -326,6 +326,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_sexsexagintary = nullptr;
   // Default-off read-only feast guest opinion of host (slot 67).
   MainThreadQueryExecutorV1 permitted_executor_septensexagintary = nullptr;
+  // Fixed current-heir pair query and existing-betrothal fulfillment.
+  MainThreadQueryExecutorV1 permitted_executor_octosexagintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_novemsexagintary = nullptr;
   // The frontend route executor is the only fixed callback admitted before a
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
@@ -487,6 +490,9 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_quinsexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sexsexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_septensexagintary = nullptr;
+  // Fixed current-heir pair query and existing-betrothal fulfillment.
+  MainThreadQueryExecutorV1 permitted_executor_octosexagintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_novemsexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes

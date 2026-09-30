@@ -9548,6 +9548,12 @@ public:
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     environment.permitted_executor_octoquadragintary =
         &ExecuteMarriageCandidateAllianceMailboxQueryV1;
+    environment.permitted_executor_octosexagintary =
+        &ExecuteCurrentFirstHeirBetrothalMailboxQueryV1;
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+    environment.permitted_executor_novemsexagintary =
+        &ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1;
+#endif
 #endif
 #if defined(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
     environment.permitted_executor_novemquadragintary =
@@ -13674,8 +13680,27 @@ void RunConnectedSession(
                   // application-main cannot evaluate the optional fixed pair.
                   read = xar::ck3_11906::ReadCurrentFirstHeirRelationshipV1(
                       query.bindings, heir_id);
-                  read.betrothal_actionability.unavailable_reason =
-                      "current_betrothal_application_main_unavailable";
+                  // Preserve the observed reason category while recording the
+                  // actual failed admission stage for the next bounded readback.
+                  const char *reason = "current_betrothal_application_main_unavailable";
+                  switch (submit) {
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::invalid_request:
+                    reason = "current_betrothal_application_main_invalid_request"; break;
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::executor_submission_disabled:
+                    reason = "current_betrothal_application_main_executor_submission_disabled"; break;
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::mailbox_not_installed:
+                    reason = "current_betrothal_application_main_mailbox_not_installed"; break;
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::infrastructure_failed:
+                    reason = "current_betrothal_application_main_infrastructure_failed"; break;
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::paused_main_thread_not_observed:
+                    reason = "current_betrothal_application_main_paused_main_thread_not_observed"; break;
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::application_main_not_observed:
+                    reason = "current_betrothal_application_main_not_observed"; break;
+                  case xar::ck3_11906::MainThreadQuerySubmitResultV1::mailbox_busy:
+                    reason = "current_betrothal_application_main_mailbox_busy"; break;
+                  default: break;
+                  }
+                  read.betrothal_actionability.unavailable_reason = reason;
                 } else {
                   auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1, query.ticket, 8'000);
