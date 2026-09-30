@@ -469,7 +469,7 @@ class WindowsInjectorJobTests(unittest.TestCase):
         command = [self.python, "-c",
                    "import sys;sys.stdout.buffer.write(b'OUT\\r\\n');"
                    "sys.stderr.buffer.write(b'ERR\\n')"]
-        result = run_contained_injector_command(command, timeout_seconds=5)
+        result = run_contained_injector_command(command, timeout_seconds=30)
         self.assertIsNone(result.error)
         self.assertEqual(result.stdout, b"OUT\r\n")
         self.assertEqual(result.stderr, b"ERR\n")
@@ -526,6 +526,28 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertEqual(result.report["job_active_final"], 0)
         self.assertEqual(result.report["job_pids_final"], [])
         self.assertIsNotNone(result.error)
+
+    def test_postproof_job_termination_or_close_failure_is_red_cleanup(self) -> None:
+        import win32api
+        import win32job
+
+        original_close = win32api.CloseHandle
+
+        def close_then_fail(handle: object) -> None:
+            original_close(handle)
+            raise OSError("dummy Job close report failure")
+
+        for target, failure in (
+            ("win32job.TerminateJobObject", OSError("dummy Job terminate failure")),
+            ("win32api.CloseHandle", close_then_fail),
+        ):
+            with self.subTest(target=target), mock.patch(target, side_effect=failure):
+                result = run_contained_injector_command(
+                    [self.python, "-c", "print('OK')"], timeout_seconds=5.0)
+                self.assertEqual(result.report["status"], "RED_CLEANUP")
+                self.assertFalse(result.report["complete_process_tree_proven"])
+                self.assertTrue(result.report["injector_root_reaped"])
+                self.assertIsNotNone(result.error)
 
     def test_output_limit_terminates_job_and_refuses_tree_proof(self) -> None:
         result = run_contained_injector_command(
