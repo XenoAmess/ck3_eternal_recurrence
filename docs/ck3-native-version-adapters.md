@@ -4,6 +4,8 @@
 
 证据状态：本文中的运行行为已按 2026-08-24 的 CK3 1.19.0.6 源码与实机记录核实；版本无关 contract、adapter registry 和逐 capability 发布已在本轮落地。精确 RVA、对象布局和逐能力实测结果仍以 [`native_bridge/research/README.md`](../ck3_autonomous_player/native_bridge/research/README.md) 为准。
 
+2026-09-30 迁移前源码补充：后续 typed query 扩展在 `bridge.cpp` 的主线程 mailbox、journal、route helper 与部分 dispatch 中仍直接绑定 `ck3_11906`；`game_adapter.cpp` 的部分 step parser 也使用该命名空间。第二 adapter 需要迁移这些实际依赖，不能仅新增 registry 条目。当前四项 startup containment 与 particle2 recorder 默认关闭。即将发生的更新按 [本体更新迁移计划](ck3-update-migration-plan.md) 执行；该计划尚不代表新版兼容。
+
 ## 1. EXE 升级后实际会发生什么
 
 当前唯一受支持的游戏镜像是：
@@ -88,7 +90,7 @@ CK3 1.19.0.6 adapter / CK3 未来版本 adapter
 - 由原生对象投影为稳定 Snapshot/Choice/Result 的读取逻辑。
 - 该版本的 anchor manifest、布局 fixture 和逐能力实测矩阵。
 
-重构前，这条边界并不完整：`bridge.cpp` 直接 include `ck3_11906.hpp`，序列化器、worker state 和所有 dispatch 分支直接引用 `xar::ck3_11906::*`；预期版本、SHA 和整套 capability 字符串也硬编码在 transport 文件中；CMake 只编译 `ck3_11906.cpp`。当前实现已经移除这些跨层依赖；本段保留为迁移前基线，便于以后审查边界是否退化。
+重构前，这条边界并不完整：`bridge.cpp` 直接 include `ck3_11906.hpp`，序列化器、worker state 和所有 dispatch 分支直接引用 `xar::ck3_11906::*`；预期版本、SHA 和整套 capability 字符串也硬编码在 transport 文件中；CMake 只编译 `ck3_11906.cpp`。基础 snapshot/command 已通过 adapter 解耦，但后续 typed query 扩展仍有版本专属依赖，具体迁移入口见本文开头的 2026-09-30 补充；不能把基础重构外推为所有新能力都已解耦。
 
 ## 3. 已落地的目录和 API
 
