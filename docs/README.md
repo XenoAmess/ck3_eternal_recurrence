@@ -20,6 +20,8 @@
 - [ck3-native-version-adapters.md](ck3-native-version-adapters.md) — CK3 EXE 升级时的 native 失效语义、稳定 Game API/逐版本 ABI 边界、adapter registry、逐 capability 迁移与最小化实机验收契约
 - [ck3-update-migration-plan.md](ck3-update-migration-plan.md) — **2026-09-30 迁移计划**：更新前冻结已执行；二进制/数据差异、主线程版本耦合、分阶段恢复 MCP 与 OODA、排期、验收及回退；新版本尚未适配
 - [ck3-1.20.0.2-migration.md](ck3-1.20.0.2-migration.md) — 因果律新版迁移：build 25588574、二进制/数据冻结、基础 ABI 和离线 C++ fixture；用户游戏期间仅后台静态施工，新版 live 待验
+- [ck3-1.20.0.2-mod-static-compatibility.md](ck3-1.20.0.2-mod-static-compatibility.md) — 新版 trait 目录、继承窗投影与两产品静态迁移验证；不代表新版游戏内验收
+- [ck3-1.20.0.2-offline-launch-preparation.md](ck3-1.20.0.2-offline-launch-preparation.md) — 新安装路径、真实版本报告、隔离候选配置与只读实机计划生成；当前不启动游戏
 - [ck3-pre-update-baseline-and-cleanup-2026-09-30.md](ck3-pre-update-baseline-and-cleanup-2026-09-30.md) — 更新前核心恢复包、三份安装的指纹、真实 checkpoint/seed、约 7 GB 过时产物清理及 13 个权限失败目录的管理员脚本
 - [z-drive-root-cleanup-2026-09-30.md](z-drive-root-cleanup-2026-09-30.md) — Z 盘根目录 131 个构建输出与 28 个旧工作树的实际清理、约 16.35 GB 原始占用、337 MB 留存归档与保留依据；本轮无权限失败
 - [z-drive-runtime-cleanup-2026-09-30.md](z-drive-runtime-cleanup-2026-09-30.md) — 294 个旧运行现场的退役、存档/源码去重归档、缓存丢弃、历史路径映射与恢复工具

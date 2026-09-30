@@ -2,6 +2,8 @@
 
 ## 状态
 
+- 2026-10-01：CK3 1.20.0.2 数据迁移已完成静态验收；目录更新为 226 项、95 组冲突。当前版本尚无新实机验收，以下 1.19.0.6 GREEN 仅为历史基线；迁移依据与待测项见 [1.20.0.2 mod 静态兼容](ck3-1.20.0.2-mod-static-compatibility.md)。
+
 - 2026-08-20 v2 源码、L0 与 CK3 1.19.0.6 真实 UI 验收 GREEN。交付失败回滚审阅后的权威证据为 `xar_courtier_creator_postreview22_20260820`；它以创建角色同时不同于玩家的文化与信仰为硬断言，取代了只点击 heritage 标题、未真正证明动态文化的早期运行。
 - 实机链覆盖原生决议、取消零副作用、119/120 金门槛、七页目录、数值步进、动态文化/信仰、同家族、关窗重开保留、默认 120 金与验收自定义配置 348 金的两次真实交付，以及 AI 运行期闸门；两次购买均校验创建角色本体，`xar error.log = 0`。
 - 348 金只是验收向量，不是最高价格。
@@ -55,13 +57,13 @@
 
 ## 目录与定价
 
-- 教育 25、将领 17、身体 38、性格 36、其他 108；唯一 trait 并集 224 项，冲突元数据 95 组。
+- 教育 25、将领 17、身体 38、性格 36、其他 110；唯一 trait 并集 226 项，冲突元数据 95 组。CK3 1.20.0.2 原版将 `scholar` 替换为 `erudite`，并新增可选 `herald`、`lifestyle_scholar`；后者需要至少 16 岁。
 - 年龄可在 0–120 间精确调整；六项基础能力可在 0–100 间用 `-10/-1/+1/+10` 调整。
 - 价格为 50 金塑造费，加年龄调整、生成的原生 trait 价格和六项原生非线性绝对能力价格，再减去默认六项能力均为 6 的 88 金基线；最终四舍五入且不低于 0。
 - 默认男性、30 岁、六项能力 6、`education_martial_3`、低身、玩家文化/信仰，价格 120 金。
 - 验收自定义向量为女性、20 岁、外交/勇武 16、其余能力 6，并选择 `education_intrigue_1`、`logistician`、`military_engineer`、`beauty_bad_1`、`lustful`、`diplomat`、动态文化/信仰及同家族，价格 348 金。
 
-价格只由 `common/script_values/xar_courtier_creator_values.txt` 中的 `xar_courtier_creator_cost` 计算；显示、确认校验和实际扣款引用同一个 script value。trait 目录与价格来自 `tools/courtier_traits_1_19_0_6.json`，由 `tools/gen_courtier_creator.py` 生成。
+价格只由 `common/script_values/xar_courtier_creator_values.txt` 中的 `xar_courtier_creator_cost` 计算；显示、确认校验和实际扣款引用同一个 script value。trait 目录与价格来自 `tools/courtier_traits_1_20_0_2.json`，由 `tools/gen_courtier_creator.py` 生成。1.20.0.2 的原生年龄/能力定价源与旧版相同，默认 120 金及历史自定义 348 金向量的静态规则保持原值。
 
 ## 验收边界
 

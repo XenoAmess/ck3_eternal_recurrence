@@ -14,28 +14,28 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "Eternal_Recurrence_Vivhite_Courtier"
 SNAPSHOT = Path(__file__).resolve().with_name(
-    "vivhite_courtier_traits_1_19_0_6.json"
+    "vivhite_courtier_traits_1_20_0_2.json"
 )
 HEADER = (
     "# GENERATED FILE - do not edit. Regenerate with "
     "tools/gen_vivhite_courtier.py"
 )
-EXPECTED_SOURCE_VERSION = "1.19.0.6"
+EXPECTED_SOURCE_VERSION = "1.20.0.2"
 EXPECTED_SOURCE_FILE = "Crusader Kings III/game/common/traits/00_traits.txt"
 EXPECTED_SOURCE_SHA256 = (
-    "079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042"
+    "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
 )
-EXPECTED_TRAIT_COUNT = 301
+EXPECTED_TRAIT_COUNT = 306
 CATALOG_NAMES = ("education", "commander", "physical", "personality", "other")
 EXPECTED_COUNTS = {
     "education": 25,
     "commander": 17,
     "physical": 38,
     "personality": 36,
-    "other": 108,
+    "other": 110,
 }
-EXPECTED_UNION_COUNT = 224
-EXPECTED_VISIBLE_COUNT = 223
+EXPECTED_UNION_COUNT = 226
+EXPECTED_VISIBLE_COUNT = 225
 EXPECTED_CONFLICT_PAIR_COUNT = 95
 OUTPUTS = {
     MOD

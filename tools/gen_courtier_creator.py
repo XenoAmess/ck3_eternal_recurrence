@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "XenoAmess_s_Eternal_Recurrence"
-SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_19_0_6.json")
+SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_2.json")
 HEADER = (
     "# GENERATED FILE - do not edit. Regenerate with "
     "tools/gen_courtier_creator.py"
@@ -24,10 +24,10 @@ EXPECTED_COUNTS = {
     "commander": 17,
     "physical": 38,
     "personality": 36,
-    "other": 108,
+    "other": 110,
 }
-EXPECTED_UNION_COUNT = 224
-EXPECTED_VISIBLE_COUNT = 223
+EXPECTED_UNION_COUNT = 226
+EXPECTED_VISIBLE_COUNT = 225
 OUTPUTS = {
     MOD
     / "common/scripted_effects/xar_generated_courtier_catalog_effects.txt": "effects",
@@ -71,7 +71,7 @@ def load_snapshot(path: Path = SNAPSHOT) -> tuple[dict[str, object], list[dict[s
     require(payload.get("schema_version") == 1, "unsupported courtier trait schema")
     source = payload.get("source")
     require(isinstance(source, dict), "snapshot source metadata is missing")
-    require(source.get("game_version") == "1.19.0.6", "unexpected source game version")
+    require(source.get("game_version") == "1.20.0.2", "unexpected source game version")
     require(
         isinstance(source.get("sha256"), str)
         and re.fullmatch(r"[0-9a-f]{64}", source["sha256"]) is not None,

@@ -1,4 +1,4 @@
-# 全自动验收 runner：备份现场 -> 场景规则/纪录 -> OCR 过大厅 -> 场景判定 -> 恢复现场
+﻿# 全自动验收 runner：备份现场 -> 场景规则/纪录 -> OCR 过大厅 -> 场景判定 -> 恢复现场
 #
 # 前置事实（2026-08-17 实证）：游戏加载的是 Steam 工坊缓存（ugc_3784706360，
 # 播放集启用的是工坊项而非 dev 路径，因 dev .mod 带了 remote_file_id 被启动器合并）。
@@ -43,6 +43,7 @@ from PIL import Image, ImageDraw, ImageGrab
 
 import validate_static
 import build_release
+import ck3_installation
 from balance_wire_data import FIELD_SCALES
 
 # UI localization smoke test: OCR engine + crop box for the three event options.
@@ -64,8 +65,7 @@ def configured_path(name, default):
     return Path(os.path.expandvars(raw)).expanduser().resolve() if raw else default.resolve()
 
 
-CK3_EXE = configured_path(
-    "XAR_CK3_EXE", ROOT / "Crusader Kings III" / "binaries" / "ck3.exe")
+CK3_EXE = ck3_installation.configured_game_executable(ROOT)
 USER_DIR = configured_path(
     "XAR_CK3_USER_DIR",
     Path.home() / "Documents" / "Paradox Interactive" / "Crusader Kings III")
@@ -73,7 +73,7 @@ ORIGINAL_USER_DIR = USER_DIR
 UGC_DIR_OVERRIDE = os.environ.get("XAR_CK3_UGC_DIR")
 MOD_ROOT = ROOT / "XenoAmess_s_Eternal_Recurrence"
 VANILLA_GAME_RULES = (
-    ROOT / "Crusader Kings III" / "game" / "common" / "game_rules"
+    CK3_EXE.parent.parent / "game" / "common" / "game_rules"
     / "00_game_rules.txt")
 UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
 TUTORIAL_TXT = USER_DIR / "tutorial.txt"
@@ -181,6 +181,13 @@ BALANCE_FIXTURES = {
 
 class RunnerError(RuntimeError):
     pass
+
+
+def installed_game_version():
+    try:
+        return ck3_installation.installed_game_version(CK3_EXE)
+    except (OSError, ValueError, TypeError) as error:
+        raise RunnerError(f"cannot read configured CK3 identity: {error}") from error
 
 
 def log(msg):
@@ -3845,6 +3852,12 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         for path in artifacts.rglob("*")
         if path.is_file() and path.name != "report.json"
     )
+    try:
+        game_version = installed_game_version()
+        game_identity_error = None
+    except RunnerError as identity_error:
+        game_version = None
+        game_identity_error = str(identity_error)
     report = {
         "schema_version": 1,
         "run_id": run_id,
@@ -3859,7 +3872,9 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
         "runtime_tree_sha256": runtime_tree_sha256,
         "debug_mode": scenario not in TERMINAL_SCENARIOS,
         "isolated_userdir": scenario in TERMINAL_SCENARIOS,
-        "game_version": os.environ.get("XAR_CK3_VERSION") or "1.19.0.6",
+        "game_version": game_version,
+        "game_executable": str(CK3_EXE),
+        "game_identity_error": game_identity_error,
         "environment": {
             "platform": platform.platform(),
             "python": sys.version.split()[0],

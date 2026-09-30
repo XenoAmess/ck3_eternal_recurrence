@@ -25,7 +25,7 @@ RELEASE_DIRECTORY_SUFFIXES = {
     "gui": {".gui", ".txt"},
     "localization": {".yml"},
 }
-EXCLUDED_DEVELOPMENT_DIRECTORIES = {"tools"}
+EXCLUDED_DEVELOPMENT_DIRECTORIES = {"tools", ".idea"}
 FORBIDDEN_CACHE_SUFFIXES = {".pyc", ".pyo"}
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 WORKSHOP_ITEM_ID = "3784706360"

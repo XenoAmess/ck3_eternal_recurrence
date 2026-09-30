@@ -1,0 +1,14 @@
+﻿{
+  "schema_version": 1,
+  "kind": "offline-migration-launch-candidate",
+  "game": {
+    "version": "1.20.0.2",
+    "executable_sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "installation_root": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III"
+  },
+  "state_directory_name": "XarAutoplayer-1.20.0.2-migration",
+  "bridge_mode": "native-headless",
+  "bridge_pipe": "\\\\.\\pipe\\xar_ck3_bridge_migration_12002",
+  "visual_ui_contract": null,
+  "live_validated": false
+}

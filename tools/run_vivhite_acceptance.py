@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run isolated CK3 acceptance for Vivhite alone and both product load orders."""
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ import run_terminal_acceptance as terminal
 ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "vivhite_acceptance"
 STEAM_APP_ID = "1158310"
-EXPECTED_GAME_VERSION = "1.19.0.6"
+EXPECTED_GAME_VERSION = os.environ.get("XAR_CK3_EXPECTED_VERSION") or "1.20.0.2"
 POSTFLIGHT_STABILITY_SECONDS = 5
 BOOT_TIMEOUT_S = 300
 DUAL_ONLY_BEGIN = "# ERVA_DUAL_ONLY_BEGIN"
@@ -1584,32 +1584,7 @@ def fixture_source_errors() -> list[str]:
 
 
 def installed_game_version() -> str:
-    settings = (
-        acceptance.CK3_EXE.parent.parent / "launcher" / "launcher-settings.json"
-    )
-    try:
-        payload = json.loads(settings.read_text(encoding="utf-8-sig"))
-    except (OSError, json.JSONDecodeError) as error:
-        raise acceptance.RunnerError(
-            f"cannot read installed CK3 version from {settings}: {error}"
-        ) from error
-    version = payload.get("rawVersion")
-    if not isinstance(version, str) or not version:
-        raise acceptance.RunnerError(
-            f"launcher settings contain no rawVersion: {settings}"
-        )
-    raw_executable = payload.get("exePath")
-    if not isinstance(raw_executable, str) or not raw_executable:
-        raise acceptance.RunnerError(
-            f"launcher settings contain no exePath: {settings}"
-        )
-    declared_executable = (settings.parent / raw_executable).resolve()
-    if declared_executable != acceptance.CK3_EXE.resolve():
-        raise acceptance.RunnerError(
-            "launcher exePath does not match the configured CK3 executable: "
-            f"{declared_executable} != {acceptance.CK3_EXE.resolve()}"
-        )
-    return version
+    return acceptance.installed_game_version()
 
 
 def preflight() -> None:

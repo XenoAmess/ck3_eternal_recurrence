@@ -6,6 +6,7 @@
 - Chinese title: 【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】
 - English title: **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**
 - Version: `1.0.1`; tested baseline: CK3 `1.19.0.6`
+- Current source migration baseline: CK3 `1.20.0.2`, static checks passed; new runtime acceptance remains pending. See [mod static compatibility](ck3-1.20.0.2-mod-static-compatibility.md). The previous tested baseline remains historical evidence.
 - Repository tag namespace: `vivhite-v<version>`; it must never reuse the original mod's `v1.0.0` tag.
 - Workshop identity: item `3787304042`. The original item `3784706360` is forbidden in the standalone runtime and is not a default in its tooling.
 
@@ -33,10 +34,14 @@ rejects any custom `xar`, `xa_`, `XAR:`, original Workshop ID, forbidden subsyst
 ## Generation
 
 `tools/gen_vivhite_courtier.py` reads only the independently pinned
-`tools/vivhite_courtier_traits_1_19_0_6.json`. Ordinary generation never reads the ignored game installation. The
-snapshot records CK3 `1.19.0.6`, source `00_traits.txt` SHA-256
-`079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042`, 301 source traits, 224 catalog traits and
+`tools/vivhite_courtier_traits_1_20_0_2.json`. Ordinary generation never reads the ignored game installation. The
+snapshot records CK3 `1.20.0.2`, source `00_traits.txt` SHA-256
+`93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa`, 306 source traits, 226 catalog traits and
 95 conflict pairs. It emits three generated ERVC catalog files and supports `--check` parity.
+
+The migration replaces the removed `scholar` ID with `erudite` and includes the newly visible `herald` and
+`lifestyle_scholar` entries at their native costs. The latter requires age 16 or older. Hidden new traits remain outside
+the catalog. The 1.19.0.6 snapshot stays checked in as a historical comparison; generation uses only the new snapshot.
 
 `tools/compose_vivhite_key_art.py` renders the owner-supplied
 `images/vivhite_courtier_key_art.png` to the standalone mod's 640×640 launcher/Workshop `thumbnail.png`. The static

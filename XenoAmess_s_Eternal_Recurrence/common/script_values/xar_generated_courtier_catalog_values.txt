@@ -168,7 +168,7 @@ xar_cc_selected_trait_cost = {
 		add = 75
 	}
 	if = {
-		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:scholar } }
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:erudite } }
 		add = 50
 	}
 	if = {
@@ -764,6 +764,10 @@ xar_cc_selected_trait_cost = {
 		add = 50
 	}
 	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:herald } }
+		add = 100
+	}
+	if = {
 		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:peasant_leader } }
 		add = 100
 	}
@@ -898,5 +902,9 @@ xar_cc_selected_trait_cost = {
 	if = {
 		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:burdened } }
 		add = -10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_scholar } }
+		add = 15
 	}
 }

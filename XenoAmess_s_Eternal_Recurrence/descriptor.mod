@@ -4,4 +4,4 @@ tags={
 }
 name="琉焰卿的永恒轮回"
 picture="thumbnail.png"
-supported_version="1.19.0.6"
+supported_version="1.20.0.2"

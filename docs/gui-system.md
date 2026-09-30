@@ -1,5 +1,10 @@
 # CK3 GUI 系统实测笔记
 
+2026-10-01 迁移补充：`tools/gen_no_heir_gui.py` 当前固定 CK3 1.20.0.2 继承窗正文 SHA-256
+`80132a0b5bb2c3e8c8f7b676c964b2c2eafec731ca5e25b98092aa437564d438`，保留新版原生组织继承按钮与可见性，
+再注入同一个 XAR 无继承人 widget。可逆投影与本地原版对照已通过静态测试；新版本按钮行为与结算仍待实机。
+本页下方 1.19.0.6 哈希与实测结论属于历史基线，详见 [迁移记录](ck3-1.20.0.2-mod-static-compatibility.md)。
+
 ## 顶层窗口的实例化：scripted_widgets 注册
 
 自定义顶层 `window = {}` 写在 gui 文件里**不会自动实例化**——必须在 `gui/scripted_widgets/*.txt` 注册：

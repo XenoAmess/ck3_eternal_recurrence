@@ -1,12 +1,14 @@
+import argparse
 import hashlib
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "Crusader Kings III/game/gui/window_succession_event.gui"
+SOURCE = (ROOT.parent / "SteamLibrary/steamapps/common/Crusader Kings III"
+          / "game/gui/window_succession_event.gui")
 OUTPUT = ROOT / "XenoAmess_s_Eternal_Recurrence/gui/window_succession_event.gui"
-HEADER = "# GENERATED FILE - native 1.19 succession window plus XAR no-heir widget\n"
-NATIVE_SHA256 = "322971347711308a51bcb16e3c34a7bd9eae5e7938243699ec8fe3691d8c7406"
+HEADER = "# GENERATED FILE - native 1.20.0.2 succession window plus XAR no-heir widget\n"
+NATIVE_SHA256 = "80132a0b5bb2c3e8c8f7b676c964b2c2eafec731ca5e25b98092aa437564d438"
 ANCHOR = '\n}\n\n\nwindow = {\n\tname = "succession_select_destiny_window"'
 INJECTION = '\n\txar_no_heir_settlement_widget = {}\n'
 
@@ -31,8 +33,8 @@ def render_source(source):
     return source.replace(ANCHOR, INJECTION + ANCHOR, 1)
 
 
-def render():
-    return render_source(SOURCE.read_text(encoding="utf-8-sig"))
+def render(source_path=SOURCE):
+    return render_source(source_path.read_text(encoding="utf-8-sig"))
 
 
 def recover_source(projection):
@@ -50,8 +52,11 @@ def recover_source(projection):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Project the pinned native succession GUI")
+    parser.add_argument("--source", type=Path, default=SOURCE)
+    args = parser.parse_args()
     OUTPUT.write_text(
-        HEADER + render(),
+        HEADER + render(args.source),
         encoding="utf-8-sig",
         newline="\n",
     )

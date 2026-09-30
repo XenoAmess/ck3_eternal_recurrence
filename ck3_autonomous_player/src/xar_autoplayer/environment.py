@@ -1,4 +1,4 @@
-"""Prepare and verify a production-only, single-mod CK3 profile."""
+﻿"""Prepare and verify a production-only, single-mod CK3 profile."""
 
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ if str(TOOLS_DIR) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIR))
 
 import build_release  # noqa: E402
+import ck3_installation  # noqa: E402
 
 
 STEAM_APP_ID = "1158310"
@@ -130,10 +131,7 @@ def default_state_dir() -> Path:
 
 
 def default_game_dir() -> Path:
-    override = os.environ.get("XAR_CK3_GAME_DIR")
-    if override:
-        return Path(os.path.expandvars(override)).expanduser().resolve()
-    return (REPO_ROOT / "Crusader Kings III").resolve()
+    return ck3_installation.configured_game_dir(REPO_ROOT)
 
 
 def real_ck3_profile() -> Path:

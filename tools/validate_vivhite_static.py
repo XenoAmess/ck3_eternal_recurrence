@@ -45,7 +45,7 @@ DESCRIPTOR_FIELDS = {
     "version": "1.0.1",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
     "picture": "thumbnail.png",
-    "supported_version": "1.19.0.6",
+    "supported_version": "1.20.0.2",
 }
 GROUP_KEY = "decision_group_type_ervc_courtier_creator"
 DECISION_TITLE_KEY = "ervc_courtier_creator_decision"
@@ -402,8 +402,8 @@ def generator_checks(errors: list[str], report: dict[str, object]) -> None:
             f"catalog counts drifted: API={actual_counts}, render={counts}, "
             f"expected={generator.EXPECTED_COUNTS}"
         )
-    if len(union) != 224:
-        errors.append(f"trait catalog union is {len(union)}, expected 224")
+    if len(union) != generator.EXPECTED_UNION_COUNT:
+        errors.append(f"trait catalog union is {len(union)}, expected {generator.EXPECTED_UNION_COUNT}")
     if len(pairs) != 95 or rendered_pair_count != 95:
         errors.append(
             f"trait conflict count drifted: API={len(pairs)}, render={rendered_pair_count}, expected=95"
@@ -938,10 +938,10 @@ def mechanics_checks(errors: list[str], report: dict[str, object]) -> None:
     trait_cost_entries = generated_values.count(
         "ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:"
     )
-    if trait_cost_entries != 224:
-        errors.append(f"generated selected-trait price wiring has {trait_cost_entries} entries, expected 224")
-    if generated_effects.count("add_to_variable_list = {") != 224:
-        errors.append("generated trait catalogs do not contain exactly 224 additions")
+    if trait_cost_entries != generator.EXPECTED_UNION_COUNT:
+        errors.append(f"generated selected-trait price wiring has {trait_cost_entries} entries, expected {generator.EXPECTED_UNION_COUNT}")
+    if generated_effects.count("add_to_variable_list = {") != generator.EXPECTED_UNION_COUNT:
+        errors.append(f"generated trait catalogs do not contain exactly {generator.EXPECTED_UNION_COUNT} additions")
     if "ervc_cc_selected_traits_compatible_trigger" not in generated_triggers:
         errors.append("generated conflict compatibility trigger is missing")
 
