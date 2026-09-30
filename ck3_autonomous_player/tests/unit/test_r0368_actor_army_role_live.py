@@ -26,8 +26,11 @@ def _run(cleanup=True, available=True):
                 'injector_attestation': {'complete_process_tree_proven': True}}
 
     with tempfile.TemporaryDirectory() as directory:
-        with (patch('xar_autoplayer.bridge.native_driver.NativeHeadlessGameplayDriver', return_value=driver),
+        manifest = {'environment_sha256': 'a' * 64,
+                    'rules': {'profile': [{'rule': 'xar_enabled', 'setting': 'xar_off'}]}}
+        with (patch('xar_autoplayer.bridge.native_driver.NativeHeadlessGameplayDriver', return_value=driver) as factory,
               patch('xar_autoplayer.native_session.native_session', side_effect=native_session),
+              patch('xar_autoplayer.environment.verify_profile', return_value=manifest),
               patch('xar_autoplayer.runtime.ck3_process_inventory', return_value={'processes': []}),
               patch.object(entry.role, '_git', return_value='a' * 40),
               patch.object(entry.role, '_fresh_target', return_value=True),
@@ -37,6 +40,11 @@ def _run(cleanup=True, available=True):
                 keeper=keeper, actor=29829, episode='exact-episode', war_id=16777231,
                 army_id=83886367, output=Path(directory), timeout_seconds=2)
             collect.assert_called_once()
+            binding = factory.call_args.kwargs['succession_lifecycle_binding']
+            if (binding['lifecycle'] != 'ordinary_campaign_succession'
+                    or binding['xar_enabled'] != 'xar_off'
+                    or binding['environment_sha256'] != 'a' * 64):
+                raise AssertionError('driver did not receive the verified ordinary lifecycle')
             driver.close.assert_called_once()
             keeper.stop.assert_called_once()
             if called[0]['before_process_create'] != keeper.process_create_gate:

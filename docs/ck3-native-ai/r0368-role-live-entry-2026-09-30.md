@@ -44,3 +44,14 @@ The worker stops its managed session, closes the driver, stops lease renewal,
 and reads the final CK3 inventory before completing. The source remains
 **live 0/1** until a new actual role read and complete process cleanup succeed.
 No screen lease or Steam operation was performed while writing this source.
+
+## 2026-09-30 15:03 correction
+
+The first entry draft constructed the generic driver with its default rogue
+one-life binding. That does not match the officially rebound ordinary
+`xar_off` driver-state and would stop at hello adoption. The corrected entry
+verifies the prepared `xar_off` profile, derives the existing ordinary/no-pact
+binding, and supplies `succession_lifecycle_binding` to the driver constructor.
+Its focused execution fixture now checks that exact constructor input. The
+first draft, freeze and no-launch/preparation receipts remain preserved; none
+of those receipts represented a live role read.

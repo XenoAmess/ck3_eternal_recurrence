@@ -102,6 +102,10 @@ def run_owned_role_read(*, spec, config, keeper, actor: int, episode: str,
     """Execute the existing typed collector and always stop the managed session."""
     from .bridge.native_driver import NativeHeadlessGameplayDriver
     from .bridge.driver import BridgeUnavailableError
+    from .bridge.succession_transition_contract import (
+        ORDINARY_CAMPAIGN_SUCCESSION, bind_succession_lifecycle_from_environment_v1,
+    )
+    from .environment import verify_profile
     from .native_session import native_session
     from .runtime import ck3_process_inventory
 
@@ -109,6 +113,10 @@ def run_owned_role_read(*, spec, config, keeper, actor: int, episode: str,
         raise AgentError('role read timeout must be within 1..1200 seconds')
     if ck3_process_inventory()['processes']:
         raise AgentError('role read requires zero current CK3 processes')
+    lifecycle_binding = bind_succession_lifecycle_from_environment_v1(
+        verify_profile(spec, xar_enabled='xar_off'),
+        lifecycle=ORDINARY_CAMPAIGN_SUCCESSION, ordinary_campaign_no_pact=True,
+    )
     abort = keeper.abort
     done = threading.Event()
     session = {}
@@ -136,7 +144,8 @@ def run_owned_role_read(*, spec, config, keeper, actor: int, episode: str,
     try:
         keeper.refresh()
         driver = NativeHeadlessGameplayDriver(config.pipe_name, state_dir=spec.state_dir,
-                                              save_dir=spec.profile_dir / 'save games')
+            save_dir=spec.profile_dir / 'save games',
+            succession_lifecycle_binding=lifecycle_binding)
         driver.allow_private_actor_army_role_query = True
         driver.query_actor_army_role_private_v1 = MethodType(query_actor_army_role_private_v1, driver)
         thread = threading.Thread(target=supervise, name='r0368-role-managed-session')
