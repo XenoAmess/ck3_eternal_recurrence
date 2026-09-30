@@ -90,6 +90,74 @@ class ProcessCreateGateTests(unittest.TestCase):
         self.assertEqual(calls, ["gate-enter", "watchdog-spawn", "gate-exit",
                                  "gate-enter"])
 
+    def test_injector_and_resume_each_require_fresh_gate(self):
+        calls = []
+        process = SimpleNamespace(resume=lambda: calls.append("resume"))
+
+        @contextmanager
+        def gate():
+            calls.append("gate-enter")
+            try:
+                yield
+            finally:
+                calls.append("gate-exit")
+
+        with patch.object(runtime, "_inject_native_bridge",
+                          side_effect=lambda *unused: calls.append("injector")):
+            runtime._resume_with_native_bridge(
+                process, SimpleNamespace(), before_process_create=gate)
+        self.assertEqual(calls, ["gate-enter", "injector", "gate-exit",
+                                 "gate-enter", "resume", "gate-exit"])
+
+    def test_delayed_injector_then_lost_lease_never_resumes_ck3(self):
+        calls = []
+        process = SimpleNamespace(resume=lambda: calls.append("resume"))
+        lost = False
+
+        @contextmanager
+        def gate():
+            calls.append("gate-enter")
+            if lost:
+                raise RuntimeError("lease lost while injector was running")
+            try:
+                yield
+            finally:
+                calls.append("gate-exit")
+
+        def delayed_injector(*unused):
+            nonlocal lost
+            calls.append("injector-start")
+            lost = True
+            calls.append("injector-exit")
+
+        with patch.object(runtime, "_inject_native_bridge", side_effect=delayed_injector):
+            with self.assertRaisesRegex(RuntimeError, "lease lost"):
+                runtime._resume_with_native_bridge(
+                    process, SimpleNamespace(), before_process_create=gate)
+        self.assertEqual(calls, ["gate-enter", "injector-start", "injector-exit",
+                                 "gate-exit", "gate-enter"])
+
+    def test_screen_gated_bridge_stops_before_any_child_without_tree_proof(self):
+        calls = []
+
+        @contextmanager
+        def gate():
+            calls.append("gate-enter")
+            yield
+
+        with patch.object(runtime, "validate_native_bridge_launch_config",
+                          return_value=SimpleNamespace(mode="native-headless")), \
+             patch.object(runtime, "_start_process_watchdog",
+                          side_effect=lambda *unused: calls.append("watchdog-spawn")), \
+             patch.object(runtime, "_create_suspended_process",
+                          side_effect=lambda *unused: calls.append("ck3-spawn")), \
+             patch.object(runtime, "_inject_native_bridge",
+                          side_effect=lambda *unused: calls.append("injector-spawn")):
+            with self.assertRaisesRegex(runtime.AgentError, "containment proof"):
+                runtime.launch(SimpleNamespace(), native_bridge=SimpleNamespace(),
+                               before_process_create=gate)
+        self.assertEqual(calls, [])
+
 
 if __name__ == "__main__":
     unittest.main()

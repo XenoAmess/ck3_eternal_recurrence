@@ -2336,10 +2336,17 @@ def _inject_native_bridge(
 def _resume_with_native_bridge(
     process: _SuspendedWindowsProcess,
     config: NativeBridgeLaunchConfig | None,
+    *,
+    before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
 ) -> None:
     if config is not None:
-        _inject_native_bridge(process, config)
-    process.resume()
+        # The injector is a separate child process. Keep the caller's CAS lock
+        # through its entire lifetime, then acquire a fresh sequence before
+        # CK3's suspended primary thread can run.
+        with before_process_create() if before_process_create is not None else nullcontext():
+            _inject_native_bridge(process, config)
+    with before_process_create() if before_process_create is not None else nullcontext():
+        process.resume()
 
 
 def _assign_process_to_job(
@@ -2420,6 +2427,14 @@ def launch(
         if native_bridge is None
         else validate_native_bridge_launch_config(native_bridge)
     )
+    # The legacy injector uses subprocess.run, which cannot prove that any
+    # descendants have exited. A screen-gated session must not create even the
+    # watchdog until the injector has a reviewed Job containment proof.
+    if before_process_create is not None and native_bridge is not None:
+        raise AgentError(
+            "screen-gated native bridge launch is stopped: injector tree "
+            "containment proof is unavailable"
+        )
     if verify_prepared_profile:
         verify_profile(spec, xar_enabled=prepared_xar_enabled)
     if job_name is not None and not re.fullmatch(
@@ -2623,7 +2638,9 @@ def launch(
                 "pre-resume global CK3 inventory is not the exact suspended process: "
                 f"{visible!r}"
             )
-        _resume_with_native_bridge(process, native_bridge)
+        _resume_with_native_bridge(
+            process, native_bridge, before_process_create=before_process_create
+        )
     except Exception as error:
         # A process that has not resumed cannot have spawned descendants. Once
         # resumed, assignment to the kill-on-close Job has already succeeded.
