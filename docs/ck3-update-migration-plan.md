@@ -46,12 +46,24 @@ R2 不等于自然死亡的一代人自治；R3 不等于全游戏自治。若�
 
 ## 3. 更新前：现在应保存的材料
 
-以下是执行清单；本次只交付计划，**尚未备份安装、改动游戏或运行迁移**。如果更新窗口很短，先完成 A，再做 B；不为再跑一遍历史 GREEN 耽误冻结旧安装。
+以下是执行清单；本次只交付计划，**尚未新建安装备份、改动游戏或运行迁移**。如果更新窗口很短，先完成 A，再做 B；不为再跑一遍历史 GREEN 耽误冻结旧安装。
+
+### 已有旧游戏目录，可直接复用
+
+用户已提供保留的旧版安装：
+
+```text
+Z:\Crusader Kings III\Crusader Kings III_1.19.0.6_20260604
+```
+
+2026-09-30 20:16（Asia/Shanghai）只读检查确认：`binaries/ck3.exe` 大小为 `95,206,008` bytes，SHA-256 与第 2 节绑定值完全一致；`game/common`、`game/gui`、`game/events`、`launcher/launcher-settings.json` 存在，顶层同时保留 `clausewitz/`、`jomini/` 与 `launcher/`。这份目录可作为旧 build 的安装与逆向材料来源，**无需为了本计划再复制一份游戏本体**；保留原目录供新旧差异比较。
+
+这次没有启动旧目录做运行回退验收，也没有确认配套 production DLL/injector、userdir、存档和自动玩家 state 已归档。它们继续按 A.4–A.6 单独登记；游戏安装目录与玩家状态目录是两份材料。实际使用该旧安装时，将 CLI 的 `--game-dir` 显式指向上述目录。
 
 ### A. 更新前必须保留
 
 1. 停止现有自动游玩 owner/job，完成正常 checkpoint 和 cleanup，确认没有 CK3 进程，再让 Steam 更新。
-2. 在 Steam 更新目录之外保存旧安装的完整可运行副本，至少包含完整 `binaries/`、匹配的 `game/`、launcher 配置及运行所需文件。只存 `ck3.exe` 够做反汇编，不够承诺回退运行；副本能否在当前 Steam/DLC 条件下运行需单独确认。
+2. 复用上述已保留旧目录；尚无旧目录时，在 Steam 更新目录之外保存旧安装的完整可运行副本，至少包含完整 `binaries/`、匹配的 `game/`、launcher 配置及运行所需文件。只存 `ck3.exe` 够做反汇编，不够承诺回退运行；副本能否在当前 Steam/DLC 条件下运行需单独确认。
 3. 保存 launcher 原始/展示版本、平台、Steam appmanifest/build ID、EXE size/SHA、PE metadata，以及相关原版脚本/GUI/AI 数据的文件清单与指纹。游戏二进制和大体积数据留在仓库外，不提交 Git。
 4. 保存当前可用的 production DLL/injector、各自 SHA、编译配置、源码 commit，以及对应 runtime/Mod projection/profile。当前工作树有大量既有变更，应另外保存本次相关 diff 与未跟踪源码；不要全仓提交、reset 或把杂项混进迁移提交。
 5. 保存完整配套的 userdir/state：实际 checkpoint 文件、driver state、episode seed 文件和 metadata、environment manifest、tutorial 持久化、playset/rules/DLC 配置。记录它们的真实对应关系，不能只复制 JSON 指针。
