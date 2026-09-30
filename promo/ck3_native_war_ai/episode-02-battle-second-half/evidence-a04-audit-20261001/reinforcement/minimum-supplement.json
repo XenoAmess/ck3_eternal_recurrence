@@ -1,0 +1,118 @@
+{
+  "status": "NOT_RUN_CURRENT_FOOTAGE_ZERO",
+  "recording_required_seconds_for_evidence_goal": 0,
+  "desired_output": "两组当前run暂停原图+人数/战宽tooltip+snapshot/control精确绑定；如拍片段，仅短暂稳定原速hold即可，勿先扩为461秒",
+  "inputs": {
+    "frozen_capture_checkout": "C:/w/jdcap0930",
+    "frozen_source_head": "475bdbffd2c0fc96b4188c394eeea80a780b672a",
+    "native_fingerprint": "91319267C8B7586FDAD2A474035D2286DBDA50CC0249E2FF745900F75DD778C1",
+    "checkpoint_source": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d11-immutable.ck3",
+    "checkpoint_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+    "fresh_steam_offline_visual_receipt": "required current attempt; old receipt cannot be reused",
+    "exclusive_screen_task_and_latest_cas": "required root acquisition after other desktop jobs finish",
+    "verified_python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe; explicitly probe before use",
+    "current_latest_formal_promo_release": "query anew before any new promo run; a15 historical v0.2.1 is not a permanent latest assertion",
+    "new_attempt": "create-only; do not overwrite a12/a14/a15 or old video"
+  },
+  "actual_entry": {
+    "prepare_script": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\prepare_jd11_a15_operator.py",
+      "bytes": 13336,
+      "sha256": "9F603CB5591181EA7F7A357EA7CEE515CD11C5EA6C6C4642CC008F51CCEF6B22"
+    },
+    "prepare_subcommand": "profile --offline-receipt CURRENT --screen-task-id CURRENT --screen-expected-sequence CURRENT --output-dir NEW",
+    "sdk_script": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\run_root_sdk_a15.py",
+      "bytes": 6918,
+      "sha256": "E4ABD63B6E07A79F125527F7B1D1603711BC3A016FC868EC10F97149E88EFA87"
+    },
+    "sdk_arguments": "--profile-preparation NEW --evidence-dir NEW --request-id CURRENT",
+    "mcp_sequence": [
+      "operator_get_capabilities",
+      "operator_get_status",
+      "operator_preflight_job",
+      "operator_handoff_job"
+    ],
+    "caveat": "Unmodified a15 conditional continuation starts600-second recorder plus guarded one-day step. The minimum2-frame evidence path needs a newly frozen bounded consumer; do not pretend the old CLI has a no-recording advance. Reuse current-focus/map/full-panel admission without weakening it."
+  },
+  "ui_tooltip_primary_sources": [
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_combat.gui",
+        "bytes": 58008,
+        "sha256": "7FEE98B7341E21607ED3BB9089C51EF890D229DB6C16865C88133C3BA3579236"
+      },
+      "location": "line646 tooltip CV_TT_RELATIVE_SOLDIERS"
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\combat_window_l_simp_chinese.yml",
+        "bytes": 6395,
+        "sha256": "37855E44CC012A3212C7356C46043683180198C091E7EBEDC0883746624114B3"
+      },
+      "location": "line65: soldier counts plus CombatWindow.GetCombat.GetCombatWidthBreakdown"
+    }
+  ],
+  "acceptance_points": [
+    "current CK3 PID/create-time/exe/HWND and foreground before input; fresh root-reviewed original image",
+    "native semantic map center on bound Messina battle; verify returned province2633/date53146488/actor29829/Combat16777218/army18",
+    "full battle panel, date and counts legible, no ToDesk popup; root verifies pointer and viewport via original dimensions and explicit preview rectangle with mapper receipt",
+    "before-paused snapshot/control same revision/date/run; width tooltip original pixels and SHA with same-bound frame metadata",
+    "new pre-advance checkpoint, strictly at most one native day; if using private join trace keep generation/identity checks and BEGIN/FINISH clean-up; no retries on already advanced attempt",
+    "after-paused snapshot/control at date+24 and same combat, actual participant army22/fullgeneration; original counts and tooltip read fresh, do not force A01 historical numbers",
+    "post-pause row.current may differ from join-return due main-phase casualties; retain both cache and row sums as their actual boundaries",
+    "clean service finish, recorder/SDK job state and final process inventory; footage is unreviewed until real review, no generated human signoff"
+  ],
+  "historical_failures": {
+    "a12": "Native paused map entry/exit completed, camera wrong region+ToDesk overlay, no gameplay or recorder requested; footage0",
+    "a14": "Native camera-center returned; STOP_CURRENT_FOREGROUND_IS_NOT_THIS_RUN_CK3; layout false; recorder NOT_STARTED and raw_video null",
+    "a15": "STATIC_READY_LIVE_STOP; fresh focus/new original UI runtime proof pending; no a15live directory in local capture preparation"
+  },
+  "history_sources": {
+    "a12_visual_closeout": {
+      "path": "C:\\Users\\1\\ck3-handoff-resume-20260930\\jd11-live-a01\\root-visual-closeout-a01.json",
+      "bytes": 3347,
+      "sha256": "D0690893ACA8FC96B4F827BEA111C8500AEDA5E8EFE488F5A0DB29B679F0FDA1"
+    },
+    "a14_controller": {
+      "path": "C:\\Users\\1\\ck3-handoff-resume-20260930\\jd11-live-a03\\sdk-a01\\camera-layout-controller\\controller-result.json",
+      "bytes": 116171,
+      "sha256": "870CDFC7F69A9EB1C1377F806504E1F7AF9E2ECB3A61F5ABD2C4D5EDA57430B9"
+    },
+    "a14_capture": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-recap-live-20260930-a14-fixed-source\\ck3-output\\capture-report.json",
+      "bytes": 9228,
+      "sha256": "C2488D1325FF23FE2789B34870F50DC41B0F7AB45A669844C21114311A8561E1"
+    },
+    "a15_gate": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-fixed-source-seal-20260930-a04\\gate-report.json",
+      "bytes": 12003,
+      "sha256": "315F5E28188BC038F1D81F0F37C7B2551B8C62C7732BEBEE8892523A0CB94944"
+    },
+    "a15_readme": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\README-a15.md",
+      "bytes": 2912,
+      "sha256": "385602A61C265FE29425BE25DDCA1CE0553EE52A4F54C9AE4E8F452BAC8CD1A5"
+    },
+    "a15_prepare": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\prepare_jd11_a15_operator.py",
+      "bytes": 13336,
+      "sha256": "9F603CB5591181EA7F7A357EA7CEE515CD11C5EA6C6C4642CC008F51CCEF6B22"
+    },
+    "a15_sdk": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\run_root_sdk_a15.py",
+      "bytes": 6918,
+      "sha256": "E4ABD63B6E07A79F125527F7B1D1603711BC3A016FC868EC10F97149E88EFA87"
+    },
+    "a15_controller": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\camera_layout_and_capture.py",
+      "bytes": 29487,
+      "sha256": "025289E912343868FA5FEBA926229D0C66433D8BC99CB8E7AA8FEEB2AE0652FF"
+    },
+    "guarded_advance_source": {
+      "path": "C:\\w\\ep2a04\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+      "bytes": 32113,
+      "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+    }
+  }
+}

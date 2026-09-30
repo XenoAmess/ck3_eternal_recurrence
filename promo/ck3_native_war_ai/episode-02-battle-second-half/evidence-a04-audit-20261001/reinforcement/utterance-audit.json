@@ -1,0 +1,3918 @@
+{
+  "schema": "ck3.a04.mechanism-evidence-audit.reinforcement.v1",
+  "created_at": "2026-09-30T18:54:35.909397+00:00",
+  "target": "a04 actual six-chapter render, reinforcement42utterances",
+  "source_branch": "codex/war-series-brown-gold-20261001",
+  "fixed_a04_root": "C:/w/ep2a04",
+  "isolation": "No fetch/pull/merge/rebase/cherry-pick/master copy; no CK3/desktop/Steam/OneDrive actions; only owned audit paths written",
+  "human_signoff": false,
+  "production_clean_admission": false,
+  "input_freeze": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-01\\input-freeze-manifest.json",
+    "bytes": 4031,
+    "sha256": "57773DEAAE69E38E642B09E9371E20A50B9CD013A7173B999E352869838CCC3D"
+  },
+  "original_byte_verification": {
+    "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\reinforcement-attempt-01\\original-byte-verification.json",
+    "bytes": 13641,
+    "sha256": "963C2D479535F4141A960ED35DCC6FD1729E512FF799C0F5434CD1F1A1747B00"
+  },
+  "summary": {
+    "utterances": 42,
+    "supported_with_declared_scope": 41,
+    "supported_mechanism_with_visual_label_fix": 1,
+    "unsupported_mechanism_claims_found": 0,
+    "native_source_hashes_rechecked": 11,
+    "static_script_hashes_rechecked": 5,
+    "all_hashes_match": true,
+    "ui_width_tooltip_existing": false,
+    "new_capture_performed": false
+  },
+  "visual_label_errors": [
+    {
+      "key": "reinforcement-r038",
+      "actual": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "expected": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+      "spec_json_pointer": "/utterances/reinforcement-r038/ui_label",
+      "edit_json_pointer": "/utterances/reinforcement-r038/spec/ui_label"
+    }
+  ],
+  "minimum_supplement": {
+    "status": "NOT_RUN_CURRENT_FOOTAGE_ZERO",
+    "recording_required_seconds_for_evidence_goal": 0,
+    "desired_output": "两组当前run暂停原图+人数/战宽tooltip+snapshot/control精确绑定；如拍片段，仅短暂稳定原速hold即可，勿先扩为461秒",
+    "inputs": {
+      "frozen_capture_checkout": "C:/w/jdcap0930",
+      "frozen_source_head": "475bdbffd2c0fc96b4188c394eeea80a780b672a",
+      "native_fingerprint": "91319267C8B7586FDAD2A474035D2286DBDA50CC0249E2FF745900F75DD778C1",
+      "checkpoint_source": "D:/workspace/ck3_native_war_ai_promo_work/episode01-full-edge-attempt-004/trace-d11-immutable.ck3",
+      "checkpoint_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "fresh_steam_offline_visual_receipt": "required current attempt; old receipt cannot be reused",
+      "exclusive_screen_task_and_latest_cas": "required root acquisition after other desktop jobs finish",
+      "verified_python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe; explicitly probe before use",
+      "current_latest_formal_promo_release": "query anew before any new promo run; a15 historical v0.2.1 is not a permanent latest assertion",
+      "new_attempt": "create-only; do not overwrite a12/a14/a15 or old video"
+    },
+    "actual_entry": {
+      "prepare_script": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\prepare_jd11_a15_operator.py",
+        "bytes": 13336,
+        "sha256": "9F603CB5591181EA7F7A357EA7CEE515CD11C5EA6C6C4642CC008F51CCEF6B22"
+      },
+      "prepare_subcommand": "profile --offline-receipt CURRENT --screen-task-id CURRENT --screen-expected-sequence CURRENT --output-dir NEW",
+      "sdk_script": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\run_root_sdk_a15.py",
+        "bytes": 6918,
+        "sha256": "E4ABD63B6E07A79F125527F7B1D1603711BC3A016FC868EC10F97149E88EFA87"
+      },
+      "sdk_arguments": "--profile-preparation NEW --evidence-dir NEW --request-id CURRENT",
+      "mcp_sequence": [
+        "operator_get_capabilities",
+        "operator_get_status",
+        "operator_preflight_job",
+        "operator_handoff_job"
+      ],
+      "caveat": "Unmodified a15 conditional continuation starts600-second recorder plus guarded one-day step. The minimum2-frame evidence path needs a newly frozen bounded consumer; do not pretend the old CLI has a no-recording advance. Reuse current-focus/map/full-panel admission without weakening it."
+    },
+    "ui_tooltip_primary_sources": [
+      {
+        "source": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_combat.gui",
+          "bytes": 58008,
+          "sha256": "7FEE98B7341E21607ED3BB9089C51EF890D229DB6C16865C88133C3BA3579236"
+        },
+        "location": "line646 tooltip CV_TT_RELATIVE_SOLDIERS"
+      },
+      {
+        "source": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\combat_window_l_simp_chinese.yml",
+          "bytes": 6395,
+          "sha256": "37855E44CC012A3212C7356C46043683180198C091E7EBEDC0883746624114B3"
+        },
+        "location": "line65: soldier counts plus CombatWindow.GetCombat.GetCombatWidthBreakdown"
+      }
+    ],
+    "acceptance_points": [
+      "current CK3 PID/create-time/exe/HWND and foreground before input; fresh root-reviewed original image",
+      "native semantic map center on bound Messina battle; verify returned province2633/date53146488/actor29829/Combat16777218/army18",
+      "full battle panel, date and counts legible, no ToDesk popup; root verifies pointer and viewport via original dimensions and explicit preview rectangle with mapper receipt",
+      "before-paused snapshot/control same revision/date/run; width tooltip original pixels and SHA with same-bound frame metadata",
+      "new pre-advance checkpoint, strictly at most one native day; if using private join trace keep generation/identity checks and BEGIN/FINISH clean-up; no retries on already advanced attempt",
+      "after-paused snapshot/control at date+24 and same combat, actual participant army22/fullgeneration; original counts and tooltip read fresh, do not force A01 historical numbers",
+      "post-pause row.current may differ from join-return due main-phase casualties; retain both cache and row sums as their actual boundaries",
+      "clean service finish, recorder/SDK job state and final process inventory; footage is unreviewed until real review, no generated human signoff"
+    ],
+    "historical_failures": {
+      "a12": "Native paused map entry/exit completed, camera wrong region+ToDesk overlay, no gameplay or recorder requested; footage0",
+      "a14": "Native camera-center returned; STOP_CURRENT_FOREGROUND_IS_NOT_THIS_RUN_CK3; layout false; recorder NOT_STARTED and raw_video null",
+      "a15": "STATIC_READY_LIVE_STOP; fresh focus/new original UI runtime proof pending; no a15live directory in local capture preparation"
+    },
+    "history_sources": {
+      "a12_visual_closeout": {
+        "path": "C:\\Users\\1\\ck3-handoff-resume-20260930\\jd11-live-a01\\root-visual-closeout-a01.json",
+        "bytes": 3347,
+        "sha256": "D0690893ACA8FC96B4F827BEA111C8500AEDA5E8EFE488F5A0DB29B679F0FDA1"
+      },
+      "a14_controller": {
+        "path": "C:\\Users\\1\\ck3-handoff-resume-20260930\\jd11-live-a03\\sdk-a01\\camera-layout-controller\\controller-result.json",
+        "bytes": 116171,
+        "sha256": "870CDFC7F69A9EB1C1377F806504E1F7AF9E2ECB3A61F5ABD2C4D5EDA57430B9"
+      },
+      "a14_capture": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\episode02-e2-06-d11-recap-live-20260930-a14-fixed-source\\ck3-output\\capture-report.json",
+        "bytes": 9228,
+        "sha256": "C2488D1325FF23FE2789B34870F50DC41B0F7AB45A669844C21114311A8561E1"
+      },
+      "a15_gate": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-fixed-source-seal-20260930-a04\\gate-report.json",
+        "bytes": 12003,
+        "sha256": "315F5E28188BC038F1D81F0F37C7B2551B8C62C7732BEBEE8892523A0CB94944"
+      },
+      "a15_readme": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\README-a15.md",
+        "bytes": 2912,
+        "sha256": "385602A61C265FE29425BE25DDCA1CE0553EE52A4F54C9AE4E8F452BAC8CD1A5"
+      },
+      "a15_prepare": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\prepare_jd11_a15_operator.py",
+        "bytes": 13336,
+        "sha256": "9F603CB5591181EA7F7A357EA7CEE515CD11C5EA6C6C4642CC008F51CCEF6B22"
+      },
+      "a15_sdk": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\run_root_sdk_a15.py",
+        "bytes": 6918,
+        "sha256": "E4ABD63B6E07A79F125527F7B1D1603711BC3A016FC868EC10F97149E88EFA87"
+      },
+      "a15_controller": {
+        "path": "C:\\Users\\1\\AppData\\Local\\ck3-capture-preparation\\jd11-a15-preparation-20260930-a01\\camera_layout_and_capture.py",
+        "bytes": 29487,
+        "sha256": "025289E912343868FA5FEBA926229D0C66433D8BC99CB8E7AA8FEEB2AE0652FF"
+      },
+      "guarded_advance_source": {
+        "path": "C:\\w\\ep2a04\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\remaining_live_step.py",
+        "bytes": 32113,
+        "sha256": "393818F52C2E76C8AFC083F4FB3CD3BF6CF08C11C2784E37D80C2AADEF78B52B"
+      }
+    }
+  },
+  "utterances": [
+    {
+      "key": "reinforcement-r001",
+      "chinese_sentence": "再把时间拨回第十一日。这段是从检查点重新载入的独立回放，来源卡上的名称，会和前面的骑士案例分开。",
+      "claims": [
+        {
+          "claim": "A01从004第11日检查点独立冷载，与历史085不是同一run。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.run_identity.source_relation; $.historical_comparison.same_run",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "A01确为004第11日存档独立冷载；同存档不等于历史085或骑士run。",
+      "evidence_levels": [
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 886.4666666666668,
+        "duration": 10.466666666666667,
+        "kind": "raw-excerpt",
+        "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+        "raw_excerpt_start": 345,
+        "raw_excerpt_source_duration": 10.466666666666667,
+        "raw_video": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+          "exists": true,
+          "bytes": 1325156480,
+          "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "expected_sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "matches": true
+        },
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r001.png",
+          "bytes": 466233,
+          "sha256": "D9C5F187A45E3024AB3CC680830A29C8BEBE23A177E071BDFF4458A3117A90E3"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r002",
+      "chinese_sentence": "先看十二月十四日的原版画面：我方八百九十三，对面一千六百零三；海上还有一支标着两千五百七十的军队。",
+      "claims": [
+        {
+          "claim": "1066-12-14海上牌2570，面板893/1603；可见UI不证明ArmyID。",
+          "source_path": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json",
+          "source_field_or_line": "$.shots[0].visible_ui_exact; $.shots[0].ui_role; $.shots[1].visible_ui_exact; $.shots[1].ui_date",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+            "exists": true,
+            "bytes": 11671,
+            "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+          }
+        }
+      ],
+      "review_finding": "原图350秒及225秒可直接读12月14日893/1603、海上2570；海牌没有ArmyID或姓名。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 896.9333333333335,
+        "duration": 10.1,
+        "kind": "raw-excerpt",
+        "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+        "raw_excerpt_start": 350,
+        "raw_excerpt_source_duration": 10.1,
+        "raw_video": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+          "exists": true,
+          "bytes": 1325156480,
+          "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "expected_sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "matches": true
+        },
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r002.png",
+          "bytes": 545444,
+          "sha256": "CCB79D1486381E89BB44C17C2F3126DE784FCF021ACD0736B7E2277A34484E45"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+            "crop_xyxy": [
+              752,
+              790,
+              1175,
+              930
+            ],
+            "label": "同日真实面板：893／1603"
+          },
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+            "crop_xyxy": [
+              1540,
+              1046,
+              1730,
+              1080
+            ],
+            "label": "原版日期：12月14日"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r003",
+      "chinese_sentence": "下一张已经是十二月十五日。我方显示八百二十七，对面四千一百零六，开战时的人数显然不能一直沿用。",
+      "claims": [
+        {
+          "claim": "前后采样面板893/1603→827/4106，日期相隔一天。",
+          "source_path": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json",
+          "source_field_or_line": "$.shots[1].visible_ui_exact; $.shots[1].ui_date; $.shots[2].visible_ui_exact; $.shots[2].ui_date",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+            "exists": true,
+            "bytes": 11671,
+            "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+          }
+        }
+      ],
+      "review_finding": "原图365秒可直接读12月15日827/4106；这是同原片跨日可见变化，非join瞬间逐团增量。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 907.0333333333335,
+        "duration": 10.2,
+        "kind": "raw-excerpt",
+        "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+        "raw_excerpt_start": 365,
+        "raw_excerpt_source_duration": 10.2,
+        "raw_video": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+          "exists": true,
+          "bytes": 1325156480,
+          "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "expected_sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "matches": true
+        },
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r003.png",
+          "bytes": 538273,
+          "sha256": "F3A8D2B2BF4A36A8EB2D9A02111D7003B8C862F4C323323D597B2D6A43DF2143"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+            "crop_xyxy": [
+              752,
+              790,
+              1175,
+              930
+            ],
+            "label": "前日真实面板：893／1603"
+          },
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+            "crop_xyxy": [
+              1540,
+              1046,
+              1730,
+              1080
+            ],
+            "label": "主图原版日期：12月15日"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r004",
+      "chinese_sentence": "但这两张画面隔了一天，差额里不能只填增援。直接拿一千六百零三加两千五百七十，并不能对上新面板。",
+      "claims": [
+        {
+          "claim": "跨日UI差不是准确join增量；内部current2560是另一字段。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.required_script_corrections[0:2]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "1603+2570=4173而非4106；跨日差额还涉及缓存重对齐等变化，不得倒推纯增援人数。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame",
+        "derived-arithmetic-not-original-runtime-truth",
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 917.2333333333335,
+        "duration": 10.466666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r004.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r004.png",
+          "bytes": 544607,
+          "sha256": "9E479F70D852FE4C862107A70A6A9B85CFE57A4397527023B6CFDE34FA9A3569"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+            "crop_xyxy": [
+              752,
+              790,
+              1175,
+              930
+            ],
+            "label": "次日真实面板：827／4106"
+          },
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+            "crop_xyxy": [
+              1540,
+              1046,
+              1730,
+              1080
+            ],
+            "label": "主图原版日期：12月14日"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r005",
+      "chinese_sentence": "要查清这一步，我们换到同次回放的原生记录卡；卡上读数来自加入函数的入口、正常返回和首次出伤之前。",
+      "claims": [
+        {
+          "claim": "同A01三处采样边界分别是入口、返回与首次side0出伤入参。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.width_boundaries",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "同A01原始finish有入口/正常返回/首次side0出伤三条width边界，均绑定CombatID/ArmyID/date/thread。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 927.7000000000002,
+        "duration": 10.533333333333333,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r005.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r005.png",
+          "bytes": 561836,
+          "sha256": "5C3A11E0940DCEA3EEBE33B1C955AFD62F37FC71FAD21CCA11AC291E150BB403"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r006",
+      "chinese_sentence": "记录里的新军加入敌方这一侧，带来十三条兵团条目。军队编号用于绑定来源，海上的军牌本身没有显示它。",
+      "claims": [
+        {
+          "claim": "joining_army_id22，incoming_regiments13，加入side0。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.run_identity.joining_army_id; $.native_join_facts.incoming_regiments",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        },
+        {
+          "claim": "UI海上军牌不证明具体ArmyID。",
+          "source_path": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json",
+          "source_field_or_line": "$.shots[0].ui_role",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+            "exists": true,
+            "bytes": 11671,
+            "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+          }
+        },
+        {
+          "claim": "加入后边界side_index0。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.width_boundaries[1].side_index",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "full-entry返回side0追加Army22、13条新RegimentID；可见海牌未显示此身份。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 938.2333333333335,
+        "duration": 10.633333333333333,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r006.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r006.png",
+          "bytes": 469977,
+          "sha256": "E770BBE9993F69799DD1F14D9895C7095427961A4A0F61067FD56C1C68791CE8"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r007",
+      "chinese_sentence": "先把旧军队留在左栏。所谓缓存，是原版单独保存的整侧人数；右边逐团条目，则让我们重新把当前人数加一遍。",
+      "claims": [
+        {
+          "claim": "同边界同时存在side缓存与逐条entry current合计，两列并不相等。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_before_cache_raw_q100000; $.native_join_facts.side0_before_entry_sum_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "原始入口同时读cached_fighting_total_raw与entry_current_sum_raw；两列独立且不相等。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 948.8666666666668,
+        "duration": 10.9,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r007.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r007.png",
+          "bytes": 569697,
+          "sha256": "F20E8DCB309CEE728D6C2153F1A807F5BC81D9C3486C014DBAA98CD44B3FB837"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r008",
+      "chinese_sentence": "它们是两种读取同一侧人数的办法，却不保证在这个入口同步。于是我们先比较这两列，再决定新军应该加到哪里。",
+      "claims": [
+        {
+          "claim": "加入入口side0/side1缓存都大于各自entry合计。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_cache_minus_entry_raw_q100000; $.native_join_facts.side1_cache_minus_entry_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "两个side的入口cache减entry均大于0，不能视为字段必然同步。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 959.7666666666668,
+        "duration": 10.9,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r008.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r008.png",
+          "bytes": 564459,
+          "sha256": "1C97E288F12EBBE3ED2DD91195A15F501205F362FCF90CE41066287A0000FBF7"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r009",
+      "chinese_sentence": "敌方旧有二十七条兵团记录，当前人数合起来约一千五百四十六点九；缓存保存的，却约是一千六百零三点一七。",
+      "claims": [
+        {
+          "claim": "旧side0 entries27，合计154690163Q，缓存160317482Q。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.old_side0_entry_count; $.native_join_facts.side0_before_entry_sum_raw_q100000; $.native_join_facts.side0_before_cache_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "原始入口side0旧27行合计154690163Q、缓存160317482Q；Q不是面板整数人数。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 970.6666666666669,
+        "duration": 10.533333333333333,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r009.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r009.png",
+          "bytes": 570689,
+          "sha256": "3194DF7447566C7B8E7732A26D9CF4E59D20AED58A61028FD40B76A451A2C63B"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r010",
+      "chinese_sentence": "这一笔相差约五十六点二七人当量。卡上保留完整原始整数，我们读的是换算后的尺度，免得把单位看成人数。",
+      "claims": [
+        {
+          "claim": "side0残差5627319Q=56.27319人当量。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_cache_minus_entry_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "5627319Q/100000=56.27319人当量，是同入口残差的复算。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 981.2000000000002,
+        "duration": 10.5,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r010.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r010.png",
+          "bytes": 563603,
+          "sha256": "AD444BF39B5AC02B99CD8936850065BEF21983AB9FF08D6B08BD73927947AD25"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r011",
+      "chinese_sentence": "我方也有同样的两列。二十四条旧记录合计约八百二十七点八五，缓存约八百九十三点二五，残差约六十五点四。",
+      "claims": [
+        {
+          "claim": "旧side1 entries24，合计82785368Q，缓存89325449Q，残差6540081Q。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.old_side1_entry_count; $.native_join_facts.side1_before_entry_sum_raw_q100000; $.native_join_facts.side1_before_cache_raw_q100000; $.native_join_facts.side1_cache_minus_entry_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "原始入口side1旧24行合计82785368Q、缓存89325449Q，残差6540081Q。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 991.7000000000002,
+        "duration": 10.966666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r011.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r011.png",
+          "bytes": 571698,
+          "sha256": "3EDB9BB3CA5019A6BB4AE3805BA607D234B6ADA50D5A73021750D17D8405246E"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r012",
+      "chinese_sentence": "注意，这些残差是同一个函数入口里，两种字段的差。它们不是昨天和今天的人数差，也不能单独命名为阵亡或受伤。",
+      "claims": [
+        {
+          "claim": "残差来自同join入口字段比较；卡并未给出纯死伤归因。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_cache_minus_entry_raw_q100000; $.native_join_facts.side1_cache_minus_entry_raw_q100000; $.native_join_facts.join_boundary_count",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        },
+        {
+          "claim": "该join边界残差归零不等于此窗新伤亡；此前缓存残差的形成原因未在这里证明。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a04/width/arithmetic-and-old24-addendum.json",
+          "source_field_or_line": "$.old_rows.cached_residual_cleared_at_join_does_not_equal_new_casualties_at_this_boundary; $.old_rows.source_of_prior_cache_staleness_earlier_time_not_proven_here",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a04\\width\\arithmetic-and-old24-addendum.json",
+            "exists": true,
+            "bytes": 2242,
+            "sha256": "F0ACE2770175DE6D62D5AAB2F4CB2D8A663EB6513E5F03F595AC5AA2BDA3E294"
+          }
+        }
+      ],
+      "review_finding": "同hook边界字段残差不等于跨日死伤；残差以前形成的机制未在本窗证明。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1002.6666666666669,
+        "duration": 11.466666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r012.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r012.png",
+          "bytes": 579698,
+          "sha256": "B0BD3ED7EAC5C78334AF6C1AA25AB31EB580E024FD83BF348A1255CB726C1FFA"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r013",
+      "chinese_sentence": "现在打开新军的十三条记录。起始人数合计两千五百七十，但起始是这里保存的历史字段，不能当成兵团人数上限。",
+      "claims": [
+        {
+          "claim": "incoming_starting_people2570，13条记录；starting与current不同。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.incoming_regiments; $.native_join_facts.incoming_starting_people; $.native_join_facts.incoming_current_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "新13条starting合计257000000Q；exact-build join源码从CRegiment+0x38基础人数建starting，此字段不是effective_max_size。原facts仅列starting/current，补充静态初始化来源。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "line69: new entry starting from CRegiment+0x38; effective size is not this history field"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1014.1333333333334,
+        "duration": 11.266666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r013.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r013.png",
+          "bytes": 472479,
+          "sha256": "D38F6B992086A892E14958EF759B88BE72BF6599990A061D3B580A59479537C7"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r014",
+      "chinese_sentence": "其中有一条起始十人，当前已经是零。它仍然是一条兵团记录，却没有给这次加入提供十名当前参战者。",
+      "claims": [
+        {
+          "claim": "Regiment177 starting10、current0。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.regiment177_starting_people; $.verified_native.regiment177_current_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "同A01新增Regiment177行starting1000000Q/current0，不贡献10名当前兵力。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1025.4,
+        "duration": 9.9,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r014.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r014.png",
+          "bytes": 472716,
+          "sha256": "0E3817168D005433082BD8665B59EA34D0C2A23380EDF8BD1940632B706575B0"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r015",
+      "chinese_sentence": "所以真正加进当前人数的，是两千五百六十。地图上的两千五百七十，与这张卡的当前合计，分别属于可见读数和内部字段。",
+      "claims": [
+        {
+          "claim": "incoming_current_people2560；海上UI只显示2570。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.incoming_current_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        },
+        {
+          "claim": "2560不见于已审目标帧，应标内部记录。",
+          "source_path": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json",
+          "source_field_or_line": "$.values_not_visible_in_inspected_frames[0]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+            "exists": true,
+            "bytes": 11671,
+            "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+          }
+        }
+      ],
+      "review_finding": "13条新增current合计256000000Q；真实海牌2570与内部current2560保持分列。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame",
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1035.3000000000002,
+        "duration": 12.366666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r015.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r015.png",
+          "bytes": 528511,
+          "sha256": "3D93826EBB1273CE1FCEB4C1D05193CC4F7AF44D143D46944EEFA9C6CBE80A12"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+            "crop_xyxy": [
+              1540,
+              1046,
+              1730,
+              1080
+            ],
+            "label": "海上2570原版日期：12月14日"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r016",
+      "chinese_sentence": "在这个加入函数的前后，敌方二十七条、我方二十四条旧记录的当前值都没变；新军接入后，两侧缓存重新对齐。",
+      "claims": [
+        {
+          "claim": "该join前后窗旧side0 27条与side1 24条九字段全部逐项不变；不证明此前整日无伤亡。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a04/width/arithmetic-and-old24-addendum.json",
+          "source_field_or_line": "$.old_rows.side0_count; $.old_rows.side1_count; $.old_rows.both_sides_same_full_regiment_ids_and_all_nine_columns_unchanged_across_join",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a04\\width\\arithmetic-and-old24-addendum.json",
+            "exists": true,
+            "bytes": 2242,
+            "sha256": "F0ACE2770175DE6D62D5AAB2F4CB2D8A663EB6513E5F03F595AC5AA2BDA3E294"
+          }
+        },
+        {
+          "claim": "side1旧24条完整ID相同，九字段row_changes=[]，cache residual6540081Q→0。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a04/width/side1-old24-readback.json",
+          "source_field_or_line": "$.before_count; $.after_count; $.same_full_regiment_ids; $.row_changes; $.before.cache_minus_entry_raw; $.after.cache_minus_entry_raw",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a04\\width\\side1-old24-readback.json",
+            "exists": true,
+            "bytes": 976,
+            "sha256": "26CCBE37BBA2F57DE5A55085D11BA2D0C6BEEC841F9B090D2C3F438FCBAE9D8A"
+          }
+        }
+      ],
+      "review_finding": "独立重读原始finish：side0旧27行、side1旧24行九字段逐项均未变；两侧返回cache residual=0。范围仅join函数入口到返回。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1047.6666666666667,
+        "duration": 10.666666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r016.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r016.png",
+          "bytes": 573338,
+          "sha256": "6DE4F124DE344C9C0AB13DE2585D41AAD6758731B68B31399C77A356695F029A"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r017",
+      "chinese_sentence": "这时可以停下来猜一次：把旧缓存加两千五百六十，还是把旧条目合计加两千五百六十，哪一列会对上正常返回？",
+      "claims": [
+        {
+          "claim": "old side0 cache/entry与incoming current形成两个不同候选。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_before_cache_raw_q100000; $.native_join_facts.side0_before_entry_sum_raw_q100000; $.native_join_facts.incoming_current_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "两个候选值分别为416317482Q、410690163Q，形成可核对的不同答案。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1058.3333333333335,
+        "duration": 10.566666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r017.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r017.png",
+          "bytes": 574615,
+          "sha256": "1C3EFF5715C11EDAF1318DE288D9FDAB12CC94A00BE9049390473791C79EBDAA"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r018",
+      "chinese_sentence": "原版返回的答案，是旧条目合计加新军当前人数，约四千一百零六点九；直接沿用旧缓存，会多出刚才那笔残差。",
+      "claims": [
+        {
+          "claim": "side0正常返回cache/entry均410690163Q=154690163Q+256000000Q。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_after_cache_and_entry_raw_q100000; $.native_join_facts.side0_before_entry_sum_raw_q100000; $.native_join_facts.incoming_current_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "原生返回cache和entry均410690163Q，满足154690163+256000000；不是旧cache加新军。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1068.9,
+        "duration": 10.8,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r018.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r018.png",
+          "bytes": 560407,
+          "sha256": "5F5BA6B1DE8D05BDFB39058142301D3302BBA00412620EC42D39CFDA6C319DE5"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r019",
+      "chinese_sentence": "我方没有收到这支新军，返回后的合计仍约八百二十七点八五。两侧缓存都对齐了条目合计，两笔残差都变成零。",
+      "claims": [
+        {
+          "claim": "side1 after82785368Q；after residual[0,0]。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side1_after_cache_and_entry_raw_q100000; $.native_join_facts.after_cache_minus_entry_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "side1旧行未变，返回82785368Q；两侧cache-entry residual均0。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1079.7000000000003,
+        "duration": 11.066666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r019.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r019.png",
+          "bytes": 569943,
+          "sha256": "276E29D93769D75CCBA46294A316DD313053C887B752D8DA34B4128BE198E9CF"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r020",
+      "chinese_sentence": "所以加入不只是给缓存添一个数，它还在本次返回时重算了整侧人数。这解释了为什么直觉加法和实际账目不一样。",
+      "claims": [
+        {
+          "claim": "本次加入返回后两侧缓存与entry合计残差均归零。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.after_cache_minus_entry_raw_q100000",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "本次返回重新对齐两侧缓存的观察有原始记录和静态0x23CB840调用支持；不外推所有加入。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1090.7666666666669,
+        "duration": 11.133333333333333,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r020.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r020.png",
+          "bytes": 574125,
+          "sha256": "BF8CD8A06FE3DF5B40B8CA0DA6B365A4477CAC956CD4AE32BFA4CB8C3297FA07"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r021",
+      "chinese_sentence": "这也不是说，每次增援都会固定抹掉五十六个人。这里证明的是一次入口、一次返回，残差取决于当时实际记录。",
+      "claims": [
+        {
+          "claim": "私有trace是本次局部join记录，不能泛化固定残差。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.private_trace; $.native_join_facts.join_boundary_count",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "局部join两边界不构成固定56人机制，正文明确限制为本次。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1101.9,
+        "duration": 11.0,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r021.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r021.png",
+          "bytes": 573053,
+          "sha256": "00D14237A9A87F6372D343BE11353B251D2EF9389275D0257759ACBC5D2CFE2E"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r022",
+      "chinese_sentence": "接着才看战宽。入口保存的基础宽度是一千六百四十五，应用地形后的最终宽度是一千四百八十，都属于内部记录。",
+      "claims": [
+        {
+          "claim": "base_before1645，final_before1480；UI战宽不可见。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.base_width_before; $.native_join_facts.final_width_before",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        },
+        {
+          "claim": "所审UI帧不显示战宽数值。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.ui_frames[0].combat_width_visible; $.ui_frames[1].combat_width_visible",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "原生width入口base1645/final1480；背景真实UI在前日，无width tooltip，不把它作同hook画面。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1112.9,
+        "duration": 11.2,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r022.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r022.png",
+          "bytes": 572220,
+          "sha256": "06DEC1204BC5E7366C42D03988C5C07C4E7430DC82E02C602BB20A652AD2D181"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r023",
+      "chinese_sentence": "入场后，把两侧当前人数合在一起，约四千九百三十四点七六人当量；精确原始值仍在卡上，不从面板整数倒算。",
+      "claims": [
+        {
+          "claim": "A01新两侧合计4934.75531人当量。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.width_boundaries[1].side_fighting_total_raw; $.mechanism.a01_sum_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "返回两side存储值合计493475531Q=4934.75531；面板整数4106+827不用于计算。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1124.1000000000001,
+        "duration": 10.866666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r023.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r023.png",
+          "bytes": 563473,
+          "sha256": "CC1B802C764F6DCEF85CF3288F99C7BFF8B44257CD97BF92505C97FC7CE935D4"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r024",
+      "chinese_sentence": "第一步取这一合计的一半，得到约二千四百六十七点三八。原版在这个位置舍去小数，候选基础宽度就成了二千四百六十七。",
+      "claims": [
+        {
+          "claim": "a01_half2467.377655，candidate_base2467。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.a01_half_people; $.mechanism.a01_candidate_base",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "数学半数2467.377655→candidate2467；要与r025一起保留定点中间值解释。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1134.9666666666667,
+        "duration": 11.833333333333334,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r024.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r024.png",
+          "bytes": 566030,
+          "sha256": "FA366279380DCD2B6A76C5C199211DF96FA679A8E035F152E9CB61E473F42D3F"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r025",
+      "chinese_sentence": "这里还有一层精度：定点除二先舍掉半个最小原始单位，再去掉人数小数；卡上分列数学半数和引擎中间值。",
+      "claims": [
+        {
+          "claim": "数学半数2467.377655；原版fixed除二先截raw为246737765Q=2467.37765，再去人数缩放截为candidate2467。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a04/width/arithmetic-and-old24-addendum.json",
+          "source_field_or_line": "$.ordered_arithmetic[1:5]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a04\\width\\arithmetic-and-old24-addendum.json",
+            "exists": true,
+            "bytes": 2242,
+            "sha256": "F0ACE2770175DE6D62D5AAB2F4CB2D8A663EB6513E5F03F595AC5AA2BDA3E294"
+          }
+        }
+      ],
+      "review_finding": "独立整数重算先raw除二246737765Q，再截人数候选2467；数学半数不冒充引擎存储字段。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1146.8000000000002,
+        "duration": 10.466666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r025.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r025.png",
+          "bytes": 569487,
+          "sha256": "B443D49C2A0F33550E7F234AFABB38EB1B2605D7C12C1D4EFB755E78B4DD4025"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r026",
+      "chinese_sentence": "但候选值还不是全部规则。基础宽度要与此前保存的值比较，保留较大者，所以它带着历史，并非每天重新缩回一半。",
+      "claims": [
+        {
+          "claim": "基础战宽保留previous与candidate较大值。",
+          "source_path": "C:/w/ep2a03/docs/ck3-native-ai/battle-simulation.md",
+          "source_field_or_line": "lines172-174: W_base=max(previous_W_base,max(1,base_candidate))",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "exists": true,
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          }
+        },
+        {
+          "claim": "加入未必总增加战宽，因为base保留历史最大。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.joining_does_not_always_increase_width_because_base_retains_historical_max",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "exact-build宽度公式保留max(previous_base,candidate)；是静态原版规则，非从A01一例猜出的历史规则。",
+      "evidence_levels": [
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1157.2666666666669,
+        "duration": 12.066666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r026.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r026.png",
+          "bytes": 560746,
+          "sha256": "8D2890771463B9EED8870365FB5CC136C15BC4096F60F63F4F84DB1BC669F15E"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。",
+        "静态规则来源已经索引，本轮只核对固定证据和脚本SHA，没有再次全EXE反汇编或通用多战例验证。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r027",
+      "chinese_sentence": "本次候选二千四百六十七，大于旧值一千六百四十五，基础宽度才上升。也不能拿入口人数倒算，强迫旧值立刻变小。",
+      "claims": [
+        {
+          "claim": "before base1645，after2467；base保留历史最大。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.base_width_before; $.verified_native.base_width_after; $.mechanism.base_formula",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "原生base1645→2467；entry人数反算不得替代入口历史base。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1169.3333333333335,
+        "duration": 11.466666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r027.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r027.png",
+          "bytes": 567219,
+          "sha256": "A7482AD1C9FCD4C18DDFCC52AFEB9AC80EE1E471CA57E2388670EC0590B8E365"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r028",
+      "chinese_sentence": "下一步才乘地形。墨西拿所在省份是森林，同版原版静态定义给出的宽度乘数是零点九，并非这次跟踪采到的字段。",
+      "claims": [
+        {
+          "claim": "省份2633为forest，forest multiplier0.9来自stock static，非A01runtime采样。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.stock_static.province2633_terrain; $.stock_static.forest_combat_width_multiplier; $.stock_static.forest_multiplier_not_runtime_sampled_in_A01",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "省2633=forest、multiplier0.9来自已核SHA同版静态文件，A01三点未直接采terrain字段。",
+      "evidence_levels": [
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\province_terrain\\00_province_terrain.txt",
+            "exists": true,
+            "bytes": 160764,
+            "sha256": "922A5B8BA73007B18E95F1CCFCDBE075A03F5DE61CBF8FF8F66698BEDBB3BE3C",
+            "expected_sha256": "922A5B8BA73007B18E95F1CCFCDBE075A03F5DE61CBF8FF8F66698BEDBB3BE3C",
+            "matches": true
+          },
+          "location": "province2633 terrain forest; forest combat_width0.9"
+        },
+        {
+          "source": {
+            "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\terrain_types\\00_terrains.txt",
+            "exists": true,
+            "bytes": 8328,
+            "sha256": "39D79AD120BF85B49D6EE8D96FE4D94EDBBABC190A41662DBA8ECA8DE0ACE64E",
+            "expected_sha256": "39D79AD120BF85B49D6EE8D96FE4D94EDBBABC190A41662DBA8ECA8DE0ACE64E",
+            "matches": true
+          },
+          "location": "province2633 terrain forest; forest combat_width0.9"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1180.8000000000002,
+        "duration": 11.6,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r028.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r028.png",
+          "bytes": 583397,
+          "sha256": "3D5E7F70A9FAAA8A283024140FAD2F230B03B80AA95058BA8FDA218F90EF0DCB"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。",
+        "静态规则来源已经索引，本轮只核对固定证据和脚本SHA，没有再次全EXE反汇编或通用多战例验证。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r029",
+      "chinese_sentence": "二千四百六十七乘零点九，得到二千二百二十点三；再次舍去小数，最终宽度二千二百二十，与原版返回记录相同。",
+      "claims": [
+        {
+          "claim": "candidate2467×forest0.9截断为2220，原生final_after2220。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.a01_forest_final; $.verified_native.final_width_after; $.stock_static.forest_combat_width_multiplier",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "静态forest乘数下2467×0.9截为2220，和原版返回字段对拍；公式复算不是独立runtime乘数采样。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1192.4,
+        "duration": 11.3,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r029.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r029.png",
+          "bytes": 567448,
+          "sha256": "AF1233171F97A490823DB6B944721CD16DF93DC2D1765ADCDACAD13FF1090936"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r030",
+      "chinese_sentence": "这里还会和最低宽度一百比较，本例显然高于门槛。重要的是先取半、截断，再保留历史较大值，最后乘地形并截断。",
+      "claims": [
+        {
+          "claim": "base/final公式及minimum100，截断顺序如卡所示。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.base_formula; $.mechanism.final_formula; $.stock_static.minimum_combat_width",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "minimum100和分步截断来自原版定义与exact-build helper；本例最终2220高于门槛。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1203.7,
+        "duration": 11.766666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r030.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r030.png",
+          "bytes": 577189,
+          "sha256": "F67BCB2669A854F582E5266A6621AAEF095E788A7D59DCC7FDF15C70FC7D4CE4"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。",
+        "静态规则来源已经索引，本轮只核对固定证据和脚本SHA，没有再次全EXE反汇编或通用多战例验证。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r031",
+      "chinese_sentence": "小数不能留到最后才一次处理。先截断会改变后续乘法的输入，照原版顺序做，才有机会把下一次出伤也接起来。",
+      "claims": [
+        {
+          "claim": "原版base/final分步截断，后续输入使用已存final。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.base_formula; $.mechanism.final_formula; $.verified_native.first_damage_width_argument",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "原版调用顺序消费已存final宽度；不能用单次最终截断替代中间截断。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1215.4666666666667,
+        "duration": 11.0,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r031.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r031.png",
+          "bytes": 587226,
+          "sha256": "CFB7C18FC628976CA98330CA07C96557B093510FBEAC93F29454B4EED7C7C92B"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r032",
+      "chinese_sentence": "还有一个更直接的检验：同一战斗的首次敌方出伤调用前，实际收到的宽度参数就是二千二百二十，而不是旧的一千四百八十。",
+      "claims": [
+        {
+          "claim": "首次side0出伤入参2220；同CombatID/ArmyID/date/thread连续三边界。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.first_damage_width_argument; $.verified_native.width_boundaries[0:3]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "原始boundary2出伤入参2220，与边界1final2220一致；三个采样点同date53146512/Combat16777218/Army22/thread20844。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1226.4666666666667,
+        "duration": 11.633333333333333,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r032.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r032.png",
+          "bytes": 574378,
+          "sha256": "7371E0BCED9554A20F34BC8900E5D65F6E8592209B2140615AC360F0EA13E734"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r033",
+      "chinese_sentence": "因此这条局部链能连起来：新记录进入名单，缓存按条目对齐，宽度写回，随后出伤器消费了刚刚更新的最终宽度。",
+      "claims": [
+        {
+          "claim": "本次join总量、宽度返回与首次出伤实参形成局部链。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.verified_native.width_boundaries; $.verified_native.full_mutable_transition_bundle_complete",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "full-entry与width同finish支撑局部入场→cache→width→消费链，不含完整mutables或全部事件写回。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1238.1000000000001,
+        "duration": 11.066666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r033.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r033.png",
+          "bytes": 567912,
+          "sha256": "D9C3487F8970A4384E197F566AC38D75A1D56E81B7062FF2CC6F3FC833837CB2"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r034",
+      "chinese_sentence": "战宽变大意味着什么？它按比例限制整侧的有效伤害输出，不能把二千二百二十讲成挑选了这么多人站在前排。",
+      "claims": [
+        {
+          "claim": "战宽按比例缩放整侧post-counter有效出伤；个体frontline选择未证。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.output_scaling; $.mechanism.individual_frontline_soldier_selection_not_proven",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "exact-build整侧post-counter输出按width比例缩放；没有逐人前排选择证据，正文没有该断言。",
+      "evidence_levels": [
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1249.1666666666667,
+        "duration": 10.5,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r034.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r034.png",
+          "bytes": 578678,
+          "sha256": "92367B8475E3045EB06921A9FBB21C1A297FA408378B4F0CA5709AC98247510C"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。",
+        "静态规则来源已经索引，本轮只核对固定证据和脚本SHA，没有再次全EXE反汇编或通用多战例验证。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r035",
+      "chinese_sentence": "在这次首次调用里，用敌方约四千一百零六点九和宽度二千二百二十，按原版定点公式复算，约百分之五十四点零五五。",
+      "claims": [
+        {
+          "claim": "使用本次原生宽度2220与敌方current410690163Q，按已核公式复算54055Q=54.055%；比例非独立runtime实采字段。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a04/width/arithmetic-and-old24-addendum.json",
+          "source_field_or_line": "$.ordered_arithmetic[8:10]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a04\\width\\arithmetic-and-old24-addendum.json",
+            "exists": true,
+            "bytes": 2242,
+            "sha256": "F0ACE2770175DE6D62D5AAB2F4CB2D8A663EB6513E5F03F595AC5AA2BDA3E294"
+          }
+        }
+      ],
+      "review_finding": "min(100000,floor(2220×100000×100000/410690163))=54055Q；54.055%只是输入上的公式复算，非独立采样返回比例。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "derived-arithmetic-not-original-runtime-truth",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1259.6666666666667,
+        "duration": 11.433333333333334,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r035.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "bytes": 2328752,
+          "sha256": "1C3220E2F8F9141ACEF31B2FDD88CEB003CF4FD5B356407C0A445A5CC7AB2838"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r035.png",
+          "bytes": 571890,
+          "sha256": "3178CEAB9A5DE5F56727E0C58B9F928E2C533F6A1F981C5FC78767F1EA8D70FB"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r036",
+      "chinese_sentence": "这个比例作用在整侧经过克制后的有效输出上。人数增加，宽度也会改变，但伤害不会只按新旧总人数直接翻倍。",
+      "claims": [
+        {
+          "claim": "whole-side effective post-counter attack乘宽度比例，定点顺序截断。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.mechanism.output_scaling",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "width与counter整侧有效输出共同作用；人数变动不能直接等同伤害翻倍。",
+      "evidence_levels": [
+        "derived-arithmetic-not-original-runtime-truth",
+        "exact-build-static-script-or-indexed-instruction"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [
+        {
+          "source": {
+            "path": "C:\\w\\ep2a04\\docs\\ck3-native-ai\\join-width-production-and-fire.md",
+            "bytes": 31904,
+            "sha256": "D86A9ED0099506C09B3FDD9F79A79C46E538F8217A739AA81B31EB17C69667C5"
+          },
+          "location": "lines7-23,69-73; indexed exact-build RVAs, historical static analysis, no fresh disassembly in this audit"
+        },
+        {
+          "source": {
+            "path": "C:\\w\\ep2a03\\docs\\ck3-native-ai\\battle-simulation.md",
+            "bytes": 95634,
+            "sha256": "FD92BAD6641D393EDB5FDD2CB1EBA91619826BDC4BF82C3A3FE3743DD7CAF727"
+          },
+          "location": "lines166-187 and exact-build damage path; no same UI hook-frame assertion"
+        }
+      ],
+      "render_binding": {
+        "global_start": 1271.1000000000001,
+        "duration": 11.3,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r036.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r036.png",
+          "bytes": 579644,
+          "sha256": "EEF428D312E2C18FB5253FC15C17A10FBAB7079E4DBEFD5ECD4A9C2F32409EC3"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。",
+        "静态规则来源已经索引，本轮只核对固定证据和脚本SHA，没有再次全EXE反汇编或通用多战例验证。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r037",
+      "chinese_sentence": "回到两张面板，观众真正能读到的是人数改变；两千五百六十、缓存残差和战宽，来自旁边明确标出的原生记录卡。",
+      "claims": [
+        {
+          "claim": "所审UI不见2560、base1645→2467/final2220、原始Q账目。",
+          "source_path": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/ui-reinforcement-edit-map.json",
+          "source_field_or_line": "$.values_not_visible_in_inspected_frames[0:3]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\ui-reinforcement-edit-map.json",
+            "exists": true,
+            "bytes": 11671,
+            "sha256": "062A1ACE22FF401E90CE83FE49F03326AA7D76A23EB462AABC82B392968AA17E"
+          }
+        }
+      ],
+      "review_finding": "原UI只能看到人数；2560、residual、1480→2220都诚实另标原生记录，历史UI缺tooltip是补采缺口。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame",
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1282.4,
+        "duration": 10.866666666666667,
+        "kind": "raw-excerpt",
+        "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-06-d11-live-20260928-a01/recording-e2-06-d11-a01/raw/e2-06-d11.mkv",
+        "raw_excerpt_start": 375,
+        "raw_excerpt_source_duration": 10.866666666666667,
+        "raw_video": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\recording-e2-06-d11-a01\\raw\\e2-06-d11.mkv",
+          "exists": true,
+          "bytes": 1325156480,
+          "sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "expected_sha256": "501B4C2A8557DC2EBBE88FD0485A45265FDDC9BF8EF46F7A1E968F8EB51024C7",
+          "matches": true
+        },
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r037.png",
+          "bytes": 540070,
+          "sha256": "857D0507F26E01EDBF29752355D49E51D02F021BCB2A2FB408D820EC99E1CFCF"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+            "crop_xyxy": [
+              752,
+              790,
+              1175,
+              930
+            ],
+            "label": "前日真实面板：893／1603"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r038",
+      "chinese_sentence": "我们没有用海上人数加战斗人数，把中间所有变化一笔带过。旧条目、缓存和新军各有自己的字段，必须先把它们对齐。",
+      "claims": [
+        {
+          "claim": "可见UI增量不能直接替代native join账；old cache残差本次局部。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.required_script_corrections[0:2]; $.verified_native.enemy_before_cache_excess_people",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "句中三种字段范围有据；但主图365秒实际12月15日827/4106，ui_label误写12月14日893/1603，需修图重编。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame",
+        "native-runtime-local-three-hooks-and-full-entry",
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1293.2666666666669,
+        "duration": 11.566666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r038.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r038.png",
+          "bytes": 540856,
+          "sha256": "B9464C8776F9F33CDF92E6FD95602DF277B94326F0DDD6DB72D8E358DB28BF0D"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+            "crop_xyxy": [
+              752,
+              790,
+              1175,
+              930
+            ],
+            "label": "前日真实面板：893／1603"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_VISUAL_LABEL_FIX",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。",
+        "主UI标签日期/人数与主图原像素不一致，影响展示准确性；不是原生算式失证。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    },
+    {
+      "key": "reinforcement-r039",
+      "chinese_sentence": "这一章也没有预测新军什么时候来。我们只看到了它实际入场，尚未从更早的路线和求援输入，证明未来到达日期。",
+      "claims": [
+        {
+          "claim": "A01证明army22 pre不在combat、post在combat，仅已发生加入。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.poststate_facts.army22_in_combat_pre; $.poststate_facts.army22_in_combat_post",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        },
+        {
+          "claim": "原始稿明确未来加入日期与路线未证明。",
+          "source_path": "C:/Users/1/AppData/Local/ck3-review-render/episode02-20260930-a01/sources/01-snapshot-draft.md",
+          "source_field_or_line": "增援入账最后一段：未来日期、路线与求援边界",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-20260930-a01\\sources\\01-snapshot-draft.md",
+            "exists": true,
+            "bytes": 27402,
+            "sha256": "1B3A92D055F4244CD04147DF9EF19AC8183229531BAEE2E348676C958600C6B2"
+          }
+        }
+      ],
+      "review_finding": "只证明Army22在该回放实际入场；未由更早route/求援输入预测未来日期。",
+      "evidence_levels": [
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1304.8333333333335,
+        "duration": 10.5,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r039.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r039.png",
+          "bytes": 485336,
+          "sha256": "2357E04071FF1A8A709E91C6BD21FD0CA96832F893C6A60A8A0F80C07A76EE5D"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r040",
+      "chinese_sentence": "这笔入场账和战宽已经逐项核过，完整的正式读取与战斗状态转移还需要单独验证；三个采样点不能替代整场闭环。",
+      "claims": [
+        {
+          "claim": "完整mutable transition bundle未证，army18 exact battle-control membership未证。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.full_mutable_transition_bundle_complete; $.poststate_facts.army18_exact_battle_control_membership_proven",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "production_trace_ready=false和full_mutable_transition_bundle_complete=false仍保留；三点不能宣称正式完整战斗转移。",
+      "evidence_levels": [
+        "native-runtime-local-three-hooks-and-full-entry",
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1315.3333333333335,
+        "duration": 11.366666666666667,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r040.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r040.png",
+          "bytes": 580364,
+          "sha256": "D0626304680B567E283E71E7A8EBC3A4911651A10580E40741758DD89BE891DD"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r041",
+      "chinese_sentence": "更不能把这一条增援回放，接到另一条追击回放的败局上，声称已经找出那次落败的唯一原因；来源卡仍要各自保留。",
+      "claims": [
+        {
+          "claim": "不得把A01到达与另一A05败局拼作同run因果。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/width/width-verification.json",
+          "source_field_or_line": "$.required_script_corrections[4]",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\Users\\1\\ck3-video-vanilla-verification-20260930\\attempt-a03\\width\\width-verification.json",
+            "exists": true,
+            "bytes": 13511,
+            "sha256": "D13822871304E9C139BF1602C059650755DF786F097F3F1AD70BEED2F0F1B3CE"
+          }
+        }
+      ],
+      "review_finding": "A01增援和A05追击/终局不同run，影片正文保留来源边界，不拼接唯一败因。",
+      "evidence_levels": [
+        "explicit-evidence-scope-and-run-boundary"
+      ],
+      "original_runtime_source": null,
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1326.7,
+        "duration": 10.666666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r041.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+          "bytes": 2385264,
+          "sha256": "607770B70202BE70ED98D771B3039C2562ECFDE5E30ACEBADAC9797A21998A02"
+        },
+        "main_ui_date": "1066-12-14",
+        "main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "expected_main_ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r041.png",
+          "bytes": 475924,
+          "sha256": "31E11EFD5B31779B62A26AF8DE0C6303E02EA9763F115B6BF726BD6F9A08A867"
+        },
+        "extra_ui": [],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [],
+      "minimum_supplement": "无新增必需实机断言；保留本句证据层级与场次边界。"
+    },
+    {
+      "key": "reinforcement-r042",
+      "chinese_sentence": "现在再看四千一百零六，它不只是一个突然变大的数字：新军的当前条目、旧缓存的重算和新的战宽，都在背后依次入账。",
+      "claims": [
+        {
+          "claim": "side0 after410690163Q、newcurrent2560、afterfinal2220。",
+          "source_path": "C:/w/ep2a03/promo/ck3_native_war_ai/episode-02-battle-second-half/cards/e2-06-07-a01-join-facts-20260928-v2.json",
+          "source_field_or_line": "$.native_join_facts.side0_after_cache_and_entry_raw_q100000; $.native_join_facts.incoming_current_people; $.native_join_facts.final_width_after",
+          "confidence": "verified",
+          "source_bytes": {
+            "path": "C:\\w\\ep2a03\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\cards\\e2-06-07-a01-join-facts-20260928-v2.json",
+            "exists": true,
+            "bytes": 7382,
+            "sha256": "EBF8036DEB926536F74448FDD61C2E430BF4DD87E824D1032DB826D70D32D6E6"
+          }
+        }
+      ],
+      "review_finding": "原生返回410690163Q、新current256000000Q、final2220支撑收束；4106是UI整数，非精确hook总和。",
+      "evidence_levels": [
+        "actual-ui-observed-sampled-frame",
+        "native-runtime-local-three-hooks-and-full-entry"
+      ],
+      "original_runtime_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-06-d11-live-20260928-a01\\ck3-output\\interactive-requests-responses\\e2-06-d11-trace-finish.json",
+        "exists": true,
+        "bytes": 439154,
+        "sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "expected_sha256": "A688CC0C656364914BE5E42457C0DCCE94415A83163950BF68F1021D9A907CA5",
+        "matches": true
+      },
+      "supplemental_primary_sources": [],
+      "render_binding": {
+        "global_start": 1337.3666666666668,
+        "duration": 11.166666666666666,
+        "kind": "still",
+        "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r042.png",
+        "raw_excerpt_start": null,
+        "raw_excerpt_source_duration": null,
+        "raw_video": null,
+        "main_ui": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "bytes": 2311631,
+          "sha256": "734CAE4F2AC444FFFF3B6317385D9978B50B87CB0C6461F6171DD4C64501D7AB"
+        },
+        "main_ui_date": "1066-12-15",
+        "main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "expected_main_ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+        "rendered_board": {
+          "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-boards-a02\\visuals\\reinforcement-r042.png",
+          "bytes": 551754,
+          "sha256": "AAA8E21B3BF69BC5BC77B58491E75E58BF90BA9096840A065FAD535E09B6E982"
+        },
+        "extra_ui": [
+          {
+            "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+            "crop_xyxy": [
+              752,
+              790,
+              1175,
+              930
+            ],
+            "label": "前日真实面板：893／1603"
+          }
+        ],
+        "spec_frozen_equals_actual_edit_spec": true,
+        "actual_narration_matches_frozen": true
+      },
+      "same_frame_relation": {
+        "run": "episode02-e2-06-d11-live-20260928-a01",
+        "same_run_ui_and_native": true,
+        "ui_before": "1066-12-14; sampled225/350seconds;893/1603;sea2570",
+        "ui_after": "1066-12-15; sampled365seconds;827/4106",
+        "ui_pair_same_frame": false,
+        "ui_exact_hook_pts_bound": false,
+        "original_ui_map_exact_frame_pts": null,
+        "native_hook_date_raw": 53146512,
+        "native_join_before_and_after_same_date_thread_combat_army": true,
+        "objects": {
+          "combat_id": 16777218,
+          "joining_army_id": 22,
+          "player_army_id": 18,
+          "war_id": 4,
+          "province_id": 2633
+        },
+        "interpretation": "真实UI采样来自同一次回放与对应日期；内部字段由该run原始hook读取，两者不是同hook瞬间画面。静态地形与复算进一步单列。"
+      },
+      "conclusion": "SUPPORTED_WITH_DECLARED_SCOPE",
+      "missing_original_reading": [],
+      "missing_actual_picture": [
+        "A01可见UI没有内部Q、incoming current2560或width tooltip；同run同日期不能声称同hook瞬间UI。正文已按原生记录/静态/复算区分。"
+      ],
+      "minimum_supplement": "同一新run推进前后暂停帧人数+战宽tooltip与snapshot/control绑定；旧三点runtime已齐，不需重新证明全部正文。"
+    }
+  ]
+}
