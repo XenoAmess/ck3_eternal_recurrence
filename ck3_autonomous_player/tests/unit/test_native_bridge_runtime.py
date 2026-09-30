@@ -17,7 +17,10 @@ sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.errors import AgentError, UnsafeCleanupError  # noqa: E402
-from xar_autoplayer.windows_injector_job import ContainedInjectorResult  # noqa: E402
+from xar_autoplayer.windows_injector_job import (  # noqa: E402
+    ContainedInjectorResult,
+    run_contained_injector_command,
+)
 from xar_autoplayer.runtime import (  # noqa: E402
     DEFAULT_NATIVE_BRIDGE_PIPE,
     NATIVE_BRIDGE_DISABLED,
@@ -28,6 +31,7 @@ from xar_autoplayer.runtime import (  # noqa: E402
     NativeBridgeLaunchConfig,
     NativeInjectorError,
     _ck3_launch_command,
+    _contained_injector_report_matches,
     _create_suspended_process,
     _inject_native_bridge,
     _native_bridge_child_environment,
@@ -157,6 +161,16 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             dll_path=Path("C:/native/xar_ck3_bridge.dll"),
             injector_path=Path("C:/native/xar_ck3_bridge_injector.exe"),
         )
+
+    def test_harmless_python_job_report_matches_exact_schema(self) -> None:
+        command = [sys.executable, "-c", "print('fixture-only')"]
+        result = run_contained_injector_command(command, timeout_seconds=5.0)
+        self.assertIsNone(result.error)
+        self.assertEqual(result.report["status"], "EXIT")
+        with mock.patch("xar_autoplayer.runtime.sha256_file",
+                        return_value=result.report["executable_sha256"]):
+            self.assertTrue(_contained_injector_report_matches(
+                result.report, command, result.stdout, result.stderr))
 
     @staticmethod
     def outcome(command: list[str], *, returncode: int = 0,
