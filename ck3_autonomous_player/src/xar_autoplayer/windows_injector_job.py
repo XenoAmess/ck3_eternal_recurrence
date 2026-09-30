@@ -477,12 +477,6 @@ def run_contained_injector_command(
             report["complete_process_tree_proven"] = False
             if result is not None:
                 result.error = "; ".join(cleanup_errors)
-        if report["status"] == "EXIT" and time.monotonic() >= deadline:
-            report["status"] = "RED_TIMEOUT"
-            report["deadline_phase"] = "post-Job cleanup"
-            report["complete_process_tree_proven"] = False
-            if result is not None:
-                result.error = "injector deadline expired during post-Job cleanup"
         for drain in (out_drain, err_drain):
             if drain is None:
                 continue
@@ -490,8 +484,14 @@ def run_contained_injector_command(
             prefix = drain.retained()
             report[f"{drain.label}_retained_bytes"] = len(prefix)
             report[f"{drain.label}_retained_sha256"] = hashlib.sha256(prefix).hexdigest().upper()
-            if result is not None and report["status"] != "EXIT":
+            if result is not None:
                 if drain.label == "stdout":
                     result.stdout = prefix
                 else:
                     result.stderr = prefix
+        if report["status"] == "EXIT" and time.monotonic() >= deadline:
+            report["status"] = "RED_TIMEOUT"
+            report["deadline_phase"] = "post-Job cleanup and stdio preservation"
+            report["complete_process_tree_proven"] = False
+            if result is not None:
+                result.error = "injector deadline expired during post-Job cleanup and stdio preservation"
