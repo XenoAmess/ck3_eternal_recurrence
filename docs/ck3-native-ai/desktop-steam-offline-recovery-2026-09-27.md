@@ -17,7 +17,7 @@
 
 Steam 不在前台时，可在本任务独占屏幕期间加 `--bring-steam-forward`；脚本按窗口句柄置前、验证前台身份，并在取证后尽量恢复原前台窗口，不使用桌面点击。`recover` 拒绝任何未释放的其他屏幕记录，包括 stale 或 `done+screen`，也拒绝运行中的 CK3、非唯一 Steam 窗口及未知／转换中的 ToDesk 服务状态。恢复标记必须精确绑定任务、状态目录、输出目录、总线安装路径、CLI SHA 和初始序号，并在十分钟内过期；`control/unsafe-cleanup.json` 或 `control/desktop-recovery-unsafe.json` 未解决时拒绝。每次桌面或服务变更前脚本用精确序号发锁内 CAS heartbeat，再回读任务、事件和唯一 owner；冲突或回读不明立即 RED，不盲重试。
 
-截至 2026-09-30，新入口只有临时总线与模拟桌面的代码级验证。权威安装 CLI 仍为旧版、XQOL 历史 stale 屏幕记录未退休，也没有经批准的权威 recovery marker。任何权威 `recover`／ToDesk 重启仍须停止；不能用上面的命令示意自行生成标记或声称实机门禁已通过。
+截至 2026-09-30，新入口只有临时总线与模拟桌面的代码级验证。权威安装 CLI 仍为旧版、XQOL 历史 stale 屏幕记录未退休，也没有经批准的权威 recovery marker／发行者合同；代码中的 `APPROVED_RECOVERY_CONTRACT_SHA256` 因此保持 `None` 并硬拒所有权威 `recover`。临时总线、自算 SHA 和自行制作的标记不具备授权效力。CAS heartbeat 只证明调用瞬间的 owner；它与随后的服务／桌面操作不在同一锁区间，权威启用前还须长寿命共享 screen／launch fence 或等价持续独占证明。任何权威 `recover`／ToDesk 重启仍须停止；不能用上面的命令示意自行生成标记或声称实机门禁已通过。
 
 2026-09-28 本机重启后的首个恢复 attempt 发现 Steam 窗口处于最小化状态：仅用 `SW_SHOW` 无法保证恢复成可采集的窗口，随后 `SetForegroundWindow` 抛出底层 pywin32 异常。工具现在对最小化窗口使用 `SW_RESTORE`，并把置前失败转换成明确的恢复错误，保留该 attempt，不绕开新鲜画面门禁。聚焦测试覆盖最小化恢复和置前拒绝。随后的全新恢复 attempt 取得原始 1024×768 画面 `D:/ck3-research-artifacts/war31-h2743-20260928/steam-offline-post-reboot-02/probe-1/steam-moved.png`，SHA-256 `795BA96C21DCF730506531E1A5728F162C52EF8C56EDF7B1985878D8B0C217B1`，人工确认左下“离线模式”及更新后的任务栏时间。H2743 新 `attempt-04` 只读实机结束后另取 `steam-offline-post-army-01/probe-1/steam-moved.png`，SHA-256 `6F6F046346EC1E3E10A2BFF1837AE78C4946072121CD6A5416960B359B433C32`，再次人工确认离线。
 

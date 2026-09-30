@@ -29,6 +29,10 @@ SCREEN_RESOURCE = "ck3-screen:acquired"
 STALE_CAPTURE_ERROR = "desktop capture did not respond to live Steam movement"
 DEFAULT_BUS = Path(r"D:\workspace\.codex-task-bus\bin\codex_task_bus.py")
 BUS_SOURCE = Path(__file__).with_name("codex_task_bus.py")
+# No authority issuer/provenance contract or continuous screen fence is approved.
+# A frozen issuer contract and long-lived fence are both needed before changing
+# this stop value; the heartbeat below is only a point-in-time ownership check.
+APPROVED_RECOVERY_CONTRACT_SHA256: str | None = None
 RECOVERY_MARKER_NAME = "desktop-steam-recovery-authorization.json"
 UNSAFE_MARKER_NAME = "unsafe-cleanup.json"
 MARKER_SCHEMA = "ck3.desktop_steam_recovery_authorization.v1"
@@ -41,6 +45,7 @@ def now() -> str:
 
 
 def task_bus_tasks(bus: Path) -> list[dict]:
+    bus = bus.resolve(strict=True)
     bus_dir = bus.parent.parent
     if (not bus.is_file() or not (bus_dir / "tasks").is_dir()
             or not (bus_dir / ".lock").is_file()
@@ -98,6 +103,11 @@ def recovery_authorization(args: argparse.Namespace) -> dict:
         raise RuntimeError("recovery marker bytes changed")
     payload = json.loads(marker.read_text(encoding="utf-8"))
     bus = args.task_bus.resolve(strict=True)
+    if bus != DEFAULT_BUS.resolve():
+        raise RuntimeError("recovery task bus is not the fixed authority CLI")
+    contract = APPROVED_RECOVERY_CONTRACT_SHA256
+    if contract is None or re.fullmatch(r"[A-F0-9]{64}", contract) is None:
+        raise RuntimeError("authoritative recovery contract is not approved")
     source = BUS_SOURCE.resolve(strict=True)
     if (bus.name != "codex_task_bus.py" or bus.parent.name != "bin"
             or _sha256(bus) != args.expected_cli_sha256
@@ -112,6 +122,7 @@ def recovery_authorization(args: argparse.Namespace) -> dict:
         "task_bus": str(bus),
         "bus_cli_sha256": args.expected_cli_sha256,
         "expected_sequence": args.expected_sequence,
+        "authority_contract_sha256": contract,
     }
     if not isinstance(payload, dict) or any(payload.get(key) != value
                                                 for key, value in expected.items()):
@@ -123,7 +134,9 @@ def recovery_authorization(args: argparse.Namespace) -> dict:
     return {"marker_sha256": args.recovery_marker_sha256,
             "cli_sha256": args.expected_cli_sha256,
             "sequence": args.expected_sequence,
-            "state_dir": state_dir}
+            "state_dir": state_dir,
+            "bus_path": bus,
+            "bus_dir": bus.parent.parent}
 
 
 def _readback_screen_heartbeat(args: argparse.Namespace, lease: dict,
@@ -140,14 +153,14 @@ def _readback_screen_heartbeat(args: argparse.Namespace, lease: dict,
             or event.get("task_id") != args.task_id
             or event.get("kind") != "heartbeat"):
         raise RuntimeError("screen heartbeat returned an invalid CAS receipt")
-    tasks = task_bus_tasks(args.task_bus)
+    tasks = task_bus_tasks(lease["bus_path"])
     if screen_owners(tasks) != [args.task_id]:
         raise RuntimeError("screen owner changed after heartbeat")
     matching = [row for row in tasks if row.get("task_id") == args.task_id]
     if len(matching) != 1 or any(matching[0].get(key) != task.get(key) for key in
                                  ("state", "resources", "last_sequence", "updated_at_utc")):
         raise RuntimeError("screen task readback differs from CAS receipt")
-    bus_dir = args.task_bus.parent.parent
+    bus_dir = lease["bus_dir"]
     events = [json.loads(line) for line in (bus_dir / "events.jsonl")
               .read_text(encoding="utf-8").splitlines() if line.strip()]
     sequences = [row.get("sequence") for row in events]
@@ -169,7 +182,7 @@ def require_exclusive_screen(args: argparse.Namespace, lease: dict) -> None:
     if ck3_pids():
         raise RuntimeError("CK3 started during recovery")
     command = [sys.executable, str(BUS_SOURCE), "--bus-dir",
-               str(args.task_bus.parent.parent), "--expected-cli-sha256",
+               str(lease["bus_dir"]), "--expected-cli-sha256",
                lease["cli_sha256"], "heartbeat", "--task", args.task_id,
                "--expected-sequence", str(lease["sequence"])]
     completed = subprocess.run(command, capture_output=True, text=True,
@@ -386,7 +399,7 @@ def recover(args: argparse.Namespace) -> dict:
         lease = None
         authorization_error = f"{type(exc).__name__}: {exc}"
     try:
-        tasks = task_bus_tasks(args.task_bus)
+        tasks = task_bus_tasks(lease["bus_path"] if lease is not None else args.task_bus)
         bus_error = None
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
         tasks = []

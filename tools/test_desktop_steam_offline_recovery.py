@@ -147,7 +147,8 @@ class DesktopRecoveryTests(unittest.TestCase):
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
                   patch.object(recovery, "recovery_authorization",
-                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                               return_value={"marker_sha256": "fixture", "sequence": 1,
+                                             "bus_path": Path("bus")}),
                   patch.object(recovery, "require_exclusive_screen"),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
@@ -176,7 +177,8 @@ class DesktopRecoveryTests(unittest.TestCase):
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
                   patch.object(recovery, "recovery_authorization",
-                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                               return_value={"marker_sha256": "fixture", "sequence": 1,
+                                             "bus_path": Path("bus")}),
                   patch.object(recovery, "require_exclusive_screen"),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
@@ -205,7 +207,8 @@ class DesktopRecoveryTests(unittest.TestCase):
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
                   patch.object(recovery, "recovery_authorization",
-                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                               return_value={"marker_sha256": "fixture", "sequence": 1,
+                                             "bus_path": Path("bus")}),
                   patch.object(recovery, "require_exclusive_screen"),
                   patch.object(recovery, "task_bus_tasks", return_value=[task(TASK)]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
@@ -230,7 +233,8 @@ class DesktopRecoveryTests(unittest.TestCase):
                              service_timeout_seconds=2)
             with (patch.object(recovery, "inspect", return_value=snapshot()),
                   patch.object(recovery, "recovery_authorization",
-                               return_value={"marker_sha256": "fixture", "sequence": 1}),
+                               return_value={"marker_sha256": "fixture", "sequence": 1,
+                                             "bus_path": Path("bus")}),
                   patch.object(recovery, "task_bus_tasks", return_value=[task("other")]),
                   patch.object(recovery, "ck3_pids", return_value=[]),
                   patch.object(recovery, "service_state", return_value={"status": "running", "pid": 11}),

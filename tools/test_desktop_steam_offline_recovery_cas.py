@@ -35,6 +35,13 @@ class RecoveryCasTests(unittest.TestCase):
         (self.bus_dir / "sequence.txt").write_text("0\n", encoding="ascii")
         self.installed = self.bus_dir / "bin" / "codex_task_bus.py"
         shutil.copyfile(recovery.BUS_SOURCE, self.installed)
+        self.authority_pin = patch.object(recovery, "DEFAULT_BUS", self.installed)
+        self.contract_pin = patch.object(
+            recovery, "APPROVED_RECOVERY_CONTRACT_SHA256", "A" * 64)
+        self.authority_pin.start()
+        self.contract_pin.start()
+        self.addCleanup(self.contract_pin.stop)
+        self.addCleanup(self.authority_pin.stop)
         self.cli_sha = hashlib.sha256(recovery.BUS_SOURCE.read_bytes()).hexdigest().upper()
         task, _ = bus_module.update_task(
             self.bus_dir, TASK, state="running", summary="synthetic screen owner",
@@ -62,6 +69,7 @@ class RecoveryCasTests(unittest.TestCase):
             "task_bus": str(self.installed.resolve()),
             "bus_cli_sha256": self.cli_sha,
             "expected_sequence": self.sequence,
+            "authority_contract_sha256": "A" * 64,
             "expires_at_utc": (datetime.now(timezone.utc)
                                + timedelta(minutes=5)).isoformat(),
         }
@@ -103,6 +111,45 @@ class RecoveryCasTests(unittest.TestCase):
     def test_installed_or_source_sha_drift_stops_authorization(self) -> None:
         self.installed.write_bytes(b"old authority CLI")
         with self.assertRaisesRegex(RuntimeError, "SHA differs"):
+            recovery.recovery_authorization(self.args)
+        self.assertEqual(len(bus_module.read_events(self.bus_dir)), 1)
+
+    def test_private_bus_and_self_minted_marker_are_not_authority(self) -> None:
+        with patch.object(recovery, "DEFAULT_BUS", self.root / "fixed-authority" / "bin"
+                          / "codex_task_bus.py"):
+            with self.assertRaisesRegex(RuntimeError, "fixed authority CLI"):
+                recovery.recovery_authorization(self.args)
+        with patch.object(recovery, "APPROVED_RECOVERY_CONTRACT_SHA256", None):
+            with self.assertRaisesRegex(RuntimeError, "not approved"):
+                recovery.recovery_authorization(self.args)
+        self.assertEqual(len(bus_module.read_events(self.bus_dir)), 1)
+
+    def test_symlinked_cli_alias_uses_canonical_bus_for_all_cas_work(self) -> None:
+        alias_dir = self.root / "alias"
+        (alias_dir / "bin").mkdir(parents=True)
+        (alias_dir / "tasks").mkdir()
+        (alias_dir / ".lock").write_bytes(b"0")
+        (alias_dir / "events.jsonl").write_bytes(b"")
+        (alias_dir / "sequence.txt").write_text("0\n", encoding="ascii")
+        alias = alias_dir / "bin" / "codex_task_bus.py"
+        try:
+            alias.symlink_to(self.installed)
+        except OSError as exc:
+            self.skipTest(f"symlink creation unavailable: {exc}")
+        self.args.task_bus = alias
+        lease = recovery.recovery_authorization(self.args)
+        self.assertEqual(lease["bus_dir"], self.bus_dir.resolve())
+        with patch.object(recovery, "ck3_pids", return_value=[]):
+            recovery.require_exclusive_screen(self.args, lease)
+        self.assertEqual((alias_dir / "sequence.txt").read_text(encoding="ascii"), "0\n")
+        self.assertEqual(lease["sequence"], self.sequence + 1)
+
+    def test_hardlink_cli_alias_with_identical_bytes_is_not_authority(self) -> None:
+        alias = self.root / "other-bin" / "codex_task_bus.py"
+        alias.parent.mkdir()
+        alias.hardlink_to(self.installed)
+        self.args.task_bus = alias
+        with self.assertRaisesRegex(RuntimeError, "fixed authority CLI"):
             recovery.recovery_authorization(self.args)
         self.assertEqual(len(bus_module.read_events(self.bus_dir)), 1)
 
