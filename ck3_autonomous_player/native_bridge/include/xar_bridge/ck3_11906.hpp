@@ -1150,6 +1150,8 @@ struct CurrentFirstHeirBetrothalActionabilityReadV1 {
   bool outcome_available = false;
   bool lineality_available = false;
   bool effective_matrilineal_if_accepted = false;
+  friend bool operator==(const CurrentFirstHeirBetrothalActionabilityReadV1 &,
+                         const CurrentFirstHeirBetrothalActionabilityReadV1 &) = default;
 };
 
 struct CurrentFirstHeirRelationshipReadV1 {

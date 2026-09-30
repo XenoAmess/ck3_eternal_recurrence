@@ -1,4 +1,5 @@
 #include "xar_bridge/marriage_proposal_native_binder_v1.hpp"
+#include "xar_bridge/marriage_native_outcome_classifier_v1.hpp"
 
 #include <array>
 #include <cassert>
@@ -68,6 +69,8 @@ struct Harness {
   bool default_matrilineal_on = false;
   bool enable_matrilineal_on_command_copy = false;
   int matrilineal_set_calls = 0;
+  bridge::MarriagePredictedOutcomeV1 predicted_outcome =
+      bridge::MarriagePredictedOutcomeV1::marriage;
 
   Harness() {
     storage_pointer = reinterpret_cast<std::uintptr_t>(storage.data());
@@ -259,7 +262,7 @@ bool ReadRanked(void *, std::uintptr_t,
 void ReleaseRanked(void *, std::uintptr_t) noexcept {}
 bool Classify(void *, std::uintptr_t, std::uintptr_t, const void *,
               bridge::MarriagePredictedOutcomeV1 &output) noexcept {
-  output = bridge::MarriagePredictedOutcomeV1::marriage;
+  output = g_harness->predicted_outcome;
   return true;
 }
 bool CaptureFrame(void *, bridge::MarriageProposalReceiptFrameV1 &output) noexcept {
@@ -634,7 +637,73 @@ void TestProductionSignatureDriftFailClosed() {
 
 } // namespace
 
+void TestExistingBetrothalFulfillment() {
+  auto install_betrothal = [](Harness &harness) {
+    Write(harness.subject_family, bridge::kMarriageFamilyBetrothedIdOffsetV1,
+          static_cast<std::int32_t>(kCandidateId));
+    Write(harness.candidate_family, bridge::kMarriageFamilyBetrothedIdOffsetV1,
+          static_cast<std::int32_t>(kSubjectId));
+    Write(harness.subject_family, bridge::kMarriageFamilyPrimarySpouseIdOffsetV1,
+          std::int32_t{-1});
+    Write(harness.candidate_family, bridge::kMarriageFamilyPrimarySpouseIdOffsetV1,
+          std::int32_t{-1});
+    Write(harness.subject_family, bridge::kMarriageFamilySpouseIdsOffsetV1 +
+              bridge::kMarriageNativeArrayCountOffsetV1, std::int32_t{0});
+    Write(harness.candidate_family, bridge::kMarriageFamilySpouseIdsOffsetV1 +
+              bridge::kMarriageNativeArrayCountOffsetV1, std::int32_t{0});
+    Write(harness.subject, bridge::kMarriageCharacterAdultSelectorOffsetV1, std::uint8_t{0});
+    Write(harness.candidate, bridge::kMarriageCharacterAdultSelectorOffsetV1, std::uint8_t{1});
+  };
+  auto submission = Submission();
+  submission.native_rank = 0;
+  submission.rankless_observed_heir = true;
+  submission.roles.actor_character_id = kPlayedId;
+  submission.recipient_ai_accept_raw = 100000;
+  submission.recipient_answer_status_raw = 1;
+  submission.fulfill_existing_betrothal = true;
+  submission.expected_effective_matrilineal = true;
+  Harness valid;
+  install_betrothal(valid);
+  valid.default_matrilineal_on = true;
+  bridge::MarriageProposalNativeBinderStateV1 state{};
+  InitializeState(valid, state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(&state, submission) ==
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(valid.submit_calls == 1 && valid.matrilineal_set_calls == 0);
+  Harness changed_lineality;
+  install_betrothal(changed_lineality);
+  InitializeState(changed_lineality, state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(&state, submission) !=
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(changed_lineality.command_calls == 0 && changed_lineality.matrilineal_set_calls == 0);
+  Harness copy_changed;
+  install_betrothal(copy_changed);
+  copy_changed.default_matrilineal_on = true;
+  copy_changed.strip_matrilineal_on_command_copy = true;
+  InitializeState(copy_changed, state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(&state, submission) !=
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(copy_changed.submit_calls == 0 && copy_changed.matrilineal_set_calls == 0);
+  Harness predicted_betrothal;
+  install_betrothal(predicted_betrothal);
+  predicted_betrothal.default_matrilineal_on = true;
+  predicted_betrothal.predicted_outcome = bridge::MarriagePredictedOutcomeV1::betrothal;
+  InitializeState(predicted_betrothal, state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(&state, submission) !=
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(predicted_betrothal.command_calls == 0 && predicted_betrothal.submit_calls == 0);
+  Harness relation_lost;
+  install_betrothal(relation_lost);
+  Write(relation_lost.candidate_family, bridge::kMarriageFamilyBetrothedIdOffsetV1,
+        std::int32_t{-1});
+  InitializeState(relation_lost, state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(&state, submission) !=
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(relation_lost.construct_calls == 0 && relation_lost.submit_calls == 0);
+}
+
 int main() {
+  TestExistingBetrothalFulfillment();
   TestBindAndCertifiedConfiguration();
   TestSingleSubmitAndNativeFinalValidation();
   TestRanklessObservedHeirNativeAnswer();

@@ -112,6 +112,10 @@ struct MarriageProposalSubmissionV1 {
   // Specified-child default route requires the native default to remain off
   // in both the finalized context and the copied send command.
   bool require_matrilineal_option_off = false;
+  // Existing current-heir betrothal: require the same marriage outcome and
+  // effective native default lineality; this route never changes an option.
+  bool fulfill_existing_betrothal = false;
+  bool expected_effective_matrilineal = false;
 
   friend bool operator==(const MarriageProposalSubmissionV1 &,
                          const MarriageProposalSubmissionV1 &) = default;

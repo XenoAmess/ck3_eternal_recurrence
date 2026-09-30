@@ -65,6 +65,8 @@ struct MarriageNativeOutcomeDetailsV1 {
   std::int16_t candidate_adult_measure_raw = 0;
   std::int32_t subject_adult_threshold_raw = 0;
   std::int32_t candidate_adult_threshold_raw = 0;
+  friend bool operator==(const MarriageNativeOutcomeDetailsV1 &,
+                         const MarriageNativeOutcomeDetailsV1 &) = default;
 };
 
 // Independent adulthood read for an existing pair. It does not require or

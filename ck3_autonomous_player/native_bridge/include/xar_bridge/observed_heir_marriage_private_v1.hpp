@@ -1,6 +1,9 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_11906.hpp"
+#endif
 #include "xar_bridge/marriage_proposal_native_binder_v1.hpp"
 
 #include <cstdint>
@@ -17,6 +20,7 @@ struct ObservedHeirMarriagePendingV1 {
   std::int32_t candidate_character_id = -1;
   std::int32_t recipient_character_id = -1;
   bool matrilineal_option_selected = false;
+  bool fulfill_existing_betrothal = false;
 };
 
 enum class ObservedHeirMarriageMaterialStatusV1 : std::uint8_t {
@@ -36,6 +40,17 @@ bool PrepareObservedHeirMarriageSubmissionV1(
     const MarriageProposalBilateralRelationshipV1 &before,
     std::uint64_t native_revision, MarriageProposalSubmissionV1 &submission,
     ObservedHeirMarriagePendingV1 &pending) noexcept;
+
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+// Fixed current pair only; no ranked candidate inventory or option mutation.
+bool PrepareCurrentFirstHeirBetrothalFulfillmentSubmissionV1(
+    std::int32_t played_character_id, std::int32_t heir_character_id,
+    const ck3_11906::CurrentFirstHeirBetrothalActionabilityReadV1 &cached,
+    const ck3_11906::CurrentFirstHeirBetrothalActionabilityReadV1 &fresh,
+    const MarriageProposalBilateralRelationshipV1 &before,
+    std::uint64_t native_revision, MarriageProposalSubmissionV1 &submission,
+    ObservedHeirMarriagePendingV1 &pending) noexcept;
+#endif
 
 ObservedHeirMarriageMaterialStatusV1 ReadObservedHeirMarriageMaterialStatusV1(
     const ObservedHeirMarriagePendingV1 &pending,

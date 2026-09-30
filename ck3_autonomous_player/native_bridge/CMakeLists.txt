@@ -2176,6 +2176,10 @@ if(BUILD_TESTING)
     xar_ck3_observed_heir_marriage_private_v1_test PRIVATE include)
   target_compile_options(
     xar_ck3_observed_heir_marriage_private_v1_test PRIVATE /W4 /WX)
+  if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    target_compile_definitions(xar_ck3_observed_heir_marriage_private_v1_test PRIVATE
+      XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  endif()
   add_test(
     NAME xar_ck3_native_bridge_observed_heir_marriage_private_v1
     COMMAND xar_ck3_observed_heir_marriage_private_v1_test
