@@ -2409,6 +2409,8 @@ def _inject_native_bridge(
             attestation,
         )
     attestation.update(result.report)
+    attestation["schema"] = "xar.ck3.native-injector-attempt.v1"
+    attestation["contained_job_report"] = dict(result.report)
     attestation["role_query_authorized"] = False
     if (result.error is not None or attestation.get("status") != "EXIT"
             or attestation.get("complete_process_tree_proven") is not True):
@@ -2416,7 +2418,7 @@ def _inject_native_bridge(
         raise NativeInjectorError(
             f"native bridge injector could not complete: {reason}", attestation
         )
-    if not _contained_injector_report_matches(attestation, command,
+    if not _contained_injector_report_matches(result.report, command,
                                                result.stdout, result.stderr):
         attestation["status"] = "RED_JOB_REPORT_MISMATCH"
         attestation["complete_process_tree_proven"] = False

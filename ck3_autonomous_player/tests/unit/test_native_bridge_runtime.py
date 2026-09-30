@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 from types import SimpleNamespace
 import unittest
 from unittest import mock
@@ -197,6 +198,10 @@ class NativeBridgeInjectorTests(unittest.TestCase):
             report = _inject_native_bridge(process, self.config)
         run.assert_called_once_with(command, timeout_seconds=30.0)
         self.assertEqual(report["status"], "INJECTOR_EXIT_ZERO_TREE_PROVEN")
+        self.assertEqual(report["schema"], "xar.ck3.native-injector-attempt.v1")
+        self.assertEqual(report["contained_job_report"]["schema"],
+                         "xar.ck3.contained-injector-job.v1")
+        self.assertEqual(report["contained_job_report"]["status"], "EXIT")
         self.assertEqual(report["pid"], 517)
         self.assertEqual(report["returncode"], 0)
         self.assertEqual(report["stdout_sha256"],
@@ -229,6 +234,10 @@ class NativeBridgeInjectorTests(unittest.TestCase):
         ):
             _resume_with_native_bridge(process, self.config)
         self.assertFalse(process.injector_attestation["complete_process_tree_proven"])
+        self.assertEqual(process.injector_attestation["schema"],
+                         "xar.ck3.native-injector-attempt.v1")
+        self.assertEqual(process.injector_attestation["contained_job_report"]["status"],
+                         "RED_TIMEOUT")
         with self.assertRaises(UnsafeCleanupError):
             _require_injector_cleanup_before_marker_clear(process)
         process.resume.assert_not_called()
@@ -373,7 +382,7 @@ class WindowsInjectorJobTests(unittest.TestCase):
     def test_timeout_terminates_job_and_refuses_tree_proof(self) -> None:
         result = run_contained_injector_command(
             [self.python, "-c", "import time;time.sleep(30)"],
-            timeout_seconds=0.1)
+            timeout_seconds=2.0)
         self.assertEqual(result.report["status"], "RED_TIMEOUT")
         self.assertTrue(result.report["injector_root_reaped"])
         self.assertFalse(result.report["complete_process_tree_proven"])
@@ -431,6 +440,57 @@ class WindowsInjectorJobTests(unittest.TestCase):
         self.assertIsNone(result.report["resume_previous_count"])
         self.assertFalse(result.report["complete_process_tree_proven"])
         self.assertTrue(result.report["injector_root_reaped"])
+
+    def test_pre_resume_identity_and_assignment_time_count_toward_budget(self) -> None:
+        import win32job
+        import win32process
+
+        for module, name in ((win32process, "GetProcessTimes"),
+                             (win32job, "AssignProcessToJobObject")):
+            with self.subTest(stage=name):
+                original = getattr(module, name)
+                calls = 0
+
+                def delayed(*args: object) -> object:
+                    nonlocal calls
+                    calls += 1
+                    time.sleep(1.1)
+                    return original(*args)
+
+                with mock.patch.object(module, name, side_effect=delayed):
+                    result = run_contained_injector_command(
+                        [self.python, "-c", "print('must not run')"],
+                        timeout_seconds=1.0)
+                self.assertEqual(calls, 1)
+                self.assertEqual(result.report["status"], "RED_TIMEOUT")
+                self.assertFalse(result.report["complete_process_tree_proven"])
+                self.assertIsNone(result.report["resume_previous_count"])
+                self.assertTrue(result.report["injector_root_reaped"])
+
+    def test_expired_pipe_setup_cannot_call_createprocess(self) -> None:
+        from xar_autoplayer import windows_injector_job
+
+        original = windows_injector_job._inheritable_copy
+        copies = 0
+
+        def delayed_copy(handle: int) -> int:
+            nonlocal copies
+            copies += 1
+            if copies == 1:
+                time.sleep(1.1)
+            return original(handle)
+
+        with mock.patch.object(windows_injector_job, "_inheritable_copy",
+                               side_effect=delayed_copy), mock.patch(
+            "_winapi.CreateProcess", side_effect=AssertionError("must not spawn")
+        ) as create:
+            result = run_contained_injector_command(
+                [self.python, "-c", "print('must not run')"],
+                timeout_seconds=1.0)
+        self.assertGreaterEqual(copies, 1)
+        create.assert_not_called()
+        self.assertEqual(result.report["status"], "RED_TIMEOUT")
+        self.assertFalse(result.report["complete_process_tree_proven"])
 
     def test_wrong_pinned_executable_never_resumes_root(self) -> None:
         with mock.patch("win32process.GetModuleFileNameEx",
