@@ -23,6 +23,8 @@ The a03 DLL lacks private phase-trace BEGIN/FINISH strings. This second session 
 
 The example below uses live attempt `a01`; change **all** four `a01` locations and the pipe together if that name exists. Execute from the final integrated #451 checkout with the verified main venv; preserve command argv/stdout/stderr/exit in the fresh attempt. The offline receipt placeholder must be replaced by this screen lease's reviewed receipt.
 
+The CAS screen gate in [screen-bus-cas-admission-20260930.md](screen-bus-cas-admission-20260930.md) supersedes this old example's screen arguments. A future live argv must also supply `--screen-task-id`, `--screen-expected-sequence`, and `--screen-cli-sha256` from a new reviewed registration; the old installed CLI and unresolved XQOL screen record currently make live admission STOP. `capture_session.py` renews its own task; do not start a second renewer. This code change invalidates any earlier no-launch seal, so regenerate the exact-HEAD attempt before live use.
+
 ```text
 D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe D:/w/video_e2_final_20260929/promo/ck3_native_war_ai/integration/capture_session.py
   --game-dir C:/SteamLibrary/steamapps/common/CRUSAD~1

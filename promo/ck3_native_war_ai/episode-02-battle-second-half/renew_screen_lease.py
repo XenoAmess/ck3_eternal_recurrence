@@ -1,7 +1,8 @@
-"""Renew an already owned CK3 screen lease during a bounded recording.
+"""CAS renewal for an already registered, uniquely owned CK3 screen task.
 
-This helper never acquires a resource. It writes a new, fsynced journal and
-stops with a nonzero result if the task loses its acquired screen resource.
+This standalone helper is for managed sessions that do not renew internally.
+capture_session.py has its own keeper; never run both for the same task. A lost
+or uncertain renewal stops immediately and leaves its journal as RED evidence.
 """
 
 from __future__ import annotations
@@ -11,9 +12,13 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 import time
+
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "promo" / "ck3_native_war_ai" / "integration"))
+from screen_bus_lease import renew_once  # noqa: E402
 
 
 def utc() -> str:
@@ -23,8 +28,9 @@ def utc() -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--task", required=True)
-    parser.add_argument("--bus-script", type=Path, required=True)
-    parser.add_argument("--journal", type=Path, required=True)
+    parser.add_argument("--expected-sequence", required=True, type=int)
+    parser.add_argument("--expected-cli-sha256", required=True)
+    parser.add_argument("--journal", required=True, type=Path)
     parser.add_argument("--interval-seconds", type=int, default=180)
     parser.add_argument("--max-seconds", type=int, default=7200)
     args = parser.parse_args()
@@ -32,13 +38,8 @@ def main() -> int:
         parser.error("interval must be 30..240 seconds")
     if not 300 <= args.max_seconds <= 14400:
         parser.error("max duration must be 300..14400 seconds")
-    if not args.bus_script.is_file():
-        parser.error("task bus script is missing")
     if not args.journal.parent.is_dir():
         parser.error("journal parent directory must already exist")
-
-    # Exclusive creation makes a repeated invocation a new attempt, never an
-    # overwrite of the previous lease evidence.
     try:
         with args.journal.open("xb"):
             pass
@@ -52,48 +53,30 @@ def main() -> int:
             stream.flush()
             os.fsync(stream.fileno())
 
+    sequence = args.expected_sequence
     deadline = time.monotonic() + args.max_seconds
-    errors = 0
     try:
         while time.monotonic() < deadline:
             try:
-                call = subprocess.run(
-                    [sys.executable, str(args.bus_script), "heartbeat", "--task", args.task],
-                    capture_output=True, text=True, timeout=60, check=False,
-                )
-            except (OSError, subprocess.TimeoutExpired) as exc:
-                append({"at_utc": utc(), "result": "HEARTBEAT_ERROR", "error": str(exc)})
-                errors += 1
-                if errors >= 3:
-                    return 2
-                time.sleep(15)
-                continue
-            try:
-                body = json.loads(call.stdout) if call.returncode == 0 else {}
-            except json.JSONDecodeError:
-                body = {}
-            task = body.get("task") or {}
-            owned = "ck3-screen:acquired" in (task.get("resources") or [])
-            sequence = (body.get("event") or {}).get("sequence")
-            append({"at_utc": utc(), "result": "OWNED" if owned else "NOT_OWNED",
-                    "exit_code": call.returncode, "task_id": task.get("task_id"),
-                    "task_updated_at_utc": task.get("updated_at_utc"),
-                    "sequence": sequence, "stderr_tail": call.stderr[-500:]})
-            if call.returncode == 0 and not owned:
+                row = renew_once(
+                    source=ROOT / "tools" / "codex_task_bus.py",
+                    bus_dir=Path("D:/workspace/.codex-task-bus"),
+                    expected_sha=args.expected_cli_sha256,
+                    task_id=args.task, expected_sequence=sequence, repo=ROOT)
+            except Exception as error:
+                append({"at_utc": utc(), "result": "LOST_OR_UNCERTAIN_STOP",
+                        "expected_sequence": sequence, "error": repr(error)})
                 return 2
-            if call.returncode != 0:
-                errors += 1
-                if errors >= 3:
-                    return 2
-                time.sleep(15)
-                continue
-            errors = 0
-            print(f"screen lease owned; heartbeat sequence={sequence}", flush=True)
+            sequence = row["sequence"]
+            append({"at_utc": utc(), "result": "OWNED_CAS", "lease": row})
+            print(f"screen lease CAS sequence={sequence}", flush=True)
             time.sleep(args.interval_seconds)
     except KeyboardInterrupt:
-        append({"at_utc": utc(), "result": "STOPPED_BY_OPERATOR"})
+        append({"at_utc": utc(), "result": "STOPPED_BY_OPERATOR",
+                "last_sequence": sequence})
         return 0
-    append({"at_utc": utc(), "result": "MAX_DURATION_REACHED"})
+    append({"at_utc": utc(), "result": "MAX_DURATION_REACHED",
+            "last_sequence": sequence})
     return 2
 
 

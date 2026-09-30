@@ -28,7 +28,9 @@ GUI_ROOT = Path("D:/workspace/ck3_native_war_ai_promo_work/episode02-e2-04-d05-s
 GUI_SETTINGS = GUI_ROOT / "native-ui-saved-settings-a01.pdx.txt"
 GUI_RECEIPT = GUI_ROOT / "native-ui-saved-settings-a01.json"
 VARIABLE_VALUE_FLAGS = ("--state-dir", "--output-dir", "--pipe-name",
-                        "--steam-offline-receipt", "--d11-admission-lock")
+                        "--steam-offline-receipt", "--d11-admission-lock",
+                        "--screen-task-id", "--screen-expected-sequence",
+                        "--screen-cli-sha256")
 
 
 def require(ok: bool, message: str) -> None:

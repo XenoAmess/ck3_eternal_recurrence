@@ -1,0 +1,19 @@
+# 第二期受管画面任务总线 CAS 准入
+
+状态：**代码与无害夹具候选；权威总线仍为旧 CLI，且旧 XQOL screen 记录未审计退役，因此实机 STOP。** 本文不证明已领取画面、Steam 离线、CK3 启动或成片。
+
+每个 live attempt 必须先由画面所有者用已安装且与当前 checkout `tools/codex_task_bus.py` **逐字节相同**的受审 CAS CLI，在权威 `D:/workspace/.codex-task-bus` 注册全新的独占 `ck3-screen:acquired` task。旧未释放 screen 记录、第二 owner、stale/unsafe、安装与源码 SHA 不同，均停止；不能用旧 `status done` 或裸 `heartbeat` 清掉旧记录。保存注册返回的 `task.last_sequence`、task ID、CLI SHA、完整 stdout/stderr 和退出码。要有当次直接审阅的新鲜 Steam“离线模式”原图及 receipt，并遵守项目实机门禁。
+
+`capture_session.py --capture` 新增三个必填参数：
+
+```text
+--screen-task-id <本次全新且已注册的 task ID>
+--screen-expected-sequence <注册回执中的 task.last_sequence>
+--screen-cli-sha256 <受审源码与安装副本共同的 64 位大写 SHA-256>
+```
+
+这些参数也必须加入 d06/d11 的 live argv；no-launch argv 不需要。新的捕获入口在受管启动前核对源码与安装 CLI 字节，读取唯一、未过期、同 checkout/HEAD、clean 的 screen owner，执行带预期序号的 CAS heartbeat，再独立读取总线任务状态。它在 CK3 运行期间每 180 秒续租；任一冲突或读回不一致则保存 RED 日志并请求受管会话停止。输出保存在本次新 `ck3-output/screen-lease-admission.json` 与 `screen-lease-journal.jsonl`。不得为同一 task 同时运行独立续租脚本。
+
+`renew_screen_lease.py` 仅供其他没有内置 keeper 的受管会话使用，其新参数为 `--task`、`--expected-sequence`、`--expected-cli-sha256`、`--journal`；旧 `--bus-script` 与裸 `heartbeat` 命令作废。CAS 失败立即停止并保留 RED journal，不再重试三次后声称仍持有租约。每次续租后，下次预期序号取当次回执 `lease.sequence`。CK3、录制器及 worker 全部退出且清场证据审阅后，画面所有者再用最新序号执行总线 `release-screen-cas`；启动前或清场未证实不能释放。
+
+此变更改变 `capture_session.py` 的 SHA 和 checkout HEAD；旧 d11 无启动 seal 不再适用，后续须在同一最终 HEAD 重新生成和封存无启动 attempt。现有旧 CLI 与旧 XQOL screen 记录未解决前，即使通过其他静态测试，所有 `--capture` 仍应在启动前 RED/STOP。

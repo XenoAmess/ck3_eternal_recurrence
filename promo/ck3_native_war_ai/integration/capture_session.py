@@ -27,6 +27,8 @@ import tempfile
 import threading
 import time
 
+from screen_bus_lease import ScreenLeaseKeeper, checked_cli_pair, renew_once
+
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 sys.path.insert(0, str(ROOT / "tools"))
@@ -1519,7 +1521,7 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None,
     return spec, lifecycle
 
 
-def capture(args: argparse.Namespace, checked: dict) -> dict:
+def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict:
     from ck3_live_run_id import allocate_live_run_id, write_identity_receipt, record_live_run_status
     from xar_autoplayer.native_session import native_session
     from xar_autoplayer.runtime import NativeBridgeLaunchConfig
@@ -1566,8 +1568,16 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     except Exception as error:
         record_live_run_status(run, "completed-red", reason=str(error))
         raise
-    record_live_run_status(run, "launch-started", reason="Bounded vanilla map capture; no strategic player actions")
     stopped = threading.Event()
+    lease_keeper = ScreenLeaseKeeper(
+        source=ROOT / "tools" / "codex_task_bus.py",
+        bus_dir=Path("D:/workspace/.codex-task-bus"),
+        expected_sha=args.screen_cli_sha256,
+        task_id=args.screen_task_id,
+        sequence=screen_lease["sequence"], repo=ROOT,
+        journal=args.output_dir / "screen-lease-journal.jsonl",
+        abort=stopped,
+    )
     worker: dict = {"ok": False, "error": None, "marks": []}
     origin = time.monotonic()
     raw = args.output_dir / "raw-desktop.mkv"
@@ -1726,18 +1736,25 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     supervisor_error = None
     try:
         with ExitStack() as resources:
+            lease_keeper.start()
+            resources.callback(lease_keeper.stop)
+            lease_keeper.refresh()  # CAS immediately before any recorder or CK3 child.
             output = resources.enter_context((args.output_dir / "session.jsonl").open("x", encoding="utf-8"))
             if command is not None:
+                lease_keeper.require_live()
                 err = resources.enter_context((args.output_dir / "ffmpeg.stderr.txt").open("xb"))
                 recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
                 time.sleep(1)
                 require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()
+            lease_keeper.require_live()
             before_final_launch = (
                 lambda current_spec: reseed_gui_scale_after_warmup(
                     current_spec.profile_dir / "pdx_settings.txt", args.gui_scale,
                     args.output_dir, allow_native_ui_one=allow_native_ui_one)
             ) if checkpoint is not None and args.gui_scale is not None else None
+            lease_keeper.refresh()  # Final CAS immediately before native_session can launch CK3.
+            record_live_run_status(run, "launch-started", reason="Bounded vanilla map capture; no strategic player actions")
             session_result = native_session(
                 # Startup, map publication and post-ready pump have separate waits.
                 spec, timeout_seconds=3 * args.frontend_timeout + args.hold_seconds + max(args.recovery_seconds, args.interactive_seconds) + 90,
@@ -1781,6 +1798,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                            else "paused-vanilla-map-environment-session-no-video"),
         "launch_mode": checked["launch_mode"],
         "checkpoint_source": checkpoint,
+        "screen_lease": lease_keeper.report(),
     }
     probe = None
     if args.record_debug_desktop and raw.is_file() and raw.stat().st_size > 0:
@@ -1792,6 +1810,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     result["ffprobe_returncode"] = probe.returncode if probe is not None else None
     shutdown = session_result.get("shutdown") or {}
     session_good = (worker["ok"] and worker["error"] is None and not thread.is_alive()
+            and lease_keeper.failure is None
             and session_result.get("ok") is True and shutdown.get("cleanup_proven") is True
             and not processes["processes"])
     recording_good = (args.record_debug_desktop and recorder is not None and recorder.returncode == 0
@@ -1842,6 +1861,11 @@ def main() -> int:
     parser.add_argument("--interactive-seconds", type=float, default=1800,
                         help="Keep the loaded campaign available for explicit MCP requests; use 3600 for a bounded one-hour work session")
     parser.add_argument("--steam-offline-receipt", type=Path)
+    parser.add_argument("--screen-task-id", help="Existing unique ck3-screen task ID; required for --capture")
+    parser.add_argument("--screen-expected-sequence", type=int,
+                        help="Fresh task.last_sequence from the reviewed screen registration")
+    parser.add_argument("--screen-cli-sha256",
+                        help="Uppercase SHA-256 of identical source and installed CAS bus CLI")
     parser.add_argument("--enable-private-phase-trace", action="store_true",
                         help="Allow only the research BEGIN/FINISH trace pair in explicit local requests")
     parser.add_argument("--enable-private-ai-reentry-observer", action="store_true",
@@ -1865,12 +1889,29 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=False)
     write_new(args.output_dir / "command.json", {"python": sys.executable, "argv": sys.argv, "started_at": utc()})
     try:
+        if args.capture:
+            require(args.screen_task_id is not None and
+                    args.screen_expected_sequence is not None and
+                    args.screen_cli_sha256 is not None,
+                    "--capture requires screen task ID, expected sequence and CLI SHA-256")
+            checked_cli_pair(ROOT / "tools" / "codex_task_bus.py",
+                             Path("D:/workspace/.codex-task-bus/bin/codex_task_bus.py"),
+                             args.screen_cli_sha256)
         checked = preflight(args)
         write_new(args.output_dir / "preflight.json", checked)
         if not args.capture:
             print(json.dumps(checked, ensure_ascii=False))
             return 0
-        result = capture(args, checked)
+        screen_lease = renew_once(
+            source=ROOT / "tools" / "codex_task_bus.py",
+            bus_dir=Path("D:/workspace/.codex-task-bus"),
+            expected_sha=args.screen_cli_sha256,
+            task_id=args.screen_task_id,
+            expected_sequence=args.screen_expected_sequence,
+            repo=ROOT,
+        )
+        write_new(args.output_dir / "screen-lease-admission.json", screen_lease)
+        result = capture(args, checked, screen_lease)
         write_new(args.output_dir / "capture-report.json", result)
         print(json.dumps(result, ensure_ascii=False))
         return 0 if result["result"] != "RED" else 1
