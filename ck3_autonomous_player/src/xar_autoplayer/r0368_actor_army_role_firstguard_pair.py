@@ -1,4 +1,4 @@
-"""Read the separately frozen native pair that retains ROLE failure diagnostics.
+"""Read the separately frozen native pair that enables the existing queued ROLE wake.
 
 This admission uses explicit manifest byte pins. The original role pair and its
 173-case receipt remain historical inputs to the original entry.
@@ -12,12 +12,12 @@ from . import r0368_actor_army_role_operator as original_role
 from .errors import AgentError
 
 
-NATIVE_SOURCE_COMMIT = "244005a79d3acaa92a01a0a949edde4dad6fdbe7"
-BRIDGE_SOURCE_SHA256 = "418F733DA86448D4C3B66379EE62AC7F24EB7A6BF75F3D6A3FCD2C23165C620E"
-NATIVE_SOURCE_FINGERPRINT_SHA256 = "B68C99E67F849B7017A9FB3D5473D4045CAA41C63A55325B8C1C474B91B4AFCE"
+NATIVE_SOURCE_COMMIT = "aef7ed46f5da8d734be05db9bcca5196e2d02bf2"
+BRIDGE_SOURCE_SHA256 = "A6B3BB697C5CB20B49282BEDC7FECB0C5571259610E0D1F908C61E7C9CCB79F0"
+NATIVE_SOURCE_FINGERPRINT_SHA256 = "FAA9804DC2CE222F2871FDC846966093BB3E460391274A71F73AE2B37ED465E0"
 CK3_EXE_SHA256 = "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
-PAIR_SCHEMA = "xar.war.r0368.release-pair-failure-diagnostics-static.v1"
-CANDIDATE_SCHEMA = "xar.war.r0368.release-pair-failure-diagnostics-candidate.v1"
+PAIR_SCHEMA = "xar.war.r0368.release-pair-queued-wake-static.v1"
+CANDIDATE_SCHEMA = "xar.war.r0368.release-pair-queued-wake-candidate.v1"
 _SHA = re.compile(r"[0-9A-Fa-f]{64}")
 _RAW_NAMES = (
     "xar_checkpoint.ck3", "driver-state.json",
@@ -89,7 +89,7 @@ def verify_firstguard_source_pair(
             != BRIDGE_SOURCE_SHA256):
         raise AgentError("R0368 new native source pair contract differs")
     if _digest(pair.get("source_fingerprint_sha256"), "native source fingerprint") != NATIVE_SOURCE_FINGERPRINT_SHA256:
-        raise AgentError("R0368 failure diagnostics native source fingerprint differs")
+        raise AgentError("R0368 queued wake native source fingerprint differs")
     ctest = pair.get("ctest")
     expected_ctest = {
         "junit_tests": 1, "junit_failures": 0, "junit_skipped": 0,
@@ -132,7 +132,7 @@ def verify_firstguard_source_pair(
     if original_role._sha256(bridge_source) != BRIDGE_SOURCE_SHA256:
         raise AgentError("R0368 first-guard bridge source bytes differ")
     return {
-        "schema": "xar.war.r0368.role-failure-diagnostics-no-launch.v1",
+        "schema": "xar.war.r0368.role-queued-wake-no-launch.v1",
         "status": "SOURCE_BYTES_READY_SAME_FRAME_PENDING",
         "candidate_manifest_sha256": candidate_sha,
         "release_pair_manifest_sha256": pair_sha,

@@ -1445,9 +1445,17 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   // already verified application-main owner with an inert thread message so
   // its normal SDL/PeekMessage loop reaches the installed drain hook. Posting
   // is best effort: failure leaves the bounded queued wait fail-closed.
-  const auto posted = PostThreadMessageW(
-      mailbox.owner_thread_id.load(std::memory_order_acquire), WM_NULL, 0, 0);
-  if (queued_wake_trace != nullptr) {
+  const auto wake_owner = mailbox.owner_thread_id.load(std::memory_order_acquire);
+  if (queued_wake_trace != nullptr) queued_wake_trace->owner_thread_id = wake_owner;
+  const bool initial_wake_allowed = wake_owner != 0 &&
+      mailbox.state.load(std::memory_order_acquire) == MainThreadQueryMailboxStateV1::queued &&
+      mailbox.published_sequence.load(std::memory_order_acquire) == ticket.sequence &&
+      mailbox.owner_thread_id.load(std::memory_order_acquire) == wake_owner &&
+      !mailbox.stop_requested.load(std::memory_order_acquire) &&
+      mailbox.failure_flags.load(std::memory_order_acquire) == 0;
+  const auto posted = initial_wake_allowed
+      ? PostThreadMessageW(wake_owner, WM_NULL, 0, 0) : FALSE;
+  if (queued_wake_trace != nullptr && initial_wake_allowed) {
     ++queued_wake_trace->wake_attempts;
     if (posted != 0) {
       ++queued_wake_trace->wake_succeeded;
@@ -1512,6 +1520,10 @@ MainThreadQueryWaitResultV1 WaitForMainThreadQueryV1(
     return finish(MainThreadQueryWaitResultV1::ticket_mismatch);
   }
   const auto started = GetTickCount64();
+  const auto wake_owner = queued_wake_trace != nullptr &&
+      queued_wake_trace->owner_thread_id != 0
+      ? queued_wake_trace->owner_thread_id
+      : mailbox.owner_thread_id.load(std::memory_order_acquire);
   auto next_queued_wake = started + queued_wake_interval_milliseconds;
   while (true) {
     const auto state = mailbox.state.load(std::memory_order_acquire);
@@ -1538,12 +1550,13 @@ MainThreadQueryWaitResultV1 WaitForMainThreadQueryV1(
         queued_wake_interval_milliseconds != 0 &&
         now >= next_queued_wake &&
         state == MainThreadQueryMailboxStateV1::queued &&
+        mailbox.published_sequence.load(std::memory_order_acquire) == ticket.sequence &&
+        wake_owner != 0 &&
+        mailbox.owner_thread_id.load(std::memory_order_acquire) == wake_owner &&
         !mailbox.stop_requested.load(std::memory_order_acquire)) {
       // Repost the same inert wake for the same queued ticket. This never
       // resubmits its executor or extends the caller's original deadline.
-      const auto posted = PostThreadMessageW(
-          mailbox.owner_thread_id.load(std::memory_order_acquire),
-          WM_NULL, 0, 0);
+      const auto posted = PostThreadMessageW(wake_owner, WM_NULL, 0, 0);
       ++queued_wake_trace->wake_attempts;
       if (posted != 0) {
         ++queued_wake_trace->wake_succeeded;
