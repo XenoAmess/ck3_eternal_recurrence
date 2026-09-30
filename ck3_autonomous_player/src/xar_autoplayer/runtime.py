@@ -2375,6 +2375,20 @@ def _contained_injector_report_matches(
     return True
 
 
+def _require_native_injector_deadline(
+    attestation: dict[str, object], deadline: float, stage: str,
+) -> None:
+    if time.monotonic() >= deadline:
+        attestation["status"] = "RED_TIMEOUT"
+        attestation["deadline_phase"] = stage
+        attestation["complete_process_tree_proven"] = False
+        attestation["role_query_authorized"] = False
+        raise NativeInjectorError(
+            f"native bridge injector deadline expired during {stage}",
+            attestation,
+        )
+
+
 def _inject_native_bridge(
     process: _SuspendedWindowsProcess,
     config: NativeBridgeLaunchConfig,
@@ -2394,6 +2408,7 @@ def _inject_native_bridge(
         "role_query_authorized": False,
     }
     process.injector_attestation = attestation
+    deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
     try:
         result = run_contained_injector_command(
             command, timeout_seconds=NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS)
@@ -2412,14 +2427,26 @@ def _inject_native_bridge(
     attestation["schema"] = "xar.ck3.native-injector-attempt.v1"
     attestation["contained_job_report"] = dict(result.report)
     attestation["role_query_authorized"] = False
+    _require_native_injector_deadline(attestation, deadline, "Job helper return")
     if (result.error is not None or attestation.get("status") != "EXIT"
             or attestation.get("complete_process_tree_proven") is not True):
         reason = result.error or "injector process tree is unproven"
         raise NativeInjectorError(
             f"native bridge injector could not complete: {reason}", attestation
         )
-    if not _contained_injector_report_matches(result.report, command,
-                                               result.stdout, result.stderr):
+    try:
+        report_matches = _contained_injector_report_matches(
+            result.report, command, result.stdout, result.stderr)
+    except Exception as error:
+        attestation["status"] = "RED_JOB_REPORT_VALIDATION"
+        attestation["complete_process_tree_proven"] = False
+        raise NativeInjectorError(
+            f"native bridge injector report validation failed: {error}",
+            attestation,
+        ) from error
+    _require_native_injector_deadline(attestation, deadline,
+                                      "post-helper executable/report validation")
+    if not report_matches:
         attestation["status"] = "RED_JOB_REPORT_MISMATCH"
         attestation["complete_process_tree_proven"] = False
         raise NativeInjectorError(
@@ -2444,6 +2471,7 @@ def _inject_native_bridge(
             attestation,
         )
     attestation["status"] = "INJECTOR_EXIT_ZERO_TREE_PROVEN"
+    _require_native_injector_deadline(attestation, deadline, "native injector result")
     return dict(attestation)
 
 
@@ -2452,8 +2480,14 @@ def _resume_with_native_bridge(
     config: NativeBridgeLaunchConfig | None,
 ) -> None:
     if config is not None:
+        deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
         process.injector_attestation = _inject_native_bridge(process, config)
+        _require_native_injector_deadline(
+            process.injector_attestation, deadline, "pre-CK3-resume")
     process.resume()
+    if config is not None:
+        _require_native_injector_deadline(
+            process.injector_attestation, deadline, "post-CK3-resume")
 
 
 def _require_injector_cleanup_before_marker_clear(

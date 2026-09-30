@@ -234,6 +234,7 @@ def run_contained_injector_command(
     assigned = False
     root_exited = False
     error_text: str | None = None
+    result: ContainedInjectorResult | None = None
     overflow = threading.Event()
 
     def require_budget(stage: str) -> None:
@@ -381,15 +382,18 @@ def run_contained_injector_command(
             require_budget("final Job-empty proof")
             report["complete_process_tree_proven"] = True
             report["status"] = "EXIT"
-        return ContainedInjectorResult(report, stdout, stderr, error_text)
+        result = ContainedInjectorResult(report, stdout, stderr, error_text)
+        return result
     except _InjectorDeadlineExpired as error:
         report["status"] = "RED_TIMEOUT"
         error_text = str(error)
-        return ContainedInjectorResult(report, None, None, error_text)
+        result = ContainedInjectorResult(report, None, None, error_text)
+        return result
     except Exception as error:
         report["status"] = "RED_INTERNAL"
         error_text = f"{type(error).__name__}: {error}"
-        return ContainedInjectorResult(report, None, None, error_text)
+        result = ContainedInjectorResult(report, None, None, error_text)
+        return result
     finally:
         if job is not None and assigned:
             try:
@@ -420,3 +424,9 @@ def run_contained_injector_command(
                 win32api.CloseHandle(job)
             except Exception:
                 report["complete_process_tree_proven"] = False
+        if report["status"] == "EXIT" and time.monotonic() >= deadline:
+            report["status"] = "RED_TIMEOUT"
+            report["deadline_phase"] = "post-Job cleanup"
+            report["complete_process_tree_proven"] = False
+            if result is not None:
+                result.error = "injector deadline expired during post-Job cleanup"
