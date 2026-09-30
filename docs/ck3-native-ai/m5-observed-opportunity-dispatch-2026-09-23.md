@@ -1,5 +1,50 @@
 # M5 observed opportunity dispatch (2026-09-23)
 
+## 2026-09-30 R0402：真实机会与 null 选择的分类
+
+R0402 使用冻结策略 `e718c905875bde661cfda2ef569a8677726c49c6`。其
+[8-turn 正式报告](D:/ck3-nw-robert-formal-nonwar-candidate-20260930/operator-runs/robert-formal-nonwar-opportunity-8turn-1/formal-report.txt)
+SHA-256 为 `338AB130904596D32572966753DF115FA56C8FD5712EF5D109B576595CC80773`。
+Robert actor29829 / episode `native-29829-2bc2d599f7f9` 在 raw53219928
+读到 `farm_estates_01`（barony2103/province2635/type596/slot1），原生成本
+raw18000000、金库 raw120644281、著录月收入 +70 hundredths。它是一个真实
+native-budgeted 正收益候选；`positive_income_coverage_complete=false` 不否定
+已读到的这个候选，也不能据此判断其他全部建筑。著录收入未变成完工收益。
+
+同轮 native3/public4 帧读得 stewardship wealth focus、当前未用点数0，
+Guy 的既有默认婚配仍 pending；fresh first-heir reader 确认38822与38718双向
+订婚，`new_proposal_eligible=false`。这些分别是无 perk 机会、未决承诺和已有
+关系，不能作为三个新的可提交正收益候选。首继承人读回绑定 native3；后续
+native4/public5 同日期建设观察不能借它拼出新的同帧婚配估值。
+
+本轮七个 wartime 联合观察均为 `incomplete_war_cash`，缺有来源的
+`pending_war_cash_raw`、`immediate_war_action_cost_raw`、
+`future_war_cost_upper_raw`、`future_risk_budget_raw`、
+`policy_minimum_gold_reserve_raw`、`horizon_days` 和
+`future_bound_assumptions`。`plan_m5_wartime_query_only` 保留实际战争 query、
+Guy receipt query 或原 `selected_step=null`，没有调用 dispatcher 做 reservation，
+也没有调用五行 priced shortlist。这里的 `formal_action_ready=false` 是缺战争
+资源输入且只读的边界，不是未发现建设或 selector 把 +0.70 估值为零。
+少于五条真实有价行时 shortlist 的原有门、独立和平正式消费者和历史资格均不改。
+
+实际 Guy pending bytes 经既有 `_pending_child_default_commitments` 返回角色
+`[34332,37909,38988]`、盟友 `[]` 及
+`player-child-default-marriage:38988`；actor29829 是资源持有者，不被排他。
+已 on-send 的成本不再次预留。这是已有和平来源的持久承诺消费函数读回，
+不能宣称本轮战争观察已经进入该和平选择器或完成了真实资源冲突动作。
+wartime 观察保留原计划的 pending 投影，不重发婚配或替换实际动作。
+
+基线 `62e6cb41c575651f28c0c7c0f363f3228feeb559` 的相关 collector/selector/
+来源源码与 R0402 冻结 e718 相同。将报告中的真实 compact before 元数据、同帧
+construction 金库和已观察 WarID 交给生产 wartime 函数，normal 复现
+七帧 `incomplete_war_cash`、原动作不变和 pending 保留；没有补任何未来费用、
+共同效用或假想候选。证据在 [normal replay](D:/nw-joint-r0402-consumption-20260930/PRODUCTION-ACTUAL-REPLAY-NORMAL.json)，
+SHA-256 `7DD5C5C1D2AB3040CB4B5E551137FE94D85C8AC18789333BB76C6C1DD894E42B`。
+本次未证实新的 selector 估值或角色承诺接线缺陷，策略改动0、游戏动作0、日期0；
+下一真实依赖是 ECON/战争接口包的当前战争金币占用与未来战争预算生产口，
+由 `m5_war_cash_resource_v1.require_complete_war_cash_resource_v1` 消费同帧、
+同 WarID 的有来源读数；既有 static 接口交付不能替代这些实际量，未知不能填零。
+
 ## C146: unavailable faction root and independent family action (2026-09-27)
 
 The private M5 collector requires a same-frame public faction root before it
