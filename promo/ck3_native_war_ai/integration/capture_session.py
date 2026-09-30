@@ -1876,6 +1876,8 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             and not processes["processes"])
     recording_good = (args.record_debug_desktop and recorder is not None and recorder.returncode == 0
             and recorder_cleanup is not None and recorder_cleanup.get("state") == "NORMAL_TREE_EMPTY"
+            and lease_keeper.failure is None
+            and not (args.output_dir / "unsafe-ffmpeg-cleanup.json").exists()
             and raw.is_file() and raw.stat().st_size > 0 and probe is not None and probe.returncode == 0)
     result["recording_complete"] = recording_good
     result["environment_session_complete"] = session_good
