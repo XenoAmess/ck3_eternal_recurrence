@@ -1,5 +1,72 @@
 # H3928 family companion: paired no-launch candidate (2026-09-29)
 
+## R0402 result consumption and existing-betrothal actionability (2026-09-30)
+
+The current bounded facts are retained in
+`D:\nw-robert-nonwar-postcondition-review-20260930\ACTUAL-OUTCOME-FACTS.json`
+(SHA-256 `5111AAE92542C7874E6E08E248E130B482433E84FF01A92CF85892AF721DA102`)
+and `REVIEW-CONCLUSIONS.json`. They bind formal report SHA-256
+`338AB130904596D32572966753DF115FA56C8FD5712EF5D109B576595CC80773`,
+PID56488, actor29829 and paused raw53219928. Guy38988 / candidate37909 /
+recipient34332 remained `pending`, exact outbound `active`, age0 and native
+reply cutoff7. Turn2 consumed checkpoint native revision4 after its actual
+revision3 result read; turn3 did not submit another proposal. The same-frame
+companion independently read primary heir38822 / partner38718 as bilateral
+betrothal, no spouse, `new_proposal_eligible=false`; it did not rewrite the
+earlier resolved ledger. These already reviewed paths were reused, not rerun.
+No additional result-consumer defect was reproduced on this frame. Native
+`accepted_pending` still means no bilateral material pair; cold absent outbox
+does not prove refusal. Later reply/material evidence requires an actual
+authorized date advance and a new result read, rather than a guessed answer.
+
+The useful next relationship decision can be fulfillment of this existing
+betrothal, without selecting another partner. On the same frozen CK3
+1.19.0.6 / EXE hash, the installed original sources match the existing hashes:
+`00_marriage_interactions.txt`
+`681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`
+and `00_marriage_triggers.txt`
+`BA0A8B51E1FECB9CC35EE94DAB5BC9B0C3B264932BAFAC33C77926423B60EB03`.
+`ready_to_marry_betrothed_trigger` at trigger lines339–348 requires an existing
+betrothed and both participants to be adult. The arrangement definition's
+lines109–134 redirect the actual pair and matchmaker; lines334–365 admit the
+ready pair, and lines552–565 allow picking the actual betrothed pair before
+the native final valid-target verdict. Lines628–644 distinguish the fulfilled
+betrothal toast. These source branches do not prove the R0402 pair is adult
+or currently final-legal.
+
+| Required input for the existing pair | Current interface boundary |
+| --- | --- |
+| Actual current primary heir and bilateral partner | Already observed by the companion; preserve current-root binding |
+| Both current adult measures/thresholds and ready-to-marry result | Missing from the relationship-only companion; do not infer from old age or elapsed date |
+| Current partner's matchmaker, final Can Send/answer, effective lineality and current resource costs | Reuse the existing finalized five-role value reader for the fixed actual pair; new proposal permissions cannot be borrowed |
+| Material conversion to adult marriage | Requires independent bilateral marriage readback, later consumer turn and required recovery; not an accepted query ACK |
+
+The existing specified-child subject reader can return the heir's adult
+measure, but it also scans the whole final-legal candidate source. Its value
+reader requires the requested partner to appear in that current subject
+result. Neither contract proves that the already betrothed partner appears
+there. Therefore the minimum construction dependency is a fixed-current-pair
+read using the existing final evaluator and value bindings, rather than more
+candidate enumeration or replacement proposals. Existing no-partner policy
+guards remain appropriate for new partner selection. Cancellation prestige,
+opinion/unity consequences and future child Dynasty remain unmeasured; none
+is assigned zero or used to justify breaking this betrothal.
+
+```mermaid
+flowchart TD
+    A[R0402 actual Guy pending and fresh primary-heir betrothal] --> B[Keep Guy pending and existing partner; no duplicate proposal]
+    B --> C[Bind actual current primary heir and bilateral betrothed]
+    C -. missing current pair inputs .-> D[unknown: both adult, native final verdict, current costs and lineality]
+    D -. required fixed-pair observation .-> E[Existing native arrange-marriage evaluation for that pair]
+    E -->|not ready or not legal| F[Retain betrothal and normal strategy]
+    E -. eligible private action still unimplemented .-> G[Typed fulfillment then independent bilateral marriage result]
+    G -. later turn and paired recovery required .-> H[No new live qualification here]
+```
+
+This increment is native source research and interface planning only. It adds
+no CK3 process, query, date, proposal, acceptance or material marriage and
+does not change the consumer, public capability or frozen candidates.
+
 Status: **official paired no-launch ready; no new CK3 frame or family action**.
 The exact game remains CK3 `1.19.0.6-steam23530548`, EXE SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
