@@ -73,3 +73,59 @@ Can Send false 仍被真实采样，answer 2 保持已读拒绝，answer 3 保�
 私有 additive Python transport 适配由独立家庭包负责；旧 DLL 缺对象仍为 unknown。
 当前 frozen 8-flag DLL、PRV008 与已运行实例不热换。新 native 制品、配对/no-launch 和 paused snapshot 待下一候选。
 公共 MCP/协议形状没有变化，`open_kaishek` 无需通用迁移。正式兑现动作、独立物质后置、下一 turn 与冷恢复尚未获得本包证据。
+
+
+## R0406 actual application-main admission failure and minimal repair
+
+Package `NW-FAMILY-CURRENT-PAIR-APPLICATION-MAIN-READBACK-20260930`, starting
+source `7790ef859c1b1d7ba0b033760cca7c4a4d9204e2`; frozen EXE/version unchanged.
+R0406 used the separate frozen query DLL28, not the untested action DLL52.
+Its independently recorded current heir `38822` and actual partner `38718`
+were bilateral and same-frame, but the optional actionability returned
+`unavailable` / `current_betrothal_application_main_unavailable`: no adult,
+threshold, final CanSend/answer, costs or lineality read completed. This is a
+failed live readback, with zero actions and zero date advance. Retain its
+immutable terminal artifact:
+`D:\nw-robert-nonwar-postcondition-review-20260930\R0406-FAMILY-LIFE-ACTUAL-TERMINAL.json`,
+SHA-256 `D1234F2495880B1EEE3BADC8531A362AAD834321D93D60DFF32D87E2B51082B8`.
+
+The exact enum was not exposed by that old generic fallback. Source tracing
+found a deterministic admission omission: the current-pair query executor
+was submitted directly, but absent from the actual populated mailbox executor
+registry. `TrySubmitMainThreadQueryV1` rejects an unlisted callback with
+`invalid_request` before its installed/owner/paused/queue checks. The old
+alliance projection executor is registered under slot 48; it does not authorize
+the different current-pair executor. DLL52 added the typed fulfillment
+executor but omitted its registration too, so it is not a matching fix.
+
+The minimal repair extends the existing registry with private current-pair
+query slot 68 and fulfillment slot 69, using the existing install certification,
+environment-to-mailbox copy and exact callback admission pattern. Slot 68 is
+registered only under the existing alliance-query build guard; slot 69 also
+requires the existing first-heir-action guard. No owner, pause, same-frame,
+native final evaluator, wait/reclaim, desktop or episode rules change. Submit
+fallbacks now retain `unavailable` and identify their actual admission failure
+stage in the reason; no missing input becomes a false/zero/adult observation.
+
+```mermaid
+flowchart TD
+  P[Current paused public heir and actual bilateral pair] --> S[Submit the exact current-pair executor]
+  S --> R{Executor registered?}
+  R -->|old DLL28 / DLL52: no| U[Unlisted callback rejected; generic old unavailable]
+  R -->|new candidate: slot 68| O[Existing installed and verified paused owner checks]
+  O --> Q[Existing mailbox queue and app-main executor]
+  Q --> N[Read actual adult/final answer/cost/default lineality at same frame]
+  N -. matching paused live candidate not yet tested .-> L[Live readback gate unknown]
+```
+
+Production mailbox regression reproduces zero executor calls and
+`invalid_request` with the registry omission. Registered callbacks retain
+`paused_main_thread_not_observed` before owner observation, then each execute
+once and complete/reclaim through the actual paused queue. A source binding
+check ties those slots to the actual private bridge executors and guards.
+Focused Debug and Release bridge builds passed. In each mode the production
+mailbox regression and current first-heir relationship fixture passed 2/2.
+The original exact-build field readers and native action binder are unchanged;
+the earlier #768/#775 independent focused results remain scoped evidence.
+This submission repair still needs a matching paused live readback candidate.
+No new CK3 instance, action, adulthood or query live success is claimed here.
