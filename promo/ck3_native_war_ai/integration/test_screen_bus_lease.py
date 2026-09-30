@@ -167,6 +167,56 @@ class ScreenBusLeaseTests(unittest.TestCase):
                     child.kill()
                     child.wait(timeout=10)
 
+    def test_spawn_gate_and_abort_recorder_lock_order_has_no_deadlock(self):
+        temporary, source, bus, sha = self.fixture()
+        with temporary:
+            recorder_lock = threading.Lock()
+            entered = threading.Event()
+            release = threading.Event()
+            aborted = threading.Event()
+            errors = []
+
+            def on_abort():
+                with recorder_lock:
+                    aborted.set()
+
+            keeper = ScreenLeaseKeeper(source=source, bus_dir=bus, expected_sha=sha,
+                                       task_id=TASK, sequence=11, repo=REPO,
+                                       journal=bus / "keeper.jsonl", abort=threading.Event(),
+                                       interval_seconds=30, on_abort=on_abort)
+            keeper.start()
+
+            def creating():
+                try:
+                    with keeper.process_create_gate():
+                        with recorder_lock:
+                            entered.set()
+                            release.wait(timeout=5)
+                except Exception as error:
+                    errors.append(error)
+
+            first = threading.Thread(target=creating)
+            first.start()
+            self.assertTrue(entered.wait(timeout=5))
+            changed = task_row(sequence=999)
+            (bus / "fixture.json").write_text(json.dumps(changed), encoding="utf-8")
+
+            def losing():
+                try:
+                    keeper.refresh()
+                except Exception:
+                    pass
+
+            second = threading.Thread(target=losing)
+            second.start()
+            release.set()
+            first.join(timeout=5)
+            second.join(timeout=5)
+            keeper.stop()
+            self.assertFalse(first.is_alive() or second.is_alive())
+            self.assertFalse(errors)
+            self.assertTrue(aborted.is_set())
+
 
 if __name__ == "__main__":
     unittest.main()
