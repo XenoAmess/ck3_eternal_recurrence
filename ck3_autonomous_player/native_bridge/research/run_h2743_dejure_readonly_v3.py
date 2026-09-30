@@ -57,6 +57,22 @@ STORAGE_DLL_SHA = "19C53611AEA499A37CF222A48A5395EC7B5BBA306ABC6065AB73C097CC85F
 DEFAULT_CANDIDATE = "title-prestate-v3"
 TRUCE_CANDIDATE = "partial-truce-inputs-v4"
 STORAGE_CANDIDATE = "war-storage-candidate-v5"
+HEAD_STORAGE_CANDIDATE = "war-storage-candidate-v5-head24c51"
+HEAD_STORAGE_HEAD = "24c51a37d2facd2dcf24da2d54e5f0c4548833cb"
+HEAD_STORAGE_BUILD_ROOT = Path("D:/ck3-research-artifacts/h2743-v5-build-20260930")
+HEAD_STORAGE_DLL_ATTEMPT = HEAD_STORAGE_BUILD_ROOT / "attempt-03-head24c51"
+HEAD_STORAGE_INJECTOR_ATTEMPT = HEAD_STORAGE_BUILD_ROOT / "attempt-04-injector-head24c51"
+HEAD_STORAGE_DLL = HEAD_STORAGE_DLL_ATTEMPT / "build/xar_ck3_bridge.dll"
+HEAD_STORAGE_DLL_SHA = "A73EBA509729D64E5DBC453791E48BEF8CF2DBCAE95C4F0BA2AA73D958B1C5EF"
+HEAD_STORAGE_INJECTOR = HEAD_STORAGE_INJECTOR_ATTEMPT / "build/xar_ck3_bridge_injector.exe"
+HEAD_STORAGE_INJECTOR_SHA = "3E9339B4C96A77AD96C8566D6707387DEBBB1C3E044B323DF2E0AD479F16A595"
+HEAD_STORAGE_PAIR = HEAD_STORAGE_BUILD_ROOT / "pair-proposal-head24c51-unreviewed.json"
+HEAD_STORAGE_PAIR_SHA = "183BF62461AE3C2B382F9367C657C923D5D412883ADE45FA7F24B7E31BC0E42C"
+HEAD_STORAGE_SOURCE_MANIFEST_SHA = "3CC643CD3F73B63AC576361C5E99B34592F83B4DB0AE9875D4061325AB6611B3"
+HEAD_STORAGE_DLL_RESULT_SHA = "8F2434DAF4801C26E43676A8BA98F913A0F50D86279CEACE19D9B58B436575F6"
+HEAD_STORAGE_DLL_POSTCHECK_SHA = "B447421DC3A50A2F32E807463C1C197F39E5A258F8367F106CBF96183DD0DD30"
+HEAD_STORAGE_INJECTOR_RESULT_SHA = "82A3A36B36AF1F0BE62564652A8555CADF6A4D3BDE27B687EC8451BB0309EC62"
+HEAD_STORAGE_INJECTOR_POSTCHECK_SHA = "59175C992DD5C0A329454758444D9E278BFE323B5869EE686704C6DB54DBBB87"
 EXISTING_TRUCE_CANDIDATE = "preaction-existing-truce-v1"
 EXISTING_TRUCE_ROOT = Path("D:/ck3-research-artifacts/h2743-existing-truce-readonly-20260929")
 EXISTING_TRUCE_BUILD = Path("D:/ck3-research-artifacts/h2743-existing-truce-release-20260930-attempt07/build")
@@ -121,6 +137,15 @@ def select_candidate(name: str) -> None:
         DLL = STORAGE_DLL
         DLL_SHA = STORAGE_DLL_SHA
         LIVE_OUTPUT = "live-dejure-war-storage-v5"
+    elif name == HEAD_STORAGE_CANDIDATE:
+        CANDIDATE = HEAD_STORAGE_CANDIDATE
+        ROOT = BASE_ROOT
+        INJECTOR = HEAD_STORAGE_INJECTOR
+        INJECTOR_SHA = HEAD_STORAGE_INJECTOR_SHA
+        QUERY = BASE_QUERY
+        DLL = HEAD_STORAGE_DLL
+        DLL_SHA = HEAD_STORAGE_DLL_SHA
+        LIVE_OUTPUT = "live-dejure-war-storage-v5-head24c51"
     elif name == EXISTING_TRUCE_CANDIDATE:
         CANDIDATE = EXISTING_TRUCE_CANDIDATE
         ROOT = EXISTING_TRUCE_ROOT
@@ -160,6 +185,132 @@ def valid_attempt_name(name: str) -> bool:
     return bool(number) and number.isascii() and number.isdecimal() and not number.startswith("0")
 
 
+def is_storage_candidate() -> bool:
+    return CANDIDATE in (STORAGE_CANDIDATE, HEAD_STORAGE_CANDIDATE)
+
+
+def candidate_manifest_sha256() -> str | None:
+    if CANDIDATE == EXISTING_TRUCE_CANDIDATE:
+        return EXISTING_TRUCE_MANIFEST_SHA
+    if CANDIDATE == HEAD_STORAGE_CANDIDATE:
+        return HEAD_STORAGE_PAIR_SHA
+    return None
+
+
+def provenance_source_hashes() -> dict[str, str] | None:
+    if CANDIDATE in (EXISTING_TRUCE_CANDIDATE, HEAD_STORAGE_CANDIDATE):
+        return python_source_hashes()
+    return None
+
+
+def pinned_json(path: Path, digest: str) -> dict[str, object]:
+    if not path.is_file() or sha256(path) != digest:
+        raise RuntimeError(f"exact H2743 provenance byte identity missing: {path}")
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise RuntimeError(f"H2743 provenance object malformed: {path}")
+    return value
+
+
+def verify_head_storage_pair() -> None:
+    """Bind the new v5 pair to one frozen HEAD, source tree and toolchain."""
+    pair = pinned_json(HEAD_STORAGE_PAIR, HEAD_STORAGE_PAIR_SHA)
+    expected_sources = {
+        name: {"path": str(SOURCE / name), "sha256": digest}
+        for name, digest in SOURCE_HASHES.items()
+    }
+    if (pair.get("schema") != "xar.ck3.h2743.v5.current-head-static-pair-proposal.v1"
+            or pair.get("status") != "UNREVIEWED_NO_LAUNCH_PAIR_PROPOSAL"
+            or pair.get("candidate_identity_proposed") != HEAD_STORAGE_CANDIDATE
+            or pair.get("head") != HEAD_STORAGE_HEAD
+            or pair.get("source_quartet") != expected_sources
+            or pair.get("shared_native_source_manifest_sha256") != HEAD_STORAGE_SOURCE_MANIFEST_SHA
+            or pair.get("shared_toolchain_binaries_equal") is not True
+            or pair.get("shared_selected_environment_equal") is not True
+            or pair.get("candidate_macro") !=
+            "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1=OFF"
+            or pair.get("old_v5_attempt15_pair_preserved") is not True
+            or pair.get("runner_modified") is not False
+            or pair.get("official_no_launch_performed") is not False
+            or pair.get("ck3_launched") is not False
+            or pair.get("go_executed") is not False
+            or pair.get("native_condition_observed") is not False
+            or pair.get("stock_any_character_war_equivalence_proven") is not False):
+        raise RuntimeError("new H2743 v5 pair proposal identity or boundary changed")
+
+    expected = (
+        ("dll", HEAD_STORAGE_DLL_ATTEMPT, HEAD_STORAGE_DLL, HEAD_STORAGE_DLL_SHA,
+         HEAD_STORAGE_DLL_RESULT_SHA, HEAD_STORAGE_DLL_POSTCHECK_SHA,
+         "GREEN_NO_LAUNCH_BUILD_AND_CTEST", "new_dll_sha256", "dll_path",
+         ["xar_ck3_bridge", "xar_ck3_h2743_war_storage_candidate_v1_test"]),
+        ("injector", HEAD_STORAGE_INJECTOR_ATTEMPT, HEAD_STORAGE_INJECTOR,
+         HEAD_STORAGE_INJECTOR_SHA, HEAD_STORAGE_INJECTOR_RESULT_SHA,
+         HEAD_STORAGE_INJECTOR_POSTCHECK_SHA, "GREEN_NO_LAUNCH_INJECTOR_BUILD",
+         "new_injector_sha256", "injector_path", ["xar_ck3_bridge_injector"]),
+    )
+    toolchains = []
+    for (kind, attempt, binary, binary_sha, result_sha, postcheck_sha,
+         status, result_key, path_key, targets) in expected:
+        if pair.get(kind) != {
+            "path": str(binary), "sha256": binary_sha,
+            "build_result": str(attempt / "result.json"),
+            "build_result_sha256": result_sha,
+            "postcheck": str(attempt / "postcheck.json"),
+            "postcheck_sha256": postcheck_sha,
+        }:
+            raise RuntimeError(f"new H2743 {kind} pair entry changed")
+        if not binary.is_file() or sha256(binary) != binary_sha:
+            raise RuntimeError(f"new H2743 {kind} binary bytes changed")
+        result = pinned_json(attempt / "result.json", result_sha)
+        postcheck = pinned_json(attempt / "postcheck.json", postcheck_sha)
+        if (result.get("status") != status
+                or result.get("head") != HEAD_STORAGE_HEAD
+                or result.get("source_inputs_unchanged") is not True
+                or result.get(result_key) != binary_sha
+                or result.get(path_key) != str(binary)
+                or result.get("game_launched") is not False
+                or result.get("go_executed") is not False
+                or postcheck.get("head") != HEAD_STORAGE_HEAD
+                or postcheck.get("clean") is not True
+                or postcheck.get("source_rows_before") != 1564
+                or postcheck.get("source_rows_after") != 1564
+                or postcheck.get("source_file_lists_equal") is not True
+                or postcheck.get(result_key) != binary_sha
+                or postcheck.get("result_sha256") != result_sha
+                or postcheck.get("source_before_sha256") != HEAD_STORAGE_SOURCE_MANIFEST_SHA
+                or postcheck.get("source_after_sha256") != HEAD_STORAGE_SOURCE_MANIFEST_SHA
+                or postcheck.get("tasklist_watch_matches") != []
+                or postcheck.get("psutil_watch_matches") != []):
+            raise RuntimeError(f"new H2743 {kind} build or postcheck changed")
+        for name in ("source-native-tracked-before.json", "source-native-tracked-after.json"):
+            if sha256(attempt / name) != HEAD_STORAGE_SOURCE_MANIFEST_SHA:
+                raise RuntimeError(f"new H2743 {kind} source manifest changed")
+        if sha256(attempt / "actual-dependencies.json") != postcheck.get("deps_sha256"):
+            raise RuntimeError(f"new H2743 {kind} dependency evidence changed")
+        toolchains.append(pinned_json(attempt / "toolchain.json", postcheck["toolchain_sha256"]))
+        configured = json.loads((attempt / "configured-inputs.json").read_text(encoding="utf-8"))
+        if (configured.get("macro") !=
+                "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1=OFF"
+                or sha256(attempt / "build/CMakeCache.txt") != configured.get("cmake_cache_sha256")
+                or "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1:BOOL=OFF"
+                not in (attempt / "build/CMakeCache.txt").read_text(encoding="utf-8")):
+            raise RuntimeError(f"new H2743 {kind} configuration changed")
+        argv = json.loads((attempt / "build-argv.json").read_text(encoding="utf-8"))
+        if argv[3:] != ["--target", *targets, "--parallel", "2"]:
+            raise RuntimeError(f"new H2743 {kind} build target scope changed")
+        if (json.loads((attempt / "configure-result.json").read_text(encoding="utf-8")).get("exit_code") != 0
+                or json.loads((attempt / "build-result.json").read_text(encoding="utf-8")).get("exit_code") != 0):
+            raise RuntimeError(f"new H2743 {kind} build phase failed")
+    if (toolchains[0].get("binaries") != toolchains[1].get("binaries")
+            or toolchains[0].get("selected_environment") != toolchains[1].get("selected_environment")):
+        raise RuntimeError("new H2743 v5 pair toolchains differ")
+    ctest = json.loads((HEAD_STORAGE_DLL_ATTEMPT / "ctest-result.json").read_text(encoding="utf-8"))
+    if (ctest.get("exit_code") != 0
+            or "100% tests passed, 0 tests failed out of 1" not in
+            (HEAD_STORAGE_DLL_ATTEMPT / "ctest-stdout.txt").read_text(encoding="utf-8")):
+        raise RuntimeError("new H2743 v5 DLL focused CTest failed")
+
+
 def check_static() -> dict[str, object]:
     expected = {SOURCE / name: digest for name, digest in SOURCE_HASHES.items()}
     expected.update({DLL: DLL_SHA, INJECTOR: INJECTOR_SHA, EXE: EXE_SHA,
@@ -180,6 +331,8 @@ def check_static() -> dict[str, object]:
                 or build.get("injector", {}).get("sha256") != INJECTOR_SHA
                 or build.get("ck3_exe_sha256") != EXE_SHA):
             raise RuntimeError("H2743 candidate build manifest content differs")
+    if CANDIDATE == HEAD_STORAGE_CANDIDATE:
+        verify_head_storage_pair()
     for path in (PYTHON, TASK_BUS, REPO / "ck3_autonomous_player/src/xar_autoplayer/cli.py",
                  REPO / "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"):
         if not path.is_file():
@@ -205,8 +358,8 @@ def check_static() -> dict[str, object]:
             "readiness_seconds": READINESS_SECONDS,
             "session_timeout_seconds": SESSION_SECONDS, "paths_sha256": {str(path): digest for path, digest in expected.items()},
             "allowed_query_steps": [QUERY, OPTIONS_QUERY],
-            "python_source_sha256": python_source_hashes() if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
-            "candidate_build_manifest_sha256": EXISTING_TRUCE_MANIFEST_SHA if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
+            "python_source_sha256": provenance_source_hashes(),
+            "candidate_build_manifest_sha256": candidate_manifest_sha256(),
             "process_module_map_probe": "self_readable",
             "gameplay_action_submitted": False}
 
@@ -296,11 +449,14 @@ def prepared_state(attempt: Path) -> tuple[Path, dict[str, object]]:
             or pair.get("ck3_launch_attempted") is not False
             or pair.get("gameplay_action_submitted") is not False):
         raise RuntimeError("prepared H2743 source pair belongs to another candidate")
-    if CANDIDATE == EXISTING_TRUCE_CANDIDATE:
+    if CANDIDATE in (EXISTING_TRUCE_CANDIDATE, HEAD_STORAGE_CANDIDATE):
         if (pair.get("python_source_sha256") != python_source_hashes()
-                or pair.get("candidate_build_manifest_sha256") != EXISTING_TRUCE_MANIFEST_SHA
+                or pair.get("candidate_build_manifest_sha256") != candidate_manifest_sha256()
                 or ready.get("python_source_sha256") != python_source_hashes()):
             raise RuntimeError("prepared H2743 Python source or build manifest changed")
+        if (CANDIDATE == HEAD_STORAGE_CANDIDATE
+                and ready.get("candidate_build_manifest_sha256") != HEAD_STORAGE_PAIR_SHA):
+            raise RuntimeError("prepared H2743 v5 HEAD pair manifest changed")
     placed = {"xar_checkpoint.ck3": state / "profile/save games/xar_checkpoint.ck3",
               "first-heir-marriage-formal-v1.json": state / "first-heir-marriage-formal-v1.json"}
     for name, path in placed.items():
@@ -330,8 +486,8 @@ def prepare_no_launch(attempt_name: str, task_id: str | None) -> None:
     write_new(attempt / "source-pair.json", {"schema": "xar.ck3.h2743.dejure-exit-read-port-no-launch.v3",
         "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
         "candidate_dll": str(DLL), "candidate_dll_sha256": DLL_SHA,
-        "python_source_sha256": python_source_hashes() if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
-        "candidate_build_manifest_sha256": EXISTING_TRUCE_MANIFEST_SHA if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
+        "python_source_sha256": provenance_source_hashes(),
+        "candidate_build_manifest_sha256": candidate_manifest_sha256(),
         "injector_sha256": INJECTOR_SHA, "ck3_launch_attempted": False, "gameplay_action_submitted": False})
 
     def call(name: str, arguments: list[str]) -> dict[str, object]:
@@ -378,13 +534,16 @@ def prepare_no_launch(attempt_name: str, task_id: str | None) -> None:
         "--expected-checkpoint-sha256", SOURCE_HASHES["xar_checkpoint.ck3"],
         "--expected-driver-state-sha256", derived, "--xar-enabled", "xar_off",
         "--succession-lifecycle", "ordinary_campaign_succession", "--ordinary-campaign-no-pact"])
-    write_new(attempt / "ready-summary.json", {"status": "no_launch_preflight_ready",
+    ready_summary = {"status": "no_launch_preflight_ready",
         "source_hashes": SOURCE_HASHES, "candidate_kind": CANDIDATE,
         "candidate_dll_sha256": DLL_SHA,
-        "python_source_sha256": python_source_hashes() if CANDIDATE == EXISTING_TRUCE_CANDIDATE else None,
+        "python_source_sha256": provenance_source_hashes(),
         "injector_sha256": INJECTOR_SHA, "derived_driver_sha256": derived,
         "prepare": prepare, "rebind": rebind, "preflight": preflight,
-        "ck3_launch_attempted": False, "gameplay_action_submitted": False})
+        "ck3_launch_attempted": False, "gameplay_action_submitted": False}
+    if CANDIDATE == HEAD_STORAGE_CANDIDATE:
+        ready_summary["candidate_build_manifest_sha256"] = HEAD_STORAGE_PAIR_SHA
+    write_new(attempt / "ready-summary.json", ready_summary)
     print(json.dumps({"status": "no_launch_preflight_ready", "attempt": str(attempt)}, ensure_ascii=False))
 
 
@@ -789,9 +948,9 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                             or len(baseline.get("primary_monthly_gold_income", [])) != 2):
                         raise RuntimeError("baseline query unavailable, malformed or falsely material-complete")
                     require_target_holder_prestate(baseline)
-                    if CANDIDATE in (TRUCE_CANDIDATE, STORAGE_CANDIDATE):
+                    if CANDIDATE == TRUCE_CANDIDATE or is_storage_candidate():
                         require_partial_truce_inputs(baseline)
-                    if CANDIDATE == STORAGE_CANDIDATE:
+                    if is_storage_candidate():
                         require_storage_candidate(baseline)
                     results.append(result)
                     if number == 1:
@@ -823,7 +982,7 @@ async def read_frame(state: Path, output: Path, lease_failures: list[str]) -> di
                                 "same_frame_continuation_risk"],
                            "comparison_status": "unavailable", "action_literal": None,
                            "gameplay_action_submitted": False}
-                if CANDIDATE == STORAGE_CANDIDATE:
+                if is_storage_candidate():
                     summary["border_raid_storage_candidate_v1"] = results[0][
                         "defender_de_jure_exit_terms_v1"
                     ]["border_raid_storage_candidate_v1"]
@@ -990,7 +1149,8 @@ def run(attempt: Path, steam_gate: Path, task_id: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", choices=(DEFAULT_CANDIDATE, TRUCE_CANDIDATE,
-                                                STORAGE_CANDIDATE, EXISTING_TRUCE_CANDIDATE),
+                                                STORAGE_CANDIDATE, HEAD_STORAGE_CANDIDATE,
+                                                EXISTING_TRUCE_CANDIDATE),
                         default=DEFAULT_CANDIDATE,
                         help="exact pinned read-only DLL; default preserves the v3 reader")
     mode = parser.add_mutually_exclusive_group()
