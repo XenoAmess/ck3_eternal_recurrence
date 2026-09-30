@@ -16,14 +16,16 @@ import math
 import os
 from pathlib import Path
 import subprocess
-import sys
 import threading
 import time
-from typing import Any
 
 
 MAX_INJECTOR_OUTPUT_BYTES = 8 * 1024 * 1024
 INJECTOR_CLEANUP_SECONDS = 5.0
+
+
+class _InjectorDeadlineExpired(RuntimeError):
+    """The combined create, assign, run, and proof budget was exhausted."""
 
 
 @dataclass
@@ -207,6 +209,7 @@ def run_contained_injector_command(
         report["status"] = "RED_INVALID_INPUT_OR_PLATFORM"
         return ContainedInjectorResult(report, None, None, "invalid injector command/platform/budget")
 
+    deadline = time.monotonic() + float(timeout_seconds)
     import _winapi
     import msvcrt
     import win32api
@@ -229,16 +232,25 @@ def run_contained_injector_command(
     out_drain: _BoundedPipeDrain | None = None
     err_drain: _BoundedPipeDrain | None = None
     assigned = False
-    resumed = False
     root_exited = False
     error_text: str | None = None
     overflow = threading.Event()
+
+    def require_budget(stage: str) -> None:
+        if time.monotonic() >= deadline:
+            report["deadline_phase"] = stage
+            raise _InjectorDeadlineExpired(
+                f"injector deadline expired during {stage}")
+
     try:
+        require_budget("input validation")
         if not executable_input.is_absolute() or not executable.is_file():
             raise RuntimeError("injector executable is missing or relative")
         before_sha = _sha256_file(executable)
+        require_budget("executable hash")
         job, flags = _verified_injector_job()
         report["job_limit_flags"] = flags
+        require_budget("Job creation")
 
         out_read, raw_out_write = _winapi.CreatePipe(None, 0)
         err_read, raw_err_write = _winapi.CreatePipe(None, 0)
@@ -257,12 +269,14 @@ def run_contained_injector_command(
                 hStdError=err_write,
                 lpAttributeList={"handle_list": [stdin_copy, out_write, err_write]},
             )
+            require_budget("pre-CreateProcess pipe setup")
             process_handle, thread_handle, pid, _thread_id = _winapi.CreateProcess(
                 str(executable), subprocess.list2cmdline(command),
                 None, None, True,
                 win32process.CREATE_SUSPENDED | win32process.CREATE_NO_WINDOW,
                 None, str(executable.parent), startup)
         report["pid"] = pid
+        require_budget("suspended CreateProcess")
         _close_handle(out_write)
         _close_handle(err_write)
         _close_handle(stdin_copy)
@@ -283,16 +297,19 @@ def run_contained_injector_command(
         if not os.path.samefile(pinned_executable, executable) or after_sha != before_sha:
             raise RuntimeError("injector pinned executable/path bytes changed")
         report["executable_sha256"] = before_sha
+        require_budget("pinned process identity")
         if win32event.WaitForSingleObject(process_handle, 0) != win32event.WAIT_TIMEOUT:
             raise RuntimeError("injector exited before Job assignment")
         if _job_state(job) != (0, []):
             raise RuntimeError("injector Job changed before assignment")
         win32job.AssignProcessToJobObject(job, process_handle)
         assigned = True
+        require_budget("Job assignment")
         count, pids = _job_state(job)
         report["pre_resume_job_pids"] = pids
         if not win32job.IsProcessInJob(process_handle, job) or count != 1 or pids != [pid]:
             raise RuntimeError("injector Job assignment is not exact before resume")
+        require_budget("pre-resume Job proof")
 
         out_drain = _BoundedPipeDrain(out_read, "stdout", output_limit_bytes, overflow)
         err_drain = _BoundedPipeDrain(err_read, "stderr", output_limit_bytes, overflow)
@@ -300,13 +317,13 @@ def run_contained_injector_command(
         out_read = None
         err_drain.start()
         err_read = None
+        require_budget("output pipe setup")
         previous = int(win32process.ResumeThread(thread_handle))
         report["resume_previous_count"] = previous
         if previous != 1:
             raise RuntimeError(f"injector primary-thread suspend count is {previous}")
-        resumed = True
+        require_budget("primary thread resume")
 
-        deadline = time.monotonic() + float(timeout_seconds)
         reason: str | None = None
         while True:
             if overflow.is_set():
@@ -337,6 +354,8 @@ def run_contained_injector_command(
 
         out_drain.finish(INJECTOR_CLEANUP_SECONDS)
         err_drain.finish(INJECTOR_CLEANUP_SECONDS)
+        if reason is None:
+            require_budget("output drain")
         report.update(out_drain.evidence())
         report.update(err_drain.evidence())
         if out_drain.error or err_drain.error or overflow.is_set():
@@ -359,9 +378,14 @@ def run_contained_injector_command(
             time.sleep(0.05)
             if _job_state(job) != (0, []):
                 raise RuntimeError("injector Job changed after its empty snapshot")
+            require_budget("final Job-empty proof")
             report["complete_process_tree_proven"] = True
             report["status"] = "EXIT"
         return ContainedInjectorResult(report, stdout, stderr, error_text)
+    except _InjectorDeadlineExpired as error:
+        report["status"] = "RED_TIMEOUT"
+        error_text = str(error)
+        return ContainedInjectorResult(report, None, None, error_text)
     except Exception as error:
         report["status"] = "RED_INTERNAL"
         error_text = f"{type(error).__name__}: {error}"
