@@ -7,7 +7,7 @@ import the visual driver, OCR, screenshots, or desktop input modules.
 from __future__ import annotations
 
 import copy
-from contextlib import contextmanager
+from contextlib import AbstractContextManager, contextmanager
 import hashlib
 import json
 import math
@@ -17,7 +17,7 @@ from queue import Empty, SimpleQueue
 import sys
 import threading
 import time
-from typing import Iterator, TextIO
+from typing import Callable, Iterator, TextIO
 
 from .bridge.session_queue import PersistentSessionQueue, SessionQueueRequest
 from .environment import EnvironmentSpec, ensure_state_path_safe, write_json_atomic
@@ -727,7 +727,10 @@ def native_session(
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    frontend_first_before_final_launch: Callable[[EnvironmentSpec], None] | None = None,
+    before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
     startup_slot0_probe_output: Path | None = None,
+    readiness_timeout_diagnostic_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
     if (
@@ -762,6 +765,13 @@ def native_session(
     ):
         raise AgentError(
             "frontend-first warm-up bridge requires a frontend-first load save"
+        )
+    if (
+        frontend_first_before_final_launch is not None
+        and frontend_first_load_save_name is None
+    ):
+        raise AgentError(
+            "frontend-first pre-final-launch gate requires a frontend-first load save"
         )
     startup_slot0_probe_plan = (
         prepare_startup_slot0_probe(spec.game_exe, startup_slot0_probe_output)
@@ -814,7 +824,11 @@ def native_session(
                     frontend_first_timeout_seconds
                 ),
                 frontend_first_warmup_bridge=warmup_bridge,
+                frontend_first_before_final_launch=frontend_first_before_final_launch,
+                before_process_create=before_process_create,
                 startup_slot0_probe_plan=startup_slot0_probe_plan,
+                **({"readiness_timeout_diagnostic_event": readiness_timeout_diagnostic_event}
+                   if readiness_timeout_diagnostic_event is not None else {}),
             )
 
 
@@ -835,12 +849,16 @@ def _native_session_locked(
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    frontend_first_before_final_launch: Callable[[EnvironmentSpec], None] | None = None,
+    before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
     startup_slot0_probe_plan: StartupSlot0ProbePlan | None = None,
+    readiness_timeout_diagnostic_event: threading.Event | None = None,
 ) -> dict[str, object]:
     started_wall = utc_now()
     started = time.monotonic()
     deadline = started + timeout_seconds
     handle = None
+    readiness_timeout_process_diagnostic: dict[str, object] | None = None
     exit_reason = "launch_error"
     process_exit_code: int | None = None
     primary_error: BaseException | None = None
@@ -969,6 +987,8 @@ def _native_session_locked(
         # Passing the validated config explicitly prevents environment changes
         # from selecting hybrid fallback between command parsing and launch.
         initial_launch_options: dict[str, object] = {"native_bridge": config}
+        if before_process_create is not None:
+            initial_launch_options["before_process_create"] = before_process_create
         if prepared_xar_enabled != "xar_on":
             initial_launch_options["prepared_xar_enabled"] = (
                 prepared_xar_enabled
@@ -1126,6 +1146,14 @@ def _native_session_locked(
                     "the final launch"
                 )
             frontend_first_warmup["target_before_final_launch"] = final_target
+            if frontend_first_before_final_launch is not None:
+                try:
+                    frontend_first_before_final_launch(spec)
+                except Exception:
+                    frontend_first_warmup["status"] = "before_final_launch_gate_failed"
+                    _write_frontend_first_evidence(spec, frontend_first_warmup)
+                    raise
+                frontend_first_warmup["before_final_launch_gate_passed"] = True
             frontend_first_warmup["status"] = "final_launch_starting"
             _write_frontend_first_evidence(spec, frontend_first_warmup)
             final_launch_options: dict[str, object] = {
@@ -1135,6 +1163,8 @@ def _native_session_locked(
                 # not repeat a repository-wide fingerprint during relaunch.
                 "verify_prepared_profile": False,
             }
+            if before_process_create is not None:
+                final_launch_options["before_process_create"] = before_process_create
             handle = launch(spec, **final_launch_options)
             pid = int(handle.process.pid)
             last_pid = pid
@@ -1297,6 +1327,8 @@ def _native_session_locked(
                             spec,
                             native_bridge=config,
                             load_save_name=str(selected_save["load_save_name"]),
+                            **({"before_process_create": before_process_create}
+                               if before_process_create is not None else {}),
                             # The session owns both global launch and state
                             # locks.  Its first launch already verified the
                             # committed profile; repeating the full Git/runtime
@@ -1398,6 +1430,44 @@ def _native_session_locked(
                 )
     finally:
         if handle is not None:
+            if (
+                readiness_timeout_diagnostic_event is not None
+                and readiness_timeout_diagnostic_event.is_set()
+            ):
+                # Capture this before tracked shutdown. A desktop screenshot
+                # cannot establish whether this exact CK3 PID owns a window.
+                readiness_timeout_process_diagnostic = {
+                    "pid": int(handle.process.pid),
+                    "launch_command": list(handle.command),
+                    "process_alive": handle.process.poll() is None,
+                    "visible_window_count": None,
+                    "window_minimized": None,
+                    "foreground_is_ck3": None,
+                    "error_type": None,
+                }
+                try:
+                    import win32gui
+                    import win32process
+
+                    pid = int(handle.process.pid)
+                    readiness_timeout_process_diagnostic["visible_window_count"] = (
+                        len(_visible_process_windows(pid))
+                    )
+                    readiness_timeout_process_diagnostic["window_minimized"] = (
+                        _process_windows_minimized(pid)
+                    )
+                    foreground = win32gui.GetForegroundWindow()
+                    foreground_pid = (
+                        win32process.GetWindowThreadProcessId(foreground)[1]
+                        if foreground else None
+                    )
+                    readiness_timeout_process_diagnostic["foreground_is_ck3"] = (
+                        foreground_pid == pid if foreground_pid is not None else None
+                    )
+                except Exception as error:
+                    readiness_timeout_process_diagnostic["error_type"] = (
+                        type(error).__name__
+                    )
             try:
                 shutdown = stop_tracked(handle, require_running=False)
                 if shutdown.get("ok") is not True and primary_error is None:
@@ -1492,6 +1562,15 @@ def _native_session_locked(
             )
         ),
     }
+    if (
+        readiness_timeout_diagnostic_event is not None
+        and readiness_timeout_diagnostic_event.is_set()
+    ):
+        report["readiness_timeout_process_diagnostic"] = (
+            readiness_timeout_process_diagnostic
+        )
+    if handle is not None and getattr(handle, "injector_attestation", None) is not None:
+        report["injector_attestation"] = copy.deepcopy(handle.injector_attestation)
     if primary_error is not None and not pre_binding_warmup_exit:
         raise AgentError(
             "native-session failed after "
