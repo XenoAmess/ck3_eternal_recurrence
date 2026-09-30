@@ -27,7 +27,8 @@ import tempfile
 import threading
 import time
 
-from screen_bus_lease import ScreenLeaseKeeper, checked_cli_pair, renew_once
+from screen_bus_lease import (ScreenLeaseKeeper, abort_recorder_process,
+                              checked_cli_pair, renew_once)
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
@@ -1577,16 +1578,9 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
         with recorder_lock:
             if recorder is None or recorder.poll() is not None:
                 return
-            recorder.terminate()
-            try:
-                recorder.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                recorder.kill()
-                recorder.wait(timeout=10)
-            append(args.output_dir / "ffmpeg-abort.jsonl", {
-                "at": utc(), "reason": "screen-lease-lost-or-uncertain",
-                "pid": recorder.pid, "returncode": recorder.returncode,
-            })
+            abort_recorder_process(
+                recorder, receipt=args.output_dir / "ffmpeg-abort.json",
+                unsafe_marker=args.output_dir / "unsafe-ffmpeg-cleanup.json")
 
     lease_keeper = ScreenLeaseKeeper(
         source=ROOT / "tools" / "codex_task_bus.py",
@@ -1761,9 +1755,10 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             output = resources.enter_context((args.output_dir / "session.jsonl").open("x", encoding="utf-8"))
             if command is not None:
                 err = resources.enter_context((args.output_dir / "ffmpeg.stderr.txt").open("xb"))
-                with recorder_lock:
-                    lease_keeper.require_live()
-                    recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
+                with lease_keeper.process_create_gate():
+                    with recorder_lock:
+                        lease_keeper.require_live()
+                        recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
                 time.sleep(1)
                 require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()

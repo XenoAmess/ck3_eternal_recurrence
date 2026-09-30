@@ -65,6 +65,29 @@ def _write_new_bytes(path: Path, value: bytes) -> None:
         os.fsync(stream.fileno())
 
 
+def abort_recorder_process(process: subprocess.Popen, *, receipt: Path,
+                           unsafe_marker: Path) -> None:
+    """Reap a harmless or debug recorder child, or leave an explicit unsafe mark."""
+    if process.poll() is not None:
+        return
+    try:
+        process.terminate()
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=10)
+        require(process.poll() is not None, "recorder did not exit after lease abort")
+        _write_new(receipt, {"at_utc": datetime.now(timezone.utc).isoformat(),
+                             "result": "EXITED", "pid": process.pid,
+                             "returncode": process.returncode})
+    except BaseException as error:
+        _write_new(unsafe_marker, {"at_utc": datetime.now(timezone.utc).isoformat(),
+                                   "result": "UNPROVEN", "pid": process.pid,
+                                   "error": repr(error)})
+        raise
+
+
 def call_bus(source: Path, bus_dir: Path, expected_sha: str, *argv: str,
              audit_dir: Path | None = None) -> dict:
     checked_cli_pair(source, bus_dir / "bin" / "codex_task_bus.py", expected_sha)

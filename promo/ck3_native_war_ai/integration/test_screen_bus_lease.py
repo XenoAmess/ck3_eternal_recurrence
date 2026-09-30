@@ -7,12 +7,14 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import threading
 import unittest
 from unittest.mock import patch
 
-from screen_bus_lease import ScreenLeaseKeeper, call_bus, checked_owner, renew_once
+from screen_bus_lease import (ScreenLeaseKeeper, abort_recorder_process,
+                              call_bus, checked_owner, renew_once)
 
 
 REPO = Path(__file__).resolve().parents[3]
@@ -148,6 +150,22 @@ class ScreenBusLeaseTests(unittest.TestCase):
             self.assertEqual((second / "stdout.bin").read_bytes(), b"partial\x00")
             self.assertEqual((second / "stderr.bin").read_bytes(), b"late\x01")
             self.assertEqual(json.loads((second / "result.json").read_text())["result"], "COMMAND_ERROR")
+
+    def test_abort_reaps_harmless_recorder_child(self):
+        with tempfile.TemporaryDirectory(prefix="video-recorder-fixture-") as directory:
+            root = Path(directory)
+            child = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"],
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            try:
+                abort_recorder_process(child, receipt=root / "ffmpeg-abort.json",
+                                       unsafe_marker=root / "unsafe-ffmpeg-cleanup.json")
+                self.assertIsNotNone(child.poll())
+                self.assertEqual(json.loads((root / "ffmpeg-abort.json").read_text())["result"], "EXITED")
+                self.assertFalse((root / "unsafe-ffmpeg-cleanup.json").exists())
+            finally:
+                if child.poll() is None:
+                    child.kill()
+                    child.wait(timeout=10)
 
 
 if __name__ == "__main__":
