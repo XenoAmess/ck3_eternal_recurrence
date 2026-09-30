@@ -50,6 +50,8 @@
 | B2 K04-a08 d06 panel | 8.133000 / 1 → 239.967000 / 4804；231.834 秒 | episode02-k04-machine-endpoints-20260930-a01/k04-a08-begin-a01/ → k04-a08-end-a01/ | 全 raw 0→8.133 缺帧 RED 必须实记；尾端骑士悬浮卡挡面板。与 B1 独立冷载，须标切口；34333 有效勇武/团61 当前 V3 值仍 RED，不能从孤帧推 11→7。 |
 | C K05-a02 d26 | 0.000000 / 0 → 210.000000 / 4460；210.000 秒 | episode02-k05-a02-d26-endpoints-20260930-a01/begin/ → end/ | 两端战斗面板 11 对 4590、海域 tooltip；核首帧 HUD/加载、名单和可用动作。d27 post-snapshot 不是 battle-control，名单 mark control=null；死亡/selector 后态须新 capture。 |
 
+**A2 整片另看 d32，不计入上述七窗或 14 个导航端点。**同一 A2 `marks.jsonl`（SHA-256 `E267959B089EFB0AC35387D6BA77D7433521CE061DE00DEEE5A3A9E928AB089E`）的 `e2t-s02-d32-writer` 与 `e2t-s02-d32-war4-after` 对应最近视频 PTS 397.333、487.700；两值仅供导航，墙钟 mark 不是媒体 PTS。真人看完整 A2 时另记第 32 日终局／writer、WarID 4 后态画面是否实际可见、是否被弹窗遮挡及可用区间。两条 mark 的 `control` 均为 `null`，虽同绑终局 report SHA-256 `3CAC1F8F89545C299A957EB49C1B8636BB9A14C2707680A458FA8104EF9B1782`，也不能当作同日 typed battle-control 或自动补成 clean span。最近 PTS 和空 control 的既有只读核验见 `W/episode02-terminal-pair-a05-pts-audit-20260928-a03.json`（SHA-256 `6FDE20151A6E51EC760BB6CFFAA0B30DC21413363A74149100D949681FC16391`）；若要将 d32 选为正式镜头，须另做精确端点、连续性与人工审阅准入。
+
 A05-2 全 raw 另有 37.933→38.700（0.767 秒）、179.600→180.067（0.467 秒）、271.267→278.833（7.566 秒）缺帧。K04-a08 的 0→8.133 是全片 RED，即使候选区间内部 PTS 连续也不得抹去。K04-a07 端点后 411.167→413.300 不能跨。K05 d26 真 control 不能自动延伸到 d27。机器孤帧里长时间暂停/遮挡是否影响可用长度，必须由真人完整审阅决定。
 
 ## 真人填写空栏：每条 raw 一份，每个最终 span 另附一份
