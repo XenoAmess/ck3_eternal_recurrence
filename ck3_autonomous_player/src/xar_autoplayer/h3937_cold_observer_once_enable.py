@@ -33,6 +33,7 @@ LIVE_RUN_ID = "desktop-3fevhd2-1c74096080--vanilla--R0117"
 LIVE_EXECUTION_ID = "2be36b8a-029f-4dc5-a017-ce7d0b3809d7"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
+BUS_CLI_SHA256 = "9B4EBC239B9411AF5C7264890E43557168C410EF358BA98CBC60EA19F5BCC343"
 SCREEN_TASK_ID = "war-h3937-cold-observer-readonly-live-20260930-a14"
 LEASE_MAX_AGE_SECONDS = 600
 GO_MAX_AGE_SECONDS = 300
@@ -147,15 +148,22 @@ def _require_live_screen_lease(expected_sequence: object | None = None) -> dict[
     now = datetime.now(timezone.utc)
     owners = []
     for path in (TASK_BUS / "tasks").glob("*.json"):
+        if path.is_symlink():
+            raise ValueError("screen task snapshot link is unavailable")
         snapshot = _read_json(path)
-        if "ck3-screen:acquired" not in snapshot.get("resources", []):
+        resources = snapshot.get("resources")
+        if type(resources) is not list or any(type(item) is not str for item in resources):
+            raise ValueError("screen task resources are invalid")
+        if "ck3-screen:acquired" not in resources:
             continue
+        if resources != ["ck3-screen:acquired"] or snapshot.get("task_id") != path.stem:
+            raise ValueError("unreleased screen record is malformed")
         updated = _time(snapshot.get("updated_at_utc"), "screen task")
         age = (now - updated).total_seconds()
-        if age < -CLOCK_SKEW_SECONDS:
-            raise ValueError("future screen task snapshot")
-        if snapshot.get("state") != "done" and age <= LEASE_MAX_AGE_SECONDS:
-            owners.append(snapshot)
+        if (age < -CLOCK_SKEW_SECONDS or age > LEASE_MAX_AGE_SECONDS
+                or snapshot.get("state") != "running"):
+            raise ValueError("unreleased stale or nonrunning screen record blocks this attempt")
+        owners.append(snapshot)
     if len(owners) != 1 or owners[0].get("task_id") != SCREEN_TASK_ID:
         raise ValueError("current ck3-screen task is not uniquely owned by this attempt")
     owner = owners[0]
@@ -168,20 +176,55 @@ def _require_live_screen_lease(expected_sequence: object | None = None) -> dict[
     return owner
 
 
+def _require_bus_cli_pair() -> Path:
+    checkout = Path(__file__).resolve().parents[3]
+    source = checkout / "tools" / "codex_task_bus.py"
+    installed = TASK_BUS / "bin" / "codex_task_bus.py"
+    if (not source.is_file() or not installed.is_file()
+            or source.is_symlink() or installed.is_symlink()
+            or _sha(source) != BUS_CLI_SHA256
+            or _sha(installed) != BUS_CLI_SHA256):
+        raise ValueError("authoritative task-bus CLI source/install bytes differ")
+    return source
+
+
 def _managed_screen_heartbeat() -> None:
     """Renew the exact main-bus lease while a long cold load is supervised."""
-    _require_live_screen_lease()
+    owner = _require_live_screen_lease()
+    sequence = owner["last_sequence"]
+    source = _require_bus_cli_pair()
     try:
-        subprocess.run(
-            [sys.executable, str(Path(__file__).resolve().parents[3]
-                                 / "tools" / "codex_task_bus.py"),
-             "--bus-dir", str(TASK_BUS), "heartbeat",
+        result = subprocess.run(
+            [sys.executable, str(source),
+             "--bus-dir", str(TASK_BUS),
+             "--expected-cli-sha256", BUS_CLI_SHA256, "heartbeat",
              "--task", SCREEN_TASK_ID,
+             "--expected-sequence", str(sequence),
              "--repo", str(Path(__file__).resolve().parents[3])],
-            capture_output=True, text=True, check=True, timeout=30)
+            capture_output=True, text=True, check=False, timeout=30)
     except subprocess.TimeoutExpired as error:
         raise RuntimeError("managed screen heartbeat timed out") from error
-    _require_live_screen_lease()
+    if result.returncode != 0 or result.stderr:
+        raise RuntimeError("managed screen heartbeat CAS refused or emitted stderr")
+    try:
+        receipt = json.loads(result.stdout)
+        event = receipt["event"]
+        task = receipt["task"]
+        renewed_sequence = event["sequence"]
+    except (ValueError, KeyError, TypeError) as error:
+        raise RuntimeError("managed screen heartbeat CAS receipt unavailable") from error
+    if (receipt.get("ok") is not True
+            or event.get("kind") != "heartbeat"
+            or event.get("task_id") != SCREEN_TASK_ID
+            or type(renewed_sequence) is not int
+            or renewed_sequence <= sequence
+            or task.get("task_id") != SCREEN_TASK_ID
+            or task.get("state") != "running"
+            or task.get("resources") != ["ck3-screen:acquired"]
+            or task.get("last_sequence") != renewed_sequence):
+        raise RuntimeError("managed screen heartbeat CAS result differs")
+    _require_bus_cli_pair()
+    _require_live_screen_lease(renewed_sequence)
 
 
 def issue_screen_challenge(entry_path: Path) -> dict[str, object]:
@@ -272,6 +315,8 @@ def _require_exact_admission() -> dict[str, object]:
         and manifest.get("candidate_clean") is True
         and Path(str(manifest.get("python"))).resolve() == FROZEN_PYTHON.resolve()
         and manifest.get("python_version") == FROZEN_PYTHON_VERSION
+        and admission.get("task_bus_cli_sha256") == BUS_CLI_SHA256
+        and manifest.get("task_bus_cli_sha256") == BUS_CLI_SHA256
         and admission.get("live_run_id") == manifest.get("live_run_id")
             == LIVE_RUN_ID
         and admission.get("live_run_identity_sha256")
@@ -325,6 +370,7 @@ def _require_exact_admission() -> dict[str, object]:
             in manifest["source_git_blobs"]
     ):
         raise ValueError("one-shot no-launch identity mismatch")
+    _require_bus_cli_pair()
     blob_head, actual_blobs = _source_blob_identity()
     if blob_head != head or manifest["source_git_blobs"] != actual_blobs:
         raise ValueError("one-shot source Git blobs differ from candidate HEAD")

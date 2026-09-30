@@ -6,11 +6,16 @@
 
 ```text
 <verified-python> tools/desktop_steam_offline_recovery.py inspect
-py D:\workspace\.codex-task-bus\bin\codex_task_bus.py status --task <本任务ID> --state running --resource ck3-screen:acquired --repo <本工作树>
+<verified-python> tools/codex_task_bus.py --bus-dir D:\workspace\.codex-task-bus --expected-cli-sha256 <经审的源/安装共同 SHA-256> register --task <全新任务ID> --summary <本次恢复> --resource ck3-screen:acquired --repo <本工作树>
 <verified-python> tools/desktop_steam_offline_recovery.py recover --task-id <本任务ID> --output-dir <全新外置目录>
 ```
 
-Steam 不在前台时，可在本任务独占屏幕期间加 `--bring-steam-forward`；脚本按窗口句柄置前、验证前台身份，并在取证后尽量恢复原前台窗口，不使用桌面点击。`recover` 拒绝活跃的其他屏幕占用、运行中的 CK3、非唯一 Steam 窗口及未知／转换中的 ToDesk 服务状态。任务总线的过期记录仅在其登记 PID 也已消失时不再算活跃占用。每次真正操作前及重试前再次检查租约和 CK3 进程。
+上面的屏幕 `register` 仅在新 CAS 总线源码/安装版已受管迁移、历史未释放记录经独立审计处理后可用。
+旧 `status --resource ck3-screen:acquired` 不能领取或释放屏幕。每次续租带权威快照的
+`--expected-sequence`，清场后使用 `release-screen-cas` 并回读任务、事件和全局 owner；
+命令与失败边界见 `docs/codex-task-bus.md`。当前未迁移完毕时应停止屏幕流程，不绕开租约门。
+
+Steam 不在前台时，可在本任务独占屏幕期间加 `--bring-steam-forward`；脚本按窗口句柄置前、验证前台身份，并在取证后尽量恢复原前台窗口，不使用桌面点击。`recover` 拒绝活跃的其他屏幕占用、运行中的 CK3、非唯一 Steam 窗口及未知／转换中的 ToDesk 服务状态。**总线中尚未显式释放的过期屏幕记录仍会阻止新 CAS 领取**；脚本对旧 PID 的即时检查不是历史租约的恢复。每次真正操作前及重试前再次检查租约和 CK3 进程。
 
 2026-09-28 本机重启后的首个恢复 attempt 发现 Steam 窗口处于最小化状态：仅用 `SW_SHOW` 无法保证恢复成可采集的窗口，随后 `SetForegroundWindow` 抛出底层 pywin32 异常。工具现在对最小化窗口使用 `SW_RESTORE`，并把置前失败转换成明确的恢复错误，保留该 attempt，不绕开新鲜画面门禁。聚焦测试覆盖最小化恢复和置前拒绝。随后的全新恢复 attempt 取得原始 1024×768 画面 `D:/ck3-research-artifacts/war31-h2743-20260928/steam-offline-post-reboot-02/probe-1/steam-moved.png`，SHA-256 `795BA96C21DCF730506531E1A5728F162C52EF8C56EDF7B1985878D8B0C217B1`，人工确认左下“离线模式”及更新后的任务栏时间。H2743 新 `attempt-04` 只读实机结束后另取 `steam-offline-post-army-01/probe-1/steam-moved.png`，SHA-256 `6F6F046346EC1E3E10A2BFF1837AE78C4946072121CD6A5416960B359B433C32`，再次人工确认离线。
 

@@ -129,6 +129,7 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     admission = {
         "schema": "xar.war.h3937-cold-observer-disabled-no-launch-admission.v1",
         "candidate_head": head, "candidate_checkout_clean": True,
+        "task_bus_cli_sha256": once.BUS_CLI_SHA256,
         "live_run_id": once.LIVE_RUN_ID,
         "live_run_identity_sha256": sha(live_identity_path),
         "cold_load_observer_default_off": True,
@@ -151,6 +152,7 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     blobs["source_module_.h3937_cold_load_observer"] = "b" * 40
     manifest = {
         "candidate_head": head, "candidate_clean": True,
+        "task_bus_cli_sha256": once.BUS_CLI_SHA256,
         "python": sys.executable,
         "python_version": (
             f"Python {sys.version_info.major}.{sys.version_info.minor}."
@@ -197,6 +199,7 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
         return "b" * 40
 
     monkeypatch.setattr(once, "_git", fake_git)
+    monkeypatch.setattr(once, "_require_bus_cli_pair", lambda: tmp_path / "bus-cli.py")
     original_sha = once._sha
 
     def synthetic_source_sha(path):
@@ -215,6 +218,12 @@ def test_exact_no_launch_requires_allocator_identity_and_16_source_blobs(
     bound = once._require_exact_admission()
     check(bound["live_run_identity_sha256"] == sha(live_identity_path))
     once._require_no_launch_unchanged(bound)
+    manifest["task_bus_cli_sha256"] = "0" * 64
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity mismatch"):
+        once._require_exact_admission()
+    manifest["task_bus_cli_sha256"] = once.BUS_CLI_SHA256
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     live_identity["sequence"] = 114
     live_identity_path.write_text(json.dumps(live_identity), encoding="utf-8")
     with pytest.raises(ValueError, match="identity mismatch"):
@@ -634,7 +643,7 @@ def test_heartbeat_failure_kills_and_reaps_worker_with_tail_stdio(
         "head": "pinned", "entry_blob": "blob", "entry_sha256": "A" * 64})
     monkeypatch.setattr(once, "_require_preworker_screen_gate", lambda entry: None)
     monkeypatch.setattr(once, "_managed_screen_heartbeat",
-                        lambda: (_ for _ in ()).throw(RuntimeError("lease heartbeat lost")))
+                         lambda: (_ for _ in ()).throw(RuntimeError("lease heartbeat lost")))
     monkeypatch.setattr(once, "_image_inventory", lambda image: {
         "returncode": 0, "found": False})
 
@@ -673,3 +682,98 @@ def test_heartbeat_failure_kills_and_reaps_worker_with_tail_stdio(
     check(worker.calls == 2)
     check((output / "supervisor.stdout.txt").read_text() == "partial and tail out")
     check((output / "supervisor.stderr.txt").read_text() == "tail err")
+
+
+def test_cas_heartbeat_binds_exact_sequence_and_cli_pair(monkeypatch) -> None:
+    owner = {"last_sequence": 10}
+    observed = []
+    def lease(expected_sequence=None):
+        observed.append(expected_sequence)
+        if expected_sequence is not None:
+            check(expected_sequence == 11)
+        return owner
+    monkeypatch.setattr(once, "_require_live_screen_lease", lease)
+    cli = Path("D:/verified/codex_task_bus.py")
+    pair_checks = []
+    def pair():
+        pair_checks.append(True)
+        return cli
+    monkeypatch.setattr(once, "_require_bus_cli_pair", pair)
+    argv_seen = []
+    def run(argv, **kwargs):
+        argv_seen.extend(argv)
+        payload = {"ok": True,
+                   "event": {"kind": "heartbeat", "task_id": once.SCREEN_TASK_ID,
+                             "sequence": 11},
+                   "task": {"task_id": once.SCREEN_TASK_ID, "state": "running",
+                            "resources": ["ck3-screen:acquired"], "last_sequence": 11}}
+        return type("Result", (), {"returncode": 0, "stderr": "",
+                                   "stdout": json.dumps(payload)})()
+    monkeypatch.setattr(once.subprocess, "run", run)
+    once._managed_screen_heartbeat()
+    check(observed == [None, 11])
+    check(pair_checks == [True, True])
+    check(argv_seen[1] == str(cli))
+    check(argv_seen[argv_seen.index("--expected-sequence") + 1] == "10")
+    check(argv_seen[argv_seen.index("--expected-cli-sha256") + 1]
+          == once.BUS_CLI_SHA256)
+
+
+def test_bus_cli_source_and_installed_bytes_must_match(monkeypatch, tmp_path) -> None:
+    checkout = tmp_path / "checkout"
+    module_path = checkout / "ck3_autonomous_player" / "src" / "xar_autoplayer" / "entry.py"
+    module_path.parent.mkdir(parents=True)
+    module_path.write_bytes(b"entry")
+    source = checkout / "tools" / "codex_task_bus.py"
+    source.parent.mkdir()
+    source.write_bytes(b"reviewed bus CLI")
+    bus = tmp_path / "bus"
+    installed = bus / "bin" / "codex_task_bus.py"
+    installed.parent.mkdir(parents=True)
+    installed.write_bytes(source.read_bytes())
+    monkeypatch.setattr(once, "__file__", str(module_path))
+    monkeypatch.setattr(once, "TASK_BUS", bus)
+    monkeypatch.setattr(once, "BUS_CLI_SHA256", sha(source))
+    check(once._require_bus_cli_pair() == source)
+    installed.write_bytes(b"old CLI")
+    with pytest.raises(ValueError, match="source/install bytes differ"):
+        once._require_bus_cli_pair()
+
+
+def test_cas_heartbeat_refusal_or_bad_readback_is_red(monkeypatch) -> None:
+    monkeypatch.setattr(once, "_require_live_screen_lease",
+                        lambda expected_sequence=None: {"last_sequence": 10})
+    monkeypatch.setattr(once, "_require_bus_cli_pair",
+                        lambda: Path("D:/verified/codex_task_bus.py"))
+    for returncode, sequence in ((3, 11), (0, 10), (0, 11)):
+        payload = {"ok": True,
+                   "event": {"kind": "heartbeat", "task_id": once.SCREEN_TASK_ID,
+                             "sequence": sequence},
+                   "task": {"task_id": once.SCREEN_TASK_ID, "state": "running",
+                            "resources": ["ck3-screen:acquired"], "last_sequence": 10}}
+        monkeypatch.setattr(once.subprocess, "run", lambda *a, **k:
+                            type("Result", (), {"returncode": returncode,
+                                                "stderr": "", "stdout": json.dumps(payload)})())
+        with pytest.raises(RuntimeError, match="heartbeat CAS"):
+            once._managed_screen_heartbeat()
+
+
+def test_stale_or_done_screen_record_blocks_new_owner(monkeypatch, tmp_path) -> None:
+    bus = tmp_path / "bus"
+    tasks = bus / "tasks"
+    tasks.mkdir(parents=True)
+    monkeypatch.setattr(once, "TASK_BUS", bus)
+    now = datetime.now(timezone.utc)
+    current = {"schema": "codex.task_bus.v1", "task_id": once.SCREEN_TASK_ID,
+               "state": "running", "resources": ["ck3-screen:acquired"],
+               "last_sequence": 10, "updated_at_utc": now.isoformat()}
+    (tasks / f"{once.SCREEN_TASK_ID}.json").write_text(json.dumps(current), encoding="utf-8")
+    check(once._require_live_screen_lease(10)["task_id"] == once.SCREEN_TASK_ID)
+    other = {**current, "task_id": "old-screen", "last_sequence": 1,
+             "updated_at_utc": (now - timedelta(days=2)).isoformat()}
+    path = tasks / "old-screen.json"
+    for state in ("running", "done"):
+        other["state"] = state
+        path.write_text(json.dumps(other), encoding="utf-8")
+        with pytest.raises(ValueError, match="unreleased"):
+            once._require_live_screen_lease(10)

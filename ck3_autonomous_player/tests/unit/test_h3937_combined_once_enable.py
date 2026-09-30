@@ -770,3 +770,12 @@ def test_supervisor_postcheck_failures_retain_red(monkeypatch, tmp_path, failure
           else result["processes_gone"] is True)
     check((output / "supervisor.stdout.txt").exists())
     check((output / "supervisor.stderr.txt").exists())
+
+
+def test_historical_combined_preworker_refuses_cas_migration() -> None:
+    try:
+        once._require_preworker_screen_gate({"head": "historical"})
+    except ValueError as error:
+        check("disabled before worker creation" in str(error))
+    else:
+        raise AssertionError("historical combined one-shot must refuse preworker")

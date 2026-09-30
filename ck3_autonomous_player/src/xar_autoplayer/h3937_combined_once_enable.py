@@ -434,10 +434,10 @@ def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
 
 def _require_preworker_screen_gate(entry: dict[str, str]) -> None:
     """Refuse even worker creation until the exact current screen proof is valid."""
-    identity = _require_exact_admission()
-    if identity["head"] != entry["head"]:
-        raise ValueError("preworker source HEAD changed")
-    _require_go(identity)
+    # Historical a11 used an unsequenced heartbeat. The authoritative screen
+    # bus now requires CAS; this old live entry must remain a readable artifact
+    # but cannot create a new worker under the upgraded protocol.
+    raise ValueError("historical H3937 combined one-shot is disabled before worker creation")
 
 
 def run_exact_once(claim_nonce: str) -> dict[str, object]:
