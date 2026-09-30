@@ -46,20 +46,32 @@ bool KeyEquals(const void *object, std::string_view key) noexcept {
                                   : Load<const char *>(storage, 0);
   return data != nullptr && std::string_view(data, size) == key;
 }
-void *Definition(void **database_slot, std::string_view key) noexcept {
-  if (database_slot == nullptr || *database_slot == nullptr) return nullptr;
+void *Definition(void **database_slot, std::string_view key,
+                 std::string *failure = nullptr) noexcept {
+  if (failure != nullptr) failure->clear();
+  if (database_slot == nullptr || *database_slot == nullptr) {
+    if (failure != nullptr) *failure = "database_unavailable";
+    return nullptr;
+  }
   void *const database = *database_slot;
   const auto data = Load<void *>(database, kDefinitionObjectsOffset);
   const auto count = Load<std::int32_t>(database, kDefinitionCountOffset);
-  if (!ValidSpan(data, count)) return nullptr;
+  if (!ValidSpan(data, count)) {
+    if (failure != nullptr) *failure = "malformed_definition_span";
+    return nullptr;
+  }
   void *match = nullptr;
   for (std::int32_t index = 0; index < count; ++index) {
     void *object = Load<void *>(data, static_cast<std::size_t>(index) * 8);
     if (KeyEquals(object, key)) {
-      if (match != nullptr) return nullptr;
+      if (match != nullptr) {
+        if (failure != nullptr) *failure = "duplicate_loaded_key";
+        return nullptr;
+      }
       match = object;
     }
   }
+  if (match == nullptr && failure != nullptr) *failure = "loaded_key_not_found";
   return match;
 }
 void *Resolve(void **store_slot, std::int32_t id,
@@ -133,14 +145,34 @@ Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
 
 bool ReadPhaseCharacterCultureRelations(const Bindings &bindings,
                                         void *character,
-                                        game::CombatPhaseCharacterV3 &out) noexcept {
+                                        game::CombatPhaseCharacterV3 &out,
+                                        std::string *unavailable_reason) noexcept {
+  if (unavailable_reason != nullptr) unavailable_reason->clear();
+  const auto fail = [&](std::string_view leaf, std::string_view cause,
+                        std::string_view key = {}) {
+    if (unavailable_reason != nullptr) {
+      *unavailable_reason = "leaf=";
+      *unavailable_reason += leaf;
+      if (!key.empty()) {
+        *unavailable_reason += ":key=";
+        *unavailable_reason += key;
+      }
+      *unavailable_reason += ":character=";
+      *unavailable_reason += std::to_string(
+          character == nullptr ? -1 : Load<std::int32_t>(character, 0x18));
+      *unavailable_reason += ':';
+      *unavailable_reason += cause;
+    }
+    return false;
+  };
   if (!bindings.enabled || character == nullptr ||
       bindings.character_context == nullptr || bindings.character_perks == nullptr ||
-      bindings.culture_has_parameter == nullptr) return false;
+      bindings.culture_has_parameter == nullptr)
+    return fail("bindings", "binding_or_character_unavailable");
   void *house = nullptr;
   if (!Optional(bindings.house_store, bindings.house_fallback,
                 Load<std::int32_t>(character, kCharacterHouseIdOffset), 0x10,
-                out.house, house)) return false;
+                out.house, house)) return fail("house", "full_id_resolution_failed");
   void *const raw_liege = bindings.character_context(character);
   void *liege = nullptr;
   out.liege = {};
@@ -149,42 +181,54 @@ bool ReadPhaseCharacterCultureRelations(const Bindings &bindings,
       raw_liege != *bindings.character_fallback) {
     if (!Optional(bindings.character_store, bindings.character_fallback,
                   Load<std::int32_t>(raw_liege, 0x18), 0x18,
-                  out.liege, liege) || liege != raw_liege) return false;
+                  out.liege, liege) || liege != raw_liege)
+      return fail("liege", "full_id_resolution_failed");
     void *liege_house = nullptr;
     if (!Optional(bindings.house_store, bindings.house_fallback,
                   Load<std::int32_t>(liege, kCharacterHouseIdOffset), 0x10,
-                  out.liege_house, liege_house)) return false;
+                  out.liege_house, liege_house))
+      return fail("liege_house", "full_id_resolution_failed");
   }
   void *dynasty = nullptr;
   if (!Optional(bindings.dynasty_store, bindings.dynasty_fallback,
                 house == nullptr ? -1 : Load<std::int32_t>(house, kHouseDynastyIdOffset),
-                0x10, out.dynasty, dynasty)) return false;
-  void *const warfare = Definition(bindings.dynasty_perk_database, "warfare_legacy_3");
-  void *const stalwart = Definition(bindings.character_perk_database, "stalwart_leader_perk");
-  if (warfare == nullptr || stalwart == nullptr) return false;
+                0x10, out.dynasty, dynasty))
+    return fail("dynasty", "full_id_resolution_failed");
+  std::string definition_failure;
+  void *const warfare = Definition(bindings.dynasty_perk_database,
+                                   "warfare_legacy_3", &definition_failure);
+  if (warfare == nullptr)
+    return fail("dynasty_perk_definition", definition_failure, "warfare_legacy_3");
+  void *const stalwart = Definition(bindings.character_perk_database,
+                                    "stalwart_leader_perk", &definition_failure);
+  if (stalwart == nullptr)
+    return fail("character_perk_definition", definition_failure, "stalwart_leader_perk");
   out.warfare_legacy_3 = false;
   if (dynasty != nullptr) {
     const auto data = Load<void *>(dynasty, kDynastyPerksDataOffset);
     const auto count = Load<std::int32_t>(dynasty, kDynastyPerksCountOffset);
-    if (!ValidSpan(data, count)) return false;
+    if (!ValidSpan(data, count)) return fail("dynasty_perks", "malformed_owned_span");
     out.warfare_legacy_3 = Contains(data, count, warfare);
   }
   const auto perk_span = bindings.character_perks(character);
-  if (perk_span == nullptr) return false;
+  if (perk_span == nullptr) return fail("character_perks", "native_span_unavailable");
   const auto perk_data = Load<void *>(perk_span, 0);
   const auto perk_count = Load<std::int32_t>(perk_span, 0x0C);
-  if (!ValidSpan(perk_data, perk_count)) return false;
+  if (!ValidSpan(perk_data, perk_count))
+    return fail("character_perks", "malformed_owned_span");
   out.stalwart_leader = Contains(perk_data, perk_count, stalwart);
   const auto relation = Load<void *>(character, kCharacterRelationOffset);
   void *employer = nullptr;
   if (!Optional(bindings.character_store, bindings.character_fallback,
                 relation == nullptr ? -1 : Load<std::int32_t>(relation, kRelationEmployerIdOffset),
-                0x18, out.employer, employer)) return false;
+                0x18, out.employer, employer))
+    return fail("employer", "full_id_resolution_failed");
 
   void *culture = nullptr;
   if (!Optional(bindings.culture_store, bindings.culture_fallback,
                 Load<std::int32_t>(character, kCharacterCultureIdOffset),
-                0x10, out.culture, culture)) return false;
+                0x10, out.culture, culture))
+    return fail("culture", "full_id_resolution_failed");
   out.heritage_north_germanic = false;
   out.knights_slightly_more_prone_to_injury = false;
   out.blademaster_traits_more_common = false;
@@ -199,14 +243,14 @@ bool ReadPhaseCharacterCultureRelations(const Bindings &bindings,
     const auto culture_template = Load<void *>(culture, kCultureTemplateOffset);
     const auto resolved = culture_template == nullptr ? nullptr
         : Load<void *>(culture_template, kTemplateResolvedDataOffset);
-    if (resolved == nullptr) return false;
+    if (resolved == nullptr) return fail("culture_resolved_data", "pointer_chain_unavailable");
     const auto pillars = Load<void *>(resolved, kResolvedPillarsDataOffset);
-    if (pillars == nullptr) return false;
+    if (pillars == nullptr) return fail("culture_pillars", "pointer_data_unavailable");
     // The native pillar evaluator indexes categories 0..4; category 5 is
     // the missing-pillar case. These are pointers in a span, never inline.
     for (std::size_t category = 0; category < 5; ++category) {
       const auto pillar = Load<void *>(pillars, category * 8);
-      if (pillar == nullptr) return false;
+      if (pillar == nullptr) return fail("culture_pillars", "selected_pointer_unavailable");
       if (KeyEquals(pillar, "heritage_north_germanic"))
         out.heritage_north_germanic = true;
     }
@@ -214,27 +258,38 @@ bool ReadPhaseCharacterCultureRelations(const Bindings &bindings,
     innovation_count = Load<std::int32_t>(culture, kCultureInnovationsCountOffset);
     tradition_data = Load<void *>(resolved, kResolvedTraditionsDataOffset);
     tradition_count = Load<std::int32_t>(resolved, kResolvedTraditionsCountOffset);
-    if (!ValidSpan(innovation_data, innovation_count) ||
-        !ValidSpan(tradition_data, tradition_count)) return false;
+    if (!ValidSpan(innovation_data, innovation_count))
+      return fail("culture_innovations", "malformed_owned_span");
+    if (!ValidSpan(tradition_data, tradition_count))
+      return fail("culture_traditions", "malformed_owned_span");
   }
   if (bindings.innovation_fallback == nullptr || bindings.tradition_fallback == nullptr)
-    return false;
+    return fail("culture_definition_fallbacks", "binding_unavailable");
   for (const auto key : kInnovationKeys) {
-    const auto definition = Definition(bindings.innovation_database, key);
-    if (definition == nullptr || definition == *bindings.innovation_fallback) return false;
+    const auto definition = Definition(bindings.innovation_database, key, &definition_failure);
+    if (definition == nullptr) return fail("innovation_definition", definition_failure, key);
+    if (definition == *bindings.innovation_fallback)
+      return fail("innovation_definition", "fallback_object", key);
     out.innovations.push_back({std::string(key), Contains(innovation_data, innovation_count, definition)});
   }
   for (const auto key : kTraditionKeys) {
-    const auto definition = Definition(bindings.tradition_database, key);
-    // The 1.20 evaluator validates the database-object kind at +0x38.
-    // Its primary vtable slot 0 is no longer the old constant-true predicate.
-    if (definition == nullptr || definition == *bindings.tradition_fallback ||
-        Load<std::uint32_t>(definition, 0x38) != 0x4744624FU) return false;
+    const auto definition = Definition(bindings.tradition_database, key, &definition_failure);
+    // The exact has-tradition consumer 0x2B12530 calls 0x2B156B0;
+    // that resolver uses the Tradition DB at 0x5D1DEE0, not the similarly
+    // shaped registry at 0x5D1EB18. Its 0x225D520 indexed lookup returns
+    // 0x5D1FB50 on a miss. CCultureTradition's constructor 0x314CEB7
+    // writes the same database-object kind checked by this evaluator.
+    if (definition == nullptr) return fail("tradition_definition", definition_failure, key);
+    if (definition == *bindings.tradition_fallback)
+      return fail("tradition_definition", "fallback_object", key);
+    if (Load<std::uint32_t>(definition, 0x38) != 0x4744624FU)
+      return fail("tradition_definition", "native_object_kind_mismatch", key);
     out.traditions.push_back({std::string(key), Contains(tradition_data, tradition_count, definition)});
   }
   for (const auto key : kParameterKeys) {
     std::int32_t id = -1;
-    if (!ScriptIdentifier(bindings, key, id)) return false;
+    if (!ScriptIdentifier(bindings, key, id))
+      return fail("culture_parameter", "identifier_lookup_or_roundtrip_failed", key);
     const auto present = culture != nullptr && bindings.culture_has_parameter(culture, id);
     out.culture_parameters.push_back({std::string(key), present});
     if (key == "knights_slightly_more_prone_to_injury")

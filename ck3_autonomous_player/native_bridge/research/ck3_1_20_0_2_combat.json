@@ -215,6 +215,27 @@
       "rip_targets": []
     },
     {
+      "purpose": "width_updater_province_map_node",
+      "rva": "0x2587e29",
+      "instruction": "mov rax, qword ptr [rax + 0x20]",
+      "bytes": "48 8B 40 20",
+      "rip_targets": []
+    },
+    {
+      "purpose": "width_updater_map_node_terrain",
+      "rva": "0x2587e2d",
+      "instruction": "mov rcx, qword ptr [rax + 0xb8]",
+      "bytes": "48 8B 88 B8 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "purpose": "width_updater_terrain_multiplier_signed_q100000",
+      "rva": "0x2587e34",
+      "instruction": "mov r9, qword ptr [rcx + 0x60]",
+      "bytes": "4C 8B 49 60",
+      "rip_targets": []
+    },
+    {
       "purpose": "terrain_min_modifier",
       "rva": "0x2650e26",
       "instruction": "movzx r8d, word ptr [r13 + 0x776]",
@@ -455,7 +476,7 @@
       "kRegimentMaaTypeOffset": 24,
       "kRegimentMainPhaseEligibilityOffset": 2442,
       "kRegimentMaximumSoldiersOffset": 60,
-      "kTerrainCombatWidthMultiplierOffset": 88,
+      "kTerrainCombatWidthMultiplierOffset": 96,
       "kTerrainCommanderMaxRollModifierIndexOffset": 1912,
       "kTerrainCommanderMinRollModifierIndexOffset": 1910,
       "kUnitArmyIdOffset": 376

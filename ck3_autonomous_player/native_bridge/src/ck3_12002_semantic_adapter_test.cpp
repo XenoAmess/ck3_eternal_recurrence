@@ -179,6 +179,16 @@ public:
     diagnostics.native_validate_true = 1;
     return game::ReadArrangeMarriageChoicesResult::available;
   }
+  game::ReadWarTerminationOptionsResult read_war_termination_options(
+      std::int32_t war_id, game::WarTerminationOptionsSnapshot &output) const noexcept override {
+    RecordSemantic();
+    output = {};
+    if (frame.active_wars.empty() || frame.active_wars.front().war_id != war_id)
+      return game::ReadWarTerminationOptionsResult::war_not_found;
+    output.war_id = war_id;
+    output.player_relative_war_score = frame.active_wars.front().player_relative_war_score;
+    return game::ReadWarTerminationOptionsResult::available;
+  }
 
 #define UNAVAILABLE_RESULT(Result, Name, Parameters) \
   game::Result Name Parameters const noexcept override { \
@@ -202,8 +212,6 @@ public:
                      (const game::CombatSimulationInputsRequest &, game::CombatSimulationInputsSnapshot &))
   UNAVAILABLE_RESULT(ReadCombatSimulationInputsV3Result, read_combat_simulation_inputs_v3,
                      (const game::CombatSimulationInputsRequest &, game::CombatSimulationInputsV3Snapshot &))
-  UNAVAILABLE_RESULT(ReadWarTerminationOptionsResult, read_war_termination_options,
-                     (std::int32_t, game::WarTerminationOptionsSnapshot &))
   UNAVAILABLE_RESULT(ReadWarTerminationTermsResult, read_war_termination_terms,
                      (std::int32_t, game::WarTerminationTermsSnapshot &))
   UNAVAILABLE_RESULT(ReadWarTerminationExitTermsResult, read_war_termination_exit_terms,
@@ -215,6 +223,110 @@ public:
     return {};
   }
 };
+
+enum class InboxMutation { world, none, player, date, paused };
+struct FixtureInboxConsole {
+  FixtureAdapter *adapter = nullptr;
+  InboxMutation mutation = InboxMutation::world;
+  bool accept = true;
+  std::uint32_t calls = 0;
+  std::uint32_t allocations = 0;
+  std::uint32_t frees = 0;
+  std::uint32_t wrong_owner = 0;
+  std::uint32_t scope_enters = 0;
+  std::uint32_t scope_exits = 0;
+  DWORD random_owner = 0;
+  void *random_wrapper = nullptr;
+};
+FixtureInboxConsole *g_inbox_console = nullptr;
+
+build::ConsoleFixtureRandomScope *EnterInboxRandomScope(
+    build::ConsoleFixtureRandomScope *scope, void *unused,
+    const build::ConsoleFixtureSourceLocation *source) {
+  auto &fixture = *g_inbox_console;
+  if (GetCurrentThreadId() != fixture.adapter->owner || unused != nullptr ||
+      source == nullptr || source->path == nullptr || source->function == nullptr ||
+      source->line == 0 ||
+      (fixture.random_owner != 0 && fixture.random_owner != fixture.adapter->owner))
+    std::terminate();
+  scope->owner_state = &fixture.random_owner;
+  scope->owns_owner = fixture.random_owner == 0 ? 1 : 0;
+  fixture.random_owner = fixture.adapter->owner;
+  ++fixture.scope_enters;
+  return scope;
+}
+void ExitInboxRandomScope(build::ConsoleFixtureRandomScope *scope) {
+  auto &fixture = *g_inbox_console;
+  if (GetCurrentThreadId() != fixture.adapter->owner ||
+      scope->owner_state != &fixture.random_owner || fixture.random_wrapper != scope ||
+      !scope->restore_slot || scope->previous_slot_target != &fixture.random_wrapper ||
+      fixture.random_owner != fixture.adapter->owner ||
+      fixture.frees != fixture.allocations) std::terminate();
+  *scope->previous_slot_target = scope->previous_value;
+  if (scope->owns_owner) fixture.random_owner = 0;
+  ++fixture.scope_exits;
+}
+
+build::ConsoleFixtureNativeString *AssignInboxString(
+    build::ConsoleFixtureNativeString *output, const char *input,
+    std::uint64_t length) {
+  if (length != 21 || std::string_view(input, length) !=
+                          build::kPrivateFixtureInboxCommand ||
+      output->size != 0 || output->capacity != 15) std::terminate();
+  auto *heap = new char[32];
+  std::memcpy(heap, input, length);
+  heap[length] = '\0';
+  std::memcpy(output->storage.data(), &heap, sizeof(heap));
+  output->size = length;
+  output->capacity = 31;
+  ++g_inbox_console->allocations;
+  return output;
+}
+void DestroyInboxString(build::ConsoleFixtureNativeString *command) {
+  if (g_inbox_console->random_wrapper == nullptr ||
+      g_inbox_console->random_owner != g_inbox_console->adapter->owner)
+    std::terminate();
+  if (command->capacity >= 16) {
+    char *heap = nullptr;
+    std::memcpy(&heap, command->storage.data(), sizeof(heap));
+    delete[] heap;
+    ++g_inbox_console->frees;
+  }
+  *command = {};
+}
+bool ExecuteInboxConsole(void *console,
+                         const build::ConsoleFixtureNativeString *command) {
+  if (console != g_inbox_console || command->size != 21 ||
+      command->capacity != 31) std::terminate();
+  const char *heap = nullptr;
+  std::memcpy(&heap, command->storage.data(), sizeof(heap));
+  if (std::string_view(heap, command->size) != build::kPrivateFixtureInboxCommand ||
+      heap[command->size] != '\0') std::terminate();
+  auto &fixture = *g_inbox_console;
+  const auto *scope = static_cast<const build::ConsoleFixtureRandomScope *>(
+      fixture.random_wrapper);
+  if (scope == nullptr || scope->owner_state != &fixture.random_owner ||
+      fixture.random_owner != fixture.adapter->owner || !scope->restore_slot)
+    std::terminate();
+  ++fixture.calls;
+  if (GetCurrentThreadId() != fixture.adapter->owner) ++fixture.wrong_owner;
+  if (!fixture.accept) return false;
+  auto &frame = fixture.adapter->frame;
+  switch (fixture.mutation) {
+  case InboxMutation::world:
+    frame.active_event_instance_id = 115;
+    frame.active_event_option_count = 5;
+    frame.played_character_spouse_ids.push_back(55);
+    frame.player_armies.front().current_province_id = 902;
+    frame.active_wars.front().player_relative_war_score = 20;
+    break;
+  case InboxMutation::player: ++frame.played_character_id; break;
+  case InboxMutation::date: ++frame.date_raw; break;
+  case InboxMutation::paused: frame.paused = false; break;
+  case InboxMutation::none: break;
+  }
+  return true;
+}
 
 struct TypedRequest {
   build::QueryMailboxEnvelope envelope{};
@@ -237,12 +349,19 @@ void Pump(api::MainThreadQueryMailboxV1 &mailbox) {
 }
 
 template <class Operation>
-bool WorkerQuery(api::MainThreadQueryMailboxV1 &mailbox, Operation operation) {
+bool WorkerQuery(api::MainThreadQueryMailboxV1 &mailbox, Operation operation,
+                 DWORD owner_pump_delay_ms = 0) {
   std::atomic<bool> done{false};
   bool succeeded = false;
   std::thread worker([&] { succeeded = operation(); done = true; });
   const auto deadline = GetTickCount64() + 10'000;
   bool drained = false;
+  if (owner_pump_delay_ms != 0) {
+    while (!done.load() &&
+           mailbox.state.load() != api::MainThreadQueryMailboxStateV1::queued &&
+           GetTickCount64() < deadline) Sleep(1);
+    Sleep(owner_pump_delay_ms);
+  }
   while (!done.load() && GetTickCount64() < deadline) {
     if (mailbox.state.load() == api::MainThreadQueryMailboxStateV1::queued) {
       Pump(mailbox);
@@ -262,6 +381,24 @@ bool WorkerOnly(Operation operation) {
   return succeeded;
 }
 
+template <class Operation, class Change>
+bool WorkerQueryWithFrameChange(api::MainThreadQueryMailboxV1 &mailbox,
+                               Operation operation, Change change) {
+  std::atomic<bool> done{false};
+  bool succeeded = false;
+  std::thread worker([&] { succeeded = operation(); done = true; });
+  const auto deadline = GetTickCount64() + 1000;
+  while (!done.load() && GetTickCount64() < deadline &&
+         mailbox.state.load() != api::MainThreadQueryMailboxStateV1::queued) Sleep(1);
+  const bool queued = mailbox.state.load() == api::MainThreadQueryMailboxStateV1::queued;
+  if (queued) {
+    change();
+    Pump(mailbox);
+  }
+  worker.join();
+  return queued && succeeded;
+}
+
 bool TestWorkerAdapter() {
   FixtureAdapter native;
   MemoryFixture memory;
@@ -272,7 +409,14 @@ bool TestWorkerAdapter() {
   Store(memory.tls, 0x20, std::uint8_t{1});
   Store(memory.state, 0x08, native.frame.date_raw);
   api::MainThreadQueryMailboxV1 mailbox;
-  build::WorkerAdapter proxy(native, mailbox);
+  FixtureInboxConsole console{&native};
+  g_inbox_console = &console;
+  void *console_slot = &console;
+  const build::ConsoleFixtureBindings console_bindings{
+      true, &console_slot, &AssignInboxString, &DestroyInboxString,
+      &ExecuteInboxConsole, &console.random_wrapper, &EnterInboxRandomScope,
+      &ExitInboxRandomScope};
+  build::WorkerAdapter proxy(native, mailbox, console_bindings);
   std::array<api::MainThreadQueryExecutorV1, 14> executors{};
   executors[12] = &ExecuteTyped;
   executors[13] = &build::ExecuteSemanticAdapter12002;
@@ -311,6 +455,10 @@ bool TestWorkerAdapter() {
   CHECK(WorkerOnly([&] { std::vector<game::DeclarableWarSnapshot> output;
     return !proxy.read_declarable_wars(output) && output.empty(); }));
   CHECK(native.semantic_calls == 0);
+  CHECK(WorkerOnly([&] { std::string output;
+    return !proxy.run_inbox_fixture(output) && output.empty(); }));
+  CHECK(console.calls == 0 && console.allocations == 0 &&
+        console.scope_enters == 0 && console.scope_exits == 0);
   CHECK(WorkerOnly([&] { return proxy.submit_pause_map() == game::PauseSubmitResult::submitted; }));
   CHECK(native.queue_thread != native.owner);
   CHECK(native.raw_reads == 1);
@@ -328,13 +476,16 @@ bool TestWorkerAdapter() {
     return proxy.read_snapshot(output) && output == native.frame && output.paused; }));
   CHECK(native.raw_reads == published_raw_reads);
 
+  // The real 1.20 loading tail has stopped owner pumps longer than eight
+  // seconds after its first valid map snapshot. Retain the queued request
+  // across a nine-second owner pause, then execute and reclaim it normally.
   CHECK(WorkerQuery(mailbox, [&] {
     std::vector<game::DeclarableWarSnapshot> output;
     return proxy.read_declarable_wars(output) && output.size() == 1 &&
       output[0].target_character_id == 0x14000042 &&
       output[0].casus_belli_key == "fixture_claim" &&
       output[0].target_title_ids == std::vector<std::int32_t>{0x11000018, 0x12000019};
-  }));
+  }, 9'000));
   CHECK(WorkerQuery(mailbox, [&] {
     return proxy.submit_select_event_option(2) == game::SelectEventOptionResult::submitted;
   }));
@@ -361,6 +512,58 @@ bool TestWorkerAdapter() {
   }));
   CHECK(native.wrong_owner == 0);
 
+  // attempt-06 observed only a same-date enemy pathfinder update between
+  // the published frame and the owner query. War options do not use routes.
+  game::ActiveWarSnapshot war{};
+  war.war_id = 16777290;
+  war.player_is_primary_war_leader = true;
+  game::ArmySnapshot enemy{};
+  enemy.army_id = 33554657;
+  enemy.route_province_ids = {2579, 2589, 2591, 2602};
+  enemy.move_target_observable = true;
+  enemy.move_target_province_id = 2602;
+  war.enemy_armies.push_back(enemy);
+  native.frame.active_wars = {war};
+  Sleep(251);
+  Pump(mailbox);
+  CHECK(WorkerQueryWithFrameChange(mailbox, [&] {
+    game::WarTerminationOptionsSnapshot output{};
+    return proxy.read_war_termination_options(war.war_id, output) ==
+               game::ReadWarTerminationOptionsResult::available &&
+           output.war_id == war.war_id && output.player_relative_war_score == 0;
+  }, [&] {
+    native.frame.active_wars.front().enemy_armies.front().route_province_ids = {2579, 2589};
+    native.frame.active_wars.front().enemy_armies.front().move_target_province_id = 2589;
+  }));
+  CHECK(mailbox.failure_flags == 0 && native.wrong_owner == 0);
+
+  // A changed war score remains part of the complete comparison. The stale
+  // request stops before the native options reader and returns unavailable.
+  Sleep(251);
+  Pump(mailbox);
+  auto semantic_calls_before_change = native.semantic_calls.load();
+  CHECK(WorkerQueryWithFrameChange(mailbox, [&] {
+    game::WarTerminationOptionsSnapshot output{};
+    return proxy.read_war_termination_options(war.war_id, output) ==
+               game::ReadWarTerminationOptionsResult::unavailable && output.war_id == -1;
+  }, [&] { native.frame.active_wars.front().player_relative_war_score = 10; }));
+  CHECK(native.semantic_calls == semantic_calls_before_change && mailbox.failure_flags == 0);
+
+  // The relaxation applies to that read only. A write still uses the full
+  // frame and does not reach the native command when an enemy route changes.
+  Sleep(251);
+  Pump(mailbox);
+  semantic_calls_before_change = native.semantic_calls.load();
+  CHECK(WorkerQueryWithFrameChange(mailbox, [&] {
+    return proxy.submit_move_army(0x23000031, 901) == game::MoveArmyResult::unavailable;
+  }, [&] {
+    native.frame.active_wars.front().enemy_armies.front().route_province_ids.push_back(2604);
+    native.frame.active_wars.front().enemy_armies.front().move_target_province_id = 2604;
+  }));
+  CHECK(native.semantic_calls == semantic_calls_before_change && mailbox.failure_flags == 0);
+  Sleep(251);
+  Pump(mailbox);
+
   // Query-specific unavailability is a valid semantic result and does not
   // turn the shared mailbox into an infrastructure failure.
   native.declarations_available = false;
@@ -370,7 +573,7 @@ bool TestWorkerAdapter() {
   native.declarations_available = true;
 
   // Typed slot thirteen reads the native adapter directly. It coexists with
-  // semantic slot fourteen, which has already processed seven requests.
+  // semantic slot fourteen, which has already processed ten requests.
   TypedRequest typed{};
   CHECK(WorkerQuery(mailbox, [&] {
     typed.envelope.game = &build::NativeAdapter12002(proxy);
@@ -386,8 +589,66 @@ bool TestWorkerAdapter() {
       reclaim == api::MainThreadQueryReclaimResultV1::reclaimed && typed.envelope.frame_stable;
   }));
   CHECK(typed.calls == 1 && typed.executed_thread == native.owner);
-  CHECK(mailbox.executed_requests == 8 && mailbox.failure_flags == 0);
+  CHECK(mailbox.executed_requests == 11 && mailbox.failure_flags == 0);
   CHECK(native.wrong_owner == 0);
+
+  // The fixed inbox console command applies fixture effects immediately.
+  // Only its Finish scope allows world changes; Enter still compares the
+  // complete frame, and native text allocation is released on the owner.
+  CHECK(WorkerQuery(mailbox, [&] {
+    std::string output;
+    const bool executed = proxy.run_inbox_fixture(output);
+    if (executed) std::printf("fixture_inbox_json=%s\n", output.c_str());
+    return executed && output ==
+      "{\"query_status\":\"executed\",\"native_executed\":true,\"fixed_command\":\"run xar_mcp_inbox.txt\",\"marker_confirmed\":false}";
+  }));
+  CHECK(native.frame.active_event_instance_id == 115 &&
+        native.frame.player_armies.front().current_province_id == 902 &&
+        native.frame.active_wars.front().player_relative_war_score == 20 &&
+        native.frame.played_character_spouse_ids == std::vector<std::int32_t>{55});
+  CHECK(console.calls == 1 && console.allocations == 1 && console.frees == 1 &&
+        console.wrong_owner == 0 && mailbox.failure_flags == 0 &&
+        console.scope_enters == 1 && console.scope_exits == 1 &&
+        console.random_owner == 0 && console.random_wrapper == nullptr);
+  Sleep(251);
+  Pump(mailbox);
+
+  console.accept = false;
+  CHECK(WorkerQuery(mailbox, [&] {
+    std::string output;
+    return !proxy.run_inbox_fixture(output) && output ==
+      "{\"query_status\":\"command_rejected\",\"native_executed\":false,\"fixed_command\":\"run xar_mcp_inbox.txt\",\"marker_confirmed\":false}";
+  }));
+  CHECK(console.calls == 2 && console.allocations == 2 && console.frees == 2 &&
+        console.scope_enters == 2 && console.scope_exits == 2 &&
+        console.random_owner == 0 && console.random_wrapper == nullptr);
+  console.accept = true;
+
+  // A changed frame before execution still prevents the console call.
+  CHECK(WorkerQueryWithFrameChange(mailbox, [&] {
+    std::string output;
+    return !proxy.run_inbox_fixture(output) && output.empty();
+  }, [&] { ++native.frame.active_event_instance_id; }));
+  CHECK(console.calls == 2 && console.allocations == 2 &&
+        console.scope_enters == 2 && console.scope_exits == 2);
+  Sleep(251);
+  Pump(mailbox);
+
+  const auto scope_frame = native.frame;
+  for (auto mutation : {InboxMutation::player, InboxMutation::date, InboxMutation::paused}) {
+    console.mutation = mutation;
+    CHECK(WorkerQuery(mailbox, [&] {
+      std::string output;
+      return !proxy.run_inbox_fixture(output) && output.empty();
+    }));
+    native.frame = scope_frame;
+    Sleep(251);
+    Pump(mailbox);
+  }
+  CHECK(console.calls == 5 && console.allocations == 5 && console.frees == 5 &&
+        console.wrong_owner == 0 && mailbox.failure_flags == 0 &&
+        console.scope_enters == 5 && console.scope_exits == 5 &&
+        console.random_owner == 0 && console.random_wrapper == nullptr);
 
   // A failed observation invalidates the worker cache and leaves typed
   // request infrastructure usable. Changing the date forces a fresh sample.
@@ -426,6 +687,6 @@ bool TestWorkerAdapter() {
 
 int main() {
   if (!TestWorkerAdapter()) return 1;
-  std::puts("PASS: owner-only raw snapshots, worker cache, queued pause/resume/save, seven semantic actor requests, typed actor coexistence, observation failure recovery; no live CK3 access");
+  std::puts("PASS: owner-only raw snapshots, worker cache, nine-second queued owner delay, war-options route update, war-score rejection, unchanged write scope, fixed inbox owner execution/allocation/release/RNG owner-scope restoration/JSON/world mutation/player-date-paused scope, typed actor coexistence, observation failure recovery; no live CK3 access");
   return 0;
 }

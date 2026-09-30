@@ -38,12 +38,28 @@ def main() -> None:
             raise ValueError(f"Changed termination ABI at {row['rva']}")
     source = (here.parent / "include/xar_bridge/ck3_12002_diplomacy.hpp").read_text(
         encoding="utf-8-sig")
+    constants = {}
     for name, wanted in manifest["source_constants"].items():
         match = re.search(rf"\b{re.escape(name)}\s*=\s*(0x[0-9a-fA-F]+)", source)
         if match is None or int(match.group(1), 0) != int(wanted, 0):
             raise ValueError(f"Changed source constant {name}")
+        constants[name] = int(match.group(1), 0)
+    # The observed live failure was a mistranscribed global RVA even though
+    # both the frozen instruction and its independently recorded target passed.
+    # Bind the actual producer instruction to the runtime constant directly.
+    for row in manifest["rip_source_constants"]:
+        rva = int(row["rva"], 0)
+        offset = pe.rva_to_offset(rva)
+        ins = next(decoder.disasm(data[offset:offset + 15], rva))
+        targets = [ins.address + ins.size + op.mem.disp
+                   for op in ins.operands
+                   if op.type == X86_OP_MEM and op.mem.base == X86_REG_RIP]
+        if targets != [constants[row["constant"]]]:
+            raise ValueError(f"Native RIP target disagrees with {row['constant']}")
     print(f"PASS {len(manifest['semantic_checks'])} termination instruction checks; "
-          f"{len(manifest['source_constants'])} source constants; no live validation")
+          f"{len(manifest['source_constants'])} source constants; "
+          f"{len(manifest['rip_source_constants'])} direct native/global bindings; "
+          "no live validation")
 
 
 if __name__ == "__main__":

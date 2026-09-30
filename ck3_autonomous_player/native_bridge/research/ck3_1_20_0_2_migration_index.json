@@ -394,6 +394,16 @@
     {
       "id": "phase_misc",
       "manifest": "ck3_1_20_0_2_phase_misc.json"
+    },
+    {
+      "id": "console_fixture",
+      "manifest": "ck3_1_20_0_2_console_fixture.json",
+      "constant_groups": [
+        {
+          "field": "console_source_constants",
+          "file": "include/xar_bridge/ck3_12002_console_fixture.hpp"
+        }
+      ]
     }
   ],
   "unindexed_domains": []

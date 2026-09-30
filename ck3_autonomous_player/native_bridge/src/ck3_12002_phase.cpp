@@ -232,17 +232,33 @@ bool ReadEnvironmentGathering(void *context, std::int32_t id, bool &value) noexc
 }
 
 bool ValidateSideSources(void *side, const std::vector<SourceArmy> &armies,
-                         NativeCombatPhaseSide &output) {
+                         const PhaseEnvironment &environment,
+                         std::size_t side_index, NativeCombatPhaseSide &output,
+                         std::string &unavailable_reason) {
+  const auto fail = [&](std::string_view branch, std::string values) {
+    unavailable_reason = "phase_native_candidate_source_unavailable:side=" +
+        std::to_string(side_index) + ':' + std::string(branch) + ':' + values;
+    return false;
+  };
   void *ids = Load<void *>(side, 0x10);
   auto count = Load<std::int32_t>(side, 0x1C);
   auto capacity = Load<std::int32_t>(side, 0x18);
   if (!ids || count != static_cast<std::int32_t>(armies.size()) ||
-      capacity < count || capacity > 65'536) return false;
+      capacity < count || capacity > 65'536)
+    return fail("army_header", "count=" + std::to_string(count) +
+        ":expected=" + std::to_string(armies.size()) + ":capacity=" +
+        std::to_string(capacity) + ":data_present=" + (ids ? "1" : "0"));
   for (std::size_t i = 0; i < armies.size(); ++i) {
     const auto &row = *armies[i].input;
-    if (Load<std::int32_t>(ids, i * 4) != row.native_carmy_id ||
-        Load<std::int32_t>(armies[i].native, 0x120) != row.commander.character_id)
-      return false;
+    const auto observed_id = Load<std::int32_t>(ids, i * 4);
+    if (observed_id != row.native_carmy_id)
+      return fail("army_id", "index=" + std::to_string(i) + ":observed=" +
+          std::to_string(observed_id) + ":expected=" + std::to_string(row.native_carmy_id));
+    const auto observed_commander = Load<std::int32_t>(armies[i].native, 0x120);
+    if (observed_commander != row.commander.character_id)
+      return fail("commander", "army=" + std::to_string(row.army_id) +
+          ":observed=" + std::to_string(observed_commander) + ":expected=" +
+          std::to_string(row.commander.character_id));
     output.ordered_army_ids.push_back(row.army_id);
     if (row.commander.character_id != -1)
       output.ordered_candidates.push_back(
@@ -253,24 +269,56 @@ bool ValidateSideSources(void *side, const std::vector<SourceArmy> &armies,
   auto knight_capacity = Load<std::int32_t>(side, 0x48);
   if (knight_count < 0 || knight_count > 65'536 ||
       knight_capacity < knight_count || knight_capacity > 65'536 ||
-      (knight_count && !entries)) return false;
+      (knight_count && !entries))
+    return fail("regiment_header", "count=" + std::to_string(knight_count) +
+        ":capacity=" + std::to_string(knight_capacity) + ":data_present=" +
+        (entries ? "1" : "0"));
   for (std::int32_t i = 0; i < knight_count; ++i) {
     const auto regiment = Load<std::int32_t>(entries,
                                             static_cast<std::size_t>(i) * 0x60 + 8);
+    // Populate 0x264DF76 sends valid MAA and knights to the same +0x40 array.
+    // Native knight source helper 0x1BA11D0 reads CArmyRegiment +0x148 and
+    // 0x1BA11D6/0x1BA11D9 skips -1; the row is not necessarily a knight.
+    void *native_regiment = environment.resolve_regiment ?
+        environment.resolve_regiment(environment.context, regiment) : nullptr;
+    const auto observed_regiment = native_regiment ?
+        Load<std::int32_t>(native_regiment, 0x10) : -1;
+    if (!native_regiment || observed_regiment != regiment)
+      return fail("regiment_identity", "index=" + std::to_string(i) +
+          ":regiment=" + std::to_string(regiment) + ":observed=" +
+          std::to_string(observed_regiment) + ":rows=" + std::to_string(knight_count));
+    const auto native_character = Load<std::int32_t>(native_regiment, 0x148);
+    if (native_character == -1) continue;
     const game::CombatKnightSnapshot *match = nullptr;
+    const game::CombatArmyInputsSnapshot *source_army = nullptr;
     for (const auto &army : armies) {
-      if (!army.input->knights.available) return false;
+      if (!army.input->knights.available)
+        return fail("knights_unavailable", "army=" + std::to_string(army.input->army_id));
       for (const auto &knight : army.input->knights.members) {
         if (knight.source_regiment_id != regiment) continue;
-        if (match || !knight.eligible || !knight.participant_army_membership_verified ||
-            knight.army_id != army.input->army_id || knight.character_id <= 0)
-          return false;
+        if (match)
+          return fail("knight_duplicate", "regiment=" + std::to_string(regiment));
+        if (!knight.eligible || !knight.participant_army_membership_verified ||
+            knight.army_id != army.input->native_carmy_id)
+          return fail("knight_membership", "regiment=" + std::to_string(regiment) +
+              ":army=" + std::to_string(knight.army_id) + ":expected=" +
+              std::to_string(army.input->native_carmy_id) + ":eligible=" +
+              (knight.eligible ? "1" : "0") + ":verified=" +
+              (knight.participant_army_membership_verified ? "1" : "0"));
+        if (knight.character_id <= 0 || knight.character_id != native_character)
+          return fail("knight_character", "regiment=" + std::to_string(regiment) +
+              ":observed=" + std::to_string(native_character) + ":expected=" +
+              std::to_string(knight.character_id));
         match = &knight;
+        source_army = army.input;
       }
     }
-    if (!match) return false;
+    if (!match)
+      return fail("knight_unmatched", "index=" + std::to_string(i) +
+          ":regiment=" + std::to_string(regiment) + ":character=" +
+          std::to_string(native_character) + ":rows=" + std::to_string(knight_count));
     output.ordered_candidates.push_back(
-        {"knight", match->army_id, regiment, match->character_id});
+        {"knight", source_army->army_id, regiment, match->character_id});
   }
   output.source_vector_equivalence = true;
   return true;
@@ -764,7 +812,7 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
           game::CombatObservationStatus::available)
     return ReadNativeCombatPhaseResult::base_inputs_unavailable;
   try {
-    const auto fail = [&output](const char *reason) {
+    const auto fail = [&output](std::string_view reason) {
       output = {};
       output.unavailable_reason = reason;
       return ReadNativeCombatPhaseResult::native_phase_unavailable;
@@ -825,8 +873,9 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
       Store<void *>(object, 0xC8, local.local[side].data());
       for (const auto &army : sources[side]) bindings.populate_side(object, army.native);
       auto &row = output.sides[side];
-      if (!ValidateSideSources(object, sources[side], row))
-        return fail("phase_native_candidate_source_unavailable");
+      std::string source_reason;
+      if (!ValidateSideSources(object, sources[side], environment, side, row, source_reason))
+        return fail(source_reason);
       Store<std::uint8_t>(object, kPhaseGatheringOffset, gathering[side] ? 1 : 0);
       void *commander = bindings.select_commander(object);
       if (!commander) return fail("phase_commander_unavailable");
@@ -845,7 +894,9 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     if (bindings.advantage.enabled) {
       if (!BuildNonReligiousAdvantagePlan(bindings.advantage, environment, base, commanders, plan) ||
           !plan.nonreligious_available)
-        return fail("phase_nonreligious_constructor_plan_unavailable");
+        return fail("phase_nonreligious_constructor_plan_unavailable:" +
+                    (plan.unavailable_reason.empty() ? std::string("unspecified") :
+                                                       plan.unavailable_reason));
       if (!AllocatePhaseLedger(local.side(0), plan.ledgers[0]) ||
           !AllocatePhaseLedger(local.side(1), plan.ledgers[1]))
         return fail("phase_constructor_ledger_allocation_unavailable");
@@ -973,9 +1024,22 @@ bool ReadNonReligiousPhaseOperands(
     NonReligiousPhaseOperands &output) noexcept {
   output = {};
   try {
-    if (ReadNativeCombatPhase(bindings, environment, scope, base,
-                              output.native_sides) != ReadNativeCombatPhaseResult::available) {
-      output.failed_domains.push_back("native_sides");
+    const auto native_result = ReadNativeCombatPhase(bindings, environment, scope, base,
+                                                     output.native_sides);
+    if (native_result != ReadNativeCombatPhaseResult::available) {
+      std::string reason = output.native_sides.unavailable_reason;
+      if (reason.empty()) {
+        switch (native_result) {
+        case ReadNativeCombatPhaseResult::requires_paused: reason = "phase_requires_paused"; break;
+        case ReadNativeCombatPhaseResult::no_played_character: reason = "phase_no_played_character"; break;
+        case ReadNativeCombatPhaseResult::base_inputs_unavailable: reason = "phase_base_inputs_unavailable"; break;
+        case ReadNativeCombatPhaseResult::unavailable: reason = "phase_bindings_environment_or_exception_unavailable"; break;
+        default: reason = "phase_native_unavailable"; break;
+        }
+      }
+      output.failed_domains.push_back("native_sides:" + reason);
+      output.fields.unavailable_reason = "phase_nonreligious_operand_unavailable:" +
+                                        output.failed_domains.back();
       return false;
     }
     output.completed_domains.push_back("native_sides");
@@ -1054,12 +1118,25 @@ bool ReadNonReligiousPhaseOperands(
     }
     (traits_ready ? output.completed_domains : output.failed_domains).push_back("identity_traits_tracks");
     bool culture_ready = bindings.culture.enabled;
+    std::string culture_failure;
     for (auto &character : output.fields.characters) {
       void *object = environment.resolve_character(environment.context, character.character_id);
-      if (!object || !phase_culture::ReadPhaseCharacterCultureRelations(bindings.culture, object, character))
+      std::string leaf_reason;
+      const bool observed = object && phase_culture::ReadPhaseCharacterCultureRelations(
+          bindings.culture, object, character, &leaf_reason);
+      if (!observed) {
         culture_ready = false;
+        if (culture_failure.empty()) {
+          culture_failure = "culture_relations_perks:character=" +
+              std::to_string(character.character_id) + ':' +
+              (!object ? std::string("native_character_unavailable") :
+               leaf_reason.empty() ? std::string("culture_operand_unavailable") : leaf_reason);
+        }
+      }
     }
-    (culture_ready ? output.completed_domains : output.failed_domains).push_back("culture_relations_perks");
+    (culture_ready ? output.completed_domains : output.failed_domains).push_back(
+        culture_ready ? "culture_relations_perks" :
+        culture_failure.empty() ? "culture_relations_perks:bindings_unavailable" : culture_failure);
     PhaseMiscDefinitionContext misc_definitions{};
     bool misc_ready = BuildPhaseMiscDefinitions(bindings.misc, misc_definitions);
     if (misc_ready) {

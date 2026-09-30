@@ -12,7 +12,7 @@
   },
   "readiness": "static-ready",
   "live_verified": false,
-  "runtime_advertised": false,
+  "runtime_advertised": true,
   "signature_anchors": [
     {
       "name": "war_resolution_context",
@@ -128,7 +128,7 @@
       "rip_targets": [
         "0x54dbc00"
       ],
-      "meaning": "native played CharacterID global 0x5DDDC00"
+      "meaning": "native played CharacterID global 0x54DBC00"
     },
     {
       "rva": "0xcf580b",
@@ -452,7 +452,7 @@
     "kValidateInteractionContextRva": "0x307C040",
     "kInteractionAnswerScoreRva": "0x307C460",
     "kSendInteractionCommandRva": "0x2968170",
-    "kPlayedCharacterIdRva": "0x5DDDC00",
+    "kPlayedCharacterIdRva": "0x54DBC00",
     "kDiplomacyWarManagerOffset": "0x2EBE0",
     "kCasusBelliFlagsOffset": "0x1548"
   },
@@ -463,7 +463,7 @@
     "send_command_context": "0x20",
     "cb_flags": "0x1548",
     "white_peace_database": "0x1018",
-    "played_character_id_global": "0x5DDDC00",
+    "played_character_id_global": "0x54DBC00",
     "autoaccept_trigger": "0x2290",
     "autoaccept_scalar": "0x2718"
   },
@@ -486,7 +486,7 @@
   "offline_fixture": {
     "status": "GREEN",
     "compiler": "MSVC 19.51 x64 C++20 /W4",
-    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/diplomacy-build/ck3_12002_diplomacy_test.exe",
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/diplomacy-build/attempt04-ripfix/ck3_12002_diplomacy_test.exe",
     "checks": [
       "full-generation WarID",
       "ended byte with adjacent nonzero decoy",
@@ -496,13 +496,46 @@
       "context clone-submit-destroy lifecycle",
       "native queue rejection",
       "paused frame",
-      "native validator rejection"
+      "native validator rejection",
+      "native played-character global address bound from both exact RIP producer instructions"
     ],
     "source_sha256": {
-      "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_diplomacy.hpp": "92d7926f00ff4dd2635e53e12d95330978239316c56cd113e607caea99578d60",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_diplomacy.hpp": "4145226fd6ad962912a28b093de8e520af14cf6b55b0f221b4a0f4d4ad1abfd2",
       "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy.cpp": "72aac813a82dbb6d094aee1f2ddc2e362f4576023b05d3ce993c8eed2bd4d476",
-      "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy_test.cpp": "2e00366022c51c86e83d51bc1a927a7de53b616e1bc7f2284ee95bbb14fd606b"
+      "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy_test.cpp": "6ce2a8ae8029c97e5beba422f211778fdc99c6b4d24d1c252e596fb35f189f21"
     },
-    "artifact_sha256": "17178122df43a984f3dfa6053f3c0d54570fe5830090a405d7eda6d5d180d6b7"
+    "artifact_sha256": "74d705ea6a89e82ab45078661437bf0f94c36968ebf3c688f1bf54849cfbbd4a"
+  },
+  "rip_source_constants": [
+    {
+      "rva": "0xcf5801",
+      "constant": "kPlayedCharacterIdRva"
+    },
+    {
+      "rva": "0x1044e65",
+      "constant": "kPlayedCharacterIdRva"
+    }
+  ],
+  "live_failure": {
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-04/mcp.native-wire.jsonl",
+    "observed_error": "CK3 war-termination query is unavailable",
+    "war_id": 16777290,
+    "played_character_id": 29829,
+    "attempts": 20,
+    "root_cause": "The previous 0x5DDDC00 constant disagreed with both native RIP targets 0x54DBC00 and rejected the true core player before constructing termination contexts.",
+    "fix_status": "verified-by-three-production-options-queries-in-attempt-06"
+  },
+  "live_query_evidence": {
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-06/war-options-analysis.json",
+    "war_id": 16777290,
+    "player_character_id": 29829,
+    "successful_query_dates": [
+      53168880,
+      53168904,
+      53168928
+    ],
+    "failed_query_date": 53168952,
+    "reader_readiness": "production-live primitive: options query observed; termination writes remain static-ready",
+    "overall_loop_status": "RED: 9 executed turns / 20 requested; three actual 1-day advances; fourth options request unavailable with contemporaneous enemy-route snapshot change; forwarded to bridge_dispatch"
   }
 }

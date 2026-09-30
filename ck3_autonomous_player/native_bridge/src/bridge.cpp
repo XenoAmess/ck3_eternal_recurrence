@@ -15,6 +15,7 @@
 #include "xar_bridge/ck3_12002_pending_context.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -201,7 +202,7 @@ std::string HelloFrame(const xar::game::GameAdapter &game) {
   return result;
 }
 
-std::string HeartbeatFrame(std::uint64_t sequence) {
+std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter &game) {
   const auto mailbox =
       xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
           g_main_thread_query_mailbox_v1);
@@ -275,7 +276,24 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += mailbox.executor_submission_enabled ? "true" : "false";
   result += ",\"ready\":";
   result += mailbox.ready ? "true" : "false";
-  result += "},\"startup_particle2_null_guard_v1\":{";
+  result += '}';
+  if (const auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game)) {
+    const auto observer = worker->snapshot_observer_diagnostics();
+    result += ",\"snapshot_observer_12002\":{\"started_ms\":";
+    result += Number(observer.started_ms);
+    result += ",\"completed_ms\":";
+    result += Number(observer.completed_ms);
+    result += ",\"last_read_ms\":";
+    result += Number(observer.last_read_ms);
+    result += ",\"read_in_progress\":";
+    result += observer.started_ms > observer.completed_ms ? "true" : "false";
+    result += ",\"last_read_available\":";
+    result += observer.last_read_available ? "true" : "false";
+    result += ",\"snapshot_cached\":";
+    result += observer.snapshot_cached ? "true" : "false";
+    result += '}';
+  }
+  result += ",\"startup_particle2_null_guard_v1\":{";
   result += "\"installed\":";
   result += startup_guard.installed ? "true" : "false";
   result += ",\"failure\":";
@@ -3098,7 +3116,8 @@ std::optional<QueryKind12002> TypedQueryKind12002(std::string_view step) {
     return QueryKind12002::route;
   if (step.starts_with(xar::ck3_11906::kActualContactScopeV1StepPrefix))
     return QueryKind12002::actual_contact;
-  if (step.starts_with("query-combat-simulation-inputs-v3-"))
+  if (step.starts_with("query-combat-simulation-inputs-v3-") ||
+      step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix))
     return QueryKind12002::combat_v3;
   if (step.starts_with(xar::ck3_11906::kBattleControlSnapshotV1StepPrefix))
     return QueryKind12002::battle_control;
@@ -3140,7 +3159,13 @@ bool ParseTypedQuery12002(std::string_view step, std::string_view payload,
     parsed = xar::ck3_11906::ParseActualContactScopeV1Step(step, query.actual_request);
     break;
   case QueryKind12002::combat_v3:
-    parsed = xar::game::ParseCombatSimulationInputsV3Step(step, query.combat_request);
+    if (step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix)) {
+      std::string public_step = "query-combat-simulation-inputs-v3-";
+      public_step += step.substr(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix.size());
+      parsed = xar::game::ParseCombatSimulationInputsV3Step(public_step, query.combat_request);
+    } else {
+      parsed = xar::game::ParseCombatSimulationInputsV3Step(step, query.combat_request);
+    }
     break;
   case QueryKind12002::battle_control:
     parsed = xar::ck3_11906::ParseBattleControlSnapshotV1Step(step, query.battle_request);
@@ -3234,7 +3259,7 @@ std::string RunTypedQuery12002(
               : "application-main typed query executor is unavailable or busy");
     }
     auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
-        g_main_thread_query_mailbox_v1, query.envelope.ticket, 8'000);
+        g_main_thread_query_mailbox_v1, query.envelope.ticket, 30'000);
     while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
       wait = xar::ck3_11906::WaitForMainThreadQueryV1(
           g_main_thread_query_mailbox_v1, query.envelope.ticket, 2'000);
@@ -3279,7 +3304,19 @@ std::string RunTypedQuery12002(
         ++state.actual_contact_scope_query_sequence, query.actual); break;
   case QueryKind12002::combat_v3:
     response = CombatSimulationInputsV3ResultFrame(request_id, step,
-        ++state.combat_inputs_query_sequence, query.combat_result, query.combat, true); break;
+        ++state.combat_inputs_query_sequence, query.combat_result, query.combat, true);
+    if (step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix)) {
+      xar::ck3_12002::PhaseDiagnosticSnapshot diagnostic{};
+      const bool completed = xar::ck3_12002::ProjectPhaseNonreligiousDiagnostic(
+          query.combat_result, query.combat, diagnostic);
+      response.resize(response.size() - 2);
+      response += ",\"private_diagnostic\":true,\"diagnostic_completed\":";
+      response += completed ? "true" : "false";
+      response += ",\"nonreligious_ready\":";
+      response += diagnostic.nonreligious_ready ? "true" : "false";
+      response += ",\"full_phase_inputs_ready\":false}}";
+    }
+    break;
   case QueryKind12002::battle_control:
     response = BattleControlSnapshotResultFrame(request_id, step,
         ++state.battle_control_snapshot_query_sequence, query.battle); break;
@@ -3388,7 +3425,7 @@ void RunConnectedSession(
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
       ++sequence;
-      connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
+      connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence, game));
       if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
@@ -3427,7 +3464,57 @@ void RunConnectedSession(
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
-        } else if (!game.supports_step(step)) {
+        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                   step == "fixture-run-inbox-v1") {
+          std::uint64_t expected_revision = 0;
+          auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
+          if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision) ||
+              expected_revision != state_revision || worker == nullptr) {
+            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+                request_id, step, false, "fixture inbox snapshot revision is stale or malformed"));
+          } else {
+            std::string fixture_json;
+            const bool executed = worker->run_inbox_fixture(fixture_json);
+            if (fixture_json.empty()) {
+              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+                  request_id, step, false, "application-main fixture inbox executor unavailable"));
+            } else {
+              std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+              AppendJsonString(response, request_id);
+              response += executed ? ",\"ok\":true" : ",\"ok\":false,\"error\":\"native fixture inbox command was not executed\"";
+              response += ",\"result\":{\"step\":";
+              AppendJsonString(response, step);
+              response += ",\"private_fixture\":true,\"fixture_inbox\":";
+              response += fixture_json;
+              response += "}}";
+              connected = xar::bridge::WriteFrame(pipe, response);
+            }
+          }
+        } else if (game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                   step == "query-marriage-native-diagnostic-v1") {
+          std::uint64_t expected_revision = 0;
+          auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
+          std::string diagnostic;
+          if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+                  incoming.payload, expected_revision) ||
+              expected_revision != state_revision || worker == nullptr ||
+              !worker->read_marriage_diagnostic(diagnostic)) {
+            connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(
+                request_id, step, false, "application-main marriage diagnostic unavailable"));
+          } else {
+            std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+            AppendJsonString(response, request_id);
+            response += ",\"ok\":true,\"result\":{\"step\":";
+            AppendJsonString(response, step);
+            response += ",\"private_diagnostic\":true,\"marriage_native_diagnostic\":";
+            response += diagnostic;
+            response += "}}";
+            connected = xar::bridge::WriteFrame(pipe, response);
+          }
+        } else if (!game.supports_step(step) &&
+                   !(game.descriptor().adapter_id == "ck3-1.20.0.2-msvc-x64" &&
+                     step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix))) {
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "unsupported native gameplay step"));

@@ -7,6 +7,48 @@
 namespace xar::ck3_12002 {
 namespace {
 
+void RemoveArmyRoutes(game::Snapshot &snapshot) {
+  const auto remove = [](game::ArmySnapshot &army) {
+    army.route_province_ids.clear();
+    army.move_target_province_id = -1;
+  };
+  for (auto &army : snapshot.player_armies) remove(army);
+  for (auto &war : snapshot.active_wars) {
+    for (auto &army : war.allied_armies) remove(army);
+    for (auto &army : war.enemy_armies) remove(army);
+  }
+}
+
+bool MatchesQuerySnapshot(const QueryMailboxEnvelope &query,
+                          const game::Snapshot &observed,
+                          bool finishing) noexcept {
+  if (finishing && query.snapshot_comparison ==
+                       QuerySnapshotComparison12002::fixture_inbox_mutation) {
+    const auto &expected = query.expected_snapshot;
+    // The fixed fixture script applies effects immediately. Preserve the
+    // paused player/date scope while accepting its intended world changes.
+    return observed.paused == expected.paused &&
+           observed.date_raw == expected.date_raw &&
+           observed.player_id == expected.player_id &&
+           observed.map_ready == expected.map_ready &&
+           observed.has_played_character == expected.has_played_character &&
+           observed.played_character_id == expected.played_character_id &&
+           observed.played_character_alive == expected.played_character_alive;
+  }
+  if (query.snapshot_comparison !=
+      QuerySnapshotComparison12002::war_termination_options)
+    return observed == query.expected_snapshot;
+  try {
+    auto expected = query.expected_snapshot;
+    auto current = observed;
+    // Paused native pathfinding can finish after the published frame. These
+    // two route fields do not belong to the war-termination options input.
+    RemoveArmyRoutes(expected);
+    RemoveArmyRoutes(current);
+    return expected == current;
+  } catch (...) { return false; }
+}
+
 bool OwnsSlot(const QueryMailboxEnvelope &query) noexcept {
   if (query.game == nullptr || query.mailbox == nullptr ||
       query.executor == nullptr || query.ticket.sequence == 0 ||
@@ -70,13 +112,16 @@ bool CaptureQuerySnapshot(void *opaque, game::Snapshot &output) noexcept {
   output = {};
   return query != nullptr && OwnsSlot(*query) &&
          game::ReadSnapshot(*query->game, output) &&
-         output == query->expected_snapshot && output.paused &&
+         MatchesQuerySnapshot(*query, output, false) && output.paused &&
          output.date_raw == query->execution_stamp.date_raw;
 }
 
 bool FinishQueryMailbox(QueryMailboxEnvelope &query) noexcept {
   game::Snapshot snapshot{};
-  query.frame_stable = CaptureQuerySnapshot(&query, snapshot);
+  query.frame_stable = OwnsSlot(query) &&
+      game::ReadSnapshot(*query.game, snapshot) &&
+      MatchesQuerySnapshot(query, snapshot, true) && snapshot.paused &&
+      snapshot.date_raw == query.execution_stamp.date_raw;
   return query.frame_stable;
 }
 

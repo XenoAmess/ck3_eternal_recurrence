@@ -1,8 +1,8 @@
 ﻿# Glassfire Lord's Eternal Recurrence modifiers
 
-# One free faith reformation: zeroes the piety cost in the faith creation window.
+# One free faith reformation: CK3 1.20 renamed the native cost modifier to rite.
 xar_free_faith_reformation = {
-	faith_creation_piety_cost_mult = -1
+	rite_creation_piety_cost_mult = -1
 }
 
 # +1 Health per borrowed-lifespan stack. Health changes mortality odds rather

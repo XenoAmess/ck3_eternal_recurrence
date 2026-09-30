@@ -80,7 +80,8 @@ constexpr std::size_t kRegimentKnightCharacterIdOffset = 0x148;
 constexpr std::size_t kRegimentMaaTypeOffset = 0x18;
 constexpr std::size_t kRegimentMainPhaseEligibilityOffset = 0x98A;
 constexpr std::size_t kRegimentMaximumSoldiersOffset = 0x3C;
-constexpr std::size_t kTerrainCombatWidthMultiplierOffset = 0x58;
+// 0x2587E29..0x2587E34: province -> map node -> terrain -> signed Q100000.
+constexpr std::size_t kTerrainCombatWidthMultiplierOffset = 0x60;
 constexpr std::size_t kTerrainCommanderMaxRollModifierIndexOffset = 0x778;
 constexpr std::size_t kTerrainCommanderMinRollModifierIndexOffset = 0x776;
 constexpr std::size_t kUnitArmyIdOffset = 0x178;

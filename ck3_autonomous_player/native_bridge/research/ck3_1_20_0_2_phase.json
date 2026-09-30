@@ -316,10 +316,45 @@
       "rip_targets": []
     },
     {
+      "rva": "0x264df76",
+      "purpose": "valid MAA joins the same side regiment array as knights",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f",
+      "bytes": "81 78 38 4F 62 44 47",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264df7d",
+      "purpose": "ordinary MAA branches to side +0x40 insertion",
+      "instruction": "je 0x264e065",
+      "bytes": "0F 84 E2 00 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x264e06d",
+      "purpose": "MAA and knight regiment insertion destination",
+      "instruction": "lea rcx, [r14 + 0x40]",
+      "bytes": "49 8D 4E 40",
+      "rip_targets": []
+    },
+    {
       "rva": "0x1ba11d0",
       "purpose": "static_native_phase_1BA11D0",
       "instruction": "mov eax, dword ptr [rax + 0x148]",
       "bytes": "8B 80 48 01 00 00",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba11d6",
+      "purpose": "native knight source helper tests absent knight identity",
+      "instruction": "cmp eax, -1",
+      "bytes": "83 F8 FF",
+      "rip_targets": []
+    },
+    {
+      "rva": "0x1ba11d9",
+      "purpose": "native knight source helper skips ordinary MAA row",
+      "instruction": "je 0x1ba1203",
+      "bytes": "74 28",
       "rip_targets": []
     },
     {

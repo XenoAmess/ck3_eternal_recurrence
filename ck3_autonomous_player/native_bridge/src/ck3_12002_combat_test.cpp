@@ -148,7 +148,9 @@ ck3_12002::CombatBindings Setup() {
   Put(characters[2].data(), 0x1B8, knight_link.data()); Put(knight_link.data(), 0xF8, knight_reg);
   Put(rules.data(), 0xEFC, std::int32_t{2}); Put(rules.data(), 0xF04, std::int32_t{99999});
   Put(terrain.data(), 0, database_vtable.data()); Key(terrain.data(), "hills");
-  Put(terrain.data(), 0x58, std::int64_t{80000});
+  // The old +58 is a live-observed decoy in 1.20. Actual combat width reads +60.
+  Put(terrain.data(), 0x58, std::int64_t{4291601254});
+  Put(terrain.data(), 0x60, std::int64_t{80000});
   Put(terrain.data(), 0x776, std::uint16_t{0x200}); Put(terrain.data(), 0x778, std::uint16_t{0x201});
   Put(terrain.data(), 0x76E, std::uint16_t{999}); Put(terrain.data(), 0x770, std::uint16_t{999});
   Put(provinces[0].data(), 0x10, std::int32_t{1}); Put(provinces[1].data(), 0x10, std::int32_t{2});
@@ -196,6 +198,7 @@ int main() {
       out.armies[1].knights.members.size() != 1 || out.armies[1].knights.members[0].prowess != 3 ||
       out.armies[1].knights.members[0].effective_damage_raw != 15000000 || out.target_province.crossing.kind != "river" ||
       !out.target_province.defender_context.holding_defender || out.counter_resolutions[0].damage_retention_by_class_raw[1] != 50000 ||
+      out.target_province.terrain.combat_width_multiplier_raw != 80000 ||
       out.target_province.precontact_width.final != 100) return Fail("new fields / modifiers / knight linkage");
   scope.paused = false;
   if (read() != game::ReadCombatSimulationInputsResult::requires_paused || out != game::CombatSimulationInputsSnapshot{}) return Fail("paused scope required");

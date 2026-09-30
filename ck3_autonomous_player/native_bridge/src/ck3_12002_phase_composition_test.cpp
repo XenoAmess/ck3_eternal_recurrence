@@ -283,6 +283,21 @@ int Run() {
   assert(ReadNativeCombatPhase(bindings, env, scope, base, output) == ReadNativeCombatPhaseResult::native_phase_unavailable);
   assert(!output.available && output.unavailable_reason == "phase_dynamic_resolution_mismatch");
   assert(counters.constructed == counters.destroyed && counters.released == counters.ledger_allocated + counters.population_allocated);
+  game::CombatPhaseInputsV3 projected{};
+  assert(ReadCombatPhaseInputs(bindings, env, scope, base, projected) ==
+         game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable);
+  assert(projected.unavailable_reason ==
+         "phase_nonreligious_operand_unavailable:native_sides:phase_dynamic_resolution_mismatch");
+  assert(!projected.available && counters.constructed == counters.destroyed &&
+         counters.released == counters.ledger_allocated + counters.population_allocated);
+  counters.corrupt_total = false;
+  f.fail_native_supply = true;
+  assert(ReadCombatPhaseInputs(bindings, env, scope, base, projected) ==
+         game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable);
+  assert(projected.unavailable_reason ==
+         "phase_nonreligious_operand_unavailable:native_sides:phase_nonreligious_constructor_plan_unavailable:native_nonreligious_advantage_preconditions_unavailable");
+  assert(!projected.available && counters.constructed == counters.destroyed &&
+         counters.released == counters.ledger_allocated + counters.population_allocated);
   std::cout << "PASS phase assembled constructor ledger, native total/dynamic decomposition and cleanup\n";
   return 0;
 }

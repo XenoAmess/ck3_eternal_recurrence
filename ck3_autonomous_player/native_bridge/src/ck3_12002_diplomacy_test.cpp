@@ -165,6 +165,7 @@ int main() {
   const auto bound=BindDiplomacyImage(0x140000000,kExecutableSha256);
   if (!bound.enabled || !bound.commands.enabled ||
       reinterpret_cast<std::uintptr_t>(bound.resolution_context) != 0x140CF57D0 ||
+      reinterpret_cast<std::uintptr_t>(bound.played_character_id) != 0x1454DBC00 ||
       BindDiplomacyImage(0x140000000,"legacy").enabled) return 11;
   std::cout << "PASS 1.20 termination both-side polarity, query and command lifecycle fixtures\n";
 }

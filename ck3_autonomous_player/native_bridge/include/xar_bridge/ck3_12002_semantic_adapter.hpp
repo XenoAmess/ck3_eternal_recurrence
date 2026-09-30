@@ -1,10 +1,20 @@
 ﻿#pragma once
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
+#include "xar_bridge/ck3_12002_console_fixture.hpp"
+#include <atomic>
 #include <mutex>
 #include <optional>
 
 namespace xar::ck3_12002 {
+
+struct SnapshotObserverDiagnostics12002 {
+  std::uint64_t started_ms = 0;
+  std::uint64_t completed_ms = 0;
+  std::uint64_t last_read_ms = 0;
+  bool last_read_available = false;
+  bool snapshot_cached = false;
+};
 
 // The bridge worker reads a published owner-thread snapshot and submits only
 // these fixed semantic operations to the same proven application-main actor.
@@ -12,6 +22,9 @@ class WorkerAdapter final : public game::GameAdapter {
 public:
   WorkerAdapter(const game::GameAdapter &native_adapter,
                 ck3_11906::MainThreadQueryMailboxV1 &mailbox) noexcept;
+  WorkerAdapter(const game::GameAdapter &native_adapter,
+                ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+                const ConsoleFixtureBindings &console_fixture) noexcept;
   const game::GameAdapter &native_adapter() const noexcept;
   const game::AdapterDescriptor &descriptor() const noexcept override;
   bool enabled() const noexcept override;
@@ -51,17 +64,26 @@ public:
   game::ReadWarTerminationExitTermsResult read_war_termination_exit_terms(
       std::int32_t, game::WarTerminationExitTermsSnapshot &) const noexcept override;
   bool Observe(const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
+  SnapshotObserverDiagnostics12002 snapshot_observer_diagnostics() const noexcept;
+  bool read_marriage_diagnostic(std::string &) const noexcept;
+  // Private fixed fixture step; no command or inbox path can be supplied.
+  bool run_inbox_fixture(std::string &) const noexcept;
 
 private:
   struct SemanticRequest;
   bool Run(SemanticRequest &) const noexcept;
   const game::GameAdapter *native_ = nullptr;
   ck3_11906::MainThreadQueryMailboxV1 *mailbox_ = nullptr;
+  ConsoleFixtureBindings console_fixture_{};
   mutable std::mutex snapshot_mutex_;
   std::optional<game::Snapshot> snapshot_;
   std::uint64_t snapshot_epoch_ = 0;
   std::uint64_t snapshot_revision_ = 0;
   std::uint64_t next_snapshot_sample_ms_ = 0;
+  std::atomic<std::uint64_t> observer_started_ms_{0};
+  std::atomic<std::uint64_t> observer_completed_ms_{0};
+  std::atomic<std::uint64_t> observer_last_read_ms_{0};
+  std::atomic<bool> observer_last_read_available_{false};
   friend bool ExecuteSemanticAdapter12002(void *, const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 };
 

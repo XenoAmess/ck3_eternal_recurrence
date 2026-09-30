@@ -20,7 +20,7 @@ template<std::size_t N> struct Object {
 struct Definition {
   std::array<std::byte,0x18> prefix{};
   std::string key;
-  std::uint32_t kind = 0x4744624F;
+  std::uint32_t kind = 0;
   std::uint32_t pad = 0;
   explicit Definition(std::string_view key) : key(key) {}
 };
@@ -63,8 +63,9 @@ struct Database {
   std::vector<std::unique_ptr<Definition>> owned;
   std::vector<void *> rows;
   void *pointer = object.data();
-  Definition *Add(std::string_view key) {
+  Definition *Add(std::string_view key, std::uint32_t kind = 0) {
     owned.push_back(std::make_unique<Definition>(key));
+    owned.back()->kind = kind;
     rows.push_back(owned.back().get());
     Refresh();
     return owned.back().get();
@@ -85,6 +86,8 @@ int main() {
   const auto bound = BindImage(base,xar::ck3_12002::kExecutableSha256);
   assert(bound.enabled);
   assert(reinterpret_cast<std::uintptr_t>(bound.culture_store) == base + kCultureStoreSlot);
+  assert(reinterpret_cast<std::uintptr_t>(bound.tradition_database) == base + 0x5D1DEE0);
+  assert(reinterpret_cast<std::uintptr_t>(bound.tradition_fallback) == base + 0x5D1FB50);
   assert(reinterpret_cast<std::uintptr_t>(bound.character_context) == base + kCharacterKnightContextRva);
   assert(!BindImage(base,"wrong-build").enabled);
   Store characters, houses, dynasties, cultures;
@@ -131,7 +134,8 @@ int main() {
       "tradition_himalayan_settlers", "tradition_mubarizuns",
       "tradition_burman_royal_army", "tradition_mountaineer_ruralism",
       "tradition_caucasian_wolves", "tradition_roman_legacy",
-      "tradition_ep3_audacious_cadets", "tradition_ep3_imperial_tagmata"}) tradition_db.Add(key);
+      "tradition_ep3_audacious_cadets", "tradition_ep3_imperial_tagmata"})
+    tradition_db.Add(key,0x4744624F);
   Definition north("heritage_north_germanic"),other("other_pillar");
   std::array<void *,5> pillars{&other,&other,&north,&other,&other};
   std::array<void *,1> innovations{innovation_db.rows[0]}, traditions{tradition_db.rows[1]};
@@ -166,6 +170,17 @@ int main() {
   assert(output.traditions.size()==14 && !output.traditions[0].value && output.traditions[1].value);
   assert(output.culture_parameters.size()==10 && output.culture_parameters[5].value);
   assert(output.faith.present && output.faith.value==123 && output.death_is_glory);
+  // attempt-07 reached all twelve innovation operands, then stopped before
+  // the first tradition. An unrelated loaded database reproduces that exact
+  // production symptom without faking valid GDbo objects in every registry.
+  std::string failure;
+  bindings.tradition_database=&innovation_db.pointer;
+  assert(!ReadPhaseCharacterCultureRelations(bindings,character.data(),output,&failure));
+  assert(output.innovations.size()==12 && output.traditions.empty() && output.culture_parameters.empty());
+  assert(failure=="leaf=tradition_definition:key=tradition_fp1_coastal_warriors:character=16777217:loaded_key_not_found");
+  bindings.tradition_database=&tradition_db.pointer;
+  assert(ReadPhaseCharacterCultureRelations(bindings,character.data(),output,&failure));
+  assert(failure.empty() && output.traditions.size()==14 && output.culture_parameters.size()==10);
   // Legal zero ownership is observed false; stale same-index generation is a
   // read failure. Malformed new spans must never alias valid old locations.
   Put(dynasty.data(),0x184,std::int32_t{0});
@@ -178,7 +193,8 @@ int main() {
   assert(!ReadPhaseCharacterCultureRelations(bindings,character.data(),output));
   Put(resolved.data(),0x64,std::int32_t{1});
   tradition_db.owned[0]->kind=0;
-  assert(!ReadPhaseCharacterCultureRelations(bindings,character.data(),output));
+  assert(!ReadPhaseCharacterCultureRelations(bindings,character.data(),output,&failure));
+  assert(failure=="leaf=tradition_definition:key=tradition_fp1_coastal_warriors:character=16777217:native_object_kind_mismatch");
   tradition_db.owned[0]->kind=0x4744624F;
   auto duplicate=innovation_db.Add("innovation_quilted_armor");
   assert(!ReadPhaseCharacterCultureRelations(bindings,character.data(),output));

@@ -7,6 +7,12 @@
 
 namespace xar::ck3_12002 {
 
+enum class QuerySnapshotComparison12002 {
+  full_snapshot,
+  war_termination_options,
+  fixture_inbox_mutation,
+};
+
 // The semantic snapshot is captured with the selected adapter; this envelope
 // never carries a legacy native Bindings object into the new executable.
 struct QueryMailboxEnvelope {
@@ -20,6 +26,8 @@ struct QueryMailboxEnvelope {
   void *typed_context = nullptr;
   bool entered = false;
   bool frame_stable = false;
+  QuerySnapshotComparison12002 snapshot_comparison =
+      QuerySnapshotComparison12002::full_snapshot;
 };
 
 bool EnterQueryMailbox(QueryMailboxEnvelope &query,

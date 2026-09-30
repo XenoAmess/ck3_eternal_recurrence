@@ -16,7 +16,9 @@ template <typename T> T Read(const void *p, std::size_t offset) {
 }
 struct Fixture {
   std::array<std::array<std::byte, 0x130>, 2> armies{};
-  std::array<std::array<std::byte, 0x20>, 3> characters{};
+  std::array<std::array<std::byte, 0x20>, 16> characters{};
+  std::array<std::array<std::byte, 0x150>, 15> regiments{};
+  std::array<std::byte, 0x40> maa_type{};
   std::array<std::byte, 0x20> target{};
   std::array<std::uintptr_t, 3> allocator_vtable{};
   void *allocator = nullptr;
@@ -25,6 +27,10 @@ struct Fixture {
   int population_allocated = 0;
   int population_freed = 0;
   bool inject_source_mismatch = false;
+  bool inject_gathering_failure = false;
+  bool inject_regiment_header_failure = false;
+  bool inject_regiment_identity_failure = false;
+  bool inject_knight_unmatched = false;
 };
 Fixture *active = nullptr;
 void Release(void *, void *p, std::size_t alignment) {
@@ -40,8 +46,8 @@ void *Construct(void *side, void *shell) {
   Write<void *>(side, 0xB8, shell);
   Write<void *>(side, 0x10, std::calloc(8, 4));
   Write<std::int32_t>(side, 0x18, 8);
-  Write<void *>(side, 0x40, std::calloc(8, 0x60));
-  Write<std::int32_t>(side, 0x48, 8);
+  Write<void *>(side, 0x40, std::calloc(16, 0x60));
+  Write<std::int32_t>(side, 0x48, 16);
   Write<void *>(side, 0x50, &active->allocator);
   return side;
 }
@@ -58,8 +64,18 @@ void Populate(void *side, void *army) {
   Write<std::int32_t>(local, 0x40, 1);
   Write<std::int32_t>(local, 0x44, 1);
   if (native_id == 101) {
-    Write<std::int32_t>(Read<void *>(side, 0x40), 8, 301);
-    Write<std::int32_t>(side, 0x4C, 1);
+    // Frozen Populate 0x264E065 stores MAA and knights together; the native
+    // source helper reads +8 and advances by 0x60, skipping regiment +148=-1.
+    // The first live army has 14 knights (2751..2764) and ordinary pikemen.
+    for (std::size_t i = 0; i < active->regiments.size(); ++i) {
+      auto id = Read<std::int32_t>(active->regiments[i].data(), 0x10);
+      if (active->inject_knight_unmatched && i == 1) id = 2999;
+      Write<std::int32_t>(Read<void *>(side, 0x40), i * 0x60, -123);
+      Write<std::int32_t>(Read<void *>(side, 0x40), i * 0x60 + 8, id);
+    }
+    Write<std::int32_t>(side, 0x4C, 15);
+    if (active->inject_regiment_header_failure)
+      Write<std::int32_t>(side, 0x48, 14);
   }
 }
 void *Commander(void *side) {
@@ -97,12 +113,27 @@ void *Army(void *context, std::int32_t id) {
 }
 void *Character(void *context, std::int32_t id) {
   auto &f = *static_cast<Fixture *>(context);
-  return id >= 201 && id <= 203 ? f.characters[static_cast<std::size_t>(id - 201)].data() : nullptr;
+  return id >= 201 && id <= 216 ? f.characters[static_cast<std::size_t>(id - 201)].data() : nullptr;
+}
+void *Regiment(void *context, std::int32_t id) {
+  auto &f = *static_cast<Fixture *>(context);
+  if (f.inject_regiment_identity_failure && id == 67109785) return nullptr;
+  // This synthetic unmatched ID resolves to a real knight not present in v2.
+  if (id == 2999 && f.inject_knight_unmatched) {
+    Write<std::int32_t>(f.regiments[1].data(), 0x10, 2999);
+    return f.regiments[1].data();
+  }
+  for (auto &row : f.regiments)
+    if (Read<std::int32_t>(row.data(), 0x10) == id) return row.data();
+  return nullptr;
 }
 void *Province(void *context, std::int32_t id) {
   return id == 1 ? static_cast<Fixture *>(context)->target.data() : nullptr;
 }
-bool Gathering(void *, std::int32_t id, bool &out) { out = id == 101; return true; }
+bool Gathering(void *context, std::int32_t id, bool &out) {
+  out = id == 101;
+  return !static_cast<Fixture *>(context)->inject_gathering_failure;
+}
 } // namespace
 
 int main() {
@@ -119,11 +150,20 @@ int main() {
     Write<std::int32_t>(f.armies[i].data(), 0x120, static_cast<std::int32_t>(201 + i));
     Write<std::int32_t>(f.armies[i].data(), 0x124, static_cast<std::int32_t>(1 + i));
   }
-  for (std::size_t i = 0; i < 3; ++i)
+  for (std::size_t i = 0; i < f.characters.size(); ++i)
     Write<std::int32_t>(f.characters[i].data(), 0x18, static_cast<std::int32_t>(201 + i));
+  Write<std::uint32_t>(f.maa_type.data(), 0x38, 0x4744624F);
+  for (std::size_t i = 0; i < f.regiments.size(); ++i) {
+    Write<std::int32_t>(f.regiments[i].data(), 0x10,
+                        i == 0 ? 67109785 : static_cast<std::int32_t>(2750 + i));
+    Write<std::uint32_t>(f.regiments[i].data(), 0x14, 0x41725267);
+    Write<void *>(f.regiments[i].data(), 0x18, f.maa_type.data());
+    Write<std::int32_t>(f.regiments[i].data(), 0x148,
+                        i == 0 ? -1 : static_cast<std::int32_t>(202 + i));
+  }
   ck3_12002::PhaseBindings bindings{true, Construct, Populate, Commander, Refresh,
                                    Strength, Destroy, Resolve, Dynamic, HasHolding};
-  ck3_12002::PhaseEnvironment env{&f, Army, Character, Province, Gathering};
+  ck3_12002::PhaseEnvironment env{&f, Army, Character, Province, Gathering, Regiment};
   game::Snapshot scope{}; scope.paused = true; scope.has_played_character = true;
   scope.played_character_alive = true;
   game::CombatSimulationInputsSnapshot base{}; base.input_observation_ready = true;
@@ -139,9 +179,12 @@ int main() {
     row.commander.character_id = i + 201; row.knights.available = true;
     row.encounter_role = i == 0 ? "attacker" : "defender";
     if (i == 0) {
-      game::CombatKnightSnapshot knight{}; knight.eligible = true;
-      knight.character_id = 203; knight.source_regiment_id = 301; knight.army_id = 1;
-      knight.participant_army_membership_verified = true; row.knights.members.push_back(knight);
+      for (std::int32_t index = 0; index < 14; ++index) {
+        game::CombatKnightSnapshot knight{}; knight.eligible = true;
+        knight.character_id = 203 + index; knight.source_regiment_id = 2751 + index;
+        knight.army_id = 101; knight.participant_army_membership_verified = true;
+        row.knights.members.push_back(knight);
+      }
     }
     base.armies.push_back(std::move(row));
   }
@@ -150,16 +193,18 @@ int main() {
   assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::available);
   assert(out.available && out.sides[0].strength_raw == 500 && out.sides[1].strength_raw == 400);
   assert(out.dynamic_advantage_at_zero_roll_raw == 1'500'000);
-  assert(out.sides[0].ordered_candidates.size() == 2);
+  assert(out.sides[0].ordered_candidates.size() == 15);
   assert(out.sides[0].ordered_candidates[0].role == "commander");
-  assert(out.sides[0].ordered_candidates[1].source_regiment_id == 301);
+  assert(out.sides[0].ordered_candidates[1].source_regiment_id == 2751);
+  assert(out.sides[0].ordered_candidates.back().source_regiment_id == 2764);
+  assert(out.sides[0].ordered_candidates[1].source_army_id == 1);
   assert(out.sides[0].source_vector_equivalence);
   assert(f.constructed == 2 && f.destroyed == 2 && f.population_freed == 2);
   game::CombatPhaseInputsV3 full{};
   assert(ck3_12002::ReadCombatPhaseInputs(bindings, env, scope, base, full) ==
          game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable);
   assert(!full.available && full.sides.size() == 2 && !full.unavailable_reason.empty());
-  assert(full.characters.size() == 3);
+  assert(full.characters.size() == 16);
   assert(full.sides[0].candidate_source_proof.source_vector_equivalence);
   assert(full.sides[0].candidate_source_proof.sequence_sha256.size() == 64);
   auto diagnostic = ck3_12002::SerializeCombatPhaseInputsV3(full);
@@ -167,7 +212,8 @@ int main() {
   assert(diagnostic.find("81_exact_native") == std::string::npos);
   assert(diagnostic.find("91EDCEED") == std::string::npos);
   assert(diagnostic.find("\"side_strength_raw\":500") != std::string::npos);
-  assert(diagnostic.find("\"source_regiment_id\":301") != std::string::npos);
+  assert(diagnostic.find("\"source_regiment_id\":2751") != std::string::npos);
+  assert(diagnostic.find("\"source_regiment_id\":67109785") == std::string::npos);
   assert(diagnostic.find("\"faith\"") == std::string::npos);
   assert(diagnostic.find("\"death_is_glory\"") == std::string::npos);
   assert(diagnostic.find("nonreligious_fields_ready\":false") != std::string::npos);
@@ -191,6 +237,52 @@ int main() {
   f.inject_source_mismatch = true;
   assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::native_phase_unavailable);
   assert(!out.available && f.constructed == f.destroyed && f.population_allocated == f.population_freed);
+  assert(ck3_12002::ReadCombatPhaseInputs(bindings, env, scope, base, full) ==
+         game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable);
+  assert(full.unavailable_reason ==
+         "phase_nonreligious_operand_unavailable:native_sides:phase_native_candidate_source_unavailable:side=0:army_id:index=0:observed=102:expected=101");
+  diagnostic = ck3_12002::SerializeCombatPhaseInputsV3(full);
+  assert(diagnostic.find("native_sides:phase_native_candidate_source_unavailable") != std::string::npos);
+  assert(diagnostic.find("nonreligious_fields_ready\":false") != std::string::npos);
+  assert(f.constructed == f.destroyed && f.population_allocated == f.population_freed);
+  f.inject_source_mismatch = false;
+  base.armies[0].knights.members[0].army_id = 1;
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::native_phase_unavailable);
+  assert(out.unavailable_reason.find("knight_membership:regiment=2751:army=1:expected=101") != std::string::npos);
+  base.armies[0].knights.members[0].army_id = 101;
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::available);
+  f.inject_regiment_header_failure = true;
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::native_phase_unavailable);
+  assert(out.unavailable_reason.find("regiment_header:count=15:capacity=14:data_present=1") != std::string::npos);
+  f.inject_regiment_header_failure = false;
+  f.inject_regiment_identity_failure = true;
+  assert(ck3_12002::ReadCombatPhaseInputs(bindings, env, scope, base, full) ==
+         game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable);
+  assert(full.unavailable_reason.find("regiment_identity:index=0:regiment=67109785:observed=-1:rows=15") != std::string::npos);
+  f.inject_regiment_identity_failure = false;
+  Write<std::int32_t>(f.armies[0].data(), 0x120, 999);
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::native_phase_unavailable);
+  assert(out.unavailable_reason.find("commander:army=1:observed=999:expected=201") != std::string::npos);
+  Write<std::int32_t>(f.armies[0].data(), 0x120, 201);
+  f.inject_knight_unmatched = true;
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::native_phase_unavailable);
+  assert(out.unavailable_reason.find("knight_unmatched:index=1:regiment=2999:character=203:rows=15") != std::string::npos);
+  f.inject_knight_unmatched = false;
+  Write<std::int32_t>(f.regiments[1].data(), 0x10, 2751);
+  Write<std::int32_t>(f.regiments[1].data(), 0x148, 999);
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::native_phase_unavailable);
+  assert(out.unavailable_reason.find("knight_character:regiment=2751:observed=999:expected=203") != std::string::npos);
+  Write<std::int32_t>(f.regiments[1].data(), 0x148, 203);
+  assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::available);
+  assert(f.constructed == f.destroyed && f.population_allocated == f.population_freed);
+  f.inject_gathering_failure = true;
+  auto before_gathering_failure = f.constructed;
+  assert(ck3_12002::ReadCombatPhaseInputs(bindings, env, scope, base, full) ==
+         game::ReadCombatSimulationInputsV3Result::phase_inputs_unavailable);
+  assert(full.unavailable_reason ==
+         "phase_nonreligious_operand_unavailable:native_sides:phase_gathering_unavailable");
+  assert(!full.available && f.constructed == before_gathering_failure);
+  f.inject_gathering_failure = false;
   scope.paused = false;
   auto allocation_count = f.constructed;
   assert(ck3_12002::ReadNativeCombatPhase(bindings, env, scope, base, out) == Status::requires_paused);

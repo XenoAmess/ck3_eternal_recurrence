@@ -18,7 +18,7 @@ inline constexpr std::uintptr_t kDestroyInteractionContextRva = 0x30773A0;
 inline constexpr std::uintptr_t kValidateInteractionContextRva = 0x307C040;
 inline constexpr std::uintptr_t kInteractionAnswerScoreRva = 0x307C460;
 inline constexpr std::uintptr_t kSendInteractionCommandRva = 0x2968170;
-inline constexpr std::uintptr_t kPlayedCharacterIdRva = 0x5DDDC00;
+inline constexpr std::uintptr_t kPlayedCharacterIdRva = 0x54DBC00;
 inline constexpr std::size_t kDiplomacyWarManagerOffset = 0x2EBE0;
 inline constexpr std::size_t kCasusBelliFlagsOffset = 0x1548;
 

@@ -81,6 +81,36 @@
       "rva": "0x28bfc70",
       "confidence": "reviewed-static-native-consumer-and-object-layout",
       "pattern": "48 8B 81 C0 01 00 00 48 8B 91 B8 01 00 00 48 85 C0 74 1E 48 8B 80 C0 01 00 00 48 8B 40 28 81 78 1C 72 61 68 43 75 06 83 78 18 FF 75 48 48 8B C1 C3 48 85 D2 74 38 48 8B 05 BB 78 3A 03 48 85 C0 74 2C 44 8B 82 C8 00 00 00 41 8B C8 81 E1 FF FF FF 00 3B 48 2C 73 17 48 8B 40 20 48 03 C9 48 8B 44 C8 08 48 85 C0 74 06 44 39 40 18 74 07 48 8B 05 8B 78 3A 03 C3"
+    },
+    {
+      "name": "tradition_database_getter",
+      "rva": "0xa14910",
+      "confidence": "reviewed-static-final-tradition-consumer-and-constructor-chain",
+      "pattern": "48 83 EC 38 48 8B 05 C5 95 30 05 48 85 C0 75 42 C7 44 24 28 1E 00 00 00 48 8D 05 D9 86 A7 03 48 89 44 24 20 48 8D 54 24 20 C6 44 24 2C 00 41 B9 64 00 00 00 0F 28 44 24 20 45 33 C0 66 0F 7F 44 24 20 41 8D 49 9D E8 05 6D 57 03 48 8B 05 7E 95 30 05 48 83 C4 38 C3"
+    },
+    {
+      "name": "tradition_scope_resolver",
+      "rva": "0x2b156b0",
+      "confidence": "reviewed-static-final-tradition-consumer-and-constructor-chain",
+      "pattern": "48 83 EC 48 80 B9 AC 00 00 00 02 48 8B 05 8E A4 20 03 75 07 48 8B 81 A0 00 00 00 81 78 38 4F 62 44 47 74 4C 4D 8B C8 C7 44 24 28 00 00 00 00 4C 8B C2 C6 44 24 20 00 48 8D 54 24 30 48 83 C1 10 E8 2B FE C3 00 66 83 7C 24 30 2C 75 1C 83 7C 24 38 FF 74 15 E8 07 F2 EF FD 8B 54 24 38 48 8B C8 48 83 C4 48 E9 07 7E 74 FF 48 8B 05 30 A4 20 03 48 83 C4 48 C3"
+    },
+    {
+      "name": "tradition_database_indexed_lookup",
+      "rva": "0x225d520",
+      "confidence": "reviewed-static-final-tradition-consumer-and-constructor-chain",
+      "pattern": "45 33 C0 44 38 81 E0 0E 00 00 45 8B C8 41 0F 94 C1 45 8D 50 FE 45 85 C9 0F 84 95 00 00 00 41 83 E9 01 74 43 41 83 F9 01 0F 85 85 00 00 00 F0 0F BA A9 A0 0E 00 00 00 73 17 0F 1F 80 00 00 00 00 F3 90 F0 0F BA A9 A0 0E 00 00 00 72 F3 0F 1F 00 8B 81 A0 0E 00 00 83 F8 01 76 04 F3 90 EB F1 41 B8 02 00 00 00 EB 4C 41 B8 02 00 00 00 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 74 31 0F 1F 40 00 41 8B C2 F0 0F C1 81 A0 0E 00 00 0F 1F 44 00 00 8B 81 A0 0E 00 00 A8 01 74 04 F3 90 EB F2 41 8B C0 F0 0F C1 81 A0 0E 00 00 A8 01 75 D3 41 B8 01 00 00 00 85 D2 78 12 3B 51 5C 7D 0D 48 8B 41 50 48 63 D2 48 8B 04 D0 EB 07 48 8B 05 60 25 AC 03 41 83 E8 01 74 0F 41 83 F8 01 75 12 F0 44 21 91 A0 0E 00 00 C3 F0 44 0F C1 91 A0 0E 00 00 C3"
+    },
+    {
+      "name": "tradition_base_constructor",
+      "rva": "0x314ce10",
+      "confidence": "reviewed-static-final-tradition-consumer-and-constructor-chain",
+      "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 4C 24 08 56 57 41 56 48 83 EC 30 0F 29 74 24 20 44 8B CA 48 8B F9 48 8B 41 08 41 0F 28 30 48 8D 0D 6F 99 43 01 48 89 0F 48 63 40 04 48 8D 0D 29 99 43 01 48 89 4C 38 08 48 8B 47 08 4C 63 40 04 41 8D 50 C0 41 89 54 38 04 44 89 4F 10 66 0F 6F C6 66 0F 73 D8 08 66 41 0F 7E C0 66 48 0F 7E F2 E8 BF 13 E3 00 89 47 14 48 8D 4F 18 66 0F 6F C6 66 0F 73 D8 08 66 0F 7E C0 4C 63 C0 45 33 F6 4C 89 31 4C 89 71 10 48 C7 41 18 0F 00 00 00 44 88 31 66 48 0F 7E F2 E8 F9 8E 70 FD C7 47 38 4F 62 44 47"
+    },
+    {
+      "name": "tradition_concrete_constructor_bindings",
+      "rva": "0x314f4a4",
+      "confidence": "reviewed-static-final-tradition-consumer-and-constructor-chain",
+      "pattern": "4C 8D 44 24 20 E8 62 D9 FF FF 48 8D 05 AB 30 77 01 48 89 03 48 8B 43 08 48 63 48 04 48 8D 05 B1 30 77 01 48 89 44 19 08 48 8B 43 08 48 63 48 04 8D 91 A0 EA FF FF 89 54 19 04 48 8D 05 9B 9A 78 01 48 89 83 20 15 00"
     }
   ],
   "vtable_prefixes": [],
@@ -206,26 +236,6 @@
       ]
     },
     {
-      "name": "tradition_database",
-      "purpose": "tradition database",
-      "rva": "0x2fb6d52",
-      "bytes": "48 8B 0D BF 7D D6 02",
-      "instruction": "mov rcx, qword ptr [rip + 0x2d67dbf]",
-      "rip_targets": [
-        "0x5d1eb18"
-      ]
-    },
-    {
-      "name": "tradition_fallback",
-      "purpose": "tradition fallback",
-      "rva": "0xf4bc0a",
-      "bytes": "48 8B 05 97 46 DD 04",
-      "instruction": "mov rax, qword ptr [rip + 0x4dd4697]",
-      "rip_targets": [
-        "0x5d202a8"
-      ]
-    },
-    {
       "name": "dynasty_perk_database_slot",
       "purpose": "dynasty perk database slot",
       "rva": "0xd2bda4",
@@ -283,22 +293,6 @@
       "rva": "0x254255e",
       "bytes": "49 8B 5D 50",
       "instruction": "mov rbx, qword ptr [r13 + 0x50]",
-      "rip_targets": []
-    },
-    {
-      "name": "tradition_database_array",
-      "purpose": "tradition database array",
-      "rva": "0x2fdc13a",
-      "bytes": "48 8B 56 50",
-      "instruction": "mov rdx, qword ptr [rsi + 0x50]",
-      "rip_targets": []
-    },
-    {
-      "name": "tradition_database_count_write",
-      "purpose": "tradition database count write",
-      "rva": "0x2fdc143",
-      "bytes": "44 89 7E 5C",
-      "instruction": "mov dword ptr [rsi + 0x5c], r15d",
       "rip_targets": []
     },
     {
@@ -472,6 +466,110 @@
       "bytes": "E9 5B 70 A3 FF",
       "instruction": "jmp 0x2549810",
       "rip_targets": []
+    },
+    {
+      "name": "tradition_scope_cached_fallback",
+      "purpose": "tradition scope cached fallback",
+      "rva": "0x2b156bb",
+      "bytes": "48 8B 05 8E A4 20 03",
+      "instruction": "mov rax, qword ptr [rip + 0x320a48e]",
+      "rip_targets": [
+        "0x5d1fb50"
+      ]
+    },
+    {
+      "name": "tradition_scope_cache_pointer",
+      "purpose": "tradition scope cache pointer",
+      "rva": "0x2b156c4",
+      "bytes": "48 8B 81 A0 00 00 00",
+      "instruction": "mov rax, qword ptr [rcx + 0xa0]",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_scope_native_kind_check",
+      "purpose": "tradition scope native kind check",
+      "rva": "0x2b156cb",
+      "bytes": "81 78 38 4F 62 44 47",
+      "instruction": "cmp dword ptr [rax + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_scope_identity_kind",
+      "purpose": "tradition scope identity kind",
+      "rva": "0x2b156f5",
+      "bytes": "66 83 7C 24 30 2C",
+      "instruction": "cmp word ptr [rsp + 0x30], 0x2c",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_scope_get_database_call",
+      "purpose": "tradition scope get database call",
+      "rva": "0x2b15704",
+      "bytes": "E8 07 F2 EF FD",
+      "instruction": "call 0xa14910",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_database",
+      "purpose": "tradition database",
+      "rva": "0xa14914",
+      "bytes": "48 8B 05 C5 95 30 05",
+      "instruction": "mov rax, qword ptr [rip + 0x53095c5]",
+      "rip_targets": [
+        "0x5d1dee0"
+      ]
+    },
+    {
+      "name": "tradition_database_count",
+      "purpose": "tradition database count",
+      "rva": "0x225d5d7",
+      "bytes": "3B 51 5C",
+      "instruction": "cmp edx, dword ptr [rcx + 0x5c]",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_database_array",
+      "purpose": "tradition database array",
+      "rva": "0x225d5dc",
+      "bytes": "48 8B 41 50",
+      "instruction": "mov rax, qword ptr [rcx + 0x50]",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_fallback",
+      "purpose": "tradition fallback",
+      "rva": "0x225d5e9",
+      "bytes": "48 8B 05 60 25 AC 03",
+      "instruction": "mov rax, qword ptr [rip + 0x3ac2560]",
+      "rip_targets": [
+        "0x5d1fb50"
+      ]
+    },
+    {
+      "name": "tradition_base_constructor_native_kind",
+      "purpose": "tradition base constructor native kind",
+      "rva": "0x314ceb7",
+      "bytes": "C7 47 38 4F 62 44 47",
+      "instruction": "mov dword ptr [rdi + 0x38], 0x4744624f",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_concrete_constructor_base_call",
+      "purpose": "tradition concrete constructor base call",
+      "rva": "0x314f4a9",
+      "bytes": "E8 62 D9 FF FF",
+      "instruction": "call 0x314ce10",
+      "rip_targets": []
+    },
+    {
+      "name": "tradition_concrete_constructor_vtable",
+      "purpose": "tradition concrete constructor vtable",
+      "rva": "0x314f4ae",
+      "bytes": "48 8D 05 AB 30 77 01",
+      "instruction": "lea rax, [rip + 0x17730ab]",
+      "rip_targets": [
+        "0x48c2560"
+      ]
     }
   ],
   "source_constants": {
@@ -483,8 +581,11 @@
     "kCultureFallbackSlot": "0x5D1E2E8",
     "kInnovationDatabaseSlot": "0x5D1DEE8",
     "kInnovationFallbackSlot": "0x5D202C8",
-    "kTraditionDatabaseSlot": "0x5D1EB18",
-    "kTraditionFallbackSlot": "0x5D202A8",
+    "kTraditionDatabaseSlot": "0x5D1DEE0",
+    "kTraditionFallbackSlot": "0x5D1FB50",
+    "kTraditionDatabaseRva": "0xA14910",
+    "kTraditionIndexedLookupRva": "0x225D520",
+    "kTraditionScopeResolverRva": "0x2B156B0",
     "kDynastyPerkDatabaseSlot": "0x5D1FC00",
     "kCharacterPerkDatabaseSlot": "0x5C67128",
     "kCharacterKnightContextRva": "0x28BFC70",
@@ -573,7 +674,7 @@
     "path": "src/ck3_12002_phase_culture_test.cpp",
     "command": "MSVC 19.51 x64 /std:c++20 /EHsc /W4, compile phase_culture.cpp and phase_culture_test.cpp; run standalone fixture",
     "passed": true,
-    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-phase-culture/phase-culture-test.exe",
+    "artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/build-phase-culture-attempt07-fix/phase-culture-test.exe",
     "coverage": [
       "actual culture ownership vs loaded-only definitions",
       "new template/resolved-data pointer chain",
@@ -588,7 +689,33 @@
       "new definition-kind validation",
       "duplicate loaded stable key rejected",
       "legal missing culture returns false membership",
-      "faith/religion fields untouched"
+      "faith/religion fields untouched",
+      "attempt-07 wrong database reproduces 12 innovations then first tradition loaded_key_not_found",
+      "correct database resumes 14 traditions and 10 parameters",
+      "reason contains exact leaf, stable key and Character full ID",
+      "only Tradition definitions carry native GDbo marker in fixture; unrelated definitions do not fake uniform object kinds"
     ]
+  },
+  "production_failure_correction": {
+    "source_artifact": "artifacts/migrations/2026-09-30/post-update-1.20.0.2/live-1.20.0.2/attempt-07/mcp.json",
+    "observed": "All 33 phase character rows reached 12 innovation fields but stopped before their first tradition and all culture parameters.",
+    "cause": "The initial cross-build signature mapping matched generic database boilerplate in another registry; its pointer array geometry was correct but it did not own tradition_fp1_coastal_warriors.",
+    "initial_wrong_slots": [
+      "0x5D1EB18",
+      "0x5D202A8"
+    ],
+    "correct_slots": [
+      "0x5D1DEE0",
+      "0x5D1FB50"
+    ],
+    "final_native_chain": [
+      "compiled_has_tradition 0x2B12530",
+      "scope_resolver 0x2B156B0",
+      "database_getter 0xA14910 -> global 0x5D1DEE0",
+      "indexed_lookup 0x225D520 -> +0x50/+0x5C -> fallback global 0x5D1FB50"
+    ],
+    "definition_kind_is_valid": "CCultureTradition constructor 0x314F4A9 calls base constructor 0x314CE10; instruction 0x314CEB7 writes +0x38=0x4744624F, matching final evaluator 0x2B125AC.",
+    "minimal_change": "Correct the two slots, preserve native object kind check, add concrete unavailable reasons to existing reader.",
+    "live_after_fix": "pending coordinator probe"
   }
 }

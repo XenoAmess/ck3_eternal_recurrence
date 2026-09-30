@@ -2,6 +2,9 @@
 #undef NDEBUG
 #endif
 #include "xar_bridge/ck3_12002_context.hpp"
+#ifdef XAR_MARRIAGE_PROBE_TEST
+#include "xar_bridge/ck3_12002_marriage_probe.hpp"
+#endif
 
 #include <array>
 #include <cassert>
@@ -169,6 +172,14 @@ int main() {
   assert(rows[0].recipient_acceptance_score_raw == -23'00000 && rows[0].native_auto_accept);
   assert(rows[0].send_costs_raw[9] == 1'000'000);
   assert(rows[0].roles.intermediary_character_id == 0x05000006);
+#ifdef XAR_MARRIAGE_PROBE_TEST
+  std::string probe_json;
+  assert(CollectMarriageProbe12002(f.bindings, probe_json));
+  assert(probe_json.find("\"query_status\":\"available\"") != std::string::npos);
+  assert(probe_json.find("\"recipient_acceptance_score_raw\":-2300000") != std::string::npos);
+  assert(probe_json.find("\"send_costs_raw\":[100000,200000,300000,400000,500000,600000,700000,800000,900000,1000000]") != std::string::npos);
+  std::cout << probe_json;
+#endif
   const ArrangeMarriageChoice chosen{0x03000001, 0x04000002};
   assert(SubmitArrangeMarriage(f.bindings, chosen) == ArrangeMarriageResult::submitted);
   assert(clones == 1 && queues == 1 && destroys == constructs + 1);
@@ -187,5 +198,10 @@ int main() {
   f.bindings.enabled = false;
   assert(ReadArrangeMarriageChoices(f.bindings, choices, diagnostics, &rows) == ReadArrangeMarriageChoicesResult::unavailable);
   assert(choices.empty() && rows.empty());
+#ifdef XAR_MARRIAGE_PROBE_TEST
+  assert(!CollectMarriageProbe12002(f.bindings, probe_json));
+  assert(probe_json.find("\"query_status\":\"unavailable\"") != std::string::npos);
+  assert(probe_json.find("\"marriage_candidate_evaluations\":[]") != std::string::npos);
+#endif
   std::cout << "PASS 1.20.0.2 offline relationships, redirected marriage legality/cost/acceptance and command ownership\n";
 }

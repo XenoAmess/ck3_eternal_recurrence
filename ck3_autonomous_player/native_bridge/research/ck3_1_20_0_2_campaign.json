@@ -434,6 +434,21 @@
     "kLoadedFeatureEnumTableEndRva": "0x4733570",
     "kLoadedFeatureScriptIdentifierNameRva": "0x3F4F900"
   },
+  "source_layout_constants": {
+    "src/ck3_12002_features.cpp": {
+      "kFeatureBitsetOffset": "0x2B0",
+      "kFeatureEnabledCountOffset": "0x2B8",
+      "kScriptDlcBucketBaseOffset": "0x08",
+      "kScriptDlcBucketMaskOffset": "0x14",
+      "kScriptDlcMaximumSpillOffset": "0x18",
+      "kScriptDlcBucketStride": "0x28",
+      "kScriptDlcBucketControlOffset": "0x04",
+      "kScriptDlcBucketKeyOffset": "0x08",
+      "kMsvcStringSizeOffset": "0x10",
+      "kMsvcStringCapacityOffset": "0x18",
+      "kMsvcStringInlineCapacity": "0x0F"
+    }
+  },
   "layouts": {
     "player_character_manager_offset": "0x222E8",
     "character_death_marker_offset": "0x1D0",

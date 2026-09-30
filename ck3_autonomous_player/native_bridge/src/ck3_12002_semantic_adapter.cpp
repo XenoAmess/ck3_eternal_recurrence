@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/ck3_12002_marriage_probe.hpp"
 #include <atomic>
 #include <utility>
 
@@ -8,8 +9,23 @@ namespace {
 enum class SemanticOperation {
   select_event, reply, acknowledge, raise, move, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
   preview, declarations, marriage_choices, strengths, combat_v2, combat_v3,
-  termination_options, termination_terms, exit_terms
+  termination_options, termination_terms, exit_terms, marriage_diagnostic,
+  fixture_run_inbox
 };
+
+std::string SerializeInboxFixture(ConsoleFixtureResult result) {
+  std::string json = "{\"query_status\":\"";
+  switch (result) {
+  case ConsoleFixtureResult::executed: json += "executed"; break;
+  case ConsoleFixtureResult::command_rejected: json += "command_rejected"; break;
+  case ConsoleFixtureResult::console_unavailable: json += "console_unavailable"; break;
+  case ConsoleFixtureResult::unavailable: json += "unavailable"; break;
+  }
+  json += "\",\"native_executed\":";
+  json += result == ConsoleFixtureResult::executed ? "true" : "false";
+  json += ",\"fixed_command\":\"run xar_mcp_inbox.txt\",\"marker_confirmed\":false}";
+  return json;
+}
 } // namespace
 
 struct WorkerAdapter::SemanticRequest {
@@ -33,14 +49,37 @@ struct WorkerAdapter::SemanticRequest {
   game::WarTerminationOptionsSnapshot termination_options{};
   game::WarTerminationTermsSnapshot termination_terms{};
   game::WarTerminationExitTermsSnapshot exit_terms{};
+  std::string diagnostic_json;
+  ConsoleFixtureBindings console_fixture{};
+  ConsoleFixtureResult console_result = ConsoleFixtureResult::unavailable;
 };
 
 WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
                              ck3_11906::MainThreadQueryMailboxV1 &mailbox) noexcept
-    : native_(&native_adapter), mailbox_(&mailbox) {}
+    : WorkerAdapter(native_adapter, mailbox,
+          BindConsoleFixtureImage(
+              reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+              native_adapter.descriptor().executable_sha256)) {}
+WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
+                             ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+                             const ConsoleFixtureBindings &console_fixture) noexcept
+    : native_(&native_adapter), mailbox_(&mailbox), console_fixture_(console_fixture) {}
 const game::GameAdapter &WorkerAdapter::native_adapter() const noexcept { return *native_; }
 const game::AdapterDescriptor &WorkerAdapter::descriptor() const noexcept { return native_->descriptor(); }
 bool WorkerAdapter::enabled() const noexcept { return native_->enabled(); }
+
+SnapshotObserverDiagnostics12002 WorkerAdapter::snapshot_observer_diagnostics() const noexcept {
+  SnapshotObserverDiagnostics12002 result{};
+  result.started_ms = observer_started_ms_.load();
+  result.completed_ms = observer_completed_ms_.load();
+  result.last_read_ms = observer_last_read_ms_.load();
+  result.last_read_available = observer_last_read_available_.load();
+  try {
+    std::lock_guard guard(snapshot_mutex_);
+    result.snapshot_cached = snapshot_.has_value() && snapshot_epoch_ != 0;
+  } catch (...) {}
+  return result;
+}
 
 bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
   output = {};
@@ -76,8 +115,14 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
       snapshot_epoch_ = 0;
     }
     game::Snapshot observed{};
+    const auto read_started_ms = GetTickCount64();
+    observer_started_ms_.store(read_started_ms);
     const bool available = native_->read_snapshot(observed) &&
         observed.date_raw == stamp.date_raw && observed.paused == stamp.paused;
+    const auto read_completed_ms = GetTickCount64();
+    observer_last_read_ms_.store(read_completed_ms - read_started_ms);
+    observer_last_read_available_.store(available);
+    observer_completed_ms_.store(read_completed_ms);
     std::lock_guard guard(snapshot_mutex_);
     if (!available) {
       snapshot_.reset();
@@ -89,6 +134,8 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     next_snapshot_sample_ms_ = GetTickCount64() + 250;
     return true;
   } catch (...) {
+    observer_last_read_available_.store(false);
+    observer_completed_ms_.store(GetTickCount64());
     try { std::lock_guard guard(snapshot_mutex_); snapshot_.reset(); snapshot_epoch_ = 0; }
     catch (...) {}
     return false;
@@ -126,7 +173,7 @@ bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {
     const auto submitted = ck3_11906::TrySubmitMainThreadQueryV1(
         *mailbox_, &ExecuteSemanticAdapter12002, &request.envelope, request.envelope.ticket);
     if (submitted != ck3_11906::MainThreadQuerySubmitResultV1::submitted) return false;
-    auto wait = ck3_11906::WaitForMainThreadQueryV1(*mailbox_, request.envelope.ticket, 8'000);
+    auto wait = ck3_11906::WaitForMainThreadQueryV1(*mailbox_, request.envelope.ticket, 30'000);
     while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
       wait = ck3_11906::WaitForMainThreadQueryV1(*mailbox_, request.envelope.ticket, 2'000);
     const auto reclaimed = ck3_11906::ReclaimMainThreadQueryV1(*mailbox_, request.envelope.ticket);
@@ -169,9 +216,38 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     case SemanticOperation::termination_options: request.result = static_cast<std::int32_t>(native.read_war_termination_options(request.id, request.termination_options)); break;
     case SemanticOperation::termination_terms: request.result = static_cast<std::int32_t>(native.read_war_termination_terms(request.id, request.termination_terms)); break;
     case SemanticOperation::exit_terms: request.result = static_cast<std::int32_t>(native.read_war_termination_exit_terms(request.id, request.exit_terms)); break;
+    case SemanticOperation::marriage_diagnostic:
+      request.bool_result = CollectMarriageProbe12002(
+          BindContextImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), kExecutableSha256),
+          request.diagnostic_json);
+      break;
+    case SemanticOperation::fixture_run_inbox:
+      request.console_result = RunPrivateInboxFixture(request.console_fixture);
+      request.diagnostic_json = SerializeInboxFixture(request.console_result);
+      break;
     }
     return FinishQueryMailbox(*envelope);
   } catch (...) { return false; }
+}
+
+bool WorkerAdapter::read_marriage_diagnostic(std::string &output) const noexcept {
+  output.clear();
+  SemanticRequest request{};
+  request.operation = SemanticOperation::marriage_diagnostic;
+  if (!Run(request)) return false;
+  output = std::move(request.diagnostic_json);
+  return !output.empty();
+}
+bool WorkerAdapter::run_inbox_fixture(std::string &output) const noexcept {
+  output.clear();
+  SemanticRequest request{};
+  request.operation = SemanticOperation::fixture_run_inbox;
+  request.console_fixture = console_fixture_;
+  request.envelope.snapshot_comparison =
+      QuerySnapshotComparison12002::fixture_inbox_mutation;
+  if (!Run(request)) return false;
+  output = std::move(request.diagnostic_json);
+  return request.console_result == ConsoleFixtureResult::executed;
 }
 game::SelectEventOptionResult WorkerAdapter::submit_select_event_option(std::int32_t option_index) const noexcept {
   SemanticRequest request{};
@@ -300,6 +376,7 @@ game::ReadCombatSimulationInputsV3Result WorkerAdapter::read_combat_simulation_i
 }
 game::ReadWarTerminationOptionsResult WorkerAdapter::read_war_termination_options(std::int32_t war_id, game::WarTerminationOptionsSnapshot &output) const noexcept {
   output = {}; SemanticRequest request{}; request.operation = SemanticOperation::termination_options;
+  request.envelope.snapshot_comparison = QuerySnapshotComparison12002::war_termination_options;
   request.id = war_id;
   if (!Run(request)) return game::ReadWarTerminationOptionsResult::unavailable;
   output = std::move(request.termination_options); return static_cast<game::ReadWarTerminationOptionsResult>(request.result);

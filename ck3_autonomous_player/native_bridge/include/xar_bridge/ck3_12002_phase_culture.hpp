@@ -16,8 +16,11 @@ inline constexpr std::uintptr_t kCultureStoreSlot = 0x5D1E2F0;
 inline constexpr std::uintptr_t kCultureFallbackSlot = 0x5D1E2E8;
 inline constexpr std::uintptr_t kInnovationDatabaseSlot = 0x5D1DEE8;
 inline constexpr std::uintptr_t kInnovationFallbackSlot = 0x5D202C8;
-inline constexpr std::uintptr_t kTraditionDatabaseSlot = 0x5D1EB18;
-inline constexpr std::uintptr_t kTraditionFallbackSlot = 0x5D202A8;
+inline constexpr std::uintptr_t kTraditionDatabaseSlot = 0x5D1DEE0;
+inline constexpr std::uintptr_t kTraditionFallbackSlot = 0x5D1FB50;
+inline constexpr std::uintptr_t kTraditionDatabaseRva = 0xA14910;
+inline constexpr std::uintptr_t kTraditionIndexedLookupRva = 0x225D520;
+inline constexpr std::uintptr_t kTraditionScopeResolverRva = 0x2B156B0;
 inline constexpr std::uintptr_t kDynastyPerkDatabaseSlot = 0x5D1FC00;
 inline constexpr std::uintptr_t kCharacterPerkDatabaseSlot = 0x5C67128;
 inline constexpr std::uintptr_t kCharacterKnightContextRva = 0x28BFC70;
@@ -82,6 +85,7 @@ Bindings BindImage(std::uintptr_t image_base,
 // Only the non-religious fields are written; all faith fields are untouched.
 bool ReadPhaseCharacterCultureRelations(
     const Bindings &bindings, void *character,
-    game::CombatPhaseCharacterV3 &output) noexcept;
+    game::CombatPhaseCharacterV3 &output,
+    std::string *unavailable_reason = nullptr) noexcept;
 
 } // namespace xar::ck3_12002::phase_culture
