@@ -91,10 +91,12 @@ Z:\ck3_mod_rewrite\_runtime\pytest-portable-opt-1789010595710
 | `metadata/source-working-tree.tar.gz` | 源码/相关工作树快照；`C75AEE3B9A48B7CA8466393CCD5F90BB504FF62445D228E0117ECBB48C775E7D`。 |
 | `metadata/build-identity.json`、`game-data-*.json`、`steam-build.json` | 三份 exact build、PE/launcher/Steam 及数据指纹。 |
 | `metadata/state-bindings.json`、`adapter-capabilities-static.json` | 当前 checkpoint/seed 的真实绑定及静态能力集合。 |
-| `cleanup-result.json` | 213 ????? 13 ??????`EC622148E0ADC556854B44D13C77F7457B91EA668515A12AC84BA0ADCAAFC59B`? |
+| `cleanup-result.json` | 213 个成功项与 13 个权限失败项；`EC622148E0ADC556854B44D13C77F7457B91EA668515A12AC84BA0ADCAAFC59B`。 |
 | `worktree-cleanup-result.json` | 10 个成功 worktree、HEAD 和大小；`3FDDD4E1D4611CE90D7A4834C3A007A441E263F9AC62AACD80D90534F3E70C6D`。 |
 | `worktree-inventory.json`、`worktree-cleanup-assessment.json` | 全部登记与本次具体保留/删除依据。 |
 
 可复用采集工具为 [`freeze_ck3_migration_metadata.py`](../tools/freeze_ck3_migration_metadata.py)，用于已有核心归档后的 build/data/source metadata 冻结；它不会复制核心 state，要求已有 `autoplayer-state`，也不能代替游戏实机验收。清理执行器为 [`cleanup_ck3_obsolete_outputs.ps1`](../tools/cleanup_ck3_obsolete_outputs.ps1)，消费本轮确切 candidate 清单，管理员脚本只包含实际失败目标。
 
 本次验证为真实复制 hash、实际 metadata capture、真实删除结果、PowerShell 语法与文档检查；未运行 CK3 或重建 bridge。下一步等待实际新 build，执行 M0 的新身份/差异表，再推进 M1/M2；无需重跑本轮冻结。
+
+用户随后追加的 Z 盘根目录清理另记于 [2026-09-30 根目录清理](z-drive-root-cleanup-2026-09-30.md)：131 个构建目录与 28 个旧工作树、16.35 GB 原始占用、337 MB 留存归档，本轮无权限失败；与上面的仓库内清理分别统计。
