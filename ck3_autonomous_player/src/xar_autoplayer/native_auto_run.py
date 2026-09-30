@@ -96,7 +96,12 @@ from .construction_formal_consumer import (
 )
 from .family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+    RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
     read_family_marriage_ledger,
+)
+from .current_first_heir_betrothal_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP,
+    consume_current_first_heir_betrothal_result_checkpoint,
 )
 from .first_heir_companion_paused_observer import (
     observe_first_heir_companion_after_child,
@@ -1145,6 +1150,9 @@ def native_auto_run(
             allow_private_construction_formal_trial is True
         )
         driver.allow_private_family_marriage_formal_trial = (
+            allow_private_family_marriage_formal_trial is True
+        )
+        driver.allow_private_current_first_heir_betrothal_fulfillment = (
             allow_private_family_marriage_formal_trial is True
         )
         driver.allow_private_activity_stage5_feast_full_cost_query = (
@@ -2814,6 +2822,7 @@ def native_auto_run(
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
             if step in {PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+                        PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP,
                         PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP,
                         PRIVATE_CHILD_DEFAULT_SUBMIT_STEP}:
                 if terminal_pending or modal_decision_pending:
@@ -2845,12 +2854,16 @@ def native_auto_run(
                                               if step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP else
                                               "player_child_matrilineal_submitted_pending"
                                               if child_proposal else
+                                              "current_first_heir_betrothal_submitted_pending"
+                                              if step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP else
                                               "first_heir_marriage_submitted_pending"),
                                     "pending_action": pending_fence, **checkpoint})
                 evidence.append("child_default_pending_checkpoint_saved"
                                 if step == PRIVATE_CHILD_DEFAULT_SUBMIT_STEP else
                                 "child_matrilineal_pending_checkpoint_saved"
                                 if child_proposal else
+                                "current_betrothal_fulfillment_pending_checkpoint_saved"
+                                if step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP else
                                 "first_heir_marriage_pending_checkpoint_saved")
                 after_snapshot = checkpoint_snapshot
                 after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
@@ -3183,6 +3196,7 @@ def native_auto_run(
                 and not war_termination_submission_pending
                 and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
                 and step != PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP
+                and step != PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP
                 and step != PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
                 and step != PRIVATE_CHILD_DEFAULT_SUBMIT_STEP
                 and step != PRIVATE_PRISONER_RANSOM_SUBMIT_STEP
@@ -3303,6 +3317,43 @@ def native_auto_run(
                 raise AgentError(
                     "read-only native query changed its paused semantic frame"
                 )
+            if (step == PRIVATE_FAMILY_MARRIAGE_RESULT_STEP
+                    and isinstance(plan, dict)
+                    and plan.get("current_betrothal_fulfillment") is True):
+                # A fulfillment read may retain the old betrothal as pending.
+                # Save that same frame beside its updated ledger before a cold PID.
+                if terminal_pending or modal_decision_pending:
+                    raise AgentError("betrothal fulfillment read cannot checkpoint on a decision frame")
+                family_ledger = read_family_marriage_ledger(driver.state_dir)
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service, driver, spec.profile_dir / "save games",
+                    session_done=session_done, session_state=session_state,
+                    timeout_seconds=min(readiness_timeout,
+                                        max(0.001, run_deadline - time.monotonic())),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                if (checkpoint.get("date_raw") != before.get("date_raw")
+                        or checkpoint.get("episode_run_id") != before.get("episode_run_id")
+                        or read_family_marriage_ledger(driver.state_dir) != family_ledger):
+                    raise AgentError("betrothal fulfillment readback checkpoint changed pair or date")
+                consume_current_first_heir_betrothal_result_checkpoint(
+                    driver, before=before, snapshot=checkpoint_snapshot,
+                )
+                counts["checkpoint"] += 1
+                result = outcome.get("result")
+                checkpoints.append({
+                    "turn_index": turn_index,
+                    "phase": "current_betrothal_fulfillment_result_" + str(
+                        result.get("status") if isinstance(result, dict) else None),
+                    **checkpoint,
+                })
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
+                current_attempt["after"] = _public_binding(after)
+                turns[-1]["after"] = _public_binding(after)
+                turns[-1]["evidence"].append(
+                    "current_betrothal_fulfillment_readback_checkpoint_saved")
             if step in {
                 PRIVATE_CHILD_DEFAULT_RESULT_STEP,
                 PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP,
@@ -8453,6 +8504,13 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "family_marriage_private_diagnostic",
         "family_marriage_current_relationship",
         "family_marriage_cold_recovery",
+        "current_betrothal_fulfillment",
+        "current_betrothal_relationship",
+        "current_betrothal_choice",
+        "current_betrothal_pending",
+        "current_betrothal_cold_recovery",
+        "current_betrothal_status",
+        "current_betrothal_result_consumed",
         "child_matrilineal_legality",
         "child_matrilineal_value",
         "child_matrilineal_pending",
@@ -8876,6 +8934,8 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "heir_character_id",
         "candidate_character_id",
         "recipient_character_id",
+        "fulfill_existing_betrothal",
+        "matrilineal_option_selected",
         "outbound_pending_state",
         "outbound_pending_id",
         "outbound_pending_age_days",
@@ -9421,6 +9481,8 @@ def _verify_pending_family_marriage_checkpoint(
                  or pending.get("matrilineal_option_selected") is True)
             and (expected_step != PRIVATE_CHILD_DEFAULT_SUBMIT_STEP
                  or pending.get("matrilineal_option_selected") is False)
+            and (expected_step != PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP
+                 or pending.get("fulfill_existing_betrothal") is True)
             and isinstance(played, dict)
             and pending.get("played_character_id") == played.get("character_id")):
         raise AgentError("first-heir marriage ACK lacks a paired pending checkpoint")
@@ -9433,6 +9495,8 @@ def _verify_pending_family_marriage_checkpoint(
                and pending["recipient_character_id"] > 0 else {}),
             "date_raw": checkpoint["date_raw"],
             "episode_run_id": checkpoint["episode_run_id"],
+            **({"fulfill_existing_betrothal": True}
+                if expected_step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP else {}),
             **({"matrilineal_option_selected": True}
                if expected_step == PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
                and pending.get("matrilineal_option_selected") is True else {}),

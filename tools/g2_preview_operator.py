@@ -74,6 +74,7 @@ CONSTRUCTION_RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 FAMILY_PENDING_V1_SCHEMA = "xar.ck3.first-heir-marriage-formal.v1"
 FAMILY_ACTION_V1_SCHEMA = "xar.ck3.observed-first-heir-marriage-private-action.v1"
 FAMILY_SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
+CURRENT_BETROTHAL_SUBMIT_STEP = "submit-current-first-heir-betrothal-fulfillment-v1-private"
 CHILD_MATRILINEAL_SCHEMA = "xar.ck3.player-child-matrilineal-private-action.v1"
 CHILD_MATRILINEAL_SUBMIT_STEP = "submit-player-child-matrilineal-marriage-v1-private"
 CHILD_MATRILINEAL_PROOF_SCHEMA = "xar.ck3.child-matrilineal-formal-job/v1"
@@ -789,6 +790,11 @@ def family_pending_sidecar_pair(
         raise ValueError("family sidecar lacks saved pending proposal proof")
     submit_report = reports[0]
     pending = sidecar.get("pending")
+    fulfillment = isinstance(pending, dict) and pending.get("fulfill_existing_betrothal") is True
+    submit_step = CURRENT_BETROTHAL_SUBMIT_STEP if fulfillment else FAMILY_SUBMIT_STEP
+    submit_phase = ("current_first_heir_betrothal_submitted_pending" if fulfillment
+                    else "first_heir_marriage_submitted_pending")
+    choice_key = "current_betrothal_choice" if fulfillment else "family_marriage_choice"
     checkpoint = driver.get("last_checkpoint")
     report_checkpoints = submit_report.get("checkpoints")
     auto_run = submit_report.get("auto_run")
@@ -830,7 +836,7 @@ def family_pending_sidecar_pair(
         raise ValueError("family pending identity disagrees with paired save")
     submitted_checkpoints = [row for row in report_checkpoints
                 if isinstance(row, dict)
-                and row.get("phase") == "first_heir_marriage_submitted_pending"
+                and row.get("phase") == submit_phase
                 and row.get("date_raw") == source_date
                 and row.get("status") == "saved"
                 and isinstance(row.get("sha256"), str)
@@ -843,9 +849,11 @@ def family_pending_sidecar_pair(
                 and row["pending_action"].get("heir_character_id") == heir
                 and row["pending_action"].get("candidate_character_id") == candidate
                 and row["pending_action"].get("recipient_character_id") == recipient
-                and row["pending_action"].get("episode_run_id") == episode]
+                and row["pending_action"].get("episode_run_id") == episode
+                and (not fulfillment
+                     or row["pending_action"].get("fulfill_existing_betrothal") is True)]
     submitted = [row for row in turns if isinstance(row, dict)
-                 and row.get("selected_step") == FAMILY_SUBMIT_STEP]
+                 and row.get("selected_step") == submit_step]
     if len(submitted_checkpoints) != 1 or len(submitted) != 1:
         raise ValueError("family proposal is not proven by one saved formal submit")
     source = submitted_checkpoints[0]
@@ -864,8 +872,11 @@ def family_pending_sidecar_pair(
             or result.get("recipient_character_id") != recipient
             or result.get("episode_run_id") != episode
             or not isinstance(plan, dict)
-            or not isinstance(plan.get("family_marriage_choice"), dict)
-            or plan["family_marriage_choice"].get("candidate_character_id") != candidate):
+            or not isinstance(plan.get(choice_key), dict)
+            or plan[choice_key].get("candidate_character_id") != candidate
+            or (fulfillment and (
+                result.get("fulfill_existing_betrothal") is not True
+                or plan.get("current_betrothal_fulfillment") is not True))):
         raise ValueError("family proposal is not proven by one saved formal submit")
     previous_checkpoint = None
     previous_pid = None
@@ -895,7 +906,7 @@ def family_pending_sidecar_pair(
                     or fixed_seed.get("history_index") != previous_checkpoint.get("history_index")
                     or fixed_seed.get("saved_date_raw") != previous_checkpoint.get("date_raw")
                     or any(isinstance(row, dict)
-                           and row.get("selected_step") == FAMILY_SUBMIT_STEP
+                           and row.get("selected_step") == submit_step
                            for row in run_turns)):
                 raise ValueError("family proof chain does not continue prior checkpoint")
         saved = [row for row in checkpoints if isinstance(row, dict)
@@ -939,6 +950,8 @@ def family_pending_sidecar_pair(
                     or row["result"].get("status") not in {"pending", "accepted_pending"}
                     or row["result"].get("heir_character_id") != heir
                     or row["result"].get("candidate_character_id") != candidate
+                    or (fulfillment
+                        and row["result"].get("fulfill_existing_betrothal") is not True)
                     for row in later_reads)):
                 raise ValueError("later paired save lacks pending family result query")
         previous_checkpoint = paired
@@ -976,6 +989,9 @@ def family_resolved_sidecar_pair(
             or pending.get("episode_run_id") != episode
             or pending.get("heir_character_id") != heir
             or pending.get("candidate_character_id") != candidate
+            or (pending.get("fulfill_existing_betrothal") is True
+                and (resolved.get("status") != "marriage"
+                     or resolved.get("fulfill_existing_betrothal") is not True))
             or resolved.get("episode_run_id") != episode
             or type(heir) is not int or heir <= 0 or heir == actor
             or type(candidate) is not int or candidate <= 0
