@@ -6,7 +6,7 @@
 
 - 仓库导航已通过exact master树定位：[状态投影 current-state.json](../project-state/current-state.json)、[G2要求JSON](../autonomous-agent-progress/g2-requirements-v1.json)、[G2要求与执行索引](../autonomous-agent-progress/g2-requirements-and-execution.md)。状态投影只指向live source，不能替代现场身份；本文不改这些文件。
 - 本次仅收口既有 **BA5 候选、3 paused query、婚配动作 OFF、日期推进 OFF**，随后交付文档；没有后续婚配动作、日期推进或新 cold 包。下文“下一步”留给接手者，不表示本执行者已启动。
-- 非战争仍以 LIFE → ECON → FAMILY 为常规优先级，JOINT 并行；当前实际婚约 application 缺口提升为 P0。战争公式、路线与模型维护留给战争维护者，本执行者只消费 master 已交付接口。不扩宗教策略或全矩阵。
+- 非战争仍以 LIFE → ECON → FAMILY 为常规优先级，JOINT 并行；本轮婚约 application 观测缺口曾升为 P0，已由 R0407 窄关闭。战争公式、路线与模型维护留给战争维护者，本执行者只消费 master 已交付接口。不扩宗教策略或全矩阵。
 - **用户已明确撤销检查别人机器 CK3 的要求**：不要询问或检查另一台战争机器。沿本机现有 owner、受管进程、冻结制品和正式实例队列操作；不得根据本文旧状态抢占本机实例。
 - CK3 默认最小化，只有必要加载/视觉验收/输入阶段短时显示；等待代码、CI或外部结果时最小化。当前身份、owner、RED、心跳与窗口状态以实际 live source 和终态回执为准，不由 PID 存活或旧报告推断。
 - 所有新源码/temp/cache/build/日志在实际可写非 C 盘，进程级 TEMP/TMP 与所需工具缓存一并绑定，不改 HOME/USERPROFILE。根 `Z:\ck3_mod_rewrite` 是历史脏现场，不能 reset、全量 stash/clean 或覆盖。
@@ -36,7 +36,7 @@ R0406 的 LIFE 同帧focus/XP/progress正式投影已达到窄 **production-live
 | --- | --- |
 | NW-LIFE | 开局/继承focus gate、有效focus保持、native revision机会刷新、pending独立receipt与下一turn消费路径已存在；本轮trigger源码追踪未找到新确定漏消费。#759补focusless低阶军事教育最小分支，#767补同帧XP正式report投影；当前0点正常no-op。没有新focus/perk提交或新perk收益。 |
 | NW-ECON | 复用既有私有建设typed提交/receipt/恢复资格。当前farm_estates_01成本180金、authored月收入0.70是**只读机会**；warfuturecost/sharedcashcommitment缺项仍null，战时hold。无新扣款、开工、完工或实得收益；不要为完整ROI无限延后独立合法和平建设。 |
-| NW-FAMILY | Guy38988→37909/recipient34332，age3/cutoff7、pending/material_result=false/outbound active；query ACK的accepted=true不是婚配接受。turn2 checkpoint native4/h4019后turn3正式query，无重提。首继承人38822↔38718双向同帧betrothal/no-newproposal，未转婚或形成新联盟。 |
+| NW-FAMILY | Guy38988→37909/recipient34332，age3/cutoff7、pending/material_result=false/outbound active；query ACK的accepted=true不是婚配接受。R0406历史turn2 checkpoint native4/h4019后turn3正式query，无重提。首继承人38822↔38718双向同帧betrothal/no-newproposal，未转婚或形成新联盟。 |
 | 当前婚约观测 | R0406真实 **current_betrothal_application_main_unavailable/null**保留历史失败；#782修复未注册executors68/69后，**R0407实际available**且adult/final采样/完整CanSend/answer/十cost/lineality均读回。14<16、CanSend=false/not_ready为合法负结果，原P0观测RED窄关闭；未开正式婚配消费者，动作闭环仍待正常合法场景。 |
 | NW-JOINT | m5 selector/dispatch/shortlist已存在；复用真实value与同帧资源承诺，pending婚配角色资源保留一次。缺战争现金/长期义务输入不能填零；候选数量、selected_step或ACK不代替正式消费。本轮无新联合资源typed动作。 |
 | NW-ACTIVITY | R0403 counter1077→1555、同fingerprint的旧误判已窄关闭；opinion=-100、未selected、join负/arrival晚/CanStart=false保持hold。requested1但普通auto attempted/successful0/0、turns[]；无Invite/Start/下一普通turn/日期。H3928研究不替Robert。 |
