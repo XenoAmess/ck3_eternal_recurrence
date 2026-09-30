@@ -529,6 +529,12 @@ def _positive_seconds(value: object, name: str) -> float:
     return float(value)
 
 
+def _seal_decoded_command_result(path: Path, payload: object) -> None:
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(payload, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+
+
 def query_h3937_stationary_route_contact_once(
     spec: EnvironmentSpec,
     *,
@@ -545,6 +551,7 @@ def query_h3937_stationary_route_contact_once(
     query_gate: Callable[[], None] | None = None,
     raw_query_envelope_path: Path | None = None,
     native_raw_result_path: Path | None = None,
+    decoded_command_result_path: Path | None = None,
 ) -> dict[str, object]:
     """Launch one managed session, issue one private query, and recycle CK3."""
 
@@ -555,6 +562,7 @@ def query_h3937_stationary_route_contact_once(
         or not callable(query_gate) or before_process_create is None
         or not isinstance(raw_query_envelope_path, Path) or not raw_query_envelope_path.is_absolute()
         or not isinstance(native_raw_result_path, Path) or not native_raw_result_path.is_absolute()
+        or not isinstance(decoded_command_result_path, Path) or not decoded_command_result_path.is_absolute()
     ):
         raise AgentError("H3937 single query requires the verified pair, root GO and process/query gates")
     if admitted_pair is None and RECEIVER_ASSETS_AND_SCOPE_VERIFIED is not True:
@@ -700,6 +708,9 @@ def query_h3937_stationary_route_contact_once(
             succession_lifecycle_binding=lifecycle,
         )
         if admitted_pair is not None:
+            driver.route_contact_command_result_observer = (
+                lambda payload: _seal_decoded_command_result(decoded_command_result_path, payload)
+            )
             def preserve_native_result(result: object) -> None:
                 with native_raw_result_path.open("x", encoding="utf-8", newline="\n") as stream:
                     json.dump({"query_result": result}, stream, ensure_ascii=False, indent=2)

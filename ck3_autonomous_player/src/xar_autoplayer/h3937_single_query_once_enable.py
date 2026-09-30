@@ -323,6 +323,7 @@ def run_once(config: dict[str, object]) -> dict[str, object]:
     keeper = screen_keeper_for_runner(cold, owner["last_sequence"])
     raw_path = cold.OUTPUT / "raw-query-envelope.json"
     native_raw_path = cold.OUTPUT / "native-query-result.json"
+    decoded_path = cold.OUTPUT / "decoded-command-result.json"
     report = None
     error = None
     def query_gate() -> None:
@@ -344,6 +345,7 @@ def run_once(config: dict[str, object]) -> dict[str, object]:
             managed_stop_event=keeper.abort, query_gate=query_gate,
             raw_query_envelope_path=raw_path,
             native_raw_result_path=native_raw_path,
+            decoded_command_result_path=decoded_path,
         )
         cold._write_json(cold.OUTPUT / "query-report.json", report)
     except BaseException as caught:
@@ -367,6 +369,8 @@ def run_once(config: dict[str, object]) -> dict[str, object]:
               "raw_query_envelope_sha256": cold._sha(raw_path) if raw_path.is_file() else None,
               "native_query_result_path": str(native_raw_path) if native_raw_path.is_file() else None,
               "native_query_result_sha256": cold._sha(native_raw_path) if native_raw_path.is_file() else None,
+              "decoded_command_result_path": str(decoded_path) if decoded_path.is_file() else None,
+              "decoded_command_result_sha256": cold._sha(decoded_path) if decoded_path.is_file() else None,
               "process_inventory_after": after, "processes_gone": gone,
               "six_read_contracts_completed": 0, "action_authorized": False,
               "date_advance_authorized": False}
@@ -401,5 +405,5 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError, RuntimeError, query.AgentError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    print(json.dumps(result, ensure_ascii=True, indent=2))
     return 0 if result.get("ok", True) is True else 1
