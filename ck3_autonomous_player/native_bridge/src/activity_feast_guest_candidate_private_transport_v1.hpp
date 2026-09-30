@@ -15,6 +15,8 @@ inline constexpr std::string_view kActivityFeastGuestCandidatePrivateStepV1 =
     "query-activity-feast-guest-candidate-v1";
 inline constexpr std::string_view kActivityFeastGuestRouteProofPrivateStepV1 =
     "query-activity-feast-stage5-guest-route-proof-v1-private";
+inline constexpr std::string_view kActivityFeastGuestTargetPrivateStepV1 =
+    "query-activity-feast-stage5-guest-target-v1-private";
 
 struct ActivityFeastGuestCandidatePrivateQueryV1 {
   MainThreadQueryMailboxV1 *mailbox = nullptr;
@@ -24,6 +26,7 @@ struct ActivityFeastGuestCandidatePrivateQueryV1 {
   std::uint64_t expected_revision = 0;
   bridge::ActivityCostSlot12ObserverV1 *passive_cost = nullptr;
   bool route_proof = false;
+  std::int32_t target_character_id = 0;
   bridge::ActivityFeastGuestCandidateResultV1 candidate{};
   bridge::ActivityFeastGuestJoinResultV1 selected_guests{};
   bridge::ActivityStage5CanStartResultV1 start_gate{};
@@ -39,6 +42,8 @@ bool ExecuteActivityFeastGuestCandidatePrivateV1(
 std::string SerializeActivityFeastGuestCandidatePrivateV1(
     const ActivityFeastGuestCandidatePrivateQueryV1 &query);
 std::string SerializeActivityFeastGuestRouteProofPrivateV1(
+    const ActivityFeastGuestCandidatePrivateQueryV1 &query);
+std::string SerializeActivityFeastGuestTargetPrivateV1(
     const ActivityFeastGuestCandidatePrivateQueryV1 &query);
 
 } // namespace xar::ck3_11906

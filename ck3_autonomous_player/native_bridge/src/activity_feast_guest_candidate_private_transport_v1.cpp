@@ -147,6 +147,15 @@ std::string FingerprintHex(std::uint64_t value) {
   return output;
 }
 
+bool TargetIsSelected(const bridge::ActivityFeastGuestJoinResultV1 &selected,
+                      std::int32_t target_character_id) noexcept {
+  for (std::uint32_t index = 0; index < selected.selected_nonhost_count;
+       ++index) {
+    if (selected.rows[index].character_id == target_character_id) return true;
+  }
+  return false;
+}
+
 } // namespace
 
 bool ExecuteActivityFeastGuestCandidatePrivateV1(
@@ -210,7 +219,7 @@ bool ExecuteActivityFeastGuestCandidatePrivateV1(
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true, true};
     query->candidate = bridge::ReadActivityFeastGuestCandidateV1(
-        environment, expected);
+        environment, expected, query->target_character_id);
     if (query->route_proof) {
       query->selected_guests = bridge::ReadActivityFeastGuestJoinV1(
           environment, expected);
@@ -220,13 +229,18 @@ bool ExecuteActivityFeastGuestCandidatePrivateV1(
       query->start_gate = bridge::ReadActivityStage5CanStartV1(
           start_environment, expected);
       const auto repeated = bridge::ReadActivityFeastGuestCandidateV1(
-          environment, expected);
+          environment, expected, query->target_character_id);
       const auto candidate_complete =
           query->candidate.status ==
               bridge::ActivityFeastGuestCandidateStatusV1::observed ||
-          query->candidate.status ==
-              bridge::ActivityFeastGuestCandidateStatusV1::
-                  no_qualified_candidate;
+          (query->target_character_id == 0 &&
+           query->candidate.status ==
+               bridge::ActivityFeastGuestCandidateStatusV1::
+                   no_qualified_candidate) ||
+          (query->target_character_id != 0 &&
+           query->candidate.status ==
+               bridge::ActivityFeastGuestCandidateStatusV1::
+                   target_not_filtered);
       query->route_proof_consistent =
           candidate_complete && repeated == query->candidate &&
           query->selected_guests.status ==
@@ -236,7 +250,13 @@ bool ExecuteActivityFeastGuestCandidatePrivateV1(
           query->selected_guests.frame == query->candidate.frame &&
           query->start_gate.frame == query->candidate.frame &&
           query->selected_guests.normal_refresh_sequence ==
-              query->candidate.normal_refresh_sequence;
+              query->candidate.normal_refresh_sequence &&
+          (query->target_character_id == 0 ||
+           query->candidate.status !=
+               bridge::ActivityFeastGuestCandidateStatusV1::observed ||
+           query->candidate.selected_member ==
+               TargetIsSelected(query->selected_guests,
+                                query->target_character_id));
     }
     query->completed = true;
     return true;
@@ -384,6 +404,74 @@ std::string SerializeActivityFeastGuestRouteProofPrivateV1(
                      candidate.status ==
                          bridge::ActivityFeastGuestCandidateStatusV1::observed
                  ? "false" : "null";
+  payload += ",\"authored_rule_membership\":null,"
+             "\"native_guest_route_qualified\":false,"
+             "\"read_only\":true,\"advertised\":false}";
+  return payload;
+}
+
+std::string SerializeActivityFeastGuestTargetPrivateV1(
+    const ActivityFeastGuestCandidatePrivateQueryV1 &query) {
+  if (!query.completed || !query.failure.empty() || query.frame_changed ||
+      !query.route_proof || query.target_character_id <= 0)
+    return {};
+  const auto &target = query.candidate;
+  const auto observed = query.route_proof_consistent;
+  const auto member = observed &&
+      target.status == bridge::ActivityFeastGuestCandidateStatusV1::observed;
+  std::string payload =
+      "{\"schema\":\"activity-feast-stage5-guest-target-private-v1\","
+      "\"snapshot_revision\":" + std::to_string(query.expected_revision) +
+      ",\"date_raw\":" + std::to_string(query.expected_snapshot.date_raw) +
+      ",\"actor_character_id\":" +
+      std::to_string(query.expected_snapshot.played_character_id) +
+      ",\"activity_key\":\"activity_feast\",\"planning_stage\":5,"
+      "\"status\":\"" + std::string(observed ? "observed" : "unavailable") +
+      "\",\"target_status\":\"" +
+      std::string(bridge::ActivityFeastGuestCandidateStatusKeyV1(target.status)) +
+      "\",\"target_character_id\":" +
+      std::to_string(query.target_character_id) +
+      ",\"selected_status\":\"" +
+      std::string(bridge::ActivityFeastGuestJoinStatusKeyV1(
+          query.selected_guests.status)) +
+      "\",\"start_gate_status\":\"" +
+      std::string(bridge::ActivityStage5CanStartStatusKeyV1(
+          query.start_gate.status)) +
+      "\",\"normal_refresh_sequence\":";
+  payload += observed ? std::to_string(target.normal_refresh_sequence) : "null";
+  payload += ",\"source_fingerprint\":";
+  payload += observed
+                 ? "\"" + FingerprintHex(target.source_fingerprint) + "\""
+                 : "null";
+  payload += ",\"active_rule_count\":";
+  payload += observed ? std::to_string(target.active_rule_count) : "null";
+  payload += ",\"filtered_group_count\":";
+  payload += observed ? std::to_string(target.filtered_group_count) : "null";
+  payload += ",\"selected_row_count\":";
+  payload += observed ? std::to_string(target.selected_row_count) : "null";
+  payload += ",\"native_filtered_member\":";
+  payload += observed ? (member ? "true" : "false") : "null";
+  payload += ",\"selected_member\":";
+  payload += observed
+                 ? (TargetIsSelected(query.selected_guests,
+                                     query.target_character_id) ? "true" : "false")
+                 : "null";
+  payload += ",\"planner_join_raw\":";
+  payload += member ? std::to_string(target.planner_join_raw) : "null";
+  payload += ",\"travel_days\":";
+  payload += member ? std::to_string(target.travel_days) : "null";
+  payload += ",\"arrival_raw\":";
+  payload += member ? std::to_string(target.arrival_raw) : "null";
+  payload += ",\"planned_start_raw\":";
+  payload += member ? std::to_string(target.planned_start_raw) : "null";
+  payload += ",\"positive_join\":";
+  payload += member ? (target.planner_join_raw > 0 ? "true" : "false") : "null";
+  payload += ",\"timely_arrival\":";
+  payload += member ? (target.arrival_raw <= target.planned_start_raw
+                           ? "true" : "false") : "null";
+  payload += ",\"final_can_start\":";
+  payload += observed ? (query.start_gate.final_can_start ? "true" : "false")
+                      : "null";
   payload += ",\"authored_rule_membership\":null,"
              "\"native_guest_route_qualified\":false,"
              "\"read_only\":true,\"advertised\":false}";

@@ -63,6 +63,9 @@ from .succession_transition_contract import (
 )
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
+from .activity_feast_guest_target_private_transport import (
+    query_activity_feast_guest_target_private_v1,
+)
 from .war_entry_contract import normalize_war_entry_target_ids
 
 
@@ -1382,6 +1385,17 @@ def create_server(
             return driver.query_player_child_marriage_value_private_v1(
                 legality=legality, candidate_character_id=candidate_character_id,
                 request_matrilineal_option=request_matrilineal_option,
+            )
+
+    if getattr(driver, "allow_private_activity_feast_guest_target_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_guest_target_private_v1(
+            expected_revision: int, target_character_id: int,
+        ) -> dict[str, object]:
+            """Read one full feast guest ID on the current paused Stage-5 frame."""
+            return query_activity_feast_guest_target_private_v1(
+                driver, expected_revision=expected_revision,
+                target_character_id=target_character_id,
             )
 
     @server.tool()

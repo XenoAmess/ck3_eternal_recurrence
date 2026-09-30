@@ -744,6 +744,37 @@ class G2PreviewOperatorTest(unittest.TestCase):
         self.assertNotIn("--activate-activity-feast-guest-rule", command)
         self.assertNotIn("--private-activity-feast-stage5-start-read", command)
 
+    def test_feast_target_member_combines_same_id_rule_and_opinion_without_start(self) -> None:
+        parsed = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "Z:/candidate/manifest.json",
+            "--output", "Z:/candidate/run",
+            "--private-activity-feast-stage1-confirm",
+            "--private-activity-feast-stage2-location-province", "2619",
+            "--private-activity-feast-stage2-destination-province", "2619",
+            "--private-activity-feast-stage5-full-cost-read",
+            "--private-activity-feast-guest-target-character-id", "43699",
+            "--private-activity-feast-guest-rule-key", "activity_invite_rule_vassals",
+            "--private-activity-feast-guest-rule-candidate-id", "43699",
+            "--private-activity-feast-guest-opinion-character-id", "43699",
+        ])
+        self.assertEqual(parsed.private_activity_feast_guest_target_character_id, 43699)
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=1, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None,
+            private_activity_feast_stage1_confirm=True,
+            private_activity_feast_stage2_location_provinces=(2619,),
+            private_activity_feast_stage2_destination_province=2619,
+            private_activity_feast_stage5_full_cost_read=True,
+            private_activity_feast_guest_target_character_id=43699,
+            private_activity_feast_guest_rule_key="activity_invite_rule_vassals",
+            private_activity_feast_guest_rule_candidate_id=43699,
+            private_activity_feast_guest_opinion_character_id=43699,
+        )
+        self.assertIn("--private-activity-feast-guest-target-character-id", command)
+        self.assertEqual(command.count("43699"), 3)
+        self.assertNotIn("--private-activity-feast-stage5-start-read", command)
+        self.assertNotIn("--allow-private-activity-feast-stage5-start-action", command)
+
     def test_child_pending_recovery_routes_one_formal_life_turn(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",
