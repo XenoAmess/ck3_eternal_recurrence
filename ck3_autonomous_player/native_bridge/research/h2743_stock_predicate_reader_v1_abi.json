@@ -1,0 +1,348 @@
+{
+  "schema": "xar.ck3.h2743.stock_predicate_reader_abi.v1",
+  "status": "SOURCE_CANDIDATE_ONLY_NO_RUNTIME",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "native_calls": {
+    "lookup_identifier": {
+      "rva": "0x3B588E0",
+      "abi": "int32(const View16*); data+0,length:int32+8,flags:uint32+C=0",
+      "missing": 12
+    },
+    "identifier_name": {
+      "rva": "0x3B58970",
+      "abi": "borrowed MSVC string*(int32)",
+      "fallback_rva": "0x585F058"
+    },
+    "stable_hash": {
+      "rva": "0x3B8B000",
+      "abi": "uint32(void* unused, const char*, uint32 byte_length)"
+    }
+  },
+  "pure_reads": {
+    "stores": {
+      "character": "0x570C130",
+      "war": "0x570C740",
+      "struggle": "0x570CC78",
+      "table_offset": "0x20",
+      "capacity_offset": "0x2C",
+      "slot_stride": 16,
+      "pointer_offset": 8
+    },
+    "identities": {
+      "character": "0x18",
+      "war": "0x8",
+      "struggle": "0x8",
+      "comparison": "full uint32 generation ID; low24 only indexes"
+    },
+    "character": {
+      "cache": "0x1B8",
+      "dirty_uint64": "0x1C8",
+      "involved_array": "0x168",
+      "interloper_array": "0x180",
+      "war_array": "0x318"
+    },
+    "array_header": {
+      "data": 0,
+      "count_int32": 12,
+      "capacity": "not used: no phase capacity ABI claim"
+    },
+    "struggle": {
+      "phase": "0x4C0",
+      "phase_block_base": "0x78",
+      "block_count": 4,
+      "block_stride": "0xB30",
+      "parameter_arrays": [
+        "0xAB0",
+        "0xAC8",
+        "0xAE0",
+        "0xAF8"
+      ]
+    },
+    "war": {
+      "primary_attacker": "0x288",
+      "primary_defender": "0x28C",
+      "cb_definition": "0x100"
+    },
+    "cb": {
+      "owner_slot": "0x570BE58",
+      "buckets": "0x198",
+      "mask_int32": "0x1A4",
+      "overflow_uint8": "0x1A8",
+      "lock_uint32": "0xEB8",
+      "lock_mode_uint8": "0xEF8",
+      "required_lock_and_mode": 0,
+      "bucket_stride": 24,
+      "bucket_state": 4,
+      "bucket_hash": 8,
+      "bucket_definition": 16,
+      "rows": "mask+overflow+2; no masked probe wrap",
+      "vtable_rva": "0x44197A0",
+      "definition_hash": "0x14",
+      "definition_name": "0x18",
+      "border_name": "fp2_border_raid",
+      "border_hash": "0x229B01D7"
+    }
+  },
+  "stock_script_inputs": [
+    {
+      "path": "common/script_values/00_war_values.txt",
+      "sha256": "ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B"
+    },
+    {
+      "path": "common/scripted_triggers/00_generic_struggle_scripted_triggers.txt",
+      "sha256": "9CCE9F5527F35DC3E178D203CEF6CE2C4B8A804F1D206790967BAC0A4AD1B051"
+    }
+  ],
+  "candidate_source_paths": [
+    "include/xar_bridge/h2743_stock_predicate_reader_v1.hpp",
+    "src/h2743_stock_predicate_reader_v1.cpp",
+    "src/h2743_stock_native_source_adapter_v1.cpp",
+    "cmake/h2743_stock_predicate_reader_v1.cmake"
+  ],
+  "disk_proofs": [
+    {
+      "name": "stock_phase_parameter_bool_leaf",
+      "rva": "0x435a330",
+      "target_rva": "0x2824d60"
+    },
+    {
+      "name": "stock_character_struggle_any_leaf",
+      "rva": "0x41cdb98",
+      "target_rva": "0x19be370"
+    },
+    {
+      "name": "stock_event_target_compare_leaf",
+      "rva": "0x44cb8a0",
+      "target_rva": "0x334fe60"
+    },
+    {
+      "name": "parameter_parser_intern_id_write",
+      "rva": "0x280a91b",
+      "bytes": "E810DA3401894350"
+    },
+    {
+      "name": "parameter_leaf_kind21",
+      "rva": "0x2824d66",
+      "bytes": "66833821"
+    },
+    {
+      "name": "parameter_leaf_full_generation_check",
+      "rva": "0x2824da0",
+      "bytes": "395108"
+    },
+    {
+      "name": "parameter_leaf_phase_and_integer_id",
+      "rva": "0x2824dac",
+      "bytes": "418B5050488B89C0040000E9940B4E00"
+    },
+    {
+      "name": "any_default_mode2",
+      "rva": "0x19bf124",
+      "bytes": "C783D803000002000000"
+    },
+    {
+      "name": "mode2_clean_cache_guard",
+      "rva": "0x19ba87d",
+      "bytes": "488B83B80100004885C074124883BBC8010000007508"
+    },
+    {
+      "name": "mode2_first_array168",
+      "rva": "0x19ba893",
+      "bytes": "480568010000"
+    },
+    {
+      "name": "mode2_second_array180",
+      "rva": "0x19ba8ec",
+      "bytes": "480580010000"
+    },
+    {
+      "name": "iterator_full32_payload",
+      "rva": "0x19ba9c1",
+      "bytes": "8B03488D542420488BCD4889442428"
+    },
+    {
+      "name": "iterator_struggle_token_kind",
+      "rva": "0x19ba9d0",
+      "bytes": "C744242021000000"
+    },
+    {
+      "name": "token_kind_compare",
+      "rva": "0x33500c6",
+      "bytes": "66443BCA"
+    },
+    {
+      "name": "token_subtype_compare",
+      "rva": "0x3350104",
+      "bytes": "0FB74424326639442442"
+    },
+    {
+      "name": "token_complete_qword_compare",
+      "rva": "0x3350114",
+      "bytes": "488B4424384839442448"
+    },
+    {
+      "name": "equality_constructor_op1",
+      "rva": "0x334fb4d",
+      "bytes": "48C7868802000001000000"
+    },
+    {
+      "name": "phase_parameter_table_base",
+      "rva": "0x2d0595f",
+      "bytes": "4C8D5978448BD2498DB3C02C0000"
+    },
+    {
+      "name": "phase_parameter_block_stride",
+      "rva": "0x2d05ac3",
+      "bytes": "4981C3300B0000"
+    },
+    {
+      "name": "lookup_only_key_view",
+      "rva": "0x3b588f1",
+      "bytes": "4C8BC1"
+    },
+    {
+      "name": "lookup_missing_sentinel12",
+      "rva": "0x3b58958",
+      "bytes": "B80C000000"
+    },
+    {
+      "name": "any_character_war boolean vslot +C8",
+      "rva": "0x41dbca0",
+      "target_rva": "0x19eb590"
+    },
+    {
+      "name": "any_character_war per-item vslot +F0",
+      "rva": "0x41dbcc8",
+      "target_rva": "0x33b6f50"
+    },
+    {
+      "name": "any boolean thunk",
+      "rva": "0x19eb593",
+      "bytes": "e9f8c50000"
+    },
+    {
+      "name": "any helper count",
+      "rva": "0x19f7bc7",
+      "bytes": "e8244ffeff"
+    },
+    {
+      "name": "any loop native list builder",
+      "rva": "0x19ebfee",
+      "bytes": "e86d0bffff"
+    },
+    {
+      "name": "per-item native child limits",
+      "rva": "0x33b6f60",
+      "bytes": "e87b6cf9ff"
+    },
+    {
+      "name": "child generic eval",
+      "rva": "0x334dc69",
+      "bytes": "e892e9ffff"
+    },
+    {
+      "name": "UsingCB boolean vslot +C8",
+      "rva": "0x43771b8",
+      "target_rva": "0x28481a0"
+    },
+    {
+      "name": "UsingCB war kind16",
+      "rva": "0x28481ac",
+      "bytes": "66833810"
+    },
+    {
+      "name": "UsingCB exact full War ID",
+      "rva": "0x28481eb",
+      "bytes": "395308"
+    },
+    {
+      "name": "UsingCB war CB definition pointer compare",
+      "rva": "0x2848213",
+      "bytes": "48398300010000"
+    },
+    {
+      "name": "UsingCB hash",
+      "rva": "0x28480fc",
+      "bytes": "e8ff2e3401"
+    },
+    {
+      "name": "UsingCB owner getter",
+      "rva": "0x28480c2",
+      "bytes": "e8996104fe"
+    },
+    {
+      "name": "UsingCB lookup",
+      "rva": "0x2848106",
+      "bytes": "e835cd7dff"
+    },
+    {
+      "name": "CCasusBelliType valid vslot0",
+      "rva": "0x44197a0",
+      "target_rva": "0x7e9220"
+    },
+    {
+      "name": "CCasusBelliType valid true thunk",
+      "rva": "0x7e9220",
+      "bytes": "b001c3"
+    },
+    {
+      "name": "CB definition base constructor",
+      "rva": "0x2d9346b",
+      "bytes": "e8b0b16c00"
+    },
+    {
+      "name": "CB definition key hash",
+      "rva": "0x345e662",
+      "bytes": "e899c97200"
+    },
+    {
+      "name": "CB definition hash field +14",
+      "rva": "0x345e66b",
+      "bytes": "894314"
+    },
+    {
+      "name": "CB definition name field +18",
+      "rva": "0x345e667",
+      "bytes": "488d4b18"
+    },
+    {
+      "name": "whole lookup has no call / allocation route",
+      "rva": "0x2024e40",
+      "size": 314,
+      "sha256": "4E3AD446DA139BBC12BC5F4927BC811C8300605D04359974951D8292146619CA"
+    },
+    {
+      "name": "CB lookup lock mode byte",
+      "rva": "0x2024E4B",
+      "bytes": "443881F80E0000"
+    },
+    {
+      "name": "CB lookup reader count add2",
+      "rva": "0x2024EA7",
+      "bytes": "41B802000000418BC0F00FC181B80E0000"
+    },
+    {
+      "name": "CB lookup occupied writer bit0",
+      "rva": "0x2024EB8",
+      "bytes": "A801"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\Users\\1\\ck3-h2743-resume-20260930\\struggle-reader-reverse-a02\\static-fixture-report.json",
+      "sha256": "8A0504E99176727A815431B0BCE9276C44B184D65492545E640F67B10BDDE2BF"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-h2743-resume-20260930\\border-reader-reverse-a02\\minimal-disk-fixture.json",
+      "sha256": "7445601722856A3B6A8B4B2D896B36D29463ECA9ECCE2AA4E59F1BEDC8517D2B"
+    }
+  ],
+  "limits": [
+    "Default OFF.",
+    "Three independent typed values; unavailable is never false.",
+    "Getter data equivalence for the frozen stock scripts, not an executed outer trigger differential.",
+    "Lock zero is sampled quiescence, not an acquired lock or atomic snapshot.",
+    "Current master793 has no old #723 H2743 producer; query executor/firstguard/installation still need narrow integration.",
+    "No native build/live bool/full exit/action credit."
+  ]
+}

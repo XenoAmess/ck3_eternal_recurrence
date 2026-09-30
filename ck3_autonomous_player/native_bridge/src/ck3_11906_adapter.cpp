@@ -195,6 +195,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-war-prisoner-release-pairs-v1-N",
     "game.command.query-outbound-war-white-peace-status-v1-N",
     "game.command.query-war-termination-terms-v1-N",
+    "game.command.query-defender-de-jure-exit-terms-v1-N",
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
     ck3_11906::kRaiktorActualTruceExpiryV1Capability,
 #endif
@@ -371,6 +372,13 @@ public:
       WarTerminationTermsSnapshot &output) const noexcept override {
     return ck3_11906::ReadWarTerminationTerms(bindings_, war_id, output);
   }
+  ReadDefenderDeJureExitTermsV1Result read_defender_de_jure_exit_terms_v1(
+      std::int32_t war_id,
+      DefenderDeJureExitTermsV1 &output) const noexcept override {
+    return ck3_11906::ReadDefenderDeJureExitTermsV1(bindings_, war_id,
+                                                      output);
+  }
+
   ReadRaiktorActualTruceExpiryResultV1
   read_raiktor_actual_truce_expiry(
       std::int32_t toward_character_id,

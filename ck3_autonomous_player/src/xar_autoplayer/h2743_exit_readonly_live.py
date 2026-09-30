@@ -18,11 +18,13 @@ from types import MethodType
 
 from .h2743_exit_source_pair import read_object, require, sha256, verify_pair
 from .bridge.h2743_exit_readonly_transport import (
-    OPTIONS_STEP, frame_key, query_h2743_exit_baseline, target_frame,
+    OPTIONS_STEP, frame_key, query_h2743_exit_baseline, target_frame, bind_admitted_stock_predicates,
 )
+from .h2743_stock_predicate_admission import verify_admitted_stock_predicate_pair
 
 GAME_EXE_SHA256 = '2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86'
 WAR_VALUES_SHA256 = 'ED1CDB6E8BC887CF1FFFE010F1E9CA642DFD6DAF241E81F23E6B4736F7AFDF3B'
+STRUGGLE_TRIGGERS_SHA256 = '9CCE9F5527F35DC3E178D203CEF6CE2C4B8A804F1D206790967BAC0A4AD1B051'
 EPISODE = 'native-29829-2bc2d599f7f9'
 PIPE = r'\\.\pipe\xar-g2-robert-1066-seed-66f926d'
 
@@ -40,16 +42,20 @@ def runtime_fingerprint() -> dict:
              'ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py',
              'ck3_autonomous_player/src/xar_autoplayer/h2743_exit_readonly_live.py',
              'ck3_autonomous_player/src/xar_autoplayer/h2743_exit_source_pair.py',
+             'ck3_autonomous_player/src/xar_autoplayer/h2743_stock_predicate_admission.py',
              'ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_exit_readonly_transport.py',
              'ck3_autonomous_player/src/xar_autoplayer/bridge/defender_dejure_exit_terms_v1.py',
              'promo/ck3_native_war_ai/integration/screen_bus_lease.py']
     return {'root': str(root), 'files': {name: sha256(root / name) for name in files}}
 
 
-def check_game(game_dir: Path) -> None:
+def check_game(game_dir: Path, *, stock_predicates: bool = False) -> None:
     require(sha256(game_dir / 'binaries/ck3.exe') == GAME_EXE_SHA256, 'H2743 exact CK3 EXE changed')
     require(sha256(game_dir / 'game/common/script_values/00_war_values.txt') == WAR_VALUES_SHA256,
             'H2743 stock war values changed')
+    if stock_predicates:
+        require(sha256(game_dir / 'game/common/scripted_triggers/00_generic_struggle_scripted_triggers.txt')
+                == STRUGGLE_TRIGGERS_SHA256, 'H2743 stock struggle helper changed')
 
 
 def prepare(source: dict, game_dir: Path, output: Path) -> dict:
@@ -57,7 +63,7 @@ def prepare(source: dict, game_dir: Path, output: Path) -> dict:
     from .ordinary_seed_rebinder import rebind_ordinary_seed_v1
     from .one_generation_preflight import native_one_generation_preflight
 
-    check_game(game_dir)
+    check_game(game_dir, stock_predicates='stock_predicate_pins_sha256' in source)
     spec = EnvironmentSpec(state_dir=output / 'state', game_dir=game_dir, expected_game_version='1.19.0.6')
     profile = prepare_profile(spec, xar_enabled='xar_off', display_mode='windowed')
     write_new(output / 'profile-preparation.json', profile)
@@ -88,6 +94,8 @@ def prepare(source: dict, game_dir: Path, output: Path) -> dict:
               'prepared_input_sha256': {name: sha256(target) for name, target in targets.items()},
               'preflight_sha256': sha256(output / 'native-one-generation-preflight.json'),
               'ck3_started': False, 'gameplay_actions': 0, 'date_advance_actions': 0}
+    if 'stock_predicate_pins_sha256' in source:
+        result['stock_predicate_pins_sha256'] = source['stock_predicate_pins_sha256']
     write_new(output / 'prepared-source.json', result)
     return result
 
@@ -100,6 +108,8 @@ def check_prepared(path: Path, source: dict) -> dict:
     require(body.get('pair_sha256') == source['pair_sha256']
             and body.get('runtime_fingerprint') == runtime_fingerprint(),
             'H2743 prepared source or Python runtime changed')
+    require(body.get('stock_predicate_pins_sha256') == source.get('stock_predicate_pins_sha256'),
+            'H2743 prepared stock predicate pins changed')
     require(body.get('pipe_name') == PIPE, 'H2743 prepared pipe differs')
     for name, value in body['prepared_input_paths'].items():
         require(sha256(Path(value)) == body['prepared_input_sha256'][name],
@@ -135,7 +145,8 @@ def check_steam_gate(path: Path, *, task_id: str) -> dict:
             'screenshot_sha256': sha256(image), 'fresh_frame_receipt_sha256': sha256(frame_path)}
 
 
-def run_owned_read(*, spec, config, keeper, output: Path, timeout_seconds: float = 1800) -> dict:
+def run_owned_read(*, spec, config, keeper, output: Path, timeout_seconds: float = 1800,
+                   stock_predicate_admission=None) -> dict:
     from .bridge.native_driver import NativeHeadlessGameplayDriver
     from .bridge.driver import BridgeUnavailableError
     from .native_session import native_session
@@ -173,6 +184,8 @@ def run_owned_read(*, spec, config, keeper, output: Path, timeout_seconds: float
                                               save_dir=spec.profile_dir / 'save games',
                                               succession_lifecycle_binding=lifecycle)
         driver.query_h2743_exit_baseline = MethodType(query_h2743_exit_baseline, driver)
+        if stock_predicate_admission is not None:
+            bind_admitted_stock_predicates(driver, stock_predicate_admission)
         thread = threading.Thread(target=supervise, name='h2743-managed-session')
         thread.start()
         deadline = time.monotonic() + timeout_seconds
@@ -210,10 +223,23 @@ def run_owned_read(*, spec, config, keeper, output: Path, timeout_seconds: float
         write_new(output / 'after-frame.json', after)
         require(target_frame(after) == target_frame(before) and frame_key(after) == frame_key(before),
                 'H2743 same paused frame changed after the three queries')
-        require(values[0] == values[1], 'H2743 double baseline read disagrees')
+        def stable_baseline(value):
+            # Per-invocation mailbox/pump provenance is retained in each raw
+            # baseline artifact; it is not stable material or a native revision.
+            copy = dict(value)
+            evidence = copy.get('h2743_stock_predicate_evidence_v1')
+            if evidence is not None:
+                copy['h2743_stock_predicate_evidence_v1'] = {
+                    key: field for key, field in evidence.items()
+                    if key not in ('mailbox_sequence', 'pump_epoch')}
+            return copy
+        require(stable_baseline(values[0]) == stable_baseline(values[1]),
+                'H2743 double baseline read disagrees')
         report['baseline'] = values[0]
         report['same_frame_double_read'] = True
-        report['stock_border_raid_pair_observed'] = False
+        report['stock_border_raid_pair_observed'] = (
+            stock_predicate_admission is not None and
+            values[0].get('truce_inputs_v1', {}).get('border_raid_pair', {}).get('status') == 'observed')
     except BaseException as error:
         report['error'] = f'{type(error).__name__}: {error}'
     finally:
@@ -250,6 +276,7 @@ def main(argv=None) -> int:
     mode.add_argument('--prepare', action='store_true')
     mode.add_argument('--live', action='store_true')
     parser.add_argument('--pair-manifest', type=Path, required=True)
+    parser.add_argument('--stock-predicate-pins', type=Path)
     parser.add_argument('--native-source-checkout', type=Path, required=True)
     parser.add_argument('--attempt-dir', type=Path, required=True)
     parser.add_argument('--game-dir', type=Path, required=True)
@@ -265,8 +292,14 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     args.attempt_dir.mkdir(parents=True, exist_ok=False)
     try:
-        source = verify_pair(args.pair_manifest, native_source_checkout=args.native_source_checkout)
-        check_game(args.game_dir)
+        admission = None
+        if args.stock_predicate_pins is None:
+            source = verify_pair(args.pair_manifest, native_source_checkout=args.native_source_checkout)
+        else:
+            source, admission = verify_admitted_stock_predicate_pair(
+                args.pair_manifest, pins_path=args.stock_predicate_pins,
+                native_source_checkout=args.native_source_checkout)
+        check_game(args.game_dir, stock_predicates=admission is not None)
         if args.no_launch:
             report = {**source, 'runtime_fingerprint': runtime_fingerprint(),
                       'entry_live_branch_implemented': True, 'fresh_go_and_frame_pending': True}
@@ -302,7 +335,8 @@ def main(argv=None) -> int:
                                    expected_game_version='1.19.0.6')
             config = NativeBridgeLaunchConfig(mode='native-headless', pipe_name=PIPE,
                 dll_path=Path(source['dll']['path']), injector_path=Path(source['injector']['path']))
-            report = run_owned_read(spec=spec, config=config, keeper=keeper, output=args.attempt_dir)
+            report = run_owned_read(spec=spec, config=config, keeper=keeper, output=args.attempt_dir,
+                                    stock_predicate_admission=admission)
             report['source_pair'] = source
             report['go_sha256'] = sha256(args.go)
             report['steam_gate'] = steam

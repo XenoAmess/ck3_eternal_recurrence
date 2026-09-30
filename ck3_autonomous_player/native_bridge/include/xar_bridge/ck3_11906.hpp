@@ -233,6 +233,14 @@ using ArmyContactPredicate = bool (*)(void *army);
 using ReadProvinceHolderCharacterId = std::int32_t *(*)(
     void *province, std::int32_t *output);
 using CharacterImmediateLiege = void *(*)(void *character);
+struct H2743NativeStringView64 {
+  const char *data;
+  std::int64_t size;
+};
+using H2743LookupScriptIdentifier = std::int32_t (*)(
+    const H2743NativeStringView64 *);
+using H2743ScriptIdentifierName = const std::string *(*)(std::int32_t);
+using H2743CharacterGovernment = void *(*)(void *);
 using CharacterRelationPredicate = bool (*)(void *left_character,
                                              void *right_character);
 using CharacterProvincePredicate = bool (*)(void *character,
@@ -483,6 +491,9 @@ struct Bindings {
   ArmyContactPredicate is_army_in_combat = nullptr;
   ReadProvinceHolderCharacterId read_province_holder_character_id = nullptr;
   CharacterImmediateLiege character_immediate_liege = nullptr;
+  H2743LookupScriptIdentifier h2743_lookup_script_identifier = nullptr;
+  H2743ScriptIdentifierName h2743_script_identifier_name = nullptr;
+  H2743CharacterGovernment h2743_character_government = nullptr;
   CharacterRelationPredicate classify_contact_defender_by_holder = nullptr;
   CharacterProvincePredicate classify_contact_defender_fallback = nullptr;
 };
@@ -514,6 +525,7 @@ using game::WarObjectiveProvinceState;
 using game::WarTerminationOptionsSnapshot;
 using game::WarTerminationTermsSnapshot;
 using game::WarTerminationExitTermsSnapshot;
+using game::DefenderDeJureExitTermsV1;
 using game::PauseSubmitResult;
 using game::ResumeSubmitResult;
 using game::SetPlayedCharacterResult;
@@ -1452,6 +1464,14 @@ using game::ReadWarTerminationTermsResult;
 ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept;
+
+using game::ReadDefenderDeJureExitTermsV1Result;
+
+// Baseline-only, fail-closed de-jure defender read.  Never calls loaded-effect
+// preview or submits a resolution; material deltas remain typed unavailable.
+ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
+    const Bindings &bindings, std::int32_t war_id,
+    DefenderDeJureExitTermsV1 &output) noexcept;
 
 using game::RaiktorActualTruceExpirySnapshotV1;
 using game::ReadRaiktorActualTruceExpiryResultV1;

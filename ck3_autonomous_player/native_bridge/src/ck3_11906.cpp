@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/h2743_war_storage_candidate_v1.hpp"
 #include "xar_bridge/campaign_root_context_v1.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
@@ -728,6 +729,11 @@ constexpr std::uintptr_t kReadCounterCurrentChunkRva = 0x23D2B90;
 constexpr std::uintptr_t kResolveCounterClassesRva = 0x23CF1B0;
 constexpr std::uintptr_t kGetCounterContextScaleRva = 0x2946B50;
 constexpr std::uintptr_t kGetKnightEffectivenessContextRva = 0x2613480;
+// H2743's partial truce-input reader uses only the exact-build lookup and
+// canonical character-government getter already audited by combat_v3.
+constexpr std::uintptr_t kH2743LookupScriptIdentifierRva = 0x3B588E0;
+constexpr std::uintptr_t kH2743ScriptIdentifierNameRva = 0x3B58970;
+constexpr std::uintptr_t kH2743CharacterGovernmentRva = 0x26165B0;
 constexpr std::uintptr_t kReadKnightEffectivenessRva = 0x28FD990;
 constexpr std::uintptr_t kIsHoldingDefenderRva = 0x2900BB0;
 constexpr std::uintptr_t kCommanderMinRollRva = 0x570ED7C;
@@ -905,6 +911,7 @@ constexpr std::size_t kLandedTitleStorageOffset = 0x20;
 constexpr std::size_t kLandedTitleIdOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
 constexpr std::size_t kLandedTitleDeJureVassalIdsOffset = 0x240;
+constexpr std::size_t kLandedTitleHolderCharacterIdOffset = 0x258;
 constexpr std::size_t kLandedTitleTemplateTierOffset = 0x5C;
 constexpr std::size_t kLandedTitleTemplateProvinceIdOffset = 0x80;
 constexpr std::size_t kLandedTitleSuccessionIdsOffset = 0x278;
@@ -10433,6 +10440,15 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.character_immediate_liege =
       reinterpret_cast<CharacterImmediateLiege>(
           module + kCampaignRootImmediateLiegeRva);
+  result.h2743_lookup_script_identifier =
+      reinterpret_cast<H2743LookupScriptIdentifier>(
+          module + kH2743LookupScriptIdentifierRva);
+  result.h2743_script_identifier_name =
+      reinterpret_cast<H2743ScriptIdentifierName>(
+          module + kH2743ScriptIdentifierNameRva);
+  result.h2743_character_government =
+      reinterpret_cast<H2743CharacterGovernment>(
+          module + kH2743CharacterGovernmentRva);
   result.classify_contact_defender_by_holder =
       reinterpret_cast<CharacterRelationPredicate>(
           module + kClassifyContactDefenderByHolderRva);
@@ -19461,6 +19477,410 @@ ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
   access.has_truce = bindings.has_character_truce;
   access.get_truce_end_date = bindings.get_character_truce_end_date;
   return ReadRaiktorActualTruceExpiryV1(access, toward_character_id, output);
+}
+
+// These helpers inspect pre-existing containers only. They do not call
+// GetOwnedPerks, HasPerk, script effects, or the truce evaluator.
+std::optional<std::vector<std::string>> ReadH2743OwnedPerkKeys(
+    const void *character) noexcept {
+  if (character == nullptr ||
+      LoadAt<void *>(character, kCharacterDeathDataOffset) != nullptr)
+    return std::nullopt;
+  void *const owner = LoadAt<void *>(character, 0x1A8);
+  if (owner == nullptr) return std::nullopt;
+  const auto *const span = static_cast<const std::byte *>(owner) + 0x220;
+  void *const data = LoadAt<void *>(span, 0);
+  const auto count = LoadAt<std::int32_t>(span, 0x0C);
+  if (count < 0 || count > 512 || (count > 0 && data == nullptr))
+    return std::nullopt;
+  std::vector<std::string> keys;
+  try {
+    keys.reserve(static_cast<std::size_t>(count));
+    for (std::int32_t index = 0; index < count; ++index) {
+      void *const perk = LoadAt<void *>(
+          data, static_cast<std::size_t>(index) * sizeof(void *));
+      std::string key;
+      if (!ReadDatabaseObjectKey(perk, 0x18, key) || key.empty() ||
+          key.size() > 127) return std::nullopt;
+      for (const char ch : key) {
+        if (!((ch >= 'a' && ch <= 'z') ||
+              (ch >= '0' && ch <= '9') || ch == '_'))
+          return std::nullopt;
+      }
+      if (std::find(keys.begin(), keys.end(), key) != keys.end())
+        return std::nullopt;
+      keys.push_back(std::move(key));
+    }
+  } catch (...) {
+    return std::nullopt;
+  }
+  return keys;
+}
+
+std::optional<std::vector<std::int32_t>> ReadH2743GovernmentFlags(
+    const Bindings &bindings, void *character) noexcept {
+  if (character == nullptr ||
+      LoadAt<void *>(character, kCharacterDeathDataOffset) != nullptr ||
+      bindings.h2743_character_government == nullptr) return std::nullopt;
+  void *const landed = LoadAt<void *>(character, 0x1B8);
+  if (landed == nullptr) return std::nullopt; // unaudited non-landed branch
+  void *const expected = LoadAt<void *>(landed, 0x3F0);
+  if (expected == nullptr ||
+      bindings.h2743_character_government(character) != expected)
+    return std::nullopt;
+  const auto *const span = static_cast<const std::byte *>(expected) + 0x48;
+  void *const data = LoadAt<void *>(span, 0);
+  const auto count = LoadAt<std::int32_t>(span, 0x0C);
+  if (count < 0 || count > 65'536 || (count > 0 && data == nullptr))
+    return std::nullopt;
+  std::vector<std::int32_t> flags;
+  try {
+    flags.reserve(static_cast<std::size_t>(count));
+    for (std::int32_t index = 0; index < count; ++index) {
+      const auto flag = LoadAt<std::int32_t>(
+          data, static_cast<std::size_t>(index) * sizeof(std::int32_t));
+      if (!flags.empty() && flag <= flags.back()) return std::nullopt;
+      flags.push_back(flag);
+    }
+  } catch (...) {
+    return std::nullopt;
+  }
+  return flags;
+}
+
+std::optional<bridge::h2743::CompleteScan> ReadH2743CompleteWarStorage(
+    const Bindings &bindings, void *game_state) noexcept {
+  if (game_state == nullptr || bindings.contains_war_participant == nullptr)
+    return std::nullopt;
+  void *const game_data =
+      LoadAt<void *>(game_state, kGameStateGameDataOffset);
+  if (game_data == nullptr) return std::nullopt;
+  auto *const war_manager =
+      static_cast<std::byte *>(game_data) + bindings.war_manager_offset;
+  void *const storage = LoadAt<void *>(war_manager, kWarStorageOffset);
+  if (storage == nullptr) return std::nullopt;
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) return std::nullopt;
+  bridge::h2743::CompleteScan scan{};
+  scan.capacity = capacity;
+  try {
+    scan.slots.reserve(static_cast<std::size_t>(capacity));
+    for (std::int32_t index = 0; index < capacity; ++index) {
+      bridge::h2743::WarSlot row{};
+      row.index = index;
+      void *const war = LoadAt<void *>(
+          slots, static_cast<std::size_t>(index) *
+                         kComponentStorageSlotSize +
+                     kComponentStorageSlotObjectOffset);
+      if (war == nullptr) {
+        scan.slots.push_back(std::move(row));
+        continue;
+      }
+      row.object_address = reinterpret_cast<std::uintptr_t>(war);
+      row.war_id = LoadAt<std::int32_t>(war, kWarIdOffset);
+      if (row.war_id <= 0 ||
+          (static_cast<std::uint32_t>(row.war_id) & 0x00FFFFFFU) !=
+              static_cast<std::uint32_t>(index)) return std::nullopt;
+      if (LoadAt<void *>(war, kWarEndedDataOffset) != nullptr) {
+        row.state = bridge::h2743::SlotState::ended;
+        scan.slots.push_back(std::move(row));
+        continue;
+      }
+      if (ResolveWar(bindings, game_state, row.war_id) != war)
+        return std::nullopt;
+      row.state = bridge::h2743::SlotState::active;
+      row.primary_attacker = LoadAt<std::int32_t>(
+          war, kWarPrimaryAttackerCharacterIdOffset);
+      row.primary_defender = LoadAt<std::int32_t>(
+          war, kWarPrimaryDefenderCharacterIdOffset);
+      void *const cb = LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+      if (cb == nullptr) return std::nullopt;
+      row.cb_address = reinterpret_cast<std::uintptr_t>(cb);
+      row.cb_index = LoadAt<std::int32_t>(
+          cb, kCasusBelliTypeDatabaseIndexOffset);
+      if (row.cb_index < 0 || row.cb_index >= kMaximumCasusBelliTypes ||
+          !ReadCasusBelliTypeKey(cb, row.cb_key)) return std::nullopt;
+      row.primary_attacker_in_participants =
+          bindings.contains_war_participant(
+              static_cast<std::byte *>(war) + kWarAttackersOffset,
+              row.primary_attacker);
+      row.primary_defender_in_participants =
+          bindings.contains_war_participant(
+              static_cast<std::byte *>(war) + kWarDefendersOffset,
+              row.primary_defender);
+      scan.slots.push_back(std::move(row));
+    }
+  } catch (...) {
+    return std::nullopt;
+  }
+  return scan;
+}
+
+ReadDefenderDeJureExitTermsV1Result ReadDefenderDeJureExitTermsV1(
+    const Bindings &bindings, std::int32_t war_id,
+    DefenderDeJureExitTermsV1 &output) noexcept {
+  using Result = ReadDefenderDeJureExitTermsV1Result;
+  output = {};
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.read_monthly_gold_income == nullptr || war_id <= 0) {
+    return Result::unavailable;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) return Result::unavailable;
+  if (!before.paused || !before.map_ready) return Result::requires_paused;
+  if (!before.has_played_character || !before.played_character_alive)
+    return Result::no_played_character;
+  const auto published = std::find_if(
+      before.active_wars.begin(), before.active_wars.end(),
+      [war_id](const ActiveWarSnapshot &candidate) {
+        return candidate.war_id == war_id;
+      });
+  if (published == before.active_wars.end()) return Result::war_not_found;
+  if (std::count_if(before.active_wars.begin(), before.active_wars.end(),
+                    [war_id](const ActiveWarSnapshot &candidate) {
+                      return candidate.war_id == war_id;
+                    }) != 1 ||
+      published->player_side != PlayerWarSide::defender ||
+      !published->player_is_primary_war_leader ||
+      published->primary_opponent_character_id <= 0 ||
+      published->primary_opponent_character_id ==
+          before.played_character_id) {
+    return Result::player_not_primary_defender;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr) return Result::unavailable;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr) return Result::war_not_found;
+  void *const casus_belli_type =
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset);
+  if (casus_belli_type == nullptr) return Result::unavailable;
+  const auto casus_belli_index = LoadAt<std::int32_t>(
+      casus_belli_type, kCasusBelliTypeDatabaseIndexOffset);
+  std::string casus_belli_key;
+  if (casus_belli_index < 0 ||
+      casus_belli_index >= kMaximumCasusBelliTypes ||
+      !ReadCasusBelliTypeKey(casus_belli_type, casus_belli_key)) {
+    return Result::unavailable;
+  }
+  if (casus_belli_index != 17 ||
+      casus_belli_key != "individual_county_de_jure_cb") {
+    return Result::unsupported_casus_belli;
+  }
+  if (bindings.character_immediate_liege == nullptr) {
+    return Result::unavailable;
+  }
+  std::vector<std::int32_t> target_title_ids;
+  if (!ReadNativeIntArray(
+          static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+          target_title_ids, kMaximumWarObjectiveTitleIds) ||
+      target_title_ids.empty() ||
+      target_title_ids != published->targeted_title_ids) {
+    return Result::unavailable;
+  }
+  for (std::size_t index = 0; index < target_title_ids.size(); ++index) {
+    if (target_title_ids[index] <= 0 ||
+        std::find(target_title_ids.begin(),
+                  target_title_ids.begin() + index,
+                  target_title_ids[index]) != target_title_ids.begin() + index ||
+        ResolveLandedTitle(bindings, game_state, target_title_ids[index]) ==
+            nullptr) {
+      return Result::unavailable;
+    }
+  }
+  // This reads only the current holder of each declared target title.  The
+  // script's runtime scope:target and the conquest change remain unobserved.
+  const auto read_target_holders = [&]() noexcept
+      -> std::optional<std::vector<game::DefenderDeJureTargetHolderPrestateV1>> {
+    std::vector<game::DefenderDeJureTargetHolderPrestateV1> rows;
+    try {
+      rows.reserve(target_title_ids.size());
+      for (const auto title_id : target_title_ids) {
+        void *const title = ResolveLandedTitle(bindings, game_state, title_id);
+        if (title == nullptr) return std::nullopt;
+        const auto holder_id = LoadAt<std::int32_t>(
+            title, kLandedTitleHolderCharacterIdOffset);
+        void *const holder = ResolveTermsCharacter(bindings, holder_id);
+        if (holder_id <= 0 || holder == nullptr) return std::nullopt;
+        void *const liege = bindings.character_immediate_liege(holder);
+        std::optional<std::int32_t> liege_id;
+        if (liege != nullptr && liege != holder) {
+          const auto candidate = LoadAt<std::int32_t>(liege, kCharacterIdOffset);
+          if (candidate <= 0 ||
+              ResolveTermsCharacter(bindings, candidate) != liege) {
+            return std::nullopt;
+          }
+          liege_id = candidate;
+        }
+        if (ResolveLandedTitle(bindings, game_state, title_id) != title ||
+            LoadAt<std::int32_t>(title,
+                                 kLandedTitleHolderCharacterIdOffset) !=
+                holder_id ||
+            ResolveTermsCharacter(bindings, holder_id) != holder) {
+          return std::nullopt;
+        }
+        rows.push_back({title_id, holder_id, liege_id});
+      }
+    } catch (...) {
+      return std::nullopt;
+    }
+    return rows;
+  };
+  const auto target_holders = read_target_holders();
+  if (!target_holders) return Result::unavailable;
+  const auto attacker_id = published->primary_opponent_character_id;
+  const auto defender_id = before.played_character_id;
+  if (LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          attacker_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          defender_id) {
+    return Result::unavailable;
+  }
+  void *const attacker = ResolveTermsCharacter(bindings, attacker_id);
+  void *const defender = ResolveTermsCharacter(bindings, defender_id);
+  if (attacker == nullptr || defender == nullptr || attacker == defender ||
+      LoadAt<void *>(attacker, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(attacker, kCharacterLegitimacyDataOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterLegitimacyDataOffset) == nullptr) {
+    return Result::unavailable;
+  }
+  std::vector<game::WarExitResourceSnapshot> balances;
+  std::vector<game::WarExitCharacterFixedPointSnapshot> income;
+  if (!ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
+                                defender_id, balances, income)) {
+    return Result::unavailable;
+  }
+  // Partial truce inputs never authorize an exit or a duration. Each source
+  // is independently unavailable when its exact reader cannot be established.
+  const auto perk_keys = ReadH2743OwnedPerkKeys(attacker);
+  const auto attacker_flags = ReadH2743GovernmentFlags(bindings, attacker);
+  const auto defender_flags = ReadH2743GovernmentFlags(bindings, defender);
+  const auto war_storage_first =
+      ReadH2743CompleteWarStorage(bindings, game_state);
+  std::optional<std::int32_t> nomadic_flag_id;
+  if (bindings.h2743_lookup_script_identifier != nullptr &&
+      bindings.h2743_script_identifier_name != nullptr) {
+    constexpr std::string_view key = "government_is_nomadic";
+    const H2743NativeStringView64 view{
+        key.data(), static_cast<std::int64_t>(key.size())};
+    const auto identifier = bindings.h2743_lookup_script_identifier(&view);
+    const auto *const returned_name = identifier < 0 || identifier == 12
+        ? nullptr : bindings.h2743_script_identifier_name(identifier);
+    if (returned_name != nullptr && *returned_name == key)
+      nomadic_flag_id = identifier;
+  }
+  std::vector<game::WarExitResourceSnapshot> balances_after;
+  std::vector<game::WarExitCharacterFixedPointSnapshot> income_after;
+  std::vector<std::int32_t> targets_after;
+  std::string key_after;
+  Snapshot after{};
+  const auto target_holders_after = read_target_holders();
+  const auto perk_keys_after = ReadH2743OwnedPerkKeys(attacker);
+  const auto attacker_flags_after = ReadH2743GovernmentFlags(bindings, attacker);
+  const auto defender_flags_after = ReadH2743GovernmentFlags(bindings, defender);
+  const auto war_storage_second =
+      ReadH2743CompleteWarStorage(bindings, game_state);
+  if (nomadic_flag_id) {
+    constexpr std::string_view key = "government_is_nomadic";
+    const H2743NativeStringView64 view{
+        key.data(), static_cast<std::int64_t>(key.size())};
+    const auto repeated = bindings.h2743_lookup_script_identifier(&view);
+    const auto *const returned_name = repeated < 0 || repeated == 12
+        ? nullptr : bindings.h2743_script_identifier_name(repeated);
+    if (repeated != *nomadic_flag_id || returned_name == nullptr ||
+        *returned_name != key) nomadic_flag_id.reset();
+  }
+  if (!target_holders_after || *target_holders_after != *target_holders ||
+      !ReadPrimaryExitResources(bindings, attacker, attacker_id, defender,
+                                defender_id, balances_after, income_after) ||
+      balances_after != balances || income_after != income ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<void *>(war, kWarActiveCasusBelliTypeOffset) !=
+          casus_belli_type ||
+      LoadAt<std::int32_t>(casus_belli_type,
+                           kCasusBelliTypeDatabaseIndexOffset) !=
+          casus_belli_index ||
+      !ReadCasusBelliTypeKey(casus_belli_type, key_after) ||
+      key_after != casus_belli_key ||
+      !ReadNativeIntArray(
+          static_cast<std::byte *>(war) + kWarTargetedTitleIdsOffset,
+          targets_after, kMaximumWarObjectiveTitleIds) ||
+      targets_after != target_title_ids ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          attacker_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          defender_id ||
+      ResolveTermsCharacter(bindings, attacker_id) != attacker ||
+      ResolveTermsCharacter(bindings, defender_id) != defender ||
+      LoadAt<void *>(attacker, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterExtensionOffset) == nullptr ||
+      LoadAt<void *>(attacker, kCharacterLegitimacyDataOffset) == nullptr ||
+      LoadAt<void *>(defender, kCharacterLegitimacyDataOffset) == nullptr ||
+      !ReadSnapshot(bindings, after) || after != before) {
+    return Result::unavailable;
+  }
+  output.war_id = war_id;
+  output.date_raw = before.date_raw;
+  output.casus_belli_database_index = casus_belli_index;
+  output.casus_belli_key = std::move(casus_belli_key);
+  output.primary_attacker_character_id = attacker_id;
+  output.primary_defender_character_id = defender_id;
+  output.target_title_ids = std::move(target_title_ids);
+  output.target_title_holder_prestate = *target_holders;
+  output.primary_resource_balances = std::move(balances);
+  output.primary_monthly_gold_income = std::move(income);
+  if (perk_keys && perk_keys_after && *perk_keys == *perk_keys_after) {
+    output.attacker_flexible_truces_perk.value =
+        std::find(perk_keys->begin(), perk_keys->end(),
+                  "flexible_truces_perk") != perk_keys->end();
+    output.attacker_flexible_truces_perk.unavailable_reason.clear();
+  } else {
+    output.attacker_flexible_truces_perk.unavailable_reason =
+        perk_keys && perk_keys_after ? "perk_span_sample_drift"
+                                     : "attacker_perk_span_unavailable";
+  }
+  const auto publish_nomadic = [nomadic_flag_id](
+      const auto &first, const auto &second,
+      game::DefenderDeJureExitTermsV1::TruceInput &field) {
+    if (!nomadic_flag_id) {
+      field.unavailable_reason = "government_flag_identity_unavailable";
+    } else if (!first || !second) {
+      field.unavailable_reason = "landed_government_flags_unavailable";
+    } else if (*first != *second) {
+      field.unavailable_reason = "government_flag_sample_drift";
+    } else {
+      field.value = std::binary_search(first->begin(), first->end(),
+                                       *nomadic_flag_id);
+      field.unavailable_reason.clear();
+    }
+  };
+  publish_nomadic(attacker_flags, attacker_flags_after,
+                  output.attacker_government_is_nomadic);
+  publish_nomadic(defender_flags, defender_flags_after,
+                  output.defender_government_is_nomadic);
+  if (war_storage_first && war_storage_second) {
+    const auto candidate = bridge::h2743::AdmitStableWarStorageCandidate(
+        *war_storage_first, *war_storage_second, war_id,
+        reinterpret_cast<std::uintptr_t>(war), attacker_id, defender_id,
+        casus_belli_index, output.casus_belli_key);
+    if (candidate) {
+      output.border_raid_storage_candidate.value =
+          candidate->border_raid_pair;
+      output.border_raid_storage_candidate.storage_capacity =
+          war_storage_first->capacity;
+      output.border_raid_storage_candidate.active_war_count =
+          candidate->active_wars;
+      output.border_raid_storage_candidate.matching_war_count =
+          candidate->matching_wars;
+      output.border_raid_storage_candidate.unavailable_reason.clear();
+    }
+  }
+  output.same_frame_stable = true;
+  return Result::available_baseline;
 }
 
 ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
