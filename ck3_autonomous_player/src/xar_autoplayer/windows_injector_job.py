@@ -157,15 +157,16 @@ def _verified_injector_job() -> tuple[object, int]:
         raise
 
 
-def _close_handle(handle: int | None) -> None:
+def _close_handle(handle: int | None) -> bool:
     if handle is None:
-        return
+        return True
     import _winapi
 
     try:
         _winapi.CloseHandle(handle)
+        return True
     except OSError:
-        pass
+        return False
 
 
 def _inheritable_copy(handle: int) -> int:
@@ -395,15 +396,18 @@ def run_contained_injector_command(
         result = ContainedInjectorResult(report, None, None, error_text)
         return result
     finally:
+        cleanup_errors: list[str] = []
         if job is not None and assigned:
             try:
                 win32job.TerminateJobObject(job, 1)
-            except Exception:
+            except Exception as error:
+                cleanup_errors.append(f"Job termination: {type(error).__name__}: {error}")
                 report["complete_process_tree_proven"] = False
         elif process_handle is not None and not root_exited:
             try:
                 win32process.TerminateProcess(process_handle, 1)
-            except Exception:
+            except Exception as error:
+                cleanup_errors.append(f"root termination: {type(error).__name__}: {error}")
                 report["complete_process_tree_proven"] = False
         if process_handle is not None and not root_exited:
             try:
@@ -414,16 +418,25 @@ def run_contained_injector_command(
         for drain in (out_drain, err_drain):
             if drain is not None and drain.thread.is_alive():
                 drain.finish(INJECTOR_CLEANUP_SECONDS)
+                if drain.thread.is_alive():
+                    cleanup_errors.append(f"{drain.label} pipe reader still alive")
                 report["complete_process_tree_proven"] = False
         for handle in (thread_handle, process_handle, out_read, err_read,
                        raw_out_write, raw_err_write,
                        out_write, err_write, stdin_copy):
-            _close_handle(handle)
+            if not _close_handle(handle):
+                cleanup_errors.append("Windows handle close failed")
         if job is not None:
             try:
                 win32api.CloseHandle(job)
-            except Exception:
+            except Exception as error:
+                cleanup_errors.append(f"Job handle close: {type(error).__name__}: {error}")
                 report["complete_process_tree_proven"] = False
+        if report["status"] == "EXIT" and cleanup_errors:
+            report["status"] = "RED_CLEANUP"
+            report["complete_process_tree_proven"] = False
+            if result is not None:
+                result.error = "; ".join(cleanup_errors)
         if report["status"] == "EXIT" and time.monotonic() >= deadline:
             report["status"] = "RED_TIMEOUT"
             report["deadline_phase"] = "post-Job cleanup"
