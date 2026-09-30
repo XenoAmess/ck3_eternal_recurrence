@@ -401,6 +401,61 @@ class ChildDefaultFormalTest(unittest.TestCase):
                         driver.state_dir)["resolved"]["cold_recovery_verified"],
                     True)
 
+    def test_pending_result_checkpoint_releases_base_turn_and_preserves_rereads(self) -> None:
+        with tempfile.TemporaryDirectory(
+            dir=os.environ.get("XAR_TEST_TEMP_ROOT")
+        ) as folder:
+            driver = Driver(Path(folder))
+            pending = {
+                "schema": consumer.ACTION_SCHEMA, "status": "receipt_pending",
+                "episode_run_id": "native-29829-test",
+                "played_character_id": 29829, "heir_character_id": 38988,
+                "candidate_character_id": 37909, "recipient_character_id": 34332,
+                "pre_native_revision": 3, "source_date_raw": 53219928,
+                "source_bridge_pid": 100, "source_bridge_creation_date": "submit",
+            }
+            consumer._write(driver.state_dir, {
+                "schema": consumer.LEDGER_SCHEMA,
+                "pending": pending, "resolved": None})
+            driver.frame = _frame(native_revision=4)
+            before = dict(driver.frame)
+            with patch.object(consumer, "bridge_process_identity",
+                              return_value=(100, "submit")):
+                consumer.query_child_default_result_private(
+                    driver, pending=pending, cold=False)
+                read_ledger = consumer.read_child_default_ledger(driver.state_dir)
+                driver.frame = _frame(native_revision=5)
+                consumer.consume_child_default_result_checkpoint(
+                    driver, ledger=read_ledger, before=before, snapshot=driver.frame)
+                consumed = consumer.read_child_default_ledger(driver.state_dir)
+                self.assertEqual(consumed["pending"]["last_checked_native_revision"], 4)
+                self.assertEqual(consumed["pending"][
+                    "last_consumed_checkpoint_native_revision"], 5)
+                for step in ("life-advance", "query-army-strengths-v1", None):
+                    baseline = {"plan": {"selected_step": step,
+                                         "phase": "native_war_red", "reason": "RED"}}
+                    planned = consumer.plan_child_default_private(
+                        driver, baseline, driver.frame)
+                    self.assertEqual(planned["plan"]["selected_step"], step)
+                    self.assertEqual(planned["plan"]["child_default_status"],
+                                     "await_later_paused_frame")
+                baseline = {"plan": {"selected_step": "life-advance"}}
+                driver.frame = {**_frame(native_revision=5), "date_raw": 53219952}
+                later_date = consumer.plan_child_default_private(
+                    driver, baseline, driver.frame)
+                self.assertEqual(later_date["plan"]["selected_step"], consumer.RESULT_STEP)
+                driver.frame = _frame(native_revision=6)
+                later_frame = consumer.plan_child_default_private(
+                    driver, baseline, driver.frame)
+                self.assertEqual(later_frame["plan"]["selected_step"], consumer.RESULT_STEP)
+            driver.frame = _frame(native_revision=3)
+            with patch.object(consumer, "bridge_process_identity",
+                              return_value=(200, "cold")):
+                cold = consumer.plan_child_default_private(driver, baseline, driver.frame)
+                self.assertEqual(cold["plan"]["selected_step"], consumer.RESULT_STEP)
+                self.assertIs(cold["plan"]["child_default_cold_recovery"], True)
+            self.assertEqual(driver.submissions, 0)
+
     def test_material_betrothal_reads_actual_alliance_without_resubmission(self) -> None:
         with tempfile.TemporaryDirectory(
             dir=os.environ.get("XAR_TEST_TEMP_ROOT")

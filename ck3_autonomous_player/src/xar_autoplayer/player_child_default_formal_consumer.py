@@ -169,7 +169,14 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
         checked_here = (
             pending.get("last_checked_bridge_pid") == pid
             and pending.get("last_checked_bridge_creation_date") == creation)
+        consumed_revision = pending.get("last_consumed_checkpoint_native_revision")
+        consumed_date = pending.get("last_consumed_checkpoint_date_raw")
+        if checked_here and _positive(consumed_revision) and type(last) is int:
+            last = max(last, consumed_revision)
+        later_date = (checked_here and type(consumed_date) is int
+                      and snapshot.get("date_raw", consumed_date) > consumed_date)
         if ((cold and not checked_here)
+                or later_date
                 or (type(last) is int and snapshot["native_revision"] > last)):
             return {**planned, "plan": {**plan,
                 "selected_step": RESULT_STEP,
@@ -472,15 +479,43 @@ def query_child_default_result_private(
                 _rejected_candidates(resolved))
         _write(state_dir, {**ledger, "pending": None, "resolved": resolved})
     elif status in {"pending", "accepted_pending"}:
-        _write(state_dir, {**ledger, "pending": {
+        updated = {
             **pending,
             "last_checked_native_revision": result["post_native_revision"],
             "last_checked_bridge_pid": pid,
             "last_checked_bridge_creation_date": creation,
-            "last_outbound_pending_state": result.get("outbound_pending_state")}})
+            "last_outbound_pending_state": result.get("outbound_pending_state")}
+        updated.pop("last_consumed_checkpoint_native_revision", None)
+        updated.pop("last_consumed_checkpoint_date_raw", None)
+        _write(state_dir, {**ledger, "pending": updated})
     else:
         raise ValueError("child default result status unavailable")
     return result
+
+
+def consume_child_default_result_checkpoint(
+    driver: object, *, ledger: Mapping[str, object],
+    before: Mapping[str, object], snapshot: Mapping[str, object],
+) -> None:
+    pending = ledger.get("pending")
+    if not isinstance(pending, dict):
+        return
+    pid, creation = bridge_process_identity(driver)
+    if (read_child_default_ledger(driver.state_dir) != dict(ledger)
+            or pending.get("last_checked_bridge_pid") != pid
+            or pending.get("last_checked_bridge_creation_date") != creation
+            or pending.get("last_checked_native_revision") != before.get("native_revision")
+            or not _positive(snapshot.get("native_revision"))
+            or snapshot["native_revision"] < before["native_revision"]
+            or snapshot.get("date_raw") != before.get("date_raw")
+            or snapshot.get("episode_run_id") != pending.get("episode_run_id")
+            or snapshot.get("paused") is not True):
+        raise ValueError("child default checkpoint does not consume its observed pending frame")
+    _write(driver.state_dir, {**ledger, "pending": {
+        **pending,
+        "last_consumed_checkpoint_native_revision": snapshot["native_revision"],
+        "last_consumed_checkpoint_date_raw": snapshot["date_raw"],
+    }})
 
 
 def query_child_default_alliance_private(
