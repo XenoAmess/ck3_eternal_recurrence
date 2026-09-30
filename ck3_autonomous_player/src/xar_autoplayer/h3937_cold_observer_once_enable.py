@@ -30,6 +30,7 @@ from .runtime import NativeBridgeLaunchConfig
 
 ROUND = "R3948"
 LIVE_RUN_ID = "desktop-3fevhd2-1c74096080--vanilla--R0117"
+LIVE_SEQUENCE = 117
 LIVE_EXECUTION_ID = "2be36b8a-029f-4dc5-a017-ce7d0b3809d7"
 PIPE = r"\\.\pipe\xar-g2-robert-1066-seed-66f926d"
 TASK_BUS = Path(r"D:\workspace\.codex-task-bus")
@@ -312,7 +313,7 @@ def _require_exact_admission() -> dict[str, object]:
         and live_identity.get("execution_id") == LIVE_EXECUTION_ID
         and live_identity.get("machine_id") == "desktop-3fevhd2-1c74096080"
         and live_identity.get("mod_key") == "vanilla"
-        and live_identity.get("sequence") == 117
+        and live_identity.get("sequence") == LIVE_SEQUENCE
         and admission.get("schema")
             == "xar.war.h3937-cold-observer-disabled-no-launch-admission.v1"
         and admission.get("candidate_head") == manifest.get("candidate_head") == head

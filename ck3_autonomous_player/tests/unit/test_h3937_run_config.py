@@ -32,6 +32,7 @@ class ExplicitH3937ConfigTests(unittest.TestCase):
             self.assertEqual(main_for_runner(runner, root / "entry.py", ["--config", str(path), "--worker", "nonce"]), 0)
             self.assertEqual(calls, [("nonce", "R900001", configuration["live_run_id"], root / "preflight/state")])
             self.assertEqual(runner.RUN_CONFIG_BYTES, path.read_bytes())
+            self.assertEqual(runner.LIVE_SEQUENCE, 900001)
             self.assertEqual(list(root.iterdir()), [path])
 
     def test_missing_config_never_dispatches_legacy_attempt(self):

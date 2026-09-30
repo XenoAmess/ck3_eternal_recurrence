@@ -35,6 +35,9 @@ def apply_run_config(runner: ModuleType, path: Path) -> dict[str, object]:
         raise ValueError("H3937 config fields must be nonempty strings")
     if re.fullmatch(r"R[1-9][0-9]*", value["round"]) is None:
         raise ValueError("H3937 config round is invalid")
+    live_identity = re.fullmatch(r"([a-z0-9][a-z0-9-]*)--([a-z0-9][a-z0-9_-]*)--R([0-9]+)", value["live_run_id"])
+    if live_identity is None or int(live_identity.group(3)) <= 0:
+        raise ValueError("H3937 config live run ID is invalid")
     if re.fullmatch(r"[0-9A-Fa-f]{64}", value["task_bus_cli_sha256"]) is None:
         raise ValueError("H3937 config task-bus SHA is invalid")
     paths = {key: Path(value[key]) for key in _PATH_FIELDS}
@@ -42,6 +45,7 @@ def apply_run_config(runner: ModuleType, path: Path) -> dict[str, object]:
         raise ValueError("H3937 config paths must be explicit absolute paths")
     runner.ROUND = value["round"]
     runner.LIVE_RUN_ID = value["live_run_id"]
+    runner.LIVE_SEQUENCE = int(live_identity.group(3))
     runner.LIVE_EXECUTION_ID = value["live_execution_id"]
     runner.PIPE = value["pipe"]
     runner.TASK_BUS = paths["task_bus_dir"]
