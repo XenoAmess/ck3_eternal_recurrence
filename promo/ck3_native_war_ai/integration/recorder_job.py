@@ -296,13 +296,18 @@ class RecorderJob:
                "pid": self.pid, "returncode": self.process.poll(),
                "job_active_processes": active, "error": error,
                "at_utc": datetime.now(timezone.utc).isoformat()}
-        _write_new(receipt, row)
+        try:
+            _write_new(receipt, row)
+        except BaseException:
+            _marker(unsafe_marker, "recorder terminal receipt write failed", self.pid)
+            raise
         return row
 
 
 def spawn(command: list[str], *, stdin: object = subprocess.PIPE,
           stdout: object = subprocess.DEVNULL, stderr: object,
-          unsafe_marker: Path, failure_receipt: Path) -> RecorderJob:
+          unsafe_marker: Path, start_receipt: Path,
+          failure_receipt: Path) -> RecorderJob:
     """Spawn a suspended child, assign its Job, then resume its only thread."""
     if sys.platform != "win32":
         raise RuntimeError("Windows Job containment requires Windows")
@@ -319,6 +324,15 @@ def spawn(command: list[str], *, stdin: object = subprocess.PIPE,
         if not member.value or _active(job) != 1:
             raise RuntimeError("suspended recorder is not the sole Job member")
         _resume_only_thread(process.pid)
+        _write_new(start_receipt, {
+            "schema": SCHEMA, "state": "ASSIGNED_AND_RESUMED",
+            "pid": process.pid, "argv": command,
+            "job_limit_flags": JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
+            "member_verified_before_resume": True,
+            "job_active_processes_before_resume": 1,
+            "initial_thread_resume_prior_count": 1,
+            "at_utc": datetime.now(timezone.utc).isoformat(),
+        })
         return RecorderJob(process, job)
     except BaseException as exc:
         marker_error = None

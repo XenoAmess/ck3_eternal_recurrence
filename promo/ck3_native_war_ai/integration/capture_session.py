@@ -1785,12 +1785,14 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             output = resources.enter_context((args.output_dir / "session.jsonl").open("x", encoding="utf-8"))
             if command is not None:
                 err = resources.enter_context((args.output_dir / "ffmpeg.stderr.txt").open("xb"))
+                out = resources.enter_context((args.output_dir / "ffmpeg.stdout.bin").open("xb"))
                 with lease_keeper.process_create_gate():
                     with recorder_lock:
                         lease_keeper.require_live()
                         recorder = spawn_recorder(
-                            command, stderr=err,
+                            command, stdout=out, stderr=err,
                             unsafe_marker=args.output_dir / "unsafe-ffmpeg-cleanup.json",
+                            start_receipt=args.output_dir / "ffmpeg-spawn.json",
                             failure_receipt=args.output_dir / "ffmpeg-spawn-failure.json")
                 resources.callback(finish_debug_recorder)  # LIFO: before lease_keeper.stop.
                 time.sleep(1)
@@ -1835,6 +1837,19 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
         "worker": worker, "cleanup_process_inventory": processes,
         "recorder_returncode": recorder.returncode if recorder is not None else None,
         "recorder_tree": recorder_cleanup,
+        "recorder_artifacts": {
+            name: identity(args.output_dir / filename)
+            for name, filename in (
+                ("argv", "ffmpeg-command.json"),
+                ("stdout", "ffmpeg.stdout.bin"),
+                ("stderr", "ffmpeg.stderr.txt"),
+                ("spawn", "ffmpeg-spawn.json"),
+                ("spawn_failure", "ffmpeg-spawn-failure.json"),
+                ("finish", "ffmpeg-finish.json"),
+                ("abort", "ffmpeg-abort.json"),
+                ("unsafe_marker", "unsafe-ffmpeg-cleanup.json"),
+            ) if (args.output_dir / filename).is_file()
+        },
         "raw_video": identity(raw) if args.record_debug_desktop and raw.is_file() else None,
         "record_debug_desktop": args.record_debug_desktop,
         "recording_complete": False,
