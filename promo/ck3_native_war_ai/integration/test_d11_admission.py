@@ -43,7 +43,7 @@ class D11AdmissionTest(unittest.TestCase):
                             __import__("subprocess").run(
                                 ["git", "-C", str(CHECKOUT), "rev-parse", "HEAD"],
                                 check=True, capture_output=True, text=True).stdout.strip())
-        with self.assertRaisesRegex(ValueError, "current checkout/script/pair"):
+        with self.assertRaisesRegex(ValueError, "current checkout/script/pair|capture script path differs"):
             no_launch_binding(OLD_A06)
 
     @unittest.skipUnless(OLD_A06.is_dir(), "historical a06 is not installed")
@@ -59,7 +59,10 @@ class D11AdmissionTest(unittest.TestCase):
             set_value(live, "--output-dir", str(root / "live" / "ck3-output"))
             set_value(live, "--pipe-name", "fresh-d11-live-pipe")
             live += ["--steam-offline-receipt", str(offline),
-                     "--d11-admission-lock", str(lock), "--capture"]
+                     "--d11-admission-lock", str(lock),
+                     "--screen-task-id", "new-screen-task",
+                     "--screen-expected-sequence", "2345",
+                     "--screen-cli-sha256", "A" * 64, "--capture"]
             files = {name: {"path": name} for name in
                      ("capture_script", "dll", "injector", "save", "receipt", "pair")}
             binding = {"attempt": str(OLD_A06), "checkout_head": "current",
