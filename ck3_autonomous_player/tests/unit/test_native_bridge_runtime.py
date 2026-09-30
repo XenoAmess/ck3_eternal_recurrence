@@ -540,10 +540,38 @@ class WindowsInjectorJobTests(unittest.TestCase):
             result = run_contained_injector_command(
                 [self.python, "-c", "print('OK')"], timeout_seconds=1.0)
         self.assertEqual(result.report["status"], "RED_TIMEOUT")
-        self.assertEqual(result.report["deadline_phase"], "post-Job cleanup")
+        self.assertEqual(result.report["deadline_phase"],
+                         "post-Job cleanup and stdio preservation")
         self.assertFalse(result.report["complete_process_tree_proven"])
         self.assertEqual(result.report["job_active_final"], 0)
         self.assertEqual(result.report["job_pids_final"], [])
+        self.assertIsNotNone(result.error)
+
+    def test_slow_final_retained_hash_retracts_green(self) -> None:
+        from xar_autoplayer import windows_injector_job
+
+        original = windows_injector_job._BoundedPipeDrain.retained
+        calls = 0
+
+        def slow_third_retained(drain: object) -> bytes:
+            nonlocal calls
+            calls += 1
+            if calls == 3:
+                time.sleep(2.1)
+            return original(drain)
+
+        with mock.patch.object(windows_injector_job._BoundedPipeDrain,
+                               "retained", autospec=True,
+                               side_effect=slow_third_retained):
+            result = run_contained_injector_command(
+                [self.python, "-c", "print('OK')"], timeout_seconds=2.0)
+        self.assertGreaterEqual(calls, 4)
+        self.assertEqual(result.report["status"], "RED_TIMEOUT")
+        self.assertEqual(result.report["deadline_phase"],
+                         "post-Job cleanup and stdio preservation")
+        self.assertFalse(result.report["complete_process_tree_proven"])
+        self.assertEqual(result.stdout, b"OK\r\n")
+        self.assertEqual(result.stderr, b"")
         self.assertIsNotNone(result.error)
 
     def test_postproof_job_termination_or_close_failure_is_red_cleanup(self) -> None:
