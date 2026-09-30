@@ -97,7 +97,9 @@ def choose_first_focus_target(
     A current unspent wealth point is a realized near-term opportunity during
     peace. A martial education and active war favor authority over the wealth
     income modifier for the initial 60-month commitment. XP values are kept
-    as observed opportunity inputs, never estimated from age.
+    as observed opportunity inputs, never estimated from age. A matching
+    education and a point observed only in martial also admit the authority
+    option; the point does not itself prove a legal perk spend.
     """
 
     def target(query: Mapping[str, object] | None, key: str,
@@ -142,17 +144,25 @@ def choose_first_focus_target(
         and wealth_row["progress"]["unspent_perk_points"] > 0
         and martial_row["progress"]["unspent_perk_points"] == 0
     )
+    educated_martial_point = bool(
+        rank > 0 and wealth_row is not None and martial_row is not None
+        and martial_row["progress"]["unspent_perk_points"] > 0
+        and wealth_row["progress"]["unspent_perk_points"] == 0
+    )
     only_final_legal_martial = bool(
         wealth_row is not None and not wealth_row["native_legal"]
     )
     if (wealth_row is not None and martial_row is not None
             and martial_row["native_legal"]
             and (only_final_legal_martial or (
-                martial_role and (not at_peace or not wealth_point_due)
+                (martial_role or educated_martial_point)
+                and (not at_peace or not wealth_point_due)
             ))):
         return {
             "status": "selected", "target_key": _MARTIAL_FOCUS,
             "reason": "only_observed_final_legal_focus" if only_final_legal_martial
+            else "martial_education_with_observed_martial_point"
+            if educated_martial_point and not martial_role
             else "martial_education_and_war_objective" if not at_peace
             else "high_martial_education_without_ready_wealth_point",
             "martial_education_rank": rank,

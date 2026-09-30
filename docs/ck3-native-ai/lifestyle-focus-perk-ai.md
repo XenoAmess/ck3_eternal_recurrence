@@ -144,6 +144,67 @@ flowchart LR
   P -. independent receipt, next turn and replan .-> W
 ```
 
+## NW-LIFE matching education and observed martial progress (2026-09-30; source boundary)
+
+The input tree is closed before the policy change for CK3
+`1.19.0.6-steam23530548`, EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The installed `game/common/traits/00_traits.txt` matches the existing trait
+metadata source SHA-256
+`079F0AB5C4224C505AB9F25BCA80D8DF296E5899BFAB26049CE5FE794DC0B042`.
+Its `education_martial_1`, `_2`, and `_3` definitions (lines 468, 512, and 549)
+provide `monthly_martial_lifestyle_xp_gain_mult = 0.1`, `0.2`, and `0.3`.
+The already frozen authority focus provides martial `+1`, monthly county
+control `+0.3`, and dread gain `+20%`; these are original effect definitions,
+not measured net benefits for the current Robert frame.
+
+The existing two-focus comparison admits martial education ranks 4–5 during
+peace and 3–5 during war. Lower matching education during peace still falls
+back to wealth when actual target progress reports a martial point and zero
+wealth points. This is a bounded option gap, not evidence of a missed Robert
+perk submission. The added first-focus branch uses that observed martial
+progress together with the matching education XP benefit. Both target rows
+must still be observed, including their actual XP/points and native final
+verdicts, and authority must be final-legal. Missing progress is not zero.
+
+The point is a progress signal, not proof that selecting authority is required
+by the game to spend it. The existing formal perk precondition requires a
+current focus/progress row; the minimum consumer already supports the unowned
+`serve_the_crown_perk` only with a current martial lifestyle, a point, and an
+independent native final-legal verdict. This branch selects a first focus;
+it does not submit a perk or claim an immediate point spend. Final modified
+monthly XP, current county control deficits, income-equivalent valuation, and
+the next legal perk are not supplied by this comparison and remain unknown.
+The existing effective focus is never switched. Other education/personality
+branches remain outside this minimum comparison.
+
+```mermaid
+flowchart TD
+    A[Existing first-operable paused actor] --> B{Current focus absent?}
+    B -->|no| K[Keep effective focus; evaluate existing perk contract]
+    B -->|yes| C[Read education and both actual target XP/points/final verdicts]
+    C --> D{Matching martial education, martial point present, wealth points zero?}
+    D -->|yes and authority final-legal| M[Admit existing authority first-focus option]
+    D -->|no| E[Keep existing education/war/wealth comparison]
+    C -. missing target observation .-> U[No inferred point or new martial branch]
+    M -. independent focus result pending .-> P[Later current martial progress and final-legal perk read]
+    P -. unobserved material perk/XP/control outcome .-> V[unknown; no immediate point-spend claim]
+```
+
+This remains a source candidate until a typed focus action has an independent
+postcondition, next-turn consumption, and the required paired recovery.
+It reuses the existing authority reader/consumer and changes no ABI, public
+gate, launch option, or frozen artifact.
+
+Focused verification on the source candidate: `test_lifestyle_min_policy`
+passes **19/19** in normal Python and **19/19** under `python -O`.
+The added cases cover ranks 1–3 through the existing bound first-focus action,
+nonmatching/unavailable education, observed point alternatives, native
+rejection/missing martial progress, and preservation of an effective focus.
+Logs are retained outside the source tree at
+`D:\nw-life-education-option-tests-20260930\normal.log` and `optimized.log`.
+No CK3 action, game-date advance, or new live qualification was performed.
+
 ## NW-LIFE first-focus martial role candidate (2026-09-28; source contract)
 
 On exact CK3 1.19.0.6, original `game/common/focuses/00_lifestyle_focuses.txt`
