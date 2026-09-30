@@ -238,6 +238,12 @@ def test_static_seal_never_grants_live(monkeypatch, tmp_path) -> None:
     check(result["worker_created"] is False)
     check(result["live_authorized"] is False)
     check(result["ck3_launch_attempted"] is False)
+    for field, source in (("admission_sha256", "admission.json"),
+                          ("operator_manifest_sha256", "operator-manifest.json"),
+                          ("live_run_identity_sha256", "live-run-identity.json"),
+                          ("source_validation_sha256", "source-validation.json"),
+                          ("interpreter_probe_sha256", "interpreter-probe.json")):
+        check(result[field] == seal.FROZEN_A14_SHA256[source])
     check(not (tmp_path / "live").exists())
     with pytest.raises(FileExistsError):
         seal.seal_attempt(output_root / "attempt-01", checkout, no_launch)
