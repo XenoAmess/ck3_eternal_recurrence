@@ -101,12 +101,23 @@ struct ArrangeMarriageQueryDiagnostics {
                          const ArrangeMarriageQueryDiagnostics &) = default;
 };
 
+enum class ArmyRouteReadStatus {
+  not_attempted,
+  complete_empty,
+  complete_nonempty,
+  target_only,
+  invalid_header,
+  unresolved_entry,
+};
+
 struct ArmySnapshot {
   std::int32_t army_id = -1;
   std::int32_t owner_character_id = -1;
   bool has_current_province = false;
   std::int32_t current_province_id = -1;
   std::vector<std::int32_t> route_province_ids;
+  ArmyRouteReadStatus route_read_status = ArmyRouteReadStatus::not_attempted;
+  std::optional<std::int32_t> route_source_count;
   bool move_target_observable = false;
   std::int32_t move_target_province_id = -1;
   std::int32_t army_state_code = 0;

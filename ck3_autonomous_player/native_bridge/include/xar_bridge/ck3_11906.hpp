@@ -931,6 +931,128 @@ using game::PreviewMoveArmyStatus;
 using game::RouteContactHorizonRequest;
 using game::RouteContactHorizonSnapshot;
 using game::RouteContactHorizonStatus;
+
+// Candidate only: this reader has no bridge command or policy consumer.  Its
+// result must never grant a date or movement step by itself.
+enum class PhysicalArmyInventoryStatusV1 {
+  unavailable,
+  requires_paused,
+  partial,
+  complete,
+};
+
+enum class PhysicalArmyWarSideV1 { allied, hostile, neutral };
+
+// Observation only. These samples are deliberately outside the inventory
+// value so they cannot affect its existing equality/completeness fences.
+struct PhysicalArmyNoncanonicalSlotV1 {
+  std::int32_t slot_index = -1;
+  std::int32_t public_cunit_id = -1;
+  std::int32_t raw_kind = -1;
+  bool carmy_resolution_attempted = false;
+  std::int32_t native_carmy_id = -1;
+  bool carmy_resolved = false;
+  std::int32_t canonical_cunit_id = -1;
+  std::string_view reason = "not_rejected";
+};
+
+inline constexpr std::size_t kPhysicalArmyNoncanonicalSampleLimitV1 = 32;
+
+struct PhysicalArmyInventoryScanDiagnosticsV1 {
+  bool performed = false;
+  std::int32_t date_raw = -1;
+  std::int32_t war_id = -1;
+  std::int32_t subject_army_id = -1;
+  std::int32_t storage_capacity = -1;
+  std::int32_t noncanonical_slots = 0;
+  std::size_t sample_count = 0;
+  bool truncated = false;
+  std::array<PhysicalArmyNoncanonicalSlotV1,
+             kPhysicalArmyNoncanonicalSampleLimitV1> samples{};
+
+  void Record(const PhysicalArmyNoncanonicalSlotV1 &sample) noexcept {
+    ++noncanonical_slots;
+    if (sample_count == samples.size()) {
+      truncated = true;
+      return;
+    }
+    samples[sample_count++] = sample;
+  }
+};
+
+struct PhysicalArmyInventoryDiagnosticsV1 {
+  PhysicalArmyInventoryScanDiagnosticsV1 first_scan{};
+  PhysicalArmyInventoryScanDiagnosticsV1 second_scan{};
+};
+
+struct PhysicalArmyInventoryRowV1 {
+  ArmySnapshot army{};
+  PhysicalArmyWarSideV1 war_side = PhysicalArmyWarSideV1::neutral;
+  friend bool operator==(const PhysicalArmyInventoryRowV1 &,
+                         const PhysicalArmyInventoryRowV1 &) = default;
+};
+
+// Private application-main source fence. Never serialize process addresses.
+// Equality across the route reader prevents joining two equal-value scans
+// from different storage generations.
+struct PhysicalArmyInventorySourceV1 {
+  std::uintptr_t game_state = 0;
+  std::uintptr_t jomini_state = 0;
+  std::uintptr_t game_data = 0;
+  std::uintptr_t unit_storage = 0;
+  std::uintptr_t unit_slots = 0;
+  std::int32_t unit_capacity = -1;
+  std::uintptr_t carmy_storage = 0;
+  std::uintptr_t carmy_slots = 0;
+  std::int32_t carmy_capacity = -1;
+  std::uintptr_t character_storage = 0;
+  std::uintptr_t character_slots = 0;
+  std::int32_t character_capacity = -1;
+  std::uintptr_t province_array = 0;
+  std::int32_t province_count = -1;
+  std::uintptr_t war_storage = 0;
+  std::uintptr_t war_slots = 0;
+  std::int32_t war_capacity = -1;
+  std::uintptr_t native_war = 0;
+  friend bool operator==(const PhysicalArmyInventorySourceV1 &,
+                         const PhysicalArmyInventorySourceV1 &) = default;
+};
+
+struct PhysicalArmyInventoryV1 {
+  PhysicalArmyInventoryStatusV1 status =
+      PhysicalArmyInventoryStatusV1::unavailable;
+  std::int32_t date_raw = -1;
+  std::int32_t war_id = -1;
+  std::int32_t subject_army_id = -1;
+  std::int32_t storage_capacity = -1;
+  std::int32_t slots_scanned = 0;
+  std::int32_t empty_slots = 0;
+  std::int32_t canonical_units = 0;
+  std::int32_t invalid_id_slots = 0;
+  std::int32_t noncanonical_slots = 0;
+  std::int32_t unresolved_slots = 0;
+  std::vector<std::int32_t> player_army_ids;
+  std::vector<std::int32_t> allied_army_ids;
+  std::vector<std::int32_t> hostile_army_ids;
+  std::vector<std::int32_t> contact_hostile_army_ids;
+  std::vector<std::int32_t> retreating_hostile_army_ids;
+  std::vector<PhysicalArmyInventoryRowV1> units;
+  PhysicalArmyInventorySourceV1 source{};
+  friend bool operator==(const PhysicalArmyInventoryV1 &,
+                         const PhysicalArmyInventoryV1 &) = default;
+};
+
+// Application-main-only, exact-build paused CUnit-storage scan.  Scans every
+// slot, counts skipped candidates, classifies canonical units using the live
+// CWar participant relation, and compares the physical hostile set with the
+// published war row.  A malformed/ambiguous slot is always partial.  Two
+// physical scans, three full snapshots and frozen source pointers must agree
+// before `complete`.
+PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
+    const Bindings &bindings, std::int32_t war_id,
+    std::int32_t subject_army_id,
+    PhysicalArmyInventoryV1 &output,
+    PhysicalArmyInventoryDiagnosticsV1 *diagnostics = nullptr) noexcept;
 using game::ActualContactScopeRequest;
 using game::ActualContactScopeSnapshot;
 using game::ActualContactScopeStatus;

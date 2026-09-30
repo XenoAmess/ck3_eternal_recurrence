@@ -464,23 +464,31 @@ def _require_exact_admission() -> dict[str, object]:
             "live_run_identity_sha256": live_identity_sha256}
 
 
-def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
+def _require_go(
+    identity: dict[str, object], *,
+    go_schema: str = "xar.war.h3937-cold-observer-once-go.v1",
+    decision: str = "GO_READ_ONLY_H3937_COMBINED",
+    authorized_scope: str = "six_paused_readonly_queries",
+    maximum_query_actions: int = 6,
+    cold_load_observer_enabled: bool = True,
+) -> tuple[dict[str, object], str]:
     raw_go = GO.read_bytes()
     go_sha = hashlib.sha256(raw_go).hexdigest().upper()
     go = json.loads(raw_go.decode("utf-8"))
     if not isinstance(go, dict):
         raise ValueError("one-shot GO receipt is not a JSON object")
     if not (
-        go.get("schema") == "xar.war.h3937-cold-observer-once-go.v1"
-        and go.get("decision") == "GO_READ_ONLY_H3937_COMBINED"
+        go.get("schema") == go_schema
+        and go.get("decision") == decision
         and go.get("candidate_head") == identity["head"]
         and go.get("round") == ROUND
         and go.get("live_run_id") == LIVE_RUN_ID
         and go.get("live_run_identity_sha256")
             == identity["live_run_identity_sha256"]
-        and go.get("cold_load_observer_enabled") is True
+        and go.get("cold_load_observer_enabled") is cold_load_observer_enabled
         and go.get("cold_load_observer_dir")
-            == str((OUTPUT / "cold-load-observation").resolve())
+            == (str((OUTPUT / "cold-load-observation").resolve())
+                if cold_load_observer_enabled else None)
         and Path(str(go.get("state_dir"))).resolve() == STATE.resolve()
         and Path(str(go.get("output_dir"))).resolve() == OUTPUT.resolve()
         and go.get("pipe") == PIPE
@@ -497,9 +505,9 @@ def _require_go(identity: dict[str, object]) -> tuple[dict[str, object], str]:
         and go.get("account_single_instance_clear") is True
         and go.get("ck3_zero_process_before") is True
         and go.get("recorder_zero_before") is True
-        and go.get("authorized_scope") == "six_paused_readonly_queries"
+        and go.get("authorized_scope") == authorized_scope
         and type(go.get("maximum_query_actions")) is int
-        and go.get("maximum_query_actions") == 6
+        and go.get("maximum_query_actions") == maximum_query_actions
     ):
         raise ValueError("one-shot external GO receipt missing or mismatched")
     owner = _require_live_screen_lease(go["screen_task_last_sequence"])

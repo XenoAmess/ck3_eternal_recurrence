@@ -10997,6 +10997,9 @@ class NativeHeadlessGameplayDriver:
                 required_capability=QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
                 internal_semantic_snapshot=True,
             )
+            raw_observer = getattr(self, "route_contact_raw_result_observer", None)
+            if raw_observer is not None:
+                raw_observer(copy.deepcopy(result))
             if (
                 set(result)
                 not in ({
@@ -11015,6 +11018,11 @@ class NativeHeadlessGameplayDriver:
                     "snapshot_revision",
                     "route_contact_horizon",
                     "physical_army_inventory",
+                    "backend_id",
+                }, {
+                    "step", "accepted", "status", "query_sequence",
+                    "snapshot_revision", "route_contact_horizon",
+                    "physical_army_inventory", "physical_army_inventory_diagnostics",
                     "backend_id",
                 })
                 or result.get("step") != step

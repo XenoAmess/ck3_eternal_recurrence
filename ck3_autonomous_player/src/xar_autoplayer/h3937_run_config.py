@@ -24,14 +24,17 @@ _PATH_FIELDS = {
 }
 
 
-def apply_run_config(runner: ModuleType, path: Path) -> dict[str, object]:
+def apply_run_config(
+    runner: ModuleType, path: Path, *, additional_fields: frozenset[str] = frozenset(),
+    schema: str = "xar.h3937.run-config.v1",
+) -> dict[str, object]:
     """Read a supplied tuple without allocating IDs, creating state or granting GO."""
     path = path.resolve()
     raw = path.read_bytes()
     value = json.loads(raw)
-    if not isinstance(value, dict) or set(value) != _FIELDS:
+    if not isinstance(value, dict) or set(value) != _FIELDS | additional_fields:
         raise ValueError("H3937 config must supply the complete new attempt tuple")
-    if value["schema"] != "xar.h3937.run-config.v1":
+    if value["schema"] != schema:
         raise ValueError("H3937 config schema differs")
     if any(not isinstance(item, str) or not item.strip() for item in value.values()):
         raise ValueError("H3937 config fields must be nonempty strings")

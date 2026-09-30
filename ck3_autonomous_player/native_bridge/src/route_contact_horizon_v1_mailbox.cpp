@@ -222,8 +222,37 @@ bool ExecuteRouteContactHorizonMailboxQueryV1(
   try {
     ++query->executor_invocations;
     query->execution_stamp = stamp;
+    PhysicalArmyInventoryV1 inventory_before{};
+    if (query->physical_inventory_requested) {
+      query->physical_inventory_before_read_status = ReadPhysicalArmyInventoryV1(
+          query->bindings, query->physical_inventory_war_id,
+          query->request.subject_army_id, inventory_before,
+          &query->physical_inventory_before_diagnostics);
+    }
     const auto status = ReadRouteContactHorizon(
         query->bindings, query->request, query->result);
+    if (query->physical_inventory_requested) {
+      query->physical_inventory_after_read_status = ReadPhysicalArmyInventoryV1(
+          query->bindings, query->physical_inventory_war_id,
+          query->request.subject_army_id, query->physical_inventory,
+          &query->physical_inventory_after_diagnostics);
+      const auto &after = query->physical_inventory;
+      query->physical_inventory_same_source =
+          inventory_before.status == PhysicalArmyInventoryStatusV1::complete &&
+          after.status == PhysicalArmyInventoryStatusV1::complete &&
+          inventory_before == after &&
+          after.source.game_state == stamp.game_state &&
+          after.source.jomini_state == stamp.jomini_state &&
+          after.date_raw == stamp.date_raw && stamp.paused &&
+          after.contact_hostile_army_ids == query->request.hostile_army_ids &&
+          after.contact_hostile_army_ids == query->result.hostile_army_ids;
+      if (!query->physical_inventory_same_source &&
+          query->physical_inventory.status ==
+              PhysicalArmyInventoryStatusV1::complete) {
+        query->physical_inventory.status =
+            PhysicalArmyInventoryStatusV1::partial;
+      }
+    }
     if (status == game::RouteContactHorizonStatus::available &&
         query->result.status == status &&
         query->result.date_raw == stamp.date_raw &&

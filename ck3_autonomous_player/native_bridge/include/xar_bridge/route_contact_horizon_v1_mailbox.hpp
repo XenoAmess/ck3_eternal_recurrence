@@ -57,6 +57,18 @@ struct RouteContactHorizonMailboxContextV1 {
   MainThreadQueryTicketV1 ticket{};
   Bindings bindings{};
   game::RouteContactHorizonRequest request{};
+  // Opt-in research receipt; the production bridge leaves this disabled.
+  bool physical_inventory_requested = false;
+  std::int32_t physical_inventory_war_id = -1;
+  PhysicalArmyInventoryV1 physical_inventory{};
+  PhysicalArmyInventoryDiagnosticsV1 physical_inventory_before_diagnostics{};
+  PhysicalArmyInventoryDiagnosticsV1 physical_inventory_after_diagnostics{};
+  PhysicalArmyInventoryStatusV1 physical_inventory_before_read_status =
+      PhysicalArmyInventoryStatusV1::unavailable;
+  PhysicalArmyInventoryStatusV1 physical_inventory_after_read_status =
+      PhysicalArmyInventoryStatusV1::unavailable;
+  bool physical_inventory_same_source = false;
+
 
   RouteContactHorizonMailboxCompletionV1 completion =
       RouteContactHorizonMailboxCompletionV1::not_executed;

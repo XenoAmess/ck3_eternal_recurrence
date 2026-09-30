@@ -615,6 +615,12 @@ def parser() -> argparse.ArgumentParser:
         required=True,
         help="monotonic CK3 ownership round R<number>; keeps this route private",
     )
+    h3937_single_parser = commands.add_parser(
+        "native-query-h3937-stationary-route-contact-v1",
+        help="one H3937 paused route-contact query; default no-launch; fresh root GO required",
+    )
+    h3937_single_parser.add_argument("--config", type=Path, required=True)
+    h3937_single_parser.add_argument("--live", action="store_true")
     family_alliance_query_parser = commands.add_parser(
         "native-query-first-heir-marriage-alliance-result-v1",
         help="one private read-only material marriage and actual alliance query",
@@ -940,6 +946,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command not in {
             "native-one-generation-preflight",
             "rebind-ordinary-seed-v1",
+            "native-query-h3937-stationary-route-contact-v1",
         }:
             configure_native_bridge_launch_environment(
                 args.bridge_mode,
@@ -1212,6 +1219,9 @@ def main(argv: list[str] | None = None) -> int:
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )
+        elif args.command == "native-query-h3937-stationary-route-contact-v1":
+            from .h3937_single_query_once_enable import main as single_query_main
+            return single_query_main(["--config", str(args.config)] + (["--live"] if args.live else []))
         elif args.command == "native-query-current-timeline-blocker-context-v1":
             from .timeline_blocker_query_run import (
                 query_current_timeline_blocker_once,
