@@ -106,6 +106,7 @@ from .player_child_default_formal_consumer import (
     ALLIANCE_RESULT_STEP as PRIVATE_CHILD_DEFAULT_ALLIANCE_STEP,
     RESULT_STEP as PRIVATE_CHILD_DEFAULT_RESULT_STEP,
     SUBMIT_STEP as PRIVATE_CHILD_DEFAULT_SUBMIT_STEP,
+    consume_child_default_result_checkpoint,
     read_child_default_ledger,
 )
 from .prisoner_ransom_formal_consumer import (
@@ -3230,6 +3231,11 @@ def native_auto_run(
                         or checkpoint.get("episode_run_id") != before.get("episode_run_id")
                         or read_child_default_ledger(driver.state_dir) != child_ledger):
                     raise AgentError("child default readback checkpoint changed pair or date")
+                if step == PRIVATE_CHILD_DEFAULT_RESULT_STEP:
+                    consume_child_default_result_checkpoint(
+                        driver, ledger=child_ledger, before=before,
+                        snapshot=checkpoint_snapshot,
+                    )
                 counts["checkpoint"] += 1
                 checkpoints.append({
                     "turn_index": turn_index,

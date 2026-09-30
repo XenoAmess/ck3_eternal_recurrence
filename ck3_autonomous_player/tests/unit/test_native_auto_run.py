@@ -577,14 +577,32 @@ class _NativeAutoRunHarness:
                     "fresh_snapshot": fresh,
                 },
             }
-        if action == "child_pending_result":
-            step = native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_RESULT_STEP
-            path = self.spec.state_dir / "player-child-matrilineal-formal-v1.json"
-            ledger = json.loads(path.read_text(encoding="utf-8"))
+        if action in {"child_pending_result", "child_default_pending_result"}:
+            default_route = action == "child_default_pending_result"
+            step = (native_auto_run_module.PRIVATE_CHILD_DEFAULT_RESULT_STEP
+                    if default_route else
+                    native_auto_run_module.PRIVATE_CHILD_MATRILINEAL_RESULT_STEP)
+            path = self.spec.state_dir / (
+                "player-child-default-formal-v1.json" if default_route else
+                "player-child-matrilineal-formal-v1.json")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            ledger = ({
+                "schema": "xar.ck3.player-child-default-formal.v1",
+                "pending": {
+                    "episode_run_id": self.episode_run_id,
+                    "played_character_id": self.played_character_id,
+                    "heir_character_id": 38988, "candidate_character_id": 37909,
+                    "recipient_character_id": 34332,
+                    "source_bridge_pid": self.bridge_pid,
+                    "source_bridge_creation_date": "fixture",
+                }, "resolved": None,
+            } if default_route else json.loads(path.read_text(encoding="utf-8")))
             pending = ledger["pending"]
             pending.update({
                 "last_checked_native_revision": self.native_revision,
                 "last_checked_bridge_pid": self.bridge_pid,
+                **({"last_checked_bridge_creation_date": "fixture"}
+                   if default_route else {}),
                 "last_outbound_pending_state": "active",
             })
             path.write_text(json.dumps(ledger), encoding="utf-8")
@@ -600,7 +618,9 @@ class _NativeAutoRunHarness:
             return {"status": "executed", "selected_step": step,
                     "plan": {"phase": "child_marriage_result_read",
                              "selected_step": step,
-                             "child_matrilineal_cold_recovery": True},
+                             **({"child_default_pending": dict(pending)}
+                                if default_route else
+                                {"child_matrilineal_cold_recovery": True})},
                     "result": result}
         if action == "opaque_postcondition_failure":
             step = "advance-route-contact-horizon-v1-101-to-3610-h-1-31"
@@ -1413,6 +1433,10 @@ class _NativeAutoRunHarness:
             },
         }
         self._append_history("save-checkpoint", result)
+        if (len(self.history) > 1 and self.history[-2]["command"]
+                == native_auto_run_module.PRIVATE_CHILD_DEFAULT_RESULT_STEP):
+            self.native_revision += 1
+            self.public_revision += 1
         return copy.deepcopy(result)
 
     def _append_history(self, command: str, result: dict[str, object]) -> None:
@@ -4175,6 +4199,46 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(ledger["pending"]["last_checked_bridge_pid"],
                          harness.bridge_pid)
         self.assertIsNone(ledger["resolved"])
+
+    def test_child_default_result_consumes_actual_paired_checkpoint_revision(self) -> None:
+        from xar_autoplayer import player_child_default_formal_consumer as consumer
+
+        with mock.patch.object(consumer, "bridge_process_identity",
+                               return_value=(4242, "fixture")):
+            report, harness = self._run(["child_default_pending_result"])
+            self.assertEqual(report["status"], "turn_limit")
+            self.assertEqual(len(report["checkpoints"]), 1)
+            ledger = consumer.read_child_default_ledger(self.spec.state_dir)
+            pending = ledger["pending"]
+            self.assertEqual(pending["last_checked_native_revision"],
+                             report["auto_run"]["turns"][0]["result"]["post_native_revision"])
+            self.assertEqual(pending["last_consumed_checkpoint_native_revision"],
+                             report["auto_run"]["turns"][0]["after"]["native_revision"])
+            self.assertEqual(pending["last_consumed_checkpoint_native_revision"],
+                             pending["last_checked_native_revision"] + 1)
+            self.assertEqual(pending["last_consumed_checkpoint_date_raw"], harness.date_raw)
+            driver = mock.Mock(state_dir=self.spec.state_dir)
+            for step in ("life-advance", None):
+                plan = {"plan": {"selected_step": step,
+                                 "phase": "native_war_red", "reason": "RED"}}
+                released = consumer.plan_child_default_private(driver, plan, harness.snapshot())
+                self.assertEqual(released["plan"]["selected_step"], step)
+            self.assertEqual(report["checkpoints"][0]["phase"],
+                             "player_child_default_result_pending")
+            self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+
+    def test_child_default_failed_checkpoint_does_not_consume_result_revision(self) -> None:
+        from xar_autoplayer import player_child_default_formal_consumer as consumer
+
+        with mock.patch.object(consumer, "bridge_process_identity",
+                               return_value=(4242, "fixture")):
+            report, harness = self._run(
+                ["child_default_pending_result"], fail_save_checkpoint=True)
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["checkpoints"], [])
+        pending = consumer.read_child_default_ledger(self.spec.state_dir)["pending"]
+        self.assertNotIn("last_consumed_checkpoint_native_revision", pending)
+        self.assertEqual(harness.auto_turn_count, 1)
 
     def test_private_child_pending_result_without_paired_save_stays_red(self) -> None:
         report, harness = self._run(

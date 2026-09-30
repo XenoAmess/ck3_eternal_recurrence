@@ -109,3 +109,65 @@ SHA-256 `1F074A14B003A1D7F1D47E1C7A6BC236D88B42047B330B33891BDF7A7A93D232`.
 The official resolved-family sidecar validator passed on those copied bytes.
 Full prepare/rebind/no-launch for the **next** candidate remains pending; this
 source-pair check does not qualify a new runtime or PID.
+
+## R0399: pending readback must consume its paired checkpoint (2026-09-30)
+
+R0399 used source `ed2c916a91cc62ef3e0e306f8b295b135c59b60c` and DLL
+`DB0D16062137CD5A1929FA24C9D9BBEE51147C7F2379D7FFAA948EE3F5B15C3B`
+on the same CK3 `1.19.0.6` / EXE hash above. It submitted the private default
+proposal for split successor Guy 38988, candidate 37909 and recipient 34332.
+The typed receipt remained `receipt_pending`; no material relationship,
+alliance or date advance was observed. Its formal report at
+`D:/ck3-nw-family-guy-h3911-c3-20260930/operator-runs/guy-h3911-c3-formal-1/formal-report.txt`
+has SHA-256 `FD9B3094993E3C247F0D5FAB3D199EAF0E5328C3540F316165C4482ED8A716B6`.
+
+The production caller has a reproducible scheduling defect. Turn 7 read
+`pending` at native revision 4 and stored `last_checked_native_revision=4`.
+Its required same-date checkpoint then published native revision 5. Turn 8
+treated `5 > 4` as a fresh result opportunity, read `pending` again, and its
+checkpoint published revision 6. Both reads remained at raw53219928. The
+final pending ledger retains last checked revision 5 while the paired driver
+is at revision 6 / history 3931. Its SHA-256 is
+`B41318E9B3B6839B0BD20F990CE93F0BD338E41D5C5BD6A84E45885AC422B5E8`.
+That save-only revision increment can repeatedly replace the base war query
+or an otherwise authorized `life-advance`; it is not evidence of a new native
+answer. The underlying war contact expected-utility RED remains a separate
+dependency and must still govern any date advancement.
+
+The existing native reader's hot path reads bilateral relationship and the
+current PID's resolution journal. Its outbound age/cutoff projection is
+cold-only; a hot `outbound_pending_state=null` does not prove refusal. The
+daily age function and generic AI reply range above explain why same-date
+pending reads do not by themselves obtain the scheduled answer.
+
+```mermaid
+flowchart TD
+    P["[R0399 live] typed proposal receipt_pending"] --> R["Read actual pair or current PID resolution journal"]
+    R -->|pending| C["Save required paired same-date checkpoint"]
+    C --> K["Consume only this verified checkpoint revision"]
+    K --> B["Retain the existing base strategy decision"]
+    B -->|new PID, later date or later actual revision| R
+    B -.-> U["[unknown] war contact RED resolution and authorized date progression"]
+    R -->|material pair| A["Read actual alliance separately"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+The bounded Python repair records the consumed checkpoint revision separately
+from the actual result-read revision. It does not submit another proposal,
+invent acceptance or authorize time through war RED. A new PID still reads
+first; a later date or native revision still triggers a result read. This
+section records the observed defect and repair boundary before policy edits;
+the repaired path requires focused production-path verification and a new
+matched live candidate before claiming live closure. `open_kaishek` precheck
+is not applicable: this is Python scheduling around a native checkpoint,
+without a script parser, finite-runtime or vanilla effect semantic change.
+
+Focused Python verification of this repair passes 14/14 in normal mode and
+14/14 in `-O`: the formal result branch materializes its required checkpoint,
+consumes its actual revision, retains the prior war RED or LIFE step on that
+same paused frame, and leaves the marker absent after a failed checkpoint.
+The consumer tests retain later-revision, later-date, cold-PID and material
+relationship reads without resubmission. These are deterministic production
+path checks; no CK3 was launched for this patch and they do not prove Guy's
+proposal was accepted.
