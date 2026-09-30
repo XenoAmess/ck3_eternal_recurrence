@@ -21,6 +21,7 @@
 - [ck3-update-migration-plan.md](ck3-update-migration-plan.md) — **2026-09-30 迁移计划**：更新前冻结已执行；二进制/数据差异、主线程版本耦合、分阶段恢复 MCP 与 OODA、排期、验收及回退；新版本尚未适配
 - [ck3-pre-update-baseline-and-cleanup-2026-09-30.md](ck3-pre-update-baseline-and-cleanup-2026-09-30.md) — 更新前核心恢复包、三份安装的指纹、真实 checkpoint/seed、约 7 GB 过时产物清理及 13 个权限失败目录的管理员脚本
 - [z-drive-root-cleanup-2026-09-30.md](z-drive-root-cleanup-2026-09-30.md) — Z 盘根目录 131 个构建输出与 28 个旧工作树的实际清理、约 16.35 GB 原始占用、337 MB 留存归档与保留依据；本轮无权限失败
+- [z-drive-runtime-cleanup-2026-09-30.md](z-drive-runtime-cleanup-2026-09-30.md) — 294 个旧运行现场的退役、存档/源码去重归档、缓存丢弃、历史路径映射与恢复工具
 - [ck3-native-title-map-navigation-contract.md](ck3-native-title-map-navigation-contract.md) — **CK3 1.19.0.6 fixture-live**：MCP 按 stable landed-title key 解析头衔并居中地图的输入、typed result、camera settled ACK、错误语义、零 OCR/键鼠 fallback 与实机证据边界
 - [ck3-native-ai/](ck3-native-ai/README.md) — CK3 1.19.0.6 原生 AI 决策树：军队控制、战斗预测与真实结算、宣战、白和/投降，以及对应的玩家 counter-policy；所有主题均含证据等级、版本边界和 Mermaid 图
 - [ck3-native-settlement-contract.md](ck3-native-settlement-contract.md) — 一代制死亡结算的 Mod→native 投影、serial/ready 发布与纪录持久化边界

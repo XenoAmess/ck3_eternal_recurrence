@@ -55,3 +55,5 @@ cleanup-result.json      8b947f8e9fd5c341febbbafb71c1e52c8ea97b4072b4b66318a794d
 本轮验证为实际归档写入/读取 hash、真实删除结果、159 个目标不存在、PowerShell AST、BOM 和文档/diff 检查。没有运行 CK3、重建 bridge、重跑 gameplay 测试或新增 live artifact，MCP readiness 与新版本兼容状态不变。
 
 任务提交信息为 `Clean obsolete CK3 temporary directories from Z drive root`，推送到 `origin/codex/mod-shiren-import`；可用 `git log -1 --format=%H -- docs/z-drive-root-cleanup-2026-09-30.md` 查询专属提交。更新后仍从[迁移计划](ck3-update-migration-plan.md)的 M0 新 build 指纹与差异表开始。
+
+随后用户指出旧 `recovery-live` 等目录仍大量留在根目录，追加了[旧运行现场退役与去重归档](z-drive-runtime-cleanup-2026-09-30.md)。上面的“保留现场”描述的是第一轮结束时的状态；第二轮将选定旧现场的存档、报告、源码与 native 产品转入稳定归档，再移除原目录，历史旧路径通过归档 manifest 查证。
