@@ -173,6 +173,8 @@ class RecoveryCasTests(unittest.TestCase):
     def test_recover_rejects_private_bus_before_executing_its_script(self) -> None:
         private = self.root / "private-bus" / "bin" / "codex_task_bus.py"
         private.parent.mkdir(parents=True)
+        (private.parent.parent / "tasks").mkdir()
+        (private.parent.parent / ".lock").write_bytes(b"0")
         sentinel = self.root / "untrusted-script-ran"
         private.write_text(
             "from pathlib import Path\n"
