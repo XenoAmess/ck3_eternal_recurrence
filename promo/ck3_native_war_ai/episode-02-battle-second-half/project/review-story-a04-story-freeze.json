@@ -1,0 +1,147 @@
+{
+  "at_utc": "2026-09-30T12:25:39.493725+00:00",
+  "story": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\story-final-v2.json",
+    "bytes": 256474,
+    "sha256": "697EDD37D55DFC6F11BD5B7FCF4DDFD8A28D4342A66010A772932C08B3F96378"
+  },
+  "chapter_sources": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-story-20260930-a04\\chapters\\opening\\opening-v5.json",
+      "bytes": 19779,
+      "sha256": "FC46272AB45221F44CA03733CEC052E28095291D3C7E3EEF86875CBABB2721B6"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-story-20260930-a04\\chapters\\pursuit\\chapter-v2.json",
+      "bytes": 53435,
+      "sha256": "0DF82A473D8876C17DBF3CE021AF7A4EB591953938EEB2D7B8A27203711BE00C"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-story-20260930-a04\\chapters\\knights\\knights-v4.json",
+      "bytes": 51710,
+      "sha256": "E042456F625283AC4DD9C1A872ECE91D7CE2F1B9BAEE188623C86FDCAE88BCA0"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-story-20260930-a04\\chapters\\reinforcement\\reinforcement-v4.json",
+      "bytes": 51641,
+      "sha256": "0D3174FCAD73656780BDAF83F2C98A088D27ED575699955EE81D3C40AEF3559E"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-story-20260930-a04\\chapters\\terminal\\terminal-v3.json",
+      "bytes": 49294,
+      "sha256": "F90DDF4C93FA41F4AE17B66369F3259F4CEA9723471221019EA13A21BC7C32F1"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-story-20260930-a04\\chapters\\closing\\closing-v5.json",
+      "bytes": 16583,
+      "sha256": "2A0D282FCE2651ABC742971E4BB3BFF7F07FB131C30B4FBFD72917FB32BD71A5"
+    }
+  ],
+  "spacing_only_changes": [
+    {
+      "chapter": "pursuit",
+      "id": "p001",
+      "before": "We now enter A05, independently reloaded from the day-27 checkpoint made in 004. The 004 label identifies the checkpoint's origin.",
+      "after": "We now enter A 05, independently reloaded from the day-27 checkpoint made in 004. The 004 label identifies the checkpoint's origin."
+    },
+    {
+      "chapter": "pursuit",
+      "id": "p029",
+      "before": "Given A05's day-28 state, the three ticks' regiment soft and hard losses can be calculated in sequence. This identifies more than a loss guessed from final UI numbers.",
+      "after": "Given A 05's day-28 state, the three ticks' regiment soft and hard losses can be calculated in sequence. This identifies more than a loss guessed from final UI numbers."
+    },
+    {
+      "chapter": "terminal",
+      "id": "t001",
+      "before": "Return to the independent A05 replay. After three pursuit settlements, day 32 brings the battlefield result into the war ledger.",
+      "after": "Return to the independent A 05 replay. After three pursuit settlements, day 32 brings the battlefield result into the war ledger."
+    },
+    {
+      "chapter": "terminal",
+      "id": "t026",
+      "before": "A05 reads this score-conversion coefficient as 150, or 15,000,000 raw units, from the casus belli loaded at settlement.",
+      "after": "A 05 reads this score-conversion coefficient as 150, or 15,000,000 raw units, from the casus belli loaded at settlement."
+    },
+    {
+      "chapter": "terminal",
+      "id": "t034",
+      "before": "A05 independently reloads a day-27 checkpoint from 004. The older 024 run remains a historical comparison, not a continuation of this trajectory.",
+      "after": "A 05 independently reloads a day-27 checkpoint from 004. The older 024 run remains a historical comparison, not a continuation of this trajectory."
+    }
+  ],
+  "pending_research_disclosures": [
+    {
+      "chapter": "closing",
+      "id": "c009",
+      "zh": "非零败方掩护、未来增援、其他骑士事件、主动撤退与整场概率，都超出本片这组固定来源证明的范围。",
+      "en": "Nonzero losing-side screening, future joins, other knight events, voluntary retreats and full-battle probabilities lie beyond what these fixed sources prove.",
+      "facts": [
+        {
+          "claim": "非零screen合同为静态分支/离线回归，下一次自然战例需同帧实机逐团校验。",
+          "source_path": "C:/w/ep2a03/docs/ck3-native-ai/pursuit-screen-nonzero-branch-contract-2026-09-27.md",
+          "source_field_or_line": "opening 状态; sections 现有实证覆盖到哪里 and 下一次受管实机的最小采集与验收",
+          "confidence": "pending"
+        },
+        {
+          "claim": "其他effect写集/事件路径与未来modifier转移仍需查验。",
+          "source_path": "C:/w/ep2a03/docs/ck3-native-ai/combat-phase-event-trace.md",
+          "source_field_or_line": "lines 403-405",
+          "confidence": "pending"
+        },
+        {
+          "claim": "未来join与当前路线候选的缺口仍存在。",
+          "source_path": "C:/w/ep2a03/docs/ck3-native-ai/future-reinforcement-trial-input-boundary-2026-09-27.md",
+          "source_field_or_line": "section 2026-09-27 后续证据范围更新, final paragraph",
+          "confidence": "pending"
+        },
+        {
+          "claim": "普通终局后的自动撤退不是普通战争AI战中主动撤退；当前本案不能提供整场通用概率。",
+          "source_path": "C:/Users/1/ck3-video-vanilla-verification-20260930/attempt-a03/verification-v1.json",
+          "source_field_or_line": "claims[id=terminal-score].boundary; claims[id=pursuit-native].boundary",
+          "confidence": "pending"
+        }
+      ],
+      "scope": "Explicitly unverified future branches, disclosed as research gaps; no affirmative mechanism claim."
+    }
+  ],
+  "counts": [
+    {
+      "id": "opening",
+      "utterances": 10,
+      "zh_characters": 478,
+      "han_characters": 426
+    },
+    {
+      "id": "pursuit",
+      "utterances": 30,
+      "zh_characters": 1686,
+      "han_characters": 1529
+    },
+    {
+      "id": "knights",
+      "utterances": 38,
+      "zh_characters": 1884,
+      "han_characters": 1723
+    },
+    {
+      "id": "reinforcement",
+      "utterances": 42,
+      "zh_characters": 2125,
+      "han_characters": 1944
+    },
+    {
+      "id": "terminal",
+      "utterances": 37,
+      "zh_characters": 1666,
+      "han_characters": 1526
+    },
+    {
+      "id": "closing",
+      "utterances": 10,
+      "zh_characters": 449,
+      "han_characters": 403
+    }
+  ],
+  "actual_tts_duration": "pending",
+  "no_master_updates": true
+}

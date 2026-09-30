@@ -1,0 +1,4579 @@
+{
+  "kind": "exact-ui-and-labelled-native-records",
+  "utterances": {
+    "opening-o001": {
+      "title": "1288对330，足够判断胜负吗？",
+      "case": "原始接战",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/day0-original-ui.png",
+      "crop_xyxy": [
+        394,
+        560,
+        630,
+        651
+      ],
+      "ui_label": "真实UI：玩家防守1288 · 敌方进攻330",
+      "diagram_title": "接战时刻的真实人数",
+      "diagram_lines": [
+        "1288 对 330",
+        "接近四比一",
+        "此刻入场人数能否决定后续？"
+      ],
+      "footer": "原始接战截图 · 无对应录像精确时码",
+      "source_kind": "actual-ui"
+    },
+    "opening-o002": {
+      "title": "开战的人、争夺的目标、相遇的战场",
+      "case": "原始接战 · 案例身份说明",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/day0-original-ui.png",
+      "crop_xyxy": [
+        0,
+        0,
+        1024,
+        768
+      ],
+      "ui_label": "真实UI：墨西拿之战 · 接战地图",
+      "diagram_title": "原生身份记录／固定名称映射",
+      "diagram_lines": [
+        "玩家：罗贝尔 Robert",
+        "战争对手：阿里 Ali",
+        "战争目标：塞尔古塞（Siracusa）",
+        "战场：墨西拿 Messina",
+        "姓名与目标为独立说明标签"
+      ],
+      "footer": "人物与目标据原生身份记录及固定名称映射；非截图控件文字",
+      "source_kind": "native-trace"
+    },
+    "opening-o003": {
+      "title": "接战之后，打开四本账",
+      "case": "同一案例 · 四类独立回放预告",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "四类真实UI预告 · 来源分别标注",
+      "diagram_title": "后续变化分别入账",
+      "diagram_lines": [
+        "追击：溃散与永久损失",
+        "骑士：人物属性与事件",
+        "增援：新军入场与重新计算",
+        "战分：战斗结果写入战争账"
+      ],
+      "footer": "四类画面来自各自独立记录；各自前后状态用于核对",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1415
+          ],
+          "label": "独立骑士名单回放 · 勇武7"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            1625,
+            550,
+            1885,
+            735
+          ],
+          "label": "独立增援回放 · 海上2570"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-480.png",
+          "crop_xyxy": [
+            668,
+            895,
+            1233,
+            985
+          ],
+          "label": "独立追击终局回放 · 战分−50%"
+        }
+      ]
+    },
+    "opening-o004": {
+      "title": "战败之后，损失还在结算",
+      "case": "独立追击回放 · 第28与31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：战败 · 撤退中 · 824",
+      "diagram_title": "两张真实帧，两个暂停日期",
+      "diagram_lines": [
+        "第28日：面板824",
+        "第31日：面板761",
+        "胜负已分出，损失仍在结算",
+        "接下来核对哪一列账在变"
+      ],
+      "footer": "同次独立追击回放前后实帧；开场只预告可见整数",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+          "crop_xyxy": [
+            755,
+            800,
+            1185,
+            1020
+          ],
+          "label": "同次回放第31日 · 761"
+        }
+      ]
+    },
+    "opening-o005": {
+      "title": "名单里的勇武，战报里的人物事件",
+      "case": "两个独立骑士回放",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        988,
+        1110,
+        1260,
+        1415
+      ],
+      "ui_label": "真实UI：骑士名单 · 勇武7",
+      "diagram_title": "人物账与兵员账分别核对",
+      "diagram_lines": [
+        "勇武：一个人的战斗属性",
+        "阵亡战报：一次人物事件",
+        "普通兵员损失另读软硬伤账",
+        "名单、战报来自两个独立回放"
+      ],
+      "footer": "独立名单回放／独立阵亡回放；两图不构成同一人物事件链",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+          "crop_xyxy": [
+            1070,
+            1008,
+            1492,
+            1119
+          ],
+          "label": "另一独立回放 · 新增阵亡战报"
+        }
+      ]
+    },
+    "opening-o006": {
+      "title": "海上2570，新军加入后如何重算？",
+      "case": "独立增援回放",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "真实UI：海上军队2570",
+      "diagram_title": "入场后的名单与计算",
+      "diagram_lines": [
+        "海上：2570（真实UI）",
+        "入场前后：分别读取战斗面板",
+        "核对名单、人数缓存与战宽",
+        "界面整数不能直接相加"
+      ],
+      "footer": "同次增援回放的不同阶段实帧；内部字段另作原生说明",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "加入前实帧 · 893／1603"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "加入后实帧 · 827／4106"
+        }
+      ]
+    },
+    "opening-o007": {
+      "title": "战斗防御方，战争进攻方",
+      "case": "同一案例 · 终局与战争身份",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实UI：战争分数−50% · 战斗分项−50%",
+      "diagram_title": "同次原生结算与身份说明",
+      "diagram_lines": [
+        "罗贝尔：战斗防御方",
+        "罗贝尔：战争进攻方",
+        "本场结算：玩家战分−50",
+        "战争仍在继续"
+      ],
+      "footer": "左：真实战争分数｜右：原生结算与身份说明；保留事件遮挡",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-480.png",
+          "crop_xyxy": [
+            47,
+            884,
+            326,
+            1059
+          ],
+          "label": "同次终局战争面板 · 玩家进攻方"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/day0-original-ui.png",
+          "crop_xyxy": [
+            288,
+            555,
+            738,
+            768
+          ],
+          "label": "原始接战 · 玩家战斗防御方"
+        }
+      ]
+    },
+    "opening-o008": {
+      "title": "独立回放，分别追踪变化",
+      "case": "同一案例 · 独立记录的来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-opening-day0/day0-original-ui.png",
+      "crop_xyxy": [
+        394,
+        560,
+        630,
+        651
+      ],
+      "ui_label": "原始接战 · 独立回放各有自己的前后状态",
+      "diagram_title": "每一条时间线独立核对",
+      "diagram_lines": [
+        "原始接战：原始记录",
+        "追击、骑士、增援：独立回放",
+        "变化只在各自前后状态核对",
+        "跨回放并列时持续标明来源"
+      ],
+      "footer": "不同独立回放不连成同一条因果时间线",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+          "crop_xyxy": [
+            755,
+            800,
+            1185,
+            1020
+          ],
+          "label": "独立追击回放"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1415
+          ],
+          "label": "独立骑士名单回放"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            1625,
+            550,
+            1885,
+            735
+          ],
+          "label": "独立增援回放"
+        }
+      ]
+    },
+    "opening-o009": {
+      "title": "真实UI在前，内部账单独解释",
+      "case": "追击记录与独立骑士名单",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：824 · 撤退中",
+      "diagram_title": "原生术语说明：分别读取",
+      "diagram_lines": [
+        "soft：溃散兵员类别",
+        "hard：永久损失类别",
+        "骑士：人物属性与人物事件",
+        "治疗、归队机制尚未核实",
+        "说明文字独立于游戏控件"
+      ],
+      "footer": "真实UI作定位；原生解释另层显示；骑士图来自独立回放",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1415
+          ],
+          "label": "独立骑士回放 · 人物名单"
+        }
+      ]
+    },
+    "opening-o010": {
+      "title": "从第28日暂停画面出发",
+      "case": "独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：第28日 · 战败 · 824",
+      "diagram_title": "接下来核对三次跨日结算",
+      "diagram_lines": [
+        "第27日检查点 → 独立冷载",
+        "第28日：当前暂停状态",
+        "第28→29→30→31日",
+        "只沿同次回放连算三次"
+      ],
+      "footer": "同次独立追击回放 · 第28日实帧",
+      "source_kind": "actual-ui"
+    },
+    "pursuit-p001": {
+      "title": "从检查点进入独立回放",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "第27日检查点 → 独立冷载",
+      "diagram_lines": [
+        "起点：旧回放第27日检查点",
+        "当前：独立追击回放",
+        "先读第28日暂停状态"
+      ],
+      "footer": "同次独立回放实帧 · 对照不同暂停日期",
+      "source_kind": "actual-ui"
+    },
+    "pursuit-p002": {
+      "title": "战败之后，追击继续",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "胜负与损失结算",
+      "diagram_lines": [
+        "玩家罗贝尔：战败、撤退中",
+        "敌军：追击中",
+        "损失账继续结算"
+      ],
+      "footer": "同次独立回放实帧 · 对照不同暂停日期",
+      "source_kind": "actual-ui"
+    },
+    "pursuit-p003": {
+      "title": "三列账，三种含义",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "原生记录：三列分别读取",
+      "diagram_lines": [
+        "当前作战人数：current",
+        "溃散兵员账：soft",
+        "永久损失账：hard",
+        "追击：soft → hard"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p004": {
+      "title": "溃散账与治疗机制的边界",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "术语解释与已核画面",
+      "diagram_lines": [
+        "软伤账：本案的溃散类别",
+        "真实画面写着“撤退中”",
+        "治疗、归队机制：尚未核实"
+      ],
+      "footer": "同次独立回放实帧 · 对照不同暂停日期",
+      "source_kind": "actual-ui"
+    },
+    "pursuit-p005": {
+      "title": "第28日：24个兵团的软伤池",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：冻结起点",
+      "diagram_lines": [
+        "征召兵 soft：62,528,090",
+        "兵士 soft：19,904,137",
+        "合计原始值：82,432,227",
+        "÷100,000＝824.32227人当量",
+        "败方24团：同帧输入"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p006": {
+      "title": "原始值先换算单位",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：单位与缩放",
+      "diagram_lines": [
+        "人数原始值 ÷100,000",
+        "82,432,227 → 824.32227人当量",
+        "追击属性与追击量另有单位",
+        "缩放相同，也不等于人数"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p007": {
+      "title": "从这一帧连算三次",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        755,
+        800,
+        1185,
+        1020
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录／模型复算",
+      "diagram_lines": [
+        "第28日有效追击、soft",
+        "有效坚韧、有效掩护",
+        "输入 → 预算 → 逐团分配",
+        "模型状态继续 → 三次结算"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p008": {
+      "title": "先得到当天追击量",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型中间量：追击量",
+      "diagram_lines": [
+        "各胜方团：有效追击 × 参战量",
+        "逐团定点运算后汇总 ×0.5",
+        "追击量 P＝75,203,000",
+        "原始单位；不当作人数"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p009": {
+      "title": "本案有效掩护为零",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型中间量：额外分量",
+      "diagram_lines": [
+        "掩护 S＝Σ有效掩护 × soft",
+        "本帧 S＝0",
+        "额外 E＝max(P−S,0)",
+        "本案 E＝75,203,000"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p010": {
+      "title": "软伤构成进入坚韧权重",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型中间量：坚韧加权量",
+      "diagram_lines": [
+        "各败方团：有效坚韧 × soft",
+        "24个兵团按定点运算汇总",
+        "首日 T＝1,489,459,979",
+        "当日溃散构成影响预算比例"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p011": {
+      "title": "保底分量单独计算",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型中间量：保底分量",
+      "diagram_lines": [
+        "基础分量＝当天 T ×5%",
+        "最低分量＝当天 T ×1%",
+        "本案保底＝基础分量",
+        "首日保底＝74,472,998",
+        "额外、保底分别保留截断"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p012": {
+      "title": "修正与三日分摊",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型复算：预算运算顺序",
+      "diagram_lines": [
+        "分量 ÷ 当日坚韧加权量",
+        "× 第28日对应软伤池",
+        "×0.75，再按三日分摊",
+        "每一步保留定点截断",
+        "额外、保底各算一份"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p013": {
+      "title": "征召兵与兵士分别预算",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型复算：按类别分组",
+      "diagram_lines": [
+        "征召兵初始池：62,528,090",
+        "兵士初始池：19,904,137",
+        "各组：额外预算＋保底预算",
+        "组预算 → 本组逐团分配"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p014": {
+      "title": "按同组软伤比例分摊",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型复算：逐团比例分配",
+      "diagram_lines": [
+        "份额＝本团当日soft／同组soft",
+        "本团份额 × 本组预算",
+        "兵团大小进入损失分配",
+        "24团并非领取等量损失"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p015": {
+      "title": "截断与余数有顺序",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "模型复算：两遍分配",
+      "diagram_lines": [
+        "第一遍：逐团比例分配",
+        "每一步：定点整数截断",
+        "第二遍：处理规定分配余数",
+        "保留原生存储顺序"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p016": {
+      "title": "一个兵团的两列变化",
+      "case": "A05 独立追击回放 · 第28日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：824 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：首团示例",
+      "diagram_lines": [
+        "soft：4,288,009 → 4,180,289",
+        "hard：2,411,991 → 2,519,711",
+        "同量转入：107,720原始值",
+        "÷100,000＝1.07720人当量"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p017": {
+      "title": "揭开第29日的实际结果",
+      "case": "A05 独立追击回放 · 第29日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：803 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：第1次结算",
+      "diagram_lines": [
+        "真实UI：824 → 803",
+        "原生逐团新增hard：20.70677",
+        "人当量；由逐团记录汇总",
+        "第28 → 29日：一次跨日结算"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p018": {
+      "title": "逐团核对超过总数核对",
+      "case": "A05 独立追击回放 · 第29日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：803 · 战败／撤退中／追击中",
+      "diagram_title": "模型与同次原生记录对照",
+      "diagram_lines": [
+        "soft：24／24项零差",
+        "可读hard：23／23项零差",
+        "核对每个兵团的字段变化",
+        "首日总量也相同"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p019": {
+      "title": "不可读字段保持缺口",
+      "case": "A05 独立追击回放 · 第29日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：803 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：可比较范围",
+      "diagram_lines": [
+        "hard：23项可读并匹配",
+        "hard：1项不可读",
+        "null 保留为空值",
+        "空值不当作零，也不报零差"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p020": {
+      "title": "下一日从模型状态继续",
+      "case": "A05 独立追击回放 · 第29日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：803 · 战败／撤退中／追击中",
+      "diagram_title": "模型链式推进与结果比较",
+      "diagram_lines": [
+        "第28日输入 → 模型第29日",
+        "模型第29日 → 模型第30日",
+        "原生第29日仅核对结果",
+        "败方原生读数不回喂连算"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p021": {
+      "title": "第30日：第二次结算",
+      "case": "A05 独立追击回放 · 第30日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-185.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：782 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：第2次结算",
+      "diagram_lines": [
+        "真实UI：803 → 782",
+        "原生新增hard：20.97473人当量",
+        "soft：24／24项零差",
+        "可读hard：23／23项零差"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p022": {
+      "title": "第31日：第三次结算",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：第3次结算",
+      "diagram_lines": [
+        "真实UI：782 → 761",
+        "原生新增hard：21.26119人当量",
+        "soft：24／24项零差",
+        "可读hard：23／23项零差"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p023": {
+      "title": "四个状态，三次跨日",
+      "case": "同次独立追击回放 · 四个暂停日期",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI四帧：824 → 803 → 782 → 761",
+      "diagram_title": "真实UI四日期对照",
+      "diagram_lines": [
+        "第28日 824 → 第29日 803",
+        "第29日 803 → 第30日 782",
+        "第30日 782 → 第31日 761",
+        "四张暂停帧之间只有三次结算"
+      ],
+      "footer": "同次独立回放实帧 · 对照不同暂停日期",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "label": "第29日 · 1067-01-01 · 803"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-185.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "label": "第30日 · 1067-01-02 · 782"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "label": "第31日 · 1067-01-03 · 761"
+        }
+      ]
+    },
+    "pursuit-p024": {
+      "title": "三次精确新增量的合计",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：三日合计",
+      "diagram_lines": [
+        "20.70677＋20.97473＋21.26119",
+        "＝62.94269人当量",
+        "soft：累计72项零差",
+        "可读hard：累计69项零差",
+        "范围：本次三日逐团对照"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p025": {
+      "title": "追击量不变，权重会变",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "模型中间量：逐日更新",
+      "diagram_lines": [
+        "三日 P 都是75,203,000",
+        "第1日 T：1,489,459,979",
+        "第2日 T：1,452,047,877",
+        "第3日 T：1,414,150,820",
+        "当日溃散构成随结算变化"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p026": {
+      "title": "初始池与当日池分别使用",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "模型复算：两种软伤口径",
+      "diagram_lines": [
+        "预算初始池：冻结在第28日",
+        "征召兵、兵士各保留自己的池",
+        "当日分摊池：使用更新后soft",
+        "当日 T 随模型状态重新计算"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p027": {
+      "title": "面板下降与current字段",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录：current对照",
+      "diagram_lines": [
+        "真实UI整数：824 → 761",
+        "current：每次24团逐项不变",
+        "三次合计72条不变对照",
+        "UI下降不另扣current人数"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p028": {
+      "title": "本案整数对应，取数公式待核",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "真实UI与同次原生soft对照",
+      "diagram_lines": [
+        "UI 824 ↔ 原生soft 824.32227",
+        "UI 803 ↔ 原生soft 803.61550",
+        "UI 782 ↔ 原生soft 782.64077",
+        "UI 761 ↔ 原生soft 761.37958",
+        "本案对应；UI内部公式尚未证实"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "pursuit-p029": {
+      "title": "三日链式结果的范围",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "同次原生记录／模型复算",
+      "diagram_lines": [
+        "第28日输入 → 连算三次",
+        "逐组预算 → 每团soft、hard",
+        "72项soft、69项可读hard零差",
+        "本次已核逐团变化与合计"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-80.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "label": "第28日 · 1066-12-31 · 824"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-100.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "label": "第29日 · 1067-01-01 · 803"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-185.png",
+          "crop_xyxy": [
+            760,
+            808,
+            1180,
+            900
+          ],
+          "label": "第30日 · 1067-01-02 · 782"
+        }
+      ]
+    },
+    "pursuit-p030": {
+      "title": "下一步核对非零掩护",
+      "case": "A05 独立追击回放 · 第31日",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-pursuit-terminal/a2-300.png",
+      "crop_xyxy": [
+        760,
+        808,
+        1180,
+        900
+      ],
+      "ui_label": "真实UI：761 · 战败／撤退中／追击中",
+      "diagram_title": "当前验收范围与下一输入",
+      "diagram_lines": [
+        "已核：本案有效掩护为零",
+        "非零掩护参与预算、可能改分支",
+        "待取得同帧原生输入",
+        "待核次日逐团soft、hard账"
+      ],
+      "footer": "左：同日真实UI｜右：同次原生记录／同版模型复算",
+      "source_kind": "native-trace"
+    },
+    "knights-k001": {
+      "title": "名单与属性各记一笔",
+      "case": "独立录制a08／第6日冷载",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        988,
+        1110,
+        1260,
+        1170
+      ],
+      "ui_label": "a08独立冷载｜第6日｜当前名单原图",
+      "diagram_title": "骑士名单、数量、勇武是三项读数",
+      "diagram_lines": [
+        "名单：人物此刻是否在列",
+        "数量：名单标题显示11名",
+        "属性：逐行读取当前勇武"
+      ],
+      "footer": "冻结静帧；请求seek 10秒，精确帧PTS未留存",
+      "source_kind": "actual-ui",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            1005,
+            1219,
+            1201,
+            1268
+          ],
+          "label": "a08当前例：同名两行勇武12与7"
+        }
+      ]
+    },
+    "knights-k002": {
+      "title": "同名两行仍须分开",
+      "case": "独立录制a08／第6日冷载",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立冷载｜第6日｜当前名单原图",
+      "diagram_title": "独立冷载：同名骑士12与7",
+      "diagram_lines": [
+        "防御方名单：11名骑士",
+        "第四行同名人物：12勇武",
+        "第五行同名人物：7勇武",
+        "姓名相同不证明人物编号相同"
+      ],
+      "footer": "冻结静帧；请求seek 10秒，精确帧PTS未留存",
+      "source_kind": "actual-ui",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k003": {
+      "title": "7与11是不同单位",
+      "case": "独立录制a08／第6日冷载",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立冷载｜第6日｜当前名单原图",
+      "diagram_title": "当前单帧的读数范围",
+      "diagram_lines": [
+        "7：第五行当前勇武",
+        "11：防御方骑士人数",
+        "单帧未展示此前属性",
+        "画面未显示11→7的时间变化"
+      ],
+      "footer": "冻结静帧；请求seek 10秒，精确帧PTS未留存",
+      "source_kind": "actual-ui",
+      "highlight_line": 0,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k004": {
+      "title": "勇武进入属性公式",
+      "case": "独立录制a08／第6日冷载",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立冷载｜第6日｜当前名单原图",
+      "diagram_title": "同版原版规则：每点勇武",
+      "diagram_lines": [
+        "基础伤害：每点50",
+        "基础坚韧：每点10",
+        "再受骑士战斗力影响",
+        "当前7勇武不在此计算实际输出"
+      ],
+      "footer": "冻结静帧；请求seek 10秒，精确帧PTS未留存",
+      "source_kind": "actual-ui",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k005": {
+      "title": "换到历史伤势链",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：039→040",
+      "diagram_lines": [
+        "原UI未留存",
+        "039：从第5日检查点另起",
+        "040：复载039的第6日后档",
+        "左图为独立当前界面示例"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k006": {
+      "title": "新增致残、仍然存活",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：039致残事件",
+      "diagram_lines": [
+        "原UI未留存",
+        "本日新增：对手致残骑士",
+        "受害者仍存活",
+        "前后同源存档另作核对"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k007": {
+      "title": "新增事件由差集取得",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：累计与新增",
+      "diagram_lines": [
+        "原UI未留存",
+        "源档已有：1条受伤战报",
+        "后档累计：2条事件",
+        "本日新增：1条致残事件"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k008": {
+      "title": "伤势与基础技能分列",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：特质差集",
+      "diagram_lines": [
+        "原UI未留存",
+        "新增特质：独腿、受伤",
+        "基础勇武：3→3",
+        "特质新增与基础技能分别读取"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k009": {
+      "title": "威望与成长分开",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：致残者收益",
+      "diagram_lines": [
+        "原UI未留存",
+        "对手威望：300→450",
+        "成长列表：选中第0项",
+        "对手基础勇武：未增加"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k010": {
+      "title": "同字节后档再读取",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：伤后复载",
+      "diagram_lines": [
+        "原UI未留存",
+        "039保存第6日伤后状态",
+        "040逐字节复载该后档",
+        "日期未推进：读取下一暂停帧"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k011": {
+      "title": "人数保持、属性待查",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：名册与兵团",
+      "diagram_lines": [
+        "原UI未留存",
+        "骑士名单：24→24人",
+        "兵团名册：51→51条",
+        "受伤骑士当前人数：1→1人"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k012": {
+      "title": "有效勇武下降",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：两个勇武口径",
+      "diagram_lines": [
+        "原UI未留存",
+        "有效勇武：11→7",
+        "骑士战斗力：1.75→1.75",
+        "基础勇武：3→3"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k013": {
+      "title": "伤前伤害属性复算",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录 / 复算：伤前",
+      "diagram_lines": [
+        "原UI未留存",
+        "11×1.75×50＝962.5",
+        "原生伤害属性：962.5",
+        "该数为战斗属性"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k014": {
+      "title": "伤后伤害属性复算",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录 / 复算：伤后",
+      "diagram_lines": [
+        "原UI未留存",
+        "7×1.75×50＝612.5",
+        "040原生伤害属性：612.5",
+        "复算与该帧原生属性一致"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k015": {
+      "title": "坚韧下降、人数保持",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录 / 复算：坚韧",
+      "diagram_lines": [
+        "原UI未留存",
+        "11×1.75×10＝192.5",
+        "7×1.75×10＝122.5",
+        "骑士名单人数保持24人"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k016": {
+      "title": "属性数不能当伤亡数",
+      "case": "历史独立回放039→040／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：单位与归因",
+      "diagram_lines": [
+        "原UI未留存",
+        "伤害属性不能读作每日击杀人数",
+        "其他兵团也有正常伤亡",
+        "致残事件不解释全部人数差"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k017": {
+      "title": "换到独立击杀回放",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：020第26日",
+      "diagram_lines": [
+        "原UI未留存",
+        "本次选中：骑士被杀事件",
+        "先追对手选择",
+        "再核对死亡写回"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k018": {
+      "title": "原名单经门槛过滤",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：19名→14候选",
+      "diagram_lines": [
+        "原UI未留存",
+        "敌方来源名单：19名骑士",
+        "经本事件勇武门槛过滤",
+        "参加本次抽取：14名候选"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k019": {
+      "title": "尾项填洞后重查",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：过滤顺序",
+      "diagram_lines": [
+        "原UI未留存",
+        "检查当前项是否合格",
+        "不合格：以尾项填入空位",
+        "重新检查当前位置"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k020": {
+      "title": "同一索引也会选错人",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：第九个位置",
+      "diagram_lines": [
+        "原UI未留存",
+        "索引8＝第9个位置",
+        "原生顺序：返回实际击杀者",
+        "稳定删除：该位置变成另一人"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k021": {
+      "title": "局部随机状态复算",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录 / 复算：选择器",
+      "diagram_lines": [
+        "原UI未留存",
+        "本分支无候选权重",
+        "复算抽签值：1,400,813,912",
+        "1,400,813,912 mod 14＝8"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k022": {
+      "title": "返回项与新战报一致",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：选择执行对拍",
+      "diagram_lines": [
+        "原UI未留存",
+        "选择器直接记录返回项",
+        "新增击杀战报记录相同对手",
+        "本步复算与实际执行对上"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k023": {
+      "title": "死亡前执行边界",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：被杀目标前态",
+      "diagram_lines": [
+        "原UI未留存",
+        "此边界：目标仍存活",
+        "有效勇武：4",
+        "人物仍连接原兵团"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k024": {
+      "title": "死亡后执行边界",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：被杀目标后态",
+      "diagram_lines": [
+        "原UI未留存",
+        "死亡标记新增；兵团连接清空",
+        "有效勇武：4→2",
+        "前后存档基础勇武：2→2"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k025": {
+      "title": "战死写回与威望收益",
+      "case": "历史独立回放020／第26日／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：后存档变化",
+      "diagram_lines": [
+        "原UI未留存",
+        "后档记下战死及击杀者",
+        "威望货币：＋150",
+        "累计威望：＋150",
+        "基础勇武保持2"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k026": {
+      "title": "成长权重换独立来源",
+      "case": "历史独立回放070／第26日权重实采／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：070独立采集",
+      "diagram_lines": [
+        "原UI未留存",
+        "同一第26日源档另起回放",
+        "070：独立运行时权重采集",
+        "来源与020分别保留"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k027": {
+      "title": "三个权重、合计85",
+      "case": "历史独立回放070／第26日权重实采／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：成长列表权重",
+      "diagram_lines": [
+        "原UI未留存",
+        "直接采样权重：40、30、15",
+        "正权重总和：85",
+        "这些是本次列表权重"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k028": {
+      "title": "比例阈值落在第零项",
+      "case": "历史独立回放070／第26日权重实采／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录 / 复算：成长",
+      "diagram_lines": [
+        "原UI未留存",
+        "复算抽签值：51,510,340",
+        "floor(抽签值×85÷2³¹)＝2",
+        "阈值2落在第0项：不作成长"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k029": {
+      "title": "执行条目直接绑定",
+      "case": "历史独立回放070／第26日权重实采／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：第0项执行证据",
+      "diagram_lines": [
+        "原UI未留存",
+        "采集绑定实际执行条目",
+        "与原生列表第0项身份一致",
+        "该次选中第0项得到直接支持"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k030": {
+      "title": "再换独立后档链",
+      "case": "历史独立回放036→038／后档链／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：036→038",
+      "diagram_lines": [
+        "原UI未留存",
+        "036保存本次事件后状态",
+        "038逐字节复载该后档",
+        "读取第27日名册"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k031": {
+      "title": "死亡者退出后名册",
+      "case": "历史独立回放036→038／后档链／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：后档名册差集",
+      "diagram_lines": [
+        "原UI未留存",
+        "兵团名册：69→68条",
+        "骑士名册：30→29人",
+        "缺项：被杀骑士及对应兵团"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k032": {
+      "title": "击杀者保留、勇武7",
+      "case": "历史独立回放036→038／后档链／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：保留名册",
+      "diagram_lines": [
+        "原UI未留存",
+        "击杀者仍在下一帧骑士名单",
+        "当前勇武：7",
+        "核对范围：保留名册与基础输入",
+        "完整伤亡状态是否一致：未证"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k033": {
+      "title": "三条历史来源各自成立",
+      "case": "历史020、070、036→038／三条独立来源／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：三条独立来源",
+      "diagram_lines": [
+        "原UI未留存",
+        "020：选择与死亡写回",
+        "070：成长权重实采",
+        "036→038：后档名册",
+        "每条独立，保留各自来源标签"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 4,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k034": {
+      "title": "回到真实相邻界面",
+      "case": "独立录制a02／第26日／原版实录",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_11_before.png",
+      "crop_xyxy": [
+        1080,
+        1407,
+        1190,
+        1440
+      ],
+      "ui_label": "a02独立实录｜原始PTS 232.533｜前帧11名",
+      "diagram_title": "独立实录a02：11→10名骑士",
+      "diagram_lines": [
+        "日期：1066年12月30日",
+        "相邻前帧：11名骑士",
+        "相邻后帧：10名骑士",
+        "两帧原始PTS：232.533／232.567"
+      ],
+      "footer": "原始相邻后帧232.567：10名；日期12月30日",
+      "source_kind": "actual-ui",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_10_after.png",
+          "crop_xyxy": [
+            1080,
+            1407,
+            1190,
+            1440
+          ],
+          "label": "同录像相邻后帧：10名骑士"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_10_after.png",
+          "crop_xyxy": [
+            2170,
+            1406,
+            2388,
+            1440
+          ],
+          "label": "原版日期：1066年12月30日"
+        }
+      ]
+    },
+    "knights-k035": {
+      "title": "可读原文的阵亡通告",
+      "case": "独立录制a02／第26日／原版实录",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+      "crop_xyxy": [
+        1070,
+        1008,
+        1492,
+        1119
+      ],
+      "ui_label": "a02独立实录｜原始PTS 233.000｜击杀通告",
+      "diagram_title": "独立实录a02：后续阵亡通告",
+      "diagram_lines": [
+        "通告内容：我方骑士被敌方骑士击杀",
+        "通知可读帧：原始PTS 233.000",
+        "防御方仍显示：10名骑士",
+        "原帧日期：1066年12月30日"
+      ],
+      "footer": "后续通知可读；这段录像不证明历史选择器执行",
+      "source_kind": "actual-ui",
+      "highlight_line": 0,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+          "crop_xyxy": [
+            1080,
+            1407,
+            1190,
+            1440
+          ],
+          "label": "同原帧：10名骑士"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+          "crop_xyxy": [
+            2170,
+            1406,
+            2388,
+            1440
+          ],
+          "label": "同原帧：12月30日"
+        }
+      ]
+    },
+    "knights-k036": {
+      "title": "画面只证明可见变化",
+      "case": "独立录制a02／第26日／原版实录",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_kill_notice_readable.png",
+      "crop_xyxy": [
+        1070,
+        1008,
+        1492,
+        1119
+      ],
+      "ui_label": "a02独立实录｜原始PTS 233.000｜击杀通告",
+      "diagram_title": "独立实录a02：画面证明范围",
+      "diagram_lines": [
+        "原帧可见：人数11→10",
+        "随后可见：击杀通告",
+        "历史抽签不由这段录像证明",
+        "单个人物的完整净减归因未证"
+      ],
+      "footer": "后续通知可读；这段录像不证明历史选择器执行",
+      "source_kind": "actual-ui",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_11_before.png",
+          "crop_xyxy": [
+            1080,
+            1407,
+            1190,
+            1440
+          ],
+          "label": "a02相邻前帧：11名"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a02_count_10_after.png",
+          "crop_xyxy": [
+            1080,
+            1407,
+            1190,
+            1440
+          ],
+          "label": "a02相邻后帧：10名"
+        }
+      ]
+    },
+    "knights-k037": {
+      "title": "致残与死亡影响不同",
+      "case": "历史独立案例汇总／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：两类已核变化",
+      "diagram_lines": [
+        "原UI未留存",
+        "039→040：留在名册、有效属性下降",
+        "036→038：死亡者退出后名册",
+        "两条独立链分别核对"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "knights-k038": {
+      "title": "本章已核范围有限",
+      "case": "历史独立案例汇总／原UI未留存",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        1005,
+        1219,
+        1201,
+        1268
+      ],
+      "ui_label": "a08独立当前界面示例｜与右栏历史回放不同次",
+      "diagram_title": "历史原生记录：验证范围",
+      "diagram_lines": [
+        "原UI未留存",
+        "已核：局部伤势、死亡、成长案例",
+        "待核：其他分支与条件权重",
+        "待核：未来日刷新与治疗结果"
+      ],
+      "footer": "右栏为历史原生记录；历史原UI未留存",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-knights/a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1170
+          ],
+          "label": "a08独立当前例：名单标题11名"
+        }
+      ]
+    },
+    "reinforcement-r001": {
+      "title": "独立检查点回到第十一日",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录：A01独立回放",
+      "diagram_lines": [
+        "第11日检查点重新载入",
+        "原版CK3 1.19.0.6",
+        "与骑士回放来源分别保留"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": []
+    },
+    "reinforcement-r002": {
+      "title": "十二月十四日原版读数",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "真实UI读数：入场前画面",
+      "diagram_lines": [
+        "1066年12月14日",
+        "战斗我方：893；敌方：1603",
+        "海上红色军牌：2570",
+        "军牌未显示人物姓名或军队编号"
+      ],
+      "footer": "原图只放大真实像素；跨日净差不等于入场人数",
+      "source_kind": "actual-ui",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "同日真实面板：893／1603"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            1540,
+            1046,
+            1730,
+            1080
+          ],
+          "label": "原版日期：12月14日"
+        }
+      ]
+    },
+    "reinforcement-r003": {
+      "title": "十二月十五日原版读数",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "真实UI读数：次日画面",
+      "diagram_lines": [
+        "1066年12月15日",
+        "战斗我方：827；敌方：4106",
+        "前日：我方893；敌方1603",
+        "两张采样画面相隔一天"
+      ],
+      "footer": "原图只放大真实像素；跨日净差不等于入场人数",
+      "source_kind": "actual-ui",
+      "highlight_line": 1,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "前日真实面板：893／1603"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+          "crop_xyxy": [
+            1540,
+            1046,
+            1730,
+            1080
+          ],
+          "label": "主图原版日期：12月15日"
+        }
+      ]
+    },
+    "reinforcement-r004": {
+      "title": "跨日加法不能闭合",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "真实UI读数 / 复算：跨日比较",
+      "diagram_lines": [
+        "1603＋2570＝4173",
+        "次日原面板：4106",
+        "跨日差额还夹有其他变化",
+        "面板差额不能直接当加入人数"
+      ],
+      "footer": "原图只放大真实像素；跨日净差不等于入场人数",
+      "source_kind": "actual-ui",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "次日真实面板：827／4106"
+        },
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+          "crop_xyxy": [
+            1540,
+            1046,
+            1730,
+            1080
+          ],
+          "label": "主图原版日期：12月14日"
+        }
+      ]
+    },
+    "reinforcement-r005": {
+      "title": "切到同次原生采样",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：三个边界",
+      "diagram_lines": [
+        "①加入函数入口",
+        "②正常返回",
+        "③首次敌方出伤之前",
+        "右栏读数来自原生采样"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": []
+    },
+    "reinforcement-r006": {
+      "title": "新军加入敌方",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录：新军侧别",
+      "diagram_lines": [
+        "新军进入敌方这一侧",
+        "带来13条兵团记录",
+        "军队编号只用于绑定原生来源",
+        "海上军牌本身未显示编号"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r007": {
+      "title": "缓存与条目分别保存",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：两种字段",
+      "diagram_lines": [
+        "缓存：原版单独保存的整侧人数",
+        "条目：逐团当前人数可重新求和",
+        "同一侧分别读取这两列"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r008": {
+      "title": "入口两列先比较",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：入口账目",
+      "diagram_lines": [
+        "整侧人数缓存",
+        "逐团当前人数合计",
+        "该入口两种字段可能未同步",
+        "先比两列，再加入新军"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r009": {
+      "title": "敌方旧军两列",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：27条敌方旧记录",
+      "diagram_lines": [
+        "旧条目当前：154690163 Q",
+        "＝1546.90163人当量",
+        "整侧旧缓存：160317482 Q",
+        "＝1603.17482人当量",
+        "Q100000：原始值÷100000"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": []
+    },
+    "reinforcement-r010": {
+      "title": "敌方残差换算",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：敌方残差",
+      "diagram_lines": [
+        "160317482−154690163",
+        "＝5627319 Q",
+        "5627319÷100000＝56.27319",
+        "单位：人当量；比较同入口两字段"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r011": {
+      "title": "我方旧军两列",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：24条我方旧记录",
+      "diagram_lines": [
+        "旧条目当前：82785368 Q",
+        "＝827.85368人当量",
+        "整侧旧缓存：89325449 Q",
+        "＝893.25449人当量",
+        "残差：6540081 Q＝65.40081"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 4,
+      "extra_ui": []
+    },
+    "reinforcement-r012": {
+      "title": "字段残差不能命名伤亡",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：残差的范围",
+      "diagram_lines": [
+        "同一函数入口：缓存−条目合计",
+        "敌方56.27319；我方65.40081",
+        "单位：人当量",
+        "跨日界面净差另属一个比较",
+        "字段差不直接证明阵亡或受伤"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": []
+    },
+    "reinforcement-r013": {
+      "title": "十三条新军记录",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录：起始与当前",
+      "diagram_lines": [
+        "新军兵团条目：13条",
+        "起始人数合计：2570",
+        "起始值是此处保存的历史字段",
+        "起始人数不等于兵团人数上限"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r014": {
+      "title": "一条记录当前为零",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录：新军中的空条目",
+      "diagram_lines": [
+        "该条目起始：10人",
+        "该条目当前：0人",
+        "兵团记录仍然存在",
+        "给当前参战人数贡献：0人"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r015": {
+      "title": "海上2570、当前2560",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录 / 复算：当前入场",
+      "diagram_lines": [
+        "海上原UI：2570",
+        "新军起始合计：2570",
+        "一条起始10人、当前0人",
+        "新军当前合计：2560",
+        "2560来自记录卡"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+          "crop_xyxy": [
+            1540,
+            1046,
+            1730,
+            1080
+          ],
+          "label": "海上2570原版日期：12月14日"
+        }
+      ]
+    },
+    "reinforcement-r016": {
+      "title": "旧条目保持、新条目入列",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：加入函数前后",
+      "diagram_lines": [
+        "敌方旧27条：当前值均未变",
+        "我方旧24条：当前值均未变",
+        "新军13条独立加入",
+        "两侧整侧缓存重新对齐"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r017": {
+      "title": "暂停选择加入哪一列",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：两个候选",
+      "diagram_lines": [
+        "候选A：旧缓存＋新军当前",
+        "160317482＋256000000 Q",
+        "候选B：旧条目＋新军当前",
+        "154690163＋256000000 Q",
+        "先预测，下一句揭示正常返回"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r018": {
+      "title": "返回对上旧条目合计",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录 / 复算：返回敌方",
+      "diagram_lines": [
+        "154690163＋256000000",
+        "＝410690163 Q",
+        "＝4106.90163人当量",
+        "用旧缓存会多5627319 Q"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r019": {
+      "title": "两侧残差同时归零",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录：返回我方与两侧",
+      "diagram_lines": [
+        "我方未接收这支新军",
+        "返回我方：82785368 Q",
+        "＝827.85368人当量",
+        "两侧缓存−条目合计：0、0"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r020": {
+      "title": "加入使整侧缓存对齐",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录：本次重算关系",
+      "diagram_lines": [
+        "旧条目合计＋新军当前",
+        "→返回整侧人数缓存",
+        "本次两侧均对齐条目合计",
+        "入口旧缓存不是直接相加的底数"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r021": {
+      "title": "残差来自本次入口",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：局部观察边界",
+      "diagram_lines": [
+        "已核：一次入口、一次正常返回",
+        "旧条目27＋24条；新条目13条",
+        "残差取决于当时实际字段",
+        "不把56.27泛化为固定减员数"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r022": {
+      "title": "先读入口保存的战宽",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：加入入口战宽",
+      "diagram_lines": [
+        "保存基础宽度：1645",
+        "地形后最终宽度：1480",
+        "本次原UI采样未展示战宽提示",
+        "战宽数字来自原生记录"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r023": {
+      "title": "合并两侧当前人数",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录 / 复算：总人数",
+      "diagram_lines": [
+        "410690163＋82785368",
+        "＝493475531 Q",
+        "＝4934.75531人当量",
+        "使用精确记录，不由UI整数倒算"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r024": {
+      "title": "先计算数学半数",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：候选基础",
+      "diagram_lines": [
+        "4934.75531÷2＝2467.377655",
+        "这是数学半数",
+        "引擎按本位置的截断步骤处理",
+        "候选基础宽度：2467"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r025": {
+      "title": "定点半数与数学半数分列",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：两层截断",
+      "diagram_lines": [
+        "数学半数：2467.377655",
+        "493475531 Q // 2＝246737765 Q",
+        "引擎定点半数：2467.37765",
+        "再去掉人数小数：2467"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r026": {
+      "title": "基础宽度保留历史",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：历史比较",
+      "diagram_lines": [
+        "新基础＝max(旧基础,候选)",
+        "旧基础：1645",
+        "候选基础：2467",
+        "保留两者中的较大值"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": []
+    },
+    "reinforcement-r027": {
+      "title": "本次基础宽度上升",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：本次比较",
+      "diagram_lines": [
+        "候选2467＞旧基础1645",
+        "新基础宽度＝2467",
+        "入口旧值携带此前历史",
+        "当前入口人数不能强迫旧值下降"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r028": {
+      "title": "森林乘数属于静态定义",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同版静态定义 / 复算：森林",
+      "diagram_lines": [
+        "墨西拿所在省份：森林",
+        "同版静态宽度乘数：0.9",
+        "乘数来源：原版静态定义",
+        "该乘数并非本次跟踪采样字段"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r029": {
+      "title": "地形后再次截断",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录 / 复算：最终宽度",
+      "diagram_lines": [
+        "2467×0.9＝2220.3",
+        "舍去小数→2220",
+        "原生正常返回最终宽度：2220",
+        "复算与该返回字段一致"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r030": {
+      "title": "完整战宽顺序",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：顺序",
+      "diagram_lines": [
+        "合计取半→定点及人数截断",
+        "保留max(旧基础,候选基础)",
+        "乘地形→再次截断",
+        "与最低宽度100取较大值",
+        "本次最终宽度：2220"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r031": {
+      "title": "逐步截断保持输入",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：中间输入",
+      "diagram_lines": [
+        "每次截断发生在原版指定位置",
+        "截断后的整数进入下一步乘法",
+        "不把全部小数推迟到最后处理",
+        "本例未声称换顺序必然改最终整数"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r032": {
+      "title": "首次出伤实际消费2220",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录：首次出伤前",
+      "diagram_lines": [
+        "同一战斗的首次敌方出伤调用",
+        "实际宽度参数：2220",
+        "入口旧最终宽度：1480",
+        "此处直接读到新的宽度参数"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r033": {
+      "title": "局部链的四步连接",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录：已核局部链",
+      "diagram_lines": [
+        "新军条目进入名单",
+        "整侧缓存对齐条目合计",
+        "新最终宽度写回",
+        "随后出伤调用消费新宽度"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r034": {
+      "title": "战宽作用于整侧伤害",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：宽度比例",
+      "diagram_lines": [
+        "整侧经过克制后的有效输出",
+        "乘min(1,最终战宽÷当前参战人数)",
+        "本次最终宽度：2220",
+        "2220不证明挑选同人数站前排"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r035": {
+      "title": "按定点公式复算比例",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录 / 复算：首次调用",
+      "diagram_lines": [
+        "宽度：2220；人数：4106.90163",
+        "min(100000,",
+        "floor(2220×10¹⁰÷410690163))",
+        "＝54055 Q＝54.055%",
+        "该比例来自已核公式复算"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r036": {
+      "title": "比例乘整侧有效输出",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录 / 复算：输出关系",
+      "diagram_lines": [
+        "先得到经过克制的整侧有效输出",
+        "再乘本次战宽比例",
+        "人数增加也会改变战宽",
+        "伤害不能只按新旧总人数翻倍"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 1,
+      "extra_ui": []
+    },
+    "reinforcement-r037": {
+      "title": "回到面板和记录卡",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "真实UI与同次原生记录分别标注",
+      "diagram_lines": [
+        "原UI：893／1603→827／4106",
+        "原生当前新军：2560",
+        "入口缓存残差：两侧分别记录",
+        "原生最终战宽：1480→2220"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "前日真实面板：893／1603"
+        }
+      ]
+    },
+    "reinforcement-r038": {
+      "title": "三种字段先对齐",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月14日｜我方893／敌方1603",
+      "diagram_title": "同次原生记录：三栏账目",
+      "diagram_lines": [
+        "旧条目：当前人数逐团求和",
+        "旧缓存：入口单独保存的整侧值",
+        "新軍：十三条当前合计2560",
+        "原UI跨日净差不代替同入口账目"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "前日真实面板：893／1603"
+        }
+      ]
+    },
+    "reinforcement-r039": {
+      "title": "已发生入场、未来未预测",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录：到达验证范围",
+      "diagram_lines": [
+        "已观察：新军实际加入",
+        "尚未由更早路线输入证明到达日",
+        "尚未由求援输入证明未来到达日",
+        "此图不绘制未证实的未来路线"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 0,
+      "extra_ui": []
+    },
+    "reinforcement-r040": {
+      "title": "三个采样点的验证范围",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "同次原生记录：局部验证范围",
+      "diagram_lines": [
+        "已核：本次加入账目与战宽",
+        "三个采样点只绑定这条局部链",
+        "正式读取认证仍需单独验证",
+        "完整战斗状态转移仍需单独验证"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": []
+    },
+    "reinforcement-r041": {
+      "title": "独立追击回放保留独立来源",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-225.000.png",
+      "crop_xyxy": [
+        1625,
+        550,
+        1885,
+        735
+      ],
+      "ui_label": "A01真实UI｜12月14日｜海上军牌2570",
+      "diagram_title": "同次原生记录：来源边界",
+      "diagram_lines": [
+        "本章：A01增援回放",
+        "追击章：另一条独立回放",
+        "两条来源分别保留",
+        "不能据此认定另一败局唯一原因"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 3,
+      "extra_ui": []
+    },
+    "reinforcement-r042": {
+      "title": "4106背后的依次入账",
+      "case": "独立回放A01／第11日检查点冷载／同次增援来源",
+      "source_image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        930
+      ],
+      "ui_label": "A01真实UI｜12月15日｜我方827／敌方4106",
+      "diagram_title": "真实UI与同次原生记录：收束",
+      "diagram_lines": [
+        "原面板保留4106真实像素",
+        "新軍当前条目加入",
+        "旧缓存按条目合计重算",
+        "新的最终战宽写回",
+        "再转入独立终局来源"
+      ],
+      "footer": "右栏标同次原生记录／复算；保留原UI数值",
+      "source_kind": "native-trace",
+      "highlight_line": 2,
+      "extra_ui": [
+        {
+          "image": "C:/Users/1/AppData/Local/ck3-review-analysis/episode02-20260930-a03/ui-reinforcement/raw-350.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "前日真实面板：893／1603"
+        }
+      ]
+    },
+    "terminal-t001": {
+      "title": "第32日：战场向战争账本交账",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 回放位置",
+      "diagram_lines": [
+        "A05 独立载入第27日检查点",
+        "三次追击结算后，进入第32日",
+        "本页回到同次战争后态"
+      ],
+      "footer": "A05 第32日 · 保留中央事件遮挡",
+      "source_kind": "actual-ui"
+    },
+    "terminal-t002": {
+      "title": "普通终局：敌军获胜",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 胜负身份",
+      "diagram_lines": [
+        "普通结果：normal_result",
+        "战斗零侧：敌军获胜",
+        "战斗一侧：玩家罗贝尔",
+        "身份来自原生回执"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t003": {
+      "title": "战斗身份与战争身份分别读",
+      "case": "A05 独立回放",
+      "source_image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01/screens/56640224465900-e2t-s01-war4-before.png",
+      "crop_xyxy": [
+        40,
+        800,
+        1233,
+        1060
+      ],
+      "ui_label": "真实战争窗口：左侧进攻方为罗贝尔",
+      "diagram_title": "A05 原生记录 · 两种攻守身份",
+      "diagram_lines": [
+        "墨西拿战斗：罗贝尔是防御方",
+        "整场战争：罗贝尔是进攻方",
+        "战斗零侧获胜 → 战争防守方获胜"
+      ],
+      "footer": "A05 a01录制段 · 左：战争进攻方；右：身份对应",
+      "source_kind": "native-trace"
+    },
+    "terminal-t004": {
+      "title": "十八号军队：普通终局后的败退",
+      "case": "A05 独立回放",
+      "source_image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-a05-frame-a01/writer-near-397333ms.png",
+      "crop_xyxy": [
+        0,
+        825,
+        744,
+        1080
+      ],
+      "ui_label": "真实军队面板：撤退至阿普利亚",
+      "diagram_title": "A05 原生记录 · 军队后态",
+      "diagram_lines": [
+        "终局结果：普通战败",
+        "军队18：已离开旧战斗",
+        "原生后态：retreating=true",
+        "此处是败后撤退状态"
+      ],
+      "footer": "A05 同次终局 · 中央事件遮挡保留",
+      "source_kind": "native-trace"
+    },
+    "terminal-t005": {
+      "title": "战争分数：结算前后对照",
+      "case": "A05 独立回放",
+      "source_image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01/screens/56640224465900-e2t-s01-war4-before.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "结算前真实UI：总分 0% / 剑形分项 0%",
+      "diagram_title": "真实UI对照 · 前后两张原图",
+      "diagram_lines": [
+        "结算前真实UI：总分 0%",
+        "结算后真实UI：总分 −50%",
+        "a01与a02为两段录制"
+      ],
+      "footer": "A05 · 本句顺序展示a01前图与a02后图",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+          "crop_xyxy": [
+            668,
+            895,
+            1233,
+            985
+          ],
+          "label": "A05 a02录制段：结算后−50%"
+        }
+      ]
+    },
+    "terminal-t006": {
+      "title": "放大可读的战争窗口下半部",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "真实UI · 两处可见读数",
+      "diagram_lines": [
+        "总分：−50%",
+        "剑形图标分项：−50%",
+        "上半部被剧情事件遮挡",
+        "放大原图下部，不补造遮挡内容"
+      ],
+      "footer": "A05 a02 第32日 · 原图下部真实像素",
+      "source_kind": "actual-ui"
+    },
+    "terminal-t007": {
+      "title": "左侧真实读数，右侧解释来源",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "画面与计算各自注明来源",
+      "diagram_lines": [
+        "左图直接可见：两处 −50%",
+        "右图来自：A05 原生终局回执",
+        "计算输入没有伪装成游戏控件"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t008": {
+      "title": "从实际输入向后计算",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 计算路径",
+      "diagram_lines": [
+        "起始量与软伤 → 战分分子",
+        "战争参战者八桶 → 分母",
+        "比例 → 系数 → 封顶 → 符号",
+        "从已封顶的 −50 无法倒推全式"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t009": {
+      "title": "先读单位：十万原始单位",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 单位标尺",
+      "diagram_lines": [
+        "原始定点标尺：Q100000",
+        "100000 原始单位 = 1 人当量",
+        "小数表示引擎记账精度"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t010": {
+      "title": "终局读取的战斗起始口径",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 起始量",
+      "diagram_lines": [
+        "baseline：129800000 原始单位",
+        "去缩放：1298 人当量",
+        "接战当前人数是另一字段",
+        "本页1298来自回执，未由UI显示"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t011": {
+      "title": "零是终局暂存输入",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 暂存当前量",
+      "diagram_lines": [
+        "stored_current：0",
+        "该零属于本场结算输入",
+        "全部军队存活状态需另查"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t012": {
+      "title": "两笔软伤分别扣除",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 软伤输入",
+      "diagram_lines": [
+        "征召兵软伤：577.53614 人当量",
+        "兵士软伤：183.84344 人当量",
+        "原始值：57753614 / 18384344"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t013": {
+      "title": "得到战分损失分子",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 分子复算",
+      "diagram_lines": [
+        "129800000 − 0 − 57753614",
+        "再减 18384344 = 53662042",
+        "去缩放：536.62042 人当量",
+        "这项用于战分计算"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t014": {
+      "title": "两本账保留十人当量差",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 两种口径",
+      "diagram_lines": [
+        "战分分子：536.62042",
+        "参战者硬伤账：526.62042",
+        "口径差：10 人当量",
+        "同次回放，分栏保留"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t015": {
+      "title": "分子与实际死亡人数分开",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 非主战条目口径",
+      "diagram_lines": [
+        "第31日非主战条目：Reg53",
+        "起始10 / 当前0 / 软伤0",
+        "硬伤：未提供，无法与预备兵分开",
+        "余量10进入战分分子的计算口径",
+        "不能据此判定10人死亡"
+      ],
+      "footer": "A05同次原生记录复盘 · 左侧UI未显示Reg53字段",
+      "source_kind": "native-trace"
+    },
+    "terminal-t016": {
+      "title": "分母来自战争参战者军事汇总",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 分母取数链",
+      "diagram_lines": [
+        "本场败方对应的战争一侧",
+        "战争参战者 → 角色军事汇总",
+        "结算读取八个数量槽",
+        "本场参战人数另列"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t017": {
+      "title": "罗贝尔的八个数量桶",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 八桶对象",
+      "diagram_lines": [
+        "本次参战者：罗贝尔",
+        "角色编号：29829",
+        "按原生加法顺序读取八桶",
+        "A05 动态记录逐桶保留"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t018": {
+      "title": "八桶相加：996",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 八桶求和",
+      "diagram_lines": [
+        "前四桶：0，675，310，0",
+        "后四桶：0，0，11，0",
+        "合计：996",
+        "八桶读数来自同次A05回执"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t019": {
+      "title": "三项非零桶的名称来自静态证据",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "原生记录 + 原版静态命名",
+      "diagram_lines": [
+        "征召兵 MAX 槽：675",
+        "兵士 MAX 槽：310",
+        "骑士数量槽：11",
+        "名称：原版指令与界面标签",
+        "数值：同次A05动态回执"
+      ],
+      "footer": "A05 动态八桶 · 名称按fixed原版静态证据对应",
+      "source_kind": "native-trace"
+    },
+    "terminal-t020": {
+      "title": "数量槽：MAX、CURRENT与骑士",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "原版静态口径 · 对应A05八桶",
+      "diagram_lines": [
+        "征召兵、兵士：本式取MAX槽",
+        "相邻CURRENT槽另有口径",
+        "骑士：以数量11进入分母",
+        "勇武加权伤害不作为人数相加"
+      ],
+      "footer": "A05 动态数量 · MAX/CURRENT命名来自静态指令",
+      "source_kind": "native-trace"
+    },
+    "terminal-t021": {
+      "title": "1298与996来自两条取数链",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 起始量与分母",
+      "diagram_lines": [
+        "本场战斗 baseline：1298",
+        "战争参战者八桶：996",
+        "前者用于损失分子",
+        "后者用于比例分母"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t022": {
+      "title": "当前士兵整数与八桶分母分开",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        40,
+        884,
+        1233,
+        1059
+      ],
+      "ui_label": "真实UI：玩家当前士兵897，战争总分−50%",
+      "diagram_title": "A05 原生记录 · 三栏口径",
+      "diagram_lines": [
+        "左图战争当前士兵：897",
+        "原生八桶分母：996",
+        "本场起始口径：1298",
+        "三栏分别取数，不能互换"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t023": {
+      "title": "先执行整数除法",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 整数比例复算",
+      "diagram_lines": [
+        "分子原始整数：53662042",
+        "分母整数：996",
+        "53662042 // 996 = 53877",
+        "原生顺序：截断，非四舍五入"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t024": {
+      "title": "去缩放后：53.877%",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 比例单位",
+      "diagram_lines": [
+        "53877 Q100000",
+        "去缩放：0.53877",
+        "写成百分比：53.877%",
+        "先截断比例，再乘系数"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t025": {
+      "title": "先过比例上限，再取系数",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "原版静态顺序 · 对应A05比例",
+      "diagram_lines": [
+        "比例上限：100000 Q = 100%",
+        "本次比例：53877 Q",
+        "min(53877，100000) = 53877",
+        "随后使用已加载战争理由系数"
+      ],
+      "footer": "A05 输入复算 · 比例上限来自fixed静态公式",
+      "source_kind": "native-trace"
+    },
+    "terminal-t026": {
+      "title": "本次战争理由系数：150",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 所选系数",
+      "diagram_lines": [
+        "已加载战争理由：本次所选路径",
+        "原生回执：15000000 Q100000",
+        "去缩放：150",
+        "仅表示本次结算实际读取值"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t027": {
+      "title": "按原生乘除顺序继续复算",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 未封顶复算",
+      "diagram_lines": [
+        "53877 × 15000000",
+        "再整除 100000",
+        "得到 8081550 原始单位",
+        "先比例截断，再进行这步乘除"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t028": {
+      "title": "未封顶战分：80.8155",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生输入复算 · 未封顶值",
+      "diagram_lines": [
+        "8081550 ÷ 100000 = 80.8155",
+        "这是按同次原生输入复算的值",
+        "左图实际UI仍显示 −50%",
+        "80.8155未由游戏界面直接显示"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t029": {
+      "title": "单场封顶后幅度：50",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "原版静态上限 + A05动态写回",
+      "diagram_lines": [
+        "未封顶幅度：80.8155",
+        "本次路径的单场上限：50",
+        "min(80.8155，50) = 50",
+        "A05 动态战分条目：5000000 Q"
+      ],
+      "footer": "单场上限为fixed静态证据 · 50写回由A05回执确认",
+      "source_kind": "native-trace"
+    },
+    "terminal-t030": {
+      "title": "切换到玩家战争视角：−50",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 幅度与符号",
+      "diagram_lines": [
+        "获胜方属于战争防守方",
+        "该方单场战分幅度：+50",
+        "罗贝尔属于战争进攻方",
+        "玩家战争相对增量：−50"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t031": {
+      "title": "同次后态与真实UI对上",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 同次后态核对",
+      "diagram_lines": [
+        "第32日暂停战争后态：−50",
+        "真实战争面板总分：−50%",
+        "真实剑形战斗分项：−50%",
+        "回执、后态、图像分别对照"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01/screens/56640224465900-e2t-s01-war4-before.png",
+          "crop_xyxy": [
+            668,
+            895,
+            1233,
+            985
+          ],
+          "label": "A05 a01结算前：0%，独立录制段"
+        }
+      ]
+    },
+    "terminal-t032": {
+      "title": "本次贡献与战争总分恰好相同",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 案例 · 单场与累计总分",
+      "diagram_lines": [
+        "本场玩家相对贡献：−50",
+        "本次战争面板总分：−50%",
+        "战争总分还可包含占领等项",
+        "单场条目与总分分别核对"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t033": {
+      "title": "把每一步放回各自来源",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 来源分栏 · 完整计算路径",
+      "diagram_lines": [
+        "左：真实UI只显示可见结果",
+        "右：分子 → 八桶分母 → 比例",
+        "再读：战争理由系数 → 封顶",
+        "最后：战争身份决定相对符号"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t034": {
+      "title": "A05是一次独立载入",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 来源关系 · 独立回放",
+      "diagram_lines": [
+        "载入004的第27日检查点",
+        "A05独立回放至第32日",
+        "024保留为历史对照",
+        "不同录制与轨迹分别标注"
+      ],
+      "footer": "A05 a02原图 · 004检查点来源；024仅历史对照",
+      "source_kind": "native-trace"
+    },
+    "terminal-t035": {
+      "title": "闭合一次普通终局的局部账",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 本次局部闭合",
+      "diagram_lines": [
+        "普通战斗结果",
+        "对应正确的战争攻守身份",
+        "单场战分条目写入战争账本",
+        "同次暂停战争后态确认−50"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "terminal-t036": {
+      "title": "固定来源尚未回答的条件",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "本次固定来源 · 尚待核对",
+      "diagram_lines": [
+        "其他战争理由的计分",
+        "特殊部队的数量桶边界",
+        "AI在败后怎样作下一次决策",
+        "需要分别取得新的证据"
+      ],
+      "footer": "现有A05窗口作来源背景 · 本页不展示新战例",
+      "source_kind": "native-trace"
+    },
+    "terminal-t037": {
+      "title": "这一笔可复算，战争仍在继续",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "回到真实战争窗口",
+      "diagram_lines": [
+        "本次 −50 已可逐步复算",
+        "战争继续，下一次状态另行观察",
+        "本片未给整场或下一战胜率"
+      ],
+      "footer": "A05 第32日 · 真实战争窗口收束",
+      "source_kind": "actual-ui"
+    },
+    "closing-c001": {
+      "title": "追击：三次跨日的软伤转硬伤",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-80.png",
+      "crop_xyxy": [
+        550,
+        785,
+        1375,
+        1080
+      ],
+      "ui_label": "A05 第28日真实UI：824 / 撤退中",
+      "diagram_title": "A05 原生账本 · 追击回顾",
+      "diagram_lines": [
+        "A05 三次跨日配对原版账本",
+        "62.94269 人当量：软伤转硬伤",
+        "UI溃散整数与逐团账分栏"
+      ],
+      "footer": "A05 同轨第28至31日 · 账本精度另列",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-300.png",
+          "crop_xyxy": [
+            550,
+            785,
+            1375,
+            1080
+          ],
+          "label": "A05第31日：761"
+        }
+      ]
+    },
+    "closing-c002": {
+      "title": "骑士：属性与名单的两种改变",
+      "case": "历史机制链 / 当前a08独立UI",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\a08_d06_fifth_row_7.png",
+      "crop_xyxy": [
+        988,
+        1110,
+        1260,
+        1440
+      ],
+      "ui_label": "当前a08真实名单：同名两行，12与7勇武",
+      "diagram_title": "历史原生记录 · 两条独立人物链",
+      "diagram_lines": [
+        "历史链甲：勇武11→7，仍在阵中",
+        "历史链乙：阵亡者退出后帧名单",
+        "左图当前a08：7勇武、11名骑士",
+        "历史链与当前UI入口分别标注"
+      ],
+      "footer": "左为a08独立UI入口 · 历史链未冒充当前人物证据",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\a02_kill_notice_readable.png",
+          "crop_xyxy": [
+            1060,
+            1000,
+            1500,
+            1440
+          ],
+          "label": "a02当前阵亡战报，仅UI入口"
+        }
+      ]
+    },
+    "closing-c003": {
+      "title": "增援：从入列到首次出伤",
+      "case": "A01 第11日检查点独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+      "crop_xyxy": [
+        752,
+        790,
+        1175,
+        1080
+      ],
+      "ui_label": "A01真实加入后面板：827 对 4106",
+      "diagram_title": "A01 原生跟踪 · 加入过程",
+      "diagram_lines": [
+        "A01 同次原生跟踪",
+        "entry.current → cache重新对齐",
+        "新增参战者 → 新战宽",
+        "2220进入首次side0出伤调用"
+      ],
+      "footer": "A01独立来源 · cache与战宽未伪装成UI读数",
+      "source_kind": "native-trace"
+    },
+    "closing-c004": {
+      "title": "终局：一笔战分进入战争账本",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        668,
+        895,
+        1233,
+        985
+      ],
+      "ui_label": "真实战争窗口：总分 −50% / 剑形分项 −50%",
+      "diagram_title": "A05 原生记录 · 终局回顾",
+      "diagram_lines": [
+        "A05 普通终局后的败退",
+        "本场玩家相对贡献：−50",
+        "同次战争后态：−50",
+        "左图战争总分与剑形分项可见"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-20260928-a05-live/recording-e2-09-terminal-a01/screens/56640224465900-e2t-s01-war4-before.png",
+          "crop_xyxy": [
+            668,
+            895,
+            1233,
+            985
+          ],
+          "label": "A05 a01结算前：0%，独立录制段"
+        },
+        {
+          "image": "D:/workspace/ck3_native_war_ai_promo_work/episode02-terminal-pair-a05-frame-a01/writer-near-397333ms.png",
+          "crop_xyxy": [
+            0,
+            825,
+            744,
+            1080
+          ],
+          "label": "A05败后军队面板：撤退至阿普利亚"
+        }
+      ]
+    },
+    "closing-c005": {
+      "title": "下一战：暂停，先读眼前状态",
+      "case": "原始002接战 / a08独立名单入口",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-opening-day0\\day0-original-ui.png",
+      "crop_xyxy": [
+        288,
+        555,
+        928,
+        768
+      ],
+      "ui_label": "原始接战UI：防御方1288 / 进攻方330",
+      "diagram_title": "实际UI观察 · 日期、双方与名单",
+      "diagram_lines": [
+        "暂停并读当前日期",
+        "认清战斗双方攻守身份",
+        "接战当前人数：1288 对 330",
+        "再开骑士名单，读名单与属性"
+      ],
+      "footer": "原始002接战 · a08骑士名单作为独立下一图",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\a08_d06_fifth_row_7.png",
+          "crop_xyxy": [
+            988,
+            1110,
+            1260,
+            1440
+          ],
+          "label": "a08独立名单：读可见7勇武与11骑士"
+        }
+      ]
+    },
+    "closing-c006": {
+      "title": "继续观察：海上军队何时入场",
+      "case": "A01 独立增援回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-225.000.png",
+      "crop_xyxy": [
+        789,
+        441,
+        1885,
+        735
+      ],
+      "ui_label": "A01 12月14日真实地图：海上军队2570",
+      "diagram_title": "实际UI观察 · 到场前后",
+      "diagram_lines": [
+        "同次A01海上军队牌：2570",
+        "加入前敌方面板：1603",
+        "加入后敌方面板：4106",
+        "前后日期与人数分别比较",
+        "不可用1603+2570直接解释4106"
+      ],
+      "footer": "A01同次图源 · sea225、before350、after365",
+      "source_kind": "actual-ui",
+      "extra_ui": [
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-350.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "A01加入前：893对1603"
+        },
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-reinforcement\\raw-365.000.png",
+          "crop_xyxy": [
+            752,
+            790,
+            1175,
+            930
+          ],
+          "label": "A01加入后：827对4106"
+        }
+      ]
+    },
+    "closing-c007": {
+      "title": "进入追击：看溃散兵员与账本",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-300.png",
+      "crop_xyxy": [
+        550,
+        785,
+        1375,
+        1080
+      ],
+      "ui_label": "A05 第31日真实UI：761 / 撤退中",
+      "diagram_title": "A05 追击 · UI与原生账本对照",
+      "diagram_lines": [
+        "同轨UI溃散人数：824 → 761",
+        "逐团账：软伤转硬伤62.94269",
+        "面板整数与原始账分别取数",
+        "整数相减不能直接报阵亡"
+      ],
+      "footer": "A05第28至31日同轨 · 原生精度另列",
+      "source_kind": "native-trace",
+      "extra_ui": [
+        {
+          "image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-80.png",
+          "crop_xyxy": [
+            550,
+            785,
+            1375,
+            1080
+          ],
+          "label": "A05第28日：824 / 撤退中"
+        }
+      ]
+    },
+    "closing-c008": {
+      "title": "最后读战争面板与军事汇总",
+      "case": "A05 独立回放",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-pursuit-terminal\\a2-480.png",
+      "crop_xyxy": [
+        40,
+        884,
+        1233,
+        1059
+      ],
+      "ui_label": "A05真实战争窗口：进攻方、总分与战斗分项",
+      "diagram_title": "A05 原生记录 · 战争面板读法",
+      "diagram_lines": [
+        "先辨战争进攻方与防守方",
+        "单场贡献与总分分别读",
+        "本次分母：罗贝尔军事汇总996",
+        "本场战斗起始口径1298另列"
+      ],
+      "footer": "A05 第32日 · 左：实际UI像素；右：同次原生记录",
+      "source_kind": "native-trace"
+    },
+    "closing-c009": {
+      "title": "下一组证据要回答的五个问题",
+      "case": "a02独立骑士UI入口 / 固定来源边界",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-knights\\a02_kill_notice_readable.png",
+      "crop_xyxy": [
+        1060,
+        1000,
+        1500,
+        1440
+      ],
+      "ui_label": "真实a02战报：一条骑士阵亡记录",
+      "diagram_title": "下一组观察问题",
+      "diagram_lines": [
+        "非零败方掩护与未来增援",
+        "其他骑士事件与主动撤退",
+        "改变条件后的整场概率",
+        "这组固定来源尚未覆盖"
+      ],
+      "footer": "a02独立原图作背景 · 不新增或外推战例",
+      "source_kind": "native-trace"
+    },
+    "closing-c010": {
+      "title": "换个条件，重新逐笔对账",
+      "case": "原始002接战独立图源",
+      "source_image": "C:\\Users\\1\\AppData\\Local\\ck3-review-analysis\\episode02-20260930-a03\\ui-opening-day0\\day0-original-ui.png",
+      "crop_xyxy": [
+        0,
+        0,
+        1024,
+        768
+      ],
+      "ui_label": "原始接战真实地图与面板",
+      "diagram_title": "跟随实际发生的事",
+      "diagram_lines": [
+        "前态 → 实际变化 → 后态",
+        "对得上的局部结果留下",
+        "尚未拍到的继续观察"
+      ],
+      "footer": "原始002接战 · 片尾停在真实画面",
+      "source_kind": "actual-ui"
+    }
+  },
+  "source_specs": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\visual-specs\\open-pursuit-v1.json",
+      "bytes": 37521,
+      "sha256": "BFDB15778131C7F82128F149EBFFFE62F84FED7B13FA1498E78D95C3C383EE4A"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\visual-specs\\knight-reinf-v2.json",
+      "bytes": 84515,
+      "sha256": "8387AD30580E03C7DD29DA3B10E9012DE5F5C7C8981F0243951A38C14814A8E7"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\visual-specs\\terminal-close-v2.json",
+      "bytes": 53935,
+      "sha256": "F77668E2EA4CBBB51846148A0F42A9659F195C501C4C23A8DB99148F67F50D60"
+    }
+  ],
+  "story": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\story-final-v2.json",
+    "bytes": 256474,
+    "sha256": "697EDD37D55DFC6F11BD5B7FCF4DDFD8A28D4342A66010A772932C08B3F96378"
+  },
+  "human_signoff": "not-provided"
+}
