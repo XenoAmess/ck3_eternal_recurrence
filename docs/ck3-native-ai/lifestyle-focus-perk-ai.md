@@ -48,6 +48,49 @@ SHA-256 `C0EDE29DFA50935E63043295025ED4711AF41033B01890E949D5E7CCF5997436`，
 首次实机仍需官方配对/no-launch、同帧读回、独立后置、下一 turn 和规定恢复。
 下方正式消费者图中的开关与 gate 节点是这条既有运行入口的注记，未改变原生 AI 树。
 
+## R0404 wartime focus/XP report projection (2026-09-30; source repair)
+
+R0404's final formal turn observed an available LIFE query on
+`native:10/raw53219952`, with zero unspent points and `no_legal_minimum`.
+The first-frame wealth focus/XP/used-point observation is a different frame.
+The wartime service kept only the final query/frame/unspent-point/status fields;
+the compact formal report copied that observation unchanged. The original
+private transport already returned the same-frame `current_focus` and
+`current_lifestyle_progress`, including XP and used points, but this no-action
+branch discarded them. Neither the final driver nor the compact report retained
+the full private query. Therefore R0404's final XP gain remains unobserved; the
+opening XP must not be copied into its terminal frame.
+
+The minimal repair preserves those existing query fields in
+`lifestyle_war_observation`. It adds no native query, changes no focus/perk or war
+choice, and uses no prior receipt or cached opening value. The existing compact
+report passes the bounded fields through. Unavailable query data remains `null`.
+The direct production service/report regression fails on the old method with
+missing `current_focus`; the repaired focused tests pass **3/3**, with two XP
+input subcases, under normal Python and `-O`. These inputs are fixtures, not
+reconstructed R0404 measurements. Pending-receipt priority and query-failure
+retry remain covered. The first draft fixture omitted its episode binding and
+failed as a harness input; its logs are retained separately from the corrected
+baseline regression and final passes.
+
+Evidence: [R0404 formal consumer details](D:/nw-robert-nonwar-postcondition-review-20260930/R0404-FORMAL-CONSUMER-DETAILS.json)
+SHA-256 `84D4CFCB39EFC619DA8309D45EE413FA9D7C1157B328B8EC2C05B90C98575115`;
+[raw presence check](D:/nw-robert-nonwar-postcondition-review-20260930/R0404-FINAL-LIFE-RAW-PRESENCE.json)
+SHA-256 `AE11FB5195D19CE6F9F455E02EC55FC86887072A432F8A1AFB9F178C374BA51A`.
+Logs are under `D:/nw-life-wartime-readback-tests-20260930/`.
+The source baseline is `0e1881e9458359ae7e0af43e9fe7bef143238d38`; this repair
+must be consumed by a later frozen candidate before claiming a material XP
+readback. The already frozen R0404 source/state and public capabilities remain
+unchanged. This package adds zero CK3 actions or game days.
+
+```mermaid
+flowchart LR
+  Q[Existing same-frame private LIFE query] --> P[Current focus and XP/point progress]
+  P --> W[Wartime policy and bounded observation]
+  W --> F[Formal compact report preserves the same values]
+  F -. next matching actual frame .-> X[Measured XP comparison remains pending]
+```
+
 ## NW-LIFE diplomacy Thoughtful successor candidate (2026-09-30; source contract)
 
 The existing first operable frame gate checks a natural successor's focus and

@@ -602,6 +602,79 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             self.assertEqual(due["lifestyle_war_observation"]["unspent_perk_points"], 1)
             self.assertEqual(len(reads), 2)
 
+    def test_war_read_preserves_current_focus_and_progress_in_formal_report(self) -> None:
+        from xar_autoplayer.native_auto_run import _compact_plan
+
+        # R0404's terminal observation retained points but omitted focus/XP.
+        # These XP values are fixture inputs, not measurements from that run.
+        for xp_total_raw in (0, 98765432):
+            with self.subTest(xp_total_raw=xp_total_raw):
+                driver = _Driver()
+                driver.frame.update({
+                    "snapshot_id": "native:10", "revision": 11,
+                    "native_revision": 10, "date_raw": 53219952,
+                    "active_wars": [{"war_id": 16777231}],
+                })
+                root = _scope_root()[0]
+                root["result"]["campaign_root_context"].update({
+                    "snapshot_revision": 10, "date_raw": 53219952,
+                })
+                driver.history.append(root)
+                driver.capabilities = lambda: {
+                    "action_steps": ["life-advance", ROOT_QUERY_STEP,
+                                     "query-army-strengths-v1"],
+                    "bridge_capabilities": [],
+                }
+                life = _life_snapshot()
+                life.update({
+                    "snapshot_id": "native:10", "public_revision": 10,
+                    "native_revision": 10, "proof_epoch": 10,
+                    "date_raw": 53219952,
+                    "episode_run_id": driver.frame["episode_run_id"],
+                })
+                life["current_focus"] = {
+                    "presence": "present", "key": "stewardship_wealth_focus",
+                    "lifestyle_key": "stewardship_lifestyle",
+                }
+                life["current_lifestyle_progress"].update({
+                    "xp_total_raw": xp_total_raw,
+                    "xp_within_level_raw": xp_total_raw,
+                    "unspent_perk_points": 0, "used_perk_points": 7,
+                })
+                life["legal_perk_candidates"]["items"] = []
+                query = {
+                    "status": "available", "snapshot": life,
+                    "episode_run_id": driver.frame["episode_run_id"],
+                    "formal_precondition_status": "ready",
+                    "source_frame": {
+                        "snapshot_id": "native:10", "revision": 11,
+                        "native_revision": 10, "date_raw": 53219952,
+                        "player_character_id": 29829,
+                    },
+                }
+                with (
+                    mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                               return_value={
+                                   "selected_step": "query-army-strengths-v1",
+                                   "phase": "native_war_army_strength_query",
+                               }),
+                    mock.patch.object(driver,
+                                      "query_player_lifestyle_formal_private_v1",
+                                      return_value=query) as read,
+                ):
+                    plan = GameplayBridgeService(driver).plan_turn()["plan"]
+                observation = plan["lifestyle_war_observation"]
+                self.assertEqual(plan["selected_step"], "query-army-strengths-v1")
+                self.assertEqual(observation["policy_decision_status"],
+                                 "no_legal_minimum")
+                self.assertEqual(observation["source_frame"], query["source_frame"])
+                self.assertEqual(observation["current_focus"], life["current_focus"])
+                self.assertEqual(observation["current_lifestyle_progress"],
+                                 life["current_lifestyle_progress"])
+                self.assertEqual(_compact_plan(plan)["lifestyle_war_observation"],
+                                 observation)
+                read.assert_called_once_with(expected_revision=11)
+
     def test_pending_life_receipt_preempts_same_date_war_read(self) -> None:
         driver = _Driver()
         service = GameplayBridgeService(driver)
@@ -638,6 +711,8 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             self.assertEqual(failed["selected_step"], "query-army-strengths-v1")
             self.assertEqual(failed["lifestyle_war_observation"]["query_status"],
                              "native_query_unavailable")
+            self.assertIsNone(failed["lifestyle_war_observation"]["current_focus"])
+            self.assertIsNone(failed["lifestyle_war_observation"]["current_lifestyle_progress"])
             driver.state.fail_query = False
             retried = service.plan_turn()["plan"]
         self.assertEqual(retried["selected_step"], PERK_SUBMIT_STEP)
