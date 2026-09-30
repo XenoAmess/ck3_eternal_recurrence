@@ -332,6 +332,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // The frontend route executor is the only fixed callback admitted before a
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
+  // Fixed private paused actor/army role read; absent in default builds.
+  MainThreadQueryExecutorV1 permitted_actor_army_role_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
   // Optional only for the offline fixture. Production binds the frozen
   // module-relative dispatch slot and resolved function identities above.
@@ -493,6 +495,8 @@ struct MainThreadQueryMailboxV1 {
   // Fixed current-heir pair query and existing-betrothal fulfillment.
   MainThreadQueryExecutorV1 permitted_executor_octosexagintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_novemsexagintary = nullptr;
+  // Fixed private paused actor/army role read; absent in default builds.
+  MainThreadQueryExecutorV1 permitted_actor_army_role_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes

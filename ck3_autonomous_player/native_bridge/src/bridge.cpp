@@ -119,6 +119,9 @@
 #if defined(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
 #include "xar_bridge/m5_war_primary_private_wire_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+#include "xar_bridge/actor_army_role_private_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
 #include "xar_bridge/minor_religious_war_defenders_private_wire_v1.hpp"
 #endif
@@ -7823,6 +7826,27 @@ std::string M5WarPrimaryPrivateResultFrame(
 }
 #endif
 
+#if defined(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+std::string ActorArmyRolePrivateResultFrame(
+    std::string_view request_id, std::string_view step,
+    const xar::ck3_11906::ActorArmyRoleResultV1 &role) {
+  const auto payload =
+      xar::ck3_11906::SerializeActorArmyRolePrivateResultV1(role);
+  if (payload.empty()) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":";
+  AppendJsonString(result, role.status);
+  result += ",\"private_build\":true,\"read_only\":true,";
+  result += "\"actor_army_role\":" + payload +
+            ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
 std::string MinorReligiousWarDefendersPrivateResultFrame(
     std::string_view request_id, std::string_view step,
@@ -9633,6 +9657,10 @@ public:
     environment.permitted_executor_octoquinquagintary =
         &xar::ck3_11906::ExecuteActiveSchemeSwayFormalPrivateCommandV1;
 #endif
+#if defined(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+    environment.permitted_actor_army_role_executor =
+        &xar::ck3_11906::ExecuteActorArmyRolePrivateQueryV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -10736,6 +10764,15 @@ void RunConnectedSession(
                      return xar::ck3_11906::
                          ParseMinorReligiousWarDefendersPrivateStepV1(
                              step, target_character_id);
+                   }()
+#endif
+#if defined(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+                   && ![&]() {
+                     std::int32_t actor_character_id = -1;
+                     std::int32_t war_id = -1;
+                     std::int32_t public_army_id = -1;
+                     return xar::ck3_11906::ParseActorArmyRolePrivateStepV1(
+                         step, actor_character_id, war_id, public_army_id);
                    }()
 #endif
         ) {
@@ -19002,6 +19039,98 @@ void RunConnectedSession(
                   response = CommandResultFrame(
                       request_id, step, false,
                       "M5 current-primary result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1)
+        else if (step.starts_with(
+                     xar::ck3_11906::kActorArmyRolePrivateStepPrefixV1)) {
+          std::int32_t actor_character_id = -1;
+          std::int32_t war_id = -1;
+          std::int32_t public_army_id = -1;
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseActorArmyRolePrivateStepV1(
+                  step, actor_character_id, war_id, public_army_id) ||
+              !xar::ck3_11906::ParseRouteContactExpectedRevisionV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "actor army role IDs are malformed"));
+          } else {
+            xar::game::Snapshot before{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                expected_revision != state_revision ||
+                !xar::game::ReadSnapshot(game, before) ||
+                before != *previous_snapshot || !before.paused ||
+                !before.map_ready || !before.has_played_character ||
+                !before.played_character_alive ||
+                before.played_character_id != actor_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "actor army role paused actor frame unavailable"));
+            } else {
+              xar::ck3_11906::ActorArmyRolePrivateQueryV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.game = &game;
+              query.module_base = reinterpret_cast<std::uintptr_t>(
+                  GetModuleHandleW(nullptr));
+              query.expected_revision = expected_revision;
+              query.expected_snapshot = before;
+              query.actor_character_id = actor_character_id;
+              query.war_id = war_id;
+              query.public_army_id = public_army_id;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteActorArmyRolePrivateQueryV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "actor army role application-main boundary unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds);
+                }
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completed && query.executor_invocations == 1 &&
+                    query.execution_stamp.paused &&
+                    query.execution_stamp.date_raw == before.date_raw) {
+                  response = ActorArmyRolePrivateResultFrame(
+                      request_id, step, query.result);
+                }
+                if (response.empty()) {
+                  const auto error = query.failure_stage.empty()
+                                         ? "actor army role private query unavailable"
+                                         : "actor army role private query unavailable:" +
+                                               query.failure_stage;
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                if (xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket) !=
+                    xar::ck3_11906::
+                        MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "actor army role result was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }
