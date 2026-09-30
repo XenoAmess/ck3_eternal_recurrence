@@ -56,6 +56,7 @@ class _BoundedPipeDrain:
         self.limit = limit
         self.overflow = overflow
         self.total = 0
+        self.retained_bytes = 0
         self.digest = hashlib.sha256()
         self.chunks: list[bytes] = []
         self.error: str | None = None
@@ -82,9 +83,12 @@ class _BoundedPipeDrain:
                         break
                     self.total += len(block)
                     self.digest.update(block)
-                    if self.total <= self.limit:
-                        self.chunks.append(block)
-                    else:
+                    remaining = self.limit - self.retained_bytes
+                    if remaining > 0:
+                        part = block[:remaining]
+                        self.chunks.append(part)
+                        self.retained_bytes += len(part)
+                    if self.total > self.limit:
                         self.overflow.set()
             self.complete = True
         except Exception as error:
@@ -104,7 +108,11 @@ class _BoundedPipeDrain:
     def captured(self) -> bytes | None:
         if not self.complete or self.error is not None or self.total > self.limit:
             return None
-        return b"".join(self.chunks)
+        return self.retained()
+
+    def retained(self) -> bytes:
+        """Return the bounded raw prefix observed so far, even on a RED path."""
+        return b"".join(tuple(self.chunks))
 
     def evidence(self) -> dict[str, object]:
         return {
@@ -203,6 +211,8 @@ def run_contained_injector_command(
         "complete_process_tree_proven": False,
         "stdout_sha256": None, "stderr_sha256": None,
         "stdout_bytes": None, "stderr_bytes": None,
+        "stdout_retained_sha256": None, "stderr_retained_sha256": None,
+        "stdout_retained_bytes": None, "stderr_retained_bytes": None,
         "stdout_complete": False, "stderr_complete": False,
         "output_limit_bytes": output_limit_bytes,
     }
@@ -473,3 +483,15 @@ def run_contained_injector_command(
             report["complete_process_tree_proven"] = False
             if result is not None:
                 result.error = "injector deadline expired during post-Job cleanup"
+        for drain in (out_drain, err_drain):
+            if drain is None:
+                continue
+            report.update(drain.evidence())
+            prefix = drain.retained()
+            report[f"{drain.label}_retained_bytes"] = len(prefix)
+            report[f"{drain.label}_retained_sha256"] = hashlib.sha256(prefix).hexdigest().upper()
+            if result is not None and report["status"] != "EXIT":
+                if drain.label == "stdout":
+                    result.stdout = prefix
+                else:
+                    result.stderr = prefix
