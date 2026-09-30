@@ -375,6 +375,9 @@ def check_static(*, static_only: bool = False) -> dict[str, object]:
 
 
 def screen_lease(task_id: str) -> None:
+    if CANDIDATE == HEAD_STORAGE_CANDIDATE:
+        raise RuntimeError("LIVE_STOP_CAS_MIGRATION_PENDING: current-HEAD v5 cannot "
+                           "use legacy list/stale screen ownership")
     listed = subprocess.run([str(PYTHON), str(TASK_BUS), "list"], capture_output=True,
                             timeout=15, check=True)
     # Older task summaries can contain legacy local-codepage bytes. The bus
@@ -392,6 +395,9 @@ def screen_lease(task_id: str) -> None:
 
 def renew_screen_lease(task_id: str) -> None:
     """Keep the exclusive screen lease fresh during a long CK3 cold start."""
+    if CANDIDATE == HEAD_STORAGE_CANDIDATE:
+        raise RuntimeError("LIVE_STOP_CAS_MIGRATION_PENDING: current-HEAD v5 cannot "
+                           "use bare task-bus heartbeat")
     screen_lease(task_id)
     heartbeat = subprocess.run(
         [str(PYTHON), str(TASK_BUS), "heartbeat", "--task", task_id],

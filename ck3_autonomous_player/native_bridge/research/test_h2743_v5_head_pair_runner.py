@@ -151,6 +151,16 @@ class HeadStoragePairTest(unittest.TestCase):
         runner.select_candidate(runner.STORAGE_CANDIDATE)
         runner.require_live_bus_migration()
 
+    def test_current_head_legacy_list_and_bare_heartbeat_are_hard_stopped(self) -> None:
+        runner = self.runner
+        runner.select_candidate(runner.HEAD_STORAGE_CANDIDATE)
+        with patch.object(runner.subprocess, "run", side_effect=AssertionError("legacy bus invoked")), \
+                patch.object(runner.subprocess, "Popen", side_effect=AssertionError("child spawned")):
+            with self.assertRaisesRegex(RuntimeError, "legacy list/stale"):
+                runner.screen_lease("h2743-test-task")
+            with self.assertRaisesRegex(RuntimeError, "bare task-bus heartbeat"):
+                runner.renew_screen_lease("h2743-test-task")
+
 
 if __name__ == "__main__":
     unittest.main()
