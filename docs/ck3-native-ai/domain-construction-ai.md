@@ -2,6 +2,63 @@
 
 - [C55 exact active-progress raw source](construction-active-progress-source-2026-09-27.md): same-frame remaining work and progress divisor; runtime cadence and completion still unverified.
 
+## 2026-09-30 R0400：建设机会启用与战争现金输入边界
+
+本次入口追踪为策略源码 `781c717b4d094c22b4c020457dfe7851271a981b`；文档基线
+`36ccc4230efc0091d7a68f41418b182263da4cbc` 只新增报告文档。R0400 实际 Python
+源码为 `e097bf9322b9da2aceff57355af4505a5a993ef7`，native 源码为
+`ed2c916a91cc62ef3e0e306f8b295b135c59b60c`，DLL SHA-256 为
+`DB0D16062137CD5A1929FA24C9D9BBEE51147C7F2379D7FFAA948EE3F5B15C3B`。
+当前 Robert `29829` / episode `native-29829-2bc2d599f7f9` 的持久配对是
+`h3935/raw53219928`，driver 实际有 3938 条命令；这是同一日期上的恢复与查询，
+没有新的建设动作或游戏日期推进。
+
+旧 DB0D 构建中的
+`XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=OFF`、
+`XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1=OFF`，运行中的
+`allow_private_construction_formal_trial=false`、`allow_private_m5_joint_collector=false`。
+driver 没有建设命令，state 没有建设 ledger。当前同帧 root 的玩家净月收入为
+raw `420502` / Q100000、直辖 `5/6`；收入不能替代当前金库、建筑槽位、合法性、
+成本或收益读回，不能据此认定可负担、没有机会或已经漏消费。
+
+现有正式入口无需重建：operator `--private-construction-formal-trial` 对应
+`--allow-private-construction-formal-trial`；`bridge/service.py` 调用
+`construction_formal_consumer.plan_construction_private`，经
+`bridge/domain_construction_private_transport_v1.py` 查询
+`g2_player_construction_view_probe_v1`。同帧查询包含 holding/slot、native 最终
+合法性、10 项 Q100000 成本向量、当前现金及可读收入。既有窄政策只比较空闲槽位、
+正的著录月收入、仅金币的原生成本，保留 200 金，再按著录收入降序/成本升序选择。
+著录收入是决策输入，开工、完工、建筑效果和实际收入仍分别读回；R0081 的已验
+typed 开工、物质收据、下一 turn 与新 PID 恢复不因本次配置核查变回未完成。
+现有 pending / applied 建设收据先走物质核对与完工 watch，不再次付款。
+
+当前 active WarID `16777231` 的原战争计划可返回 `selected_step=null`。
+在没有旧建设收据时，正式 service 需要显式 `--private-m5-joint-collector`
+（agent 参数 `--allow-private-m5-joint-collector`）才会在这个 null-step 分支调用
+现成 wartime construction observer；它保留战争步骤/RED，只读机会，不提交建设。
+另一个现成窄入口是 `native-query-private-construction-source-v1`
+的 `--cold-start-checkpoint --wartime-observation --ownership-round-id <allocated-round>`，
+输出 source world，不推进 gameplay turn。没有上述 observer 启用条件不能把本帧
+空数据归因为 selector 认定无建设。
+
+同帧战争现金合同还需要有来源的 WarID、pending/immediate 金币占用、未来金币
+upper、risk budget、minimum reserve、正的 horizon 与 assumptions。
+已交付 bounded battle forecast 的 120 日 horizon、兵员损失及风险概率不产生这些
+金币上界；净收入也不是军队总维护费。缺项保持缺项，不能填零或宣称联合可负担。
+这只限制战争联合比较/花钱；独立和平及宣战前的建设路径继续按自身同帧合法性、
+成本和储备合同评估，不因未知远期战争成本停掉全部和平建设。
+
+[R0400 ECON 入口追踪](D:/nw-econ-r0400-opportunity-20260930/OPPORTUNITY-TRACE.json)
+SHA-256 为 `CED5B44D322F5397A578D6247BFA9D0C485BA92B8B58DAF7E7E33519D2BFF77A`。
+下一独立匹配构建的 [candidate index](D:/nw-econ-native-candidate-20260930/CANDIDATE-INDEX.json)
+SHA-256 为 `C0EDE29DFA50935E63043295025ED4711AF41033B01890E949D5E7CCF5997436`，
+源为 36ccc，DLL SHA-256 为
+`BE3AD066D0C28EE90C8902C51518734DF71C6C6B7BE3AEA91C4E460A63A971B1`。
+它启用原四个婚配 flags、建设 VIEW/ACTION 与 LIFE，共七项；两个 domain observer
+仍 OFF，其余开关默认 OFF。ACTION 编入不表示 observer 会调用它，也无需为本次
+查询另建第二只读 DLL。此处只记录构建准备，不记录候选加载、当前正收益机会、
+新动作、下一 turn 或冷恢复通过；这些仍由官方配对/no-launch 后的有界实机验证。
+
 ## 2026-09-29 H3928 wartime construction opportunity: one-shot source candidate
 
 The exact CK3 1.19.0.6 EXE SHA-256 remains
@@ -309,9 +366,20 @@ Robert c12 h148 的 `hill_farms_01` 仍为 `applied/in_progress`，当前无实�
 
   对 h96 冷恢复，独立 `construction-formal-pending-v1.json` 是必要的策略状态，c4 原件 SHA-256 `9344B3273A5144E0987CA4E59B8181F4882FF94D5300BF3254BD1AB75EF1D55E`；仅复制 save/driver 会丢失这笔未决动作。在 R0227 当时，官方 `prepare-state` 只从给定 sample_dir 寻找 pending sidecar，按 schema、请求 ID、玩家/episode、checkpoint 前的同一正式提交历史行核对，再逐字节复制到新 state；普通无 sidecar 配对沿旧流程。本次新增的显式 `--construction-sidecar` 来源也按同一配对合同核对后复制。准备回执记录副本路径、SHA 和请求 ID，后续仍以官方 no-launch/save/driver 检查及新 PID paused 原生后置决定是否可恢复，不把复制成功当作动作生效。exact 原版 `hill_farms_01` 在 `00_standard_economy_buildings.txt:8672-8688` 使用 `standard_construction_time`、`cheap_building_tier_1_cost` 和 `normal_building_tax_tier_1`；脚本基础为 1095 天、100 金、标称省份月收入 +0.35。当前仅已见开工与扣款，**尚未见完工或玩家实际收入增加**。
 
+下图的入口节点补注 2026-09-30 已有正式消费者的启用/同帧条件；后半段保留开工
+收据与完工收益的独立判定，未改变原生 AI 的建设排序树。
+
 ```mermaid
 flowchart LR
-    A[正式 typed 建设 pending] --> Q[下一 paused 原生物质查询]
+    E[匹配 native VIEW 与有界正式 trial] --> P{已有建设 pending 或 applied 收据?}
+    P -->|有| Q[下一 paused 原生物质查询]
+    P -->|无| L[同帧 root 与原生槽位 成本 合法性]
+    L --> M{当前作用域}
+    M -->|战争 null-step 且 M5 observer ON| O[只读机会与战争资源缺项 保留原步骤和 RED]
+    M -->|独立和平或宣战前| V[原生合法 正著录收入 金币成本及 200 金储备]
+    V --> B[匹配 native ACTION 的正式 typed 提交]
+    B --> A[正式 typed 建设 pending]
+    A --> Q
     Q --> T{同 tuple 发起人 active 且同日精确扣款?}
     T -->|是| S[开工 applied / in_progress]
     T -.->|否| R[保留 pending RED]
