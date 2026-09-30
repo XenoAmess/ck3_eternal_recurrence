@@ -149,6 +149,18 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_ck3_12002_foundation_test
+    src/ck3_12002.cpp
+    src/ck3_12002_test.cpp
+  )
+  target_include_directories(xar_ck3_12002_foundation_test PRIVATE include)
+  if(MSVC)
+    target_compile_options(xar_ck3_12002_foundation_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12002_offline_foundation
+    COMMAND xar_ck3_12002_foundation_test)
+
   add_executable(xar_ck3_event_window_context_v1_serializer_test
     src/event_window_context_v1_serializer.cpp
     src/event_window_context_v1_serializer_test.cpp

@@ -8,6 +8,8 @@
 
 ## 1. EXE 升级后实际会发生什么
 
+2026-09-30 更新后：CK3 1.20.0.2（Steam build 25588574）已冻结，基础字段与时间命令布局已有独立离线模块和 ABI verifier，详见 [迁移执行记录](ck3-1.20.0.2-migration.md)。这属于 static-ready foundation；正式 registry、完整 snapshot/typed dispatch 与 paused live 尚未迁移，下面的“受支持”仍仅指旧版 gameplay。
+
 当前唯一受支持的游戏镜像是：
 
 - 产品版本：`1.19.0.6`
