@@ -30,6 +30,10 @@ from .bridge.domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
 )
 from .m5_joint_dispatch import M5FrameDispatcher
+from .current_betrothal_fulfillment_proposal import (
+    SUBMIT_STEP as CURRENT_BETROTHAL_SUBMIT_STEP,
+    current_betrothal_fulfillment_m5_proposal,
+)
 from .faction_gift_formal_candidate_v1 import latest_same_frame_faction_root_v1
 from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
 from .lifestyle_formal_consumer import ROOT_QUERY_STEP
@@ -125,7 +129,7 @@ def collect_m5_formal_proposals(
                 raise ValueError("M5 marriage plans lack selected five-row source")
             marriage_ids: set[str] = set()
             for plan in plans:
-                proposal = first_heir_marriage_proposal(
+                proposal = _family_proposal_from_plan(
                     frame=frame, plan=_mapping(plan, "marriage.plan"),
                 )
                 if proposal["candidate_id"] in marriage_ids:
@@ -517,7 +521,7 @@ def plan_m5_formal_query_only(
         for candidate_plan in family_plans:
             if not isinstance(candidate_plan, Mapping):
                 return blocked("M5 selected family plan is malformed")
-            proposal = first_heir_marriage_proposal(
+            proposal = _family_proposal_from_plan(
                 frame=observed_frame(snapshot), plan=candidate_plan,
             )
             if proposal["candidate_id"] == dispatch.get("selected_candidate_id"):
@@ -528,16 +532,23 @@ def plan_m5_formal_query_only(
         and reservation.get("domain") == "marriage"
         and reservation.get("candidate_id") == dispatch.get("selected_candidate_id")
         and isinstance(family_plan, Mapping)
-        and family_plan.get("selected_step") == FAMILY_SUBMIT_STEP
+        and family_plan.get("selected_step") in {
+            FAMILY_SUBMIT_STEP, CURRENT_BETROTHAL_SUBMIT_STEP}
     ):
         return {
             **cleaned,
             "plan": {
                 **baseline,
                 **deepcopy(dict(family_plan)),
-                "phase": "m5_joint_family_typed_submit",
-                "selected_step": FAMILY_SUBMIT_STEP,
-                "reason": "submit one same-frame native-legal valued first-heir marriage",
+                "phase": (
+                    "m5_joint_current_betrothal_typed_submit"
+                    if family_plan["selected_step"] == CURRENT_BETROTHAL_SUBMIT_STEP
+                    else "m5_joint_family_typed_submit"),
+                "selected_step": family_plan["selected_step"],
+                "reason": (
+                    "fulfill one same-frame native-legal existing first-heir betrothal"
+                    if family_plan["selected_step"] == CURRENT_BETROTHAL_SUBMIT_STEP
+                    else "submit one same-frame native-legal valued first-heir marriage"),
                 "m5_joint_query_only": collection,
                 "m5_joint_formal_action_ready": True,
             },
@@ -618,6 +629,14 @@ def plan_m5_formal_query_only(
     }
 
 
+def _family_proposal_from_plan(
+    *, frame: Mapping[str, object], plan: Mapping[str, object],
+) -> dict[str, object]:
+    if plan.get("selected_step") == CURRENT_BETROTHAL_SUBMIT_STEP:
+        return current_betrothal_fulfillment_m5_proposal(frame=frame, plan=plan)
+    return first_heir_marriage_proposal(frame=frame, plan=plan)
+
+
 def _adapt_domain(
     domain: str, *, frame: Mapping[str, object],
     snapshot: Mapping[str, object], source: Mapping[str, object],
@@ -641,7 +660,7 @@ def _adapt_domain(
             query=_mapping(source.get("query"), "building.query"),
         )
     if domain == "marriage":
-        return first_heir_marriage_proposal(
+        return _family_proposal_from_plan(
             frame=frame,
             plan=_mapping(source.get("plan"), "marriage.plan"),
         )
