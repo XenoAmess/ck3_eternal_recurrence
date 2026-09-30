@@ -64,7 +64,100 @@ def _choose(snapshot: dict[str, object], **kwargs: object) -> dict[str, object]:
     )
 
 
+def _observed_focus_target(
+    key: str, lifestyle: str, points: int,
+) -> dict[str, object]:
+    return {
+        "status": "observed", "native_legal": True,
+        "target_key": key, "target_lifestyle_key": lifestyle,
+        "target_lifestyle_progress": {
+            "presence": "present", "xp_total_raw": 25000000,
+            "xp_within_level_raw": 25000000, "xp_per_level": 1000,
+            "unspent_perk_points": points, "used_perk_points": 2,
+        },
+    }
+
+
 class LifestyleMinPolicyTests(unittest.TestCase):
+    def test_matching_martial_progress_admits_lower_education_first_focus(self) -> None:
+        wealth = _observed_focus_target(
+            "stewardship_wealth_focus", "stewardship_lifestyle", 0,
+        )
+        martial = _observed_focus_target(
+            "martial_authority_focus", "martial_lifestyle", 1,
+        )
+        for rank in (1, 2, 3):
+            with self.subTest(education_rank=rank):
+                comparison = choose_first_focus_target(
+                    wealth=wealth, martial=martial,
+                    actor_traits={"status": "available", "observed_keys": [
+                        f"education_martial_{rank}"]}, at_peace=True,
+                )
+                self.assertEqual(comparison["target_key"], "martial_authority_focus")
+                self.assertEqual(comparison["reason"],
+                                 "martial_education_with_observed_martial_point")
+                self.assertEqual(comparison["martial_education_rank"], rank)
+                self.assertEqual(comparison["observed_target_progress"]["martial"]
+                                 ["progress"]["xp_total_raw"], 25000000)
+                snapshot = _complete_snapshot()
+                snapshot["current_focus"] = {"presence": "absent"}
+                snapshot["current_lifestyle_progress"] = {"presence": "absent"}
+                snapshot["legal_focus_candidates"]["items"] = [{
+                    "key": "martial_authority_focus",
+                    "lifestyle_key": "martial_lifestyle",
+                }]
+                snapshot["target_lifestyle_progress"] = {
+                    **martial["target_lifestyle_progress"],
+                    "lifestyle_key": "martial_lifestyle",
+                }
+                selected = _choose(
+                    snapshot, preferred_focus_target_key=comparison["target_key"],
+                )
+                self.assertEqual(selected["selected_action"]["kind"], "focus")
+                self.assertEqual(selected["selected_action"]["target_key"],
+                                 "martial_authority_focus")
+                self.assertEqual(selected["selected_action"]["expected"]
+                                 ["expected_player_character_id"], 32904)
+
+    def test_new_education_branch_needs_matching_education_and_actual_only_martial_point(self) -> None:
+        wealth = _observed_focus_target(
+            "stewardship_wealth_focus", "stewardship_lifestyle", 0,
+        )
+        martial = _observed_focus_target(
+            "martial_authority_focus", "martial_lifestyle", 1,
+        )
+        matching = {"status": "available", "observed_keys": ["education_martial_2"]}
+        cases = (
+            ("no_matching_education", wealth, martial,
+             {"status": "available", "observed_keys": ["education_stewardship_2"]}),
+            ("education_unavailable", wealth, martial,
+             {"status": "unavailable"}),
+            ("no_martial_point", wealth, _observed_focus_target(
+                "martial_authority_focus", "martial_lifestyle", 0), matching),
+            ("both_styles_have_points", _observed_focus_target(
+                "stewardship_wealth_focus", "stewardship_lifestyle", 1),
+             martial, matching),
+            ("martial_native_rejected", wealth,
+             {**martial, "native_legal": False}, matching),
+            ("martial_progress_unavailable", wealth,
+             {**martial, "target_lifestyle_progress": {"presence": "unavailable"}},
+             matching),
+        )
+        for name, wealth_row, martial_row, traits in cases:
+            with self.subTest(case=name):
+                result = choose_first_focus_target(
+                    wealth=wealth_row, martial=martial_row,
+                    actor_traits=traits, at_peace=True,
+                )
+                self.assertEqual(result["target_key"], "stewardship_wealth_focus")
+
+    def test_authority_preference_keeps_existing_effective_focus(self) -> None:
+        result = _choose(
+            _complete_snapshot(), preferred_focus_target_key="martial_authority_focus",
+        )
+        self.assertEqual(result["selected_action"]["kind"], "perk")
+        self.assertEqual(result["selected_action"]["target_key"], "cutting_corners_perk")
+
     def test_diplomacy_thoughtful_requires_point_native_legality_and_unowned(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["current_focus"] = {
