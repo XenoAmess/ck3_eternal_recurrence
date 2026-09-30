@@ -57,3 +57,8 @@ R0129 在聚焦后重新读取 snapshot/control 并重选战场，typed 定位�
 ## 2026-10-01 07:25 R0130 实际相机诊断补件
 
 新增 [实际诊断](reinforcement/native-center-R0130-diagnostic.json) 与 [全量封存](reinforcement/paused-join-R0130-diagnostic-failed.json)。observed_snapshot_read=true且字段无差异；相机执行后的post-dispatch-target-position-drift拒绝居中。本轮零推进、零采样对，cleanup/SDK实际结束及screen释放已核验。原历史逐句索引、R0128/R0129失败和a06成片保持原样。诊断分支190147独立，不接收或合入master；下一步修实际相机语义后新run采完整面板和战宽tooltip。
+
+
+## 2026-10-01 07:48 R0131根回执格式失败
+
+[全量封存](reinforcement/paused-join-R0131-review-rejected.json)记录实际helper在输入前拒绝string观察；原接口要求非空dict，原生相机未被测试，0移动/0居中/0推进。新严格root writer与actual validator离线复核已完成；新重入仍须真实原图。已按原字节归档 [pointer-first消费者](reinforcement/pointer-first-consumer-a01/README.md)，旧attempt与原审计索引不改写。
