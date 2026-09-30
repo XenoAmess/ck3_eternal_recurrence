@@ -549,6 +549,60 @@ class WindowsInjectorJobTests(unittest.TestCase):
                 self.assertTrue(result.report["injector_root_reaped"])
                 self.assertIsNotNone(result.error)
 
+    def test_unproven_early_stdin_close_never_resumes_injector(self) -> None:
+        from xar_autoplayer import windows_injector_job
+
+        original = windows_injector_job._close_handle
+        closes = 0
+
+        def fail_fifth_close(handle: int | None) -> bool:
+            nonlocal closes
+            if handle is not None:
+                closes += 1
+                if closes == 5:
+                    return False
+            return original(handle)
+
+        with mock.patch.object(windows_injector_job, "_close_handle",
+                               side_effect=fail_fifth_close):
+            result = run_contained_injector_command(
+                [self.python, "-c", "print('must not run')"],
+                timeout_seconds=30.0)
+        self.assertGreaterEqual(closes, 5)
+        self.assertEqual(result.report["status"], "RED_CLEANUP")
+        self.assertIn("stdin inherited handle", result.error)
+        self.assertIsNone(result.report["resume_previous_count"])
+        self.assertTrue(result.report["injector_root_reaped"])
+        self.assertFalse(result.report["complete_process_tree_proven"])
+
+    def test_unproven_raw_handle_close_prevents_createprocess(self) -> None:
+        from xar_autoplayer import windows_injector_job
+
+        original = windows_injector_job._close_handle
+        closes = 0
+
+        def fail_first_close(handle: int | None) -> bool:
+            nonlocal closes
+            if handle is not None:
+                closes += 1
+                if closes == 1:
+                    return False
+            return original(handle)
+
+        with mock.patch.object(windows_injector_job, "_close_handle",
+                               side_effect=fail_first_close), mock.patch(
+            "_winapi.CreateProcess", side_effect=AssertionError("must not spawn")
+        ) as create:
+            result = run_contained_injector_command(
+                [self.python, "-c", "print('must not run')"],
+                timeout_seconds=30.0)
+        create.assert_not_called()
+        self.assertGreaterEqual(closes, 1)
+        self.assertEqual(result.report["status"], "RED_CLEANUP")
+        self.assertIn("stdout raw write handle", result.error)
+        self.assertIsNone(result.report["pid"])
+        self.assertFalse(result.report["complete_process_tree_proven"])
+
     def test_output_limit_terminates_job_and_refuses_tree_proof(self) -> None:
         result = run_contained_injector_command(
             [self.python, "-c", "import sys;sys.stdout.buffer.write(b'X'*1048576)"],
