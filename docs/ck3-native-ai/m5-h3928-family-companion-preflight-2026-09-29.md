@@ -59,3 +59,89 @@ expand its qualification or change G2's `3/8` count.
 ## R0375 matched live result (2026-09-29)
 
 The indexed H3928 candidate was executed once by the single local owner in a new minimized CK3 PID171476. The same paused native:3/revision4/actor29829/raw53219928 frame read Emma37265→Gerard37267 as outbound `active` pending, pending ID `-469762048`, age 0 with a 7-day AI reply cutoff, and `material_result=false`. The companion independently read primary first heir 38822 and 38718 as bilaterally betrothed, with no spouse, and `new_proposal_eligible=false`. [Formal report](<Z:/family-h3928-companion-v2-20260929/operator-runs/companion-read-1/formal-report.txt>) SHA-256 `5B4278C03CFA64D5F470FF8A2D2AB2ADDA8FBAAA72228617F4941DC4051B75B5`; [operator receipt](<Z:/family-h3928-companion-v2-20260929/operator-runs/companion-read-1/operator-receipt.json>) SHA-256 `E7F16A58D15C79B814E523FC75ED287DAA877511AD464CEA250E946871466E9D` completed/exit0. The source save hash stayed `A92073407D1CB2800EEF9C0C3EFEB9846D48398F679DC3163B71EF86C40CEC2C`; gold stayed raw120644281; no gameplay turn/date or proposal was submitted; process tree and owner were released. This is a private same-frame cold result read, not an acceptance, marriage, alliance, next-turn consumer or public capability.
+
+## R0400 Guy result: missing companion binding (2026-09-30)
+
+The exact native build and relationship tree above remain unchanged. R0400
+restored Robert's h3931/raw53219928 pair in PID144920 and read Guy38988 to
+37909, recipient34332, as outbound `active`, signed pending ID `-469762048`,
+age0 and AI reply cutoff7 days. `material_result=false`. Its next formal turn
+returned to `query-war-termination-options-16777231`; the paired-checkpoint
+revision is now consumed instead of causing another same-date Guy query.
+Neither read advances the native daily age function (`0x27516F0`, pending
+`+0x5B8`). This does not prove acceptance or let the marriage consumer override
+the retained contact expected-utility RED to advance time.
+
+The same restored sidecar still records first heir38822 and38718 as betrothed,
+with the prior material read in PID118364 and prior `not_allied` result. R0400
+did not independently re-read that pair. Its current public root still binds
+38822 as the primary first heir and Guy38988 as county2173's split successor.
+The [R0400 input and production-consumer replay](<D:/nw-family-pending-actionability-20260930/evidence.json>)
+has SHA-256 `8D545776053741A27E533AED49C3ECCFB181B47844FC6C840B04BE7C86CD1643`.
+Its three bounded fixtures preserve the actual war query, retained contact
+RED and an already selected `life-advance`; they do not infer a complete war
+decision from a partial snapshot.
+
+The existing `query-current-first-heir-relationship-v1-private` first binds
+the public primary first heir, reads bilateral spouse/betrothal identities,
+and verifies the same paused revision/player/date before returning. The
+existing companion classifier performs another unchanged-frame check and
+never enumerates candidates or submits a proposal. Its CLI was only bound
+to the matrilineal child pending observation, so the default-lineality Guy
+RESULT branch could not consume this existing observation in its formal run.
+Enabling the full first-heir marriage trial is unsuitable for this read:
+its wartime entry requires an existing query/advance step and it can evaluate
+new candidates if the old material pair has ended.
+
+The narrow Python binding is default OFF and runs the existing companion
+after the independent Guy RESULT read, before the required paired checkpoint.
+The full family marriage trial stays OFF. A partnered current heir has no new
+proposal value; an unpartnered or changed heir still requires its own final
+legality and value evidence, which this observer does not collect. A malformed
+or missing typed reply or frame drift fails the observation; a valid typed
+`unavailable` result remains an unknown relation. The
+checkpoint continues to consume its own publication revision, and real later
+dates/new native frames/cold PIDs still trigger the Guy result read.
+
+```mermaid
+flowchart TD
+  A["[R0400 live] Guy outbox active, same game day"] --> B["Independent typed Guy RESULT read"]
+  B --> C["[existing native read] Bind current primary heir through public root"]
+  C --> D{"Same paused frame; bilateral relation available?"}
+  D -->|frame mismatch| X["Observation fails; no date or proposal"]
+  D -->|available and partnered| P["Existing partner: no new proposal value"]
+  D -->|available and unpartnered| U["Final legality and value still required"]
+  D -->|typed unavailable| N["Record unavailable relation"]
+  P --> K["Required same-date checkpoint; consume publication revision"]
+  U --> K
+  N --> K
+  K --> W["Preserve authoritative next war/LIFE step"]
+  U -.-> F["[unknown] Later qualified marriage decision and outcome"]
+  W -.-> T["[unknown] Legal date advance and eventual Guy native reply"]
+```
+
+This is a Python formal observation binding using an already qualified
+private native reader. It changes no DLL, schema, public MCP registration,
+PRV008 artifact, G2 milestone or material marriage/alliance conclusion. A
+matching bounded candidate and live same-frame read are still required.
+
+The formal operator flag is `--private-guy-default-first-heir-companion`,
+with `--private-guy-default-formal-trial` ON and the full family trial OFF.
+The operator forwards the same companion flag to `native-auto-run`; the
+native CLI uses `--allow-private-guy-default-formal-trial` for its existing
+default-child trial. The existing `private_first_heir_companion_observation`
+report records the current relation and whether it matches the old material
+pair. The Guy result turn records `guy_default_first_heir_companion_observed`;
+the old first-heir sidecar is not rewritten as a new material result.
+
+Focused production-runner and operator fixtures pass 9/9 in normal mode and
+9/9 in `-O`, with logs in
+`D:\nw-guy-firstheir-companion-tests-20260930`. They cover old-PID betrothal
+comparison against the current primary heir, a changed unpartnered heir
+without a proposal, option-OFF compatibility, typed query frame drift staying
+RED, and the true checkpoint fence after an additional publication. The
+relationship query itself preserves its existing revision contract; a later
+checkpoint refresh is consumed without replacing the original Guy read
+revision. The generated operator command is parsed by the actual native CLI.
+These are fixture results; no new CK3 process, relationship outcome, date or
+candidate qualification is claimed here.

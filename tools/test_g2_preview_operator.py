@@ -586,6 +586,41 @@ class G2PreviewOperatorTest(unittest.TestCase):
         ])
         self.assertNotIn("--allow-private-family-marriage-formal-trial", command)
 
+    def test_guy_first_heir_companion_reaches_formal_native_cli_without_family_trial(self) -> None:
+        args = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "D:/candidate/manifest.json",
+            "--output", "D:/candidate/run", "--private-guy-default-formal-trial",
+            "--private-guy-default-first-heir-companion",
+        ])
+        self.assertTrue(args.private_guy_default_first_heir_companion)
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=8, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None,
+            private_guy_default_formal_trial=args.private_guy_default_formal_trial,
+            private_guy_default_first_heir_companion=args.private_guy_default_first_heir_companion)
+        self.assertIn("--allow-private-guy-default-formal-trial", command)
+        self.assertIn("--private-guy-default-first-heir-companion", command)
+        self.assertNotIn("--allow-private-family-marriage-formal-trial", command)
+        baseline = g2_preview_operator.native_auto_run_command(
+            ["python", "-m", "xar_autoplayer"], turns=8, timeout=600,
+            readiness_timeout=300, private_faction_round_id_value=None)
+        self.assertNotIn("--private-guy-default-first-heir-companion", baseline)
+        from xar_autoplayer.cli import parser as native_parser
+        native_args = native_parser().parse_args(command[3:])
+        self.assertTrue(native_args.private_guy_default_first_heir_companion)
+        self.assertTrue(native_args.allow_private_guy_default_formal_trial)
+        self.assertFalse(native_args.allow_private_family_marriage_formal_trial)
+
+    def test_guy_first_heir_companion_rejects_a_full_family_trial_before_launch(self) -> None:
+        for flags in ([], ["--private-guy-default-formal-trial",
+                           "--private-family-marriage-formal-trial"]):
+            args = g2_preview_operator.parser().parse_args([
+                "run", "--manifest", "D:/candidate/manifest.json",
+                "--output", "D:/candidate/run", "--private-guy-default-first-heir-companion",
+                *flags])
+            with self.assertRaisesRegex(ValueError, "family trial off"):
+                g2_preview_operator.command_run(args)
+
     def test_feast_stage5_full_cost_read_reaches_bounded_formal_argv(self) -> None:
         parsed = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "Z:/candidate/manifest.json",

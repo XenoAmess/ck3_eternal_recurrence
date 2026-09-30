@@ -2764,6 +2764,8 @@ class NativeAutoRunTests(unittest.TestCase):
         private_active_scheme_sway_target: int | None = None,
         private_child_matrilineal_pending_read_target: tuple[int, int] | None = None,
         private_child_matrilineal_first_heir_companion: bool = False,
+        private_guy_default_first_heir_companion: bool = False,
+        first_heir_resolved: dict[str, object] | None = None,
         private_child_matrilineal_pending_recovery_target: tuple[int, int] | None = None,
         allow_private_active_scheme_sway_formal_trial: bool = False,
         private_realm_law_paused_query: bool = False,
@@ -2903,6 +2905,15 @@ class NativeAutoRunTests(unittest.TestCase):
                 }],
             }]
         harness.advance_pump_epochs = advance_pump_epochs
+        if first_heir_resolved is not None:
+            self.spec.state_dir.mkdir(parents=True, exist_ok=True)
+            (self.spec.state_dir / "first-heir-marriage-formal-v1.json").write_text(
+                json.dumps({
+                    "schema": "xar.ck3.first-heir-marriage-formal.v1",
+                    "pending": None,
+                    "resolved": {**first_heir_resolved,
+                                 "episode_run_id": harness.episode_run_id},
+                }), encoding="utf-8")
         harness.activity_feast_open_status = activity_feast_open_status
         harness.activity_feast_open_stage = activity_feast_open_stage
         harness.activity_feast_selected_verified = activity_feast_selected_verified
@@ -3051,6 +3062,12 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 private_child_matrilineal_first_heir_companion=(
                     private_child_matrilineal_first_heir_companion
+                ),
+                allow_private_guy_default_formal_trial=(
+                    private_guy_default_first_heir_companion
+                ),
+                private_guy_default_first_heir_companion=(
+                    private_guy_default_first_heir_companion
                 ),
                 private_child_matrilineal_target=(
                     private_child_matrilineal_pending_recovery_target
@@ -4412,6 +4429,121 @@ class NativeAutoRunTests(unittest.TestCase):
         pending = consumer.read_child_default_ledger(self.spec.state_dir)["pending"]
         self.assertNotIn("last_consumed_checkpoint_native_revision", pending)
         self.assertEqual(harness.auto_turn_count, 1)
+
+    def test_guy_companion_reads_current_primary_pair_before_true_checkpoint_fence(self) -> None:
+        from xar_autoplayer import player_child_default_formal_consumer as consumer
+
+        old_resolved = {
+            "status": "betrothal", "material_result": True,
+            "heir_character_id": 38822, "candidate_character_id": 38718,
+            "post_bridge_pid": 118364,
+            "post_bridge_creation_date": "20260928-old-material-read",
+            "alliance_result": {"status": "not_allied"},
+        }
+        materialize = native_auto_run_module._materialize_checkpoint
+
+        def refreshed_checkpoint(service: object, driver: object, *args: object,
+                                 **kwargs: object) -> object:
+            # The valid relationship query preserves its frame. A subsequent
+            # publication before save must still be consumed by the true fence.
+            self.assertEqual(driver.harness.first_heir_relationship_query_count, 1)
+            driver.harness.native_revision += 1
+            driver.harness.public_revision += 1
+            return materialize(service, driver, *args, **kwargs)
+
+        with mock.patch.object(consumer, "bridge_process_identity",
+                               return_value=(4242, "fixture")), mock.patch.object(
+                native_auto_run_module, "_materialize_checkpoint",
+                side_effect=refreshed_checkpoint):
+            report, harness = self._run(
+                ["child_default_pending_result"],
+                private_guy_default_first_heir_companion=True,
+                first_heir_resolved=old_resolved)
+            self.assertTrue(report["ok"], report.get("first_blocker"))
+            observed = report["private_first_heir_companion_observation"]
+            self.assertTrue(observed["same_frame"])
+            self.assertTrue(observed["resolved_pair_matches_native"])
+            self.assertIs(observed["new_proposal_eligible"], False)
+            self.assertEqual(harness.first_heir_relationship_query_count, 1)
+            turn = report["auto_run"]["turns"][0]
+            pending = consumer.read_child_default_ledger(self.spec.state_dir)["pending"]
+            read_revision = turn["result"]["post_native_revision"]
+            self.assertEqual(pending["last_checked_native_revision"], read_revision)
+            self.assertEqual(pending["last_consumed_checkpoint_native_revision"],
+                             turn["after"]["native_revision"])
+            self.assertGreaterEqual(pending["last_consumed_checkpoint_native_revision"],
+                                    read_revision + 2)
+            self.assertIn("guy_default_first_heir_companion_observed", turn["evidence"])
+            self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+            self.assertFalse(report["qualification_gates"]["date_advanced"])
+            driver = mock.Mock(state_dir=self.spec.state_dir)
+            for step in (None, "life-advance"):
+                base = {"plan": {"selected_step": step,
+                                 "phase": "native_war_contact_prediction_red", "reason": "RED"}}
+                next_turn = consumer.plan_child_default_private(driver, base, harness.snapshot())
+                self.assertEqual(next_turn["plan"]["selected_step"], step)
+            kept = json.loads((self.spec.state_dir / "first-heir-marriage-formal-v1.json").read_text(
+                encoding="utf-8"))
+            self.assertEqual(kept["resolved"]["post_bridge_pid"], 118364)
+            self.assertIsNone(kept["pending"])
+
+    def test_guy_companion_changed_current_heir_is_observation_without_proposal(self) -> None:
+        from xar_autoplayer import player_child_default_formal_consumer as consumer
+        original = _FakeNativeDriver.query_current_first_heir_relationship_private_v1
+
+        def changed_heir(driver: object, *, expected_native_revision: int) -> dict[str, object]:
+            relation = original(driver, expected_native_revision=expected_native_revision)
+            return {**relation, "heir_character_id": 38988,
+                    "betrothed_character_id": None}
+
+        with mock.patch.object(_FakeNativeDriver,
+                               "query_current_first_heir_relationship_private_v1", changed_heir), \
+                mock.patch.object(consumer, "bridge_process_identity", return_value=(4242, "fixture")):
+            report, harness = self._run(
+                ["child_default_pending_result"],
+                private_guy_default_first_heir_companion=True,
+                first_heir_resolved={"status": "betrothal", "material_result": True,
+                                     "heir_character_id": 38822, "candidate_character_id": 38718,
+                                     "post_bridge_pid": 118364})
+        observed = report["private_first_heir_companion_observation"]
+        self.assertTrue(report["ok"], report.get("first_blocker"))
+        self.assertEqual(observed["first_heir_relationship"]["heir_character_id"], 38988)
+        self.assertFalse(observed["resolved_pair_matches_native"])
+        self.assertIsNone(observed["new_proposal_eligible"])
+        self.assertEqual(observed["new_proposal_value_status"],
+                         "unpartnered_requires_final_legality_and_value")
+        self.assertEqual(harness.auto_turn_count, 1)
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(len(report["checkpoints"]), 1)
+
+    def test_guy_companion_off_does_not_query_first_heir(self) -> None:
+        from xar_autoplayer import player_child_default_formal_consumer as consumer
+        with mock.patch.object(consumer, "bridge_process_identity", return_value=(4242, "fixture")):
+            report, harness = self._run(["child_default_pending_result"])
+        self.assertEqual(harness.first_heir_relationship_query_count, 0)
+        self.assertNotIn("private_first_heir_companion_observation", report)
+        self.assertEqual(len(report["checkpoints"]), 1)
+
+    def test_guy_companion_revision_drift_stays_red_without_consuming_checkpoint(self) -> None:
+        from xar_autoplayer import player_child_default_formal_consumer as consumer
+        original = _FakeNativeDriver.query_current_first_heir_relationship_private_v1
+
+        def drift(driver: object, *, expected_native_revision: int) -> dict[str, object]:
+            relation = original(driver, expected_native_revision=expected_native_revision)
+            driver.harness.native_revision += 1
+            driver.harness.public_revision += 1
+            return relation
+
+        with mock.patch.object(_FakeNativeDriver,
+                               "query_current_first_heir_relationship_private_v1", drift):
+            report, harness = self._run(
+                ["child_default_pending_result"],
+                private_guy_default_first_heir_companion=True)
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["checkpoints"], [])
+        pending = consumer.read_child_default_ledger(self.spec.state_dir)["pending"]
+        self.assertNotIn("last_consumed_checkpoint_native_revision", pending)
+        self.assertEqual(harness.first_heir_relationship_query_count, 1)
 
     def test_private_child_pending_result_without_paired_save_stays_red(self) -> None:
         report, harness = self._run(

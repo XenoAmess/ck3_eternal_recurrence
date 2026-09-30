@@ -1384,6 +1384,7 @@ def native_auto_run_command(
     private_construction_formal_trial: bool = False,
     private_family_marriage_formal_trial: bool = False,
     private_guy_default_formal_trial: bool = False,
+    private_guy_default_first_heir_companion: bool = False,
     private_m5_joint_collector: bool = False,
     private_prisoner_collection_observation: bool = False,
     private_active_scheme_sway_target: int | None = None,
@@ -1445,6 +1446,8 @@ def native_auto_run_command(
         command.append("--allow-private-family-marriage-formal-trial")
     if private_guy_default_formal_trial:
         command.append("--allow-private-guy-default-formal-trial")
+    if private_guy_default_first_heir_companion:
+        command.append("--private-guy-default-first-heir-companion")
     if private_m5_joint_collector:
         command.append("--allow-private-m5-joint-collector")
     if private_prisoner_collection_observation:
@@ -2096,6 +2099,11 @@ def command_prepare_state(args: argparse.Namespace) -> int:
 
 
 def command_run(args: argparse.Namespace) -> int:
+    if args.private_guy_default_first_heir_companion and (
+        not args.private_guy_default_formal_trial
+        or args.private_family_marriage_formal_trial
+    ):
+        raise ValueError("Guy companion needs the default trial with family trial off")
     child_pair = args.private_child_matrilineal_pending_read
     child_recovery_pair = args.private_child_matrilineal_pending_recovery
     recovery_proof_args = (
@@ -2393,6 +2401,7 @@ def command_run(args: argparse.Namespace) -> int:
         "private_construction_formal_trial": args.private_construction_formal_trial,
         "private_family_marriage_formal_trial": args.private_family_marriage_formal_trial,
         "private_guy_default_formal_trial": args.private_guy_default_formal_trial,
+        "private_guy_default_first_heir_companion": args.private_guy_default_first_heir_companion,
         "private_m5_joint_collector": args.private_m5_joint_collector,
         "private_prisoner_collection_observation": (
             args.private_prisoner_collection_observation
@@ -2530,6 +2539,9 @@ def command_run(args: argparse.Namespace) -> int:
                 ),
                 private_child_matrilineal_first_heir_companion=(
                     args.private_child_matrilineal_first_heir_companion
+                ),
+                private_guy_default_first_heir_companion=(
+                    args.private_guy_default_first_heir_companion
                 ),
                 private_child_matrilineal_pending_recovery=(
                     tuple(child_recovery_pair) if child_recovery_pair is not None else None
@@ -3408,6 +3420,10 @@ def parser() -> argparse.ArgumentParser:
         "--private-child-matrilineal-first-heir-companion",
         action="store_true",
         help="also read current first-heir relationship in that paused frame",
+    )
+    run.add_argument(
+        "--private-guy-default-first-heir-companion", action="store_true",
+        help="read the current first-heir relation beside a default child result, without another proposal",
     )
     run.add_argument(
         "--private-child-matrilineal-pending-recovery", type=int, nargs=2,
