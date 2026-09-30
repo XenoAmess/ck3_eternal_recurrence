@@ -7,7 +7,7 @@ import the visual driver, OCR, screenshots, or desktop input modules.
 from __future__ import annotations
 
 import copy
-from contextlib import contextmanager
+from contextlib import AbstractContextManager, contextmanager
 import hashlib
 import json
 import math
@@ -728,6 +728,7 @@ def native_session(
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
     frontend_first_before_final_launch: Callable[[EnvironmentSpec], None] | None = None,
+    before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
     startup_slot0_probe_output: Path | None = None,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
@@ -823,6 +824,7 @@ def native_session(
                 ),
                 frontend_first_warmup_bridge=warmup_bridge,
                 frontend_first_before_final_launch=frontend_first_before_final_launch,
+                before_process_create=before_process_create,
                 startup_slot0_probe_plan=startup_slot0_probe_plan,
             )
 
@@ -845,6 +847,7 @@ def _native_session_locked(
     ),
     frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
     frontend_first_before_final_launch: Callable[[EnvironmentSpec], None] | None = None,
+    before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
     startup_slot0_probe_plan: StartupSlot0ProbePlan | None = None,
 ) -> dict[str, object]:
     started_wall = utc_now()
@@ -979,6 +982,8 @@ def _native_session_locked(
         # Passing the validated config explicitly prevents environment changes
         # from selecting hybrid fallback between command parsing and launch.
         initial_launch_options: dict[str, object] = {"native_bridge": config}
+        if before_process_create is not None:
+            initial_launch_options["before_process_create"] = before_process_create
         if prepared_xar_enabled != "xar_on":
             initial_launch_options["prepared_xar_enabled"] = (
                 prepared_xar_enabled
@@ -1153,6 +1158,8 @@ def _native_session_locked(
                 # not repeat a repository-wide fingerprint during relaunch.
                 "verify_prepared_profile": False,
             }
+            if before_process_create is not None:
+                final_launch_options["before_process_create"] = before_process_create
             handle = launch(spec, **final_launch_options)
             pid = int(handle.process.pid)
             last_pid = pid
@@ -1315,6 +1322,8 @@ def _native_session_locked(
                             spec,
                             native_bridge=config,
                             load_save_name=str(selected_save["load_save_name"]),
+                            **({"before_process_create": before_process_create}
+                               if before_process_create is not None else {}),
                             # The session owns both global launch and state
                             # locks.  Its first launch already verified the
                             # committed profile; repeating the full Git/runtime

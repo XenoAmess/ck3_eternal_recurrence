@@ -10,8 +10,9 @@ import subprocess
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
-from screen_bus_lease import ScreenLeaseKeeper, checked_owner, renew_once
+from screen_bus_lease import ScreenLeaseKeeper, call_bus, checked_owner, renew_once
 
 
 REPO = Path(__file__).resolve().parents[3]
@@ -124,6 +125,29 @@ class ScreenBusLeaseTests(unittest.TestCase):
             self.assertIsNotNone(keeper.failure)
             lines = (bus / "keeper.jsonl").read_text(encoding="utf-8").splitlines()
             self.assertEqual(json.loads(lines[-1])["result"], "LOST_OR_UNCERTAIN_STOP")
+
+    def test_command_bytes_are_exclusive_and_preserved_on_success_and_timeout(self):
+        temporary, source, bus, sha = self.fixture()
+        with temporary:
+            audit = bus / "command-evidence"
+            body = call_bus(source, bus, sha, "list", "--stale-after", "600", audit_dir=audit)
+            self.assertTrue(body["ok"])
+            first = next(audit.iterdir())
+            argv = json.loads((first / "argv.json").read_text(encoding="utf-8"))["argv"]
+            self.assertEqual(argv[-3:], ["list", "--stale-after", "600"])
+            raw = (first / "stdout.bin").read_bytes()
+            receipt = json.loads((first / "result.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["stdout_sha256"], hashlib.sha256(raw).hexdigest().upper())
+            with patch("screen_bus_lease.subprocess.run", side_effect=subprocess.TimeoutExpired(
+                    ["fixture"], 60, output=b"partial\x00", stderr=b"late\x01")):
+                with self.assertRaises(subprocess.TimeoutExpired):
+                    call_bus(source, bus, sha, "list", audit_dir=audit)
+            entries = sorted(audit.iterdir())
+            self.assertEqual(len(entries), 2)
+            second = next(item for item in entries if item != first)
+            self.assertEqual((second / "stdout.bin").read_bytes(), b"partial\x00")
+            self.assertEqual((second / "stderr.bin").read_bytes(), b"late\x01")
+            self.assertEqual(json.loads((second / "result.json").read_text())["result"], "COMMAND_ERROR")
 
 
 if __name__ == "__main__":

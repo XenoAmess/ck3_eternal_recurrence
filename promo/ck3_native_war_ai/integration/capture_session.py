@@ -1569,6 +1569,25 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
         record_live_run_status(run, "completed-red", reason=str(error))
         raise
     stopped = threading.Event()
+    recorder = None
+    recorder_lock = threading.Lock()
+
+    def abort_debug_recorder() -> None:
+        nonlocal recorder
+        with recorder_lock:
+            if recorder is None or recorder.poll() is not None:
+                return
+            recorder.terminate()
+            try:
+                recorder.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                recorder.kill()
+                recorder.wait(timeout=10)
+            append(args.output_dir / "ffmpeg-abort.jsonl", {
+                "at": utc(), "reason": "screen-lease-lost-or-uncertain",
+                "pid": recorder.pid, "returncode": recorder.returncode,
+            })
+
     lease_keeper = ScreenLeaseKeeper(
         source=ROOT / "tools" / "codex_task_bus.py",
         bus_dir=Path("D:/workspace/.codex-task-bus"),
@@ -1576,7 +1595,8 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
         task_id=args.screen_task_id,
         sequence=screen_lease["sequence"], repo=ROOT,
         journal=args.output_dir / "screen-lease-journal.jsonl",
-        abort=stopped,
+        abort=stopped, audit_dir=args.output_dir / "screen-bus-commands",
+        on_abort=abort_debug_recorder,
     )
     worker: dict = {"ok": False, "error": None, "marks": []}
     origin = time.monotonic()
@@ -1592,7 +1612,6 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
     })
     if command is not None:
         write_new(args.output_dir / "ffmpeg-command.json", command)
-    recorder = None
     session_result: dict = {}
 
     async def observe() -> None:
@@ -1741,9 +1760,10 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             lease_keeper.refresh()  # CAS immediately before any recorder or CK3 child.
             output = resources.enter_context((args.output_dir / "session.jsonl").open("x", encoding="utf-8"))
             if command is not None:
-                lease_keeper.require_live()
                 err = resources.enter_context((args.output_dir / "ffmpeg.stderr.txt").open("xb"))
-                recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
+                with recorder_lock:
+                    lease_keeper.require_live()
+                    recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
                 time.sleep(1)
                 require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()
@@ -1755,6 +1775,7 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             ) if checkpoint is not None and args.gui_scale is not None else None
             lease_keeper.refresh()  # Final CAS immediately before native_session can launch CK3.
             record_live_run_status(run, "launch-started", reason="Bounded vanilla map capture; no strategic player actions")
+            args.native_session_invoked = True
             session_result = native_session(
                 # Startup, map publication and post-ready pump have separate waits.
                 spec, timeout_seconds=3 * args.frontend_timeout + args.hold_seconds + max(args.recovery_seconds, args.interactive_seconds) + 90,
@@ -1765,6 +1786,7 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
                 frontend_first_load_save_name=CHECKPOINT_LOAD_NAME if checkpoint is not None else None,
                 frontend_first_timeout_seconds=args.frontend_timeout,
                 frontend_first_before_final_launch=before_final_launch,
+                before_process_create=lease_keeper.process_create_gate,
             )
     except BaseException as error:
         supervisor_error = repr(error)
@@ -1775,18 +1797,19 @@ def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict
             thread.join(timeout=5)
         if supervisor_error is not None:
             prioritize_supervisor_failure(worker, supervisor_error)
-        if recorder is not None and recorder.poll() is None:
-            try:
-                recorder.communicate(b"q\n", timeout=30)
-            except subprocess.TimeoutExpired:
-                recorder.terminate()
-                recorder.wait(timeout=10)
+        with recorder_lock:
+            if recorder is not None and recorder.poll() is None:
+                try:
+                    recorder.communicate(b"q\n", timeout=30)
+                except subprocess.TimeoutExpired:
+                    recorder.terminate()
+                    recorder.wait(timeout=10)
         processes = ck3_process_inventory()
     write_new(args.output_dir / "session-result.json", session_result)
     write_new(args.output_dir / "observation-marks.json", worker["marks"])
     result = {
         "schema": "ck3-native-war-ai-raw-capture/v1", "run_id": run.run_id,
-        "finished_at": utc(), "ck3_launch_attempted": True,
+        "finished_at": utc(), "ck3_launch_attempted": args.native_session_invoked,
         "worker": worker, "cleanup_process_inventory": processes,
         "recorder_returncode": recorder.returncode if recorder is not None else None,
         "raw_video": identity(raw) if args.record_debug_desktop and raw.is_file() else None,
@@ -1874,6 +1897,7 @@ def main() -> int:
                         help="Expected SHA-256 of the explicit private observer DLL")
     parser.add_argument("--capture", action="store_true", help="Explicitly launch CK3 after preflight; default is no launch")
     args = parser.parse_args()
+    args.native_session_invoked = False
     require(30 <= args.hold_seconds <= 90, "Hold must be 30..90 seconds")
     require(30 <= args.frontend_timeout <= 1500, "Frontend timeout must be 30..1500 seconds")
     require(0 <= args.recovery_seconds <= 3600 and 0 <= args.interactive_seconds <= 3600, "Hot service must be 0..3600 seconds")
@@ -1909,6 +1933,7 @@ def main() -> int:
             task_id=args.screen_task_id,
             expected_sequence=args.screen_expected_sequence,
             repo=ROOT,
+            audit_dir=args.output_dir / "screen-bus-commands",
         )
         write_new(args.output_dir / "screen-lease-admission.json", screen_lease)
         result = capture(args, checked, screen_lease)
@@ -1916,7 +1941,11 @@ def main() -> int:
         print(json.dumps(result, ensure_ascii=False))
         return 0 if result["result"] != "RED" else 1
     except Exception as error:
-        failure = {"result": "RED", "error": repr(error), "ck3_started_by_preflight": False, "at": utc()}
+        failure = {"result": "RED", "error": repr(error),
+                   "ck3_started_by_preflight": False,
+                   "native_session_invoked": args.native_session_invoked,
+                   "ck3_process_created": "unknown" if args.native_session_invoked else False,
+                   "at": utc()}
         write_new(args.output_dir / "entry-failure.json", failure)
         print(json.dumps(failure))
         return 1

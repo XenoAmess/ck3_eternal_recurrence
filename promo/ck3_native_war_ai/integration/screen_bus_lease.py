@@ -8,6 +8,8 @@ the production entry are fixed by the caller, not by an untrusted receipt.
 
 from __future__ import annotations
 
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -17,6 +19,7 @@ import re
 import subprocess
 import sys
 import threading
+import uuid
 
 
 SCREEN = "ck3-screen:acquired"
@@ -46,17 +49,59 @@ def checked_cli_pair(source: Path, installed: Path, expected_sha: str) -> str:
     return expected_sha
 
 
-def call_bus(source: Path, bus_dir: Path, expected_sha: str, *argv: str) -> dict:
+def _write_new(path: Path, value: object) -> None:
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        if isinstance(value, str):
+            stream.write(value)
+        else:
+            json.dump(value, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+
+
+def _write_new_bytes(path: Path, value: bytes) -> None:
+    with path.open("xb") as stream:
+        stream.write(value)
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def call_bus(source: Path, bus_dir: Path, expected_sha: str, *argv: str,
+             audit_dir: Path | None = None) -> dict:
     checked_cli_pair(source, bus_dir / "bin" / "codex_task_bus.py", expected_sha)
-    result = subprocess.run(
-        [sys.executable, str(source), "--bus-dir", str(bus_dir),
-         "--expected-cli-sha256", expected_sha, *argv],
-        capture_output=True, text=True, timeout=60, check=False,
-    )
-    checked_cli_pair(source, bus_dir / "bin" / "codex_task_bus.py", expected_sha)
-    require(result.returncode == 0, f"bus CAS/readback failed (exit {result.returncode}): {result.stdout[-1000:]} {result.stderr[-500:]}")
+    command = [sys.executable, str(source), "--bus-dir", str(bus_dir),
+               "--expected-cli-sha256", expected_sha, *argv]
+    evidence = None
+    if audit_dir is not None:
+        audit_dir.mkdir(parents=True, exist_ok=True)
+        evidence = audit_dir / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ") + "-" + uuid.uuid4().hex)
+        evidence.mkdir(exist_ok=False)
+        _write_new(evidence / "argv.json", {"argv": command, "source_cli_sha256": expected_sha})
     try:
-        body = json.loads(result.stdout)
+        result = subprocess.run(command, capture_output=True, text=False,
+                                env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+                                timeout=60, check=False)
+    except (OSError, subprocess.TimeoutExpired) as error:
+        if evidence is not None:
+            stdout = getattr(error, "stdout", None) or ""
+            stderr = getattr(error, "stderr", None) or ""
+            stdout = stdout.encode("utf-8") if isinstance(stdout, str) else stdout
+            stderr = stderr.encode("utf-8") if isinstance(stderr, str) else stderr
+            _write_new_bytes(evidence / "stdout.bin", stdout)
+            _write_new_bytes(evidence / "stderr.bin", stderr)
+            _write_new(evidence / "result.json", {"result": "COMMAND_ERROR", "error": repr(error)})
+        raise
+    if evidence is not None:
+        _write_new_bytes(evidence / "stdout.bin", result.stdout)
+        _write_new_bytes(evidence / "stderr.bin", result.stderr)
+        _write_new(evidence / "result.json", {"exit_code": result.returncode,
+                                              "stdout_sha256": hashlib.sha256(result.stdout).hexdigest().upper(),
+                                              "stderr_sha256": hashlib.sha256(result.stderr).hexdigest().upper()})
+    checked_cli_pair(source, bus_dir / "bin" / "codex_task_bus.py", expected_sha)
+    stdout = result.stdout.decode("utf-8")
+    stderr = result.stderr.decode("utf-8", "replace")
+    require(result.returncode == 0, f"bus CAS/readback failed (exit {result.returncode}): {stdout[-1000:]} {stderr[-500:]}")
+    try:
+        body = json.loads(stdout)
     except (json.JSONDecodeError, TypeError) as error:
         raise RuntimeError("bus returned no valid JSON") from error
     require(isinstance(body, dict) and body.get("schema") == SCHEMA and body.get("ok") is True,
@@ -110,28 +155,36 @@ def checkout_head(repo: Path) -> str:
     head = result.stdout.strip()
     require(re.fullmatch(r"[a-fA-F0-9]{40}", head) is not None,
             "checkout HEAD is unavailable")
+    status = subprocess.run(["git", "-C", str(repo), "status", "--porcelain=v1",
+                             "--untracked-files=normal"], capture_output=True, text=True,
+                            timeout=30, check=True)
+    require(not status.stdout.strip(), "screen task checkout has current tracked or untracked changes")
     return head
 
 
 def renew_once(*, source: Path, bus_dir: Path, expected_sha: str,
-               task_id: str, expected_sequence: int, repo: Path) -> dict:
+               task_id: str, expected_sequence: int, repo: Path,
+               audit_dir: Path | None = None) -> dict:
     require(type(task_id) is str and TASK_PATTERN.fullmatch(task_id) is not None,
             "valid screen task ID is required")
     require(type(expected_sequence) is int and expected_sequence > 0,
             "positive screen task CAS sequence is required")
     require(repo.is_dir(), "screen task checkout is unavailable")
     head = checkout_head(repo)
-    before = call_bus(source, bus_dir, expected_sha, "list", "--stale-after", str(MAX_AGE_SECONDS))
+    before = call_bus(source, bus_dir, expected_sha, "list", "--stale-after", str(MAX_AGE_SECONDS),
+                      audit_dir=audit_dir)
     checked_owner(before.get("tasks"), task_id, expected_sequence, repo, head)
     changed = call_bus(source, bus_dir, expected_sha, "heartbeat", "--task", task_id,
-                       "--expected-sequence", str(expected_sequence), "--repo", str(repo))
+                       "--expected-sequence", str(expected_sequence), "--repo", str(repo),
+                       audit_dir=audit_dir)
     task, event = changed.get("task"), changed.get("event")
     require(isinstance(task, dict) and isinstance(event, dict) and
             event.get("kind") == "heartbeat" and event.get("task_id") == task_id and
             type(event.get("sequence")) is int and event["sequence"] > expected_sequence and
             task.get("last_sequence") == event["sequence"],
             "bus heartbeat did not return a new CAS sequence")
-    after = call_bus(source, bus_dir, expected_sha, "list", "--stale-after", str(MAX_AGE_SECONDS))
+    after = call_bus(source, bus_dir, expected_sha, "list", "--stale-after", str(MAX_AGE_SECONDS),
+                     audit_dir=audit_dir)
     owner = checked_owner(after.get("tasks"), task_id, event["sequence"], repo, head)
     require({key: owner.get(key) for key in ("task_id", "state", "resources", "last_sequence", "repo", "git")} ==
             {key: task.get(key) for key in ("task_id", "state", "resources", "last_sequence", "repo", "git")},
@@ -150,11 +203,15 @@ class ScreenLeaseKeeper:
 
     def __init__(self, *, source: Path, bus_dir: Path, expected_sha: str,
                  task_id: str, sequence: int, repo: Path, journal: Path,
-                 abort: threading.Event, interval_seconds: int = 180) -> None:
+                 abort: threading.Event, interval_seconds: int = 180,
+                 audit_dir: Path | None = None,
+                 on_abort: Callable[[], None] | None = None) -> None:
         require(30 <= interval_seconds <= 240, "lease interval must be 30..240 seconds")
         self.source, self.bus_dir, self.expected_sha = source, bus_dir, expected_sha
         self.task_id, self.sequence, self.repo = task_id, sequence, repo
         self.journal, self.abort, self.interval_seconds = journal, abort, interval_seconds
+        self.audit_dir = audit_dir
+        self.on_abort = on_abort
         self.failure: str | None = None
         self._lock = threading.Lock()
         self._done = threading.Event()
@@ -177,23 +234,39 @@ class ScreenLeaseKeeper:
 
     def refresh(self) -> dict:
         with self._lock:
-            self.require_live()
+            return self._refresh_locked()
+
+    def _refresh_locked(self) -> dict:
+        self.require_live()
+        try:
+            row = renew_once(
+                source=self.source, bus_dir=self.bus_dir,
+                expected_sha=self.expected_sha, task_id=self.task_id,
+                expected_sequence=self.sequence, repo=self.repo,
+                audit_dir=self.audit_dir)
+            self.sequence = row["sequence"]
+            self._append({"at_utc": datetime.now(timezone.utc).isoformat(),
+                          "result": "OWNED_CAS", "lease": row})
+            return row
+        except BaseException as error:
+            self.failure = repr(error)
+            self.abort.set()
             try:
-                row = renew_once(
-                    source=self.source, bus_dir=self.bus_dir,
-                    expected_sha=self.expected_sha, task_id=self.task_id,
-                    expected_sequence=self.sequence, repo=self.repo)
-                self.sequence = row["sequence"]
-                self._append({"at_utc": datetime.now(timezone.utc).isoformat(),
-                              "result": "OWNED_CAS", "lease": row})
-                return row
-            except BaseException as error:
-                self.failure = repr(error)
-                self.abort.set()
                 self._append({"at_utc": datetime.now(timezone.utc).isoformat(),
                               "result": "LOST_OR_UNCERTAIN_STOP", "error": self.failure,
                               "expected_sequence": self.sequence})
-                raise
+            finally:
+                if self.on_abort is not None:
+                    self.on_abort()
+            raise
+
+    @contextmanager
+    def process_create_gate(self) -> Iterator[None]:
+        """Keep the renewal lock through a watchdog or CK3 process creation."""
+        with self._lock:
+            self._refresh_locked()
+            self.require_live()
+            yield
 
     def require_live(self) -> None:
         require(self.failure is None and not self.abort.is_set(),

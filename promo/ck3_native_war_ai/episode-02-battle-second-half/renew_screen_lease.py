@@ -1,8 +1,10 @@
 """CAS renewal for an already registered, uniquely owned CK3 screen task.
 
-This standalone helper is for managed sessions that do not renew internally.
-capture_session.py has its own keeper; never run both for the same task. A lost
-or uncertain renewal stops immediately and leaves its journal as RED evidence.
+This standalone helper only renews the bus task. It cannot stop a CK3 session
+or recorder on its own. No current live runbook may treat it as a safety gate;
+an outer supervisor would have to prove immediate abort and tree cleanup on
+nonzero exit. capture_session.py has its own keeper; never run both for one
+task. A lost or uncertain renewal stops and leaves RED evidence.
 """
 
 from __future__ import annotations
@@ -40,6 +42,9 @@ def main() -> int:
         parser.error("max duration must be 300..14400 seconds")
     if not args.journal.parent.is_dir():
         parser.error("journal parent directory must already exist")
+    audit_dir = args.journal.with_name(args.journal.stem + "-commands")
+    if audit_dir.exists():
+        parser.error("command evidence directory already exists; choose a new attempt path")
     try:
         with args.journal.open("xb"):
             pass
@@ -62,7 +67,8 @@ def main() -> int:
                     source=ROOT / "tools" / "codex_task_bus.py",
                     bus_dir=Path("D:/workspace/.codex-task-bus"),
                     expected_sha=args.expected_cli_sha256,
-                    task_id=args.task, expected_sequence=sequence, repo=ROOT)
+                    task_id=args.task, expected_sequence=sequence, repo=ROOT,
+                    audit_dir=audit_dir)
             except Exception as error:
                 append({"at_utc": utc(), "result": "LOST_OR_UNCERTAIN_STOP",
                         "expected_sequence": sequence, "error": repr(error)})

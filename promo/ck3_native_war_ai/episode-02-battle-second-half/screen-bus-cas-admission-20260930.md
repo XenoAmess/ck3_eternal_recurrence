@@ -14,6 +14,6 @@
 
 这些参数也必须加入 d06/d11 的 live argv；no-launch argv 不需要。新的捕获入口在受管启动前核对源码与安装 CLI 字节，读取唯一、未过期、同 checkout/HEAD、clean 的 screen owner，执行带预期序号的 CAS heartbeat，再独立读取总线任务状态。它在 CK3 运行期间每 180 秒续租；任一冲突或读回不一致则保存 RED 日志并请求受管会话停止。输出保存在本次新 `ck3-output/screen-lease-admission.json` 与 `screen-lease-journal.jsonl`。不得为同一 task 同时运行独立续租脚本。
 
-`renew_screen_lease.py` 仅供其他没有内置 keeper 的受管会话使用，其新参数为 `--task`、`--expected-sequence`、`--expected-cli-sha256`、`--journal`；旧 `--bus-script` 与裸 `heartbeat` 命令作废。CAS 失败立即停止并保留 RED journal，不再重试三次后声称仍持有租约。每次续租后，下次预期序号取当次回执 `lease.sequence`。CK3、录制器及 worker 全部退出且清场证据审阅后，画面所有者再用最新序号执行总线 `release-screen-cas`；启动前或清场未证实不能释放。
+`renew_screen_lease.py` 仅续租任务总线，**自身无法停止 CK3、录制器或 worker，现有 live runbook 不得单独使用它作为安全门禁**。它的新参数为 `--task`、`--expected-sequence`、`--expected-cli-sha256`、`--journal`；旧 `--bus-script` 与裸 `heartbeat` 命令作废。只有外层 supervisor 已证明能在其非零退出时立即停止并清空进程树的其他会话，才可按另行审定的合同使用。CAS 失败立即停止并保留 RED journal，不再重试三次后声称仍持有租约。每次续租后，下次预期序号取当次回执 `lease.sequence`。CK3、录制器及 worker 全部退出且清场证据审阅后，画面所有者再用最新序号执行总线 `release-screen-cas`；启动前或清场未证实不能释放。
 
 此变更改变 `capture_session.py` 的 SHA 和 checkout HEAD；旧 d11 无启动 seal 不再适用，后续须在同一最终 HEAD 重新生成和封存无启动 attempt。现有旧 CLI 与旧 XQOL screen 记录未解决前，即使通过其他静态测试，所有 `--capture` 仍应在启动前 RED/STOP。

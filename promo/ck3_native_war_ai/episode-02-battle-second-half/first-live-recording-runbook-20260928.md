@@ -1,5 +1,7 @@
 # E2-02/03 首次追击补录：受管操作 runbook
 
+> **历史证据，禁止照此执行。** 本页旧 `status --resource`、裸 `heartbeat --task` 和旧 `capture_session.py --capture` 命令没有 CAS 门禁。所有新的画面/CK3 操作须从 [2026-09-30 CAS 准入](screen-bus-cas-admission-20260930.md)重新建新 attempt；旧 XQOL screen 记录和旧安装 CLI 未解决前实机 STOP。
+
 **状态：待屏幕交接；本 runbook 尚未执行实拍。** 按主任务队列等 R0271、R0266 依次释放 `ck3-screen`，由本任务 `promo-episode02-capture-20260928` 领取后执行。所有下列命令使用 `cmd` 和显式 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`；`<...>` 均须替换为当次新路径。当前 no-launch 证据见[源档预检](pursuit-capture-preflight-20260928.md)，录制器见 [`record_bounded_gameplay.py`](record_bounded_gameplay.py)。
 
 ## 0. 冻结源、版本和画面目标（不占屏）

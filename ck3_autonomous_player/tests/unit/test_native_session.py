@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import nullcontext
 import hashlib
 import io
 import inspect
@@ -476,6 +477,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
             "seen": True,
         }
         output = io.StringIO()
+        process_gate = lambda: nullcontext()
 
         def before_final_launch(spec) -> None:
             self.assertIs(spec, self.spec)
@@ -506,6 +508,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 frontend_first_load_save_name="last_save",
                 frontend_first_timeout_seconds=1.0,
                 frontend_first_before_final_launch=before_final_launch,
+                before_process_create=process_gate,
             )
 
         self.assertEqual(
@@ -515,12 +518,14 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                     self.spec,
                     native_bridge=None,
                     verify_prepared_profile=False,
+                    before_process_create=process_gate,
                 ),
                 mock.call(
                     self.spec,
                     native_bridge=config,
                     load_save_name="last_save",
                     verify_prepared_profile=False,
+                    before_process_create=process_gate,
                 ),
             ],
         )
@@ -1163,6 +1168,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
     def test_start_next_episode_loads_immutable_seed_with_new_lifecycle_marker(
         self,
     ) -> None:
+        process_gate = lambda: nullcontext()
         first_process = mock.Mock(pid=4545)
         first_process.poll.return_value = None
         second_process = mock.Mock(pid=4646)
@@ -1215,6 +1221,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 input_stream=None,
                 output_stream=None,
                 poll_interval_seconds=0.001,
+                before_process_create=process_gate,
             )
 
         self.assertEqual(
@@ -1224,8 +1231,11 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 native_bridge=config,
                 load_save_name="xar_episode_seed",
                 verify_prepared_profile=False,
+                before_process_create=process_gate,
             ),
         )
+        self.assertIs(launch_mock.call_args_list[0].kwargs["before_process_create"],
+                      process_gate)
         response = json.loads(
             (bridge_dir / "outbox" / "01-next.json").read_text(encoding="utf-8")
         )

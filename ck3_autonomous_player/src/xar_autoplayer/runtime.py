@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping
+from collections.abc import Callable, Mapping, MutableMapping
+from contextlib import AbstractContextManager, nullcontext
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
@@ -2412,6 +2413,7 @@ def launch(
     load_save_name: str | None = None,
     verify_prepared_profile: bool = True,
     prepared_xar_enabled: str = "xar_on",
+    before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
 ) -> SessionHandle:
     native_bridge = (
         native_bridge_launch_config_from_environment()
@@ -2481,33 +2483,36 @@ def launch(
         raise AgentError(
             f"supervisor process identity could not be authenticated: {parent_identity!r}"
         )
-    try:
-        write_json_atomic(
-            unsafe_marker,
-            {
-                "nonce": nonce,
-                "ck3_pid": None,
-                "reason": "watchdog bootstrap requested; CK3 launch not yet started",
-            },
-        )
-    except Exception as error:
-        raise AgentError(f"could not establish unsafe cleanup marker: {error}") from error
-    try:
-        watchdog_pid, watchdog_creation_date = _start_process_watchdog(
-            os.getpid(),
-            Path(str(parent_identity["executable"])),
-            str(parent_identity["creation_date"]),
-            nonce,
-            ready_file,
-            pid_file,
-            unsafe_marker,
-            spec.game_exe,
-            watchdog_final_evidence,
-        )
-    except Exception as error:
-        raise UnsafeCleanupError(
-            f"watchdog bootstrap failed; unsafe marker retained: {error}"
-        ) from error
+    # An opt-in caller may hold its own lease lock across the helper spawn.
+    # The same gate runs again immediately before creating CK3 below.
+    with before_process_create() if before_process_create is not None else nullcontext():
+        try:
+            write_json_atomic(
+                unsafe_marker,
+                {
+                    "nonce": nonce,
+                    "ck3_pid": None,
+                    "reason": "watchdog bootstrap requested; CK3 launch not yet started",
+                },
+            )
+        except Exception as error:
+            raise AgentError(f"could not establish unsafe cleanup marker: {error}") from error
+        try:
+            watchdog_pid, watchdog_creation_date = _start_process_watchdog(
+                os.getpid(),
+                Path(str(parent_identity["executable"])),
+                str(parent_identity["creation_date"]),
+                nonce,
+                ready_file,
+                pid_file,
+                unsafe_marker,
+                spec.game_exe,
+                watchdog_final_evidence,
+            )
+        except Exception as error:
+            raise UnsafeCleanupError(
+                f"watchdog bootstrap failed; unsafe marker retained: {error}"
+            ) from error
     try:
         write_json_atomic(
             unsafe_marker,
@@ -2562,11 +2567,12 @@ def launch(
     job_handle: object | None = None
     try:
         job_handle = _create_kill_on_close_job(job_name)
-        process = _create_suspended_process(
-            command,
-            spec.game_exe.parent,
-            child_environment,
-        )
+        with before_process_create() if before_process_create is not None else nullcontext():
+            process = _create_suspended_process(
+                command,
+                spec.game_exe.parent,
+                child_environment,
+            )
         write_json_atomic(
             unsafe_marker,
             {
