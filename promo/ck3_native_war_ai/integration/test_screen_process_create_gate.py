@@ -13,7 +13,9 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
+sys.path.insert(0, str(ROOT / "promo" / "ck3_native_war_ai" / "integration"))
 from xar_autoplayer import runtime  # noqa: E402
+import capture_session  # noqa: E402
 
 
 class ProcessCreateGateTests(unittest.TestCase):
@@ -157,6 +159,27 @@ class ProcessCreateGateTests(unittest.TestCase):
                 runtime.launch(SimpleNamespace(), native_bridge=SimpleNamespace(),
                                before_process_create=gate)
         self.assertEqual(calls, [])
+
+    def test_capture_entry_stops_before_recorder_or_bus(self):
+        with tempfile.TemporaryDirectory(prefix="video-entry-stop-") as temporary:
+            output = Path(temporary) / "new-attempt"
+            argv = ["capture_session.py", "--game-dir", temporary,
+                    "--bridge-dll", str(Path(temporary) / "bridge.dll"),
+                    "--bridge-injector", str(Path(temporary) / "injector.exe"),
+                    "--state-dir", str(Path(temporary) / "state"),
+                    "--output-dir", str(output), "--pipe-name", "fixture",
+                    "--record-debug-desktop", "--capture"]
+            with patch.object(sys, "argv", argv), \
+                 patch.object(capture_session, "preflight") as preflight, \
+                 patch.object(capture_session, "renew_once") as renew, \
+                 patch.object(capture_session.subprocess, "Popen") as popen:
+                self.assertEqual(capture_session.main(), 1)
+            preflight.assert_not_called()
+            renew.assert_not_called()
+            popen.assert_not_called()
+            failure = (output / "entry-failure.json").read_text(encoding="utf-8")
+            self.assertIn("process-tree containment is not reviewed", failure)
+            self.assertIn('"ck3_process_created": false', failure)
 
 
 if __name__ == "__main__":

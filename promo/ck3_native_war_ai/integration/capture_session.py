@@ -1522,7 +1522,16 @@ def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None,
     return spec, lifecycle
 
 
+def require_native_bridge_tree_proof() -> None:
+    """Stop every live video entry until the injector Job proof is reviewed."""
+    require(False,
+        "native bridge injector process-tree containment is not reviewed; "
+        "screen-gated capture remains stopped before any child process"
+    )
+
+
 def capture(args: argparse.Namespace, checked: dict, screen_lease: dict) -> dict:
+    require_native_bridge_tree_proof()
     from ck3_live_run_id import allocate_live_run_id, write_identity_receipt, record_live_run_status
     from xar_autoplayer.native_session import native_session
     from xar_autoplayer.runtime import NativeBridgeLaunchConfig
@@ -1909,6 +1918,9 @@ def main() -> int:
     write_new(args.output_dir / "command.json", {"python": sys.executable, "argv": sys.argv, "started_at": utc()})
     try:
         if args.capture:
+            # This precedes CAS subprocesses, observer threads and optional
+            # FFmpeg. The current injector cannot prove descendant cleanup.
+            require_native_bridge_tree_proof()
             require(args.screen_task_id is not None and
                     args.screen_expected_sequence is not None and
                     args.screen_cli_sha256 is not None,
